@@ -26,9 +26,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 
-/**
- * Initial onboarding fragment to setup Brave Wallet.
- */
+/** Initial onboarding fragment to setup Brave Wallet. */
 public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
     private static final String TAG = "SetupWalletFragment";
 

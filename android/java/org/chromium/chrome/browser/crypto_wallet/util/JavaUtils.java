@@ -35,6 +35,7 @@ public class JavaUtils {
     /**
      * Return either the mapped value or null, without throwing any exception. Useful to get nested
      * value.
+     *
      * @param val primary object to fetch value from
      * @param mapper function to get the value
      * @return either mapped value or null
@@ -103,6 +104,7 @@ public class JavaUtils {
     /**
      * Returns a combined string with a separator or an empty string. Empty and null values are
      * ignored e.g. concatStrings(#,a,b,c,"",null) => a#b#c
+     *
      * @param separator to append after each string.
      * @param items of string values.
      * @return a combined or empty string.

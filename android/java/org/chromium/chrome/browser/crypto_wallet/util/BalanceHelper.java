@@ -62,42 +62,59 @@ public class BalanceHelper {
 
             // Get CoinType SOL balances
             if (selectedNetwork.coin == CoinType.SOL) {
-                GetSolanaBalanceResponseContext context = addBalanceResponseContext(contexts,
-                        new GetSolanaBalanceResponseContext(
-                                balancesMultiResponse.singleResponseComplete),
-                        accountInfo.address, null);
+                GetSolanaBalanceResponseContext context =
+                        addBalanceResponseContext(
+                                contexts,
+                                new GetSolanaBalanceResponseContext(
+                                        balancesMultiResponse.singleResponseComplete),
+                                accountInfo.address,
+                                null);
                 jsonRpcService.getSolanaBalance(
                         accountInfo.address, selectedNetwork.chainId, context);
             } else {
-                GetBalanceResponseContext context = addBalanceResponseContext(contexts,
-                        new GetBalanceResponseContext(balancesMultiResponse.singleResponseComplete),
-                        accountInfo.address, null);
-                jsonRpcService.getBalance(accountInfo.address, accountInfo.accountId.coin,
-                        selectedNetwork.chainId, context);
+                GetBalanceResponseContext context =
+                        addBalanceResponseContext(
+                                contexts,
+                                new GetBalanceResponseContext(
+                                        balancesMultiResponse.singleResponseComplete),
+                                accountInfo.address,
+                                null);
+                jsonRpcService.getBalance(
+                        accountInfo.address,
+                        accountInfo.accountId.coin,
+                        selectedNetwork.chainId,
+                        context);
             }
         }
 
-        balancesMultiResponse.setWhenAllCompletedAction(() -> {
-            final int networkDecimals = selectedNetwork.decimals;
-            for (GetBalanceResponseBaseContext context : contexts) {
-                Double nativeAssetBalance = (context.error == ProviderError.SUCCESS)
-                        ? Utils.getBalanceForCoinType(
-                                selectedNetwork.coin, networkDecimals, context.balance)
-                        : 0.0d;
-                nativeAssetsBalances.put(context.accountAddress, nativeAssetBalance);
-            }
+        balancesMultiResponse.setWhenAllCompletedAction(
+                () -> {
+                    final int networkDecimals = selectedNetwork.decimals;
+                    for (GetBalanceResponseBaseContext context : contexts) {
+                        Double nativeAssetBalance =
+                                (context.error == ProviderError.SUCCESS)
+                                        ? Utils.getBalanceForCoinType(
+                                                selectedNetwork.coin,
+                                                networkDecimals,
+                                                context.balance)
+                                        : 0.0d;
+                        nativeAssetsBalances.put(context.accountAddress, nativeAssetBalance);
+                    }
 
-            callback.call(selectedNetwork.coin, nativeAssetsBalances);
-        });
+                    callback.call(selectedNetwork.coin, nativeAssetsBalances);
+                });
     }
 
     /**
-     * Get assets balances for a list of tokens on all accounts.
-     * Only collect balances for current network. Return a nested map that is grouped by accounts
-     * first and then tokens. Native tokens (ETH, SOL, FIL) will be excluded.
+     * Get assets balances for a list of tokens on all accounts. Only collect balances for current
+     * network. Return a nested map that is grouped by accounts first and then tokens. Native tokens
+     * (ETH, SOL, FIL) will be excluded.
      */
-    public static void getBlockchainTokensBalances(JsonRpcService jsonRpcService,
-            NetworkInfo selectedNetwork, AccountInfo[] accountInfos, BlockchainToken[] tokens,
+    public static void getBlockchainTokensBalances(
+            JsonRpcService jsonRpcService,
+            NetworkInfo selectedNetwork,
+            AccountInfo[] accountInfos,
+            BlockchainToken[] tokens,
             Callbacks.Callback2<Integer, HashMap<String, HashMap<String, Double>>> callback) {
         if (jsonRpcService == null) return;
         HashMap<String, HashMap<String, Double>> blockchainTokensBalances =
@@ -123,30 +140,42 @@ public class BalanceHelper {
                     if (selectedNetwork.chainId.equals(token.chainId)) {
                         if (token.isErc721) {
                             GetErc721TokenBalanceResponseContext context =
-                                    addBalanceResponseContext(contexts,
+                                    addBalanceResponseContext(
+                                            contexts,
                                             new GetErc721TokenBalanceResponseContext(
                                                     balancesMultiResponse.singleResponseComplete),
-                                            accountInfo.address, token);
-                            jsonRpcService.getErc721TokenBalance(token.contractAddress,
-                                    token.tokenId != null ? token.tokenId : "", accountInfo.address,
-                                    token.chainId, context);
+                                            accountInfo.address,
+                                            token);
+                            jsonRpcService.getErc721TokenBalance(
+                                    token.contractAddress,
+                                    token.tokenId != null ? token.tokenId : "",
+                                    accountInfo.address,
+                                    token.chainId,
+                                    context);
                         } else {
                             GetErc20TokenBalanceResponseContext context =
-                                    addBalanceResponseContext(contexts,
+                                    addBalanceResponseContext(
+                                            contexts,
                                             new GetErc20TokenBalanceResponseContext(
                                                     balancesMultiResponse.singleResponseComplete),
-                                            accountInfo.address, token);
-                            jsonRpcService.getErc20TokenBalance(token.contractAddress,
-                                    accountInfo.address, token.chainId, context);
+                                            accountInfo.address,
+                                            token);
+                            jsonRpcService.getErc20TokenBalance(
+                                    token.contractAddress,
+                                    accountInfo.address,
+                                    token.chainId,
+                                    context);
                         }
                     }
                 } else if (accountInfo.accountId.coin == CoinType.SOL) {
                     if (selectedNetwork.chainId.equals(token.chainId)) {
                         GetSplTokenAccountBalanceResponseContext context =
-                                addBalanceResponseContext(contexts,
+                                addBalanceResponseContext(
+                                        contexts,
                                         new GetSplTokenAccountBalanceResponseContext(
                                                 balancesMultiResponse.singleResponseComplete),
-                                        accountInfo.address, token);
+                                        accountInfo.address,
+                                        token);
                         jsonRpcService.getSplTokenAccountBalance(
                                 accountInfo.address, token.contractAddress, token.chainId, context);
                     }
@@ -156,37 +185,44 @@ public class BalanceHelper {
             }
         }
 
-        balancesMultiResponse.setWhenAllCompletedAction(() -> {
-            for (GetBalanceResponseBaseContext context : contexts) {
-                final String tokenKey = Utils.tokenToString(context.userAsset);
-                final int decimals = (context.userAsset.decimals != 0 || context.userAsset.isErc721)
-                        ? context.userAsset.decimals
-                        : (context.userAsset.coin == CoinType.SOL ? context.decimals
-                                                                  : selectedNetwork.decimals);
-                Double tokenBalance =
-                        (context.error == ProviderError.SUCCESS && context.balance != null
-                                && !context.balance.isEmpty())
-                        ? Utils.getBalanceForCoinType(
-                                selectedNetwork.coin, decimals, context.balance)
-                        : 0.0d;
-                if (blockchainTokensBalances.containsKey(context.accountAddress)) {
-                    blockchainTokensBalances.get(context.accountAddress)
-                            .put(tokenKey, tokenBalance);
-                } else {
-                    HashMap<String, Double> perAccountBlockchainTokensBalances =
-                            new HashMap<String, Double>();
-                    perAccountBlockchainTokensBalances.put(tokenKey, tokenBalance);
-                    blockchainTokensBalances.put(
-                            context.accountAddress, perAccountBlockchainTokensBalances);
-                }
-            }
+        balancesMultiResponse.setWhenAllCompletedAction(
+                () -> {
+                    for (GetBalanceResponseBaseContext context : contexts) {
+                        final String tokenKey = Utils.tokenToString(context.userAsset);
+                        final int decimals =
+                                (context.userAsset.decimals != 0 || context.userAsset.isErc721)
+                                        ? context.userAsset.decimals
+                                        : (context.userAsset.coin == CoinType.SOL
+                                                ? context.decimals
+                                                : selectedNetwork.decimals);
+                        Double tokenBalance =
+                                (context.error == ProviderError.SUCCESS
+                                                && context.balance != null
+                                                && !context.balance.isEmpty())
+                                        ? Utils.getBalanceForCoinType(
+                                                selectedNetwork.coin, decimals, context.balance)
+                                        : 0.0d;
+                        if (blockchainTokensBalances.containsKey(context.accountAddress)) {
+                            blockchainTokensBalances
+                                    .get(context.accountAddress)
+                                    .put(tokenKey, tokenBalance);
+                        } else {
+                            HashMap<String, Double> perAccountBlockchainTokensBalances =
+                                    new HashMap<String, Double>();
+                            perAccountBlockchainTokensBalances.put(tokenKey, tokenBalance);
+                            blockchainTokensBalances.put(
+                                    context.accountAddress, perAccountBlockchainTokensBalances);
+                        }
+                    }
 
-            callback.call(selectedNetwork.coin, blockchainTokensBalances);
-        });
+                    callback.call(selectedNetwork.coin, blockchainTokensBalances);
+                });
     }
 
-    public static void getP3ABalances(WeakReference<BraveWalletBaseActivity> activityRef,
-            List<NetworkInfo> allNetworks, NetworkInfo selectedNetwork,
+    public static void getP3ABalances(
+            WeakReference<BraveWalletBaseActivity> activityRef,
+            List<NetworkInfo> allNetworks,
+            NetworkInfo selectedNetwork,
             Callbacks.Callback1<HashMap<Integer, HashSet<String>>> callback) {
         BraveWalletBaseActivity activity = activityRef.get();
         if (activity == null || activity.isFinishing()) return;
@@ -194,11 +230,12 @@ public class BalanceHelper {
         BraveWalletService braveWalletService = activity.getBraveWalletService();
         BlockchainRegistry blockchainRegistry = activity.getBlockchainRegistry();
         JsonRpcService jsonRpcService = activity.getJsonRpcService();
-        assert braveWalletService != null && blockchainRegistry != null && keyringService != null
+        assert braveWalletService != null
+                && blockchainRegistry != null
+                && keyringService != null
                 && jsonRpcService != null;
         if (JavaUtils.anyNull(
-                    braveWalletService, blockchainRegistry, keyringService, jsonRpcService))
-            return;
+                braveWalletService, blockchainRegistry, keyringService, jsonRpcService)) return;
 
         boolean P3AEnabled =
                 BraveConfig.P3A_ENABLED && BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED);
@@ -211,37 +248,51 @@ public class BalanceHelper {
             callback.call(activeAddresses);
             return;
         } else {
-            Utils.getP3ANetworks(allNetworks, relevantNetworks -> {
-                // Exclude selectedNetwork if in relevantNetworks, also sort by CoinType
-                HashMap<Integer, ArrayList<NetworkInfo>> sortedNetworks =
-                        filterAndSortNetworksP3A(relevantNetworks, selectedNetwork);
-                int numNetworks = 0;
-                for (int coinType : Utils.P3ACoinTypes) {
-                    numNetworks += sortedNetworks.get(coinType).size();
-                }
+            Utils.getP3ANetworks(
+                    allNetworks,
+                    relevantNetworks -> {
+                        // Exclude selectedNetwork if in relevantNetworks, also sort by CoinType
+                        HashMap<Integer, ArrayList<NetworkInfo>> sortedNetworks =
+                                filterAndSortNetworksP3A(relevantNetworks, selectedNetwork);
+                        int numNetworks = 0;
+                        for (int coinType : Utils.P3ACoinTypes) {
+                            numNetworks += sortedNetworks.get(coinType).size();
+                        }
 
-                MultiResponseHandler multiResponse = new MultiResponseHandler(numNetworks * 2);
-                ArrayList<GetNativeAssetsBalancesResponseContext> nativeAssetsBalancesResponses =
-                        new ArrayList<GetNativeAssetsBalancesResponseContext>();
-                ArrayList<GetBlockchainTokensBalancesResponseContext>
-                        blockchainTokensBalancesResponses =
-                                new ArrayList<GetBlockchainTokensBalancesResponseContext>();
+                        MultiResponseHandler multiResponse =
+                                new MultiResponseHandler(numNetworks * 2);
+                        ArrayList<GetNativeAssetsBalancesResponseContext>
+                                nativeAssetsBalancesResponses =
+                                        new ArrayList<GetNativeAssetsBalancesResponseContext>();
+                        ArrayList<GetBlockchainTokensBalancesResponseContext>
+                                blockchainTokensBalancesResponses =
+                                        new ArrayList<GetBlockchainTokensBalancesResponseContext>();
 
-                for (int coinType : Utils.P3ACoinTypes) {
-                    processP3ACoinNetworks(coinType, sortedNetworks.get(coinType), keyringService,
-                            jsonRpcService, braveWalletService, blockchainRegistry, multiResponse,
-                            nativeAssetsBalancesResponses, blockchainTokensBalancesResponses);
-                }
+                        for (int coinType : Utils.P3ACoinTypes) {
+                            processP3ACoinNetworks(
+                                    coinType,
+                                    sortedNetworks.get(coinType),
+                                    keyringService,
+                                    jsonRpcService,
+                                    braveWalletService,
+                                    blockchainRegistry,
+                                    multiResponse,
+                                    nativeAssetsBalancesResponses,
+                                    blockchainTokensBalancesResponses);
+                        }
 
-                multiResponse.setWhenAllCompletedAction(() -> {
-                    updateActiveAddresses(nativeAssetsBalancesResponses.toArray(
-                                                  new GetNativeAssetsBalancesResponseContext[0]),
-                            blockchainTokensBalancesResponses.toArray(
-                                    new GetBlockchainTokensBalancesResponseContext[0]),
-                            activeAddresses);
-                    callback.call(activeAddresses);
-                });
-            });
+                        multiResponse.setWhenAllCompletedAction(
+                                () -> {
+                                    updateActiveAddresses(
+                                            nativeAssetsBalancesResponses.toArray(
+                                                    new GetNativeAssetsBalancesResponseContext[0]),
+                                            blockchainTokensBalancesResponses.toArray(
+                                                    new GetBlockchainTokensBalancesResponseContext
+                                                            [0]),
+                                            activeAddresses);
+                                    callback.call(activeAddresses);
+                                });
+                    });
         }
     }
 

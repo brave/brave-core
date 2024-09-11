@@ -101,8 +101,10 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
         viewPager.setUserInputEnabled(false);
         FragmentNavigationItemAdapter adapter = new FragmentNavigationItemAdapter(this, mTabTitles);
         viewPager.setAdapter(adapter);
-        new TabLayoutMediator(tabLayout, viewPager,
-                (tab, position) -> tab.setText(mTabTitles.get(position).getTitle()))
+        new TabLayoutMediator(
+                        tabLayout,
+                        viewPager,
+                        (tab, position) -> tab.setText(mTabTitles.get(position).getTitle()))
                 .attach();
         Button btnAddSwitchNetwork = view.findViewById(R.id.fragment_add_switch_eth_chain_btn_sign);
         if (mPanelType == ADD_ETHEREUM_CHAIN) {
@@ -124,26 +126,28 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
         } else if (mPanelType == SWITCH_ETHEREUM_CHAIN) {
             btnAddSwitchNetwork.setText(R.string.brave_wallet_allow_change_network_button);
         }
-        btnAddSwitchNetwork.setOnClickListener(v -> {
-            if (mPanelType == ADD_ETHEREUM_CHAIN) {
-                processAddChainRequest(mNetworkInfo, true);
-                processNextAddNetworkRequest();
-            } else if (mPanelType == SWITCH_ETHEREUM_CHAIN) {
-                processSwitchChainRequest(mSwitchChainRequest, true);
-                processNextSwitchChainRequest();
-            }
-        });
+        btnAddSwitchNetwork.setOnClickListener(
+                v -> {
+                    if (mPanelType == ADD_ETHEREUM_CHAIN) {
+                        processAddChainRequest(mNetworkInfo, true);
+                        processNextAddNetworkRequest();
+                    } else if (mPanelType == SWITCH_ETHEREUM_CHAIN) {
+                        processSwitchChainRequest(mSwitchChainRequest, true);
+                        processNextSwitchChainRequest();
+                    }
+                });
         Button btnAddSwitchCancel =
                 view.findViewById(R.id.fragment_add_switch_eth_chain_btn_cancel);
-        btnAddSwitchCancel.setOnClickListener(v -> {
-            if (mPanelType == ADD_ETHEREUM_CHAIN) {
-                processAddChainRequest(mNetworkInfo, false);
-                processNextAddNetworkRequest();
-            } else if (mPanelType == SWITCH_ETHEREUM_CHAIN) {
-                processSwitchChainRequest(mSwitchChainRequest, false);
-                processNextSwitchChainRequest();
-            }
-        });
+        btnAddSwitchCancel.setOnClickListener(
+                v -> {
+                    if (mPanelType == ADD_ETHEREUM_CHAIN) {
+                        processAddChainRequest(mNetworkInfo, false);
+                        processNextAddNetworkRequest();
+                    } else if (mPanelType == SWITCH_ETHEREUM_CHAIN) {
+                        processSwitchChainRequest(mSwitchChainRequest, false);
+                        processNextSwitchChainRequest();
+                    }
+                });
         mFavicon = view.findViewById(R.id.fragment_add_token_iv_domain_icon);
         mSiteTv = view.findViewById(R.id.fragment_add_token_tv_site);
 
@@ -257,13 +261,15 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
 
     private void processSwitchChainRequest(
             SwitchChainRequest switchChainRequest, boolean isApproved) {
-        mBraveWalletBaseActivity.getJsonRpcService().notifySwitchChainRequestProcessed(
-                switchChainRequest.requestId, isApproved);
+        mBraveWalletBaseActivity
+                .getJsonRpcService()
+                .notifySwitchChainRequestProcessed(switchChainRequest.requestId, isApproved);
     }
 
     private void processAddChainRequest(NetworkInfo networkInfo, boolean isApproved) {
-        mBraveWalletBaseActivity.getJsonRpcService().addEthereumChainRequestCompleted(
-                networkInfo.chainId, isApproved);
+        mBraveWalletBaseActivity
+                .getJsonRpcService()
+                .addEthereumChainRequestCompleted(networkInfo.chainId, isApproved);
     }
 
     private void updateNetworkInfo() {

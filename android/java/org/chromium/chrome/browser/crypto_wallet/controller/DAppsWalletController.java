@@ -120,18 +120,19 @@ public class DAppsWalletController implements ConnectionErrorHandler {
         if (Utils.shouldShowCryptoOnboarding()) {
             showOnBoardingOrUnlock();
         } else {
-            mKeyringService.isLocked(isLocked -> {
-                if (isLocked) {
-                    showOnBoardingOrUnlock();
-                } else {
-                    boolean isFoundPendingDAppsTx = false;
-                    // TODO: check if pending dapps transaction are available and implement an
-                    // action accrodingly
-                    if (!isFoundPendingDAppsTx) {
-                        createAndShowWalletPanel();
-                    }
-                }
-            });
+            mKeyringService.isLocked(
+                    isLocked -> {
+                        if (isLocked) {
+                            showOnBoardingOrUnlock();
+                        } else {
+                            boolean isFoundPendingDAppsTx = false;
+                            // TODO: check if pending dapps transaction are available and implement
+                            // an action accrodingly
+                            if (!isFoundPendingDAppsTx) {
+                                createAndShowWalletPanel();
+                            }
+                        }
+                    });
         }
     }
 

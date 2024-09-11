@@ -111,8 +111,9 @@ public class BraveDappPermissionPromptDialog
     @SuppressLint("DiscouragedApi")
     @CalledByNative
     void show() {
-        View customView = LayoutInflaterUtils.inflate(
-                mContext, R.layout.brave_permission_prompt_dialog, null);
+        View customView =
+                LayoutInflaterUtils.inflate(
+                        mContext, R.layout.brave_permission_prompt_dialog, null);
 
         mFavIconImage = customView.findViewById(R.id.favicon);
         mCvFavContainer = customView.findViewById(R.id.permission_prompt_fav_container);
@@ -122,16 +123,21 @@ public class BraveDappPermissionPromptDialog
         initBraveWalletService();
         TextView domain = customView.findViewById(R.id.domain);
         mBraveWalletService.getActiveOrigin(
-                originInfo -> { domain.setText(Utils.geteTldSpanned(originInfo)); });
+                originInfo -> {
+                    domain.setText(Utils.geteTldSpanned(originInfo));
+                });
 
         mPropertyModel =
                 new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)
                         .with(ModalDialogProperties.CONTROLLER, this)
                         .with(ModalDialogProperties.CUSTOM_VIEW, customView)
-                        .with(ModalDialogProperties.POSITIVE_BUTTON_TEXT,
+                        .with(
+                                ModalDialogProperties.POSITIVE_BUTTON_TEXT,
                                 mContext.getString(
-                                        R.string.permissions_connect_brave_wallet_connect_button_text))
-                        .with(ModalDialogProperties.NEGATIVE_BUTTON_TEXT,
+                                        R.string
+                                                .permissions_connect_brave_wallet_connect_button_text))
+                        .with(
+                                ModalDialogProperties.NEGATIVE_BUTTON_TEXT,
                                 mContext.getString(
                                         R.string.permissions_connect_brave_wallet_back_button_text))
                         .with(ModalDialogProperties.FILTER_TOUCH_FOR_SECURITY, true)
@@ -144,9 +150,12 @@ public class BraveDappPermissionPromptDialog
 
             ViewGroup container = getPermissionModalViewContainer(customView);
             mPermissionDialogPositiveButton =
-                    container.findViewById(activity.getResources().getIdentifier(
-                            WalletConstants.PERMISSION_DIALOG_POSITIVE_BUTTON_ID,
-                            WalletConstants.RESOURCE_ID, activity.getPackageName()));
+                    container.findViewById(
+                            activity.getResources()
+                                    .getIdentifier(
+                                            WalletConstants.PERMISSION_DIALOG_POSITIVE_BUTTON_ID,
+                                            WalletConstants.RESOURCE_ID,
+                                            activity.getPackageName()));
             if (mPermissionDialogPositiveButton != null) {
                 mPermissionDialogPositiveButton.setEnabled(false);
             }
@@ -204,42 +213,51 @@ public class BraveDappPermissionPromptDialog
         mRecyclerView.setAdapter(mAccountsListAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(layoutManager);
-        mWalletModel.getDappsModel().fetchAccountsForConnectionReq(
-                mCoinType, selectedAccountAllAccounts -> {
-                    AccountInfo selectedAccount = selectedAccountAllAccounts.first;
-                    List<AccountInfo> accounts = selectedAccountAllAccounts.second;
-                    mAccountsListAdapter.setAccounts(accounts.toArray(new AccountInfo[0]));
-                    if (accounts.size() > 0) {
-                        mAccountsListAdapter.setSelectedAccount(selectedAccount);
-                        if (mPermissionDialogPositiveButton != null) {
-                            mPermissionDialogPositiveButton.setEnabled(true);
-                        }
-                    }
-                    mAccountsListAdapter.notifyDataSetChanged();
+        mWalletModel
+                .getDappsModel()
+                .fetchAccountsForConnectionReq(
+                        mCoinType,
+                        selectedAccountAllAccounts -> {
+                            AccountInfo selectedAccount = selectedAccountAllAccounts.first;
+                            List<AccountInfo> accounts = selectedAccountAllAccounts.second;
+                            mAccountsListAdapter.setAccounts(accounts.toArray(new AccountInfo[0]));
+                            if (accounts.size() > 0) {
+                                mAccountsListAdapter.setSelectedAccount(selectedAccount);
+                                if (mPermissionDialogPositiveButton != null) {
+                                    mPermissionDialogPositiveButton.setEnabled(true);
+                                }
+                            }
+                            mAccountsListAdapter.notifyDataSetChanged();
 
-                    // We are on the flow from ConnectAccountFragment.connectAccount
-                    ConnectAccountFragment.ConnectAccountPendingData capd =
-                            ConnectAccountFragment.getAndResetConnectAccountPendingData();
-                    if (capd != null) {
-                        final String[] selectedAccounts = {capd.accountAddress};
-                        BraveDappPermissionPromptDialogJni.get().onPrimaryButtonClicked(
-                                mNativeDialogController, selectedAccounts,
-                                capd.permissionLifetimeOption);
-                        mModalDialogManager.dismissDialog(
-                                mPropertyModel, DialogDismissalCause.POSITIVE_BUTTON_CLICKED);
-                    }
-                });
+                            // We are on the flow from ConnectAccountFragment.connectAccount
+                            ConnectAccountFragment.ConnectAccountPendingData capd =
+                                    ConnectAccountFragment.getAndResetConnectAccountPendingData();
+                            if (capd != null) {
+                                final String[] selectedAccounts = {capd.accountAddress};
+                                BraveDappPermissionPromptDialogJni.get()
+                                        .onPrimaryButtonClicked(
+                                                mNativeDialogController,
+                                                selectedAccounts,
+                                                capd.permissionLifetimeOption);
+                                mModalDialogManager.dismissDialog(
+                                        mPropertyModel,
+                                        DialogDismissalCause.POSITIVE_BUTTON_CLICKED);
+                            }
+                        });
     }
 
     private void setFavIcon() {
         if (mFavIconURL.isEmpty()) {
             return;
         }
-        ImageLoader.fetchFavIcon(mFavIconURL, new WeakReference<>(mContext), fav -> {
-            if (fav == null) return;
-            mFavIconImage.setImageBitmap(fav);
-            mCvFavContainer.setVisibility(View.VISIBLE);
-        });
+        ImageLoader.fetchFavIcon(
+                mFavIconURL,
+                new WeakReference<>(mContext),
+                fav -> {
+                    if (fav == null) return;
+                    mFavIconImage.setImageBitmap(fav);
+                    mCvFavContainer.setVisibility(View.VISIBLE);
+                });
     }
 
     public String[] getSelectedAccounts() {
@@ -256,13 +274,16 @@ public class BraveDappPermissionPromptDialog
     @Override
     public void onClick(PropertyModel model, @ButtonType int buttonType) {
         if (buttonType == ButtonType.POSITIVE) {
-            BraveDappPermissionPromptDialogJni.get().onPrimaryButtonClicked(
-                    mNativeDialogController, getSelectedAccounts(), getPermissionLifetimeOption());
+            BraveDappPermissionPromptDialogJni.get()
+                    .onPrimaryButtonClicked(
+                            mNativeDialogController,
+                            getSelectedAccounts(),
+                            getPermissionLifetimeOption());
             mModalDialogManager.dismissDialog(
                     mPropertyModel, DialogDismissalCause.POSITIVE_BUTTON_CLICKED);
         } else if (buttonType == ButtonType.NEGATIVE) {
-            BraveDappPermissionPromptDialogJni.get().onNegativeButtonClicked(
-                    mNativeDialogController);
+            BraveDappPermissionPromptDialogJni.get()
+                    .onNegativeButtonClicked(mNativeDialogController);
             mModalDialogManager.dismissDialog(
                     mPropertyModel, DialogDismissalCause.NEGATIVE_BUTTON_CLICKED);
         }
@@ -312,9 +333,13 @@ public class BraveDappPermissionPromptDialog
 
     @NativeMethods
     interface Natives {
-        void onPrimaryButtonClicked(long nativeBraveDappPermissionPromptDialogController,
-                String[] accounts, int permissionLifetimeOption);
+        void onPrimaryButtonClicked(
+                long nativeBraveDappPermissionPromptDialogController,
+                String[] accounts,
+                int permissionLifetimeOption);
+
         void onNegativeButtonClicked(long nativeBraveDappPermissionPromptDialogController);
+
         void onDialogDismissed(long nativeBraveDappPermissionPromptDialogController);
     }
 }

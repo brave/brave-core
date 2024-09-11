@@ -84,35 +84,51 @@ public class AddTokenFragment extends BaseDAppsFragment {
 
     private void fillAddSuggestTokenRequest(boolean init) {
         if (mWalletModel == null) return;
-        getBraveWalletService().getPendingAddSuggestTokenRequests(requests -> {
-            if (requests == null || requests.length == 0) {
-                Intent intent = new Intent();
-                getActivity().setResult(Activity.RESULT_OK, intent);
-                getActivity().finish();
+        getBraveWalletService()
+                .getPendingAddSuggestTokenRequests(
+                        requests -> {
+                            if (requests == null || requests.length == 0) {
+                                Intent intent = new Intent();
+                                getActivity().setResult(Activity.RESULT_OK, intent);
+                                getActivity().finish();
 
-                return;
-            }
-            mCurrentAddSuggestTokenRequest = requests[0];
-            NetworkInfo selectedNetwork = mWalletModel.getNetworkModel().getNetwork(
-                    mCurrentAddSuggestTokenRequest.token.chainId);
-            if (init) {
-                mBtCancel.setOnClickListener(
-                        v -> { notifyAddSuggestTokenRequestProcessed(false); });
-                mBtAdd.setOnClickListener(v -> { notifyAddSuggestTokenRequestProcessed(true); });
-                mTokenAddress.setOnClickListener(v -> {
-                    Activity activity = getActivity();
-                    if (activity instanceof BraveWalletBaseActivity && selectedNetwork != null) {
-                        Utils.openAddress(
-                                "/token/" + mCurrentAddSuggestTokenRequest.token.contractAddress,
-                                (BraveWalletBaseActivity) activity,
-                                mCurrentAddSuggestTokenRequest.token.coin, selectedNetwork);
-                    }
-                });
-            }
-            fillOriginInfo(mCurrentAddSuggestTokenRequest.origin);
-            initToken();
-            updateNetwork(selectedNetwork);
-        });
+                                return;
+                            }
+                            mCurrentAddSuggestTokenRequest = requests[0];
+                            NetworkInfo selectedNetwork =
+                                    mWalletModel
+                                            .getNetworkModel()
+                                            .getNetwork(
+                                                    mCurrentAddSuggestTokenRequest.token.chainId);
+                            if (init) {
+                                mBtCancel.setOnClickListener(
+                                        v -> {
+                                            notifyAddSuggestTokenRequestProcessed(false);
+                                        });
+                                mBtAdd.setOnClickListener(
+                                        v -> {
+                                            notifyAddSuggestTokenRequestProcessed(true);
+                                        });
+                                mTokenAddress.setOnClickListener(
+                                        v -> {
+                                            Activity activity = getActivity();
+                                            if (activity instanceof BraveWalletBaseActivity
+                                                    && selectedNetwork != null) {
+                                                Utils.openAddress(
+                                                        "/token/"
+                                                                + mCurrentAddSuggestTokenRequest
+                                                                        .token
+                                                                        .contractAddress,
+                                                        (BraveWalletBaseActivity) activity,
+                                                        mCurrentAddSuggestTokenRequest.token.coin,
+                                                        selectedNetwork);
+                                            }
+                                        });
+                            }
+                            fillOriginInfo(mCurrentAddSuggestTokenRequest.origin);
+                            initToken();
+                            updateNetwork(selectedNetwork);
+                        });
     }
 
     private void fillOriginInfo(OriginInfo originInfo) {
@@ -129,15 +145,28 @@ public class AddTokenFragment extends BaseDAppsFragment {
     private void initToken() {
         if (!mCurrentAddSuggestTokenRequest.token.logo.isEmpty()) {
             String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
-            Utils.setBitmapResource(mExecutor, mHandler, getActivity(),
+            Utils.setBitmapResource(
+                    mExecutor,
+                    mHandler,
+                    getActivity(),
                     "file://" + tokensPath + "/" + mCurrentAddSuggestTokenRequest.token.logo,
-                    R.drawable.ic_eth, mTokenImage, null, true);
+                    R.drawable.ic_eth,
+                    mTokenImage,
+                    null,
+                    true);
         } else {
-            Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, mTokenImage,
+            Utils.setBlockiesBitmapCustomAsset(
+                    mExecutor,
+                    mHandler,
+                    mTokenImage,
                     mCurrentAddSuggestTokenRequest.token.contractAddress,
                     mCurrentAddSuggestTokenRequest.token.symbol,
-                    getActivity().getResources().getDisplayMetrics().density, null, getActivity(),
-                    false, (float) 0.9, true);
+                    getActivity().getResources().getDisplayMetrics().density,
+                    null,
+                    getActivity(),
+                    false,
+                    (float) 0.9,
+                    true);
         }
         String tokenName = mCurrentAddSuggestTokenRequest.token.name;
         if (tokenName.isEmpty()) {

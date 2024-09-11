@@ -18,7 +18,9 @@ public class SignMessagePagerAdapter extends FragmentStateAdapter {
     private List<String> mTabTitles;
     private SignMessageRequest mCurrentSignMessageRequest;
 
-    public SignMessagePagerAdapter(Fragment fragment, List<String> tabTitles,
+    public SignMessagePagerAdapter(
+            Fragment fragment,
+            List<String> tabTitles,
             SignMessageRequest currentSignMessageRequest) {
         super(fragment);
         mTabTitles = tabTitles;

@@ -56,10 +56,11 @@ public class CreateAccountAdapter extends RecyclerView.Adapter<CreateAccountAdap
         holder.tvDesc.setText(accountTypeInfo.getDesc());
         holder.ivNetworkPicture.setImageResource(accountTypeInfo.getIcon());
 
-        holder.itemView.setOnClickListener(v -> {
-            assert mCreateAccountClickListener != null;
-            mCreateAccountClickListener.onAccountClick(accountTypeInfo);
-        });
+        holder.itemView.setOnClickListener(
+                v -> {
+                    assert mCreateAccountClickListener != null;
+                    mCreateAccountClickListener.onAccountClick(accountTypeInfo);
+                });
     }
 
     @Override

@@ -72,7 +72,7 @@ public class TransactionUtils {
         if (transactionInfo == null || transactionInfo.txDataUnion == null) return false;
         return WalletConstants.SOLANA_TRANSACTION_TYPES.contains(transactionInfo.txType)
                 || transactionInfo.txType == TransactionType.OTHER
-                && safeSolData(transactionInfo.txDataUnion) != null;
+                        && safeSolData(transactionInfo.txDataUnion) != null;
     }
 
     public static String getSolanaProgramIdName(String programId, Context context) {

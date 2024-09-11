@@ -44,10 +44,10 @@ public class DAppsDialog extends Dialog implements ConnectionErrorHandler {
     private DialogInterface.OnDismissListener mOnDismissListener;
     private boolean mDismissed;
     private final Handler mHandler;
-    @DAppsDialogStyle
-    private final int mStyle;
+    @DAppsDialogStyle private final int mStyle;
 
-    public DAppsDialog(@NonNull Context context,
+    public DAppsDialog(
+            @NonNull Context context,
             DialogInterface.OnDismissListener onDismissListener,
             @DAppsDialogStyle int dialogStyle) {
         super(context, getDialogTheme(dialogStyle));
@@ -57,7 +57,8 @@ public class DAppsDialog extends Dialog implements ConnectionErrorHandler {
         mHandler = new Handler(Looper.getMainLooper());
     }
 
-    public static DAppsDialog newInstance(Context context,
+    public static DAppsDialog newInstance(
+            Context context,
             DialogInterface.OnDismissListener onDismissListener,
             @DAppsDialogStyle int dialogStyle) {
         return new DAppsDialog(context, onDismissListener, dialogStyle);
@@ -66,11 +67,13 @@ public class DAppsDialog extends Dialog implements ConnectionErrorHandler {
     public void showOnboarding(boolean showOnboarding) {
         mShowOnboarding = showOnboarding;
         show();
-        mHandler.postDelayed(() -> {
-            if (isShowing()) {
-                dismiss();
-            }
-        }, WalletConstants.MILLI_SECOND * 30);
+        mHandler.postDelayed(
+                () -> {
+                    if (isShowing()) {
+                        dismiss();
+                    }
+                },
+                WalletConstants.MILLI_SECOND * 30);
     }
 
     @Override
@@ -90,21 +93,23 @@ public class DAppsDialog extends Dialog implements ConnectionErrorHandler {
         window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mRootView = findViewById(R.id.dapp_dialog_root);
-        mRootView.setOnClickListener(v -> {
-            if (mShowOnboarding) {
-                openWallet();
-                dismiss();
-            } else {
-                mKeyringService.isLocked(isLocked -> {
-                    if (isLocked) {
+        mRootView.setOnClickListener(
+                v -> {
+                    if (mShowOnboarding) {
                         openWallet();
+                        dismiss();
                     } else {
-                        // Todo: show option to connect account
+                        mKeyringService.isLocked(
+                                isLocked -> {
+                                    if (isLocked) {
+                                        openWallet();
+                                    } else {
+                                        // Todo: show option to connect account
+                                    }
+                                    dismiss();
+                                });
                     }
-                    dismiss();
                 });
-            }
-        });
     }
 
     private void openWallet() {

@@ -20,9 +20,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 
-/**
- * Fragment used by DApps for sign-in error message
- */
+/** Fragment used by DApps for sign-in error message */
 public class SignMessageErrorFragment extends BaseDAppsBottomSheetDialogFragment {
     private static final String TAG = "SMEF";
 
@@ -65,24 +63,29 @@ public class SignMessageErrorFragment extends BaseDAppsBottomSheetDialogFragment
     }
 
     private void fillSignMessageErrorInfo(boolean init) {
-        getBraveWalletService().getPendingSignMessageErrors(errors -> {
-            if (errors == null || errors.length == 0) {
-                Intent intent = new Intent();
-                getActivity().setResult(Activity.RESULT_OK, intent);
-                getActivity().finish();
-                return;
-            }
+        getBraveWalletService()
+                .getPendingSignMessageErrors(
+                        errors -> {
+                            if (errors == null || errors.length == 0) {
+                                Intent intent = new Intent();
+                                getActivity().setResult(Activity.RESULT_OK, intent);
+                                getActivity().finish();
+                                return;
+                            }
 
-            mCurrentSignMessageError = errors[0];
+                            mCurrentSignMessageError = errors[0];
 
-            mTextViewUrl.setText(mCurrentSignMessageError.originInfo.originSpec);
-            mTextViewHost.setText(mCurrentSignMessageError.originInfo.eTldPlusOne);
-            mTextViewReason.setText(mCurrentSignMessageError.localizedErrMsg);
+                            mTextViewUrl.setText(mCurrentSignMessageError.originInfo.originSpec);
+                            mTextViewHost.setText(mCurrentSignMessageError.originInfo.eTldPlusOne);
+                            mTextViewReason.setText(mCurrentSignMessageError.localizedErrMsg);
 
-            if (init) {
-                mBtClose.setOnClickListener(v -> { notifySignMessageErrorProcessed(); });
-            }
-        });
+                            if (init) {
+                                mBtClose.setOnClickListener(
+                                        v -> {
+                                            notifySignMessageErrorProcessed();
+                                        });
+                            }
+                        });
     }
 
     private void notifySignMessageErrorProcessed() {

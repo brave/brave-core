@@ -79,14 +79,19 @@ public final class WalletConstants {
     public static final String SOL_DAPP_NONCE_ACCOUNT = "nonce_account";
     public static final String SOL_DAPP_NEW_ACCOUNT = "new_account";
 
-    public static List<Integer> SOLANA_TRANSACTION_TYPES = Arrays.asList(
-            TransactionType.SOLANA_SYSTEM_TRANSFER, TransactionType.SOLANA_SPL_TOKEN_TRANSFER,
-            TransactionType.SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION,
-            TransactionType.SOLANA_DAPP_SIGN_TRANSACTION,
-            TransactionType.SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION, TransactionType.SOLANA_SWAP);
+    public static List<Integer> SOLANA_TRANSACTION_TYPES =
+            Arrays.asList(
+                    TransactionType.SOLANA_SYSTEM_TRANSFER,
+                    TransactionType.SOLANA_SPL_TOKEN_TRANSFER,
+                    TransactionType
+                            .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION,
+                    TransactionType.SOLANA_DAPP_SIGN_TRANSACTION,
+                    TransactionType.SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION,
+                    TransactionType.SOLANA_SWAP);
 
     public static List<Integer> SOLANA_DAPPS_TRANSACTION_TYPES =
-            Arrays.asList(TransactionType.SOLANA_DAPP_SIGN_TRANSACTION,
+            Arrays.asList(
+                    TransactionType.SOLANA_DAPP_SIGN_TRANSACTION,
                     TransactionType.SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION);
 
     // Solana instruction types

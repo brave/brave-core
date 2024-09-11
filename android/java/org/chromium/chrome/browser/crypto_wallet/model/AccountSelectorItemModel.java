@@ -116,13 +116,15 @@ public class AccountSelectorItemModel {
 
     // ERC721 has format [Title #ID]
     public String getTitle() {
-        return isErc721() ? Utils.formatErc721TokenTitle(mTitle, Utils.hexToIntString(mId))
-                          : mTitle;
+        return isErc721()
+                ? Utils.formatErc721TokenTitle(mTitle, Utils.hexToIntString(mId))
+                : mTitle;
     }
 
     public String getSubTitle() {
-        return isErc721() ? Utils.formatErc721TokenTitle(mSubTitle, Utils.hexToIntString(mId))
-                          : mSubTitle;
+        return isErc721()
+                ? Utils.formatErc721TokenTitle(mSubTitle, Utils.hexToIntString(mId))
+                : mSubTitle;
     }
 
     public String getText1() {

@@ -84,6 +84,7 @@ public class WalletUtils {
     public static boolean accountIdsEqual(AccountId left, AccountId right) {
         return left.uniqueKey.equals(right.uniqueKey);
     }
+
     public static boolean accountIdsEqual(AccountInfo left, AccountInfo right) {
         return accountIdsEqual(left.accountId, right.accountId);
     }

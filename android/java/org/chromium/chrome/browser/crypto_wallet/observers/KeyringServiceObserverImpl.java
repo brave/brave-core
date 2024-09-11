@@ -15,15 +15,25 @@ import java.lang.ref.WeakReference;
 public class KeyringServiceObserverImpl implements KeyringServiceObserver {
     public interface KeyringServiceObserverImplDelegate {
         default void locked() {}
+
         default void backedUp() {}
+
         default void walletCreated() {}
+
         default void walletRestored() {}
+
         default void walletReset() {}
+
         default void unlocked() {}
+
         default void accountsChanged() {}
+
         default void accountsAdded(AccountInfo[] addedAccounts) {}
+
         default void autoLockMinutesChanged() {}
+
         default void selectedWalletAccountChanged(AccountInfo accountInfo) {}
+
         default void selectedDappAccountChanged(
                 @CoinType.EnumType int coinType, AccountInfo accountInfo) {}
     }

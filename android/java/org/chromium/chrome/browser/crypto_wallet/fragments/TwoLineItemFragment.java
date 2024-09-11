@@ -46,24 +46,25 @@ public class TwoLineItemFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view;
         adapter = new TwoLineItemRecyclerViewAdapter(items);
         recyclerView.setAdapter(adapter);
-        recyclerView.setOnTouchListener((v, event) -> {
-            int action = event.getAction();
-            switch (action) {
-                case MotionEvent.ACTION_DOWN:
-                    // Disallow NestedScrollView to intercept touch events.
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    break;
+        recyclerView.setOnTouchListener(
+                (v, event) -> {
+                    int action = event.getAction();
+                    switch (action) {
+                        case MotionEvent.ACTION_DOWN:
+                            // Disallow NestedScrollView to intercept touch events.
+                            v.getParent().requestDisallowInterceptTouchEvent(true);
+                            break;
 
-                case MotionEvent.ACTION_UP:
-                    // Allow NestedScrollView to intercept touch events.
-                    v.getParent().requestDisallowInterceptTouchEvent(false);
-                    break;
-            }
+                        case MotionEvent.ACTION_UP:
+                            // Allow NestedScrollView to intercept touch events.
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                            break;
+                    }
 
-            // Handle RecyclerView touch events.
-            v.onTouchEvent(event);
-            return true;
-        });
+                    // Handle RecyclerView touch events.
+                    v.onTouchEvent(event);
+                    return true;
+                });
         return view;
     }
 

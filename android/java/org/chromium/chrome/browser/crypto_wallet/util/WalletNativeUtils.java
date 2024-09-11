@@ -31,8 +31,11 @@ public class WalletNativeUtils {
     @NativeMethods
     interface Natives {
         void resetWallet(Profile profile);
+
         boolean isUnstoppableDomainsTld(String domain);
+
         boolean isEnsTld(String domain);
+
         boolean isSnsTld(String domain);
     }
 }

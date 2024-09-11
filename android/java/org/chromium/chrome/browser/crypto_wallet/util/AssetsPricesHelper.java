@@ -19,7 +19,9 @@ import java.util.Locale;
 public class AssetsPricesHelper {
     private static final String TAG = "AssetsPricesHelper";
 
-    public static void fetchPrices(AssetRatioService assetRatioService, BlockchainToken[] assets,
+    public static void fetchPrices(
+            AssetRatioService assetRatioService,
+            BlockchainToken[] assets,
             Callbacks.Callback1<HashMap<String, Double>> callback) {
         HashMap<String, Double> assetsPrices = new HashMap<String, Double>();
         AsyncUtils.MultiResponseHandler pricesMultiResponse =
@@ -41,26 +43,33 @@ public class AssetsPricesHelper {
                     fromAssets, toAssets, AssetPriceTimeframe.LIVE, priceContext);
         }
 
-        pricesMultiResponse.setWhenAllCompletedAction(() -> {
-            for (AsyncUtils.GetPriceResponseContext priceContext : pricesContexts) {
-                if (!priceContext.success || priceContext.prices.length != 1) {
-                    continue;
-                }
+        pricesMultiResponse.setWhenAllCompletedAction(
+                () -> {
+                    for (AsyncUtils.GetPriceResponseContext priceContext : pricesContexts) {
+                        if (!priceContext.success || priceContext.prices.length != 1) {
+                            continue;
+                        }
 
-                Double usdPerToken = 0.0d;
-                final AssetPrice thisPrice = priceContext.prices[0];
-                final String toConvert = thisPrice.price != null ? thisPrice.price : "0.0";
-                try {
-                    usdPerToken = Double.parseDouble(toConvert);
-                } catch (NumberFormatException ex) {
-                    Log.e(TAG,
-                            "Cannot parse " + toConvert + ", Token: "
-                                    + String.valueOf(thisPrice.fromAsset) + ", " + ex);
-                    continue;
-                }
-                assetsPrices.put(thisPrice.fromAsset.toLowerCase(Locale.getDefault()), usdPerToken);
-            }
-            callback.call(assetsPrices);
-        });
+                        Double usdPerToken = 0.0d;
+                        final AssetPrice thisPrice = priceContext.prices[0];
+                        final String toConvert = thisPrice.price != null ? thisPrice.price : "0.0";
+                        try {
+                            usdPerToken = Double.parseDouble(toConvert);
+                        } catch (NumberFormatException ex) {
+                            Log.e(
+                                    TAG,
+                                    "Cannot parse "
+                                            + toConvert
+                                            + ", Token: "
+                                            + String.valueOf(thisPrice.fromAsset)
+                                            + ", "
+                                            + ex);
+                            continue;
+                        }
+                        assetsPrices.put(
+                                thisPrice.fromAsset.toLowerCase(Locale.getDefault()), usdPerToken);
+                    }
+                    callback.call(assetsPrices);
+                });
     }
 }
