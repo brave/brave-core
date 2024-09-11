@@ -76,6 +76,7 @@ source_set("extensions") {
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",
+    "//brave/components/brave_rewards/common/mojom",
     "//brave/components/brave_rewards/core:headers",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/core/common",
