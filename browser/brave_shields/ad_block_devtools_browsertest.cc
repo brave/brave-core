@@ -6,23 +6,22 @@
 #include "base/values.h"
 #include "brave/browser/brave_shields/ad_block_service_browsertest.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_devtools_protocol_client.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#else
+#include "chrome/test/base/in_process_browser_test.h"
+#endif
 
 class AdblockDevtoolsTest : public AdBlockServiceTest,
                             public content::TestDevToolsProtocolClient {
  public:
   AdblockDevtoolsTest() = default;
   ~AdblockDevtoolsTest() override = default;
-
-  content::WebContents* web_contents() {
-    return browser()->tab_strip_model()->GetActiveWebContents();
-  }
 
   bool IsShowingInterstitial() {
     return chrome_browser_interstitials::IsShowingInterstitial(web_contents());
