@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/modules/document_metadata/document_metadata_extractor.cc b/third_party/blink/renderer/modules/document_metadata/document_metadata_extractor.cc
+index a18f0001e2d76b30a441ea369ef375d6a39ea38a..23a1a64d478c5741356a0b5e4248817e686ebb32 100644
+--- a/third_party/blink/renderer/modules/document_metadata/document_metadata_extractor.cc
++++ b/third_party/blink/renderer/modules/document_metadata/document_metadata_extractor.cc
+@@ -218,7 +218,7 @@ void ExtractEntity(const JSONObject& val, int recursion_level, Entity& entity) {
+         add_property = ParseRepeatedValue(*(val.GetArray(entry.first)),
+                                           recursion_level, property->values);
+         break;
+-      default:
++      case JSONValue::ValueType::kTypeNull:add_property = false;
+         break;
+     }
+     if (add_property)
