@@ -91,11 +91,12 @@ public class BraveWalletProviderDelegateImplHelper {
 
     public static void IsSolanaConnected(
             WebContents webContents, String account, Callbacks.Callback1<Boolean> callback) {
-        Callback<Boolean> callbackWrapper = result -> {
-            callback.call(result);
-        };
-        BraveWalletProviderDelegateImplHelperJni.get().IsSolanaConnected(
-                webContents, account, callbackWrapper);
+        Callback<Boolean> callbackWrapper =
+                result -> {
+                    callback.call(result);
+                };
+        BraveWalletProviderDelegateImplHelperJni.get()
+                .IsSolanaConnected(webContents, account, callbackWrapper);
     }
 
     @NativeMethods

@@ -115,20 +115,24 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
         mWebSite = view.findViewById(R.id.fragment_connect_account_website);
         mAccountsConnected = view.findViewById(R.id.fragment_connect_account_accounts_connected);
         mButtonNewAccount = view.findViewById(R.id.fragment_connect_account_new_account_id);
-        mButtonNewAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BottomSheetDialogFragment sheetDialogFragment =
-                        new CreateAccountBottomSheetFragment();
-                sheetDialogFragment.show(
-                        getChildFragmentManager(), CreateAccountBottomSheetFragment.TAG);
-            }
-        });
+        mButtonNewAccount.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BottomSheetDialogFragment sheetDialogFragment =
+                                new CreateAccountBottomSheetFragment();
+                        sheetDialogFragment.show(
+                                getChildFragmentManager(), CreateAccountBottomSheetFragment.TAG);
+                    }
+                });
         mRecyclerView = view.findViewById(R.id.accounts_list);
         mFavicon = view.findViewById(R.id.favicon);
 
-        getBraveWalletService().getActiveOrigin(
-                originInfo -> { mWebSite.setText(Utils.geteTldSpanned(originInfo)); });
+        getBraveWalletService()
+                .getActiveOrigin(
+                        originInfo -> {
+                            mWebSite.setText(Utils.geteTldSpanned(originInfo));
+                        });
         initComponents();
 
         return view;
@@ -139,8 +143,9 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             GURL pageUrl = getCurrentHostHttpAddress();
-            FaviconImageCallback imageCallback = (bitmap,
-                    iconUrl) -> ConnectAccountFragment.this.onFaviconAvailable(pageUrl, bitmap);
+            FaviconImageCallback imageCallback =
+                    (bitmap, iconUrl) ->
+                            ConnectAccountFragment.this.onFaviconAvailable(pageUrl, bitmap);
             // 0 is a max bitmap size for download
             mFaviconHelper.getLocalFaviconImageForURL(
                     activity.getCurrentProfile(), pageUrl, 0, imageCallback);
@@ -148,14 +153,20 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
             Log.e(TAG, "initComponents " + e);
         }
         assert mWalletModel != null;
-        mWalletModel.getKeyringModel().mAllAccountsInfo.observe(
-                getViewLifecycleOwner(), allAccounts -> {
-                    mSelectedAccount = allAccounts.selectedAccount;
-                    mAccountInfos = Utils.filterAccountsByCoin(allAccounts.accounts,
-                                                 mSelectedAccount.accountId.coin)
+        mWalletModel
+                .getKeyringModel()
+                .mAllAccountsInfo
+                .observe(
+                        getViewLifecycleOwner(),
+                        allAccounts -> {
+                            mSelectedAccount = allAccounts.selectedAccount;
+                            mAccountInfos =
+                                    Utils.filterAccountsByCoin(
+                                                    allAccounts.accounts,
+                                                    mSelectedAccount.accountId.coin)
                                             .toArray(new AccountInfo[0]);
-                    updateAccounts();
-                });
+                            updateAccounts();
+                        });
     }
 
     private void onFaviconAvailable(GURL pageUrl, Bitmap favicon) {
@@ -201,9 +212,11 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
             this.accountAddress = accountAddress;
             this.permissionLifetimeOption = permissionLifetimeOption;
         }
+
         public String accountAddress;
         public int permissionLifetimeOption;
     }
+
     private static ConnectAccountPendingData sConnectAccountPendingData;
 
     private static void setConnectAccountPendingData(
@@ -228,52 +241,65 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
             if (tab.getWebContents() != null) {
                 // Static data for BraveDappPermissionPromptDialog.show
                 setConnectAccountPendingData(account.address, PermissionLifetimeOption.FOREVER);
-                ConnectAccountFragmentJni.get().connectAccount(
-                        account.address, account.accountId.coin, tab.getWebContents(), success -> {
-                            if (!success) {
-                                return;
-                            }
-                            if (CoinType.SOL != account.accountId.coin) {
-                                getKeyringService().setSelectedAccount(
-                                        account.accountId, setSuccess -> {});
-                            }
-                            updateAccounts();
-                        });
+                ConnectAccountFragmentJni.get()
+                        .connectAccount(
+                                account.address,
+                                account.accountId.coin,
+                                tab.getWebContents(),
+                                success -> {
+                                    if (!success) {
+                                        return;
+                                    }
+                                    if (CoinType.SOL != account.accountId.coin) {
+                                        getKeyringService()
+                                                .setSelectedAccount(
+                                                        account.accountId, setSuccess -> {});
+                                    }
+                                    updateAccounts();
+                                });
             }
         }
     }
 
     @Override
     public void disconnectAccount(@NonNull final AccountInfo account) {
-        getBraveWalletService().resetPermission(account.accountId, success -> {
-            if (!success) {
-                return;
-            }
-            if (!WalletUtils.accountIdsEqual(mSelectedAccount, account)) {
-                updateAccounts();
-                return;
-            }
+        getBraveWalletService()
+                .resetPermission(
+                        account.accountId,
+                        success -> {
+                            if (!success) {
+                                return;
+                            }
+                            if (!WalletUtils.accountIdsEqual(mSelectedAccount, account)) {
+                                updateAccounts();
+                                return;
+                            }
 
-            assert mAccountsWithPermissions != null;
-            Iterator<AccountInfo> it = mAccountsWithPermissions.iterator();
-            while (it.hasNext()) {
-                AccountInfo accountInfo = it.next();
-                if (!WalletUtils.accountIdsEqual(accountInfo, account)) {
-                    getKeyringService().setSelectedAccount(accountInfo.accountId, setSuccess -> {});
-                    break;
-                }
-            }
-            updateAccounts();
-        });
+                            assert mAccountsWithPermissions != null;
+                            Iterator<AccountInfo> it = mAccountsWithPermissions.iterator();
+                            while (it.hasNext()) {
+                                AccountInfo accountInfo = it.next();
+                                if (!WalletUtils.accountIdsEqual(accountInfo, account)) {
+                                    getKeyringService()
+                                            .setSelectedAccount(
+                                                    accountInfo.accountId, setSuccess -> {});
+                                    break;
+                                }
+                            }
+                            updateAccounts();
+                        });
     }
 
     @Override
     public void switchAccount(@NonNull final AccountInfo account) {
-        getKeyringService().setSelectedAccount(account.accountId, setSuccess -> {
-            if (setSuccess) {
-                updateAccounts();
-            }
-        });
+        getKeyringService()
+                .setSelectedAccount(
+                        account.accountId,
+                        setSuccess -> {
+                            if (setSuccess) {
+                                updateAccounts();
+                            }
+                        });
     }
 
     private GURL getCurrentHostHttpAddress() {
@@ -291,7 +317,10 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
 
     @NativeMethods
     interface Natives {
-        void connectAccount(String accountAddress, int accountIdCoin, WebContents webContents,
+        void connectAccount(
+                String accountAddress,
+                int accountIdCoin,
+                WebContents webContents,
                 Callback<Boolean> callback);
     }
 }

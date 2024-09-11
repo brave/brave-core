@@ -32,8 +32,9 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
 public abstract class BraveWalletBaseActivity extends AsyncInitializationActivity
-        implements ConnectionErrorHandler, KeyringServiceObserverImplDelegate,
-                   TxServiceObserverImplDelegate {
+        implements ConnectionErrorHandler,
+                KeyringServiceObserverImplDelegate,
+                TxServiceObserverImplDelegate {
     protected KeyringService mKeyringService;
     protected BlockchainRegistry mBlockchainRegistry;
     protected JsonRpcService mJsonRpcService;

@@ -36,9 +36,17 @@ public class ParsedTransactionFees {
     private double gasPremium;
     private double gasFeeCap;
 
-    protected ParsedTransactionFees(String gasLimit, String gasPrice, String maxPriorityFeePerGas,
-            String maxFeePerGas, double gasFee, double gasFeeFiat, boolean isEIP1559Transaction,
-            String missingGasLimitError, double gasPremium, double gasFeeCap) {
+    protected ParsedTransactionFees(
+            String gasLimit,
+            String gasPrice,
+            String maxPriorityFeePerGas,
+            String maxFeePerGas,
+            double gasFee,
+            double gasFeeFiat,
+            boolean isEIP1559Transaction,
+            String missingGasLimitError,
+            double gasPremium,
+            double gasFeeCap) {
         this.gasLimit = gasLimit;
         this.gasPrice = gasPrice;
         this.maxPriorityFeePerGas = maxPriorityFeePerGas;
@@ -203,21 +211,30 @@ public class ParsedTransactionFees {
 
     // Desktop doesn't seem to have slow/avg/fast MaxFeePerGas options,
     // so extracting this part as a separate function
-    public static double[] calcGasFee(NetworkInfo selectedNetwork, double networkSpotPrice,
-            boolean isEIP1559Transaction, String gasLimit, String gasPrice, String maxFeePerGas,
-            boolean isSolTransaction, long solFeeEstimatesFee) {
+    public static double[] calcGasFee(
+            NetworkInfo selectedNetwork,
+            double networkSpotPrice,
+            boolean isEIP1559Transaction,
+            String gasLimit,
+            String gasPrice,
+            String maxFeePerGas,
+            boolean isSolTransaction,
+            long solFeeEstimatesFee) {
         final int networkDecimals = selectedNetwork.decimals;
         double gasFee;
         if (isSolTransaction) {
-            gasFee = solFeeEstimatesFee != 0
-                    ? Utils.fromWei(Long.toString(solFeeEstimatesFee), networkDecimals)
-                    : 0.0d;
+            gasFee =
+                    solFeeEstimatesFee != 0
+                            ? Utils.fromWei(Long.toString(solFeeEstimatesFee), networkDecimals)
+                            : 0.0d;
         } else {
             // Gas fee calculations for Eth and Fil use the same logic.
-            gasFee = Utils.fromHexWei(isEIP1559Transaction
-                            ? Utils.multiplyHexBN(maxFeePerGas, gasLimit)
-                            : Utils.multiplyHexBN(gasPrice, gasLimit),
-                    networkDecimals);
+            gasFee =
+                    Utils.fromHexWei(
+                            isEIP1559Transaction
+                                    ? Utils.multiplyHexBN(maxFeePerGas, gasLimit)
+                                    : Utils.multiplyHexBN(gasPrice, gasLimit),
+                            networkDecimals);
         }
 
         final double gasFeeFiat = gasFee * networkSpotPrice;

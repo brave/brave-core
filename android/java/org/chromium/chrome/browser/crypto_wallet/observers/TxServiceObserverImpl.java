@@ -12,7 +12,9 @@ import org.chromium.mojo.system.MojoException;
 public class TxServiceObserverImpl implements TxServiceObserver {
     public interface TxServiceObserverImplDelegate {
         default void onNewUnapprovedTx(TransactionInfo txInfo) {}
+
         default void onUnapprovedTxUpdated(TransactionInfo txInfo) {}
+
         default void onTransactionStatusChanged(TransactionInfo txInfo) {}
     }
 

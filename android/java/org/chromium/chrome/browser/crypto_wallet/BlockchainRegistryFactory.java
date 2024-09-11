@@ -55,6 +55,7 @@ public class BlockchainRegistryFactory {
     @NativeMethods
     interface Natives {
         long getInterfaceToBlockchainRegistry();
+
         String getTokensIconsLocation(Profile profile);
     }
 }

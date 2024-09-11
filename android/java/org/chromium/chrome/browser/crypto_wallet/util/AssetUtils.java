@@ -65,19 +65,19 @@ public class AssetUtils {
 
     public static AccountInfo[] filterAccountsByNetwork(
             AccountInfo[] accounts, @CoinType.EnumType int coinType, @Nullable String chainId) {
-        @KeyringId.EnumType
-        int keyringId = AssetUtils.getKeyring(coinType, chainId);
+        @KeyringId.EnumType int keyringId = AssetUtils.getKeyring(coinType, chainId);
 
         return Arrays.stream(accounts)
                 .filter(acc -> acc.accountId.keyringId == keyringId)
-                .toArray(AccountInfo[] ::new);
+                .toArray(AccountInfo[]::new);
     }
 
     /**
      * Gets keyring Id only for coin types Ethereum and Solana.
+     *
      * @param coinType Coin type Ethereum or Solana.
      * @return Keyring Id for coin tpye. If coin type does not belong to Ethereum or Solana it
-     *         defaults to {@link BraveWalletConstants.DEFAULT_KEYRING_ID}.
+     *     defaults to {@link BraveWalletConstants.DEFAULT_KEYRING_ID}.
      */
     public static @KeyringId.EnumType int getKeyringForEthOrSolOnly(
             @CoinType.EnumType int coinType) {
@@ -116,7 +116,8 @@ public class AssetUtils {
 
     public static boolean isBatToken(BlockchainToken token) {
         String symbol = token.symbol;
-        return symbol.equalsIgnoreCase("bat") || symbol.equalsIgnoreCase("wbat")
+        return symbol.equalsIgnoreCase("bat")
+                || symbol.equalsIgnoreCase("wbat")
                 || symbol.equalsIgnoreCase("bat.e");
     }
 

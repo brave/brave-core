@@ -71,8 +71,8 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
     public void show(FragmentManager manager, String tag) {
         try {
             TransactionDetailsSheetFragment fragment =
-                    (TransactionDetailsSheetFragment) manager.findFragmentByTag(
-                            TransactionDetailsSheetFragment.TAG);
+                    (TransactionDetailsSheetFragment)
+                            manager.findFragmentByTag(TransactionDetailsSheetFragment.TAG);
             FragmentTransaction transaction = manager.beginTransaction();
             if (fragment != null) {
                 transaction.remove(fragment);
@@ -98,7 +98,9 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         return LayoutInflater.from(getContext())
                 .inflate(R.layout.tx_details_bottom_sheet, container, false);
@@ -133,8 +135,10 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
         }
 
         if (mParsedTx.getType() == TransactionType.ERC20_APPROVE) {
-            txType.setText(String.format(
-                    getResources().getString(R.string.activate_erc20), mParsedTx.getSymbol()));
+            txType.setText(
+                    String.format(
+                            getResources().getString(R.string.activate_erc20),
+                            mParsedTx.getSymbol()));
         } else if (mParsedTx.getIsSwap()) {
             txType.setText(getResources().getString(R.string.swap));
         } else if (mParsedTx.isSolanaDappTransaction) {
@@ -147,11 +151,14 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
             AndroidUtils.gone(amountFiat, amountAsset);
         } else {
             amountFiat.setText(
-                    String.format(getResources().getString(R.string.crypto_wallet_amount_fiat),
+                    String.format(
+                            getResources().getString(R.string.crypto_wallet_amount_fiat),
                             String.format(Locale.ENGLISH, "%.2f", mParsedTx.getFiatTotal())));
             String amountText =
-                    String.format(getResources().getString(R.string.crypto_wallet_amount_asset),
-                            mParsedTx.formatValueToDisplay(), mParsedTx.getSymbol());
+                    String.format(
+                            getResources().getString(R.string.crypto_wallet_amount_asset),
+                            mParsedTx.formatValueToDisplay(),
+                            mParsedTx.getSymbol());
 
             if (mTxInfo.txType == TransactionType.ERC721_TRANSFER_FROM
                     || mTxInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM) {
@@ -166,11 +173,21 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
                 && !mParsedTx.getSender().equals(mParsedTx.getRecipient())) {
             String recipient =
                     TextUtils.isEmpty(mParsedTx.getRecipient()) ? "..." : mParsedTx.getRecipient();
-            fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
-                    accountName, mParsedTx.getSender(), "->", recipient));
+            fromTo.setText(
+                    String.format(
+                            getResources().getString(R.string.crypto_wallet_from_to),
+                            accountName,
+                            mParsedTx.getSender(),
+                            "->",
+                            recipient));
         } else {
-            fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
-                    accountName, mParsedTx.getSender(), "", ""));
+            fromTo.setText(
+                    String.format(
+                            getResources().getString(R.string.crypto_wallet_from_to),
+                            accountName,
+                            mParsedTx.getSender(),
+                            "",
+                            ""));
         }
     }
 
@@ -181,24 +198,31 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
         double totalGas = mParsedTx.getGasFee();
         if (totalGas > 0) {
             String gasFiatAndCrypto =
-                    String.format(getResources().getString(R.string.crypto_wallet_gas_fee_amount),
-                            String.format(Locale.ENGLISH, "%.8f", totalGas), mParsedTx.getSymbol())
-                    + System.getProperty(WalletConstants.LINE_SEPARATOR)
-                    + String.format(getResources().getString(R.string.crypto_wallet_amount_fiat),
-                            new Amount(mParsedTx.getFiatTotal()).toStringFormat());
-            items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(
-                    getString(R.string.brave_wallet_allow_spend_transaction_fee),
-                    gasFiatAndCrypto));
+                    String.format(
+                                    getResources().getString(R.string.crypto_wallet_gas_fee_amount),
+                                    String.format(Locale.ENGLISH, "%.8f", totalGas),
+                                    mParsedTx.getSymbol())
+                            + System.getProperty(WalletConstants.LINE_SEPARATOR)
+                            + String.format(
+                                    getResources().getString(R.string.crypto_wallet_amount_fiat),
+                                    new Amount(mParsedTx.getFiatTotal()).toStringFormat());
+            items.add(
+                    new TwoLineItemRecyclerViewAdapter.TwoLineItemText(
+                            getString(R.string.brave_wallet_allow_spend_transaction_fee),
+                            gasFiatAndCrypto));
             items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
         }
         if (mParsedTx.marketPrice > 0) {
-            items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(
-                    getString(R.string.market_price_text),
-                    String.format(Locale.ENGLISH, "$%,.6f", mParsedTx.marketPrice)));
+            items.add(
+                    new TwoLineItemRecyclerViewAdapter.TwoLineItemText(
+                            getString(R.string.market_price_text),
+                            String.format(Locale.ENGLISH, "$%,.6f", mParsedTx.marketPrice)));
             items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
         }
-        items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(getString(R.string.date_text),
-                WalletUtils.timeDeltaToDateString(mParsedTx.getCreatedTime())));
+        items.add(
+                new TwoLineItemRecyclerViewAdapter.TwoLineItemText(
+                        getString(R.string.date_text),
+                        WalletUtils.timeDeltaToDateString(mParsedTx.getCreatedTime())));
         items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
         items.add(
                 new TwoLineItemRecyclerViewAdapter.TwoLineItemText(
@@ -219,7 +243,8 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
                                     null);
                         }));
 
-        txDetails.setAdapter(new TwoLineItemRecyclerViewAdapter(
-                items, TwoLineItemRecyclerViewAdapter.ADAPTER_VIEW_ORIENTATION.HORIZONTAL));
+        txDetails.setAdapter(
+                new TwoLineItemRecyclerViewAdapter(
+                        items, TwoLineItemRecyclerViewAdapter.ADAPTER_VIEW_ORIENTATION.HORIZONTAL));
     }
 }

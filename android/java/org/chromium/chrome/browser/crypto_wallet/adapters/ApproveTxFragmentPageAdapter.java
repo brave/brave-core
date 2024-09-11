@@ -43,12 +43,18 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
     private Context mContext;
     private Fragment mDetailsFragment;
 
-    public ApproveTxFragmentPageAdapter(FragmentManager fm, TransactionInfo txInfo,
-            NetworkInfo selectedNetwork, AccountInfo[] accounts,
-            HashMap<String, Double> assetPrices, BlockchainToken[] fullTokenList,
+    public ApproveTxFragmentPageAdapter(
+            FragmentManager fm,
+            TransactionInfo txInfo,
+            NetworkInfo selectedNetwork,
+            AccountInfo[] accounts,
+            HashMap<String, Double> assetPrices,
+            BlockchainToken[] fullTokenList,
             HashMap<String, Double> nativeAssetsBalances,
-            HashMap<String, HashMap<String, Double>> blockchainTokensBalances, Activity activity,
-            boolean updateTxObjectManually, long solanaEstimatedTxFee) {
+            HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
+            Activity activity,
+            boolean updateTxObjectManually,
+            long solanaEstimatedTxFee) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mTxInfo = txInfo;
         mSelectedNetwork = selectedNetwork;
@@ -58,8 +64,11 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
         mNativeAssetsBalances = nativeAssetsBalances;
         mBlockchainTokensBalances = blockchainTokensBalances;
         mContext = activity;
-        mTitles = new ArrayList<>(Arrays.asList(activity.getText(R.string.transaction).toString(),
-                activity.getText(R.string.transaction_details).toString()));
+        mTitles =
+                new ArrayList<>(
+                        Arrays.asList(
+                                activity.getText(R.string.transaction).toString(),
+                                activity.getText(R.string.transaction_details).toString()));
         mUpdateTxObjectManually = updateTxObjectManually;
         mSolanaEstimatedTxFee = solanaEstimatedTxFee;
     }
@@ -68,9 +77,16 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return TxFragment.newInstance(mTxInfo, mSelectedNetwork, mAccounts, mAssetPrices,
-                    mFullTokenList, mNativeAssetsBalances, mBlockchainTokensBalances,
-                    mUpdateTxObjectManually, mSolanaEstimatedTxFee);
+            return TxFragment.newInstance(
+                    mTxInfo,
+                    mSelectedNetwork,
+                    mAccounts,
+                    mAssetPrices,
+                    mFullTokenList,
+                    mNativeAssetsBalances,
+                    mBlockchainTokensBalances,
+                    mUpdateTxObjectManually,
+                    mSolanaEstimatedTxFee);
         } else {
             if (mDetailsFragment == null) {
                 if (TransactionUtils.isSolanaTx(mTxInfo)) {

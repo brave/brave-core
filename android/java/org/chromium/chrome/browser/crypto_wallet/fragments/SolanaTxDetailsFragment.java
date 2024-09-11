@@ -23,8 +23,9 @@ public class SolanaTxDetailsFragment {
         List<TwoLineItemRecyclerViewAdapter.TwoLineItem> details = new ArrayList<>();
         SolanaInstruction[] instructions =
                 TransactionUtils.safeSolData(txInfo.txDataUnion).instructions;
-        details.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(
-                context.getString(TransactionUtils.getTxType(txInfo))));
+        details.add(
+                new TwoLineItemRecyclerViewAdapter.TwoLineItemText(
+                        context.getString(TransactionUtils.getTxType(txInfo))));
 
         for (SolanaInstruction solanaInstruction : instructions) {
             SolanaInstructionPresenter solanaInstructionPresenter =

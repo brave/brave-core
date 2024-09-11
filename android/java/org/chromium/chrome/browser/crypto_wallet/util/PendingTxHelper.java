@@ -105,41 +105,45 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
             mTxService.getAllTransactionInfo(
                     accountInfo.accountId.coin, null, accountInfo.accountId, allTxContext);
         }
-        allTxMultiResponse.setWhenAllCompletedAction(() -> {
-            for (AsyncUtils.GetAllTransactionInfoResponseContext allTxContext : allTxContexts) {
-                ArrayList<TransactionInfo> newValue = new ArrayList<TransactionInfo>();
-                for (TransactionInfo txInfo : allTxContext.txInfos) {
-                    if (mReturnAll || txInfo.txStatus == TransactionStatus.UNAPPROVED) {
-                        if (mFilterByContractAddress == null) {
-                            // Don't filter by contract
-                            newValue.add(txInfo);
-                        } else if (txInfo.txType != TransactionType.ERC20_APPROVE
-                                && txInfo.txType != TransactionType.ERC20_TRANSFER
-                                && txInfo.txType != TransactionType.ERC721_TRANSFER_FROM
-                                && txInfo.txType != TransactionType.ERC721_SAFE_TRANSFER_FROM) {
-                            // TODO: Filter by ETH only
-                            newValue.add(txInfo);
+        allTxMultiResponse.setWhenAllCompletedAction(
+                () -> {
+                    for (AsyncUtils.GetAllTransactionInfoResponseContext allTxContext :
+                            allTxContexts) {
+                        ArrayList<TransactionInfo> newValue = new ArrayList<TransactionInfo>();
+                        for (TransactionInfo txInfo : allTxContext.txInfos) {
+                            if (mReturnAll || txInfo.txStatus == TransactionStatus.UNAPPROVED) {
+                                if (mFilterByContractAddress == null) {
+                                    // Don't filter by contract
+                                    newValue.add(txInfo);
+                                } else if (txInfo.txType != TransactionType.ERC20_APPROVE
+                                        && txInfo.txType != TransactionType.ERC20_TRANSFER
+                                        && txInfo.txType != TransactionType.ERC721_TRANSFER_FROM
+                                        && txInfo.txType
+                                                != TransactionType.ERC721_SAFE_TRANSFER_FROM) {
+                                    // TODO: Filter by ETH only
+                                    newValue.add(txInfo);
+                                }
+                            }
+                        }
+                        Collections.sort(newValue, sortByDateComparator);
+                        TransactionInfo[] newArray = new TransactionInfo[newValue.size()];
+                        newArray = newValue.toArray(newArray);
+                        TransactionInfo[] value = mTxInfos.get(allTxContext.name);
+                        if (value == null) {
+                            mTxInfos.put(allTxContext.name, newArray);
+                        } else {
+                            TransactionInfo[] both =
+                                    Arrays.copyOf(value, value.length + newArray.length);
+                            System.arraycopy(newArray, 0, both, value.length, newArray.length);
+                            mTxInfos.put(allTxContext.name, both);
                         }
                     }
-                }
-                Collections.sort(newValue, sortByDateComparator);
-                TransactionInfo[] newArray = new TransactionInfo[newValue.size()];
-                newArray = newValue.toArray(newArray);
-                TransactionInfo[] value = mTxInfos.get(allTxContext.name);
-                if (value == null) {
-                    mTxInfos.put(allTxContext.name, newArray);
-                } else {
-                    TransactionInfo[] both = Arrays.copyOf(value, value.length + newArray.length);
-                    System.arraycopy(newArray, 0, both, value.length, newArray.length);
-                    mTxInfos.put(allTxContext.name, both);
-                }
-            }
-            isFetchingTx = false;
-            updateTransactionList();
-            if (runWhenDone != null) {
-                runWhenDone.run();
-            }
-        });
+                    isFetchingTx = false;
+                    updateTransactionList();
+                    if (runWhenDone != null) {
+                        runWhenDone.run();
+                    }
+                });
     }
 
     public void updateTxInfosMap(TransactionInfo transactionInfo) {
@@ -256,8 +260,8 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
                 mTransactionInfos.addAll(newTransactionInfos);
                 Collections.sort(mTransactionInfos, sortByDateComparator);
                 if ((_mSelectedPendingRequest.getValue() != null
-                                    && _mSelectedPendingRequest.getValue().id.equals(txInfo.id)
-                            || _mSelectedPendingRequest.getValue() == null)) {
+                                && _mSelectedPendingRequest.getValue().id.equals(txInfo.id)
+                        || _mSelectedPendingRequest.getValue() == null)) {
                     postTxUpdates();
                 }
             }

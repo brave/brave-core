@@ -109,15 +109,16 @@ public class KeystoreHelper {
         return true;
     }
 
-    private static SecretKey getSecretKey() throws NoSuchAlgorithmException, NoSuchProviderException
-                                                   ,
-                                                   InvalidAlgorithmParameterException {
+    private static SecretKey getSecretKey()
+            throws NoSuchAlgorithmException,
+                    NoSuchProviderException,
+                    InvalidAlgorithmParameterException {
         KeyGenerator keyGenerator =
                 KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEY_STORE);
 
         keyGenerator.init(
-                new KeyGenParameterSpec
-                        .Builder(BRAVE_WALLET_ALIAS,
+                new KeyGenParameterSpec.Builder(
+                                BRAVE_WALLET_ALIAS,
                                 KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
                         .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
                         .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
