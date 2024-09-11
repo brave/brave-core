@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.util;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.chromium.base.Callbacks;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
@@ -145,11 +146,14 @@ public class TokenUtils {
      * @param callback Callback containing a filtered array of tokens for the given network.
      */
     public static void getAllTokensFiltered(
-            BraveWalletService braveWalletService,
-            BlockchainRegistry blockchainRegistry,
-            NetworkInfo selectedNetwork,
+            @Nullable BraveWalletService braveWalletService,
+            @Nullable BlockchainRegistry blockchainRegistry,
+            @Nullable NetworkInfo selectedNetwork,
             TokenType tokenType,
             Callbacks.Callback1<BlockchainToken[]> callback) {
+        if (braveWalletService == null || blockchainRegistry == null || selectedNetwork == null) {
+            return;
+        }
         blockchainRegistry.getAllTokens(
                 selectedNetwork.chainId,
                 selectedNetwork.coin,
