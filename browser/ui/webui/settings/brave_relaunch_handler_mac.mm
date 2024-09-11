@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
 
-#include "brave/browser/features.h"
+#include "brave/browser/mac_features.h"
 #import "brave/browser/mac/sparkle_glue.h"
 
 namespace brave_relaunch_handler {

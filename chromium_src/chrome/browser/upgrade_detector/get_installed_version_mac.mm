@@ -10,7 +10,7 @@
 #include "base/functional/callback.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/version.h"
-#include "brave/browser/features.h"
+#include "brave/browser/mac_features.h"
 #include "brave/browser/mac/keystone_glue.h"
 #include "chrome/browser/updater/browser_updater_client_util.h"
 #include "chrome/common/chrome_features.h"

@@ -13,7 +13,7 @@
 #include "base/strings/escape.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/features.h"
+#include "brave/browser/mac_features.h"
 #include "brave/browser/mac/keystone_glue.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"

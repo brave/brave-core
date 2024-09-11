@@ -12,7 +12,7 @@
 #include "base/process/process.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
-#include "brave/browser/features.h"
+#include "brave/browser/mac_features.h"
 #include "brave/browser/mac/keystone_glue.h"
 #include "chrome/browser/updater/browser_updater_client.h"
 #include "chrome/browser/updater/browser_updater_client_util.h"
