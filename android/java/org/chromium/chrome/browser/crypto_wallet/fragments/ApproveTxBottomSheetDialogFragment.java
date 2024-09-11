@@ -208,15 +208,14 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         }
     }
 
+    @Nullable
     @Override
-    public void setupDialog(@NonNull Dialog dialog, int style) {
-        super.setupDialog(dialog, style);
-        @SuppressLint("InflateParams")
-        final View view =
-                LayoutInflater.from(getContext()).inflate(R.layout.approve_tx_bottom_sheet, null);
-        dialog.setContentView(view);
-        ViewParent parent = view.getParent();
-        ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.approve_tx_bottom_sheet, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         JsonRpcService jsonRpcService = getJsonRpcService();
         KeyringService keyringService = getKeyringService();
         assert jsonRpcService != null && keyringService != null;
@@ -240,107 +239,97 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
             associatedSplTokenInfo.setText(associatedSPLTokenAccountInfo);
         }
         mCoinType = TransactionUtils.getCoinFromTxDataUnion(mTxInfo.txDataUnion);
-        if (JavaUtils.anyNull(mWalletModel)) return;
-        mTxNetwork = mWalletModel.getNetworkModel().getNetwork(mTxInfo.chainId);
-        networkName.setText(mTxNetwork.chainName);
-        keyringService.getAllAccounts(
-                allAccounts -> {
-                    AccountInfo[] accounts =
-                            AssetUtils.filterAccountsByNetwork(
-                                    allAccounts.accounts, mTxNetwork.coin, mTxNetwork.chainId);
+        if (mWalletModel != null) {
+            mTxNetwork = mWalletModel.getNetworkModel().getNetwork(mTxInfo.chainId);
+            networkName.setText(mTxNetwork.chainName);
+            keyringService.getAllAccounts(
+                    allAccounts -> {
+                        AccountInfo[] accounts = AssetUtils.filterAccountsByNetwork(
+                                allAccounts.accounts, mTxNetwork.coin, mTxNetwork.chainId);
 
-                    AccountInfo txAccountInfo = Utils.findAccount(accounts, mTxInfo.fromAccountId);
-                    if (txAccountInfo == null) {
-                        return;
-                    }
+                        AccountInfo txAccountInfo = Utils.findAccount(accounts, mTxInfo.fromAccountId);
+                        if (txAccountInfo == null) {
+                            return;
+                        }
 
-                    ImageView icon = view.findViewById(R.id.account_picture);
-                    Utils.setBlockiesBitmapResourceFromAccount(
-                            mExecutor, mHandler, icon, txAccountInfo, true);
+                        ImageView icon = view.findViewById(R.id.account_picture);
+                        Utils.setBlockiesBitmapResourceFromAccount(
+                                mExecutor, mHandler, icon, txAccountInfo, true);
 
-                    // First fill in data that does not require remote queries
-                    TokenUtils.getAllTokensFiltered(
-                            getBraveWalletService(),
-                            getBlockchainRegistry(),
-                            mTxNetwork,
-                            TokenUtils.TokenType.ALL,
-                            tokenList -> {
-                                SolanaTransactionsGasHelper solanaTransactionsGasHelper =
-                                        new SolanaTransactionsGasHelper(
-                                                (BraveWalletBaseActivity) getActivity(),
-                                                new TransactionInfo[] {mTxInfo});
-                                solanaTransactionsGasHelper.maybeGetSolanaGasEstimations(() -> {
-                                    HashMap<String, Long> perTxFee =
-                                            solanaTransactionsGasHelper.getPerTxFee();
-                                    if (perTxFee.get(mTxInfo.id) != null) {
-                                        Long solTxFee = perTxFee.get(mTxInfo.id);
-                                        if (solTxFee != null) {
-                                            mSolanaEstimatedTxFee = solTxFee;
+                        // First fill in data that does not require remote queries
+                        TokenUtils.getAllTokensFiltered(getBraveWalletService(),
+                                getBlockchainRegistry(), mTxNetwork, TokenUtils.TokenType.ALL,
+                                tokenList -> {
+                                    SolanaTransactionsGasHelper solanaTransactionsGasHelper =
+                                            new SolanaTransactionsGasHelper(
+                                                    (BraveWalletBaseActivity) getActivity(),
+                                                    new TransactionInfo[]{mTxInfo});
+                                    solanaTransactionsGasHelper.maybeGetSolanaGasEstimations(() -> {
+                                        HashMap<String, Long> perTxFee =
+                                                solanaTransactionsGasHelper.getPerTxFee();
+                                        if (perTxFee.get(mTxInfo.id) != null) {
+                                            Long solTxFee = perTxFee.get(mTxInfo.id);
+                                            if (solTxFee != null) {
+                                                mSolanaEstimatedTxFee = solTxFee;
+                                            }
                                         }
-                                    }
-                                    if (!canUpdateUi()) return;
-                                    ParsedTransaction parsedTx = fillAssetDependentControls(view,
-                                            mTxNetwork, txAccountInfo, accounts,
-                                            new HashMap<>(), tokenList,
-                                            new HashMap<>(),
-                                            new HashMap<>(),
-                                            mSolanaEstimatedTxFee);
+                                        if (!canUpdateUi()) return;
+                                        ParsedTransaction parsedTx = fillAssetDependentControls(view,
+                                                mTxNetwork, txAccountInfo, accounts,
+                                                new HashMap<>(), tokenList,
+                                                new HashMap<>(),
+                                                new HashMap<>(),
+                                                mSolanaEstimatedTxFee);
 
-                                            // Get tokens involved in this transaction
-                                            List<BlockchainToken> tokens = new ArrayList<>();
-                                            tokens.add(
-                                                    Utils.makeNetworkAsset(
-                                                            mTxNetwork)); // Always add native asset
-                                            if (parsedTx.getIsSwap()) {
-                                                tokens.add(parsedTx.getSellToken());
-                                                tokens.add(parsedTx.getBuyToken());
-                                            } else if (parsedTx.getToken() != null)
-                                                tokens.add(parsedTx.getToken());
-                                            BlockchainToken[] filterByTokens =
-                                                    tokens.toArray(new BlockchainToken[0]);
+                                        // Get tokens involved in this transaction
+                                        List<BlockchainToken> tokens = new ArrayList<>();
+                                        tokens.add(Utils.makeNetworkAsset(
+                                                mTxNetwork)); // Always add native asset
+                                        if (parsedTx.getIsSwap()) {
+                                            tokens.add(parsedTx.getSellToken());
+                                            tokens.add(parsedTx.getBuyToken());
+                                        } else if (parsedTx.getToken() != null)
+                                            tokens.add(parsedTx.getToken());
+                                        BlockchainToken[] filterByTokens =
+                                                tokens.toArray(new BlockchainToken[0]);
 
-                                            fetchTxBalanceAndUpdateUi(
-                                                    view,
-                                                    mTxNetwork,
-                                                    txAccountInfo,
-                                                    accounts,
-                                                    filterByTokens);
-                                        });
-                            });
+                                        fetchTxBalanceAndUpdateUi(view, mTxNetwork, txAccountInfo,
+                                                accounts, filterByTokens);
+                                    });
+                                });
+                    });
+            Button reject = view.findViewById(R.id.reject);
+            reject.setOnClickListener(v -> rejectTransaction());
+            Button approve = view.findViewById(R.id.approve);
+            approve.setOnClickListener(v -> approveTransaction());
+            if (mTransactionInfos.size() > 1) {
+                // TODO: next button is not functional. Update next button text based on position in
+                //  mTransactionInfos list.
+                //  Refactor Approve pendingTxHelper code to update the mSelectedPendingRequest Tx
+                //  with the next Transaction.
+                Button next = view.findViewById(R.id.btn_next_tx);
+                next.setVisibility(View.VISIBLE);
+                next.setOnClickListener(v -> {
+                    if (mTransactionConfirmationListener != null) {
+                        mTransactionConfirmationListener.onNextTransaction();
+                    }
                 });
-        Button reject = view.findViewById(R.id.reject);
-        reject.setOnClickListener(v -> rejectTransaction());
-        Button approve = view.findViewById(R.id.approve);
-        approve.setOnClickListener(v -> approveTransaction());
-        if (mTransactionInfos.size() > 1) {
-            // TODO: next button is not functional. Update next button text based on position in
-            //  mTransactionInfos list.
-            //  Refactor Approve pendingTxHelper code to update the mSelectedPendingRequest Tx
-            //  with the next Transaction.
-            Button next = view.findViewById(R.id.btn_next_tx);
-            next.setVisibility(View.VISIBLE);
-            next.setOnClickListener(
-                    v -> {
-                        if (mTransactionConfirmationListener != null) {
-                            mTransactionConfirmationListener.onNextTransaction();
-                        }
-                    });
-            mRejectAllTx = view.findViewById(R.id.btn_reject_transactions);
-            mRejectAllTx.setVisibility(View.VISIBLE);
-            mRejectAllTx.setOnClickListener(
-                    v -> {
-                        if (mTransactionConfirmationListener != null) {
-                            mTransactionConfirmationListener.onRejectAllTransactions();
-                            dismiss();
-                        }
-                    });
-            refreshListContentUi();
-        }
+                mRejectAllTx = view.findViewById(R.id.btn_reject_transactions);
+                mRejectAllTx.setVisibility(View.VISIBLE);
+                mRejectAllTx.setOnClickListener(v -> {
+                    if (mTransactionConfirmationListener != null) {
+                        mTransactionConfirmationListener.onRejectAllTransactions();
+                        dismiss();
+                    }
+                });
+                refreshListContentUi();
+            }
 
-        if (mTxInfo.originInfo != null && URLUtil.isValidUrl(mTxInfo.originInfo.originSpec)) {
-            TextView domain = view.findViewById(R.id.domain);
-            domain.setVisibility(View.VISIBLE);
-            domain.setText(Utils.geteTldSpanned(mTxInfo.originInfo));
+            if (mTxInfo.originInfo != null && URLUtil.isValidUrl(mTxInfo.originInfo.originSpec)) {
+                TextView domain = view.findViewById(R.id.domain);
+                domain.setVisibility(View.VISIBLE);
+                domain.setText(Utils.geteTldSpanned(mTxInfo.originInfo));
+            }
         }
     }
 
