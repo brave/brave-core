@@ -28,7 +28,7 @@ def parse_args(_self, original_method, *args, **kwargs):
     copied_sources = []
     for source in opts.sources or []:
         if source.find("/brave") != -1:
-            dest_file = source.replace("/brave", "")
+            dest_file = source.replace("/brave/", "/", 1)
             shutil.copy2(source, dest_file)
             sources.append(dest_file)
             copied_sources.append(dest_file)
