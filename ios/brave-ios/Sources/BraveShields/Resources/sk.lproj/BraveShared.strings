@@ -25,6 +25,9 @@
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
 "AntiAdBlockWarningTitle" = "Upravte nastavenia blokovania reklám pre túto stránku";
 
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Automaticky zničiť";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agresívne";
 
@@ -145,8 +148,38 @@
 /* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
 "FilterListURLTextFieldPlaceholder" = "Tu zadajte adresu URL zoznamu filtrov ";
 
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Po zatvorení lokality vymaže súbory cookie a ďalšie údaje lokality";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Zabudnúť na mňa, keď zavriem túto stránku";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Striktné";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Zničiť údaje";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Nikdy";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Zatvoriť aplikáciu";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Karty stránky zatvorené";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Zničiť údaje stránky";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Zničením dôjde k zatvorenie všetkých otvorených kariet tejto stránky. Zároveň sa vymažú všetky údaje stránky. Tento krok nemožno zvrátiť.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Zničiť údaje stránky?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Zničiť údaje stránky teraz";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Stránka nie je zabezpečená";

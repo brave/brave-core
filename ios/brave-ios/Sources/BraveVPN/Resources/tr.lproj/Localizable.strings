@@ -1,0 +1,325 @@
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "etkinleştir";
+
+/* Text for toggle which indicating the toggle action is for selecting region in automatic */
+"vpn.automaticServerSelectionToggleTitle" = "Otomatik";
+
+/* Title on top the list of available servers */
+"vpn.availableServerTitle" = "KULLANILABİLİR SUNUCULAR";
+
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "Satın Al";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxDevicesProtect" = "1 abonelikle 5 cihazı koruyun";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoLocation" = "Coğrafi/ülke konumunuzu seçin";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "Brave, sizin aktivitenizi asla kaydetmez";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectYourDevices" = "Her uygulamayı ve tüm cihazınızı koruyun";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSaferWifi" = "Ev veya ortak Wi-Fi için daha güvenlidir";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSpeedFast" = "Çok hızlıdır, 100 Mbps'ye kadar";
+
+/* Text indicating how many cities is used for that country used as Ex: '1 City' */
+"vpn.cityCountTitle" = "%ld Şehir";
+
+/* Text showing the vpn region is connected */
+"vpn.connectedRegionDescription" = "Bağlı";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "App Store Makbuzu";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "Uygulama Sürümü";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "Hücresel Taşıyıcı";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "Brave sizi takip etmediği veya uygulamanızı nasıl kullandığınızı bilmediği için VPN'İ nasıl kurduğunuzu bilemeyiz. Lütfen yaşadığınız sorunu paylaşın, en kısa süre içinde çözmeye çalışacağız.";
+
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "E-posta gönderilemiyor. Lütfen e-posta yapılandırmanızı kontrol edin.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "Lütfen bizimle rahatlıkla paylaşabileceğiniz bilgileri seçin.\n\nBaşlangıçta bizimle ne kadar çok bilgi paylaşırsanız, destek personelimizin sorununuzu çözmenize yardımcı olması o kadar kolay olacaktır.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "Koruma ekibinin yardımıyla sağlanan destek.";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "VPN Ana Bilgisayar Adı";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "Sorun";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "Bağlantı güvenilirliği sorunu";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Lütfen sorunu tarif eden kategoriyi seçin.";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "Bağlandığında internet yok";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "Diğer";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "VPN'e bağlanılamıyor (Diğer hata)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "Yavaş bağlantı";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "Web sitesi çalışmıyor";
+
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "Hata Günlükleri";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "Ağ Türü";
+
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Platform";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "E-postaya Devam Et";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "Abonelik Türü";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "iOS Saat Dilimi";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Brave Güvenlik Duvarı + VPN Sorunu";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "Etkinleştir";
+
+/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
+"vpn.freeTrialDetail" = "Tüm planlar %@ içerir!";
+
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "ücretsiz 7 günlük deneme";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "7 gün ücretsiz deneyin";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "Tüm abonelikler otomatik olarak yenilenir, ancak yenilemeden önce iptal edilebilir.";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "Bu profil, VPN'in cihazınızdaki trafiği her zaman otomatik olarak bağlamasını ve güvenli hale almasını sağlar. Bu VPN bağlantısı, zararlı ve istilacı olabilecek bağlantıları engellemek için Brave'in akıllı güvenlik duvarı üzerinden şifrelenecek ve yönlendirilecektir.";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "VPN Profili Yükle";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Brave şimdi bir VPN profili yükleyecek.";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "VPN artık etkin";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "VPN yükle";
+
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "ÜCRETSİz deneyin";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "Aylık olarak yeniler";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "Aylık Abonelik";
+
+/* Text indicating how many cities is used for that region used as Ex: '2 Cities' */
+"vpn.multipleCityCountTitle" = "%ld Şehir";
+
+/* Text indicating how many server is used for that region used as Ex: '2 Servers' */
+"vpn.multipleServerCountTitle" = "%ld Sunucu";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "Süresi Dolmuş";
+
+/* Description of vpn tunnel protocol
+   The alert title showing vpn region is changed */
+"vpn.protocolPickerDescription" = "Lütfen tercih ettiğiniz aktarım protokolünü seçin. Değiştirdikten sonra mevcut VPN kimlik bilgileriniz temizlenir ve kurulu bir VPN bağlantısı varsa tekrar bağlanırsınız.";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "Tünel protokolü değiştirilemedi, lütfen daha sonra tekrar deneyin.";
+
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Sunucu Hatası";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "Aktarım Protokolü";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "VPN Tünel Protokolü değiştirildi.";
+
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "Sistem saat diliminize bağlı olarak, size en yakın sunucu bölgesi otomatik olarak seçilir. Bu, yüksek internet hızları sağlamak için önerilir.";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Sunucu değiştirilemedi, lütfen daha sonra yeniden deneyin.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Sunucu Hatası";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Sunucu Bölgesi";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "VPN bölgesi değişti.";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "VPN yapılandırması sıfırlanamıyor. Lütfen tekrar deneyin. Sorun devam ederse, yardım için destekle iletişime geçin.";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "Tekrar Dene";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "Sıfırlama Başarısız";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "VPN yapılandırması başarıyla sıfırlandı.";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "Sıfırlama Başarılı";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "Geri yükle";
+
+/* Title showing which country serves list showing. Ex: 'Brazil Server */
+"vpn.serverNameTitle" = "%@ Sunucu";
+
+/* Text for description of toggle that auto selcets the server according to time zone. */
+"vpn.serverRegionAutoSelectDescription" = "Saat diliminize bağlı olarak size en yakın VPN sunucu bölgesini otomatik olarak seçin. Bu seçenek, internet hızlarını maksimuma çıkarmak için önerilir.";
+
+/* Text indicating how many server is used for that region used as Ex: '1 Server' */
+"vpn.serverTitle" = "%ld Sunucu";
+
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "Bağlantınızı korumak ve her yerde istilacı izleyicileri engellemek için bir VPN'e yükseltin.";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "Teknik Desteğe Başvurun";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Sunucu listesi alınamadı, lütfen daha sonra yeniden deneyin.";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "VPN Desteği";
+
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Satın alımı Brave hesabınıza bağlayın";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Brave VPN'i ve diğer cihazlarda kullanmak için App Store satın alımınızı Brave hesabınıza bağlayın";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "Aboneliği Yönet";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "Teklif Kodunu Kullan";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "Yapılandırmayı Sıfırla";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "Host";
+
+/* Table cell title for vpn's server location and which open opens location select */
+"vpn.settingsServerLocation" = "Yer";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "Sunucu";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "Sona erme tarihi";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "Abonelik";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "Durum";
+
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "Aktarım Protokolü";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Ödeme Yöntemini Güncelle";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "Arka planda bile Brave seni korumaya devam edecek.";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Brave Güvenlik Duvarı + VPN Açık";
+
+/* Text for description of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalDescription" = "Mevcut en iyi sunucuyu kullan";
+
+/* Text for title of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalTitle" = "Optimum";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "VPN başlatilirken bir sorun meydana geldi. Lütfen yeniden deneyin veya VPN ayarları sayfasında yapılandırmayı sıfırlamayı deneyin.";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "Hata";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave Güvenlik Duvarı + VPN'in çalışması için cihazınıza bir VPN profilinin yüklenmesi gerekir. ";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "İzin reddedildi";
+
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "Teklif kodu kullanılamadı. Lütfen tekrar deneyin veya teklif kodu ayrıntılarınızı kontrol edip tekrar deneyin.";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "Satın alma işlemi tamamlanamıyor. Lütfen yeniden deneyin veya Apple'daki ödeme bilgilerinizi kontrol edin ve yeniden deneyin.";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "Hata";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "Abonelikler iTunes hesabınız üzerinden ücretlendirilir.\n\nÜcretsiz deneme sürümünün kullanılmayan herhangi bir kısmı, teklif edilirse, bir abonelik satın ettiğinizde kaybedilir.\n\nGeçerli dönemin bitiminden en az 24 saat önce iptal edilmediği sürece aboneliğiniz otomatik olarak yenilenir.\n\nAboneliklerinizi Ayarlar'dan yönetebilirsiniz.\n\nBrave'i kullanarak Kullanım Koşullarını ve Gizlilik Politikasını kabul etmiş olursunuz.";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "Kodu Kullan";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "Bu, Brave Güvenlik Duvarı + VPN yapılandırmanızı sıfırlar ve hataları düzeltir. Bu işlem bir dakika sürebilir.";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "Yapılandırmayı sıfırla";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "Sıfırla";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "Aylık abonelik";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "Yıllık abonelik";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "Yıllık yenileme tasarrufu % @";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+"vpn.yearlySubDisclaimer" = "En iyi fiyat";
+
+/* One year lenght vpn subcription */
+"vpn.yearlySubTitle" = "Bir yıl";
+

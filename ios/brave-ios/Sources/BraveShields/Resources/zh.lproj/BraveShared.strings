@@ -25,6 +25,9 @@
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
 "AntiAdBlockWarningTitle" = "调整本网站的广告屏蔽设置";
 
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "自动销毁";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "積極";
 
@@ -145,8 +148,38 @@
 /* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
 "FilterListURLTextFieldPlaceholder" = "在此处输入筛选器清单网址";
 
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "在您關閉網站時清除 cookie 和其他網站資料";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "关闭此网站后删除我的资料";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "严格";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "销毁数据";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "一律不要";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "关闭应用程序";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "网站标签已关闭";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "销毁网站数据";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "销毁操作将关闭所有打开到该网站的标签页，并删除所有网站数据。此操作无法撤销。";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "要销毁网站数据吗？";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "立即销毁网站数据";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "网站不安全";

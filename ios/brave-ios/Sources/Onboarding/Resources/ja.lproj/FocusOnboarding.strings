@@ -32,7 +32,7 @@
 "focusOnboarding.p3aToggleDescription" = "この設定は \"Brave Shields & プライバシー\" でいつでも変更できます";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "プライバシーを保護した匿名のプロダクト分析を共有する";
+"focusOnboarding.p3aToggleTitle" = "プライバシーを保護した匿名のプロダクト分析を共有します。";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "ブラウジングを開始する";

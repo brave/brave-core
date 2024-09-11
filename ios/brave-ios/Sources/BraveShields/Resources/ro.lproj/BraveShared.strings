@@ -145,8 +145,14 @@
 /* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
 "FilterListURLTextFieldPlaceholder" = "Introdu URL pentru lista de filtre aici";
 
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Șterge modulele cookie și alte date referitoare la site în momentul în care închideți un site";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Strict";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Niciodată";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Site-ul nu este sigur";
