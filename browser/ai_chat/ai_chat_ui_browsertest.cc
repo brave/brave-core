@@ -47,6 +47,7 @@
 
 #if defined(PDF_OCR_INTEGRATION_TEST_ENABLED)
 #include "chrome/browser/screen_ai/screen_ai_install_state.h"
+#include "services/network/public/cpp/network_switches.h"
 #include "services/screen_ai/public/cpp/utilities.h"
 #include "ui/accessibility/accessibility_features.h"
 #include "ui/accessibility/ax_features.mojom-features.h"
