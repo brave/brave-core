@@ -224,8 +224,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                                 this,
                                 transactionInfo -> {
                                     if (transactionInfo == null
-                                            || mPendingTxHelper.getPendingTransactions().size()
-                                                    == 0) {
+                                            || mPendingTxHelper.getPendingTransactions().isEmpty()) {
                                         return;
                                     }
                                     if (mApproveTxBottomSheetDialogFragment != null

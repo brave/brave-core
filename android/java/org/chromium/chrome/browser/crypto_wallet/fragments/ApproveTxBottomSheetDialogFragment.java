@@ -91,6 +91,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
     private WalletModel mWalletModel;
     private NetworkInfo mTxNetwork;
 
+    @NonNull
     public static ApproveTxBottomSheetDialogFragment newInstance(
             List<TransactionInfo> transactionInfos,
             TransactionInfo txInfo,
@@ -98,6 +99,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         return new ApproveTxBottomSheetDialogFragment(transactionInfos, txInfo, listener);
     }
 
+    @NonNull
     public static ApproveTxBottomSheetDialogFragment newInstance(TransactionInfo txInfo) {
         List<TransactionInfo> infos = new ArrayList<>();
         infos.add(txInfo);
@@ -125,19 +127,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         mTransactionConfirmationListener = transactionConfirmationListener;
     }
 
-    public void setApprovedTxObserver(ApprovedTxObserver approvedTxObserver) {
-        mApprovedTxObserver = approvedTxObserver;
-    }
-
-    // TODO: Make these into an interface so they can be shared between fragments and activities
-    private AssetRatioService getAssetRatioService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletBaseActivity) {
-            return ((BraveWalletBaseActivity) activity).getAssetRatioService();
-        }
-        return null;
-    }
-
+    @Nullable
     private TxService getTxService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletBaseActivity) {
@@ -146,6 +136,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         return null;
     }
 
+    @Nullable
     private JsonRpcService getJsonRpcService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletBaseActivity) {
@@ -154,6 +145,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         return null;
     }
 
+    @Nullable
     private BlockchainRegistry getBlockchainRegistry() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletBaseActivity) {
@@ -162,6 +154,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         return null;
     }
 
+    @Nullable
     private BraveWalletService getBraveWalletService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletBaseActivity) {
@@ -170,6 +163,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         return null;
     }
 
+    @Nullable
     private KeyringService getKeyringService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletBaseActivity) {
@@ -210,7 +204,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {
+    public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         if (mApprovedTxObserver != null) {
             if (mRejected || mApproved) {
