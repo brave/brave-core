@@ -25,62 +25,70 @@ export const iconMap: { [key: string]: string } = {
   'settings:system': 'settings',
   'settings:restore': 'backward',
   'settings:location-on': 'location-on', // location
-  'settings:location-off': 'location-off', // location off
+  'privacy:location-on': 'location-on', // location
+  'privacy:location-off': 'location-off', // location off
   'cr:videocam': 'video-camera', // camera
-  'settings:videocam-off': 'video-camera-off', // camera off
+  'privacy:videocam-off': 'video-camera-off', // camera off
   'cr:mic': 'microphone', // microphone
-  'settings:mic-off': 'microphone-off', // microphone off
-  'settings:sensors': 'motion-sensor', // motion sensors
-  'settings:sensors-off': 'motion-sensor-off', // motion sensors
-  'settings:notifications': 'notification', // notifications
-  'settings:notifications-off': 'notification-off', // notifications off
-  'settings:code': 'code', // javascript
-  'settings:code-off': 'code-off', // javascript
+  'privacy:mic': 'microphone', // microphone
+  'privacy:mic-off': 'microphone-off', // microphone off
+  'privacy:sensors': 'motion-sensor', // motion sensors
+  'privacy:sensors-off': 'motion-sensor-off', // motion sensors
+  'privacy:notifications': 'notification', // notifications
+  'privacy:notifications-off': 'notification-off', // notifications off
+  'privacy:code': 'code', // javascript
+  'privacy:code-off': 'code-off', // javascript
   'settings:cookie': 'cookie', // cookies
-  'settings:photo': 'image', // images
-  'settings:photo-off': 'image-off', // images off
+  'privacy:imagesmode': 'image', // images
+  'privacy:hide-image': 'image-off', // images off
   'cr:open-in-new': 'launch', // popups & redirects
+  'privacy:open-in-new-off': 'launch-off', // popups & redirects off
   'settings:ads': '', // intrusive ads (unused)
   'cr:sync': 'product-sync', // background sync
-  'settings:volume-up': 'volume-on', // sound
-  'settings:volume-up-off': 'volume-off', // sound off
-  'settings:download': 'download', // automatic downloads
-  'settings:file-download-off': 'download-off', // automatic downloads off
-  'settings:midi': 'media-visualizer', // midi devices
-  'settings:midi-off': 'media-visualizer-off', // midi devices off
-  'settings:usb': 'usb', // usb devices
-  'settings:usb-off': 'usb-off', // usb devices off
-  'settings:serial-port': 'cpu-chip', // serial ports
-  'settings:serial-port-off': 'cpu-chip-off', // serial ports off
-  'settings:save-original': 'file-edit', // file editing
-  'settings:file-editing-off': 'file-corrupted', // file editing off
-  'settings:hid-device': 'sparkles', // hid devices
-  'settings:hid-device-off': 'sparkles-off', // hid devices off
-  'settings:protected-content': 'key-lock', // protected content ids
-  'settings:protected-content-off': 'key-lock-off', // protected content off
-  'settings:clipboard': 'copy', // clipboard
-  'settings:clipboard-off': 'copy-off', // clipboard off
-  'settings:payment-handler': 'credit-card', // payment handlers
-  'settings:payment-handler-off': 'credit-card-off', // payment handlers
+  'privacy:volume-up': 'volume-on', // sound
+  'privacy:volume-off': 'volume-off', // sound off
+  'cr:download': 'download', // automatic downloads
+  'privacy:protocol-handler': 'protocol-handler', // protocol handler
+  'privacy:protocol-handler-off': 'protocol-handler-off', // protocol handler off
+  'privacy:file-download-off': 'download-off', // automatic downloads off
+  'privacy:piano': 'media-visualizer', // midi devices
+  'privacy:piano-off': 'media-visualizer-off', // midi devices off
+  'privacy:usb': 'usb', // usb devices
+  'privacy:usb-off': 'usb-off', // usb devices off
+  'privacy:developer-board': 'cpu-chip', // serial ports
+  'privacy:developer-board-off': 'cpu-chip-off', // serial ports off
+  'privacy:file-save': 'file-edit', // file editing
+  'privacy:file-save-off': 'file-corrupted', // file editing off
+  'privacy:videogame-asset': 'sparkles', // hid devices
+  'privacy:videogame-asset-off': 'sparkles-off', // hid devices off
+  'privacy:sync-saved-locally': 'key-lock', // protected content ids
+  'privacy:web-asset-off': 'key-lock-off', // protected content off
+  'privacy:content-paste': 'copy', // clipboard
+  'privacy:content-paste-off': 'copy-off', // clipboard off
+  'privacy:credit-card': 'credit-card', // payment handlers
+  'privacy:credit-card-off': 'credit-card-off', // payment handlers
   'settings:bluetooth-scanning': 'bluetooth', // bluetooth scanning
   'settings:bluetooth-off': 'bluetooth-off', // bluetooth off
-  'settings:insecure-content': 'warning-triangle-outline', // insecure content
-  'settings:federated-identity-api': '', // federated identity (unused)
-  'settings:vr-headset': 'virtual-reality', // virtual reality & augmented reality
-  'settings:vr-headset-off': 'virtual-reality-off', // virtual reality & augmented reality off
-  'settings:window-management': 'windows-open', // window management
-  'settings:window-management-off': 'window-tab-close', // window management off
-  'settings:local-fonts': 'font-size', // fonts
-  'settings:local-fonts-off': 'font-size-off', // fonts off
-  'settings:zoom-in': 'search-zoom-in', // zoom levels
-  'settings:pdf': 'file', // pdfs
-  'settings:open-in-browser': 'window', // open in browser
+  'privacy:warning': 'warning-triangle-outline', // insecure content
+  'privacy:federated-identity-api': '', // federated identity (unused)
+  'privacy:cardboard': 'virtual-reality', // virtual reality & augmented reality
+  'privacy:cardboard-off': 'virtual-reality-off', // virtual reality & augmented reality off
+  'privacy:select-window': 'windows-open', // window management
+  'privacy:select-window-off': 'window-tab-close', // window management off
+  'privacy:font-download': 'font-size', // fonts
+  'privacy:font-download-off': 'font-size-off', // fonts off
+  'privacy:zoom-in': 'search-zoom-in', // zoom levels
+  'privacy:drive-pdf': 'file', // pdfs
+  'privacy:open-in-browser': 'window', // open in browser
   'settings20:chrome-filled': 'hearts',
   'settings20:incognito-unfilled': 'product-private-window',
   'settings20:lightbulb': 'idea',
   'cr:delete': 'trash', // delete browsing data
   'cr:security': 'lock',
   'privacy:page-info': 'tune', // privacy page additional settings
+  'cr:fullscreen': 'fullscreen-on', // automatic fullscreen
+  'settings:picture-in-picture': 'picture-in-picture', // picture in picture
+  'cr:file-download': 'download',
 }
 
 RegisterStyleOverride('iron-icon', html`
