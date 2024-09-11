@@ -544,6 +544,13 @@ Config.prototype.buildArgs = function () {
     args.symbol_level = 1
   }
 
+  // For Linux Release builds, upstream doesn't want to use symbol_level = 2
+  // unless use_debug_fission is set. However, they don't set it when a
+  // cc_wrapper is used. Since we use cc_wrapper we need to set it manually.
+  if (this.getTargetOS() === 'linux' && this.isReleaseBuild()) {
+    args.use_debug_fission = true
+  }
+
   if (this.getTargetOS() === 'mac' &&
       fs.existsSync(path.join(this.srcDir, 'build', 'mac_files', 'xcode_binaries', 'Contents'))) {
       // always use hermetic xcode for macos when available
