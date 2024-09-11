@@ -59,8 +59,11 @@ bool EligibilityService::IsConnectedToWifiOrEthernet() const {
          connection_type_ == net::NetworkChangeNotifier::CONNECTION_ETHERNET;
 }
 
-void EligibilityService::OnPowerStateChange(bool on_battery_power) {
-  is_on_battery_power_ = on_battery_power;
+void EligibilityService::OnBatteryPowerStatusChange(
+    base::PowerStateObserver::BatteryPowerStatus battery_power_status) {
+  is_on_battery_power_ =
+      (battery_power_status ==
+       base::PowerStateObserver::BatteryPowerStatus::kBatteryPower);
   MaybeChangeEligibility();
 }
 
