@@ -8,6 +8,7 @@ import argparse
 import atexit
 import os
 
+import brave_chromium_utils
 import override_utils
 
 
@@ -27,7 +28,15 @@ def parse_args(_self, original_method, *args, **kwargs):
     sources = []
     copied_sources = []
     for source in opts.sources or []:
-        if source.find("/brave") != -1:
+        override = brave_chromium_utils.get_chromium_src_override(source)
+        if os.path.exists(override):
+            dest_file = source.replace(".ts", ".patch.ts", 1)
+            shutil.copy2(override, dest_file)
+            sources.append(source)
+            sources.append(dest_file)
+            copied_sources.append(dest_file)
+
+        elif source.find("/brave") != -1:
             dest_file = source.replace("/brave/", "/", 1)
             shutil.copy2(source, dest_file)
             sources.append(dest_file)

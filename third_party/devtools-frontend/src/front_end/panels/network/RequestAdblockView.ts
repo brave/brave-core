@@ -31,7 +31,7 @@ export class RequestAdblockView extends LegacyWrapper.LegacyWrapper.WrappableCom
       if (!this.#manager) {
         render(html``, this.#shadow, { host: this });
       } else {
-        const adblockInfo = this.#manager.dispatcher.adblockInfoForId(this.#request.requestId());
+        const adblockInfo = (this.#manager.dispatcher as any).adblockInfoForId(this.#request.requestId());
         render(html`
               ${Object.entries(adblockInfo ? adblockInfo : {}).map(([key, value]) => {
           return this.#renderRow(key, `${value}`)

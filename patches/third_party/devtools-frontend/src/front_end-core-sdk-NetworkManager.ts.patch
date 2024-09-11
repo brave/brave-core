@@ -1,38 +1,12 @@
 diff --git a/front_end/core/sdk/NetworkManager.ts b/front_end/core/sdk/NetworkManager.ts
-index ffb2d5c379f24e907f4f0eea5e167f7ac09a7dec..4c74fef775e4c06217285739cc05b8be583ff607 100644
+index ffb2d5c379f24e907f4f0eea5e167f7ac09a7dec..270fc93e7db35a03176fa2927b248a932f2faac4 100644
 --- a/front_end/core/sdk/NetworkManager.ts
 +++ b/front_end/core/sdk/NetworkManager.ts
-@@ -682,6 +682,23 @@ export class NetworkDispatcher implements ProtocolProxyApi.NetworkDispatcher {
-         Events.ResponseReceived, {request: networkRequest, response: info.outerResponse});
+@@ -1261,6 +1261,7 @@ export class NetworkDispatcher implements ProtocolProxyApi.NetworkDispatcher {
+     return request;
    }
+ }
++import { NetworkDispatcherPatch } from './NetworkManager.patch.js'; (NetworkDispatcher as any) = NetworkDispatcherPatch(NetworkDispatcher);
  
-+  #requestsAdblockInfo: Map<string, object> | undefined;
-+
-+  adblockInfoForId(id: string): object|null {
-+    return this.#requestsAdblockInfo?.get(id) || null;
-+  }
-+
-+  requestAdblockInfoReceived(params: any): void {
-+    if (!this.#requestsAdblockInfo) {
-+      this.#requestsAdblockInfo = new Map();
-+    }
-+    this.#requestsAdblockInfo.set(params.requestId, params.info);
-+    const networkRequest = this.#requestsById.get(params.requestId);
-+    if (networkRequest) {
-+      this.updateNetworkRequest(networkRequest);
-+    }
-+  }
-+
-   requestWillBeSent({
-     requestId,
-     loaderId,
-@@ -1126,6 +1143,9 @@ export class NetworkDispatcher implements ProtocolProxyApi.NetworkDispatcher {
-     for (const [requestId, request] of this.#requestsById) {
-       if (request.finished) {
-         this.#requestsById.delete(requestId);
-+        if (this.#requestsAdblockInfo) {
-+          this.#requestsAdblockInfo.delete(requestId)
-+        }
-       }
-     }
-     for (const [requestURL, request] of this.#requestsByURL) {
+ let multiTargetNetworkManagerInstance: MultitargetNetworkManager|null;
+ 
