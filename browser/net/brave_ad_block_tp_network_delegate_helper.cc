@@ -99,9 +99,8 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     // Explicitly specify source when DNS over HTTPS is enabled to avoid
     // using `HostResolverProc` which will be handled by system resolver
     // See https://crbug.com/872665
-    if (secure_dns_config.mode() == net::SecureDnsMode::kSecure) {
+    if (secure_dns_config.mode() == net::SecureDnsMode::kSecure)
       optional_parameters->source = net::HostResolverSource::DNS;
-    }
 
     start_time_ = base::TimeTicks::Now();
 
@@ -387,9 +386,9 @@ int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
                                         std::shared_ptr<BraveRequestInfo> ctx) {
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
-  if (ctx->request_url.is_empty() || ctx->initiator_url.is_empty() ||
-      !ctx->initiator_url.has_host() || !ctx->allow_brave_shields ||
-      ctx->allow_ads ||
+  if (ctx->request_url.is_empty() ||
+      ctx->initiator_url.is_empty() || !ctx->initiator_url.has_host() ||
+      !ctx->allow_brave_shields || ctx->allow_ads ||
       ctx->resource_type == BraveRequestInfo::kInvalidResourceType) {
     return net::OK;
   }
