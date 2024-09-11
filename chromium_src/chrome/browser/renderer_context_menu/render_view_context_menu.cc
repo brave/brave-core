@@ -691,28 +691,37 @@ void BraveRenderViewContextMenu::AddAccessibilityLabelsServiceItem(
   // Suppress adding "Get image descriptions from Brave"
 }
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-void BraveRenderViewContextMenu::AppendAllExtensionItems() {
+void BraveRenderViewContextMenu::AppendDeveloperItems() {
+  RenderViewContextMenu_Chromium::AppendDeveloperItems();
+
   auto* shields_tab_helper =
       brave_shields::BraveShieldsTabHelper::FromWebContents(
           source_web_contents_);
   bool add_block_elements =
       shields_tab_helper && shields_tab_helper->GetAdBlockMode() !=
                                 brave_shields::mojom::AdBlockMode::ALLOW;
-  add_block_elements &= params_.selection_text.empty();
+#if BUILDFLAG(IS_ANDROID)
+  // Content picker doesn't available for Android.
+  add_block_elements = false;
+#endif  // BUILDFLAG(IS_ANDROID)
   add_block_elements &=
-      params_.link_url.is_empty() || params_.has_image_contents;
+      params_.selection_text.empty() || !params_.link_url.is_empty();
 
   const auto page_url = source_web_contents_->GetLastCommittedURL();
   add_block_elements &= page_url.SchemeIsHTTPOrHTTPS();
   if (add_block_elements) {
-    menu_model_.AddItemWithStringId(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS,
-                                    IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS);
+    std::optional<size_t> inspect_index =
+        menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);
+    if (inspect_index) {
+      menu_model_.InsertItemWithStringIdAt(*inspect_index,
+                                           IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS,
+                                           IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS);
+    } else {
+      menu_model_.AddItemWithStringId(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS,
+                                      IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS);
+    }
   }
-
-  RenderViewContextMenu_Chromium::AppendAllExtensionItems();
 }
-#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();

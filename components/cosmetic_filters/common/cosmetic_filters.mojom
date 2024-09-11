@@ -18,8 +18,8 @@ interface CosmeticFiltersResources {
 };
 
 interface CosmeticFiltersHandler {
-    // Adds a user cosmetic rule for the current site.
-    // (currently from the content picker feature).
+  // Adds a user cosmetic rule for the current site.
+  // (currently from the content picker feature).
   AddSiteCosmeticFilter(string filter);
 
   // Opens the custom filter section in Shields settings .
