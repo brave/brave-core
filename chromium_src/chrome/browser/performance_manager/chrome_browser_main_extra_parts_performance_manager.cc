@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/performance_manager/metrics/page_resource_monitor.h"
+#include "components/performance_manager/public/metrics/page_resource_monitor.h"
 
 namespace performance_manager::metrics {
 namespace {
