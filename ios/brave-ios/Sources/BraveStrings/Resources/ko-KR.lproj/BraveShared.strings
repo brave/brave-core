@@ -158,7 +158,7 @@
 "BraveRewardsTitle" = "Brave Rewards";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Brave 검색은 사용자의 신원이나 검색어, 클릭 활동을 추적하지 않습니다.";
+"braveSearchPromotion.bannerDescription" = "Brave 검색은 사용자를 프로파일링하지 않습니다.";
 
 /* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "나중에";
@@ -272,7 +272,7 @@
 "callout.p3aCalloutTitle" = "Brave 개선에 참여.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "프라이버시가 완전 보장되는 익명 제품 인사이트를 공유합니다.";
+"callout.p3aCalloutToggleTitle" = "프라이버시가 보장되는 익명 제품 인사이트를 공유합니다.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "프라이버시가 뛰어난 Brave를 컴퓨터/태블릿에서 이용하고 기기 간 북마크와 확장 프로그램을 동기화하세요.";
@@ -1428,6 +1428,9 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageUnknownStatusWarning" = "이 사이트로의 연결이 완전히 확인되지 않았습니다. 이대로 진행해도 되지만 페이지를 새로 고쳐 안전한 연결을 수립하는 것이 좋습니다.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "웹사이트에 로그인";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "인증서 보기";
@@ -3526,9 +3529,6 @@
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave는 음성 검색 내역을 저장하거나 공유하지 않습니다.";
 
-/* The button text that starts the subscription action */
-"vpn.activateSubscriptionAction" = "활성화";
-
 /* Pop up extra description for billing issue of subcription VPN about to expire */
 "vpn.autoReneSoonExpirePopOverSubDescription" = "계속 보호받으셔야죠? 구독 종료 전에 갱신하시면 됩니다. 갱신하시면 감사의 의미로 3개월간 20% 할인해드리겠습니다.";
 
@@ -3547,146 +3547,14 @@
 /* Pop up title for VPN subscription is about expire */
 "vpn.autoRenewSoonExpireTitle" = "앗! Brave VPN 구독이 곧 만료됩니다.";
 
-/* Button text to buy Brave VPN */
-"vpn.buyButton" = "구매";
-
 /* Title for screen to buy the VPN. */
 "vpn.buyVPNTitle" = "Brave Firewall + VPN";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxDevicesProtect" = "구독 1개로 기기 5대 보호";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoLocation" = "지역/국가 위치 선택";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave가 활동을 절대 기록하지 않음";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "모든 앱 및 모든 기기 보호";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSaferWifi" = "집 또는 공용 Wi-Fi에서 더욱 안전하게";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSpeedFast" = "빛처럼 빠른 속도, 최대 100Mbps";
-
-/* App Store Receipt field for customer support contact form. */
-"vpn.contactFormAppStoreReceipt" = "App Store 영수증";
-
-/* App Version field for customer support contact form. */
-"vpn.contactFormAppVersion" = "앱 버전";
-
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "이동통신사";
-
-/* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Brave는 사용자의 신원을 추적하지 않고, 앱 사용 패턴을 파악하지 않으며, VPN을 어떻게 설정했는지 전혀 알 수 없습니다. 겪으신 문제에 대한 정보를 공유해주시면 최대한 빨리 문제를 해결해드리겠습니다.";
-
-/* Button name to send contact form. */
-"vpn.contactFormEmailNotConfiguredBody" = "이메일을 보낼 수 없습니다. 이메일 구성을 확인하세요.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooter" = "공유해도 괜찮은 정보를 선택하세요.\n\n초기에 공유해주시는 정보가 많을수록 지원 담당 직원이 문제를 해결해드리기 쉬워집니다.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooterSharedWithGuardian" = "지원은 Guardian 팀의 도움을 받아 제공됩니다.";
-
-/* VPN Hostname field for customer support contact form. */
-"vpn.contactFormHostname" = "VPN 호스트 이름";
-
-/* Specific issue field for customer support contact form. */
-"vpn.contactFormIssue" = "문제";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "연결 안정성 문제";
-
-/* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "문제를 설명하는 카테고리를 선택하세요.";
-
-/* No internet problem for contact form issue field. */
-"vpn.contactFormIssueNoInternet" = "인터넷에 연결되지 않음";
-
-/* Other problem for contact form issue field. */
-"vpn.contactFormIssueOther" = "기타";
-
-/* Other connection problem for contact form issue field. */
-"vpn.contactFormIssueOtherConnectionError" = "VPN에 연결할 수 없음(기타 오류)";
-
-/* Slow connection problem for contact form issue field. */
-"vpn.contactFormIssueSlowConnection" = "연결 속도가 느림";
-
-/* Website problem for contact form issue field. */
-"vpn.contactFormIssueWebsiteProblems" = "웹사이트가 작동하지 않음";
-
-/* VPN logs field for customer support contact form. */
-"vpn.contactFormLogs" = "오류 로그";
-
-/* Network Type field for customer support contact form. */
-"vpn.contactFormNetworkType" = "네트워크 유형";
-
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
-"vpn.contactFormPlatform" = "플랫폼";
-
-/* Button name to send contact form. */
-"vpn.contactFormSendButton" = "이메일로 계속";
-
-/* Subscription Type field for customer support contact form. */
-"vpn.contactFormSubscriptionType" = "구독 유형";
-
-/* iOS Timezone field for customer support contact form. */
-"vpn.contactFormTimezone" = "iOS 시간대";
-
-/* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave Firewall + VPN 문제";
-
-/* Button text to enable Brave VPN */
-"vpn.enableButton" = "활성화";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "App Store에 연결할 수 없습니다. 몇 분 후에 다시 시도해주세요.";
 
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "App Store 오류";
-
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "모든 플랜에 %@ 포함!";
-
-/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
-"vpn.freeTrialPeriod" = "7일 무료 평가판";
-
-/* The button text that starts the trial action */
-"vpn.freeTrialPeriodAction" = "7일 무료 이용";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "모든 구독은 자동 갱신되지만, 갱신 전 취소할 수 있습니다.";
-
-/* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "이 프로필을 사용하여 VPN을 자동으로 연결하고 항상 디바이스 간 트래픽을 안전하게 보호합니다. VPN 연결은 암호화되고 Brave의 지능적인 방화벽을 통해 라우팅되어 유해하거나 침입 가능성이 있는 연결을 차단합니다.";
-
-/* Text for 'install vpn profile' button */
-"vpn.installProfileButtonText" = "VPN 프로필 설치";
-
-/* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Brave에 VPN 프로필이 설치됩니다.";
-
-/* Popup that shows after user installs the vpn for the first time. */
-"vpn.installSuccessPopup" = "VPN이 활성화되었습니다.";
-
-/* Title for screen to install the VPN. */
-"vpn.installTitle" = "VPN 설치";
-
-/* Button text to try free Brave VPN */
-"vpn.learnMore" = "무료로 사용해보기";
-
-/* Used in context: 'Monthly subscription, (it) renews monthly' */
-"vpn.monthlySubDetail" = "매월 갱신";
-
-/* No comment provided by engineer. */
-"vpn.monthlySubTitle" = "월간 구독";
-
-/* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "만료됨";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckboxBlockAds" = "원치 않는 네트워크 연결 차단";
@@ -3709,56 +3577,8 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "제공:";
 
-/* Description of vpn tunnel protocol */
-"vpn.protocolPickerDescription" = "선호하는 전송 프로토콜을 선택하세요. 기존 VPN을 전환하면 자격증명이 지워지고 VPN 연결이 현재 수립되어 있다면 재연결됩니다.";
-
-/* Message for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorMessage" = "터널 프로토콜을 전환하지 못했습니다. 나중에 다시 시도하세요.";
-
-/* Title for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorTitle" = "서버 오류";
-
-/* Title for vpn tunnel protocol screen */
-"vpn.protocolPickerTitle" = "전송 프로토콜";
-
-/* Message that we show after successfully changing tunnel protocol. */
-"vpn.protocolSwitchSuccessPopupText" = "VPN 터널 프로토콜이 변경되었습니다.";
-
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "가장 근접한 서버 지역이 시스템 시간대를 기반으로 자동 선택됩니다. 인터넷 속도를 빠르게 하려면 이 설정을 유지하는 것이 좋습니다.";
-
 /* Name of automatic vpn region selector */
 "vpn.regionPickerAutomaticModeCellText" = "자동";
-
-/* Message for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorMessage" = "서버를 전환하지 못했습니다. 나중에 다시 시도하세요.";
-
-/* Title for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorTitle" = "서버 오류";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "서버 지역";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "VPN 지역이 변경되었습니다.";
-
-/* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "VPN 구성을 재설정할 수 없습니다. 다시 시도하세요. 문제가 지속되면 지원팀에 문의하여 도움을 받으세요.";
-
-/* Title of button to try again when vpn configuration reset fails. */
-"vpn.resetVPNErrorButtonActionTitle" = "다시 시도";
-
-/* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "재설정 실패";
-
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "VPN 구성이 성공적으로 재설정되었습니다.";
-
-/* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "재설정 성공";
-
-/* No comment provided by engineer. */
-"vpn.restorePurchases" = "복구";
 
 /* Alert description to show when the VPN session has expired */
 "vpn.sessionExpiredDescription" = "VPN 세션을 새로 고치려면 Brave 계정에 로그인하세요.";
@@ -3771,54 +3591,6 @@
 
 /* Alert title to show when the VPN session has expired */
 "vpn.sessionExpiredTitle" = "세션 만료됨";
-
-/* VPN Banner Description */
-"vpn.settingHeaderBody" = "VPN으로 업그레이드하면 연결을 보호하고 침입성 트래커를 차단합니다.";
-
-/* Button to contact tech support */
-"vpn.settingsContactSupport" = "기술 지원에 문의";
-
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "서버 목록을 가져오지 못했습니다. 나중에 다시 시도하세요.";
-
-/* Button for FAQ */
-"vpn.settingsFAQ" = "VPN 지원";
-
-/* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "구매한 항목을 Brave 계정에 연결";
-
-/* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "다른 기기에서도 Brave VPN을 사용하려면 App Store 구매 항목을 Brave 계정에 연결하세요.";
-
-/* Button to manage your VPN subscription */
-"vpn.settingsManageSubscription" = "구독 관리";
-
-/* Button to redeem offer code subscription */
-"vpn.settingsRedeemOfferCode" = "프로모션 코드 사용";
-
-/* Button to reset VPN configuration */
-"vpn.settingsResetConfiguration" = "구성 재설정";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "호스트";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "위치";
-
-/* Header title for vpn settings server section. */
-"vpn.settingsServerSection" = "서버";
-
-/* Table cell title for cell that shows when the VPN subscription expires. */
-"vpn.settingsSubscriptionExpiration" = "만료";
-
-/* Header title for vpn settings subscription section. */
-"vpn.settingsSubscriptionSection" = "구독";
-
-/* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "상태";
-
-/* Table cell title for vpn's transport protocol and which open opens protocol select */
-"vpn.settingsTransportProtocol" = "전송 프로토콜";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "비활성화됨";
@@ -3868,41 +3640,8 @@
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "결제 업데이트";
 
-/* Text for necesseray required action of VPN subscription needs a method of payment update */
-"vpn.vpnActionUpdatePaymentMethodSettingsText" = "결제 수단 업데이트";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Brave는 백그라운드에서도 계속 사용자를 보호해줍니다.";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN 켜짐";
-
-/* Message for an alert when the VPN can't be configured. */
-"vpn.vpnConfigGenericErrorBody" = "VPN을 초기화하는 중에 문제가 발생했습니다. 다시 시도하거나 VPN 설정 페이지에서 구성을 초기화해 보세요.";
-
-/* Title for an alert when the VPN can't be configured */
-"vpn.vpnConfigGenericErrorTitle" = "오류";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave Firewall + VPN이 동작하려면 디바이스에 VPN 프로필이 설치되어 있어야 합니다.";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "권한 거부됨";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "프로모션 코드를 사용할 수 없습니다. 프로모션 코드 세부정보를 확인하고 다시 시도하세요.";
-
-/* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "구매를 완료할 수 없습니다. 다시 시도하거나 Apple에서 결제 세부 정보를 확인하고 다시 시도하세요.";
-
-/* Title for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedTitle" = "오류";
-
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "구독 대금은 iTunes 계정을 통해 청구됩니다.\n\n구독을 구매하면 무료 평가판에서 미사용된 부분은 포기한 것으로 간주합니다.\n\n현재 구독 기간 종료 최소 24시간 전에 취소하지 않으면 구독이 자동으로 갱신됩니다.\n\n구매 후 설정에서 구독을 관리할 수 있습니다.\n\nBrave를 사용하면 이용 약관 및 개인정보 취급방침을 읽고 이에 동의한 것으로 간주됩니다.";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "코드 사용";
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "서버 지역";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "현재 설정: %@";
@@ -3910,32 +3649,8 @@
 /* Button title for VPN region selection in menu */
 "vpn.vpnRegionSelectorButtonTitle" = "VPN 지역";
 
-/* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Brave Firewall + VPN 구성이 재설정되고 모든 오류가 정정됩니다. 이 프로세스는 1분 정도 소요됩니다.";
-
-/* Title for alert to reset vpn configuration */
-"vpn.vpnResetAlertTitle" = "구성 재설정";
-
-/* Button name to reset vpn configuration */
-"vpn.vpnResetButton" = "재설정";
-
-/* Name of monthly subscription in VPN Settings */
-"vpn.vpnSettingsMonthlySubName" = "월간 구독";
-
-/* Name of annual subscription in VPN Settings */
-"vpn.vpnSettingsYearlySubName" = "연간 구독";
-
 /* Text description of VPN subscription needs a method of payment update */
 "vpn.vpnUpdatePaymentMethodDescriptionText" = "결제 수단을 업데이트하세요.";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "연간 갱신 시 %@ 할인";
-
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "최고의 가치";
-
-/* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "1년";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "월렛 생성 날짜";

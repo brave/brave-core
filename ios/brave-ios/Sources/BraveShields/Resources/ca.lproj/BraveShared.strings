@@ -74,7 +74,7 @@
 "CustomFilters" = "Filtres personalitzats";
 
 /* A description of the custom filters section */
-"CustomFiltersDescription" = "Afegeix aquí filtres personalitzats. Assegureu-vos d'utilitzar la sintaxi del filtre Adblock.";
+"CustomFiltersDescription" = "Afegeix aquí filtres personalitzats. Assegura't d'utilitzar la sintaxi del filtre Adblock.";
 
 /* An error message telling the user that a rule is invalid */
 "CustomFiltersInvalidRuleError" = "`%1$@` regla no vàlida, a la línia %2$i";
@@ -145,8 +145,14 @@
 /* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
 "FilterListURLTextFieldPlaceholder" = "Introdueix l'URL de la llista de filtres aquí";
 
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Esborra les galetes i altres dades dels llocs quan tanquis un lloc";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Estricte";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Mai";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "El lloc no és segur";
@@ -161,5 +167,5 @@
 "UpgradeConnectionsToHTTPS" = "Actualitza les connexions a HTTPS";
 
 /* A description shown an a page where the http page was blocked */
-"YourConnectionIsNotPrivate" = "Esteu veient aquest avís perquè aquest lloc no és compatible amb HTTPS.";
+"YourConnectionIsNotPrivate" = "Estàs veient aquest avís perquè aquest lloc no és compatible amb HTTPS.";
 

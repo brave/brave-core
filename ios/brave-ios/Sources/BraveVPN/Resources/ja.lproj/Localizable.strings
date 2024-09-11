@@ -1,0 +1,325 @@
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "有効にする";
+
+/* Text for toggle which indicating the toggle action is for selecting region in automatic */
+"vpn.automaticServerSelectionToggleTitle" = "自動";
+
+/* Title on top the list of available servers */
+"vpn.availableServerTitle" = "利用可能なサービス";
+
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "購入する";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxDevicesProtect" = "1つのサブスクリプションで5台のデバイスを保護";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoLocation" = "あなたの位置/国を選択する";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "Braveはブラウザ上のアクティビティを記録しません";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectYourDevices" = "各アプリとデバイス全体を保護";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSaferWifi" = "ご自宅や公共Wi-Fiでの安全確保に";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSpeedFast" = "最高100 Mbps、超高速のパフォーマンス";
+
+/* Text indicating how many cities is used for that country used as Ex: '1 City' */
+"vpn.cityCountTitle" = "%ld 都市";
+
+/* Text showing the vpn region is connected */
+"vpn.connectedRegionDescription" = "接続済み";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "AppStoreレシート";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "アプリバージョン";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "通信キャリア";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "Braveはお客様の個人情報を追跡したり、お客様がどのようにアプリを使用したかを把握していないため、VPNの設定内容についてお答えすることができません。できるだけ早く解決できるよう最善を尽くしますので、発生している問題の情報を共有してください。";
+
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "メールを送信できませんでした。Eメールの設定をご確認ください。";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "私たちと共有してもよい情報を選択してください。\n\n最初に共有する情報が多ければ多いほど、サポートスタッフがお客様の課題解決をサポートしやすくなります。";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "サポート対応においてGuardian VPNのチームの協力を受けています.";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "VPNホストネーム";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "イシュー";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "接続信頼性の問題";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "問題に当てはまるカテゴリーを選択してください。";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "接続時にインターネットに接続できなかった";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "その他";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "VPNに接続できなかった(その他のエラー)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "接続が遅い";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "ウェブサイトが機能しなかった";
+
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "エラーログ";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "ネットワークタイプ";
+
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "プラットフォーム";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "メールを送る";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "購読タイプ";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "タイムゾーン";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Brave Firewall + VPNに関わる問題";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "有効にする";
+
+/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
+"vpn.freeTrialDetail" = "すべてのプランに%@が含まれています。";
+
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "7日間の無料トライアル";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "7日間無料でお試し";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "すべての定期購読は自動更新ですが、更新前に解約することができます。";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "このプロファイルにより、VPNは自動的に接続され、デバイス上のすべてのアプリにおいて常にトラフィックが保護されます。VPN接続は暗号化され、Braveのインテリジェントファイアウォールを介してルーティングされ、広告やトラッカーをブロックします。";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "VPNプロファイルをインストール";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Brave は VPN プロファイルをインストールしています。";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "VPNが有効化されました";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "VPNをインストール";
+
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "無料で試してみる";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "毎月更新";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "毎月の定期購読";
+
+/* Text indicating how many cities is used for that region used as Ex: '2 Cities' */
+"vpn.multipleCityCountTitle" = "%ld 都市";
+
+/* Text indicating how many server is used for that region used as Ex: '2 Servers' */
+"vpn.multipleServerCountTitle" = "サーバー %ld 台";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "期限切れ";
+
+/* Description of vpn tunnel protocol
+   The alert title showing vpn region is changed */
+"vpn.protocolPickerDescription" = "ご希望の転送プロトコルを選択してください。VPN接続が確立されている場合は、一度切り替えると既存のVPN認証情報がクリアされ、再接続されます。";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "トンネルプロトコルの切り替えに失敗しました。しばらくしてからもう一度お試しください。";
+
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "サーバーエラー";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "転送プロトコル";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "VPNトンネルプロトコルを変更しました。";
+
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "あなたのシステムのタイムゾーンに基づいて、あなたに最も近接したサーバーリージョンが自動で選択されます。インターネットの速さを損なわないために推奨されています。";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "サーバーの切り替えに失敗しました。後ほど再試行ください";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "サーバーエラー";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "サーバーリージョン";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "VPNのリージョンが変更されました。";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "VPN設定をリセットできません。もう一度お試しください。問題が解決しない場合は、サポートにお問い合わせください。";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "再試行";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "リセット失敗";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "VPN設定をリセットしました。";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "リセット成功";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "復元";
+
+/* Title showing which country serves list showing. Ex: 'Brazil Server */
+"vpn.serverNameTitle" = "サーバー所在国: %@";
+
+/* Text for description of toggle that auto selcets the server according to time zone. */
+"vpn.serverRegionAutoSelectDescription" = "タイムゾーンに基づき、最も近いVPNサーバー地域を自動選択します。このオプションは、インターネット速度を最大化するために推奨されます。";
+
+/* Text indicating how many server is used for that region used as Ex: '1 Server' */
+"vpn.serverTitle" = "サーバー %ld 台";
+
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "VPN にアップグレードして通信を保護し、攻撃的なトラッカーをいつでもどこでもブロックしましょう。";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "テクニカルサポートへのお問い合わせ";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "サーバーリストの取得に失敗しました。再試行してください";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "VPNサポート";
+
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Braveアカウントに購入情報をリンク";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "App Storeで購入した商品をBraveアカウントにリンクさせると、他のデバイスでBrave VPNを利用できます。";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "購読の管理";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "オファーコードを使用する";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "設定をリセット";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "ホスト";
+
+/* Table cell title for vpn's server location and which open opens location select */
+"vpn.settingsServerLocation" = "ロケーション";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "サーバー";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "有効期限";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "購読";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "稼働状況";
+
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "転送プロトコル";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "お支払い方法を更新";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "バックグラウンドでもBraveはあなたを保護します";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPNは有効です";
+
+/* Text for description of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalDescription" = "利用できる最適なサーバーを使用";
+
+/* Text for title of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalTitle" = "最適値";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "VPNの初期化に問題がありました。再度お試しいただくか、VPN設定画面で設定をリセットしてみてください。";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "エラー";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave Firewall + VPNを使用するには、お使いのデバイスにVPNプロファイルをインストールする必要があります。";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "パーミッションが拒否されました";
+
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "オファーコードを使用できません。再試行するか、オファーコードの詳細を確認してからもう一度お試しください。";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "購入を完了できません。再度お試しいただくか、Appleでお支払い内容をご確認の上、再度お試しください。";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "エラー";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "サブスクリプションはiTunesアカウントを通じて課金されます。\n無料トライアルが提供されている場合、未使用の部分は、サブスクリプションを購入した時点で無効になります。\nサブスクリプションは、現在の期間終了の少なくとも24時間前にキャンセルされない限り、自動的に更新されます。\nサブスクリプションは「設定」で管理できます。\nBraveを使用することで、利用規約とプライバシーポリシーに同意したことになります。";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "コードを使用";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "この操作を実行するとBrave Firewall + VPNの構成はリセットされ、発生しているエラーが修正されます。プロセス完了までに約1分かかる場合があります。";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "設定リセット";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "リセット";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "定期購読(月払い)";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "定期購読(年払い)";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "年払いを選択すると%@お得です";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+"vpn.yearlySubDisclaimer" = "一番お得";
+
+/* One year lenght vpn subcription */
+"vpn.yearlySubTitle" = "1年間";
+
