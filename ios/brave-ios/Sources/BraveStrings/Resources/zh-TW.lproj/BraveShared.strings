@@ -158,7 +158,7 @@
 "BraveRewardsTitle" = "Brave Rewards";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Brave 搜尋不會追蹤您、您的查詢內容或點擊項目。";
+"braveSearchPromotion.bannerDescription" = "Brave 搜尋不會建立您的使用者輪廓。";
 
 /* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "稍後再說";
@@ -272,7 +272,7 @@
 "callout.p3aCalloutTitle" = "協助提升 Brave 品質。";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "分享完全不公開的匿名產品深入分析。";
+"callout.p3aCalloutToggleTitle" = "分享不公開和匿名的產品深入分析。";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "在您的電腦或平板電腦上享有 Brave 隱私保護，並且讓各裝置上的書籤和擴充功能保持同步。";
@@ -1428,6 +1428,9 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageUnknownStatusWarning" = "您前往此網站的連線無法完全驗證。您可以繼續進行，或者嘗試重新載入頁面以建立安全的連線。";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "登入網站";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "查看認證";
@@ -3526,9 +3529,6 @@
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave 不會儲存或分享您的語音搜尋。";
 
-/* The button text that starts the subscription action */
-"vpn.activateSubscriptionAction" = "啟用";
-
 /* Pop up extra description for billing issue of subcription VPN about to expire */
 "vpn.autoReneSoonExpirePopOverSubDescription" = "想要保持受保護嗎？只需在訂閱結束前續訂。為了感謝您的續訂，我們還會在接下來的 3 個月提供 20% 的折扣。";
 
@@ -3547,146 +3547,14 @@
 /* Pop up title for VPN subscription is about expire */
 "vpn.autoRenewSoonExpireTitle" = "糟了！ 您的 Brave VPN 訂閱即將到期。";
 
-/* Button text to buy Brave VPN */
-"vpn.buyButton" = "購買";
-
 /* Title for screen to buy the VPN. */
 "vpn.buyVPNTitle" = "Brave Firewall + VPN";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxDevicesProtect" = "1 筆訂閱即可保護 5 個裝置";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoLocation" = "選擇您的地理/國家/地區位置";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave 絕不會記錄您的活動";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "保護所有應用程式和整個裝置";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSaferWifi" = "家用和公共 Wi-Fi 更安全";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSpeedFast" = "速度飛快，高達 100 Mbps";
-
-/* App Store Receipt field for customer support contact form. */
-"vpn.contactFormAppStoreReceipt" = "App Store 收據";
-
-/* App Version field for customer support contact form. */
-"vpn.contactFormAppVersion" = "應用程式版本";
-
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "行動通訊業者";
-
-/* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Brave 不會追蹤您，也不會知道您使用應用程式的情形，因此不會得知您的 VPN 設定方式。請與我們分享所發生問題的相關資訊，我們會在最短時間內盡力解決問題。";
-
-/* Button name to send contact form. */
-"vpn.contactFormEmailNotConfiguredBody" = "無法傳送電子郵件。請檢查電子郵件設定。";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooter" = "請選取您願意提供的資訊。\n\n您主動提供的資訊越多，越有利於我們的支援人員協助您解決問題。";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooterSharedWithGuardian" = "支援服務由 Guardian 團隊協助提供。";
-
-/* VPN Hostname field for customer support contact form. */
-"vpn.contactFormHostname" = "VPN 主機名稱";
-
-/* Specific issue field for customer support contact form. */
-"vpn.contactFormIssue" = "問題";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "連線穩定性問題";
-
-/* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "請選擇說明該問題的類別。";
-
-/* No internet problem for contact form issue field. */
-"vpn.contactFormIssueNoInternet" = "沒有可用的網際網路連線";
-
-/* Other problem for contact form issue field. */
-"vpn.contactFormIssueOther" = "其他";
-
-/* Other connection problem for contact form issue field. */
-"vpn.contactFormIssueOtherConnectionError" = "無法連線至 VPN (其他錯誤)";
-
-/* Slow connection problem for contact form issue field. */
-"vpn.contactFormIssueSlowConnection" = "連線速度緩慢";
-
-/* Website problem for contact form issue field. */
-"vpn.contactFormIssueWebsiteProblems" = "網站無法運作";
-
-/* VPN logs field for customer support contact form. */
-"vpn.contactFormLogs" = "錯誤記錄";
-
-/* Network Type field for customer support contact form. */
-"vpn.contactFormNetworkType" = "網路類型";
-
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
-"vpn.contactFormPlatform" = "平台";
-
-/* Button name to send contact form. */
-"vpn.contactFormSendButton" = "繼續寄送電子郵件";
-
-/* Subscription Type field for customer support contact form. */
-"vpn.contactFormSubscriptionType" = "訂閱類型";
-
-/* iOS Timezone field for customer support contact form. */
-"vpn.contactFormTimezone" = "iOS 時區";
-
-/* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave Firewall + VPN 問題";
-
-/* Button text to enable Brave VPN */
-"vpn.enableButton" = "啟用";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "無法連線至 App Store，請稍候再試。";
 
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "App Store 錯誤";
-
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "所有方案都包含 %@！";
-
-/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
-"vpn.freeTrialPeriod" = "免費的 7 天試用期";
-
-/* The button text that starts the trial action */
-"vpn.freeTrialPeriodAction" = "免費試用 7 天";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "所有訂閱都會自動續約，但可在續約前取消。";
-
-/* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "此設定檔可允許 VPN 自動連線，並隨時保障您裝置上的流量安全。此 VPN 連線會經過加密，並採用 Brave 智慧型防火牆的路由規則，有效封鎖潛在的有害與侵入式連線。";
-
-/* Text for 'install vpn profile' button */
-"vpn.installProfileButtonText" = "安裝 VPN 設定檔";
-
-/* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Brave 現在要開始安裝 VPN 設定檔。";
-
-/* Popup that shows after user installs the vpn for the first time. */
-"vpn.installSuccessPopup" = "VPN 現已啟用";
-
-/* Title for screen to install the VPN. */
-"vpn.installTitle" = "安裝 VPN";
-
-/* Button text to try free Brave VPN */
-"vpn.learnMore" = "免費試用";
-
-/* Used in context: 'Monthly subscription, (it) renews monthly' */
-"vpn.monthlySubDetail" = "每月自動續約";
-
-/* No comment provided by engineer. */
-"vpn.monthlySubTitle" = "按月訂閱";
-
-/* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "過期";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckboxBlockAds" = "封鎖不需要的網路連線";
@@ -3709,56 +3577,8 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "技術提供：";
 
-/* Description of vpn tunnel protocol */
-"vpn.protocolPickerDescription" = "請選擇您喜歡的傳輸通訊協定。切換後，您現有的 VPN 憑證將被清除，如果目前已建立 VPN 連線，您將會重新連線。";
-
-/* Message for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorMessage" = "通道協定切換失敗，請稍後重試。";
-
-/* Title for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorTitle" = "發生伺服器錯誤";
-
-/* Title for vpn tunnel protocol screen */
-"vpn.protocolPickerTitle" = "傳輸通訊協定";
-
-/* Message that we show after successfully changing tunnel protocol. */
-"vpn.protocolSwitchSuccessPopupText" = "VPN 通道通訊協定已變更。";
-
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "系統會根據您所設定的時區，自動為您選取最靠近的伺服器區域。這項建議功能旨在確保網際網路的速度不受影響。";
-
 /* Name of automatic vpn region selector */
 "vpn.regionPickerAutomaticModeCellText" = "自動";
-
-/* Message for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorMessage" = "無法切換伺服器，請稍後再試。";
-
-/* Title for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorTitle" = "發生伺服器錯誤";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "伺服器區域";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "VPN 區域已完成變更。";
-
-/* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "無法重設 VPN 設定，請再試一次。如果問題仍未解決，請聯絡支援團隊尋求協助。";
-
-/* Title of button to try again when vpn configuration reset fails. */
-"vpn.resetVPNErrorButtonActionTitle" = "再試一次";
-
-/* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "重設失敗";
-
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "已成功重設 VPN 設定。";
-
-/* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "重設成功";
-
-/* No comment provided by engineer. */
-"vpn.restorePurchases" = "還原";
 
 /* Alert description to show when the VPN session has expired */
 "vpn.sessionExpiredDescription" = "請登入 Brave 帳戶，重新整理您的 VPN 工作階段。";
@@ -3771,54 +3591,6 @@
 
 /* Alert title to show when the VPN session has expired */
 "vpn.sessionExpiredTitle" = "工作階段已過期";
-
-/* VPN Banner Description */
-"vpn.settingHeaderBody" = "升級為 VPN 以保護您的連線，並封鎖無所不在的追蹤程式，捍衛個人隱私。";
-
-/* Button to contact tech support */
-"vpn.settingsContactSupport" = "與技術支援人員聯絡";
-
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "無法擷取伺服器清單，請稍後再試。";
-
-/* Button for FAQ */
-"vpn.settingsFAQ" = "VPN 支援";
-
-/* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "將購買交易連結至您的 Brave 帳戶";
-
-/* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "將您的 App Store 購買交易連結至 Brave 帳戶，以便在其他裝置上使用 Brave VPN。";
-
-/* Button to manage your VPN subscription */
-"vpn.settingsManageSubscription" = "管理訂閱";
-
-/* Button to redeem offer code subscription */
-"vpn.settingsRedeemOfferCode" = "兌換優惠代碼";
-
-/* Button to reset VPN configuration */
-"vpn.settingsResetConfiguration" = "重設組態";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "主機";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "位置";
-
-/* Header title for vpn settings server section. */
-"vpn.settingsServerSection" = "伺服器";
-
-/* Table cell title for cell that shows when the VPN subscription expires. */
-"vpn.settingsSubscriptionExpiration" = "到期日";
-
-/* Header title for vpn settings subscription section. */
-"vpn.settingsSubscriptionSection" = "訂閱";
-
-/* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "狀態";
-
-/* Table cell title for vpn's transport protocol and which open opens protocol select */
-"vpn.settingsTransportProtocol" = "傳輸通訊協定";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "已停用";
@@ -3868,41 +3640,8 @@
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "更新付款資訊";
 
-/* Text for necesseray required action of VPN subscription needs a method of payment update */
-"vpn.vpnActionUpdatePaymentMethodSettingsText" = "更新付款方式";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "即使在背景運作，Brave 也會繼續為您提供防護。";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN 已開啟";
-
-/* Message for an alert when the VPN can't be configured. */
-"vpn.vpnConfigGenericErrorBody" = "初始化 VPN 時發生問題。請再試一次，或嘗試在 VPN 設定頁面中重設組態。";
-
-/* Title for an alert when the VPN can't be configured */
-"vpn.vpnConfigGenericErrorTitle" = "錯誤";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave Firewall + VPN 需要 VPN 設定檔，才能安裝到您的裝置上，發揮效用。";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "權限遭拒";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "無法兌換優惠代碼。請再試一次，或檢查您的優惠代碼詳細資訊後重試。";
-
-/* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "無法完成購買。請再試一次，或到 Apple 帳戶查看付款詳細資訊後重試。";
-
-/* Title for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedTitle" = "錯誤";
-
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "我們會透過你的 iTunes 帳戶收取訂閱費用。\n\n如果您在免費試用期結束前便選擇訂閱，剩餘的試用效期即告失效。\n\n只要未在目前約期結束前 24 小時取消訂閱，系統就會自動為您續約。\n\n您可以前往「設定」管理訂閱事宜。\n\n使用 Brave 即表示您同意使用條款及隱私權政策。";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "兌換代碼";
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "伺服器區域";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "目前的設定：%@";
@@ -3910,32 +3649,8 @@
 /* Button title for VPN region selection in menu */
 "vpn.vpnRegionSelectorButtonTitle" = "VPN 區域";
 
-/* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "此程序會重設您的 Brave Firewall + VPN 組態，並修正任何錯誤。這會需要一點時間，請稍候。";
-
-/* Title for alert to reset vpn configuration */
-"vpn.vpnResetAlertTitle" = "重設組態";
-
-/* Button name to reset vpn configuration */
-"vpn.vpnResetButton" = "重設";
-
-/* Name of monthly subscription in VPN Settings */
-"vpn.vpnSettingsMonthlySubName" = "按月訂閱";
-
-/* Name of annual subscription in VPN Settings */
-"vpn.vpnSettingsYearlySubName" = "按年訂閱";
-
 /* Text description of VPN subscription needs a method of payment update */
 "vpn.vpnUpdatePaymentMethodDescriptionText" = "請更新您的付款方式";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "每年自動續約，立即省下 %@";
-
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "最超值";
-
-/* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "1 年";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "錢包建立日期";

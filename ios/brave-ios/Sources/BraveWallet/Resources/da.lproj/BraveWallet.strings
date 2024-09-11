@@ -418,12 +418,6 @@
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Brave-wallet";
 
-/* The navigation title of the screen for users to customize ipfs public gateway address for NFT. */
-"wallet.customizeIPFSNFTPublicGatewayNavTitle" = "Tilpas IPFS Gateway til NFT";
-
-/* The navigation title of the screen for users to customize ipfs public gateway address. */
-"wallet.customizeIPFSPublicGatewayNavTitle" = "Tilpas IPFS Gateway";
-
 /* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
 "wallet.customNetworkBlockExplorerUrlsTitle" = "Blokér Explorer-url'er";
 
@@ -462,6 +456,9 @@
 
 /* The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen. */
 "wallet.customNetworkInvalidAddressErrMsg" = "Ugyldig adresse.";
+
+/* The error message for the input field when users input an unsecure address for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkNotSecureErrMsg" = "Ikke sikker.";
 
 /* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
 "wallet.customNetworkRpcUrlsTitle" = "RPC-url'er";
@@ -603,6 +600,9 @@
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
 "wallet.editButtonTitle" = "Rediger";
+
+/* A pop up message that will prompt to user before user confirms to edit the existing network. */
+"wallet.editExistingNetworkAlertMsg" = "Vil du opdatere det eksisterende netværk?";
 
 /* The title of form for users to edit an existed custom network. */
 "wallet.editfCustomNetworkTitle" = "Rediger netværk";
@@ -907,24 +907,6 @@
 /* The title of a button that Deselects all visible options. */
 "wallet.internalErrorMessage" = "Der opstod en intern fejl";
 
-/* A title will displayed in the IPFS error page when IPFS is disabled. */
-"wallet.ipfsErrorTitle" = "Dette websted kan ikke nås";
-
-/* The navigation title of the screen for users to customize NFT gateway. */
-"wallet.ipfsPublicGatewayAddressNFTTitle" = "IPFS Public Gateway-adresse til NFT";
-
-/* The navigation title of the screen for users to customize IPFS public gateway. */
-"wallet.ipfsPublicGatewayAddressTitle" = "IPFS Public Gateway-adresse";
-
-/* The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy. */
-"wallet.ipfsResolveMethodDescription" = "[Lær mere](%@) om overvejelser om privatlivets fred i IPFS-gatewayen.";
-
-/* The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources. */
-"wallet.ipfsResourcesOptionsTitle" = "Løs IPFS-ressourcer";
-
-/* The header of the section under Web3 settings for IPFS NFT gateway setting. */
-"wallet.ipfsSettingsHeader" = "IPFS";
-
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
 "wallet.learnMoreButton" = "Få mere at vide";
 
@@ -1101,9 +1083,6 @@
 
 /* The title of the button that user clicks to add his/her first NFT */
 "wallet.nftEmptyImportNFT" = "Importér NFT";
-
-/* Description of the NFT Gateway setting */
-"wallet.nftGatewayLongDescription" = "Gyldig IPFS-gateway skal leveres. Den forudsatte gateway vil blive kontrolleret for muligheden for at indlæse IPFS-ressourcer.";
 
 /* The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs. */
 "wallet.nftHidden" = "Skjult";
@@ -1440,9 +1419,6 @@
 
 /* One of the context menu option for user to tap to set a default network in wallet settings. */
 "wallet.setDefaultNetwork" = "Indstil som standardværdi";
-
-/* Title of the set IPFS gateway button */
-"wallet.setGatewayButtonTitle" = "Indstil";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Indstillinger ";
@@ -2110,18 +2086,6 @@
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "Løs Solana Name Service (SNS)-domænenavne";
 
-/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Brave article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
-"wallet.web3IPFSInterstitialIPFSPrivacy" = "IPFS (InterPlanetary File System) er det offentlige netværk til peer-to-peer datalagring og levering. Denne protokol har andre privatlivsovervejelser end HTTP(S). <a href=%1$@>%2$@</a>";
-
-/* A brief explaination of resolving IPFS scheme url using a public gateway. */
-"wallet.web3IPFSInterstitialIPFSPublicGateway" = "Beskytter din IP-adresse og det indhold, du anmoder om fra potentielle tredjepartsobservatører, men ikke fra den offentlige gateway-operatør. Gateway-operatøren er ansvarlig for at sikre, at indholdet, der serveres til dig via en gateway, er det indhold, du har anmodet om. Din enhed bidrager heller ikke til det offentlige IPFS-netværk.";
-
-/* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
-"wallet.web3IPFSInterstitialIPFSTitle" = "Indstil din IPFS-præference";
-
-/* The title of the button that user will click to let Brave to resolve IPFS shceme url. */
-"wallet.web3IPFSInterstitialProceedButton" = "Brug en offentlig gateway";
-
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "Websteder kan anmode om adgang til din Ethereum Wallet";
 
@@ -2148,12 +2112,6 @@
 
 /* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "Tilføj automatisk NFT'er, du ejer, til Wallet ved hjælp af tredjeparts-API'er. [Få mere at vide](%@)";
-
-/* Description of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertDescription" = "Der blev angivet en ugyldig url. Gatewayen bør kunne løse IPFS-ressourcer.";
-
-/* Title of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertTitle" = "Det lykkedes ikke at indstille gateway";
 
 /* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
 "wallet.zToASortOption" = "Z til A";

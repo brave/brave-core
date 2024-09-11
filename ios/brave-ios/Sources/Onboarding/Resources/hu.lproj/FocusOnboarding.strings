@@ -32,7 +32,7 @@
 "focusOnboarding.p3aToggleDescription" = "Ezt bármikor módosíthatja a Brave beállításokban, a „Brave pajzsok és adatvédelem” alatt.";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "Teljesen privát és névtelen termékelemzések megosztása.";
+"focusOnboarding.p3aToggleTitle" = "Privát és névtelen termékelemzések megosztása.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Böngészés elkezdése";

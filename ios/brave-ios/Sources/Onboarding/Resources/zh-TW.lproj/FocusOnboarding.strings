@@ -32,7 +32,7 @@
 "focusOnboarding.p3aToggleDescription" = "您隨時可以在「Brave Shields 與隱私權」下的「Brave 設定」中加以變更。";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "以完全不公開的匿名方式分享產品深入分析。";
+"focusOnboarding.p3aToggleTitle" = "分享不公開和匿名的產品深入分析。";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "開始瀏覽";
