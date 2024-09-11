@@ -732,9 +732,8 @@ void PlaylistService::SanitizeImage(
     base::OnceCallback<void(scoped_refptr<base::RefCountedBytes>)> callback) {
   if (!delegate_) {
     CHECK_IS_TEST();
-    auto bytes = base::MakeRefCounted<base::RefCountedBytes>(
-        reinterpret_cast<const unsigned char*>(image->data()), image->size());
-    std::move(callback).Run(bytes);
+    std::move(callback).Run(
+        new base::RefCountedBytes(base::as_byte_span(*image)));
     return;
   }
 
