@@ -7,11 +7,11 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_HELP_VERSION_UPDATER_MAC_H_
 
 #import <AppKit/AppKit.h>
-
 #include <string.h>
 
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/sparkle_buildflags.h"
 #include "chrome/browser/ui/webui/help/version_updater.h"
 #include "chrome/updater/update_service.h"
 #include "chrome/updater/updater_scope.h"
@@ -20,12 +20,12 @@
 
 // macOS implementation of version update functionality, used by the WebUI
 // About/Help page.
-class VersionUpdaterMac : public VersionUpdater {
+class SparkleVersionUpdater : public VersionUpdater {
  public:
-  VersionUpdaterMac();
-  VersionUpdaterMac(const VersionUpdaterMac&) = delete;
-  VersionUpdaterMac& operator=(const VersionUpdaterMac&) = delete;
-  ~VersionUpdaterMac() override;
+  SparkleVersionUpdater();
+  SparkleVersionUpdater(const SparkleVersionUpdater&) = delete;
+  SparkleVersionUpdater& operator=(const SparkleVersionUpdater&) = delete;
+  ~SparkleVersionUpdater() override;
 
   // VersionUpdater implementation.
   void CheckForUpdate(StatusCallback status_callback,
@@ -37,6 +37,10 @@ class VersionUpdaterMac : public VersionUpdater {
   // a version is available (see AutoupdateStatus), it will be present at key
   // kAutoupdateStatusVersion.
   void UpdateStatus(NSDictionary* status);
+
+#if BUILDFLAG(ENABLE_SPARKLE)
+  void GetIsSparkleForTesting(bool& result) const override;
+#endif
 
  private:
   // Update the visibility state of promote button.
@@ -59,7 +63,7 @@ class VersionUpdaterMac : public VersionUpdater {
   // The observer that will receive Keystone status updates.
   KeystoneObserver* __strong keystone_observer_;
 
-  base::WeakPtrFactory<VersionUpdaterMac> weak_factory_{this};
+  base::WeakPtrFactory<SparkleVersionUpdater> weak_factory_{this};
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_HELP_VERSION_UPDATER_MAC_H_

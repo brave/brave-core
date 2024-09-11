@@ -4,30 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 declare_args() {
-  # In 2023, Chrome began switching to a new auto-update implementation
-  # ("Omaha 4"). As of this writing, Chrome uses Omaha 4 on macOS and is in the
-  # process of rolling it out on Windows. The new implementation is hidden
-  # behind upstream GN arg `enable_updater`. We set it to true to enable some
-  # integration points. But, as of this writing, we do not yet use Omaha 4. The
-  # arg below enables building our own Omaha 4 integration, which is still
-  # experimental.
-  brave_enable_updater = false
-}
-
-declare_args() {
-  # We ship a pre-built (and pre-signed) copy of Omaha 4 in official builds. The
-  # main reason for this is that upstream's browser signing code expects it this
-  # way. The following arg, which controls whether Omaha 4 should be built from
-  # source, is therefore disabled by default for official builds:
-  build_omaha4 = brave_enable_updater && !is_official_build
-}
-
-if (brave_enable_updater) {
-  assert(target_os == "mac",
-         "brave_enable_updater currently only takes effect on macOS.")
-}
-
-if (build_omaha4) {
-  assert(brave_enable_updater,
-         "brave_enable_updater must be true to build Omaha 4")
+  # We ship a pre-built (and pre-signed) copy of Omaha 4. The main reason for
+  # this is that upstream's browser signing code expects it this way. But it
+  # also keeps the updater (an extremely critical component) more stable.
+  use_prebuilt_omaha4 = is_official_build
 }

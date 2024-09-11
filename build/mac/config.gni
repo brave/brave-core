@@ -1,3 +1,8 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 declare_args() {
   mac_unsigned_output_prefix = "unsigned"
   mac_signed_output_prefix = "signed"
@@ -12,6 +17,13 @@ declare_args() {
   notary_password = ""
   notarize = false
   is_universal_binary = false
+
+  # Upstream installs Omaha 4 when the PKG is installed. We do not yet want
+  # this. As of this writing, we control with a Griffin flag whether a user
+  # receives Omaha 4. We only want to install it when that is the case. Once
+  # we have fully migrated to Omaha 4, we will remove this GN arg with a default
+  # value of true.
+  install_omaha4_with_pkg = false
 }
 
 if (host_os == "mac") {

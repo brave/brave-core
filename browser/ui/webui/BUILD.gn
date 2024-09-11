@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/build/config.gni")
+
 source_set("browser_tests") {
   testonly = true
 
@@ -25,5 +27,19 @@ source_set("browser_tests") {
     sources += [ "searchbox/brave_realbox_handler_browsertest.cc" ]
 
     deps += [ "//chrome/browser/ui/webui/searchbox" ]
+  }
+}
+
+if (enable_sparkle) {
+  source_set("unit_tests") {
+    testonly = true
+    sources = [ "help/brave_version_updater_mac_unittest.mm" ]
+    deps = [
+      "//base",
+      "//base/test:test_support",
+      "//brave/browser:mac_features",
+      "//chrome/browser/ui",
+      "//testing/gtest",
+    ]
   }
 }

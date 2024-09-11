@@ -384,6 +384,7 @@ source_set("ui") {
         "webui/settings/brave_relaunch_handler_mac.h",
         "webui/settings/brave_relaunch_handler_mac.mm",
       ]
+      deps += [ "//brave/browser:mac_features" ]
     }
 
     if (enable_tor) {

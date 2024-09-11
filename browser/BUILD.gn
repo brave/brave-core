@@ -66,6 +66,16 @@ group("browser") {
   public_deps = [ "//chrome/browser" ]
 }
 
+if (is_mac) {
+  source_set("mac_features") {
+    sources = [
+      "mac_features.cc",
+      "mac_features.h",
+    ]
+    deps = [ "//base" ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
 

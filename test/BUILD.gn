@@ -146,9 +146,6 @@ test("brave_unit_tests") {
     "//components/sync/service/sync_auth_manager_unittest.cc",
     "//components/sync_device_info/device_info_sync_bridge_unittest.cc",
   ]
-  if (brave_enable_updater) {
-    sources += [ "//brave/chromium_src/components/update_client/request_sender_unittest.cc" ]
-  }
 
   deps = [
     ":crypto_unittests",
@@ -325,6 +322,10 @@ test("brave_unit_tests") {
     deps += [ "//brave/browser/day_zero_browser_ui_expt:unit_tests" ]
   }
 
+  if (enable_sparkle) {
+    deps += [ "//brave/browser/ui/webui:unit_tests" ]
+  }
+
   if (enable_tor) {
     deps += [
       "//brave/browser/tor/test:unit_tests",
@@ -410,6 +411,7 @@ test("brave_unit_tests") {
       "//brave/browser/ui/webui/settings/brave_wallet_handler_unittest.cc",
       "//brave/chromium_src/chrome/browser/devtools/url_constants_unittest.cc",
       "//brave/chromium_src/chrome/browser/profiles/profile_avatar_icon_util_unittest.cc",
+      "//brave/chromium_src/components/update_client/request_sender_unittest.cc",
       "//chrome/browser/push_messaging/push_messaging_app_identifier_unittest.cc",
       "//chrome/browser/push_messaging/push_messaging_notification_manager_unittest.cc",
       "//chrome/browser/push_messaging/push_messaging_service_unittest.cc",
