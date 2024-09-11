@@ -46,6 +46,16 @@ brave_components_omnibox_browser_deps = [
   "//url",
 ]
 
+# Looks like an upstream bug:
+# https://chromium-review.googlesource.com/c/chromium/src/+/5814284/7/component
+# s/omnibox/browser/verbatim_match.cc#15. Note, that for iOS we add the header
+# content/public/common/url_constants.h to //brave/extensions:common target.
+if (is_ios) {
+  brave_components_omnibox_browser_deps += [ "//brave/extensions:common" ]
+} else {
+  brave_components_omnibox_browser_deps += [ "//content/public/common" ]
+}
+
 if (enable_ai_chat) {
   brave_components_omnibox_browser_sources += [
     "//brave/components/omnibox/browser/leo_action.cc",
