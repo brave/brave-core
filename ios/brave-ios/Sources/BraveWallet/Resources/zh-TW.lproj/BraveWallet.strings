@@ -418,12 +418,6 @@
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Brave 錢包";
 
-/* The navigation title of the screen for users to customize ipfs public gateway address for NFT. */
-"wallet.customizeIPFSNFTPublicGatewayNavTitle" = "為 NFT 自訂 IPFS 閘道";
-
-/* The navigation title of the screen for users to customize ipfs public gateway address. */
-"wallet.customizeIPFSPublicGatewayNavTitle" = "自訂 IPFS 閘道";
-
 /* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
 "wallet.customNetworkBlockExplorerUrlsTitle" = "封鎖總管 URL";
 
@@ -462,6 +456,9 @@
 
 /* The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen. */
 "wallet.customNetworkInvalidAddressErrMsg" = "網址無效。";
+
+/* The error message for the input field when users input an unsecure address for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkNotSecureErrMsg" = "不安全。";
 
 /* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
 "wallet.customNetworkRpcUrlsTitle" = "RPC URL";
@@ -603,6 +600,9 @@
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
 "wallet.editButtonTitle" = "編輯";
+
+/* A pop up message that will prompt to user before user confirms to edit the existing network. */
+"wallet.editExistingNetworkAlertMsg" = "要更新現有網路嗎？";
 
 /* The title of form for users to edit an existed custom network. */
 "wallet.editfCustomNetworkTitle" = "編輯網路";
@@ -907,24 +907,6 @@
 /* The title of a button that Deselects all visible options. */
 "wallet.internalErrorMessage" = "發生內部錯誤";
 
-/* A title will displayed in the IPFS error page when IPFS is disabled. */
-"wallet.ipfsErrorTitle" = "無法造訪此網站";
-
-/* The navigation title of the screen for users to customize NFT gateway. */
-"wallet.ipfsPublicGatewayAddressNFTTitle" = "NFT 的 IPFS 公用閘道位址";
-
-/* The navigation title of the screen for users to customize IPFS public gateway. */
-"wallet.ipfsPublicGatewayAddressTitle" = "IPFS 公用閘道器位址";
-
-/* The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy. */
-"wallet.ipfsResolveMethodDescription" = "[深入瞭解](%@) IPFS 閘道的隱私注意事項。";
-
-/* The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources. */
-"wallet.ipfsResourcesOptionsTitle" = "解析 IPFS 資源";
-
-/* The header of the section under Web3 settings for IPFS NFT gateway setting. */
-"wallet.ipfsSettingsHeader" = "IPFS";
-
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
 "wallet.learnMoreButton" = "了解更多";
 
@@ -1101,9 +1083,6 @@
 
 /* The title of the button that user clicks to add his/her first NFT */
 "wallet.nftEmptyImportNFT" = "匯入 NFT";
-
-/* Description of the NFT Gateway setting */
-"wallet.nftGatewayLongDescription" = "應提供有效的 IPFS 閘道。系統會檢查提供的閘道是否可載入 IPFS 資源。";
 
 /* The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs. */
 "wallet.nftHidden" = "已隱藏";
@@ -1440,9 +1419,6 @@
 
 /* One of the context menu option for user to tap to set a default network in wallet settings. */
 "wallet.setDefaultNetwork" = "設為預設";
-
-/* Title of the set IPFS gateway button */
-"wallet.setGatewayButtonTitle" = "設定";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "設定";
@@ -2110,18 +2086,6 @@
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "解析 Solana Name Service (SNS) 網域名稱";
 
-/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Brave article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
-"wallet.web3IPFSInterstitialIPFSPrivacy" = "IPFS (星際檔案系統) 是用於點對點資料儲存和傳送的公用網路。此通訊協定的隱私注意事項與 HTTP(S) 有所不同。<a href=%1$@>%2$@</a>";
-
-/* A brief explaination of resolving IPFS scheme url using a public gateway. */
-"wallet.web3IPFSInterstitialIPFSPublicGateway" = "保護您向潛在的第三方觀察者請求的 IP 位址和內容，而不是公共閘道營運商。 閘道營運商負責確保透過閘道提供給您的內容是您請求的內容。此外，您的裝置不參與公共 IPFS 網路。";
-
-/* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
-"wallet.web3IPFSInterstitialIPFSTitle" = "設定您的 IPFS 喜好設定";
-
-/* The title of the button that user will click to let Brave to resolve IPFS shceme url. */
-"wallet.web3IPFSInterstitialProceedButton" = "使用公用閘道";
-
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "網站可以請求造訪您的 Ethereum 錢包";
 
@@ -2148,12 +2112,6 @@
 
 /* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "使用第三方 API 將您擁有的 NFT 自動新增至「錢包」。[深入瞭解](%@)";
-
-/* Description of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertDescription" = "提供的 URL 無效。閘道應可解析 IPFS 資源。";
-
-/* Title of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertTitle" = "無法設定閘道";
 
 /* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
 "wallet.zToASortOption" = "Z 至 A";

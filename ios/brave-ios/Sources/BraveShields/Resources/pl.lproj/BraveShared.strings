@@ -25,6 +25,9 @@
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
 "AntiAdBlockWarningTitle" = "Dostosuj blokowanie reklam dla tej strony";
 
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Automatyczne usuwanie";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agresywnie";
 
@@ -145,8 +148,38 @@
 /* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
 "FilterListURLTextFieldPlaceholder" = "Wprowadź tutaj adres URL listy filtrów";
 
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Usuwa pliki cookie i inne dane strony po jej zamknięciu";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Zapomnij moje dane, gdy zamknę tę stronę";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Ścisłe";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Usuwaj dane";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Nigdy";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Zamknięcie aplikacji";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Zamknięte zakładki strony";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Usuwaj dane strony";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Usunięcie spowoduje zamknięcie wszystkich zakładek otwartych dla tej strony oraz usunięcie wszystkich danych strony. Nie można tego cofnąć.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Usunąć dane strony?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Usuń dane strony teraz";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Strona nie jest bezpieczna";

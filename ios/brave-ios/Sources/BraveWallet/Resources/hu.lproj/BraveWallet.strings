@@ -418,12 +418,6 @@
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Brave Wallet";
 
-/* The navigation title of the screen for users to customize ipfs public gateway address for NFT. */
-"wallet.customizeIPFSNFTPublicGatewayNavTitle" = "Az IPFS-átjáró testreszabása NFT-khez";
-
-/* The navigation title of the screen for users to customize ipfs public gateway address. */
-"wallet.customizeIPFSPublicGatewayNavTitle" = "Az IPFS-átjáró testreszabása";
-
 /* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
 "wallet.customNetworkBlockExplorerUrlsTitle" = "Block explorer URL-ek";
 
@@ -462,6 +456,9 @@
 
 /* The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen. */
 "wallet.customNetworkInvalidAddressErrMsg" = "Érvénytelen cím.";
+
+/* The error message for the input field when users input an unsecure address for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkNotSecureErrMsg" = "Nem biztonságos.";
 
 /* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
 "wallet.customNetworkRpcUrlsTitle" = "RPC URL-ek";
@@ -603,6 +600,9 @@
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
 "wallet.editButtonTitle" = "Szerkesztés";
+
+/* A pop up message that will prompt to user before user confirms to edit the existing network. */
+"wallet.editExistingNetworkAlertMsg" = "Szeretné frissíteni a meglévő hálózatot?";
 
 /* The title of form for users to edit an existed custom network. */
 "wallet.editfCustomNetworkTitle" = "Hálózat szerkesztése";
@@ -907,24 +907,6 @@
 /* The title of a button that Deselects all visible options. */
 "wallet.internalErrorMessage" = "Belső hiba lépett fel";
 
-/* A title will displayed in the IPFS error page when IPFS is disabled. */
-"wallet.ipfsErrorTitle" = "Ez a webhely nem érhető el";
-
-/* The navigation title of the screen for users to customize NFT gateway. */
-"wallet.ipfsPublicGatewayAddressNFTTitle" = "IPFS nyilvános átjáró címe NFT-hez";
-
-/* The navigation title of the screen for users to customize IPFS public gateway. */
-"wallet.ipfsPublicGatewayAddressTitle" = "IPFS nyilvános átjáró címe";
-
-/* The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy. */
-"wallet.ipfsResolveMethodDescription" = "[További tudnivalók](%@) az IPFS-átjárók adatvédelmi szempontjairól.";
-
-/* The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources. */
-"wallet.ipfsResourcesOptionsTitle" = "IPFS-erőforrások feloldása";
-
-/* The header of the section under Web3 settings for IPFS NFT gateway setting. */
-"wallet.ipfsSettingsHeader" = "IPFS";
-
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
 "wallet.learnMoreButton" = "További információ";
 
@@ -1101,9 +1083,6 @@
 
 /* The title of the button that user clicks to add his/her first NFT */
 "wallet.nftEmptyImportNFT" = "NFT importálása";
-
-/* Description of the NFT Gateway setting */
-"wallet.nftGatewayLongDescription" = "Érvényes IPFS-átjárót kell megadni. A megadott átjáró IPFS-erőforrásbetöltési képessége ellenőrizve lesz.";
 
 /* The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs. */
 "wallet.nftHidden" = "Rejtett";
@@ -1440,9 +1419,6 @@
 
 /* One of the context menu option for user to tap to set a default network in wallet settings. */
 "wallet.setDefaultNetwork" = "Beállítás alapértelmezettként";
-
-/* Title of the set IPFS gateway button */
-"wallet.setGatewayButtonTitle" = "Beállít";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Beállítások";
@@ -2110,18 +2086,6 @@
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "A Solana Name Service (SNS) doménneveinek feloldása";
 
-/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Brave article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
-"wallet.web3IPFSInterstitialIPFSPrivacy" = "Az IPFS (InterPlanetary File System) egy társközi adattárolási és -kézbesítési hálózat. Erre a protokollra a HTTP(S)-től eltérő adatvédelmi szempontok vonatkoznak. <a href=%1$@>%2$@</a>";
-
-/* A brief explaination of resolving IPFS scheme url using a public gateway. */
-"wallet.web3IPFSInterstitialIPFSPublicGateway" = "Megvédi az Ön IP-címét és az Ön által kért tartalmat a potenciális külső megfigyelőktől, de nem a nyilvános átjáró üzemeltetőjétől. Az átjáró üzemeltetője felelős azért, hogy az átjárón keresztül Önnek szolgáltatott tartalom megegyezzen az Ön által kért tartalommal. Az Ön eszköze emellett nem járul hozzá a nyilvános IPFS-hálózathoz.";
-
-/* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
-"wallet.web3IPFSInterstitialIPFSTitle" = "Állítsd be IPFS preferenciádat";
-
-/* The title of the button that user will click to let Brave to resolve IPFS shceme url. */
-"wallet.web3IPFSInterstitialProceedButton" = "Nyilvános átjáró használata";
-
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "A weboldalak hozzáférést kérhetnek Ethereum pénztárcájához";
 
@@ -2148,12 +2112,6 @@
 
 /* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "Az Ön által birtokolt NFT-k automatikus hozzáadása a Pénztárcához, harmadik féltől származó API-k segítségével. [További tudnivalók](%@)";
-
-/* Description of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertDescription" = "Érvénytelen URL lett megadva. Az átjárónak képesnek kell lennie az IPFS-erőforrások feloldására.";
-
-/* Title of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertTitle" = "Nem sikerült beállítani az átjárót";
 
 /* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
 "wallet.zToASortOption" = "Z-től A-ig";

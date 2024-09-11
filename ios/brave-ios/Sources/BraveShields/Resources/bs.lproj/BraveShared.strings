@@ -25,6 +25,9 @@
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
 "AntiAdBlockWarningTitle" = "Namještanje postavki blokiranja oglasa za ovo mrežno mjesto";
 
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Automatsko uništavanje";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agresivno";
 
@@ -145,8 +148,38 @@
 /* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
 "FilterListURLTextFieldPlaceholder" = "Ovdje upišite URL popisa filtra";
 
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Kada zatvorite mrežno mjesto, brišu se kolačići i drugi podaci o mrežnom mjestu.";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Zaboravi me kada zatvorim ovu stranicu";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Strogo";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Uništavanje podataka";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Nikad";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Zatvaranje aplikacije";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Kartice mrežne stranice zatvorene";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Uništavanje podataka s mrežne stranice";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Uništavanje će zatvoriti sve kartice otvorene na ovoj mrežnoj stranici i izbrisati sve podatke s mrežne stranice. Ovo se ne može poništiti.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Uništiti podatke s mrežne stranice?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Odmah uništiti podatke s mrežne stranice";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Mrežno mjesto nije sigurno";
