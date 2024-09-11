@@ -77,3 +77,28 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTest, ResourceBlock) {
   EXPECT_TRUE(*info->FindBool("blocked"));
   EXPECT_TRUE(*info->FindBool("didMatchRule"));
 }
+
+IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTest, Exception) {
+  AttachToWebContents(web_contents());
+  SendCommandSync("Network.enable");
+
+  const GURL& url = embedded_test_server()->GetURL("/blocking.html");
+  UpdateAdBlockInstanceWithRules("*ad_banner.png");
+  UpdateCustomAdBlockInstanceWithRules("@@ad_banner.png");
+  NavigateToURL(url);
+
+  ASSERT_EQ(true, EvalJs(web_contents(),
+                         "setExpectations(1, 0, 0, 0);"
+                         "addImage('ad_banner.png')"));
+  const base::Value::Dict& notification =
+      WaitForNotification("Network.requestAdblockInfoReceived", true);
+
+  const auto* info = notification.FindDict("info");
+  ASSERT_TRUE(info);
+  const GURL& image_url = embedded_test_server()->GetURL("/ad_banner.png");
+  EXPECT_EQ(image_url.spec(), *info->FindString("requestUrl"));
+  EXPECT_EQ("Image", *info->FindString("resourceType"));
+  EXPECT_FALSE(*info->FindBool("blocked"));
+  EXPECT_TRUE(*info->FindBool("didMatchRule"));
+  EXPECT_TRUE(*info->FindBool("didMatchException"));
+}
