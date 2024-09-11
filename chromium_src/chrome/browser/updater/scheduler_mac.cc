@@ -13,6 +13,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "brave/browser/mac/keystone_glue.h"
+#include "brave/browser/mac_features.h"
 #include "chrome/browser/updater/browser_updater_client.h"
 #include "chrome/browser/updater/browser_updater_client_util.h"
 #include "chrome/common/chrome_features.h"
@@ -20,7 +21,7 @@
 #include "chrome/updater/util/mac_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-#define DoPeriodicTasks DoPeriodicTasks_Unused
+#define DoPeriodicTasks DoPeriodicTasks_ChromiumImpl
 
 #include "src/chrome/browser/updater/scheduler_mac.cc"
 
@@ -46,34 +47,36 @@ void CheckProcessExit(base::Process process, base::OnceClosure callback) {
 }  // namespace
 
 void DoPeriodicTasks(base::OnceClosure callback) {
-  if (!keystone_glue::KeystoneEnabled()) {
-    return;
-  }
-
-  // The registration framework doesn't provide a mechanism to ask Keystone to
-  // just do its normal routine tasks, so instead launch the agent directly.
-  // The agent can be in one of four places depending on the age and mode of
-  // Keystone.
-  for (UpdaterScope scope : {UpdaterScope::kSystem, UpdaterScope::kUser}) {
-    std::optional<base::FilePath> keystone_path = GetKeystoneFolderPath(scope);
-    if (!keystone_path) {
-      continue;
-    }
-    for (const std::string& folder : {"Helpers", "Resources"}) {
-      base::FilePath agent_path =
-          keystone_path->Append("Contents")
-              .Append(folder)
-              .Append(
-                  "GoogleSoftwareUpdateAgent.app/Contents/MacOS/"
-                  "GoogleSoftwareUpdateAgent");
-      if (base::PathExists(agent_path)) {
-        CheckProcessExit(base::LaunchProcess(base::CommandLine(agent_path), {}),
-                         std::move(callback));
-        return;
+  if (brave::ShouldUseOmaha4()) {
+    DoPeriodicTasks_ChromiumImpl(std::move(callback));
+  } else if (keystone_glue::KeystoneEnabled()) {
+    // The registration framework doesn't provide a mechanism to ask Keystone to
+    // just do its normal routine tasks, so instead launch the agent directly.
+    // The agent can be in one of four places depending on the age and mode of
+    // Keystone.
+    for (UpdaterScope scope : {UpdaterScope::kSystem, UpdaterScope::kUser}) {
+      std::optional<base::FilePath> keystone_path =
+          GetKeystoneFolderPath(scope);
+      if (!keystone_path) {
+        continue;
+      }
+      for (const std::string& folder : {"Helpers", "Resources"}) {
+        base::FilePath agent_path =
+            keystone_path->Append("Contents")
+                .Append(folder)
+                .Append(
+                    "GoogleSoftwareUpdateAgent.app/Contents/MacOS/"
+                    "GoogleSoftwareUpdateAgent");
+        if (base::PathExists(agent_path)) {
+          CheckProcessExit(
+              base::LaunchProcess(base::CommandLine(agent_path), {}),
+              std::move(callback));
+          return;
+        }
       }
     }
+    std::move(callback).Run();
   }
-  std::move(callback).Run();
 }
 
 }  // namespace updater

@@ -11,6 +11,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/version.h"
 #include "brave/browser/mac/keystone_glue.h"
+#include "brave/browser/mac_features.h"
 #include "chrome/browser/updater/browser_updater_client_util.h"
 #include "chrome/common/chrome_features.h"
 #include "components/version_info/version_info.h"
@@ -27,6 +28,14 @@ InstalledAndCriticalVersion GetInstalledVersionSynchronous() {
 
 }  // namespace
 
+#define GetInstalledVersion GetInstalledVersion_ChromiumImpl
+#include "src/chrome/browser/upgrade_detector/get_installed_version_mac.mm"
+#undef GetInstalledVersion
+
 void GetInstalledVersion(InstalledVersionCallback callback) {
-  std::move(callback).Run(GetInstalledVersionSynchronous());
+  if (brave::ShouldUseOmaha4()) {
+    GetInstalledVersion_ChromiumImpl(std::move(callback));
+  } else {
+    std::move(callback).Run(GetInstalledVersionSynchronous());
+  }
 }

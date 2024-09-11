@@ -3,12 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/updater/buildflags.h"
-
-#if BUILDFLAG(BRAVE_ENABLE_UPDATER)
-#include "src/chrome/browser/ui/webui/help/version_updater_mac.mm"
-#else
-
 #include "brave/chromium_src/chrome/browser/ui/webui/help/version_updater_mac.h"
 
 #include <memory>
@@ -20,6 +14,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/mac/keystone_glue.h"
+#include "brave/browser/mac_features.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/obsolete_system/obsolete_system.h"
@@ -32,14 +27,14 @@
 #endif
 
 // KeystoneObserver is a simple notification observer for Keystone status
-// updates. It will be created and managed by VersionUpdaterMac.
+// updates. It will be created and managed by SparkleVersionUpdater.
 @interface KeystoneObserver : NSObject {
  @private
-  raw_ptr<VersionUpdaterMac> versionUpdater_;  // Weak.
+  raw_ptr<SparkleVersionUpdater> versionUpdater_;  // Weak.
 }
 
 // Initialize an observer with an updater. The updater owns this object.
-- (id)initWithUpdater:(VersionUpdaterMac*)updater;
+- (id)initWithUpdater:(SparkleVersionUpdater*)updater;
 
 // Notification callback, called with the status of keystone operations.
 - (void)handleStatusNotification:(NSNotification*)notification;
@@ -48,7 +43,7 @@
 
 @implementation KeystoneObserver
 
-- (id)initWithUpdater:(VersionUpdaterMac*)updater {
+- (id)initWithUpdater:(SparkleVersionUpdater*)updater {
   if ((self = [super init])) {
     versionUpdater_ = updater;
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
@@ -70,20 +65,15 @@
 
 @end  // @implementation KeystoneObserver
 
-std::unique_ptr<VersionUpdater> VersionUpdater::Create(
-    content::WebContents* web_contents) {
-  return base::WrapUnique(new VersionUpdaterMac());
-}
-
-VersionUpdaterMac::VersionUpdaterMac()
+SparkleVersionUpdater::SparkleVersionUpdater()
     : keystone_observer_([[KeystoneObserver alloc] initWithUpdater:this]) {
   show_promote_button_ = false;
 }
 
-VersionUpdaterMac::~VersionUpdaterMac() {}
+SparkleVersionUpdater::~SparkleVersionUpdater() {}
 
-void VersionUpdaterMac::CheckForUpdate(StatusCallback status_callback,
-                                       PromoteCallback promote_callback) {
+void SparkleVersionUpdater::CheckForUpdate(StatusCallback status_callback,
+                                           PromoteCallback promote_callback) {
   status_callback_ = std::move(status_callback);
 
 #if BUILDFLAG(ENABLE_SPARKLE)
@@ -124,11 +114,11 @@ void VersionUpdaterMac::CheckForUpdate(StatusCallback status_callback,
 #endif
 }
 
-void VersionUpdaterMac::PromoteUpdater() {
+void SparkleVersionUpdater::PromoteUpdater() {
   NOTIMPLEMENTED();
 }
 
-void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
+void SparkleVersionUpdater::UpdateStatus(NSDictionary* dictionary) {
   AutoupdateStatus sparkle_status =
       static_cast<AutoupdateStatus>([base::apple::ObjCCastStrict<NSNumber>(
           [dictionary objectForKey:kAutoupdateStatusStatus]) intValue]);
@@ -209,8 +199,19 @@ void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
   }
 }
 
-void VersionUpdaterMac::UpdateShowPromoteButton() {
+void SparkleVersionUpdater::UpdateShowPromoteButton() {
   NOTIMPLEMENTED();
 }
 
-#endif  // BUILDFLAG(BRAVE_ENABLE_UPDATER)
+#define WrapUnique(X)                 \
+  WrapUnique(brave::ShouldUseOmaha4() \
+                 ? X                  \
+                 : static_cast<VersionUpdater*>(new SparkleVersionUpdater()))
+#include "src/chrome/browser/ui/webui/help/version_updater_mac.mm"
+#undef WrapUnique
+
+#if BUILDFLAG(ENABLE_SPARKLE)
+void SparkleVersionUpdater::GetIsSparkleForTesting(bool& result) const {
+  result = true;
+}
+#endif
