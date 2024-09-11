@@ -30,7 +30,6 @@
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/net/http/http_status_code.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -135,7 +134,7 @@ void RefillConfirmationTokens::RequestSignedTokensCallback(
 base::expected<void, std::tuple<std::string, bool>>
 RefillConfirmationTokens::HandleRequestSignedTokensUrlResponse(
     const mojom::UrlResponseInfo& mojom_url_response) {
-  if (mojom_url_response.status_code == net::kHttpUpgradeRequired) {
+  if (mojom_url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
     AdsNotifierManager::GetInstance().NotifyBrowserUpgradeRequiredToServeAds();
 
     return base::unexpected(std::make_tuple(
@@ -209,7 +208,7 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
   CHECK(tokens_);
   CHECK(blinded_tokens_);
 
-  if (mojom_url_response.status_code == net::kHttpUpgradeRequired) {
+  if (mojom_url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
     AdsNotifierManager::GetInstance().NotifyBrowserUpgradeRequiredToServeAds();
 
     return base::unexpected(std::make_tuple(
