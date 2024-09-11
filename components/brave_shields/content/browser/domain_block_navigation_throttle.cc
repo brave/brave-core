@@ -37,7 +37,7 @@
 
 namespace brave_shields {
 
-struct BlockResult {
+struct DomainBlockNavigationThrottle::BlockResult {
   BlockResult() = default;
   BlockResult(const BlockResult&) = default;
   BlockResult(BlockResult&&) = default;
@@ -51,12 +51,12 @@ struct BlockResult {
 }  // namespace brave_shields
 
 namespace {
-brave_shields::BlockResult ShouldBlockDomainOnTaskRunner(
-    brave_shields::AdBlockService* ad_block_service,
-    const GURL& url,
-    bool aggressive_setting) {
+brave_shields::DomainBlockNavigationThrottle::BlockResult
+ShouldBlockDomainOnTaskRunner(brave_shields::AdBlockService* ad_block_service,
+                              const GURL& url,
+                              bool aggressive_setting) {
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.DomainBlock.ShouldBlock");
-  brave_shields::BlockResult block_result;
+  brave_shields::DomainBlockNavigationThrottle::BlockResult block_result;
   // force aggressive blocking to `true` for domain blocking - these requests
   // are all "first-party", but the throttle is already only called when
   // necessary.
@@ -72,7 +72,7 @@ brave_shields::BlockResult ShouldBlockDomainOnTaskRunner(
                              ? std::string(result.rewritten_url.value)
                              : std::string();
 
-  if (block_result.should_block) {
+  if (block_result.should_block || result.has_exception) {
     content::devtools_instrumentation::AdblockInfo info;
     info.request_url = url;
     info.checked_url = url;

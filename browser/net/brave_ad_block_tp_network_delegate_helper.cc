@@ -221,7 +221,11 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
     ctx->blocked_by = kAdBlocked;
   }
 
-  if (ctx->blocked_by == kAdBlocked && ctx->devtools_request_id) {
+  const bool should_report_to_devtools =
+      ctx->devtools_request_id &&
+      (ctx->blocked_by == kAdBlocked || previous_result.did_match_exception);
+
+  if (should_report_to_devtools) {
     content::devtools_instrumentation::AdblockInfo info;
     info.request_url = ctx->request_url;
     info.checked_url = url_to_check;
@@ -383,9 +387,9 @@ int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
                                         std::shared_ptr<BraveRequestInfo> ctx) {
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
-  if (ctx->request_url.is_empty() ||
-      ctx->initiator_url.is_empty() || !ctx->initiator_url.has_host() ||
-      !ctx->allow_brave_shields || ctx->allow_ads ||
+  if (ctx->request_url.is_empty() || ctx->initiator_url.is_empty() ||
+      !ctx->initiator_url.has_host() || !ctx->allow_brave_shields ||
+      ctx->allow_ads ||
       ctx->resource_type == BraveRequestInfo::kInvalidResourceType) {
     return net::OK;
   }
