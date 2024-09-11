@@ -181,21 +181,24 @@ public class FeedDataSource: ObservableObject {
     "ja",
     "de",
     "fr",
+    "it",
   ]
 
   /// A list of known supported locales
   public static let knownSupportedLocales = [
     "en_US",
     "en_CA",
-    "en_UK",
+    "en_GB",
     "en_AU",
     "en_IN",
     "ja_JP",
     "es_ES",
     "es_MX",
+    "es_AR",
     "pt_BR",
     "de_DE",
     "fr_FR",
+    "it_IT",
   ]
 
   private struct NewsBucket {
