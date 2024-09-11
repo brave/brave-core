@@ -1,5 +1,5 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index f6ba7799556ad6626825727071c20e29df4be6af..d96489f1776c3e0772d013805cf60ae5a11543ae 100644
+index 056d40393e7c8fd2f3696a61f886e8b5d6b70b72..6d4534cab184eb3f0afaffa3884cfc8204e95b30 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -565,6 +565,7 @@ static_library("test_support") {
@@ -18,7 +18,7 @@ index f6ba7799556ad6626825727071c20e29df4be6af..d96489f1776c3e0772d013805cf60ae5
        }
      }
  
-@@ -9593,7 +9593,10 @@ test("unit_tests") {
+@@ -9594,7 +9594,10 @@ test("unit_tests") {
        "../browser/enterprise/connectors/analysis/analysis_service_settings_unittest.cc",
        "../browser/enterprise/connectors/connectors_manager_unittest.cc",
      ]
