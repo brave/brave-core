@@ -134,8 +134,9 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                     }
                 });
 
-        mModalDialogManager = new ModalDialogManager(
-                new AppModalPresenter(this), ModalDialogManager.ModalDialogType.APP);
+        mModalDialogManager =
+                new ModalDialogManager(
+                        new AppModalPresenter(this), ModalDialogManager.ModalDialogType.APP);
 
         onInitialLayoutInflationComplete();
     }
@@ -195,8 +196,10 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
     private void addRemoveSecureFlag(final boolean add) {
         if (add) {
-            getWindow().setFlags(
-                    WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+            getWindow()
+                    .setFlags(
+                            WindowManager.LayoutParams.FLAG_SECURE,
+                            WindowManager.LayoutParams.FLAG_SECURE);
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
         }

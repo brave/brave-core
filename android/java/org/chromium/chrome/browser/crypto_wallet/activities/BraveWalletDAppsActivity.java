@@ -40,12 +40,10 @@ import org.chromium.chrome.browser.profiles.ProfileProvider;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Base activity for all DApps-related activities
- */
+/** Base activity for all DApps-related activities */
 public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         implements TransactionConfirmationListener,
-                   AddSwitchChainNetworkFragment.AddSwitchRequestProcessListener {
+                AddSwitchChainNetworkFragment.AddSwitchRequestProcessListener {
     public static final String ACTIVITY_TYPE = "activityType";
     private static final String TAG = "BraveWalletDApps";
     private ApproveTxBottomSheetDialogFragment mApproveTxBottomSheetDialogFragment;
@@ -95,29 +93,38 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
     @Override
     protected void triggerLayoutInflation() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow()
+                .setFlags(
+                        WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_brave_wallet_dapps);
         Intent intent = getIntent();
-        mActivityType = ActivityType.valueOf(
-                intent.getIntExtra("activityType", ActivityType.ADD_ETHEREUM_CHAIN.getValue()));
+        mActivityType =
+                ActivityType.valueOf(
+                        intent.getIntExtra(
+                                "activityType", ActivityType.ADD_ETHEREUM_CHAIN.getValue()));
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-            mWalletModel.getDappsModel().mProcessNextDAppsRequest.observe(this, activityType -> {
-                if (activityType == null) return;
-                switch (activityType) {
-                    case GET_ENCRYPTION_PUBLIC_KEY_REQUEST:
-                    case DECRYPT_REQUEST:
-                        processPendingDappsRequest();
-                        break;
-                    case FINISH:
-                        finish();
-                        break;
-                    default:
-                        break;
-                }
-            });
+            mWalletModel
+                    .getDappsModel()
+                    .mProcessNextDAppsRequest
+                    .observe(
+                            this,
+                            activityType -> {
+                                if (activityType == null) return;
+                                switch (activityType) {
+                                    case GET_ENCRYPTION_PUBLIC_KEY_REQUEST:
+                                    case DECRYPT_REQUEST:
+                                        processPendingDappsRequest();
+                                        break;
+                                    case FINISH:
+                                        finish();
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            });
 
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "triggerLayoutInflation", e);
@@ -153,13 +160,16 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
     @Override
     public void onRejectAllTransactions() {
         for (TransactionInfo transactionInfo : mPendingTxHelper.getPendingTransactions()) {
-            getTxService().rejectTransaction(
-                    TransactionUtils.getCoinFromTxDataUnion(transactionInfo.txDataUnion),
-                    transactionInfo.chainId, transactionInfo.id, success -> {
-                        if (!success) {
-                            Log.e(TAG, "Transaction failed " + transactionInfo.id);
-                        }
-                    });
+            getTxService()
+                    .rejectTransaction(
+                            TransactionUtils.getCoinFromTxDataUnion(transactionInfo.txDataUnion),
+                            transactionInfo.chainId,
+                            transactionInfo.id,
+                            success -> {
+                                if (!success) {
+                                    Log.e(TAG, "Transaction failed " + transactionInfo.id);
+                                }
+                            });
         }
         mPendingTxHelper.destroy();
         finish();

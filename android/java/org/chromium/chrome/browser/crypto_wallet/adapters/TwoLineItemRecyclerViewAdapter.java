@@ -111,8 +111,13 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
             if (ADAPTER_VIEW_ORIENTATION.VERTICAL == mItemViewOrientation
                     && itemDataSourceText.imageType == ImageType.BLOCKIE) {
                 AndroidUtils.show(viewHolder.mIvIconContainer);
-                Utils.setTextGeneratedBlockies(mExecutor, mHandler, viewHolder.mIvIcon,
-                        itemDataSourceText.imgData, true, false);
+                Utils.setTextGeneratedBlockies(
+                        mExecutor,
+                        mHandler,
+                        viewHolder.mIvIcon,
+                        itemDataSourceText.imgData,
+                        true,
+                        false);
             }
             if (itemDataSourceText.updateViewCb != null) {
                 itemDataSourceText.updateViewCb.call(viewHolder.mTvTitle, viewHolder.mTvSubtitle);
@@ -178,11 +183,13 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
             mTvText = itemView.findViewById(R.id.item_fragment_two_line_text);
         }
     }
+
     public interface TwoLineItem {
         int TYPE_TEXT = 1;
         int TYPE_HEADER = 2;
         int TYPE_DIVIDER = 3;
         int TYPE_SINGLE = 4;
+
         int getType();
     }
 
@@ -194,7 +201,9 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
 
         private Callbacks.Callback2<TextView, TextView> updateViewCb;
 
-        public TwoLineItemText(String title, String subTitle,
+        public TwoLineItemText(
+                String title,
+                String subTitle,
                 Callbacks.Callback2<TextView, TextView> customUiChanges) {
             this(title, subTitle);
             this.updateViewCb = customUiChanges;
@@ -246,12 +255,20 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         public TwoLineSingleText() {
             mText = "";
         }
+
         @Override
         public int getType() {
             return TYPE_SINGLE;
         }
     }
 
-    public enum ImageType { NONE, BLOCKIE }
-    public enum ADAPTER_VIEW_ORIENTATION { HORIZONTAL, VERTICAL }
+    public enum ImageType {
+        NONE,
+        BLOCKIE
+    }
+
+    public enum ADAPTER_VIEW_ORIENTATION {
+        HORIZONTAL,
+        VERTICAL
+    }
 }

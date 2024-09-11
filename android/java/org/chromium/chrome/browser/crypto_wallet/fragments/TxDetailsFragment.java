@@ -34,14 +34,17 @@ public class TxDetailsFragment extends Fragment {
 
     private TxDetailsFragment(TransactionInfo txInfo) {
         mTxInfo = txInfo;
-        mTxData1559 = mTxInfo.txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
-                ? mTxInfo.txDataUnion.getEthTxData1559()
-                : null;
+        mTxData1559 =
+                mTxInfo.txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
+                        ? mTxInfo.txDataUnion.getEthTxData1559()
+                        : null;
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_transaction_details, container, false);
 
@@ -52,7 +55,8 @@ public class TxDetailsFragment extends Fragment {
 
     @SuppressLint("ClickableViewAccessibility")
     public void setupView(View view) {
-        if ((mTxInfo.txParams.length == 0 || mTxInfo.txArgs.length == 0) && mTxData1559 != null
+        if ((mTxInfo.txParams.length == 0 || mTxInfo.txArgs.length == 0)
+                && mTxData1559 != null
                 && mTxData1559.baseData.data.length == 0) {
             return;
         }
@@ -60,8 +64,10 @@ public class TxDetailsFragment extends Fragment {
         String functionType = getString(TransactionUtils.getTxType(mTxInfo));
 
         TextView functionTypeWidget = view.findViewById(R.id.function_type);
-        functionTypeWidget.setText(String.format(
-                getResources().getString(R.string.wallet_details_function_type), functionType));
+        functionTypeWidget.setText(
+                String.format(
+                        getResources().getString(R.string.wallet_details_function_type),
+                        functionType));
 
         if (mTxInfo.txParams.length > 0) {
             String detailsParam1 = mTxInfo.txParams[0] + ": " + mTxInfo.txArgs[0];
@@ -84,25 +90,27 @@ public class TxDetailsFragment extends Fragment {
             detailsParam3Widget.setText(detailsParam3);
         }
 
-        if (mTxInfo.txParams.length == 0 && mTxData1559 != null
+        if (mTxInfo.txParams.length == 0
+                && mTxData1559 != null
                 && mTxData1559.baseData.data.length != 0) {
             String detailsParam1 = Utils.numberArrayToHexStr(mTxData1559.baseData.data);
             TextView detailsParam1Widget = view.findViewById(R.id.tx_details_param_1);
             detailsParam1Widget.setVisibility(View.VISIBLE);
             detailsParam1Widget.setText(detailsParam1);
-            detailsParam1Widget.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                @SuppressLint("ClickableViewAccessibility")
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                        case MotionEvent.ACTION_UP:
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                            break;
-                    }
-                    return false;
-                }
-            });
+            detailsParam1Widget.setOnTouchListener(
+                    new View.OnTouchListener() {
+                        @Override
+                        @SuppressLint("ClickableViewAccessibility")
+                        public boolean onTouch(View v, MotionEvent event) {
+                            v.getParent().requestDisallowInterceptTouchEvent(true);
+                            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                                case MotionEvent.ACTION_UP:
+                                    v.getParent().requestDisallowInterceptTouchEvent(false);
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
         }
     }
 }

@@ -35,6 +35,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 public class EncryptionKeyFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "ConnectAccount";
 
@@ -88,8 +89,9 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         assert getArguments() != null;
-        mActivityType = (BraveWalletDAppsActivity.ActivityType) getArguments().getSerializable(
-                ACTIVITY_TYPE);
+        mActivityType =
+                (BraveWalletDAppsActivity.ActivityType)
+                        getArguments().getSerializable(ACTIVITY_TYPE);
         View view = inflater.inflate(R.layout.fragment_encryption_key, container, false);
         mAccountImage = view.findViewById(R.id.fragment_encryption_msg_cv_iv_account);
         mAccountName = view.findViewById(R.id.fragment_encryption_msg_tv_account_name);
@@ -111,17 +113,22 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
 
     private void updateAccount(AccountId accountId) {
         assert (accountId.coin == CoinType.ETH);
-        mWalletModel.getKeyringModel().mAllAccountsInfo.observe(
-                getViewLifecycleOwner(), allAccounts -> {
-                    AccountInfo accountInfo = Utils.findAccount(allAccounts.accounts, accountId);
-                    if (accountInfo != null) {
-                        assert (accountInfo.address != null);
-                        Utils.setBlockiesBitmapResourceFromAccount(
-                                mExecutor, mHandler, mAccountImage, accountInfo, true);
-                        String accountText = accountInfo.name + "\n" + accountInfo.address;
-                        mAccountName.setText(accountText);
-                    }
-                });
+        mWalletModel
+                .getKeyringModel()
+                .mAllAccountsInfo
+                .observe(
+                        getViewLifecycleOwner(),
+                        allAccounts -> {
+                            AccountInfo accountInfo =
+                                    Utils.findAccount(allAccounts.accounts, accountId);
+                            if (accountInfo != null) {
+                                assert (accountInfo.address != null);
+                                Utils.setBlockiesBitmapResourceFromAccount(
+                                        mExecutor, mHandler, mAccountImage, accountInfo, true);
+                                String accountText = accountInfo.name + "\n" + accountInfo.address;
+                                mAccountName.setText(accountText);
+                            }
+                        });
     }
 
     private void initState() {
@@ -129,42 +136,62 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
             return;
         }
 
-        mWalletModel.getCryptoModel().getNetworkModel().mPairChainAndNetwork.observe(
-                getViewLifecycleOwner(), chainIdAndInfosPair -> {
-                    String chainId = chainIdAndInfosPair.first;
-                    List<NetworkInfo> cryptoNetworks = chainIdAndInfosPair.second;
-                    NetworkInfo network = Utils.getNetworkInfoByChainId(chainId, cryptoNetworks);
-                    if (!TextUtils.isEmpty(chainId) && cryptoNetworks.size() > 0) {
-                        mNetworkName.setText(network.chainName);
-                    }
-                });
+        mWalletModel
+                .getCryptoModel()
+                .getNetworkModel()
+                .mPairChainAndNetwork
+                .observe(
+                        getViewLifecycleOwner(),
+                        chainIdAndInfosPair -> {
+                            String chainId = chainIdAndInfosPair.first;
+                            List<NetworkInfo> cryptoNetworks = chainIdAndInfosPair.second;
+                            NetworkInfo network =
+                                    Utils.getNetworkInfoByChainId(chainId, cryptoNetworks);
+                            if (!TextUtils.isEmpty(chainId) && cryptoNetworks.size() > 0) {
+                                mNetworkName.setText(network.chainName);
+                            }
+                        });
 
         if (mActivityType
                 == BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST) {
-            mWalletModel.getCryptoModel().getPublicEncryptionRequest(encryptionPublicKeyRequest -> {
-                if (encryptionPublicKeyRequest != null) {
-                    mEncryptionPublicKeyRequest = encryptionPublicKeyRequest;
-                    updateAccount(mEncryptionPublicKeyRequest.accountId);
-                    String formattedeTLD = String.format(
-                            getString(R.string.brave_wallet_provide_encryption_key_description),
-                            Utils.geteTldHtmlString(encryptionPublicKeyRequest.originInfo));
-                    mTvMessageDesc.setText(AndroidUtils.formatHTML(formattedeTLD));
-                }
-            });
+            mWalletModel
+                    .getCryptoModel()
+                    .getPublicEncryptionRequest(
+                            encryptionPublicKeyRequest -> {
+                                if (encryptionPublicKeyRequest != null) {
+                                    mEncryptionPublicKeyRequest = encryptionPublicKeyRequest;
+                                    updateAccount(mEncryptionPublicKeyRequest.accountId);
+                                    String formattedeTLD =
+                                            String.format(
+                                                    getString(
+                                                            R.string
+                                                                    .brave_wallet_provide_encryption_key_description),
+                                                    Utils.geteTldHtmlString(
+                                                            encryptionPublicKeyRequest.originInfo));
+                                    mTvMessageDesc.setText(AndroidUtils.formatHTML(formattedeTLD));
+                                }
+                            });
         } else if (mActivityType == BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST) {
-            mWalletModel.getCryptoModel().getDecryptMessageRequest(decryptRequest -> {
-                mDecryptRequest = decryptRequest;
-                updateAccount(mDecryptRequest.accountId);
-                mTveTldPlusOne.setVisibility(View.VISIBLE);
-                mTvMessageDecrypt.setVisibility(View.VISIBLE);
-                mTveTldPlusOne.setText(Utils.geteTldSpanned(mDecryptRequest.originInfo));
-                mTvMessage.setText(R.string.brave_wallet_read_encrypted_message_title);
-                mBtProvideAllow.setText(R.string.brave_wallet_read_encrypted_message_button);
-                mTvMessageDecrypt.setOnClickListener(v -> {
-                    mTvMessageDecrypt.setVisibility(View.GONE);
-                    mTvMessageDesc.setText(mDecryptRequest.unsafeMessage);
-                });
-            });
+            mWalletModel
+                    .getCryptoModel()
+                    .getDecryptMessageRequest(
+                            decryptRequest -> {
+                                mDecryptRequest = decryptRequest;
+                                updateAccount(mDecryptRequest.accountId);
+                                mTveTldPlusOne.setVisibility(View.VISIBLE);
+                                mTvMessageDecrypt.setVisibility(View.VISIBLE);
+                                mTveTldPlusOne.setText(
+                                        Utils.geteTldSpanned(mDecryptRequest.originInfo));
+                                mTvMessage.setText(
+                                        R.string.brave_wallet_read_encrypted_message_title);
+                                mBtProvideAllow.setText(
+                                        R.string.brave_wallet_read_encrypted_message_button);
+                                mTvMessageDecrypt.setOnClickListener(
+                                        v -> {
+                                            mTvMessageDecrypt.setVisibility(View.GONE);
+                                            mTvMessageDesc.setText(mDecryptRequest.unsafeMessage);
+                                        });
+                            });
         }
     }
 
@@ -172,11 +199,14 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
     public void onClick(View v) {
         if (mActivityType
                 == BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST) {
-            mWalletModel.getDappsModel().processPublicEncryptionKey(
-                    mEncryptionPublicKeyRequest.requestId, isPositiveActionTriggered(v));
+            mWalletModel
+                    .getDappsModel()
+                    .processPublicEncryptionKey(
+                            mEncryptionPublicKeyRequest.requestId, isPositiveActionTriggered(v));
         } else if (mActivityType == BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST) {
-            mWalletModel.getDappsModel().processDecryptRequest(
-                    mDecryptRequest.requestId, isPositiveActionTriggered(v));
+            mWalletModel
+                    .getDappsModel()
+                    .processDecryptRequest(mDecryptRequest.requestId, isPositiveActionTriggered(v));
         }
     }
 

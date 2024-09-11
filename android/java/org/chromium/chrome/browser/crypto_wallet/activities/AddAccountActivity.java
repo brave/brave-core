@@ -57,8 +57,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     private Spinner mFilecoinNetworkSpinner;
     private static final int FILE_PICKER_REQUEST_CODE = 1;
     private WalletModel mWalletModel;
-    @FilecoinNetworkType
-    private String mSelectedFilecoinNetwork;
+    @FilecoinNetworkType private String mSelectedFilecoinNetwork;
 
     @NonNull
     public static Intent createIntentToAddAccount(
@@ -108,41 +107,46 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
             setupFilecoinNetworkSpinner();
         }
 
-        mAddAccountText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {}
+        mAddAccountText.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void afterTextChanged(Editable s) {}
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                    @Override
+                    public void beforeTextChanged(
+                            CharSequence s, int start, int count, int after) {}
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Disable add button if input is empty.
-                String inputText = s.toString().trim();
-                btnAdd.setEnabled(!TextUtils.isEmpty(inputText));
-            }
-        });
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        // Disable add button if input is empty.
+                        String inputText = s.toString().trim();
+                        btnAdd.setEnabled(!TextUtils.isEmpty(inputText));
+                    }
+                });
 
-        btnAdd.setOnClickListener(v -> {
-            if (mEditedAccountInfo != null) {
-                updateAccountName();
-                return;
-            }
+        btnAdd.setOnClickListener(
+                v -> {
+                    if (mEditedAccountInfo != null) {
+                        updateAccountName();
+                        return;
+                    }
 
-            if (!TextUtils.isEmpty(mPrivateKeyControl.getText().toString())) {
-                importAccount(mCoinForNewAccount);
-            } else {
-                addAccount(mCoinForNewAccount);
-            }
-        });
+                    if (!TextUtils.isEmpty(mPrivateKeyControl.getText().toString())) {
+                        importAccount(mCoinForNewAccount);
+                    } else {
+                        addAccount(mCoinForNewAccount);
+                    }
+                });
 
-        importBtn.setOnClickListener(v -> {
-            Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-            chooseFile.setType("*/*");
-            chooseFile = Intent.createChooser(
-                    chooseFile, getResources().getString(R.string.choose_a_file));
-            startActivityForResult(chooseFile, FILE_PICKER_REQUEST_CODE);
-        });
+        importBtn.setOnClickListener(
+                v -> {
+                    Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+                    chooseFile.setType("*/*");
+                    chooseFile =
+                            Intent.createChooser(
+                                    chooseFile, getResources().getString(R.string.choose_a_file));
+                    startActivityForResult(chooseFile, FILE_PICKER_REQUEST_CODE);
+                });
 
         onInitialLayoutInflationComplete();
     }
@@ -299,25 +303,30 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
         filecoinNetworkArrayAdapter.setDropDownViewResource(
                 android.R.layout.simple_spinner_dropdown_item);
         mFilecoinNetworkSpinner.setAdapter(filecoinNetworkArrayAdapter);
-        mFilecoinNetworkSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case FILECOIN_MAINNET_POSITION:
-                        mSelectedFilecoinNetwork = BraveWalletConstants.FILECOIN_MAINNET;
-                        break;
-                    case FILECOIN_TESTNET_POSITION:
-                        mSelectedFilecoinNetwork = BraveWalletConstants.FILECOIN_TESTNET;
-                        break;
-                    default:
-                        throw new IllegalStateException(String.format(
-                                "No Filecoin network found for position %d.", position));
-                }
-            }
+        mFilecoinNetworkSpinner.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(
+                            AdapterView<?> parent, View view, int position, long id) {
+                        switch (position) {
+                            case FILECOIN_MAINNET_POSITION:
+                                mSelectedFilecoinNetwork = BraveWalletConstants.FILECOIN_MAINNET;
+                                break;
+                            case FILECOIN_TESTNET_POSITION:
+                                mSelectedFilecoinNetwork = BraveWalletConstants.FILECOIN_TESTNET;
+                                break;
+                            default:
+                                throw new IllegalStateException(
+                                        String.format(
+                                                "No Filecoin network found for position %d.",
+                                                position));
+                        }
+                    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) { /* Unused. */
-            }
-        });
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        /* Unused. */
+                    }
+                });
     }
 }

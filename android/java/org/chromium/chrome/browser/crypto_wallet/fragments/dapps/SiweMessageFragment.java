@@ -60,9 +60,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-/**
- * Fragment used by DApps sign in operation
- */
+/** Fragment used by DApps sign in operation */
 public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     private static final String TAG = "SignMessageFragment";
 
@@ -135,32 +133,44 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
 
     private void fillSignMessageInfo(boolean init) {
         if (mDappsModel == null) return;
-        mDappsModel.getPendingSignMessageRequests(requests -> {
-            if (requests == null || requests.length == 0) {
-                Intent intent = new Intent();
-                getActivity().setResult(Activity.RESULT_OK, intent);
-                getActivity().finish();
-                return;
-            }
+        mDappsModel.getPendingSignMessageRequests(
+                requests -> {
+                    if (requests == null || requests.length == 0) {
+                        Intent intent = new Intent();
+                        getActivity().setResult(Activity.RESULT_OK, intent);
+                        getActivity().finish();
+                        return;
+                    }
 
-            mCurrentSignMessageRequest = requests[0];
-            if (mCurrentSignMessageRequest.signData.which() == SignDataUnion.Tag.EthSiweData) {
-                mSiweMessageData = mCurrentSignMessageRequest.signData.getEthSiweData();
-            }
-            if (init) {
-                mBtCancel.setOnClickListener(v -> { notifySignMessageRequestProcessed(false); });
-                mBtSign.setOnClickListener(v -> { notifySignMessageRequestProcessed(true); });
-            }
-            if (mCurrentSignMessageRequest.originInfo != null
-                    && URLUtil.isValidUrl(mCurrentSignMessageRequest.originInfo.originSpec)) {
-                mTvOrigin.setText(mCurrentSignMessageRequest.originInfo.eTldPlusOne);
-                mTvUrl.setText(Utils.geteTldSpanned(mCurrentSignMessageRequest.originInfo));
-            }
-            updateDetails(mCurrentSignMessageRequest.chainId, mCurrentSignMessageRequest.accountId);
-            updateNetwork(mCurrentSignMessageRequest.chainId);
-            updateFavIcon(mCurrentSignMessageRequest.originInfo,
-                    mCurrentSignMessageRequest.accountId.address);
-        });
+                    mCurrentSignMessageRequest = requests[0];
+                    if (mCurrentSignMessageRequest.signData.which()
+                            == SignDataUnion.Tag.EthSiweData) {
+                        mSiweMessageData = mCurrentSignMessageRequest.signData.getEthSiweData();
+                    }
+                    if (init) {
+                        mBtCancel.setOnClickListener(
+                                v -> {
+                                    notifySignMessageRequestProcessed(false);
+                                });
+                        mBtSign.setOnClickListener(
+                                v -> {
+                                    notifySignMessageRequestProcessed(true);
+                                });
+                    }
+                    if (mCurrentSignMessageRequest.originInfo != null
+                            && URLUtil.isValidUrl(
+                                    mCurrentSignMessageRequest.originInfo.originSpec)) {
+                        mTvOrigin.setText(mCurrentSignMessageRequest.originInfo.eTldPlusOne);
+                        mTvUrl.setText(Utils.geteTldSpanned(mCurrentSignMessageRequest.originInfo));
+                    }
+                    updateDetails(
+                            mCurrentSignMessageRequest.chainId,
+                            mCurrentSignMessageRequest.accountId);
+                    updateNetwork(mCurrentSignMessageRequest.chainId);
+                    updateFavIcon(
+                            mCurrentSignMessageRequest.originInfo,
+                            mCurrentSignMessageRequest.accountId.address);
+                });
     }
 
     private void updateDetails(String chainId, AccountId accountId) {
@@ -186,15 +196,23 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
             String separator = System.getProperty(WalletConstants.LINE_SEPARATOR);
             SpannableStringBuilder builder = new SpannableStringBuilder();
             builder.append(separator);
-            builder.append(getString(R.string.brave_wallet_sign_in_with_brave_wallet_message,
-                    mCurrentSignMessageRequest.originInfo.eTldPlusOne));
+            builder.append(
+                    getString(
+                            R.string.brave_wallet_sign_in_with_brave_wallet_message,
+                            mCurrentSignMessageRequest.originInfo.eTldPlusOne));
             builder.append(separator);
-            builder.append(AndroidUtils.createClickableSpanString(requireContext(),
-                    R.string.brave_wallet_see_details, (view) -> { showSiweDetails(); }));
-            details.updateViewCb = textView -> {
-                textView.setMovementMethod(LinkMovementMethod.getInstance());
-                textView.setText(builder);
-            };
+            builder.append(
+                    AndroidUtils.createClickableSpanString(
+                            requireContext(),
+                            R.string.brave_wallet_see_details,
+                            (view) -> {
+                                showSiweDetails();
+                            }));
+            details.updateViewCb =
+                    textView -> {
+                        textView.setMovementMethod(LinkMovementMethod.getInstance());
+                        textView.setText(builder);
+                    };
             items.add(details);
             items.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
         }
@@ -229,7 +247,9 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     private void updateFavIcon(OriginInfo originInfo, String accountAddress) {
         if (originInfo == null || !URLUtil.isValidUrl(originInfo.originSpec)) return;
         ImageLoader.fetchFavIcon(
-                originInfo.originSpec, new WeakReference<>(getContext()), bitmap -> {
+                originInfo.originSpec,
+                new WeakReference<>(getContext()),
+                bitmap -> {
                     if (bitmap != null) {
                         mIvFav.setImageBitmap(bitmap);
                     } else if (accountAddress != null) {
@@ -246,8 +266,15 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
         String logo = Utils.getNetworkIconName(network.chainId, network.coin);
         if (TextUtils.isEmpty(logo)) return;
-        Utils.setBitmapResource(mExecutor, mHandler, requireContext(),
-                "file://" + tokensPath + "/" + logo, Integer.MIN_VALUE, mIvFavNetwork, null, true);
+        Utils.setBitmapResource(
+                mExecutor,
+                mHandler,
+                requireContext(),
+                "file://" + tokensPath + "/" + logo,
+                Integer.MIN_VALUE,
+                mIvFavNetwork,
+                null,
+                true);
         AndroidUtils.show(mIvFavNetworkContainer);
         mNetworkName.setText(network.chainName);
     }
@@ -273,8 +300,10 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         fragment.show(getParentFragmentManager(), TAG);
     }
 
-    private void addDetail(List<TwoLineItemRecyclerViewAdapter.TwoLineItem> allDetails,
-            @StringRes int id, String value) {
+    private void addDetail(
+            List<TwoLineItemRecyclerViewAdapter.TwoLineItem> allDetails,
+            @StringRes int id,
+            String value) {
         if (TextUtils.isEmpty(value)) return;
         allDetails.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(getString(id), value));
         allDetails.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());

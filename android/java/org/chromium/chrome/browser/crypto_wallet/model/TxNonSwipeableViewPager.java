@@ -1,10 +1,7 @@
-/**
- * Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.chromium.chrome.browser.crypto_wallet.model;
 
 import android.annotation.SuppressLint;
@@ -60,7 +57,8 @@ public class TxNonSwipeableViewPager extends ViewPager {
         View firstChild = getChildAt(0);
         if (firstChild != null) {
             firstChild.measure(widthMeasureSpec, heightMeasureSpec);
-            super.onMeasure(widthMeasureSpec,
+            super.onMeasure(
+                    widthMeasureSpec,
                     MeasureSpec.makeMeasureSpec(
                             firstChild.getMeasuredHeight(), MeasureSpec.EXACTLY));
             return;

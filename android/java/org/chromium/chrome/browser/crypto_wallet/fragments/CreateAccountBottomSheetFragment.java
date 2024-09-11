@@ -45,7 +45,9 @@ public class CreateAccountBottomSheetFragment extends BottomSheetDialogFragment
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_create_account, container, false);
         return rootView;
@@ -73,8 +75,9 @@ public class CreateAccountBottomSheetFragment extends BottomSheetDialogFragment
 
     @Override
     public void onAccountClick(CryptoAccountTypeInfo cryptoAccountTypeInfo) {
-        Intent intent = AddAccountActivity.createIntentToAddAccount(
-                getContext(), cryptoAccountTypeInfo.getCoinType());
+        Intent intent =
+                AddAccountActivity.createIntentToAddAccount(
+                        getContext(), cryptoAccountTypeInfo.getCoinType());
         startActivity(intent);
         dismiss();
     }

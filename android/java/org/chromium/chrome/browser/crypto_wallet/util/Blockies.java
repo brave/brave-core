@@ -49,8 +49,10 @@ public class Blockies {
         String color = createColor();
         createColor(); // skip dark color
         String spotColor = createColor(); // use 3rd vibrant color
-        GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
-                new int[] {Color.parseColor(spotColor), Color.parseColor(color)});
+        GradientDrawable gd =
+                new GradientDrawable(
+                        GradientDrawable.Orientation.TOP_BOTTOM,
+                        new int[] {Color.parseColor(spotColor), Color.parseColor(color)});
         gd.setCornerRadius(0f);
         return gd;
     }
@@ -230,9 +232,14 @@ public class Blockies {
             canvas.drawCircle(
                     bitmap.getWidth() / 2f, bitmap.getHeight() / 2f, bitmap.getWidth() / 2f, paint);
         } else {
-            canvas.drawRoundRect(0, 0, bitmap.getWidth(), bitmap.getHeight(),
+            canvas.drawRoundRect(
+                    0,
+                    0,
+                    bitmap.getWidth(),
+                    bitmap.getHeight(),
                     WalletConstants.RECT_SHARP_ROUNDED_CORNERS_DP,
-                    WalletConstants.RECT_SHARP_ROUNDED_CORNERS_DP, paint);
+                    WalletConstants.RECT_SHARP_ROUNDED_CORNERS_DP,
+                    paint);
         }
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(bitmap, rect, rect, paint);
