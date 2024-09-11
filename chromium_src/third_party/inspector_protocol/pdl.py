@@ -73,7 +73,7 @@ def _merge_events(extended_domain, protocol_domain):
             protocol_events.append(extended_event)
             continue
         # Please add new PDL merging capabilities if you need to.
-        raise RuntimeError("Unsupported command merge: ", extended_event)
+        raise RuntimeError("Unsupported event merge: ", extended_event)
 
 
 def _merge_protocol(protocol, file_name):

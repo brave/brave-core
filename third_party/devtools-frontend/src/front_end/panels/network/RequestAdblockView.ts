@@ -32,12 +32,10 @@ export class RequestAdblockView extends LegacyWrapper.LegacyWrapper.WrappableCom
         render(html``, this.#shadow, { host: this });
       } else {
         const adblockInfo = this.#manager.dispatcher.adblockInfoForId(this.#request.requestId());
-        // clang-format off
         render(html`
               ${Object.entries(adblockInfo ? adblockInfo : {}).map(([key, value]) => {
           return this.#renderRow(key, `${value}`)
         })}`, this.#shadow, { host: this });
-        // clang-format on
       }
     });
   }

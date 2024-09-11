@@ -24,6 +24,7 @@ struct CONTENT_EXPORT AdblockInfo {
   ~AdblockInfo();
   AdblockInfo(const AdblockInfo&);
   AdblockInfo(AdblockInfo&&);
+  AdblockInfo& operator=(const AdblockInfo&);
   AdblockInfo& operator=(AdblockInfo&&);
 
   // Check context

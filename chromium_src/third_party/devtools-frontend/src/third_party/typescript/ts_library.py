@@ -11,12 +11,15 @@ import os
 import override_utils
 
 
-def remove_copied_source(sources):
+def remove_copied_sources(sources):
     for source in sources:
         if os.path.exists(source):
             os.remove(source)
 
 
+# Here we put our files in the devtools source directory due to the limitations
+# of 'rootDir' in the configuration files. After the build, the copied files
+# are deleted from the chrome directories.
 @override_utils.override_method(argparse.ArgumentParser)
 def parse_args(_self, original_method, *args, **kwargs):
     opts = original_method(_self, *args, **kwargs)
@@ -35,6 +38,6 @@ def parse_args(_self, original_method, *args, **kwargs):
     opts.sources = sources
 
     if copied_sources:
-        atexit.register(remove_copied_source, copied_sources)
+        atexit.register(remove_copied_sources, copied_sources)
 
     return opts

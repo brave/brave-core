@@ -1,15 +1,12 @@
 diff --git a/third_party/typescript/typescript.gni b/third_party/typescript/typescript.gni
-index 8c3044885a828e428b9502d1ee5a8917261b9990..f5d888297a40179307ca4ae8a4c11c28d470b314 100644
+index 8c3044885a828e428b9502d1ee5a8917261b9990..c041b4f0f90f8ffe44ebe6e8a52c2f2361bdc324 100644
 --- a/third_party/typescript/typescript.gni
 +++ b/third_party/typescript/typescript.gni
-@@ -198,6 +198,10 @@ template("ts_library") {
+@@ -198,6 +198,7 @@ template("ts_library") {
  
        foreach(src, sources) {
          _extension = get_path_info(src, "extension")
-+        _brave_src = string_replace(src, "//brave", "")
-+        if (src != _brave_src) {
-+          src = get_path_info(src, "name")
-+        }
++        if (string_replace(src, "//brave", "") != src) { src = get_path_info(src, "name") }
          _relative_file_name = rebase_path(src, _rootdir)
          _fileName = get_path_info(_relative_file_name, "dir") + "/" +
                      get_path_info(_relative_file_name, "name")

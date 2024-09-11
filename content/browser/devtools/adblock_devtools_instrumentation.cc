@@ -14,17 +14,12 @@
 #include "content/browser/renderer_host/navigation_request.h"
 #include "content/public/browser/browser_thread.h"
 
-namespace content::devtools_instrumentation {
+namespace {
 
-AdblockInfo::AdblockInfo() = default;
-AdblockInfo::~AdblockInfo() = default;
-AdblockInfo::AdblockInfo(const AdblockInfo&) = default;
-AdblockInfo::AdblockInfo(AdblockInfo&&) = default;
-AdblockInfo& AdblockInfo::operator=(AdblockInfo&&) = default;
-
-void SendAdblockInfoInternal(int frame_tree_node_id,
-                             const std::string& request_id,
-                             const AdblockInfo& info) {
+void SendAdblockInfoInternal(
+    int frame_tree_node_id,
+    const std::string& request_id,
+    const content::devtools_instrumentation::AdblockInfo& info) {
   if (!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI)) {
     content::GetUIThreadTaskRunner()->PostTask(
         FROM_HERE, base::BindOnce(&SendAdblockInfoInternal, frame_tree_node_id,
@@ -33,26 +28,27 @@ void SendAdblockInfoInternal(int frame_tree_node_id,
   }
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  FrameTreeNode* frame_tree_node =
-      FrameTreeNode::GloballyFindByID(frame_tree_node_id);
+  content::FrameTreeNode* frame_tree_node =
+      content::FrameTreeNode::GloballyFindByID(frame_tree_node_id);
 
   if (!frame_tree_node) {
     return;
   }
-  DevToolsAgentHostImpl* agent_host =
-      RenderFrameDevToolsAgentHost::GetFor(frame_tree_node);
+  content::DevToolsAgentHostImpl* agent_host =
+      content::RenderFrameDevToolsAgentHost::GetFor(frame_tree_node);
   if (!agent_host) {
     return;
   }
 
   auto adblock_info =
-      protocol::Network::AdblockInfo::Create()
+      content::protocol::Network::AdblockInfo::Create()
           .SetRequestUrl(info.request_url.spec())
           .SetCheckedUrl(info.checked_url.spec())
           .SetSourceHost(info.source_host)
           .SetAggressive(info.aggressive)
-          .SetResourceType(protocol::NetworkHandler::ResourceTypeToString(
-              info.resource_type.value()))
+          .SetResourceType(
+              content::protocol::NetworkHandler::ResourceTypeToString(
+                  info.resource_type.value()))
           .SetBlocked(info.blocked)
           .SetDidMatchImportantRule(info.did_match_important_rule)
           .SetDidMatchRule(info.did_match_rule)
@@ -64,10 +60,22 @@ void SendAdblockInfoInternal(int frame_tree_node_id,
     adblock_info->SetRewrittenUrl(info.rewritten_url.value());
   }
 
-  for (auto* handler : protocol::NetworkHandler::ForAgentHost(agent_host)) {
+  for (auto* handler :
+       content::protocol::NetworkHandler::ForAgentHost(agent_host)) {
     handler->RequestAdblockInfoReceived(request_id, std::move(adblock_info));
   }
 }
+
+}  // namespace
+
+namespace content::devtools_instrumentation {
+
+AdblockInfo::AdblockInfo() = default;
+AdblockInfo::~AdblockInfo() = default;
+AdblockInfo::AdblockInfo(const AdblockInfo&) = default;
+AdblockInfo::AdblockInfo(AdblockInfo&&) = default;
+AdblockInfo& AdblockInfo::operator=(const AdblockInfo&) = default;
+AdblockInfo& AdblockInfo::operator=(AdblockInfo&&) = default;
 
 void SendAdblockInfo(int frame_tree_node_id,
                      const std::string& request_id,

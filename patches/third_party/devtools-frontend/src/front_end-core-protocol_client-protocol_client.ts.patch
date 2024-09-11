@@ -1,10 +1,9 @@
 diff --git a/front_end/core/protocol_client/protocol_client.ts b/front_end/core/protocol_client/protocol_client.ts
-index 6cc8a12337304550a27f467ca2ffc67fe7eeb057..578914aac1bf16ca77bdd65dd43bf55639669d16 100644
+index 6cc8a12337304550a27f467ca2ffc67fe7eeb057..81e05472eae66b3d78acf0cfcd8010e99572f0c3 100644
 --- a/front_end/core/protocol_client/protocol_client.ts
 +++ b/front_end/core/protocol_client/protocol_client.ts
-@@ -18,3 +18,5 @@ self.Protocol = self.Protocol || {};
+@@ -18,3 +18,4 @@ self.Protocol = self.Protocol || {};
  
  // FIXME: This instance of InspectorBackend should not be a side effect of importing this module.
  InspectorBackendCommands.registerCommands(InspectorBackend.inspectorBackend);
 +InspectorBackend.inspectorBackend.registerEvent("Network.requestAdblockInfoReceived" as InspectorBackend.QualifiedName, ["requestId", "info"]);
-+
