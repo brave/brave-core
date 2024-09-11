@@ -278,7 +278,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 
 TEST(FeatureDefaultsTest, EnabledFeatures) {
   const base::Feature* enabled_features[] = {
-      &autofill::features::kAutofillDisableShadowHeuristics,
       &blink::features::kPrefetchPrivacyChanges,
       &blink::features::kReducedReferrerGranularity,
       &blink::features::kReduceUserAgentMinorVersion,
