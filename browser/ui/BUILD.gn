@@ -1238,6 +1238,7 @@ source_set("ui") {
       "//brave/browser/ui/webui/brave_wallet/common_handler",
       "//brave/components/brave_news/browser",
       "//brave/components/brave_news/browser/resources:generated_resources",
+      "//brave/components/brave_rewards/common/mojom",
       "//brave/components/brave_wallet/browser:permission_utils",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",
