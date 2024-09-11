@@ -4,12 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useLocation, useHistory } from 'react-router-dom'
+import NavigationMenu from '@brave/leo/react/navigationMenu'
+import NavigationItem from '@brave/leo/react/navigationItem'
 
-// Selectors
-import { UISelectors } from '../../../common/selectors'
-
-// Hooks
-import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+// Utils
+import { getLocale } from '../../../../common/locale'
 
 // Options
 import {
@@ -26,15 +26,19 @@ import {
   Wrapper,
   Section,
   PageOptionsWrapper,
-  PanelOptionsWrapper
+  PanelOptionsWrapper,
+  LeoNavigation,
+  WalletLogo
 } from './wallet-nav.style'
+import { Row, VerticalDivider } from '../../shared/style'
 
 export const WalletNav = () => {
-  // redux
-  const isPanel = useSafeUISelector(UISelectors.isPanel)
+  // routing
+  const history = useHistory()
+  const { pathname: walletLocation } = useLocation()
 
   return (
-    <Wrapper isPanel={isPanel}>
+    <Wrapper>
       <PanelOptionsWrapper>
         <Section>
           {PanelNavOptions.map((option) => (
@@ -47,22 +51,40 @@ export const WalletNav = () => {
       </PanelOptionsWrapper>
 
       <PageOptionsWrapper>
-        <Section showBorder={true}>
-          {NavOptions.map((option) => (
-            <WalletNavButton
-              option={option}
-              key={option.id}
-            />
-          ))}
-        </Section>
-        <Section>
-          {BuySendSwapDepositOptions.map((option) => (
-            <WalletNavButton
-              option={option}
-              key={option.id}
-            />
-          ))}
-        </Section>
+        <LeoNavigation>
+          <Row
+            justifyContent='flex-start'
+            padding='32px 0px 16px 24px'
+            slot='header'
+          >
+            <WalletLogo />
+          </Row>
+          <NavigationMenu>
+            {NavOptions.map((option) => (
+              <NavigationItem
+                key={option.id}
+                icon={option.icon}
+                isCurrent={walletLocation.includes(option.route)}
+                onClick={() => history.push(option.route)}
+              >
+                {getLocale(option.name)}
+              </NavigationItem>
+            ))}
+            <Row>
+              <VerticalDivider />
+            </Row>
+            {BuySendSwapDepositOptions.map((option) => (
+              <NavigationItem
+                key={option.id}
+                icon={option.icon}
+                isCurrent={walletLocation.includes(option.route)}
+                onClick={() => history.push(option.route)}
+              >
+                {getLocale(option.name)}
+              </NavigationItem>
+            ))}
+          </NavigationMenu>
+        </LeoNavigation>
       </PageOptionsWrapper>
     </Wrapper>
   )

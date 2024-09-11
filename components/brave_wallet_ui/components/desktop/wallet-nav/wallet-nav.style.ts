@@ -5,41 +5,30 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
+import Navigation from '@brave/leo/react/navigation'
+
+// Assets
+import WalletLogoLight from '../../../assets/svg-icons/wallet_logo_light.svg'
+import WalletLogoDark from '../../../assets/svg-icons/wallet_logo_dark.svg'
+
+// Shared Styles
 import {
   layoutSmallWidth,
-  layoutTopPosition,
-  maxCardWidth,
-  navWidth,
-  navSpace
+  navWidth
 } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
-export const Wrapper = styled.div<{
-  isPanel: boolean
-}>`
+export const Wrapper = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   flex-direction: column;
-  background-color: ${leo.color.container.background};
-  border-radius: 16px;
   position: absolute;
-  top: ${layoutTopPosition}px;
-  /*
-    (100vw / 2) - (${navWidth}px / 2) makes the nav perfectly centered
-    horizontally in the browser window.
-
-    - (${maxCardWidth}px / 2) - (${navSpace}px / 2) is to then adjust the
-    nav to the left to be centered with the layout card body.
-  */
-  left: calc(
-    (100vw / 2) - (${navWidth}px / 2) - (${maxCardWidth}px / 2) -
-      (${navSpace}px / 2)
-  );
-  overflow: visible;
+  background-color: ${leo.color.container.background};
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
   z-index: 10;
   width: ${navWidth}px;
-  padding: 12px 0px;
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
   @media screen and (max-width: ${layoutSmallWidth}px) {
     flex-direction: row;
     top: unset;
@@ -48,9 +37,10 @@ export const Wrapper = styled.div<{
     bottom: 0px;
     border: none;
     padding: 8px 0px;
-    border-radius: 0px;
     box-shadow: 0px -8px 16px rgba(0, 0, 0, 0.04);
     width: unset;
+    align-items: center;
+    justify-content: center;
   }
 `
 
@@ -87,4 +77,18 @@ export const PanelOptionsWrapper = styled.div`
   @media screen and (max-width: ${layoutSmallWidth}px) {
     display: flex;
   }
+`
+
+export const WalletLogo = styled.div`
+  height: 28px;
+  width: 87.65px;
+  background-image: url(${WalletLogoLight});
+  background-size: cover;
+  @media (prefers-color-scheme: dark) {
+    background-image: url(${WalletLogoDark});
+  }
+`
+
+export const LeoNavigation = styled(Navigation)`
+  width: 100%;
 `
