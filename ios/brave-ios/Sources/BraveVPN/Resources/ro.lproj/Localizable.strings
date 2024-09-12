@@ -1,0 +1,301 @@
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "activează";
+
+/* Text for toggle which indicating the toggle action is for selecting region in automatic */
+"vpn.automaticServerSelectionToggleTitle" = "Automat";
+
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "Cumpără";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxDevicesProtect" = "Protejează până la 5 dispozitive";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoLocation" = "Alege zona geografică/țara";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "Nu îți înregistrăm activitatea";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectYourDevices" = "Protejează întregul tău dispozitiv";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSaferWifi" = "Siguranță sporită pentru rețele Wi-Fi de domiciliu și publice";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSpeedFast" = "Super viteze de până la 100 Mbps";
+
+/* Text showing the vpn region is connected */
+"vpn.connectedRegionDescription" = "Conectat";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "Chitanță AppStore";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "Versiunea aplicației";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "Operator de telefonie mobilă";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "Brave nu te urmărește și nici nu știe cum utilizezi aplicația așa că nu știm cum ai configurat VPN-ul. Te rog să ne comunici informații despre problema cu care te confrunți și vom face tot posibilul să o rezolvăm cât mai curând posibil.";
+
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "Nu poate fi trimis e-mailul. Te rog să verifici configurația de e-mail.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "Te rog să selectezi informațiile pe care te simți confortabil să le împărtășești cu noi.\n\nCu cât mai multe informații pe care le împărtășești cu noi, cu atât va fi mai ușor pentru personalul nostru de asistență să te ajute să îți rezolvi problema.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "Asistență oferită cu ajutorul echipei Guardian.";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "Nume gazdă VPN";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "Problema";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "Problemă de stabilitate a conexiunii";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Te rog să alegi categoria care descrie problema.";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "Fără internet în momentul conectării";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "Altceva";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "Nu este posibilă conectarea la VPN (altă eroare)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "Viteză mică";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "Site-ul nu funcționează";
+
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "Log-uri erori";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "Tip de rețea";
+
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Platformă";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "Continuă spre e-mail";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "Tipul abonamentului";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "Fus orar iOS";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Problemă Firewall + VPN Brave";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "Activează";
+
+/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
+"vpn.freeTrialDetail" = "Toate planurile includ o %@!";
+
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "perioadă de încercare gratuită de 7 zile";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "Încearcă gratuit 7 zile";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "Toate abonamentele sunt reînnoite automat însă pot fi anulate înainte de reînnoire.";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "Acest profil permite ca VPN-ul să se conecteze automat și să securizeze traficul pe dispozitiv în permanență. Această conexiune VPN va fi criptată și rout-ata prin intermediul Firewall-ului inteligent Brave pentru a bloca conexiuni potențial dăunătoare și invazive.";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "Instalează profilul VPN";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Brave va instala un profil VPN.";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "VPN-ul este activat";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "Instalează VPN-ul";
+
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "Încearcă GRATUIT";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "Se reînnoiește lunar";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "Abonament Lunar";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "Expirat";
+
+/* Description of vpn tunnel protocol
+   The alert title showing vpn region is changed */
+"vpn.protocolPickerDescription" = "Te rog să selectezi protocolul de transport preferat. Odată schimbat, credențialele existente VPN vor fi resetate și vei fi reconectat dacă o conexiune VPN este deja stabilită.";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "Nu s-a reușit schimbarea protocolului de tunel, te rog să incerci din nou mai târziu.";
+
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Eroare de server";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "Protocol de transport";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "Protocolul de tunel VPN s-a schimbat.";
+
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "Regiunea server cea mai apropiată de tine va fi selectată automat, în funcție de fusul orar al sistemului tău. Acest lucru este recomandat pentru a asigura viteze de internet rapide.";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Nu s-a reușit schimbarea serverelor, te rog să încerci din nou mai târziu.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Eroare de server";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Regiune server";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "Regiune VPN schimbată.";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "Nu se poate reseta configurația VPN. Te rog să încerci din nou. Dacă problema persistă, contactează serviciul de asistență.";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "Încearcă din nou";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "Resetare eșuată";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "Configurația VPN a fost resetată cu succes.";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "Resetare reușită";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "Restabilește";
+
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "Fă upgrade către un VPN pentru a proteja conexiunea și a bloca sistemele invazive de urmărire oriunde te-ai afla.";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "Contactează asistența tehnică";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Nu s-a reușit recuperarea listei de servere, te rog să încerci din nou mai târziu.";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "Asistență VPN";
+
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Asociază achiziția la contul tău Brave";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Conectează achiziția AppStore la contul tău Brave pentru a putea utiliza Brave VPN și pe alte dispozitive.";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "Gestionează abonamentul";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "Utilizează un cod de ofertă";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "Resetează configurația";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "Gazdă";
+
+/* Table cell title for vpn's server location and which open opens location select */
+"vpn.settingsServerLocation" = "Locație";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "Server";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "Expiră";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "Abonament";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "Stare";
+
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "Protocol de transport";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Actualizare metodă de plată";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "Chiar și în fundal, Brave va continua să te protejeze.";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Firewall + VPN Brave este ON";
+
+/* Text for title of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalTitle" = "Optim";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "A apărut o problemă la inițializarea VPN-ului. Te rog să încerci din nou sau să încerci să resetezi configurația în pagina de setări a VPN-ului.";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "Eroare";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Pentru a funcționa, Firewall + VPN Brave necesită instalarea unui profil VPN pe dispozitiv. ";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "Permisiune refuzată";
+
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "Nu s-a putut valida codul de ofertă. Te rog să încerci din nou sau verifică detaliile codului de ofertă și încearcă din nou.";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "Nu s-a putut finaliza achiziția. Te rog să încerci din nou sau să verifici detaliile de plată în Apple și apoi să încerci din nou.";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "Eroare";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "Abonamentele vor fi plătite prin intermediul contului tău iTunes.\n\nOrice porțiune neutilizată din perioada de încercare gratuită, dacă este oferită, este pierdută atunci când cumperi un abonament.\n\nAbonamentul tău se va reînnoi automat în caz că nu este anulat cu cel puțin 24 de ore înainte de sfârșitul perioadei curente.\n\nPoți gestiona abonamentele în Setări.\n\nFolosind Brave, ești de acord cu Termenii de Utilizare și Politica de Confidențialitate.";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "Folosește un cod de ofertă";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "Acest lucru va reseta configurația Brave Firewall + VPN și va corecta eventualele erori. Procesul poate dura un minut.";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "Resetare configurație";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "Resetează";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "Abonament lunar";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "Abonament anual";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "Reînnoind anual economisești %@";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+"vpn.yearlySubDisclaimer" = "Cea mai bună valoare";
+
+/* One year lenght vpn subcription */
+"vpn.yearlySubTitle" = "Un an";
+

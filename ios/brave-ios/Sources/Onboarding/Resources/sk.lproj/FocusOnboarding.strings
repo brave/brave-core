@@ -32,7 +32,7 @@
 "focusOnboarding.p3aToggleDescription" = "Túto možnosť môžete kedykoľvek zmeniť v nastaveniach prehliadača Brave v časti „Štíty a ochrana osobných údajov“.";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "Zdieľajte úplne súkromné a anonymné informácie o produktoch.";
+"focusOnboarding.p3aToggleTitle" = "Zdieľajte súkromné a anonymné informácie o produkte.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Začať prehľadávanie";

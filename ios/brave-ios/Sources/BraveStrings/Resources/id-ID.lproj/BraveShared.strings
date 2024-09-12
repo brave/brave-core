@@ -158,7 +158,7 @@
 "BraveRewardsTitle" = "Imbalan Brave";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Pencarian Brave tidak melacak Anda, pertanyaan Anda, atau klik Anda.";
+"braveSearchPromotion.bannerDescription" = "Pencarian Brave tidak membuat profil Anda.";
 
 /* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Mungkin nanti";
@@ -272,7 +272,7 @@
 "callout.p3aCalloutTitle" = "Bantulah membuat Brave lebih baik.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Bagikan Pandangan Produk Paling Rahasia dan Anonim.";
+"callout.p3aCalloutToggleTitle" = "Bagikan Wawasan Produk Secara Privat & Anonim.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Dapatkan privasi Brave pada komputer atau tablet Anda, dan sinkronisasikan markah & ekstensi antar perangkat.";
@@ -1428,6 +1428,9 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageUnknownStatusWarning" = "Koneksi Anda ke situs ini tidak dapat sepenuhnya terverifikasi. Anda dapat melanjutkan, atau cobalah memuat ulang halaman untuk mendapatkan koneksi yang aman.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "Masuk ke situs web";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Lihat Sertifikat";
@@ -3526,9 +3529,6 @@
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave tidak menyimpan atau membagikan pencarian suara Anda.";
 
-/* The button text that starts the subscription action */
-"vpn.activateSubscriptionAction" = "aktifkan";
-
 /* Pop up extra description for billing issue of subcription VPN about to expire */
 "vpn.autoReneSoonExpirePopOverSubDescription" = "Ingin tetap terlindungi? Perbarui saja sebelum langganan Anda berakhir. Sebagai tanda terima kasih telah memperbarui, kami bahkan memberi potongan 20% untuk 3 bulan ke depan.";
 
@@ -3547,146 +3547,14 @@
 /* Pop up title for VPN subscription is about expire */
 "vpn.autoRenewSoonExpireTitle" = "Oh tidak! Langganan VPN Brave Anda sebentar lagi berakhir.";
 
-/* Button text to buy Brave VPN */
-"vpn.buyButton" = "Beli";
-
 /* Title for screen to buy the VPN. */
 "vpn.buyVPNTitle" = "Firewall Brave + VPN";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxDevicesProtect" = "Lindungi 5 perangkat dengan 1 paket berlangganan";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoLocation" = "Pilih lokasi geo/negara Anda";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave tidak pernah mencatat aktivitas Anda";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Lindungi setiap aplikasi & seluruh perangkat Anda";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSaferWifi" = "Lebih aman untuk rumah atau Wi-Fi umum";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSpeedFast" = "Secepat kilat, hingga 100 Mbps";
-
-/* App Store Receipt field for customer support contact form. */
-"vpn.contactFormAppStoreReceipt" = "Tanda Terima App Store";
-
-/* App Version field for customer support contact form. */
-"vpn.contactFormAppVersion" = "Versi Aplikasi";
-
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Operator Telepon Seluler";
-
-/* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Brave tidak melacak Anda atau mengetahui cara Anda menggunakan aplikasi kami, sehingga kami tidak tahu cara Anda memasang VPN. Silakan bagikan info tentang masalah yang Anda alami dan kami akan melakukan yang terbaik untuk memecahkannya secepat mungkin.";
-
-/* Button name to send contact form. */
-"vpn.contactFormEmailNotConfiguredBody" = "Tidak dapat mengirim surel. Silakan periksa kembali konfigurasi surel Anda.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooter" = "Silakan pilih informasi yang ingin Anda bagikan kepada kami.\n\nSemakin banyak informasi yang sejak awal Anda bagikan kepada kami, akan lebih mudah bagi staf pendukung kami untuk membantu Anda menyelesaikan masalah Anda.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooterSharedWithGuardian" = "Dukungan disediakan dengan bantuan dari tim Guardian.";
-
-/* VPN Hostname field for customer support contact form. */
-"vpn.contactFormHostname" = "Nama Host VPN";
-
-/* Specific issue field for customer support contact form. */
-"vpn.contactFormIssue" = "Masalah";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Masalah keandalan koneksi";
-
-/* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "Silakan pilih kategori yang menggambarkan masalah tersebut.";
-
-/* No internet problem for contact form issue field. */
-"vpn.contactFormIssueNoInternet" = "Tidak ada internet saat terkoneksi";
-
-/* Other problem for contact form issue field. */
-"vpn.contactFormIssueOther" = "Lainnya";
-
-/* Other connection problem for contact form issue field. */
-"vpn.contactFormIssueOtherConnectionError" = "Tidak dapat terkoneksi ke VPN (Kesalahan lain)";
-
-/* Slow connection problem for contact form issue field. */
-"vpn.contactFormIssueSlowConnection" = "Koneksi lambat";
-
-/* Website problem for contact form issue field. */
-"vpn.contactFormIssueWebsiteProblems" = "Situs web tidak bekerja";
-
-/* VPN logs field for customer support contact form. */
-"vpn.contactFormLogs" = "Error Logs";
-
-/* Network Type field for customer support contact form. */
-"vpn.contactFormNetworkType" = "Jenis jaringan";
-
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
-"vpn.contactFormPlatform" = "Platform";
-
-/* Button name to send contact form. */
-"vpn.contactFormSendButton" = "Lanjut ke Email";
-
-/* Subscription Type field for customer support contact form. */
-"vpn.contactFormSubscriptionType" = "Jenis Langganan";
-
-/* iOS Timezone field for customer support contact form. */
-"vpn.contactFormTimezone" = "Timezone iOS";
-
-/* Title for contact form email. */
-"vpn.contactFormTitle" = "Masalah Firewall + VPN Brave";
-
-/* Button text to enable Brave VPN */
-"vpn.enableButton" = "Aktifkan";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Tidak dapat terhubung ke App Store, silakan coba lagi dalam beberapa menit.";
 
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "Kesalahan Apple Store";
-
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Semua paket termasuk %@!";
-
-/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
-"vpn.freeTrialPeriod" = "uji coba gratis 7 hari";
-
-/* The button text that starts the trial action */
-"vpn.freeTrialPeriodAction" = "uji coba gratis selama 7 hari";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Semua paket berlangganan diperbarui secara otomatis namun dapat dibatalkan sebelum diperbarui.";
-
-/* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Profil ini memungkinkan VPN untuk secara otomatis tersambung dan mengamankan lalu-lintas di semua perangkat Anda setiap waktu. VPN ini akan terenkripsi dan diarahkan melalui firewall cerdas Brave untuk memblokir koneksi yang berpotensi menyerang dan merusak.";
-
-/* Text for 'install vpn profile' button */
-"vpn.installProfileButtonText" = "Pasang Profil VPN";
-
-/* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Brave kini akan memasang profil VPN.";
-
-/* Popup that shows after user installs the vpn for the first time. */
-"vpn.installSuccessPopup" = "VPN kini telah diaktifkan";
-
-/* Title for screen to install the VPN. */
-"vpn.installTitle" = "Pasang VPN";
-
-/* Button text to try free Brave VPN */
-"vpn.learnMore" = "Cobalah secara GRATIS";
-
-/* Used in context: 'Monthly subscription, (it) renews monthly' */
-"vpn.monthlySubDetail" = "Perbarui setiap bulan";
-
-/* No comment provided by engineer. */
-"vpn.monthlySubTitle" = "Langganan Bulanan";
-
-/* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Telah Kedaluwarsa";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckboxBlockAds" = "Memblokir koneksi jaringan yang tak diinginkan";
@@ -3709,56 +3577,8 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Didukung oleh";
 
-/* Description of vpn tunnel protocol */
-"vpn.protocolPickerDescription" = "Silakan pilih protokol transpor yang Anda inginkan. Setelah beralih, kredential VPN Anda yang ada saat ini akan dihapus dan Anda akan dihubungkan kembali jika koneksi VPN saat ini telah terpasang.";
-
-/* Message for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorMessage" = "Gagal mengalihkan protokol jalur, silakan coba kembali nanti.";
-
-/* Title for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorTitle" = "Server mengalami error";
-
-/* Title for vpn tunnel protocol screen */
-"vpn.protocolPickerTitle" = "Protokol Transpor";
-
-/* Message that we show after successfully changing tunnel protocol. */
-"vpn.protocolSwitchSuccessPopupText" = "Protokol Jalur VPN telah diubah.";
-
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "Kawasan server yang terdekat dengan lokasi Anda akan dipilih secara otomatis berdasar zona waktu sistem Anda. Ini direkomendasikan demi menjamin kecepatan internet yang tinggi. ";
-
 /* Name of automatic vpn region selector */
 "vpn.regionPickerAutomaticModeCellText" = "Otomatis";
-
-/* Message for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorMessage" = "Gagal beralih server, harap coba lagi nanti. ";
-
-/* Title for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorTitle" = "Server mengalami error";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Server Kawasan";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "VPN kawasan berubah";
-
-/* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "Tidak dapat mengatur ulang konfigurasi VPN. Silakan coba lagi. Jika masalah ini terus berlanjut, hubungi dukungan pelanggan untuk mendapatkan bantuan.";
-
-/* Title of button to try again when vpn configuration reset fails. */
-"vpn.resetVPNErrorButtonActionTitle" = "Coba Lagi";
-
-/* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "Gagal Mengatur Ulang";
-
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "Konfigurasi VPN telah berhasil diatur ulang.";
-
-/* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "Pengaturan Ulang Berhasil";
-
-/* No comment provided by engineer. */
-"vpn.restorePurchases" = "Pulihkan";
 
 /* Alert description to show when the VPN session has expired */
 "vpn.sessionExpiredDescription" = "Harap login ke Akun Brave untuk me-refresh sesi VPN Anda.";
@@ -3771,54 +3591,6 @@
 
 /* Alert title to show when the VPN session has expired */
 "vpn.sessionExpiredTitle" = "Sesi kedaluwarsa";
-
-/* VPN Banner Description */
-"vpn.settingHeaderBody" = "Tingkatkan dengan VPN untuk mejaga koneksi Anda dan memblokir serangan pelacak di mana pun.";
-
-/* Button to contact tech support */
-"vpn.settingsContactSupport" = "Hubungi Dukungan Teknis";
-
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "Gagal menarik daftar server, harap coba lagi nanti. ";
-
-/* Button for FAQ */
-"vpn.settingsFAQ" = "Dukungan VPN";
-
-/* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Tautkan pembelian ke akun Brave Anda";
-
-/* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Tautkan pembelian Toko Aplikasi Anda ke akun Brave Anda untuk menggunakan VPN Brave pada perangkat lain.";
-
-/* Button to manage your VPN subscription */
-"vpn.settingsManageSubscription" = "Kelola Langganan";
-
-/* Button to redeem offer code subscription */
-"vpn.settingsRedeemOfferCode" = "Tebus Kode Penawaran";
-
-/* Button to reset VPN configuration */
-"vpn.settingsResetConfiguration" = "Atur Ulang Konfigurasi";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Host";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Lokasi";
-
-/* Header title for vpn settings server section. */
-"vpn.settingsServerSection" = "Peladen";
-
-/* Table cell title for cell that shows when the VPN subscription expires. */
-"vpn.settingsSubscriptionExpiration" = "Kedaluwarsa";
-
-/* Header title for vpn settings subscription section. */
-"vpn.settingsSubscriptionSection" = "Langganan";
-
-/* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "Status";
-
-/* Table cell title for vpn's transport protocol and which open opens protocol select */
-"vpn.settingsTransportProtocol" = "Protokol Transpor";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "Dinonaktifkan";
@@ -3868,41 +3640,8 @@
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Perbarui Pembayaran";
 
-/* Text for necesseray required action of VPN subscription needs a method of payment update */
-"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Perbarui Metode Pembayaran";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Bahkan di belakang layar, Brave akan tetap melindungi Anda.";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Firewall + VPN Brave telah AKTIF";
-
-/* Message for an alert when the VPN can't be configured. */
-"vpn.vpnConfigGenericErrorBody" = "Terjadi masalah saat mulai mengaktifkan VPN. Silakan coba lagi atau cobalah untuk mengatur ulang konfigurasi di halaman pengaturan VPN.";
-
-/* Title for an alert when the VPN can't be configured */
-"vpn.vpnConfigGenericErrorTitle" = "Kesalahan";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Firewall + VPN Brave memerlukan pemasangan profil VPN di perangkat Anda agar dapat bekerja.";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "Izin tidak diberikan";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "Tidak dapat menebus kode penawaran. Silakan coba lagi, atau periksa detail kode penawaran Anda dan coba lagi.";
-
-/* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "Tidak dapat menyelesaikan pembelian. Silakan coba lagi, atau periksa detail pembayaran Anda di akun Apple dan coba lagi.";
-
-/* Title for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedTitle" = "Kesalahan";
-
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Biaya berlangganan akan ditagihkan melalui akun iTunes Anda.\n\nBagian dari uji coba gratis yang tidak digunakan, jika ditawarkan, akan hangus saat Anda berlangganan.\n\nLangganan Anda akan diperbarui secara otomatis kecuali jika dibatalkan dalam minimum 24 jam sebelum akhir periode berjalanan.\n\nAnda dapat mengelola langganan Anda di Pengaturan.\n\nDengan menggunakan Brave, anda menyetujui Syarat Penggunaan dan Kebijakan Privasi ini.";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Tebus Kode";
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "Server Kawasan";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Pengaturan Saat Ini: %@";
@@ -3910,32 +3649,8 @@
 /* Button title for VPN region selection in menu */
 "vpn.vpnRegionSelectorButtonTitle" = "Wilayah VPN";
 
-/* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Ini akan mengatur ulang konfigurasi Firewall + VPN Brave Anda dan memperbaiki kesalahan apa pun. Proses ini dapat memakan waktu beberapa saat.";
-
-/* Title for alert to reset vpn configuration */
-"vpn.vpnResetAlertTitle" = "Atur ulang konfigurasi";
-
-/* Button name to reset vpn configuration */
-"vpn.vpnResetButton" = "Atur ulang";
-
-/* Name of monthly subscription in VPN Settings */
-"vpn.vpnSettingsMonthlySubName" = "Langganan bulanan";
-
-/* Name of annual subscription in VPN Settings */
-"vpn.vpnSettingsYearlySubName" = "Langganan tahunan";
-
 /* Text description of VPN subscription needs a method of payment update */
 "vpn.vpnUpdatePaymentMethodDescriptionText" = "Silakan perbarui metode pembayaran Anda";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Pembaruan tahunan akan menghemat %@";
-
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Harga terbaik";
-
-/* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "Satu tahun";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Tanggal Pembuatan Dompet";

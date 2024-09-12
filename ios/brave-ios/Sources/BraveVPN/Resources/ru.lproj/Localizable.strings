@@ -1,0 +1,325 @@
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "активировать";
+
+/* Text for toggle which indicating the toggle action is for selecting region in automatic */
+"vpn.automaticServerSelectionToggleTitle" = "Автоматически";
+
+/* Title on top the list of available servers */
+"vpn.availableServerTitle" = "ДОСТУПНЫЕ СЕРВЕРЫ";
+
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "Купить";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxDevicesProtect" = "Поддержка до 5 устройств по одной подписке";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoLocation" = "Выбирайте свое местоположение";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "Отсутствие журналов активности";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectYourDevices" = "Защита всех приложений на любых устройствах";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSaferWifi" = "Повышенная безопасность для домашнего или публичного Wi-Fi-соединения";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSpeedFast" = "Скорость до 100 Мбит/с";
+
+/* Text indicating how many cities is used for that country used as Ex: '1 City' */
+"vpn.cityCountTitle" = "%ld город";
+
+/* Text showing the vpn region is connected */
+"vpn.connectedRegionDescription" = "Подключено";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "Чек App Store";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "Версия приложения";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "Оператор сотовой связи";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "Brave не отслеживает, как вы используете приложение, поэтому у нас нет информации об установленном VPN. Расскажите о вашей проблеме и мы постараемся решить ее как можно быстрее.";
+
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "Нам не удалось отправить письмо. Проверьте настройки электронной почты.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "Укажите, какой информацией вы хотели бы с нами поделиться.\n\nЧем больше информации вы изначально нам предоставите, тем легче нашей службе поддержки будет помогать вам в решении возникающих проблем.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "Поддержка обеспечивается при участии команды Guardian.";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "Имя хоста VPN";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "Проблема";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "Ненадежное подключение";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Выберите наиболее подходящую категорию проблемы.";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "Отсутствует соединение с Интернетом";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "Другой";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "Не удалось установить соединение с VPN (другая ошибка)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "Медленное соединение";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "Веб-сайт не работает";
+
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "Ошибка";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "Тип сети";
+
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Платформа";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "Отправить";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "Тип подписки";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "Часовой пояс iOS";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Проблема, связанная с файрволом и VPN-расширением для браузера Brave";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "Включить";
+
+/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
+"vpn.freeTrialDetail" = "Все планы включают в себя %@.";
+
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "7-дневный бесплатный пробный период";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "Попробовать бесплатно в течение 7 дней";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "Все подписки продлеваются автоматически. Однако вы можете отменить подписку до того, как она будет продлена.";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "В этом режиме сеть VPN автоматически проверяет весь трафик на устройстве, делая просмотр безопасным. VPN-соединение зашифровано, а трафик проходит через умный брандмауэр Brave, который не пропускает потенциально вредоносный контент и блокирует попытки отслеживания.";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "Установить профиль VPN";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Сейчас в браузер Brave будет установлен профиль VPN.";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "Теперь VPN включен";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "Установить VPN";
+
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "Попробовать БЕСПЛАТНО";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "Продлевается ежемесячно";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "Ежемесячная подписка";
+
+/* Text indicating how many cities is used for that region used as Ex: '2 Cities' */
+"vpn.multipleCityCountTitle" = "Городов: %ld";
+
+/* Text indicating how many server is used for that region used as Ex: '2 Servers' */
+"vpn.multipleServerCountTitle" = "Серверов: %ld";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "Срок действия закончился.";
+
+/* Description of vpn tunnel protocol
+   The alert title showing vpn region is changed */
+"vpn.protocolPickerDescription" = "Выберите предпочтительный протокол транспортного уровня. После переключения существующие учетные данные VPN будут стерты. Если сейчас установлено VPN-соединение, вы подключитесь заново.";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "Не удалось переключить туннельный протокол. Повторите попытку.";
+
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Ошибка сервера";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "Протокол транспортного уровня";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "VPN-протокол изменен.";
+
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "Ближайшие к вам серверы будут выбраны автоматически. Они определятся по часовому поясу вашей системы, и это поможет установить высокую скорость интернет-соединения.";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Не удалось изменить серверы. Повторите попытку позже.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Ошибка сервера";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Местонахождение серверов";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "Местонахождение серверов изменено.";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "Не удалось сбросить настройки VPN — попробуйте снова. Если проблема не исчезнет, свяжитесь со службой поддержки.";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "Повторить";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "Ошибка";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "Настройки VPN  сброшены.";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "Готово";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "Восстановить";
+
+/* Title showing which country serves list showing. Ex: 'Brazil Server */
+"vpn.serverNameTitle" = "Сервер (%@)";
+
+/* Text for description of toggle that auto selcets the server according to time zone. */
+"vpn.serverRegionAutoSelectDescription" = "Автоматически выбирать VPN-сервер в ближайшей стране на основе часового пояса. Это обеспечит более высокую скорость подключения к интернету.";
+
+/* Text indicating how many server is used for that region used as Ex: '1 Server' */
+"vpn.serverTitle" = "%ld сервер";
+
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "Чтобы защищать соединение и блокировать трекеры на всех сайтах, вы можете приобрести VPN.";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "Обратиться в службу технической поддержки";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Не удалось получить список серверов. Повторите попытку позже.";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "Справочная информация в отношении VPN";
+
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Привязать покупку к аккаунту Brave";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Привяжите покупку в App Store к аккаунту Brave, чтобы использовать Brave VPN на других устройствах.";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "Управление подписками";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "Активировать промо-код";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "Сбросить настройки";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "Хост-сервер";
+
+/* Table cell title for vpn's server location and which open opens location select */
+"vpn.settingsServerLocation" = "Местоположение";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "Сервер";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "Срок действия истекает";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "Подписка";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "Состояние";
+
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "Протокол транспортного уровня";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Измените способ оплаты";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "Браузер Brave будет защищать вас даже в фоновом режиме.";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Файрвол и VPN-расширение для браузера Brave ВКЛЮЧЕНЫ";
+
+/* Text for description of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalDescription" = "Использовать лучший сервер";
+
+/* Text for title of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalTitle" = "Оптимальный";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "Возникла проблема с инициализацией VPN. Повторите попытку или попробуйте сбросить настройки на странице настроек VPN.";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "Ошибка";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Для работы файрвола и VPN-расширения для браузера Brave необходимо установить профиль VPN.";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "В доступе отказано";
+
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "Не удалось активировать промо-код. Проверьте его и попробуйте снова или свяжитесь со службой поддержки.";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "Невозможно завершить осуществление покупки. Повторите попытку или проверьте свои платежные реквизиты в сети Apple и попробуйте еще раз.";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "Ошибка";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "Плата за подписки будет взиматься через ваш аккаунт iTunes.\n\nПри покупке подписки неиспользованный период бесплатной версии аннулируется.\n\nПодписка будет обновляться автоматически. Чтобы отменить подписку, откажитесь от нее как минимум за 24 часа до окончания текущего расчетного периода.\n\nВы можете управлять подписками в настройках.\n\nИспользуя Brave, вы соглашаетесь с нашими Условиями использования и Политикой конфиденциальности.";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "Активировать код";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "Это позволит сбросить настройки файрвола и VPN-расширения для браузера Brave и исправить любые ошибки. Процесс может занять около минуты.";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "Сбросить настройки";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "Сбросить";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "Ежемесячная подписка";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "Ежегодная подписка";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "Продлевайте ежегодно и экономьте %@";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+"vpn.yearlySubDisclaimer" = "Оптимальная стоимость";
+
+/* One year lenght vpn subcription */
+"vpn.yearlySubTitle" = "Годовая";
+

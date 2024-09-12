@@ -25,6 +25,9 @@
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
 "AntiAdBlockWarningTitle" = "Juster annonseblokkeringsinnstillingene for dette nettstedet";
 
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Makuler automatisk";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Aggressiv";
 
@@ -145,8 +148,38 @@
 /* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
 "FilterListURLTextFieldPlaceholder" = "Skriv inn filterliste-URL-en her";
 
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Tømmer informasjonskapsler og andre nettstedsdata når du lukker en nettside";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Glem meg når jeg lukker denne nettsiden";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Strengt";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Makuler data";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Aldri";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Når appen lukkes";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Når faner for nettstedet lukkes";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Makuler nettstedsdata";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Makulering lukker alle fanene som er åpne for dette nettstedet, og sletter alle nettsteddataene. Handlingen kan ikke angres.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Vil du makulere nettsteddataene?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Makuler nettsteddataene nå";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Nettstedet er ikke sikkert";

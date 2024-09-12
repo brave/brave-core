@@ -901,7 +901,7 @@ extension Strings {
 
     public static let vpnRegionChangedTitle =
       NSLocalizedString(
-        "vpn.protocolPickerDescription",
+        "vpn.vpnRegionChangedTitle",
         bundle: .module,
         value: "VPN Region Changed",
         comment: "The alert title showing vpn region is changed"

@@ -158,7 +158,7 @@
 "BraveRewardsTitle" = "Brave Belønninger";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Brave Søk sporer ikke deg, søkene eller klikkene dine.";
+"braveSearchPromotion.bannerDescription" = "Brave Search lager ikke en brukerprofil om deg.";
 
 /* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Kanskje senere";
@@ -272,7 +272,7 @@
 "callout.p3aCalloutTitle" = "Hjelp oss med å gjøre Brave bedre.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Del helt anonyme og private produktinnsikter.";
+"callout.p3aCalloutToggleTitle" = "Del anonyme produktinnsikter helt privat.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Få Brave-personvernfunksjonalitet på datamaskinen eller nettbrettet, og synkroniser bokmerker og utvidelser mellom enheter.";
@@ -1428,6 +1428,9 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageUnknownStatusWarning" = "Tilkoblingen din til dette nettstedet kunne ikke verifiseres fullt ut. Du kan fortsette, eller prøve å laste inn siden på nytt for å opprette en sikker tilkobling.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "Logg på nettstedet";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Vis sertifikat";
@@ -3526,9 +3529,6 @@
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave verken lagrer eller deler talesøkene dine.";
 
-/* The button text that starts the subscription action */
-"vpn.activateSubscriptionAction" = "aktiver";
-
 /* Pop up extra description for billing issue of subcription VPN about to expire */
 "vpn.autoReneSoonExpirePopOverSubDescription" = "Vil du fortsette å værebest mulig beskyttet? Da er det bare å fornye før abonnementet utløper. Som takk for at du fornyer, gir vi deg 20 % rabatt de neste 3 månedene.";
 
@@ -3547,146 +3547,14 @@
 /* Pop up title for VPN subscription is about expire */
 "vpn.autoRenewSoonExpireTitle" = "Å nei! Brave VPN-abonnementet ditt utløper snart.";
 
-/* Button text to buy Brave VPN */
-"vpn.buyButton" = "Kjøp";
-
 /* Title for screen to buy the VPN. */
 "vpn.buyVPNTitle" = "Brave-brannmur + VPN";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxDevicesProtect" = "Beskytt 5 enheter med 1 abonnement";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoLocation" = "Velg geografisk beliggenhet/land";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave loggfører aldri aktiviteten din";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Beskytt hver eneste app og hele enheten din";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSaferWifi" = "Tryggere for hjemmet eller offentlig wifi";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSpeedFast" = "Lynrask, opptil 100 Mbps";
-
-/* App Store Receipt field for customer support contact form. */
-"vpn.contactFormAppStoreReceipt" = "App Store-kvittering";
-
-/* App Version field for customer support contact form. */
-"vpn.contactFormAppVersion" = "Appversjon";
-
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "teleselskap";
-
-/* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Brave sporer deg ikke og følger ikke med på hvordan du bruker appen, så vi vet ikke hvordan du har satt opp VPN-en. Fortell oss mer om problemet du opplever, så skal vi gjøre vårt beste for å løse det snarest.";
-
-/* Button name to send contact form. */
-"vpn.contactFormEmailNotConfiguredBody" = "Kan ikke sende e-post. Kontroller e-postkonfigurasjonen.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooter" = "Velg informasjonen du vil dele med oss.\n\nJo mer informasjon du deler med oss i første omgang, jo lettere blir det for støttepersonellet å hjelpe deg med å løse problemet.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooterSharedWithGuardian" = "Støtte tilbys ved hjelp av Guardian-teamet.";
-
-/* VPN Hostname field for customer support contact form. */
-"vpn.contactFormHostname" = "VPN-vertsnavn";
-
-/* Specific issue field for customer support contact form. */
-"vpn.contactFormIssue" = "Problem";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Problem med tilkoblingens stabilitet";
-
-/* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "Velg kategorien som beskriver problemet.";
-
-/* No internet problem for contact form issue field. */
-"vpn.contactFormIssueNoInternet" = "Ingen internett når du er tilkoblet";
-
-/* Other problem for contact form issue field. */
-"vpn.contactFormIssueOther" = "Annet";
-
-/* Other connection problem for contact form issue field. */
-"vpn.contactFormIssueOtherConnectionError" = "Kan ikke koble til VPN (Annen feil)";
-
-/* Slow connection problem for contact form issue field. */
-"vpn.contactFormIssueSlowConnection" = "Treg tilkobling";
-
-/* Website problem for contact form issue field. */
-"vpn.contactFormIssueWebsiteProblems" = "Nettstedet fungerer ikke";
-
-/* VPN logs field for customer support contact form. */
-"vpn.contactFormLogs" = "Feillogger";
-
-/* Network Type field for customer support contact form. */
-"vpn.contactFormNetworkType" = "Nettverkstype";
-
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
-"vpn.contactFormPlatform" = "Plattform";
-
-/* Button name to send contact form. */
-"vpn.contactFormSendButton" = "Fortsett til e-post";
-
-/* Subscription Type field for customer support contact form. */
-"vpn.contactFormSubscriptionType" = "Abonnementstype";
-
-/* iOS Timezone field for customer support contact form. */
-"vpn.contactFormTimezone" = "iOS-tidssone";
-
-/* Title for contact form email. */
-"vpn.contactFormTitle" = "Problem med Brave-brannmur + VPN";
-
-/* Button text to enable Brave VPN */
-"vpn.enableButton" = "Aktiver";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Kunne ikke koble til App Store. Prøv igjen om noen minutter.";
 
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "Feil i App Store";
-
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Alle abonnementene inkluderer en %@!";
-
-/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
-"vpn.freeTrialPeriod" = "gratis 7-dagers prøveperiode";
-
-/* The button text that starts the trial action */
-"vpn.freeTrialPeriodAction" = "prøv 7 dager gratis";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Alle abonnement fornyes automatisk, men kan avbestilles før fornyelse.";
-
-/* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Denne profilen lar VPN automatisk koble til og sikre trafikk over hele enheten din hele tiden. Denne VPN-tilkoblingen vil krypteres og rutes gjennom Braves intelligente brannmur for å blokkere potensielt skadelige og invasive forbindelser.";
-
-/* Text for 'install vpn profile' button */
-"vpn.installProfileButtonText" = "Installer VPN-profil";
-
-/* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Brave vil nå installere en VPN-profil.";
-
-/* Popup that shows after user installs the vpn for the first time. */
-"vpn.installSuccessPopup" = "Brave er nå aktivert";
-
-/* Title for screen to install the VPN. */
-"vpn.installTitle" = "Installer VPN";
-
-/* Button text to try free Brave VPN */
-"vpn.learnMore" = "Prøv GRATIS";
-
-/* Used in context: 'Monthly subscription, (it) renews monthly' */
-"vpn.monthlySubDetail" = "Fornyes månedlig";
-
-/* No comment provided by engineer. */
-"vpn.monthlySubTitle" = "Månedlig abonnement";
-
-/* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Utløpt";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckboxBlockAds" = "Blokkerer uønskede nettverkstilkoblinger";
@@ -3709,56 +3577,8 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Drevet av";
 
-/* Description of vpn tunnel protocol */
-"vpn.protocolPickerDescription" = "Velg din foretrukne transportprotokoll. Når du har byttet, vil din eksisterende VPN-legitimasjon bli slettet, og du vil bli koblet til på nytt hvis en VPN-tilkobling er opprettet.";
-
-/* Message for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorMessage" = "Kunne ikke bytte tunnelprotokoll. Prøv igjen senere.";
-
-/* Title for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorTitle" = "Serverfeil";
-
-/* Title for vpn tunnel protocol screen */
-"vpn.protocolPickerTitle" = "Transporter protokoll";
-
-/* Message that we show after successfully changing tunnel protocol. */
-"vpn.protocolSwitchSuccessPopupText" = "VPN-tunnelprotokoll endret.";
-
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "Serverregionen som er nærmest deg blir automatisk valgt, basert på tidssonen til systemet ditt. Dette anbefales for å sikre rask Internett-hastighet.";
-
 /* Name of automatic vpn region selector */
 "vpn.regionPickerAutomaticModeCellText" = "Automatisk";
-
-/* Message for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorMessage" = "Kunne ikke bytte servere, prøv igjen senere.";
-
-/* Title for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorTitle" = "Serverfeil";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Serverområde";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "VPN-område endret.";
-
-/* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "Kunne ikke tilbakestille VPN-konfigurasjonen. Prøv på nytt. Hvis problemet vedvarer, kan du kontakte kundestøtten for å få hjelp.";
-
-/* Title of button to try again when vpn configuration reset fails. */
-"vpn.resetVPNErrorButtonActionTitle" = "Prøv igjen";
-
-/* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "Tilbakestilling mislyktes";
-
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "VPN-konfigurasjonen er nå tilbakestilt.";
-
-/* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "Tilbakestilling vellykket";
-
-/* No comment provided by engineer. */
-"vpn.restorePurchases" = "Gjenopprett";
 
 /* Alert description to show when the VPN session has expired */
 "vpn.sessionExpiredDescription" = "Logg på Brave-konten din for å oppdatere VPN-økten.";
@@ -3771,54 +3591,6 @@
 
 /* Alert title to show when the VPN session has expired */
 "vpn.sessionExpiredTitle" = "Økten er utløpt";
-
-/* VPN Banner Description */
-"vpn.settingHeaderBody" = "Oppgrader til en VPN for å beskytte forbindelsen din og blokkere invasive sporere overalt.";
-
-/* Button to contact tech support */
-"vpn.settingsContactSupport" = "Kontakt teknisk kundestøtte";
-
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "Kunne ikke hente serverlisten, prøv igjen senere.";
-
-/* Button for FAQ */
-"vpn.settingsFAQ" = "VPN-kundestøtte";
-
-/* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Koble kjøpet til Brave-kontoen din";
-
-/* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Koble App Store-kjøpet til Brave-kontoen din for å bruke Brave VPN på andre enheter.";
-
-/* Button to manage your VPN subscription */
-"vpn.settingsManageSubscription" = "Administrer abonnement";
-
-/* Button to redeem offer code subscription */
-"vpn.settingsRedeemOfferCode" = "Løs inn tilbudskode";
-
-/* Button to reset VPN configuration */
-"vpn.settingsResetConfiguration" = "Tilbakestill konfigurasjon";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Vert";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Sted";
-
-/* Header title for vpn settings server section. */
-"vpn.settingsServerSection" = "Server";
-
-/* Table cell title for cell that shows when the VPN subscription expires. */
-"vpn.settingsSubscriptionExpiration" = "Utløper";
-
-/* Header title for vpn settings subscription section. */
-"vpn.settingsSubscriptionSection" = "Abonnement";
-
-/* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "Status";
-
-/* Table cell title for vpn's transport protocol and which open opens protocol select */
-"vpn.settingsTransportProtocol" = "Transporter protokoll";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "Deaktivert";
@@ -3868,41 +3640,8 @@
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Oppdater betalingsmåte";
 
-/* Text for necesseray required action of VPN subscription needs a method of payment update */
-"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Oppdater betalingsmåte";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Selv i bakgrunnen vil Brave fortsette å beskytte deg.";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave-brannmur + VPN er PÅ";
-
-/* Message for an alert when the VPN can't be configured. */
-"vpn.vpnConfigGenericErrorBody" = "Det oppstod et problem med å initialisere VPN. Vennligst prøv igjen eller prøv å tilbakestille konfigurasjonen på VPN-innstillingssiden.";
-
-/* Title for an alert when the VPN can't be configured */
-"vpn.vpnConfigGenericErrorTitle" = "Feil";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave-brannmur + VPN krever at det installeres en VPN-profil på enheten din for å fungere.";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "Tillatelse nektet";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "Kunne ikke løse inn tilbudskoden. Prøv igjen eller kontroller tilbudskodens informasjon og prøv igjen.";
-
-/* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "Kan ikke fullføre kjøpet. Vennligst prøv igjen, eller sjekk betalingsinformasjonen din på Apple og prøv igjen.";
-
-/* Title for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedTitle" = "Feil";
-
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Abonnementer belastes via iTunes-kontoen din.\n\nEnhver ubrukt del av den gratis prøveperioden, hvis den tilbys, går tapt når du kjøper et abonnement.\n\nAbonnementet ditt fornyes automatisk med mindre det blir kansellert minst 24 timer før inneværende periode utløper.\n\nDu kan administrere abonnementene dine i innstillingene.\n\nVed å bruke Brave godtar du bruksvilkårene og retningslinjene for personvern.";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Løs inn koden";
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "Serverområde";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Gjeldende innstilling: %@";
@@ -3910,32 +3649,8 @@
 /* Button title for VPN region selection in menu */
 "vpn.vpnRegionSelectorButtonTitle" = "VPN-region";
 
-/* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Dette vil tilbakestille Brave-brannmuren + VPN-konfigurasjonen din og fikse eventuelle feil. Denne prosessen kan ta et øyeblikk.";
-
-/* Title for alert to reset vpn configuration */
-"vpn.vpnResetAlertTitle" = "Tilbakestill konfigurasjon";
-
-/* Button name to reset vpn configuration */
-"vpn.vpnResetButton" = "Tilbakestill";
-
-/* Name of monthly subscription in VPN Settings */
-"vpn.vpnSettingsMonthlySubName" = "Månedlig abonnement";
-
-/* Name of annual subscription in VPN Settings */
-"vpn.vpnSettingsYearlySubName" = "Årlig abonnement";
-
 /* Text description of VPN subscription needs a method of payment update */
 "vpn.vpnUpdatePaymentMethodDescriptionText" = "Oppdater betalingsmåte";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Forny årlig, spar %@";
-
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Beste verdi";
-
-/* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "Ett år";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Opprettelsesdato for lommebok";

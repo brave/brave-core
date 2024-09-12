@@ -25,6 +25,9 @@
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
 "AntiAdBlockWarningTitle" = "Säädä tämän sivuston mainosestoasetuksia";
 
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Automaattinen silppuaminen";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Aggressiivinen";
 
@@ -145,8 +148,38 @@
 /* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
 "FilterListURLTextFieldPlaceholder" = "Kirjoita suodatinluettelon URL-osoite tähän";
 
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Tyhjentää evästeet ja muut sivuston tiedot, kun suljet sivuston";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Unohda minut, kun suljen tämän sivuston";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Tiukka";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Silppua tiedot";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Ei koskaan";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Sovellus suljettu";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Sivuston välilehdet suljettu";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Silppua sivuston tiedot";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Silppuaminen sulkee kaikki tämän sivuston avoimet välilehdet ja poistaa kaikki sivuston tiedot. Tätä ei voi kumota.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Silppua sivuston tiedot?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Silppua sivuston tiedot nyt";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Sivustoa ei ole suojattu";

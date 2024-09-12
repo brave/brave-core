@@ -1,0 +1,325 @@
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "aktivoi";
+
+/* Text for toggle which indicating the toggle action is for selecting region in automatic */
+"vpn.automaticServerSelectionToggleTitle" = "Automaattinen";
+
+/* Title on top the list of available servers */
+"vpn.availableServerTitle" = "KÄYTETTÄVISSÄ OLEVAT PALVELIMET";
+
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "Osta";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxDevicesProtect" = "Suojaa 5:tä laitetta 1:ssä tilauksessa";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoLocation" = "Valitse sijainti tai maa";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "Brave ei koskaan kirjaa toimintaasi";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectYourDevices" = "Suojaa sovellukset ja koko laite";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSaferWifi" = "Turvallinen kotona tai julkisessa Wi-Fi:ssä";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSpeedFast" = "Valonnopea, jopa 100 Mb/s";
+
+/* Text indicating how many cities is used for that country used as Ex: '1 City' */
+"vpn.cityCountTitle" = "%ld Kaupunki";
+
+/* Text showing the vpn region is connected */
+"vpn.connectedRegionDescription" = "Yhdistetty";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "App Store -kuitti";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "Sovellusversio";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "Mobiilipalveluntarjoaja";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "Brave ei seuraa sinua eikä tiedä, kuinka käytät sovellustamme, joten emme tiedä VPN-asetuksiasi. Jaa tietoja kohtaamastasi ongelmasta, niin teemme parhaamme ratkaistaksemme sen mahdollisimman pian.";
+
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "Sähköpostia ei voi lähettää. Tarkista sähköpostiasetukset.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "Valitse tiedot, jotka haluat jakaa meille.\n\nMitä enemmän tietoja meille annat, sitä helpompaa tukihenkilöstömme on auttaa sinua ratkaisemaan ongelmasi.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "Tuki tarjotaan Guardian tiimin avulla.";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "VPN:n isäntänimi";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "Ongelma";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "Yhteyden luotettavuusongelma";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Valitse ongelmaa kuvaava luokka.";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "Ei Internet-yhteyttä yhdistämisen jälkeen";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "Muu";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "VPN:ään ei saada yhteyttä (muu virhe)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "Hidas yhteys";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "Verkkosivusto ei toimi";
+
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "Virhelokit";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "Verkkotyyppi";
+
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Käyttöympäristö";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "Jatka sähköpostiin";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "Tilaustyyppi";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "iOS-aikavyöhyke";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Brave-palomuuri ja -VPN -ongelma";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "Ota käyttöön";
+
+/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
+"vpn.freeTrialDetail" = "Kaikki tilaukset sisältävät %@!";
+
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "ilmaisen 7 päivän kokeilujakson";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "kokeile 7 päivän ajan ilmaiseksi";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "Kaikki tilaukset uusiutuvat automaattisesti, mutta ne ovat peruttavissa ennen uusimista.";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "Tämän profiilin avulla VPN voi automaattisesti muodostaa yhteyden ja suojata liikennettä kaikilla laitteillasi koko ajan. Tämä VPN-yhteys salataan ja reititetään Braven älykkään palomuurin kautta mahdollisesti haitallisten ja invasiivisten yhteyksien estämiseksi.";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "Asenna VPN-profiili";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Brave asentaa nyt VPN-profiilin.";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "VPN on nyt käytössä";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "Asenna VPN";
+
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "Kokeile ILMAISEKSI";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "Uusiutuu kuukausittain";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "Kuukausitilaus";
+
+/* Text indicating how many cities is used for that region used as Ex: '2 Cities' */
+"vpn.multipleCityCountTitle" = "%ld Kaupunkia";
+
+/* Text indicating how many server is used for that region used as Ex: '2 Servers' */
+"vpn.multipleServerCountTitle" = "%ld Palvelinta";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "Vanhentunut";
+
+/* Description of vpn tunnel protocol
+   The alert title showing vpn region is changed */
+"vpn.protocolPickerDescription" = "Valitse haluamasi välitysprotokolla. Kun olet vaihtanut, nykyiset VPN-kirjautumistietosi poistetaan ja yhteys muodostetaan uudelleen, jos VPN-yhteys on tällä hetkellä muodostettu.";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "Tunnelointiprotokollan vaihtaminen epäonnistui. Yritä myöhemmin uudelleen.";
+
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Palvelinvirhe";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "Välitysprotokolla";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "VPN-tunnelointiprotokollaa muutettu.";
+
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "Lähin palvelinalue valitaan automaattisesti järjestelmän aikavyöhykkeen perusteella. Tätä suositellaan Internet-yhteyden nopeuden varmistamiseksi.";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Palvelimen vaihtaminen epäonnistui. Yritä myöhemmin uudelleen.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Palvelinvirhe";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Palvelinalue";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "VPN-alue muuttunut.";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "VPN-määritysten nollaus ei onnistu. Yritä uudelleen. Jos ongelma jatkuu, saat apua ottamalla yhteyttä tukeen.";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "Yritä uudelleen";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "Nollaus epäonnistui";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "VPN-määritysten nollaus onnistui.";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "Nollaus onnistui";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "Palauta";
+
+/* Title showing which country serves list showing. Ex: 'Brazil Server */
+"vpn.serverNameTitle" = "%@ Palvelin";
+
+/* Text for description of toggle that auto selcets the server according to time zone. */
+"vpn.serverRegionAutoSelectDescription" = "Valitse automaattisesti lähin VPN-palvelinalue aikavyöhykkeesi perusteella. Tätä vaihtoehtoa suositellaan Internet-nopeuksien maksimoimiseksi.";
+
+/* Text indicating how many server is used for that region used as Ex: '1 Server' */
+"vpn.serverTitle" = "%ld Palvelin";
+
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "Päivitä VPN:ksi, jotta voit suojata yhteytesi ja estää invasiivisen seurannan kaikkialla.";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "Ota yhteyttä tekniseen tukeen";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Palvelinluettelon haku epäonnistui. Yritä myöhemmin uudelleen.";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "VPN-tuki";
+
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Linkitä ostos Brave-tiliisi";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Linkitä App Storen ostos Brave-tiliisi, jotta voit käyttää Brave VPN:ää muissa laitteissa.";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "Hallitse tilausta";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "Lunasta tarjouskoodi";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "Nollaa määritykset";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "Isäntä";
+
+/* Table cell title for vpn's server location and which open opens location select */
+"vpn.settingsServerLocation" = "Sijainti";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "Palvelin";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "Vanhenee";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "Tilaus";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "Tila";
+
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "Välitysprotokolla";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Päivitä maksutapa";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "Brave jatkaa suojaamistasi jopa taustalla toimiessaan.";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Brave-palomuuri ja -VPN on kytketty PÄÄLLE";
+
+/* Text for description of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalDescription" = "Käytä parasta käytettävissä olevaa palvelinta";
+
+/* Text for title of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalTitle" = "Optimaalinen";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "VPN:n alustuksessa oli ongelma. Yritä uudelleen tai yritä nollata asetukset VPN-määrityssivulla.";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "Virhe";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave-palomuurin ja -VPN:n toiminta edellyttää, että laitteellesi on asennettu VPN-profiili.";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "Lupa kielletty";
+
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "Tarjouskoodia ei voi lunastaa. Yritä uudelleen tai tarkista tarjouskoodin tiedot ja yritä uudelleen.";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "Ostoa ei voi suorittaa loppuun. Yritä uudelleen tai tarkista Apple-palveluun tallennetut maksutietosi ja yritä uudelleen.";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "Virhe";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "Tilaukset veloitetaan iTunes-tilisi kautta.\n\nKaikki käyttämättömät ilmaisen kokeilujakson osat, jos sellainen on tarjottu, menetetään, kun ostat tilauksen.\n\nTilauksesi uusitaan automaattisesti, ellei sitä peruuteta vähintään 24 tuntia ennen nykyisen jakson päättymistä.\n\nVoit hallita tilauksiasi asetuksissa.\n\nKäyttämällä Bravea hyväksyt käyttöehdot ja tietosuojakäytännön.";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "Lunasta koodi";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "Tämä nollaa Brave-palomuurin ja -VPN:n määritykset ja korjaa mahdolliset virheet. Tämä prosessi voi kestää minuutin.";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "Nollaa määritykset";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "Tyhjennä";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "Kuukausitilaus";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "Vuositilaus";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "Uusi vuosittain ja säästä %@";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+"vpn.yearlySubDisclaimer" = "Paras arvo";
+
+/* One year lenght vpn subcription */
+"vpn.yearlySubTitle" = "Yksi vuosi";
+

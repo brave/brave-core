@@ -25,6 +25,9 @@
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
 "AntiAdBlockWarningTitle" = "このサイトの広告ブロック設定を調整";
 
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "自動削除";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "積極的";
 
@@ -145,8 +148,38 @@
 /* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
 "FilterListURLTextFieldPlaceholder" = "フィルターリストのURLをここに入力してください";
 
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "サイトを閉じる際に、Cookieやその他のサイトデータを消去します";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "このサイトを閉じる際にデータを削除";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "厳格";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "データを削除";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "使用しない";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "アプリの終了時";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "サイトタブの終了時";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "サイトデータを削除";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "削除を選択すると、このサイトに開いている全タブを閉じ、すべてのサイトデータを削除します。これは元に戻せません。";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "サイトデータを削除しますか？";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "サイトデータを削除";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "サイトは安全ではありません";

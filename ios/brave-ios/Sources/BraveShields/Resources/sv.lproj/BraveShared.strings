@@ -25,6 +25,9 @@
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
 "AntiAdBlockWarningTitle" = "Justera inställningarna för annonsblockering för den här webbplatsen";
 
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Ta bort automatiskt";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Aggressiv";
 
@@ -145,8 +148,38 @@
 /* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
 "FilterListURLTextFieldPlaceholder" = "Ange filterlistans webbadress här";
 
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Rensa cookies och andra webbplatsdata när du stänger en webbplats";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Glöm mig när jag stänger den här webbplatsen";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Strikt";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Ta bort data";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Aldrig";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Appen stängd";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Webbplatsflikar stängda";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Ta bort webbplatsdata";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Borttagning stänger alla flikar som är öppna för den här webbplatsen och tar bort alla webbplatsdata. Detta kan inte ångras.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Vill du ta bort webbplatsdata?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Ta bort webbplatsdata nu";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Webbplatsen är inte säker";

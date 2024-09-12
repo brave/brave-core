@@ -25,6 +25,9 @@
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
 "AntiAdBlockWarningTitle" = "Laraskan Tetapan Sekatan Iklan Untuk Laman Ini";
 
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Penghapus Auto";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agresif";
 
@@ -145,8 +148,38 @@
 /* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
 "FilterListURLTextFieldPlaceholder" = "Masukkan URL senarai penapis di sini";
 
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Kosongkan kuki dan data laman lain apabila anda menutup laman";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Lupakan Saya Apabila Saya Menutup Laman Ini";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Terbatas";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Hapuskan Data";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Tidak sama sekali";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Aplikasi Ditutup";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Tab Laman Ditutup";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Hapuskan Data Laman";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Penghapusan akan menutup semua tab yang dibuka pada laman ini dan memadamkan semua data laman. Tindakan ini tidak boleh dibuat asal.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Hapuskan Data Laman?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Hapuskan Data Laman Sekarang";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Laman tidak selamat";

@@ -32,7 +32,7 @@
 "focusOnboarding.p3aToggleDescription" = "Μπορείτε να το αλλάξετε όποτε θέλετε, από τις Ρυθμίσεις Brave, στην επιλογή «Ασπίδες Brave και απόρρητο».";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "Κοινοποιήστε απολύτως ιδιωτικές και ανώνυμες πληροφορίες προϊόντος.";
+"focusOnboarding.p3aToggleTitle" = "Κοινοποιήστε ιδιωτικές και ανώνυμες πληροφορίες προϊόντος.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Ξεκινήστε την περιήγηση";

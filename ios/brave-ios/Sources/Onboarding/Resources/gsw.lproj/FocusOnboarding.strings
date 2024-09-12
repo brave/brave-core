@@ -32,7 +32,7 @@
 "focusOnboarding.p3aToggleDescription" = "Sie können dies jederzeit in den Brave-Einstellungen unter „Brave Shields und Datenschutz“ ändern.";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "Teilen Sie völlig private und anonyme Produkteinblicke.";
+"focusOnboarding.p3aToggleTitle" = "Private und anonyme Produkteinblicke teilen.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Mit dem Surfen beginnen";

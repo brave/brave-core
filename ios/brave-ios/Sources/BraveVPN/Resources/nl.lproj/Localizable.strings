@@ -1,0 +1,301 @@
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "activeer";
+
+/* Text for toggle which indicating the toggle action is for selecting region in automatic */
+"vpn.automaticServerSelectionToggleTitle" = "Automatisch";
+
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "Koop";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxDevicesProtect" = "Bescherm 5 apparaten met 1 abonnement";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoLocation" = "Kies je geolocatie of land";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "Brave legt je activiteit nooit vast";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectYourDevices" = "Bescherm elke app en je volledige apparaat";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSaferWifi" = "Veiliger voor privé- of openbare wifinetwerken";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSpeedFast" = "Razendsnel, tot 100 Mbps";
+
+/* Text showing the vpn region is connected */
+"vpn.connectedRegionDescription" = "Verbonden";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "App Store-betalingsbewijs";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "App-versie";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "Mobiele provider";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "Brave volgt je niet of weet niet hoe je onze app gebruikt, dus we weten niet hoe je VPN hebt ingesteld. Deel informatie over het probleem dat je ondervindt en we doen ons best om het zo snel mogelijk op te lossen.";
+
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "E-mail kan niet worden verstuurd. Controleer je e-mailconfiguratie.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "Selecteer de informatie die je wilt delen met ons.\n\nHoe meer informatie je deelt met ons, hoe makkelijker het is voor ons Ondersteuningsteam om het probleem op te lossen.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "Ondersteuning geleverd met hulp van het Guardian Team.";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "VPN-hostnaam";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "Probleem";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "Probleem met betrouwbaarheid van verbinding";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Kies de categorie die het probleem het best omschrijft.";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "Geen internet bij verbinding";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "Overige";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "Geen VPN-verbinding mogelijk (andere fout)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "Trage verbinding";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "Website werkt niet";
+
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "Foutlogs";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "Netwerktype";
+
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Platform";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "Stuur e-mail";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "Abonnementstype";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "Tijdzone op iOS";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Probleem met Brave Firewall + VPN";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "Schakel in";
+
+/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
+"vpn.freeTrialDetail" = "Bij alle abonnementen is er een %@.";
+
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "gratis proefperiode van 7 dagen";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "probeer 7 dagen gratis";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "Alle abonnementen worden automatisch verlengd, maar kunnen vóór de verlengdatum worden opgezegd.";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "Met dit profiel kan VPN automatisch verbinding maken en het verkeer op je apparaat beveiligen. Deze VPN-verbinding is geëncrypt en gerouteerd via de intelligente firewall van Brave om potentieel schadelijke en ongewenste verbindingen te blokkeren.";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "Installeer VPN-profiel";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Brave installeert nu een VPN-profiel.";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "VPN is nu ingeschakeld";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "Installeer VPN";
+
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "Probeer GRATIS";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "Wordt maandelijks verlengd";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "Maandabonnement";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "Verlopen";
+
+/* Description of vpn tunnel protocol
+   The alert title showing vpn region is changed */
+"vpn.protocolPickerDescription" = "Selecteer het gewenste transportprotocol. Na de overschakeling worden de bestaande VPN-inloggegevens gewist en word je opnieuw verbonden als je momenteel een VPN-verbinding gebruikt.";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "Overschakeling van tunnelprotocol is mislukt. Probeer het later opnieuw.";
+
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Serverfout";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "Transportprotocol";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "Tunnelprotocol van VPN is gewijzigd.";
+
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "Op basis van de ingestelde tijdzone op je systeem wordt automatisch de dichtste serverregio in jouw buurt geselecteerd. Dit is aanbevolen voor een hoge internetsnelheid.";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Overschakeling van server is mislukt. Probeer het later opnieuw.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Serverfout";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Serverregio";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "VPN-regio is gewijzigd.";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "VPN-configuratie kan niet opnieuw worden ingesteld. Probeer het nogmaals. Als het probleem aanhoudt, neem je contact op met Ondersteuning.";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "Opnieuw";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "Opnieuw instellen is mislukt";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "VPN-configuratie is opnieuw ingesteld.";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "Opnieuw ingesteld";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "Herstel";
+
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "Upgrade naar een VPN om je verbinding te beschermen en invasieve trackers overal te blokkeren.";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "Contact met de technische ondersteuning";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Serverlijst kon niet worden opgehaald. Probeer het later opnieuw.";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "VPN-ondersteuning";
+
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Koppel aankoop aan Brave-account";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Koppel je App Store-aankoop aan je Brave-account om Brave VPN op andere apparaten te gebruiken.";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "Beheer abonnement";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "Wissel aanbiedingscode in";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "Stel configuratie opnieuw in";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "Host";
+
+/* Table cell title for vpn's server location and which open opens location select */
+"vpn.settingsServerLocation" = "Locatie";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "Server";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "Verloopt op";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "Abonnement";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "Status";
+
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "Transportprotocol";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Werk betaalmethode bij";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "Zelfs op de achtergrond beschermt Brave je.";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN staat AAN";
+
+/* Text for title of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalTitle" = "Optimaal";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "Het VPN kon niet worden geïnitialiseerd. Probeer het opnieuw of ga naar de pagina met de VPN-instellingen en stel de configuratie opnieuw in.";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "Fout";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Als je Brave Firewall + VPN wilt gebruiken, moet er een VPN-profiel op je apparaat geïnstalleerd zijn. ";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "Geen toestemming";
+
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "Aanbiedingscode kan niet worden ingewisseld. Controleer de aanbiedingscode en probeer het opnieuw.";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "Aankoop kan niet worden afgerond. Probeer het opnieuw of controleer je betalingsgegevens bij Apple en probeer het dan opnieuw.";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "Fout";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "Abonnementen worden in rekening gebracht bij je iTunes-account.\n\nAlle resterende tijd van een eventuele gratis proefperiode gaat verloren bij de aankoop van een abonnement.\n\nJe abonnement wordt automatisch verlengd tenzij je het ten minste 24 uur vóór het einde van de huidige periode opzegt.\n\nJe kunt je abonnementen beheren in Instellingen.\n\nAls je Brave gebruikt, ga je akkoord met de Gebruiksvoorwaarden en het Privacybeleid.";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "Wissel code in";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "Hiermee stel je de configuratie van Brave Firewall + VPN opnieuw in en los je eventuele fouten op. Dit proces duurt maar even.";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "Stel configuratie opnieuw in";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "Stel opnieuw in";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "Maandabonnement";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "Jaarabonnement";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "Bespaar %@ bij een jaarlijkse verlenging";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+"vpn.yearlySubDisclaimer" = "Beste prijs-waardeverhouding";
+
+/* One year lenght vpn subcription */
+"vpn.yearlySubTitle" = "Eén jaar";
+

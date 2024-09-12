@@ -32,7 +32,7 @@
 "focusOnboarding.p3aToggleDescription" = "Bu özelliği \"Brave Kalkanları ve Gizlilik\" altındaki Brave Ayarlarından dilediğiniz zaman değiştirebilirsiniz.";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "Tamamen Gizli ve Anonim Ürün İçgörülerini Paylaşın.";
+"focusOnboarding.p3aToggleTitle" = "Gizli ve Anonim Ürüm İçgörülerini Paylaşın.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Göz Atmaya Başla";

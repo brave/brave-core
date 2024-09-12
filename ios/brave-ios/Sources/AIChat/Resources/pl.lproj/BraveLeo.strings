@@ -70,6 +70,12 @@
 /* The title shown on limit reached error view, which is suggesting user to change default model */
 "aichat.contextLimitErrorTitle" = "Ta rozmowa jest za długa i nie może być kontynuowana. \nMogą być dostępne inne modele, z którymi Leo jest w stanie zapewnić dokładność przy dłuższych rozmowach.";
 
+/* The title of the section where custom models are displayed as a list. */
+"aichat.customModelChatSectionTitle" = "Modele niestandardowe";
+
+/* The title for the custom models section in the menu */
+"aichat.customModelsMenuSectionTitle" = "Modele niestandardowe";
+
 /* The title of the section where chat models are displayed as a list. */
 "aichat.defaultModelChatSectionTitle" = "Czat";
 
@@ -133,9 +139,6 @@
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Nieprawdopodobnie szybki czat";
 
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Cześć, nazywam się Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude 3 Sonnet opracowanego przez Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu.";
-
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet od Anthropic";
 
@@ -144,12 +147,6 @@
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Cześć, jestem Leo. Jestem asystentem Brave opartym na sztucznej inteligencji. Korzystam z modelu %@. Zapytaj mnie o cokolwiek, a ja postaram się jak najlepiej odpowiedzieć.";
-
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Cześć, jestem Leo. Jestem w pełni hostowanym asystentem Brave opartym na sztucznej inteligencji. Korzystam z modelu Llama 3 8B opracowanego przez Meta, który jest wydajny i może być stosowany w wielu przypadkach użycia.";
-
-/* The model and creator for intro message - Llama 3 8b is the model name -- Meta is the creator */
-"aichat.introMessageLlamaModelDescription" = "Model Llama 3 8b opracowany przez Meta";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Czat ogólny";
@@ -168,6 +165,9 @@
 
 /* The name of the AI-Assistant that's responsing to the user */
 "aichat.leoAssistantNameTitle" = "Leo";
+
+/* The default title displayed above a code block when the language of the code is not known. */
+"aichat.leoCodeExampleDefaultTitle" = "Przykład kodu";
 
 /* The text displayed on the loading screen when searching for a user query */
 "aichat.leoImprovedAnswerBraveSearch" = "Ulepszone wyszukiwanie odpowiedzi dla";

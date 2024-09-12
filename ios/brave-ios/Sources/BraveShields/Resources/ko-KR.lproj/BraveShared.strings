@@ -25,6 +25,9 @@
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
 "AntiAdBlockWarningTitle" = "이 사이트의 광고 차단 설정 조정";
 
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "자동 파쇄";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "강력";
 
@@ -145,8 +148,38 @@
 /* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
 "FilterListURLTextFieldPlaceholder" = "여기에 필터 목록 URL 입력";
 
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "사이트를 닫을 때 쿠키와 다른 사이트 데이터 삭제";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "이 사이트를 닫으면 기록 소거";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "엄격";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "데이터 파쇄";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "사용하지 않음";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "앱을 닫았을 때";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "사이트 탭이 닫혔을 때";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "사이트 데이터 파쇄";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "파쇄하면 이 사이트에 열린 모든 탭이 닫히고 모든 사이트 데이터가 삭제됩니다. 번복할 수 없습니다.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "사이트 데이터를 파쇄하시겠습니까?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "지금 사이트 데이터 파쇄";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "사이트가 비보안임";

@@ -32,7 +32,7 @@
 "focusOnboarding.p3aToggleDescription" = "Endre dette når som helst i Brave-innstillingene under «Brave-skjold og -personvern».";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "Del helt privat og anonym produktinnsikt.";
+"focusOnboarding.p3aToggleTitle" = "Del anonym produktinnsikt helt privat.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Begynn å surfe";

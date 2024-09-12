@@ -32,7 +32,7 @@
 "focusOnboarding.p3aToggleDescription" = "Отключить эту опцию можно в любой момент в разделе настроек «Brave Щит и конфиденциальность».";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "Делиться всеми конфиденциальными и анонимными сведениями о продукте";
+"focusOnboarding.p3aToggleTitle" = "Делиться конфиденциальными и анонимными сведениями о продукте";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Начать поиск";

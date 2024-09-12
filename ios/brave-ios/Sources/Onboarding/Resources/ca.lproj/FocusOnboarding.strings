@@ -31,9 +31,6 @@
 /* The title of the toggle for enable / disable privacy preserving analytics. */
 "focusOnboarding.p3aToggleDescription" = "Canvieu això en qualsevol moment a la configuració de Brave, a \"Privacitat i Escuts de Brave\".";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "Compartiu informació completament anònima i privada de productes.";
-
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Inicia la navegació";
 
