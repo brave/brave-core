@@ -591,6 +591,12 @@ Config.prototype.buildArgs = function () {
     args.enable_brave_page_graph_webapi_probes = false
   }
 
+  // Devtools: Now we patch devtools frontend, so it is usefull to see
+  // if something goes wrong on CI builds.
+  if (this.targetOS !== 'android' && this.targetOS !== 'ios' && this.isCI) {
+    args.devtools_skip_typecheck = false
+  }
+
   if (this.targetOS) {
     args.target_os = this.targetOS;
   }
