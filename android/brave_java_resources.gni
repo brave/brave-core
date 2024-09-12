@@ -938,6 +938,7 @@ brave_java_resources = [
   "java/res/layout/radio_button_group_ddns_resolve_method_preference.xml",
   "java/res/layout/recovery_phrase_item_layout.xml",
   "java/res/layout/report_broken_site_layout.xml",
+  "java/res/layout/report_error_page_layout.xml",
   "java/res/layout/rewards_notification_permission_request.xml",
   "java/res/layout/rewards_onboarding.xml",
   "java/res/layout/rewards_onboarding_all_set.xml",

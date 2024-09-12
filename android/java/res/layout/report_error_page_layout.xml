@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="24dp"
+    android:visibility="gone"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center_vertical"
+        android:fontFamily="sans-serif"
+        android:text="@string/report_broken_site_text"
+        android:textColor="@color/default_icon_color_tint_list"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/default_icon_color_tint_list"
+        android:layout_marginBottom="14dp"
+        android:text="@string/report_error_page_explanation"/>
+
+    <android.widget.Button
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/transparent_bg_bordered"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/close_text"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        style="?android:attr/buttonBarButtonStyle"
+        android:textColor="@color/default_icon_color_tint_list"/>
+</LinearLayout>
