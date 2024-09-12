@@ -50,8 +50,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
     using ExtractCallback = base::OnceCallback<void(std::string)>;
 
     virtual ~PrintPreviewExtractionDelegate() = default;
-    // Get the current text from the WebContents using Print Preview. This
-    // should not be called
+    // Get the current text from the WebContents using Print Preview
     virtual void Extract(bool is_pdf, ExtractCallback callback) = 0;
   };
 
