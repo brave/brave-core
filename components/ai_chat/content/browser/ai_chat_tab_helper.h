@@ -174,7 +174,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   uint8_t check_pdf_a11y_tree_attempts_ = 0;
 
   raw_ptr<content::WebContents> inner_web_contents_ = nullptr;
-  
+
   // TODO(petemill): Use signal to allow for multiple callbacks
   ConversationHandler::GetPageContentCallback
       pending_get_page_content_callback_;

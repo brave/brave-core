@@ -570,8 +570,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
     // Fetch updated page content before performing generation
     GeneratePageContent(
         base::BindOnce(&ConversationHandler::PerformAssistantGeneration,
-                       weak_ptr_factory_.GetWeakPtr(), question_part,
-                       associated_content_uuid_));
+                       weak_ptr_factory_.GetWeakPtr(), question_part));
   } else {
     // Now the conversation is committed, we can remove some unneccessary data
     // if we're not associated with a page.
@@ -579,7 +578,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
     associated_content_delegate_ = nullptr;
     OnSuggestedQuestionsChanged();
     // Perform generation immediately
-    PerformAssistantGeneration(question_part, associated_content_uuid_);
+    PerformAssistantGeneration(question_part);
   }
 }
 
@@ -744,19 +743,19 @@ void ConversationHandler::GenerateQuestions() {
   // Make API request for questions but first get page content.
   // Do not call SetRequestInProgress, this progress
   // does not need to be shown to the UI.
-  auto on_content_retrieved = [](ConversationHandler* instance,
-                                 int64_t navigation_id,
-                                 std::string page_content, bool is_video,
-                                 std::string invalidation_token) {
-    instance->engine_->GenerateQuestionSuggestions(
-        is_video, page_content,
-        base::BindOnce(&ConversationHandler::OnSuggestedQuestionsResponse,
-                       instance->weak_ptr_factory_.GetWeakPtr(),
-                       std::move(navigation_id)));
-  };
-  GeneratePageContent(base::BindOnce(std::move(on_content_retrieved),
-                                     base::Unretained(this),
-                                     associated_content_uuid_));
+  GeneratePageContent(
+      base::BindOnce(&ConversationHandler::PerformQuestionGeneration,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void ConversationHandler::PerformQuestionGeneration(
+    std::string page_content,
+    bool is_video,
+    std::string invalidation_token) {
+  engine_->GenerateQuestionSuggestions(
+      is_video, page_content,
+      base::BindOnce(&ConversationHandler::OnSuggestedQuestionsResponse,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void ConversationHandler::GetAssociatedContentInfo(
@@ -944,17 +943,16 @@ void ConversationHandler::AddToConversationHistory(
 
 void ConversationHandler::PerformAssistantGeneration(
     const std::string& input,
-    int associated_content_uuid,
     std::string page_content /* = "" */,
     bool is_video /* = false */,
     std::string invalidation_token /* = "" */) {
-  auto data_received_callback = base::BindRepeating(
-      &ConversationHandler::OnEngineCompletionDataReceived,
-      weak_ptr_factory_.GetWeakPtr(), associated_content_uuid);
+  auto data_received_callback =
+      base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
+                          weak_ptr_factory_.GetWeakPtr());
 
   auto data_completed_callback =
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
-                     weak_ptr_factory_.GetWeakPtr(), associated_content_uuid);
+                     weak_ptr_factory_.GetWeakPtr());
 
   bool should_refine_page_content =
       features::IsPageContentRefineEnabled() &&
@@ -1157,12 +1155,10 @@ void ConversationHandler::GeneratePageContent(GetPageContentCallback callback) {
 
   associated_content_delegate_->GetContent(
       base::BindOnce(&ConversationHandler::OnGeneratePageContentComplete,
-                     weak_ptr_factory_.GetWeakPtr(), associated_content_uuid_,
-                     std::move(callback)));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void ConversationHandler::OnGeneratePageContentComplete(
-    int navigation_id,
     GetPageContentCallback callback,
     std::string contents_text,
     bool is_video,
@@ -1201,24 +1197,12 @@ void ConversationHandler::OnGetRefinedPageContent(
 }
 
 void ConversationHandler::OnEngineCompletionDataReceived(
-    int navigation_id,
     mojom::ConversationEntryEventPtr result) {
-  if (navigation_id != associated_content_uuid_) {
-    VLOG(1) << __func__ << " for a different navigation. Ignoring.";
-    return;
-  }
-
   UpdateOrCreateLastAssistantEntry(std::move(result));
 }
 
 void ConversationHandler::OnEngineCompletionComplete(
-    int navigation_id,
     EngineConsumer::GenerationResult result) {
-  if (navigation_id != associated_content_uuid_) {
-    VLOG(1) << __func__ << " for a different navigation. Ignoring.";
-    return;
-  }
-
   is_request_in_progress_ = false;
 
   if (result.has_value()) {
@@ -1239,15 +1223,7 @@ void ConversationHandler::OnEngineCompletionComplete(
 }
 
 void ConversationHandler::OnSuggestedQuestionsResponse(
-    int content_uuid,
     EngineConsumer::SuggestedQuestionResult result) {
-  // We might have navigated away whilst this async operation is in
-  // progress, so check if we're the same navigation.
-  if (content_uuid != associated_content_uuid_) {
-    VLOG(1) << __func__ << " for a different navigation. Ignoring.";
-    return;
-  }
-
   if (result.has_value()) {
     suggestions_.insert(suggestions_.end(), result->begin(), result->end());
     suggestion_generation_status_ =
