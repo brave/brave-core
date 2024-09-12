@@ -35,6 +35,11 @@ class TranslateURLBarButton: UIButton {
     fatalError()
   }
 
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    gradientView.frame = bounds
+  }
+
   override var isSelected: Bool {
     didSet {
       updateAppearance()
@@ -96,39 +101,24 @@ class TranslateURLBarButton: UIButton {
     }
   }
 
-  private lazy var gradientLayer = CAGradientLayer().then {
-    let gradient = BraveGradient(
-      stops: [
-        .init(color: UIColor(rgb: 0xFA7250), position: 0.0),
-        .init(color: UIColor(rgb: 0xFF1893), position: 0.43),
-        .init(color: UIColor(rgb: 0xA78AFF), position: 1.0),
-      ],
-      angle: .figmaDegrees(314.42)
-    )
-
-    $0.frame = self.bounds
-    $0.type = gradient.type
-    $0.colors = gradient.stops.map(\.color.cgColor)
-    $0.locations = gradient.stops.map({ NSNumber(value: $0.position) })
-    $0.startPoint = gradient.startPoint
-    $0.endPoint = gradient.endPoint
-
-    let mask = CALayer()
-    mask.contents = imageIcon?.cgImage
-    mask.frame = $0.bounds
-    $0.mask = mask
-  }
+  private let gradientView = GradientView(braveSystemName: .iconsActive)
 
   func setOnboardingState(enabled: Bool) {
     if enabled {
-      gradientLayer.frame = imageView?.bounds ?? self.bounds
-      gradientLayer.mask?.frame = gradientLayer.bounds
-
-      imageView?.layer.addSublayer(gradientLayer)
-      setImage(nil, for: .normal)
+      addSubview(gradientView)
+      gradientView.frame = bounds
+      gradientView.mask = imageView
     } else {
-      gradientLayer.removeFromSuperlayer()
+      if let imageView = imageView {
+        // gradientView.mask = imageView automatically removes the imageView from the button :o!
+        // So we have to add it back lol
+        addSubview(imageView)
+      }
+
+      gradientView.mask = nil
+      gradientView.removeFromSuperview()
       setImage(imageIcon, for: .normal)
+      updateIconSize()
     }
   }
 

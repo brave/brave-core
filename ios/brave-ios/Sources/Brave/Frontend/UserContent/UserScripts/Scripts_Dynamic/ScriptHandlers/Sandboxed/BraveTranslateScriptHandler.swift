@@ -152,6 +152,19 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
       return nil
     }
 
+    //    return WKUserScript(
+    //      source: secureScript(
+    //        handlerNamesMap: ["$<message_handler>": messageHandlerName,
+    //                          "$<brave_translate_api_key>": kBraveServicesKey,
+    //                          "$<brave_translate_script>": namespace],
+    //        securityToken: scriptId,
+    //        script: script
+    //      ),
+    //      injectionTime: .atDocumentEnd,
+    //      forMainFrameOnly: true,
+    //      in: scriptSandbox
+    //    )
+
     // HACKS! Need a better way to do this.
     // Chromium Scripts do NOT have a secure message handler and cannot be sandboxed the same way!
     return WKUserScript(
@@ -419,10 +432,6 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
         try Task.checkCancellation()
         try await updateTranslationStatus()
       }
-    }
-
-    if body["command"] as? String == "status" {
-      print(body)
     }
 
     replyHandler(nil, nil)
