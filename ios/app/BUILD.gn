@@ -77,7 +77,6 @@ source_set("app") {
     "//ios/chrome/app/startup:startup",
     "//ios/chrome/app/startup:startup_basic",
     "//ios/chrome/browser/bookmarks/model",
-    "//ios/chrome/browser/browser_state/model",
     "//ios/chrome/browser/credential_provider/model:buildflags",
     "//ios/chrome/browser/flags:system_flags",
     "//ios/chrome/browser/history/model",
