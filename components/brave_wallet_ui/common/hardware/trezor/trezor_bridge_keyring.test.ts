@@ -682,7 +682,7 @@ test('Sign typed from unlocked device, success', () => {
 })
 
 test('Sign typed message api not supported', () => {
-  const signMessagePayload = {
+  const signMessagePayload: SignTypedMessageResponse = {
     success: false,
     payload: {
       code: 'Method_InvalidParameter',

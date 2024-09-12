@@ -82,7 +82,10 @@ export default class EthereumLedgerBridgeKeyring
       data.payload.signature
     )
     if (!ethereumSignatureVRS) {
-      return { success: false, error: 'Invalid signature' }
+      return {
+        success: false,
+        error: 'Invalid signature'
+      }
     }
 
     return {
@@ -121,7 +124,10 @@ export default class EthereumLedgerBridgeKeyring
       data.payload.signature
     )
     if (!ethereumSignatureBytes) {
-      return { success: false, error: 'Invalid signature' }
+      return {
+        success: false,
+        error: 'Invalid signature'
+      }
     }
 
     return {
@@ -161,7 +167,10 @@ export default class EthereumLedgerBridgeKeyring
       data.payload.signature
     )
     if (!ethereumSignatureBytes) {
-      return { success: false, error: 'Invalid signature' }
+      return {
+        success: false,
+        error: 'Invalid signature'
+      }
     }
 
     return {

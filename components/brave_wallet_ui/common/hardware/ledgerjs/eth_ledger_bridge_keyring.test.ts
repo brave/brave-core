@@ -52,21 +52,17 @@ const unlockSuccessResponse: UnlockResponse = {
   payload: { success: true }
 }
 
+const unlockError: HardwareOperationError = {
+  success: false,
+  error: 'LedgerError',
+  code: 101
+}
+
 const unlockErrorResponse: UnlockResponse = {
   id: LedgerCommand.Unlock,
   origin: window.origin,
   command: LedgerCommand.Unlock,
-  payload: {
-    success: false,
-    error: 'LedgerError',
-    code: 101
-  }
-}
-
-const expectedUnlockResponse: HardwareOperationError = {
-  success: false,
-  error: 'LedgerError',
-  code: 101
+  payload: unlockError
 }
 
 test('getAccounts unlock error', async () => {
@@ -78,7 +74,7 @@ test('getAccounts unlock error', async () => {
     1,
     EthLedgerLiveHardwareImportScheme
   )
-  expect(result).toEqual(expectedUnlockResponse)
+  expect(result).toEqual(unlockError)
 })
 
 test('getAccounts ledger live derivation path success', async () => {
@@ -231,11 +227,7 @@ test('getAccounts ledger error after successful unlock', async () => {
     id: LedgerCommand.GetAccount,
     origin: window.origin,
     command: LedgerCommand.GetAccount,
-    payload: {
-      success: false,
-      error: 'LedgerError',
-      code: 101
-    }
+    payload: unlockError
   }
 
   transport.addSendCommandResponse(getAccountResponseLedgerError)
@@ -245,7 +237,7 @@ test('getAccounts ledger error after successful unlock', async () => {
     EthLedgerLiveHardwareImportScheme
   )
 
-  expect(result).toEqual(expectedUnlockResponse)
+  expect(result).toEqual(unlockError)
 })
 
 test('signTransaction unlock error', async () => {
@@ -256,7 +248,7 @@ test('signTransaction unlock error', async () => {
     "m/44'/60'/0'/0/0",
     'transaction'
   )
-  expect(result).toEqual(expectedUnlockResponse)
+  expect(result).toEqual(unlockError)
 })
 
 test('signTransaction success', async () => {
@@ -292,11 +284,7 @@ test('signTransaction ledger error after successful unlock', async () => {
     id: LedgerCommand.SignTransaction,
     origin: window.origin,
     command: LedgerCommand.SignTransaction,
-    payload: {
-      success: false,
-      error: 'LedgerError',
-      code: 101
-    }
+    payload: unlockError
   }
   transport.addSendCommandResponse(signTransactionResponse)
   const result = await keyring.signTransaction(
@@ -304,11 +292,7 @@ test('signTransaction ledger error after successful unlock', async () => {
     'transaction'
   )
 
-  expect(result).toEqual({
-    success: false,
-    error: 'LedgerError',
-    code: 101
-  })
+  expect(result).toEqual(unlockError)
 })
 
 test('signPersonalMessage unlock error', async () => {
@@ -359,22 +343,14 @@ test('signPersonalMessage failure after unsuccessful unlock', async () => {
     id: LedgerCommand.SignTransaction,
     origin: window.origin,
     command: LedgerCommand.SignTransaction,
-    payload: {
-      success: false,
-      error: 'LedgerError',
-      code: 101
-    }
+    payload: unlockError
   }
   transport.addSendCommandResponse(signPersonalMessageResponse)
   const result = await keyring.signPersonalMessage(
     "m/44'/60'/0'/0/0",
     'message'
   )
-  expect(result).toEqual({
-    success: false,
-    error: 'LedgerError',
-    code: 101
-  })
+  expect(result).toEqual(unlockError)
 })
 
 test('signEip712Message unlock error', async () => {
@@ -426,11 +402,7 @@ test('signEip712Message failure after unsuccessful unlock', async () => {
     id: LedgerCommand.SignTransaction,
     origin: window.origin,
     command: LedgerCommand.SignTransaction,
-    payload: {
-      success: false,
-      error: 'LedgerError',
-      code: 101
-    }
+    payload: unlockError
   }
   transport.addSendCommandResponse(signEip712MessageResponse)
   const result = await keyring.signEip712Message(
@@ -438,9 +410,5 @@ test('signEip712Message failure after unsuccessful unlock', async () => {
     'domainSeparatorHex',
     'hashStructMessageHex'
   )
-  expect(result).toEqual({
-    success: false,
-    error: 'LedgerError',
-    code: 101
-  })
+  expect(result).toEqual(unlockError)
 })

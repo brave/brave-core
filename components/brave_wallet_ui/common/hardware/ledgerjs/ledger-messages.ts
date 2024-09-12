@@ -37,7 +37,6 @@ export type CommandMessage = {
   origin: string
 }
 
-// TODO(apaymyshev): need string for code?
 export type LedgerError = {
   error?: string
   code?: number | string

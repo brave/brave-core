@@ -27,15 +27,17 @@ const createKeyring = () => {
   return { keyring, transport }
 }
 
+const unlockError: HardwareOperationError = {
+  success: false,
+  error: 'LedgerError',
+  code: 101
+}
+
 const unlockErrorResponse: UnlockResponse = {
   id: LedgerCommand.Unlock,
   origin: window.origin,
   command: LedgerCommand.Unlock,
-  payload: {
-    success: false,
-    error: 'LedgerError',
-    code: 101
-  }
+  payload: unlockError
 }
 
 const unlockSuccessResponse: UnlockResponse = {
@@ -53,11 +55,7 @@ test('getAccounts unlock error', async () => {
     1,
     BtcLedgerMainnetHardwareImportScheme
   )
-  const expectedResult: HardwareOperationError = {
-    success: false,
-    error: 'LedgerError',
-    code: 101
-  }
+  const expectedResult: HardwareOperationError = unlockError
   expect(result).toEqual(expectedResult)
 })
 
@@ -116,11 +114,7 @@ test('getAccounts ledger error after successful unlock', async () => {
     id: LedgerCommand.GetAccount,
     origin: window.origin,
     command: LedgerCommand.GetAccount,
-    payload: {
-      success: false,
-      error: 'LedgerError',
-      code: 101
-    }
+    payload: unlockError
   }
 
   transport.addSendCommandResponse(getAccountResponseLedgerError)
@@ -130,10 +124,6 @@ test('getAccounts ledger error after successful unlock', async () => {
     BtcLedgerMainnetHardwareImportScheme
   )
 
-  const expectedResult: HardwareOperationError = {
-    success: false,
-    code: 101,
-    error: 'LedgerError'
-  }
+  const expectedResult: HardwareOperationError = unlockError
   expect(result).toEqual(expectedResult)
 })

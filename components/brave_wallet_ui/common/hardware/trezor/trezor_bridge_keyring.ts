@@ -134,7 +134,10 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
       response.payload
     )
     if (!ethereumSignatureVRS) {
-      return { success: false, error: 'Invalid signature' }
+      return {
+        success: false,
+        error: 'Invalid signature'
+      }
     }
     return {
       success: true,
@@ -173,7 +176,10 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
       response.payload
     )
     if (!ethereumSignatureBytes) {
-      return { success: false, error: 'Invalid signature' }
+      return {
+        success: false,
+        error: 'Invalid signature'
+      }
     }
     return {
       success: true,
@@ -232,7 +238,10 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
       response.payload
     )
     if (!ethereumSignatureBytes) {
-      return { success: false, error: 'Invalid signature' }
+      return {
+        success: false,
+        error: 'Invalid signature'
+      }
     }
     return {
       success: true,

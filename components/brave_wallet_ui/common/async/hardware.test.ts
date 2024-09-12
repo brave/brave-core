@@ -50,17 +50,6 @@ const getMockedLedgerEthKeyring = (args: {
         return { success: false }
       }
     }
-    // signed: () => {
-    //   if (!signed) {
-    //     return
-    //   }
-    //   const { v, r, s } = signed.payload as EthereumSignedTx
-    //   return {
-    //     v: '0x' + v,
-    //     r: r,
-    //     s: s
-    //   }
-    // }
   }
 }
 

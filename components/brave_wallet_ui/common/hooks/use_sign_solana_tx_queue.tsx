@@ -77,10 +77,10 @@ export const useSignSolanaTransactionsQueue = () => {
   const queueIndex = queueNumber - 1
 
   // queries
-  const { data: SignSolTransactionsRequests } =
+  const { data: signSolTransactionsRequests } =
     useGetPendingSignSolTransactionsRequestsQuery()
-  const selectedRequest = SignSolTransactionsRequests
-    ? SignSolTransactionsRequests.at(queueIndex)
+  const selectedRequest = signSolTransactionsRequests
+    ? signSolTransactionsRequests.at(queueIndex)
     : undefined
   const { data: network } = useGetNetworkQuery(
     selectedRequest
@@ -90,7 +90,7 @@ export const useSignSolanaTransactionsQueue = () => {
   const { account } = useAccountQuery(selectedRequest?.fromAccountId)
 
   // computed
-  const queueLength = SignSolTransactionsRequests?.length || 0
+  const queueLength = signSolTransactionsRequests?.length || 0
 
   // force signing messages in-order
   const isDisabled = queueNumber !== 1
@@ -102,7 +102,6 @@ export const useSignSolanaTransactionsQueue = () => {
 
   // render
   return {
-    SignSolTransactionsRequests,
     selectedRequest,
     isDisabled,
     network,

@@ -39,11 +39,8 @@ test('unlock successful', async () => {
   }
   transport.addSendCommandResponse(unlockResponse)
   const result: HardwareOperationResult = await keyring.unlock()
-  expect(result).toEqual({
-    success: false,
-    error: 'LedgerError',
-    code: 101
-  })
+  const expectedResult: HardwareOperationResult = unlockResponse.payload
+  expect(result).toEqual(expectedResult)
 })
 
 test('unlock ledger error', async () => {
@@ -61,11 +58,8 @@ test('unlock ledger error', async () => {
   }
   transport.addSendCommandResponse(unlockResponse)
   const result: HardwareOperationResult = await keyring.unlock()
-  expect(result).toEqual({
-    success: false,
-    error: 'LedgerError',
-    code: 101
-  })
+  const expectedResult: HardwareOperationResult = unlockResponse.payload
+  expect(result).toEqual(expectedResult)
 })
 
 test('unlock unauthorized error', async () => {
@@ -83,11 +77,8 @@ test('unlock unauthorized error', async () => {
   }
   transport.addSendCommandResponse(sendCommandResponse)
   const result: HardwareOperationResult = await keyring.unlock()
-  expect(result).toEqual({
-    success: false,
-    error: 'unauthorized',
-    code: undefined
-  })
+  const expectedResult: HardwareOperationResult = sendCommandResponse.payload
+  expect(result).toEqual(expectedResult)
 })
 
 test('unlock bridge error123', async () => {
