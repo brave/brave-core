@@ -270,13 +270,15 @@ class ConversationHandler : public mojom::ConversationHandler,
   int GetContentUsedPercentage();
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
   void PerformAssistantGeneration(const std::string& input,
-                                  int associated_content_uuid,
                                   std::string page_content = "",
                                   bool is_video = false,
                                   std::string invalidation_token = "");
   void SetAPIError(const mojom::APIError& error);
   void UpdateOrCreateLastAssistantEntry(mojom::ConversationEntryEventPtr text);
   void MaybeSeedOrClearSuggestions();
+  void PerformQuestionGeneration(std::string page_content,
+                                 bool is_video,
+                                 std::string invalidation_token);
 
   // Some associated content may provide some conversation that the user wants
   // to continue, e.g. Brave Search.
@@ -289,8 +291,7 @@ class ConversationHandler : public mojom::ConversationHandler,
                       bool is_video,
                       std::string invalidation_token);
 
-  void OnGeneratePageContentComplete(int navigation_id,
-                                     GetPageContentCallback callback,
+  void OnGeneratePageContentComplete(GetPageContentCallback callback,
                                      std::string contents_text,
                                      bool is_video,
                                      std::string invalidation_token);
@@ -301,12 +302,9 @@ class ConversationHandler : public mojom::ConversationHandler,
       std::string page_content,
       bool is_video,
       base::expected<std::string, std::string> refined_page_content);
-  void OnEngineCompletionDataReceived(int associated_content_uuid,
-                                      mojom::ConversationEntryEventPtr result);
-  void OnEngineCompletionComplete(int associated_content_uuid,
-                                  EngineConsumer::GenerationResult result);
+  void OnEngineCompletionDataReceived(mojom::ConversationEntryEventPtr result);
+  void OnEngineCompletionComplete(EngineConsumer::GenerationResult result);
   void OnSuggestedQuestionsResponse(
-      int navigation_id,
       EngineConsumer::SuggestedQuestionResult result);
 
   void OnModelDataChanged();
@@ -320,9 +318,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   base::WeakPtr<AssociatedContentDelegate> associated_content_delegate_;
   std::unique_ptr<AssociatedArchiveContent> archive_content_;
 
-  // UUID for associated content so that back navigations can reunite the
-  // AssociatedContentDelegate with the ConversationHandler, e.g. navigation id.
-  int associated_content_uuid_;
   std::string model_key_;
   // Chat conversation entries
   std::vector<mojom::ConversationTurnPtr> chat_history_;
