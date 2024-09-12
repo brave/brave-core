@@ -311,7 +311,6 @@ void AddBraveColorMixerForAllThemes(ui::ColorProvider* provider,
   // color by their color mixers.
   mixer[kColorToolbarButtonActivated] = {SkColorSetRGB(0x7C, 0x91, 0xFF)};
   mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
-  mixer[kColorToolbarContentAreaSeparator] = {kColorToolbar};
 }
 
 }  // namespace
@@ -344,7 +343,6 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
   }
 
   mixer[kColorToolbar] = {ui::kColorSysBase};
-  mixer[kColorToolbarContentAreaSeparator] = {nala::kColorDividerSubtle};
 
   key.color_mode == ui::ColorProviderKey::ColorMode::kDark
       ? AddChromeDarkThemeColorMixer(provider, key)
@@ -666,7 +664,6 @@ void AddTorThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorToolbarButtonIcon] = {nala::kColorPrimitiveTorWindow70};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
-  mixer[kColorToolbarContentAreaSeparator] = {kColorToolbar};
   mixer[ui::kColorFrameActive] = {kPrivateTorFrame};
   mixer[ui::kColorFrameInactive] = {kPrivateTorFrame};
   mixer[kColorTabDividerFrameInactive] = {SkColorSetRGB(0x5A, 0x53, 0x66)};
