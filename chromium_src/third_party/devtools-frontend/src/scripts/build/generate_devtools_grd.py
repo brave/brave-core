@@ -4,7 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import os
-import argparse
+import re
 
 import override_utils
 
@@ -19,7 +19,7 @@ def parse_args(original_func, *args, **kwargs):
     for filename in parsed_args.source_files:
         source_files.append(filename)
 
-        patch_name = filename.replace(".js", ".patch.js", 1)
+        patch_name = re.sub(r'\.js$', '.patch.js', filename)
         patch = os.path.join(os.path.dirname(parsed_args.output_filename),
                              patch_name)
         if filename != patch_name and os.path.exists(patch):
