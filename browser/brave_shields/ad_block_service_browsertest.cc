@@ -104,6 +104,7 @@ using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
+using brave_shields::features::kBraveAdblockProceduralFiltering;
 using brave_shields::features::kBraveAdblockScriptletDebugLogs;
 using brave_shields::features::kCosmeticFilteringJsPerformance;
 
@@ -1938,6 +1939,40 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringFlagDisabledTest,
                          "checkSelector('.ad-banner', 'display', 'block')"));
 
   ASSERT_EQ(true, EvalJs(contents, "checkSelector('.ad', 'display', 'block')"));
+}
+
+class ProceduralFilteringFlagDisabledTest : public AdBlockServiceTest {
+ public:
+  ProceduralFilteringFlagDisabledTest() {
+    feature_list_.InitAndDisableFeature(kBraveAdblockProceduralFiltering);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// Ensure no cosmetic filtering occurs when the feature flag is disabled
+IN_PROC_BROWSER_TEST_F(ProceduralFilteringFlagDisabledTest,
+                       ProceduralFilteringDisabledHasText) {
+  UpdateAdBlockInstanceWithRules(
+      "a.com##.string-cases > div:has-text(hide me)\n"
+      "a.com##.regex-cases > div:has-text(/should be [a-z]{6}\\./)\n"
+      "a.com##.items:has-text(Sponsored)\n"
+      "a.com##.items2:has-text(Sponsored) + .container:has-text(Ad)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-has-text [data-expect]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
 }
 
 #if BUILDFLAG(ENABLE_PLAYLIST)

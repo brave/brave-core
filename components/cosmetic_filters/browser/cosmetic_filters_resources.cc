@@ -9,9 +9,11 @@
 #include <optional>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 
 namespace {
@@ -25,9 +27,9 @@ const char kProceduralActionsScript[] =
               stylesheet += filter.selector[0].arg + '{' + filter.action.arg + '}\n';
               return false;
             }
-            return true;
+            return $1;
           };
-          CC.proceduralActionFilters = JSON.parse(String.raw`$1`).filter(f => takeStyleFilter(f));
+          CC.proceduralActionFilters = JSON.parse(String.raw`$2`).filter(f => takeStyleFilter(f));
           CC.hasProceduralActions = CC.proceduralActionFilters.length > 0;
           return stylesheet;
         })();)";
@@ -97,6 +99,12 @@ void CosmeticFiltersResources::UrlCosmeticResources(
   const auto* procedural_actions_list =
       resources.FindList("procedural_actions");
   if (procedural_actions_list && !procedural_actions_list->empty()) {
+    const char* procedural_filtering_feature_enabled =
+        base::FeatureList::IsEnabled(
+            brave_shields::features::kBraveAdblockProceduralFiltering)
+            ? "true"
+            : "false";
+
     // Each element of procedural_actions_list is already formatted as JSON.
     // Combine them into a single JSON list using string concatenation to avoid
     // double-escaping.
@@ -110,7 +118,9 @@ void CosmeticFiltersResources::UrlCosmeticResources(
     std::string procedural_actions_json = base::StrCat(
         {"[", base::JoinString(procedural_actions_strings, ","), "]"});
     std::string procedural_actions_script = base::ReplaceStringPlaceholders(
-        kProceduralActionsScript, {procedural_actions_json.c_str()}, nullptr);
+        kProceduralActionsScript,
+        {procedural_filtering_feature_enabled, procedural_actions_json.c_str()},
+        nullptr);
     resources.Set("procedural_actions_script", procedural_actions_script);
   }
   resources.Remove("procedural_actions");
