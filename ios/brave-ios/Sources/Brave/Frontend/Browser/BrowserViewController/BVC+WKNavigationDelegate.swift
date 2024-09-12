@@ -659,26 +659,6 @@ extension BrowserViewController: WKNavigationDelegate {
     let response = navigationResponse.response
     let responseURL = response.url
     let tab = tab(for: webView)
-    let isInvalid: Bool
-    if let httpResponse = response as? HTTPURLResponse {
-      isInvalid = httpResponse.statusCode >= 400
-    } else {
-      isInvalid = true
-    }
-
-    // Handle invalid upgrade to https
-    if isInvalid,
-      navigationResponse.isForMainFrame,
-      let responseURL = responseURL,
-      let tab = tab,
-      let originalResponse = handleInvalidHTTPSUpgrade(
-        tab: tab,
-        responseURL: responseURL
-      )
-    {
-      tab.loadRequest(originalResponse)
-      return .cancel
-    }
 
     // Store the response in the tab
     if let responseURL = responseURL {
