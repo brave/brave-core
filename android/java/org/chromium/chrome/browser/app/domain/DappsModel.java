@@ -17,6 +17,7 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.brave_wallet.mojom.SignSolTransactionsRequest;
+import org.chromium.brave_wallet.mojom.SolanaSignature;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
@@ -91,7 +92,7 @@ public class DappsModel implements KeyringServiceObserver {
     public void notifySignSolTransactionsRequestProcessed(
             boolean isApproved, SignSolTransactionsRequest request) {
         mBraveWalletService.notifySignSolTransactionsRequestProcessed(
-                isApproved, request.id, Collections.emptyList(), null);
+                isApproved, request.id, new SolanaSignature[0], null);
         mBraveWalletService.getPendingSignSolTransactionsRequests(
                 requests -> {
                     if (requests.length == 0) {
