@@ -94,7 +94,7 @@ void BraveShieldsWebContentsObserver::BindBraveShieldsHost(
 // static
 void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
     const GURL& request_url,
-    int frame_tree_node_id,
+    content::FrameTreeNodeId frame_tree_node_id,
     const std::string& block_type) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 

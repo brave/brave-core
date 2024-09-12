@@ -27,7 +27,7 @@ BraveProxyingWebSocket::BraveProxyingWebSocket(
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client,
     int process_id,
-    int frame_tree_node_id,
+    content::FrameTreeNodeId frame_tree_node_id,
     content::BrowserContext* browser_context,
     scoped_refptr<RequestIDGenerator> request_id_generator,
     BraveRequestHandler& handler,

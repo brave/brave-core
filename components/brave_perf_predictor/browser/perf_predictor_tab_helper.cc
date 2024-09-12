@@ -53,7 +53,7 @@ void PerfPredictorTabHelper::RegisterProfilePrefs(
 // static
 void PerfPredictorTabHelper::DispatchBlockedEvent(
     const std::string& subresource,
-    int frame_tree_node_id) {
+    content::FrameTreeNodeId frame_tree_node_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   content::WebContents* web_contents =
