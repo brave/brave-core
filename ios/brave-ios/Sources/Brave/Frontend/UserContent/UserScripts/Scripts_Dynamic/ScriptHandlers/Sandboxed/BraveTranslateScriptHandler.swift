@@ -15,7 +15,7 @@ import os.log
 protocol BraveTranslateScriptHandlerDelegate: NSObject {
   func updateTranslateURLBar(tab: Tab?, state: TranslateURLBarButton.TranslateState)
   func showTranslateOnboarding(tab: Tab?, completion: @escaping (_ translateEnabled: Bool) -> Void)
-  func presentToast(_ languageInfo: BraveTranslateLanguageInfo)
+  func presentToast(tab: Tab?, languageInfo: BraveTranslateLanguageInfo)
 }
 
 class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
@@ -70,7 +70,8 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
       if message.hasNoTranslate {
         delegate.currentLanguageInfo.pageLanguage = delegate.currentLanguageInfo.currentLanguage
       } else {
-        delegate.currentLanguageInfo.pageLanguage = Locale.Language(identifier: message.htmlLang)
+        delegate.currentLanguageInfo.pageLanguage =
+          !message.htmlLang.isEmpty ? Locale.Language(identifier: message.htmlLang) : nil
       }
 
       replyHandler(nil, nil)
@@ -244,7 +245,8 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     }
 
     // Language identified via our own Javascript
-    if let languageCode = await executePageFunction(name: "getPageLanguage") {
+    if let languageCode = await executePageFunction(name: "getPageLanguage"), !languageCode.isEmpty
+    {
       return Locale.Language(identifier: languageCode)
     }
 
@@ -266,7 +268,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     return .init(currentLanguage: Locale.current.language, pageLanguage: pageLanguage)
   }
 
-  func startTranslation() {
+  func startTranslation(canShowToast: Bool) {
     Task { @MainActor [weak self] in
       guard let self = self,
         let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier,
@@ -288,8 +290,10 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
         ]
       )
 
-      self.delegate?.updateTranslateURLBar(tab: self.tab, state: .active)
-      self.delegate?.presentToast(currentLanguageInfo)
+      if canShowToast {
+        self.delegate?.updateTranslateURLBar(tab: self.tab, state: .active)
+        self.delegate?.presentToast(tab: self.tab, languageInfo: currentLanguageInfo)
+      }
     }
   }
 

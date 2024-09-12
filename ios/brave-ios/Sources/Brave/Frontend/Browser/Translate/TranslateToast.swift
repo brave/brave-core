@@ -228,23 +228,7 @@ struct TranslateToast: View {
   @ObservedObject
   var languageInfo: BraveTranslateLanguageInfo
 
-  var currentLanguageName: String {
-    if let languageCode = languageInfo.currentLanguage.languageCode?.identifier,
-      let languageName = Locale.current.localizedString(forLanguageCode: languageCode)
-    {
-      return languageName
-    }
-    return "Unknown Language"
-  }
-
-  var pageLanguageName: String {
-    if let languageCode = languageInfo.pageLanguage?.languageCode?.identifier,
-      let languageName = Locale.current.localizedString(forLanguageCode: languageCode)
-    {
-      return languageName
-    }
-    return "Unknown Language"
-  }
+  var onLanguageSelectionChanged: ((BraveTranslateLanguageInfo) -> Void)?
 
   var body: some View {
     HStack {
@@ -305,7 +289,7 @@ struct TranslateToast: View {
     }
     .padding()
     .frame(alignment: .leading)
-    .bravePopup(isPresented: $showTargetLanguageSelection) {
+    .bravePopup(isPresented: $showSourceLanguageSelection) {
       TranslationOptionsView(
         language: Binding(
           get: {
@@ -313,6 +297,7 @@ struct TranslateToast: View {
           },
           set: {
             languageInfo.pageLanguage = $0
+            onLanguageSelectionChanged?(languageInfo)
           }
         )
       )
@@ -320,7 +305,7 @@ struct TranslateToast: View {
         showTargetLanguageSelection = false
       }
     }
-    .bravePopup(isPresented: $showSourceLanguageSelection) {
+    .bravePopup(isPresented: $showTargetLanguageSelection) {
       TranslationOptionsView(
         language: Binding(
           get: {
@@ -328,6 +313,7 @@ struct TranslateToast: View {
           },
           set: {
             languageInfo.currentLanguage = $0 ?? Locale.current.language
+            onLanguageSelectionChanged?(languageInfo)
           }
         )
       )
@@ -335,6 +321,24 @@ struct TranslateToast: View {
         showSourceLanguageSelection = false
       }
     }
+  }
+
+  private var currentLanguageName: String {
+    if let languageCode = languageInfo.currentLanguage.languageCode?.identifier,
+      let languageName = Locale.current.localizedString(forLanguageCode: languageCode)
+    {
+      return languageName
+    }
+    return "Unknown Language"
+  }
+
+  private var pageLanguageName: String {
+    if let languageCode = languageInfo.pageLanguage?.languageCode?.identifier,
+      let languageName = Locale.current.localizedString(forLanguageCode: languageCode)
+    {
+      return languageName
+    }
+    return "Unknown Language"
   }
 }
 
@@ -345,5 +349,5 @@ extension TranslateToast: PopoverContentComponent {
 }
 
 #Preview {
-  TranslateToast(languageInfo: .init())
+  TranslateToast(languageInfo: .init(), onLanguageSelectionChanged: nil)
 }
