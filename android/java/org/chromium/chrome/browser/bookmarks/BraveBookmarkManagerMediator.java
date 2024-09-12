@@ -130,21 +130,37 @@ class BraveBookmarkManagerMediator
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("text/html");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        if (mWindowAndroid.showIntent(Intent.createChooser(intent,
-                                              mContext.getResources().getString(
-                                                      R.string.import_bookmarks_select_file)),
-                    new WindowAndroid.IntentCallback() {
-                        @Override
-                        public void onIntentCompleted(int resultCode, Intent results) {
-                            if (resultCode == Activity.RESULT_OK && results != null
-                                    && results.getData() != null) {
-                                PostTask.postTask(TaskTraits.USER_VISIBLE_MAY_BLOCK,
-                                        () -> { importFileSelected(results.getData()); });
-                            }
+        if (mWindowAndroid.showIntent(
+                Intent.createChooser(
+                        intent,
+                        mContext.getResources().getString(R.string.import_bookmarks_select_file)),
+                new WindowAndroid.IntentCallback() {
+                    @Override
+                    public void onIntentCompleted(int resultCode, Intent results) {
+                        if (resultCode == Activity.RESULT_OK
+                                && results != null
+                                && results.getData() != null) {
+                            PostTask.postTask(
+                                    TaskTraits.USER_VISIBLE_MAY_BLOCK,
+                                    () -> {
+                                        importFileSelected(results.getData());
+                                    });
                         }
-                    },
-                    null))
+                    }
+                },
+                null)) {
             return;
+        }
+    }
+
+    private String sanitizeFilename(String displayName) {
+        String[] badCharacters = new String[] {"..", "/"};
+        String[] segments = displayName.split("/");
+        String fileName = segments[segments.length - 1];
+        for (String suspString : badCharacters) {
+            fileName = fileName.replace(suspString, "_");
+        }
+        return fileName;
     }
 
     private void importFileSelected(Uri resultData) {
@@ -153,7 +169,8 @@ class BraveBookmarkManagerMediator
             int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
             cursor.moveToFirst();
             String name = cursor.getString(nameIndex);
-            File file = new File(mContext.getFilesDir(), name);
+            String sanitizedName = sanitizeFilename(name);
+            File file = new File(mContext.getFilesDir(), sanitizedName);
             try (InputStream inputStream =
                             mContext.getContentResolver().openInputStream(resultData);
                     FileOutputStream outputStream = new FileOutputStream(file)) {
