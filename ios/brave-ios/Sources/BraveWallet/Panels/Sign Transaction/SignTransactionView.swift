@@ -38,8 +38,8 @@ struct SignTransactionView: View {
   }
 
   var navigationTitle: String {
-    // TODO:
-    return Strings.Wallet.signAllTransactionsTitle
+    return currentRequest.txDatas.count > 1
+      ? Strings.Wallet.signAllTransactionsTitle : Strings.Wallet.signTransactionTitle
   }
 
   private var currentRequest: BraveWallet.SignSolTransactionsRequest {
