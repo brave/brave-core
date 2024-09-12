@@ -108,6 +108,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void InnerWebContentsAttached(content::WebContents* inner_web_contents,
                                 content::RenderFrameHost* render_frame_host,
                                 bool is_full_page) override;
+  void DidFinishLoad(content::RenderFrameHost* render_frame_host,
+                     const GURL& validated_url) override;
 
   // favicon::FaviconDriverObserver
   void OnFaviconUpdated(favicon::FaviconDriver* favicon_driver,
@@ -141,6 +143,10 @@ class AIChatTabHelper : public content::WebContentsObserver,
   bool is_pdf_a11y_info_loaded_ = false;
   uint8_t check_pdf_a11y_tree_attempts_ = 0;
   GetPageContentCallback pending_get_page_content_callback_;
+  bool is_page_loaded_ = false;
+  // <navigation_id, GetPageContentCallback>
+  base::flat_map<int64_t, GetPageContentCallback>
+      pending_print_preview_requests_;
 
   raw_ptr<content::WebContents> inner_web_contents_ = nullptr;
   std::unique_ptr<PDFA11yInfoLoadObserver> pdf_load_observer_;
