@@ -25,6 +25,9 @@
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
 "AntiAdBlockWarningTitle" = "Ajuster les paramètres de blocage des publicités pour ce site";
 
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Destruction automatique";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agressif";
 
@@ -145,8 +148,38 @@
 /* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
 "FilterListURLTextFieldPlaceholder" = "Saisissez l'URL de la liste de filtres ici";
 
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Efface les cookies et autres données de site lorsque vous fermez un site";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "M'oublier quand je ferme ce site";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Strict";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Détruire les données";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Jamais";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Fermeture de l'application";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Onglets du site fermés";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Détruire les données du site";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "La destruction fermera tous les onglets ouverts sur ce site et supprimera toutes les données du site. Cette action est irréversible.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Détruire les données du site ?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Détruire les données maintenant";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Le site n'est pas sécurisé";
