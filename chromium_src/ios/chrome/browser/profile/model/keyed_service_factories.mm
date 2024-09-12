@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "ios/chrome/browser/browser_state/model/browser_state_keyed_service_factories.h"
+#include "ios/chrome/browser/profile/model/keyed_service_factories.h"
 
-#include "brave/ios/browser/browser_state/brave_browser_state_keyed_service_factories.h"
+#include "brave/ios/browser/profile/model/brave_keyed_service_factories.h"
 #include "ios/chrome/browser/autocomplete/model/autocomplete_classifier_factory.h"
 #include "ios/chrome/browser/autocomplete/model/zero_suggest_cache_service_factory.h"
 #include "ios/chrome/browser/autofill/model/personal_data_manager_factory.h"
@@ -68,7 +68,7 @@
 #import "ios/chrome/browser/credential_provider/model/credential_provider_service_factory.h"
 #endif
 
-void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
+void EnsureProfileKeyedServiceFactoriesBuilt() {
   autofill::PersonalDataManagerFactory::GetInstance();
   data_sharing::DataSharingServiceFactory::GetInstance();
   ios::AccountBookmarkSyncServiceFactory::GetInstance();
@@ -130,5 +130,5 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   CredentialProviderServiceFactory::GetInstance();
 #endif
 
-  brave::EnsureBrowserStateKeyedServiceFactoriesBuilt();
+  brave::EnsureProfileKeyedServiceFactoriesBuilt();
 }

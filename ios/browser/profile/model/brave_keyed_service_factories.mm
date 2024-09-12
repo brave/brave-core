@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/browser_state/brave_browser_state_keyed_service_factories.h"
+#include "brave/ios/browser/profile/model/brave_keyed_service_factories.h"
 
 #include "brave/ios/browser/api/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/api/ai_chat/model_service_factory.h"
@@ -19,7 +19,7 @@
 
 namespace brave {
 
-void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
+void EnsureProfileKeyedServiceFactoriesBuilt() {
   ai_chat::ModelServiceFactory::GetInstance();
   ai_chat::AIChatServiceFactory::GetInstance();
   brave_favicon::BraveIOSFaviconLoaderFactory::GetInstance();
