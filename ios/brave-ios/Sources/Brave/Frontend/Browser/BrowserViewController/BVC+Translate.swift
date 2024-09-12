@@ -8,8 +8,8 @@ import DesignSystem
 import Foundation
 import Onboarding
 import Preferences
-import UIKit
 import SwiftUI
+import UIKit
 
 extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
   func updateTranslateURLBar(tab: Tab?, state: TranslateURLBarButton.TranslateState) {
@@ -20,7 +20,7 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
 
       //      translateActivity(info: state == .existingItem ? item : nil)
       topToolbar.updateTranslateButtonState(state)
-      
+
       showTranslateOnboarding(tab: tab) { [weak tab] translateEnabled in
         if let scriptHandler = tab?.getContentScript(
           name: BraveTranslateScriptHandler.scriptName
@@ -63,6 +63,7 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
               guard let tab = tab, let self = self else { return }
 
               self.topToolbar.locationView.translateButton.setOnboardingState(enabled: false)
+              Preferences.Translate.translateEnabled.value = true
 
               if let scriptHandler = tab.getContentScript(
                 name: BraveTranslateScriptHandler.scriptName
@@ -112,7 +113,7 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
   func presentToast(_ languageInfo: BraveTranslateLanguageInfo) {
     let popover = PopoverController(
       content: TranslateToast(languageInfo: languageInfo),
-      autoLayoutConfiguration: .phoneWidth
+      autoLayoutConfiguration: nil
     )
 
     popover.popoverDidDismiss = { [weak self] _ in
