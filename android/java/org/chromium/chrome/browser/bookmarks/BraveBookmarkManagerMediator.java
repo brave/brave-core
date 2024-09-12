@@ -10,11 +10,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.provider.OpenableColumns;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,6 +51,7 @@ class BraveBookmarkManagerMediator
     // Overridden Chromium's BookmarkManagerMediator.mContext
     private Context mContext;
     private static final String TAG = "BraveBookmarkManager";
+    private static final String IMPORTED_BOOKMARKS_TEMP_FILENAME = "ImportedBookmarks";
 
     BraveBookmarkManagerMediator(
             Context context,
@@ -130,30 +129,32 @@ class BraveBookmarkManagerMediator
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("text/html");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        if (mWindowAndroid.showIntent(Intent.createChooser(intent,
-                                              mContext.getResources().getString(
-                                                      R.string.import_bookmarks_select_file)),
-                    new WindowAndroid.IntentCallback() {
-                        @Override
-                        public void onIntentCompleted(int resultCode, Intent results) {
-                            if (resultCode == Activity.RESULT_OK && results != null
-                                    && results.getData() != null) {
-                                PostTask.postTask(TaskTraits.USER_VISIBLE_MAY_BLOCK,
-                                        () -> { importFileSelected(results.getData()); });
-                            }
+        if (mWindowAndroid.showIntent(
+                Intent.createChooser(
+                        intent,
+                        mContext.getResources().getString(R.string.import_bookmarks_select_file)),
+                new WindowAndroid.IntentCallback() {
+                    @Override
+                    public void onIntentCompleted(int resultCode, Intent results) {
+                        if (resultCode == Activity.RESULT_OK
+                                && results != null
+                                && results.getData() != null) {
+                            PostTask.postTask(
+                                    TaskTraits.USER_VISIBLE_MAY_BLOCK,
+                                    () -> {
+                                        importFileSelected(results.getData());
+                                    });
                         }
-                    },
-                    null))
+                    }
+                },
+                null)) {
             return;
+        }
     }
 
     private void importFileSelected(Uri resultData) {
         try {
-            Cursor cursor = mContext.getContentResolver().query(resultData, null, null, null, null);
-            int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-            cursor.moveToFirst();
-            String name = cursor.getString(nameIndex);
-            File file = new File(mContext.getFilesDir(), name);
+            File file = new File(mContext.getFilesDir(), IMPORTED_BOOKMARKS_TEMP_FILENAME);
             try (InputStream inputStream =
                             mContext.getContentResolver().openInputStream(resultData);
                     FileOutputStream outputStream = new FileOutputStream(file)) {
