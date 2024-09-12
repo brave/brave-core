@@ -1173,7 +1173,6 @@ test("brave_browser_tests") {
   # API tests and extension deps
   if (enable_extensions) {
     sources += [
-      "//brave/browser/extensions/brave_shields_apitest.cc",
       "//brave/browser/extensions/extension_urls_browsertest.cc",
       "//brave/browser/ui/webui/settings/brave_extensions_manifest_v2_browsertest.cc",
       "//brave/browser/ui/webui/settings/brave_tor_snowflake_extension_browsertest.cc",

@@ -12,9 +12,6 @@
     "128": "assets/img/icon-128.png",
     "256": "assets/img/icon-256.png"
   },
-  "web_accessible_resources": [
-    "elementPicker.html"
-  ],
   "background": {
     "scripts": [
       "out/brave_extension_background.bundle.js"
@@ -51,7 +48,6 @@
     "chrome://favicon/*",
     "webRequestBlocking",
     "unlimitedStorage",
-    "scripting",
     "<all_urls>"
   ],
   "content_security_policy": "default-src 'self'; font-src 'self' data:; script-src 'self' 'wasm-eval'; style-src 'unsafe-inline'; img-src 'self' data: chrome://favicon/; connect-src * data: blob: filesystem:;",

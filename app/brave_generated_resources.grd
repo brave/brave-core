@@ -346,6 +346,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Check details
       </message>
 
+      <!-- Adblock contenxt menu -->
+      <message name="IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS" desc="Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page">
+        Block elements
+      </message>
+
       <message name="IDS_LOCATION_BAR_ONION_AVAILABLE" desc="Button in location bar to indicate onion available site to open a new tab in tor window.">
         .onion
       </message>

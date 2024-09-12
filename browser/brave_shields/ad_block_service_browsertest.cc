@@ -22,6 +22,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
@@ -46,6 +47,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -58,6 +60,7 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
+#include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -103,6 +106,16 @@ using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kBraveAdblockScriptletDebugLogs;
 using brave_shields::features::kCosmeticFilteringJsPerformance;
+
+namespace {
+void WaitForSelectorBlocked(const content::ToRenderFrameHost& target,
+                            const std::string& selector) {
+  const char kTemplate[] = R"(waitCSSSelector($1, 'display', 'none'))";
+
+  ASSERT_TRUE(
+      EvalJs(target, content::JsReplace(kTemplate, selector)).ExtractBool());
+}
+}  // namespace
 
 AdBlockServiceTest::AdBlockServiceTest()
     : https_server_(net::EmbeddedTestServer::Type::TYPE_HTTPS) {}
@@ -1713,10 +1726,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RemoveparamSubresource) {
 #define MAYBE_RemoveparamTopLevelNavigation \
   DISABLED_RemoveparamTopLevelNavigation
 #define MAYBE_DefaultRemoveparamFromCustom DISABLED_DefaultRemoveparamFromCustom
-#else
+#else  // BUILDFLAG(IS_ANDROID)
 #define MAYBE_RemoveparamTopLevelNavigation RemoveparamTopLevelNavigation
 #define MAYBE_DefaultRemoveparamFromCustom DefaultRemoveparamFromCustom
-#endif
+#endif  // BUILDFLAG(IS_ANDROID)
 
 // `$removeparam` should be respected for top-level navigations
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
@@ -2719,6 +2732,60 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ListEnabled) {
   }
 }
 
+// Content Picker and the context menu are disabled for Android.
+#if !BUILDFLAG(IS_ANDROID)
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
+  const GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+  const char kPickerIsInjected[] =
+      "document.getElementById('brave-element-picker') != null";
+  ASSERT_FALSE(
+      content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
+
+  const auto click_menu = [&]() {
+    content::ContextMenuParams params;
+    params.page_url = tab_url;
+    TestRenderViewContextMenu menu(*web_contents()->GetPrimaryMainFrame(),
+                                   params);
+    menu.Init();
+    EXPECT_TRUE(menu.IsItemEnabled(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS));
+    menu.ExecuteCommand(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS, 0);
+  };
+
+  click_menu();
+
+  ASSERT_TRUE(content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
+
+  EXPECT_TRUE(content::EvalJs(web_contents(),
+                              "checkSelector('#ad-banner', 'display', 'block')")
+                  .ExtractBool());
+
+  // Emulate selecting some element and clicking `Create` button.
+  ASSERT_TRUE(content::ExecJs(web_contents(),
+                              "cf_worker.addSiteCosmeticFilter('#ad-banner')",
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+
+  // Reload the page and check the selector is blocked by the new rule.
+  NavigateToURL(tab_url);
+  WaitForSelectorBlocked(web_contents(), "#ad-banner");
+  EXPECT_FALSE(
+      content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
+
+  click_menu();
+  // Emulate clicking `Manage filters`.
+  ASSERT_TRUE(content::ExecJs(web_contents(), "cf_worker.manageCustomFilters()",
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
+  EXPECT_EQ(web_contents()->GetLastCommittedURL(),
+            "chrome://settings/shields/filters");
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
  public:
   AdBlockServiceTestJsPerformance() {
@@ -2741,14 +2808,6 @@ class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
     })";
     ASSERT_TRUE(content::ExecJs(
         target, content::JsReplace(kTemplate, start_number, end_number)));
-  }
-
-  void WaitForSelectorBlocked(const content::ToRenderFrameHost& target,
-                              const std::string& selector) const {
-    const char kTemplate[] = R"(waitCSSSelector($1, 'display', 'none'))";
-
-    ASSERT_TRUE(
-        EvalJs(target, content::JsReplace(kTemplate, selector)).ExtractBool());
   }
 
   void NonBlockingDelay(const base::TimeDelta& delay) {

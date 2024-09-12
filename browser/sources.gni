@@ -17,6 +17,7 @@ import("//brave/browser/brave_vpn/sources.gni")
 import("//brave/browser/brave_wallet/android/sources.gni")
 import("//brave/browser/brave_wallet/notifications/sources.gni")
 import("//brave/browser/browsing_data/sources.gni")
+import("//brave/browser/cosmetic_filters/sources.gni")
 import("//brave/browser/debounce/sources.gni")
 import("//brave/browser/download/sources.gni")
 import("//brave/browser/ephemeral_storage/sources.gni")
@@ -501,6 +502,7 @@ brave_chrome_browser_sources += brave_browser_brave_stats_updater_sources
 brave_chrome_browser_sources += brave_browser_brave_vpn_sources
 brave_chrome_browser_sources += brave_browser_brave_wallet_sources
 brave_chrome_browser_sources += brave_browser_browsing_data_sources
+brave_chrome_browser_sources += brave_browser_cosmetic_filters_sources
 brave_chrome_browser_sources += brave_browser_debounce_sources
 brave_chrome_browser_sources += brave_browser_download_sources
 brave_chrome_browser_sources += brave_browser_ephemeral_storage_sources
@@ -538,6 +540,7 @@ brave_chrome_browser_deps += brave_browser_brave_stats_updater_deps
 brave_chrome_browser_deps += brave_browser_brave_vpn_deps
 brave_chrome_browser_deps += brave_browser_brave_wallet_deps
 brave_chrome_browser_deps += brave_browser_browsing_data_deps
+brave_chrome_browser_deps += brave_browser_cosmetic_filters_deps
 brave_chrome_browser_deps += brave_browser_debounce_deps
 brave_chrome_browser_deps += brave_browser_download_deps
 brave_chrome_browser_deps += brave_browser_ephemeral_storage_deps
