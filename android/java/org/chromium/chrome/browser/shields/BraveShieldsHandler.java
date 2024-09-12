@@ -105,6 +105,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private LinearLayout mThankYouLayout;
     private LinearLayout mPrivacyReportLayout;
     private LinearLayout mReportBrokenSiteLayout;
+    private LinearLayout mReportErrorPageLayout;
     private TextView mSiteBlockCounterText;
     private TextView mShieldsDownText;
     private TextView mSiteBrokenWarningText;
@@ -394,6 +395,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mSiteBrokenWarningText = mPopupView.findViewById(R.id.site_broken_warning_text);
 
         mReportBrokenSiteLayout = mPopupView.findViewById(R.id.brave_shields_report_site_layout_id);
+        mReportErrorPageLayout =
+                mPopupView.findViewById(R.id.brave_shields_report_error_page_layout_id);
         mThankYouLayout = mPopupView.findViewById(R.id.brave_shields_thank_you_layout_id);
         mPrivacyReportLayout = mPopupView.findViewById(R.id.brave_shields_privacy_report_layout_id);
 
@@ -765,19 +768,41 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                 });
     }
 
+    private void setupErrorPageLayout() {
+        Button closeButton = mReportErrorPageLayout.findViewById(R.id.btn_close);
+        closeButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        hideBraveShieldsMenu();
+                    }
+                });
+    }
+
     private void setUpMainSwitchLayout(boolean isChecked) {
         if (mContext == null) return;
 
         TextView mShieldDownText = mMainLayout.findViewById(R.id.shield_down_text);
         Button mReportBrokenSiteButton = mMainLayout.findViewById(R.id.btn_report_broken_site);
-        mReportBrokenSiteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMainLayout.setVisibility(View.GONE);
-                mReportBrokenSiteLayout.setVisibility(View.VISIBLE);
-                setUpReportBrokenSiteLayout();
-            }
-        });
+        mReportBrokenSiteButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Tab currentActiveTab = mIconFetcher.getTab();
+                        if (currentActiveTab == null) {
+                            return;
+                        }
+
+                        mMainLayout.setVisibility(View.GONE);
+                        if (!currentActiveTab.isShowingErrorPage()) {
+                            mReportBrokenSiteLayout.setVisibility(View.VISIBLE);
+                            setUpReportBrokenSiteLayout();
+                        } else {
+                            mReportErrorPageLayout.setVisibility(View.VISIBLE);
+                            setupErrorPageLayout();
+                        }
+                    }
+                });
 
         LinearLayout mSiteBlockLayout = mMainLayout.findViewById(R.id.site_block_layout);
         TextView mSiteBrokenWarningText = mMainLayout.findViewById(R.id.site_broken_warning_text);

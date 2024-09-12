@@ -167,6 +167,9 @@
 			android:id="@+id/brave_shields_thank_you_layout_id"
 			layout="@layout/brave_shields_thank_you_layout"/>
 
+		<include
+			android:id="@+id/brave_shields_report_error_page_layout_id"
+			layout="@layout/report_error_page_layout"/>
 	</FrameLayout>
 
 </ScrollView>
