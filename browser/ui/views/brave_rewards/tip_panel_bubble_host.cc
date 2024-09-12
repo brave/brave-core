@@ -38,9 +38,6 @@ class TipPanelBubbleManager : public WebUIBubbleManagerImpl<TipPanelUI> {
   ~TipPanelBubbleManager() override = default;
 
   // WebUIBubbleManager:
-
-  void MaybeInitPersistentRenderer() override {}
-
   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
       const std::optional<gfx::Rect>& anchor,
       views::BubbleBorder::Arrow arrow) override {
