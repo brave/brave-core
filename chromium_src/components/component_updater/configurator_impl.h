@@ -6,14 +6,19 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_COMPONENT_UPDATER_CONFIGURATOR_IMPL_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_COMPONENT_UPDATER_CONFIGURATOR_IMPL_H_
 
-// Prevent EnabledBackgroundDownloader from being redefined in the interface.
 #include "components/update_client/configurator.h"
 
-#define EnabledBackgroundDownloader                 \
-  EnabledBackgroundDownloader_ChromiumImpl() const; \
+#define EnabledBackgroundDownloader           \
+  EnabledBackgroundDownloader_Unused() const; \
   bool EnabledBackgroundDownloader
 
+#define EnabledCupSigning           \
+  EnabledCupSigning_Unused() const; \
+  bool EnabledCupSigning
+
 #include "src/components/component_updater/configurator_impl.h"  // IWYU pragma: export
+
+#undef EnabledCupSigning
 
 #undef EnabledBackgroundDownloader
 

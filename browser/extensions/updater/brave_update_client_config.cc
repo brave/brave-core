@@ -49,11 +49,6 @@ BraveUpdateClientConfig::GetNetworkFetcherFactory() {
   return network_fetcher_factory_;
 }
 
-// Disabling cup signing
-bool BraveUpdateClientConfig::EnabledCupSigning() const {
-  return false;
-}
-
 BraveUpdateClientConfig::~BraveUpdateClientConfig() = default;
 
 // static
