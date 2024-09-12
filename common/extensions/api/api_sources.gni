@@ -12,7 +12,6 @@ brave_extensions_api_schema_include_rules =
 
 schema_sources_ = [
   "brave_rewards.json",
-  "brave_shields.json",
   "brave_talk.json",
   "brave_theme.json",
   "greaselion.json",

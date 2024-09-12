@@ -12,8 +12,11 @@
 #include "base/feature_list.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
+#include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
+#include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -421,6 +424,8 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
 #endif
     case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW:
       return CanOpenSplitViewForWebContents(source_web_contents_->GetWeakPtr());
+    case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
+      return true;
     default:
       return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
   }
@@ -490,6 +495,10 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
 #endif
     case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW:
       OpenLinkInSplitView(source_web_contents_->GetWeakPtr(), params_.link_url);
+      break;
+    case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
+      cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(
+          source_web_contents_);
       break;
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
@@ -680,6 +689,38 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
 void BraveRenderViewContextMenu::AddAccessibilityLabelsServiceItem(
     bool is_checked) {
   // Suppress adding "Get image descriptions from Brave"
+}
+
+void BraveRenderViewContextMenu::AppendDeveloperItems() {
+  RenderViewContextMenu_Chromium::AppendDeveloperItems();
+
+  auto* shields_tab_helper =
+      brave_shields::BraveShieldsTabHelper::FromWebContents(
+          source_web_contents_);
+  bool add_block_elements =
+      shields_tab_helper && shields_tab_helper->GetAdBlockMode() !=
+                                brave_shields::mojom::AdBlockMode::ALLOW;
+#if BUILDFLAG(IS_ANDROID)
+  // Content picker doesn't available for Android.
+  add_block_elements = false;
+#endif  // BUILDFLAG(IS_ANDROID)
+  add_block_elements &=
+      params_.selection_text.empty() || !params_.link_url.is_empty();
+
+  const auto page_url = source_web_contents_->GetLastCommittedURL();
+  add_block_elements &= page_url.SchemeIsHTTPOrHTTPS();
+  if (add_block_elements) {
+    std::optional<size_t> inspect_index =
+        menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);
+    if (inspect_index) {
+      menu_model_.InsertItemWithStringIdAt(*inspect_index,
+                                           IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS,
+                                           IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS);
+    } else {
+      menu_model_.AddItemWithStringId(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS,
+                                      IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS);
+    }
+  }
 }
 
 void BraveRenderViewContextMenu::InitMenu() {
