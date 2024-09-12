@@ -13,13 +13,13 @@ cargo_crate("lib") {
   crate_name = "data_encoding"
   epoch = "2"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/data-encoding-2.3.3/src/lib.rs"
-  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/data-encoding-2.3.3/src/lib.rs" ]
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/data-encoding-2.6.0/src/lib.rs"
+  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/data-encoding-2.6.0/src/lib.rs" ]
   inputs = []
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "2.3.3"
+  cargo_pkg_version = "2.6.0"
   cargo_pkg_authors = "Julien Cretin <git@ia0.eu>"
   cargo_pkg_name = "data-encoding"
   cargo_pkg_description = "Efficient and customizable data-encoding functions like base64, base32, and hex"
