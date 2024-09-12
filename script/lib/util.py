@@ -125,11 +125,11 @@ def make_zip(zip_file_path, files, dirs):
     # missing files.
     if sys.platform == 'darwin':
         files += dirs
-        for root, dirs, _ in os.walk(dirs[0]):
-            for d in dirs:
+        for root, dirs_, _ in os.walk(dirs[0]):
+            for d in dirs_:
                 print(root)
-                subprocess.run(['ls', '-alh', os.path.join(root, d)],
-                                check=True)
+                subprocess.run(
+                    ['ls', '-alh', os.path.join(root, d)], check=True)
         execute(['zip', '-r', '-y', zip_file_path] + files)
     else:
         zip_file = zipfile.ZipFile(zip_file_path, "w", zipfile.ZIP_DEFLATED,
