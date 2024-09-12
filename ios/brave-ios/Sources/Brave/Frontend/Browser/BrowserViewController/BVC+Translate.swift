@@ -27,7 +27,7 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
         )
           as? BraveTranslateScriptHandler
         {
-          scriptHandler.startTranslation()
+          scriptHandler.startTranslation(canShowToast: true)
         }
       }
     }
@@ -110,15 +110,20 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
     }
   }
 
-  func presentToast(_ languageInfo: BraveTranslateLanguageInfo) {
+  func presentToast(tab: Tab?, languageInfo: BraveTranslateLanguageInfo) {
     let popover = PopoverController(
-      content: TranslateToast(languageInfo: languageInfo),
+      content: TranslateToast(languageInfo: languageInfo) { [weak tab] languageInfo in
+
+        if let scriptHandler = tab?.getContentScript(
+          name: BraveTranslateScriptHandler.scriptName
+        )
+          as? BraveTranslateScriptHandler
+        {
+          scriptHandler.startTranslation(canShowToast: false)
+        }
+      },
       autoLayoutConfiguration: nil
     )
-
-    popover.popoverDidDismiss = { [weak self] _ in
-
-    }
     popover.present(from: self.topToolbar.locationView.translateButton, on: self)
   }
 }
