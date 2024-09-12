@@ -1061,7 +1061,7 @@ TEST_P(PageContentRefineTest, TextEmbedder) {
           .Times(1);
     }
     conversation_handler_->PerformAssistantGeneration(
-        test_case.prompt, 0, test_case.page_content, false, "");
+        test_case.prompt, test_case.page_content, false, "");
   }
 }
 
@@ -1122,8 +1122,12 @@ TEST_P(PageContentRefineTest, TextEmbedderInitialized) {
             .Times(1);
       }
     }
+
     conversation_handler_->PerformAssistantGeneration(
-        "prompt", 0, std::string(max_page_content_length + 1, 'A'), false, "");
+        "prompt", std::string(max_page_content_length + 1, 'A'), false, "");
+
+    testing::Mock::VerifyAndClearExpectations(mock_engine);
+    testing::Mock::VerifyAndClearExpectations(mock_text_embedder);
   }
 }
 

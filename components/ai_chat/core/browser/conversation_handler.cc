@@ -124,19 +124,7 @@ void AssociatedContentDelegate::GetTopSimilarityWithPromptTilContextLimit(
     const std::string& text,
     uint32_t context_limit,
     TextEmbedder::TopSimilarityCallback callback) {
-  // Run immediately if already initialized
-  if (text_embedder_ && text_embedder_->IsInitialized()) {
-    text_embedder_->GetTopSimilarityWithPromptTilContextLimit(
-        prompt, text, context_limit, std::move(callback));
-    return;
-  }
-
-  // Will have to wait for initialization to complete, store params for calling
-  // later.
-  pending_top_similarity_requests_.emplace_back(prompt, text, context_limit,
-                                                std::move(callback));
-
-  // Start initialization if not already started
+  // Create TextEmbedder
   if (!text_embedder_) {
     base::FilePath universal_qa_model_path =
         LocalModelsUpdaterState::GetInstance()->GetUniversalQAModel();
@@ -149,16 +137,27 @@ void AssociatedContentDelegate::GetTopSimilarityWithPromptTilContextLimit(
     text_embedder_ = TextEmbedder::Create(
         base::FilePath(universal_qa_model_path), embedder_task_runner);
     if (!text_embedder_) {
-      auto& item = pending_top_similarity_requests_.back();
-      std::move(std::get<3>(item))
-          .Run(base::unexpected("Failed to create TextEmbedder"));
+      std::move(callback).Run(
+          base::unexpected("Failed to create TextEmbedder"));
       pending_top_similarity_requests_.pop_back();
       return;
     }
+  }
+
+  if (!text_embedder_->IsInitialized()) {
+    // Will have to wait for initialization to complete, store params for
+    // calling later.
+    pending_top_similarity_requests_.emplace_back(prompt, text, context_limit,
+                                                  std::move(callback));
+
     text_embedder_->Initialize(
         base::BindOnce(&ConversationHandler::AssociatedContentDelegate::
                            OnTextEmbedderInitialized,
                        weak_ptr_factory_.GetWeakPtr()));
+  } else {
+    // Run immediately if already initialized
+    text_embedder_->GetTopSimilarityWithPromptTilContextLimit(
+        prompt, text, context_limit, std::move(callback));
   }
 }
 
@@ -174,7 +173,7 @@ void AssociatedContentDelegate::OnTextEmbedderInitialized(bool initialized) {
     return;
   }
 
-  CHECK(text_embedder_ && text_embedder_->IsInitialized());
+  CHECK(text_embedder_);
   for (auto& callback_info : pending_top_similarity_requests_) {
     text_embedder_->GetTopSimilarityWithPromptTilContextLimit(
         std::get<0>(callback_info), std::get<1>(callback_info),
