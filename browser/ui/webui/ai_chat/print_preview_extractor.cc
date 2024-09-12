@@ -372,9 +372,11 @@ void PrintPreviewExtractor::OnCompositePdfPageDone(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(print_preview_ui_id_);
 
-  PrintPreviewDataService::GetInstance()->SetDataEntry(
-      *print_preview_ui_id_, page_index,
-      base::RefCountedSharedMemoryMapping::CreateFromWholeRegion(region));
+  if (status == printing::mojom::PrintCompositor::Status::kSuccess) {
+    PrintPreviewDataService::GetInstance()->SetDataEntry(
+        *print_preview_ui_id_, page_index,
+        base::RefCountedSharedMemoryMapping::CreateFromWholeRegion(region));
+  }
 }
 
 void PrintPreviewExtractor::OnCompositeToPdfDone(
@@ -385,9 +387,11 @@ void PrintPreviewExtractor::OnCompositeToPdfDone(
   DVLOG(3) << __func__ << ": id=" << request_id << " , status=" << status;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(print_preview_ui_id_);
-  PrintPreviewDataService::GetInstance()->SetDataEntry(
-      *print_preview_ui_id_, printing::COMPLETE_PREVIEW_DOCUMENT_INDEX,
-      base::RefCountedSharedMemoryMapping::CreateFromWholeRegion(region));
+  if (status == printing::mojom::PrintCompositor::Status::kSuccess) {
+    PrintPreviewDataService::GetInstance()->SetDataEntry(
+        *print_preview_ui_id_, printing::COMPLETE_PREVIEW_DOCUMENT_INDEX,
+        base::RefCountedSharedMemoryMapping::CreateFromWholeRegion(region));
+  }
   OnPreviewReady();
 }
 
