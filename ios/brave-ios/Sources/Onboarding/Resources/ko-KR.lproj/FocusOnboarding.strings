@@ -32,7 +32,7 @@
 "focusOnboarding.p3aToggleDescription" = "'Brave Shields 및 프라이버시' 아래 Brave 설정에서 언제든지 변경할 수 있습니다.";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "프라이버시가 완전 보장되는 익명 제품 인사이트 공유.";
+"focusOnboarding.p3aToggleTitle" = "프라이버시가 보장되는 익명 제품 인사이트를 공유합니다.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "브라우징 시작";

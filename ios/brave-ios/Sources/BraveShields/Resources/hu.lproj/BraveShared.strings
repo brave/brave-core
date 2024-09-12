@@ -25,6 +25,9 @@
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
 "AntiAdBlockWarningTitle" = "Igazítsa a hirdetésblokkoló beállításait ehhez a webhelyhez";
 
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Automatikus megsemmisítés";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agresszív";
 
@@ -145,8 +148,38 @@
 /* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
 "FilterListURLTextFieldPlaceholder" = "Ide írja be a szűrőlista URL-címét ";
 
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Törli a cookie-kat és egyéb webhelyadatokat, amikor bezár egy adott oldalt";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Felejtsen el, amikor bezárom ezt az oldalt";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Szigorú";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Adatok megsemmisítése";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Soha";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Alkalmazás bezárásakor";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Webhelylapok bezárásakor";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Webhelyadatok megsemmisítése";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "A megsemmisítés a webhely összes nyitott lapját be fogja zárni, és valamennyi webhelyadatot törölni fogja. Ezt nem lehet visszavonni.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Megsemmisíti a webhelyadatokat?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Webhelyadatok megsemmisítése most";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "A webhely nem biztonságos";

@@ -32,7 +32,7 @@
 "focusOnboarding.p3aToggleDescription" = "Voit muuttaa tätä milloin tahansa Braven asetuksissa kohdassa Brave-suojaus ja tietisuoja.";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "Jaa täysin yksityisiä ja anonyymejä tuotetietoja.";
+"focusOnboarding.p3aToggleTitle" = "Jaa yksityisiä ja anonyymejä tuotetietoja.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Aloita selaaminen";
