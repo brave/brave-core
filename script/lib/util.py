@@ -125,6 +125,9 @@ def make_zip(zip_file_path, files, dirs):
     # missing files.
     if sys.platform == 'darwin':
         files += dirs
+        for root, dirs, _ in os.walk(dirs[0]):
+            for d in dirs:
+                execute(['ls', '-alh', os.path.join(root, d)])
         execute(['zip', '-r', '-y', zip_file_path] + files)
     else:
         zip_file = zipfile.ZipFile(zip_file_path, "w", zipfile.ZIP_DEFLATED,
