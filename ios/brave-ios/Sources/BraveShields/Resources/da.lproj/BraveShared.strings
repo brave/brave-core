@@ -25,6 +25,9 @@
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
 "AntiAdBlockWarningTitle" = "Juster indstillinger for annonceblokering for dette websted";
 
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Automakulér";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Aggressiv ";
 
@@ -145,8 +148,38 @@
 /* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
 "FilterListURLTextFieldPlaceholder" = "Indtast filterlistens URL her ";
 
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Rydder cookies og andet sidedata, når du lukker en side";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Glem mig, når jeg lukker denne side.";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Striks";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Makulér data";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Aldrig";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "App lukket";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Sidefaner lukket";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Makulér sidedata";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Makulering lukker alle faner, der er åbne på siden, og sletter alle data fra siden. Det kan ikke fortrydes.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Makulér sidedata?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Makulér sidedata nu";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Webstedet er usikkert";

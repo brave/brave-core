@@ -14,7 +14,7 @@
 "aichat.advancedSettingsDefaultModelTitle" = "Predvolený model";
 
 /* The title for the header for adjusting leo ai settings */
-"aichat.advancedSettingsHeaderTitle" = "Leo je inteligentný asistent poháňaný AI. Zabudované priamo do prehliadača.";
+"aichat.advancedSettingsHeaderTitle" = "Leo predstavuje inteligentného asistenta využívajúceho AI, ktorý je integrovaný priamo do prehliadača.";
 
 /* The subtitle for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Prepojte svoj nákup v obchode App Store so svojím účtom Brave, aby ste mohli používať Leo na iných zariadeniach.";
@@ -69,6 +69,12 @@
 
 /* The title shown on limit reached error view, which is suggesting user to change default model */
 "aichat.contextLimitErrorTitle" = "Táto konverzácia je príliš dlhá a nemôže pokračovať.\nK dispozícii môžu byť aj iné modely, s ktorými je Leo schopný zachovať presnosť pri dlhších rozhovoroch.";
+
+/* The title of the section where custom models are displayed as a list. */
+"aichat.customModelChatSectionTitle" = "Vlastné modely";
+
+/* The title for the custom models section in the menu */
+"aichat.customModelsMenuSectionTitle" = "Vlastné modely";
 
 /* The title of the section where chat models are displayed as a list. */
 "aichat.defaultModelChatSectionTitle" = "Chat";
@@ -133,9 +139,6 @@
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Chat s bleskovou rýchlosťou";
 
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Ahoj, ja som Leo. Môj poskytovateľ je Brave a poháňa ma Claude 3 Sonnet, model vytvorený spoločnosťou Anthropic na podporu úloh konverzácie a spracovania textu.";
-
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonet od Anthropic";
 
@@ -144,12 +147,6 @@
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Ahoj, ja som Leo. Som asistent AI od Brave. Používam %@. Opýtajte sa ma na čokoľvek a ja sa pokúsim odpovedať.";
-
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Ahoj, ja som Leo, asistent AI plne prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Llama 3 8B vytvoreným spoločnosťou Meta, aby som bol výkonný a použiteľný v mnohých prípadoch použitia.";
-
-/* The model and creator for intro message - Llama 3 8b is the model name -- Meta is the creator */
-"aichat.introMessageLlamaModelDescription" = "Llama 3 8b by Meta";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Všeobecný chat";
@@ -168,6 +165,9 @@
 
 /* The name of the AI-Assistant that's responsing to the user */
 "aichat.leoAssistantNameTitle" = "Leo";
+
+/* The default title displayed above a code block when the language of the code is not known. */
+"aichat.leoCodeExampleDefaultTitle" = "Príklad kódu";
 
 /* The text displayed on the loading screen when searching for a user query */
 "aichat.leoImprovedAnswerBraveSearch" = "Vylepšené vyhľadávanie odpovedí na";

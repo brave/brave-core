@@ -1,0 +1,325 @@
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "ενεργοποίηση";
+
+/* Text for toggle which indicating the toggle action is for selecting region in automatic */
+"vpn.automaticServerSelectionToggleTitle" = "Αυτόματη";
+
+/* Title on top the list of available servers */
+"vpn.availableServerTitle" = "ΔΙΑΘΕΣΙΜΟΙ ΔΙΑΚΟΜΙΣΤΕΣ";
+
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "Αγορά";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxDevicesProtect" = "Προστατέψτε 5 συσκευές με 1 συνδρομή";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoLocation" = "Επιλέξτε την τοποθεσία της γεωγραφικής περιοχής/χώρας σας";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "Το Brave δεν καταγράφει ποτέ τη δραστηριότητά σας";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectYourDevices" = "Συνολική προστασία εφαρμογών/συσκευής";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSaferWifi" = "Ασφαλέστερο για οικιακό ή δημόσιο Wi-Fi";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSpeedFast" = "Αστραπιαίες ταχύτητες, έως 100 Mbps";
+
+/* Text indicating how many cities is used for that country used as Ex: '1 City' */
+"vpn.cityCountTitle" = "%ld Πόλη";
+
+/* Text showing the vpn region is connected */
+"vpn.connectedRegionDescription" = "Σε σύνδεση";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "Απόδειξη App Store";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "Έκδοση εφαρμογής";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "Εταιρεία κινητής τηλεφωνίας";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "Η Brave δεν σας παρακολουθεί ούτε γνωρίζει πώς χρησιμοποιείτε την εφαρμογή μας, επομένως δεν γνωρίζουμε πώς έχετε ρυθμίσει το VPN. Στείλτε μας πληροφορίες σχετικά με το πρόβλημα που αντιμετωπίζετε και θα κάνουμε ό,τι καλύτερο μπορούμε για να το επιλύσουμε το συντομότερο δυνατό.";
+
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "Δεν είναι δυνατή η αποστολή email. Ελέγξτε τη διαμόρφωση του email σας.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "Επιλέξτε τις πληροφορίες που θέλετε να μοιραστείτε μαζί μας.\n\nΌσο περισσότερες πληροφορίες μοιραστείτε αρχικά μαζί μας τόσο πιο εύκολο θα είναι για το προσωπικό υποστήριξής μας να σας βοηθήσει να επιλύσετε το πρόβλημά σας.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "Η υποστήριξη παρέχεται με τη βοήθεια της ομάδας Guardian.";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "Όνομα κεντρικού υπολογιστή VPN";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "Πρόβλημα";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "Πρόβλημα αξιοπιστίας σύνδεσης";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Επιλέξτε την κατηγορία που περιγράφει το πρόβλημα.";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "Δεν υπάρχει σύνδεση στο διαδίκτυο κατά τη σύνδεση";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "Άλλο";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "Δεν είναι δυνατή η σύνδεση με το VPN (Άλλο σφάλμα)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "Αργή σύνδεση";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "Ο ιστότοπος δεν λειτουργεί";
+
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "Αρχεία καταγραφής σφαλμάτων";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "Τύπος δικτύου";
+
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Πλατφόρμα";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "Συνέχεια ως email";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "Τύπος συνδρομής";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "Ζώνη ώρας iOS";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Πρόβλημα Τείχους προστασίας + VPN Brave";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "Ενεργοποίηση";
+
+/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
+"vpn.freeTrialDetail" = "Όλα τα προγράμματα περιλαμβάνουν %@!";
+
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "δωρεάν δοκιμή 7 ημερών";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "δωρεάν δοκιμή 7 ημερών";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "Όλες οι συνδρομές ανανεώνονται αυτόματα, αλλά μπορούν να ακυρωθούν πριν από την ανανέωση.";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "Αυτό το προφίλ επιτρέπει στο VPN να συνδέεται αυτόματα και να ασφαλίζει συνεχώς την κυκλοφορία στη συσκευή σας. Αυτή η σύνδεση VPN θα κρυπτογραφείται και θα δρομολογείται μέσω του έξυπνου τείχους προστασίας της Brave για να αποκλείει δυνητικά επιβλαβείς και παρεμβατικές συνδέσεις.";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "Εγκατάσταση προφίλ VPN";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Το Brave θα εγκαταστήσει τώρα ένα προφίλ VPN.";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "Το VPN έχει ενεργοποιηθεί";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "Εγκατάσταση VPN";
+
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "Δοκιμάστε ΔΩΡΕΑΝ";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "Μηνιαία ανανέωση";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "Μηνιαία συνδρομή";
+
+/* Text indicating how many cities is used for that region used as Ex: '2 Cities' */
+"vpn.multipleCityCountTitle" = "%ld Πόλεις";
+
+/* Text indicating how many server is used for that region used as Ex: '2 Servers' */
+"vpn.multipleServerCountTitle" = "%ld Διακομιστές";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "Έχει λήξει";
+
+/* Description of vpn tunnel protocol
+   The alert title showing vpn region is changed */
+"vpn.protocolPickerDescription" = "Επιλέξτε το πρωτόκολλο μεταφοράς που προτιμάτε. Μετά την εναλλαγή, τα υπάρχοντα διαπιστευτήριά σας VPN θα εκκαθαριστούν και θα συνδεθείτε ξανά, εάν έχει δημιουργηθεί μια σύνδεση VPN τη δεδομένη στιγμή.";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "Η αλλαγή πρωτοκόλλου διοχέτευσης απέτυχε. Δοκιμάστε ξανά αργότερα.";
+
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Σφάλμα διακομιστή";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "Πρωτόκολλο μεταφοράς";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "Το πρωτόκολλο διοχέτευσης VPN άλλαξε.";
+
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "Θα επιλεγεί αυτόματα μια περιοχή διακομιστή που είναι πιο κοντά σε εσάς, με βάση τη ζώνη ώρας του συστήματός σας. Αυτό συνιστάται για να εξασφαλίσετε γρήγορες ταχύτητες Internet.";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Η αλλαγή διακομιστών απέτυχε. Δοκιμάστε ξανά αργότερα.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Σφάλμα διακομιστή";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Περιοχή διακομιστή";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "Η περιοχή VPN άλλαξε.";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "Δεν ήταν δυνατή η επαναφορά της διαμόρφωσης VPN. Δοκιμάστε ξανά. Εάν το πρόβλημα παραμένει, επικοινωνήστε με την υποστήριξη για βοήθεια.";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "Δοκιμάστε ξανά";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "Η επαναφορά απέτυχε";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "Η διαμόρφωση VPN επαναφέρθηκε με επιτυχία.";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "Η επαναφορά ήταν επιτυχής";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "Ανάκτηση";
+
+/* Title showing which country serves list showing. Ex: 'Brazil Server */
+"vpn.serverNameTitle" = "%@ Διακομιστής";
+
+/* Text for description of toggle that auto selcets the server according to time zone. */
+"vpn.serverRegionAutoSelectDescription" = "Αυτόματη επιλογή της κοντινότερης σε εσάς περιοχής διακομιστή VPN με βάση τη ζώνη ώρας σας. Αυτή η επιλογή συνιστάται για να μεγιστοποιήσετε τις ταχύτητες του Διαδικτύου.";
+
+/* Text indicating how many server is used for that region used as Ex: '1 Server' */
+"vpn.serverTitle" = "%ld Διακομιστής";
+
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "Αναβαθμίστε σε ένα VPN για να προστατέψετε τη σύνδεσή σας και να αποκλείσετε παντού τους παρεμβατικούς ιχνηλάτες.";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "Επικοινωνία με την τεχνική υποστήριξη";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Η ανάκτηση της λίστας διακομιστών απέτυχε. Δοκιμάστε ξανά αργότερα.";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "Υποστήριξη VPN";
+
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Συνδέστε την αγορά στον λογαριασμό σας Brave";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Συνδέστε την αγορά σας από το App Store με τον λογαριασμό σας Brave για να χρησιμοποιήσετε το Brave VPN σε άλλες συσκευές.";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "Διαχείριση συνδρομής";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "Εξαργύρωση κωδικού προσφοράς";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "Επαναφορά διαμόρφωσης";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "Κεντρικός υπολογιστής";
+
+/* Table cell title for vpn's server location and which open opens location select */
+"vpn.settingsServerLocation" = "Τοποθεσία";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "Διακομιστής";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "Λήγει";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "Συνδρομή";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "Κατάσταση";
+
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "Πρωτόκολλο μεταφοράς";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Ενημέρωση τρόπου πληρωμής";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "Ακόμα και στο παρασκήνιο, το Brave θα συνεχίσει να σας προστατεύει.";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Το Τείχος προστασίας + VPN Brave είναι ΕΝΕΡΓΟ";
+
+/* Text for description of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalDescription" = "Χρήση του καλύτερου διαθέσιμου διακομιστή";
+
+/* Text for title of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalTitle" = "Βέλτιστη";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "Παρουσιάστηκε πρόβλημα με την προετοιμασία του VPN. Δοκιμάστε ξανά ή δοκιμάστε να επαναφέρετε τη διαμόρφωση στη σελίδα ρυθμίσεων VPN.";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "Σφάλμα";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Το Τείχος προστασίας + VPN Brave απαιτεί την εγκατάσταση ενός προφίλ VPN στη συσκευή σας για να λειτουργήσει. ";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "Η άδεια απορρίφθηκε";
+
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "Δεν είναι δυνατή η εξαργύρωση του κωδικού προσφοράς. Δοκιμάστε ξανά ή ελέγξτε τα στοιχεία του κωδικού προσφοράς και δοκιμάστε ξανά.";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "Δεν είναι δυνατή η ολοκλήρωση της αγοράς. Δοκιμάστε ξανά ή ελέγξτε τα στοιχεία πληρωμής σας στην Apple και δοκιμάστε ξανά.";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "Σφάλμα";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "Οι συνδρομές θα χρεώνονται μέσω του λογαριασμού σας iTunes.\n\nΟποιοδήποτε αχρησιμοποίητο τμήμα της δωρεάν δοκιμής, εάν προσφέρεται, χάνεται όταν αγοράζετε μια συνδρομή.\n\nΗ συνδρομή σας θα ανανεώνεται αυτόματα, εκτός εάν ακυρωθεί τουλάχιστον 24 ώρες πριν από το τέλος της τρέχουσας περιόδου.\n\nΜπορείτε να διαχειρίζεστε τις συνδρομές σας στις Ρυθμίσεις.\n\nΧρησιμοποιώντας το Brave, συμφωνείτε με τους Όρους χρήσης και την Πολιτική απορρήτου.";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "Εξαργύρωση κωδικού";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "Αυτή η ενέργεια θα επαναφέρει τη διαμόρφωση Τείχους προστασίας + VPN Brave και θα διορθώσει τυχόν σφάλματα. Αυτή η διαδικασία μπορεί να χρειαστεί λίγο χρόνο.";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "Επαναφορά διαμόρφωσης";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "Επαναφορά";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "Μηνιαία συνδρομή";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "Ετήσια συνδρομ";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "Ανανεώστε ετησίως και εξοικονομήστε %@";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+"vpn.yearlySubDisclaimer" = "Η καλύτερη αξία";
+
+/* One year lenght vpn subcription */
+"vpn.yearlySubTitle" = "Ένα έτος";
+

@@ -32,7 +32,7 @@
 "focusOnboarding.p3aToggleDescription" = "Ubah ini kapan saja di Pengaturan Brave, pada bagian 'Perisai dan Privasi Brave'.";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "Bagikan Wawasan Produk yang Sepenuhnya Privat & Anonim.";
+"focusOnboarding.p3aToggleTitle" = "Bagikan Wawasan Produk Secara Privat & Anonim.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Mulai Menjelajah";
