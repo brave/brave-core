@@ -256,6 +256,8 @@ public abstract class BraveActivity extends ChromeActivity
             "https://basicattentiontoken.org/user-terms-of-service/";
     public static final String BRAVE_PRIVACY_POLICY = "https://brave.com/privacy/browser/#rewards";
     public static final String OPEN_URL = "open_url";
+    public static final String BRAVE_WEBCOMPAT_INFO_WIKI_URL =
+            "https://github.com/brave/brave-browser/wiki/Web-compatibility-reports";
 
     private static final int DAYS_1 = 1;
     private static final int DAYS_4 = 4;

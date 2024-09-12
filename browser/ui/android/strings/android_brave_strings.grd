@@ -1619,7 +1619,10 @@ Are you sure you want to do this?
         Let Brave's developers know that this site doesn't work properly with Shields:
       </message>
       <message name="IDS_REPORT_BROKEN_SITE_TEXT_2" desc="Shields text for broken text warning message.">
-        Note: This site address will be submitted with your Brave version number and your IP address(which will not be stored).
+        Thank you for helping make Brave better for all. This report will only contain information necessary for us to fix this site. <ph name="LEARN_MORE">%1$s</ph>
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_TEXT_LINK" desc="Text for link to webcompat report wiki page.">
+        Learn more.
       </message>
       <message name="IDS_REPORT_ERROR_PAGE_EXPLANATION" desc="Notifies the user that the error page cannot be reported">
         This is an error page. It cannot be reported as a broken site.
