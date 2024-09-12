@@ -11,6 +11,7 @@
 #include <optional>
 #include <string>
 
+#include "base/containers/span_or_size.h"
 #include "base/time/time.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h"
@@ -158,8 +159,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                                   const blink::Resource* cached_resource);
   void DidReceiveData(uint64_t identifier,
                       blink::DocumentLoader* loader,
-                      const char* data,
-                      uint64_t data_length);
+                      base::SpanOrSize<const char> data);
   void DidReceiveBlob(uint64_t identifier,
                       blink::DocumentLoader* loader,
                       blink::BlobDataHandle*);

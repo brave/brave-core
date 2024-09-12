@@ -648,13 +648,11 @@ void PageGraph::DidReceiveResourceResponse(
 
 void PageGraph::DidReceiveData(uint64_t identifier,
                                blink::DocumentLoader*,
-                               const char* data,
-                               uint64_t data_length) {
+                               base::SpanOrSize<const char> data) {
   if (TrackedRequestRecord* request_record =
           request_tracker_.GetTrackingRecord(identifier)) {
     if (TrackedRequest* request = request_record->request.get()) {
-      request->UpdateResponseBodyHash(
-          base::make_span(data, static_cast<size_t>(data_length)));
+      request->UpdateResponseBodyHash(*data.span());
     }
     return;
   }
