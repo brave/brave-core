@@ -9,16 +9,16 @@ license = "MPL-2.0"
 base64 = "0.13.0"
 bls-signatures = { version = "0.12", default-features = false, features = ["pairing"] }
 cxx = "1"
-fvm_shared = { version = "3.3.0" }
+fvm_shared = { version = "3.10.0" }
 libsecp256k1 = "0.7"
 num_bigint_chainsafe = { package = "forest_bigint", version = "0.1.2"}
 serde = { version = "^1.0.117", features = ["derive"] }
 serde_json = "^1.0.59"
 thiserror = "^1.0.30"
 blake2b_simd = "1"
-cid = { version = "0.8.5", default-features = false }
-multihash = { version="0.16.3", default-features = false, features = [ "multihash-impl", "blake2b"] }
-fvm_ipld_encoding = "0.3"
+cid = { version = "0.10", default-features = false }
+multihash = { version = "0.18.0", default-features = false, features = [ "multihash-impl", "blake2b"] }
+fvm_ipld_encoding = "0.4"
 
 [lib]
 name = "filecoin_cxx"

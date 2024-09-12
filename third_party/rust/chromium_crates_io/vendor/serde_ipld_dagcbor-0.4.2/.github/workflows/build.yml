@@ -1,0 +1,41 @@
+name: build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+        toolchain: [stable]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v3
+
+      - name: Cache Dependencies & Build Outputs
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.toolchain }}
+          components: rustfmt, clippy
+
+      - name: Check Code Format
+        run: cargo fmt --all -- --check
+        shell: bash
+
+      - name: Code Lint
+        run: cargo clippy --all-targets --workspace -- -D warnings
+        shell: bash
+
+      - name: Test
+        run: cargo test --workspace
+        shell: bash
