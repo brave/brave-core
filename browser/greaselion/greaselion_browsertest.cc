@@ -129,6 +129,7 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
     BaseLocalDataFilesBrowserTest::SetUpOnMainThread();
     base::ScopedAllowBlockingForTesting allow_blocking;
     response_->LoadMocks();
+    profile()->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
   }
 
   // BaseLocalDataFilesBrowserTest overrides
