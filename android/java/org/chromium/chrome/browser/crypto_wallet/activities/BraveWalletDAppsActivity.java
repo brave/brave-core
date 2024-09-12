@@ -93,10 +93,6 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
     @Override
     protected void triggerLayoutInflation() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow()
-                .setFlags(
-                        WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_brave_wallet_dapps);
         Intent intent = getIntent();
         mActivityType =
