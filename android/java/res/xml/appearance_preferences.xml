@@ -50,8 +50,8 @@
         android:summary="@string/enable_multi_windows_summary" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="show_undo_on_tab_closed"
-        android:title="@string/show_undo_on_tab_closed"
+        android:key="show_undo_when_tabs_closed"
+        android:title="@string/show_undo_when_tabs_closed"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off" />
 
