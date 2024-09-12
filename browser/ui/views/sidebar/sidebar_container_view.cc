@@ -836,7 +836,7 @@ void SidebarContainerView::OnTabStripModelChanged(
     if (registry) {
       if (auto* entry = registry->GetEntryForKey(
               SidePanelEntry::Key(SidePanelEntryId::kChatUI))) {
-        if (side_panel_coordinator_->IsSidePanelEntryShowing(entry)) {
+        if (side_panel_coordinator_->IsSidePanelEntryShowing(entry->key())) {
           side_panel_coordinator_->Close();
         } else {
           entry->ClearCachedView();
