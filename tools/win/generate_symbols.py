@@ -120,7 +120,6 @@ def get_images_with_pdbs(args):
 
 
 async def process_image(args, image_path):
-    assert os.path.isabs(image_path)
     start_time = datetime.utcnow()
     output = f'Processing {image_path}'
 
@@ -130,7 +129,6 @@ async def process_image(args, image_path):
     )
     output += f'\n{image_fingerprint=!s}'
 
-    assert os.path.isabs(pdb_path)
     pdb_fingerprint = await get_pdb_fingerprint(pdb_path)
     output += f'\n{pdb_fingerprint=!s}'
 
@@ -174,7 +172,6 @@ async def get_pdb_info_from_img(image_path):
 
 
 async def get_pdb_fingerprint(pdb_path):
-    assert os.path.isabs(pdb_path)
     llvm_pdbutil_path = os.path.join(ROOT_DIR, 'third_party', 'llvm-build',
                                      'Release+Asserts', 'bin',
                                      'llvm-pdbutil.exe')
