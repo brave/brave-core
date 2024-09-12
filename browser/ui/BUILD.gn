@@ -328,6 +328,7 @@ source_set("ui") {
       "//chrome/browser/sync",
       "//chrome/browser/themes",
       "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/content_settings",
       "//chrome/browser/ui/omnibox",
       "//chrome/browser/ui/views/side_panel",
       "//chrome/browser/ui/webui/searchbox",
