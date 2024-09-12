@@ -42,6 +42,7 @@ class GreaselionService : public KeyedService,
   class Delegate {
    public:
     virtual ~Delegate() = default;
+    virtual bool IsEnabled() const = 0;
     virtual void AddExtension(extensions::Extension* extension) = 0;
     virtual void UnloadExtension(const std::string& extension_id) = 0;
   };

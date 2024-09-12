@@ -270,6 +270,9 @@ GreaselionServiceImpl::GetExtensionIdsForTesting() {
 }
 
 void GreaselionServiceImpl::UpdateInstalledExtensions() {
+  if (!delegate_->IsEnabled()) {
+    return;
+  }
   if (update_in_progress_) {
     update_pending_ = true;
     return;

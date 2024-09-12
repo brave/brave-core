@@ -13,7 +13,9 @@ if (enable_greaselion) {
 
   brave_browser_greaselion_deps += [
     "//base",
+    "//brave/components/brave_rewards/common",
     "//brave/components/greaselion/browser",
+    "//chrome/browser/profiles:profile",
     "//chrome/common",
     "//components/keyed_service/content",
     "//extensions/browser",

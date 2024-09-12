@@ -12,9 +12,11 @@
 #include "base/no_destructor.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "brave/components/greaselion/browser/greaselion_service_impl.h"
 #include "chrome/browser/extensions/extension_service.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -36,6 +38,19 @@ class GreaselionServiceDelegateImpl
       content::BrowserContext* browser_context)
       : browser_context_(browser_context) {
     DCHECK(browser_context_);
+    pref_change_registrar_.Init(
+        Profile::FromBrowserContext(browser_context)->GetPrefs());
+    pref_change_registrar_.Add(
+        brave_rewards::prefs::kEnabled,
+        base::BindRepeating(
+            &GreaselionServiceDelegateImpl::UpdateGreaselionExtensions,
+            base::Unretained(this)));
+  }
+
+  bool IsEnabled() const override {
+    return Profile::FromBrowserContext(browser_context_)
+        ->GetPrefs()
+        ->GetBoolean(brave_rewards::prefs::kEnabled);
   }
 
   void AddExtension(extensions::Extension* extension) override {
@@ -56,7 +71,16 @@ class GreaselionServiceDelegateImpl
   }
 
  private:
+  void UpdateGreaselionExtensions() {
+    auto* service =
+        GreaselionServiceFactory::GetForBrowserContext(browser_context_);
+    if (service) {
+      service->UpdateInstalledExtensions();
+    }
+  }
+
   raw_ptr<content::BrowserContext> browser_context_;  // Not owned
+  PrefChangeRegistrar pref_change_registrar_;
 };
 
 }  // namespace
