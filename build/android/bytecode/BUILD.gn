@@ -120,7 +120,6 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveToolbarManagerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveToolbarSwipeLayoutClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTopToolbarCoordinatorClassAdapter.java",
-    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTranslateCompactInfoBarBaseClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveUndoBarControllerBaseClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveVariationsSeedFetcherClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveWebsiteClassAdapter.java",

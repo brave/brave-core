@@ -50,7 +50,7 @@ public class AppearancePreferences extends BravePreferenceFragment
     public static final String PREF_BRAVE_ENABLE_TAB_GROUPS = "brave_enable_tab_groups";
     public static final String PREF_BRAVE_ENABLE_SPEEDREADER = "brave_enable_speedreader";
     public static final String PREF_ENABLE_MULTI_WINDOWS = "enable_multi_windows";
-    public static final String PREF_SHOW_UNDO_ON_TAB_CLOSED = "show_undo_on_tab_closed";
+    public static final String PREF_SHOW_UNDO_WHEN_TABS_CLOSED = "show_undo_when_tabs_closed";
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
@@ -175,14 +175,14 @@ public class AppearancePreferences extends BravePreferenceFragment
         }
 
         ChromeSwitchPreference showUndoButtonOnTabClosed =
-                (ChromeSwitchPreference) findPreference(PREF_SHOW_UNDO_ON_TAB_CLOSED);
+                (ChromeSwitchPreference) findPreference(PREF_SHOW_UNDO_WHEN_TABS_CLOSED);
         if (showUndoButtonOnTabClosed != null) {
             showUndoButtonOnTabClosed.setOnPreferenceChangeListener(this);
             ((ChromeSwitchPreference) showUndoButtonOnTabClosed)
                     .setChecked(
                             ChromeSharedPreferences.getInstance()
                                     .readBoolean(
-                                            BravePreferenceKeys.SHOW_UNDO_ON_TAB_CLOSED, true));
+                                            BravePreferenceKeys.SHOW_UNDO_WHEN_TABS_CLOSED, true));
         }
     }
 
@@ -269,9 +269,10 @@ public class AppearancePreferences extends BravePreferenceFragment
                 }
             }
             BraveMultiWindowUtils.updateEnableMultiWindows((boolean) newValue);
-        } else if (PREF_SHOW_UNDO_ON_TAB_CLOSED.equals(key)) {
+        } else if (PREF_SHOW_UNDO_WHEN_TABS_CLOSED.equals(key)) {
             ChromeSharedPreferences.getInstance()
-                    .writeBoolean(BravePreferenceKeys.SHOW_UNDO_ON_TAB_CLOSED, (boolean) newValue);
+                    .writeBoolean(
+                            BravePreferenceKeys.SHOW_UNDO_WHEN_TABS_CLOSED, (boolean) newValue);
         }
         if (shouldRelaunch) {
             BraveRelaunchUtils.askForRelaunch(getActivity());

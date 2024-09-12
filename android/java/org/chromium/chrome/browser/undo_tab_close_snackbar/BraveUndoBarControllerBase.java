@@ -17,7 +17,7 @@ public class BraveUndoBarControllerBase implements SnackbarManager.SnackbarContr
     public void showUndoBar(List<Tab> closedTabs, boolean isAllTabs) {
         boolean showUndoBar =
                 ChromeSharedPreferences.getInstance()
-                        .readBoolean(BravePreferenceKeys.SHOW_UNDO_ON_TAB_CLOSED, true);
+                        .readBoolean(BravePreferenceKeys.SHOW_UNDO_WHEN_TABS_CLOSED, true);
         if (!showUndoBar) {
             if (closedTabs.isEmpty()) {
                 return;
@@ -27,7 +27,7 @@ public class BraveUndoBarControllerBase implements SnackbarManager.SnackbarContr
             return;
         }
 
-        BraveReflectionUtil.InvokeMethod(
+        BraveReflectionUtil.invokeMethod(
                 UndoBarController.class,
                 this,
                 "showUndoBar",
