@@ -52,7 +52,7 @@ class BraveProxyingWebSocket
       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
           handshake_client,
       int process_id,
-      int frame_tree_node_id,
+      content::FrameTreeNodeId frame_tree_node_id,
       content::BrowserContext* browser_context,
       scoped_refptr<RequestIDGenerator> request_id_generator,
       BraveRequestHandler& handler,
@@ -138,7 +138,7 @@ class BraveProxyingWebSocket
   std::shared_ptr<brave::BraveRequestInfo> ctx_;
 
   const int process_id_;
-  const int frame_tree_node_id_;
+  const content::FrameTreeNodeId frame_tree_node_id_;
   content::ContentBrowserClient::WebSocketFactory factory_;
   const raw_ptr<content::BrowserContext> browser_context_;
   scoped_refptr<RequestIDGenerator> request_id_generator_;

@@ -52,7 +52,7 @@ BraveRequestInfo::~BraveRequestInfo() = default;
 std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     const network::ResourceRequest& request,
     int render_process_id,
-    int frame_tree_node_id,
+    content::FrameTreeNodeId frame_tree_node_id,
     uint64_t request_identifier,
     content::BrowserContext* browser_context,
     std::shared_ptr<brave::BraveRequestInfo> old_ctx) {

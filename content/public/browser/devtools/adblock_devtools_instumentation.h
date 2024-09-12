@@ -10,6 +10,7 @@
 #include <string>
 
 #include "content/common/content_export.h"
+#include "content/public/browser/frame_tree_node_id.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom.h"
 #include "url/gurl.h"
 
@@ -43,7 +44,7 @@ struct CONTENT_EXPORT AdblockInfo {
   std::optional<std::string> rewritten_url;
 };
 
-CONTENT_EXPORT void SendAdblockInfo(int frame_tree_node_id,
+CONTENT_EXPORT void SendAdblockInfo(content::FrameTreeNodeId frame_tree_node_id,
                                     const std::string& request_id,
                                     const AdblockInfo& info);
 
