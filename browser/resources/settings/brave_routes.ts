@@ -75,6 +75,10 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
       r.SITE_SETTINGS_LOCALHOST_ACCESS = r.SITE_SETTINGS
         .createChild('localhostAccess')
     }
+    const isBraveAIChatFeatureEnabled = loadTimeData.getBoolean('isBraveAIChatFeatureEnabled')
+    if (isBraveAIChatFeatureEnabled) {
+      r.SITE_SETTINGS_BRAVE_AI_CHAT = r.SITE_SETTINGS.createChild('braveAIChat')
+    }
     const isNativeBraveWalletFeatureEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
     if (isNativeBraveWalletFeatureEnabled) {
       r.SITE_SETTINGS_ETHEREUM = r.SITE_SETTINGS.createChild('ethereum')

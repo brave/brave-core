@@ -7,6 +7,7 @@
 
 #include "base/functional/bind.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/features.h"
@@ -21,6 +22,10 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
+#endif
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 #include "brave/components/request_otr/common/features.h"
@@ -96,6 +101,12 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
       "isLocalhostAccessFeatureEnabled",
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveLocalhostAccessPermission));
+  data_source->AddBoolean("isBraveAIChatFeatureEnabled",
+#if BUILDFLAG(ENABLE_AI_CHAT)
+                          ai_chat::IsAIChatEnabled(profile->GetPrefs()));
+#else
+                          false);
+#endif
 }
 
 void BravePrivacyHandler::SetLocalStateBooleanEnabled(

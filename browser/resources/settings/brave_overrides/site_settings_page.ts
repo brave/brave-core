@@ -137,6 +137,21 @@ RegisterPolymerComponentReplacement(
               lists_.permissionsAdvanced.splice(currentIndex, 0,
                 localhostAccessItem)
             }
+            const isBraveAIChatFeatureEnabled =
+              loadTimeData.getBoolean('isBraveAIChatFeatureEnabled')
+            if (isBraveAIChatFeatureEnabled) {
+              currentIndex++
+              const AIChatItem = {
+                route: routes.SITE_SETTINGS_BRAVE_AI_CHAT,
+                id: 'braveAIChat',
+                label: 'siteSettingsBraveAIChat',
+                icon: 'product-brave-leo',
+                enabledLabel: 'siteSettingsBraveAIChatAsk',
+                disabledLabel: 'siteSettingsBraveAIChatBlock'
+              }
+              lists_.permissionsAdvanced.splice(currentIndex, 0,
+                AIChatItem)
+            }
             const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
             if (isNativeBraveWalletEnabled) {
               currentIndex++

@@ -31,7 +31,7 @@
   {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},                \
   {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},          \
   {ContentSettingsType::BRAVE_LOCALHOST_ACCESS, "localhostAccess"},   \
-  {ContentSettingsType::BRAVE_AI_CHAT, nullptr},                      \
+  {ContentSettingsType::BRAVE_AI_CHAT, "braveAIChat"},                \
   {ContentSettingsType::BRAVE_WEBCOMPAT_NONE, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS, nullptr}, \
