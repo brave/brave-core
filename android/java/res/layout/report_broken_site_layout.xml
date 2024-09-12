@@ -43,11 +43,11 @@
         android:layout_marginBottom="14dp"/>
 
     <TextView
+        android:id="@+id/report_broken_site_disclaimer_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:textColor="@color/default_icon_color_tint_list"
-        android:text="@string/report_broken_site_text_2"/>
+        android:textColor="@color/default_icon_color_tint_list"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

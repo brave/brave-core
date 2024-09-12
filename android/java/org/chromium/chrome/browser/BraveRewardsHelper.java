@@ -32,6 +32,7 @@ import androidx.annotation.Nullable;
 
 import org.jni_zero.CalledByNative;
 
+import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -587,8 +588,38 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         return textSpannableString;
     }
 
-    public static void setSpan(Context context, String text, SpannableString tosTextSS,
-            int stringId, ClickableSpan clickableSpan) {
+    public static SpannableString toSpannableString(
+            String text,
+            int colorRes,
+            int clickableSubstringResId,
+            Callback<Context> onSubstringClicked) {
+        Context context = ContextUtils.getApplicationContext();
+        Spanned textSpanned = spannedFromHtmlString(text);
+        SpannableString textSpannableString = new SpannableString(textSpanned.toString());
+
+        NoUnderlineClickableSpan substringClickableSpan =
+                new NoUnderlineClickableSpan(
+                        context,
+                        colorRes,
+                        (textView) -> {
+                            onSubstringClicked.onResult(context);
+                        });
+
+        setSpan(
+                context,
+                text,
+                textSpannableString,
+                clickableSubstringResId,
+                substringClickableSpan);
+        return textSpannableString;
+    }
+
+    public static void setSpan(
+            Context context,
+            String text,
+            SpannableString tosTextSS,
+            int stringId,
+            ClickableSpan clickableSpan) {
         String spanString = context.getResources().getString(stringId);
         int spanLength = spanString.length();
         int index = text.indexOf(spanString);
