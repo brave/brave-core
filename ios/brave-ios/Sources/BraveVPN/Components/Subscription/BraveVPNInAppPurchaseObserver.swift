@@ -38,12 +38,21 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
     // but to show the UI we only want to call the delegate method once.
     var callPurchaseDelegateOnce = true
 
+    // Filter for VPN only transactions. We do not want to call `finishTransaction` on other transactions
+    let vpnTransactions = transactions.filter({
+      ($0.payment.productIdentifier == BraveVPNProductInfo.ProductIdentifiers.monthlySub)
+        || ($0.payment.productIdentifier == BraveVPNProductInfo.ProductIdentifiers.yearlySub)
+    })
+
+    // There was no VPN purchases
+    if vpnTransactions.isEmpty {
+      let errorRestore = SKError(SKError.unknown, userInfo: ["detail": "not-purchased"])
+      self.delegate?.purchaseFailed(error: .transactionError(error: errorRestore))
+      return
+    }
+
     // For safety let's start processing from the newest transaction.
-    transactions
-      .filter({
-        ($0.payment.productIdentifier == BraveVPNProductInfo.ProductIdentifiers.monthlySub)
-          || ($0.payment.productIdentifier == BraveVPNProductInfo.ProductIdentifiers.yearlySub)
-      })
+    vpnTransactions
       .sorted(by: { $0.transactionDate ?? Date() > $1.transactionDate ?? Date() })
       .forEach { transaction in
         switch transaction.transactionState {
@@ -87,9 +96,12 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
         case .failed:
           Logger.module.debug("Received transaction state: failed")
           SKPaymentQueue.default().finishTransaction(transaction)
-          self.delegate?.purchaseFailed(
-            error: .transactionError(error: transaction.error as? SKError)
-          )
+          if callPurchaseDelegateOnce {
+            self.delegate?.purchaseFailed(
+              error: .transactionError(error: transaction.error as? SKError)
+            )
+          }
+          callPurchaseDelegateOnce = false
         @unknown default:
           assertionFailure("Unknown transactionState")
         }
@@ -115,7 +127,67 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
 
       let errorRestore = SKError(SKError.unknown, userInfo: ["detail": "not-purchased"])
       delegate?.purchaseFailed(error: .transactionError(error: errorRestore))
+      return
     }
+
+    // Existing Transactions!
+    var callPurchaseDelegateOnce = true
+    let vpnTransactions = queue.transactions.filter({
+      ($0.payment.productIdentifier == BraveVPNProductInfo.ProductIdentifiers.monthlySub)
+        || ($0.payment.productIdentifier == BraveVPNProductInfo.ProductIdentifiers.yearlySub)
+    })
+
+    // There was no VPN purchases
+    if vpnTransactions.isEmpty {
+      let errorRestore = SKError(SKError.unknown, userInfo: ["detail": "not-purchased"])
+      self.delegate?.purchaseFailed(error: .transactionError(error: errorRestore))
+      return
+    }
+
+    vpnTransactions
+      .sorted(by: { $0.transactionDate ?? Date() > $1.transactionDate ?? Date() })
+      .forEach { transaction in
+        switch transaction.transactionState {
+        case .purchased:
+          Logger.module.debug("Existing transaction state: purchased")
+          if callPurchaseDelegateOnce {
+            Preferences.VPN.subscriptionProductId.value = transaction.payment.productIdentifier
+            self.delegate?.purchasedOrRestoredProduct(validateReceipt: true)
+          }
+          callPurchaseDelegateOnce = false
+        case .restored:
+          Logger.module.debug("Existing transaction state: restored")
+
+          if callPurchaseDelegateOnce {
+            Preferences.VPN.subscriptionProductId.value = transaction.payment.productIdentifier
+
+            Task {
+              let response = await BraveVPN.validateReceiptData()
+              if response?.status == .expired {
+                self.delegate?.purchaseFailed(error: .receiptError)
+              } else {
+                self.delegate?.purchasedOrRestoredProduct(validateReceipt: false)
+                BraveVPN.clearSkusCredentials(includeExpirationDate: false)
+              }
+            }
+          }
+
+          callPurchaseDelegateOnce = false
+        case .purchasing, .deferred:
+          Logger.module.debug("Received transaction state: purchasing")
+        case .failed:
+          Logger.module.debug("Received transaction state: failed")
+
+          if callPurchaseDelegateOnce {
+            self.delegate?.purchaseFailed(
+              error: .transactionError(error: transaction.error as? SKError)
+            )
+          }
+          callPurchaseDelegateOnce = false
+        @unknown default:
+          assertionFailure("Unknown transactionState")
+        }
+      }
   }
 
   // MARK: - Handling promoted in-app purchases
