@@ -16,6 +16,10 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kExtensionTelemetryForEnterprise, base::FEATURE_DISABLED_BY_DEFAULT},
     {kExtensionTelemetryTabsApiSignal, base::FEATURE_DISABLED_BY_DEFAULT},
     {kGooglePlayProtectInApkTelemetry, base::FEATURE_DISABLED_BY_DEFAULT},
+#if BUILDFLAG(IS_ANDROID)
+    {kSafeBrowsingNewGmsApiForBrowseUrlDatabaseCheck,
+     base::FEATURE_DISABLED_BY_DEFAULT},
+#endif  // BUILDFLAG(IS_ANDROID)
 }});
 
 }  // namespace safe_browsing
