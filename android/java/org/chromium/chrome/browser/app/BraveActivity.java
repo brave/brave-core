@@ -340,10 +340,9 @@ public abstract class BraveActivity extends ChromeActivity
         // TODO(sergz): verify do we need it in that phase or not.
         if (mNativeInitialized) {
             BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-            if (layout == null || !layout.isWalletIconVisible()) {
-                return;
+            if (layout != null && layout.isWalletIconVisible()) {
+                updateWalletBadgeVisibility();
             }
-            updateWalletBadgeVisibility();
         }
 
         BraveSafeBrowsingApiHandler.getInstance().setDelegate(
