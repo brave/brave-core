@@ -7,7 +7,6 @@
 #define BRAVE_BROWSER_POLICY_BRAVE_SIMPLE_POLICY_MAP_H_
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -17,6 +16,7 @@
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
 #endif
 
@@ -44,10 +44,9 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      kManagedBraveShieldsDisabledForUrls, base::Value::Type::LIST},
     {policy::key::kBraveShieldsEnabledForUrls,
      kManagedBraveShieldsEnabledForUrls, base::Value::Type::LIST},
-#endif
-
     {policy::key::kBraveSyncUrl, brave_sync::kCustomSyncServiceUrl,
      base::Value::Type::STRING},
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
     {policy::key::kTorDisabled, tor::prefs::kTorDisabled,
