@@ -8,12 +8,20 @@ import Lottie
 import Preferences
 import SwiftUI
 
-struct FocusSystemSettingsView: View {
+public struct FocusSystemSettingsView: View {
+
+  public enum DefaultBrowserScreenType {
+    case onboarding, callout
+  }
+
   @Environment(\.colorScheme) private var colorScheme
+  @Environment(\.dismiss) var dismiss
   @Environment(\.verticalSizeClass) private var verticalSizeClass: UserInterfaceSizeClass?
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass: UserInterfaceSizeClass?
 
   @Binding var shouldDismiss: Bool
+
+  var screenType: DefaultBrowserScreenType
 
   private var shouldUseExtendedDesign: Bool {
     return horizontalSizeClass == .regular && verticalSizeClass == .regular
@@ -21,7 +29,15 @@ struct FocusSystemSettingsView: View {
 
   private let dynamicTypeRange = (...DynamicTypeSize.xLarge)
 
-  var body: some View {
+  public init(
+    screenType: DefaultBrowserScreenType,
+    shouldDismiss: Binding<Bool>
+  ) {
+    self.screenType = screenType
+    self._shouldDismiss = shouldDismiss
+  }
+
+  public var body: some View {
     if shouldUseExtendedDesign {
       VStack(spacing: 40) {
         VStack {
@@ -33,7 +49,9 @@ struct FocusSystemSettingsView: View {
         .shadow(color: .black.opacity(0.1), radius: 18, x: 0, y: 8)
         .shadow(color: .black.opacity(0.05), radius: 0, x: 0, y: 1)
 
-        FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(3))
+        if screenType == .onboarding {
+          FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(3))
+        }
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .background(Color(braveSystemName: .pageBackground))
@@ -41,7 +59,10 @@ struct FocusSystemSettingsView: View {
     } else {
       VStack(spacing: 16) {
         settingsSystemContentView
-        FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(3))
+
+        if screenType == .onboarding {
+          FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(3))
+        }
       }
       .padding(.bottom, 20)
       .background(Color(braveSystemName: .pageBackground))
@@ -97,8 +118,7 @@ struct FocusSystemSettingsView: View {
               UIApplication.shared.open(settingsUrl)
             }
 
-            Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
-            shouldDismiss = true
+            completeDefaultBrowserInteraction()
           },
           label: {
             Text(Strings.FocusOnboarding.systemSettingsButtonTitle)
@@ -119,12 +139,13 @@ struct FocusSystemSettingsView: View {
 
         Button(
           action: {
-            Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
-            shouldDismiss = true
+            completeDefaultBrowserInteraction()
           },
           label: {
             Text(
-              "\(Strings.FocusOnboarding.startBrowseActionButtonTitle) \(Image(systemName: "arrow.right"))"
+              screenType == .onboarding
+                ? "\(Strings.FocusOnboarding.startBrowseActionButtonTitle) \(Image(systemName: "arrow.right"))"
+                : "\(Strings.FocusOnboarding.notNowActionButtonTitle)"
             )
             .font(.subheadline.weight(.semibold))
             .foregroundColor(Color(braveSystemName: .textInteractive))
@@ -143,6 +164,15 @@ struct FocusSystemSettingsView: View {
     .padding(.vertical, shouldUseExtendedDesign ? 48 : 24)
     .padding(.horizontal, shouldUseExtendedDesign ? 75 : 20)
   }
+
+  private func completeDefaultBrowserInteraction() {
+    if screenType == .onboarding {
+      Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
+      shouldDismiss = true
+    } else {
+      dismiss()
+    }
+  }
 }
 
 #if DEBUG
@@ -150,7 +180,9 @@ struct FocusSystemSettingsView_Previews: PreviewProvider {
   static var previews: some View {
     @State var shouldDismiss: Bool = false
 
-    FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
+    FocusSystemSettingsView(screenType: .onboarding, shouldDismiss: $shouldDismiss)
+
+    FocusSystemSettingsView(screenType: .callout, shouldDismiss: $shouldDismiss)
   }
 }
 #endif

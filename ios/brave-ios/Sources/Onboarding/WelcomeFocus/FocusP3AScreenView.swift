@@ -53,7 +53,7 @@ struct FocusP3AScreenView: View {
       .background(Color(braveSystemName: .pageBackground))
       .background {
         NavigationLink("", isActive: $isSystemSettingsViewPresented) {
-          FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
+          FocusSystemSettingsView(screenType: .onboarding, shouldDismiss: $shouldDismiss)
         }
       }
       .toolbar(.hidden, for: .navigationBar)
@@ -66,7 +66,7 @@ struct FocusP3AScreenView: View {
       .background(Color(braveSystemName: .pageBackground))
       .background {
         NavigationLink("", isActive: $isSystemSettingsViewPresented) {
-          FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
+          FocusSystemSettingsView(screenType: .onboarding, shouldDismiss: $shouldDismiss)
         }
       }
       .toolbar(.hidden, for: .navigationBar)
