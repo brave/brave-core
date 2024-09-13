@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/resources/settings/privacy_page/security_page.html b/chrome/browser/resources/settings/privacy_page/security_page.html
+index 7d79e5cb222645e3d789db363e5375ed6c86f7f3..354af4a6a000a6309c421f870a24724055647ef4 100644
+--- a/chrome/browser/resources/settings/privacy_page/security_page.html
++++ b/chrome/browser/resources/settings/privacy_page/security_page.html
+@@ -272,15 +272,17 @@
+           numeric-checked-value="[[httpsFirstModeSettingEnum_.ENABLED_FULL]]">
+       </settings-toggle-button>
+       <template is="dom-if" if="[[showSecureDnsSetting_]]">
+-        <settings-secure-dns prefs="{{prefs}}"></settings-secure-dns>
++        <settings-secure-dns prefs="{{prefs}}" id="secureDnsSettingOld">
++        </settings-secure-dns>
+       </template>
+     </template>
+-    <tempate is="dom-if" if="[[enableHttpsFirstModeNewSettings_]]" restamp>
++    <template is="dom-if" if="[[enableHttpsFirstModeNewSettings_]]" restamp>
+       <template is="dom-if" if="[[showSecureDnsSetting_]]">
+-        <settings-secure-dns prefs="{{prefs}}" class="no-hr">
++        <settings-secure-dns prefs="{{prefs}}" class="no-hr"
++            id="secureDnsSettingNew">
+         </settings-secure-dns>
+       </template>
+-    </tempate>
++    </template>
+ <if expr="is_chromeos">
+     <template is="dom-if" if="[[showSecureDnsSettingLink_]]">
+         <cr-link-row id="openChromeOSSecureDnsSettings"
