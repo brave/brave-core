@@ -10,9 +10,11 @@ import WebKit
 
 class HTTPBlockedScriptHandler: TabContentScript {
   private weak var tab: Tab?
+  private weak var tabManager: TabManager?
 
-  required init(tab: Tab) {
+  required init(tab: Tab, tabManager: TabManager) {
     self.tab = tab
+    self.tabManager = tabManager
   }
 
   static let scriptName = "HTTPBlockedScript"
@@ -21,7 +23,7 @@ class HTTPBlockedScriptHandler: TabContentScript {
   static let scriptSandbox: WKContentWorld = .page
   static let userScript: WKUserScript? = nil
 
-  func userContentController(
+  @MainActor func userContentController(
     _ userContentController: WKUserContentController,
     didReceiveScriptMessage message: WKScriptMessage,
     replyHandler: (Any?, String?) -> Void
@@ -69,9 +71,15 @@ class HTTPBlockedScriptHandler: TabContentScript {
     tab.loadRequest(request)
   }
 
-  private func didGoBack() {
+  @MainActor private func didGoBack() {
     guard let tab else { return }
     tab.upgradedHTTPSRequest = nil
-    tab.goBack()
+    if tab.backList?.isEmpty == true {
+      // interstitial was opened in a new tab
+      tabManager?.addTabToRecentlyClosed(tab)
+      tabManager?.removeTab(tab)
+    } else {
+      tab.goBack()
+    }
   }
 }
