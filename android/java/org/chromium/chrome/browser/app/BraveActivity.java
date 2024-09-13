@@ -631,7 +631,9 @@ public abstract class BraveActivity extends ChromeActivity
         assert mKeyringService != null;
         mKeyringService.isLocked(locked -> {
             if (locked) {
-                layout.showWalletPanel();
+                if (showPendingTransactions) {
+                    layout.showWalletPanel();
+                }
                 return;
             }
             mKeyringService.hasPendingUnlockRequest(pending -> {
