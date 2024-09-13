@@ -18,7 +18,8 @@ TEST_F(RequestSenderTest, UsesBraveCUPKey) {
       GetTestFilePath("updatecheck_reply_1.json")));
 
   const std::vector<GURL> urls = {GURL(kUrl1)};
-  request_sender_ = std::make_unique<RequestSender>(config_);
+  request_sender_ =
+      base::MakeRefCounted<RequestSender>(config_->GetNetworkFetcherFactory());
   request_sender_->Send(
       urls, {}, "test", true,
       base::BindOnce(&RequestSenderTest::RequestSenderComplete,
