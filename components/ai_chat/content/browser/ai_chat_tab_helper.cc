@@ -103,6 +103,7 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
           std::make_unique<PageContentFetcher>(web_contents)) {
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
+  previous_page_title_ = web_contents->GetTitle();
 }
 
 AIChatTabHelper::~AIChatTabHelper() = default;
@@ -144,9 +145,10 @@ void AIChatTabHelper::NavigationEntryCommitted(
   int pending_navigation_id = load_details.entry->GetUniqueID();
   pending_navigation_id_ = pending_navigation_id;
   DVLOG(2) << __func__ << " id: " << pending_navigation_id_
-           << " url: " << load_details.entry->GetVirtualURL()
-           << " title: " << load_details.entry->GetTitle() << " same document? "
-           << load_details.is_same_document;
+           << "\n url: " << load_details.entry->GetVirtualURL()
+           << "\n current page title: " << GetPageTitle()
+           << "\n previous page title: " << previous_page_title_
+           << "\n same document? " << load_details.is_same_document;
 
   // Allow same-document navigation, as content often changes as a result
   // of framgment / pushState / replaceState navigations.
@@ -156,16 +158,25 @@ void AIChatTabHelper::NavigationEntryCommitted(
   // and treating it as a "fresh page".
   is_same_document_navigation_ = load_details.is_same_document;
   // Experimentally only call |OnNewPage| for same-page navigations _if_
-  // it results in a page title change (see |TtileWasSet|).
-  if (!is_same_document_navigation_) {
+  // it results in a page title change (see |TtileWasSet|). Title detection
+  // also done within the navigation entry so that back/forward navigations
+  // are handled correctly.
+  
+  // Page loaded is only considered changing when full document changes
+  if (!is_same_document_navigation) {
     is_page_loaded_ = false;
+  }
+  if (!is_same_document_navigation_ || previous_page_title_ != GetPageTitle()) {
     OnNewPage(pending_navigation_id_);
   }
+  previous_page_title_ = GetPageTitle();
 }
 
 void AIChatTabHelper::TitleWasSet(content::NavigationEntry* entry) {
-  DVLOG(3) << __func__ << entry->GetTitle();
+  DVLOG(2) << __func__ << ": id=" << entry->GetUniqueID()
+           << " title=" << entry->GetTitle();
   MaybeSameDocumentIsNewPage();
+  previous_page_title_ = GetPageTitle();
 }
 
 void AIChatTabHelper::InnerWebContentsAttached(

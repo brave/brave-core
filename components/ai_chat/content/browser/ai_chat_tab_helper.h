@@ -176,6 +176,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   bool is_same_document_navigation_ = false;
   int pending_navigation_id_;
+  std::u16string previous_page_title_;
   bool is_pdf_a11y_info_loaded_ = false;
   uint8_t check_pdf_a11y_tree_attempts_ = 0;
   bool is_page_loaded_ = false;

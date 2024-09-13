@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 
 #include <memory>
+#include <string>
 
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
@@ -19,6 +20,7 @@
 #include "content/public/test/navigation_simulator.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
+#include "content/test/test_web_contents.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -103,16 +105,26 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
     return std::make_unique<TestingProfile>();
   }
 
-  void NavigateTo(GURL url) {
-    NavigateAndCommit(url);
+  void NavigateTo(GURL url, bool is_same_page = false, std::string title = "") {
+    if (title.empty()) {
+      title = base::StrCat({url.host(), url.path()});
+    }
+    std::unique_ptr<content::NavigationSimulator> simulator =
+        content::NavigationSimulator::CreateRendererInitiated(url, main_rfh());
+    if (is_same_page) {
+      simulator->CommitSameDocument();
+    } else {
+      simulator->Commit();
+    }
+    SimulateTitleChange(base::UTF8ToUTF16(title));
     EXPECT_EQ(helper_->GetPageURL(), url);
   }
 
-  void SimulateTitleChange(const std::string& title) {
-    content::NavigationEntry* entry =
-        web_contents()->GetController().GetLastCommittedEntry();
-    entry->SetTitle(base::ASCIIToUTF16(title));
-    helper_->TitleWasSet(entry);
+  // void NavigateHistory(bool back = false,
+
+  void SimulateTitleChange(const std::u16string& title) {
+    web_contents()->UpdateTitleForEntry(controller().GetLastCommittedEntry(),
+                                        title);
   }
 
   void GetPageContent(ConversationHandler::GetPageContentCallback callback,
@@ -145,6 +157,7 @@ INSTANTIATE_TEST_SUITE_P(
 TEST_P(AIChatTabHelperUnitTest, OnNewPage) {
   int current_navigation_id = -1;
   int previous_navigation_id = -2;
+  // Each time we navigate, we should get call OnNewPage with a new content ID
   EXPECT_CALL(*observer_, OnAssociatedContentNavigated)
       .Times(3)
       .WillRepeatedly([&](int new_navigation_id) {
@@ -156,7 +169,7 @@ TEST_P(AIChatTabHelperUnitTest, OnNewPage) {
   NavigateTo(GURL("https://www.brave.com/1"));
   NavigateTo(GURL("https://www.brave.com/2"));
 
-  // Going back should revive the navigation id
+  // Going back should revive the same content id
   EXPECT_CALL(*observer_, OnAssociatedContentNavigated)
       .WillOnce([&](int new_navigation_id) {
         EXPECT_EQ(new_navigation_id, previous_navigation_id);
@@ -170,15 +183,11 @@ TEST_P(AIChatTabHelperUnitTest, OnNewPage) {
       });
   content::NavigationSimulator::GoForward(web_contents());
 
-  // Same-document navigation should not call OnNewPage
+  // Same-document navigation should not call OnNewPage if page title is the
+  // same
   EXPECT_CALL(*observer_, OnAssociatedContentNavigated).Times(0);
-  {
-    std::unique_ptr<content::NavigationSimulator> simulator =
-        content::NavigationSimulator::CreateRendererInitiated(
-            GURL("https://www.brave.com/2/3"), main_rfh());
-    simulator->CommitSameDocument();
-    testing::Mock::VerifyAndClearExpectations(&observer_);
-  }
+  NavigateTo(GURL("https://www.brave.com/2/3"), true, "www.brave.com/2");
+  testing::Mock::VerifyAndClearExpectations(&observer_);
   // ...unless the page title changes before the next navigation.
   EXPECT_CALL(*observer_, OnAssociatedContentNavigated)
       .WillOnce([&](int new_navigation_id) {
@@ -186,7 +195,16 @@ TEST_P(AIChatTabHelperUnitTest, OnNewPage) {
         previous_navigation_id = current_navigation_id;
         current_navigation_id = new_navigation_id;
       });
-  SimulateTitleChange("New Title");
+  SimulateTitleChange(u"New Title");
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+  // Back same-document navigation doesn't get a different title event
+  // so let's check it's still detected as a new page if the navigation
+  // results in a title difference.
+  EXPECT_CALL(*observer_, OnAssociatedContentNavigated)
+      .WillOnce([&](int new_navigation_id) {
+        EXPECT_EQ(new_navigation_id, previous_navigation_id);
+      });
+  content::NavigationSimulator::GoBack(web_contents());
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
   // Title changes after different-document navigation should not
@@ -195,8 +213,8 @@ TEST_P(AIChatTabHelperUnitTest, OnNewPage) {
   content::NavigationSimulator::NavigateAndCommitFromBrowser(
       web_contents(), GURL("https://www.brave.com/3"));
   testing::Mock::VerifyAndClearExpectations(&observer_);
-  EXPECT_CALL(*observer_, OnAssociatedContentNavigated).Times(0);
-  SimulateTitleChange("Another New Title");
+  EXPECT_CALL(*observer_, OnAssociatedContentNavigated(_)).Times(0);
+  SimulateTitleChange(u"Another New Title");
   testing::Mock::VerifyAndClearExpectations(&observer_);
 }
 
