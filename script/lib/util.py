@@ -8,6 +8,7 @@ from __future__ import print_function
 import atexit
 import contextlib
 import errno
+import re
 import shutil
 import ssl
 import subprocess
@@ -127,10 +128,24 @@ def make_zip(zip_file_path, files, dirs):
         files += dirs
         for root, dirs_, _ in os.walk(dirs[0]):
             for d in dirs_:
-                print(root)
-                subprocess.run(
-                    ['ls', '-alh', os.path.join(root, d)], check=True)
-        execute(['zip', '-r', '-y', zip_file_path] + files)
+                dir_path = os.path.join(root, d)
+                print(dir_path)
+                subprocess.run(['ls', '-alh', dir_path], check=True)
+        # pylint: disable=subprocess-run-check
+        cp = subprocess.run(['zip', '-r', '-y', zip_file_path] + files,
+                            capture_output=True,
+                            text=True)
+        if cp.returncode != 0:
+            for m in re.finditer(
+                    'zip warning: could not open for reading: (.*)',
+                    cp.stdout):
+                failed_path = m.group(1)
+                print(f'zip failed to open {failed_path} for reading.')
+                # See what happens if we try to read the file.
+                with open(failed_path, 'rb') as f:
+                    f.read()
+            print(cp.stdout)
+            raise RuntimeError('zip failed', cp.stderr)
     else:
         zip_file = zipfile.ZipFile(zip_file_path, "w", zipfile.ZIP_DEFLATED,
                                    allowZip64=True)
