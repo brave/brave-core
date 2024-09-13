@@ -88,11 +88,16 @@ void BraveShieldsWebContentsObserver::SendShieldsSettingsToFrame(
   if (shields_up) {
     auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
         host_content_settings_map, primary_url);
-    if (fingerprinting_type == ControlType::BLOCK) {
-      farbling_level = brave_shields::mojom::FarblingLevel::MAXIMUM;
-    }
-    if (fingerprinting_type == ControlType::ALLOW) {
-      farbling_level = brave_shields::mojom::FarblingLevel::OFF;
+    switch (fingerprinting_type) {
+      case ControlType::BLOCK:
+        farbling_level = brave_shields::mojom::FarblingLevel::MAXIMUM;
+        break;
+      case ControlType::ALLOW:
+        farbling_level = brave_shields::mojom::FarblingLevel::OFF;
+        break;
+      case ControlType::BLOCK_THIRD_PARTY:
+      case ControlType::DEFAULT:
+        NOTREACHED();
     }
   } else {
     farbling_level = brave_shields::mojom::FarblingLevel::OFF;
