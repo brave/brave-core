@@ -10,6 +10,7 @@ import BraveShared
 import BraveStrings
 import BraveUI
 import BraveWallet
+import BraveWidgetsModels
 import CertificateUtilities
 import Data
 import Lottie
@@ -556,8 +557,13 @@ extension BrowserViewController: TopToolbarDelegate {
 
   // TODO: This logic should be fully abstracted away and share logic from current MenuViewController
   // See: https://github.com/brave/brave-ios/issues/1452
-  func topToolbarDidTapBookmarkButton(_ topToolbar: TopToolbarView) {
-    navigationHelper.openBookmarks()
+  func topToolbarDidTapShortcutButton(_ topToolbar: TopToolbarView) {
+    guard
+      let shortcut = Preferences.General.toolbarShortcutButton.value.flatMap(WidgetShortcut.init)
+    else {
+      return
+    }
+    NavigationPath.handleWidgetShortcut(shortcut, with: self)
   }
 
   func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView) {

@@ -700,10 +700,16 @@ class SettingsViewController: TableViewController {
     }
 
     display.rows.append(contentsOf: [
-      .boolRow(
-        title: Strings.showBookmarkButtonInTopToolbar,
-        option: Preferences.General.showBookmarkToolbarShortcut,
-        image: UIImage(braveSystemNamed: "leo.product.bookmarks")
+      Row(
+        text: Strings.ShortcutButton.shortcutButtonTitle,
+        selection: { [weak self] in
+          let controller = UIHostingController(rootView: ShortcutButtonPickerView())
+          controller.navigationItem.title = Strings.ShortcutButton.shortcutButtonTitle
+          self?.navigationController?.pushViewController(controller, animated: true)
+        },
+        image: UIImage(braveSystemNamed: "leo.launch"),
+        accessory: .disclosureIndicator,
+        cellClass: MultilineValue1Cell.self
       ),
       .boolRow(
         title: Strings.hideRewardsIcon,
