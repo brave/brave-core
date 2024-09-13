@@ -1,0 +1,132 @@
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "تم نسخ عنوان URL إلى الحافظة";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "طلب موقع سطح المكتب";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "طلب موقع المحمول";
+
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "إظهار الإشارات المرجعية التي تمت زيارتها مؤخرًا";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "إلغاء";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "هل أنت متأكد من رغبتك في إلغاء هذا التنزيل؟";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "استئناف";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "إلغاء التنزيل";
+
+/* Cancel button */
+"CancelString" = "إلغاء";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "تبديل";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "تم فتح علامة تبويب جديدة";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "تم إلغاء التنزيل";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "فشل التنزيل";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "1 من%d من الملفات";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "التنزيلات";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "افتح هذا الرابط في تطبيق آب ستور؟";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "ذهاب";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "عدم الحفظ";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "عدم التحديث";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "حفظ تسجيل الدخول";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "تحديث";
+
+/* OK button */
+"OKString" = "موافق";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "وضع القارئ متاح";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "إعادة تعيين حجم النص";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "حفظ كلمة المرور لـ %@؟";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "حفظ تسجيل الدخول %1$@ لـ %2$@؟";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "موافق";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "قم بمحاذاة رمز الاستجابة السريعة داخل الإطار للمسح الضوئي";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "البيانات غير صالحة";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "يرجى السماح لـ Brave بالوصول إلى كاميرا جهازك في \"الإعدادات\" -> \"الخصوصية\" > \"الكاميرا\".";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "مسح كود الاستجابة السريعة QR";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "عام";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "تم";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "تراجع";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "تم إغلاقات علامة (علامات) التبويب %d";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "موافق";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "حدث خطأ أثناء إضافة بطاقة المرور إلى المحفظة. يرجى إعادة المحاولة لاحقًا.";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "فشل في إضافة بطاقة مرور";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "لا يمكن لـ Brave فتح الصفحة لأنها تحتوي على عنوان غير صالح.";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "لا يمكن فتح الصفحة";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "تحديث تسجيل الدخول %1$@ لـ %2$@؟";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "تحديث تسجيل الدخول %1$@ لـ %2$@؟";
+

@@ -1,0 +1,57 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "اكتشف الكيفية";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "جربه!";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "خذني إلى قائمة التشغيل الخاصة بي";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "الآن، لنلقِ نظرةً على قائمة التشغيل الخاصة بك.";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "المحتوى المضاف إلى %@";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "أحسنت";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "رفض";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "ربما لاحقاً";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "إغلاق";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "تقديم قائمة التشغيل لدى Brave";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "قم بإعداد قوائم تشغيل لمحتواك المفضل. واحفظ بيانات الجوال. واستمتع بإعادة التشغيل بدون إعلانات.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "صورة داخل صورة. التشغيل في الخلفية. التحكم من شاشة القفل. وأكثر من ذلك...";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "مواصلة البث: يمكنك إضافة مقاطع فيديو أثناء التصفح، ومشاهدتها لاحقًا.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "أضف مقاطع فيديو إلى قائمة التشغيل لدى Brave. التشغيل في أي وقت. حتى في وضع عدم الاتصال";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "التشغيل أفضل في قائمة التشغيل";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "ما عليك سوى الضغط على الزر لإضافة مقاطع الفيديو إلى قائمة تشغيل";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "أنشئ قوائم تشغيل بالمحتوى الذي تحبه. أضف وسائط من أي صفحة.\nالعب في أي وقت. حتى في وضع عدم الاتصال!";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "انقر فوق %@ لإضافة العنصر الأول";
+
+/* Will be shown next to an icon inside of some other text. i.e. \"Tap 'Add to Playlist' to add your first item\" */
+"userActionPromptFill" = "إضافة إلى قائمة التشغيل";
+
