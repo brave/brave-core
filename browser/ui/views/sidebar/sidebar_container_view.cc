@@ -141,11 +141,10 @@ void SidebarContainerView::Init() {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
   DCHECK(browser_view);
 
-  auto* side_panel_registry =
-      SidePanelCoordinator::GetGlobalSidePanelRegistry(browser_);
-  panel_registry_observations_.AddObservation(side_panel_registry);
+  auto* global_registry = side_panel_coordinator_->GetWindowRegistry();
+  panel_registry_observations_.AddObservation(global_registry);
 
-  for (const auto& entry : side_panel_registry->entries()) {
+  for (const auto& entry : global_registry->entries()) {
     DVLOG(1) << "Observing panel entry in ctor: "
              << SidePanelEntryIdToString(entry->key().id());
     panel_entry_observations_.AddObservation(entry.get());
@@ -808,15 +807,42 @@ void SidebarContainerView::OnEntryWillDeregister(SidePanelRegistry* registry,
   panel_entry_observations_.RemoveObservation(entry);
 }
 
+void SidebarContainerView::OnRegistryDestroying(SidePanelRegistry* registry) {
+  if (panel_registry_observations_.IsObservingSource(registry)) {
+    StopObservingContextualSidePanelRegistry(registry);
+  }
+}
+
 void SidebarContainerView::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
-  // Need to [de]register contextual registry when tab is replaced.
   if ((change.type() == TabStripModelChange::kReplaced)) {
+    // Pre-cr129's change
+    // https://chromium.googlesource.com/chromium/src/+/2fd6b53ce, we would
+    // handle shared pinned tab moving from one window to another here by
+    // starting to observe the new contents registry and stoping observing the
+    // old contents registry. But since the registry is no longer associated
+    // with the contents and is now associated with the tab instead we don't
+    // need to do the swap here. However, we may need to take some action here
+    // to fix https://github.com/brave/brave-browser/issues/40681.
+
+    // For AI Chat, if the contents got replaced then the AI Chat UI associated
+    // with that contetnts will no longer work, so just close it.
     auto* replace = change.GetReplace();
-    StartObservingContextualSidePanelRegistry(replace->new_contents);
-    StopObservingContextualSidePanelRegistry(replace->old_contents);
+    // old_contents is already removed from the tab, so use the new_contents to
+    // get the registry.
+    auto* registry = SidePanelRegistry::GetDeprecated(replace->new_contents);
+    if (registry) {
+      if (auto* entry = registry->GetEntryForKey(
+              SidePanelEntry::Key(SidePanelEntryId::kChatUI))) {
+        if (side_panel_coordinator_->IsSidePanelEntryShowing(entry)) {
+          side_panel_coordinator_->Close();
+        } else {
+          entry->ClearCachedView();
+        }
+      }
+    }
     return;
   }
 
@@ -828,16 +854,29 @@ void SidebarContainerView::OnTabStripModelChanged(
   }
 
   if (change.type() == TabStripModelChange::kRemoved) {
-    for (const auto& contents : change.GetRemove()->contents) {
-      StopObservingContextualSidePanelRegistry(contents.contents);
+    bool removed_for_deletion =
+        (change.GetRemove()->contents[0].remove_reason ==
+         TabStripModelChange::RemoveReason::kDeleted);
+    // If the tab is removed for deletion the side panel registry has already
+    // been destroyed. We stop observing that registry in
+    // SidePanelRegistryObserver::OnRegistryDestroying override above.
+    if (!removed_for_deletion) {
+      for (const auto& contents : change.GetRemove()->contents) {
+        StopObservingContextualSidePanelRegistry(contents.contents);
+      }
+      return;
     }
-    return;
   }
 }
 
 void SidebarContainerView::StopObservingContextualSidePanelRegistry(
     content::WebContents* contents) {
-  auto* registry = SidePanelRegistry::Get(contents);
+  auto* registry = SidePanelRegistry::GetDeprecated(contents);
+  StopObservingContextualSidePanelRegistry(registry);
+}
+
+void SidebarContainerView::StopObservingContextualSidePanelRegistry(
+    SidePanelRegistry* registry) {
   if (!registry) {
     return;
   }
@@ -856,7 +895,7 @@ void SidebarContainerView::StopObservingContextualSidePanelRegistry(
 
 void SidebarContainerView::StartObservingContextualSidePanelRegistry(
     content::WebContents* contents) {
-  auto* registry = SidePanelRegistry::Get(contents);
+  auto* registry = SidePanelRegistry::GetDeprecated(contents);
   if (!registry) {
     return;
   }

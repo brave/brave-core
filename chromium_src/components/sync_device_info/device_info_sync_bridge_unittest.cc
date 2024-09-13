@@ -224,9 +224,9 @@ TEST_F(DeviceInfoSyncBridgeTest, BraveExpireOldEntriesUponStartup) {
 
 TEST_F(DeviceInfoSyncBridgeTest, BraveResetsProgressMarkerOnce) {
   const DeviceInfoSpecifics specifics = CreateLocalDeviceSpecifics();
-  ModelTypeState model_type_state = StateWithEncryption("ekn");
-  model_type_state.mutable_progress_marker()->set_token("ABC");
-  WriteToStoreWithMetadata({specifics}, model_type_state);
+  DataTypeState data_type_state = StateWithEncryption("ekn");
+  data_type_state.mutable_progress_marker()->set_token("ABC");
+  WriteToStoreWithMetadata({specifics}, data_type_state);
 
   {
     base::RunLoop run_loop;
@@ -238,9 +238,8 @@ TEST_F(DeviceInfoSyncBridgeTest, BraveResetsProgressMarkerOnce) {
         .WillOnce([&run_loop](std::unique_ptr<MetadataBatch> batch) {
           // When model is loaded for the first time and the progress token
           // was set then the token should be reset
-          EXPECT_TRUE(batch->GetModelTypeState().has_progress_marker());
-          EXPECT_FALSE(
-              batch->GetModelTypeState().progress_marker().has_token());
+          EXPECT_TRUE(batch->GetDataTypeState().has_progress_marker());
+          EXPECT_FALSE(batch->GetDataTypeState().progress_marker().has_token());
           run_loop.Quit();
         });
 
@@ -256,8 +255,8 @@ TEST_F(DeviceInfoSyncBridgeTest, BraveResetsProgressMarkerOnce) {
         .WillOnce([&run_loop](std::unique_ptr<MetadataBatch> batch) {
           // When the progress token already was reset, then do not reset it
           // again
-          EXPECT_TRUE(batch->GetModelTypeState().has_progress_marker());
-          EXPECT_TRUE(batch->GetModelTypeState().progress_marker().has_token());
+          EXPECT_TRUE(batch->GetDataTypeState().has_progress_marker());
+          EXPECT_TRUE(batch->GetDataTypeState().progress_marker().has_token());
           run_loop.Quit();
         });
     run_loop.Run();

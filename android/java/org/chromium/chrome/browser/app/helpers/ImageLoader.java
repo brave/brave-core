@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.app.helpers;
 
-import static org.chromium.chrome.browser.content.WebContentsFactory.DEFAULT_NETWORK_HANDLE;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.content.Context;
@@ -53,6 +52,7 @@ import org.chromium.components.image_fetcher.ImageFetcher.Params;
 import org.chromium.components.image_fetcher.ImageFetcherConfig;
 import org.chromium.components.image_fetcher.ImageFetcherFactory;
 import org.chromium.content_public.browser.WebContents;
+import org.chromium.net.NetId;
 import org.chromium.url.GURL;
 
 import java.io.IOException;
@@ -116,7 +116,7 @@ public class ImageLoader {
             WebContentsFactory webContentsFactory = new WebContentsFactory();
             WebContents webContents =
                     webContentsFactory.createWebContentsWithWarmRenderer(
-                            profile, true, DEFAULT_NETWORK_HANDLE);
+                            profile, true, NetId.INVALID);
             webContents.downloadImage(
                     new GURL(validUrl), // Url
                     false, // isFavIcon

@@ -211,6 +211,7 @@ extension CredentialListModel {
 
     var favicon: String!
     var recordIdentifier: String!
+    var gaia: String!
     var username: String!
     var password: String!
     var rank: Int64 = 0
@@ -225,6 +226,7 @@ extension CredentialListModel {
     var privateKey: Data!
     var encrypted: Data!
     var creationTime: Int64 = 0
+    var lastUsedTime: Int64 = 0
 
     init(
       favicon: FaviconAttributes?,

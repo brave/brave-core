@@ -91,9 +91,9 @@ TEST_F(SearchAdsHeaderDelegateHelperTest, BraveSearchTabRewardsEnabled) {
         &headers, brave::ResponseCallback(), request_info);
     EXPECT_EQ(result_code, net::OK);
 
-    std::string header_value;
-    EXPECT_TRUE(headers.GetHeader(brave::kSearchAdsHeader, &header_value));
-    EXPECT_EQ(header_value, brave::kSearchAdsDisabledValue);
+    auto header_value = headers.GetHeader(brave::kSearchAdsHeader);
+    ASSERT_TRUE(header_value);
+    EXPECT_EQ(*header_value, brave::kSearchAdsDisabledValue);
   }
 
   {
@@ -105,9 +105,9 @@ TEST_F(SearchAdsHeaderDelegateHelperTest, BraveSearchTabRewardsEnabled) {
         &headers, brave::ResponseCallback(), request_info);
     EXPECT_EQ(result_code, net::OK);
 
-    std::string header_value;
-    EXPECT_TRUE(headers.GetHeader(brave::kSearchAdsHeader, &header_value));
-    EXPECT_EQ(header_value, brave::kSearchAdsDisabledValue);
+    auto header_value = headers.GetHeader(brave::kSearchAdsHeader);
+    ASSERT_TRUE(header_value);
+    EXPECT_EQ(*header_value, brave::kSearchAdsDisabledValue);
   }
 
   {
@@ -119,9 +119,9 @@ TEST_F(SearchAdsHeaderDelegateHelperTest, BraveSearchTabRewardsEnabled) {
         &headers, brave::ResponseCallback(), request_info);
     EXPECT_EQ(result_code, net::OK);
 
-    std::string header_value;
-    EXPECT_TRUE(headers.GetHeader(brave::kSearchAdsHeader, &header_value));
-    EXPECT_EQ(header_value, brave::kSearchAdsDisabledValue);
+    auto header_value = headers.GetHeader(brave::kSearchAdsHeader);
+    ASSERT_TRUE(header_value);
+    EXPECT_EQ(*header_value, brave::kSearchAdsDisabledValue);
   }
 
   {
@@ -135,9 +135,9 @@ TEST_F(SearchAdsHeaderDelegateHelperTest, BraveSearchTabRewardsEnabled) {
         &headers, brave::ResponseCallback(), request_info);
     EXPECT_EQ(result_code, net::OK);
 
-    std::string header_value;
-    EXPECT_TRUE(headers.GetHeader(brave::kSearchAdsHeader, &header_value));
-    EXPECT_EQ(header_value, brave::kSearchAdsDisabledValue);
+    auto header_value = headers.GetHeader(brave::kSearchAdsHeader);
+    ASSERT_TRUE(header_value);
+    EXPECT_EQ(*header_value, brave::kSearchAdsDisabledValue);
   }
 }
 

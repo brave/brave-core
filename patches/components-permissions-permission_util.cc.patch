@@ -1,8 +1,8 @@
 diff --git a/components/permissions/permission_util.cc b/components/permissions/permission_util.cc
-index 43d22e3ede54888554374efd939962d8d5a0d8d8..e793f02aede0024cdc045e731cd8bb54f12a0b7b 100644
+index c8476e07b72a1f123ea5da44ab57f16c8aff69bd..b78f5d4407de1f114b5406ed3290ad6fe411c8dc 100644
 --- a/components/permissions/permission_util.cc
 +++ b/components/permissions/permission_util.cc
-@@ -356,6 +356,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingTypeSafe(
+@@ -361,6 +361,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingTypeSafe(
        return ContentSettingsType::AUTOMATIC_FULLSCREEN;
      case PermissionType::NUM:
        break;

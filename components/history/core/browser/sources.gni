@@ -4,10 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_components_history_core_browser_sources = [
-  "//brave/components/history/core/browser/sync/brave_history_delete_directives_model_type_controller.cc",
-  "//brave/components/history/core/browser/sync/brave_history_delete_directives_model_type_controller.h",
-  "//brave/components/history/core/browser/sync/brave_history_model_type_controller.cc",
-  "//brave/components/history/core/browser/sync/brave_history_model_type_controller.h",
+  "//brave/components/history/core/browser/sync/brave_history_data_type_controller.cc",
+  "//brave/components/history/core/browser/sync/brave_history_data_type_controller.h",
+  "//brave/components/history/core/browser/sync/brave_history_delete_directives_data_type_controller.cc",
+  "//brave/components/history/core/browser/sync/brave_history_delete_directives_data_type_controller.h",
 ]
 
 brave_components_history_core_browser_deps = []

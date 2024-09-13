@@ -366,7 +366,6 @@ Config.prototype.buildArgs = function () {
     branding_path_product: "brave",
     enable_nacl: false,
     enable_widevine: true,
-    enable_feed_v2: true,
     // Our copy of signature_generator.py doesn't support --ignore_missing_cert:
     ignore_missing_widevine_signing_cert: false,
     target_cpu: this.targetArch,
@@ -543,6 +542,13 @@ Config.prototype.buildArgs = function () {
       (!this.isDebug() && !this.isComponentBuild() && !this.isReleaseBuild()))
   ) {
     args.symbol_level = 1
+  }
+
+  // For Linux Release builds, upstream doesn't want to use symbol_level = 2
+  // unless use_debug_fission is set. However, they don't set it when a
+  // cc_wrapper is used. Since we use cc_wrapper we need to set it manually.
+  if (this.getTargetOS() === 'linux' && this.isReleaseBuild()) {
+    args.use_debug_fission = true
   }
 
   if (this.getTargetOS() === 'mac' &&

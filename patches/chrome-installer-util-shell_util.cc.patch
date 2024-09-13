@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/util/shell_util.cc b/chrome/installer/util/shell_util.cc
-index 87a2c70b6cb1a0153c1afae935f316a6bb2710f9..bc4e4b8f38d203b0dff268f0e5c92f2510dfb052 100644
+index 183bf96be37418e8d2871711f0c03cfcb3f62314..fd4035f282c81dc768fcd5e30dfe5f8757857e41 100644
 --- a/chrome/installer/util/shell_util.cc
 +++ b/chrome/installer/util/shell_util.cc
-@@ -364,6 +364,7 @@ void GetChromeProgIdEntries(
+@@ -369,6 +369,7 @@ void GetChromeProgIdEntries(
    app_info.delegate_clsid = install_static::GetLegacyCommandExecuteImplClsid();
  
    GetProgIdEntries(app_info, entries);
@@ -10,7 +10,7 @@ index 87a2c70b6cb1a0153c1afae935f316a6bb2710f9..bc4e4b8f38d203b0dff268f0e5c92f25
  
    if (!app_info.delegate_clsid.empty()) {
      auto delegate_execute_entries =
-@@ -459,6 +460,7 @@ void GetShellIntegrationEntries(
+@@ -464,6 +465,7 @@ void GetShellIntegrationEntries(
  
    const std::wstring html_prog_id(GetBrowserProgId(suffix));
    for (int i = 0; ShellUtil::kPotentialFileAssociations[i] != nullptr; i++) {
@@ -18,7 +18,7 @@ index 87a2c70b6cb1a0153c1afae935f316a6bb2710f9..bc4e4b8f38d203b0dff268f0e5c92f25
      entries->push_back(std::make_unique<RegistryEntry>(
          capabilities + L"\\FileAssociations",
          ShellUtil::kPotentialFileAssociations[i], html_prog_id));
-@@ -483,6 +485,7 @@ void GetAppExtRegistrationEntries(
+@@ -488,6 +490,7 @@ void GetAppExtRegistrationEntries(
    std::wstring key_name =
        base::StrCat({ShellUtil::kRegClasses, kFilePathSeparator, ext,
                      kFilePathSeparator, ShellUtil::kRegOpenWithProgids});

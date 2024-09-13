@@ -44,7 +44,8 @@ public class BraveHubManagerImpl extends HubManagerImpl {
             @NonNull MenuOrKeyboardActionController menuOrKeyboardActionController,
             @NonNull SnackbarManager snackbarManager,
             @NonNull ObservableSupplier<Tab> tabSupplier,
-            @NonNull MenuButtonCoordinator menuButtonCoordinator) {
+            @NonNull MenuButtonCoordinator menuButtonCoordinator,
+            @NonNull HubShowPaneHelper hubShowPaneHelper) {
         super(
                 context,
                 profileProviderSupplier,
@@ -53,7 +54,8 @@ public class BraveHubManagerImpl extends HubManagerImpl {
                 menuOrKeyboardActionController,
                 snackbarManager,
                 tabSupplier,
-                menuButtonCoordinator);
+                menuButtonCoordinator,
+                hubShowPaneHelper);
 
         mIsTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(context);
 

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/downloads/downloads_ui.cc b/chrome/browser/ui/webui/downloads/downloads_ui.cc
-index bb28abf91c3e82ef1b3808e87a5b4c1cc4466f19..8424de47702b7369014d9b5f895f1bb6d2d8bb9c 100644
+index 2e94fd950bbf31d17815f2f6380385c73916df98..e354f7d7ba8c46e5ba11409081178d45e1c98931 100644
 --- a/chrome/browser/ui/webui/downloads/downloads_ui.cc
 +++ b/chrome/browser/ui/webui/downloads/downloads_ui.cc
-@@ -66,6 +66,7 @@ namespace {
+@@ -71,6 +71,7 @@ namespace {
  content::WebUIDataSource* CreateAndAddDownloadsUIHTMLSource(Profile* profile) {
    content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
        profile, chrome::kChromeUIDownloadsHost);

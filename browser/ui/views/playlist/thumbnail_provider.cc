@@ -67,8 +67,7 @@ void ThumbnailProvider::GetThumbnail(
                 std::string raw_data;
                 if (base::ReadFileToString(path, &raw_data)) {
                   return gfx::Image::CreateFrom1xPNGBytes(
-                      reinterpret_cast<unsigned char*>(raw_data.data()),
-                      raw_data.size());
+                      base::as_byte_span(raw_data));
                 }
 
                 VLOG(2) << __FUNCTION__ << " Failed to read " << path;

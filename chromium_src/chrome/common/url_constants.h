@@ -86,7 +86,7 @@ inline constexpr char kChromeHelpViaMenuURL[] = "https://support.brave.com/";
 
 inline constexpr char kChromeHelpViaWebUIURL[] = "https://support.brave.com/";
 
-inline constexpr char kFirstPartySetsLearnMoreURL[] =
+inline constexpr char kRelatedWebsiteSetsLearnMoreURL[] =
     "https://support.brave.com/";
 
 // The isolated-app: scheme is used for Isolated Web Apps. A public explainer
@@ -234,6 +234,10 @@ inline constexpr char kGoogleAccountChooserURL[] = "https://support.brave.com/";
 
 // URL of the Google Account page showing the known user devices.
 inline constexpr char kGoogleAccountDeviceActivityURL[] =
+    "https://support.brave.com/";
+
+// URL of the two factor authentication setup required intersitial.
+inline constexpr char kGoogleTwoFactorIntersitialURL[] =
     "https://support.brave.com/";
 
 // URL of the Google Password Manager.

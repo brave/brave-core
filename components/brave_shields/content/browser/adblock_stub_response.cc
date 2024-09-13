@@ -131,8 +131,7 @@ void MakeStubResponse(const std::optional<std::string>& data_url,
   *data = {};
 
   // Possibly overwrite mime and stub data.
-  std::string accept_header;
-  request.headers.GetHeader("Accept", &accept_header);
+  std::string accept_header = request.headers.GetHeader("Accept").value_or("");
   auto mime_types = base::SplitString(
       accept_header, ",;", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   if (!mime_types.empty()) {

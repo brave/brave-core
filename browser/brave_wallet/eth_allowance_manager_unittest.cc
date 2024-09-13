@@ -313,16 +313,15 @@ class EthAllowanceManagerUnitTest : public testing::Test {
             if (request.url.spec().find("nfts") != std::string::npos) {
               continue;
             }
-            std::string header_value;
-            EXPECT_TRUE(
-                request.headers.GetHeader("X-Eth-Method", &header_value));
+            auto header_value = request.headers.GetHeader("X-Eth-Method");
+            ASSERT_TRUE(header_value);
             if (request.url.spec() == url.spec() &&
-                header_value == "eth_blockNumber") {
+                *header_value == "eth_blockNumber") {
               url_loader_factory_.ClearResponses();
               url_loader_factory_.AddResponse(request.url.spec(),
                                               get_block_response_str);
             } else if (request.url.spec() == url.spec() &&
-                       header_value == "eth_getLogs") {
+                       *header_value == "eth_getLogs") {
               std::optional<base::Value> request_dict_val =
                   base::JSONReader::Read(
                       request.request_body->elements()

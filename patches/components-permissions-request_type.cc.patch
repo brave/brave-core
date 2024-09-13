@@ -1,5 +1,5 @@
 diff --git a/components/permissions/request_type.cc b/components/permissions/request_type.cc
-index f4cf353f679fd701c7fac82f5ad5962fe62611be..536ed81cd13561184f45bd753edb44fdabc05505 100644
+index b93642eb6bc41a988d1861ab240393336d14316e..922a03d566d526d238af8b1edcbe8306b2447ded 100644
 --- a/components/permissions/request_type.cc
 +++ b/components/permissions/request_type.cc
 @@ -451,6 +451,7 @@ const char* PermissionKeyForRequestType(permissions::RequestType request_type) {

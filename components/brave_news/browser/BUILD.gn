@@ -73,7 +73,6 @@ static_library("browser") {
     "//brave/components/time_period_storage",
     "//components/favicon/core:core",
     "//components/favicon_base:favicon_base",
-    "//components/feed:buildflags",
     "//components/history/core/browser",
     "//components/keyed_service/core",
     "//components/prefs",

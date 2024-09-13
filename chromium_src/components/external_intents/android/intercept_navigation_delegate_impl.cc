@@ -34,7 +34,7 @@ using navigation_interception::InterceptNavigationDelegate;
 class BraveInterceptNavigationDelegate : public InterceptNavigationDelegate {
  public:
   BraveInterceptNavigationDelegate(JNIEnv* env,
-                                   const jni_zero::JavaRef<jobject>& jdelegate,
+                                   jobject jdelegate,
                                    PrefService* pref_service)
       : InterceptNavigationDelegate(env, jdelegate) {
     pref_service_ = pref_service;

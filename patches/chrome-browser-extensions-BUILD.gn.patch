@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index 41da2d74b20200ae6376aefec71a006930666dea..9f0f423ddac2b15def9761d193e47e8cced2b17a 100644
+index 80a85688333ec6a11bf0fe59c17beee189d17a45..fd6cadc3d03efc609bb3f5bb7fe3aca206d3a6f9 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
-@@ -1561,6 +1561,7 @@ source_set("extensions") {
-       "//components/enterprise/data_controls/core",
+@@ -1583,6 +1583,7 @@ source_set("extensions") {
+       "//components/enterprise/data_controls/core/browser",
      ]
    }
 +  deps += brave_extensions_resources
