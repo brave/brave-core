@@ -209,9 +209,9 @@ function Main() {
           ref={conversationContentElement}>
           {aiChatContext.isHistoryEnabled &&
           <ul>
-            <li onClick={() => aiChatContext.onSelectConversationId(undefined)}>This page's conversation</li>
+            <li onClick={() => aiChatContext.onSelectConversationUuid(undefined)}>This page's conversation</li>
           {aiChatContext.visibleConversations.map(conversation => (
-            <li key={conversation.uuid} onClick={() => aiChatContext.onSelectConversationId(conversation.uuid)}>
+            <li key={conversation.uuid} onClick={() => aiChatContext.onSelectConversationUuid(conversation.uuid)}>
               <div>{conversation.uuid}</div>
               <div>{conversation.title}</div>
             </li>

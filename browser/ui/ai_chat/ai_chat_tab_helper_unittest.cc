@@ -15,11 +15,14 @@
 #include "chrome/test/base/testing_profile.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/favicon/core/test/mock_favicon_service.h"
+#include "content/public/browser/navigation_entry.h"
+#include "content/public/test/navigation_simulator.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using ::testing::_;
 using ::testing::NiceMock;
 
 namespace ai_chat {
@@ -105,9 +108,20 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
     EXPECT_EQ(helper_->GetPageURL(), url);
   }
 
+  void SimulateTitleChange(const std::string& title) {
+    content::NavigationEntry* entry =
+        web_contents()->GetController().GetLastCommittedEntry();
+    entry->SetTitle(base::ASCIIToUTF16(title));
+    helper_->TitleWasSet(entry);
+  }
+
   void GetPageContent(ConversationHandler::GetPageContentCallback callback,
                       std::string_view invalidation_token) {
     helper_->GetPageContent(std::move(callback), invalidation_token);
+  }
+
+  void TitleWasSet(content::NavigationEntry* entry) {
+    helper_->TitleWasSet(entry);
   }
 
  protected:
@@ -129,17 +143,61 @@ INSTANTIATE_TEST_SUITE_P(
     });
 
 TEST_P(AIChatTabHelperUnitTest, OnNewPage) {
-  int last_navigation_id = -1;
+  int current_navigation_id = -1;
+  int previous_navigation_id = -2;
   EXPECT_CALL(*observer_, OnAssociatedContentNavigated)
       .Times(3)
-      .WillRepeatedly([&last_navigation_id](int new_navigation_id) {
-        EXPECT_GT(new_navigation_id, last_navigation_id);
-        last_navigation_id = new_navigation_id;
+      .WillRepeatedly([&](int new_navigation_id) {
+        EXPECT_GT(new_navigation_id, current_navigation_id);
+        previous_navigation_id = current_navigation_id;
+        current_navigation_id = new_navigation_id;
       });
   NavigateTo(GURL("https://www.brave.com"));
   NavigateTo(GURL("https://www.brave.com/1"));
   NavigateTo(GURL("https://www.brave.com/2"));
-  EXPECT_GT(last_navigation_id, -1);
+
+  // Going back should revive the navigation id
+  EXPECT_CALL(*observer_, OnAssociatedContentNavigated)
+      .WillOnce([&](int new_navigation_id) {
+        EXPECT_EQ(new_navigation_id, previous_navigation_id);
+      });
+  content::NavigationSimulator::GoBack(web_contents());
+
+  // Same with going forward
+  EXPECT_CALL(*observer_, OnAssociatedContentNavigated)
+      .WillOnce([&](int new_navigation_id) {
+        EXPECT_EQ(new_navigation_id, current_navigation_id);
+      });
+  content::NavigationSimulator::GoForward(web_contents());
+
+  // Same-document navigation should not call OnNewPage
+  EXPECT_CALL(*observer_, OnAssociatedContentNavigated).Times(0);
+  {
+    std::unique_ptr<content::NavigationSimulator> simulator =
+        content::NavigationSimulator::CreateRendererInitiated(
+            GURL("https://www.brave.com/2/3"), main_rfh());
+    simulator->CommitSameDocument();
+    testing::Mock::VerifyAndClearExpectations(&observer_);
+  }
+  // ...unless the page title changes before the next navigation.
+  EXPECT_CALL(*observer_, OnAssociatedContentNavigated)
+      .WillOnce([&](int new_navigation_id) {
+        EXPECT_GT(new_navigation_id, current_navigation_id);
+        previous_navigation_id = current_navigation_id;
+        current_navigation_id = new_navigation_id;
+      });
+  SimulateTitleChange("New Title");
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+
+  // Title changes after different-document navigation should not
+  // trigger OnNewPage.
+  EXPECT_CALL(*observer_, OnAssociatedContentNavigated(_)).Times(1);
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(
+      web_contents(), GURL("https://www.brave.com/3"));
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+  EXPECT_CALL(*observer_, OnAssociatedContentNavigated).Times(0);
+  SimulateTitleChange("Another New Title");
+  testing::Mock::VerifyAndClearExpectations(&observer_);
 }
 
 TEST_P(AIChatTabHelperUnitTest, GetPageContent_HasContent) {

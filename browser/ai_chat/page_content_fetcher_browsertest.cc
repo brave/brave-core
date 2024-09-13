@@ -100,7 +100,8 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
                         bool trim_whitespace = true) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
-    page_content_fetcher_ = std::make_unique<ai_chat::PageContentFetcher>();
+    page_content_fetcher_ =
+        std::make_unique<ai_chat::PageContentFetcher>(GetActiveWebContents());
     page_content_fetcher_->SetURLLoaderFactoryForTesting(
         shared_url_loader_factory_);
     page_content_fetcher_->FetchPageContent(
@@ -122,8 +123,8 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
                               const std::optional<std::string>& expected_key) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
-    page_content_fetcher_ = std::make_unique<ai_chat::PageContentFetcher>(
-        browser()->tab_strip_model()->GetActiveWebContents());
+    page_content_fetcher_ =
+        std::make_unique<ai_chat::PageContentFetcher>(GetActiveWebContents());
     page_content_fetcher_->GetSearchSummarizerKey(base::BindLambdaForTesting(
         [&run_loop, &expected_key](const std::optional<std::string>& key) {
           EXPECT_EQ(expected_key, key);

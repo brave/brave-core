@@ -326,7 +326,6 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
         printing::GetFrameToPrint(web_contents_.get());
     if (!render_frame_host) {
       DLOG(ERROR) << "No render frame host for print preview";
-      SendResult("");
       return;
     }
 

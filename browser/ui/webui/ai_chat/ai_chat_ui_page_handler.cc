@@ -180,6 +180,10 @@ void AIChatUIPageHandler::HandleWebContentsDestroyed() {
 }
 
 void AIChatUIPageHandler::OnAssociatedContentNavigated(int new_navigation_id) {
+  // This is only applicable to content-adjacent UI, e.g. SidePanel on Desktop
+  // where it would like to remain associated with the Tab and move away from
+  // Conversations of previous navigations. That doens't apply to the standalone
+  // UI where it will keep a previous navigation's conversation active.
   chat_ui_->OnNewDefaultConversation();
 }
 void AIChatUIPageHandler::CloseUI() {

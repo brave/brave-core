@@ -27,7 +27,7 @@ export interface CharCountContext {
 }
 
 export interface ConversationContext extends CharCountContext {
-  conversationId?: string
+  conversationUuid?: string
   conversationHistory: mojom.ConversationTurn[]
   associatedContentInfo?: mojom.SiteInfo
   allModels: mojom.Model[]
@@ -198,7 +198,7 @@ export function ConversationContextProvider(
 
     async function initialize() {
       const [
-        { conversationId },
+        { conversationUuid },
         { isRequestInProgress: isGenerating },
         { models, currentModelKey },
         { questions, suggestionStatus },
@@ -206,7 +206,7 @@ export function ConversationContextProvider(
         { error }
       ] = await Promise.all([
         // TODO(petemill): have a single getState function
-        conversationHandler.getConversationId(),
+        conversationHandler.getConversationUuid(),
         conversationHandler.getIsRequestInProgress(),
         conversationHandler.getModels(),
         conversationHandler.getSuggestedQuestions(),
@@ -214,7 +214,7 @@ export function ConversationContextProvider(
         conversationHandler.getAPIResponseError()
       ])
       setPartialContext({
-        conversationId,
+        conversationUuid,
         isGenerating,
         ...getModelContext(currentModelKey, models),
         suggestedQuestions: questions,
@@ -299,10 +299,10 @@ export function ConversationContextProvider(
 
   // Update favicon
   React.useEffect(() => {
-    if (!context.conversationId || !aiChatContext.uiHandler) {
+    if (!context.conversationUuid || !aiChatContext.uiHandler) {
       return
     }
-    aiChatContext.uiHandler.getFaviconImageData(context.conversationId)
+    aiChatContext.uiHandler.getFaviconImageData(context.conversationUuid)
       .then(({ faviconImageData }) => {
         if (!faviconImageData) {
           return
@@ -312,7 +312,7 @@ export function ConversationContextProvider(
           faviconUrl: URL.createObjectURL(blob)
         })
       })
-  }, [context.conversationId, context.faviconCacheKey])
+  }, [context.conversationUuid, context.faviconCacheKey])
 
   const actionList = useActionMenu(context.inputText, () =>
     Promise.resolve(aiChatContext.allActions)

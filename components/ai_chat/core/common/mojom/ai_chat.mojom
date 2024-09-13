@@ -256,7 +256,7 @@ interface Service {
 
   // Bind specified Conversation for 2-way communication
   BindConversation(
-      string conversation_id,
+      string conversation_uuid,
       pending_receiver<ConversationHandler> conversation,
       pending_remote<ConversationUI> conversation_ui);
 };
@@ -298,7 +298,7 @@ interface AIChatUIHandler {
 
   // TODO(petemill): WebUI clients won't need this when they can
   // request via FaviconSource URLs via trusted webui.
-  GetFaviconImageData(string conversation_id) => (
+  GetFaviconImageData(string conversation_uuid) => (
       array<uint8>? favicon_image_data);
 };
 
@@ -312,7 +312,7 @@ interface ChatUI {
 // Browser-side handler for a Conversation
 interface ConversationHandler {
   // TODO(petemill): GetInitialState => (InitialState conversation_state);
-  GetConversationId() => (string conversation_id);
+  GetConversationUuid() => (string conversation_uuid);
 
   // Get all the possible models for any conversation
   // TODO(petemill): Move the models part to Service

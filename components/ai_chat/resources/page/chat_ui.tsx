@@ -29,7 +29,7 @@ function App() {
     document.getElementById('mountPoint')?.classList.add('loaded')
   }, [])
 
-  const [selectedConversationId, setSelectedConversationId] = React.useState<
+  const [selectedConversationUuid, setSelectedConversationUuid] = React.useState<
     string | undefined
   >()
 
@@ -41,18 +41,18 @@ function App() {
   const [defaultConversationToken, setDefaultConversationToken] =
     React.useState(new Date().getTime())
 
-  const handleSelectConversationId = (id: string | undefined) => {
+  const handleSelectConversationUuid = (id: string | undefined) => {
     console.log('select conversation', id)
     setConversationAPI(API.bindConversation(id))
-    setSelectedConversationId(id)
+    setSelectedConversationUuid(id)
   }
 
   // Start off with default conversation and if the target content
   // navigates then show the new conversation, only if we're still
   // on the default conversation.
   React.useEffect(() => {
-    if (!selectedConversationId) {
-      handleSelectConversationId(undefined)
+    if (!selectedConversationUuid) {
+      handleSelectConversationUuid(undefined)
     }
   }, [defaultConversationToken])
 
@@ -66,7 +66,7 @@ function App() {
 
   const handleNewConversation = () => {
     setConversationAPI(API.newConversation())
-    setSelectedConversationId(undefined)
+    setSelectedConversationUuid(undefined)
   }
 
   React.useEffect(() => {
@@ -83,9 +83,9 @@ function App() {
 
   return (
     <AIChatContextProvider
-      selectedConversationId={selectedConversationId}
+      selectedConversationUuid={selectedConversationUuid}
       onNewConversation={handleNewConversation}
-      onSelectConversationId={handleSelectConversationId}
+      onSelectConversationUuid={handleSelectConversationUuid}
     >
       {conversationAPI && (
         <ConversationContextProvider {...conversationAPI}>

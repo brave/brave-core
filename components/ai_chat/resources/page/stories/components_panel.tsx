@@ -365,7 +365,7 @@ const preview: Meta = {
         dismissPremiumPrompt: () => {},
         userRefreshPremiumSession: () => {},
         onNewConversation: () => {},
-        onSelectConversationId(id) {}
+        onSelectConversationUuid(id) {}
       }
 
       const inputText = options.args.inputText
