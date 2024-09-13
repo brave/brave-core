@@ -14,7 +14,6 @@ import android.util.Pair;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.PurchaseModel;
@@ -89,12 +88,12 @@ public class BraveVpnApiResponseUtils {
                                 ? region
                                 : serverRegion;
             }
-            region =
-                    (braveVpnServerRegion
-                                    .getRegionPrecision()
-                                    .equals(BraveVpnConstants.REGION_PRECISION_CITY)
-                            ? braveVpnServerRegion.getRegionCityName()
-                            : region);
+            // region =
+            //         (braveVpnServerRegion
+            //                         .getRegionPrecision()
+            //                         .equals(BraveVpnConstants.REGION_PRECISION_CITY)
+            //                 ? braveVpnServerRegion.getRegionCityName()
+            //                 : region);
             BraveVpnNativeWorker.getInstance()
                     .getHostnamesForRegion(region, braveVpnServerRegion.getRegionPrecision());
             braveVpnPrefModel.setServerRegion(braveVpnServerRegion);

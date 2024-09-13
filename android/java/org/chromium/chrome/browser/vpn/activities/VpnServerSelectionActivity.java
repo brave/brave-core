@@ -101,8 +101,6 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
                                             "",
                                             BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC,
                                             "",
-                                            BraveVpnUtils.OPTIMAL_SERVER,
-                                            "",
                                             BraveVpnConstants.REGION_PRECISION_COUNTRY);
                             changeServerRegion();
                         }

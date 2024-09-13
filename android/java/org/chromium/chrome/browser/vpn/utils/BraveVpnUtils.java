@@ -52,8 +52,6 @@ public class BraveVpnUtils {
     public static final String VERIFY_CREDENTIALS_FAILED = "verify_credentials_failed";
     public static final String DESKTOP_CREDENTIAL = "desktop_credential";
 
-    public static final String OPTIMAL_SERVER = "Optimal";
-
     public static boolean mUpdateProfileAfterSplitTunnel;
     public static BraveVpnServerRegion selectedServerRegion;
     public static Region selectedRegion;
@@ -162,8 +160,6 @@ public class BraveVpnUtils {
                                         region.getString("country-iso-code"),
                                         region.getString("name"),
                                         region.getString("name-pretty"),
-                                        OPTIMAL_SERVER,
-                                        "",
                                         BraveVpnConstants.REGION_PRECISION_COUNTRY);
                         return braveVpnServerRegion;
                     }

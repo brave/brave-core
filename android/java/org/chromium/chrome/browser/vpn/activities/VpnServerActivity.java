@@ -105,7 +105,7 @@ public class VpnServerActivity extends BraveVpnParentActivity {
                 new OnCitySelection() {
                     @Override
                     public void onCityClick(Region city, int position) {
-                        if (BraveVpnPrefUtils.getRegionCityName().equals(city.name)) {
+                        if (BraveVpnPrefUtils.getRegionName().equals(city.name)) {
                             Toast.makeText(
                                             VpnServerActivity.this,
                                             R.string.already_selected_the_server,
@@ -115,12 +115,10 @@ public class VpnServerActivity extends BraveVpnParentActivity {
                             BraveVpnUtils.selectedServerRegion =
                                     new BraveVpnServerRegion(
                                             region.countryIsoCode,
-                                            region.name,
-                                            region.namePretty,
                                             position == 0
-                                                    ? BraveVpnUtils.OPTIMAL_SERVER
+                                                    ? BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC
                                                     : city.name,
-                                            city.namePretty,
+                                            position == 0 ? region.namePretty : city.namePretty,
                                             position == 0
                                                     ? BraveVpnConstants.REGION_PRECISION_COUNTRY
                                                     : BraveVpnConstants.REGION_PRECISION_CITY);
