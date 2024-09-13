@@ -49,9 +49,7 @@ BraveShieldsWebContentsObserver* g_receiver_impl_for_testing = nullptr;
 
 }  // namespace
 
-BraveShieldsWebContentsObserver::~BraveShieldsWebContentsObserver() {
-  brave_shields_remotes_.clear();
-}
+BraveShieldsWebContentsObserver::~BraveShieldsWebContentsObserver() = default;
 
 BraveShieldsWebContentsObserver::BraveShieldsWebContentsObserver(
     WebContents* web_contents)
@@ -59,72 +57,6 @@ BraveShieldsWebContentsObserver::BraveShieldsWebContentsObserver(
       content::WebContentsUserData<BraveShieldsWebContentsObserver>(
           *web_contents),
       receivers_(web_contents, this) {}
-
-void BraveShieldsWebContentsObserver::RenderFrameCreated(RenderFrameHost* rfh) {
-  SendShieldsSettingsToFrame(rfh, nullptr);
-}
-
-void BraveShieldsWebContentsObserver::SendShieldsSettingsToFrame(
-    RenderFrameHost* rfh,
-    NavigationHandle* navigation_handle) {
-  DCHECK(rfh);
-  DCHECK(!navigation_handle || rfh == navigation_handle->GetRenderFrameHost());
-
-  const GURL& primary_url =
-      navigation_handle
-          ? (navigation_handle->GetParentFrameOrOuterDocument()
-                 ? navigation_handle->GetParentFrameOrOuterDocument()
-                       ->GetOutermostMainFrame()
-                       ->GetLastCommittedURL()
-                 : navigation_handle->GetURL())
-          : rfh->GetLastCommittedURL();
-
-  brave_shields::mojom::FarblingLevel farbling_level =
-      brave_shields::mojom::FarblingLevel::BALANCED;
-  HostContentSettingsMap* host_content_settings_map =
-      HostContentSettingsMapFactory::GetForProfile(rfh->GetBrowserContext());
-  const bool shields_up = brave_shields::GetBraveShieldsEnabled(
-      host_content_settings_map, primary_url);
-  if (shields_up) {
-    auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
-        host_content_settings_map, primary_url);
-    switch (fingerprinting_type) {
-      case ControlType::BLOCK:
-        farbling_level = brave_shields::mojom::FarblingLevel::MAXIMUM;
-        break;
-      case ControlType::ALLOW:
-        farbling_level = brave_shields::mojom::FarblingLevel::OFF;
-        break;
-      case ControlType::BLOCK_THIRD_PARTY:
-      case ControlType::DEFAULT:
-        NOTREACHED();
-    }
-  } else {
-    farbling_level = brave_shields::mojom::FarblingLevel::OFF;
-  }
-  PrefService* pref_service =
-      user_prefs::UserPrefs::Get(rfh->GetBrowserContext());
-
-  GetBraveShieldsRemote(rfh)->SetShieldsSettings(
-      brave_shields::mojom::ShieldsSettings::New(
-          farbling_level, allowed_scripts_,
-          brave_shields::IsReduceLanguageEnabledForProfile(pref_service)));
-}
-
-void BraveShieldsWebContentsObserver::RenderFrameDeleted(RenderFrameHost* rfh) {
-  brave_shields_remotes_.erase(rfh);
-}
-
-void BraveShieldsWebContentsObserver::RenderFrameHostChanged(
-    RenderFrameHost* old_host,
-    RenderFrameHost* new_host) {
-  if (old_host) {
-    RenderFrameDeleted(old_host);
-  }
-  if (new_host) {
-    RenderFrameCreated(new_host);
-  }
-}
 
 bool BraveShieldsWebContentsObserver::IsBlockedSubresource(
     const std::string& subresource) {
@@ -301,10 +233,14 @@ void BraveShieldsWebContentsObserver::RegisterProfilePrefs(
 
 void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
     NavigationHandle* navigation_handle) {
-  // when the main frame navigate away
+  // Ignore same document navigations.
+  if (navigation_handle->IsSameDocument()) {
+    return;
+  }
+
+  // When the main frame navigates away.
   content::ReloadType reload_type = navigation_handle->GetReloadType();
-  if (navigation_handle->IsInMainFrame() &&
-      !navigation_handle->IsSameDocument()) {
+  if (navigation_handle->IsInMainFrame()) {
     if (reload_type == content::ReloadType::NONE) {
       // For new loads, we reset the counters for both blocked scripts and URLs.
       allowed_scripts_.clear();
@@ -317,8 +253,7 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
     }
   }
 
-  RenderFrameHost* rfh = navigation_handle->GetRenderFrameHost();
-  SendShieldsSettingsToFrame(rfh, navigation_handle);
+  SendShieldsSettings(navigation_handle);
 }
 
 void BraveShieldsWebContentsObserver::BlockAllowedScripts(
@@ -347,23 +282,58 @@ void BraveShieldsWebContentsObserver::SetReceiverImplForTesting(
   g_receiver_impl_for_testing = impl;
 }
 
+void BraveShieldsWebContentsObserver::SendShieldsSettings(
+    NavigationHandle* navigation_handle) {
+  DCHECK(navigation_handle);
+  RenderFrameHost* rfh = navigation_handle->GetRenderFrameHost();
+
+  const GURL& primary_url =
+      navigation_handle->GetParentFrameOrOuterDocument()
+          ? navigation_handle->GetParentFrameOrOuterDocument()
+                ->GetOutermostMainFrame()
+                ->GetLastCommittedURL()
+          : navigation_handle->GetURL();
+
+  brave_shields::mojom::FarblingLevel farbling_level =
+      brave_shields::mojom::FarblingLevel::BALANCED;
+  HostContentSettingsMap* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(rfh->GetBrowserContext());
+  const bool shields_up = brave_shields::GetBraveShieldsEnabled(
+      host_content_settings_map, primary_url);
+  if (shields_up) {
+    auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
+        host_content_settings_map, primary_url);
+    switch (fingerprinting_type) {
+      case ControlType::ALLOW:
+        farbling_level = brave_shields::mojom::FarblingLevel::OFF;
+        break;
+      case ControlType::BLOCK:
+        farbling_level = brave_shields::mojom::FarblingLevel::MAXIMUM;
+        break;
+      case ControlType::BLOCK_THIRD_PARTY:
+        NOTREACHED();
+      case ControlType::DEFAULT:
+        farbling_level = brave_shields::mojom::FarblingLevel::BALANCED;
+        break;
+    }
+  } else {
+    farbling_level = brave_shields::mojom::FarblingLevel::OFF;
+  }
+  PrefService* pref_service =
+      user_prefs::UserPrefs::Get(rfh->GetBrowserContext());
+
+  mojo::AssociatedRemote<brave_shields::mojom::BraveShields> agent;
+  rfh->GetRemoteAssociatedInterfaces()->GetInterface(&agent);
+  agent->SetShieldsSettings(brave_shields::mojom::ShieldsSettings::New(
+      farbling_level, allowed_scripts_,
+      brave_shields::IsReduceLanguageEnabledForProfile(pref_service)));
+}
+
 void BraveShieldsWebContentsObserver::BindReceiver(
     mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShieldsHost>
         receiver,
     content::RenderFrameHost* rfh) {
   receivers_.Bind(rfh, std::move(receiver));
-}
-
-mojo::AssociatedRemote<brave_shields::mojom::BraveShields>&
-BraveShieldsWebContentsObserver::GetBraveShieldsRemote(
-    content::RenderFrameHost* rfh) {
-  if (!brave_shields_remotes_.contains(rfh)) {
-    rfh->GetRemoteAssociatedInterfaces()->GetInterface(
-        &brave_shields_remotes_[rfh]);
-  }
-
-  DCHECK(brave_shields_remotes_[rfh].is_bound());
-  return brave_shields_remotes_[rfh];
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveShieldsWebContentsObserver);
