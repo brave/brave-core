@@ -137,7 +137,7 @@ TEST_F(BraveAdsReactionsTest, Ads) {
   const ReactionMap expected_ad_reactions = {
       {test::kAdvertiserId, mojom::ReactionType::kLiked},
       {"2c0577b2-097b-41e8-81db-685de60d26e5", mojom::ReactionType::kDisliked},
-  };
+      {"57b26e2f-2e77-4b31-a3ce-d3faf82dd574", mojom::ReactionType::kDisliked}};
   EXPECT_EQ(expected_ad_reactions, GetReactions().Ads());
 }
 
@@ -218,8 +218,8 @@ TEST_F(BraveAdsReactionsTest, Segments) {
   // Act & Assert
   const ReactionMap expected_segment_reactions = {
       {test::kSegment, mojom::ReactionType::kLiked},
-      {"food & drink", mojom::ReactionType::kDisliked},
-  };
+      {"technology & computing", mojom::ReactionType::kDisliked},
+      {"food & drink", mojom::ReactionType::kDisliked}};
   EXPECT_EQ(expected_segment_reactions, GetReactions().Segments());
 }
 
