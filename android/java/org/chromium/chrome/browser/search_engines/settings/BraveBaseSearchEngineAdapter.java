@@ -44,8 +44,7 @@ public class BraveBaseSearchEngineAdapter extends BaseAdapter {
     public static void sortAndFilterUnnecessaryTemplateUrl(
             List<TemplateUrl> templateUrls,
             TemplateUrl defaultSearchEngine,
-            boolean isEeaChoiceCountry,
-            boolean shouldShowUpdatedSettings) {
+            boolean isEeaChoiceCountry) {
         int recentEngineNum = 0;
         long displayTime =
                 System.currentTimeMillis() - SearchEngineAdapter.MAX_DISPLAY_TIME_SPAN_MS;
