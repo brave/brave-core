@@ -146,7 +146,8 @@ void AIChatTabHelper::NavigationEntryCommitted(
   pending_navigation_id_ = pending_navigation_id;
   DVLOG(2) << __func__ << " id: " << pending_navigation_id_
            << " url: " << load_details.entry->GetVirtualURL()
-           << " same document? " << load_details.is_same_document;
+           << " title: " << load_details.entry->GetTitle() << " same document? "
+           << load_details.is_same_document;
   // Allow same-document navigation, as content often changes as a result
   // of framgment / pushState / replaceState navigations.
   // Content won't be retrieved immediately and we don't have a similar
@@ -292,7 +293,8 @@ void AIChatTabHelper::OnFetchPageContentComplete(
     std::string content,
     bool is_video,
     std::string invalidation_token) {
-  if (base::CollapseWhitespaceASCII(content, true).empty() && !is_video &&
+  base::TrimWhitespaceASCII(content, base::TRIM_ALL, &content);
+  if (content.empty() && !is_video &&
       print_preview_extraction_delegate_ != nullptr) {
     DVLOG(1) << "Initiating print preview fallback";
     print_preview_extraction_delegate_->Extract(
