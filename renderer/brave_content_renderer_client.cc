@@ -129,7 +129,9 @@ void BraveContentRendererClient::RenderThreadStarted() {
 void BraveContentRendererClient::RenderFrameCreated(
     content::RenderFrame* render_frame) {
   ChromeContentRendererClient::RenderFrameCreated(render_frame);
-
+  if (base::FeatureList::IsEnabled(kDisableBraveFeatures)) {
+    return;
+  }
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockCosmeticFiltering)) {
     auto dynamic_params_closure = base::BindRepeating([]() {
@@ -240,9 +242,11 @@ void BraveContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(
     const GURL& service_worker_scope,
     const GURL& script_url,
     const blink::ServiceWorkerToken& service_worker_token) {
-  brave_search_service_worker_holder_.WillEvaluateServiceWorkerOnWorkerThread(
-      context_proxy, v8_context, service_worker_version_id,
-      service_worker_scope, script_url);
+  if (!base::FeatureList::IsEnabled(kDisableBraveFeatures)) {
+    brave_search_service_worker_holder_.WillEvaluateServiceWorkerOnWorkerThread(
+        context_proxy, v8_context, service_worker_version_id,
+        service_worker_scope, script_url);
+  }
   ChromeContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(
       context_proxy, v8_context, service_worker_version_id,
       service_worker_scope, script_url, service_worker_token);
@@ -253,10 +257,12 @@ void BraveContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
     int64_t service_worker_version_id,
     const GURL& service_worker_scope,
     const GURL& script_url) {
-  brave_search_service_worker_holder_
-      .WillDestroyServiceWorkerContextOnWorkerThread(
-          v8_context, service_worker_version_id, service_worker_scope,
-          script_url);
+  if (!base::FeatureList::IsEnabled(kDisableBraveFeatures)) {
+    brave_search_service_worker_holder_
+        .WillDestroyServiceWorkerContextOnWorkerThread(
+            v8_context, service_worker_version_id, service_worker_scope,
+            script_url);
+  }
   ChromeContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
       v8_context, service_worker_version_id, service_worker_scope, script_url);
 }

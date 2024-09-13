@@ -30,7 +30,9 @@ WaybackState WaybackMachineStateManager::GetActiveTabWaybackState() const {
 
   auto* tab_helper =
       BraveWaybackMachineTabHelper::FromWebContents(active_contents);
-  CHECK(tab_helper);
+  if (!tab_helper) {
+    return WaybackState::kInitial;
+  }
   return tab_helper->wayback_state();
 }
 
@@ -45,24 +47,26 @@ void WaybackMachineStateManager::OnTabStripModelChanged(
   if (selection.old_contents) {
     auto* tab_helper =
         BraveWaybackMachineTabHelper::FromWebContents(selection.old_contents);
-    CHECK(tab_helper);
-    tab_helper->SetWaybackStateChangedCallback(base::NullCallback());
+    if (tab_helper) {
+      tab_helper->SetWaybackStateChangedCallback(base::NullCallback());
 
-    // Try to close if old tab had bubble.
-    if (auto* widget = views::Widget::GetWidgetForNativeWindow(
-            tab_helper->active_window())) {
-      widget->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
-      tab_helper->set_active_window(nullptr);
+      // Try to close if old tab had bubble.
+      if (auto* widget = views::Widget::GetWidgetForNativeWindow(
+              tab_helper->active_window())) {
+        widget->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
+        tab_helper->set_active_window(nullptr);
+      }
     }
   }
 
   if (selection.new_contents) {
     auto* tab_helper =
         BraveWaybackMachineTabHelper::FromWebContents(selection.new_contents);
-    CHECK(tab_helper);
-    tab_helper->SetWaybackStateChangedCallback(
-        base::BindRepeating(&WaybackMachineStateManager::OnWaybackStateChanged,
-                            weak_factory_.GetWeakPtr()));
+    if (tab_helper) {
+      tab_helper->SetWaybackStateChangedCallback(base::BindRepeating(
+          &WaybackMachineStateManager::OnWaybackStateChanged,
+          weak_factory_.GetWeakPtr()));
+    }
   }
 }
 

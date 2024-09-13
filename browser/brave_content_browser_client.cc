@@ -937,6 +937,9 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
   auto result = ChromeContentBrowserClient::CreateURLLoaderThrottles(
       request, browser_context, wc_getter, navigation_ui_data,
       frame_tree_node_id, navigation_id);
+  if (base::FeatureList::IsEnabled(kDisableBraveFeatures)) {
+    return result;
+  }
   content::WebContents* contents = wc_getter.Run();
 
   if (contents) {
@@ -1010,10 +1013,12 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
     network::mojom::URLLoaderFactoryOverridePtr* factory_override,
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
   // TODO(iefremov): Skip proxying for certain requests?
-  BraveProxyingURLLoaderFactory::MaybeProxyRequest(
-      browser_context, frame,
-      type == URLLoaderFactoryType::kNavigation ? -1 : render_process_id,
-      factory_builder, navigation_response_task_runner);
+  if (!base::FeatureList::IsEnabled(kDisableBraveFeatures)) {
+    BraveProxyingURLLoaderFactory::MaybeProxyRequest(
+        browser_context, frame,
+        type == URLLoaderFactoryType::kNavigation ? -1 : render_process_id,
+        factory_builder, navigation_response_task_runner);
+  }
 
   ChromeContentBrowserClient::WillCreateURLLoaderFactory(
       browser_context, frame, render_process_id, type, request_initiator,
@@ -1035,6 +1040,12 @@ void BraveContentBrowserClient::CreateWebSocket(
     const std::optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client) {
+  if (base::FeatureList::IsEnabled(kDisableBraveFeatures)) {
+    ChromeContentBrowserClient::CreateWebSocket(frame, std::move(factory), url,
+                                                site_for_cookies, user_agent,
+                                                std::move(handshake_client));
+    return;
+  }
   auto* proxy = BraveProxyingWebSocket::ProxyWebSocket(
       frame, std::move(factory), url, site_for_cookies, user_agent,
       std::move(handshake_client));

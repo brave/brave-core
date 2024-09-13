@@ -51,4 +51,6 @@ extern const base::FeatureParam<int>
 }  // namespace features
 }  // namespace brave_shields
 
+BASE_DECLARE_FEATURE(kDisableBraveFeatures);
+
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_FEATURES_H_

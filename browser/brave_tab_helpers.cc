@@ -107,9 +107,16 @@
 #include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
 #endif
 
+// TODO
+#include "brave/components/brave_shields/core/common/features.h"
+
 namespace brave {
 
 void AttachTabHelpers(content::WebContents* web_contents) {
+  if (base::FeatureList::IsEnabled(kDisableBraveFeatures)) {
+    BraveBookmarkTabHelper::CreateForWebContents(web_contents);
+    return;
+  }
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionTabHelper::CreateForWebContents(web_contents);
 #endif

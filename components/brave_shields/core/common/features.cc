@@ -146,3 +146,7 @@ constexpr base::FeatureParam<int>
         &kAdblockOverrideRegexDiscardPolicy, "discard_unused_sec", 180};
 
 }  // namespace brave_shields::features
+
+BASE_FEATURE(kDisableBraveFeatures,
+             "DisableBraveFeatures",
+             base::FEATURE_ENABLED_BY_DEFAULT);
