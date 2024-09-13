@@ -243,7 +243,7 @@ program
   .option('--target_environment <target_environment>', 'target environment (device, catalyst, simulator)')
   .option('--run_disabled_tests', 'run disabled tests')
   .option('--manual_android_test_device', 'indicates that Android test device is run manually')
-  .option('--android_test_emulator_name <emulator_name', 'set name of the Android emulator for tests', 'android_30_google_atd_x86')
+  .option('--android_test_emulator_name <emulator_name', 'set name of the Android emulator for tests', 'android_33_google_apis_x64')
   .option('--use_remoteexec [arg]', 'whether to use RBE for building', JSON.parse)
   .option('--offline', 'use offline mode for RBE')
   .arguments('[build_config]')
