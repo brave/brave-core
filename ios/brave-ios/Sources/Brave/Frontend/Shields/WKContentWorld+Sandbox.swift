@@ -7,6 +7,5 @@ import Foundation
 import WebKit
 
 extension WKContentWorld {
-  static let bookmarkletSandbox = WKContentWorld.page
   static let cosmeticFiltersSandbox = WKContentWorld.world(name: "CosmeticFiltersSandbox")
 }

@@ -1827,7 +1827,7 @@ public class BrowserViewController: UIViewController {
       {
         webView.evaluateSafeJavaScript(
           functionName: code,
-          contentWorld: .bookmarkletSandbox,
+          contentWorld: .page,
           asFunction: false
         ) { _, error in
           if let error = error {
