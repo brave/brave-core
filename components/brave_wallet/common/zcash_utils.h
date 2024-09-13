@@ -6,12 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ZCASH_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ZCASH_UTILS_H_
 
+#include <limits>
 #include <optional>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/containers/span.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
@@ -30,8 +32,13 @@ inline constexpr size_t kOrchardNullifierSize = 32u;
 inline constexpr size_t kOrchardCmxSize = 32u;
 inline constexpr size_t kOrchardEphemeralKeySize = 32u;
 inline constexpr size_t kOrchardCipherTextSize = 52u;
+inline constexpr size_t kOrchardMemoSize = 512u;
+inline constexpr uint64_t kZCashFullAmount =
+    std::numeric_limits<uint64_t>::max();
 
 using OrchardFullViewKey = std::array<uint8_t, kOrchardFullViewKeySize>;
+using OrchardMemo = std::array<uint8_t, kOrchardMemoSize>;
+using OrchardAddrRawPart = std::array<uint8_t, kOrchardRawBytesSize>;
 
 // Reduce current scanning position on this value if reorg is found
 // All Zcash network participants basically assume rollbacks longer than 100
@@ -72,9 +79,13 @@ struct DecodedZCashAddress {
 
 struct OrchardOutput {
   uint32_t value = 0;
-  std::array<std::uint8_t, ::brave_wallet::kOrchardRawBytesSize> addr;
+  OrchardAddrRawPart addr;
+  std::optional<OrchardMemo> memo;
 
   bool operator==(const OrchardOutput& other) const = default;
+
+  base::Value::Dict ToValue() const;
+  static std::optional<OrchardOutput> FromValue(const base::Value::Dict& value);
 };
 
 // Structure describes note nullifier that marks some note as spent
@@ -123,7 +134,7 @@ std::optional<std::string> GetOrchardUnifiedAddress(
     base::span<const uint8_t> orchard_part,
     bool is_testnet);
 
-std::optional<std::array<uint8_t, kOrchardRawBytesSize>> GetOrchardRawBytes(
+std::optional<OrchardAddrRawPart> GetOrchardRawBytes(
     const std::string& unified_address,
     bool is_testnet);
 
@@ -142,6 +153,12 @@ std::optional<std::string> ExtractTransparentPart(
 std::optional<std::string> ExtractOrchardPart(
     const std::string& unified_address,
     bool is_testnet);
+
+std::optional<OrchardMemo> ToOrchardMemo(
+    const std::optional<std::vector<uint8_t>>& input);
+
+std::optional<std::vector<uint8_t>> OrchardMemoToVec(
+    const std::optional<OrchardMemo>& memo);
 
 // Converts 000000000049900203ce1cba81a36d29390ea40fc78cf4799e8139b96f3a8114 to
 // 0x14813a6fb939819e79f48cc70fa40e39296da381ba1cce030290490000000000

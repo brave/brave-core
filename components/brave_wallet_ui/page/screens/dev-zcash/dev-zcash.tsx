@@ -91,11 +91,11 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
     }
   }
 
-  const shieldFunds = async () => {
+  const shieldAllFunds = async () => {
     let {
       txId,
       errorMessage,
-    } = await getAPIProxy().zcashWalletService.shieldFunds(
+    } = await getAPIProxy().zcashWalletService.shieldAllFunds(
       BraveWallet.Z_CASH_MAINNET,
       props.accountId
     )
@@ -168,7 +168,7 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
           <button onClick={stopOrchardSync}>Stop orchard sync</button>
 
           <button onClick={fetchBalance}>Reload</button>
-          <button onClick={shieldFunds}>Shield</button>
+          <button onClick={shieldAllFunds}>Shield</button>
           <h3>make account shieldable result: {makeAccountShieldableResult}</h3>
           <h3>sync status: {syncStatusResult}</h3>
           <h3>shield result: {shieldResult}</h3>
@@ -245,6 +245,12 @@ const GetZCashAccountInfoSection: React.FC<
         />
       ) : (
         <>
+          <div>
+            <code>Unified address: </code>
+            <code>
+              {zcashAccountInfo?.unifiedAddress || '-'}
+            </code>
+          </div>
           <div>
             <code>Next Receive Address: </code>
             <code>{keyId(zcashAccountInfo?.nextTransparentReceiveAddress.keyId)}

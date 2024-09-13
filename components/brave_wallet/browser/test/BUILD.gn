@@ -108,6 +108,8 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/zcash/zcash_grpc_utils_unittest.cc",
     "//brave/components/brave_wallet/browser/zcash/zcash_keyring_unittest.cc",
     "//brave/components/brave_wallet/browser/zcash/zcash_serializer_unittest.cc",
+    "//brave/components/brave_wallet/browser/zcash/zcash_transaction_unittest.cc",
+    "//brave/components/brave_wallet/browser/zcash/zcash_transaction_utils_unittest.cc",
     "//brave/components/brave_wallet/browser/zcash/zcash_wallet_service_unittest.cc",
   ]
 

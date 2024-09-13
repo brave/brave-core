@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_meta.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -60,7 +61,27 @@ void ZCashTxManager::AddUnapprovedTransaction(
     AddUnapprovedTransactionCallback callback) {
   const auto& zec_tx_data = tx_data_union->get_zec_tx_data();
 
-  zcash_wallet_service_->CreateTransaction(
+#if BUILDFLAG(ENABLE_ORCHARD)
+  if (IsZCashShieldedTransactionsEnabled()) {
+    bool has_orchard_part =
+        ExtractOrchardPart(zec_tx_data->to, chain_id == mojom::kZCashTestnet)
+            .has_value();
+    if (has_orchard_part) {
+      std::optional<OrchardMemo> memo = ToOrchardMemo(zec_tx_data->memo);
+      if (!memo && zec_tx_data->memo) {
+        std::move(callback).Run(false, "", "");
+        return;
+      }
+      zcash_wallet_service_->CreateShieldTransaction(
+          chain_id, from->Clone(), zec_tx_data->to, zec_tx_data->amount, memo,
+          base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
+                         weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
+                         origin, std::move(callback)));
+      return;
+    }
+  }
+#endif
+  zcash_wallet_service_->CreateFullyTransparentTransaction(
       chain_id, from->Clone(), zec_tx_data->to, zec_tx_data->amount,
       base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), chain_id, from.Clone(), origin,

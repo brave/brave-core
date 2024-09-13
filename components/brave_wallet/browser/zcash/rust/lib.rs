@@ -141,7 +141,10 @@ mod ffi {
         value: u32,
         // Recipient raw Orchard address.
         // Array size should match kOrchardRawBytesSize
-        addr: [u8; 43]
+        addr: [u8; 43],
+        memo: [u8; 512],
+        // Whether to use memo field in the transacition
+        use_memo: bool
     }
 
     // Encoded orchard output extracted from the transaction
@@ -400,7 +403,7 @@ fn create_orchard_builder_internal(
         let _ = match Option::from(orchard::Address::from_raw_address_bytes(&out.addr)) {
             Some(addr) => {
                 builder.add_output(None, addr,
-                    orchard::value::NoteValue::from_raw(u64::from(out.value)), None)
+                    orchard::value::NoteValue::from_raw(u64::from(out.value)), if out.use_memo { Some(out.memo)} else { Option::None })
             },
             None => return Box::new(OrchardUnauthorizedBundleResult::from(Err(Error::WrongOutputError)))
         };

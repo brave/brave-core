@@ -35,8 +35,9 @@ class HDKeyZip32 {
 
   // Returns public or internal address that may be used as a recipient address
   // in transactions
-  std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
-  GetDiversifiedAddress(uint32_t div_index, OrchardAddressKind kind);
+  std::optional<OrchardAddrRawPart> GetDiversifiedAddress(
+      uint32_t div_index,
+      OrchardAddressKind kind);
 
   // Full view key(fvk) is used to decode incoming transactions
   OrchardFullViewKey GetFullViewKey();

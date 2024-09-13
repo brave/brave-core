@@ -438,4 +438,49 @@ int GetFirstValidChainURLIndex(const std::vector<GURL>& chain_urls) {
   return 0;
 }
 
+bool ReadUint32StringTo(const base::Value::Dict& dict,
+                        std::string_view key,
+                        uint32_t& to) {
+  auto* str = dict.FindString(key);
+  if (!str) {
+    return false;
+  }
+  return base::StringToUint(*str, &to);
+}
+
+bool ReadStringTo(const base::Value::Dict& dict,
+                  std::string_view key,
+                  std::string& to) {
+  auto* str = dict.FindString(key);
+  if (!str) {
+    return false;
+  }
+  to = *str;
+  return true;
+}
+
+bool ReadUint64StringTo(const base::Value::Dict& dict,
+                        std::string_view key,
+                        uint64_t& to) {
+  auto* str = dict.FindString(key);
+  if (!str) {
+    return false;
+  }
+  return base::StringToUint64(*str, &to);
+}
+
+bool ReadHexByteArrayTo(const base::Value::Dict& dict,
+                        std::string_view key,
+                        std::vector<uint8_t>& to) {
+  auto* str = dict.FindString(key);
+  if (!str) {
+    return false;
+  }
+  if (str->empty()) {
+    to.clear();
+    return true;
+  }
+  return base::HexStringToBytes(*str, &to);
+}
+
 }  // namespace brave_wallet

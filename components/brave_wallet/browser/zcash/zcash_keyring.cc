@@ -139,8 +139,8 @@ mojom::ZCashAddressPtr ZCashKeyring::GetShieldedAddress(
   return mojom::ZCashAddress::New(addr_str.value(), key_id.Clone());
 }
 
-std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
-ZCashKeyring::GetOrchardRawBytes(const mojom::ZCashKeyId& key_id) {
+std::optional<OrchardAddrRawPart> ZCashKeyring::GetOrchardRawBytes(
+    const mojom::ZCashKeyId& key_id) {
   if (!orchard_key_) {
     return std::nullopt;
   }

@@ -1727,6 +1727,9 @@ struct ZCashAccountInfo {
   ZCashAddress next_transparent_receive_address;
   ZCashAddress next_transparent_change_address;
   ZCashAccountShieldBirthday? account_shield_birthday;
+  // Address that contains both transparent and orchard part
+  // Could be null if orchard is not enabled
+  string? unified_address;
 };
 
 enum ZCashAddressValidationResult {
@@ -1760,7 +1763,7 @@ interface ZCashWalletService {
       (ZCashAccountInfo? account_info);
   ValidateZCashAddress(string addr, bool testnet) =>
       (ZCashAddressValidationResult result);
-  ShieldFunds(string network_id, AccountId account_id) =>
+  ShieldAllFunds(string network_id, AccountId account_id) =>
       (string? tx_id, string? error_message);
 
   AddObserver(pending_remote<ZCashWalletServiceObserver> observer);
@@ -1843,6 +1846,8 @@ struct ZecTxOutput {
 
 struct ZecTxData {
   string to;
+  // Memo field should exist only for shielded output
+  array<uint8>? memo;
   uint64 amount;
   uint64 fee;
   array<ZecTxInput> inputs;

@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_shield_sync_service.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_transaction_complete_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -27,7 +28,7 @@
 namespace brave_wallet {
 
 class ZCashCreateTransparentTransactionTask;
-class ZCashCreateShieldAllTransactionTask;
+class ZCashCreateShieldTransactionTask;
 class ZCashGetTransparentUtxosContext;
 
 class ZCashWalletService : public mojom::ZCashWalletService,
@@ -91,9 +92,9 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   // TODO(cypt4): Make this a part of zcash
   // transaction
   // Sends all account funds from transparent pool to orchard pool.
-  void ShieldFunds(const std::string& chain_id,
-                   mojom::AccountIdPtr account_id,
-                   ShieldFundsCallback callback) override;
+  void ShieldAllFunds(const std::string& chain_id,
+                      mojom::AccountIdPtr account_id,
+                      ShieldAllFundsCallback callback) override;
 
   void RunDiscovery(mojom::AccountIdPtr account_id,
                     RunDiscoveryCallback callback);
@@ -113,23 +114,32 @@ class ZCashWalletService : public mojom::ZCashWalletService,
                 mojom::AccountIdPtr account_id,
                 GetUtxosCallback);
 
-  void CreateTransaction(const std::string& chain_id,
-                         mojom::AccountIdPtr account_id,
-                         const std::string& address_to,
-                         uint64_t amount,
-                         CreateTransactionCallback callback);
+  void CreateFullyTransparentTransaction(const std::string& chain_id,
+                                         mojom::AccountIdPtr account_id,
+                                         const std::string& address_to,
+                                         uint64_t amount,
+                                         CreateTransactionCallback callback);
+
+#if BUILDFLAG(ENABLE_ORCHARD)
+  void CreateShieldTransaction(const std::string& chain_id,
+                               mojom::AccountIdPtr account_id,
+                               const std::string& address_to,
+                               uint64_t amount,
+                               std::optional<OrchardMemo> memo,
+                               CreateTransactionCallback callback);
+#endif
 
   void GetTransactionStatus(const std::string& chain_id,
                             const std::string& tx_hash,
                             GetTransactionStatusCallback callback);
 
-  void PostShieldTransaction(const std::string& chain_id,
-                             ZCashTransaction zcash_transaction,
-                             SignAndPostTransactionCallback callback);
+  void CompleteAndPostTransaction(const std::string& chain_id,
+                                  ZCashTransaction zcash_transaction,
+                                  SignAndPostTransactionCallback callback);
 
   void SignAndPostTransaction(const std::string& chain_id,
                               const mojom::AccountIdPtr& account_id,
-                              ZCashTransaction zcash_transaction,
+                              const ZCashTransaction& zcash_transaction,
                               SignAndPostTransactionCallback callback);
 
   void SetZCashRpcForTesting(std::unique_ptr<ZCashRpc> zcash_rpc);
@@ -137,18 +147,16 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   void Reset();
 
  private:
-  friend class ZCashCreateShieldAllTransactionTask;
+  friend class ZCashCreateShieldTransactionTask;
   friend class ZCashCreateTransparentTransactionTask;
   friend class ZCashDiscoverNextUnusedZCashAddressTask;
+  friend class ZCashTransactionCompleteManager;
   friend class ZCashTxManager;
   friend class ZCashWalletServiceUnitTest;
 
   /*KeyringServiceObserverBase*/
   void Unlocked() override;
   void Locked() override;
-
-  bool SignTransactionInternal(ZCashTransaction& tx,
-                               const mojom::AccountIdPtr& account_id);
 
   void AccumulateRunDiscovery(
       base::OnceCallback<
@@ -174,32 +182,31 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       GetTransactionStatusCallback callback,
       base::expected<zcash::mojom::RawTransactionPtr, std::string> result);
 
-  void OnResolveLastBlockHeightForSendTransaction(
-      const std::string& chain_id,
-      const mojom::AccountIdPtr& account_id,
-      ZCashTransaction zcash_transaction,
-      SignAndPostTransactionCallback callback,
-      base::expected<zcash::mojom::BlockIDPtr, std::string> result);
-
   void OnSendTransactionResult(
       SignAndPostTransactionCallback callback,
       ZCashTransaction zcash_transaction,
       base::expected<zcash::mojom::SendResponsePtr, std::string> result);
 
   void CreateTransactionTaskDone(ZCashCreateTransparentTransactionTask* task);
+  void CreateTransactionTaskDone(ZCashCreateShieldTransactionTask* task);
+
+  void CompleteTransactionDone(std::string chain_id,
+                               ZCashTransaction original_zcash_transaction,
+                               SignAndPostTransactionCallback callback,
+                               base::expected<ZCashTransaction, std::string>);
 
 #if BUILDFLAG(ENABLE_ORCHARD)
   void CreateShieldAllTransaction(const std::string& chain_id,
                                   mojom::AccountIdPtr account_id,
                                   CreateTransactionCallback callback);
 
-  void CreateShieldTransactionTaskDone(
+  void CreateShieldAllTransactionTaskDone(
       const std::string& chain_id,
       mojom::AccountIdPtr account_id,
-      ShieldFundsCallback callback,
+      ShieldAllFundsCallback callback,
       base::expected<ZCashTransaction, std::string> transaction);
 
-  void OnPostShieldTransactionDone(ShieldFundsCallback callback,
+  void OnPostShieldTransactionDone(ShieldAllFundsCallback callback,
                                    std::string tx_id,
                                    ZCashTransaction transaction,
                                    std::string error);
@@ -241,12 +248,14 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   base::FilePath zcash_data_path_;
   raw_ptr<KeyringService> keyring_service_;
   std::unique_ptr<ZCashRpc> zcash_rpc_;
+  std::unique_ptr<ZCashTransactionCompleteManager> complete_manager_;
 
   std::list<std::unique_ptr<ZCashCreateTransparentTransactionTask>>
       create_transaction_tasks_;
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-  std::unique_ptr<ZCashCreateShieldAllTransactionTask> shield_funds_task_;
+  std::list<std::unique_ptr<ZCashCreateShieldTransactionTask>>
+      create_shield_transaction_tasks_;
   std::map<mojom::AccountIdPtr, std::unique_ptr<ZCashShieldSyncService>>
       shield_sync_services_;
 #endif

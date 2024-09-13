@@ -5,6 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_transaction_task.h"
 
+#include <utility>
+
+#include "base/containers/extend.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_transaction_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -22,6 +26,7 @@ ZCashCreateTransparentTransactionTask::ZCashCreateTransparentTransactionTask(
     : zcash_wallet_service_(zcash_wallet_service),
       chain_id_(chain_id),
       account_id_(account_id.Clone()),
+      amount_(amount),
       callback_(std::move(callback)) {
   transaction_.set_to(address_to);
   transaction_.set_amount(amount);
@@ -77,12 +82,16 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
   // https://github.com/bitcoin/bitcoin/blob/v24.0/src/wallet/spend.cpp#L739-L747
   transaction_.set_locktime(chain_height_.value());
 
-  if (!PickInputs()) {
+  auto pick_inputs_result = PickZCashTransparentInputs(utxo_map_, amount_, 0);
+  if (!pick_inputs_result) {
     // TODO(cypt4) : switch to IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE when ready
     SetError(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     WorkOnTask();
     return;
   }
+  transaction_.set_fee(pick_inputs_result->fee);
+  base::Extend(transaction_.transparent_part().inputs,
+               pick_inputs_result->inputs);
 
   if (!PrepareOutputs()) {
     SetError(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -131,49 +140,6 @@ void ZCashCreateTransparentTransactionTask::OnGetUtxos(
 
   utxo_map_ = std::move(utxo_map.value());
   WorkOnTask();
-}
-
-bool ZCashCreateTransparentTransactionTask::PickInputs() {
-  bool done = false;
-
-  // TODO(apaymyshev): This just picks ouputs one by one and stops when picked
-  // amount is GE to send amount plus fee. Needs something better than such
-  // greedy strategy.
-  std::vector<ZCashTransaction::TxInput> all_inputs;
-  for (const auto& item : utxo_map_) {
-    for (const auto& utxo : item.second) {
-      if (!utxo) {
-        error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
-        return false;
-      }
-      if (auto input =
-              ZCashTransaction::TxInput::FromRpcUtxo(item.first, *utxo)) {
-        all_inputs.emplace_back(std::move(*input));
-      }
-    }
-  }
-
-  base::ranges::sort(all_inputs, [](auto& input1, auto& input2) {
-    return input1.utxo_value < input2.utxo_value;
-  });
-
-  for (auto& input : all_inputs) {
-    transaction_.transparent_part().inputs.push_back(std::move(input));
-    transaction_.set_fee(
-        CalculateZCashTxFee(transaction_.transparent_part().inputs.size(), 0));
-
-    if (transaction_.TotalInputsAmount() >=
-        transaction_.amount() + transaction_.fee()) {
-      done = true;
-    }
-
-    if (done) {
-      break;
-    }
-  }
-
-  DCHECK(!transaction_.transparent_part().inputs.empty());
-  return done;
 }
 
 bool ZCashCreateTransparentTransactionTask::PrepareOutputs() {

@@ -29,7 +29,9 @@ std::unique_ptr<UnauthorizedOrchardBundle> UnauthorizedOrchardBundle::Create(
     std::optional<size_t> random_seed_for_testing) {
   ::rust::Vec<orchard::OrchardOutput> outputs;
   for (const auto& output : orchard_outputs) {
-    outputs.push_back(orchard::OrchardOutput{output.value, output.addr});
+    outputs.push_back(orchard::OrchardOutput{
+        output.value, output.addr, output.memo ? *output.memo : OrchardMemo(),
+        output.memo.has_value()});
   }
   if (random_seed_for_testing) {
     CHECK_IS_TEST();

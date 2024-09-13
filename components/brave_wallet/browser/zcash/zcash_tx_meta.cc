@@ -11,10 +11,12 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
+#include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
 namespace {
-mojom::ZecTxDataPtr ToZecTxData(ZCashTransaction& tx) {
+mojom::ZecTxDataPtr ToZecTxData(const std::string& chain_id,
+                                ZCashTransaction& tx) {
   std::vector<mojom::ZecTxInputPtr> mojom_inputs;
   for (auto& input : tx.transparent_part().inputs) {
     mojom_inputs.push_back(
@@ -25,8 +27,16 @@ mojom::ZecTxDataPtr ToZecTxData(ZCashTransaction& tx) {
     mojom_outputs.push_back(
         mojom::ZecTxOutput::New(output.address, output.amount));
   }
-  return mojom::ZecTxData::New(tx.to(), tx.amount(), tx.fee(),
-                               std::move(mojom_inputs),
+  for (auto& output : tx.orchard_part().outputs) {
+    auto orchard_unified_addr =
+        GetOrchardUnifiedAddress(output.addr, chain_id == mojom::kZCashTestnet);
+    if (orchard_unified_addr) {
+      mojom_outputs.push_back(
+          mojom::ZecTxOutput::New(*orchard_unified_addr, output.value));
+    }
+  }
+  return mojom::ZecTxData::New(tx.to(), OrchardMemoToVec(tx.memo()),
+                               tx.amount(), tx.fee(), std::move(mojom_inputs),
                                std::move(mojom_outputs));
 }
 }  // namespace
@@ -54,7 +64,7 @@ base::Value::Dict ZCashTxMeta::ToValue() const {
 mojom::TransactionInfoPtr ZCashTxMeta::ToTransactionInfo() const {
   return mojom::TransactionInfo::New(
       id_, std::nullopt, from_.Clone(), tx_hash_,
-      mojom::TxDataUnion::NewZecTxData(ToZecTxData(*tx_)), status_,
+      mojom::TxDataUnion::NewZecTxData(ToZecTxData(chain_id_, *tx_)), status_,
       mojom::TransactionType::Other, std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,
       base::Milliseconds(created_time_.InMillisecondsSinceUnixEpoch()),
