@@ -176,7 +176,7 @@ TEST(ZCashUtilsUnitTest, GetOrchardRawBytes) {
         "v",
         false);
     ASSERT_TRUE(orchard_raw_bytes);
-    constexpr std::array<uint8_t, kOrchardRawBytesSize> expected_raw_bytes = {
+    constexpr OrchardAddrRawPart expected_raw_bytes = {
         0x3b, 0x68, 0xc2, 0x9b, 0x4a, 0x13, 0x8b, 0x28, 0x9f, 0xea, 0x8b,
         0x67, 0x95, 0xe6, 0x47, 0x59, 0xa7, 0xcd, 0x7c, 0x0a, 0xaf, 0x4b,
         0xb9, 0x8e, 0xd3, 0x07, 0x99, 0x59, 0xb0, 0xbb, 0xa9, 0xb7, 0x61,
@@ -253,7 +253,7 @@ TEST(ZCashUtilsUnitTest, OrchardAddress) {
         "ey"
         "ex6ndgr6ezte66706e3vaqrd25dzvzkc69kw0jgywtd0cmq52q5lkw6uh7hyvzjse8ksx";
     auto orchard_part = ExtractOrchardPart(addr, false);
-    auto orchard_raw_bytes = std::array<uint8_t, kOrchardRawBytesSize>(
+    auto orchard_raw_bytes = OrchardAddrRawPart(
         {0xce, 0xcb, 0xe5, 0xe6, 0x89, 0xa4, 0x53, 0xa3, 0xfe, 0x10, 0xcc,
          0xf7, 0x61, 0x7e, 0x6c, 0x1f, 0xb3, 0x82, 0x81, 0x9d, 0x7f, 0xc9,
          0x20, 0x0a, 0x1f, 0x42, 0x09, 0x2a, 0xc8, 0x4a, 0x30, 0x37, 0x8f,
@@ -274,7 +274,7 @@ TEST(ZCashUtilsUnitTest, OrchardAddress) {
         "u1ddnjsdcpm36r6aq79n3s68shjweksnmwtdltrh046s8m6xcws9ygyawalxx8n6hg6veg"
         "k0wh8zjnafxgh6msppjsljvyt0ynece3lvm0";
     auto orchard_part = ExtractOrchardPart(addr, false);
-    auto orchard_raw_bytes = std::array<uint8_t, kOrchardRawBytesSize>(
+    auto orchard_raw_bytes = OrchardAddrRawPart(
         {0xe3, 0x40, 0x63, 0x65, 0x42, 0xec, 0xe1, 0xc8, 0x12, 0x85, 0xed,
          0x4e, 0xab, 0x44, 0x8a, 0xdb, 0xb5, 0xa8, 0xc0, 0xf4, 0xd3, 0x86,
          0xee, 0xff, 0x33, 0x7e, 0x88, 0xe6, 0x91, 0x5f, 0x6c, 0x3e, 0xc1,
@@ -387,6 +387,33 @@ TEST(ZCashUtilsUnitTest, RevertHex) {
           "000000000049900203ce1cba81a36d29390ea40fc78cf4799e8139b96f3a8114")
           .value(),
       "0x14813a6fb939819e79f48cc70fa40e39296da381ba1cce030290490000000000");
+}
+
+TEST(ZCashUtilsUnitTest, OrchardMemo) {
+  EXPECT_FALSE(ToOrchardMemo(std::nullopt));
+  EXPECT_FALSE(OrchardMemoToVec(std::nullopt));
+  {
+    OrchardMemo memo;
+    memo.fill(1);
+    EXPECT_EQ(OrchardMemoToVec(memo),
+              std::vector<uint8_t>(kOrchardMemoSize, 1));
+  }
+
+  {
+    OrchardMemo memo;
+    memo.fill(2);
+    EXPECT_EQ(memo,
+              ToOrchardMemo(std::vector<uint8_t>(kOrchardMemoSize, 2)).value());
+  }
+
+  {
+    OrchardMemo memo;
+    memo.fill(1);
+    memo.back() = 0;
+    EXPECT_EQ(memo,
+              *ToOrchardMemo(std::vector<uint8_t>(kOrchardMemoSize - 1, 1)));
+  }
+  EXPECT_FALSE(ToOrchardMemo(std::vector<uint8_t>(kOrchardMemoSize + 1, 1)));
 }
 
 }  // namespace brave_wallet

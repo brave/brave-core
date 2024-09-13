@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_TRANSPARENT_TRANSACTION_TASK_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_TRANSPARENT_TRANSACTION_TASK_H_
 
+#include <string>
+
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
@@ -38,7 +40,6 @@ class ZCashCreateTransparentTransactionTask {
 
   void SetError(const std::string& error_string) { error_ = error_string; }
 
-  bool PickInputs();
   bool PrepareOutputs();
 
   void OnGetChainHeight(
@@ -51,6 +52,7 @@ class ZCashCreateTransparentTransactionTask {
   raw_ptr<ZCashWalletService> zcash_wallet_service_;  // Owns `this`.
   std::string chain_id_;
   mojom::AccountIdPtr account_id_;
+  uint64_t amount_;
   CreateTransactionCallback callback_;
 
   std::optional<uint32_t> chain_height_;

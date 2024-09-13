@@ -41,13 +41,12 @@ class ZCashTransaction {
     TxInput();
     ~TxInput();
     TxInput(const TxInput& other);
-    TxInput& operator=(const TxInput& other) = delete;
+    TxInput& operator=(const TxInput& other);
     TxInput(TxInput&& other);
     TxInput& operator=(TxInput&& other);
     bool operator==(const TxInput& other) const;
     bool operator!=(const TxInput& other) const;
 
-    TxInput Clone() const;
     base::Value::Dict ToValue() const;
     static std::optional<TxInput> FromValue(const base::Value::Dict& value);
 
@@ -69,14 +68,13 @@ class ZCashTransaction {
   struct TxOutput {
     TxOutput();
     ~TxOutput();
-    TxOutput(const TxOutput& other) = delete;
-    TxOutput& operator=(const TxOutput& other) = delete;
+    TxOutput(const TxOutput& other);
+    TxOutput& operator=(const TxOutput& other);
     TxOutput(TxOutput&& other);
     TxOutput& operator=(TxOutput&& other);
     bool operator==(const TxOutput& other) const;
     bool operator!=(const TxOutput& other) const;
 
-    TxOutput Clone() const;
     base::Value::Dict ToValue() const;
     static std::optional<TxOutput> FromValue(const base::Value::Dict& value);
 
@@ -89,8 +87,8 @@ class ZCashTransaction {
     TransparentPart();
     ~TransparentPart();
     TransparentPart(TransparentPart&& other);
-    TransparentPart(const TransparentPart& other) = delete;
-    TransparentPart& operator=(const TransparentPart& other) = delete;
+    TransparentPart(const TransparentPart& other);
+    TransparentPart& operator=(const TransparentPart& other);
     TransparentPart& operator=(TransparentPart&& other);
     bool operator==(const TransparentPart& other) const;
     bool operator!=(const TransparentPart& other) const;
@@ -105,7 +103,7 @@ class ZCashTransaction {
     OrchardPart();
     ~OrchardPart();
     OrchardPart(OrchardPart&& other);
-    OrchardPart(const OrchardPart& other) = delete;
+    OrchardPart(const OrchardPart& other);
     OrchardPart& operator=(const OrchardPart& other);
     OrchardPart& operator=(OrchardPart&& other);
     bool operator==(const OrchardPart& other) const;
@@ -119,14 +117,13 @@ class ZCashTransaction {
 
   ZCashTransaction();
   ~ZCashTransaction();
-  ZCashTransaction(const ZCashTransaction& other) = delete;
-  ZCashTransaction& operator=(const ZCashTransaction& other) = delete;
+  ZCashTransaction(const ZCashTransaction& other);
+  ZCashTransaction& operator=(const ZCashTransaction& other);
   ZCashTransaction(ZCashTransaction&& other);
   ZCashTransaction& operator=(ZCashTransaction&& other);
   bool operator==(const ZCashTransaction& other) const;
   bool operator!=(const ZCashTransaction& other) const;
 
-  ZCashTransaction Clone() const;
   base::Value::Dict ToValue() const;
   static std::optional<ZCashTransaction> FromValue(
       const base::Value::Dict& value);
@@ -138,6 +135,9 @@ class ZCashTransaction {
 
   std::string to() const { return to_; }
   void set_to(const std::string& to) { to_ = to; }
+
+  const std::optional<OrchardMemo>& memo() const { return memo_; }
+  void set_memo(const std::optional<OrchardMemo>& memo) { memo_ = memo; }
 
   uint64_t amount() const { return amount_; }
   void set_amount(uint64_t amount) { amount_ = amount; }
@@ -166,6 +166,7 @@ class ZCashTransaction {
   uint32_t locktime_ = 0;
   uint32_t expiry_height_ = 0;
   std::string to_;
+  std::optional<OrchardMemo> memo_;
   uint64_t amount_ = 0;
   uint64_t fee_ = 0;
 };

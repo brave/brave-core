@@ -29,8 +29,9 @@ std::unique_ptr<HDKeyZip32> HDKeyZip32::DeriveHardenedChild(uint32_t index) {
       new HDKeyZip32(extended_spending_key_->DeriveHardenedChild(index)));
 }
 
-std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
-HDKeyZip32::GetDiversifiedAddress(uint32_t div_index, OrchardAddressKind kind) {
+std::optional<OrchardAddrRawPart> HDKeyZip32::GetDiversifiedAddress(
+    uint32_t div_index,
+    OrchardAddressKind kind) {
   return extended_spending_key_->GetDiversifiedAddress(div_index, kind);
 }
 
