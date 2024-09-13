@@ -60,6 +60,12 @@ BASE_FEATURE(kBraveAdblockMobileNotificationsListDefault,
 BASE_FEATURE(kBraveAdblockExperimentalListDefault,
              "BraveAdblockExperimentalListDefault",
              base::FEATURE_DISABLED_BY_DEFAULT);
+// When enabled, Brave will enable "Brave Twitch Adblock Rules" list by
+// default unless overridden by a locally set preference.
+// NOTE: should only be turned on by default in Nightly and Beta (for now).
+BASE_FEATURE(kBraveAdblockTwitchListDefault,
+             "BraveAdblockTwitchListDefault",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, Brave will block domains listed in the user's selected adblock
 // filters and present a security interstitial with choice to proceed and
 // optionally whitelist the domain.

@@ -557,6 +557,17 @@
               brave_shields::features::kBraveAdblockExperimentalListDefault),  \
       },                                                                       \
       {                                                                        \
+          "brave-adblock-twitch-list-default",                                 \
+          "Treat 'Brave Twitch Adblock Rules' as a default list "              \
+          "source",                                                            \
+                                                                               \
+          "Enables the 'Brave Twitch Adblock Rules' regional list if "         \
+          "its toggle in brave://adblock hasn't otherwise been modified",      \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveAdblockTwitchListDefault),        \
+      },                                                                       \
+      {                                                                        \
           "brave-adblock-scriptlet-debug-logs",                                \
           "Enable debug logging for scriptlet injections",                     \
           "Enable console debugging for scriptlets injected by cosmetic "      \

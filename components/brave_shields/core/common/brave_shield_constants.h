@@ -43,6 +43,8 @@ inline constexpr char kMobileNotificationsListUuid[] =
     "2F3DCE16-A19A-493C-A88F-2E110FBD37D6";
 inline constexpr char kExperimentalListUuid[] =
     "564C3B75-8731-404C-AD7C-5683258BA0B0";
+inline constexpr char kTwitchListUuid[] =
+    "529A3F3B-7EBA-4351-B986-D176A82E7F5A";
 
 inline constexpr char kAdBlockResourceComponentName[] =
     "Brave Ad Block Resources Library";

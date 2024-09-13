@@ -29,6 +29,7 @@
 using brave_shields::features::kBraveAdblockCookieListDefault;
 using brave_shields::features::kBraveAdblockExperimentalListDefault;
 using brave_shields::features::kBraveAdblockMobileNotificationsListDefault;
+using brave_shields::features::kBraveAdblockTwitchListDefault;
 
 namespace brave_shields {
 
@@ -39,23 +40,18 @@ typedef struct ListDefaultOverrideConstants {
   const char* list_uuid;
 } ListDefaultOverrideConstants;
 
-const ListDefaultOverrideConstants kCookieListConstants{
-    .feature = raw_ref<const base::Feature>(kBraveAdblockCookieListDefault),
-    .list_uuid = kCookieListUuid};
-
-const ListDefaultOverrideConstants kMobileNotificationsListConstants{
-    .feature = raw_ref<const base::Feature>(
-        kBraveAdblockMobileNotificationsListDefault),
-    .list_uuid = kMobileNotificationsListUuid};
-
-const ListDefaultOverrideConstants kExperimentalListConstants{
-    .feature =
-        raw_ref<const base::Feature>(kBraveAdblockExperimentalListDefault),
-    .list_uuid = kExperimentalListUuid};
-
-const ListDefaultOverrideConstants kOverrideConstants[3] = {
-    kCookieListConstants, kMobileNotificationsListConstants,
-    kExperimentalListConstants};
+const ListDefaultOverrideConstants kOverrideConstants[4] = {
+    {.feature = raw_ref<const base::Feature>(kBraveAdblockCookieListDefault),
+     .list_uuid = kCookieListUuid},
+    {.feature = raw_ref<const base::Feature>(
+         kBraveAdblockMobileNotificationsListDefault),
+     .list_uuid = kMobileNotificationsListUuid},
+    {.feature =
+         raw_ref<const base::Feature>(kBraveAdblockExperimentalListDefault),
+     .list_uuid = kExperimentalListUuid},
+    {.feature = raw_ref<const base::Feature>(kBraveAdblockTwitchListDefault),
+     .list_uuid = kTwitchListUuid},
+};
 
 }  // namespace
 
