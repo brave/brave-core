@@ -91,8 +91,10 @@ void AIChatUIPageHandler::HandleVoiceRecognition() {
   // WebContents
   auto* context_web_contents = (active_chat_tab_helper_)
                                    ? active_chat_tab_helper_->web_contents()
-                                   : web_contents();
-  ai_chat::HandleVoiceRecognition(web_contents(), context_web_contents);
+                                   : owner_web_contents_.get();
+  // TODO: send a conversation ID instead of context_web_contents, so
+  // that this will work for standalone conversations.
+  ai_chat::HandleVoiceRecognition(owner_web_contents_, context_web_contents);
 #endif
 }
 
@@ -142,7 +144,7 @@ void AIChatUIPageHandler::GoPremium() {
 #else
   auto* contents_to_navigate = (active_chat_tab_helper_)
                                    ? active_chat_tab_helper_->web_contents()
-                                   : web_contents();
+                                   : owner_web_contents_.get();
   ai_chat::GoPremium(contents_to_navigate);
 #endif
 }
@@ -157,7 +159,7 @@ void AIChatUIPageHandler::ManagePremium() {
 #else
   auto* contents_to_navigate = (active_chat_tab_helper_)
                                    ? active_chat_tab_helper_->web_contents()
-                                   : web_contents();
+                                   : owner_web_contents_.get();
   ai_chat::ManagePremium(contents_to_navigate);
 #endif
 }
