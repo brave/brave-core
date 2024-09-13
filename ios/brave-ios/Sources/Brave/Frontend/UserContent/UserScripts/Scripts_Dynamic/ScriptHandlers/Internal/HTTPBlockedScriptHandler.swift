@@ -70,21 +70,8 @@ class HTTPBlockedScriptHandler: TabContentScript {
   }
 
   private func didGoBack() {
-    let etldP1 =
-      tab?.upgradedHTTPSRequest?.url?.baseDomain
-      ?? tab?.url?.strippedInternalURL?.baseDomain
-
-    guard
-      let listItem = tab?.backList?.reversed().first(where: {
-        // It is not the blocked page or the internal page
-        $0.url.baseDomain != etldP1 && $0.url != tab?.webView?.url
-      })
-    else {
-      tab?.goBack()
-      return
-    }
-
-    tab?.upgradedHTTPSRequest = nil
-    tab?.goToBackForwardListItem(listItem)
+    guard let tab else { return }
+    tab.upgradedHTTPSRequest = nil
+    tab.goBack()
   }
 }
