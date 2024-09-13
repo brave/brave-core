@@ -16,7 +16,7 @@ When `chromium_src/third_party/devtools-frontend/src/third_party/typescript/ts_l
 1. Create a patch file in `//brave/chromium_src/third_party/devtools-frontend/src/front_end/{path to the file you want to patch}.ts`
 2. Apply the patch after `SomeClass` declaration in the original file:
    ```javascript
-   import { SomeClassPatch } from './SomeFile.patch.js'; (SomeClass as any) = SomeClassPatch(SomeClass);
+   import { PatchSomeClass } from './SomeFile.patch.js'; (SomeClass as any) = PatchSomeClass(SomeClass);
    ```
 
 ### How It Works
