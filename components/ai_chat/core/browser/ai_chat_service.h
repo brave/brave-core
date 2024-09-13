@@ -63,6 +63,10 @@ class AIChatService : public KeyedService,
       ConversationHandler* handler,
       std::vector<mojom::ConversationTurnPtr> entries) override;
   void OnClientConnectionChanged(ConversationHandler* handler) override;
+  void OnAssociatedContentIdAdded(ConversationHandler* handler,
+                                  int associated_content_id) override;
+  void OnAssociatedContentIdRemoved(ConversationHandler* handler,
+                                    int associated_content_id) override;
 
   // Adds new conversation and returns the handler
   ConversationHandler* CreateConversation();

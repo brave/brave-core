@@ -100,6 +100,12 @@ class AssociatedContentDriver
   // is expected.
   void OnNewPage(int64_t navigation_id) override;
 
+  // Content has an additional content ID that all conversations
+  // should be associated with.
+  void OnAssociatedContentIdAdded(int associated_content_id);
+  // Conversation should not be associated with this content anymore.
+  void OnAssociatedContentIdRemoved(int associated_content_id);
+
  private:
   friend class ::AIChatUIBrowserTest;
   FRIEND_TEST_ALL_PREFIXES(::AIChatUIBrowserTest, PrintPreviewFallback);

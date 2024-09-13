@@ -159,6 +159,11 @@ void AIChatTabHelper::NavigationEntryCommitted(
   // it results in a page title change (see |TtileWasSet|).
   if (!is_same_document_navigation_) {
     OnNewPage(pending_navigation_id_);
+  } else {
+    // Whilst this isn't a new page, we still want to associate this content
+    // with the ID, so that conversations can be fetched based on
+    // e.g. back / forward navigations to this content.
+    OnAssociatedContentIdAdded(pending_navigation_id_);
   }
 }
 
@@ -308,6 +313,7 @@ void AIChatTabHelper::MaybeSameDocumentIsNewPage() {
                 "OnNewPage()";
     // Cancel knowledge that the current navigation should be associated
     // with any conversation that's associated with the previous navigation.
+    OnAssociatedContentIdRemoved(pending_navigation_id_);
     // Tell any conversation that it shouldn't be associated with this
     // content anymore, as we've moved on.
     OnNewPage(pending_navigation_id_);

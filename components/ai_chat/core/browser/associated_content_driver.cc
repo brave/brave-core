@@ -237,6 +237,20 @@ void AssociatedContentDriver::OnSearchQuerySummaryFetched(
   std::move(callback).Run(search_query_summary);
 }
 
+void AssociatedContentDriver::OnAssociatedContentIdAdded(
+    int associated_content_id) {
+  for (auto& conversation : associated_conversations_) {
+    conversation->OnAssociatedContentIdAdded(associated_content_id);
+  }
+}
+
+void AssociatedContentDriver::OnAssociatedContentIdRemoved(
+    int associated_content_id) {
+  for (auto& conversation : associated_conversations_) {
+    conversation->OnAssociatedContentIdRemoved(associated_content_id);
+  }
+}
+
 // static
 std::optional<SearchQuerySummary>
 AssociatedContentDriver::ParseSearchQuerySummaryResponse(

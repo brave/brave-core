@@ -288,6 +288,21 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
   MaybeEraseConversation(handler);
 }
 
+void AIChatService::OnAssociatedContentIdAdded(ConversationHandler* handler,
+                                               int associated_content_id) {
+  // Conversation is reporting that an additional navigation is associated
+  // with this conversaitn
+  content_conversations_.insert_or_assign(associated_content_id,
+                                          handler->get_conversation_uuid());
+}
+
+void AIChatService::OnAssociatedContentIdRemoved(ConversationHandler* handler,
+                                                 int associated_content_id) {
+  // Conversation is reporting that a navigation should not be associated
+  // with this conversation
+  content_conversations_.erase(associated_content_id);
+}
+
 void AIChatService::GetVisibleConversations(
     GetVisibleConversationsCallback callback) {
   std::vector<mojom::ConversationPtr> conversations;

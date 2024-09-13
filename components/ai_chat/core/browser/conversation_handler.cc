@@ -929,6 +929,20 @@ void ConversationHandler::OnUserOptedIn() {
   MaybeFetchOrClearContentStagedConversation();
 }
 
+void ConversationHandler::OnAssociatedContentIdAdded(
+    int associated_content_id) {
+  for (auto& observer : observers_) {
+    observer.OnAssociatedContentIdAdded(this, associated_content_id);
+  }
+}
+
+void ConversationHandler::OnAssociatedContentIdRemoved(
+    int associated_content_id) {
+  for (auto& observer : observers_) {
+    observer.OnAssociatedContentIdRemoved(this, associated_content_id);
+  }
+}
+
 void ConversationHandler::AddToConversationHistory(
     mojom::ConversationTurnPtr turn) {
   if (!turn) {

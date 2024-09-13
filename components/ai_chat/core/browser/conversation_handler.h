@@ -134,6 +134,18 @@ class ConversationHandler : public mojom::ConversationHandler,
 
     // Called when a mojo client connects or disconnects
     virtual void OnClientConnectionChanged(ConversationHandler* handler) {}
+
+    // The same content should be handled by an additional content ID. This
+    // is used for same-page non-contentful navigations, where the conversation
+    // should be related to both navigations.
+    virtual void OnAssociatedContentIdAdded(ConversationHandler* handler,
+                                            int associated_content_id) {}
+
+    // The content should no longer be associated with this conversation. This
+    // can occur when the content was determined to be different than a
+    // previous same-document navigation.
+    virtual void OnAssociatedContentIdRemoved(ConversationHandler* handler,
+                                              int associated_content_id) {}
   };
 
   ConversationHandler(
@@ -221,6 +233,12 @@ class ConversationHandler : public mojom::ConversationHandler,
                                   mojom::APIError error);
   void OnFaviconImageDataChanged();
   void OnUserOptedIn();
+
+  // Content has an additional content ID that all conversations
+  // should be associated with.
+  void OnAssociatedContentIdAdded(int associated_content_id);
+  // Content should not be associated with this conversation anymore.
+  void OnAssociatedContentIdRemoved(int associated_content_id);
 
   base::WeakPtr<ConversationHandler> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
