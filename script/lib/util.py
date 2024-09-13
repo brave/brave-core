@@ -141,9 +141,9 @@ def make_zip(zip_file_path, files, dirs):
                     cp.stdout):
                 failed_path = m.group(1)
                 print(f'zip failed to open {failed_path} for reading.')
-                # See what happens if we try to read the file.
-                with open(failed_path, 'rb') as f:
-                    f.read()
+                # See what `ls` says now.
+                # pylint: disable=subprocess-run-check
+                subprocess.run(['ls', '-alh', failed_path])
             print(cp.stdout)
             raise RuntimeError('zip failed', cp.stderr)
     else:
