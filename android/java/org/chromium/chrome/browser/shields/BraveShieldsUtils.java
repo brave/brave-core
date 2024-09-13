@@ -5,8 +5,12 @@
 
 package org.chromium.chrome.browser.shields;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +21,7 @@ import org.chromium.base.ThreadUtils;
 import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.browser.BraveConfig;
+import org.chromium.chrome.browser.feedback.ScreenshotTask;
 import org.chromium.components.version_info.BraveVersionConstants;
 import org.chromium.net.ChromiumNetworkAdapter;
 import org.chromium.net.NetworkTrafficAnnotationTag;
@@ -65,7 +70,8 @@ public class BraveShieldsUtils {
 
             @Override
             protected Void doInBackground() {
-                sendBraveShieldsFeedback(mDomain, mApiKey);
+	            Log.i(TAG, "start doInBackground #300");
+	            sendBraveShieldsFeedback(mDomain, mApiKey, null);
                 return null;
             }
 
@@ -77,9 +83,11 @@ public class BraveShieldsUtils {
             }
         }
 
-        private static void sendBraveShieldsFeedback(String domain, String apiKey) {
+        private static void sendBraveShieldsFeedback(String domain, String apiKey, @Nullable Bitmap screenshot) {
             assert BraveConfig.WEBCOMPAT_REPORT_ENDPOINT != null
                     && !BraveConfig.WEBCOMPAT_REPORT_ENDPOINT.isEmpty();
+
+        Log.i(TAG, String.format("start sendBraveShieldsFeedback #100 %s", screenshot != null));
 
         RecordHistogram.recordEnumeratedHistogram(WEBCOMPAT_UI_SOURCE_HISTOGRAM_NAME, 0, 2);
 
