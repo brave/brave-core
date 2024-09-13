@@ -20,7 +20,7 @@ function createMenuElement(title, href, iconName, pageVisibilitySection) {
   menuEl.setAttribute('role', 'menuitem')
   menuEl.setAttribute('class', 'cr-nav-menu-item')
 
-  const icon = document.createElement('iron-icon')
+  const icon = document.createElement('cr-icon')
   icon.setAttribute('icon', iconName)
   menuEl.appendChild(icon)
 
@@ -123,11 +123,11 @@ RegisterStyleOverride(
         font-weight: 400 !important;
       }
 
-      a:hover, iron-icon:hover {
+      a:hover, cr-icon:hover {
         color: #444DD0 !important;
       }
 
-      iron-icon, leo-icon {
+      cr-icon, leo-icon {
         margin-inline-end: 14px !important;
         width: 24px;
         height: 24px;
@@ -151,7 +151,7 @@ RegisterStyleOverride(
           color: #FB5930;
         }
 
-        a:hover, iron-icon:hover {
+        a:hover, cr-icon:hover {
           color: #A6ABE9 !important;
         }
       }
@@ -168,7 +168,7 @@ RegisterStyleOverride(
         border: none !important;
       }
 
-      #advancedButton > iron-icon {
+      #advancedButton > cr-icon {
         margin-inline-end: 0 !important;
       }
 
