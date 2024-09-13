@@ -106,9 +106,9 @@ bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
   if (!shields_settings_) {
     return false;
   }
-  bool allow = base::Contains(shields_settings_->origins_to_allow_scripts_once,
+  bool allow = base::Contains(shields_settings_->origins_to_allow_scripts,
                               url::Origin::Create(script_url).Serialize()) ||
-               base::Contains(shields_settings_->origins_to_allow_scripts_once,
+               base::Contains(shields_settings_->origins_to_allow_scripts,
                               script_url.spec());
   if (!allow) {
     // Also check rules in the main frame, because this frame rules may be out

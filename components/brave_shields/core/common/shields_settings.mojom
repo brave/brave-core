@@ -15,6 +15,6 @@ enum FarblingLevel {
 
 struct ShieldsSettings {
   FarblingLevel farbling_level;
-  array<string> origins_to_allow_scripts_once;
+  array<string> origins_to_allow_scripts;
   bool reduce_language;
 };
