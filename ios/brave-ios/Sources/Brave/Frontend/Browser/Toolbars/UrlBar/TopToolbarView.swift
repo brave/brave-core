@@ -4,6 +4,7 @@
 
 import BraveCore
 import BraveUI
+import BraveWidgetsModels
 import Combine
 import Data
 import DesignSystem
@@ -28,7 +29,7 @@ protocol TopToolbarDelegate: AnyObject {
   // Returns either (search query, true) or (url, false).
   func topToolbarDisplayTextForURL(_ url: URL?) -> (String?, Bool)
   func topToolbarDidBeginDragInteraction(_ topToolbar: TopToolbarView)
-  func topToolbarDidTapBookmarkButton(_ topToolbar: TopToolbarView)
+  func topToolbarDidTapShortcutButton(_ topToolbar: TopToolbarView)
   func topToolbarDidTapBraveShieldsButton(_ topToolbar: TopToolbarView)
   func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView)
   func topToolbarDidTapMenuButton(_ topToolbar: TopToolbarView)
@@ -148,14 +149,41 @@ class TopToolbarView: UIView, ToolbarProtocol {
     $0.addTarget(self, action: #selector(tappedScrollToTopArea), for: .touchUpInside)
   }
 
-  private lazy var bookmarkButton = ToolbarButton().then {
-    $0.setImage(UIImage(braveSystemNamed: "leo.product.bookmarks"), for: .normal)
-    $0.accessibilityLabel = Strings.bookmarksMenuItem
-    $0.addTarget(self, action: #selector(didClickBookmarkButton), for: .touchUpInside)
+  private lazy var shortcutButton = ToolbarButton().then {
+    $0.addTarget(self, action: #selector(didClickShortcutButton), for: .touchUpInside)
     $0.contentEdgeInsets = .init(top: 4, left: 4, bottom: 4, right: 4)
     $0.snp.makeConstraints {
       $0.size.greaterThanOrEqualTo(32)
     }
+    $0.menu = .init(children: [
+      UIMenu(
+        options: [.singleSelection, .displayInline],
+        children: WidgetShortcut.eligibleButtonShortcuts.map { shortcut in
+          UIAction(
+            title: shortcut.displayString,
+            image: shortcut.image,
+            state: shortcut.rawValue == Preferences.General.toolbarShortcutButton.value
+              ? .on : .off,
+            handler: { _ in
+              Preferences.General.toolbarShortcutButton.value = shortcut.rawValue
+            }
+          )
+        }
+      ),
+      UIMenu(
+        options: .displayInline,
+        children: [
+          UIAction(
+            title: "Hide Shortcut Button",
+            image: UIImage(braveSystemNamed: "leo.eye.off"),
+            attributes: .destructive,
+            handler: { _ in
+              Preferences.General.toolbarShortcutButton.value = nil
+            }
+          )
+        ]
+      ),
+    ])
   }
 
   var forwardButton = ToolbarButton()
@@ -173,7 +201,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   }()
 
   lazy var actionButtons: [UIButton] = [
-    shareButton, tabsButton, bookmarkButton,
+    shareButton, tabsButton, shortcutButton,
     forwardButton, backButton, menuButton,
     shieldsButton, rewardsButton,
   ].compactMap { $0 }
@@ -317,7 +345,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
     leadingItemsStackView.addArrangedSubview(backButton)
     leadingItemsStackView.addArrangedSubview(forwardButton)
-    leadingItemsStackView.addArrangedSubview(bookmarkButton)
+    leadingItemsStackView.addArrangedSubview(shortcutButton)
     leadingItemsStackView.addArrangedSubview(shareButton)
 
     [backButton, forwardButton].forEach {
@@ -347,7 +375,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
     setupConstraints()
 
-    Preferences.General.showBookmarkToolbarShortcut.observe(from: self)
+    Preferences.General.toolbarShortcutButton.observe(from: self)
 
     // Make sure we hide any views that shouldn't be showing in non-overlay mode.
     updateViewsForOverlayModeAndToolbarChanges()
@@ -369,7 +397,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     helper?.updateForTraitCollection(
       traitCollection,
       browserColors: privateBrowsingManager.browserColors,
-      additionalButtons: [bookmarkButton]
+      additionalButtons: [shortcutButton]
     )
     updateForTraitCollection()
 
@@ -411,7 +439,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     helper?.updateForTraitCollection(
       traitCollection,
       browserColors: privateBrowsingManager.browserColors,
-      additionalButtons: [bookmarkButton]
+      additionalButtons: [shortcutButton]
     )
     updateForTraitCollection()
   }
@@ -730,8 +758,14 @@ class TopToolbarView: UIView, ToolbarProtocol {
     locationView.contentView.isHidden = inOverlayMode
     shieldsRewardsStack.isHidden = inOverlayMode
 
-    let showBookmarkPref = Preferences.General.showBookmarkToolbarShortcut.value
-    bookmarkButton.isHidden = showBookmarkPref ? inOverlayMode : true
+    let selectedShortcut: WidgetShortcut? = Preferences.General.toolbarShortcutButton.value.flatMap(
+      WidgetShortcut.init
+    )
+    shortcutButton.isHidden = selectedShortcut != nil ? inOverlayMode : true
+    if let selectedShortcut {
+      shortcutButton.setImage(selectedShortcut.image, for: .normal)
+      shortcutButton.accessibilityLabel = selectedShortcut.displayString
+    }
     leadingItemsStackView.isHidden = leadingItemsStackView.arrangedSubviews.allSatisfy(\.isHidden)
   }
 
@@ -744,7 +778,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
     if inOverlayMode {
       [
-        leadingItemsStackView, bookmarkButton, shieldsRewardsStack, trailingItemsStackView,
+        leadingItemsStackView, shortcutButton, shieldsRewardsStack, trailingItemsStackView,
         locationView.contentView,
       ].forEach {
         $0?.isHidden = true
@@ -805,8 +839,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
     delegate?.topToolbarDidPressScrollToTop(self)
   }
 
-  @objc func didClickBookmarkButton() {
-    delegate?.topToolbarDidTapBookmarkButton(self)
+  @objc func didClickShortcutButton() {
+    delegate?.topToolbarDidTapShortcutButton(self)
   }
 
   @objc func didClickMenu() {

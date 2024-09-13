@@ -111,8 +111,7 @@ public enum NavigationPath: Equatable {
     )
   }
 
-  private static func handleWidgetShortcut(_ path: WidgetShortcut, with bvc: BrowserViewController)
-  {
+  static func handleWidgetShortcut(_ path: WidgetShortcut, with bvc: BrowserViewController) {
     switch path {
     case .unknown, .search:
       // Search

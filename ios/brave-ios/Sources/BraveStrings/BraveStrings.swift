@@ -2581,14 +2581,6 @@ extension Strings {
     value: "Save Logins",
     comment: "Setting to enable the built-in password manager"
   )
-  public static let showBookmarkButtonInTopToolbar = NSLocalizedString(
-    "ShowBookmarkButtonInTopToolbar",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Show Bookmarks Shortcut",
-    comment:
-      "Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks."
-  )
   public static let alwaysRequestDesktopSite = NSLocalizedString(
     "AlwaysRequestDesktopSite",
     tableName: "BraveShared",
@@ -9712,6 +9704,23 @@ extension Strings {
       bundle: .module,
       value: "Refresh your credentials",
       comment: "Button action text for refreshing credentials from brave site."
+    )
+  }
+}
+
+extension Strings {
+  public struct ShortcutButton {
+    public static let hideButtonTitle = NSLocalizedString(
+      "shortcutsButton.hideButtonTitle",
+      bundle: .module,
+      value: "Hide Shortcut Button",
+      comment: "An option in a list of shortcut actions that hides the button"
+    )
+    public static let shortcutButtonTitle = NSLocalizedString(
+      "shortcutsButton.shortcutButtonTitle",
+      bundle: .module,
+      value: "Shortcut Button",
+      comment: "A title shown when letting the user choose a button's purpose from a list of destinations"
     )
   }
 }
