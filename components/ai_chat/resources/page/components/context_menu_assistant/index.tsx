@@ -22,6 +22,7 @@ interface ContextMenuAssistantProps {
   isOpen: boolean
   onClick: () => void
   onClose: () => void
+  onEditAnswerClicked: () => void
 }
 
 enum RatingStatus {
@@ -35,6 +36,7 @@ function ContextMenuAssistant_(
   ref: React.RefObject<Map<number, Element>>
 ) {
   const context = React.useContext(DataContext)
+  const {shouldDisableUserInput} = context
   const [feedbackId, setFeedbackId] = React.useState<string | null>()
   const [isFormVisible, setIsFormVisible] = React.useState(false)
   const [currentRatingStatus, setCurrentRatingStatus] =
@@ -157,6 +159,14 @@ function ContextMenuAssistant_(
         >
           <Icon name='more-vertical' />
         </Button>
+        {!shouldDisableUserInput && (
+          <leo-menu-item
+            onClick={props.onEditAnswerClicked}
+          >
+            <Icon name='edit-pencil' />
+            <span>{getLocale('editAnswerLabel')}</span>
+          </leo-menu-item>
+        )}
         <leo-menu-item
           class={classnames({
             [styles.liked]: currentRatingStatus === RatingStatus.Liked
