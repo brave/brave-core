@@ -17,11 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.radiobutton.MaterialRadioButton;
 
+import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.activities.VpnServerActivity.OnCitySelection;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
-import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,13 +54,38 @@ public class VpnServerAdapter extends RecyclerView.Adapter<VpnServerAdapter.View
                             .getQuantityString(
                                     R.plurals.server_text, city.serverCount, city.serverCount);
             holder.cityServerText.setText((position == 0) ? city.name : cityServerText);
+            // boolean isEnabled =
+            //         BraveVpnPrefUtils.getRegionName().equals(mRegion.name)
+            //                 && BraveVpnPrefUtils.getRegionName()
+            //                         .equals(
+            //                                 position == 0
+            //                                         ? BraveVpnUtils.OPTIMAL_SERVER
+            //                                         : city.name);
+            // boolean isEnabled =
+            //         BraveVpnPrefUtils.getRegionPrecision()
+            //                         .equals(BraveVpnConstants.REGION_PRECISION_CITY)
+            //                 && BraveVpnPrefUtils.getRegionName()
+            //                         .equals(
+            //                                 position == 0
+            //                                         ? BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC
+            //                                         : city.name);
+
+            // boolean isEnabled =
+            // (BraveVpnPrefUtils.getRegionPrecision().equals(BraveVpnConstants.REGION_PRECISION_COUNTRY) && BraveVpnPrefUtils.getRegionName().equals(mRegion.name) && position == 0) || (BraveVpnPrefUtils.getRegionPrecision().equals(BraveVpnConstants.REGION_PRECISION_CITY) && BraveVpnPrefUtils.getRegionName().equals(city.name));
+
+            boolean isCountryPrecision =
+                    BraveVpnPrefUtils.getRegionPrecision()
+                            .equals(BraveVpnConstants.REGION_PRECISION_COUNTRY);
+            boolean isCityPrecision =
+                    BraveVpnPrefUtils.getRegionPrecision()
+                            .equals(BraveVpnConstants.REGION_PRECISION_CITY);
+            boolean isRegionMatch =
+                    BraveVpnPrefUtils.getRegionName().equals(mRegion.name) && position == 0;
+            boolean isCityMatch = BraveVpnPrefUtils.getRegionName().equals(city.name);
+
             boolean isEnabled =
-                    BraveVpnPrefUtils.getRegionName().equals(mRegion.name)
-                            && BraveVpnPrefUtils.getRegionCityName()
-                                    .equals(
-                                            position == 0
-                                                    ? BraveVpnUtils.OPTIMAL_SERVER
-                                                    : city.name);
+                    (isCountryPrecision && isRegionMatch) || (isCityPrecision && isCityMatch);
+
             holder.serverRadioButton.setChecked(isEnabled);
             holder.serverSelectionItemLayout.setOnClickListener(
                     new View.OnClickListener() {
