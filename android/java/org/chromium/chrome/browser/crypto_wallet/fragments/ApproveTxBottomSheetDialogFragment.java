@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -18,7 +17,6 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -52,7 +50,6 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.ApproveTxFragmentPageA
 import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
-import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
 import org.chromium.chrome.browser.crypto_wallet.util.SolanaTransactionsGasHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
@@ -112,8 +109,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         mSolanaEstimatedTxFee = 0;
     }
 
-    ApproveTxBottomSheetDialogFragment(
-            List<TransactionInfo> transactionInfos,
+    private ApproveTxBottomSheetDialogFragment(List<TransactionInfo> transactionInfos,
             TransactionInfo txInfo,
             @Nullable TransactionConfirmationListener transactionConfirmationListener) {
         this(txInfo);
@@ -180,7 +176,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
             transaction.add(this, tag);
             transaction.commitAllowingStateLoss();
         } catch (IllegalStateException e) {
-            Log.e("ApproveTxBottomSheetDialogFragment", e.getMessage());
+            Log.e(TAG, "ApproveTxBottomSheetDialogFragment", e);
         }
     }
 
@@ -198,14 +194,6 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
             Log.e(TAG, "onCreateDialog ", e);
         }
         return dialog;
-    }
-
-    @Override
-    public void onDismiss(@NonNull DialogInterface dialog) {
-        super.onDismiss(dialog);
-        if (mTransactionConfirmationListener != null) {
-            mTransactionConfirmationListener.onDismiss();
-        }
     }
 
     @Nullable
@@ -561,15 +549,22 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                 });
     }
 
+    /** @noinspection BooleanMethodIsAlwaysInverted*/
     private boolean canUpdateUi() {
         return isAdded() && getActivity() != null;
     }
 
     @Override
-    public void onCancel(@NonNull DialogInterface dialog) {
-        super.onCancel(dialog);
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
         if (mTransactionConfirmationListener != null) {
             mTransactionConfirmationListener.onCancel();
+        }
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            activity.showWalletPanel(false, true);
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "onHide", e);
         }
     }
 }
