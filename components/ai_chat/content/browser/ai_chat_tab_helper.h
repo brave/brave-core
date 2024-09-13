@@ -144,6 +144,11 @@ class AIChatTabHelper : public content::WebContentsObserver,
                       std::string_view invalidation_token) override;
   std::u16string GetPageTitle() const override;
 
+  // Called when an event of significance occurs that, if the page is a
+  // same-document navigation, should result in that previous navigation
+  // being considered as a new page.
+  void MaybeSameDocumentIsNewPage();
+
   void GetSearchSummarizerKey(
       mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback)
       override;

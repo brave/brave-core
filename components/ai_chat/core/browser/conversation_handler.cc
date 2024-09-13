@@ -446,8 +446,8 @@ void ConversationHandler::SendFeedback(const std::string& category,
                               std::move(on_complete));
 }
 
-void ConversationHandler::GetConversationId(
-    GetConversationIdCallback callback) {
+void ConversationHandler::GetConversationUuid(
+    GetConversationUuidCallback callback) {
   std::move(callback).Run(metadata_->uuid);
 }
 

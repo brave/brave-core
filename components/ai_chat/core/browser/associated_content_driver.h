@@ -100,16 +100,6 @@ class AssociatedContentDriver
   // is expected.
   void OnNewPage(int64_t navigation_id) override;
 
-  // Begin the alternative content fetching (print preview / OCR) by
-  // sending a message to an observer with access to the layer this can
-  // be performed on (i.e. the UI layer can use Print Preview).
-  // Since this AssociatedContentDriver might be open in multiple WebUIs,
-  // we can no longer rely on the WebUI class observing its conversation 1:1.
-  // We might end up with multiple UIs performing the print preview fetching
-  // for a single conversation. Instead we need some single entity that is
-  // able to perform this work, either by relocating AIChatTabHelper to
-  // brave/browser/ui, or having a singleton/KeyedService observe this event
-  // void NotifyPrintPreviewRequested(bool is_pdf);
  private:
   friend class ::AIChatUIBrowserTest;
   FRIEND_TEST_ALL_PREFIXES(::AIChatUIBrowserTest, PrintPreviewFallback);

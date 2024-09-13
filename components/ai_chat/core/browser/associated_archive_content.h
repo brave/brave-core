@@ -14,6 +14,13 @@
 
 namespace ai_chat {
 
+// Used in place of real content, which is normally provided by
+// AssociatedContentDriver (via AIChatTabHelper and WebContents on desktop).
+// When the actual associated content is no longer available (e.g. it's been
+// navigated away from), this class is used to provide the archive of that
+// content.
+// Similarly, if a conversation is loaded from storage, and the conversation
+// was associated with content, this class is used to represent that content.
 class AssociatedArchiveContent
     : public ConversationHandler::AssociatedContentDelegate {
  public:

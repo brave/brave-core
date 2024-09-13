@@ -127,9 +127,12 @@ class ConversationHandler : public mojom::ConversationHandler,
    public:
     ~Observer() override {}
 
+    // Called when the conversation history changess
     virtual void OnConversationEntriesChanged(
         ConversationHandler* handler,
         std::vector<mojom::ConversationTurnPtr> entries) {}
+
+    // Called when a mojo client connects or disconnects
     virtual void OnClientConnectionChanged(ConversationHandler* handler) {}
   };
 
@@ -177,7 +180,7 @@ class ConversationHandler : public mojom::ConversationHandler,
                     const std::string& rating_id,
                     bool send_hostname,
                     SendFeedbackCallback callback) override;
-  void GetConversationId(GetConversationIdCallback) override;
+  void GetConversationUuid(GetConversationUuidCallback) override;
   void GetModels(GetModelsCallback callback) override;
   void ChangeModel(const std::string& model_key) override;
   void GetIsRequestInProgress(GetIsRequestInProgressCallback callback) override;

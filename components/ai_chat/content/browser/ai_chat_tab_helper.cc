@@ -164,15 +164,7 @@ void AIChatTabHelper::NavigationEntryCommitted(
 
 void AIChatTabHelper::TitleWasSet(content::NavigationEntry* entry) {
   DVLOG(3) << __func__ << entry->GetTitle();
-  if (is_same_document_navigation_) {
-    DVLOG(2) << "Same document navigation detected new \"page\" - calling "
-                "OnNewPage()";
-    // Page title modification after same-document navigation seems as good a
-    // time as any to assume meaningful changes occured to the content.
-    OnNewPage(pending_navigation_id_);
-    // Don't respond to further TitleWasSet
-    is_same_document_navigation_ = false;
-  }
+  MaybeSameDocumentIsNewPage();
 }
 
 void AIChatTabHelper::InnerWebContentsAttached(
@@ -222,15 +214,7 @@ void AIChatTabHelper::OnInterceptedPageContentChanged() {
   // Maybe mark that the page changed, if we didn't detect it already via title
   // change after a same-page navigation. This is the main benefit of this
   // function.
-  if (is_same_document_navigation_) {
-    DVLOG(2) << "Same document navigation detected new \"page\" - calling "
-                "OnNewPage()";
-    // Page title modification after same-document navigation seems as good a
-    // time as any to assume meaningful changes occured to the content.
-    OnNewPage(pending_navigation_id_);
-    // Don't respond to further TitleWasSet
-    is_same_document_navigation_ = false;
-  }
+  MaybeSameDocumentIsNewPage();
 }
 
 GURL AIChatTabHelper::GetPageURL() const {
@@ -316,6 +300,20 @@ void AIChatTabHelper::OnExtractPrintPreviewContentComplete(
 
 std::u16string AIChatTabHelper::GetPageTitle() const {
   return web_contents()->GetTitle();
+}
+
+void AIChatTabHelper::MaybeSameDocumentIsNewPage() {
+  if (is_same_document_navigation_) {
+    DVLOG(2) << "Same document navigation detected new \"page\" - calling "
+                "OnNewPage()";
+    // Cancel knowledge that the current navigation should be associated
+    // with any conversation that's associated with the previous navigation.
+    // Tell any conversation that it shouldn't be associated with this
+    // content anymore, as we've moved on.
+    OnNewPage(pending_navigation_id_);
+    // Don't respond to further TitleWasSet
+    is_same_document_navigation_ = false;
+  }
 }
 
 void AIChatTabHelper::BindPageContentExtractorReceiver(

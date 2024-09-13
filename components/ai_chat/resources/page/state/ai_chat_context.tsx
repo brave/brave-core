@@ -10,11 +10,11 @@ import { loadTimeData } from '$web-common/loadTimeData'
 
 interface Props {
   // Which conversation to higlight in list
-  selectedConversationId?: string
+  selectedConversationUuid?: string
   // Create a new conversation and use it
   onNewConversation: () => unknown
   // Select a new conversation
-  onSelectConversationId: (id: string | undefined) => unknown
+  onSelectConversationUuid: (id: string | undefined) => unknown
 }
 
 export interface AIChatContext extends Props {
@@ -52,7 +52,7 @@ const defaultContext: AIChatContext = {
   dismissPremiumPrompt: () => {},
   userRefreshPremiumSession: () => {},
   onNewConversation: () => {},
-  onSelectConversationId: () => {}
+  onSelectConversationUuid: () => {}
 }
 
 export const AIChatReactContext =
