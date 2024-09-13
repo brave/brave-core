@@ -145,7 +145,8 @@ void AIChatTabHelper::NavigationEntryCommitted(
   pending_navigation_id_ = pending_navigation_id;
   DVLOG(2) << __func__ << " id: " << pending_navigation_id_
            << " url: " << load_details.entry->GetVirtualURL()
-           << " same document? " << load_details.is_same_document;
+           << " title: " << load_details.entry->GetTitle() << " same document? "
+           << load_details.is_same_document;
 
   // Allow same-document navigation, as content often changes as a result
   // of framgment / pushState / replaceState navigations.
@@ -311,8 +312,9 @@ void AIChatTabHelper::OnFetchPageContentComplete(
     std::string content,
     bool is_video,
     std::string invalidation_token) {
+  base::TrimWhitespaceASCII(content, base::TRIM_ALL, &content);
   if (!did_retry_get_page_content_after_page_load_ &&
-      base::CollapseWhitespaceASCII(content, true).empty() && !is_video) {
+      content.empty() && !is_video) {
     // Only try this once
     did_retry_get_page_content_after_page_load_ = true;
     DVLOG(1) << __func__ <<  "empty content, will retry once, is_page_loaded_=" << is_page_loaded_;
