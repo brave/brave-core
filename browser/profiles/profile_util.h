@@ -13,10 +13,6 @@ namespace brave {
 
 bool IsTorDisabledForProfile(Profile* profile);
 
-// Specifically used to record if sponsored images are enabled.
-// Called from BraveAppearanceHandler and BraveNewTabMessageHandler
-void RecordSponsoredImagesEnabledP3A(Profile* profile);
-
 // Records default values for some histograms.
 //
 // For profile agnostic values (ex: local_state) see
