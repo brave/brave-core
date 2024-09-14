@@ -43,6 +43,7 @@ static_library("browser") {
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
     "//brave/components/greaselion/browser/buildflags",
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a_utils",
