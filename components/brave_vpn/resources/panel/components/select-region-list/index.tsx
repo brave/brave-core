@@ -10,9 +10,30 @@ import Flag from '../flag'
 import { Region } from '../../api/panel_browser_api'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
-import { getLocale, getLocaleWithReplacements } from '$web-common/locale'
+import { getLocale } from '$web-common/locale'
 
 import 'emptykit.css'
+
+function getCountryInfo(numCity: number, numServer: number) {
+  const city =
+    numCity === 1
+      ? getLocale('braveVpnServerSelectionSingleCity')
+      : getLocale('braveVpnServerSelectionMultipleCities').replace(
+          '$1',
+          `${numCity}`
+        )
+
+  return `${city} - ${getCityInfo(numServer)}`
+}
+
+function getCityInfo(numServer: number) {
+  return numServer === 1
+    ? getLocale('braveVpnServerSelectionSingleServer')
+    : getLocale('braveVpnServerSelectionMultipleServers').replace(
+        '$1',
+        `${numServer}`
+      )
+}
 
 interface ConnectButtonProps {
   right: string
@@ -82,11 +103,6 @@ function RegionContent(props: RegionContentProps) {
     if (props.selected) ref.current?.scrollIntoView()
   }, [])
 
-  const countryInfo = {
-    $1: props.region.cities.length,
-    $2: props.region.serverCount
-  }
-
   return (
     <S.RegionContainer
       selected={props.selected}
@@ -105,9 +121,9 @@ function RegionContent(props: RegionContentProps) {
             {props.region.namePretty}
           </S.RegionCountryLabel>
           <S.CountryServerInfo selected={!props.open && props.selected}>
-            {getLocaleWithReplacements(
-              'braveVpnServerSelectionCountryInfo',
-              countryInfo
+            {getCountryInfo(
+              props.region.cities.length,
+              props.region.serverCount
             )}
           </S.CountryServerInfo>
         </S.CountryInfo>
@@ -143,10 +159,7 @@ function RegionContent(props: RegionContentProps) {
             <RegionCity
               key={city.name}
               cityLabel={city.namePretty}
-              serverInfo={getLocale('braveVpnServerSelectionCityInfo').replace(
-                '$1',
-                `${city.serverCount}`
-              )}
+              serverInfo={getCityInfo(city.serverCount)}
               selected={props.selected && currentRegion.name === city.name}
               connectionButton={
                 <ConnectButton

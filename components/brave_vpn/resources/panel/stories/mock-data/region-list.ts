@@ -18,7 +18,7 @@ export const mockRegionList: Region[] = [
         'regionPrecision': 'city',
         'isAutomatic': false,
         'cities': [],
-        'serverCount': 8
+        'serverCount': 1
       }
     ],
     'continent': 'Oceania',
@@ -29,7 +29,7 @@ export const mockRegionList: Region[] = [
     'namePretty': 'Australia',
     'regionPrecision': 'country',
     'isAutomatic': false,
-    'serverCount': 8
+    'serverCount': 1
   },
   {
     'cities': [
