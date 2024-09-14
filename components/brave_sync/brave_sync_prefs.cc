@@ -83,6 +83,7 @@ void Prefs::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kSyncFailedDecryptSeedNoticeDismissed, false);
   registry->RegisterBooleanPref(kSyncAccountDeletedNoticePending, false);
   registry->RegisterStringPref(kSyncLeaveChainDetails, std::string());
+  registry->RegisterStringPref(kCustomSyncServiceUrl, std::string());
 }
 
 // static
