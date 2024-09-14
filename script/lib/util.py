@@ -134,7 +134,8 @@ def make_zip(zip_file_path, files, dirs):
                             text=True)
         if cp.returncode != 0:
             print(cp.stdout)
-            print('\n'.join(sorted(glob.glob(f'{dirs[0]}/**', recursive=True))))
+            print('\n'.join(sorted(glob.glob(f'{dirs[0]}/**',
+                                             recursive=True))))
             raise RuntimeError('zip failed', cp.stderr)
     else:
         zip_file = zipfile.ZipFile(zip_file_path, "w", zipfile.ZIP_DEFLATED,
