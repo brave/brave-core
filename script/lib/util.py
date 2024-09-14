@@ -8,6 +8,7 @@ from __future__ import print_function
 import atexit
 import contextlib
 import errno
+import glob
 import re
 import shutil
 import ssl
@@ -126,25 +127,14 @@ def make_zip(zip_file_path, files, dirs):
     # missing files.
     if sys.platform == 'darwin':
         files += dirs
-        for root, dirs_, _ in os.walk(dirs[0]):
-            for d in dirs_:
-                dir_path = os.path.join(root, d)
-                print(dir_path)
-                subprocess.run(['ls', '-alh', dir_path], check=True)
+        print('\n'.join(sorted(glob.glob(f'{dirs[0]}/**', recursive=True))))
         # pylint: disable=subprocess-run-check
         cp = subprocess.run(['zip', '-r', '-y', zip_file_path] + files,
                             capture_output=True,
                             text=True)
         if cp.returncode != 0:
-            for m in re.finditer(
-                    'zip warning: could not open for reading: (.*)',
-                    cp.stdout):
-                failed_path = m.group(1)
-                print(f'zip failed to open {failed_path} for reading.')
-                # See what `ls` says now.
-                # pylint: disable=subprocess-run-check
-                subprocess.run(['ls', '-alh', failed_path])
             print(cp.stdout)
+            print('\n'.join(sorted(glob.glob(f'{dirs[0]}/**', recursive=True))))
             raise RuntimeError('zip failed', cp.stderr)
     else:
         zip_file = zipfile.ZipFile(zip_file_path, "w", zipfile.ZIP_DEFLATED,
