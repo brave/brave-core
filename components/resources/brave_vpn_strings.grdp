@@ -140,7 +140,19 @@
     <ph name="CITY_COUNT">$1<ex>5</ex></ph> cities - <ph name="SERVER_COUNT">$2<ex>5</ex></ph> servers
   </message>
 
-  <message name="IDS_BRAVE_VPN_SERVER_SELECTION_CITY_INFO" desc="Text for the server count for the city">
+  <message name="IDS_BRAVE_VPN_SERVER_SELECTION_SINGLE_CITY" desc="Text for the single city in selection panel">
+    1 city
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SERVER_SELECTION_MULTIPLE_CITIES" desc="Text for the multiple cities in selection panel">
+    <ph name="CITY_COUNT">$1<ex>5</ex></ph> cities
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SERVER_SELECTION_SINGLE_SERVER" desc="Text for the single server in selection panel">
+    1 server
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SERVER_SELECTION_MULTIPLE_SERVERS" desc="Text for the multiple servers in selection panel">
     <ph name="SERVER_COUNT">$1<ex>5</ex></ph> servers
   </message>
 
