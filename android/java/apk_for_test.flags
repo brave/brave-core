@@ -445,14 +445,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.infobar.TranslateCompactInfoBar {
-    public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.infobar.BraveTranslateCompactInfoBarBase {
-    public <init>(...);
-}
-
 -keep class org.chromium.chrome.browser.tasks.tab_management.TabUiThemeProvider {
     *** getActionButtonTintList(...);
 }

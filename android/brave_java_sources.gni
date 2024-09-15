@@ -227,7 +227,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/homepage/settings/BraveHomepageSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/identity_disc/BraveIdentityDiscController.java",
   "../../brave/android/java/org/chromium/chrome/browser/infobar/BraveInfoBarIdentifier.java",
-  "../../brave/android/java/org/chromium/chrome/browser/infobar/BraveTranslateCompactInfoBarBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/informers/BraveSyncAccountDeletedInformer.java",
   "../../brave/android/java/org/chromium/chrome/browser/language/settings/BraveLanguageSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/local_database/BraveStatsTable.java",
