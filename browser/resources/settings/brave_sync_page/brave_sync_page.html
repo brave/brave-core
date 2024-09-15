@@ -1,16 +1,8 @@
-<style include="settings-shared iron-flex">
-  cr-input {
-    width: 100%;
-    --cr-input-width: 50%;
-    margin-top: 10px;
-    margin-left: 20px;
-  }
-
-  cr-input::part(row-container) {
-    justify-content: normal;
-  }
-</style>
-<settings-animated-pages id="pages" section="braveSync">
+<style include="settings-shared iron-flex"></style>
+<settings-animated-pages
+  id="pages"
+  section="braveSync"
+>
   <div route-path="default">
     <cr-link-row
       id="brave-sync-setup"
@@ -19,9 +11,18 @@
       role-description="$i18n{subpageArrowRoleDescription}"
     >
     </cr-link-row>
+    <div class="hr"></div>
+    <sync-url-input
+      id="customSyncUrl"
+      pref="{{prefs.brave_sync.sync_service_url}}"
+    >
+    </sync-url-input>
   </div>
 
-  <template is="dom-if" route-path="/braveSync/setup">
+  <template
+    is="dom-if"
+    route-path="/braveSync/setup"
+  >
     <settings-subpage
       associated-control="[[$$('#brave-sync-setup')]]"
       page-title="[[syncLabel_]]"
@@ -31,25 +32,3 @@
     </settings-subpage>
   </template>
 </settings-animated-pages>
-
-<settings-toggle-button
-  id="customSyncUrlEnabled"
-  class="hr"
-  pref="{{prefs.brave.custom_sync_url_enabled}}"
-  label="$i18n{braveCustomSyncUrlEnableLabel}"
->
-  <template
-    is="dom-if"
-    if="[[shouldShowRestart_(prefs.brave.custom_sync_url_enabled.value, prefs.brave.custom_sync_url.value)]]"
-  >
-    <cr-button on-click="onRestartClick_" slot="more-actions">
-      $i18n{restart}
-    </cr-button>
-  </template>
-</settings-toggle-button>
-<template is="dom-if" if="[[prefs.brave.custom_sync_url_enabled.value]]">
-  <sync-url-input
-    id="customSyncUrl"
-    pref="{{prefs.brave.custom_sync_url}}"
-  ></sync-url-input>
-</template>

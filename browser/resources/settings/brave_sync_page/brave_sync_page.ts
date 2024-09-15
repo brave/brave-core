@@ -21,7 +21,6 @@ import { SyncBrowserProxy, SyncBrowserProxyImpl, SyncPrefs } from '/shared/setti
 import { PrefsMixin } from '/shared/settings/prefs/prefs_mixin.js';
 
 import { BaseMixin } from '../base_mixin.js';
-import { RelaunchMixin, RestartType } from '../relaunch_mixin.js';
 import { Route, Router } from '../router.js';
 
 import { BraveSyncBrowserProxy, BraveSyncStatus } from './brave_sync_browser_proxy.js';
@@ -34,8 +33,8 @@ import { getTemplate } from './brave_sync_page.html.js';
  */
 
 const SettingsBraveSyncPageElementBase =
-  RelaunchMixin(PrefsMixin(I18nMixin(
-    WebUiListenerMixin((BaseMixin(PolymerElement))))));
+  PrefsMixin(I18nMixin(
+    WebUiListenerMixin((BaseMixin(PolymerElement)))));
 
 export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBase {
   static get is() {
@@ -122,19 +121,6 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
       }
     }
   }
-
-  private shouldShowRestart_(enabled: boolean, url: string): boolean {
-    const proxy = BraveSyncBrowserProxy.getInstance();
-    return enabled !== proxy.wasCustomSyncUrlEnabledAtStartup() ||
-      proxy.getCustomSyncUrlAtStartup() !== url;
-  }
-
-  private onRestartClick_(e: Event) {
-    // Prevent event from bubbling up to the toggle button.
-    e.stopPropagation();
-    this.performRestart(RestartType.RESTART);
-  }
-
 }
 
 customElements.define(
