@@ -34,6 +34,7 @@
 #include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -223,13 +224,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isSharedPinnedTabsEnabled",
       base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs));
-
-  html_source->AddBoolean(
-      "customSyncUrlEnabledAtStartup",
-      g_browser_process->local_state()->GetBoolean(kBraveCustomSyncUrlEnabled));
   html_source->AddString(
       "customSyncUrlAtStartup",
-      g_browser_process->local_state()->GetString(kBraveCustomSyncUrl));
+      profile->GetPrefs()->GetString(brave_sync::kCustomSyncServiceUrl));
 }
 
 // static

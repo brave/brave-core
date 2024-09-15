@@ -162,8 +162,4 @@ inline constexpr char kBraveSuggestedSiteSuggestionsEnabled[] =
     "brave.brave_suggested_site_suggestions_enabled";
 #endif
 
-inline constexpr char kBraveCustomSyncUrlEnabled[] =
-    "brave.custom_sync_url_enabled";
-inline constexpr char kBraveCustomSyncUrl[] = "brave.custom_sync_url";
-
 #endif  // BRAVE_COMPONENTS_CONSTANTS_PREF_NAMES_H_
