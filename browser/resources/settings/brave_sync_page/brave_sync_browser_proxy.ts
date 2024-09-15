@@ -58,10 +58,6 @@ export class BraveSyncBrowserProxy {
     return sendWithPromise('SyncGetWordsCount', syncCode);
   }
 
-  wasCustomSyncUrlEnabledAtStartup(): boolean {
-    return loadTimeData.getBoolean('customSyncUrlEnabledAtStartup');
-  }
-
   getCustomSyncUrlAtStartup(): string {
     return loadTimeData.getString('customSyncUrlAtStartup');
   }
