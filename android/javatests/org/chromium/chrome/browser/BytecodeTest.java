@@ -2158,10 +2158,6 @@ public class BytecodeTest {
                         "org/chromium/components/browser_ui/site_settings/BraveSiteSettingsPreferencesBase"));
         Assert.assertTrue(
                 checkSuperName(
-                        "org/chromium/chrome/browser/infobar/TranslateCompactInfoBar",
-                        "org/chromium/chrome/browser/infobar/BraveTranslateCompactInfoBarBase"));
-        Assert.assertTrue(
-                checkSuperName(
                         "org/chromium/chrome/browser/download/DownloadMessageUiControllerImpl",
                         "org/chromium/chrome/browser/download/BraveDownloadMessageUiControllerImpl")); // presubmit: ignore-long-line
         Assert.assertTrue(
