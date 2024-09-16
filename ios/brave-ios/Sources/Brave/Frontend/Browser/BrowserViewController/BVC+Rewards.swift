@@ -163,8 +163,6 @@ extension Tab {
     }
 
     if rewardsReportingState.wasRestored
-      || !rewardsReportingState.isNewNavigation
-      || rewardsReportingState.isErrorPage
     {
       return
     }

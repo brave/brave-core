@@ -18,7 +18,6 @@ struct TabInfo final {
   TabInfo(int32_t id,
           bool is_visible,
           std::vector<GURL> redirect_chain,
-          bool is_error_page,
           bool is_playing_media);
 
   TabInfo(const TabInfo&);
@@ -34,7 +33,6 @@ struct TabInfo final {
   int32_t id = 0;
   bool is_visible = false;
   std::vector<GURL> redirect_chain;
-  bool is_error_page = false;
   bool is_playing_media = false;
 };
 
