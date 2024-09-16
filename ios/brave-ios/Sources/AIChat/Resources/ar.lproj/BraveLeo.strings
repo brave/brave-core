@@ -1,0 +1,369 @@
+/* The description for the error message when the user's session has expired */
+"aichat.accountSessionExpiredDescription" = "لقد انتهت صلاحية الجلسة لحساب Brave خاصتك. يرجى زيارة صفحة حسابك للتحديث، ثم العودة لاستخدام المميزات المتقدمة.";
+
+/* The title for button that submits feedback */
+"aichat.addFeedbackActionTitle" = "إضافة تعليقات";
+
+/* The description for the settings to show search suggestions from Leo in url-address bar */
+"aichat.advancedSettingsAutocompleteDescription" = "قم بتشغيله لإظهار اختصار لتشغيل Leo من شريط العناوين.";
+
+/* The title for the settings to show search suggestions from Leo in url-address bar */
+"aichat.advancedSettingsAutocompleteTitle" = "إظهار في شريط العناوين";
+
+/* The title for the settings to change default model for conversations */
+"aichat.advancedSettingsDefaultModelTitle" = "النموذج الافتراضي";
+
+/* The title for the header for adjusting leo ai settings */
+"aichat.advancedSettingsHeaderTitle" = "Leo هو مساعد ذكي يعمل بالذكاء الاصطناعي، ومُدمج مباشرةً في المتصفح.";
+
+/* The subtitle for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "اربط مشترياتك من آب ستور بحساب Brave الخاص بك لاستخدام Leo على الأجهزة الأخرى.";
+
+/* The title for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "ربط عملية الشراء بحسابك على Brave";
+
+/* The title for the label showing the date which subscription expires */
+"aichat.advancedSettingsSubscriptionExpiresTitle" = "تاريخ انتهاء الصلاحية";
+
+/* The title for the header for subscription details */
+"aichat.advancedSettingsSubscriptionHeaderTitle" = "اشتراك";
+
+/* The title for the label showing status if the subscription */
+"aichat.advancedSettingsSubscriptionStatusTitle" = "الحالة";
+
+/* The subtitle for the error showing there is an error from App Store */
+"aichat.appStoreErrorSubTitle" = "تعذر الاتصال بآب ستور، يرجى إعادة المحاولة لاحقًا.";
+
+/* The title for the error showing there is an error from App Store */
+"aichat.appStoreErrorTitle" = "خطأ في آب ستور";
+
+/* The title of the search bar suggestion when prompting to Ask Leo */
+"aichat.askLeoSearchSuggestionTitle" = "اسأل Leo";
+
+/* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
+"aichat.busyErrorDescription" = "Leo مشغول جدًا الآن. يرجى المحاولة مرة أخرى بعد بضع دقائق.";
+
+/* The subtitle for intro view which triggers just chat */
+"aichat.chatIntroJustTalkSubTitle" = "اسألني على أي شيء! يمكننا التحدُّث حول أي موضوع تريده. أنا أتعلم دومًا وأحرص على التحسُّن لتقديم أفضل الإجابات.";
+
+/* The title for intro view which triggers just chat */
+"aichat.chatIntroJustTalkTitle" = "هل تريد إجراء محادثة فقط؟";
+
+/* The subtitle for intro view */
+"aichat.chatIntroSubTitle" = "مساعد ذكاء مدعوم من الذكاء الاصطناعي، تم إنشاؤه مباشرة في متصفح Brave.";
+
+/* The title for intro view */
+"aichat.chatIntroTitle" = "مرحبًا، أدعى ليو!";
+
+/* The subtitle for intro view which triggers website help for article */
+"aichat.chatIntroWebsiteHelpSubtitleArticleSummarize" = "يمكنني مساعدتك على تلخيص مقالاتك، ما يؤدي إلى التوسع في محتوى موقعك وغير ذلك الكثير.";
+
+/* The subtitle for intro view which triggers website help for summary */
+"aichat.chatIntroWebsiteHelpSubtitlePageSummarize" = "يمكنني مساعدتك على تلخيص المقالات، ما يؤدي إلى التوسع في محتوى موقعك وغير ذلك الكثير. ألست متأكدًا من البدء؟ جرِّب ذلك:";
+
+/* The title for intro view which triggers website help */
+"aichat.chatIntroWebsiteHelpTitle" = "هل تحتاج إلى مساعدة في موقع ويب معين؟";
+
+/* The title for the chat section in the menu */
+"aichat.chatMenuSectionTitle" = "الدردشة";
+
+/* The title shown on limit reached error view, which is suggesting user to change default model */
+"aichat.contextLimitErrorTitle" = "هذه المحادثة طويلة جدًا ولا يمكن أن تستمر.\nقد تكون هناك نماذج أخرى متاحة يستطيع Leo من خلالها الحفاظ على الدقة لإجراء محادثات أطول.";
+
+/* The title of the section where custom models are displayed as a list. */
+"aichat.customModelChatSectionTitle" = "نماذج مخصصة";
+
+/* The title for the custom models section in the menu */
+"aichat.customModelsMenuSectionTitle" = "نماذج مخصصة";
+
+/* The title of the section where chat models are displayed as a list. */
+"aichat.defaultModelChatSectionTitle" = "الدردشة";
+
+/* The title of the section where language models are displayed as a list. */
+"aichat.defaultModelLanguageSectionTitle" = "نماذج اللغة";
+
+/* The title of the menu where user can change the default model */
+"aichat.defaultModelViewTitle" = "النموذج الافتراضي";
+
+/* The title for view which user type feedback */
+"aichat.feedbackInputViewTitle" = "أضف تعليقًا هنا";
+
+/* The title for view which listsfeedback option list */
+"aichat.feedbackOptionsViewTitle" = "ما هي فئة تعليقك؟";
+
+/* The title for incorrect feedback option */
+"aichat.feedbackOptionTitleIncorrect" = "غير صحيح";
+
+/* The title for helpful feedback option */
+"aichat.feedbackOptionTitleNotHelpful" = "غير مفيد";
+
+/* The title for other feedback option */
+"aichat.feedbackOptionTitleOther" = "غير ذلك";
+
+/* The title for unsafe/harmful feedback option */
+"aichat.feedbackOptionTitleUnsafeHarmful" = "غير آمن/ضار";
+
+/* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
+"aichat.feedbackPremiumAdTitle" = "يوفر Leo Premium الوصول إلى مجموعة موسعة من نماذج اللغة للحصول على فارق بسيط أكبر في الإجابة. [تعرف على المزيد](https://brave.com/) - [رفض](braveai://dismiss)";
+
+/* The title for the button that submits feedback */
+"aichat.feedbackSubmitActionTitle" = "إرسال";
+
+/* The title for feedback view when it fails to submit feedback */
+"aichat.feedbackSubmittedErrorTitle" = "حدث خطأ ما. يرجى المحاولة مرة أخرى.";
+
+/* The title for feedback view when it is submitted */
+"aichat.feedbackSubmittedTitle" = "تم إرسال التعليقات بنجاح";
+
+/* The title for feedback view when response is sucessfull but disliked */
+"aichat.feedbackSuccessAnswerDisLikedTitle" = "الإجابة لم تعجبني";
+
+/* The title for feedback view when response is sucessfull also liked */
+"aichat.feedbackSuccessAnswerLikedTitle" = "أعجبتني الإجابة";
+
+/* The title for view which user type feedback */
+"aichat.feedbackViewMainTitle" = "إضافة تعليق بخصوص Brave AI ";
+
+/* The button title for opening paywall screen */
+"aichat.goPremiumButtonTitle" = "الاشتراك الحصري (Premium)";
+
+/* Description about answers are changing with page context */
+"aichat.infoAboutPageContext" = "قم بصياغة الإجابات بناءً على محتويات الصفحة";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeHaikuMessageDescription" = "مرحبًا بكم، معكم Leo، أتمتع بتوجيهي بواسطة متصفح Brave، كما أنني مدعوم بواسطة Claude 3 Haiku، وهو نموذج أنشأته Anthropic لتشغيل المهام المتعلقة بالدردشة ومعالجة النصوص.";
+
+/* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeHaikuModelDescription" = "كلود هايكو من Anthropic";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeHaikuModelPurposeDescription" = "دردشة بسرعة البرق";
+
+/* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeSonnetModelDescription" = "كلود سونيت من Anthropic";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeSonnetModelPurposeDescription" = "سرعة وذكاء متوازنان";
+
+/* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
+"aichat.introMessageGenericMessageDescription" = "مرحبا ، أنا Leo. أنا مساعد الذكاء الاصطناعي من Brave. أنا مدعوم من %@. اسألني أي شيء، وسأبذل قصارى جهدي للإجابة.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaModelPurposeDescription" = "دردشة حول أغراض عامة";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageMixtralMessageDescription" = "مرحبًا، أنا Leo. أنا مساعد الذكاء الاصطناعي المستضاف بالكامل بواسطة Brave. أنا مدعوم بـ Mixtral 8x7B، وهو نموذج تم إنشاؤه بواسطة Mistral AI للتعامل مع المهام المتقدمة.";
+
+/* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
+"aichat.introMessageMixtralModelDescription" = "Mixtral بواسطة Mistral AI";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageMixtralModelPurposeDescription" = "مهام الدردشة المتقدمة";
+
+/* The title for intro message */
+"aichat.introMessageTitle" = "الدردشة";
+
+/* The name of the AI-Assistant that's responsing to the user */
+"aichat.leoAssistantNameTitle" = "ليو";
+
+/* The default title displayed above a code block when the language of the code is not known. */
+"aichat.leoCodeExampleDefaultTitle" = "مثال على الكود";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovedAnswerBraveSearch" = "تحسين البحث عن إجابة";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovingAnswerBraveSearch" = "تحسين الإجابة باستخدام Brave Search ...";
+
+/* The title of the advanced settings view */
+"aichat.leoNavigationTitle" = "Leo الذكاء الاصطناعي";
+
+/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "قم بالتشغيل لطرح سؤال حول هذه الصفحة. سيتم إرسال محتواها إلى ليو في متصفح Brave إلى جانب رسائلك.";
+
+/* The accessibility text to read out loud when the user taps on the info icon on the page context view */
+"aichat.leoPageContextInfoIconAccessibilityTitle" = "معلومات سياق الصفحة";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Slash Tools button */
+"aichat.leoSlashToolsButtonAccessibilityTitle" = "أدوات الشرطة المائلة";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionNull" = "بلا";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionUnknown" = "غير معروف";
+
+/* The title to display when the duration of the subscription is unknown */
+"aichat.leoSubscriptionUnknownDateTitle" = "غير متوفر";
+
+/* The button title for managing subscriptions */
+"aichat.manageSubscriptionsButtonTitle" = "إدارة الاشتراكات";
+
+/* The description for alert needed to have microphone permission */
+"aichat.microphonePermissionAlertDescription" = "يرجى السماح بالوصول إلى الميكروفون في إعدادات نظام iOS لـ Brave لاستخدام إدخال صوت مجهول.";
+
+/* The description for alert needed to have microphone permission */
+"aichat.microphonePermissionAlertTitle" = "يلزم الوصول إلى الميكروفون";
+
+/* Title showing monthly subscription */
+"aichat.monthlySubscriptionTitle" = "الاشتراك الشهري";
+
+/* The title for view that shows network - connection error and suggesting to try again */
+"aichat.networkErrorViewTitle" = "حدثت مشكلة في الشبكة أثناء الاتصال بـ Leo، تحقق من الاتصال بالإنترنت وحاول مرة أخرى.";
+
+/* The title for button that starts a new chat */
+"aichat.newChatActionTitle" = "دردشة جديدة";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"aichat.paywallMonthlyPriceDividend" = "شهر";
+
+/* Title indicating monthly subscription */
+"aichat.paywallMontlySubscriptionTitle" = "شهريًا";
+
+/* The title for dismiss button when premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellDismissAction" = "ربما لاحقاً";
+
+/* The title for button when premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellPrimaryAction" = "ترقيه";
+
+/* The title for premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellTitle" = "أطلق العنان لقوى Leo الكاملة مع Premium:";
+
+/* The title of the button for action triggering purchase */
+"aichat.paywallPurchaseActionTitle" = "الترقية الآن";
+
+/* The text displayed on the bottom of paywall screen which indicates subscriptions are auto renewable. */
+"aichat.paywallPurchaseDeepNote" = "تجدد جميع الاشتراكات تلقائيًا ولكن يمكن إلغاؤها في أي وقت قبل التجديد.";
+
+/* The error description when in app purcahse is erroneous. */
+"aichat.paywallPurchaseErrorDescription" = "يتعذر إكمال عملية الشراء. يرجى المحاولة مرة أخرى، أو التحقق من تفاصيل الدفع الخاصة بك على Apple والمحاولة مرة أخرى.";
+
+/* The subtitle for premium upseel when rate limit is shown after sending a message */
+"aichat.paywallRateLimitSubTitle" = "احصل على معدل استجابة أعلى من خلال الاشتراك في Premium، أو حاول مرة أخرى لاحقًا.";
+
+/* The title for premium upseel when rate limit is shown after sending a message */
+"aichat.paywallRateLimitTitle" = "تم الوصول إلى حد معدل الاستجابة";
+
+/* The subtitle accuracy entry in paywall upsell screen */
+"aichat.paywallUpsellAccuracyTopicSubTitle" = "احصل على إجابات أكثر دقة لمحادثات أكثر دقة.";
+
+/* The title accuracy entry in paywall upsell screen */
+"aichat.paywallUpsellAccuracyTopicTitle" = "البقاء على الموضوع";
+
+/* The subtitle chat length entry in paywall upsell screen */
+"aichat.paywallUpsellChatLengthTopicSubTitle" = "احصل على حدود أسعار أعلى للمحادثات الأطول.";
+
+/* The title chat length entry in paywall upsell screen */
+"aichat.paywallUpsellChatLengthTopicTitle" = "الدردشة لفترة أطول";
+
+/* The subtitle creativity entry in paywall upsell screen */
+"aichat.paywallUpsellCreativityTopicSubTitle" = "الوصول إلى النماذج الأكثر ملاءمةً للمهام الإبداعية وإنشاء المحتوى.";
+
+/* The title creativity entry in paywall upsell screen */
+"aichat.paywallUpsellCreativityTopicTitle" = "أطلق العنان لإبداعك";
+
+/* The subtitle model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "أولوية الوصول إلى النماذج القوية ذات المهارات المختلفة.";
+
+/* The title model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicTitle" = "اكتشف نماذج الذكاء الاصطناعي المختلفة";
+
+/* The title for paywall view */
+"aichat.paywallViewTitle" = "Leo Premium";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"aichat.paywallYearlyPriceDividend" = "سنة";
+
+/* The description indicating yearly subscription that show how much user is saving percentage */
+"aichat.paywallYearlySubscriptionDescription" = "وفر حتى 25%";
+
+/* Title indicating yearly subscription */
+"aichat.paywallYearlySubscriptionTitle" = "ٍسنة واحدة";
+
+/* The title of the badge where a model which can be used limited */
+"aichat.premiumModelStatusTitle" = "Premium";
+
+/* Title shown next to Leo in navigation bar when user has premium subcription */
+"aichat.premiumNavigationBarBadgeTitle" = "Premium";
+
+/* Title showing premium subscription - not determined monthly por yearly */
+"aichat.premiumSubscriptionTitle" = "اشتراك Premium";
+
+/* The text for placeholder on textfield for entering questions for AI */
+"aichat.promptPlaceHolderDescription" = "أدخل الأمر هنا";
+
+/* The title of action for quick menu which displaying advanced settings */
+"aichat.quickMenuAdvancedSettingsActionTitle" = "الإعدادات المتقدمة";
+
+/* The title of action for quick menu which presents payment screen for premium */
+"aichat.quickMenuGoPremiumActionTitle" = "الاشتراك الحصري (Premium)";
+
+/* The title of action for quick menu which display subscription management view */
+"aichat.quickMenuManageSubscriptionActionTitle" = "إدارة الاشتراكات";
+
+/* The title for error when rating a response is not success */
+"aichat.rateAnswerActionErrorText" = "خطأ في تقييم الإجابة";
+
+/* The title for button that refreshes user credentials */
+"aichat.refreshCredentialsActionTitle" = "إعادة التحميل";
+
+/* The title for the button where it triggers reset leo data */
+"aichat.resetLeoDataActionTitle" = "إعادة تعيين ومسح بيانات Leo";
+
+/* The title of a button that will reset data for leo */
+"aichat.resetLeoDataAlertButtonTitle" = "إعادة الضبط";
+
+/* The description for the error whre leo data reset */
+"aichat.resetLeoDataErrorDescription" = "هل أنت متأكد من أنك تريد إعادة تعيين بيانات Leo ومسحها؟";
+
+/* The title for the error whre leo data reset */
+"aichat.resetLeoDataErrorTitle" = "إعادة تعيين بيانات Leo";
+
+/* The title for copying response to clipboard action */
+"aichat.responseContextMenuCopyTitle" = "نسخ";
+
+/* The title for disliking response to clipboard action */
+"aichat.responseContextMenuDislikeAnswerTitle" = "لم تعجبني الإجابة";
+
+/* The title for liking response to clipboard action */
+"aichat.responseContextMenuLikeAnswerTitle" = "أعجبتني الإجابة";
+
+/* The title for regenerating response action from context menu */
+"aichat.responseContextMenuRegenerateTitle" = "توليد";
+
+/* The button title for restoring ai-app purchse for Leo. */
+"aichat.restorePaywallButtonTitle" = "استعادة";
+
+/* The title for button for re-try */
+"aichat.retryActionTitle" = "إعادة المحاولة";
+
+/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
+"aichat.speechRecognizerDisclaimer" = "لا يقوم Brave بتخزين أو مشاركة مدخلاتك الصوتية.";
+
+/* The title for the button to generate suggestions */
+"aichat.suggestionsGenerationButtonTitle" = "اقترح أسئلة...";
+
+/* The title for button that start summarizing page */
+"aichat.summarizePageActionTitle" = "تلخيص هذه الصفحة";
+
+/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+"aichat.termsConditionsApproveActionTitle" = "أفهم";
+
+/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
+"aichat.termsConditionsDescription" = "Brave Leo هو مساعد ذكي بالذكاء الاصطناعي يعزز استخدامك للويب. وLeo مجاني للاستخدام مع وصول محدود. يقدم Brave Leo Premium المزيد من النماذج وحدودًا أعلى ويمنح المشتركين إمكانية الوصول المبكر إلى الميزات الجديدة. النموذج الافتراضي لجميع المستخدمين حاليا هو Mixtral 8x7B. انظر Brave **[مركز المساعدة](%1$@)** لمزيد من التفاصيل.\n\nبشكل افتراضي ، عندما تسأل Leo سؤالًا ، قد يرسل ويستخدم محتوى صفحة الويب التي تشاهدها أو أي نص تظلله على الصفحة إلى Brave Leo لتقديم رد. وفي بعض الحالات ، سيرسل Leo استعلامات مشتقة من إدخالك إلى Brave Search ويستخدم نتائج البحث للإجابة على سؤالك بشكل أفضل. دقة الردود غير مضمونة ، وقد تتضمن معلومات غير دقيقة أو مضللة أو خاطئة. لا ترسل معلومات حساسة أو خاصة ، وتوخّ الحذر مع أي إجابات تتعلق بالصحة أو التمويل أو السلامة الشخصية أو ما شابه ذلك. ويمكنك ضبط خيارات Leo في الإعدادات في أي وقت. انتقل إلى الإعدادات > Leo.\n\nلا يجمع Leo معرفات مثل عنوان بروتوكول الإنترنت الخاص بك والذي يمكن ربطه بك. ولا يتم استخدام أي بيانات لتدريب نماذج الذكاء الاصطناعي ولا يتم الاحتفاظ بأي بيانات شخصية بواسطة نماذج الذكاء الاصطناعي (باستثناء Anthropic التي تحتفظ بالبيانات لمدة 30 يومًا قبل حذفها). راجع **[سياسة الخصوصية](%2$@)** لمزيد من المعلومات.";
+
+/* The title terms and conditions for AI chat usage */
+"aichat.termsConditionsTitle" = "الدردشة بخصوصية مع Brave Leo";
+
+/* The title of the badge where a model which can be used unlimited */
+"aichat.unlimitedModelStatusTitle" = "غير حدود";
+
+/* The accessibility description when pressing the microphone button to access voice entry. */
+"aichat.voiceInputButtonTitle" = "الإدخال الصوتي";
+
+/* Title showing yearly subscription - annual */
+"aichat.yearlySubscriptionTitle" = "الاشتراك السنوي";
+
+/* The word 'You' as in 'Me', 'Myself', 'I' (the user). */
+"aichat.youMessageTitle" = "أنت";
+
