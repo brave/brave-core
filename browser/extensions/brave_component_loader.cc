@@ -6,14 +6,17 @@
 #include "brave/browser/extensions/brave_component_loader.h"
 
 #include <string>
+#include <utility>
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/json/json_reader.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/components/brave_component_updater/browser/brave_component_installer.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
@@ -29,6 +32,7 @@
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/mojom/manifest.mojom.h"
+#include "ui/base/resource/resource_bundle.h"
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
@@ -46,7 +50,19 @@ BraveComponentLoader::BraveComponentLoader(ExtensionSystem* extension_system,
                                            Profile* profile)
     : ComponentLoader(extension_system, profile),
       profile_(profile),
-      profile_prefs_(profile->GetPrefs()) {}
+      profile_prefs_(profile->GetPrefs()) {
+  pref_change_registrar_.Init(profile_prefs_);
+
+  pref_change_registrar_.Add(
+      kWebDiscoveryEnabled,
+      base::BindRepeating(&BraveComponentLoader::UpdateBraveExtension,
+                          base::Unretained(this)));
+
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kEnabled,
+      base::BindRepeating(&BraveComponentLoader::UpdateBraveExtension,
+                          base::Unretained(this)));
+}
 
 BraveComponentLoader::~BraveComponentLoader() = default;
 
@@ -102,15 +118,7 @@ void BraveComponentLoader::AddExtension(const std::string& extension_id,
 void BraveComponentLoader::AddDefaultComponentExtensions(
     bool skip_session_components) {
   ComponentLoader::AddDefaultComponentExtensions(skip_session_components);
-
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-  if (!command_line.HasSwitch(switches::kDisableBraveExtension)) {
-    base::FilePath brave_extension_path(FILE_PATH_LITERAL(""));
-    brave_extension_path =
-        brave_extension_path.Append(FILE_PATH_LITERAL("brave_extension"));
-    Add(IDR_BRAVE_EXTENSION, brave_extension_path);
-  }
+  UpdateBraveExtension();
 }
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
@@ -151,6 +159,51 @@ void BraveComponentLoader::AddWebTorrentExtension() {
         brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
     Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
   }
+}
+
+bool BraveComponentLoader::UseBraveExtensionBackgroundPage() {
+  // Keep sync with `pref_change_registrar_` in the ctor.
+  return profile_prefs_->GetBoolean(brave_rewards::prefs::kEnabled) ||
+         profile_prefs_->GetBoolean(kWebDiscoveryEnabled);
+}
+
+void BraveComponentLoader::UpdateBraveExtension() {
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  if (command_line.HasSwitch(switches::kDisableBraveExtension)) {
+    return;
+  }
+
+  base::FilePath brave_extension_path(FILE_PATH_LITERAL(""));
+  brave_extension_path =
+      brave_extension_path.Append(FILE_PATH_LITERAL("brave_extension"));
+  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
+  std::optional<base::Value::Dict> manifest = base::JSONReader::ReadDict(
+      resource_bundle.GetRawDataResource(IDR_BRAVE_EXTENSION));
+  CHECK(manifest) << "invalid Brave Extension manifest";
+
+  // The background page is a conditional. Replace MAYBE_background in the
+  // manifest to "background" or remove it.
+  auto background_value = manifest->Extract("MAYBE_background");
+  if (UseBraveExtensionBackgroundPage() && background_value) {
+    manifest->Set("background", std::move(*background_value));
+  }
+
+  extensions::ExtensionRegistry* registry =
+      extensions::ExtensionRegistry::Get(profile_);
+  const Extension* current_extension =
+      registry->GetInstalledExtension(brave_extension_id);
+
+  if (current_extension) {
+    const auto* current_manifest = current_extension->manifest();
+    if (current_manifest && *current_manifest->value() == *manifest) {
+      return;  // Skip reload, nothing is actually changed.
+    }
+    Remove(brave_extension_id);
+  }
+
+  const auto id = Add(std::move(*manifest), brave_extension_path);
+  CHECK_EQ(id, brave_extension_id);
 }
 
 }  // namespace extensions

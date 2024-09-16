@@ -39,6 +39,7 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
+#include "extensions/common/manifest_handlers/background_info.h"
 #include "net/dns/mock_host_resolver.h"
 #include "url/origin.h"
 
@@ -725,4 +726,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CheckExpectedExtensions) {
       registry->GenerateInstalledExtensionsSet().GetIDs();
 
   EXPECT_EQ(expected_extensions, installed_extensions);
+
+  const auto* brave_extension =
+      registry->GetInstalledExtension(brave_extension_id);
+
+  // Brave Extension background page should be disabled by default.
+  EXPECT_FALSE(extensions::BackgroundInfo::HasBackgroundPage(brave_extension));
 }
