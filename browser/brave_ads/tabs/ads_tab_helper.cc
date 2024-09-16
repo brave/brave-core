@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
 
+#include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/containers/contains.h"
 #include "base/strings/stringprintf.h"
@@ -21,6 +22,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "net/http/http_response_headers.h"
+#include "net/http/http_status_code.h"
 #include "ui/base/page_transition_types.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -32,8 +34,8 @@ namespace brave_ads {
 
 namespace {
 
-constexpr int kHtmlClientErrorResponseCodeClass = 4;
-constexpr int kHtmlServerErrorResponseCodeClass = 5;
+constexpr int kHttpClientErrorResponseStatusCodeClass = 4;
+constexpr int kHttpServerErrorResponseStatusCodeClass = 5;
 
 constexpr char16_t kSerializeDocumentToStringJavaScript[] =
     u"new XMLSerializer().serializeToString(document)";
@@ -147,18 +149,22 @@ bool AdsTabHelper::IsNewNavigation(
       navigation_handle->GetPageTransition());
 }
 
-bool AdsTabHelper::IsErrorPage(content::NavigationHandle* navigation_handle) {
+std::optional<int> AdsTabHelper::HttpStatusCode(
+    content::NavigationHandle* navigation_handle) {
   CHECK(navigation_handle);
 
-  // Only consider client and server error responses as error pages.
   if (const net::HttpResponseHeaders* const response_headers =
           navigation_handle->GetResponseHeaders()) {
-    const int response_code_class = response_headers->response_code() / 100;
-    return response_code_class == kHtmlClientErrorResponseCodeClass ||
-           response_code_class == kHtmlServerErrorResponseCodeClass;
+    return response_headers->response_code();
   }
 
-  return false;
+  return std::nullopt;
+}
+
+bool AdsTabHelper::IsErrorPage(const int http_status_code) const {
+  const int http_status_code_class = http_status_code / 100;
+  return http_status_code_class == kHttpClientErrorResponseStatusCodeClass ||
+         http_status_code_class == kHttpServerErrorResponseStatusCodeClass;
 }
 
 void AdsTabHelper::ProcessNavigation() {
@@ -182,7 +188,7 @@ void AdsTabHelper::ResetNavigationState() {
   redirect_chain_.clear();
   redirect_chain_.shrink_to_fit();
 
-  is_error_page_ = false;
+  http_status_code_.reset();
 
   media_players_.clear();
 }
@@ -245,9 +251,10 @@ void AdsTabHelper::MaybeNotifyTabDidChange() {
 bool AdsTabHelper::ShouldNotifyTabContentDidChange() const {
   // Don't notify about content changes if the ads service is not available, the
   // tab was restored, was a previously committed navigation, the web contents
-  // are still loading, or an error page was displayed.
+  // are still loading, or an interstitial or error page was displayed.
   return ads_service_ && !was_restored_ && is_new_navigation_ &&
-         !redirect_chain_.empty() && !is_error_page_;
+         !redirect_chain_.empty() && http_status_code_ &&
+         !IsErrorPage(*http_status_code_);
 }
 
 void AdsTabHelper::MaybeNotifyTabHtmlContentDidChange() {
@@ -355,7 +362,7 @@ void AdsTabHelper::DidFinishNavigation(
 
   redirect_chain_ = navigation_handle->GetRedirectChain();
 
-  is_error_page_ = IsErrorPage(navigation_handle);
+  http_status_code_ = HttpStatusCode(navigation_handle).value_or(net::HTTP_OK);
 
   MaybeNotifyUserGestureEventTriggered(navigation_handle);
 
