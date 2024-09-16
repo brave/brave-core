@@ -10,7 +10,12 @@
   brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettings(  \
       ContentSettingsType webcompat_settings_type) override;         \
   blink::WebSecurityOrigin GetEphemeralStorageOriginSync() override; \
-  bool HasContentSettingsRules() const override;
+  bool HasContentSettingsRules() const override;                     \
+                                                                     \
+ private:                                                            \
+  brave_shields::mojom::ShieldsSettingsPtr shields_settings_;        \
+                                                                     \
+ public:
 
 #include "src/chrome/renderer/worker_content_settings_client.h"  // IWYU pragma: export
 

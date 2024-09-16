@@ -52,6 +52,10 @@ class BraveContentSettingsAgentImpl
   // RenderFrameObserver:
   void DidCommitProvisionalLoad(ui::PageTransition transition) override;
 
+  const brave_shields::mojom::ShieldsSettingsPtr& shields_settings() const {
+    return shields_settings_;
+  }
+
  protected:
   bool AllowScript(bool enabled_per_settings) override;
   bool AllowScriptFromSource(bool enabled_per_settings,

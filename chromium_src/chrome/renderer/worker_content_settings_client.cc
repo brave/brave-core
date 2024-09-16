@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
+#include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "components/content_settings/renderer/content_settings_agent_impl.h"
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -52,8 +53,16 @@ WorkerContentSettingsClient::GetBraveShieldsSettings(
   } else {
     farbling_level = brave_shields::mojom::FarblingLevel::BALANCED;
   }
-  return brave_shields::mojom::ShieldsSettings::New(
-      farbling_level, std::vector<std::string>(), false);
+
+  if (shields_settings_) {
+    auto shields_settings = shields_settings_.Clone();
+    shields_settings->farbling_level = farbling_level;
+    return shields_settings;
+  } else {
+    DCHECK(!HasContentSettingsRules());
+    return brave_shields::mojom::ShieldsSettings::New(
+        farbling_level, std::vector<std::string>(), false);
+  }
 }
 
 blink::WebSecurityOrigin
@@ -92,4 +101,19 @@ bool WorkerContentSettingsClient::HasContentSettingsRules() const {
   return content_setting_rules_.get();
 }
 
+#define BRAVE_WORKER_CONTENT_SETTINGS_CLIENT                                   \
+  if (const auto& shields_settings =                                           \
+          static_cast<content_settings::BraveContentSettingsAgentImpl*>(agent) \
+              ->shields_settings()) {                                          \
+    shields_settings_ = shields_settings->Clone();                             \
+  }
+
+#define BRAVE_WORKER_CONTENT_SETTINGS_CLIENT_COPY_CTOR    \
+  if (other.shields_settings_) {                          \
+    shields_settings_ = other.shields_settings_->Clone(); \
+  }
+
 #include "src/chrome/renderer/worker_content_settings_client.cc"
+
+#undef BRAVE_WORKER_CONTENT_SETTINGS_CLIENT
+#undef BRAVE_WORKER_CONTENT_SETTINGS_CLIENT_COPY_CTOR
