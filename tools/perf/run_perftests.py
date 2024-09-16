@@ -28,7 +28,7 @@ import components.perf_test_runner as perf_test_runner
 import components.perf_test_utils as perf_test_utils
 import components.path_util as path_util
 import components.profile_tools as profile_tools
-import components.wpr_tools as wpr_tools
+import components.wpr_utils as wpr_utils
 
 from components.common_options import CommonOptions, PerfMode
 
