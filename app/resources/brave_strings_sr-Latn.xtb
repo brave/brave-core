@@ -63,6 +63,7 @@ Dozvole koje ste već dali veb-sajtovima i aplikacijama mogu da važe za ovaj n
 <translation id="9048754176089806686">Brave je blokirao ovo preuzimanje jer se ovaj tip fajl ne preuzima često i može da bude opasan</translation>
 <translation id="1953553007165777902">Preuzima se... Još <ph name="MINUTE"/> min</translation>
 <translation id="1775322105159056176">Brave ne može da odredi ni da podesi podrazumevani pregledač</translation>
+<translation id="4372901050442507812">Saznajte zašto Brave blokira neke fajlove, otvara se na novoj kartici</translation>
 <translation id="9220324636239049437">Ovim ćete izbrisati 1 stavku sa ovog uređaja. Da biste kasnije vratili podatke, prijavite se u Brave kao <ph name="USER_EMAIL"/>.</translation>
 <translation id="2018879682492276940">Instalacija nije uspela. Probajte ponovo.</translation>
 <translation id="831418749472885028">Da biste proverili da li su ostale lozinke bezbedne od upada u podatke i drugih bezbednosnih problema, <ph name="BEGIN_LINK"/>prijavite se u Brave<ph name="END_LINK"/>.</translation>
@@ -123,6 +124,7 @@ Dozvole koje ste već dali veb-sajtovima i aplikacijama mogu da važe za ovaj n
 <translation id="2915996080311180594">Restartuj kasnije</translation>
 <translation id="2928420929544864228">Instalacija je dovršena.</translation>
 <translation id="2945997411976714835">Greška pri instalaciji: Proces instalacije nije uspeo.</translation>
+<translation id="3688936822855019158">Organizacija upravlja Brave-om</translation>
 <translation id="8208853227947884571">Brave je ažuriran</translation>
 <translation id="5122472867956731189">Ako neki sajt pokuša da ukrade vašu lozinku ili probate da preuzmete štetni fajl, Brave može da pošalje URL-ove, uključujući delove sadržaja stranice, u Bezbedno pregledanje</translation>
 <translation id="500707801149472925">Brave može da učini ove kartice neaktivnim da bi poboljšao doživljaj pregledanja i oslobodio resurse.</translation>
@@ -223,6 +225,7 @@ Dozvole koje ste već dali veb-sajtovima i aplikacijama mogu da važe za ovaj n
 <translation id="8148611988012584308">Prilagodite i kontrolišite Brave</translation>
 <translation id="4427306783828095590">Poboljšana zaštita nudi više mogućnosti za blokiranje „pecanja“ i malvera</translation>
 <translation id="4434353761996769206">Greška programa za instalaciju: <ph name="INSTALLER_ERROR"/></translation>
+<translation id="175926951572479413"><ph name="MANAGER"/> upravlja Brave-om</translation>
 <translation id="6786534271003695094">O verziji Brave for Testing</translation>
 <translation id="4501471624619070934">Instalacija nije uspela jer je pristup u ovoj zemlji ograničen.</translation>
 <translation id="8594994021633965927">Ovaj dodatak nije objavio prakse privatnosti, na primer, kako prikuplja i koristi podatke. Brave preporučuje da ga uklonite.</translation>
@@ -427,6 +430,7 @@ Brave ne može da vrati podešavanja.</translation>
 <translation id="38294420683216447">Pomoću Brave profila možete da razdvojite sve Brave sadržaje. Na taj način ćete lakše moći da razdvojite posao i zabavu.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Programerska verzija Brave-a</translation>
 <translation id="2034072705932785495">Brave traži dozvolu da pristupi kameri za ovaj sajt</translation>
+<translation id="7129342855140808694">Da biste koristili mikrofon, odobrite Brave-u pristup u <ph name="BEGIN_LINK"/>podešavanjima sistema<ph name="END_LINK"/></translation>
 <translation id="5296583608321648908">Da biste dobijali buduća Brave ažuriranja, treba vam Windows 10 ili novija verzija. Ovaj računar koristi Windows 7.</translation>
 <translation id="3962395975456095331">Želite ponovo da pokrenete Brave?</translation>
 <translation id="2619516027171717873">Nije moguće instalirati istu verziju Brave-a koja se trenutno koristi. Zatvorite Brave i pokušajte ponovo.</translation>
@@ -455,6 +459,7 @@ Brave ne može da vrati podešavanja.</translation>
 <translation id="7872446069773932638">Preuzima se... Još <ph name="SECONDS"/> sek</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Kako možete da upravljate podacima:<ph name="END_BOLD"/> Radi zaštite privatnosti automatski brišemo interesovanja starija od 4 nedelje. Kada nastavite da pregledate, interesovanje će se možda ponovo pojaviti na listi. Možete i da uklanjate interesovanja za koja ne želite da ih Brave uzima u obzir.</translation>
 <translation id="5687542525349822727">Podesite Brave kao podrazumevani pregledač</translation>
+<translation id="6396151137840491551">Brave automatski nadograđuje nebezbedne veze na HTTPS kada je to moguće</translation>
 <translation id="2925193881330501265">Bili ste prijavljeni na Brave kao <ph name="USER_EMAIL_ADDRESS"/>. Koristite isti nalog da biste se ponovo prijavili.</translation>
 <translation id="6915252145142862992">Ovo je sekundarna instalacija Brave-a pa ne možete da ga podesite kao podrazumevani pregledač.</translation>
 <translation id="1743665722170667430">Dodaci, aplikacije i teme iz nepoznatih izvora mogu da naškode uređaju. Brave preporučuje da ih instalirate samo iz: <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/></translation>
@@ -467,6 +472,7 @@ Brave ne može da vrati podešavanja.</translation>
 <translation id="813913629614996137">Pokreće se…</translation>
 <translation id="7550680632761245819">Uključite dodatnu zaštitu u Brave alatki za JavaScript i WebAssembly</translation>
 <translation id="9067428552314418522">Ova datoteka je opasna, pa ju je Brave blokirao.</translation>
+<translation id="8377926237617998195">Da biste koristili kameru, odobrite Brave-u pristup u <ph name="BEGIN_LINK"/>podešavanjima sistema<ph name="END_LINK"/></translation>
 <translation id="1755067029031059271">Brave ne može da potvrdi odakle potiče ovaj dodatak i možda nije bezbedan. Uklonite ga iz Brave-a da više ne bi mogao da vidi i menja podatke na sajtovima koje posećujete, uključujući lične podatke.</translation>
 <translation id="8207657266087451193">Ako slika nema koristan opis, Brave će probati da vam ga pruži. Slike se šalju Brave-u radi pravljenja opisa. To možete da isključite u podešavanjima u svakom trenutku.</translation>
 <translation id="7792526144795244436">Želite li da se prijavite u Brave na novom profilu?</translation>
@@ -490,6 +496,7 @@ Brave ne može da vrati podešavanja.</translation>
 <translation id="8550334526674375523">Ovaj poslovni profil je potpuno odvojen od ličnog profila.</translation>
 <translation id="8555465886620020932">Greška u usluzi: <ph name="SERVICE_ERROR"/>.</translation>
 <translation id="227028348235968071">Brave može da vam proverava lozinke kada se prijavite pomoću Brave naloga</translation>
+<translation id="839677568225616901">Više organizacija upravlja Brave-om</translation>
 <translation id="8121009781989288430">Autorska prava <ph name="YEAR"/>. Autori Brave-a. Sva prava zadržana.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Kako koristimo ove podatke:<ph name="END_BOLD"/> Sajtovi mogu da čuvaju informacije o vašim interesovanjima u Brave-u. Na primer, ako posetite sajt da biste kupili patike za maraton, taj sajt može da definiše vaše interesovanje kao trčanje maratona. Kasnije, ako posetite neki drugi sajt da biste se prijavili za trku, taj sajt može da vam prikaže oglas za patike za trčanje na osnovu interesovanja.</translation>
 <translation id="3052349005266761501">Pokreće se Brave...</translation>
@@ -535,6 +542,7 @@ Brave ne može da vrati podešavanja.</translation>
 <translation id="983803489796659991">Instalacija nije uspela zato što server za ažuriranje nema nikakve heširane podatke za aplikaciju.</translation>
 <translation id="8435446479956716379">Koristite Brave bez naloga</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
+<translation id="3146636448190445245">Da biste koristili lokaciju, odobrite Brave-u pristup u <ph name="BEGIN_LINK"/>podešavanjima sistema<ph name="END_LINK"/></translation>
 <translation id="137466361146087520">Google Chrome beta</translation>
 <translation id="7535429826459677826">Programerska verzija Google Chrome-a</translation>
 </translationbundle>

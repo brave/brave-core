@@ -16,6 +16,7 @@
 <translation id="8294286161128352783">فقط در صفحه زبانه جدید</translation>
 <translation id="6406506848690869874">همگام‌سازی</translation>
 <translation id="1544192797660353713">کیف پول</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="8275068909952022340">بیشتر…</translation>
 <translation id="1990886731975529483">Google Widevine را نصب و اجرا کنید</translation>
 <translation id="8926389886865778422">دوباره سؤال نشود</translation>
@@ -55,15 +56,20 @@
 <translation id="1434416574322382019">Window with Tor خصوصی جدید</translation>
 <translation id="4703780849509456860">باز کردن پیوند در Window with Tor خصوصی</translation>
 <translation id="3488584642074079080">باز کردن پیوند در Window with Tor خصوصی Brave</translation>
+<translation id="8594912907680633924">باز کردن لینک در نمای تقسیم‌شده</translation>
 <translation id="6313675821927505581">Window with Tor خصوصی جدید</translation>
 <translation id="2638041073279639246">باز کردن پیوند در Window with Tor خصوصی</translation>
 <translation id="3425600262621021599">باز کردن پیوند در Window with Tor خصوصی Brave</translation>
+<translation id="3795436270513738622">باز کردن لینک در نمای تقسیم‌شده</translation>
 <translation id="2545072023356206691">از 1 دسامبر 2023، به‌روزرسانی‌های کانال Brave Dev متوقف می‌شود. ما به کاربران توصیه می‌کنیم که برای ادامه به‌روزرسانی مرورگر، به نسخه‌های Nightly، Beta یا Release Brave بروند.</translation>
 <translation id="474217410105706308">بی‌صدا کردن برگه</translation>
 <translation id="2804710924397009224">نماد جوایز بریو را پنهان کن.</translation>
 <translation id="5029193871181468990">مخفی کردن نماد Brave Rewards</translation>
 <translation id="2808103541110899519">پنهان کردن نماد کیف پول Brave</translation>
 <translation id="7595540212376041331">نماد «کیف پول Brave» را پنهان می‌کند</translation>
+<translation id="3893997535859323951">مخفی کردن آیکون هوش مصنوعی Leo</translation>
+<translation id="6208515240323786457">مخفی کردن آیکون هوش مصنوعی Leo</translation>
+<translation id="2361906291514218784">هوش مصنوعی Leo</translation>
 <translation id="4928988318462976765">فروشگاه افزونه‌های وب</translation>
 <translation id="9181207987584064303">مشاهده در «فروشگاه افزونه‌های وب»</translation>
 <translation id="3161744659507801211">هشدار: Brave نمی‌تواند مانع از ثبت سابقه مرورتان توسط افزونه‌ها شود.</translation>
@@ -96,9 +102,6 @@
 <translation id="3462465068145800637">Brave Search اطلاعات شخصی شما را جمع‌آوری نمی‌کند و 100% مستقل از شرکت‌های بزرگ فناوری است.</translation>
 <translation id="42032117189492785">جستجوی مبتنی بر هوش مصنوعی با یک شاخص منحصر به فرد.</translation>
 <translation id="8606416238399082160">کاملاً خصوصی، 100% مستقل، و همراه با مشخصه‌های هوش مصنوعی عالی.</translation>
-<translation id="7706528608480893054">DDG فقط Bing با لباسی مبدل است. وقت آن رسیده که به حریم خصوصی واقعی، نتایج بهتر و یک موتور جستجوی مستقل دست پیدا کنید. زمان جستجوی Brave است.</translation>
-<translation id="3818133234428578803">با آن اردک خداحافظی کنید</translation>
-<translation id="14817360483752259">«جستجوی Brave» شما، جستارها یا کلیک‌هایتان را ردیابی نمی‌کند. و (برخلاف DDG) فقط Bing در لباس مبدل نیست.</translation>
 <translation id="4381193110021038941">دریافت نتایج بهتر</translation>
 <translation id="3846545273704969734">«جستجوی Brave» به‌طور مستقل تأیید شده است که نتایج بهتری نسبت به Bing (یا موتورهای جستجوی مشابه Bing مانند DuckDuckGo) ارائه می‌دهد.</translation>
 <translation id="2841164160723712537">بهبود نتایج جستجو</translation>
@@ -287,8 +290,9 @@
 <translation id="2818704116581303039">باز کردن تنظیمات فهرست پخش</translation>
 <translation id="6790428901817661496">پخش</translation>
 <translation id="1178581264944972037">مکث</translation>
-<translation id="4477350412780666475">آهنگ بعدی</translation>
-<translation id="3962859241508114581">آهنگ قبلی</translation>
+<translation id="4046123991198612571">آهنگ بعدی</translation>
+<translation id="2874939134665556319">آهنگ قبلی</translation>
+<translation id="3040310857793999281">روشن/خاموش کردن صدا</translation>
 <translation id="7544853251252956727">به‌صورت تصادفی</translation>
 <translation id="4330722796577425585">به عقب رفتن</translation>
 <translation id="7481312909269577407">ارسال کردن</translation>
@@ -298,7 +302,15 @@
 <translation id="6453210454707928697">مورد پخش نشد</translation>
 <translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] ممکن است منقضی شده باشد. آیا می‌خواهید آن را بازیابی کنید؟</translation>
 <translation id="6155018868740116868">بازیابی</translation>
-<translation id="1727684853006449697">پخش‌کننده Brave</translation>
+<translation id="2521960050170773751">افزودن رسانه از صفحه</translation>
+<translation id="2301087142998134097"><ph name="SITE"/> می‌خواهد باز شود</translation>
+<translation id="7128982309566342232">یک صفحه جاسازی شده در <ph name="SITE"/> می‌خواهد باز شود</translation>
+<translation id="1175012181261953767">این صفحه می‌خواهد باز شود</translation>
+<translation id="7459546222322124545">یک صفحه جاسازی‌شده در این صفحه می‌خواهد باز شود</translation>
+<translation id="5836261838911560851"><ph name="SITE"/> می‌خواهد ذخیره شود</translation>
+<translation id="5936788906460687941">یک صفحه جاسازی‌شده در <ph name="SITE"/> می‌خواهد ذخیره شود</translation>
+<translation id="7700010743463174379">این صفحه می‌خواهد ذخیره شود</translation>
+<translation id="6774238875569752630">یک صفحه جاسازی‌شده در این صفحه می‌خواهد ذخیره شود</translation>
 <translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
 <translation id="7179921470347911571">اکنون راه‌اندازی مجدد شود</translation>
 <translation id="1426410128494586442">بله</translation>
@@ -323,6 +335,7 @@
 <translation id="5860254591544742609">نمایش نوار عنوان</translation>
 <translation id="5371926069408837914">گسترده کردن پانل زبانه‌های عمودی با نگه داشتن نشانگر، پس از جمع شدن</translation>
 <translation id="3367129510799209147">حالت شناور برگه</translation>
+<translation id="8527099657928614787">گسترش زبانه‌های عمودی به‌طور مستقل در هر پنجره</translation>
 <translation id="916373084491701212">نمایش نوار پیمایش</translation>
 <translation id="515949045075831661">در سمت راست نشان داده شود</translation>
 <translation id="3725395376319291415">در سمت چپ نشان داده شود</translation>
@@ -339,6 +352,7 @@
 <translation id="4144468798716165316">دستورات سریع</translation>
 <translation id="7310387888625228830">دستیار هوش مصنوعی Leo</translation>
 <translation id="5222974844674487962">نمایش دکمه اخبار Brave</translation>
+<translation id="2085436423511121572">نمایش دکمه هوش مصنوعی Leo</translation>
 <translation id="383007806262310953">نمایش نوار نشانک‌ها</translation>
 <translation id="4054323497808446566">نوار نشانک روی همه صفحات قابل مشاهده است</translation>
 <translation id="8693858092251192712">نوار نشانک در همه صفحات،‌ به غیر از صفحه زبانه جدید، مخفی شده است</translation>
@@ -439,6 +453,7 @@
 <translation id="4891600875049212418">هنگام بازدید از سایت‌های حساس، به «حالت خصوصی و محرمانه» بروید</translation>
 <translation id="1968895725257436430">جمع‌آوری داده</translation>
 <translation id="4846154056248462491">در برگه خروج</translation>
+<translation id="216468847346280584">پاک کردن داده‌های تبلیغات Brave...</translation>
 <translation id="2808630562319398131">بازنشانی داده‌های Brave Rewards…</translation>
 <translation id="6438096877646138757">سایت‌هایی که با بسته شدن، کوکی‌ها را پاک می‌کنند</translation>
 <translation id="2988792685798128092">پاک کردن موقع بسته شدن سایت</translation>
@@ -552,6 +567,8 @@
 <translation id="4094590686212463338">امکان پیوستن به این زنجیره همگام‌سازی وجود ندارد. زنجیره همگام‌سازی پاک شده است.</translation>
 <translation id="4908081302669157000">شماره‌های تلفن، ایمیل‌ها و نشانی‌ها</translation>
 <translation id="294985549514492876">برنامه‌های وب ‎(PWAs)</translation>
+<translation id="924029461438529367">نمایش پیشنهادهای جستجو</translation>
+<translation id="3128251601544028053">وقتی در نوار آدرس یا کادر جستجو تایپ می‌کنید، Brave آنچه را که تایپ می‌کنید به موتور جستجوی پیش‌فرض شما ارسال می‌کند تا پیشنهادهای بهتری دریافت کند. این مورد در پنجره‌های خصوصی در دسترس نیست.</translation>
 <translation id="6285118765755298263">فهرست‌بندی سایر موتورهای جستجو</translation>
 <translation id="919715748352669592">فهرست‌بندی خودکار وبسایت‌هایی که از مشخصات OpenSearch پیروی می‌کنند.</translation>
 <translation id="842628013524824194">پنجره عادی - موتور جستجو استفاده‌شده در نوار نشانی</translation>
@@ -667,7 +684,6 @@
 <translation id="3095201688102519917">قبل از بستن پنجره‌ای با چندین زبانه، به من هشدار داده شود</translation>
 <translation id="7120553802660696133">هنگام بستن آخرین زبانه، پنجره بسته شود</translation>
 <translation id="3394171693948989253">نمایش یادآور تمام‌صفحه برای فشار دادن Esc هنگام خروج</translation>
-<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">نمایش آیکون Leo در نوار کناری</translation>
 <translation id="8055509865174199683">نمایش Leo در منوی زمینه در وب‌سایت‌ها</translation>
 <translation id="1529674267267221673">وقتی روی یک وب‌سایت کلیک راست می‌کنید، Leo در منوی زمینه ظاهر می‌شود. بدین ترتیب زمینه از صفحه وب فعلی به Leo ارسال می‌شود.</translation>

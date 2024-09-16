@@ -241,48 +241,7 @@
 <translation id="3082557070674409251">Натиснуто</translation>
 <translation id="7119308337584989771">Закрито</translation>
 <translation id="6805660603861526473">Переглянуто</translation>
-<translation id="8826352442759228526">Ваш профіль Brave Rewards не може бути перевірений, оскільки ви досягли максимального ліміту підтверджених пристроїв.</translation>
-<translation id="1221593978088944142">Помилка: досягнуто ліміт кількості пристроїв</translation>
-<translation id="6895088073061692390">Ваш профіль Brave Rewards позначено, оскільки автоматична перевірка виявила неочікувану активність реклами Brave.</translation>
-<translation id="4229056297802204697">Поки ваш профіль має позначку, ви можете й надалі бачити рекламу, але не матимете права на отримання виплат. Ви також не зможете підключити депозитарний рахунок до Brave Rewards.</translation>
-<translation id="5124846913141379164">Можливо, ваш профіль отримав позначку помилково, і негайних дій із вашого боку не потрібно. Позначку з вашого профілю може бути знято в майбутньому.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Дізнатися більше про процес Brave щодо позначок профілів Rewards.<ph name="END_LINK"/></translation>
-<translation id="5028274575541726856">Помилка: позначено профіль Brave Rewards</translation>
-<translation id="2607420597216860026">Спробуйте ще раз після завершення перевірки ідентифікатора <ph name="PROVIDER"/>.</translation>
-<translation id="3183954159462541696">Помилка: для входу потрібен перевірений обліковий запис</translation>
-<translation id="1859789048900659918">Схоже, що країна винагород Brave не збігається з країною вашого рахунку <ph name="PROVIDER"/>, який ви намагаєтеся підключити.</translation>
-<translation id="8925428135452218262">Помилка: невідповідність країни</translation>
-<translation id="5260522591743022748">Схоже, що ваш профіль Brave Rewards уже перевірено за допомогою іншого облікового запису<ph name="PROVIDER"/>. Спробуйте виконати перевірку знову за допомогою попереднього облікового запису.</translation>
-<translation id="5111921830714291902">Помилка: інший акаунт</translation>
-<translation id="5225019866741699134">Схоже підключення <ph name="PROVIDER"/> до Brave Rewards тимчасово недоступне. Спробуйте ще раз пізніше.</translation>
-<translation id="6105073131081187815">Ви можете переглянути <ph name="BEGIN_LINK"/>статус сервісу тут<ph name="END_LINK"/>.</translation>
-<translation id="2400786541309111904">Помилка: підключення до вибраного депозитарного партнера тимчасово недоступне</translation>
-<translation id="1024520300696337331">Наразі неможливо підключити ваш обліковий запис <ph name="PROVIDER"/> до профілю Brave Rewards. Ваш обліковий запис <ph name="PROVIDER"/> зареєстровано в країні, для якої наразі не підтримується підключення до Brave Rewards.</translation>
-<translation id="619384413404021992">Перегляньте <ph name="LINK_BEGIN"/>поточний список підтримуваних регіонів і дізнайтеся більше<ph name="END_LINK"/> про підключення депозитарного рахунку до Brave Rewards.</translation>
-<translation id="7193389978208728181">Помилка. Регіон наразі не підтримується</translation>
-<translation id="5382684862562314222">BAT не підтримується у вашому регіоні в гаманцях Uphold.</translation>
-<translation id="9074594632540931067">Помилка: кошти BAT недоступні</translation>
-<translation id="5376524136040178759">Згідно з даними Uphold на ваш обліковий запис Uphold поширюються деякі обмеження. Увійдіть у свій обліковий запис Uphold і дізнайтеся, чи надійшли якісь сповіщення або чи треба виконати додаткові вимоги щодо активації облікового запису, а потім повторіть спробу. Можливо, потрібно надати певні додаткові відомості Uphold.</translation>
-<translation id="6996157559236886133">Помилка: обмежена функціональність облікового запису Uphold</translation>
-<translation id="3274650021044762770">Під час перевірки запиту браузера на підключення профілю Brave Rewards до вашого облікового запису <ph name="PROVIDER"/> сталася помилка. Ви можете звернутися за допомогою <ph name="BEGIN_LINK"/>до служби підтримки<ph name="END_LINK"/>.</translation>
-<translation id="1316066811927496401">Помилка: неможливо підтвердити запит</translation>
-<translation id="7352651011704765696">Щось пішло не так</translation>
-<translation id="8285276813470932793">Ми не змогли виконати ваш запит. Спробуйте ще раз і <ph name="LINK_BEGIN"/>зверніться до служби підтримки<ph name="LINK_END"/>, якщо проблема не зникне.</translation>
 <translation id="8167256685618982116">Активуючи <ph name="TITLE"/>, ви погоджуєтесь із <ph name="BEGIN_LINK1"/>Умовами використання<ph name="END_LINK1"/> та <ph name="BEGIN_LINK2"/>Політикою конфіденційності<ph name="END_LINK2"/>.</translation>
-<translation id="8817096698141999876">Депозитарні рахунки (потрібне підтвердження особи)</translation>
-<translation id="1539433155512862005">Депозитарні рахунки — це рахунки в довірених сторонніх службах, які зберігають ваші BAT для вас.</translation>
-<translation id="6834831484510296932">Некастодіальний</translation>
-<translation id="4208917415153655958">Некастодіальний гаманець надає вам ексклюзивний контроль ваших BAT, а також повну відповідальність за безпеку.</translation>
-<translation id="1953496742859481929">Вибираючи некастодіальний гаманець, ви отримуватимете винагороди як SPL-BAT у мережі Solana.</translation>
-<translation id="6751803821780922506">Виберіть, куди ви хочете отримувати BAT</translation>
-<translation id="3162035476318501831">Дізнатися більше про регіони й підтримку.</translation>
-<translation id="7329170127335794328">Наразі недоступно у вашому регіоні</translation>
-<translation id="966956302643313970">Аби почати отримувати винагороду у вигляді токенів Basic Attention Token (BAT), підключіть рахунок. Зароблені вами BAT автоматично перераховуватимуться на ваш рахунок щомісяця.</translation>
-<translation id="4009439571146350519">Або інший гаманець, що підтримує Solana</translation>
-<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>Умови використання<ph name="TOS_LINK_END"/> і <ph name="PP_LINK_BEGIN"/>Політика приватності<ph name="PP_LINK_END"/>.</translation>
-<translation id="1692293127547800972">Сталася помилка. Спробуйте ще раз</translation>
-<translation id="756341217015623253">Увійдіть або зареєструйтеся</translation>
-<translation id="2653844658857826081">НОВИНКА</translation>
 <translation id="1892970806832316900">Очікується до <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Браузер не може отримувати приватні рекламні оголошення Brave.</translation>
 <translation id="5177429570315095022">Оновіть браузер, щоб ви могли й надалі переглядати рекламу.</translation>
@@ -397,7 +356,6 @@
 <translation id="3448261046185459858">Ви можете видалити будь-який сайт, що отримує щомісячні внески, з панелі «Внески».</translation>
 <translation id="5082474983463379713">Будь ласка, майте на увазі:</translation>
 <translation id="1430915738399379752">Друк</translation>
-<translation id="135956957367307069">Ваш запит все ще опрацьовується, будь ласка, зачекайте.</translation>
 <translation id="2600847485413879104">Нагороди BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
@@ -562,13 +520,16 @@
 <translation id="6965382102122355670">Гаразд</translation>
 <translation id="6727102863431372879">Установити</translation>
 <translation id="8853725596990766789">Змінити суму</translation>
-<translation id="1609556006143307897">Ви підтримуєте авторів умісту</translation>
+<translation id="5899814466108868020">Ви підтримуєте Brave і спільноту BAT</translation>
 <translation id="654447476965480878">Докладніше про те, як заробляти BAT</translation>
 <translation id="4105212447337987768"><ph name="DATE"/> ми припинимо підтримку наявних віртуальних балансів BAT. Підключіть депозитарний рахунок до цієї дати, щоб ми могли перевести ваші зароблені кошти на нього. Інакше ці кошти буде втрачено.</translation>
 <translation id="707569835145765061">Потрібно виконати таку дію: підключіть депозитарний рахунок, інакше ваші кошти vBAT будуть утрачені</translation>
 <translation id="3358400027937159351">Ви внесли <ph name="AMOUNT"/>.</translation>
 <translation id="1619753851206150396">Ви вийшли з облікового запису</translation>
 <translation id="3035648636451344428">Час від часу це відбувається з міркувань захисту вашого облікового запису <ph name="PROVIDER"/>. Після виходу ви й надалі отримуватимете виплати, але не зможете переглядати свій баланс або надсилати внески з облікового запису <ph name="PROVIDER"/>.</translation>
+<translation id="9074594632540931067">Помилка: кошти BAT недоступні</translation>
+<translation id="5382684862562314222">BAT не підтримується у вашому регіоні в гаманцях Uphold.</translation>
+<translation id="6996157559236886133">Помилка: обмежена функціональність облікового запису Uphold</translation>
 <translation id="1677961202754619328">За даними Uphold на ваш обліковий запис Uphold поширюються деякі обмеження. Увійдіть у свій обліковий запис і перевірте наявність сповіщень або невиконаних вимог, а потім спробуйте ще раз.</translation>
 <translation id="9029009481113741943">Увійти знову</translation>
 <translation id="2429828319207652823">Під час обробки вашого внеску виникла проблема.</translation>
@@ -581,6 +542,7 @@
 <translation id="3247549836099021862">Зв’язатися із службою підтримки</translation>
 <translation id="5234764350956374838">Відхилити</translation>
 <translation id="7859066142771796818">Використовуйте токени для купівлі подарункових карток, обміну на інші валюти, підтримки авторів контенту тощо.</translation>
+<translation id="7352651011704765696">Щось пішло не так</translation>
 <translation id="5425006356459378415">Винагороди Brave недоступні</translation>
 <translation id="909076461795862330">Під час налаштування нагород Brave виникла помилка. Спробуйте знову.</translation>
 <translation id="3180990265682133881">Під час установлення країни виникла помилка. Спробуйте знову.</translation>
@@ -652,6 +614,62 @@
 <translation id="1053740665683265460">Використайте гаманець Web3, щоб надіслати одноразовий внесок автору й виразити свою вдячність</translation>
 <translation id="6859705040495339375">Надіслати за допомогою гаманця Web3</translation>
 <translation id="7615852194054434287">Схоже, цей автор ще не налаштував отримання внесків через гаманець Web3.</translation>
+<translation id="8817096698141999876">Кастодіальні рахунки (потрібна перевірка ідентифікатора)</translation>
+<translation id="1539433155512862005">Кастодіальні рахунки – це рахунки з довіреними сторонніми службами, які зберігають для вас BAT.</translation>
+<translation id="6834831484510296932">Некастодіальний</translation>
+<translation id="4208917415153655958">Некастодіальний гаманець надає вам ексклюзивний контроль ваших BAT, а також повну відповідальність за безпеку.</translation>
+<translation id="9118326146754987354">З некастодіальним рахунком заробітки BAT виплачуватимуться як SPL-BAT у мережі Solana.</translation>
+<translation id="6751803821780922506">Виберіть, де ви бажаєте отримати BAT</translation>
+<translation id="3162035476318501831">Дізнатися більше про регіони й підтримку.</translation>
+<translation id="7329170127335794328">Наразі недоступно у вашому регіоні</translation>
+<translation id="966956302643313970">Щоб почати отримувати винагороди Basic Attention Token (BAT), підключіть рахунок. Зароблені BAT автоматично перераховуватимуться на ваш рахунок щомісяця.</translation>
+<translation id="4009439571146350519">Або інший гаманець, що підтримує Solana</translation>
+<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>Умови використання<ph name="TOS_LINK_END"/> і <ph name="PP_LINK_BEGIN"/>Політика приватності<ph name="PP_LINK_END"/>.</translation>
+<translation id="1692293127547800972">Сталася помилка. Спробуйте ще раз</translation>
+<translation id="756341217015623253">Увійдіть або зареєструйтеся</translation>
+<translation id="2653844658857826081">НОВИНКА</translation>
+<translation id="1165039591588034296">Помилка</translation>
+<translation id="5826530373788377342">Ви досягли максимальної кількості пристроїв для цього рахунку <ph name="PROVIDER"/>.</translation>
+<translation id="6700131426769360592">Досягнуто ліміту кількості пристроїв</translation>
+<translation id="6895088073061692390">На жаль, ваш профіль Винагород Brave було позначено, оскільки наші автоматичні перевірки виявили неочікувану активність Реклами Brave.</translation>
+<translation id="4229056297802204697">Поки ваш профіль позначено, ви можете продовжувати переглядати рекламні оголошення, але не матимете права отримувати виплати. Ви також не зможете підключити кастодіальний рахунок до Винагород Brave.</translation>
+<translation id="5124846913141379164">Можливо, ваш профіль було позначено помилково, і вам не потрібно негайно вживати заходів. Позначку у вашому профілі може бути видалено в майбутньому.</translation>
+<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Дізнатися більше про процес Brave щодо позначок профілів Rewards.<ph name="END_LINK"/></translation>
+<translation id="4699218748197721830">Профіль Винагород Brave позначено</translation>
+<translation id="2607420597216860026">Спробуйте ще раз після завершення перевірки ідентифікатора <ph name="PROVIDER"/>.</translation>
+<translation id="5037332159336402972">Щоб увійти, потрібен підтверджений обліковий запис</translation>
+<translation id="1859789048900659918">Схоже, що країна винагород Brave не збігається з країною вашого рахунку <ph name="PROVIDER"/>, який ви намагаєтеся підключити.</translation>
+<translation id="3080649636035373911">Невідповідність країни</translation>
+<translation id="5260522591743022748">Схоже, що ваш профіль Brave Rewards уже перевірено за допомогою іншого облікового запису<ph name="PROVIDER"/>. Спробуйте виконати перевірку знову за допомогою попереднього облікового запису.</translation>
+<translation id="6408621361472415607">Інший обліковий запис</translation>
+<translation id="5225019866741699134">Схоже підключення <ph name="PROVIDER"/> до Brave Rewards тимчасово недоступне. Спробуйте ще раз пізніше.</translation>
+<translation id="6105073131081187815">Ви можете переглянути <ph name="BEGIN_LINK"/>статус сервісу тут<ph name="END_LINK"/>.</translation>
+<translation id="3969419585013689529">Підключення до вибраного кастодіального партнера тимчасово недоступне</translation>
+<translation id="1024520300696337331">Наразі неможливо підключити ваш обліковий запис <ph name="PROVIDER"/> до профілю Brave Rewards. Ваш обліковий запис <ph name="PROVIDER"/> зареєстровано в країні, для якої наразі не підтримується підключення до Brave Rewards.</translation>
+<translation id="619384413404021992">Перегляньте <ph name="LINK_BEGIN"/>поточний список підтримуваних регіонів і дізнайтеся більше<ph name="END_LINK"/> про підключення депозитарного рахунку до Brave Rewards.</translation>
+<translation id="7933193151688235283">Регіон наразі не підтримується</translation>
+<translation id="5376524136040178759">Згідно з даними Uphold на ваш обліковий запис Uphold поширюються деякі обмеження. Увійдіть у свій обліковий запис Uphold і дізнайтеся, чи надійшли якісь сповіщення або чи треба виконати додаткові вимоги щодо активації облікового запису, а потім повторіть спробу. Можливо, потрібно надати певні додаткові відомості Uphold.</translation>
+<translation id="6349168810769273818">Обмежена функціональність облікового запису Uphold</translation>
+<translation id="1279668677171152085">Під час перевірки запиту на підключення вашого облікового запису <ph name="PROVIDER"/> до Винагород Brave виникла проблема. Ви можете звернутися по допомогу до <ph name="BEGIN_LINK"/>служби підтримки<ph name="END_LINK"/>.</translation>
+<translation id="8761736799800527591">Неможливо перевірити запит</translation>
+<translation id="8285276813470932793">Ми не змогли виконати ваш запит. Спробуйте ще раз і <ph name="LINK_BEGIN"/>зверніться до служби підтримки<ph name="LINK_END"/>, якщо проблема не зникне.</translation>
+<translation id="135956957367307069">Ваш запит все ще опрацьовується, будь ласка, зачекайте.</translation>
+<translation id="9033500121333471466">Позначити як «Неналежне»</translation>
+<translation id="4477865412359526485">Наразі немає історії Реклами Brave.</translation>
+<translation id="4256040774643144761">Історія рекламних оголошень</translation>
+<translation id="1188389905162088150">Рекламні оголошення, які ви отримали за останні 30 днів</translation>
+<translation id="4296467068886908539">Макс. <ph name="NUM"/>/год</translation>
+<translation id="3266055641283174315">Тип рекламного оголошення</translation>
+<translation id="8706824117053903390">Переглядів цього місяця</translation>
+<translation id="5105890735834548623">Налаштування рекламних оголошень</translation>
+<translation id="96989662637180657">Рекламні оголошення в пошуковій службі Brave з’являються в <ph name="LINK_BEGIN"/>Пошуку Brave<ph name="LINK_END"/>.</translation>
+<translation id="3138160233953903250">Налаштування рекламних оголошень</translation>
+<translation id="2446517297521536638">Налаштуйте, які типи реклами Brave мають для вас відображатися та як часто. Що більше оголошень ви бачите, то більше можете заробити.</translation>
+<translation id="5860033963881614850">Вимкнути</translation>
+<translation id="5916664084637901428">Увімкнути</translation>
+<translation id="4284417062730522399">Рекламних оголошень отримано цього місяця: <ph name="NUM"/></translation>
+<translation id="7697696066810593560">Ви заробили цього місяця: <ph name="NUM"/></translation>
+<translation id="6733193230212030816">Очікується, що ви заробите в діапазоні між: <ph name="RANGE"/></translation>
 <translation id="7090992647511817643">рахунок</translation>
 <translation id="4822132585477111396">ID мережі</translation>
 <translation id="3269475789479462358">домен</translation>
@@ -767,6 +785,18 @@
 <translation id="8918807203406722697">Пари стейблкойнів: <ph name="SLIPPAGE_PERCENT"/>%</translation>
 <translation id="7056655731948492143">Інші: <ph name="SLIPPAGE_PERCENT"/>%</translation>
 <translation id="6231782223312638214">Рекомендовані</translation>
+<translation id="8525485643657418753">Найдешевші</translation>
+<translation id="1224275271335624810">найшвидше</translation>
+<translation id="4071446933408069155">у мережі <ph name="NETWORK_NAME"/></translation>
+<translation id="3751611888003301070">Маршрути</translation>
+<translation id="3799091982455573025">Своп у мережі <ph name="NETWORK_NAME"/> через <ph name="EXCHANGE_NAME"/></translation>
+<translation id="5136093123841570193">Міст від <ph name="FRIST_NETWORK_NAME"/> до <ph name="SECOND_NETWORK_NAME"/></translation>
+<translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} кроки}
+      other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} кроків}
+    }</translation>
+<translation id="782639616412356895"><ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE_NAME"/><ph name="EXCHANGE_AFTER"/> через <ph name="PROVIDER_BEFORE"/><ph name="PROVIDER_NAME"/><ph name="PROVIDER_AFTER"/></translation>
+<translation id="3735740477244556633">Параметри сортування</translation>
 <translation id="6484605214219822434">Перевірити міст</translation>
 <translation id="3365052891357224017">Розрахунковий час</translation>
 <translation id="7448445168067324096">Обмінний курс</translation>
@@ -905,7 +935,6 @@
 <translation id="1329837291200753515">Виберіть блокчейн для імпорту апаратного гаманця</translation>
 <translation id="6983390509997396124">Під’єднайте свій пристрій <ph name="HARDWARE_DEVICE"/> до гаманця Brave</translation>
 <translation id="5149944858285555235">Невідома помилка. Повторно під’єднайте апаратний гаманець і повторіть спробу.</translation>
-<translation id="4522570452068850558">Подробиці</translation>
 <translation id="9220525904950070496">Видалення облікового запису</translation>
 <translation id="8574289650879708853">Додати користувацькі активи</translation>
 <translation id="6600400596821238377">Назва токена</translation>
@@ -1062,10 +1091,8 @@
 <translation id="6015436276085482001">Відмовлено</translation>
 <translation id="6666273175654835609">Надіслано</translation>
 <translation id="2331676293859649642">Підтверджено</translation>
-<translation id="1165039591588034296">Помилка</translation>
 <translation id="8373210463207847451">Скинуто</translation>
 <translation id="8214232307424031138">Підписано</translation>
-<translation id="5916664084637901428">Увімкнути</translation>
 <translation id="9065572743819293042">Останні транзакції</translation>
 <translation id="1702356231547761669">Хеш транзакції</translation>
 <translation id="8941851657764077659">Комісія за макс. пріоритет</translation>
@@ -1575,12 +1602,11 @@
 <translation id="1531836666020185856">Обрані</translation>
 <translation id="3225021799163709119">Популярне</translation>
 <translation id="6854651431635060919">Обліковий запис тестової мережі</translation>
-<translation id="3800173541008902040">Увімкнути покращені дані транзакції в:</translation>
-<translation id="1215089823252478557">Переглядайте приблизні зміни балансу</translation>
+<translation id="626850389704042219">Увімкнути моделювання транзакцій</translation>
+<translation id="7414944309396133072">Переглянути приблизну зміну балансу</translation>
 <translation id="2761574758015819991">Виявляйте потенційно зловмисні транзакції</translation>
 <translation id="168533464844528463">Допомагайте виявляти спроби фішингу</translation>
-<translation id="7269757150305059881">Brave надає цю послугу в партнерстві. Увімкнувши цю функцію, ви погоджуєтеся ділитися непідписаними транзакціями та їхніми URL-адресами DApp з нашим партнером.</translation>
-<translation id="7790932700072432983">Змінюйте будь-коли в <ph name="TAG_BEFORE"/>налаштуваннях<ph name="TAG_AFTER"/>.</translation>
+<translation id="2410455471299328417">Цей сервіс надається компанією <ph name="BOLD_BEFORE"/>Blowfish.xyz<ph name="BOLD_AFTER"/> і регулюється її <ph name="TERMS_LINK_BEFORE"/>Умовами обслуговування<ph name="TERMS_LINK_AFTER"/> та <ph name="PRIVACY_POLICY_LINK_BEFORE"/>Політикою приватності<ph name="PRIVACY_POLICY_LINK_AFTER"/></translation>
 <translation id="8688672835843460752">Доступно</translation>
 <translation id="5296640085393149413">Кошти, доступні для використання.</translation>
 <translation id="3248185426436836442">В очікуванні</translation>
@@ -1616,6 +1642,54 @@
 <translation id="8355371587927005068">Фільтри</translation>
 <translation id="803703704549420287">Очистити фільтри</translation>
 <translation id="1472675084647422956">Показати більше</translation>
+<translation id="4522570452068850558">Подробиці</translation>
+<translation id="7144878232160441200">Спробувати знову</translation>
+<translation id="9094621390791852268">Збій попереднього перегляду транзакції.</translation>
+<translation id="4982713341035600933">Приблизна зміна балансу</translation>
+<translation id="7197388583016272600">Подробиці затвердження</translation>
+<translation id="3785613860627641047">Зміна права</translation>
+<translation id="5135378583369915147">Триває сканування транзакції</translation>
+<translation id="4744699166186440">Staker</translation>
+<translation id="6313747204807079184">Отримувач</translation>
+<translation id="4312670848214406213">Ви надаєте комусь іншому дозвіл на передачу токенів від вашого імені.</translation>
+<translation id="5465460394116463557">Для цього потрібен дозвіл на передачу багатьох токенів, що зазвичай розглядається як спроба крадіжки.</translation>
+<translation id="7315935420455987651">Цей сайт може бути підробкою.</translation>
+<translation id="7772576967285233002">Пізніше цей DApp зможе переміщувати токени з вашого облікового запису.</translation>
+<translation id="438039795179295571">Цей сайт позначено як такий, що має високий ризик, і він, імовірно, спробує викрасти ваші кошти.</translation>
+<translation id="4852394547793286745">Цей домен ще не перевірено. Продовжуйте, лише якщо довіряєте сайту.</translation>
+<translation id="5832443872711287128">Ще раз перевірте цю адресу, оскільки вона може видавати себе за ваш попередній контакт.</translation>
+<translation id="5317646355693663165">Це призведе до передавання права власності на ваш баланс токенів комусь іншому.</translation>
+<translation id="3459325260212799301">Цей сайт позначено як небезпечний і/або шкідливий. Якщо продовжити, ви можете зазнати збитків.</translation>
+<translation id="5409388443146954820">Це призведе до затвердження понад 200 дій. Якщо така поведінка не запланована, вона може бути зловмисною.</translation>
+<translation id="6187462466381633445">Для цього потрібно понад 200 затверджень; що зазвичай є спробою вичерпати ваш баланс.</translation>
+<translation id="3322526234603442338">Ви обмінюєте токени, не отримуючи нічого на заміну. Імовірно, це помилка.</translation>
+<translation id="4773052969794445878">Ви надсилаєте кошти на власну адресу токена, де їх буде втрачено назавжди.</translation>
+<translation id="8144820760826901598">Це призведе до передавання права власності на ваш обліковий запис і баланс комусь іншому.</translation>
+<translation id="6023771436430346631">Недостатньо коштів для покриття плати за мережевий газ.</translation>
+<translation id="4753738223346804632">Недостатньо коштів для завершення транзакції.</translation>
+<translation id="8661124952575076441">Провести транзакцію, імовірно, не вдасться, і її буде скасовано. Спроба все одно призведе до витрат на газ.</translation>
+<translation id="7660840414862537846">Неочікувана помилка під час попереднього перегляду транзакції. Затвердження може бути небезпечним.</translation>
+<translation id="4683335916231560287">Змін не виявлено</translation>
+<translation id="6769279318856228158">Зміна власника облікового запису</translation>
+<translation id="3200658657457611958">Змоделюйте поведінку транзакції, перш ніж авторизувати її</translation>
+<translation id="8311005737513179222">Попередній перегляд транзакції не підтримується в цій мережі.</translation>
+<translation id="4282496974850444428">Ви бачите це повідомлення, оскільки ввімкнули послугу попереднього перегляду транзакцій.</translation>
+<translation id="6094399032955582807">Переглянути доступні мережі</translation>
+<translation id="6644973832009582039">Сканування повідомлень EVM наразі не підтримується</translation>
+<translation id="5222675470118670784">Що таке сканування повідомлень EVM?</translation>
+<translation id="4085714860536252628">Воно забезпечує безпеку й точність, перевіряючи повідомлення, надіслані з віртуальної машини Ethereum, які взаємодіють із вашим смартконтрактом або будь-якими діями.</translation>
+<translation id="7800112661494546348">Це як повторно перевірити лист, щоб переконатися в його правильності, перш ніж його підписувати.</translation>
+<translation id="4750109510113597688">Ця транзакція може включати комісію за створення облікового запису</translation>
+<translation id="6201709949885884577">Щоб виконати цю дію, потрібно вказати пароль.</translation>
+<translation id="3435015606307655951">Безпечне передавання</translation>
+<translation id="1958146856582208323">Передавання токенів</translation>
+<translation id="3550219298671597013">Передати NFT</translation>
+<translation id="8043066678623588950">Переслати FIL</translation>
+<translation id="7138678301420049075">Інше</translation>
+<translation id="8703556909820882288">Передавання стисненого NFT</translation>
+<translation id="2713141960460256091">Підписати й надіслати транзакцію DApp</translation>
+<translation id="6387730345715997739">Підписати транзакцію DApp</translation>
+<translation id="4150336849480030462">Передавання токенів SPL зі створенням пов’язаного облікового запису токенів</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Загальна інформація</translation>
 <translation id="4045404575593562245">Події управління Tor</translation>
@@ -1803,6 +1877,7 @@
 <translation id="6938154350999993769">Відлагодження: перемикання режиму планшета</translation>
 <translation id="5854741377790551127">Відлагодження: друк дерева перегляду</translation>
 <translation id="8199130368328220410">Увімкнути / вимкнути субтитри в режимі реального часу</translation>
+<translation id="5509712368473990741">Увімкнути чи вимкнути ШІ Leo</translation>
 <translation id="9055778350624039365">Показати панель гаманця Brave</translation>
 <translation id="2548853975094084059">Закрити панель гаманця Brave</translation>
 <translation id="3765209580429944524">Показати панель Brave VPN</translation>
@@ -1899,12 +1974,11 @@
 <translation id="7932221068776853847">Від’єднайтеся, що зупинити надсилання вмісту цієї сторінки до Leo й почати нову розмову</translation>
 <translation id="1167803637855350748">Під час підключення до Leo сталася помилка мережі, перевірте підключення й повторіть спробу.</translation>
 <translation id="1996126325390835277">Досягнуто ліміту для рівня преміум. Повторіть спробу за кілька годин.</translation>
-<translation id="7144878232160441200">Спробувати знову</translation>
-<translation id="8570488829560315702">Привіт, я Leo. Я повністю хостинговий ШІ-помічник від Brave. Я працюю на базі моделі Llama 3 8B, створеної компанією Meta для ефективної роботи та застосування в багатьох сценаріях використання.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
+<translation id="4177458398826096846">Привіт, я Leo. Я повністю хостинговий ШІ-помічник від Brave. Я працюю на базі моделі Llama 3.1 8B, створеної компанією Meta для ефективної роботи й застосування в багатьох сценаріях використання.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Привіт, я Leo. Я повністю хостинговий ШІ-помічник від Brave. Я працюю на базі моделі Mixtral 8x7B, створеної компанією Mistral AI для виконання складних завдань. <ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Привіт, я Leo. Я працюю на проксі-сервері Brave на базі моделі Claude Instant, створеної компанією Anthropic для виконання голосових завдань та оброблення текстів. <ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">Вітаю, я Leo. Я вбудований у Brave і працюю на базі Claude 3 Haiku, моделі, створеної Anthropic, для виконання завдань з оброблення розмов і тексту.</translation>
-<translation id="4147243042852964992">Вітаю, я Leo. Я вбудований у Brave і працюю на базі Claude 3 Sonnet, моделі, створеної Anthropic, для виконання завдань з оброблення розмов і тексту.</translation>
+<translation id="1107977270364670952">Вітаю, я Leo. Я вбудований у Brave і працюю на базі Claude 3.5 Sonnet, моделі, створеної Anthropic, для виконання завдань з оброблення розмов і тексту.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> від <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Преміум</translation>
 <translation id="6187065185557150870">Чат</translation>
@@ -1940,10 +2014,10 @@
 <translation id="9018766373792005944">Про що ваш відгук?</translation>
 <translation id="7355096922131918313">Надайте відгук тут</translation>
 <translation id="3027575440738035995">Leo Premium надає доступ до розширеного набору мовних моделей для ще більш точних відповідей. <ph name="LINK_BEFORE"/>Детальніше<ph name="LINK_AFTER"/></translation>
+<translation id="7488762544858401571">Відредаговано</translation>
 <translation id="2399439821649319175">Не допомагає</translation>
 <translation id="2976167228906046828">Неправильна</translation>
 <translation id="1183055847065865059">Небезпечна / шкідлива</translation>
-<translation id="7138678301420049075">Інше</translation>
 <translation id="2313959174679245365">Не вдалося надіслати оцінку. Перевірте підключення до мережі й повторіть спробу</translation>
 <translation id="98413980871833152">Не вдалося надіслати відгук. Перевірте підключення до мережі й повторіть спробу</translation>
 <translation id="8742658901413346500">Ця розмова довга, тому Leo скоро почне забувати певні репліки. Щоб вести довші розмови, перейдіть на преміумверсію або очистьте чат, щоб скинути розмову.</translation>
@@ -1996,6 +2070,7 @@
 <translation id="983013125018250242">Інструменти Leo</translation>
 <translation id="49269513399674318">Використовувати мікрофон</translation>
 <translation id="3895031624234442305">Користувацькі моделі</translation>
+<translation id="4572010449071015143">Почати розмову</translation>
 <translation id="6303294677342628402">Щити</translation>
 <translation id="8458987127502506209">Увімкнути щити Brave</translation>
 <translation id="7509914170164691086">Щити увімкнено <ph name="LINK_BEFORE"/>для <ph name="LINK_AFTER"/></translation>
@@ -2039,6 +2114,9 @@
 Заблоковано стеження, рекламу тощо: <ph name="NUMBER"/></translation>
 <translation id="4292121526390005808">Заблоковані скрипти</translation>
 <translation id="5046271170844958713">Дозволені скрипти</translation>
+<translation id="4575452981007854269">Застосовано захист відбитків пальців</translation>
+<translation id="1905384713982899903">Заблоковані відбитки пальців</translation>
+<translation id="314364527871618241">Дозволені відбитки пальців</translation>
 <translation id="264682546981571963">Втомилися від повідомлень про згоду на використання файлів cookie?</translation>
 <translation id="4986297793092101884">У Brave вже заблоковано сторонні файли cookie. Ми також можемо блокувати повідомлення про згоду на використання файлів cookie.</translation>
 <translation id="535688588637568715">Так, блокувати повідомлення про згоду на блокування файлів cookie</translation>
@@ -2079,36 +2157,42 @@
 <translation id="7821773512278295352">Брандмауер Brave + VPN підключено</translation>
 <translation id="6019088868713395120">Брандмауер Brave + VPN відключено</translation>
 <translation id="3541307549916475335">Інтерфейс панелі VPN Brave</translation>
-<translation id="1742469581923031760">Підключення…</translation>
-<translation id="1287487756047817908">Відключення…</translation>
+<translation id="7143207342074048698">Під’єднання</translation>
+<translation id="1202549130170287307">Триває від’єднання</translation>
 <translation id="2325196879156848326">Помилка з’єднання</translation>
 <translation id="745054660363064771">Не вдається встановити з’єднання із сервером</translation>
 <translation id="3936826714240735937">Вибрати інший сервер</translation>
-<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> не може встановити зв’язок із сервером <ph name="REGION_NAME"/>. Ви можете повторити спробу або спробувати інший сервер.</translation>
-<translation id="8703188411226330709">Розпочати безплатний пробний період</translation>
-<translation id="1024255913009642477">Уже придбали VPN?</translation>
+<translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> не може встановити зв’язок із сервером <ph name="REGION_NAME"/>. Повторіть спробу або виберіть іншу країну.</translation>
+<translation id="5753795690521538679">Розпочати безкоштовний 7-денний пробний період</translation>
+<translation id="3357036723290257445">Уже придбали Brave VPN?</translation>
 <translation id="8814357473522731680">Надано</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="8652175077544655965">Закрити налаштування</translation>
+<translation id="3099126540952997993">Брандмауер + VPN</translation>
+<translation id="5908163815855240493">Перейти на головну</translation>
 <translation id="7805768142964895445">Стан</translation>
 <translation id="5747552184818312860">Діє до</translation>
 <translation id="8421945428836418371">Автоматичне повторне з’єднання</translation>
 <translation id="434523916398030617">Зверніться до служби технічної підтримки</translation>
 <translation id="1116694919640316211">Про Brave Software Brave</translation>
-<translation id="8670386189340362926">Блокувати стеження і рекламу в усіх застосунках</translation>
-<translation id="4860763498907927955">Захищає вас від підключення до небажаних мереж</translation>
-<translation id="3181339219453722970">Виберіть локацію VPN-сервера</translation>
-<translation id="1708407585266172412">Швидко й без обмежень зі швидкістю до 500 МБ/с</translation>
-<translation id="1400240082805528049">Підтримка 24/7</translation>
+<translation id="755045397420611731">Додаткова приватність і безпека онлайн</translation>
+<translation id="4520128772974831415">Приховайте свою IP-адресу й змініть своє місцезнаходження</translation>
+<translation id="2044418816479192294">Сотні серверів у всьому світі</translation>
+<translation id="7410504850864021600">Блискавична швидкість з’єднання</translation>
+<translation id="2422309687188612485">Захистіть до 10 пристроїв за допомогою одного плану</translation>
 <translation id="1693568075761612600">Не вдалося створити заявку в службу підтримки. Перевірте з’єднання.</translation>
+<translation id="1407707415819020643">Виберіть свій сервер</translation>
 <translation id="8463313539532697053">Зачекайте, триває завантаження…</translation>
-<translation id="4317307602527599178">Не вдалося перевірити статус придбання. Це могло статися через проблему мережі.</translation>
+<translation id="2542131205769293399">Не вдалося перевірити статус вашого придбання. Імовірно, виникла проблема з мережею. Повторіть спробу або зверніться до служби підтримки.</translation>
 <translation id="4613076894734402086">Редагувати спосіб оплати</translation>
 <translation id="427718751211990320">Термін дії облікових даних сплив.</translation>
 <translation id="8670619630771851260">Не вдалося завантажити облікові дані.</translation>
 <translation id="1594643509610625766">Токен більше не дійсний.</translation>
 <translation id="8373427068383038263">Схоже, ваш останній платіж за підписку (<ph name="VALUE"/>) не пройшов. Доступ до цієї підписки буде призупинено, доки не вирішиться проблема з платежем. Спробуйте відредагувати спосіб оплати або зверніться в службу підтримки Brave.</translation>
+<translation id="5257165507296814658">Закрити форму служби підтримки</translation>
 <translation id="1839021455997460752">Ваша адреса електронної пошти</translation>
+<translation id="7508253027939632101">Введіть вашу адресу електронної пошти</translation>
 <translation id="8054563304616131773">Уведіть дійсну електронну адресу</translation>
+<translation id="365334785487370919">Це поле є обов’язковим для заповнення</translation>
 <translation id="5154702632169343078">Тема</translation>
 <translation id="6625978880678465492">Виберіть причину</translation>
 <translation id="6687228121145903051">Не вдається під’єднатися до VPN (інша помилка)</translation>
@@ -2116,6 +2200,7 @@
 <translation id="21570240866965662">Повільний зв’язок</translation>
 <translation id="1219475260382643267">Вебсайт не працює</translation>
 <translation id="1387340358507240698">Опишіть проблему</translation>
+<translation id="5597547971954030233">Опишіть свою проблему тут</translation>
 <translation id="501818585183973587">Виберіть інформацію, якою ви хочете поділитися з нами</translation>
 <translation id="3195618332367441234">Що більше ви розкажете, то простіше буде службі підтримки вам допомогти.</translation>
 <translation id="5682143294773821728">Ім’я хосту VPN:</translation>
@@ -2123,7 +2208,7 @@
 <translation id="6676791921618140305">Версія ОС:</translation>
 <translation id="1156325797949437777">Підтримка надається в партнерстві з Guardian.</translation>
 <translation id="8146777497879160283">Помилка запису конфігурації VPN. Можливо, у вас немає відповідного дозволу або ви не встановили свіже оновлення для Windows.</translation>
-<translation id="3307461350293459700">Помилка під’єднання VPN. Спробуйте ще раз, перевірте, щоб було ввімкнено налаштування «Дозволити вмикати Brave VPN».</translation>
+<translation id="3362894458460231163">Помилка під’єднання VPN. Спробуйте ще раз і обов’язково натисніть «Дозволити», щоб увімкнути конфігурацію VPN Brave.</translation>
 <translation id="7261518280726313829">Якщо буде вимкнено безпечний сервер DNS або використовуватимуться стандартні сервери у Windows, то ваш інтернет-оператор зможе побачити адреси переглянутих вами сайтів. Brave не радить так робити. Однаково вимкнути?</translation>
 <translation id="888284761945060750">Безпечний сервер DNS вимкнено політиками вашої організації. Якщо ви використовуватимете VPN Brave без безпечного сервера DNS, то ваш інтернет-оператор або організація зможуть побачити адреси переглянутих вами сайтів.</translation>
 <translation id="6593224083874259773">Brave VPN на Windows</translation>

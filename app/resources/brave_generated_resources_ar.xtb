@@ -16,6 +16,7 @@
 <translation id="8294286161128352783">فقط على صفحة علامة التبويب الجديدة</translation>
 <translation id="6406506848690869874">مزامنة</translation>
 <translation id="1544192797660353713">المحفظة</translation>
+<translation id="6129027151000961048">ليو</translation>
 <translation id="8275068909952022340">المزيد …</translation>
 <translation id="1990886731975529483">قم بتثبيت برنامج Google Widevine وتشغيله</translation>
 <translation id="8926389886865778422">عدم السؤال مرة أخرى</translation>
@@ -56,15 +57,20 @@
 <translation id="1434416574322382019">نافذة جديدة وخاصة بـTor</translation>
 <translation id="4703780849509456860">افتح الرابط في نافذة خاصة بـ Tor</translation>
 <translation id="3488584642074079080">افتح الرابط في نافذة Brave الخاصة بـ Tor</translation>
+<translation id="8594912907680633924">فتح الرابط في العرض المقسم</translation>
 <translation id="6313675821927505581">نافذة خاصة جديدة من خلال Tor</translation>
 <translation id="2638041073279639246">افتح الرابط في نافذة خاصة، باستخدام Tor</translation>
 <translation id="3425600262621021599">افتح الرابط في نافذة Brave خاصة، باستخدام Tor</translation>
+<translation id="3795436270513738622">فتح الرابط في العرض المقسم</translation>
 <translation id="2545072023356206691">بدءًا من 1 ديسمبر 2023، لن تتلقى قناة Brave Dev تحديثات المتصفح بعد الآن. نوصي المستخدمين بالانتقال إلى إصدارات Nightly أو Beta أو Release من Brave.</translation>
 <translation id="474217410105706308">تجاهل علامة التبويب</translation>
 <translation id="2804710924397009224">إخفاء أيقونة مكافآت Brave</translation>
 <translation id="5029193871181468990">إخفاء أيقونة Brave Rewards</translation>
 <translation id="2808103541110899519">إخفاء أيقونة محفظة Brave</translation>
 <translation id="7595540212376041331">إخفاء أيقونة Brave Wallet</translation>
+<translation id="3893997535859323951">إخفاء أيقونة Leo AI</translation>
+<translation id="6208515240323786457">إخفاء أيقونة Leo AI</translation>
+<translation id="2361906291514218784">Leo الذكاء الاصطناعي</translation>
 <translation id="4928988318462976765">متجر إضافات الويب</translation>
 <translation id="9181207987584064303">عرض في متجر إضافات الويب</translation>
 <translation id="3161744659507801211">تحذير: لا يستطيع Brave منع الامتدادات من تسجيل محفوظات الاستعراض الخاصة بك.</translation>
@@ -97,9 +103,6 @@
 <translation id="3462465068145800637">لا يقوم Brave Search بإنشاء ملف تعريف لك. كما أنه مستقل تمامًا عن شركات التكنولوجيا الكبرى.</translation>
 <translation id="42032117189492785">بحث مدعم بالذكاء الاصطناعي باستخدام فهرس فريد.</translation>
 <translation id="8606416238399082160">يتسم بخصوية كاملة، ومستقل تمامًا بنسبة 100%، ومزود بميزات الذكاء الاصطناعي الرائعة.</translation>
-<translation id="7706528608480893054">DDG هو مجرد Bing مخفي. حان الوقت للتمتع بخصوصية حقيقية ونتائج أفضل وفهرس مستقل. حان الوقت لـ Brave Search.</translation>
-<translation id="3818133234428578803">التخلص من تراكيب الأصوات</translation>
-<translation id="14817360483752259">لا يتعقبك Brave Search أو يتتبع استفساراتك أو نقراتك. (على عكس DDG) لا يقتصر الأمر على Bing المخفي.</translation>
 <translation id="4381193110021038941">الحصول على نتائج أفضل</translation>
 <translation id="3846545273704969734">تم التحقق من Brave Search بشكل مستقل للحصول على نتائج أفضل من Bing (أو نُسخ Bing مثل DuckDuckGo).</translation>
 <translation id="2841164160723712537">تحسين نتائج البحث</translation>
@@ -288,8 +291,9 @@
 <translation id="2818704116581303039">فتح إعدادات قائمة التشغيل</translation>
 <translation id="6790428901817661496">التشغيل</translation>
 <translation id="1178581264944972037">الإيقاف مؤقتًا</translation>
-<translation id="4477350412780666475">المقطع الصوتي التالي</translation>
-<translation id="3962859241508114581">المقطع الصوتي السابق</translation>
+<translation id="4046123991198612571">المقطع الصوتي التالي</translation>
+<translation id="2874939134665556319">المقطع الصوتي السابق</translation>
+<translation id="3040310857793999281">تبديل كتم الصوت</translation>
 <translation id="7544853251252956727">ترتيب عشوائي</translation>
 <translation id="4330722796577425585">ترجيع</translation>
 <translation id="7481312909269577407">إلى الأمام</translation>
@@ -300,7 +304,15 @@
 <translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] 
  قد يكون منتهي الصلاحية. هل ترغب في استعادته؟</translation>
 <translation id="6155018868740116868">الاستعادة</translation>
-<translation id="1727684853006449697">مشغّل Brave</translation>
+<translation id="2521960050170773751">إضافة الوسائط من الصفحة</translation>
+<translation id="2301087142998134097"><ph name="SITE"/> تريد الفتح</translation>
+<translation id="7128982309566342232">يوجد صفحة مضمنة في <ph name="SITE"/> تريد الفتح</translation>
+<translation id="1175012181261953767">هذه الصفحة تريد الفتح</translation>
+<translation id="7459546222322124545">تريد صفحة مضمنة في هذه الصفحة الفتح</translation>
+<translation id="5836261838911560851"><ph name="SITE"/> تريد الحفظ</translation>
+<translation id="5936788906460687941">يوجد صفحة مضمنة في <ph name="SITE"/> تريد الحفظ</translation>
+<translation id="7700010743463174379">هذه الصفحة تريد الحفظ</translation>
+<translation id="6774238875569752630">تريد صفحة مضمنة في هذه الصفحة الحفظ</translation>
 <translation id="9156965752763025780">‏ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل Brave.</translation>
 <translation id="7179921470347911571">أعد التشغيل الآن</translation>
 <translation id="1426410128494586442">نعم</translation>
@@ -325,6 +337,7 @@
 <translation id="5860254591544742609">عرض شريط العناوين</translation>
 <translation id="5371926069408837914">قم بتوسيع لوحة علامات التبويب العمودية فور تحريك الماوس عند طيها</translation>
 <translation id="3367129510799209147">وضع المرور فوق علامة التبويب</translation>
+<translation id="8527099657928614787">توسيع علامات التبويب الرأسية بشكل مستقل لكل نافذة</translation>
 <translation id="916373084491701212">إظهار شريط التمرير</translation>
 <translation id="515949045075831661">العرض على اليمين</translation>
 <translation id="3725395376319291415">العرض على اليسار</translation>
@@ -341,6 +354,7 @@
 <translation id="4144468798716165316">الأوامر السريعة</translation>
 <translation id="7310387888625228830">مساعد Leo الذي يعمل بالذكاء الاصطناعي</translation>
 <translation id="5222974844674487962">عرض زر Brave News</translation>
+<translation id="2085436423511121572">إظهار زر Leo AI</translation>
 <translation id="383007806262310953">عرض شريط الإشارات</translation>
 <translation id="4054323497808446566">شريط الإشارات مرئي في جميع الصفحات</translation>
 <translation id="8693858092251192712">شريط الإشارات مخفي في كل الصفحات باستثناء صفحة علامة التبويب الجديدة</translation>
@@ -441,6 +455,7 @@
 <translation id="4891600875049212418">استمتع بالخصوصية عند زيارة المواقع التي تتضمن محتوى حساسًا</translation>
 <translation id="1968895725257436430">جمع البيانات</translation>
 <translation id="4846154056248462491">عند الخروج</translation>
+<translation id="216468847346280584">مسح بيانات إعلانات Brave Ads</translation>
 <translation id="2808630562319398131">إعادة تعيين بيانات مكافآت Brave...</translation>
 <translation id="6438096877646138757">المواقع التي تقوم بمسح ملفات تعريف الارتباط بمجرد إغلاقها</translation>
 <translation id="2988792685798128092">مسح عند إغلاق الموقع</translation>
@@ -554,6 +569,8 @@
 <translation id="4094590686212463338">تعذر الانضمام إلى سلسلة المزامنة هذه. تم حذف سلسلة المزامنة.</translation>
 <translation id="4908081302669157000">أرقام الهواتف ورسائل البريد الإلكتروني والعناوين</translation>
 <translation id="294985549514492876">تطبيقات الويب (PWAs)</translation>
+<translation id="924029461438529367">إظهار اقتراحات البحث</translation>
+<translation id="3128251601544028053">عندما تكتب في شريط العناوين أو مربع البحث، فإن Brave يرسل ما تكتبه إلى محرك البحث الافتراضي للحصول على اقتراحات أفضل. هذا غير متاح في النوافذ الخاصة.</translation>
 <translation id="6285118765755298263">فهرسة محركات البحث الأخرى</translation>
 <translation id="919715748352669592">يقوم تلقائيًا بفهرسة مواقع الويب التي تتبع مواصفات OpenSearch.</translation>
 <translation id="842628013524824194">نافذة عادية - تم استخدام محرك البحث في شريط العنوان</translation>
@@ -669,7 +686,6 @@
 <translation id="3095201688102519917">تحذيري قبل إغلاق النافذة بعلامات تبويب متعددة</translation>
 <translation id="7120553802660696133">أغلق النافذة عند إغلاق آخر علامة تبويب</translation>
 <translation id="3394171693948989253">إظهار تذكير ملء الشاشة للضغط على Esc عند الخروج</translation>
-<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">إظهار رمز Leo في الشريط الجانبي</translation>
 <translation id="8055509865174199683">إظهار مساعد Leo في قائمة السياقات على مواقع الويب</translation>
 <translation id="1529674267267221673">سيظهر مساعد Leo في قائمة السياقات عندما تنقر بزر الماوس الأيمن على موقع الويب. وسيؤدي ذلك إلى إرسال السياق من صفحة الويب الحالية إلى مساعد Leo.</translation>

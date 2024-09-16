@@ -16,6 +16,7 @@
 <translation id="8294286161128352783">শুধুমাত্র নতুন ট্যাব পেজে</translation>
 <translation id="6406506848690869874">সিঙ্ক করুন</translation>
 <translation id="1544192797660353713">ওয়ালেট</translation>
+<translation id="6129027151000961048">লিও</translation>
 <translation id="8275068909952022340">অনেক…</translation>
 <translation id="1990886731975529483">Google Widevine ইনস্টল করুন এবং চালান</translation>
 <translation id="8926389886865778422">আর জিজ্ঞাসা করবেন না</translation>
@@ -56,15 +57,20 @@
 <translation id="1434416574322382019">Tor এর সাথে নতুন ব্যক্তিগত উইন্ডো</translation>
 <translation id="4703780849509456860">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3488584642074079080">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
+<translation id="8594912907680633924">স্প্লিট ভিউতে লিঙ্ক খুলুন</translation>
 <translation id="6313675821927505581">Tor এর সাথে নতুন ব্যক্তিগত উইন্ডো</translation>
 <translation id="2638041073279639246">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3425600262621021599">Tor এর সাথে Brave ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
+<translation id="3795436270513738622">স্প্লিট ভিউতে লিঙ্ক খুলুন</translation>
 <translation id="2545072023356206691">1 ডিসেম্বর, 2023 থেকে, Brave Dev চ্যানেল আর ব্রাউজারের আপডেট পাবে না। আমরা ব্যবহারকারীদের Nightly, Beta বা Brave-এর Release ভার্সনে মাইগ্রেট করতে বলি।</translation>
 <translation id="474217410105706308">ট্যাব মিউট করুন</translation>
 <translation id="2804710924397009224">ব্রেভ রিওয়ার্ড আইকন লুকান</translation>
 <translation id="5029193871181468990">Brave রিওয়ার্ড আইকন লুকান</translation>
 <translation id="2808103541110899519">Brave ওয়ালেট আইকন লুকান</translation>
 <translation id="7595540212376041331">Brave ওয়ালেট আইকন লুকান</translation>
+<translation id="3893997535859323951">Leo AI আইকন লুকান</translation>
+<translation id="6208515240323786457">Leo AI আইকন লুকান</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="4928988318462976765">ওয়েব এক্সটেনশন স্টোর</translation>
 <translation id="9181207987584064303">ওয়েব এক্সটেনশন স্টোরে দেখুন</translation>
 <translation id="3161744659507801211">সতর্কতা: Brave আপনার ব্রাউজিং ইতিহাস রেকর্ডিং থেকে এক্সটেনশনগুলিকে আটকাতে পারে না।</translation>
@@ -97,9 +103,6 @@
 <translation id="3462465068145800637">Brave সার্চ আপনার ব্যক্তিত্ব বিচার করে না। এবং এটি বিগ টেকের 100% শর্তহীন।</translation>
 <translation id="42032117189492785">একটি অনন্য ইনডেক্স দিয়ে AI-ইনফিউজড অনুসন্ধান।</translation>
 <translation id="8606416238399082160">সম্পূর্ণভাবে ব্যক্তিগত, 100% স্বতন্ত্র এবং দুর্দান্ত AI বৈশিষ্ট্য সহ।</translation>
-<translation id="7706528608480893054">DDG হল ছদ্মবেশে Bing মাত্র। প্রকৃত গোপনীয়তা, আরও ভালো ফলাফল এবং একটি স্বাধীন সূচকের সময় এসেছে। Brave সার্চ ব্যবহার করার সময় এসেছে।</translation>
-<translation id="3818133234428578803">ডিচ দা ডাক</translation>
-<translation id="14817360483752259">Brave সার্চ আপনাকে, আপনার প্রশ্ন বা ক্লিকগুলিকে ট্র্যাক করে না। এবং (DDG-র মতো নয) এটি কেবল ছদ্মবেশে Bing নয়।</translation>
 <translation id="4381193110021038941">আরও ভালো ফলাফল পান</translation>
 <translation id="3846545273704969734">Bing-এর (বা DuckDuckGo এর মত Bing ক্লোন) চেয়ে ভাল ফলাফলের জন্য Brave সার্চ স্বাধীনভাবে যাচাই করা হয়েছে।</translation>
 <translation id="2841164160723712537">আরও সার্চ ফলাফল পান</translation>
@@ -288,8 +291,9 @@
 <translation id="2818704116581303039">প্লেলিস্ট সেটিংস খুলুন</translation>
 <translation id="6790428901817661496">চালু করুন</translation>
 <translation id="1178581264944972037">বিরতি</translation>
-<translation id="4477350412780666475">পরবর্তী ট্র্যাক</translation>
-<translation id="3962859241508114581">পূর্ববর্তী ট্র্যাক</translation>
+<translation id="4046123991198612571">পরবর্তী ট্র্যাক</translation>
+<translation id="2874939134665556319">পূর্ববর্তী ট্র্যাক</translation>
+<translation id="3040310857793999281">মিউট টগল করুন</translation>
 <translation id="7544853251252956727">শাফল করুন</translation>
 <translation id="4330722796577425585">রিওয়াইন্ড</translation>
 <translation id="7481312909269577407">ফরওয়ার্ড</translation>
@@ -299,7 +303,15 @@
 <translation id="6453210454707928697">আইটেম প্লে করা গেল না</translation>
 <translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] মেয়াদ শেষ হয়ে যেতে পারে। আপনি কি এটিকে পুনরুদ্ধার করতে চান?</translation>
 <translation id="6155018868740116868">পুনরুদ্ধার করুন</translation>
-<translation id="1727684853006449697">Brave প্লেয়ার</translation>
+<translation id="2521960050170773751">পৃষ্ঠা থেকে মিডিয়া যোগ করুন</translation>
+<translation id="2301087142998134097"><ph name="SITE"/> খুলতে চায়</translation>
+<translation id="7128982309566342232"><ph name="SITE"/>-এ একটি এমবেডেড পৃষ্ঠা খুলতে চায়</translation>
+<translation id="1175012181261953767">এই পৃষ্ঠাটি খুলতে চায়</translation>
+<translation id="7459546222322124545">এই পৃষ্ঠায় একটি এমবেডেড পৃষ্ঠা খুলতে চায়</translation>
+<translation id="5836261838911560851"><ph name="SITE"/> সেভ করতে চায়</translation>
+<translation id="5936788906460687941"><ph name="SITE"/>-এ একটি এমবেডেড পৃষ্ঠা সেভ করতে চায়</translation>
+<translation id="7700010743463174379">এই পৃষ্ঠাটি সেভ করতে চায়</translation>
+<translation id="6774238875569752630">এই পৃষ্ঠায় একটি এমবেডেড পৃষ্ঠা সেভ করতে চায়</translation>
 <translation id="9156965752763025780">আপনার পরিবর্তনগুলি পরবর্তী সময় আপনি Brave আবার চালু হলে ফলপ্রদ হবে৷</translation>
 <translation id="7179921470347911571">এখনই রিলঞ্চ করুন</translation>
 <translation id="1426410128494586442">হ্যাঁ</translation>
@@ -324,6 +336,7 @@
 <translation id="5860254591544742609">টাইটেল বার দেখান</translation>
 <translation id="5371926069408837914">বন্ধ হয়ে গেলে মাউসওভারে উল্লম্ব ট্যাব প্যানেল প্রসারিত করুন</translation>
 <translation id="3367129510799209147">ট্যাব হোভার মোড</translation>
+<translation id="8527099657928614787">উইন্ডো প্রতি স্বাধীনভাবে উল্লম্ব ট্যাব প্রসারিত করুন</translation>
 <translation id="916373084491701212">স্ক্রলবার দেখান</translation>
 <translation id="515949045075831661">ডান দিকে দেখান</translation>
 <translation id="3725395376319291415">বাম দিকে দেখান</translation>
@@ -340,6 +353,7 @@
 <translation id="4144468798716165316">দ্রুত কমেন্ট</translation>
 <translation id="7310387888625228830">Leo AI অ্যাসিস্ট্যান্ট</translation>
 <translation id="5222974844674487962">Brave সংবাদ বোতাম দেখান</translation>
+<translation id="2085436423511121572">Leo AI বোতাম দেখান</translation>
 <translation id="383007806262310953">বুকমার্ক বার দেখান</translation>
 <translation id="4054323497808446566">বুকমার্ক বার সব পেজে দেখা যাচ্ছে</translation>
 <translation id="8693858092251192712">নতুন ট্যাব পেজটি ছাড়া বুকমার্ক বার সব পেজে লুকানো রয়েছে</translation>
@@ -440,6 +454,7 @@
 <translation id="4891600875049212418">সংবেদনশীল সাইট ভিজিট করার সময় অফ-দ্য-রেকর্ড হিসাবে যান</translation>
 <translation id="1968895725257436430">ডেটা সংগ্রহ</translation>
 <translation id="4846154056248462491">প্রস্থানের সময়</translation>
+<translation id="216468847346280584">Brave বিজ্ঞাপনের ডেটা সাফ করুন...</translation>
 <translation id="2808630562319398131">Brave Rewards এর ডেটা রিসেট করুন...</translation>
 <translation id="6438096877646138757">আপনি সাইট বন্ধ করে দিলে সেগুলো কুকি সাফ করে</translation>
 <translation id="2988792685798128092">সাইট বন্ধ করে সাফ করুন</translation>
@@ -553,6 +568,8 @@
 <translation id="4094590686212463338">এই সিঙ্ক চেইনে যোগ দেওয়া যায়নি। সিঙ্ক চেইনটি মুছে ফেলা হয়েছিল।</translation>
 <translation id="4908081302669157000">ফোন নম্বর, ইমেইল এবং ঠিকানা</translation>
 <translation id="294985549514492876">ওয়েব অ্যাপ (PWAs)</translation>
+<translation id="924029461438529367">অনুসন্ধানের পরামর্শ দেখান</translation>
+<translation id="3128251601544028053">আপনি অ্যাড্রেস বারে বা সন্ধানের বক্সে টাইপ করলে আরো ভালো পরামর্শ পেতে Brave, আপনি যা টাইপ করেন সেটিকে আপনার ডিফল্ট অনুসন্ধানের ইঞ্জিনে পাঠায়। এটি ব্যক্তিগত উইন্ডোতে উপলব্ধ নয়।</translation>
 <translation id="6285118765755298263">অন্যান্য সার্চ ইঞ্জিনকে ইনডেক্স করুন</translation>
 <translation id="919715748352669592">OpenSearch স্পেসিফিকেশন অনুসরণ করে এমন ওয়েবসাইটগুলিকে স্বয়ংক্রিয়ভাবে ইনডেক্স করে।</translation>
 <translation id="842628013524824194">সাধারণ উইন্ডো - ঠিকানা বারে সার্চ ইঞ্জিন ব্যবহার করা হয়েছে</translation>
@@ -668,7 +685,6 @@
 <translation id="3095201688102519917">বিবিধ ট্যাব সহ কোনও উইন্ডো বন্ধ করার আগে আমাকে জানান</translation>
 <translation id="7120553802660696133">শেষ ট্যাব বন্ধ করার সময় উইন্ডো বন্ধ করুন</translation>
 <translation id="3394171693948989253">প্রস্থানের সময় Esc টিপতে পূর্ণ স্ক্রিনে অনুস্মারক দেখান</translation>
-<translation id="6129027151000961048">লিও</translation>
 <translation id="2751872555001636931">সাইডবারে লিও আইকন দেখান</translation>
 <translation id="8055509865174199683">ওয়েবসাইটগুলিতে প্রসঙ্গ মেনুতে Leo দেখান</translation>
 <translation id="1529674267267221673">আপনি যখন কোনও ওয়েবসাইটে ডান-ক্লিক করবেন, তখন প্রসঙ্গ মেনুতে Leo দেখানো হবে। এটি বর্তমান ওয়েব পৃষ্ঠা থেকে Leo-তে প্রসঙ্গ পাঠাবে।</translation>

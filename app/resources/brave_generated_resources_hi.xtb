@@ -16,6 +16,7 @@
 <translation id="8294286161128352783">सिर्फ़ नए टैब पेज पर</translation>
 <translation id="6406506848690869874">सिंक</translation>
 <translation id="1544192797660353713">वॉलेट</translation>
+<translation id="6129027151000961048">लियो</translation>
 <translation id="8275068909952022340">और…</translation>
 <translation id="1990886731975529483">Widevine को इंस्टॉल करें और चलाएँ</translation>
 <translation id="8926389886865778422">दोबारा न पूछें</translation>
@@ -57,15 +58,20 @@
 <translation id="1434416574322382019">टोर के साथ नया गोपनीय विंडो</translation>
 <translation id="4703780849509456860">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
 <translation id="3488584642074079080">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
+<translation id="8594912907680633924">स्प्लिट व्यू में लिंक खोलें</translation>
 <translation id="6313675821927505581">Tor के साथ नई प्राइवेट विंडो</translation>
 <translation id="2638041073279639246">Tor के साथ प्राइवेट विंडो में लिंक खोलें</translation>
 <translation id="3425600262621021599">Tor के साथ ब्रेव प्राइवेट विंडो में लिंक खोलें</translation>
+<translation id="3795436270513738622">स्प्लिट व्यू में लिंक खोलें</translation>
 <translation id="2545072023356206691">1 दिसंबर 2023 से, Brave Dev चैनल के लिए किसी तरह के ब्राउज़र अपडेट नहीं भेजे जाएँगे. हमारी सलाह है कि यूज़र Brave के Nightly, Beta या Release वर्ज़न को अपना लें.</translation>
 <translation id="474217410105706308">टैब म्यूट करें</translation>
 <translation id="2804710924397009224">Brave रिवार्ड्स आइकन छुपाएं</translation>
 <translation id="5029193871181468990">Brave रिवॉर्ड आइकन को छिपाएँ</translation>
 <translation id="2808103541110899519">Brave वॉलेट आइकन को छिपाएँ</translation>
 <translation id="7595540212376041331">Brave वॉलेट आइकन को छिपाएँ</translation>
+<translation id="3893997535859323951">Leo AI आइकन छिपाएँ</translation>
+<translation id="6208515240323786457">Leo AI आइकन छिपाएँ</translation>
+<translation id="2361906291514218784">लियो AI</translation>
 <translation id="4928988318462976765">वेब एक्सटेंशन स्टोर</translation>
 <translation id="9181207987584064303">वेब एक्सटेंशन स्टोर में देखें</translation>
 <translation id="3161744659507801211">ध्यान दें: Brave, एक्सटेंशन को आपके ब्राउज़िंग विवरण को रिकॉर्ड करने से नहीं रोक सकता है।</translation>
@@ -98,9 +104,6 @@
 <translation id="3462465068145800637">Brave सर्च आपकी प्रोफ़ाइल नहीं बनाता है. यह टेक दिग्गजों से 100% आज़ाद है.</translation>
 <translation id="42032117189492785">यूनीक इंडेक्स के साथ AI समर्थित सर्च</translation>
 <translation id="8606416238399082160">पूरी तरह प्राइवेट, 100% आज़ाद और AI के शानदार फ़ीचर के साथ.</translation>
-<translation id="7706528608480893054">पर्दे के पीछे DDG भी Bing ही है. समय आ गया है असली प्राइवेसी, बेहतर नतीजे और स्वतंत्र इंडेक्स का. समय है Brave सर्च का.</translation>
-<translation id="3818133234428578803">Duck से पीछा छुड़ाएँ</translation>
-<translation id="14817360483752259">Brave सर्च आपको, आपके सवालों को, आपकी क्लिक को ट्रैक नहीं करता. और यह छिपकर (जैसे कि DDG) Bing की तरह काम नहीं करता.</translation>
 <translation id="4381193110021038941">बेहतर नतीजे पाएँ</translation>
 <translation id="3846545273704969734">यह स्वतंत्र तौर पर वेरिफ़ाई किया गया है कि Brave सर्च में Bing (या Bing की तरह काम करने वाले DDG) से बेहतर नतीजे मिलते हैं.</translation>
 <translation id="2841164160723712537">सर्च के नतीजों में सुधार करें</translation>
@@ -289,8 +292,9 @@
 <translation id="2818704116581303039">प्लेलिस्ट की सेटिंग खोलें</translation>
 <translation id="6790428901817661496">चलाएं</translation>
 <translation id="1178581264944972037">रोकें</translation>
-<translation id="4477350412780666475">अगला ट्रैक</translation>
-<translation id="3962859241508114581">पिछला ट्रैक</translation>
+<translation id="4046123991198612571">अगला ट्रैक</translation>
+<translation id="2874939134665556319">पिछला ट्रैक</translation>
+<translation id="3040310857793999281">म्यूट करना टॉगल करें</translation>
 <translation id="7544853251252956727">शफ़ल करें</translation>
 <translation id="4330722796577425585">रिवाइंड करें</translation>
 <translation id="7481312909269577407">आगे जाएं</translation>
@@ -300,7 +304,15 @@
 <translation id="6453210454707928697">आइटम चलाने में विफल</translation>
 <translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] की समय सीमा समाप्त हो सकती है। क्या आप इसे रिकवर करना चाहेंगे?</translation>
 <translation id="6155018868740116868">रिकवर करें</translation>
-<translation id="1727684853006449697">Brave प्लेयर</translation>
+<translation id="2521960050170773751">पेज से मीडिया जोड़ें</translation>
+<translation id="2301087142998134097"><ph name="SITE"/> खोलना चाहता है</translation>
+<translation id="7128982309566342232"><ph name="SITE"/> पर एक एम्बेडेड पेज खोलना चाहता है</translation>
+<translation id="1175012181261953767">यह पेज खुलना चाहता है</translation>
+<translation id="7459546222322124545">इस पेज पर एक एम्बेडेड पेज खुलना चाहता है</translation>
+<translation id="5836261838911560851"><ph name="SITE"/> सेव होना चाहता है</translation>
+<translation id="5936788906460687941"><ph name="SITE"/> पर एक एम्बेडेड पेज सेव होना चाहता है</translation>
+<translation id="7700010743463174379">यह पेज सेव होना चाहता है</translation>
+<translation id="6774238875569752630">इस पेज पर एक एम्बेडेड पेज सेव होना चाहता है</translation>
 <translation id="9156965752763025780">अगली बार आपके द्वारा क्रोमियम पुन: लॉन्‍च करने पर आपके परिवर्तन प्रभावी होंगे.</translation>
 <translation id="7179921470347911571">अब पुनः प्रस्तुत करें</translation>
 <translation id="1426410128494586442">हां</translation>
@@ -358,6 +370,7 @@ Binance
 <translation id="5860254591544742609">टाइटल बार दिखाएँ</translation>
 <translation id="5371926069408837914">जब वर्टिकल पैनल पर माउस का कर्सर जाए तो वह खुल जाए</translation>
 <translation id="3367129510799209147">टैब होवर मोड</translation>
+<translation id="8527099657928614787">हर विंडो में वर्टीकल टैब का एक्सपैंड करें</translation>
 <translation id="916373084491701212">स्क्रॉलबार दिखाएँ</translation>
 <translation id="515949045075831661">दाईं ओर दिखाएं</translation>
 <translation id="3725395376319291415">बाईं ओर दिखाएं</translation>
@@ -374,6 +387,7 @@ Binance
 <translation id="4144468798716165316">क्विक कमांड</translation>
 <translation id="7310387888625228830">लियो AI असिस्टेंट</translation>
 <translation id="5222974844674487962">Brave न्यूज़ का बटन दिखाएँ</translation>
+<translation id="2085436423511121572">Leo AI बटन दिखाएं</translation>
 <translation id="383007806262310953">बुकमार्क बार दिखाएं</translation>
 <translation id="4054323497808446566">बुकमार्क बार सभी पेज पर दिखाई देता है</translation>
 <translation id="8693858092251192712">नए टैब पेज को छोड़कर सभी पेज पर बुकमार्क बार छिपा हुआ रहता है</translation>
@@ -474,6 +488,7 @@ Binance
 <translation id="4891600875049212418">संवेदनशील वेबसाइट पर जाते समय 'अदृश्य' हो जाएँ</translation>
 <translation id="1968895725257436430">डेटा कनेक्शन</translation>
 <translation id="4846154056248462491">बाहर निकलने पर</translation>
+<translation id="216468847346280584">Brave Ads डेटा हटाएं...</translation>
 <translation id="2808630562319398131">Brave रिवॉर्ड डेटा रीसेट करें ...</translation>
 <translation id="6438096877646138757">साइटें जो बंद करने पर कुकीज़ को साफ़ करती हैं</translation>
 <translation id="2988792685798128092">साइट बंद करने पर साफ़ करें</translation>
@@ -587,6 +602,8 @@ Binance
 <translation id="4094590686212463338">इस सिंक चेन में शामिल नहीं हो सकते. यह सिंक चेन मिट चुकी है.</translation>
 <translation id="4908081302669157000">फ़ोन नंबर, ईमेल और पता</translation>
 <translation id="294985549514492876">वेब ऐप (PWA)</translation>
+<translation id="924029461438529367">सर्च के सुझाव दिखाएं</translation>
+<translation id="3128251601544028053">जब आप एड्रेस बार या सर्च बॉक्स में टाइप करते हैं, तो बेहतर सुझाव पाने के लिए, आप जो कुछ टाइप करते हैं Brave उसे आपके डिफ़ॉल्ट सर्च इंजन पर भेजता है. यह प्राइवेट विंडोज़ में उपलब्ध नहीं है.</translation>
 <translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
 <translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
 <translation id="842628013524824194">सामान्य विंडो - एड्रेस बार में इस्तेमाल किया गया सर्च इंजन</translation>
@@ -702,7 +719,6 @@ Binance
 <translation id="3095201688102519917">कई सारे टैब वाली विंडो बंद करने से पहले मुझे बताएँ</translation>
 <translation id="7120553802660696133">आखिरी टैब को बंद करते समय विंडो को भी बंद करें</translation>
 <translation id="3394171693948989253">बाहर निकलने पर Esc दबाने के लिए फ़ुल स्क्रीन रिमाइंडर दिखाएं</translation>
-<translation id="6129027151000961048">लियो</translation>
 <translation id="2751872555001636931">साइडबार में लियो आइकन दिखाएँ</translation>
 <translation id="8055509865174199683">वेबसाइट पर संदर्भ मेनू में Leo को दिखाएँ</translation>
 <translation id="1529674267267221673">जब आप किसी वेबसाइट पर राइट क्लिक करेंगे, तब संदर्भ मेनू में Leo दिखने लगेगा। यह संदर्भ को मौजूदा वेब पेज से Leo पर भेज देगा।</translation>

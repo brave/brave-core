@@ -110,6 +110,7 @@
 <translation id="3377025655491224618">علامة تبويب خاصة</translation>
 <translation id="7304425663107214334">إظهار اقتراحات المتصفح</translation>
 <translation id="8982438328166986164">يعرض اقتراحات مواقع الويب بناءً على الإشارات المرجعية وسجل التصفح.</translation>
+<translation id="924029461438529367">إظهار اقتراحات ميزة البحث</translation>
 <translation id="1571106259128580884">إظهار اقتراحات أفضل المواقع</translation>
 <translation id="9148058034647219655">إنهاء</translation>
 <translation id="8047754398610073499">حظر إشعارات الموافقة على ملفات تعريف الارتباط</translation>
@@ -263,6 +264,8 @@
 <translation id="6511854390690723657">هذا هو إعلانك الأول من Brave. انقر للاطلاع على المزيد.</translation>
 <translation id="2070991379950719711">ابدأ في استخدام Brave Rewards</translation>
 <translation id="48520986898237073">الاستمرار إلى المحفظة</translation>
+<translation id="6213254277250932867">لدي عبارة استرداد مكونة من 12 كلمة</translation>
+<translation id="4225265925807365011">لدي عبارة استرداد مكونة من 24 كلمة</translation>
 <translation id="3570367516044491911">تعيين كمتصفح افتراضي</translation>
 <translation id="6800338374677644736">التعيين كمتصفح افتراضي</translation>
 <translation id="19715420010996093">حدد متصفح Brave وانقر على "دائماً"</translation>
@@ -362,6 +365,8 @@
 <translation id="6417420737057016607">إعلانات Brave</translation>
 <translation id="5611966874859284786">يتم عرض الإشعارات الخاصة بالإعلانات عندما لا يتم استخدام موقع Brave</translation>
 <translation id="6606319453795180219">سيؤدي ذلك إلى حذف مكافآت Brave الخاصة بك وإعادة تعيين جميع بيانات مكافآت Brave الخاصة بك</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>إعادة تعيين بيانات Brave Rewards…<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>مسح بيانات إعلانات Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">إضافة إشارة مرجعية</translation>
 <translation id="340492034650766959">حذف إشارة مرجعية</translation>
 <translation id="2149973817440762519">تعديل إشارة مرجعية</translation>
@@ -461,7 +466,7 @@
 <translation id="5582686930349810484">حظر بصمات الأصابع (قياسي)</translation>
 <translation id="769702552748212954">السماح بجميع عمليات أخذ البصمات</translation>
 <translation id="876424292214881779">الإعلانات والأشياء المريبة الأخرى التي تم حظرها</translation>
-<translation id="6930134873084561197">غالبًا ما تتضمن المواقع ملفات تعريف ارتباط ونصوص برمجية تحاول التعرف على هويتك وجهازك. إنهم يريدون معرفة هويتك ومتابعتك عبر الويب لتتبع ما تفعله في كل موقع.\n\nيحجب Brave هذه الأشياء عنك لكي تتمكن من التصفح دون أن يتم تتبعك.</translation>
+<translation id="6849027612978668678">غالبًا ما تتضمن المواقع ملفات تعريف الارتباط والبرامج النصية التي تحاول التعرف عليك وعلى جهازك. وتريد معرفة هويتك ومتابعتك عبر الويب، تتبع ما تفعله على كل موقع.\n\nيقوم Brave بحظر هذه الأشياء حتى تتمكن من التصفح دون متابعة.</translation>
 <translation id="8553998445606452168">حول Brave Shields</translation>
 <translation id="8912304686498704084">قيد التشغيل</translation>
 <translation id="4963218453264888510">معطل</translation>
@@ -556,6 +561,8 @@
 <translation id="7889432931837317731">الفتح تلقائياً عندما يكون ذلك ممكناً</translation>
 <translation id="1029304566263314007">عرض إشعارات تقدم التنزيل</translation>
 <translation id="2910433761530295035">اسأل عن مكان حفظ الملفات (إذا تم اكتشاف بطاقة SD)</translation>
+<translation id="2977501775944575564">التنزيل الموازي</translation>
+<translation id="6224180438946945617">تمكين التنزيل المتوازي لتسريع سرعة التنزيل</translation>
 <translation id="8967385052772844086">عرض تقرير الخصوصية الكامل</translation>
 <translation id="6864343534748973390">الأكثر شهرة</translation>
 <translation id="4608192160278975831">خاص وبدون تتبع</translation>
@@ -585,44 +592,38 @@
 <translation id="7909462264772842773">تحكم في التشفير والرموز المميزة غير القابلة للاستبدال (NFT) الخاصة بك. تدعم محفظة Brave سلاسل Ethereum وEVM وSolana وFilecoin والمزيد.</translation>
 <translation id="165255193061631296">هل تحتاج إلى إنشاء محفظة جديدة؟</translation>
 <translation id="3485737865439729577">ابدأ مع محفظة Brave خلال دقائق</translation>
-<translation id="2759836790106646094">قم بعمل نسخة احتياطية من محفظتك الآن!</translation>
-<translation id="1078873179929044999">في الخطوة التالية، سترى ’ عبارة استرداد مكونة من 12 كلمة، والتي يمكنك استخدامها لاستعادة حسابات التشفير الأساسية الخاصة بك. احفظها في مكان آمن. عبارة الاسترداد الخاصة بك هي الطريقة الوحيدة لاسترداد الحساب في حالة نسيان كلمة المرور أو فقدان الجهاز أو سرقته أو إذا كنت تريد تبديل المحافظ..</translation>
+<translation id="2540568096903252632">أدخل كلمة المرور للمتابعة</translation>
+<translation id="3356580495013324916">أدخل كلمة مرور محفظة Brave لبدء في النسخ الاحتياطي للمحفظة.</translation>
 <translation id="2359808026110333948">استمرار</translation>
 <translation id="5488357322146334497">رسالة</translation>
-<translation id="1904000155026201268">أدرك أنه في حالة فقدان عبارة الاسترداد الخاصة بي، فلن أتمكن من الوصول إلى محفظة عملاتي المشفرة.</translation>
 <translation id="5333225216561354793">نطلب منك الإقرار بالبنود الواردة أدناه</translation>
 <translation id="6937275455070754004">اختر نوع سلاسل التحكم التي تستخدمها في محفظتك.</translation>
 <translation id="1645800479814134195">أفهم أن هذه محفظة ذاتية الحفظ، وأنني وحدي المسؤول عن أي أموال أو أصول أو حسابات مرتبطة بها، وعن اتخاذ الإجراء المناسب لتأمين محفظتي وحمايتها وإجراء النسخ الاحتياطي لها. أفهم أن Brave لا يمكنها الوصول إلى محفظتي أو عكس المعاملات نيابة عني، وأن عبارة الاسترداد الخاصة بي هي الطريقة الوحيدة لاستعادة الوصول في حالة فقدان كلمة المرور أو سرقة الجهاز أو حدوث ظرف مماثل.</translation>
 <translation id="4565891212173086999">لقد قرأت وأوافق على <ph name="CLICK_START"/>شروط الاستخدام<ph name="CLICK_END"/>.</translation>
-<translation id="3933122286596948824">عبارة الاسترداد الخاصة بك</translation>
-<translation id="5077747669435508720">اكتب هذه الكلمات أو انسخها بالترتيب الدقيق الموضح أدناه، واحفظها في مكان آمن. عبارة الاسترداد الخاصة بك هي الطريقة الوحيدة لاستعادة الوصول إلى الحساب في حالة نسيان كلمة المرور أو فقدان الجهاز أو سرقته أو إذا كنت تريد تبديل المحافظ.</translation>
-<translation id="2708402071160162126">تحذير: لا تشارك عبارة الاسترداد الخاصة بك. يمكن لأي شخص لديه هذه العبارة أن يأخذ أصولك إلى الأبد.</translation>
-<translation id="111912712268284159">لقد قمت بعمل نسخة احتياطية من عباراتي في مكان آمن.</translation>
-<translation id="6896758677409633944">نسخ</translation>
+<translation id="3259102562570606417">احفظ عبارة الاسترداد الخاصة بك</translation>
+<translation id="4339981001593889376">عبارة الاسترداد هي المفتاح للوصول إلى محفظتك في حالة نسيان كلمة المرور أو فقدان جهازك.</translation>
+<translation id="426648489149930289">احفظها في مكان آمن يتعذر على الآخرين الوصول إليه، وتجنب مشاركتها مع أي شخص.</translation>
 <translation id="3726490322412361740">أدخل كلمة المرور</translation>
-<translation id="3038243139480464605">تحقق من كلمة المرور</translation>
-<translation id="7396672979287122068">كلمة المرور التي تم التحقق منها غير مطابقة</translation>
 <translation id="1566412704591731844">محفظتك قيد الإنشاء...</translation>
 <translation id="7779823116893018906">قد يستغرق الأمر بضع ثوانٍ...</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> حساب<ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">إضافة حساب</translation>
 <translation id="3448492834076427715">تحديث الحساب</translation>
-<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="5532363218245261099">#<ph name="NUMBER"/> <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="1537175937716697987">عرض عبارة الاسترداد الخاصة بي</translation>
+<translation id="5303015959766064022">سأعد نسخة احتياطية لاحقًا</translation>
+<translation id="7345730059518887993">لنتحقق</translation>
+<translation id="7640406249038879146">أدخل الكلمة في الموضع <ph name="WORD_POSITION"/> من عبارة الاسترداد الخاصة بك.</translation>
+<translation id="2598171223363459366">يمكنك تخطي هذه الخطوة الآن، ولكن ستظل بحاجة لعمل نسخة احتياطية من عبارة الاسترداد الخاصة بك لضمان أمان الحساب.</translation>
 <translation id="8100001366858145406">تفعيل إلغاء القفل ببصمة الإصبع</translation>
 <translation id="5493402808936397665">قم بتفعيل خيار الدخول بالبصمة لفتح محفظتك بسرعة دون إدخال كلمة المرور الخاصة بك.</translation>
 <translation id="8030647312184163932">فتح القفل ببصمة الإصبع</translation>
 <translation id="4090490645603511157">استخدم المقاييس الحيوية لفتح محفظتك بسرعة دون حاجة لإدخال كلمة المرور.</translation>
 <translation id="1544192797660353713">المحفظة</translation>
-<translation id="6901810042765869341">أدخل عبارة الاسترداد الخاصة بك لاستعادة حساب التشفير crypto لـ Brave Wallet الخاص بك.</translation>
-<translation id="9120654436199628567">استعادة حساب العملة المشفرة</translation>
+<translation id="2321396552035646646">يمكنك لصق عبارة الاسترداد بأكملها في أي حقل.</translation>
+<translation id="3961126209136843111">استيراد محفظة حالية</translation>
 <translation id="4811736040444856406">عرض عبارة الاسترداد</translation>
-<translation id="283071225285270357">أدخِل عبارة الاسترداد</translation>
-<translation id="3943857333388298514">لصق</translation>
-<translation id="3331452756822160641">كلمة مرور جديدة</translation>
 <translation id="4359319875297001084">هل ترغب في توريد محافظ التفشير القديمة الخاصة بـ Brave؟</translation>
-<translation id="2339124864228588937">تحقق من عبارة الاسترداد</translation>
-<translation id="3747079125031086337">تحديد الكلمات في العبارة الاستردادية في مكانها الصحيح.</translation>
-<translation id="6518133107902771759">تحقق</translation>
 <translation id="3157931365184549694">استعادة</translation>
 <translation id="5844138175312846408">هل لديك محفظة بالفعل؟</translation>
 <translation id="2502258949541727762">قبل أن نبدأ</translation>
@@ -631,6 +632,7 @@
 <translation id="2523174693142405417">شبكات البحث</translation>
 <translation id="1164748583090434571">عرض شبكات الاختبار</translation>
 <translation id="935220650946301698">المتابعة بواسطة شبكات <ph name="NUMBER"/>.</translation>
+<translation id="4052668782430384783">كلمة رقم #<ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">إنشاء كلمة مرور</translation>
 <translation id="2789310860394340571">ستستخدم كلمة المرور هذه للوصول إلى محفظتك.</translation>
 <translation id="2136372518715274136">أدخل كلمة مرور جديدة</translation>
@@ -648,9 +650,8 @@
 <translation id="5619264711680220002">إلغاء القفل الحيوي</translation>
 <translation id="9195657745688986798">فتح المحفظة</translation>
 <translation id="5168349973342709369">أدخل كلمة المرور لفتح المحفظة</translation>
-<translation id="3043677904160378840">يجب أن تكون كلمات المرور 8 أحرف على الأقل.</translation>
 <translation id="1144810021918451336">لا يحميك من مواقع الويب والتنزيلات والإضافات الخطيرة.</translation>
-<translation id="5760476995887363522">العبارات غير متطابقة. حاول مرة أخرى.</translation>
+<translation id="9085712756417277119">عبارة الاسترداد لا تتطابق</translation>
 <translation id="2360588547830602174">فشل استرداد الحساب، حاول مرة أخرى.</translation>
 <translation id="1987317783729300807">الحسابات</translation>
 <translation id="6284218950354553099">الإرسال التلقائي لأداة البينج للاستخدام اليومي إلى Brave</translation>
@@ -685,16 +686,21 @@
 <translation id="3510283489391432976">اختيار موقعك الجغرافي / بلدك</translation>
 <translation id="7695158478627528928">لا يسجل Brave نشاطك أبدًا</translation>
 <translation id="4575683170451975058">حماية 5 أجهزة باشتراك واحد</translation>
+<translation id="755045397420611731">الخصوصية والأمان الإضافيان عبر الإنترنت</translation>
+<translation id="4520128772974831415">إخفاء عنوان IP الخاص بك وتغيير موقعك</translation>
+<translation id="2044418816479192294">مئات من الخوادم حول العالم</translation>
+<translation id="7410504850864021600">سرعات اتصال فائقة</translation>
+<translation id="2422309687188612485">حماية ما يصل إلى 10 أجهزة بخطة واحدة</translation>
 <translation id="4882693590083943563">تتضمن جميع الخطط <ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">تجربة مجانية لمدة 7 أيام!</translation>
 <translation id="1532536259167115948">الاشتراك الشهري <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">الاشتراك السنوي <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">يتجدد شهريًا</translation>
-<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / mo.</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /شهر</translation>
 <translation id="1163809943099641131">ٍسنة واحدة</translation>
-<translation id="172859718096975160">تجديد سنوي<ph name="DISCOUNT_TEXT_START"/>وفّر <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
-<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
-<translation id="5125233570742276182">سيتم تحصيل الاشتراكات عبر حسابك على Google. وسيتم مصادرة أي جزء غير مستخدم من النسخة التجريبية المجانية، إذا تم عرضه، عند شراء اشتراك.\n\nسيتم تجديد اشتراكك تلقائيًا ما لم يتم إلغاؤه قبل 24 ساعة على الأقل من نهاية الفترة الحالية.\n\nيمكنك إدارة اشتراكاتك في الإعدادات.\باستخدام Brave، توافق على شروط الاستخدام وسياسة الخصوصية.</translation>
+<translation id="727385358513272220">يتجدد سنويا (<ph name="DISCOUNT_TEXT_START"/>حفظ <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /سنة</translation>
+<translation id="2786538705804257030">سيتم تحصيل الاشتراكات عبر حسابك على Google. وسيتم مصادرة أي جزء غير مستخدم من النسخة التجريبية المجانية، إذا تم عرضه، عند شراء اشتراك.\n\nسيتم تجديد اشتراكك تلقائيًا ما لم يتم إلغاؤه قبل 24 ساعة على الأقل من نهاية الفترة الحالية.\n\nيمكنك إدارة اشتراكاتك في الإعدادات.\n\nباستخدام Brave، توافق على شروط الاستخدام وسياسة الخصوصية.</translation>
 <translation id="5035172357624830412">هل اشتريت بالفعل عبر الموقع الإلكتروني Brave.com؟</translation>
 <translation id="713136183174551885">قم بتحديث بيانات الاعتماد الخاصة بك</translation>
 <translation id="6053992191006521518">المحاولة مجانًا</translation>
@@ -929,7 +935,6 @@
 <translation id="7002577172732106572">الانقسام النفقي</translation>
 <translation id="8181161042860463420">حساب العملة الرمزية المرتبط غير موجود حتى الآن. سينفق مبلغًا صغيرًا من SOL لإنشائه وتمويله. <ph name="CLICK_START"/>تعرف على المزيد<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">جارٍ تحديث ملف تعريف VPN ...</translation>
-<translation id="7457027586454688423">أدخل كلمة مرور محفظة Brave الخاصة بك</translation>
 <translation id="4784306439879850873">لاحظ أن Brave لا يمكنه التحقق مما سيحدث إذا قمت بالتوقيع. يمكن أن يخول التوقيع تقريبًا أي عملية في حسابك أو نيابة عنك ، بما في ذلك (على سبيل المثال لا الحصر) منح التحكم الكامل في حسابك وأصول التشفير للموقع الذي يقدم الطلب. قم بالتوقيع فقط إذا كنت متأكدًا من رغبتك في اتخاذ هذا الإجراء، وتثق في الموقع الطالب.</translation>
 <translation id="3474375934783434676">تسجيل الدخول على مسؤوليتك الخاصة</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> من<ph name="SIZE"/></translation>
@@ -939,6 +944,7 @@
 <translation id="2629767022373384291">هل ترغب في استخدام المصادقة البيومترية لفتح محفظة Brave؟</translation>
 <translation id="4782919977106118997">استخدام فتح القفل ببصمة الإصبع</translation>
 <translation id="2054995875643283428">تخطي هذا الآن</translation>
+<translation id="2610561535971892504">انقر للنسخ</translation>
 <translation id="2522605225061484799">الانتقال إلى محفظتي</translation>
 <translation id="1148624853678088576">أنت جاهز تمامًا!</translation>
 <translation id="4131445988101719379">محفظة Brave الخاصة بك جاهزة للاستخدام</translation>
@@ -1021,7 +1027,7 @@
 <translation id="6610899852831463073">لا يمكن تمكين التصفح الآمن</translation>
 <translation id="7954263306665462056">تم تعطيل التصفح الآمن على جهازك. لتمكين التصفح الآمن، تأكد من تثبيت خدمات Google Play وتحديثها.</translation>
 <translation id="6605147707233193230">قم بالتفعيل للمساعدة في دعم منشئي المحتوى</translation>
-<translation id="1609556006143307897">أنت تساعد في دعم مُنشئي المحتوى</translation>
+<translation id="5899814466108868020">أنت تساعد في دعم Brave ومجتمع BAT</translation>
 <translation id="6067959437127691361">يساعد استخدام Brave Rewards في دعم منشئي المحتوى ويتيح لك ربح BAT.</translation>
 <translation id="3264975266761862670">هل أنت مستعد لبدء الكسب؟</translation>
 <translation id="265337947574975838">قم بربط أو إنشاء حساب مع أحد شركائنا.</translation>
@@ -1120,6 +1126,7 @@
 <translation id="1173894706177603556">إعادة تسمية</translation>
 <translation id="3596306474342941843">حذف قائمة التشغيل</translation>
 <translation id="7765158879357617694">نقل</translation>
+<translation id="6896758677409633944">نسخ</translation>
 <translation id="3803384303807438047">حذف بيانات العنصر في وضع عدم الاتصال بالإنترنت</translation>
 <translation id="4195643157523330669">فتح الإشارة في علامة تبويب جديدة</translation>
 <translation id="4243710787042215766">فتح في علامة تبويب خاصة</translation>

@@ -16,6 +16,7 @@
 <translation id="8294286161128352783">Только на новой вкладке</translation>
 <translation id="6406506848690869874">Синхронизация</translation>
 <translation id="1544192797660353713">Кошелек</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="8275068909952022340">Ещё…</translation>
 <translation id="1990886731975529483">Установка и запуск Widevine</translation>
 <translation id="8926389886865778422">Больше не спрашивать</translation>
@@ -56,15 +57,20 @@
 <translation id="1434416574322382019">Новое приватное окно с Тор</translation>
 <translation id="4703780849509456860">Открыть ссылку в приватном окне с Тор</translation>
 <translation id="3488584642074079080">Открыть ссылку в приватном окне Brave с Тор</translation>
+<translation id="8594912907680633924">Открыть в режиме разделенного экрана</translation>
 <translation id="6313675821927505581">Новое приватное окно с Tor</translation>
 <translation id="2638041073279639246">Открыть ссылку в приватном окне с Tor</translation>
 <translation id="3425600262621021599">Открыть ссылку в приватном окне Brave с Tor</translation>
+<translation id="3795436270513738622">Открыть в режиме разделенного экрана</translation>
 <translation id="2545072023356206691">С 1 декабря 2023 года мы перестанем выпускать обновления для Brave Dev. Рекомендуем перейти на Brave Nightly или Beta либо использовать основную версию браузера.</translation>
 <translation id="474217410105706308">Отключить звук на вкладке</translation>
 <translation id="2804710924397009224">Скрыть иконку Brave Rewards</translation>
 <translation id="5029193871181468990">Скрыть значок Brave Наград</translation>
 <translation id="2808103541110899519">Скрыть значок Brave Кошелька</translation>
 <translation id="7595540212376041331">Скрыть значок Brave Кошелька</translation>
+<translation id="3893997535859323951">Скрыть значок Leo</translation>
+<translation id="6208515240323786457">Скрыть значок Leo</translation>
+<translation id="2361906291514218784">ИИ-помощник Leo</translation>
 <translation id="4928988318462976765">Магазин расширений</translation>
 <translation id="9181207987584064303">Открыть в магазине расширений</translation>
 <translation id="3161744659507801211">Внимание: Brave не может запретить расширениям сохранять историю просмотров.</translation>
@@ -97,9 +103,6 @@
 <translation id="3462465068145800637">Brave Поиск не отслеживает ваши действия и запросы. Наша система полностью независима от технологических гигантов.</translation>
 <translation id="42032117189492785">Поиск с поддержкой ИИ и уникальным индексом</translation>
 <translation id="8606416238399082160">Brave — это конфиденциальный и независимый браузер с полезными функциями ИИ.</translation>
-<translation id="7706528608480893054">DuckDuckGo — просто замаскированная система Bing. Brave Поиск — это реальная конфиденциальность, более точные результаты и независимый индекс.</translation>
-<translation id="3818133234428578803">Сделайте правильный выбор</translation>
-<translation id="14817360483752259">Brave Поиск не отслеживает ваши действия и запросы. В отличие от DuckDuckGo, мы — не замаскированный аналог Bing.</translation>
 <translation id="4381193110021038941">Находите нужную информацию быстрее</translation>
 <translation id="3846545273704969734">Независимые проверки показывают, что Brave Поиск предлагает результаты точнее, чем Bing или аналоги, такие как DuckDuckGo.</translation>
 <translation id="2841164160723712537">Получайте точные результаты</translation>
@@ -288,8 +291,9 @@
 <translation id="2818704116581303039">Открыть настройки Brave Плейлиста</translation>
 <translation id="6790428901817661496">Воспроизвести</translation>
 <translation id="1178581264944972037">Пауза</translation>
-<translation id="4477350412780666475">Следующий трек</translation>
-<translation id="3962859241508114581">Предыдущий трек</translation>
+<translation id="4046123991198612571">Следующий трек</translation>
+<translation id="2874939134665556319">Предыдущий трек</translation>
+<translation id="3040310857793999281">Отключить звук</translation>
 <translation id="7544853251252956727">Перемешать</translation>
 <translation id="4330722796577425585">Воспроизвести заново</translation>
 <translation id="7481312909269577407">Вперед</translation>
@@ -299,7 +303,15 @@
 <translation id="6453210454707928697">Не удалось воспроизвести файл</translation>
 <translation id="8741852840789907931">Возможно, файл [<ph name="ITEM_NAME"/>] устарел. Вы хотите восстановить его?</translation>
 <translation id="6155018868740116868">Восстановить</translation>
-<translation id="1727684853006449697">Проигрыватель Brave</translation>
+<translation id="2521960050170773751">Добавить медиаконтент со страницы</translation>
+<translation id="2301087142998134097">Открывается сайт <ph name="SITE"/></translation>
+<translation id="7128982309566342232">Открывается встроенная страница <ph name="SITE"/></translation>
+<translation id="1175012181261953767">Открывается страница</translation>
+<translation id="7459546222322124545">Открывается встроенная страница</translation>
+<translation id="5836261838911560851">Сайт <ph name="SITE"/> запрашивает сохранение</translation>
+<translation id="5936788906460687941">Встроенная страница по адресу <ph name="SITE"/> запрашивает сохранение</translation>
+<translation id="7700010743463174379">Страница запрашивает сохранение</translation>
+<translation id="6774238875569752630">Встроенная страница запрашивает сохранение</translation>
 <translation id="9156965752763025780">Изменения вступят в силу при следующем входе в Brave.</translation>
 <translation id="7179921470347911571">Перезапустить</translation>
 <translation id="1426410128494586442">Да</translation>
@@ -324,6 +336,7 @@
 <translation id="5860254591544742609">Показывать заголовок окна</translation>
 <translation id="5371926069408837914">Раскрывать вертикальную панель вкладок при наведении мыши, если она свернута</translation>
 <translation id="3367129510799209147">Режим наведения указателя на вкладку</translation>
+<translation id="8527099657928614787">Раскрыть вертикальную панель вкладок в этом окне</translation>
 <translation id="916373084491701212">Показывать полосу прокрутки</translation>
 <translation id="515949045075831661">Показать справа</translation>
 <translation id="3725395376319291415">Показать слева</translation>
@@ -340,6 +353,7 @@
 <translation id="4144468798716165316">Быстрые команды</translation>
 <translation id="7310387888625228830">ИИ-помощник Leo</translation>
 <translation id="5222974844674487962">Показывать кнопку Brave Новостей</translation>
+<translation id="2085436423511121572">Показать кнопку Leo</translation>
 <translation id="383007806262310953">Показывать панель закладок</translation>
 <translation id="4054323497808446566">Панель закладок закреплена на всех вкладках</translation>
 <translation id="8693858092251192712">Панель закладок закреплена только на новых вкладках</translation>
@@ -440,6 +454,7 @@
 <translation id="4891600875049212418">Включать режим «Не для протокола» при посещении сайтов с деликатным контентом</translation>
 <translation id="1968895725257436430">Сбор данных</translation>
 <translation id="4846154056248462491">На выходе</translation>
+<translation id="216468847346280584">Удалить данные Brave Рекламы</translation>
 <translation id="2808630562319398131">Сбросить данные Вознаграждений Brave...</translation>
 <translation id="6438096877646138757">Сайты, которые удаляют файлы cookie при закрытии</translation>
 <translation id="2988792685798128092">Удаление файлов cookie при закрытии сайта</translation>
@@ -553,6 +568,8 @@
 <translation id="4094590686212463338">Не удалось присоединиться к цепи синхронизации, потому что она удалена.</translation>
 <translation id="4908081302669157000">Телефонные номера, электронная почта и адреса</translation>
 <translation id="294985549514492876">Веб-приложения (PWA)</translation>
+<translation id="924029461438529367">Показывать подсказки при поиске</translation>
+<translation id="3128251601544028053">Когда вы вводите текст в адресной строке или окне поиска, Brave отправляет ваш запрос поисковой системе по умолчанию и получает от нее подсказки. В режиме инкогнито эта функция отключена.</translation>
 <translation id="6285118765755298263">Добавлять другие поисковые системы</translation>
 <translation id="919715748352669592">Сайты, соответствующие спецификациям OpenSearch, будут автоматически индексироваться.</translation>
 <translation id="842628013524824194">Обычное окно — поисковая система используется в адресной строке</translation>
@@ -668,7 +685,6 @@
 <translation id="3095201688102519917">Предупреждать перед закрытием окна с несколькими вкладками</translation>
 <translation id="7120553802660696133">Закрывать окно при закрытии последней вкладки</translation>
 <translation id="3394171693948989253">Показывать подсказку о нажатии Esc для выхода из полноэкранного режима</translation>
-<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Показывать значок Leo на боковой панели</translation>
 <translation id="8055509865174199683">Показывать Leo в контекстных меню сайтов</translation>
 <translation id="1529674267267221673">Leo появится в контекстном меню на сайте при нажатии правой кнопкой мыши и получит сведения о текущей странице.</translation>

@@ -16,6 +16,7 @@
 <translation id="8294286161128352783">新しいタブページのみ</translation>
 <translation id="6406506848690869874">同期</translation>
 <translation id="1544192797660353713">ウォレット</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="8275068909952022340">詳細…</translation>
 <translation id="1990886731975529483">Google Widevineをインストールして実行</translation>
 <translation id="8926389886865778422">再表示させない</translation>
@@ -56,15 +57,20 @@
 <translation id="1434416574322382019">新しいプライベートウィンドウ+Tor</translation>
 <translation id="4703780849509456860">トーアのプライベートウィンドウでリンクを開く</translation>
 <translation id="3488584642074079080">Braveプライベートウィンドウ+Tor でリンクを開く</translation>
+<translation id="8594912907680633924">スプリットビューでリンクを開く</translation>
 <translation id="6313675821927505581">Torで新しいプライベートウィンドウを開く</translation>
 <translation id="2638041073279639246">Torのプライベートウィンドウでリンクを開きます</translation>
 <translation id="3425600262621021599">Torのプライベートウィンドウで Brave内のリンクを開く</translation>
+<translation id="3795436270513738622">スプリットビューでリンクを開く</translation>
 <translation id="2545072023356206691">2023年12月1日から、Brave Devチャンネルはブラウザアップデートを受け取らなくなります。Nightly、Beta、またはRelease版のBraveに移行をお勧めします。</translation>
 <translation id="474217410105706308">タブをミュート</translation>
 <translation id="2804710924397009224">Brave Rewards アイコンを非表示にします</translation>
 <translation id="5029193871181468990">Brave Rewardsアイコンを非表示にする</translation>
 <translation id="2808103541110899519">Braveウォレットのアイコンを非表示</translation>
 <translation id="7595540212376041331">Braveウォレットのアイコンを非表示</translation>
+<translation id="3893997535859323951">Leo AIアイコンを非表示</translation>
+<translation id="6208515240323786457">Leo AIアイコンを非表示</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="4928988318462976765">ウェブ拡張機能ストア</translation>
 <translation id="9181207987584064303">ウェブ拡張ストアを見る</translation>
 <translation id="3161744659507801211">警告：Braveは拡張機能が閲覧履歴を記録するのを防ぐことはできません。</translation>
@@ -97,9 +103,6 @@
 <translation id="3462465068145800637">Brave検索はユーザー情報をプロファイリングしません。大手テック企業からは100％独立した独自のシステムです。</translation>
 <translation id="42032117189492785">独自のインデックスでAIを取り入れた検索を。</translation>
 <translation id="8606416238399082160">完全プライベート、100％独立型、優れたAI機能も搭載。</translation>
-<translation id="7706528608480893054">個人情報を収集しないことで知られるDDGですが、本質的にはこれまでと何ら変わりはありません。Brave検索は、本当の意味でのプライバシーとより良い検索結果、独立したインデックスをすべての方に提供します。</translation>
-<translation id="3818133234428578803">その検索、本当に安全？</translation>
-<translation id="14817360483752259">Brave検索は個人情報、クエリ、クリックを追跡しない真にプライベートな検索エンジンです。DDGやBing...今お使いのものはいかがですか？</translation>
 <translation id="4381193110021038941">欲しい検索結果がここに</translation>
 <translation id="3846545273704969734">Brave検索は独自に情報を検証し、ニーズに合ったより細やかな検索結果を提供します。これは、他社製品にはないBraveならではの強みです。</translation>
 <translation id="2841164160723712537">検索精度がはるかに向上</translation>
@@ -288,8 +291,9 @@
 <translation id="2818704116581303039">プレイリスト設定を開く</translation>
 <translation id="6790428901817661496">再生</translation>
 <translation id="1178581264944972037">一時停止</translation>
-<translation id="4477350412780666475">次のトラック</translation>
-<translation id="3962859241508114581">前のトラック</translation>
+<translation id="4046123991198612571">次のトラック</translation>
+<translation id="2874939134665556319">前のトラック</translation>
+<translation id="3040310857793999281">ミュートの切り替え</translation>
 <translation id="7544853251252956727">シャッフル</translation>
 <translation id="4330722796577425585">巻き戻し</translation>
 <translation id="7481312909269577407">進む</translation>
@@ -299,7 +303,15 @@
 <translation id="6453210454707928697">アイテムの再生に失敗しました</translation>
 <translation id="8741852840789907931">[<ph name="ITEM_NAME"/>]の有効期限が切れている可能性があります。復元しますか？</translation>
 <translation id="6155018868740116868">復元する</translation>
-<translation id="1727684853006449697">Braveプレーヤー</translation>
+<translation id="2521960050170773751">ページからメディアを追加</translation>
+<translation id="2301087142998134097"><ph name="SITE"/>が次へのアクセスを要求しています:</translation>
+<translation id="7128982309566342232"><ph name="SITE"/>に埋め込まれたページが次へのアクセスを要求しています:</translation>
+<translation id="1175012181261953767">このページが次へのアクセスを要求しています:</translation>
+<translation id="7459546222322124545">このページに埋め込まれたページが次へのアクセスを要求しています:</translation>
+<translation id="5836261838911560851"><ph name="SITE"/>が次の保存を要求しています:</translation>
+<translation id="5936788906460687941"><ph name="SITE"/>に埋め込まれたページが次の保存を要求しています</translation>
+<translation id="7700010743463174379">このページが次の保存を要求しています:</translation>
+<translation id="6774238875569752630">このページに埋め込まれたページが次の保存を要求しています</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
 <translation id="1426410128494586442">はい</translation>
@@ -324,6 +336,7 @@
 <translation id="5860254591544742609">タイトルバーを表示</translation>
 <translation id="5371926069408837914">折りたたまれている状態でマウスオーバーすると、垂直タブパネルを展開</translation>
 <translation id="3367129510799209147">タブホバーモード</translation>
+<translation id="8527099657928614787">垂直タブをウィンドウごとに独立して展開</translation>
 <translation id="916373084491701212">スクロールバーを表示</translation>
 <translation id="515949045075831661">右側に表示</translation>
 <translation id="3725395376319291415">左側に表示</translation>
@@ -340,6 +353,7 @@
 <translation id="4144468798716165316">クイックコマンド</translation>
 <translation id="7310387888625228830">Leo AI アシスタント</translation>
 <translation id="5222974844674487962">Braveニュースボタンを表示する</translation>
+<translation id="2085436423511121572">Leo AIボタンを表示</translation>
 <translation id="383007806262310953">ブックマーク バーを表示する</translation>
 <translation id="4054323497808446566">ブックマーク バーをすべてのページに表示</translation>
 <translation id="8693858092251192712">新しいタブページを除き、ブックマーク バーをすべてのページで非表示</translation>
@@ -440,6 +454,7 @@
 <translation id="4891600875049212418">機密性の高いサイトを訪問する場合はOTRモードに切り替える</translation>
 <translation id="1968895725257436430">データコレクション</translation>
 <translation id="4846154056248462491">終了時に</translation>
+<translation id="216468847346280584">Brave広告のデータをクリア</translation>
 <translation id="2808630562319398131">Brave Rewardsデータをリセット...</translation>
 <translation id="6438096877646138757">閉じたときにCookiesを消去するサイト</translation>
 <translation id="2988792685798128092">サイトを閉じたときに消去</translation>
@@ -553,6 +568,8 @@
 <translation id="4094590686212463338">この同期チェーンに参加できません。同期チェーンが削除されています。</translation>
 <translation id="4908081302669157000">電話番号、メールアドレス、住所</translation>
 <translation id="294985549514492876">ウェブアプリ（PWA）</translation>
+<translation id="924029461438529367">検索候補を表示</translation>
+<translation id="3128251601544028053">アドレスバーや検索ボックスに文字を入力すると、Braveは入力した文字をデフォルトの検索エンジンに送信し、より良い候補を取得します。これはプライベートウィンドウでは利用できません。</translation>
 <translation id="6285118765755298263">他の検索エンジンのインデックス</translation>
 <translation id="919715748352669592">OpenSearchの仕様に従うウェブサイトのインデックスを自動的に作成します。</translation>
 <translation id="842628013524824194">標準ウィンドウ - アドレスバーで使用される検索エンジン</translation>
@@ -668,7 +685,6 @@
 <translation id="3095201688102519917">複数のタブでウィンドウを閉じる前に警告を表示する</translation>
 <translation id="7120553802660696133">最後のタブを閉じる際にウィンドウを閉じる</translation>
 <translation id="3394171693948989253">終了時にEscを押すよう、全画面でリマインダーを表示</translation>
-<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">サイドバーにLeoアイコンを表示</translation>
 <translation id="8055509865174199683">ウェブサイトのコンテキストメニューにLeoを表示</translation>
 <translation id="1529674267267221673">ウェブサイトを右クリックすると、コンテキストメニューにLeoが表示されます。これにより、現在のウェブページのコンテキストがLeoに送信されます。</translation>

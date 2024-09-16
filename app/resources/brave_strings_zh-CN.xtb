@@ -17,7 +17,7 @@
 <translation id="6213288206540454953">若要共享窗口，请在“系统偏好设置”中为 Brave 启用屏幕录制功能。</translation>
 <translation id="1203500561924088507">感谢您完成安装。您必须重启浏览器才能使用 <ph name="BUNDLE_NAME"/>。</translation>
 <translation id="8799570501820813406">当此标签页处于闲置状态时，系统会释放一些内存，以让 Brave 保持快速运行。您可以选择始终不让此网站处于闲置状态。</translation>
-<translation id="8767381092474532098">Brave 阻止了此项下载操作，因为该文件具有危险性</translation>
+<translation id="8767381092474532098">由于该文件具有危险性，Brave 阻止了这次下载</translation>
 <translation id="3256289531845594061">使用 <ph name="USER_EMAIL"/> 登录 Gmail 或 YouTube 等 Brave 服务时，您可以使用同一账号自动登录 Brave</translation>
 <translation id="1290883685122687410">设置错误：<ph name="METAINSTALLER_EXIT_CODE"/>。<ph name="WINDOWS_ERROR"/></translation>
 <translation id="4798342026247191171">设置您的新 Brave 个人资料</translation>
@@ -53,6 +53,7 @@
 <translation id="9048754176089806686">Brave 阻止了此项下载操作，因为这不是常下载的文件类型，可能具有危险性</translation>
 <translation id="1953553007165777902">正在下载…还需 <ph name="MINUTE"/> 分钟</translation>
 <translation id="1775322105159056176">Brave 无法确定或设置默认浏览器</translation>
+<translation id="4372901050442507812">了解 Brave 为何屏蔽某些文件（在新标签页中打开）</translation>
 <translation id="9220324636239049437">这会从这台设备上删除 1 项内容。如果日后想要检索您的数据，届时请以 <ph name="USER_EMAIL"/> 的身份登录 Brave。</translation>
 <translation id="2018879682492276940">安装失败。请重试。</translation>
 <translation id="831418749472885028">若要检查您的其他密码是否未曾遭遇数据泄露和其他安全问题，请<ph name="BEGIN_LINK"/>登录 Brave<ph name="END_LINK"/>。</translation>
@@ -113,6 +114,7 @@
 <translation id="2915996080311180594">暂不重启</translation>
 <translation id="2928420929544864228">安装完毕。</translation>
 <translation id="2945997411976714835">安装时出错：安装程序进程未能启动。</translation>
+<translation id="3688936822855019158">贵组织负责管理 Brave</translation>
 <translation id="8208853227947884571">Brave 已是最新版本</translation>
 <translation id="5122472867956731189">如果某个网站企图窃取您的密码，或者您下载了有害的文件，Brave 可能还会将相应网址连同少量网页内容发送给“安全浏览”功能</translation>
 <translation id="500707801149472925">Brave 可以让这些标签页处于非活跃状态，以改善您的浏览体验并释放资源。</translation>
@@ -207,6 +209,7 @@
 <translation id="8148611988012584308">自定义及控制 Brave</translation>
 <translation id="4427306783828095590">“增强型保护”选项在防范网上诱骗和恶意软件方面更高一筹</translation>
 <translation id="4434353761996769206">安装程序错误：<ph name="INSTALLER_ERROR"/></translation>
+<translation id="175926951572479413"><ph name="MANAGER"/>负责管理 Brave</translation>
 <translation id="6786534271003695094">关于 Brave for Testing</translation>
 <translation id="4501471624619070934">由于在此国家/地区的访问权限遭到限制，安装失败。</translation>
 <translation id="8594994021633965927">此扩展程序尚未发布隐私权规范，例如如何收集和使用数据。Brave 建议您移除它。</translation>
@@ -408,6 +411,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="38294420683216447">通过使用多份 Brave 个人资料，您可将自己的所有 Brave 信息分门别类，从而更轻松地将工作和娱乐分开。</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave 开发者版</translation>
 <translation id="2034072705932785495">Brave 需要获得相应权限，才能允许此网站使用您的摄像头</translation>
+<translation id="7129342855140808694">如需使用麦克风，请在<ph name="BEGIN_LINK"/>系统设置<ph name="END_LINK"/>中授予 Brave 访问权限</translation>
 <translation id="5296583608321648908">若要接收后续 Brave 更新，您需使用 Windows 10 或更高版本。该计算机目前使用的是 Windows 7。</translation>
 <translation id="3962395975456095331">重新启动 Brave？</translation>
 <translation id="2619516027171717873">无法安装与当前运行的版本相同的 Brave。请关闭 Brave 并重试。</translation>
@@ -434,6 +438,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="7872446069773932638">正在下载…还需 <ph name="SECONDS"/> 秒</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>您可以如何管理自己的数据<ph name="END_BOLD"/>：为了保护您的隐私，如果您的兴趣保留时间超过 4 周，系统便会自动将其删除。随着您继续浏览，某项兴趣可能会再次出现在列表中。您也可以移除不希望纳入 Brave 考虑范围的兴趣。</translation>
 <translation id="5687542525349822727">将 Brave 设为默认浏览器</translation>
+<translation id="6396151137840491551">Brave 会尽可能将不安全的连接自动升级为 HTTPS</translation>
 <translation id="2925193881330501265">您之前登录 Brave 时使用的账号为 <ph name="USER_EMAIL_ADDRESS"/>，请使用同一账号再次登录。</translation>
 <translation id="6915252145142862992">这是 Brave 的并行安装，您无法将此浏览器设为默认浏览器。</translation>
 <translation id="7685904775439037072">一旦 Brave 获得了使用权限，网站便能请求您向其授予使用权限。</translation>
@@ -445,6 +450,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="813913629614996137">正在初始化…</translation>
 <translation id="7550680632761245819">开启 Brave 的 JavaScript 和 WebAssembly 引擎额外保护功能</translation>
 <translation id="9067428552314418522">此文件存在危险，因此 Brave 已将其拦截。</translation>
+<translation id="8377926237617998195">如需使用摄像头，请在<ph name="BEGIN_LINK"/>系统设置<ph name="END_LINK"/>中授予 Brave 访问权限</translation>
 <translation id="1755067029031059271">Brave 无法验证此扩展程序的来源，它可能不安全。请将其从 Brave 中移除，这样它便无法再查看和更改您在所访问的网站上的数据，包括个人信息。</translation>
 <translation id="8207657266087451193">如果图片缺少有用的说明，则 Brave 会尝试为您提供一条说明。为便于创建说明，系统会将图片发送给 Brave。您可以随时在“设置”中关闭此功能。</translation>
 <translation id="7792526144795244436">要使用新的个人资料登录 Brave 吗？</translation>
@@ -468,6 +474,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="8550334526674375523">此工作资料与您的个人资料是完全分开的。</translation>
 <translation id="8555465886620020932">发生了服务错误：<ph name="SERVICE_ERROR"/>。</translation>
 <translation id="227028348235968071">您需要先登录 Brave 账号才能使用 Brave 的密码检查功能。</translation>
+<translation id="839677568225616901">多个组织负责管理 Brave</translation>
 <translation id="8121009781989288430">版权所有<ph name="YEAR"/> Brave Software Inc。保留所有权利。</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>我们会如何使用这些数据<ph name="END_BOLD"/>：网站可以将您的兴趣信息存储在 Brave 中。例如，如果您访问某个网站购买马拉松跑鞋，系统可能会根据该网站推测您对跑马拉松感兴趣。之后，如果您访问其他网站报名参加比赛，相应网站就可以根据您的兴趣向您展示跑鞋广告。</translation>
 <translation id="3052349005266761501">正在启动 Brave…</translation>
@@ -512,6 +519,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="983803489796659991">更新服务器没有应用的任何哈希数据，因此安装失败。</translation>
 <translation id="8435446479956716379">在不登录账号的情况下使用 Brave</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
+<translation id="3146636448190445245">如需使用位置信息，请在<ph name="BEGIN_LINK"/>系统设置<ph name="END_LINK"/>中授予 Brave 访问权限</translation>
 <translation id="137466361146087520">Google Chrome 测试版</translation>
 <translation id="7535429826459677826">Google Chrome 开发者版</translation>
 <translation id="5359574361379286250">如果你只想一次性使用此账户，你可以使用 Brave 浏览器中的<ph name="GUEST_LINK_BEGIN"/>访客模式<ph name="GUEST_LINK_END"/>如果你想为他人添加账户， <ph name="LINK_BEGIN"/>添加一个个人资料文件<ph name="LINK_END"/>到你的 <ph name="DEVICE_TYPE"/>。

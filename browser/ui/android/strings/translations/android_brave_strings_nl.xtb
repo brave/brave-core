@@ -257,6 +257,8 @@
 <translation id="6511854390690723657">Dit is je eerste Brave advertentie. Tik om meer te leren.</translation>
 <translation id="2070991379950719711">Starten met het gebruik van Brave Rewards</translation>
 <translation id="48520986898237073">Doorgaan naar wallet</translation>
+<translation id="6213254277250932867">Ik heb een herstelzin van 12 woorden</translation>
+<translation id="4225265925807365011">Ik heb een herstelzin van 24 woorden</translation>
 <translation id="3570367516044491911">Stel in als standaard browser</translation>
 <translation id="6800338374677644736">Instellen als standaardbrowser</translation>
 <translation id="19715420010996093">Selecteer de Brave Browser en druk op 'Altijd'</translation>
@@ -451,7 +453,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="5582686930349810484">Vingerafdrukken geblokkeerd (standaard)</translation>
 <translation id="769702552748212954">Sta alle vingerafdrukken toe</translation>
 <translation id="876424292214881779">Advertenties en andere griezelige dingen zijn geblokkeerd</translation>
-<translation id="6930134873084561197">Sites bevatten vaak cookies en scripts die zowel jou als je apparaat proberen te identificeren. Ze willen erachter komen wie je bent en je volgen over het hele web; ze volgen op elke site wat je doet.\n\nBrave blokkeert deze dingen, zodat je kunt surfen zonder dat je gevolgd wordt.</translation>
 <translation id="8553998445606452168">Over Brave Shields</translation>
 <translation id="8912304686498704084">BOVEN</translation>
 <translation id="4963218453264888510">BENEDEN</translation>
@@ -575,44 +576,35 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="7909462264772842773">Neem de controle over uw crypto en NFT's. Brave Wallet ondersteunt Ethereum, EVM-chains, Solana, Filecoin en meer.</translation>
 <translation id="165255193061631296">Nieuwe wallet nodig?</translation>
 <translation id="3485737865439729577">Aan de slag met Brave Wallet binnen enkele minuten</translation>
-<translation id="2759836790106646094">Maak nu een back-up van je wallet!</translation>
-<translation id="1078873179929044999">Bij de volgende stap zie je een herstelzin van 12 woorden die je kunt gebruiken om je primaire cryptoaccounts te herstellen. Bewaar hem op een veilige plek. Alleen met je herstelzin kun je weer toegang krijgen tot je account wanneer je je wachtwoord bent vergeten, je apparaat kwijt is of is gestolen en wanneer je van wallet wilt wisselen.</translation>
+<translation id="2540568096903252632">Voer het wachtwoord in om verder te gaan</translation>
+<translation id="3356580495013324916">Voer het wachtwoord van uw Brave Wallet in om een back-up te maken van uw wallet.</translation>
 <translation id="2359808026110333948">Doorgaan met</translation>
 <translation id="5488357322146334497">Message</translation>
-<translation id="1904000155026201268">Ik begrijp dat indien ik mijn herstelwoorden kwijtraak, ik geen toegang meer heb tot mijn cryptowallet.</translation>
 <translation id="5333225216561354793">We vereisen dat u onderstaande items bevestigt</translation>
 <translation id="6937275455070754004">Kies welke blockchains u wilt gebruiken in uw wallet.</translation>
 <translation id="1645800479814134195">Ik begrijp dat dit een eigen wallet is, en dat ik persoonlijk verantwoordelijk ben voor alle bijbehorende fondsen, activa of rekeningen, en voor het nemen van gepaste maatregelen om mijn wallet te beveiligen, beschermen en back-uppen. Ik begrijp dat Brave geen toegang heeft tot mijn wallet of transacties namens mij kan terugdraaien, en dat mijn herstelzin de ENIGE manier is om weer toegang te krijgen in het geval van een verloren wachtwoord, gestolen apparaat, of soortgelijke omstandigheden.</translation>
 <translation id="4565891212173086999">Ik heb de <ph name="CLICK_START"/>gebruiksvoorwaarden<ph name="CLICK_END"/> gelezen en ga hiermee akkoord.</translation>
-<translation id="3933122286596948824">Jouw herstelwoorden</translation>
-<translation id="5077747669435508720">Noteer deze woorden of kopieer ze in de exacte volgorde zoals hieronder weergegeven en bewaar ze op een veilige plek. Je herstelzin is de enige manier om weer toegang te krijgen tot je account als je je wachtwoord bent vergeten, je apparaat is gestolen of verloren of wanneer je van wallet wilt wisselen.</translation>
-<translation id="2708402071160162126">WAARSCHUWING: deel je herstelzin nooit met anderen. Iedereen met deze zin kan voor altijd toegang krijgen tot jouw assets.</translation>
-<translation id="111912712268284159">Ik heb mijn herstelzin op een veilige plek opgeslagen.</translation>
-<translation id="6896758677409633944">Kopiëren</translation>
+<translation id="3259102562570606417">Bewaar uw herstelzin</translation>
+<translation id="426648489149930289">Bewaar het op een veilige plek waar anderen geen toegang toe hebben en deel het niet met anderen.</translation>
 <translation id="3726490322412361740">Wachtwoord invoeren</translation>
-<translation id="3038243139480464605">Wachtwoord verifiëren</translation>
-<translation id="7396672979287122068">Geverifieerd wachtwoord komt niet overeen</translation>
 <translation id="1566412704591731844">Uw wallet wordt aangemaakt...</translation>
 <translation id="7779823116893018906">Dit kan enkele seconden duren...</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/>-account <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Account toevoegen</translation>
 <translation id="3448492834076427715">Account bijwerken</translation>
-<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="1537175937716697987">Bekijk mijn herstelzin</translation>
+<translation id="5303015959766064022">Ik maak later een reservekopie</translation>
+<translation id="7345730059518887993">Controleren</translation>
+<translation id="2598171223363459366">Je kunt deze stap nu overslaan, maar je moet wel een reservekopie van je herstelzin maken om je account veilig te houden.</translation>
 <translation id="8100001366858145406">Ontgrendelen met vingerafdruk inschakelen?</translation>
 <translation id="5493402808936397665">Schakel biometrische gegevens in om snel zonder wachtwoord je wallet te ontgrendelen.</translation>
 <translation id="8030647312184163932">Ontgrendelen met vingerafdruk</translation>
 <translation id="4090490645603511157">Gebruik biometrische gegevens om snel zonder wachtwoord uw wallet te ontgrendelen.</translation>
 <translation id="1544192797660353713">Wallet</translation>
-<translation id="6901810042765869341">Voer je herstelwoorden in om het cryptoaccount van je Brave-wallet te herstellen.</translation>
-<translation id="9120654436199628567">Cryptoaccount herstellen</translation>
+<translation id="2321396552035646646">Je kunt de volledige herstelzin in een veld plakken.</translation>
+<translation id="3961126209136843111">Importeer een bestaande wallet</translation>
 <translation id="4811736040444856406">Herstelwoorden tonen</translation>
-<translation id="283071225285270357">Voer je herstelwoorden in</translation>
-<translation id="3943857333388298514">Plakken</translation>
-<translation id="3331452756822160641">Nieuw wachtwoord</translation>
 <translation id="4359319875297001084">Importeren vanuit verouderde Brave-cryptowallets?</translation>
-<translation id="2339124864228588937">Herstelwoorden verifiëren</translation>
-<translation id="3747079125031086337">Selecteer de woorden van je herstelzin in de juiste volgorde.</translation>
-<translation id="6518133107902771759">Verifieer</translation>
 <translation id="3157931365184549694">Herstel</translation>
 <translation id="5844138175312846408">Hebt u al een wallet?</translation>
 <translation id="2502258949541727762">Voordat we beginnen</translation>
@@ -638,9 +630,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="5619264711680220002">Biometrisch ontgrendelen</translation>
 <translation id="9195657745688986798">Wallet ontgrendelen</translation>
 <translation id="5168349973342709369">Voer het wachtwoord in om de wallet te ontgrendelen</translation>
-<translation id="3043677904160378840">Wachtwoorden moeten minimaal 8 tekens lang zijn</translation>
 <translation id="1144810021918451336">Beschermt u niet tegen gevaarlijke websites, downloads en extensies.</translation>
-<translation id="5760476995887363522">Woorden komen niet overeen. Probeer het opnieuw.</translation>
 <translation id="2360588547830602174">Accountherstel mislukt; probeer het opnieuw.</translation>
 <translation id="1987317783729300807">Accounts</translation>
 <translation id="6284218950354553099">Dagelijks automatisch gebruiksping verzenden naar Brave</translation>
@@ -680,9 +670,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1532536259167115948">Maandabonnement <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Jaarabonnement <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Wordt maandelijks verlengd</translation>
-<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> per maand.</translation>
 <translation id="1163809943099641131">Eén jaar</translation>
-<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
 <translation id="6053992191006521518">Probeer GRATIS uit</translation>
 <translation id="5903391101107992067">Probeer 7 dagen gratis</translation>
 <translation id="721747358270435486">VPN installeren</translation>
@@ -915,12 +903,12 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="7002577172732106572">Split-tunneling</translation>
 <translation id="8181161042860463420">Het bijbehorende tokenaccount bestaat nog niet. Er zal een klein bedrag aan SOL worden besteed om het aan te maken en er tegoed op te zetten. <ph name="CLICK_START"/>Meer informatie<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">VPN-profiel bijwerken ...</translation>
-<translation id="7457027586454688423">Voer het wachtwoord van uw Brave-wallet in</translation>
 <translation id="4784306439879850873">Houd er rekening mee dat Brave niet kan controleren wat er gebeurt als u tekent. Een ondertekening kan bijna elke bewerking in uw account of namens uw account autoriseren, waaronder (maar niet beperkt tot) het geven van volledige controle over uw account en cryptoassets aan de website die het verzoek doet. Teken alleen als u deze actie wilt uitvoeren en de aanvragende website vertrouwt.</translation>
 <translation id="3474375934783434676">Tekenen op eigen risico</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> of <ph name="SIZE"/></translation>
 <translation id="756701799684433105">Transactie goedkeuren</translation>
 <translation id="6450792191436242818">Systeemprogramma</translation>
+<translation id="2610561535971892504">Klikken om te kopiëren</translation>
 <translation id="2522605225061484799">Ga naar mijn portfolio</translation>
 <translation id="1148624853678088576">Alles is klaar!</translation>
 <translation id="6252742184395380448">Configuratieprogramma</translation>
@@ -1002,7 +990,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6610899852831463073">Kan veilig browsen niet inschakelen</translation>
 <translation id="7954263306665462056">Veilig browsen is uitgeschakeld op uw apparaat. Zorg ervoor dat Google Play Services is geïnstalleerd om veilig browsen in te schakelen en houd het up-to-date.</translation>
 <translation id="6605147707233193230">Inschakelen om contentontwikkelaars te helpen ondersteunen</translation>
-<translation id="1609556006143307897">U helpt contentontwikkelaars te ondersteunen</translation>
 <translation id="6067959437127691361">Brave Rewards helpt contentontwikkelaars te ondersteunen en u kunt er BAT mee verdienen.</translation>
 <translation id="3264975266761862670">Klaar om te beginnen met verdienen?</translation>
 <translation id="265337947574975838">Koppel uw bestaande account of maak een nieuwe aan bij een van onze partners.</translation>
@@ -1101,6 +1088,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1173894706177603556">Naam wijzigen</translation>
 <translation id="3596306474342941843">Playlist verwijderen</translation>
 <translation id="7765158879357617694">Verplaatsen</translation>
+<translation id="6896758677409633944">Kopiëer</translation>
 <translation id="3803384303807438047">Offline gegevens van item verwijderen</translation>
 <translation id="4195643157523330669">Openen op nieuw tabblad</translation>
 <translation id="4243710787042215766">Openen in privétabblad</translation>

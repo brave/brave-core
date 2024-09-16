@@ -54,6 +54,7 @@
 <translation id="9048754176089806686">Brave har blokkert denne nedlastingen fordi filtypen ikke lastes ned ofte, så den kan være farlig</translation>
 <translation id="1953553007165777902">Laster ned … <ph name="MINUTE"/> minutt(er) igjen</translation>
 <translation id="1775322105159056176">Brave kan ikke fastslå eller angi standardnettleseren</translation>
+<translation id="4372901050442507812">Finn ut hvorfor Brave blokkerer enkelte filer (åpnes i en ny fane)</translation>
 <translation id="9220324636239049437">Dette sletter 1 element fra denne enheten. For å hente dataene dine igjen senere må du logge på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="2018879682492276940">Installasjonen mislyktes. Prøv igjen.</translation>
 <translation id="831418749472885028">For å sjekke om de andre passordene dine er trygge mot databrudd og andre sikkerhetsproblemer, <ph name="BEGIN_LINK"/>logg på Brave<ph name="END_LINK"/>.</translation>
@@ -114,6 +115,7 @@
 <translation id="2915996080311180594">Start på nytt senere</translation>
 <translation id="2928420929544864228">Installasjonen er fullført.</translation>
 <translation id="2945997411976714835">Installasjonsfeil: Installasjonsprosessen kunne ikke startes.</translation>
+<translation id="3688936822855019158">Organisasjonen din administrerer Brave</translation>
 <translation id="8208853227947884571">Brave er oppdatert</translation>
 <translation id="5122472867956731189">Hvis nettsteder prøver å stjele passordet ditt, eller når du laster ned skadelige filer, kan Brave også sende nettadresser, inkludert deler av sideinnholdet, til Safe Browsing</translation>
 <translation id="500707801149472925">Brave kan gjøre disse fanene inaktive for å frigjøre ressurser og gi deg en bedre surfeopplevelse.</translation>
@@ -208,6 +210,7 @@
 <translation id="8148611988012584308">Tilpass og kontroller Brave</translation>
 <translation id="4427306783828095590">Økt beskyttelse gjør mer for å blokkere nettfisking og skadelig programvare</translation>
 <translation id="4434353761996769206">Installasjonsfeil: <ph name="INSTALLER_ERROR"/></translation>
+<translation id="175926951572479413"><ph name="MANAGER"/> administrerer Brave</translation>
 <translation id="6786534271003695094">Om Brave for testing</translation>
 <translation id="4501471624619070934">Installasjonen mislyktes fordi tilgangen er begrenset i dette landet.</translation>
 <translation id="8594994021633965927">Denne utvidelsen har ikke publisert retningslinjer for personvern, for eksempel hvordan den samler inn og bruker data. Brave anbefaler at du fjerner den.</translation>
@@ -409,6 +412,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="38294420683216447">Med Brave-profiler kan du holde alle Brave-tingene dine atskilt. Dette gjør det lettere å skille mellom arbeid og fritid.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave for utviklere</translation>
 <translation id="2034072705932785495">Brave trenger tilgang til kameraet ditt for dette nettstedet</translation>
+<translation id="7129342855140808694">For å la Brave bruke mikrofonen må du gi tilgang i <ph name="BEGIN_LINK"/>systeminnstillingene<ph name="END_LINK"/></translation>
 <translation id="5296583608321648908">For å få fremtidige Brave-oppdateringer må du ha Windows 10 eller nyere. Denne datamaskinen bruker Windows 7.</translation>
 <translation id="3962395975456095331">Vil du starte Brave på nytt?</translation>
 <translation id="2619516027171717873">Kan ikke installere den samme Brave-versjonen som kjører. Lukk Brave og prøv på nytt.</translation>
@@ -435,6 +439,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="7872446069773932638">Laster ned … <ph name="SECONDS"/> sekund(er) igjen</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Slik kan du administrere dataene dine:<ph name="END_BOLD"/> For å beskytte personvernet ditt sletter vi automatisk interessene dine som er eldre enn fire uker. Når du fortsetter å surfe, kan det hende at interesser havner på listen igjen. Alternativt kan du fjerne interesse du ikke vil at Brave skal vurdere.</translation>
 <translation id="5687542525349822727">Angi Brave som standard</translation>
+<translation id="6396151137840491551">Brave oppgraderer usikre tilkoblinger til HTTPS automatisk når det er mulig</translation>
 <translation id="2925193881330501265">Du ble logget på Brave som <ph name="USER_EMAIL_ADDRESS"/>. Du må logge deg på igjen med samme konto.</translation>
 <translation id="6915252145142862992">Dette er en sekundær installering av Brave. Den kan ikke brukes som standardnettleser.</translation>
 <translation id="7685904775439037072">Når Brave har fått tilgang, kan nettsteder spørre deg om tilgang.</translation>
@@ -446,6 +451,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="813913629614996137">Initialiserer …</translation>
 <translation id="7550680632761245819">Slå på ekstra beskyttelse i JavaScript- og WebAssembly-motoren i Brave</translation>
 <translation id="9067428552314418522">Denne filen er farlig, så Brave har blokkert den.</translation>
+<translation id="8377926237617998195">For å la Brave bruke kameraet må du gi tilgang i <ph name="BEGIN_LINK"/>systeminnstillingene<ph name="END_LINK"/></translation>
 <translation id="1755067029031059271">Brave kan ikke bekrefte hvor denne utvidelsen kommer fra, og den kan være utrygg. Fjern den fra Brave, slik at den ikke lenger kan se og endre dataene dine på nettsteder du besøker, inkludert personopplysninger.</translation>
 <translation id="8207657266087451193">Hvis et bilde ikke har noen nyttig beskrivelse, prøver Brave å finne en til deg. For å opprette beskrivelser blir bilder sendt til Brave. Du kan slå av dette i innstillingene når som helst.</translation>
 <translation id="7792526144795244436">Vil du logge på Brave i en ny profil?</translation>
@@ -469,6 +475,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="8550334526674375523">Denne jobbprofilen er helt separat fra den personlige profilen din.</translation>
 <translation id="8555465886620020932">Tjenestefeil: ‏<ph name="SERVICE_ERROR"/>.</translation>
 <translation id="227028348235968071">Brave kan sjekke passordene dine når du logger på med Brave-kontoen din</translation>
+<translation id="839677568225616901">Flere organisasjoner administrerer Brave</translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> – Brave Software Inc. Med enerett.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Slik bruker vi disse dataene:<ph name="END_BOLD"/> Nettsteder kan lagre informasjon om interessene dine i Brave. Hvis du for eksempel besøker et nettsted for å kjøpe maratonsko, kan det hende nettstedet definerer interessen din som maratonløp. Hvis du senere besøker et annet nettsted for å melde deg på et løp, kan dette nettstedet vise deg en annonse for løpesko basert på interessene dine.</translation>
 <translation id="3052349005266761501">Starter Brave ...</translation>
@@ -513,6 +520,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="983803489796659991">Installasjonen mislyktes fordi oppdateringstjeneren ikke har hash-data for programmet.</translation>
 <translation id="8435446479956716379">Bruk Brave uten noen konto</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
+<translation id="3146636448190445245">For å la Brave bruke posisjonen din må du gi tilgang i <ph name="BEGIN_LINK"/>systeminnstillingene<ph name="END_LINK"/></translation>
 <translation id="137466361146087520">Google Chrome Beta</translation>
 <translation id="7535429826459677826">Google Chrome Dev</translation>
 <translation id="5359574361379286250">Hvis du bare vil bruke denne kontoen én gang,  kan du bruke <ph name="GUEST_LINK_BEGIN"/>Gjest-modusen<ph name="GUEST_LINK_END"/> i Brave-nettleseren. Hvis du vil legge til en konto for noen andre, <ph name="LINK_BEGIN"/>legger du til en ny profil<ph name="LINK_END"/> i <ph name="DEVICE_TYPE"/>-en din.

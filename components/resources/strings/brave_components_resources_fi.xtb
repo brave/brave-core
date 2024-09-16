@@ -241,48 +241,7 @@
 <translation id="3082557070674409251">Klikattu</translation>
 <translation id="7119308337584989771">Hylätty</translation>
 <translation id="6805660603861526473">Katsottu</translation>
-<translation id="8826352442759228526">Brave-palkintojasi ei voida vahvistaa, sillä olet saavuttanut sallitun vahvistettujen laitteiden ylärajan.</translation>
-<translation id="1221593978088944142">Virhe: laiteraja saavutettu</translation>
-<translation id="6895088073061692390">Brave-palkintoprofiilisi merkittiin haitalliseksi, koska automaattisissa tarkistuksissamme havaittiin odottamatonta Brave-mainosten toimintaa.</translation>
-<translation id="4229056297802204697">Kun profiilisi on merkitty haitalliseksi, saatat edelleen nähdä mainoksia, mutta et ole oikeutettu vastaanottamaan maksuja. Et voi  myöskään yhdistää säilytystiliä Brave-palkintoihin.</translation>
-<translation id="5124846913141379164">On mahdollista, että profiilisi on merkitty haitalliseksi virheellisesti, eikä sinulta vaadita välittömiä toimia. Merkintä saatetaan poistaa profiilistasi tulevaisuudessa.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Lue lisää Braven prosessista palkintoprofiilien merkitsemisestä haitalliseksi.<ph name="END_LINK"/></translation>
-<translation id="5028274575541726856">Virhe: Brave-palkintoprofiili on merkitty haitalliseksi</translation>
-<translation id="2607420597216860026">Yritä uudelleen, kun olet suorittanut henkilöllisyyden vahvistuksen kohteessa <ph name="PROVIDER"/>.</translation>
-<translation id="3183954159462541696">Virhe: Tarvitset vahvistetun tilin kirjautuaksesi sisään</translation>
-<translation id="1859789048900659918">Hmm, näyttää siltä, että Brave-palkinto-ohjelman maasi ei vastaa sen <ph name="PROVIDER"/>-tilin maata, jota yrität yhdistää.</translation>
-<translation id="8925428135452218262">Virhe: Maa ei täsmää</translation>
-<translation id="5260522591743022748">Hmm, näyttää siltä, että Brave-palkintosi on jo vahvistettu toisella <ph name="PROVIDER"/> tilillä. Vahvista uudelleen käyttämällä edellistä tiliäsi.</translation>
-<translation id="5111921830714291902">Virhe: Eri tili</translation>
-<translation id="5225019866741699134">Näyttää siltä, että palveluntarjoajaa <ph name="PROVIDER"/> ei voi tällä hetkellä yhdistää Brave-palkintoihin. Yritä myöhemmin uudelleen.</translation>
-<translation id="6105073131081187815">Voit nähdä <ph name="BEGIN_LINK"/>palvelun tilan tästä<ph name="END_LINK"/>.</translation>
-<translation id="2400786541309111904">Virhe: Yhteyttä valittuun valvojaan ei voi tällä hetkellä muodostaa</translation>
-<translation id="1024520300696337331"><ph name="PROVIDER"/>-tiliäsi ei voida yhdistää Brave-palkintoprofiiliisi tällä hetkellä. <ph name="PROVIDER"/>-tilisi on rekisteröity maassa, jossa Brave-palkintojen yhdistämistä ei tueta.</translation>
-<translation id="619384413404021992">Tutustu <ph name="LINK_BEGIN"/>tällä hetkellä tuettujen alueiden luetteloon ja lue lisää<ph name="END_LINK"/> säilytystilin yhdistämisestä Brave-palkintoihin.</translation>
-<translation id="7193389978208728181">Virhe: Aluetta ei tällä hetkellä tueta</translation>
-<translation id="5382684862562314222">BATtia ei vielä tueta alueesi Uphold-lompakoissa.</translation>
-<translation id="9074594632540931067">Virhe: BAT ei ole saatavilla</translation>
-<translation id="5376524136040178759">Upholdin mukaan Uphold-tililläsi on tällä hetkellä joitain rajoituksia. Kirjaudu sisään Uphold-tilillesi ja tarkista, onko sinulla ilmoituksia tai tilivaatimuksia jäljellä, ja yritä sitten uudelleen. Saatat esimerkiksi joutua lähettämään lisätietoja Upholdille.</translation>
-<translation id="6996157559236886133">Virhe: Rajoitettu Uphold-tilin toiminnallisuus</translation>
-<translation id="3274650021044762770">Ilmeni ongelma, kun selaimesi pyyntöä liittää Brave-palkintosi <ph name="PROVIDER"/>-tiliisi vahvistettiin. Voit <ph name="BEGIN_LINK"/>ottaa yhteyttä tukeen<ph name="END_LINK"/> saadaksesi apua.</translation>
-<translation id="1316066811927496401">Virhe: pyyntöä ei voitu vahvistaa</translation>
-<translation id="7352651011704765696">Jotakin meni vikaan</translation>
-<translation id="8285276813470932793">Emme voineet suorittaa pyyntöäsi. Yritä uudelleen ja <ph name="LINK_BEGIN"/>ota yhteyttä tukeen<ph name="LINK_END"/>, jos ongelma jatkuu.</translation>
 <translation id="8167256685618982116">Käynnistämällä <ph name="TITLE"/> hyväksyt <ph name="BEGIN_LINK1"/>käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>yksityisyyskäytännön<ph name="END_LINK2"/>.</translation>
-<translation id="8817096698141999876">Säilytystilit (vaatii henkilöllisyyden todentamisen)</translation>
-<translation id="1539433155512862005">Säilytystilit ovat tilejä luotetuilla kolmannen osapuolen palveluilla, jotka säilyttävät BATit puolestasi.</translation>
-<translation id="6834831484510296932">Oma säilö</translation>
-<translation id="4208917415153655958">Oma säilö antaa haltijalleen yksinomaisen määräysvallan omiin BAT:eihin sekä täyden vastuun niiden turvallisuudesta.</translation>
-<translation id="1953496742859481929">Jos oma säilö -lompakko on valittuna, palkinnot maksetaan SPL-BAT:eina Solana-verkossa.</translation>
-<translation id="6751803821780922506">Valitse, missä haluat vastaanottaa BATit</translation>
-<translation id="3162035476318501831">Perehdy alueisiin ja tukeen.</translation>
-<translation id="7329170127335794328">Ei tällä hetkellä käytettävissä alueellasi</translation>
-<translation id="966956302643313970">Aloittaaksesi Basic Attention Token (BAT) -palkkioiden ansaitsemisen yhdistä tili. Ansaitsemasi BATit siirretään automaattisesti tilillesi joka kuukausi.</translation>
-<translation id="4009439571146350519">Tai toiseen Solanaa tukevaan lompakkoon.</translation>
-<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>Käyttöehdot<ph name="TOS_LINK_END"/> ja <ph name="PP_LINK_BEGIN"/>yksityisyyskäytäntö<ph name="PP_LINK_END"/></translation>
-<translation id="1692293127547800972">Jokin meni pieleen. Yritä uudestaan.</translation>
-<translation id="756341217015623253">Kirjaudu sisään tai rekisteröidy</translation>
-<translation id="2653844658857826081">UUTTA</translation>
 <translation id="1892970806832316900">Vireillä <ph name="DATE"/> asti</translation>
 <translation id="7849926087559412554">Oho! Selaimesi ei voi vastaanottaa yksityisiä Brave-mainoksia.</translation>
 <translation id="5177429570315095022">Selaimesi on päivitettävä, jotta voit jatkaa mainosten näkemistä.</translation>
@@ -397,7 +356,6 @@
 <translation id="3448261046185459858">Voit poistaa sivuston, jolle et halua enää maksaa kuukausittaista lahjoitusta, Lahjoitus-paneelista.</translation>
 <translation id="5082474983463379713">Huomaathan:</translation>
 <translation id="1430915738399379752">Tulosta</translation>
-<translation id="135956957367307069">Pyyntöäsi käsitellään yhä. Ole hyvä ja odota.</translation>
 <translation id="2600847485413879104">Palkintojen BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
@@ -562,13 +520,16 @@
 <translation id="6965382102122355670">OK</translation>
 <translation id="6727102863431372879">Aseta</translation>
 <translation id="8853725596990766789">Muuta summa</translation>
-<translation id="1609556006143307897">Tuet sisällönluojia</translation>
+<translation id="5899814466108868020">Autat tukemaan Bravea ja BAT-yhteisöä</translation>
 <translation id="654447476965480878">Lue lisää BATien ansaitsemisesta</translation>
 <translation id="4105212447337987768"><ph name="DATE"/> lopetamme tuen nykyisille virtuaalisille BAT-saldoille. Yhdistä säilytystili ennen tätä päivämäärää niin voimme siirtää ansaitun saldosi säilytystilillesi, tai muuten saldosi menetetään.</translation>
 <translation id="707569835145765061">Aiheellinen toimenpide: Yhdistä säilytytili tai vBATisi menetetään</translation>
 <translation id="3358400027937159351">Lahjoituksesi: <ph name="AMOUNT"/>.</translation>
 <translation id="1619753851206150396">Olet kirjautunut ulos</translation>
 <translation id="3035648636451344428">Tämä tapahtuu aika ajoin, jotta <ph name="PROVIDER"/>-tilisi pysyisi turvassa. Ollessasi uloskirjautuneena, vastaanotat edelleen maksuja, mutta et pääse näkemään saldoasi tai lähettämään maksuja <ph name="PROVIDER"/>-tililtäsi.</translation>
+<translation id="9074594632540931067">Virhe: BAT ei ole saatavilla</translation>
+<translation id="5382684862562314222">BATtia ei vielä tueta alueellasi Uphold-palvelussa.</translation>
+<translation id="6996157559236886133">Virhe: Rajoitettu Uphold-tilin toiminnallisuus</translation>
 <translation id="1677961202754619328">Upholdin mukaan Uphold-tililläsi on tällä hetkellä joitain rajoituksia. Kirjaudu sisään Uphold-tilillesi ja tarkista, onko sinulla ilmoituksia tai tilivaatimuksia jäljellä, ja yritä sitten uudelleen.</translation>
 <translation id="9029009481113741943">Kirjaudu sisään uudestaan</translation>
 <translation id="2429828319207652823">Osallistumisesi käsittelyssä tapahtui virhe</translation>
@@ -581,6 +542,7 @@
 <translation id="3247549836099021862">Ota yhteyttä tukeen</translation>
 <translation id="5234764350956374838">Piilota</translation>
 <translation id="7859066142771796818">Käytä tokeneita lahjakorttien ostamiseen, vaihtamiseen muihin valuuttoihin, sisällöntuottajien tukemiseen ja paljon muuhun.</translation>
+<translation id="7352651011704765696">Jotakin meni vikaan</translation>
 <translation id="5425006356459378415">Brave-palkinnot eivät ole käytettävissä</translation>
 <translation id="909076461795862330">Brave-palkintojen määrittämisen aikana tapahtui valitettavasti virhe. Yritä uudelleen.</translation>
 <translation id="3180990265682133881">Maan asettamisen aikana tapahtui valitettavasti virhe. Yritä uudelleen.</translation>
@@ -652,6 +614,62 @@
 <translation id="1053740665683265460">Käytä Web3-lompakkoasi kertaluonteisen lahjoituksen lähettämiseen kyseiselle tekijälle ja osoita hänelle näin arvostusta</translation>
 <translation id="6859705040495339375">Lähetä Web3-lompakon avulla</translation>
 <translation id="7615852194054434287">Näyttää siltä, että tätä tekijää ei ole vielä asetettu vastaanottamaan maksuja Web3-lompakoiden kautta.</translation>
+<translation id="8817096698141999876">Säilytystilit (vaatii henkilöllisyyden todentamisen)</translation>
+<translation id="1539433155512862005">Säilytystilit ovat tilejä luotetuilla kolmannen osapuolen palveluilla, jotka säilyttävät BATit puolestasi.</translation>
+<translation id="6834831484510296932">Oma säilö</translation>
+<translation id="4208917415153655958">Oma säilö antaa haltijalleen yksinomaisen määräysvallan omiin BAT:eihin sekä täyden vastuun niiden turvallisuudesta.</translation>
+<translation id="9118326146754987354">Oman säilön avulla BAT-ansiot maksetaan SPL-BAT:nä Solana-verkossa.</translation>
+<translation id="6751803821780922506">Valitse, missä haluat vastaanottaa BATit</translation>
+<translation id="3162035476318501831">Perehdy alueisiin ja tukeen.</translation>
+<translation id="7329170127335794328">Ei tällä hetkellä käytettävissä alueellasi</translation>
+<translation id="966956302643313970">Aloittaaksesi Basic Attention Token (BAT) -palkkioiden ansaitsemisen yhdistä tili. Ansaitsemasi BATit siirretään automaattisesti tilillesi joka kuukausi.</translation>
+<translation id="4009439571146350519">Tai toiseen Solanaa tukevaan lompakkoon.</translation>
+<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>Käyttöehdot<ph name="TOS_LINK_END"/> ja <ph name="PP_LINK_BEGIN"/>yksityisyyskäytäntö<ph name="PP_LINK_END"/></translation>
+<translation id="1692293127547800972">Jokin meni pieleen. Yritä uudestaan.</translation>
+<translation id="756341217015623253">Kirjaudu sisään tai rekisteröidy</translation>
+<translation id="2653844658857826081">UUTTA</translation>
+<translation id="1165039591588034296">Virhe</translation>
+<translation id="5826530373788377342">Olet saavuttanut palveluntarjoajan <ph name="PROVIDER"/> tiliä koskevan laiterajan.</translation>
+<translation id="6700131426769360592">Laiteraja saavutettu</translation>
+<translation id="6895088073061692390">Brave-palkintoprofiilisi merkittiin haitalliseksi, koska automaattisissa tarkistuksissamme havaittiin odottamatonta Brave-mainosten toimintaa.</translation>
+<translation id="4229056297802204697">Kun profiilisi on merkitty haitalliseksi, saatat edelleen nähdä mainoksia, mutta et ole oikeutettu vastaanottamaan maksuja. Et voi  myöskään yhdistää säilytystiliä Brave-palkintoihin.</translation>
+<translation id="5124846913141379164">On mahdollista, että profiilisi on merkitty haitalliseksi virheellisesti, eikä sinulta vaadita välittömiä toimia. Merkintä saatetaan poistaa profiilistasi tulevaisuudessa.</translation>
+<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Lue lisää Braven prosessista palkintoprofiilien merkitsemisestä haitalliseksi.<ph name="END_LINK"/></translation>
+<translation id="4699218748197721830">Brave-palkintoprofiili on merkitty haitalliseksi</translation>
+<translation id="2607420597216860026">Yritä uudelleen, kun olet suorittanut henkilöllisyyden vahvistuksen kohteessa <ph name="PROVIDER"/>.</translation>
+<translation id="5037332159336402972">Tarvitset sisäänkirjautumiseen vahvistetun tilin</translation>
+<translation id="1859789048900659918">Hmm, näyttää siltä, että Brave-palkinto-ohjelman maasi ei vastaa sen <ph name="PROVIDER"/>-tilin maata, jota yrität yhdistää.</translation>
+<translation id="3080649636035373911">Maa ei täsmää</translation>
+<translation id="5260522591743022748">Hmm, näyttää siltä, että Brave-palkintosi on jo vahvistettu toisella <ph name="PROVIDER"/> tilillä. Vahvista uudelleen käyttämällä edellistä tiliäsi.</translation>
+<translation id="6408621361472415607">Eri tili</translation>
+<translation id="5225019866741699134">Näyttää siltä, että palveluntarjoajaa <ph name="PROVIDER"/> ei voi tällä hetkellä yhdistää Brave-palkintoihin. Yritä myöhemmin uudelleen.</translation>
+<translation id="6105073131081187815">Voit nähdä <ph name="BEGIN_LINK"/>palvelun tilan tästä<ph name="END_LINK"/>.</translation>
+<translation id="3969419585013689529">Yhteyttä valittuun valvojaan ei voi tällä hetkellä muodostaa</translation>
+<translation id="1024520300696337331"><ph name="PROVIDER"/>-tiliäsi ei voida yhdistää Brave-palkintoprofiiliisi tällä hetkellä. <ph name="PROVIDER"/>-tilisi on rekisteröity maassa, jossa Brave-palkintojen yhdistämistä ei tueta.</translation>
+<translation id="619384413404021992">Tutustu <ph name="LINK_BEGIN"/>tällä hetkellä tuettujen alueiden luetteloon ja lue lisää<ph name="END_LINK"/> säilytystilin yhdistämisestä Brave-palkintoihin.</translation>
+<translation id="7933193151688235283">Aluetta ei tällä hetkellä tueta</translation>
+<translation id="5376524136040178759">Upholdin mukaan Uphold-tililläsi on tällä hetkellä joitain rajoituksia. Kirjaudu sisään Uphold-tilillesi ja tarkista, onko sinulla ilmoituksia tai tilivaatimuksia jäljellä, ja yritä sitten uudelleen. Saatat esimerkiksi joutua lähettämään lisätietoja Upholdille.</translation>
+<translation id="6349168810769273818">Rajoitettu Uphold-tilin toiminnallisuus</translation>
+<translation id="1279668677171152085">Ilmeni ongelma, kun selaimesi pyyntöä liittää Brave-palkintosi palveluntarjoajan <ph name="PROVIDER"/> tiliisi vahvistettiin. Voit <ph name="BEGIN_LINK"/>ottaa yhteyttä tukeen<ph name="END_LINK"/> saadaksesi apua.</translation>
+<translation id="8761736799800527591">Pyyntöä ei voitu vahvistaa</translation>
+<translation id="8285276813470932793">Emme voineet suorittaa pyyntöäsi. Yritä uudelleen ja <ph name="LINK_BEGIN"/>ota yhteyttä tukeen<ph name="LINK_END"/>, jos ongelma jatkuu.</translation>
+<translation id="135956957367307069">Pyyntöäsi käsitellään yhä. Ole hyvä ja odota.</translation>
+<translation id="9033500121333471466">Merkitse sopimattomaksi</translation>
+<translation id="4477865412359526485">Brave Ads -historiaa ei ole tällä hetkellä</translation>
+<translation id="4256040774643144761">Mainoshistoria</translation>
+<translation id="1188389905162088150">Viimeisen 30 päivän aikana vastaanottamasi mainokset</translation>
+<translation id="4296467068886908539">Enintään <ph name="NUM"/>/t</translation>
+<translation id="3266055641283174315">Mainostyyppi</translation>
+<translation id="8706824117053903390">Katselukertoja tässä kuussa</translation>
+<translation id="5105890735834548623">Mainosasetukset</translation>
+<translation id="96989662637180657">Brave-haun mainokset näytetään <ph name="LINK_BEGIN"/>Brave-haussa<ph name="LINK_END"/>.</translation>
+<translation id="3138160233953903250">Mainosasetukset</translation>
+<translation id="2446517297521536638">Hallitse, millaisia Brave-mainoksia näet ja kuinka usein. Mitä enemmän mainoksia näet, sitä enemmän voit ansaita.</translation>
+<translation id="5860033963881614850">Päältä</translation>
+<translation id="5916664084637901428">Käytössä</translation>
+<translation id="4284417062730522399"><ph name="NUM"/> mainosta vastaanotettu tässä kuussa</translation>
+<translation id="7697696066810593560">Olet ansainnut tähän mennessä tässä kuussa <ph name="NUM"/></translation>
+<translation id="6733193230212030816">Ansaitset arvion mukaan: <ph name="RANGE"/></translation>
 <translation id="7090992647511817643">tili</translation>
 <translation id="4822132585477111396">Ketjun tunnus</translation>
 <translation id="3269475789479462358">verkkotunnus</translation>
@@ -767,6 +785,18 @@
 <translation id="8918807203406722697">Stablecoin-parit: <ph name="SLIPPAGE_PERCENT"/> %</translation>
 <translation id="7056655731948492143">Muut: <ph name="SLIPPAGE_PERCENT"/> %</translation>
 <translation id="6231782223312638214">Ehdotettu</translation>
+<translation id="8525485643657418753">Halvin</translation>
+<translation id="1224275271335624810">Nopein</translation>
+<translation id="4071446933408069155">verkossa <ph name="NETWORK_NAME"/></translation>
+<translation id="3751611888003301070">Reitit</translation>
+<translation id="3799091982455573025">Vaihda verkossa <ph name="NETWORK_NAME"/> kohteella <ph name="EXCHANGE_NAME"/></translation>
+<translation id="5136093123841570193">Luo silta verkosta <ph name="FRIST_NETWORK_NAME"/> verkkoon <ph name="SECOND_NETWORK_NAME"/></translation>
+<translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} vaihe}
+      other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} vaihetta}
+    }</translation>
+<translation id="782639616412356895"><ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE_NAME"/><ph name="EXCHANGE_AFTER"/> palveluntarjoajalla <ph name="PROVIDER_BEFORE"/><ph name="PROVIDER_NAME"/><ph name="PROVIDER_AFTER"/></translation>
+<translation id="3735740477244556633">Lajitteluperuste</translation>
 <translation id="6484605214219822434">Tarkista silta</translation>
 <translation id="3365052891357224017">Arvioitu aika</translation>
 <translation id="7448445168067324096">Vaihtokurssi</translation>
@@ -905,7 +935,6 @@
 <translation id="1329837291200753515">Valitse lohkoketju ja tuo laitteistolompakkosi</translation>
 <translation id="6983390509997396124">Yhdistä laite <ph name="HARDWARE_DEVICE"/> Brave-lompakkoon</translation>
 <translation id="5149944858285555235">Tuntematon virhe, liitä laitelompakko uudelleen ja yritä sitten uudelleen.</translation>
-<translation id="4522570452068850558">Tarkat tiedot</translation>
 <translation id="9220525904950070496">Poista tili</translation>
 <translation id="8574289650879708853">Lisää mukautettuja varoja</translation>
 <translation id="6600400596821238377">Tokenin nimi</translation>
@@ -1062,10 +1091,8 @@
 <translation id="6015436276085482001">Hylätty</translation>
 <translation id="6666273175654835609">Lähetetty</translation>
 <translation id="2331676293859649642">Vahvistettu</translation>
-<translation id="1165039591588034296">Virhe</translation>
 <translation id="8373210463207847451">Luovutettu</translation>
 <translation id="8214232307424031138">Allekirjoitettu</translation>
-<translation id="5916664084637901428">Käytössä</translation>
 <translation id="9065572743819293042">Äskettäiset maksutapahtumat</translation>
 <translation id="1702356231547761669">Maksutapahtuman hajautus</translation>
 <translation id="8941851657764077659">Ensisijaisuuden enimmäismaksu</translation>
@@ -1575,12 +1602,11 @@
 <translation id="1531836666020185856">Valitut ominaisuudet</translation>
 <translation id="3225021799163709119">Suositut</translation>
 <translation id="6854651431635060919">Testiverkkotili</translation>
-<translation id="3800173541008902040">Ota käyttöön parannetut liiketoimitiedot seuraaville:</translation>
-<translation id="1215089823252478557">Katso arvioitu saldomuutos</translation>
+<translation id="626850389704042219">Ota maksutapahtumasimulaatio käyttöön</translation>
+<translation id="7414944309396133072">Esikatsele arvioitua saldomuutosta</translation>
 <translation id="2761574758015819991">Tunnista mahdolliset pahansuovat liiketoimet</translation>
 <translation id="168533464844528463">Auta kalasteluyritysten havaitsemisessa</translation>
-<translation id="7269757150305059881">Brave työskentelee yhteistyökumppanin kanssa tämän palvelun tuottamiseksi. Ottamalla sen käyttöön suostut jakamaan allekirjoittamattomat liiketoimet ja niiden DApp-URL-osoitteet yhteistyökumppanimme kanssa.</translation>
-<translation id="7790932700072432983">Muuta milloin tahansa kohdassa<ph name="TAG_BEFORE"/>Asetukset<ph name="TAG_AFTER"/>.</translation>
+<translation id="2410455471299328417">Tämän palvelun tarjoaa <ph name="BOLD_BEFORE"/>Blowfish.xyz<ph name="BOLD_AFTER"/>. Sen on toimittava omien <ph name="TERMS_LINK_BEFORE"/>palveluehtojen<ph name="TERMS_LINK_AFTER"/> ja oman<ph name="PRIVACY_POLICY_LINK_BEFORE"/>tietosuojakäytännön<ph name="PRIVACY_POLICY_LINK_AFTER"/> mukaisesti.</translation>
 <translation id="8688672835843460752">Saatavilla</translation>
 <translation id="5296640085393149413">Käytettävissäsi olevat varat.</translation>
 <translation id="3248185426436836442">Odottaa</translation>
@@ -1616,6 +1642,54 @@
 <translation id="8355371587927005068">Suodattimet</translation>
 <translation id="803703704549420287">Tyhjennä suodattimet</translation>
 <translation id="1472675084647422956">Näytä enemmän</translation>
+<translation id="4522570452068850558">Tarkat tiedot</translation>
+<translation id="7144878232160441200">Yritä uudestaan</translation>
+<translation id="9094621390791852268">Maksutapahtuman esikatselu epäonnistui.</translation>
+<translation id="4982713341035600933">Arvioitu saldomuutos</translation>
+<translation id="7197388583016272600">Hyväksynnän tiedot</translation>
+<translation id="3785613860627641047">Auktoriteettimuutos</translation>
+<translation id="5135378583369915147">Maksutapahtumaa skannataan</translation>
+<translation id="4744699166186440">Panostaja</translation>
+<translation id="6313747204807079184">Nostaja</translation>
+<translation id="4312670848214406213">Annat jollekulle muulle luvan siirtää tokeneita puolestasi.</translation>
+<translation id="5465460394116463557">Tämä pyytää lupaa siirtää monia tokeneita, mikä katsotaan usein varkauden yrittämiseksi.</translation>
+<translation id="7315935420455987651">Tämä sivusto voi olla vilpillinen.</translation>
+<translation id="7772576967285233002">Tämä DApp voi siirtää tokeneita tililtäsi myöhemmin.</translation>
+<translation id="438039795179295571">Tämä sivusto on merkitty erittäin haitalliseksi, ja se pyrkii todennäköisesti varastamaan varasi.</translation>
+<translation id="4852394547793286745">Tätä verkkotunnusta ei ole vielä vahvistettu. Jatka vain, jos pidät sivustoa luotettavana.</translation>
+<translation id="5832443872711287128">Tarkista tämä osoite, koska se voi olla joku, joka esittää olevansa joku tuntemasi.</translation>
+<translation id="5317646355693663165">Tämä siirtää tokenien omistajuuden jollekulle muulle.</translation>
+<translation id="3459325260212799301">Tämä sivusto on merkitty vaaralliseksi ja/tai haitalliseksi. Jatkaminen voi johtaa menetyksiin.</translation>
+<translation id="5409388443146954820">Tämä hyväksyy yli 200 toimintoa. Tämä voi olla haitallista, jos sitä ei ole suunniteltu.</translation>
+<translation id="6187462466381633445">Tämä pyytää yli 200 hyväksyntää. Tämä on yleensä yritys tyhjentää saldosi.</translation>
+<translation id="3322526234603442338">Olet vaihtamassa tokeneita saamatta mitään vastineeksi. Tämä on todennäköisesti virhe.</translation>
+<translation id="4773052969794445878">Olet lähettämässä varoja tokenin omaan osoitteeseen, jolloin tulet menettämään ne kaikki lopullisesti.</translation>
+<translation id="8144820760826901598">Tämä siirtää tilisi ja saldojesi omistajuuden jollekulle muulle.</translation>
+<translation id="6023771436430346631">Varat eivät riitä verkon gas-maksuun.</translation>
+<translation id="4753738223346804632">Varat eivät riitä maksutapahtuman suorittamiseen.</translation>
+<translation id="8661124952575076441">Maksutapahtuma todennäköisesti epäonnistuu ja kumotaan. Yrittäminen johtaa silti gas-maksuun.</translation>
+<translation id="7660840414862537846">Maksutapahtuman esikatselussa tapahtui odottamaton virhe. Hyväksyminen voi olla vaarallista.</translation>
+<translation id="4683335916231560287">Muutoksia ei ole havaittu</translation>
+<translation id="6769279318856228158">Tilin omistajuuden muutos</translation>
+<translation id="3200658657457611958">Simuloi, miten maksutapahtuma käyttäytyy, ennen kuin hyväksyt sen.</translation>
+<translation id="8311005737513179222">Maksutapahtuman esikatselua ei tueta tässä verkossa.</translation>
+<translation id="4282496974850444428">Näet tämän viestin, koska olet osallistunut maksutapahtuman esikatselupalveluun.</translation>
+<translation id="6094399032955582807">Näytä saatavilla olevat verkot</translation>
+<translation id="6644973832009582039">EVM-viestin skannaamista ei tällä hetkellä tueta</translation>
+<translation id="5222675470118670784">Mitä EVM-viestien skannaus on?</translation>
+<translation id="4085714860536252628">Se takaa turvallisuuden ja tarkkuuden tarkistamalla Ethereum-vistruaalikoneesta lähetetyt viestit, jotka ovat vuorovaikutuksessa älysopimuksen tai muiden toimintojen kanssa.</translation>
+<translation id="7800112661494546348">Se on sama asia kuin kirjeen tarkistaminen ennen sen allekirjoittamista.</translation>
+<translation id="4750109510113597688">Tämä maksutapahtuma voi sisältää tilin luomismaksun</translation>
+<translation id="6201709949885884577">Tämän toiminnon suorittaminen edellyttää salasanan antamisen.</translation>
+<translation id="3435015606307655951">Turvallinen siirto</translation>
+<translation id="1958146856582208323">Tokenien siirto</translation>
+<translation id="3550219298671597013">NFT-siirto</translation>
+<translation id="8043066678623588950">FIL-välitys</translation>
+<translation id="7138678301420049075">Muu</translation>
+<translation id="8703556909820882288">Pakattu NFT-siirto</translation>
+<translation id="2713141960460256091">Allekirjoita ja lähetä DApp-maksutapahtuma</translation>
+<translation id="6387730345715997739">Allekirjoita DApp-maksutapahtuma</translation>
+<translation id="4150336849480030462">SPL-tokenin siirto ja liittyvä tokenitilin luonti</translation>
 <translation id="3155170474926428993">Tor-laukaisin</translation>
 <translation id="3745016858329272300">Yleiset tiedot</translation>
 <translation id="4045404575593562245">Tor-hallinnointitapahtumat</translation>
@@ -1803,6 +1877,7 @@
 <translation id="6938154350999993769">Vianetsintä - vaihda tablettitilaa</translation>
 <translation id="5854741377790551127">Vianetsintä - tulosta näkymäpuu</translation>
 <translation id="8199130368328220410">Vaihda live-tekstityksiä</translation>
+<translation id="5509712368473990741">Ota käyttöön / poista käytöstä Leo-tekoälyavustaja</translation>
 <translation id="9055778350624039365">Näytä Brave-lompakon paneeli</translation>
 <translation id="2548853975094084059">Sulje Brave-lompakon paneeli</translation>
 <translation id="3765209580429944524">Näytä Braven VPN-paneeli</translation>
@@ -1899,12 +1974,11 @@
 <translation id="7932221068776853847">Katkaise yhteys lopettaaksesi tämän sivun sisällön lähettämisen Leolle ja aloita uusi keskustelu</translation>
 <translation id="1167803637855350748">Leoon yhteyden muodostamisessa oli verkko-ongelma, tarkista yhteys ja yritä uudelleen.</translation>
 <translation id="1996126325390835277">Olet saavuttanut premium-määrärajan. Yritä uudelleen muutaman tunnin kuluttua.</translation>
-<translation id="7144878232160441200">Yritä uudestaan</translation>
-<translation id="8570488829560315702">Hei, olen Leo. Olen Braven täysin tekoälyperusteinen avustaja. Toimintani perustuu Llama 3 8B:hen, Metan luomaan malliin, joka on tehokas ja soveltuu moniin käyttötarkoituksiin. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
+<translation id="4177458398826096846">Hei, olen Leo. Olen Braven täysin tekoälyperusteinen avustaja. Toimintani perustuu Llama 3.1 8B:hen, Metan luomaan malliin, joka on tehokas ja soveltuu moniin käyttötarkoituksiin. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Hei, olen Leo. Olen Braven täysin tekoälyperusteinen avustaja. Toimintani perustuu Mixtral 8x7B:hen, Mistral AI:n luomaan malliin, joka soveltuu edistyneisiin käyttötarkoituksiin. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Hei, olen Leo. Olen Braven täysin tekoälyperusteinen avustaja. Toimintani perustuu Claude Instantiin, Anthropicin luomaan malliin, joka soveltuu edistyneisiin käyttötarkoituksiin. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude 3 Haiku, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä.</translation>
-<translation id="4147243042852964992">Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude 3 Sonnet, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä.</translation>
+<translation id="1107977270364670952">Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude 3.5 Sonnet, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> palveluntarjoaja <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -1940,10 +2014,10 @@
 <translation id="9018766373792005944">Mitä palautteesi koskee?</translation>
 <translation id="7355096922131918313">Anna palautetta tässä</translation>
 <translation id="3027575440738035995">Leo Premium tarjoaa pääsyn laajennettuun joukkoon kielimalleja, jotka tarjoavat entistä tarkempia vastauksia. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
+<translation id="7488762544858401571">Muokattu</translation>
 <translation id="2399439821649319175">Ei auta</translation>
 <translation id="2976167228906046828">Virheellinen</translation>
 <translation id="1183055847065865059">Vaarallinen/haitallinen</translation>
-<translation id="7138678301420049075">Muu</translation>
 <translation id="2313959174679245365">Arviointiasi ei voitu lähettää. Tarkista verkkoyhteys ja yritä uudelleen</translation>
 <translation id="98413980871833152">Palautettasi ei voitu lähettää. Tarkista verkkoyhteys ja yritä uudelleen</translation>
 <translation id="8742658901413346500">Tämä keskustelu on pitkä ja Leo saattaa alkaa unohtaa pian asioita. Voit saada pidempiä keskusteluja vaihtamalla premium-malliin, tai voit tyhjentää chatin nollataksesi sen.</translation>
@@ -1996,6 +2070,7 @@
 <translation id="983013125018250242">Leo-työkalut</translation>
 <translation id="49269513399674318">Käytä mikrofonia</translation>
 <translation id="3895031624234442305">Mukautetut mallit</translation>
+<translation id="4572010449071015143">Aloita uusi keskustelu</translation>
 <translation id="6303294677342628402">Suojaukset</translation>
 <translation id="8458987127502506209">Ota Brave-suojaus käyttöön</translation>
 <translation id="7509914170164691086">Suojaukset ovat käytössä <ph name="LINK_BEFORE"/>kohteelle<ph name="LINK_AFTER"/></translation>
@@ -2039,6 +2114,9 @@
 <ph name="NUMBER"/> seurainta, mainosta jne. estetty</translation>
 <translation id="4292121526390005808">Estetyt skriptit</translation>
 <translation id="5046271170844958713">Sallitut skriptit</translation>
+<translation id="4575452981007854269">Sormenjälkitunnistuksen suojaus otettu käyttöön</translation>
+<translation id="1905384713982899903">Estetyt sormenjäljet</translation>
+<translation id="314364527871618241">Sallitut sormenjäljet</translation>
 <translation id="264682546981571963">Oletko kyllästynyt evästeiden suostumusilmoituksiin?</translation>
 <translation id="4986297793092101884">Brave estää jo kolmannen osapuolen evästeet. Voimme myös estää evästeiden suostumusilmoitukset.</translation>
 <translation id="535688588637568715">Kyllä, estä evästeiden suostumusilmoitukset</translation>
@@ -2077,36 +2155,42 @@
 <translation id="7821773512278295352">Brave-palomuuri + VPN: yhdistetty</translation>
 <translation id="6019088868713395120">Brave-palomuuri + VPN: yhteys katkaistu</translation>
 <translation id="3541307549916475335">Brave VPN:n paneelin käyttöliittymä</translation>
-<translation id="1742469581923031760">Yhdistetään…</translation>
-<translation id="1287487756047817908">Yhteyttä katkaistaan…</translation>
+<translation id="7143207342074048698">Yhdistetään</translation>
+<translation id="1202549130170287307">Yhteyttä katkaistaan</translation>
 <translation id="2325196879156848326">Yhdistäminen epäonnistui</translation>
 <translation id="745054660363064771">Ei voitu yhdistää palvelimeen</translation>
 <translation id="3936826714240735937">Valitse toinen palvelin</translation>
-<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> ei pystynyt muodostamaan yhteyttä <ph name="REGION_NAME"/>-palvelimeen. Voit yrittää uudelleen tai valita toisen palvelimen.</translation>
-<translation id="8703188411226330709">Aloita ilmainen kokeilu</translation>
-<translation id="1024255913009642477">Oletko jo ostanut VPN:n?</translation>
+<translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> ei pystynyt luomaan yhteyttä palvelimeen maassa <ph name="REGION_NAME"/>. Yritä uudelleen tai valitse toinen maa.</translation>
+<translation id="5753795690521538679">Aloita 7 päivän kokeilujakso</translation>
+<translation id="3357036723290257445">Oletko jo ostanut Brave VPN:n?</translation>
 <translation id="8814357473522731680">Palvelun tarjoaa</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="8652175077544655965">Sulje asetukset</translation>
+<translation id="3099126540952997993">Palomuuri ja VPN</translation>
+<translation id="5908163815855240493">Siirry aloitussivulle</translation>
 <translation id="7805768142964895445">Tila</translation>
 <translation id="5747552184818312860">Vanhenee</translation>
 <translation id="8421945428836418371">Muodosta yhteys uudelleen automaattisesti</translation>
 <translation id="434523916398030617">Ota yhteyttä tekniseen tukipalveluun</translation>
 <translation id="1116694919640316211">Tietoja asetuksista</translation>
-<translation id="8670386189340362926">Estä seuranta ja mainokset kaikissa sovelluksissa</translation>
-<translation id="4860763498907927955">Suojaa sinua ei-toivotuilta verkkoyhteyksiltä</translation>
-<translation id="3181339219453722970">Valitse VPN:n sijainti</translation>
-<translation id="1708407585266172412">Nopea ja rajoittamaton, jopa 500 Mbit/s</translation>
-<translation id="1400240082805528049">Ympärivuorokautinen tuki</translation>
+<translation id="755045397420611731">Parempi tietosuoja ja turvallisuus verkossa</translation>
+<translation id="4520128772974831415">Piilota IP-osoitteesi ja vaihda sijaintia</translation>
+<translation id="2044418816479192294">Satoja palvelimia ympäri maailman</translation>
+<translation id="7410504850864021600">Salamannopeat yhteydet</translation>
+<translation id="2422309687188612485">Suojaa yhdellä tilauksella jopa 10 laitetta</translation>
 <translation id="1693568075761612600">Tukipyynnön luonti epäonnistui, tarkista yhteys.</translation>
+<translation id="1407707415819020643">Valitse palvelin</translation>
 <translation id="8463313539532697053">Odota hetki, lataus käynnissä…</translation>
-<translation id="4317307602527599178">Ostoksen tilaa ei voi tarkistaa. Tämä voi johtua verkko-ongelmasta.</translation>
+<translation id="2542131205769293399">Ostoksen tilaa ei voi tarkistaa. Tämä voi johtua verkko-ongelmasta. Yritä uudelleen tai ota yhteyttä tukeen.</translation>
 <translation id="4613076894734402086">Muokkaa maksutapaa</translation>
 <translation id="427718751211990320">Tunnusten viimeinen käyttöpäivä on ylittynyt.</translation>
 <translation id="8670619630771851260">Tunnuksia ei voi ladata</translation>
 <translation id="1594643509610625766">Tokeni ei ole enää kelvollinen.</translation>
 <translation id="8373427068383038263">Näyttää siltä, että viimeisin maksusi, <ph name="VALUE"/>, ei mennyt läpi. Pääsy tähän tilaukseen keskeytetään, kunnes maksuongelma on ratkaistu. Muokkaa maksutapaasi tai ota yhteyttä Brave-tukeen.</translation>
+<translation id="5257165507296814658">Sulje tukilomake</translation>
 <translation id="1839021455997460752">Sähköpostiosoitteesi</translation>
+<translation id="7508253027939632101">Anna sähköpostiosoite</translation>
 <translation id="8054563304616131773">Anna kelvollinen sähköpostiosoite</translation>
+<translation id="365334785487370919">Tämä kenttä on pakollinen</translation>
 <translation id="5154702632169343078">Aihe</translation>
 <translation id="6625978880678465492">Valitse syy</translation>
 <translation id="6687228121145903051">VPN:ään ei saada yhteyttä (muu virhe)</translation>
@@ -2114,6 +2198,7 @@
 <translation id="21570240866965662">Hidas yhteys</translation>
 <translation id="1219475260382643267">Verkkosivusto ei toimi</translation>
 <translation id="1387340358507240698">Kuvaile ongelmaasi</translation>
+<translation id="5597547971954030233">Kuvaile ongelmaasi tässä</translation>
 <translation id="501818585183973587">Valitse ne tiedot, jotka voit jakaa kanssamme</translation>
 <translation id="3195618332367441234">Mitä enemmän tietoja jaat, sitä helpompi on tukihenkilöstön auttaa sinua.</translation>
 <translation id="5682143294773821728">VPN:n isäntänimi</translation>
@@ -2121,7 +2206,7 @@
 <translation id="6676791921618140305">OS-versio:</translation>
 <translation id="1156325797949437777">Tuki tarjotaan yhteistyössä Guardianin kanssa.</translation>
 <translation id="8146777497879160283">VPN-määrityksen kirjoittaminen epäonnistui. Näin voi käydä, jos sinulla ei ole lupaa tai jos et ole suorittanut Windows-päivitystä äskettäin.</translation>
-<translation id="3307461350293459700">VPN-yhteys epäonnistui. Yritä muodostaa yhteys uudelleen ja varmista, että napsautat Salli-painiketta ottaaksesi Braven VPN-määrityksen käyttöön.</translation>
+<translation id="3362894458460231163">VPN-yhteyden muodostus epäonnistui. Yritä muodostaa yhteys uudelleen ja varmista, että napsautat Salli-painiketta ottaaksesi Braven VPN-määrityksen käyttöön.</translation>
 <translation id="7261518280726313829">Suojattujen DNS-asetusten poistaminen käytöstä tai oletuspalvelimien käyttäminen Windowsilla saattaa paljastaa Internet-palveluntarjoajallesi niiden sivustojen nimet, joilla olet vieraillut. Brave ei suosittele tämän tekemistä. Haluatko kuitenkin tehdä sen?</translation>
 <translation id="888284761945060750">Suojatut DNS-asetukset on poistettu käytöstä organisaatiosi käytäntöjen vuoksi. Brave VPN:n käyttäminen ilman suojattuja DNS-asetuksia voi paljastaa Internet-palveluntarjoajallesi tai organisaatiollesi niiden sivustojen nimet, joilla olet vieraillut.</translation>
 <translation id="6593224083874259773">Brave VPN Windowsissa</translation>

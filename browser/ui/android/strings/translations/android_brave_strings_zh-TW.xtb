@@ -110,6 +110,7 @@
 <translation id="3377025655491224618">隱私瀏覽分頁</translation>
 <translation id="7304425663107214334">顯示瀏覽器建議</translation>
 <translation id="8982438328166986164">根據您的書籤和瀏覽記錄顯示網站建議。</translation>
+<translation id="924029461438529367">顯示搜尋建議</translation>
 <translation id="1571106259128580884">顯示熱門網站建議</translation>
 <translation id="9148058034647219655">結束</translation>
 <translation id="8047754398610073499">攔截 cookie 同意通知</translation>
@@ -262,6 +263,8 @@
 <translation id="6511854390690723657">這是你的首則 Brave 廣告。點按了解詳情。</translation>
 <translation id="2070991379950719711">開始使用 Brave Rewards</translation>
 <translation id="48520986898237073">繼續到錢包</translation>
+<translation id="6213254277250932867">我的復原詞句有 12 個字</translation>
+<translation id="4225265925807365011">我的復原詞句有 24 個字</translation>
 <translation id="3570367516044491911">設為預設瀏覽器</translation>
 <translation id="6800338374677644736">設為預設瀏覽器</translation>
 <translation id="19715420010996093">選取 Brave 瀏覽器並點擊「一律使用」</translation>
@@ -361,6 +364,8 @@
 <translation id="6417420737057016607">Brave 廣告</translation>
 <translation id="5611966874859284786">不使用 Brave 時顯示通知廣告</translation>
 <translation id="6606319453795180219">這麼做將刪除您的 Brave 獎勵並重設您所有的 Brave 獎勵資料</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>重設 Brave Rewards 資料…<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>清除 Brave Ads 資料…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">新增書籤</translation>
 <translation id="340492034650766959">刪除書籤</translation>
 <translation id="2149973817440762519">編輯書籤</translation>
@@ -464,7 +469,7 @@
 <translation id="5582686930349810484">封鎖指紋（標準）</translation>
 <translation id="769702552748212954">允許所有指紋追蹤</translation>
 <translation id="876424292214881779">已封鎖廣告與其他令人毛骨悚然的東西</translation>
-<translation id="6930134873084561197">網站時常包含 cookies 和 scripts，它們會試著辨認你和你的裝置。它們想要知道你是誰，並追蹤您在每個網站做什麼。\n\n Brave 會封鎖這些東西，讓您在不被跟蹤的狀態下進行瀏覽。</translation>
+<translation id="6849027612978668678">網站時常含有 Cookie 和程式碼，這些程式會嘗試辨認您的身分和裝置。此設計是要識別您的身分，並追蹤您在網路上各個網站的使用情形。\n\nBrave 會封鎖這些程式，讓您在瀏覽網路期間不受追蹤。</translation>
 <translation id="8553998445606452168">關於 Brave Shields</translation>
 <translation id="8912304686498704084">开启</translation>
 <translation id="4963218453264888510">关闭</translation>
@@ -559,6 +564,8 @@
 <translation id="7889432931837317731">可能的話自動開啟</translation>
 <translation id="1029304566263314007">顯示下載進度通知</translation>
 <translation id="2910433761530295035">詢問檔案儲存位置（若偵測到 SD 卡）</translation>
+<translation id="2977501775944575564">並行下載</translation>
+<translation id="6224180438946945617">啟用並行下載以加快下載速度</translation>
 <translation id="8967385052772844086">檢視完整的隱私權報告</translation>
 <translation id="6864343534748973390">最熱門</translation>
 <translation id="4608192160278975831">私人且沒有追蹤</translation>
@@ -588,44 +595,38 @@
 <translation id="7909462264772842773">掌控您的加密貨幣和 NFT。Brave 錢包支援以太坊、EVM 鏈、Solana、Filecoin 等。</translation>
 <translation id="165255193061631296">需要新的錢包嗎？</translation>
 <translation id="3485737865439729577">只要幾分鐘即可開始使用 Brave 錢包</translation>
-<translation id="2759836790106646094">立刻備份您的錢包！</translation>
-<translation id="1078873179929044999">下一步您將看到一個 12 字的還原片語，可用於還原您的主加密帳戶。請妥善保管。還原片語是在忘記密碼、裝置遺失或被盜或者想切換錢包時找回帳戶存取權限的唯一方式。</translation>
+<translation id="2540568096903252632">輸入密碼以繼續</translation>
+<translation id="3356580495013324916">輸入您的 Brave 錢包密碼，以開始備份錢包。</translation>
 <translation id="2359808026110333948">繼續</translation>
 <translation id="5488357322146334497">訊息</translation>
-<translation id="1904000155026201268">我了解一旦遺失備援短語，就無法存取加密貨幣錢包。</translation>
 <translation id="5333225216561354793">請務必瞭解下列事項</translation>
 <translation id="6937275455070754004">選擇要在錢包中使用的區塊鏈。</translation>
 <translation id="1645800479814134195">我瞭解這是應自行保管的錢包，我獨自負責任何相關的資金、資產或帳戶，並負責採取適當的行動來保障、保護和備份我的錢包。我瞭解 Brave 不能代表我存取我的錢包或逆轉交易，並且在密碼遺失、裝置遭竊或類似情況下，我的復原詞句是重新取得存取權限的「唯一」方法。</translation>
 <translation id="4565891212173086999">我已閱讀並同意<ph name="CLICK_START"/>使用條款<ph name="CLICK_END"/>。</translation>
-<translation id="3933122286596948824">您的備援短語</translation>
-<translation id="5077747669435508720">嚴格按照下面所示的順序寫下或複製這些單詞，並妥善保管它們。還原片語是在忘記密碼、裝置遺失或被盜或者想切換錢包時找回帳戶存取權限的唯一方式。</translation>
-<translation id="2708402071160162126">警告：切勿分享您的還原片語。任何人只要知道這個短語就能永遠拿走您的資產。</translation>
-<translation id="111912712268284159">我已經在安全的地方備份了我的片語。</translation>
-<translation id="6896758677409633944">複製</translation>
+<translation id="3259102562570606417">儲存您的復原詞句</translation>
+<translation id="4339981001593889376">萬一您忘記密碼或遺失裝置，您的復原詞句就是您存取錢包的金鑰。</translation>
+<translation id="426648489149930289">請將復原詞句保存在安全的地方，確保其他人無法取得，且避免與任何人分享。</translation>
 <translation id="3726490322412361740">輸入密碼</translation>
-<translation id="3038243139480464605">驗證密碼</translation>
-<translation id="7396672979287122068">與完成驗證的密碼不符</translation>
 <translation id="1566412704591731844">建立您的錢包…</translation>
 <translation id="7779823116893018906">這可能需要幾秒鐘的時間…</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/>帳戶 <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">新增帳戶</translation>
 <translation id="3448492834076427715">更新帳戶</translation>
-<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="5532363218245261099">#<ph name="NUMBER"/> <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="1537175937716697987">檢視我的復原詞句</translation>
+<translation id="5303015959766064022">稍後再備份</translation>
+<translation id="7345730059518887993">請檢查</translation>
+<translation id="7640406249038879146">輸入您復原詞句中的第 <ph name="WORD_POSITION"/> 個字詞。</translation>
+<translation id="2598171223363459366">您現在可以略過此步驟，但仍須備份復原詞句以確保帳戶安全。</translation>
 <translation id="8100001366858145406">啟用指紋解鎖？</translation>
 <translation id="5493402808936397665">啟用生物識別技術來快速解鎖您的錢包，不用輸入您的密碼。</translation>
 <translation id="8030647312184163932">指紋解鎖</translation>
 <translation id="4090490645603511157">啟用生物識別技術來快速解鎖錢包，不必輸入密碼即可解鎖。</translation>
 <translation id="1544192797660353713">錢包</translation>
-<translation id="6901810042765869341">輸入您的備援短語來復原您的 Brave 錢包加密貨幣帳號。</translation>
-<translation id="9120654436199628567">還原加密貨幣帳戶</translation>
+<translation id="2321396552035646646">您可以將整段復原詞句複製到任一欄位。</translation>
+<translation id="3961126209136843111">匯入現有錢包</translation>
 <translation id="4811736040444856406">顯示備援短語</translation>
-<translation id="283071225285270357">輸入您的備援短語</translation>
-<translation id="3943857333388298514">貼上</translation>
-<translation id="3331452756822160641">新密碼</translation>
 <translation id="4359319875297001084">從舊 Brave 加密幣錢包匯入？</translation>
-<translation id="2339124864228588937">驗證備援短語</translation>
-<translation id="3747079125031086337">依正確順序選取還原片語中的字。</translation>
-<translation id="6518133107902771759">驗證</translation>
 <translation id="3157931365184549694">Restore</translation>
 <translation id="5844138175312846408">已有錢包？</translation>
 <translation id="2502258949541727762">開始之前</translation>
@@ -634,6 +635,7 @@
 <translation id="2523174693142405417">搜尋網路</translation>
 <translation id="1164748583090434571">顯示測試網</translation>
 <translation id="935220650946301698">繼續使用 <ph name="NUMBER"/> 個網路</translation>
+<translation id="4052668782430384783">字詞 #<ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">建立密碼</translation>
 <translation id="2789310860394340571">您會使用這組密碼存取錢包。</translation>
 <translation id="2136372518715274136">輸入新密碼</translation>
@@ -651,9 +653,8 @@
 <translation id="5619264711680220002">生物識別技術解鎖</translation>
 <translation id="9195657745688986798">解鎖錢包</translation>
 <translation id="5168349973342709369">輸入密碼以解鎖錢包</translation>
-<translation id="3043677904160378840">PIN 碼至少要有 8 個字元。</translation>
 <translation id="1144810021918451336">無法協助您防護危險網站、下載和延伸套件。</translation>
-<translation id="5760476995887363522">片語不相符，請再試一次。</translation>
+<translation id="9085712756417277119">復原詞句不符</translation>
 <translation id="2360588547830602174">帳號復原失敗。請再試一次。</translation>
 <translation id="1987317783729300807">帳戶</translation>
 <translation id="6284218950354553099">自動傳送每日使用 ping 到 Brave</translation>
@@ -688,16 +689,21 @@
 <translation id="3510283489391432976">選擇您的地理／國家位置</translation>
 <translation id="7695158478627528928">Brave 絕不會記錄您的活動</translation>
 <translation id="4575683170451975058">1 筆訂閱即可保護 5 個裝置</translation>
+<translation id="755045397420611731">提升網路隱私和安全</translation>
+<translation id="4520128772974831415">隱藏 IP 並變更位置</translation>
+<translation id="2044418816479192294">數百部伺服器遍及全球</translation>
+<translation id="7410504850864021600">連線快速流暢</translation>
+<translation id="2422309687188612485">單一方案最多可保護 10 部裝置</translation>
 <translation id="4882693590083943563">所有方案均包含 <ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">7 天的免費試用！</translation>
 <translation id="1532536259167115948">月繳訂閱 <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">年繳訂閱 <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">每月續訂</translation>
-<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/>/ 月。</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/>/月</translation>
 <translation id="1163809943099641131">一年</translation>
-<translation id="172859718096975160">每年續訂<ph name="DISCOUNT_TEXT_START"/>，省下 <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
-<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/>/ 年</translation>
-<translation id="5125233570742276182">我們會透過你的 Google 帳戶收取訂閱費用。如果您在免費試用期結束前便選擇訂閱，剩餘的試用效期即告失效。\n\n只要未在目前約期結束前 24 小時取消訂閱，系統就會自動為您續約。\n\n您可以前往「設定」管理訂閱事宜。\n使用 Brave 即表示您同意《使用條款》及《隱私權政策》。</translation>
+<translation id="727385358513272220">每年續訂 (<ph name="DISCOUNT_TEXT_START"/>省下 <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/>/年</translation>
+<translation id="2786538705804257030">我們會透過您的 Google 帳戶收取訂閱費用。如果您在免費試用期結束前便選擇訂閱，剩餘的試用效期即告失效。\n\n若未在當前約期結束前至少 24 小時內取消訂閱，系統會自動為您續訂。\n\n您可以前往「設定」管理訂閱方案。\n\n使用 Brave 即表示您同意《使用條款》及《隱私權政策》。</translation>
 <translation id="5035172357624830412">已在 brave.com 上購買嗎？</translation>
 <translation id="713136183174551885">重新整理您的憑證</translation>
 <translation id="6053992191006521518">免費試用</translation>
@@ -932,7 +938,6 @@
 <translation id="7002577172732106572">分割通道</translation>
 <translation id="8181161042860463420">相關聯的代幣帳戶不存在。將花費少量的 SOL 來建立和儲值。<ph name="CLICK_START"/>瞭解詳情<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">正在更新 VPN 設定檔……</translation>
-<translation id="7457027586454688423">輸入您的 Brave 錢包密碼</translation>
 <translation id="4784306439879850873">請注意，Brave 無法驗證您簽名後會發生什麼。簽名可以授權別人進行帳戶的幾乎任何操作，包括（但不限於）將您的帳戶和加密資產的完全控制權交給提出請求的網站。因此只有在您確定要採取此操作並信任請求的網站時才簽名。</translation>
 <translation id="3474375934783434676">簽名風險自擔</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> / <ph name="SIZE"/></translation>
@@ -942,6 +947,7 @@
 <translation id="2629767022373384291">您要使用生物辨識驗證功能解鎖 Brave 錢包嗎？</translation>
 <translation id="4782919977106118997">使用指紋解鎖</translation>
 <translation id="2054995875643283428">暫時略過</translation>
+<translation id="2610561535971892504">點選即可複製</translation>
 <translation id="2522605225061484799">前往我的投資組合</translation>
 <translation id="1148624853678088576">您已準備就緒！</translation>
 <translation id="4131445988101719379">您的 Brave 錢包已可使用</translation>
@@ -1024,7 +1030,7 @@
 <translation id="6610899852831463073">無法啟用安全瀏覽</translation>
 <translation id="7954263306665462056">您的裝置已停用安全瀏覽。若要啟用，請確保 Google Play 服務已安裝且保持最新版本。</translation>
 <translation id="6605147707233193230">開啟以立即支持內容創作者</translation>
-<translation id="1609556006143307897">您正在支持內容創作者</translation>
+<translation id="5899814466108868020">您正在為支持 Brave 和 BAT 社群盡份心力</translation>
 <translation id="6067959437127691361">使用 Brave Rewards 不僅能支持內容創作者，還可賺取 BAT。</translation>
 <translation id="3264975266761862670">準備好開始賺取收益了嗎？</translation>
 <translation id="265337947574975838">連結帳戶或向我們的任一合作夥伴建立帳戶。</translation>
@@ -1123,6 +1129,7 @@
 <translation id="1173894706177603556">重新命名</translation>
 <translation id="3596306474342941843">刪除播放清單</translation>
 <translation id="7765158879357617694">移動</translation>
+<translation id="6896758677409633944">複製</translation>
 <translation id="3803384303807438047">刪除項目的離線資料</translation>
 <translation id="4195643157523330669">在新分頁中開啟</translation>
 <translation id="4243710787042215766">用隱私分頁開啟</translation>

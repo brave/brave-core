@@ -110,6 +110,7 @@
 <translation id="3377025655491224618">Private Tab</translation>
 <translation id="7304425663107214334">Show browser suggestions</translation>
 <translation id="8982438328166986164">Displays website suggestions based on your bookmarks and browsing history.</translation>
+<translation id="924029461438529367">Show search suggestions</translation>
 <translation id="1571106259128580884">Show top sites suggestions</translation>
 <translation id="9148058034647219655">Exit</translation>
 <translation id="8047754398610073499">Block cookie consent notices</translation>
@@ -262,6 +263,8 @@
 <translation id="6511854390690723657">This is your first Brave ad. Tap to learn more.</translation>
 <translation id="2070991379950719711">Start using Brave Rewards</translation>
 <translation id="48520986898237073">Continue to wallet</translation>
+<translation id="6213254277250932867">I have a 12-word recovery phrase</translation>
+<translation id="4225265925807365011">I have a 24-word recovery phrase</translation>
 <translation id="3570367516044491911">Set as default browser</translation>
 <translation id="6800338374677644736">Set as default browser</translation>
 <translation id="19715420010996093">Select Brave Browser and tap 'Always'</translation>
@@ -361,6 +364,8 @@
 <translation id="6417420737057016607">Brave Ads</translation>
 <translation id="5611966874859284786">Show notification ads when Brave is not in use</translation>
 <translation id="6606319453795180219">This will delete your Brave Rewards and reset all of your Brave Rewards data</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Reset Brave Rewards data …<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Clear Brave Ads data …<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Add bookmark</translation>
 <translation id="340492034650766959">Delete bookmark</translation>
 <translation id="2149973817440762519">Edit bookmark</translation>
@@ -464,7 +469,7 @@ Are you sure you want to do this?</translation>
 <translation id="5582686930349810484">Fingerprinting blocked (standard)</translation>
 <translation id="769702552748212954">Allow all fingerprinting</translation>
 <translation id="876424292214881779">Ads and other creepy things blocked</translation>
-<translation id="6930134873084561197">Sites often include cookies and scripts which try to identify you and your device. They want to work out who you are and follow you across the web-tracking to see what you do on every site.\n\nBrave blocks these things so that you can browse without being followed around.</translation>
+<translation id="6849027612978668678">Sites often include cookies and scripts that try to identify you and your device. They want to work out who you are and follow you across the web, tracking what you do on every site.\n\nBrave blocks these things so that you can browse without being followed around.</translation>
 <translation id="8553998445606452168">About Brave Shields</translation>
 <translation id="8912304686498704084">UP</translation>
 <translation id="4963218453264888510">DOWN</translation>
@@ -559,6 +564,8 @@ Are you sure you want to do this?</translation>
 <translation id="7889432931837317731">Automatically open when possible</translation>
 <translation id="1029304566263314007">Show download progress notifications</translation>
 <translation id="2910433761530295035">Ask where to save files (if SD card is detected)</translation>
+<translation id="2977501775944575564">Parallel downloading</translation>
+<translation id="6224180438946945617">Enable parallel downloading to accelerate download speed</translation>
 <translation id="8967385052772844086">View full Privacy Report</translation>
 <translation id="6864343534748973390">Most popular</translation>
 <translation id="4608192160278975831">Private and no tracking</translation>
@@ -588,44 +595,38 @@ Are you sure you want to do this?</translation>
 <translation id="7909462264772842773">Take control of your crypto and NFTs. Brave Wallet supports Ethereum, EVM chains, Solana, Filecoin and more.</translation>
 <translation id="165255193061631296">Need a new wallet?</translation>
 <translation id="3485737865439729577">Get started with Brave Wallet within minutes</translation>
-<translation id="2759836790106646094">Back up your wallet now!</translation>
-<translation id="1078873179929044999">In the next step, you’ll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Save it somewhere safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.</translation>
+<translation id="2540568096903252632">Enter a password to continue</translation>
+<translation id="3356580495013324916">Enter your Brave Wallet password to start backing up wallet.</translation>
 <translation id="2359808026110333948">Continue</translation>
 <translation id="5488357322146334497">Message</translation>
-<translation id="1904000155026201268">I understand that if I lose my recovery phrase, I won’t be able to access my crypto wallet.</translation>
 <translation id="5333225216561354793">We require that you acknowledge the items below</translation>
 <translation id="6937275455070754004">Choose which blockchains to use in your wallet.</translation>
 <translation id="1645800479814134195">I understand this is a self-custody wallet and that I alone am responsible for any associated funds, assets or accounts, and for taking appropriate action to secure, protect and back up my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device or similar circumstance.</translation>
 <translation id="4565891212173086999">I have read and agree to the <ph name="CLICK_START"/>Terms of Use<ph name="CLICK_END"/>.</translation>
-<translation id="3933122286596948824">Your recovery phrase</translation>
-<translation id="5077747669435508720">Write down or copy these words in the exact order shown below and save them somewhere safe. Your recovery phrase is the only way to regain account access in case of a forgotten password, lost or stolen device, or if you want to switch wallets.</translation>
-<translation id="2708402071160162126">WARNING: never share your recovery phrase. Anyone with this phrase can take your assets forever.</translation>
-<translation id="111912712268284159">I have backed up my phrase somewhere safe.</translation>
-<translation id="6896758677409633944">Copy</translation>
+<translation id="3259102562570606417">Save your recovery phrase</translation>
+<translation id="4339981001593889376">Your recovery phrase is the key to access your wallet in case you forget your password or lose your device.</translation>
+<translation id="426648489149930289">Keep it in a secure place that is not accessible to others and avoid sharing it with anyone.</translation>
 <translation id="3726490322412361740">Enter password</translation>
-<translation id="3038243139480464605">Verify password</translation>
-<translation id="7396672979287122068">Verified password did not match</translation>
 <translation id="1566412704591731844">Creating your wallet …</translation>
 <translation id="7779823116893018906">It may take a few seconds …</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> Account <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Add account</translation>
 <translation id="3448492834076427715">Update account</translation>
-<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="5532363218245261099">#<ph name="NUMBER"/> <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="1537175937716697987">View my recovery phrase</translation>
+<translation id="5303015959766064022">I'll back up later</translation>
+<translation id="7345730059518887993">Let's check</translation>
+<translation id="7640406249038879146">Enter the word in position <ph name="WORD_POSITION"/> from your recovery phrase.</translation>
+<translation id="2598171223363459366">You can skip this step now, but you still need to back up your recovery phrase to ensure account security.</translation>
 <translation id="8100001366858145406">Enable fingerprint unlock?</translation>
 <translation id="5493402808936397665">Enable biometrics to quickly unlock your wallet without entering your password.</translation>
 <translation id="8030647312184163932">Fingerprint unlock</translation>
 <translation id="4090490645603511157">Use biometrics to quickly unlock your wallet without entering your password.</translation>
 <translation id="1544192797660353713">Wallet</translation>
-<translation id="6901810042765869341">Enter your recovery phrase to restore your Brave Wallet crypto account.</translation>
-<translation id="9120654436199628567">Restore crypto account</translation>
+<translation id="2321396552035646646">You can paste your entire recovery phrase into any field.</translation>
+<translation id="3961126209136843111">Import an existing wallet</translation>
 <translation id="4811736040444856406">Show recovery phrase</translation>
-<translation id="283071225285270357">Enter your recovery phrase</translation>
-<translation id="3943857333388298514">Paste</translation>
-<translation id="3331452756822160641">New password</translation>
 <translation id="4359319875297001084">Import from legacy Brave crypto wallets?</translation>
-<translation id="2339124864228588937">Verify recovery phrase</translation>
-<translation id="3747079125031086337">Select the words in your recovery phrase in their correct order.</translation>
-<translation id="6518133107902771759">Verify</translation>
 <translation id="3157931365184549694">Restore</translation>
 <translation id="5844138175312846408">Already have a wallet?</translation>
 <translation id="2502258949541727762">Before we begin</translation>
@@ -634,6 +635,7 @@ Are you sure you want to do this?</translation>
 <translation id="2523174693142405417">Search networks</translation>
 <translation id="1164748583090434571">Show testnets</translation>
 <translation id="935220650946301698">Continue with <ph name="NUMBER"/> networks</translation>
+<translation id="4052668782430384783">Word #<ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">Create a password</translation>
 <translation id="2789310860394340571">You'll use this password to access your wallet.</translation>
 <translation id="2136372518715274136">Enter new password</translation>
@@ -651,9 +653,8 @@ Are you sure you want to do this?</translation>
 <translation id="5619264711680220002">Biometric unlock</translation>
 <translation id="9195657745688986798">Unlock wallet</translation>
 <translation id="5168349973342709369">Enter password to unlock wallet</translation>
-<translation id="3043677904160378840">Passwords must be at least 8 characters.</translation>
 <translation id="1144810021918451336">Does not protect you against dangerous websites, downloads and extensions.</translation>
-<translation id="5760476995887363522">Phrases did not match. Please try again.</translation>
+<translation id="9085712756417277119">Recovery phrase doesn't match</translation>
 <translation id="2360588547830602174">Account recovery failed. Please try again.</translation>
 <translation id="1987317783729300807">Accounts</translation>
 <translation id="6284218950354553099">Automatically send daily usage ping to Brave</translation>
@@ -688,16 +689,21 @@ Are you sure you want to do this?</translation>
 <translation id="3510283489391432976">Choose your geo/country location</translation>
 <translation id="7695158478627528928">Brave never logs your activity</translation>
 <translation id="4575683170451975058">Protect 5 devices on 1 subscription</translation>
+<translation id="755045397420611731">Extra privacy &amp; security online</translation>
+<translation id="4520128772974831415">Hide your IP &amp; change your location</translation>
+<translation id="2044418816479192294">Hundreds of servers around the world</translation>
+<translation id="7410504850864021600">Lightning-fast connection speeds</translation>
+<translation id="2422309687188612485">Protect up to 10 devices with one plan</translation>
 <translation id="4882693590083943563">All plans include a <ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">free 7-day trial!</translation>
 <translation id="1532536259167115948">Monthly subscription <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Yearly subscription <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Renews monthly</translation>
-<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / mo.</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /month</translation>
 <translation id="1163809943099641131">One year</translation>
-<translation id="172859718096975160">Renew annually <ph name="DISCOUNT_TEXT_START"/>save <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
-<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
-<translation id="5125233570742276182">Subscriptions will be charged via your Google account. Any unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is cancelled at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\nBy using Brave, you agree to the Terms of Use and Privacy Policy.</translation>
+<translation id="727385358513272220">Renews annually (<ph name="DISCOUNT_TEXT_START"/>save <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /year</translation>
+<translation id="2786538705804257030">Subscriptions will be charged via your Google account. Any unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is cancelled at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\n\nBy using Brave, you agree to the Terms of Use and Privacy Policy.</translation>
 <translation id="5035172357624830412">Already purchased on brave.com?</translation>
 <translation id="713136183174551885">Refresh your credentials</translation>
 <translation id="6053992191006521518">Try for FREE</translation>
@@ -932,7 +938,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="7002577172732106572">Split tunnelling</translation>
 <translation id="8181161042860463420">The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it. <ph name="CLICK_START"/>Learn more<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Updating VPN Profile ...</translation>
-<translation id="7457027586454688423">Enter your Brave Wallet password</translation>
 <translation id="4784306439879850873">Note that Brave can't verify what will happen if you sign. A signature could authorise nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you're sure you want to take this action and trust the requesting site.</translation>
 <translation id="3474375934783434676">Sign at your own risk</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> of <ph name="SIZE"/></translation>
@@ -942,6 +947,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="2629767022373384291">Would you like to use biometric authentication to unlock your Brave Wallet?</translation>
 <translation id="4782919977106118997">Use Fingerprint Unlock</translation>
 <translation id="2054995875643283428">Skip this for now</translation>
+<translation id="2610561535971892504">Click to copy</translation>
 <translation id="2522605225061484799">Go to my portfolio</translation>
 <translation id="1148624853678088576">You’re all set!</translation>
 <translation id="4131445988101719379">Your Brave Wallet is ready to use</translation>
@@ -1024,7 +1030,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="6610899852831463073">Cannot enable Safe Browsing</translation>
 <translation id="7954263306665462056">Safe Browsing has been disabled on your device. To enable it, ensure that Google Play Services is installed and that it's up to date.</translation>
 <translation id="6605147707233193230">Turn on to help support content creators</translation>
-<translation id="1609556006143307897">You are helping support content creators</translation>
+<translation id="5899814466108868020">You are helping support Brave and the BAT community</translation>
 <translation id="6067959437127691361">Using Brave Rewards helps support content creators, and lets you earn BATs.</translation>
 <translation id="3264975266761862670">Ready to start earning?</translation>
 <translation id="265337947574975838">Connect or create an account with one of our partners.</translation>
@@ -1123,6 +1129,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="1173894706177603556">Rename</translation>
 <translation id="3596306474342941843">Delete playlist</translation>
 <translation id="7765158879357617694">Move</translation>
+<translation id="6896758677409633944">Copy</translation>
 <translation id="3803384303807438047">Delete item's offline data</translation>
 <translation id="4195643157523330669">Open in new tab</translation>
 <translation id="4243710787042215766">Open in Private tab</translation>

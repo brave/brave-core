@@ -16,6 +16,7 @@
 <translation id="8294286161128352783">בדף הכרטיסייה החדשה בלבד</translation>
 <translation id="6406506848690869874">סנכרון</translation>
 <translation id="1544192797660353713">ארנק</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="8275068909952022340">עוד…</translation>
 <translation id="1990886731975529483">התקינו והפעילו את Google Widevine</translation>
 <translation id="8926389886865778422">אל תשאל שוב</translation>
@@ -56,15 +57,20 @@
 <translation id="1434416574322382019">חלון גלישה פרטי עם תור</translation>
 <translation id="4703780849509456860">פתחו קישור בחלון פרטי בעזרת Tor</translation>
 <translation id="3488584642074079080">פתיחת קישור בחלון גלישה פרטית של Brave עם Tor</translation>
+<translation id="8594912907680633924">פתח את הקישור בתצוגה מפוצלת</translation>
 <translation id="6313675821927505581">חלון פרטי חדש ב-Tor</translation>
 <translation id="2638041073279639246">פתח קישור בחלון פרטי ב-Tor</translation>
 <translation id="3425600262621021599">פתח קישור בחלון פרטי ב-Tor</translation>
+<translation id="3795436270513738622">פתח את הקישור בתצוגה מפוצלת</translation>
 <translation id="2545072023356206691">החל מ-1 בדצמבר 2023, ערוץ Brave Dev לא יקבל עוד עדכוני דפדפן. אנו ממליצים למשתמשים לעבור לגרסאות Nightly, Beta או Release של Brave.</translation>
 <translation id="474217410105706308">השתק כרטיסייה</translation>
 <translation id="2804710924397009224">הסתר את סמלון Brave Rewards</translation>
 <translation id="5029193871181468990">הסתרת סמל Brave Rewards</translation>
 <translation id="2808103541110899519">הסתרת האייקון של Brave Wallet</translation>
 <translation id="7595540212376041331">הסתרת האייקון של Brave Wallet</translation>
+<translation id="3893997535859323951">הסתר את סמל Leo המבוסס בינה מלאכותית</translation>
+<translation id="6208515240323786457">הסתר את סמל Leo המבוסס בינה מלאכותית</translation>
+<translation id="2361906291514218784">Leo המבוסס בינה מלאכותית</translation>
 <translation id="4928988318462976765">חנות תוספי רשת</translation>
 <translation id="9181207987584064303">הצג בחנות תוספי רשת</translation>
 <translation id="3161744659507801211">אזהרה: Brave אינו יכול למנוע מתוספים לתעד את היסטוריית הגלישה שלכם.</translation>
@@ -97,9 +103,6 @@
 <translation id="3462465068145800637">Brave חיפוש לא יוצר עבורכם פרופיל. והוא לא תלוי בביג טק ב-100%.</translation>
 <translation id="42032117189492785">חיפוש מוטבע בינה מלאכותית עם אינדקס ייחודי.</translation>
 <translation id="8606416238399082160">פרטית לחלוטין, 100% עצמאית ועם תכונות בינה מלאכותית מעולות.</translation>
-<translation id="7706528608480893054">DDG הוא רק בינג בתחפושת. הגיע הזמן לפרטיות אמיתית, תוצאות טובות יותר ואינדקס עצמאי. הגיע הזמן לחיפוש Brave.</translation>
-<translation id="3818133234428578803">עזבו את הברווזים הצולעים</translation>
-<translation id="14817360483752259">חיפוש Brave אינו עוקב אחריכם, השאילתות שלכם או הקליקים שלכם. (בניגוד ל-DDG) ואינו רק בינג בתחפושת.</translation>
 <translation id="4381193110021038941">קבלו תוצאות טובות יותר</translation>
 <translation id="3846545273704969734">חיפוש Brave נבדק עצמאית ונמצא כי הוא נותן תוצאות טובות יותר מ-Bing (או שיבוטים שלו כגון DuckDuckGo)</translation>
 <translation id="2841164160723712537">שפרו את תוצאות החיפוש שלכם</translation>
@@ -287,8 +290,9 @@
 <translation id="2818704116581303039">פתח את הגדרות הפלייליסט</translation>
 <translation id="6790428901817661496">הפעל</translation>
 <translation id="1178581264944972037">השהה</translation>
-<translation id="4477350412780666475">המסלול הבא</translation>
-<translation id="3962859241508114581">רצועה קודמת</translation>
+<translation id="4046123991198612571">הרצועה הבאה</translation>
+<translation id="2874939134665556319">הרצועה הקודמת</translation>
+<translation id="3040310857793999281">השתקה או ביטול ההשתקה</translation>
 <translation id="7544853251252956727">ערבוב</translation>
 <translation id="4330722796577425585">החזר לאחור</translation>
 <translation id="7481312909269577407">קדימה</translation>
@@ -298,7 +302,15 @@
 <translation id="6453210454707928697">הפעלת הפריט נכשלה</translation>
 <translation id="8741852840789907931">ייתכן שהתוקף של [<ph name="ITEM_NAME"/>] פג. האם ברצונכם לשחזר אותו?</translation>
 <translation id="6155018868740116868">שחזר</translation>
-<translation id="1727684853006449697">נגן Brave</translation>
+<translation id="2521960050170773751">הוסף מדיה מהדף</translation>
+<translation id="2301087142998134097">נעשה ניסיון לפתוח את <ph name="SITE"/></translation>
+<translation id="7128982309566342232">נעשה ניסיון לפתוח את הדף המוטמע ב-<ph name="SITE"/></translation>
+<translation id="1175012181261953767">נעשה ניסיון לפתוח דף זה</translation>
+<translation id="7459546222322124545">נעשה ניסיון לפתוח דף המוטמע בדף זה</translation>
+<translation id="5836261838911560851">נעשה ניסיון לשמור את <ph name="SITE"/></translation>
+<translation id="5936788906460687941">נעשה ניסיון לשמור את הדף המוטמע ב-<ph name="SITE"/></translation>
+<translation id="7700010743463174379">נעשה ניסיון לשמור דף זה</translation>
+<translation id="6774238875569752630">נעשה ניסיון לשמור דף המוטמע בדף זה</translation>
 <translation id="9156965752763025780">‏השינויים שביצעת ייכנסו לתוקף בפעם הבאה שתפעיל מחדש את Brave‏.</translation>
 <translation id="7179921470347911571">הפעלה מחדש כעת</translation>
 <translation id="1426410128494586442">כן</translation>
@@ -323,6 +335,7 @@
 <translation id="5860254591544742609">הצגת שורת הכותרת</translation>
 <translation id="5371926069408837914">הרחב את חלונית הכרטיסיות האנכיות בעת העברת העכבר כאשר היא מכווצת</translation>
 <translation id="3367129510799209147">מצב ריחוף בכרטיסייה</translation>
+<translation id="8527099657928614787">הרחב לשוניות אנכיות באופן עצמאי בכל חלון</translation>
 <translation id="916373084491701212">הצג את סרגל הגלילה</translation>
 <translation id="515949045075831661">הצג בצד ימין</translation>
 <translation id="3725395376319291415">הצג בצד שמאל</translation>
@@ -339,6 +352,7 @@
 <translation id="4144468798716165316">פקודות מהירות</translation>
 <translation id="7310387888625228830">עוזר בינה מלאכותית של ליאו</translation>
 <translation id="5222974844674487962">כפתור הצג חדשות אמיצות</translation>
+<translation id="2085436423511121572">הצג את לחצן Leo המבוסס בינה מלאכותית</translation>
 <translation id="383007806262310953">הצג את סרגל הסימניות</translation>
 <translation id="4054323497808446566">סרגל הסימניות נראה בכל הדפים</translation>
 <translation id="8693858092251192712">סרגל הסימניות מוסתר בכל הדפים למעט את דף הכרטיסייה החדשה</translation>
@@ -439,6 +453,7 @@
 <translation id="4891600875049212418">עברו ל-Off-The-Record בעת ביקור באתרים רגישים</translation>
 <translation id="1968895725257436430">איסוף נתונים</translation>
 <translation id="4846154056248462491">ביציאה</translation>
+<translation id="216468847346280584">מחק נתוני Brave מודעות...</translation>
 <translation id="2808630562319398131">אפס נתוני Brave Rewards...</translation>
 <translation id="6438096877646138757">אתרים שמנקים קובצי עוגיות כאשר הם נסגרים</translation>
 <translation id="2988792685798128092">נקה עם סגירת האתר</translation>
@@ -551,6 +566,8 @@
 <translation id="4094590686212463338">לא ניתן היה להצטרף לשרשרת הסנכרון הזו. שרשרת הסנכרון נמחקה.</translation>
 <translation id="4908081302669157000">מספרי טלפון, דוא"ל וכתובות</translation>
 <translation id="294985549514492876">Web apps (PWAs)</translation>
+<translation id="924029461438529367">הצג הצעות חיפוש</translation>
+<translation id="3128251601544028053">כשאתה מקליד בשורת הכתובות או בתיבת החיפוש, Brave שולח את הטקסט שאתה מקליד אל ברירת המחדל של מנוע החיפוש שלך על מנת לקבל הצעות טובות יותר. תכונה זאת לא זמינה בחלונות פרטיים.</translation>
 <translation id="6285118765755298263">תצרו אינדקס למנועי חיפוש אחרים</translation>
 <translation id="919715748352669592">כולל אינדקס באופן אוטומטי לאתרי אינטרנט העוקבים אחר מפרט OpenSearch.</translation>
 <translation id="842628013524824194">חלון רגיל - מנוע החיפוש יוצג בשורת הכתובת</translation>
@@ -667,7 +684,6 @@
 <translation id="3095201688102519917">הזהר אותי לפני סגירת חלון שבו מספר כרטיסיות</translation>
 <translation id="7120553802660696133">סגור חלון בסגירת הכרטיסייה האחרונה</translation>
 <translation id="3394171693948989253">הצג תזכורת במסך מלא ללחוץ על Esc ליציאה</translation>
-<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">הצג את סמל Leo בסרגל הצד</translation>
 <translation id="8055509865174199683">הצג את ליאו בתפריט הקונטקסט באתרי אינטרנט</translation>
 <translation id="1529674267267221673">ליאו יוצג בתפריט הקונטקסט כשתלחץ על הלחצן הימני של העכבר באתר האינטרנט. הפעולה תשלח קונטקסט מדף האינטרנט הנוכחי אל ליאו.</translation>

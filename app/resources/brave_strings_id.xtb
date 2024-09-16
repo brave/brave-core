@@ -54,6 +54,7 @@
 <translation id="9048754176089806686">Brave memblokir download ini karena jenis file tersebut tidak biasa didownload dan mungkin berbahaya</translation>
 <translation id="1953553007165777902">Mendownload... <ph name="MINUTE"/> menit lagi</translation>
 <translation id="1775322105159056176">Brave tidak dapat menentukan atau menyetel browser default</translation>
+<translation id="4372901050442507812">Pelajari alasan Brave memblokir beberapa file, terbuka di tab baru</translation>
 <translation id="9220324636239049437">Tindakan ini akan menghapus 1 item dari perangkat. Untuk mengambil data nanti, login ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="2018879682492276940">Gagal menginstal. Coba lagi.</translation>
 <translation id="831418749472885028">Untuk memeriksa apakah sandi Anda yang lain aman dari pelanggaran data dan masalah keamanan lainnya, <ph name="BEGIN_LINK"/>login ke Brave<ph name="END_LINK"/>.</translation>
@@ -114,6 +115,7 @@
 <translation id="2915996080311180594">Mulai Ulang Nanti</translation>
 <translation id="2928420929544864228">Penginstalan selesai.</translation>
 <translation id="2945997411976714835">Error penginstalan: Proses penginstal gagal dimulai.</translation>
+<translation id="3688936822855019158">Organisasi Anda mengelola Brave</translation>
 <translation id="8208853227947884571">Brave sudah diperbarui</translation>
 <translation id="5122472867956731189">Jika situs berusaha mencuri sandi Anda, atau jika Anda mendownload file berbahaya, Brave mungkin juga mengirimkan URL, termasuk bit konten halaman, ke Safe Browsing</translation>
 <translation id="500707801149472925">Brave dapat menonaktifkan tab ini untuk meningkatkan pengalaman penjelajahan dan mengosongkan resource.</translation>
@@ -208,6 +210,7 @@
 <translation id="8148611988012584308">Menyesuaikan dan mengontrol Brave</translation>
 <translation id="4427306783828095590">Perlindungan yang ditingkatkan akan memblokir phishing dan malware dengan lebih optimal</translation>
 <translation id="4434353761996769206">Error penginstal: <ph name="INSTALLER_ERROR"/></translation>
+<translation id="175926951572479413"><ph name="MANAGER"/> mengelola Brave</translation>
 <translation id="6786534271003695094">Tentang Brave for Testing</translation>
 <translation id="4501471624619070934">Penginstalan gagal karena akses dibatasi untuk negara ini.</translation>
 <translation id="8594994021633965927">Ekstensi ini belum memublikasikan praktik privasi, seperti cara ekstensi mengumpulkan dan menggunakan data. Brave merekomendasikan agar Anda menghapusnya.</translation>
@@ -409,6 +412,7 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="38294420683216447">Dengan profil Brave, Anda dapat memisahkan semua aktivitas Brave Anda. Hal ini mempermudah pemisahan antara aktivitas kerja dan hiburan.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="2034072705932785495">Brave memerlukan izin akses ke kamera untuk situs ini</translation>
+<translation id="7129342855140808694">Untuk menggunakan mikrofon, beri Brave akses di <ph name="BEGIN_LINK"/>setelan sistem<ph name="END_LINK"/></translation>
 <translation id="5296583608321648908">Untuk mendapatkan update Brave berikutnya, Anda perlu Windows 10 atau yang lebih baru. Komputer ini menggunakan Windows 7.</translation>
 <translation id="3962395975456095331">Luncurkan kembali Brave?</translation>
 <translation id="2619516027171717873">Tidak dapat memasang Brave versi yang sama dengan yang sedang Anda jalankan. Tutup Brave dan coba lagi.</translation>
@@ -435,6 +439,7 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="7872446069773932638">Mendownload ... <ph name="SECONDS"/> detik lagi</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Cara Anda dapat mengelola data Anda:<ph name="END_BOLD"/> Untuk melindungi privasi Anda, kami otomatis menghapus minat yang tersimpan lebih dari 4 minggu. Saat Anda terus menjelajah, minat dapat kembali muncul di daftar. Atau Anda dapat menghapus minat yang tidak perlu dipertimbangkan oleh Brave.</translation>
 <translation id="5687542525349822727">Setel Brave sebagai browser default</translation>
+<translation id="6396151137840491551">Brave mengupgrade koneksi yang tidak aman ke HTTPS secara otomatis jika memungkinkan</translation>
 <translation id="2925193881330501265">Anda telah masuk ke Brave sebagai <ph name="USER_EMAIL_ADDRESS"/>. Gunakan akun yang sama untuk masuk kembali.</translation>
 <translation id="6915252145142862992">Ini adalah pemasangan Brave sekunder, dan tidak dapat digunakan sebagai browser default.</translation>
 <translation id="7685904775439037072">Setelah Brave memiliki akses, situs dapat meminta akses dari Anda.</translation>
@@ -446,6 +451,7 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="813913629614996137">Memulai...</translation>
 <translation id="7550680632761245819">Aktifkan perlindungan tambahan di mesin WebAssembly dan JavaScript Brave</translation>
 <translation id="9067428552314418522">File ini berbahaya, jadi Brave telah memblokirnya.</translation>
+<translation id="8377926237617998195">Untuk menggunakan kamera, beri Brave akses di <ph name="BEGIN_LINK"/>setelan sistem<ph name="END_LINK"/></translation>
 <translation id="1755067029031059271">Brave tidak dapat memverifikasi asal ekstensi ini, dan mungkin ekstensi ini tidak aman. Hapus dari Brave agar ekstensi ini tidak dapat lagi melihat dan mengubah data Anda di situs yang Anda kunjungi, termasuk info pribadi Anda.</translation>
 <translation id="8207657266087451193">Jika gambar tidak memiliki deskripsi yang berguna, Brave akan mencoba memberikan deskripsi untuk Anda. Untuk membuat deskripsi, gambar akan dikirim ke Brave. Anda dapat menonaktifkannya kapan saja di setelan.</translation>
 <translation id="7792526144795244436">Login ke Brave di profil baru?</translation>
@@ -469,6 +475,7 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="8550334526674375523">Profil kerja ini sama sekali terpisah dari profil pribadi Anda.</translation>
 <translation id="8555465886620020932">Error layanan: <ph name="SERVICE_ERROR"/>.</translation>
 <translation id="227028348235968071">Brave dapat memeriksa sandi saat Anda login dengan Akun Brave</translation>
+<translation id="839677568225616901">Beberapa organisasi mengelola Brave</translation>
 <translation id="8121009781989288430">Hak Cipta <ph name="YEAR"/> Pengarang Brave. Semua hak dilindungi undang-undang.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Cara kami menggunakan data ini:<ph name="END_BOLD"/> Situs dapat menyimpan informasi tentang minat Anda ke Brave. Misalnya, jika Anda mengunjungi suatu situs untuk membeli sepatu maraton, situs tersebut dapat menetapkan minat Anda sebagai lari maraton. Kemudian, jika Anda mengunjungi situs lain untuk mendaftar lomba lari, situs tersebut dapat menampilkan iklan sepatu lari berdasarkan minat Anda.</translation>
 <translation id="3052349005266761501">Meluncurkan Brave...</translation>
@@ -513,6 +520,7 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="983803489796659991">Penginstalan gagal karena server update tidak memiliki data hash apa pun untuk aplikasi.</translation>
 <translation id="8435446479956716379">Gunakan Brave Tanpa Akun</translation>
 <translation id="8992261409816268381">Pengarang Brave</translation>
+<translation id="3146636448190445245">Untuk menggunakan lokasi, beri Brave akses di <ph name="BEGIN_LINK"/>setelan sistem<ph name="END_LINK"/></translation>
 <translation id="137466361146087520">Google Chrome Beta</translation>
 <translation id="7535429826459677826">Google Chrome Dev</translation>
 <translation id="5359574361379286250">Jika Anda ingin menggunakan akun ini hanya sekali, Anda dapat menggunakan <ph name="GUEST_LINK_BEGIN"/>mode Tamu<ph name="GUEST_LINK_END"/> di peramban Brave. Jika Anda ingin menambahkan akun untuk orang lain, <ph name="LINK_BEGIN"/>tambahkan profil baru<ph name="LINK_END"/> ke <ph name="DEVICE_TYPE"/> Anda.

@@ -16,6 +16,7 @@
 <translation id="8294286161128352783">僅在新索引標籤頁面</translation>
 <translation id="6406506848690869874">同步</translation>
 <translation id="1544192797660353713">錢包</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="8275068909952022340">其他…</translation>
 <translation id="1990886731975529483">安裝並執行 Google Widevine</translation>
 <translation id="8926389886865778422">不再詢問這個問題</translation>
@@ -56,15 +57,20 @@
 <translation id="1434416574322382019">以 Tor 開啟新私有窗口</translation>
 <translation id="4703780849509456860">使用 Tor 在隱私視窗中打開連結</translation>
 <translation id="3488584642074079080">使用 Tor 在隱私視窗中打開連結</translation>
+<translation id="8594912907680633924">在分割檢視畫面開啟連結</translation>
 <translation id="6313675821927505581">新的使用 Tor 的視窗</translation>
 <translation id="2638041073279639246">在使用 Tor 的隱私視窗中開啟連結</translation>
 <translation id="3425600262621021599">在使用 Tor 的 Brave 隱私視窗中開啟連結</translation>
+<translation id="3795436270513738622">在分割檢視畫面開啟連結</translation>
 <translation id="2545072023356206691">從 2023 年 12 月 1 日開始，Brave Dev 頻道將不再接收瀏覽器更新。建議使用者改用 Brave Nightly、測試版或正式版。</translation>
 <translation id="474217410105706308">關閉分頁音訊</translation>
 <translation id="2804710924397009224">隱藏 Brave 獎賞圖標</translation>
 <translation id="5029193871181468990">隱藏 Brave 獎勵圖示</translation>
 <translation id="2808103541110899519">隱藏 Brave 錢包圖示</translation>
 <translation id="7595540212376041331">隱藏 Brave 錢包圖示</translation>
+<translation id="3893997535859323951">隱藏 Leo AI 圖示</translation>
+<translation id="6208515240323786457">隱藏 Leo AI 圖示</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="4928988318462976765">網路擴充功能商店</translation>
 <translation id="9181207987584064303">在「網路擴充功能商店」檢視</translation>
 <translation id="3161744659507801211">警告：Brave 無法防止擴充功能記錄您的瀏覽歷程記錄。</translation>
@@ -97,9 +103,6 @@
 <translation id="3462465068145800637">Brave 搜尋不會建立您的使用者輪廓，完全獨立於大型科技公司。</translation>
 <translation id="42032117189492785">AI 智慧搜尋，搭配獨一無二的索引方式。</translation>
 <translation id="8606416238399082160">完全隱私、100% 獨立，還具有強大的 AI 功能。</translation>
-<translation id="7706528608480893054">DDG 只是 Bing 的偽裝。實現真正隱私、更好的結果和獨立的索引的時候到了。使用 Brave 搜尋的時候到了。</translation>
-<translation id="3818133234428578803">別再使用 DuckDuckGo 了</translation>
-<translation id="14817360483752259">Brave Search 不會追蹤您、您的查詢或您的點擊。並且（與 DDG 不同之處）這不僅是 Bing 的偽裝。</translation>
 <translation id="4381193110021038941">獲得更好的結果</translation>
 <translation id="3846545273704969734">Brave Search 已被獨立驗證，結果優於 Bing（或 DuckDuckGo 等的 Bing 克隆產品）。</translation>
 <translation id="2841164160723712537">改善搜尋結果</translation>
@@ -288,8 +291,9 @@
 <translation id="2818704116581303039">開啟播放清單設定</translation>
 <translation id="6790428901817661496">播放</translation>
 <translation id="1178581264944972037">暫停</translation>
-<translation id="4477350412780666475">下一首</translation>
-<translation id="3962859241508114581">上一首</translation>
+<translation id="4046123991198612571">下一首曲目</translation>
+<translation id="2874939134665556319">上一首曲目</translation>
+<translation id="3040310857793999281">切換靜音</translation>
 <translation id="7544853251252956727">隨機播放</translation>
 <translation id="4330722796577425585">倒帶</translation>
 <translation id="7481312909269577407">往前</translation>
@@ -299,7 +303,15 @@
 <translation id="6453210454707928697">項目播放失敗</translation>
 <translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] 可能已過期，是否要復原此項目？</translation>
 <translation id="6155018868740116868">復原</translation>
-<translation id="1727684853006449697">Brave 播放器</translation>
+<translation id="2521960050170773751">從頁面新增媒體</translation>
+<translation id="2301087142998134097"><ph name="SITE"/> 要求開啟</translation>
+<translation id="7128982309566342232"><ph name="SITE"/> 的嵌入頁面要求開啟</translation>
+<translation id="1175012181261953767">此頁面要求開啟</translation>
+<translation id="7459546222322124545">此頁面中的嵌入頁面要求開啟</translation>
+<translation id="5836261838911560851"><ph name="SITE"/> 要求儲存</translation>
+<translation id="5936788906460687941"><ph name="SITE"/> 的嵌入頁面要求儲存</translation>
+<translation id="7700010743463174379">此頁面要求儲存</translation>
+<translation id="6774238875569752630">此頁面中的嵌入頁面要求儲存</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="1426410128494586442">是</translation>
@@ -324,6 +336,7 @@
 <translation id="5860254591544742609">顯示標題列</translation>
 <translation id="5371926069408837914">收合時將滑鼠游標停留於上方，垂直分頁面板就會展開。</translation>
 <translation id="3367129510799209147">索引標籤懸停模式</translation>
+<translation id="8527099657928614787">依視窗個別展開垂直分頁</translation>
 <translation id="916373084491701212">顯示捲軸</translation>
 <translation id="515949045075831661">顯示於右側</translation>
 <translation id="3725395376319291415">顯示於左側</translation>
@@ -340,6 +353,7 @@
 <translation id="4144468798716165316">快速指令</translation>
 <translation id="7310387888625228830">Leo 人工智慧助理</translation>
 <translation id="5222974844674487962">顯示 Brave News 按鈕</translation>
+<translation id="2085436423511121572">顯示 Leo AI 按鈕</translation>
 <translation id="383007806262310953">顯示書籤列</translation>
 <translation id="4054323497808446566">書籤列在所有頁面上都可見</translation>
 <translation id="8693858092251192712">書籤列在除索引標籤頁面之外的所有頁面上都為隱藏</translation>
@@ -440,6 +454,7 @@
 <translation id="4891600875049212418">造訪敏感網站時停止記錄</translation>
 <translation id="1968895725257436430">資料集合</translation>
 <translation id="4846154056248462491">離開</translation>
+<translation id="216468847346280584">清除 Brave Ads 資料...</translation>
 <translation id="2808630562319398131">重設 Brave 獎勵資料…</translation>
 <translation id="6438096877646138757">關閉時清除 cookie 的網站</translation>
 <translation id="2988792685798128092">網站關閉時清除</translation>
@@ -554,6 +569,8 @@
 <translation id="4094590686212463338">無法加入此同步鏈。同步鏈已被刪除。</translation>
 <translation id="4908081302669157000">電話號碼、電子郵件和地址</translation>
 <translation id="294985549514492876">Web 應用程式 (PWA)</translation>
+<translation id="924029461438529367">顯示搜尋建議</translation>
+<translation id="3128251601544028053">您在網址列或搜尋方塊輸入內容時，Brave 會將您輸入的內容傳送至您的預設搜尋引擎，以取得更好的建議。私密瀏覽視窗不支援此功能。</translation>
 <translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
 <translation id="919715748352669592">為遵循 OpenSearch 規範的網站自動編製索引。</translation>
 <translation id="842628013524824194">一般視窗 - 在網址列使用搜尋引擎</translation>
@@ -669,7 +686,6 @@
 <translation id="3095201688102519917">關閉已開啟多個分頁的視窗前顯示警告訊息</translation>
 <translation id="7120553802660696133">關閉最後一個分頁時關閉視窗</translation>
 <translation id="3394171693948989253">顯示全螢幕提醒，按 Esc 即可結束</translation>
-<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">在側邊欄顯示 Leo 圖示</translation>
 <translation id="8055509865174199683">在網站的內容選單中顯示 Leo</translation>
 <translation id="1529674267267221673">以滑鼠右鍵按一下網站，Leo 就會出現在內容選單中。這會將目前網頁的內容傳送給 Leo。</translation>

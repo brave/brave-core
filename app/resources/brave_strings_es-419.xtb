@@ -54,6 +54,7 @@
 <translation id="9048754176089806686">Brave bloqueó esta descarga porque el tipo de archivo no se descarga con frecuencia y puede ser peligroso</translation>
 <translation id="1953553007165777902">Descargando… Minutos restantes: <ph name="MINUTE"/></translation>
 <translation id="1775322105159056176">Brave no puede determinar ni establecer el navegador predeterminado</translation>
+<translation id="4372901050442507812">Descubre por qué Brave bloquea algunos archivos (se abre en una pestaña nueva)</translation>
 <translation id="9220324636239049437">Esta acción borrará 1 elemento de este dispositivo. Si más adelante deseas recuperar los datos, accede a tu cuenta en Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="2018879682492276940">No se completó la instalación. Vuelve a intentarlo.</translation>
 <translation id="831418749472885028">Para comprobar si tus otras contraseñas están a salvo de violaciones de la seguridad de los datos y otros problemas de seguridad, <ph name="BEGIN_LINK"/>accede a Brave<ph name="END_LINK"/>.</translation>
@@ -114,6 +115,7 @@
 <translation id="2915996080311180594">Reiniciar más tarde</translation>
 <translation id="2928420929544864228">Se completó la instalación.</translation>
 <translation id="2945997411976714835">Error de instalación: No se pudo iniciar el proceso del instalador.</translation>
+<translation id="3688936822855019158">Tu organización administra Brave</translation>
 <translation id="8208853227947884571">Brave está actualizado.</translation>
 <translation id="5122472867956731189">Si un sitio intenta robar tu contraseña, o cuando descargas un archivo dañino, es posible que Brave también envíe las URL, con partes del contenido de la página, a la Navegación segura.</translation>
 <translation id="500707801149472925">Brave puede desactivar estas pestañas para mejorar tu experiencia de navegación y liberar recursos.</translation>
@@ -206,6 +208,7 @@
 <translation id="8148611988012584308">Personaliza y controla Brave</translation>
 <translation id="4427306783828095590">La protección mejorada permite bloquear mejor los ataques de phishing y el software malicioso.</translation>
 <translation id="4434353761996769206">Error de instalador: <ph name="INSTALLER_ERROR"/></translation>
+<translation id="175926951572479413"><ph name="MANAGER"/> administra Brave</translation>
 <translation id="6786534271003695094">Acerca de Brave for Testing</translation>
 <translation id="4501471624619070934">La instalación falló porque el acceso está restringido en este país.</translation>
 <translation id="8594994021633965927">Esta extensión no publicó prácticas de privacidad, como la forma en que recopila y usa datos. Brave te recomienda quitarla.</translation>
@@ -403,6 +406,7 @@
 <translation id="38294420683216447">Con los perfiles de Brave, puedes separar todo lo que tienes en Brave. De esta manera, es más fácil separar el trabajo del entretenimiento.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/>: Brave para desarrolladores</translation>
 <translation id="2034072705932785495">Brave necesita permiso para acceder a tu cámara para este sitio</translation>
+<translation id="7129342855140808694">Para usar el micrófono, otorga acceso a Brave en la <ph name="BEGIN_LINK"/>configuración del sistema<ph name="END_LINK"/></translation>
 <translation id="5296583608321648908">Para obtener próximas actualizaciones de Brave, necesitarás Windows 10 o versiones posteriores. Esta computadora usa Windows 7.</translation>
 <translation id="3962395975456095331">¿Quieres reiniciar Brave?</translation>
 <translation id="2619516027171717873">No es posible instalar la misma versión de Brave que se está ejecutando. Cierra Brave y vuelve a intentarlo.</translation>
@@ -429,6 +433,7 @@
 <translation id="7872446069773932638">Descargando… Segundos restantes: <ph name="SECONDS"/></translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Cómo puedes administrar tu información:<ph name="END_BOLD"/> Para proteger tu privacidad, borramos los intereses automáticamente después de 4 semanas. Es posible que, a medida que navegues, un interés vuelva a aparecer en la lista. O bien, puedes quitar los intereses que no quieres que Brave tenga en cuenta.</translation>
 <translation id="5687542525349822727">Establece Brave como navegador predeterminado</translation>
+<translation id="6396151137840491551">Brave actualiza automáticamente las conexiones no seguras a HTTPS cuando es posible</translation>
 <translation id="2925193881330501265">Accediste a Brave con <ph name="USER_EMAIL_ADDRESS"/>. Usa la misma cuenta para volver a acceder.</translation>
 <translation id="6915252145142862992">Como esta es una instalación secundaria de Brave, no puede establecerse como tu navegador predeterminado.</translation>
 <translation id="7685904775439037072">Una vez que Brave tenga acceso, los sitios web podrán solicitarte acceso.</translation>
@@ -440,6 +445,7 @@
 <translation id="813913629614996137">Inicializando…</translation>
 <translation id="7550680632761245819">Activar la protección adicional en el motor de WebAssembly y de JavaScript de Brave</translation>
 <translation id="9067428552314418522">Brave bloqueó este archivo porque es peligroso.</translation>
+<translation id="8377926237617998195">Para usar la cámara, otorga acceso a Brave en la <ph name="BEGIN_LINK"/>configuración del sistema<ph name="END_LINK"/></translation>
 <translation id="1755067029031059271">Brave no puede verificar de dónde proviene esta extensión y es posible que no sea segura. Quítala de Brave para que ya no pueda ver ni cambiar tus datos en los sitios que visitas, incluida la información personal.</translation>
 <translation id="8207657266087451193">Si una imagen no tiene una descripción útil, Brave intentará proporcionarte una. Para crear descripciones, se envían las imágenes a Brave. Puedes desactivar esta opción en la configuración en cualquier momento.</translation>
 <translation id="7792526144795244436">¿Quieres acceder a Brave con un perfil nuevo?</translation>
@@ -463,6 +469,7 @@
 <translation id="8550334526674375523">Este perfil de trabajo está totalmente separado de tu perfil personal.</translation>
 <translation id="8555465886620020932">Error del servicio: <ph name="SERVICE_ERROR"/>.</translation>
 <translation id="227028348235968071">Brave puede revisar las contraseñas solo cuando accedes con tu Cuenta de Brave</translation>
+<translation id="839677568225616901">Varias organizaciones administran Brave</translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> Los autores de Brave. Todos los derechos reservados.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Cómo usamos esta información:<ph name="END_BOLD"/> Los sitios pueden almacenar información sobre tus intereses con Brave. Por ejemplo, si visitas un sitio para comprar zapatillas para una maratón, es posible que el sitio defina que te interesa correr maratones. Luego, si visitas otro sitio para registrarte en una carrera, ese sitio podrá mostrarte un anuncio sobre calzado para correr en función de tus intereses.</translation>
 <translation id="3052349005266761501">Iniciando Brave…</translation>
@@ -507,6 +514,7 @@
 <translation id="983803489796659991">No se pudo completar la instalación porque el servidor de actualización no tiene ningún dato hash para la aplicación.</translation>
 <translation id="8435446479956716379">Usar Brave sin una cuenta</translation>
 <translation id="8992261409816268381">Los creadores de Brave</translation>
+<translation id="3146636448190445245">Para usar la ubicación, otorga acceso a Brave en la <ph name="BEGIN_LINK"/>configuración del sistema<ph name="END_LINK"/></translation>
 <translation id="137466361146087520">Google Chrome Beta</translation>
 <translation id="7535429826459677826">Google Chrome Dev</translation>
 <translation id="5359574361379286250">Si solo quieres utilizar esta cuenta una vez, puedes usar el navegador de Brave en <ph name="GUEST_LINK_BEGIN"/>modo invitado<ph name="GUEST_LINK_END"/>. Si quieres añadir una cuenta para otra persona, <ph name="LINK_BEGIN"/>añade un nuevo perfil<ph name="LINK_END"/> a tu <ph name="DEVICE_TYPE"/>.
