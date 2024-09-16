@@ -110,6 +110,7 @@
 <translation id="3377025655491224618">Privat flik</translation>
 <translation id="7304425663107214334">Visa webbläsarförslag</translation>
 <translation id="8982438328166986164">Visa förslag på webbplatser baserat på dina bokmärken och webbhistorik.</translation>
+<translation id="924029461438529367">Visa sök förslag</translation>
 <translation id="1571106259128580884">Visa förslag på bästa webbplatser</translation>
 <translation id="9148058034647219655">Avsluta</translation>
 <translation id="8047754398610073499">Blockera meddelanden om samtycke till cookies</translation>
@@ -262,6 +263,8 @@
 <translation id="6511854390690723657">Detta är din första Brave-annons. Tryck för att läsa mer.</translation>
 <translation id="2070991379950719711">Börja använda Brave Rewards</translation>
 <translation id="48520986898237073">Fortsätt till plånboken</translation>
+<translation id="6213254277250932867">Jag har en återställningsfras med 12 ord</translation>
+<translation id="4225265925807365011">Jag har en återställningsfras med 24 ord</translation>
 <translation id="3570367516044491911">Ställ in som standardwebbläsare</translation>
 <translation id="6800338374677644736">Ställ in som standardwebbläsare</translation>
 <translation id="19715420010996093">Välj webbläsaren Brave och tryck på ”Alltid”.</translation>
@@ -361,6 +364,8 @@
 <translation id="6417420737057016607">Brave annonser</translation>
 <translation id="5611966874859284786">Visa annonser när Brave inte används</translation>
 <translation id="6606319453795180219">Detta kommer att radera dina Brave Rewards och återställa alla dina Brave Rewards-data</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Återställ Brave Belöningar-data …<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Rensa Brave Annonser-data …<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Lägg till bokmärke</translation>
 <translation id="340492034650766959">Ta bort bokmärke</translation>
 <translation id="2149973817440762519">Ändra bokmärke</translation>
@@ -464,7 +469,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="5582686930349810484">Fingeravtrycksläsning hindrad (standard)</translation>
 <translation id="769702552748212954">Tillåt att alla fingeravtryck tas</translation>
 <translation id="876424292214881779">annonser och andra oönskade saker har blockerats</translation>
-<translation id="6930134873084561197">Sajter har ofta cookies och skript som försöker identifiera dig och din enhet. De vill ta reda på vem du är och vad du gör på webben, på varenda sajt.\n\nBrave blockerar sådana saker, så att du kan surfa utan att någon bevakar dig.</translation>
+<translation id="6849027612978668678">Webbplatser innehåller ofta cookies och skript som försöker identifiera dig och din enhet. De vill ta reda på vem du är och följa dig över hela webben och spåra vad du gör på varje webbplats.\n\nBrave blockerar dessa saker så att du kan surfa utan att bli förföljd.</translation>
 <translation id="8553998445606452168">Om Brave-sköldar</translation>
 <translation id="8912304686498704084">UPP</translation>
 <translation id="4963218453264888510">NED</translation>
@@ -559,6 +564,8 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="7889432931837317731">Öppna automatiskt när det är möjligt</translation>
 <translation id="1029304566263314007">Visa meddelanden om nedladdningsframsteg</translation>
 <translation id="2910433761530295035">Fråga var du ska spara filer (om SD-kort upptäcks)</translation>
+<translation id="2977501775944575564">Parallell nedladdning</translation>
+<translation id="6224180438946945617">Aktivera parallell nedladdning för att påskynda nedladdningshastigheten</translation>
 <translation id="8967385052772844086">Se hela sekretessrapporten</translation>
 <translation id="6864343534748973390">Populäraste</translation>
 <translation id="4608192160278975831">Privat och utan spårning</translation>
@@ -588,44 +595,38 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="7909462264772842773">Ta kontroll över din krypto och NFT:er. Brave Wallet stöder Ethereum, EVM-kedjor, Solana, Filecoin med flera.</translation>
 <translation id="165255193061631296">Behöver du en ny plånbok?</translation>
 <translation id="3485737865439729577">Kom igång med Brave Wallet på några minuter</translation>
-<translation id="2759836790106646094">Säkerhetskopiera din plånbok nu!</translation>
-<translation id="1078873179929044999">I nästa steg kommer du att se en återställningsfras på 12 ord som du kan använda för att återställa dina primära kryptokonton. Spara den på ett säkert ställe. Din återställningsfras är det enda sättet att återfå kontoåtkomst i händelse av glömt lösenord, förlorad eller stulen enhet, eller om du vill byta plånböcker.</translation>
+<translation id="2540568096903252632">Ange ett lösenord för att fortsätta</translation>
+<translation id="3356580495013324916">Ange ditt Brave Wallet-lösenord för att börja säkerhetskopiera plånboken.</translation>
 <translation id="2359808026110333948">Fortsätt</translation>
 <translation id="5488357322146334497">Meddelande</translation>
-<translation id="1904000155026201268">Jag förstår att jag inte kommer åt min kryptoplånbok om jag tappar bort min återställningsfras.</translation>
 <translation id="5333225216561354793">Vi kräver att du bekräftar posterna nedan</translation>
 <translation id="6937275455070754004">Välj vilka blockkedjor du vill använda i din plånbok.</translation>
 <translation id="1645800479814134195">Jag förstår att detta är en plånbok för självförvar och att jag ensam är ansvarig för alla associerade medel, tillgångar eller konton, och för att vidta lämpliga åtgärder för att säkra, skydda och säkerhetskopiera min plånbok. Jag förstår att Brave inte kan komma åt min plånbok eller vända transaktioner för mina räkningar, och att min återställningsfras är det ENDA sättet att återfå åtkomst i händelse av ett förlorat lösenord, stulen enhet eller liknande omständigheter.</translation>
 <translation id="4565891212173086999">Jag har läst och godkänner <ph name="CLICK_START"/>Användarvillkoren<ph name="CLICK_END"/>.</translation>
-<translation id="3933122286596948824">Din återställningsfras</translation>
-<translation id="5077747669435508720">Skriv ner eller kopiera dessa ord i exakt ordning som visas nedan och spara dem någonstans säkert. Din återställningsfras är det enda sättet att återfå kontotillgång vid glömt lösenord, förlorad eller stulen enhet, eller om du vill byta plånbok.</translation>
-<translation id="2708402071160162126">VARNING: Dela aldrig din återställningsfras. Alla med denna fras kan ta dina tillgångar för alltid.</translation>
-<translation id="111912712268284159">Jag har säkerhetskopierat min fras någonstans säkert.</translation>
-<translation id="6896758677409633944">Kopiera</translation>
+<translation id="3259102562570606417">Spara din återställningsfras</translation>
+<translation id="4339981001593889376">Din återställningsfras är nyckeln till din plånbok om du skulle glömma ditt lösenord eller förlora din enhet.</translation>
+<translation id="426648489149930289">Förvara den på en säker plats som inte är tillgänglig för andra och undvik att dela den med någon.</translation>
 <translation id="3726490322412361740">Ange lösenord</translation>
-<translation id="3038243139480464605">Bekräfta lösenord</translation>
-<translation id="7396672979287122068">Lösenorden matchar inte</translation>
 <translation id="1566412704591731844">Skapar din plånbok ...</translation>
 <translation id="7779823116893018906">Det kan ta några sekunder ...</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> Konto <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Lägg till konto</translation>
 <translation id="3448492834076427715">Uppdatera konto</translation>
-<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="5532363218245261099">Nr. <ph name="NUMBER"/> <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="1537175937716697987">Visa min återställningsfras</translation>
+<translation id="5303015959766064022">Jag säkerhetskopierar senare</translation>
+<translation id="7345730059518887993">Låt oss kontrollera</translation>
+<translation id="7640406249038879146">Ange ordet i position <ph name="WORD_POSITION"/> från din återställningsfras.</translation>
+<translation id="2598171223363459366">Du kan hoppa över det här steget nu, men du måste fortfarande säkerhetskopiera återställningsfrasen för att säkerställa kontosäkerheten.</translation>
 <translation id="8100001366858145406">Vill du aktivera upplåsning med fingeravtryck?</translation>
 <translation id="5493402808936397665">Aktivera biometri för att snabbt låsa upp din plånbok utan att behöva ange ditt lösenord.</translation>
 <translation id="8030647312184163932">Lås upp med fingeravtryck</translation>
 <translation id="4090490645603511157">Använd biometri för att snabbt låsa upp plånboken utan att behöva ange lösenordet.</translation>
 <translation id="1544192797660353713">Plånbok</translation>
-<translation id="6901810042765869341">Ange din återställningsfras för att återställa ditt Brave Wallet-kryptokonto.</translation>
-<translation id="9120654436199628567">Återställ kryptokonto</translation>
+<translation id="2321396552035646646">Du kan klistra in hela återställningsfrasen i valfritt fält.</translation>
+<translation id="3961126209136843111">Importera befintlig plånbok</translation>
 <translation id="4811736040444856406">Visa återställningsfras</translation>
-<translation id="283071225285270357">Ange din återställningsfras</translation>
-<translation id="3943857333388298514">Klistra in</translation>
-<translation id="3331452756822160641">Nytt lösenord</translation>
 <translation id="4359319875297001084">Importera från äldre Brave krypto-plånböcker?</translation>
-<translation id="2339124864228588937">Bekräfta återställningsfras</translation>
-<translation id="3747079125031086337">Välj orden i din återställningsfras i rätt ordning.</translation>
-<translation id="6518133107902771759">Verifiera</translation>
 <translation id="3157931365184549694">Återställ</translation>
 <translation id="5844138175312846408">Har du redan en plånbok?</translation>
 <translation id="2502258949541727762">Innan vi börjar</translation>
@@ -634,6 +635,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="2523174693142405417">Sök nätverk</translation>
 <translation id="1164748583090434571">Visa testnät</translation>
 <translation id="935220650946301698">Fortsätter med <ph name="NUMBER"/> nätverk</translation>
+<translation id="4052668782430384783">Ord nr. <ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">Skapa ett lösenord</translation>
 <translation id="2789310860394340571">Du använder det här lösenordet för att komma åt din plånbok.</translation>
 <translation id="2136372518715274136">Ange nytt lösenord</translation>
@@ -651,9 +653,8 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="5619264711680220002">Biometrisk upplåsning</translation>
 <translation id="9195657745688986798">Lås upp plånbok</translation>
 <translation id="5168349973342709369">Ange lösenord för att låsa upp plånboken</translation>
-<translation id="3043677904160378840">Lösenorden måste vara minst 8 tecken.</translation>
 <translation id="1144810021918451336">Skyddar dig inte mot farliga webbplatser, nedladdningar eller tillägg.</translation>
-<translation id="5760476995887363522">Meningarna matchade inte. Försök igen.</translation>
+<translation id="9085712756417277119">Återställningsfrasen stämmer inte överens</translation>
 <translation id="2360588547830602174">Kontoåterställningen misslyckades. Försök igen.</translation>
 <translation id="1987317783729300807">Konton</translation>
 <translation id="6284218950354553099">Skicka daglig användningsping till Brave automatiskt</translation>
@@ -688,16 +689,21 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="3510283489391432976">Välj din geografiska/landliga plats</translation>
 <translation id="7695158478627528928">Brave loggar aldrig din aktivitet</translation>
 <translation id="4575683170451975058">Skydda 5 enheter med 1 prenumeration</translation>
+<translation id="755045397420611731">Extra integritet och säkerhet online</translation>
+<translation id="4520128772974831415">Dölj din IP-adress och ändra din plats</translation>
+<translation id="2044418816479192294">Hundratals servrar runt om i världen</translation>
+<translation id="7410504850864021600">Blixtsnabba anslutningshastigheter</translation>
+<translation id="2422309687188612485">Skydda upp till 10 enheter med ett abonnemang</translation>
 <translation id="4882693590083943563">Alla planer inkluderar en <ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">gratis provperiod i 7 dagar!</translation>
 <translation id="1532536259167115948">Månatlig prenumeration <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Årsprenumeration <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Förnyas varje månad</translation>
-<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / mo.</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/>/månad</translation>
 <translation id="1163809943099641131">Ett år</translation>
-<translation id="172859718096975160">Förnya årligen <ph name="DISCOUNT_TEXT_START"/>spara <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
-<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
-<translation id="5125233570742276182">Prenumerationer debiteras via ditt Google-konto. Eventuell oanvänd del av den kostnadsfria provperioden, om den erbjuds, förverkas när du köper en prenumeration.\n\nDin prenumeration förnyas automatiskt såvida den inte sägs upp senast 24 timmar före slutet av den aktuella perioden.\n\nDu kan hantera dina prenumerationer i Inställningar.\nGenom att använda Brave godkänner du användarvillkoren och integritetspolicyn.</translation>
+<translation id="727385358513272220">Förnyas årligen (<ph name="DISCOUNT_TEXT_START"/>spara <ph name="PERCENTAGE_AMOUNT"/>%% <ph name="DISCOUNT_TEXT_END"/> )</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/>/år</translation>
+<translation id="2786538705804257030">Prenumerationer debiteras via ditt Google-konto. Eventuell oanvänd del av den kostnadsfria provperioden, om sådan erbjuds, förverkas när du köper en prenumeration.\n\nPrenumerationen förnyas automatiskt om den inte sägs upp minst 24 timmar före utgången av den aktuella perioden.\n\nDu kan hantera dina prenumerationer i Inställningar.\n\nGenom att använda Brave godkänner du användarvillkoren och integritetspolicyn.</translation>
 <translation id="5035172357624830412">Har du redan köpt på brave.com?</translation>
 <translation id="713136183174551885">Uppdatera dina inloggningsuppgifter</translation>
 <translation id="6053992191006521518">Testa GRATIS</translation>
@@ -932,7 +938,6 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="7002577172732106572">Split tunneling</translation>
 <translation id="8181161042860463420">Det associerade tokenkontot finns inte ännu. En liten mängd SOL kommer att spenderas för att skapa och finansiera den.<ph name="CLICK_START"/>Läs mer<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Uppdaterar VPN-profil ...</translation>
-<translation id="7457027586454688423">Ange ditt lösenord för Brave Wallet</translation>
 <translation id="4784306439879850873">Observera att Brave inte kan verifiera vad som händer om du signerar. En signatur kan godkänna nästan alla operationer på ditt konto eller för dina räkning, inklusive (men inte begränsat till) att ge fullständig kontroll över ditt konto och kryptotillgångar till webbplatsen som gör begäran. Skriv bara under om du är säker på att du vill vidta denna åtgärden och litar på den begärande webbplatsen.</translation>
 <translation id="3474375934783434676">Logga in på egen risk</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> av <ph name="SIZE"/></translation>
@@ -942,6 +947,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="2629767022373384291">Vill du använda biometrisk autentisering för att låsa upp din Brave Plånbok?</translation>
 <translation id="4782919977106118997">Lås upp med fingeravtryck</translation>
 <translation id="2054995875643283428">Hoppa över just nu</translation>
+<translation id="2610561535971892504">Klicka för att kopiera</translation>
 <translation id="2522605225061484799">Gå till min portfolio</translation>
 <translation id="1148624853678088576">Du är klar!</translation>
 <translation id="4131445988101719379">Din Brave Plånbok är klar att användas</translation>
@@ -1024,7 +1030,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="6610899852831463073">Kan inte aktivera säker webbsökning</translation>
 <translation id="7954263306665462056">Säker webbsökning har inaktiverats på din enhet. För att aktivera det, se till att Google Play Services är installerat och att det är uppdaterat.</translation>
 <translation id="6605147707233193230">Aktivera för att stödja innehållsskapare</translation>
-<translation id="1609556006143307897">Du hjälper till att stödja innehållsskapare</translation>
+<translation id="5899814466108868020">Du hjälper till att stödja Brave och BAT-communityn</translation>
 <translation id="6067959437127691361">Med Brave Rewards kan du stötta kreatörer samtidigt som du tjänar BAT.</translation>
 <translation id="3264975266761862670">Redo att börja tjäna?</translation>
 <translation id="265337947574975838">Anslut eller skapa ett konto med en av våra partner</translation>
@@ -1123,6 +1129,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="1173894706177603556">Ändra namn</translation>
 <translation id="3596306474342941843">Ta bort spellista</translation>
 <translation id="7765158879357617694">Flytta</translation>
+<translation id="6896758677409633944">Kopiera</translation>
 <translation id="3803384303807438047">Ta bort offlinedata för objektet</translation>
 <translation id="4195643157523330669">Öppna i ny flik</translation>
 <translation id="4243710787042215766">Öppna i privat flik</translation>

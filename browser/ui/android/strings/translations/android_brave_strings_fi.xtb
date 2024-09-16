@@ -110,6 +110,7 @@
 <translation id="3377025655491224618">Yksityinen välilehti</translation>
 <translation id="7304425663107214334">Näytä selainehdotukset</translation>
 <translation id="8982438328166986164">Näyttää verkkosivustoehdotuksia kirjanmerkkiesi ja selaushistoriasi perusteella.</translation>
+<translation id="924029461438529367">Näytä hakuehdotukset</translation>
 <translation id="1571106259128580884">Näytä suosituimmat selainehdotukset</translation>
 <translation id="9148058034647219655">Poistu</translation>
 <translation id="8047754398610073499">Estä evästeitä koskevat suostumusilmoitukset</translation>
@@ -262,6 +263,8 @@
 <translation id="6511854390690723657">Tämä on ensimmäinen Brave-mainoksesi. Napauta tätä saadaksesi lisätietoja.</translation>
 <translation id="2070991379950719711">Aloita Brave-palkintojen käyttö</translation>
 <translation id="48520986898237073">Jatka lompakkoon</translation>
+<translation id="6213254277250932867">Minulla on 12-sanainen palautuslause</translation>
+<translation id="4225265925807365011">Minulla on 24-sanainen palautuslause</translation>
 <translation id="3570367516044491911">Aseta oletusselaimeksi</translation>
 <translation id="6800338374677644736">Aseta oletusselaimeksi</translation>
 <translation id="19715420010996093">Valitse Brave Browser ja paina 'Aina'</translation>
@@ -361,6 +364,8 @@
 <translation id="6417420737057016607">Brave-mainokset</translation>
 <translation id="5611966874859284786">Näytä ilmoitusmainoksia, kun Brave ei ole käytössä</translation>
 <translation id="6606319453795180219">Tämä poistaa Brave Rewards -palkintosi ja nollaa kaikki Brave Rewards -tietosi</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Nollaa Brave-palkintotiedot…<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Poista Brave-mainostiedot…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Lisää kirjanmerkki</translation>
 <translation id="340492034650766959">Poista kirjanmerkki</translation>
 <translation id="2149973817440762519">Muokkaa kirjanmerkkiä</translation>
@@ -464,7 +469,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="5582686930349810484">Sormenjälkitunnistus estetty (standardi)</translation>
 <translation id="769702552748212954">Salli kaikki sormenjälkitunnistaminen</translation>
 <translation id="876424292214881779">Estetyt mainokset ja muut epäilyttävät kohteet</translation>
-<translation id="6930134873084561197">Sivustoilla on usein evästeitä ja merkkijonoja, joita käytetään sinun ja laitteesi tunnistamiseen. Ne tahtovat selvittää henkilöllisyytesi sekä seurata sinua verkossa, tarkkaillen jokaisen sivuston käyttöä.\n\nBrave estää kyseiset seuraimet, joten voit rauhassa selata nettiä ilman tarkkailijoita.</translation>
+<translation id="6849027612978668678">Sivustoilla on usein evästeitä ja merkkijonoja, joita käytetään sinun ja laitteesi tunnistamiseen. Ne tahtovat selvittää henkilöllisyytesi sekä seurata sinua verkossa, tarkkaillen jokaisen sivuston käyttöä.\n\nBrave estää kyseiset seuraimet, joten voit rauhassa selata nettiä ilman tarkkailijoita.</translation>
 <translation id="8553998445606452168">Tietoja Brave Shieldsistä</translation>
 <translation id="8912304686498704084">YLÖS</translation>
 <translation id="4963218453264888510">ALAS</translation>
@@ -559,6 +564,8 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="7889432931837317731">Avaa automaattisesti aina kun mahdollista</translation>
 <translation id="1029304566263314007">Näytä latauksen edistymisilmoitukset</translation>
 <translation id="2910433761530295035">Kysy, mihin tiedostot tallennetaan (jos SD-kortti on havaittu)</translation>
+<translation id="2977501775944575564">Samanaikainen lataus</translation>
+<translation id="6224180438946945617">Ota samanaikainen lataus käyttöön ja tehosta latausnopeutta</translation>
 <translation id="8967385052772844086">Näytä yksityisyysraportti kokonaisuudessaan</translation>
 <translation id="6864343534748973390">Suosituimmat</translation>
 <translation id="4608192160278975831">Yksityinen, ei seurantaa</translation>
@@ -588,44 +595,38 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="7909462264772842773">Ota kryprovaluuttasi ja NFT:si hallintaan. Brave-lompakko tukee Ethereumia, EVM-ketjuja, Solanaa, Filecoinia ja muita.</translation>
 <translation id="165255193061631296">Tarvitsetko uuden lompakon?</translation>
 <translation id="3485737865439729577">Aloita Brave-lompakon käyttö minuuteissa</translation>
-<translation id="2759836790106646094">Varmuuskopioi lompakkosi nyt!</translation>
-<translation id="1078873179929044999">Seuraavassa vaiheessa näet 12 sanan palautuslauseen, jonka avulla voit palauttaa ensisijaiset kryptotilisi. Säilytä sitä turvallisessa paikassa. Palautuslause on ainoa tapa saada tilisi takaisin, jos salasana unohtuu, laite katoaa tai varastetaan tai jos haluat vaihtaa lompakkoa.</translation>
+<translation id="2540568096903252632">Anna salasana jatkaaksesi</translation>
+<translation id="3356580495013324916">Anna Brave-lompakon salasana aloittaaksesi lompakon varmuuskopioinnin.</translation>
 <translation id="2359808026110333948">Jatka</translation>
 <translation id="5488357322146334497">Viesti</translation>
-<translation id="1904000155026201268">Ymmärrän, että jos kadotan palautuslauseeni, en voi käyttää kryptolompakkoani.</translation>
 <translation id="5333225216561354793">Vaadimme, että hyväksyt alla olevat kohteet.</translation>
 <translation id="6937275455070754004">Valitse, mitä lohkoketjuja lompakossasi käytetään.</translation>
 <translation id="1645800479814134195">Ymmärrän, että tämä on omavarainen lompakko ja että olen yksin vastuussa kaikista lompakkoon liittyvistä varoista, resursseista tai tileistä sekä asianmukaisten toimien toteuttamisesta lompakkoni turvaamiseksi, suojaamiseksi ja varmuuskopioimiseksi. Ymmärrän, että Brave EI voi käyttää lompakkoani tai peruuttaa tapahtumia puolestani ja että palautuslauseeni on AINOA tapa saada käyttöoikeus takaisin, jos salasana katoaa, laite varastetaan tai muu vastaava tilanne ilmanee.</translation>
 <translation id="4565891212173086999">Olen lukenut <ph name="CLICK_START"/>käyttöehdot<ph name="CLICK_END"/> ja hyväksyn ne.</translation>
-<translation id="3933122286596948824">Palautuslauseesi</translation>
-<translation id="5077747669435508720">Kirjoita ylös tai kopioi nämä sanat alla esitetyssä järjestyksessä ja säilytä niitä turvallisessa paikassa. Palautuslause on ainoa tapa saada tilisi takaisin, jos salasana unohtuu, laite katoaa tai varastetaan tai jos haluat vaihtaa lompakkoa.</translation>
-<translation id="2708402071160162126">VAROITUS: Älä koskaan jaa palautuslausetta. Jokainen, jolla on tämä lause hallussaan, voi viedä varasi.</translation>
-<translation id="111912712268284159">Olen varmuuskopioinut lauseen turvalliseen paikkaan.</translation>
-<translation id="6896758677409633944">Kopioi</translation>
+<translation id="3259102562570606417">Tallenna palautuslause</translation>
+<translation id="4339981001593889376">Palautuslauseesi on keino päästä lompakkoosi, jos unohdat salasanasi tai kadotat laitteesi.</translation>
+<translation id="426648489149930289">Säilytä sitä turvallisessa paikassa, johon muut eivät pääse käsiksi, ja vältä sen jakamista muille.</translation>
 <translation id="3726490322412361740">Anna salasana</translation>
-<translation id="3038243139480464605">Vahvista salasana</translation>
-<translation id="7396672979287122068">Vahvistettu salasana ei täsmää</translation>
 <translation id="1566412704591731844">Luodaan lompakkoa…</translation>
 <translation id="7779823116893018906">Tämä voi kestää muutaman sekunnin…</translation>
 <translation id="1577948178257477049">Tili: <ph name="ACCOUNT_NAME"/> <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Lisää tili</translation>
 <translation id="3448492834076427715">Päivitä tili</translation>
-<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="5532363218245261099"><ph name="NUMBER"/> <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="1537175937716697987">Katso oma palautuslause</translation>
+<translation id="5303015959766064022">Palaan asiaan myöhemmin</translation>
+<translation id="7345730059518887993">Tarkistetaan</translation>
+<translation id="7640406249038879146">Anna sana paikassa <ph name="WORD_POSITION"/> palautuslauseestasi.</translation>
+<translation id="2598171223363459366">Voit ohittaa tämän vaiheen nyt, mutta sinun on silti varmuuskopioitava palautuslause tilin turvallisuuden varmistamiseksi.</translation>
 <translation id="8100001366858145406">Ota sormenjälkilukituksen poistaminen käyttöön?</translation>
 <translation id="5493402808936397665">Ota biometriset tiedot käyttöön, jotta voit nopeasti avata lompakkosi antamatta salasanaasi.</translation>
 <translation id="8030647312184163932">Lukituksen avaaminen sormenjäljellä</translation>
 <translation id="4090490645603511157">Avaa lompakkosi ilman salasanaa käyttämällä biometrisia tietoja.</translation>
 <translation id="1544192797660353713">Lompakko</translation>
-<translation id="6901810042765869341">Anna palautuslauseesi, jotta voit palauttaa Brave Walletin kryptotilin.</translation>
-<translation id="9120654436199628567">Kryptotilin palauttaminen</translation>
+<translation id="2321396552035646646">Voit liittää koko palautuslauseesi mihin tahansa kenttään.</translation>
+<translation id="3961126209136843111">Tuo olemassa oleva lompakko</translation>
 <translation id="4811736040444856406">Näytä palautuslause</translation>
-<translation id="283071225285270357">Anna palautuslauseesi</translation>
-<translation id="3943857333388298514">Liitä</translation>
-<translation id="3331452756822160641">Uusi salasana</translation>
 <translation id="4359319875297001084">Tuo vanhasta Brave-kryptolomlakoista?</translation>
-<translation id="2339124864228588937">Vahvista palautuslauseesi</translation>
-<translation id="3747079125031086337">Valitse palautuslauseen sanat oikeassa järjestyksessä.</translation>
-<translation id="6518133107902771759">Vahvista</translation>
 <translation id="3157931365184549694">Palauta</translation>
 <translation id="5844138175312846408">Onko sinulla jo lompakko?</translation>
 <translation id="2502258949541727762">Ennen aloittamista</translation>
@@ -634,6 +635,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="2523174693142405417">Hae verkkoja</translation>
 <translation id="1164748583090434571">Näytä testiverkot</translation>
 <translation id="935220650946301698">Jatka <ph name="NUMBER"/> verkolla</translation>
+<translation id="4052668782430384783">Sana <ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">Luo salasana</translation>
 <translation id="2789310860394340571">Salasana mahdollistaa pääsyn lompakkoon.</translation>
 <translation id="2136372518715274136">Anna uusi salasana</translation>
@@ -651,9 +653,8 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="5619264711680220002">Biometrinen avaus</translation>
 <translation id="9195657745688986798">Avaa lompakko</translation>
 <translation id="5168349973342709369">Avaa lompakko antamalla salasana</translation>
-<translation id="3043677904160378840">Salasanoissa on oltava vähintään 8 merkkiä.</translation>
 <translation id="1144810021918451336">Ei suojele sinua vaarallisilta verkkosivustoilta, latauksilta ja laajennuksilta.</translation>
-<translation id="5760476995887363522">Lauseet eivät täsmää. Yritä uudelleen.</translation>
+<translation id="9085712756417277119">Palautuslause ei täsmää</translation>
 <translation id="2360588547830602174">Tilin palautus epäonnistui. Yritä uudelleen.</translation>
 <translation id="1987317783729300807">Tilit</translation>
 <translation id="6284218950354553099">Lähetä automaattisesti päivittäinen käyttöping Bravelle</translation>
@@ -688,16 +689,21 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="3510283489391432976">Valitse sijainti tai maa</translation>
 <translation id="7695158478627528928">Brave ei koskaan kirjaa toimintaasi</translation>
 <translation id="4575683170451975058">Suojaa 5:tä laitetta 1:ssä tilauksessa</translation>
+<translation id="755045397420611731">Parempi tietosuoja ja turvallisuus verkossa</translation>
+<translation id="4520128772974831415">Piilota IP-osoitteesi ja vaihda sijaintisi</translation>
+<translation id="2044418816479192294">Satoja palvelimia ympäri maailman</translation>
+<translation id="7410504850864021600">Salamannopeat yhteydet</translation>
+<translation id="2422309687188612485">Suojaa yhdellä tilauksella jopa 10 laitetta</translation>
 <translation id="4882693590083943563">Kaikkiin tilauksiin sisältyy <ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">ilmainen 7 päivän kokeilujakso!</translation>
 <translation id="1532536259167115948">Kuukausitilaus <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Vuositilaus <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Uusiutuu kuukausittain</translation>
-<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/>/kk.</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/>/kuukaudessa</translation>
 <translation id="1163809943099641131">Yksi vuosi</translation>
-<translation id="172859718096975160">Uusi vuosittain <ph name="DISCOUNT_TEXT_START"/>tallenna <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
-<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/>/vuosi.</translation>
-<translation id="5125233570742276182">Tilaukset veloitetaan Google-tilisi kautta. Kaikki käyttämättömät ilmaisen kokeilujakson osat, jos sellainen on tarjottu, menetetään, kun ostat tilauksen.\n\nTilauksesi uusitaan automaattisesti, ellei sitä peruuteta vähintään 24 tuntia ennen nykyisen jakson päättymistä.\n\nVoit hallita tilauksiasi asetuksissa.\nKäyttämällä Bravea hyväksyt käyttöehdot ja tietosuojakäytännön.</translation>
+<translation id="727385358513272220">Uusiutuu vuosittain (<ph name="DISCOUNT_TEXT_START"/>säästä <ph name="PERCENTAGE_AMOUNT"/> %%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/>/vuodessa</translation>
+<translation id="2786538705804257030">Tilaukset veloitetaan Google-tilisi kautta. Kaikki käyttämättömät ilmaisen kokeilujakson osat, jos sellainen on tarjottu, menetetään, kun ostat tilauksen.\n\nTilauksesi uusitaan automaattisesti, ellei sitä peruuteta vähintään 24 tuntia ennen nykyisen jakson päättymistä.\n\nVoit hallita tilauksiasi asetuksissa.\n\nKäyttämällä Bravea hyväksyt käyttöehdot ja tietosuojakäytännön.</translation>
 <translation id="5035172357624830412">Oletko jo ostanut brave.comista?</translation>
 <translation id="713136183174551885">Päivitä tunnuksesi</translation>
 <translation id="6053992191006521518">Kokeile ILMAISEKSI</translation>
@@ -932,7 +938,6 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="7002577172732106572">Jaettu tunnelointi</translation>
 <translation id="8181161042860463420">Liitettyä tokentiliä ei ole vielä olemassa. Sen luomiseen ja rahoittamiseen käytetään pieni määrä SOL-tokeneita. <ph name="CLICK_START"/>Lisätietoja<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Päivitetään VPN-profiilia...</translation>
-<translation id="7457027586454688423">Anna Brave-lompakkosi salasanasi</translation>
 <translation id="4784306439879850873">Huomaa, että Brave ei voi tarkistaa, mitä tapahtuu, jos allekirjoitat. Allekirjoitus voi valtuuttaa melkein minkä tahansa toiminnon tililläsi tai puolestasi, mukaan lukien (mutta ei rajoittuen) tilin ja kryptovarojen täydellisen hallinnan antaminen pyynnön esittäneelle sivustolle. Allekirjoita vain, jos olet varma, että haluat suorittaa tämän toiminnon ja että pystyt luottamaan pyytävään sivustoon.</translation>
 <translation id="3474375934783434676">Allekirjoita omalla vastuullasi</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/>/<ph name="SIZE"/></translation>
@@ -942,6 +947,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="2629767022373384291">Haluatko käyttää biometrista todennusta Brave-lompakon lukituksen avaamiseen?</translation>
 <translation id="4782919977106118997">Käytä lukituksen avaamiseen sormenjälkeä</translation>
 <translation id="2054995875643283428">Ohita tämä toistaiseksi</translation>
+<translation id="2610561535971892504">Kopioi napsauttamalla</translation>
 <translation id="2522605225061484799">Siirry omaan portfolioon</translation>
 <translation id="1148624853678088576">Valmista!</translation>
 <translation id="4131445988101719379">Brave-lompakkosi on valmis käytettäväksi</translation>
@@ -1024,7 +1030,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="6610899852831463073">Selaussuojaa ei voi ottaa käyttöön</translation>
 <translation id="7954263306665462056">Selaussuoja on poistettu käytöstä laitteessasi. Jotta voit ottaa sen käyttöön varmista, että Google Play Palvelut on asennettu ja ajan tasalla.</translation>
 <translation id="6605147707233193230">Laita päälle tukeaksesi sisällönluojia</translation>
-<translation id="1609556006143307897">Tuet sisällönluojia</translation>
+<translation id="5899814466108868020">Autat tukemaan Bravea ja BAT-yhteisöä</translation>
 <translation id="6067959437127691361">Kun käytät Brave-palkintoja, tuet sisällönluojia ja voit ansaita BATeja.</translation>
 <translation id="3264975266761862670">Oletko valmis aloittamaan ansaitsemisen?</translation>
 <translation id="265337947574975838">Yhdistä tai luo tili jonkun kumppanimme kanssa.</translation>
@@ -1123,6 +1129,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="1173894706177603556">Muuta nimeä</translation>
 <translation id="3596306474342941843">Poista soittolista</translation>
 <translation id="7765158879357617694">Siirrä</translation>
+<translation id="6896758677409633944">Kopioi</translation>
 <translation id="3803384303807438047">Poista kohteen offline-tiedot</translation>
 <translation id="4195643157523330669">Avaa uudessa välilehdessä</translation>
 <translation id="4243710787042215766">Avaa yksityisessä välilehdessä</translation>

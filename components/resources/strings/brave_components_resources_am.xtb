@@ -229,48 +229,7 @@
 <translation id="3082557070674409251">ጠቅ የተደረገ</translation>
 <translation id="7119308337584989771">የተሰናበተ</translation>
 <translation id="6805660603861526473">የታየ</translation>
-<translation id="8826352442759228526">የመሳርያዎ የመጨረሻ የማረጋገጫ ገደብ ላይ ስለደረሱ የብሬቭ ሽልማቶችዎ ሊረጋገጡ አይችሉም።</translation>
-<translation id="1221593978088944142">ስህተት: የመሳሪያ ገደብ ደርሷል</translation>
-<translation id="6895088073061692390">እንደ አለመታደል ሆኖ፣ የBrave ሽልማቶች መገለጫዎ ተጠቁሟል ምክንያቱም የእኛ በራስ ሰር የተካሄዱ ፍተሻዎች አንዳንድ ያልተጠበቁ የBrave ማስታወቂያዎች እንቅስቃሴን ስላገኙ ነው።</translation>
-<translation id="4229056297802204697">መገለጫዎ በተጠቆመበት ጊዜ ማስታወቂያዎችን ማየትዎን መቀጠል ይችላሉ ነገር ግን ክፍያዎችን ለመቀበል ብቁ አይሆኑም። እንዲሁም የማቆያ መለያን ከBrave ሽልማቶች ጋር ማገናኘት አይችሉም።</translation>
-<translation id="5124846913141379164">የእርስዎ መገለጫ በስህተት የተጠቆመ ሊሆን ይችላል፣ እና በእርስዎ በኩል ምንም አፋጣኝ እርምጃ አያስፈልግም። በመገለጫዎ ላይ ያለው ባንዲራ ወደፊት ሊወገድ ይችላል።</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>የ Rewards መገለጫዎችን ለመጠቆም ስለ Brave ሂደት የበለጠ ይረዱ።<ph name="END_LINK"/></translation>
-<translation id="5028274575541726856">ስህተት፡ የ Brave Rewards መገለጫ ተጠቁሟል</translation>
-<translation id="2607420597216860026">የመታወቂያ ማረጋገጫን በ <ph name="PROVIDER"/> ላይ ካጠናቀቁ በኋላ እባክዎ እንደገና ይሞክሩ።</translation>
-<translation id="3183954159462541696">ስህተት: ለመግባት፥ የተረጋገጠ መለያ ያስፈልጋል</translation>
-<translation id="1859789048900659918">እምም, የ እርሶ Brave Rewards ሀገር ሊገናኙት ከሚፈልጉት የ <ph name="PROVIDER"/> መለያ አገር ጋር አይዛመድም።</translation>
-<translation id="8925428135452218262">ስህተት፡ የሀገር አለመዛመድ</translation>
-<translation id="5260522591743022748">የብሬቭ ሽልማቶችዎ በሌላ <ph name="PROVIDER"/>መለያ ተረጋግጧል። እባክዎ በራስዎ የቀድሞ መለያ ለማረጋገጥ ይሞክሩ።</translation>
-<translation id="5111921830714291902">ስህተት፡ የተለየ መለያ</translation>
-<translation id="5225019866741699134">ይህ <ph name="PROVIDER"/> ከ Brave Rewards ጋር ግንኙነት ለጊዜው የማይገኝ ይመስላል። እባክዎ ቆየት ብለው ይሞክሩ.</translation>
-<translation id="6105073131081187815">ይህንን <ph name="BEGIN_LINK"/>የአገልግሎት ሁኔታ እዚህ<ph name="END_LINK"/> ማየት ይችላሉ።</translation>
-<translation id="2400786541309111904">ስህተት፡ ከተመረጠው ጠባቂ ጋር መገናኘት ለጊዜው አልተቻለም።</translation>
-<translation id="1024520300696337331">አሁን ላይ <ph name="PROVIDER"/> መለያዎ ከ የ Brave Rewards ፕሮፋይልዎ ጋር ሊገናኝ አይችልም። <ph name="PROVIDER"/> መለያዎ በአሁኑ ሰዓት ከ Brave Rewards ጋር ለመገናኘት ከማትችል ሀገር ላይ ነው የተመዘገበው።</translation>
-<translation id="619384413404021992">አሁን ላይ <ph name="LINK_BEGIN"/> የሚደገፉ ክልሎችን ዝርዝር ይመልከቱ እና<ph name="END_LINK"/> የ ውክልና መለያን ከ Brave Rewards ማገናኘትን የተመለከተ ተጨማሪ መረጃን ያግኙ።</translation>
-<translation id="7193389978208728181">ስህተት፦ ክልሉ በአሁኑ ጊዜ አይደገፍም</translation>
-<translation id="5382684862562314222">BAT በ Uphold ላይ ባለው ክልልዎ ውስጥ አልተፈቀደም።</translation>
-<translation id="9074594632540931067">ስህተት፡ BAT አይገኝም</translation>
-<translation id="5376524136040178759">በUphold መሠረት በአሁኑ ጊዜ በእርስዎ የUphold መለያ ላይ አንዳንድ ገደቦች አሉ። እባክዎ ወደ የUphold መለያዎ ይግቡና ለማጠናቀቅ ማሳወቂያዎች ወይም ቀሪ የመለያ መስፈርቶች መኖራቸውን ያረጋግጡ እና እንደገና ይሞክሩ። ለምሳሌ፣ ተጨማሪ መረጃን ወደ Uphold ማስገባት ሊኖርብዎ ይችላል።</translation>
-<translation id="6996157559236886133">ስህተት፡ የተገደበ የማቆየት መለያ ተግባር</translation>
-<translation id="3274650021044762770">የብሬቭ ሽልማቶችን ከእርስዎ<ph name="PROVIDER"/> መለያ ጋር ለማገናኘት የማሰሻዎን ጥያቄ ማረጋገጥ ላይ ችግር አጋጥሟል። ለተጨማሪ እርዳታ <ph name="BEGIN_LINK"/>ድጋፍ ሰጭ<ph name="END_LINK"/> ማግኘት ይችላሉ።</translation>
-<translation id="1316066811927496401">ስህተት: ጥያቄዎ ተቀባይነት አላገኘም</translation>
-<translation id="7352651011704765696">የሆነ ስህተት ተፈጥሯል</translation>
-<translation id="8285276813470932793">ጥያቄዎን ማጠናቀቅ አልቻልንም። እባክዎን እንደገና ይሞክሩ እና ችግሩ ከቀጠለ <ph name="LINK_BEGIN"/>ድጋፍ ሰጪን<ph name="LINK_END"/> ያነጋግሩ።</translation>
 <translation id="8167256685618982116"><ph name="TITLE"/> 'ን በማብራት፣ በ <ph name="BEGIN_LINK1"/>የአገልግሎት ውሎች<ph name="END_LINK1"/> እና በ <ph name="BEGIN_LINK2"/>ግላዊነት ፖሊሲ<ph name="END_LINK2"/> ይስማማሉ።</translation>
-<translation id="8817096698141999876">በሞግዚት የሚከፈቱ የህጻናት የባንክ ሂሳቦች (የመታወቂያ ማረጋገጫ ያስፈልገዋል)</translation>
-<translation id="1539433155512862005">በሞግዚት የሚከፈቱ የህጻናት የባንክ ሂሳቦች የእርስዎን BAT ለእርስዎ የሚይዙ የታመኑ የሶስተኛ ወገን አገልግሎቶች ያሏቸው መለያዎች ናቸው።</translation>
-<translation id="6834831484510296932">ራስን ማስተዳደር</translation>
-<translation id="4208917415153655958">ራስን ማስተዳደር በእርስዎ BAT ላይ ልዩ ቁጥጥር እና የመጠበቅ ሙሉ ኃላፊነት ይሰጥዎታል።</translation>
-<translation id="1953496742859481929">ራስን የማስተዳደር አማራጭን ሲመርጡ፣ ሽልማቶች በSolana ኔትወርክ ላይ እንደ SPL-BAT ይከፈላሉ።</translation>
-<translation id="6751803821780922506">BAT መቀበል የሚፈልጉትን ቦታ ይምረጡ</translation>
-<translation id="3162035476318501831">ስለ አካባቢ እና ድጋፍ ተጨማሪ ይወቁ።</translation>
-<translation id="7329170127335794328">በአሁኑ ጊዜ በእርስዎ አካባቢ ውስጥ አይገኝም</translation>
-<translation id="966956302643313970">የመሠረታዊ ትኩረት ማስመሰያ (BAT) ሽልማቶችን ማግኘት ለመጀመር የባንክ ሂሳብዎን ያገናኙ። የሚያገኙት BAT በየወሩ በራስ-ሰር ወደ የባንክ ሂሳብዎ ይተላለፋል።</translation>
-<translation id="4009439571146350519">ወይም ሌላ Solanaን የሚደግፍ የክፍያ አማራጭ ካለ</translation>
-<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>የአጠቃቀም ውሎች<ph name="TOS_LINK_END"/> እና <ph name="PP_LINK_BEGIN"/>የግላዊነት ፖሊሲ<ph name="PP_LINK_END"/>።</translation>
-<translation id="1692293127547800972">የሆነ ስህተት ተከስቷል። እባክዎ እንደገና ይሞክሩ</translation>
-<translation id="756341217015623253">በመለያ ይግቡ ወይም እንደ አዲስ ይመዝገቡ</translation>
-<translation id="2653844658857826081">አዲስ</translation>
 <translation id="1892970806832316900">እስከ <ph name="DATE"/> በመጠባበቅ ላይ</translation>
 <translation id="7849926087559412554">ውይ! አሳሽዎ የBrave የግል ማስታወቂያዎችን መቀበል አይችልም።</translation>
 <translation id="5177429570315095022">ማስታወቂያዎችን ማየት ለመቀጠል አሳሽዎ መዘመን አለበት።</translation>
@@ -385,7 +344,6 @@
 <translation id="3448261046185459858">ከመዋጮዎ ፓናል ውስጥ ወርሃዊ መዋጮዎችን የሚቀበል ማንኛውም ጣቢያን ማስወገድ ይችላሉ።</translation>
 <translation id="5082474983463379713">እባኮትን ያስታውሱ፡</translation>
 <translation id="1430915738399379752">አትም</translation>
-<translation id="135956957367307069">ጥያቄዎ ገና እየተከወነ ነው፣ እባክዎ ይጠብቁ።</translation>
 <translation id="2600847485413879104">የሽልማት BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
@@ -541,13 +499,15 @@
 <translation id="6965382102122355670">እሺ</translation>
 <translation id="6727102863431372879">ያዘጋጁ</translation>
 <translation id="8853725596990766789">መጠኑን ይቀይሩ</translation>
-<translation id="1609556006143307897">እርስዎ የድጋፍ ይዘት ፈጣሪዎችን እያገዙ ነው</translation>
 <translation id="654447476965480878">ስለ BAT የበለጠ ይወቁ።</translation>
 <translation id="4105212447337987768"><ph name="DATE"/> ላይ ለነባር ምናባዊ BAT ቀሪ ሒሳቦች ድጋፍን እናቆማለን። የተገኘውን ሒሳብዎን ወደ በአዋቂ የሚተዳደር የልጅ ሒሳብዎ ማስተላለፍ እንድንችል ከዚህ ቀን በፊት ያገናኙ፣ ያለበለዚያ ቀሪ ሒሳቡ ይጠፋል።</translation>
 <translation id="707569835145765061">እርምጃ መውሰድ ያስፈልጋል፦ በአዋቂ የሚተዳደር የልጅ መለያን ያገናኙ አለበለዚያ የእርስዎ vBAT ይጠፋል</translation>
 <translation id="3358400027937159351"><ph name="AMOUNT"/>ን አበርክተዋል።</translation>
 <translation id="1619753851206150396">ወጥተዋል</translation>
 <translation id="3035648636451344428">ይህ የእርስዎን <ph name="PROVIDER"/> መለያ ደህንነቱን ጠብቆ ለማቆየት ከጊዜ ወደ ጊዜ ይከሰታል። ዘግተው ሲወጡ ክፍያዎችን መቀበልዎን ይቀጥላሉ፣ ነገር ግን ቀሪ ሒሳብዎን ማየት ወይም ከ <ph name="PROVIDER"/> መለያዎ መዋጮዎችን መላክ አይችሉም።</translation>
+<translation id="9074594632540931067">ስህተት፡ BAT አይገኝም</translation>
+<translation id="5382684862562314222">BAT በ Uphold ላይ ባለው በክልልዎ ውስጥ አልተፈቀደም።</translation>
+<translation id="6996157559236886133">ስህተት፡ የተገደበ የማቆየት መለያ ተግባር</translation>
 <translation id="1677961202754619328">በUphold መሠረት በአሁኑ ጊዜ በእርስዎ የUphold መለያ ላይ አንዳንድ ገደቦች አሉ። እባክዎ ወደ የ Uphold መለያዎ ይግቡና ለማጠናቀቅ ማሳወቂያዎች ወይም ቀሪ የመለያ መስፈርቶች መኖራቸውን ያረጋግጡ እና እንደገና ይሞክሩ። ለምሳሌ፣ ተጨማሪ መረጃን ወደ Uphold ማስገባት ሊኖርብዎ ይችላል። ለምሳሌ፣ ተጨማሪ መረጃ ወደ Uphold ማስገባት ሊኖርብዎ ይችላል።</translation>
 <translation id="9029009481113741943">እንደገና ይግቡ</translation>
 <translation id="2429828319207652823">አስተዋፅ contributionዎን በማካሄድ ላይ ችግር ነበር</translation>
@@ -560,6 +520,7 @@
 <translation id="3247549836099021862">ድጋፍ ሰችን ያነጋግሩ</translation>
 <translation id="5234764350956374838">አሰናብት</translation>
 <translation id="7859066142771796818">የስጦታ ካርዶችን ለመግዛት፣ ለሌሎች ምንዛሬዎች ለመለዋወጥ፣ የይዘት ፈጣሪዎችን ለመደገፍ እና ሌሎች ቶክኖችን ይጠቀሙ።</translation>
+<translation id="7352651011704765696">የሆነ ስህተት ተፈጥሯል</translation>
 <translation id="5425006356459378415">የ Brave ሽልማቶች አይገኙም</translation>
 <translation id="909076461795862330">እንደ አለመታደል ሆኖ፣ ካሜራዎን ለመድረስ ሲሞከር የተፈጠረ ስህተት አለ። እባክዎ እንደገና ይሞክሩ።</translation>
 <translation id="3180990265682133881">እንደ አለመታደል ሆኖ፣ አገርዎን ለማዘጋጀት በሚሞከርበት ጊዜ ለመድረስ ሲሞከር የተፈጠረ ስህተት አለ። እባክዎ እንደገና ይሞክሩ።</translation>
@@ -624,6 +585,36 @@
 <translation id="1053740665683265460">የWeb3 የክፍያ አማራጭን በመጠቀም ለዚህ ፈጣሪ የአንድ ጊዜ አስተዋጽዖ ያድርጉ እናም አድናቆትም ይስጧቸው</translation>
 <translation id="6859705040495339375">በWeb3 የክፍያ አማራጭ ይላኩ</translation>
 <translation id="7615852194054434287">እንደሚያሳየው ከሆነ ይህ ፈጣሪ በWeb3 የክፍያ አማራጭ አስተዋጽኦ ለመቀበል ብቁ አይደሉም</translation>
+<translation id="8817096698141999876">በሞግዚት የሚከፈቱ የህጻናት የባንክ ሂሳቦች (የመታወቂያ ማረጋገጫ ያስፈልገዋል)</translation>
+<translation id="1539433155512862005">በሞግዚት የሚከፈቱ የህጻናት የባንክ ሂሳቦች የእርስዎን BAT ለእርስዎ የሚይዙ የታመኑ የሶስተኛ ወገን አገልግሎቶች ያሏቸው መለያዎች ናቸው።</translation>
+<translation id="6834831484510296932">ራስን ማስተዳደር</translation>
+<translation id="4208917415153655958">ራስን ማስተዳደር በእርስዎ BAT ላይ ልዩ ቁጥጥር እና የመጠበቅ ሙሉ ኃላፊነት ይሰጥዎታል።</translation>
+<translation id="6751803821780922506">BAT መቀበል የሚፈልጉትን ቦታ ይምረጡ</translation>
+<translation id="3162035476318501831">ስለ አካባቢ እና ድጋፍ ተጨማሪ ይወቁ።</translation>
+<translation id="7329170127335794328">በአሁኑ ጊዜ በእርስዎ አካባቢ ውስጥ አይገኝም</translation>
+<translation id="966956302643313970">የመሠረታዊ ትኩረት ማስመሰያ (BAT) ሽልማቶችን ማግኘት ለመጀመር የባንክ ሂሳብዎን ያገናኙ። የሚያገኙት BAT በየወሩ በራስ-ሰር ወደ የባንክ ሂሳብዎ ይተላለፋል።</translation>
+<translation id="4009439571146350519">ወይም ሌላ Solanaን የሚደግፍ የክፍያ አማራጭ ካለ</translation>
+<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>የአጠቃቀም ውሎች<ph name="TOS_LINK_END"/> እና <ph name="PP_LINK_BEGIN"/>የግላዊነት ፖሊሲ<ph name="PP_LINK_END"/>።</translation>
+<translation id="1692293127547800972">የሆነ ስህተት ተከስቷል። እባክዎ እንደገና ይሞክሩ</translation>
+<translation id="756341217015623253">በመለያ ይግቡ ወይም እንደ አዲስ ይመዝገቡ</translation>
+<translation id="2653844658857826081">አዲስ</translation>
+<translation id="1165039591588034296">ስህተት</translation>
+<translation id="6895088073061692390">እንደ አለመታደል ሆኖ፣ የBrave ሽልማቶች መገለጫዎ ተጠቁሟል ምክንያቱም የእኛ በራስ ሰር የተካሄዱ ፍተሻዎች አንዳንድ ያልተጠበቁ የBrave ማስታወቂያዎች እንቅስቃሴን ስላገኙ ነው።</translation>
+<translation id="4229056297802204697">መገለጫዎ በተጠቆመበት ጊዜ ማስታወቂያዎችን ማየትዎን መቀጠል ይችላሉ ነገር ግን ክፍያዎችን ለመቀበል ብቁ አይሆኑም። እንዲሁም የማቆያ መለያን ከBrave ሽልማቶች ጋር ማገናኘት አይችሉም።</translation>
+<translation id="5124846913141379164">የእርስዎ መገለጫ በስህተት የተጠቆመ ሊሆን ይችላል፣ እና በእርስዎ በኩል ምንም አፋጣኝ እርምጃ አያስፈልግም። በመገለጫዎ ላይ ያለው ባንዲራ ወደፊት ሊወገድ ይችላል።</translation>
+<translation id="280350148043792509"><ph name="BEGIN_LINK"/>የ Rewards መገለጫዎችን ለመጠቆም ስለ Brave ሂደት የበለጠ ይረዱ።<ph name="END_LINK"/></translation>
+<translation id="2607420597216860026">የመታወቂያ ማረጋገጫን በ <ph name="PROVIDER"/> ላይ ካጠናቀቁ በኋላ እባክዎ እንደገና ይሞክሩ።</translation>
+<translation id="1859789048900659918">እምም, የ እርሶ Brave Rewards ሀገር ሊገናኙት ከሚፈልጉት የ <ph name="PROVIDER"/> መለያ አገር ጋር አይዛመድም።</translation>
+<translation id="5260522591743022748">የብሬቭ ሽልማቶችዎ በሌላ <ph name="PROVIDER"/>መለያ ተረጋግጧል። እባክዎ በራስዎ የቀድሞ መለያ ለማረጋገጥ ይሞክሩ።</translation>
+<translation id="5225019866741699134">ይህ <ph name="PROVIDER"/> ከ Brave Rewards ጋር ግንኙነት ለጊዜው የማይገኝ ይመስላል። እባክዎ ቆየት ብለው ይሞክሩ.</translation>
+<translation id="6105073131081187815">ይህንን <ph name="BEGIN_LINK"/>የአገልግሎት ሁኔታ እዚህ<ph name="END_LINK"/> ማየት ይችላሉ።</translation>
+<translation id="1024520300696337331">አሁን ላይ <ph name="PROVIDER"/> መለያዎ ከ የ Brave Rewards ፕሮፋይልዎ ጋር ሊገናኝ አይችልም። <ph name="PROVIDER"/> መለያዎ በአሁኑ ሰዓት ከ Brave Rewards ጋር ለመገናኘት ከማትችል ሀገር ላይ ነው የተመዘገበው።</translation>
+<translation id="619384413404021992">አሁን ላይ <ph name="LINK_BEGIN"/> የሚደገፉ ክልሎችን ዝርዝር ይመልከቱ እና<ph name="END_LINK"/> የ ውክልና መለያን ከ Brave Rewards ማገናኘትን የተመለከተ ተጨማሪ መረጃን ያግኙ።</translation>
+<translation id="5376524136040178759">በUphold መሠረት በአሁኑ ጊዜ በእርስዎ የUphold መለያ ላይ አንዳንድ ገደቦች አሉ። እባክዎ ወደ የUphold መለያዎ ይግቡና ለማጠናቀቅ ማሳወቂያዎች ወይም ቀሪ የመለያ መስፈርቶች መኖራቸውን ያረጋግጡ እና እንደገና ይሞክሩ። ለምሳሌ፣ ተጨማሪ መረጃን ወደ Uphold ማስገባት ሊኖርብዎ ይችላል።</translation>
+<translation id="8285276813470932793">ጥያቄዎን ማጠናቀቅ አልቻልንም። እባክዎን እንደገና ይሞክሩ እና ችግሩ ከቀጠለ <ph name="LINK_BEGIN"/>ድጋፍ ሰጪን<ph name="LINK_END"/> ያነጋግሩ።</translation>
+<translation id="135956957367307069">ጥያቄዎ ገና እየተከወነ ነው፣ እባክዎ ይጠብቁ።</translation>
+<translation id="5860033963881614850">አጥፋ</translation>
+<translation id="5916664084637901428">በርቷል</translation>
 <translation id="7090992647511817643">መለያ</translation>
 <translation id="4822132585477111396">የሰንሰለት መታወቂያ</translation>
 <translation id="3269475789479462358">ጎራ</translation>
@@ -708,6 +699,8 @@
 <translation id="4853960199138416955">Brave የከፍያ አማራጭን በአሁኑ ጊዜ ቢትኮይን NFTs (ordinals) አይደግፍም። BTCን ከመደበኛው አድራሻ መላክ ሳይታሰብ ኦርዲናሎቹ እንዲተላለፉ ሊያደርግ ይችላል።</translation>
 <translation id="5292796745632149097">ላክ ወደ</translation>
 <translation id="473775607612524610">አዘምን</translation>
+<translation id="1224275271335624810">እጅግ በጣም ፈጣን</translation>
+<translation id="3735740477244556633">ደርድር በ</translation>
 <translation id="9209024278910716955">ለተመረጠው አውታረ መረብ መግዛት አይደገፍም</translation>
 <translation id="4982630604810554641">ጎራ በመፈለግ ላይ...</translation>
 <translation id="5467044307473123584">Brave የ .eth ጎራዎችን ለመፍታት ከሰንሰለት ውጪ ጌትዌይስ መጠቀምን ይደግፋል።</translation>
@@ -823,7 +816,6 @@
 <translation id="4549853322523631092">ምንም ውጤቶች አልተገኙም።</translation>
 <translation id="7150150391368236519">የሃርድዌር ዋሌት አገናኝ</translation>
 <translation id="5149944858285555235">ያልታወቀ ስህተት ፣ እባክዎን የሃርድዌርዎን wallet እንደገና ያገናኙ እና እንደገና ይሞክሩ።</translation>
-<translation id="4522570452068850558">ዝርዝሮች</translation>
 <translation id="9220525904950070496">መለያ ያስወግዱ</translation>
 <translation id="8574289650879708853">ብጁ ንብረትን ያክሉ</translation>
 <translation id="6600400596821238377">የምልክት ስም</translation>
@@ -977,10 +969,8 @@
 <translation id="6015436276085482001">ውድቅ የተደረገ</translation>
 <translation id="6666273175654835609">የቀረበ</translation>
 <translation id="2331676293859649642">ተረጋገጠ</translation>
-<translation id="1165039591588034296">ስህተት</translation>
 <translation id="8373210463207847451">የተጣለ</translation>
 <translation id="8214232307424031138">ተፈርሟል</translation>
-<translation id="5916664084637901428">በርቷል</translation>
 <translation id="9065572743819293042">የቅርብ ጊዜ ግብይቶች</translation>
 <translation id="1702356231547761669">የግብይት ሃሽ</translation>
 <translation id="8941851657764077659">ከፍተኛ ቅድሚያ ክፍያ</translation>
@@ -1456,12 +1446,8 @@
 <translation id="1531836666020185856">ተለይቶ የቀረበ</translation>
 <translation id="3225021799163709119">ታዋቂ</translation>
 <translation id="6854651431635060919">የአውታረመረብን አካውንት ሞክር</translation>
-<translation id="3800173541008902040">የተሻሻለ የግብይት ዝርዝሮችን ፍቀድ፦</translation>
-<translation id="1215089823252478557">የተገመተውን የሒሳብ ለውጥ ለመመልከት</translation>
 <translation id="2761574758015819991">ተንኮል-አዘል ሊሆኑ የሚችሉ ግብይቶችን ለመለየት</translation>
 <translation id="168533464844528463">የማታለል ሙከራዎችን ለመለየት</translation>
-<translation id="7269757150305059881">Brave የክፍያ አማራጭ ይህንን አገልግሎት ለመስጠት ከአጋር ጋር ይሰራል። ይህን በመፈቀድዎ፤ ከአጋራችን ጋር ያልተፈረሙ ግብይቶችን እና የእነርሱን DApp URL ለማጋራት ተስማምተዋል።</translation>
-<translation id="7790932700072432983">በማንኛውም ጊዜ ይቀይሩ በሚከተለው <ph name="TAG_BEFORE"/>ቅንብሮች<ph name="TAG_AFTER"/> ውስጥ ይቀይሩ።</translation>
 <translation id="8688672835843460752">ይገኛል</translation>
 <translation id="5296640085393149413">ሊጠቀሙ የሚችሉት ገንዘብ።</translation>
 <translation id="3248185426436836442">በእንጥልጥል ላይ ያለ</translation>
@@ -1476,6 +1462,9 @@
 <translation id="8775144690796719618">ልክ ያልሆነ ዩአርኤል</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="1472675084647422956">ተጨማሪ አሳይ</translation>
+<translation id="4522570452068850558">ዝርዝሮች</translation>
+<translation id="7144878232160441200">እንደገና ሞክር</translation>
+<translation id="7138678301420049075">ሌላ</translation>
 <translation id="3155170474926428993">ቶር ማስጀመርያ</translation>
 <translation id="3745016858329272300">አጠቃላይ መረጃ</translation>
 <translation id="4045404575593562245">በ ቶር ቁጥጥር ያሉ ክስተቶች</translation>
@@ -1743,7 +1732,6 @@
 <translation id="7921782882718083488">ይህንን ገጽ ያጠቃልሉ</translation>
 <translation id="7932221068776853847">የዚህን ገጽ ይዘት ለ Leo መላክ ለማቆም ግንኙነቱን ያቋርጡ እና አዲስ ውይይት ይጀምሩ</translation>
 <translation id="1167803637855350748">ከ Leo ጋር በመገናኘት የአውታረ መረብ ችግር ነበር፣ ግንኙነትዎን ያረጋግጡ እና እንደገና ይሞክሩ።</translation>
-<translation id="7144878232160441200">እንደገና ሞክር</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> በ <ph name="COMPANY_NAME"/></translation>
 <translation id="6187065185557150870">ጭውውት</translation>
 <translation id="2961040541145689181">አዲስ ጭውውት</translation>
@@ -1778,7 +1766,6 @@
 <translation id="2399439821649319175">አጋዥ አይደለም</translation>
 <translation id="2976167228906046828">ልክ አይደለም</translation>
 <translation id="1183055847065865059">ደህንነቱ ያልተጠበቀ/ጎጂ</translation>
-<translation id="7138678301420049075">ሌላ</translation>
 <translation id="2313959174679245365">የእርስዎ የደረጃ አሰጣጥ ሊገባ አልቻለም፣ እባክዎ የአውታረመረብ ግንኙነቱን ይፈትሹ እና ዳግም ይሞክሩ</translation>
 <translation id="98413980871833152">የእርስዎ ግብረመልስ ሊገባ አልቻለም፣ እባክዎ የአውታረመረብ ግንኙነቱን ይፈትሹ እና ዳግም ይሞክሩ</translation>
 <translation id="8742658901413346500">ይህ ውይይት ረጅም ነው እና Leo በቅርቡ ነገሮችን መርሳት ሊጀምር ይችላል። ወደ ፕሪሚየም ሞዴል በመቀየር ረጃጅም ውይይቶችን ማግኘት ይችልሉ ወይም ዳግም ለማስጀመር ጭውውቱን ማጽዳት ይችላሉ።</translation>
@@ -1897,32 +1884,18 @@
 <translation id="7821773512278295352">Brave Firewall + VPN: ተገናኝቷል</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: ግንኙነቱ ተቋርጧል</translation>
 <translation id="3541307549916475335">የBrave ቪፒኤን ፓነል ዩአይ</translation>
-<translation id="1742469581923031760">በማገናኘት ላይ፤</translation>
-<translation id="1287487756047817908">በመቋረጥ ላይ…፤</translation>
+<translation id="7143207342074048698">በመያያዝ ላይ</translation>
 <translation id="2325196879156848326">ግንኙነት ተቋርጧል</translation>
 <translation id="745054660363064771">ከሰርቨሩ ጋር መገናኘት አልተቻለም</translation>
 <translation id="3936826714240735937">ሌላ ሰርቨር ይምረጡ</translation>
-<translation id="1305433007676951913">1 <ph name="PRODUCT_NAME"/> 
-ከ  
-<ph name="REGION_NAME"/> 
-አገላግይ ጋር መገናኘት አልተቻለም። እንደገና መሞከር ወይም ሌላ መምረጥ ይችላሉ።</translation>
-<translation id="8703188411226330709">የነጻ ሙከራ ጀምር</translation>
-<translation id="1024255913009642477">አስቀድመው VPN ገዝተዋልን?</translation>
 <translation id="8814357473522731680">የተጎላበተው በ</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="7805768142964895445">ሁኔታ</translation>
 <translation id="5747552184818312860">ጊዜው አልፎበታል</translation>
 <translation id="8421945428836418371">በራስ ሰር ዳግም አገናኝ</translation>
 <translation id="434523916398030617">የቴክኒክ ድጋፍን ያነጋግሩ</translation>
 <translation id="1116694919640316211">ስለ</translation>
-<translation id="8670386189340362926">መከታተያዎችን አግድ &amp; በሁሉም መተግበሪያዎች ላይ ያሉ ማስታወቂያዎች</translation>
-<translation id="4860763498907927955">ከማይፈለጉ የአውታረ መረብ  ግንኙነቶች ይጠብቅዎታል</translation>
-<translation id="3181339219453722970">የእርስዎን VPN አካባቢ ይምረጡ</translation>
-<translation id="1708407585266172412">ፈጣን እና ያልተገደበ እስከ 500 Mbps</translation>
-<translation id="1400240082805528049">24/7 ድጋፍ</translation>
 <translation id="1693568075761612600">የድጋፍ ትኬት መፍጠር አልተሳካም፣ ግንኙነትዎን ይፈትሹ።</translation>
 <translation id="8463313539532697053">…ን በመጫን ላይ ትንሽ ይጠብቁ</translation>
-<translation id="4317307602527599178">የግዢዎን ሁኔታ ማረጋገጥ አልተቻለም። ይህ በአውታረ መረብ ችግር ምክንያት ሊከሰት ይችላል።</translation>
 <translation id="4613076894734402086">የመክፈያ ዘዴን ያርትዑ</translation>
 <translation id="427718751211990320">ማስረጃዎች የማብቂያ ቀናት አልፈዋል።</translation>
 <translation id="8670619630771851260">ማስረጃዎችን ለመጫን አልተቻለም።</translation>
@@ -1944,7 +1917,6 @@
 <translation id="6676791921618140305">የOS ስሪት፦</translation>
 <translation id="1156325797949437777">ከጋርድያን ጋር በመተባበር ድጋፍ ይሰጣል።</translation>
 <translation id="8146777497879160283">የ VPN አወቃቀሩን መጻፍ አልተሳካም። ፍቃድ ከሌልዎት ወይም በቅርቡ የዊንዶውስ ዝመናን ካላካሄዱ ይህ ሊከሰት ይችላል።</translation>
-<translation id="3307461350293459700">የ VPN ግንኙነት አልተሳካም። እባክዎ እንደገና ለማገናኘት ይሞክሩና የ Brave's VPN ውቅረትን ለማንቃት ፍቀድ የሚለውን ጠቅ ማድረግዎን ያረጋግጡ።</translation>
 <translation id="7261518280726313829">ደህንነቱ የተጠበቀ ዲኤንኤስን ማጥፋት ወይም ነባሪ አገልጋዮችን በዊንዶውስ ላይ መጠቀም እርስዎ የሚጎበኟቸውን  ጣቢያዎች ስሞች ለበይነመረብ አገልግሎት አቅራቢዎ ሊያሳይ ይችላል። Brave ይህን እንዲያደርጉ አይመክርም። ለማንኛውም ሊያደርጉት ይፈልጋሉ?</translation>
 <translation id="888284761945060750">ደህንነቱ የተጠበቀ DNS በድርጅትዎ መመሪያዎች ተሰናክሏል። የBrave ቪፒኤን ያለ ደህንነቱ የተጠበቀ DNS መጠቀም እርስዎ የሚጎበኟቸውን ጣቢያዎች ስሞች ለበይነመረብ አገልግሎት አቅራቢዎ ወይም ድርጅትዎ ሊያሳይ ይችላል።</translation>
 <translation id="6593224083874259773">የ Brave VPN በ Windows ላይ</translation>

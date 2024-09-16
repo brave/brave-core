@@ -110,6 +110,7 @@
 <translation id="3377025655491224618">כרטיסייה פרטית</translation>
 <translation id="7304425663107214334">הצג את הצעות הדפדפן</translation>
 <translation id="8982438328166986164">מציג הצעות לאתרים בהתבסס על הסימניות ועל היסטוריית הגלישה שלך.</translation>
+<translation id="924029461438529367">הצג הצעות חיפוש</translation>
 <translation id="1571106259128580884">הצג הצעות של האתרים הטובים ביותר</translation>
 <translation id="9148058034647219655">יציאה</translation>
 <translation id="8047754398610073499">חסימת הודעות הסכמה לקובצי Cookie</translation>
@@ -262,6 +263,8 @@
 <translation id="6511854390690723657">זה פרסומת Brave הראשון שלך. נא להקיש כדי ללמוד עוד.</translation>
 <translation id="2070991379950719711">התחל להשתמש ב-Brave Rewards</translation>
 <translation id="48520986898237073">המשך לארנק</translation>
+<translation id="6213254277250932867">יש ברשותי ביטוי שחזור בן 12 מילים</translation>
+<translation id="4225265925807365011">יש ברשותי ביטוי שחזור בן 24 מילים</translation>
 <translation id="3570367516044491911">הגדר כדפדפן ברירת המחדל</translation>
 <translation id="6800338374677644736">הגדר כדפדפן ברירת המחדל</translation>
 <translation id="19715420010996093">בחר/י בדפדפן Brave והקש/י על "תמיד"</translation>
@@ -362,6 +365,8 @@
 <translation id="6417420737057016607">פרסומות Brave</translation>
 <translation id="5611966874859284786">הצג מודעות התראה כאשר Brave אינו בשימוש</translation>
 <translation id="6606319453795180219">פעולה זו תמחק את תגמולי ה-Brave ותאפס את כל נתוני תגמולי ה-Brave שלך</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>איפוס נתוני Brave תגמולים…<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>מחיקת נתוני Brave מודעות…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">הוספת סימניה</translation>
 <translation id="340492034650766959">מחיקת סימניה</translation>
 <translation id="2149973817440762519">עריכת סימניה</translation>
@@ -465,7 +470,7 @@
 <translation id="5582686930349810484">טביעות אצבע חסומות (סטנדרטי)</translation>
 <translation id="769702552748212954">אפשר כל לקיחת טביעות אצבע</translation>
 <translation id="876424292214881779">פרסומות ומטרדים אחרים נחסמו</translation>
-<translation id="6930134873084561197">אתרים כוללים לעתים קרובות קובצי עוגייה וסקריפטים שמנסים לזהות אותך ואת המכשיר שלך. הם רוצים להבין מי את/ה ולעקוב אחריך ברחבי האינטרנט - בעודם עוקבים אחר מה שאת/ה עושה בכל אתר.\n\n Braveחוסם את הדברים האלה כך שתוכל/י לגלוש בלי שיעקבו אחריך.</translation>
+<translation id="6849027612978668678">אתרים כוללים לעתים קרובות קובצי עוגייה וסקריפטים שמנסים לזהות אותך ואת המכשיר שלך. הם רוצים להבין מי אתה ולעקוב אחריך ברחבי האינטרנט ולנטר אחר מה שאתה עושה בכל אתר.\n\n Braveחוסם את הדברים האלה כך שתוכל לגלוש מבלי שיעקבו אחריך.</translation>
 <translation id="8553998445606452168">אודות Brave Shields</translation>
 <translation id="8912304686498704084">למעלה</translation>
 <translation id="4963218453264888510">למטה</translation>
@@ -560,6 +565,8 @@
 <translation id="7889432931837317731">פתח אוטומטית כאשר ניתן</translation>
 <translation id="1029304566263314007">הצג התראות על התקדמות ההורדה</translation>
 <translation id="2910433761530295035">שאל היכן לשמור קבצים (אם מזוהה כרטיס SD)</translation>
+<translation id="2977501775944575564">מבצע הורדה במקביל</translation>
+<translation id="6224180438946945617">אפשר הורדה במקביל כדי להאיץ את מהירות ההורדה</translation>
 <translation id="8967385052772844086">הצג דוח פרטיות מלא</translation>
 <translation id="6864343534748973390">הכי פופולרי</translation>
 <translation id="4608192160278975831">פרטי וללא מעקב</translation>
@@ -589,44 +596,38 @@
 <translation id="7909462264772842773">החזק נכסי קריפטו במשמורת שלך ועקוב אחרי ביצועי תיק ההשקעות. ארנק Brave תומך באתריום, רשתות EVM, סולנה, פיילקוין ועוד.</translation>
 <translation id="165255193061631296">זקוק לארנק חדש?</translation>
 <translation id="3485737865439729577">התחל עם ארנק Brave בתוך דקות</translation>
-<translation id="2759836790106646094">גבה את הארנק שלך כעת!</translation>
-<translation id="1078873179929044999">בצעד הבא תראה’ ביטוי שחזור בן 12 מילים, שבו תוכל להשתמש לשחזור חשבונות הקריפטו העיקריים שלך. שמור אותו במקום בטוח. ביטוי השחזור שלך היא הדרך היחידה להחזיר את הגישה לחשבון במקרה של סיסמה שנשכחה, מכשיר שאבד או נגנב, או אם אתה רוצה להחליף ארנק.</translation>
+<translation id="2540568096903252632">יש להזין סיסמה כדי להמשיך</translation>
+<translation id="3356580495013324916">הזינו את סיסמת Brave Wallet שלכם כדי להתחיל לגבות את הארנק.</translation>
 <translation id="2359808026110333948">המשך</translation>
 <translation id="5488357322146334497">הודעה</translation>
-<translation id="1904000155026201268">אני מבינ/ה שאם אאבד את מילות השחזור שלי, לא אוכל לגשת לארנק הקריפטו שלי.</translation>
 <translation id="5333225216561354793">אנו מבקשים שתאשר את הפריטים הבאים</translation>
 <translation id="6937275455070754004">בחרו באיזה בלוקצ'יין להשתמש בארנק שלכם.</translation>
 <translation id="1645800479814134195">אני מבין שמדובר בארנק במשמורת עצמית ושאני נושא באחריות הבלעדית על הכספים, הנכסים או החשבונות ונקיטה בפעולות ההולמות על מנת לאבטח ולהגן על הארנק שלי ולגבות אותו. אני מבין של-Brave אין גישה לארנק שלי ושאינו יכול להפוך עסקאות מטעמי, ושבמקרה של אובדן סיסמה, מכשיר שנגנב או נסיבות דומות, סיסמת השחזור שלי היא הדרך היחידה לקבל גישה מחדש.</translation>
 <translation id="4565891212173086999">קראתי את <ph name="CLICK_START"/>תנאי השימוש<ph name="CLICK_END"/> ואני מסכים להם.</translation>
-<translation id="3933122286596948824">ביטוי השחזור שלך</translation>
-<translation id="5077747669435508720">יש לרשום או להעתיק את המילים האלה בסדר המדויק המוצג להלן, ולשמור אותן במקום בטוח. ביטוי השחזור שלך הוא הדרך היחידה להחזיר את הגישה לחשבון במקרה של סיסמה שנשכחה, מכשיר שאבד או נגנב, או אם ברצונך להחליף ארנק.</translation>
-<translation id="2708402071160162126">אזהרה: לעולם אל תחשוף את ביטוי השחזור שלך. כל מי שברשותו ביטוי זה יכול לקחת את הנכסים שלך לצמיתות.</translation>
-<translation id="111912712268284159">גיביתי את ביטוי השחזור שלי במקום בטוח</translation>
-<translation id="6896758677409633944">העתקה</translation>
+<translation id="3259102562570606417">שמור/י את משפט השחזור שלך</translation>
+<translation id="4339981001593889376">באמצעות ביטוי השחזור תוכל לגשת לארנק שלך במקרה שתשכח את הסיסמה או שתאבד את המכשיר שלך.</translation>
+<translation id="426648489149930289">שמור אותו במקום מאובטח שאינו נגיש לאחרים והימנע מלשתף אותו עם אף אחד.</translation>
 <translation id="3726490322412361740">יש להזין ססמה</translation>
-<translation id="3038243139480464605">אמת סיסמה</translation>
-<translation id="7396672979287122068">הסיסמה המאומתת אינה תואמת</translation>
 <translation id="1566412704591731844">יוצר את הארנק שלך...</translation>
 <translation id="7779823116893018906">זה יכול לקחת כמה שניות...</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> חשבון <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">חשבון חדש</translation>
 <translation id="3448492834076427715">עדכן חשבון</translation>
-<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="5532363218245261099">מספר <ph name="NUMBER"/> <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="1537175937716697987">הצג את ביטוי השחזור שלי</translation>
+<translation id="5303015959766064022">אני אגבה מאוחר יותר</translation>
+<translation id="7345730059518887993">בוא נבדוק</translation>
+<translation id="7640406249038879146">הזן את המילה במיקום <ph name="WORD_POSITION"/> משחזור הביטוי שלך.</translation>
+<translation id="2598171223363459366">אתה יכול לדלג על שלב זה כעת, אך נא לגבות את ביטוי השחזור שלך כדי להבטיח את אבטחת החשבון.</translation>
 <translation id="8100001366858145406">להפעיל ביטול נעילה בטביעת אצבע?</translation>
 <translation id="5493402808936397665">הפעלת ביומטריה כדי לבטל נעילה במהירות של הארנק שלך מבלי להזין סיסמה.</translation>
 <translation id="8030647312184163932">ביטול נעילה באמצעות טביעת אצבע</translation>
 <translation id="4090490645603511157">השתמש בביומטריה כדי לבטל את נעילת הארנק שלך במהירות מבלי להזין סיסמה.</translation>
 <translation id="1544192797660353713">ארנק</translation>
-<translation id="6901810042765869341">הזן את ביטוי השחזור שלך כדי לשחזר את חשבון הקריפטו של ארנק Brave שלך.</translation>
-<translation id="9120654436199628567">שחזר חשבון קריפטו</translation>
+<translation id="2321396552035646646">ניתן להדביק את משפט השחזור שלך במלואו לתוך כל שדה.</translation>
+<translation id="3961126209136843111">ייבוא ארנק קיים</translation>
 <translation id="4811736040444856406">הצג ביטוי שחזור</translation>
-<translation id="283071225285270357">יש להזין את ביטוי השחזור שלך</translation>
-<translation id="3943857333388298514">הדבק</translation>
-<translation id="3331452756822160641">סיסמה חדשה</translation>
 <translation id="4359319875297001084">לייבא מארנקי קריפטו Brave מדור קודם?</translation>
-<translation id="2339124864228588937">אמת ביטוי שחזור</translation>
-<translation id="3747079125031086337">בחר את המילים בביטוי השחזור שלך בסדר הנכון שלהן.</translation>
-<translation id="6518133107902771759">אימות</translation>
 <translation id="3157931365184549694">שחזר</translation>
 <translation id="5844138175312846408">כבר יש ברשותך ארנק?</translation>
 <translation id="2502258949541727762">לפני שנתחיל</translation>
@@ -635,6 +636,7 @@
 <translation id="2523174693142405417">חפש ברשתות</translation>
 <translation id="1164748583090434571">הצג רשתות בדיקה</translation>
 <translation id="935220650946301698">המשך עם <ph name="NUMBER"/> רשתות</translation>
+<translation id="4052668782430384783">מילה מספר <ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">צור/י סיסמה</translation>
 <translation id="2789310860394340571">סיסמה זאת תשמש לצורך גישה לארנק שלכם.</translation>
 <translation id="2136372518715274136">הזן סיסמה חדשה</translation>
@@ -652,9 +654,8 @@
 <translation id="5619264711680220002">ביטול נעילה באמצעים ביומטריים</translation>
 <translation id="9195657745688986798">שחרר נעילת ארנק</translation>
 <translation id="5168349973342709369">הזן סיסמה כדי לפתוח את הארנק</translation>
-<translation id="3043677904160378840">סיסמאות חייבות להיות באורך 8 תווים לפחות.</translation>
 <translation id="1144810021918451336">אינו מגן מפני אתרים הורדות והרחבות שעלולים לסכן אותך.</translation>
-<translation id="5760476995887363522">ביטויים לא תואמים, יש לנסות שוב.</translation>
+<translation id="9085712756417277119">ביטוי השחזור לא תואם</translation>
 <translation id="2360588547830602174">שחזור חשבון נכשלה. נסה שוב.</translation>
 <translation id="1987317783729300807">חשבונות</translation>
 <translation id="6284218950354553099">שלח PING של שימוש יומי ל-Brave</translation>
@@ -689,16 +690,21 @@
 <translation id="3510283489391432976">בחר את המיקום הגיאוגרפי/מדינה שלך</translation>
 <translation id="7695158478627528928">Brave לעולם לא מנהלת רישומי יומן של הפעילות שלכם</translation>
 <translation id="4575683170451975058">הגנה על 5 מכשירים במנוי אחד</translation>
+<translation id="755045397420611731">פרטיות ואבטחה מוגברות באינטרנט</translation>
+<translation id="4520128772974831415">הסתר את כתובת ה-IP שלך &amp;שנה את מיקומך</translation>
+<translation id="2044418816479192294">מאות שרתים ברחבי העולם</translation>
+<translation id="7410504850864021600">חיבור במהירות שיא</translation>
+<translation id="2422309687188612485">הגנה על עד 10 מכשירים בתוכנית אחת</translation>
 <translation id="4882693590083943563">כל התוכניות כוללות <ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">7 ימי ניסיון!</translation>
 <translation id="1532536259167115948">מנוי חודשי <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">מנוי שנתי <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">מתחדש מדי חודש</translation>
-<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / mo.</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> לחודש</translation>
 <translation id="1163809943099641131">שנה אחת</translation>
-<translation id="172859718096975160">סקרו שנתית <ph name="DISCOUNT_TEXT_START"/>save <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
-<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
-<translation id="5125233570742276182">המינויים יחויבו דרך חשבון Google שלכם. כל חלק שלא נעשה בו שימוש בתקופת הניסיון בחינם, אם מוצע, יתבטל בעת רכישת מנוי.\n\nהמינוי שלכם יתחדש אוטומטית אלא אם כן יבוטל לפחות 24 שעות לפני תום התקופה הנוכחית.\n\nתוכלו לנהל את מינויים בהגדרות.\nבשימוש ב-Brave, אתם מסכימים לתנאי השימוש ולמדיניות הפרטיות</translation>
+<translation id="727385358513272220">מתחדש בכל שנה מחדש (<ph name="DISCOUNT_TEXT_START"/>חיסכון של <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> לשנה</translation>
+<translation id="2786538705804257030">המנויים יחויבו דרך חשבון Google שלך. כל חלק שלא ייעשה בו שימוש בתקופת הניסיון בחינם, במידה ויוצע, יתבטל בעת רכישת מנוי.\n\nהמנוי יתחדש באופן אוטומטי אלא אם יבוטל לפחות 24 שעות לפני תום התקופה הנוכחית.\n\nטת המנויים ניתן לנהל בהגדרות.\nבעצם השימוש ב-Brave, אתם מסכימים לתנאי השימוש ולמדיניות הפרטיות.</translation>
 <translation id="5035172357624830412">האם כבר קניתם ב- brave.com?</translation>
 <translation id="713136183174551885">חדשו את שם המשתמש וסיסמה שלכם</translation>
 <translation id="6053992191006521518">נסה בחינם</translation>
@@ -933,7 +939,6 @@
 <translation id="7002577172732106572">מנהור מפוצל</translation>
 <translation id="8181161042860463420">חשבון האסימון המשויך לא קיים עדיין. סכום קטן של SOL יושקע כדי ליצור ולממן אותו. <ph name="CLICK_START"/>למידע נוסף<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">מעדכן את פרופיל VPN...</translation>
-<translation id="7457027586454688423">הזן את סיסמת ה-Brave Wallet שלך</translation>
 <translation id="4784306439879850873">שים לב ש-Brave לא יכול לאמת מה יקרה אם תחתום. חתימה יכולה לאשר כמעט כל פעולה בחשבונך או בשמך, לרבות (אך לא רק) הענקת שליטה מלאה על חשבונך ונכסי הקריפטו לאתר המגיש את הבקשה. חתום רק אם אתה בטוח שאתה רוצה לבצע פעולה זו ולסמך על האתר המבקש.</translation>
 <translation id="3474375934783434676">הירשם על אחריותך בלבד</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> של <ph name="SIZE"/></translation>
@@ -943,6 +948,7 @@
 <translation id="2629767022373384291">האם ברצונכם להשתמש באימות ביומטרי כדי לפתוח את נעילת ארנק Brave?</translation>
 <translation id="4782919977106118997">השתמשו בפתיחת נעילה באמצעות טביעת אצבע</translation>
 <translation id="2054995875643283428">דלגו על שלב זה לעת עתה</translation>
+<translation id="2610561535971892504">לחץ כדי להעתיק</translation>
 <translation id="2522605225061484799">עבור אל הפורטפוליו שלי</translation>
 <translation id="1148624853678088576">אתה סיימת</translation>
 <translation id="4131445988101719379">ארנק Brave מוכן לשימוש</translation>
@@ -1025,7 +1031,7 @@
 <translation id="6610899852831463073">לא ניתן להפעיל גלישה בטוחה</translation>
 <translation id="7954263306665462056">גלישה בטוחה הושבתה במכשיר שלכם. כדי להפעיל את האפשרות מחדש ודאו ששירותי Google Play מותקנים ומעודכנים.</translation>
 <translation id="6605147707233193230">הפעל כדי לעזור לתמוך ביוצרי תוכן</translation>
-<translation id="1609556006143307897">אתה עוזר לתמוך ביוצרי תוכן</translation>
+<translation id="5899814466108868020">אתה מסייע לתמיכה ב-Brave ובקהילת BAT</translation>
 <translation id="6067959437127691361">השימוש ב-Brave Rewards עוזר לתמוך ביוצרי תוכן, ומאפשר לך להרוויח BAT.</translation>
 <translation id="3264975266761862670">מוכנ/ה להתחיל להרוויח?</translation>
 <translation id="265337947574975838">התחבר או צור חשבון עם אחד מהשותפים שלנו.</translation>
@@ -1124,6 +1130,7 @@
 <translation id="1173894706177603556">שנה שם</translation>
 <translation id="3596306474342941843">מחק רשימת השמעה</translation>
 <translation id="7765158879357617694">העבר</translation>
+<translation id="6896758677409633944">העתקה</translation>
 <translation id="3803384303807438047">מחק את הנתונים הלא מקוונים של הפריט</translation>
 <translation id="4195643157523330669">פתח בכרטיסייה חדשה</translation>
 <translation id="4243710787042215766">פתח בכרטיסייה פרטית</translation>
