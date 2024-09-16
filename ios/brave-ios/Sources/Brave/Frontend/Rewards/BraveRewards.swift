@@ -252,14 +252,16 @@ public class BraveRewards: PreferencesObserver {
   /// Report that a page has loaded in the current browser tab, and the
   /// text/HTML content is available for analysis.
   func reportLoadedPage(
-    redirectChain: [URL],
-    tabId: Int,
+    tab: Tab,
     htmlContent: String?,
     textContent: String?
   ) {
-    guard let url = redirectChain.last else {
+    guard let url = tab.redirectChain.last else {
+      // Don't report update for tabs that haven't finished loading.
       return
     }
+
+    let tabId = Int(tab.rewardsId)
 
     tabRetrieved(tabId, url: url, html: htmlContent)
     if ads.isServiceRunning() {
@@ -270,21 +272,21 @@ public class BraveRewards: PreferencesObserver {
 
       let kHttpClientErrorResponseStatusCodeClass = 4
       let kHttpServerErrorResponseStatusCodeClass = 5
-      let responseStatusCodeClass = response.statusCode / 100
+      let responseStatusCodeClass = tab.rewardsReportingState.httpStatusCode / 100
 
-      if rewardsReportingState.isNewNavigation
+      if tab.rewardsReportingState.isNewNavigation
         && responseStatusCodeClass != kHttpClientErrorResponseStatusCodeClass
         && responseStatusCodeClass != kHttpServerErrorResponseStatusCodeClass
       {
         ads.notifyTabHtmlContentDidChange(
           tabId,
-          redirectChain: redirectChain,
+          redirectChain: tab.redirectChain,
           html: htmlContent ?? ""
         )
         if let textContent {
           ads.notifyTabTextContentDidChange(
             tabId,
-            redirectChain: redirectChain,
+            redirectChain: tab.redirectChain,
             text: textContent
           )
         }
