@@ -703,7 +703,7 @@ enum TransactionParser {
           fromFiat =
             currencyFormatter.formatAsFiat(
               assetRatios[token.assetRatioId.lowercased(), default: 0]
-              * (Double(fromValueFormatted) ?? 0)
+                * (Double(fromValueFormatted) ?? 0)
             ) ?? "$0.00"
         }
       } else {
