@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.URLUtil;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 
@@ -164,10 +166,28 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         super.show(manager, TAG);
     }
 
+    private void setupFullHeight(@NonNull final BottomSheetDialog bottomSheetDialog) {
+        final FrameLayout frameLayout = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
+        if (frameLayout == null) {
+            assert false : "Null frame layout for bottom sheet dialog resource design_bottom_sheet";
+            return;
+        }
+
+        BottomSheetBehavior.from(frameLayout).setSkipCollapsed(true);
+        ViewGroup.LayoutParams layoutParams = frameLayout.getLayoutParams();
+        layoutParams.height = requireActivity().getWindow().getDecorView().getHeight();
+        frameLayout.setLayoutParams(layoutParams);
+
+        final BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(frameLayout);
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = new BottomSheetDialog(requireContext(), R.style.ApproveTxBottomSheetDialogTheme);
+        Dialog bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.ApproveTxBottomSheetDialogTheme);
+        bottomSheetDialog.setOnShowListener(dialog -> setupFullHeight((BottomSheetDialog) dialog));
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
@@ -175,9 +195,9 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                 registerKeyringObserver(mWalletModel.getKeyringModel());
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onCreateDialog ", e);
+            Log.e(TAG, "onCreateDialog", e);
         }
-        return dialog;
+        return bottomSheetDialog;
     }
 
     @Nullable
