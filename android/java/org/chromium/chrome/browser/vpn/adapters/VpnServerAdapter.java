@@ -20,6 +20,7 @@ import com.google.android.material.radiobutton.MaterialRadioButton;
 import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.chrome.R;
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.vpn.activities.VpnServerActivity.OnCitySelection;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 
@@ -54,24 +55,11 @@ public class VpnServerAdapter extends RecyclerView.Adapter<VpnServerAdapter.View
                             .getQuantityString(
                                     R.plurals.server_text, city.serverCount, city.serverCount);
             holder.cityServerText.setText((position == 0) ? city.name : cityServerText);
-            // boolean isEnabled =
-            //         BraveVpnPrefUtils.getRegionName().equals(mRegion.name)
-            //                 && BraveVpnPrefUtils.getRegionName()
-            //                         .equals(
-            //                                 position == 0
-            //                                         ? BraveVpnUtils.OPTIMAL_SERVER
-            //                                         : city.name);
-            // boolean isEnabled =
-            //         BraveVpnPrefUtils.getRegionPrecision()
-            //                         .equals(BraveVpnConstants.REGION_PRECISION_CITY)
-            //                 && BraveVpnPrefUtils.getRegionName()
-            //                         .equals(
-            //                                 position == 0
-            //                                         ? BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC
-            //                                         : city.name);
 
-            // boolean isEnabled =
-            // (BraveVpnPrefUtils.getRegionPrecision().equals(BraveVpnConstants.REGION_PRECISION_COUNTRY) && BraveVpnPrefUtils.getRegionName().equals(mRegion.name) && position == 0) || (BraveVpnPrefUtils.getRegionPrecision().equals(BraveVpnConstants.REGION_PRECISION_CITY) && BraveVpnPrefUtils.getRegionName().equals(city.name));
+            Log.e(
+                    "brave_vpn",
+                    "BraveVpnPrefUtils.getRegionName() : " + BraveVpnPrefUtils.getRegionName());
+            Log.e("brave_vpn", "mRegion.name : " + mRegion.name);
 
             boolean isCountryPrecision =
                     BraveVpnPrefUtils.getRegionPrecision()

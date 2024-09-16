@@ -114,10 +114,13 @@ public class VpnServerActivity extends BraveVpnParentActivity {
                         } else {
                             BraveVpnUtils.selectedServerRegion =
                                     new BraveVpnServerRegion(
-                                            region.countryIsoCode,
+                                            false,
+                                            city.country,
+                                            city.continent,
                                             position == 0
-                                                    ? BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC
-                                                    : city.name,
+                                                    ? region.countryIsoCode
+                                                    : city.countryIsoCode,
+                                            position == 0 ? region.name : city.name,
                                             position == 0 ? region.namePretty : city.namePretty,
                                             position == 0
                                                     ? BraveVpnConstants.REGION_PRECISION_COUNTRY

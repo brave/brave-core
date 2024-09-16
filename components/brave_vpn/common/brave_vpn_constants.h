@@ -22,6 +22,7 @@ inline constexpr char kAboutUrl[] = "https://brave.com/firewall-vpn/";
 
 inline constexpr char kRegionNameKey[] = "name";
 inline constexpr char kRegionNamePrettyKey[] = "name-pretty";
+inline constexpr char kRegionCountryKey[] = "country";
 inline constexpr char kRegionContinentKey[] = "continent";
 inline constexpr char kRegionCountryIsoCodeKey[] = "country-iso-code";
 inline constexpr char kRegionPrecisionKey[] = "region-precision";
