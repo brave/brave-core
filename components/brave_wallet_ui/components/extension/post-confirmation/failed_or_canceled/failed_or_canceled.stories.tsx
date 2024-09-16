@@ -1,7 +1,7 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
 // Types
@@ -20,13 +20,13 @@ import {
 import {
   WalletPanelStory //
 } from '../../../../stories/wrappers/wallet-panel-story-wrapper'
-import { TransactionSubmittedOrSigned } from './submitted_or_signed'
+import { TransactionFailedOrCanceled } from './failed_or_canceled'
 
 // Styled Components
 import { LongWrapper } from '../../../../stories/style'
 import { PanelWrapper } from '../../../../panel/style'
 
-export const _TransactionSubmittedOrSigned = {
+export const _TransactionFailedOrCanceled = {
   render: (args: StorybookTransactionArgs) => {
     // Props
     const { transactionType } = args
@@ -34,7 +34,7 @@ export const _TransactionSubmittedOrSigned = {
     // Computed
     const transaction = getPostConfirmationStatusMockTransaction(
       transactionType,
-      BraveWallet.TransactionStatus.Submitted
+      BraveWallet.TransactionStatus.Error
     )
 
     return (
@@ -44,13 +44,9 @@ export const _TransactionSubmittedOrSigned = {
           height={650}
         >
           <LongWrapper padding='0px'>
-            <TransactionSubmittedOrSigned
-              onClose={() => alert('Close panel screen clicked.')}
-              onShowCancelTransaction={() =>
-                alert('Show cancel transaction clicked.')
-              }
+            <TransactionFailedOrCanceled
               transaction={transaction}
-              onClickViewInActivity={() => alert('View in activity clicked.')}
+              onClose={() => alert('Close panel screen clicked.')}
             />
           </LongWrapper>
         </PanelWrapper>
@@ -60,7 +56,7 @@ export const _TransactionSubmittedOrSigned = {
 }
 
 export default {
-  component: TransactionSubmittedOrSigned,
+  component: TransactionFailedOrCanceled,
   argTypes: {
     transactionType: {
       options: StorybookTransactionOptions,

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
+import LeoButton from '@brave/leo/react/button'
 
 // Constants
 import {
@@ -10,65 +11,124 @@ import {
   SerializableTransactionInfo
 } from '../../../../constants/types'
 
-// Hooks
-import { useExplorer } from '../../../../common/hooks/explorer'
-import { useTransactionsNetwork } from '../../../../common/hooks/use-transactions-network'
-
 // Utils
 import { getLocale } from '$web-common/locale'
 
-// Styled components
-import { Panel } from '../../panel/index'
-import { SubmittedOrSignedIcon, Title } from './submitted_or_signed.style'
+// Components
 import {
-  ButtonRow,
-  DetailButton,
-  LinkIcon,
-  TransactionStatusDescription
-} from '../common/common.style'
+  PostConfirmationHeader //
+} from '../common/post_confirmation_header'
+import { SpeedUpAlert } from '../common/speed_up_alert'
+import { TransactionIntent } from '../common/transaction_intent'
+
+// Styled components
+import { LoadingRing, StatusIcon, Wrapper, Title } from '../common/common.style'
+import { Column, Row, Text, VerticalSpace } from '../../../shared/style'
+import {
+  isBridgeTransaction,
+  isSwapTransaction
+} from '../../../../utils/tx-utils'
 
 interface Props {
-  headerTitle: string
   transaction: SerializableTransactionInfo
   onClose: () => void
+  onShowCancelTransaction: () => void
+  onClickViewInActivity: () => void
 }
 
 export const TransactionSubmittedOrSigned = (props: Props) => {
-  const { headerTitle, transaction, onClose } = props
+  const {
+    transaction,
+    onClose,
+    onShowCancelTransaction,
+    onClickViewInActivity
+  } = props
 
-  // custom hooks
-  const transactionNetwork = useTransactionsNetwork(transaction)
-  const onClickViewOnBlockExplorer = useExplorer(transactionNetwork)
+  // State
+  const [showSpeedUpAlert, setShowSpeedupAlert] = React.useState<boolean>(false)
 
-  const title =
-    transaction.txStatus === BraveWallet.TransactionStatus.Submitted
-      ? getLocale('braveWalletTransactionSubmittedTitle')
-      : getLocale('braveWalletTransactionSignedTitle')
-  const description =
-    transaction.txStatus === BraveWallet.TransactionStatus.Submitted
-      ? getLocale('braveWalletTransactionSubmittedDescription')
-      : getLocale('braveWalletTransactionSignedDescription')
+  // Computed
+  const isBridge = isBridgeTransaction(transaction)
+  const isSwap = isSwapTransaction(transaction)
+  const isERC20Approval =
+    transaction.txType === BraveWallet.TransactionType.ERC20Approve
+
+  // Memos
+  const statusIconName = React.useMemo(() => {
+    if (isERC20Approval) {
+      return 'lock-open'
+    }
+    if (isBridge) {
+      return 'web3-bridge'
+    }
+    if (isSwap) {
+      return 'swap-horizontal'
+    }
+    return 'send-filled'
+  }, [isERC20Approval, isBridge, isSwap])
+
+  React.useEffect(() => {
+    const timeId = setTimeout(() => {
+      setShowSpeedupAlert(true)
+    }, 5000)
+    return () => {
+      clearTimeout(timeId)
+    }
+  }, [])
 
   return (
-    <Panel
-      navAction={onClose}
-      title={headerTitle}
-      headerStyle='slim'
+    <Wrapper
+      fullWidth={true}
+      fullHeight={true}
+      alignItems='center'
+      justifyContent='space-between'
     >
-      <SubmittedOrSignedIcon />
-      <Title>{title}</Title>
-      <TransactionStatusDescription>{description}</TransactionStatusDescription>
-      <ButtonRow>
-        <DetailButton
-          onClick={onClickViewOnBlockExplorer(
-            transaction.swapInfo?.provider === 'lifi' ? 'lifi' : 'tx',
-            transaction.txHash
-          )}
+      <Column fullWidth={true}>
+        <PostConfirmationHeader onClose={onClose} />
+        <Column
+          fullWidth={true}
+          padding='0px 24px'
         >
-          {getLocale('braveWalletTransactionExplorer')}
-        </DetailButton>
-        <LinkIcon />
-      </ButtonRow>
-    </Panel>
+          {showSpeedUpAlert ? (
+            <SpeedUpAlert />
+          ) : (
+            <VerticalSpace space='114px' />
+          )}
+          <LoadingRing>
+            <StatusIcon name={statusIconName} />
+          </LoadingRing>
+          <Title>
+            {transaction.txStatus === BraveWallet.TransactionStatus.Submitted
+              ? getLocale('braveWalletTransactionSubmittedTitle')
+              : getLocale('braveWalletTransactionSignedTitle')}
+          </Title>
+          <TransactionIntent transaction={transaction} />
+        </Column>
+      </Column>
+      <Column
+        fullWidth={true}
+        padding='16px'
+        gap='16px'
+      >
+        <Text
+          textSize='12px'
+          textColor='tertiary'
+          isBold={false}
+        >
+          {getLocale('braveWalletSafelyDismissWindow')}
+        </Text>
+        <Row gap='8px'>
+          <LeoButton
+            kind='plain'
+            onClick={onShowCancelTransaction}
+          >
+            {getLocale('braveWalletTransactionCancel')}
+          </LeoButton>
+          <LeoButton onClick={onClickViewInActivity}>
+            {getLocale('braveWalletViewInActivity')}
+          </LeoButton>
+        </Row>
+      </Column>
+    </Wrapper>
   )
 }
