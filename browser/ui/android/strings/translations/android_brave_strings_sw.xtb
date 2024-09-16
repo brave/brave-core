@@ -110,6 +110,7 @@
 <translation id="3377025655491224618">Kichupo cha Faragha</translation>
 <translation id="7304425663107214334">Onyesha mapendekezo ya kivinjari</translation>
 <translation id="8982438328166986164">Huonyesha mapendekezo ya tovuti kulingana na ualamishaji wako na historia ya kuvinjari.</translation>
+<translation id="924029461438529367">Onyesha mapendekezo ya utafutaji</translation>
 <translation id="1571106259128580884">Onyesha mapendekezo ya tovuti maarufu</translation>
 <translation id="9148058034647219655">Ondoka</translation>
 <translation id="8047754398610073499">Zuia taarifa za idhini ya vidakuzi</translation>
@@ -262,6 +263,8 @@
 <translation id="6511854390690723657">Hili ni tangazo lako la kwanza la Brave. Gusa upate maelezo zaidi.</translation>
 <translation id="2070991379950719711">Anza kutumia Zawadi za Brave</translation>
 <translation id="48520986898237073">Nenda kwenye kipochi</translation>
+<translation id="6213254277250932867">Nina kaulisiri ya maneno 12 ya kurejesha ufikiaji</translation>
+<translation id="4225265925807365011">Nina kaulisiri ya maneno 24 ya kurejesha ufikiaji</translation>
 <translation id="3570367516044491911">Weka kiwe kivinjari chaguo msingi</translation>
 <translation id="6800338374677644736">Weka kuwa Kivinjari Chaguo Msingi</translation>
 <translation id="19715420010996093">Chagua Brave Browser na ubofye 'Daima'</translation>
@@ -361,6 +364,8 @@
 <translation id="6417420737057016607">Matangazo ya Brave</translation>
 <translation id="5611966874859284786">Onyesha matangazo ya arifa wakati Brave haitumiki</translation>
 <translation id="6606319453795180219">Hii itafuta Zawadi zako za Brave na kuweka upya data yako yote ya Zawadi za Brave</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Weka upya data ya Zawadi za Brave…<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Futa data ya Matangazo ya Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Ongeza Alamisho</translation>
 <translation id="340492034650766959">Futa Alamisho</translation>
 <translation id="2149973817440762519">Badilisha Alamisho</translation>
@@ -464,7 +469,7 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="5582686930349810484">Alama ya kidole imezuiwa (kawaida)</translation>
 <translation id="769702552748212954">Ruhusu uchapishaji wote wa alama za vidole</translation>
 <translation id="876424292214881779">Matangazo na mambo mengine ya ajabu yamezuiwa</translation>
-<translation id="6930134873084561197">Mara nyingi tovuti zinajumuisha vidakuzi na hati ambazo hujaribu kukutambua wewe na kifaa chako. Zinataka kujua wewe ni nani na kukufuata kwenye wavuti ili kujua unachokifanya kwenye kila tovuti.\n\nBrave huzuia mambo haya ili uweze kuvinjari bila kufuatiliwa.</translation>
+<translation id="6849027612978668678">Mara nyingi tovuti hujumuisha vidakuzi na programu ndogo za ufuatiliaji ambazo hujaribu kukutambua wewe na kifaa chako. Zinataka kujua wewe ni nani na hukufuata kote kwenye wavuti, zikifuatilia unachofanya kwenye kila tovuti.\n\nBrave huzuia mambo haya ili uweze kuvinjari bila kufuatwa.</translation>
 <translation id="8553998445606452168">Kuhusu Brave Shields</translation>
 <translation id="8912304686498704084">JUU</translation>
 <translation id="4963218453264888510">CHINI</translation>
@@ -559,6 +564,8 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="7889432931837317731">Fungua kiotomatiki inapowezekana</translation>
 <translation id="1029304566263314007">Onyesha arifa za maendeleo ya upakuaji</translation>
 <translation id="2910433761530295035">Uliza mahali pa kuhifadhi faili (ikiwa kadi ya SD imegunduliwa)</translation>
+<translation id="2977501775944575564">Upakuaji Sambamba</translation>
+<translation id="6224180438946945617">Washa upakuaji sambamba ili kuharakisha kasi ya upakuaji</translation>
 <translation id="8967385052772844086">Tazama Ripoti kamili ya Faragha</translation>
 <translation id="6864343534748973390">Maarufu zaidi</translation>
 <translation id="4608192160278975831">Faragha na kutofuatilia</translation>
@@ -588,44 +595,38 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="7909462264772842773">Dhibiti crypto na NFT zako. Brave Wallet huwezesha matumizi ya Ethereum, mitungo ya EVM, Solana, Filecoin, na zaidi.</translation>
 <translation id="165255193061631296">Unahitaji pochi mpya?</translation>
 <translation id="3485737865439729577">Anza kutumia Brave Wallet ndani ya dakika chache</translation>
-<translation id="2759836790106646094">Hifadhi nakala ya pochi yako sasa hivi!</translation>
-<translation id="1078873179929044999">Katika hatua inayofuata utaona kauli ya urejeshaji ya maneno 12, ambayo unaweza kutumia kurejesha akaunti zako za msingi za crypto. Ihifadhi eneo salama. Kauli yako ya urejeshaji ni njia tu ya kupata uwezo wa kufikia akaunti endapo umesahau nenosiri, umepoteza au kifaa kimeibwa, au unataka kubadilisha pochi.</translation>
+<translation id="2540568096903252632">Ingiza nenosiri ili uendelee</translation>
+<translation id="3356580495013324916">Ingiza nenosiri lako la Pochi ya Brave ili kuanza kuhifadhi nakala ya pochi.</translation>
 <translation id="2359808026110333948">Endelea</translation>
 <translation id="5488357322146334497">Ujumbe</translation>
-<translation id="1904000155026201268">Ninaelewa kwamba ikiwa nitapoteza uwezo wangu wa kulipa, sitaweza kufikia pochi yangu ya crpto.</translation>
 <translation id="5333225216561354793">Tunahitaji uthibitishe vipengee vilivyo hapa chini</translation>
 <translation id="6937275455070754004">Chagua mitandao ya kutumia kwenye pochi yako.</translation>
 <translation id="1645800479814134195">Ninaelewa kuwa hii ni pochi ya uangalizi binafsi, na kwamba ni mimi pekee ninawajibika kwa fedha, mali au akaunti zozote zinazohusiana, na kuchukua hatua inayofaa ili kulinda, kutunza na kuhifadhi nakala rudufu ya pochi yangu. Ninaelewa kuwa Brave haiwezi kufikia pochi yangu au kubatilisha miamala kwa niaba yangu, na kwamba kifungu changu cha maneno cha kurejesha ufikiaji ndicho njia ya PEKEE ya kupata tena ufikiaji ikiwa nenosiri litapotea, kifaa kitaibiwa au hali kama hiyo.</translation>
 <translation id="4565891212173086999">Nimesoma na ninakubali <ph name="CLICK_START"/>Masharti ya Matumizi<ph name="CLICK_END"/>.</translation>
-<translation id="3933122286596948824">Kaulisiri yako ya urejeshaji</translation>
-<translation id="5077747669435508720">Andika au nakili maneno haya katika mpangilio kamili ulioonyeshwa hapa chini na uyahifadhi mahali salama. Kauli yako ya urejeshaji ni njia tu ya kupata uwezo wa ufikiaji endapo umesahau nenosiri, umepoteza au kifaa kimeibwa, unataka kubadilisha pochi.</translation>
-<translation id="2708402071160162126">ONYO: Usiwahi kushiriki kauli yako ya urejeshaji. Yeyote aliye na kauli hii anaweza kuchukua rasilimali zako kabisa.</translation>
-<translation id="111912712268284159">Nimehifadhi nakala ya kauli yangu mahali salama.</translation>
-<translation id="6896758677409633944">Nakala</translation>
+<translation id="3259102562570606417">Hifadhi kaulisiri yako ya kurejesha ufikiaji</translation>
+<translation id="4339981001593889376">Kaulisiri yako ya kurejesha ufikiaji ndiyo ufunguo wa kufikia pochi yako iwapo utasahau nenosiri lako au kupoteza kifaa chako.</translation>
+<translation id="426648489149930289">Iweke mahali salama ambapo hapawezi kufikiwa na watu wengine na uepuke kuishiriki na mtu yeyote.</translation>
 <translation id="3726490322412361740">Weka Nenosiri</translation>
-<translation id="3038243139480464605">Thibitisha nenosiri</translation>
-<translation id="7396672979287122068">Nenosiri lililothibitishwa halikulingana</translation>
 <translation id="1566412704591731844">Inaunda pochi yako...</translation>
 <translation id="7779823116893018906">Inaweza kuchukua sekunde chache...</translation>
 <translation id="1577948178257477049">Akaunti ya <ph name="ACCOUNT_NAME"/><ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Ongeza akaunti</translation>
 <translation id="3448492834076427715">Sasisha akaunti</translation>
-<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="5532363218245261099">Namba <ph name="NUMBER"/> <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="1537175937716697987">Tazama kaulisiri yangu ya kurejesha ufikiaji</translation>
+<translation id="5303015959766064022">Nitacheleza baadaye</translation>
+<translation id="7345730059518887993">Hebu tuangalie</translation>
+<translation id="7640406249038879146">Weka neno lililo katika nafasi ya <ph name="WORD_POSITION"/> katika kaulisiri yako ya kurejesha ufikiaji.</translation>
+<translation id="2598171223363459366">Unaweza kuruka hatua hii sasa lakini bado unahitaji kuhifadhi nakala ya kaulisiri yako ya kurejesha ufikiaji ili kuhakikisha usalama wa akaunti.</translation>
 <translation id="8100001366858145406">Washa kipengele cha kufungua kwa kutumia alama ya kidole?</translation>
 <translation id="5493402808936397665">Wezesha bayometriki kufungua haraka pochi yako bila kuweka nenosiri lako.</translation>
 <translation id="8030647312184163932">Kufungua kwa alama ya kidole</translation>
 <translation id="4090490645603511157">Tumia bayometriki ili kufungua pochi yako haraka bila kuingiza nenosiri lako.</translation>
 <translation id="1544192797660353713">Pochi</translation>
-<translation id="6901810042765869341">Weka kaulisiri yako ya urejeshaji ili kurejesha akaunti yako ya crypto ya Brave Wallet.</translation>
-<translation id="9120654436199628567">Rejesha akaunti ya crypto</translation>
+<translation id="2321396552035646646">Unaweza kubandika kaulisiri yako nzima ya kurejesha ufikiaji kwenye sehemu yoyote.</translation>
+<translation id="3961126209136843111">Leta pochi iliyopo</translation>
 <translation id="4811736040444856406">Onyesha kaulisiri ya urejeshaji</translation>
-<translation id="283071225285270357">Weka kaulisiri yako ya urejeshaji</translation>
-<translation id="3943857333388298514">Bandika</translation>
-<translation id="3331452756822160641">Nenosiri Jipya</translation>
 <translation id="4359319875297001084">Leta kutoka kwenye pochi za jadi za crypto ya Brave?</translation>
-<translation id="2339124864228588937">Thibitisha kaulisiri ya urejeshaji</translation>
-<translation id="3747079125031086337">Teua maneno katika kauli yako ya urejeshaji katika mpangilio wayo sahihi.</translation>
-<translation id="6518133107902771759">Thibitisha</translation>
 <translation id="3157931365184549694">Rejesha</translation>
 <translation id="5844138175312846408">Je, tayari una pochi?</translation>
 <translation id="2502258949541727762">Kabla hatujaanza</translation>
@@ -634,6 +635,7 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="2523174693142405417">Vinjari mitandao</translation>
 <translation id="1164748583090434571">Onyesha majaribio ya mitandao</translation>
 <translation id="935220650946301698">Endelea katika mitandao ya <ph name="NUMBER"/></translation>
+<translation id="4052668782430384783">Neno namba <ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">Unda nywila</translation>
 <translation id="2789310860394340571">Utatumia nywila hii ili kufikia pochi lako.</translation>
 <translation id="2136372518715274136">Weka nenosiri jipya</translation>
@@ -651,9 +653,8 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="5619264711680220002">Kufungua kibiometriki</translation>
 <translation id="9195657745688986798">Fungua Pochi</translation>
 <translation id="5168349973342709369">Weka nenosiri ili ufungue pochi</translation>
-<translation id="3043677904160378840">Sharti nenosiri liwe na angalau vibambo 8</translation>
 <translation id="1144810021918451336">Haikulindi dhidi ya tovuti, vipakuliwa na viendelezi hatari.</translation>
-<translation id="5760476995887363522">Kauli hazikulingana. Tafadhali jaribu tena.</translation>
+<translation id="9085712756417277119">Kaulisiri ya kurejesha ufikiaji hailingani</translation>
 <translation id="2360588547830602174">Urejeshaji wa akaunti haujafaulu. Tafadhali jaribu tena.</translation>
 <translation id="1987317783729300807">Akaunti</translation>
 <translation id="6284218950354553099">Tuma kiotomatiki mlio wa matumizi ya kila siku kwa Brave</translation>
@@ -688,16 +689,21 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="3510283489391432976">Chagua eneo lako la jiografia/nchi</translation>
 <translation id="7695158478627528928">Brave haiweki kamwe kumbukumbu za shughuli zako.</translation>
 <translation id="4575683170451975058">Linda vifaa 5 kwa kutumia usajili 1</translation>
+<translation id="755045397420611731">Faragha na usalama wa ziada mtandaoni</translation>
+<translation id="4520128772974831415">Ficha IP yako na ubadilishe mahali ulipo</translation>
+<translation id="2044418816479192294">Mamia ya seva kote ulimwenguni</translation>
+<translation id="7410504850864021600">Kasi za muunganisho za upesi mno</translation>
+<translation id="2422309687188612485">Linda hadi vifaa 10 kwenye mpango mmoja</translation>
 <translation id="4882693590083943563">Mipango yote inajumuisha <ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">jaribio la siku 7 la bila malipo!</translation>
 <translation id="1532536259167115948">Usajili wa kila mwezi <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Usajili wa kila mwaka <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Uandikishaji upya kila mwezi</translation>
-<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> kwa mwezi.</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /mwezi</translation>
 <translation id="1163809943099641131">Mwaka mmoja</translation>
-<translation id="172859718096975160">Jisajili upya kila mwaka <ph name="DISCOUNT_TEXT_START"/>uokoe <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
-<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> kwa mwaka.</translation>
-<translation id="5125233570742276182">Usajili utatozwa kupitia akaunti yako ya Google. Sehemu yoyote ambayo haijatumika ya jaribio la bila malipo, ikiwa lilitolewa, hutupiliwa mbali unaponunua usajili.\n\nUsajili wako utawezeshwa upya kiotomatiki isipokuwa ukighairiwa angalau saa 24 kabla ya mwisho wa kipindi cha sasa.\n\nUnaweza kudhibiti usajili wako katika Mipangilio.\nKwa kutumia Brave, unakubali Masharti ya Matumizi na Sera ya Faragha.</translation>
+<translation id="727385358513272220">Usajili huanzishwa upya kila mwaka (<ph name="DISCOUNT_TEXT_START"/>okoa <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> kila mwaka</translation>
+<translation id="2786538705804257030">Usajili utatozwa kupitia akaunti yako ya Google. Sehemu yoyote ambayo haijatumika ya jaribio la bila malipo, ikiwa lilitolewa, hutupiliwa mbali unaponunua usajili.\n\nUsajili wako utaanzishwa upya kiotomatiki isipokuwa ukighairiwa angalau saa 24 kabla ya mwisho wa kipindi cha sasa.\n\nUnaweza kudhibiti usajili wako katika Mipangilio.\n\nKwa kutumia Brave, unakubali Masharti ya Matumizi na Sera ya Faragha.</translation>
 <translation id="5035172357624830412">Je, tayari umenunuliwa kwenye brave.com?</translation>
 <translation id="713136183174551885">Weka upya maelezo yako ya utambulisho</translation>
 <translation id="6053992191006521518">Jaribu BILA MALIPO</translation>
@@ -932,7 +938,6 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="7002577172732106572">Upangaji Njia Uliogawanywa</translation>
 <translation id="8181161042860463420">Akaunti ya tokeni inayohusishwa bado haipo. Kiasi kidogo cha SOL kitatumika kuiunda na kuifadhili. <ph name="CLICK_START"/>Jifunze zaidi<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Inasasisha Wasifu wa VPN...</translation>
-<translation id="7457027586454688423">Weka nenosiri lako la Pochi ya Brave</translation>
 <translation id="4784306439879850873">Fahamu kuwa Brave haiwezi kuthibitisha kitakachotendeka ukitia sahihi. Sahihi inaweza kuidhinisha takribani shughuli yoyote katika akaunti yako au kwa niaba yako, ikiwemo (lakini si tu) kutoa udhibiti wa jumla wa akaunti yako na mali zako za crypto kwa tovuti inayotuma ombi. Tia sahihi ikiwa tu una uhakika unataka kuchukua hatua hii na unaamini tovuti inayoomba.</translation>
 <translation id="3474375934783434676">Tia sahihi kwa tahadhari yako pekee</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> kati ya <ph name="SIZE"/></translation>
@@ -942,6 +947,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="2629767022373384291">Je, ungependa kutumia uthibitishaji wa kibayometriki kufungua Pochi yako ya Brave?</translation>
 <translation id="4782919977106118997">Tumia kipengele cha Kufungua kwa Alama ya Kidole</translation>
 <translation id="2054995875643283428">Ruka hii kwa sasa</translation>
+<translation id="2610561535971892504">Bofya ili unakili</translation>
 <translation id="2522605225061484799">Nenda kwenye potifolio yangu</translation>
 <translation id="1148624853678088576">Akaunti yako iko tayari kutumika!</translation>
 <translation id="4131445988101719379">Pochi yako ya Brave iko tayari kutumika</translation>
@@ -1024,7 +1030,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="6610899852831463073">Haiwezi kuwezesha Kuvinjari Salama</translation>
 <translation id="7954263306665462056">Kuvinjari Salama kumezimwa katika kifaa chako. Ili kuuwezesha, hakikisha kwamba Huduma za Google Play zimesakinishwa na kwamba zimesasishwa.</translation>
 <translation id="6605147707233193230">Washa ili kuwezesha kuwasaidia waundaji maudhui</translation>
-<translation id="1609556006143307897">Unawezesha kusaidia waundaji maudhui</translation>
+<translation id="5899814466108868020">Unasaidia kufadhili Brave na jumuiya ya BAT</translation>
 <translation id="6067959437127691361">Kutumia Zawadi za Brae huwezesha kuwasaidia waundaji maudhui na kukufanya kupata BAT.</translation>
 <translation id="3264975266761862670">Uko tayari kuanza kupokea mapato?</translation>
 <translation id="265337947574975838">Unganisha au ufungue akaunti kwa mmoja wa washirika wetu.</translation>
@@ -1123,6 +1129,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="1173894706177603556">Ipe jina jipya</translation>
 <translation id="3596306474342941843">Futa orodha ya kucheza</translation>
 <translation id="7765158879357617694">Sogeza</translation>
+<translation id="6896758677409633944">Nakala</translation>
 <translation id="3803384303807438047">Futa data ya nje ya mtandao ya kipengee</translation>
 <translation id="4195643157523330669">Fungua katika kichupo kipya</translation>
 <translation id="4243710787042215766">Open in private tab</translation>

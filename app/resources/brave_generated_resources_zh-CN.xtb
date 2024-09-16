@@ -16,6 +16,7 @@
 <translation id="8294286161128352783">只在新标签页</translation>
 <translation id="6406506848690869874">同步</translation>
 <translation id="1544192797660353713">钱包</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="8275068909952022340">更多…</translation>
 <translation id="1990886731975529483">安装并运行 Google Widevine</translation>
 <translation id="8926389886865778422">不再询问</translation>
@@ -55,15 +56,20 @@
 <translation id="1434416574322382019">用 Tor 打开新的私人窗口</translation>
 <translation id="4703780849509456860">用 Tor 在私人窗口中打开链接</translation>
 <translation id="3488584642074079080">用 Tor 在 Brave 私人窗口中打开链接</translation>
+<translation id="8594912907680633924">在分屏视图打开链接</translation>
 <translation id="6313675821927505581">用 Tor 打开新的隐私窗口</translation>
 <translation id="2638041073279639246">用 Tor 在隐私窗口中打开</translation>
 <translation id="3425600262621021599">用 Tor 在 Brave 隐私窗口中打开链接</translation>
+<translation id="3795436270513738622">在分屏视图打开链接</translation>
 <translation id="2545072023356206691">从 2023 年 12 月 1 日开始，Brave Dev 频道将不再接收浏览器更新。建议用户改用 Brave Nightly、测试版或正式版。</translation>
 <translation id="474217410105706308">将此标签页静音</translation>
 <translation id="2804710924397009224">隐藏 Brave 奖励图标</translation>
 <translation id="5029193871181468990">隐藏 Brave 奖励图标</translation>
 <translation id="2808103541110899519">隐藏 Brave 的钱包图标</translation>
 <translation id="7595540212376041331">隐藏 Brave 的钱包图标</translation>
+<translation id="3893997535859323951">隐藏 Leo AI 图标</translation>
+<translation id="6208515240323786457">隐藏 Leo AI 图标</translation>
+<translation id="2361906291514218784">Leo 人工智能</translation>
 <translation id="4928988318462976765">网络扩展程序商店</translation>
 <translation id="9181207987584064303">在网络扩展程序商店中查看</translation>
 <translation id="3161744659507801211">警告：Brave 无法阻止扩展程序记录您的浏览活动。</translation>
@@ -96,9 +102,6 @@
 <translation id="3462465068145800637">Brave 搜索不会对您进行个人档案分析。它 100% 独立于大型科技公司。</translation>
 <translation id="42032117189492785">人工智能搜索，独一无二的索引。</translation>
 <translation id="8606416238399082160">完全无痕、100% 独立，并具有强大的人工智能功能。</translation>
-<translation id="7706528608480893054">DDG 只是必应的伪装。是时候拥有真正的隐私、更好的结果和独立的索引了。 Brave 搜索的时候到了。</translation>
-<translation id="3818133234428578803">放弃 Duck</translation>
-<translation id="14817360483752259">Brave 搜索不会跟踪您、您的查询或点击。而且（与 DDG 不同），它不仅仅是 Bing 的伪装。</translation>
 <translation id="4381193110021038941">获得更好的结果</translation>
 <translation id="3846545273704969734">经独立验证，Brave 搜索的搜索结果优于 Bing（或 Bing 克隆产品，如 DuckDuckGo）。</translation>
 <translation id="2841164160723712537">改善搜索结果</translation>
@@ -287,8 +290,9 @@
 <translation id="2818704116581303039">打开播放列表设置</translation>
 <translation id="6790428901817661496">播放</translation>
 <translation id="1178581264944972037">暂停</translation>
-<translation id="4477350412780666475">下一曲</translation>
-<translation id="3962859241508114581">上一曲</translation>
+<translation id="4046123991198612571">下一曲</translation>
+<translation id="2874939134665556319">上一曲</translation>
+<translation id="3040310857793999281">静音/取消静音</translation>
 <translation id="7544853251252956727">随机播放</translation>
 <translation id="4330722796577425585">倒带</translation>
 <translation id="7481312909269577407">前进</translation>
@@ -298,7 +302,15 @@
 <translation id="6453210454707928697">无法播放项目</translation>
 <translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] 可能已过期。是否恢复此项目？</translation>
 <translation id="6155018868740116868">恢复</translation>
-<translation id="1727684853006449697">Brave 播放器</translation>
+<translation id="2521960050170773751">从网页添加媒体</translation>
+<translation id="2301087142998134097"><ph name="SITE"/> 试图打开</translation>
+<translation id="7128982309566342232"><ph name="SITE"/>上的嵌入式页面试图打开</translation>
+<translation id="1175012181261953767">此页面试图打开</translation>
+<translation id="7459546222322124545">此页面上的嵌入式页面试图打开</translation>
+<translation id="5836261838911560851"><ph name="SITE"/> 试图保存</translation>
+<translation id="5936788906460687941"><ph name="SITE"/>上的嵌入式页面试图打开</translation>
+<translation id="7700010743463174379">此页面试图保存</translation>
+<translation id="6774238875569752630">此页面上的嵌入式页面试图保存</translation>
 <translation id="9156965752763025780">您所做的更改会在下次重新启动 Brave 时生效。</translation>
 <translation id="7179921470347911571">立即重新启动</translation>
 <translation id="1426410128494586442">是</translation>
@@ -323,6 +335,7 @@
 <translation id="5860254591544742609">显示标题栏</translation>
 <translation id="5371926069408837914">当折叠时，在鼠标移动中展开垂直标签面板</translation>
 <translation id="3367129510799209147">标签悬停模式</translation>
+<translation id="8527099657928614787">在每个窗口中独立展开垂直标签</translation>
 <translation id="916373084491701212">显示滚动条</translation>
 <translation id="515949045075831661">在右侧显示</translation>
 <translation id="3725395376319291415">在左侧显示</translation>
@@ -339,6 +352,7 @@
 <translation id="4144468798716165316">快捷指令</translation>
 <translation id="7310387888625228830">Leo 人工智能助手</translation>
 <translation id="5222974844674487962">显示 Brave 新闻按钮</translation>
+<translation id="2085436423511121572">显示 Leo AI 按钮</translation>
 <translation id="383007806262310953">显示书签栏</translation>
 <translation id="4054323497808446566">所有页面均可见书签栏</translation>
 <translation id="8693858092251192712">除了新标签页，书签栏已在所有页面上隐藏</translation>
@@ -439,6 +453,7 @@
 <translation id="4891600875049212418">访问敏感网站时不记录在案</translation>
 <translation id="1968895725257436430">资料合集</translation>
 <translation id="4846154056248462491">退出时</translation>
+<translation id="216468847346280584">清除 Brave 广告数据…</translation>
 <translation id="2808630562319398131">重置 Brave Rewards 计划数据...</translation>
 <translation id="6438096877646138757">关闭时所有网站窗口时清除 cookie 的网站</translation>
 <translation id="2988792685798128092">站点关闭时清除</translation>
@@ -552,6 +567,8 @@
 <translation id="4094590686212463338">无法加入此同步链。同步链已删除。</translation>
 <translation id="4908081302669157000">电话号码、电子邮件和地址</translation>
 <translation id="294985549514492876">Web 应用程序（PWA）</translation>
+<translation id="924029461438529367">显示搜索建议</translation>
+<translation id="3128251601544028053">当您在地址栏或搜索框中输入时，Brave 会将你输入的内容发送到你的默认搜索引擎，以获得更好的建议。私密窗口无法使用。</translation>
 <translation id="6285118765755298263">对其他搜索引擎构建索引</translation>
 <translation id="919715748352669592">自动对遵循 OpenSearch 规范的网站构建索引</translation>
 <translation id="842628013524824194">一般窗口 - 地址栏中使用的搜索引擎</translation>
@@ -667,7 +684,6 @@
 <translation id="3095201688102519917">关闭已开启多个标签页的视窗前显示警告消息</translation>
 <translation id="7120553802660696133">关闭最后一个标签页时关闭窗口</translation>
 <translation id="3394171693948989253">显示全屏提醒，退出时按 Esc 键</translation>
-<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">在侧边栏中显示 Leo 图标</translation>
 <translation id="8055509865174199683">在网站的右键菜单中显示 Leo</translation>
 <translation id="1529674267267221673">当你右键点击网站时，Leo 将出现在上下文菜单中。这将把当前网页的上下文发送到 Leo。</translation>
