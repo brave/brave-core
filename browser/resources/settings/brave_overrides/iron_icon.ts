@@ -89,17 +89,8 @@ export const iconMap: { [key: string]: string } = {
   'cr:fullscreen': 'fullscreen-on', // automatic fullscreen
   'settings:picture-in-picture': 'picture-in-picture', // picture in picture
   'cr:file-download': 'download',
-
-  // brave_settings replacements size 24px
-  // todo: check cr: versions of these icons
-  'settings:search-engine': 'search',
-  'settings:privacy-security': 'lock',
   'settings:download': 'download',
-  'settings:printing': 'print',
   'settings:performance': 'cpu-chip',
-  'settings:clipboard': 'copy',
-  'settings:close-circle': 'close-circle',
-  'settings:shields': 'shield-done',
 }
 
 RegisterStyleOverride('iron-icon', html`
