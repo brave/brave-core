@@ -7,7 +7,7 @@ import { mapLimit } from 'async'
 import { Store } from 'redux'
 
 // actions
-import { PanelActions } from '../panel/actions'
+import { PanelActions } from '../common/slices/panel.slice'
 
 // types
 import type WalletApiProxy from '../common/wallet_api_proxy'

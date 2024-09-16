@@ -33,7 +33,7 @@ import {
 import { useSwapTransactionParser } from '../../../common/hooks/use-swap-tx-parser'
 
 // Actions
-import * as WalletPanelActions from '../../../panel/actions/wallet_panel_actions'
+import { PanelActions } from '../../../common/slices/panel.slice'
 
 // Components
 import { Panel } from '../panel/index'
@@ -122,18 +122,18 @@ export function TransactionStatus({ transactionLookup }: Props) {
       return
     }
     dispatch(
-      WalletPanelActions.setSelectedTransactionId({
+      PanelActions.setSelectedTransactionId({
         chainId: tx.chainId,
         coin: getCoinFromTxDataUnion(tx.txDataUnion),
         id: tx.id
       })
     )
-    dispatch(WalletPanelActions.navigateToMain())
+    dispatch(PanelActions.navigateToMain())
     history.push(makeTransactionDetailsRoute(tx.id))
   }, [dispatch, history, tx])
 
   const onClose = () =>
-    dispatch(WalletPanelActions.setSelectedTransactionId(undefined))
+    dispatch(PanelActions.setSelectedTransactionId(undefined))
   const completePrimaryCTAText =
     transactionsQueueLength === 0
       ? getLocale('braveWalletButtonClose')

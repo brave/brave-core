@@ -36,7 +36,7 @@ import {
 } from '../../../panel/constants/action_types'
 
 // Actions
-import { PanelActions } from '../../../panel/actions'
+import { PanelActions } from '../panel.slice'
 
 // utils
 import {

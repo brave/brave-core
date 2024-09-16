@@ -11,7 +11,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // actions
 import { UIActions } from '../slices/ui.slice'
-import { PanelActions } from '../../panel/actions'
+import { PanelActions } from '../slices/panel.slice'
 
 // utils
 import Amount from '../../utils/amount'
