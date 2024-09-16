@@ -100,12 +100,6 @@ export const iconMap: { [key: string]: string } = {
   'settings:clipboard': 'copy',
   'settings:close-circle': 'close-circle',
   'settings:shields': 'shield-done',
-
-  // brave_settings20
-  // size: 20px
-  'brave_settings20:private-mode': 'product-private-window',
-  'brave_settings20:edit-pencil': 'edit-pencil',
-  'brave_settings20:trash-can': 'trash',
 }
 
 RegisterStyleOverride('iron-icon', html`

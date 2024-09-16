@@ -40,6 +40,10 @@
   .main-header {
     font: var(--leo-font-heading-h4);
   }
+
+  cr-icon-button.size-20 {
+    --iron-icon-width: 20px;
+  }
 </style>
 
 <div class="settings-box header">
@@ -86,11 +90,13 @@
           <div class="model-actions">
             <cr-icon-button
               on-click="handleEdit_"
-              iron-icon="brave_settings20:edit-pencil"
+              class="size-20"
+              iron-icon="edit-pencil"
             ></cr-icon-button>
             <cr-icon-button
               on-click="handleDelete_"
-              iron-icon="brave_settings20:trash-can"
+              class="size-20"
+              iron-icon="trash"
             ></cr-icon-button>
           </div>
         </div>
