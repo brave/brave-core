@@ -55,17 +55,17 @@ public class BraveShieldsUtils {
         void braveShieldsSubmitted();
     }
 
-        public static boolean hasShieldsTooltipShown(String tooltipType) {
-            SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
-            return mSharedPreferences.getBoolean(tooltipType, false);
-        }
+    public static boolean hasShieldsTooltipShown(String tooltipType) {
+        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
+        return mSharedPreferences.getBoolean(tooltipType, false);
+    }
 
-        public static void setShieldsTooltipShown(String tooltipType, boolean isShown) {
-            SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
-            SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-            sharedPreferencesEditor.putBoolean(tooltipType, isShown);
-            sharedPreferencesEditor.apply();
-        }
+    public static void setShieldsTooltipShown(String tooltipType, boolean isShown) {
+        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(tooltipType, isShown);
+        sharedPreferencesEditor.apply();
+    }
 
     public static class BraveShieldsWorkerTask extends AsyncTask<Void> {
         private String mDomain;
@@ -86,7 +86,7 @@ public class BraveShieldsUtils {
 
         @Override
         protected void onPostExecute(Void result) {
-                assert ThreadUtils.runningOnUiThread();
+            assert ThreadUtils.runningOnUiThread();
 
             if (isCancelled()) return;
         }
