@@ -245,16 +245,29 @@ void AdsTabHelper::MaybeNotifyTabDidChange() {
 
   ads_service_->NotifyTabDidChange(/*tab_id=*/session_id_.id(), redirect_chain_,
                                    is_new_navigation_, was_restored_,
-                                   is_error_page_, IsVisible());
+                                   IsVisible());
+}
+
+void AdsTabHelper::MaybeNotifyTabDidLoad() {
+  CHECK(http_status_code_);
+
+  if (!ads_service_) {
+    // No-op if the ads service is unavailable.
+    return;
+  }
+
+  ads_service_->NotifyTabDidLoad(/*tab_id=*/session_id_.id(),
+                                 *http_status_code_);
 }
 
 bool AdsTabHelper::ShouldNotifyTabContentDidChange() const {
   // Don't notify about content changes if the ads service is not available, the
   // tab was restored, was a previously committed navigation, the web contents
-  // are still loading, or an interstitial or error page was displayed.
+  // are still loading, or an error page was displayed.
+  CHECK(http_status_code_);
+
   return ads_service_ && !was_restored_ && is_new_navigation_ &&
-         !redirect_chain_.empty() && http_status_code_ &&
-         !IsErrorPage(*http_status_code_);
+         !redirect_chain_.empty() && !IsErrorPage(*http_status_code_);
 }
 
 void AdsTabHelper::MaybeNotifyTabHtmlContentDidChange() {
@@ -348,6 +361,9 @@ void AdsTabHelper::DidStartNavigation(
   ResetNavigationState();
 }
 
+// This method is called when a navigation in the main frame or a subframe has
+// completed. It indicates that the navigation has finished, but the document
+// might still be loading resources.
 void AdsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   if (!ads_service_) {
@@ -366,7 +382,12 @@ void AdsTabHelper::DidFinishNavigation(
 
   MaybeNotifyUserGestureEventTriggered(navigation_handle);
 
+  // Notify of tab changes after navigation completes but before notifying that
+  // the tab has loaded, so that any listeners can process the tab changes
+  // before the tab is considered loaded.
   MaybeNotifyTabDidChange();
+
+  MaybeNotifyTabDidLoad();
 
   // Process same document navigations only when a document load is completed.
   // For navigations that lead to a document change, `ProcessNavigation` is
@@ -377,6 +398,9 @@ void AdsTabHelper::DidFinishNavigation(
   }
 }
 
+// This method is called when the document's onload event has fired in the
+// primary main frame. This means that the document and all its subresources
+// have finished loading.
 void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
   if (!ads_service_) {
     // No-op if the ads service is unavailable.

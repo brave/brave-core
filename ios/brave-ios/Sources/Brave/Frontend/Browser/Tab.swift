@@ -72,9 +72,8 @@ struct RewardsTabChangeReportingState {
   /// Set to true when the resulting page navigation is not a reload or a
   /// back/forward type.
   var isNewNavigation = true
-  /// Set to true when the resulting page is showing an error interstitial or
-  /// the resulting response from the web page had a 4xx or 5xx status code.
-  var isErrorPage = false
+  /// HTTP status code of the resulting page.
+  var httpStatusCode = -1
 }
 
 enum TabSecureContentState: String {

@@ -244,7 +244,6 @@ public class BraveRewards: PreferencesObserver {
         redirectChain: tab.redirectChain,
         isNewNavigation: tab.rewardsReportingState.isNewNavigation,
         isRestoring: tab.rewardsReportingState.wasRestored,
-        isErrorPage: tab.rewardsReportingState.isErrorPage,
         isSelected: isSelected
       )
     }
@@ -264,17 +263,31 @@ public class BraveRewards: PreferencesObserver {
 
     tabRetrieved(tabId, url: url, html: htmlContent)
     if ads.isServiceRunning() {
-      ads.notifyTabHtmlContentDidChange(
+      ads.notifyTabDidLoad(
         tabId,
-        redirectChain: redirectChain,
-        html: htmlContent ?? ""
+        httpStatusCode: tab.rewardsReportingState.httpStatusCode
       )
-      if let textContent {
-        ads.notifyTabTextContentDidChange(
+
+      let kHttpClientErrorResponseStatusCodeClass = 4
+      let kHttpServerErrorResponseStatusCodeClass = 5
+      let responseStatusCodeClass = response.statusCode / 100
+
+      if rewardsReportingState.isNewNavigation
+        && responseStatusCodeClass != kHttpClientErrorResponseStatusCodeClass
+        && responseStatusCodeClass != kHttpServerErrorResponseStatusCodeClass
+      {
+        ads.notifyTabHtmlContentDidChange(
           tabId,
           redirectChain: redirectChain,
-          text: textContent
+          html: htmlContent ?? ""
         )
+        if let textContent {
+          ads.notifyTabTextContentDidChange(
+            tabId,
+            redirectChain: redirectChain,
+            text: textContent
+          )
+        }
       }
     }
     rewardsAPI?.reportLoadedPage(url: url, tabId: UInt32(tabId))

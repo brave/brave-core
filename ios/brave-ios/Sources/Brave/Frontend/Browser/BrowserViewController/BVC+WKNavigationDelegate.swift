@@ -686,13 +686,7 @@ extension BrowserViewController: WKNavigationDelegate {
     {
       let internalUrl = InternalURL(responseURL)
 
-      let kHttpClientErrorResponseCodeClass = 4
-      let kHttpServerErrorResponseCodeClass = 5
-
-      let responseCodeClass = response.statusCode / 100
-      tab.rewardsReportingState.isErrorPage =
-        (responseCodeClass == kHttpClientErrorResponseCodeClass
-          || responseCodeClass == kHttpServerErrorResponseCodeClass)
+      tab.rewardsReportingState.httpStatusCode = response.statusCode
 
       if !tab.rewardsReportingState.wasRestored {
         tab.rewardsReportingState.wasRestored = internalUrl?.isSessionRestore == true

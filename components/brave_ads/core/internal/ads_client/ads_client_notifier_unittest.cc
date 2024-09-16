@@ -9,6 +9,7 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_observer_mock.h"
+#include "net/http/http_status_code.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -31,8 +32,9 @@ constexpr char kHtml[] = "HTML";
 constexpr int32_t kTabId = 1;
 constexpr bool kIsNewNavigation = true;
 constexpr bool kIsRestoring = false;
-constexpr bool kIsErrorPage = false;
 constexpr bool kIsVisible = true;
+
+constexpr int kHttpResponseCode = net::HTTP_OK;
 
 constexpr int32_t kPageTransitionType = 2;
 
@@ -73,7 +75,8 @@ class BraveAdsAdsClientNotifierTest : public ::testing::Test {
     ads_client_notifier_.NotifyTabDidStopPlayingMedia(kTabId);
     ads_client_notifier_.NotifyTabDidChange(kTabId, {GURL(kRedirectChainUrl)},
                                             kIsNewNavigation, kIsRestoring,
-                                            kIsErrorPage, kIsVisible);
+                                            kIsVisible);
+    ads_client_notifier_.NotifyTabDidLoad(kTabId, kHttpResponseCode);
     ads_client_notifier_.NotifyDidCloseTab(kTabId);
 
     ads_client_notifier_.NotifyUserGestureEventTriggered(kPageTransitionType);
@@ -131,7 +134,10 @@ class BraveAdsAdsClientNotifierTest : public ::testing::Test {
     EXPECT_CALL(ads_client_notifier_observer_mock_,
                 OnNotifyTabDidChange(
                     kTabId, ::testing::ElementsAre(GURL(kRedirectChainUrl)),
-                    kIsNewNavigation, kIsRestoring, kIsErrorPage, kIsVisible))
+                    kIsNewNavigation, kIsRestoring, kIsVisible))
+        .Times(expected_call_count);
+    EXPECT_CALL(ads_client_notifier_observer_mock_,
+                OnNotifyTabDidLoad(kTabId, kHttpResponseCode))
         .Times(expected_call_count);
     EXPECT_CALL(ads_client_notifier_observer_mock_, OnNotifyDidCloseTab(kTabId))
         .Times(expected_call_count);

@@ -58,8 +58,8 @@ class AdsClientNotifierForTesting : public AdsClientNotifier {
                           const std::vector<GURL>& redirect_chain,
                           bool is_new_navigation,
                           bool is_restoring,
-                          bool is_error_page,
                           bool is_visible) override;
+  void NotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
   void NotifyDidCloseTab(int32_t tab_id) override;
 
   void NotifyUserGestureEventTriggered(int32_t page_transition_type) override;

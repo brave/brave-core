@@ -158,8 +158,10 @@ OBJC_EXPORT
              redirectChain:(NSArray<NSURL*>*)redirectChain
            isNewNavigation:(BOOL)isNewNavigation
                isRestoring:(BOOL)isRestoring
-               isErrorPage:(BOOL)isErrorPage
                 isSelected:(BOOL)isSelected;
+
+- (void)notifyTabDidLoad:(NSInteger)tabId
+          httpStatusCode:(NSInteger)httpStatusCode;
 
 - (void)notifyDidCloseTab:(NSInteger)tabId;
 

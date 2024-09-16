@@ -81,6 +81,8 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   void MaybeNotifyTabDidChange();
 
+  void MaybeNotifyTabDidLoad();
+
   bool ShouldNotifyTabContentDidChange() const;
   void MaybeNotifyTabHtmlContentDidChange();
   void OnMaybeNotifyTabHtmlContentDidChange(

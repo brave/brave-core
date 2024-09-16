@@ -34,7 +34,6 @@ namespace brave_ads {
 class SiteVisit;
 struct AdInfo;
 struct ConversionInfo;
-struct TabInfo;
 
 class AdHandler final : public ConversionsObserver, SiteVisitObserver {
  public:
@@ -85,12 +84,14 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
 
   // SiteVisitObserver:
   void OnMaybeLandOnPage(const AdInfo& ad, base::TimeDelta after) override;
-  void OnDidSuspendPageLand(const TabInfo& tab,
+  void OnDidSuspendPageLand(int32_t tab_id,
                             base::TimeDelta remaining_time) override;
-  void OnDidResumePageLand(const TabInfo& tab,
+  void OnDidResumePageLand(int32_t tab_id,
                            base::TimeDelta remaining_time) override;
-  void OnDidLandOnPage(const TabInfo& tab, const AdInfo& ad) override;
-  void OnDidNotLandOnPage(const TabInfo& tab, const AdInfo& ad) override;
+  void OnDidLandOnPage(int32_t tab_id,
+                       int32_t http_response_code,
+                       const AdInfo& ad) override;
+  void OnDidNotLandOnPage(int32_t tab_id, const AdInfo& ad) override;
   void OnCanceledPageLand(int32_t tab_id, const AdInfo& ad) override;
 
   Catalog catalog_;

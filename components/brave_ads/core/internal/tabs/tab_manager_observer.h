@@ -25,6 +25,9 @@ class TabManagerObserver : public base::CheckedObserver {
   // Invoked when the `tab` is updated.
   virtual void OnTabDidChange(const TabInfo& tab) {}
 
+  // Invoked when the `tab` has loaded.
+  virtual void OnTabDidLoad(const TabInfo& tab, const int http_status_code) {}
+
   // Invoked when a new `tab` is opened.
   virtual void OnDidOpenNewTab(const TabInfo& tab) {}
 

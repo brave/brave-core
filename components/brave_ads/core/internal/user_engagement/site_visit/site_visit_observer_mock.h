@@ -8,7 +8,6 @@
 
 #include <cstdint>
 
-#include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -32,15 +31,21 @@ class SiteVisitObserverMock : public SiteVisitObserver {
 
   MOCK_METHOD(void,
               OnDidSuspendPageLand,
-              (const TabInfo& tab, const base::TimeDelta remaining_time));
+              (const int32_t tab_id, const base::TimeDelta remaining_time));
 
   MOCK_METHOD(void,
               OnDidResumePageLand,
-              (const TabInfo& tab, const base::TimeDelta remaining_time));
+              (const int32_t tab_id, const base::TimeDelta remaining_time));
 
-  MOCK_METHOD(void, OnDidLandOnPage, (const TabInfo& tab, const AdInfo& ad));
+  MOCK_METHOD(void,
+              OnDidLandOnPage,
+              (const int32_t tab_id,
+               const int http_status_code,
+               const AdInfo& ad));
 
-  MOCK_METHOD(void, OnDidNotLandOnPage, (const TabInfo& tab, const AdInfo& ad));
+  MOCK_METHOD(void,
+              OnDidNotLandOnPage,
+              (const int32_t tab_id, const AdInfo& ad));
 
   MOCK_METHOD(void,
               OnCanceledPageLand,
