@@ -38,7 +38,6 @@ public class BraveLocationBarMediator extends LocationBarMediator {
     private boolean mIsTablet;
     private boolean mNativeInitialized;
     private boolean mIsLocationBarFocusedFromNtpScroll;
-    private boolean mShouldClearOmniboxOnFocus;
     private Context mContext;
     private @BrandedColorScheme int mBrandedColorScheme = BrandedColorScheme.APP_DEFAULT;
 
@@ -186,12 +185,5 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                     ((AppCompatActivity) mContext).getSupportFragmentManager(),
                     "BraveLocationBarQRDialogFragment");
         }
-    }
-
-    @Override
-    /*package */ void onUrlFocusChange(boolean hasFocus) {
-        // We don't want to clear omnibox for focus.
-        mShouldClearOmniboxOnFocus = false;
-        super.onUrlFocusChange(hasFocus);
     }
 }
