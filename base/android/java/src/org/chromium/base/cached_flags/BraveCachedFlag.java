@@ -14,6 +14,7 @@ public class BraveCachedFlag extends CachedFlag {
     private static final String INCOGNITO_REAUTHENTICATION_FOR_ANDROID =
             "IncognitoReauthenticationForAndroid";
     private static final String MAGIC_STACK_ANDROID = "MagicStackAndroid";
+    private static final String RETAIN_OMNIBOX_ON_FOCUS = "RetainOmniboxOnFocus";
     private static final String SURFACE_POLISH = "SurfacePolish";
 
     // Set of flags to override.
@@ -23,6 +24,7 @@ public class BraveCachedFlag extends CachedFlag {
         sFlags = new HashMap<String, Boolean>();
         sFlags.put(INCOGNITO_REAUTHENTICATION_FOR_ANDROID, true);
         sFlags.put(MAGIC_STACK_ANDROID, false);
+        sFlags.put(RETAIN_OMNIBOX_ON_FOCUS, true);
         sFlags.put(SURFACE_POLISH, false);
     }
 

@@ -550,7 +550,6 @@
     *** mIsTablet;
     *** mNativeInitialized;
     *** mIsLocationBarFocusedFromNtpScroll;
-    *** mShouldClearOmniboxOnFocus;
     *** mContext;
     *** mBrandedColorScheme;
     *** mAssistantVoiceSearchServiceSupplier;
