@@ -327,6 +327,12 @@
         <item name="android:windowEnterAnimation">@anim/slide_in_top</item>
         <item name="android:windowExitAnimation">@anim/slide_out_top</item>
     </style>
+
+    <style name="ApproveTxBottomSheetDialogStyle" parent="Widget.MaterialComponents.BottomSheet.Modal" />
+
+    <style name="ApproveTxBottomSheetDialogTheme" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ApproveTxBottomSheetDialogStyle</item>
+    </style>
     
     <!-- Brave Ads Notifications -->
     <style name="WebNotificationSmallIcon">

@@ -25,9 +25,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.base.Log;
@@ -68,9 +68,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogFragment {
-    private static final String TAG = "ApproveTx";
-
-    public static final String TAG_FRAGMENT = ApproveTxBottomSheetDialogFragment.class.getName();
+    private static final String TAG = "ApproveTxBottomSheetDialog";
 
     private final TransactionInfo mTxInfo;
     private final ExecutorService mExecutor;
@@ -162,28 +160,14 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         return null;
     }
 
-    @Override
-    public void show(@NonNull FragmentManager manager, @Nullable String tag) {
-        try {
-            ApproveTxBottomSheetDialogFragment fragment =
-                    (ApproveTxBottomSheetDialogFragment)
-                            manager.findFragmentByTag(
-                                    ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
-            FragmentTransaction transaction = manager.beginTransaction();
-            if (fragment != null) {
-                transaction.remove(fragment);
-            }
-            transaction.add(this, tag);
-            transaction.commitAllowingStateLoss();
-        } catch (IllegalStateException e) {
-            Log.e(TAG, "ApproveTxBottomSheetDialogFragment", e);
-        }
+    public void show(@NonNull final FragmentManager manager) {
+        super.show(manager, TAG);
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        Dialog dialog = new BottomSheetDialog(requireContext(), R.style.ApproveTxBottomSheetDialogTheme);
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
@@ -536,7 +520,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                                         + ", "
                                         + errorMessage;
                         Utils.warnWhenError(
-                                ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT,
+                                TAG,
                                 "approveTransaction",
                                 providerError,
                                 errorMessage);

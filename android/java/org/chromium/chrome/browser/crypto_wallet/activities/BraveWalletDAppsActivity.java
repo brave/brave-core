@@ -234,9 +234,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                                                     mPendingTxHelper.getPendingTransactions(),
                                                     transactionInfo,
                                                     this);
-                                    mApproveTxBottomSheetDialogFragment.show(
-                                            getSupportFragmentManager(),
-                                            ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
+                                    mApproveTxBottomSheetDialogFragment.show(getSupportFragmentManager());
                                     mPendingTxHelper.mTransactionInfoLd.observe(
                                             this,
                                             transactionInfos -> {
