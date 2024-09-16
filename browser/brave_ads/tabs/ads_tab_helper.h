@@ -62,9 +62,12 @@ class AdsTabHelper : public content::WebContentsObserver,
   // reload, otherwise 'true'.
   bool IsNewNavigation(content::NavigationHandle* navigation_handle);
 
-  // DO NOT use this before the navigation commit. It would always return false.
-  // You can use it from WebContentsObserver::DidFinishNavigation().
-  bool IsErrorPage(content::NavigationHandle* navigation_handle);
+  // NOTE: DO NOT use this method before the navigation commit as it will return
+  // null. It is safe to use from `WebContentsObserver::DidFinishNavigation()`.
+  std::optional<int> HttpStatusCode(
+      content::NavigationHandle* navigation_handle);
+
+  bool IsErrorPage(int http_status_code) const;
 
   void ProcessNavigation();
   void ProcessSameDocumentNavigation();
@@ -124,7 +127,7 @@ class AdsTabHelper : public content::WebContentsObserver,
   bool was_restored_ = false;
   bool is_new_navigation_ = false;
   std::vector<GURL> redirect_chain_;
-  bool is_error_page_ = false;
+  std::optional<int> http_status_code_;
 
   std::set</*media_player_uuid*/ std::string> media_players_;
 
