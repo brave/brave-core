@@ -76,7 +76,6 @@ brave_settings_non_web_component_files = [
   "brave_overrides/cookies_page.ts",
   "brave_overrides/cr_icon.ts",
   "brave_overrides/default_browser_page.ts",
-  "brave_overrides/icons.ts",
   "brave_overrides/import_data_dialog.ts",
   "brave_overrides/index.ts",
   "brave_overrides/iron_icon.ts",
@@ -130,7 +129,6 @@ if (enable_pin_shortcut) {
       [ "pin_shortcut_page/pin_shortcut_page_browser_proxy.ts" ]
 }
 
-brave_settings_icons_html_files = [ "brave_icons.html" ]
 brave_settings_ts_definitions = [
   "//brave/components/definitions/chrome_brave_theme.d.ts",
   "//brave/components/definitions/chrome_brave_wallet.d.ts",
@@ -145,7 +143,6 @@ foreach(component_file, brave_settings_web_component_files) {
   brave_settings_local_html_files +=
       [ string_replace(component_file, ".ts", ".html") ]
 }
-brave_settings_local_html_files += brave_settings_icons_html_files
 
 brave_settings_ts_extra_deps =
     [ "//brave/browser/resources/settings:preprocess" ]
