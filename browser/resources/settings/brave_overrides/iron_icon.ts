@@ -90,7 +90,8 @@ export const iconMap: { [key: string]: string } = {
   'settings:picture-in-picture': 'picture-in-picture', // picture in picture
   'cr:file-download': 'download',
 
-  // brave_icons replacements
+  // brave_settings replacements size 24px
+  // todo: check cr: versions of these icons
   'settings:search-engine': 'search',
   'settings:privacy-security': 'lock',
   'settings:download': 'download',
@@ -112,9 +113,6 @@ export const iconMap: { [key: string]: string } = {
   'brave_leo:code': 'code',
   'brave_leo:trash-can': 'trash',
   'brave_leo:magnifying-glass': 'search',
-
-  // brave_settings18
-  'brave_settings18:info': 'info-outline',
 }
 
 RegisterStyleOverride('iron-icon', html`
