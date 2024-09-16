@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
+import { TransportStatusError } from '@ledgerhq/errors'
 import Eth from '@ledgerhq/hw-app-eth'
 import {
   EthGetAccountCommand,
@@ -107,7 +108,9 @@ export class EthereumLedgerUntrustedMessagingTransport //
         ...command,
         payload: {
           success: false,
-          error: (error as Error).message
+          error: (error as Error).message,
+          code:
+            error instanceof TransportStatusError ? error.statusCode : undefined
         }
       }
       return response
@@ -137,7 +140,9 @@ export class EthereumLedgerUntrustedMessagingTransport //
         ...command,
         payload: {
           success: false,
-          error: (error as Error).message
+          error: (error as Error).message,
+          code:
+            error instanceof TransportStatusError ? error.statusCode : undefined
         }
       }
       return response
@@ -174,7 +179,9 @@ export class EthereumLedgerUntrustedMessagingTransport //
         ...command,
         payload: {
           success: false,
-          error: (error as Error).message
+          error: (error as Error).message,
+          code:
+            error instanceof TransportStatusError ? error.statusCode : undefined
         }
       }
       return response
@@ -212,7 +219,9 @@ export class EthereumLedgerUntrustedMessagingTransport //
         ...command,
         payload: {
           success: false,
-          error: (error as Error).message
+          error: (error as Error).message,
+          code:
+            error instanceof TransportStatusError ? error.statusCode : undefined
         }
       }
       return response

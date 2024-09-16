@@ -18,8 +18,7 @@ import {
   HardwareOperationResult,
   HardwareOperationResultEthereumSignatureVRS,
   HardwareOperationResultFilecoinSignature,
-  HardwareOperationResultSolanaSignature,
-  SignHardwareTransactionType
+  HardwareOperationResultSolanaSignature
 } from '../hardware/types'
 import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
@@ -45,9 +44,16 @@ const getMockedLedgerEthKeyring = (args: {
       expect(path).toStrictEqual(args.expectedPath)
       expect(data).toStrictEqual(args.expectedData)
       if (args.mockSignature) {
-        return { success: true, signature: args.mockSignature }
+        return {
+          success: true,
+          signature: args.mockSignature
+        }
       } else {
-        return { success: false }
+        return {
+          success: false,
+          error: 'braveWalletSignOnDeviceError',
+          code: undefined
+        }
       }
     }
   }
@@ -66,9 +72,16 @@ const getMockedLedgerFilKeyring = (args: {
     ): Promise<HardwareOperationResultFilecoinSignature> => {
       expect(message).toStrictEqual(args.expectedMessage)
       if (args.mockSignature) {
-        return Promise.resolve({ success: true, signature: args.mockSignature })
+        return {
+          success: true,
+          signature: args.mockSignature
+        }
       }
-      return Promise.resolve({ success: false })
+      return {
+        success: false,
+        error: 'braveWalletSignOnDeviceError',
+        code: undefined
+      }
     }
   }
 }
@@ -84,9 +97,13 @@ const getMockedLedgerSolKeyring = (args: {
     ): Promise<HardwareOperationResultSolanaSignature> => {
       expect(message).toStrictEqual(args.expectedMessage)
       if (args.mockSignature) {
-        return Promise.resolve({ success: true, signature: args.mockSignature })
+        return { success: true, signature: args.mockSignature }
       }
-      return Promise.resolve({ success: false })
+      return {
+        success: false,
+        error: 'braveWalletSignOnDeviceError',
+        code: undefined
+      }
     }
   }
 }
@@ -110,7 +127,11 @@ const getMockedTrezorKeyring = (args: {
       } else if (args.mockHardwareOperationError) {
         return args.mockHardwareOperationError
       } else {
-        return { success: false }
+        return {
+          success: false,
+          error: 'braveWalletSignOnDeviceError',
+          code: undefined
+        }
       }
     }
   }
@@ -280,9 +301,9 @@ const signFilTransactionWithLedger = (args: {
 
 const hardwareTransactionErrorResponse = (
   errorId: string,
-  code: string = ''
-): SignHardwareTransactionType => {
-  return { success: false, error: getLocale(errorId) }
+  code: string | undefined = undefined
+): HardwareOperationError => {
+  return { success: false, error: getLocale(errorId), code }
 }
 const hardwareTransactionErrorResponseWithCode = (
   errorId: string,
@@ -386,7 +407,8 @@ test('Test sign Trezor transaction, approved, device error', () => {
     })
   ).resolves.toStrictEqual({
     success: false,
-    error: 'error'
+    error: 'error',
+    code: '111'
   })
 })
 
@@ -394,7 +416,9 @@ test('Test sign Trezor transaction, approved, generic device error', () => {
   return expect(
     signTransactionWithTrezor({
       mockHardwareOperationError: {
-        success: false
+        success: false,
+        error: 'braveWalletSignOnDeviceError',
+        code: undefined
       }
     })
   ).resolves.toStrictEqual(

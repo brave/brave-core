@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { CoinType } from '@glif/filecoin-address'
+import { TransportStatusError } from '@ledgerhq/errors'
 import { LotusMessage, SignedLotusMessage } from '@glif/filecoin-message'
 import {
   LedgerProvider,
@@ -82,7 +83,9 @@ export class FilecoinLedgerUntrustedMessagingTransport //
         origin: command.origin,
         payload: {
           success: false,
-          error: (error as Error).message
+          error: (error as Error).message,
+          code:
+            error instanceof TransportStatusError ? error.statusCode : undefined
         }
       }
     }
@@ -138,7 +141,9 @@ export class FilecoinLedgerUntrustedMessagingTransport //
         origin: command.origin,
         payload: {
           success: false,
-          error: (error as Error).message
+          error: (error as Error).message,
+          code:
+            error instanceof TransportStatusError ? error.statusCode : undefined
         }
       }
     }

@@ -52,10 +52,7 @@ import {
   useGetPendingSignSolTransactionsRequestsQuery,
   useGetPendingTokenSuggestionRequestsQuery
 } from '../common/slices/api.slice'
-import {
-  useAccountsQuery,
-  useSelectedAccountQuery
-} from '../common/slices/api.slice.extra'
+import { useAccountsQuery } from '../common/slices/api.slice.extra'
 import {
   useSelectedPendingTransaction //
 } from '../common/hooks/use-pending-transaction'
@@ -100,7 +97,6 @@ function Container() {
 
   // queries
   const { accounts } = useAccountsQuery()
-  const { data: selectedAccount } = useSelectedAccountQuery()
   const { data: addChainRequest } = useGetPendingAddChainRequestQuery()
   const { data: switchChainRequest } = useGetPendingSwitchChainRequestQuery()
   const { data: decryptRequest } = useGetPendingDecryptRequestQuery()
@@ -190,7 +186,6 @@ function Container() {
 
   if (
     selectedPanel === 'connectHardwareWallet' &&
-    selectedAccount &&
     (selectedPendingTransaction ||
       signMessageData?.length ||
       signSolTransactionsRequests?.length)
@@ -198,10 +193,7 @@ function Container() {
     return (
       <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>
-          <ConnectHardwareWalletPanel
-            account={selectedAccount}
-            hardwareWalletCode={hardwareWalletCode}
-          />
+          <ConnectHardwareWalletPanel hardwareWalletCode={hardwareWalletCode} />
         </StyledExtensionWrapper>
       </PanelWrapper>
     )

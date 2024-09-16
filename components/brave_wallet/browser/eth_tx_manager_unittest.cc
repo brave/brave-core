@@ -1254,7 +1254,7 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction) {
           [&](const std::optional<std::string>& hex_message) {
             EXPECT_EQ(
                 *hex_message,
-                "0xf873018517fcf1832182960494be862ad9abfe6f22bcb087716c7d89a260"
+                "f873018517fcf1832182960494be862ad9abfe6f22bcb087716c7d89a260"
                 "51f74c88016345785d8a0000b844095ea7b3000000000000000000000000bf"
                 "b30a082f650c2a15d0632f0e87be4f8e64460f000000000000000000000000"
                 "0000000000000000000000003fffffffffffffff8205398080");
@@ -1307,7 +1307,7 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction1559) {
                                          hex_message) {
         EXPECT_EQ(
             *hex_message,
-            "0x02dd04800101019401010101010101010101010101010101010101018080c0");
+            "02dd04800101019401010101010101010101010101010101010101018080c0");
         callback_called = true;
       }));
   task_environment_.RunUntilIdle();

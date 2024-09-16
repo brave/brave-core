@@ -42,10 +42,6 @@ export type TrezorAccount = {
   serializedPath: string
   fingerprint: number
 }
-export type TrezorError = {
-  error: string
-  code?: string | number
-}
 
 // Unlock command
 export type UnlockResponse =

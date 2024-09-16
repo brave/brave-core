@@ -1143,12 +1143,12 @@ export const transactionEndpoints = ({
           } else if (
             hardwareAccount.vendor === BraveWallet.HardwareVendor.kTrezor
           ) {
-            const { success, error, deviceError } = await signTrezorTransaction(
+            const result = await signTrezorTransaction(
               apiProxy,
               hardwareAccount.path,
               txInfo
             )
-            if (success) {
+            if (result.success) {
               store.dispatch(
                 PanelActions.setSelectedTransactionId({
                   chainId: txInfo.chainId,
@@ -1174,14 +1174,14 @@ export const transactionEndpoints = ({
               }
             }
 
-            if (deviceError === 'deviceBusy') {
+            if (result.code === 'deviceBusy') {
               // do nothing as the operation is already in progress
               return {
                 data: { success: true }
               }
             }
 
-            console.log(error)
+            console.log(result.error)
             await apiProxy.txService.rejectTransaction(
               getCoinFromTxDataUnion(txInfo.txDataUnion),
               txInfo.chainId,

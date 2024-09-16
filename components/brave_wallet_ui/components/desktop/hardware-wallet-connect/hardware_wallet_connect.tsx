@@ -195,7 +195,11 @@ export const HardwareWalletConnect = ({
         return
       }
       setAccounts([])
-      setTotalNumberOfAccounts(DerivationBatchSize)
+      if (findHardwareImportScheme(scheme).singleAccount) {
+        setTotalNumberOfAccounts(1)
+      } else {
+        setTotalNumberOfAccounts(DerivationBatchSize)
+      }
       setCurrentDerivationScheme(scheme)
     },
     [currentDerivationScheme]

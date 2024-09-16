@@ -38,8 +38,8 @@ export type CommandMessage = {
 }
 
 export type LedgerError = {
-  error?: string
-  code?: number | string
+  error: string
+  code: number | string | undefined
 }
 
 export type LedgerResponse<T extends object = {}> =

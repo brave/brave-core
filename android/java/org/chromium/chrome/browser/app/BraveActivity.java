@@ -528,6 +528,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
+    // TODO(apaymyshev): refactor this to have a better name.
     private void maybeShowSignSolTransactionsRequestLayout() {
         assert mBraveWalletService != null;
         mBraveWalletService.getPendingSignSolTransactionsRequests(

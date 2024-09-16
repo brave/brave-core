@@ -304,7 +304,11 @@ test('Device is busy', () => {
 })
 
 test('Unlock device fail', () => {
-  const hardwareKeyring = createTrezorKeyringWithTransport({ success: false })
+  const hardwareKeyring = createTrezorKeyringWithTransport({
+    success: false,
+    error: 'error',
+    code: undefined
+  })
   expect(hardwareKeyring.isUnlocked()).toStrictEqual(false)
   return expect(hardwareKeyring.unlock()).resolves.toStrictEqual({
     success: false,
@@ -329,7 +333,7 @@ test('Unlock device fail with error', () => {
 
 test('Extract accounts from locked device', () => {
   const hardwareKeyring = createTrezorKeyringWithTransport(
-    { success: false },
+    { success: false, error: 'error', code: undefined },
     { success: true, payload: [] }
   )
   return expect(
@@ -703,6 +707,7 @@ test('Sign typed message api not supported', () => {
     )
   ).resolves.toStrictEqual({
     error: getLocale('braveWalletTrezorSignTypedDataError'),
-    success: signMessagePayload.success
+    success: signMessagePayload.success,
+    code: undefined
   })
 })

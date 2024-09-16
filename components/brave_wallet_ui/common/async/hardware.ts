@@ -5,14 +5,12 @@
 
 import { assertNotReached } from 'chrome://resources/js/assert.js'
 import {
-  SignHardwareTransactionType,
   FetchHardwareWalletAccountsProps,
   HardwareOperationResultAccounts,
   HardwareOperationResult,
   HardwareOperationResultEthereumSignatureBytes,
   HardwareOperationResultSolanaSignature
 } from '../hardware/types'
-import { StatusCodes as LedgerStatusCodes } from '@ledgerhq/errors'
 import { getLocale } from '../../../common/locale'
 import type WalletApiProxy from '../../common/wallet_api_proxy'
 import {
@@ -49,7 +47,10 @@ export function dialogErrorFromLedgerErrorCode(
     return 'deviceBusy'
   }
 
-  if (code === LedgerStatusCodes.CONDITIONS_OF_USE_NOT_SATISFIED) {
+  // @ledgerhq/errors StatusCodes.CONDITIONS_OF_USE_NOT_SATISFIED
+  const CONDITIONS_OF_USE_NOT_SATISFIED = 0x6985
+
+  if (code === CONDITIONS_OF_USE_NOT_SATISFIED) {
     return 'transactionRejected'
   }
 
@@ -73,7 +74,7 @@ export async function signTrezorTransaction(
   path: string,
   txInfo: Pick<SerializableTransactionInfo, 'id' | 'chainId' | 'txDataUnion'>,
   deviceKeyring: TrezorBridgeKeyring = getTrezorHardwareKeyring()
-): Promise<SignHardwareTransactionType> {
+): Promise<HardwareOperationResult> {
   const nonce = await apiProxy.ethTxManagerProxy.getNonceForHardwareTransaction(
     txInfo.chainId,
     txInfo.id
@@ -81,14 +82,16 @@ export async function signTrezorTransaction(
   if (!nonce || !nonce.nonce) {
     return {
       success: false,
-      error: getLocale('braveWalletApproveTransactionError')
+      error: getLocale('braveWalletApproveTransactionError'),
+      code: undefined
     }
   }
 
   if (!txInfo.txDataUnion.ethTxData1559) {
     return {
       success: false,
-      error: getLocale('braveWalletApproveTransactionError')
+      error: getLocale('braveWalletApproveTransactionError'),
+      code: undefined
     }
   }
 
@@ -106,9 +109,17 @@ export async function signTrezorTransaction(
       ? signed.error
       : getLocale('braveWalletSignOnDeviceError')
     if (signed.code === TrezorErrorsCodes.CommandInProgress) {
-      return { success: false, error: error, deviceError: 'deviceBusy' }
+      return {
+        success: false,
+        error: error,
+        code: 'deviceBusy'
+      }
     }
-    return { success: false, error: error }
+    return {
+      success: false,
+      error: error,
+      code: signed.code
+    }
   }
   const result = await apiProxy.ethTxManagerProxy.processEthHardwareSignature(
     txInfo.id,
@@ -117,7 +128,8 @@ export async function signTrezorTransaction(
   if (!result.status) {
     return {
       success: false,
-      error: getLocale('braveWalletProcessTransactionError')
+      error: getLocale('braveWalletProcessTransactionError'),
+      code: undefined
     }
   }
   return { success: true }
@@ -136,7 +148,8 @@ export async function signLedgerEthereumTransaction(
   if (!nonce || !nonce.nonce) {
     return {
       success: false,
-      error: getLocale('braveWalletApproveTransactionError')
+      error: getLocale('braveWalletApproveTransactionError'),
+      code: undefined
     }
   }
   const { hexMessage } =
@@ -144,7 +157,8 @@ export async function signLedgerEthereumTransaction(
   if (!hexMessage) {
     return {
       success: false,
-      error: getLocale('braveWalletNoMessageToSignError')
+      error: getLocale('braveWalletNoMessageToSignError'),
+      code: undefined
     }
   }
 
@@ -164,7 +178,8 @@ export async function signLedgerEthereumTransaction(
   if (!result || !result.status) {
     return {
       success: false,
-      error: getLocale('braveWalletProcessTransactionError')
+      error: getLocale('braveWalletProcessTransactionError'),
+      code: undefined
     }
   }
   return { success: true }
@@ -180,7 +195,8 @@ export async function signLedgerFilecoinTransaction(
   if (!jsonMessage) {
     return {
       success: false,
-      error: getLocale('braveWalletNoMessageToSignError')
+      error: getLocale('braveWalletNoMessageToSignError'),
+      code: undefined
     }
   }
 
@@ -200,7 +216,8 @@ export async function signLedgerFilecoinTransaction(
   if (!result || !result.status) {
     return {
       success: false,
-      error: getLocale('braveWalletProcessTransactionError')
+      error: getLocale('braveWalletProcessTransactionError'),
+      code: undefined
     }
   }
   return { success: true }
@@ -219,7 +236,8 @@ export async function signLedgerSolanaTransaction(
   if (!message) {
     return {
       success: false,
-      error: getLocale('braveWalletNoMessageToSignError')
+      error: getLocale('braveWalletNoMessageToSignError'),
+      code: undefined
     }
   }
   const signed = await deviceKeyring.signTransaction(path, Buffer.from(message))
@@ -239,7 +257,8 @@ export async function signLedgerSolanaTransaction(
   if (!result || !result.status) {
     return {
       success: false,
-      error: getLocale('braveWalletProcessTransactionError')
+      error: getLocale('braveWalletProcessTransactionError'),
+      code: undefined
     }
   }
 
@@ -259,7 +278,8 @@ export async function signEthMessageWithHardwareKeyring(
       if (!signTypedData.domainHash || !signTypedData.primaryHash) {
         return {
           success: false,
-          error: getLocale('braveWalletUnknownInternalError')
+          error: getLocale('braveWalletUnknownInternalError'),
+          code: undefined
         }
       }
       return deviceKeyring.signEip712Message(
@@ -271,7 +291,8 @@ export async function signEthMessageWithHardwareKeyring(
     if (!standardSignData) {
       return {
         success: false,
-        error: getLocale('braveWalletUnknownInternalError')
+        error: getLocale('braveWalletUnknownInternalError'),
+        code: undefined
       }
     }
     return deviceKeyring.signPersonalMessage(path, standardSignData.message)
@@ -280,7 +301,8 @@ export async function signEthMessageWithHardwareKeyring(
       if (!signTypedData.domainHash || !signTypedData.primaryHash) {
         return {
           success: false,
-          error: getLocale('braveWalletUnknownInternalError')
+          error: getLocale('braveWalletUnknownInternalError'),
+          code: undefined
         }
       }
       return deviceKeyring.signEip712Message(
@@ -292,7 +314,8 @@ export async function signEthMessageWithHardwareKeyring(
     if (!standardSignData) {
       return {
         success: false,
-        error: getLocale('braveWalletUnknownInternalError')
+        error: getLocale('braveWalletUnknownInternalError'),
+        code: undefined
       }
     }
     return deviceKeyring.signPersonalMessage(path, standardSignData.message)
@@ -301,12 +324,14 @@ export async function signEthMessageWithHardwareKeyring(
     // https://github.com/solana-labs/solana/issues/21366.
     return {
       success: false,
-      error: getLocale('braveWalletHardwareOperationUnsupportedError')
+      error: getLocale('braveWalletHardwareOperationUnsupportedError'),
+      code: undefined
     }
   }
   return {
     success: false,
-    error: getLocale('braveWalletUnknownKeyringError')
+    error: getLocale('braveWalletUnknownKeyringError'),
+    code: undefined
   }
 }
 

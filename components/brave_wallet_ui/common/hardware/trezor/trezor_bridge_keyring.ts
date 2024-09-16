@@ -76,7 +76,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
       const code = response.payload?.code ?? ''
       return { success: false, error: error, code: code }
     }
-    return { success: this.unlocked }
+    return { success: true }
   }
 
   getAccounts = async (
@@ -136,7 +136,8 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     if (!ethereumSignatureVRS) {
       return {
         success: false,
-        error: 'Invalid signature'
+        error: 'Invalid signature',
+        code: undefined
       }
     }
     return {
@@ -178,7 +179,8 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     if (!ethereumSignatureBytes) {
       return {
         success: false,
-        error: 'Invalid signature'
+        error: 'Invalid signature',
+        code: undefined
       }
     }
     return {
@@ -228,7 +230,8 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
       if (unsuccess.code && unsuccess.code === 'Method_InvalidParameter') {
         return {
           success: false,
-          error: getLocale('braveWalletTrezorSignTypedDataError')
+          error: getLocale('braveWalletTrezorSignTypedDataError'),
+          code: undefined
         }
       }
       return { success: false, error: unsuccess.error, code: unsuccess.code }
@@ -240,7 +243,8 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     if (!ethereumSignatureBytes) {
       return {
         success: false,
-        error: 'Invalid signature'
+        error: 'Invalid signature',
+        code: undefined
       }
     }
     return {

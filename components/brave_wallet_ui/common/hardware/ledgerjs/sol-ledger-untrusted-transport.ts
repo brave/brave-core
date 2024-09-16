@@ -5,6 +5,7 @@
 
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import Sol from '@ledgerhq/hw-app-solana'
+import { TransportStatusError } from '@ledgerhq/errors'
 import {
   LedgerCommand,
   UnlockResponse,
@@ -52,7 +53,9 @@ export class SolanaLedgerUntrustedMessagingTransport //
         ...command,
         payload: {
           success: false,
-          error: (error as Error).message
+          error: (error as Error).message,
+          code:
+            error instanceof TransportStatusError ? error.statusCode : undefined
         }
       }
       return response
@@ -85,7 +88,9 @@ export class SolanaLedgerUntrustedMessagingTransport //
         ...command,
         payload: {
           success: false,
-          error: (error as Error).message
+          error: (error as Error).message,
+          code:
+            error instanceof TransportStatusError ? error.statusCode : undefined
         }
       }
       return response
