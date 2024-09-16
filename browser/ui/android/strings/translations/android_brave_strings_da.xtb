@@ -3,7 +3,7 @@
 <translationbundle lang="da">
 <translation id="8631427463833030968">Administrér annoncer</translation>
 <translation id="7630214457764713113">Kopiér rent link</translation>
-<translation id="885805571521218129">Dette viser din omtrentlige indtjening for Brave Ads denne måned.</translation>
+<translation id="885805571521218129">Dette interval viser din omtrentlige indtjening for Brave Ads denne måned.</translation>
 <translation id="3478449063771497234">Notifikationer er slået fra</translation>
 <translation id="2862978891748913252">Vælg land</translation>
 <translation id="3970520675790340955">Vælg dit land, så vi kan vise dig de rette valgmuligheder og reklamer i dit område.</translation>
@@ -110,6 +110,7 @@
 <translation id="3377025655491224618">Privat fane</translation>
 <translation id="7304425663107214334">Vis browserforslag</translation>
 <translation id="8982438328166986164">Viser hjemmesideforslag baseret på dine bogmærker og søgehistorik.</translation>
+<translation id="924029461438529367">Vis søgeforslag</translation>
 <translation id="1571106259128580884">Vis forslag til topsider</translation>
 <translation id="9148058034647219655">Afslut</translation>
 <translation id="8047754398610073499">Blokér meddelelser om samtykke til til cookies</translation>
@@ -262,6 +263,8 @@
 <translation id="6511854390690723657">Dette er din første Brave-annonce. Tryk for at lære mere.</translation>
 <translation id="2070991379950719711">Begynd at bruge Brave Rewards</translation>
 <translation id="48520986898237073">Fortsæt til tegnebog</translation>
+<translation id="6213254277250932867">Jeg har en gendannelsessætning på 12 ord</translation>
+<translation id="4225265925807365011">Jeg har en gendannelsessætning på 24 ord</translation>
 <translation id="3570367516044491911">Indstil som standardbrowser</translation>
 <translation id="6800338374677644736">Indstil som standardbrowser</translation>
 <translation id="19715420010996093">Vælg Brave Browser, og tryk på "Altid"</translation>
@@ -361,6 +364,8 @@
 <translation id="6417420737057016607">Brave Reklamer</translation>
 <translation id="5611966874859284786">Vis notifikationsannoncer, når Brave ikke er i brug</translation>
 <translation id="6606319453795180219">Dette vil slette dine Brave Rewards og nulstille alle dine Brave Rewards-data</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Nulstil data om Brave-belønninger …<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Slet data om Brave-reklamer …<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Tilføj bogmærke</translation>
 <translation id="340492034650766959">Slet bogmærke</translation>
 <translation id="2149973817440762519">Rediger bogmærke</translation>
@@ -464,7 +469,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="5582686930349810484">Fingeraftryk er blokeret (standard)</translation>
 <translation id="769702552748212954">Tillad al fingeraftrykning</translation>
 <translation id="876424292214881779">Reklamer og andet utøj blev blokeret</translation>
-<translation id="6930134873084561197">Sider indeholder ofte cookies og scripts som forsøger at identificere dig og din enhed. De vil vide hvem du er og følge dig via web-tracking, for at se hvad du laver på hver side.\n\nBrave blokerer disse, så du kan browse uden at blive forfulgt.</translation>
+<translation id="6849027612978668678">Sider indeholder ofte cookies og scripts, som forsøger at identificere dig og din enhed. De vil vide, hvem du er, og følge dig via web-tracking, for at se hvad du laver på alle websteder.\n\nBrave blokerer disse, så du kan browse uden at blive forfulgt.</translation>
 <translation id="8553998445606452168">Om Brave Shields</translation>
 <translation id="8912304686498704084">Op</translation>
 <translation id="4963218453264888510">NED</translation>
@@ -559,6 +564,8 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="7889432931837317731">Åbn automatisk, når det er muligt</translation>
 <translation id="1029304566263314007">Vis meddelelser om downloadfremskridt</translation>
 <translation id="2910433761530295035">Vælg, hvor filerne skal gemmes (hvis der registreres et SD-kort)</translation>
+<translation id="2977501775944575564">Parallel downloading</translation>
+<translation id="6224180438946945617">Aktivér parallel downloadg for at øge downloadhastigheden</translation>
 <translation id="8967385052772844086">Se fuld databeskyttelsesrapport</translation>
 <translation id="6864343534748973390">Mest populær</translation>
 <translation id="4608192160278975831">Privat og ingen tracking</translation>
@@ -588,44 +595,38 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="7909462264772842773">Tag kontrollen med din crypto og NFT. Brave Wallet understøtter Ethereum, EVM chains, Solana, Filecoin og meget mere.</translation>
 <translation id="165255193061631296">Har du brug for en ny wallet?</translation>
 <translation id="3485737865439729577">Kom i gang med Brave Wallet på få minutter.</translation>
-<translation id="2759836790106646094">Lav en sikkerhedskopi af din tegnebog nu!</translation>
-<translation id="1078873179929044999">På det næste trin vil du se en gendannelsessætning på 12 ord, som du kan bruge til at gendanne dine primære crypto-konti. Opbevar den et sikkert sted. Din gendannelsessætning er den eneste måde at få adgang på, hvis du har glemt din adgangskode, du mister din enhed, eller hvis du vil skifte wallet.</translation>
+<translation id="2540568096903252632">Indtast en adgangskode for at fortsætte</translation>
+<translation id="3356580495013324916">Indtast adgangskoden til din Brave Wallet, så du kan begynde at lave backup.</translation>
 <translation id="2359808026110333948">Fortsæt</translation>
 <translation id="5488357322146334497">Besked</translation>
-<translation id="1904000155026201268">Jeg er indforstået med, at hvis jeg mister mine gendannelsessætning, vil jeg ikke kunne tilgå min kryptotegnebog.</translation>
 <translation id="5333225216561354793">Vi kræver, at du bekræfter nedenstående</translation>
 <translation id="6937275455070754004">Vælg, hvilke blockchains du vil bruge i din tegnebog.</translation>
 <translation id="1645800479814134195">Jeg forstår, at dette er en wallet til selv-varetægt, og at jeg alene er ansvarlig for eventuelle tilknyttede midler, aktiver eller konti og for at træffe passende foranstaltninger for at sikre, beskytte og sikkerhedskopiere min pung. Jeg forstår, at Brave ikke kan få adgang til min pung eller tilbageføre transaktioner på mine vegne, og at min gendannelsessætning i tilfælde af en mistet adgangskode, stjålet enhed eller lignende omstændigheder er den ENESTE måde at få adgang.</translation>
 <translation id="4565891212173086999">Jeg har læst og accepterer <ph name="CLICK_START"/>Brugervilkårene<ph name="CLICK_END"/>.</translation>
-<translation id="3933122286596948824">Din gendannelsessætning</translation>
-<translation id="5077747669435508720">Nedskriv eller kopiér disse ord i denne præcise rækkefølge, og gem dem et sikkert sted. Din gendannelsessætning er den eneste måde at få adgang til din konto på, hvis du glemmer din adgangskode, mister din enhed, eller hvis du vil skifte wallets.</translation>
-<translation id="2708402071160162126">ADVARSEL: Del aldrig din gendannelsessætning. Personer i besiddelse af sætningen kan tage dine aktiver permanent.</translation>
-<translation id="111912712268284159">Jeg har gemt min sætning et sikkert sted.</translation>
-<translation id="6896758677409633944">Kopier</translation>
+<translation id="3259102562570606417">Gem din gendannelsessætning</translation>
+<translation id="4339981001593889376">Din gendannelsessætning er nøglen til at få adgang til din wallet, hvis du glemmer din adgangskode eller mister din enhed.</translation>
+<translation id="426648489149930289">Opbevar den et sikkert sted, der ikke kan tilgås af andre, og undgå at dele den med nogen.</translation>
 <translation id="3726490322412361740">Indtast adgangskode</translation>
-<translation id="3038243139480464605">Bekræft kodeord</translation>
-<translation id="7396672979287122068">Bekræftede adgangskode stemte ikke overens</translation>
 <translation id="1566412704591731844">Opretter din wallet...</translation>
 <translation id="7779823116893018906">Det kan tage et par sekunder...</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/>-konto<ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Tilføj konto</translation>
 <translation id="3448492834076427715">Opdatér konto</translation>
-<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="5532363218245261099">#<ph name="NUMBER"/> <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="1537175937716697987">Se min gendannelsessætning</translation>
+<translation id="5303015959766064022">Jeg tager backup senere</translation>
+<translation id="7345730059518887993">Lad os se efter</translation>
+<translation id="7640406249038879146">Indtast ordet i position <ph name="WORD_POSITION"/> i din sikkerhedssætning.</translation>
+<translation id="2598171223363459366">Du kan springe dette trin over nu, men du skal stadig sikkerhedskopiere din gendannelsessætning for at sikre kontosikkerhed.</translation>
 <translation id="8100001366858145406">Aktivér oplåsning via fingeraftryk?</translation>
 <translation id="5493402808936397665">Slå biometriske data til, så du hurtigt kan låse din tegnebog op uden at indtaste adgangskode.</translation>
 <translation id="8030647312184163932">Fingeraftrykoplåsning</translation>
 <translation id="4090490645603511157">Brug biometriske data, så du hurtigt kan låse din tegnebog op uden at indtaste adgangskode.</translation>
 <translation id="1544192797660353713">Wallet</translation>
-<translation id="6901810042765869341">Indtast din gendannelsessætning for at gendanne din Brave Wallet med kryptovaluta.</translation>
-<translation id="9120654436199628567">Gendan kryptokonto</translation>
+<translation id="2321396552035646646">Du kan indsætte hele din gendannelsessætning i ethvert felt.</translation>
+<translation id="3961126209136843111">Importér en eksisterende wallet</translation>
 <translation id="4811736040444856406">Vis gendannelsessætning</translation>
-<translation id="283071225285270357">Indtast din gendannelsessætning</translation>
-<translation id="3943857333388298514">Indsæt</translation>
-<translation id="3331452756822160641">Ny adgangskode</translation>
 <translation id="4359319875297001084">Importér fra legacy Brave crypto-wallets?</translation>
-<translation id="2339124864228588937">Bekræft gendannelsessætning</translation>
-<translation id="3747079125031086337">Vælg ordene i din gendannelsessætning i den rigtige rækkefølge.</translation>
-<translation id="6518133107902771759">Bekræft</translation>
 <translation id="3157931365184549694">Gendan</translation>
 <translation id="5844138175312846408">Har du allerede en wallet?</translation>
 <translation id="2502258949541727762">Inden vi begynder</translation>
@@ -634,6 +635,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="2523174693142405417">Søg netværker</translation>
 <translation id="1164748583090434571">Vis testnets</translation>
 <translation id="935220650946301698">Fortsæt med <ph name="NUMBER"/>-netværk</translation>
+<translation id="4052668782430384783">Ord <ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">Opret adgangskode</translation>
 <translation id="2789310860394340571">Du vil bruge denne adgangskode til at få adgang til din tegnebog.</translation>
 <translation id="2136372518715274136">Indtast ny adgangskode</translation>
@@ -651,9 +653,8 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="5619264711680220002">Biometrisk oplåsning</translation>
 <translation id="9195657745688986798">Lås wallet op</translation>
 <translation id="5168349973342709369">Indtast adgangskode for at åbne wallet</translation>
-<translation id="3043677904160378840">Adgangskoder skal indeholde mindst 8 tegn.</translation>
 <translation id="1144810021918451336">Beskytter dig ikke mod farlige websteder, downloads og udvidelser.</translation>
-<translation id="5760476995887363522">Sætningerne stemte ikke overens. Prøv igen.</translation>
+<translation id="9085712756417277119">Sikkerhedssætningen matcher ikke.</translation>
 <translation id="2360588547830602174">Kontogendannelsen mislykkedes. Prøv igen.</translation>
 <translation id="1987317783729300807">Konti</translation>
 <translation id="6284218950354553099">Send automatisk dagligt ping om brug til Brave</translation>
@@ -688,16 +689,21 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="3510283489391432976">Vælg din placering/dit land</translation>
 <translation id="7695158478627528928">Brave sporer aldrig din aktivitet</translation>
 <translation id="4575683170451975058">Beskyt 5 enheder på 1 abonnement</translation>
+<translation id="755045397420611731">Mere privatliv og sikkerhed online</translation>
+<translation id="4520128772974831415">Skjul din IP-adresse, og skift din placering</translation>
+<translation id="2044418816479192294">Hundredvis af servere over hele verden</translation>
+<translation id="7410504850864021600">Lynhurtige tilslutningshastigheder</translation>
+<translation id="2422309687188612485">Beskyt op til 10 enheder med ét abonnement</translation>
 <translation id="4882693590083943563">Alle planer inkluderer <ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">7 dages gratis prøve!</translation>
 <translation id="1532536259167115948">Månedligt abonnement <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Årligt abonnement <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Forny månedlig</translation>
-<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / md.</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /måned</translation>
 <translation id="1163809943099641131">Et år</translation>
-<translation id="172859718096975160">Forny årligt <ph name="DISCOUNT_TEXT_START"/>spar<ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
-<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / år.</translation>
-<translation id="5125233570742276182">Abonnementer vil blive opkrævet via din Google-konto. Enhver ubrugt del af den gratis prøveperiode, hvis den tilbydes, fortabes, når du køber et abonnement.\n\nDit abonnement fornyes automatisk, medmindre det annulleres mindst 24 timer før udgangen af ​​den aktuelle periode.\n\nDu kan administrere dine abonnementer i Indstillinger.\nVed at bruge Brave accepterer du vilkårene for brug og privatlivspolitikken.</translation>
+<translation id="727385358513272220">Fornyes årligt (<ph name="DISCOUNT_TEXT_START"/>spar<ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /år</translation>
+<translation id="2786538705804257030">Abonnementer vil blive opkrævet via din Google-konto. Enhver ubrugt del af den gratis prøveperiode, hvis den tilbydes, mistes, når du køber et abonnement.\n\nDit abonnement fornyes automatisk, medmindre det annulleres mindst 24 timer før udgangen af ​​den aktuelle periode.\n\nDu kan administrere dine abonnementer i Indstillinger.\nVed at bruge Brave accepterer du vilkårene for brug og privatlivspolitikken.</translation>
 <translation id="5035172357624830412">Har du allerede købt hos brave.com?</translation>
 <translation id="713136183174551885">Opdater dine legitimationsoplysninger</translation>
 <translation id="6053992191006521518">Prøv GRATIS</translation>
@@ -932,7 +938,6 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="7002577172732106572">Split-tunneling</translation>
 <translation id="8181161042860463420">Den tilknyttede token-konto eksisterer ikke endnu. En lille mængde SOL vil blive brugt til at oprette og finansiere den. <ph name="CLICK_START"/>Find ud af mere<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Opdaterer VPN-profil ...</translation>
-<translation id="7457027586454688423">Indtast din Brave Wallet-adgangskode</translation>
 <translation id="4784306439879850873">Vær opmærksom på, at Brave ikke kan garantere, hvad der vil ske, hvis du skriver under. En signatur kan godkende næsten enhver form for handling i din konto eller på dine vegne, blandt andet at give fuld kontrol over din konto og crypto-aktiver til siden, der anmoder dig. Skriv kun under, hvis du er sikker på, du vil udføre denne handling og stoler på siden.</translation>
 <translation id="3474375934783434676">Skriv under på eget ansvar</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/>af<ph name="SIZE"/></translation>
@@ -942,6 +947,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="2629767022373384291">Vil du bruge biometrisk godkendelse til at låse din Brave Wallet op?</translation>
 <translation id="4782919977106118997">Brug oplåsning med fingeraftryk</translation>
 <translation id="2054995875643283428">Spring dette over indtil videre</translation>
+<translation id="2610561535971892504">Klik her for at kopiere</translation>
 <translation id="2522605225061484799">Gå til min portefølje</translation>
 <translation id="1148624853678088576">Du er klar!</translation>
 <translation id="4131445988101719379">Din Brave Wallet er klar til brug</translation>
@@ -1024,7 +1030,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="6610899852831463073">Kan ikke aktivere Sikker browsing</translation>
 <translation id="7954263306665462056">Sikker browsing er blevet deaktiveret på din enhed. Hvis du vil aktivere denne funktion, skal du sikre dig, at Google Play Services er installeret og er opdateret.</translation>
 <translation id="6605147707233193230">Aktivér for at hjælpe med at støtte indholdsskabere</translation>
-<translation id="1609556006143307897">Du hjælper med at understøtte indholdsskabere</translation>
+<translation id="5899814466108868020">Du hjælper med at understøtte Brave og BAT-fællesskabet</translation>
 <translation id="6067959437127691361">Ved at bruge Brave Rewards understøtter du indholdsskabere, samtidig med at du optjener BAT.</translation>
 <translation id="3264975266761862670">Er du klar til at optjene?</translation>
 <translation id="265337947574975838">Forbind eller opret en konto hos en af vores partnere.</translation>
@@ -1123,6 +1129,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1173894706177603556">Omdøb</translation>
 <translation id="3596306474342941843">Slet spilleliste</translation>
 <translation id="7765158879357617694">Flyt</translation>
+<translation id="6896758677409633944">Kopiér</translation>
 <translation id="3803384303807438047">Slet elementets offlinedata</translation>
 <translation id="4195643157523330669">Åbn på ny fane</translation>
 <translation id="4243710787042215766">Åbn i privat fane</translation>

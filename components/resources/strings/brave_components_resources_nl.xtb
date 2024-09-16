@@ -233,48 +233,7 @@
 <translation id="3082557070674409251">Geklikt</translation>
 <translation id="7119308337584989771">Afgewezen</translation>
 <translation id="6805660603861526473">Bekeken</translation>
-<translation id="8826352442759228526">Brave Beloningen kan niet worden geverifieerd omdat u de maximale limiet aan geverifieerd apparaten hebt bereikt.</translation>
-<translation id="1221593978088944142">Fout: Apparaatlimiet bereikt</translation>
-<translation id="6895088073061692390">Helaas is uw Brave Beloningen-profiel gerapporteerd, omdat onze automatische controles ongebruikelijke activiteit van Brave Ads hebben gezien.</translation>
-<translation id="4229056297802204697">Wanneer een profiel is gerapporteerd, blijven advertenties zichtbaar, maar komt u niet in aanmerking voor het ontvangen van uitbetalingen. U kunt een beheerdersaccount dan ook niet koppelen aan Brave Beloningen.</translation>
-<translation id="5124846913141379164">Het kan gebeuren dat uw profiel onterecht is gerapporteerd en u hoeft dan ook niet onmiddellijk actie te ondernemen. De vlag op uw profiel kan in de toekomst worden verwijderd.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Meer informatie over het proces van Brave met betrekking tot het rapporteren van Beloningen-profielen.<ph name="END_LINK"/></translation>
-<translation id="5028274575541726856">Fout: Brave Beloningen-profiel is gerapporteerd</translation>
-<translation id="2607420597216860026">Probeer het opnieuw nadat je de ID-verificatie hebt doorlopen van <ph name="PROVIDER"/>.</translation>
-<translation id="3183954159462541696">Fout: er is een geverifieerd account vereist om in te loggen</translation>
-<translation id="1859789048900659918">Hmm, het lijkt erop dat uw Brave Rewards-land niet overeenkomt met het land van het <ph name="PROVIDER"/>-account dat u probeert te koppelen.</translation>
-<translation id="8925428135452218262">Fout: landen komen niet overeen</translation>
-<translation id="5260522591743022748">Het lijkt erop dat Brave Beloningen al is geverifieerd met een ander <ph name="PROVIDER"/>-account. Probeer nog eens te verifiëren met uw vorige account.</translation>
-<translation id="5111921830714291902">Fout: ander account</translation>
-<translation id="5225019866741699134">Het lijkt erop dat verbinden van <ph name="PROVIDER"/> met Brave Rewards tijdelijk niet mogelijk is. Probeer het later opnieuw.</translation>
-<translation id="6105073131081187815">U kunt de <ph name="BEGIN_LINK"/>servicestatus<ph name="END_LINK"/> hier bekijken.</translation>
-<translation id="2400786541309111904">Fout: verbinden met de geselecteerde beheerder is momenteel niet beschikbaar</translation>
-<translation id="1024520300696337331">Uw <ph name="PROVIDER"/>-account kan momenteel niet worden verbonden met uw Brave Rewards-profiel. Uw <ph name="PROVIDER"/>-account is geregistreerd in een land dat momenteel geen ondersteuning biedt aan Brave Rewards.</translation>
-<translation id="619384413404021992">Bekijk de <ph name="LINK_BEGIN"/>huidige lijst met ondersteunde regio's en leer meer<ph name="END_LINK"/> over verbinding maken met Brave Rewards via een beheerdersaccount.</translation>
-<translation id="7193389978208728181">Fout: regio momenteel niet ondersteund</translation>
-<translation id="5382684862562314222">BAT wordt in Uphold nog niet ondersteund in jouw regio.</translation>
-<translation id="9074594632540931067">Fout: BAT niet beschikbaar</translation>
-<translation id="5376524136040178759">Volgens Uphold gelden er momenteel enkele beperkingen voor uw Uphold-account. Log in bij uw Uphold-account en controleer of er meldingen zijn of er gegevens ontbreken. Probeer het vervolgens opnieuw.</translation>
-<translation id="6996157559236886133">Fout: beperkte Uphold-accountfunctionaliteit</translation>
-<translation id="3274650021044762770">Er is een probleem opgetreden bij het valideren van het verzoek van uw browser om Brave Beloningen te koppelen aan uw <ph name="PROVIDER"/>-account. U kunt <ph name="BEGIN_LINK"/>contact opnemen met de ondersteuning <ph name="END_LINK"/> als u meer hulp nodig hebt.</translation>
-<translation id="1316066811927496401">Fout: verzoek kan niet worden gevalideerd</translation>
-<translation id="7352651011704765696">Er ging iets fout</translation>
-<translation id="8285276813470932793">We kunnen uw verzoek niet voltooien. Probeer het opnieuw en <ph name="LINK_BEGIN"/>Neem contact op met de ondersteuning<ph name="LINK_END"/> als het probleem zich blijft voordoen.</translation>
 <translation id="8167256685618982116">Door <ph name="TITLE"/> in the schakelen, ga je akkoord met de <ph name="BEGIN_LINK1"/>Servicevoorwaarden<ph name="END_LINK1"/> en het <ph name="BEGIN_LINK2"/>Privacybeleid<ph name="END_LINK2"/>.</translation>
-<translation id="8817096698141999876">Beheerrekeningen (ID-verificatie vereist)</translation>
-<translation id="1539433155512862005">Beheerrekeningen zijn rekeningen met services van vertrouwde derde partijen die BAT voor u bewaren.</translation>
-<translation id="6834831484510296932">Eigen beheer</translation>
-<translation id="4208917415153655958">Met eigen beheer heeft u alleen controle over uw BAT en bent u alleen verantwoordelijk voor de beveiliging ervan.</translation>
-<translation id="1953496742859481929">Als u voor een wallet in eigen beheer kiest, zullen beloningen uitbetaald worden als SPL-BAT op het Solana-netwerk.</translation>
-<translation id="6751803821780922506">Kies waar u BAT wilt ontvangen</translation>
-<translation id="3162035476318501831">Meer informatie over regio's en ondersteuning.</translation>
-<translation id="7329170127335794328">Momenteel niet beschikbaar in uw regio</translation>
-<translation id="966956302643313970">Koppel een rekening om Basic Attention Token-beloningen (BAT) te ontvangen. BAT dat u hebt verdiend, wordt elke maand automatisch naar uw rekening overgeschreven.</translation>
-<translation id="4009439571146350519">Of andere wallet die Solana ondersteunt</translation>
-<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>Gebruiksvoorwaarden<ph name="TOS_LINK_END"/> en <ph name="PP_LINK_BEGIN"/>privacybeleid<ph name="PP_LINK_END"/>.</translation>
-<translation id="1692293127547800972">Er is iets misgegaan. Probeer het opnieuw.</translation>
-<translation id="756341217015623253">Inloggen of registreren</translation>
-<translation id="2653844658857826081">NIEUW</translation>
 <translation id="1892970806832316900">In behandeling tot <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Uw browser kan geen Brave-privéadvertenties weergeven.</translation>
 <translation id="5177429570315095022">Uw browser moet worden bijgewerkt om advertenties te blijven weergeven.</translation>
@@ -389,7 +348,6 @@
 <translation id="3448261046185459858">U kunt in het Bijdragenpaneel elke website verwijderen die maandelijks een bijdrage ontvangt.</translation>
 <translation id="5082474983463379713">Let op:</translation>
 <translation id="1430915738399379752">Afdrukken</translation>
-<translation id="135956957367307069">Je aanvraag wordt nog verwerkt. Een ogenblik geduld.</translation>
 <translation id="2600847485413879104">BAT-beloningen</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
@@ -547,13 +505,15 @@
 <translation id="6965382102122355670">OK</translation>
 <translation id="6727102863431372879">Instellen</translation>
 <translation id="8853725596990766789">Aantal veranderen</translation>
-<translation id="1609556006143307897">U helpt contentontwikkelaars te ondersteunen</translation>
 <translation id="654447476965480878">Meer informatie over BAT verdienen</translation>
 <translation id="4105212447337987768">Op <ph name="DATE"/> beëindigen we de ondersteuning voor bestaand virtueel BAT-saldo. Koppel vóór deze datum een beheerdersaccount, zodat we uw verdiende saldo kunnen overschrijven naar uw beheerdersaccount. Als u dit niet doet, gaat uw saldo verloren.</translation>
 <translation id="707569835145765061">Actie vereist: koppel een beheerdersaccount of uw vBAT gaat verloren</translation>
 <translation id="3358400027937159351">U hebt <ph name="AMOUNT"/> bijgedragen.</translation>
 <translation id="1619753851206150396">U bent uitgelogd</translation>
 <translation id="3035648636451344428">Dit gebeurt van tijd tot tijd om uw <ph name="PROVIDER"/>-account veilig te houden. Als u uitgelogd bent, blijft u uitbetalingen ontvangen maar kunt u niet uw saldo zien of bijdragen verzenden vanaf uw <ph name="PROVIDER"/>-account.</translation>
+<translation id="9074594632540931067">Fout: BAT niet beschikbaar</translation>
+<translation id="5382684862562314222">BAT wordt nog niet ondersteund in jouw regio voor Uphold.</translation>
+<translation id="6996157559236886133">Fout: beperkte Uphold-accountfunctionaliteit</translation>
 <translation id="1677961202754619328">Volgens Uphold gelden er momenteel enkele beperkingen voor uw Uphold-account. Log in bij uw Uphold-account en controleer of er meldingen zijn en of er gegevens ontbreken. Probeer het vervolgens opnieuw.</translation>
 <translation id="9029009481113741943">Opnieuw inloggen</translation>
 <translation id="2429828319207652823">Er is een probleem opgetreden bij het verwerken van je bijdrage.</translation>
@@ -566,6 +526,7 @@
 <translation id="3247549836099021862">Contact opnemen met ondersteuning</translation>
 <translation id="5234764350956374838">Dismiss</translation>
 <translation id="7859066142771796818">Gebruik tokens om onder andere cadeaubonnen te kopen, om voor andere valuta in te wisselen en om content creators te ondersteunen.</translation>
+<translation id="7352651011704765696">Er ging iets fout</translation>
 <translation id="5425006356459378415">Brave Rewards is niet beschikbaar</translation>
 <translation id="909076461795862330">Er heeft zich een probleem voorgedaan bij het instellen van Brave Rewards. Probeer het opnieuw.</translation>
 <translation id="3180990265682133881">Er heeft zich een probleem voorgedaan bij het instellen van uw land. Probeer het opnieuw.</translation>
@@ -631,6 +592,36 @@
 <translation id="1053740665683265460">Gebruik uw Web3-wallet om een eenmalige bijdrage te sturen naar deze maker en hen uw waardering te tonen.</translation>
 <translation id="6859705040495339375">Sturen met Web3-wallet</translation>
 <translation id="7615852194054434287">Deze gebruiker heeft zich nog niet aangemeld om bijdragen via Web3-wallets te ontvangen.</translation>
+<translation id="8817096698141999876">Beheerrekeningen (ID-verificatie vereist)</translation>
+<translation id="1539433155512862005">Beheerrekeningen zijn rekeningen met services van vertrouwde derde partijen die BAT voor u bewaren.</translation>
+<translation id="6834831484510296932">Eigen beheer</translation>
+<translation id="4208917415153655958">Met eigen beheer heeft u alleen controle over uw BAT en bent u alleen verantwoordelijk voor de beveiliging ervan.</translation>
+<translation id="6751803821780922506">Kies waar u BAT wilt ontvangen</translation>
+<translation id="3162035476318501831">Meer informatie over regio's en ondersteuning.</translation>
+<translation id="7329170127335794328">Momenteel niet beschikbaar in uw regio</translation>
+<translation id="966956302643313970">Koppel een rekening om Basic Attention Token-beloningen (BAT) te ontvangen. BAT dat u hebt verdiend, wordt elke maand automatisch naar uw rekening overgeschreven.</translation>
+<translation id="4009439571146350519">Of andere wallet die Solana ondersteunt</translation>
+<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>Gebruiksvoorwaarden<ph name="TOS_LINK_END"/> en <ph name="PP_LINK_BEGIN"/>privacybeleid<ph name="PP_LINK_END"/>.</translation>
+<translation id="1692293127547800972">Er is iets misgegaan. Probeer het opnieuw.</translation>
+<translation id="756341217015623253">Inloggen of registreren</translation>
+<translation id="2653844658857826081">NIEUW</translation>
+<translation id="1165039591588034296">Fout</translation>
+<translation id="6895088073061692390">Helaas is uw Brave Beloningen-profiel gerapporteerd, omdat onze automatische controles ongebruikelijke activiteit van Brave Ads hebben gezien.</translation>
+<translation id="4229056297802204697">Wanneer een profiel is gerapporteerd, blijven advertenties zichtbaar, maar komt u niet in aanmerking voor het ontvangen van uitbetalingen. U kunt een beheerdersaccount dan ook niet koppelen aan Brave Beloningen.</translation>
+<translation id="5124846913141379164">Het kan gebeuren dat uw profiel onterecht is gerapporteerd en u hoeft dan ook niet onmiddellijk actie te ondernemen. De vlag op uw profiel kan in de toekomst worden verwijderd.</translation>
+<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Meer informatie over het proces van Brave met betrekking tot het rapporteren van Beloningen-profielen.<ph name="END_LINK"/></translation>
+<translation id="2607420597216860026">Probeer het opnieuw nadat je de ID-verificatie hebt doorlopen voor <ph name="PROVIDER"/>.</translation>
+<translation id="1859789048900659918">Hmm, het lijkt erop dat uw Brave Rewards-land niet overeenkomt met het land van het <ph name="PROVIDER"/>-account dat u probeert te koppelen.</translation>
+<translation id="5260522591743022748">Het lijkt erop dat Brave Beloningen al is geverifieerd met een ander <ph name="PROVIDER"/>-account. Probeer nog eens te verifiëren met uw vorige account.</translation>
+<translation id="5225019866741699134">Het lijkt erop dat verbinden van <ph name="PROVIDER"/> met Brave Rewards tijdelijk niet mogelijk is. Probeer het later opnieuw.</translation>
+<translation id="6105073131081187815">U kunt de <ph name="BEGIN_LINK"/>servicestatus<ph name="END_LINK"/> hier bekijken.</translation>
+<translation id="1024520300696337331">Uw <ph name="PROVIDER"/>-account kan momenteel niet worden verbonden met uw Brave Rewards-profiel. Uw <ph name="PROVIDER"/>-account is geregistreerd in een land dat momenteel geen ondersteuning biedt aan Brave Rewards.</translation>
+<translation id="619384413404021992">Bekijk de <ph name="LINK_BEGIN"/>huidige lijst met ondersteunde regio's en leer meer<ph name="END_LINK"/> over verbinding maken met Brave Rewards via een beheerdersaccount.</translation>
+<translation id="5376524136040178759">Volgens Uphold gelden er momenteel enkele beperkingen voor uw Uphold-account. Log in bij uw Uphold-account en controleer of er meldingen zijn of er gegevens ontbreken. Probeer het vervolgens opnieuw.</translation>
+<translation id="8285276813470932793">We kunnen uw verzoek niet voltooien. Probeer het opnieuw en <ph name="LINK_BEGIN"/>Neem contact op met de ondersteuning<ph name="LINK_END"/> als het probleem zich blijft voordoen.</translation>
+<translation id="135956957367307069">Je aanvraag wordt nog verwerkt. Een ogenblik geduld.</translation>
+<translation id="5860033963881614850">Off</translation>
+<translation id="5916664084637901428">On</translation>
 <translation id="7090992647511817643">account</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="3269475789479462358">domein</translation>
@@ -726,6 +717,8 @@
 <translation id="7099260104593926742">Marktprijs</translation>
 <translation id="473775607612524610">Updaten</translation>
 <translation id="6231782223312638214">Voorgesteld</translation>
+<translation id="1224275271335624810">Snelste</translation>
+<translation id="3735740477244556633">Sorteren op</translation>
 <translation id="9209024278910716955">Aankoop niet ondersteund voor geselecteerd netwerk</translation>
 <translation id="4982630604810554641">Zoeken naar domein...</translation>
 <translation id="5467044307473123584">Brave ondersteunt het gebruik van gateways buiten de blockchain om .eth-domeinen om te zetten.</translation>
@@ -856,7 +849,6 @@
 <translation id="1329837291200753515">Selecteer een blockchain om uw hardware wallet te importeren</translation>
 <translation id="6983390509997396124">Verbind uw <ph name="HARDWARE_DEVICE"/>-apparaat met Brave Wallet</translation>
 <translation id="5149944858285555235">Onbekende fout; maak opnieuw verbinding met je hardwarewallet en probeer het opnieuw.</translation>
-<translation id="4522570452068850558">Details</translation>
 <translation id="9220525904950070496">Remove account</translation>
 <translation id="8574289650879708853">Aangepaste asset toevoegen</translation>
 <translation id="6600400596821238377">Tokennaam</translation>
@@ -1012,10 +1004,8 @@
 <translation id="6015436276085482001">Verworpen</translation>
 <translation id="6666273175654835609">Submitted</translation>
 <translation id="2331676293859649642">Bevestigd</translation>
-<translation id="1165039591588034296">Fout</translation>
 <translation id="8373210463207847451">Dropped</translation>
 <translation id="8214232307424031138">Signed</translation>
-<translation id="5916664084637901428">On</translation>
 <translation id="9065572743819293042">Recente transacties</translation>
 <translation id="1702356231547761669">Transactie-hash</translation>
 <translation id="8941851657764077659">Maximale prioriteitsvergoeding</translation>
@@ -1522,12 +1512,8 @@
 <translation id="1531836666020185856">Uitgelicht</translation>
 <translation id="3225021799163709119">Populair</translation>
 <translation id="6854651431635060919">Testnetwerkaccount</translation>
-<translation id="3800173541008902040">Uitgebreide transactiegegevens inschakelen om:</translation>
-<translation id="1215089823252478557">Geschatte saldowijzigingen te zien</translation>
 <translation id="2761574758015819991">Potentieel gevaarlijke transacties te identificeren</translation>
 <translation id="168533464844528463">Phishing-pogingen te helpen detecteren</translation>
-<translation id="7269757150305059881">Brave werkt samen met een partner om deze dienst te leveren. Door deze functie in te schakelen, gaat u ermee akkoord dat niet-ondertekende transacties en de bijbehorende DApp-URL's worden gedeeld met onze partner.</translation>
-<translation id="7790932700072432983">U kunt dit op elk gewenst moment wijzigen in de <ph name="TAG_BEFORE"/>instellingen<ph name="TAG_AFTER"/>.</translation>
 <translation id="8688672835843460752">Available</translation>
 <translation id="5296640085393149413">Beschikbaar saldo om te gebruiken.</translation>
 <translation id="3248185426436836442">In afwachting</translation>
@@ -1543,6 +1529,9 @@
 <translation id="8775144690796719618">Ongeldige URL</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="1472675084647422956">Meer weergeven</translation>
+<translation id="4522570452068850558">Details</translation>
+<translation id="7144878232160441200">Opnieuw proberen</translation>
+<translation id="7138678301420049075">Overige</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Algemene informatie</translation>
 <translation id="4045404575593562245">Tor-controlegebeurtenissen</translation>
@@ -1821,12 +1810,9 @@
 <translation id="7921782882718083488">Deze pagina samenvatten</translation>
 <translation id="7932221068776853847">Verbreek de verbinding om ervoor te zorgen dat deze pagina geen content meer naar Leo stuurt en start een nieuw gesprek</translation>
 <translation id="1167803637855350748">Er was een netwerkprobleem bij het verbinden met Leo. Controleer uw verbinding en probeer het opnieuw.</translation>
-<translation id="7144878232160441200">Opnieuw proberen</translation>
-<translation id="8570488829560315702">Hallo, ik ben Leo. Ik ben een volledig gehoste AI-assistent van Brave. Ik draai op 3 8B, een model dat ontwikkeld is door Meta om krachtig en toepasbaar te zijn in veel gebruikssituaties. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Hallo, ik ben Leo. Ik ben een volledig gehoste AI-assistent van Brave. Ik draai op Mixtral 8x7B, een model dat ontwikkeld is door Mistral om geavanceerde taken uit te voeren. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Hallo, ik ben Leo. Ik ben een proxy van Brave en draai op Claude Instant, een model dat ontwikkeld is door Anthropic om gespreks- en tekstverwerkingstaken te ondersteunen. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">Hallo, ik ben Leo. Ik werk via een proxy van Brave en wordt mede mogelijk gemaakt door Claude 3 Haiku, een model dat door Anthropic is gemaakt voor gespreks- en tekstverwerkingstaken.</translation>
-<translation id="4147243042852964992">Hallo, ik ben Leo. Ik werk via een proxy van Brave en word mede mogelijk gemaakt door Claude 3 Sonnet, een model dat door Anthropic is gemaakt voor gespreks- en tekstverwerkingstaken.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> door <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -1864,7 +1850,6 @@
 <translation id="2399439821649319175">Niet nuttig</translation>
 <translation id="2976167228906046828">Onjuist</translation>
 <translation id="1183055847065865059">Onveilig/gevaarlijk</translation>
-<translation id="7138678301420049075">Overige</translation>
 <translation id="2313959174679245365">Uw beoordeling kan niet worden verstuurd. Controleer uw netwerkverbinding en probeer het opnieuw</translation>
 <translation id="98413980871833152">Uw feedback kan niet worden verstuurd. Controleer uw internetverbinding en probeer het opnieuw</translation>
 <translation id="8742658901413346500">Dit gesprek is lang en Leo zou spoedig dingen kunnen gaan vergeten. U kunt langere gesprekken krijgen door over te stappen op een premiummodel of u kunt de chat wissen om het gesprek te resetten.</translation>
@@ -1996,29 +1981,19 @@
 <translation id="7821773512278295352">Brave Firewall + VPN: verbonden</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: niet verbonden</translation>
 <translation id="3541307549916475335">Gebruikersinterface Brave VPN-venster</translation>
-<translation id="1742469581923031760">Verbinden…</translation>
-<translation id="1287487756047817908">Verbinding verbreken…</translation>
+<translation id="7143207342074048698">Verbinding maken</translation>
 <translation id="2325196879156848326">Verbinden mislukt</translation>
 <translation id="745054660363064771">Kan geen verbinding maken met server</translation>
 <translation id="3936826714240735937">Andere server kiezen</translation>
-<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> kan geen verbinding maken met de server in <ph name="REGION_NAME"/>. Probeer het opnieuw of kies een andere server.</translation>
-<translation id="8703188411226330709">Gratis proefperiode starten</translation>
-<translation id="1024255913009642477">Heb je al VPN gekocht?</translation>
 <translation id="8814357473522731680">Mogelijk gemaakt door</translation>
-<translation id="3960619311638643872">Brave-VPN</translation>
+<translation id="3099126540952997993">Firewall + VPN</translation>
 <translation id="7805768142964895445">Status</translation>
 <translation id="5747552184818312860">Verloopt</translation>
 <translation id="8421945428836418371">Automatisch opnieuw verbinden</translation>
 <translation id="434523916398030617">Neem contact op met de technische ondersteuning</translation>
 <translation id="1116694919640316211">Over</translation>
-<translation id="8670386189340362926">Blokkeer trackers en advertenties in alle apps</translation>
-<translation id="4860763498907927955">Beschermt je tegen ongewenste netwerkverbindingen</translation>
-<translation id="3181339219453722970">Kies je VPN-locatie</translation>
-<translation id="1708407585266172412">Snel en onbeperkt, tot wel 500 Mbps</translation>
-<translation id="1400240082805528049">24/7 ondersteuning</translation>
 <translation id="1693568075761612600">Ondersteuningsticket maken mislukt, controleer de verbinding.</translation>
 <translation id="8463313539532697053">Een ogenblik geduld tijdens het laden…</translation>
-<translation id="4317307602527599178">De status van uw aankoop kan niet worden gecontroleerd. Dit kan worden veroorzaakt door een netwerkprobleem.</translation>
 <translation id="4613076894734402086">Betaalmethode bewerken</translation>
 <translation id="427718751211990320">De vervaldatum van de inloggegevens is verstreken</translation>
 <translation id="8670619630771851260">Inloggegevens konden niet worden geladen.</translation>
@@ -2040,7 +2015,6 @@
 <translation id="6676791921618140305">OS-versie:</translation>
 <translation id="1156325797949437777">Ondersteuning wordt verleend in samenwerking met Guardian.</translation>
 <translation id="8146777497879160283">De VPN-configuratie kan niet worden geschreven. Dit kan gebeuren als u niet gemachtigd bent of als u niet recentelijk Windows Update heeft uitgevoerd.</translation>
-<translation id="3307461350293459700">VPN-verbinding mislukt. Probeer opnieuw verbinding te maken en klik op Toestaan om de VPN-configuratie van Brave in te schakelen.</translation>
 <translation id="7261518280726313829">Als u beveiligde DNS uitschakelt of standaardservers gebruikt in Windows, zijn de namen van sites die u bezoekt mogelijk zichtbaar voor uw internetprovider. Brave raadt dit niet aan. Wilt u toch doorgaan?</translation>
 <translation id="888284761945060750">Beveiligde DNS is uitgeschakeld vanwege het beleid van uw organisatie. Als u Brave VPN gebruikt zonder beveiligde DNS, zijn de namen van sites die u bezoekt mogelijk zichtbaar voor uw internetprovider of organisatie.</translation>
 <translation id="6593224083874259773">Brave VPN op Windows</translation>

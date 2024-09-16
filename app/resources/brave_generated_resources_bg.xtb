@@ -16,6 +16,7 @@
 <translation id="8294286161128352783">Само на страницата на нов раздел</translation>
 <translation id="6406506848690869874">Синхр</translation>
 <translation id="1544192797660353713">Портфейл</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="8275068909952022340">Още…</translation>
 <translation id="1990886731975529483">Инсталирайте и стартирайте Google Widevine</translation>
 <translation id="8926389886865778422">Без повторно питане</translation>
@@ -56,15 +57,20 @@
 <translation id="1434416574322382019">Нов поверителен прозорец с Tor</translation>
 <translation id="4703780849509456860">Отвори връзката в поверителен прозорец с Tor</translation>
 <translation id="3488584642074079080">Отваряне на връзката в Поверителен прозорец на Brave чрез Tor</translation>
+<translation id="8594912907680633924">Отваряне на линка в разделен изглед</translation>
 <translation id="6313675821927505581">Нов поверителен прозорец с Tor</translation>
 <translation id="2638041073279639246">Отворете линка в поверителен прозорец с Tor</translation>
 <translation id="3425600262621021599">Отворете линка в Brave поверителен прозорец с Tor</translation>
+<translation id="3795436270513738622">Отваряне на линка в разделен изглед</translation>
 <translation id="2545072023356206691">От 1 декември 2023 г. каналът Brave Dev вече няма да получава актуализации на браузъра. Препоръчваме на потребителите да мигрират към версиите Nightly, Beta или Release на Brave.</translation>
 <translation id="474217410105706308">Спиране на звука на раздела</translation>
 <translation id="2804710924397009224">Скриване на иконата Brave Rewards</translation>
 <translation id="5029193871181468990">Скриване на иконата за награди в Brave</translation>
 <translation id="2808103541110899519">Скриване на иконата за портфейл в Brave</translation>
 <translation id="7595540212376041331">Скриване на иконата за портфейл в Brave</translation>
+<translation id="3893997535859323951">Скриване на иконата на Leo AI</translation>
+<translation id="6208515240323786457">Скриване на иконата на Leo AI</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="4928988318462976765">Магазин за уеб разширения</translation>
 <translation id="9181207987584064303">Вижте в Магазина за уеб разширения</translation>
 <translation id="3161744659507801211">Внимание: Brave не може да попречи на разширенията да записват историята ви на сърфиране.</translation>
@@ -97,9 +103,6 @@
 <translation id="3462465068145800637">Brave Търсене не ви профилира. И е 100% независимо от големите технологични компании.</translation>
 <translation id="42032117189492785">Търсене с помощта на изкуствен интелект и уникален индекс.</translation>
 <translation id="8606416238399082160">Напълно поверителен, 100% независим и със страхотни функции на изкуствен интелект.</translation>
-<translation id="7706528608480893054">DDG е просто прикрит Bing. Време е за истинска поверителност, по-добри резултати и независим индекс. Време е за Brave Търсене.</translation>
-<translation id="3818133234428578803">Забравете за прикриването</translation>
-<translation id="14817360483752259">Brave Търсене не следи Вас, Вашите заявки или щракания. И (за разлика от DDG) не е просто Bing под прикритие.</translation>
 <translation id="4381193110021038941">Насладете се на по-добри резултати</translation>
 <translation id="3846545273704969734">Независима проверка показва, че Brave Търсене има по-добри резултати от Bing (или клонинги на Bing като DuckDuckGo).</translation>
 <translation id="2841164160723712537">Подобрете резултатите от търсене</translation>
@@ -288,8 +291,9 @@
 <translation id="2818704116581303039">Отваряне на настройките на плейлиста</translation>
 <translation id="6790428901817661496">Пускане</translation>
 <translation id="1178581264944972037">Пауза</translation>
-<translation id="4477350412780666475">Следващ запис</translation>
-<translation id="3962859241508114581">Предишен запис</translation>
+<translation id="4046123991198612571">Следващ запис</translation>
+<translation id="2874939134665556319">Предишен запис</translation>
+<translation id="3040310857793999281">Превключване на спирането на звука</translation>
 <translation id="7544853251252956727">Разбъркване</translation>
 <translation id="4330722796577425585">Превъртане назад</translation>
 <translation id="7481312909269577407">Препращане</translation>
@@ -299,7 +303,15 @@
 <translation id="6453210454707928697">Неуспешно възпроизвеждане на елемента.</translation>
 <translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] може да е изтекъл. Искате ли да го възстановите?</translation>
 <translation id="6155018868740116868">Възстанови</translation>
-<translation id="1727684853006449697">Brave Player</translation>
+<translation id="2521960050170773751">Добавяне на медия от страницата</translation>
+<translation id="2301087142998134097"><ph name="SITE"/> иска да се отвори</translation>
+<translation id="7128982309566342232">Вградена страница в <ph name="SITE"/> иска да се отвори</translation>
+<translation id="1175012181261953767">Тази страница иска да се отвори</translation>
+<translation id="7459546222322124545">Вградена страница на тази страница иска да се отвори</translation>
+<translation id="5836261838911560851"><ph name="SITE"/> иска да се запази</translation>
+<translation id="5936788906460687941">Вградена страница в <ph name="SITE"/> иска да се запази</translation>
+<translation id="7700010743463174379">Тази страница иска да се запази</translation>
+<translation id="6774238875569752630">Вградена страница на тази страница иска да се запази</translation>
 <translation id="9156965752763025780">Промените ви ще влязат в сила следващия път, когато стартирате отново Brave.</translation>
 <translation id="7179921470347911571">Презареди сега</translation>
 <translation id="1426410128494586442">Да</translation>
@@ -324,6 +336,7 @@
 <translation id="5860254591544742609">Показване на заглавната лента</translation>
 <translation id="5371926069408837914">Разширяване на панела с вертикални раздели при преминаване с мишката, когато е сгънат</translation>
 <translation id="3367129510799209147">Режим на задържане на раздел</translation>
+<translation id="8527099657928614787">Разширяване на вертикалните раздели самостоятелно за всеки прозорец</translation>
 <translation id="916373084491701212">Показване на лентата за превъртане</translation>
 <translation id="515949045075831661">Покажи отдясно</translation>
 <translation id="3725395376319291415">Покажи отляво</translation>
@@ -340,6 +353,7 @@
 <translation id="4144468798716165316">Бързи команди</translation>
 <translation id="7310387888625228830">Асистент Leo AI</translation>
 <translation id="5222974844674487962">Показване на бутона Brave News</translation>
+<translation id="2085436423511121572">Показване на бутона за Leo AI</translation>
 <translation id="383007806262310953">Показване на лентата на отметките</translation>
 <translation id="4054323497808446566">Лентата за отметки е видима на всички страници</translation>
 <translation id="8693858092251192712">Лентата за отметки е скрита на всички страници с изключение на страницата на нов раздел</translation>
@@ -440,6 +454,7 @@
 <translation id="4891600875049212418">Преминете в режим „Off-The-Record“, когато посещавате чувствителни сайтове</translation>
 <translation id="1968895725257436430">Събиране на данни</translation>
 <translation id="4846154056248462491">При излизане</translation>
+<translation id="216468847346280584">Изчистване на данни за Brave Ads...</translation>
 <translation id="2808630562319398131">Нулиране на данните за Brave награди...</translation>
 <translation id="6438096877646138757">Сайтове, които изчистват бисквитките, когато ги затворите</translation>
 <translation id="2988792685798128092">Изчистване при затваряне на сайта</translation>
@@ -553,6 +568,8 @@
 <translation id="4094590686212463338">Не може да се присъедини към тази верига за синхронизиране. Веригата за синхронизиране е изтрита.</translation>
 <translation id="4908081302669157000">Телефонни номера, имейли и адреси</translation>
 <translation id="294985549514492876">Уеб приложения (PWA)</translation>
+<translation id="924029461438529367">Показване на предложения за търсене</translation>
+<translation id="3128251601544028053">Когато пишете в адресната лента или полето за търсене, Brave автоматично изпраща написаното към вашето търсене по подразбиране, за да получите по-добри предложения. Това не е налично в поверителни прозорци.</translation>
 <translation id="6285118765755298263">Индексиране на други търсачки</translation>
 <translation id="919715748352669592">Автоматично индексира уебсайтове, които следват спецификациите на OpenSearch.</translation>
 <translation id="842628013524824194">Нормален прозорец - търсачката се използва в адресната лента</translation>
@@ -668,7 +685,6 @@
 <translation id="3095201688102519917">Предупреди ме, преди затваряне на прозорец с няколко раздела</translation>
 <translation id="7120553802660696133">Затвори прозореца при затваряне на последния раздел</translation>
 <translation id="3394171693948989253">Показване на напомняне на цял екран за натискане на Esc при излизане</translation>
-<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Показване на иконата на Leo в системния панел</translation>
 <translation id="8055509865174199683">Показване на Лео в контекстното меню на уебсайтове</translation>
 <translation id="1529674267267221673">Лео ще се появи в контекстното меню, когато щракнете с десния бутон върху уебсайт. Това ще изпрати контекст от текущата уеб страница до Лео.</translation>

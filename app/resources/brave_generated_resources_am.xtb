@@ -16,6 +16,7 @@
 <translation id="8294286161128352783">በአዲሱ የትር ገጽ ላይ ብቻ</translation>
 <translation id="6406506848690869874">አመሳስል</translation>
 <translation id="1544192797660353713">ዋሌት</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="8275068909952022340">የበለጠ…</translation>
 <translation id="1990886731975529483">Google Widevine ን ይጫኑት እና ይክፈቱ</translation>
 <translation id="8926389886865778422">ደግመው አይጠይቁ</translation>
@@ -268,8 +269,9 @@
 <translation id="2818704116581303039">የአጫዋች ዝርዝር ቅንብሮችን ይክፈቱ</translation>
 <translation id="6790428901817661496">አጫውት</translation>
 <translation id="1178581264944972037">ለአፍታ አቁም</translation>
-<translation id="4477350412780666475">ቀጣይ ትራክ</translation>
-<translation id="3962859241508114581">የቀድሞ ትራክ</translation>
+<translation id="4046123991198612571">ቀጣይ ትራክ</translation>
+<translation id="2874939134665556319">ቀዳሚ ትራክ</translation>
+<translation id="3040310857793999281">ድምጸ-ከል ቀይር</translation>
 <translation id="7544853251252956727">በውዝ</translation>
 <translation id="4330722796577425585">አጠንጥን</translation>
 <translation id="7481312909269577407">ወደ ፊት</translation>
@@ -279,7 +281,6 @@
 <translation id="6453210454707928697">ለመክፈት አልተሳካም</translation>
 <translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] ጊዜው ያለፈበት ሊሆን ይችላል። መልሰው ማግኘት ይፈልጋሉ?</translation>
 <translation id="6155018868740116868">መልሰህ አግኝ</translation>
-<translation id="1727684853006449697">Brave አጫዋች</translation>
 <translation id="9156965752763025780">ለውጦችዎ Brave በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ።</translation>
 <translation id="7179921470347911571">አሁን እንደገና ያስጀምሩ</translation>
 <translation id="1426410128494586442">አዎ</translation>
@@ -633,7 +634,6 @@
 <translation id="2775956301559569472">የ Wayback ማሽን ስንዱን 404 ገጾች ላይ አሳይ</translation>
 <translation id="3095201688102519917">በርካታ ትሮች ያሉት መስኮት ከመዝጋቱ በፊት አስጠንቅቀኝ</translation>
 <translation id="7120553802660696133">የመጨረሻውን ትር ሲዘጋ መስኮቱን ይዝጉ</translation>
-<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">የLeo አዶን የጎን አሞሌ ውስጥ አሳይ</translation>
 <translation id="8055509865174199683">በድር ጣቢያዎች ላይ ባለው የአውድ ምናሌ/context menu ውስጥ Leo ን አሳይ</translation>
 <translation id="1529674267267221673">Leo አንድ የድር ጣቢያ ላይ በቀኝ ጠቅ ሲያደርጉ በአውድ ምናሌው ውስጥ ይታያል። ይህም አውድን ከአሁኑ ድረ-ገጽ ወደ Leo ይልካል።</translation>
