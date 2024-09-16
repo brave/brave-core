@@ -170,18 +170,10 @@ bool AdsTabHelper::IsErrorPage(const int http_status_code) const {
 void AdsTabHelper::ProcessNavigation() {
   MaybeNotifyTabHtmlContentDidChange();
   MaybeNotifyTabTextContentDidChange();
-
-  // Set `was_restored_` to `false` so that listeners are notified of tab
-  // changes after the tab is restored.
-  was_restored_ = false;
 }
 
 void AdsTabHelper::ProcessSameDocumentNavigation() {
   MaybeNotifyTabHtmlContentDidChange();
-
-  // Set `was_restored_` to `false` so that listeners are notified of tab
-  // changes after the tab is restored.
-  was_restored_ = false;
 }
 
 void AdsTabHelper::ResetNavigationState() {
@@ -263,11 +255,12 @@ void AdsTabHelper::MaybeNotifyTabDidLoad() {
 bool AdsTabHelper::ShouldNotifyTabContentDidChange() const {
   // Don't notify about content changes if the ads service is not available, the
   // tab was restored, was a previously committed navigation, the web contents
-  // are still loading, or an error page was displayed.
-  CHECK(http_status_code_);
-
+  // are still loading, or an error page was displayed. `http_status_code_` can
+  // be `std::nullopt` if the navigation never finishes which can occur if the
+  // user constantly refreshes the page.
   return ads_service_ && !was_restored_ && is_new_navigation_ &&
-         !redirect_chain_.empty() && !IsErrorPage(*http_status_code_);
+         !redirect_chain_.empty() && http_status_code_ &&
+         !IsErrorPage(*http_status_code_);
 }
 
 void AdsTabHelper::MaybeNotifyTabHtmlContentDidChange() {
@@ -378,7 +371,11 @@ void AdsTabHelper::DidFinishNavigation(
 
   redirect_chain_ = navigation_handle->GetRedirectChain();
 
-  http_status_code_ = HttpStatusCode(navigation_handle).value_or(net::HTTP_OK);
+  http_status_code_ = HttpStatusCode(navigation_handle);
+  if (!http_status_code_) {
+    // No-op if the HTTP status code is unavailable.
+    return;
+  }
 
   MaybeNotifyUserGestureEventTriggered(navigation_handle);
 
@@ -395,6 +392,10 @@ void AdsTabHelper::DidFinishNavigation(
   if (navigation_handle->IsSameDocument() &&
       web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame()) {
     ProcessSameDocumentNavigation();
+
+    // Set `was_restored_` to `false` so that listeners are notified of tab
+    // changes after the tab is restored.
+    was_restored_ = false;
   }
 }
 
@@ -408,6 +409,10 @@ void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
   }
 
   ProcessNavigation();
+
+  // Set `was_restored_` to `false` so that listeners are notified of tab
+  // changes after the tab is restored.
+  was_restored_ = false;
 }
 
 bool AdsTabHelper::IsPlayingMedia(const std::string& media_player_uuid) {
