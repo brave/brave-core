@@ -14,12 +14,7 @@ struct SearchQuerySummary {
   std::string query;
   std::string summary;
 
-  SearchQuerySummary(const std::string& query, const std::string& summary)
-      : query(query), summary(summary) {}
-
-  bool operator==(const SearchQuerySummary& other) const {
-    return query == other.query && summary == other.summary;
-  }
+  bool operator==(const SearchQuerySummary& other) const = default;
 };
 
 }  // namespace ai_chat

@@ -28,11 +28,11 @@
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/web_string.h"
+#include "third_party/blink/public/web/web_document.h"
+#include "third_party/blink/public/web/web_element.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "third_party/blink/public/web/web_node.h"
 #include "third_party/blink/public/web/web_script_source.h"
-#include "third_party/re2/src/re2/re2.h"
-#include "ui/accessibility/ax_node.h"
-#include "ui/accessibility/ax_tree_update.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 #include "v8/include/v8-isolate.h"
@@ -73,9 +73,6 @@ constexpr auto kVideoTrackHosts =
                                              {
                                                  "www.ted.com",
                                              });
-
-constexpr char kSearchSummarizerKeyPattern[] =
-    "<meta .*name=\"summarizer-key\" content=\"({.+?})\".*></meta>";
 
 }  // namespace
 
@@ -305,21 +302,14 @@ void PageContentExtractor::OnJSTranscriptUrlResult(
 
 void PageContentExtractor::GetSearchSummarizerKey(
     mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback) {
-  auto snapshotter = render_frame()->CreateAXTreeSnapshotter(
-      ui::AXMode::kWebContents | ui::AXMode::kHTMLMetadata);
-  ui::AXTreeUpdate snapshot;
-  snapshotter->Snapshot(0, {}, &snapshot);
-
-  RE2 pattern(kSearchSummarizerKeyPattern);
-  for (const auto& meta : snapshot.tree_data.metadata) {
-    std::string key;
-    if (re2::RE2::FullMatch(meta, pattern, &key)) {
-      std::move(callback).Run(key);
-      return;
-    }
+  auto element =
+      render_frame()->GetWebFrame()->GetDocument().Head().QuerySelector(
+          "meta[name=summarizer-key]");
+  if (element.IsNull()) {
+    std::move(callback).Run({});
+    return;
   }
-
-  std::move(callback).Run({});
+  std::move(callback).Run(element.GetAttribute("content").Utf8());
 }
 
 }  // namespace ai_chat

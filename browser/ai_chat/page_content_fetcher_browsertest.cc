@@ -250,9 +250,17 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, GetSearchSummarizerKey) {
 
   // Test meta with empty key.
   remove_first_summarizer_key();
-  GetSearchSummarizerKey(FROM_HERE, std::nullopt);
+  GetSearchSummarizerKey(FROM_HERE, "");
 
   // Test meta with empty key and other atribute.
+  remove_first_summarizer_key();
+  GetSearchSummarizerKey(FROM_HERE, "");
+
+  // Test meta with plain string key.
+  remove_first_summarizer_key();
+  GetSearchSummarizerKey(FROM_HERE, "plainstring123");
+
+  // Test no summarizer-key meta.
   remove_first_summarizer_key();
   GetSearchSummarizerKey(FROM_HERE, std::nullopt);
 }
