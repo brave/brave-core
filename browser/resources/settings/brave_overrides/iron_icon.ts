@@ -106,13 +106,6 @@ export const iconMap: { [key: string]: string } = {
   'brave_settings20:private-mode': 'product-private-window',
   'brave_settings20:edit-pencil': 'edit-pencil',
   'brave_settings20:trash-can': 'trash',
-
-  // brave_leo size 24
-  // todo: remove these - they can just use Nala icons directly
-  'brave_leo:refresh': 'refresh',
-  'brave_leo:code': 'code',
-  'brave_leo:trash-can': 'trash',
-  'brave_leo:magnifying-glass': 'search',
 }
 
 RegisterStyleOverride('iron-icon', html`
