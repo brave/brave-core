@@ -11,6 +11,7 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
+#include "url/gurl.h"
 
 namespace content {
 class RenderFrame;
@@ -20,8 +21,19 @@ namespace ai_chat {
 
 void DistillPageText(
     content::RenderFrame* render_frame,
+    int32_t global_world_id,
     int32_t isolated_world_id,
     base::OnceCallback<void(const std::optional<std::string>&)>);
+
+bool LoadSiteScriptForHost(const GURL& url,
+                           std::string* script_content,
+                           bool* needs_main_world);
+
+void DistillPageTextViaSiteScript(
+    content::RenderFrame* render_frame,
+    const std::string& script_content,
+    int32_t world_id,
+    base::OnceCallback<void(const std::optional<std::string>&)> callback);
 
 }  // namespace ai_chat
 

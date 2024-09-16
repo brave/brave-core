@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/renderer/page_text_distilling.h"
 
 #include <iterator>
+#include <map>
 #include <memory>
 #include <optional>
 #include <queue>
@@ -39,6 +40,7 @@
 #include "ui/accessibility/ax_node_data.h"
 #include "ui/accessibility/ax_tree.h"
 #include "ui/accessibility/ax_tree_update.h"
+#include "ui/base/resource/resource_bundle.h"
 
 namespace ai_chat {
 
@@ -139,8 +141,29 @@ void AddTextNodesToVector(const ui::AXNode* node,
 
 void DistillPageText(
     content::RenderFrame* render_frame,
+    int32_t global_world_id,
     int32_t isolated_world_id,
     base::OnceCallback<void(const std::optional<std::string>&)> callback) {
+  blink::WebLocalFrame* main_frame = render_frame->GetWebFrame();
+  GURL origin =
+      url::Origin(((const blink::WebFrame*)main_frame)->GetSecurityOrigin())
+          .GetURL();
+
+  GURL url = main_frame->GetDocument().Url();
+  std::string host = origin.host();
+
+  // Prepare to load a site script for the host (assume no main world needed)
+  std::string script_content;
+  bool needs_main_world = false;
+
+  if (LoadSiteScriptForHost(url, &script_content, &needs_main_world)) {
+    VLOG(1) << "Using site script for host: " << host;
+    int32_t world_id = needs_main_world ? global_world_id : isolated_world_id;
+    DistillPageTextViaSiteScript(render_frame, script_content, world_id,
+                                 std::move(callback));
+    return;
+  }
+
   auto snapshotter = render_frame->CreateAXTreeSnapshotter(
       ui::AXMode::kWebContents | ui::AXMode::kHTML | ui::AXMode::kScreenReader);
   ui::AXTreeUpdate snapshot;
@@ -202,6 +225,103 @@ void DistillPageText(
   }
 
   std::move(callback).Run(contents_text);
+}
+
+void DistillPageTextViaSiteScript(
+    content::RenderFrame* render_frame,
+    const std::string& script_content,
+    int32_t world_id,
+    base::OnceCallback<void(const std::optional<std::string>&)> callback) {
+  /**
+   * Concatenates our injector-script (retrieved from the resource bundle) with
+   * our extractor script. Because the injector-script is wrapped in an IIFE, we
+   * leverage custom events dispatched against the window object to communicate
+   * between the two scripts.
+   *
+   * The extractor script is currently hard-coded to request content at level 3.
+   * Level 3 is the "FULL" level, which is the highest content level. The level
+   * could be tied to the currently-active model (e.g., smaller models could be
+   * defaulted to a smaller level).
+   */
+  std::string script = script_content + R"(
+    new Promise(function(resolve, reject) {
+        window.addEventListener('{complete_key}', (event) => {
+            if (event?.detail?.result) {
+                return resolve(event.detail.result);
+            }
+            reject("No result in {complete_key} event");
+        }, { once: true });
+        window.dispatchEvent(new CustomEvent(
+          '{initiate_key}', { detail: { level: 3 } }
+        ));
+    });
+  )";
+
+  base::ReplaceSubstringsAfterOffset(&script, 0, "{initiate_key}",
+                                     "LEO_DISTILL_REQUESTED");
+  base::ReplaceSubstringsAfterOffset(&script, 0, "{complete_key}",
+                                     "LEO_DISTILL_RESULT");
+
+  blink::WebScriptSource source =
+      blink::WebScriptSource(blink::WebString::FromUTF8(script));
+
+  auto on_script_executed =
+      [](base::OnceCallback<void(const std::optional<std::string>&)> callback,
+         std::optional<base::Value> value, base::TimeTicks start_time) {
+        if (value && value->is_string() && !value->GetString().empty()) {
+          std::move(callback).Run(value->GetString());
+          return;
+        }
+
+        std::move(callback).Run({});
+      };
+
+  // Execute the combined script as a single source
+  render_frame->GetWebFrame()->RequestExecuteScript(
+      world_id, base::make_span(&source, 1u),
+      blink::mojom::UserActivationOption::kDoNotActivate,
+      blink::mojom::EvaluationTiming::kAsynchronous,
+      blink::mojom::LoadEventBlockingOption::kDoNotBlock,
+      base::BindOnce(on_script_executed, std::move(callback)),
+      blink::BackForwardCacheAware::kAllow,
+      blink::mojom::WantResultOption::kWantResult,
+      /**
+       * Because we are using a promise to resolve the result, we will
+       * use the `kAwait` option to ensure the promise is resolved before
+       * the callback is invoked.
+       */
+      blink::mojom::PromiseResultOption::kAwait);
+}
+
+bool LoadSiteScriptForHost(const GURL& url,
+                           std::string* script_content,
+                           bool* needs_main_world) {
+  std::string host = base::ToLowerASCII(url.host());
+
+  if (base::StartsWith(host, "www.", base::CompareCase::INSENSITIVE_ASCII)) {
+    host = host.substr(4);
+  }
+
+  struct ScriptResource {
+    int resource_id;
+    bool needs_main_world;
+  };
+
+  static const std::map<std::string, ScriptResource> kHostToScriptResource = {
+      {"github.com", {IDR_AI_CHAT_SITE_DISTILLER_GITHUB_COM_BUNDLE_JS, false}},
+      {"x.com", {IDR_AI_CHAT_SITE_DISTILLER_X_COM_BUNDLE_JS, true}},
+  };
+
+  auto it = kHostToScriptResource.find(host);
+
+  if (it != kHostToScriptResource.end()) {
+    auto& bundle = ui::ResourceBundle::GetSharedInstance();
+    *script_content = bundle.LoadDataResourceString(it->second.resource_id);
+    *needs_main_world = it->second.needs_main_world;
+    return script_content->empty() == false;
+  }
+
+  return false;
 }
 
 }  // namespace ai_chat

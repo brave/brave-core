@@ -1,0 +1,29 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/common/typescript.gni")
+
+assert(enable_ai_chat)
+
+transpile_web_ui("ai_chat_site_distiller") {
+  resource_name = "ai_chat_site_distiller"
+  entry_points = [
+    [
+      "x_com",
+      rebase_path("scripts/x.com/index.ts"),
+    ],
+    [
+      "github_com",
+      rebase_path("scripts/github.com/index.ts"),
+    ],
+  ]
+}
+
+pack_web_resources("generated_resources") {
+  resource_name = "ai_chat_site_distiller"
+  output_dir = "$root_gen_dir/brave/components/ai_chat/distiller_scripts"
+  deps = [ ":ai_chat_site_distiller" ]
+}
