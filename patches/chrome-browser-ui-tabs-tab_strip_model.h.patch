@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.h b/chrome/browser/ui/tabs/tab_strip_model.h
-index 2733d84a065e98f48fa048f2da12360819f661c2..6cb884ecb8a8d3a5ca19ee563158322dd5e18b8c 100644
+index 4d900c4a7f58c8ed0e68e4f890b2f79484ad89dc..0d2f081f130a7c7f33db2a0f020d28afff8c683d 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.h
 +++ b/chrome/browser/ui/tabs/tab_strip_model.h
 @@ -660,6 +660,7 @@ class TabStripModel : public TabGroupController {

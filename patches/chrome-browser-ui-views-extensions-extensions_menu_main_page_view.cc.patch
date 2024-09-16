@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
-index da5d38532531bc86c8107e7edbf85299aa35536e..edae27bffb231d02be53485715fd1c9645a16590 100644
+index c54a8bcd8c3aeb232cdf9b38989a6be5b0c60b0d..ad6dea309b571b4c08d535b2c1d30f101a2cbc6c 100644
 --- a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
 +++ b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
-@@ -678,6 +678,7 @@ void ExtensionsMenuMainPageView::CreateAndInsertMenuItem(
+@@ -688,6 +688,7 @@ void ExtensionsMenuMainPageView::CreateAndInsertMenuItem(
      ExtensionMenuItemView::SitePermissionsButtonAccess
          site_permissions_button_access,
      int index) {
