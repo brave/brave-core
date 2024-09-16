@@ -1,0 +1,27 @@
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "تم حظر أدوات التتبع والإعلانات";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "تم حظر \nالإعلانات";
+
+/* Data Saved Shield Stat */
+"DataSavedStat" = "البيانات التقديرية \nالمحفوظة";
+
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "الوقت التقديري \nالمحفوظ.";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "يوم";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "ساعة";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "دقيقه";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "ثانية";
+
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "تم حظر \nأدوات التتبع";
+

@@ -1,0 +1,3441 @@
+/* About settings section title */
+"About" = "حول";
+
+/* The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "حول Brave Shields";
+
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "غالبًا ما تتضمن المواقع ملفات تعريف الارتباط والبرامج النصية التي تحاول التعرف عليك وعلى جهازك. وتريد معرفة هويتك ومتابعتك عبر الويب - تتبع ما تفعله على كل موقع.\n\nيقوم Brave بحظر هذه الأشياء حتى تتمكن من التصفح دون متابعة.";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertMessage" = "يتيح لك ذلك حفظ الصورة في ألبوم الكاميرا.";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertTitle" = "يرغب Brave في الوصول إلى صورك";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addBookmarkTitle" = "إضافة إشارة مرجعية";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addFavouritesTitle" = "إضافة إلى قائمة المفضلات";
+
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "مجلد جديد";
+
+/* Add to favorites share action. */
+"AddToFavorites" = "إضافة إلى قائمة المفضلات";
+
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "إضافة إشارة مرجعية";
+
+/* individual blocking statistic title */
+"AdsAndTrackers" = "الإعلانات والمتتبعون";
+
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "اطلب دائمًا موقع سطح المكتب";
+
+/* Used as a button label for crash dialog prompt */
+"AlwaysSendButtonTitle" = "أرسل دائمًا";
+
+/* Setting preference to always show the browser tabs bar. */
+"AlwaysShow" = "تشغيل";
+
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "هذا يصادق على وصولك إلى Brave";
+
+/* Label for Cancel button */
+"AuthPromptAlertCancelButtonTitle" = "إلغاء";
+
+/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
+"AuthPromptAlertFormatRealmMessageText" = "يتم طلب اسم مستخدم وكلمة مرور بواسطة %1$@. يقول الموقع: %2$@";
+
+/* Authentication prompt log in button */
+"AuthPromptAlertLogInButtonTitle" = "تسجيل الدخول";
+
+/* Authentication prompt message with no realm. Parameter is the hostname of the site */
+"AuthPromptAlertMessageText" = "يتم طلب اسم مستخدم وكلمة مرور بواسطة %@.";
+
+/* Password textbox in Authentication prompt */
+"AuthPromptAlertPasswordPlaceholderText" = "كلمة المرور";
+
+/* Authentication prompt title */
+"AuthPromptAlertTitle" = "المصادقة مطلوبة";
+
+/* Username textbox in Authentication prompt */
+"AuthPromptAlertUsernamePlaceholderText" = "اسم المستخدم";
+
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "إعادة التوجيه التلقائي لصفحات AMP";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "قم دائمًا بزيارة عناوين URL للصفحة الأصلية (التي ليست بتنسيق AMP)، بدلاً من إصدارات صفحات الجوال المسرَّعة من Google";
+
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "إعادة التوجيه التلقائي لعناوين URL التتبعية";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "تمكين الدعم لتجاوز إعادة التوجيه عالية المستوى لعناوين URL التتبعية";
+
+/* cookie settings option */
+"Block3rdPartyCookies" = "حظر ملفات تعريف الارتباط الخاصة بالجهات الخارجية";
+
+/* Title for setting to block all website cookies. */
+"BlockAllCookies" = "حظر جميع ملفات تعريف الارتباط";
+
+/* block all cookies settings action title */
+"BlockAllCookiesAction" = "حظر الكل";
+
+/* Information displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertInfo" = "سيؤدي حظر جميع ملفات تعريف الارتباط إلى منع بعض مواقع الويب من العمل بشكل صحيح.";
+
+/* Title of alert displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertTitle" = "حظر جميع ملفات تعريف الارتباط؟";
+
+/* Message of alert displayed to user when block all cookie operation fails */
+"BlockAllCookiesFailedAlertMsg" = "فشل في تعيين التفضيل. يرجى المحاولة مرة أخرى.";
+
+/* A title for a setting that enables cookie consent notices */
+"BlockCookieConsentNotices" = "حظر إشعارات الموافقة على ملفات تعريف الارتباط";
+
+/* No comment provided by engineer. */
+"BlockCookiesDescription" = "يمنع مواقع الويب من تخزين معلومات حول زياراتك السابقة.";
+
+/* title for section showing page blocking statistics */
+"BlockingMonitor" = "حجب المراقبة";
+
+/* Setting to enable popup blocking */
+"BlockPopups" = "حظر النوافذ المنبثقة";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "حظر البرامج النصية";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "يحظر JavaScript (قد يعطل المواقع).";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
+"BookmarkAllTabsTitle" = "إضافة إشارة مرجعية لعلامات التبويب %lld";
+
+/* Bookmark Folder Section Title */
+"BookmarkFolder" = "مجلد الإشارات المرجعية";
+
+/* Bookmark Info Section Title */
+"BookmarkInfo" = "معلومات الإشارة المرجعية";
+
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "إشارات";
+
+/* title for bookmarks panel */
+"Bookmarks" = "إشارات";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "تصدير الإشارات المرجعية";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "استيراد الإشارات المرجعية";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "إشارات";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "الاسم";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "العنوان";
+
+/* Button to show the brave panel */
+"BravePanel" = "لوحة Brave";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "مكافآت Brave";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "السعر الافتتاحي";
+
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "Rewards";
+
+/* Brave Rewards title */
+"BraveRewardsTitle" = "مكافآت Brave";
+
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "لا يقوم Brave Search بعمل ملف تعريفي لك.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "ربما لاحقًا";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "دعم البحث المستقل بخصوصية أفضل";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "تجربة البحث في Brave";
+
+/* Button title for Bottom Bar Callout View for action later */
+"braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "ربما لاحقًا";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "رفض";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "الضوابط المتقدمة";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacy" = "Brave Shields والخصوصية";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "Shields والخصوصية";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "الإعلانات والأشياء المريبة الأخرى التي تم حظرها";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "اعرف المزيد";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "تغيير إعدادات Shields الافتراضية العالمية";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "الضوابط العالمية";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "إذا ظهر هذا الموقع معطلًا ، فجرب إيقاف Shields";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "دروع Brave";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "الأسفل";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "أعلى";
+
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "انقر نقرًا مزدوجًا لتبديل Brave Shields";
+
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "محادثة Brave";
+
+/* Title for setting to enable the browser lock privacy feature */
+"BrowserLock" = "قفل المتصفح";
+
+/* Description for setting to enable the browser lock privacy feature */
+"BrowserLockDescription" = "افتح Brave باستخدام Touch ID أو Face ID أو رمز مرور النظام.";
+
+/* Settings item for clearing browsing history */
+"BrowsingHistory" = "سجلّ التصفّح";
+
+/* Settings item for clearing the cache */
+"Cache" = "تخزين مؤقت";
+
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "نقل شريط علامات التبويب";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "انقل شريط العناوين وعلامات التبويب والإشارات المرجعية والأدوات الأخرى إلى أسفل المتصفح.";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "تخصيص شريط علامات تبويب Brave";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "تعيين Brave كمتصفح افتراضي؟";
+
+/* Subtitle - Description for Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutDescription" = "باستخدام Brave كافتراضي، يفتح كل رابط تنقر عليه بحماية خصوصية Brave.";
+
+/* Title for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "تعيين الافتراضي";
+
+/* Description for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "افتراضي بالفعل؟";
+
+/* Title for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "تخطي هذا";
+
+/* Title for Default Browser Full Screen Callout */
+"callout.defaultBrowserTitle" = "الخصوصية. أصبحت بسيطةً.";
+
+/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutDescription" = "يساعدنا هذا في معرفة ميزات Brave المستخدمة في أغلب الأحيان. قم بالتغيير في أي وقت في إعدادات Brave ضمن \"Brave Shields وإعدادات الخصوصية الأخرى\".";
+
+/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
+"callout.p3aCalloutLinkTitle" = "تعرف على المزيد حول تحليلات الحفاظ على الخصوصية المنتج (P3A).";
+
+/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutTitle" = "ساعد في تحسين Brave.";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "تمتع بمشاركة رؤى المنتج الخاصة ومجهولة المصدر.";
+
+/* Subtitle - Description for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutDescription" = "احصل على خصوصية Brave على جهاز الكمبيوتر أو الجهاز اللوحي، وقم بمزامنة الإشارات المرجعية والإضافات بين الأجهزة.";
+
+/* Title for button in Default Browser Full Screen Callout */
+"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "مزامنة الآن";
+
+/* Title for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutTitle" = "الخصوصية. في كل مكان.";
+
+/* Title for 'Tab Received' Callout, This is shown in the message when a Tab information is received from another sync device. */
+"callout.tabReceivedCalloutTitle" = "تم استلام علامة التبويب";
+
+/* No comment provided by engineer. */
+"CancelButtonTitle" = "إلغاء";
+
+/* Title indicating whether the section for the algorithm used */
+"certificateViewer.algorithmTitle" = "خوارزمية";
+
+/* Title indicating whether or not a private key can be used for 'Anything' (encrypting, deriving, wrapping, verifying, signing, etc) */
+"certificateViewer.anyTitle" = "أي";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bitsUnitTitle" = "بت";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bytesUnitTitle" = "بايت";
+
+/* The description for when an SSL certificate is valid */
+"certificateViewer.certificateIsValidTitle" = "هذه الشهادة سارية المفعول";
+
+/* Section Title displaying common information */
+"certificateViewer.commonInfoTitle" = "معلومات مشتركة";
+
+/* Title of the section for Commonly used Name for the certificate. Example: Alias, Commonly used name, DigiCert High Assurance TLS. */
+"certificateViewer.commonNameTitle" = "الاسم الشائع";
+
+/* Title of the section for the certificate's issuing country or region. Example: Canada, or USA */
+"certificateViewer.countryOrRegionTitle" = "البلد أو المنطقة";
+
+/* Title indicating whether or not a private key can be used to derive some data from another piece of data. IE: Use one key to generate another */
+"certificateViewer.deriveTitle" = "استنتاج";
+
+/* Title of the section for the Domain Component such as: DNS or brave.com or a website's domain. */
+"certificateViewer.domainComponentTitle" = "مكون المجال";
+
+/* Title of the section indication which 'Encryption' algorithm was used. */
+"certificateViewer.encryptionTitle" = "تشفير";
+
+/* Title indicating whether or not a private key can be used to encrypt data */
+"certificateViewer.encryptTitle" = "تشفير";
+
+/* Title indicating whether the mathematical exponent used. x³, x², etc. */
+"certificateViewer.exponentTitle" = "أس";
+
+/* Fingerprints/Hashes are algorithms used to determine if the certificate is legitimate */
+"certificateViewer.fingerPrintsTitle" = "بصمات الأصابع";
+
+/* Section Title for Issuer Name in the SSL Certificate */
+"certificateViewer.issuerNameTitle" = "اسم المصدر";
+
+/* Title indicating the size of the private or public key used in bytes. Example: KeySize - 1024 Bytes. Key Size - 2048 Bytes. */
+"certificateViewer.keySizeTitle" = "حجم المفتاح";
+
+/* Title indicating what the private or public key can be used for. */
+"certificateViewer.keyUsageTitle" = "استخدام المفتاح";
+
+/* Title of the section for the certificate's issuing city. Example: Toronto, New York, or San Francisco */
+"certificateViewer.localityTitle" = "المحل";
+
+/* Title indicating 'None' or no information or empty. */
+"certificateViewer.noneTitle" = "بلا";
+
+/* Certificate is 'not valid after' January 31st, 2022 for example. */
+"certificateViewer.notValidAfterTitle" = "غير صالح بعد";
+
+/* Certificate is 'not valid before' January 1st, 2022 for example. */
+"certificateViewer.notValidBeforeTitle" = "غير صالح قبل";
+
+/* Title of the section for Department of the Company. Example: Human Resources. */
+"certificateViewer.organizationalUnitTitle" = "الوحدة التنظيمية";
+
+/* Title of the section for Name of the Company. Example: Brave Inc. */
+"certificateViewer.organizationTitle" = "منظمة";
+
+/* Title indicating 'Parameters' or Input passed to a function/algorithm. */
+"certificateViewer.parametersTitle" = "معلّمات";
+
+/* Information about a Public Key section title. */
+"certificateViewer.publicKeyInfoTitle" = "معلومات المفتاح العام";
+
+/* Title indicating whether the key used is public (not private) */
+"certificateViewer.publicKeyTitle" = "المفتاح العام";
+
+/* Certificates have a serial number to identify that it's unique */
+"certificateViewer.serialNumberTitle" = "الرقم التسلسلي";
+
+/* Do NOT translate the %@. They are place holders. Example: 'SHA256' with 'RSA' Encryption */
+"certificateViewer.signatureAlgorithmEncryptionDescription" = "%1$@ مع تشفير %2$@";
+
+/* Do NOT translate the %@. They are place holders. Example: 'ECDSA Signature' with 'SHA-256' */
+"certificateViewer.signatureAlgorithmSignatureDescription" = "توقيع %1$@ مع %2$@";
+
+/* Title for the section where we display information about the algorithm used to sign the certificate */
+"certificateViewer.signatureAlgorithmTitle" = "خوارزمية التوقيع";
+
+/* Title of the view that states whether or not something was signed with an encryption algorithm or hash. */
+"certificateViewer.signatureTitle" = "توقيع";
+
+/* Title of the section for the certificate's issuing state or province. Example: Ontario Province or California State */
+"certificateViewer.stateOrProvinceTitle" = "الولاية/المقاطعة";
+
+/* Title of the section for the address of where the certificate came from. */
+"certificateViewer.streetAddressTitle" = "عنوان الشارع";
+
+/* Section Title for Subject Name in the SSL Certificate */
+"certificateViewer.subjectNameTitle" = "اسم الموضوع";
+
+/* Title of the section for the User's ID (Identifier). */
+"certificateViewer.userIDTitle" = "هوية المستخدم";
+
+/* Title of section that determines if the dates on a certificate is valid. */
+"certificateViewer.validityDatesTitle" = "تواريخ الصلاحية";
+
+/* Title indicating whether or not a private key can be used to verify data is legitimate */
+"certificateViewer.verifyTitle" = "تحقق";
+
+/* Certificates have a version number */
+"certificateViewer.versionNumberTitle" = "الإصدار";
+
+/* Title indicating whether or not a private key can be used to wrap or enclose some data */
+"certificateViewer.wrapTitle" = "تغليف";
+
+/* No comment provided by engineer. */
+"ClearData" = "مسح البيانات";
+
+/* Section title in settings panel */
+"ClearPrivateData" = "مسح البيانات الخاصة";
+
+/* The cancel button when confirming clear private data. */
+"ClearPrivateDataAlertCancelButtonTitle" = "إلغاء";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertMessage" = "هل أنت متأكد؟";
+
+/* The button that clears private data. */
+"ClearPrivateDataAlertOkButtonTitle" = "موافق";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertTitle" = "حذف البيانات";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertYesAction" = "نعم، حذف";
+
+/* Button in settings that clears private data for the selected items. */
+"ClearPrivateDataNow" = "مسح البيانات الآن";
+
+/* The cancel button when confirming clear history. */
+"ClearSyncedHistoryAlertCancelButtoTitle" = "إلغاء";
+
+/* Description of the confirmation dialog shown when a user tries to clear history that's synced to another device. */
+"ClearSyncedHistoryAlertMessage" = "سيؤدي هذا الإجراء إلى مسح جميع بياناتك الخاصة، بما في ذلك السجل من أجهزتك المتزامنة.";
+
+/* The confirmation button that clears history even when Sync is connected. */
+"ClearSyncedHistoryAlertOkButtoTitle" = "موافق";
+
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "خطأ العميل";
+
+/* Button title to close a menu. */
+"Close" = "إغلاق";
+
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "هل تريد بالتأكيد إغلاق جميع علامات التبويب المفتوحة الأخرى؟";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "إغلاق جميع علامات التبويب الأخرى";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "هل تريد بالتأكيد إغلاق جميع علامات التبويب المفتوحة؟";
+
+/* No comment provided by engineer. */
+"CloseAllTabsTitle" = "إغلاق كافة علامات التبويب %i";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "تنزيل";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "مشاركة";
+
+/* No comment provided by engineer. */
+"Confirm" = "تأكيد";
+
+/* Cookie settings option title */
+"CookieControl" = "التحكم في ملفات تعريف الارتباط";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "ملفات تعريف الارتباط وبيانات المواقع";
+
+/* Copy app info to clipboard action sheet action. */
+"CopyAppInfoToClipboard" = "نسخ معلومات التطبيق إلى الحافظة.";
+
+/* Copy app info to clipboard action sheet action. */
+"copyAppSizeInfoToClipboard" = "نسخ معلومات حجم التطبيق إلى الحافظة.";
+
+/* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
+"CopyCleanLink" = "نسخ الرابط النظيف";
+
+/* Context menu item for copying an image to the clipboard */
+"CopyImageActionTitle" = "نسخ الصورة";
+
+/* Context menu item for copying a link URL to the clipboard */
+"CopyLinkActionTitle" = "نسخ الرابط";
+
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "نسخ معلومات علامات التبويب إلى الحافظة.";
+
+/* Copy rewards internals info for support */
+"CopyWalletSupportInfo" = "نسخ معلومات الدعم";
+
+/* Create PDF share action. */
+"CreatePDF" = "إنشاء ملف PDF";
+
+/* Currently usedd search engines section name. */
+"CurrentlyUsedSearchEngines" = "محركات البحث المستخدمة حاليًا";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "اكتب عنوان url للبحث واستبدل الاستعلام بـ %1$s.\nعلى سبيل المثال: https://youtube.com/search?q=%2$s \n(إذا كان الموقع يدعم OpenSearch، فسيتم توفير خيار للإضافة تلقائيًا أثناء تحرير هذا الحقل.)";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "إضافة تلقائية";
+
+/* A title explaining that an error shown while adding custom search engine */
+"customSearchEngine.customSearchEngineAddErrorTitle" = "خطأ في إضافة محرك البحث المخصص";
+
+/* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
+"customSearchEngine.deleteEngineAlertDescription" = "سيؤدي حذف محرك بحث مخصص أثناء كونه افتراضيًا إلى تبديل المحرك الافتراضي تلقائيًا.";
+
+/* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
+"customSearchEngine.deleteEngineAlertTitle" = "هل تريد بالتأكيد حذف %@؟";
+
+/* The warning description shown to user when custom search engine already exists. */
+"customSearchEngine.engineAlertExistsAlertDescription" = "محرك بحث بنفس الاسم موجود بالفعل.";
+
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+"customSearchEngine.insecureSearchTemplateURLErrorDescription" = "قالب بحث مخصص غير آمن لـ";
+
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+"customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "قالب اقتراح مخصص غير آمن لـ";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "إضافة محرك بحث";
+
+/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.searchTemplateTitle" = "قالب البحث:";
+
+/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.suggestionTemplateTitle" = "قالب الاقتراح:";
+
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "سيظهر محرك البحث الجديد في شريط البحث السريع.";
+
+/* The title that asks the user to Add the search provider */
+"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "إضافة مزود البحث؟";
+
+/* A descriotion explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "تعذرت إضافة محرك البحث المخصص. يرجى إعادة المحاولة لاحقًا.";
+
+/* A title explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "خطأ في محرك البحث المخصص";
+
+/* A message explaining a replica search engine is already added */
+"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "تمت إضافة محرك بحث بهذا العنوان أو عنوان URL بالفعل.";
+
+/* A description explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription" = "اكتب عنوان url للبحث واستبدل الاستعلام بـ %s.";
+
+/* A title explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle" = "خطأ في استعلام عنوان URL للبحث ";
+
+/* A description explaining the copied url should be secure */
+"customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription" = "يجب أن يكون النص المنسوخ عنوان URL آمنًا صالحًا يبدأ بـ \"https://\"";
+
+/* A descriotion explaining that the fields must filled while adding a search engine. */
+"customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription" = "يرجى ملء حقلي العنوان وعنوان URL.";
+
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "محركات البحث المخصصة";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "تمت إضافة محرك البحث!";
+
+/* Button text to close the default browser popup. */
+"defaultBrowserCallout.introCancelButtonText" = "ليس الآن";
+
+/* Button text to open app settings */
+"defaultBrowserCallout.introOpenSettingsButtonText" = "فتح الإعدادات";
+
+/* Primary text on default browser popup screen */
+"defaultBrowserCallout.introPrimaryText" = "افتح جميع الروابط بواسطة متصفح Brave لحماية خصوصيتك";
+
+/* Secondary text on default browser popup. */
+"defaultBrowserCallout.introSecondaryText" = "تقوم Brave Shields بحظر أدوات التتبع والإعلانات، وحفظ البيانات، وتوفير الوقت في كل موقع تزوره";
+
+/* Tertiary text on default browser popup screen */
+"defaultBrowserCallout.introTertiaryText" = "افتح الإعدادات، وانقر فوق تطبيق المتصفح الافتراضي، وحدد Brave.";
+
+/* Notification body to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationBody" = "‏اختيار Brave كمتصفِّح تلقائي";
+
+/* Notification title to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationTitle" = "احصل على حماية Brave، على كل رابط";
+
+/* No comment provided by engineer. */
+"defaultBrowserCalloutCloseAccesabilityLabel" = "إغلاق وسيلة شرح المتصفح الافتراضي";
+
+/* Name for default Brave theme. */
+"defaultThemeName" = "Brave الافتراضي";
+
+/* No comment provided by engineer. */
+"Delete" = "حذف";
+
+/* Message for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertMessage" = "سيؤدي هذا إلى حذف جميع المجلدات والإشارات المرجعية بالداخل. هل تريد بالتأكيد المتابعة؟";
+
+/* Title for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertTitle" = "حذف مجلد؟";
+
+/* Prompt option for cancelling out of deletion */
+"DeleteLoginAlertCancelActionTitle" = "إلغاء";
+
+/* Prompt message warning the user that deleting non-synced logins will permanently remove them */
+"DeleteLoginAlertLocalMessage" = "ستتم إزالة عمليات تسجيل الدخول نهائيًا.";
+
+/* Prompt message warning the user that deleted logins will remove logins from all connected devices */
+"DeleteLoginAlertSyncedDevicesMessage" = "ستتم إزالة عمليات تسجيل الدخول من جميع الأجهزة المتصلة.";
+
+/* Prompt title when deleting logins */
+"DeleteLoginAlertTitle" = "هل أنت متأكد؟";
+
+/* Label for the button used to delete the current login. */
+"DeleteLoginButtonTitle" = "حذف";
+
+/* Current device model and iOS version copied to clipboard. */
+"DeviceTemplate" = "الجهاز %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "رفض التغييرات";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "هل تريد بالتأكيد رفض هذه التغييرات؟ سيتم فقد أي تعديلات.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "رفض التغييرات؟";
+
+/* Button title that when tapped displays a websites HTTPS security certificate information */
+"DisplayCertificate" = "شهادة الأمن";
+
+/* Section name for display preferences. */
+"DisplaySettingsSection" = "عرض";
+
+/* No comment provided by engineer. */
+"Done" = "تم";
+
+/* cookie settings option */
+"DontBlockCookies" = "لا تحظر ملفات تعريف الارتباط";
+
+/* Used as a button label for crash dialog prompt */
+"DontSendButtonTitle" = "لا ترسل";
+
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "الملفات التي تم تنزيلها";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "التنزيلات";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "ستظهر الملفات التي تم تنزيلها هنا.";
+
+/* Action item title of long press for Opening the existing - active Tab url in a new Tab */
+"DuplicateActiveTab" = "علامة تبويب نشطة مكررة";
+
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "أسبق";
+
+/* No comment provided by engineer. */
+"Edit" = "تعديل";
+
+/* Button to edit a bookmark */
+"EditBookmark" = "تعديل إشارة مرجعية";
+
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "الموقع";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "تعديل الإشارة المرجعية";
+
+/* Button to edit a favorite */
+"EditFavorite" = "تحرير قائمة المفضلات";
+
+/* Title for editing a favorite bookmark */
+"EditFavoriteTitle" = "تحرير قائمة المفضلات";
+
+/* Title for editing a folder */
+"EditFolderTitle" = "تعديل مجلد";
+
+/* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
+"enablePullToRefresh" = "تمكين السحب للتحديث";
+
+/* Description for new folder popup */
+"EnterFolderName" = "أدخل اسم المجلد";
+
+/* Shown in error pages to suggest a fix to the user. */
+"errorPageCantBeReachedTry" = "حاول إعادة كتابة عنوان URL، أو فتح محرك بحث والبحث عن عنوان URL الجديد.";
+
+/* Shown in error pages for files that can't be shown and need to be downloaded. */
+"ErrorPageOpenInSafariButtonTitle" = "فتح في Safari";
+
+/* Shown in error pages on a button that will try to load the page again */
+"ErrorPageReloadButtonTitle" = "إعادة التحميل";
+
+/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
+"ErrorPagesAdvancedErrorPinningDetails" = "يستخدم %1$@ التشفير عادةً لحماية معلوماتك. عندما حاول Brave الاتصال ب %2$@ هذه المرة، أرسل موقع الويب بيانات اعتماد غير عادية وغير صحيحة. قد يحدث هذا عندما يحاول أحد المهاجمين التظاهر بأنه %3$@، أو أن شاشة تسجيل الدخول إلى Wi-Fi قد قطعت الاتصال. لا تزال معلوماتك آمنة لأن Brave أوقف الاتصال قبل تبادل أي بيانات.<br />لا يمكنك زيارة %4$@ الآن لأن موقع الويب يستخدم تثبيت الشهادة. عادة ما تكون أخطاء الشبكة والهجمات مؤقتة، لذلك من المحتمل أن تعمل هذه الصفحة لاحقًا.";
+
+/* Additional warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningDetails" = "تعذر على هذا الخادم إثبات أنه %@؛ شهادة الأمان الخاصة به غير موثوق بها من قبل نظام تشغيل جهازك. قد يكون هذا بسبب خطأ في التكوين أو محاولة مهاجم اعتراض اتصالك.";
+
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningTitle" = "قد يحاول المهاجمون سرقة معلوماتك من %@ (على سبيل المثال، كلمات المرور أو الرسائل أو بطاقات الائتمان).";
+
+/* Label for button to go back from the error page */
+"ErrorPagesBackToSafetyButton" = "العودة إلى بر الأمان";
+
+/* Title on the certificate error page */
+"ErrorPagesCertErrorTitle" = "لا يمكن لهذا الموقع توفير اتصال آمن";
+
+/* Title on the certificate error page */
+"ErrorPagesCertWarningTitle" = "اتصالك ليس خاصًا";
+
+/* Label for button to hide advanced actions on the error page */
+"ErrorPagesHideDetailsButton" = "إخفاء التفاصيل";
+
+/* Label for learn more link on error page */
+"ErrorPagesLearnMoreButton" = "اعرف المزيد";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesMoreDetailsButton" = "مزيد من التفاصيل";
+
+/* Title of the No Internet error page */
+"ErrorPagesNoInternetTitle" = "لا يوجد اتصال بالإنترنت";
+
+/* Text telling the user to Try: The following list of things */
+"ErrorPagesNoInternetTry" = "يبدو أنك لست متصلًا بالإنترنت. لإصلاح ذلك، حاول";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem1" = "فحص كبلات الشبكة والمودم والموجه";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem2" = "إعادة الاتصال بشبكة Wi-Fi";
+
+/* Button label to temporarily continue to the site from the certificate error page */
+"ErrorPagesProceedAnywayButton" = "انتقل إلى %@ (غير آمن)";
+
+/* %@ will launch an external application */
+"ExternalAppURLAlertMessage" = "%@ سيطلق تطبيقًا خارجيًا";
+
+/* Allow link to switch apps? */
+"ExternalAppURLAlertTitle" = "السماح للرابط بتبديل التطبيقات؟";
+
+/* Allow Brave to open the external app URL */
+"ExternalAppURLAllow" = "السماح";
+
+/* Don't allow Brave to open the external app URL */
+"ExternalAppURLDontAllow" = "عدم السماح";
+
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "توجد قائمة المفضلات على شاشتك الرئيسية. ولا تتم مزامنة هذه الإشارات المرجعية مع الأجهزة الأخرى.";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "قائمة التفضيلات";
+
+/* No comment provided by engineer. */
+"Features" = "الميزات";
+
+/* Share action title */
+"FindInPage" = "بحث في الصفحة";
+
+/* Done button in Find in Page Toolbar. */
+"FindInPageDoneButtonAccessibilityLabel" = "تم";
+
+/* Find %@ text in page. */
+"FindInPageFormat" = "بحث عن \"%@\"";
+
+/* Accessibility label for next result button in Find in Page Toolbar. */
+"FindInPageNextResultButtonAccessibilityLabel" = "النتيجة التالية في الصفحة";
+
+/* Accessibility label for previous result button in Find in Page Toolbar. */
+"FindInPagePreviousResultButtonAccessibilityLabel" = "النتيجة السابقة في الصفحة";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findInPageTitle" = "بحث في الصفحة";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findNextTitle" = "بحث عن التالي";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "في هذه الصفحة";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findPreviousTitle" = "بحث عن السابق";
+
+/* individual blocking statistic title */
+"FingerprintingMethods" = "طرق البصمات";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "حجب مسح البصمة";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "يجعل من الصعب على المواقع التعرف على الخصائص المميزة لجهازك. ";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "السماح بفتح الروابط العامة في التطبيقات الخارجية";
+
+/* A label which when tapped pastes from the users clipboard forcefully (so as to ignore any paste restrictions placed by the website) */
+"ForcePaste" = "فرض اللصق";
+
+/* No comment provided by engineer. */
+"genericErrorBody" = "عفوًا! حدث خطأ ما. يرجى المحاولة مرةً أخرى.";
+
+/* No comment provided by engineer. */
+"genericErrorTitle" = "خطأ";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "حظر مواقع الويب الخطرة";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsingUsingWebKitDescription" = "يحمي التصفح الآمن من مواقع الويب المعروفة بخطورتها. [تعرف على المزيد](%@)";
+
+/* Context menu item for hiding link previews */
+"HideLinkPreviewsActionTitle" = "إخفاء معاينات الرابط";
+
+/* Hides the rewards icon */
+"HideRewardsIcon" = "إخفاء أيقونة مكافآت Brave";
+
+/* Hide the rewards icon explination. */
+"HideRewardsIconSubtitle" = "يخفي أيقونة Brave Rewards عند عدم تمكين Brave Rewards";
+
+/* Title for history menu item */
+"HistortMenuItem" = "السجل";
+
+/* Title for History Clear All Action */
+"history.historyClearActionTitle" = "مسح السجل";
+
+/* Description for Clear All History Alert Description */
+"history.historyClearAlertDescription" = "سيؤدي هذا إلى مسح كل سجل التصفح.";
+
+/* Title for Clear All History Alert Title */
+"history.historyClearAlertTitle" = "مسح سجل التصفح";
+
+/* Title which is displayed when History screen is empty. */
+"history.historyEmptyStateTitle" = "سيظهر السجل هنا.";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateTitle" = "لا يتوفر السجل في وضع التصفح الخاص فقط.";
+
+/* Title displayed for placeholder inside Search Bar in History */
+"history.historySearchBarTitle" = "سجل البحث";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "السجل";
+
+/* No comment provided by engineer. */
+"Home" = "الصفحة الرئيسية";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhere" = "ترقية الاتصالات إلى HTTPS";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "لفتح المواقع باستخدام HTTPS الآمن بدلًا من HTTP متى أمكن.";
+
+/* individual blocking statistic title */
+"HTTPSUpgrades" = "ترقيات HTTPS";
+
+/* title for per-site shield toggles */
+"IndividualControls" = "أدوات التحكم الفردية";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "تفاصيل غير صالحة في طلب الدفع";
+
+/* History tableview section header */
+"LastMonth" = "الشهر الماضي";
+
+/* History tableview section header */
+"LastWeek" = "الأسبوع الماضي";
+
+/* No comment provided by engineer. */
+"learnMore" = "مزيد من المعلومات";
+
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "ليو";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginEntryDeleteAlertMessage" = "ستتم إزالة تسجيل الدخول المحفوظ نهائيًا.";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginInfoCreatedHeaderTitle" = "تم الإنشاء %@";
+
+/* The header title displayed over the details of login entry */
+"login.loginInfoDetailsHeaderTitle" = "تفاصيل تسجيل الدخول";
+
+/* Title for the password field in password detail page */
+"login.loginInfoDetailsPasswordFieldTitle" = "كلمة المرور";
+
+/* Title for the username field in password detail page */
+"login.loginInfoDetailsUsernameFieldTitle" = "اسم المستخدم";
+
+/* Title for the website field in password detail page */
+"login.loginInfoDetailsWebsiteFieldTitle" = "موقع ويب";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.loginInfoSetPasscodeAlertDescription" = "للاطلاع على كلمات المرور، يجب أولًا تعيين رمز مرور على جهازك.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"login.loginInfoSetPasscodeAlertTitle" = "تعيين رمز مرور";
+
+/* The message displayed on the password list screen when there is not password found */
+"login.loginListEmptyScreenTitle" = "لم يتم العثور على بيانات تسجيل الدخول";
+
+/* Title for navigation bar of the login list screen */
+"login.loginListNavigationTitle" = "بيانات تسجيل الدخول وكلمات المرور";
+
+/* The header title displayed over the never saved login list entry */
+"login.loginListNeverSavedHeaderTitle" = "لم يتم الحفظ مطلقًا";
+
+/* The header title displayed over the login list */
+"login.loginListSavedLoginsHeaderTitle" = "بيانات تسجيل الدخول المحفوظة";
+
+/* The text for placeholder inside search bar in login list */
+"login.loginListSearchBarPlaceHolderTitle" = "فلتر";
+
+/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
+"LoginDetailLastModifiedCellFormatTitle" = "آخر تعديل %@";
+
+/* Label displayed above the password row in Login Detail View. */
+"LoginDetailPasswordCellTitle" = "كلمة المرور";
+
+/* Label displayed above the username row in Login Detail View. */
+"LoginDetailUsernameCellTitle" = "اسم المستخدم";
+
+/* Label displayed above the website row in Login Detail View. */
+"LoginDetailWebsiteCellTitle" = "موقع الويب";
+
+/* Label for the button used to deselect all logins. */
+"LoginListDeselectAllButtonTitle" = "إلغاء تحديد الكل";
+
+/* Label displayed when no logins are found after searching. */
+"LoginListNoLoginTitle" = "لم يتم العثور على بيانات تسجيل الدخول";
+
+/* Title for Logins List View screen. */
+"LoginListScreenTitle" = "بيانات تسجيل الدخول";
+
+/* Label for the button used to select all logins. */
+"LoginListSelectAllButtonTitle" = "تحديد الكل";
+
+/* Setting to allow media to play in the background */
+"MediaAutoBackgrounding" = "تمكين الصوت في الخلفية";
+
+/* Copy password text selection menu item */
+"MenuItemCopyTitle" = "نسخ";
+
+/* Hide password text selection menu item */
+"MenuItemHidePasswordTitle" = "إخفاء";
+
+/* Open and Fill website text selection menu item */
+"MenuItemOpenTitle" = "فتح موقع الويب";
+
+/* Reveal password text selection menu item */
+"MenuItemRevealPasswordTitle" = "إظهار";
+
+/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
+"monthAbbreviation" = "شهر";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "انقر هنا لمعرفة المزيد.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "هذا هو أول إعلانات Brave";
+
+/* Bookmark title / Device name */
+"Name" = "الاسم";
+
+/* Setting preference to always hide the browser tabs bar. */
+"NeverShow" = "إيقاف";
+
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "إشارة مرجعية جديدة";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "إشارة مرجعية جديدة";
+
+/* Title for new folder popup */
+"NewFolder" = "مجلد جديد";
+
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "مجلد جديد";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "مجلد جديد";
+
+/* Context menu item for opening a new private browsing window */
+"NewPrivateWindowTitle" = "نافذة خاصة جديدة";
+
+/* New Tab title */
+"NewTab" = "علامة تبويب جديدة";
+
+/* Context menu item for opening a new window */
+"NewWindowTitle" = "نافذة جديدة";
+
+/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
+"nightMode.modeTitle" = "وضع";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.sectionDescription" = "سيؤثر الوضع الليلي على مظهر موقع الويب ومظهر النظام العام في نفس الوقت.";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.settingsDescription" = "تشغيل / إيقاف الوضع الليلي";
+
+/* A table cell title for Night Mode - defining element for the toggle */
+"nightMode.settingsTitle" = "الوضع الليلي";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"No" = "الرقم";
+
+/* The information title displayed when there is no search reault found */
+"noSearchResultsfound" = "لم يتم العثور على نتائج البحث.";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "يعيد توجيه روابط NPR تلقائيًا إلى نسختها النصية (في text.npr.org).";
+
+/* Bookmark title for Brave Support */
+"ntp.braveSupportFavoriteTitle" = "دعم Brave";
+
+/* No comment provided by engineer. */
+"ntp.claimRewards" = "المطالبة بالرموز المميزة";
+
+/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+"ntp.earningsReport" = "لقد ربحت %@ من خلال التصفح باستخدام Brave.";
+
+/* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
+"ntp.goodJob" = "أحسنت!";
+
+/* No comment provided by engineer. */
+"ntp.hideSponsoredImages" = "إخفاء الصور الدعائية";
+
+/* The text description of image type which is being used NTP */
+"ntp.imageTypeSelectionDescription" = "\"برعاية\" هي خلفيات إضافية ذات علامات تجارية يمكنك الربح منها مع تمكين Brave Rewards.";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "تعرف على المزيد حول Brave Rewards";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "تعرف على المزيد حول الصور الدعائية";
+
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"ntp.settingsAutoOpenKeyboard" = "فتح تلقائي للوحة المفاتيح";
+
+/* A selection to let the users only see a set of predefined, default images on the background of the app. */
+"ntp.settingsDefaultImagesOnly" = "الصور الافتراضية";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"ntp.settingsTitle" = "صفحة في علامة تبويب جديدة";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"ntp.showMoreFavorites" = "عرض المزيد";
+
+/* No comment provided by engineer. */
+"ntp.sponsoredImageDescription" = "أنت تدعم منشئي المحتوى والناشرين من خلال عرض هذه الصورة الدعائية.";
+
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
+"ntp.turnRewardsTos" = "من خلال تشغيل المكافآت ، فإنك توافق على %@.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "اربح الرموز المميزة وكافئ منشئي المحتوى على المحتوى الرائع أثناء التصفح.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessageJapan" = "اربح نقاطًا وكافئ منشئي المحتوى على المحتوى الرائع أثناء التصفح.";
+
+/* Title when opting into brave Ads when region becomes available */
+"OBAdsOptInTitle" = "إعلانات Brave هنا!";
+
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "سيعرض Brave إعلانك الأول في";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "أنت الآن جاهز للانطلاق.";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "لم أرى إعلان";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "حدث خطأ ما أثناء إنشاء محفظتك. يرجى المحاولة مرة أخرى";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "حسنًا";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "معذرةً";
+
+/* Button to finish onboarding and start using the app. */
+"OBFinishButton" = "بدء التصفح";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "انضمام";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentClipboardPermission" = "السماح لـ Brave بالتحقق من حافظتي بحثًا عن رمز إحالة مطابق";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentDetail" = "ربما تكون قد قمت بتنزيل Brave لدعم المحيل الخاص بك. للكشف عن المحيل الخاص بك، يقوم Brave بإجراء فحص لمرة واحدة لحافظتك بحثًا عن رمز الإحالة المطابق. يقتصر هذا الفحص على الرمز فقط ولن يتم إرسال أي بيانات شخصية أخرى. إذا قمت بإلغاء الاشتراك، فلن يتلقى المحيل مكافآت من Brave.";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentNoButton" = "عدم السماح بهذا الفحص";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentTitle" = "فحص رمز الإحالة المجهول";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentYesButton" = "السماح بفحص الحافظة لمرة واحدة";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "بالنقر فوق نعم، فإنك توافق على";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "شروط الخدمة";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "و";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "مكافآت Brave";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "يدعم الاشتراك في إعلانات Brave الخاصة الناشرين ومنشئي المحتوى مع كل إعلان يتم عرضه.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "اربح الرموز المميزة وكافئ منشئي المحتوى على المحتوى الرائع أثناء التصفح.";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "سياسة الخصوصية";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "مكافآت Brave";
+
+/* Save button to save current selection */
+"OBSaveButton" = "حفظ";
+
+/* Detail text for search engine onboarding screen */
+"OBSearchEngineDetail" = "قم بإختيار محرك البحث الإفتراضي";
+
+/* Title for search engine onboarding screen */
+"OBSearchEngineTitle" = "مرحباً بك في متصفح Brave";
+
+/* Detail text for shields onboarding screen */
+"OBShieldsDetail" = "حظر أدوات التتبع التي تغزو الخصوصية حتى تتمكن من التصفح دون متابعتك عبر الويب";
+
+/* Title for shields onboarding screen */
+"OBShieldsTitle" = "دروع Brave";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "أظهر لي";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "البدء";
+
+/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "تم حظر %1$@ و%2$lld من الإعلانات الأخرى وأدوات التتبع";
+
+/* The footnote indicating what Brave shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "شاهد كل الأشياء السيئةالتي تم حظرها بواسطة Brave، في كل صفحة، باستخدام Shields.";
+
+/* The text describing user where they should press in order to open Shield panel */
+"onboarding.blockedAdsOnboardingInstructionsText" = "انقر لعرض Brave Shields";
+
+/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "تم حظر الإعلانات وأدوات التتبع";
+
+/* Button text to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptButton" = "ربط اشتراكك في VPN";
+
+/* Popup description to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptDescription" = "يمكن لاشتراكك في Brave VPN حماية ما يصل إلى 5 أجهزة من الأجهزة العاملة بنظام Android وiOS وسطح المكتب. ما عليك سوى ربط اشتراكك في آب ستور بحساب Brave الخاص بك.";
+
+/* Popup title to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptTitle" = "قم بتوسيع نطاق حماية Brave Firewall + VPN";
+
+/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
+"onboarding.navigateSettingsOnboardingScreenDescription" = "بحث عن \"تطبيق المتصفح الافتراضي\"";
+
+/* Title for Navigate Settings Screen in Onboarding */
+"onboarding.navigateSettingsOnboardingScreenTitle" = "يأخذك إلى الإعدادات ...";
+
+/* Description for the NTP pop-over that describes the tracking information on NTP */
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "من خلال حظر أدوات التتبع والإعلانات، تستخدم مواقع الويب بيانات أقل وطريقة تحميل أسرع.";
+
+/* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverDescription" = "انظر اختلاف Brave:\nلا إعلانات. لا توجد أدوات تتبع. طريقة تحميل أسرع للصفحة.";
+
+/* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverTitle" = "كتابة اسم موقع ويب أو عنوان URL";
+
+/* Title for Welcome Screen in Onboarding */
+"onboarding.welcomeScreenTitle" = "مرحباً بك في Brave";
+
+/* Continue button to navigate to next onboarding screen. */
+"OnboardingContinueButton" = "متابعة";
+
+/* Skip button to skip onboarding and start using the app. */
+"OnboardingSkipButton" = "تخطّي";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "على %@";
+
+/* Context menu item for opening all folder bookmarks */
+"OpenAllBookmarks" = "فتح الكل (%i)";
+
+/* Button title for opening the Brave Rewards panel to settings */
+"OpenBraveRewardsSettings" = "فتح إعدادات Brave Rewards";
+
+/* Error description when there is an error while navigating to Files App */
+"OpenDownloadsFolderErrorDescription" = "حدث خطأ غير معروف أثناء فتح مجلد التنزيلات في تطبيق الملفات.";
+
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "٪%@ يقول:";
+
+/* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
+"openExternalAppURLTitle" = "السماح لـ %@ بتبديل التطبيقات؟";
+
+/* Context menu for opening image in new tab */
+"OpenImageInNewTab" = "فتح الصورة في علامة تبويب جديدة";
+
+/* Context menu item for opening a link in a new private browsing window */
+"OpenInNewPrivateWindowTitle" = "فتح في نافذة خاصة جديدة";
+
+/* Context menu item for opening a link in a new window */
+"OpenInNewWindowTitle" = "فتح في نافذة جديدة";
+
+/* Context menu option for opening a link in a new private tab */
+"OpenNewPrivateTabButtonTitle" = "فتح في علامة تبويب خاصة جديدة";
+
+/* Context menu item for opening a link in a new tab */
+"OpenNewTabButtonTitle" = "فتح في علامة تبويب جديدة";
+
+/* See http://mzl.la/1G7uHo7 */
+"OpenPhoneSettingsActionTitle" = "فتح الإعدادات";
+
+/* The description indicating the device is active # of days ago. The parameter substituted for \"%ld\" is the number of days. E.g.: Active 123 Days Ago */
+"opentabs.activePeriodDeviceDaysAgoTitle" = "نشط منذ %ld من الأيام";
+
+/* The description indicating the device is active last time this month */
+"opentabs.activePeriodDeviceThisMonthTitle" = "نشط الشهر الماضي";
+
+/* The description indicating the device is active last time this week */
+"opentabs.activePeriodDeviceThisWeekTitle" = "نشط الأسبوع الماضي";
+
+/* The description indicating the device is active last time today */
+"opentabs.activePeriodDeviceTodayTitle" = "نشط اليوم";
+
+/* The description indicating the device is active last time yesterday */
+"opentabs.activePeriodDeviceYesterdayTitle" = "نشط أمس";
+
+/* The description of the view describing tab syncing should be enabled. */
+"opentabs.enableOpenTabsPlaceHolderViewDescription" = "قم بتمكين مزامنة علامة التبويب لرؤية علامات التبويب من أجهزتك الأخرى.";
+
+/* The description of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewDescription" = "للاطلاع على أجهزتك وأنواع المزامنة الممكّنة، انضم إلى سلسلة مزامنة";
+
+/* The title of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewTitle" = "لا توجد أجهزة في سلسلة المزامنة هذه";
+
+/* The description of the view explaining user should join a sync chain. */
+"opentabs.noSyncChainPlaceHolderViewDescription" = "للبدء، قم بإعداد سلسلة مزامنة وقم بتبديل \"فتح علامات التبويب\" في إعدادات المزامنة.";
+
+/* The additional description of the view describing tab syncing should be enabled. */
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "إدارة ما يقوم Brave بمزامنته في الإعدادات.";
+
+/* The description of the view describing no other sessions are active in sync. */
+"opentabs.noSyncSessionPlaceHolderViewDescription" = "لا توجد جلسات نشطة لعرضها من أجهزتك الأخرى.";
+
+/* The title of the view showing no synced sessions */
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "تعرض هذه المساحة علامات تبويب Brave المفتوحة في الأجهزة الأخرى";
+
+/* The title for the action to hide open session with all tabs */
+"opentabs.openSessionHideAllActionTitle" = "إخفاء الآن";
+
+/* The title for the action to open all the tabs in a synced open session */
+"opentabs.openSessionOpenAllActionTitle" = "فتح الكل";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
+"opentabs.openTabsItemLastSyncedLastWeekTitle" = "الأسبوع الماضي %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
+"opentabs.openTabsItemLastSyncedTodayTitle" = "اليوم %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
+"opentabs.openTabsItemLastSyncedYesterdayTitle" = "أمس %@";
+
+/* The title displayed on table header for open tabs list from other devices */
+"openTabs.openTabsListTableHeaderTitle" = "الأجهزة";
+
+/* Title action button for sending webpage to selected other device */
+"opentabs.sendDeviceButtonTitle" = "إرسال إلى جهازك";
+
+/* The title displayed on screen showing sending page is already completed */
+"openTabs.sendingWebpageCompletedTitle" = "مرسلة!";
+
+/* The title displayed on screen showing webpage is being sent */
+"openTabs.sendingWebpageProgressTitle" = "إرسال...";
+
+/* The title displayed on send-webpage screen */
+"openTabs.sendWebpageScreenTitle" = "إرسال صفحة ويب";
+
+/* Share action title for sending e url to another device */
+"opentabs.sendWebsiteShareActionTitle" = "إرسال إلى أجهزتك";
+
+/* The button which navigates to screen where user can view sync settings */
+"opentabs.showSettingsSyncButtonTitle" = "إظهار إعدادات المزامنة";
+
+/* The button which navigates to screen starting a new sync chain */
+"opentabs.startASyncChainButtonTitle" = "بدء سلسلة مزامنة";
+
+/* The button which navigates to screen where Tab Sync functionality toggle can be adjusted */
+"opentabs.tabSyncEnableButtonTitle" = "تمكين مزامنة علامات التبويب";
+
+/* The placeholder written in seach bar while tab-tray is showing open tabs. */
+"opentabs.tabTrayOpenSearchBarTitle" = "البحث في علامات التبويب من الأجهزة الأخرى";
+
+/* Title for open tabs menu item */
+"OpenTabsMenuItem" = "علامات التبويب المفتوحة";
+
+/* Button title to that opens a website. */
+"OpenWebsite" = "فتح موقع الويب";
+
+/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+"optionsMenu.braveLeoItemDescription" = "Leo هو مساعد ذكي يعمل بالذكاء الاصطناعي، وهو مدمج في المتصفح مباشرةً";
+
+/* The subtitle description of menu item Brave News */
+"optionsMenu.braveNewsItemDescription" = "أهم الأخبار اليوم في موجز أخبار خاص";
+
+/* Brave News Item Menu title */
+"optionsMenu.braveNewsItemTitle" = "أخبار";
+
+/* The subtitle description of menu item Brave Playlist */
+"optionsMenu.bravePlaylistItemDescription" = "احتفظ بقائمة تشغيل غير متصلة بالإنترنت لأي فيديو / دفق";
+
+/* Brave News Item Menu title */
+"optionsMenu.bravePlaylistItemTitle" = "قائمة التشغيل";
+
+/* The subtitle description of menu item Brave Talk */
+"optionsMenu.braveTalkItemDescription" = "مكالمات الفيديو الخاصة، مباشرة في متصفحك";
+
+/* Brave Talk Item Menu title */
+"optionsMenu.braveTalkItemTitle" = "محادثة";
+
+/* The subtitle description of menu item Brave VPN */
+"optionsMenu.braveVPNItemDescription" = "حماية جهازك بالكامل عبر الإنترنت";
+
+/* Brave VPN Item Menu title */
+"optionsMenu.braveVPNItemTitle" = "VPN";
+
+/* The subtitle description of menu item Brave Wallet */
+"optionsMenu.braveWalletItemDescription" = "محفظة التشفير الآمنة، لا يلزم التمديد";
+
+/* Privacy Features Section title */
+"optionsMenu.menuSectionTitle" = "ميزات Brave";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "إعدادات الخصوصية الأخرى";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "إعدادات أخرى";
+
+/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
+"p3a.continue" = "متابعة";
+
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "تساعد هذه الاستجابات الخاصة متصفح Brave على تقدير الاستخدام العام لميزات معينة وجعلها أفضل بالنسبة لك.";
+
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+"p3a.settingTitle" = "السماح بتحليلات المنتجات التي تحافظ على الخصوصية (P3A)";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotFullySecureTitle" = "اتصالك بهذا الموقع ليس آمنًا تمامًا.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureDetailedWarning" = "يجب عدم إدخال أي معلومات حساسة على هذا الموقع (على سبيل المثال، كلمات المرور أو بطاقات الائتمان)، لأنه يمكن سرقتها من قبل المهاجمين.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureTitle" = "اتصالك بهذا الموقع غير آمن.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "لم يتم التحقق من اتصال الموقع.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "تعذر التحقق من اتصالك بهذا الموقع بالكامل. يمكنك المتابعة أو محاولة إعادة تحميل الصفحة لإنشاء اتصال آمن.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "‏تسجيل الدخول إلى موقع الويب";
+
+/* No comment provided by engineer. */
+"pageSecurityView.viewCertificateButtonTitle" = "عرض الشهادة";
+
+/* Title for the section for the global/default zoom level */
+"pagezoom.settings.defaultZoomLevelSectionTitle" = "مستوى تكبير/تصغير صفحة الويب الافتراضي";
+
+/* Description for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesDescription" = "عندما يتغير مستوى التكبير / التصغير لموقع الويب، سيظهر موقع الويب في القائمة هنا. حاليًا، لا توجد مواقع ويب تم تكبيرها أو تصغيرها.";
+
+/* Title for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesTitle" = "لا توجد مواقع ويب مضافة";
+
+/* Title for the section for the Web-Page zoom level of other websites */
+"pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "جميع مواقع الويب الأخرى";
+
+/* Title of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all" = "إعادة تعيين الكل";
+
+/* Description of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all-description" = "إعادة تعيين مستويات تكبير / تصغير موقع الويب";
+
+/* Title for list of websites shown in settings screen */
+"pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "إعدادات صفحة محددة";
+
+/* Title of the Web-Page Zoom screen */
+"pagezoom.settings.title" = "تكبير / تصغير الصفحة";
+
+/* Title for the web-page zoom level view */
+"pagezoom.zoomView.text" = "تكبير / تصغير الصفحة";
+
+/* Title for passwords menu item */
+"PasswordsMenuItem" = "كلمات المرور";
+
+/* Setting to allow the app to restore private browsing tabs */
+"PersistentPrivateBrowsing" = "التصفح الخاص المستمر";
+
+/* Persistent private browsing alert message to existing users */
+"PersistentPrivateBrowsingAlertMessage" = "يسمح لـ Brave باستعادة علامات تبويب التصفح الخاصة، حتى إذا قمت بإغلاق / إعادة فتح التطبيق";
+
+/* Persistent private browsing alert title to existing users */
+"PersistentPrivateBrowsingAlertTitle" = "استعادة علامات التبويب الخاصة";
+
+/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
+"PhotoBy" = "الصورة بواسطة %@";
+
+/* A message shown when the user adds media to the playlist. '%@' will be replaced by the folder it was added to. Example: 'Added to Play Later' */
+"playList.addedToPlaylistMessage" = "تمت الإضافة إلى %@";
+
+/* Alert Description for adding videos to playlist */
+"playList.addToPlayListAlertDescription" = "هل ترغب في إضافة هذا الفيديو إلى قائمة التشغيل الخاصة بك؟";
+
+/* Alert Title for adding videos to playlist */
+"playList.addToPlayListAlertTitle" = "أضف إلى قائمة التشغيل لدى Brave";
+
+/* The title of the screen in CarPlay that contains all the audio/playback options */
+"playlist.carplayOptionsScreenTitle" = "خيارات التشغيل";
+
+/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
+"playlist.carplayRestartPlaybackButtonStateDisabled" = "تم التعطيل. انقر لتمكين إعادة تشغيل التشغيل.";
+
+/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
+"playlist.carplayRestartPlaybackButtonStateEnabled" = "تم التمكين. انقر لتعطيل إعادة تشغيل التشغيل.";
+
+/* The description of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionDetailsTitle" = "تحديد ما إذا كان تحديد عنصر قيد التشغيل بالفعل سيؤدي إلى إعادة تشغيل التشغيل أم لا، أو متابعة التشغيل من حيث توقف آخر مرة";
+
+/* The title of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionTitle" = "إعادة تشغيل التشغيل";
+
+/* The title of the section containing settings/options in CarPlay */
+"playlist.carplaySettingsSectionTitle" = "الإعدادات";
+
+/* The title of the playlist when in Carplay mode */
+"playlist.carplayTitle" = "قائمة تشغيل Brave";
+
+/* Title for changing the folder of the current media playlist item */
+"playList.changeFoldersButtonTitle" = "تغيير قائمة التشغيل";
+
+/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
+"playlist.deleteForOfflineButtonTitle" = "حذف ذاكرة التخزين المؤقت دون اتصال";
+
+/* The description for the alert that shows up when an item is expired */
+"playList.expiredAlertDescription" = "كان هذا الفيديو عبارة عن بث مباشر أو تم الوصول إلى الحد الزمني. يرجى إعادة فتح الرابط للتحديث.";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.expiredAlertTitle" = "فيديو منتهي الصلاحية";
+
+/* Text indicator on the table cell If a video is expired */
+"playList.expiredLabelTitle" = "انتهت الصلاحية";
+
+/* Number of items in the playlsit folder. Example: '10 items' */
+"playlist.folderItemCountPlural" = "%d من العناصر";
+
+/* Title for when there's a single item inside of a folder */
+"playlist.foldersCountSingular" = "%d عنصر";
+
+/* Description for load resources error alert */
+"playList.loadResourcesErrorAlertDescription" = "حدثت مشكلة أثناء تحميل المورد!";
+
+/* Description footer for playlist menu badge option */
+"playlist.menuBadgeOptionFooterText" = "عند التمكين، سيتم عرض شارة على أيقونة القائمة الرئيسية، مما يشير إلى أنه يمكن إضافة الوسائط الموجودة على الصفحة إلى قائمة التشغيل لدى Brave.";
+
+/* Title for playlist menu badge option */
+"playlist.menuBadgeOptionTitle" = "إظهار شارة إشعار القائمة";
+
+/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
+"playlist.movePlaylistShareActionMenuTitle" = "نقل...";
+
+/* Detail Text when there are no items in the playlist */
+"playList.noItemLabelDetailLabel" = "يمكنك إضافة عناصر إلى قائمة التشغيل لدى Brave الخاصة بك داخل المتصفح";
+
+/* Text when there are no items in the playlist */
+"playList.noItemLabelTitle" = "لا توجد عناصر متوفرة";
+
+/* Title for download video error alert */
+"playList.noticeAlertTitle" = "ملاحظة";
+
+/* Okay Alert button title */
+"playList.okayButtonTitle" = "حسنًا";
+
+/* Title for opening the playlist */
+"playList.openInPlaylistButtonTitle" = "فتح في قائمة التشغيل";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.pictureInPictureErrorTitle" = "معذرةً، حدث خطأ أثناء محاولة عرض صورة داخل صورة.";
+
+/* Playlist alert message when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingBody" = "قائمة التشغيل نشطة بالفعل في نافذة أخرى";
+
+/* Playlist alert title when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingTitle" = "معذرةً";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "سيؤدي هذا الخيار إلى تمكين / تعطيل التشغيل التلقائي عند فتح قائمة التشغيل. ومع ذلك، لن يؤثر هذا الخيار على التشغيل التلقائي عند تحميل الفيديو التالي في القائمة.";
+
+/* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionTitle" = "التشغيل التلقائي";
+
+/* Auto Download turn Off Option */
+"playlist.playlistAutoSaveOptionOff" = "إيقاف";
+
+/* Auto Save turn On Option */
+"playlist.playlistAutoSaveOptionOn" = "تشغيل";
+
+/* Option Text for Auto Save Only Wi-Fi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "Wi-Fi فقط";
+
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "يمكن أن تؤدي إضافة ملفات الفيديو والصوت للاستخدام في وضع عدم الاتصال إلى استخدام مساحة تخزين كبيرة على جهازك بالإضافة إلى استخدام بياناتك الخلوية";
+
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "سيحتفظ هذا الخيار تلقائيًا بعناصر قائمة التشغيل الخاصة بك على جهازك حتى تتمكن من تشغيلها دون اتصال بالإنترنت.";
+
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsTitle" = "الحفظ التلقائي في وضع عدم الاتصال";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "يمكن أن تؤدي إضافة ملفات الفيديو والصوت للاستخدام في وضع عدم الاتصال إلى استخدام مساحة تخزين كبيرة على جهازك. الرجاء إزالة بعض الملفات لتحرير مساحة التخزين.";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningTitle" = "التخزين ممتلئ تقريبًا";
+
+/* When a video or audio is live and has no duration */
+"playlist.playlistLiveMediaStream" = "بث مباشر";
+
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "عند التمكين، يمكنك الضغط لفترة طويلة على معظم ملفات الفيديو / الصوت لإضافتها إلى قائمة التشغيل الخاصة بك.";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "تمكين الضغط لفترة طويلة";
+
+/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistMediaAndOfflineDataToggleOption" = "وسائط قائمة التشغيل والبيانات غير المتصلة بالإنترنت";
+
+/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistOfflineDataToggleOption" = "بيانات قائمة التشغيل دون اتصال بالإنترنت";
+
+/* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
+"playlist.playlistPopoverChangeFoldersButtonTitle" = "تغيير";
+
+/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+"playList.playlistResetAlertTitle" = "إعادة الضبط";
+
+/* Footer Text for the Playlist Settings Option for resetting Playlist. */
+"playlist.playlistResetPlaylistOptionFooterText" = "سيؤدي هذا الخيار إلى إزالة جميع مقاطع الفيديو من قائمة التشغيل بالإضافة إلى التخزين في وضع عدم الاتصال.";
+
+/* Error message when saving a playlist item for offline fails */
+"playlist.playlistSaveForOfflineErrorMessage" = "معذرةً، تعذر حفظ هذا العنصر في وضع عدم الاتصال في الوقت الحالي.";
+
+/* Title of alert when saving a playlist item for offline mode */
+"playlist.playlistSaveForOfflineErrorTitle" = "معذرةً، حدث خطأ ما";
+
+/* Title For the Section that videos are listed */
+"playList.playListSectionTitle" = "قوائم التشغيل";
+
+/* Title Playlist (used for back button, and playlist settings) */
+"playList.playListSettingTitle" = "قائمة التشغيل";
+
+/* Body for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsBody" = "هذا المجلد موجود بالفعل في قائمة التشغيل لدى Brave الخاصة بك";
+
+/* Title for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsTitle" = "معذرةً";
+
+/* Title for the Section that videos are listed */
+"playList.playlistSharedFolderSectionTitle" = "تمت مشاركتها معك";
+
+/* Title For the Section that videos are listed */
+"playList.playListSharedFolderSectionTitle" = "تمت مشاركتها معك";
+
+/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationFooterText" = "سيؤدي هذا الإعداد إلى تغيير موقع قائمة الفيديو بين الجانب الأيسر / الجانب الأيمن.";
+
+/* Option Text for Sidebar Location Left */
+"playlist.playlistSidebarLocationOptionLeft" = "اليسار";
+
+/* Option Text for Sidebar Location Right */
+"playlist.playlistSidebarLocationOptionRight" = "يمين";
+
+/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationTitle" = "موقع الشريط الجانبي";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsFooterText" = "بالنسبة للملفات الفردية، استأنف التشغيل من نقطة الإيقاف المؤقت الأخير.";
+
+/* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "تذكر موضع إعادة التشغيل للملف";
+
+/* Description for Playlist setting */
+"playlist.playlistWebCompatibilityDescription" = "لتعطيل واجهة برمجة تطبيقات WebKit MediaSource";
+
+/* Title for Playlist setting */
+"playlist.playlistWebCompatibilityTitle" = "توافق الويب";
+
+/* Title for removing offline mode storage */
+"playList.removeActionButtonTitle" = "احذف";
+
+/* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
+"playList.removedFromPlaylistMessage" = "تمت الإزالة من %@";
+
+/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertMessage" = "سيؤدي هذا إلى حذف الوسائط من التخزين دون اتصال بالإنترنت. هل تريد بالتأكيد المتابعة؟";
+
+/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertTitle" = "إزالة البيانات دون اتصال بالإنترنت";
+
+/* Message for the alert shown when the user tries to remove a video from playlist */
+"playlist.removePlaylistVideoAlertMessage" = "سيؤدي هذا إلى إزالة عنصر الوسائط من القائمة. هل تريد بالتأكيد المتابعة؟";
+
+/* Title for the alert shown when the user tries to remove an item from playlist */
+"playlist.removePlaylistVideoAlertTitle" = "إزالة عنصر الوسائط من قائمة التشغيل؟";
+
+/* Reopen Alert button title */
+"playList.reopenButtonTitle" = "إعادة فتح";
+
+/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
+"playList.savedForOfflineLabelTitle" = "تمت الإضافة إلى وضع عدم الاتصال";
+
+/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
+"playlist.saveForOfflineButtonTitle" = "حفظ في وضع عدم الاتصال بالإنترنت";
+
+/* Text indicator on the table cell while saving a video for offline */
+"playList.savingForOfflineLabelTitle" = "الحفظ في وضع عدم الاتصال ...";
+
+/* Description of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyDescription" = "لمزامنة جميع مجلدات قائمة التشغيل الخاصة بك تلقائيًا";
+
+/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyTitle" = "مزامنة مجلدات قائمة التشغيل تلقائيًا";
+
+/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionDetailsTitle" = "يمكنك فتح العنصر الحالي في علامة تبويب جديدة، أو مشاركته عبر قائمة مشاركة النظام";
+
+/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionTitle" = "قائمة قائمة التشغيل لدى Brave";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "فتح في علامة تبويب خاصة";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewTabTitle" = "فتح في علامة تبويب جديدة";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistShareActionMenuTitle" = "مشاركة...";
+
+/* Title for load resources error alert */
+"playList.sorryAlertTitle" = "معذرةً";
+
+/* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
+"playList.toastAddedToPlaylistTitle" = "تمت الإضافة إلى قائمة التشغيل لدى Brave";
+
+/* The title for the toast button when an item was added to playlist */
+"playList.toastAddToPlaylistOpenButton" = "السعر الافتتاحي";
+
+/* The title for the toast that shows up on a page containing a playlist item */
+"playList.toastAddToPlaylistTitle" = "أضف إلى قائمة التشغيل لدى Brave";
+
+/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
+"playList.toastExitingItemPlaylistTitle" = "عرض في قائمة التشغيل لدى Brave";
+
+/* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
+"playList.undoRemoveButtonTitle" = "تراجع";
+
+/* Footer for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionFooter" = "لإضافة زر قائمة تشغيل (يبدو وكأنه 4 أسطر مع رمز +) بجانب شريط العناوين في متصفح Brave. يمنحك هذا الزر وصولًا سريعًا لفتح قائمة التشغيل أو إضافة الوسائط أو إزالتها.";
+
+/* Title for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionTitle" = "تمكين زر الوصول السريع";
+
+/* The title of the screen that allows you to change the folder where a playlist item was saved to */
+"playlistFolders.changeFoldersTitle" = "نقل إلى";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldLabel" = "اسم قائمة التشغيل";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldPlaceholder" = "أدخل اسم قائمة التشغيل الخاصة بك";
+
+/* The title of the button to create a new folder */
+"playlistFolders.createNewFolderButtonTitle" = "إنشاء";
+
+/* The title of the button that allows the user to edit the name of a folder */
+"playlistFolders.editButtonTitle" = "تعديل";
+
+/* The title of the screen where the user edits folder names */
+"playlistFolders.editFolderScreenTitle" = "تحرير المجلد";
+
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "تحرير قائمة التشغيل";
+
+/* The error shown to the user when we cannot save their changes made on a folder */
+"playlistFolders.errorSavingMessage" = "معذرةً، لم نتمكن من حفظ التغييرات التي أجريتها على هذا المجلد";
+
+/* The title of the button where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderButtonTitle" = "نقل";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "قائمة التشغيل الحالية";
+
+/* The title of the screen where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderScreenTitle" = "نقل";
+
+/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+"playlistFolders.moveItemDescription" = "%@ و 1 عنصر آخر";
+
+/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithMultipleNoNameTitle" = "%lld من العناصر";
+
+/* Sometimes an item can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithNoNameTitle" = "1 عنصر";
+
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+"playlistFolders.moveMultipleItemDescription" = "%1$@ و%2$lld عناصر أكثر";
+
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "قائمة تشغيل جديدة";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "قائمة تشغيل جديدة";
+
+/* The sub-title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionSubtitle" = "انقر لتحديد مقاطع الفيديو";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "إضافة مقاطع فيديو إلى قائمة التشغيل هذه";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
+"playlistFolders.selectAFolderTitle" = "حدد قائمة تشغيل لنقل %lld من العناصر إليها";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "حدد قائمة تشغيل لنقل 1 عنصر إليها";
+
+/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
+"playlistFolders.subtitleItemCount" = "%lld من العناصر";
+
+/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
+"playlistFolders.subtitleItemSingleCount" = "1 عنصر";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "قائمة تشغيل بدون عنوان";
+
+/* Accessibility Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonAccessibilityTitle" = "إضافة إلى زر قائمة التشغيل لدى Brave";
+
+/* Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonTitle" = "حفظ";
+
+/* Menu Title for removing offline data/cache */
+"playlistFolderSharing.deleteOfflineDataMenuTitle" = "إزالة البيانات دون اتصال بالإنترنت";
+
+/* Menu Title for deleting the playlist */
+"playlistFolderSharing.deletePlaylistMenuTitle" = "حذف قائمة التشغيل";
+
+/* Menu Title for editing a folder */
+"playlistFolderSharing.editMenuTitle" = "تعديل";
+
+/* Accessibility Title for the playlist menu. */
+"playlistFolderSharing.menuButtonAccessibilityTitle" = "زر قائمة التشغيل";
+
+/* Button that adds the playlist to the local database */
+"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "إضافة قائمة التشغيل الآن";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewDescription" = "الحفظ التلقائي للاستخدام بلا اتصال مفعل، مما يعني أنه يتم حفظ الإضافات الجديدة إلى قوائم التشغيل، بما في ذلك قوائم التشغيل المشتركة، على جهازك لعرضها بلا اتصال بالإنترنت ويمكن أن تستخدم بياناتك الخلوية.\n\nيمكن إدارة الحفظ التلقائي للاستخدام بلا اتصال بالإنترنت في إعدادات قائمة التشغيل.";
+
+/* Button that takes the user to the settings menu */
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "الإعدادات";
+
+/* Title of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewTitle" = "إدارة بيانات قائمة التشغيل";
+
+/* Menu Title for renaming a folder */
+"playlistFolderSharing.renameMenuTitle" = "إعادة تسمية";
+
+/* Menu Title for saving offline data/cache */
+"playlistFolderSharing.saveOfflineDataMenuTitle" = "حفظ البيانات دون اتصال بالإنترنت";
+
+/* Menu Title for syncing playlist */
+"playlistFolderSharing.syncNowMenuTitle" = "مزامنة الآن";
+
+/* Description for closing the `Brave Shields` popover menu that is displayed. */
+"PopoverShieldsMenuClose" = "إغلاق قائمة Shields";
+
+/* Settings privacy section title */
+"Privacy" = "الخصوصية";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"privacy.tab.tray.passcode.alert" = "لتبديل وضع التصفح الخاص، يجب عليك أولًا تعيين رمز مرور على جهازك.";
+
+/* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
+"privacyHub.allTimeListsButtonText" = "قوائم جميع الوقت";
+
+/* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
+"privacyHub.allTimeListsHeader" = "جميع الأوقات";
+
+/* Title of a section to show total count of trackers blocked by Brave */
+"privacyHub.allTimeListsTrackersView" = "أدوات التتبع والإعلانات";
+
+/* Title of a section to show websites containing highest amount of trackers */
+"privacyHub.allTimeListsWebsitesView" = "المواقع الإلكترونية";
+
+/* Header title for a list of most frequent ads and trackers detected. */
+"privacyHub.allTimeListTrackersHeaderTitle" = "الإعلانات وأدوات التتبع الأكثر شيوعًا على المواقع التي تزورها";
+
+/* Header title for a list of websites with ads and trackers. */
+"privacyHub.allTimeListWebsitesHeaderTitle" = "مواقع الويب التي تحتوي على معظم الإعلانات وأدوات التتبع";
+
+/* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
+"privacyHub.allTimeSitesCount" = "%lld من المواقع";
+
+/* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
+"privacyHub.allTimeTrackersCount" = "%lld من أدوات التتبع والإعلانات";
+
+/* Title under which we display most name of the most blocked tracker or ad. */
+"privacyHub.allTimeTrackerTitle" = "أداة التتبع والإعلان";
+
+/* Title under which we display a website on which there's the highest number of trackers or ads. */
+"privacyHub.allTimeWebsiteTitle" = "موقع ويب";
+
+/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
+"privacyHub.allVPNAlertsButtonText" = "جميع التنبيهات";
+
+/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
+"privacyHub.blockedBy" = "تم حظره بواسطة";
+
+/* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
+"privacyHub.blockedLabel" = "محجوب";
+
+/* Accessibility label for the 'clear all data' button. */
+"privacyHub.clearAllDataAccessibility" = "مسح بيانات مركز الخصوصية";
+
+/* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
+"privacyHub.clearAllDataPrompt" = "مسح جميع بيانات Shields؟";
+
+/* Hide Privacy Hub Alert Hide Button */
+"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "إخفاء";
+
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "إخفاء إحصائيات الخصوصية";
+
+/* The description in alert of the hide action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetAlertDescription" = "اضغط على إخفاء لإزالة أداة إحصائيات الخصوصية. يمكنك دائمًا إعادة التمكين في الإعدادات، ضمن صفحة علامة تبويب جديدة";
+
+/* Header text, under it we display blocked items from last week */
+"privacyHub.lastWeekHeader" = "الأسبوع الماضي";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
+"privacyHub.mostFrequentTrackerAndAdBody" = "تم حظر **%1$@** بواسطة Brave Shields على مواقع **%2$ lld**";
+
+/* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
+"privacyHub.mostFrequentTrackerAndAdTitle" = "الإعلان وعلامة التبويب الأكثر شيوعًا";
+
+/* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
+"privacyHub.noDataCalloutBody" = "قم بزيارة بعض مواقع الويب للاطلاع على البيانات هنا.";
+
+/* This text is diplayed when there is no data to display to the user. The data is about blocked trackers or sites with trackers on them. */
+"privacyHub.noDataToShow" = "لا توجد بيانات لإظهارها حتى الآن.";
+
+/* Text of a callout to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutBody" = "احصل على تحديثات الخصوصية الأسبوعية حول أداة التتبع وحظر الإعلانات.";
+
+/* Text of a button to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutButtonText" = "تشغيل الإشعارات";
+
+/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationMessage" = "ملخص لكيفية حماية Brave لك عبر الإنترنت هذا الأسبوع.";
+
+/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationTitle" = "تقرير الخصوصية الأسبوعي";
+
+/* Text of a button that opens up a Privacy Reports screen. */
+"privacyHub.onboardingButtonTitle" = "افتح مركز الخصوصية";
+
+/* The title of the button action which open the privacy hub */
+"privacyHub.openPrivacyHubWidgetActionTitle" = "افتح مركز الخصوصية";
+
+/* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
+"privacyHub.privacyReportsDisclaimer" = "يتم تخزين بيانات مركز الخصوصية محليًا ولا يتم إرسالها إلى أي مكان.";
+
+/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+"privacyHub.privacyReportsTitle" = "مركز الخصوصية";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
+"privacyHub.riskiestWebsiteBody" = "**%1$@** كان لديه متوسط **%2$ lld** من أدوات التتبع والإعلانات المحظورة لكل زيارة";
+
+/* Title of a website that contained the most trackers per visit. */
+"privacyHub.riskiestWebsiteTitle" = "الموقع المحتوي على أكثر أدوات التتبع";
+
+/* This text explains a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsFooter" = "يعرض مركز الخصوصية عدد ما حظرته Shields. لن يؤثر الإعداد على عداد Shields في صفحة علامة تبويب جديدة. لا يتم احتساب بيانات Shields في النوافذ الخاصة.";
+
+/* Title of a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsTitle" = "إظهار بيانات Shields";
+
+/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsFooter" = "ينطبق الإعداد فقط إذا كنت قد اشتريت اشتراك VPN.";
+
+/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsTitle" = "إظهار تنبيهات VPN";
+
+/* This text explains what the button to clear datain the Privacy Hub is for. */
+"privacyHub.settingsSlearDataFooter" = "يعيد تعيين عدد كل شيء حظرته Shields.";
+
+/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
+"privacyHub.settingsSlearDataTitle" = "مسح بيانات Shields";
+
+/* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
+"privacyHub.shieldsLabel" = "طرق الحماية";
+
+/* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
+"privacyHub.trackingDisabledCalloutBody" = "قم بتمكين \"%@\" لرؤية البيانات هنا";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypePlural" = "أداة تتبع البريد الإلكتروني";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypeSingular" = "أدات تتبع البريد الإلكتروني";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypePlural" = "اختبارات اتصال الموقع";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypeSingular" = "اختبار اتصال الموقع";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypePlural" = "أدوات التتبع والإعلانات";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypeSingular" = "أداة التتبع أو الإعلان";
+
+/* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
+"privacyHub.vpnAlertsHeader" = "تنبيهات Brave Firewall + VPN";
+
+/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
+"privacyHub.vpnLabel" = "جدار الحماية + VPN";
+
+/* It shows a total count of items blocked by our VPN shields */
+"privacyHub.vpvnAlertsTotalCount" = "العدد الإجمالي";
+
+/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+"PrivacyPolicy" = "سياسة الخصوصية";
+
+/* Private button title */
+"Private" = "متخفي";
+
+/* No comment provided by engineer. */
+"PrivateBrowsing" = "التصفح الخاص";
+
+/* Setting to keep app in private mode */
+"PrivateBrowsingOnly" = "التصفح الخاص فقط";
+
+/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
+"PrivateBrowsingOnlyWarning" = "سيؤدي وضع التصفح الخاص فقط إلى إغلاق جميع علامات التبويب الحالية وتسجيل خروجك من جميع المواقع.";
+
+/* Private tab details */
+"PrivateTabBody" = "لا يتم حفظ علامات التبويب الخاصة في Brave، لكنها لا تجعلك مجهول الهوية عبر الإنترنت. ولن تظهر المواقع التي تزورها في علامة تبويب خاصة في سجلك وتختفي ملفات تعريف الارتباط الخاصة بها دائمًا عند إغلاقها - لن يكون هناك أي أثر لها في Brave. ومع ذلك، سيتم حفظ التنزيلات.\nيمكن لمشغل شبكة الهاتف (أو مالك شبكة Wi-Fi أو شبكة VPN التي تتصل بها) معرفة المواقع التي تزورها وستتعرف هذه المواقع على عنوان بروتوكول الإنترنت العام الخاص بك، حتى في علامات التبويب الخاصة.";
+
+/* Private tab detail text */
+"PrivateTabDetails" = "يؤدي استخدام علامات التبويب الخاصة فقط إلى تغيير ما يفعله Brave على جهازك، ولا يغير سلوك أي شخص آخر.\n\nتتعرف المواقع دائمًا على عنوان بروتوكول الإنترنت الخاص بك عند زيارتها. ومن خلال ذلك، يمكنها في كثير من الأحيان تخمين مكانك تقريبًا - عادة مدينتك. في بعض الأحيان يمكن أن يكون تخمين الموقع أكثر تحديدًا. كما تعرف المواقع أيضًا كل ما تخبرها به على وجه التحديد، مثل مصطلحات البحث. إذا قمت بتسجيل الدخول إلى أحد المواقع، فستعرف أنك مالك هذا الحساب. وستظل قيد تسجيل الخروج عند إغلاق علامات التبويب الخاصة لأن Brave سيتخلص من ملف تعريف الارتباط الذي يبقيك قيد تسجيل الدخول.\n\nيمكن لأي شخص يقوم بتوصيلك بالإنترنت (مزود خدمة الإنترنت) رؤية كل نشاط الشبكة الخاص بك. وفي كثير من الأحيان، هذا هو مشغل شبكة المحمول الخاص بك. وإذا كنت متصلًا بشبكة Wi-Fi، فهذا هو مالك تلك الشبكة، أما إذا كنت تستخدم شبكة VPN، فهذا هو الشخص الذي يدير شبكة VPN هذه. ويمكن لمزود خدمة الإنترنت معرفة المواقع التي تزورها أثناء زيارتها. إذا كانت هذه المواقع تستخدم HTTPS، فلن تتمكن من إجراء أكثر من مجرد تخمين متعلم حول ما تفعله على تلك المواقع. ولكن إذا كان الموقع يستخدم HTTP فقط، فيمكن لمزود خدمة الإنترنت رؤية كل شيء: مصطلحات البحث والصفحات التي تقرأها والروابط التي تتبعها.\n\nإذا كان صاحب العمل يدير جهازك، فقد يتتبع أيضا ما تفعله به. وربما لن يمنعه استخدام علامات التبويب الخاصة من معرفة المواقع التي زرتها. كما يمكن لشخص آخر لديه حق الوصول إلى جهازك أيضًا تثبيت برنامج يراقب نشاطك، ولن تحميك علامات التبويب الخاصة من ذلك أيضًا.";
+
+/* Private tab information link */
+"PrivateTabLink" = "تعرف على علامات التبويب الخاصة.";
+
+/* Default engine for private search. */
+"PrivateTabSearch" = "علامة تبويب خاصة";
+
+/* Title for quick-search engines settings section. */
+"QuickSearchEngines" = "محركات البحث السريع";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "تقييم Brave";
+
+/* Accessibility label for button increasing font size in display settings of reader mode */
+"ReaderModeBiggerFontButtonAccessibilityLabel" = "زيادة حجم النص";
+
+/* Button for larger reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeBiggerFontButtonTitle" = "+";
+
+/* Accessibility label for brightness adjustment slider in Reader Mode display settings */
+"ReaderModeBrightSliderAccessibilityLabel" = "السطوع";
+
+/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
+"ReaderModeDisplaySettingsButtonTitle" = "إعدادات العرض";
+
+/* Error displayed when reader mode cannot be enabled */
+"ReaderModeErrorConvertDisplayText" = "حدث خطأ أثناء تحويل الصفحة";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSerifTitle" = "Serif";
+
+/* Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeFontSizeLabelText" = "أأ";
+
+/* Accessibility hint for the font type buttons in reader mode display settings */
+"ReaderModeFontTypeButtonAccessibilityHint" = "لتغيير نوع الخط.";
+
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadingContentDisplayText" = "جارٍ تحميل المحتوى...";
+
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadOriginalLinkText" = "تحميل الصفحة الأصلية";
+
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModePageCantShowDisplayText" = "تعذر عرض الصفحة في طريقة عرض القارئ.";
+
+/* Title of a bar that show up when you enter reader mode. */
+"readerModeSettingsButton" = "وضع القارئ";
+
+/* Accessibility label for button decreasing font size in display settings of reader mode */
+"ReaderModeSmallerFontButtonAccessibilityLabel" = "تقليل حجم النص";
+
+/* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeSmallerFontButtonTitle" = "-";
+
+/* Accessibility hint for the color theme setting buttons in reader mode display settings */
+"ReaderModeThemeButtonAccessibilityHint" = "لتغيير سمة اللون.";
+
+/* Title for Clear Button inside Recently Closed Tabs */
+"recently.closed.action.clear" = "محو";
+
+/* Confirmation message for Clear Button action inside Recently Closed Tabs */
+"recently.closed.confirmation.clear.title" = "مسح جميع علامات التبويب المغلقة مؤخرًا؟";
+
+/* Title for empty screen Recently Closed Tabs */
+"recently.closed.empty.list.title" = "لا توجد علامات تبويب مغلقة مؤخرًا.";
+
+/* Open Tab action title */
+"recently.closed.open" = "السعر الافتتاحي";
+
+/* Re-open Last Tab action title */
+"recently.closed.reopen.latest" = "إعادة فتح آخر علامة تبويب مغلقة";
+
+/* Description for alert to ask user for opening last closed tab in list */
+"recently.closed.shake.description" = "هل تريد فتح أحدث علامة تبويب مغلقة؟";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.title" = "علامات التبويب المغلقة مؤخرًا";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.view.tab" = "عرض علامات التبويب المغلقة مؤخرًا";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "محو";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "مسح الأخيرة";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "بيانات البحث الأخيرة";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "إيقاف";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "تمكين";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "قائمة التفضيلات";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "إخفاء";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "لصق والانتقال";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "مُشغَّل";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "الممسوحة ضوئيًا";
+
+/* Scanning a QR Code for searching body */
+"RecentSearchScannerDescriptionBody" = "للبحث عن طريق رمز الاستجابة السريعة، قم بمحاذاة رمز الاستجابة السريعة في وسط الإطار.";
+
+/* Scanning a QR Code for title */
+"RecentSearchScannerDescriptionTitle" = "تعليمات";
+
+/* Scanning a QR Code for searching */
+"RecentSearchScannerTitle" = "مسح كود الاستجابة السريعة QR";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "تتيح لك عمليات البحث الأخيرة الوصول بشكل خاص إلى عمليات البحث السابقة. هل ترغب في تمكين عمليات البحث الأخيرة؟";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "عمليات البحث الأخيرة";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "عرض";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "عرض المزيد";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "اقتراحات البحث";
+
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "يعيد توجيه روابط Reddit تلقائيًا إلى الواجهة القديمة (عند old.reddit.com). لفرض واجهة Reddit الجديدة، استخدم new.reddit.com بدلًا من ذلك.";
+
+/* Button to remove a favorite */
+"RemoveFavorite" = "إزالة قائمة المفضلات";
+
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "الإبلاغ عن موقع إلكتروني معطل";
+
+/* Providers the user an email page where they can submit a but report. */
+"ReportABug" = "الإبلاغ عن خطأ";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "التفاصيل الإضافية (اختياري):";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "تواصل معي على: (اختياري)";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "البريد الإلكتروني، تويتر، إلخ.";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "إخطار مطوري Brave بأن هذا الموقع لا يعمل بشكلٍ سليم مع Shields:";
+
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "ملاحظة: سيتضمن التقرير المرسل إلى خوادم Brave عنوان الموقع ورقم إصدار متصفح Brave وإعدادات Shields وحالة VPN وإعدادات اللغة.";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "إرسال";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraAndMicrophonePermissionPrompt" = "يرغب \"%@\" في الوصول إلى الكاميرا والميكروفون";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraPermissionPrompt" = "يرغب \"%@\" في الوصول إلى الكاميرا";
+
+/* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
+"requestCaptureDevicePermissionAllowButtonTitle" = "السماح";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCaptureDevicePermissionPrompt" = "يرغب \"%@\" في الوصول إلى جهاز التقاط الوسائط";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestMicrophonePermissionPrompt" = "يرغب \"%@\" في الوصول إلى الميكروفون";
+
+/* Name of folder where restored bookmarks are retrieved */
+"RestoredBookmarksFolderName" = "الإشارات المرجعية المستعادة";
+
+/* Name of folder where restored favorites are retrieved */
+"RestoredFavoritesFolderName" = "قائمة المفضلات المستعادة";
+
+/* Restore Tabs Affirmative Action */
+"RestoreTabAffirmativeButtonTitle" = "نعم";
+
+/* Restore Tabs Negative Action */
+"RestoreTabNegativeButtonTitle" = "الرقم";
+
+/* Restore Tabs Prompt Description */
+"RestoreTabOnCrashAlertMessage" = "لسوء الحظ، تعطل Brave أو لم يغلق بشكل صحيح.\nهل تريد استعادة علامات التبويب الخاصة بك؟";
+
+/* Restore Tabs Prompt Title */
+"RestoreTabOnCrashAlertTitle" = "تم إغلاق Brave بشكل غير متوقع.";
+
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "باستخدام Brave Rewards، يمكنك عرض الإعلانات التي تحافظ على الخصوصية من شبكة إعلانات Brave. لا توجد أدوات تتبع. ولا تباطؤ. وتبقى بياناتك آمنة تمامًا.";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "تشغيل المكافآت";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "انقر على أي مكان في الشاشة لمواصلة التواجد في Brave Talk.";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "يمكنك إجراء مكالمة مجانية الآن";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "للبدء في إجراء مكالمة حرة، قم بتشغيل Brave Rewards.";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "بالنقر، توافق على %1$@ و%2$@. تعطيل أي وقت في الإعدادات.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "تمكين مكافآت Brave";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "عدد منشئي المحتوى الذين تساعد في دعمهم هذا الشهر.";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "لم يتحقق منشئ المحتوى هذا ولن يتم تضمينه في دعم منشئي المحتوى";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAmount" = "المبلغ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAnonymous" = "مجهول";
+
+/* No comment provided by engineer. */
+"RewardsInternalsBalanceInfoHeader" = "معلومات الرصيد";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsConfirmation" = "هل أنت متأكد من رغبتك في مسح جميع سجلات المكافآت؟";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsTitle" = "مسح السجلات";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionAmount" = "مقدار المساهمة";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorBraveTokens" = "رموز Brave المميزة";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorNone" = "بلا";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUphold" = "تأييد";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUserFunds" = "أموال المستخدم";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepACOff" = "إيقاف المساهمة التلقائية";
+
+/* 'AC' refers to Auto-Contribute */
+"RewardsInternalsContributionsStepACTableEmpty" = "جدول المساهمة التلقائية فارغ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCompleted" = "مكتمل";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCreds" = "بيانات الاعتماد";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepExternalTransaction" = "المعاملات الخارجية";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepFailed" = "فشل";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepNotEnoughFunds" = "لا توجد أموال كافية";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepPrepare" = "إعداد";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepReserve" = "الاحتياطي";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepRewardsOff" = "إيقاف المكافآت";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepStart" = "البدء";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsTitle" = "المساهمات";
+
+/* No comment provided by engineer. */
+"RewardsInternalsCreatedAt" = "تم إنشاؤه في";
+
+/* No comment provided by engineer. */
+"RewardsInternalsDeviceInfoHeader" = "معلومات الجهاز";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrolled" = "مسجل";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrollmentState" = "حالة التسجيل";
+
+/* No comment provided by engineer. */
+"RewardsInternalsExpiresAt" = "ينتهي في";
+
+/* No comment provided by engineer. */
+"RewardsInternalsInvalid" = "غير صالح";
+
+/* No comment provided by engineer. */
+"RewardsInternalsKeyInfoSeed" = "بذرة المعلومات الأساسية";
+
+/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
+"RewardsInternalsLogsCount" = "تظهر %d من السجلات";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLogsTitle" = "السجلات";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotEnrolled" = "غير مسجل";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotSupported" = "غير مدعوم";
+
+/* No comment provided by engineer. */
+"RewardsInternalsProcessor" = "المعالج";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublisher" = "ناشر";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublishers" = "الناشرون";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRetryCount" = "عدد مرات إعادة المحاولة";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeAutoContribute" = "المساهمة التلقائية";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeOneTimeTip" = "نصيحة لمرة واحدة";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeRecurringTip" = "إكرامية دورية";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "الملف الشخصي للمكافآت والجهاز ومعلومات الرصيد (تتم مشاركتها دائمًا)";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicTitle" = "معلومات أساسية";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableContributionsDescription" = "أي مساهمات يتم تقديمها إلى الناشرين من خلال الإكرامية أو المساهمة التلقائية";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseDescription" = "مخزن البيانات الداخلي";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseTitle" = "قاعدة بيانات المكافآت";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableLogsDescription" = "تسجيل خاص للمكافآت";
+
+/* No comment provided by engineer. */
+"RewardsInternalsShare" = "مشاركة";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsShareInternalsTitle" = "مشاركة المكافآت الداخلية";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "قد تكون البيانات الموجودة على هذه الصفحات حساسة. كن حذرًا بخصوص من تشاركها معه.";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningTitle" = "تحذير";
+
+/* No comment provided by engineer. */
+"RewardsInternalsStatus" = "الحالة";
+
+/* i.e. 'Step: Started' */
+"RewardsInternalsStep" = "خطوة";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSupported" = "مدعوم";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsTitle" = "المكافآت الداخلية";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalAmount" = "المبلغ الإجمالي";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalBalance" = "إجمالي الرصيد";
+
+/* No comment provided by engineer. */
+"RewardsInternalsType" = "النوع";
+
+/* No comment provided by engineer. */
+"RewardsInternalsValid" = "صالح";
+
+/* No comment provided by engineer. */
+"RewardsInternalsVersion" = "الإصدار";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "تاريخ إنشاء ملف تعريف المكافآت";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "معلومات ملف تعريف المكافآت";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "معرف دفع المكافآت";
+
+/* Button to show the rewards panel */
+"RewardsPanel" = "لوحة المكافآت";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "حفظ";
+
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "حفظ التغييرات";
+
+/* Settings item for clearing passwords and login data */
+"SavedLogins" = "بيانات تسجيل الدخول المحفوظة";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "علامات التبويب المحفوظة";
+
+/* Context menu item for saving an image */
+"SaveImageActionTitle" = "حفظ الصورة";
+
+/* Setting to enable the built-in password manager */
+"SaveLogins" = "حفظ تسجيلات الدخول";
+
+/* individual blocking statistic title */
+"ScriptsBlocked" = "البرامج النصية المحظورة";
+
+/* The placeholder text for bookmark search */
+"searchBookmarksTitle" = "بحث في الإشارات المرجعية";
+
+/* Label for search engine buttons. The argument corresponds to the name of the search engine. */
+"SearchEngineFormatText" = "بحث %@";
+
+/* Search engines section of settings */
+"SearchEngines" = "محرّكات البحث";
+
+/* Accessibility hint describing the action performed when a search suggestion is clicked */
+"SearchesForSuggestionButtonAccessibilityText" = "للبحث عن الاقتراح";
+
+/* Section header for history and bookmarks and open tabs option */
+"SearchHistorySectionHeader" = "افتح علامات التبويب والإشارات المرجعية والسجل";
+
+/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
+"SearchInputViewClearButtonTitle" = "مسح البحث";
+
+/* Accessibility label for entering search mode for logins */
+"SearchInputViewOverlayAccessibilityLabel" = "الدخول إلى وضع البحث";
+
+/* Accessibility label for the search input field in the Logins list */
+"SearchInputViewTextFieldAccessibilityLabel" = "حقل إدخال البحث";
+
+/* Title for the search field at the top of the Logins list screen */
+"SearchInputViewTitle" = "بحث";
+
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "إضافة محرك بحث مخصص";
+
+/* Label for showing browser suggestion setting description */
+"SearchSettingBrowserSuggestionCellDescription" = "قم بتشغيل هذا لتضمين نتائج من السجل والإشارات المرجعية عند البحث";
+
+/* Label for showing browser suggestion setting */
+"SearchSettingBrowserSuggestionCellTitle" = "إظهار اقتراحات المتصفح";
+
+/* Navigation title for search settings. */
+"SearchSettingNavTitle" = "بحث";
+
+/* Label for showing recent search setting. */
+"SearchSettingRecentSearchesCellTitle" = "إظهار عمليات البحث الأخيرة";
+
+/* Label for search settings button. */
+"SearchSettingsButtonTitle" = "إعدادات البحث";
+
+/* Label for show search suggestions setting. */
+"SearchSettingSuggestionCellTitle" = "إظهار اقتراحات البحث";
+
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
+"SearchSuggestionFromFormatText" = "اقتراحات البحث من %@";
+
+/* Action title for Switching to an existing tab for the suggestion item shown on the table list */
+"searchSuggestionOpenTabActionTitle" = "التبديل إلى علامة التبويب هذه";
+
+/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+"SearchSuggestionSectionTitleFormat" = "بحث %@";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "بحث";
+
+/* Section header for search suggestions option */
+"SearchSuggestionsSectionHeader" = "اقتراحات البحث";
+
+/* Title of an action that allows user to perform a one-click web search for selected text */
+"SearchWithBrave" = "بحث باستخدام Brave";
+
+/* Settings security section title */
+"Security" = "أمن المعلومات";
+
+/* No comment provided by engineer. */
+"sendButtonTitle" = "إرسال";
+
+/* Message displayed in the crash dialog above the buttons used to select when sending reports */
+"SendCrashReportAlertMessage" = "إرسال تقرير الأعطال حتى يتمكن Brave من حل المشكلة؟";
+
+/* Title for prompt displayed to user after the app crashes */
+"SendCrashReportAlertTitle" = "عفوًا! تعطل Brave";
+
+/* Used as a button label for crash dialog prompt */
+"SendReportButtonTitle" = "إرسال تقرير";
+
+/* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "يمكن الآن تعيين Brave كمتصفح افتراضي في iOS. اضغط هنا لفتح الإعدادات.";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "التعيين كمتصفح افتراضي";
+
+/* No comment provided by engineer. */
+"Settings" = "الإعدادات";
+
+/* Settings option to never close tabs automatically, must be done manually */
+"settings.autocloseTabsManualOption" = "يدويًا";
+
+/* Settings option to close old tabs after 1 day */
+"settings.autocloseTabsOneDayOption" = "بعد يوم واحد";
+
+/* Settings option to close old tabs after 1 month */
+"settings.autocloseTabsOneMonthOption" = "بعد شهر واحد";
+
+/* Settings option to close old tabs after 1 week */
+"settings.autocloseTabsOneWeekOption" = "بعد أسبوع واحد";
+
+/* Name of app setting that allows users to automatically close tabs. */
+"settings.autocloseTabsSetting" = "إغلاق علامات التبويب";
+
+/* Description of autoclose tabs feature. */
+"settings.autocloseTabsSettingFooter" = "السماح لـ Brave بإغلاق علامات التبويب التي لم يتم عرضها مؤخرًا تلقائيًا.";
+
+/* Label for the navigation link to quality settings view */
+"settings.highestQualityPlayback" = "تشغيل بأعلى جودة";
+
+/* Detail text for the navigation link to quality settings view */
+"settings.highestQualityPlaybackDetail" = "يسمح بدقة عالية الجودة";
+
+/* Header for the general settings section */
+"settings.media.general" = "عام";
+
+/* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
+"settings.media.rootSetting" = "الوسائط";
+
+/* A toggle label which lets the user always open YouTube urls in Brave */
+"settings.openYouTubeInBrave" = "فتح روابط YouTube في متصفح Brave";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSetting" = "تمكين مدة تشغيل الشاشة";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSettingDescription" = "تعرف على مواقع الويب التي تقضي معظم الوقت عليها، وقم بتعيين حدود التصفح. [تعرف على المزيد](%@)";
+
+/* Title for the quality settings view */
+"settings.qualitySettings" = "إعدادات الجودة";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "تتيح أداة البينج الخاصة هذه لمتصفح Brave تقدير المستخدمين النشطين.";
+
+/* Title to explain the daily usage ping toggle */
+"settings.sendUsagePingTitle" = "الإرسال التلقائي لأداة البينج للاستخدام اليومي إلى Brave";
+
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
+
+/* Error message that is shown in settings when there was a problem loading */
+"SettingsContentLoadErrorMessage" = "تعذر تحميل الصفحة.";
+
+/* Row name for licenses. */
+"SettingsLicenses" = "التراخيص";
+
+/* Title for settings menu item */
+"SettingsMenuItem" = "الإعدادات";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionBottomBar" = "الشريط السفلي";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionTopBar" = "الشريط العلوي";
+
+/* Tabs settings section title */
+"SettingsTabsSectionTitle" = "علامات التبويب";
+
+/* Context menu item for sharing a link URL */
+"ShareLinkActionTitle" = "مشاركة الرابط";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "مشاركة مع...";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"shareWithTitle" = "مشاركة مع...";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "تهانينا على الوصول إلى هذا الإنجاز المتعلق بالخصوصية.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkExclusiveTierTitle" = "تهانينا. لقد أصبحت عضوًا في نادٍ حصري.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkGrandTierTitle" = "تهانينا. لقد أصبحت أستاذًا كبيرًا.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkLegendaryTierTitle" = "تهانينا. أنت أسطوري.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkPrimeTierTitle" = "تهانينا. لقد أصبحت أستاذًا.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkProfessionalTierTitle" = "تهانينا. لقد أصبحت من المحترفين.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkSpecialTierTitle" = "تهانينا. أنت مميز جدًا.";
+
+/* Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
+"shieldEducation.domainSpecificDataSavedSubtitle" = "متوسط البيانات المحفوظة\n%@ ميجابايت";
+
+/* Action title for button at domain specific data saved pop-up */
+"shieldEducation.dontShowThisTitle" = "لا تظهر هذا مرة أخرى";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "مشاركة الأخبار";
+
+/* Subtitle for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningSubTitle" = "قامت Brave Shields بحماية خصوصيتك على الإنترنت.";
+
+/* Subtitle for Shield Education Tracker Count Share */
+"shieldEducation.trackerCountShareSubtitle" = "تهانينا. أنت مميز جدًا.";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "تم حظر %ld من أدوات التتبع والإعلانات!";
+
+/* Subtitle for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockSubtitle" = "تستهلك مقاطع الفيديو بدون إعلانات بيانات أقل.";
+
+/* Title for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockTitle" = "يتم حظر الإعلانات أثناء مشاهدة مقاطع الفيديو على هذا الموقع.";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "إعدادات Brave Shields الافتراضية العالمية";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "هذه هي إعدادات طرق الحماية الافتراضية للمواقع الجديدة. لن يؤثر تغييرها على إعداداتك الحالية لكل موقع";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "إنك تتصفح هذا الموقع دون حماية الخصوصية من Brave. ألا يعمل بشكل صحيح أثناء تشغيل Shields؟";
+
+/* shields overview message */
+"ShieldsOverview" = "تتيح لك دروع Shields الموقع التحكم في وقت حظر الإعلانات وأدوات التتبع لكل موقع تزوره. إذا كنت تفضل مشاهدة الإعلانات على موقع معين، فيمكنك تمكينها هنا.";
+
+/* shields overview footer message */
+"ShieldsOverviewFooter" = "ملاحظة: قد تتطلب بعض المواقع برامج نصية للعمل بشكل صحيح بحيث يتم إيقاف تشغيل هذا الدرع shield افتراضيًا.";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "علامة تبويب خاصة جديدة";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "علامة تبويب جديدة";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "مسح كود الاستجابة السريعة QR";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeBraveNewsDescription" = "افتح أخبار Brave وتحقق من أهم أخبار اليوم";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryDescription" = "افتح المتصفح في علامة تبويب جديدة واحذف جميع بيانات سجل المتصفح الخاص";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "مسح سجل المتصفح";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryTitle" = "مسح سجل تصفح Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNDescription" = "افتح المتصفح في علامة تبويب جديدة وقم بتمكين VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "تمكين VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNTitle" = "افتح متصفح Brave وقم بتمكين VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "فتح علامة تبويب خاصة جديدة";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabTitle" = "فتح علامة تبويب متصفح خاص جديدة";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabSuggestedPhrase" = "فتح علامة تبويب جديدة";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabTitle" = "فتح علامة تبويب متصفح جديدة";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksDescription" = "فتح شاشة الإشارات المرجعية للمتصفح";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "فتح الإشارات المرجعية";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksTitle" = "فتح الإشارات المرجعية لمتصفح Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveNewsTitle" = "فتح أخبار Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "فتح أخبار Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListDescription" = "فتح شاشة سجل المتصفح";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "فتح سجل المتصفح";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListTitle" = "فتح سجل متصفح Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistDescription" = "ابدأ تشغيل مقاطع الفيديو الخاصة بك في قائمة التشغيل";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "فتح قائمة التشغيل";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistTitle" = "فتح قائمة التشغيل";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "فتح علامات تبويب Brave فتح في أجهزة أخرى";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "فتح علامات التبويب من أجهزة أخرى";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsTitle" = "فتح علامات التبويب من أجهزة أخرى";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeTabDescription" = "بدء البحث في الويب بأمان باستخدام Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "فتح موقع الويب من الإشارة المرجعية";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "فتح موقع الويب من السجل";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "فتح موقع الويب";
+
+/* Description for opening Brave Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "سيفتح هذا الخيار إعدادات Brave. لتغيير خيارات Siri المختلفة، يرجى تحديد عنصر القائمة \"Siri والبحث\" وتخصيص اختياراتك.";
+
+/* Button title that open application settings */
+"shortcuts.shortcutOpenApplicationSettingsTitle" = "فتح الإعدادات";
+
+/* Description of Clear Browser History Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "استخدام الاختصارات لفتح علامة تبويب جديدة ومسح سجل المتصفح عبر Siri - المساعد الصوتي";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "مسح سجل المتصفح";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNDescription" = "استخدم الاختصارات لتمكين Brave VPN عبر Siri - المساعد الصوتي";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNTitle" = "تمكين VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksDescription" = "استخدام الاختصارات لفتح شاشة الإشارات المرجعية عبر Siri - المساعد الصوتي";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksTitle" = "فتح الإشارات المرجعية";
+
+/* Description of Open Brave News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "استخدام الاختصارات لفتح علامة تبويب جديدة وإظهار موجز أخبار Brave عبر Siri - المساعد الصوتي";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "فتح أخبار Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListDescription" = "استخدام الاختصارات لفتح شاشة سجل المتصفح عبر Siri - المساعد الصوتي";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListTitle" = "فتح سجل المتصفح";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "استخدام الاختصارات لفتح علامة تبويب خاصة جديدة عبر Siri - المساعد الصوتي";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "فتح علامة تبويب خاصة جديدة";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabDescription" = "استخدام الاختصارات لفتح علامة تبويب جديدة عبر Siri - المساعد الصوتي";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "فتح علامة تبويب جديدة";
+
+/* Description of Open Playlist Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "استخدام الاختصارات لفتح قائمة التشغيل عبر Siri - المساعد الصوتي";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "فتح قائمة التشغيل";
+
+/* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "استخدام الاختصارات لفتح علامات التبويب من الأجهزة الأخرى عبر Siri - المساعد الصوتي";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenSyncedTabsTitle" = "فتح علامات التبويب من أجهزة أخرى";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsTitle" = "اختصارات Siri";
+
+/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
+"ShowBookmarkButtonInTopToolbar" = "اختصار إظهار الإشارات المرجعية";
+
+/* Button to show the bookmarks list */
+"ShowBookmarks" = "إظهار الإشارات المرجعية";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showDownloadsTitle" = "عرض التنزيلات";
+
+/* Button to show the history list */
+"ShowHistory" = "عرض السجل";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showHistoryTitle" = "عرض السجل";
+
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
+"ShowInLandscapeOnly" = "أفقي فقط";
+
+/* Context menu item for showing link previews */
+"ShowLinkPreviewsActionTitle" = "إظهار معاينات الرابط";
+
+/* Accessibility Label for the tabs button in the browser toolbar */
+"ShowTabs" = "إظهار علامات التبويب";
+
+/* Setting to show/hide the tabs bar */
+"ShowTabsBar" = "شريط علامات التبويب";
+
+/* No comment provided by engineer. */
+"SiteReportedBody" = "شكراً لإخطارك مطوري Brave بوجود خطأٍ في هذا الموقع. سنبذل قصارى جهدنا لإصلاحه!";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "شكرًا";
+
+/* Brave panel topmost title */
+"SiteShieldSettings" = "طرق الحماية";
+
+/* Title used when in warning pop-over when domain specific data save appears */
+"socialSharing.domainSpecificDataSavedTitle" = "أحفظ البيانات يوميًا عبر تصفح موقع الويب باستخدام Brave.";
+
+/* Text used for social sharing together with Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "أحفظ البيانات يوميًا عبر تصفح موقع الويب باستخدام Brave.";
+
+/* Open search section of settings */
+"StandardTabSearch" = "علامة تبويب قياسية";
+
+/* Support section title */
+"Support" = "الدعم";
+
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "منع هذه الصفحة من إنشاء تنبيهات إضافية";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "إيقاف التنبيهات";
+
+/* Message of the popup if bookmark export succeeds. */
+"sync.bookmarksExportPopupSuccessMessage" = "تم تصدير الإشارات المرجعية بنجاح";
+
+/* Message of the popup if bookmark export fails. */
+"sync.bookmarksIExportPopupFailureMessage" = "فشل تصدير الإشارة المرجعية";
+
+/* Title of the bookmark import popup. */
+"sync.bookmarksImportPopupErrorTitle" = "إشارات";
+
+/* Message of the popup if bookmark import fails. */
+"sync.bookmarksImportPopupFailureMessage" = "فشل استيراد الإشارة المرجعية";
+
+/* Message of the popup if bookmark import succeeds. */
+"sync.bookmarksImportPopupSuccessMessage" = "تم استيراد الإشارات المرجعية بنجاح";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "هذا الحذف دائم ولا توجد طريقة لاستعادة البيانات. إذا قررت البدء في استخدام المزامنة مرةً أخرى، فستحتاج إلى إنشاء حساب جديد وإعادة إضافة كل جهاز واحدًا تلو الآخر.";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "الإشارات المرجعية المستوردة";
+
+/* Accessibility label for action denoting closing a tab in tab list (tray) */
+"TabAccessibilityCloseActionLabel" = "إغلاق";
+
+/* Accessiblity hint for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityHint" = "لتشغيل الوضع الخاص أو إيقاف تشغيله";
+
+/* Accessibility label for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityLabel" = "الوضع الخاص";
+
+/* Toggled OFF accessibility value */
+"TabPrivateModeToggleAccessibilityValueOff" = "إيقاف";
+
+/* Toggled ON accessibility value */
+"TabPrivateModeToggleAccessibilityValueOn" = "تشغيل";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingDescription" = "حافظ على علامات تبويب التصفح الخاص مفتوحة عند إغلاق التطبيق، مما يضمن استمرار جلسات التصفح الخاصة بسلاسة.";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingTitle" = "الاحتفاظ بعلامات التبويب الخاصة";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleFaceID" = "طلب Face ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitlePinCode" = "طلب رمز Pin";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleTouchID" = "يتطلب Touch ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateTabsSettingsTitle" = "علامات التبويب الخاصة";
+
+/* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
+"TabToolbarAccessibilityLabel" = "شريط أدوات التنقل";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabToolbarAddTabButtonAccessibilityLabel" = "إضافة علامة تبويب";
+
+/* Accessibility Label for the tab toolbar Add to Playlist button */
+"tabToolbarAddToPlaylistButtonAccessibilityLabel" = "إضافة إلى قائمة التشغيل";
+
+/* Accessibility label for the Back button in the tab toolbar. */
+"TabToolbarBackButtonAccessibilityLabel" = "الرجوع إلى الوراء";
+
+/* Accessibility Label for the tab toolbar Forward button */
+"TabToolbarForwardButtonAccessibilityLabel" = "إلى الأمام";
+
+/* Accessibility label for the lock icon, which is only present if the connection is secure */
+"TabToolbarLockImageAccessibilityLabel" = "اتصال آمن";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "القائمة";
+
+/* A label shown next to a URL that loaded in some insecure way */
+"tabToolbarNotSecureTitle" = "غير آمن";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "قائمة التشغيل";
+
+/* Accessibility label for the Reader View button */
+"TabToolbarReaderViewButtonAccessibilityLabel" = "عرض القارئ";
+
+/* Accessibility label for action adding current page to reading list. */
+"TabToolbarReaderViewButtonTitle" = "إضافة إلى قائمة القراءة";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"TabToolbarReloadButtonAccessibilityLabel" = "إعادة التحميل";
+
+/* The text shown in the URL bar on about:home */
+"TabToolbarSearchAddressPlaceholderText" = "البحث عن العنوان أو إدخاله";
+
+/* Accessibility Label for the browser toolbar Share button */
+"TabToolbarShareButtonAccessibilityLabel" = "مشاركة";
+
+/* Accessibility Label for the tab toolbar Stop button */
+"TabToolbarStopButtonAccessibilityLabel" = "إيقاف";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"tabToolbarVoiceSearchButtonAccessibilityLabel" = "البحث الصوتي";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "اتصال غير آمن";
+
+/* Accessibility label for the Tabs Tray view. */
+"TabTrayAccessibilityLabel" = "درج علامات التبويب";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabTrayAddTabAccessibilityLabel" = "إضافة علامة تبويب";
+
+/* Accessibility hint for tab tray's displayed tab. */
+"TabTrayCellCloseAccessibilityHint" = "اسحب لليمين أو اليسار بثلاثة أصابع لإغلاق علامة التبويب.";
+
+/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
+"TabTrayClosingTabAccessibilityNotificationText" = "إغلاق علامة التبويب";
+
+/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
+"TabTrayEmptyVoiceOverText" = "لا توجد علامات تبويب";
+
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+"TabTrayMultiTabPositionFormatVoiceOverText" = "علامات التبويب %1$@ إلى %2$@ من %3$@";
+
+/* Accessibility label for the New Tab button in the tab toolbar. */
+"TabTrayNewTabButtonAccessibilityLabel" = "علامة تبويب جديدة";
+
+/* Title displayed for placeholder inside Search Bar in Tab Tray */
+"TabTraySearchBarTitle" = "علامات تبويب البحث";
+
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+"TabTraySingleTabPositionFormatVoiceOverText" = "علامة التبويب b %1$@ من %2$@";
+
+/* No comment provided by engineer. */
+"TermsOfService" = "شروط الخدمة";
+
+/* Show Brave Browser TOS page from the Privacy section in the settings. */
+"TermsOfUse" = "شروط الاستخدام";
+
+/* Text for button to share referral's QR code. */
+"themeQRCodeShareButton" = "مشاركة...";
+
+/* Title for QR popup encouraging users to share the code with their friends. */
+"themeQRCodeShareTitle" = "شارك Brave مع أصدقائك!";
+
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "تلقائي";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "معتم";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "المظهر";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "لا يتم تطبيق هذه الإعدادات في وضع التصفح الخاص.";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "فاتح";
+
+/* Name for app theme settings */
+"themesSettings" = "المظاهر";
+
+/* No comment provided by engineer. */
+"Title" = "العنوان";
+
+/* History tableview section header */
+"Today" = "اليوم";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "إضافة";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "فشل إضافة المصدر";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "معذرةً، لم نتمكن من التعرف على عنوان الموجز هذا.";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "معذرةً، لم نتمكن من العثور على عنوان الموجز هذا.";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "معذرةً، لا يحتوي عنوان الموجز هذا على أي محتوى.";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "أضف مصدرًا إلى أخبار Brave";
+
+/* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
+"today.availableRSSFeedsHeaderTitle" = "مواجيز RSS المتاحة";
+
+/* The name of the feature */
+"today.braveToday" = "أخبار Brave";
+
+/* The name of the feature in settings */
+"today.braveToday.title" = "أخبار";
+
+/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+"today.channelsButtonSubtitle" = "تابع الموضوعات التي تثير اهتمامك";
+
+/* A button title that when tapped shows users a list of channels/topics that they can follow */
+"today.channelsButtonTitle" = "القنوات";
+
+/* A header title shown over a list of channels (i.e. Cars, Business, Fashion, etc.) */
+"today.channelsHeaderTitle" = "القنوات";
+
+/* A title at the top of the screen that shows a list of topics the user can follow */
+"today.channelsTitle" = "القنوات";
+
+/* No comment provided by engineer. */
+"today.contentAvailableButtonTitle" = "محتوى جديد متاح";
+
+/* No comment provided by engineer. */
+"today.deals" = "الصفقات";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disabledAlertBody" = "ستتوقف أخبار Brave عن عرض المحتوى من %@";
+
+/* No comment provided by engineer. */
+"today.disabledAlertTitle" = "تم الإيقاف";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disablePublisherContent" = "إخفاء المحتوى من %@";
+
+/* No comment provided by engineer. */
+"today.emptyFeedBody" = "حاول تشغيل بعض مصادر الأخبار";
+
+/* No comment provided by engineer. */
+"today.emptyFeedTitle" = "لا توجد مقالات لإظهارها";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.enablePublisherContent" = "السماح بالمحتوى من %@";
+
+/* No comment provided by engineer. */
+"today.errorGeneralBody" = "تواجه أخبار Brave بعض المشكلات. حاول مرةً أخرى.";
+
+/* No comment provided by engineer. */
+"today.errorGeneralTitle" = "عذراً...";
+
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+"today.followingButtonSubtitle" = "قم بإدارة مصادر الموجز الخاص بك";
+
+/* A button title that when tapped shows users a list of sources & channels they are currently following */
+"today.followingButtonTitle" = "متابعة";
+
+/* A title at the top of the screen that shows a list of the news content the user is following */
+"today.followingTitle" = "متابعة";
+
+/* A toggle title shown next to a source or channel that the user can follow. When tapped switches to 'Unfollow' */
+"today.followToggleTitle" = "متابعة";
+
+/* Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'. */
+"today.getFeedsFromSiteButtonTitle" = "الحصول على مواجيز من";
+
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "استيراد OPML";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "مصادر غير آمنة - أضف على مسؤوليتك الخاصة";
+
+/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "اتبع مصادرك المفضلة، في موجز واحد. ما عليك سوى فتح علامة تبويب في Brave، والتمرير لأسفل، و ... ها هو!\nأخبار Brave مدعومة بالإعلانات مع إعلانات خاصة مجهولة المصدر.";
+
+/* Shown above a button that turns on the \"Brave News\" product in the app. */
+"today.introCardTitle" = "قم بتشغيل Brave News، ولا تفوت أي خبر";
+
+/* No comment provided by engineer. */
+"today.isEnabledToggleLabel" = "إظهار Brave News";
+
+/* No comment provided by engineer. */
+"today.learnMoreTitle" = "اعرف المزيد عن بياناتك";
+
+/* 'Brave Offers' is a product name */
+"today.moreBraveOffers" = "المزيد من عروض Brave";
+
+/* No comment provided by engineer. */
+"today.noInternet" = "لا يوجد إنترنت";
+
+/* No comment provided by engineer. */
+"today.noInternetBody" = "حاول التحقق من اتصالك أو إعادة الاتصال بشبكة Wi-Fi.";
+
+/* Shown on the screen when a user searches for sources/channels but finds no results. */
+"today.noResultsFound" = "لم يتم العثور على نتائج";
+
+/* Shown below 'Popular Sources' explaining what sources will be shown. */
+"today.popularSourcesButtonSubtitle" = "قائمة المصادر المصنفة";
+
+/* A button title that when tapped shows users a list of news sources that are ranked the highest */
+"today.popularSourcesDestinationTitle" = "الشائع";
+
+/* A title at the top of the screen that shows a list of sources that are ranked the highest */
+"today.popularSourcesTitle" = "المصادر الشائعة";
+
+/* A button title that is placed on promoted cards */
+"today.promoted" = "تمت ترقيته";
+
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "قيّم Brave في آب ستور";
+
+/* Title for long press action that will hide Brave Rate Card */
+"today.rateBraveCardHideActionTitle" = "إخفاء";
+
+/* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
+"today.rateBraveCardRateActionTitle" = "تقييم Brave";
+
+/* Subtitle shown on the Rate Brave Card */
+"today.rateBraveCardSubtitle" = "أخبرنا ما رأيك!";
+
+/* Title shown on the Rate Brave Card */
+"today.rateBraveCardTitle" = "هل تحب Brave؟";
+
+/* No comment provided by engineer. */
+"today.refresh" = "إعادة التحميل";
+
+/* Placeholder text that appears in the search bar when empty. Site as in website. */
+"today.searchPlaceholder" = "البحث عن موقع أو موضوع أو موجز RSS";
+
+/* Shown on a row displaying a source. '%@' will be replaced with another sources name. For example: 'Similar to 9to5Mac' */
+"today.similarToSourceSubtitle" = "مماثل لـ %@";
+
+/* No comment provided by engineer. */
+"today.sourcesAndSettings" = "المصادر والإعدادات";
+
+/* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
+"today.sourcesHeaderTitle" = "المصادر";
+
+/* Shown below 'Suggested' explaining what sources will be shown. */
+"today.suggestedSourcesButtonSubtitle" = "بعض المصادر التي قد تعجبك";
+
+/* A button title that when tapped shows users a list of news sources that are suggested based on the ones they currently follow */
+"today.suggestedSourcesButtonTitle" = "مقترح";
+
+/* A title at the top of the screen that shows a list of the news content the user is being suggested */
+"today.suggestedTitle" = "مقترح";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "تشغيل أخبار Brave";
+
+/* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
+"today.unfollowToggleTitle" = "إلغاء المتابعة";
+
+/* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
+"today.userSourcesHeaderTitle" = "مصادر المستخدم";
+
+/* Button title that when tapped toggles the web page in our out of reader mode */
+"ToggleReaderMode" = "تبديل وضع القارئ";
+
+/* Prompt shown before enabling provider search queries */
+"Turn on search suggestions?" = "هل تريد تشغيل اقتراحات البحث؟";
+
+/* No comment provided by engineer. */
+"UnlockButtonTitle" = "فتح القفل";
+
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "وسائل الدفع غير المدعومة";
+
+/* Bookmark URL */
+"URL" = "‏عنوان URL";
+
+/* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
+"URLBarViewLocationTextViewAccessibilityLabel" = "العنوان والبحث";
+
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "عمليات إعادة توجيه موقع الويب";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "تم الإلغاء بواسطة المستخدم";
+
+/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
+"UseRegionalAdblock" = "استخدام أداة حظر الإعلانات adblock الإقليمية";
+
+/* No comment provided by engineer. */
+"UserWalletCloseButtonTitle" = "إغلاق";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorMessage" = "حدثت مشكلة أثناء تسجيل الدخول إلى حساب Uphold الخاص بك. يرجى المحاولة مرةً أخرى";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorTitle" = "معذرةً، حدث خطأ ما";
+
+/* Version number of Brave shown in settings */
+"VersionTemplate" = "الإصدار %1$@ (%2$@)";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "عرض على %@";
+
+/* Explanation for warning alert why the microphone access required. */
+"voice.search.microphone.description.required" = "يرجى السماح بالوصول إلى الميكروفون في إعدادات نظام iOS لـ Brave لاستخدام البحث الصوتي المجهول.";
+
+/* Title for warning alert microphone access is required. */
+"voice.search.microphone.title.required" = "يلزم الوصول إلى الميكروفون";
+
+/* Disclaimer for screen to search using voice. */
+"voice.search.screen.disclaimer" = "لا يقوم Brave بتخزين أو مشاركة عمليات البحث الصوتي الخاصة بك.";
+
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "هل تريد البقاء محميًا؟ ما عليك سوى التجديد قبل انتهاء اشتراكك. كشكر على التجديد، سنأخذ خصمًا بنسبة 20% لمدة 3 أشهر قادمة.";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "تمكين التجديد التلقائي";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "جدد اشتراك Brave VPN تلقائيًا الآن واحصل على خصم 20% لمدة 3 أشهر!";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "قم بالتجديد التلقائي لاشتراك Brave VPN الخاص بك الآن واحصل على شهر مجانًا!";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "هذا يعني أنك ستفقد حماية Brave الإضافية لكل تطبيق على هاتفك.";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "للأسف! اشتراك Brave VPN الخاص بك على وشك الانتهاء.";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Brave Firewall + VPN";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "تعذر الاتصال بآب ستور، يرجى المحاولة مرة أخرى في غضون بضع دقائق.";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "خطأ في آب ستور";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "يمنع اتصالات الشبكة غير المرغوب فيها";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "حظر الإعلانات وأدوات التتبع عبر جميع التطبيقات ";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "يدعم سرعات تصل إلى 100 ميجابت في الثانية";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "سريع وغير محدود حتى 100 ميجابت في الثانية";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "دعم على مدار الساعة طوال أيام الأسبوع";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "يؤمن جميع الاتصالات";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "مدعومة من";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "تلقائي";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "يرجى تسجيل الدخول إلى حساب Brave الخاص بك لتحديث جلسة VPN الخاصة بك.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "رفض";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "تسجيل الدخول";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "انتهت صلاحية الجلسة";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "تم الإيقاف";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "تم التمكين";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "انتهت الصلاحية";
+
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "اشترك الآن";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "هذا صحيح. اشتراك Brave VPN الخاص بك جيد الآن على ما يصل إلى 5 أجهزة. حتى تتمكن من الاشتراك في iOS واستخدامه على أجهزة Mac وWindows وAndroid مجانًا.";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "الآن، استخدم Brave VPN على جميع أجهزتك بنفس السعر!";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "جرب Brave VPN مرة أخرى واحصل على خصم 20% لمدة 3 أشهر!";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "هل أنت مستعد لحماية كل تطبيق على هاتفك؟ عد إلى Brave VPN واحصل على خصم 20% لمدة 3 أشهر قادمة.";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "لطالما حظرت Brave VPN أدوات التتبع على كل تطبيق، حتى خارج متصفح Brave. يمكنك الآن معرفة من حاول تتبعك باستخدام مركز خصوصية Brave.";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "هل تعلم أن Brave VPN تحميك خارج متصفح Brave؟";
+
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "تحديث";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "لا تقلق. سنبقي VPN نشطةً لبضعة أيام أثناء تحديث معلومات الدفع الخاصة بك.";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "قم بتحديث معلومات الدفع الخاصة بك لتظل محميًا باستخدام Brave VPN.";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "هل تريد الاستمرار في حماية كل تطبيق على هاتفك؟ ما عليك سوى تحديث تفاصيل الدفع الخاصة بك.";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "هناك مشكلة في الفوترة في حسابك، مما يعني أن اشتراك Brave VPN الخاص بك على وشك الانتهاء.";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "تحديث الدفع";
+
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "منطقة الخادم";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "الإعداد الحالي: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "منطقة VPN";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "يرجى تحديث طريقة الدفع الخاصة بك";
+
+/* The date your wallet was created */
+"WalletCreationDate" = "تاريخ إنشاء المحفظة";
+
+/* Accessibility label for the main web content view */
+"WebContentAccessibilityLabel" = "محتوى الويب";
+
+/* Temporary data that is stored on the users device to speed up future requests and interactions. */
+"websiteData.dataRecordCache" = "تخزين مؤقت";
+
+/* The word used to describe small bits of state stored locally in a web browser (e.g. Browser cookies) */
+"websiteData.dataRecordCookies" = "ملفّات تعريف الارتباط";
+
+/* Some data stored on disk that is a kind of database (such as WebSQL or IndexedDB.) */
+"websiteData.dataRecordDatabases" = "قواعد البيانات";
+
+/* A kind of browser storage particularely for saving data on the users device for a specific webpage for the given session or longer time periods. */
+"websiteData.dataRecordLocalStorage" = "تخزين محلي";
+
+/* A message displayed to users while the system fetches all website data to display. */
+"websiteData.loadingWebsiteData" = "جارٍ تحميل بيانات الموقع...";
+
+/* A button or screen title describing that the user is there to manually manage website data that is persisted to their device. I.e. to manage data specific to a web page the user has visited */
+"websiteData.manageWebsiteDataTitle" = "إدارة بيانات الموقع";
+
+/* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
+"websiteData.noSavedWebsiteData" = "لا توجد بيانات موقع محفوظة";
+
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+"websiteData.removeAllDataRecords" = "إزالة كلمات المرور كلّها";
+
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+"websiteData.removeDataRecord" = "احذف";
+
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+"websiteData.removeSelectedDataRecord" = "إزالة %ld من العناصر";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "قائمة التفضيلات";
+
+/* Title of the settings for widgets part */
+"widgets.widgetTitle" = " عناصر واجهة المستخدم";
+
+/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
+"yearAbbreviation" = "سنه";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"Yes" = "نعم";
+
+/* Button title to confirm the deletion of a bookmarks folder */
+"YesDeleteButtonTitle" = "نعم، حذف";
+
+/* History tableview section header */
+"Yesterday" = "أمس";
+
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "تمكين مقاطع فيديو YouTube عالية الجودة";
+
+/* Description of setting to enable high quality youtube videos */
+"YoutubeMediaQualityDetails" = "سيؤدي تمكين هذه الميزة التجريبية إلى تشغيل الفيديو بأقصى جودة متاحة وسيستخدم بيانات إضافية.";
+
+/* Setting that disables highest quality video playback */
+"YoutubeMediaQualityOff" = "إيقاف";
+
+/* Setting that enables high quality playback always */
+"YoutubeMediaQualityOn" = "تشغيل";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "جودة تشغيل YouTube";
+
+/* Setting that enables high quality playback on wifi only */
+"YoutubeMediaQualityWifi" = "السماح عبر شبكة Wi-Fi";
+

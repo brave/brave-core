@@ -1,0 +1,198 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "أضف قوائم إضافية أنشأها مجتمعك الموثوق واحتفظ بها.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "** اشترك فقط في القوائم من الكيانات التي تثق بها **. سيتحقق متصفحك بشكل دوري من تحديثات القائمة من عنوان URL الذي تدخله.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "إضافة فلتر حسب عنوان URL";
+
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**مشغّل Brave** هي تذكرتك إلى تجربة فيديو خالية من الإعلانات ودون انقطاع.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "ضبط الدروع Shields من أجلي";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "بدأ هذا الموقع في حظر بعض أدوات حظر الإعلانات ، مما يعني أن موقعهم قد لا يعمل كما هو متوقع.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "لمعالجة هذه المشكلة، يمكن لـ Brave ضبط إعدادات الدروع Shields نيابة عنك. بمجرد التعديل، يمكنك محاولة مشاهدة هذا المحتوى في مشغّل Brave بدلًا من ذلك.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "احتفاظ بالإعدادات الحالية";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "ضبط إعدادات حظر الإعلانات لهذا الموقع";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "حذف تلقائي بشكل نهائي";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "عدواني";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "يمنع تحميل الإعلانات والنوافذ المنبثقة وأدوات التتبع.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "تم الإيقاف";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "قياسي";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "حظر إشعارات \"التبديل إلى التطبيق\"";
+
+/* Title for the brave player feature */
+"BravePlayer" = "مشغّل Brave";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "افتح دائمًا مقاطع الفيديو من هذا الموقع باستخدام مشغّل Brave";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "جربه";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "ليس الآن";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "يتيح لك مشغّل Brave مشاهدة مقاطع الفيديو دون انقطاع.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "شاهد في مشغّل Brave بدلًا من ذلك";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "تصفية المحتوى";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "قم بتمكين التصفية المتخصصة التي تمنع أدوات التتبع اللغوية والإقليمية ومضايقات";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "قائمة الفلتر المخصصة";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "عنوان URL لقائمة التصفية المخصصة";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "تصفيات مخصصة";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "أضف فلاتر مخصصة هنا. وتأكد من استخدام بناء جملة فلتر Adblock.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "قاعدة غير صالحة \"%1$@\" في السطر %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "أضف الفلاتر المخصصة الخاصة بك هنا، واحدًا لكل سطر.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "لا تدعم الفلاتر المخصصة أكثر من %i من السطور";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "قوائم الفلاتر الافتراضية";
+
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "العودة";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "نظرًا لطلبك حجب المتتبعين والإعلانات بشكل قاطع، يحجب متصفح Brave هذا الموقع قبل إجراء أول اتصال بالشبكة.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "قام Brave بمنع الموقع التالي من التحميل:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "قد يحاول هذا الموقع تتبعك عبر مواقع أخرى";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "متابعة";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "نطاق تم حظره";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "تمكين واجهة برمجة تطبيقات JS للتحكم في الخصوصية العالمية";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "تمكين التحكم في الخصوصية العالمية";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "قوائم الفلاتر الخارجية";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "عنوان URL الذي تم إدخاله غير صالح";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "يسمح فقط بعناوين URL الآمنة (https) لقوائم الفلاتر المخصصة";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "إضافة";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "قوائم المجتمع الشهيرة الإضافية. لاحظ أن تمكين عدد كبير للغاية من عوامل التصفية سيؤدي إلى تقليل سرعات التصفح.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "تعذّر التنزيل";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "في انتظار التنزيل";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "تعديل";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "أدخل عنوان URL لقائمة عامل التصفية";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "آخر تحديث %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "أدخل عنوان URL لقائمة الفلتر هنا ";
+
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "يتم مسح البيانات الخاصة بالكوكيز ومعلومات الموقع الأخرى عند إغلاق الموقع ";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "لا تتذكرني فور أن أغلق هذا الموقع";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "صارم";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "حذف البيانات بشكل نهائي";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "مطلقًا";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "إغلاق التطبيق";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "تم إغلاق علامات تبويب الموقع";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "حذف بيانات الموقع بشكل نهائي";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "سيؤدي الحذف بشكل نهائي إلى إغلاق جميع علامات التبويب المفتوحة على هذا الموقع، وحذف جميع بيانات الموقع. ولا يمكن التراجع عن هذا الإجراء.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "هل تريد حذف بيانات الموقع بشكل نهائي؟";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "حذف بيانات الموقع بشكل نهائي الآن";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "الموقع غير آمن";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "الاتصال بـ %@ غير آمن";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "أدوات التتبع وحظر الإعلانات";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "ترقية الاتصالات إلى HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "أنت ترى هذا التحذير لأن هذا الموقع لا يدعم HTTPS.";
+
