@@ -16,6 +16,8 @@ static_library("browser") {
     "ntp_background_images_service.cc",
     "ntp_background_images_service.h",
     "ntp_p3a_helper.h",
+    "ntp_p3a_util.cc",
+    "ntp_p3a_util.h",
     "ntp_sponsored_images_data.cc",
     "ntp_sponsored_images_data.h",
     "sponsored_images_component_data.cc",
