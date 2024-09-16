@@ -29,9 +29,9 @@ TEST_F(BraveAdsReactionsTypeUtilTest,
 }
 
 TEST_F(BraveAdsReactionsTypeUtilTest,
-       ToggleLikedReactionTypeFromDislikedToNeutral) {
+       ToggleLikedReactionTypeFromDislikedToLiked) {
   // Act & Assert
-  EXPECT_EQ(mojom::ReactionType::kNeutral,
+  EXPECT_EQ(mojom::ReactionType::kLiked,
             ToggleLikedReactionType(mojom::ReactionType::kDisliked));
 }
 
@@ -50,9 +50,9 @@ TEST_F(BraveAdsReactionsTypeUtilTest,
 }
 
 TEST_F(BraveAdsReactionsTypeUtilTest,
-       ToggleDislikedReactionTypeFromLikedToNeutral) {
+       ToggleDislikedReactionTypeFromLikedToDisliked) {
   // Act & Assert
-  EXPECT_EQ(mojom::ReactionType::kNeutral,
+  EXPECT_EQ(mojom::ReactionType::kDisliked,
             ToggleDislikedReactionType(mojom::ReactionType::kLiked));
 }
 

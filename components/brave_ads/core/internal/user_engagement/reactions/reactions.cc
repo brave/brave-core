@@ -36,8 +36,10 @@ void Reactions::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
   const mojom::ReactionType toggled_mojom_reaction_type =
       ToggleLikedReactionType(mojom_reaction_type);
   if (toggled_mojom_reaction_type == mojom::ReactionType::kNeutral) {
+    // Neutral reaction, so remove it.
     ad_reactions_.erase(advertiser_id);
   } else {
+    // Non-neutral reaction, so set it.
     ad_reactions_[advertiser_id] = toggled_mojom_reaction_type;
   }
   SetProfileDictPref(prefs::kAdReactions, ReactionMapToDict(ad_reactions_));
@@ -63,8 +65,10 @@ void Reactions::ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
   const mojom::ReactionType toggled_mojom_reaction_type =
       ToggleDislikedReactionType(mojom_reaction_type);
   if (toggled_mojom_reaction_type == mojom::ReactionType::kNeutral) {
+    // Neutral reaction, so remove it.
     ad_reactions_.erase(advertiser_id);
   } else {
+    // Non-neutral reaction, so set it.
     ad_reactions_[advertiser_id] = toggled_mojom_reaction_type;
   }
   SetProfileDictPref(prefs::kAdReactions, ReactionMapToDict(ad_reactions_));
@@ -82,8 +86,10 @@ mojom::ReactionType Reactions::AdReactionTypeForId(
     const std::string& advertiser_id) const {
   const auto iter = ad_reactions_.find(advertiser_id);
   if (iter == ad_reactions_.cend()) {
+    // No reaction, so neutral.
     return mojom::ReactionType::kNeutral;
   }
+  // Reaction found.
   const auto& [_, reaction_type] = *iter;
   return reaction_type;
 }
@@ -100,8 +106,10 @@ void Reactions::ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
   const mojom::ReactionType toggled_mojom_reaction_type =
       ToggleLikedReactionType(mojom_reaction_type);
   if (toggled_mojom_reaction_type == mojom::ReactionType::kNeutral) {
+    // Neutral reaction, so remove it.
     segment_reactions_.erase(segment);
   } else {
+    // Non-neutral reaction, so set it.
     segment_reactions_[segment] = toggled_mojom_reaction_type;
   }
   SetProfileDictPref(prefs::kSegmentReactions,
@@ -126,8 +134,10 @@ void Reactions::ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
   const mojom::ReactionType toggled_mojom_reaction_type =
       ToggleDislikedReactionType(mojom_reaction_type);
   if (toggled_mojom_reaction_type == mojom::ReactionType::kNeutral) {
+    // Neutral reaction, so remove it.
     segment_reactions_.erase(segment);
   } else {
+    // Non-neutral reaction, so set it.
     segment_reactions_[segment] = toggled_mojom_reaction_type;
   }
   SetProfileDictPref(prefs::kSegmentReactions,
@@ -144,6 +154,7 @@ mojom::ReactionType Reactions::SegmentReactionTypeForId(
     const std::string& segment) const {
   const auto iter = segment_reactions_.find(segment);
   if (iter == segment_reactions_.cend()) {
+    // No reaction, so neutral.
     return mojom::ReactionType::kNeutral;
   }
   const auto [_, reaction_type] = *iter;
@@ -156,10 +167,11 @@ void Reactions::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
     return std::move(callback).Run(/*success=*/false);
   }
 
-  const auto [iterator, inserted] =
+  const auto [iter, inserted] =
       saved_ads_.insert(mojom_reaction->creative_instance_id);
   if (!inserted) {
-    saved_ads_.erase(iterator);
+    // Already saved, so unsave it.
+    saved_ads_.erase(iter);
   }
   SetProfileListPref(prefs::kSaveAds, ReactionSetToList(saved_ads_));
 
@@ -183,10 +195,11 @@ void Reactions::ToggleMarkAdAsInappropriate(
     return std::move(callback).Run(/*success=*/false);
   }
 
-  const auto [iterator, inserted] =
+  const auto [iter, inserted] =
       marked_as_inappropriate_.insert(mojom_reaction->creative_set_id);
   if (!inserted) {
-    marked_as_inappropriate_.erase(iterator);
+    // Already marked as inappropriate, so unmark it.
+    marked_as_inappropriate_.erase(iter);
   }
   SetProfileListPref(prefs::kMarkedAsInappropriate,
                      ReactionSetToList(marked_as_inappropriate_));
