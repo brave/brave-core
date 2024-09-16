@@ -110,6 +110,7 @@
 <translation id="3377025655491224618">Onglet privé</translation>
 <translation id="7304425663107214334">Afficher les suggestions du navigateur</translation>
 <translation id="8982438328166986164">Affiche des sites suggérés en fonction de vos favoris et de votre historique de navigation.</translation>
+<translation id="924029461438529367">Afficher les suggestions de recherche</translation>
 <translation id="1571106259128580884">Afficher les meilleurs sites dans les suggestions</translation>
 <translation id="9148058034647219655">Quitter</translation>
 <translation id="8047754398610073499">Bloquer les avis de consentement aux cookies</translation>
@@ -262,6 +263,8 @@
 <translation id="6511854390690723657">Voici votre première publicité sur Brave. Tapez pour en savoir plus.</translation>
 <translation id="2070991379950719711">Commencer à utiliser Brave Rewards</translation>
 <translation id="48520986898237073">Continuer vers le portefeuille</translation>
+<translation id="6213254277250932867">J'ai une phrase de récupération de 12 mots</translation>
+<translation id="4225265925807365011">J'ai une phrase de récupération de 24 mots</translation>
 <translation id="3570367516044491911">Définir comme navigateur par défaut</translation>
 <translation id="6800338374677644736">Définir comme navigateur par défaut</translation>
 <translation id="19715420010996093">Sélectionnez le navigateur Brave et appuyez sur « Toujours ».</translation>
@@ -361,6 +364,8 @@
 <translation id="6417420737057016607">Publicités Brave</translation>
 <translation id="5611966874859284786">Afficher des notifications publicitaires lorsque Brave n'est pas utilisé</translation>
 <translation id="6606319453795180219">Cette opération supprimera vos récompenses Brave et réinitialisera toutes les données relatives à celles-ci</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Réinitialiser les données liées aux Récompenses Brave…<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Effacer les données liées aux publicités Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Ajouter un marque-page</translation>
 <translation id="340492034650766959">Supprimer le favori</translation>
 <translation id="2149973817440762519">Modifier le marque-page</translation>
@@ -464,7 +469,7 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="5582686930349810484">Empreintes digitales bloquées (standard)</translation>
 <translation id="769702552748212954">Autoriser toutes les empreintes digitales</translation>
 <translation id="876424292214881779">publicités et autres éléments indésirables bloqués</translation>
-<translation id="6930134873084561197">Les sites incluent souvent des cookies et des scripts qui tentent de vous identifier, vous et votre appareil. Ils veulent savoir qui vous êtes et vous suivre sur le web en pistant ce que vous faites sur chaque site.\n\nBrave bloque ces éléments afin que vous puissiez naviguer sans être suivi.</translation>
+<translation id="6849027612978668678">Les sites incluent souvent des cookies et des scripts qui tentent de vous identifier, vous et votre appareil. Ils veulent savoir qui vous êtes et vous suivre sur le web en pistant ce que vous faites sur chaque site.\n\nBrave bloque ces éléments afin que vous puissiez naviguer sans être suivi.</translation>
 <translation id="8553998445606452168">À propos de Brave Shields</translation>
 <translation id="8912304686498704084">HAUT</translation>
 <translation id="4963218453264888510">BAS</translation>
@@ -559,6 +564,8 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="7889432931837317731">Ouvrir automatiquement lorsque c'est possible</translation>
 <translation id="1029304566263314007">Afficher les notifications de progression des téléchargements</translation>
 <translation id="2910433761530295035">Demander où enregistrer les fichiers (si une carte SD est détectée)</translation>
+<translation id="2977501775944575564">Téléchargements parallèles</translation>
+<translation id="6224180438946945617">Activez les téléchargements parallèles pour augmenter votre vitesse de téléchargement</translation>
 <translation id="8967385052772844086">Voir le rapport de confidentialité complet</translation>
 <translation id="6864343534748973390">Les plus populaires</translation>
 <translation id="4608192160278975831">Privé et sans tracking</translation>
@@ -588,44 +595,38 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="7909462264772842773">Prenez le contrôle de votre crypto-monnaie et de vos NFT. Le portefeuille Brave prend en charge Ethereum, les chaînes EVM, Solana, Filecoin et plus encore.</translation>
 <translation id="165255193061631296">Besoin d'un nouveau portefeuille ?</translation>
 <translation id="3485737865439729577">Démarrez avec le portefeuille Brave en quelques minutes</translation>
-<translation id="2759836790106646094">Faites une sauvegarde de votre portefeuille dès maintenant !</translation>
-<translation id="1078873179929044999">À l'étape suivante, vous verrez une phrase de récupération de 12 mots, que vous pouvez utiliser pour récupérer vos comptes cryptos principaux. Conservez-la en lieu sûr. Votre phrase de récupération est le seul moyen de retrouver l'accès à votre compte en cas d'oubli du mot de passe, de perte ou de vol de votre appareil, ou si vous souhaitez changer de portefeuille.</translation>
+<translation id="2540568096903252632">Saisissez un mot de passe pour continuer</translation>
+<translation id="3356580495013324916">Saisissez le mot de passe de votre portefeuille Brave pour commencer à sauvegarder le portefeuille.</translation>
 <translation id="2359808026110333948">Continuer</translation>
 <translation id="5488357322146334497">Message</translation>
-<translation id="1904000155026201268">Je comprends que si je perds ma phrase de récupération, je ne pourrai plus accéder à mon portefeuille crypto.</translation>
 <translation id="5333225216561354793">Nous vous demandons de prendre acte des éléments ci-dessous</translation>
 <translation id="6937275455070754004">Choisissez quelles chaînes de blocs utiliser dans votre portefeuille.</translation>
 <translation id="1645800479814134195">Je comprends qu'il s'agit d'un portefeuille dont j'ai la garde, et que je suis le seul responsable des fonds, actifs ou comptes associés, et que je dois prendre les mesures appropriées pour sécuriser, protéger et sauvegarder mon portefeuille. Je comprends que Brave ne peut pas accéder à mon portefeuille ou inverser des transactions en mon nom, et que ma phrase de récupération est le SEUL moyen de retrouver l'accès en cas de perte du mot de passe, de vol de l'appareil ou de circonstances similaires.</translation>
 <translation id="4565891212173086999">J'ai lu et j'accepte les <ph name="CLICK_START"/>conditions d'utilisation<ph name="CLICK_END"/>.</translation>
-<translation id="3933122286596948824">Votre phrase de récupération</translation>
-<translation id="5077747669435508720">Notez ou copiez ces mots dans l'ordre exact indiqué ci-dessous, et conservez-les en lieu sûr. Votre phrase de récupération est le seul moyen de retrouver l'accès à votre compte en cas d'oubli du mot de passe, de perte ou de vol de votre appareil, ou si vous souhaitez changer de portefeuille.</translation>
-<translation id="2708402071160162126">ATTENTION : Ne partagez jamais votre phrase de récupération. N'importe qui détenant cette phrase peut voler vos actifs sans aucun recours possible.</translation>
-<translation id="111912712268284159">J'ai sauvegardé ma phrase en lieu sûr.</translation>
-<translation id="6896758677409633944">Copier</translation>
+<translation id="3259102562570606417">Enregistrez votre phrase de récupération</translation>
+<translation id="4339981001593889376">Votre phrase de récupération est la clé qui vous permet d'accéder à votre portefeuille en cas d'oubli de votre mot de passe ou de perte de votre appareil.</translation>
+<translation id="426648489149930289">Conservez-la dans un endroit sûr inaccessible aux autres et ne la partagez avec personne.</translation>
 <translation id="3726490322412361740">Entrez votre mot de passe</translation>
-<translation id="3038243139480464605">Confirmer le mot de passe</translation>
-<translation id="7396672979287122068">La confirmation du mot de passe ne correspond pas</translation>
 <translation id="1566412704591731844">Création de votre portefeuille…</translation>
 <translation id="7779823116893018906">Cette opération peut prendre quelques secondes…</translation>
 <translation id="1577948178257477049">Compte <ph name="ACCOUNT_NAME"/> <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Ajouter un compte</translation>
 <translation id="3448492834076427715">Mettre à jour le compte</translation>
-<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="5532363218245261099">N°<ph name="NUMBER"/> <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="1537175937716697987">Voir ma phrase de récupération</translation>
+<translation id="5303015959766064022">Je la sauvegarderai plus tard</translation>
+<translation id="7345730059518887993">Passons à la vérification</translation>
+<translation id="7640406249038879146">Saisissez le mot en position <ph name="WORD_POSITION"/> dans votre phrase de récupération.</translation>
+<translation id="2598171223363459366">Vous pouvez ignorer cette étape maintenant, mais vous devez quand même sauvegarder votre phrase de récupération pour assurer la sécurité de votre compte.</translation>
 <translation id="8100001366858145406">Activer le déverrouillage par empreinte digitale ?</translation>
 <translation id="5493402808936397665">Activez l'authentification biométrique pour accéder rapidement à votre portefeuille sans entrer votre mot de passe.</translation>
 <translation id="8030647312184163932">Déverrouillage par empreinte digitale</translation>
 <translation id="4090490645603511157">Utilisez l'authentification biométrique pour accéder rapidement à votre portefeuille sans entrer votre mot de passe.</translation>
 <translation id="1544192797660353713">Portefeuille</translation>
-<translation id="6901810042765869341">Entrez votre phrase de récupération pour restaurer votre portefeuille Brave.</translation>
-<translation id="9120654436199628567">Restaurer un compte crypto</translation>
+<translation id="2321396552035646646">Vous pouvez coller l'intégralité de votre phrase de récupération dans n'importe quel champ.</translation>
+<translation id="3961126209136843111">Importer un portefeuille existant</translation>
 <translation id="4811736040444856406">Afficher la phrase de récupération</translation>
-<translation id="283071225285270357">Entrez votre phrase de récupération</translation>
-<translation id="3943857333388298514">Coller</translation>
-<translation id="3331452756822160641">Nouveau mot de passe</translation>
 <translation id="4359319875297001084">Importer depuis les portefeuilles cryptos Brave hérités ?</translation>
-<translation id="2339124864228588937">Vérifier la phrase de récupération</translation>
-<translation id="3747079125031086337">Sélectionnez les mots de votre phrase de récupération dans le bon ordre.</translation>
-<translation id="6518133107902771759">Valider</translation>
 <translation id="3157931365184549694">Restaurer</translation>
 <translation id="5844138175312846408">Vous avez déjà un portefeuille ?</translation>
 <translation id="2502258949541727762">Avant de commencer</translation>
@@ -634,6 +635,7 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="2523174693142405417">Rechercher des réseaux</translation>
 <translation id="1164748583090434571">Afficher les réseaux de test</translation>
 <translation id="935220650946301698">Poursuivre avec les réseaux <ph name="NUMBER"/></translation>
+<translation id="4052668782430384783">Mot n°<ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">Créer un mot de passe</translation>
 <translation id="2789310860394340571">Vous utiliserez ce mot de passe pour accéder à votre portefeuille.</translation>
 <translation id="2136372518715274136">Saisissez le nouveau mot de passe</translation>
@@ -651,9 +653,8 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="5619264711680220002">Déverrouillage par authentification biométrique</translation>
 <translation id="9195657745688986798">Déverrouiller le portefeuille</translation>
 <translation id="5168349973342709369">Saisir le mot de passe pour déverrouiller le portefeuille</translation>
-<translation id="3043677904160378840">Le mot de passe doit contenir au moins 8 caractères.</translation>
 <translation id="1144810021918451336">Ne vous protège pas contre les sites Internet dangereux, les téléchargements et les extensions.</translation>
-<translation id="5760476995887363522">Les phrases ne correspondent pas. Veuillez réessayer.</translation>
+<translation id="9085712756417277119">La phrase de récupération ne correspond pas</translation>
 <translation id="2360588547830602174">La récupération du compte a échoué. Veuillez réessayer.</translation>
 <translation id="1987317783729300807">Comptes</translation>
 <translation id="6284218950354553099">Envoyer automatiquement un signal d'utilisation quotidienne à Brave</translation>
@@ -688,16 +689,21 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="3510283489391432976">Choisissez votre zone géographique/pays</translation>
 <translation id="7695158478627528928">Brave n'enregistre jamais votre activité</translation>
 <translation id="4575683170451975058">Protégez 5 appareils avec 1 abonnement</translation>
+<translation id="755045397420611731">Confidentialité et sécurité en ligne renforcées</translation>
+<translation id="4520128772974831415">Masquez votre IP et changez votre géolocalisation</translation>
+<translation id="2044418816479192294">Des centaines de serveurs dans le monde entier</translation>
+<translation id="7410504850864021600">Vitesses de connexion ultra-rapides</translation>
+<translation id="2422309687188612485">Protégez jusqu'à 10 appareils avec un seul abonnement</translation>
 <translation id="4882693590083943563">Tous les forfaits incluent un <ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">essai gratuit pendant 7 jours !</translation>
 <translation id="1532536259167115948">Abonnement mensuel <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Abonnement annuel <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Renouvellement mensuel</translation>
-<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/>/mois.</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/>/mois</translation>
 <translation id="1163809943099641131">Un an</translation>
-<translation id="172859718096975160">Renouvelez annuellement <ph name="DISCOUNT_TEXT_START"/>économisez <ph name="PERCENTAGE_AMOUNT"/> %%<ph name="DISCOUNT_TEXT_END"/></translation>
-<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/>/an.</translation>
-<translation id="5125233570742276182">Les abonnements seront facturés via votre compte Google. Toute période d’essai gratuite non utilisée sera annulée en cas d’achat d’un abonnement.\n\nVotre abonnement sera automatiquement renouvelé, sauf en cas d’annulation au moins 24 heures avant la fin de la période en cours.\n\nVous pouvez gérer vos abonnements dans Paramètres.\nEn utilisant Brave, vous acceptez les Conditions d’utilisation et la Politique de confidentialité.</translation>
+<translation id="727385358513272220">Renouvellement annuel (<ph name="DISCOUNT_TEXT_START"/>économisez <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/>/an</translation>
+<translation id="2786538705804257030">Les abonnements seront facturés via votre compte Google. Toute période d’essai gratuite non utilisée sera annulée en cas d’achat d’un abonnement.\n\nVotre abonnement sera automatiquement renouvelé, sauf en cas d’annulation au moins 24 heures avant la fin de la période en cours.\n\nVous pouvez gérer vos abonnements dans les Paramètres.\n\nEn utilisant Brave, vous acceptez les Conditions d’utilisation et la Politique de confidentialité.</translation>
 <translation id="5035172357624830412">Vous avez déjà acheté sur brave.com ?</translation>
 <translation id="713136183174551885">Actualisez vos identifiants</translation>
 <translation id="6053992191006521518">Faites un essai GRATUIT</translation>
@@ -932,7 +938,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="7002577172732106572">Split Tunneling</translation>
 <translation id="8181161042860463420">Le compte de jeton associé n'existe pas encore. Une petite quantité de SOL sera dépensée pour le créer et l'alimenter. <ph name="CLICK_START"/>En savoir plus<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Mise à jour du profil VPN…</translation>
-<translation id="7457027586454688423">Saisissez le mot de passe de votre portefeuille Brave</translation>
 <translation id="4784306439879850873">Notez que Brave ne peut pas vérifier ce qui se passera si vous signez. Une signature peut autoriser presque n'importe quelle opération sur votre compte ou en votre nom, y compris (mais sans s'y limiter) donner le contrôle total de votre compte et de vos actifs cryptos au site qui en fait la demande. Ne signez que si vous voulez vraiment effectuer cette action et si vous faites confiance au site demandeur.</translation>
 <translation id="3474375934783434676">Signer à votre entière responsabilité</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> sur <ph name="SIZE"/></translation>
@@ -942,6 +947,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="2629767022373384291">Voulez-vous utiliser l'authentification biométrique pour déverrouiller le portefeuille Brave ?</translation>
 <translation id="4782919977106118997">Utiliser le déverrouillage par empreinte digitale</translation>
 <translation id="2054995875643283428">Passer ceci pour l'instant</translation>
+<translation id="2610561535971892504">Cliquer pour copier</translation>
 <translation id="2522605225061484799">Accéder à mon portefeuille</translation>
 <translation id="1148624853678088576">Tout est prêt !</translation>
 <translation id="4131445988101719379">Votre portefeuille Brave est prêt à être utilisé.</translation>
@@ -1024,7 +1030,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="6610899852831463073">Impossible d'activer la navigation sécurisée</translation>
 <translation id="7954263306665462056">La navigation sécurisée a été désactivée sur votre appareil. Pour l'activer, vérifiez que les services Google Play sont installés et à jour.</translation>
 <translation id="6605147707233193230">Activez cette fonctionnalité pour soutenir les créateurs de contenu</translation>
-<translation id="1609556006143307897">Vous soutenez les créateurs de contenu</translation>
+<translation id="5899814466108868020">Vous soutenez Brave et la communauté BAT</translation>
 <translation id="6067959437127691361">L'utilisation de Récompenses Brave aide à soutenir des créateurs de contenu et vous permet de gagner des BAT.</translation>
 <translation id="3264975266761862670">Prêt à commencer à gagner ?</translation>
 <translation id="265337947574975838">Connectez un compte ou créez-en un auprès de l'un de nos partenaires.</translation>
@@ -1123,6 +1129,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="1173894706177603556">Renommer</translation>
 <translation id="3596306474342941843">Supprimer la liste de lecture</translation>
 <translation id="7765158879357617694">Déplacer</translation>
+<translation id="6896758677409633944">Copiez</translation>
 <translation id="3803384303807438047">Supprimer les données hors ligne de l'élément</translation>
 <translation id="4195643157523330669">Ouvrir dans un nouvel onglet</translation>
 <translation id="4243710787042215766">Ouvrir dans un onglet privé</translation>

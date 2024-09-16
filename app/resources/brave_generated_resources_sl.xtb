@@ -16,6 +16,7 @@
 <translation id="8294286161128352783">Samo na strani nov zavihek</translation>
 <translation id="6406506848690869874">Sinhronizacija</translation>
 <translation id="1544192797660353713">Denarnica</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="8275068909952022340">Več…</translation>
 <translation id="1990886731975529483">Namesti in zaženi Google Widevine</translation>
 <translation id="8926389886865778422">Ne sprašuj več</translation>
@@ -58,15 +59,20 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="1434416574322382019">Novo zasebno okno v brskalniku Tor</translation>
 <translation id="4703780849509456860">Odpri povezavo v zasebnem oknu v brskalniku Tor</translation>
 <translation id="3488584642074079080">Odpri povezavo v zasebnem oknu Brave v brskalniku Tor</translation>
+<translation id="8594912907680633924">Odprite povezavo v razdeljenem  pogledu</translation>
 <translation id="6313675821927505581">Novo zasebno okno z uporabo brskalnika Tor</translation>
 <translation id="2638041073279639246">Odpri povezavo v zasebnem oknu z uporabo brskalnika Tor</translation>
 <translation id="3425600262621021599">Odpri povezave v zasebnem oknu Brave z uporabo brskalnika Tor</translation>
+<translation id="3795436270513738622">Odprite povezavo v razdeljenem pogledu</translation>
 <translation id="2545072023356206691">Od 1. decembra 2023 kanal Brave Dev ne bo več prejemal posodobitev brskalnika. Uporabnikom priporočamo, da se preselijo na Nightly, Beta ali Release različice Brave.</translation>
 <translation id="474217410105706308">Izklop zvoka zavihka</translation>
 <translation id="2804710924397009224">Skrij ikono storitve Brave Rewards</translation>
 <translation id="5029193871181468990">Skrij ikono Brave Rewards</translation>
 <translation id="2808103541110899519">Skrij ikono denarnice Brave Wallet</translation>
 <translation id="7595540212376041331">Skrij ikono denarnice Brave Wallet</translation>
+<translation id="3893997535859323951">Skrijte ikono Leo AI</translation>
+<translation id="6208515240323786457">Skrijte ikono Leo AI</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="4928988318462976765">Trgovina s spletnimi razširitvami</translation>
 <translation id="9181207987584064303">Ogled v trgovini s spletnimi razširitvami</translation>
 <translation id="3161744659507801211">Opozorilo: Brave ne more preprečiti, da bi razširitve beležile zgodovino brskanja.</translation>
@@ -99,9 +105,6 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="3462465068145800637">Iskanje Brave vam ne sledi. In je 100-odstotno neodvisno od velikanov tehnologije.</translation>
 <translation id="42032117189492785">Iskanje s pomočjo umetne inteligence in z edinstvenim indeksom.</translation>
 <translation id="8606416238399082160">Popolnoma zasebno, 100-odstotno neodvisno in z odličnimi funkcijami umetne inteligence.</translation>
-<translation id="7706528608480893054">DDG je zgolj Bing pod krinko. Čas je za resnično zasebnost, boljše rezultate in neodvisen indeks. Čas je za iskanje z Brave.</translation>
-<translation id="3818133234428578803">Z račko je konec</translation>
-<translation id="14817360483752259">Iskanje z Brave ne beleži vašega vedenja, vaših poizvedb ali vaših klikov. In (za razliko od DDG) ni zgolj Bing pod krinko.</translation>
 <translation id="4381193110021038941">Zagotovite si boljše rezultate</translation>
 <translation id="3846545273704969734">Iskanje z Brave je neodvisno preverjeno in zagotavlja boljše rezultate kot Bing (ali kloni Binga, kot je DuckDuckGo).</translation>
 <translation id="2841164160723712537">Izboljšajte rezultate iskanja</translation>
@@ -290,8 +293,9 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="2818704116581303039">Odprite nastavitve seznama predvajanja</translation>
 <translation id="6790428901817661496">Predvajanje</translation>
 <translation id="1178581264944972037">Prekini</translation>
-<translation id="4477350412780666475">Naslednja skladba</translation>
-<translation id="3962859241508114581">Prejšnja skladba</translation>
+<translation id="4046123991198612571">Naslednja skladba</translation>
+<translation id="2874939134665556319">Prejšnja skladba</translation>
+<translation id="3040310857793999281">Izklop/vklop zvoka</translation>
 <translation id="7544853251252956727">Naključno predvajanje</translation>
 <translation id="4330722796577425585">Previj nazaj</translation>
 <translation id="7481312909269577407">Naprej</translation>
@@ -302,7 +306,15 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] 
 se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="6155018868740116868">Obnovite</translation>
-<translation id="1727684853006449697">Brave predvajalnik</translation>
+<translation id="2521960050170773751">Dodajte medije s strani</translation>
+<translation id="2301087142998134097"><ph name="SITE"/> se želi odpreti</translation>
+<translation id="7128982309566342232">Vdelana stran na<ph name="SITE"/> se želi odpreti</translation>
+<translation id="1175012181261953767">Ta stran se želi odpreti</translation>
+<translation id="7459546222322124545">Vdelana stran na tej strani se želi odpreti</translation>
+<translation id="5836261838911560851"><ph name="SITE"/> se želi shraniti</translation>
+<translation id="5936788906460687941">Vdelana stran na <ph name="SITE"/> se želi shraniti</translation>
+<translation id="7700010743463174379">Ta stran se želi shraniti</translation>
+<translation id="6774238875569752630">Vdelana stran na tej strani se želi shraniti</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
 <translation id="7179921470347911571">Znova zaženite zdaj</translation>
 <translation id="1426410128494586442">Da</translation>
@@ -327,6 +339,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="5860254591544742609">Pokaži naslovno vrstico</translation>
 <translation id="5371926069408837914">Razširi ploščo z navpičnimi zavihki, ko premaknete miško, ko je strnjena</translation>
 <translation id="3367129510799209147">Način izbiranja na zavihku</translation>
+<translation id="8527099657928614787">Navpične zavihke neodvisno razširite na okno</translation>
 <translation id="916373084491701212">Prikaži vrstico za pomikanje</translation>
 <translation id="515949045075831661">Prikaži na desni strani</translation>
 <translation id="3725395376319291415">Prikaži na levi strani</translation>
@@ -343,6 +356,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="4144468798716165316">Hitri ukazi</translation>
 <translation id="7310387888625228830">Leo AI pomočnik</translation>
 <translation id="5222974844674487962">Prikaži gumb Brave News</translation>
+<translation id="2085436423511121572">Pokaži gumb za Leo AI</translation>
 <translation id="383007806262310953">Pokaži vrstico z zaznamki</translation>
 <translation id="4054323497808446566">Vrstica z zaznamki je prikazana na vseh straneh</translation>
 <translation id="8693858092251192712">Vrstica z zaznamki je skrita na vseh straneh, razen na strani novega zavihka</translation>
@@ -443,6 +457,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="4891600875049212418">Ko obiščete občutljiva spletna mesta, preklopite v Nezabeleženi način</translation>
 <translation id="1968895725257436430">Zbiranje podatkov</translation>
 <translation id="4846154056248462491">Ob izhodu</translation>
+<translation id="216468847346280584">Počisti podatke oglasov Brave ...</translation>
 <translation id="2808630562319398131">Ponastavi podatke Brave Rewards ...</translation>
 <translation id="6438096877646138757">Spletna mesta, ki izbrišejo piškotke, ko jih zaprete</translation>
 <translation id="2988792685798128092">Počisti po zaprtju spletnega mesta</translation>
@@ -556,6 +571,8 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="4094590686212463338">Ni se bilo mogoče pridružiti tej sinhronizacijski verigi. Sinhronizacijska veriga je bila izbrisana.</translation>
 <translation id="4908081302669157000">Telefonske številke, e-pošta in naslovi</translation>
 <translation id="294985549514492876">Spletne aplikacije (PWAs)</translation>
+<translation id="924029461438529367">Prikaži predloge za iskanje</translation>
+<translation id="3128251601544028053">Ko v naslovno vrstico ali iskalno polje vtipkate besedilo, Brave vneseno besedilo pošlje vašemu privzetemu iskalniku, da tako dobi boljše predloge. To v zasebnih oknih ni na voljo.</translation>
 <translation id="6285118765755298263">Indeksiraj druge iskalnike</translation>
 <translation id="919715748352669592">Samodejno indeksira spletna mesta, ki sledijo specifikacijam OpenSearch.</translation>
 <translation id="842628013524824194">Običajno okno - iskalnik, ki se uporablja v naslovni vrstici</translation>
@@ -671,7 +688,6 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="3095201688102519917">Opozori me pred zaprtjem okna z več zavihki</translation>
 <translation id="7120553802660696133">Zapri okno, ko se zapre zadnji zavihek</translation>
 <translation id="3394171693948989253">Ob izhodu prikaži celozaslonski opomnik za pritisk tipke Esc</translation>
-<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Pokaži ikono Leo v stranski vrstici</translation>
 <translation id="8055509865174199683">Prikaži Leo v kontekstnem meniju na spletnih mestih</translation>
 <translation id="1529674267267221673">Leo se prikaže v kontekstnem meniju, ko z desno tipko miške kliknete na spletno mesto. To bo v program Leo poslalo kontekst iz trenutne spletne strani.</translation>

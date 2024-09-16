@@ -110,6 +110,7 @@
 <translation id="3377025655491224618">Privat fane</translation>
 <translation id="7304425663107214334">Vis forslag til nettlesere</translation>
 <translation id="8982438328166986164">Viser forslag til nettsider basert på bokmerkene og nettleserhistorikken din.</translation>
+<translation id="924029461438529367">Vis søkeforslag</translation>
 <translation id="1571106259128580884">Vis forslag til de beste nettstedene</translation>
 <translation id="9148058034647219655">Avslutt</translation>
 <translation id="8047754398610073499">Blokker varsler om informasjonskapselinnstillinger</translation>
@@ -262,6 +263,8 @@
 <translation id="6511854390690723657">Dette er din første Brave-annonse. Trykk for å finne ut mer.</translation>
 <translation id="2070991379950719711">Earn &amp; Gi</translation>
 <translation id="48520986898237073">Fortsett til lommeboken</translation>
+<translation id="6213254277250932867">Jeg har en gjenopprettingsfrase på 12 ord</translation>
+<translation id="4225265925807365011">Jeg har en gjenopprettingsfrase på 24 ord</translation>
 <translation id="3570367516044491911">Angi som standardnettleser</translation>
 <translation id="6800338374677644736">Sett som standardnettleser</translation>
 <translation id="19715420010996093">Velg Brave Browser og trykk på 'Alltid'</translation>
@@ -361,6 +364,8 @@
 <translation id="6417420737057016607">Brave-annonser</translation>
 <translation id="5611966874859284786">Vis varslingsannonser når Brave ikke er i bruk</translation>
 <translation id="6606319453795180219">Dette medfører sletting av Brave Rewards og tilbakestilling av alle Brave Rewards-dataene dine</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Tilbakestill Brave Rewards-data …<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Tøm Brave Ads-data …<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Legg til bokmerke</translation>
 <translation id="340492034650766959">Slett bokmerke</translation>
 <translation id="2149973817440762519">Rediger bokmerke</translation>
@@ -464,7 +469,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="5582686930349810484">Fingeravtrykk blokkert (standard)</translation>
 <translation id="769702552748212954">Tillat all bruk av fingeravtrykk</translation>
 <translation id="876424292214881779">Annonser og andre ekle ting blokkert</translation>
-<translation id="6930134873084561197">Nettsteder inkluderer ofte informasjonskapsler og skript som prøver å identifisere deg og din enhet. De ønsker å finne ut av hvem du er, følge deg på nettet og spore det du gjør på alle nettsider. \n\nBrave blokkerer dette, slik at du kan surfe på nett uten å bli fulgt.</translation>
+<translation id="6849027612978668678">Nettsteder inkluderer ofte informasjonskapsler og skript som prøver å identifisere deg og enheten din. De ønsker å finne ut av hvem du er, overvåke deg på nettet og spore det du gjør på alle nettsteder. \n\nBrave blokkerer dette, slik at du kan surfe på nett uten å bli overvåket.</translation>
 <translation id="8553998445606452168">Om Brave Shields</translation>
 <translation id="8912304686498704084">OPP</translation>
 <translation id="4963218453264888510">NED</translation>
@@ -559,6 +564,8 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="7889432931837317731">Åpne automatisk når mulig</translation>
 <translation id="1029304566263314007">Vis fremdriftsvarsler for nedlastingen</translation>
 <translation id="2910433761530295035">Spør hvor filer skal lagres (hvis SD-kort oppdages)</translation>
+<translation id="2977501775944575564">Parallell nedlasting</translation>
+<translation id="6224180438946945617">Aktiver parallell nedlasting for å øke nedlastingshastigheten</translation>
 <translation id="8967385052772844086">Se hele Personvernrapporten</translation>
 <translation id="6864343534748973390">Mest populær</translation>
 <translation id="4608192160278975831">Privat og ingen sporing</translation>
@@ -588,44 +595,38 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="7909462264772842773">Ta kontroll over kryptoen din og NFT-ene dine. Brave Wallet støtter Ethereum, EVM-kjeder, Solana, Filecoin og mer.</translation>
 <translation id="165255193061631296">Trenger du en ny lommebok?</translation>
 <translation id="3485737865439729577">Kom i gang med Brave Wallet på noen få minutter</translation>
-<translation id="2759836790106646094">Ta sikkerhetskopi av lommeboken din nå!</translation>
-<translation id="1078873179929044999">I neste trinn får du se en setning for gjenoppretting på 12 ord, som du kan bruke til å gjenopprette de primære kryptokontoene dine. Oppbevar det et trygt sted. Gjenopprettingssetningen din er den eneste måten du kan få tilbake kontotilgangen om du har glemt passordet, tapt eller blitt frastjålet enheten, eller du ønsker å bytte lommebok.</translation>
+<translation id="2540568096903252632">Skriv inn et passord for å fortsette</translation>
+<translation id="3356580495013324916">Skriv inn passordet til Brave-lommeoken for å begynne å sikkerhetskopiere lommeboken.</translation>
 <translation id="2359808026110333948">Fortsett</translation>
 <translation id="5488357322146334497">Melding</translation>
-<translation id="1904000155026201268">Jeg forstår at jeg ikke får tilgang til kryptolommeboken min igjen om jeg mister gjenopprettingsfrasen.</translation>
 <translation id="5333225216561354793">Vi krever at du bekrefter elementene nedenfor</translation>
 <translation id="6937275455070754004">Velg hvilke blockchains som skal brukes i lommeboken din.</translation>
 <translation id="1645800479814134195">Jeg forstår at dette er en lommebok jeg oppbevarer selv og at det bare er jeg som er ansvarlig for tilknyttede midler, ressurser og konti, samt for å gjøre det som kreves for å sikre, beskytte og sikkerhetskopiere lommeboken. Jeg forstår at Brave ikke har tilgang til lommeboken min eller kan reversere transaksjonene mine på mine vegne, og at gjenopprettingsfrasen min er den ENESTE måten å få tilgang til lommeboken på i tilfeller som tapt passord, stjålet enhet eller tilsvarende hendelser.</translation>
 <translation id="4565891212173086999">Jeg har lest og samtykker til <ph name="CLICK_START"/>bruksvilkårene<ph name="CLICK_END"/>.</translation>
-<translation id="3933122286596948824">Din gjenopprettingsfrase</translation>
-<translation id="5077747669435508720">Skriv ned eller kopier disse ordene i den nøyaktige rekkefølgen vist nedenfor, og lagre informasjonen på et trygt sted. Sikkerhetsfrasen din er den eneste måten du kan gjenopprette kontotilgangen på hvis du glemmer passordet, enheten din går tapt eller du vil bytte lommebøker.</translation>
-<translation id="2708402071160162126">ADVARSEL: Hold sikkerhetsfrasen din hemmelig. Alle som kjenner til frasen, kan ta ut verdiene dine for alltid.</translation>
-<translation id="111912712268284159">Jeg har lagret sikkerhetsfrasen på et trygt sted.</translation>
-<translation id="6896758677409633944">Kopier</translation>
+<translation id="3259102562570606417">Lagre gjenopprettingsfrasen din</translation>
+<translation id="4339981001593889376">Gjenopprettingsfrasen er nøkkelen for å få tilgang til lommeboken din i tilfelle du glemmer passordet eller mister enheten.</translation>
+<translation id="426648489149930289">Oppbevar den på et trygt sted som ikke er tilgjengelig for andre, og ikke del den med noen.</translation>
 <translation id="3726490322412361740">Angi passord</translation>
-<translation id="3038243139480464605">Bekreft passord</translation>
-<translation id="7396672979287122068">Det bekreftede passordet samsvarte ikke</translation>
 <translation id="1566412704591731844">Oppretter lommeboken din ...</translation>
 <translation id="7779823116893018906">Det kan ta et par sekunder ...</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/>-konto <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Legg til konto</translation>
 <translation id="3448492834076427715">Oppdater kontoen</translation>
-<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="5532363218245261099">Nr. <ph name="NUMBER"/> <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="1537175937716697987">Vis gjenopprettingsfrasen</translation>
+<translation id="5303015959766064022">Jeg sikkerhetskopierer senere</translation>
+<translation id="7345730059518887993">La oss sjekke</translation>
+<translation id="7640406249038879146">Skriv inn ordet i posisjon <ph name="WORD_POSITION"/> fra gjenopprettingsfrasen din.</translation>
+<translation id="2598171223363459366">Du kan hoppe over dette trinnet nå, men du vil likevel måtte sikkerhetskopiere gjenopprettingsfrasen din for å garantere kontosikkerhet.</translation>
 <translation id="8100001366858145406">Aktivere åpning med fingeravtrykk?</translation>
 <translation id="5493402808936397665">Aktiver biometri for å raskt åpne lommeboken din uten bruk av passord.</translation>
 <translation id="8030647312184163932">Opplåsing med fingeravtrykk</translation>
 <translation id="4090490645603511157">Bruk biometri for raskt å låse opp lommeboken uten å skrive inn passordet ditt.</translation>
 <translation id="1544192797660353713">Lommebok</translation>
-<translation id="6901810042765869341">Angi gjenopprettingsfrasen for å gjenopprette Brave Wallet-kryptokontoen din.</translation>
-<translation id="9120654436199628567">Gjenopprette kryptokonto</translation>
+<translation id="2321396552035646646">Du kan lime inn hele gjenopprettingsfrasen din i et hvilket som helst felt.</translation>
+<translation id="3961126209136843111">Importer en eksisterende lommebok</translation>
 <translation id="4811736040444856406">Vis gjenopprettingsfrase</translation>
-<translation id="283071225285270357">Angi gjenopprettingsfrasen</translation>
-<translation id="3943857333388298514">Lim inn</translation>
-<translation id="3331452756822160641">Nytt passord</translation>
 <translation id="4359319875297001084">Vil du importere fra utrangerte Brave-kryptolommebøker?</translation>
-<translation id="2339124864228588937">Bekreft gjenopprettingsfrase</translation>
-<translation id="3747079125031086337">Velg ordene i sikkerhetsfrasen din i riktig rekkefølge.</translation>
-<translation id="6518133107902771759">Bekreft</translation>
 <translation id="3157931365184549694">Gjenopprett</translation>
 <translation id="5844138175312846408">Har du allerede en lommebok?</translation>
 <translation id="2502258949541727762">Før vi begynner</translation>
@@ -634,6 +635,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="2523174693142405417">Søk i nettverk</translation>
 <translation id="1164748583090434571">Vis testnettverk</translation>
 <translation id="935220650946301698">Fortsett med <ph name="NUMBER"/> nettverk</translation>
+<translation id="4052668782430384783">Ord nr. <ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">Lag et passord</translation>
 <translation id="2789310860394340571">Du bruker dette passordet for å få tilgang til lommeboken din.</translation>
 <translation id="2136372518715274136">Skriv inn nytt passord</translation>
@@ -651,9 +653,8 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="5619264711680220002">Biometrisk opplåsing</translation>
 <translation id="9195657745688986798">Lås opp Wallet</translation>
 <translation id="5168349973342709369">Skriv inn passordet for å åpne lommeboken</translation>
-<translation id="3043677904160378840">Passordet må bestå av minst 8 tegn.</translation>
 <translation id="1144810021918451336">Beskytter deg ikke mot farlige nettsteder, nedlastinger eller utvidelser.</translation>
-<translation id="5760476995887363522">Ordene stemte ikke overens. Prøv på nytt.</translation>
+<translation id="9085712756417277119">Gjenopprettingsfrasen samsvarer ikke</translation>
 <translation id="2360588547830602174">Kunne ikke gjenopprette konto. Prøv igjen.</translation>
 <translation id="1987317783729300807">Kontoer</translation>
 <translation id="6284218950354553099">Automatisk ping dagsforbruk til Brave</translation>
@@ -688,16 +689,21 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="3510283489391432976">Velg region/land</translation>
 <translation id="7695158478627528928">Brave logger aldri aktiviteten din</translation>
 <translation id="4575683170451975058">Beskytt 5 enheter med ett abonnement</translation>
+<translation id="755045397420611731">Ekstra personvern og sikkerhet på nettet</translation>
+<translation id="4520128772974831415">Skjul IP-adressen og endre plasseringen din</translation>
+<translation id="2044418816479192294">Hundrevis av servere verden rundt</translation>
+<translation id="7410504850864021600">Lynraske tilkoblingshastigheter</translation>
+<translation id="2422309687188612485">Beskytt opptil 10 enheter med ett abonnement</translation>
 <translation id="4882693590083943563">Alle abonnementer inkluderer en <ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">gratis 7-dagers prøveversjon!</translation>
 <translation id="1532536259167115948">Månedsabonnement <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Årsabonnement <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Fornyes månedlig</translation>
-<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> /mnd.</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /måned</translation>
 <translation id="1163809943099641131">Ett år</translation>
-<translation id="172859718096975160">Forny årlig <ph name="DISCOUNT_TEXT_START"/>, spar <ph name="PERCENTAGE_AMOUNT"/>%% <ph name="DISCOUNT_TEXT_END"/></translation>
-<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> per år.</translation>
-<translation id="5125233570742276182">Abonnementer belastes via Google-kontoen din. Eventuelle ubrukte andeler av den gratis prøveversjonen, hvis dette er tilgjengelig, bortfaller hvis du kjøper et abonnement.\n\nAbonnementet fornyes automatisk med mindre det kanselleres minst 24 timer før utgangen av inneværende periode.\n\nDu kan administrere abonnementene dine i Innstillinger.\nVed å bruke Brave samtykker du til brukervilkårene og personvernerklæringen.</translation>
+<translation id="727385358513272220">Fornyes årlig (<ph name="DISCOUNT_TEXT_START"/>spar <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /år</translation>
+<translation id="2786538705804257030">Abonnementer belastes via Google-kontoen din. Det som eventuelt forblir ubrukt av den gratis prøveperioden, bortfaller hvis du kjøper et abonnement.\n\nAbonnementet fornyes automatisk, med mindre det kanselleres minst 24 timer før den inneværende perioden er omme.\n\nDu kan administrere abonnementene dine i Innstillingene.\n\nVed å bruke Brave samtykker du i bruksvilkårene og personvernerklæringen.</translation>
 <translation id="5035172357624830412">Har du allerede kjøpt på brave.com?</translation>
 <translation id="713136183174551885">Oppdater påloggingsinformasjonen</translation>
 <translation id="6053992191006521518">Prøv GRATIS</translation>
@@ -932,7 +938,6 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="7002577172732106572">Split Tunneling</translation>
 <translation id="8181161042860463420">Den tilknyttede merkekontoen eksisterer ikke ennå. Et lite antall SOL blir brukt for å opprette og fylle den. <ph name="CLICK_START"/>Les mer<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Oppdaterer VPN-profilen ...</translation>
-<translation id="7457027586454688423">Skriv inn passordet til Brave-lommeboken din</translation>
 <translation id="4784306439879850873">Merk at Brave ikke kan verifisere hva som skjer hvis du signerer. En signatur kan autorisere praktisk talt enhver operasjon på kontoen din på dine vegne, inkludert (men ikke begrenset til) å gi total kontroll over kontoen din og kryptoressursene sine til nettstedet som kommer med forespørselen. Du må bare signere hvis du er sikker på at du vil utføre denne handlingen, og stoler på nettstedet som kommer med forespørselen.</translation>
 <translation id="3474375934783434676">Signer på egen risiko</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> av <ph name="SIZE"/></translation>
@@ -942,6 +947,7 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="2629767022373384291">Vil du bruke biometrisk autentisering for å låse opp Brave-lommeboken?</translation>
 <translation id="4782919977106118997">Bruk opplåsing med fingeravtrykk</translation>
 <translation id="2054995875643283428">Hopp over dette for øyeblikket</translation>
+<translation id="2610561535971892504">Klikk for å kopiere</translation>
 <translation id="2522605225061484799">Gå til min portefølje</translation>
 <translation id="1148624853678088576">Du er helt klar!</translation>
 <translation id="4131445988101719379">Brave-lommeboken er klar til bruk</translation>
@@ -1024,7 +1030,7 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="6610899852831463073">Kan ikke aktivere Safe Browsing</translation>
 <translation id="7954263306665462056">Safe Browsing er deaktivert på enheten din. For å aktivere funksjonen må du kontrollere at Google Play-tjenester er installert og oppdatert.</translation>
 <translation id="6605147707233193230">Slå på for å støtte innholdsskapere</translation>
-<translation id="1609556006143307897">Du bidrar til å støtte innholdsskapere</translation>
+<translation id="5899814466108868020">Du bidrar til å støtte Brave og BAT-fellesskapet</translation>
 <translation id="6067959437127691361">Ved å bruke Brave rewards kan du støtte innholdsskapere samtidig som du tjener opp BAT.</translation>
 <translation id="3264975266761862670">Klar til å begynne å tjene?</translation>
 <translation id="265337947574975838">Koble til en konto, eller opprett en konto hos en av partnerne våre.</translation>
@@ -1123,6 +1129,7 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="1173894706177603556">Gi nytt navn</translation>
 <translation id="3596306474342941843">Slett spillelisten</translation>
 <translation id="7765158879357617694">Flytt</translation>
+<translation id="6896758677409633944">Kopier</translation>
 <translation id="3803384303807438047">Slett offline-dataene for elementet</translation>
 <translation id="4195643157523330669">Åpne i ny fane</translation>
 <translation id="4243710787042215766">Åpne i privat fane</translation>

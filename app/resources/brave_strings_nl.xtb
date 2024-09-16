@@ -55,6 +55,7 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="9048754176089806686">Brave heeft deze download geblokkeerd, omdat het bestandstype niet vaak wordt gedownload en misschien gevaarlijk is</translation>
 <translation id="1953553007165777902">Downloaden... Nog <ph name="MINUTE"/> minuten</translation>
 <translation id="1775322105159056176">Brave kan de standaardbrowser niet bepalen of instellen</translation>
+<translation id="4372901050442507812">Meer informatie over waarom Brave bepaalde bestanden blokkeert, wordt geopend in een nieuw tabblad</translation>
 <translation id="9220324636239049437">Hiermee wordt 1 item verwijderd van dit apparaat. Als je je gegevens later wilt terughalen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>
 <translation id="2018879682492276940">Installatie mislukt. Probeer het opnieuw.</translation>
 <translation id="831418749472885028">Als je wilt checken of je andere wachtwoorden zijn beveiligd tegen gegevenslekken en andere beveiligingsproblemen, <ph name="BEGIN_LINK"/>log je in bij Brave<ph name="END_LINK"/>.</translation>
@@ -115,6 +116,7 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="2915996080311180594">Later opnieuw opstarten</translation>
 <translation id="2928420929544864228">Installatie afgerond.</translation>
 <translation id="2945997411976714835">Installatiefout: Het installatieproces kan niet worden gestart.</translation>
+<translation id="3688936822855019158">Je organisatie beheert Brave</translation>
 <translation id="8208853227947884571">Brave is up-to-date</translation>
 <translation id="5122472867956731189">Als een site je wachtwoord probeert te stelen of als je een schadelijk bestand downloadt, kan Brave ook URL's, inclusief delen van de paginacontent, naar Safe Browsing sturen</translation>
 <translation id="500707801149472925">Brave kan deze tabbladen inactief maken om de browsefunctionaliteit te verbeteren en resources vrij te maken.</translation>
@@ -209,6 +211,7 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="8148611988012584308">Brave aanpassen en beheren</translation>
 <translation id="4427306783828095590">Geoptimaliseerde beveiliging die je nog beter beschermt tegen phishing en malware</translation>
 <translation id="4434353761996769206">Fout met installatieprogramma: <ph name="INSTALLER_ERROR"/></translation>
+<translation id="175926951572479413"><ph name="MANAGER"/> beheert Brave</translation>
 <translation id="6786534271003695094">Over Brave for Testing</translation>
 <translation id="4501471624619070934">De installatie is mislukt omdat de toegang is beperkt in dit land.</translation>
 <translation id="8594994021633965927">Deze extensie heeft geen privacyprocedures gepubliceerd, zoals de manier waarop gegevens worden verzameld en gebruikt. Brave raadt je aan deze te verwijderen.</translation>
@@ -410,6 +413,7 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="38294420683216447">Met Brave-profielen kun je alle Brave-gegevens gescheiden houden. Zo kun je makkelijker onderscheid maken tussen werk en privé.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave voor ontwikkelaars</translation>
 <translation id="2034072705932785495">Brave heeft toegangsrechten voor je camera nodig voor deze site</translation>
+<translation id="7129342855140808694">Geef Brave toegang via de <ph name="BEGIN_LINK"/>systeeminstellingen<ph name="END_LINK"/> om je microfoon te gebruiken</translation>
 <translation id="5296583608321648908">Als je toekomstige Brave-updates wilt krijgen, heb je Windows 10 of hoger nodig. Deze computer gebruikt Windows 7.</translation>
 <translation id="3962395975456095331">Brave opnieuw starten?</translation>
 <translation id="2619516027171717873">Kan niet dezelfde Brave-versie installeren, omdat deze versie nu actief is. Sluit Brave en probeer het opnieuw.</translation>
@@ -436,6 +440,7 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="7872446069773932638">Downloaden... Nog <ph name="SECONDS"/> seconden</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Hoe je je gegevens kunt beheren:<ph name="END_BOLD"/> Ter bescherming van je privacy verwijderen we automatisch interesses die ouder zijn dan 4 weken. Het kan gebeuren dat een interesse weer in de lijst komt te staan als je blijft browsen. Je kunt ook interesses verwijderen waarvan je niet wilt dat Brave deze overweegt.</translation>
 <translation id="5687542525349822727">Brave instellen als je standaardbrowser</translation>
+<translation id="6396151137840491551">Brave upgradet niet-beveiligde verbindingen automatisch naar HTTPS als dat mogelijk is</translation>
 <translation id="2925193881330501265">Je bent ingelogd bij Brave als <ph name="USER_EMAIL_ADDRESS"/>. Gebruik hetzelfde account om opnieuw in te loggen.</translation>
 <translation id="6915252145142862992">Dit is een tweede installatie van Brave en kan niet als standaardbrowser worden ingesteld.</translation>
 <translation id="7685904775439037072">Zodra Brave toegang heeft, kunnen websites je om toegang vragen.</translation>
@@ -447,6 +452,7 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="813913629614996137">Starten...</translation>
 <translation id="7550680632761245819">Zet aanvullende beveiliging aan in de JavaScript- en WebAssembly-engine van Brave</translation>
 <translation id="9067428552314418522">Dit bestand is gevaarlijk en is daarom door Brave geblokkeerd.</translation>
+<translation id="8377926237617998195">Geef Brave toegang via de <ph name="BEGIN_LINK"/>systeeminstellingen<ph name="END_LINK"/> om je camera te gebruiken</translation>
 <translation id="1755067029031059271">Brave kan niet verifiëren waar deze extensie vandaan komt en de extensie is misschien onveilig. Verwijder de extensie uit Brave zodat deze je gegevens (waaronder je persoonlijke informatie) niet meer kan bekijken en wijzigen op sites die je bezoekt.</translation>
 <translation id="8207657266087451193">Als een afbeelding geen nuttige beschrijving bevat, probeert Brave je er een te geven. Afbeeldingen worden naar Brave gestuurd om beschrijvingen te maken. Je kunt dit op elk gewenst moment uitzetten in Instellingen.</translation>
 <translation id="7792526144795244436">Inloggen bij Brave in een nieuw profiel?</translation>
@@ -470,6 +476,7 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="8550334526674375523">Dit werkprofiel is volledig gescheiden van je persoonlijke profiel.</translation>
 <translation id="8555465886620020932">Servicefout: <ph name="SERVICE_ERROR"/>.</translation>
 <translation id="227028348235968071">Brave kan je wachtwoorden checken als je inlogt met je Brave-account</translation>
+<translation id="839677568225616901">Meerdere organisaties beheren Brave</translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> De auteurs van Brave. Alle rechten voorbehouden.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Hoe we deze gegevens gebruiken:<ph name="END_BOLD"/> Sites kunnen informatie over je interesses in Brave opslaan. Als je bijvoorbeeld een site bezoekt om schoenen voor een marathon te kopen, kan de site je interesse definiëren als 'deelname aan marathons'. Als je later een andere site bezoekt om je aan te melden voor een race, kan die site je een advertentie voor hardloopschoenen laten zien op basis van je interesses.</translation>
 <translation id="3052349005266761501">Brave starten…</translation>
@@ -514,6 +521,7 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="983803489796659991">De installatie is mislukt omdat de updateserver geen hash-gegevens voor de app heeft.</translation>
 <translation id="8435446479956716379">Brave gebruiken zonder account</translation>
 <translation id="8992261409816268381">De auteurs van Brave</translation>
+<translation id="3146636448190445245">Geef Brave toegang via de <ph name="BEGIN_LINK"/>systeeminstellingen<ph name="END_LINK"/> om je locatie te gebruiken</translation>
 <translation id="137466361146087520">Google Chrome Bèta</translation>
 <translation id="7535429826459677826">Google Chrome Dev</translation>
 <translation id="5359574361379286250">Indien u dit account eenmalig wilt gebruiken, kunt u de<ph name="GUEST_LINK_BEGIN"/>Gastmodus<ph name="GUEST_LINK_END"/> in Brave-browser gebruiken. Indien u een account voor iemand wilt toevoegen, kunt u <ph name="LINK_BEGIN"/>een nieuw profiel toevoegen<ph name="LINK_END"/> aan uw <ph name="DEVICE_TYPE"/>.
