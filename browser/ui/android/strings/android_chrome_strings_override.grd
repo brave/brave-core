@@ -126,6 +126,9 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SETTINGS_INCOGNITO_TAB_LOCK_SUMMARY_ANDROID_SETTING_ON" desc="Summary for a toggle in Settings that allows users to lock their existing Private tabs with a device reauthentication mechanism. This summary is shown to the user when the screen lock setting is on in the device.">
         Use screen lock to see open Private tabs
       </message>
+      <message translateable="false" name="IDS_AUTOFILL_OPTIONS_HINT_3P_IN_INCOGNITO" desc="Explanation that a 3P password manager may prompt to save passwords in private." formatter_data="android_java">
+        Note: When using “other providers”, the browser informs the configured AutofillService about sites and fields visited in private.\nThe AutofillService uses this information to autofill your data and may store data in the process. Autofill data saved in private mode is stored even after private mode ends and available outside private mode.
+      </message>
       <message name="IDS_PRIVACY_GUIDE_COOKIES_BLOCK_INCOGNITO_TITLE" desc="Title for the radio button for blocking third-party cookies in private.">
         Block while using Private
       </message>
@@ -199,7 +202,7 @@ CHAR_LIMIT guidelines:
         New Private tab
       </message>
       <message name="IDS_MENU_CLOSE_ALL_INCOGNITO_TABS" desc="Menu item for closing all open Private tabs. [CHAR_LIMIT=27]">
-        Close Private tabs
+        Close all Private tabs
       </message>
       <message name="IDS_MENU_SWITCH_TO_INCOGNITO" desc="Menu item for switching to private.">
         Switch to Private
@@ -219,6 +222,9 @@ CHAR_LIMIT guidelines:
       </message>
       <message name="IDS_ACCESSIBILITY_INCOGNITO_BADGE" desc="Content description for the badge indicating that the user is in Private mode.">
         Private mode
+      </message>
+      <message name="IDS_INCOGNITO_BADGE" desc="Text appearing in the private badge on toolbar indicating that the user is in Private mode.">
+        Private
       </message>
 
       <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_INCOGNITO_TOGGLE_STANDARD" desc="Content description for the Private tabs toggle button when viewing standard tabs.">
@@ -260,6 +266,18 @@ CHAR_LIMIT guidelines:
           other {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>4</ex></ph> private and <ph name="TAB_COUNT_MANY">%2$s<ex>4</ex></ph> more tabs will be closed}}
       </message>
 
+      <message name="IDS_IPH_TAB_SWITCHER_SWITCH_INTO_INCOGNITO_TEXT" desc="The in-product-help message to long press the tab switcher button to switch to private.">
+        Touch and hold to switch to Private
+      </message>
+      <message name="IDS_IPH_TAB_SWITCHER_SWITCH_INTO_INCOGNITO_ACCESSIBILITY_TEXT" desc="The in-product-help message to long press the tab switcher button to switch to private.">
+        Double tap and hold to switch to Private
+      </message>
+      <message name="IDS_IPH_TAB_SWITCHER_SWITCH_OUT_OF_INCOGNITO_TEXT" desc="The in-product-help message to long press the tab switcher button to switch to private.">
+        Touch and hold to switch out of Private
+      </message>
+      <message name="IDS_IPH_TAB_SWITCHER_SWITCH_OUT_OF_INCOGNITO_ACCESSIBILITY_TEXT" desc="The in-product-help message to long press the tab switcher button to switch to private.">
+        Double tap and hold to switch out of Private
+      </message>
       <message name="IDS_QUICK_ACTION_SEARCH_WIDGET_MESSAGE_NO_INCOGNITO" desc="Toast message shown when the user tries to open Private tab which is disabled on the device.">
         Private is not available on this device
       </message>
