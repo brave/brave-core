@@ -6,10 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_BRAVE_SHIELDS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_BRAVE_SHIELDS_UTIL_H_
 
-#include <stdint.h>
-
 #include <string>
 
+#include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 
 namespace https_upgrade_exceptions {
@@ -164,6 +163,9 @@ bool MaybeChangeReferrer(bool allow_referrers,
 
 ShieldsSettingCounts GetFPSettingCount(HostContentSettingsMap* map);
 ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map);
+
+mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
+                                      const GURL& primary_url);
 
 }  // namespace brave_shields
 

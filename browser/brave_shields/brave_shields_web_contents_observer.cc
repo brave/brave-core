@@ -294,31 +294,12 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
                 ->GetLastCommittedURL()
           : navigation_handle->GetURL();
 
-  brave_shields::mojom::FarblingLevel farbling_level =
-      brave_shields::mojom::FarblingLevel::BALANCED;
-  HostContentSettingsMap* host_content_settings_map =
-      HostContentSettingsMapFactory::GetForProfile(rfh->GetBrowserContext());
-  const bool shields_up = brave_shields::GetBraveShieldsEnabled(
-      host_content_settings_map, primary_url);
-  if (shields_up) {
-    auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
-        host_content_settings_map, primary_url);
-    switch (fingerprinting_type) {
-      case ControlType::ALLOW:
-        farbling_level = brave_shields::mojom::FarblingLevel::OFF;
-        break;
-      case ControlType::BLOCK:
-        farbling_level = brave_shields::mojom::FarblingLevel::MAXIMUM;
-        break;
-      case ControlType::BLOCK_THIRD_PARTY:
-        NOTREACHED();
-      case ControlType::DEFAULT:
-        farbling_level = brave_shields::mojom::FarblingLevel::BALANCED;
-        break;
-    }
-  } else {
-    farbling_level = brave_shields::mojom::FarblingLevel::OFF;
-  }
+  const brave_shields::mojom::FarblingLevel farbling_level =
+      brave_shields::GetFarblingLevel(
+          HostContentSettingsMapFactory::GetForProfile(
+              rfh->GetBrowserContext()),
+          primary_url);
+
   PrefService* pref_service =
       user_prefs::UserPrefs::Get(rfh->GetBrowserContext());
 
