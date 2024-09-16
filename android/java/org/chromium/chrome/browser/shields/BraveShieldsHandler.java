@@ -805,7 +805,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                                             R.color.brave_link,
                                             R.string.report_broken_site_text_view_screenshot_label,
                                             (context) -> {
-
                                                 mDialogView =
                                                         ((Activity) mContext)
                                                                 .getLayoutInflater()

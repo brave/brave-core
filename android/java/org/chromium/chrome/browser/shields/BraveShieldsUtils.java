@@ -67,7 +67,7 @@ public class BraveShieldsUtils {
             sharedPreferencesEditor.apply();
         }
 
-        public static class BraveShieldsWorkerTask extends AsyncTask<Void> {
+    public static class BraveShieldsWorkerTask extends AsyncTask<Void> {
         private String mDomain;
         private String mApiKey;
         private byte[] mScreenshotBytes;
@@ -84,12 +84,12 @@ public class BraveShieldsUtils {
             return null;
         }
 
-            @Override
-            protected void onPostExecute(Void result) {
+        @Override
+        protected void onPostExecute(Void result) {
                 assert ThreadUtils.runningOnUiThread();
 
-                if (isCancelled()) return;
-            }
+            if (isCancelled()) return;
+        }
     }
 
     private static void sendBraveShieldsFeedback(
