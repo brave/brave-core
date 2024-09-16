@@ -390,18 +390,7 @@ class TabManager: NSObject {
     }
 
     UIImpactFeedbackGenerator(style: .light).vibrate()
-    selectedTab?.createWebview()
     selectedTab?.lastExecutedTime = Date.now()
-
-    if let selectedTab = selectedTab,
-      let webView = selectedTab.webView,
-      webView.lastCommittedURL == nil
-    {
-
-      selectedTab.url = selectedTab.url ?? TabManager.ntpInteralURL
-      restoreTab(selectedTab)
-      Logger.module.error("Force Restored a Zombie Tab?!")
-    }
 
     delegates.forEach { $0.get()?.tabManager(self, didSelectedTabChange: tab, previous: previous) }
     if let tab = previous {
