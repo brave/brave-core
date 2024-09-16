@@ -1,8 +1,8 @@
 diff --git a/third_party/rust/rustc_version/v0_4/BUILD.gn b/third_party/rust/rustc_version/v0_4/BUILD.gn
-index 892b10bb58ee64bfef15aa4ead0831f1df7afbfe..db88ea00395d746581c04ce0a5e4d32f4cf28db9 100644
+index 22e051538e3747fb5a78034ff1962b55bde1e525..2af3a3a2a4a7a52b9c2a5e310a2e09c0c62d2b15 100644
 --- a/third_party/rust/rustc_version/v0_4/BUILD.gn
 +++ b/third_party/rust/rustc_version/v0_4/BUILD.gn
-@@ -35,5 +35,4 @@ cargo_crate("buildrs_support") {
+@@ -34,5 +34,4 @@ cargo_crate("buildrs_support") {
    # //third_party/rust/chromium_crates_io/Cargo.toml to use
    # it from first-party code.
    visibility = [ "//third_party/rust/*" ]
