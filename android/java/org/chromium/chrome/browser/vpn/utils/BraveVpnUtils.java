@@ -43,6 +43,7 @@ import org.chromium.gms.ChromiumPlayServicesAvailability;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
 
 public class BraveVpnUtils {
@@ -155,9 +156,14 @@ public class BraveVpnUtils {
                 JSONArray timezones = region.getJSONArray("timezones");
                 for (int j = 0; j < timezones.length(); j++) {
                     if (timezones.getString(j).equals(currentTimezone)) {
+                        String isoCode = region.getString("country-iso-code");
+                        String country = new Locale("", isoCode).getDisplayCountry();
                         BraveVpnServerRegion braveVpnServerRegion =
                                 new BraveVpnServerRegion(
-                                        region.getString("country-iso-code"),
+                                        true,
+                                        country,
+                                        region.getString("continent"),
+                                        isoCode,
                                         region.getString("name"),
                                         region.getString("name-pretty"),
                                         BraveVpnConstants.REGION_PRECISION_COUNTRY);

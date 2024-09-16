@@ -127,6 +127,7 @@ struct PurchasedInfo {
 struct Region {
   string name;
   string name_pretty;
+  string country;
   string continent;
   string country_iso_code;
   string region_precision;

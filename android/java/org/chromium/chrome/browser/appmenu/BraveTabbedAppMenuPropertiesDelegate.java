@@ -21,6 +21,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
@@ -58,9 +59,9 @@ import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
-/**
- * Brave's extension for TabbedAppMenuPropertiesDelegate
- */
+import java.util.Locale;
+
+/** Brave's extension for TabbedAppMenuPropertiesDelegate */
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
     private Menu mMenu;
     private AppMenuDelegate mAppMenuDelegate;
@@ -124,6 +125,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         BraveVpnProfileUtils.getInstance().isBraveVPNConnected(mContext));
             }
 
+            Log.e(
+                    "brave_vpn",
+                    "BraveVpnPrefUtils.getRegionIsoCode() : "
+                            + BraveVpnPrefUtils.getRegionIsoCode());
             if (BraveVpnPrefUtils.isSubscriptionPurchase()
                     && !TextUtils.isEmpty(BraveVpnPrefUtils.getRegionIsoCode())) {
                 String serverLocation = " %s  %s";
@@ -131,12 +136,18 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         menu.findItem(R.id.request_vpn_location_row_menu_id).getSubMenu();
                 MenuItem vpnLocationSubMenuItem =
                         vpnLocationSubMenu.findItem(R.id.request_vpn_location_id);
+                String isoCode = BraveVpnPrefUtils.getRegionIsoCode();
+                String country =
+                        (!BraveVpnPrefUtils.getRegionCountry().equals("")
+                                ? BraveVpnPrefUtils.getRegionCountry()
+                                : new Locale("", isoCode).getDisplayCountry());
+
                 vpnLocationSubMenuItem.setTitle(
                         String.format(
                                 serverLocation,
                                 BraveVpnUtils.countryCodeToEmoji(
                                         BraveVpnPrefUtils.getRegionIsoCode()),
-                                BraveVpnPrefUtils.getRegionNamePretty()));
+                                country));
                 MenuItem vpnLocationIconSubMenuItem =
                         vpnLocationSubMenu.findItem(R.id.request_vpn_location_icon_id);
                 Drawable drawable = vpnLocationIconSubMenuItem.getIcon();

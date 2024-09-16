@@ -8,20 +8,41 @@ package org.chromium.chrome.browser.vpn.models;
 import androidx.annotation.NonNull;
 
 public class BraveVpnServerRegion {
-    private String mCountryIsoCode;
-    private String mRegionName;
-    private String mRegionNamePretty;
-    private String mRegionPrecision;
+    private final boolean mIsAutoSelected;
+    private final String mCountry;
+    private final String mContinent;
+    private final String mCountryIsoCode;
+    private final String mRegionName;
+    private final String mRegionNamePretty;
+    private final String mRegionPrecision;
 
     public BraveVpnServerRegion(
+            boolean isAutoSelected,
+            String country,
+            String continent,
             String countryIsoCode,
             String regionName,
             String regionNamePretty,
             String regionPrecision) {
+        this.mIsAutoSelected = isAutoSelected;
+        this.mCountry = country;
+        this.mContinent = continent;
         this.mCountryIsoCode = countryIsoCode;
         this.mRegionName = regionName;
         this.mRegionNamePretty = regionNamePretty;
         this.mRegionPrecision = regionPrecision;
+    }
+
+    public boolean isAutoSelected() {
+        return mIsAutoSelected;
+    }
+
+    public String getCountry() {
+        return mCountry;
+    }
+
+    public String getContinent() {
+        return mContinent;
     }
 
     public String getCountryIsoCode() {
@@ -44,7 +65,15 @@ public class BraveVpnServerRegion {
     @Override
     public String toString() {
         return "BraveVpnServerRegion{"
-                + "mCountryIsoCode='"
+                + "mIsAutoSelected="
+                + mIsAutoSelected
+                + ", mCountry='"
+                + mCountry
+                + '\''
+                + ", mContinent='"
+                + mContinent
+                + '\''
+                + ", mCountryIsoCode='"
                 + mCountryIsoCode
                 + '\''
                 + ", mRegionName='"

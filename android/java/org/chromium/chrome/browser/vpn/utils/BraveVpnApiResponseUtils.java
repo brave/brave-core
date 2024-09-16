@@ -14,6 +14,7 @@ import android.util.Pair;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.PurchaseModel;
@@ -88,6 +89,7 @@ public class BraveVpnApiResponseUtils {
                                 ? region
                                 : serverRegion;
             }
+            Log.e("brave_vpn", "region : " + region);
             // region =
             //         (braveVpnServerRegion
             //                         .getRegionPrecision()
