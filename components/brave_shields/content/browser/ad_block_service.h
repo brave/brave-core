@@ -123,6 +123,7 @@ class AdBlockService {
   AdBlockCustomFiltersProvider* custom_filters_provider();
 
   void EnableTag(const std::string& tag, bool enabled);
+  void AddUserCosmeticFilter(const std::string& filter);
 
   // Methods for brave://adblock-internals.
   using GetDebugInfoCallback =

@@ -240,9 +240,9 @@ declare namespace chrome.windows {
   const getAllAsync: any
 }
 
-declare namespace chrome.braveShields {
-  const addSiteCosmeticFilter: (cssSelector: string) => void
-  const openFilterManagementPage: () => void
+declare namespace cf_worker {
+  const addSiteCosmeticFilter: (selector: string) => void
+  const manageCustomFilters: () => void
 }
 
 declare namespace chrome.test {
