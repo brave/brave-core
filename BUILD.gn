@@ -542,6 +542,7 @@ action("create_dist_zips") {
     if (is_mac) {
       dir_inputs += [ brave_exe ]
       rebase_base_dir = rebase_path(root_out_dir)
+      deps += [ "//brave/build/mac:finalize_app" ]
     } else {
       rebase_base_dir = rebase_path(brave_dist_dir, root_out_dir)
     }
