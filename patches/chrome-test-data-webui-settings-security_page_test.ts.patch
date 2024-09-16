@@ -1,0 +1,46 @@
+diff --git a/chrome/test/data/webui/settings/security_page_test.ts b/chrome/test/data/webui/settings/security_page_test.ts
+index f14e2dd3bc1ef02adac14bf24688c7421d86e984..e644899a644c6667dfcfb4e113102b623670e2a8 100644
+--- a/chrome/test/data/webui/settings/security_page_test.ts
++++ b/chrome/test/data/webui/settings/security_page_test.ts
+@@ -228,6 +228,20 @@ suite('Main', function() {
+     flush();
+     assertEquals(lockedSubLabel, toggle.subLabel);
+   });
++
++  // Tests that only the new Secure DNS toggle is shown when the new
++  // HTTPS-First Mode Settings flag is enabled.
++  // Regression test for crbug.com/365884462
++  // TODO(crbug.com/349860796): Remove when Balanced Mode is fully launched.
++  // <if expr="not is_chromeos">
++  test('SecureDnsToggleNotDuplicated', function() {
++    // Check that the setting under the new element ID visible.
++    assertTrue(isChildVisible(page, '#secureDnsSettingNew'));
++
++    // Check that the setting under the old element ID is not visible.
++    assertFalse(isChildVisible(page, '#secureDnsSettingOld'));
++  });
++  // </if>
+ });
+ 
+ suite('SecurityPageHappinessTrackingSurveys', function() {
+@@ -465,6 +479,20 @@ suite('FlagsDisabled', function() {
+     assertEquals(lockedSubLabel, toggle.subLabel);
+   });
+ 
++  // Tests that only the old Secure DNS toggle is shown when the new
++  // HTTPS-First Mode Settings flag is disabled.
++  // Regression test for crbug.com/365884462
++  // TODO(crbug.com/349860796): Remove when Balanced Mode is fully launched.
++  // <if expr="not is_chromeos">
++  test('SecureDnsToggleNotDuplicated', function() {
++    // Check that the setting under the new element ID is not visible.
++    assertFalse(isChildVisible(page, '#secureDnsSettingNew'));
++
++    // Check that the setting under the old element ID is visible.
++    assertTrue(isChildVisible(page, '#secureDnsSettingOld'));
++  });
++  // </if>
++
+   // TODO(crbug.com/349439367): Remove the test once
+   // kExtendedReportingRemovePrefDependency is fully launched.
+   test('LogSafeBrowsingExtendedToggle', async function() {
