@@ -8,7 +8,7 @@
 const path = require('path')
 const fs = require('fs')
 const assert = require('assert')
-const dotenv = require('dotenv')
+const dotenvPopulateWithIncludes = require('./dotenvPopulateWithIncludes')
 const Log = require('./logging')
 
 let envConfig = null
@@ -47,27 +47,7 @@ const getEnvConfig = (key, default_value = undefined) => {
     let envConfigPath = path.join(braveCoreDir, '.env')
     // It's okay to not have the initial `.env` file.
     if (fs.existsSync(envConfigPath)) {
-      while (envConfigPath) {
-        const loadResult = dotenv.configDotenv({
-          path: envConfigPath,
-          processEnv: envConfig
-        })
-        if (loadResult.error) {
-          Log.error(
-            `Error loading .env from ${envConfigPath}\n${loadResult.error}`
-          )
-          process.exit(1)
-        }
-
-        // Support include_env=<path> to include other .env files.
-        const newEnvConfigPath = envConfig['include_env']
-        delete envConfig['include_env']
-        envConfigPath = newEnvConfigPath
-          ? path.isAbsolute(newEnvConfigPath)
-            ? newEnvConfigPath
-            : path.join(path.dirname(envConfigPath), newEnvConfigPath)
-          : null
-      }
+      dotenvPopulateWithIncludes(envConfig, envConfigPath)
     }
 
     // Convert 'true' and 'false' strings into booleans.
