@@ -89,6 +89,32 @@ export const iconMap: { [key: string]: string } = {
   'cr:fullscreen': 'fullscreen-on', // automatic fullscreen
   'settings:picture-in-picture': 'picture-in-picture', // picture in picture
   'cr:file-download': 'download',
+
+  // brave_icons replacements
+  'settings:search-engine': 'search',
+  'settings:privacy-security': 'lock',
+  'settings:download': 'download',
+  'settings:printing': 'print',
+  'settings:performance': 'cpu-chip',
+  'settings:clipboard': 'copy',
+  'settings:close-circle': 'close-circle',
+  'settings:shields': 'shield-done',
+
+  // brave_settings20
+  // size: 20px
+  'brave_settings20:private-mode': 'product-private-window',
+  'brave_settings20:edit-pencil': 'edit-pencil',
+  'brave_settings20:trash-can': 'trash',
+
+  // brave_leo size 24
+  // todo: remove these - they can just use Nala icons directly
+  'brave_leo:refresh': 'refresh',
+  'brave_leo:code': 'code',
+  'brave_leo:trash-can': 'trash',
+  'brave_leo:magnifying-glass': 'search',
+
+  // brave_settings18
+  'brave_settings18:info': 'info-outline',
 }
 
 RegisterStyleOverride('iron-icon', html`
