@@ -8,6 +8,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "base/values.h"
 
@@ -84,6 +85,49 @@ void MergeResourcesInto(base::Value::Dict from,
   auto from_resources_generichide = from.FindBool("generichide");
   if (from_resources_generichide && *from_resources_generichide) {
     into.Set("generichide", true);
+  }
+}
+
+// Removes any procedural filters from the given UrlCosmeticResources Value.
+//
+// Procedural filters are filters with at least one selector operator of a type
+// that isn't `css-selector`.
+//
+// These filters are represented as JSON provided by adblock-rust. The format
+// is documented at:
+// https://docs.rs/adblock/latest/adblock/cosmetic_filter_cache/struct.ProceduralOrActionFilter.html
+void StripProceduralFilters(base::Value::Dict& resources) {
+  base::Value::List* procedural_actions =
+      resources.FindList("procedural_actions");
+  if (procedural_actions) {
+    base::Value::List::iterator it = procedural_actions->begin();
+    while (it < procedural_actions->end()) {
+      DCHECK(it->is_string());
+      auto* pfilter_str = it->GetIfString();
+      if (pfilter_str == nullptr) {
+        continue;
+      }
+      auto val = base::JSONReader::ReadDict(*pfilter_str);
+      if (val) {
+        auto* list = val->FindList("selector");
+        if (list && list->size() != 1) {
+          // Non-procedural filters are always a single operator in length.
+          it = procedural_actions->erase(it);
+          continue;
+        }
+        // The single operator must also be a `css-selector`.
+        auto op_iterator = list->begin();
+        auto* dict = op_iterator->GetIfDict();
+        if (dict) {
+          auto* str = dict->FindString("type");
+          if (str && *str != "css-selector") {
+            it = procedural_actions->erase(it);
+            continue;
+          }
+        }
+      }
+      it++;
+    }
   }
 }
 
