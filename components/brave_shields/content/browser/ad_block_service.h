@@ -50,6 +50,8 @@ class AdBlockCustomFiltersProvider;
 class AdBlockLocalhostFiltersProvider;
 class AdBlockFilterListCatalogProvider;
 class AdBlockSubscriptionServiceManager;
+class CosmeticResourceMergeTest;
+class StripProceduralFiltersTest;
 
 // The brave shields service in charge of ad-block checking and init.
 class AdBlockService {
@@ -142,6 +144,8 @@ class AdBlockService {
   friend class ::AdBlockServiceTest;
   friend class ::EphemeralStorage1pDomainBlockBrowserTest;
   friend class ::DebounceBrowserTest;
+  friend class brave_shields::CosmeticResourceMergeTest;
+  friend class brave_shields::StripProceduralFiltersTest;
 
   static std::string g_ad_block_dat_file_version_;
 
@@ -157,6 +161,12 @@ class AdBlockService {
 
   void TagExistsForTest(const std::string& tag,
                         base::OnceCallback<void(bool)> cb);
+
+  static void MergeResourcesInto(base::Value::Dict from,
+                                 base::Value::Dict& into,
+                                 bool force_hide);
+
+  static void StripProceduralFilters(base::Value::Dict& resources);
 
   raw_ptr<PrefService> local_state_;
   std::string locale_;

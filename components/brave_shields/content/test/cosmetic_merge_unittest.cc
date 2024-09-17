@@ -6,7 +6,7 @@
 #include <optional>
 
 #include "base/json/json_reader.h"
-#include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -33,8 +33,8 @@ class CosmeticResourceMergeTest : public testing::Test {
         base::JSONReader::Read(expected);
     ASSERT_TRUE(expected_val);
 
-    MergeResourcesInto(std::move(b_val->GetDict()), *a_val->GetIfDict(),
-                       force_hide);
+    AdBlockService::MergeResourcesInto(std::move(b_val->GetDict()),
+                                       *a_val->GetIfDict(), force_hide);
 
     ASSERT_EQ(*a_val, *expected_val);
   }

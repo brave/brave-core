@@ -7,7 +7,7 @@
 
 #include "base/json/json_reader.h"
 #include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
-#include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -40,6 +40,10 @@ class StripProceduralFiltersTest : public testing::Test {
     auto resources = std::move(parsed_result->GetDict());
 
     return resources;
+  }
+
+  void StripProceduralFilters(base::Value::Dict& resources) {
+    AdBlockService::StripProceduralFilters(resources);
   }
 };
 
