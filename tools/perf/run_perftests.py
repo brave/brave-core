@@ -144,7 +144,7 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
     return _RunUpdateProfile(config, options)
 
   if options.mode == PerfMode.RECORD_WPR:
-    return 0 if wpr_tools.record_wpr(config, options) else 1
+    return 0 if wpr_utils.record_wpr(config, options) else 1
 
   raise RuntimeError('Unknown mode')
 

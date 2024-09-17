@@ -7,27 +7,44 @@
 
 import argparse
 import logging
+import os
 
 import components.wpr_utils as wpr_utils
 import components.cloud_storage as cloud_storage
 
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s: %(message)s')
+def main():
+  logging.basicConfig(level=logging.INFO, format='%(asctime)s: %(message)s')
 
-parser = argparse.ArgumentParser()
-parser.add_argument(
-      'mode',
-      type=str,
-      choices=['wpr-cleanup', 'wpr-ls', 's3-upload', 'wpr-upload'])
-parser.add_argument(
-      'file',
-      type=str)
-args = parser.parse_args()
-if args.mode == 'wpr-cleanup':
-  wpr_utils.cleanup_archive(args.file, True)
+  parser = argparse.ArgumentParser()
+  subparsers = parser.add_subparsers(dest='subparser_name')
+  wpr_parser = subparsers.add_parser('wpr')
+  wpr_parser.add_argument(
+        'cmd',
+        type=str,
+        choices=['cleanup', 'ls'])
+  s3_parser = subparsers.add_parser('s3')
+  s3_parser.add_argument(
+        'cmd',
+        type=str,
+        choices=['upload', 'update-sha1'])
 
-if args.mode == 'wpr-ls':
-  print(wpr_utils.run_httparchive(['ls', args.file]))
+  parser.add_argument(
+        'file',
+        type=str)
+  args = parser.parse_args()
+  if args.subparser_name == 'wpr':
+    if args.cmd == 'cleanup':
+      wpr_utils.cleanup_archive(args.file, True)
 
-if args.mode == 'wpr-upload':
-  cloud_storage.UploadFileToCloudStorage(cloud_storage.CloudFolder.CATAPULT_PERF_DATA, args.file)
+    if args.cmd == 'ls':
+      print(wpr_utils.run_httparchive(['ls', os.path.abspath(args.file)]))
+
+  if args.subparser_name == 's3':
+    if args.cmd == 'upload':
+      cloud_storage.UploadFileToCloudStorage(cloud_storage.CloudFolder.CATAPULT_PERF_DATA, args.file)
+
+    if args.cmd == 'update-sha1':
+      cloud_storage.UpdateSha1(args.file)
+
+main()

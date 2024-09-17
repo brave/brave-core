@@ -93,6 +93,7 @@ def _merge_wpr_files(files: List[str], output_file: str) -> None:
 
 
 def cleanup_archive(file: str, include_service_hosts: bool) -> None:
+  file = os.path.abspath(file)
   # Remove duplicates:
   tmp_file = file + '.empty'
   run_httparchive(['trim', '--invert-match', '--host', 'none', file, tmp_file])
@@ -105,7 +106,7 @@ def cleanup_archive(file: str, include_service_hosts: bool) -> None:
   if include_service_hosts:
     hosts += _SERVICE_HOSTS
   for host in hosts:
-    logging.info(host)
+    logging.info('Removing %s', host)
     run_httparchive(['trim', '--host', host, file, file])
 
   # Remove Chromium https://accounts.google.com/ListAccounts requests:
