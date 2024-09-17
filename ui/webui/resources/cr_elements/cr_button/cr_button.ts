@@ -5,8 +5,8 @@
 
 import '//resources/brave/leo.bundle.js'
 
-import { PolymerElement } from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import { getTemplate } from './cr_button.html.js';
+import {CrLitElement, css} from '//resources/lit/v3_0/lit.rollup.js';
+import {getHtml} from './cr_button.html.js';
 
 export interface CrButtonElement {
   $: {
@@ -14,27 +14,47 @@ export interface CrButtonElement {
   };
 }
 
-export class CrButtonElement extends PolymerElement {
+export class CrButtonElement extends CrLitElement {
   static get is() {
     return 'cr-button';
   }
 
-  static get template() {
-    return getTemplate();
+  static override get styles() {
+    return css`
+:host {
+  display: inline-block;
+  height: min-content;
+}
+
+:host(.cancel-button) {
+  margin-inline-end: var(--leo-spacing-m);
+}
+
+leo-button {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
+`;
   }
 
-  static get properties() {
+  override render() {
+    return getHtml.bind(this)();
+  }
+
+  static override get properties() {
     return {
       disabled: {
         type: Boolean,
         value: false,
-        reflectToAttribute: true,
+        reflect: true,
         observer: 'disabledChanged_'
       },
       class: {
         type: String,
         value: '',
-        reflectToAttribute: true,
+        reflect: true,
         observer: 'classChanged_'
       }
     };
