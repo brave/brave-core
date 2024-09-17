@@ -34,6 +34,7 @@ WebDiscoveryServiceFactory::WebDiscoveryServiceFactory()
 
 WebDiscoveryServiceFactory::~WebDiscoveryServiceFactory() = default;
 
+// static
 ProfileSelections WebDiscoveryServiceFactory::CreateProfileSelections() {
   if (!base::FeatureList::IsEnabled(features::kBraveWebDiscoveryNative)) {
     return ProfileSelections::BuildNoProfilesSelected();
