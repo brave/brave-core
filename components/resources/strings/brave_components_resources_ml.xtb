@@ -32,7 +32,6 @@
 <translation id="8446884382197647889">കൂടുതലറിയുക</translation>
 <translation id="4394049700291259645">അപ്രാപ്‌തമാക്കുക</translation>
 <translation id="4176463684765177261">അപ്രാപ്‌തമാക്കി</translation>
-<translation id="7352651011704765696">എന്തോ കുഴപ്പം സംഭവിച്ചു</translation>
 <translation id="6643016212128521049">മായ്‌ക്കുക</translation>
 <translation id="583281660410589416">അജ്ഞാതം</translation>
 <translation id="7375125077091615385">തരം:</translation>
@@ -59,6 +58,7 @@
 <translation id="2359808026110333948">തുടരുക</translation>
 <translation id="6965382102122355670">ശരി</translation>
 <translation id="5234764350956374838">ബഹിഷ്‌ക്കരിക്കുക</translation>
+<translation id="7352651011704765696">എന്തോ കുഴപ്പം സംഭവിച്ചു</translation>
 <translation id="6945221475159498467">തിരഞ്ഞെടുക്കുക</translation>
 <translation id="7649070708921625228">സഹായം</translation>
 <translation id="6042308850641462728">കൂടുതൽ</translation>
@@ -68,11 +68,16 @@
 <translation id="1483493594462132177">അയയ്‌ക്കുക</translation>
 <translation id="1177863135347784049">ഇഷ്ടാനുസൃതം</translation>
 <translation id="8725066075913043281">വീണ്ടും ശ്രമിക്കുക</translation>
+<translation id="1165039591588034296">പിശക്</translation>
+<translation id="5860033963881614850">ഓഫാണ്</translation>
+<translation id="5916664084637901428">ഓണാണ്</translation>
 <translation id="1987317783729300807">അക്കൗണ്ടുകൾ‌</translation>
 <translation id="6979737339423435258">എല്ലാ സമയത്തും</translation>
 <translation id="629730747756840877">അക്കൗണ്ട്</translation>
 <translation id="5292796745632149097">ഇതിലേക്ക് അയയ്ക്കുക</translation>
 <translation id="473775607612524610">അപ്ഡേറ്റ് ചെയ്യുക</translation>
+<translation id="1224275271335624810">ഏറ്റവും വേഗതയുള്ളത്</translation>
+<translation id="3735740477244556633">ഇപ്രകാരം അടുക്കുക</translation>
 <translation id="1426410128494586442">അതെ</translation>
 <translation id="4250680216510889253">ഇല്ല</translation>
 <translation id="1201402288615127009">അടുത്തത്</translation>
@@ -87,7 +92,6 @@
 <translation id="8275038454117074363">ഇറക്കുമതിചെയ്യുക</translation>
 <translation id="7978412674231730200">സ്വകാര്യ കീ</translation>
 <translation id="4378551569595875038">കണക്റ്റുചെയ്യുന്നു...</translation>
-<translation id="4522570452068850558">വിശദാംശങ്ങൾ</translation>
 <translation id="9220525904950070496">അക്കൗണ്ട് നീക്കംചെയ്യൽ</translation>
 <translation id="1974060860693918893">നൂതനം</translation>
 <translation id="42126664696688958">എക്‌സ്‌പോർട്ടുചെയ്യുക</translation>
@@ -104,8 +108,6 @@
 <translation id="5565735124758917034">സജീവമാണ്</translation>
 <translation id="8874184842967597500">കണക്റ്റുചെയ്‌തിട്ടില്ല</translation>
 <translation id="5677928146339483299">തടഞ്ഞു</translation>
-<translation id="1165039591588034296">പിശക്</translation>
-<translation id="5916664084637901428">ഓണാണ്</translation>
 <translation id="2941112035454246133">താഴ്ന്ന</translation>
 <translation id="9100765901046053179">വിപുലമായ ക്രമീകരണം</translation>
 <translation id="3380365263193509176">അജ്ഞാതമായ പിശക്</translation>
@@ -129,6 +131,9 @@
 <translation id="8688672835843460752">ലഭ്യമാണ്</translation>
 <translation id="8775144690796719618">അസാധുവായ URL</translation>
 <translation id="1472675084647422956">കൂടുതൽ‍ കാണിക്കുക</translation>
+<translation id="4522570452068850558">വിശദാംശങ്ങൾ</translation>
+<translation id="7144878232160441200">വീണ്ടും ശ്രമിക്കുക</translation>
+<translation id="7138678301420049075">മറ്റുള്ളവ</translation>
 <translation id="4750394297954878236">നിർദ്ദേശങ്ങൾ</translation>
 <translation id="939305735877869636">Brave Software</translation>
 <translation id="1264974993859112054">കായികം</translation>
@@ -144,14 +149,13 @@
 <translation id="6002210667729577411">പുതിയ വിൻഡോയിലേക്ക് ഗ്രൂപ്പിനെ നീക്കുക</translation>
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">മോണോസ്പെ‌യ്‌സ്</translation>
-<translation id="7144878232160441200">വീണ്ടും ശ്രമിക്കുക</translation>
-<translation id="7138678301420049075">മറ്റുള്ളവ</translation>
 <translation id="8712637175834984815">വിജയകരം</translation>
 <translation id="7053983685419859001">തടയുക</translation>
 <translation id="6196640612572343990">മൂന്നാം കക്ഷി കുക്കികള്‍ ബ്ലോക്കുചെയ്യുക</translation>
 <translation id="5657156137487675418">എല്ലാ കുക്കികളും അനുവദിക്കൂ</translation>
 <translation id="2453860139492968684">പൂര്‍ത്തിയാക്കുക</translation>
 <translation id="5037676449506322593">എല്ലാം തിരഞ്ഞെടുക്കുക</translation>
+<translation id="7143207342074048698">കണക്റ്റുചെയ്യുന്നു</translation>
 <translation id="7805768142964895445">നില</translation>
 <translation id="5747552184818312860">കാലഹരണപ്പെടുന്നു</translation>
 <translation id="1116694919640316211">വിവരം</translation>

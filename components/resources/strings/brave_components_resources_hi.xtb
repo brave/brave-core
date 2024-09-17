@@ -242,48 +242,7 @@
 <translation id="3082557070674409251">क्लिक किया गया</translation>
 <translation id="7119308337584989771">बरखास्त</translation>
 <translation id="6805660603861526473">देखा गया</translation>
-<translation id="8826352442759228526">आपके Brave Rewards को वेरीफ़ाई नहीं किया जा सकता है क्योंकि आप अधिकतम वेरीफ़ाई किए गए डिवाइस की सीमा पार कर गए हैं.</translation>
-<translation id="1221593978088944142">गड़बड़ी : अधिकतम डिवाइस की संख्या पूरी हो चुकी है</translation>
-<translation id="6895088073061692390">हमारी ऑटोमैटिक जाँच के दौरान आपके Brave विज्ञापन में कुछ अप्रत्याशित गतिविधियों का पता चला है, जिसकी वजह से दुर्भाग्यवश आपके Brave विज्ञापन के प्रोफ़ाइल को फ़्लैग किया गया है.</translation>
-<translation id="4229056297802204697">हालाँकि प्रोफ़ाइल फ़्लैग रहने के दौरान भी आपको विज्ञापन दिख सकते हैं, लेकिन भुगतान नहीं मिल पाएँगे. आप Brave रिवॉर्ड से कस्टोडियल अकाउंट को भी कनेक्ट नहीं कर पाएँगे.</translation>
-<translation id="5124846913141379164">यह मुमकिन है कि आपके प्रोफ़ाइल को फ़्लैग करने मे कोई गड़बड़ी हुई हो और आपकी ओर से किसी भी तरह की तत्काल कार्यवाही की ज़रूरत न पड़े. आपके प्रोफ़ाइल से फ़्लैग को बाद में हटाया जा सकता है.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Brave के रिवॉर्ड प्रोफ़ाइल को फ़्लैग करने के प्रोसेस के बारे में और जानें.<ph name="END_LINK"/></translation>
-<translation id="5028274575541726856">गड़बड़ी: Brave रिवॉर्ड प्रोफ़ाइल को फ़्लैग किया गया है</translation>
-<translation id="2607420597216860026"><ph name="PROVIDER"/> पर ID का वेरिफ़िकेशन पूरा करने के बाद, कृपया दोबारा कोशिश करें.</translation>
-<translation id="3183954159462541696">गड़बड़ी : लॉग इन करने के लिए आपको एक वेरिफ़ाई किया गया अकाउंट चाहिए</translation>
-<translation id="1859789048900659918">अच्छा, ऐसा लगता है कि आपके Brave रिवॉर्ड का देश उस <ph name="PROVIDER"/> अकाउंट के देश से मेल नहीं खाता, जिसे आप कनेक्ट करने की कोशिश कर रहे हैं.</translation>
-<translation id="8925428135452218262">गड़बड़ी : देश मेल नहीं खाता</translation>
-<translation id="5260522591743022748">हम्म, ऐसा लगता है कि आपका Brave Rewards पहले से ही दूसरे <ph name="PROVIDER"/> अकाउंट से वेरिफ़ाई किया जा चुका है. कृपया अपने पिछले अकाउंट का इस्तेमाल करके फिर से वेरिफ़ाई करने की कोशिश करें.</translation>
-<translation id="5111921830714291902">एरर: अलग अकाउंट</translation>
-<translation id="5225019866741699134">ऐसा लगता है कि फ़िलहाल <ph name="PROVIDER"/> से Brave Rewards को कनेक्ट नहीं किया जा सकता है. बाद में फिर से कोशिश करें.</translation>
-<translation id="6105073131081187815">आप <ph name="BEGIN_LINK"/>यहाँ सेवा का स्टेटस<ph name="END_LINK"/> देख सकते हैं.</translation>
-<translation id="2400786541309111904">गड़बड़ी : चुने गए कस्टोडियन से कनेक्ट करने की सुविधा फ़िलहाल नहीं है</translation>
-<translation id="1024520300696337331">इस समय आपके <ph name="PROVIDER"/> अकाउंट को आपकी Brave प्रोफ़ाइल से नहीं जोड़ा जा सका. आपका अकाउंट ऐसे देश में रजिस्टर किया हुआ है, जहाँ अभी Brave रिवॉर्ड जोड़ने की सुविधा नहीं है.</translation>
-<translation id="619384413404021992"><ph name="LINK_BEGIN"/>सपोर्ट किए जाने वाले क्षेत्रों की मौजूदा लिस्ट देखें और Brave रिवॉर्ड से कस्टोडियल अकाउंट जोड़ने के बारे में और जानें<ph name="END_LINK"/>.</translation>
-<translation id="7193389978208728181">गड़बड़ी : इस क्षेत्र में अभी काम नहीं करता है</translation>
-<translation id="5382684862562314222">आपके क्षेत्र में Uphold पर bAT अभी तक सपोर्टेड नहीं है.</translation>
-<translation id="9074594632540931067">एरर: बैट अनुपलब्ध है</translation>
-<translation id="5376524136040178759">Uphold के मुताबिक, इस समय आपके Uphold अकाउंट पर कुछ सीमाएँ हैं. कृपया अपने Uphold अकाउंट में लॉग इन करें और देखें कि क्या वहाँ कोई नोटिस है या अकाउंट से जुड़ी कोई ज़रूरी शर्तें पूरी करनी बाकी हैं, इसके बाद फिर से कोशिश करें. हो सकता है कि आपको Uphold पर और जानकारी सबमिट करनी पड़े.</translation>
-<translation id="6996157559236886133">गड़बड़ी: सीमित Uphold अकाउंट कार्यक्षमता</translation>
-<translation id="3274650021044762770">आपके Brave Rewards को आपके <ph name="PROVIDER"/>अकाउंट से जोड़ने के आपके ब्राउज़र के अनुरोध को सत्यापित करने में समस्या हुई. अधिक सहायता के लिए आप <ph name="BEGIN_LINK"/> सहायता केंद्र <ph name="END_LINK"/> से संपर्क कर सकते हैं.</translation>
-<translation id="1316066811927496401">एरर: अनुरोध सत्यापित नहीं किया जा सका</translation>
-<translation id="7352651011704765696">कुछ गलत हो गया</translation>
-<translation id="8285276813470932793">हम आपके अनुरोध को पूरा नहीं कर सके। कृपया फिर से कोशिश करें और अगर समस्या बनी रहे, तो <ph name="LINK_BEGIN"/>सहायता टीम से संपर्क करें<ph name="LINK_END"/>।</translation>
 <translation id="8167256685618982116"><ph name="TITLE"/> को चालू करके, आप <ph name="BEGIN_LINK1"/> सेवा की शर्तें <ph name="END_LINK1"/> से सहमत होते हैं। और <ph name="BEGIN_LINK2"/> गोपनीयता नीति <ph name="END_LINK2"/>।</translation>
-<translation id="8817096698141999876">कस्टोडियल अकाउंट (ID वेरिफ़ाई करना ज़रूरी है)</translation>
-<translation id="1539433155512862005">कस्टोडियल अकाउंट ऐसे भरोसेमंद थर्ड पार्टी अकाउंट हैं, जो आपके BAT अपने पास रखते हैं.</translation>
-<translation id="6834831484510296932">सेल्फ़-कस्टडी</translation>
-<translation id="4208917415153655958">सेल्फ़-कस्टडी आपको अपने BAT पर खास नियंत्रण के साथ-साथ उसकी सुरक्षा की पूरी ज़िम्मेदारी भी देती है।</translation>
-<translation id="1953496742859481929">सेल्फ़-कस्टडी वॉलेट चुनकर, Solana नेटवर्क पर SPL-BAT के रूप में रिवॉर्ड का भुगतान किया जाएगा।</translation>
-<translation id="6751803821780922506">यह चुनें कि आप अपने BAT कहाँ लेना चाहेंगे</translation>
-<translation id="3162035476318501831">क्षेत्र और सपोर्ट के बारे में और जानें।</translation>
-<translation id="7329170127335794328">फ़िलहाल आपके क्षेत्र में उपलब्ध नहीं है</translation>
-<translation id="966956302643313970">बेसिक अटेंशन टोकन (BAT) रिवॉर्ड कमाना शुरू करने के लिए कोई अकाउंट कनेक्ट करें. आप जो भी BAT कमाएँगे, वे अपने-आप हर महीने आपके अकाउंट में ट्रांसफ़र हो जाएँगे.</translation>
-<translation id="4009439571146350519">या दूसरा वॉलेट, जो Solana को सपोर्ट करता है</translation>
-<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>उपयोग की शर्तें<ph name="TOS_LINK_END"/> और<ph name="PP_LINK_BEGIN"/>गोपनीयता नीति<ph name="PP_LINK_END"/>।</translation>
-<translation id="1692293127547800972">कुछ गलत हो गया। कृपया फिर से कोशिश करें</translation>
-<translation id="756341217015623253">लॉग इन या साइन अप करें</translation>
-<translation id="2653844658857826081">नया</translation>
 <translation id="1892970806832316900"><ph name="DATE"/> तक पेंडिंग है</translation>
 <translation id="7849926087559412554">ओह! आपके ब्राउज़र पर Brave प्राइवेसी विज्ञापन नहीं आ सकते हैं</translation>
 <translation id="5177429570315095022">विज्ञापन देखना जारी रखने के लिए आपको अपना ब्राउज़र अपडेट करना होगा</translation>
@@ -398,7 +357,6 @@
 <translation id="3448261046185459858">आप इस 'आर्थिक योगदान' पैनल में जाकर किसी साइट को मासिक योगदान पाने वालों की लिस्ट से निकाल सकते हैं.</translation>
 <translation id="5082474983463379713">कृपया याद रखें:</translation>
 <translation id="1430915738399379752">प्रिंट करें</translation>
-<translation id="135956957367307069">आपका अनुरोध अभी भी प्रोसेस हो रहा है, कृपया प्रतीक्षा करें।</translation>
 <translation id="2600847485413879104">इनाम BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
@@ -563,13 +521,16 @@
 <translation id="6965382102122355670">ठीक है</translation>
 <translation id="6727102863431372879">सेट</translation>
 <translation id="8853725596990766789">राशि बदलें</translation>
-<translation id="1609556006143307897">आप कंटेंट क्रिएटर को सपोर्ट करने में मदद कर रहे हैं</translation>
+<translation id="5899814466108868020">आप Brave और BAT समुदाय को सहायता प्रदान कर रहे हैं</translation>
 <translation id="654447476965480878">BAT कमाने के बारे में और जानें</translation>
 <translation id="4105212447337987768"><ph name="DATE"/> को हम मौजूदा वर्चुअल BAT बैलेंस को सपोर्ट करना बंद कर देंगे. इस तारीख से पहले एक कस्टोडियल अकाउंट को कनेक्ट करें ताकि हम आपके कमाए गए बैलेंस को आपके कस्टोडियल अकाउंट में ट्रांसफ़र कर सकें, नहीं तो आप अपना बैलेंस खो देंगे.</translation>
 <translation id="707569835145765061">कार्रवाई ज़रूरी है : कोई कस्टोडियल अकाउंट कनेक्ट करें वरना आप अपना vBAT खो देंगे</translation>
 <translation id="3358400027937159351">आपने सहयोग के तौर पर <ph name="AMOUNT"/> दिए हैं.</translation>
 <translation id="1619753851206150396">आप लॉग आउट हो गए हैं</translation>
 <translation id="3035648636451344428">आपका <ph name="PROVIDER"/> खाता सुरक्षित रखने के लिए, ऐसा समय-समय पर होता है। लॉग आउट होने पर भी आपको भुगतान प्राप्त होता रहेगा, लेकिन आप अपने खाते में बकाया नहीं देख पाएंगे या अपने <ph name="PROVIDER"/> खाते से योगदान नहीं कर पाएंगे।</translation>
+<translation id="9074594632540931067">एरर: बैट अनुपलब्ध है</translation>
+<translation id="5382684862562314222">आपके क्षेत्र में Uphold पर bAT अभी तक सपोर्टेड नहीं है.</translation>
+<translation id="6996157559236886133">गड़बड़ी: सीमित Uphold अकाउंट सुविधाएँ</translation>
 <translation id="1677961202754619328">Uphold के मुताबिक, इस समय आपके Uphold अकाउंट पर कुछ सीमाएँ हैं. कृपया अपने Uphold अकाउंट में लॉग इन करें और देखें कि क्या वहाँ कोई नोटिस है या अकाउंट से जुड़ी कोई ज़रूरी शर्तें पूरी करनी बाकी हैं, इसके बाद फिर से कोशिश करें.</translation>
 <translation id="9029009481113741943">दोबारा लॉग इन करें</translation>
 <translation id="2429828319207652823">आपके योगदान को प्रोसैस करने में एक समस्या थी।</translation>
@@ -582,6 +543,7 @@
 <translation id="3247549836099021862">सपोर्ट से संपर्क करें</translation>
 <translation id="5234764350956374838">खारिज करें</translation>
 <translation id="7859066142771796818">गिफ़्ट कार्ड खरीदने, अन्य करेंसी में बदलने, कंटेंट क्रिएटर्स का सपोर्ट करने और बहुत कुछ करने के लिए टोकन का इस्तेमाल करें.</translation>
+<translation id="7352651011704765696">कुछ गलत हो गया</translation>
 <translation id="5425006356459378415">Brave रिवॉर्ड उपलब्ध नहीं है</translation>
 <translation id="909076461795862330">बदकिस्मती से, Brave रिवॉर्ड को सेट अप करते समय कोई गड़बड़ी हुई. कृपया फिर से कोशिश करें.</translation>
 <translation id="3180990265682133881">बदकिस्मती से, आपका देश सेट करते समय कोई गड़बड़ी हुई. कृपया फिर से कोशिश करें.</translation>
@@ -654,6 +616,62 @@
 <translation id="1053740665683265460">इस क्रिएटर को एक बार दिया जाने वाला योगदान भेजने और उनके प्रति सराहना प्रकट करने के लिए अपने Web3 वॉलेट का उपयोग करें</translation>
 <translation id="6859705040495339375">Web3 वॉलेट से भेजें</translation>
 <translation id="7615852194054434287">ऐसा लगता है कि इस क्रिएटर ने अभी तक Web3 वॉलेट के ज़रिए योगदान प्राप्त करने के लिए सेट अप नहीं किया है।</translation>
+<translation id="8817096698141999876">कस्टोडियल अकाउंट (ID वेरिफ़ाई करना ज़रूरी है)</translation>
+<translation id="1539433155512862005">कस्टोडियल अकाउंट ऐसे भरोसेमंद थर्ड पार्टी अकाउंट हैं, जो आपके BAT अपने पास रखते हैं.</translation>
+<translation id="6834831484510296932">सेल्फ़-कस्टडी</translation>
+<translation id="4208917415153655958">सेल्फ़-कस्टडी आपको अपने BAT पर खास नियंत्रण के साथ-साथ उसकी सुरक्षा की पूरी ज़िम्मेदारी भी देती है।</translation>
+<translation id="9118326146754987354">सेल्फ़-कस्टडी के साथ, BAT नेटवर्क पर SPL-BAT के तौर पर रिवॉर्ड का भुगतान किया जाएगा.</translation>
+<translation id="6751803821780922506">यह चुनें कि आप अपने BAT कहाँ लेना चाहेंगे</translation>
+<translation id="3162035476318501831">क्षेत्र और सपोर्ट के बारे में और जानें।</translation>
+<translation id="7329170127335794328">फ़िलहाल आपके क्षेत्र में उपलब्ध नहीं है</translation>
+<translation id="966956302643313970">बेसिक अटेंशन टोकन (BAT) रिवॉर्ड कमाना शुरू करने के लिए कोई अकाउंट कनेक्ट करें. आप जो भी BAT कमाएँगे, वे अपने-आप हर महीने आपके अकाउंट में ट्रांसफ़र हो जाएँगे.</translation>
+<translation id="4009439571146350519">या दूसरा वॉलेट, जो Solana को सपोर्ट करता है</translation>
+<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>उपयोग की शर्तें<ph name="TOS_LINK_END"/> और<ph name="PP_LINK_BEGIN"/>गोपनीयता नीति<ph name="PP_LINK_END"/>।</translation>
+<translation id="1692293127547800972">कुछ गलत हो गया। कृपया फिर से कोशिश करें</translation>
+<translation id="756341217015623253">लॉग इन या साइन अप करें</translation>
+<translation id="2653844658857826081">नया</translation>
+<translation id="1165039591588034296">गड़बड़ी</translation>
+<translation id="5826530373788377342">आप इस <ph name="PROVIDER"/> अकाउंट के लिए अधिकतम डिवाइस लिमिट तक पहुंच गए हैं.</translation>
+<translation id="6700131426769360592">डिवाइस  लिमिट तक पहुँच गये</translation>
+<translation id="6895088073061692390">हमारी ऑटोमैटिक जाँच के दौरान आपके Brave विज्ञापन में कुछ अप्रत्याशित गतिविधियों का पता चला है, जिसकी वजह से दुर्भाग्यवश आपके Brave विज्ञापन के प्रोफ़ाइल को फ़्लैग किया गया है.</translation>
+<translation id="4229056297802204697">हालाँकि प्रोफ़ाइल फ़्लैग रहने के दौरान भी आपको विज्ञापन दिख सकते हैं, लेकिन भुगतान नहीं मिल पाएँगे. आप Brave रिवॉर्ड से कस्टोडियल अकाउंट को भी कनेक्ट नहीं कर पाएँगे.</translation>
+<translation id="5124846913141379164">यह मुमकिन है कि आपके प्रोफ़ाइल को फ़्लैग करने मे कोई गड़बड़ी हुई हो और आपकी ओर से किसी भी तरह की तत्काल कार्यवाही की ज़रूरत न पड़े. आपके प्रोफ़ाइल से फ़्लैग को बाद में हटाया जा सकता है.</translation>
+<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Brave के रिवॉर्ड प्रोफ़ाइल को फ़्लैग करने के प्रोसेस के बारे में और जानें.<ph name="END_LINK"/></translation>
+<translation id="4699218748197721830">Brave Rewards प्रोफ़ाइल को फ़्लैग किया गया</translation>
+<translation id="2607420597216860026"><ph name="PROVIDER"/> पर ID का वेरिफ़िकेशन पूरा करने के बाद, कृपया दोबारा कोशिश करें.</translation>
+<translation id="5037332159336402972">लॉग इन करने के लिए आपको एक वेरिफ़ाई किया गया अकाउंट चाहिए</translation>
+<translation id="1859789048900659918">अच्छा, ऐसा लगता है कि आपके Brave रिवॉर्ड का देश उस <ph name="PROVIDER"/> अकाउंट के देश से मेल नहीं खाता, जिसे आप कनेक्ट करने की कोशिश कर रहे हैं.</translation>
+<translation id="3080649636035373911">देश मेल नहीं खाता</translation>
+<translation id="5260522591743022748">हम्म, ऐसा लगता है कि आपका Brave Rewards पहले से ही दूसरे <ph name="PROVIDER"/> अकाउंट से वेरिफ़ाई किया जा चुका है. कृपया अपने पिछले अकाउंट का इस्तेमाल करके फिर से वेरिफ़ाई करने की कोशिश करें.</translation>
+<translation id="6408621361472415607">अलग अकाउंट</translation>
+<translation id="5225019866741699134">ऐसा लगता है कि फ़िलहाल <ph name="PROVIDER"/> से Brave Rewards को कनेक्ट नहीं किया जा सकता है. बाद में फिर से कोशिश करें.</translation>
+<translation id="6105073131081187815">आप <ph name="BEGIN_LINK"/>यहाँ सेवा का स्टेटस<ph name="END_LINK"/> देख सकते हैं.</translation>
+<translation id="3969419585013689529">चुने गए कस्टोडियन से कनेक्ट करने की सुविधा फ़िलहाल नहीं है</translation>
+<translation id="1024520300696337331">इस समय आपके <ph name="PROVIDER"/> अकाउंट को आपकी Brave प्रोफ़ाइल से नहीं जोड़ा जा सका. आपका अकाउंट ऐसे देश में रजिस्टर किया हुआ है, जहाँ अभी Brave रिवॉर्ड जोड़ने की सुविधा नहीं है.</translation>
+<translation id="619384413404021992"><ph name="LINK_BEGIN"/>सपोर्ट किए जाने वाले क्षेत्रों की मौजूदा लिस्ट देखें और Brave रिवॉर्ड से कस्टोडियल अकाउंट जोड़ने के बारे में और जानें<ph name="END_LINK"/>.</translation>
+<translation id="7933193151688235283">इस क्षेत्र में अभी काम नहीं करता है</translation>
+<translation id="5376524136040178759">Uphold के मुताबिक, इस समय आपके Uphold अकाउंट पर कुछ सीमाएँ हैं. कृपया अपने Uphold अकाउंट में लॉग इन करें और देखें कि क्या वहाँ कोई नोटिस है या अकाउंट से जुड़ी कोई ज़रूरी शर्तें पूरी करनी बाकी हैं, इसके बाद फिर से कोशिश करें. हो सकता है कि आपको Uphold पर और जानकारी सबमिट करनी पड़े.</translation>
+<translation id="6349168810769273818">सीमित Uphold अकाउंट सुविधाएँ</translation>
+<translation id="1279668677171152085">आपके<ph name="PROVIDER"/> अकाउंट को Brave Rewards से जोड़ने के आपके अनुरोध को वैलिडेट करने में समस्या हुई. ज़्यादा सहायता के लिए आप<ph name="BEGIN_LINK"/>सपोर्ट <ph name="END_LINK"/>से संपर्क कर सकते हैं.</translation>
+<translation id="8761736799800527591">अनुरोध को वैलिडेट नहीं किया जा सका</translation>
+<translation id="8285276813470932793">हम आपके अनुरोध को पूरा नहीं कर सके। कृपया फिर से कोशिश करें और अगर समस्या बनी रहे, तो <ph name="LINK_BEGIN"/>सहायता टीम से संपर्क करें<ph name="LINK_END"/>।</translation>
+<translation id="135956957367307069">आपका अनुरोध अभी भी प्रोसेस हो रहा है, कृपया प्रतीक्षा करें।</translation>
+<translation id="9033500121333471466">बतौर ग़लत मार्क करें</translation>
+<translation id="4477865412359526485">इस समय कोई भी Brave Ads हिस्ट्री नहीं है.</translation>
+<translation id="4256040774643144761">Ads हिस्ट्री</translation>
+<translation id="1188389905162088150">आपके द्वारा पिछले 30 दिनों में प्राप्त किए गए विज्ञापन</translation>
+<translation id="4296467068886908539">ज़्यादा से ज़्यादा <ph name="NUM"/>/घंटा</translation>
+<translation id="3266055641283174315">विज्ञापन का प्रकार</translation>
+<translation id="8706824117053903390">इस महीने के कुल व्यू</translation>
+<translation id="5105890735834548623">विज्ञापन सेटिंग</translation>
+<translation id="96989662637180657">Brave Search Ads<ph name="LINK_BEGIN"/>Brave Search<ph name="LINK_END"/>पर दिखाई देते हैं.</translation>
+<translation id="3138160233953903250">विज्ञापन सेटिंग</translation>
+<translation id="2446517297521536638">आप किस तरह के Brave Ads, कितनी बार देखना चाहते हैं, यह कंट्रोल करें. जितना ज़्यादा आप देखेंगे, आप उतना ज़्यादा कमा सकेंगे.</translation>
+<translation id="5860033963881614850">बंद</translation>
+<translation id="5916664084637901428">चालू</translation>
+<translation id="4284417062730522399">इस महीने <ph name="NUM"/> विज्ञापन प्राप्त हुए</translation>
+<translation id="7697696066810593560">आपने इस महीने अब तक <ph name="NUM"/>अर्जित किया है</translation>
+<translation id="6733193230212030816">अनुमान है कि आपकी कमाई इस बीच होगी:<ph name="RANGE"/></translation>
 <translation id="7090992647511817643">अकाउंट</translation>
 <translation id="4822132585477111396">चेन आई.डी.</translation>
 <translation id="3269475789479462358">डोमेन</translation>
@@ -769,6 +787,18 @@
 <translation id="8918807203406722697">Stablecoin जोड़े: <ph name="SLIPPAGE_PERCENT"/>%</translation>
 <translation id="7056655731948492143">दुसरे: <ph name="SLIPPAGE_PERCENT"/>%</translation>
 <translation id="6231782223312638214">सुझाया गए</translation>
+<translation id="8525485643657418753">सबसे सस्ता</translation>
+<translation id="1224275271335624810">सबसे तेज़</translation>
+<translation id="4071446933408069155"><ph name="NETWORK_NAME"/> पर</translation>
+<translation id="3751611888003301070">रूट</translation>
+<translation id="3799091982455573025"><ph name="EXCHANGE_NAME"/>के ज़रिए<ph name="NETWORK_NAME"/>पर स्वैप करें</translation>
+<translation id="5136093123841570193"><ph name="FRIST_NETWORK_NAME"/> के ज़रिए <ph name="SECOND_NETWORK_NAME"/>पर ब्रिज करें</translation>
+<translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} स्टेप}
+      other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} स्टेप्स}
+    }</translation>
+<translation id="782639616412356895"><ph name="PROVIDER_BEFORE"/><ph name="PROVIDER_NAME"/><ph name="PROVIDER_AFTER"/> के ज़रिए <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE_NAME"/><ph name="EXCHANGE_AFTER"/></translation>
+<translation id="3735740477244556633">इसके अनुसार क्रम से लगाएं</translation>
 <translation id="6484605214219822434">ब्रिज रिव्यु करें</translation>
 <translation id="3365052891357224017">अनुमानित समय</translation>
 <translation id="7448445168067324096">विनिमय दर</translation>
@@ -907,7 +937,6 @@
 <translation id="1329837291200753515">अपने हार्डवेयर वॉलेट को इम्पोर्ट करने के लिए ब्लॉकचेन चुनें</translation>
 <translation id="6983390509997396124">अपने<ph name="HARDWARE_DEVICE"/>डिवाइस को Brave वॉलेट से कनेक्ट करें.</translation>
 <translation id="5149944858285555235">अनजान एरर, कृपया अपने हार्डवेयर वॉलेट को फिर से कनेक्ट करें और दोबारा कोशिश  करें.</translation>
-<translation id="4522570452068850558">विवरण</translation>
 <translation id="9220525904950070496">खाता हटाएं</translation>
 <translation id="8574289650879708853">कस्टम एसेट जोड़ें</translation>
 <translation id="6600400596821238377">टोकन नेम</translation>
@@ -1064,10 +1093,8 @@
 <translation id="6015436276085482001">रिजेक्ट किया हुआ</translation>
 <translation id="6666273175654835609">प्रस्तुत किया गया</translation>
 <translation id="2331676293859649642">पुष्टि की गई</translation>
-<translation id="1165039591588034296">गड़बड़ी</translation>
 <translation id="8373210463207847451">गिर गया</translation>
 <translation id="8214232307424031138">साइन किया गया</translation>
-<translation id="5916664084637901428">चालू</translation>
 <translation id="9065572743819293042">हाल के लेनदेन</translation>
 <translation id="1702356231547761669">लेनदेन हैश</translation>
 <translation id="8941851657764077659">अधिकतम प्राथमिकता शुल्क</translation>
@@ -1577,12 +1604,11 @@
 <translation id="1531836666020185856">फ़ीचर किया गया</translation>
 <translation id="3225021799163709119">मशहूर</translation>
 <translation id="6854651431635060919">टेस्ट नेटवर्क अकाउंट</translation>
-<translation id="3800173541008902040">उन्नत लेनदेन संबंधी विवरण यहां सक्षम करें:</translation>
-<translation id="1215089823252478557">अनुमानित बैलेंस का बदलाव देखें</translation>
+<translation id="626850389704042219">ट्रांज़ैक्शन सिमुलेशन इनेबल करें</translation>
+<translation id="7414944309396133072">अपने अनुमानित बैलेंस बदलाव प्रीव्यू करें</translation>
 <translation id="2761574758015819991">संभावित दुर्भावनापूर्ण लेनदेन की पहचान करें</translation>
 <translation id="168533464844528463">धोखाधड़ी की कोशिशों का पता लगाने में मदद करें</translation>
-<translation id="7269757150305059881">यह सेवा देने के लिए Brave किसी भागीदार के साथ काम करता है। सक्षम करके, आप अहस्ताक्षरित लेनदेन और उनके DApp URL को हमारे भागीदार के साथ साझा करने के लिए सहमति देते हैं।</translation>
-<translation id="7790932700072432983"><ph name="TAG_BEFORE"/>सेटिंग्स<ph name="TAG_AFTER"/> में जाकर किसी भी समय बदलें।</translation>
+<translation id="2410455471299328417">यह सेवा <ph name="BOLD_BEFORE"/>Blowfish.xyz<ph name="BOLD_AFTER"/> द्वारा प्रदान की जाती है और उनके सेवा की शर्तें<ph name="TERMS_LINK_BEFORE"/> के अधीन है<ph name="TERMS_LINK_AFTER"/> और<ph name="PRIVACY_POLICY_LINK_BEFORE"/>गोपनीयता नीति<ph name="PRIVACY_POLICY_LINK_AFTER"/>के अधीन है</translation>
 <translation id="8688672835843460752">उपलब्ध</translation>
 <translation id="5296640085393149413">आपके उपयोग के लिए धनराशि उपलब्ध है।</translation>
 <translation id="3248185426436836442">लंबित है</translation>
@@ -1618,6 +1644,54 @@
 <translation id="8355371587927005068">फ़िल्टर</translation>
 <translation id="803703704549420287">फ़िल्टर हटाएँ</translation>
 <translation id="1472675084647422956">और दिखाएं</translation>
+<translation id="4522570452068850558">विवरण</translation>
+<translation id="7144878232160441200">पुन: प्रयास करें</translation>
+<translation id="9094621390791852268">ट्रांज़ैक्शन प्रीव्यू नहीं किया जा सका.</translation>
+<translation id="4982713341035600933">अनुमानित बैलेंस का बदलाव</translation>
+<translation id="7197388583016272600">अप्रूवल से जुड़ी जानकारी</translation>
+<translation id="3785613860627641047">अथॉरिटी में बदलाव</translation>
+<translation id="5135378583369915147">ट्रांज़ैक्शन स्कैन किया जा रहा है</translation>
+<translation id="4744699166186440">दावा करने वाला एड्रेस</translation>
+<translation id="6313747204807079184">निकालने वाला</translation>
+<translation id="4312670848214406213">आप किसी और को अपनी ओर से टोकन ट्रांसफ़र करने की अनुमति दे रहे हैं.</translation>
+<translation id="5465460394116463557">यह कई टोकनों को ट्रांसफ़र करने की अनुमति मांगता है, जो आमतौर पर चोरी करने की कोशिश होती है.</translation>
+<translation id="7315935420455987651">यह साइट नकली हो सकती है.</translation>
+<translation id="7772576967285233002">DApp बाद में आपके अकाउंट से टोकन ट्रांसफ़र कर सकेंगे.</translation>
+<translation id="438039795179295571">यह साइट ख़तरनाक मानी गई है और शायद आपके पैसों को चुराने की कोशिश करेगी.</translation>
+<translation id="4852394547793286745">इस डोमेन को अभी तक वेरिफ़ाई नहीं किया गया है. अगर आप साइट पर भरोसा करते हैं, तभी आगे बढ़ें.</translation>
+<translation id="5832443872711287128">इस एड्रेस को दोबारा अच्छे से देखे लें क्योंकि यह आपके किसी पिछले संपर्क का नाम हो सकता है.</translation>
+<translation id="5317646355693663165">इससे आपके टोकन बैलेंस का स्वामित्व किसी और को ट्रांसफ़र हो जाता है.</translation>
+<translation id="3459325260212799301">इस साइट को असुरक्षित और/या ख़तरनाक के तौर पार्क मार्क किया गया है. इसे जारी रखने से नुकसान हो सकता है.</translation>
+<translation id="5409388443146954820">इससे 200 से ज़्यादा कार्रवाइयों को मंज़ूरी मिलेगी. अगर पहले से प्लॉन नहीं बनाया जाए, तो यह ख़तरनाक हो सकता है.</translation>
+<translation id="6187462466381633445">इसके लिए 200 से ज़्यादा अप्रूवल का अनुरोध किया गया है; जो आमतौर पर आपके बैलेंस को ख़त्म करने की कोशिश होती है.</translation>
+<translation id="3322526234603442338">आप बिना किसी बदले के टोकन के ट्रांज़ैक्शन कर रहे हैं. यह शायद एक गलती है.</translation>
+<translation id="4773052969794445878">आप टोकन के अपने एड्रेस पर ही धनराशि भेज रहे हैं, जहां वह हमेशा के लिए खो जाएगी.</translation>
+<translation id="8144820760826901598">इससे आपके अकाउंट का स्वामित्व और बैलेंस किसी और को ट्रांसफ़र हो जाता है.</translation>
+<translation id="6023771436430346631">नेटवर्क गैस शुल्क को कवर करने के लिए अपर्याप्त पैसे.</translation>
+<translation id="4753738223346804632">ट्रांज़ैक्शन करने के लिए अपर्याप्त पैसे.</translation>
+<translation id="8661124952575076441">ऐसा हो सकता है कि ट्रांज़ैक्शन नहीं हो और वापस हो जाए. कोशिश करने पर भी गैस की लागत लगेगी.</translation>
+<translation id="7660840414862537846">ट्रांज़ैक्शन प्रीव्यू में अनचाही एरर. स्वीकृति देना असुरक्षित हो सकता है.</translation>
+<translation id="4683335916231560287">कोई बदलाव नहीं मिले</translation>
+<translation id="6769279318856228158">अकाउंट ओनरशिप में बदलाव</translation>
+<translation id="3200658657457611958">किसी ट्रांज़ैक्शन को ऑथोराइज़ करने से पहले उसका व्यवहार कैसा होगा, इसे सिम्युलेट करें</translation>
+<translation id="8311005737513179222">ट्रांज़ैक्शन प्रीव्यू इस नेटवर्क पर सपोर्टेड नहीं है</translation>
+<translation id="4282496974850444428">आपको यह मेसेज इसलिए दिखाई दे रहा है क्योंकि आपने ट्रांज़ैक्शन प्रीव्यू सर्विस का विकल्प चुना है.</translation>
+<translation id="6094399032955582807">उपलब्ध नेटवर्क देखें</translation>
+<translation id="6644973832009582039">EVM मेसेज स्कैनिंग फ़िलहाल सपोर्टेड नहीं है</translation>
+<translation id="5222675470118670784">EVM मेसेज स्कैनिंग क्या है?</translation>
+<translation id="4085714860536252628">यह एथेरियम वर्चुअल मशीन से भेजे गए मेसेज की जांच करके सुरक्षा और सटीकता सुनिश्चित करता है जो आपके स्मार्ट कॉन्ट्रैक्ट या किसी भी एक्शन से इंटरैक्ट करते हैं.</translation>
+<translation id="7800112661494546348">यह किसी लेटर पर साइन करने से पहले उसकी दोबारा जांच करने जैसा है.</translation>
+<translation id="4750109510113597688">इस ट्रांज़ैक्शन में अकाउंट बनाने से जुड़ी फ़ीस शामिल हो सकती है</translation>
+<translation id="6201709949885884577">यह कार्रवाई करने के लिए पासवर्ड ज़रूरी है.</translation>
+<translation id="3435015606307655951">सेफ़ ट्रांसफ़र</translation>
+<translation id="1958146856582208323">टोकन ट्रांसफ़र</translation>
+<translation id="3550219298671597013">NFT ट्रांसफ़र</translation>
+<translation id="8043066678623588950">FIL फ़ॉरवर्ड करें</translation>
+<translation id="7138678301420049075">अन्य</translation>
+<translation id="8703556909820882288">कम्प्रेस्ड NFT ट्रांसफ़र</translation>
+<translation id="2713141960460256091">DApp ट्रांज़ैक्शन साइन करें और भेजें</translation>
+<translation id="6387730345715997739">DApp ट्रांज़ैक्शन  के लिए साइन करें</translation>
+<translation id="4150336849480030462">एसोसिएटेड टोकन अकाउंट क्रिएशन के साथ SPL टोकन ट्रांसफ़र</translation>
 <translation id="3155170474926428993">टॉर लॉन्चर</translation>
 <translation id="3745016858329272300">सामान्य जानकारी</translation>
 <translation id="4045404575593562245">टॉर नियंत्रण इवेंट्स</translation>
@@ -1805,6 +1879,7 @@
 <translation id="6938154350999993769">डीबग करें - टैबलेट मोड को बंद/चालू करें</translation>
 <translation id="5854741377790551127">प्रिंट व्यू ट्री को डीबग करें</translation>
 <translation id="8199130368328220410">लाइव कैप्शन को बंद/चालू करें</translation>
+<translation id="5509712368473990741">Leo AI टॉगल करें</translation>
 <translation id="9055778350624039365">Brave वॉलेट का पैनल दिखाएँ</translation>
 <translation id="2548853975094084059">Brave वॉलेट का पैनल बंद करें</translation>
 <translation id="3765209580429944524">Brave VPN का पैनल दिखाएँ</translation>
@@ -1901,12 +1976,11 @@
 <translation id="7932221068776853847">इस पेज का कंटेंट लियो को भेजे जाने से रोकने के लिए डिसकनेक्ट करें और नई बातचीत शुरू करें.</translation>
 <translation id="1167803637855350748">लियो से कनेक्ट करते समय नेटवर्क की समस्या हुई, अपना कनेक्शन जाँचें और फिर से कोशिश करें.</translation>
 <translation id="1996126325390835277">आप प्रीमियम रेट की सीमा पूरी कर चुके हैं. कुछ घंटों में कृपया फिर से कोशिश करें.</translation>
-<translation id="7144878232160441200">पुन: प्रयास करें</translation>
-<translation id="8570488829560315702">नमस्ते, मैं लियो हूँ. मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ. मैं Llama 3 8B द्वारा संचालित हूँ, जो Meta द्वारा बनाया गया एक मॉडल है जो परफॉरमेंस और कई यूज़ केसेज़ के लिए लागू है.<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="4177458398826096846">नमस्ते, मैं लियो हूँ. मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ. मैं Llama 3.1 8B द्वारा संचालित हूँ, जो Meta द्वारा बनाया गया एक मॉडल है जो परफॉरमेंस और कई यूज़ केसेज़ के लिए लागू है.<ph name="LINK_BEFORE"/>और जानें<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">नमस्ते, मैं लियो हूँ. मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ. मैं Mixtral 8x7B द्वारा संचालित हूँ, जो एडवांस टास्क को संभालने के लिए Mistral AI द्वारा बनाया गया एक मॉडल है. <ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">नमस्ते, मैं लियो हूँ. मैं Brave द्वारा पॉवरड हूँ और Claude Instant द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है.<ph name="LINK_BEFORE"/>और जानें<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">नमस्ते, मैं लियो हूँ. मुझे Brave ने एक प्रॉक्सी के तौर पर बनाया है और मुझमें Anthropic द्वारा बनाए गए Claude 3 Haiku की शक्ति है, जिसके ज़रिए मैं बातचीत के साथ ही टेक्स्ट प्रोसेसिंग के काम करता हूँ.</translation>
-<translation id="4147243042852964992">नमस्ते, मैं लियो हूँ. मुझे Brave ने एक प्रॉक्सी के तौर पर बनाया है और मुझमें Anthropic द्वारा बनाए गए Claude 3 Sonnet की शक्ति है, जिसके ज़रिए मैं बातचीत के साथ ही टेक्स्ट प्रोसेसिंग के काम करता हूँ.</translation>
+<translation id="1107977270364670952">नमस्ते, मैं लियो हूँ. मुझे Brave ने एक प्रॉक्सी के तौर पर बनाया है और मुझमें Anthropic द्वारा बनाए गए Claude 3.5 Sonnet की शक्ति है, जिसके ज़रिए मैं बातचीत के साथ ही टेक्स्ट प्रोसेसिंग के काम करता हूँ.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/>, <ph name="COMPANY_NAME"/> की पेशकश</translation>
 <translation id="963346402440669081">प्रीमियम</translation>
 <translation id="6187065185557150870">चैट</translation>
@@ -1942,10 +2016,10 @@
 <translation id="9018766373792005944">आपका फ़ीडबैक किस बारे में है?</translation>
 <translation id="7355096922131918313">फ़ीडबैक यहाँ दें</translation>
 <translation id="3027575440738035995">लियो प्रीमियम में लैंग्वेज मॉडल के विस्तृत सेट का ऐक्सेस मिलता है, ताकि आपको और भी बेहतर जवाब मिल सकें. <ph name="LINK_BEFORE"/>और जानें<ph name="LINK_AFTER"/></translation>
+<translation id="7488762544858401571">एडिट किया गया</translation>
 <translation id="2399439821649319175">इससे कोई मदद नहीं मिलती</translation>
 <translation id="2976167228906046828">गलत</translation>
 <translation id="1183055847065865059">असुरक्षित/खतरनाक</translation>
-<translation id="7138678301420049075">अन्य</translation>
 <translation id="2313959174679245365">आपकी रेटिंग सबमिट नहीं हो सकी है, कृपया नेटवर्क कनेक्शन को जाँचें और फिर से कोशिश करें</translation>
 <translation id="98413980871833152">आपका फ़ीडबैक सबमिट नहीं हो सका है, कृपया नेटवर्क कनेक्शन को जाँचें और फिर से कोशिश करें</translation>
 <translation id="8742658901413346500">यह बातचीत बहुत लंबी है और संभव है कि लियो जल्द ही भूलने लगे. आप प्रीमियम मॉडल को अपनाकर लंबी बातचीत की सुविधा पा सकते हैं या चैट को रीसेट कर सकते हैं.</translation>
@@ -1998,6 +2072,7 @@
 <translation id="983013125018250242">Leo टूल</translation>
 <translation id="49269513399674318">माइक्रोफ़ोन का इस्तेमाल करें</translation>
 <translation id="3895031624234442305">कस्टम मॉडल</translation>
+<translation id="4572010449071015143">नई बातचीत शुरू करें</translation>
 <translation id="6303294677342628402">शील्ड्स</translation>
 <translation id="8458987127502506209">Brave Shields को इनेबल करें</translation>
 <translation id="7509914170164691086"><ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/> के लिए शील्ड चालू है</translation>
@@ -2041,6 +2116,9 @@
 <ph name="NUMBER"/> ट्रैकर, विज्ञापन और अन्य चीज़ें ब्लॉक की गईं</translation>
 <translation id="4292121526390005808">बाधित स्क्रिप्ट्स</translation>
 <translation id="5046271170844958713">जारी किए गए स्क्रिप्ट्स</translation>
+<translation id="4575452981007854269">फिंगरप्रिंटिंग सुरक्षा अप्लाई किया गया</translation>
+<translation id="1905384713982899903">फ़िंगरप्रिंट ब्लॉक किया गया</translation>
+<translation id="314364527871618241">फ़िंगरप्रिंट को अनुमति दिया गया</translation>
 <translation id="264682546981571963">कुकी कंसेंट नोटिस से थक गए हैं?</translation>
 <translation id="4986297793092101884">Brave पहले से ही थर्ड-पार्टी कुकीज़ को ब्लॉक कर देता है. हम कुकी कंसेंट नोटिस को भी ब्लॉक कर सकते हैं.</translation>
 <translation id="535688588637568715">हाँ, कुकी कंसेंट नोटिस को ब्लॉक करें</translation>
@@ -2079,36 +2157,42 @@
 <translation id="7821773512278295352">Brave Firewall + VPN: कनेक्ट हो गया है</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: कनेक्ट नहीं है</translation>
 <translation id="3541307549916475335">Brave VPN पैनल UI</translation>
-<translation id="1742469581923031760">कनेक्ट किया जा रहा है</translation>
-<translation id="1287487756047817908">डिसकनेक्ट किया जा रहा है</translation>
+<translation id="7143207342074048698">कनेक्‍ट हो रहा है</translation>
+<translation id="1202549130170287307">डिसकनेक्ट किया जा रहा है</translation>
 <translation id="2325196879156848326">कनेक्शन नहीं हुआ है</translation>
 <translation id="745054660363064771">सर्वर से कनेक्शन नहीं हो सका</translation>
 <translation id="3936826714240735937">कोई और सर्वर चुनें</translation>
-<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> <ph name="REGION_NAME"/> के सर्वर से कनेक्ट नहीं हो सका. आप फिर से कोशिश कर सकते हैं या कोई दूसरा सर्वर चुन सकते हैं.</translation>
-<translation id="8703188411226330709">मुफ़्त ट्रायल शुरू करें</translation>
-<translation id="1024255913009642477">VPN पहले से खरीद चुके हैं?</translation>
+<translation id="2606728814652041300"><ph name="PRODUCT_NAME"/><ph name="REGION_NAME"/>सर्वर से कनेक्ट नहीं हो सका. कृपया फिर से कोशिश करें या कोई अन्य देश चुनें.</translation>
+<translation id="5753795690521538679">7 दिनों का मुफ़्त ट्रायल शुरू करें</translation>
+<translation id="3357036723290257445">क्या आप पहले से ही Brave VPN खरीद चुके हैं?</translation>
 <translation id="8814357473522731680">द्वारा संचालित</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="8652175077544655965">सेटिंग बंद करें</translation>
+<translation id="3099126540952997993">फ़ायरवॉल + VPN</translation>
+<translation id="5908163815855240493">मेन पेज पर जाएं</translation>
 <translation id="7805768142964895445">स्थिति</translation>
 <translation id="5747552184818312860">समय सीमा समाप्ति दिनांक</translation>
 <translation id="8421945428836418371">अपने आप रिकनेक्ट करें</translation>
 <translation id="434523916398030617">तकनीकी सपोर्ट के लिए संपर्क करें</translation>
 <translation id="1116694919640316211">इसके बारे में</translation>
-<translation id="8670386189340362926">सभी ऐप पर ट्रैकर और विज्ञापनों को ब्लॉक करें</translation>
-<translation id="4860763498907927955">अनचाहे नेटवर्क कनेक्शन से आपकी सुरक्षा करता है</translation>
-<translation id="3181339219453722970">अपनी VPN लोकेशन चुनें</translation>
-<translation id="1708407585266172412">500 Mbps तक की रफ़्तार और असीमित</translation>
-<translation id="1400240082805528049">24/7 सहायता</translation>
+<translation id="755045397420611731">और ज़्यादा प्राइवेसी और ऑनलाइन सिक्योरिटी</translation>
+<translation id="4520128772974831415">अपना IP छुपाएं और अपनी लोकेशन बदलें</translation>
+<translation id="2044418816479192294">दुनियाभर में सैकड़ों सर्वर</translation>
+<translation id="7410504850864021600">बिजली की तरह तेज़ कनेक्शन स्पीड</translation>
+<translation id="2422309687188612485">एक प्लॉन से 10 डिवाइस तक को सुरक्षित रखें</translation>
 <translation id="1693568075761612600">सपोर्ट टिकट नहीं बन सका, अपने कनेक्शन की जाँच करें.</translation>
+<translation id="1407707415819020643">अपना सर्वर चुनें</translation>
 <translation id="8463313539532697053">लोड करने में एक पल…</translation>
-<translation id="4317307602527599178">आपकी खरीदारी का स्टेटस नहीं देखा जा सका. ऐसा नेटवर्क की समस्या की वजह से हो सकता है.</translation>
+<translation id="2542131205769293399">आपकी खरीदारी का स्टेटस चेक नहीं हो सका. यह शायद नेटवर्क एरर है दोबारा कोशिश करें या सपोर्ट से संपर्क करें.</translation>
 <translation id="4613076894734402086">भुगतान विधि में बदलाव करें</translation>
 <translation id="427718751211990320">क्रेडेंशियल की आखिरी तारीख बीत गई है.</translation>
 <translation id="8670619630771851260">क्रेडेंशियल लोड नहीं हो पा रहे हैं.</translation>
 <translation id="1594643509610625766">यह टोकन अब मान्य नहीं है.</translation>
 <translation id="8373427068383038263">ऐसा लगता है कि <ph name="VALUE"/> के लिए आपका पिछला भुगतान पूरा नहीं हुआ है. जब तक भुगतान से जुड़ी यह समस्या हल नहीं हो जाती, तब तक इस सदस्यता के ऐक्सेस पर रोक लगी रहेगी. अपनी भुगतान विधि में बदलाव करने की कोशिश करें या फिर Brave सपोर्ट टीम से संपर्क करें.</translation>
+<translation id="5257165507296814658">सपोर्ट फ़ॉर्म बंद करें</translation>
 <translation id="1839021455997460752">आपका ईमेल पता</translation>
+<translation id="7508253027939632101">आपका ईमेल एड्रेस डालें</translation>
 <translation id="8054563304616131773">कृपया कोई मान्य ईमेल पता डालें</translation>
+<translation id="365334785487370919">यह फ़ील्ड ज़रूरी है</translation>
 <translation id="5154702632169343078">विषय</translation>
 <translation id="6625978880678465492">कोई वजह चुनें</translation>
 <translation id="6687228121145903051">VPN से कनेक्ट नहीं हो सका (कोई और एरर)</translation>
@@ -2116,6 +2200,7 @@
 <translation id="21570240866965662">धीमा कनेक्शन</translation>
 <translation id="1219475260382643267">वेबसाइट काम नहीं कर रही</translation>
 <translation id="1387340358507240698">अपनी समस्या के बारे में बताएँ</translation>
+<translation id="5597547971954030233">अपनी समस्या के बारे में यहाँ बताएँ</translation>
 <translation id="501818585183973587">वह जानकारी चुनें, जो आप हमारे साथ शेयर करना चाहते हैं</translation>
 <translation id="3195618332367441234">आप जितनी ज़्यादा जानकारी शेयर करेंगे हमारी सपोर्ट टीम के स्टाफ़ को आपकी मदद करने में उतनी आसानी होगी.</translation>
 <translation id="5682143294773821728">VPN होस्ट का नाम :</translation>
@@ -2123,7 +2208,7 @@
 <translation id="6676791921618140305">OS वर्ज़न :</translation>
 <translation id="1156325797949437777">सपोर्ट के लिए गार्डियन के साथ पार्टनरशिप की गई है.</translation>
 <translation id="8146777497879160283">VPN कॉन्फ़िगरेशन नहीं लिखा जा सका. अगर आपके पास इजाज़त नहीं है या आपने हाल में Windows को अपडेट नहीं किया है, तो यह इसकी वजह हो सकती है.</translation>
-<translation id="3307461350293459700">VPN कनेक्शन नहीं हो पाया। फिर से कनेक्ट करने की कोशिश करें और पक्का करें कि आप 'इजाज़त दें' पर क्लिक करें ताकि Brave का VPN कॉन्फ़िगरेशन चालू हो सके.</translation>
+<translation id="3362894458460231163">VPN कनेक्शन नहीं हो पाया.  फिर से कनेक्ट करने की कोशिश करें और पक्का करें कि आप 'इजाज़त दें' पर क्लिक करें ताकि Brave का VPN कॉन्फ़िगरेशन चालू हो सके.</translation>
 <translation id="7261518280726313829">सुरक्षित DNS को बंद करने से या Windows पर डिफ़ॉल्ट सर्वर इस्तेमाल करने से आपके इंटरनेट सर्विस प्रोवाइडर को उन साइट के नाम पता चल सकते हैं, जिन पर आप जाते हैं. Brave ऐसा करने का सुझाव नहीं देता. क्या आप फिर भी ऐसा करना चाहते हैं?</translation>
 <translation id="888284761945060750">आपके संगठन की नीतियों की वजह से सुरक्षित DNS बंद किया गया है. बिना सुरक्षित DNS के Brave VPN इस्तेमाल करने से आपके इंटरनेट सर्विस प्रोवाइडर या संगठन को उन साइट के नाम पता चल सकते हैं, जिन पर आप जाते हैं.</translation>
 <translation id="6593224083874259773">Windows पर Brave VPN</translation>

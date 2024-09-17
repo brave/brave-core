@@ -16,6 +16,7 @@
 <translation id="8294286161128352783">Лише на сторінці нової вкладки</translation>
 <translation id="6406506848690869874">Синхронізація</translation>
 <translation id="1544192797660353713">Гаманець</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="8275068909952022340">Більше…</translation>
 <translation id="1990886731975529483">Встановити й запустити Google Widevine</translation>
 <translation id="8926389886865778422">Не запитувати знову</translation>
@@ -56,15 +57,20 @@
 <translation id="1434416574322382019">Нове приватне вікно з Tor</translation>
 <translation id="4703780849509456860">Відкрити посилання у приватному вікні з Tor</translation>
 <translation id="3488584642074079080">Відкрити посилання у приватному вікні Brave з Tor</translation>
+<translation id="8594912907680633924">Відкрити посилання в розділеному поданні</translation>
 <translation id="6313675821927505581">Нове приватне вікно з Tor</translation>
 <translation id="2638041073279639246">Відкрити посилання у приватному вікні з Tor</translation>
 <translation id="3425600262621021599">Відкрити посилання у приватному вікні Brave з Tor</translation>
+<translation id="3795436270513738622">Відкрити посилання в розділеному поданні</translation>
 <translation id="2545072023356206691">Починаючи з 1 грудня 2023 року, канал Brave Dev більше не отримуватиме оновлення браузера. Ми рекомендуємо користувачам перейти на Nightly, Beta або Release версію Brave.</translation>
 <translation id="474217410105706308">Вимкнути звук вкладки</translation>
 <translation id="2804710924397009224">Приховати піктограму Винагороди Brave</translation>
 <translation id="5029193871181468990">Приховати піктограму Винагороди Brave</translation>
 <translation id="2808103541110899519">Приховати піктограму Гаманець Brave</translation>
 <translation id="7595540212376041331">Приховати піктограму Гаманець Brave</translation>
+<translation id="3893997535859323951">Приховати піктограму ШІ Leo</translation>
+<translation id="6208515240323786457">Приховати піктограму ШІ Leo</translation>
+<translation id="2361906291514218784">ШІ Leo</translation>
 <translation id="4928988318462976765">Вебмагазин розширень</translation>
 <translation id="9181207987584064303">Переглянути у вебмагазині розширень</translation>
 <translation id="3161744659507801211">Попередження: Brave не може завадити розширенням записувати вашу історію перегляду.</translation>
@@ -97,9 +103,6 @@
 <translation id="3462465068145800637">Пошук Brave не створює ваш профіль. Він на 100% незалежний від великих технологічних компаній.</translation>
 <translation id="42032117189492785">Пошук на базі ШІ з унікальним індексом.</translation>
 <translation id="8606416238399082160">Цілком приватний і незалежний, і має потужні функції ШІ.</translation>
-<translation id="7706528608480893054">DDG – це просто замаскований Bing. Настав час для справжньої приватності, ліпших результатів і незалежного індексу. Це час Пошуку Brave.</translation>
-<translation id="3818133234428578803">Відмовтеся від Duck</translation>
-<translation id="14817360483752259">Пошук Brave не відстежує вас, ваші запити або ваші натискання. І (на відміну від DDG) це не просто замаскований Bing.</translation>
 <translation id="4381193110021038941">Отримуйте ліпші результати</translation>
 <translation id="3846545273704969734">Незалежні перевірки вказують на те, що Пошук Brave надає ліпші результати, ніж Bing (чи клони Bing, як-от DuckDuckGo).</translation>
 <translation id="2841164160723712537">Вдоскональте результати пошуку</translation>
@@ -288,8 +291,9 @@
 <translation id="2818704116581303039">Відкрити налаштування списку відтворення</translation>
 <translation id="6790428901817661496">Відтворити</translation>
 <translation id="1178581264944972037">Призупинити</translation>
-<translation id="4477350412780666475">Наступна доріжка</translation>
-<translation id="3962859241508114581">Попередня доріжка</translation>
+<translation id="4046123991198612571">Наступна композиція</translation>
+<translation id="2874939134665556319">Попередня композиція</translation>
+<translation id="3040310857793999281">Увімкнути чи вимкнути звук</translation>
 <translation id="7544853251252956727">Перемішати</translation>
 <translation id="4330722796577425585">Перемотати назад</translation>
 <translation id="7481312909269577407">Далі</translation>
@@ -299,7 +303,15 @@
 <translation id="6453210454707928697">Не вдалося відтворити елемент</translation>
 <translation id="8741852840789907931">Можливо, файл [<ph name="ITEM_NAME"/>] застарів. Бажаєте його відновити?</translation>
 <translation id="6155018868740116868">Відновити</translation>
-<translation id="1727684853006449697">Програвач Brave</translation>
+<translation id="2521960050170773751">Додати медіа зі сторінки</translation>
+<translation id="2301087142998134097"><ph name="SITE"/> хоче відкрити</translation>
+<translation id="7128982309566342232">Сторінка, вбудована на сайті <ph name="SITE"/>, хоче відкритися</translation>
+<translation id="1175012181261953767">Ця сторінка хоче відкритися</translation>
+<translation id="7459546222322124545">Убудована сторінка на цій сторінці хоче відкритися</translation>
+<translation id="5836261838911560851">Сайт <ph name="SITE"/> хоче зберегтися</translation>
+<translation id="5936788906460687941">Убудована сторінка на сайті <ph name="SITE"/> хоче зберегтися</translation>
+<translation id="7700010743463174379">Ця сторінка хоче зберегтися</translation>
+<translation id="6774238875569752630">Убудована сторінка на цій сторінці хоче зберегтися</translation>
 <translation id="9156965752763025780">Ваші зміни почнуть діяти після наступного перезапуску Brave.</translation>
 <translation id="7179921470347911571">Перезапустити зараз</translation>
 <translation id="1426410128494586442">Так</translation>
@@ -324,6 +336,7 @@
 <translation id="5860254591544742609">Показати панель заголовка</translation>
 <translation id="5371926069408837914">Розгортати вертикальну панель вкладок наведенням курсора, якщо вона згорнута</translation>
 <translation id="3367129510799209147">Режим наведення на вкладку</translation>
+<translation id="8527099657928614787">Розгортати вертикальні вкладки окремо для кожного вікна</translation>
 <translation id="916373084491701212">Показати панель прокручування</translation>
 <translation id="515949045075831661">Показати праворуч</translation>
 <translation id="3725395376319291415">Показати ліворуч</translation>
@@ -340,6 +353,7 @@
 <translation id="4144468798716165316">Швидкі команди</translation>
 <translation id="7310387888625228830">Leo – помічник на основі ШІ</translation>
 <translation id="5222974844674487962">Показати кнопку Новини Brave</translation>
+<translation id="2085436423511121572">Показати кнопку ШІ Leo</translation>
 <translation id="383007806262310953">Показати панель закладок</translation>
 <translation id="4054323497808446566">Панель закладок відображається на всіх сторінках</translation>
 <translation id="8693858092251192712">Панель закладок прихована на всіх сторінках, крім сторінки нової вкладки</translation>
@@ -440,6 +454,7 @@
 <translation id="4891600875049212418">Не залишайте слідів, переглядаючи конфіденційні сайти</translation>
 <translation id="1968895725257436430">Збір даних</translation>
 <translation id="4846154056248462491">Під час виходу</translation>
+<translation id="216468847346280584">Очистити дані Реклами Brave…</translation>
 <translation id="2808630562319398131">Скинути дані Винагород Brave...</translation>
 <translation id="6438096877646138757">Сайти, для яких стираються файли cookie під час їх закриття</translation>
 <translation id="2988792685798128092">Очищати під час закриття сайту</translation>
@@ -553,6 +568,8 @@
 <translation id="4094590686212463338">Не вдалося приєднатися до ланцюжка синхронізації, оскільки його було видалено.</translation>
 <translation id="4908081302669157000">Номери телефонів, адреси електронної пошти та адреси</translation>
 <translation id="294985549514492876">Вебзастосунки (PWA)</translation>
+<translation id="924029461438529367">Показати пошукові пропозиції</translation>
+<translation id="3128251601544028053">Коли ви вводите текст в адресному рядку чи полі пошуку, Brave надсилає його у вашу типову пошукову систему, щоб отримати кращі пропозиції. Ця функція недоступна в приватних вікнах.</translation>
 <translation id="6285118765755298263">Індексувати інші пошукові системи</translation>
 <translation id="919715748352669592">Автоматичне індексування вебсайтів, що відповідають специфікації OpenSearch.</translation>
 <translation id="842628013524824194">Звичайне вікно – пошукова система в адресному рядку</translation>
@@ -668,7 +685,6 @@
 <translation id="3095201688102519917">Попереджати перед закриттям вікна з декількома вкладками</translation>
 <translation id="7120553802660696133">Закривати вікно після закриття останньої вкладки</translation>
 <translation id="3394171693948989253">Показувати нагадування про натискання Esc для виходу з повноекранного режиму</translation>
-<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Показувати піктограму Leo на бічній панелі</translation>
 <translation id="8055509865174199683">Показувати Leo в контекстному меню на вебсайтах</translation>
 <translation id="1529674267267221673">Leo відображатиметься в контекстному меню, якщо натиснути правою кнопкою миші на вебсайті. При цьому контекст із поточної вебсторінки передаватиметься до Leo.</translation>

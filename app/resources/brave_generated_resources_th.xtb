@@ -16,6 +16,7 @@
 <translation id="8294286161128352783">บนหน้าแท็บใหม่เท่านั้น</translation>
 <translation id="6406506848690869874">ซิงค์</translation>
 <translation id="1544192797660353713">วอลเล็ท</translation>
+<translation id="6129027151000961048">ลีโอ</translation>
 <translation id="8275068909952022340">เพิ่มเติม…</translation>
 <translation id="1990886731975529483">ติดตั้งและเรียกใช้ Google Widevine</translation>
 <translation id="8926389886865778422">ไม่ต้องถามอีก</translation>
@@ -56,15 +57,20 @@
 <translation id="1434416574322382019">การสร้างวินโดว์ส่วนบุคคลกับทอร์</translation>
 <translation id="4703780849509456860">เปิดลิงก์ในหน้าต่างส่วนตัวพร้อม Tor</translation>
 <translation id="3488584642074079080">เปิดลิงก์ในหน้าต่างส่วนตัวของ Brave พร้อม Tor</translation>
+<translation id="8594912907680633924">เปิดลิงก์ในมุมมองแบบแยก</translation>
 <translation id="6313675821927505581">หน้าต่างส่วนตัวใหม่ด้วย Tor</translation>
 <translation id="2638041073279639246">เปิดลิงก์ในหน้าต่างส่วนตัวด้วย Tor</translation>
 <translation id="3425600262621021599">เปิดลิงก์ในหน้าต่างส่วนตัวของ Brave ด้วย Tor</translation>
+<translation id="3795436270513738622">เปิดลิงก์ในมุมมองแบบแยก</translation>
 <translation id="2545072023356206691">ตั้งแต่วันที่ 1 ธันวาคม 2566 เป็นต้นไป ช่องทาง Brave Dev จะไม่ได้รับการอัปเดตอีกต่อไป เราจึงขอแนะนำให้ผู้ใช้เปลี่ยนไปใช้งาน Nightly ในรุ่น Beta หรือตัวเต็มของ Brave</translation>
 <translation id="474217410105706308">ปิดเสียงแท็บ</translation>
 <translation id="2804710924397009224">ซ่อนไอคอน Brave Rewards</translation>
 <translation id="5029193871181468990">ซ่อนไอคอน Brave Rewards</translation>
 <translation id="2808103541110899519">ซ่อนไอคอน Brave Wallet</translation>
 <translation id="7595540212376041331">ซ่อนไอคอน Brave วอลเล็ต</translation>
+<translation id="3893997535859323951">ซ่อนไอคอน Leo AI</translation>
+<translation id="6208515240323786457">ซ่อนไอคอน Leo AI</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">ดูใน Web Extensions Store</translation>
 <translation id="3161744659507801211">คำเตือน: Brave ไม่สามารถป้องกันไม่ให้ส่วนขยายต่างๆ บันทึกประวัติการท่องเว็บของคุณ</translation>
@@ -97,9 +103,6 @@
 <translation id="3462465068145800637">Brave Search จะไม่ทำการเก็บข้อมูลของคุณ และมีความเป็นอิสระแบบ 100% จากบริษัทเทคโนโลยียักษ์ใหญ่</translation>
 <translation id="42032117189492785">การค้นหาแบบ AI พร้อมดัชนีที่ไม่ซ้ำใคร</translation>
 <translation id="8606416238399082160">เป็นส่วนตัวโดยสมบูรณ์แบบ เป็นอิสระ 100% และมีคุณสมบัติ AI ที่ยอดเยี่ยม</translation>
-<translation id="7706528608480893054">DDG คือ Bing ที่ปลอมตัวมา ถึงเวลาสำหรับความเป็นส่วนตัวที่แท้จริง ผลลัพธ์ที่ดีกว่า และดัชนีแบบอิสระ ถึงเวลาใช้งาน Brave Search แล้ว</translation>
-<translation id="3818133234428578803">ทิ้งเจ้าเป็ดนั่นไปได้แล้ว</translation>
-<translation id="14817360483752259">Brave Search จะไม่ติดตามคำค้นหาหรือการคลิกของคุณ (ไม่เหมือนกับ DDG) Brave Search นั้นไม่ได้เป็นเพียง Bing ที่ปลอมตัวมา</translation>
 <translation id="4381193110021038941">ได้ผลลัพธ์ที่ดีกว่า</translation>
 <translation id="3846545273704969734">Brave Search ได้ทำการตรวจสอบแบบอิสระเพื่อให้ได้ผลลัพธ์ที่ดีกว่า Bing (หรือของเลียนแบบ Bing อย่าง DuckDuckGo)</translation>
 <translation id="2841164160723712537">ปรับปรุงผลการค้นหา</translation>
@@ -288,8 +291,9 @@
 <translation id="2818704116581303039">เปิดการตั้งค่าเพลย์ลิสต์</translation>
 <translation id="6790428901817661496">เล่น</translation>
 <translation id="1178581264944972037">หยุดชั่วคราว</translation>
-<translation id="4477350412780666475">แทร็กถัดไป</translation>
-<translation id="3962859241508114581">แทร็กก่อนหน้า</translation>
+<translation id="4046123991198612571">แทร็กถัดไป</translation>
+<translation id="2874939134665556319">แทร็กก่อนหน้า</translation>
+<translation id="3040310857793999281">สลับการปิดเสียง</translation>
 <translation id="7544853251252956727">สุ่มเพลง</translation>
 <translation id="4330722796577425585">กรอกลับ</translation>
 <translation id="7481312909269577407">ส่งต่อ</translation>
@@ -299,7 +303,15 @@
 <translation id="6453210454707928697">ไม่สามารถเล่นรายการได้</translation>
 <translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] อาจหมดอายุแล้ว คุณต้องการกู้คืนหรือไม่</translation>
 <translation id="6155018868740116868">กู้คืน</translation>
-<translation id="1727684853006449697">Brave Player</translation>
+<translation id="2521960050170773751">เพิ่มสื่อจากหน้า</translation>
+<translation id="2301087142998134097"><ph name="SITE"/> ต้องการเปิด</translation>
+<translation id="7128982309566342232">หน้าที่ฝังตัวอยู่บน <ph name="SITE"/> ต้องการเปิด</translation>
+<translation id="1175012181261953767">หน้านี้ต้องการเปิด</translation>
+<translation id="7459546222322124545">หน้าที่ฝังตัวอยู่ในหน้านี้ต้องการเปิด</translation>
+<translation id="5836261838911560851"><ph name="SITE"/> ต้องการบันทึก</translation>
+<translation id="5936788906460687941">หน้าที่ฝังตัวอยู่บน <ph name="SITE"/> ต้องการบันทึก</translation>
+<translation id="7700010743463174379">หน้านี้ต้องการบันทึก</translation>
+<translation id="6774238875569752630">หน้าที่ฝังตัวอยู่ในหน้านี้ต้องการบันทึก</translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
 <translation id="7179921470347911571">เปิดใหม่อีกครั้ง</translation>
 <translation id="1426410128494586442">ใช่</translation>
@@ -324,6 +336,7 @@
 <translation id="5860254591544742609">แสดงแถบหัวเรื่อง</translation>
 <translation id="5371926069408837914">ขยายหน้าต่างแท็บแนวตั้งเมื่อชี้เมาส์ขณะยุบอยู่</translation>
 <translation id="3367129510799209147">โหมดโฮเวอร์แท็บ</translation>
+<translation id="8527099657928614787">ขยายหน้าต่างแท็บแนวตั้งแยกกันในหน้าต่างแต่ละบาน</translation>
 <translation id="916373084491701212">แสดงแถบเลื่อน</translation>
 <translation id="515949045075831661">แสดงทางด้านขวา</translation>
 <translation id="3725395376319291415">แสดงทางด้านซ้าย</translation>
@@ -340,6 +353,7 @@
 <translation id="4144468798716165316">คำสั่งด่วน</translation>
 <translation id="7310387888625228830">Leo ผู้ช่วย AI</translation>
 <translation id="5222974844674487962">แสดงปุ่ม Brave News</translation>
+<translation id="2085436423511121572">แสดงปุ่ม Leo AI</translation>
 <translation id="383007806262310953">แสดงแถบบุ๊กมาร์ก</translation>
 <translation id="4054323497808446566">แถบบุ๊กมาร์กจะแสดงให้เห็นบนทุกหน้า</translation>
 <translation id="8693858092251192712">แถบบุ๊กมาร์กจะซ่อนอยู่บนทุกหน้า ยกเว้นหน้าแท็บใหม่</translation>
@@ -440,6 +454,7 @@
 <translation id="4891600875049212418">ไปที่ Off-The-Record เมื่อเยี่ยมชมเว็บไซต์ที่สำคัญ</translation>
 <translation id="1968895725257436430">การรวบรวมข้อมูล</translation>
 <translation id="4846154056248462491">เมื่อออก</translation>
+<translation id="216468847346280584">ล้างข้อมูล Brave Ads...</translation>
 <translation id="2808630562319398131">รีเซ็ตข้อมูล Brave Rewards...</translation>
 <translation id="6438096877646138757">เว็บไซต์ที่จะล้างคุกกี้เมื่อคุณปิด</translation>
 <translation id="2988792685798128092">ล้างเมื่อปิดเว็บไซต์</translation>
@@ -553,6 +568,8 @@
 <translation id="4094590686212463338">ไม่สามารถเข้าร่วมกลุ่มการซิงค์ได้เนื่องจากกลุ่มการซิงค์ถูกลบไปแล้ว</translation>
 <translation id="4908081302669157000">หมายเลขโทรศัพท์ อีเมล และที่อยู่</translation>
 <translation id="294985549514492876">เว็บแอป (PWA)</translation>
+<translation id="924029461438529367">แสดงคำแนะนำในการค้นหา</translation>
+<translation id="3128251601544028053">เมื่อคุณพิมพ์ในแถบที่อยู่หรือช่องค้นหา Brave จะส่งข้อมูลที่คุณพิมพ์ไปยังเครื่องมือค้นหาเริ่มต้นเพื่อรับคำแนะนำที่ดีขึ้น ซึ่งการกระทำนี้จะไม่สามารถใช้ได้ในหน้าต่างแบบส่วนตัว</translation>
 <translation id="6285118765755298263">จัดทำดัชนีเครื่องมือค้นหาอื่นๆ</translation>
 <translation id="919715748352669592">จัดทำดัชนีเว็บไซต์ที่เป็นไปตามข้อกำหนดของ OpenSearch โดยอัตโนมัติ</translation>
 <translation id="842628013524824194">หน้าต่างทั่วไป - เครื่องมือค้นหาที่ใช้ในแถบที่อยู่</translation>
@@ -668,7 +685,6 @@
 <translation id="3095201688102519917">เตือนฉันก่อนปิดหน้าต่างที่มีหลายแท็บ</translation>
 <translation id="7120553802660696133">ปิดหน้าต่างเมื่อปิดแท็บสุดท้าย</translation>
 <translation id="3394171693948989253">แสดงการแจ้งเตือนแบบเต็มหน้าจอในการกดปุ่ม Esc เมื่อทำการออกจากโปรแกรม</translation>
-<translation id="6129027151000961048">ลีโอ</translation>
 <translation id="2751872555001636931">แสดงไอคอน Leo ในแถบด้านข้าง</translation>
 <translation id="8055509865174199683">แสดง Leo ในเมนูตามบริบทบนเว็บไซต์</translation>
 <translation id="1529674267267221673">Leo จะปรากฏในเมนูตามบริบทเมื่อคุณคลิกขวาบนเว็บไซต์ การคลิกจะส่งบริบทจากหน้าเว็บปัจจุบันไปยัง Leo</translation>

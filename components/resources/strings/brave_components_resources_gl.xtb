@@ -241,48 +241,7 @@
 <translation id="3082557070674409251">Premido</translation>
 <translation id="7119308337584989771">Destituído</translation>
 <translation id="6805660603861526473">Visto</translation>
-<translation id="8826352442759228526">Non se pode verificar o teu perfil de Recompensas de Brave porque alcanzaches o límite máximo de dispositivos verificados.</translation>
-<translation id="1221593978088944142">Erro: alcanzouse o límite do dispositivo</translation>
-<translation id="6895088073061692390">Desafortunadamente, o seu perfil de Recompensas de Brave marcouse debido a que as nosas comprobacións automáticas atoparon algunha actividade de Anuncios de Brave inesperada.</translation>
-<translation id="4229056297802204697">Aínda que o seu perfil está marcado, poderá continuar vendo anuncios, pero non reunirá os requisitos necesarios para recibir pagos. Tampouco poderá conectar unha conta de custodia a Recompensas de Brave.</translation>
-<translation id="5124846913141379164">É posible que o seu perfil fose marcado incorrectamente, polo que non é necesario que leve a cabo ningunha acción inmediata. A marca do seu perfil eliminarase no futuro.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Obteña máis información acerca do proceso de Brave para marcar perfís de Recompensas.<ph name="END_LINK"/></translation>
-<translation id="5028274575541726856">Erro: o perfil de Recompensas de Brave está marcado</translation>
-<translation id="2607420597216860026">Téntao de novo tras verificar o ID en <ph name="PROVIDER"/>.</translation>
-<translation id="3183954159462541696">Erro: precisas dunha conta verificada para iniciar sesión</translation>
-<translation id="1859789048900659918">Vaites, parece que o teu país de Brave Rewards non coincide co da conta de <ph name="PROVIDER"/> á que estás tentando conectarte.</translation>
-<translation id="8925428135452218262">Erro: o país non coincide</translation>
-<translation id="5260522591743022748">Vaites, parece que o teu perfil de Recompensas de Brave xa se verificou con outra conta de <ph name="PROVIDER"/>. Tenta verificalo de novo coa túa conta anterior.</translation>
-<translation id="5111921830714291902">Erro: conta diferente</translation>
-<translation id="5225019866741699134">Parece que non se pode conectar <ph name="PROVIDER"/> con Recompensas de Brave neste intre. Téntao de novo máis tarde.</translation>
-<translation id="6105073131081187815">Podes ver o <ph name="BEGIN_LINK"/>estado do servizo aquí<ph name="END_LINK"/>.</translation>
-<translation id="2400786541309111904">Erro: Non se pode conectar co custodio seleccionado neste intre</translation>
-<translation id="1024520300696337331">A túa conta de <ph name="PROVIDER"/> non se pode conectar neste momento ao teu perfil de Recompensas de Brave.  A túa conta de <ph name="PROVIDER"/> está rexistrada nun país que actualmente non admite a conexión a Recompensas de Brave.</translation>
-<translation id="619384413404021992">Consulta  a <ph name="LINK_BEGIN"/>lista actual de rexións compatibles e obtén máis información sobre<ph name="END_LINK"/> sobre a conexión dunha conta de custodia a Recompensas de Brave.</translation>
-<translation id="7193389978208728181">Erro: A rexión non é compatible</translation>
-<translation id="5382684862562314222">Uphold aínda non admite BAT na túa rexión.</translation>
-<translation id="9074594632540931067">Erro: no hay BAT</translation>
-<translation id="5376524136040178759">Actualmente, segundo Uphold, a túa conta de Uphold ten algunhas limitacións. Inicia sesión en Uphold e comproba se tes algún aviso ou requisito de conta pendente antes de tentalo de novo. Por exemplo, pode que Uphold precise de máis información pola túa parte.</translation>
-<translation id="6996157559236886133">Erro: conta de Uphold con funcionalidades limitadas</translation>
-<translation id="3274650021044762770">Produciuse un problema ao validar a solicitude do navegador para conectar Recompensas de Brave coa túa conta de <ph name="PROVIDER"/>. Podes <ph name="BEGIN_LINK"/>poñerte en contacto co servizo de asistencia<ph name="END_LINK"/> para obter máis axuda.</translation>
-<translation id="1316066811927496401">Erro: non se puido validar a solicitude</translation>
-<translation id="7352651011704765696">Produciuse un erro</translation>
-<translation id="8285276813470932793">Non puidemos completar a túa solicitude. Téntao de novo e <ph name="LINK_BEGIN"/>contacta co servizo de asistencia<ph name="LINK_END"/> se o problema persiste.</translation>
 <translation id="8167256685618982116">Ao activar <ph name="TITLE"/>, aceptas as <ph name="BEGIN_LINK1"/>Condicións de servizo<ph name="END_LINK1"/> e a <ph name="BEGIN_LINK2"/>Política de privacidade<ph name="END_LINK2"/>.</translation>
-<translation id="8817096698141999876">Contas de custodia (verificación de ID obrigatoria)</translation>
-<translation id="1539433155512862005">As contas de custodia son as que dependen de servizos externos fiables para gardar os teus BAT.</translation>
-<translation id="6834831484510296932">Custodia persoal</translation>
-<translation id="4208917415153655958">A custodia persoal dáche control exclusivo sobre o teu BAT, así como completa responsabilidade respecto da túa seguridade.</translation>
-<translation id="1953496742859481929">Ao escoller unha carteira de custodia persoal, as recompensas pagaranse como SPL-BAT na rede Solana.</translation>
-<translation id="6751803821780922506">Escolle onde che gustaría recibir os BAT</translation>
-<translation id="3162035476318501831">Obtén máis información sobre as rexións e a asistencia.</translation>
-<translation id="7329170127335794328">Actualmente non dispoñible na túa rexión</translation>
-<translation id="966956302643313970">Para comezar a gañar recompensas en Basic Attention Token (BAT), debes vincular unha conta. Os BAT que recibas transferiranse automaticamente a esa conta todos os meses.</translation>
-<translation id="4009439571146350519">Ou outra carteira que admita Solana</translation>
-<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>Condicións de servizo<ph name="TOS_LINK_END"/> e <ph name="PP_LINK_BEGIN"/>Política de privacidade<ph name="PP_LINK_END"/>.</translation>
-<translation id="1692293127547800972">Produciuse un erro. Téntao de novo.</translation>
-<translation id="756341217015623253">Inicia sesión ou rexístrate</translation>
-<translation id="2653844658857826081">NOVIDADE</translation>
 <translation id="1892970806832316900">Pendente ata o <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Vaites! O teu navegador non pode recibir os anuncios privados de Brave.</translation>
 <translation id="5177429570315095022">Se queres continuar vendo os anuncios, tes que actualizar o teu navegador.</translation>
@@ -397,7 +356,6 @@
 <translation id="3448261046185459858">Podes eliminar calquera sitio que reciba contribucións mensuais desde o panel Contribucións.</translation>
 <translation id="5082474983463379713">Teña en conta:</translation>
 <translation id="1430915738399379752">Imprimir</translation>
-<translation id="135956957367307069">A súa solicitude aínda se está a procesar. Por favor, agarde.</translation>
 <translation id="2600847485413879104">BAT recompensas</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
@@ -563,13 +521,16 @@
 <translation id="6965382102122355670">Aceptar</translation>
 <translation id="6727102863431372879">Configurar</translation>
 <translation id="8853725596990766789">Cambiar cantidade</translation>
-<translation id="1609556006143307897">Estás a apoiar os creadores de contidos</translation>
+<translation id="5899814466108868020">Estás axudando a apoiar Brave e a comunidade BAT</translation>
 <translation id="654447476965480878">Máis información sobre como gañar BAT</translation>
 <translation id="4105212447337987768">A partir do <ph name="DATE"/>, deixaremos de manter os saldos de BAT virtuais existentes. Conecta unha conta de custodia antes de que chegue esa data para que poidamos transferirche o saldo que gañaches. Se non o fas, perderás ese saldo.</translation>
 <translation id="707569835145765061">Acción necesaria: conecta una conta de custodia se non queres perder os teus vBAT</translation>
 <translation id="3358400027937159351">Contribuíches con <ph name="AMOUNT"/>.</translation>
 <translation id="1619753851206150396">Pechaches sesión</translation>
 <translation id="3035648636451344428">Isto sucede cando en vez para protexer a túa conta de <ph name="PROVIDER"/>. Mentres teñas pechada sesión, seguirás recibindo pagos, pero non poderás ver o teu saldo nin enviar contribucións desde a túa conta de<ph name="PROVIDER"/>.</translation>
+<translation id="9074594632540931067">Erro: no hay BAT</translation>
+<translation id="5382684862562314222">Uphold aínda non admite BAT na túa rexión.</translation>
+<translation id="6996157559236886133">Erro: conta de Uphold con funcionalidades limitadas</translation>
 <translation id="1677961202754619328">Segundo Uphold, a túa conta de Uphold ten algunhas limitacións neste intre. Inicia sesión en Uphold e comproba se tes algún aviso ou requisito de conta pendente. Despois, téntao de novo.</translation>
 <translation id="9029009481113741943">Iniciar sesión de novo</translation>
 <translation id="2429828319207652823">Produciuse un problema ao procesar a túa contribución.</translation>
@@ -582,6 +543,7 @@
 <translation id="3247549836099021862">Contacta co servizo de asistencia</translation>
 <translation id="5234764350956374838">Rexeitar</translation>
 <translation id="7859066142771796818">Usa os tokens para comprar tarxetas regalo, cámbiaos por outras moedas ou apoia os creadores de contido, entre outras cousas.</translation>
+<translation id="7352651011704765696">Produciuse un erro</translation>
 <translation id="5425006356459378415">Brave Rewards non está dispoñible</translation>
 <translation id="909076461795862330">Desafortunadamente, produciuse un erro ao tentar configurar Brave Rewards. Téntao de novo.</translation>
 <translation id="3180990265682133881">Desafortunadamente, produciuse un erro ao tentar establecer o teu país. Téntao de novo.</translation>
@@ -653,6 +615,62 @@
 <translation id="1053740665683265460">Usa a túa carteira Web3 para enviar unha contribución única a este creador e amosarlle o teu agradecemento</translation>
 <translation id="6859705040495339375">Enviar con carteira Web3</translation>
 <translation id="7615852194054434287">Parece que este creador aínda non está configurado para recibir contribucións a través de carteiras Web3.</translation>
+<translation id="8817096698141999876">Contas de custodia (verificación de ID obrigatoria)</translation>
+<translation id="1539433155512862005">As contas de custodia son as que dependen de servizos externos fiables para gardar os teus BAT.</translation>
+<translation id="6834831484510296932">Custodia persoal</translation>
+<translation id="4208917415153655958">A custodia persoal dáche control exclusivo sobre o teu BAT, así como completa responsabilidade respecto da túa seguridade.</translation>
+<translation id="9118326146754987354">Coa custodia persoal, as ganancias de BAT pagaranse como SPL-BAT na rede Solana.</translation>
+<translation id="6751803821780922506">Escolle onde che gustaría recibir os BAT</translation>
+<translation id="3162035476318501831">Obtén máis información sobre as rexións e a asistencia.</translation>
+<translation id="7329170127335794328">Actualmente non dispoñible na túa rexión</translation>
+<translation id="966956302643313970">Para comezar a gañar recompensas en Basic Attention Token (BAT), debes vincular unha conta. Os BAT que recibas transferiranse automaticamente a esa conta todos os meses.</translation>
+<translation id="4009439571146350519">Ou outra carteira que admita Solana</translation>
+<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>Condicións de servizo<ph name="TOS_LINK_END"/> e <ph name="PP_LINK_BEGIN"/>Política de privacidade<ph name="PP_LINK_END"/>.</translation>
+<translation id="1692293127547800972">Produciuse un erro. Téntao de novo.</translation>
+<translation id="756341217015623253">Inicia sesión ou rexístrate</translation>
+<translation id="2653844658857826081">NOVIDADE</translation>
+<translation id="1165039591588034296">Erro</translation>
+<translation id="5826530373788377342">Alcanzaches o límite máximo de dispositivos para esta conta de <ph name="PROVIDER"/> .</translation>
+<translation id="6700131426769360592">Alcanzouse o límite de dispositivos</translation>
+<translation id="6895088073061692390">Desafortunadamente, o seu perfil de Recompensas de Brave marcouse debido a que as nosas comprobacións automáticas atoparon algunha actividade de Anuncios de Brave inesperada.</translation>
+<translation id="4229056297802204697">Aínda que o seu perfil está marcado, poderá continuar vendo anuncios, pero non reunirá os requisitos necesarios para recibir pagos. Tampouco poderá conectar unha conta de custodia a Recompensas de Brave.</translation>
+<translation id="5124846913141379164">É posible que o seu perfil fose marcado incorrectamente, polo que non é necesario que leve a cabo ningunha acción inmediata. A marca do seu perfil eliminarase no futuro.</translation>
+<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Obteña máis información acerca do proceso de Brave para marcar perfís de Recompensas.<ph name="END_LINK"/></translation>
+<translation id="4699218748197721830">O perfil de Recompensas de Brave está marcado</translation>
+<translation id="2607420597216860026">Téntao de novo tras verificar o ID en <ph name="PROVIDER"/>.</translation>
+<translation id="5037332159336402972">Necesitas unha conta verificada para iniciar sesión</translation>
+<translation id="1859789048900659918">Vaites, parece que o teu país de Brave Rewards non coincide co da conta de <ph name="PROVIDER"/> á que estás tentando conectarte.</translation>
+<translation id="3080649636035373911">Falta de coincidencia do país</translation>
+<translation id="5260522591743022748">Vaites, parece que o teu perfil de Recompensas de Brave xa se verificou con outra conta de <ph name="PROVIDER"/>. Tenta verificalo de novo coa túa conta anterior.</translation>
+<translation id="6408621361472415607">Conta diferente</translation>
+<translation id="5225019866741699134">Parece que non se pode conectar <ph name="PROVIDER"/> con Recompensas de Brave neste intre. Téntao de novo máis tarde.</translation>
+<translation id="6105073131081187815">Podes ver o <ph name="BEGIN_LINK"/>estado do servizo aquí<ph name="END_LINK"/>.</translation>
+<translation id="3969419585013689529">A conexión co custodio seleccionado non está dispoñible temporalmente</translation>
+<translation id="1024520300696337331">A túa conta de<ph name="PROVIDER"/> non se pode conectar ao teu perfil de Recompensas de Brave neste momento. A túa conta de<ph name="PROVIDER"/> está rexistrada nun país que non se admite actualmente para conectarse a Recompensas de Brave.</translation>
+<translation id="619384413404021992">Consulta a <ph name="LINK_BEGIN"/>lista actual de rexións admitidas e obtén máis información<ph name="END_LINK"/> sobre como conectar unha conta de custodia a Recompensas de Brave.</translation>
+<translation id="7933193151688235283">A rexión non é compatible actualmente</translation>
+<translation id="5376524136040178759">Segundo Uphold, a túa conta de Uphold ten algunhas limitacións neste intre. Inicia sesión en Uphold e comproba se tes algún aviso ou requisito de conta pendente. Despois, téntao de novo. Por exemplo, pode que teñas que enviar máis información a Uphold.</translation>
+<translation id="6349168810769273818">Conta de Uphold con funcionalidades limitadas</translation>
+<translation id="1279668677171152085">Produciuse un problema ao validar a solicitude do navegador para conectar a túa conta de<ph name="PROVIDER"/> a Recompensas de Brave. Podes<ph name="BEGIN_LINK"/>poñerte en contacto co servizo de asistencia<ph name="END_LINK"/> para obter máis axuda.</translation>
+<translation id="8761736799800527591">Non se puido validar a solicitude</translation>
+<translation id="8285276813470932793">Non puidemos completar a túa solicitude. Téntao de novo e <ph name="LINK_BEGIN"/>contacta co servizo de asistencia<ph name="LINK_END"/> se o problema persiste.</translation>
+<translation id="135956957367307069">A súa solicitude aínda se está a procesar. Por favor, agarde.</translation>
+<translation id="9033500121333471466">Marcado como inapropiado</translation>
+<translation id="4477865412359526485">Actualmente non hai historial de anuncios de Brave.</translation>
+<translation id="4256040774643144761">Historial de anuncios</translation>
+<translation id="1188389905162088150">Anuncios que recibiches nos últimos 30 días</translation>
+<translation id="4296467068886908539">Máx <ph name="NUM"/>/h</translation>
+<translation id="3266055641283174315">Tipo de anuncio</translation>
+<translation id="8706824117053903390">Vistas este mes</translation>
+<translation id="5105890735834548623">Configuración de anuncios</translation>
+<translation id="96989662637180657">Anuncios de Busca de Brave aparece en <ph name="LINK_BEGIN"/>Busca de Brave<ph name="LINK_END"/>.</translation>
+<translation id="3138160233953903250">Configuración de anuncios</translation>
+<translation id="2446517297521536638">Controla os tipos de Anuncios de Brave que ves e a súa frecuencia. Canto máis vexas, máis podes gañar.</translation>
+<translation id="5860033963881614850">Non</translation>
+<translation id="5916664084637901428">Si</translation>
+<translation id="4284417062730522399"><ph name="NUM"/> anuncios recibidos este mes</translation>
+<translation id="7697696066810593560">Levas gañado <ph name="NUM"/> este mes</translation>
+<translation id="6733193230212030816">Estímase que gañarás entre: <ph name="RANGE"/></translation>
 <translation id="7090992647511817643">conta</translation>
 <translation id="4822132585477111396">ID da cadea</translation>
 <translation id="3269475789479462358">dominio</translation>
@@ -768,6 +786,18 @@
 <translation id="8918807203406722697">Pares de moeda estable: <ph name="SLIPPAGE_PERCENT"/> %</translation>
 <translation id="7056655731948492143">Outros: <ph name="SLIPPAGE_PERCENT"/> %</translation>
 <translation id="6231782223312638214">Suxerido</translation>
+<translation id="8525485643657418753">O máis barato</translation>
+<translation id="1224275271335624810">A máis rápida</translation>
+<translation id="4071446933408069155">en <ph name="NETWORK_NAME"/></translation>
+<translation id="3751611888003301070">Rutas</translation>
+<translation id="3799091982455573025">Intercambia en<ph name="NETWORK_NAME"/> a través de <ph name="EXCHANGE_NAME"/></translation>
+<translation id="5136093123841570193">Ponte desde<ph name="FRIST_NETWORK_NAME"/> ata<ph name="SECOND_NETWORK_NAME"/></translation>
+<translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} paso}
+      other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} pasos}
+    }</translation>
+<translation id="782639616412356895"><ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE_NAME"/><ph name="EXCHANGE_AFTER"/> a través de <ph name="PROVIDER_BEFORE"/><ph name="PROVIDER_NAME"/><ph name="PROVIDER_AFTER"/></translation>
+<translation id="3735740477244556633">Ordenar por</translation>
 <translation id="6484605214219822434">Revisar conexión</translation>
 <translation id="3365052891357224017">Hora estimada</translation>
 <translation id="7448445168067324096">Tipo de cambio</translation>
@@ -906,7 +936,6 @@
 <translation id="1329837291200753515">Seleccione unha cadea de bloques para importar a túa carteira de hardware</translation>
 <translation id="6983390509997396124">Conecta o teu dispositivo<ph name="HARDWARE_DEVICE"/> a Carteira de Wallet</translation>
 <translation id="5149944858285555235">Produciuse un erro descoñecido, volve conectar a carteira de hardware e téntao de novo.</translation>
-<translation id="4522570452068850558">Detalles</translation>
 <translation id="9220525904950070496">Quitar conta</translation>
 <translation id="8574289650879708853">Engadir activo personalizado</translation>
 <translation id="6600400596821238377">None do token</translation>
@@ -1063,10 +1092,8 @@
 <translation id="6015436276085482001">Rexeitado</translation>
 <translation id="6666273175654835609">Enviado</translation>
 <translation id="2331676293859649642">Confirmado</translation>
-<translation id="1165039591588034296">Erro</translation>
 <translation id="8373210463207847451">Deixou de funcionar</translation>
 <translation id="8214232307424031138">Rexistrado</translation>
-<translation id="5916664084637901428">Si</translation>
 <translation id="9065572743819293042">Transaccións recentes</translation>
 <translation id="1702356231547761669">Hash da transacción</translation>
 <translation id="8941851657764077659">Tarifa prioritaria máxima</translation>
@@ -1576,12 +1603,11 @@
 <translation id="1531836666020185856">Redes destacadas</translation>
 <translation id="3225021799163709119">Populares</translation>
 <translation id="6854651431635060919">Conta na rede de proba</translation>
-<translation id="3800173541008902040">Habilitar detalles mellorados de transaccións para:</translation>
-<translation id="1215089823252478557">Ver cambio estimado de saldo</translation>
+<translation id="626850389704042219">Activar a simulación de transaccións</translation>
+<translation id="7414944309396133072">Previsualizar o cambio de saldo estimado</translation>
 <translation id="2761574758015819991">Identificar transaccións potencialmente maliciosas</translation>
 <translation id="168533464844528463">Axudar a detectar intentos de suplantación de identidade</translation>
-<translation id="7269757150305059881">Brave traballa cun socio para fornecer este servizo. Ao activalo, aceptas compartir transaccións sen asinar e as súas URL de DApp co noso socio.</translation>
-<translation id="7790932700072432983">Cámbiao en cualquera momento en <ph name="TAG_BEFORE"/>Configuración<ph name="TAG_AFTER"/>.</translation>
+<translation id="2410455471299328417">Este servizo ofréceo <ph name="BOLD_BEFORE"/>Blowfish.xyz<ph name="BOLD_AFTER"/> e está suxeito ás súas <ph name="TERMS_LINK_BEFORE"/>Condicións de servizo<ph name="TERMS_LINK_AFTER"/> e á <ph name="PRIVACY_POLICY_LINK_BEFORE"/>Política de privacidade<ph name="PRIVACY_POLICY_LINK_AFTER"/></translation>
 <translation id="8688672835843460752">Dispoñible</translation>
 <translation id="5296640085393149413">Fondos dispoñibles para que os uses.</translation>
 <translation id="3248185426436836442">Pendente</translation>
@@ -1617,6 +1643,54 @@
 <translation id="8355371587927005068">Filtros</translation>
 <translation id="803703704549420287">Borrar filtros</translation>
 <translation id="1472675084647422956">Mostrar máis</translation>
+<translation id="4522570452068850558">Detalles</translation>
+<translation id="7144878232160441200">Reintentar</translation>
+<translation id="9094621390791852268">Produciuse un erro na vista previa da transacción.</translation>
+<translation id="4982713341035600933">Cambio de saldo estimado</translation>
+<translation id="7197388583016272600">Detalles de aprobación</translation>
+<translation id="3785613860627641047">Cambio de autoridade</translation>
+<translation id="5135378583369915147">Escaneando transacción</translation>
+<translation id="4744699166186440">Almacenador</translation>
+<translation id="6313747204807079184">Enderezo de retirada</translation>
+<translation id="4312670848214406213">Estás dando permiso a outra persoa para transferir tokens no teu nome.</translation>
+<translation id="5465460394116463557">Isto solicita permiso para transferir moitos tokens, o que adoita ser un intento de roubo.</translation>
+<translation id="7315935420455987651">Este sitio pode ser falso.</translation>
+<translation id="7772576967285233002">Esta DApp poderá mover tokens da túa conta máis adiante.</translation>
+<translation id="438039795179295571">Este sitio está marcado como de alto risco e é probable que intente roubar os teus fondos.</translation>
+<translation id="4852394547793286745">Este dominio aínda non se verificou. Continúa só se confías no sitio.</translation>
+<translation id="5832443872711287128">Comproba este enderezo xa que pode estar suplantando a identidade dun contacto teu anterior.</translation>
+<translation id="5317646355693663165">Isto transfire a propiedade do saldo do teu token a outra persoa.</translation>
+<translation id="3459325260212799301">Este sitio está marcado como inseguro e/ou malicioso. Continuar pode producir perdas.</translation>
+<translation id="5409388443146954820">Aprobaranse máis de 200 accións. A menos que se planifique, isto pode ser malicioso.</translation>
+<translation id="6187462466381633445">Isto solicita máis de 200 aprobacións; o que adoita ser un intento de esgotar os teus saldos.</translation>
+<translation id="3322526234603442338">Estás intercambiando tokens sen nada a cambio. É probable que isto sexa un erro.</translation>
+<translation id="4773052969794445878">Estás enviando fondos ao enderezo do propio token, onde se perderán para sempre.</translation>
+<translation id="8144820760826901598">Isto transfire a propiedade da túa conta e dos saldos a outra persoa.</translation>
+<translation id="6023771436430346631">Fondos insuficientes para cubrir a taxa de gas da rede.</translation>
+<translation id="4753738223346804632">Fondos insuficientes para completar a transacción.</translation>
+<translation id="8661124952575076441">É probable que a transacción falle e se reverta. O intento seguirá supoñendo custos de gas.</translation>
+<translation id="7660840414862537846">Erro inesperado coa vista previa da transacción. Aprobar a acción pode ser pouco seguro.</translation>
+<translation id="4683335916231560287">Non se detectaron cambios</translation>
+<translation id="6769279318856228158">Cambio na propiedade da conta</translation>
+<translation id="3200658657457611958">Simula o comportamento dunha transacción antes de autorizala</translation>
+<translation id="8311005737513179222">Esta rede non admite a vista previa da transacción.</translation>
+<translation id="4282496974850444428">Estás vendo esta mensaxe porque activaches o servizo de vista previa de transaccións.</translation>
+<translation id="6094399032955582807">Ver redes dispoñibles</translation>
+<translation id="6644973832009582039">O escaneo de mensaxes EVM non se admite nestes momentos</translation>
+<translation id="5222675470118670784">Que é o escaneo de mensaxes EVM ?</translation>
+<translation id="4085714860536252628">Garantiza a seguridade e a precisión ao examinar as mensaxes enviadas desde a Ethereum Virtual Machine (EVM) que interactúan co teu contrato intelixente ou con calquera acción.</translation>
+<translation id="7800112661494546348">É como comprobar unha carta dúas veces para asegurarse de que está todo correcto antes de asinala.</translation>
+<translation id="4750109510113597688">Esta transacción pode incluír unha taxa de creación de conta</translation>
+<translation id="6201709949885884577">Requírese contrasinal para realizar esta acción.</translation>
+<translation id="3435015606307655951">Transferencia segura</translation>
+<translation id="1958146856582208323">Transferencia de tokens</translation>
+<translation id="3550219298671597013">Transferir NFT</translation>
+<translation id="8043066678623588950">Enviar FIL</translation>
+<translation id="7138678301420049075">Outros</translation>
+<translation id="8703556909820882288">Transferencia NFT comprimida</translation>
+<translation id="2713141960460256091">Asinar e enviar transacción da DApp</translation>
+<translation id="6387730345715997739">Asinar transacción da DApp</translation>
+<translation id="4150336849480030462">Transferencia de token SPL con creación de conta de token asociada</translation>
 <translation id="3155170474926428993">Lanzador Tor</translation>
 <translation id="3745016858329272300">Información xeral</translation>
 <translation id="4045404575593562245">Eventos de control de Tor</translation>
@@ -1804,6 +1878,7 @@
 <translation id="6938154350999993769">Depurar: Activar/desactivar o modo tableta</translation>
 <translation id="5854741377790551127">Depurar: Imprimir a árbore de visualización</translation>
 <translation id="8199130368328220410">Activar/desactivar subtítulos instantáneos</translation>
+<translation id="5509712368473990741">Activar/desactivar IA de Leo</translation>
 <translation id="9055778350624039365">Mostrar o panel de Carteira de Brave</translation>
 <translation id="2548853975094084059">Pechar o panel de Carteira de Brave</translation>
 <translation id="3765209580429944524">Mostrar o panel de VPN de Brave</translation>
@@ -1900,12 +1975,11 @@
 <translation id="7932221068776853847">Desconéctate para deixar de enviar o contido desta páxina a Leo e inicia unha nova conversa</translation>
 <translation id="1167803637855350748">Produciuse un problema de rede ao conectarse a Leo. Comproba a conexión e téntao de novo.</translation>
 <translation id="1996126325390835277">Alcanzaches o límite de taxa para Premium. Téntao de novo nunhas horas.</translation>
-<translation id="7144878232160441200">Reintentar</translation>
-<translation id="8570488829560315702">Ola, son Leo! Son un asistente de IA totalmente aloxado por Brave. Dispoño de tecnoloxía de Llama 3 8B, un modelo creado por Meta para ofrecer un bo rendemento aplicable a moitos casos de uso. <ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
+<translation id="4177458398826096846">Ola, son Leo. Son un asistente de IA totalmente aloxado por Brave. Teño tecnoloxía de Llama 3.1 8B, un modelo creado por Meta para ser eficiente e aplicable a moitos casos de uso. <ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Ola, son Leo! Son un asistente de IA totalmente aloxado por Brave. Dispoño de tecnoloxía Mixtral 8x7B, un modelo creado por Mistral AI para manexar tarefas avanzadas. <ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Ola, son Leo! Teño proxy de Brave e dispoño de tecnoloxía de Claude Instant, un modelo creado por Anthropic para realizar tarefas de conversación e de procesamento de texto.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">Ola, son Leo! Teño proxy de Brave e dispoño de tecnoloxía Claude 3 Haiku, un modelo creado por Anthropic para realizar tarefas conversacionais e de procesamento de texto.</translation>
-<translation id="4147243042852964992">Ola, son Leo! Teño proxy de Brave e dispoño de tecnoloxía de Claude 3 Sonnet, un modelo creado por Anthropic para realizar tarefas de conversación e de procesamento de texto.</translation>
+<translation id="1107977270364670952">Ola, son Leo. Teño proxy de Brave e tecnoloxía de Claude 3.5 Sonnet, un modelo creado por Anthropic para potenciar tarefas conversacionais e de procesamento de texto.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> de <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -1941,10 +2015,10 @@
 <translation id="9018766373792005944">¿De que tratan os seus comentarios?</translation>
 <translation id="7355096922131918313">Forneza comentarios aquí</translation>
 <translation id="3027575440738035995">Leo Premium fornece acceso a un conxunto ampliado de modelos de idioma para obter respostas con aínda máis matices. <ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
+<translation id="7488762544858401571">Editado</translation>
 <translation id="2399439821649319175">Non útil</translation>
 <translation id="2976167228906046828">Incorrecto</translation>
 <translation id="1183055847065865059">Inseguro/daniño</translation>
-<translation id="7138678301420049075">Outros</translation>
 <translation id="2313959174679245365">A súa valoración non se puido enviar, comprobe a conexión de rede e ténteo de novo</translation>
 <translation id="98413980871833152">Os seus comentarios non se puideron enviar, comprobe a conexión de rede e ténteo de novo</translation>
 <translation id="8742658901413346500">Esta conversa é longa e é posible que Leo comece a esquecer as cousas en breve. Pode obter conversas máis longas cambiando a un modelo Premium ou ben pode borrar o chat para restablecelo.</translation>
@@ -1997,6 +2071,7 @@
 <translation id="983013125018250242">Ferramentas Leo</translation>
 <translation id="49269513399674318">Usar micrófono</translation>
 <translation id="3895031624234442305">Modelos personalizados</translation>
+<translation id="4572010449071015143">Iniciar nova conversa</translation>
 <translation id="6303294677342628402">Escudos</translation>
 <translation id="8458987127502506209">Activar Escudos de Brave</translation>
 <translation id="7509914170164691086">Os escudos están activos <ph name="LINK_BEFORE"/>para<ph name="LINK_AFTER"/></translation>
@@ -2040,6 +2115,9 @@
 Bloqueáronse <ph name="NUMBER"/> rastreadores, anuncios e demais elementos</translation>
 <translation id="4292121526390005808">Guións bloqueados</translation>
 <translation id="5046271170844958713">Guións permitidos</translation>
+<translation id="4575452981007854269">Proteccións de impresións dixitais aplicadas</translation>
+<translation id="1905384713982899903">Impresións dixitais bloqueadas</translation>
+<translation id="314364527871618241">Impresións dixitais  permitidas</translation>
 <translation id="264682546981571963">Cánsanche os avisos de consentimento das cookies?</translation>
 <translation id="4986297793092101884">Brave xa bloquea as cookies de terceiros, ademais dos avisos de consentimento das cookies.</translation>
 <translation id="535688588637568715">Si, bloquear os avisos de consentimento das cookies</translation>
@@ -2078,36 +2156,42 @@ Bloqueáronse <ph name="NUMBER"/> rastreadores, anuncios e demais elementos</tra
 <translation id="7821773512278295352">Firewall + VPN de Brave: conectado</translation>
 <translation id="6019088868713395120">Firewall + VPN de Brave: desconectado</translation>
 <translation id="3541307549916475335">IU do panel de VPN de Brave</translation>
-<translation id="1742469581923031760">Conectando…</translation>
-<translation id="1287487756047817908">Desconectando…</translation>
+<translation id="7143207342074048698">Conectando</translation>
+<translation id="1202549130170287307">Desconectando</translation>
 <translation id="2325196879156848326">Erro de conexión</translation>
 <translation id="745054660363064771">Non se pode conectar co servidor</translation>
 <translation id="3936826714240735937">Elixe outro servidor</translation>
-<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> non puido conectar co servidor <ph name="REGION_NAME"/>. Podes tentalo de novo ou elixir outro.</translation>
-<translation id="8703188411226330709">Iniciar proba gratuíta</translation>
-<translation id="1024255913009642477">Xa mercaches a VPN?</translation>
+<translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> non se puido conectar ao servidor de<ph name="REGION_NAME"/>. Téntao de novo ou escolle outro país.</translation>
+<translation id="5753795690521538679">Comezar proba gratuíta de 7 días</translation>
+<translation id="3357036723290257445">Xa compraches Brave VPN?</translation>
 <translation id="8814357473522731680">Con tecnoloxía de</translation>
-<translation id="3960619311638643872">VPN de Brave</translation>
+<translation id="8652175077544655965">Pechar a configuración</translation>
+<translation id="3099126540952997993">Firewall + VPN</translation>
+<translation id="5908163815855240493">Ir á páxina principal</translation>
 <translation id="7805768142964895445">Estado</translation>
 <translation id="5747552184818312860">Caduca</translation>
 <translation id="8421945428836418371">Reconectar automaticamente</translation>
 <translation id="434523916398030617">Contactar con soporte técnico</translation>
 <translation id="1116694919640316211">Acerca de</translation>
-<translation id="8670386189340362926">Bloquea rastreadores e anuncios en todas as aplicacións</translation>
-<translation id="4860763498907927955">Protéxete das conexións de rede non desexadas</translation>
-<translation id="3181339219453722970">Escolle a túa ubicación VPN</translation>
-<translation id="1708407585266172412">Rápido e ilimitado ata 500 Mbps</translation>
-<translation id="1400240082805528049">Asistencia ininterrompida</translation>
+<translation id="755045397420611731">Privacidade adicional e seguridade en liña</translation>
+<translation id="4520128772974831415">Ocultar a túa e cambiar a túa localización</translation>
+<translation id="2044418816479192294">Centos de servidores en todo o mundo</translation>
+<translation id="7410504850864021600">Velocidades de conexión ultrarrápidas</translation>
+<translation id="2422309687188612485">Protexe ata 10 dispositivos cun só plan</translation>
 <translation id="1693568075761612600">Non se puido crear o tícket de asistencia. Comproba a túa conexión.</translation>
+<translation id="1407707415819020643">Selecciona o teu servidor</translation>
 <translation id="8463313539532697053">Agarde un momento mentres carga...</translation>
-<translation id="4317307602527599178">Non se pode comprobar o estado da túa compra debido, quizais, a un problema coa rede.</translation>
+<translation id="2542131205769293399">Non se puido comprobar o estado da túa compra. Trátase probablemente dun problema de rede. Téntao de novo ou ponte en contacto co servizo de asistencia.</translation>
 <translation id="4613076894734402086">Editar método de pagamento</translation>
 <translation id="427718751211990320">Superouse a data de caducidade das credenciais.</translation>
 <translation id="8670619630771851260">Non se poden cargar as credenciais.</translation>
 <translation id="1594643509610625766">O token xa non é válido.</translation>
 <translation id="8373427068383038263">Semella que o teu pago máis recente de <ph name="VALUE"/> non se procesou. Non se poderá acceder a esta subscrición ata que se resolva o problema do pago. Tenta editar o método de pago ou contacta co servizo de asistencia de Brave.</translation>
+<translation id="5257165507296814658">Pechar o formulario de asistencia</translation>
 <translation id="1839021455997460752">O teu enderezo de correo electrónico</translation>
+<translation id="7508253027939632101">Indica o teu enderezo de correo electrónico</translation>
 <translation id="8054563304616131773">Introduce un enderezo de correo electrónico válido</translation>
+<translation id="365334785487370919">Este campo é obrigatorio</translation>
 <translation id="5154702632169343078">Asunto</translation>
 <translation id="6625978880678465492">Escolle un motivo</translation>
 <translation id="6687228121145903051">Non se pode conectar coa VPN (outro erro)</translation>
@@ -2115,6 +2199,7 @@ Bloqueáronse <ph name="NUMBER"/> rastreadores, anuncios e demais elementos</tra
 <translation id="21570240866965662">Conexión lenta</translation>
 <translation id="1219475260382643267">O sitio web non funciona</translation>
 <translation id="1387340358507240698">Describe o teu problema</translation>
+<translation id="5597547971954030233">Describe aquí o teu problema</translation>
 <translation id="501818585183973587">Selecciona a información que queres compartir connosco</translation>
 <translation id="3195618332367441234">Canta máis información compartas, máis sinxelo será para o persoal de asistencia axudarche.</translation>
 <translation id="5682143294773821728">Nome de host da VPN:</translation>
@@ -2122,7 +2207,7 @@ Bloqueáronse <ph name="NUMBER"/> rastreadores, anuncios e demais elementos</tra
 <translation id="6676791921618140305">Versión do sistema operativo:</translation>
 <translation id="1156325797949437777">Asistencia fornecida en asociación con Guardian.</translation>
 <translation id="8146777497879160283">Non se puido redactar a configuración da VPN. Pode deberse á falta de permisos ou a que non executaches Windows Update ultimamente.</translation>
-<translation id="3307461350293459700">Non foi posible a conexión coa VPN. Téntao de novo e non esquezas facer clic en Permitir para activar a configuración da VPN de Brave.</translation>
+<translation id="3362894458460231163">Fallou a conexión VPN. Tenta conectarte de novo e asegúrate de facer clic en "Permitir" para activar a configuración VPN de Brave.</translation>
 <translation id="7261518280726313829">Se desactivas o DNS seguro ou usas os servidores predefinidos de Windows, pode que o teu fornecedor de servizos de Internet teña acceso aos nomes dos sitios que visitas, cousa que Brave desaconsella. Queres facelo igualmente?</translation>
 <translation id="888284761945060750">O DNS seguro está desactivado por mor das políticas da túa organización. Se usas VPN de Brave sen DNS seguro, pode que o teu fornecedor de servizos de Internet ou a túa organización teñan acceso aos nomes dos sitios que visitas.</translation>
 <translation id="6593224083874259773">VPN de Brave en Windows</translation>
