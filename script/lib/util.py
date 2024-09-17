@@ -127,21 +127,27 @@ def make_zip(zip_file_path, files, dirs):
     # missing files.
     if sys.platform == 'darwin':
         files += dirs
-        files_before = {f: os.stat(f) for f in glob.glob(f'{dirs[0]}/**', recursive=True)}
+        files_before = {
+            f: os.stat(f)[:-3]
+            for f in glob.glob(f'{dirs[0]}/**', recursive=True)
+        }
         # pylint: disable=subprocess-run-check
         cp = subprocess.run(['zip', '-r', '-y', zip_file_path] + files,
                             capture_output=True,
                             text=True)
         if cp.returncode != 0:
             print(cp.stdout)
-            files_after = {f: os.stat(f) for f in glob.glob(f'{dirs[0]}/**', recursive=True)}
+            files_after = {
+                f: os.stat(f)[:-3]
+                for f in glob.glob(f'{dirs[0]}/**', recursive=True)
+            }
             missing = sorted(f for f in files_before if f not in files_after)
             print('The following files have disappeared:')
             print('\n'.join(missing))
             print('The following files have changed:')
             for f, s in files_after.items():
                 if files_before[f] != s:
-                    print(f'{f}: {tuple(files_before[f])} -> {tuple(s)}')
+                    print(f'{f}: {files_before[f]} -> {s}')
             raise RuntimeError('zip failed', cp.stderr)
     else:
         zip_file = zipfile.ZipFile(zip_file_path, "w", zipfile.ZIP_DEFLATED,
