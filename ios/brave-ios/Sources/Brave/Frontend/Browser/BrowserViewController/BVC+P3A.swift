@@ -134,8 +134,14 @@ extension BrowserViewController {
   }
 
   @MainActor func maybeRecordInitialShieldsP3A() {
-    if Preferences.Shields.initialP3AStateReported.value { return }
-    defer { Preferences.Shields.initialP3AStateReported.value = true }
+    // Increment this version if metrics in this function change
+    // so that all metrics can be re-reported after update.
+    let kCurrentReportRevision = 1
+    guard kCurrentReportRevision > Preferences.Shields.initialP3AStateReportedRevision.value else {
+      return
+    }
+    recordGlobalAdBlockShieldsP3A()
+    recordGlobalFingerprintingShieldsP3A()
     let buckets: [Bucket] = [
       0,
       .r(1...5),
@@ -146,6 +152,8 @@ extension BrowserViewController {
     ]
     recordShieldsLevelUpdateP3A(buckets: buckets)
     recordFinterprintProtectionP3A(buckets: buckets)
+
+    Preferences.Shields.initialP3AStateReportedRevision.value = kCurrentReportRevision
   }
 
   @MainActor private func recordShieldsLevelUpdateP3A(buckets: [Bucket]) {
@@ -182,6 +190,36 @@ extension BrowserViewController {
       buckets: buckets,
       value: fingerprintingAboveGlobalCount
     )
+  }
+
+  func recordGlobalAdBlockShieldsP3A() {
+    // Q46 What is the global ad blocking shields setting?
+    enum Answer: Int, CaseIterable {
+      case disabled = 0
+      case standard = 1
+      case aggressive = 2
+    }
+
+    let answer = { () -> Answer in
+      switch ShieldPreferences.blockAdsAndTrackingLevel {
+      case .disabled: return .disabled
+      case .standard: return .standard
+      case .aggressive: return .aggressive
+      }
+    }()
+
+    UmaHistogramEnumeration("Brave.Shields.AdBlockSetting", sample: answer)
+  }
+
+  func recordGlobalFingerprintingShieldsP3A() {
+    // Q47 What is the global fingerprinting shields setting?
+    enum Answer: Int, CaseIterable {
+      case disabled = 0
+      case standard = 1
+      case aggressive = 2
+    }
+    let answer: Answer = Preferences.Shields.fingerprintingProtection.value ? .standard : .disabled
+    UmaHistogramEnumeration("Brave.Shields.FingerprintBlockSetting", sample: answer)
   }
 
   func recordDataSavedP3A(change: Int) {

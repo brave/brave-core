@@ -65,9 +65,6 @@ import os
   @Published var adBlockAndTrackingPreventionLevel: ShieldLevel {
     didSet {
       ShieldPreferences.blockAdsAndTrackingLevel = adBlockAndTrackingPreventionLevel
-      if adBlockAndTrackingPreventionLevel != oldValue {
-        recordGlobalAdBlockShieldsP3A()
-      }
     }
   }
   @Published var httpsUpgradeLevel: HTTPSUpgradeLevel {
@@ -278,43 +275,5 @@ import os
         }
       }
       .store(in: &subscriptions)
-
-    Preferences.Shields.fingerprintingProtection.$value
-      .sink { [weak self] _ in
-        self?.recordGlobalFingerprintingShieldsP3A()
-      }
-      .store(in: &subscriptions)
-  }
-
-  // MARK: - P3A
-
-  private func recordGlobalAdBlockShieldsP3A() {
-    // Q46 What is the global ad blocking shields setting?
-    enum Answer: Int, CaseIterable {
-      case disabled = 0
-      case standard = 1
-      case aggressive = 2
-    }
-
-    let answer = { () -> Answer in
-      switch ShieldPreferences.blockAdsAndTrackingLevel {
-      case .disabled: return .disabled
-      case .standard: return .standard
-      case .aggressive: return .aggressive
-      }
-    }()
-
-    UmaHistogramEnumeration("Brave.Shields.AdBlockSetting", sample: answer)
-  }
-
-  private func recordGlobalFingerprintingShieldsP3A() {
-    // Q47 What is the global fingerprinting shields setting?
-    enum Answer: Int, CaseIterable {
-      case disabled = 0
-      case standard = 1
-      case aggressive = 2
-    }
-    let answer: Answer = Preferences.Shields.fingerprintingProtection.value ? .standard : .disabled
-    UmaHistogramEnumeration("Brave.Shields.FingerprintBlockSetting", sample: answer)
   }
 }

@@ -3283,12 +3283,16 @@ extension BrowserViewController: PreferencesObserver {
       tabManager.reloadSelectedTab()
     case Preferences.General.enablePullToRefresh.key:
       tabManager.selectedTab?.updatePullToRefreshVisibility()
-    case ShieldPreferences.blockAdsAndTrackingLevelRaw.key,
-      Preferences.Shields.blockScripts.key,
+    case Preferences.Shields.blockScripts.key,
       Preferences.Shields.blockImages.key,
-      Preferences.Shields.fingerprintingProtection.key,
       Preferences.Shields.useRegionAdBlock.key:
       tabManager.reloadSelectedTab()
+    case ShieldPreferences.blockAdsAndTrackingLevelRaw.key:
+      tabManager.reloadSelectedTab()
+      recordGlobalAdBlockShieldsP3A()
+    case Preferences.Shields.fingerprintingProtection.key:
+      tabManager.reloadSelectedTab()
+      recordGlobalFingerprintingShieldsP3A()
     case Preferences.General.defaultPageZoomLevel.key:
       tabManager.allTabs.forEach({
         guard let url = $0.webView?.url else { return }

@@ -83,9 +83,9 @@ extension Preferences {
       default: false
     )
     /// Whether or not we've reported the initial state of shields for p3a
-    public static let initialP3AStateReported = Option<Bool>(
-      key: "shields.initial-p3a-state-reported",
-      default: false
+    public static let initialP3AStateReportedRevision = Option<Int>(
+      key: "shields.initial-p3a-state-reported-revision",
+      default: 0
     )
   }
 
