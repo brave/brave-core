@@ -186,10 +186,11 @@ function ConversationList(props: ConversationListProps) {
                         )}
                         <div className={styles.turnActions}>
                           <CopyButton onClick={handleCopyText} />
-                          <EditButton
-                            onClick={() => setEditInputId(id)}
-                            isDisabled={isAIAssistant && shouldDisableUserInput}
-                          />
+                          {!isAIAssistant &&
+                            <EditButton
+                              onClick={() => setEditInputId(id)}
+                            />
+                          }
                           {isAIAssistant &&
                             context.currentModel?.options.leoModelOptions && (
                             <ContextMenuAssistant
@@ -198,6 +199,7 @@ function ConversationList(props: ConversationListProps) {
                               isOpen={activeMenuId === id}
                               onClick={() => showAssistantMenu(id)}
                               onClose={hideAssistantMenu}
+                              onEditAnswerClicked={() => setEditInputId(id)}
                             />
                           )}
                         </div>

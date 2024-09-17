@@ -84,6 +84,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"saveButtonLabel", IDS_CHAT_UI_SAVE_BUTTON_LABEL},
       {"editedLabel", IDS_CHAT_UI_EDITED_LABEL},
       {"editButtonLabel", IDS_CHAT_UI_EDIT_BUTTON_LABEL},
+      {"editAnswerLabel", IDS_CHAT_UI_EDIT_ANSWER_LABEL},
       {"optionNotHelpful", IDS_CHAT_UI_OPTION_NOT_HELPFUL},
       {"optionIncorrect", IDS_CHAT_UI_OPTION_INCORRECT},
       {"optionUnsafeHarmful", IDS_CHAT_UI_OPTION_UNSAFE_HARMFUL},
