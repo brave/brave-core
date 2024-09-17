@@ -199,6 +199,9 @@
   <message name="IDS_CHAT_UI_EDIT_BUTTON_LABEL" desc="Button title to edit content">
     Edit
   </message>
+  <message name="IDS_CHAT_UI_EDIT_ANSWER_LABEL" desc="Button title to edit AI agent answer">
+    Edit answer
+  </message>
   <message name="IDS_CHAT_UI_OPTION_NOT_HELPFUL" desc="Select option for feedback form if the answer is not helpful">
     Not helpful
   </message>
