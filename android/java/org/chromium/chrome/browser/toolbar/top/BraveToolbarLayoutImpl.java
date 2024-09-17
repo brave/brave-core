@@ -35,6 +35,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import org.chromium.base.ContextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -1124,20 +1125,21 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mBraveShieldsButton == v && mBraveShieldsButton != null) {
             showShieldsMenu(mBraveShieldsButton);
         } else if (mBraveRewardsButton == v && mBraveRewardsButton != null) {
-            if (null != mRewardsPopup) {
-                return;
-            }
-            hideRewardsOnboardingIcon();
-            OnboardingPrefManager.getInstance().setOnboardingShown(true);
-            mRewardsPopup = new BraveRewardsPanel(v);
-            mRewardsPopup.showLikePopDownMenu();
-            if (mBraveRewardsNotificationsCount.isShown()) {
-                ChromeSharedPreferences.getInstance()
-                        .writeBoolean(
-                                BraveRewardsPanel.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, true);
-                mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
-                mIsInitialNotificationPosted = false;
-            }
+            // if (null != mRewardsPopup) {
+            //     return;
+            // }
+            // hideRewardsOnboardingIcon();
+            // OnboardingPrefManager.getInstance().setOnboardingShown(true);
+            // mRewardsPopup = new BraveRewardsPanel(v);
+            // mRewardsPopup.showLikePopDownMenu();
+            // if (mBraveRewardsNotificationsCount.isShown()) {
+            //     ChromeSharedPreferences.getInstance()
+            //             .writeBoolean(
+            //                     BraveRewardsPanel.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, true);
+            //     mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
+            //     mIsInitialNotificationPosted = false;
+            // }
+            BraveLeoActivity.showPage(ContextUtils.getApplicationContext(), BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
         } else if (mHomeButton == v) {
             // Helps Brave News know how to behave on home button action
             try {
