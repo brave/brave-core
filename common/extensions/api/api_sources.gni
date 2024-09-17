@@ -16,6 +16,7 @@ schema_sources_ = [
   "brave_theme.json",
   "greaselion.json",
   "rewards_notifications.json",
+  "web_discovery.json",
 ]
 
 if (ethereum_remote_client_enabled) {

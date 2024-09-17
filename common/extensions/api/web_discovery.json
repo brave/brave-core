@@ -1,0 +1,31 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[
+  {
+    "namespace": "webDiscovery",
+    "description": "Includes Web Discovery functions for the Brave extension",
+    "compiler_options": {
+      "implemented_in": "brave/browser/extensions/api/web_discovery_api.h"
+    },
+    "functions": [
+      {
+        "name": "isWebDiscoveryNativeEnabled",
+        "type": "function",
+        "description": "Returns true if Web Discovery native feature is active",
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "enabled",
+              "type": "boolean"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

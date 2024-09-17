@@ -248,3 +248,8 @@ declare namespace cf_worker {
 declare namespace chrome.test {
   const sendMessage: (message: string) => {}
 }
+
+declare namespace chrome.webDiscovery {
+  type WebDiscoveryNativeEnabledCallback = (enabled: boolean) => void
+  const isWebDiscoveryNativeEnabled: (callback: WebDiscoveryNativeEnabledCallback) => void
+}

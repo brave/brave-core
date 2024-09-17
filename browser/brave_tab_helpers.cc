@@ -23,7 +23,6 @@
 #include "brave/browser/ntp_background/ntp_tab_helper.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
-#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -33,6 +32,7 @@
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -87,7 +87,7 @@
 #include "brave/components/tor/tor_tab_helper.h"
 #endif
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
 #endif
 
@@ -167,7 +167,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
       web_contents);
   psst::PsstTabHelper::MaybeCreateForWebContents(
       web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 

@@ -79,12 +79,17 @@ if (!chrome.extension.inIncognitoContext) {
     }
   }
 
-  chrome.settingsPrivate.onPrefsChanged.addListener((prefs: chrome.settingsPrivate.PrefObject[]) => {
-    const pref = prefs.find(p => p.key === WEB_DISCOVERY_PREF_KEY)
-    toggleWebDiscovery(pref)
-  })
+  chrome.webDiscovery.isWebDiscoveryNativeEnabled((nativeEnabled) => {
+    if (nativeEnabled) {
+      return
+    }
+    chrome.settingsPrivate.onPrefsChanged.addListener((prefs: chrome.settingsPrivate.PrefObject[]) => {
+      const pref = prefs.find(p => p.key === WEB_DISCOVERY_PREF_KEY)
+      toggleWebDiscovery(pref)
+    })
 
-  chrome.settingsPrivate.getPref(WEB_DISCOVERY_PREF_KEY, (pref: chrome.settingsPrivate.PrefObject) => {
-    toggleWebDiscovery(pref)
+    chrome.settingsPrivate.getPref(WEB_DISCOVERY_PREF_KEY, (pref: chrome.settingsPrivate.PrefObject) => {
+      toggleWebDiscovery(pref)
+    })
   })
 }
