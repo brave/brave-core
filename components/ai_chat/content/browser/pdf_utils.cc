@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 
 #include "base/strings/strcat.h"
+#include "components/strings/grit/components_strings.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/web_contents.h"
 #include "pdf/buildflags.h"
@@ -126,6 +127,14 @@ bool IsPdfLoaded(const ui::AXNode* pdf_root) {
           ax::mojom::Role::kStatus) {
     return false;
   }
+
+#if BUILDFLAG(ENABLE_PDF)
+  if (pdf_root->GetChildAtIndex(0)->GetChildAtIndex(0)->GetStringAttribute(
+          ax::mojom::StringAttribute::kName) ==
+      l10n_util::GetStringUTF8(IDS_PDF_OCR_IN_PROGRESS)) {
+    return false;
+  }
+#endif
 
   return true;
 }
