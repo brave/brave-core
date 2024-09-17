@@ -181,13 +181,12 @@ std::optional<size_t> PickPeekingCardWithMax(
   }
 
   std::vector<ItemScore> final_candidates;
-  std::map<std::string, size_t> seen_channels;
+  std::map<std::string, size_t> seen_publishers;
 
-  // Make sure we can pick enough options to have at least |maxCandidates|
-  // options in out finalCandidates.
-  const auto channel_limit = following_count < kMaxPeekingCardCandidates
-                                 ? (max_candidates / following_count)
-                                 : 1;
+  // Limit each publisher to a percentage of the final candidates (i.e. no more
+  // than 20% of the candidates should come from one source).
+  const auto publisher_limit = static_cast<int>(
+      kMaxPeekingCardCandidates * kMaxPublisherPercentOfCandidates);
   // This is the minimum score that we'll consider candidates at;
   const auto min_score =
       kMaxCandidatesScorePercentCutoff * std::get<1>(candidates.front());
@@ -199,17 +198,11 @@ std::optional<size_t> PickPeekingCardWithMax(
 
     const auto& article = get_article(index);
 
-    // We don't want any channel to dominate our final candidates list.
-    if (!article->channels.empty()) {
-      // The channels are ordered from least to most specific - we only look at
-      // the most specific channel so we get a bit more variety.
-      auto most_specific_channel = article->channels.back();
-      if (seen_channels[most_specific_channel] >= channel_limit) {
-        continue;
-      }
-
-      seen_channels[most_specific_channel]++;
+    if (seen_publishers[article->publisher_id] >= publisher_limit) {
+      continue;
     }
+
+    seen_publishers[article->publisher_id]++;
 
     final_candidates.emplace_back(index, score);
   }
