@@ -19,9 +19,6 @@ import components.cloud_storage as cloud_storage
 
 from components.common_options import CommonOptions
 
-with path_util.SysPath(path_util.GetDepotToolsDir()):
-  from download_from_google_storage import get_sha1
-
 # Brave and Chromium update related-hosts.
 # Normally we don't need this in any WPR.
 _UPDATE_HOSTS = [
@@ -38,23 +35,19 @@ _UPDATE_HOSTS = [
 # and leave in others (i.e. system_health).
 _SERVICE_HOSTS = [
     'redirector.brave.com',
-
     'geo.ads.brave.com',
     'static.ads.brave.com',
-
     'rewards.brave.com',
     'api.rewards.brave.com',
     'grant.rewards.brave.com',
-
     'collector.bsg.brave.com',
     'star-randsrv.bsg.brave.com',
-
     'p3a-json.brave.com',
     'brave-today-cdn.brave.com',
-
     'update.googleapis.com',
     'content-autofill.googleapis.com',
 ]
+
 
 def run_httparchive(args: List[str]) -> str:
   _, output = perf_test_utils.GetProcessOutput(
@@ -150,7 +143,7 @@ def record_wpr(config: perf_config.PerfConfig, options: CommonOptions) -> bool:
   output_file = max(files, key=os.path.getctime)
   _merge_wpr_files(files, output_file)
   cleanup_archive(output_file, False)
-  run_httparchive(['ls', file])
+  run_httparchive(['ls', output_file])
 
   # Copy the final .wprgo to the artifacts directory.
   artifacts_dir = os.path.join(options.working_directory, 'artifacts')
