@@ -76,21 +76,6 @@ void BraveVPNStatusLabel::OnConnectionStateChanged(ConnectionState state) {
   UpdateState();
 }
 
-gfx::Size BraveVPNStatusLabel::CalculatePreferredSize(
-    const views::SizeBounds& available_size) const {
-  auto size = views::Label::CalculatePreferredSize(available_size);
-  if (longest_state_string_id_ == -1)
-    return size;
-  auto text =
-      brave_l10n::GetLocalizedResourceUTF16String(longest_state_string_id_);
-  if (text == GetText())
-    return size;
-  size.set_width(font_list().GetExpectedTextWidth(text.length()) +
-                 GetInsets().width());
-  size.set_height(GetHeightForWidth(size.width()));
-  return size;
-}
-
 void BraveVPNStatusLabel::UpdateState() {
   const auto state = service_->GetConnectionState();
 
