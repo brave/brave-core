@@ -12,10 +12,14 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
+#include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/credential_manager.h"
+#include "brave/components/web_discovery/browser/regex_util.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
+#include "brave/components/web_discovery/common/web_discovery.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -50,6 +54,13 @@ class WebDiscoveryService : public KeyedService {
   // KeyedService:
   void Shutdown() override;
 
+  // Called by `WebDiscoveryTabHelper` to notify on a page load.
+  bool ShouldExtractFromPage(const GURL& url,
+                             content::RenderFrameHost* render_frame_host);
+  void StartExtractingFromPage(
+      const GURL& url,
+      mojo::Remote<mojom::DocumentExtractor> document_extractor);
+
  private:
   void Start();
   void Stop();
@@ -59,6 +70,8 @@ class WebDiscoveryService : public KeyedService {
 
   void OnConfigChange();
   void OnPatternsLoaded();
+  void OnContentScraped(bool is_strict,
+                        std::unique_ptr<PageScrapeResult> result);
 
   raw_ptr<PrefService> local_state_;
   raw_ptr<PrefService> profile_prefs_;
@@ -66,10 +79,15 @@ class WebDiscoveryService : public KeyedService {
 
   base::FilePath user_data_dir_;
 
+  RegexUtil regex_util_;
+
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+
+  mojo::RemoteSet<mojom::DocumentExtractor> document_extractor_remotes_;
 
   std::unique_ptr<ServerConfigLoader> server_config_loader_;
   std::unique_ptr<CredentialManager> credential_manager_;
+  std::unique_ptr<ContentScraper> content_scraper_;
 };
 
 }  // namespace web_discovery

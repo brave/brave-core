@@ -4,26 +4,21 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
-import("//mojo/public/tools/bindings/mojom.gni")
 
 assert(enable_web_discovery_native)
 
-if (enable_web_discovery_native) {
-  mojom("mojom") {
-    sources = [ "web_discovery.mojom" ]
-    deps = [ "//mojo/public/mojom/base" ]
-  }
-}
-
-component("common") {
-  output_name = "web_discovery_common"
+source_set("renderer") {
   sources = [
-    "features.cc",
-    "features.h",
+    "blink_document_extractor.cc",
+    "blink_document_extractor.h",
   ]
 
   deps = [
     "//base",
-    "//brave/components/web_discovery/buildflags",
+    "//brave/components/web_discovery/common:mojom",
+    "//content/public/renderer",
+    "//mojo/public/cpp/bindings",
+    "//services/service_manager/public/cpp",
+    "//third_party/blink/public:blink",
   ]
 }

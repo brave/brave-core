@@ -70,6 +70,12 @@
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #endif
 
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#include "brave/browser/web_discovery/web_discovery_service_factory.h"
+#include "brave/components/web_discovery/browser/web_discovery_tab_helper.h"
+#include "brave/components/web_discovery/common/features.h"
+#endif
+
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/brave_drm_tab_helper.h"
 #endif
@@ -216,6 +222,19 @@ void AttachTabHelpers(content::WebContents* web_contents) {
     }
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+  if (base::FeatureList::IsEnabled(
+          web_discovery::features::kBraveWebDiscoveryNative)) {
+    auto* web_discovery_service =
+        web_discovery::WebDiscoveryServiceFactory::GetForBrowserContext(
+            web_contents->GetBrowserContext());
+    if (web_discovery_service) {
+      web_discovery::WebDiscoveryTabHelper::CreateForWebContents(
+          web_contents, web_discovery_service);
+    }
+  }
+#endif
 }
 
 }  // namespace brave
