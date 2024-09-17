@@ -103,6 +103,8 @@ source_set("extensions") {
     "api/rewards_notifications_api.h",
     "api/settings_private/brave_prefs_util.cc",
     "api/settings_private/brave_prefs_util.h",
+    "api/web_discovery_api.cc",
+    "api/web_discovery_api.h",
     "brave_extension_management.cc",
     "brave_extension_management.h",
     "brave_extension_provider.cc",

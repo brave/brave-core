@@ -28,12 +28,12 @@ source_set("constants") {
     "webui_url_constants.h",
   ]
 
-  public_deps = [ ":brave_services_key" ]
-  deps = [
-    "//base",
+  public_deps = [
+    ":brave_services_key",
     "//brave/components/web_discovery/buildflags",
     "//extensions/buildflags",
   ]
+  deps = [ "//base" ]
 }
 
 source_set("brave_service_key_helper") {
