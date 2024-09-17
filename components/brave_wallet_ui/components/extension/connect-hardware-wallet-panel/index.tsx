@@ -97,7 +97,7 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
   const request = signMessageData?.at(0)
   const isSigning = request && request.id !== -1
 
-  const { account: singMessageAccount } = useAccountQuery(request?.accountId)
+  const { account: signMessageAccount } = useAccountQuery(request?.accountId)
 
   // pending transactions
   const {
@@ -106,7 +106,7 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
     fromAccount: confirmTransactionAccount
   } = usePendingTransactions()
 
-  const account = singMessageAccount || confirmTransactionAccount
+  const account = signMessageAccount || confirmTransactionAccount
 
   // memos
   const isConnected = React.useMemo((): boolean => {
@@ -152,13 +152,13 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
   }, [account, dispatch])
 
   const onSignData = React.useCallback(async () => {
-    if (!singMessageAccount || !request) {
+    if (!signMessageAccount || !request) {
       return
     }
 
-    if (isHardwareAccount(singMessageAccount.accountId)) {
+    if (isHardwareAccount(signMessageAccount.accountId)) {
       await signMessageHardware({
-        account: singMessageAccount,
+        account: signMessageAccount,
         request: request
       }).unwrap()
     } else {
@@ -168,7 +168,7 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
       }).unwrap()
     }
   }, [
-    singMessageAccount,
+    signMessageAccount,
     processSignMessageRequest,
     request,
     signMessageHardware
