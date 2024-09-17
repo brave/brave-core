@@ -20,7 +20,6 @@ import com.google.android.material.radiobutton.MaterialRadioButton;
 import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.chrome.R;
-import org.chromium.base.Log;
 import org.chromium.chrome.browser.vpn.activities.VpnServerActivity.OnCitySelection;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 
@@ -56,24 +55,25 @@ public class VpnServerAdapter extends RecyclerView.Adapter<VpnServerAdapter.View
                                     R.plurals.server_text, city.serverCount, city.serverCount);
             holder.cityServerText.setText((position == 0) ? city.name : cityServerText);
 
-            Log.e(
-                    "brave_vpn",
-                    "BraveVpnPrefUtils.getRegionName() : " + BraveVpnPrefUtils.getRegionName());
-            Log.e("brave_vpn", "mRegion.name : " + mRegion.name);
-
             boolean isCountryPrecision =
                     BraveVpnPrefUtils.getRegionPrecision()
                             .equals(BraveVpnConstants.REGION_PRECISION_COUNTRY);
             boolean isCityPrecision =
                     BraveVpnPrefUtils.getRegionPrecision()
                             .equals(BraveVpnConstants.REGION_PRECISION_CITY);
-            boolean isRegionMatch =
-                    BraveVpnPrefUtils.getRegionName().equals(mRegion.name) && position == 0;
-            boolean isCityMatch = BraveVpnPrefUtils.getRegionName().equals(city.name);
+            boolean regionMatches = BraveVpnPrefUtils.getRegionName().equals(mRegion.name);
+            boolean cityMatches = BraveVpnPrefUtils.getRegionName().equals(city.name);
+            boolean isoCodeMatches =
+                    isCountryPrecision
+                            && !regionMatches
+                            && !cityMatches
+                            && BraveVpnPrefUtils.getRegionIsoCode().equals(mRegion.countryIsoCode)
+                            && position == 0;
 
             boolean isEnabled =
-                    (isCountryPrecision && isRegionMatch) || (isCityPrecision && isCityMatch);
-
+                    (isCountryPrecision && regionMatches && position == 0)
+                            || (isCityPrecision && cityMatches)
+                            || isoCodeMatches;
             holder.serverRadioButton.setChecked(isEnabled);
             holder.serverSelectionItemLayout.setOnClickListener(
                     new View.OnClickListener() {
