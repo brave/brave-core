@@ -473,7 +473,7 @@ TEST_F(SystemVPNConnectionAPIUnitTest, CreateOSVPNEntryWithInvalidInfoTest) {
 
   auto* test_api = GetConnectionAPI();
   test_api->CheckConnection();
-  local_state()->SetString(prefs::kBraveVPNSelectedRegion, "eu-be");
+  local_state()->SetString(prefs::kBraveVPNSelectedRegionV2, "eu-be");
   // Prepare valid connection info.
   test_api->OnFetchHostnames("eu-be", kHostNamesTestData, true);
   test_api->SetPreventCreationForTesting(true);
@@ -496,7 +496,7 @@ TEST_F(SystemVPNConnectionAPIUnitTest, NeedsConnectTest) {
 
   // Check ignore Connect() request while connecting or disconnecting is
   // in-progress.
-  local_state()->SetString(prefs::kBraveVPNSelectedRegion, "eu-be");
+  local_state()->SetString(prefs::kBraveVPNSelectedRegionV2, "eu-be");
   test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
   test_api->Connect();
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());

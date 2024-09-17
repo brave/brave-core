@@ -865,7 +865,7 @@ TEST_F(BraveVPNServiceTest, GetProperRegionFromTimeZoneTest) {
   // timezone.
   // Clear selected region to set with device region when timezone
   // data is fetched.
-  local_pref_service_.ClearPref(prefs::kBraveVPNSelectedRegion);
+  local_pref_service_.ClearPref(prefs::kBraveVPNSelectedRegionV2);
   local_pref_service_.SetInteger(prefs::kBraveVPNRegionListVersion, 2);
   OnFetchRegionList(GetRegionsDataV2(), true);
   OnFetchTimezones(GetTimeZonesData(), true);
