@@ -5,8 +5,6 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import '../brave_icons.html.js'
-
 import {RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
