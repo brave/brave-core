@@ -11,6 +11,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "base/values.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 
 namespace brave_shields {
 
@@ -64,7 +65,8 @@ void MergeResourcesInto(base::Value::Dict from,
     }
   }
 
-  constexpr std::string_view kListKeys[] = {"exceptions", "procedural_actions"};
+  constexpr std::string_view kListKeys[] = {
+      "exceptions", kCosmeticResourcesProceduralActions};
   for (const auto& key_ : kListKeys) {
     base::Value::List* resources = into.FindList(key_);
     base::Value::List* from_resources = from.FindList(key_);
@@ -98,7 +100,7 @@ void MergeResourcesInto(base::Value::Dict from,
 // https://docs.rs/adblock/latest/adblock/cosmetic_filter_cache/struct.ProceduralOrActionFilter.html
 void StripProceduralFilters(base::Value::Dict& resources) {
   base::Value::List* procedural_actions =
-      resources.FindList("procedural_actions");
+      resources.FindList(kCosmeticResourcesProceduralActions);
   if (procedural_actions) {
     base::Value::List::iterator it = procedural_actions->begin();
     while (it < procedural_actions->end()) {

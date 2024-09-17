@@ -13,6 +13,7 @@
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 
@@ -97,7 +98,7 @@ void CosmeticFiltersResources::UrlCosmeticResources(
       ad_block_service_->UrlCosmeticResources(url, aggressive_blocking);
 
   const auto* procedural_actions_list =
-      resources.FindList("procedural_actions");
+      resources.FindList(brave_shields::kCosmeticResourcesProceduralActions);
   if (procedural_actions_list && !procedural_actions_list->empty()) {
     const char* procedural_filtering_feature_enabled =
         base::FeatureList::IsEnabled(

@@ -8,6 +8,7 @@
 #include "base/json/json_reader.h"
 #include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -46,13 +47,15 @@ TEST_F(StripProceduralFiltersTest, EmptyResources) {
   std::string rules = "";
   auto resources = ResourcesForRules(rules);
 
-  ASSERT_TRUE(resources.FindList("procedural_actions"));
-  ASSERT_EQ(resources.FindList("procedural_actions")->size(), 0UL);
+  ASSERT_TRUE(resources.FindList(kCosmeticResourcesProceduralActions));
+  ASSERT_EQ(resources.FindList(kCosmeticResourcesProceduralActions)->size(),
+            0UL);
 
   StripProceduralFilters(resources);
 
-  ASSERT_TRUE(resources.FindList("procedural_actions"));
-  ASSERT_EQ(resources.FindList("procedural_actions")->size(), 0UL);
+  ASSERT_TRUE(resources.FindList(kCosmeticResourcesProceduralActions));
+  ASSERT_EQ(resources.FindList(kCosmeticResourcesProceduralActions)->size(),
+            0UL);
 }
 
 TEST_F(StripProceduralFiltersTest, NotRemoved) {
@@ -64,14 +67,16 @@ TEST_F(StripProceduralFiltersTest, NotRemoved) {
   )";
   auto resources = ResourcesForRules(rules);
 
-  ASSERT_TRUE(resources.FindList("procedural_actions"));
-  ASSERT_EQ(resources.FindList("procedural_actions")->size(), 4UL);
+  ASSERT_TRUE(resources.FindList(kCosmeticResourcesProceduralActions));
+  ASSERT_EQ(resources.FindList(kCosmeticResourcesProceduralActions)->size(),
+            4UL);
 
   // no-op - no procedural filters
   StripProceduralFilters(resources);
 
-  ASSERT_TRUE(resources.FindList("procedural_actions"));
-  ASSERT_EQ(resources.FindList("procedural_actions")->size(), 4UL);
+  ASSERT_TRUE(resources.FindList(kCosmeticResourcesProceduralActions));
+  ASSERT_EQ(resources.FindList(kCosmeticResourcesProceduralActions)->size(),
+            4UL);
 }
 
 TEST_F(StripProceduralFiltersTest, ProceduralFilters) {
@@ -84,14 +89,16 @@ TEST_F(StripProceduralFiltersTest, ProceduralFilters) {
   )";
   auto resources = ResourcesForRules(rules);
 
-  ASSERT_TRUE(resources.FindList("procedural_actions"));
-  ASSERT_EQ(resources.FindList("procedural_actions")->size(), 5UL);
+  ASSERT_TRUE(resources.FindList(kCosmeticResourcesProceduralActions));
+  ASSERT_EQ(resources.FindList(kCosmeticResourcesProceduralActions)->size(),
+            5UL);
 
   // All removed; only procedural filters
   StripProceduralFilters(resources);
 
-  ASSERT_TRUE(resources.FindList("procedural_actions"));
-  ASSERT_EQ(resources.FindList("procedural_actions")->size(), 0UL);
+  ASSERT_TRUE(resources.FindList(kCosmeticResourcesProceduralActions));
+  ASSERT_EQ(resources.FindList(kCosmeticResourcesProceduralActions)->size(),
+            0UL);
 }
 
 TEST_F(StripProceduralFiltersTest, Mixed) {
@@ -108,14 +115,16 @@ TEST_F(StripProceduralFiltersTest, Mixed) {
   )";
   auto resources = ResourcesForRules(rules);
 
-  ASSERT_TRUE(resources.FindList("procedural_actions"));
-  ASSERT_EQ(resources.FindList("procedural_actions")->size(), 9UL);
+  ASSERT_TRUE(resources.FindList(kCosmeticResourcesProceduralActions));
+  ASSERT_EQ(resources.FindList(kCosmeticResourcesProceduralActions)->size(),
+            9UL);
 
   // 5 procedural filters removed; 4 non-procedural filters remaining
   StripProceduralFilters(resources);
 
-  ASSERT_TRUE(resources.FindList("procedural_actions"));
-  ASSERT_EQ(resources.FindList("procedural_actions")->size(), 4UL);
+  ASSERT_TRUE(resources.FindList(kCosmeticResourcesProceduralActions));
+  ASSERT_EQ(resources.FindList(kCosmeticResourcesProceduralActions)->size(),
+            4UL);
 }
 
 }  // namespace brave_shields
