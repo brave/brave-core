@@ -443,13 +443,23 @@ class BraveVPNServiceTest : public testing::Test {
         },
         {
           "continent": "north-america",
-          "name": "us-west",
-          "name-pretty": "USA West"
+          "name": "us-central",
+          "name-pretty": "USA - Central"
         },
         {
           "continent": "oceania",
           "name": "au-au",
           "name-pretty": "Australia"
+        }
+      ])";
+  }
+
+  std::string GetRegionsDataV2() {
+    return R"([
+        {
+          "continent": "north-america",
+          "name": "na-usa",
+          "name-pretty": "USA - Central"
         }
       ])";
   }
@@ -838,6 +848,29 @@ TEST_F(BraveVPNServiceTest, SelectedRegionChangedUpdateWithDeviceRegionTest) {
   base::RunLoop loop;
   observer.WaitSelectedRegionStateChange(loop.QuitClosure());
   loop.Run();
+}
+
+TEST_F(BraveVPNServiceTest, GetProperRegionFromTimeZoneTest) {
+  // For initial region list, "us-central" is used for "America/Havana"
+  // timezone.
+  SetTestTimezone("America/Havana");
+
+  OnFetchRegionList(GetRegionsData(), true);
+  OnFetchTimezones(GetTimeZonesData(), true);
+
+  EXPECT_EQ("us-central", GetDeviceRegion());
+  EXPECT_EQ("us-central", GetSelectedRegion());
+
+  // For region list v2, "na-usa" is used for "America/Havana"
+  // timezone.
+  // Clear selected region to set with device region when timezone
+  // data is fetched.
+  local_pref_service_.ClearPref(prefs::kBraveVPNSelectedRegion);
+  local_pref_service_.SetInteger(prefs::kBraveVPNRegionListVersion, 2);
+  OnFetchRegionList(GetRegionsDataV2(), true);
+  OnFetchTimezones(GetTimeZonesData(), true);
+  EXPECT_EQ("na-usa", GetDeviceRegion());
+  EXPECT_EQ("na-usa", GetSelectedRegion());
 }
 
 TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {

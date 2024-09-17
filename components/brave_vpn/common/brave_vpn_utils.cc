@@ -52,6 +52,27 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 #endif
 }
 
+// Region name map between v1 and v2.
+constexpr auto kV1ToV2Map =
+    base::MakeFixedFlatMap<std::string_view, std::string_view>(
+        {{"au-au", "ocn-aus"},      {"eu-at", "eu-at"},
+         {"eu-be", "eu-be"},        {"sa-brazil", "sa-brz"},
+         {"ca-east", "na-can"},     {"sa-cl", "sa-cl"},
+         {"sa-colombia", "sa-co"},  {"eu-cr", "eu-cr"},
+         {"eu-cz", "eu-cz"},        {"eu-dk", "eu-dk"},
+         {"eu-fr", "eu-fr"},        {"eu-de", "eu-de"},
+         {"eu-gr", "eu-gr"},        {"eu-ir", "eu-ie"},
+         {"eu-italy", "eu-it"},     {"asia-jp", "asia-jp"},
+         {"sa-mexico", "sa-mx"},    {"eu-nl", "eu-nl"},
+         {"eu-pl", "eu-pl"},        {"eu-pt", "eu-pt"},
+         {"eu-ro", "eu-ro"},        {"asia-sg", "asia-sg"},
+         {"af-za", "af-za"},        {"eu-es", "eu-es"},
+         {"eu-sweden", "eu-se"},    {"eu-ch", "eu-ch"},
+         {"us-central", "na-usa"},  {"us-east", "na-usa"},
+         {"us-mountain", "na-usa"}, {"us-north-west", "na-usa"},
+         {"us-west", "na-usa"},     {"eu-ua", "eu-ua"},
+         {"eu-en", "en-en"}});
+
 #if !BUILDFLAG(IS_ANDROID)
 void MigrateFromV1ToV2(PrefService* local_prefs) {
   const auto selected_region_v1 =
@@ -65,25 +86,6 @@ void MigrateFromV1ToV2(PrefService* local_prefs) {
 
   // In this migration, selected region name is updated to matched v2's country
   // name.
-  constexpr auto kV1ToV2Map =
-      base::MakeFixedFlatMap<std::string_view, std::string_view>(
-          {{"au-au", "ocn-aus"},      {"eu-at", "eu-at"},
-           {"eu-be", "eu-be"},        {"sa-brazil", "sa-brz"},
-           {"ca-east", "na-can"},     {"sa-cl", "sa-cl"},
-           {"sa-colombia", "sa-co"},  {"eu-cr", "eu-cr"},
-           {"eu-cz", "eu-cz"},        {"eu-dk", "eu-dk"},
-           {"eu-fr", "eu-fr"},        {"eu-de", "eu-de"},
-           {"eu-gr", "eu-gr"},        {"eu-ir", "eu-ie"},
-           {"eu-italy", "eu-it"},     {"asia-jp", "asia-jp"},
-           {"sa-mexico", "sa-mx"},    {"eu-nl", "eu-nl"},
-           {"eu-pl", "eu-pl"},        {"eu-pt", "eu-pt"},
-           {"eu-ro", "eu-ro"},        {"asia-sg", "asia-sg"},
-           {"af-za", "af-za"},        {"eu-es", "eu-es"},
-           {"eu-sweden", "eu-se"},    {"eu-ch", "eu-ch"},
-           {"us-central", "na-usa"},  {"us-east", "na-usa"},
-           {"us-mountain", "na-usa"}, {"us-north-west", "na-usa"},
-           {"us-west", "na-usa"},     {"eu-ua", "eu-ua"},
-           {"eu-en", "en-en"}});
   if (kV1ToV2Map.contains(selected_region_v1)) {
     local_prefs->SetString(prefs::kBraveVPNSelectedRegion,
                            kV1ToV2Map.at(selected_region_v1));
@@ -96,6 +98,19 @@ void MigrateFromV1ToV2(PrefService* local_prefs) {
 #endif
 
 }  // namespace
+
+std::string_view GetMigratedNameIfNeeded(PrefService* local_prefs,
+                                         const std::string& name) {
+  if (local_prefs->GetInteger(prefs::kBraveVPNRegionListVersion) == 1) {
+    return name;
+  }
+
+  if (kV1ToV2Map.contains(name)) {
+    return kV1ToV2Map.at(name);
+  }
+
+  NOTREACHED_NORETURN();
+}
 
 bool IsBraveVPNWireguardEnabled(PrefService* local_state) {
   if (!IsBraveVPNFeatureEnabled()) {
