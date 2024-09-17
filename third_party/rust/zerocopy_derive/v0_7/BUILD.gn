@@ -4,5 +4,5 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 group("lib") {
-  public_deps = [ "//third_party/rust/byteorder/v1:lib" ]
+  public_deps = [ "//brave/third_party/rust/zerocopy-derive/v0_7:lib" ]
 }
