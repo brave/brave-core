@@ -53,7 +53,6 @@ struct UrpService {
   ) {
     guard var endPoint = URL(string: host) else {
       completion(nil, .endpointError)
-      DebugLogger.log(for: .urp, text: "Host not a url: \(host)")
       return
     }
 
@@ -76,19 +75,12 @@ struct UrpService {
           )
         }
 
-        DebugLogger.log(for: .urp, text: "Referral code lookup response: \(data)")
-
         let json = JSON(data)
         let referral = ReferralData(json: json)
         completion(referral, nil)
 
       case .failure(let error):
         Logger.module.error("Referral code lookup response: \(error.localizedDescription)")
-        DebugLogger.log(
-          for: .urp,
-          text: "Referral code lookup response: \(error.localizedDescription)"
-        )
-
         completion(nil, .endpointError)
       }
     }
@@ -113,7 +105,6 @@ struct UrpService {
         isRetryEnabled: isRetryEnabled,
         timeout: timeout
       )
-      DebugLogger.log(for: .urp, text: "Ad Attribution response: \(result)")
 
       if let resultData = result as? Data {
         let jsonResponse =
@@ -146,7 +137,6 @@ struct UrpService {
 
     do {
       let (result, _) = try await sessionManager.adGroupsReportApiRequest(endPoint: endPoint)
-      DebugLogger.log(for: .urp, text: "Ad Groups Report response: \(result)")
 
       if let resultData = result as? Data {
         let adGroupsReportData = try AdGroupReportData(data: resultData, keywordId: keywordId)
