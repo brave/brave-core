@@ -82,6 +82,7 @@ export const iconMap: { [key: string]: string } = {
   'privacy:open-in-browser': 'window', // open in browser
   'settings20:chrome-filled': 'hearts',
   'settings20:incognito-unfilled': 'product-private-window',
+  'settings20:incognito': 'product-private-window',
   'settings20:lightbulb': 'idea',
   'cr:delete': 'trash', // delete browsing data
   'cr:security': 'lock',
@@ -89,6 +90,10 @@ export const iconMap: { [key: string]: string } = {
   'cr:fullscreen': 'fullscreen-on', // automatic fullscreen
   'settings:picture-in-picture': 'picture-in-picture', // picture in picture
   'cr:file-download': 'download',
+  'cr:search': 'search',
+  'cr:print': 'print',
+  'settings:download': 'download',
+  'settings:performance': 'cpu-chip',
 }
 
 RegisterStyleOverride('iron-icon', html`
