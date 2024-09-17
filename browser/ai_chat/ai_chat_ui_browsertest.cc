@@ -342,20 +342,24 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, ExtractionPrintDialog) {
 #endif  // BUILDFLAG(IS_WIN) && defined(ADDRESS_SANITIZER) &&
         // defined(ARCH_CPU_64_BITS)
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, MAYBE_PrintPreviewFallback) {
-  NavigateURL(https_server_.GetURL("a.com", "/text_in_image.pdf"), false);
-
   auto run_loop = std::make_unique<base::RunLoop>();
+  // TODO(darkdh): Enable text_in_image.pdf when upstream fixes the hanging
+  // blank page issue. See https://github.com/brave/brave-browser/issues/41113
+#if 0
+  NavigateURL(https_server_.GetURL("a.com", "/text_in_image.pdf"),
+              false);
+
   chat_tab_helper_->GeneratePageContent(
       base::BindLambdaForTesting([&run_loop](std::string text, bool is_video,
                                              std::string invalidation_token) {
         EXPECT_FALSE(is_video);
-        EXPECT_EQ(
-            text,
-            "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
+        EXPECT_EQ(text,
+                  "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
         run_loop->Quit();
       }));
   run_loop->Run();
   run_loop = std::make_unique<base::RunLoop>();
+#endif
 
   NavigateURL(https_server_.GetURL("a.com", "/canvas.html"), false);
   chat_tab_helper_->GeneratePageContent(
