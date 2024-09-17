@@ -18,7 +18,6 @@
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
-#include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_resources.h"
