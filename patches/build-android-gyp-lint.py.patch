@@ -1,8 +1,16 @@
 diff --git a/build/android/gyp/lint.py b/build/android/gyp/lint.py
-index 517ebbb47112568cfad411dcfa6b994a88eb19b1..e266d1fb5be6df59416eefabe44679c284c9e6d4 100755
+index 517ebbb47112568cfad411dcfa6b994a88eb19b1..5ef4be4bec78ab1c89736e2b61b0a7a903d0d9e4 100755
 --- a/build/android/gyp/lint.py
 +++ b/build/android/gyp/lint.py
-@@ -527,5 +527,6 @@ def main():
+@@ -42,6 +42,7 @@ _DISABLED_ALWAYS = [
+     "VisibleForTests",  # Does not recognize "ForTesting" methods.
+     "UniqueConstants",  # Chromium enums allow aliases.
+     "UnusedAttribute",  # Chromium apks have various minSdkVersion values.
++    "NullSafeMutableLiveData",  # CI crashes with Can't connect to X11 window server using ':3' as the value of the DISPLAY variable.
+ ]
+ 
+ _RES_ZIP_DIR = 'RESZIPS'
+@@ -527,5 +528,6 @@ def main():
    build_utils.Touch(args.stamp)
  
  
