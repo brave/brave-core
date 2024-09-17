@@ -41,7 +41,8 @@ AIChatServiceFactory::AIChatServiceFactory()
     : BrowserStateKeyedServiceFactory(
           "AIChatService",
           BrowserStateDependencyManager::GetInstance()),
-      ai_chat_metrics_(std::make_unique<AIChatMetrics>(GetApplicationContext()->GetLocalState())) {}
+      ai_chat_metrics_(std::make_unique<AIChatMetrics>(
+          GetApplicationContext()->GetLocalState())) {}
 
 AIChatServiceFactory::~AIChatServiceFactory() {}
 
@@ -65,9 +66,9 @@ std::unique_ptr<KeyedService> AIChatServiceFactory::BuildServiceInstanceFor(
   ModelService* model_service =
       ModelServiceFactory::GetForBrowserState(browser_state);
   return std::make_unique<AIChatService>(
-      model_service,
-      std::move(credential_manager), user_prefs::UserPrefs::Get(context),
-      ai_chat_metrics_.get(), context->GetSharedURLLoaderFactory(),
+      model_service, std::move(credential_manager),
+      user_prefs::UserPrefs::Get(context), ai_chat_metrics_.get(),
+      context->GetSharedURLLoaderFactory(),
       version_info::GetChannelString(::GetChannel()));
 }
 

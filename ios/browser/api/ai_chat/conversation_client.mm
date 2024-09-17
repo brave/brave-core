@@ -63,4 +63,4 @@ void ConversationClient::OnAssociatedContentInfoChanged(
 
 void ConversationClient::OnFaviconImageDataChanged() {}
 
-}  // namespace ai_chat {
+}  // namespace ai_chat

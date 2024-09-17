@@ -69,8 +69,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
                                   FetchPageContentCallback callback) = 0;
 
     // Attempts to find a search summarizer key for the page.
-    virtual void GetSearchSummarizerKey(GetSearchSummarizerKeyCallback
-            callback) = 0;
+    virtual void GetSearchSummarizerKey(
+        GetSearchSummarizerKeyCallback callback) = 0;
   };
 
   AIChatTabHelper(const AIChatTabHelper&) = delete;

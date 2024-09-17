@@ -351,7 +351,9 @@ public struct AIChatAdvancedSettingsView: View {
             title: Text(Strings.AIChat.resetLeoDataErrorTitle),
             message: Text(Strings.AIChat.resetLeoDataErrorDescription),
             primaryButton: .destructive(Text(Strings.AIChat.resetLeoDataAlertButtonTitle)) {
-              model.clearAndResetData()
+              Task { @MainActor in
+                await model.clearAndResetData()
+              }
             },
             secondaryButton: .cancel()
           )

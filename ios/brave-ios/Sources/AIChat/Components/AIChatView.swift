@@ -96,7 +96,9 @@ public struct AIChatView: View {
           dismiss()
         },
         onNewChat: {
-          model.clearConversationHistory()
+          Task { @MainActor in
+            await model.clearConversationHistory()
+          }
         },
         menuContent: {
           menuView
@@ -378,7 +380,7 @@ public struct AIChatView: View {
       )
     }
     .task {
-      await model.getInitialData()
+      await model.getInitialState()
       await model.refreshPremiumStatus()
       await MarkdownParser.prepareMarkdownParser(isDarkTheme: true)
 
@@ -613,7 +615,9 @@ public struct AIChatView: View {
         .padding()
       case .contextLimitReached:
         AIChatContextLimitErrorView {
-          model.clearConversationHistory()
+          Task { @MainActor in
+            await model.clearConversationHistory()
+          }
         }
         .padding()
       case .none:

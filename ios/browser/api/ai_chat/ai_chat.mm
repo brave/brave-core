@@ -54,8 +54,10 @@
     browser_state_ = browserState;
     delegate_ = delegate;
 
-    model_service_ = ai_chat::ModelServiceFactory::GetForBrowserState(browser_state_);
-    service_ = ai_chat::AIChatServiceFactory::GetForBrowserState(browser_state_);
+    model_service_ =
+        ai_chat::ModelServiceFactory::GetForBrowserState(browser_state_);
+    service_ =
+        ai_chat::AIChatServiceFactory::GetForBrowserState(browser_state_);
 
     current_content_ = std::make_unique<ai_chat::AssociatedContentDriverIOS>(
         browser_state_->GetSharedURLLoaderFactory(), delegate);
@@ -67,12 +69,11 @@
 
 - (void)dealloc {
   web::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          ^(decltype(current_content_) current_content) {
-            current_content.reset();
-          },
-          std::move(current_content_)));
+      FROM_HERE, base::BindOnce(
+                     ^(decltype(current_content_) current_content) {
+                       current_content.reset();
+                     },
+                     std::move(current_content_)));
 }
 
 - (void)createNewConversation {
@@ -149,13 +150,14 @@
 - (void)clearErrorAndGetFailedMessage:
     (void (^)(AiChatConversationTurn*))completion {
   current_conversation_->ClearErrorAndGetFailedMessage(base::BindOnce(
-        [](void (^completion)(AiChatConversationTurn*),
-            ai_chat::mojom::ConversationTurnPtr turn) {
-              if (completion) {
-                completion([[AiChatConversationTurn alloc]
-                                initWithConversationTurnPtr:std::move(turn)]);
-              }
-            }, completion));
+      [](void (^completion)(AiChatConversationTurn*),
+         ai_chat::mojom::ConversationTurnPtr turn) {
+        if (completion) {
+          completion([[AiChatConversationTurn alloc]
+              initWithConversationTurnPtr:std::move(turn)]);
+        }
+      },
+      completion));
 }
 
 - (void)getState:(void (^)(AiChatConversationState*))completion {
@@ -164,7 +166,7 @@
          ai_chat::mojom::ConversationStatePtr state) {
         if (completion) {
           completion([[AiChatConversationState alloc]
-                          initWithConversationStatePtr:std::move(state)]);
+              initWithConversationStatePtr:std::move(state)]);
         }
       },
       completion));
@@ -261,13 +263,14 @@
          sendPageUrl:(bool)sendPageUrl
           completion:(void (^)(bool))completion {
   current_conversation_->SendFeedback(base::SysNSStringToUTF8(category),
-                        base::SysNSStringToUTF8(feedback),
-                        base::SysNSStringToUTF8(ratingId), sendPageUrl,
-                        base::BindOnce(completion));
+                                      base::SysNSStringToUTF8(feedback),
+                                      base::SysNSStringToUTF8(ratingId),
+                                      sendPageUrl, base::BindOnce(completion));
 }
 
 - (void)modifyConversation:(NSUInteger)turnId newText:(NSString*)newText {
-  current_conversation_->ModifyConversation(turnId, base::SysNSStringToUTF8(newText));
+  current_conversation_->ModifyConversation(turnId,
+                                            base::SysNSStringToUTF8(newText));
 }
 
 - (void)getCanShowPremiumPrompt:(void (^_Nullable)(bool))completion {

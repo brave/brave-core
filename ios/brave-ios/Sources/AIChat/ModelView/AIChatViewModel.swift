@@ -32,7 +32,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
   @Published var canShowPremiumPrompt: Bool = false
   @Published var premiumStatus: AiChat.PremiumStatus = .inactive
   @Published var suggestedQuestions: [String] = []
-  @Published var suggestionsStatus: [AiChat.SuggestionGenerationStatus] = .none
+  @Published var suggestionsStatus: AiChat.SuggestionGenerationStatus = .none
   @Published var conversationHistory: [AiChat.ConversationTurn] = []
   @Published var models: [AiChat.Model] = []
   @Published var currentModel: AiChat.Model!
@@ -137,9 +137,9 @@ public class AIChatViewModel: NSObject, ObservableObject {
     api.changeModel(modelKey)
   }
 
-  func clearConversationHistory() {
+  func clearConversationHistory() async {
     api.createNewConversation()
-    self.getInitialState()
+    await self.getInitialState()
   }
 
   func generateSuggestions() {
@@ -206,8 +206,8 @@ public class AIChatViewModel: NSObject, ObservableObject {
     }
   }
 
-  func clearAndResetData() {
-    self.clearConversationHistory()
+  func clearAndResetData() async {
+    await self.clearConversationHistory()
     api.isAgreementAccepted = false
   }
 
@@ -218,12 +218,12 @@ public class AIChatViewModel: NSObject, ObservableObject {
 
   @MainActor
   func getInitialState() async {
-    let state = await api.getState()
-    self.requestInProgress = state.requestInProgress
-    self.suggestedQuestions = state.suggestedQuestions;
-    self.suggestionsStatus = state.suggestionStatus;
-    self.siteInfo = state.associatedContentInfo;
-    self._shouldSendPageContents = state.shouldSendContent;
+    let state = await api.state()
+    self.requestInProgress = state.isRequestInProgress
+    self.suggestedQuestions = state.suggestedQuestions
+    self.suggestionsStatus = state.suggestionStatus
+    self.siteInfo = state.associatedContentInfo
+    self._shouldSendPageContents = state.shouldSendContent
     self.apiError = state.error
   }
 
@@ -349,7 +349,10 @@ extension AIChatViewModel: AIChatDelegate {
     self.models = modelList
   }
 
-  public func onPageHasContent(_ siteInfo: AiChat.SiteInfo, shouldSendPageContents: Bool) {
+  public func onPageHasContent(
+    _ siteInfo: AiChat.SiteInfo,
+    shouldSendContent shouldSendPageContents: Bool
+  ) {
     self.siteInfo = siteInfo
     self._shouldSendPageContents = shouldSendPageContents
   }
