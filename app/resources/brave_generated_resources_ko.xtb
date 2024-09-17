@@ -16,6 +16,7 @@
 <translation id="8294286161128352783">새 탭 페이지에서만</translation>
 <translation id="6406506848690869874">동기화</translation>
 <translation id="1544192797660353713">월렛</translation>
+<translation id="6129027151000961048">레오</translation>
 <translation id="8275068909952022340">더 보기…</translation>
 <translation id="1990886731975529483">Google Widevine 설치 및 실행</translation>
 <translation id="8926389886865778422">이 메시지 그만 보기</translation>
@@ -56,15 +57,20 @@
 <translation id="1434416574322382019">Tor와 함께하는 새로운 비공개 윈도우</translation>
 <translation id="4703780849509456860">Tor와 함께 비공개 윈도우에서 링크 열기</translation>
 <translation id="3488584642074079080">Brave 비공개 창의 링크를 Tor로 열기</translation>
+<translation id="8594912907680633924">분할 보기에서 링크 열기</translation>
 <translation id="6313675821927505581">Tor를 이용한 새로운 비공개 윈도우</translation>
 <translation id="2638041073279639246">Tor를 이용해 비공개 윈도우에서 링크 열기</translation>
 <translation id="3425600262621021599">Tor를 이용해 Brave 비공개 윈도우에서 링크 열기</translation>
+<translation id="3795436270513738622">분할 보기에서 링크 열기</translation>
 <translation id="2545072023356206691">2023년 12월 1일부터 Brave Dev 채널이 더 이상 브라우저 업데이트를 수신하지 않습니다. 기존 이용자는 Brave Nightly, Beta 또는 Release 버전으로 전환하기를 권장합니다.</translation>
 <translation id="474217410105706308">탭 음소거</translation>
 <translation id="2804710924397009224">Brave Rewards 아이콘 숨기기</translation>
 <translation id="5029193871181468990">Brave Rewards 아이콘 숨기기</translation>
 <translation id="2808103541110899519">Brave 월렛 아이콘 숨기기</translation>
 <translation id="7595540212376041331">Brave 월렛 아이콘 숨기기</translation>
+<translation id="3893997535859323951">레오 AI 아이콘 숨기기</translation>
+<translation id="6208515240323786457">레오 AI 아이콘 숨기기</translation>
+<translation id="2361906291514218784">레오 AI</translation>
 <translation id="4928988318462976765">웹 익스텐션 스토어</translation>
 <translation id="9181207987584064303">웹 익스텐션 스토어에서 보기</translation>
 <translation id="3161744659507801211">경고: Brave는 확장 기능이 여러분의 브라우징 기록을 기록하는 것을 막을 수 없습니다.</translation>
@@ -97,9 +103,6 @@
 <translation id="3462465068145800637">Brave는 사용자를 프로파일링하지 않습니다. 그리고 빅테크 기업으로부터 100% 독립적입니다.</translation>
 <translation id="42032117189492785">고유한 색인을 갖춘 AI 기반 검색.</translation>
 <translation id="8606416238399082160">프라이버시 완벽 보호, 100% 독립적, 뛰어난 AI 기능.</translation>
-<translation id="7706528608480893054">DDG는 모양만 다른 Bing일 뿐입니다. 진정한 프라이버시, 더 나은 결과, 독립된 색인을 이용할 때입니다. Brave 검색을 이용하세요.</translation>
-<translation id="3818133234428578803">덕덕 바이바이</translation>
-<translation id="14817360483752259">Brave는 사용자 개인, 검색어, 클릭 내역을 추적하지 않습니다. 그리고 (DDG처럼) Bing을 모양만 바꾼 게 아닙니다.</translation>
 <translation id="4381193110021038941">더 나은 검색 결과</translation>
 <translation id="3846545273704969734">Brave 검색은 독립적인 기관에 의해 Bing(이나 DuckDuckGo와 같은 Bing 변형)에 비해 더 나은 결과를 제공한다고 검증되었습니다.</translation>
 <translation id="2841164160723712537">검색 결과 개선</translation>
@@ -288,8 +291,9 @@
 <translation id="2818704116581303039">재생목록 설정 열기</translation>
 <translation id="6790428901817661496">재생</translation>
 <translation id="1178581264944972037">중지</translation>
-<translation id="4477350412780666475">다음 트랙</translation>
-<translation id="3962859241508114581">이전 트랙</translation>
+<translation id="4046123991198612571">다음 트랙</translation>
+<translation id="2874939134665556319">이전 트랙</translation>
+<translation id="3040310857793999281">음소거 전환</translation>
 <translation id="7544853251252956727">셔플</translation>
 <translation id="4330722796577425585">되감기</translation>
 <translation id="7481312909269577407">앞으로</translation>
@@ -299,7 +303,15 @@
 <translation id="6453210454707928697">항목 재생 실패</translation>
 <translation id="8741852840789907931">[<ph name="ITEM_NAME"/>]이(가) 만료되었을 수 있습니다. 복구하시겠습니까?</translation>
 <translation id="6155018868740116868">복구</translation>
-<translation id="1727684853006449697">Brave 플레이어</translation>
+<translation id="2521960050170773751">페이지에서 미디어 추가</translation>
+<translation id="2301087142998134097"><ph name="SITE"/>이(가) 다음을 열려고 함</translation>
+<translation id="7128982309566342232"><ph name="SITE"/>상에 임베드된 페이지가 다음을 열려고 함</translation>
+<translation id="1175012181261953767">이 페이지가 다음을 열려고 함</translation>
+<translation id="7459546222322124545">이 페이지상에 임베드된 페이지가 다음을 열려고 함</translation>
+<translation id="5836261838911560851"><ph name="SITE"/>이(가) 다음을 저장하려고 함</translation>
+<translation id="5936788906460687941"><ph name="SITE"/>상에 임베드된 페이지가 다음을 저장하려고 함</translation>
+<translation id="7700010743463174379">이 페이지가 다음을 저장하려고 함</translation>
+<translation id="6774238875569752630">이 페이지상에 임베드된 페이지가 다음을 저장하려고 함</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
 <translation id="7179921470347911571">지금 다시 실행</translation>
 <translation id="1426410128494586442">예</translation>
@@ -324,6 +336,7 @@
 <translation id="5860254591544742609">제목 바 표시</translation>
 <translation id="5371926069408837914">접혀 있을 때 마우스 커서를 올리면 세로 탭 패널 펼치기</translation>
 <translation id="3367129510799209147">탭 호버 모드</translation>
+<translation id="8527099657928614787">페이지별로 독립적으로 세로 탭 펼치기</translation>
 <translation id="916373084491701212">스크롤바 표시</translation>
 <translation id="515949045075831661">오른쪽에 표시</translation>
 <translation id="3725395376319291415">왼쪽에 표시</translation>
@@ -340,6 +353,7 @@
 <translation id="4144468798716165316">빠른 명령</translation>
 <translation id="7310387888625228830">레오 AI 어시스턴트</translation>
 <translation id="5222974844674487962">Brave News 버튼 표시</translation>
+<translation id="2085436423511121572">레오 AI 버튼 표시</translation>
 <translation id="383007806262310953">북마크바 표시</translation>
 <translation id="4054323497808446566">모든 페이지에서 북마크 바 표시</translation>
 <translation id="8693858092251192712">새 탭 페이지를 제외한 모든 페이지에서 북마크 바 숨김</translation>
@@ -440,6 +454,7 @@
 <translation id="4891600875049212418">민감한 사이트 방문 시 오프더레코드 활성화</translation>
 <translation id="1968895725257436430">데이터 수집</translation>
 <translation id="4846154056248462491">나갈 때</translation>
+<translation id="216468847346280584">Brave Ads 데이터 지우기...</translation>
 <translation id="2808630562319398131">Brave 리워드 데이터 재설정...</translation>
 <translation id="6438096877646138757">닫으면 쿠키가 삭제되는 사이트</translation>
 <translation id="2988792685798128092">사이트를 닫으면 삭제</translation>
@@ -553,6 +568,8 @@
 <translation id="4094590686212463338">이 동기화 체인에 참여할 수 없습니다. 동기화 체인이 삭제되었습니다.</translation>
 <translation id="4908081302669157000">전화번호, 이메일, 주소</translation>
 <translation id="294985549514492876">웹 앱(PWA)</translation>
+<translation id="924029461438529367">추천 검색어 표시</translation>
+<translation id="3128251601544028053">주소창이나 검색창에 입력하면 입력하신 내용을 Brave가 기본 검색 엔진으로 보내 추천 결과를 개선합니다. 비공개 창에서는 사용이 불가합니다.</translation>
 <translation id="6285118765755298263">다른 검색 엔진 색인</translation>
 <translation id="919715748352669592">OpenSearch 사양을 준수하는 웹사이트를 자동으로 색인합니다.</translation>
 <translation id="842628013524824194">일반 창 - 주소 표시줄에 검색 엔진 사용</translation>
@@ -668,7 +685,6 @@
 <translation id="3095201688102519917">탭 여러 개가 있는 창을 닫기 전에 경고</translation>
 <translation id="7120553802660696133">마지막 탭을 닫으면 창 닫기</translation>
 <translation id="3394171693948989253">전체화면 알림 표시, 나가려면 Esc 누르기</translation>
-<translation id="6129027151000961048">레오</translation>
 <translation id="2751872555001636931">사이드바에 레오 아이콘 표시</translation>
 <translation id="8055509865174199683">웹사이트의 컨텍스트 메뉴에 레오 표시</translation>
 <translation id="1529674267267221673">웹사이트에서 우클릭하면 나오는 컨텍스트 메뉴에 레오가 표시됩니다. 현재 웹페이지의 컨텍스트를 레오로 보낼 수 있습니다.</translation>

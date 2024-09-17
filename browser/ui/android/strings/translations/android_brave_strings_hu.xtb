@@ -110,6 +110,7 @@
 <translation id="3377025655491224618">Privát lap</translation>
 <translation id="7304425663107214334">A böngésző javaslatainak megjelenítése</translation>
 <translation id="8982438328166986164">A könyvjelzői és böngészési előzményei alapján ajánlott weboldalak megjelenítése.</translation>
+<translation id="924029461438529367">Keresési javaslatok megjelenítése</translation>
 <translation id="1571106259128580884">A legnépszerűbb webhelyekre vonatkozó javaslatok megjelenítése</translation>
 <translation id="9148058034647219655">Kilépés</translation>
 <translation id="8047754398610073499">Cookie-khoz való hozzájárulással kapcsolatos értesítések letiltása</translation>
@@ -262,6 +263,8 @@
 <translation id="6511854390690723657">Ez az első Brave hirdetése. Koppintson, ha szeretne többet megtudni.</translation>
 <translation id="2070991379950719711">Használja a Brave Rewardsot</translation>
 <translation id="48520986898237073">Tovább a pénztárcához</translation>
+<translation id="6213254277250932867">12 szavas helyreállítási kifejezésem van</translation>
+<translation id="4225265925807365011">24 szavas helyreállítási kifejezésem van</translation>
 <translation id="3570367516044491911">Beállítás alapértelmezett böngészőként</translation>
 <translation id="6800338374677644736">Beállítás alapértelmezett böngészőként</translation>
 <translation id="19715420010996093">Válaszd ki a Brave böngészőt és kattints a 'Mindig'-re</translation>
@@ -361,6 +364,8 @@
 <translation id="6417420737057016607">Brave hirdetések</translation>
 <translation id="5611966874859284786">Mutasson értesítéseket, amikor a Brave nincs használatban</translation>
 <translation id="6606319453795180219">Ezzel törli a Brave-jutalmait, és alaphelyzetbe állítja a Brave-jutalmakkal kapcsolatos összes adatát.</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>A Brave-jutalmak adatainak visszaállítása…<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>A Brave-jutalmak adatainak törlése…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Könyvjelző hozzáadása</translation>
 <translation id="340492034650766959">Könyvjelző törlése</translation>
 <translation id="2149973817440762519">Könyvjelző szerkesztése</translation>
@@ -464,7 +469,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="5582686930349810484">Ujjlenyomat-felismerés letiltva (standard)</translation>
 <translation id="769702552748212954">Minden ujjlenyomat-beállítás engedélyezése</translation>
 <translation id="876424292214881779">Blokkoltuk a hirdetéseket és más bizarr dolgokat</translation>
-<translation id="6930134873084561197">A weboldalak gyakran olyan sütiket és parancsfájlokat tartalmaznak, amelyek azonosítani akarnak téged vagy a készülékedet. Megpróbálják kideríteni, hogy ki vagy, és követik webes tevékenységedet minden oldalon\n\nA Brave letiltja ezeket a dolgokat, így követés nélkül böngészhetsz.</translation>
+<translation id="6849027612978668678">A webhelyek gyakran tartalmaznak cookie-kat és szkripteket, amelyek megpróbálják azonosítani Önt és eszközét. Ki akarják deríteni, hogy Ön kicsoda, és követni akarják Önt az interneten – minden webhelyen nyomon követik, mit csinál. A Brave letiltja ezeket az eszközöket, így Ön anélkül böngészhet, hogy követnék.</translation>
 <translation id="8553998445606452168">Bővebben a Brave Shieldsről</translation>
 <translation id="8912304686498704084">FEL</translation>
 <translation id="4963218453264888510">LE</translation>
@@ -559,6 +564,8 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="7889432931837317731">Automatikus megnyitás, ha lehetséges</translation>
 <translation id="1029304566263314007">A letöltés előrehaladásáról szóló értesítések megjelenítése</translation>
 <translation id="2910433761530295035">Kérdezze meg, hogy hova mentse a fájlokat (SD-kártya érzékelése esetén)</translation>
+<translation id="2977501775944575564">Párhuzamos letöltés</translation>
+<translation id="6224180438946945617">A párhuzamos letöltés engedélyezése a gyorsabb letöltés érdekében</translation>
 <translation id="8967385052772844086">Teljes adatvédelmi jelentés megtekintése</translation>
 <translation id="6864343534748973390">Legnépszerűbb</translation>
 <translation id="4608192160278975831">Privát és követő nélküli</translation>
@@ -588,44 +595,38 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="7909462264772842773">Kezelje kriptóit és NFT-it. A Brave pénztárca támogatja az Ethereumot, EVM láncok, Solana, Filecoin és még több használatát.</translation>
 <translation id="165255193061631296">Új pénztárcára van szüksége?</translation>
 <translation id="3485737865439729577">Kezdje el a Brave pénztárca használatát perceken belül</translation>
-<translation id="2759836790106646094">Készíts biztonsági mentést pénztárcádról most!</translation>
-<translation id="1078873179929044999">A következő lépésben egy 12 szavas helyreállítási kifejezést fog látni, amelyet arra használhat, hogy helyreállítsa az elsődleges kriptoszámláit. Mentse el biztonságos helyre. A helyreállítási kifejezés az egyetlen módja annak, hogy újra hozzáférjen a fiókjaihoz, amennyiben elfelejti a jelszavát, elveszti vagy ellopják a készülékét, vagy tárcát akar váltani.</translation>
+<translation id="2540568096903252632">A folytatáshoz adjon meg egy jelszót</translation>
+<translation id="3356580495013324916">Adja meg a Brave pénztárca jelszavát, hogy mentést készíthessen a pénztárcáról.</translation>
 <translation id="2359808026110333948">Folytatás</translation>
 <translation id="5488357322146334497">Üzenet</translation>
-<translation id="1904000155026201268">Megértettem, hogy ha elvesztem a helyreállítási kifejezést, akkor nem fogok tudni hozzáférni a kriptopénztárcámhoz.</translation>
 <translation id="5333225216561354793">Szükségünk van rá, hogy elfogadja a lenti elemeket</translation>
 <translation id="6937275455070754004">Válassza ki, hogy melyik blokkláncot szeretné használni a pénztárcájában.</translation>
 <translation id="1645800479814134195">Tudomásul veszem, hogy ez egy önálló letétkezelésű pénztárca, és egyedül én vagyok felelős a kapcsolódó pénzösszegekért, eszközökért vagy számlákért, valamint a pénztárcám biztonsága, védelme és biztonsági mentése érdekében szükséges intézkedések megtételéért. Tudomásul veszem, hogy a Brave nem férhet hozzá a pénztárcámhoz, és nem fordíthatja vissza a tranzakciókat a nevemben, továbbá, hogy a helyreállítási kifejezésem az EGYETLEN módja annak, hogy visszaszerezzem a hozzáférést elvesztett jelszó, ellopott eszköz vagy hasonló körülmény esetén.</translation>
 <translation id="4565891212173086999">Elolvastam és elfogadom a <ph name="CLICK_START"/>Használati feltételeket<ph name="CLICK_END"/>.</translation>
-<translation id="3933122286596948824">Helyreállítási kifejezés</translation>
-<translation id="5077747669435508720">Írja fel vagy másolja ki ezeket a szavakat a lent ábrázolt megfelelő sorrendben, és mentse el őket biztonságos helyre. A helyreállítási kifejezés az egyetlen módja annak, hogy újra hozzáférjen a számláihoz, amennyiben elfelejti a jelszavát, elveszti vagy ellopják a készülékét, vagy tárcát akar váltani.</translation>
-<translation id="2708402071160162126">FIGYELMEZTETÉS: Senkivel ne ossza meg a helyreállítási kifejezését! Ennek a kifejezésnek a birtokában bárki örökre elveheti az eszközeit.</translation>
-<translation id="111912712268284159">Elmentettem a kifejezést biztonságos helyre.</translation>
-<translation id="6896758677409633944">Másolás</translation>
+<translation id="3259102562570606417">Helyreállítási kifejezés mentése</translation>
+<translation id="4339981001593889376">A helyreállítási kifejezés a kulcs a pénztárcájához való hozzáféréshez, ha elfelejti jelszavát vagy elveszíti eszközét.</translation>
+<translation id="426648489149930289">Tárolja biztonságos, mások számára nem hozzáférhető helyen, és ne ossza meg senkivel.</translation>
 <translation id="3726490322412361740">Add meg a jelszót</translation>
-<translation id="3038243139480464605">Jelszó visszaigazolása</translation>
-<translation id="7396672979287122068">A visszaigazolt jelszó nem egyezik</translation>
 <translation id="1566412704591731844">Pénztárcája létrehozása...</translation>
 <translation id="7779823116893018906">Ez beletelhet néhány másodpercbe...</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NUMBER"/>. <ph name="ACCOUNT_NAME"/> fiók</translation>
 <translation id="7665369617277396874">Fiók hozzáadása</translation>
 <translation id="3448492834076427715">Fiók frissítése</translation>
-<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="5532363218245261099"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="1537175937716697987">Saját helyreállítási kifejezés megtekintése</translation>
+<translation id="5303015959766064022">Később végzem el a biztonsági mentést</translation>
+<translation id="7345730059518887993">Ellenőrizzük</translation>
+<translation id="7640406249038879146">Adja meg a helyreállítása kifejezése <ph name="WORD_POSITION"/>. szavát.</translation>
+<translation id="2598171223363459366">Ezt a lépést most kihagyhatja, de a fiók biztonsága érdekében továbbra is biztonsági másolatot kell készítenie a helyreállítási kifejezésről.</translation>
 <translation id="8100001366858145406">Engedélyezed az ujjlenyomatos feloldást?</translation>
 <translation id="5493402808936397665">Engedélyezd a biometrikát a pénztárca zárolásának gyors feloldásához anélkül, hogy beírnád a jelszót.</translation>
 <translation id="8030647312184163932">Ujjlenyomatos feloldás</translation>
 <translation id="4090490645603511157">A biometrika segítségével gyorsan feloldhatja pénztárcáját anélkül, hogy beírná a jelszót.</translation>
 <translation id="1544192797660353713">Pénztárca</translation>
-<translation id="6901810042765869341">Add meg a helyreállítási kifejezést Brave Wallet kriptopénztárcád visszaállításához.</translation>
-<translation id="9120654436199628567">Kriptoszámla visszaállítása</translation>
+<translation id="2321396552035646646">A teljes helyreállítási kifejezést bármely mezőbe beillesztheti.</translation>
+<translation id="3961126209136843111">Meglévő pénztárca importálása</translation>
 <translation id="4811736040444856406">Helyreállítási kifejezés megjelenítése</translation>
-<translation id="283071225285270357">Add meg a helyreállítási kifejezést</translation>
-<translation id="3943857333388298514">Beillesztés</translation>
-<translation id="3331452756822160641">Új jelszó</translation>
 <translation id="4359319875297001084">Importál régebbi Brave kriptotárcákból?</translation>
-<translation id="2339124864228588937">Igazold vissza a helyreállítási kifejezést</translation>
-<translation id="3747079125031086337">Válassza ki a helyreállítási kifejezés szavait a megfelelő sorrendben.</translation>
-<translation id="6518133107902771759">Ellenőrzés</translation>
 <translation id="3157931365184549694">Visszaállítás</translation>
 <translation id="5844138175312846408">Már rendelkezik pénztárcával?</translation>
 <translation id="2502258949541727762">Mielőtt belevágunk</translation>
@@ -634,6 +635,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="2523174693142405417">Hálózatok keresése</translation>
 <translation id="1164748583090434571">Testnets megmutatása</translation>
 <translation id="935220650946301698">Folytatás a következő hálózattal: <ph name="NUMBER"/></translation>
+<translation id="4052668782430384783"><ph name="NUMBER"/>. szó</translation>
 <translation id="8248460961680233459">Jelszó létrehozása</translation>
 <translation id="2789310860394340571">Ezzel a jelszóval férhet hozzá a pénztárcájához.</translation>
 <translation id="2136372518715274136">Adja meg az új jelszót</translation>
@@ -651,9 +653,8 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="5619264711680220002">Biometrikus feloldás</translation>
 <translation id="9195657745688986798">Pénztárca zárolásának feloldása</translation>
 <translation id="5168349973342709369">A tárca feloldásához adja meg a jelszavát</translation>
-<translation id="3043677904160378840">A jelszónak legalább 8 karakterből kell állnia.</translation>
 <translation id="1144810021918451336">Nem védi meg a veszélyes webhelyek, letöltések és bővítmények ellen.</translation>
-<translation id="5760476995887363522">A kifejezések nem egyeznek. Próbálja meg újra.</translation>
+<translation id="9085712756417277119">A helyreállítási kifejezés nem egyezik</translation>
 <translation id="2360588547830602174">A fiók helyreállítása sikertelen volt. Próbáld meg újra.</translation>
 <translation id="1987317783729300807">Fiókok</translation>
 <translation id="6284218950354553099">Napi használatról szóló jelzések automatikus küldése a Brave-be</translation>
@@ -688,16 +689,21 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="3510283489391432976">Válassza ki a földrajzi helyzetét/országát</translation>
 <translation id="7695158478627528928">A Brave sosem naplózza a tevékenységeit</translation>
 <translation id="4575683170451975058">Védjen meg 5 eszközt 1 előfizetéssel</translation>
+<translation id="755045397420611731">Fejlettebb online adatvédelem és biztonság</translation>
+<translation id="4520128772974831415">Az IP-cím elrejtése és a tartózkodási hely módosítása</translation>
+<translation id="2044418816479192294">Világszerte több száz szerver</translation>
+<translation id="7410504850864021600">Villámgyors kapcsolati sebesség</translation>
+<translation id="2422309687188612485">Több mint 10 eszköz védelme egyetlen csomagban</translation>
 <translation id="4882693590083943563">Valamennyi csomag tartalmaz <ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">7 napos ingyenes próbaidőszakot!</translation>
 <translation id="1532536259167115948">Havi csomag <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Éves csomag <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Havonta megújul</translation>
-<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / hó.</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/>/hó</translation>
 <translation id="1163809943099641131">Egy év</translation>
-<translation id="172859718096975160">Újítsa meg évente <ph name="DISCOUNT_TEXT_START"/> <ph name="PERCENTAGE_AMOUNT"/>%% megtakarítás<ph name="DISCOUNT_TEXT_END"/></translation>
-<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / év.</translation>
-<translation id="5125233570742276182">Az előfizetési díjak kiszabása a Google-fiókján keresztül történik. Az esetleges ingyenes próbaidőszak fel nem használt hányada elveszik az előfizetés megvásárlásakor.\n\nElőfizetése automatikusan megújul, hacsak nem mondja le legalább 24 órával az aktuális időszak vége előtt.\n\nElőfizetéseit a Beállításokban kezelheti.\nA Brave használatával Ön elfogadja a használati feltételeket és az adatvédelmi szabályzatot.</translation>
+<translation id="727385358513272220">Újítsa meg évente (<ph name="DISCOUNT_TEXT_START"/> <ph name="PERCENTAGE_AMOUNT"/>%% megtakarítás<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /év</translation>
+<translation id="2786538705804257030">Az előfizetési díjak kiszabása a Google-fiókján keresztül történik. Az esetleges ingyenes próbaidőszak fel nem használt hányada elveszik az előfizetés megvásárlásakor.\n\nElőfizetése automatikusan megújul, hacsak nem mondja le legalább 24 órával az aktuális időszak vége előtt.\n\nElőfizetéseit a Beállításokban kezelheti.\nA Brave használatával Ön elfogadja a használati feltételeket és az adatvédelmi szabályzatot.</translation>
 <translation id="5035172357624830412">Már vásárolt a brave.com-on?</translation>
 <translation id="713136183174551885">Frissítse hitelesítő adatait</translation>
 <translation id="6053992191006521518">Próbálja ki INGYENESEN</translation>
@@ -932,7 +938,6 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="7002577172732106572">Osztott alagút mód (Split Tunneling)</translation>
 <translation id="8181161042860463420">A kapcsolódó tokenszámla még nem létezik. Ennek létrehozására és fenntartására egy kisebb SOL-összeg lesz felhasználva. <ph name="CLICK_START"/>További információ:<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">VPN-profil frissítése...</translation>
-<translation id="7457027586454688423">Adja meg Brave-pénztárcája jelszavát</translation>
 <translation id="4784306439879850873">Ne feledje, hogy a Brave nem tudja megerősíteni, mi történik, ha aláír. Aláírással szinte bármelyik számláján lévő műveletre feljogosítja a kérvényező oldalt, vagy arra, hogy az Ön nevében járjon el, beleértve (de nem kizárólag) a számlája és kriptoeszközei feletti teljes rendelkezést. Csak akkor írjon alá, ha biztosan ezt szeretné, és megbízik a kérvényező oldalban.</translation>
 <translation id="3474375934783434676">Csak a saját felelősségére írjon alá</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/>/<ph name="SIZE"/></translation>
@@ -942,6 +947,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="2629767022373384291">Szeretne biometrikus hitelesítést használni a Brave pénztárcája feloldásához?</translation>
 <translation id="4782919977106118997">Feloldás ujjlenyomattal</translation>
 <translation id="2054995875643283428">Most kihagyom</translation>
+<translation id="2610561535971892504">Kattintson a másoláshoz</translation>
 <translation id="2522605225061484799">Ugrás a saját portfólióra</translation>
 <translation id="1148624853678088576">Minden készen áll!</translation>
 <translation id="4131445988101719379">Brave-pénztárcája készen áll a használatra</translation>
@@ -1024,7 +1030,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="6610899852831463073">Nem engedélyezhető a biztonságos böngészés</translation>
 <translation id="7954263306665462056">A biztonságos böngészés le van tiltva az Ön eszközén. Az engedélyezéshez győződjön meg arról, hogy a Google Play-szolgáltatások telepítve vannak és naprakészek-e!</translation>
 <translation id="6605147707233193230">A bekapcsolással segíthet támogatni a tartalomkészítőket</translation>
-<translation id="1609556006143307897">Ön segít támogatni a tartalomkészítőket</translation>
+<translation id="5899814466108868020">Ön segít támogatni a Brave-et és a BAT-közösséget</translation>
 <translation id="6067959437127691361">A Brave-jutalmak használata segít Önnek támogatni a tartalomkészítőket, és lehetővé teszi, hogy BAT-t kereshessen.</translation>
 <translation id="3264975266761862670">Készen áll pénzt keresni?</translation>
 <translation id="265337947574975838">Csatlakoztasson vagy hozzon létre egy partnerünk által kezelt fiókot.</translation>
@@ -1123,6 +1129,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="1173894706177603556">Átnevezés</translation>
 <translation id="3596306474342941843">Lejátszási lista törlése</translation>
 <translation id="7765158879357617694">Áthelyezés</translation>
+<translation id="6896758677409633944">Másolás</translation>
 <translation id="3803384303807438047">Elem offline adatainak törlése</translation>
 <translation id="4195643157523330669">Megnyitás új lapon</translation>
 <translation id="4243710787042215766">Megnyitás privát fülben</translation>

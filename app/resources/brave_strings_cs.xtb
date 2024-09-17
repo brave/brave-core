@@ -55,6 +55,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="9048754176089806686">Prohlížeč Brave toto stahování zablokoval, protože tento typ souboru se běžně nestahuje a může být nebezpečný</translation>
 <translation id="1953553007165777902">Stahování… Počet zbývajících minut: <ph name="MINUTE"/></translation>
 <translation id="1775322105159056176">Brave nemůže určit ani nastavit výchozí prohlížeč</translation>
+<translation id="4372901050442507812">Proč Brave některé soubory blokuje, otevře se na nové kartě</translation>
 <translation id="9220324636239049437">Z tohoto zařízení bude smazána 1 položka. Budete-li chtít své údaje později načíst, přihlaste se do prohlížeče Brave jako <ph name="USER_EMAIL"/>.</translation>
 <translation id="2018879682492276940">Instalace se nezdařila. Zkuste to znovu.</translation>
 <translation id="831418749472885028">Chcete-li zkontrolovat, zda jsou ostatní hesla v bezpečí před porušením zabezpečení údajů a ostatními bezpečnostními hrozbami, <ph name="BEGIN_LINK"/>přihlaste se do prohlížeče Brave<ph name="END_LINK"/>.</translation>
@@ -115,6 +116,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="2915996080311180594">Restartovat později</translation>
 <translation id="2928420929544864228">Instalace byla dokončena.</translation>
 <translation id="2945997411976714835">Chyba instalace: Instalační proces se nepodařilo spustit.</translation>
+<translation id="3688936822855019158">Brave spravuje vaše organizace</translation>
 <translation id="8208853227947884571">Brave je aktuální</translation>
 <translation id="5122472867956731189">Pokud se web pokusí odcizit vám heslo nebo když stáhnete škodlivý soubor, může Brave Bezpečnému prohlížení odeslat také adresy URL, včetně částí obsahu stránky</translation>
 <translation id="500707801149472925">Brave může tyto karty deaktivovat, aby při procházení vše lépe fungovalo a uvolnily se zdroje.</translation>
@@ -209,6 +211,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="8148611988012584308">Přizpůsobit a ovládat Brave</translation>
 <translation id="4427306783828095590">Vylepšená ochrana vás lépe ochrání před phishingem a malwarem</translation>
 <translation id="4434353761996769206">Chyba instalačního programu: <ph name="INSTALLER_ERROR"/></translation>
+<translation id="175926951572479413">Brave spravuje organizace <ph name="MANAGER"/></translation>
 <translation id="6786534271003695094">O Brave for Testing</translation>
 <translation id="4501471624619070934">Instalace se nezdařila, protože přístup je v této zemi omezen.</translation>
 <translation id="8594994021633965927">Pro toto rozšíření nebyly publikovány postupy v oblasti ochrany soukromí, například informace o tom, jak shromažďuje a používá data. Brave vám doporučuje odstranit ho.</translation>
@@ -410,6 +413,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="38294420683216447">Pomocí profilů prohlížeče Brave můžete všechny své údaje v prohlížeči Brave uchovávat odděleně. Budete tak moci snáze oddělit zábavu od práce.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="2034072705932785495">Brave pro tento web potřebuje oprávnění k přístupu k fotoaparátu</translation>
+<translation id="7129342855140808694">Pokud chcete používat mikrofon, udělte prohlížeči Brave přístup v <ph name="BEGIN_LINK"/>nastavení systému<ph name="END_LINK"/></translation>
 <translation id="5296583608321648908">Pokud chcete v budoucnu dostávat aktualizace prohlížeče Brave, budete potřebovat systém Windows 10 nebo novější. Tento počítač používá Windows 7.</translation>
 <translation id="3962395975456095331">Restartovat Brave?</translation>
 <translation id="2619516027171717873">Nelze nainstalovat verzi prohlížeče Brave, která je právě spuštěná. Ukončete prohlížeč Brave a zkuste to znovu.</translation>
@@ -436,6 +440,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="7872446069773932638">Stahování… Zbývající čas: <ph name="SECONDS"/> s</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Jak můžete své údaje spravovat:<ph name="END_BOLD"/> Abychom chránili vaše soukromí, vaše zájmy starší než 4 měsíce automaticky mažeme. Jak budete pracovat s internetem, zájmy se mohou na seznamu znovu objevit. Pokud se zájmy nemají zohledňovat, můžete je z Chromia odstranit.</translation>
 <translation id="5687542525349822727">Nastavte si Brave jako výchozí prohlížeč</translation>
+<translation id="6396151137840491551">Pokud je to možné, Brave nezabezpečená připojení automaticky upgraduje na HTTPS</translation>
 <translation id="2925193881330501265">K prohlížeči Brave jste byli přihlášeni s účtem <ph name="USER_EMAIL_ADDRESS"/>. Přihlaste se prosím znovu pomocí stejného účtu.</translation>
 <translation id="6915252145142862992">Toto je druhá instalace prohlížeče Brave. Tuto instalaci nelze nastavit jako výchozí prohlížeč.</translation>
 <translation id="7685904775439037072">Až bude mít Brave přístup, budou vás weby moci požádat o přístup.</translation>
@@ -447,6 +452,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="813913629614996137">Probíhá inicializace...</translation>
 <translation id="7550680632761245819">Zapnout další ochranu v modulu prohlížeče Brave pro JavaScript a WebAssembly</translation>
 <translation id="9067428552314418522">Tento soubor je nebezpečný, proto jej prohlížeč Brave zablokoval.</translation>
+<translation id="8377926237617998195">Pokud chcete používat kameru, udělte prohlížeči Brave přístup v <ph name="BEGIN_LINK"/>nastavení systému<ph name="END_LINK"/></translation>
 <translation id="1755067029031059271">Toto rozšíření nemusí být bezpečné. Brave nedokáže ověřit, odkud pochází. Odstraňte ho z prohlížeče Brave, aby již nemohlo číst a měnit vaše data (včetně osobních údajů) na webech, které navštěvujete.</translation>
 <translation id="8207657266087451193">Pokud obrázek nemá užitečný popis, Brave se vám jej pokusí poskytnout. Za účelem vytváření popisů jsou obrázky odesílány do Googlu. Tuto funkci můžete kdykoliv vypnout v nastavení.</translation>
 <translation id="7792526144795244436">Přihlásit se do prohlížeče Brave v novém profilu?</translation>
@@ -470,6 +476,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="8550334526674375523">Tento pracovní profil je zcela oddělen od vašeho osobního profilu.</translation>
 <translation id="8555465886620020932">Chyba služby: <ph name="SERVICE_ERROR"/>.</translation>
 <translation id="227028348235968071">Když se přihlásíte pomocí účtu Brave, může vám Brave kontrolovat hesla</translation>
+<translation id="839677568225616901">Brave spravuje několik organizací</translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> Autoři prohlížeče Brave. Všechna práva vyhrazena.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Jak tyto údaje využíváme:<ph name="END_BOLD"/> Weby mohou v prohlížeči Brave ukládat informace o vašich zájmech. Např. když navštívíte web, kde se prodávají boty na maraton, web může definovat váš zájem jako běhání maratonů. Když později navštívíte jiný web s registrací na závod, může se vám na něm na základě vašich zájmů zobrazit reklama na boty na běhání.</translation>
 <translation id="3052349005266761501">Spouštění prohlížeče Brave...</translation>
@@ -514,6 +521,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="983803489796659991">Instalace se nezdařila, protože server s aktualizací nemá hashovací data pro aplikaci.</translation>
 <translation id="8435446479956716379">Použít Brave bez účtu</translation>
 <translation id="8992261409816268381">Autoři prohlížeče Brave</translation>
+<translation id="3146636448190445245">Pokud chcete používat polohu, udělte prohlížeči Brave přístup v <ph name="BEGIN_LINK"/>nastavení systému<ph name="END_LINK"/></translation>
 <translation id="137466361146087520">Google Chrome Beta</translation>
 <translation id="7535429826459677826">Google Chrome Dev</translation>
 <translation id="5359574361379286250">Pokud chcete tento účet použít pouze jednorázově, můžete použít <ph name="GUEST_LINK_BEGIN"/>Režim pro hosty<ph name="GUEST_LINK_END"/> v prohlížeči Brave. Pokud chcete vytvořit účet pro někoho jiného, <ph name="LINK_BEGIN"/>vytvořte nový profil<ph name="LINK_END"/> na vašem zařízení <ph name="DEVICE_TYPE"/>.

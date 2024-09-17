@@ -55,6 +55,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="9048754176089806686">Brave a bloqué ce téléchargement, car le type de fichier n'est pas souvent téléchargé et pourrait être dangereux</translation>
 <translation id="1953553007165777902">Téléchargement en cours… <ph name="MINUTE"/> minute(s) restante(s)</translation>
 <translation id="1775322105159056176">Brave ne parvient pas à déterminer quel est le navigateur par défaut ou à le définir</translation>
+<translation id="4372901050442507812">Découvrir pourquoi Brave bloque certains fichiers, s'ouvre dans un nouvel onglet</translation>
 <translation id="9220324636239049437">Cette action entraînera la suppression d'un élément de cet appareil. Pour récupérer vos données plus tard, connectez-vous à Brave en tant que <ph name="USER_EMAIL"/>.</translation>
 <translation id="2018879682492276940">Échec de l'installation. Veuillez réessayer.</translation>
 <translation id="831418749472885028">Pour vérifier si vos autres mots de passe sont en sécurité contre les violations de données et d'autres risques de sécurité, <ph name="BEGIN_LINK"/>connectez-vous à Brave<ph name="END_LINK"/>.</translation>
@@ -115,6 +116,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="2915996080311180594">Redémarrer plus tard</translation>
 <translation id="2928420929544864228">Installation terminée.</translation>
 <translation id="2945997411976714835">Erreur d'installation : le processus d'installation n'a pas pu démarrer.</translation>
+<translation id="3688936822855019158">Votre organisation gère Brave</translation>
 <translation id="8208853227947884571">Brave est à jour</translation>
 <translation id="5122472867956731189">Si un site tente de voler votre mot de passe ou si vous téléchargez un fichier dangereux, Brave peut également envoyer les URL concernées, y compris des extraits du contenu de pages, à la navigation sécurisée</translation>
 <translation id="500707801149472925">Brave peut rendre ces onglets inactifs pour améliorer votre expérience de navigation et libérer des ressources.</translation>
@@ -209,6 +211,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="8148611988012584308">Personnaliser et commander Brave</translation>
 <translation id="4427306783828095590">La protection renforcée en fait plus pour bloquer l'hameçonnage et les logiciels nuisibles</translation>
 <translation id="4434353761996769206">Erreur du programme d'installation : <ph name="INSTALLER_ERROR"/></translation>
+<translation id="175926951572479413"><ph name="MANAGER"/> gère Brave</translation>
 <translation id="6786534271003695094">À propos de Brave for Testing</translation>
 <translation id="4501471624619070934">L'installation a échoué, car l'accès est restreint dans ce pays.</translation>
 <translation id="8594994021633965927">Cette extension n'a pas publié de pratiques en matière de confidentialité, telles que la manière dont elle collecte et utilise les données. Brave vous recommande de la retirer.</translation>
@@ -410,6 +413,7 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="38294420683216447">Utilisez les profils Brave pour dissocier toutes vos données Brave. Cette façon de faire facilite la distinction entre le travail et le divertissement.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave pour les concepteurs</translation>
 <translation id="2034072705932785495">Brave a besoin de votre autorisation pour accéder à votre appareil photo pour ce site</translation>
+<translation id="7129342855140808694">Pour utiliser votre microphone, accordez l'accès à Brave dans les <ph name="BEGIN_LINK"/>paramètres système<ph name="END_LINK"/></translation>
 <translation id="5296583608321648908">Pour recevoir les futures mises à jour de Brave, vous devrez disposer de Windows 10 ou d'une version ultérieure. Cet ordinateur fonctionne sous Windows 7.</translation>
 <translation id="3962395975456095331">Relancer Brave?</translation>
 <translation id="2619516027171717873">Vous ne pouvez pas installer la même version de Brave qui est en cours d'exécution. Veuillez fermer Brave et essayer à nouveau.</translation>
@@ -436,6 +440,7 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="7872446069773932638">Téléchargement en cours… <ph name="SECONDS"/> seconde(s) restante(s)</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Comment gérer vos données :<ph name="END_BOLD"/> afin de protéger votre confidentialité, nous supprimons automatiquement vos centres d'intérêt ayant plus de quatre semaines. Au fur et à mesure que vous naviguez, un centre d'intérêt peut réapparaître sur la liste. Vous pouvez également retirer des centres d'intérêt si vous ne voulez pas que Brave les prenne en compte.</translation>
 <translation id="5687542525349822727">Définir Brave comme navigateur par défaut</translation>
+<translation id="6396151137840491551">Brave met automatiquement à niveau les connexions non sécurisées vers HTTPS lorsque cela est possible</translation>
 <translation id="2925193881330501265">Vous étiez connecté à Brave en tant que <ph name="USER_EMAIL_ADDRESS"/>. Veuillez utiliser le même compte pour vous reconnecter.</translation>
 <translation id="6915252145142862992">Cette installation de Brave est secondaire. Celui-ci ne peut donc pas servir de navigateur par défaut.</translation>
 <translation id="7685904775439037072">Lorsque Brave y aura accès, les sites Web pourront vous demander l'accès.</translation>
@@ -447,6 +452,7 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="813913629614996137">Initialisation en cours...</translation>
 <translation id="7550680632761245819">Activez une protection supplémentaire dans le moteur JavaScript et WebAssembly de Brave</translation>
 <translation id="9067428552314418522">Brave a bloqué ce fichier, car il est dangereux.</translation>
+<translation id="8377926237617998195">Pour utiliser votre caméra, accordez l'accès à Brave dans les <ph name="BEGIN_LINK"/>paramètres système<ph name="END_LINK"/></translation>
 <translation id="1755067029031059271">Brave ne peut pas vérifier l'origine de cette extension et elle peut s'avérer dangereuse. Retirez-la de Brave afin qu'elle ne puisse plus voir ni modifier vos données sur les sites que vous visitez, y compris vos renseignements personnels.</translation>
 <translation id="8207657266087451193">Si une image n'est pas accompagnée d'une description utile, Brave essaiera de vous en proposer une. Pour créer des descriptions, les images sont envoyées à Brave. Vous pouvez désactiver cette option dans les paramètres à tout moment.</translation>
 <translation id="7792526144795244436">Vous connecter à Brave avec un nouveau profil?</translation>
@@ -470,6 +476,7 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="8550334526674375523">Ce profil professionnel est distinct de votre profil personnel.</translation>
 <translation id="8555465886620020932">Erreur liée au service : <ph name="SERVICE_ERROR"/>.</translation>
 <translation id="227028348235968071">Brave peut vérifier vos mots de passe lorsque vous vous connectez avec votre compte Brave</translation>
+<translation id="839677568225616901">Plusieurs organisations gèrent Brave</translation>
 <translation id="8121009781989288430">© <ph name="YEAR"/> Les auteurs de Brave. Tous droits réservés.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Comment nous utilisons ces données :<ph name="END_BOLD"/> les sites peuvent stocker des renseignements sur vos centres d'intérêt dans Brave. Par exemple, si vous visitez un site pour acheter des chaussures pour un marathon, le site pourrait définir votre centre d'intérêt comme la course de marathons. Ultérieurement, si vous visitez un autre site pour vous inscrire à une course, celui-ci peut vous montrer une annonce pour des chaussures de course en fonction de vos centres d'intérêt.</translation>
 <translation id="3052349005266761501">Lancement de Brave en cours…</translation>
@@ -514,6 +521,7 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="983803489796659991">L'installation a échoué, car le serveur de mise à jour ne dispose pas de données de hachage pour cette application.</translation>
 <translation id="8435446479956716379">Utiliser Brave sans compte</translation>
 <translation id="8992261409816268381">Les auteurs de Brave</translation>
+<translation id="3146636448190445245">Pour utiliser votre position, accordez l'accès à Brave dans les <ph name="BEGIN_LINK"/>paramètres système<ph name="END_LINK"/></translation>
 <translation id="137466361146087520">Google Chrome bêta</translation>
 <translation id="7535429826459677826">Google Chrome Dev</translation>
 <translation id="5359574361379286250">Si vous voulez utiliser ce compte une seule fois, vous pouvez utiliser le   <ph name="GUEST_LINK_BEGIN"/>mode Invité<ph name="GUEST_LINK_END"/> dans le navigateur Brave. Si vous voulez ajouter un compte pour quelqu'un d'autre, <ph name="LINK_BEGIN"/>ajoutez un nouveau profil <ph name="LINK_END"/> à votre <ph name="DEVICE_TYPE"/>.

@@ -110,6 +110,7 @@
 <translation id="3377025655491224618">Karta Inkognito</translation>
 <translation id="7304425663107214334">Zobraziť návrh prehliadača</translation>
 <translation id="8982438328166986164">Zobrazuje návrhy webových stránok na základe vašich záložiek a histórie prehliadania.</translation>
+<translation id="924029461438529367">Zobraziť návrhy vyhľadávania</translation>
 <translation id="1571106259128580884">Zobraziť najlepšie návrhy stránok</translation>
 <translation id="9148058034647219655">Ukončiť</translation>
 <translation id="8047754398610073499">Blokovať upozornenia na súhlas so súbormi cookie</translation>
@@ -262,6 +263,8 @@
 <translation id="6511854390690723657">Toto je vaša prvá Brave reklama. Kliknutím zistíte viac.</translation>
 <translation id="2070991379950719711">Začnite používať Odmeny Brave</translation>
 <translation id="48520986898237073">Pokračujte do peňaženky</translation>
+<translation id="6213254277250932867">Mám 12-slovnú frázu obnovenia</translation>
+<translation id="4225265925807365011">Mám 24-slovnú frázu obnovenia</translation>
 <translation id="3570367516044491911">Nastaviť ako predvolený prehliadač</translation>
 <translation id="6800338374677644736">Nastaviť ako predvolený prehliadač</translation>
 <translation id="19715420010996093">Zvoľte si Prehliadač Brave a klepnite na „Vždy“</translation>
@@ -361,6 +364,8 @@
 <translation id="6417420737057016607">Reklamy Brave</translation>
 <translation id="5611966874859284786">Zobrazovať reklamy s upozornením, keď sa Brave nepoužíva</translation>
 <translation id="6606319453795180219">Týmto sa odstránia vaše odmeny Brave a obnovia sa všetky údaje o odmenách Brave</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Obnoviť údaje o Brave Rewards…<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Vymazať údaje o reklamách Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Pridať záložku</translation>
 <translation id="340492034650766959">Odstrániť záložku</translation>
 <translation id="2149973817440762519">Upraviť záložku</translation>
@@ -464,7 +469,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="5582686930349810484">Používanie odtlačkov prstov blokované (Štandardne)</translation>
 <translation id="769702552748212954">Povoliť všetky odtlačky prstov</translation>
 <translation id="876424292214881779">Blokovanie reklám a ďalších nechutných záležitostí</translation>
-<translation id="6930134873084561197">Webové stránky často obsahujú súbory cookie a skripty, ktoré sa snažia identifikovať vás a vaše zariadenie. Chcú zistiť, kto ste, a sledovať čo robíte na každej stránke naprieč webom.\n\nBrave tieto veci blokuje, takže môžete prehliadať bez toho, aby ste boli všade prenasledovaní.</translation>
+<translation id="6849027612978668678">Webové stránky často obsahujú súbory cookie a skripty, ktoré sa snažia identifikovať vás a vaše zariadenie. Chcú zistiť, kto ste, a sledovať čo robíte na každej stránke naprieč webom.\n\nBrave tieto veci blokuje, takže môžete prehliadať bez toho, aby ste boli všade prenasledovaní.</translation>
 <translation id="8553998445606452168">O Brave štítoch</translation>
 <translation id="8912304686498704084">HORE</translation>
 <translation id="4963218453264888510">DOLE</translation>
@@ -559,6 +564,8 @@ Naozaj chcete pokračovať?</translation>
 <translation id="7889432931837317731">Ak je to možné, automaticky sa otvorí</translation>
 <translation id="1029304566263314007">Zobraziť oznámenia o priebehu sťahovania</translation>
 <translation id="2910433761530295035">Opýtať sa, kam uložiť súbory (ak je zistená karta SD)</translation>
+<translation id="2977501775944575564">Paralelné sťahovanie</translation>
+<translation id="6224180438946945617">Povoliť paralelné sťahovanie na zvýšenie rýchlosti sťahovania</translation>
 <translation id="8967385052772844086">Zobraziť celú správu o ochrane osobných údajov</translation>
 <translation id="6864343534748973390">Najpopulárnejšie</translation>
 <translation id="4608192160278975831">Súkromné a bez sledovania</translation>
@@ -588,44 +595,38 @@ Naozaj chcete pokračovať?</translation>
 <translation id="7909462264772842773">Prevezmite kontrolu nad svojimi kryptomenami a NFT. Brave Wallet podporuje Ethereum, reťazce EVM, Solana, Filecoin a ďalšie.</translation>
 <translation id="165255193061631296">Potrebujete novú peňaženku?</translation>
 <translation id="3485737865439729577">Začnite používať Brave Wallet za pár minút</translation>
-<translation id="2759836790106646094">Teraz zálohovať peňaženku!</translation>
-<translation id="1078873179929044999">V ďalšom kroku uvidíte 12-slovnú frázu na obnovenie, ktorú môžete použiť na obnovenie svojich základných kryptoúčtov. Uložte si ju na bezpečné miesto. V prípade zabudnutého hesla, strateného alebo ukradnutého zariadenia alebo zmeny peňaženky je fráza na obnovenie jediný spôsob, ako opäť získať prístup k účtu.</translation>
+<translation id="2540568096903252632">Pokračujte zadaním hesla</translation>
+<translation id="3356580495013324916">Zadaním hesla k Brave Wallet spustite zálohovanie peňaženky.</translation>
 <translation id="2359808026110333948">Pokračovať</translation>
 <translation id="5488357322146334497">Zpráva</translation>
-<translation id="1904000155026201268">Rozumiem, že ak stratím frázu na obnovenie, nebudem mať prístup k svojej kryptopeňaženke.</translation>
 <translation id="5333225216561354793">Potrebujeme, aby ste potvrdili nasledujúce položky</translation>
 <translation id="6937275455070754004">Vyberte si, ktoré blokchainy chcete v peňaženke používať.</translation>
 <translation id="1645800479814134195">Beriem na vedomie, že ide o peňaženku na vlastnú zodpovednosť a že som sám zodpovedný za všetky súvisiace finančné prostriedky, aktíva alebo účty a za prijatie vhodných opatrení na zabezpečenie, ochranu a zálohovanie svojej peňaženky. Beriem na vedomie, že spoločnosť Brave nemôže v mojom mene získať prístup k mojej peňaženke ani zvrátiť transakcie a že fáza obnovy je JEDINÝM spôsobom, ako získať prístup v prípade straty hesla, krádeže zariadenia alebo podobných okolností.</translation>
 <translation id="4565891212173086999">Prečítal som si a súhlasím s <ph name="CLICK_START"/>Podmienkami používania<ph name="CLICK_END"/>.</translation>
-<translation id="3933122286596948824">Vaša fráza na obnovenie</translation>
-<translation id="5077747669435508720">napíšte si alebo skopírujte tieto slová presne v uvedenom poradí a uložte si ich na bezpečné miesto. V prípade zabudnutého hesla, strateného alebo ukradnutého zariadenia alebo zmeny peňaženiek je fráza na obnovenie jediný spôsob, ako opäť získať prístup k účtu.</translation>
-<translation id="2708402071160162126">VAROVANIE: Nikdy nezverejňujte svoju frázu na zálohovanie. Každý, kto má túto frázu, vám môže navždy vziať aktíva.</translation>
-<translation id="111912712268284159">Svoju frázu mám zálohovanú na bezpečnom mieste.</translation>
-<translation id="6896758677409633944">Kopírovať</translation>
+<translation id="3259102562570606417">Uložiť frázu na obnovenie</translation>
+<translation id="4339981001593889376">Vaša fráza na obnovenie je kľúčom k prístupu k vašej peňaženke v prípade, že zabudnete heslo alebo stratíte svoje zariadenie.</translation>
+<translation id="426648489149930289">Uchovávajte ho na bezpečnom mieste, ktoré nie je prístupné iným osobám, a s nikým ho nezdieľajte.</translation>
 <translation id="3726490322412361740">Zadajte heslo</translation>
-<translation id="3038243139480464605">Overiť heslo</translation>
-<translation id="7396672979287122068">Overené heslo sa nezhoduje</translation>
 <translation id="1566412704591731844">Vaša peňaženka sa vytvára…</translation>
 <translation id="7779823116893018906">Môže to trvať niekoľko sekúnd…</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/><ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Pridať účet</translation>
 <translation id="3448492834076427715">Aktualizovať účet</translation>
-<translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="5532363218245261099"><ph name="NUMBER"/> <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="1537175937716697987">Zobraziť si moju frázu obnovenia</translation>
+<translation id="5303015959766064022">Dokončiť neskôr</translation>
+<translation id="7345730059518887993">Poďme to skontrolovať</translation>
+<translation id="7640406249038879146">Zadajte slovo do položky <ph name="WORD_POSITION"/> z vašej frázy na obnovenie.</translation>
+<translation id="2598171223363459366">Tento krok môžete teraz preskočiť, ale aj tak si musíte zálohovať svoju frázu na obnovenie, aby ste zaistili bezpečnosť účtu.</translation>
 <translation id="8100001366858145406">Povoliť odomykanie odtlačkom prsta?</translation>
 <translation id="5493402808936397665">Povoľte biometriu na rýchle odomykanie svojej peňaženky bez zadania hesla.</translation>
 <translation id="8030647312184163932">Odomknutie odtlačkom prsta</translation>
 <translation id="4090490645603511157">Použite biometrické údaje na rýchle odomykanie peňaženky bez zadania hesla.</translation>
 <translation id="1544192797660353713">Peňaženka</translation>
-<translation id="6901810042765869341">Zadajte svoju frázu na obnovenie a obnovte svoj krypto účet Brave Wallet.</translation>
-<translation id="9120654436199628567">Obnoviť kryptoúčet</translation>
+<translation id="2321396552035646646">Celú frázu obnovenia môžete vložiť do ľubovoľného poľa.</translation>
+<translation id="3961126209136843111">Importovať existujúcu peňaženku</translation>
 <translation id="4811736040444856406">Zobraziť frázu na obnovenie</translation>
-<translation id="283071225285270357">Zadajte svoju frázu na obnovenie</translation>
-<translation id="3943857333388298514">Prilepiť</translation>
-<translation id="3331452756822160641">Nové heslo</translation>
 <translation id="4359319875297001084">Importovať zo starších kryptopeňaženiek Brave?</translation>
-<translation id="2339124864228588937">Overiť frázu na obnovenie</translation>
-<translation id="3747079125031086337">Vyberte si slová vo svojej fráze na obnovenie v správnom poradí.</translation>
-<translation id="6518133107902771759">Overiť</translation>
 <translation id="3157931365184549694">Obnoviť</translation>
 <translation id="5844138175312846408">Už máte peňaženku?</translation>
 <translation id="2502258949541727762">Skôr ako začneme</translation>
@@ -634,6 +635,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="2523174693142405417">Hľadať siete</translation>
 <translation id="1164748583090434571">Zobraziť testovacie siete</translation>
 <translation id="935220650946301698">Pokračovať so sieťami <ph name="NUMBER"/></translation>
+<translation id="4052668782430384783">Slovo <ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">Vytvoriť heslo</translation>
 <translation id="2789310860394340571">Toto heslo použijete pri prístupe do svojej peňaženky.</translation>
 <translation id="2136372518715274136">Zadajte nové heslo</translation>
@@ -651,9 +653,8 @@ Naozaj chcete pokračovať?</translation>
 <translation id="5619264711680220002">Biometrické odomknutie</translation>
 <translation id="9195657745688986798">Odomknúť peňaženku</translation>
 <translation id="5168349973342709369">Odomknite peňaženku zadaním hesla</translation>
-<translation id="3043677904160378840">Heslá musia mať aspoň 8 znakov.</translation>
 <translation id="1144810021918451336">Nechráni vás pred nebezpečnými webovými stránkami, stiahnutými súbormi a rozšíreniami.</translation>
-<translation id="5760476995887363522">Frázy sa nezhodujú. Skúste to znova.</translation>
+<translation id="9085712756417277119">Fráza obnovenia sa nezhoduje</translation>
 <translation id="2360588547830602174">Obnovenie účtu zlyhalo. Prosím, skúste to znova.</translation>
 <translation id="1987317783729300807">Účty</translation>
 <translation id="6284218950354553099">Automaticky odoslať správu o dennom využívaní službe Brave</translation>
@@ -688,16 +689,21 @@ Naozaj chcete pokračovať?</translation>
 <translation id="3510283489391432976">Zvoľte svoju geografickú polohu/krajinu</translation>
 <translation id="7695158478627528928">Brave vašu aktivitu nikdy nezaznamenáva</translation>
 <translation id="4575683170451975058">1 predplatným ochráňte 5 zariadení</translation>
+<translation id="755045397420611731">Viac online súkromia a bezpečnosti</translation>
+<translation id="4520128772974831415">Skryte svoju IP adresu, zmeňte svoju polohu</translation>
+<translation id="2044418816479192294">Stovky serverov na celom svete</translation>
+<translation id="7410504850864021600">Mimoriadne rýchle pripojenie</translation>
+<translation id="2422309687188612485">Chráňte až 10 zariadení s jedným plánom</translation>
 <translation id="4882693590083943563">Všetky plány obsahujú <ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">7-dňová skúšobná verzia zadarmo!</translation>
 <translation id="1532536259167115948">Mesačné predplatné <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Ročné predplatné <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Obnovuje sa mesačne</translation>
-<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> /mes.</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /mesiac</translation>
 <translation id="1163809943099641131">Jeden rok</translation>
-<translation id="172859718096975160">Obnovte si každoročne <ph name="DISCOUNT_TEXT_START"/>ušetrite <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
-<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
-<translation id="5125233570742276182">Predplatné sa bude účtovať prostredníctvom vášho účtu Google. Akákoľvek nevyužitá časť bezplatnej skúšobnej verzie, ak je v ponuke, prepadne pri zakúpení predplatného.\n\nVaše predplatné sa automaticky obnoví, ak nebude zrušené aspoň 24 hodín pred koncom aktuálneho obdobia.\n\nSvoje odbery môžete spravovať v Nastaveniach.\nPoužívaním Brave súhlasíte s Podmienkami používania a Zásadami ochrany osobných údajov.</translation>
+<translation id="727385358513272220">Obnovuje sa každoročne <ph name="DISCOUNT_TEXT_START"/>ušetrite <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /rok</translation>
+<translation id="2786538705804257030">Predplatné sa bude účtovať prostredníctvom vášho účtu Google. Akákoľvek nevyužitá časť bezplatnej skúšobnej verzie, ak je v ponuke, prepadne pri zakúpení predplatného.\n\nVaše predplatné sa automaticky obnoví, ak nebude zrušené aspoň 24 hodín pred koncom aktuálneho obdobia.\n\nSvoje odbery môžete spravovať v Nastaveniach.\nPoužívaním Brave súhlasíte s Podmienkami používania a Zásadami ochrany osobných údajov.</translation>
 <translation id="5035172357624830412">Už ste nakupovali na brave.com?</translation>
 <translation id="713136183174551885">Obnovte si svoje poverenia</translation>
 <translation id="6053992191006521518">Vyskúšajte ZADARMO</translation>
@@ -932,7 +938,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="7002577172732106572">Rozdeliť tunelovanie</translation>
 <translation id="8181161042860463420">Priradený tokenový účet zatiaľ neexistuje. Na jeho vytvorenie a financovanie sa vynaloží malé množstvo SOL. <ph name="CLICK_START"/>Viac informácií<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Aktualizuje sa profil VPN...</translation>
-<translation id="7457027586454688423">Zadajte heslo do peňaženky Brave</translation>
 <translation id="4784306439879850873">Upozorňujeme, že Brave nedokáže overiť, čo sa stane, ak sa prihlásite. Podpisom sa dá schváliť takmer každá operácia na vašom účte alebo vo vašom mene, vrátane (okrem iného) poskytnutia úplnej kontroly nad vaším účtom a kryptoaktívami v prospech stránky vytvárajúcej žiadosť.  Podpíšte sa len vtedy, ak ste si istí, že chcete túto akciu vykonať a že dôverujete žiadajúcej stránke.</translation>
 <translation id="3474375934783434676">Zaregistrujte sa na vlastné riziko</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> z <ph name="SIZE"/></translation>
@@ -942,6 +947,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="2629767022373384291">Chcete používať biometrické overovanie na otvorenie peňaženky Brave?</translation>
 <translation id="4782919977106118997">Použiť odtlačok prsta na odomknutie</translation>
 <translation id="2054995875643283428">Teraz preskočiť</translation>
+<translation id="2610561535971892504">Kliknutím skopírovať</translation>
 <translation id="2522605225061484799">Prejsť do môjho portfólia</translation>
 <translation id="1148624853678088576">Všetko je pripravené!</translation>
 <translation id="4131445988101719379">Vaša peňaženka Brave je pripravená na použitie</translation>
@@ -1024,7 +1030,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="6610899852831463073">Nepodarilo sa aktivovať Bezpečné prehliadanie</translation>
 <translation id="7954263306665462056">Bezpečné prehliadanie je vo vašom zariadení deaktivované. Ak ho chcete aktivovať, uistite sa, že máte nainštalované a aktualizované služby Google Play.</translation>
 <translation id="6605147707233193230">Zapnite, aby ste pomohli podporiť tvorov obsahu</translation>
-<translation id="1609556006143307897">Pomáhate podporovať tvorcov obsahu</translation>
+<translation id="5899814466108868020">Pomáhate podporovať prehliadač Brave a komunitu BAT</translation>
 <translation id="6067959437127691361">Používanie Brave Odmien podporuje tvorcov obsahu a umožňuje vám zarábať BAT.</translation>
 <translation id="3264975266761862670">Ste pripravení začať zarábať?</translation>
 <translation id="265337947574975838">Pripojte alebo si vytvorte účet u niektorého z našich partnerov.</translation>
@@ -1123,6 +1129,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="1173894706177603556">Premenovať</translation>
 <translation id="3596306474342941843">Odstrániť zoznam skladieb</translation>
 <translation id="7765158879357617694">Presunúť</translation>
+<translation id="6896758677409633944">Kopírovat</translation>
 <translation id="3803384303807438047">Odstrániť údaje položky v režime offline</translation>
 <translation id="4195643157523330669">Otvoriť na novej karte</translation>
 <translation id="4243710787042215766">Otvoriť v súkromnej karte</translation>
