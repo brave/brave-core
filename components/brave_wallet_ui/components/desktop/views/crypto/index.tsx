@@ -230,6 +230,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
             noCardPadding={true}
             cardHeader={<PortfolioOverviewHeader />}
             useDarkBackground={isPanel}
+            isPortfolio={true}
             hideDivider={true}
           >
             <StyledWrapper>
@@ -274,6 +275,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
             noCardPadding={true}
             cardHeader={<PortfolioOverviewHeader />}
             useDarkBackground={isPanel}
+            isPortfolio={true}
             hideDivider={isPanel}
           >
             <StyledWrapper>

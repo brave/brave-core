@@ -37,7 +37,8 @@ import {
   CardHeaderWrapper,
   CardHeader,
   CardHeaderShadow,
-  CardHeaderContentWrapper
+  CardHeaderContentWrapper,
+  PortfolioBackgroundWatermark
 } from './wallet-page-wrapper.style'
 
 import { loadTimeData } from '../../../../common/loadTimeData'
@@ -55,6 +56,7 @@ export interface Props {
   noBorderRadius?: boolean
   useDarkBackground?: boolean
   useFullHeight?: boolean
+  isPortfolio?: boolean
   children?: React.ReactNode
 }
 
@@ -72,7 +74,8 @@ export const WalletPageWrapper = (props: Props) => {
     noMinCardHeight,
     noBorderRadius,
     useDarkBackground,
-    useFullHeight
+    useFullHeight,
+    isPortfolio
   } = props
 
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
@@ -162,6 +165,7 @@ export const WalletPageWrapper = (props: Props) => {
         noPadding={noPadding}
         noTopPosition={isPanel || isAndroid}
       >
+        {isPanel && isPortfolio && <PortfolioBackgroundWatermark />}
         {isWalletCreated && !hideHeader && !isPanel && !isAndroid && (
           <TabHeader hideHeaderMenu={hideHeaderMenu} />
         )}
@@ -195,6 +199,7 @@ export const WalletPageWrapper = (props: Props) => {
               noBorderRadius={noBorderRadius}
               useDarkBackground={useDarkBackground}
               useFullHeight={useFullHeight}
+              noBackground={isPanel && isPortfolio}
             >
               {children}
             </ContainerCard>

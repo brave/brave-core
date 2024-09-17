@@ -8,10 +8,6 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useHistory, useLocation } from 'react-router'
 import { Route, Switch, Redirect } from 'react-router-dom'
 
-// selectors
-import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../../common/selectors'
-
 // hooks
 import {
   useBalancesFetcher //
@@ -92,7 +88,6 @@ import {
   ControlsRow,
   BalanceAndButtonsWrapper,
   BalanceAndChangeWrapper,
-  BackgroundWatermark,
   BalanceAndLineChartWrapper
 } from './style'
 import { Column, Row, HorizontalSpace } from '../../../shared/style'
@@ -151,9 +146,6 @@ export const PortfolioOverview = () => {
     LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
     false
   )
-
-  // redux
-  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // queries
   const { data: networks } = useGetVisibleNetworksQuery()
@@ -518,7 +510,6 @@ export const PortfolioOverview = () => {
             fullWidth={true}
             justifyContent='flex-start'
           >
-            {isPanel && <BackgroundWatermark />}
             <BalanceAndButtonsWrapper
               fullWidth={true}
               alignItems='center'
