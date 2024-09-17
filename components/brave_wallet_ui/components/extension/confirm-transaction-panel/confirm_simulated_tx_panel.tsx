@@ -336,7 +336,7 @@ export const ConfirmSimulatedTransactionPanel = ({
               ) : txSimulation && transactionsNetwork ? (
                 simulationType === 'EVM' ? (
                   <TransactionSimulationInfo
-                    key={'EVMSimulationInfo'}
+                    key={`EVMSimulationInfo-${transactionDetails.id}`}
                     simulation={txSimulation}
                     simulationType={simulationType}
                     network={transactionsNetwork}
@@ -344,7 +344,7 @@ export const ConfirmSimulatedTransactionPanel = ({
                   />
                 ) : (
                   <TransactionSimulationInfo
-                    key={'SolanaSimulationInfo'}
+                    key={`SolanaSimulationInfo-${transactionDetails.id}`}
                     simulation={txSimulation}
                     simulationType={simulationType}
                     network={transactionsNetwork}
