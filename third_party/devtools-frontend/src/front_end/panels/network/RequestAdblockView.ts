@@ -79,7 +79,7 @@ export class RequestAdblockView extends LegacyWrapper.LegacyWrapper
 
   override wasShown(): void {
     this.#request.addEventListener(
-      SDK.NetworkRequest.Events.FinishedLoading,
+      SDK.NetworkRequest.Events.FINISHED_LOADING,
       this.#refresh,
       this
     )
@@ -87,7 +87,7 @@ export class RequestAdblockView extends LegacyWrapper.LegacyWrapper
 
   override willHide(): void {
     this.#request.removeEventListener(
-      SDK.NetworkRequest.Events.FinishedLoading,
+      SDK.NetworkRequest.Events.FINISHED_LOADING,
       this.#refresh,
       this
     )
