@@ -17,6 +17,8 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_news/brave_news_action_icon_view.h"
+#include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_controller.h"
+#include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_view.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
@@ -125,6 +127,12 @@ void BraveLocationBarView::Init() {
       AddChildView(std::make_unique<OnionLocationView>(browser_->profile()));
 #endif
 
+  if (PromotionButtonController::PromotionEnabled(profile()->GetPrefs())) {
+    promotion_button_ = AddChildView(std::make_unique<PromotionButtonView>());
+    promotion_controller_ = std::make_unique<PromotionButtonController>(
+        promotion_button_, omnibox_view_, browser());
+  }
+
   // brave action buttons
   brave_actions_ = AddChildView(
       std::make_unique<BraveActionsContainer>(browser_, profile()));
@@ -206,6 +214,13 @@ void BraveLocationBarView::OnChanged() {
     brave_news_action_icon_view_->Update();
   }
 
+  if (promotion_controller_) {
+    const bool show_button =
+        promotion_controller_->ShouldShowSearchPromotionButton() &&
+        !ShouldChipOverrideLocationIcon() && !ShouldShowKeywordBubble();
+    promotion_controller_->Show(show_button);
+  }
+
   // OnChanged calls Layout
   LocationBarView::OnChanged();
 }
@@ -232,6 +247,10 @@ std::vector<views::View*> BraveLocationBarView::GetLeftMostTrailingViews() {
   }
 #endif
   return views;
+}
+
+views::View* BraveLocationBarView::GetSearchPromotionButton() const {
+  return promotion_button_;
 }
 
 void BraveLocationBarView::RefreshBackground() {

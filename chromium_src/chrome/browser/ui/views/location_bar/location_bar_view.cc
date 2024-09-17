@@ -18,23 +18,32 @@
 //               If custom padding is provided(text_left is not null), respect
 //               it. Otherwise, set our design value - 5px.
 // Both value could be updated when |should_indent| is true.
-#define BRAVE_LAYOUT_LEADING_DECORATIONS                           \
+#define BRAVE_LOCATION_BAR_VIEW_LAYOUT_LEADING_DECORATIONS         \
   icon_left = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);     \
   if (text_left == 0 && !location_icon_view_->ShouldShowLabel()) { \
     text_left = 5;                                                 \
   }
 
-#define BRAVE_LAYOUT_RIGHT_MOST_TRAILING_DECORATIONS             \
-  auto right_most_trailing_views = GetRightMostTrailingViews();  \
-  for (auto* item : base::Reversed(right_most_trailing_views)) { \
-    add_trailing_decoration(item, /*intra_item_padding=*/0);     \
+#define BRAVE_LOCATION_BAR_VIEW_LAYOUT_RIGHT_MOST_TRAILING_DECORATIONS \
+  auto right_most_trailing_views = GetRightMostTrailingViews();        \
+  for (auto* item : base::Reversed(right_most_trailing_views)) {       \
+    add_trailing_decoration(item, /*intra_item_padding=*/0);           \
   }
 
-#define BRAVE_LAYOUT_LEFT_MOST_TRAILING_DECORATIONS             \
-  auto left_most_trailing_views = GetLeftMostTrailingViews();   \
-  for (auto* item : base::Reversed(left_most_trailing_views)) { \
-    add_trailing_decoration(item, /*intra_item_padding=*/0);    \
+#define BRAVE_LOCATION_BAR_VIEW_LAYOUT_LEFT_MOST_TRAILING_DECORATIONS \
+  auto left_most_trailing_views = GetLeftMostTrailingViews();         \
+  for (auto* item : base::Reversed(left_most_trailing_views)) {       \
+    add_trailing_decoration(item, /*intra_item_padding=*/0);          \
   }
+
+#define BRAVE_LOCATION_BAR_VIEW_LAYOUT_HANDLE_SEARCH_PROMOTION_BUTTON_VISIBILITY \
+  }                                                                              \
+  else if (GetSearchPromotionButton() && /* NOLINT */                            \
+           GetSearchPromotionButton()->GetVisible()) {                           \
+    leading_decorations.AddDecoration(vertical_padding, location_height,         \
+                                      false, kLeadingDecorationMaxFraction,      \
+                                      /*intra_item_padding=*/0, 0,               \
+                                      GetSearchPromotionButton());
 
 #define OmniboxViewViews BraveOmniboxViewViews
 #define ChromeOmniboxClient BraveOmniboxClientImpl
@@ -52,9 +61,14 @@
 #undef PageActionIconContainerView
 #undef ChromeOmniboxClient
 #undef OmniboxViewViews
-#undef BRAVE_LAYOUT_LEFT_MOST_TRAILING_DECORATIONS
-#undef BRAVE_LAYOUT_RIGHT_MOST_TRAILING_DECORATIONS
-#undef BRAVE_LAYOUT_LEADING_DECORATIONS
+#undef BRAVE_LOCATION_BAR_VIEW_LAYOUT_HANDLE_SEARCH_PROMOTION_BUTTON_VISIBILITY
+#undef BRAVE_LOCATION_BAR_VIEW_LAYOUT_LEFT_MOST_TRAILING_DECORATIONS
+#undef BRAVE_LOCATION_BAR_VIEW_LAYOUT_RIGHT_MOST_TRAILING_DECORATIONS
+#undef BRAVE_LOCATION_BAR_VIEW_LAYOUT_LEADING_DECORATIONS
+
+views::View* LocationBarView::GetSearchPromotionButton() const {
+  return nullptr;
+}
 
 std::vector<views::View*> LocationBarView::GetRightMostTrailingViews() {
   return std::vector<views::View*>();

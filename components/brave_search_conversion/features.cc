@@ -20,6 +20,10 @@ BASE_FEATURE(kOmniboxDDGBanner,
              "BraveSearchOmniboxDDGBanner",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kOmniboxPromotionButton,
+             "BraveSearchPromotionOmniboxButton",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 // Brave search promotion at NTP.
 BASE_FEATURE(kNTP, "BraveSearchNTP", base::FEATURE_DISABLED_BY_DEFAULT);
 

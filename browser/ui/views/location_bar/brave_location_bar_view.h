@@ -19,6 +19,8 @@
 
 class BraveActionsContainer;
 class BraveActionsContainerTest;
+class PromotionButtonController;
+class PromotionButtonView;
 class PlaylistActionIconView;
 class RewardsBrowserTest;
 class SkPath;
@@ -70,6 +72,7 @@ class BraveLocationBarView : public LocationBarView {
   std::vector<views::View*> GetRightMostTrailingViews() override;
   // Views that locates at left side of upstream's trailing views.
   std::vector<views::View*> GetLeftMostTrailingViews() override;
+  views::View* GetSearchPromotionButton() const override;
   void RefreshBackground() override;
   void OnOmniboxBlurred() override;
 
@@ -104,6 +107,8 @@ class BraveLocationBarView : public LocationBarView {
       playlist::PlaylistBrowserTestWithSitesUsingMediaSource,
       MediaShouldBeExtractedFromBackground_DynamicallyAddedMedia);
   FRIEND_TEST_ALL_PREFIXES(policy::BraveRewardsPolicyTest, RewardsIconIsHidden);
+  FRIEND_TEST_ALL_PREFIXES(BraveLocationBarViewBrowserTest,
+                           SearchConversionButtonTest);
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
 
@@ -113,6 +118,8 @@ class BraveLocationBarView : public LocationBarView {
   std::unique_ptr<ViewShadow> shadow_;
   raw_ptr<BraveActionsContainer> brave_actions_ = nullptr;
   raw_ptr<BraveNewsActionIconView> brave_news_action_icon_view_ = nullptr;
+  std::unique_ptr<PromotionButtonController> promotion_controller_;
+  raw_ptr<PromotionButtonView> promotion_button_ = nullptr;
 #if BUILDFLAG(ENABLE_TOR)
   raw_ptr<OnionLocationView> onion_location_view_ = nullptr;
 #endif
