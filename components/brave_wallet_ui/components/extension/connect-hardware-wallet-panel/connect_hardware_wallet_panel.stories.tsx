@@ -11,17 +11,12 @@ import {
 import ConnectHardwareWalletPanel from '.'
 import { PanelWrapper } from '../../../panel/style'
 
-import { mockAccounts } from '../../../stories/mock-data/mock-wallet-accounts'
-
 export const _ConnectHardwareWalletPanel = {
   render: () => {
     return (
       <WalletPanelStory>
         <PanelWrapper>
-          <ConnectHardwareWalletPanel
-            account={{ ...mockAccounts[0], name: 'Ledger 1' }}
-            hardwareWalletCode={undefined}
-          />
+          <ConnectHardwareWalletPanel hardwareWalletCode={undefined} />
         </PanelWrapper>
       </WalletPanelStory>
     )
