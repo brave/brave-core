@@ -79,7 +79,7 @@ ShouldBlockDomainOnTaskRunner(brave_shields::AdBlockService* ad_block_service,
     info.source_host = url.host();
     info.resource_type = blink::mojom::ResourceType::kMainFrame;
     info.aggressive = aggressive_for_engine;
-    info.blocked = true;
+    info.blocked = block_result.should_block;
     info.did_match_important_rule = result.important;
     info.did_match_rule = result.matched;
     info.did_match_exception = result.has_exception;
