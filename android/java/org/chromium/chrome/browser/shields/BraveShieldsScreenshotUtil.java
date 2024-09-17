@@ -28,11 +28,9 @@ public class BraveShieldsScreenshotUtil {
         private Bitmap mBitmap;
         private final BraveShieldsScreenshotUtilCallback mCallback;
 
-        public PngConvertorTask(@NonNull BraveShieldsScreenshotUtilCallback callback) {
+        public PngConvertorTask(
+                @Nullable Bitmap bitmap, @NonNull BraveShieldsScreenshotUtilCallback callback) {
             mCallback = callback;
-        }
-
-        public void setScreenshotBitmap(@Nullable Bitmap bitmap) {
             mBitmap = bitmap;
         }
 
@@ -70,14 +68,13 @@ public class BraveShieldsScreenshotUtil {
         private int mRetryCounter;
         private final BraveShieldsScreenshotUtilCallback mCallback;
         private final ScreenshotTask mScreenshotTask;
-        private final PngConvertorTask mPngConvertorTask;
+        private PngConvertorTask mPngConvertorTask;
 
         public BraveScreenshotRunnable(
                 @NonNull ScreenshotTask screenshotTask,
                 @NonNull BraveShieldsScreenshotUtilCallback callback) {
             mCallback = callback;
             mScreenshotTask = screenshotTask;
-            mPngConvertorTask = new PngConvertorTask(callback);
         }
 
         private void start() {
@@ -99,7 +96,7 @@ public class BraveShieldsScreenshotUtil {
                 return;
             }
 
-            mPngConvertorTask.setScreenshotBitmap(mScreenshotTask.getScreenshot());
+            mPngConvertorTask = new PngConvertorTask(mScreenshotTask.getScreenshot(), mCallback);
             mPngConvertorTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
 
