@@ -328,7 +328,17 @@
         <item name="android:windowExitAnimation">@anim/slide_out_top</item>
     </style>
 
-    <style name="ApproveTxBottomSheetDialogStyle" parent="Widget.MaterialComponents.BottomSheet.Modal" />
+    <style name="ApproveTxBottomSheetDialogStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="shapeAppearance">@style/ShapeAppearanceRoundedCorners</item>
+        <item name="shouldRemoveExpandedCorners">false</item>
+        <item name="behavior_skipCollapsed">true</item>
+        <item name="backgroundTint">@color/container_background</item>
+    </style>
+
+    <style name="ShapeAppearanceRoundedCorners" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">30dp</item>
+    </style>
 
     <style name="ApproveTxBottomSheetDialogTheme" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/ApproveTxBottomSheetDialogStyle</item>

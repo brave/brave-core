@@ -173,7 +173,6 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
             return;
         }
 
-        BottomSheetBehavior.from(frameLayout).setSkipCollapsed(true);
         ViewGroup.LayoutParams layoutParams = frameLayout.getLayoutParams();
         layoutParams.height = requireActivity().getWindow().getDecorView().getHeight();
         frameLayout.setLayoutParams(layoutParams);
@@ -186,7 +185,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.ApproveTxBottomSheetDialogTheme);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.ApproveTxBottomSheetDialogTheme);
         bottomSheetDialog.setOnShowListener(dialog -> setupFullHeight((BottomSheetDialog) dialog));
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();

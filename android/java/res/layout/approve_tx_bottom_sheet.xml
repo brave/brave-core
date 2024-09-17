@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/wallet_bg"
     android:layout_margin="12dp"
     android:orientation="vertical"
     tools:context=".ApproveTxBottomSheetDialogFragment"
@@ -168,7 +167,6 @@
         android:layout_height="0dp"
         app:layout_constraintHeight_default="spread"
         app:layout_constraintTop_toBottomOf="@id/tabs"
-        app:layout_constraintHeight_min="240dp"
         app:layout_constraintBottom_toTopOf="@id/actions_container"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
