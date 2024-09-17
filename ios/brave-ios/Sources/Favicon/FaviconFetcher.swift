@@ -151,7 +151,7 @@ public class FaviconFetcher {
 
   /// Updates the Favicon in the cache with the specified icon if any, otherwise removes the favicon from the cache.
   public static func updateCache(_ favicon: Favicon?, for url: URL, persistent: Bool) async {
-    guard let favicon else {
+    guard let favicon, !favicon.isMonogramImage else {
       let cachedURL = cacheURL(for: url)
       SDImageCache.shared.memoryCache.removeObject(forKey: cachedURL.absoluteString)
       SDImageCache.shared.diskCache.removeData(forKey: cachedURL.absoluteString)
