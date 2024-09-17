@@ -19,19 +19,11 @@ def main():
   parser = argparse.ArgumentParser()
   subparsers = parser.add_subparsers(dest='subparser_name')
   wpr_parser = subparsers.add_parser('wpr')
-  wpr_parser.add_argument(
-        'cmd',
-        type=str,
-        choices=['cleanup', 'ls'])
+  wpr_parser.add_argument('cmd', type=str, choices=['cleanup', 'ls'])
   s3_parser = subparsers.add_parser('s3')
-  s3_parser.add_argument(
-        'cmd',
-        type=str,
-        choices=['upload', 'update-sha1'])
+  s3_parser.add_argument('cmd', type=str, choices=['upload', 'update-sha1'])
 
-  parser.add_argument(
-        'file',
-        type=str)
+  parser.add_argument('file', type=str)
   args = parser.parse_args()
   if args.subparser_name == 'wpr':
     if args.cmd == 'cleanup':
@@ -42,9 +34,11 @@ def main():
 
   if args.subparser_name == 's3':
     if args.cmd == 'upload':
-      cloud_storage.UploadFileToCloudStorage(cloud_storage.CloudFolder.CATAPULT_PERF_DATA, args.file)
+      cloud_storage.UploadFileToCloudStorage(
+          cloud_storage.CloudFolder.CATAPULT_PERF_DATA, args.file)
 
     if args.cmd == 'update-sha1':
       cloud_storage.UpdateSha1(args.file)
+
 
 main()

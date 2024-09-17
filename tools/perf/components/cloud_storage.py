@@ -20,6 +20,7 @@ class CloudFolder(str, Enum):
   TEST_PROFILES = 'perf-profiles'
   CATAPULT_PERF_DATA = 'telemetry-perf-data'
 
+
 def UpdateSha1(path: str):
   sha1 = get_sha1(path)
   sha1_path = path + '.sha1'

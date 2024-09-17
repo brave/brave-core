@@ -6,7 +6,9 @@
     "extra-browser-args": [
       "--disable-features=CalculateNativeWinOcclusion",
     ],
-    "extra-benchmark-args": [],
+    "extra-benchmark-args": [
+      "--also-run-disabled-tests"
+    ],
     "save-artifacts": true,
   }],
   "benchmarks": [
@@ -39,8 +41,16 @@
       ]
     },
     {
-      "name": "speedometer2",
-      "pageset-repeat": 1,
+      "name": "speedometer3",
     },
+    {
+      "name": "jetstream2",
+    },
+    {
+      "name": "rendering.desktop",
+      "stories": [
+        "motionmark_fixed_2_seconds"
+      ]
+    }
   ]
 }

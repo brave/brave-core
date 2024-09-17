@@ -22,34 +22,39 @@ from components.common_options import CommonOptions
 with path_util.SysPath(path_util.GetDepotToolsDir()):
   from download_from_google_storage import get_sha1
 
+# Brave and Chromium update related-hosts.
+# Normally we don't need this in any WPR.
 _UPDATE_HOSTS = [
-    'brave-core-ext.s3.brave.com',  # components downloading
-    'go-updater.brave.com',  # components update check
-    'redirector.brave.com',
-    'optimizationguide-pa.googleapis.com',  # optimizationguide chrome component
-    'safebrowsingohttpgateway.googleapis.com',  # safebrowsing update
+    'brave-core-ext.s3.brave.com',
+    'go-updater.brave.com',
+    'componentupdater.brave.com',
+    'optimizationguide-pa.googleapis.com',
+    'safebrowsingohttpgateway.googleapis.com',
 ]
 
+# Hosts are related to some browser features (like Rewards).
+# Cutting it reduces memory and CPU usage, but makes the picture less
+# representative. It makes sense to remove them some tests (i.e. jetstream)
+# and leave in others (i.e. system_health).
 _SERVICE_HOSTS = [
-  'update.googleapis.com',
-  'content-autofill.googleapis.com',
-  'rewards.brave.com',
-  'api.rewards.brave.com',
-  'grant.rewards.brave.com',
-  'collector.bsg.brave.com',
-  'star-randsrv.bsg.brave.com',
-  'geo.ads.brave.com',
-  'componentupdater.brave.com',
-  'brave-today-cdn.brave.com',
-  'p3a-json.brave.com',
-  'static.ads.brave.com',
-]
+    'redirector.brave.com',
 
-_PATH_TO_REMOVE = [
-  #TODO
-  '/ListAccounts' # for Chromium
-]
+    'geo.ads.brave.com',
+    'static.ads.brave.com',
 
+    'rewards.brave.com',
+    'api.rewards.brave.com',
+    'grant.rewards.brave.com',
+
+    'collector.bsg.brave.com',
+    'star-randsrv.bsg.brave.com',
+
+    'p3a-json.brave.com',
+    'brave-today-cdn.brave.com',
+
+    'update.googleapis.com',
+    'content-autofill.googleapis.com',
+]
 
 def run_httparchive(args: List[str]) -> str:
   _, output = perf_test_utils.GetProcessOutput(
@@ -110,7 +115,10 @@ def cleanup_archive(file: str, include_service_hosts: bool) -> None:
     run_httparchive(['trim', '--host', host, file, file])
 
   # Remove Chromium https://accounts.google.com/ListAccounts requests:
-  run_httparchive(['trim', '--full_path', '/ListAccounts', '--host', 'accounts.google.com', file, file])
+  run_httparchive([
+      'trim', '--full_path', '/ListAccounts', '--host', 'accounts.google.com',
+      file, file
+  ])
 
   # make a new sha1
   cloud_storage.UpdateSha1(file)
