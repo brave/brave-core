@@ -4,6 +4,7 @@
 
 import BraveCore
 import BraveShields
+import BraveWidgetsModels
 import Data
 import Foundation
 import Growth
@@ -26,6 +27,7 @@ public class Migration {
     Preferences.migrateAdAndTrackingProtection()
     Preferences.migrateHTTPSUpgradeLevel()
     Preferences.migrateBackgroundSponsoredImages()
+    Preferences.migrateBookmarksButtonInToolbar()
 
     if Preferences.General.isFirstLaunch.value {
       if UIDevice.current.userInterfaceIdiom == .phone {
@@ -201,6 +203,12 @@ extension Preferences {
       key: "newtabpage.background-sponsored-images",
       default: true
     )
+
+    /// Specifies whether the bookmark button is present on toolbar
+    static let showBookmarkToolbarShortcut = Option<Bool>(
+      key: "general.show-bookmark-toolbar-shortcut",
+      default: UIDevice.isIpad
+    )
   }
 
   /// Migration preferences
@@ -245,6 +253,11 @@ extension Preferences {
 
     static let backgroundSponsoredImagesCompleted = Option<Bool>(
       key: "migration.newtabpage-background-sponsored-images",
+      default: false
+    )
+
+    static let migratedBookmarksButtonInToolbar = Option<Bool>(
+      key: "migration.bookmarks-button-in-toolbar",
       default: false
     )
   }
@@ -402,6 +415,17 @@ extension Preferences {
     }
 
     Migration.backgroundSponsoredImagesCompleted.value = true
+  }
+
+  fileprivate class func migrateBookmarksButtonInToolbar() {
+    guard !Migration.migratedBookmarksButtonInToolbar.value else { return }
+
+    DeprecatedPreferences.showBookmarkToolbarShortcut.migrate { isEnabled in
+      Preferences.General.toolbarShortcutButton.value =
+        isEnabled ? WidgetShortcut.bookmarks.rawValue : nil
+    }
+
+    Migration.migratedBookmarksButtonInToolbar.value = true
   }
 }
 

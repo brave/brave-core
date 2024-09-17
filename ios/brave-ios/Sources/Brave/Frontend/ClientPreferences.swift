@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveWidgetsModels
 import Foundation
 import Preferences
 import Shared
@@ -74,9 +75,9 @@ extension Preferences {
       default: false
     )
     /// Specifies whether the bookmark button is present on toolbar
-    static let showBookmarkToolbarShortcut = Option<Bool>(
+    static let toolbarShortcutButton = Option<Int?>(
       key: "general.show-bookmark-toolbar-shortcut",
-      default: UIDevice.isIpad
+      default: UIDevice.isIpad ? WidgetShortcut.bookmarks.rawValue : nil
     )
     /// Controls whether or not media should continue playing in the background
     static let mediaAutoBackgrounding = Option<Bool>(
