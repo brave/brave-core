@@ -13,8 +13,43 @@
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
+#define WorkerContentSettingsClient WorkerContentSettingsClient_ChromiumImpl
+
+#include "src/chrome/renderer/worker_content_settings_client.cc"
+
+#undef WorkerContentSettingsClient
+
+WorkerContentSettingsClient_BraveImpl::WorkerContentSettingsClient_BraveImpl(
+    content::RenderFrame* render_frame)
+    : WorkerContentSettingsClient_ChromiumImpl(render_frame) {
+  content_settings::ContentSettingsAgentImpl* agent =
+      content_settings::ContentSettingsAgentImpl::Get(render_frame);
+
+  if (const auto& shields_settings =
+          static_cast<content_settings::BraveContentSettingsAgentImpl*>(agent)
+              ->shields_settings()) {
+    shields_settings_ = shields_settings->Clone();
+  }
+}
+
+WorkerContentSettingsClient_BraveImpl::
+    ~WorkerContentSettingsClient_BraveImpl() = default;
+
+WorkerContentSettingsClient_BraveImpl::WorkerContentSettingsClient_BraveImpl(
+    const WorkerContentSettingsClient_BraveImpl& other)
+    : WorkerContentSettingsClient_ChromiumImpl(other) {
+  if (other.shields_settings_) {
+    shields_settings_ = other.shields_settings_->Clone();
+  }
+}
+
+std::unique_ptr<blink::WebContentSettingsClient>
+WorkerContentSettingsClient_BraveImpl::Clone() {
+  return base::WrapUnique(new WorkerContentSettingsClient_BraveImpl(*this));
+}
+
 brave_shields::mojom::ShieldsSettingsPtr
-WorkerContentSettingsClient::GetBraveShieldsSettings(
+WorkerContentSettingsClient_BraveImpl::GetBraveShieldsSettings(
     ContentSettingsType webcompat_settings_type) {
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
   if (content_setting_rules_) {
@@ -66,12 +101,14 @@ WorkerContentSettingsClient::GetBraveShieldsSettings(
 }
 
 blink::WebSecurityOrigin
-WorkerContentSettingsClient::GetEphemeralStorageOriginSync() {
-  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
+WorkerContentSettingsClient_BraveImpl::GetEphemeralStorageOriginSync() {
+  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
     return {};
+  }
 
-  if (is_unique_origin_)
+  if (is_unique_origin_) {
     return {};
+  }
 
   // If first party ephemeral storage is enabled, we should always ask the
   // browser if a worker should use ephemeral storage or not.
@@ -89,31 +126,14 @@ WorkerContentSettingsClient::GetEphemeralStorageOriginSync() {
   content_settings_manager_->AllowEphemeralStorageAccess(
       frame_token_, document_origin_, site_for_cookies_, top_frame_origin_,
       &optional_ephemeral_storage_origin);
-  // Don't cache the value intentionally as other WorkerContentSettingsClient
-  // methods do.
+  // Don't cache the value intentionally as other
+  // WorkerContentSettingsClient_BraveImpl methods do.
   return blink::WebSecurityOrigin(
       optional_ephemeral_storage_origin
           ? blink::WebSecurityOrigin(*optional_ephemeral_storage_origin)
           : blink::WebSecurityOrigin());
 }
 
-bool WorkerContentSettingsClient::HasContentSettingsRules() const {
+bool WorkerContentSettingsClient_BraveImpl::HasContentSettingsRules() const {
   return content_setting_rules_.get();
 }
-
-#define BRAVE_WORKER_CONTENT_SETTINGS_CLIENT                                   \
-  if (const auto& shields_settings =                                           \
-          static_cast<content_settings::BraveContentSettingsAgentImpl*>(agent) \
-              ->shields_settings()) {                                          \
-    shields_settings_ = shields_settings->Clone();                             \
-  }
-
-#define BRAVE_WORKER_CONTENT_SETTINGS_CLIENT_COPY_CTOR    \
-  if (other.shields_settings_) {                          \
-    shields_settings_ = other.shields_settings_->Clone(); \
-  }
-
-#include "src/chrome/renderer/worker_content_settings_client.cc"
-
-#undef BRAVE_WORKER_CONTENT_SETTINGS_CLIENT
-#undef BRAVE_WORKER_CONTENT_SETTINGS_CLIENT_COPY_CTOR
