@@ -309,9 +309,24 @@ interface ChatUI {
   OnNewDefaultConversation();
 };
 
+struct ConversationState {
+  string conversation_uuid;
+  bool is_request_in_progress;
+  array<Model> all_models;
+  string current_model_key;
+  array<string> suggested_questions;
+  SuggestionGenerationStatus suggestion_status;
+  SiteInfo associated_content_info;
+  bool should_send_content;
+  APIError error;
+  // TODO(petemill): include conversation history, once
+  // `OnConversationHistoryUpdate` is more intelligent (see TOOD in definition).
+};
+
 // Browser-side handler for a Conversation
 interface ConversationHandler {
-  // TODO(petemill): GetInitialState => (InitialState conversation_state);
+  GetState() => (ConversationState conversation_state);
+
   GetConversationUuid() => (string conversation_uuid);
 
   // Get all the possible models for any conversation

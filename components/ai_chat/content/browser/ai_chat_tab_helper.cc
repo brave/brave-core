@@ -401,7 +401,7 @@ void AIChatTabHelper::CheckPDFA11yTree() {
 }
 
 void AIChatTabHelper::GetSearchSummarizerKey(
-    mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback) {
+    GetSearchSummarizerKeyCallback callback) {
   if (!IsBraveSearchSERP(GetPageURL())) {
     std::move(callback).Run(std::nullopt);
     return;

@@ -69,8 +69,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
                                   FetchPageContentCallback callback) = 0;
 
     // Attempts to find a search summarizer key for the page.
-    virtual void GetSearchSummarizerKey(
-        mojom::PageContentExtractor::GetSearchSummarizerKeyCallback
+    virtual void GetSearchSummarizerKey(GetSearchSummarizerKeyCallback
             callback) = 0;
   };
 
@@ -151,9 +150,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // being considered as a new page.
   void MaybeSameDocumentIsNewPage();
 
-  void GetSearchSummarizerKey(
-      mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback)
-      override;
+  void GetSearchSummarizerKey(GetSearchSummarizerKeyCallback callback) override;
 
   void OnFetchPageContentComplete(
       ConversationHandler::GetPageContentCallback callback,

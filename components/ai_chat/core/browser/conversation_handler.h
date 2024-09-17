@@ -148,6 +148,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   ConversationHandler(const ConversationHandler&) = delete;
   ConversationHandler& operator=(const ConversationHandler&) = delete;
 
+  void Bind(mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler);
   void Bind(mojo::PendingReceiver<mojom::ConversationHandler> receiver,
             mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler);
 
@@ -171,6 +172,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory() const;
 
   // mojom::ConversationHandler
+  void GetState(GetStateCallback callback) override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
   void RateMessage(bool is_liked,
                    uint32_t turn_id,

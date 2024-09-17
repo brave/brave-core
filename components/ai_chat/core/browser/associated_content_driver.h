@@ -70,11 +70,14 @@ class AssociatedContentDriver
   }
 
  protected:
+  using GetSearchSummarizerKeyCallback =
+      base::OnceCallback<void(const std::optional<std::string>&)>;
+
   virtual GURL GetPageURL() const = 0;
   virtual std::u16string GetPageTitle() const = 0;
   // Get summarizer-key meta tag content from Brave Search SERP if exists.
   virtual void GetSearchSummarizerKey(
-      mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback) = 0;
+      GetSearchSummarizerKeyCallback callback) = 0;
 
   // Implementer should fetch content from the "page" associated with this
   // conversation.
@@ -85,7 +88,8 @@ class AssociatedContentDriver
       ConversationHandler::GetPageContentCallback callback,
       std::string_view invalidation_token) = 0;
 
-  virtual void OnFaviconImageDataChanged();
+  // Implementer should call this when the favicon for the content changes
+  void OnFaviconImageDataChanged();
 
   // Implementer should call this when the content is updated in a way that
   // will not be detected by the on-demand techniques used by GetPageContent.
@@ -96,8 +100,8 @@ class AssociatedContentDriver
                             bool is_video,
                             std::string invalidation_token);
 
-  // To be called when a page navigation is detected and a new conversation
-  // is expected.
+  // Implementer should call this when a page navigation is detected and a new
+  // conversation is expected.
   void OnNewPage(int64_t navigation_id) override;
 
  private:
@@ -124,10 +128,6 @@ class AssociatedContentDriver
       api_request_helper::APIRequestResult result);
   static std::optional<SearchQuerySummary> ParseSearchQuerySummaryResponse(
       const base::Value& value);
-
-  raw_ptr<PrefService> pref_service_;
-  raw_ptr<AIChatMetrics> ai_chat_metrics_;
-  std::unique_ptr<AIChatCredentialManager> credential_manager_;
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 

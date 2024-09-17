@@ -378,6 +378,7 @@ public struct AIChatView: View {
       )
     }
     .task {
+      await model.getInitialData()
       await model.refreshPremiumStatus()
       await MarkdownParser.prepareMarkdownParser(isDarkTheme: true)
 
@@ -603,7 +604,7 @@ public struct AIChatView: View {
             Task { @MainActor in
               await model.refreshPremiumStatus()
 
-              if let turn = model.clearErrorAndGetFailedMessage() {
+              if let turn = await model.clearErrorAndGetFailedMessage() {
                 prompt = turn.text
               }
             }

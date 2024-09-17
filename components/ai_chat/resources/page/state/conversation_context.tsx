@@ -197,27 +197,22 @@ export function ConversationContextProvider(
     }
 
     async function initialize() {
-      const [
-        { conversationUuid },
-        { isRequestInProgress: isGenerating },
-        { models, currentModelKey },
-        { questions, suggestionStatus },
-        { associatedContentInfo, shouldSendContent },
-        { error }
-      ] = await Promise.all([
-        // TODO(petemill): have a single getState function
-        conversationHandler.getConversationUuid(),
-        conversationHandler.getIsRequestInProgress(),
-        conversationHandler.getModels(),
-        conversationHandler.getSuggestedQuestions(),
-        conversationHandler.getAssociatedContentInfo(),
-        conversationHandler.getAPIResponseError()
-      ])
+      const { conversationState: {
+        conversationUuid,
+        isRequestInProgress: isGenerating,
+        allModels: models,
+        currentModelKey,
+        suggestedQuestions,
+        suggestionStatus,
+        associatedContentInfo,
+        shouldSendContent,
+        error
+      } } = await conversationHandler.getState()
       setPartialContext({
         conversationUuid,
         isGenerating,
         ...getModelContext(currentModelKey, models),
-        suggestedQuestions: questions,
+        suggestedQuestions,
         suggestionStatus,
         associatedContentInfo,
         shouldSendPageContents: shouldSendContent,
@@ -226,7 +221,6 @@ export function ConversationContextProvider(
     }
 
     // Initial data
-    // TODO(petemill): have a single mojom call that provides the initial state
     updateHistory()
     initialize()
 

@@ -219,9 +219,7 @@ void ConversationHandler::RemoveObserver(Observer* observer) {
 }
 
 void ConversationHandler::Bind(
-    mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
-  receivers_.Add(this, std::move(receiver));
   conversation_ui_handlers_.Add(std::move(conversation_ui_handler));
   OnClientConnectionChanged();
   // In some cases, this page handler hasn't been created and remote might not
@@ -234,9 +232,16 @@ void ConversationHandler::Bind(
   MaybePopPendingRequests();
 }
 
+void ConversationHandler::Bind(
+    mojo::PendingReceiver<mojom::ConversationHandler> receiver,
+    mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
+  receivers_.Add(this, std::move(receiver));
+  Bind(std::move(conversation_ui_handler));
+}
+
 bool ConversationHandler::IsAnyClientConnected() {
   DVLOG(2) << metadata_->uuid << " HAS " << receivers_.size() << " RECEIVERS!";
-  return !receivers_.empty();
+  return !receivers_.empty() && !conversation_ui_handlers_.empty();
 }
 
 bool ConversationHandler::HasAnyHistory() {
@@ -375,6 +380,24 @@ void ConversationHandler::GetConversationHistory(
   }
 
   std::move(callback).Run(std::move(history));
+}
+
+void ConversationHandler::GetState(GetStateCallback callback) {
+  const auto& models = model_service_->GetModels();
+  std::vector<mojom::ModelPtr> models_copy(models.size());
+  std::transform(models.cbegin(), models.cend(), models_copy.begin(),
+                 [](auto& model) { return model.Clone(); });
+  auto model_key = GetCurrentModel().key;
+
+  BuildAssociatedContentInfo();
+
+  mojom::ConversationStatePtr state = mojom::ConversationState::New(
+      metadata_->uuid, is_request_in_progress_, std::move(models_copy),
+      model_key, suggestions_, suggestion_generation_status_,
+      associated_content_info_->Clone(), should_send_page_contents_,
+      current_error_);
+
+  std::move(callback).Run(std::move(state));
 }
 
 void ConversationHandler::RateMessage(bool is_liked,
