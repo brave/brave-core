@@ -796,59 +796,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                                     return;
                                 }
                                 mScreenshotBytes = pngBytes;
-                                mViewScreenshot.setVisibility(View.VISIBLE);
-                                mViewScreenshot.setText(
-                                        BraveRewardsHelper.toSpannableString(
-                                                mContext.getResources()
-                                                        .getString(
-                                                                R.string
-                                                                    .report_broken_site_text_view_screenshot_label),
-                                                R.color.brave_link,
-                                                R.string
-                                                        .report_broken_site_text_view_screenshot_label,
-                                                (context) -> {
-                                                    mDialogView =
-                                                            ((Activity) mContext)
-                                                                    .getLayoutInflater()
-                                                                    .inflate(
-                                                                            R.layout
-                                                                                .report_broken_site_screenshot_view,
-                                                                            null);
-
-                                                    ChromeImageButton okButton =
-                                                            mDialogView.findViewById(
-                                                                    R.id.ok_button);
-                                                    okButton.setOnClickListener(
-                                                            new View.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(View view) {
-                                                                    mDialog.cancel();
-                                                                }
-                                                            });
-
-                                                    mDialog =
-                                                            new ChromeDialog(
-                                                                    (Activity) mContext,
-                                                                    R.style
-                                                                        .ThemeOverlay_BrowserUI_Fullscreen);
-                                                    mDialog.addContentView(
-                                                            mDialogView,
-                                                            new LinearLayout.LayoutParams(
-                                                                    LinearLayout.LayoutParams
-                                                                            .MATCH_PARENT,
-                                                                    LinearLayout.LayoutParams
-                                                                            .MATCH_PARENT));
-                                                    mImageView =
-                                                            mDialogView.findViewById(
-                                                                    R.id.screenshot_image);
-                                                    mImageView.setScaleType(
-                                                            ImageView.ScaleType.FIT_START);
-                                                    mImageView.setImageBitmap(
-                                                            BitmapFactory.decodeByteArray(
-                                                                    pngBytes, 0, pngBytes.length));
-                                                    mDialog.show();
-                                                }));
-                                mViewScreenshot.setMovementMethod(LinkMovementMethod.getInstance());
+                                setUpViewScreenshot(pngBytes);
                             } catch (Exception e) {
                                 Log.e(TAG, "BraveShieldsScreenshot failed " + e);
                             } finally {
@@ -888,6 +836,48 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                         mThankYouLayout.setVisibility(View.VISIBLE);
                     }
                 });
+    }
+
+    private void setUpViewScreenshot(byte[] pngBytes) {
+        mViewScreenshot.setVisibility(View.VISIBLE);
+        mViewScreenshot.setText(getScreenshotSpinnableString(pngBytes));
+        mViewScreenshot.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    private SpannableString getScreenshotSpinnableString(byte[] pngBytes) {
+        return BraveRewardsHelper.toSpannableString(
+                mContext.getResources()
+                        .getString(R.string.report_broken_site_text_view_screenshot_label),
+                R.color.brave_link,
+                R.string.report_broken_site_text_view_screenshot_label,
+                (context) -> showPreviewDialog(pngBytes));
+    }
+
+    private void showPreviewDialog(byte[] pngBytes) {
+        mDialogView =
+                ((Activity) mContext)
+                        .getLayoutInflater()
+                        .inflate(R.layout.report_broken_site_screenshot_view, null);
+
+        ChromeImageButton okButton = mDialogView.findViewById(R.id.ok_button);
+        okButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDialog.cancel();
+                    }
+                });
+
+        mDialog = new ChromeDialog((Activity) mContext, R.style.ThemeOverlay_BrowserUI_Fullscreen);
+        mDialog.addContentView(
+                mDialogView,
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT));
+        mImageView = mDialogView.findViewById(R.id.screenshot_image);
+        mImageView.setScaleType(ImageView.ScaleType.FIT_START);
+        mImageView.setImageBitmap(BitmapFactory.decodeByteArray(pngBytes, 0, pngBytes.length));
+        mDialog.show();
     }
 
     private boolean isScreenshotAvailable() {
