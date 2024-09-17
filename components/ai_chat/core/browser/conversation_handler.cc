@@ -241,7 +241,7 @@ void ConversationHandler::Bind(
 
 bool ConversationHandler::IsAnyClientConnected() {
   DVLOG(2) << metadata_->uuid << " HAS " << receivers_.size() << " RECEIVERS!";
-  return !receivers_.empty() && !conversation_ui_handlers_.empty();
+  return !receivers_.empty() || !conversation_ui_handlers_.empty();
 }
 
 bool ConversationHandler::HasAnyHistory() {

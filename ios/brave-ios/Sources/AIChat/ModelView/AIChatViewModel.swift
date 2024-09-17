@@ -35,7 +35,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
   @Published var suggestionsStatus: AiChat.SuggestionGenerationStatus = .none
   @Published var conversationHistory: [AiChat.ConversationTurn] = []
   @Published var models: [AiChat.Model] = []
-  @Published var currentModel: AiChat.Model!
+  @Published var currentModel: AiChat.Model?
 
   @Published var requestInProgress: Bool = false
   @Published var apiError: AiChat.APIError = .none
@@ -45,7 +45,9 @@ public class AIChatViewModel: NSObject, ObservableObject {
   }
 
   public var isCurrentModelPremium: Bool {
-    currentModel.options.tag == .leoModelOptions
+    guard let currentModel = currentModel else { return false }
+
+    return currentModel.options.tag == .leoModelOptions
       && currentModel.options.leoModelOptions?.access == .premium
   }
 
@@ -137,11 +139,6 @@ public class AIChatViewModel: NSObject, ObservableObject {
     api.changeModel(modelKey)
   }
 
-  func clearConversationHistory() async {
-    api.createNewConversation()
-    await self.getInitialState()
-  }
-
   func generateSuggestions() {
     if self.suggestionsStatus != .isGenerating && self.suggestionsStatus != .hasGenerated {
       objectWillChange.send()
@@ -206,6 +203,13 @@ public class AIChatViewModel: NSObject, ObservableObject {
     }
   }
 
+  @MainActor
+  func clearConversationHistory() async {
+    api.createNewConversation()
+    await self.getInitialState()
+  }
+
+  @MainActor
   func clearAndResetData() async {
     await self.clearConversationHistory()
     api.isAgreementAccepted = false
@@ -225,6 +229,10 @@ public class AIChatViewModel: NSObject, ObservableObject {
     self.siteInfo = state.associatedContentInfo
     self._shouldSendPageContents = state.shouldSendContent
     self.apiError = state.error
+    self.models = state.allModels
+
+    self.currentModel = self.models.first(where: { $0.key == state.currentModelKey })
+    self.conversationHistory = api.conversationHistory
   }
 
   @MainActor
@@ -342,6 +350,7 @@ extension AIChatViewModel: AIChatDelegate {
     status: AiChat.SuggestionGenerationStatus
   ) {
     self.suggestedQuestions = questions
+    self.suggestionsStatus = status
   }
 
   public func onModelChanged(_ modelKey: String, modelList: [AiChat.Model]) {

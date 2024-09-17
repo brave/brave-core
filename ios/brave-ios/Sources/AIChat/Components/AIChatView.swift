@@ -96,7 +96,7 @@ public struct AIChatView: View {
           dismiss()
         },
         onNewChat: {
-          Task { @MainActor in
+          Task {
             await model.clearConversationHistory()
           }
         },
@@ -144,8 +144,8 @@ public struct AIChatView: View {
                         }
                       )
                       .padding()
-                    } else {
-                      AIChatIntroMessageView(model: model.currentModel)
+                    } else if let currentModel = model.currentModel {
+                      AIChatIntroMessageView(model: currentModel)
                         .padding()
                         .background(Color(braveSystemName: .containerBackground))
 
@@ -272,6 +272,10 @@ public struct AIChatView: View {
                       }
 
                       Color.clear.id(lastMessageId)
+                    } else {
+                      ProgressView()
+                        .tint(Color(braveSystemName: .textInteractive))
+                        .padding(.trailing, 12.0)
                     }
                   }
                   .onChange(of: model.requestInProgress) { _ in
@@ -615,7 +619,7 @@ public struct AIChatView: View {
         .padding()
       case .contextLimitReached:
         AIChatContextLimitErrorView {
-          Task { @MainActor in
+          Task {
             await model.clearConversationHistory()
           }
         }

@@ -15,8 +15,6 @@ OBJC_EXPORT
 @interface AIChat : NSObject
 @property(nonatomic) bool isAgreementAccepted;
 
-@property(nonatomic, readonly) NSArray<AiChatModel*>* models;
-
 @property(nonatomic, readonly)
     NSArray<AiChatConversationTurn*>* conversationHistory;
 
