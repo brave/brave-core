@@ -23,8 +23,17 @@ inline constexpr char kBraveVPNRegionListFetchedDate[] =
     "brave.brave_vpn.region_list_fetched_date";
 inline constexpr char kBraveVPNDeviceRegion[] =
     "brave.brave_vpn.device_region_name";
+
+// For backward-compatibility, v1's selected region name is preserved.
+// If user runs older brave with migrated profile, it could make crash as
+// region data list v1 doesn't have entry for v2's selected region name.
+// Retaining only this data only is sufficient for backward compatibility
+// because region list and timezone data are fetched again as v2 data becomes
+// invalid in old browser.
 inline constexpr char kBraveVPNSelectedRegion[] =
     "brave.brave_vpn.selected_region_name";
+inline constexpr char kBraveVPNSelectedRegionV2[] =
+    "brave.brave_vpn.selected_region_name_v2";
 inline constexpr char kBraveVPNRegionListVersion[] =
     "brave.brave_vpn.region_list_version";
 #if BUILDFLAG(IS_WIN)

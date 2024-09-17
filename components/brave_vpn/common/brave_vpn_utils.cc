@@ -36,6 +36,7 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(prefs::kBraveVPNRegionListFetchedDate, {});
   registry->RegisterStringPref(prefs::kBraveVPNDeviceRegion, "");
   registry->RegisterStringPref(prefs::kBraveVPNSelectedRegion, "");
+  registry->RegisterStringPref(prefs::kBraveVPNSelectedRegionV2, "");
 #endif
   registry->RegisterStringPref(prefs::kBraveVPNEnvironment,
                                skus::GetDefaultEnvironment());
@@ -87,12 +88,10 @@ void MigrateFromV1ToV2(PrefService* local_prefs) {
   // In this migration, selected region name is updated to matched v2's country
   // name.
   if (kV1ToV2Map.contains(selected_region_v1)) {
-    local_prefs->SetString(prefs::kBraveVPNSelectedRegion,
+    local_prefs->SetString(prefs::kBraveVPNSelectedRegionV2,
                            kV1ToV2Map.at(selected_region_v1));
-  } else {
-    // This will not be happened but added for safe during the startup.
-    local_prefs->ClearPref(prefs::kBraveVPNSelectedRegion);
   }
+
   local_prefs->SetInteger(prefs::kBraveVPNRegionListVersion, 2);
 }
 #endif

@@ -389,7 +389,7 @@ void BraveVpnService::UpdatePurchasedStateForSessionExpired(
 bool BraveVpnService::IsCurrentRegionSelectedAutomatically(
     const brave_vpn::mojom::RegionPtr& region) {
   const auto selected_region_name =
-      local_prefs_->GetString(prefs::kBraveVPNSelectedRegion);
+      local_prefs_->GetString(prefs::kBraveVPNSelectedRegionV2);
 
   if (region->region_precision == brave_vpn::mojom::kRegionPrecisionCountry &&
       selected_region_name.empty()) {

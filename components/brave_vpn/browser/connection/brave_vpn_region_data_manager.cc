@@ -40,7 +40,7 @@ bool BraveVPNRegionDataManager::IsRegionDataReady() const {
 }
 
 void BraveVPNRegionDataManager::SetSelectedRegion(std::string_view name) {
-  local_prefs_->SetString(prefs::kBraveVPNSelectedRegion, name);
+  local_prefs_->SetString(prefs::kBraveVPNSelectedRegionV2, name);
 
   if (selected_region_changed_callback_) {
     selected_region_changed_callback_.Run(GetSelectedRegion());
@@ -52,7 +52,7 @@ std::string BraveVPNRegionDataManager::GetSelectedRegion() const {
     CHECK_IS_TEST();
   }
 
-  auto region_name = local_prefs_->GetString(prefs::kBraveVPNSelectedRegion);
+  auto region_name = local_prefs_->GetString(prefs::kBraveVPNSelectedRegionV2);
   if (region_name.empty()) {
     // Gives device region if there is no cached selected region.
     VLOG(2) << __func__ << " : give device region instead.";
@@ -128,7 +128,7 @@ void BraveVPNRegionDataManager::SetDeviceRegionWithTimezone(
             GetMigratedNameIfNeeded(local_prefs_, *region_name);
         SetDeviceRegion(new_name);
         // Use device region as a default selected region.
-        if (local_prefs_->GetString(prefs::kBraveVPNSelectedRegion).empty()) {
+        if (local_prefs_->GetString(prefs::kBraveVPNSelectedRegionV2).empty()) {
           SetSelectedRegion(new_name);
         }
         return;
