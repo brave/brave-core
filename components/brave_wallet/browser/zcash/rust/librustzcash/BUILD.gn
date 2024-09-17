@@ -29,8 +29,8 @@ rust_static_library("zcash_encoding") {
   sources = [ "src/components/zcash_encoding/src/lib.rs" ]
   allow_unsafe = true
   deps = [
-    "//brave/third_party/rust/byteorder/v1:lib",
     "//brave/third_party/rust/nonempty/v0_7:lib",
+    "//third_party/rust/byteorder/v1:lib",
   ]
 }
 
@@ -51,10 +51,10 @@ rust_static_library("zcash_primitives") {
   deps = [
     ":zcash_encoding",
     ":zcash_protocol",
-    "//brave/third_party/rust/byteorder/v1:lib",
     "//brave/third_party/rust/incrementalmerkletree/v0_5:lib",
     "//brave/third_party/rust/memuse/v0_2:lib",
     "//brave/third_party/rust/nonempty/v0_7:lib",
     "//brave/third_party/rust/orchard/v0_8:lib",
+    "//third_party/rust/byteorder/v1:lib",
   ]
 }

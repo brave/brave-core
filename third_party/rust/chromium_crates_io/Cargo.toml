@@ -91,13 +91,9 @@ package = "anyhow"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/base64-0.13.1"
 package = "base64"
 
-[patch.crates-io.bitflags_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/bitflags-1.3.2"
-package = "bitflags"
-
-[patch.crates-io.bitflags_v2]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0"
-package = "bitflags"
+[patch.crates-io.byteorder_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/byteorder-1.5.0"
+package = "byteorder"
 
 [patch.crates-io.cfg-if_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/cfg-if-1.0.0"
@@ -234,3 +230,11 @@ package = "zcash_encoding"
 [patch.crates-io.zcash_primitives_v0_15]
 path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/zcash_primitives"
 package = "zcash_primitives"
+
+[patch.crates-io.zerocopy_v0_7]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/zerocopy-0.7.35"
+package = "zerocopy"
+
+[patch.crates-io.zerocopy_derive_v0_7]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/zerocopy-derive-0.7.35"
+package = "zerocopy-derive"
