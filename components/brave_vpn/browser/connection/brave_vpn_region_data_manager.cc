@@ -16,6 +16,7 @@
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_helper.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
@@ -38,7 +39,7 @@ bool BraveVPNRegionDataManager::IsRegionDataReady() const {
   return !regions_.empty();
 }
 
-void BraveVPNRegionDataManager::SetSelectedRegion(const std::string& name) {
+void BraveVPNRegionDataManager::SetSelectedRegion(std::string_view name) {
   local_prefs_->SetString(prefs::kBraveVPNSelectedRegion, name);
 
   if (selected_region_changed_callback_) {
@@ -66,7 +67,7 @@ std::string BraveVPNRegionDataManager::GetDeviceRegion() const {
   return local_prefs_->GetString(prefs::kBraveVPNDeviceRegion);
 }
 
-void BraveVPNRegionDataManager::SetDeviceRegion(const std::string& name) {
+void BraveVPNRegionDataManager::SetDeviceRegion(std::string_view name) {
   local_prefs_->SetString(prefs::kBraveVPNDeviceRegion, name);
 }
 
@@ -122,10 +123,13 @@ void BraveVPNRegionDataManager::SetDeviceRegionWithTimezone(
       }
       if (current_time_zone == timezone.GetString()) {
         VLOG(2) << "Found default region: " << *region_name;
-        SetDeviceRegion(*region_name);
+        // Get new region name as timezone data could use old name.
+        std::string_view new_name =
+            GetMigratedNameIfNeeded(local_prefs_, *region_name);
+        SetDeviceRegion(new_name);
         // Use device region as a default selected region.
         if (local_prefs_->GetString(prefs::kBraveVPNSelectedRegion).empty()) {
-          SetSelectedRegion(*region_name);
+          SetSelectedRegion(new_name);
         }
         return;
       }

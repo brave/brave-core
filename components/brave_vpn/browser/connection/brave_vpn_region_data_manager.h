@@ -46,7 +46,7 @@ class BraveVPNRegionDataManager {
       base::RepeatingCallback<void(bool)> callback) {
     region_data_ready_callback_ = callback;
   }
-  void SetSelectedRegion(const std::string& name);
+  void SetSelectedRegion(std::string_view name);
   std::string GetDeviceRegion() const;
   std::string GetRegionPrecisionForName(const std::string& name) const;
 
@@ -54,7 +54,7 @@ class BraveVPNRegionDataManager {
   friend class BraveVPNServiceTest;
   friend class SystemVPNConnectionAPIUnitTest;
 
-  void SetDeviceRegion(const std::string& name);
+  void SetDeviceRegion(std::string_view name);
 
   void SetFallbackDeviceRegion();
   void SetDeviceRegionWithTimezone(const base::Value::List& timezons_value);
