@@ -27,9 +27,6 @@ class BraveVPNStatusLabel : public views::Label,
   BraveVPNStatusLabel(const BraveVPNStatusLabel&) = delete;
   BraveVPNStatusLabel& operator=(const BraveVPNStatusLabel&) = delete;
 
-  gfx::Size CalculatePreferredSize(
-      const views::SizeBounds& available_size) const override;
-
  private:
   // brave_vpn::BraveVPNServiceObserver overrides:
   void OnConnectionStateChanged(
