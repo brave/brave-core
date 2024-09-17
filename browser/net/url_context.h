@@ -122,6 +122,8 @@ struct BraveRequestInfo {
 
   std::string upload_data;
 
+  std::optional<std::string> devtools_request_id;
+
   static std::shared_ptr<brave::BraveRequestInfo> MakeCTX(
       const network::ResourceRequest& request,
       int render_process_id,

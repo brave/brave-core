@@ -57,6 +57,25 @@ def _merge_commands(extended_domain, protocol_domain):
         raise RuntimeError("Unsupported command merge: ", extended_command)
 
 
+def _merge_events(extended_domain, protocol_domain):
+    extended_events = extended_domain.get('events', None)
+    if not extended_events:
+        return
+    protocol_events = protocol_domain.get('events', None)
+    if not protocol_events:
+        protocol_domain['events'] = extended_events
+        return
+    for extended_event in extended_events:
+        protocol_event = next(
+            filter(lambda x: x['name'] == extended_event['name'],
+                   protocol_events), None)
+        if not protocol_event:
+            protocol_events.append(extended_event)
+            continue
+        # Please add new PDL merging capabilities if you need to.
+        raise RuntimeError("Unsupported event merge: ", extended_event)
+
+
 def _merge_protocol(protocol, file_name):
     chromium_src_file = brave_chromium_utils.get_chromium_src_override(
         file_name)
@@ -65,13 +84,21 @@ def _merge_protocol(protocol, file_name):
     with open(chromium_src_file, "r") as input_file:
         extended_protocol = _original_parse(input_file.read(),
                                             chromium_src_file)
-    for extended_domain in extended_protocol['domains']:
-        protocol_domain = next(
-            filter(lambda x: x['domain'] == extended_domain['domain'],
-                   protocol['domains']))
-        _merge_types(extended_domain, protocol_domain)
-        _merge_commands(extended_domain, protocol_domain)
 
+    for extended_domain in extended_protocol['domains']:
+        protocol_domain = None
+        for domain in protocol['domains']:
+            if domain['domain'] == extended_domain['domain']:
+                protocol_domain = domain
+                break
+
+        if protocol_domain:
+            _merge_types(extended_domain, protocol_domain)
+            _merge_commands(extended_domain, protocol_domain)
+            _merge_events(extended_domain, protocol_domain)
+        else:
+            assert extended_domain['domain'].startswith('Brave')
+            protocol['domains'].append(extended_domain)
 
 @override_utils.override_function(globals())
 def parse(original_function, data, file_name, map_binary_to_string=False):

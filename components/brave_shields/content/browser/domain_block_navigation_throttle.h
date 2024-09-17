@@ -34,6 +34,7 @@ class AdBlockCustomFiltersProvider;
 
 class DomainBlockNavigationThrottle : public content::NavigationThrottle {
  public:
+  struct BlockResult;
   explicit DomainBlockNavigationThrottle(
       content::NavigationHandle* navigation_handle,
       AdBlockService* ad_block_service,
@@ -65,7 +66,7 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
 
  private:
   void OnShouldBlockDomain(DomainBlockingType domain_blocking_type,
-                           std::pair<bool, std::string> should_block_domain);
+                           const BlockResult& should_block_domain);
   void ShowInterstitial(bool proceed_with_resume_cancel);
   void Enable1PESAndResume(bool proceed_with_resume_cancel);
   void On1PESState(bool proceed_with_resume_cancel, bool is_1pes_enabled);

@@ -1,0 +1,12 @@
+diff --git a/content/public/browser/BUILD.gn b/content/public/browser/BUILD.gn
+index 35318cd019e2a52a071b2c426aff95040077d427..2548fee7bb96b6326f2220eeb3bbd53bf2900c63 100644
+--- a/content/public/browser/BUILD.gn
++++ b/content/public/browser/BUILD.gn
+@@ -734,6 +734,7 @@ source_set("browser_sources") {
+   if (is_chromeos_lacros) {
+     deps += [ "//chromeos/startup" ]
+   }
++  import("//brave/content/public/browser/sources.gni") sources += brave_content_public_browser_sources
+ }
+ 
+ if (is_android) {

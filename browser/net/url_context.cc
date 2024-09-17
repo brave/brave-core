@@ -147,6 +147,8 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     ctx->redirect_source = old_ctx->redirect_source;
   }
 
+  ctx->devtools_request_id = request.devtools_request_id;
+
   return ctx;
 }
 
