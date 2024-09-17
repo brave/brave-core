@@ -1,0 +1,7 @@
+include_rules = [
+  "+content/browser/devtools",
+  "+content/browser/renderer_host",
+  "+content/common",
+  "+content/public",
+  "+third_party/blink/public",
+]

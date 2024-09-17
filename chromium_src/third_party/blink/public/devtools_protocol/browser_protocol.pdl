@@ -23,3 +23,24 @@ domain Page
     returns
       # Generated report lines
       array of string report
+
+
+domain Network
+  experimental type AdblockInfo extends object
+    properties
+      string requestUrl
+      string checkedUrl
+      string sourceHost
+      optional ResourceType resourceType
+      boolean aggressive
+      boolean blocked
+      boolean didMatchImportantRule
+      boolean didMatchRule
+      boolean didMatchException
+      boolean hasMockData
+      optional string rewrittenUrl
+
+  experimental event requestAdblockInfoReceived
+    parameters
+      Network.RequestId requestId
+      AdblockInfo info

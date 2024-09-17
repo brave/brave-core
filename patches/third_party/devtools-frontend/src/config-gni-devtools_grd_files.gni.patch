@@ -1,0 +1,12 @@
+diff --git a/config/gni/devtools_grd_files.gni b/config/gni/devtools_grd_files.gni
+index 46b25683cb5b9bdb4c185663b23982aada1128e9..2f27a3450bb4ffa64b092d9281b3dc0f7070bd37 100644
+--- a/config/gni/devtools_grd_files.gni
++++ b/config/gni/devtools_grd_files.gni
+@@ -2393,6 +2393,7 @@ grd_files_debug_sources = [
+   "front_end/ui/visual_logging/LoggingState.js",
+   "front_end/ui/visual_logging/NonDomState.js",
+ ]
++import("//brave/third_party/devtools-frontend/src/config/gni/sources.gni") grd_files_debug_sources += brave_grd_files_debug_sources
+ 
+ # Confirm that there is no overlap between the two lists.
+ _grd_files_release_sources =

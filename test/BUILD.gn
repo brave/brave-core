@@ -735,6 +735,7 @@ test("brave_browser_tests") {
     "//brave/browser/brave_prefs_browsertest.cc",
     "//brave/browser/brave_scheme_load_browsertest.cc",
     "//brave/browser/brave_search/brave_search_browsertest.cc",
+    "//brave/browser/brave_shields/ad_block_devtools_browsertest.cc",
     "//brave/browser/brave_shields/ad_block_service_browsertest.cc",
     "//brave/browser/brave_shields/ad_block_service_browsertest.h",
     "//brave/browser/brave_shields/brave_shields_web_contents_observer_browsertest.cc",

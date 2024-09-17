@@ -6,6 +6,7 @@
 #include "brave/components/brave_shields/content/browser/domain_block_navigation_throttle.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/feature_list.h"
@@ -21,6 +22,7 @@
 #include "brave/components/brave_shields/content/browser/domain_block_tab_storage.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
+#include "brave/content/public/browser/devtools/adblock_devtools_instumentation.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
@@ -33,13 +35,28 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "net/base/net_errors.h"
 
-namespace {
+namespace brave_shields {
 
-std::pair<bool, std::string> ShouldBlockDomainOnTaskRunner(
-    brave_shields::AdBlockService* ad_block_service,
-    const GURL& url,
-    bool aggressive_setting) {
+struct DomainBlockNavigationThrottle::BlockResult {
+  BlockResult() = default;
+  BlockResult(const BlockResult&) = default;
+  BlockResult(BlockResult&&) = default;
+  ~BlockResult() = default;
+
+  bool should_block = false;
+  std::string new_url;
+  std::optional<content::devtools_instrumentation::AdblockInfo> info;
+};
+
+}  // namespace brave_shields
+
+namespace {
+brave_shields::DomainBlockNavigationThrottle::BlockResult
+ShouldBlockDomainOnTaskRunner(brave_shields::AdBlockService* ad_block_service,
+                              const GURL& url,
+                              bool aggressive_setting) {
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.DomainBlock.ShouldBlock");
+  brave_shields::DomainBlockNavigationThrottle::BlockResult block_result;
   // force aggressive blocking to `true` for domain blocking - these requests
   // are all "first-party", but the throttle is already only called when
   // necessary.
@@ -48,13 +65,32 @@ std::pair<bool, std::string> ShouldBlockDomainOnTaskRunner(
       url, blink::mojom::ResourceType::kMainFrame, url.host(),
       aggressive_for_engine, false, false, false);
 
-  const bool should_block =
+  block_result.should_block =
       result.important || (result.matched && !result.has_exception);
 
-  std::string new_url = aggressive_setting && result.rewritten_url.has_value
-                            ? std::string(result.rewritten_url.value)
-                            : std::string();
-  return std::pair(should_block, new_url);
+  block_result.new_url = aggressive_setting && result.rewritten_url.has_value
+                             ? std::string(result.rewritten_url.value)
+                             : std::string();
+
+  if (block_result.should_block || result.has_exception) {
+    content::devtools_instrumentation::AdblockInfo info;
+    info.request_url = url;
+    info.checked_url = url;
+    info.source_host = url.host();
+    info.resource_type = blink::mojom::ResourceType::kMainFrame;
+    info.aggressive = aggressive_for_engine;
+    info.blocked = block_result.should_block;
+    info.did_match_important_rule = result.important;
+    info.did_match_rule = result.matched;
+    info.did_match_exception = result.has_exception;
+    info.has_mock_data = false;
+    if (!block_result.new_url.empty()) {
+      info.rewritten_url = block_result.new_url;
+    }
+    block_result.info = std::move(info);
+  }
+
+  return block_result;
 }
 
 }  // namespace
@@ -174,11 +210,17 @@ DomainBlockNavigationThrottle::WillProcessResponse() {
 
 void DomainBlockNavigationThrottle::OnShouldBlockDomain(
     DomainBlockingType domain_blocking_type,
-    std::pair<bool, std::string> block_result) {
-  const bool should_block = block_result.first;
-  const GURL new_url(block_result.second);
+    const BlockResult& block_result) {
+  const bool should_block = block_result.should_block;
+  const GURL new_url(block_result.new_url);
   const bool proceed_with_resume_cancel = is_deferred_;
   is_deferred_ = false;
+
+  if (should_block && block_result.info) {
+    content::devtools_instrumentation::SendAdblockInfo(
+        this->navigation_handle(), block_result.info.value());
+  }
+
   if (!should_block && !new_url.is_valid()) {
     DomainBlockTabStorage* tab_storage = DomainBlockTabStorage::FromWebContents(
         navigation_handle()->GetWebContents());
