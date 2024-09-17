@@ -9,7 +9,7 @@
 
 ### How It Works
 
-When `chromium_src/third_party/devtools-frontend/src/third_party/typescript/ts_library.py` detects a file starting with `//brave`, it copies this file to the corresponding upstream directory. When the compilation of the corresponding target is done, `ts_library.py` removes the copied file to preserve the upstream sources in their original state.
+When `chromium_src/third_party/devtools-frontend/src/scripts/build/typescript/ts_library.py` detects a file starting with `//brave`, it copies this file to the corresponding upstream directory. When the compilation of the corresponding target is done, `ts_library.py` removes the copied file to preserve the upstream sources in their original state.
 
 ## Patching an Existing File
 
@@ -21,4 +21,4 @@ When `chromium_src/third_party/devtools-frontend/src/third_party/typescript/ts_l
 
 ### How It Works
 
-When `chromium_src/third_party/devtools-frontend/src/third_party/typescript/ts_library.py` detects a `chromium_src` counterpart, it copies the file to the corresponding upstream directory (replacing `.ts` with `.patch.ts`). You don't need to add this file in `sources.gni` or `BUILD.gn`. Instead, you should import the `{filename}.patch.js` file (See step #2 above). `chromium_src/third_party/devtools-frontend/src/scripts/build/generate_devtools_grd.py` will automatically add the `.patch.js` file into the resource bundle.
+When `chromium_src/third_party/devtools-frontend/src/scripts/build/typescript/ts_library.py` detects a `chromium_src` counterpart, it copies the file to the corresponding upstream directory (replacing `.ts` with `.patch.ts`). You don't need to add this file in `sources.gni` or `BUILD.gn`. Instead, you should import the `{filename}.patch.js` file (See step #2 above). `chromium_src/third_party/devtools-frontend/src/scripts/build/generate_devtools_grd.py` will automatically add the `.patch.js` file into the resource bundle.

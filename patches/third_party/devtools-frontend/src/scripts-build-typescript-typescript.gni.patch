@@ -1,8 +1,8 @@
-diff --git a/third_party/typescript/typescript.gni b/third_party/typescript/typescript.gni
-index 83bc0fb5c6a84f962248a69aac9b149358fc75b3..4561a20679ed773828a4157adb2cecaa4c79ea6a 100644
---- a/third_party/typescript/typescript.gni
-+++ b/third_party/typescript/typescript.gni
-@@ -198,6 +198,7 @@ template("ts_library") {
+diff --git a/scripts/build/typescript/typescript.gni b/scripts/build/typescript/typescript.gni
+index b2af3fa42b04abd30ea36245c5517e94a6fdf79a..eaaea43776fe398322451d48983417f81e31995d 100644
+--- a/scripts/build/typescript/typescript.gni
++++ b/scripts/build/typescript/typescript.gni
+@@ -202,6 +202,7 @@ template("ts_library") {
  
        foreach(src, sources) {
          _extension = get_path_info(src, "extension")
