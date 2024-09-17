@@ -6,6 +6,7 @@
 group("rust_lib") {
   visibility = [
     "//brave/components/brave_shields/content/browser:*",
+    "//brave/components/brave_shields/content/test:unit_tests",
     "//brave/components/brave_shields/core/browser:*",
     "//brave/components/brave_shields/core/common:*",
     "//brave/fuzzers:*",

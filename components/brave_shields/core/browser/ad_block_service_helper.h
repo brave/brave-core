@@ -23,6 +23,8 @@ void MergeResourcesInto(base::Value::Dict from,
                         base::Value::Dict& into,
                         bool force_hide);
 
+void StripProceduralFilters(base::Value::Dict& resources);
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_SERVICE_HELPER_H_
