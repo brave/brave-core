@@ -11,7 +11,7 @@ RegisterStyleOverride(
   html`
     <style>
       #progress {
-        --paper-progress-active-color: var(--leo-color-icon-interactive) !important;
+        --cr-progress-active-color: var(--leo-color-icon-interactive) !important;
       }
     </style>
   `
