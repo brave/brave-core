@@ -825,7 +825,6 @@ std::optional<mojom::CoinType> GetCoinTypeFromPrefKey_DEPRECATED(
   } else if (key == kZCashPrefKey) {
     return mojom::CoinType::ZEC;
   }
-  NOTREACHED_IN_MIGRATION() << key;
   return std::nullopt;
 }
 
