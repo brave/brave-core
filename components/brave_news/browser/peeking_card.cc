@@ -29,6 +29,9 @@ namespace {
 using ItemScore = std::tuple</*index*/ size_t, /*score*/ double>;
 
 constexpr size_t kMaxPeekingCardCandidates = 10;
+// The percentage of the final candidates that are allowed to come from the same
+// publisher.
+constexpr double kMaxPublisherPercentOfCandidates = 0.2;
 
 constexpr double kDirectBoost = 15;
 constexpr double kPublisherBoost = 10;
@@ -43,6 +46,8 @@ constexpr double kOneDayMultiplier = 1.1;
 
 constexpr double kMorningNewsBoost = 3;
 constexpr double kEveningEntertainmentBoost = 3;
+
+constexpr double kMaxCandidatesScorePercentCutoff = 0.8;
 
 constexpr char kEntertainmentChannel[] = "Entertainment";
 }  // namespace
@@ -171,6 +176,10 @@ std::optional<size_t> PickPeekingCardWithMax(
     return a_article->publish_time > b_article->publish_time;
   });
 
+  if (candidates.empty()) {
+    return std::nullopt;
+  }
+
   std::vector<ItemScore> final_candidates;
   std::map<std::string, size_t> seen_channels;
 
@@ -179,8 +188,12 @@ std::optional<size_t> PickPeekingCardWithMax(
   const auto channel_limit = following_count < kMaxPeekingCardCandidates
                                  ? (max_candidates / following_count)
                                  : 1;
+  // This is the minimum score that we'll consider candidates at;
+  const auto min_score =
+      kMaxCandidatesScorePercentCutoff * std::get<1>(candidates.front());
+
   for (auto& [index, score] : candidates) {
-    if (final_candidates.size() >= max_candidates) {
+    if (final_candidates.size() >= max_candidates || score < min_score) {
       break;
     }
 
@@ -201,7 +214,7 @@ std::optional<size_t> PickPeekingCardWithMax(
     final_candidates.emplace_back(index, score);
   }
 
-  if (final_candidates.size() == 0) {
+  if (final_candidates.empty()) {
     return std::nullopt;
   }
 
