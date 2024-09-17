@@ -21,7 +21,6 @@ import androidx.core.graphics.drawable.DrawableCompat;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
@@ -125,10 +124,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         BraveVpnProfileUtils.getInstance().isBraveVPNConnected(mContext));
             }
 
-            Log.e(
-                    "brave_vpn",
-                    "BraveVpnPrefUtils.getRegionIsoCode() : "
-                            + BraveVpnPrefUtils.getRegionIsoCode());
             if (BraveVpnPrefUtils.isSubscriptionPurchase()
                     && !TextUtils.isEmpty(BraveVpnPrefUtils.getRegionIsoCode())) {
                 String serverLocation = " %s  %s";
