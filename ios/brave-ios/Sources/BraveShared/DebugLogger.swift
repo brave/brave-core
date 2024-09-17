@@ -8,12 +8,10 @@ import Shared
 import UIKit
 
 public enum LoggerType {
-  case urp, secureState
+  case secureState
 
   var prefsKey: String {
     switch self {
-    case .urp:
-      return "urpLogs"
     case .secureState:
       return "secureStateLogs"
     }
@@ -49,8 +47,6 @@ public struct DebugLogger {
     case .secureState:
       logs.append("------------------------------------\n\n")
       logs.append(" [\(time)]\n\n \(text)\n")
-    case .urp:
-      logs.append("[\(time)] \(text)\n")
     }
 
     UserDefaults.standard.set(logs, forKey: type.prefsKey)
@@ -58,6 +54,11 @@ public struct DebugLogger {
 
   public static func cleanLogger(for type: LoggerType) {
     UserDefaults.standard.removeObject(forKey: type.prefsKey)
+  }
+
+  public static func cleanUrpLogs() {
+    // Delete the no-longer used urp logs if they exist
+    UserDefaults.standard.removeObject(forKey: "urpLogs")
   }
 }
 
@@ -78,8 +79,6 @@ public class DebugLogViewController: UIViewController {
     super.viewDidLoad()
 
     switch loggerType {
-    case .urp:
-      title = "URP Logs"
     case .secureState:
       title = "Secure Content State"
     }

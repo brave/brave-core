@@ -67,15 +67,11 @@ public struct AdAttributionData {
     // They will indicate if the Apple Searhs Ads is clicked and for which campaign
     guard let attribution = json["attribution"] as? Bool else {
       Logger.module.error("Failed to unwrap json to Ad Attribution property.")
-      DebugLogger.log(for: .urp, text: "Failed to unwrap json to Ad Attribution property. \(json)")
-
       throw SerializationError.missing("Attribution Context")
     }
 
     guard let campaignId = json["campaignId"] as? Int else {
       Logger.module.error("Failed to unwrap json to Campaign Id property.")
-      DebugLogger.log(for: .urp, text: "Failed to unwrap json to Campaign Id property. \(json)")
-
       throw SerializationError.missing("Campaign Id")
     }
 

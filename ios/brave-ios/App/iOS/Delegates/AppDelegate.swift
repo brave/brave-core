@@ -131,6 +131,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Clean Logger for Secure content state
     DebugLogger.cleanLogger(for: .secureState)
 
+    // Clean Logger for URP (no longer used)
+    DebugLogger.cleanUrpLogs()
+
     return true
   }
 

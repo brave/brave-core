@@ -101,7 +101,6 @@ public class DAU {
   @objc private func sendPingToServerInternal() {
     guard let paramsAndPrefs = paramsAndPrefsSetup(for: Date()) else {
       Logger.module.debug("dau, no changes detected, no server ping")
-      DebugLogger.log(for: .urp, text: "dau, no changes detected, no server ping")
       return
     }
 
@@ -123,7 +122,6 @@ public class DAU {
     }
 
     Logger.module.debug("send ping to server, url: \(pingRequestUrl)")
-    DebugLogger.log(for: .urp, text: "send ping to server, url: \(pingRequestUrl)")
 
     var request = URLRequest(url: pingRequestUrl)
     for (key, value) in paramsAndPrefs.headers {
@@ -137,7 +135,6 @@ public class DAU {
 
       if let e = error {
         Logger.module.error("status update error: \(e.localizedDescription)")
-        DebugLogger.log(for: .urp, text: "status update error: \(e)")
         return
       }
 
@@ -224,7 +221,6 @@ public class DAU {
 
     if let referralCode = UserReferralProgram.getReferralCode() {
       params.append(URLQueryItem(name: "ref", value: referralCode))
-      DebugLogger.log(for: .urp, text: "DAU ping with added ref, params: \(params)")
     }
 
     let lastPingTimestamp = [Int((date).timeIntervalSince1970)]

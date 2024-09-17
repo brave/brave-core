@@ -1054,17 +1054,6 @@ class SettingsViewController: TableViewController {
           accessory: .disclosureIndicator,
           cellClass: MultilineValue1Cell.self
         ),
-        Row(
-          text: "View URP Logs",
-          selection: { [unowned self] in
-            self.navigationController?.pushViewController(
-              DebugLogViewController(type: .urp),
-              animated: true
-            )
-          },
-          accessory: .disclosureIndicator,
-          cellClass: MultilineValue1Cell.self
-        ),
         Row(text: "URP Code: \(UserReferralProgram.getReferralCode() ?? "--")"),
         Row(
           text: "BraveCore Switches",
