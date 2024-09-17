@@ -46,16 +46,18 @@ if (include_polymer) {
         "br_elements/br_toolbar/br_toolbar.ts",
         "br_elements/br_toolbar/br_toolbar_search_field.ts",
       ]
-
-      # All the cr_overrides we add should be included in the build.
-      foreach(cr_override, brave_override_cr_elements) {
-        web_component_files += [ "cr_elements/$cr_override/$cr_override.ts" ]
-      }
-
       non_web_component_files = [
         "polymer_overriding.ts",
         "lit_overriding.ts",
       ]
+
+      # All the cr_overrides we add should be included in the build.
+      foreach(cr_override, brave_override_cr_elements) {
+        non_web_component_files += [
+          "cr_elements/$cr_override/$cr_override.ts",
+          "cr_elements/$cr_override/$cr_override.html.ts",
+        ]
+      }
     }
 
     if (include_polymer) {
