@@ -15,7 +15,7 @@ struct BraveSearchDebugMenu: View {
   @State private var storageTypes: [String] = []
 
   var body: some View {
-    List {
+    Form {
       Section {
         Toggle("Enable callback logging", isOn: $logging.isEnabled)
           .toggleStyle(SwitchToggleStyle(tint: .accentColor))

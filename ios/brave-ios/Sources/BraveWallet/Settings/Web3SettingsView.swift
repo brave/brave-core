@@ -30,7 +30,7 @@ public struct Web3SettingsView: View {
   }
 
   public var body: some View {
-    List {
+    Form {
       if let settingsStore = settingsStore {
         if let networkStore = networkStore, let keyringStore = keyringStore {
           WalletSettingsView(

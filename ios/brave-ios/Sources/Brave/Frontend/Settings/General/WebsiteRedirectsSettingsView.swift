@@ -13,7 +13,7 @@ struct WebsiteRedirectsSettingsView: View {
   @ObservedObject private var npr = Preferences.WebsiteRedirects.npr
 
   var body: some View {
-    List {
+    Form {
       Section {
         Toggle(isOn: $reddit.value) {
           Text("reddit.com \(Image(systemName: "arrow.right")) old.reddit.com")

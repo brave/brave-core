@@ -33,7 +33,7 @@ struct FilterListAddURLView: View {
 
   var body: some View {
     NavigationView {
-      List {
+      Form {
         Section(
           content: {
             VStack(alignment: .leading) {

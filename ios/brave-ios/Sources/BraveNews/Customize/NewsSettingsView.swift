@@ -204,7 +204,7 @@ public struct NewsSettingsView: View {
   }
 
   public var body: some View {
-    List {
+    Form {
       Section {
         if isNewsEnabled.value {
           destinations

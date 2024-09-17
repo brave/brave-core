@@ -62,7 +62,7 @@ public struct BraveNewsDebugSettingsView: View {
   }
 
   public var body: some View {
-    List {
+    Form {
       Section {
         Picker("Environment", selection: $environment) {
           ForEach(FeedDataSource.Environment.allCases, id: \.self) { env in

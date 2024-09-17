@@ -21,7 +21,7 @@ struct ShredSettingsView: View {
   }
 
   var body: some View {
-    List {
+    Form {
       Section {
         Picker(selection: $settings.shredLevel) {
           ForEach(SiteShredLevel.allCases) { level in

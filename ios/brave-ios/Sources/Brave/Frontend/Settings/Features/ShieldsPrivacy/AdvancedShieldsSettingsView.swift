@@ -21,7 +21,7 @@ struct AdvancedShieldsSettingsView: View {
   }
 
   var body: some View {
-    List {
+    Form {
       DefaultShieldsSectionView(settings: settings)
       ClearDataSectionView(settings: settings)
 

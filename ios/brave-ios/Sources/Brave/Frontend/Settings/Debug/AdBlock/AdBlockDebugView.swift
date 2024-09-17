@@ -8,7 +8,7 @@ import WebKit
 
 struct AdBlockDebugView: View {
   var body: some View {
-    List {
+    Form {
       CompileContentBlockersSectionView()
     }
   }
