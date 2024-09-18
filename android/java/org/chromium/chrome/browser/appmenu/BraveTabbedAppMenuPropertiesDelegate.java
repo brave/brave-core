@@ -133,9 +133,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         vpnLocationSubMenu.findItem(R.id.request_vpn_location_id);
                 String isoCode = BraveVpnPrefUtils.getRegionIsoCode();
                 String country =
-                        (!BraveVpnPrefUtils.getRegionCountry().equals("")
+                        !BraveVpnPrefUtils.getRegionCountry().equals("")
                                 ? BraveVpnPrefUtils.getRegionCountry()
-                                : new Locale("", isoCode).getDisplayCountry());
+                                : new Locale("", isoCode).getDisplayCountry();
 
                 vpnLocationSubMenuItem.setTitle(
                         String.format(
