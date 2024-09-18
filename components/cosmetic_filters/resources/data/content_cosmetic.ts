@@ -9,8 +9,6 @@
 // - for cosmetic filters work with CSS and stylesheet. That work itself
 //   could call the script several times.
 
-import { applyCompiledSelector, compileProceduralSelector } from './procedural_filters'
-
 // Start looking for things to unhide before at most this long after
 // the backend script is up and connected (eg backgroundReady = true),
 // or sooner if the thread is idle.
@@ -38,16 +36,6 @@ let currentMutationStartTime = performance.now()
 // The next allowed time to call FetchNewClassIdRules() if it's throttled.
 let nextFetchNewClassIdRulesCall = 0
 let fetchNewClassIdRulesTimeoutId: number | undefined
-
-// Generate a random string between [a000000000, zzzzzzzzzz] (base 36)
-const generateRandomAttr = () => {
-  const min = Number.parseInt('a000000000', 36)
-  const max = Number.parseInt('zzzzzzzzzz', 36)
-  return Math.floor(Math.random() * (max - min) + min).toString(36)
-}
-
-const globalStyleAttr = generateRandomAttr()
-const styleAttrMap = new Map<string, string>()
 
 const queriedIds = new Set<string>()
 const queriedClasses = new Set<string>()
@@ -87,6 +75,8 @@ CC.switchToSelectorsPollingThreshold =
   CC.switchToSelectorsPollingThreshold || undefined
 CC.fetchNewClassIdRulesThrottlingMs =
   CC.fetchNewClassIdRulesThrottlingMs || undefined
+
+CC.hasRemovals = CC.hasRemovals || false
 
 /**
  * Provides a new function which can only be scheduled once at a time.
@@ -296,7 +286,7 @@ const onMutations = (mutations: MutationRecord[], observer: MutationObserver) =>
     fetchNewClassIdRules()
   }
 
-  if (CC.hasProceduralActions) {
+  if (CC.hasRemovals) {
     const addedElements : Element[] = [];
     mutations.forEach(mutation =>
       mutation.addedNodes.length !== 0 && mutation.addedNodes.forEach(n =>
@@ -304,7 +294,7 @@ const onMutations = (mutations: MutationRecord[], observer: MutationObserver) =>
       )
     )
     if (addedElements.length !== 0) {
-      executeProceduralActions(addedElements);
+      executeRemovals(addedElements);
     }
   }
 
@@ -646,7 +636,7 @@ const queryAttrsFromDocument = (switchToMutationObserverAtTime?: number) => {
     fetchNewClassIdRules()
   }
 
-  if (CC.hasProceduralActions) executeProceduralActions();
+  if (CC.hasRemovals) executeRemovals();
 
   if (eventId) {
     // Callback to c++ renderer process
@@ -686,7 +676,7 @@ const scheduleQueuePump = (hide1pContent: boolean, genericHide: boolean) => {
   // called, in which case set up a timer and quit
   CC._startCheckingId = window.requestIdleCallback(_ => {
     CC._hasDelayOcurred = true
-    if (!genericHide || CC.hasProceduralActions) {
+    if (!genericHide || CC.hasRemovals) {
       if (CC.firstSelectorsPollingDelayMs === undefined) {
         startObserving()
       } else {
@@ -712,76 +702,37 @@ CC.tryScheduleQueuePump = CC.tryScheduleQueuePump || tryScheduleQueuePump
 
 tryScheduleQueuePump()
 
-const executeProceduralActions = (added?: Element[]) => {
+const executeRemovals = (added?: Element[]) => {
   // If passed a list of added elements, do not query the entire document
-  if (CC.proceduralActionFilters === undefined) {
-    return
+  const findMatchingElements =
+    (added === undefined)
+    ? (selector : string) => document.querySelectorAll(selector)
+    : (selector : string) => added.filter(elem => elem.matches(selector));
+  if (CC.selectorsToRemove !== undefined) {
+    CC.selectorsToRemove.forEach(
+      selector => findMatchingElements(selector).forEach(elem => elem.remove())
+    );
   }
-
-  const getStyleAttr = (style: string): string => {
-    let styleAttr = styleAttrMap.get(style)
-    if (styleAttr === undefined) {
-      styleAttr = generateRandomAttr()
-      styleAttrMap.set(style, styleAttr)
-      const css = `[${globalStyleAttr}][${styleAttr}]{${style}}`
-      // @ts-expect-error
-      cf_worker.injectStylesheet(css)
+  if (CC.classesToRemoveBySelector !== undefined) {
+    for (const [selector, classesToRemove] of CC.classesToRemoveBySelector) {
+      findMatchingElements(selector).forEach((elem : Element) => {
+        // Check if the element has any classes to remove because
+        // classList.remove(tokens...) always triggers another mutation
+        // even if nothing was removed.
+        if(classesToRemove.find(c => elem.classList.contains(c))) {
+          elem.classList.remove.apply(elem.classList, classesToRemove);
+        }
+      });
     }
-    return styleAttr
   }
-
-  const performAction = (element: any, action: any) => {
-    if (action === undefined) {
-      const attr = getStyleAttr('display: none !important')
-      element.setAttribute(globalStyleAttr, '')
-      element.setAttribute(attr, '')
-    } else if (action.type === 'style') {
-      const attr = getStyleAttr(action.arg)
-      element.setAttribute(globalStyleAttr, '')
-      element.setAttribute(attr, '')
-    } else if (action.type === 'remove') {
-      element.remove()
-    } else if (action.type === 'remove-attr') {
+  if (CC.attributesToRemoveBySelector !== undefined) {
+    for (const [selector, attributes] of CC.attributesToRemoveBySelector) {
       // We can remove attributes without checking if they exist
-      element.removeAttribute(action.arg)
-    } else if (action.type === 'remove-class') {
-      // Check if the element has any classes to remove because
-      // classList.remove(tokens...) always triggers another mutation
-      // even if nothing was removed.
-      if (element.classList.contains(action.arg)) {
-        element.classList.remove(action.arg);
-      }
-    }
-  }
-  for (const { selector, action } of CC.proceduralActionFilters) {
-    let matchingElements: Element[] | NodeListOf<any>;
-    let startOperator: number;
-
-    if (selector[0].type === 'css-selector' && added === undefined) {
-      matchingElements = document.querySelectorAll(selector[0].arg);
-      startOperator = 1;
-    } else if (added === undefined) {
-      matchingElements = document.querySelectorAll('*');
-      startOperator = 0;
-    } else {
-      matchingElements = added;
-      startOperator = 0;
-    }
-
-    if (startOperator === selector.length) {
-      // First `css-selector` was already handled, and no more elements remain
-      matchingElements.forEach(elem => performAction(elem, action))
-    } else {
-      try {
-        const filter = compileProceduralSelector(selector.slice(startOperator));
-        applyCompiledSelector(filter, matchingElements as HTMLElement[]).forEach(elem => performAction(elem, action))
-      } catch (e) {
-        console.error('Failed to apply filter ' + JSON.stringify(selector) + ' ' + JSON.stringify(action) + ': ');
-        console.error(e.message);
-        console.error(e.stack);
-      }
+      findMatchingElements(selector).forEach(elem =>
+        attributes.forEach(elem.removeAttribute.bind(elem))
+      );
     }
   }
 };
 
-if (CC.hasProceduralActions) executeProceduralActions();
+if (CC.hasRemovals) executeRemovals();

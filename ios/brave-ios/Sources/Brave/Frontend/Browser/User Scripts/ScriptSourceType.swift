@@ -24,8 +24,6 @@ enum ScriptSourceType {
   case selectorsPoller
   /// Global Privacy Control script
   case gpc
-  /// Used in conjunction with selectorsPoller to provide procedural filters support
-  case proceduralFilters
 
   var fileName: String {
     switch self {
@@ -34,7 +32,6 @@ enum ScriptSourceType {
     case .frameCheckWrapper: return "FrameCheckWrapper"
     case .selectorsPoller: return "SelectorsPollerScript"
     case .gpc: return "gpc"
-    case .proceduralFilters: return "ProceduralFilters"
     }
   }
 

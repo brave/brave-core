@@ -19,7 +19,6 @@ BASE_DECLARE_FEATURE(kBraveAdblockCollapseBlockedElements);
 BASE_DECLARE_FEATURE(kBraveAdblockCookieListDefault);
 BASE_DECLARE_FEATURE(kBraveAdblockCookieListOptIn);
 BASE_DECLARE_FEATURE(kBraveAdblockCosmeticFiltering);
-BASE_DECLARE_FEATURE(kBraveAdblockProceduralFiltering);
 BASE_DECLARE_FEATURE(kBraveAdblockCspRules);
 BASE_DECLARE_FEATURE(kBraveAdblockDefault1pBlocking);
 BASE_DECLARE_FEATURE(kBraveAdblockMobileNotificationsListDefault);

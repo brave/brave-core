@@ -85,17 +85,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
             from: models,
             isAggressive: domain.globalBlockAdsAndTrackingLevel.isAggressive
           )
-
-          // Join the procedural actions
-          // Note: they can't be part of `UserScriptType.SelectorsPollerSetup`
-          // As this is encoded and therefore the JSON will be escaped
-          var proceduralActions: Set<String> = []
-          for modelTuple in models {
-            proceduralActions = proceduralActions.union(modelTuple.model.proceduralActions)
-          }
-          let script = try ScriptFactory.shared.makeScript(
-            for: .selectorsPoller(setup, proceduralActions: proceduralActions)
-          )
+          let script = try ScriptFactory.shared.makeScript(for: .selectorsPoller(setup))
 
           try await webView.evaluateSafeJavaScriptThrowing(
             functionName: script.source,
@@ -117,13 +107,27 @@ class SiteStateListenerScriptHandler: TabContentScript {
   ) throws -> UserScriptType.SelectorsPollerSetup {
     var standardSelectors: Set<String> = []
     var aggressiveSelectors: Set<String> = []
+    var styleSelectors: [String: Set<String>] = [:]
 
     for modelTuple in modelTuples {
+      for (key, values) in modelTuple.model.styleSelectors {
+        styleSelectors[key] = styleSelectors[key]?.union(Set(values)) ?? Set(values)
+      }
+
       if modelTuple.isAlwaysAggressive {
         aggressiveSelectors = aggressiveSelectors.union(modelTuple.model.hideSelectors)
       } else {
         standardSelectors = standardSelectors.union(modelTuple.model.hideSelectors)
       }
+    }
+
+    let styleSelectorObjects = styleSelectors.map {
+      selector,
+      rules -> UserScriptType.SelectorsPollerSetup.StyleSelectorEntry in
+      UserScriptType.SelectorsPollerSetup.StyleSelectorEntry(
+        selector: selector,
+        rules: rules
+      )
     }
 
     return UserScriptType.SelectorsPollerSetup(
@@ -133,7 +137,8 @@ class SiteStateListenerScriptHandler: TabContentScript {
       switchToSelectorsPollingThreshold: 1000,
       fetchNewClassIdRulesThrottlingMs: 100,
       aggressiveSelectors: aggressiveSelectors,
-      standardSelectors: standardSelectors
+      standardSelectors: standardSelectors,
+      styleSelectors: Set(styleSelectorObjects)
     )
   }
 }

@@ -10,6 +10,10 @@ import WebKit
 enum UserScriptType: Hashable {
   /// An object used to setup the selectors poller script
   struct SelectorsPollerSetup: Hashable, Encodable {
+    struct StyleSelectorEntry: Hashable, Encodable {
+      let selector: String
+      var rules: Set<String>
+    }
     /// Determines if we hide first party content or not. This is controlled via agressive or standard mode
     /// Standard mode may unhide 1p content for certain filter lists.
     let hideFirstPartyContent: Bool
@@ -28,6 +32,8 @@ enum UserScriptType: Hashable {
     /// These are standard hide selectors that will get automatically processed when the script loads.
     /// Standard selectors may be unhidden on standard mode if they contain 1p content
     let standardSelectors: Set<String>
+    /// These are hide selectors that will get automatically processed when the script loads.
+    let styleSelectors: Set<StyleSelectorEntry>
   }
 
   struct EngineScriptConfiguration: Hashable {
@@ -56,9 +62,7 @@ enum UserScriptType: Hashable {
   case engineScript(EngineScriptConfiguration)
   /// Selectors poller script (aka cosmetic filtering script) is responsible for hiding and unhiding css elements as dictated by the ad-block engines.
   /// This script is actually executed rather than injected and this type is solely used for the creation rather than the injection of the script.
-  ///
-  /// proceduralFilters are represented as raw JSON and will still need to be parsed.
-  case selectorsPoller(SelectorsPollerSetup, proceduralActions: Set<String>)
+  case selectorsPoller(SelectorsPollerSetup)
   /// Global Privacy Control (GPC) script
   case gpc(Bool)
 

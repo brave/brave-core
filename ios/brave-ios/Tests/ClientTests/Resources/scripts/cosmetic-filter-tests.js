@@ -12,34 +12,18 @@
    * @param {Array} unhiddenIds All the ids that are not hidden
    * @returns A Promise that resolves new hide selectors
    */
-  const sendTestResults = (results) => {
+  const sendTestResults = (hiddenIds, unhiddenIds) => {
     return webkit.messageHandlers['SendCosmeticFiltersResult'].postMessage({
-      'hiddenIds': results.hiddenIds,
-      'unhiddenIds': results.unhiddenIds,
-      'removedClass': results.removedClass,
-      'removedAttribute': results.removedAttribute,
-      'removedElement': results.removedElement,
-      'styledElement': results.styledElement,
-      'upwardInt': results.upwardInt,
-      'upwardSelector': results.upwardSelector
+      'hiddenIds': hiddenIds,
+      'unhiddenIds': unhiddenIds
     })
-  }
-
-  const sendDebugMessage = (message) => {
-    return webkit.messageHandlers['LoggingHandler'].postMessage(message)
   }
 
   const getHideResults = () => {
     const elements = document.querySelectorAll('[id]')
     const results = {
       hiddenIds: [],
-      unhiddenIds: [],
-      removedElement: true,
-      removedClass: false,
-      removedAttribute: false,
-      styledElement: false,
-      upwardInt: false,
-      upwardSelector: false
+      unhiddenIds: []
     }
 
     elements.forEach((node) => {
@@ -52,35 +36,11 @@
       } else {
         results.unhiddenIds.push(node.id)
       }
-
-      if (node.id === 'test-remove-element') {
-        results.removedElement = false
-      }
-
-      if (node.id === 'test-remove-class') {
-        results.removedClass = !node.classList.contains('test')
-      }
-
-      if (node.id === 'test-remove-attribute') {
-        results.removedAttribute = !node.hasAttribute('test')
-      }
-
-      if (node.id === 'test-style-element') {
-        results.styledElement = window.getComputedStyle(node).backgroundColor === "rgb(255, 0, 0)"
-      }
-
-      if (node.id === 'test-upward-int') {
-        results.upwardInt = window.getComputedStyle(node).display === 'none'
-      }
-
-      if (node.id === 'test-upward-selector') {
-        results.upwardSelector = window.getComputedStyle(node).display === 'none'
-      }
     })
 
     return results
   }
 
   let results = getHideResults()
-  sendTestResults(results)
+  sendTestResults(results.hiddenIds, results.unhiddenIds)
 })()

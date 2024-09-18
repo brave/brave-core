@@ -6,7 +6,7 @@
 #include <optional>
 
 #include "base/json/json_reader.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -33,8 +33,8 @@ class CosmeticResourceMergeTest : public testing::Test {
         base::JSONReader::Read(expected);
     ASSERT_TRUE(expected_val);
 
-    AdBlockService::MergeResourcesInto(std::move(b_val->GetDict()),
-                                       *a_val->GetIfDict(), force_hide);
+    MergeResourcesInto(std::move(b_val->GetDict()), *a_val->GetIfDict(),
+                       force_hide);
 
     ASSERT_EQ(*a_val, *expected_val);
   }
@@ -48,8 +48,11 @@ class CosmeticResourceMergeTest : public testing::Test {
 const char EMPTY_RESOURCES[] =
     "{"
     "\"hide_selectors\": [], "
-    "\"procedural_actions\": [], "
+    "\"style_selectors\": {}, "
     "\"exceptions\": [], "
+    "\"remove_selectors\": [], "
+    "\"remove_attrs\": {}, "
+    "\"remove_classes\": {}, "
     "\"injected_script\": \"\", "
     "\"generichide\": false"
     "}";
@@ -57,8 +60,20 @@ const char EMPTY_RESOURCES[] =
 const char NONEMPTY_RESOURCES[] =
     "{"
     "\"hide_selectors\": [\"a\", \"b\"], "
-    "\"procedural_actions\": [\"c\", \"d\"], "
+    "\"style_selectors\": {"
+    "\"c\": [\"color: #fff\"], "
+    "\"d\": [\"color: #000\"]"
+    "}, "
     "\"exceptions\": [\"e\", \"f\"], "
+    "\"remove_selectors\": [\"x\", \"y\"], "
+    "\"remove_attrs\": {"
+    "\"v\": [\"href\", \"id\"], "
+    "\"w\": [\"attr\"]"
+    "}, "
+    "\"remove_classes\": {"
+    "\"t\": [\"class-one\", \"class-two\"], "
+    "\"u\": [\"class-three\"]"
+    "}, "
     "\"injected_script\": \"console.log('g')\", "
     "\"generichide\": false"
     "}";
@@ -72,8 +87,11 @@ TEST_F(CosmeticResourceMergeTest, MergeTwoEmptyResources) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [], "
-      "\"procedural_actions\": [], "
+      "\"style_selectors\": {}, "
       "\"exceptions\": [], "
+      "\"remove_selectors\": [], "
+      "\"remove_attrs\": {}, "
+      "\"remove_classes\": {}, "
       "\"injected_script\": \"\n\", "
       "\"generichide\": false"
       "}";
@@ -90,8 +108,20 @@ TEST_F(CosmeticResourceMergeTest, MergeEmptyIntoNonEmpty) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [\"a\", \"b\"], "
-      "\"procedural_actions\": [\"c\", \"d\"], "
+      "\"style_selectors\": {"
+      "\"c\": [\"color: #fff\"], "
+      "\"d\": [\"color: #000\"]"
+      "}, "
       "\"exceptions\": [\"e\", \"f\"], "
+      "\"remove_selectors\": [\"x\", \"y\"], "
+      "\"remove_attrs\": {"
+      "\"v\": [\"href\", \"id\"], "
+      "\"w\": [\"attr\"]"
+      "}, "
+      "\"remove_classes\": {"
+      "\"t\": [\"class-one\", \"class-two\"], "
+      "\"u\": [\"class-three\"]"
+      "}, "
       "\"injected_script\": \"console.log('g')\n\", "
       "\"generichide\": false"
       "}";
@@ -108,8 +138,20 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyIntoEmpty) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [\"a\", \"b\"],"
-      "\"procedural_actions\": [\"c\", \"d\"], "
+      "\"style_selectors\": {"
+      "\"c\": [\"color: #fff\"], "
+      "\"d\": [\"color: #000\"]"
+      "}, "
       "\"exceptions\": [\"e\", \"f\"], "
+      "\"remove_selectors\": [\"x\", \"y\"], "
+      "\"remove_attrs\": {"
+      "\"v\": [\"href\", \"id\"], "
+      "\"w\": [\"attr\"]"
+      "}, "
+      "\"remove_classes\": {"
+      "\"t\": [\"class-one\", \"class-two\"], "
+      "\"u\": [\"class-three\"]"
+      "}, "
       "\"injected_script\": \"\nconsole.log('g')\", "
       "\"generichide\": false"
       "}";
@@ -122,8 +164,18 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyIntoNonEmpty) {
   const std::string b =
       "{"
       "\"hide_selectors\": [\"h\", \"i\"], "
-      "\"procedural_actions\": [\"j\", \"k\"], "
+      "\"style_selectors\": {"
+      "\"j\": [\"color: #eee\"], "
+      "\"k\": [\"color: #111\"]"
+      "}, "
       "\"exceptions\": [\"l\", \"m\"], "
+      "\"remove_selectors\": [\"k\"], "
+      "\"remove_attrs\": {"
+      "\"s\": [\"attr\"]"
+      "}, "
+      "\"remove_classes\": {"
+      "\"r\": [\"class-six\"]"
+      "}, "
       "\"injected_script\": \"console.log('n')\", "
       "\"generichide\": false"
       "}";
@@ -131,8 +183,24 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyIntoNonEmpty) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [\"a\", \"b\", \"h\", \"i\"], "
-      "\"procedural_actions\": [\"c\", \"d\", \"j\", \"k\"], "
+      "\"style_selectors\": {"
+      "\"c\": [\"color: #fff\"], "
+      "\"d\": [\"color: #000\"], "
+      "\"j\": [\"color: #eee\"], "
+      "\"k\": [\"color: #111\"]"
+      "}, "
       "\"exceptions\": [\"e\", \"f\", \"l\", \"m\"], "
+      "\"remove_selectors\": [\"x\", \"y\", \"k\"], "
+      "\"remove_attrs\": {"
+      "\"v\": [\"href\", \"id\"], "
+      "\"w\": [\"attr\"], "
+      "\"s\": [\"attr\"]"
+      "}, "
+      "\"remove_classes\": {"
+      "\"t\": [\"class-one\", \"class-two\"], "
+      "\"u\": [\"class-three\"], "
+      "\"r\": [\"class-six\"]"
+      "}, "
       "\"injected_script\": \"console.log('g')\nconsole.log('n')\", "
       "\"generichide\": false"
       "}";
@@ -149,8 +217,11 @@ TEST_F(CosmeticResourceMergeTest, MergeEmptyForceHide) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [], "
-      "\"procedural_actions\": [], "
+      "\"style_selectors\": {}, "
       "\"exceptions\": [], "
+      "\"remove_selectors\": [], "
+      "\"remove_attrs\": {}, "
+      "\"remove_classes\": {}, "
       "\"injected_script\": \"\n\","
       "\"generichide\": false, "
       "\"force_hide_selectors\": []"
@@ -164,8 +235,14 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyForceHide) {
   const std::string b =
       "{"
       "\"hide_selectors\": [\"h\", \"i\"], "
-      "\"procedural_actions\": [\"j\", \"k\"], "
+      "\"style_selectors\": {"
+      "\"j\": [\"color: #eee\"], "
+      "\"k\": [\"color: #111\"]"
+      "}, "
       "\"exceptions\": [\"l\", \"m\"], "
+      "\"remove_selectors\": [], "
+      "\"remove_attrs\": {}, "
+      "\"remove_classes\": {}, "
       "\"injected_script\": \"console.log('n')\", "
       "\"generichide\": false"
       "}";
@@ -173,8 +250,22 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyForceHide) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [\"a\", \"b\"], "
-      "\"procedural_actions\": [\"c\", \"d\", \"j\", \"k\"], "
+      "\"style_selectors\": {"
+      "\"c\": [\"color: #fff\"], "
+      "\"d\": [\"color: #000\"], "
+      "\"j\": [\"color: #eee\"], "
+      "\"k\": [\"color: #111\"]"
+      "}, "
       "\"exceptions\": [\"e\", \"f\", \"l\", \"m\"], "
+      "\"remove_selectors\": [\"x\", \"y\"], "
+      "\"remove_attrs\": {"
+      "\"v\": [\"href\", \"id\"], "
+      "\"w\": [\"attr\"]"
+      "}, "
+      "\"remove_classes\": {"
+      "\"t\": [\"class-one\", \"class-two\"], "
+      "\"u\": [\"class-three\"]"
+      "}, "
       "\"injected_script\": \"console.log('g')\nconsole.log('n')\","
       "\"generichide\": false, "
       "\"force_hide_selectors\": [\"h\", \"i\"]"
@@ -187,8 +278,11 @@ TEST_F(CosmeticResourceMergeTest, MergeNonGenerichideIntoGenerichide) {
   const std::string a =
       "{"
       "\"hide_selectors\": [], "
-      "\"procedural_actions\": [], "
+      "\"style_selectors\": {}, "
       "\"exceptions\": [], "
+      "\"remove_selectors\": [], "
+      "\"remove_attrs\": {}, "
+      "\"remove_classes\": {}, "
       "\"injected_script\": \"\n\", "
       "\"generichide\": true"
       "}";
@@ -197,8 +291,11 @@ TEST_F(CosmeticResourceMergeTest, MergeNonGenerichideIntoGenerichide) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [], "
-      "\"procedural_actions\": [], "
+      "\"style_selectors\": {}, "
       "\"exceptions\": [], "
+      "\"remove_selectors\": [], "
+      "\"remove_attrs\": {}, "
+      "\"remove_classes\": {}, "
       "\"injected_script\": \"\n\n\", "
       "\"generichide\": true"
       "}";
@@ -211,8 +308,14 @@ TEST_F(CosmeticResourceMergeTest, MergeGenerichideIntoNonGenerichide) {
   const std::string b =
       "{"
       "\"hide_selectors\": [\"h\", \"i\"], "
-      "\"procedural_actions\": [\"j\", \"k\"], "
+      "\"style_selectors\": {"
+      "\"j\": [\"color: #eee\"], "
+      "\"k\": [\"color: #111\"]"
+      "}, "
       "\"exceptions\": [\"l\", \"m\"], "
+      "\"remove_selectors\": [], "
+      "\"remove_attrs\": {}, "
+      "\"remove_classes\": {}, "
       "\"injected_script\": \"console.log('n')\", "
       "\"generichide\": true"
       "}";
@@ -220,8 +323,22 @@ TEST_F(CosmeticResourceMergeTest, MergeGenerichideIntoNonGenerichide) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [\"a\", \"b\", \"h\", \"i\"], "
-      "\"procedural_actions\": [\"c\", \"d\", \"j\", \"k\"], "
+      "\"style_selectors\": {"
+      "\"c\": [\"color: #fff\"], "
+      "\"d\": [\"color: #000\"], "
+      "\"j\": [\"color: #eee\"], "
+      "\"k\": [\"color: #111\"]"
+      "}, "
       "\"exceptions\": [\"e\", \"f\", \"l\", \"m\"], "
+      "\"remove_selectors\": [\"x\", \"y\"], "
+      "\"remove_attrs\": {"
+      "\"v\": [\"href\", \"id\"], "
+      "\"w\": [\"attr\"]"
+      "}, "
+      "\"remove_classes\": {"
+      "\"t\": [\"class-one\", \"class-two\"], "
+      "\"u\": [\"class-three\"]"
+      "}, "
       "\"injected_script\": \"console.log('g')\nconsole.log('n')\", "
       "\"generichide\": true"
       "}";
@@ -233,8 +350,11 @@ TEST_F(CosmeticResourceMergeTest, MergeGenerichideIntoGenerichide) {
   const std::string a =
       "{"
       "\"hide_selectors\": [], "
-      "\"procedural_actions\": [], "
+      "\"style_selectors\": {}, "
       "\"exceptions\": [], "
+      "\"remove_selectors\": [], "
+      "\"remove_attrs\": {}, "
+      "\"remove_classes\": {}, "
       "\"injected_script\": \"\", "
       "\"generichide\": true"
       "}";
@@ -242,13 +362,88 @@ TEST_F(CosmeticResourceMergeTest, MergeGenerichideIntoGenerichide) {
   const std::string expected =
       "{"
       "\"hide_selectors\": [], "
-      "\"procedural_actions\": [], "
+      "\"style_selectors\": {}, "
       "\"exceptions\": [], "
+      "\"remove_selectors\": [], "
+      "\"remove_attrs\": {}, "
+      "\"remove_classes\": {}, "
       "\"injected_script\": \"\n\", "
       "\"generichide\": true"
       "}";
 
   CompareMergeFromStrings(a, a, false, expected);
+}
+
+TEST_F(CosmeticResourceMergeTest, MergeStyles) {
+  const std::string a =
+      "{"
+      "\"hide_selectors\": [], "
+      "\"style_selectors\": {"
+      "\".a\": [\"color: #eee\"], "
+      "\".b\": [\"color: #111\"], "
+      "\".d\": [\"padding: 0\"]"
+      "}, "
+      "\"exceptions\": [], "
+      "\"remove_selectors\": [], "
+      "\"remove_attrs\": {"
+      "\"v\": [\"href\", \"id\"], "
+      "\"w\": [\"attr\"]"
+      "}, "
+      "\"remove_classes\": {"
+      "\"t\": [\"class-one\", \"class-two\"], "
+      "\"u\": [\"class-three\"]"
+      "}, "
+      "\"injected_script\": \"\", "
+      "\"generichide\": false"
+      "}";
+  const std::string b =
+      "{"
+      "\"hide_selectors\": [], "
+      "\"style_selectors\": {"
+      "\".c\": [\"margin: 0\"], "
+      "\".b\": [\"background: #000\"], "
+      "\".a\": [\"background: #fff\"]"
+      "}, "
+      "\"exceptions\": [], "
+      "\"remove_selectors\": [], "
+      "\"remove_attrs\": {"
+      "\"v\": [\"class\", \"data-no\"], "
+      "\"s\": [\"attr\"]"
+      "}, "
+      "\"remove_classes\": {"
+      "\"t\": [\"class-four\", \"class-five\"], "
+      "\"r\": [\"class-six\"]"
+      "}, "
+      "\"injected_script\": \"\", "
+      "\"generichide\": false"
+      "}";
+
+  const std::string expected =
+      "{"
+      "\"hide_selectors\": [], "
+      "\"style_selectors\": {"
+      "\".a\": [\"color: #eee\", \"background: #fff\"], "
+      "\".b\": [\"color: #111\", \"background: #000\"], "
+      "\".c\": [\"margin: 0\"], "
+      "\".d\": [\"padding: 0\"] "
+      "}, "
+      "\"exceptions\": [], "
+      "\"remove_selectors\": [], "
+      "\"remove_attrs\": {"
+      "\"v\": [\"href\", \"id\", \"class\", \"data-no\"], "
+      "\"w\": [\"attr\"], "
+      "\"s\": [\"attr\"]"
+      "}, "
+      "\"remove_classes\": {"
+      "\"t\": [\"class-one\", \"class-two\", \"class-four\", \"class-five\"], "
+      "\"u\": [\"class-three\"], "
+      "\"r\": [\"class-six\"]"
+      "}, "
+      "\"injected_script\": \"\n\", "
+      "\"generichide\": false"
+      "}";
+
+  CompareMergeFromStrings(a, b, false, expected);
 }
 
 }  // namespace brave_shields
