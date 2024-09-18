@@ -34,12 +34,6 @@ struct DownloadedResourceResponse: Decodable {
 }
 
 class ResourceDownloadScriptHandler: TabContentScript {
-  fileprivate weak var tab: Tab?
-
-  init(tab: Tab) {
-    self.tab = tab
-  }
-
   static let scriptName = "ResourceDownloaderScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
@@ -61,17 +55,17 @@ class ResourceDownloadScriptHandler: TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
     Task { @MainActor in
       do {
         let response = try DownloadedResourceResponse.from(message: message)
-        await tab?.temporaryDocument?.onDocumentDownloaded(document: response, error: nil)
+        await tab.temporaryDocument?.onDocumentDownloaded(document: response, error: nil)
       } catch {
-        await tab?.temporaryDocument?.onDocumentDownloaded(document: nil, error: error)
+        await tab.temporaryDocument?.onDocumentDownloaded(document: nil, error: error)
       }
       replyHandler(nil, nil)
     }

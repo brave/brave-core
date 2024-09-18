@@ -2583,31 +2583,32 @@ extension BrowserViewController: TabDelegate {
     webView.uiDelegate = self
 
     var injectedScripts: [TabContentScript] = [
-      ReaderModeScriptHandler(tab: tab),
-      SessionRestoreScriptHandler(tab: tab),
-      BlockedDomainScriptHandler(tab: tab),
-      PrintScriptHandler(browserController: self, tab: tab),
-      CustomSearchScriptHandler(tab: tab),
-      DarkReaderScriptHandler(tab: tab),
-      FocusScriptHandler(tab: tab),
-      BraveGetUA(tab: tab),
-      BraveSearchScriptHandler(tab: tab, profile: profile, rewards: rewards),
-      ResourceDownloadScriptHandler(tab: tab),
-      DownloadContentScriptHandler(browserController: self, tab: tab),
-      WindowRenderScriptHandler(tab: tab),
+      ReaderModeScriptHandler(),
+      SessionRestoreScriptHandler(),
+      BlockedDomainScriptHandler(),
+      PrintScriptHandler(browserController: self),
+      CustomSearchScriptHandler(),
+      DarkReaderScriptHandler(),
+      FocusScriptHandler(),
+      BraveGetUA(),
+      BraveSearchScriptHandler(profile: profile, rewards: rewards),
+      ResourceDownloadScriptHandler(),
+      DownloadContentScriptHandler(browserController: self),
+      WindowRenderScriptHandler(),
       PlaylistScriptHandler(tab: tab),
-      PlaylistFolderSharingScriptHandler(tab: tab),
-      RewardsReportingScriptHandler(rewards: rewards, tab: tab),
-      AdsMediaReportingScriptHandler(rewards: rewards, tab: tab),
-      ReadyStateScriptHandler(tab: tab),
-      DeAmpScriptHandler(tab: tab),
-      SiteStateListenerScriptHandler(tab: tab),
-      CosmeticFiltersScriptHandler(tab: tab),
-      URLPartinessScriptHandler(tab: tab),
-      FaviconScriptHandler(tab: tab),
-      Web3NameServiceScriptHandler(tab: tab),
+      PlaylistFolderSharingScriptHandler(),
+      RewardsReportingScriptHandler(rewards: rewards),
+      AdsMediaReportingScriptHandler(rewards: rewards),
+      ReadyStateScriptHandler(),
+      DeAmpScriptHandler(),
+      SiteStateListenerScriptHandler(),
+      CosmeticFiltersScriptHandler(),
+      URLPartinessScriptHandler(),
+      FaviconScriptHandler(),
+      Web3NameServiceScriptHandler(),
       YoutubeQualityScriptHandler(tab: tab),
-      BraveLeoScriptHandler(tab: tab),
+      BraveLeoScriptHandler(),
+      BraveSkusScriptHandler(),
 
       tab.contentBlocker,
       tab.requestBlockingContentHelper,
@@ -2616,7 +2617,6 @@ extension BrowserViewController: TabDelegate {
     #if canImport(BraveTalk)
     injectedScripts.append(
       BraveTalkScriptHandler(
-        tab: tab,
         rewards: rewards,
         launchNativeBraveTalk: { [weak self] tab, room, token in
           self?.launchNativeBraveTalk(tab: tab, room: room, token: token)
@@ -2625,17 +2625,13 @@ extension BrowserViewController: TabDelegate {
     )
     #endif
 
-    if let braveSkusHandler = BraveSkusScriptHandler(tab: tab) {
-      injectedScripts.append(braveSkusHandler)
-    }
-
     // Only add the logins handler and wallet provider if the tab is NOT a private browsing tab
     if !tab.isPrivate {
       injectedScripts += [
-        LoginsScriptHandler(tab: tab, profile: profile, passwordAPI: braveCore.passwordAPI),
-        EthereumProviderScriptHandler(tab: tab),
-        SolanaProviderScriptHandler(tab: tab),
-        BraveSearchResultAdScriptHandler(tab: tab),
+        LoginsScriptHandler(profile: profile, passwordAPI: braveCore.passwordAPI),
+        EthereumProviderScriptHandler(),
+        SolanaProviderScriptHandler(),
+        BraveSearchResultAdScriptHandler(),
       ]
     }
 

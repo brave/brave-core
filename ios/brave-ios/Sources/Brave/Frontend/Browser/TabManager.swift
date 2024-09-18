@@ -202,6 +202,16 @@ class TabManager: NSObject {
     return allTabs[index]
   }
 
+  subscript(webView: WKWebView) -> Tab? {
+    assert(Thread.isMainThread)
+
+    for tab in allTabs where tab.webView?.underlyingWebView == webView {
+      return tab
+    }
+
+    return nil
+  }
+
   subscript(webView: BraveWebView) -> Tab? {
     assert(Thread.isMainThread)
 
@@ -564,6 +574,7 @@ class TabManager: NSObject {
       configuration: webViewConfiguration,
       id: tabId,
       type: type,
+      contentScriptManager: .init(tabManager: self),
       tabGeneratorAPI: tabGeneratorAPI,
       browserPrefs: browserPrefs
     )

@@ -52,12 +52,6 @@ class SolanaProviderScriptHandler: TabContentScript {
     )
   }()
 
-  private weak var tab: Tab?
-
-  init(tab: Tab) {
-    self.tab = tab
-  }
-
   private struct MessageBody: Decodable {
     enum Method: String, Decodable {
       case connect
@@ -77,9 +71,9 @@ class SolanaProviderScriptHandler: TabContentScript {
     }
   }
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
     if !verifyMessage(message: message) {
@@ -87,8 +81,7 @@ class SolanaProviderScriptHandler: TabContentScript {
       return
     }
 
-    guard let tab = tab,
-      !tab.isPrivate,
+    guard !tab.isPrivate,
       let provider = tab.walletSolProvider,
       // Fail if there is no last committed URL yet
       !message.frameInfo.securityOrigin.host.isEmpty,
@@ -114,19 +107,19 @@ class SolanaProviderScriptHandler: TabContentScript {
     Task { @MainActor in
       switch body.method {
       case .connect:
-        let (publicKey, error) = await connect(args: body.args)
+        let (publicKey, error) = await connect(tab: tab, args: body.args)
         replyHandler(publicKey, error)
         if let publicKey = publicKey as? String {
-          await emitConnectEvent(publicKey: publicKey)
+          await emitConnectEvent(tab: tab, publicKey: publicKey)
         }
       case .disconnect:
         provider.disconnect()
         replyHandler("{:}", nil)
       case .signAndSendTransaction:
-        let (result, error) = await signAndSendTransaction(args: body.args)
+        let (result, error) = await signAndSendTransaction(tab: tab, args: body.args)
         replyHandler(result, error)
       case .signMessage:
-        let (result, error) = await signMessage(args: body.args)
+        let (result, error) = await signMessage(tab: tab, args: body.args)
         replyHandler(result, error)
       case .request:
         guard let args = body.args,
@@ -136,26 +129,26 @@ class SolanaProviderScriptHandler: TabContentScript {
           replyHandler(nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
           return
         }
-        let (result, error) = await request(args: body.args)
+        let (result, error) = await request(tab: tab, args: body.args)
         replyHandler(result, error)
         if method == Keys.connect.rawValue, let publicKey = result as? String {
-          await emitConnectEvent(publicKey: publicKey)
+          await emitConnectEvent(tab: tab, publicKey: publicKey)
         } else if method == Keys.disconnect.rawValue {
           tab.emitSolanaEvent(.disconnect)
         }
       case .signTransaction:
-        let (result, error) = await signTransaction(args: body.args)
+        let (result, error) = await signTransaction(tab: tab, args: body.args)
         replyHandler(result, error)
       case .signAllTransactions:
-        let (result, error) = await signAllTransactions(args: body.args)
+        let (result, error) = await signAllTransactions(tab: tab, args: body.args)
         replyHandler(result, error)
       }
     }
   }
 
   /// Given optional args `{onlyIfTrusted: Bool}`, will return the base 58 encoded public key for success or the error dictionary for failures.
-  @MainActor func connect(args: String?) async -> (Any?, String?) {
-    guard let tab = tab, let provider = tab.walletSolProvider else {
+  @MainActor func connect(tab: Tab, args: String?) async -> (Any?, String?) {
+    guard let provider = tab.walletSolProvider else {
       return (
         nil,
         buildErrorJson(status: .internalError, errorMessage: Strings.Wallet.internalErrorMessage)
@@ -177,12 +170,12 @@ class SolanaProviderScriptHandler: TabContentScript {
   /// Given args `{serializedMessage: [Uint8], signatures: [Buffer], sendOptions: [:]}`, will return
   /// dictionary `{publicKey: <base58 encoded string>, signature: <base58 encoded string>}` for success
   /// or an error dictionary for failures.
-  @MainActor func signAndSendTransaction(args: String?) async -> (Any?, String?) {
+  @MainActor func signAndSendTransaction(tab: Tab, args: String?) async -> (Any?, String?) {
     guard let args = args,
       let arguments = MojoBase.Value(jsonString: args)?.dictionaryValue,
       let serializedMessage = arguments[Keys.serializedMessage.rawValue],
       let signatures = arguments[Keys.signatures.rawValue],
-      let provider = tab?.walletSolProvider
+      let provider = tab.walletSolProvider
     else {
       return (nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
     }
@@ -208,11 +201,11 @@ class SolanaProviderScriptHandler: TabContentScript {
   /// Given args `{[[UInt8], String]}` (second arg optional), will return
   /// `{publicKey: <base58 encoded String>, signature: <base 58 decoded list>}` for success flow
   /// or an error dictionary for failures
-  @MainActor func signMessage(args: String?) async -> (Any?, String?) {
+  @MainActor func signMessage(tab: Tab, args: String?) async -> (Any?, String?) {
     guard let args = args,
       let argsList = MojoBase.Value(jsonString: args)?.listValue,
       let blobMsg = argsList.first?.numberArray,
-      let provider = tab?.walletSolProvider
+      let provider = tab.walletSolProvider
     else {
       return (nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
     }
@@ -239,11 +232,10 @@ class SolanaProviderScriptHandler: TabContentScript {
 
   /// Given a request arg `{method: String, params: {}}`, will encode the response as a json object for success
   /// or provide an error dictionary for failures
-  @MainActor func request(args: String?) async -> (Any?, String?) {
+  @MainActor func request(tab: Tab, args: String?) async -> (Any?, String?) {
     guard let args = args,
       var argDict = MojoBase.Value(jsonString: args)?.dictionaryValue,
       let method = argDict[Keys.method.rawValue]?.stringValue,
-      let tab = tab,
       let provider = tab.walletSolProvider
     else {
       return (nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
@@ -279,12 +271,12 @@ class SolanaProviderScriptHandler: TabContentScript {
 
   /// Given args `{serializedMessage: Buffer, signatures: {publicKey: String, signature: Buffer}}`,
   /// will encoded the response as a json object for success or provide an error dictionary for failures
-  @MainActor func signTransaction(args: String?) async -> (Any?, String?) {
+  @MainActor func signTransaction(tab: Tab, args: String?) async -> (Any?, String?) {
     guard let args = args,
       let arguments = MojoBase.Value(jsonString: args)?.dictionaryValue,
       let serializedMessage = arguments[Keys.serializedMessage.rawValue],
       let signatures = arguments[Keys.signatures.rawValue],
-      let provider = tab?.walletSolProvider
+      let provider = tab.walletSolProvider
     else {
       return (nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
     }
@@ -311,10 +303,10 @@ class SolanaProviderScriptHandler: TabContentScript {
 
   /// Given args `[{serializedMessage: Buffer, signatures: {publicKey: String, signature: Buffer}}]`,
   /// will encoded the response as a json object for success or provide an error dictionary for failures
-  @MainActor func signAllTransactions(args: String?) async -> (Any?, String?) {
+  @MainActor func signAllTransactions(tab: Tab, args: String?) async -> (Any?, String?) {
     guard let args = args,
       let transactions = MojoBase.Value(jsonString: args)?.listValue,
-      let provider = tab?.walletSolProvider
+      let provider = tab.walletSolProvider
     else {
       return (nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
     }
@@ -406,8 +398,8 @@ class SolanaProviderScriptHandler: TabContentScript {
     )
   }
 
-  @MainActor private func emitConnectEvent(publicKey: String) async {
-    if let webView = tab?.webView {
+  @MainActor private func emitConnectEvent(tab: Tab, publicKey: String) async {
+    if let webView = tab.webView {
       let script =
         "window.solana.emit('connect', new \(UserScriptManager.walletSolanaNameSpace).solanaWeb3.PublicKey('\(publicKey.htmlEntityEncodedString)'))"
       await webView.evaluateSafeJavaScript(

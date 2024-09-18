@@ -8,22 +8,16 @@ import WebKit
 import os.log
 
 class FocusScriptHandler: TabContentScript {
-  fileprivate weak var tab: Tab?
-
-  init(tab: Tab) {
-    self.tab = tab
-  }
-
   static let scriptName = "FocusScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "focusHelper"
   static let scriptSandbox: WKContentWorld = .defaultClient
   static let userScript: WKUserScript? = nil
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
 
@@ -48,9 +42,9 @@ class FocusScriptHandler: TabContentScript {
 
     switch eventType {
     case "focus":
-      tab?.isEditing = true
+      tab.isEditing = true
     case "blur":
-      tab?.isEditing = false
+      tab.isEditing = false
     default:
       return Logger.module.error("FocusHelper.js sent unhandled eventType")
     }

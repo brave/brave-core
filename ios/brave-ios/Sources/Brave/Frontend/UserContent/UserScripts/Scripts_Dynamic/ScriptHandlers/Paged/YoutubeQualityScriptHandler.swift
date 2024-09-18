@@ -10,12 +10,10 @@ import Shared
 import WebKit
 
 class YoutubeQualityScriptHandler: NSObject, TabContentScript {
-  private weak var tab: Tab?
   private var url: URL?
   private var urlObserver: NSObjectProtocol?
 
   init(tab: Tab) {
-    self.tab = tab
     self.url = tab.url
     super.init()
 
@@ -78,10 +76,10 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript {
     )
   }
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")

@@ -39,12 +39,13 @@ class ReadabilityOperation: Operation {
       let configuration = WKWebViewConfiguration()
       self.tab = Tab(
         wkConfiguration: configuration,
-        configuration: self.braveCore.defaultWebViewConfiguration
+        configuration: self.braveCore.defaultWebViewConfiguration,
+        contentScriptManager: TabContentScriptManager(tabForWebView: { [weak self] _ in self?.tab })
       )
       self.tab.createWebview()
       self.tab.navigationDelegate = self
 
-      let readerMode = ReaderModeScriptHandler(tab: self.tab)
+      let readerMode = ReaderModeScriptHandler()
       readerMode.delegate = self
       self.tab.addContentScript(
         readerMode,

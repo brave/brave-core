@@ -156,7 +156,7 @@ id NSObjectFromValue(const base::Value* value) {
 - (WKWebView*)underlyingWebView {
   CRWWebController* web_controller =
       web::WebStateImpl::FromWebState(self.webState)->GetWebController();
-  return [web_controller ensureWebViewCreated];
+  return web_controller.webView;
 }
 
 - (WKWebViewConfiguration*)WKConfiguration {

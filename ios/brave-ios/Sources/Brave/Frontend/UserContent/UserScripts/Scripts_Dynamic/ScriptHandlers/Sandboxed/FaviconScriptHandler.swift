@@ -11,13 +11,6 @@ import WebKit
 import os.log
 
 class FaviconScriptHandler: NSObject, TabContentScript {
-  private weak var tab: Tab?
-
-  init(tab: Tab) {
-    self.tab = tab
-    super.init()
-  }
-
   static let scriptName = "FaviconScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
@@ -39,13 +32,12 @@ class FaviconScriptHandler: NSObject, TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
-    guard let tab = tab else { return }
 
     Task { @MainActor in
       // Assign default favicon

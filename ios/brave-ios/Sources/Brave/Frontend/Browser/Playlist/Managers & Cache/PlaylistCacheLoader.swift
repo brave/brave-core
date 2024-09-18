@@ -34,7 +34,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
   private var pendingRequests = [String: URLRequest]()
   private let braveCore: BraveCoreMain?
 
-  private lazy var tab = Tab(
+  private lazy var tab: Tab = Tab(
     wkConfiguration: WKWebViewConfiguration().then {
       $0.processPool = WKProcessPool()
       $0.preferences = WKPreferences()
@@ -43,7 +43,8 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
       $0.ignoresViewportScaleLimits = true
     },
     configuration: braveCore?.nonPersistentWebViewConfiguration ?? .nonPersistent(),
-    type: .private
+    type: .private,
+    contentScriptManager: .init(tabForWebView: { [weak self] _ in self?.tab })
   ).then {
     $0.createWebview()
     $0.setScript(script: .playlistMediaSource, enabled: true)
@@ -159,9 +160,9 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
     static let userScript: WKUserScript? = nil
     static let playlistProcessDocumentLoad = PlaylistScriptHandler.playlistProcessDocumentLoad
 
-    func userContentController(
-      _ userContentController: WKUserContentController,
-      didReceiveScriptMessage message: WKScriptMessage,
+    func tab(
+      _ tab: Tab,
+      receivedScriptMessage message: WKScriptMessage,
       replyHandler: (Any?, String?) -> Void
     ) {
       if !verifyMessage(message: message) {

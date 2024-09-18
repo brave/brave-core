@@ -41,9 +41,9 @@ protocol TabContentScript: TabContentScriptLoader {
   func verifyMessage(message: WKScriptMessage) -> Bool
   func verifyMessage(message: WKScriptMessage, securityToken: String) -> Bool
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   )
 }
@@ -328,7 +328,7 @@ class Tab: NSObject {
 
   // There is no 'available macro' on props, we currently just need to store ownership.
   lazy var contentBlocker = ContentBlockerHelper(tab: self)
-  lazy var requestBlockingContentHelper = RequestBlockingContentScriptHandler(tab: self)
+  lazy var requestBlockingContentHelper = RequestBlockingContentScriptHandler()
 
   /// The last title shown by this tab. Used by the tab tray to show titles for zombie tabs.
   var lastTitle: String?
@@ -363,7 +363,7 @@ class Tab: NSObject {
   // If this tab has been opened from another, its parent will point to the tab from which it was opened
   weak var parent: Tab?
 
-  fileprivate var contentScriptManager = TabContentScriptManager()
+  fileprivate var contentScriptManager: TabContentScriptManager
   private var userScripts = Set<UserScriptManager.ScriptType>()
   private var customUserScripts = Set<UserScriptType>()
 
@@ -414,6 +414,7 @@ class Tab: NSObject {
     configuration: CWVWebViewConfiguration?,
     id: UUID = UUID(),
     type: TabType = .regular,
+    contentScriptManager: TabContentScriptManager,
     tabGeneratorAPI: BraveTabGeneratorAPI? = nil,
     browserPrefs: BrowserPrefs? = nil
   ) {
@@ -421,6 +422,7 @@ class Tab: NSObject {
     self.configuration = configuration
     self.favicon = Favicon.default
     self.id = id
+    self.contentScriptManager = contentScriptManager
     self.browserPrefs = browserPrefs
 
     rewardsId = UInt32.random(in: 1...UInt32.max)
@@ -443,6 +445,7 @@ class Tab: NSObject {
     webView: TabWebView,
     id: UUID = UUID(),
     type: TabType = .regular,
+    contentScriptManager: TabContentScriptManager,
     tabGeneratorAPI: BraveTabGeneratorAPI? = nil,
     browserPrefs: BrowserPrefs? = nil
   ) {
@@ -450,6 +453,7 @@ class Tab: NSObject {
     self.favicon = Favicon.default
     self.id = id
     self.type = type
+    self.contentScriptManager = contentScriptManager
     self.browserPrefs = browserPrefs
     rewardsId = UInt32.random(in: 1...UInt32.max)
     nightMode = Preferences.General.nightModeEnabled.value
@@ -478,6 +482,7 @@ class Tab: NSObject {
       configuration: configuration,
       id: UUID(),
       type: type,
+      contentScriptManager: contentScriptManager,
       tabGeneratorAPI: tabGeneratorAPI,
       browserPrefs: browserPrefs
     )
@@ -1059,8 +1064,19 @@ extension Tab: TabWebViewDelegate {
   }
 }
 
-private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply {
+class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply {
   fileprivate var helpers = [String: TabContentScript]()
+  var tabForWebView: (WKWebView) -> Tab?
+
+  init(tabForWebView: @escaping (WKWebView) -> Tab?) {
+    self.tabForWebView = tabForWebView
+  }
+
+  convenience init(tabManager: TabManager) {
+    self.init(tabForWebView: { [weak tabManager] webView in
+      return tabManager?[webView]
+    })
+  }
 
   func uninstall(from tab: Tab) {
     helpers.forEach {
@@ -1070,22 +1086,20 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
     }
   }
 
-  @objc func userContentController(
+  func userContentController(
     _ userContentController: WKUserContentController,
     didReceive message: WKScriptMessage,
-    replyHandler: @escaping (Any?, String?) -> Void
+    replyHandler: @escaping @MainActor (Any?, String?) -> Void
   ) {
-    for helper in helpers.values {
-      let scriptMessageHandlerName = type(of: helper).messageHandlerName
-      if scriptMessageHandlerName == message.name {
-        helper.userContentController(
-          userContentController,
-          didReceiveScriptMessage: message,
-          replyHandler: replyHandler
-        )
-        return
-      }
+    guard let webView = message.webView, let tab = tabForWebView(webView),
+      let helper = helpers.values.first(where: {
+        type(of: $0).messageHandlerName == message.name
+      })
+    else {
+      replyHandler(nil, nil)
+      return
     }
+    helper.tab(tab, receivedScriptMessage: message, replyHandler: replyHandler)
   }
 
   func addContentScript(
@@ -1095,7 +1109,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
     contentWorld: WKContentWorld
   ) {
     if let _ = helpers[name] {
-      assertionFailure("Duplicate helper added: \(name)")
+      return
     }
 
     helpers[name] = helper
