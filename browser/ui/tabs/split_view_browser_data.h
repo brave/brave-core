@@ -90,14 +90,14 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
 
  private:
   friend BrowserUserData;
-  friend class SplitViewBrowserDataUnitTest;
-  friend class SplitViewTabStripModelAdapterUnitTest;
+  friend class SplitViewBrowserDataBrowserTest;
+  friend class SplitViewTabStripModelAdapterBrowserTest;
 
-  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserDataUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserDataBrowserTest,
                            BreakTile_WithNonExistingTabIsError);
-  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserDataUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserDataBrowserTest,
                            TileTabs_WithAlreadyTiledTabIsError);
-  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserDataUnitTest, FindTile);
+  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserDataBrowserTest, FindTile);
 
   explicit SplitViewBrowserData(Browser* browser);
 
