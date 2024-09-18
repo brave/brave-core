@@ -753,7 +753,7 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
     std::vector<uint8_t> message,
     bool is_eip712,
     bool approved,
-    mojom::ByteArrayStringUnionPtr signature,
+    mojom::EthereumSignatureBytesPtr hw_signature,
     const std::optional<std::string>& error) {
   bool reject = false;
   if (error && !error->empty()) {
@@ -787,13 +787,13 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
       formed_response = base::Value(ToHex(*signature_with_err.signature));
     }
   } else {
-    if (!signature || !signature->is_str()) {  // Missing hardware signature.
+    if (!hw_signature) {  // Missing hardware signature.
       formed_response = GetProviderErrorDictionary(
           mojom::ProviderError::kInternalError,
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
       reject = true;
     } else {
-      formed_response = base::Value(signature->get_str());
+      formed_response = base::Value(ToHex(hw_signature->bytes));
     }
   }
 

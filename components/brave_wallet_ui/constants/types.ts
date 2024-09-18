@@ -373,14 +373,6 @@ export type TransactionInfo =
   | BraveWallet.TransactionInfo
   | SerializableTransactionInfo
 
-export interface ProcessHardwareSignatureReturnInfo {
-  status: boolean
-}
-
-export interface GetNonceForHardwareTransactionReturnInfo {
-  nonce: string
-}
-
 export type BuySendSwapViewTypes =
   | 'swap'
   | 'buy'

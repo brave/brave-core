@@ -73,13 +73,10 @@ class SolanaTransaction {
   bool operator!=(const SolanaTransaction&) const;
 
   // Serialize the message and sign it with the selected account.
-  std::string GetSignedTransaction(
-      KeyringService* keyring_service,
-      const mojom::AccountIdPtr& selected_account) const;
   std::optional<std::vector<uint8_t>> GetSignedTransactionBytes(
       KeyringService* keyring_service,
       const mojom::AccountIdPtr& selected_account,
-      const std::vector<uint8_t>* selected_account_signature = nullptr) const;
+      const mojom::SolanaSignaturePtr& selected_account_signature) const;
 
   // https://docs.rs/solana-sdk/1.18.14/src/solana_sdk/transaction/mod.rs.html#271-276
   std::string GetUnsignedTransaction() const;

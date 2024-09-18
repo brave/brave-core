@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { CoinType } from '@glif/filecoin-address'
+import { TransportStatusError } from '@ledgerhq/errors'
 import { LotusMessage, SignedLotusMessage } from '@glif/filecoin-message'
 import {
   LedgerProvider,
@@ -54,7 +55,8 @@ export class FilecoinLedgerUntrustedMessagingTransport //
           origin: command.origin,
           payload: {
             success: false,
-            statusCode: LedgerBridgeErrorCodes.BridgeNotReady
+            error: '',
+            code: LedgerBridgeErrorCodes.BridgeNotReady
           }
         }
       }
@@ -74,12 +76,17 @@ export class FilecoinLedgerUntrustedMessagingTransport //
           accounts: accounts
         }
       }
-    } catch (e) {
+    } catch (error) {
       return {
         command: LedgerCommand.GetAccount,
         id: LedgerCommand.GetAccount,
         origin: command.origin,
-        payload: e
+        payload: {
+          success: false,
+          error: (error as Error).message,
+          code:
+            error instanceof TransportStatusError ? error.statusCode : undefined
+        }
       }
     }
   }
@@ -95,7 +102,8 @@ export class FilecoinLedgerUntrustedMessagingTransport //
           origin: command.origin,
           payload: {
             success: false,
-            statusCode: LedgerBridgeErrorCodes.BridgeNotReady
+            error: '',
+            code: LedgerBridgeErrorCodes.BridgeNotReady
           }
         }
       }
@@ -123,15 +131,20 @@ export class FilecoinLedgerUntrustedMessagingTransport //
         origin: command.origin,
         payload: {
           success: true,
-          lotusMessage: signed
+          untrustedSignedTxJson: JSON.stringify(signed)
         }
       }
-    } catch (e) {
+    } catch (error) {
       return {
         command: LedgerCommand.SignTransaction,
         id: LedgerCommand.SignTransaction,
         origin: command.origin,
-        payload: e
+        payload: {
+          success: false,
+          error: (error as Error).message,
+          code:
+            error instanceof TransportStatusError ? error.statusCode : undefined
+        }
       }
     }
   }

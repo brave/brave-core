@@ -14,3 +14,15 @@ export const BridgeTypes = {
 } as const
 
 export type BridgeType = (typeof BridgeTypes)[keyof typeof BridgeTypes]
+
+export namespace Untrusted {
+  export type EthereumSignatureVRS = {
+    vBytes: Buffer
+    rBytes: Buffer
+    sBytes: Buffer
+  }
+
+  export type EthereumSignatureBytes = {
+    bytes: Buffer
+  }
+}

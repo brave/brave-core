@@ -240,7 +240,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                                      std::vector<uint8_t> message,
                                      bool is_eip712,
                                      bool approved,
-                                     mojom::ByteArrayStringUnionPtr signature,
+                                     mojom::EthereumSignatureBytesPtr signature,
                                      const std::optional<std::string>& error);
 
   // KeyringServiceObserverBase:

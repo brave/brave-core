@@ -10,7 +10,6 @@
 #include <set>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
@@ -283,14 +282,14 @@ void FilTxManager::RetryTransaction(const std::string& tx_meta_id,
   NOTIMPLEMENTED();
 }
 
-void FilTxManager::GetTransactionMessageToSign(
+void FilTxManager::GetFilTransactionMessageToSign(
     const std::string& tx_meta_id,
-    GetTransactionMessageToSignCallback callback) {
+    GetFilTransactionMessageToSignCallback callback) {
   std::unique_ptr<FilTxMeta> meta =
       GetFilTxStateManager()->GetFilTx(tx_meta_id);
   if (!meta || !meta->tx()) {
     VLOG(1) << __FUNCTION__ << "No transaction found with id:" << tx_meta_id;
-    std::move(callback).Run(nullptr);
+    std::move(callback).Run(std::nullopt);
     return;
   }
   if (!meta->tx()->nonce()) {
@@ -314,13 +313,13 @@ mojom::CoinType FilTxManager::GetCoinType() const {
 
 void FilTxManager::OnGetNextNonceForHardware(
     std::unique_ptr<FilTxMeta> meta,
-    GetTransactionMessageToSignCallback callback,
+    GetFilTransactionMessageToSignCallback callback,
     bool success,
     uint256_t nonce) {
   if (!success) {
     meta->set_status(mojom::TransactionStatus::Error);
     tx_state_manager_->AddOrUpdateTx(*meta);
-    std::move(callback).Run(nullptr);
+    std::move(callback).Run(std::nullopt);
     return;
   }
   // DCHECK_LE will eventually be expanded into `CheckOpValueStr` which doesn't
@@ -329,23 +328,17 @@ void FilTxManager::OnGetNextNonceForHardware(
   meta->tx()->set_nonce(static_cast<uint64_t>(nonce));
   meta->set_status(mojom::TransactionStatus::Approved);
   if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
-    std::move(callback).Run(nullptr);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
   auto fil_address = FilAddress::FromAddress(meta->from()->address);
   if (fil_address.IsEmpty()) {
-    std::move(callback).Run(nullptr);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
-  auto message = meta->tx()->GetMessageToSignJson(fil_address);
-  if (!message.has_value()) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-
-  std::move(callback).Run(mojom::MessageToSignUnion::NewMessageStr(*message));
+  std::move(callback).Run(meta->tx()->GetMessageToSignJson(fil_address));
 }
 
 void FilTxManager::Reset() {
@@ -420,7 +413,7 @@ FilBlockTracker* FilTxManager::GetFilBlockTracker() {
 
 void FilTxManager::ProcessFilHardwareSignature(
     const std::string& tx_meta_id,
-    const std::string& signed_tx,
+    const mojom::FilecoinSignaturePtr& hw_signature,
     ProcessFilHardwareSignatureCallback callback) {
   std::unique_ptr<FilTxMeta> meta =
       GetFilTxStateManager()->GetFilTx(tx_meta_id);
@@ -444,7 +437,7 @@ void FilTxManager::ProcessFilHardwareSignature(
   }
 
   json_rpc_service_->SendFilecoinTransaction(
-      meta->chain_id(), signed_tx,
+      meta->chain_id(), hw_signature->signed_message_json,
       base::BindOnce(&FilTxManager::OnSendFilecoinTransaction,
                      weak_factory_.GetWeakPtr(), meta->id(),
                      std::move(callback)));

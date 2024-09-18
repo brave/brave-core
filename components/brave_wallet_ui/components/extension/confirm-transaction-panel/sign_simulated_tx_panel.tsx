@@ -18,13 +18,9 @@ import {
   getSolanaTransactionInstructionParamsAndType as getTypedSolTxInstruction //
 } from '../../../utils/solana-instruction-utils'
 import { getLocale } from '../../../../common/locale'
-import { getTxDatasFromQueuedSolSignRequest } from '../../../utils/tx-utils'
 
 // Hooks
-import {
-  useProcessSignSolanaTransaction,
-  useSignSolanaTransactionsQueue
-} from '../../../common/hooks/use_sign_solana_tx_queue'
+import { useProcessSignSolanaTransaction } from '../../../common/hooks/use_sign_solana_tx_queue'
 
 // Components
 import { TransactionOrigin } from './common/origin'
@@ -33,9 +29,6 @@ import { TransactionSimulationInfo } from './transaction_simulation_info'
 import { PanelTab } from '../panel-tab/index'
 import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
 import NavButton from '../buttons/nav-button'
-import {
-  LoadingSimulation //
-} from '../enable_transaction_simulations/enable_transaction_simulations'
 import {
   SolanaTransactionInstruction //
 } from '../../shared/solana-transaction-instruction/solana-transaction-instruction'
@@ -70,15 +63,11 @@ type confirmPanelTabs = 'transaction' | 'details'
 
 type Props = {
   txSimulation: BraveWallet.SolanaSimulationResponse
-  signMode: Parameters<typeof useSignSolanaTransactionsQueue>[0]
   isSigningDisabled: boolean
   network: BraveWallet.NetworkInfo
   queueNextSignTransaction: () => void
-  selectedQueueData:
-    | BraveWallet.SignTransactionRequest
-    | BraveWallet.SignAllTransactionsRequest
-    | undefined
-  signingAccount?: BraveWallet.AccountInfo
+  signSolTransactionsRequest: BraveWallet.SignSolTransactionsRequest
+  signingAccount: BraveWallet.AccountInfo
   queueLength: number
   queueNumber: number
 }
@@ -101,21 +90,18 @@ export const SignSimulatedTransactionPanel = ({
   queueLength,
   queueNextSignTransaction,
   queueNumber,
-  selectedQueueData,
+  signSolTransactionsRequest,
   signingAccount,
-  signMode,
   txSimulation,
   isSigningDisabled
 }: Props) => {
   // custom hooks
   const { cancelSign: onCancelSign, sign: onSign } =
     useProcessSignSolanaTransaction({
-      signMode,
-      request: selectedQueueData
+      signSolTransactionsRequest
     })
 
   // state
-  const originInfo = selectedQueueData?.originInfo
   const [signStep, setSignStep] = React.useState<SignDataSteps>(
     SignDataSteps.SignRisk
   )
@@ -139,18 +125,6 @@ export const SignSimulatedTransactionPanel = ({
     []
   )
 
-  // memos
-  const txDatas = React.useMemo(() => {
-    return selectedQueueData
-      ? getTxDatasFromQueuedSolSignRequest(selectedQueueData)
-      : []
-  }, [selectedQueueData])
-
-  // render
-  if (!txSimulation || !network || !selectedQueueData) {
-    return <LoadingSimulation />
-  }
-
   // Critical Warning pop-up
   if (isCriticalWarningPopupOpen) {
     return (
@@ -173,15 +147,15 @@ export const SignSimulatedTransactionPanel = ({
           alignItems='flex-start'
           gap={'4px'}
         >
-          <NetworkNameText>{network?.chainName ?? ''}</NetworkNameText>
+          <NetworkNameText>{network.chainName}</NetworkNameText>
           <AccountNameAndAddress>
             <CopyTooltip
               isAddress
-              text={signingAccount?.address}
-              tooltipText={signingAccount?.address}
+              text={signingAccount.address}
+              tooltipText={signingAccount.address}
             >
-              {signingAccount?.name ?? ''}{' '}
-              {reduceAddress(signingAccount?.address || '') ?? ''}
+              {signingAccount.name}{' '}
+              {reduceAddress(signingAccount.address) ?? ''}
             </CopyTooltip>
           </AccountNameAndAddress>
         </Column>
@@ -231,22 +205,20 @@ export const SignSimulatedTransactionPanel = ({
               flex={1}
               justifyContent={'flex-start'}
             >
-              {originInfo && (
-                <Row
-                  alignItems={'center'}
-                  justifyContent={'center'}
-                  padding={'0px 24px'}
-                  width={'100%'}
-                >
-                  <TransactionOrigin
-                    network={network}
-                    originInfo={originInfo}
-                    isFlagged={txSimulation.warnings.some((w) =>
-                      isUrlWarning(w.kind)
-                    )}
-                  />
-                </Row>
-              )}
+              <Row
+                alignItems={'center'}
+                justifyContent={'center'}
+                padding={'0px 24px'}
+                width={'100%'}
+              >
+                <TransactionOrigin
+                  network={network}
+                  originInfo={signSolTransactionsRequest.originInfo}
+                  isFlagged={txSimulation.warnings.some((w) =>
+                    isUrlWarning(w.kind)
+                  )}
+                />
+              </Row>
 
               <TabRow>
                 <PanelTab
@@ -274,36 +246,38 @@ export const SignSimulatedTransactionPanel = ({
                     >
                       <ErrorText>{simulationResultsErrorText}</ErrorText>
                     </MessageBox>
-                  ) : txSimulation && network ? (
+                  ) : (
                     <TransactionSimulationInfo
                       key={'SolanaSimulationInfo'}
                       simulation={txSimulation}
                       simulationType={'SVM'}
                       network={network}
                     />
-                  ) : null
+                  )
                 ) : (
                   <MessageBox
                     isDetails={true}
                     width='100%'
                   >
-                    {txDatas.map(({ instructions, txType }, i) => {
-                      return (
-                        <DetailColumn key={`${txType}-${i}`}>
-                          {instructions?.map((instruction, index) => {
-                            return (
-                              <SolanaTransactionInstruction
-                                key={index}
-                                typedInstructionWithParams={
-                                  //
-                                  getTypedSolTxInstruction(instruction)
-                                }
-                              />
-                            )
-                          })}
-                        </DetailColumn>
-                      )
-                    })}
+                    {signSolTransactionsRequest.txDatas.map(
+                      ({ instructions, txType }, i) => {
+                        return (
+                          <DetailColumn key={`${txType}-${i}`}>
+                            {instructions?.map((instruction, index) => {
+                              return (
+                                <SolanaTransactionInstruction
+                                  key={index}
+                                  typedInstructionWithParams={
+                                    //
+                                    getTypedSolTxInstruction(instruction)
+                                  }
+                                />
+                              )
+                            })}
+                          </DetailColumn>
+                        )
+                      }
+                    )}
                   </MessageBox>
                 )}
               </Column>

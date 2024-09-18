@@ -100,7 +100,7 @@ export const SOLTransfer = ({
   }, [transfer, network])
 
   const normalizedAmount = React.useMemo(() => {
-    return new Amount(transfer.diff.digits.toString()).divideByDecimals(
+    return new Amount(transfer.diff.digits).divideByDecimals(
       transfer.asset.decimals
     )
   }, [transfer])
@@ -224,7 +224,7 @@ export const SPLTokenTransfer = ({
   }, [transfer, combinedTokensRegistry, network])
 
   const normalizedAmount = React.useMemo(() => {
-    return new Amount(transfer.diff.digits.toString()).divideByDecimals(
+    return new Amount(transfer.diff.digits).divideByDecimals(
       transfer.asset.decimals
     )
   }, [transfer])
@@ -334,7 +334,7 @@ export const SPLTokenApproval = ({
 
   // memos
   const afterAmount = React.useMemo(() => {
-    return new Amount(approval.diff.digits.toString())
+    return new Amount(approval.diff.digits)
       .divideByDecimals(approval.asset.decimals)
       .formatAsAsset(6, approval.asset.symbol)
   }, [approval])

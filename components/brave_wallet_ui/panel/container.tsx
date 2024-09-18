@@ -49,14 +49,10 @@ import {
   useGetPendingSignMessageErrorsQuery,
   useGetPendingSignMessageRequestsQuery,
   useGetPendingSwitchChainRequestQuery,
-  useGetPendingSignAllTransactionsRequestsQuery,
-  useGetPendingTokenSuggestionRequestsQuery,
-  useGetPendingSignTransactionRequestsQuery
+  useGetPendingSignSolTransactionsRequestsQuery,
+  useGetPendingTokenSuggestionRequestsQuery
 } from '../common/slices/api.slice'
-import {
-  useAccountsQuery,
-  useSelectedAccountQuery
-} from '../common/slices/api.slice.extra'
+import { useAccountsQuery } from '../common/slices/api.slice.extra'
 import {
   useSelectedPendingTransaction //
 } from '../common/hooks/use-pending-transaction'
@@ -101,7 +97,6 @@ function Container() {
 
   // queries
   const { accounts } = useAccountsQuery()
-  const { data: selectedAccount } = useSelectedAccountQuery()
   const { data: addChainRequest } = useGetPendingAddChainRequestQuery()
   const { data: switchChainRequest } = useGetPendingSwitchChainRequestQuery()
   const { data: decryptRequest } = useGetPendingDecryptRequestQuery()
@@ -110,13 +105,9 @@ function Container() {
     isLoading: isLoadingPendingPublicKeyRequest
   } = useGetPendingGetEncryptionPublicKeyRequestQuery()
   const {
-    data: signTransactionRequests,
-    isLoading: isLoadingSignTransactionRequests
-  } = useGetPendingSignTransactionRequestsQuery()
-  const {
-    data: signAllTransactionsRequests,
-    isLoading: isLoadingSignAllTransactionsRequests
-  } = useGetPendingSignAllTransactionsRequestsQuery()
+    data: signSolTransactionsRequests,
+    isLoading: isLoadingSignSolTransactionsRequests
+  } = useGetPendingSignSolTransactionsRequestsQuery()
   const { data: signMessageData, isLoading: isLoadingSignMessageData } =
     useGetPendingSignMessageRequestsQuery()
   const {
@@ -134,8 +125,7 @@ function Container() {
   const isLoadingPendingActions =
     isLoadingPendingTransactions ||
     isLoadingPendingPublicKeyRequest ||
-    isLoadingSignTransactionRequests ||
-    isLoadingSignAllTransactionsRequests ||
+    isLoadingSignSolTransactionsRequests ||
     isLoadingSignMessageData ||
     isLoadingSignMessageErrorData ||
     isLoadingAddTokenRequests
@@ -196,19 +186,14 @@ function Container() {
 
   if (
     selectedPanel === 'connectHardwareWallet' &&
-    selectedAccount &&
     (selectedPendingTransaction ||
       signMessageData?.length ||
-      signAllTransactionsRequests?.length ||
-      signTransactionRequests?.length)
+      signSolTransactionsRequests?.length)
   ) {
     return (
       <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>
-          <ConnectHardwareWalletPanel
-            account={selectedAccount}
-            hardwareWalletCode={hardwareWalletCode}
-          />
+          <ConnectHardwareWalletPanel hardwareWalletCode={hardwareWalletCode} />
         </StyledExtensionWrapper>
       </PanelWrapper>
     )
@@ -314,15 +299,11 @@ function Container() {
     )
   }
 
-  if (signAllTransactionsRequests?.length || signTransactionRequests?.length) {
+  if (signSolTransactionsRequests?.length) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper padding='0px'>
-          <PendingSignatureRequestsPanel
-            signMode={
-              signAllTransactionsRequests?.length ? 'signAllTxs' : 'signTx'
-            }
-          />
+          <PendingSignatureRequestsPanel />
         </LongWrapper>
       </PanelWrapper>
     )

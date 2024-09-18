@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
@@ -35,8 +36,10 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -2289,7 +2292,8 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
 
   mojom::OriginInfoPtr origin_info =
       MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
-  std::string expected_signature = std::string("0xSiGnEd");
+  auto expected_signature =
+      mojom::EthereumSignatureBytes::New(std::vector<uint8_t>{1, 2, 3, 4, 5});
   // That should be hw account per test name.
   auto account_id = GetAccountUtils().EnsureEthAccount(0)->account_id.Clone();
   std::string domain = "{}";
@@ -2303,23 +2307,20 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   service_->AddSignMessageRequest(
       std::move(request1),
       base::BindLambdaForTesting([&](bool approved,
-                                     mojom::ByteArrayStringUnionPtr signature,
+                                     mojom::EthereumSignatureBytesPtr signature,
                                      const std::optional<std::string>& error) {
         ASSERT_TRUE(approved);
-        ASSERT_TRUE(signature->is_str());
-        EXPECT_EQ(signature->get_str(), expected_signature);
+        EXPECT_EQ(signature, expected_signature);
         EXPECT_FALSE(error);
         callback_is_called = true;
       }));
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
   service_->NotifySignMessageRequestProcessed(
-      true, 1, mojom::ByteArrayStringUnion::NewStr(expected_signature),
-      std::nullopt);
+      true, 1, expected_signature.Clone(), std::nullopt);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
   service_->NotifySignMessageRequestProcessed(
-      true, 1, mojom::ByteArrayStringUnion::NewStr(expected_signature),
-      std::nullopt);
+      true, 1, expected_signature.Clone(), std::nullopt);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
   callback_is_called = false;
   std::string expected_error = "error";
@@ -2331,19 +2332,17 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   service_->AddSignMessageRequest(
       std::move(request2),
       base::BindLambdaForTesting([&](bool approved,
-                                     mojom::ByteArrayStringUnionPtr signature,
+                                     mojom::EthereumSignatureBytesPtr signature,
                                      const std::optional<std::string>& error) {
         ASSERT_FALSE(approved);
-        ASSERT_TRUE(signature->is_str());
-        EXPECT_EQ(signature->get_str(), expected_signature);
+        EXPECT_EQ(signature, expected_signature);
         ASSERT_TRUE(error);
         EXPECT_EQ(*error, expected_error);
         callback_is_called = true;
       }));
   EXPECT_EQ(GetPendingSignMessageRequests().size(), 1u);
   service_->NotifySignMessageRequestProcessed(
-      false, 2, mojom::ByteArrayStringUnion::NewStr(expected_signature),
-      expected_error);
+      false, 2, expected_signature.Clone(), expected_error);
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(GetPendingSignMessageRequests().empty());
 }
@@ -2366,7 +2365,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   service_->AddSignMessageRequest(
       std::move(request1),
       base::BindLambdaForTesting([&](bool approved,
-                                     mojom::ByteArrayStringUnionPtr signature,
+                                     mojom::EthereumSignatureBytesPtr signature,
                                      const std::optional<std::string>& error) {
         ASSERT_TRUE(approved);
         EXPECT_FALSE(signature);
@@ -2389,7 +2388,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   service_->AddSignMessageRequest(
       std::move(request2),
       base::BindLambdaForTesting([&](bool approved,
-                                     mojom::ByteArrayStringUnionPtr signature,
+                                     mojom::EthereumSignatureBytesPtr signature,
                                      const std::optional<std::string>& error) {
         ASSERT_FALSE(approved);
         EXPECT_FALSE(signature);
@@ -2564,7 +2563,7 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
       mojom::CoinType::ETH, mojom::kMainnetChainId);
   service_->AddSignMessageRequest(
       std::move(request1),
-      base::BindLambdaForTesting([](bool, mojom::ByteArrayStringUnionPtr,
+      base::BindLambdaForTesting([](bool, mojom::EthereumSignatureBytesPtr,
                                     const std::optional<std::string>&) {}));
   mojom::BlockchainTokenPtr custom_token = mojom::BlockchainToken::New(
       "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", false, true,

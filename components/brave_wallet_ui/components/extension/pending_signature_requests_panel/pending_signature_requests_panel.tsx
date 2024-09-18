@@ -16,7 +16,7 @@ import {
 import {
   useGetHasTransactionSimulationSupportQuery,
   useGetIsTxSimulationOptInStatusQuery,
-  useGetSolanaTransactionSimulationQuery
+  useGetSolanaSignTransactionsRequestSimulationQuery
 } from '../../../common/slices/api.slice'
 
 // Components
@@ -33,13 +33,7 @@ import {
 // Style
 import { LongWrapper } from '../../../stories/style'
 
-interface Props {
-  signMode: 'signTx' | 'signAllTxs'
-}
-
-export const PendingSignatureRequestsPanel: React.FC<Props> = ({
-  signMode
-}) => {
+export const PendingSignatureRequestsPanel: React.FC = () => {
   // custom hooks
   const {
     isDisabled,
@@ -47,9 +41,9 @@ export const PendingSignatureRequestsPanel: React.FC<Props> = ({
     queueLength,
     queueNextSignTransaction,
     queueNumber,
-    selectedQueueData,
+    selectedRequest,
     signingAccount
-  } = useSignSolanaTransactionsQueue(signMode)
+  } = useSignSolanaTransactionsQueue()
 
   // queries
   const {
@@ -77,18 +71,13 @@ export const PendingSignatureRequestsPanel: React.FC<Props> = ({
     isFetching: isFetchingSolanaSimulation,
     isError: hasSimulationError,
     refetch: retrySimulation
-  } = useGetSolanaTransactionSimulationQuery(
+  } = useGetSolanaSignTransactionsRequestSimulationQuery(
     isSimulationPermitted &&
       network &&
       networkHasTxSimulationSupport &&
-      selectedQueueData?.id !== undefined
+      selectedRequest
       ? {
-          chainId: network.chainId,
-          id: selectedQueueData.id,
-          mode:
-            signMode === 'signAllTxs'
-              ? 'signAllTransactionsRequest'
-              : 'signTransactionRequest'
+          signSolTransactionsRequestId: selectedRequest.id
         }
       : skipToken
   )
@@ -106,6 +95,8 @@ export const PendingSignatureRequestsPanel: React.FC<Props> = ({
   // Loading
   if (
     !network ||
+    !selectedRequest ||
+    !signingAccount ||
     isLoadingSimulationOptInStatus ||
     isCheckingSimulationNetworkSupport
   ) {
@@ -130,7 +121,6 @@ export const PendingSignatureRequestsPanel: React.FC<Props> = ({
     return (
       <LongWrapper>
         <SignSimulatedTransactionPanel
-          signMode={signMode}
           key={'SVM'}
           txSimulation={solanaSimulation}
           isSigningDisabled={isDisabled}
@@ -138,7 +128,7 @@ export const PendingSignatureRequestsPanel: React.FC<Props> = ({
           queueLength={queueLength}
           queueNextSignTransaction={queueNextSignTransaction}
           queueNumber={queueNumber}
-          selectedQueueData={selectedQueueData}
+          signSolTransactionsRequest={selectedRequest}
           signingAccount={signingAccount}
         />
       </LongWrapper>
@@ -149,13 +139,12 @@ export const PendingSignatureRequestsPanel: React.FC<Props> = ({
   return (
     <LongWrapper>
       <SignTransactionPanel
-        signMode={signMode}
         isSigningDisabled={isDisabled}
         network={network}
         queueLength={queueLength}
         queueNextSignTransaction={queueNextSignTransaction}
         queueNumber={queueNumber}
-        selectedQueueData={selectedQueueData}
+        selectedRequest={selectedRequest}
         signingAccount={signingAccount}
         showSimulationNotSupportedMessage={
           isSimulationPermitted && !networkHasTxSimulationSupport

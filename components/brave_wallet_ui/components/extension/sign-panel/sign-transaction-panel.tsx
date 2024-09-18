@@ -13,7 +13,6 @@ import { getLocale } from '../../../../common/locale'
 import {
   getSolanaTransactionInstructionParamsAndType as getTypedSolTxInstruction //
 } from '../../../utils/solana-instruction-utils'
-import { getTxDatasFromQueuedSolSignRequest } from '../../../utils/tx-utils'
 
 // Hooks
 import { useAccountOrb } from '../../../common/hooks/use-orb'
@@ -67,15 +66,11 @@ import { Tooltip } from '../../shared/tooltip/index'
 import { Column } from '../../shared/style'
 
 interface Props {
-  signMode: 'signTx' | 'signAllTxs'
+  selectedRequest: BraveWallet.SignSolTransactionsRequest
   isSigningDisabled: boolean
   network: BraveWallet.NetworkInfo
   queueNextSignTransaction: () => void
-  selectedQueueData:
-    | BraveWallet.SignTransactionRequest
-    | BraveWallet.SignAllTransactionsRequest
-    | undefined
-  signingAccount?: BraveWallet.AccountInfo
+  signingAccount: BraveWallet.AccountInfo
   queueLength: number
   queueNumber: number
   retrySimulation?: () => void
@@ -93,13 +88,12 @@ const onClickLearnMore = () => {
 }
 
 export const SignTransactionPanel = ({
-  signMode,
+  selectedRequest,
   isSigningDisabled,
   network,
   queueLength,
   queueNextSignTransaction,
   queueNumber,
-  selectedQueueData,
   signingAccount,
   retrySimulation,
   showSimulationNotSupportedMessage
@@ -121,16 +115,8 @@ export const SignTransactionPanel = ({
 
   const { cancelSign: onCancelSign, sign: onSign } =
     useProcessSignSolanaTransaction({
-      signMode,
-      account: signingAccount,
-      request: selectedQueueData
+      signSolTransactionsRequest: selectedRequest
     })
-
-  const txDatas = React.useMemo(() => {
-    return selectedQueueData
-      ? getTxDatasFromQueuedSolSignRequest(selectedQueueData)
-      : []
-  }, [selectedQueueData])
 
   // render
   return (
@@ -151,16 +137,14 @@ export const SignTransactionPanel = ({
         )}
       </TopRow>
       <AccountCircle orb={orb} />
-      {selectedQueueData && (
-        <URLText>
-          <CreateSiteOrigin
-            originSpec={selectedQueueData.originInfo.originSpec}
-            eTldPlusOne={selectedQueueData.originInfo.eTldPlusOne}
-          />
-        </URLText>
-      )}
+      <URLText>
+        <CreateSiteOrigin
+          originSpec={selectedRequest.originInfo.originSpec}
+          eTldPlusOne={selectedRequest.originInfo.eTldPlusOne}
+        />
+      </URLText>
       <Tooltip
-        text={selectedQueueData?.fromAddress || ''}
+        text={selectedRequest.fromAddress || ''}
         isAddress
       >
         <AccountNameText>{signingAccount?.name ?? ''}</AccountNameText>
@@ -189,7 +173,7 @@ export const SignTransactionPanel = ({
             />
           </TabRow>
           <MessageBox>
-            {txDatas.map(({ instructions, txType }, i) => {
+            {selectedRequest.txDatas.map(({ instructions, txType }, i) => {
               return (
                 <DetailColumn key={`${txType}-${i}`}>
                   {instructions?.map((instruction, index) => {

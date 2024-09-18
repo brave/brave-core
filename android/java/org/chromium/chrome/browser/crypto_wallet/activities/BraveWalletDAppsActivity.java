@@ -29,7 +29,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.ConnectAccountF
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.EncryptionKeyFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageErrorFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageFragment;
-import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignTransactionFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignSolTransactionsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SiweMessageFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
@@ -60,8 +60,8 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         CONFIRM_TRANSACTION(5),
         DECRYPT_REQUEST(6),
         GET_ENCRYPTION_PUBLIC_KEY_REQUEST(7),
-        SIGN_TRANSACTION(8),
-        SIGN_ALL_TRANSACTIONS(9),
+        SIGN_TRANSACTION_DEPRECATED(8),
+        SIGN_SOL_TRANSACTIONS(9),
         SIWE_MESSAGE(10),
         SIGN_MESSAGE_ERROR(11),
         FINISH(12);
@@ -254,9 +254,8 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         } else if (mActivityType == ActivityType.ADD_ETHEREUM_CHAIN
                 || mActivityType == ActivityType.SWITCH_ETHEREUM_CHAIN) {
             mFragment = new AddSwitchChainNetworkFragment(mActivityType, this);
-        } else if (mActivityType == ActivityType.SIGN_TRANSACTION
-                || mActivityType == ActivityType.SIGN_ALL_TRANSACTIONS) {
-            mFragment = SignTransactionFragment.newInstance(mActivityType);
+        } else if (mActivityType == ActivityType.SIGN_SOL_TRANSACTIONS) {
+            mFragment = SignSolTransactionsFragment.newInstance();
         } else if (mActivityType == ActivityType.CONNECT_ACCOUNT) {
             mFragment = new ConnectAccountFragment();
         } else if (mActivityType == GET_ENCRYPTION_PUBLIC_KEY_REQUEST

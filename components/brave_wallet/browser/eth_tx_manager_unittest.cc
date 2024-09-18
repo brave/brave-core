@@ -1103,7 +1103,7 @@ TEST_F(EthTxManagerUnitTest, ValidateTxData1559) {
       &error_message));
 }
 
-TEST_F(EthTxManagerUnitTest, ProcessHardwareSignature) {
+TEST_F(EthTxManagerUnitTest, ProcessEthHardwareSignature) {
   auto tx_data =
       mojom::TxData::New("0x06", "" /* gas_price */, "" /* gas_limit */,
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
@@ -1126,10 +1126,14 @@ TEST_F(EthTxManagerUnitTest, ProcessHardwareSignature) {
   SetInterceptor("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0\"}");
 
   base::RunLoop run_loop;
-  eth_tx_manager()->ProcessHardwareSignature(
-      tx_meta_id, "0x00",
-      "0x93b9121e82df014428924df439ff044f89c205dd76a194f8b11f50d2eade744e",
-      "0x7aa705c9144742836b7fbbd0745c57f67b60df7b8d1790fe59f91ed8d2bfc11d",
+  eth_tx_manager()->ProcessEthHardwareSignature(
+      tx_meta_id,
+      mojom::EthereumSignatureVRS::New(
+          *PrefixedHexStringToBytes("0x00"),
+          *PrefixedHexStringToBytes("0x93b9121e82df014428924df439ff044f89c205dd"
+                                    "76a194f8b11f50d2eade744e"),
+          *PrefixedHexStringToBytes("0x7aa705c9144742836b7fbbd0745c57f67b60df7b"
+                                    "8d1790fe59f91ed8d2bfc11d")),
       base::BindLambdaForTesting([&](bool success,
                                      mojom::ProviderError error_out,
                                      const std::string& error_message_out) {
@@ -1145,7 +1149,7 @@ TEST_F(EthTxManagerUnitTest, ProcessHardwareSignature) {
   ASSERT_TRUE(observer.TxStatusChanged());
 }
 
-TEST_F(EthTxManagerUnitTest, ProcessHardwareSignatureFail) {
+TEST_F(EthTxManagerUnitTest, ProcessEthHardwareSignatureFail) {
   auto tx_data =
       mojom::TxData::New("0x06", "" /* gas_price */, "" /* gas_limit */,
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
@@ -1163,8 +1167,13 @@ TEST_F(EthTxManagerUnitTest, ProcessHardwareSignatureFail) {
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   callback_called = false;
-  eth_tx_manager()->ProcessHardwareSignature(
-      tx_meta_id, "0x00", "9ff044f89c205dd76a194f8b11f50d2eade744e", "",
+  eth_tx_manager()->ProcessEthHardwareSignature(
+      tx_meta_id,
+      mojom::EthereumSignatureVRS::New(
+          *PrefixedHexStringToBytes("0x00"),
+          *PrefixedHexStringToBytes(
+              "0x9ff044f89c205dd76a194f8b11f50d2eade744e"),
+          std::vector<uint8_t>()),
       base::BindLambdaForTesting([&](bool success,
                                      mojom::ProviderError error_out,
                                      const std::string& error_message_out) {
@@ -1183,8 +1192,13 @@ TEST_F(EthTxManagerUnitTest, ProcessHardwareSignatureFail) {
   ASSERT_TRUE(observer.TxStatusChanged());
   observer.Reset();
   callback_called = false;
-  eth_tx_manager()->ProcessHardwareSignature(
-      "-1", "0x00", "9ff044f89c205dd76a194f8b11f50d2eade744e", "",
+  eth_tx_manager()->ProcessEthHardwareSignature(
+      "-1",
+      mojom::EthereumSignatureVRS::New(
+          *PrefixedHexStringToBytes("0x00"),
+          *PrefixedHexStringToBytes(
+              "0x9ff044f89c205dd76a194f8b11f50d2eade744e"),
+          std::vector<uint8_t>()),
       base::BindLambdaForTesting([&](bool success,
                                      mojom::ProviderError error_out,
                                      const std::string& error_message_out) {
@@ -1234,19 +1248,18 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction) {
   ASSERT_TRUE(callback_called);
 
   callback_called = false;
-  eth_tx_manager()->GetTransactionMessageToSign(
+  eth_tx_manager()->GetEthTransactionMessageToSign(
       tx_meta_id,
-      base::BindLambdaForTesting([&](mojom::MessageToSignUnionPtr message) {
-        ASSERT_TRUE(message->is_message_str());
-        std::optional<std::string> message_str = message->get_message_str();
-        EXPECT_EQ(
-            message_str,
-            "0xf873018517fcf1832182960494be862ad9abfe6f22bcb087716c7d89a260"
-            "51f74c88016345785d8a0000b844095ea7b3000000000000000000000000bf"
-            "b30a082f650c2a15d0632f0e87be4f8e64460f000000000000000000000000"
-            "0000000000000000000000003fffffffffffffff8205398080");
-        callback_called = true;
-      }));
+      base::BindLambdaForTesting(
+          [&](const std::optional<std::string>& hex_message) {
+            EXPECT_EQ(
+                *hex_message,
+                "f873018517fcf1832182960494be862ad9abfe6f22bcb087716c7d89a260"
+                "51f74c88016345785d8a0000b844095ea7b3000000000000000000000000bf"
+                "b30a082f650c2a15d0632f0e87be4f8e64460f000000000000000000000000"
+                "0000000000000000000000003fffffffffffffff8205398080");
+            callback_called = true;
+          }));
   task_environment_.RunUntilIdle();
   ASSERT_TRUE(callback_called);
   ASSERT_TRUE(observer.TxStatusChanged());
@@ -1288,14 +1301,13 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction1559) {
   ASSERT_TRUE(callback_called);
 
   callback_called = false;
-  eth_tx_manager()->GetTransactionMessageToSign(
+  eth_tx_manager()->GetEthTransactionMessageToSign(
       tx_meta_id,
-      base::BindLambdaForTesting([&](mojom::MessageToSignUnionPtr message) {
-        ASSERT_TRUE(message->is_message_str());
-        std::optional<std::string> message_str = message->get_message_str();
+      base::BindLambdaForTesting([&](const std::optional<std::string>&
+                                         hex_message) {
         EXPECT_EQ(
-            message_str,
-            "0x02dd04800101019401010101010101010101010101010101010101018080c0");
+            *hex_message,
+            "02dd04800101019401010101010101010101010101010101010101018080c0");
         callback_called = true;
       }));
   task_environment_.RunUntilIdle();
@@ -1317,12 +1329,12 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransactionFail) {
   ASSERT_TRUE(callback_called);
 
   callback_called = false;
-  eth_tx_manager()->GetTransactionMessageToSign(
-      std::string(),
-      base::BindLambdaForTesting([&](mojom::MessageToSignUnionPtr message) {
-        ASSERT_FALSE(message);
-        callback_called = true;
-      }));
+  eth_tx_manager()->GetEthTransactionMessageToSign(
+      std::string(), base::BindLambdaForTesting(
+                         [&](const std::optional<std::string>& hex_message) {
+                           ASSERT_FALSE(hex_message);
+                           callback_called = true;
+                         }));
   task_environment_.RunUntilIdle();
   ASSERT_TRUE(callback_called);
   ASSERT_FALSE(observer.TxStatusChanged());

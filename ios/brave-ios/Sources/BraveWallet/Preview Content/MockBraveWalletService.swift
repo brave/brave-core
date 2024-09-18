@@ -150,7 +150,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   func notifySignMessageRequestProcessed(
     approved: Bool,
     id: Int32,
-    signature: BraveWallet.ByteArrayStringUnion?,
+    hwSignature: BraveWallet.EthereumSignatureBytes?,
     error: String?
   ) {
   }
@@ -239,30 +239,16 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     completion(false)
   }
 
-  func pendingSignTransactionRequests(
-    completion: @escaping ([BraveWallet.SignTransactionRequest]) -> Void
+  func pendingSignSolTransactionsRequests(
+    completion: @escaping ([BraveWallet.SignSolTransactionsRequest]) -> Void
   ) {
     completion([])
   }
 
-  func pendingSignAllTransactionsRequests(
-    completion: @escaping ([BraveWallet.SignAllTransactionsRequest]) -> Void
-  ) {
-    completion([])
-  }
-
-  func notifySignTransactionRequestProcessed(
+  func notifySignSolTransactionsRequestProcessed(
     approved: Bool,
     id: Int32,
-    signature: BraveWallet.ByteArrayStringUnion?,
-    error: String?
-  ) {
-  }
-
-  func notifySignAllTransactionsRequestProcessed(
-    approved: Bool,
-    id: Int32,
-    signatures: [BraveWallet.ByteArrayStringUnion]?,
+    hwSignatures: [BraveWallet.SolanaSignature],
     error: String?
   ) {
   }

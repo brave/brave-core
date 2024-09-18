@@ -128,22 +128,20 @@ class FilTxManagerUnitTest : public testing::Test {
     url_loader_factory_.ClearResponses();
   }
 
-  void GetTransactionMessageToSign(
+  void GetFilTransactionMessageToSign(
       const std::string& tx_meta_id,
       std::optional<std::string> expected_message) {
     base::RunLoop run_loop;
-    fil_tx_manager()->GetTransactionMessageToSign(
-        tx_meta_id,
-        base::BindLambdaForTesting([&](mojom::MessageToSignUnionPtr message) {
-          EXPECT_EQ(!!message, expected_message.has_value());
-          if (expected_message.has_value()) {
-            ASSERT_TRUE(message->is_message_str());
-            std::optional<std::string> message_str = message->get_message_str();
-            EqualJSONs(*message_str, *expected_message);
-            EXPECT_EQ(message_str.has_value(), expected_message.has_value());
-          }
-          run_loop.Quit();
-        }));
+    fil_tx_manager()->GetFilTransactionMessageToSign(
+        tx_meta_id, base::BindLambdaForTesting(
+                        [&](const std::optional<std::string>& json_message) {
+                          EXPECT_EQ(!!json_message,
+                                    expected_message.has_value());
+                          if (expected_message.has_value()) {
+                            EqualJSONs(*json_message, *expected_message);
+                          }
+                          run_loop.Quit();
+                        }));
     run_loop.Run();
   }
 
@@ -455,7 +453,7 @@ TEST_F(FilTxManagerUnitTest, SomeSiteOrigin) {
   EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
 }
 
-TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
+TEST_F(FilTxManagerUnitTest, GetFilTransactionMessageToSign) {
   const auto from_account = FilTestAcc(0);
   EXPECT_EQ(from_account->address, "t1dca7adhz5lbvin5n3qlw67munu6xhn5fpb77nly");
   const std::string to_account = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
@@ -472,7 +470,7 @@ TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
     EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
     EXPECT_EQ(tx_meta->from(), from_account);
     EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
-    GetTransactionMessageToSign(meta_id, R"(
+    GetFilTransactionMessageToSign(meta_id, R"(
     {
         "From": "t1dca7adhz5lbvin5n3qlw67munu6xhn5fpb77nly",
         "GasFeeCap": "3",
@@ -504,7 +502,7 @@ TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
     EXPECT_EQ(tx_meta->chain_id(), mojom::kLocalhostChainId);
     EXPECT_EQ(tx_meta->from(), from_account);
     EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
-    GetTransactionMessageToSign(meta_id, R"(
+    GetFilTransactionMessageToSign(meta_id, R"(
     {
         "From": "t1dca7adhz5lbvin5n3qlw67munu6xhn5fpb77nly",
         "GasFeeCap": "3",
@@ -520,8 +518,8 @@ TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
   )");
   }
 
-  GetTransactionMessageToSign("unknown id", std::nullopt);
-  GetTransactionMessageToSign("", std::nullopt);
+  GetFilTransactionMessageToSign("unknown id", std::nullopt);
+  GetFilTransactionMessageToSign("", std::nullopt);
 }
 
 TEST_F(FilTxManagerUnitTest, ProcessHardwareSignature) {
@@ -575,7 +573,7 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignature) {
 
   base::RunLoop run_loop;
   fil_tx_manager()->ProcessFilHardwareSignature(
-      meta_id, signed_message,
+      meta_id, mojom::FilecoinSignature::New(signed_message),
       base::BindLambdaForTesting([&](bool success,
                                      mojom::ProviderErrorUnionPtr error_union,
                                      const std::string& err_message) {
@@ -612,7 +610,7 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignatureError) {
                        "data");
   base::RunLoop run_loop;
   fil_tx_manager()->ProcessFilHardwareSignature(
-      "fake", signed_message,
+      "fake", mojom::FilecoinSignature::New(signed_message),
       base::BindLambdaForTesting([&](bool success,
                                      mojom::ProviderErrorUnionPtr error_union,
                                      const std::string& err_message) {

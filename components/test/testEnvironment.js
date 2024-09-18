@@ -59,5 +59,9 @@ module.exports = class CustomEnvironment extends JSDOMEnvironment {
       removeEventListener: () => {},
       dispatchEvent: () => {}
     })
+
+    // Fixed in jest >= 28 https://github.com/jestjs/jest/pull/12631
+    assert(this.global.structuredClone === undefined)
+    this.global.structuredClone = structuredClone
   }
 }

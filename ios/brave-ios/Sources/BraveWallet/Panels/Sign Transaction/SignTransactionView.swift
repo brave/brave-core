@@ -7,44 +7,11 @@ import BraveCore
 import DesignSystem
 import SwiftUI
 
-class SignTransactionRequestUnion {
-  let id: Int32
-  let chainId: String
-  let originInfo: BraveWallet.OriginInfo
-  let coin: BraveWallet.CoinType
-  let fromAddress: String
-  let txDatas: [BraveWallet.TxDataUnion]
-  let rawMessage: [BraveWallet.ByteArrayStringUnion]
-
-  init(
-    id: Int32,
-    chainId: String,
-    originInfo: BraveWallet.OriginInfo,
-    coin: BraveWallet.CoinType,
-    fromAddress: String,
-    txDatas: [BraveWallet.TxDataUnion],
-    rawMessage: [BraveWallet.ByteArrayStringUnion]
-  ) {
-    self.id = id
-    self.chainId = chainId
-    self.originInfo = originInfo
-    self.coin = coin
-    self.fromAddress = fromAddress
-    self.txDatas = txDatas
-    self.rawMessage = rawMessage
-  }
-}
-
 struct SignTransactionView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
 
-  enum Request {
-    case signTransaction([BraveWallet.SignTransactionRequest])
-    case signAllTransactions([BraveWallet.SignAllTransactionsRequest])
-  }
-
-  var request: Request
+  var requests: [BraveWallet.SignSolTransactionsRequest]
   var cryptoStore: CryptoStore
   var onDismiss: () -> Void
 
@@ -55,59 +22,28 @@ struct SignTransactionView: View {
   @Environment(\.openURL) private var openWalletURL
   @ScaledMetric private var blockieSize = 54
   private let maxBlockieSize: CGFloat = 108
-  private let normalizedRequests: [SignTransactionRequestUnion]
 
   init(
     keyringStore: KeyringStore,
     networkStore: NetworkStore,
-    request: Request,
+    requests: [BraveWallet.SignSolTransactionsRequest],
     cryptoStore: CryptoStore,
     onDismiss: @escaping () -> Void
   ) {
     self.keyringStore = keyringStore
     self.networkStore = networkStore
-    self.request = request
+    self.requests = requests
     self.cryptoStore = cryptoStore
     self.onDismiss = onDismiss
-    switch self.request {
-    case .signTransaction(let requests):
-      self.normalizedRequests = requests.map {
-        SignTransactionRequestUnion(
-          id: $0.id,
-          chainId: $0.chainId,
-          originInfo: $0.originInfo,
-          coin: $0.coin,
-          fromAddress: $0.fromAddress,
-          txDatas: [$0.txData],
-          rawMessage: [$0.rawMessage]
-        )
-      }
-    case .signAllTransactions(let requests):
-      self.normalizedRequests = requests.map {
-        SignTransactionRequestUnion(
-          id: $0.id,
-          chainId: $0.chainId,
-          originInfo: $0.originInfo,
-          coin: $0.coin,
-          fromAddress: $0.fromAddress,
-          txDatas: $0.txDatas,
-          rawMessage: $0.rawMessages
-        )
-      }
-    }
   }
 
   var navigationTitle: String {
-    switch request {
-    case .signTransaction:
-      return Strings.Wallet.signTransactionTitle
-    case .signAllTransactions:
-      return Strings.Wallet.signAllTransactionsTitle
-    }
+    return currentRequest.txDatas.count > 1
+      ? Strings.Wallet.signAllTransactionsTitle : Strings.Wallet.signTransactionTitle
   }
 
-  private var currentRequest: SignTransactionRequestUnion {
-    normalizedRequests[txIndex]
+  private var currentRequest: BraveWallet.SignSolTransactionsRequest {
+    requests[txIndex]
   }
 
   private var network: BraveWallet.NetworkInfo? {
@@ -116,7 +52,7 @@ struct SignTransactionView: View {
 
   private func instructionsDisplayString() -> String {
     currentRequest.txDatas
-      .map { $0.solanaTxData?.instructions ?? [] }
+      .map { $0.instructions }
       .map { instructionsForOneTx in
         instructionsForOneTx
           .map { TransactionParser.parseSolanaInstruction($0).toString }
@@ -141,14 +77,14 @@ struct SignTransactionView: View {
                 .foregroundColor(Color(.braveLabel))
             }
             Spacer()
-            if normalizedRequests.count > 1 {
+            if requests.count > 1 {
               HStack {
                 Spacer()
                 Text(
                   String.localizedStringWithFormat(
                     Strings.Wallet.transactionCount,
                     txIndex + 1,
-                    normalizedRequests.count
+                    requests.count
                   )
                 )
                 .fontWeight(.semibold)
@@ -240,18 +176,10 @@ struct SignTransactionView: View {
     } else {
       cancelButton
       Button {  // approve
-        switch request {
-        case .signTransaction(_):
-          cryptoStore.handleWebpageRequestResponse(
-            .signTransaction(approved: true, id: currentRequest.id)
-          )
-
-        case .signAllTransactions(_):
-          cryptoStore.handleWebpageRequestResponse(
-            .signAllTransactions(approved: true, id: currentRequest.id)
-          )
-        }
-        if normalizedRequests.count == 1 {
+        cryptoStore.handleWebpageRequestResponse(
+          .signSolTransactions(approved: true, id: currentRequest.id)
+        )
+        if requests.count == 1 {
           onDismiss()
         }
       } label: {
@@ -266,17 +194,10 @@ struct SignTransactionView: View {
 
   @ViewBuilder private var cancelButton: some View {
     Button {  // cancel
-      switch request {
-      case .signTransaction(_):
-        cryptoStore.handleWebpageRequestResponse(
-          .signTransaction(approved: false, id: currentRequest.id)
-        )
-      case .signAllTransactions(_):
-        cryptoStore.handleWebpageRequestResponse(
-          .signAllTransactions(approved: false, id: currentRequest.id)
-        )
-      }
-      if normalizedRequests.count == 1 {
+      cryptoStore.handleWebpageRequestResponse(
+        .signSolTransactions(approved: false, id: currentRequest.id)
+      )
+      if requests.count == 1 {
         onDismiss()
       }
     } label: {
@@ -327,7 +248,7 @@ struct SignTransactionView: View {
   }
 
   private func next() {
-    if txIndex + 1 < normalizedRequests.count {
+    if txIndex + 1 < requests.count {
       txIndex += 1
     } else {
       txIndex = 0
@@ -341,18 +262,17 @@ struct SignTransaction_Previews: PreviewProvider {
     SignTransactionView(
       keyringStore: .previewStore,
       networkStore: .previewStore,
-      request: .signTransaction([
-        BraveWallet.SignTransactionRequest(
+      requests: [
+        BraveWallet.SignSolTransactionsRequest(
           originInfo: .init(),
           id: 0,
           from: BraveWallet.AccountInfo.previewAccount.accountId,
           fromAddress: BraveWallet.AccountInfo.previewAccount.address,
-          txData: .init(),
-          rawMessage: .init(),
-          coin: .sol,
+          txDatas: [.init()],
+          rawMessages: [.init()],
           chainId: BraveWallet.SolanaMainnet
         )
-      ]),
+      ],
       cryptoStore: .previewStore,
       onDismiss: {}
     )

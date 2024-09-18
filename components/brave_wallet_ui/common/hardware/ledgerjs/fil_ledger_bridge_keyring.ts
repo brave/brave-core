@@ -7,18 +7,15 @@ import {
   AccountFromDevice,
   HardwareImportScheme,
   DerivationSchemes,
-  GetAccountsHardwareOperationResult,
-  SignHardwareOperationResult
+  HardwareOperationResultAccounts,
+  HardwareOperationResultFilecoinSignature
 } from '../types'
 import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import {
   FilGetAccountResponse,
-  FilGetAccountResponsePayload,
   FilSignTransactionResponse,
-  FilSignTransactionResponsePayload,
   LedgerBridgeErrorCodes,
-  LedgerCommand,
-  LedgerError
+  LedgerCommand
 } from './ledger-messages'
 import LedgerBridgeKeyring from './ledger_bridge_keyring'
 
@@ -38,7 +35,7 @@ export default class FilecoinLedgerBridgeKeyring
     from: number,
     count: number,
     scheme: HardwareImportScheme
-  ): Promise<GetAccountsHardwareOperationResult> => {
+  ): Promise<HardwareOperationResultAccounts> => {
     const result = await this.unlock()
     if (!result.success) {
       return result
@@ -64,29 +61,23 @@ export default class FilecoinLedgerBridgeKeyring
     }
 
     if (!data.payload.success) {
-      const ledgerError = data.payload as LedgerError
-      return {
-        success: false,
-        error: ledgerError,
-        code: ledgerError.statusCode
-      }
+      return { ...data.payload }
     }
-    const responsePayload = data.payload as FilGetAccountResponsePayload
 
     let accounts: AccountFromDevice[] = []
-    for (let i = 0; i < responsePayload.accounts.length; i++) {
+    for (let i = 0; i < data.payload.accounts.length; i++) {
       accounts.push({
-        address: responsePayload.accounts[i],
+        address: data.payload.accounts[i],
         derivationPath: scheme.pathTemplate(from + i)
       })
     }
 
-    return { success: true, payload: accounts }
+    return { success: true, accounts: accounts }
   }
 
   signTransaction = async (
     message: string
-  ): Promise<SignHardwareOperationResult> => {
+  ): Promise<HardwareOperationResultFilecoinSignature> => {
     const result = await this.unlock()
     if (!result.success) {
       return result
@@ -107,19 +98,16 @@ export default class FilecoinLedgerBridgeKeyring
     }
 
     if (!data.payload.success) {
-      const ledgerError = data.payload as LedgerError
-      return {
-        success: false,
-        error: ledgerError,
-        code: ledgerError.statusCode
-      }
+      return { ...data.payload }
     }
 
     try {
       return {
         success: true,
-        payload: (data.payload as FilSignTransactionResponsePayload)
-          .lotusMessage
+        signature: {
+          // TODO(apaymyshev): should have trusted->untrusted checks?
+          signedMessageJson: data.payload.untrustedSignedTxJson
+        }
       }
     } catch (e) {
       return {

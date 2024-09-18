@@ -57,16 +57,12 @@ class BraveWalletService : public KeyedService,
   using APIRequestHelper = api_request_helper::APIRequestHelper;
   using SignMessageRequestCallback =
       base::OnceCallback<void(bool,
-                              mojom::ByteArrayStringUnionPtr,
+                              mojom::EthereumSignatureBytesPtr,
                               const std::optional<std::string>&)>;
-  using SignTransactionRequestCallback =
+  using SignSolTransactionsRequestCallback =
       base::OnceCallback<void(bool,
-                              mojom::ByteArrayStringUnionPtr,
+                              std::vector<mojom::SolanaSignaturePtr>,
                               const std::optional<std::string>&)>;
-  using SignAllTransactionsRequestCallback = base::OnceCallback<void(
-      bool,
-      std::optional<std::vector<mojom::ByteArrayStringUnionPtr>>,
-      const std::optional<std::string>&)>;
   using AddSuggestTokenCallback =
       base::OnceCallback<void(bool, mojom::ProviderError, const std::string&)>;
 
@@ -165,24 +161,17 @@ class BraveWalletService : public KeyedService,
       GetPendingSignMessageRequestsCallback callback) override;
   void GetPendingSignMessageErrors(
       GetPendingSignMessageErrorsCallback callback) override;
-  void GetPendingSignTransactionRequests(
-      GetPendingSignTransactionRequestsCallback callback) override;
-  void GetPendingSignAllTransactionsRequests(
-      GetPendingSignAllTransactionsRequestsCallback callback) override;
-  void NotifySignTransactionRequestProcessed(
+  void GetPendingSignSolTransactionsRequests(
+      GetPendingSignSolTransactionsRequestsCallback callback) override;
+  void NotifySignSolTransactionsRequestProcessed(
       bool approved,
       int id,
-      mojom::ByteArrayStringUnionPtr signature,
-      const std::optional<std::string>& error) override;
-  void NotifySignAllTransactionsRequestProcessed(
-      bool approved,
-      int id,
-      std::optional<std::vector<mojom::ByteArrayStringUnionPtr>> signatures,
+      std::vector<mojom::SolanaSignaturePtr> hw_signatures,
       const std::optional<std::string>& error) override;
   void NotifySignMessageRequestProcessed(
       bool approved,
       int id,
-      mojom::ByteArrayStringUnionPtr signature,
+      mojom::EthereumSignatureBytesPtr hw_signature,
       const std::optional<std::string>& error) override;
   void NotifySignMessageErrorProcessed(const std::string& error_id) override;
   void GetPendingAddSuggestTokenRequests(
@@ -241,6 +230,7 @@ class BraveWalletService : public KeyedService,
 
   void GetTransactionSimulationOptInStatus(
       GetTransactionSimulationOptInStatusCallback callback) override;
+  mojom::BlowfishOptInStatus GetTransactionSimulationOptInStatusSync();
 
   void SetTransactionSimulationOptInStatus(
       mojom::BlowfishOptInStatus status) override;
@@ -277,23 +267,19 @@ class BraveWalletService : public KeyedService,
                          std::string unsafe_message,
                          mojom::EthereumProvider::RequestCallback callback,
                          base::Value id);
-  void AddSignTransactionRequest(mojom::SignTransactionRequestPtr request,
-                                 SignTransactionRequestCallback callback);
-  void AddSignAllTransactionsRequest(
-      mojom::SignAllTransactionsRequestPtr request,
-      SignAllTransactionsRequestCallback callback);
+  void AddSignSolTransactionsRequest(
+      mojom::SignSolTransactionsRequestPtr request,
+      SignSolTransactionsRequestCallback callback);
+  mojom::SignSolTransactionsRequestPtr GetPendingSignSolTransactionsRequest(
+      int32_t id);
 
   void RemovePrefListenersForTests();
 
   BraveWalletP3A* GetBraveWalletP3A();
 
-  void SetSignTransactionRequestAddedCallbackForTesting(
+  void SetSignSolTransactionsRequestAddedCallbackForTesting(
       base::OnceClosure callback) {
-    sign_tx_request_added_cb_for_testing_ = std::move(callback);
-  }
-  void SetSignAllTransactionsRequestAddedCallbackForTesting(
-      base::OnceClosure callback) {
-    sign_all_txs_request_added_cb_for_testing_ = std::move(callback);
+    sign_sol_txs_request_added_cb_for_testing_ = std::move(callback);
   }
 
   BraveWalletServiceDelegate* GetDelegateForTesting() {
@@ -368,30 +354,24 @@ class BraveWalletService : public KeyedService,
   void OnNetworkChanged();
   void CancelAllSuggestedTokenCallbacks();
   void CancelAllSignMessageCallbacks();
-  void CancelAllSignTransactionCallbacks();
-  void CancelAllSignAllTransactionsCallbacks();
+  void CancelAllSignSolTransactionsCallbacks();
   void CancelAllGetEncryptionPublicKeyCallbacks();
   void CancelAllDecryptCallbacks();
   void OnGetNftsForCompressedMigration(
       std::vector<mojom::BlockchainTokenPtr> nfts);
 
   base::OnceClosure sign_tx_request_added_cb_for_testing_;
-  base::OnceClosure sign_all_txs_request_added_cb_for_testing_;
+  base::OnceClosure sign_sol_txs_request_added_cb_for_testing_;
 
   int sign_message_id_ = 0;
-  int sign_transaction_id_ = 0;
-  int sign_all_transactions_id_ = 0;
+  int sign_sol_transactions_id_ = 0;
   base::circular_deque<mojom::SignMessageRequestPtr> sign_message_requests_;
   base::circular_deque<SignMessageRequestCallback> sign_message_callbacks_;
   base::circular_deque<mojom::SignMessageErrorPtr> sign_message_errors_;
-  base::circular_deque<mojom::SignTransactionRequestPtr>
-      sign_transaction_requests_;
-  base::circular_deque<SignTransactionRequestCallback>
-      sign_transaction_callbacks_;
-  base::circular_deque<mojom::SignAllTransactionsRequestPtr>
-      sign_all_transactions_requests_;
-  base::circular_deque<SignAllTransactionsRequestCallback>
-      sign_all_transactions_callbacks_;
+  base::circular_deque<mojom::SignSolTransactionsRequestPtr>
+      sign_sol_transactions_requests_;
+  base::circular_deque<SignSolTransactionsRequestCallback>
+      sign_sol_transactions_callbacks_;
   base::flat_map<std::string, mojom::EthereumProvider::RequestCallback>
       add_suggest_token_callbacks_;
   base::flat_map<std::string, base::Value> add_suggest_token_ids_;

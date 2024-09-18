@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { loadTimeData } from '../../../../common/loadTimeData'
+import { Untrusted } from '../untrusted_shared_types'
 
 const braveWalletLedgerBridgeUrl = loadTimeData.getString(
   'braveWalletLedgerBridgeUrl'
@@ -36,15 +37,17 @@ export type CommandMessage = {
   origin: string
 }
 
-export type LedgerResponsePayload = {
-  success: boolean
+export type LedgerError = {
+  error: string
+  code: number | string | undefined
 }
 
-export type LedgerError = LedgerResponsePayload & {
-  message?: string
-  statusCode?: number
-  id?: string
-  name?: string
+export type LedgerResponse<T extends object = {}> =
+  | ({ success: true } & T)
+  | ({ success: false } & LedgerError)
+
+export type LedgerResponsePayload<T extends object = {}> = {
+  payload: LedgerResponse<T>
 }
 
 // Unlock command
@@ -52,9 +55,7 @@ export type LedgerError = LedgerResponsePayload & {
 // are reversed. The Ledger *Response messages will have a payload field
 // of type *ResponsePayload, whereas Trezor will have a *ResponsePayload
 // messages with a payload field of type *Response.
-export type UnlockResponse = CommandMessage & {
-  payload: LedgerResponsePayload | LedgerError
-}
+export type UnlockResponse = CommandMessage & LedgerResponsePayload
 export type UnlockCommand = CommandMessage & {
   command: LedgerCommand.Unlock
 }
@@ -63,9 +64,8 @@ export type UnlockCommand = CommandMessage & {
 export type AuthorizationRequiredCommand = CommandMessage & {
   command: LedgerCommand.AuthorizationRequired
 }
-export type AuthorizationSuccessResponsePayload = CommandMessage & {
-  payload: LedgerResponsePayload
-}
+export type AuthorizationSuccessResponsePayload = CommandMessage &
+  LedgerResponsePayload
 export type AuthorizationSuccessCommand = CommandMessage & {
   command: LedgerCommand.AuthorizationSuccess
 }
@@ -92,24 +92,18 @@ export type LedgerCommandHandlerUnion<T> =
 
 // Solana
 // GetAccounts command
-export type SolGetAccountResponsePayload = LedgerResponsePayload & {
-  address: Buffer
-}
-export type SolGetAccountResponse = CommandMessage & {
-  payload: SolGetAccountResponsePayload | LedgerError
-}
+export type SolGetAccountResponse = CommandMessage &
+  LedgerResponsePayload<{ address: Buffer }>
 export type SolGetAccountCommand = CommandMessage & {
   command: LedgerCommand.GetAccount
   path: string
 }
 
 // SignTransaction command
-export type SolSignTransactionResponsePayload = LedgerResponsePayload & {
-  signature: Buffer
-}
-export type SolSignTransactionResponse = CommandMessage & {
-  payload: SolSignTransactionResponsePayload | LedgerError
-}
+export type SolSignTransactionResponse = CommandMessage &
+  LedgerResponsePayload<{
+    untrustedSignatureBytes: Buffer
+  }>
 export type SolSignTransactionCommand = CommandMessage & {
   command: LedgerCommand.SignTransaction
   path: string
@@ -125,14 +119,10 @@ export type SolLedgerFrameResponse =
 
 // Filecoin
 // GetAccounts command
-export type FilGetAccountResponsePayload = LedgerResponsePayload & {
-  accounts: string[]
-}
-
-export type FilGetAccountResponse = CommandMessage & {
-  payload: FilGetAccountResponsePayload | LedgerError
-}
-
+export type FilGetAccountResponse = CommandMessage &
+  LedgerResponsePayload<{
+    accounts: string[]
+  }>
 export type FilGetAccountCommand = CommandMessage & {
   command: LedgerCommand.GetAccount
   from: number
@@ -140,37 +130,9 @@ export type FilGetAccountCommand = CommandMessage & {
   isTestnet: boolean
 }
 
-export interface FilLotusMessage {
-  To: string
-  From: string
-  Nonce: number
-  Value: string
-  GasPremium: string
-  GasLimit: number
-  GasFeeCap: string
-  Method: number
-  Params?: string | string[]
-}
-
-export interface FilSignedLotusMessage {
-  Message: FilLotusMessage
-  Signature: {
-    Type: number
-    Data: string
-  }
-}
-
 // SignTransaction command
-export type FilSignedTx = {
-  lotusMessage: FilSignedLotusMessage
-}
-export type FilSignTransactionResponsePayload = LedgerResponsePayload &
-  FilSignedTx
-
-export type FilSignTransactionResponse = CommandMessage & {
-  payload: FilSignTransactionResponsePayload | LedgerError
-}
-
+export type FilSignTransactionResponse = CommandMessage &
+  LedgerResponsePayload<{ untrustedSignedTxJson: string }>
 export type FilSignTransactionCommand = CommandMessage & {
   command: LedgerCommand.SignTransaction
   message: string
@@ -194,18 +156,10 @@ export type BtcSignTransactionCommand = CommandMessage & {
   rawTxBytes: Buffer
 }
 
-export type BtcGetAccountResponsePayload = LedgerResponsePayload & {
-  xpub: string
-}
-export type BtcGetAccountResponse = CommandMessage & {
-  payload: BtcGetAccountResponsePayload | LedgerError
-}
-export type BtcSignTransactionResponsePayload = LedgerResponsePayload & {
-  signature: Buffer
-}
-export type BtcSignTransactionResponse = CommandMessage & {
-  payload: BtcSignTransactionResponsePayload | LedgerError
-}
+export type BtcGetAccountResponse = CommandMessage &
+  LedgerResponsePayload<{ xpub: string }>
+export type BtcSignTransactionResponse = CommandMessage &
+  LedgerResponsePayload<{ signature: Buffer }>
 
 export type BtcLedgerFrameCommand =
   | BtcGetAccountCommand
@@ -216,34 +170,20 @@ export type BtcLedgerFrameResponse =
 
 // Ethereum
 // GetAccounts command
-export type EthGetAccountResponsePayload = LedgerResponsePayload & {
-  publicKey: string
-  address: string
-  chainCode?: string
-}
-
-export type EthGetAccountResponse = CommandMessage & {
-  payload: EthGetAccountResponsePayload | LedgerError
-}
-
+export type EthGetAccountResponse = CommandMessage &
+  LedgerResponsePayload<{
+    publicKey: string
+    address: string
+    chainCode?: string
+  }>
 export type EthGetAccountCommand = CommandMessage & {
   command: LedgerCommand.GetAccount
   path: string
 }
 
 // SignTransaction command
-export type EthereumSignedTx = {
-  v: string
-  r: string
-  s: string
-}
-export type EthSignTransactionResponsePayload = LedgerResponsePayload &
-  EthereumSignedTx
-
-export type EthSignTransactionResponse = CommandMessage & {
-  payload: EthSignTransactionResponsePayload | LedgerError
-}
-
+export type EthSignTransactionResponse = CommandMessage &
+  LedgerResponsePayload<{ signature: Untrusted.EthereumSignatureVRS }>
 export type EthSignTransactionCommand = CommandMessage & {
   command: LedgerCommand.SignTransaction
   path: string
@@ -251,16 +191,8 @@ export type EthSignTransactionCommand = CommandMessage & {
 }
 
 // SignPersonalMessage command
-export type EthSignPersonalMessageResponsePayload = LedgerResponsePayload & {
-  v: number
-  r: string
-  s: string
-}
-
-export type EthSignPersonalMessageResponse = CommandMessage & {
-  payload: EthSignPersonalMessageResponsePayload | LedgerError
-}
-
+export type EthSignPersonalMessageResponse = CommandMessage &
+  LedgerResponsePayload<{ signature: Untrusted.EthereumSignatureBytes }>
 export type EthSignPersonalMessageCommand = CommandMessage & {
   command: LedgerCommand.SignPersonalMessage
   path: string
@@ -268,13 +200,8 @@ export type EthSignPersonalMessageCommand = CommandMessage & {
 }
 
 // SignEip712Message command
-export type EthSignEip712MessageResponsePayload =
-  EthSignPersonalMessageResponsePayload
-
-export type EthSignEip712MessageResponse = CommandMessage & {
-  payload: EthSignEip712MessageResponsePayload | LedgerError
-}
-
+export type EthSignEip712MessageResponse = CommandMessage &
+  LedgerResponsePayload<{ signature: Untrusted.EthereumSignatureBytes }>
 export type EthSignEip712MessageCommand = CommandMessage & {
   command: LedgerCommand.SignEip712Message
   path: string

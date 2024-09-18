@@ -7,49 +7,11 @@ import { getLocale } from '../../../../common/locale'
 import LedgerBridgeKeyring from './ledger_bridge_keyring'
 import {
   LedgerBridgeErrorCodes,
-  LedgerFrameCommand,
   LedgerCommand,
-  LedgerError,
-  UnlockResponse,
-  LedgerFrameResponse
+  UnlockResponse
 } from './ledger-messages'
 import { HardwareOperationResult } from '../types'
-import { LedgerTrustedMessagingTransport } from './ledger-trusted-transport'
-
-type MockResponseType = LedgerFrameResponse | LedgerBridgeErrorCodes
-
-export class MockLedgerTransport extends LedgerTrustedMessagingTransport {
-  sendCommandResponses: MockResponseType[] // queue
-
-  constructor(
-    targetWindow: Window,
-    targetUrl: string,
-    onAuthorized?: () => void
-  ) {
-    super(targetWindow, targetUrl)
-    this.sendCommandResponses = []
-  }
-
-  addSendCommandResponse = (
-    response: LedgerFrameResponse | LedgerBridgeErrorCodes
-  ) => {
-    // appends to the left of the list
-    this.sendCommandResponses.unshift(response)
-  }
-
-  sendCommand = <T>(
-    command: LedgerFrameCommand
-  ): Promise<T | LedgerBridgeErrorCodes> => {
-    const response = this.sendCommandResponses.pop()
-    if (response === undefined) {
-      throw new Error(
-        'No mock ledger transport responses remaining.' +
-          'More sendCommand calls were made than mocked responses added.'
-      )
-    }
-    return new Promise((resolve) => resolve(response as T))
-  }
-}
+import { MockLedgerTransport } from './mock_ledger_transport'
 
 const createKeyring = () => {
   const keyring = new LedgerBridgeKeyring()
@@ -71,8 +33,8 @@ test('unlock successful', async () => {
     command: LedgerCommand.Unlock,
     payload: {
       success: false,
-      message: 'LedgerError',
-      statusCode: 101
+      error: 'LedgerError',
+      code: 101
     }
   }
   transport.addSendCommandResponse(unlockResponse)
@@ -90,8 +52,8 @@ test('unlock ledger error', async () => {
     command: LedgerCommand.Unlock,
     payload: {
       success: false,
-      message: 'LedgerError',
-      statusCode: 101
+      error: 'LedgerError',
+      code: 101
     }
   }
   transport.addSendCommandResponse(unlockResponse)
@@ -111,7 +73,7 @@ test('unlock unauthorized error', async () => {
       success: false,
       error: 'unauthorized',
       code: undefined
-    } as LedgerError
+    }
   }
   transport.addSendCommandResponse(sendCommandResponse)
   const result: HardwareOperationResult = await keyring.unlock()

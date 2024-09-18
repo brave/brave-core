@@ -63,9 +63,9 @@ class EthTransaction {
   void set_data(const std::vector<uint8_t>& data) { data_ = data; }
   void set_gas_price(uint256_t gas_price) { gas_price_ = gas_price; }
   void set_gas_limit(uint256_t gas_limit) { gas_limit_ = gas_limit; }
-  bool ProcessVRS(const std::string& v,
-                  const std::string& r,
-                  const std::string& s);
+  bool ProcessVRS(const std::vector<uint8_t>& v,
+                  const std::vector<uint8_t>& r,
+                  const std::vector<uint8_t>& s);
   bool IsToCreationAddress() const { return to_.IsEmpty(); }
 
   // return
