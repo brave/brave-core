@@ -18,57 +18,24 @@ source_set("browser_tests") {
     "//chrome/browser/ui:browser_navigator_params_headers",
     "//components/prefs",
     "//content/test:test_support",
+    "//ui/base",
   ]
 
   if (!is_android) {
     sources += [
       "shared_pinned_tab_service_browsertest.cc",
       "shared_pinned_tab_service_browsertest.h",
+      "split_view_browser_data_browsertest.cc",
+      "split_view_tab_strip_model_adapter_browsertest.cc",
     ]
-    deps += [ "//chrome/test:test_support_ui" ]
-  }
-
-  if (is_mac) {
-    sources += [ "shared_pinned_tab_service_browsertest_mac.mm" ]
-  }
-}
-
-source_set("unit_tests") {
-  testonly = true
-
-  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-
-  if (!is_android) {
-    sources = [
-      "split_view_browser_data_unittest.cc",
-      "split_view_tab_strip_model_adapter_unittest.cc",
-    ]
-
-    deps = [
-      ":test_support",
-      "//chrome/browser",
-      "//chrome/browser/ui",
+    deps += [
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
       "//components/tab_groups",
     ]
   }
-}
 
-# In order to resolve circular deps to the test_tab_strip_model_delegate,
-# declares source set here instead of adding these files to //brave/test/BUILD.gn
-source_set("test_support") {
-  if (!is_android) {
-    sources = [
-      "//chrome/browser/ui/tabs/test_tab_strip_model_delegate.cc",
-      "//chrome/browser/ui/tabs/test_tab_strip_model_delegate.h",
-    ]
-
-    deps = [
-      "//base",
-      "//chrome/browser/extensions",
-      "//chrome/browser/ui",
-      "//components/tab_groups",
-    ]
+  if (is_mac) {
+    sources += [ "shared_pinned_tab_service_browsertest_mac.mm" ]
   }
 }
