@@ -517,7 +517,7 @@ export const transactionEndpoints = ({
               }
               payload.approved = false
               payload.hwSignatures = []
-              payload.error = signed.error as string
+              payload.error = signed.error
               break
             } else {
               payload.hwSignatures?.push(signed.signature)
