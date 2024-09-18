@@ -116,8 +116,11 @@ TEST_F(ModelServiceTest, MigrateOldClaudeDefaultModelKey) {
   // new claude.
   ModelService::MigrateProfilePrefs(&pref_service_);
   // Verify uses non-premium version
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-instant");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
   // Verify uses premium version
+  EXPECT_CALL(*observer_,
+              OnDefaultModelChanged("chat-claude-haiku", "chat-claude-sonnet"))
+      .Times(1);
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Active);
   EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-sonnet");
 }
@@ -131,19 +134,25 @@ TEST_F(ModelServiceTest, MigrateOldClaudeDefaultModelKey_OnlyOnce) {
   // new claude.
   ModelService::MigrateProfilePrefs(&pref_service_);
   // Verify uses non-premium version
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-instant");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
+  EXPECT_CALL(*observer_, OnDefaultModelChanged(_, _)).Times(0);
   // Verify keeps non-premium version
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Inactive);
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-instant");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Active);
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-instant");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
+  testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
 TEST_F(ModelServiceTestWithDifferentPremiumModel,
        MigrateToPremiumDefaultModel) {
   EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-leo-expanded");
+  EXPECT_CALL(*observer_,
+              OnDefaultModelChanged("chat-leo-expanded", "claude-3-sonnet"))
+      .Times(1);
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Active);
   EXPECT_EQ(GetService()->GetDefaultModelKey(), "claude-3-sonnet");
+  testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
 TEST_F(ModelServiceTestWithDifferentPremiumModel,
@@ -154,15 +163,19 @@ TEST_F(ModelServiceTestWithDifferentPremiumModel,
       .Times(1);
   GetService()->SetDefaultModelKey("chat-basic");
   testing::Mock::VerifyAndClearExpectations(observer_.get());
+  EXPECT_CALL(*observer_, OnDefaultModelChanged(_, _)).Times(0);
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Active);
   EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
+  testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
 TEST_F(ModelServiceTestWithSamePremiumModel,
        MigrateToPremiumDefaultModel_None) {
   EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-leo-expanded");
+  EXPECT_CALL(*observer_, OnDefaultModelChanged(_, _)).Times(0);
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Active);
   EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-leo-expanded");
+  testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
 TEST_F(ModelServiceTest, ChangeOldDefaultKey) {

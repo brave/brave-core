@@ -219,6 +219,7 @@ base::Value::Dict GetModelDict(mojom::ModelPtr model) {
 
 ModelService::ModelService(PrefService* prefs_service)
     : pref_service_(prefs_service) {
+  InitModels();
   // Perform migrations which depend on finding out about user's premium status
   const std::string& default_model_user_pref = GetDefaultModelKey();
   if (default_model_user_pref == "chat-claude-instant") {
@@ -232,8 +233,6 @@ ModelService::ModelService(PrefService* prefs_service)
     SetDefaultModelKey("chat-claude-haiku");
     is_migrating_claude_instant_ = true;
   }
-
-  InitModels();
 }
 
 ModelService::~ModelService() = default;
