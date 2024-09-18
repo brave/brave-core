@@ -28,10 +28,11 @@ type Props = Pick<
   | 'isToolsMenuOpen'
   | 'setIsToolsMenuOpen'
   | 'shouldDisableUserInput'
+  | 'handleVoiceRecognition'
 > &
   Pick<
     AIChatContext,
-    'isMobile' | 'hasAcceptedAgreement' | 'handleVoiceRecognition'
+    'isMobile' | 'hasAcceptedAgreement'
   >
 
 interface InputBoxProps {

@@ -25,7 +25,7 @@ import java.util.List;
 public class BraveLeoVoiceRecognitionHandler {
     private static final String TAG = "LeoVoiceRecognition";
     private WindowAndroid mWindowAndroid;
-    private WebContents mContextWebContents;
+    private String mConversationUuid;
 
     /** Callback for when we receive voice search results after initiating voice recognition. */
     class VoiceRecognitionCompleteCallback implements WindowAndroid.IntentCallback {
@@ -66,7 +66,7 @@ public class BraveLeoVoiceRecognitionHandler {
             if (TextUtils.isEmpty(topResultQuery)) {
                 return;
             }
-            BraveLeoUtils.openLeoQuery(mContextWebContents, topResultQuery, false);
+            BraveLeoUtils.openLeoQuery(mContextWebContents, mConversationUuid, topResultQuery, false);
         }
     }
 
@@ -96,9 +96,9 @@ public class BraveLeoVoiceRecognitionHandler {
     }
 
     public BraveLeoVoiceRecognitionHandler(
-            WindowAndroid windowAndroid, WebContents contextWebContents) {
+            WindowAndroid windowAndroid, String conversationUuid) {
         mWindowAndroid = windowAndroid;
-        mContextWebContents = contextWebContents;
+        mConversationUuid = conversation_uuid;
     }
 
     private List<BraveLeoVoiceRecognitionHandler.VoiceResult> convertBundleToVoiceResults(

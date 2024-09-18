@@ -277,7 +277,7 @@ interface AIChatUIHandler {
   GoPremium();
   RefreshPremiumSession();
   ManagePremium();
-  HandleVoiceRecognition();
+  HandleVoiceRecognition(string conversation_uuid);
 
   // This might be a no-op if the UI isn't closeable
   CloseUI();

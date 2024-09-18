@@ -63,7 +63,7 @@ public class BraveLeoSuggestionProcessor extends BaseSuggestionViewProcessor {
                     Tab tab = mActivityTabSupplier.get();
                     if (tab != null) {
                         mDelegate.openLeoQuery(
-                                tab.getWebContents(),
+                                tab.getWebContents(), "",
                                 mUrlBarEditingTextProvider.getTextWithoutAutocomplete());
                     }
                 });

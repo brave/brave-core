@@ -32,7 +32,6 @@ export interface AIChatContext extends Props {
   handleAgreeClick: () => void
   dismissPremiumPrompt: () => void
   userRefreshPremiumSession: () => void,
-  handleVoiceRecognition?: () => void
   uiHandler?: mojom.AIChatUIHandlerRemote
 }
 
@@ -139,7 +138,6 @@ export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
     dismissPremiumPrompt: () => Service.dismissPremiumPrompt(),
     userRefreshPremiumSession: () => UIHandler.refreshPremiumSession(),
     handleAgreeClick: () => Service.markAgreementAccepted(),
-    handleVoiceRecognition: () => UIHandler.handleVoiceRecognition(),
     uiHandler: UIHandler
   }
 

@@ -84,17 +84,10 @@ AIChatUIPageHandler::AIChatUIPageHandler(
 
 AIChatUIPageHandler::~AIChatUIPageHandler() = default;
 
-void AIChatUIPageHandler::HandleVoiceRecognition() {
+void AIChatUIPageHandler::HandleVoiceRecognition(
+    const std::string& conversation_uuid) {
 #if BUILDFLAG(IS_ANDROID)
-  // TODO(petemill): figure out why java needs access to conversation context
-  // web contents and this can't be done in UI WebContents only. Taget
-  // WebContents
-  auto* context_web_contents = (active_chat_tab_helper_)
-                                   ? active_chat_tab_helper_->web_contents()
-                                   : owner_web_contents_.get();
-  // TODO: send a conversation ID instead of context_web_contents, so
-  // that this will work for standalone conversations.
-  ai_chat::HandleVoiceRecognition(owner_web_contents_, context_web_contents);
+  ai_chat::HandleVoiceRecognition(owner_web_contents_.get(), conversation_uuid);
 #endif
 }
 

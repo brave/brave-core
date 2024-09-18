@@ -61,6 +61,7 @@ export interface ConversationContext extends CharCountContext {
   resetSelectedActionType: () => void
   handleActionTypeClick: (actionType: mojom.ActionType) => void
   setIsToolsMenuOpen: (isOpen: boolean) => void
+  handleVoiceRecognition?: () => void
   conversationHandler?: API.ConversationHandlerRemote
 }
 
@@ -455,6 +456,14 @@ export function ConversationContextProvider(
     })
   }
 
+  const handleVoiceRecognition = () => {
+    if (!context.conversationUuid) {
+      console.error('No conversationUuid found')
+      return
+    }
+    aiChatContext.uiHandler?.handleVoiceRecognition(context.conversationUuid)
+  }
+
   const store: ConversationContext = {
     ...context,
     actionList,
@@ -480,6 +489,7 @@ export function ConversationContextProvider(
     submitInputTextToAPI,
     switchToBasicModel,
     setIsToolsMenuOpen: (isToolsMenuOpen) => setPartialContext({ isToolsMenuOpen }),
+    handleVoiceRecognition,
     conversationHandler
   }
 
