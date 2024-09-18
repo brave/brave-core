@@ -115,6 +115,11 @@ class AIChatService : public KeyedService,
   size_t GetInMemoryConversationCountForTesting();
 
  private:
+  void MaybeAssociateContentWithConversation(
+      ConversationHandler* conversation,
+      int associated_content_id,
+      base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
+          associated_content);
   void OnUserOptedIn();
   void OnSkusServiceReceived(
       SkusServiceGetter getter,

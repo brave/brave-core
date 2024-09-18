@@ -139,16 +139,8 @@ ConversationHandler* AIChatService::GetOrCreateConversationHandlerForContent(
     conversation = CreateConversation();
   }
   // Provide the content delegate, if allowed
-  if (associated_content &&
-      base::Contains(kAllowedSchemes, associated_content->GetURL().scheme())) {
-    conversation->SetAssociatedContentDelegate(associated_content);
-  }
-  // Record that this is the latest conversation for this content. Even
-  // if we don't call SetAssociatedContentDelegate, the conversation still
-  // has a default Tab's navigation for which is is associated. The Conversation
-  // won't use that Tab's Page for context.
-  content_conversations_.insert_or_assign(
-      associated_content_id, conversation->get_conversation_uuid());
+  MaybeAssociateContentWithConversation(conversation, associated_content_id,
+                                        associated_content);
 
   return conversation;
 }
@@ -159,6 +151,17 @@ ConversationHandler* AIChatService::CreateConversationHandlerForContent(
         associated_content) {
   ConversationHandler* conversation = CreateConversation();
   // Provide the content delegate, if allowed
+  MaybeAssociateContentWithConversation(conversation, associated_content_id,
+                                        associated_content);
+
+  return conversation;
+}
+
+void AIChatService::MaybeAssociateContentWithConversation(
+    ConversationHandler* conversation,
+    int associated_content_id,
+    base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
+        associated_content) {
   if (associated_content &&
       base::Contains(kAllowedSchemes, associated_content->GetURL().scheme())) {
     conversation->SetAssociatedContentDelegate(associated_content);
@@ -169,8 +172,6 @@ ConversationHandler* AIChatService::CreateConversationHandlerForContent(
   // won't use that Tab's Page for context.
   content_conversations_.insert_or_assign(
       associated_content_id, conversation->get_conversation_uuid());
-
-  return conversation;
 }
 
 void AIChatService::MarkAgreementAccepted() {
