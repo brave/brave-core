@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.shields;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import org.json.JSONException;
@@ -99,7 +98,6 @@ public class BraveShieldsUtils {
 
         RecordHistogram.recordEnumeratedHistogram(WEBCOMPAT_UI_SOURCE_HISTOGRAM_NAME, 0, 2);
 
-        Context context = ContextUtils.getApplicationContext();
         StringBuilder sb = new StringBuilder();
 
         HttpURLConnection urlConnection = null;
@@ -171,11 +169,11 @@ public class BraveShieldsUtils {
             throws UnsupportedEncodingException, IOException {
         urlConnection.setRequestProperty("Content-Type", "application/json");
         urlConnection.connect();
-        OutputStream outputStream = urlConnection.getOutputStream();
-        byte[] input = jsonData.getBytes(StandardCharsets.UTF_8.toString());
-        outputStream.write(input, 0, input.length);
-        outputStream.flush();
-        outputStream.close();
+        try (OutputStream outputStream = urlConnection.getOutputStream()) {
+            byte[] input = jsonData.getBytes(StandardCharsets.UTF_8.toString());
+            outputStream.write(input, 0, input.length);
+            outputStream.flush();
+        }
     }
 
     private static boolean isScreenshotAvailable(byte[] screenshotPngBytes) {
@@ -185,45 +183,45 @@ public class BraveShieldsUtils {
     private static void generateMultipartData(
             HttpURLConnection urlConnection, String jsonData, byte[] screenshotPngBytes)
             throws UnsupportedEncodingException, IOException {
-        final String multipartBoundary = generateBoundary();
+        final String mb = generateBoundary();
         urlConnection.setRequestProperty(
-                "Content-Type", String.format(MULTIPART_CONTENT_TYPE_PREFIX, multipartBoundary));
+                "Content-Type", String.format(MULTIPART_CONTENT_TYPE_PREFIX, mb));
         urlConnection.connect();
 
-        OutputStream outputStream = urlConnection.getOutputStream();
-        outputStream.write(
-                asUtf8Bytes(String.format("--%s%s", multipartBoundary, MULTIPART_LINE_END)));
-        outputStream.write(
-                asUtf8Bytes(
-                        String.format(
-                                "Content-Disposition: form-data; name=\"%s\"%s",
-                                REPORT_DETAILS_MULTIPART_NAME, MULTIPART_LINE_END)));
-        outputStream.write(
-                asUtf8Bytes(
-                        String.format(
-                                "Content-Type: %s%s", JSON_CONTENT_TYPE, MULTIPART_LINE_END)));
-        outputStream.write(
-                asUtf8Bytes(
-                        String.format("%s%s%s", MULTIPART_LINE_END, jsonData, MULTIPART_LINE_END)));
+        try (OutputStream os = urlConnection.getOutputStream()) {
+            os.write(asUtf8Bytes(String.format("--%s%s", mb, MULTIPART_LINE_END)));
+            os.write(
+                    asUtf8Bytes(
+                            String.format(
+                                    "Content-Disposition: form-data; name=\"%s\"%s",
+                                    REPORT_DETAILS_MULTIPART_NAME, MULTIPART_LINE_END)));
+            os.write(
+                    asUtf8Bytes(
+                            String.format(
+                                    "Content-Type: %s%s", JSON_CONTENT_TYPE, MULTIPART_LINE_END)));
+            os.write(
+                    asUtf8Bytes(
+                            String.format(
+                                    "%s%s%s", MULTIPART_LINE_END, jsonData, MULTIPART_LINE_END)));
 
-        outputStream.write(
-                asUtf8Bytes(String.format("--%s%s", multipartBoundary, MULTIPART_LINE_END)));
-        outputStream.write(
-                asUtf8Bytes(
-                        String.format(
-                                "Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"%s",
-                                SCREENSHOT_MULTIPART_NAME,
-                                SCREENSHOT_MULTIPART_FILENAME,
-                                MULTIPART_LINE_END)));
-        outputStream.write(
-                asUtf8Bytes(
-                        String.format("Content-Type: %s%s", PNG_CONTENT_TYPE, MULTIPART_LINE_END)));
-        outputStream.write(MULTIPART_LINE_END.getBytes(StandardCharsets.UTF_8.toString()));
-        outputStream.write(screenshotPngBytes);
-        outputStream.write(MULTIPART_LINE_END.getBytes(StandardCharsets.UTF_8.toString()));
-        outputStream.write(
-                asUtf8Bytes(String.format("--%s--%s", multipartBoundary, MULTIPART_LINE_END)));
-        outputStream.flush();
-        outputStream.close();
+            os.write(asUtf8Bytes(String.format("--%s%s", mb, MULTIPART_LINE_END)));
+            os.write(
+                    asUtf8Bytes(
+                            String.format(
+                                    "Content-Disposition: form-data; name=\"%s\";"
+                                            + " filename=\"%s\"%s",
+                                    SCREENSHOT_MULTIPART_NAME,
+                                    SCREENSHOT_MULTIPART_FILENAME,
+                                    MULTIPART_LINE_END)));
+            os.write(
+                    asUtf8Bytes(
+                            String.format(
+                                    "Content-Type: %s%s", PNG_CONTENT_TYPE, MULTIPART_LINE_END)));
+            os.write(MULTIPART_LINE_END.getBytes(StandardCharsets.UTF_8.toString()));
+            os.write(screenshotPngBytes);
+            os.write(MULTIPART_LINE_END.getBytes(StandardCharsets.UTF_8.toString()));
+            os.write(asUtf8Bytes(String.format("--%s--%s", mb, MULTIPART_LINE_END)));
+            os.flush();
+        }
     }
 }

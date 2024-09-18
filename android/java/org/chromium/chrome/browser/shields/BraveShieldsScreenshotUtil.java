@@ -56,7 +56,10 @@ public class BraveShieldsScreenshotUtil {
         protected void onPostExecute(byte[] pngBytes) {
             assert ThreadUtils.runningOnUiThread();
 
-            if (isCancelled()) return;
+            if (isCancelled()) {
+                mCallback.OnScreenshotReady(null);
+                return;
+            }
 
             mCallback.OnScreenshotReady(pngBytes);
         }
