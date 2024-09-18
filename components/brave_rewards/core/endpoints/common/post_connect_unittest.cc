@@ -9,6 +9,7 @@
 #include <tuple>
 #include <utility>
 
+#include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
@@ -31,7 +32,9 @@ class PostConnectMock final : public endpoints::PostConnect {
   ~PostConnectMock() override = default;
 
  private:
-  const char* Path() const override { return "/v3/wallet/mock/%s/claim"; }
+  std::string Path(base::cstring_view payment_id) const override {
+    return base::StringPrintf("/v3/wallet/mock/%s/claim", payment_id.c_str());
+  }
 };
 
 using PostConnectParamType = std::tuple<

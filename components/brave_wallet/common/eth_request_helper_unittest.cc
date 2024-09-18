@@ -690,7 +690,7 @@ TEST(EthResponseHelperUnitTest, ParseSwitchEthereumChainParams) {
 }
 
 TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
-  const std::string json_tmpl = R"({
+  constexpr char kJson[] = R"({
     "params": [
       "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
       "{
@@ -723,7 +723,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
     ]
   })";
 
-  std::string json = base::StringPrintf(json_tmpl.c_str(), R"({
+  std::string json = base::StringPrintf(kJson, R"({
     \"from\": {
       \"name\":\"Cow\",
       \"wallet\":\"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826\"
@@ -787,7 +787,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
   EXPECT_FALSE(meta);
 
   // Test with extra fields in the message.
-  json = base::StringPrintf(json_tmpl.c_str(), R"({
+  json = base::StringPrintf(kJson, R"({
     \"from\": {
       \"name\":\"Cow\",
       \"wallet\":\"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826\"

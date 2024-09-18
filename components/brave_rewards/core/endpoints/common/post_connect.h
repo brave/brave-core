@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/strings/cstring_view.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
@@ -40,7 +41,7 @@ class PostConnect : public RequestBuilder, public ResponseHandler<PostConnect> {
   ~PostConnect() override;
 
  protected:
-  virtual const char* Path() const = 0;
+  virtual std::string Path(base::cstring_view payment_id) const = 0;
 
  private:
   std::optional<std::string> Url() const override;
