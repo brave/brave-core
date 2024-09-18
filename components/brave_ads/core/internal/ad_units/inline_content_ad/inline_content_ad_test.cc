@@ -103,7 +103,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run)
-      .WillOnce([=](const std::string& dimensions,
+      .WillOnce([&](const std::string& dimensions,
                     const std::optional<InlineContentAdInfo>& ad) {
         ASSERT_EQ(kDimensions, dimensions);
         ASSERT_TRUE(ad);
@@ -125,7 +125,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run)
-      .WillOnce([=](const std::string& dimensions,
+      .WillOnce([&](const std::string& dimensions,
                     const std::optional<InlineContentAdInfo>& ad) {
         ASSERT_EQ(kDimensions, dimensions);
         ASSERT_TRUE(ad);
@@ -153,7 +153,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest,
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run)
-      .WillOnce([=](const std::string& dimensions,
+      .WillOnce([&](const std::string& dimensions,
                     const std::optional<InlineContentAdInfo>& ad) {
         ASSERT_EQ(kDimensions, dimensions);
         ASSERT_TRUE(ad);

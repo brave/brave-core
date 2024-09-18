@@ -204,7 +204,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
   void SetEthChainIdInterceptor(const std::vector<GURL>& network_urls,
                                 const std::string& chain_id) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [=](const network::ResourceRequest& request) {
+        [=, this](const network::ResourceRequest& request) {
           std::string_view request_string(request.request_body->elements()
                                               ->at(0)
                                               .As<network::DataElementBytes>()

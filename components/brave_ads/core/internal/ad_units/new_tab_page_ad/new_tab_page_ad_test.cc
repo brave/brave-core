@@ -122,7 +122,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run)
-      .WillOnce([=](const std::optional<NewTabPageAdInfo>& ad) {
+      .WillOnce([&](const std::optional<NewTabPageAdInfo>& ad) {
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
 
@@ -173,7 +173,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run)
-      .WillOnce([=](const std::optional<NewTabPageAdInfo>& ad) {
+      .WillOnce([&](const std::optional<NewTabPageAdInfo>& ad) {
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
 
@@ -244,7 +244,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run)
-      .WillOnce([=](const std::optional<NewTabPageAdInfo>& ad) {
+      .WillOnce([&](const std::optional<NewTabPageAdInfo>& ad) {
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
 
