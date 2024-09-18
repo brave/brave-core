@@ -58,6 +58,10 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
 
   void AppendDeveloperItems() override;
 
+  void SetAIEngineForTesting(
+      std::unique_ptr<ai_chat::EngineConsumer> ai_engine);
+  ai_chat::EngineConsumer* GetAIEngineForTesting() { return ai_engine_.get(); }
+
  private:
   friend class BraveRenderViewContextMenuTest;
   // RenderViewContextMenuBase:

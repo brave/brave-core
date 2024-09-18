@@ -536,24 +536,6 @@ bool BraveRenderViewContextMenu::IsAIChatEnabled() const {
 }
 
 void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
-  auto* browser = GetBrowser();
-  if (!browser) {
-    VLOG(1) << "Can't get browser";
-    return;
-  }
-
-  ai_chat::AIChatTabHelper* helper =
-      ai_chat::AIChatTabHelper::FromWebContents(source_web_contents_);
-  if (!helper) {
-    VLOG(1) << "Can't get AI chat tab helper";
-    return;
-  }
-  ai_chat::ConversationHandler* conversation =
-      ai_chat::AIChatServiceFactory::GetForBrowserContext(
-          source_web_contents_->GetBrowserContext())
-          ->GetOrCreateConversationHandlerForContent(helper->GetContentId(),
-                                                     helper->GetWeakPtr());
-
   // To do rewrite in-place, the following conditions must be met:
   // 1) Selected content is editable.
   // 2) User has opted in to Leo.
@@ -568,7 +550,44 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
       ai_chat::features::kAIChatSSE.Get() && IsRewriteCommand(command) &&
       !source_web_contents_->GetUserData(kAIChatRewriteDataKey);
 
-  if (!rewrite_in_place) {
+  auto [action_type, p3a_action] = GetActionTypeAndP3A(command);
+  auto selected_text = base::UTF16ToUTF8(params_.selection_text);
+
+  if (rewrite_in_place) {
+    source_web_contents_->SetUserData(kAIChatRewriteDataKey,
+                                      std::make_unique<AIChatRewriteData>());
+    if (!ai_engine_) {
+      ai_engine_ = ai_chat::AIChatServiceFactory::GetForBrowserContext(
+                       source_web_contents_->GetBrowserContext())
+                       ->GetDefaultAIEngine();
+    }
+    ai_engine_->GenerateRewriteSuggestion(
+        selected_text, ai_chat::GetActionTypeQuestion(action_type),
+        ai_chat::BindParseRewriteReceivedData(
+            base::BindRepeating(&OnRewriteSuggestionDataReceived,
+                                source_web_contents_->GetWeakPtr())),
+        base::BindOnce(&OnRewriteSuggestionCompleted,
+                       source_web_contents_->GetWeakPtr(), selected_text,
+                       action_type));
+  } else {
+    auto* browser = GetBrowser();
+    if (!browser) {
+      VLOG(1) << "Can't get browser";
+      return;
+    }
+
+    ai_chat::AIChatTabHelper* helper =
+        ai_chat::AIChatTabHelper::FromWebContents(source_web_contents_);
+    if (!helper) {
+      VLOG(1) << "Can't get AI chat tab helper";
+      return;
+    }
+
+    ai_chat::ConversationHandler* conversation =
+        ai_chat::AIChatServiceFactory::GetForBrowserContext(
+            source_web_contents_->GetBrowserContext())
+            ->GetOrCreateConversationHandlerForContent(helper->GetContentId(),
+                                                       helper->GetWeakPtr());
     // Before trying to activate the panel, unlink page content if needed.
     // This needs to be called before activating the panel to check against the
     // current state.
@@ -580,28 +599,9 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
     CHECK(sidebar_controller);
     sidebar_controller->ActivatePanelItem(
         sidebar::SidebarItem::BuiltInItemType::kChatUI);
-  } else {
-    source_web_contents_->SetUserData(kAIChatRewriteDataKey,
-                                      std::make_unique<AIChatRewriteData>());
-  }
-
-  auto [action_type, p3a_action] = GetActionTypeAndP3A(command);
-  auto selected_text = base::UTF16ToUTF8(params_.selection_text);
-  if (rewrite_in_place) {
-    ai_engine_ = ai_chat::AIChatServiceFactory::GetForBrowserContext(
-                     source_web_contents_->GetBrowserContext())
-                     ->GetDefaultAIEngine();
-    ai_engine_->GenerateRewriteSuggestion(
-        selected_text, ai_chat::GetActionTypeQuestion(action_type),
-        ai_chat::BindParseRewriteReceivedData(
-            base::BindRepeating(&OnRewriteSuggestionDataReceived,
-                                source_web_contents_->GetWeakPtr())),
-        base::BindOnce(&OnRewriteSuggestionCompleted,
-                       source_web_contents_->GetWeakPtr(), selected_text,
-                       action_type));
-  } else {
     conversation->SubmitSelectedText(selected_text, action_type);
   }
+
   g_brave_browser_process->process_misc_metrics()
       ->ai_chat_metrics()
       ->RecordContextMenuUsage(p3a_action);
@@ -736,6 +736,11 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
                                       IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS);
     }
   }
+}
+
+void BraveRenderViewContextMenu::SetAIEngineForTesting(
+    std::unique_ptr<ai_chat::EngineConsumer> ai_engine) {
+  ai_engine_ = std::move(ai_engine);
 }
 
 void BraveRenderViewContextMenu::InitMenu() {

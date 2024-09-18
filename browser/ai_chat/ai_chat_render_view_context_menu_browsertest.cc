@@ -8,6 +8,7 @@
 
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/test/bind.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/brave_browser.h"
@@ -22,7 +23,6 @@
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
-#include "chrome/browser/renderer_context_menu/render_view_context_menu_browsertest_util.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -46,10 +46,21 @@ using ::testing::_;
 
 namespace ai_chat {
 
+namespace {
+
+void ExecuteRewriteCommand(RenderViewContextMenu* context_menu) {
+  // Calls EngineConsumer::GenerateRewriteSuggestion
+  context_menu->ExecuteCommand(IDC_AI_CHAT_CONTEXT_SHORTEN, 0);
+  context_menu->Cancel();
+}
+
+}  // namespace
+
 class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
  public:
   AIChatRenderViewContextMenuBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
+      : ai_engine_(std::make_unique<MockEngineConsumer>()),
+        https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   ~AIChatRenderViewContextMenuBrowserTest() override = default;
 
@@ -86,28 +97,13 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
 
   void TestRewriteInPlace(
       content::WebContents* web_contents,
-      MockEngineConsumer* mock_engine,
       const std::string& element_id,
       const std::string& expected_selected_text,
       const std::vector<std::string>& received_data,
       base::expected<std::string, mojom::APIError> completed_result,
       const std::string& expected_updated_text) {
     base::RunLoop run_loop;
-    // Verify that rewrite is requested
-    EXPECT_CALL(*mock_engine, GenerateRewriteSuggestion(_, _, _, _))
-        .WillOnce([&](std::string text, const std::string& question,
-                      EngineConsumer::GenerationDataCallback data_callback,
-                      EngineConsumer::GenerationCompletedCallback callback) {
-          ASSERT_TRUE(callback);
-          ASSERT_TRUE(data_callback);
-          for (const auto& data : received_data) {
-            auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(data));
-            data_callback.Run(std::move(event));
-          }
-          std::move(callback).Run(completed_result);
-          run_loop.Quit();
-        });
+    MockEngineConsumer* ai_engine;
 
     // Select text in the element and create context menu to execute a rewrite
     // command.
@@ -126,15 +122,42 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
                 base::StringPrintf("getRectY('%s')", element_id.c_str()))
                 .ExtractInt();
 
-    // Calls ConversationDriver::SubmitSelectedText
-    ContextMenuNotificationObserver context_menu_observer(
-        IDC_AI_CHAT_CONTEXT_SHORTEN);
+    RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
+        base::BindLambdaForTesting([&](RenderViewContextMenu* context_menu) {
+          auto* brave_context_menu =
+              static_cast<BraveRenderViewContextMenu*>(context_menu);
+          brave_context_menu->SetAIEngineForTesting(
+              std::make_unique<MockEngineConsumer>());
+          ai_engine = static_cast<MockEngineConsumer*>(
+              brave_context_menu->GetAIEngineForTesting());
+          // Verify that rewrite is requested
+          EXPECT_CALL(*ai_engine, GenerateRewriteSuggestion(_, _, _, _))
+              .WillOnce(
+                  [&](std::string text, const std::string& question,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback) {
+                    ASSERT_TRUE(callback);
+                    ASSERT_TRUE(data_callback);
+                    for (const auto& data : received_data) {
+                      auto event =
+                          mojom::ConversationEntryEvent::NewCompletionEvent(
+                              mojom::CompletionEvent::New(data));
+                      data_callback.Run(std::move(event));
+                    }
+                    std::move(callback).Run(completed_result);
+                    run_loop.Quit();
+                  });
+          base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+              FROM_HERE, base::BindOnce(&ExecuteRewriteCommand, context_menu));
+        }));
+
     web_contents->GetPrimaryMainFrame()
         ->GetRenderViewHost()
         ->GetWidget()
         ->ShowContextMenuAtPoint(gfx::Point(x, y), ui::MENU_SOURCE_MOUSE);
     run_loop.Run();
-    testing::Mock::VerifyAndClearExpectations(mock_engine);
+    EXPECT_NE(ai_engine, nullptr);
+    testing::Mock::VerifyAndClearExpectations(ai_engine);
 
     // Verify that the text is rewritten as expected.
     std::string updated_text =
@@ -159,6 +182,7 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
   }
 
  private:
+  std::unique_ptr<MockEngineConsumer> ai_engine_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
 };
@@ -184,39 +208,33 @@ IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest, RewriteInPlace) {
                                                      helper->GetWeakPtr());
   ASSERT_TRUE(conversation_handler);
 
-  conversation_handler->SetEngineForTesting(
-      std::make_unique<MockEngineConsumer>());
-  auto* mock_engine = static_cast<MockEngineConsumer*>(
-      conversation_handler->GetEngineForTesting());
-
   // Test rewriting textarea value and verify that the response tag is ignored
   // by BraveRenderViewContextMenu
-  TestRewriteInPlace(contents, mock_engine, "textarea", "I'm textarea.",
+  TestRewriteInPlace(contents, "textarea", "I'm textarea.",
                      {"O", "OK", "<", "</", "</r", "</re", "</response"}, "",
                      "OK");
 
   // Do the same again to make sure it still works at the second time.
-  TestRewriteInPlace(contents, mock_engine, "textarea", "OK",
-                     {"O", "OK", "OK2"}, "", "OK2");
+  TestRewriteInPlace(contents, "textarea", "OK", {"O", "OK", "OK2"}, "", "OK2");
 
   // Select text in text input and create context menu to execute a rewrite cmd.
   // Verify that the text is rewritten.
-  TestRewriteInPlace(contents, mock_engine, "input_text", "I'm input.",
-                     {"O", "OK", "OK3"}, "", "OK3");
-  TestRewriteInPlace(contents, mock_engine, "contenteditable",
-                     "I'm contenteditable.", {"O", "OK", "OK4"}, "", "OK4");
+  TestRewriteInPlace(contents, "input_text", "I'm input.", {"O", "OK", "OK3"},
+                     "", "OK3");
+  TestRewriteInPlace(contents, "contenteditable", "I'm contenteditable.",
+                     {"O", "OK", "OK4"}, "", "OK4");
 
   // Error case handling tests and verify that the text is not rewritten.
   // 1) Get error in completed callback immediately.
   EXPECT_FALSE(IsAIChatSidebarActive());
-  TestRewriteInPlace(contents, mock_engine, "textarea", "OK2", {},
+  TestRewriteInPlace(contents, "textarea", "OK2", {},
                      base::unexpected(mojom::APIError::ConnectionIssue), "OK2");
   EXPECT_TRUE(IsAIChatSidebarActive());
   GetSidebarController()->DeactivateCurrentPanel();
 
   EXPECT_FALSE(IsAIChatSidebarActive());
   // 2) Get partial streaming responses then error in completed callback.
-  TestRewriteInPlace(contents, mock_engine, "textarea", "OK2", {"N", "O"},
+  TestRewriteInPlace(contents, "textarea", "OK2", {"N", "O"},
                      base::unexpected(mojom::APIError::ConnectionIssue), "OK2");
   EXPECT_TRUE(IsAIChatSidebarActive());
 }
