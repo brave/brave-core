@@ -676,8 +676,9 @@ BraveContentBrowserClient::GetEphemeralStorageToken(
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(
     const GURL& url,
     content::BrowserContext* browser_context) {
-  return WorkerGetBraveFarblingLevel(url, browser_context) !=
-         BraveFarblingLevel::MAXIMUM;
+  HostContentSettingsMap* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(browser_context);
+  return ShouldApplyNoFingerprintingProtections(url, host_content_settings_map);
 }
 
 uint8_t BraveContentBrowserClient::WorkerGetBraveFarblingLevel(
@@ -685,20 +686,15 @@ uint8_t BraveContentBrowserClient::WorkerGetBraveFarblingLevel(
     content::BrowserContext* browser_context) {
   HostContentSettingsMap* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(browser_context);
-  const bool shields_up =
-      brave_shields::GetBraveShieldsEnabled(host_content_settings_map, url);
-  if (!shields_up) {
-    return BraveFarblingLevel::OFF;
+  if (brave_shields::ShouldApplyAggressiveFingerprintingProtections(
+      host_content_settings_map, url)) {
+    return BraveFarblingLevel::MAXIMUM
   }
-  auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
-      host_content_settings_map, url);
-  if (fingerprinting_type == ControlType::BLOCK) {
-    return BraveFarblingLevel::MAXIMUM;
+  if (brave_shields::ShouldApplyDefaultFingerprintingProtections(
+      host_content_settings_map, url)) {
+    return BraveFarblingLevel::BALANCED;
   }
-  if (fingerprinting_type == ControlType::ALLOW) {
-    return BraveFarblingLevel::OFF;
-  }
-  return BraveFarblingLevel::BALANCED;
+  return BraveFarblingLevel::OFF;
 }
 
 content::ContentBrowserClient::AllowWebBluetoothResult

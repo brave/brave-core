@@ -68,6 +68,12 @@ void SetAdControlType(HostContentSettingsMap* map,
                       const GURL& url,
                       PrefService* local_state = nullptr);
 ControlType GetAdControlType(HostContentSettingsMap* map, const GURL& url);
+bool ShouldApplyAggressiveContentFiltering(HostContentSettingsMap* map,
+                                           const GURL& url);
+bool ShouldApplyDefaultContentFiltering(HostContentSettingsMap* map,
+                                        const GURL& url);
+bool ShouldApplyNoContentFiltering(HostContentSettingsMap* map,
+                                   const GURL& url);
 
 void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                      ControlType type,
@@ -78,6 +84,12 @@ ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                             const GURL& url);
 bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
                                           const GURL& url);
+bool ShouldApplyAggressiveCosmeticFiltering(HostContentSettingsMap* map,
+                                            const GURL& url);
+bool ShouldApplyDefaultCosmeticFiltering(HostContentSettingsMap* map,
+                                         const GURL& url);
+bool ShouldApplyNoCosmeticFiltering(HostContentSettingsMap* map,
+                                    const GURL& url);
 
 bool IsReduceLanguageEnabledForProfile(PrefService* pref_service);
 
@@ -97,6 +109,9 @@ ControlType GetCookieControlType(
     HostContentSettingsMap* map,
     content_settings::CookieSettings* cookie_settings,
     const GURL& url);
+bool ShouldBlockAllCookies(HostContentSettingsMap* map, content_settings::CookieSettings* cookie_settings, const GURL& url);
+bool ShouldBlockThirdPartyCookies(HostContentSettingsMap* map, content_settings::CookieSettings* cookie_settings, const GURL& url);
+bool ShouldAllowAllCookies(HostContentSettingsMap* map, content_settings::CookieSettings* cookie_settings, const GURL& url);
 
 // Referrers is always set along with cookies so there is no setter and
 // these is just included for backwards compat.
@@ -109,6 +124,14 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
                                   PrefService* profile_state = nullptr);
 ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
                                          const GURL& url);
+bool ShouldApplyAggressiveFingerprintingProtections(
+    HostContentSettingsMap* map, const GURL& url);
+bool ShouldApplyDefaultFingerprintingProtections(
+    HostContentSettingsMap* map, const GURL& url);
+bool ShouldApplyNoFingerprintingProtections(
+    HostContentSettingsMap* map, const GURL& url);
+
+
 bool IsBraveShieldsManaged(PrefService* prefs,
                            HostContentSettingsMap* map,
                            GURL url);

@@ -54,6 +54,7 @@ static_library("browser") {
     "//base",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/adblock:rust_lib",
+    "//brave/components/brave_shields/common",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/core/common",
     "//brave/components/brave_shields/core/common:mojom",

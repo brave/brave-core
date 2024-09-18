@@ -116,14 +116,13 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   ctx->allow_brave_shields =
       map ? brave_shields::GetBraveShieldsEnabled(map, ctx->tab_origin) : true;
   ctx->allow_ads =
-      map ? brave_shields::GetAdControlType(map, ctx->tab_origin) ==
-                brave_shields::ControlType::ALLOW
+      map ? brave_shields::ShouldApplyNoContentFiltering(map, ctx->tab_origin)
           : false;
   // Currently, "aggressive" mode is registered as a cosmetic filtering control
   // type, even though it can also affect network blocking.
   ctx->aggressive_blocking =
-      map ? brave_shields::GetCosmeticFilteringControlType(
-                map, ctx->tab_origin) == brave_shields::ControlType::BLOCK
+      map ? brave_shields::ShouldDoAggressiveCosmeticFiltering(
+                map, ctx->tab_origin)
           : false;
 
   // HACK: after we fix multiple creations of BraveRequestInfo we should

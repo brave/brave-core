@@ -10,6 +10,7 @@
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/notreached.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -235,6 +236,9 @@ void ResetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
 }
 
 bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
+  if (!::brave_shields::features::IsBraveShieldsEnabled()) {
+    return false;
+  }
   if (base::FeatureList::IsEnabled(
           ::brave_shields::features::kBraveExtensionNetworkBlocking) &&
       url.SchemeIs(kChromeExtensionScheme)) {
@@ -363,6 +367,32 @@ bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
   return type == ControlType::BLOCK;
 }
 
+bool ShouldDoAggressiveCosmeticFiltering(HostContentSettingsMap* map,
+                                         const GURL& url) {
+  if (!GetBraveShieldsEnabled(host_content_settings_map, url)) {
+    return false;
+  }
+  const auto control_type = GetCosmeticFilteringControlType(map, url);
+  return control_type == ControlType::BLOCK;
+}
+
+bool ShouldDoDefaultCosmeticFiltering(HostContentSettingsMap* map,
+                                      const GURL& url) {
+  if (!GetBraveShieldsEnabled(host_content_settings_map, url)) {
+    return false;
+  }
+  const auto control_type = GetCosmeticFilteringControlType(map, url);
+  return control_type == ControlType::BLOCK_THIRD_PARTY;
+}
+
+bool ShouldDoNoCosmeticFiltering(HostContentSettingsMap* map, const GURL& url) {
+  if (!GetBraveShieldsEnabled(host_content_settings_map, url)) {
+    return true;
+  }
+  const auto control_type = GetCosmeticFilteringControlType(map, url);
+  return control_type == ControlType::ALLOW;
+}
+
 bool IsReduceLanguageEnabledForProfile(PrefService* pref_service) {
   // Don't reduce language if feature is disabled
   if (!base::FeatureList::IsEnabled(features::kBraveReduceLanguage)) {
@@ -384,15 +414,8 @@ bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
     return false;
   }
 
-  // Don't reduce language if Brave Shields is down (this also handles cases
-  // where the URL is not HTTP(S))
-  if (!brave_shields::GetBraveShieldsEnabled(map, url)) {
-    return false;
-  }
-
   // Don't reduce language if fingerprinting is off
-  if (brave_shields::GetFingerprintingControlType(map, url) ==
-      ControlType::ALLOW) {
+  if (ShouldApplyShouldApplyNoFingerprintingProtections()) {
     return false;
   }
 
@@ -629,6 +652,37 @@ ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
 
   return fp_setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
                                              : ControlType::BLOCK;
+}
+
+bool ShouldApplyAggressiveFingerprintingProtections(
+    HostContentSettingsMap* map, const GURL& url) {
+  if (!GetBraveShieldsEnabled(host_content_settings_map, url)) {
+    return false;
+  }
+  const ControlType fingerprinting_setting = GetFingerprintingControlType(
+      host_content_settings_map, url);
+  return fingerprinting_setting == ControlType::BLOCK;
+}
+
+bool ShouldApplyDefaultFingerprintingProtections(
+    HostContentSettingsMap* map, const GURL& url) {
+  if (!GetBraveShieldsEnabled(host_content_settings_map, url)) {
+    return false;
+  }
+  const ControlType fingerprinting_setting = GetFingerprintingControlType(
+      host_content_settings_map, url);
+  return fingerprinting_setting == ControlType::DEFAULT;
+}
+
+bool ShouldApplyNoFingerprintingProtections(
+    HostContentSettingsMap* map, const GURL& url) {
+  if (ShouldApplyAggressiveFingerprintingProtections()) {
+    return false;
+  }
+  if (ShouldApplyDefaultFingerprintingProtections()) {
+    return false
+  }
+  return true;
 }
 
 bool IsBraveShieldsManaged(PrefService* prefs,
