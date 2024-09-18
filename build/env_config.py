@@ -35,25 +35,47 @@ def main():
                   fp=sys.stdout)
 
 
+# Regex to define an env config line with GN restrictions.
+ENV_CONFIG_LINE = re.compile(
+    r"""
+    (?:^|\n)                # Start of line or newline
+    \s*                     # Optional leading whitespace
+    ([a-zA-Z_]+\w*)         # Key: a valid C++/GN identifier
+    (?:\s*=\s*)             # Assignment operator: '=' with optional whitespace
+    (                       # Start of value capturing group
+        \s*'(?:\\'|[^'])*'  # Single-quoted value
+        |                   # OR
+        \s*"(?:\\"|[^"])*"  # Double-quoted value
+        |                   # OR
+        \s*`(?:\\`|[^`])*`  # Backtick-quoted value
+        |                   # OR
+        [^#\n]+             # Unquoted value (anything except # or newline)
+    )                       # Value is required
+    \s*                     # Optional trailing whitespace
+    (?:\#.*)?               # Optional comment
+    (?:$|\n)                # End of line or newline
+""", re.VERBOSE | re.MULTILINE)
+
+
 def read_env_config_as_dict(file_path, result_dict=None):
     if result_dict is None:
         result_dict = {}
 
     # PowerShell saves files with BOM, to support this we use utf-8-sig.
     with open(file_path, 'r', encoding='utf-8-sig') as file:
-        for line in file:
-            # Remove comments at the end of the line
-            line = re.sub(r'#.*$', '', line).strip()
+        for match in ENV_CONFIG_LINE.finditer(file.read()):
+            key = match.group(1)
+            value = match.group(2).strip()
 
-            splitted_line = line.split('=', 1)
-            if len(splitted_line) != 2:
-                continue
+            # Check if double quoted
+            maybe_quote = value[0] if value else ''
 
-            key, value = map(str.strip, splitted_line)
+            # Remove surrounding quotes
+            value = re.sub(r'^(\")([\s\S]*)\1$', r'\2', value)
 
-            # Skip invalid keys.
-            if not re.match(r'[a-zA-Z_]+[a-zA-Z0-9_]*', key):
-                continue
+            # Expand newlines if double quoted
+            if maybe_quote == '"':
+                value = value.replace('\\n', '\n')
 
             try:
                 value = json.loads(value)
