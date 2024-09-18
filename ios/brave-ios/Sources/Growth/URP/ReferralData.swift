@@ -29,7 +29,6 @@ struct ReferralData {
     guard let downloadId = json["download_id"].string, let code = json["referral_code"].string
     else {
       Logger.module.error("Failed to unwrap json to Referral struct.")
-      DebugLogger.log(for: .urp, text: "Failed to unwrap json to Referral struct. \(json)")
       return nil
     }
 
