@@ -174,7 +174,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         }
 
         ViewGroup.LayoutParams layoutParams = frameLayout.getLayoutParams();
-        layoutParams.height = requireActivity().getWindow().getDecorView().getHeight();
+        layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
         frameLayout.setLayoutParams(layoutParams);
 
         final BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(frameLayout);
