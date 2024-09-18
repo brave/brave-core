@@ -508,8 +508,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
-    // TODO(apaymyshev): refactor this to have a better name.
-    private void maybeShowSignSolTransactionsRequestLayout() {
+    private void maybeShowSignSolTransactionsRequestLayout(@NonNull final Runnable openWalletPanelRunnable) {
         assert mBraveWalletService != null;
         mBraveWalletService.getPendingSignSolTransactionsRequests(
                 requests -> {
@@ -518,11 +517,11 @@ public abstract class BraveActivity extends ChromeActivity
                                 BraveWalletDAppsActivity.ActivityType.SIGN_SOL_TRANSACTIONS);
                         return;
                     }
-                    maybeShowSignMessageErrorsLayout();
+                    maybeShowSignMessageErrorsLayout(openWalletPanelRunnable);
                 });
     }
 
-    private void maybeShowSignMessageErrorsLayout() {
+    private void maybeShowSignMessageErrorsLayout(@NonNull final Runnable openWalletPanelRunnable) {
         assert mBraveWalletService != null;
         mBraveWalletService.getPendingSignMessageErrors(
                 errors -> {
@@ -531,10 +530,10 @@ public abstract class BraveActivity extends ChromeActivity
                                 BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE_ERROR);
                     }
                 });
-        maybeShowSignMessageRequestLayout();
+        maybeShowSignMessageRequestLayout(openWalletPanelRunnable);
     }
 
-    private void maybeShowSignMessageRequestLayout() {
+    private void maybeShowSignMessageRequestLayout(@NonNull final Runnable openWalletPanelRunnable) {
         assert mBraveWalletService != null;
         mBraveWalletService.getPendingSignMessageRequests(requests -> {
             if (requests != null && requests.length != 0) {
@@ -545,11 +544,11 @@ public abstract class BraveActivity extends ChromeActivity
                 openBraveWalletDAppsActivity(activityType);
                 return;
             }
-            maybeShowChainRequestLayout();
+            maybeShowChainRequestLayout(openWalletPanelRunnable);
         });
     }
 
-    private void maybeShowChainRequestLayout() {
+    private void maybeShowChainRequestLayout(@NonNull final Runnable openWalletPanelRunnable) {
         assert mJsonRpcService != null;
         mJsonRpcService.getPendingAddChainRequests(networks -> {
             if (networks != null && networks.length != 0) {
@@ -558,11 +557,11 @@ public abstract class BraveActivity extends ChromeActivity
 
                 return;
             }
-            maybeShowSwitchChainRequestLayout();
+            maybeShowSwitchChainRequestLayout(openWalletPanelRunnable);
         });
     }
 
-    private void maybeShowSwitchChainRequestLayout() {
+    private void maybeShowSwitchChainRequestLayout(@NonNull final Runnable openWalletPanelRunnable) {
         assert mJsonRpcService != null;
         mJsonRpcService.getPendingSwitchChainRequests(requests -> {
             if (requests != null && requests.length != 0) {
@@ -571,11 +570,11 @@ public abstract class BraveActivity extends ChromeActivity
 
                 return;
             }
-            maybeShowAddSuggestTokenRequestLayout();
+            maybeShowAddSuggestTokenRequestLayout(openWalletPanelRunnable);
         });
     }
 
-    private void maybeShowAddSuggestTokenRequestLayout() {
+    private void maybeShowAddSuggestTokenRequestLayout(@NonNull final Runnable openWalletPanelRunnable) {
         assert mBraveWalletService != null;
         mBraveWalletService.getPendingAddSuggestTokenRequests(requests -> {
             if (requests != null && requests.length != 0) {
@@ -583,11 +582,11 @@ public abstract class BraveActivity extends ChromeActivity
 
                 return;
             }
-            maybeShowGetEncryptionPublicKeyRequestLayout();
+            maybeShowGetEncryptionPublicKeyRequestLayout(openWalletPanelRunnable);
         });
     }
 
-    private void maybeShowGetEncryptionPublicKeyRequestLayout() {
+    private void maybeShowGetEncryptionPublicKeyRequestLayout(@NonNull final Runnable openWalletPanelRunnable) {
         assert mBraveWalletService != null;
         mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
             if (requests != null && requests.length != 0) {
@@ -596,11 +595,11 @@ public abstract class BraveActivity extends ChromeActivity
 
                 return;
             }
-            maybeShowDecryptRequestLayout();
+            maybeShowDecryptRequestLayout(openWalletPanelRunnable);
         });
     }
 
-    private void maybeShowDecryptRequestLayout() {
+    private void maybeShowDecryptRequestLayout(@NonNull final Runnable openWalletPanelRunnable) {
         assert mBraveWalletService != null;
         mBraveWalletService.getPendingDecryptRequests(
                 requests -> {
@@ -610,8 +609,7 @@ public abstract class BraveActivity extends ChromeActivity
 
                         return;
                     }
-                    BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-                    layout.showWalletPanel();
+                    openWalletPanelRunnable.run();
                 });
     }
 
@@ -650,7 +648,13 @@ public abstract class BraveActivity extends ChromeActivity
                                 if (showPendingTransactions && mWalletBadgeVisible) {
                                     maybeShowPendingTransactions();
                                 } else {
-                                    maybeShowSignSolTransactionsRequestLayout();
+                                    // Create a runnable that opens the Wallet
+                                    // if the pending requests reach the end of the chain
+                                    // without returning earlier.
+                                    final Runnable openWalletPanelRunnable = () -> {
+                                        getBraveToolbarLayout().showWalletPanel();
+                                    };
+                                    maybeShowSignSolTransactionsRequestLayout(openWalletPanelRunnable);
                                 }
                             });
                 });
