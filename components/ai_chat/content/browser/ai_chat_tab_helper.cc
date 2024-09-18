@@ -181,8 +181,7 @@ void AIChatTabHelper::TitleWasSet(content::NavigationEntry* entry) {
 
 void AIChatTabHelper::InnerWebContentsAttached(
     content::WebContents* inner_web_contents,
-    content::RenderFrameHost* render_frame_host,
-    bool is_full_page) {
+    content::RenderFrameHost* render_frame_host) {
   // Setting a11y mode for PDF process which is dedicated for each
   // PDF so we don't have to unset it.
   if (IsPdf(content::WebContents::FromRenderFrameHost(render_frame_host))) {
