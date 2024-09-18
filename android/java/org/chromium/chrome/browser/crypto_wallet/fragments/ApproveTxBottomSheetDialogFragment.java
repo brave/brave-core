@@ -99,20 +99,13 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         return newInstance(infos, txInfo, null);
     }
 
-    private ApproveTxBottomSheetDialogFragment(TransactionInfo txInfo) {
-        mTxInfo = txInfo;
-        mExecutor = Executors.newSingleThreadExecutor();
-        mHandler = new Handler(Looper.getMainLooper());
-        // TODO (Wengling): To support other networks, all hard-coded chainSymbol, etc. need to be
-        // get from current network instead.
-        mTransactionInfos = Collections.emptyList();
-        mSolanaEstimatedTxFee = 0;
-    }
-
     private ApproveTxBottomSheetDialogFragment(List<TransactionInfo> transactionInfos,
             TransactionInfo txInfo,
             @Nullable TransactionConfirmationListener transactionConfirmationListener) {
-        this(txInfo);
+        mTxInfo = txInfo;
+        mExecutor = Executors.newSingleThreadExecutor();
+        mHandler = new Handler(Looper.getMainLooper());
+        mSolanaEstimatedTxFee = 0;
         mTransactionInfos = transactionInfos;
         mTransactionConfirmationListener = transactionConfirmationListener;
     }
