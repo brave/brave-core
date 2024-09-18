@@ -52,20 +52,6 @@ public class TxNonSwipeableViewPager extends ViewPager {
         }
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        View firstChild = getChildAt(0);
-        if (firstChild != null) {
-            firstChild.measure(widthMeasureSpec, heightMeasureSpec);
-            super.onMeasure(
-                    widthMeasureSpec,
-                    MeasureSpec.makeMeasureSpec(
-                            firstChild.getMeasuredHeight(), MeasureSpec.EXACTLY));
-            return;
-        }
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
     public static class ViewPagerScroller extends Scroller {
         ViewPagerScroller(Context context) {
             super(context, new DecelerateInterpolator());
