@@ -92,7 +92,8 @@ def _merge_wpr_files(files: List[str], output_file: str) -> None:
 
 def cleanup_archive(file: str, include_service_hosts: bool) -> None:
   file = os.path.abspath(file)
-  # Remove duplicates:
+
+  # Remove the duplicates by making an empty .wprgo and merging the current file to it.
   tmp_file = file + '.empty'
   run_httparchive(['trim', '--invert-match', '--host', 'none', file, tmp_file])
   run_httparchive(['merge', tmp_file, file, file])
@@ -113,7 +114,7 @@ def cleanup_archive(file: str, include_service_hosts: bool) -> None:
       file, file
   ])
 
-  # make a new sha1
+  # Recalculate .sha1 file.
   cloud_storage.UpdateSha1(file)
 
 

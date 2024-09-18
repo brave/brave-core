@@ -18,7 +18,7 @@ The current structure:
 ## S3 upload
 
 1. Make sure that you setup aws cli tools.
-2. Run `brave/tools/perf/perf_utils.py s3 upload <filename>.wprgo`
+2. Run `brave/tools/perf/perf_utils.py s3-upload <filename>.wprgo`
 
 ## GSC manual upload (legacy)
 
