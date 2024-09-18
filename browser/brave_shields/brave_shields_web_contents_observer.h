@@ -67,10 +67,6 @@ class BraveShieldsWebContentsObserver
 
  protected:
   // content::WebContentsObserver overrides.
-  void RenderFrameCreated(content::RenderFrameHost* host) override;
-  void RenderFrameDeleted(content::RenderFrameHost* render_frame_host) override;
-  void RenderFrameHostChanged(content::RenderFrameHost* old_host,
-                              content::RenderFrameHost* new_host) override;
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
 
@@ -92,17 +88,16 @@ class BraveShieldsWebContentsObserver
   // other than this own class, for testing purposes only.
   static void SetReceiverImplForTesting(BraveShieldsWebContentsObserver* impl);
 
-  // Only used from the BindBraveShieldsHost() static method, useful to bind the
-  // mojo receiver of brave_shields::mojom::BraveShieldsHost to a different
-  // implementor when needed, for testing purposes.
+  // Only used from the BindBraveShieldsHost() static method, useful to bind
+  // the mojo receiver of brave_shields::mojom::BraveShieldsHost to a
+  // different implementor when needed, for testing purposes.
   void BindReceiver(mojo::PendingAssociatedReceiver<
                         brave_shields::mojom::BraveShieldsHost> receiver,
                     content::RenderFrameHost* rfh);
 
-  // Return an already bound remote for the brave_shields::mojom::BraveShields
-  // mojo interface. It is an error to call this method with an invalid |rfh|.
-  mojo::AssociatedRemote<brave_shields::mojom::BraveShields>&
-  GetBraveShieldsRemote(content::RenderFrameHost* rfh);
+  // Sends the current shields settings to the renderer process bound to the
+  // given |navigation_handle|.
+  void SendShieldsSettings(content::NavigationHandle* navigation_handle);
 
   std::vector<std::string> allowed_scripts_;
   // We keep a set of the current page's blocked URLs in case the page
@@ -111,10 +106,6 @@ class BraveShieldsWebContentsObserver
 
   content::RenderFrameHostReceiverSet<brave_shields::mojom::BraveShieldsHost>
       receivers_;
-
-  // Map of remote endpoints for the brave_shields::mojom::BraveShields mojo
-  // interface, to prevent binding a new remote each time it's used.
-  BraveShieldsRemotesMap brave_shields_remotes_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

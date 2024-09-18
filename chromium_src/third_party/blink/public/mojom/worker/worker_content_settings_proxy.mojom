@@ -5,10 +5,12 @@
 
 module blink.mojom;
 
+import "brave/components/brave_shields/core/common/shields_settings.mojom";
+
 [BraveExtend]
 interface WorkerContentSettingsProxy {
   // Returns whether the worker is allowed access to privileged functions that
   // could be used for fingerprinting.
   [Sync]
-  GetBraveFarblingLevel() => (uint8 result);
+  GetBraveShieldsSettings() => (brave_shields.mojom.ShieldsSettings result);
 };

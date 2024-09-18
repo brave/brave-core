@@ -676,29 +676,23 @@ BraveContentBrowserClient::GetEphemeralStorageToken(
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(
     const GURL& url,
     content::BrowserContext* browser_context) {
-  return WorkerGetBraveFarblingLevel(url, browser_context) !=
-         BraveFarblingLevel::MAXIMUM;
+  return WorkerGetBraveShieldSettings(url, browser_context)->farbling_level !=
+         brave_shields::mojom::FarblingLevel::MAXIMUM;
 }
 
-uint8_t BraveContentBrowserClient::WorkerGetBraveFarblingLevel(
+brave_shields::mojom::ShieldsSettingsPtr
+BraveContentBrowserClient::WorkerGetBraveShieldSettings(
     const GURL& url,
     content::BrowserContext* browser_context) {
-  HostContentSettingsMap* host_content_settings_map =
-      HostContentSettingsMapFactory::GetForProfile(browser_context);
-  const bool shields_up =
-      brave_shields::GetBraveShieldsEnabled(host_content_settings_map, url);
-  if (!shields_up) {
-    return BraveFarblingLevel::OFF;
-  }
-  auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
-      host_content_settings_map, url);
-  if (fingerprinting_type == ControlType::BLOCK) {
-    return BraveFarblingLevel::MAXIMUM;
-  }
-  if (fingerprinting_type == ControlType::ALLOW) {
-    return BraveFarblingLevel::OFF;
-  }
-  return BraveFarblingLevel::BALANCED;
+  const brave_shields::mojom::FarblingLevel farbling_level =
+      brave_shields::GetFarblingLevel(
+          HostContentSettingsMapFactory::GetForProfile(browser_context), url);
+
+  PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
+
+  return brave_shields::mojom::ShieldsSettings::New(
+      farbling_level, std::vector<std::string>(),
+      brave_shields::IsReduceLanguageEnabledForProfile(pref_service));
 }
 
 content::ContentBrowserClient::AllowWebBluetoothResult

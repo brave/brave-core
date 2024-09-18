@@ -32,13 +32,17 @@ static_library("common") {
   ]
 }
 
-mojom("mojom") {
+mojom_component("mojom") {
+  output_prefix = "brave_shields_mojom"
+  macro_prefix = "BRAVE_SHIELDS_MOJOM"
+
   generate_java = true
   sources = [
     "brave_shields.mojom",
     "brave_shields_panel.mojom",
     "cookie_list_opt_in.mojom",
     "filter_list.mojom",
+    "shields_settings.mojom",
   ]
 
   deps = [ "//components/content_settings/core/common:content_settings_types" ]
@@ -48,4 +52,8 @@ mojom("mojom") {
     "//ui/gfx/geometry/mojom",
     "//url/mojom:url_mojom_gurl",
   ]
+
+  export_class_attribute_blink = "BLINK_PLATFORM_EXPORT"
+  export_define_blink = "BLINK_PLATFORM_IMPLEMENTATION=1"
+  export_header_blink = "third_party/blink/public/platform/web_common.h"
 }

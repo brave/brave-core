@@ -8,5 +8,6 @@ brave_content_browser_sources =
 
 brave_content_browser_deps = [
   "//brave/components/brave_service_keys",
+  "//brave/components/brave_shields/core/common:mojom",
   "//brave/components/speech_to_text",
 ]

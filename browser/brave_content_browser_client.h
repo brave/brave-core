@@ -77,7 +77,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const GURL& url,
       content::BrowserContext* browser_context) override;
 
-  uint8_t WorkerGetBraveFarblingLevel(
+  brave_shields::mojom::ShieldsSettingsPtr WorkerGetBraveShieldSettings(
       const GURL& url,
       content::BrowserContext* browser_context) override;
 

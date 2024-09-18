@@ -1,6 +1,7 @@
 include_rules = [
-  "+brave/third_party/blink/renderer",
+  "+brave/components/brave_shields/core/common",
   "+brave/components/webcompat",
+  "+brave/third_party/blink/renderer",
   "+ui/display",
   "+ui/gfx/geometry",
 ]

@@ -103,9 +103,13 @@ bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
   // Check if scripts from this origin are temporily allowed or not.
   // Also matches the full script URL to support data URL cases which we use
   // the full URL to allow it.
-  bool allow = base::Contains(temporarily_allowed_scripts_,
+  if (!shields_settings_) {
+    return false;
+  }
+  bool allow = base::Contains(shields_settings_->origins_to_allow_scripts,
                               url::Origin::Create(script_url).Serialize()) ||
-               base::Contains(temporarily_allowed_scripts_, script_url.spec());
+               base::Contains(shields_settings_->origins_to_allow_scripts,
+                              script_url.spec());
   if (!allow) {
     // Also check rules in the main frame, because this frame rules may be out
     // of sync.
@@ -120,7 +124,10 @@ bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
 }
 
 bool BraveContentSettingsAgentImpl::IsReduceLanguageEnabled() {
-  return reduce_language_enabled_;
+  if (!shields_settings_) {
+    return false;
+  }
+  return shields_settings_->reduce_language;
 }
 
 void BraveContentSettingsAgentImpl::BraveSpecificDidAllowJavaScriptOnce(
@@ -330,7 +337,8 @@ void BraveContentSettingsAgentImpl::DidCommitProvisionalLoad(
   cached_ephemeral_storage_origins_.clear();
 }
 
-BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel(
+brave_shields::mojom::ShieldsSettingsPtr
+BraveContentSettingsAgentImpl::GetBraveShieldsSettings(
     ContentSettingsType webcompat_settings_type) {
   GetOrCreateBraveShieldsRemote()->OnWebcompatFeatureInvoked(
       webcompat_settings_type);
@@ -356,15 +364,27 @@ BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel(
     }
   }
 
+  BraveFarblingLevel farbling_level = BraveFarblingLevel::BALANCED;
   if (setting == CONTENT_SETTING_BLOCK) {
     DVLOG(1) << "farbling level MAXIMUM";
-    return BraveFarblingLevel::MAXIMUM;
+    farbling_level = BraveFarblingLevel::MAXIMUM;
   } else if (setting == CONTENT_SETTING_ALLOW) {
     DVLOG(1) << "farbling level OFF";
-    return BraveFarblingLevel::OFF;
+    farbling_level = BraveFarblingLevel::OFF;
   } else {
     DVLOG(1) << "farbling level BALANCED";
-    return BraveFarblingLevel::BALANCED;
+    farbling_level = BraveFarblingLevel::BALANCED;
+  }
+
+  if (shields_settings_) {
+    auto shields_settings = shields_settings_.Clone();
+    shields_settings->farbling_level = farbling_level;
+    return shields_settings;
+  } else {
+    // TODO(goodov): Parent or Incumbent frame should be used in this case.
+    DCHECK(!HasContentSettingsRules());
+    return brave_shields::mojom::ShieldsSettings::New(
+        farbling_level, std::vector<std::string>(), false);
   }
 }
 
@@ -407,13 +427,9 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool play_requested) {
   return allow;
 }
 
-void BraveContentSettingsAgentImpl::SetAllowScriptsFromOriginsOnce(
-    const std::vector<std::string>& origins) {
-  temporarily_allowed_scripts_ = origins;
-}
-
-void BraveContentSettingsAgentImpl::SetReduceLanguageEnabled(bool enabled) {
-  reduce_language_enabled_ = enabled;
+void BraveContentSettingsAgentImpl::SetShieldsSettings(
+    brave_shields::mojom::ShieldsSettingsPtr shields_settings) {
+  shields_settings_ = std::move(shields_settings);
 }
 
 void BraveContentSettingsAgentImpl::BindBraveShieldsReceiver(

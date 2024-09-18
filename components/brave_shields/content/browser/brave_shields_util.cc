@@ -894,4 +894,24 @@ bool IsWebcompatEnabled(HostContentSettingsMap* map,
   return setting == CONTENT_SETTING_ALLOW;
 }
 
+mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
+                                      const GURL& primary_url) {
+  const bool shields_up = GetBraveShieldsEnabled(map, primary_url);
+  if (!shields_up) {
+    return brave_shields::mojom::FarblingLevel::OFF;
+  }
+
+  auto fingerprinting_type = GetFingerprintingControlType(map, primary_url);
+  switch (fingerprinting_type) {
+    case ControlType::ALLOW:
+      return brave_shields::mojom::FarblingLevel::OFF;
+    case ControlType::BLOCK:
+      return brave_shields::mojom::FarblingLevel::MAXIMUM;
+    case ControlType::BLOCK_THIRD_PARTY:
+      NOTREACHED();
+    case ControlType::DEFAULT:
+      return brave_shields::mojom::FarblingLevel::BALANCED;
+  }
+}
+
 }  // namespace brave_shields

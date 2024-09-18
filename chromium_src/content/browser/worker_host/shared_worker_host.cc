@@ -7,11 +7,12 @@
 
 namespace content {
 
-void SharedWorkerHost::GetBraveFarblingLevel(
+void SharedWorkerHost::GetBraveShieldsSettings(
     const GURL& url,
-    base::OnceCallback<void(uint8_t)> callback) {
+    base::OnceCallback<void(brave_shields::mojom::ShieldsSettingsPtr)>
+        callback) {
   std::move(callback).Run(
-      GetContentClient()->browser()->WorkerGetBraveFarblingLevel(
+      GetContentClient()->browser()->WorkerGetBraveShieldSettings(
           url, GetProcessHost()->GetBrowserContext()));
 }
 

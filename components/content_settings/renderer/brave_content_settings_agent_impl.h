@@ -15,6 +15,7 @@
 #include "base/containers/flat_set.h"
 #include "base/gtest_prod_util.h"
 #include "brave/components/brave_shields/core/common/brave_shields.mojom.h"
+#include "brave/components/brave_shields/core/common/shields_settings.mojom-forward.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -51,6 +52,10 @@ class BraveContentSettingsAgentImpl
   // RenderFrameObserver:
   void DidCommitProvisionalLoad(ui::PageTransition transition) override;
 
+  const brave_shields::mojom::ShieldsSettingsPtr& shields_settings() const {
+    return shields_settings_;
+  }
+
  protected:
   bool AllowScript(bool enabled_per_settings) override;
   bool AllowScriptFromSource(bool enabled_per_settings,
@@ -64,7 +69,7 @@ class BraveContentSettingsAgentImpl
   void BraveSpecificDidAllowJavaScriptOnce(const GURL& details);
   bool AllowAutoplay(bool play_requested) override;
 
-  BraveFarblingLevel GetBraveFarblingLevel(
+  brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettings(
       ContentSettingsType webcompat_settings_type) override;
 
   bool IsReduceLanguageEnabled() override;
@@ -81,9 +86,8 @@ class BraveContentSettingsAgentImpl
   bool IsScriptTemporilyAllowed(const GURL& script_url);
 
   // brave_shields::mojom::BraveShields.
-  void SetAllowScriptsFromOriginsOnce(
-      const std::vector<std::string>& origins) override;
-  void SetReduceLanguageEnabled(bool enabled) override;
+  void SetShieldsSettings(
+      brave_shields::mojom::ShieldsSettingsPtr settings) override;
 
   void BindBraveShieldsReceiver(
       mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShields>
@@ -94,15 +98,10 @@ class BraveContentSettingsAgentImpl
   mojo::AssociatedRemote<brave_shields::mojom::BraveShieldsHost>&
   GetOrCreateBraveShieldsRemote();
 
-  // Origins of scripts which are temporary allowed for this frame in the
-  // current load
-  base::flat_set<std::string> temporarily_allowed_scripts_;
-
   // cache blocked script url which will later be used in `DidNotAllowScript()`
   GURL blocked_script_url_;
 
-  // Status of "reduce language identifiability" feature.
-  bool reduce_language_enabled_ = false;
+  brave_shields::mojom::ShieldsSettingsPtr shields_settings_;
 
   base::flat_map<url::Origin, blink::WebSecurityOrigin>
       cached_ephemeral_storage_origins_;
