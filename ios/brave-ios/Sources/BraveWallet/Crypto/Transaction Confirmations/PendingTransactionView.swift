@@ -484,6 +484,10 @@ struct PendingTransactionView: View {
     .disabled(
       !confirmationStore.isBalanceSufficient || confirmationStore.activeTxStatus == .approved
     )
+    .transaction { transaction in
+      transaction.animation = nil
+      transaction.disablesAnimations = true
+    }
   }
 
   var body: some View {
