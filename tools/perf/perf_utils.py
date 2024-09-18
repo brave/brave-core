@@ -19,9 +19,15 @@ def main():
       description='A set of supporting tools for the perf tests')
   subparsers = parser.add_subparsers(dest='subparser_name',
                                      help='A subcommand to run')
-  subparsers.add_parser(
+  wpr_cleanup_parser = subparsers.add_parser(
       'wpr-cleanup',
       help='Rewrite the WPR file to drop the unwanted and duplicated requests.')
+  wpr_cleanup_parser.add_argument(
+      '--preseve-service-hosts',
+      action='store_true',
+      default=False,
+      help='Don\'t remove requests to the service hosts (i.e. rewards.brave.com)'
+  )
   subparsers.add_parser('wpr-ls', help='List the content of WPR file.')
   subparsers.add_parser(
       's3-upload',
@@ -36,7 +42,7 @@ def main():
 
   args = parser.parse_args()
   if args.subparser_name == 'wpr-cleanup':
-    wpr_utils.cleanup_archive(args.file, True)
+    wpr_utils.cleanup_archive(args.file, not args.preseve_service_hosts)
 
   if args.subparser_name == 'wpr-ls':
     print(wpr_utils.run_httparchive(['ls', os.path.abspath(args.file)]))
