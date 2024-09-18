@@ -177,7 +177,6 @@ void ConversationHandler::Bind(
   OnClientConnectionChanged();
 
   MaybeFetchOrClearContentStagedConversation();
-  MaybePopPendingRequests();
 }
 
 void ConversationHandler::Bind(
@@ -471,11 +470,9 @@ void ConversationHandler::SubmitHumanConversationEntry(
       has_edits ? turn->edits->back() : turn;
   // Decide if this entry needs to wait for one of:
   // - user to be opted-in
-  // - conversation to be active
   // - is request in progress (should only be possible if regular entry is
   // in-progress and another entry is submitted outside of regular UI, e.g. from
   // location bar or context menu.
-  // if (!is_conversation_active_ || !ai_chat_service_->HasUserOptedIn() ||
   if (!ai_chat_service_->HasUserOptedIn() || is_request_in_progress_) {
     VLOG(1) << "Adding as a pending conversation entry";
     // This is possible (on desktop) if user submits multiple location bar
@@ -805,7 +802,7 @@ void ConversationHandler::SubmitSelectedTextWithQuestion(
 }
 
 bool ConversationHandler::MaybePopPendingRequests() {
-  if (IsAnyClientConnected() && !ai_chat_service_->HasUserOptedIn()) {
+  if (!ai_chat_service_->HasUserOptedIn()) {
     return false;
   }
 
