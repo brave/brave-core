@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -45,19 +45,7 @@ def main():
 
     with scoped_cwd(base_dir):
         if output.endswith('.zip'):
-            try:
-                make_zip(output, inputs, dir_inputs)
-            except RuntimeError as e:
-                if sys.platform != 'darwin':
-                    raise
-                # create_dist_zips is currently flaky on macOS. Warn about the
-                # error but do not fail the build to unblock developers, while
-                # we determine and resolve the underlying issue.
-                print('WARNING: ' + e.args[0])
-                print(e.args[1])
-                # Create the file so CI does not fail because it does not exist:
-                open(output, 'w').close()
-
+            make_zip(output, inputs, dir_inputs)
         elif output.endswith('.7z'):
             make_7z(output, inputs, dir_inputs)
         else:
