@@ -6,6 +6,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/commander/commander_service.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/dom_distiller/core/dom_distiller_features.h"
 #include "components/grit/brave_components_strings.h"
@@ -18,6 +19,7 @@ constexpr int kReopenCloseTabsMacResourceId = IDS_REOPEN_CLOSED_TABS_MAC;
 constexpr int kHelpMacResourceId = IDS_HELP_MAC;
 constexpr int kMediaRouterMenuItemTitleResourceId =
     IDS_MEDIA_ROUTER_MENU_ITEM_TITLE;
+constexpr int kShowGoogleLensShortcut = IDC_SHOW_GOOGLE_LENS_SHORTCUT;
 }  // namespace
 
 // Insert "New Private Window with Tor" in "File" menu
@@ -57,8 +59,14 @@ IDS_IDC_COMMANDER).command_id(IDC_COMMANDER)                     \
                   .remove_if(is_pwa || !commander::IsEnabled()), \
               Item(kMediaRouterMenuItemTitleResourceId
 
+// Remove "Always Show Google Lens Shortcut"
+#undef IDC_SHOW_GOOGLE_LENS_SHORTCUT
+#define IDC_SHOW_GOOGLE_LENS_SHORTCUT \
+  kShowGoogleLensShortcut).remove_if(true
+
 #include "src/chrome/browser/ui/cocoa/main_menu_builder.mm"
 
+#undef IDC_SHOW_GOOGLE_LENS_SHORTCUT
 #undef IDS_MEDIA_ROUTER_MENU_ITEM_TITLE
 #undef IDS_MUTE_SITE_MAC
 #define IDS_MUTE_SITE_MAC kMuteSiteResourceId
