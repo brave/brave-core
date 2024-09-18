@@ -284,7 +284,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                                                 tokens.add(
                                                         Utils.makeNetworkAsset(
                                                                 mTxNetwork)); // Always add native
-                                                                              // asset
+                                                // asset
                                                 if (parsedTx.getIsSwap()) {
                                                     tokens.add(parsedTx.getSellToken());
                                                     tokens.add(parsedTx.getBuyToken());
