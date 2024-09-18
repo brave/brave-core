@@ -182,12 +182,13 @@ public class TokenUtils {
             boolean userAssetsOnly,
             Callbacks.Callback1<BlockchainToken[]> callback) {
         if (JavaUtils.anyNull(braveWalletService, blockchainRegistry)) return;
-        if (userAssetsOnly)
+        if (userAssetsOnly) {
             getVisibleUserAssetsFiltered(
                     braveWalletService, selectedNetwork, coinType, tokenType, callback);
-        else
+        } else {
             getAllTokensFiltered(
                     braveWalletService, blockchainRegistry, selectedNetwork, tokenType, callback);
+        }
     }
 
     /**

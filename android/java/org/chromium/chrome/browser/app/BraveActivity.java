@@ -524,12 +524,13 @@ public abstract class BraveActivity extends ChromeActivity
 
     private void maybeShowSignMessageErrorsLayout() {
         assert mBraveWalletService != null;
-        mBraveWalletService.getPendingSignMessageErrors(errors -> {
-            if (errors != null && errors.length != 0) {
-                openBraveWalletDAppsActivity(
-                        BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE_ERROR);
-            }
-        });
+        mBraveWalletService.getPendingSignMessageErrors(
+                errors -> {
+                    if (errors != null && errors.length != 0) {
+                        openBraveWalletDAppsActivity(
+                                BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE_ERROR);
+                    }
+                });
         maybeShowSignMessageRequestLayout();
     }
 
@@ -601,15 +602,17 @@ public abstract class BraveActivity extends ChromeActivity
 
     private void maybeShowDecryptRequestLayout() {
         assert mBraveWalletService != null;
-        mBraveWalletService.getPendingDecryptRequests(requests -> {
-            if (requests != null && requests.length != 0) {
-                openBraveWalletDAppsActivity(BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST);
+        mBraveWalletService.getPendingDecryptRequests(
+                requests -> {
+                    if (requests != null && requests.length != 0) {
+                        openBraveWalletDAppsActivity(
+                                BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST);
 
-                return;
-            }
-            BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-            layout.showWalletPanel();
-        });
+                        return;
+                    }
+                    BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
+                    layout.showWalletPanel();
+                });
     }
 
     public void dismissWalletPanelOrDialog() {
@@ -621,7 +624,8 @@ public abstract class BraveActivity extends ChromeActivity
         showWalletPanel(true, ignoreWeb3NotificationPreference);
     }
 
-    public void showWalletPanel(final boolean showPendingTransactions, final boolean ignoreWeb3NotificationPreference) {
+    public void showWalletPanel(
+            final boolean showPendingTransactions, final boolean ignoreWeb3NotificationPreference) {
         final BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
         layout.showWalletIcon(true);
         if (!ignoreWeb3NotificationPreference
@@ -629,25 +633,27 @@ public abstract class BraveActivity extends ChromeActivity
             return;
         }
         assert mKeyringService != null;
-        mKeyringService.isLocked(locked -> {
-            if (locked) {
-                if (showPendingTransactions) {
-                    layout.showWalletPanel();
-                }
-                return;
-            }
-            mKeyringService.hasPendingUnlockRequest(pending -> {
-                if (pending) {
-                    layout.showWalletPanel();
-                    return;
-                }
-                if (showPendingTransactions && mWalletBadgeVisible) {
-                    maybeShowPendingTransactions();
-                } else {
-                    maybeShowSignTxRequestLayout();
-                }
-            });
-        });
+        mKeyringService.isLocked(
+                locked -> {
+                    if (locked) {
+                        if (showPendingTransactions) {
+                            layout.showWalletPanel();
+                        }
+                        return;
+                    }
+                    mKeyringService.hasPendingUnlockRequest(
+                            pending -> {
+                                if (pending) {
+                                    layout.showWalletPanel();
+                                    return;
+                                }
+                                if (showPendingTransactions && mWalletBadgeVisible) {
+                                    maybeShowPendingTransactions();
+                                } else {
+                                    maybeShowSignTxRequestLayout();
+                                }
+                            });
+                });
     }
 
     public void showWalletOnboarding() {
@@ -1557,7 +1563,8 @@ public abstract class BraveActivity extends ChromeActivity
         Utils.openAddress("/address/" + address, this, coinType, networkInfo);
     }
 
-    public void openBraveWalletDAppsActivity(@NonNull final BraveWalletDAppsActivity.ActivityType activityType) {
+    public void openBraveWalletDAppsActivity(
+            @NonNull final BraveWalletDAppsActivity.ActivityType activityType) {
         Intent braveWalletIntent = new Intent(this, BraveWalletDAppsActivity.class);
         braveWalletIntent.putExtra("activityType", activityType.getValue());
         braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

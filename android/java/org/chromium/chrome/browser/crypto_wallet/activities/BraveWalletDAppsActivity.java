@@ -226,7 +226,9 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                                 this,
                                 transactionInfo -> {
                                     if (transactionInfo == null
-                                            || mPendingTxHelper.getPendingTransactions().isEmpty()) {
+                                            || mPendingTxHelper
+                                                    .getPendingTransactions()
+                                                    .isEmpty()) {
                                         return;
                                     }
                                     if (mApproveTxBottomSheetDialogFragment != null
@@ -240,7 +242,8 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                                                     mPendingTxHelper.getPendingTransactions(),
                                                     transactionInfo,
                                                     this);
-                                    mApproveTxBottomSheetDialogFragment.show(getSupportFragmentManager());
+                                    mApproveTxBottomSheetDialogFragment.show(
+                                            getSupportFragmentManager());
                                     mPendingTxHelper.mTransactionInfoLd.observe(
                                             this,
                                             transactionInfos -> {
