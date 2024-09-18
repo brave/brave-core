@@ -389,6 +389,7 @@ if (is_android) {
     "//brave/browser/android:android_browser_process",
     "//brave/browser/android/preferences",
     "//brave/browser/android/safe_browsing:buildflags",
+    "//brave/browser/download/android:jni_headers",
     "//brave/build/android:jni_headers",
     "//brave/components/brave_sync:sync_service_impl_helper",
     "//chrome/android:jni_headers",
