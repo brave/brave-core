@@ -255,6 +255,27 @@ if (!window.__firefox__) {
     return value;
   };
 
+  /// Secure URL object
+  $.URL = window.URL;
+  /// Secure Event object
+  $.Event = window.Event;
+  /// Secure ProgressEvent object
+  $.ProgressEvent = window.ProgressEvent;
+  /// Secure MutationObserver object
+  $.MutationObserver = window.MutationObserver;
+  /// Secure Map object
+  $.Map = window.Map;
+  /// Secure Set object
+  $.Set = window.Set;
+  /// Secure TypeError object
+  $.TypeError = window.TypeError;
+  /// Secure WeakRef object
+  $.WeakRef = window.WeakRef;
+  /// Secure WeakMap object
+  $.WeakMap = window.WeakMap;
+  /// Secure WeakSet object
+  $.WeakSet = window.WeakSet;
+
   /*
    *  Freeze an object and its prototype
    */

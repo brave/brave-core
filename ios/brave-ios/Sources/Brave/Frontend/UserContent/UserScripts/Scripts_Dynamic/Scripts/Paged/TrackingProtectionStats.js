@@ -18,7 +18,7 @@ window.__firefox__.execute(function($) {
 
     let resourceURL = null;
     try {
-      resourceURL = new URL(urlString, document.location.href);
+      resourceURL = new $.URL(urlString, document.location.href);
 
       // First party urls or invalid URLs are not blocked
       if (document.location.host === resourceURL.host) {
