@@ -112,7 +112,7 @@ ConversationHandler* AIChatService::CreateConversation() {
 }
 
 ConversationHandler* AIChatService::GetConversation(
-    const std::string conversation_uuid) {
+    const std::string& conversation_uuid) {
   auto conversation_handler_it = conversation_handlers_.find(conversation_uuid);
   if (conversation_handler_it == conversation_handlers_.end()) {
     return nullptr;
@@ -328,8 +328,7 @@ std::unique_ptr<EngineConsumer> AIChatService::GetDefaultAIEngine() {
 }
 
 size_t AIChatService::GetInMemoryConversationCountForTesting() {
-  CHECK(conversations_.size() == conversation_handlers_.size());
-  return conversations_.size();
+  return conversation_handlers_.size();
 }
 
 void AIChatService::OnUserOptedIn() {

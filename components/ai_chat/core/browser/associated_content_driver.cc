@@ -24,6 +24,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "net/base/url_util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
+
 namespace ai_chat {
 
 namespace {

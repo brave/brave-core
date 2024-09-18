@@ -10,8 +10,6 @@
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
-#include "base/functional/callback_helpers.h"
-#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
 #include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
 #include "brave/browser/brave_browser_process.h"
@@ -68,6 +66,8 @@
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
 #include "brave/browser/ui/ai_chat/print_preview_extractor.h"
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
+#include "base/functional/callback_helpers.h"
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)

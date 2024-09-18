@@ -67,18 +67,18 @@ class AIChatService : public KeyedService,
   // Adds new conversation and returns the handler
   ConversationHandler* CreateConversation();
 
-  ConversationHandler* GetConversation(const std::string uuid);
+  ConversationHandler* GetConversation(const std::string& uuid);
 
   // Creates and owns a ConversationHandler if one hasn't been made for the
-  // associated_content_id yet. associated_content_id should not be stored. It
+  // associated_content_id yet. |associated_content_id| should not be stored. It
   // is an ephemeral identifier for active browser content.
   ConversationHandler* GetOrCreateConversationHandlerForContent(
       int associated_content_id,
       base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
           associated_content);
 
-  // Creates and owns a ConversationHandler if one hasn't been made for the
-  // associated_content_id yet. associated_content_id should not be stored. It
+  // Creates and owns a new ConversationHandler and associated with the provided
+  // content ID. |associated_content_id| should not be stored. It
   // is an ephemeral identifier for active browser content.
   ConversationHandler* CreateConversationHandlerForContent(
       int associated_content_id,

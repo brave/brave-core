@@ -175,12 +175,7 @@ void ConversationHandler::Bind(
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   conversation_ui_handlers_.Add(std::move(conversation_ui_handler));
   OnClientConnectionChanged();
-  // In some cases, this page handler hasn't been created and remote might not
-  // have been set yet.
-  // ex. A user may ask a question from the location bar
-  if (!pending_conversation_entry_.is_null()) {
-    OnHistoryUpdate();
-  }
+
   MaybeFetchOrClearContentStagedConversation();
   MaybePopPendingRequests();
 }
@@ -901,6 +896,10 @@ void ConversationHandler::PerformAssistantGeneration(
                        is_video));
     return;
   } else if (!should_refine_page_content && is_content_refined_) {
+    // If we previously refined content but we're not anymore (perhaps the
+    // content shrunk or the model changed to one with a larger content length
+    // limit), update the UI to let them know we're not refining content
+    // anymore.
     is_content_refined_ = false;
     OnAssociatedContentInfoChanged();
   }
@@ -1008,9 +1007,14 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
 }
 
 void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
+  // Try later when we get a connected client
+  if (!IsAnyClientConnected()) {
+    return;
+  }
+
   const bool can_check_for_staged_conversation =
-      IsAnyClientConnected() && ai_chat_service_->HasUserOptedIn() &&
-      IsContentAssociationPossible() && should_send_page_contents_;
+      ai_chat_service_->HasUserOptedIn() && IsContentAssociationPossible() &&
+      should_send_page_contents_;
   if (!can_check_for_staged_conversation) {
     // Clear any staged conversation entries since user might have unassociated
     // content with this conversation
@@ -1026,11 +1030,6 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
       OnHistoryUpdate();
       return;
     }
-  }
-
-  // Try later when we get a connected client
-  if (!IsAnyClientConnected()) {
-    return;
   }
 
   // Currently only have search query summary at the start of a conversation.
@@ -1079,11 +1078,6 @@ void ConversationHandler::GeneratePageContent(GetPageContentCallback callback) {
   // for more page content (e.g. video transcript).
   DCHECK(ai_chat_service_->HasUserOptedIn())
       << "UI shouldn't allow operations before user has accepted agreement";
-
-  // Perf: make sure we're not doing this when the feature
-  // won't be used (e.g. no active conversation).
-  // DCHECK(is_conversation_active_)
-  //     << "UI shouldn't allow operations for an inactive conversation";
 
   associated_content_delegate_->GetContent(
       base::BindOnce(&ConversationHandler::OnGeneratePageContentComplete,

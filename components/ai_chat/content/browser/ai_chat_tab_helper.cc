@@ -140,7 +140,7 @@ void AIChatTabHelper::NavigationEntryCommitted(
   if (!load_details.is_main_frame) {
     return;
   }
-  // UniqueID will provide a consitent value for the entry when navigating
+  // UniqueID will provide a consistent value for the entry when navigating
   // through history, allowing us to re-join conversations and navigations.
   int pending_navigation_id = load_details.entry->GetUniqueID();
   pending_navigation_id_ = pending_navigation_id;
