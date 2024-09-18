@@ -650,7 +650,7 @@ public abstract class BraveActivity extends ChromeActivity
                                 if (showPendingTransactions && mWalletBadgeVisible) {
                                     maybeShowPendingTransactions();
                                 } else {
-                                    maybeShowSignTxRequestLayout();
+                                    maybeShowSignSolTransactionsRequestLayout();
                                 }
                             });
                 });
