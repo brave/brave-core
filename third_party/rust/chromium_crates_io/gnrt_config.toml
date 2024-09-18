@@ -84,11 +84,7 @@ remove_crates = ['cc', 'link-cplusplus', 'wasi', 'winapi-i686-pc-windows-gnu', '
 [crate.adblock]
 extra_kv = { raw_gn = '''
 if (is_ios) {
-    features += [
-      "content-blocking",
-      "serde_json",
-    ]
-    deps += [ "//brave/third_party/rust/serde_json/v1:lib" ]
+    features += [ "content-blocking" ]
   } else {
     features += [
       "object-pooling",
