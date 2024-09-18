@@ -37,6 +37,7 @@ public class BraveIntentHandler {
         String url = IntentHandler.getUrlFromVoiceSearchResult(intent);
         if (url == null) url = getUrlForCustomTab(intent);
         if (url == null) url = getUrlForWebapp(intent);
+        if (url == null) url = IntentHandler.getUrlFromShareIntent(intent);
         if (url == null) url = intent.getDataString();
         if (url == null) url = getUrlFromText(intent);
         if (url == null) url = getWebSearchUrl(intent);
