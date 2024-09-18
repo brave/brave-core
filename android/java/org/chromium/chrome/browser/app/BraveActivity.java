@@ -508,7 +508,8 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
-    private void maybeShowSignSolTransactionsRequestLayout(@NonNull final Runnable openWalletPanelRunnable) {
+    private void maybeShowSignSolTransactionsRequestLayout(
+            @NonNull final Runnable openWalletPanelRunnable) {
         assert mBraveWalletService != null;
         mBraveWalletService.getPendingSignSolTransactionsRequests(
                 requests -> {
@@ -533,70 +534,81 @@ public abstract class BraveActivity extends ChromeActivity
         maybeShowSignMessageRequestLayout(openWalletPanelRunnable);
     }
 
-    private void maybeShowSignMessageRequestLayout(@NonNull final Runnable openWalletPanelRunnable) {
+    private void maybeShowSignMessageRequestLayout(
+            @NonNull final Runnable openWalletPanelRunnable) {
         assert mBraveWalletService != null;
-        mBraveWalletService.getPendingSignMessageRequests(requests -> {
-            if (requests != null && requests.length != 0) {
-                BraveWalletDAppsActivity.ActivityType activityType =
-                        (requests[0].signData.which() == SignDataUnion.Tag.EthSiweData)
-                        ? BraveWalletDAppsActivity.ActivityType.SIWE_MESSAGE
-                        : BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE;
-                openBraveWalletDAppsActivity(activityType);
-                return;
-            }
-            maybeShowChainRequestLayout(openWalletPanelRunnable);
-        });
+        mBraveWalletService.getPendingSignMessageRequests(
+                requests -> {
+                    if (requests != null && requests.length != 0) {
+                        BraveWalletDAppsActivity.ActivityType activityType =
+                                (requests[0].signData.which() == SignDataUnion.Tag.EthSiweData)
+                                        ? BraveWalletDAppsActivity.ActivityType.SIWE_MESSAGE
+                                        : BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE;
+                        openBraveWalletDAppsActivity(activityType);
+                        return;
+                    }
+                    maybeShowChainRequestLayout(openWalletPanelRunnable);
+                });
     }
 
     private void maybeShowChainRequestLayout(@NonNull final Runnable openWalletPanelRunnable) {
         assert mJsonRpcService != null;
-        mJsonRpcService.getPendingAddChainRequests(networks -> {
-            if (networks != null && networks.length != 0) {
-                openBraveWalletDAppsActivity(
-                        BraveWalletDAppsActivity.ActivityType.ADD_ETHEREUM_CHAIN);
+        mJsonRpcService.getPendingAddChainRequests(
+                networks -> {
+                    if (networks != null && networks.length != 0) {
+                        openBraveWalletDAppsActivity(
+                                BraveWalletDAppsActivity.ActivityType.ADD_ETHEREUM_CHAIN);
 
-                return;
-            }
-            maybeShowSwitchChainRequestLayout(openWalletPanelRunnable);
-        });
+                        return;
+                    }
+                    maybeShowSwitchChainRequestLayout(openWalletPanelRunnable);
+                });
     }
 
-    private void maybeShowSwitchChainRequestLayout(@NonNull final Runnable openWalletPanelRunnable) {
+    private void maybeShowSwitchChainRequestLayout(
+            @NonNull final Runnable openWalletPanelRunnable) {
         assert mJsonRpcService != null;
-        mJsonRpcService.getPendingSwitchChainRequests(requests -> {
-            if (requests != null && requests.length != 0) {
-                openBraveWalletDAppsActivity(
-                        BraveWalletDAppsActivity.ActivityType.SWITCH_ETHEREUM_CHAIN);
+        mJsonRpcService.getPendingSwitchChainRequests(
+                requests -> {
+                    if (requests != null && requests.length != 0) {
+                        openBraveWalletDAppsActivity(
+                                BraveWalletDAppsActivity.ActivityType.SWITCH_ETHEREUM_CHAIN);
 
-                return;
-            }
-            maybeShowAddSuggestTokenRequestLayout(openWalletPanelRunnable);
-        });
+                        return;
+                    }
+                    maybeShowAddSuggestTokenRequestLayout(openWalletPanelRunnable);
+                });
     }
 
-    private void maybeShowAddSuggestTokenRequestLayout(@NonNull final Runnable openWalletPanelRunnable) {
+    private void maybeShowAddSuggestTokenRequestLayout(
+            @NonNull final Runnable openWalletPanelRunnable) {
         assert mBraveWalletService != null;
-        mBraveWalletService.getPendingAddSuggestTokenRequests(requests -> {
-            if (requests != null && requests.length != 0) {
-                openBraveWalletDAppsActivity(BraveWalletDAppsActivity.ActivityType.ADD_TOKEN);
+        mBraveWalletService.getPendingAddSuggestTokenRequests(
+                requests -> {
+                    if (requests != null && requests.length != 0) {
+                        openBraveWalletDAppsActivity(
+                                BraveWalletDAppsActivity.ActivityType.ADD_TOKEN);
 
-                return;
-            }
-            maybeShowGetEncryptionPublicKeyRequestLayout(openWalletPanelRunnable);
-        });
+                        return;
+                    }
+                    maybeShowGetEncryptionPublicKeyRequestLayout(openWalletPanelRunnable);
+                });
     }
 
-    private void maybeShowGetEncryptionPublicKeyRequestLayout(@NonNull final Runnable openWalletPanelRunnable) {
+    private void maybeShowGetEncryptionPublicKeyRequestLayout(
+            @NonNull final Runnable openWalletPanelRunnable) {
         assert mBraveWalletService != null;
-        mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
-            if (requests != null && requests.length != 0) {
-                openBraveWalletDAppsActivity(
-                        BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
+        mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(
+                requests -> {
+                    if (requests != null && requests.length != 0) {
+                        openBraveWalletDAppsActivity(
+                                BraveWalletDAppsActivity.ActivityType
+                                        .GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
 
-                return;
-            }
-            maybeShowDecryptRequestLayout(openWalletPanelRunnable);
-        });
+                        return;
+                    }
+                    maybeShowDecryptRequestLayout(openWalletPanelRunnable);
+                });
     }
 
     private void maybeShowDecryptRequestLayout(@NonNull final Runnable openWalletPanelRunnable) {
@@ -651,10 +663,12 @@ public abstract class BraveActivity extends ChromeActivity
                                     // Create a runnable that opens the Wallet
                                     // if the pending requests reach the end of the chain
                                     // without returning earlier.
-                                    final Runnable openWalletPanelRunnable = () -> {
-                                        getBraveToolbarLayout().showWalletPanel();
-                                    };
-                                    maybeShowSignSolTransactionsRequestLayout(openWalletPanelRunnable);
+                                    final Runnable openWalletPanelRunnable =
+                                            () -> {
+                                                getBraveToolbarLayout().showWalletPanel();
+                                            };
+                                    maybeShowSignSolTransactionsRequestLayout(
+                                            openWalletPanelRunnable);
                                 }
                             });
                 });
