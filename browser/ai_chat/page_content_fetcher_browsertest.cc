@@ -138,7 +138,7 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
     GURL expected_patch_url =
         https_server_.GetURL("github.com", kGithubUrlPathPatch);
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [=](const network::ResourceRequest& request) {
+        [=, this](const network::ResourceRequest& request) {
           if (request.url == expected_patch_url) {
             url_loader_factory_.ClearResponses();
             url_loader_factory_.AddResponse(request.url.spec(), kGithubPatch);
