@@ -19,9 +19,8 @@ ENV_CONFIG_SAMPLE = inspect.cleandoc('''
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        'command',
-        choices=['create_if_not_found', 'convert_to_json', 'include_env_noop'])
+    parser.add_argument('command',
+                        choices=['create_if_not_found', 'convert_to_json'])
     parser.add_argument('filename', nargs='?')
 
     args = parser.parse_args()
@@ -34,10 +33,6 @@ def main():
         json.dump(read_env_config_as_dict(args.filename),
                   sort_keys=True,
                   fp=sys.stdout)
-    elif args.command == 'include_env_noop':
-        # A no-op command used in GN to add extra dependencies on the files
-        # declared by include_env.
-        pass
 
 
 def read_env_config_as_dict(file_path, result_dict=None):

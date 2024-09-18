@@ -21,12 +21,9 @@ env_config = exec_script("env_config.py",
 env_config_files = [ rebase_path(env_config_file) ]
 
 if (defined(env_config.include_env) && env_config.include_env != []) {
-  # This command is a no-op, but it adds GN dependencies on the extra .env files
-  # so that GN is re-run if they change.
-  exec_script("env_config.py",
-              [ "include_env_noop" ],
-              "",
-              env_config.include_env)
+  # This no-op command adds GN dependencies on the extra .env files so that GN
+  # is re-run if they change.
+  exec_script("//build/noop.py", [], "", env_config.include_env)
 
   # Add the extra .env files to the list.
   env_config_files += rebase_path(env_config.include_env)
