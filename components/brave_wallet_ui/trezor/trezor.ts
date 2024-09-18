@@ -23,6 +23,13 @@ import {
 } from '../common/hardware/trezor/trezor-messages'
 import { addTrezorCommandHandler } from '../common/hardware/trezor/trezor-command-handler'
 
+const hexPad = (hexString: string) => {
+  if (hexString.length % 2 === 1) {
+    return `0${hexString}`
+  }
+  return hexString
+}
+
 const createUnlockResponse = (
   command: UnlockCommand,
   result: boolean,
@@ -111,7 +118,7 @@ addTrezorCommandHandler(
               success: true,
               payload: {
                 // https://docs.trezor.io/trezor-suite/packages/connect/methods/ethereumSignTransaction.html#result
-                vBytes: Buffer.from(result.payload.v.slice(2), 'hex'),
+                vBytes: Buffer.from(hexPad(result.payload.v.slice(2)), 'hex'),
                 rBytes: Buffer.from(result.payload.r.slice(2), 'hex'),
                 sBytes: Buffer.from(result.payload.s.slice(2), 'hex')
               }
@@ -191,7 +198,7 @@ addTrezorCommandHandler(
             payload: {
               success: true,
               payload: {
-                bytes: Buffer.from(result.payload.signature, 'hex')
+                bytes: Buffer.from(result.payload.signature.slice(2), 'hex')
               }
             }
           })
