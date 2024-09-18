@@ -43,6 +43,11 @@ BASE_FEATURE(kBraveAdblockCookieListOptIn,
 BASE_FEATURE(kBraveAdblockCosmeticFiltering,
              "BraveAdblockCosmeticFiltering",
              base::FEATURE_ENABLED_BY_DEFAULT);
+// Brave will apply cosmetic filters with procedural operators like
+// `:has-text(...)` and `:upward(...)`.
+BASE_FEATURE(kBraveAdblockProceduralFiltering,
+             "BraveAdblockProceduralFiltering",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 BASE_FEATURE(kBraveAdblockScriptletDebugLogs,
              "BraveAdblockScriptletDebugLogs",
              base::FEATURE_DISABLED_BY_DEFAULT);

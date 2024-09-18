@@ -546,6 +546,14 @@
                                  kBraveAdblockMobileNotificationsListDefault), \
       },                                                                       \
       {                                                                        \
+          "brave-adblock-procedural-filtering",                                \
+          "Enable procedural filtering",                                       \
+          "Enable support for procedural cosmetic filtering",                  \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveAdblockProceduralFiltering),      \
+      },                                                                       \
+      {                                                                        \
           "brave-adblock-experimental-list-default",                           \
           "Treat 'Brave Experimental Adblock Rules' as a default list "        \
           "source",                                                            \

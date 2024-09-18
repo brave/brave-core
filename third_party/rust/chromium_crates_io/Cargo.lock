@@ -4,7 +4,7 @@ version = 3
 
 [[package]]
 name = "adblock"
-version = "0.8.12"
+version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "base64",
@@ -20,6 +20,7 @@ dependencies = [
  "seahash",
  "selectors 0.23.0",
  "serde",
+ "serde_json",
  "thiserror",
  "url",
 ]

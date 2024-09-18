@@ -581,6 +581,9 @@ var braveTarget: PackageDescription.Target = .target(
       "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/SelectorsPollerScript.js"
     ),
     .copy(
+      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/ProceduralFilters.js"
+    ),
+    .copy(
       "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/SiteStateListenerScript.js"
     ),
     .copy(

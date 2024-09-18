@@ -14,7 +14,7 @@ use crate::regex_manager::RegexManager;
 use crate::request;
 use crate::utils::{self, Hash};
 
-pub const TOKENS_BUFFER_SIZE: usize = 200;
+pub(crate) const TOKENS_BUFFER_SIZE: usize = 200;
 
 /// For now, only support `$removeparam` with simple alphanumeric/dash/underscore patterns.
 static VALID_PARAM: Lazy<Regex> = Lazy::new(|| Regex::new(r"^[a-zA-Z0-9_\-]+$").unwrap());
@@ -1087,6 +1087,16 @@ impl NetworkFilter {
     fn for_https(&self) -> bool {
         self.mask.contains(NetworkFilterMask::FROM_HTTPS)
     }
+
+    fn check_cpt_allowed(&self, cpt: &request::RequestType) -> bool {
+        match NetworkFilterMask::from(cpt) {
+            // TODO this is not ideal, but required to allow regexed exception rules without an
+            // explicit `$document` option to apply uBO-style.
+            // See also: https://github.com/uBlockOrigin/uBlock-issues/issues/1501
+            NetworkFilterMask::FROM_DOCUMENT => self.mask.contains(NetworkFilterMask::FROM_DOCUMENT) || self.is_exception(),
+            mask => self.mask.contains(mask),
+        }
+    }
 }
 
 impl fmt::Display for NetworkFilter {
@@ -1170,7 +1180,7 @@ fn compute_filter_id(
 /// filters containing at least a * or ^ symbol. Because Regexes are expansive,
 /// we try to convert some patterns to plain filters.
 #[allow(clippy::trivial_regex)]
-pub fn compile_regex(
+pub(crate) fn compile_regex(
     filter: &FilterPart,
     is_right_anchor: bool,
     is_left_anchor: bool,
@@ -1591,16 +1601,6 @@ fn check_pattern(
     }
 }
 
-pub fn check_cpt_allowed(filter: &NetworkFilter, cpt: &request::RequestType) -> bool {
-    match NetworkFilterMask::from(cpt) {
-        // TODO this is not ideal, but required to allow regexed exception rules without an
-        // explicit `$document` option to apply uBO-style.
-        // See also: https://github.com/uBlockOrigin/uBlock-issues/issues/1501
-        NetworkFilterMask::FROM_DOCUMENT => filter.mask.contains(NetworkFilterMask::FROM_DOCUMENT) || filter.is_exception(),
-        mask => filter.mask.contains(mask),
-    }
-}
-
 fn check_options(filter: &NetworkFilter, request: &request::Request) -> bool {
     // Bad filter never matches
     if filter.is_badfilter() {
@@ -1608,7 +1608,7 @@ fn check_options(filter: &NetworkFilter, request: &request::Request) -> bool {
     }
     // We first discard requests based on type, protocol and party. This is really
     // cheap and should be done first.
-    if !check_cpt_allowed(filter, &request.request_type)
+    if !filter.check_cpt_allowed(&request.request_type)
         || (request.is_https && !filter.for_https())
         || (request.is_http && !filter.for_http())
         || (!filter.first_party() && !request.is_third_party)

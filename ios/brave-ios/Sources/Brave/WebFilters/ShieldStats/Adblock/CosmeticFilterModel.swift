@@ -11,9 +11,9 @@ struct CosmeticFilterModel: Codable {
   /// These are the selectors that should be hidden on the frame.
   /// Contains hide selectors such as the ones needed for cookie consent blocking.
   let hideSelectors: [String]
-  /// These are custom style css rules that need to be applied on the frame.
-  /// May contain selectors rules such as the ones needed for cookie consent blocking or cosmetic filtering.
-  let styleSelectors: [String: [String]]
+  /// Filters with actions and/or procedural selectors.
+  /// Each one is encoded as JSON.
+  let proceduralActions: [String]
   /// These are exceptions that should be given back to the engine
   /// when retrieving additional selectors given by the `SelectorsPollerScript.js` script.
   let exceptions: [String]
@@ -26,7 +26,7 @@ struct CosmeticFilterModel: Codable {
 
   enum CodingKeys: String, CodingKey {
     case hideSelectors = "hide_selectors"
-    case styleSelectors = "style_selectors"
+    case proceduralActions = "procedural_actions"
     case exceptions = "exceptions"
     case injectedScript = "injected_script"
     case genericHide = "generichide"

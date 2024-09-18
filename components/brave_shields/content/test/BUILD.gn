@@ -32,9 +32,11 @@ source_set("unit_tests") {
     "cookie_list_opt_in_service_unittest.cc",
     "cosmetic_merge_unittest.cc",
     "csp_merge_unittest.cc",
+    "strip_procedural_filters_unittest.cc",
   ]
 
   deps = [
+    "//brave/components/brave_shields/adblock:rust_lib",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/core/common",

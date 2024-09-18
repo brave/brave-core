@@ -33,6 +33,11 @@ inline constexpr char kObsoleteShieldsCookies[] = "shieldsCookies";
 // Some users were not properly migrated from fingerprinting V1.
 inline constexpr char kObsoleteFingerprinting[] = "fingerprinting";
 
+// Key for procedural and action filters in the UrlCosmeticResources struct from
+// adblock-rust
+inline constexpr char kCosmeticResourcesProceduralActions[] =
+    "procedural_actions";
+
 // Filename for cached text from a custom filter list subscription
 const base::FilePath::CharType kCustomSubscriptionListText[] =
     FILE_PATH_LITERAL("list_text.txt");
