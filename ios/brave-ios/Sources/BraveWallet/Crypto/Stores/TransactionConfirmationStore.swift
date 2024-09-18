@@ -761,7 +761,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     case .solDappTransaction(let details), .solSwapTransaction(let details):
       symbol = details.symbol ?? ""
       value = details.fromAmount
-      transactionDetails = transactionDetails
+      transactionDetails =
+        transactionDetails
         + "\n\n"
         + details.instructions
         .map(\.toString)
