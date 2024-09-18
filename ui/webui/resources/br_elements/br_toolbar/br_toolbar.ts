@@ -1,167 +1,337 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Convert to Polymer class and remove ts-nocheck
+import { CrLitElement, css } from '//resources/lit/v3_0/lit.rollup.js';
+import { getHtml } from './br_toolbar.html.js';
+import { loadTimeData } from '//resources/js/load_time_data.js';
 
-import 'chrome://resources/polymer/v3_0/iron-media-query/iron-media-query.js';
-import '../br_shared_vars.css.js';
-import '../br_shared_style.css.js';
-import './br_toolbar_search_field.js';
+import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js';
 
-import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
-import {Polymer} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+// TODO: This is a hack while I haven't converted to the search field over yet
+import('//resources/brave/br_elements' + '/br_toolbar/br_toolbar_search_field.js' as any)
 
-import {getTemplate} from './br_toolbar.html.js'
-
-const customCurrentWebUINameMap = {
+const customCurrentWebUINameMap: { [key: string]: string } = {
   extensions: 'settings',
   sync: 'settings',
 }
 
-Polymer({
-  is: 'cr-toolbar',
+export interface CrToolbarElement {
+  $: {
+    search: HTMLElement
+  }
+}
 
-  _template: getTemplate(),
+export class CrToolbarElement extends CrLitElement {
+  static get is() {
+    return 'cr-toolbar'
+  }
 
-  properties: {
-    // Name to display in the toolbar, in titlecase.
-    pageName: String,
+  static override get styles() {
+    return css`
+  #menuButtonContainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #menuButton {
+    --cr-icon-button-fill-color: currentColor;
+  }
 
-    // Prompt text to display in the search field.
-    searchPrompt: String,
+  .br-toolbar {
+    --toolbar-background: var(--brave-toolbar-gradient);
+    background: var(--toolbar-background);
+    color: white;
+    height: 56px;
+    position: relative;
+  }
 
-    // Tooltip to display on the clear search button.
-    clearLabel: String,
+  .nav-items {
+    align-items: stretch;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+  }
 
-    // Tooltip to display on the menu button.
-    menuLabel: String,
+  .nav-items-list-item {
+    display: flex;
+  }
 
-    // Promotional toolstip string, shown in narrow mode if showMenuPromo is
-    // true.
-    menuPromo: String,
+  .nav-item {
+    align-items: center;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    /* update br_toolbar.js font-load detection
+    if font-weight or name changes */
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0.6px;
+    /* hide until fonts are loaded */
+    opacity: 0;
+    overflow: hidden;
+    padding: 0 32px;
+    text-decoration: none;
+    transition: opacity 100ms ease-out;
+  }
 
-    // Value is proxied through to cr-toolbar-search-field. When true,
-    // the search field will show a processing spinner.
-    spinnerActive: Boolean,
+  .fonts-loaded .nav-item {
+    opacity: 1;
+  }
+  .nav-item:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+  .nav-item:focus {
+    background: rgba(0, 0, 0, 0.2);
+  }
+  .nav-item:active {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  .nav-item.-selected {
+    background: rgba(0, 0, 0, 0.3);
+    cursor: default;
+  }
 
-    // Controls whether the menu button is shown at the start of the menu.
-    showMenu: {type: Boolean, value: false},
+  .nav-item-icon {
+    align-items: center;
+    color: inherit;
+    display: flex;
+  }
 
-    // Whether to show menu promo tooltip.
-    showMenuPromo: {
-      type: Boolean,
-      value: false,
-    },
+  .nav-item-icon path {
+    fill: currentColor;
+  }
 
-    // Controls whether the search field is shown.
-    showSearch: {type: Boolean, value: true},
+  .nav-item-text {
+    display: block;
+    margin: 0 0 0 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  @media only screen and (max-width: 1200px) {
+    .nav-item-text {
+      display: none;
+    }
+  }
 
-    // True when the toolbar is displaying in narrow mode.
-    narrow: {
-      type: Boolean,
-      reflectToAttribute: true,
-      readonly: true,
-      notify: true,
-    },
+  .toolbar-extra {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    z-index: 1;
+  }
 
-    /**
-     * The threshold at which the toolbar will change from normal to narrow
-     * mode, in px.
-     */
-    narrowThreshold: {
-      type: Number,
-      value: 900,
-    },
+  .toolbar-extra.-slot-filled {
+    background: rgb(221, 225, 226);
+    color: rgb(34, 34, 34);
+    padding: 5px;
+  }
+  @media (prefers-color-scheme: dark) {
+    .toolbar-extra.-slot-filled {
+      background: #444;
+      color: rgb(221, 225, 226);
+    }
+`
+  }
 
-    closeMenuPromo: String,
+  override render() {
+    return getHtml.bind(this)()
+  }
 
-    noSearch: {
-      observer: 'noSearchChanged_',
-      type: Boolean,
-      // boolean props on html attributes must default to false
-      value: false
-    },
+  static override get properties() {
+    return {
+      // Name to display in the toolbar, in titlecase.
+      pageName: { type: String },
 
-    /** @private */
-    showingSearch_: {
-      type: Boolean,
-      reflectToAttribute: true,
-    },
+      // Prompt text to display in the search field.
+      searchPrompt: { type: String },
 
-    shouldShowRewardsButton_: {
-      type: Boolean,
-      value: true,
-    },
+      // Tooltip to display on the clear search button.
+      clearLabel: { type: String },
 
-    isBraveWalletAllowed_: {
-      type: Boolean,
-      value: true,
-    },
-  },
+      // Tooltip to display on the menu button.
+      menuLabel: { type: String },
+
+      // Promotional toolstip string, shown in narrow mode if showMenuPromo is
+      // true.
+      menuPromo: { type: String },
+
+      // Value is proxied through to cr-toolbar-search-field. When true,
+      // the search field will show a processing spinner.
+      spinnerActive: { type: Boolean },
+
+      // Controls whether the menu button is shown at the start of the menu.
+      showMenu: { type: Boolean },
+
+      // Whether to show menu promo tooltip.
+      showMenuPromo: {
+        type: Boolean,
+      },
+
+      // Controls whether the search field is shown.
+      showSearch: { type: Boolean },
+
+      // True when the toolbar is displaying in narrow mode.
+      narrow: {
+        type: Boolean,
+        reflectToAttribute: true,
+        readonly: true,
+        notify: true,
+      },
+
+      /**
+       * The threshold at which the toolbar will change from normal to narrow
+       * mode, in px.
+       */
+      narrowThreshold: {
+        type: Number,
+      },
+
+      closeMenuPromo: { type: String },
+
+      noSearch: {
+        observer: 'noSearchChanged_',
+        type: Boolean,
+      },
+
+      /** @private */
+      showingSearch_: {
+        type: Boolean,
+        reflectToAttribute: true,
+      },
+
+      shouldShowRewardsButton_: {
+        type: Boolean,
+      },
+
+      isBraveWalletAllowed_: {
+        type: Boolean,
+      },
+
+      fontsLoadedClassName: {
+        type: String
+      }
+    }
+  }
+
+  pageName = ''
+  searchPrompt = ''
+  clearLabel = ''
+  menuLabel = ''
+  menuPromo = ''
+  spinnerActive = false
+  showMenu = false
+  showMenuPromo = false
+  showSearch = true
+  narrow = false
+  narrowThreshold = 900
+  narrowQuery_: MediaQueryList | null = null
+  closeMenuPromo = ''
+  noSearch = false
+  showingSearch = false
+  showRewardsButton = true
+  isBraveWalletAllowed_ = loadTimeData.getBoolean('brToolbarShowRewardsButton')
+
+  // Localized strings:
+  // These will be loaded from `loadTimeData`
+  historyTitle = loadTimeData.getString('brToolbarHistoryTitle')
+  settingsTitle = loadTimeData.getString('brToolbarSettingsTitle')
+  bookmarksTitle = loadTimeData.getString('brToolbarBookmarksTitle')
+  downloadsTitle = loadTimeData.getString('brToolbarDownloadsTitle')
+  braveRewardsTitle = loadTimeData.getString('brToolbarRewardsTitle')
+  walletsTitle = loadTimeData.getString('brToolbarWalletsTitle')
+
+  // Settings from `loadTimeData`
+  shouldShowRewardsButton_ = loadTimeData.getBoolean('brToolbarShowRewardsButton')
+
+  // Non-observed properties
+  fontsLoadedClassName = ''
+
+  // Slotted content
+  toolbarExtraSlot: HTMLSlotElement
+  toolbarExtraElement: Element
+
+  override willUpdate(changedProperties: PropertyValues<this>) {
+    super.willUpdate(changedProperties);
+    if (changedProperties.has('narrowThreshold')) {
+      this.narrowQuery_ = window.matchMedia(`(max-width: ${this.narrowThreshold}px)`);
+      this.narrow = this.narrowQuery_.matches
+      this.narrowQuery_.addEventListener('change', () => {
+        this.narrow = this.narrowQuery_?.matches ?? false;
+      });
+    }
+  }
 
   /** @return {!CrToolbarSearchFieldElement} */
-  getSearchField: function() {
+  getSearchField() {
     return this.$.search;
-  },
+  }
 
   /** @private */
-  onMenuTap_: function() {
+  onMenuClick_() {
     this.dispatchEvent(new CustomEvent(
-      'cr-toolbar-menu-click', {bubbles: true, composed: true}))
-  },
+      'cr-toolbar-menu-click', { bubbles: true, composed: true }))
+  }
 
   focusMenuButton() {
     requestAnimationFrame(() => {
       // Wait for next animation frame in case dom-if has not applied yet and
       // added the menu button.
       const menuButton =
-          this.shadowRoot!.querySelector<HTMLElement>('#menuButton');
+        this.shadowRoot!.querySelector<HTMLElement>('#menuButton');
       if (menuButton) {
         menuButton.focus();
       }
     });
-  },
+  }
 
   /** @return {boolean} */
   isMenuFocused() {
     return !!this.shadowRoot!.activeElement &&
-        this.shadowRoot!.activeElement.id === 'menuButton';
-  },
+      this.shadowRoot!.activeElement.id === 'menuButton';
+  }
 
   /** @private */
-  noSearchChanged_: function () {
+  noSearchChanged_() {
     this.updateSearchDisplayed_()
-  },
+  }
 
   /** @private */
-  updateSearchDisplayed_: function () {
+  updateSearchDisplayed_() {
     this.$.search.hidden = this.noSearch
-  },
+  }
 
   /**
    * @param {string} title
    * @param {boolean} showMenuPromo
    * @return {string} The title if the menu promo isn't showing, else "".
    */
-  titleIfNotShowMenuPromo_: function(title, showMenuPromo) {
+  titleIfNotShowMenuPromo_(title: string, showMenuPromo: boolean) {
     return showMenuPromo ? '' : title;
-  },
+  }
 
-  getNavItemSelectedClassName: function(itemName) {
+  getNavItemSelectedClassName(itemName: string) {
     // which navigation item is the current page?
     let currentWebUIName = document.location.hostname
     // override name from hostname, if applicable
     if (customCurrentWebUINameMap[currentWebUIName])
       currentWebUIName = customCurrentWebUINameMap[currentWebUIName]
-    // does it match the item calling this function?
-    const itemWebUIName = itemName
+
     if (itemName === currentWebUIName)
       return '-selected'
     // not selected
     return ''
-  },
+  }
 
   notifyIfExtraSlotFilled() {
     const slotIsFilled = this.toolbarExtraSlot.assignedNodes().length !== 0
@@ -171,12 +341,12 @@ Polymer({
     } else {
       this.toolbarExtraElement.classList.remove(classNameFilled)
     }
-  },
+  }
 
-  initSlotFilledDetection: function() {
-    // Style the 'extra items' slot only if it containts
+  initSlotFilledDetection() {
+    // Style the 'extra items' slot only if it contains
     // content.
-    const toolbarExtraElement = this.$$('.toolbar-extra')
+    const toolbarExtraElement = this.querySelector('.toolbar-extra')
     if (!toolbarExtraElement) {
       console.error('Could not find "toolbar-extra" element')
       return
@@ -189,46 +359,18 @@ Polymer({
     this.toolbarExtraElement = toolbarExtraElement
     this.toolbarExtraSlot = toolbarExtraSlot
     this.notifyIfExtraSlotFilled()
-    toolbarExtraSlot.addEventListener('slotchange',  (e) => {
+    toolbarExtraSlot.addEventListener('slotchange', () => {
       this.notifyIfExtraSlotFilled()
     })
-  },
+  }
 
-  getLoadTimeDataBoolean: function(value: string) {
-    if (loadTimeData.data_) {
-      return loadTimeData.getBoolean(value)
-    }
-    return window.loadTimeData.getBoolean(value)
-  },
-
-  getLoadTimeDataString: function(value: string) {
-    if (loadTimeData.data_) {
-      return loadTimeData.getString(value)
-    }
-    return window.loadTimeData.getString(value)
-  },
-
-  initStrings: function() {
-    this.historyTitle = this.getLoadTimeDataString('brToolbarHistoryTitle')
-    this.settingsTitle = this.getLoadTimeDataString('brToolbarSettingsTitle')
-    this.bookmarksTitle = this.getLoadTimeDataString('brToolbarBookmarksTitle')
-    this.downloadsTitle = this.getLoadTimeDataString('brToolbarDownloadsTitle')
-    this.braveRewardsTitle = this.getLoadTimeDataString('brToolbarRewardsTitle')
-    this.walletsTitle = this.getLoadTimeDataString('brToolbarWalletsTitle')
-  },
-
-  /** @override */
-  attached: function () {
-    this.shouldShowRewardsButton_ =
-      this.getLoadTimeDataBoolean('brToolbarShowRewardsButton')
-    this.isBraveWalletAllowed_ =
-      this.getLoadTimeDataBoolean('isBraveWalletAllowed')
+  override connectedCallback() {
+    super.connectedCallback()
     this.initSlotFilledDetection()
-    this.initStrings()
     this.initFontLoadDetection()
-  },
+  }
 
-  initFontLoadDetection: async function() {
+  async initFontLoadDetection() {
     // Font detection.
     // Wait for component to render with font style.
     await new Promise(resolve => window.requestAnimationFrame(resolve))
@@ -245,9 +387,20 @@ Polymer({
       console.debug('font was loaded after a wait')
     }
     this.setFontsAreLoaded()
-  },
+  }
 
-  setFontsAreLoaded: function() {
+  setFontsAreLoaded() {
     this.fontsLoadedClassName = 'fonts-loaded'
   }
-});
+}
+
+/* declare global {
+    interface HTMLElementTagNameMap {
+        'cr-toolbar': CrToolbarElement;
+    }
+} */
+
+customElements.define(
+  CrToolbarElement.is, CrToolbarElement)
+
+

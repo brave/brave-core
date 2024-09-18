@@ -42,12 +42,13 @@ if (!is_android && !is_ios) {
     # and not //ui/webui/resources which is the default for build_cr_component.
     if (!is_android && !is_ios) {
       web_component_files = [
-        "br_elements/br_toolbar/br_toolbar.ts",
         "br_elements/br_toolbar/br_toolbar_search_field.ts",
       ]
       non_web_component_files = [
         "polymer_overriding.ts",
         "lit_overriding.ts",
+        "br_elements/br_toolbar/br_toolbar.ts",
+        "br_elements/br_toolbar/br_toolbar.html.ts",
       ]
 
       # All the cr_overrides we add should be included in the build.
