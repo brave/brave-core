@@ -10,10 +10,7 @@ declare_args() {
 
 # Parsed .env as a GN scope.
 env_config = exec_script("env_config.py",
-                         [
-                           "convert_to_json",
-                           rebase_path(env_config_file),
-                         ],
+                         [ rebase_path(env_config_file) ],
                          "json",
                          [ env_config_file ])
 

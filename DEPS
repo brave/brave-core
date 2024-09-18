@@ -64,12 +64,6 @@ hooks = [
     'action': ['python3', 'script/ios_bootstrap.py']
   },
   {
-    # The .env file is used by `gn gen`. Create it if it doesn't exist.
-    'name': 'ensure_env_config',
-    'pattern': '.',
-    'action': ['python3', 'build/env_config.py', 'create_if_not_found', '.env'],
-  },
-  {
     # Download hermetic xcode for goma
     'name': 'download_hermetic_xcode',
     'pattern': '.',

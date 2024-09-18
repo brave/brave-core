@@ -45,9 +45,14 @@ const getEnvConfig = (key, default_value = undefined) => {
 
     // Parse src/brave/.env with all included env files.
     let envConfigPath = path.join(braveCoreDir, '.env')
-    // It's okay to not have the initial `.env` file.
     if (fs.existsSync(envConfigPath)) {
       dotenvPopulateWithIncludes(envConfig, envConfigPath)
+    } else {
+      // The .env file is used by `gn gen`. Create it if it doesn't exist.
+      const defaultEnvConfigContent =
+        '# This is an .env config file for the build system.\n' +
+        '# See https://github.com/brave/brave-browser/wiki/Build-configuration\n'
+      fs.writeFileSync(envConfigPath, defaultEnvConfigContent)
     }
 
     // Convert 'true' and 'false' strings into booleans.

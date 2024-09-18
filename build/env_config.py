@@ -5,34 +5,21 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import argparse
-import inspect
 import json
 import os
 import re
 import sys
 
-ENV_CONFIG_SAMPLE = inspect.cleandoc('''
-# This is a sample .env config file for the build system.
-# See https://github.com/brave/brave-browser/wiki/Build-configuration
-''')
-
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('command',
-                        choices=['create_if_not_found', 'convert_to_json'])
-    parser.add_argument('filename', nargs='?')
+    parser.add_argument('filename')
 
     args = parser.parse_args()
 
-    if args.command == 'create_if_not_found':
-        if not os.path.exists(args.filename):
-            with open(args.filename, 'w', newline='\n') as file:
-                file.write(ENV_CONFIG_SAMPLE + '\n')
-    elif args.command == 'convert_to_json':
-        json.dump(read_env_config_as_dict(args.filename),
-                  sort_keys=True,
-                  fp=sys.stdout)
+    json.dump(read_env_config_as_dict(args.filename),
+              sort_keys=True,
+              fp=sys.stdout)
 
 
 # Regex to define an env config line with GN restrictions.
