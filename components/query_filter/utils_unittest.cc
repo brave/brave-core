@@ -99,6 +99,14 @@ TEST(BraveQueryFilter, FilterQueryTrackers) {
   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
       GURL("https://brave.com"), GURL("https://brave.com"),
       GURL("https://test.com/?gclid=123"), "GET", true));
+  // Don't filter exempted hostnames
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https://brave.com"), GURL(),
+      GURL("https://urldefense.com/v3/__https://www.portainer.io/hs/"
+           "preferences-center/en/"
+           "direct?utm_campaign=XNF&utm_source=hs_automation&_hsenc=p2&_hsmi="
+           "26__;!!MlclJBHn!0eDf-z$"),
+      "GET", false));
 }
 
 TEST(BraveQueryFilter, IsScopedTracker) {
