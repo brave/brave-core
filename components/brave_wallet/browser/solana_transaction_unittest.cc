@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/containers/extend.h"
 #include "base/test/bind.h"
 #include "base/test/gtest_util.h"
 #include "base/test/task_environment.h"
@@ -169,10 +170,9 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
       12,                                       // data length
       2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0  // data
   };
-  std::string expected_tx = base::Base64Encode(expected_bytes);
-  EXPECT_EQ(transaction.GetSignedTransaction(keyring_service(),
-                                             from_account->account_id),
-            expected_tx);
+  EXPECT_EQ(transaction.GetSignedTransactionBytes(
+                keyring_service(), from_account->account_id, nullptr),
+            expected_bytes);
 
   // Test three signers where one is fee payer and two signatures are from
   // sign_transaction_param. Create two transactions where signer accounts
@@ -208,11 +208,11 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   std::vector<uint8_t> test_sig1(64, 1);
   std::vector<uint8_t> test_sig2(64, 2);
   sign_tx_param->signatures.push_back(
-      mojom::SignaturePubkeyPair::New(std::nullopt, kFromAccount));
-  sign_tx_param->signatures.push_back(
-      mojom::SignaturePubkeyPair::New(test_sig1, kToAccount));
-  sign_tx_param->signatures.push_back(
-      mojom::SignaturePubkeyPair::New(test_sig2, kTestAccount));
+      mojom::SignaturePubkeyPair::New(nullptr, kFromAccount));
+  sign_tx_param->signatures.push_back(mojom::SignaturePubkeyPair::New(
+      mojom::SolanaSignature::New(test_sig1), kToAccount));
+  sign_tx_param->signatures.push_back(mojom::SignaturePubkeyPair::New(
+      mojom::SolanaSignature::New(test_sig2), kTestAccount));
   transaction2.set_sign_tx_param(sign_tx_param.Clone());
 
   // Should have 3 signatures, 1 from signing the passed in serialized msg
@@ -233,19 +233,18 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
                         test_sig1.end());
   expected_bytes.insert(expected_bytes.end(), message_bytes.begin(),
                         message_bytes.end());
-  expected_tx = base::Base64Encode(expected_bytes);
-  EXPECT_EQ(transaction2.GetSignedTransaction(keyring_service(),
-                                              from_account->account_id),
-            expected_tx);
+  EXPECT_EQ(transaction2.GetSignedTransactionBytes(
+                keyring_service(), from_account->account_id, nullptr),
+            expected_bytes);
 
   // Test when there are redundant signatures not in signers, we will only use
   // those in signers.
   sign_tx_param->signatures.push_back(mojom::SignaturePubkeyPair::New(
-      std::vector<uint8_t>({64, 3}), kTestAccount2));
+      mojom::SolanaSignature::New(std::vector<uint8_t>(64, 3)), kTestAccount2));
   transaction2.set_sign_tx_param(sign_tx_param.Clone());
-  EXPECT_EQ(transaction2.GetSignedTransaction(keyring_service(),
-                                              from_account->account_id),
-            expected_tx);
+  EXPECT_EQ(transaction2.GetSignedTransactionBytes(
+                keyring_service(), from_account->account_id, nullptr),
+            expected_bytes);
 
   // Test when num of signatures available is less than signers.size in message,
   // the # of signature should still be the same to signers.size and unavaliable
@@ -260,14 +259,9 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   expected_bytes.insert(expected_bytes.end(), kSolanaSignatureSize * 2, 0);
   expected_bytes.insert(expected_bytes.end(), message_bytes.begin(),
                         message_bytes.end());
-  EXPECT_EQ(transaction2.GetSignedTransaction(keyring_service(),
-                                              from_account->account_id),
-            base::Base64Encode(expected_bytes));
-
-  // Test key_service is nullptr.
-  EXPECT_TRUE(
-      transaction2.GetSignedTransaction(nullptr, from_account->account_id)
-          .empty());
+  EXPECT_EQ(transaction2.GetSignedTransactionBytes(
+                keyring_service(), from_account->account_id, nullptr),
+            expected_bytes);
 
   std::vector<uint8_t> oversized_data(1232, 1);
   instruction = SolanaInstruction(
@@ -281,10 +275,8 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
       kRecentBlockhash, last_valid_block_height, kFromAccount, {instruction});
   ASSERT_TRUE(msg4);
   SolanaTransaction transaction4 = SolanaTransaction(std::move(*msg4));
-  EXPECT_TRUE(
-      transaction4
-          .GetSignedTransaction(keyring_service(), from_account->account_id)
-          .empty());
+  EXPECT_FALSE(transaction4.GetSignedTransactionBytes(
+      keyring_service(), from_account->account_id, nullptr));
 }
 
 TEST_F(SolanaTransactionUnitTest, FromSignedTransactionBytes) {
@@ -432,9 +424,11 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
   auto sign_tx_param = mojom::SolanaSignTransactionParam::New();
   sign_tx_param->encoded_serialized_msg = "encoded_serialized_message";
   sign_tx_param->signatures.push_back(
-      mojom::SignaturePubkeyPair::New(std::nullopt, "public_key1"));
+      mojom::SignaturePubkeyPair::New(nullptr, "public_key1"));
   sign_tx_param->signatures.push_back(mojom::SignaturePubkeyPair::New(
-      std::vector<uint8_t>(kSolanaSignatureSize, 1), "public_key2"));
+      mojom::SolanaSignature::New(
+          std::vector<uint8_t>(kSolanaSignatureSize, 1)),
+      "public_key2"));
   transaction.set_sign_tx_param(sign_tx_param->Clone());
 
   auto solana_tx_data = transaction.ToSolanaTxData();
@@ -538,9 +532,9 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
   auto sign_tx_param = mojom::SolanaSignTransactionParam::New();
   sign_tx_param->encoded_serialized_msg = "encoded_serialized_message";
   sign_tx_param->signatures.push_back(
-      mojom::SignaturePubkeyPair::New(std::nullopt, "public_key1"));
+      mojom::SignaturePubkeyPair::New(nullptr, "public_key1"));
   sign_tx_param->signatures.push_back(mojom::SignaturePubkeyPair::New(
-      std::vector<uint8_t>(2, 1), "public_key2"));
+      mojom::SolanaSignature::New(std::vector<uint8_t>(2, 1)), "public_key2"));
   transaction.set_sign_tx_param(sign_tx_param->Clone());
 
   auto fee_estimation = mojom::SolanaFeeEstimation::New();
@@ -819,15 +813,14 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
   SetSelectedAccount(selected_dapp_account->account_id);
 
   // Empty message is invalid
-  std::vector<uint8_t> signature_bytes;
-  std::string signature =
+  auto signature_bytes = mojom::SolanaSignature::New(*Base58Decode(
       "fJaHU9cDUoLsWLXJSPTgW3bAkhuZL319v2479igQtSp1ZyBjPi923jWkALg48uS75z5fp1JK"
-      "1T4vdWi2D35fFEj";
-  EXPECT_TRUE(Base58Decode(signature, &signature_bytes, kSolanaSignatureSize));
+      "1T4vdWi2D35fFEj",
+      kSolanaSignatureSize));
   SolanaTransaction transaction(mojom::SolanaMessageVersion::kLegacy, "", 0, "",
                                 SolanaMessageHeader(), {}, {}, {});
   EXPECT_EQ(transaction.GetSignedTransactionBytes(
-                keyring_service(), from_account->account_id, &signature_bytes),
+                keyring_service(), from_account->account_id, signature_bytes),
             std::nullopt);
 
   // Valid
@@ -842,15 +835,14 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
   ASSERT_TRUE(message);
   SolanaTransaction transaction2(std::move(*message));
   EXPECT_NE(transaction2.GetSignedTransactionBytes(
-                keyring_service(), from_account->account_id, &signature_bytes),
+                keyring_service(), from_account->account_id, signature_bytes),
             std::nullopt);
 
   // Empty signature is invalid
-  std::vector<uint8_t> empty_signature_bytes;
-  EXPECT_EQ(
-      transaction2.GetSignedTransactionBytes(
-          keyring_service(), from_account->account_id, &empty_signature_bytes),
-      std::nullopt);
+  EXPECT_EQ(transaction2.GetSignedTransactionBytes(
+                keyring_service(), from_account->account_id,
+                mojom::SolanaSignature::New()),
+            std::nullopt);
 
   // Test empty signature will be appended for non-selected-account signers.
   SolanaInstruction instruction_three_signers(
@@ -866,43 +858,36 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
   SolanaTransaction transaction3(std::move(*message));
   std::vector<mojom::SignaturePubkeyPairPtr> sig_key_pairs;
   sig_key_pairs.emplace_back(
-      mojom::SignaturePubkeyPair::New(std::nullopt, kFromAccount));
+      mojom::SignaturePubkeyPair::New(nullptr, kFromAccount));
   sig_key_pairs.emplace_back(
-      mojom::SignaturePubkeyPair::New(std::nullopt, kTestAccount2));
+      mojom::SignaturePubkeyPair::New(nullptr, kTestAccount2));
   sig_key_pairs.emplace_back(
-      mojom::SignaturePubkeyPair::New(signature_bytes, kToAccount));
-  auto seriazlied_msg = transaction3.message()->Serialize(nullptr);
-  ASSERT_TRUE(seriazlied_msg);
+      mojom::SignaturePubkeyPair::New(signature_bytes.Clone(), kToAccount));
+  auto serialized_msg = transaction3.message()->Serialize(nullptr);
+  ASSERT_TRUE(serialized_msg);
   transaction3.set_sign_tx_param(mojom::SolanaSignTransactionParam::New(
-      Base58Encode(*seriazlied_msg), std::move(sig_key_pairs)));
+      Base58Encode(*serialized_msg), std::move(sig_key_pairs)));
   auto signed_tx_bytes = transaction3.GetSignedTransactionBytes(
-      keyring_service(), from_account->account_id, &signature_bytes);
+      keyring_service(), from_account->account_id, signature_bytes);
   ASSERT_TRUE(signed_tx_bytes);
   std::vector<uint8_t> expect_signed_tx_bytes = {3};
-  expect_signed_tx_bytes.insert(expect_signed_tx_bytes.end(),
-                                signature_bytes.begin(), signature_bytes.end());
-  expect_signed_tx_bytes.insert(expect_signed_tx_bytes.end(),
-                                kSolanaSignatureSize, 0);
-  expect_signed_tx_bytes.insert(expect_signed_tx_bytes.end(),
-                                signature_bytes.begin(), signature_bytes.end());
-  expect_signed_tx_bytes.insert(expect_signed_tx_bytes.end(),
-                                seriazlied_msg->begin(), seriazlied_msg->end());
+  base::Extend(expect_signed_tx_bytes, signature_bytes->bytes);
+  base::Extend(expect_signed_tx_bytes,
+               std::vector<uint8_t>(kSolanaSignatureSize, 0));
+  base::Extend(expect_signed_tx_bytes, signature_bytes->bytes);
+  base::Extend(expect_signed_tx_bytes, *serialized_msg);
   EXPECT_EQ(*signed_tx_bytes, expect_signed_tx_bytes);
 
   transaction3.set_sign_tx_param(nullptr);
   std::vector<uint8_t> expect_signed_tx_bytes2 = {3};
-  expect_signed_tx_bytes2.insert(expect_signed_tx_bytes2.end(),
-                                 signature_bytes.begin(),
-                                 signature_bytes.end());
-  expect_signed_tx_bytes2.insert(expect_signed_tx_bytes2.end(),
-                                 kSolanaSignatureSize * 2, 0);
-  expect_signed_tx_bytes2.insert(expect_signed_tx_bytes2.end(),
-                                 seriazlied_msg->begin(),
-                                 seriazlied_msg->end());
+  base::Extend(expect_signed_tx_bytes2, signature_bytes->bytes);
+  base::Extend(expect_signed_tx_bytes2,
+               std::vector<uint8_t>(kSolanaSignatureSize * 2, 0));
+  base::Extend(expect_signed_tx_bytes2, *serialized_msg);
   EXPECT_EQ(
       transaction3
           .GetSignedTransactionBytes(keyring_service(),
-                                     from_account->account_id, &signature_bytes)
+                                     from_account->account_id, signature_bytes)
           .value(),
       expect_signed_tx_bytes2);
 
@@ -918,19 +903,19 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
   SolanaTransaction transaction4(std::move(*message));
   std::vector<uint8_t> passed_sig_bytes(kSolanaSignatureSize, 1);
   sig_key_pairs.clear();
+  sig_key_pairs.emplace_back(mojom::SignaturePubkeyPair::New(
+      mojom::SolanaSignature::New(passed_sig_bytes), kTestAccount));
   sig_key_pairs.emplace_back(
-      mojom::SignaturePubkeyPair::New(passed_sig_bytes, kTestAccount));
-  sig_key_pairs.emplace_back(
-      mojom::SignaturePubkeyPair::New(std::nullopt, kFromAccount));
-  seriazlied_msg = transaction4.message()->Serialize(nullptr);
-  ASSERT_TRUE(seriazlied_msg);
+      mojom::SignaturePubkeyPair::New(nullptr, kFromAccount));
+  serialized_msg = transaction4.message()->Serialize(nullptr);
+  ASSERT_TRUE(serialized_msg);
   transaction4.set_sign_tx_param(mojom::SolanaSignTransactionParam::New(
-      Base58Encode(*seriazlied_msg), std::move(sig_key_pairs)));
+      Base58Encode(*serialized_msg), std::move(sig_key_pairs)));
 
   expect_signed_tx_bytes = {2};  // 2 signatures
   std::vector<uint8_t> selected_account_sig =
       keyring_service()->SignMessageBySolanaKeyring(from_account->account_id,
-                                                    *seriazlied_msg);
+                                                    *serialized_msg);
   expect_signed_tx_bytes.insert(expect_signed_tx_bytes.end(),
                                 passed_sig_bytes.begin(),
                                 passed_sig_bytes.end());
@@ -938,9 +923,9 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
                                 selected_account_sig.begin(),
                                 selected_account_sig.end());
   expect_signed_tx_bytes.insert(expect_signed_tx_bytes.end(),
-                                seriazlied_msg->begin(), seriazlied_msg->end());
+                                serialized_msg->begin(), serialized_msg->end());
   auto result = transaction4.GetSignedTransactionBytes(
-      keyring_service(), from_account->account_id);
+      keyring_service(), from_account->account_id, nullptr);
   ASSERT_TRUE(result);
   EXPECT_EQ(*result, expect_signed_tx_bytes);
 }
@@ -958,17 +943,21 @@ TEST_F(SolanaTransactionUnitTest, IsPartialSigned) {
   EXPECT_FALSE(tx.IsPartialSigned());
 
   param->signatures.emplace_back(
-      mojom::SignaturePubkeyPair::New(std::nullopt, kFromAccount));
+      mojom::SignaturePubkeyPair::New(nullptr, kFromAccount));
   tx.set_sign_tx_param(param.Clone());
   EXPECT_FALSE(tx.IsPartialSigned());
 
   param->signatures.emplace_back(mojom::SignaturePubkeyPair::New(
-      std::vector<uint8_t>(kSolanaSignatureSize, 0), kFromAccount));
+      mojom::SolanaSignature::New(
+          std::vector<uint8_t>(kSolanaSignatureSize, 0)),
+      kFromAccount));
   tx.set_sign_tx_param(param.Clone());
   EXPECT_FALSE(tx.IsPartialSigned());
 
   param->signatures.emplace_back(mojom::SignaturePubkeyPair::New(
-      std::vector<uint8_t>(kSolanaSignatureSize, 1), kFromAccount));
+      mojom::SolanaSignature::New(
+          std::vector<uint8_t>(kSolanaSignatureSize, 1)),
+      kFromAccount));
   tx.set_sign_tx_param(param.Clone());
   EXPECT_TRUE(tx.IsPartialSigned());
 }

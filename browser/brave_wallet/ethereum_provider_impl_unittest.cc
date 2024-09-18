@@ -491,14 +491,15 @@ class EthereumProviderImplUnitTest : public testing::Test {
         domain.c_str(), account.c_str(), uri.c_str(), network.c_str());
   }
 
-  void SignMessageHardware(bool user_approved,
-                           const std::string& address,
-                           const std::string& message,
-                           const std::string& hardware_signature,
-                           const std::string& error_in,
-                           std::string* signature_out,
-                           mojom::ProviderError* error_out,
-                           std::string* error_message_out) {
+  void SignMessageHardware(
+      bool user_approved,
+      const std::string& address,
+      const std::string& message,
+      const mojom::EthereumSignatureBytesPtr& hardware_signature,
+      const std::string& error_in,
+      mojom::EthereumSignatureBytesPtr* signature_out,
+      mojom::ProviderError* error_out,
+      std::string* error_message_out) {
     if (!signature_out || !error_out || !error_message_out) {
       return;
     }
@@ -510,9 +511,10 @@ class EthereumProviderImplUnitTest : public testing::Test {
             [&](base::Value id, base::Value formed_response, const bool reject,
                 const std::string& first_allowed_account,
                 const bool update_bind_js_properties) {
-              signature_out->clear();
+              signature_out->reset();
               if (formed_response.type() == base::Value::Type::STRING) {
-                *signature_out = formed_response.GetString();
+                *signature_out = mojom::EthereumSignatureBytes::New(
+                    *PrefixedHexStringToBytes(formed_response.GetString()));
               }
               GetErrorCodeMessage(std::move(formed_response), error_out,
                                   error_message_out);
@@ -523,7 +525,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     browser_task_environment_.RunUntilIdle();
     brave_wallet_service_->NotifySignMessageRequestProcessed(
         user_approved, brave_wallet_service_->sign_message_id_ - 1,
-        mojom::ByteArrayStringUnion::NewStr(hardware_signature), error_in);
+        hardware_signature.Clone(), error_in);
     run_loop.Run();
   }
 
@@ -716,12 +718,11 @@ class EthereumProviderImplUnitTest : public testing::Test {
     return result;
   }
 
-  mojom::TransactionInfoPtr GetTransactionInfo(const std::string& chain_id,
-                                               const std::string& meta_id) {
+  mojom::TransactionInfoPtr GetTransactionInfo(const std::string& meta_id) {
     mojom::TransactionInfoPtr transaction_info;
     base::RunLoop run_loop;
     tx_service()->GetTransactionInfo(
-        mojom::CoinType::ETH, chain_id, meta_id,
+        mojom::CoinType::ETH, meta_id,
         base::BindLambdaForTesting([&](mojom::TransactionInfoPtr v) {
           transaction_info = std::move(v);
           run_loop.Quit();
@@ -1101,10 +1102,10 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
   EXPECT_EQ(infos[0]->chain_id, chain_id);
 
-  EXPECT_EQ(*GetTransactionInfo(chain_id, infos[0]->id), *infos[0]);
-  EXPECT_TRUE(GetTransactionInfo(chain_id, "unknown_id").is_null());
+  EXPECT_EQ(*GetTransactionInfo(infos[0]->id), *infos[0]);
+  EXPECT_TRUE(GetTransactionInfo("unknown_id").is_null());
 
-  // Set an interceptor and just fake a common repsonse for
+  // Set an interceptor and just fake a common response for
   // eth_getTransactionCount and eth_sendRawTransaction
   SetInterceptor("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0\"}");
 
@@ -1259,7 +1260,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559Transaction) {
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
   EXPECT_EQ(infos[0]->chain_id, chain_id);
 
-  // Set an interceptor and just fake a common repsonse for
+  // Set an interceptor and just fake a common response for
   // eth_getTransactionCount and eth_sendRawTransaction
   SetInterceptor("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0\"}");
 
@@ -1997,7 +1998,7 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
   keyring_service()->Lock();
 
   // nullopt for the first param here because we don't AddSignMessageRequest
-  // whent here are no accounts returned.
+  // when here are no accounts returned.
   SignTypedMessage(std::nullopt, address_0, "{...}", domain_hash, primary_hash,
                    domain.Clone(), nullptr, &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
@@ -2573,8 +2574,10 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageHardware) {
   CreateWallet();
   std::string address = "0xA99D71De40D67394eBe68e4D0265cA6C9D421029";
   auto added_hw_account = AddHardwareAccount(address);
-  std::string signature;
-  std::string expected_signature = "0xExpectedSignature";
+  mojom::EthereumSignatureBytesPtr signature;
+  const mojom::EthereumSignatureBytesPtr expected_signature =
+      mojom::EthereumSignatureBytes::New(
+          std::vector<uint8_t>{1, 2, 3, 4, 5, 6});
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
   GURL url("https://brave.com");
@@ -2584,7 +2587,6 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageHardware) {
   // success
   SignMessageHardware(true, address, "0x1234", expected_signature, "",
                       &signature, &error, &error_message);
-  EXPECT_FALSE(signature.empty());
   EXPECT_EQ(signature, expected_signature);
   EXPECT_EQ(error, mojom::ProviderError::kSuccess);
   EXPECT_TRUE(error_message.empty());
@@ -2593,14 +2595,12 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageHardware) {
   std::string expected_error = "error text";
   SignMessageHardware(false, address, "0x1234", expected_signature,
                       expected_error, &signature, &error, &error_message);
-  EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInternalError);
   EXPECT_EQ(error_message, expected_error);
 
   // user rejected request
   SignMessageHardware(false, address, "0x1234", expected_signature, "",
                       &signature, &error, &error_message);
-  EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));

@@ -17,7 +17,6 @@ export interface Unsuccessful {
 
 export interface Success<T> {
   success: true
-  id: number
   payload: T
 }
 
@@ -70,24 +69,6 @@ export interface CommonParams {
   useCardanoDerivation?: boolean
 }
 
-export interface HDNodeResponse {
-  path: number[]
-  serializedPath: string
-  childNum: number
-  xpub: string
-  xpubSegwit?: string
-  chainCode: string
-  publicKey: string
-  fingerprint: number
-  depth: number
-}
-
-export interface EthereumSignedTx {
-  v: string
-  r: string
-  s: string
-}
-
 export interface EthereumSignMessage {
   path: string | number[]
   message: string
@@ -100,11 +81,6 @@ export interface EthereumSignTypedHash {
   message_hash: string
   metamask_v4_compat: boolean
   data: EthereumSignTypedDataMessage<EthereumSignTypedDataTypes>
-}
-
-export type MessageSignature = {
-  address: string
-  signature: string
 }
 
 export interface EthereumSignTypedDataTypeProperty {

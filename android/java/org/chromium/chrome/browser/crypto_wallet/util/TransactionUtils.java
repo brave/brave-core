@@ -12,8 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.SignAllTransactionsRequest;
-import org.chromium.brave_wallet.mojom.SignTransactionRequest;
+import org.chromium.brave_wallet.mojom.SignSolTransactionsRequest;
 import org.chromium.brave_wallet.mojom.SolanaSystemInstruction;
 import org.chromium.brave_wallet.mojom.SolanaTokenInstruction;
 import org.chromium.brave_wallet.mojom.SolanaTxData;
@@ -125,15 +124,10 @@ public class TransactionUtils {
         }
     }
 
-    public static SolanaTxData safeSolData(SignTransactionRequest request) {
-        return safeSolData(request.txData);
-    }
-
-    public static List<SolanaTxData> safeSolData(SignAllTransactionsRequest request) {
+    public static List<SolanaTxData> safeSolData(SignSolTransactionsRequest request) {
         if (request == null || request.txDatas == null) return Collections.emptyList();
         List<SolanaTxData> txDatas = new ArrayList<>();
-        for (TxDataUnion txDataUnion : request.txDatas) {
-            SolanaTxData txData = safeSolData(txDataUnion);
+        for (SolanaTxData txData : request.txDatas) {
             if (txData != null) {
                 txDatas.add(txData);
             }

@@ -75,8 +75,7 @@ KeyedService* SimulationServiceFactory::BuildServiceInstanceFor(
 
   return new SimulationService(
       shared_url_loader_factory,
-      BraveWalletServiceFactory::GetServiceForContext(context)
-          ->json_rpc_service());
+      BraveWalletServiceFactory::GetServiceForContext(context));
 }
 
 content::BrowserContext* SimulationServiceFactory::GetBrowserContextToUse(

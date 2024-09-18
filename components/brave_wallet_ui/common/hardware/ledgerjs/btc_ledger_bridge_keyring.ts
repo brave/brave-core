@@ -8,15 +8,13 @@ import {
   AccountFromDevice,
   HardwareImportScheme,
   DerivationSchemes,
-  GetAccountsHardwareOperationResult
+  HardwareOperationResultAccounts
 } from '../types'
 import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import {
   LedgerCommand,
   LedgerBridgeErrorCodes,
-  LedgerError,
-  BtcGetAccountResponse,
-  BtcGetAccountResponsePayload
+  BtcGetAccountResponse
 } from './ledger-messages'
 
 import LedgerBridgeKeyring from './ledger_bridge_keyring'
@@ -37,7 +35,7 @@ export default class BitcoinLedgerBridgeKeyring
     from: number,
     count: number,
     scheme: HardwareImportScheme
-  ): Promise<GetAccountsHardwareOperationResult> => {
+  ): Promise<HardwareOperationResultAccounts> => {
     const result = await this.unlock()
     if (!result.success) {
       return result
@@ -52,7 +50,7 @@ export default class BitcoinLedgerBridgeKeyring
   private readonly getAccountsFromDevice = async (
     paths: string[],
     scheme: HardwareImportScheme
-  ): Promise<GetAccountsHardwareOperationResult> => {
+  ): Promise<HardwareOperationResultAccounts> => {
     let accounts: AccountFromDevice[] = []
     for (const path of paths) {
       const data = await this.sendCommand<BtcGetAccountResponse>({
@@ -73,20 +71,14 @@ export default class BitcoinLedgerBridgeKeyring
       }
 
       if (!data.payload.success) {
-        const ledgerError = data.payload as LedgerError
-        return {
-          success: false,
-          error: ledgerError,
-          code: ledgerError.statusCode
-        }
+        return { ...data.payload }
       }
-      const responsePayload = data.payload as BtcGetAccountResponsePayload
 
       accounts.push({
-        address: responsePayload.xpub,
+        address: data.payload.xpub,
         derivationPath: path
       })
     }
-    return { success: true, payload: accounts }
+    return { success: true, accounts: accounts }
   }
 }

@@ -5,25 +5,7 @@
 
 import { BraveWallet } from '../../constants/types'
 
-export type AccountPayloadType = {
-  selectedAccounts: BraveWallet.AccountInfo[]
-}
-
 export type ShowConnectToSitePayload = {
   accounts: string[]
   originInfo: BraveWallet.OriginInfo
-}
-
-export type SignMessageProcessedPayload = {
-  approved: boolean
-  id: number
-  signature?: BraveWallet.ByteArrayStringUnion
-  error?: string
-}
-
-export type SignAllTransactionsProcessedPayload = {
-  approved: boolean
-  id: number
-  signatures?: BraveWallet.ByteArrayStringUnion[]
-  error?: string
 }

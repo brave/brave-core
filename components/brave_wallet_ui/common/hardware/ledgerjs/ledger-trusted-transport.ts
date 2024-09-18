@@ -39,10 +39,10 @@ export class LedgerTrustedMessagingTransport extends LedgerMessagingTransport {
     }
 
     return {
-      id: command.id,
-      command: command.command,
-      payload: { success: true },
-      origin: command.origin
+      ...command,
+      payload: {
+        success: true
+      }
     }
   }
 }

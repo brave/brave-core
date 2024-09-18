@@ -5,7 +5,7 @@
 
 import { BridgeType } from '../untrusted_shared_types'
 import { getLocale } from '../../../../common/locale'
-import { HardwareOperationResult } from '../types'
+import { HardwareOperationError, HardwareOperationResult } from '../types'
 import {
   LEDGER_BRIDGE_URL,
   LedgerCommand,
@@ -57,8 +57,11 @@ export default class LedgerBridgeKeyring {
     ) {
       return this.createErrorFromCode(data)
     }
+    if (!data.payload.success) {
+      return { ...data.payload }
+    }
 
-    return data.payload
+    return { success: true }
   }
 
   sendCommand = async <T>(
@@ -103,7 +106,7 @@ export default class LedgerBridgeKeyring {
 
   protected readonly createErrorFromCode = (
     code: LedgerBridgeErrorCodes
-  ): HardwareOperationResult => {
+  ): HardwareOperationError => {
     const deviceName = getLocale('braveWalletConnectHardwareLedger')
 
     switch (code) {

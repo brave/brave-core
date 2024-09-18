@@ -224,12 +224,6 @@ void ZCashTxManager::RetryTransaction(const std::string& tx_meta_id,
   NOTIMPLEMENTED() << "Zcash transaction retry is not supported";
 }
 
-void ZCashTxManager::GetTransactionMessageToSign(
-    const std::string& tx_meta_id,
-    GetTransactionMessageToSignCallback callback) {
-  NOTIMPLEMENTED() << "Zcash hardware signing is not supported";
-}
-
 ZCashTxStateManager* ZCashTxManager::GetZCashTxStateManager() {
   return static_cast<ZCashTxStateManager*>(tx_state_manager_.get());
 }

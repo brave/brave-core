@@ -9,18 +9,15 @@ import {
   AccountFromDevice,
   HardwareImportScheme,
   DerivationSchemes,
-  GetAccountsHardwareOperationResult,
-  SignHardwareOperationResult
+  HardwareOperationResultAccounts,
+  HardwareOperationResultSolanaSignature
 } from '../types'
 import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import {
   LedgerCommand,
   LedgerBridgeErrorCodes,
-  LedgerError,
   SolGetAccountResponse,
-  SolGetAccountResponsePayload,
-  SolSignTransactionResponse,
-  SolSignTransactionResponsePayload
+  SolSignTransactionResponse
 } from './ledger-messages'
 
 import LedgerBridgeKeyring from './ledger_bridge_keyring'
@@ -41,7 +38,7 @@ export default class SolanaLedgerBridgeKeyring
     from: number,
     count: number,
     scheme: HardwareImportScheme
-  ): Promise<GetAccountsHardwareOperationResult> => {
+  ): Promise<HardwareOperationResultAccounts> => {
     const result = await this.unlock()
     if (!result.success) {
       return result
@@ -61,7 +58,7 @@ export default class SolanaLedgerBridgeKeyring
   signTransaction = async (
     path: string,
     rawTxBytes: Buffer
-  ): Promise<SignHardwareOperationResult> => {
+  ): Promise<HardwareOperationResultSolanaSignature> => {
     const result = await this.unlock()
     if (!result.success) {
       return result
@@ -81,25 +78,18 @@ export default class SolanaLedgerBridgeKeyring
       return this.createErrorFromCode(data)
     }
     if (!data.payload.success) {
-      // TODO Either pass data.payload (LedgerError) or data.payload.message
-      // (LedgerError.message) consistently here and in getAccountsFromDevice.
-      // Currently we pass the entire LedgerError up to UI only for getAccounts
-      // to make statusCode available, but don't do the same here for
-      // signTransaction.
-      const ledgerError = data.payload as LedgerError
-      return {
-        success: false,
-        error: ledgerError.message,
-        code: ledgerError.statusCode
-      }
+      return { ...data.payload }
     }
-    const responsePayload = data.payload as SolSignTransactionResponsePayload
-    return { success: true, payload: responsePayload.signature }
+    return {
+      success: true,
+      // TODO(apaymyshev): should have trusted->untrusted checks?
+      signature: { bytes: [...data.payload.untrustedSignatureBytes] }
+    }
   }
 
   private readonly getAccountsFromDevice = async (
     paths: string[]
-  ): Promise<GetAccountsHardwareOperationResult> => {
+  ): Promise<HardwareOperationResultAccounts> => {
     let accounts: AccountFromDevice[] = []
 
     for (const path of paths) {
@@ -117,20 +107,16 @@ export default class SolanaLedgerBridgeKeyring
       }
 
       if (!data.payload.success) {
-        const ledgerError = data.payload as LedgerError
-        return {
-          success: false,
-          error: ledgerError,
-          code: ledgerError.statusCode
-        }
+        return { ...data.payload }
       }
-      const responsePayload = data.payload as SolGetAccountResponsePayload
-
       accounts.push({
-        address: bs58.encode(responsePayload.address),
+        address: bs58.encode(data.payload.address),
         derivationPath: path
       })
     }
-    return { success: true, payload: accounts }
+    return {
+      success: true,
+      accounts: accounts
+    }
   }
 }

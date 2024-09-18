@@ -2,36 +2,20 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import {
-  BraveWallet,
-  HardwareWalletResponseCodeType
-} from '../../constants/types'
-import {
-  EthereumSignedTx,
-  FilSignedLotusMessage,
-  LedgerError
-} from './ledgerjs/ledger-messages'
+import { BraveWallet } from '../../constants/types'
+import { Untrusted } from './untrusted_shared_types'
 
-export interface SignHardwareTransactionType {
-  success: boolean
-  error?: string
-  deviceError?: HardwareWalletResponseCodeType
-}
-export interface SignatureVRS {
-  v: number
-  r: string
-  s: string
+export interface HardwareOperationError {
+  success: false
+  error: string
+  code: string | number | undefined
 }
 
-export type HardwareOperationResult = {
-  success: boolean
-  error?: string | LedgerError
-  code?: string | number
-}
+export type HardwareOperationSuccess<T extends object> = { success: true } & T
 
-export type SignHardwareOperationResult = HardwareOperationResult & {
-  payload?: EthereumSignedTx | FilSignedLotusMessage | Buffer | string
-}
+export type HardwareOperationResult<T extends object = {}> =
+  | HardwareOperationSuccess<T>
+  | HardwareOperationError
 
 export const DerivationSchemes = {
   EthLedgerLive: 'EthLedgerLive',
@@ -190,9 +174,23 @@ export const AllHardwareImportSchemes: HardwareImportScheme[] = [
   EthTrezorDefaultHardwareImportScheme
 ]
 
-export type GetAccountsHardwareOperationResult = HardwareOperationResult & {
-  payload?: AccountFromDevice[]
-}
+export type HardwareOperationResultAccounts = HardwareOperationResult<{
+  accounts: AccountFromDevice[]
+}>
+
+export type HardwareOperationResultEthereumSignatureVRS =
+  HardwareOperationResult<{ signature: BraveWallet.EthereumSignatureVRS }>
+
+export type HardwareOperationResultEthereumSignatureBytes =
+  HardwareOperationResult<{ signature: BraveWallet.EthereumSignatureBytes }>
+
+export type HardwareOperationResultSolanaSignature = HardwareOperationResult<{
+  signature: BraveWallet.SolanaSignature
+}>
+
+export type HardwareOperationResultFilecoinSignature = HardwareOperationResult<{
+  signature: BraveWallet.FilecoinSignature
+}>
 
 // Batch size of accounts imported from the device in one step.
 export const DerivationBatchSize = 5
@@ -207,4 +205,23 @@ export interface FetchHardwareWalletAccountsProps {
 export interface AccountFromDevice {
   address: string
   derivationPath: string
+}
+
+// TODO(apaymyshev): needs some simple checks
+export function fromUntrustedEthereumSignatureVRS(
+  untrusted: Untrusted.EthereumSignatureVRS
+): BraveWallet.EthereumSignatureVRS | undefined {
+  return {
+    vBytes: [...untrusted.vBytes],
+    rBytes: [...untrusted.rBytes],
+    sBytes: [...untrusted.sBytes]
+  }
+}
+
+export function fromUntrustedEthereumSignatureBytes(
+  untrusted: Untrusted.EthereumSignatureBytes
+): BraveWallet.EthereumSignatureBytes | undefined {
+  return {
+    bytes: [...untrusted.bytes]
+  }
 }

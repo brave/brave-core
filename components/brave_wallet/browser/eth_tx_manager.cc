@@ -438,24 +438,23 @@ void EthTxManager::GetNonceForHardwareTransaction(
   }
 }
 
-void EthTxManager::GetTransactionMessageToSign(
+void EthTxManager::GetEthTransactionMessageToSign(
     const std::string& tx_meta_id,
-    GetTransactionMessageToSignCallback callback) {
+    GetEthTransactionMessageToSignCallback callback) {
   std::unique_ptr<EthTxMeta> meta =
       GetEthTxStateManager()->GetEthTx(tx_meta_id);
   if (!meta) {
     VLOG(1) << __FUNCTION__ << "No transaction found with id:" << tx_meta_id;
-    std::move(callback).Run(nullptr);
+    std::move(callback).Run(std::nullopt);
     return;
   }
   uint256_t chain_id = 0;
   if (!HexValueToUint256(meta->chain_id(), &chain_id)) {
-    std::move(callback).Run(nullptr);
+    std::move(callback).Run(std::nullopt);
     return;
   }
-  auto message = meta->tx()->GetMessageToSign(chain_id, false);
-  auto encoded = brave_wallet::ToHex(message);
-  std::move(callback).Run(mojom::MessageToSignUnion::NewMessageStr(encoded));
+  std::move(callback).Run(base::ToLowerASCII(
+      base::HexEncode(meta->tx()->GetMessageToSign(chain_id, false))));
 }
 
 mojom::CoinType EthTxManager::GetCoinType() const {
@@ -483,12 +482,10 @@ void EthTxManager::OnGetNextNonceForHardware(
   std::move(callback).Run(Uint256ValueToHex(nonce));
 }
 
-void EthTxManager::ProcessHardwareSignature(
+void EthTxManager::ProcessEthHardwareSignature(
     const std::string& tx_meta_id,
-    const std::string& v,
-    const std::string& r,
-    const std::string& s,
-    ProcessHardwareSignatureCallback callback) {
+    mojom::EthereumSignatureVRSPtr hw_signature,
+    ProcessEthHardwareSignatureCallback callback) {
   std::unique_ptr<EthTxMeta> meta =
       GetEthTxStateManager()->GetEthTx(tx_meta_id);
   if (!meta) {
@@ -498,7 +495,8 @@ void EthTxManager::ProcessHardwareSignature(
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
     return;
   }
-  if (!meta->tx()->ProcessVRS(v, r, s)) {
+  if (!meta->tx()->ProcessVRS(hw_signature->v_bytes, hw_signature->r_bytes,
+                              hw_signature->s_bytes)) {
     VLOG(1) << __FUNCTION__
             << "Could not initialize a transaction with v,r,s for id:"
             << tx_meta_id;
@@ -528,7 +526,7 @@ void EthTxManager::ProcessHardwareSignature(
 }
 
 void EthTxManager::ContinueProcessHardwareSignature(
-    ProcessHardwareSignatureCallback callback,
+    ProcessEthHardwareSignatureCallback callback,
     bool status,
     mojom::ProviderErrorUnionPtr error_union,
     const std::string& error_message) {

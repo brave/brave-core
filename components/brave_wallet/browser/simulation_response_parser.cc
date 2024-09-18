@@ -776,8 +776,11 @@ mojom::BlowfishSolanaDiffPtr ParseDiff(
     const simulation_responses::SolanaDiff& value) {
   auto diff = mojom::BlowfishSolanaDiff::New();
   diff->sign = ParseDiffSign(value.sign);
-  if (!base::StringToUint64(value.digits, &diff->digits)) {
+  uint64_t check_uint64_t = 0;
+  if (!base::StringToUint64(value.digits, &check_uint64_t)) {
     return nullptr;
+  } else {
+    diff->digits = value.digits;
   }
 
   return diff;
@@ -921,8 +924,11 @@ mojom::BlowfishSolanaStateChangeRawInfoPtr ParseStateChangeRawInfo(
       return nullptr;
     }
 
-    if (!base::StringToUint64(data_value->sol_staked, &data->sol_staked)) {
+    uint64_t check_uint64_t = 0;
+    if (!base::StringToUint64(data_value->sol_staked, &check_uint64_t)) {
       return nullptr;
+    } else {
+      data->sol_staked = data_value->sol_staked;
     }
 
     raw_info->data = mojom::BlowfishSolanaStateChangeRawInfoDataUnion::

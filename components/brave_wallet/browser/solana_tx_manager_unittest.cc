@@ -572,21 +572,15 @@ class SolanaTxManagerUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  void TestGetTransactionMessageToSign(
+  void TestGetSolTransactionMessageToSign(
       const std::string& tx_meta_id,
       std::optional<std::vector<std::uint8_t>> expected_tx_message) {
     base::RunLoop run_loop;
-    solana_tx_manager()->GetTransactionMessageToSign(
+    solana_tx_manager()->GetSolTransactionMessageToSign(
         tx_meta_id,
         base::BindLambdaForTesting(
-            [&](mojom::MessageToSignUnionPtr tx_message) {
-              EXPECT_EQ(!!tx_message, expected_tx_message.has_value());
-              if (expected_tx_message.has_value()) {
-                ASSERT_TRUE(tx_message->is_message_bytes());
-                std::optional<std::vector<std::uint8_t>> message_bytes =
-                    tx_message->get_message_bytes();
-                EXPECT_EQ(message_bytes, expected_tx_message);
-              }
+            [&](const std::optional<std::vector<uint8_t>>& tx_message) {
+              EXPECT_EQ(tx_message, expected_tx_message);
               run_loop.Quit();
             }));
     run_loop.Run();
@@ -600,7 +594,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
       const std::string& expected_error_message) {
     base::RunLoop run_loop;
     solana_tx_manager()->ProcessSolanaHardwareSignature(
-        tx_meta_id, signature,
+        tx_meta_id, mojom::SolanaSignature::New(signature),
         base::BindLambdaForTesting([&](bool result,
                                        mojom::ProviderErrorUnionPtr error_union,
                                        const std::string& error_message) {
@@ -738,7 +732,9 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   auto param = mojom::SolanaSignTransactionParam::New(
       kEncodedSerializedMessage, std::vector<mojom::SignaturePubkeyPairPtr>());
   param->signatures.emplace_back(mojom::SignaturePubkeyPair::New(
-      std::vector<uint8_t>(kSolanaSignatureSize, 1), sol_account()->address));
+      mojom::SolanaSignature::New(
+          std::vector<uint8_t>(kSolanaSignatureSize, 1)),
+      sol_account()->address));
   solana_tx_data->sign_transaction_param = std::move(param);
   auto tx = SolanaTransaction::FromSolanaTxData(solana_tx_data.Clone());
   ASSERT_TRUE(tx);
@@ -848,8 +844,8 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
 
   tx->message()->set_recent_blockhash(latest_blockhash1_);
   tx->message()->set_last_valid_block_height(last_valid_block_height1_);
-  tx->set_wired_tx(
-      tx->GetSignedTransaction(keyring_service_.get(), from_account));
+  tx->set_wired_tx(base::Base64Encode(*tx->GetSignedTransactionBytes(
+      keyring_service_.get(), from_account, nullptr)));
 
   tx_meta4 = solana_tx_manager()->GetTxForTesting(meta_id4);
   ASSERT_TRUE(tx_meta4);
@@ -1658,7 +1654,9 @@ TEST_F(SolanaTxManagerUnitTest, RetryTransaction) {
   auto param = mojom::SolanaSignTransactionParam::New(
       "test", std::vector<mojom::SignaturePubkeyPairPtr>());
   param->signatures.emplace_back(mojom::SignaturePubkeyPair::New(
-      std::vector<uint8_t>(kSolanaSignatureSize, 1), sol_account()->address));
+      mojom::SolanaSignature::New(
+          std::vector<uint8_t>(kSolanaSignatureSize, 1)),
+      sol_account()->address));
   tx_meta1->tx()->set_sign_tx_param(param.Clone());
   tx_meta2->tx()->set_sign_tx_param(param.Clone());
 
@@ -1685,9 +1683,9 @@ TEST_F(SolanaTxManagerUnitTest, RetryTransaction) {
       l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE));
 }
 
-TEST_F(SolanaTxManagerUnitTest, GetTransactionMessageToSign) {
+TEST_F(SolanaTxManagerUnitTest, GetSolTransactionMessageToSign) {
   // Unknown tx_meta_id yields null message
-  TestGetTransactionMessageToSign("Unknown", std::nullopt);
+  TestGetSolTransactionMessageToSign("Unknown", std::nullopt);
   std::vector<mojom::HardwareWalletAccountPtr> hw_infos;
   hw_infos.push_back(mojom::HardwareWalletAccount::New(
       "89DzXVKJ79xf9MkzTxatQESh5fcvsqBo9fCsbAXkCaZE", "path", "name 1",
@@ -1718,11 +1716,11 @@ TEST_F(SolanaTxManagerUnitTest, GetTransactionMessageToSign) {
       "srbpyw5vnvIzlu8X3EmssQ5s6QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
       "AzEkOkozS44c7s0P8ldozF5ymD02/"
       "RsLDbpEpnVXU5rkDAgAFAtkpAQACAAkDZAAAAAAAAAADAgABDAIAAAABAAAAAAAAAA==");
-  TestGetTransactionMessageToSign(system_transfer_meta_id, message);
+  TestGetSolTransactionMessageToSign(system_transfer_meta_id, message);
 
   // Valid cached latest blockhash
   SetInterceptor("", 0, "", "");
-  TestGetTransactionMessageToSign(system_transfer_meta_id, message);
+  TestGetSolTransactionMessageToSign(system_transfer_meta_id, message);
 }
 
 TEST_F(SolanaTxManagerUnitTest, ProcessSolanaHardwareSignature) {

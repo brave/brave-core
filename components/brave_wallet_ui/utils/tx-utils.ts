@@ -1814,57 +1814,6 @@ export function toTxDataUnion<D extends keyof BraveWallet.TxDataUnion>(
   return Object.assign({}, unionItem) as BraveWallet.TxDataUnion
 }
 
-export function isSolanaSignTransactionRequest(
-  request?:
-    | BraveWallet.SignTransactionRequest
-    | BraveWallet.SignAllTransactionsRequest
-): request is BraveWallet.SignTransactionRequest {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-  return !!(request as BraveWallet.SignTransactionRequest | undefined)?.txData
-    ?.solanaTxData
-}
-
-export function isSolanaSignAllTransactionsRequest(
-  request?:
-    | BraveWallet.SignTransactionRequest
-    | BraveWallet.SignAllTransactionsRequest
-): request is BraveWallet.SignAllTransactionsRequest {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-  return !!(request as BraveWallet.SignAllTransactionsRequest | undefined)
-    ?.txDatas
-}
-
-export function getTxDataFromSolSignTxRequest(
-  selectedQueueData: BraveWallet.SignTransactionRequest
-): BraveWallet.SolanaTxData | undefined {
-  return selectedQueueData.txData?.solanaTxData
-}
-
-export function getTxDatasFromSolSignAllTxsRequest(
-  selectedQueueData: BraveWallet.SignAllTransactionsRequest
-): BraveWallet.SolanaTxData[] {
-  return selectedQueueData.txDatas
-    .map(({ solanaTxData }) => solanaTxData)
-    .filter((data): data is BraveWallet.SolanaTxData => !!data)
-}
-
-export function getTxDatasFromQueuedSolSignRequest(
-  selectedQueueData:
-    | BraveWallet.SignAllTransactionsRequest
-    | BraveWallet.SignTransactionRequest
-): BraveWallet.SolanaTxData[] {
-  if (isSolanaSignAllTransactionsRequest(selectedQueueData)) {
-    return getTxDatasFromSolSignAllTxsRequest(selectedQueueData)
-  }
-
-  if (isSolanaSignTransactionRequest(selectedQueueData)) {
-    const txData = getTxDataFromSolSignTxRequest(selectedQueueData)
-    return txData ? [txData] : []
-  }
-
-  return []
-}
-
 export const isAssociatedTokenAccountCreationTx = (
   tx: Pick<BraveWallet.TransactionInfo, 'txType'> | undefined
 ) =>

@@ -371,7 +371,9 @@ class SolanaProviderScriptHandler: TabContentScript {
     let signaturesValues = (signatures.listValue ?? []).compactMap { $0.dictionaryValue }
     let signatures: [BraveWallet.SignaturePubkeyPair] = signaturesValues.map {
       BraveWallet.SignaturePubkeyPair(
-        signature: $0[Keys.signature.rawValue]?.numberArray,
+        signature: BraveWallet.SolanaSignature(
+          bytes: $0[Keys.signature.rawValue]?.numberArray ?? []
+        ),
         publicKey: $0[Keys.publicKey.rawValue]?.stringValue ?? ""
       )
     }

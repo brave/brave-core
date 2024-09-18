@@ -61,10 +61,6 @@ class BitcoinTxManager : public TxManager,
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
-  void GetTransactionMessageToSign(
-      const std::string& tx_meta_id,
-      GetTransactionMessageToSignCallback callback) override;
-
   void SpeedupOrCancelTransaction(
       const std::string& tx_meta_id,
       bool cancel,

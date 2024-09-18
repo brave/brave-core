@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { assertNotReached } from 'chrome://resources/js/assert.js'
 import * as React from 'react'
 import { ThunkDispatch } from '@reduxjs/toolkit'
 import { useHistory } from 'react-router'
@@ -50,7 +51,6 @@ import {
 } from './style'
 
 export interface Props {
-  account: BraveWallet.AccountInfo
   hardwareWalletCode: HardwareWalletResponseCodeType | undefined
 }
 
@@ -70,15 +70,14 @@ function getAppName(coinType: BraveWallet.CoinType): string {
       return 'Solana'
     case BraveWallet.CoinType.FIL:
       return 'Filecoin'
-    default:
+    case BraveWallet.CoinType.ETH:
       return 'Ethereum'
   }
+
+  assertNotReached(`Unsupported coin ${coinType}`)
 }
 
-export const ConnectHardwareWalletPanel = ({
-  account,
-  hardwareWalletCode
-}: Props) => {
+export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
   // redux
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
   const history = useHistory()
@@ -88,7 +87,6 @@ export const ConnectHardwareWalletPanel = ({
   )
 
   const isConfirming = !!selectedPendingTransactionId
-  const coinType = account.accountId.coin
 
   // mutations
   const [signMessageHardware] = useSignMessageHardwareMutation()
@@ -99,11 +97,16 @@ export const ConnectHardwareWalletPanel = ({
   const request = signMessageData?.at(0)
   const isSigning = request && request.id !== -1
 
-  const { account: messageAccount } = useAccountQuery(request?.accountId)
+  const { account: signMessageAccount } = useAccountQuery(request?.accountId)
 
   // pending transactions
-  const { onConfirm: onConfirmTransaction, selectedPendingTransaction } =
-    usePendingTransactions()
+  const {
+    onConfirm: onConfirmTransaction,
+    selectedPendingTransaction,
+    fromAccount: confirmTransactionAccount
+  } = usePendingTransactions()
+
+  const account = signMessageAccount || confirmTransactionAccount
 
   // memos
   const isConnected = React.useMemo((): boolean => {
@@ -114,6 +117,10 @@ export const ConnectHardwareWalletPanel = ({
   }, [hardwareWalletCode])
 
   const title = React.useMemo(() => {
+    if (!account) {
+      return ''
+    }
+
     if (hardwareWalletCode === 'deviceBusy') {
       return getLocale('braveWalletConnectHardwarePanelConfirmation')
     }
@@ -129,25 +136,29 @@ export const ConnectHardwareWalletPanel = ({
       )
     }
 
-    const network = getAppName(coinType)
+    const network = getAppName(account.accountId.coin)
     return getLocale('braveWalletConnectHardwarePanelOpenApp')
       .replace('$1', network)
       .replace('$2', account.name)
-  }, [hardwareWalletCode, coinType, account.name])
+  }, [hardwareWalletCode, account])
 
   // methods
   const onCancelConnect = React.useCallback(() => {
+    if (!account) {
+      return
+    }
+
     dispatch(PanelActions.cancelConnectHardwareWallet(account))
   }, [account, dispatch])
 
   const onSignData = React.useCallback(async () => {
-    if (!messageAccount || !request) {
+    if (!signMessageAccount || !request) {
       return
     }
 
-    if (isHardwareAccount(messageAccount.accountId)) {
+    if (isHardwareAccount(signMessageAccount.accountId)) {
       await signMessageHardware({
-        account: messageAccount,
+        account: signMessageAccount,
         request: request
       }).unwrap()
     } else {
@@ -156,7 +167,12 @@ export const ConnectHardwareWalletPanel = ({
         id: request.id
       }).unwrap()
     }
-  }, [messageAccount, processSignMessageRequest, request, signMessageHardware])
+  }, [
+    signMessageAccount,
+    processSignMessageRequest,
+    request,
+    signMessageHardware
+  ])
 
   const retryHardwareOperation = React.useCallback(() => {
     if (isSigning) {
@@ -184,6 +200,10 @@ export const ConnectHardwareWalletPanel = ({
   }, [history])
 
   // render
+
+  if (!account) {
+    return null
+  }
   return (
     <StyledWrapper>
       <ConnectionRow>
@@ -207,7 +227,7 @@ export const ConnectHardwareWalletPanel = ({
       <PageIcon />
       {hardwareWalletCode !== 'deviceBusy' &&
         (hardwareWalletCode === 'unauthorized' ? (
-          <AuthorizeHardwareDeviceIFrame coinType={coinType} />
+          <AuthorizeHardwareDeviceIFrame coinType={account.accountId.coin} />
         ) : (
           <ButtonWrapper>
             <NavButton

@@ -18,8 +18,7 @@ enum PendingRequest: Equatable {
   case signMessageError([BraveWallet.SignMessageError])
   case getEncryptionPublicKey(BraveWallet.GetEncryptionPublicKeyRequest)
   case decrypt(BraveWallet.DecryptRequest)
-  case signTransaction([BraveWallet.SignTransactionRequest])
-  case signAllTransactions([BraveWallet.SignAllTransactionsRequest])
+  case signSolTransactions([BraveWallet.SignSolTransactionsRequest])
 }
 
 extension PendingRequest: Identifiable {
@@ -41,10 +40,8 @@ extension PendingRequest: Identifiable {
       return "getEncryptionPublicKey-\(request.accountId.uniqueKey)-\(request.requestId)"
     case .decrypt(let request):
       return "decrypt-\(request.accountId.uniqueKey)-\(request.requestId)"
-    case .signTransaction(let requests):
-      return "signTransaction-\(requests.map(\.id))"
-    case .signAllTransactions(let requests):
-      return "signAllTransactions-\(requests.map(\.id))"
+    case .signSolTransactions(let requests):
+      return "signSolTransactions-\(requests.map(\.id))"
     }
   }
 }
@@ -57,8 +54,7 @@ enum WebpageRequestResponse: Equatable {
   case signMessageError(errorId: String)
   case getEncryptionPublicKey(approved: Bool, requestId: String)
   case decrypt(approved: Bool, requestId: String)
-  case signTransaction(approved: Bool, id: Int32)
-  case signAllTransactions(approved: Bool, id: Int32)
+  case signSolTransactions(approved: Bool, id: Int32)
 }
 
 public class CryptoStore: ObservableObject, WalletObserverStore {
@@ -753,14 +749,10 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   func fetchPendingWebpageRequest() async -> PendingRequest? {
     if let chainRequest = await rpcService.pendingAddChainRequests().first {
       return .addChain(chainRequest)
-    } else if case let signTransactionRequests =
-      await walletService.pendingSignTransactionRequests(), !signTransactionRequests.isEmpty
+    } else if case let signSolTransactionsRequests =
+      await walletService.pendingSignSolTransactionsRequests(), !signSolTransactionsRequests.isEmpty
     {
-      return .signTransaction(signTransactionRequests)
-    } else if case let signAllTransactionsRequests =
-      await walletService.pendingSignAllTransactionsRequests(), !signAllTransactionsRequests.isEmpty
-    {
-      return .signAllTransactions(signAllTransactionsRequests)
+      return .signSolTransactions(signSolTransactionsRequests)
     } else if case let signMessageErrors = await walletService.pendingSignMessageErrors(),
       !signMessageErrors.isEmpty
     {
@@ -843,7 +835,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       walletService.notifySignMessageRequestProcessed(
         approved: approved,
         id: id,
-        signature: nil,
+        hwSignature: nil,
         error: nil
       )
     case .signMessageError(let errorId):
@@ -852,18 +844,11 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       walletService.notifyGetPublicKeyRequestProcessed(requestId: requestId, approved: approved)
     case .decrypt(let approved, let requestId):
       walletService.notifyDecryptRequestProcessed(requestId: requestId, approved: approved)
-    case .signTransaction(let approved, let id):
-      walletService.notifySignTransactionRequestProcessed(
+    case .signSolTransactions(let approved, let id):
+      walletService.notifySignSolTransactionsRequestProcessed(
         approved: approved,
         id: id,
-        signature: nil,
-        error: nil
-      )
-    case .signAllTransactions(let approved, let id):
-      walletService.notifySignAllTransactionsRequestProcessed(
-        approved: approved,
-        id: id,
-        signatures: nil,
+        hwSignatures: [],
         error: nil
       )
     }

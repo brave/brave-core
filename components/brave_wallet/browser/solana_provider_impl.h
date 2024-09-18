@@ -80,12 +80,13 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       RequestPermissionsError error,
       const std::optional<std::vector<std::string>>& allowed_accounts);
 
-  void OnSignMessageRequestProcessed(const std::vector<uint8_t>& blob_msg,
-                                     const mojom::AccountInfoPtr& account,
-                                     SignMessageCallback callback,
-                                     bool approved,
-                                     mojom::ByteArrayStringUnionPtr signature,
-                                     const std::optional<std::string>& error);
+  void OnSignMessageRequestProcessed(
+      const std::vector<uint8_t>& blob_msg,
+      const mojom::AccountInfoPtr& account,
+      SignMessageCallback callback,
+      bool approved,
+      mojom::EthereumSignatureBytesPtr hw_signature,
+      const std::optional<std::string>& error);
   void ContinueSignTransaction(
       std::optional<std::pair<SolanaMessage, std::vector<uint8_t>>> msg_pair,
       mojom::SolanaSignTransactionParamPtr param,
@@ -100,12 +101,12 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       const mojom::AccountInfoPtr& account,
       SignTransactionCallback callback,
       bool approved,
-      mojom::ByteArrayStringUnionPtr signature,
+      std::vector<mojom::SolanaSignaturePtr> hw_signatures,
       const std::optional<std::string>& error);
   void ContinueSignAllTransactions(
-      std::vector<mojom::TxDataUnionPtr> tx_datas,
+      std::vector<mojom::SolanaTxDataPtr> tx_datas,
       std::vector<std::unique_ptr<SolanaTransaction>> txs,
-      std::vector<mojom::ByteArrayStringUnionPtr> raw_messages,
+      std::vector<std::vector<uint8_t>> raw_messages,
       mojom::AccountInfoPtr account,
       const std::string& chain_id,
       SignAllTransactionsCallback callback,
@@ -115,7 +116,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       mojom::AccountInfoPtr account,
       SignAllTransactionsCallback callback,
       bool approved,
-      std::optional<std::vector<mojom::ByteArrayStringUnionPtr>> signatures,
+      std::vector<mojom::SolanaSignaturePtr> signatures,
       const std::optional<std::string>& error);
   void OnAddUnapprovedTransaction(SignAndSendTransactionCallback callback,
                                   bool success,

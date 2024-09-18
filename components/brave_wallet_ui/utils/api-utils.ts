@@ -89,21 +89,15 @@ export const getHasPendingRequests = async () => {
     return true
   }
 
-  const { requests: signAllTxsRequests } =
-    await braveWalletService.getPendingSignAllTransactionsRequests()
-  if (signAllTxsRequests.length) {
+  const { requests: signSolTxsRequests } =
+    await braveWalletService.getPendingSignSolTransactionsRequests()
+  if (signSolTxsRequests.length) {
     return true
   }
 
   const { requests: signMessageRequests } =
     await braveWalletService.getPendingSignMessageRequests()
   if (signMessageRequests.length) {
-    return true
-  }
-
-  const { requests: signTxRequests } =
-    await braveWalletService.getPendingSignTransactionRequests()
-  if (signTxRequests.length) {
     return true
   }
 

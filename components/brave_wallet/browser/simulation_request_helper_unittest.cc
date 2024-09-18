@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/gtest_util.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
@@ -111,39 +112,22 @@ mojom::TransactionInfoPtr GetCannedScanSolanaTransactionParams(
   return meta.ToTransactionInfo();
 }
 
-mojom::SignTransactionRequestPtr MakeSolanaSignTransactionRequest(
-    mojom::TransactionInfoPtr tx_info) {
-  auto request = mojom::SignTransactionRequest::New();
-  request->origin_info = std::move(tx_info->origin_info);
-  request->id = 1;
-  request->from_account_id = tx_info->from_account_id->Clone();
-  request->from_address = *tx_info->from_address;
-  request->tx_data = tx_info->tx_data_union.Clone();
-  request->coin = mojom::CoinType::SOL;
-
-  auto tx = SolanaTransaction::FromSolanaTxData(
-      std::move(tx_info->tx_data_union->get_solana_tx_data()));
-  const auto& tx_b64 = tx->GetBase64EncodedMessage();
-  request->raw_message = mojom::ByteArrayStringUnion::NewStr(tx_b64);
-  return request;
-}
-
-mojom::SignAllTransactionsRequestPtr MakeSolanaSignAllTransactionsRequest(
-    mojom::TransactionInfoPtr tx_info) {
-  auto request = mojom::SignAllTransactionsRequest::New();
+mojom::SignSolTransactionsRequestPtr MakeSolanaSignAllTransactionsRequest(
+    const mojom::TransactionInfoPtr& tx_info) {
+  auto request = mojom::SignSolTransactionsRequest::New();
   request->origin_info = std::move(tx_info->origin_info);
   request->id = 1;
   request->from_account_id = tx_info->from_account_id->Clone();
   request->from_address = *tx_info->from_address;
 
-  request->tx_datas.push_back(tx_info->tx_data_union.Clone());
-  request->coin = mojom::CoinType::SOL;
+  auto& solana_tx_data = tx_info->tx_data_union->get_solana_tx_data();
+  request->tx_datas.push_back(solana_tx_data.Clone());
 
-  auto tx = SolanaTransaction::FromSolanaTxData(
-      std::move(tx_info->tx_data_union->get_solana_tx_data()));
-  const auto& tx_b64 = tx->GetBase64EncodedMessage();
+  auto tx = SolanaTransaction::FromSolanaTxData(std::move(solana_tx_data));
+  if (auto serialized_message_pair = tx->GetSerializedMessage()) {
+    request->raw_messages.push_back(serialized_message_pair->first);
+  }
 
-  request->raw_messages.push_back(mojom::ByteArrayStringUnion::NewStr(tx_b64));
   return request;
 }
 
@@ -155,7 +139,7 @@ TEST(SimulationRequestHelperUnitTest,
   // correctly.
   auto tx_info =
       GetCannedScanEVMTransactionParams(false, true, false, std::nullopt);
-  auto params = evm::EncodeScanTransactionParams(tx_info);
+  auto params = evm::EncodeScanTransactionParams(*tx_info);
   std::string expected_params(R"(
     {
       "metadata":{
@@ -173,14 +157,15 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )");
   ASSERT_TRUE(params);
-  EXPECT_EQ(params->first, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(params->second, "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(tx_info->from_address,
+            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 
   // OK: Params for legacy (type-0) EVM contract interaction is encoded
   // properly.
   tx_info =
       GetCannedScanEVMTransactionParams(false, false, false, std::nullopt);
-  params = evm::EncodeScanTransactionParams(tx_info);
+  params = evm::EncodeScanTransactionParams(*tx_info);
   expected_params = R"(
     {
       "metadata":{
@@ -198,8 +183,9 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )";
   ASSERT_TRUE(params);
-  EXPECT_EQ(params->first, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(params->second, "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(tx_info->from_address,
+            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -207,7 +193,7 @@ TEST(SimulationRequestHelperUnitTest,
   // OK: Params for EIP-1559 (type-2) EVM ETH transfer is encoded correctly.
   auto tx_info =
       GetCannedScanEVMTransactionParams(true, true, false, std::nullopt);
-  auto params = evm::EncodeScanTransactionParams(tx_info);
+  auto params = evm::EncodeScanTransactionParams(*tx_info);
   std::string expected_params(R"(
     {
       "metadata":{
@@ -225,13 +211,14 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )");
   ASSERT_TRUE(params);
-  EXPECT_EQ(params->first, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(params->second, "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(tx_info->from_address,
+            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 
   // OK: Params for EIP-1559 (type-2) EVM contract interaction is encoded
   // correctly.
   tx_info = GetCannedScanEVMTransactionParams(true, false, false, std::nullopt);
-  params = evm::EncodeScanTransactionParams(tx_info);
+  params = evm::EncodeScanTransactionParams(*tx_info);
   expected_params = R"(
     {
       "metadata":{
@@ -249,8 +236,9 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )";
   ASSERT_TRUE(params);
-  EXPECT_EQ(params->first, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(params->second, "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(tx_info->from_address,
+            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -259,7 +247,7 @@ TEST(SimulationRequestHelperUnitTest,
   // correctly.
   auto tx_info = GetCannedScanEVMTransactionParams(false, true, false,
                                                    "https://example.com");
-  auto params = evm::EncodeScanTransactionParams(tx_info);
+  auto params = evm::EncodeScanTransactionParams(*tx_info);
   std::string expected_params(R"(
     {
       "metadata":{
@@ -277,14 +265,15 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )");
   ASSERT_TRUE(params);
-  EXPECT_EQ(params->first, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(params->second, "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(tx_info->from_address,
+            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 
   // OK: Custom origin for contract interaction is encoded in params metadata
   // correctly.
   tx_info = GetCannedScanEVMTransactionParams(false, false, false,
                                               "https://example.com");
-  params = evm::EncodeScanTransactionParams(tx_info);
+  params = evm::EncodeScanTransactionParams(*tx_info);
   expected_params = R"(
     {
       "metadata":{
@@ -302,8 +291,9 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )";
   ASSERT_TRUE(params);
-  EXPECT_EQ(params->first, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(params->second, "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(tx_info->from_address,
+            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -312,7 +302,7 @@ TEST(SimulationRequestHelperUnitTest,
   // correctly.
   auto tx_info = GetCannedScanEVMTransactionParams(true, true, false,
                                                    "https://example.com");
-  auto params = evm::EncodeScanTransactionParams(tx_info);
+  auto params = evm::EncodeScanTransactionParams(*tx_info);
   std::string expected_params(R"(
     {
       "metadata":{
@@ -330,14 +320,15 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )");
   ASSERT_TRUE(params);
-  EXPECT_EQ(params->first, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(params->second, "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(tx_info->from_address,
+            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 
   // OK: Custom origin for contract interaction is encoded in params metadata
   // correctly.
   tx_info = GetCannedScanEVMTransactionParams(true, false, false,
                                               "https://example.com");
-  params = evm::EncodeScanTransactionParams(tx_info);
+  params = evm::EncodeScanTransactionParams(*tx_info);
   expected_params = R"(
     {
       "metadata":{
@@ -355,22 +346,18 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )";
   ASSERT_TRUE(params);
-  EXPECT_EQ(params->first, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(params->second, "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(tx_info->from_address,
+            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 }
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsEVMInvalidTxData) {
   auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
-  auto params = evm::EncodeScanTransactionParams(tx_info);
+  auto params = evm::EncodeScanTransactionParams(*tx_info);
 
   // KO: Invalid tx data is not encoded.
   EXPECT_FALSE(params);
-}
-
-TEST(SimulationRequestHelperUnitTest,
-     EncodeScanTransactionParamsEVMNullParams) {
-  EXPECT_EQ(evm::EncodeScanTransactionParams(nullptr), std::nullopt);
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -379,7 +366,7 @@ TEST(SimulationRequestHelperUnitTest,
   // encoded correctly.
   auto tx_info =
       GetCannedScanEVMTransactionParams(false, false, true, std::nullopt);
-  auto params = evm::EncodeScanTransactionParams(tx_info);
+  auto params = evm::EncodeScanTransactionParams(*tx_info);
   std::string expected_params(R"(
     {
       "metadata":{
@@ -397,13 +384,14 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )");
   ASSERT_TRUE(params);
-  EXPECT_EQ(params->first, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(params->second, "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(tx_info->from_address,
+            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 
   // OK: Params for EIP-1559 (type-2) EVM contract deployment transaction is
   // encoded correctly.
   tx_info = GetCannedScanEVMTransactionParams(true, false, true, std::nullopt);
-  params = evm::EncodeScanTransactionParams(tx_info);
+  params = evm::EncodeScanTransactionParams(*tx_info);
   expected_params = R"(
     {
       "metadata":{
@@ -421,16 +409,15 @@ TEST(SimulationRequestHelperUnitTest,
     }
   )";
   ASSERT_TRUE(params);
-  EXPECT_EQ(params->first, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(params->second, "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(tx_info->from_address,
+            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 }
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaTransactionInfoDefaultOrigin) {
   auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
-  auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
-      std::move(tx_info));
-  auto params = solana::EncodeScanTransactionParams(request);
+  auto params = solana::EncodeScanTransactionParams(*tx_info);
 
   std::string expected_params(R"(
     {
@@ -446,16 +433,15 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(params);
-  EXPECT_EQ(params->first, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(params->second, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
+  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(tx_info->from_address,
+            "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
 }
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaTransactionInfoCustomOrigin) {
   auto tx_info = GetCannedScanSolanaTransactionParams("https://example.com");
-  auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
-      std::move(tx_info));
-  auto params = solana::EncodeScanTransactionParams(request);
+  auto params = solana::EncodeScanTransactionParams(*tx_info);
 
   std::string expected_params(R"(
     {
@@ -471,75 +457,17 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(params);
-  EXPECT_EQ(params->first, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(params->second, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
-}
-
-TEST(SimulationRequestHelperUnitTest,
-     EncodeScanTransactionParamsSolanaSignTransactionRequestDefaultOrigin) {
-  auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
-
-  auto parsed = MakeSolanaSignTransactionRequest(std::move(tx_info));
-  auto request =
-      mojom::SolanaTransactionRequestUnion::NewSignTransactionRequest(
-          std::move(parsed));
-  auto params = solana::EncodeScanTransactionParams(request);
-
-  std::string expected_params(R"(
-    {
-      "metadata":{
-        "origin":"https://brave.com"
-      },
-      "transactions":[
-        "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAEDoTNZW3PS2dRMn6vIKJadRsVHGCzRbI8EOvvXPsmsn8X/4OT1Xu4XhM4oUvnby2eebttd+Y+Gz6yzTEMGqaSVJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg79TyWzB3v+wQ4jR2yoGqfCJjrmpBhFXewYqN6JAeFsBAgIAAQwCAAAAgJaYAAAAAAA="
-      ],
-      "userAccount":"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8"
-    }
-  )");
-
-  // OK: Params for Solana TransactionInfo is encoded correctly.
-  ASSERT_TRUE(params);
-  EXPECT_EQ(params->first, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(params->second, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
-}
-
-TEST(SimulationRequestHelperUnitTest,
-     EncodeScanTransactionParamsSolanaSignTransactionRequestCustomOrigin) {
-  auto tx_info = GetCannedScanSolanaTransactionParams("https://example.com");
-
-  auto parsed = MakeSolanaSignTransactionRequest(std::move(tx_info));
-  auto request =
-      mojom::SolanaTransactionRequestUnion::NewSignTransactionRequest(
-          std::move(parsed));
-  auto params = solana::EncodeScanTransactionParams(request);
-
-  std::string expected_params(R"(
-    {
-      "metadata":{
-        "origin":"https://example.com"
-      },
-      "transactions":[
-        "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAEDoTNZW3PS2dRMn6vIKJadRsVHGCzRbI8EOvvXPsmsn8X/4OT1Xu4XhM4oUvnby2eebttd+Y+Gz6yzTEMGqaSVJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg79TyWzB3v+wQ4jR2yoGqfCJjrmpBhFXewYqN6JAeFsBAgIAAQwCAAAAgJaYAAAAAAA="
-      ],
-      "userAccount":"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8"
-    }
-  )");
-
-  // OK: Params for Solana TransactionInfo is encoded correctly.
-  ASSERT_TRUE(params);
-  EXPECT_EQ(params->first, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(params->second, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
+  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(tx_info->from_address,
+            "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
 }
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaSignAllTransactionsRequestDefaultOrigin) {
   auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
 
-  auto parsed = MakeSolanaSignAllTransactionsRequest(std::move(tx_info));
-  auto request =
-      mojom::SolanaTransactionRequestUnion::NewSignAllTransactionsRequest(
-          std::move(parsed));
-  auto params = solana::EncodeScanTransactionParams(request);
+  auto parsed = MakeSolanaSignAllTransactionsRequest(tx_info);
+  auto params = solana::EncodeScanTransactionParams(*parsed);
 
   std::string expected_params(R"(
     {
@@ -555,19 +483,17 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(params);
-  EXPECT_EQ(params->first, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(params->second, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
+  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(tx_info->from_address,
+            "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
 }
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaSignAllTransactionsRequestCustomOrigin) {
   auto tx_info = GetCannedScanSolanaTransactionParams("https://example.com");
 
-  auto parsed = MakeSolanaSignAllTransactionsRequest(std::move(tx_info));
-  auto request =
-      mojom::SolanaTransactionRequestUnion::NewSignAllTransactionsRequest(
-          std::move(parsed));
-  auto params = solana::EncodeScanTransactionParams(request);
+  auto parsed = MakeSolanaSignAllTransactionsRequest(tx_info);
+  auto params = solana::EncodeScanTransactionParams(*parsed);
 
   std::string expected_params(R"(
     {
@@ -583,99 +509,50 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(params);
-  EXPECT_EQ(params->first, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(params->second, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
+  EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(tx_info->from_address,
+            "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
 }
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaInvalidTxData) {
   auto tx_info =
       GetCannedScanEVMTransactionParams(false, true, false, std::nullopt);
-  auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
-      std::move(tx_info));
-  auto params = solana::EncodeScanTransactionParams(request);
+  auto params = solana::EncodeScanTransactionParams(*tx_info);
 
   // KO: Invalid tx data is not encoded.
   EXPECT_FALSE(params);
 }
 
-TEST(SimulationRequestHelperUnitTest,
-     EncodeScanTransactionParamsSolanaNullParams) {
-  EXPECT_EQ(solana::EncodeScanTransactionParams(nullptr), std::nullopt);
-}
-
 TEST(SimulationRequestHelperUnitTest, HasEmptyRecentBlockhashSolana) {
   {
     auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
-    auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
-        tx_info->Clone());
-    auto has_empty_recent_blockhash = solana::HasEmptyRecentBlockhash(request);
-    ASSERT_TRUE(has_empty_recent_blockhash);
-    EXPECT_EQ(*has_empty_recent_blockhash, false);
+    EXPECT_FALSE(solana::HasEmptyRecentBlockhash(*tx_info));
   }
 
   {
     auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
     tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash = "";
-    auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
-        std::move(tx_info));
-    auto has_empty_recent_blockhash = solana::HasEmptyRecentBlockhash(request);
-    ASSERT_TRUE(has_empty_recent_blockhash);
-    EXPECT_EQ(*has_empty_recent_blockhash, true);
+    EXPECT_TRUE(solana::HasEmptyRecentBlockhash(*tx_info));
   }
 
   {
     auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
-    auto parsed = MakeSolanaSignTransactionRequest(std::move(tx_info));
-    auto request =
-        mojom::SolanaTransactionRequestUnion::NewSignTransactionRequest(
-            std::move(parsed));
-    auto has_empty_recent_blockhash = solana::HasEmptyRecentBlockhash(request);
-    ASSERT_TRUE(has_empty_recent_blockhash);
-    EXPECT_EQ(*has_empty_recent_blockhash, false);
+    auto parsed_all = MakeSolanaSignAllTransactionsRequest(tx_info);
+    EXPECT_FALSE(solana::HasEmptyRecentBlockhash(*parsed_all));
   }
 
   {
     auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
     tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash = "";
-    auto parsed = MakeSolanaSignTransactionRequest(std::move(tx_info));
-    auto request =
-        mojom::SolanaTransactionRequestUnion::NewSignTransactionRequest(
-            std::move(parsed));
-    auto has_empty_recent_blockhash = solana::HasEmptyRecentBlockhash(request);
-    ASSERT_TRUE(has_empty_recent_blockhash);
-    EXPECT_EQ(*has_empty_recent_blockhash, true);
-  }
-
-  {
-    auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
-    auto parsed_all = MakeSolanaSignAllTransactionsRequest(std::move(tx_info));
-    auto request =
-        mojom::SolanaTransactionRequestUnion::NewSignAllTransactionsRequest(
-            std::move(parsed_all));
-    auto has_empty_recent_blockhash = solana::HasEmptyRecentBlockhash(request);
-    ASSERT_TRUE(has_empty_recent_blockhash);
-    EXPECT_EQ(*has_empty_recent_blockhash, false);
-  }
-
-  {
-    auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
-    tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash = "";
-    auto parsed_all = MakeSolanaSignAllTransactionsRequest(std::move(tx_info));
-    auto request =
-        mojom::SolanaTransactionRequestUnion::NewSignAllTransactionsRequest(
-            std::move(parsed_all));
-    auto has_empty_recent_blockhash = solana::HasEmptyRecentBlockhash(request);
-    ASSERT_TRUE(has_empty_recent_blockhash);
-    EXPECT_EQ(*has_empty_recent_blockhash, true);
+    auto parsed_all = MakeSolanaSignAllTransactionsRequest(tx_info);
+    EXPECT_TRUE(solana::HasEmptyRecentBlockhash(*parsed_all));
   }
 
   {
     auto tx_info =
         GetCannedScanEVMTransactionParams(false, true, false, std::nullopt);
-    auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
-        std::move(tx_info));
-    EXPECT_FALSE(solana::HasEmptyRecentBlockhash(request));
+    EXPECT_CHECK_DEATH(solana::HasEmptyRecentBlockhash(*tx_info));
   }
 }
 
@@ -684,13 +561,9 @@ TEST(SimulationRequestHelperUnitTest, PopulateRecentBlockhashSolana) {
     // Recent blockhash is populated if the value in SolanaTxData is empty.
     auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
     tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash = "";
-    auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
-        std::move(tx_info));
     solana::PopulateRecentBlockhash(
-        *request, "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
-    EXPECT_EQ(request->get_transaction_info()
-                  ->tx_data_union->get_solana_tx_data()
-                  ->recent_blockhash,
+        *tx_info, "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
+    EXPECT_EQ(tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash,
               "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
   }
 
@@ -698,13 +571,9 @@ TEST(SimulationRequestHelperUnitTest, PopulateRecentBlockhashSolana) {
     // Recent blockhash is NOT populated if the value in SolanaTxData is not
     // empty.
     auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
-    auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
-        std::move(tx_info));
     solana::PopulateRecentBlockhash(
-        *request, "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
-    EXPECT_EQ(request->get_transaction_info()
-                  ->tx_data_union->get_solana_tx_data()
-                  ->recent_blockhash,
+        *tx_info, "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
+    EXPECT_EQ(tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash,
               "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6");
   }
 
@@ -712,15 +581,10 @@ TEST(SimulationRequestHelperUnitTest, PopulateRecentBlockhashSolana) {
     // Recent blockhash is populated if the value in SolanaTxData is empty.
     auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
     tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash = "";
-    auto parsed = MakeSolanaSignTransactionRequest(std::move(tx_info));
-    auto request =
-        mojom::SolanaTransactionRequestUnion::NewSignTransactionRequest(
-            std::move(parsed));
+    auto parsed_all = MakeSolanaSignAllTransactionsRequest(tx_info);
     solana::PopulateRecentBlockhash(
-        *request, "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
-    EXPECT_EQ(request->get_sign_transaction_request()
-                  ->tx_data->get_solana_tx_data()
-                  ->recent_blockhash,
+        *parsed_all, "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
+    EXPECT_EQ(parsed_all->tx_datas[0]->recent_blockhash,
               "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
   }
 
@@ -728,49 +592,10 @@ TEST(SimulationRequestHelperUnitTest, PopulateRecentBlockhashSolana) {
     // Recent blockhash is NOT populated if the value in SolanaTxData is not
     // empty.
     auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
-    auto parsed = MakeSolanaSignTransactionRequest(std::move(tx_info));
-    auto request =
-        mojom::SolanaTransactionRequestUnion::NewSignTransactionRequest(
-            std::move(parsed));
+    auto parsed_all = MakeSolanaSignAllTransactionsRequest(tx_info);
     solana::PopulateRecentBlockhash(
-        *request, "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
-    EXPECT_EQ(request->get_sign_transaction_request()
-                  ->tx_data->get_solana_tx_data()
-                  ->recent_blockhash,
-              "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6");
-  }
-
-  {
-    // Recent blockhash is populated if the value in SolanaTxData is empty.
-    auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
-    tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash = "";
-    auto parsed_all = MakeSolanaSignAllTransactionsRequest(std::move(tx_info));
-    auto request =
-        mojom::SolanaTransactionRequestUnion::NewSignAllTransactionsRequest(
-            std::move(parsed_all));
-    solana::PopulateRecentBlockhash(
-        *request, "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
-    EXPECT_EQ(request->get_sign_all_transactions_request()
-                  ->tx_datas[0]
-                  ->get_solana_tx_data()
-                  ->recent_blockhash,
-              "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
-  }
-
-  {
-    // Recent blockhash is NOT populated if the value in SolanaTxData is not
-    // empty.
-    auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
-    auto parsed_all = MakeSolanaSignAllTransactionsRequest(std::move(tx_info));
-    auto request =
-        mojom::SolanaTransactionRequestUnion::NewSignAllTransactionsRequest(
-            std::move(parsed_all));
-    solana::PopulateRecentBlockhash(
-        *request, "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
-    EXPECT_EQ(request->get_sign_all_transactions_request()
-                  ->tx_datas[0]
-                  ->get_solana_tx_data()
-                  ->recent_blockhash,
+        *parsed_all, "5XTGS1cRXen7tvnhzNAhTLAeyLTi32TzoQpLW6oJPDPA");
+    EXPECT_EQ(parsed_all->tx_datas[0]->recent_blockhash,
               "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6");
   }
 }

@@ -87,10 +87,7 @@ const getErrorMessage = (
   }
 
   // error must be of type LedgerError
-  if (
-    error.statusCode &&
-    (error.statusCode === 27404 || error.statusCode === 21781)
-  ) {
+  if (error.code && (error.code === 27404 || error.code === 21781)) {
     // Unknown Error
     return {
       error: getLocale('braveWalletConnectHardwareInfo2').replace(
@@ -101,22 +98,24 @@ const getErrorMessage = (
     }
   }
 
-  if (!error.message) {
+  const ledgerError: LedgerError = error
+
+  if (!ledgerError.error) {
     return { error: getLocale('braveWalletUnknownInternalError'), userHint: '' }
   }
 
   if (
-    error.statusCode &&
-    (error.statusCode === 27904 || error.statusCode === 26368)
+    ledgerError.code &&
+    (ledgerError.code === 27904 || ledgerError.code === 26368)
   ) {
     // INCORRECT_LENGTH or INS_NOT_SUPPORTED
     return {
-      error: error.message,
+      error: ledgerError.error,
       userHint: getLocale('braveWalletConnectHardwareWrongApplicationUserHint')
     }
   }
 
-  return { error: error.message, userHint: '' }
+  return { error: ledgerError.error, userHint: '' }
 }
 
 const defaultSchemeForCoinAndVendor = (
@@ -196,7 +195,11 @@ export const HardwareWalletConnect = ({
         return
       }
       setAccounts([])
-      setTotalNumberOfAccounts(DerivationBatchSize)
+      if (findHardwareImportScheme(scheme).singleAccount) {
+        setTotalNumberOfAccounts(1)
+      } else {
+        setTotalNumberOfAccounts(DerivationBatchSize)
+      }
       setCurrentDerivationScheme(scheme)
     },
     [currentDerivationScheme]
@@ -259,11 +262,11 @@ export const HardwareWalletConnect = ({
         return
       }
       setIsLoadingAccounts(false)
-      setShowAccountsList(!!result.payload)
+      setShowAccountsList(result.success)
 
-      if (result.payload) {
+      if (result.success) {
         setAccounts((prev) =>
-          prev.concat(makeAccountListItems(result.payload ?? []))
+          prev.concat(makeAccountListItems(result.accounts ?? []))
         )
         return
       }

@@ -24,14 +24,13 @@ import { getLocale } from '../../../../common/locale'
 import {
   dialogErrorFromLedgerErrorCode,
   dialogErrorFromTrezorErrorCode,
-  signMessageWithHardwareKeyring
+  signEthMessageWithHardwareKeyring
 } from '../../async/hardware'
-import { toByteArrayStringUnion } from '../../../utils/mojo-utils'
 
 interface ProcessSignMessageRequestArgs {
   approved: boolean
   id: number
-  signature?: BraveWallet.ByteArrayStringUnion | undefined
+  hwSignature?: BraveWallet.EthereumSignatureBytes | undefined
   error?: string | undefined
 }
 
@@ -93,7 +92,7 @@ export const signingEndpoints = ({
         try {
           const { data: api } = baseQuery(undefined)
 
-          await processSignMessageRequest(api, arg)
+          await processSignMessageRequestInternal(api, arg)
 
           return {
             data: true
@@ -159,6 +158,10 @@ export const signingEndpoints = ({
         try {
           const { data: api } = baseQuery(undefined)
 
+          if (arg.account.accountId.coin !== BraveWallet.CoinType.ETH) {
+            throw new Error('Not an ETH account')
+          }
+
           if (!isHardwareAccount(arg.account.accountId)) {
             api.braveWalletService.notifySignMessageRequestProcessed(
               false,
@@ -180,14 +183,13 @@ export const signingEndpoints = ({
             navigateToConnectHardwareWallet(api.panelHandler, store)
           }
 
-          const coin = arg.account.accountId.coin
           const info = arg.account.hardware
 
           if (!info) {
             throw new Error('No hardware account information found')
           }
 
-          const signed = await signMessageWithHardwareKeyring(
+          const signed = await signEthMessageWithHardwareKeyring(
             info.vendor,
             info.path,
             arg.request
@@ -224,20 +226,13 @@ export const signingEndpoints = ({
             }
           }
 
-          await processSignMessageRequest(
+          await processSignMessageRequestInternal(
             api,
             signed.success
               ? {
                   approved: signed.success,
                   id: arg.request.id,
-                  signature:
-                    coin === BraveWallet.CoinType.SOL
-                      ? toByteArrayStringUnion({
-                          bytes: [...(signed.payload as Buffer)]
-                        })
-                      : toByteArrayStringUnion({
-                          str: signed.payload as string
-                        })
+                  hwSignature: signed.signature
                 }
               : {
                   approved: signed.success,
@@ -273,7 +268,7 @@ export const signingEndpoints = ({
 }
 
 // internals
-async function processSignMessageRequest(
+async function processSignMessageRequestInternal(
   api: {
     braveWalletService: BraveWallet.BraveWalletServiceRemote
     panelHandler?: BraveWallet.PanelHandlerRemote
@@ -283,7 +278,7 @@ async function processSignMessageRequest(
   api.braveWalletService.notifySignMessageRequestProcessed(
     arg.approved,
     arg.id,
-    arg.signature || null,
+    arg.hwSignature || null,
     arg.error || null
   )
 

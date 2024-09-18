@@ -499,18 +499,19 @@ public abstract class BraveActivity extends ChromeActivity
 
     private void maybeHasPendingUnlockRequest() {
         assert mKeyringService != null;
-        mKeyringService.hasPendingUnlockRequest(pending -> {
-            if (pending) {
-                BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-                if (layout != null) {
-                    layout.showWalletPanel();
-                }
+        mKeyringService.hasPendingUnlockRequest(
+                pending -> {
+                    if (pending) {
+                        BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
+                        if (layout != null) {
+                            layout.showWalletPanel();
+                        }
 
-                return;
-            }
-            maybeShowPendingTransactions();
-            maybeShowSignTxRequestLayout();
-        });
+                        return;
+                    }
+                    maybeShowPendingTransactions();
+                    maybeShowSignSolTransactionsRequestLayout();
+                });
     }
 
     private void setWalletBadgeVisibility(boolean visibile) {
@@ -527,28 +528,18 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
-    private void maybeShowSignTxRequestLayout() {
+    // TODO(apaymyshev): refactor this to have a better name.
+    private void maybeShowSignSolTransactionsRequestLayout() {
         assert mBraveWalletService != null;
-        mBraveWalletService.getPendingSignTransactionRequests(requests -> {
-            if (requests != null && requests.length != 0) {
-                openBraveWalletDAppsActivity(
-                        BraveWalletDAppsActivity.ActivityType.SIGN_TRANSACTION);
-                return;
-            }
-            maybeShowSignAllTxRequestLayout();
-        });
-    }
-
-    private void maybeShowSignAllTxRequestLayout() {
-        assert mBraveWalletService != null;
-        mBraveWalletService.getPendingSignAllTransactionsRequests(requests -> {
-            if (requests != null && requests.length != 0) {
-                openBraveWalletDAppsActivity(
-                        BraveWalletDAppsActivity.ActivityType.SIGN_ALL_TRANSACTIONS);
-                return;
-            }
-            maybeShowSignMessageErrorsLayout();
-        });
+        mBraveWalletService.getPendingSignSolTransactionsRequests(
+                requests -> {
+                    if (requests != null && requests.length != 0) {
+                        openBraveWalletDAppsActivity(
+                                BraveWalletDAppsActivity.ActivityType.SIGN_SOL_TRANSACTIONS);
+                        return;
+                    }
+                    maybeShowSignMessageErrorsLayout();
+                });
     }
 
     private void maybeShowSignMessageErrorsLayout() {

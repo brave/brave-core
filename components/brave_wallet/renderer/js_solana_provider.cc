@@ -1008,8 +1008,10 @@ JSSolanaProvider::GetSignatures(v8::Local<v8::Value> transaction) {
       if (!pubkey_string) {
         return std::nullopt;
       }
-      sig_pubkey_pairs.push_back(
-          mojom::SignaturePubkeyPair::New(signature_blob, *pubkey_string));
+      sig_pubkey_pairs.push_back(mojom::SignaturePubkeyPair::New(
+          signature_blob ? mojom::SolanaSignature::New(*signature_blob)
+                         : mojom::SolanaSignaturePtr(),
+          *pubkey_string));
     }
   } else {  // Transaction
     for (uint32_t i = 0; i < signatures_count; ++i) {
@@ -1037,8 +1039,10 @@ JSSolanaProvider::GetSignatures(v8::Local<v8::Value> transaction) {
         return std::nullopt;
       }
 
-      sig_pubkey_pairs.push_back(
-          mojom::SignaturePubkeyPair::New(signature_blob, *pubkey_string));
+      sig_pubkey_pairs.push_back(mojom::SignaturePubkeyPair::New(
+          signature_blob ? mojom::SolanaSignature::New(*signature_blob)
+                         : mojom::SolanaSignaturePtr(),
+          *pubkey_string));
     }
   }
 

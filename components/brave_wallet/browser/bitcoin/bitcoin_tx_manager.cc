@@ -193,12 +193,6 @@ void BitcoinTxManager::RetryTransaction(const std::string& tx_meta_id,
   NOTIMPLEMENTED() << "Bitcoin transaction retry is not supported";
 }
 
-void BitcoinTxManager::GetTransactionMessageToSign(
-    const std::string& tx_meta_id,
-    GetTransactionMessageToSignCallback callback) {
-  NOTIMPLEMENTED() << "Bitcoin hardware signing is not supported";
-}
-
 BitcoinTxStateManager* BitcoinTxManager::GetBitcoinTxStateManager() {
   return static_cast<BitcoinTxStateManager*>(tx_state_manager_.get());
 }

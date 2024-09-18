@@ -6,18 +6,18 @@
 import {
   FilLedgerMainnetHardwareImportScheme,
   FilLedgerTestnetHardwareImportScheme,
-  SignHardwareOperationResult
+  HardwareOperationResultAccounts,
+  HardwareOperationError,
+  HardwareOperationResultFilecoinSignature
 } from '../types'
 import FilecoinLedgerBridgeKeyring from './fil_ledger_bridge_keyring'
 import {
   FilGetAccountResponse,
-  FilLotusMessage,
   FilSignTransactionResponse,
-  FilSignedLotusMessage,
   LedgerCommand,
   UnlockResponse
 } from './ledger-messages'
-import { MockLedgerTransport } from './ledger_bridge_keyring.test'
+import { MockLedgerTransport } from './mock_ledger_transport'
 
 const unlockSuccessResponse: UnlockResponse = {
   id: LedgerCommand.Unlock,
@@ -32,8 +32,28 @@ const unlockErrorResponse: UnlockResponse = {
   command: LedgerCommand.Unlock,
   payload: {
     success: false,
-    message: 'LedgerError',
-    statusCode: 101
+    error: 'LedgerError',
+    code: 101
+  }
+}
+
+interface FilLotusMessage {
+  To: string
+  From: string
+  Nonce: number
+  Value: string
+  GasPremium: string
+  GasLimit: number
+  GasFeeCap: string
+  Method: number
+  Params?: string | string[]
+}
+
+interface FilSignedLotusMessage {
+  Message: FilLotusMessage
+  Signature: {
+    Type: number
+    Data: string
   }
 }
 
@@ -56,6 +76,8 @@ const signedLotusMessage: FilSignedLotusMessage = {
     Data: 'data'
   }
 }
+
+const signedLotusMessageJSON = JSON.stringify(signedLotusMessage)
 
 const getAccountsResponse: FilGetAccountResponse = {
   payload: {
@@ -84,17 +106,19 @@ test('Extracting accounts from device MAIN', async () => {
   transport.addSendCommandResponse(unlockSuccessResponse)
   transport.addSendCommandResponse(getAccountsResponse)
 
-  return expect(
-    await keyring.getAccounts(0, 1, FilLedgerMainnetHardwareImportScheme)
-  ).toEqual({
-    payload: [
+  const expectedResult: HardwareOperationResultAccounts = {
+    success: true,
+    accounts: [
       {
         address: '0',
         derivationPath: "m/44'/461'/0'/0/0"
       }
-    ],
-    success: true
-  })
+    ]
+  }
+
+  return expect(
+    await keyring.getAccounts(0, 1, FilLedgerMainnetHardwareImportScheme)
+  ).toEqual(expectedResult)
 })
 
 test('Extracting accounts from device TEST', async () => {
@@ -103,17 +127,19 @@ test('Extracting accounts from device TEST', async () => {
   transport.addSendCommandResponse(unlockSuccessResponse)
   transport.addSendCommandResponse(getAccountsResponse)
 
-  return expect(
-    await keyring.getAccounts(0, 1, FilLedgerTestnetHardwareImportScheme)
-  ).toEqual({
-    payload: [
+  const expectedResult: HardwareOperationResultAccounts = {
+    success: true,
+    accounts: [
       {
         address: '0',
         derivationPath: "m/44'/1'/0'/0/0"
       }
-    ],
-    success: true
-  })
+    ]
+  }
+
+  return expect(
+    await keyring.getAccounts(0, 1, FilLedgerTestnetHardwareImportScheme)
+  ).toEqual(expectedResult)
 })
 
 test('Unlock device success', async () => {
@@ -127,11 +153,14 @@ test('Unlock device failed', async () => {
   const { keyring, transport } = createKeyring()
 
   transport.addSendCommandResponse(unlockErrorResponse)
-  expect(await keyring.unlock()).toEqual({
-    message: 'LedgerError',
-    statusCode: 101,
-    success: false
-  })
+
+  const expectedResult: HardwareOperationError = {
+    success: false,
+    error: 'LedgerError',
+    code: 101
+  }
+
+  expect(await keyring.unlock()).toEqual(expectedResult)
 })
 
 test('Extract accounts from locked device success', async () => {
@@ -139,9 +168,15 @@ test('Extract accounts from locked device success', async () => {
 
   transport.addSendCommandResponse(unlockErrorResponse)
 
+  const expectedResult: HardwareOperationError = {
+    success: false,
+    error: 'LedgerError',
+    code: 101
+  }
+
   return expect(
     await keyring.getAccounts(0, 2, FilLedgerTestnetHardwareImportScheme)
-  ).toEqual({ message: 'LedgerError', statusCode: 101, success: false })
+  ).toEqual(expectedResult)
 })
 
 test('signTransaction success', async () => {
@@ -154,19 +189,19 @@ test('signTransaction success', async () => {
     command: LedgerCommand.SignTransaction,
     payload: {
       success: true,
-      lotusMessage: signedLotusMessage
+      untrustedSignedTxJson: signedLotusMessageJSON
     }
   }
 
   transport.addSendCommandResponse(signTransactionResponse)
 
-  const result: SignHardwareOperationResult = await keyring.signTransaction(
-    'transaction'
-  )
+  const result = await keyring.signTransaction('transaction')
 
-  const expectedResult: SignHardwareOperationResult = {
+  const expectedResult: HardwareOperationResultFilecoinSignature = {
     success: true,
-    payload: signedLotusMessage
+    signature: {
+      signedMessageJson: signedLotusMessageJSON
+    }
   }
   expect(result).toEqual(expectedResult)
 })
@@ -181,15 +216,21 @@ test('Sign transaction locked device, unlock error', async () => {
     command: LedgerCommand.SignTransaction,
     payload: {
       success: true,
-      lotusMessage: signedLotusMessage
+      untrustedSignedTxJson: signedLotusMessageJSON
     }
   }
 
   transport.addSendCommandResponse(signTransactionResponse)
 
+  const expectedResult: HardwareOperationError = {
+    success: false,
+    error: 'LedgerError',
+    code: 101
+  }
+
   return expect(
     await keyring.signTransaction(JSON.stringify('message'))
-  ).toEqual({ message: 'LedgerError', statusCode: 101, success: false })
+  ).toEqual(expectedResult)
 })
 
 test('Sign transaction locked device, parsing error', async () => {
@@ -202,19 +243,17 @@ test('Sign transaction locked device, parsing error', async () => {
     command: LedgerCommand.SignTransaction,
     payload: {
       success: false,
-      message: 'LedgerError',
-      statusCode: 101
+      error: 'LedgerError',
+      code: 101
     }
   }
   transport.addSendCommandResponse(signTransactionResponse)
 
-  return expect(await keyring.signTransaction('{,,')).toEqual({
+  const expectedResult: HardwareOperationError = {
     success: false,
-    code: 101,
-    error: {
-      success: false,
-      message: 'LedgerError',
-      statusCode: 101
-    }
-  })
+    error: 'LedgerError',
+    code: 101
+  }
+
+  return expect(await keyring.signTransaction('{,,')).toEqual(expectedResult)
 })
