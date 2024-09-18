@@ -98,6 +98,11 @@ def read_env_config_as_dict(file_path, result_dict=None):
                 # strings to uppercase.
                 result_dict[key.upper()] = value
 
+                # Store JSON-escaped variants to be used in a buildflag header.
+                escaped_value = json.dumps(value)
+                result_dict[key + '_escaped'] = escaped_value
+                result_dict[key.upper() + '_escaped'] = escaped_value
+
     return result_dict
 
 

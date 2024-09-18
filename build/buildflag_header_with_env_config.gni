@@ -17,10 +17,17 @@ if (defined(env_config.allow_empty_env_config_flags)) {
 # Similar to buildflag_header(), but supports flags defined in .env file.
 #
 # For example, "sample_secret_key=iamsecret" in the .env file can be generated
-# into a buildflag header as `SAMPLE_SECRET_KEY="iamsecret"` using the
-# following:
+# into a buildflag header as `SAMPLE_SECRET_KEY=\"iamsecret\"` using the
+# following format:
 #
 #   env_config_flags = [ "SAMPLE_SECRET_KEY" ]
+#
+# If the value is not set, it will default to an empty string. A custom default
+# value can be provided using the following format:
+#
+#   env_config_flags = [ "SAMPLE_SECRET_KEY=\"iamdefault\"" ]
+#   env_config_flags = [ "SAMPLE_BOOLEAN_PARAM=false" ]
+#   env_config_flags = [ "SAMPLE_INTEGER_PARAM=0" ]
 #
 # The generator will match the lowercase version of the flag name in the .env
 # file. If the flag is not found in the .env file, it will be generated as an
@@ -30,23 +37,33 @@ template("buildflag_header_with_env_config") {
     forward_variables_from(invoker, "*", [ "env_config_flags" ])
 
     if (defined(invoker.env_config_flags)) {
-      _extracted_env_config_flags = []
+      if (!defined(flags)) {
+        flags = []
+      }
 
       foreach(name, invoker.env_config_flags) {
-        if (defined(env_config[name])) {
-          _extracted_env_config_flags += [ "$name=\"${env_config[name]}\"" ]
+        _name_and_default_value = []
+        _name_and_default_value = string_split(name, "=")
+        if (_name_and_default_value[0] == name) {
+          # No default value provided.
+          _default_value = "\"\""
+        } else {
+          # Default value provided.
+          name = _name_and_default_value[0]
+          _default_value = _name_and_default_value[1]
+        }
+
+        _escaped_name = name + "_escaped"
+        if (defined(env_config[_escaped_name])) {
+          _env_config_flag_value = env_config[_escaped_name]
+          not_needed([ "_default_value" ])
         } else {
           assert(allow_empty_env_config_flags,
                  "$name (or lowercase variant) is not set in " +
                      string_join(" or ", env_config_files))
-          _extracted_env_config_flags += [ "$name=\"\"" ]
+          _env_config_flag_value = _default_value
         }
-      }
-
-      if (defined(flags)) {
-        flags += _extracted_env_config_flags
-      } else {
-        flags = _extracted_env_config_flags
+        flags += [ "$name=$_env_config_flag_value" ]
       }
     }
   }
