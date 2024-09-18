@@ -47,7 +47,7 @@ constexpr double kOneDayMultiplier = 1.1;
 constexpr double kMorningNewsBoost = 3;
 constexpr double kEveningEntertainmentBoost = 3;
 
-constexpr double kMaxCandidatesScorePercentCutoff = 0.8;
+constexpr double kMaxCandidatesScorePercentCutoff = 0.7;
 
 constexpr char kEntertainmentChannel[] = "Entertainment";
 }  // namespace
