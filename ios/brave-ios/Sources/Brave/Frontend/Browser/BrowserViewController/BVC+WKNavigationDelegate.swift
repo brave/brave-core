@@ -29,11 +29,17 @@ class SampledTopPageColorNotifier: NSObject {
   private let keyPath = "_sampl\("edPageTopC")olor"
   private weak var webView: CWVWebView?
   private let handler: (UIColor?) -> Void
+  private var notified: Bool = false
   init(webView: CWVWebView, handler: @escaping (UIColor?) -> Void) {
     self.webView = webView
     self.handler = handler
     super.init()
     webView.underlyingWebView?.addObserver(self, forKeyPath: keyPath, context: nil)
+  }
+  deinit {
+    if !notified {
+      webView?.underlyingWebView?.removeObserver(self, forKeyPath: keyPath)
+    }
   }
   override func observeValue(
     forKeyPath keyPath: String?,
@@ -41,6 +47,7 @@ class SampledTopPageColorNotifier: NSObject {
     change: [NSKeyValueChangeKey: Any]?,
     context: UnsafeMutableRawPointer?
   ) {
+    defer { notified = true }
     guard let webView, keyPath == self.keyPath else { return }
     handler(webView.underlyingWebView?.sampledPageTopColor)
     webView.underlyingWebView?.removeObserver(self, forKeyPath: self.keyPath)
