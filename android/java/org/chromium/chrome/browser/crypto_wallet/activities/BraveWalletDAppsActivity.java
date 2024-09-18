@@ -91,8 +91,14 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
     private ActivityType mActivityType;
 
     @Override
-    protected void triggerLayoutInflation() {
+    protected void onPreCreate() {
+        super.onPreCreate();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+    }
+
+    @Override
+    protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_brave_wallet_dapps);
         Intent intent = getIntent();
         mActivityType =
