@@ -11,6 +11,8 @@ import TopLayerLight from './assets/top_layer_light.svg'
 import BottomLayerLight from './assets/bottom_layer_light.svg'
 import TopLayerDark from './assets/top_layer_dark.svg'
 import BottomLayerDark from './assets/bottom_layer_dark.svg'
+import LinesLight from './assets/portfolio_lines_background_light.svg'
+import LinesDark from './assets/portfolio_lines_background_dark.svg'
 
 // Shared Styles
 import { Row } from '../../shared/style'
@@ -105,12 +107,15 @@ export const ContainerCard = styled.div<{
   noBorderRadius?: boolean
   useDarkBackground?: boolean
   useFullHeight?: boolean
+  noBackground?: boolean
 }>`
   display: flex;
   flex: none;
   flex-direction: column;
   background-color: ${(p) =>
-    p.useDarkBackground
+    p.noBackground
+      ? 'unset'
+      : p.useDarkBackground
       ? leo.color.page.background
       : leo.color.container.background};
   border-radius: ${(p) => (p.hideCardHeader ? '24px' : '0px 0px 24px 24px')};
@@ -287,5 +292,20 @@ export const FeatureRequestButtonWrapper = styled.div`
   display: flex;
   @media screen and (max-width: 1445px) {
     display: none;
+  }
+`
+
+export const PortfolioBackgroundWatermark = styled.div`
+  width: 100%;
+  height: 100%;
+  background-image: url(${LinesLight});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  @media (prefers-color-scheme: dark) {
+    background-image: url(${LinesDark});
   }
 `
