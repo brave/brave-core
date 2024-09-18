@@ -8,8 +8,7 @@
 
 #include <memory>
 
-#include "components/keyed_service/content/browser_context_keyed_service_factory.h"
-#include "content/public/browser/browser_context.h"
+#include "chrome/browser/profiles/profile_keyed_service_factory.h"
 
 namespace base {
 template <typename T>
@@ -19,7 +18,7 @@ class NoDestructor;
 namespace ai_chat {
 class AIChatService;
 
-class AIChatServiceFactory : public BrowserContextKeyedServiceFactory {
+class AIChatServiceFactory : public ProfileKeyedServiceFactory {
  public:
   AIChatServiceFactory(const AIChatServiceFactory&) = delete;
   AIChatServiceFactory& operator=(const AIChatServiceFactory&) = delete;
@@ -33,9 +32,7 @@ class AIChatServiceFactory : public BrowserContextKeyedServiceFactory {
   AIChatServiceFactory();
   ~AIChatServiceFactory() override;
 
-  // BrowserContextKeyedServiceFactory overrides:
-  content::BrowserContext* GetBrowserContextToUse(
-      content::BrowserContext* context) const override;
+  // ProfileKeyedServiceFactory overrides:
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
 };

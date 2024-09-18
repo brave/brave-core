@@ -114,8 +114,8 @@ void AssociatedContentDelegate::GetTopSimilarityWithPromptTilContextLimit(
 void AssociatedContentDelegate::OnTextEmbedderInitialized(bool initialized) {
   if (!initialized) {
     VLOG(1) << "Failed to initialize TextEmbedder";
-    for (auto& callback_info : pending_top_similarity_requests_) {
-      std::move(std::get<3>(callback_info))
+    for (auto& request_info : pending_top_similarity_requests_) {
+      std::move(std::get<3>(request_info))
           .Run(base::unexpected<std::string>(
               "Failed to initialize TextEmbedder"));
     }
@@ -124,10 +124,10 @@ void AssociatedContentDelegate::OnTextEmbedderInitialized(bool initialized) {
   }
 
   CHECK(text_embedder_);
-  for (auto& callback_info : pending_top_similarity_requests_) {
+  for (auto& request_info : pending_top_similarity_requests_) {
     text_embedder_->GetTopSimilarityWithPromptTilContextLimit(
-        std::get<0>(callback_info), std::get<1>(callback_info),
-        std::get<2>(callback_info), std::move(std::get<3>(callback_info)));
+        std::get<0>(request_info), std::get<1>(request_info),
+        std::get<2>(request_info), std::move(std::get<3>(request_info)));
   }
   pending_top_similarity_requests_.clear();
 }

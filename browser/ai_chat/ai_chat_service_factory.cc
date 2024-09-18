@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/no_destructor.h"
+#include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/skus/skus_service_factory.h"
@@ -37,30 +38,26 @@ AIChatServiceFactory* AIChatServiceFactory::GetInstance() {
 AIChatService* AIChatServiceFactory::GetForBrowserContext(
     content::BrowserContext* context) {
   CHECK(context);
+  if (!IsAllowedForContext(context) ||
+      !ModelServiceFactory::GetForBrowserContext(context) ||
+      !skus::SkusServiceFactory::GetForContext(context)) {
+    return nullptr;
+  }
   return static_cast<AIChatService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
 AIChatServiceFactory::AIChatServiceFactory()
-    : BrowserContextKeyedServiceFactory(
+    : ProfileKeyedServiceFactory(
           "AIChatService",
-          BrowserContextDependencyManager::GetInstance()) {
+          ProfileSelections::Builder()
+              .WithRegular(ProfileSelection::kOriginalOnly)
+              .Build()) {
   DependsOn(skus::SkusServiceFactory::GetInstance());
   DependsOn(ModelServiceFactory::GetInstance());
 }
 
 AIChatServiceFactory::~AIChatServiceFactory() = default;
-
-content::BrowserContext* AIChatServiceFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  if (!Profile::FromBrowserContext(context)->IsRegularProfile() ||
-      !features::IsAIChatEnabled() ||
-      !ModelServiceFactory::GetForBrowserContext(context) ||
-      !skus::SkusServiceFactory::GetForContext(context)) {
-    return nullptr;
-  }
-  return context;
-}
 
 std::unique_ptr<KeyedService>
 AIChatServiceFactory::BuildServiceInstanceForBrowserContext(

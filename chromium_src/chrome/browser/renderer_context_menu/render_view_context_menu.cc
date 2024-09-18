@@ -310,6 +310,9 @@ void OnRewriteSuggestionCompleted(
     ai_chat::AIChatService* ai_chat_service =
         ai_chat::AIChatServiceFactory::GetForBrowserContext(
             web_contents.get()->GetBrowserContext());
+    if (!ai_chat_service) {
+      return;
+    }
     ai_chat::AIChatTabHelper* helper =
         ai_chat::AIChatTabHelper::FromWebContents(web_contents.get());
     if (!helper) {
