@@ -195,7 +195,12 @@ const PrepopulatedEngine brave_search = MakeBravePrepopulatedEngine(
 #endif
     "UTF-8",
     "https://search.brave.com/api/"
-    "suggest?q={searchTerms}&rich=true&source=browser",
+    "suggest?q={searchTerms}&rich=true&source="
+#if BUILDFLAG(IS_ANDROID)
+    "android",
+#else
+    "desktop",
+#endif
     SEARCH_ENGINE_OTHER,
     PREPOPULATED_ENGINE_ID_BRAVE);
 
