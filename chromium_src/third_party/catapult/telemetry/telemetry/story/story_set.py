@@ -12,14 +12,14 @@ import override_utils
 from py_utils import cloud_storage
 
 with brave_chromium_utils.sys_path('//brave/tools/perf'):
-    from components.path_util import GetPageSetsDataPath
+    from components.path_util import GetPageSetsDataPath, GetBraveDir
 
 _WPR_ARCHIVES_TO_REPLACE = [
     'system_health_desktop.json',
     'system_health_mobile.json',
     'rendering_desktop.json',
     'rendering_mobile.json',
-    # 'jetstream2.json',
+    'jetstream2.json',
 ]
 
 
@@ -51,6 +51,7 @@ def __init__(self,
         self._archive_data_file = os.path.relpath(new_archive_path,
                                                   self._base_dir)
     else:
-        if cloud_storage_bucket != cloud_storage.PUBLIC_BUCKET:
+        if cloud_storage_bucket != cloud_storage.PUBLIC_BUCKET and not archive_path.startswith(
+                GetBraveDir()):
             raise RuntimeError(
                 f'No brave replacement for private WPR {archive_path}')
