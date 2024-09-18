@@ -7,6 +7,8 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_UTILS_H_
 
 #include "base/functional/callback_forward.h"
+#include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "third_party/skia/include/core/SkBitmap.h"
@@ -29,6 +31,11 @@ bool IsPremiumStatus(mojom::PremiumStatus status);
 using GetOCRTextCallback = base::OnceCallback<void(std::string)>;
 void GetOCRText(const SkBitmap& image, GetOCRTextCallback callback);
 #endif
+
+const std::string& GetActionTypeQuestion(mojom::ActionType action_type);
+
+EngineConsumer::GenerationDataCallback BindParseRewriteReceivedData(
+    ConversationHandler::GeneratedTextCallback callback);
 
 }  // namespace ai_chat
 

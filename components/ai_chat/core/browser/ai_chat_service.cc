@@ -285,6 +285,8 @@ void AIChatService::OnConversationEntriesChanged(
 }
 
 void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
+  DVLOG(4) << "Client connection changed for conversation "
+           << handler->get_conversation_uuid();
   MaybeEraseConversation(handler);
 }
 

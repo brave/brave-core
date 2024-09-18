@@ -10,10 +10,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/fixed_flat_set.h"
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
-#include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
@@ -26,12 +24,13 @@
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/types.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "third_party/re2/src/re2/re2.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace ai_chat {
@@ -43,55 +42,6 @@ using ai_chat::mojom::ConversationTurn;
 
 using AssociatedContentDelegate =
     ConversationHandler::AssociatedContentDelegate;
-
-const base::flat_map<mojom::ActionType, std::string>&
-GetActionTypeQuestionMap() {
-  static const base::NoDestructor<
-      base::flat_map<mojom::ActionType, std::string>>
-      kMap({{mojom::ActionType::SUMMARIZE_PAGE,
-             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE)},
-            {mojom::ActionType::SUMMARIZE_VIDEO,
-             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO)},
-            {mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
-             l10n_util::GetStringUTF8(
-                 IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT)},
-            {mojom::ActionType::EXPLAIN,
-             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_EXPLAIN)},
-            {mojom::ActionType::PARAPHRASE,
-             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PARAPHRASE)},
-            {mojom::ActionType::CREATE_TAGLINE,
-             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_CREATE_TAGLINE)},
-            {mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_SHORT,
-             l10n_util::GetStringUTF8(
-                 IDS_AI_CHAT_QUESTION_CREATE_SOCIAL_MEDIA_COMMENT_SHORT)},
-            {mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_LONG,
-             l10n_util::GetStringUTF8(
-                 IDS_AI_CHAT_QUESTION_CREATE_SOCIAL_MEDIA_COMMENT_LONG)},
-            {mojom::ActionType::IMPROVE,
-             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_IMPROVE)},
-            {mojom::ActionType::PROFESSIONALIZE,
-             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PROFESSIONALIZE)},
-            {mojom::ActionType::PERSUASIVE_TONE,
-             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PERSUASIVE_TONE)},
-            {mojom::ActionType::CASUALIZE,
-             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_CASUALIZE)},
-            {mojom::ActionType::FUNNY_TONE,
-             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_FUNNY_TONE)},
-            {mojom::ActionType::ACADEMICIZE,
-             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_ACADEMICIZE)},
-            {mojom::ActionType::SHORTEN,
-             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SHORTEN)},
-            {mojom::ActionType::EXPAND,
-             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_EXPAND)}});
-  return *kMap;
-}
-
-const std::string& GetActionTypeQuestion(mojom::ActionType action_type) {
-  const auto& map = GetActionTypeQuestionMap();
-  auto iter = map.find(action_type);
-  CHECK(iter != map.end());
-  return iter->second;
-}
 
 uint32_t GetMaxContentLengthForModel(const mojom::Model& model) {
   return model.options->is_custom_model_options()
@@ -199,6 +149,9 @@ ConversationHandler::ConversationHandler(
   receivers_.set_disconnect_handler(
       base::BindRepeating(&ConversationHandler::OnClientConnectionChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+  conversation_ui_handlers_.set_disconnect_handler(base::BindRepeating(
+      &ConversationHandler::OnConversationUIConnectionChanged,
+      weak_ptr_factory_.GetWeakPtr()));
   models_observer_.Observe(model_service_.get());
   // TODO(petemill): differ based on premium status, if different
   ChangeModel(model_service->GetDefaultModelKey());
@@ -240,7 +193,6 @@ void ConversationHandler::Bind(
 }
 
 bool ConversationHandler::IsAnyClientConnected() {
-  DVLOG(2) << metadata_->uuid << " HAS " << receivers_.size() << " RECEIVERS!";
   return !receivers_.empty() || !conversation_ui_handlers_.empty();
 }
 
@@ -745,7 +697,9 @@ void ConversationHandler::GenerateQuestions() {
     return;
   }
   // We're not expecting to already have generated suggestions
-  if (suggestions_.size() >= 1u) {
+  const size_t expected_existing_suggestions_size =
+      (IsContentAssociationPossible() && should_send_page_contents_) ? 1u : 0u;
+  if (suggestions_.size() > expected_existing_suggestions_size) {
     DLOG(ERROR) << "GenerateQuestions should not be called more than once";
     return;
   }
@@ -837,67 +791,22 @@ void ConversationHandler::ClearErrorAndGetFailedMessage(
   std::move(callback).Run(std::move(turn));
 }
 
-void ConversationHandler::SubmitSelectedText(
-    const std::string& selected_text,
-    mojom::ActionType action_type,
-    GeneratedTextCallback received_callback,
-    EngineConsumer::GenerationCompletedCallback completed_callback) {
+void ConversationHandler::SubmitSelectedText(const std::string& selected_text,
+                                             mojom::ActionType action_type) {
   const std::string& question = GetActionTypeQuestion(action_type);
-  SubmitSelectedTextWithQuestion(selected_text, question, action_type,
-                                 std::move(received_callback),
-                                 std::move(completed_callback));
+  SubmitSelectedTextWithQuestion(selected_text, question, action_type);
 }
 
 void ConversationHandler::SubmitSelectedTextWithQuestion(
     const std::string& selected_text,
     const std::string& question,
-    mojom::ActionType action_type,
-    GeneratedTextCallback received_callback,
-    EngineConsumer::GenerationCompletedCallback completed_callback) {
-  if (received_callback && completed_callback) {
-    // Start a one-off request and replace in-place with the result.
-    // TODO(petemill): This should only belong in the caller location,
-    // such as ai rewriter dialog (or a shared utility).
-    engine_->GenerateRewriteSuggestion(
-        selected_text, question,
-        base::BindRepeating(
-            [](GeneratedTextCallback received_callback,
-               mojom::ConversationEntryEventPtr rewrite_event) {
-              constexpr char kResponseTagPattern[] =
-                  "<\\/?(response|respons|respon|respo|resp|res|re|r)?$";
-              if (!rewrite_event->is_completion_event()) {
-                return;
-              }
+    mojom::ActionType action_type) {
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
+      CharacterType::HUMAN, action_type,
+      mojom::ConversationTurnVisibility::VISIBLE, question, selected_text,
+      std::nullopt, base::Time::Now(), std::nullopt, false);
 
-              std::string suggestion =
-                  rewrite_event->get_completion_event()->completion;
-
-              base::TrimWhitespaceASCII(suggestion, base::TRIM_ALL,
-                                        &suggestion);
-              if (suggestion.empty()) {
-                return;
-              }
-
-              // Avoid showing the ending tag.
-              if (RE2::PartialMatch(suggestion, kResponseTagPattern)) {
-                return;
-              }
-
-              received_callback.Run(suggestion);
-            },
-            std::move(received_callback)),
-        std::move(completed_callback));
-  } else if (!received_callback && !completed_callback) {
-    // Use sidebar.
-    mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
-        CharacterType::HUMAN, action_type,
-        mojom::ConversationTurnVisibility::VISIBLE, question, selected_text,
-        std::nullopt, base::Time::Now(), std::nullopt, false);
-
-    SubmitHumanConversationEntry(std::move(turn));
-  } else {
-    NOTREACHED_NORETURN() << "Both callbacks must be set or unset";
-  }
+  SubmitHumanConversationEntry(std::move(turn));
 }
 
 bool ConversationHandler::MaybePopPendingRequests() {
@@ -1065,6 +974,7 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
 
   if (!is_page_associated && !suggestions_.empty()) {
     suggestions_.clear();
+    suggestion_generation_status_ = mojom::SuggestionGenerationStatus::None;
     OnSuggestedQuestionsChanged();
     return;
   }
@@ -1381,9 +1291,17 @@ void ConversationHandler::OnAssociatedContentInfoChanged() {
 }
 
 void ConversationHandler::OnClientConnectionChanged() {
+  DVLOG(2) << metadata_->uuid << " has " << receivers_.size()
+           << " RECEIVERS and " << conversation_ui_handlers_.size()
+           << " UI HANDLERS";
   for (auto& observer : observers_) {
     observer.OnClientConnectionChanged(this);
   }
+}
+
+void ConversationHandler::OnConversationUIConnectionChanged(
+    mojo::RemoteSetElementId id) {
+  OnClientConnectionChanged();
 }
 
 void ConversationHandler::OnAssociatedContentFaviconImageDataChanged() {

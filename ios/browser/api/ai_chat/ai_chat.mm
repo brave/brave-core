@@ -186,59 +186,9 @@
 
 - (void)submitSelectedText:(NSString*)selectedText
                 actionType:(AiChatActionType)actionType {
-  [self submitSelectedText:selectedText
-                actionType:actionType
-              onSuggestion:nil
-               onCompleted:nil];
-}
-
-- (void)submitSelectedText:(NSString*)selectedText
-                actionType:(AiChatActionType)actionType
-              onSuggestion:(void (^)(NSString*))onSuggestion
-               onCompleted:(void (^)(NSString* result,
-                                     AiChatAPIError error))onCompleted {
   current_conversation_->SubmitSelectedText(
       base::SysNSStringToUTF8(selectedText),
-      static_cast<ai_chat::mojom::ActionType>(actionType),
-      onSuggestion ? base::BindRepeating(^(const std::string& suggestion_text) {
-        onSuggestion(base::SysUTF8ToNSString(suggestion_text));
-      })
-                   : base::NullCallback(),
-      onCompleted
-          ? base::BindOnce(^(ai_chat::EngineConsumer::GenerationResult result) {
-              if (auto result_string = result; result_string.has_value()) {
-                onCompleted(base::SysUTF8ToNSString(result_string.value()),
-                            AiChatAPIErrorNone);
-              } else {
-                onCompleted(nil, static_cast<AiChatAPIError>(result.error()));
-              }
-            })
-          : base::NullCallback());
-}
-
-- (void)submitSelectedText:(NSString*)selectedText
-                  question:(NSString*)question
-                actionType:(AiChatActionType)actionType
-              onSuggestion:(void (^)(NSString*))onSuggestion
-               onCompleted:(void (^)(NSString* result,
-                                     AiChatAPIError error))onCompleted {
-  current_conversation_->SubmitSelectedTextWithQuestion(
-      base::SysNSStringToUTF8(selectedText), base::SysNSStringToUTF8(question),
-      static_cast<ai_chat::mojom::ActionType>(actionType),
-      onSuggestion ? base::BindRepeating(^(const std::string& suggestion_text) {
-        onSuggestion(base::SysUTF8ToNSString(suggestion_text));
-      })
-                   : base::NullCallback(),
-      onCompleted
-          ? base::BindOnce(^(ai_chat::EngineConsumer::GenerationResult result) {
-              if (auto result_string = result; result_string.has_value()) {
-                onCompleted(base::SysUTF8ToNSString(result_string.value()),
-                            AiChatAPIErrorNone);
-              } else {
-                onCompleted(nil, static_cast<AiChatAPIError>(result.error()));
-              }
-            })
-          : base::NullCallback());
+      static_cast<ai_chat::mojom::ActionType>(actionType));
 }
 
 - (void)rateMessage:(bool)isLiked

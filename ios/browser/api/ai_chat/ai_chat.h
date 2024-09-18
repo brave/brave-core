@@ -46,19 +46,6 @@ OBJC_EXPORT
 - (void)submitSelectedText:(NSString*)selectedText
                 actionType:(AiChatActionType)actionType;
 
-- (void)submitSelectedText:(NSString*)selectedText
-                actionType:(AiChatActionType)actionType
-              onSuggestion:(void (^_Nullable)(NSString* _Nullable))onSuggestion
-               onCompleted:(void (^_Nullable)(NSString* _Nullable result,
-                                              AiChatAPIError error))onCompleted;
-
-- (void)submitSelectedText:(NSString*)selectedText
-                  question:(NSString*)question
-                actionType:(AiChatActionType)actionType
-              onSuggestion:(void (^)(NSString* _Nullable))onSuggestion
-               onCompleted:(void (^)(NSString* _Nullable result,
-                                     AiChatAPIError error))onCompleted;
-
 - (void)rateMessage:(bool)isLiked
              turnId:(NSUInteger)turnId
          completion:

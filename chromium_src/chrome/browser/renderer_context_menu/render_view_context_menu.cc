@@ -587,20 +587,21 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
 
   auto [action_type, p3a_action] = GetActionTypeAndP3A(command);
   auto selected_text = base::UTF16ToUTF8(params_.selection_text);
-  auto data_received_callback =
-      rewrite_in_place ? base::BindRepeating(&OnRewriteSuggestionDataReceived,
-                                             source_web_contents_->GetWeakPtr())
-                       : base::NullCallback();
-  auto completed_callback =
-      rewrite_in_place ? base::BindOnce(&OnRewriteSuggestionCompleted,
-                                        source_web_contents_->GetWeakPtr(),
-                                        selected_text, action_type)
-                       : base::NullCallback();
-
-  conversation->SubmitSelectedText(selected_text, action_type,
-                                   std::move(data_received_callback),
-                                   std::move(completed_callback));
-
+  if (rewrite_in_place) {
+    ai_engine_ = ai_chat::AIChatServiceFactory::GetForBrowserContext(
+                     source_web_contents_->GetBrowserContext())
+                     ->GetDefaultAIEngine();
+    ai_engine_->GenerateRewriteSuggestion(
+        selected_text, ai_chat::GetActionTypeQuestion(action_type),
+        ai_chat::BindParseRewriteReceivedData(
+            base::BindRepeating(&OnRewriteSuggestionDataReceived,
+                                source_web_contents_->GetWeakPtr())),
+        base::BindOnce(&OnRewriteSuggestionCompleted,
+                       source_web_contents_->GetWeakPtr(), selected_text,
+                       action_type));
+  } else {
+    conversation->SubmitSelectedText(selected_text, action_type);
+  }
   g_brave_browser_process->process_misc_metrics()
       ->ai_chat_metrics()
       ->RecordContextMenuUsage(p3a_action);

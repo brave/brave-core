@@ -204,18 +204,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   void ClearErrorAndGetFailedMessage(
       ClearErrorAndGetFailedMessageCallback callback) override;
 
-  void SubmitSelectedText(
-      const std::string& selected_text,
-      mojom::ActionType action_type,
-      GeneratedTextCallback received_callback = base::NullCallback(),
-      EngineConsumer::GenerationCompletedCallback completed_callback =
-          base::NullCallback());
-  void SubmitSelectedTextWithQuestion(
-      const std::string& selected_text,
-      const std::string& question,
-      mojom::ActionType action_type,
-      GeneratedTextCallback received_callback,
-      EngineConsumer::GenerationCompletedCallback completed_callback);
+  void SubmitSelectedText(const std::string& selected_text,
+                          mojom::ActionType action_type);
+  void SubmitSelectedTextWithQuestion(const std::string& selected_text,
+                                      const std::string& question,
+                                      mojom::ActionType action_type);
   bool MaybePopPendingRequests();
   void MaybeUnlinkAssociatedContent();
   void AddSubmitSelectedTextError(const std::string& selected_text,
@@ -317,6 +310,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnSuggestedQuestionsChanged();
   void OnAssociatedContentInfoChanged();
   void OnClientConnectionChanged();
+  void OnConversationUIConnectionChanged(mojo::RemoteSetElementId id);
   void OnAssociatedContentFaviconImageDataChanged();
   void OnAPIRequestInProgressChanged();
 

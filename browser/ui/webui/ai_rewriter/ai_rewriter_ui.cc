@@ -17,10 +17,9 @@
 #include "brave/browser/ui/ai_rewriter/ai_rewriter_dialog_delegate.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_rewriter/common/features.h"
@@ -37,7 +36,6 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "third_party/re2/src/re2/re2.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
@@ -114,11 +112,13 @@ void AIRewriterUI::RewriteText(const std::string& text,
     return;
   }
 
-  // TODO(petemill): Pass |action| when supported by engine
+  // TODO(petemill): Pass |action| in addition to |instructions| when supported
+  // by engine.
   ai_engine_->GenerateRewriteSuggestion(
       text, instructions,
-      base::BindRepeating(&AIRewriterUI::OnRewriteSuggestionGenerated,
-                          weak_ptr_factory_.GetWeakPtr()),
+      ai_chat::BindParseRewriteReceivedData(
+          base::BindRepeating(&AIRewriterUI::OnRewriteSuggestionGenerated,
+                              weak_ptr_factory_.GetWeakPtr())),
       base::BindOnce(
           [](RewriteTextCallback callback,
              ai_chat::EngineConsumer::GenerationResult result) {
@@ -165,26 +165,7 @@ void AIRewriterUI::GetActionMenuList(GetActionMenuListCallback callback) {
   std::move(callback).Run(ai_chat::GetActionMenuList());
 }
 
-void AIRewriterUI::OnRewriteSuggestionGenerated(
-    ai_chat::mojom::ConversationEntryEventPtr rewrite_event) {
-  constexpr char kResponseTagPattern[] =
-      "<\\/?(response|respons|respon|respo|resp|res|re|r)?$";
-  if (!rewrite_event->is_completion_event()) {
-    return;
-  }
-
-  std::string suggestion = rewrite_event->get_completion_event()->completion;
-
-  base::TrimWhitespaceASCII(suggestion, base::TRIM_ALL, &suggestion);
-  if (suggestion.empty()) {
-    return;
-  }
-
-  // Avoid showing the ending tag.
-  if (RE2::PartialMatch(suggestion, kResponseTagPattern)) {
-    return;
-  }
-
+void AIRewriterUI::OnRewriteSuggestionGenerated(const std::string& suggestion) {
   if (page_.is_bound()) {
     page_->OnUpdatedGeneratedText(suggestion);
   }

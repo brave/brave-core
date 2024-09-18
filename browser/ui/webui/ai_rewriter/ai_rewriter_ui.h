@@ -64,8 +64,7 @@ class AIRewriterUI : public ConstrainedWebDialogUI,
   AIRewriterDialogDelegate* GetDialogDelegate();
   content::WebContents* GetTargetContents();
 
-  void OnRewriteSuggestionGenerated(
-      ai_chat::mojom::ConversationEntryEventPtr rewrite_event);
+  void OnRewriteSuggestionGenerated(const std::string& rewrite_event);
 
   raw_ptr<Profile> profile_ = nullptr;
   bool dialog_closed_ = false;

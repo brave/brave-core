@@ -33,6 +33,7 @@
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
@@ -282,6 +283,40 @@ MATCHER_P(LastTurnHasText, expected_text, "") {
 
 MATCHER_P(LastTurnHasSelectedText, expected_text, "") {
   return !arg.empty() && arg.back()->selected_text == expected_text;
+}
+
+TEST_F(ConversationHandlerUnitTest, GetState) {
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  for (bool should_send_content : {false, true}) {
+    SCOPED_TRACE(testing::Message()
+                 << "should_send_content: " << should_send_content);
+    conversation_handler_->SetShouldSendPageContents(should_send_content);
+    conversation_handler_->GetState(
+        base::BindLambdaForTesting([&](mojom::ConversationStatePtr state) {
+          EXPECT_EQ(state->conversation_uuid, "uuid");
+          EXPECT_FALSE(state->is_request_in_progress);
+          EXPECT_EQ(state->all_models.size(),
+                    model_service_->GetModels().size());
+          EXPECT_EQ(state->current_model_key,
+                    model_service_->GetDefaultModelKey());
+          if (should_send_content) {
+            EXPECT_THAT(state->suggested_questions,
+                        testing::ElementsAre(l10n_util::GetStringUTF8(
+                            IDS_CHAT_UI_SUMMARIZE_PAGE)));
+          } else {
+            EXPECT_TRUE(state->suggested_questions.empty());
+          }
+          EXPECT_EQ(state->suggestion_status,
+                    should_send_content
+                        ? mojom::SuggestionGenerationStatus::CanGenerate
+                        : mojom::SuggestionGenerationStatus::None);
+          EXPECT_TRUE(
+              state->associated_content_info->is_content_association_possible);
+          EXPECT_EQ(state->should_send_content, should_send_content);
+          EXPECT_EQ(state->error, mojom::APIError::None);
+        }));
+    task_environment_.RunUntilIdle();
+  }
 }
 
 TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
@@ -927,7 +962,7 @@ TEST_F(ConversationHandlerUnitTest,
 }
 
 TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
-       MaybeFetchOrClearSearchQuerySummary_NoAssociatedContent) {
+       MaybeFetchOrClearSearchQuerySummary) {
   // Ensure nothing gets staged when there's no associated content.
   conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
       [&](mojom::SiteInfoPtr site_info, bool should_send_page_contents) {
@@ -974,6 +1009,87 @@ TEST_F(ConversationHandlerUnitTest,
   NiceMock<MockConversationHandlerClient> client2(conversation_handler_.get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+}
+
+TEST_F(ConversationHandlerUnitTest, GenerateQuestions) {
+  std::string page_content = "Some example page content";
+  const std::string initial_question =
+      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE);
+  const std::vector<std::string> questions = {"Question 1?", "Question 2?",
+                                              "Question 3?", "Question 4?"};
+  std::vector<std::string> expected_results;
+  expected_results.push_back(initial_question);
+  base::ranges::copy(questions, std::back_inserter(expected_results));
+
+  conversation_handler_->SetShouldSendPageContents(true);
+  EXPECT_CALL(*associated_content_, GetURL)
+      .WillOnce(testing::Return(GURL("https://www.example.com")));
+  EXPECT_CALL(*associated_content_, GetContent)
+      .WillOnce(base::test::RunOnceCallback<0>(page_content, false, ""));
+
+  // Mock engine response
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine,
+              GenerateQuestionSuggestions(false, StrEq(page_content), _))
+      .WillOnce(base::test::RunOnceCallback<2>(questions));
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  testing::Sequence s;
+  EXPECT_CALL(client, OnSuggestedQuestionsChanged(
+                          testing::ElementsAre(initial_question),
+                          mojom::SuggestionGenerationStatus::IsGenerating))
+      .Times(1)
+      .InSequence(s);
+  EXPECT_CALL(client, OnSuggestedQuestionsChanged(
+                          testing::ContainerEq(expected_results),
+                          mojom::SuggestionGenerationStatus::HasGenerated))
+      .Times(1)
+      .InSequence(s);
+  conversation_handler_->GenerateQuestions();
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&client);
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+  testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+TEST_F(ConversationHandlerUnitTest, GenerateQuestions_DisableSendPageContent) {
+  conversation_handler_->SetShouldSendPageContents(false);
+  conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
+      [&](mojom::SiteInfoPtr site_info, bool should_send_page_contents) {
+        EXPECT_FALSE(should_send_page_contents);
+      }));
+  EXPECT_CALL(*associated_content_, GetURL).Times(0);
+  EXPECT_CALL(*associated_content_, GetContent).Times(0);
+
+  // Mock engine response
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, GenerateQuestionSuggestions(_, _, _)).Times(0);
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  testing::Sequence s;
+  EXPECT_CALL(client, OnSuggestedQuestionsChanged(_, _)).Times(0);
+  conversation_handler_->GenerateQuestions();
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&client);
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+  testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, GenerateQuestions) {
+  // Mock engine response
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, GenerateQuestionSuggestions(_, _, _)).Times(0);
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  testing::Sequence s;
+  EXPECT_CALL(client, OnSuggestedQuestionsChanged(_, _)).Times(0);
+  conversation_handler_->GenerateQuestions();
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&client);
+  testing::Mock::VerifyAndClearExpectations(engine);
 }
 
 class PageContentRefineTest : public ConversationHandlerUnitTest,
