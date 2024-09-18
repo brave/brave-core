@@ -119,8 +119,6 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
     EXPECT_EQ(helper_->GetPageURL(), url);
   }
 
-  // void NavigateHistory(bool back = false,
-
   void SimulateTitleChange(const std::u16string& title) {
     web_contents()->UpdateTitleForEntry(controller().GetLastCommittedEntry(),
                                         title);

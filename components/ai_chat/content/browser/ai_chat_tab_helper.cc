@@ -249,8 +249,10 @@ void AIChatTabHelper::GetPageContent(
   bool is_pdf = IsPdf(web_contents());
   if (is_pdf && !is_pdf_a11y_info_loaded_) {
     if (pending_get_page_content_callback_) {
-      // TODO(petemill): Queue the callback in a Signal, instead of only
-      // allowing a single pending callback.
+      // TODO(petemill): Queue the callback in a OneShotEvent, instead of only
+      // allowing a single pending callback. At the moment, this doesn't matter
+      // since only higher level usage (|AssociatedContentDriver|) does
+      // queue calls to |GetPageContent| via a OneShotEvent.
       std::move(pending_get_page_content_callback_).Run("", false, "");
     }
     // invalidation_token doesn't matter for PDF extraction.
