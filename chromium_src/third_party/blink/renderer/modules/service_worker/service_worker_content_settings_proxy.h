@@ -9,12 +9,12 @@
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 
-#define AllowStorageAccessSync                               \
-  UnusedFunction() {                                         \
-    return false;                                            \
-  }                                                          \
-  BraveFarblingLevel GetBraveFarblingLevel(                  \
-      ContentSettingsType webcompat_settings_type) override; \
+#define AllowStorageAccessSync                                      \
+  UnusedFunction() {                                                \
+    return false;                                                   \
+  }                                                                 \
+  brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettings( \
+      ContentSettingsType webcompat_settings_type) override;        \
   bool AllowStorageAccessSync
 
 #include "src/third_party/blink/renderer/modules/service_worker/service_worker_content_settings_proxy.h"  // IWYU pragma: export

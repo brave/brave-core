@@ -10,8 +10,8 @@
 // affects this class.
 #include "third_party/blink/public/mojom/worker/worker_content_settings_proxy.mojom.h"
 
-#define RequestFileSystemAccessSync                                       \
-  GetBraveFarblingLevel(GetBraveFarblingLevelCallback callback) override; \
+#define RequestFileSystemAccessSync                                           \
+  GetBraveShieldsSettings(GetBraveShieldsSettingsCallback callback) override; \
   void RequestFileSystemAccessSync
 
 #include "src/content/browser/service_worker/service_worker_content_settings_proxy_impl.h"  // IWYU pragma: export

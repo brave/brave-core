@@ -7,20 +7,20 @@
 
 namespace content {
 
-void ServiceWorkerContentSettingsProxyImpl::GetBraveFarblingLevel(
-    GetBraveFarblingLevelCallback callback) {
+void ServiceWorkerContentSettingsProxyImpl::GetBraveShieldsSettings(
+    GetBraveShieldsSettingsCallback callback) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   // May be shutting down.
   if (!context_wrapper_->browser_context()) {
-    std::move(callback).Run(1 /* OFF */);
+    std::move(callback).Run(brave_shields::mojom::ShieldsSettings::New());
     return;
   }
   if (origin_.opaque()) {
-    std::move(callback).Run(1 /* OFF */);
+    std::move(callback).Run(brave_shields::mojom::ShieldsSettings::New());
     return;
   }
   std::move(callback).Run(
-      GetContentClient()->browser()->WorkerGetBraveFarblingLevel(
+      GetContentClient()->browser()->WorkerGetBraveShieldSettings(
           origin_.GetURL(), context_wrapper_->browser_context()));
 }
 

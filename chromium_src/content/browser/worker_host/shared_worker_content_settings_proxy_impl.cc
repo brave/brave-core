@@ -7,12 +7,13 @@
 
 namespace content {
 
-void SharedWorkerContentSettingsProxyImpl::GetBraveFarblingLevel(
-    GetBraveFarblingLevelCallback callback) {
+void SharedWorkerContentSettingsProxyImpl::GetBraveShieldsSettings(
+    GetBraveShieldsSettingsCallback callback) {
   if (!origin_.opaque()) {
-    owner_->GetBraveFarblingLevel(origin_.GetURL(), std::move(callback));
+    owner_->GetBraveShieldsSettings(origin_.GetURL(), std::move(callback));
   } else {
-    std::move(callback).Run(1 /* OFF */);
+    std::move(callback).Run(brave_shields::mojom::ShieldsSettings::New());
   }
 }
+
 }  // namespace content

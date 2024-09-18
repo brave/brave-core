@@ -218,13 +218,13 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   CHECK(h.Sign(domain, domain_key_, sizeof domain_key_));
   settings_client_ = GetContentSettingsClientFor(&context, true);
   if (settings_client_ != nullptr) {
-    auto raw_farbling_level = settings_client_->GetBraveFarblingLevel(
+    auto shields_settings = settings_client_->GetBraveShieldsSettings(
         ContentSettingsType::BRAVE_WEBCOMPAT_NONE);
     farbling_level_ =
         base::FeatureList::IsEnabled(
             brave_shields::features::kBraveShowStrictFingerprintingMode)
-            ? raw_farbling_level
-            : (raw_farbling_level == BraveFarblingLevel::OFF
+            ? shields_settings->farbling_level
+            : (shields_settings->farbling_level == BraveFarblingLevel::OFF
                    ? BraveFarblingLevel::OFF
                    : BraveFarblingLevel::BALANCED);
   }
@@ -412,10 +412,11 @@ BraveFarblingLevel BraveSessionCache::GetBraveFarblingLevel(
   if (settings_client_ != nullptr &&
       webcompat_content_settings > ContentSettingsType::BRAVE_WEBCOMPAT_NONE &&
       webcompat_content_settings < ContentSettingsType::BRAVE_WEBCOMPAT_ALL) {
-    auto farbling_level =
-        settings_client_->GetBraveFarblingLevel(webcompat_content_settings);
-    farbling_levels_.insert(webcompat_content_settings, farbling_level);
-    return farbling_level;
+    auto shields_settings =
+        settings_client_->GetBraveShieldsSettings(webcompat_content_settings);
+    farbling_levels_.insert(webcompat_content_settings,
+                            shields_settings->farbling_level);
+    return shields_settings->farbling_level;
   }
   return farbling_level_;
 }
