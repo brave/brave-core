@@ -58,7 +58,7 @@ public class BraveShieldsScreenshotUtil {
 
             if (isCancelled()) return;
 
-            mCallback.OnScrrenshotReady(pngBytes);
+            mCallback.OnScreenshotReady(pngBytes);
         }
     }
 
@@ -92,7 +92,7 @@ public class BraveShieldsScreenshotUtil {
             }
 
             if (isRetryCounterOver()) {
-                mCallback.OnScrrenshotReady(null);
+                mCallback.OnScreenshotReady(null);
                 return;
             }
 
@@ -110,7 +110,7 @@ public class BraveShieldsScreenshotUtil {
     }
 
     public interface BraveShieldsScreenshotUtilCallback {
-        void OnScrrenshotReady(@Nullable byte[] pngBytes);
+        void OnScreenshotReady(@Nullable byte[] pngBytes);
     }
 
     public BraveShieldsScreenshotUtil(
