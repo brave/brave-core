@@ -28,6 +28,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabBuilder;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.ui.RootUiCoordinator;
+import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.test.ChromeTabbedActivityTestRule;
 import org.chromium.chrome.test.batch.BlankCTATabInitialStateRule;
 import org.chromium.components.browser_ui.util.BrowserControlsVisibilityDelegate;
@@ -80,7 +81,8 @@ public class BraveSwipeRefreshHandlerTest {
                 null,
                 null,
                 rootUiCoordinator.getToolbarManager().getTabStripHeightSupplier(),
-                new OneshotSupplierImpl<ModuleRegistry>());
+                new OneshotSupplierImpl<ModuleRegistry>(),
+                new ObservableSupplierImpl<EdgeToEdgeController>());
     }
 
     @Test
