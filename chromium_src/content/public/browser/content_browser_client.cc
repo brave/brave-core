@@ -33,9 +33,9 @@ ContentBrowserClient::WorkerGetBraveShieldSettings(
   return brave_shields::mojom::ShieldsSettingsPtr();
 }
 
-GURL ContentBrowserClient::SanitizeURL(content::RenderFrameHost*,
-                                       const GURL& url) {
-  return url;
+std::optional<GURL> ContentBrowserClient::SanitizeURL(content::RenderFrameHost*,
+                                                      const GURL& url) {
+  return std::nullopt;
 }
 
 }  // namespace content
