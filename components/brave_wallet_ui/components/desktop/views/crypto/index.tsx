@@ -169,13 +169,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         isMetaMaskInstalled)) &&
     !isDefaultWalletBannerDismissed
 
-  const noBannerPadding =
-    isPanel &&
-    (!showBanner ||
-      (!isCheckingWalletBackupStatus &&
-        !isWalletBackedUp &&
-        !isBackupWarningDismissed))
-
   // memos
   const banners = React.useMemo(
     () => (
@@ -199,7 +192,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
                 setDismissBackupWarning(true)
               }}
               onClick={onShowBackup}
-              bannerType='danger'
+              bannerType='error'
               buttonText={getLocale('braveWalletBackupButton')}
               description={getLocale('braveWalletBackupWarningText')}
             />
@@ -236,7 +229,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
             <StyledWrapper>
               <Column
                 fullWidth={true}
-                padding={noBannerPadding ? '0px' : '20px 20px 0px 20px'}
+                padding={isPanel ? '0px' : '20px 20px 0px 20px'}
               >
                 {banners}
               </Column>
@@ -281,7 +274,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
             <StyledWrapper>
               <Column
                 fullWidth={true}
-                padding={noBannerPadding ? '0px' : '20px 20px 0px 20px'}
+                padding={isPanel ? '0px' : '20px 20px 0px 20px'}
               >
                 {banners}
               </Column>
