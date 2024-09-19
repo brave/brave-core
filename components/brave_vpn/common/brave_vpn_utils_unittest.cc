@@ -203,9 +203,13 @@ TEST(BraveVPNUtilsUnitTest, SelectedRegionNameMigration) {
                                      "au-au");
   brave_vpn::MigrateLocalStatePrefs(&local_state_pref_service);
   EXPECT_EQ("ocn-aus", local_state_pref_service.GetString(
-                           brave_vpn::prefs::kBraveVPNSelectedRegion));
+                           brave_vpn::prefs::kBraveVPNSelectedRegionV2));
   EXPECT_EQ(2, local_state_pref_service.GetInteger(
                    brave_vpn::prefs::kBraveVPNRegionListVersion));
+
+  // Check v1's selected region is preserved.
+  EXPECT_EQ("au-au", local_state_pref_service.GetString(
+                         brave_vpn::prefs::kBraveVPNSelectedRegion));
 }
 
 TEST(BraveVPNUtilsUnitTest, InvalidSelectedRegionNameMigration) {
@@ -218,7 +222,7 @@ TEST(BraveVPNUtilsUnitTest, InvalidSelectedRegionNameMigration) {
                                      "invalid");
   brave_vpn::MigrateLocalStatePrefs(&local_state_pref_service);
   EXPECT_EQ("", local_state_pref_service.GetString(
-                    brave_vpn::prefs::kBraveVPNSelectedRegion));
+                    brave_vpn::prefs::kBraveVPNSelectedRegionV2));
   EXPECT_EQ(2, local_state_pref_service.GetInteger(
                    brave_vpn::prefs::kBraveVPNRegionListVersion));
 }
