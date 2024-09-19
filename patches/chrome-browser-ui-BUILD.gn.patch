@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index bc6e4008f2c5a5aa47406e4ec69b804b356c7383..949fba72967d38a7696692ca73bfc48e25175918 100644
+index 1d4df92c6685b8f6a7501cb37a470235df57b507..7dff5f269ff1e7db3e01f5f48dac71d46703d00f 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -758,6 +758,7 @@ static_library("ui") {
-     # TODO(crbug.com/): It includes //c/b/ui/browser_dialogs.h and //c/b/ui/url_identity.h
-     "//chrome/browser/ui/file_system_access:impl",
+@@ -736,6 +736,7 @@ static_library("ui") {
+     "//chrome/browser/content_settings:impl",
+     "//chrome/browser/content_settings:content_settings_util_impl",
    ]
 +  public_deps += [ "//brave/browser/ui" ] allow_circular_includes_from += [ "//brave/browser/ui" ]
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -3823,7 +3824,10 @@ static_library("ui") {
+@@ -3656,7 +3657,10 @@ static_library("ui") {
        ]
        deps += [ "//chrome/updater/app/server/win:updater_legacy_idl" ]
      } else {

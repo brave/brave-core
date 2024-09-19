@@ -1,5 +1,5 @@
 diff --git a/components/browsing_data/core/BUILD.gn b/components/browsing_data/core/BUILD.gn
-index 9ca09f512e151ceea7efd92730d6b74592210afc..c5a96268ac4c463cbdfc18ca1ffe1c54016f467f 100644
+index 3da3507c5d3ec54f1b4307b3071350423492a232..0c94d05cc13d1bc00f389a497415fe33a94e0cbd 100644
 --- a/components/browsing_data/core/BUILD.gn
 +++ b/components/browsing_data/core/BUILD.gn
 @@ -49,6 +49,7 @@ static_library("core") {
@@ -9,4 +9,4 @@ index 9ca09f512e151ceea7efd92730d6b74592210afc..c5a96268ac4c463cbdfc18ca1ffe1c54
 +  import("//brave/components/browsing_data/core/sources.gni") deps += brave_components_browsing_data_core_deps
  }
  
- if (is_android) {
+ source_set("cookie_or_cache_deletion_choice") {

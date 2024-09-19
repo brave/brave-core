@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/extensions/sidebar.html b/chrome/browser/resources/extensions/sidebar.html
-index dbba22d216e5b0ff1acdc5b82eef5289a96a0ca8..21bb60f9e88bcc56a7099574f052fbb4b86bcf2b 100644
+index ff74778591b553de60c1125656f1108d70c6d868..bfa71e3cc8ddc6fee2539f87a2f24a3837913922 100644
 --- a/chrome/browser/resources/extensions/sidebar.html
 +++ b/chrome/browser/resources/extensions/sidebar.html
-@@ -74,6 +74,7 @@ cr-shared-style">
+@@ -24,6 +24,7 @@
      <cr-ripple></cr-ripple>
    </a>
  </cr-menu-selector>
@@ -10,8 +10,8 @@ index dbba22d216e5b0ff1acdc5b82eef5289a96a0ca8..21bb60f9e88bcc56a7099574f052fbb4
  <div class="separator"></div>
  <div class="cr-nav-menu-item" id="moreExtensions">
    <cr-icon id="web-store-icon" icon="extensions-icons:web_store">
-@@ -83,3 +84,4 @@ cr-shared-style">
-       inner-h-t-m-l="[[discoverMoreText_]]"></span>
+@@ -33,3 +34,4 @@
+       .innerHTML="${this.computeDiscoverMoreText_()}"></span>
    <cr-ripple></cr-ripple>
  </div>
 +-->

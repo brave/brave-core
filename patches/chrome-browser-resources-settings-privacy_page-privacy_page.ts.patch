@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.ts b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
-index ca19589fbc70408fce8ac69c4690eac95f50f309..0db8f2a862ba92ff3729097a1b62b25f748f4dcb 100644
+index ead2033ad6ce1cf4d537d5820e619f3f6556a061..7f8159faa04693c15cbc62ee7395d49373ce1b36 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.ts
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
-@@ -24,6 +24,7 @@ import '../settings_shared.css.js';
- import '../site_settings/offer_writing_help_page.js';
+@@ -23,6 +23,7 @@ import '../settings_page/settings_subpage.js';
+ import '../settings_shared.css.js';
  import '../site_settings/settings_category_default_radio_group.js';
  import '../site_settings/smart_card_readers_page.js';
 +import './personalization_options.js';

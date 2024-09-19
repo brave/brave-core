@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/tab_ui/android/BUILD.gn b/chrome/browser/tab_ui/android/BUILD.gn
-index f889ad2d2844ce64e15a6268684ecaa478316831..fae2eb47cbc248ed17294dd1aabdb2f1fcaa5664 100644
+index 2e13039e87e467c1f3ed394a2ae5fce8d21b8525..1dcb8453c41a6487c25013841855404d928b09b3 100644
 --- a/chrome/browser/tab_ui/android/BUILD.gn
 +++ b/chrome/browser/tab_ui/android/BUILD.gn
 @@ -23,6 +23,7 @@ android_library("java") {
@@ -9,4 +9,4 @@ index f889ad2d2844ce64e15a6268684ecaa478316831..fae2eb47cbc248ed17294dd1aabdb2f1
 +  sources += brave_tab_ui_sources
    deps = [
      ":java_resources",
-     "//base:base_cached_flags_java",
+     "//base:base_java",

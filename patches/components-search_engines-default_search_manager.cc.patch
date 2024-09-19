@@ -1,12 +1,12 @@
 diff --git a/components/search_engines/default_search_manager.cc b/components/search_engines/default_search_manager.cc
-index 6b04809f0ce444161bd5ee16cd0c735a0a4176ff..6740fd176dc3c78c7cf1f7579030f82f53e1cc14 100644
+index a012a0693197274de6ca7281909d412a8403cfc3..0730bf5f71969d7c4ffaae1a12c346fa81e5dec2 100644
 --- a/components/search_engines/default_search_manager.cc
 +++ b/components/search_engines/default_search_manager.cc
-@@ -425,6 +425,7 @@ void DefaultSearchManager::LoadDefaultSearchEngineFromPrefs() {
+@@ -304,6 +304,7 @@ void DefaultSearchManager::LoadDefaultSearchEngineFromPrefs() {
    // Check if default search preference is overriden by extension.
    if (pref->IsExtensionControlled()) {
      extension_default_search_ = std::move(turl_data);
 +  LOADDEFAULTSEARCHENGINEFROMPREFS_BRAVE
    } else {
-     prefs_default_search_ = std::move(turl_data);
-     MergePrefsDataWithPrepopulated();
+     prefs_default_search_.SetAndReconcile(std::move(turl_data));
+   }
