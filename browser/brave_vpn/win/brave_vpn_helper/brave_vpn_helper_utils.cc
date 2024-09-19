@@ -94,6 +94,11 @@ std::wstring GetBraveVpnHelperServiceName() {
   return name;
 }
 
+std::wstring GetBraveVpnHelperServiceDescription() {
+  return L"Protects Brave VPN against DNS leaks with Smart Multi-Homed Name "
+         L"Resolution when using IKEv2";
+}
+
 std::wstring GetBraveVpnHelperRegistryStoragePath() {
   switch (chrome::GetChannel()) {
     case version_info::Channel::CANARY:
