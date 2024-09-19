@@ -79,8 +79,6 @@ class GetWallet final : public RequestBuilder,
   ~GetWallet() override;
 
  private:
-  std::string Path() const;
-
   std::optional<std::string> Url() const override;
   mojom::UrlMethod Method() const override;
   std::optional<std::vector<std::string>> Headers(

@@ -14,7 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/strcat.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
@@ -119,9 +119,13 @@ class BraveNetworkAuditSearchAdTest : public InProcessBrowserTest {
     std::string port =
         base::NumberToString(https_server()->host_port_pair().port());
     std::vector<std::string> allowed_prefixes;
-    for (const char* prefix : kAllowedBraveSearchTemplates) {
-      allowed_prefixes.push_back(base::StringPrintf(prefix, port.c_str()));
-    }
+
+    // Brave search
+    // The test simulation has a pattern https://search.brave.com:<port>
+    // port is changed dynamically
+    const char kAllowedBraveSearchTemplate[] = "https://search.brave.com:%s/";
+    allowed_prefixes.push_back(
+        base::StringPrintf(kAllowedBraveSearchTemplate, port.c_str()));
     VerifyNetworkAuditLog(net_log_path_, audit_results_path_, allowed_prefixes);
   }
 

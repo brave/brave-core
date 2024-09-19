@@ -38,7 +38,7 @@ class PostConnectBitflyer final : public PostConnect {
  private:
   std::optional<std::string> Content() const override;
 
-  const char* Path() const override;
+  std::string Path(base::cstring_view payment_id) const override;
 
   std::string linking_info_;
 };

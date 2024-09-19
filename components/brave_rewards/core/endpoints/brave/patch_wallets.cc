@@ -10,7 +10,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/request_signer.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
@@ -22,6 +22,8 @@ using Error = PatchWallets::Error;
 using Result = PatchWallets::Result;
 
 namespace {
+
+constexpr char kPatchWalletsPathPrefix[] = "/v4/wallets/";
 
 Result ParseBody(RewardsEngine& engine, const std::string& body) {
   const auto value = base::JSONReader::Read(body);
@@ -87,10 +89,6 @@ PatchWallets::PatchWallets(RewardsEngine& engine, std::string&& geo_country)
 
 PatchWallets::~PatchWallets() = default;
 
-const char* PatchWallets::Path() const {
-  return "/v4/wallets/%s";
-}
-
 std::optional<std::string> PatchWallets::Url() const {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
@@ -102,7 +100,7 @@ std::optional<std::string> PatchWallets::Url() const {
 
   return engine_->Get<EnvironmentConfig>()
       .rewards_grant_url()
-      .Resolve(base::StringPrintf(Path(), wallet->payment_id.c_str()))
+      .Resolve(base::StrCat({kPatchWalletsPathPrefix, wallet->payment_id}))
       .spec();
 }
 
@@ -128,7 +126,7 @@ std::optional<std::vector<std::string>> PatchWallets::Headers(
   }
 
   return signer->GetSignedHeaders(
-      "patch " + base::StringPrintf(Path(), wallet->payment_id.c_str()),
+      base::StrCat({"patch ", kPatchWalletsPathPrefix, wallet->payment_id}),
       content);
 }
 

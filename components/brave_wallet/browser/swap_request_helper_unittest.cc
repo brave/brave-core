@@ -23,8 +23,7 @@ namespace brave_wallet {
 
 namespace {
 
-const char* GetJupiterQuoteTemplate() {
-  return R"(
+constexpr char kJupiterQuoteTemplate[] = R"(
     {
       "inputMint": "So11111111111111111111111111111111111111112",
       "inAmount": "100000000",
@@ -67,10 +66,8 @@ const char* GetJupiterQuoteTemplate() {
         }
       ]
     })";
-}
 
-const char* GetLiFiQuoteTemplate() {
-  return R"(
+constexpr char kLiFiQuoteTemplate[] = R"(
     {
       "routes": [
         {
@@ -367,10 +364,8 @@ const char* GetLiFiQuoteTemplate() {
       }
     }
   )";
-}
 
-const char* GetLiFiEvmToSolQuoteTemplate() {
-  return R"(
+constexpr char kLiFiEvmToSolQuoteTemplate[] = R"(
     {
       "routes": [
         {
@@ -602,10 +597,8 @@ const char* GetLiFiEvmToSolQuoteTemplate() {
       }
     }
   )";
-}
 
-const char* GetLiFiEvmToSolQuoteTemplate2() {
-  return R"(
+constexpr char kLiFiEvmToSolQuoteTemplate2[] = R"(
     {
       "routes": [
         {
@@ -833,14 +826,13 @@ const char* GetLiFiEvmToSolQuoteTemplate2() {
       }
     }
   )";
-}
 
 }  // namespace
 
 TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
-  auto* json_template = GetJupiterQuoteTemplate();
   std::string json = base::StringPrintf(
-      json_template, "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");  // USDC
+      kJupiterQuoteTemplate,
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");  // USDC
   mojom::JupiterQuotePtr swap_quote =
       jupiter::ParseQuoteResponse(ParseJson(json));
   ASSERT_TRUE(swap_quote);
@@ -1010,7 +1002,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiQuoteParams) {
 TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
   // OK: EVM -> EVM bridge quotes are correctly handled
   mojom::LiFiQuotePtr quote =
-      lifi::ParseQuoteResponse(ParseJson(GetLiFiQuoteTemplate()));
+      lifi::ParseQuoteResponse(ParseJson(kLiFiQuoteTemplate));
   ASSERT_TRUE(quote);
   ASSERT_EQ(quote->routes.size(), 1UL);
   ASSERT_EQ(quote->routes[0]->steps.size(), 1UL);
@@ -1241,7 +1233,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
   EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
 
   // OK: EVM -> SOL bridge quotes are correctly handled
-  quote = lifi::ParseQuoteResponse(ParseJson(GetLiFiEvmToSolQuoteTemplate()));
+  quote = lifi::ParseQuoteResponse(ParseJson(kLiFiEvmToSolQuoteTemplate));
   ASSERT_TRUE(quote);
   ASSERT_EQ(quote->routes.size(), 1UL);
   ASSERT_EQ(quote->routes[0]->steps.size(), 1UL);
@@ -1413,7 +1405,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
   EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
 
   // OK: EVM to native SOL bridge quotes are correctly handled
-  quote = lifi::ParseQuoteResponse(ParseJson(GetLiFiEvmToSolQuoteTemplate2()));
+  quote = lifi::ParseQuoteResponse(ParseJson(kLiFiEvmToSolQuoteTemplate2));
   ASSERT_TRUE(quote);
   ASSERT_EQ(quote->routes.size(), 1UL);
   ASSERT_EQ(quote->routes[0]->steps.size(), 1UL);

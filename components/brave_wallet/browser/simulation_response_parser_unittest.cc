@@ -917,7 +917,7 @@ TEST(SimulationResponseParserUnitTest, ParseEvmBuyErc1155TokenWithEth) {
 
 // Example from https://docs.blowfish.xyz/reference/scan-transactions-evm
 TEST(SimulationResponseParserUnitTest, ParseEvmErc1155ApprovalForAll) {
-  std::string json(R"(
+  constexpr char kJson[] = R"(
     {
       "requestId":"e8cd35ce-f743-4ef2-8e94-f26857744db7",
       "action":"WARN",
@@ -968,10 +968,9 @@ TEST(SimulationResponseParserUnitTest, ParseEvmErc1155ApprovalForAll) {
         }
       }
     }
-  )");
+  )";
 
-  auto json_with_token_name =
-      base::StringPrintf(json.c_str(), "\"Sandbox ASSET\"");
+  auto json_with_token_name = base::StringPrintf(kJson, "\"Sandbox ASSET\"");
 
   auto simulation_response = evm::ParseSimulationResponse(
       ParseJson(json_with_token_name),
@@ -1022,22 +1021,22 @@ TEST(SimulationResponseParserUnitTest, ParseEvmErc1155ApprovalForAll) {
   EXPECT_EQ(state_change_raw_info->asset->price->dollar_value_per_token,
             "232.43");
 
-  json_with_token_name = base::StringPrintf(json.c_str(), "null");
+  json_with_token_name = base::StringPrintf(kJson, "null");
   EXPECT_TRUE(evm::ParseSimulationResponse(
       ParseJson(json_with_token_name),
       "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"));
 
-  json_with_token_name = base::StringPrintf(json.c_str(), "[]");
+  json_with_token_name = base::StringPrintf(kJson, "[]");
   EXPECT_FALSE(evm::ParseSimulationResponse(
       ParseJson(json_with_token_name),
       "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"));
 
-  json_with_token_name = base::StringPrintf(json.c_str(), "{}");
+  json_with_token_name = base::StringPrintf(kJson, "{}");
   EXPECT_FALSE(evm::ParseSimulationResponse(
       ParseJson(json_with_token_name),
       "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"));
 
-  json_with_token_name = base::StringPrintf(json.c_str(), "false");
+  json_with_token_name = base::StringPrintf(kJson, "false");
   EXPECT_FALSE(evm::ParseSimulationResponse(
       ParseJson(json_with_token_name),
       "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"));
@@ -1202,7 +1201,7 @@ TEST(SimulationResponseParserUnitTest, ParseEvmUnknownWarnings) {
 }
 
 TEST(SimulationResponseParserUnitTest, ParseEvmNullableFields) {
-  std::string json_fmt(R"(
+  constexpr char kJson[] = R"(
     {
       "requestId":"e8cd35ce-f743-4ef2-8e94-f26857744db7",
       "action":"NONE",
@@ -1243,11 +1242,10 @@ TEST(SimulationResponseParserUnitTest, ParseEvmNullableFields) {
         }
       }
     }
-  )");
+  )";
 
   {
-    auto json =
-        base::StringPrintf(json_fmt.c_str(), "null", "null", "null", "null");
+    auto json = base::StringPrintf(kJson, "null", "null", "null", "null");
     auto simulation_response = evm::ParseSimulationResponse(
         ParseJson(json), "0xd8da6bf26964af9d7eed9e03e53415d37aa96045");
 
@@ -1292,8 +1290,7 @@ TEST(SimulationResponseParserUnitTest, ParseEvmNullableFields) {
   }
 
   {
-    auto json =
-        base::StringPrintf(json_fmt.c_str(), "null", "null", "true", "null");
+    auto json = base::StringPrintf(kJson, "null", "null", "true", "null");
     // OK: invalid values for nullable field asset->imageUrl are treated as
     // null.
     auto simulation_response = evm::ParseSimulationResponse(
@@ -1307,8 +1304,7 @@ TEST(SimulationResponseParserUnitTest, ParseEvmNullableFields) {
   }
 
   {
-    auto json =
-        base::StringPrintf(json_fmt.c_str(), "null", "null", "null", "true");
+    auto json = base::StringPrintf(kJson, "null", "null", "null", "true");
     // OK: invalid values for nullable field asset->price are treated as
     // null.
     auto simulation_response = evm::ParseSimulationResponse(
@@ -1322,8 +1318,8 @@ TEST(SimulationResponseParserUnitTest, ParseEvmNullableFields) {
   }
 
   {
-    auto json = base::StringPrintf(json_fmt.c_str(), "null", "null", "null",
-                                   "{\"foo\": 1}");
+    auto json =
+        base::StringPrintf(kJson, "null", "null", "null", "{\"foo\": 1}");
     // OK: invalid dict for nullable field asset->price is treated as null.
     auto simulation_response = evm::ParseSimulationResponse(
         ParseJson(json), "0xd8da6bf26964af9d7eed9e03e53415d37aa96045");
@@ -1785,7 +1781,7 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaWarnings) {
 }
 
 TEST(SimulationResponseParserUnitTest, ParseSolanaNullableFields) {
-  std::string json_fmt(R"(
+  constexpr char kJson[] = R"(
     {
       "aggregated": {
         "action": "NONE",
@@ -1805,7 +1801,7 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaNullableFields) {
                     "decimals": "6",
                     "supply": "1000000000",
                     "metaplexTokenStandard": "unknown",
-                    "price": null,
+                    "price": %s,
                     "imageUrl": "https://usdt.png"
                   },
                   "diff": {
@@ -1821,10 +1817,10 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaNullableFields) {
         "error": null,
       }
     }
-  )");
+  )";
 
   {
-    auto json = base::StringPrintf(json_fmt.c_str(), "null");
+    auto json = base::StringPrintf(kJson, "null");
     auto simulation_response = solana::ParseSimulationResponse(
         ParseJson(json), "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT");
 
@@ -1841,7 +1837,7 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaNullableFields) {
   }
 
   {
-    auto json = base::StringPrintf(json_fmt.c_str(), "true");
+    auto json = base::StringPrintf(kJson, "true");
     auto simulation_response = solana::ParseSimulationResponse(
         ParseJson(json), "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT");
 
@@ -1859,7 +1855,7 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaNullableFields) {
   }
 
   {
-    auto json = base::StringPrintf(json_fmt.c_str(), "{\"foo\": 1}");
+    auto json = base::StringPrintf(kJson, "{\"foo\": 1}");
     auto simulation_response = solana::ParseSimulationResponse(
         ParseJson(json), "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT");
 

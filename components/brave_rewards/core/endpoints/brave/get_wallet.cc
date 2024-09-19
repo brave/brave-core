@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/request_signer.h"
 #include "brave/components/brave_rewards/core/common/url_helpers.h"
@@ -22,6 +23,8 @@ using Error = GetWallet::Error;
 using Result = GetWallet::Result;
 
 namespace {
+
+constexpr char kPath[] = "/v4/wallets/";
 
 Result ParseBody(RewardsEngine& engine, const std::string& body) {
   auto value = base::JSONReader::Read(body);
@@ -92,10 +95,6 @@ GetWallet::GetWallet(RewardsEngine& engine) : RequestBuilder(engine) {}
 
 GetWallet::~GetWallet() = default;
 
-std::string GetWallet::Path() const {
-  return "/v4/wallets/";
-}
-
 std::optional<std::string> GetWallet::Url() const {
   const auto wallet = engine_->wallet()->GetWallet();
   if (!wallet) {
@@ -105,7 +104,7 @@ std::optional<std::string> GetWallet::Url() const {
 
   auto url =
       URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().rewards_grant_url(),
-                          {Path(), wallet->payment_id});
+                          {kPath, wallet->payment_id});
 
   return url.spec();
 }
@@ -131,8 +130,8 @@ std::optional<std::vector<std::string>> GetWallet::Headers(
     return std::nullopt;
   }
 
-  return signer->GetSignedHeaders("get " + Path() + wallet->payment_id,
-                                  content);
+  return signer->GetSignedHeaders(
+      base::StrCat({"get ", kPath, wallet->payment_id}), content);
 }
 
 }  // namespace brave_rewards::internal::endpoints

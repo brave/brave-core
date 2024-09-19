@@ -10,6 +10,7 @@
 
 #include "base/base64.h"
 #include "base/json/json_writer.h"
+#include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/common/request_signer.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
@@ -102,8 +103,8 @@ std::optional<std::vector<std::string>> PostConnectUphold::Headers(
   return std::vector<std::string>{};
 }
 
-const char* PostConnectUphold::Path() const {
-  return "/v3/wallet/uphold/%s/claim";
+std::string PostConnectUphold::Path(base::cstring_view payment_id) const {
+  return base::StringPrintf("/v3/wallet/uphold/%s/claim", payment_id.c_str());
 }
 
 }  // namespace brave_rewards::internal::endpoints

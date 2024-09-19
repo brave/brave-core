@@ -58,7 +58,7 @@ class PostConnectUphold final : public PostConnect {
   std::optional<std::vector<std::string>> Headers(
       const std::string& content) const override;
 
-  const char* Path() const override;
+  std::string Path(base::cstring_view payment_id) const override;
 
   std::string address_;
 };
