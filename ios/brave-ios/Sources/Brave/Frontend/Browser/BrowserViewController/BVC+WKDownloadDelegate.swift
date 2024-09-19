@@ -33,6 +33,12 @@ extension BrowserViewController: WKDownloadDelegate {
     let temporaryDir = NSTemporaryDirectory()
     let fileName = temporaryDir + "/" + suggestedFilename
     let url = URL(fileURLWithPath: fileName)
+
+    // WKDownload will fail with a -3000 error code if the file already exists at the given path
+    if await AsyncFileManager.default.fileExists(atPath: url.path(percentEncoded: false)) {
+      try? await AsyncFileManager.default.removeItem(at: url)
+    }
+
     let pendingDownload = WebKitDownload(
       fileURL: url,
       response: response,
@@ -70,8 +76,6 @@ extension BrowserViewController: WKDownloadDelegate {
       return
     }
 
-    downloadQueue.download(downloadInfo, didFinishDownloadingTo: downloadInfo.fileURL)
-
     let response = URLResponse(
       url: downloadInfo.fileURL,
       mimeType: downloadInfo.response.mimeType,
@@ -80,6 +84,7 @@ extension BrowserViewController: WKDownloadDelegate {
     )
 
     if downloadInfo.response.mimeType == MIMEType.passbook {
+      downloadQueue.download(downloadInfo, didFinishDownloadingTo: downloadInfo.fileURL)
       if let passbookHelper = OpenPassBookHelper(
         request: nil,
         response: response,
@@ -89,12 +94,26 @@ extension BrowserViewController: WKDownloadDelegate {
       ) {
         Task {
           await passbookHelper.open()
+          try await AsyncFileManager.default.removeItem(at: downloadInfo.fileURL)
         }
       }
+      return
     }
 
+    // Handle non-passbook downloads the same as HTTPDownload
+    let filename = downloadInfo.filename
+    let location = downloadInfo.fileURL
+    let temporaryLocation = FileManager.default.temporaryDirectory
+      .appending(component: "\(filename)-\(location.lastPathComponent)")
+    try? FileManager.default.moveItem(at: location, to: temporaryLocation)
     Task {
-      try await AsyncFileManager.default.removeItem(at: downloadInfo.fileURL)
+      do {
+        let destination = try await downloadInfo.uniqueDownloadPathForFilename(filename)
+        try await AsyncFileManager.default.moveItem(at: temporaryLocation, to: destination)
+        downloadQueue.download(downloadInfo, didFinishDownloadingTo: destination)
+      } catch {
+        downloadQueue.download(downloadInfo, didCompleteWithError: error)
+      }
     }
   }
 

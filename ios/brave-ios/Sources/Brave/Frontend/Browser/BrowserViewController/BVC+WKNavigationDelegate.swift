@@ -756,13 +756,14 @@ extension BrowserViewController: WKNavigationDelegate {
       return .download
     }
 
+    if response.mimeType == MIMEType.passbook {
+      return .download
+    }
+
     // Check if this response should be handed off to Passbook.
     if shouldDownloadNavigationResponse {
       shouldDownloadNavigationResponse = false
-
-      if response.mimeType == MIMEType.passbook {
-        return .download
-      }
+      return .download
     }
 
     // If the content type is not HTML, create a temporary document so it can be downloaded and
