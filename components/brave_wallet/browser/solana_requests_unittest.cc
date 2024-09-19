@@ -110,7 +110,7 @@ TEST(SolanaRequestsUnitTest, getBlockHeight) {
 }
 
 TEST(SolanaRequestsUnitTest, getTokenAccountsByOwner) {
-  std::string expected_json_string_fmt = R"(
+  constexpr char kExpectedJsonStringFormat[] = R"(
     {
       "id":1,
       "jsonrpc":"2.0",
@@ -128,18 +128,18 @@ TEST(SolanaRequestsUnitTest, getTokenAccountsByOwner) {
   )";
   ASSERT_EQ(base::test::ParseJsonDict(
                 getTokenAccountsByOwner("pubkey", "base64", "program")),
-            base::test::ParseJsonDict(base::StringPrintf(
-                expected_json_string_fmt.c_str(), "base64")));
+            base::test::ParseJsonDict(
+                base::StringPrintf(kExpectedJsonStringFormat, "base64")));
 
   ASSERT_EQ(base::test::ParseJsonDict(
                 getTokenAccountsByOwner("pubkey", "base58", "program")),
-            base::test::ParseJsonDict(base::StringPrintf(
-                expected_json_string_fmt.c_str(), "base58")));
+            base::test::ParseJsonDict(
+                base::StringPrintf(kExpectedJsonStringFormat, "base58")));
 
   ASSERT_EQ(base::test::ParseJsonDict(
                 getTokenAccountsByOwner("pubkey", "jsonParsed", "program")),
-            base::test::ParseJsonDict(base::StringPrintf(
-                expected_json_string_fmt.c_str(), "jsonParsed")));
+            base::test::ParseJsonDict(
+                base::StringPrintf(kExpectedJsonStringFormat, "jsonParsed")));
 
   EXPECT_CHECK_DEATH(
       getTokenAccountsByOwner("pubkey", "invalid encoding", "program"));

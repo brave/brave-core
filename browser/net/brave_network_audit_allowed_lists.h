@@ -79,13 +79,6 @@ inline constexpr const char* kAllowedUrlPrefixes[] = {
     "https://static1.brave.com/",
 };
 
-inline constexpr const char* kAllowedBraveSearchTemplates[] = {
-    // Brave search
-    // The test simulation has a pattern https://search.brave.com:<port>
-    // port is changed dynamically
-    "https://search.brave.com:%s/",
-};
-
 // Before adding to this list, get approval from the security team.
 inline constexpr const char* kAllowedUrlPatterns[] = {
     // allowed because it's url for fetching super referral's mapping table

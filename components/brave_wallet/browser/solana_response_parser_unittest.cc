@@ -7,6 +7,7 @@
 
 #include <optional>
 #include <string>
+#include <utility>
 
 #include "base/strings/stringprintf.h"
 #include "base/test/gtest_util.h"
@@ -80,7 +81,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetTokenAccountBalance) {
 }
 
 TEST(SolanaResponseParserUnitTest, ParseGetSPLTokenBalances) {
-  std::string json_fmt(R"(
+  constexpr char kJsonFmt[] = R"(
     {
       "jsonrpc": "2.0",
       "result": {
@@ -177,10 +178,10 @@ TEST(SolanaResponseParserUnitTest, ParseGetSPLTokenBalances) {
       },
       "id": 1
     }
-  )");
+  )";
 
   // OK: well-formed json
-  auto json = base::StringPrintf(json_fmt.c_str(), "9");
+  auto json = base::StringPrintf(kJsonFmt, "9");
   auto result = ParseGetSPLTokenBalances(ParseJson(json));
   ASSERT_TRUE(result.has_value());
   ASSERT_EQ(result->size(), 2UL);
@@ -198,15 +199,15 @@ TEST(SolanaResponseParserUnitTest, ParseGetSPLTokenBalances) {
   EXPECT_EQ(result->at(1)->decimals, 6);
 
   // KO: decimals uint8_t overflow
-  json = base::StringPrintf(json_fmt.c_str(), "256");
+  json = base::StringPrintf(kJsonFmt, "256");
   EXPECT_FALSE(ParseGetSPLTokenBalances(ParseJson(json)));
 
   // KO: decimals uint8_t underflow
-  json = base::StringPrintf(json_fmt.c_str(), "-1");
+  json = base::StringPrintf(kJsonFmt, "-1");
   EXPECT_FALSE(ParseGetSPLTokenBalances(ParseJson(json)));
 
   // KO: decimals type mismatch
-  json = base::StringPrintf(json_fmt.c_str(), "\"not a decimal\"");
+  json = base::StringPrintf(kJsonFmt, "\"not a decimal\"");
   EXPECT_FALSE(ParseGetSPLTokenBalances(ParseJson(json)));
 }
 
