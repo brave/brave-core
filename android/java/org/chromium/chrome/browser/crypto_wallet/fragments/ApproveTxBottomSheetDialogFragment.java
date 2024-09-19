@@ -340,6 +340,12 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        dismiss();
+    }
+
     public void setTxList(List<TransactionInfo> transactionInfos) {
         mTransactionInfos = transactionInfos;
         if (isVisible()) {
