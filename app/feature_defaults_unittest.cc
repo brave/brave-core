@@ -165,6 +165,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kPrivacyGuidePreloadAndroid,
 #endif
       &features::kPrivacySandboxAdsAPIsOverride,
+      &features::kPrivacySandboxAdsAPIsM1Override,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kReportPakFileIntegrity,
 #endif
