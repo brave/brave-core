@@ -508,9 +508,11 @@ brave_java_sources += brave_public_tab_management_java_sources
 brave_java_sources += brave_share_java_sources
 brave_java_sources += brave_app_billing_sources
 
-brave_browser_ui_android_appmenu_internal_sources = [
-  "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenu.java",
-  "//brave/browser/ui/android/default_browser_promo/java/src/org/chromium/chrome/browser/ui/default_browser_promo/BraveDefaultBrowserPromoUtils.java",
+brave_browser_ui_android_appmenu_internal_sources = [ "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenu.java" ]
+
+brave_browser_ui_android_default_browser_promo_java_sources = [
+  # TODO(alexeybarabash): BraveDefaultBrowserPromoUtils now causes crash on debug build at start app
+  # "//brave/browser/ui/android/default_browser_promo/java/src/org/chromium/chrome/browser/ui/default_browser_promo/BraveDefaultBrowserPromoUtils.java"
 ]
 
 brave_browser_ui_android_toolbar_sources = [

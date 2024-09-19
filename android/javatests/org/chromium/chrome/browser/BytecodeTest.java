@@ -152,6 +152,7 @@ import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.externalauth.ExternalAuthUtils;
 import org.chromium.components.favicon.LargeIconBridge;
+import org.chromium.components.feature_engagement.Tracker;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.permissions.PermissionDialogController;
@@ -463,11 +464,15 @@ public class BytecodeTest {
                         null));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/ui/default_browser_promo/DefaultBrowserPromoUtils", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/ui/default_browser_promo/DefaultBrowserPromoUtils",
                         "prepareLaunchPromoIfNeeded",
-                        MethodModifier.STATIC,
-                        false,
-                        null));
+                        MethodModifier.REGULAR,
+                        true,
+                        boolean.class,
+                        Activity.class,
+                        WindowAndroid.class,
+                        Tracker.class,
+                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
