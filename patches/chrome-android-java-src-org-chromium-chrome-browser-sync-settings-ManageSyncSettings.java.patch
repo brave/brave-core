@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 0e09dbed0837ec74dd3fef73f3d92555faa7156c..e76992f5ae4e9d92cc94c32ac6fc3efc3f9646ea 100644
+index eaffd5888cef7125b1181188a6bf67595186105c..2574e22438c895d9f16705715300a732163d4978 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 @@ -62,7 +62,7 @@ import org.chromium.chrome.browser.ui.signin.SigninUtils;
@@ -17,6 +17,6 @@ index 0e09dbed0837ec74dd3fef73f3d92555faa7156c..e76992f5ae4e9d92cc94c32ac6fc3efc
          // May happen if account is removed from the device while this screen is shown.
 -        if (signedInAccountName == null) {
 +        if (false) {
-             if (getActivity() != null) getActivity().finish();
+             finishCurrentSettings();
              return;
          }
