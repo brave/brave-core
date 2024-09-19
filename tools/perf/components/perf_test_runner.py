@@ -123,6 +123,7 @@ class RunableConfiguration:
     rebase_benchmark.name = ('brave_utils.online'
                              if online_rebase else 'brave_utils.offline')
     rebase_benchmark.stories = ['UpdateProfile']
+    rebase_benchmark.stories_exclude = []
 
     rebase_benchmark.pageset_repeat = 2 if online_rebase else 1
 
@@ -162,6 +163,10 @@ class RunableConfiguration:
     if len(benchmark_config.stories) > 0:
       story_filter = '|'.join(benchmark_config.stories)
       args.append(f'--story-filter=({story_filter})')
+
+    if len(benchmark_config.stories_exclude) > 0:
+      story_filter_exclude = '|'.join(benchmark_config.stories_exclude)
+      args.append(f'--story-filter-exclude=({story_filter_exclude})')
 
     # process the binary-specific args:
     args.extend(binary.get_run_benchmark_args())
@@ -227,7 +232,7 @@ class RunableConfiguration:
 
     success, _ = perf_test_utils.GetProcessOutput(
         args, cwd=path_util.GetChromiumPerfDir(), timeout=timeout)
-    if not local_run:
+    if success and not local_run:
       assert (out_dir is not None)
       assert (bench_out_dir is not None)
 

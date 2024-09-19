@@ -15,23 +15,46 @@ import components.perf_config as perf_config
 import components.perf_test_runner as perf_test_runner
 import components.perf_test_utils as perf_test_utils
 import components.path_util as path_util
+import components.cloud_storage as cloud_storage
 
 from components.common_options import CommonOptions
 
-_HOSTS_TO_REMOVE = [
-    'brave-core-ext.s3.brave.com',  # components downloading
-    'go-updater.brave.com',  # components update check
+# Brave and Chromium update related-hosts.
+# Normally we don't need this in any WPR.
+_UPDATE_HOSTS = [
+    'brave-core-ext.s3.brave.com',
+    'go-updater.brave.com',
+    'componentupdater.brave.com',
+    'optimizationguide-pa.googleapis.com',
+    'safebrowsingohttpgateway.googleapis.com',
+]
+
+# Hosts are related to some browser features (like Rewards).
+# Cutting it reduces memory and CPU usage, but makes the picture less
+# representative. It makes sense to remove them some tests (i.e. jetstream)
+# and leave in others (i.e. system_health).
+_SERVICE_HOSTS = [
     'redirector.brave.com',
-    'optimizationguide-pa.googleapis.com',  # optimizationguide chrome component
-    'safebrowsingohttpgateway.googleapis.com',  # safebrowsing update
+    'geo.ads.brave.com',
+    'static.ads.brave.com',
+    'rewards.brave.com',
+    'api.rewards.brave.com',
+    'grant.rewards.brave.com',
+    'collector.bsg.brave.com',
+    'star-randsrv.bsg.brave.com',
+    'p3a-json.brave.com',
+    'brave-today-cdn.brave.com',
+    'update.googleapis.com',
+    'content-autofill.googleapis.com',
 ]
 
 
-def _run_httparchive(args: List[str]) -> None:
-  perf_test_utils.GetProcessOutput(
+def run_httparchive(args: List[str]) -> str:
+  _, output = perf_test_utils.GetProcessOutput(
       ['go', 'run', os.path.join('src', 'httparchive.go'), *args],
       cwd=os.path.join(path_util.GetCatapultDir(), 'web_page_replay_go'),
       check=True)
+  return output
 
 
 def _get_wpr_pattern() -> str:
@@ -58,7 +81,7 @@ def _merge_wpr_files(files: List[str], output_file: str) -> None:
   args.extend(files)
   args.append(output_file)
 
-  _run_httparchive(args)
+  run_httparchive(args)
 
   # clean the source files:
   for file in files:
@@ -67,11 +90,32 @@ def _merge_wpr_files(files: List[str], output_file: str) -> None:
     os.unlink(file + '.sha1')
 
 
-def _post_process_wpr(file: str) -> None:
-  for host in _HOSTS_TO_REMOVE:
-    _run_httparchive(['trim', '--host', host, file, file])
+def cleanup_archive(file: str, include_service_hosts: bool) -> None:
+  file = os.path.abspath(file)
 
-  _run_httparchive(['ls', file])
+  # Remove the duplicates by making an empty .wprgo and merging the current file to it.
+  tmp_file = file + '.empty'
+  run_httparchive(['trim', '--invert-match', '--host', 'none', file, tmp_file])
+  run_httparchive(['merge', tmp_file, file, file])
+  os.unlink(tmp_file)
+
+  # Filter requests by hosts:
+  hosts = []
+  hosts += _UPDATE_HOSTS
+  if include_service_hosts:
+    hosts += _SERVICE_HOSTS
+  for host in hosts:
+    logging.info('Removing %s', host)
+    run_httparchive(['trim', '--host', host, file, file])
+
+  # Remove Chromium https://accounts.google.com/ListAccounts requests:
+  run_httparchive([
+      'trim', '--full_path', '/ListAccounts', '--host', 'accounts.google.com',
+      file, file
+  ])
+
+  # Recalculate .sha1 file.
+  cloud_storage.UpdateSha1(file)
 
 
 def record_wpr(config: perf_config.PerfConfig, options: CommonOptions) -> bool:
@@ -99,7 +143,8 @@ def record_wpr(config: perf_config.PerfConfig, options: CommonOptions) -> bool:
   files = _get_all_wpr_files()
   output_file = max(files, key=os.path.getctime)
   _merge_wpr_files(files, output_file)
-  _post_process_wpr(output_file)
+  cleanup_archive(output_file, False)
+  run_httparchive(['ls', output_file])
 
   # Copy the final .wprgo to the artifacts directory.
   artifacts_dir = os.path.join(options.working_directory, 'artifacts')
