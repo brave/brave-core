@@ -25,12 +25,12 @@ def main():
               fp=sys.stdout)
 
 
-# Regex to define an env config line with GN restrictions.
+# Regex to define a .env config line with C++/GN restrictions.
 ENV_CONFIG_LINE = re.compile(
     r"""
     (?:^|\n)                # Start of line or newline
     \s*                     # Optional leading whitespace
-    ([a-zA-Z_]+\w*)         # Key: a valid C++/GN identifier
+    ([a-zA-Z_]\w*)          # Key: a valid C++/GN identifier
     (?:\s*=\s*)             # Assignment operator: '=' with optional whitespace
     (                       # Start of value capturing group
         \s*'(?:\\'|[^'])*'  # Single-quoted value

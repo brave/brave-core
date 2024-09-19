@@ -128,6 +128,19 @@ class TestReadEnvConfigAsDict(unittest.TestCase):
         result = read_env_config_as_dict(file_path)
         self.assert_env_config_value(result, 'MULTILINE_KEY', 'line1\nline2')
 
+    def test_invalid_keys(self):
+        content = """
+        1key=sample_value
+        key-two=sample_value
+        key.three=sample_value
+        _KEY_VALID=valid_key
+        """
+        file_path = self.create_temp_file(content)
+        result = read_env_config_as_dict(file_path)
+        self.assert_env_config_value(result, '_KEY_VALID', 'valid_key')
+        # Expect only _KEY4 and _KEY4_escaped in the result.
+        self.assertEqual(len(result), 2)
+
     def test_utf_8_with_bom(self):
         content = "SAMPLE_KEY=sample_value"
         file_path = self.create_temp_file(content, encoding="utf-8-sig")
