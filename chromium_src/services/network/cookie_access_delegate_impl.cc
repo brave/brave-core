@@ -17,7 +17,7 @@ bool CookieAccessDelegateImpl::NotUsed() const {
 bool CookieAccessDelegateImpl::ShouldUseEphemeralStorage(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const std::optional<url::Origin>& top_frame_origin) const {
+    base::optional_ref<const url::Origin> top_frame_origin) const {
   if (!cookie_settings_) {
     return false;
   }
