@@ -43,6 +43,7 @@ import org.chromium.gms.ChromiumPlayServicesAvailability;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
 
 public class BraveVpnUtils {
@@ -51,8 +52,6 @@ public class BraveVpnUtils {
     public static final String IAP_ANDROID_PARAM_TEXT = "iap-android";
     public static final String VERIFY_CREDENTIALS_FAILED = "verify_credentials_failed";
     public static final String DESKTOP_CREDENTIAL = "desktop_credential";
-
-    public static final String OPTIMAL_SERVER = "Optimal";
 
     public static boolean mUpdateProfileAfterSplitTunnel;
     public static BraveVpnServerRegion selectedServerRegion;
@@ -157,13 +156,16 @@ public class BraveVpnUtils {
                 JSONArray timezones = region.getJSONArray("timezones");
                 for (int j = 0; j < timezones.length(); j++) {
                     if (timezones.getString(j).equals(currentTimezone)) {
+                        String isoCode = region.getString("country-iso-code");
+                        String country = new Locale("", isoCode).getDisplayCountry();
                         BraveVpnServerRegion braveVpnServerRegion =
                                 new BraveVpnServerRegion(
-                                        region.getString("country-iso-code"),
+                                        true,
+                                        country,
+                                        region.getString("continent"),
+                                        isoCode,
                                         region.getString("name"),
                                         region.getString("name-pretty"),
-                                        OPTIMAL_SERVER,
-                                        "",
                                         BraveVpnConstants.REGION_PRECISION_COUNTRY);
                         return braveVpnServerRegion;
                     }

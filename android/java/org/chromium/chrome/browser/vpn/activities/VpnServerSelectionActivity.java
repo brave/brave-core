@@ -98,16 +98,16 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
                         if (mAutomaticSwitch.isChecked()) {
                             BraveVpnUtils.selectedServerRegion =
                                     new BraveVpnServerRegion(
+                                            true,
+                                            "",
+                                            "",
                                             "",
                                             BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC,
-                                            "",
-                                            BraveVpnUtils.OPTIMAL_SERVER,
                                             "",
                                             BraveVpnConstants.REGION_PRECISION_COUNTRY);
                             changeServerRegion();
                         }
 
-                        BraveVpnPrefUtils.setAutomaticServerSelection(mAutomaticSwitch.isChecked());
                         updateAutomaticSelection(mAutomaticSwitch.isChecked());
                     }
                 });
