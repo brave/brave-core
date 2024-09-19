@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-brave_build_dotfile_settings = {
-  exec_script_whitelist = [ "//brave/build/env_config.gni" ]
-}
+brave_exec_script_whitelist = [
+  # //brave/.env parser.
+  "//brave/build/env_config.gni",
+]

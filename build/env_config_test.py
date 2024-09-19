@@ -138,7 +138,7 @@ class TestReadEnvConfigAsDict(unittest.TestCase):
         file_path = self.create_temp_file(content)
         result = read_env_config_as_dict(file_path)
         self.assert_env_config_value(result, '_KEY_VALID', 'valid_key')
-        # Expect only _KEY4 and _KEY4_escaped in the result.
+        # Expect only _KEY_VALID and _KEY_VALID_escaped in the result.
         self.assertEqual(len(result), 2)
 
     def test_utf_8_with_bom(self):
