@@ -13,15 +13,15 @@ injectStyle(CrIconElement, css`:host {
   --leo-icon-color: var(--iron-icon-fill-color, currentColor);
 }`)
 
-const old = CrIconElement.prototype.updateIcon
-CrIconElement.prototype.updateIcon = function (...args: any) {
+const old = (CrIconElement.prototype as any).updateIcon_;
+(CrIconElement.prototype as any).updateIcon_ = function (...args: any) {
   const removeAllOfType = (type: string) => {
     for (const node of this.shadowRoot!.querySelectorAll(type)) node.remove()
   }
 
   const name = iconMap[this.icon]
   if (name || leoIcons.has(this.icon)) {
-    removeAllOfType('svg') 
+    removeAllOfType('svg')
 
     let leoIcon = this.shadowRoot!.querySelector('leo-icon')
     if (!leoIcon) {
