@@ -1,0 +1,9 @@
+diff --git a/telemetry/telemetry/story/story_set.py b/telemetry/telemetry/story/story_set.py
+index 5ac91f7a441e193094ad8da6c48fc52edc2bbc96..9259f342c3661402651d7fd8e172ae8a6f7d0d69 100644
+--- a/telemetry/telemetry/story/story_set.py
++++ b/telemetry/telemetry/story/story_set.py
+@@ -195,3 +195,4 @@ class StorySet():
+ 
+   def __setitem__(self, key, value):
+     self._stories[key] = value
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())

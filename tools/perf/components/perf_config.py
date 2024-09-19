@@ -92,6 +92,7 @@ class BenchmarkConfig:
   name: str
   pageset_repeat: int = 1
   stories: List[str]
+  stories_exclude: List[str]
 
   def __init__(self, json: Optional[dict] = None):
     if not json:
@@ -100,9 +101,8 @@ class BenchmarkConfig:
     self.name = json['name']
     if pageset_repeat := json.get('pageset-repeat'):
       self.pageset_repeat = pageset_repeat
-    self.stories = []
-    if story_list := json.get('stories'):
-      self.stories.extend(story_list)
+    self.stories = json.get('stories') or []
+    self.stories_exclude = json.get('stories-exclude') or []
 
 
 class PerfConfig:

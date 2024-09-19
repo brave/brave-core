@@ -20,7 +20,7 @@ def _RunCommand(original_func, args):
         assert url.startswith('gs://')
         bucket = url.split('/')[2]
         hash = url.split('/')[3]
-        if bucket == PARTNER_BUCKET:
+        if bucket == PARTNER_BUCKET or bucket == INTERNAL_BUCKET:
             assert hash is not None
             return DownloadFileFromCloudStorage(CloudFolder.CATAPULT_PERF_DATA,
                                                 hash, local_filepath)

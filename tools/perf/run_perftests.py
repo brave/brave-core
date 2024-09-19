@@ -28,7 +28,7 @@ import components.perf_test_runner as perf_test_runner
 import components.perf_test_utils as perf_test_utils
 import components.path_util as path_util
 import components.profile_tools as profile_tools
-import components.wpr_tools as wpr_tools
+import components.wpr_utils as wpr_utils
 
 from components.common_options import CommonOptions, PerfMode
 
@@ -78,7 +78,8 @@ def _RunUpdateProfile(config: perf_config.PerfConfig,
       perf_config.BenchmarkConfig({
           'name': 'brave_utils.online',
           'pageset-repeat': 5,
-          'stories': ['UpdateProfile']
+          'stories': ['UpdateProfile'],
+          'stories_exclude': [],
       })
   ]
 
@@ -143,7 +144,7 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
     return _RunUpdateProfile(config, options)
 
   if options.mode == PerfMode.RECORD_WPR:
-    return 0 if wpr_tools.record_wpr(config, options) else 1
+    return 0 if wpr_utils.record_wpr(config, options) else 1
 
   raise RuntimeError('Unknown mode')
 

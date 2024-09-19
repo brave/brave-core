@@ -15,20 +15,10 @@ The current structure:
 `./telemetry-perf-data/`: WPR files and other data are used by telemetry and
                           catapult code
 
-## S3 manual upload
+## S3 upload
 
-Make sure that you setup aws cli tools.
-
-1. Calculate SHA1 hash
-2. Upload to `s3://brave-perf-data/<folder>/<sha1>`
-3. Store the hash as `<filename>.sha1`
-
-A sh command to run all 3 steps:
-`FILE=<filename>; \
-SHA1=$(shasum -a 1 BUILD.gn | head -c 40); \
-  aws s3 cp $FILE s3://brave-perf-data/<folder>/$SHA1 \
-    --profile go-translate-dev --acl bucket-owner-full-control --sse AES256 \
-  echo $SHA1 > $FILE.sha1;`
+1. Make sure that you setup aws cli tools.
+2. Run `brave/tools/perf/perf_utils.py s3-upload <filename>.wprgo`
 
 ## GSC manual upload (legacy)
 

@@ -1,0 +1,54 @@
+{
+    "archives": {
+        "motionmark_fixed_2_seconds_canvas_arcs": {
+            "DEFAULT": "rendering_desktop_83bb4c0be3.wprgo"
+        },
+        "motionmark_fixed_2_seconds_canvas_lines": {
+            "DEFAULT": "rendering_desktop_83bb4c0be3.wprgo"
+        },
+        "motionmark_fixed_2_seconds_design": {
+            "DEFAULT": "rendering_desktop_83bb4c0be3.wprgo"
+        },
+        "motionmark_fixed_2_seconds_images": {
+            "DEFAULT": "rendering_desktop_83bb4c0be3.wprgo"
+        },
+        "motionmark_fixed_2_seconds_leaves": {
+            "DEFAULT": "rendering_desktop_83bb4c0be3.wprgo"
+        },
+        "motionmark_fixed_2_seconds_multiply": {
+            "DEFAULT": "rendering_desktop_83bb4c0be3.wprgo"
+        },
+        "motionmark_fixed_2_seconds_paths": {
+            "DEFAULT": "rendering_desktop_83bb4c0be3.wprgo"
+        },
+        "motionmark_fixed_2_seconds_suits": {
+            "DEFAULT": "rendering_desktop_83bb4c0be3.wprgo"
+        },
+        "motionmark_ramp_canvas_arcs": {
+            "DEFAULT": "rendering_desktop_83bb4c0be3.wprgo"
+        },
+        "motionmark_ramp_canvas_lines": {
+            "DEFAULT": "rendering_desktop_83bb4c0be3.wprgo"
+        },
+        "motionmark_ramp_design": {
+            "DEFAULT": "rendering_desktop_83bb4c0be3.wprgo"
+        },
+        "motionmark_ramp_images": {
+            "DEFAULT": "rendering_desktop_83bb4c0be3.wprgo"
+        },
+        "motionmark_ramp_leaves": {
+            "DEFAULT": "rendering_desktop_83bb4c0be3.wprgo"
+        },
+        "motionmark_ramp_multiply": {
+            "DEFAULT": "rendering_desktop_83bb4c0be3.wprgo"
+        },
+        "motionmark_ramp_paths": {
+            "DEFAULT": "rendering_desktop_83bb4c0be3.wprgo"
+        },
+        "motionmark_ramp_suits": {
+            "DEFAULT": "rendering_desktop_83bb4c0be3.wprgo"
+        }
+    },
+    "description": "Describes the Web Page Replay archives for a story set. Don't edit by hand! Use record_wpr for updating.",
+    "platform_specific": true
+}
