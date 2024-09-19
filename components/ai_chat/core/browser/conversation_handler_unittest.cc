@@ -290,6 +290,7 @@ TEST_F(ConversationHandlerUnitTest, GetState) {
   for (bool should_send_content : {false, true}) {
     SCOPED_TRACE(testing::Message()
                  << "should_send_content: " << should_send_content);
+    base::RunLoop run_loop;
     conversation_handler_->SetShouldSendPageContents(should_send_content);
     conversation_handler_->GetState(
         base::BindLambdaForTesting([&](mojom::ConversationStatePtr state) {
@@ -314,8 +315,9 @@ TEST_F(ConversationHandlerUnitTest, GetState) {
               state->associated_content_info->is_content_association_possible);
           EXPECT_EQ(state->should_send_content, should_send_content);
           EXPECT_EQ(state->error, mojom::APIError::None);
+          run_loop.Quit();
         }));
-    task_environment_.RunUntilIdle();
+    run_loop.Run();
   }
 }
 
