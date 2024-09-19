@@ -1,0 +1,13 @@
+diff --git a/front_end/ui/legacy/themeColors.css b/front_end/ui/legacy/themeColors.css
+index fd0aab1edd..a2b3cc842b 100644
+--- a/front_end/ui/legacy/themeColors.css
++++ b/front_end/ui/legacy/themeColors.css
+@@ -564,7 +564,7 @@
+   /* Outlines */
+ 
+   --sys-color-outline: var(--ref-palette-neutral-variant60);
+-  --sys-color-tonal-outline: var(--ref-palette-secondary50);
++  --sys-color-tonal-outline: var(--sys-color-primary);
+   --sys-color-neutral-outline: var(--ref-palette-neutral50);
+   --sys-color-yellow-outline: var(--ref-palette-yellow40);
+   --sys-color-error-outline: var(--ref-palette-error80);
