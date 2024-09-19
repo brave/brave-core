@@ -1315,6 +1315,7 @@ if (is_android) {
       "//components/external_intents/android:java",
       "//components/externalauth/android:java",
       "//components/favicon/android:java",
+      "//components/feature_engagement/public:public_java",
       "//components/image_fetcher:java",
       "//components/omnibox/browser:browser_java",
       "//components/password_manager/core/browser:password_manager_java_enums",
