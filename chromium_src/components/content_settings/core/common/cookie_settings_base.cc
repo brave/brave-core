@@ -78,12 +78,12 @@ CookieSettingsBase::~CookieSettingsBase() = default;
 bool CookieSettingsBase::ShouldUseEphemeralStorage(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const std::optional<url::Origin>& top_frame_origin) const {
+    base::optional_ref<const url::Origin> top_frame_origin) const {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return false;
 
   const GURL first_party_url =
-      GetFirstPartyURL(site_for_cookies, base::OptionalToPtr(top_frame_origin));
+      GetFirstPartyURL(site_for_cookies, top_frame_origin.as_ptr());
 
   if (!first_party_url.is_valid())
     return false;
@@ -121,7 +121,7 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
 bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const std::optional<url::Origin>& top_frame_origin,
+    base::optional_ref<const url::Origin> top_frame_origin,
     net::CookieSettingOverrides overrides) const {
   if (ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin)) {
     return true;
@@ -134,7 +134,7 @@ bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
 bool CookieSettingsBase::IsFullCookieAccessAllowed(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const std::optional<url::Origin>& top_frame_origin,
+    base::optional_ref<const url::Origin> top_frame_origin,
     net::CookieSettingOverrides overrides,
     CookieSettingWithMetadata* cookie_settings) const {
   bool allow = IsFullCookieAccessAllowed_ChromiumImpl(
@@ -147,7 +147,7 @@ bool CookieSettingsBase::IsFullCookieAccessAllowed(
     return true;
 
   const GURL first_party_url =
-      GetFirstPartyURL(site_for_cookies, base::OptionalToPtr(top_frame_origin));
+      GetFirstPartyURL(site_for_cookies, top_frame_origin.as_ptr());
 
   // Determine whether a main frame is ephemeral or Shields are down.
   // This is required to properly handle main and nested frames depending on the
