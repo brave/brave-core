@@ -18,8 +18,11 @@ class BraveTabSearchBubbleHost : public TabSearchBubbleHost {
   void SetBubbleArrow(views::BubbleBorder::Arrow arrow);
 
   // TabSearchBubbleHost:
-  bool ShowTabSearchBubble(bool triggered_by_keyboard_shortcut = false,
-                           int tab_index = -1) override;
+  bool ShowTabSearchBubble(
+      bool triggered_by_keyboard_shortcut = false,
+      int tab_index = -1,
+      tab_search::mojom::TabOrganizationFeature organization_feature =
+          tab_search::mojom::TabOrganizationFeature::kNone) override;
 
  private:
   std::optional<views::BubbleBorder::Arrow> arrow_;
