@@ -105,7 +105,7 @@ public class VpnServerActivity extends BraveVpnParentActivity {
                 new OnCitySelection() {
                     @Override
                     public void onCityClick(Region city, int position) {
-                        if (BraveVpnPrefUtils.getRegionCityName().equals(city.name)) {
+                        if (BraveVpnPrefUtils.getRegionName().equals(city.name)) {
                             Toast.makeText(
                                             VpnServerActivity.this,
                                             R.string.already_selected_the_server,
@@ -114,13 +114,14 @@ public class VpnServerActivity extends BraveVpnParentActivity {
                         } else {
                             BraveVpnUtils.selectedServerRegion =
                                     new BraveVpnServerRegion(
-                                            region.countryIsoCode,
-                                            region.name,
-                                            region.namePretty,
+                                            false,
+                                            position == 0 ? region.country : city.country,
+                                            position == 0 ? region.continent : city.continent,
                                             position == 0
-                                                    ? BraveVpnUtils.OPTIMAL_SERVER
-                                                    : city.name,
-                                            city.namePretty,
+                                                    ? region.countryIsoCode
+                                                    : city.countryIsoCode,
+                                            position == 0 ? region.name : city.name,
+                                            position == 0 ? region.namePretty : city.namePretty,
                                             position == 0
                                                     ? BraveVpnConstants.REGION_PRECISION_COUNTRY
                                                     : BraveVpnConstants.REGION_PRECISION_CITY);
