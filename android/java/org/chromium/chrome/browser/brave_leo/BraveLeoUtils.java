@@ -54,7 +54,10 @@ public class BraveLeoUtils {
     }
 
     public static void openLeoQuery(
-            WebContents webContents, String conversationUuid, String query, boolean openLeoChatWindow) {
+            WebContents webContents,
+            String conversationUuid,
+            String query,
+            boolean openLeoChatWindow) {
         try {
             BraveLeoUtilsJni.get().openLeoQuery(webContents, conversationUuid, query);
             if (openLeoChatWindow) {

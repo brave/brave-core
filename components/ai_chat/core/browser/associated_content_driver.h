@@ -14,18 +14,13 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/one_shot_event.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
-#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 
-class PrefService;
-
 FORWARD_DECLARE_TEST(AIChatUIBrowserTest, PrintPreviewFallback);
+
 namespace ai_chat {
-class AIChatMetrics;
 
 // Contains a platform-independent relationship between multiple conversations
 // and a single piece of content. Must be subclassed to
