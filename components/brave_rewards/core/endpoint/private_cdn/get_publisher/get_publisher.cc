@@ -7,12 +7,12 @@
 #include <string_view>
 #include <utility>
 
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "brave/components/brave_rewards/core/common/brotli_util.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
-#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
@@ -153,10 +153,11 @@ GetPublisher::GetPublisher(RewardsEngine& engine) : engine_(engine) {}
 GetPublisher::~GetPublisher() = default;
 
 std::string GetPublisher::GetUrl(const std::string& hash_prefix) {
-  auto url = URLHelpers::Resolve(
-      engine_->Get<EnvironmentConfig>().brave_pcdn_url(),
-      {"/publishers/prefixes/", base::ToLowerASCII(hash_prefix)});
-  return url.spec();
+  return engine_->Get<EnvironmentConfig>()
+      .brave_pcdn_url()
+      .Resolve(base::StrCat(
+          {"/publishers/prefixes/", base::ToLowerASCII(hash_prefix)}))
+      .spec();
 }
 
 mojom::Result GetPublisher::CheckStatusCode(const int status_code) {

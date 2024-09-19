@@ -9,8 +9,8 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
-#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "net/http/http_status_code.h"
 
@@ -65,10 +65,10 @@ Result GetTransactionStatusUphold::ProcessResponse(
 }
 
 std::optional<std::string> GetTransactionStatusUphold::Url() const {
-  auto url =
-      URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().uphold_api_url(),
-                          {"/v0/me/transactions/", transaction_id_});
-  return url.spec();
+  return engine_->Get<EnvironmentConfig>()
+      .uphold_api_url()
+      .Resolve(base::StrCat({"/v0/me/transactions/", transaction_id_}))
+      .spec();
 }
 
 std::optional<std::vector<std::string>> GetTransactionStatusUphold::Headers(
