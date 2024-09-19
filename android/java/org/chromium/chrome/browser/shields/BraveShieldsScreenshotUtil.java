@@ -14,16 +14,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.ThreadUtils;
-import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.browser.feedback.ScreenshotTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class BraveShieldsScreenshotUtil {
     private static final String TAG = "ShieldsScreenshot";
     private final BraveScreenshotRunnable mBraveScreenshotRunnable;
 
-    private static class PngConvertorTask extends AsyncTask<byte[]> {
+    private static class PngConvertorTask implements Runnable {
         private static final int PNG_QUALITY = 100;
         private Bitmap mBitmap;
         private final BraveShieldsScreenshotUtilCallback mCallback;
@@ -35,32 +36,35 @@ public class BraveShieldsScreenshotUtil {
         }
 
         @Override
-        protected byte[] doInBackground() {
+        public void run() {
             assert !ThreadUtils.runningOnUiThread();
 
             try {
                 if (mBitmap == null) {
-                    return null;
+                    ThreadUtils.postOnUiThread(
+                            () -> {
+                                onPostExecute(null);
+                            });
+                    return;
                 }
 
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 mBitmap.compress(CompressFormat.PNG, PNG_QUALITY, bos);
 
-                return bos.toByteArray();
+                ThreadUtils.postOnUiThread(
+                        () -> {
+                            onPostExecute(bos.toByteArray());
+                        });
             } catch (Exception ex) {
-                return null;
+                ThreadUtils.postOnUiThread(
+                        () -> {
+                            onPostExecute(null);
+                        });
             }
         }
 
-        @Override
-        protected void onPostExecute(byte[] pngBytes) {
+        private void onPostExecute(byte[] pngBytes) {
             assert ThreadUtils.runningOnUiThread();
-
-            if (isCancelled()) {
-                mCallback.OnScreenshotReady(null);
-                return;
-            }
-
             mCallback.OnScreenshotReady(pngBytes);
         }
     }
@@ -71,7 +75,6 @@ public class BraveShieldsScreenshotUtil {
         private int mRetryCounter;
         private final BraveShieldsScreenshotUtilCallback mCallback;
         private final ScreenshotTask mScreenshotTask;
-        private PngConvertorTask mPngConvertorTask;
 
         public BraveScreenshotRunnable(
                 @NonNull ScreenshotTask screenshotTask,
@@ -99,8 +102,8 @@ public class BraveShieldsScreenshotUtil {
                 return;
             }
 
-            mPngConvertorTask = new PngConvertorTask(mScreenshotTask.getScreenshot(), mCallback);
-            mPngConvertorTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            ExecutorService es = Executors.newSingleThreadExecutor();
+            es.execute(new PngConvertorTask(mScreenshotTask.getScreenshot(), mCallback));
         }
 
         private boolean isRetryCounterOver() {
