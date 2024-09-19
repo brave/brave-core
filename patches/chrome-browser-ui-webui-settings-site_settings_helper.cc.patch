@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index d34354c29d963cded0b9ac480847b00a31391df7..91896187382590c4ae3a69acdf98ffa5d57bd4e3 100644
+index 3828b286a5d81062cfc6522704c7f600e08cf519..4f711cf4b2641a8f251801307a538d8fc846d1dd 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -244,6 +244,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
-     {ContentSettingsType::TOP_LEVEL_TPCD_ORIGIN_TRIAL, nullptr},
-     {ContentSettingsType::DISPLAY_MEDIA_SYSTEM_AUDIO, nullptr},
+@@ -247,6 +247,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      {ContentSettingsType::STORAGE_ACCESS_HEADER_ORIGIN_TRIAL, nullptr},
+     // TODO(crbug.com/368266658): Implement the UI for Direct Sockets PNA.
+     {ContentSettingsType::DIRECT_SOCKETS_PRIVATE_NETWORK_ACCESS, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  };
  
  static_assert(
-@@ -486,6 +487,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -508,6 +509,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
@@ -18,7 +18,7 @@ index d34354c29d963cded0b9ac480847b00a31391df7..91896187382590c4ae3a69acdf98ffa5
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      // Content setting types that aren't represented in the settings UI
      // will have `nullptr` as their `name`. However, converting `nullptr`
-@@ -500,6 +502,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
+@@ -522,6 +524,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
  }
  
  std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
@@ -26,7 +26,7 @@ index d34354c29d963cded0b9ac480847b00a31391df7..91896187382590c4ae3a69acdf98ffa5
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      if (type == entry.type) {
        // Content setting types that aren't represented in the settings UI
-@@ -679,6 +682,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+@@ -696,6 +699,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
  SiteSettingSource ProviderTypeToSiteSettingsSource(
      const ProviderType provider_type) {
    switch (provider_type) {
@@ -34,7 +34,7 @@ index d34354c29d963cded0b9ac480847b00a31391df7..91896187382590c4ae3a69acdf98ffa5
      case ProviderType::kWebuiAllowlistProvider:
        return SiteSettingSource::kAllowlist;
      case ProviderType::kPolicyProvider:
-@@ -705,6 +709,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
+@@ -722,6 +726,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
  
  std::string ProviderToDefaultSettingSourceString(const ProviderType provider) {
    switch (provider) {
