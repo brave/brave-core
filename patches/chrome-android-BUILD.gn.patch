@@ -2,7 +2,7 @@ diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
 index 3e0a1fe57e55843795740a337a12ea7e8ef0ba3f..cc4aad1e81b8d92eede35342506b5b604c6e6db9 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -194,6 +194,7 @@ if (current_toolchain == default_toolchain) {
+@@ -192,6 +192,7 @@ if (current_toolchain == default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -10,7 +10,7 @@ index 3e0a1fe57e55843795740a337a12ea7e8ef0ba3f..cc4aad1e81b8d92eede35342506b5b60
    }
  
    android_resources("chrome_app_java_resources") {
-@@ -282,6 +283,7 @@ if (current_toolchain == default_toolchain) {
+@@ -281,6 +282,7 @@ if (current_toolchain == default_toolchain) {
      } else {
        deps += [ "//components/plus_addresses/android:java_resources" ]
      }
@@ -18,7 +18,7 @@ index 3e0a1fe57e55843795740a337a12ea7e8ef0ba3f..cc4aad1e81b8d92eede35342506b5b60
    }
  
    android_resources("java_overlay_resources") {
-@@ -774,6 +776,7 @@ if (current_toolchain == default_toolchain) {
+@@ -743,6 +745,7 @@ if (current_toolchain == default_toolchain) {
      ]
  
      deps += feed_deps
@@ -26,16 +26,16 @@ index 3e0a1fe57e55843795740a337a12ea7e8ef0ba3f..cc4aad1e81b8d92eede35342506b5b60
  
      srcjar_deps = [
        ":chrome_android_java_enums_srcjar",
-@@ -791,6 +794,7 @@ if (current_toolchain == default_toolchain) {
+@@ -760,6 +763,7 @@ if (current_toolchain == default_toolchain) {
        "//components/sharing_message:sharing_send_message_result_generated_enum",
        "//components/supervised_user/core/browser:supervised_user_utils_enum_javagen",
      ]
 +    srcjar_deps += brave_chrome_java_srcjar_deps
  
      # From java_sources.gni.
-     sources = chrome_java_sources + [ app_hooks_impl ]
-@@ -923,6 +927,7 @@ if (current_toolchain == default_toolchain) {
-       "//components/saved_tab_groups:java",
+     sources = chrome_java_sources
+@@ -890,6 +894,7 @@ if (current_toolchain == default_toolchain) {
+       "//components/saved_tab_groups/public:conversion_utils_java",
        "//components/segmentation_platform/internal:internal_java",
      ]
 +    deps += brave_chrome_all_java_deps
