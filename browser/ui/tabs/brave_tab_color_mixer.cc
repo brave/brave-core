@@ -30,7 +30,7 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorBraveVerticalTabActiveBackground] = {
       kColorTabBackgroundInactiveFrameActive};
   mixer[kColorBraveVerticalTabInactiveBackground] = {kColorToolbar};
-  mixer[kColorBraveVerticalTabSeparator] = {nala::kColorDividerSubtle};
+  mixer[kColorBraveVerticalTabSeparator] = {kColorToolbarContentAreaSeparator};
   mixer[kColorBraveVerticalTabNTBIconColor] = {
       kColorTabForegroundInactiveFrameActive};
   mixer[kColorBraveVerticalTabNTBTextColor] = {
