@@ -11,9 +11,14 @@
 #import "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
 // static
-GoogleGroupsManager*
-GoogleGroupsManagerFactory::GetForBrowserState(
-    ChromeBrowserState* browser_state) {
+GoogleGroupsManager* GoogleGroupsManagerFactory::GetForBrowserState(
+    ProfileIOS* profile) {
+  return nullptr;
+}
+
+// static
+GoogleGroupsManager* GoogleGroupsManagerFactory::GetForProfile(
+    ProfileIOS* profile) {
   return nullptr;
 }
 
