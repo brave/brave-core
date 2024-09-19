@@ -336,11 +336,10 @@ WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
   CHECK(h.Sign(seed, key, sizeof key));
   // initial PRNG seed based on session key and passed-in seed string
   uint64_t v = *reinterpret_cast<uint64_t*>(key);
-  UChar* destination;
+  base::span<UChar> destination;
   WTF::String value = WTF::String::CreateUninitialized(length, destination);
-  for (wtf_size_t i = 0; i < length; i++) {
-    destination[i] =
-        kLettersForRandomStrings[v % kLettersForRandomStringsLength];
+  for (auto& c : destination) {
+    c = kLettersForRandomStrings[v % kLettersForRandomStringsLength];
     v = lfsr_next(v);
   }
   return value;
