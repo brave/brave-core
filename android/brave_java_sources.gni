@@ -409,6 +409,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/sync/settings/BraveManageSyncSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/settings/BravePasswordAccessReauthenticationHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/tab/BraveTabHelpers.java",
+  "../../brave/android/java/org/chromium/chrome/browser/tabbed_mode/BraveTabbedNavigationBarColorControllerBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/tabbed_mode/BraveTabbedRootUiCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/tabmodel/BraveTabCreator.java",
   "../../brave/android/java/org/chromium/chrome/browser/tasks/BraveReturnToChromeUtil.java",
