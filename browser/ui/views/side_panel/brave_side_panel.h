@@ -86,17 +86,29 @@ class BraveSidePanel : public views::View,
   void AddedToWidget() override;
   void Layout(PassKey) override;
 
+  // Reflects the current state of the visibility of the side panel.
+  enum class State { kClosed, kOpening, kOpen, kClosing };
+  State state() { return state_; }
+
+  // These two methods are the only mechanism to change visibility of the side
+  // panel. `animated` is ignored in Brave entirely.
+  void Open(bool animated);
+  void Close(bool animated);
+
+  // This is the parent view for the contents of the side panel.
+  views::View* GetContentParentView();
+
   void SetMinimumSidePanelContentsWidthForTesting(int width) {}
 
  private:
   friend class sidebar::SidebarBrowserTest;
 
+  // This method is the shared implementation of Open/Close.
+  void UpdateVisibility(bool should_be_open);
+
   // views::ViewObserver:
   void OnChildViewAdded(View* observed_view, View* child) override;
   void OnChildViewRemoved(View* observed_view, View* child) override;
-  void OnViewPropertyChanged(View* observed_view,
-                             const void* key,
-                             int64_t old_value) override;
 
   void UpdateBorder();
   void OnSidePanelWidthChanged();
@@ -118,6 +130,9 @@ class BraveSidePanel : public views::View,
   std::unique_ptr<SidePanelResizeWidget> resize_widget_;
   std::unique_ptr<ViewShadow> shadow_;
   std::unique_ptr<views::View> header_view_;
+  // Owned by `this` indirectly through the views tree.
+  raw_ptr<views::View> content_parent_view_;
+  State state_ = State::kClosed;
 };
 
 // Alias to the original `SidePanel` to the benefit of upstream code, as

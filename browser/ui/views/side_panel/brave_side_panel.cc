@@ -26,6 +26,33 @@
 #include "ui/color/color_provider.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
+#include "ui/views/view_class_properties.h"
+
+namespace {
+
+// ContentParentView is the parent view for views hosted in the
+// side panel.
+class ContentParentView : public views::View {
+  METADATA_HEADER(ContentParentView, views::View)
+
+ public:
+  ContentParentView() {
+    SetUseDefaultFillLayout(true);
+    SetBackground(
+        views::CreateThemedSolidBackground(kColorSidePanelBackground));
+    SetProperty(
+        views::kFlexBehaviorKey,
+        views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                                 views::MaximumFlexSizeRule::kUnbounded));
+  }
+
+  ~ContentParentView() override = default;
+};
+
+BEGIN_METADATA(ContentParentView)
+END_METADATA
+
+}  // namespace
 
 BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
                                HorizontalAlignment horizontal_alignment)
@@ -50,6 +77,9 @@ BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
     SetBackground(
         views::CreateThemedSolidBackground(kColorSidebarPanelHeaderBackground));
   }
+
+  content_parent_view_ = AddChildView(std::make_unique<ContentParentView>());
+  content_parent_view_->SetVisible(false);
 }
 
 BraveSidePanel::~BraveSidePanel() {
@@ -194,17 +224,21 @@ void BraveSidePanel::OnChildViewRemoved(View* observed_view, View* child) {
   }
 }
 
-void BraveSidePanel::OnViewPropertyChanged(View* observed_view,
-                                           const void* key,
-                                           int64_t old_value) {
-  if (key == kSidePanelContentStateKey) {
-    SidePanelContentState new_value = static_cast<SidePanelContentState>(
-        observed_view->GetProperty(kSidePanelContentStateKey));
-    if (new_value != static_cast<SidePanelContentState>(old_value)) {
-      SetVisible(new_value == SidePanelContentState::kReadyToShow ||
-                 new_value == SidePanelContentState::kShowImmediately);
-    }
-  }
+void BraveSidePanel::Open(bool animated) {
+  UpdateVisibility(/*should_be_open=*/true);
+}
+
+void BraveSidePanel::Close(bool animated) {
+  UpdateVisibility(/*should_be_open=*/false);
+}
+
+void BraveSidePanel::UpdateVisibility(bool should_be_open) {
+  state_ = should_be_open ? State::kOpen : State::kClosed;
+  SetVisible(should_be_open);
+}
+
+views::View* BraveSidePanel::GetContentParentView() {
+  return content_parent_view_;
 }
 
 BEGIN_METADATA(BraveSidePanel)
