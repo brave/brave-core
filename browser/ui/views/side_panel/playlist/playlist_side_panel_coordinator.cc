@@ -117,7 +117,7 @@ void PlaylistSidePanelCoordinator::OnViewIsDeleting(views::View* view) {
 
 void PlaylistSidePanelCoordinator::DestroyWebContentsIfNeeded() {
   DCHECK(contents_wrapper_);
-  if (!contents_wrapper_->web_contents()->GetCurrentlyPlayingVideoCount()) {
+  if (!contents_wrapper_->web_contents()->IsCurrentlyAudible()) {
     contents_wrapper_.reset();
   }
 }
