@@ -59,7 +59,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   // TODO(petemill): consider making SearchQuerySummary generic (StagedEntries)
   // or a list of ConversationTurn objects.
   using GetStagedEntriesCallback = base::OnceCallback<void(
-      const std::optional<SearchQuerySummary>& search_query_summary)>;
+      const std::optional<std::vector<SearchQuerySummary>>& entries)>;
 
   // Supplements a conversation with associated page content
   class AssociatedContentDelegate {
@@ -282,7 +282,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   // to continue, e.g. Brave Search.
   void MaybeFetchOrClearContentStagedConversation();
   void OnGetStagedEntriesFromContent(
-      const std::optional<SearchQuerySummary>& search_query_summary);
+      const std::optional<std::vector<SearchQuerySummary>>& entries);
 
   void GeneratePageContent(GetPageContentCallback callback);
   void SetPageContent(std::string contents_text,

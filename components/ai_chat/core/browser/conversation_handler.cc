@@ -1015,21 +1015,19 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
   if (!can_check_for_staged_conversation) {
     // Clear any staged conversation entries since user might have unassociated
     // content with this conversation
-    // For now, we assume all staged conversations are 2 entries (question and
-    // answer).
-    if (chat_history_.size() != 2) {
+    if (chat_history_.empty()) {
       return;
     }
 
     const auto& last_turn = chat_history_.back();
     if (last_turn->from_brave_search_SERP) {
-      chat_history_.clear();  // Clear the staged query and summary.
+      chat_history_.clear();  // Clear the staged entries.
       OnHistoryUpdate();
-      return;
     }
+    return;
   }
 
-  // Currently only have search query summary at the start of a conversation.
+  // Can only have staged entries at the start of a conversation.
   if (!chat_history_.empty()) {
     return;
   }
@@ -1040,27 +1038,28 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
 }
 
 void ConversationHandler::OnGetStagedEntriesFromContent(
-    const std::optional<SearchQuerySummary>& search_query_summary) {
+    const std::optional<std::vector<SearchQuerySummary>>& entries) {
   // Check if all requirements are still met.
-  if (!search_query_summary || !chat_history_.empty() ||
-      !IsContentAssociationPossible() || !should_send_page_contents_ ||
-      !ai_chat_service_->HasUserOptedIn()) {
+  if (!entries || !chat_history_.empty() || !IsContentAssociationPossible() ||
+      !should_send_page_contents_ || !ai_chat_service_->HasUserOptedIn()) {
     return;
   }
 
-  // Add the query & summary to the conversation history and call
+  // Add the query & summary pairs to the conversation history and call
   // OnHistoryUpdate to update UI.
-  chat_history_.push_back(mojom::ConversationTurn::New(
-      CharacterType::HUMAN, mojom::ActionType::QUERY,
-      mojom::ConversationTurnVisibility::VISIBLE, search_query_summary->query,
-      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, true));
-  std::vector<mojom::ConversationEntryEventPtr> events;
-  events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New(search_query_summary->summary)));
-  chat_history_.push_back(mojom::ConversationTurn::New(
-      CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, search_query_summary->summary,
-      std::nullopt, std::move(events), base::Time::Now(), std::nullopt, true));
+  for (const auto& entry : *entries) {
+    chat_history_.push_back(mojom::ConversationTurn::New(
+        CharacterType::HUMAN, mojom::ActionType::QUERY,
+        mojom::ConversationTurnVisibility::VISIBLE, entry.query, std::nullopt,
+        std::nullopt, base::Time::Now(), std::nullopt, true));
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New(entry.summary)));
+    chat_history_.push_back(mojom::ConversationTurn::New(
+        CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+        mojom::ConversationTurnVisibility::VISIBLE, entry.summary, std::nullopt,
+        std::move(events), base::Time::Now(), std::nullopt, true));
+  }
   OnHistoryUpdate();
 }
 

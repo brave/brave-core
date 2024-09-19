@@ -104,6 +104,7 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
     return std::make_unique<TestingProfile>();
   }
 
+  // TODO(petemill): param for simulating page load
   void NavigateTo(GURL url, bool is_same_page = false, std::string title = "") {
     if (title.empty()) {
       title = base::StrCat({url.host(), url.path()});

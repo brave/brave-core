@@ -161,9 +161,9 @@ void AIChatTabHelper::NavigationEntryCommitted(
   // it results in a page title change (see |TtileWasSet|). Title detection
   // also done within the navigation entry so that back/forward navigations
   // are handled correctly.
-  
+
   // Page loaded is only considered changing when full document changes
-  if (!is_same_document_navigation) {
+  if (!is_same_document_navigation_) {
     is_page_loaded_ = false;
   }
   if (!is_same_document_navigation_ || previous_page_title_ != GetPageTitle()) {
@@ -310,11 +310,12 @@ void AIChatTabHelper::OnFetchPageContentComplete(
     bool is_video,
     std::string invalidation_token) {
   base::TrimWhitespaceASCII(content, base::TRIM_ALL, &content);
-  if (!did_retry_get_page_content_after_page_load_ &&
-      content.empty() && !is_video) {
+  if (!did_retry_get_page_content_after_page_load_ && content.empty() &&
+      !is_video) {
     // Only try this once
     did_retry_get_page_content_after_page_load_ = true;
-    DVLOG(1) << __func__ <<  "empty content, will retry once, is_page_loaded_=" << is_page_loaded_;
+    DVLOG(1) << __func__ << "empty content, will retry once, is_page_loaded_="
+             << is_page_loaded_;
     if (!is_page_loaded_) {
       // Retry after page is loaded, including possible print preview fallback
       if (pending_get_page_content_callback_) {
@@ -328,7 +329,7 @@ void AIChatTabHelper::OnFetchPageContentComplete(
       print_preview_extraction_delegate_->Extract(
           IsPdf(web_contents()),
           base::BindOnce(&AIChatTabHelper::OnExtractPrintPreviewContentComplete,
-                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
     }
     return;
   }
@@ -347,7 +348,7 @@ std::u16string AIChatTabHelper::GetPageTitle() const {
   return web_contents()->GetTitle();
 }
 
-void OnNewPage(int64_t navigation_id) {
+void AIChatTabHelper::OnNewPage(int64_t navigation_id) {
   DVLOG(3) << __func__ << " id: " << navigation_id;
   AssociatedContentDriver::OnNewPage(navigation_id);
   did_retry_get_page_content_after_page_load_ = false;

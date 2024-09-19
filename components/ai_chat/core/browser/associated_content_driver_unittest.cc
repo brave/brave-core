@@ -19,6 +19,7 @@
 #include "base/threading/thread.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/types.h"
+#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -29,8 +30,10 @@
 namespace ai_chat {
 
 using testing::_;
+using testing::ElementsAre;
 using testing::Eq;
 using testing::NiceMock;
+using testing::Optional;
 
 class MockAssociatedContentDriver : public AssociatedContentDriver {
  public:
@@ -45,8 +48,6 @@ class MockAssociatedContentDriver : public AssociatedContentDriver {
               GetPageContent,
               (ConversationHandler::GetPageContentCallback, std::string_view),
               (override));
-  // MOCK_METHOD(void, PrintPreviewFallback, (GetPageContentCallback),
-  // (override));
   MOCK_METHOD(void,
               GetSearchSummarizerKey,
               (mojom::PageContentExtractor::GetSearchSummarizerKeyCallback),
@@ -131,7 +132,9 @@ TEST_F(AssociatedContentDriverUnitTest, GetStagedEntriesFromContent) {
 
   // Expect a result
   base::MockCallback<ConversationHandler::GetStagedEntriesCallback> callback;
-  EXPECT_CALL(callback, Run(Eq(SearchQuerySummary("query", "summary"))))
+  EXPECT_CALL(
+      callback,
+      Run(Optional(ElementsAre(Eq(SearchQuerySummary("query", "summary"))))))
       .Times(1);
 
   // Test
@@ -195,14 +198,21 @@ TEST_F(AssociatedContentDriverUnitTest, GetStagedEntriesFromContent_NoResult) {
 TEST_F(AssociatedContentDriverUnitTest, ParseSearchQuerySummaryResponse) {
   struct {
     std::string response;
-    std::optional<SearchQuerySummary> expected_query_summary;
+    std::optional<std::vector<SearchQuerySummary>> expected_query_summary;
   } test_cases[] = {
       {"{}", std::nullopt},
       {R"({"conversation": []})", std::nullopt},  // empty conversation
       {R"({"conversation": [{"query": "q","answer": []}]})",
-       std::nullopt},  // empty answer
+       std::vector<SearchQuerySummary>()},  // empty answer
       {R"({"conversation": [{"query": "q", "answer": [{"text": "t"}]}]})",
-       SearchQuerySummary("q", "t")},
+       std::vector<SearchQuerySummary>({SearchQuerySummary("q", "t")})},
+      {R"({"conversation": [
+          {"query": "q1", "answer": [{"text": "t1"}, {"text": "t2"}]},
+          {"query": "q2", "answer": []},
+          {"query": "q3", "answer": [{"text": "t3"}]}
+        ]})",
+       std::vector<SearchQuerySummary>(
+           {SearchQuerySummary("q1", "t1"), SearchQuerySummary("q3", "t3")})},
   };
 
   for (const auto& test_case : test_cases) {

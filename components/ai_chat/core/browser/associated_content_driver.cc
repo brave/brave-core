@@ -24,6 +24,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "net/base/url_util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace ai_chat {
 
@@ -228,18 +229,17 @@ void AssociatedContentDriver::OnSearchQuerySummaryFetched(
     return;
   }
 
-  auto search_query_summary =
-      ParseSearchQuerySummaryResponse(result.value_body());
-  if (!search_query_summary) {
+  auto entries = ParseSearchQuerySummaryResponse(result.value_body());
+  if (!entries) {
     std::move(callback).Run(std::nullopt);
     return;
   }
 
-  std::move(callback).Run(search_query_summary);
+  std::move(callback).Run(entries);
 }
 
 // static
-std::optional<SearchQuerySummary>
+std::optional<std::vector<SearchQuerySummary>>
 AssociatedContentDriver::ParseSearchQuerySummaryResponse(
     const base::Value& value) {
   auto search_query_response =
@@ -248,12 +248,17 @@ AssociatedContentDriver::ParseSearchQuerySummaryResponse(
     return std::nullopt;
   }
 
-  const auto& query_summary = search_query_response->conversation[0];
-  if (query_summary.answer.empty()) {
-    return std::nullopt;
+  std::vector<SearchQuerySummary> entries;
+  for (const auto& entry : search_query_response->conversation) {
+    if (entry.answer.empty()) {
+      continue;
+    }
+
+    // Only support one answer for each query for now.
+    entries.push_back(SearchQuerySummary(entry.query, entry.answer[0].text));
   }
 
-  return SearchQuerySummary(query_summary.query, query_summary.answer[0].text);
+  return entries;
 }
 
 void AssociatedContentDriver::OnFaviconImageDataChanged() {

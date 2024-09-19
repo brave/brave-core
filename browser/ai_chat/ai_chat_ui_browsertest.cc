@@ -216,10 +216,8 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
-  const base::flat_map<int64_t,
-                       ai_chat::ConversationDriver::GetPageContentCallback>&
-  GetPendingPrintPreviewRequests() {
-    return chat_tab_helper_->pending_print_preview_requests_;
+  bool HasPendingGetContentRequest() {
+    return chat_tab_helper_->pending_get_page_content_callback_ ? true : false;
   }
 
  protected:
@@ -260,29 +258,29 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreview) {
   FetchPageContent(FROM_HERE, "");
 #endif
   // Each request is cleared after extraction.
-  EXPECT_EQ(0u, GetPendingPrintPreviewRequests().size());
+  EXPECT_FALSE(HasPendingGetContentRequest());
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewRequests) {
   NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"),
               false);
   FetchPageContent(FROM_HERE, "", false);
-  EXPECT_EQ(1u, GetPendingPrintPreviewRequests().size());
+  EXPECT_TRUE(HasPendingGetContentRequest());
 
   GetActiveWebContents()->GetController().Reload(content::ReloadType::NORMAL,
                                                  false);
   content::WaitForLoadStop(GetActiveWebContents());
   // The request should be cleared after reload.
-  EXPECT_EQ(0u, GetPendingPrintPreviewRequests().size());
+  EXPECT_FALSE(HasPendingGetContentRequest());
 
   // Try page loaded scenario
   NavigateURL(https_server_.GetURL("docs.google.com", "/canvas.html"));
   FetchPageContent(FROM_HERE, "", false);
-  EXPECT_EQ(1u, GetPendingPrintPreviewRequests().size());
+  EXPECT_TRUE(HasPendingGetContentRequest());
 
   NavigateURL(https_server_.GetURL("a.com", "/canvas.html"), false);
   // The request should be cleared after navigation.
-  EXPECT_EQ(0u, GetPendingPrintPreviewRequests().size());
+  EXPECT_FALSE(HasPendingGetContentRequest());
 }
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
@@ -346,8 +344,8 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, MAYBE_PrintPreviewFallback) {
   FetchPageContent(FROM_HERE, "this is the way");
 
   // Does not fall back when there is regular DOM content
-  NavigateURL(
-      https_server_.GetURL("a.com", "/long_canvas_with_dom_content.html", false));
+  NavigateURL(https_server_.GetURL(
+      "a.com", "/long_canvas_with_dom_content.html", false));
   FetchPageContent(FROM_HERE, "Or maybe not.");
 }
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)

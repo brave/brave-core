@@ -229,7 +229,8 @@ class ConversationHandlerUnitTest : public testing::Test {
 
   void TearDown() override { ai_chat_service_.reset(); }
 
-  void SetAssociatedContentStagedEntries(bool empty = false) {
+  void SetAssociatedContentStagedEntries(bool empty = false,
+                                         bool multi = false) {
     if (empty) {
       ON_CALL(*associated_content_, GetStagedEntriesFromContent)
           .WillByDefault(
@@ -238,10 +239,22 @@ class ConversationHandlerUnitTest : public testing::Test {
               });
       return;
     }
+    if (!multi) {
+      ON_CALL(*associated_content_, GetStagedEntriesFromContent)
+          .WillByDefault(
+              [](ConversationHandler::GetStagedEntriesCallback callback) {
+                std::move(callback).Run(std::vector<SearchQuerySummary>{
+                    SearchQuerySummary("query", "summary")});
+              });
+      return;
+    }
     ON_CALL(*associated_content_, GetStagedEntriesFromContent)
         .WillByDefault(
             [](ConversationHandler::GetStagedEntriesCallback callback) {
-              std::move(callback).Run(SearchQuerySummary("query", "summary"));
+              std::move(callback).Run(
+                  std::make_optional(std::vector<SearchQuerySummary>{
+                      SearchQuerySummary("query", "summary"),
+                      SearchQuerySummary("query2", "summary2")}));
             });
   }
 
@@ -845,7 +858,7 @@ TEST_F(ConversationHandlerUnitTest,
        MaybeFetchOrClearContentStagedConversation) {
   // Fetch with result should update the conversation history and call
   // OnConversationHistoryUpdate on observers.
-  SetAssociatedContentStagedEntries(false);
+  SetAssociatedContentStagedEntries(/*empty=*/false);
   // Client connecting will trigger content staging
   EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(1);
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
@@ -896,9 +909,76 @@ TEST_F(ConversationHandlerUnitTest,
 }
 
 TEST_F(ConversationHandlerUnitTest,
+       MaybeFetchOrClearContentStagedConversation_Multi) {
+  // Fetch with result should update the conversation history and call
+  // OnConversationHistoryUpdate on observers.
+  SetAssociatedContentStagedEntries(/*empty=*/false, /*multi=*/true);
+  // Client connecting will trigger content staging
+  EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(1);
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  EXPECT_CALL(client, OnConversationHistoryUpdate()).Times(1);
+  EXPECT_TRUE(conversation_handler_->IsAnyClientConnected());
+  conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
+      [&](mojom::SiteInfoPtr site_info, bool should_send_page_contents) {
+        EXPECT_TRUE(should_send_page_contents);
+      }));
+
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+  testing::Mock::VerifyAndClearExpectations(&client);
+
+  auto& history = conversation_handler_->GetConversationHistory();
+  std::vector<mojom::ConversationTurnPtr> expected_history;
+  expected_history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      mojom::ConversationTurnVisibility::VISIBLE, "query", std::nullopt,
+      std::nullopt, base::Time::Now(), std::nullopt, true));
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("summary")));
+  expected_history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "summary", std::nullopt,
+      std::move(events), base::Time::Now(), std::nullopt, true));
+
+  expected_history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      mojom::ConversationTurnVisibility::VISIBLE, "query2", std::nullopt,
+      std::nullopt, base::Time::Now(), std::nullopt, true));
+  std::vector<mojom::ConversationEntryEventPtr> events2;
+  events2.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("summary2")));
+  expected_history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "summary2", std::nullopt,
+      std::move(events2), base::Time::Now(), std::nullopt, true));
+
+  ASSERT_EQ(history.size(), expected_history.size());
+  for (size_t i = 0; i < history.size(); i++) {
+    expected_history[i]->created_time = history[i]->created_time;
+    EXPECT_EQ(history[i], expected_history[i]);
+  }
+
+  // Verify turning off content association clears the conversation history.
+  EXPECT_CALL(client, OnConversationHistoryUpdate()).Times(1);
+  // Shouldn't ask for staged entries if user doesn't want to be associated
+  // with content. This verifies that even with existing staged entries,
+  // MaybeFetchOrClearContentStagedConversation will always early return.
+  EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(0);
+
+  conversation_handler_->SetShouldSendPageContents(false);
+
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&client);
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+
+  EXPECT_TRUE(conversation_handler_->GetConversationHistory().empty());
+}
+
+TEST_F(ConversationHandlerUnitTest,
        MaybeFetchOrClearContentStagedConversation_NoResult) {
   // Ensure delegate provides empty result
-  SetAssociatedContentStagedEntries(true);
+  SetAssociatedContentStagedEntries(/*empty=*/true);
   // Client connecting will trigger content staging
   EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(1);
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
@@ -918,7 +998,7 @@ TEST_F(ConversationHandlerUnitTest_OptedOut,
        MaybeFetchOrClearSearchQuerySummary_NotOptedIn) {
   // Content will have staged entries, but we want to make sure that
   // ConversationHandler won't ask for them when not opted-in yet.
-  SetAssociatedContentStagedEntries(false);
+  SetAssociatedContentStagedEntries(/*empty=*/false);
   EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(0);
   // Modifying whether page contents should be sent should trigger content
   // staging.
@@ -943,7 +1023,7 @@ TEST_F(ConversationHandlerUnitTest,
   // Content will have staged entries, but we want to make sure that
   // ConversationHandler won't ask for them when user has chosen not to
   // use page content.
-  SetAssociatedContentStagedEntries(false);
+  SetAssociatedContentStagedEntries(/*empty=*/false);
   conversation_handler_->SetShouldSendPageContents(false);
   conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
       [&](mojom::SiteInfoPtr site_info, bool should_send_page_contents) {
@@ -984,7 +1064,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
 
 TEST_F(ConversationHandlerUnitTest,
        MaybeFetchOrClearSearchQuerySummary_OnClientConnectionChanged) {
-  SetAssociatedContentStagedEntries(false);
+  SetAssociatedContentStagedEntries(/*empty=*/false);
   // Verify that no fetch happens when no client
   EXPECT_FALSE(conversation_handler_->IsAnyClientConnected());
   EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(0);

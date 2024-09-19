@@ -144,6 +144,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void GetPageContent(ConversationHandler::GetPageContentCallback callback,
                       std::string_view invalidation_token) override;
   std::u16string GetPageTitle() const override;
+  void OnNewPage(int64_t navigation_id) override;
 
   // Called when an event of significance occurs that, if the page is a
   // same-document navigation, should result in that previous navigation
@@ -177,9 +178,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   bool is_pdf_a11y_info_loaded_ = false;
   uint8_t check_pdf_a11y_tree_attempts_ = 0;
   bool is_page_loaded_ = false;
-  // <navigation_id, GetPageContentCallback>
-  base::flat_map<int64_t, GetPageContentCallback>
-      pending_print_preview_requests_;
+  bool did_retry_get_page_content_after_page_load_ = false;
 
   raw_ptr<content::WebContents> inner_web_contents_ = nullptr;
 

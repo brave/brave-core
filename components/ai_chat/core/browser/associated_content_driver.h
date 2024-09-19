@@ -121,8 +121,8 @@ class AssociatedContentDriver
       ConversationHandler::GetStagedEntriesCallback callback,
       int64_t navigation_id,
       api_request_helper::APIRequestResult result);
-  static std::optional<SearchQuerySummary> ParseSearchQuerySummaryResponse(
-      const base::Value& value);
+  static std::optional<std::vector<SearchQuerySummary>>
+  ParseSearchQuerySummaryResponse(const base::Value& value);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
