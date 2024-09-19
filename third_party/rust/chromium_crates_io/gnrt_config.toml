@@ -177,6 +177,9 @@ extra_input_roots = [ "../README.md" ]
 [crate.deranged]
 license_files = ['LICENSE-Apache']
 
+[crate.der]
+extra_input_roots = [ "../README.md" ]
+
 [crate.derivation-path]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
@@ -303,8 +306,8 @@ license_files = ['LICENSE-Apache']
 [crate.num-traits]
 extra_kv = { rustflags = [ "--cfg", "has_i128", "--cfg", "has_to_int_unchecked", "--cfg", "has_reverse_bits", "--cfg", "has_leading_trailing_ones", "--cfg", "has_int_assignop_ref", "--cfg", "has_div_euclid", "--cfg", "has_copysign" ] }
 
-[crate.platforms]
-extra_src_roots = [ "target" ]
+[crate.pkcs8]
+extra_input_roots = [ "../README.md" ]
 
 [crate.powerfmt]
 license_files = ['LICENSE-Apache']
