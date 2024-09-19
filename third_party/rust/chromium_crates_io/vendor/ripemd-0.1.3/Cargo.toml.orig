@@ -1,0 +1,24 @@
+[package]
+name = "ripemd"
+version = "0.1.3"
+description = "Pure Rust implementation of the RIPEMD hash functions"
+authors = ["RustCrypto Developers"]
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+edition = "2018"
+documentation = "https://docs.rs/ripemd"
+repository = "https://github.com/RustCrypto/hashes"
+keywords = ["crypto", "ripemd", "hash", "digest"]
+categories = ["cryptography", "no-std"]
+
+[dependencies]
+digest = "0.10.4"
+
+[dev-dependencies]
+digest = { version = "0.10.4", features = ["dev"] }
+hex-literal = "0.2.2"
+
+[features]
+default = ["std"]
+std = ["digest/std"]
+oid = ["digest/oid"] # Enable OID support. WARNING: Bumps MSRV to 1.57
