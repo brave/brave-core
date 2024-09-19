@@ -1,0 +1,54 @@
+[package]
+name = "fvm_shared"
+description = "Filecoin Virtual Machine shared types and functions"
+version = "3.10.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+authors = ["ChainSafe Systems <info@chainsafe.io>", "Protocol Labs", "Filecoin Core Devs"]
+repository = "https://github.com/filecoin-project/ref-fvm"
+
+[dependencies]
+blake2b_simd = "1.0.1"
+thiserror = "1.0"
+num-traits = "0.2"
+num-derive = "0.4"
+num-bigint = "0.4"
+num-integer = "0.1"
+data-encoding = "2.4.0"
+data-encoding-macro = "0.1.13"
+lazy_static = "1.4.0"
+cid = { workspace = true, features = ["serde-codec", "std"] }
+multihash = { workspace = true }
+unsigned-varint = "0.7.1"
+anyhow = "1.0.71"
+fvm_ipld_encoding = { version = "0.4" }
+serde = { version = "1", default-features = false }
+serde_tuple = "0.5"
+arbitrary = { version = "1.3", optional = true, features = ["derive"] }
+quickcheck = { version = "1", optional = true }
+bitflags = { version = "2.3.3", features = ["serde"] }
+
+## non-wasm dependencies; these dependencies and the respective code is
+## only activated through non-default features, which the Kernel enables, but
+## not the actors.
+filecoin-proofs-api = { version = "18", default-features = false, optional = true }
+libsecp256k1 = { version = "0.7", optional = true }
+bls-signatures = { version = "0.15", default-features = false, optional = true }
+
+[dev-dependencies]
+rand = "0.8"
+rand_chacha = "0.3"
+serde_json = "1.0.99"
+multihash = { workspace = true, features = ["multihash-impl", "sha2", "sha3", "ripemd"] }
+quickcheck_macros = "1"
+
+fvm_shared = { path = ".", features = ["arb"] }
+
+[features]
+default = []
+crypto = ["libsecp256k1", "blst", "proofs"]
+proofs = ["filecoin-proofs-api"]
+secp256k1 = ["libsecp256k1"]
+blst = ["bls-signatures/blst"]
+testing = []
+arb = ["arbitrary", "dep:quickcheck", "num-bigint/quickcheck"]
