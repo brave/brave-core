@@ -182,7 +182,7 @@ std::optional<std::string> PostConnect::Url() const {
 
   return engine_->Get<EnvironmentConfig>()
       .rewards_grant_url()
-      .Resolve(base::StringPrintf(Path(), wallet->payment_id.c_str()))
+      .Resolve(Path(wallet->payment_id))
       .spec();
 }
 
@@ -203,9 +203,7 @@ std::optional<std::vector<std::string>> PostConnect::Headers(
     return std::nullopt;
   }
 
-  return signer->GetSignedHeaders(
-      "post " + base::StringPrintf(Path(), wallet->payment_id.c_str()),
-      content);
+  return signer->GetSignedHeaders("post " + Path(wallet->payment_id), content);
 }
 
 std::string PostConnect::ContentType() const {
