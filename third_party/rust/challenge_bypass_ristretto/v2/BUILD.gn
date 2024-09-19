@@ -46,11 +46,11 @@ cargo_crate("lib") {
     "//brave/third_party/rust/digest/v0_10:lib",
     "//brave/third_party/rust/hmac/v0_12:lib",
     "//brave/third_party/rust/rand/v0_8:lib",
+    "//brave/third_party/rust/rand_chacha/v0_3:lib",
     "//brave/third_party/rust/rand_core/v0_6:lib",
     "//brave/third_party/rust/serde/v1:lib",
     "//brave/third_party/rust/subtle/v2:lib",
     "//brave/third_party/rust/zeroize/v1:lib",
-    "//third_party/rust/rand_chacha/v0_3:lib",
   ]
   features = [
     "alloc",
