@@ -1048,6 +1048,14 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         true,
                         void.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController",
+                        "getNavigationBarColor",
+                        MethodModifier.REGULAR,
+                        true,
+                        int.class,
+                        boolean.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
@@ -2084,6 +2092,10 @@ public class BytecodeTest {
                         "mReferenceButtonData",
                         true,
                         ResourceButtonData.class));
+        Assert.assertFalse(
+                fieldExists(
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController",
+                        "mContext"));
     }
 
     @Test
@@ -2221,6 +2233,10 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/tasks/tab_management/IncognitoTabSwitcherPane",
                         "org/chromium/chrome/browser/tasks/tab_management/BraveTabSwitcherPaneBase")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController",
+                        "org/chromium/chrome/browser/tabbed_mode/BraveTabbedNavigationBarColorControllerBase"));
     }
 
     private boolean classExists(String className) {

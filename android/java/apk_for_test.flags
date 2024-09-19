@@ -891,3 +891,9 @@
 -keep class org.chromium.chrome.browser.tasks.tab_management.BraveIncognitoTabSwitcherPane {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.tabbed_mode.TabbedNavigationBarColorController {
+    *** mContext;
+}
+
+-keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedNavigationBarColorControllerBase
