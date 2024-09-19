@@ -50,8 +50,8 @@ const getEnvConfig = (key, default_value = undefined) => {
     } else {
       // The .env file is used by `gn gen`. Create it if it doesn't exist.
       const defaultEnvConfigContent =
-        '# This is an .env config file for the build system.\n' +
-        '# See https://github.com/brave/brave-browser/wiki/Build-configuration\n'
+        '# This is a placeholder .env config file for the build system.\n' +
+        '# See for details: https://github.com/brave/brave-browser/wiki/Build-configuration\n'
       fs.writeFileSync(envConfigPath, defaultEnvConfigContent)
     }
 

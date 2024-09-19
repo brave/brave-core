@@ -11,13 +11,16 @@ import re
 import sys
 
 
+# This script reads a .env configuration file and converts it into a JSON
+# object, which is then printed to the standard output. It is used as part of
+# `gn gen` to access .env variables directly from `.gn/.gni` files.
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('filename')
+    parser.add_argument('file_path')
 
     args = parser.parse_args()
 
-    json.dump(read_env_config_as_dict(args.filename),
+    json.dump(read_env_config_as_dict(args.file_path),
               sort_keys=True,
               fp=sys.stdout)
 
@@ -58,13 +61,15 @@ def read_env_config_as_dict(file_path, result_dict=None):
             maybe_quote = value[0] if value else ''
 
             # Remove surrounding quotes
-            value = re.sub(r'^(\")([\s\S]*)\1$', r'\2', value)
+            value = re.sub(r"^(['\"`])([\s\S]*)\1$", r'\2', value)
 
             # Expand newlines if double quoted
             if maybe_quote == '"':
                 value = value.replace('\\n', '\n')
 
             try:
+                # Try to parse the value as JSON to represent numbers and
+                # booleans correctly.
                 value = json.loads(value)
             except json.JSONDecodeError:
                 # Keep the value as a string if it's not a valid JSON.

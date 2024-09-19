@@ -17,10 +17,13 @@ env_config = exec_script("env_config.py",
 # A list of .env files that were used to generate the env_config.
 env_config_files = [ rebase_path(env_config_file) ]
 
+# If there were any extra .env files included, add GN dependencies on them so
+# that GN is re-run if they change.
 if (defined(env_config.include_env) && env_config.include_env != []) {
-  # This no-op command adds GN dependencies on the extra .env files so that GN
-  # is re-run if they change.
-  exec_script("//build/noop.py", [], "", env_config.include_env)
+  foreach(env_file, env_config.include_env) {
+    # Read the file to register it as a gen-time dependency.
+    read_file(env_file, "")
+  }
 
   # Add the extra .env files to the list.
   env_config_files += rebase_path(env_config.include_env)
