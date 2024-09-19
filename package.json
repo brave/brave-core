@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.72.23",
+  "version": "1.72.24",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
