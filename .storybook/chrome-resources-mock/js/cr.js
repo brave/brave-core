@@ -4,16 +4,18 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 /**
- * 
- * @param {string} eventName 
- * @param {Function} handler 
+ *
+ * @param {string} eventName
+ * @param {Function} handler
  */
-export function addWebUIListener(eventName, handler) {}
+export function addWebUiListener(eventName, handler) {
+  console.log('addWebUIListener', eventName, handler)
+}
 
 /**
- * 
- * @param {string} message 
- * @param  {...any} args 
+ *
+ * @param {string} message
+ * @param  {...any} args
  */
 export function sendWithPromise(message, ...args) {
   return new Promise(() => console.log('sendWithPromise', message, args))
