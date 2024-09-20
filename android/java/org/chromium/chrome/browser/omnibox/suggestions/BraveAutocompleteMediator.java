@@ -146,9 +146,9 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     }
 
     @Override
-    public void openLeoQuery(WebContents webContents, String query) {
+    public void openLeoQuery(WebContents webContents, String conversationUuid, String query) {
         mDelegate.clearOmniboxFocus();
-        BraveLeoUtils.openLeoQuery(webContents, query, true);
+        BraveLeoUtils.openLeoQuery(webContents, conversationUuid, query, true);
     }
 
     @Override
@@ -166,7 +166,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator
                     // Remove the start word from the query and process it.
                     topResultQuery =
                             topResultQuery.substring(LEO_START_WORD_UPPER_CASE.length()).trim();
-                    openLeoQuery(tab.getWebContents(), topResultQuery);
+                    openLeoQuery(tab.getWebContents(), "", topResultQuery);
 
                     // Clear the voice results to prevent the query from being processed by Chromium
                     // since it's already handled by Leo.

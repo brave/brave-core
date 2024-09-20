@@ -9,16 +9,13 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <vector>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
-#include "base/observer_list.h"
-#include "brave/components/ai_chat/core/browser/conversation_driver.h"
-#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
+#include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "components/favicon/core/favicon_driver_observer.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -26,10 +23,6 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
-#include "mojo/public/cpp/bindings/receiver_set.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
-
-class PrefService;
 
 namespace content {
 class ScopedAccessibilityMode;
@@ -44,37 +37,69 @@ class AIChatTabHelper : public content::WebContentsObserver,
                         public content::WebContentsUserData<AIChatTabHelper>,
                         public mojom::PageContentExtractorHost,
                         public favicon::FaviconDriverObserver,
-                        public ConversationDriver {
+                        public AssociatedContentDriver {
  public:
+  using GetPageContentCallback = ConversationHandler::GetPageContentCallback;
+
   static void BindPageContentExtractorHost(
       content::RenderFrameHost* rfh,
       mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
           receiver);
 
-  // Maximum length can be exceeded, the length will determine that no more
-  // pages will be processed in print preview. Ex. if we reach the maximum
-  // length in the middle of the 5th page, the 5th page will be the last page
-  // and the rest of the pages will be ignored.
-  static void SetMaxContentLengthForTesting(std::optional<uint32_t> max_length);
+  // Delegate to extract print preview content
+  class PrintPreviewExtractionDelegate {
+   public:
+    using ExtractCallback = base::OnceCallback<void(std::string)>;
+
+    virtual ~PrintPreviewExtractionDelegate() = default;
+    // Get the current text from the WebContents using Print Preview
+    virtual void Extract(bool is_pdf, ExtractCallback callback) = 0;
+  };
+
+  class PageContentFetcherDelegate {
+   public:
+    using FetchPageContentCallback =
+        base::OnceCallback<void(std::string page_content,
+                                bool is_video,
+                                std::string invalidation_token)>;
+
+    virtual ~PageContentFetcherDelegate() = default;
+
+    // Gets text of the page content, making an attempt
+    // to only consider the main content of the page.
+    virtual void FetchPageContent(std::string_view invalidation_token,
+                                  FetchPageContentCallback callback) = 0;
+
+    // Attempts to find a search summarizer key for the page.
+    virtual void GetSearchSummarizerKey(
+        GetSearchSummarizerKeyCallback callback) = 0;
+  };
 
   AIChatTabHelper(const AIChatTabHelper&) = delete;
   AIChatTabHelper& operator=(const AIChatTabHelper&) = delete;
   ~AIChatTabHelper() override;
 
   void SetOnPDFA11yInfoLoadedCallbackForTesting(base::OnceClosure cb);
+  void SetPageContentFetcherDelegateForTesting(
+      std::unique_ptr<PageContentFetcherDelegate> delegate) {
+    page_content_fetcher_delegate_ = std::move(delegate);
+  }
+  raw_ptr<PageContentFetcherDelegate>
+  GetPageContentFetcherDelegateForTesting() {
+    return page_content_fetcher_delegate_.get();
+  }
+  raw_ptr<PrintPreviewExtractionDelegate>
+  GetPrintPreviewExtractionDelegateForTesting() {
+    return print_preview_extraction_delegate_.get();
+  }
 
   // mojom::PageContentExtractorHost
   void OnInterceptedPageContentChanged() override;
 
-  // This will be called when print preview has been composited into image per
-  // page and finish OCR.
-  void OnPreviewTextReady(std::string ocr_text);
-
-  uint32_t GetMaxPageContentLength();
-
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
   friend class ::AIChatUIBrowserTest;
+  friend class AIChatTabHelperUnitTest;
 
   // To observe PDF InnerWebContents for "Finished loading PDF" event which
   // means PDF content has been loaded to an accessibility tree.
@@ -90,20 +115,18 @@ class AIChatTabHelper : public content::WebContentsObserver,
     raw_ptr<AIChatTabHelper> helper_;
   };
 
-  AIChatTabHelper(
-      content::WebContents* web_contents,
-      AIChatMetrics* ai_chat_metrics,
-      base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
-          skus_service_getter,
-      PrefService* local_state_prefs,
-      const std::string& channel_name);
+  // PrintPreviewExtractionDelegate is provided as it's implementation is
+  // in a different layer.
+  AIChatTabHelper(content::WebContents* web_contents,
+                  std::unique_ptr<PrintPreviewExtractionDelegate>
+                      print_preview_extraction_delegate);
 
   void OnPDFA11yInfoLoaded();
 
   // content::WebContentsObserver
   void WebContentsDestroyed() override;
-  void DidFinishNavigation(
-      content::NavigationHandle* navigation_handle) override;
+  void NavigationEntryCommitted(
+      const content::LoadCommittedDetails& load_details) override;
   void TitleWasSet(content::NavigationEntry* entry) override;
   void InnerWebContentsAttached(content::WebContents* inner_web_contents,
                                 content::RenderFrameHost* render_frame_host,
@@ -118,16 +141,27 @@ class AIChatTabHelper : public content::WebContentsObserver,
                         bool icon_url_changed,
                         const gfx::Image& image) override;
 
-  // ai_chat::ConversationDriver
+  // ai_chat::AssociatedContentDriver
   GURL GetPageURL() const override;
   void GetPageContent(GetPageContentCallback callback,
                       std::string_view invalidation_token) override;
-  void PrintPreviewFallback(GetPageContentCallback callback) override;
   std::u16string GetPageTitle() const override;
+  void OnNewPage(int64_t navigation_id) override;
 
-  void GetSearchSummarizerKey(
-      mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback)
-      override;
+  // Called when an event of significance occurs that, if the page is a
+  // same-document navigation, should result in that previous navigation
+  // being considered as a new page.
+  void MaybeSameDocumentIsNewPage();
+
+  void GetSearchSummarizerKey(GetSearchSummarizerKeyCallback callback) override;
+
+  void OnFetchPageContentComplete(GetPageContentCallback callback,
+                                  std::string content,
+                                  bool is_video,
+                                  std::string invalidation_token);
+
+  void OnExtractPrintPreviewContentComplete(GetPageContentCallback callback,
+                                            std::string content);
 
   void BindPageContentExtractorReceiver(
       mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
@@ -136,19 +170,27 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // Traverse through a11y tree to check existence of status node.
   void CheckPDFA11yTree();
 
+  bool MaybePrintPreviewExtract(GetPageContentCallback& callback);
+
+  void SetPendingGetContentCallback(GetPageContentCallback callback);
+
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
   bool is_same_document_navigation_ = false;
-  int64_t pending_navigation_id_;
+  int pending_navigation_id_;
+  std::u16string previous_page_title_;
   bool is_pdf_a11y_info_loaded_ = false;
   uint8_t check_pdf_a11y_tree_attempts_ = 0;
-  GetPageContentCallback pending_get_page_content_callback_;
   bool is_page_loaded_ = false;
-  // <navigation_id, GetPageContentCallback>
-  base::flat_map<int64_t, GetPageContentCallback>
-      pending_print_preview_requests_;
 
   raw_ptr<content::WebContents> inner_web_contents_ = nullptr;
+
+  // TODO(petemill): Use signal to allow for multiple callbacks
+  GetPageContentCallback pending_get_page_content_callback_;
+
+  std::unique_ptr<PrintPreviewExtractionDelegate>
+      print_preview_extraction_delegate_;
+  std::unique_ptr<PageContentFetcherDelegate> page_content_fetcher_delegate_;
   std::unique_ptr<PDFA11yInfoLoadObserver> pdf_load_observer_;
   base::OnceClosure on_pdf_a11y_info_loaded_cb_;
 

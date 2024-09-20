@@ -5,8 +5,7 @@
 import { ActionGroup, ActionType } from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m';
 import { AIRewriterPageCallbackRouter, AIRewriterPageHandler, AIRewriterPageHandlerRemote } from 'gen/brave/components/ai_rewriter/common/mojom/ai_rewriter.mojom.m';
 import * as React from 'react';
-import { CharCountContext, defaultCharCountContext } from '../../../ai_chat/resources/page/state/context';
-import { getFirstValidAction, useActionMenu, useCharCountInfo } from '../../../ai_chat/resources/page/state/data-context-provider';
+import { CharCountContext, defaultCharCountContext, getFirstValidAction, useActionMenu, useCharCountInfo } from '../../../ai_chat/resources/page/state/conversation_context';
 
 interface Context extends CharCountContext {
   initialText: string;

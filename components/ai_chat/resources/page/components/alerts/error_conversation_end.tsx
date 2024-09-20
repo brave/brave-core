@@ -7,10 +7,12 @@ import * as React from 'react'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
-import getPageHandlerInstance from '../../api/page_handler'
+import { useAIChat } from '../../state/ai_chat_context'
 import styles from './alerts.module.scss'
 
 function ErrorConversationEnd () {
+  const aiChatContext = useAIChat()
+
   return (
     <div className={styles.alert}>
       <Alert
@@ -21,7 +23,7 @@ function ErrorConversationEnd () {
         <Button
           slot='actions'
           kind='plain-faint'
-          onClick={() => { getPageHandlerInstance().pageHandler.clearConversationHistory() }}
+          onClick={() => { aiChatContext.onNewConversation() }}
         >
             {getLocale('menuNewChat')}
         </Button>

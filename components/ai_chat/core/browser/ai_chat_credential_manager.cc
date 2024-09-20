@@ -44,7 +44,7 @@ AIChatCredentialManager::AIChatCredentialManager(
 AIChatCredentialManager::~AIChatCredentialManager() = default;
 
 void AIChatCredentialManager::GetPremiumStatus(
-    mojom::PageHandler::GetPremiumStatusCallback callback) {
+    mojom::Service::GetPremiumStatusCallback callback) {
   base::Time now = base::Time::Now();
   // First check for a valid credential in the cache.
   bool credential_in_cache = false;
@@ -84,7 +84,7 @@ void AIChatCredentialManager::GetPremiumStatus(
 }
 
 void AIChatCredentialManager::OnCredentialSummary(
-    mojom::PageHandler::GetPremiumStatusCallback callback,
+    mojom::Service::GetPremiumStatusCallback callback,
     const std::string& domain,
     const bool credential_in_cache,
     skus::mojom::SkusResultPtr summary) {

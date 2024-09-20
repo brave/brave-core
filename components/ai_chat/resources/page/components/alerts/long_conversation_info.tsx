@@ -4,18 +4,19 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
-import DataContext from '../../state/context'
+import { getLocale } from '$web-common/locale'
+import { useAIChat } from '../../state/ai_chat_context'
+import { useConversation } from '../../state/conversation_context'
 import styles from './alerts.module.scss'
-import getPageHandlerInstance from '../../api/page_handler'
 
 export default function LongConversationInfo() {
-  const context = React.useContext(DataContext)
+  const context = useConversation()
+  const aiChatContext = useAIChat()
 
   const handleClearChat = () => {
-    getPageHandlerInstance().pageHandler.clearConversationHistory()
+    aiChatContext.onNewConversation()
     context.dismissLongConversationInfo()
   }
 

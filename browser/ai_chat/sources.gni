@@ -4,6 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_browser_ai_chat_sources = [
+  "//brave/browser/ai_chat/ai_chat_service_factory.cc",
+  "//brave/browser/ai_chat/ai_chat_service_factory.h",
   "//brave/browser/ai_chat/ai_chat_settings_helper.cc",
   "//brave/browser/ai_chat/ai_chat_settings_helper.h",
   "//brave/browser/ai_chat/ai_chat_utils.cc",
@@ -12,6 +14,7 @@ brave_browser_ai_chat_sources = [
 
 brave_browser_ai_chat_deps = [
   "//brave/brave_domains",
+  "//brave/components/ai_chat/content/browser",
   "//brave/components/ai_chat/core/browser",
   "//brave/components/ai_chat/core/common/mojom",
   "//brave/net/base:utils",

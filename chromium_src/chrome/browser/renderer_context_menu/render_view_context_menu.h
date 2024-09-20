@@ -9,6 +9,10 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
 #define BRAVE_RENDER_VIEW_CONTEXT_MENU_H_ \
   private: \
     friend class BraveRenderViewContextMenu; \
@@ -54,6 +58,10 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
 
   void AppendDeveloperItems() override;
 
+  void SetAIEngineForTesting(
+      std::unique_ptr<ai_chat::EngineConsumer> ai_engine);
+  ai_chat::EngineConsumer* GetAIEngineForTesting() { return ai_engine_.get(); }
+
  private:
   friend class BraveRenderViewContextMenuTest;
   // RenderViewContextMenuBase:
@@ -71,6 +79,7 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+  std::unique_ptr<ai_chat::EngineConsumer> ai_engine_;
   ui::SimpleMenuModel ai_chat_submenu_model_;
   ui::SimpleMenuModel ai_chat_change_tone_submenu_model_;
   ui::SimpleMenuModel ai_chat_change_length_submenu_model_;

@@ -74,8 +74,9 @@ struct SiteInfo {
   string? title;
   // Indicates if the URL scheme is of a type that allows for content association.
   bool is_content_association_possible;
-  // Current tab's hostname
+  // Current tab's url and hostname, if http(s)
   string? hostname;
+  url.mojom.Url? url;
   // Percentage of the content that has been utilized by remote LLM (0-100)
   int32 content_used_percentage;
   // Indicates content has been refined through extracting most relevant parts
@@ -226,69 +227,170 @@ struct ActionGroup {
   array<ActionEntry> entries;
 };
 
-// Browser-side handler for requests from WebUI page.
-interface PageHandler {
-  SetClientPage(pending_remote<ChatUIPage> page);
-  // Get all the possible models for the conversation
+struct Conversation {
+  string uuid;
+  string title;
+  bool has_content;
+};
+
+interface Service {
+  // User opts-in to the feature at a profile level
+  MarkAgreementAccepted();
+
+  // Get metadata for non-archived conversations
+  GetVisibleConversations() => (array<Conversation> conversations);
+
+  // Get metadata for all quick actions
+  GetActionMenuList() => (array<ActionGroup> action_list);
+
+  // Current status of subscription
+  GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
+
+  // Premium prompt is only shown conditionally (e.g. the user hasn't dismissed
+  // it and it's been some time since the user started using the feature).
+  GetCanShowPremiumPrompt() => (bool can_show);
+  DismissPremiumPrompt();
+
+  // Send events to the UI
+  BindObserver(pending_remote<ServiceObserver> ui);
+
+  // Bind specified Conversation for 2-way communication
+  BindConversation(
+      string conversation_uuid,
+      pending_receiver<ConversationHandler> conversation,
+      pending_remote<ConversationUI> conversation_ui);
+};
+
+interface ServiceObserver {
+  OnConversationListChanged(array<Conversation> conversations);
+  OnAgreementAccepted();
+};
+
+// Browser-side handler for general AI Chat UI functions, implemented
+// per-platform
+interface AIChatUIHandler {
+  // Open various external links or dialogs depending on the platform
+  OpenAIChatSettings();
+  OpenURL(url.mojom.Url url);
+  OpenLearnMoreAboutBraveSearchWithLeo();
+  OpenModelSupportUrl();
+  GoPremium();
+  RefreshPremiumSession();
+  ManagePremium();
+  HandleVoiceRecognition(string conversation_uuid);
+
+  // This might be a no-op if the UI isn't closeable
+  CloseUI();
+
+  SetChatUI(pending_remote<ChatUI> chat_ui);
+
+  // Bind 2-way communication to the conversation related to the open page in
+  // the current browser window. No binding will occur if this isn't a
+  // tab-related UI, e.g. sidebar or popup.
+  BindRelatedConversation(
+      pending_receiver<ConversationHandler> conversation,
+      pending_remote<ConversationUI> conversation_ui);
+
+  // Make a completely new conversation, which may
+  // be bound to the associated conversation, if this UI has a target
+  NewConversation(pending_receiver<ConversationHandler> conversation,
+      pending_remote<ConversationUI> conversation_ui);
+
+  // TODO(petemill): WebUI clients won't need this when they can
+  // request via FaviconSource URLs via trusted webui.
+  GetFaviconImageData(string conversation_uuid) => (
+      array<uint8>? favicon_image_data);
+};
+
+// UI-side handler for whole AI Chat UI
+interface ChatUI {
+  // Notifies that the default conversation for the
+  // panel has changed. e.g. Tab navigation with AIChat open in sidebar.
+  OnNewDefaultConversation();
+};
+
+struct ConversationState {
+  string conversation_uuid;
+  bool is_request_in_progress;
+  array<Model> all_models;
+  string current_model_key;
+  array<string> suggested_questions;
+  SuggestionGenerationStatus suggestion_status;
+  SiteInfo associated_content_info;
+  bool should_send_content;
+  APIError error;
+  // TODO(petemill): include conversation history, once
+  // `OnConversationHistoryUpdate` is more intelligent (see TOOD in definition).
+};
+
+// Browser-side handler for a Conversation
+interface ConversationHandler {
+  GetState() => (ConversationState conversation_state);
+
+  GetConversationUuid() => (string conversation_uuid);
+
+  // Get all the possible models for any conversation
+  // TODO(petemill): Move the models part to Service
   GetModels() => (array<Model> models, string current_model_key);
-  // Command to change the model for the Conversation to |model_name|.
+
+  // Command to change the model for the Conversation to |model_name|
   ChangeModel(string model_key);
+
+  GetIsRequestInProgress() => (bool is_request_in_progress);
+
+  // Get all visible history entries, including in-progress responses
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
 
-  // List of all suggested questions for the active tab in the page's Browser
-  // window.
+  // List of all suggested questions
   GetSuggestedQuestions() => (
       array<string> questions, SuggestionGenerationStatus suggestion_status);
+
   // The browser should generate some questions and fire an event when they
   // are ready.
   GenerateQuestions();
 
   SubmitHumanConversationEntry(string input);
   SubmitHumanConversationEntryWithAction(string input, ActionType action_type);
-  HandleVoiceRecognition();
+  ModifyConversation(uint32 turn_index, string new_text);
   SubmitSummarizationRequest();
-  MarkAgreementAccepted();
+
   // Get associated page information. If there is none then |site_info| will be
   // |null|. If the reason for that is it's still being fetched, then
   // |is_fetching| will be |true|.
-  GetSiteInfo() => (SiteInfo site_info);
-  GetFaviconImageData() => (array<uint8>? favicon_image_data);
-  OpenBraveLeoSettings();
-  OpenURL(url.mojom.Url url);
-  OpenLearnMoreAboutBraveSearchWithLeo();
+  GetAssociatedContentInfo() => (
+      SiteInfo associated_content_info, bool should_send_content);
+
   SetShouldSendPageContents(bool should_send);
-  GetShouldSendPageContents() => (bool should_send);
-  GoPremium();
-  RefreshPremiumSession();
-  ManagePremium();
-  ClearConversationHistory();
-  RetryAPIRequest();
+
   GetAPIResponseError() => (APIError error);
+  RetryAPIRequest();
+
   // Reset the current error state and returns the
   // most recent message from the conversation to the caller.
   ClearErrorAndGetFailedMessage() => (ConversationTurn turn);
-  GetCanShowPremiumPrompt() => (bool can_show);
-  DismissPremiumPrompt();
 
   // Send a user-rating for a chat
   // message. |turn_id| is the index of the message in the
-  // current conversation.
-  RateMessage(bool is_liked, uint32 turn_id) => (string? rating_id);
-  SendFeedback(string category, string feedback, string rating_id, bool send_hostname) => (bool is_success);
-  GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
-  ClosePanel();
-  GetActionMenuList() => (array<ActionGroup> action_list);
-  OpenModelSupportUrl();
-  ModifyConversation(uint32 turn_index, string new_text);
+  // specified conversation.
+  RateMessage(bool is_liked, uint32 turn_id)
+      => (string? rating_id);
+  SendFeedback(
+      string category,
+      string feedback,
+      string rating_id, bool send_hostname) => (bool is_success);
 };
 
-interface ChatUIPage {
+interface ConversationUI {
+  // TODO(petemill): Provide single entry that's been updated so that we don't
+  // need to fetch (and clone) all conversation entries each time text is added
+  // to the most recent entry.
   OnConversationHistoryUpdate();
-  OnAPIRequestInProgress(bool in_progress);
+  OnAPIRequestInProgress(bool is_request_in_progress);
   OnAPIResponseError(APIError error);
   // Usually the model is changed from the UI client, but occassionally
   // it could be changed from the browser.
-  // When the browser changes the model, it will also provide a new list of models.
+  // When the browser changes the model, it will also provide a new list
+  // of models.
   OnModelDataChanged(string conversation_model_key, array<Model> all_models);
   // Provides the full list of questions for the active tab in the page's
   // Browser window.
@@ -297,8 +399,8 @@ interface ChatUIPage {
   // Associated page information has changed. If there is none then |site_info|
   // will be |null|. If the reason for that is it's still being fetched, then
   // |is_fetching| will be |true|.
-  OnSiteInfoChanged(SiteInfo info);
-  OnFaviconImageDataChanged(array<uint8> favicon_image_data);
+  OnAssociatedContentInfoChanged(SiteInfo info, bool should_send_page_contents);
+  OnFaviconImageDataChanged();
 };
 
 [EnableIf=is_android]

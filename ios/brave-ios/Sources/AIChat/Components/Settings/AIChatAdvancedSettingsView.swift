@@ -185,7 +185,7 @@ public struct AIChatAdvancedSettingsView: View {
           LabelView(
             title: Strings.AIChat.advancedSettingsDefaultModelTitle,
             subtitle: model.models.first(where: { $0.key == model.defaultAIModelKey })?.displayName
-              ?? model.currentModel.displayName
+              ?? model.currentModel?.displayName
           )
         }.listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
@@ -351,7 +351,9 @@ public struct AIChatAdvancedSettingsView: View {
             title: Text(Strings.AIChat.resetLeoDataErrorTitle),
             message: Text(Strings.AIChat.resetLeoDataErrorDescription),
             primaryButton: .destructive(Text(Strings.AIChat.resetLeoDataAlertButtonTitle)) {
-              model.clearAndResetData()
+              Task { @MainActor in
+                await model.clearAndResetData()
+              }
             },
             secondaryButton: .cancel()
           )

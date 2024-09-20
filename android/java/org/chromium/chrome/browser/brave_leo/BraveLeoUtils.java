@@ -54,9 +54,12 @@ public class BraveLeoUtils {
     }
 
     public static void openLeoQuery(
-            WebContents webContents, String query, boolean openLeoChatWindow) {
+            WebContents webContents,
+            String conversationUuid,
+            String query,
+            boolean openLeoChatWindow) {
         try {
-            BraveLeoUtilsJni.get().openLeoQuery(webContents, query);
+            BraveLeoUtilsJni.get().openLeoQuery(webContents, conversationUuid, query);
             if (openLeoChatWindow) {
                 BraveActivity activity = BraveActivity.getBraveActivity();
                 activity.openBraveLeo();
@@ -106,6 +109,6 @@ public class BraveLeoUtils {
 
     @NativeMethods
     public interface Natives {
-        void openLeoQuery(WebContents webContents, String query);
+        void openLeoQuery(WebContents webContents, String conversationUuid, String query);
     }
 }

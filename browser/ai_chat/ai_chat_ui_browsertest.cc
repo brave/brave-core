@@ -12,9 +12,11 @@
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/types.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
@@ -119,7 +121,7 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     chat_tab_helper_ =
         ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());
     ASSERT_TRUE(chat_tab_helper_);
-    chat_tab_helper_->SetUserOptedIn(true);
+    ai_chat::SetUserOptedIn(prefs(), true);
     OpenAIChatSidePanel();
   }
 
@@ -205,20 +207,17 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     SCOPED_TRACE(testing::Message() << location.ToString());
 
     base::RunLoop run_loop;
-    chat_tab_helper_->MaybeFetchOrClearSearchQuerySummary(
-        base::BindLambdaForTesting(
-            [&](const std::optional<std::vector<ai_chat::SearchQuerySummary>>&
-                    search_query_summary) {
-              EXPECT_EQ(search_query_summary, expected_search_query_summary);
-              run_loop.Quit();
-            }));
+    chat_tab_helper_->GetStagedEntriesFromContent(base::BindLambdaForTesting(
+        [&](const std::optional<std::vector<ai_chat::SearchQuerySummary>>&
+                search_query_summary) {
+          EXPECT_EQ(search_query_summary, expected_search_query_summary);
+          run_loop.Quit();
+        }));
     run_loop.Run();
   }
 
-  const base::flat_map<int64_t,
-                       ai_chat::ConversationDriver::GetPageContentCallback>&
-  GetPendingPrintPreviewRequests() {
-    return chat_tab_helper_->pending_print_preview_requests_;
+  bool HasPendingGetContentRequest() {
+    return chat_tab_helper_->pending_get_page_content_callback_ ? true : false;
   }
 
  protected:
@@ -240,6 +239,14 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreview) {
   // Page recognition host with a canvas element
   NavigateURL(https_server_.GetURL("docs.google.com", "/canvas.html"), false);
   FetchPageContent(FROM_HERE, "this is the way");
+
+  // Ignores all dom content, only does print preview extraction
+  NavigateURL(https_server_.GetURL("docs.google.com",
+                                   "/long_canvas_with_dom_content.html"));
+  FetchPageContent(FROM_HERE,
+                   "This is the way.\n\nI have spoken.\nWherever I Go, He "
+                   "Goes.\nOr maybe not.");
+
 #if BUILDFLAG(IS_WIN)
   // Unsupported locale should return no content for Windows only
   // Other platforms do not use locale for extraction
@@ -251,33 +258,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreview) {
   FetchPageContent(FROM_HERE, "");
 #endif
   // Each request is cleared after extraction.
-  EXPECT_EQ(0u, GetPendingPrintPreviewRequests().size());
-
-  // Not supported on other hosts
-  NavigateURL(https_server_.GetURL("a.com", "/long_canvas.html"));
-  FetchPageContent(FROM_HERE, "");
-}
-
-IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewRequests) {
-  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"),
-              false);
-  FetchPageContent(FROM_HERE, "", false);
-  EXPECT_EQ(1u, GetPendingPrintPreviewRequests().size());
-
-  GetActiveWebContents()->GetController().Reload(content::ReloadType::NORMAL,
-                                                 false);
-  content::WaitForLoadStop(GetActiveWebContents());
-  // The request should be cleared after reload.
-  EXPECT_EQ(0u, GetPendingPrintPreviewRequests().size());
-
-  // Try page loaded scenario
-  NavigateURL(https_server_.GetURL("docs.google.com", "/canvas.html"));
-  FetchPageContent(FROM_HERE, "", false);
-  EXPECT_EQ(1u, GetPendingPrintPreviewRequests().size());
-
-  NavigateURL(https_server_.GetURL("a.com", "/canvas.html"), false);
-  // The request should be cleared after navigation.
-  EXPECT_EQ(0u, GetPendingPrintPreviewRequests().size());
+  EXPECT_FALSE(HasPendingGetContentRequest());
 }
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
@@ -288,20 +269,6 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewPagesLimit) {
   std::string expected_string(ai_chat::kMaxPreviewPages - 1, '\n');
   base::StrAppend(&expected_string, {"This is the way."});
   FetchPageContent(FROM_HERE, expected_string);
-}
-
-IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewContextLimit) {
-  ai_chat::AIChatTabHelper::SetMaxContentLengthForTesting(10);
-  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"),
-              false);
-  FetchPageContent(FROM_HERE, "This is the way.");
-
-  ai_chat::AIChatTabHelper::SetMaxContentLengthForTesting(20);
-  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"),
-              false);
-  FetchPageContent(FROM_HERE, "This is the way.\n\nI have spoken.");
-
-  ai_chat::AIChatTabHelper::SetMaxContentLengthForTesting(std::nullopt);
 }
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
@@ -342,34 +309,23 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, ExtractionPrintDialog) {
 #endif  // BUILDFLAG(IS_WIN) && defined(ADDRESS_SANITIZER) &&
         // defined(ARCH_CPU_64_BITS)
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, MAYBE_PrintPreviewFallback) {
-  auto run_loop = std::make_unique<base::RunLoop>();
+  // Falls back when there is no regular DOM content
   // TODO(darkdh): Enable text_in_image.pdf when upstream fixes the hanging
   // blank page issue. See https://github.com/brave/brave-browser/issues/41113
 #if 0
-  NavigateURL(https_server_.GetURL("a.com", "/text_in_image.pdf"),
-              false);
-
-  chat_tab_helper_->GeneratePageContent(
-      base::BindLambdaForTesting([&run_loop](std::string text, bool is_video,
-                                             std::string invalidation_token) {
-        EXPECT_FALSE(is_video);
-        EXPECT_EQ(text,
-                  "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
-        run_loop->Quit();
-      }));
-  run_loop->Run();
-  run_loop = std::make_unique<base::RunLoop>();
+  NavigateURL(https_server_.GetURL("a.com", "/text_in_image.pdf"), false);
+  FetchPageContent(
+      FROM_HERE, "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
 #endif
 
   NavigateURL(https_server_.GetURL("a.com", "/canvas.html"), false);
-  chat_tab_helper_->GeneratePageContent(
-      base::BindLambdaForTesting([&run_loop](std::string text, bool is_video,
-                                             std::string invalidation_token) {
-        EXPECT_FALSE(is_video);
-        EXPECT_EQ(text, "this is the way");
-        run_loop->Quit();
-      }));
-  run_loop->Run();
+  FetchPageContent(FROM_HERE, "this is the way");
+
+  // Does not fall back when there is regular DOM content
+  NavigateURL(
+      https_server_.GetURL("a.com", "/long_canvas_with_dom_content.html"),
+      false);
+  FetchPageContent(FROM_HERE, "Or maybe not.");
 }
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
 #endif  // BUILDFLAG(ENABLE_TEXT_RECOGNITION)
@@ -386,7 +342,6 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, FetchSearchQuerySummary_NoMetaTag) {
   // Test when meta tag is not present, should return null result.
   NavigateURL(https_server_.GetURL("search.brave.com", "/search?q=query"));
   FetchSearchQuerySummary(FROM_HERE, std::nullopt);
-  EXPECT_TRUE(chat_tab_helper_->GetConversationHistory().empty());
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,

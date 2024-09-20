@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 
 #include <algorithm>
+#include <memory>
 #include <utility>
 
 #include "base/base64.h"
@@ -14,11 +15,18 @@
 #include "base/strings/strcat.h"
 #include "base/uuid.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer_claude.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer_llama.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace ai_chat {
 
@@ -212,8 +220,19 @@ base::Value::Dict GetModelDict(mojom::ModelPtr model) {
 ModelService::ModelService(PrefService* prefs_service)
     : pref_service_(prefs_service) {
   InitModels();
-
-  pref_change_registrar_.Init(pref_service_);
+  // Perform migrations which depend on finding out about user's premium status
+  const std::string& default_model_user_pref = GetDefaultModelKey();
+  if (default_model_user_pref == "chat-claude-instant") {
+    // 2024-05 Migration for old "claude instant" model
+    // The migration is performed here instead of
+    // ai_chat::prefs::MigrateProfilePrefs because the migration requires
+    // knowing about premium status.
+    // First set to an equivalent model that is available to all users. When
+    // we are told about premium status, we can switch to the premium
+    // equivalent.
+    SetDefaultModelKey("chat-claude-haiku");
+    is_migrating_claude_instant_ = true;
+  }
 }
 
 ModelService::~ModelService() = default;
@@ -255,6 +274,36 @@ const mojom::Model* ModelService::GetModelForTesting(std::string_view key) {
   }
 
   return nullptr;
+}
+
+void ModelService::OnPremiumStatus(mojom::PremiumStatus status) {
+  if (is_migrating_claude_instant_) {
+    is_migrating_claude_instant_ = false;
+    if (status != mojom::PremiumStatus::Inactive) {
+      SetDefaultModelKey("chat-claude-sonnet");
+    }
+  } else if (IsPremiumStatus(status)) {
+    // If user hasn't changed default model and we configure that premium
+    // default model is different to non-premium default model, then change to
+    // premium default model.
+    const base::Value* user_value =
+        pref_service_->GetUserPrefValue(kDefaultModelKey);
+    if (!user_value &&
+        features::kAIModelsDefaultKey.Get() !=
+            features::kAIModelsPremiumDefaultKey.Get() &&
+        GetDefaultModelKey() != features::kAIModelsPremiumDefaultKey.Get()) {
+      // We don't call SetDefaultModelKey as we don't want to actually set
+      // the pref value for the user, we only want to change the default so
+      // that the user benefits from future changes to the default.
+      pref_service_->SetDefaultPrefValue(
+          kDefaultModelKey,
+          base::Value(features::kAIModelsPremiumDefaultKey.Get()));
+      for (auto& obs : observers_) {
+        obs.OnDefaultModelChanged(features::kAIModelsDefaultKey.Get(),
+                                  features::kAIModelsPremiumDefaultKey.Get());
+      }
+    }
+  }
 }
 
 void ModelService::InitModels() {
@@ -351,22 +400,25 @@ void ModelService::DeleteCustomModel(uint32_t index) {
   auto model = custom_models_pref.begin() + index;
   std::string removed_key = *model->GetDict().FindString(kCustomModelItemKey);
 
-  custom_models_pref.erase(model);
-  pref_service_->SetList(kCustomModelsList, std::move(custom_models_pref));
-
-  auto current_default_key = pref_service_->GetString(kDefaultModelKey);
+  auto current_default_key = GetDefaultModelKey();
 
   // If the removed model is the default model, clear the default model key.
   if (current_default_key == removed_key) {
     pref_service_->ClearPref(kDefaultModelKey);
     DVLOG(1) << "Default model key " << removed_key
              << " was removed. Cleared default model key.";
+    for (auto& obs : observers_) {
+      obs.OnDefaultModelChanged(removed_key, GetDefaultModelKey());
+    }
   }
 
+  custom_models_pref.erase(model);
+  pref_service_->SetList(kCustomModelsList, std::move(custom_models_pref));
+
   InitModels();
+
   for (auto& obs : observers_) {
     obs.OnModelRemoved(removed_key);
-    obs.OnDefaultModelChanged(features::kAIModelsDefaultKey.Get());
   }
 }
 
@@ -382,10 +434,20 @@ void ModelService::SetDefaultModelKey(const std::string& new_key) {
     return;
   }
 
+  // Don't continue migrating if user choses another default in the meantime
+  is_migrating_claude_instant_ = false;
+
+  const std::string previous_default_key = GetDefaultModelKey();
+
+  if (previous_default_key == new_key) {
+    // Nothing to do
+    return;
+  }
+
   pref_service_->SetString(kDefaultModelKey, new_key);
 
   for (auto& obs : observers_) {
-    obs.OnDefaultModelChanged(new_key);
+    obs.OnDefaultModelChanged(previous_default_key, new_key);
   }
 }
 
@@ -432,6 +494,42 @@ void ModelService::AddObserver(Observer* observer) {
 
 void ModelService::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
+}
+
+std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
+    std::string model_key,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    AIChatCredentialManager* credential_manager) {
+  const mojom::Model* model = GetModel(model_key);
+  std::unique_ptr<EngineConsumer> engine;
+  // Only LeoModels are passed to the following engines.
+  if (model->options->is_leo_model_options()) {
+    auto& leo_model_opts = model->options->get_leo_model_options();
+
+    // Engine enum on model to decide which one
+    if (leo_model_opts->engine_type ==
+        mojom::ModelEngineType::BRAVE_CONVERSATION_API) {
+      DVLOG(1) << "Started AI engine: conversation api";
+      engine = std::make_unique<EngineConsumerConversationAPI>(
+          *leo_model_opts, url_loader_factory, credential_manager);
+    } else if (leo_model_opts->engine_type ==
+               mojom::ModelEngineType::LLAMA_REMOTE) {
+      DVLOG(1) << "Started AI engine: llama";
+      engine = std::make_unique<EngineConsumerLlamaRemote>(
+          *leo_model_opts, url_loader_factory, credential_manager);
+    } else {
+      DVLOG(1) << "Started AI engine: claude";
+      engine = std::make_unique<EngineConsumerClaudeRemote>(
+          *leo_model_opts, url_loader_factory, credential_manager);
+    }
+  } else if (model->options->is_custom_model_options()) {
+    auto& custom_model_opts = model->options->get_custom_model_options();
+    DVLOG(1) << "Started AI engine: custom";
+    engine = std::make_unique<EngineConsumerOAIRemote>(*custom_model_opts,
+                                                       url_loader_factory);
+  }
+
+  return engine;
 }
 
 }  // namespace ai_chat

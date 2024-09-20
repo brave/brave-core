@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leo test</title>
+</head>
+<body>
+    <div style="width: 559px; height: 794px;">
+      <canvas id="page1" width="559" height="794">
+      </canvas>
+    </div>
+    <div style="width: 559px; height: 794px;">
+      <canvas id="page2" width="559" height="794">
+      </canvas>
+    </div>
+    <div style="width: 559px; height: 794px;">
+      <canvas id="page3" width="559" height="794">
+      </canvas>
+    </div>
+    <div style="width: 559px; height: 794px;">
+      <canvas id="page4" width="559" height="794">
+      </canvas>
+    </div>
+
+    <script>
+      var canvas = document.getElementById('page1');
+      var context = canvas.getContext('2d');
+      context.font = '30px Arial';
+      context.fillText('This is the way.', 50, 100);
+
+      // leave page 2 empty
+
+      canvas = document.getElementById('page3');
+      context = canvas.getContext('2d');
+      context.font = '30px Arial';
+      context.fillText('I have spoken.', 50, 100);
+
+      // smaller text with higher DPI
+      canvas = document.getElementById('page4');
+      const dpr = 2;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      canvas.style.width = `${rect.width}px`;
+      canvas.style.height = `${rect.height}px`;
+      context = canvas.getContext('2d');
+      context.scale(dpr, dpr);
+      context.font = '15px Arial';
+      context.fillText('Wherever I Go, He Goes.', 50, 100);
+    </script>
+
+    <main>
+      <p>Or maybe not.</p>
+    </main>
+</body>
+</html>

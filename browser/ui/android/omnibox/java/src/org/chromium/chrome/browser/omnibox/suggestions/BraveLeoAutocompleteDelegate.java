@@ -15,5 +15,5 @@ public interface BraveLeoAutocompleteDelegate {
 
     boolean isAutoCompleteEnabled(WebContents webContents);
 
-    void openLeoQuery(WebContents webContents, String query);
+    void openLeoQuery(WebContents webContents, String conversationUuid, String query);
 }

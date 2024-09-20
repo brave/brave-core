@@ -40,7 +40,7 @@ class AIChatCredentialManager {
   virtual ~AIChatCredentialManager();
 
   virtual void GetPremiumStatus(
-      mojom::PageHandler::GetPremiumStatusCallback callback);
+      mojom::Service::GetPremiumStatusCallback callback);
 
   virtual void FetchPremiumCredential(
       base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
@@ -66,11 +66,10 @@ class AIChatCredentialManager {
 
   void OnMojoConnectionError();
 
-  void OnCredentialSummary(
-      mojom::PageHandler::GetPremiumStatusCallback callback,
-      const std::string& domain,
-      const bool credential_in_cache,
-      skus::mojom::SkusResultPtr summary_result);
+  void OnCredentialSummary(mojom::Service::GetPremiumStatusCallback callback,
+                           const std::string& domain,
+                           const bool credential_in_cache,
+                           skus::mojom::SkusResultPtr summary_result);
 
   void OnGetPremiumStatus(
       base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
