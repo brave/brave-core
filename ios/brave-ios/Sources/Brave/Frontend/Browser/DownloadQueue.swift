@@ -38,7 +38,7 @@ class Download: NSObject {
   func pause() {}
   func resume() {}
 
-  fileprivate func uniqueDownloadPathForFilename(_ filename: String) async throws -> URL {
+  func uniqueDownloadPathForFilename(_ filename: String) async throws -> URL {
     let downloadsPath = try await AsyncFileManager.default.downloadsPath()
     let basePath = downloadsPath.appending(path: filename)
     let fileExtension = basePath.pathExtension
