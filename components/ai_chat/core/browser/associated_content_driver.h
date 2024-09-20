@@ -130,8 +130,7 @@ class AssociatedContentDriver
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 
   base::ObserverList<Observer> observers_;
-  std::unique_ptr<base::OneShotEvent> on_page_text_fetch_complete_;
-  bool is_page_text_fetch_in_progress_ = false;
+  std::unique_ptr<base::OneShotEvent> on_page_text_fetch_complete_ = nullptr;
   std::string cached_text_content_;
   std::string content_invalidation_token_;
   bool is_video_ = false;

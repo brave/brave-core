@@ -57,8 +57,7 @@ GetSearchQuerySummaryNetworkTrafficAnnotationTag() {
 
 AssociatedContentDriver::AssociatedContentDriver(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : url_loader_factory_(url_loader_factory),
-      on_page_text_fetch_complete_(std::make_unique<base::OneShotEvent>()) {}
+    : url_loader_factory_(url_loader_factory) {}
 
 AssociatedContentDriver::~AssociatedContentDriver() {
   for (auto& conversation : associated_conversations_) {
@@ -101,6 +100,13 @@ std::u16string AssociatedContentDriver::GetTitle() const {
 
 void AssociatedContentDriver::GetContent(
     ConversationHandler::GetPageContentCallback callback) {
+  // Determine whether we're adding our callback to the queue or the
+  // we need to call GetPageContent.
+  bool is_page_text_fetch_in_progress =
+      (on_page_text_fetch_complete_ != nullptr);
+  if (!is_page_text_fetch_in_progress) {
+    on_page_text_fetch_complete_ = std::make_unique<base::OneShotEvent>();
+  }
   // Register callback to fire when the event is complete
   auto handle_existing_fetch_complete = base::BindOnce(
       &AssociatedContentDriver::OnExistingGeneratePageContentComplete,
@@ -108,18 +114,18 @@ void AssociatedContentDriver::GetContent(
       current_navigation_id_);
   on_page_text_fetch_complete_->Post(FROM_HERE,
                                      std::move(handle_existing_fetch_complete));
-  // Only perform a fetch once at a time, and then use the results from
-  // an in-progress operation.
-  if (is_page_text_fetch_in_progress_) {
+
+  if (is_page_text_fetch_in_progress) {
     DVLOG(1) << "A page content fetch is in progress, waiting for the existing "
                 "operation to complete";
-  } else {
-    is_page_text_fetch_in_progress_ = true;
-    GetPageContent(
-        base::BindOnce(&AssociatedContentDriver::OnGeneratePageContentComplete,
-                       weak_ptr_factory_.GetWeakPtr(), current_navigation_id_),
-        content_invalidation_token_);
+    return;
   }
+  // No operation already in progress, so fetch the page content and signal the
+  // event when done.
+  GetPageContent(
+      base::BindOnce(&AssociatedContentDriver::OnGeneratePageContentComplete,
+                     weak_ptr_factory_.GetWeakPtr(), current_navigation_id_),
+      content_invalidation_token_);
 }
 
 void AssociatedContentDriver::OnExistingGeneratePageContentComplete(
@@ -145,8 +151,6 @@ void AssociatedContentDriver::OnGeneratePageContentComplete(
     return;
   }
 
-  is_page_text_fetch_in_progress_ = false;
-
   // If invalidation token matches existing token, then
   // content was not re-fetched and we can use our existing cache.
   if (invalidation_token.empty() ||
@@ -163,7 +167,7 @@ void AssociatedContentDriver::OnGeneratePageContentComplete(
   }
 
   on_page_text_fetch_complete_->Signal();
-  on_page_text_fetch_complete_ = std::make_unique<base::OneShotEvent>();
+  on_page_text_fetch_complete_ = nullptr;
 }
 
 std::string_view AssociatedContentDriver::GetCachedTextContent() {
