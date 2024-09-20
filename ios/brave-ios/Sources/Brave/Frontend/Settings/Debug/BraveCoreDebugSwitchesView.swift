@@ -81,7 +81,7 @@ private struct BasicStringInputView: View {
   @State private var text: String = ""
 
   var body: some View {
-    List {
+    Form {
       Section {
         TextField(coreSwitch.displayString, text: $text)
           .disableAutocorrection(true)
@@ -135,7 +135,7 @@ private struct BasicPickerInputView: View {
   @State private var selectedItem: String = ""
 
   var body: some View {
-    List {
+    Form {
       Picker("", selection: $selectedItem) {
         Text("Default")
           .foregroundColor(Color(.secondaryBraveLabel))
@@ -190,7 +190,7 @@ private struct CustomSwitchInputView: View {
   }
 
   var body: some View {
-    List {
+    Form {
       Section {
         TextField("Key", text: $key)
           .disableAutocorrection(true)
@@ -310,7 +310,7 @@ struct BraveCoreDebugSwitchesView: View {
   }
 
   var body: some View {
-    List {
+    Form {
       Section {
         Text("Switches only affect fresh launches")
           .frame(maxWidth: .infinity)
