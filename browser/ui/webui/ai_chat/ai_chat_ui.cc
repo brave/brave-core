@@ -7,11 +7,15 @@
 
 #include <utility>
 
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/resources/page/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -93,6 +97,8 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
 #endif
 
   untrusted_source->AddBoolean("isMobile", kIsMobile);
+  untrusted_source->AddBoolean("isHistoryEnabled",
+                               ai_chat::features::IsAIChatHistoryEnabled());
 
   untrusted_source->AddBoolean(
       "hasUserDismissedPremiumPrompt",
@@ -119,7 +125,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
 AIChatUI::~AIChatUI() = default;
 
 void AIChatUI::BindInterface(
-    mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver) {
+    mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver) {
   // We call ShowUI() before creating the PageHandler object so that
   // the WebContents is added to a Browser which we can get a reference
   // to and provide to the PageHandler.
@@ -146,6 +152,12 @@ void AIChatUI::BindInterface(
   }
   page_handler_ = std::make_unique<ai_chat::AIChatUIPageHandler>(
       web_ui()->GetWebContents(), web_contents, profile_, std::move(receiver));
+}
+
+void AIChatUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::Service> receiver) {
+  ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_)->Bind(
+      std::move(receiver));
 }
 
 bool UntrustedChatUIConfig::IsWebUIEnabled(

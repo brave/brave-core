@@ -7,10 +7,12 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
-import classnames from '$web-common/classnames'
 import AlertCenter from '@brave/leo/react/alertCenter'
-import getPageHandlerInstance, * as mojom from '../../api/page_handler'
-import DataContext from '../../state/context'
+import classnames from '$web-common/classnames'
+import * as mojom from '../../api'
+import { useConversation } from '../../state/conversation_context'
+import { useAIChat } from '../../state/ai_chat_context'
+import { isLeoModel } from '../../model_utils'
 import ConversationList from '../conversation_list'
 import PrivacyMessage from '../privacy_message'
 import ErrorConnection from '../alerts/error_connection'
@@ -24,47 +26,40 @@ import LongConversationInfo from '../alerts/long_conversation_info'
 import ErrorConversationEnd from '../alerts/error_conversation_end'
 import WelcomeGuide from '../welcome_guide'
 import PageContextToggle from '../page_context_toggle'
-import styles from './style.module.scss'
 import ToolsButtonMenu from '../tools_button_menu'
+import styles from './style.module.scss'
 
 const SCROLL_BOTTOM_THRESHOLD = 10.0
 
-function Main() {
-  const context = React.useContext(DataContext)
-  const {
-    siteInfo,
-    hasAcceptedAgreement,
-    currentError,
-    apiHasError
-  } = context
 
-  const handleNewConversation = () => {
-    getPageHandlerInstance().pageHandler.clearConversationHistory()
-  }
+function Main() {
+  const aiChatContext = useAIChat()
+  const conversationContext = useConversation()
 
   const shouldShowPremiumSuggestionForModel =
-    hasAcceptedAgreement &&
-    !context.isPremiumStatusFetching && // Avoid flash of content
-    !context.isPremiumUser &&
-    context.currentModel?.options.leoModelOptions?.access === mojom.ModelAccess.PREMIUM
+    aiChatContext.hasAcceptedAgreement &&
+    !aiChatContext.isPremiumStatusFetching && // Avoid flash of content
+    !aiChatContext.isPremiumUser &&
+    conversationContext.currentModel?.options.leoModelOptions?.access === mojom.ModelAccess.PREMIUM
 
   const shouldShowPremiumSuggestionStandalone =
-    hasAcceptedAgreement &&
-    !context.isPremiumStatusFetching && // Avoid flash of content
+    aiChatContext.hasAcceptedAgreement &&
+    !aiChatContext.isPremiumStatusFetching && // Avoid flash of content
     !shouldShowPremiumSuggestionForModel && // Don't show 2 premium prompts
-    !apiHasError && // Don't show premium prompt and errors (rate limit error has its own premium prompt suggestion)
-    context.canShowPremiumPrompt &&
-    siteInfo === null && // SiteInfo request has finished and this is a standalone conversation
-    !context.isPremiumUser
+    !conversationContext.apiHasError && // Don't show premium prompt and errors (rate limit error has its own premium prompt suggestion)
+    aiChatContext.canShowPremiumPrompt &&
+    conversationContext.associatedContentInfo === null && // SiteInfo request has finished and this is a standalone conversation
+    !aiChatContext.isPremiumUser
 
-  const isLastTurnBraveSearchSERPSummary =
-    context.conversationHistory.at(-1)?.fromBraveSearchSERP ?? false
+  const shouldDisplayNewChatIcon = conversationContext.conversationHistory.length >= 1
 
-  const shouldDisplayNewChatIcon = context.conversationHistory.length >= 1
+    const isLastTurnBraveSearchSERPSummary =
+    conversationContext.conversationHistory.at(-1)?.fromBraveSearchSERP ?? false
+
   const showContextToggle =
-    (context.conversationHistory.length === 0 ||
+    (conversationContext.conversationHistory.length === 0 ||
       isLastTurnBraveSearchSERPSummary) &&
-    siteInfo?.isContentAssociationPossible
+    conversationContext.associatedContentInfo?.isContentAssociationPossible
 
   let currentErrorElement = null
 
@@ -74,22 +69,22 @@ function Main() {
 
   const scrollPos = React.useRef({ isAtBottom: true })
 
-  if (hasAcceptedAgreement) {
-    if (apiHasError && currentError === mojom.APIError.ConnectionIssue) {
+  if (aiChatContext.hasAcceptedAgreement) {
+    if (conversationContext.apiHasError && conversationContext.currentError === mojom.APIError.ConnectionIssue) {
       currentErrorElement = (
         <ErrorConnection
-          onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
+          onRetry={conversationContext.retryAPIRequest}
         />
       )
     }
 
-    if (apiHasError && currentError === mojom.APIError.RateLimitReached) {
+    if (conversationContext.apiHasError && conversationContext.currentError === mojom.APIError.RateLimitReached) {
       currentErrorElement = (
         <ErrorRateLimit />
       )
     }
 
-    if (apiHasError && currentError === mojom.APIError.ContextLimitReached) {
+    if (conversationContext.apiHasError && conversationContext.currentError === mojom.APIError.ContextLimitReached) {
       currentErrorElement = (
         <ErrorConversationEnd />
       )
@@ -98,7 +93,7 @@ function Main() {
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     // Monitor scroll positions only when Assistant is generating
-    if (!context.isGenerating) return
+    if (!conversationContext.isGenerating) return
     const el = e.currentTarget
     scrollPos.current.isAtBottom = Math.abs(el.scrollHeight - el.clientHeight - el.scrollTop) < SCROLL_BOTTOM_THRESHOLD
   }
@@ -113,12 +108,16 @@ function Main() {
     }
   }
 
+  // Ask for opt-in once the first message is sent
+  const showAgreementModal = !aiChatContext.hasAcceptedAgreement &&
+      conversationContext.conversationHistory.length
+
   const viewPortWithoutKeyboard = React.useRef(0)
   const keyboardSize = React.useRef(0)
 
     React.useEffect(() => {
       const handler = () => {
-        if (!context.isMobile || !window.visualViewport) {
+        if (!aiChatContext.isMobile || !window.visualViewport) {
           return
         }
         const viewPortWithKeyboard = window.visualViewport.height
@@ -160,16 +159,16 @@ function Main() {
 
   return (
     <main className={styles.main}>
-      {context.showAgreementModal && <PrivacyMessage />}
+      {showAgreementModal && <PrivacyMessage />}
       <div className={styles.header}
         ref={headerElement}>
         <div className={styles.logo}>
           <Icon name='product-brave-leo' />
           <div className={styles.logoTitle}>Leo AI</div>
-          {context.isPremiumUser && <div className={styles.badgePremium}>PREMIUM</div>}
+          {aiChatContext.isPremiumUser && <div className={styles.badgePremium}>PREMIUM</div>}
         </div>
         <div className={styles.actions}>
-          {hasAcceptedAgreement && (
+          {aiChatContext.hasAcceptedAgreement && (
             <>
             {shouldDisplayNewChatIcon && (
               <Button
@@ -177,7 +176,7 @@ function Main() {
                 kind='plain-faint'
                 aria-label={getLocale('startConversationLabel')}
                 title={getLocale('startConversationLabel')}
-                onClick={handleNewConversation}
+                onClick={aiChatContext.onNewConversation}
               >
                 <Icon name='edit-box' />
               </Button>
@@ -190,7 +189,7 @@ function Main() {
               aria-label='Close'
               title='Close'
               className={styles.closeButton}
-              onClick={() => getPageHandlerInstance().pageHandler.closePanel()}
+              onClick={() => aiChatContext.uiHandler?.closeUI()}
             >
               <Icon name='close' />
             </Button>
@@ -200,7 +199,7 @@ function Main() {
       </div>
       <div className={classnames({
         [styles.scroller]: true,
-        [styles.flushBottom]: !hasAcceptedAgreement
+        [styles.flushBottom]: !aiChatContext.hasAcceptedAgreement
       })}
         ref={node => (scrollerElement = node)}
         onScroll={handleScroll}
@@ -208,7 +207,18 @@ function Main() {
         <AlertCenter position='top-left' className={styles.alertCenter} />
         <div className={styles.conversationContent}
           ref={conversationContentElement}>
-          {context.hasAcceptedAgreement && <>
+          {aiChatContext.isHistoryEnabled &&
+          <ul>
+            <li onClick={() => aiChatContext.onSelectConversationUuid(undefined)}>This page's conversation</li>
+          {aiChatContext.visibleConversations.map(conversation => (
+            <li key={conversation.uuid} onClick={() => aiChatContext.onSelectConversationUuid(conversation.uuid)}>
+              <div>{conversation.uuid}</div>
+              <div>{conversation.title}</div>
+            </li>
+          ))}
+          </ul>
+          }
+          {aiChatContext.hasAcceptedAgreement && <>
             <ModelIntro />
             <ConversationList
               onLastElementHeightChange={handleLastElementHeightChange}
@@ -225,7 +235,7 @@ function Main() {
                   secondaryActionButton={
                     <Button
                       kind='plain-faint'
-                      onClick={() => context.switchToBasicModel()}
+                      onClick={() => conversationContext.switchToBasicModel()}
                     >
                       {getLocale('switchToBasicModelButtonLabel')}
                     </Button>
@@ -242,7 +252,7 @@ function Main() {
                   secondaryActionButton={
                     <Button
                       kind='plain-faint'
-                      onClick={() => context.dismissPremiumPrompt()}
+                      onClick={() => aiChatContext.dismissPremiumPrompt()}
                     >
                       {getLocale('dismissButtonLabel')}
                     </Button>
@@ -251,16 +261,16 @@ function Main() {
               </div>
             )
           }
-          {context.isPremiumUserDisconnected &&
+          {aiChatContext.isPremiumUserDisconnected && (!conversationContext.currentModel || isLeoModel(conversationContext.currentModel)) &&
           <div className={styles.promptContainer}>
             <WarningPremiumDisconnected />
           </div>
           }
-          {context.shouldShowLongConversationInfo &&
+          {conversationContext.shouldShowLongConversationInfo &&
           <div className={styles.promptContainer}>
               <LongConversationInfo />
           </div>}
-          {!hasAcceptedAgreement && <WelcomeGuide />}
+          {!aiChatContext.hasAcceptedAgreement && <WelcomeGuide />}
         </div>
       </div>
       <div className={styles.input}>
@@ -269,9 +279,9 @@ function Main() {
             <PageContextToggle />
           </div>
         )}
-        <ToolsButtonMenu {...context}>
+        <ToolsButtonMenu {...conversationContext}>
           <InputBox
-            context={context}
+            context={{...conversationContext, ...aiChatContext}}
             onFocusInputMobile={handleOnFocusInputMobile}
           />
         </ToolsButtonMenu>

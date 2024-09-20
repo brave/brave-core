@@ -11,12 +11,13 @@ import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 
 import styles from './style.module.scss'
-import { AIChatContext } from '../../state/context'
-import getPageHandlerInstance from '../../api/page_handler'
+import { AIChatContext } from '../../state/ai_chat_context'
+import { ConversationContext } from '../../state/conversation_context'
 import ActionTypeLabel from '../action_type_label'
 
-type Props = Pick<AIChatContext,
-  'inputText'
+type Props = Pick<
+  ConversationContext,
+  | 'inputText'
   | 'setInputText'
   | 'submitInputTextToAPI'
   | 'selectedActionType'
@@ -26,13 +27,17 @@ type Props = Pick<AIChatContext,
   | 'inputTextCharCountDisplay'
   | 'isToolsMenuOpen'
   | 'setIsToolsMenuOpen'
-  | 'isMobile'
   | 'shouldDisableUserInput'
-  | 'hasAcceptedAgreement'>
+  | 'handleVoiceRecognition'
+> &
+  Pick<
+    AIChatContext,
+    'isMobile' | 'hasAcceptedAgreement'
+  >
 
 interface InputBoxProps {
-    context: Props
-    onFocusInputMobile?: () => unknown
+  context: Props
+  onFocusInputMobile?: () => unknown
 }
 
 function InputBox(props: InputBoxProps) {
@@ -45,7 +50,7 @@ function InputBox(props: InputBoxProps) {
   }
 
   const handleMic = () => {
-    getPageHandlerInstance().pageHandler.handleVoiceRecognition()
+    props.context.handleVoiceRecognition?.()
   }
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -124,8 +129,9 @@ function InputBox(props: InputBoxProps) {
           <Button
             fab
             kind='plain-faint'
-            onClick={() => props.context.setIsToolsMenuOpen(
-              !props.context.isToolsMenuOpen)}
+            onClick={() =>
+              props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
+            }
             title={getLocale('toolsMenuButtonLabel')}
           >
             <Icon

@@ -99,7 +99,7 @@ enum AIChatMenuOptionTypes {
 
 struct AIChatMenuView: View {
   var premiumStatus: AiChat.PremiumStatus
-  var currentModel: AiChat.Model
+  var currentModel: AiChat.Model?
   var modelOptions: [AiChat.Model]
   var onModelChanged: (String) -> Void
   var onOptionSelected: (AIChatMenuOptionTypes) -> Void
@@ -218,7 +218,7 @@ struct AIChatMenuView: View {
         AIChatMenuItemView(
           title: model.displayName,
           subtitle: modelPurpose(for: model),
-          isSelected: model.key == currentModel.key
+          isSelected: model.key == currentModel?.key
         ) {
           switch model.options.tag {
           case .leoModelOptions:

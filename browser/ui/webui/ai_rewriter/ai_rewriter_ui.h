@@ -6,11 +6,13 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_AI_REWRITER_AI_REWRITER_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_AI_REWRITER_AI_REWRITER_UI_H_
 
+#include <memory>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/ai_rewriter/ai_rewriter_dialog_delegate.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_rewriter/common/mojom/ai_rewriter.mojom.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
@@ -62,11 +64,13 @@ class AIRewriterUI : public ConstrainedWebDialogUI,
   AIRewriterDialogDelegate* GetDialogDelegate();
   content::WebContents* GetTargetContents();
 
-  void OnRewriteSuggestionGenerated(const std::string& data);
+  void OnRewriteSuggestionGenerated(const std::string& rewrite_event);
 
   raw_ptr<Profile> profile_ = nullptr;
   bool dialog_closed_ = false;
   std::string initial_text_;
+
+  std::unique_ptr<ai_chat::EngineConsumer> ai_engine_;
 
   mojo::Receiver<mojom::AIRewriterPageHandler> receiver_{this};
   mojo::Remote<mojom::AIRewriterPage> page_;

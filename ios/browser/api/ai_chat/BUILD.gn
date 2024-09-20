@@ -24,8 +24,12 @@ source_set("ai_chat") {
     "ai_chat.h",
     "ai_chat.mm",
     "ai_chat_delegate.h",
-    "conversation_driver_ios.h",
-    "conversation_driver_ios.mm",
+    "ai_chat_service_factory.h",
+    "ai_chat_service_factory.mm",
+    "associated_content_driver_ios.h",
+    "associated_content_driver_ios.mm",
+    "conversation_client.h",
+    "conversation_client.mm",
     "model_service_factory.h",
     "model_service_factory.mm",
   ]
@@ -64,4 +68,12 @@ ios_objc_mojom_wrappers("ai_chat_mojom_wrappers") {
   mojom_target = "//brave/components/ai_chat/core/common/mojom"
   sources = [ "//brave/components/ai_chat/core/common/mojom/ai_chat.mojom" ]
   output_dir = "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ios"
+
+  # These types have pending_receiver arguments which aren't
+  # supported in objc_mojom_wrappers, but should be refactored to support
+  # binding to them for iOS.
+  exclude_types = [
+    "AIChatUIHandler",
+    "Service",
+  ]
 }

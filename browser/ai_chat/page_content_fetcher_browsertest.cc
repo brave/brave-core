@@ -35,7 +35,7 @@ index 9e2e7d6ef96..4cdf7cc8ac8 100644
 @@ -7,6 +7,7 @@
  #include "file3.h"
  #include "file4.h"
-+ 
++
 +int main() {
 +    std::cout << "This is the way" << std::endl;
 +    return 0;
@@ -100,20 +100,22 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
                         bool trim_whitespace = true) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
-    ai_chat::FetchPageContent(
-        browser()->tab_strip_model()->GetActiveWebContents(), "",
-        base::BindLambdaForTesting([&run_loop, &expected_text,
-                                    &expected_is_video, &trim_whitespace](
-                                       std::string text, bool is_video,
-                                       std::string invalidation_token) {
+    page_content_fetcher_ =
+        std::make_unique<ai_chat::PageContentFetcher>(GetActiveWebContents());
+    page_content_fetcher_->SetURLLoaderFactoryForTesting(
+        shared_url_loader_factory_);
+    page_content_fetcher_->FetchPageContent(
+        "", base::BindLambdaForTesting([&run_loop, &expected_text,
+                                        &expected_is_video, &trim_whitespace](
+                                           std::string text, bool is_video,
+                                           std::string invalidation_token) {
           EXPECT_EQ(expected_text,
                     trim_whitespace ? base::TrimWhitespaceASCII(
                                           text, base::TrimPositions::TRIM_ALL)
                                     : text);
           EXPECT_EQ(expected_is_video, is_video);
           run_loop.Quit();
-        }),
-        shared_url_loader_factory_);
+        }));
     run_loop.Run();
   }
 
@@ -121,13 +123,13 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
                               const std::optional<std::string>& expected_key) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
-    ai_chat::GetSearchSummarizerKey(
-        browser()->tab_strip_model()->GetActiveWebContents(),
-        base::BindLambdaForTesting(
-            [&run_loop, &expected_key](const std::optional<std::string>& key) {
-              EXPECT_EQ(expected_key, key);
-              run_loop.Quit();
-            }));
+    page_content_fetcher_ =
+        std::make_unique<ai_chat::PageContentFetcher>(GetActiveWebContents());
+    page_content_fetcher_->GetSearchSummarizerKey(base::BindLambdaForTesting(
+        [&run_loop, &expected_key](const std::optional<std::string>& key) {
+          EXPECT_EQ(expected_key, key);
+          run_loop.Quit();
+        }));
     run_loop.Run();
   }
 
@@ -159,6 +161,7 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
   net::test_server::EmbeddedTestServer https_server_;
 
  private:
+  std::unique_ptr<ai_chat::PageContentFetcher> page_content_fetcher_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
@@ -186,7 +189,6 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContentPDF) {
   auto* chat_tab_helper =
       ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());
   ASSERT_TRUE(chat_tab_helper);
-  chat_tab_helper->SetUserOptedIn(true);
   auto run_loop = std::make_unique<base::RunLoop>();
   chat_tab_helper->SetOnPDFA11yInfoLoadedCallbackForTesting(
       base::BindLambdaForTesting([this, &run_loop, &kExpectedText]() {

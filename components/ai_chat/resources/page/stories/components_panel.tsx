@@ -4,23 +4,20 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import styles from './style.module.scss'
-
-import './locale'
-import '$web-components/app.global.scss'
+import { useArgs } from '@storybook/preview-api'
+import { Meta } from '@storybook/react'
 import '@brave/leo/tokens/css/variables.css'
+import '$web-components/app.global.scss'
 import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import Main from '../components/main'
-import * as mojom from '../api/page_handler'
-import { useArgs } from '@storybook/preview-api'
+import * as mojom from '../api/'
 import FeedbackForm from '../components/feedback_form'
-import DataContextProvider from '../state/data-context-provider'
-import { setPageHandlerAPIForTesting } from '../api/page_handler'
-import { MockPageHandlerAPI } from '../api/mock_page_handler'
-
-const mockAPIHandler = new MockPageHandlerAPI()
-setPageHandlerAPIForTesting(mockAPIHandler as any)
+import { AIChatContext, AIChatReactContext } from '../state/ai_chat_context'
+import { ConversationContext, ConversationReactContext } from '../state/conversation_context'
+import './locale'
+import ACTIONS_LIST from './actions'
+import styles from './style.module.scss'
 
 function getCompletionEvent(text: string): mojom.ConversationEntryEvent {
   return {
@@ -288,10 +285,11 @@ const SITE_INFO: mojom.SiteInfo = {
   contentUsedPercentage: 40,
   isContentAssociationPossible: true,
   hostname: 'www.example.com',
+  url: { url: 'https://www.example.com/a' },
   isContentRefined: false,
 }
 
-export default {
+const preview: Meta = {
   title: 'Chat/Chat',
   parameters: {
     layout: 'centered'
@@ -311,6 +309,7 @@ export default {
     }
   },
   args: {
+    inputText: `Write a Star Trek poem about Data's life on board the Enterprise`,
     hasConversation: true,
     hasSuggestedQuestions: true,
     hasSiteInfo: true,
@@ -322,14 +321,14 @@ export default {
     currentErrorState: 'ConnectionIssue' satisfies keyof typeof mojom.APIError,
     suggestionStatus: 'None' satisfies keyof typeof mojom.SuggestionGenerationStatus,
     model: MODELS[0].key,
-    showAgreementModal: false,
     isMobile: false,
     shouldShowLongConversationInfo: false,
     shouldShowLongPageWarning: false,
   },
   decorators: [
-    (Story: any, options: any) => {
+    (Story, options) => {
       const [, setArgs] = useArgs()
+
       const siteInfo = options.args.hasSiteInfo ? SITE_INFO : new mojom.SiteInfo()
       const suggestedQuestions = options.args.hasSuggestedQuestions
         ? SAMPLE_QUESTIONS
@@ -346,39 +345,81 @@ export default {
         setArgs({ model: nonPremiumModel })
       }
 
-      const store = {
-        allModels: MODELS,
-        conversationHistory: options.args.hasConversation ? HISTORY : [],
+      const setInputText = (inputText: string) => {
+        setArgs({ inputText })
+      }
+
+      const aiChatContext: AIChatContext = {
+        visibleConversations: [],
+        hasAcceptedAgreement: options.args.hasAcceptedAgreement,
         isPremiumStatusFetching: false,
-        isGenerating: true,
-        suggestionStatus: mojom.SuggestionGenerationStatus[options.args.suggestionStatus],
-        canShowPremiumPrompt: options.args.canShowPremiumPrompt,
         isPremiumUser: options.args.isPremiumUser,
         isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
-        showAgreementModal: options.args.showAgreementModal,
+        canShowPremiumPrompt: options.args.canShowPremiumPrompt,
         isMobile: options.args.isMobile,
-        shouldShowLongPageWarning: options.args.shouldShowLongPageWarning,
-        shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo,
+        isHistoryEnabled: false,
+        allActions: ACTIONS_LIST,
+        goPremium: () => {},
+        managePremium: () => {},
+        handleAgreeClick: () => {},
+        dismissPremiumPrompt: () => {},
+        userRefreshPremiumSession: () => {},
+        onNewConversation: () => {},
+        onSelectConversationUuid(id) {}
+      }
+
+      const inputText = options.args.inputText
+
+      const conversationContext: ConversationContext = {
+        conversationHistory: options.args.hasConversation ? HISTORY : [],
+        associatedContentInfo: siteInfo,
+        allModels: MODELS,
         currentModel,
         suggestedQuestions,
-        siteInfo,
+        isGenerating: true,
+        suggestionStatus: mojom.SuggestionGenerationStatus[options.args.suggestionStatus],
         currentError,
-        hasAcceptedAgreement: options.args.hasAcceptedAgreement,
         apiHasError,
+        shouldDisableUserInput: false,
+        shouldShowLongPageWarning: options.args.shouldShowLongPageWarning,
+        shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo,
+        shouldSendPageContents: siteInfo?.isContentAssociationPossible,
+        inputText,
+        actionList: ACTIONS_LIST,
+        selectedActionType: undefined,
+        isToolsMenuOpen: false,
+        isCurrentModelLeo: true,
+        isCharLimitApproaching: inputText.length > 64,
+        isCharLimitExceeded: inputText.length > 70,
+        inputTextCharCountDisplay: `${inputText.length} / 70`,
+        setInputText,
+        setCurrentModel: () => {},
         switchToBasicModel,
-        shouldSendPageContents: siteInfo?.isContentAssociationPossible
+        generateSuggestedQuestions: () => {},
+        dismissLongConversationInfo: () => {},
+        updateShouldSendPageContents: () => {},
+        retryAPIRequest: () => {},
+        handleResetError: () => {},
+        submitInputTextToAPI: () => {},
+        resetSelectedActionType: () => {},
+        handleActionTypeClick: () => {},
+        setIsToolsMenuOpen: () => {}
       }
 
       return (
-        <DataContextProvider store={store}>
+        <AIChatReactContext.Provider value={aiChatContext}>
+          <ConversationReactContext.Provider value={conversationContext}>
           <ThemeProvider>
             <Story />
           </ThemeProvider>
-        </DataContextProvider>
+          </ConversationReactContext.Provider>
+        </AIChatReactContext.Provider>
       )
     }
   ]
 }
+
+export default preview
 
 export const _Panel = {
   render: () => {

@@ -617,7 +617,9 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled()) {
-    registry.ForWebUI<AIChatUI>().Add<ai_chat::mojom::PageHandler>();
+    registry.ForWebUI<AIChatUI>()
+        .Add<ai_chat::mojom::AIChatUIHandler>()
+        .Add<ai_chat::mojom::Service>();
   }
 #endif
 
@@ -832,8 +834,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       Profile::FromBrowserContext(render_frame_host->GetBrowserContext())
           ->IsRegularProfile()) {
     // WebUI -> Browser interface
-    content::RegisterWebUIControllerInterfaceBinder<ai_chat::mojom::PageHandler,
-                                                    AIChatUI>(map);
+    content::RegisterWebUIControllerInterfaceBinder<
+        ai_chat::mojom::AIChatUIHandler, AIChatUI>(map);
 #if !BUILDFLAG(IS_ANDROID)
     content::RegisterWebUIControllerInterfaceBinder<
         ai_chat::mojom::AIChatSettingsHelper, BraveSettingsUI>(map);

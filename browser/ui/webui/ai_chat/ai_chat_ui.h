@@ -35,7 +35,8 @@ class AIChatUI : public ui::UntrustedWebUIController {
   ~AIChatUI() override;
 
   void BindInterface(
-      mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver);
+      mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver);
+  void BindInterface(mojo::PendingReceiver<ai_chat::mojom::Service> receiver);
 
   // Set by WebUIContentsWrapperT. TopChromeWebUIController provides default
   // implementation for this but we don't use it.
@@ -47,7 +48,7 @@ class AIChatUI : public ui::UntrustedWebUIController {
   static constexpr std::string GetWebUIName() { return "AIChatPanel"; }
 
  private:
-  std::unique_ptr<ai_chat::mojom::PageHandler> page_handler_;
+  std::unique_ptr<ai_chat::mojom::AIChatUIHandler> page_handler_;
 
   base::WeakPtr<TopChromeWebUIController::Embedder> embedder_;
   raw_ptr<Profile> profile_ = nullptr;

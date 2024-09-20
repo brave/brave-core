@@ -6,7 +6,7 @@
 import * as React from 'react'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import classnames from '$web-common/classnames'
-import * as mojom from '../../api/page_handler'
+import * as mojom from '../../api/'
 
 import styles from './style.module.scss'
 

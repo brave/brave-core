@@ -16,6 +16,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_split.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
@@ -39,6 +40,9 @@
 namespace ai_chat {
 
 namespace {
+
+using FetchPageContentCallback =
+    AIChatTabHelper::PageContentFetcherDelegate::FetchPageContentCallback;
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 // Hosts to use for screenshot based text retrieval
@@ -95,9 +99,9 @@ net::NetworkTrafficAnnotationTag GetGithubNetworkTrafficAnnotationTag() {
     )");
 }
 
-class PageContentFetcher {
+class PageContentFetcherInternal {
  public:
-  explicit PageContentFetcher(
+  explicit PageContentFetcherInternal(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
       : url_loader_factory_(url_loader_factory) {}
 
@@ -112,9 +116,9 @@ class PageContentFetcher {
     // Unretained is OK here. The `mojo::Remote` will not invoke callbacks
     // after it is destroyed.
     content_extractor_.set_disconnect_handler(base::BindOnce(
-        &PageContentFetcher::DeleteSelf, base::Unretained(this)));
+        &PageContentFetcherInternal::DeleteSelf, base::Unretained(this)));
     content_extractor_->ExtractPageContent(base::BindOnce(
-        &PageContentFetcher::OnTabContentResult, base::Unretained(this),
+        &PageContentFetcherInternal::OnTabContentResult, base::Unretained(this),
         std::move(callback), invalidation_token));
   }
 
@@ -127,7 +131,7 @@ class PageContentFetcher {
       return;
     }
     content_extractor_.set_disconnect_handler(base::BindOnce(
-        &PageContentFetcher::DeleteSelf, base::Unretained(this)));
+        &PageContentFetcherInternal::DeleteSelf, base::Unretained(this)));
     content_extractor_->GetSearchSummarizerKey(std::move(callback));
   }
 
@@ -148,9 +152,9 @@ class PageContentFetcher {
                network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
     loader->SetAllowHttpErrorResults(true);
     auto* loader_ptr = loader.get();
-    auto on_response = base::BindOnce(&PageContentFetcher::OnPatchFetchResponse,
-                                      weak_ptr_factory_.GetWeakPtr(),
-                                      std::move(callback), std::move(loader));
+    auto on_response = base::BindOnce(
+        &PageContentFetcherInternal::OnPatchFetchResponse,
+        weak_ptr_factory_.GetWeakPtr(), std::move(callback), std::move(loader));
     loader_ptr->DownloadToString(url_loader_factory_.get(),
                                  std::move(on_response), 2 * 1024 * 1024);
   }
@@ -210,7 +214,7 @@ class PageContentFetcher {
     bool is_youtube =
         data->type == ai_chat::mojom::PageContentType::VideoTranscriptYouTube;
     auto on_response =
-        base::BindOnce(&PageContentFetcher::OnTranscriptFetchResponse,
+        base::BindOnce(&PageContentFetcherInternal::OnTranscriptFetchResponse,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback),
                        std::move(loader), is_youtube, new_invalidation_token);
     loader_ptr->DownloadToString(url_loader_factory_.get(),
@@ -309,9 +313,10 @@ class PageContentFetcher {
           transcript_content,
           data_decoder::mojom::XmlParser::WhitespaceBehavior::
               kPreserveSignificant,
-          base::BindOnce(&PageContentFetcher::OnYoutubeTranscriptXMLParsed,
-                         weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                         invalidation_token));
+          base::BindOnce(
+              &PageContentFetcherInternal::OnYoutubeTranscriptXMLParsed,
+              weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+              invalidation_token));
       return;
     }
 
@@ -345,7 +350,7 @@ class PageContentFetcher {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   mojo::Remote<mojom::PageContentExtractor> content_extractor_;
-  base::WeakPtrFactory<PageContentFetcher> weak_ptr_factory_{this};
+  base::WeakPtrFactory<PageContentFetcherInternal> weak_ptr_factory_{this};
 };
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
@@ -380,14 +385,20 @@ std::optional<GURL> GetGithubPatchURLForPRURL(const GURL& url) {
 
 }  // namespace
 
-void FetchPageContent(content::WebContents* web_contents,
-                      std::string_view invalidation_token,
-                      FetchPageContentCallback callback,
-                      scoped_refptr<network::SharedURLLoaderFactory>
-                          url_loader_factory_for_test) {
+PageContentFetcher::PageContentFetcher(content::WebContents* web_contents)
+    : web_contents_(web_contents),
+      url_loader_factory_(web_contents_->GetBrowserContext()
+                              ->GetDefaultStoragePartition()
+                              ->GetURLLoaderFactoryForBrowserProcess()
+                              .get()) {}
+
+PageContentFetcher::~PageContentFetcher() = default;
+
+void PageContentFetcher::FetchPageContent(std::string_view invalidation_token,
+                                          FetchPageContentCallback callback) {
   VLOG(2) << __func__ << " Extracting page content from renderer...";
 
-  auto* primary_rfh = web_contents->GetPrimaryMainFrame();
+  auto* primary_rfh = web_contents_->GetPrimaryMainFrame();
   DCHECK(primary_rfh->IsRenderFrameLive());
 
   if (!primary_rfh) {
@@ -398,7 +409,7 @@ void FetchPageContent(content::WebContents* web_contents,
     return;
   }
 
-  if (IsPdf(web_contents)) {
+  if (IsPdf(web_contents_)) {
     std::string pdf_content;
     auto* pdf_root = GetPdfRoot(primary_rfh);
     if (pdf_root) {
@@ -410,13 +421,13 @@ void FetchPageContent(content::WebContents* web_contents,
     return;
   }
 
-  auto url = web_contents->GetLastCommittedURL();
+  auto url = web_contents_->GetLastCommittedURL();
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
   if (base::Contains(kScreenshotRetrievalHosts, url.host_piece())) {
     content::RenderWidgetHostView* view =
-        web_contents->GetRenderWidgetHostView();
+        web_contents_->GetRenderWidgetHostView();
     if (view) {
-      gfx::Size content_size = web_contents->GetSize();
+      gfx::Size content_size = web_contents_->GetSize();
       gfx::Rect capture_area(0, 0, content_size.width(), content_size.height());
       view->CopyFromSurface(capture_area, content_size,
                             base::BindOnce(&OnScreenshot, std::move(callback)));
@@ -424,13 +435,8 @@ void FetchPageContent(content::WebContents* web_contents,
     }
   }
 #endif
-  auto* loader = url_loader_factory_for_test.get()
-                     ? url_loader_factory_for_test.get()
-                     : web_contents->GetBrowserContext()
-                           ->GetDefaultStoragePartition()
-                           ->GetURLLoaderFactoryForBrowserProcess()
-                           .get();
-  auto* fetcher = new PageContentFetcher(loader);
+  auto* loader = url_loader_factory_.get();
+  auto* fetcher = new PageContentFetcherInternal(loader);
   auto patch_url = GetGithubPatchURLForPRURL(url);
   if (patch_url) {
     fetcher->StartGithub(patch_url.value(), std::move(callback));
@@ -444,13 +450,12 @@ void FetchPageContent(content::WebContents* web_contents,
   fetcher->Start(std::move(extractor), invalidation_token, std::move(callback));
 }
 
-void GetSearchSummarizerKey(
-    content::WebContents* web_contents,
+void PageContentFetcher::GetSearchSummarizerKey(
     mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback) {
-  auto* primary_rfh = web_contents->GetPrimaryMainFrame();
+  auto* primary_rfh = web_contents_->GetPrimaryMainFrame();
   DCHECK(primary_rfh->IsRenderFrameLive());
 
-  auto* fetcher = new PageContentFetcher(nullptr);
+  auto* fetcher = new PageContentFetcherInternal(nullptr);
   mojo::Remote<mojom::PageContentExtractor> extractor;
   primary_rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());

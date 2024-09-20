@@ -5,17 +5,16 @@
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import ButtonMenu from '@brave/leo/react/buttonMenu'
+import { showAlert } from '@brave/leo/react/alertCenter'
 import Button from '@brave/leo/react/button'
+import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
-import { showAlert } from '@brave/leo/react/alertCenter'
-
-import getPageHandlerInstance from '../../api/page_handler'
-import styles from './style.module.scss'
+import { useAIChat } from '../../state/ai_chat_context'
+import { useConversation } from '../../state/conversation_context'
 import FeedbackForm from '../feedback_form'
-import DataContext from '../../state/context'
+import styles from './style.module.scss'
 
 interface ContextMenuAssistantProps {
   turnId: number
@@ -35,8 +34,9 @@ function ContextMenuAssistant_(
   props: ContextMenuAssistantProps,
   ref: React.RefObject<Map<number, Element>>
 ) {
-  const context = React.useContext(DataContext)
-  const {shouldDisableUserInput} = context
+  const aiChatContext = useAIChat()
+  const conversationContext = useConversation()
+  const {shouldDisableUserInput} = conversationContext
   const [feedbackId, setFeedbackId] = React.useState<string | null>()
   const [isFormVisible, setIsFormVisible] = React.useState(false)
   const [currentRatingStatus, setCurrentRatingStatus] =
@@ -49,8 +49,8 @@ function ContextMenuAssistant_(
   const handleLikeAnswer = () => {
     if (hasSentRating) return
 
-    getPageHandlerInstance()
-      .pageHandler.rateMessage(true, props.turnId)
+    conversationContext.conversationHandler
+      ?.rateMessage(true, props.turnId)
       .then((resp) => {
         if (!resp.ratingId) {
           showAlert({
@@ -76,8 +76,8 @@ function ContextMenuAssistant_(
   const handleDislikeAnswer = () => {
     if (hasSentRating) return
 
-    getPageHandlerInstance()
-      .pageHandler.rateMessage(false, props.turnId)
+    conversationContext.conversationHandler
+      ?.rateMessage(false, props.turnId)
       .then((resp) => {
         if (!resp.ratingId) {
           showAlert({
@@ -113,8 +113,8 @@ function ContextMenuAssistant_(
 
   const handleOnSubmit = (selectedCategory: string, feedbackText: string, shouldSendUrl: boolean) => {
     if (feedbackId) {
-      getPageHandlerInstance()
-        .pageHandler.sendFeedback(selectedCategory, feedbackText, feedbackId, shouldSendUrl)
+      conversationContext.conversationHandler
+        ?.sendFeedback(selectedCategory, feedbackText, feedbackId, shouldSendUrl)
         .then((resp) => {
           if (!resp.isSuccess) {
             showAlert({
@@ -154,7 +154,7 @@ function ContextMenuAssistant_(
           className={classnames({
             [styles.moreButton]: true,
             [styles.moreButtonActive]: props.isOpen,
-            [styles.moreButtonHide]: context.isMobile
+            [styles.moreButtonHide]: aiChatContext.isMobile
           })}
         >
           <Icon name='more-vertical' />

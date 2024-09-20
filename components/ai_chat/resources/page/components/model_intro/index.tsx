@@ -9,9 +9,9 @@ import Tooltip from '@brave/leo/react/tooltip'
 import Button from '@brave/leo/react/button'
 import formatMessage from '$web-common/formatMessage'
 import { getLocale } from '$web-common/locale'
-
-import getPageHandlerInstance, * as mojom from '../../api/page_handler'
-import DataContext from '../../state/context'
+import * as mojom from '../../api'
+import { useAIChat } from '../../state/ai_chat_context'
+import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
 
 function getCategoryName(category: mojom.ModelCategory) {
@@ -28,9 +28,10 @@ function getIntroMessage(model: mojom.Model) {
 }
 
 export default function ModelIntro() {
-  const context = React.useContext(DataContext)
+  const aiChatContext = useAIChat()
+  const conversationContext = useConversation()
 
-  const model = context.currentModel
+  const model = conversationContext.currentModel
   if (!model) {
     console.error('Rendered ModelIntro when currentModel does not exist!')
     return <></>
@@ -43,12 +44,12 @@ export default function ModelIntro() {
       </div>
       <div className={styles.meta}>
         <h4 className={styles.category}>
-          {context.isCurrentModelLeo
+          {conversationContext.isCurrentModelLeo
             ? getCategoryName(model.options.leoModelOptions!.category)
             : model.displayName}
         </h4>
         <h3 className={styles.name}>
-          {context.isCurrentModelLeo
+          {conversationContext.isCurrentModelLeo
             ? formatMessage(getLocale('modelNameSyntax'), {
                 placeholders: {
                   $1: model.displayName,
@@ -56,7 +57,7 @@ export default function ModelIntro() {
                 }
               })
             : `${model.options.customModelOptions?.modelRequestName}`}
-          {context.isCurrentModelLeo && (
+          {conversationContext.isCurrentModelLeo && (
             <Tooltip
               mode='default'
               className={styles.tooltip}
@@ -73,7 +74,7 @@ export default function ModelIntro() {
                         <a
                           key={content}
                           onClick={() =>
-                            getPageHandlerInstance().pageHandler.openModelSupportUrl()
+                            aiChatContext.uiHandler?.openModelSupportUrl()
                           }
                           href='#'
                           target='_blank'

@@ -4,19 +4,16 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-
-import { getLocale } from '$web-common/locale'
 import Button from '@brave/leo/react/button'
-
+import { getLocale } from '$web-common/locale'
+import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
-import getPageHandlerInstance from '../../api/page_handler'
-import DataContext from '../../state/context'
 
 function WelcomeGuide() {
-  const context = React.useContext(DataContext)
+  const conversationContext = useConversation()
 
   const summarizeNow = () => {
-    getPageHandlerInstance().pageHandler.submitSummarizationRequest()
+    conversationContext.conversationHandler?.submitSummarizationRequest()
   }
 
   return (
@@ -29,8 +26,8 @@ function WelcomeGuide() {
         <h4 className={styles.cardTitle}>
           {getLocale('welcomeGuideSiteHelpCardTitle')}
         </h4>
-        {context.siteInfo?.isContentAssociationPossible &&
-        context.shouldSendPageContents ? (
+        {conversationContext.associatedContentInfo?.isContentAssociationPossible &&
+        conversationContext.shouldSendPageContents ? (
           <>
             <p>{getLocale('welcomeGuideSiteHelpCardDescWithAction')}</p>
             <div className={styles.actions}>

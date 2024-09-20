@@ -38,7 +38,7 @@ bool IsAIChatEnabled() {
 }
 
 BASE_FEATURE(kAIChatHistory,
-             "kAIChatHistory",
+             "AIChatHistory",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsAIChatHistoryEnabled() {

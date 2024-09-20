@@ -24,7 +24,7 @@ void ManagePremium(content::WebContents* web_contents);
 void OpenURL(const std::string& url);
 // Handles voice recognition for a prompt
 void HandleVoiceRecognition(content::WebContents* web_contents,
-                            content::WebContents* context_web_contents);
+                            const std::string& conversation_uuid);
 // Closes Leo chat window
 void CloseActivity(content::WebContents* web_contents);
 

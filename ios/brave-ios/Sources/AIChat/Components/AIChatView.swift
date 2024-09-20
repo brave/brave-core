@@ -96,7 +96,9 @@ public struct AIChatView: View {
           dismiss()
         },
         onNewChat: {
-          model.clearConversationHistory()
+          Task {
+            await model.clearConversationHistory()
+          }
         },
         menuContent: {
           menuView
@@ -142,8 +144,8 @@ public struct AIChatView: View {
                         }
                       )
                       .padding()
-                    } else {
-                      AIChatIntroMessageView(model: model.currentModel)
+                    } else if let currentModel = model.currentModel {
+                      AIChatIntroMessageView(model: currentModel)
                         .padding()
                         .background(Color(braveSystemName: .containerBackground))
 
@@ -270,6 +272,10 @@ public struct AIChatView: View {
                       }
 
                       Color.clear.id(lastMessageId)
+                    } else {
+                      ProgressView()
+                        .tint(Color(braveSystemName: .textInteractive))
+                        .padding(.trailing, 12.0)
                     }
                   }
                   .onChange(of: model.requestInProgress) { _ in
@@ -378,6 +384,7 @@ public struct AIChatView: View {
       )
     }
     .task {
+      await model.getInitialState()
       await model.refreshPremiumStatus()
       await MarkdownParser.prepareMarkdownParser(isDarkTheme: true)
 
@@ -603,7 +610,7 @@ public struct AIChatView: View {
             Task { @MainActor in
               await model.refreshPremiumStatus()
 
-              if let turn = model.clearErrorAndGetFailedMessage() {
+              if let turn = await model.clearErrorAndGetFailedMessage() {
                 prompt = turn.text
               }
             }
@@ -612,7 +619,9 @@ public struct AIChatView: View {
         .padding()
       case .contextLimitReached:
         AIChatContextLimitErrorView {
-          model.clearConversationHistory()
+          Task {
+            await model.clearConversationHistory()
+          }
         }
         .padding()
       case .none:

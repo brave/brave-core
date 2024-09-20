@@ -26,8 +26,8 @@ OBJC_EXPORT
              modelList:(NSArray<AiChatModel*>*)modelList;
 - (void)onSuggestedQuestionsChanged:(NSArray<NSString*>*)questions
                              status:(AiChatSuggestionGenerationStatus)status;
-- (void)onPageHasContent:(AiChatSiteInfo*)siteInfo;
-- (void)onConversationEntryPending;
+- (void)onPageHasContent:(AiChatSiteInfo*)siteInfo
+       shouldSendContent:(bool)shouldSendContent;
 @end
 
 NS_ASSUME_NONNULL_END

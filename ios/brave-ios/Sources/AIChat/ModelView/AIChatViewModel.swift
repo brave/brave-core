@@ -18,6 +18,9 @@ public enum AIChatModelKey: String {
 }
 
 public class AIChatViewModel: NSObject, ObservableObject {
+  // TODO(petemill): AIChatService, ConversationHandler refs should
+  // be passed directly to this object instead of proxied through the
+  // AIChat class.
   private var api: AIChat!
   private weak var webView: WKWebView?
   private let script: any AIChatJavascript.Type
@@ -25,11 +28,14 @@ public class AIChatViewModel: NSObject, ObservableObject {
   var querySubmited: String?
 
   @Published var siteInfo: AiChat.SiteInfo?
+  @Published var _shouldSendPageContents: Bool = true
+  @Published var canShowPremiumPrompt: Bool = false
   @Published var premiumStatus: AiChat.PremiumStatus = .inactive
   @Published var suggestedQuestions: [String] = []
+  @Published var suggestionsStatus: AiChat.SuggestionGenerationStatus = .none
   @Published var conversationHistory: [AiChat.ConversationTurn] = []
   @Published var models: [AiChat.Model] = []
-  @Published var currentModel: AiChat.Model!
+  @Published var currentModel: AiChat.Model?
 
   @Published var requestInProgress: Bool = false
   @Published var apiError: AiChat.APIError = .none
@@ -39,7 +45,9 @@ public class AIChatViewModel: NSObject, ObservableObject {
   }
 
   public var isCurrentModelPremium: Bool {
-    currentModel.options.tag == .leoModelOptions
+    guard let currentModel = currentModel else { return false }
+
+    return currentModel.options.tag == .leoModelOptions
       && currentModel.options.leoModelOptions?.access == .premium
   }
 
@@ -49,22 +57,22 @@ public class AIChatViewModel: NSObject, ObservableObject {
 
   public var shouldSendPageContents: Bool {
     get {
-      return api.shouldSendPageContents
+      return _shouldSendPageContents
     }
 
     set {
       objectWillChange.send()
-      api.shouldSendPageContents = newValue
+      api.setShouldSendPageContents(newValue)
     }
   }
 
   public var shouldShowPremiumPrompt: Bool {
     get {
-      return api.canShowPremiumPrompt
+      return canShowPremiumPrompt
     }
 
     set {  // swiftlint:disable:this unused_setter_value
-      objectWillChange.send()
+      self.canShowPremiumPrompt = newValue
       if !newValue {
         api.dismissPremiumPrompt()
       }
@@ -72,21 +80,17 @@ public class AIChatViewModel: NSObject, ObservableObject {
   }
 
   public var shouldShowTermsAndConditions: Bool {
-    !api.conversationHistory.isEmpty && !api.isAgreementAccepted
+    !self.conversationHistory.isEmpty && !api.isAgreementAccepted
   }
 
   public var shouldShowSuggestions: Bool {
-    api.currentAPIError == .none && api.isAgreementAccepted && api.shouldSendPageContents
-      && (!api.suggestedQuestions.isEmpty || api.suggestionsStatus == .canGenerate
-        || api.suggestionsStatus == .isGenerating)
+    self.apiError == .none && api.isAgreementAccepted && self.shouldSendPageContents
+      && (!self.suggestedQuestions.isEmpty || self.suggestionsStatus == .canGenerate
+        || self.suggestionsStatus == .isGenerating)
   }
 
   public var shouldShowGenerateSuggestionsButton: Bool {
-    api.suggestionsStatus == .canGenerate || api.suggestionsStatus == .isGenerating
-  }
-
-  public var suggestionsStatus: AiChat.SuggestionGenerationStatus {
-    api.suggestionsStatus
+    self.suggestionsStatus == .canGenerate || self.suggestionsStatus == .isGenerating
   }
 
   public var isAgreementAccepted: Bool {
@@ -97,7 +101,6 @@ public class AIChatViewModel: NSObject, ObservableObject {
     set {
       objectWillChange.send()
       api.isAgreementAccepted = newValue
-      api.setConversationActive(newValue)
     }
   }
 
@@ -128,16 +131,6 @@ public class AIChatViewModel: NSObject, ObservableObject {
 
     // Initialize
     api = braveCore.aiChatAPI(with: self)
-    currentModel = api.currentModel
-    models = api.models
-    conversationHistory = api.conversationHistory
-    suggestedQuestions = api.suggestedQuestions
-    apiError = api.currentAPIError
-    requestInProgress = api.isRequestInProgress
-
-    if isAgreementAccepted {
-      api.setConversationActive(true)
-    }
   }
 
   // MARK: - API
@@ -146,13 +139,8 @@ public class AIChatViewModel: NSObject, ObservableObject {
     api.changeModel(modelKey)
   }
 
-  func clearConversationHistory() {
-    apiError = .none
-    api.clearConversationHistory()
-  }
-
   func generateSuggestions() {
-    if api.suggestionsStatus != .isGenerating && api.suggestionsStatus != .hasGenerated {
+    if self.suggestionsStatus != .isGenerating && self.suggestionsStatus != .hasGenerated {
       objectWillChange.send()
       api.generateQuestions()
     }
@@ -177,48 +165,21 @@ public class AIChatViewModel: NSObject, ObservableObject {
     api.submitSelectedText(text, actionType: action)
   }
 
-  func submitSelectedText(
-    _ text: String,
-    action: AiChat.ActionType,
-    onSuggestion: @escaping (String?) -> Void,
-    onCompleted: @escaping (String?, AiChat.APIError) -> Void
-  ) {
-    apiError = .none
-    api.submitSelectedText(
-      text,
-      actionType: action,
-      onSuggestion: onSuggestion,
-      onCompleted: onCompleted
-    )
-  }
-
-  func submitSelectedText(
-    _ text: String,
-    question: String,
-    action: AiChat.ActionType,
-    onSuggestion: @escaping (String?) -> Void,
-    onCompleted: @escaping (String?, AiChat.APIError) -> Void
-  ) {
-    apiError = .none
-    api.submitSelectedText(
-      text,
-      question: question,
-      actionType: action,
-      onSuggestion: onSuggestion,
-      onCompleted: onCompleted
-    )
-  }
-
   func retryLastRequest() {
-    if !api.conversationHistory.isEmpty {
+    if !self.conversationHistory.isEmpty {
       api.retryAPIRequest()
     }
   }
 
-  func clearAndResetData() {
-    apiError = .none
-    api.clearConversationHistory()
-    api.setConversationActive(false)
+  @MainActor
+  func clearConversationHistory() async {
+    api.createNewConversation()
+    await self.getInitialState()
+  }
+
+  @MainActor
+  func clearAndResetData() async {
+    await self.clearConversationHistory()
     api.isAgreementAccepted = false
   }
 
@@ -228,8 +189,23 @@ public class AIChatViewModel: NSObject, ObservableObject {
   }
 
   @MainActor
-  func clearErrorAndGetFailedMessage() -> AiChat.ConversationTurn? {
-    api.clearErrorAndGetFailedMessage()
+  func getInitialState() async {
+    let state = await api.state()
+    self.requestInProgress = state.isRequestInProgress
+    self.suggestedQuestions = state.suggestedQuestions
+    self.suggestionsStatus = state.suggestionStatus
+    self.siteInfo = state.associatedContentInfo
+    self._shouldSendPageContents = state.shouldSendContent
+    self.apiError = state.error
+    self.models = state.allModels
+
+    self.currentModel = self.models.first(where: { $0.key == state.currentModelKey })
+    self.conversationHistory = api.conversationHistory
+  }
+
+  @MainActor
+  func clearErrorAndGetFailedMessage() async -> AiChat.ConversationTurn? {
+    return await api.clearErrorAndGetFailedMessage()
   }
 
   @MainActor
@@ -294,7 +270,7 @@ extension AIChatViewModel: AIChatDelegate {
     }
 
     requestInProgress = true
-    defer { requestInProgress = api.isRequestInProgress }
+    defer { requestInProgress = self.requestInProgress }
 
     if let transcript = await braveTalkScript?.getTranscript() {
       return (transcript, false)
@@ -342,17 +318,19 @@ extension AIChatViewModel: AIChatDelegate {
     status: AiChat.SuggestionGenerationStatus
   ) {
     self.suggestedQuestions = questions
+    self.suggestionsStatus = status
   }
 
   public func onModelChanged(_ modelKey: String, modelList: [AiChat.Model]) {
     self.currentModel = self.models.first(where: { $0.key == modelKey })
+    self.models = modelList
   }
 
-  public func onPageHasContent(_ siteInfo: AiChat.SiteInfo) {
-    objectWillChange.send()
-  }
-
-  public func onConversationEntryPending() {
-    objectWillChange.send()
+  public func onPageHasContent(
+    _ siteInfo: AiChat.SiteInfo,
+    shouldSendContent shouldSendPageContents: Bool
+  ) {
+    self.siteInfo = siteInfo
+    self._shouldSendPageContents = shouldSendPageContents
   }
 }

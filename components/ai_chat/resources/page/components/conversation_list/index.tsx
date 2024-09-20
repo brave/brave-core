@@ -8,8 +8,7 @@ import classnames from '$web-common/classnames'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import useLongPress from '$web-common/useLongPress'
-import getPageHandlerInstance, * as mojom from '../../api/page_handler'
-import DataContext from '../../state/context'
+import * as mojom from '../../api'
 import ContextMenuAssistant from '../context_menu_assistant'
 import { getLocale } from '$web-common/locale'
 import SiteTitle from '../site_title'
@@ -22,6 +21,8 @@ import CopyButton from '../copy_button'
 import EditButton from '../edit_button'
 import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
+import { useConversation } from '../../state/conversation_context'
+import { useAIChat } from '../../state/ai_chat_context'
 
 const SUGGESTION_STATUS_SHOW_BUTTON: mojom.SuggestionGenerationStatus[] = [
   mojom.SuggestionGenerationStatus.CanGenerate,
@@ -33,25 +34,20 @@ interface ConversationListProps {
 }
 
 function ConversationList(props: ConversationListProps) {
-  const context = React.useContext(DataContext)
-  const {
-    conversationHistory,
-    suggestedQuestions,
-    shouldDisableUserInput,
-    hasAcceptedAgreement,
-    shouldSendPageContents
-  } = context
+  const aiChatContext = useAIChat()
+  const conversationContext = useConversation()
+
 
   const portalRefs = React.useRef<Map<number, Element>>(new Map())
 
   const showSuggestions: boolean =
-    hasAcceptedAgreement &&
-    context.shouldSendPageContents &&
-    (suggestedQuestions.length > 0 ||
-      SUGGESTION_STATUS_SHOW_BUTTON.includes(context.suggestionStatus))
+    aiChatContext.hasAcceptedAgreement &&
+    conversationContext.shouldSendPageContents &&
+    (conversationContext.suggestedQuestions.length > 0 ||
+      SUGGESTION_STATUS_SHOW_BUTTON.includes(conversationContext.suggestionStatus))
 
   const handleQuestionSubmit = (question: string) => {
-    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(question)
+    conversationContext.conversationHandler?.submitHumanConversationEntry(question)
   }
 
   const lastEntryElementRef = React.useRef<HTMLDivElement>(null)
@@ -59,7 +55,7 @@ function ConversationList(props: ConversationListProps) {
   const [editInputId, setEditInputId] = React.useState<number | null>()
 
   const handleEditSubmit = (index: number, text: string) => {
-    getPageHandlerInstance().pageHandler.modifyConversation(index, text)
+    conversationContext.conversationHandler?.modifyConversation(index, text)
     setEditInputId(null)
   }
 
@@ -83,21 +79,21 @@ function ConversationList(props: ConversationListProps) {
 
   React.useEffect(() => {
     if (lastEntryElementRef.current === null) return
-    if (!context.isGenerating) return
+    if (!conversationContext.isGenerating) return
     props.onLastElementHeightChange()
-  }, [conversationHistory.length, lastEntryElementRef.current?.clientHeight])
+  }, [conversationContext.conversationHistory.length, lastEntryElementRef.current?.clientHeight])
 
   const lastAssistantId = React.useMemo(() => {
     // Get the last entry that is an assistant entry
-    for (let i = conversationHistory.length - 1; i >= 0; i--) {
+    for (let i = conversationContext.conversationHistory.length - 1; i >= 0; i--) {
       if (
-        conversationHistory[i].characterType === mojom.CharacterType.ASSISTANT
+        conversationContext.conversationHistory[i].characterType === mojom.CharacterType.ASSISTANT
       ) {
         return i
       }
     }
     return -1
-  }, [conversationHistory])
+  }, [conversationContext.conversationHistory])
 
   const getCompletion = (turn: mojom.ConversationTurn) => {
     const event = turn.events?.find((event) => event.completionEvent)
@@ -107,16 +103,16 @@ function ConversationList(props: ConversationListProps) {
   return (
     <>
       <div>
-        {conversationHistory.map((turn, id) => {
+        {conversationContext.conversationHistory.map((turn, id) => {
           const isLastEntry = id === lastAssistantId
           const isAIAssistant =
             turn.characterType === mojom.CharacterType.ASSISTANT
           const isEntryInProgress =
-            isLastEntry && isAIAssistant && context.isGenerating
+            isLastEntry && isAIAssistant && conversationContext.isGenerating
           const isHuman = turn.characterType === mojom.CharacterType.HUMAN
-          const showSiteTitle = id === 0 && isHuman && shouldSendPageContents
+          const showSiteTitle = id === 0 && isHuman && conversationContext.shouldSendPageContents
           const showLongPageContentInfo =
-            id === 1 && isAIAssistant && context.shouldShowLongPageWarning
+            id === 1 && isAIAssistant && conversationContext.shouldShowLongPageWarning
           const showEditInput = editInputId === id
           const showEditIndicator = !showEditInput && !!turn.edits?.length
           const latestEdit = turn.edits?.at(-1)
@@ -126,7 +122,7 @@ function ConversationList(props: ConversationListProps) {
           const lastEditedTime = latestTurn.createdTime
 
           const turnContainer = classnames({
-            [styles.turnContainerMobile]: context.isMobile,
+            [styles.turnContainerMobile]: aiChatContext.isMobile,
             [styles.turnContainerHighlight]:
               isAIAssistant && activeMenuId === id
           })
@@ -192,7 +188,7 @@ function ConversationList(props: ConversationListProps) {
                             />
                           }
                           {isAIAssistant &&
-                            context.currentModel?.options.leoModelOptions && (
+                            conversationContext.currentModel?.options.leoModelOptions && (
                             <ContextMenuAssistant
                               ref={portalRefs}
                               turnId={id}
@@ -223,7 +219,7 @@ function ConversationList(props: ConversationListProps) {
                       text={latestTurnText}
                       onSubmit={(text) => handleEditSubmit(id, text)}
                       onCancel={() => setEditInputId(null)}
-                      isSubmitDisabled={shouldDisableUserInput}
+                      isSubmitDisabled={conversationContext.shouldDisableUserInput}
                     />
                   )}
                   {turn.selectedText && (
@@ -251,25 +247,25 @@ function ConversationList(props: ConversationListProps) {
       {showSuggestions && (
         <div className={styles.suggestedQuestionsBox}>
           <div className={styles.questionsList}>
-            {suggestedQuestions.map((question, id) => (
+            {conversationContext.suggestedQuestions.map((question, id) => (
               <Button
                 key={id}
                 kind='outline'
                 size='small'
                 onClick={() => handleQuestionSubmit(question)}
-                isDisabled={shouldDisableUserInput}
+                isDisabled={conversationContext.shouldDisableUserInput}
               >
                 <span className={styles.buttonText}>{question}</span>
               </Button>
             ))}
             {SUGGESTION_STATUS_SHOW_BUTTON.includes(
-              context.suggestionStatus
+              conversationContext.suggestionStatus
             ) && (
               <Button
-                onClick={() => context.generateSuggestedQuestions()}
+                onClick={() => conversationContext.generateSuggestedQuestions()}
                 // isDisabled={context.suggestionStatus === mojom.SuggestionGenerationStatus.IsGenerating}
                 isLoading={
-                  context.suggestionStatus ===
+                  conversationContext.suggestionStatus ===
                   mojom.SuggestionGenerationStatus.IsGenerating
                 }
                 kind='outline'

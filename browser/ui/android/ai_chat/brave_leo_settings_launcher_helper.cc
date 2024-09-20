@@ -35,10 +35,11 @@ void OpenURL(const std::string& url) {
 }
 
 void HandleVoiceRecognition(content::WebContents* web_contents,
-                            content::WebContents* context_web_contents) {
+                            const std::string& conversation_uuid) {
   Java_BraveLeoSettingsLauncherHelper_handleVoiceRecognition(
       base::android::AttachCurrentThread(), web_contents->GetJavaWebContents(),
-      context_web_contents->GetJavaWebContents());
+      base::android::ConvertUTF8ToJavaString(
+          base::android::AttachCurrentThread(), conversation_uuid));
 }
 
 void CloseActivity(content::WebContents* web_contents) {

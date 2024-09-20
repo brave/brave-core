@@ -8,10 +8,13 @@
 #include "base/time/time.h"
 #include "brave/build/android/jni_headers/BraveLeoUtils_jni.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "content/public/browser/web_contents.h"
 #endif
 
@@ -20,20 +23,39 @@ namespace ai_chat {
 static void JNI_BraveLeoUtils_OpenLeoQuery(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jweb_contents,
+    const base::android::JavaParamRef<jstring>& conversation_uuid,
     const base::android::JavaParamRef<jstring>& query) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
-  // Send the query to the AIChat's backend.
-  auto* chat_tab_helper = AIChatTabHelper::FromWebContents(web_contents);
-  DCHECK(chat_tab_helper);
-  chat_tab_helper->MaybeUnlinkPageContent();
+  AIChatService* ai_chat_service = AIChatServiceFactory::GetForBrowserContext(
+      web_contents->GetBrowserContext());
+  DCHECK(ai_chat_service);
+  auto conversation_uuid_str =
+      base::android::ConvertJavaStringToUTF8(conversation_uuid);
+  // This function is either targeted at a specific conversation
+  // or a conversation based on the provided WebContents.
+  ConversationHandler* conversation;
+  if (conversation_uuid_str.empty()) {
+    AIChatTabHelper* chat_tab_helper =
+        AIChatTabHelper::FromWebContents(web_contents);
+    DCHECK(chat_tab_helper);
+    conversation = ai_chat_service->GetOrCreateConversationHandlerForContent(
+        chat_tab_helper->GetContentId(), chat_tab_helper->GetWeakPtr());
+  } else {
+    conversation = ai_chat_service->GetConversation(conversation_uuid_str);
+  }
+  if (!conversation) {
+    return;
+  }
+  // Send the query
+  conversation->MaybeUnlinkAssociatedContent();
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       mojom::ConversationTurnVisibility::VISIBLE,
       base::android::ConvertJavaStringToUTF8(query), std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, false);
-  chat_tab_helper->SubmitHumanConversationEntry(std::move(turn));
+  conversation->SubmitHumanConversationEntry(std::move(turn));
 #endif
 }
 }  // namespace ai_chat
