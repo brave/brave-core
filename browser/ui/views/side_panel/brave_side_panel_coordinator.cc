@@ -151,3 +151,14 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
   SidePanelCoordinator::PopulateSidePanel(supress_animations, unique_key, entry,
                                           std::move(content_view));
 }
+
+void BraveSidePanelCoordinator::NotifyPinnedContainerOfActiveStateChange(
+    SidePanelEntryKey key,
+    bool is_active) {
+  if (!browser_view_->toolbar()->pinned_toolbar_actions_container()) {
+    return;
+  }
+
+  SidePanelCoordinator::NotifyPinnedContainerOfActiveStateChange(key,
+                                                                 is_active);
+}

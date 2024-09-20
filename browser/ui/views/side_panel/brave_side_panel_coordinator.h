@@ -36,6 +36,9 @@ class BraveSidePanelCoordinator : public SidePanelCoordinator {
       SidePanelEntry* entry,
       std::optional<std::unique_ptr<views::View>> content_view) override;
 
+  void NotifyPinnedContainerOfActiveStateChange(SidePanelEntryKey key,
+                                                bool is_active) override;
+
  private:
   // Returns the last active entry or the default entry if no last active
   // entry exists.
