@@ -15,6 +15,7 @@ import android.text.TextUtils;
 
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.permissions.PermissionCallback;
 

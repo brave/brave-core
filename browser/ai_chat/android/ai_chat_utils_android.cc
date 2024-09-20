@@ -12,6 +12,7 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "content/public/browser/web_contents.h"
@@ -42,7 +43,7 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
     conversation = ai_chat_service->GetOrCreateConversationHandlerForContent(
         chat_tab_helper->GetContentId(), chat_tab_helper->GetWeakPtr());
   } else {
-    conversation = ai_chat_service->GetConversation(conversation_uuid);
+    conversation = ai_chat_service->GetConversation(conversation_uuid_str);
   }
   if (!conversation) {
     return;
