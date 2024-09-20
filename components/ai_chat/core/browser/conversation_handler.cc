@@ -191,7 +191,14 @@ bool ConversationHandler::IsAnyClientConnected() {
 }
 
 bool ConversationHandler::HasAnyHistory() {
-  return !chat_history_.empty();
+  if (chat_history_.empty()) {
+    return false;
+  }
+  // If any entry is not staged, then we have history
+  return base::ranges::any_of(chat_history_,
+                              [](const mojom::ConversationTurnPtr& turn) {
+                                return !turn->from_brave_search_SERP;
+                              });
 }
 
 void ConversationHandler::InitEngine() {

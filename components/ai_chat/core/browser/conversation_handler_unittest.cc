@@ -305,6 +305,7 @@ TEST_F(ConversationHandlerUnitTest, GetState) {
                  << "should_send_content: " << should_send_content);
     base::RunLoop run_loop;
     conversation_handler_->SetShouldSendPageContents(should_send_content);
+    EXPECT_FALSE(conversation_handler_->HasAnyHistory());
     conversation_handler_->GetState(
         base::BindLambdaForTesting([&](mojom::ConversationStatePtr state) {
           EXPECT_EQ(state->conversation_uuid, "uuid");
@@ -355,6 +356,8 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
                   mojom::CompletionEvent::New("This is the way."))),
           base::test::RunOnceCallback<5>(base::ok(""))));
 
+  EXPECT_FALSE(conversation_handler_->HasAnyHistory());
+
   // Test without page contents.
   conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
       [&](mojom::SiteInfoPtr site_info, bool should_send_page_contents) {
@@ -399,6 +402,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
         EXPECT_TRUE(questions.empty());
       }));
 
+  EXPECT_TRUE(conversation_handler_->HasAnyHistory());
   const auto& history = conversation_handler_->GetConversationHistory();
   std::vector<mojom::ConversationTurnPtr> expected_history;
   expected_history.push_back(mojom::ConversationTurn::New(
@@ -891,6 +895,8 @@ TEST_F(ConversationHandlerUnitTest,
     expected_history[i]->created_time = history[i]->created_time;
     EXPECT_EQ(history[i], expected_history[i]);
   }
+  // HasAnyHistory should still return false since all entries are staged
+  EXPECT_FALSE(conversation_handler_->HasAnyHistory());
 
   // Verify turning off content association clears the conversation history.
   EXPECT_CALL(client, OnConversationHistoryUpdate()).Times(1);
@@ -958,6 +964,8 @@ TEST_F(ConversationHandlerUnitTest,
     expected_history[i]->created_time = history[i]->created_time;
     EXPECT_EQ(history[i], expected_history[i]);
   }
+  // HasAnyHistory should still return false since all entries are staged
+  EXPECT_FALSE(conversation_handler_->HasAnyHistory());
 
   // Verify turning off content association clears the conversation history.
   EXPECT_CALL(client, OnConversationHistoryUpdate()).Times(1);
