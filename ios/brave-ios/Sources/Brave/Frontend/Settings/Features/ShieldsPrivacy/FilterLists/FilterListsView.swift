@@ -216,7 +216,7 @@ struct FilterListsView: View {
   }
 
   @ViewBuilder private var defaultFilterListRows: some View {
-    let searchText = searchText.lowercased()
+    let searchText = searchText
     #if DEBUG
     let allEnabled = Binding {
       filterListStorage.filterLists.allSatisfy({
@@ -385,13 +385,14 @@ struct FilterListsView_Previews: PreviewProvider {
 extension FilterList {
   fileprivate func satisfies(searchText: String) -> Bool {
     guard !searchText.isEmpty else { return true }
-    return entry.title.contains(searchText) || entry.desc.contains(searchText)
+    return entry.title.localizedCaseInsensitiveContains(searchText)
+      || entry.desc.localizedCaseInsensitiveContains(searchText)
   }
 }
 
 extension FilterListCustomURL {
   @MainActor fileprivate func satisfies(searchText: String) -> Bool {
     guard !searchText.isEmpty else { return true }
-    return setting.externalURL.absoluteString.contains(searchText)
+    return setting.externalURL.absoluteString.localizedCaseInsensitiveContains(searchText)
   }
 }
