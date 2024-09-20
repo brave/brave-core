@@ -7,9 +7,11 @@ package org.chromium.chrome.browser.shields;
 
 import android.animation.AnimatorSet;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -26,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
@@ -55,6 +58,8 @@ import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettin
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.components.browser_ui.widget.ChromeDialog;
+import org.chromium.ui.widget.ChromeImageButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -124,6 +129,12 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private int mTabId;
     private Profile mProfile;
     public boolean isDisconnectEntityLoaded;
+    private CheckBox mCheckBoxScreenshot;
+    private View mDialogView;
+    private Dialog mDialog;
+    private ImageView mImageView;
+    private TextView mViewScreenshot;
+    private byte[] mScreenshotBytes;
 
     private static Context scanForActivity(Context cont) {
         if (cont == null) {
@@ -772,6 +783,40 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     }
                 });
 
+        mViewScreenshot = mReportBrokenSiteLayout.findViewById(R.id.view_screenshot_link);
+
+        BraveShieldsScreenshotUtil braveShieldsScreenshotUtil =
+                new BraveShieldsScreenshotUtil(
+                        mContext,
+                        (byte[] pngBytes) -> {
+                            try {
+                                if (pngBytes == null || pngBytes.length == 0) {
+                                    mScreenshotBytes = null;
+                                    mViewScreenshot.setVisibility(View.GONE);
+                                    return;
+                                }
+                                mScreenshotBytes = pngBytes;
+                                setUpViewScreenshot(pngBytes);
+                            } catch (Exception e) {
+                                Log.e(TAG, "BraveShieldsScreenshot failed " + e);
+                            } finally {
+                                mCheckBoxScreenshot.setEnabled(true);
+                            }
+                        });
+
+        mCheckBoxScreenshot =
+                mReportBrokenSiteLayout.findViewById(R.id.checkbox_include_screenshot);
+        mCheckBoxScreenshot.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> {
+                    mScreenshotBytes = null;
+                    if (isChecked) {
+                        mCheckBoxScreenshot.setEnabled(false);
+                        braveShieldsScreenshotUtil.capture();
+                    } else {
+                        mViewScreenshot.setVisibility(View.GONE);
+                    }
+                });
+
         Button mSubmitButton = mReportBrokenSiteLayout.findViewById(R.id.btn_submit);
         mSubmitButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -783,12 +828,65 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                                 NTPBackgroundImagesBridge.getInstance(mProfile).getReferralApiKey();
                         BraveShieldsUtils.BraveShieldsWorkerTask mWorkerTask =
                                 new BraveShieldsUtils.BraveShieldsWorkerTask(
-                                        siteUrl, referralApiKey);
+                                        siteUrl,
+                                        referralApiKey,
+                                        isScreenshotAvailable() ? mScreenshotBytes : null);
                         mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                         mReportBrokenSiteLayout.setVisibility(View.GONE);
                         mThankYouLayout.setVisibility(View.VISIBLE);
                     }
                 });
+    }
+
+    private void setUpViewScreenshot(byte[] pngBytes) {
+        mViewScreenshot.setVisibility(View.VISIBLE);
+        mViewScreenshot.setText(getScreenshotSpinnableString(pngBytes));
+        mViewScreenshot.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    private SpannableString getScreenshotSpinnableString(byte[] pngBytes) {
+        return BraveRewardsHelper.toSpannableString(
+                mContext.getResources()
+                        .getString(R.string.report_broken_site_text_view_screenshot_label),
+                R.color.brave_link,
+                R.string.report_broken_site_text_view_screenshot_label,
+                (context) -> showPreviewDialog(pngBytes));
+    }
+
+    private void showPreviewDialog(byte[] pngBytes) {
+        mDialogView =
+                ((Activity) mContext)
+                        .getLayoutInflater()
+                        .inflate(R.layout.report_broken_site_screenshot_view, null);
+
+        ChromeImageButton okButton = mDialogView.findViewById(R.id.ok_button);
+        okButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDialog.cancel();
+                    }
+                });
+
+        mDialog = new ChromeDialog((Activity) mContext, R.style.ThemeOverlay_BrowserUI_Fullscreen);
+        mDialog.addContentView(
+                mDialogView,
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT));
+        mImageView = mDialogView.findViewById(R.id.screenshot_image);
+        mImageView.setScaleType(ImageView.ScaleType.FIT_START);
+        mImageView.setImageBitmap(BitmapFactory.decodeByteArray(pngBytes, 0, pngBytes.length));
+        mDialog.show();
+    }
+
+    private boolean isScreenshotAvailable() {
+        return mViewScreenshot != null
+                && mViewScreenshot.getVisibility() == View.VISIBLE
+                && mCheckBoxScreenshot != null
+                && mCheckBoxScreenshot.isChecked()
+                && mScreenshotBytes != null
+                && mScreenshotBytes.length > 0;
     }
 
     private void setupErrorPageLayout() {
