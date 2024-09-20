@@ -16,7 +16,7 @@ struct PrivacyReportSettingsView: View {
   @State private var showClearDataPrompt: Bool = false
 
   var body: some View {
-    List {
+    Form {
       Section(footer: Text(Strings.PrivacyHub.settingsEnableShieldsFooter)) {
         Toggle(Strings.PrivacyHub.settingsEnableShieldsTitle, isOn: $shieldsDataEnabled.value)
           .toggleStyle(SwitchToggleStyle(tint: .accentColor))
