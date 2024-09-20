@@ -815,6 +815,16 @@ void SidebarContainerView::OnEntryWillDeregister(SidePanelRegistry* registry,
 void SidebarContainerView::OnRegistryDestroying(SidePanelRegistry* registry) {
   if (panel_registry_observations_.IsObservingSource(registry)) {
     StopObservingContextualSidePanelRegistry(registry);
+    // If this is the active tab being destroyed, then reset the active item.
+    // Note, that items persisted across tabs like reading list or bookmarks
+    // don't show as active_entry, in which case leave the active item as is.
+    if (registry == active_contextual_registry_) {
+      if (registry->active_entry()) {
+        auto* controller = browser_->sidebar_controller();
+        controller->ActivateItemAt(std::nullopt);
+      }
+      active_contextual_registry_ = nullptr;
+    }
   }
 }
 
@@ -848,17 +858,11 @@ void SidebarContainerView::OnTabStripModelChanged(
         }
       }
     }
-    return;
-  }
-
-  if (change.type() == TabStripModelChange::kInserted) {
+  } else if (change.type() == TabStripModelChange::kInserted) {
     for (const auto& contents : change.GetInsert()->contents) {
       StartObservingContextualSidePanelRegistry(contents.contents);
     }
-    return;
-  }
-
-  if (change.type() == TabStripModelChange::kRemoved) {
+  } else if (change.type() == TabStripModelChange::kRemoved) {
     bool removed_for_deletion =
         (change.GetRemove()->contents[0].remove_reason ==
          TabStripModelChange::RemoveReason::kDeleted);
@@ -869,7 +873,18 @@ void SidebarContainerView::OnTabStripModelChanged(
       for (const auto& contents : change.GetRemove()->contents) {
         StopObservingContextualSidePanelRegistry(contents.contents);
       }
-      return;
+    }
+  }
+
+  // Keep track of the active contextual registry
+  if (selection.active_tab_changed()) {
+    active_contextual_registry_ =
+        selection.new_contents
+            ? SidePanelRegistry::GetDeprecated(selection.new_contents)
+            : nullptr;
+    if (active_contextual_registry_) {
+      DCHECK(panel_registry_observations_.IsObservingSource(
+          active_contextual_registry_));
     }
   }
 }
