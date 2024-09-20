@@ -54,7 +54,6 @@ function Main() {
     !shouldShowPremiumSuggestionForModel && // Don't show 2 premium prompts
     !apiHasError && // Don't show premium prompt and errors (rate limit error has its own premium prompt suggestion)
     context.canShowPremiumPrompt &&
-    siteInfo === null && // SiteInfo request has finished and this is a standalone conversation
     !context.isPremiumUser
 
   const isLastTurnBraveSearchSERPSummary =
