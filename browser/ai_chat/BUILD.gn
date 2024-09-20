@@ -38,6 +38,10 @@ static_library("ai_chat") {
     "//content/public/browser",
     "//ui/base",
   ]
+
+  if (is_android) {
+    deps += [ "//brave/build/android:jni_headers" ]
+  }
 }
 
 source_set("unit_tests") {

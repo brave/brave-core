@@ -64,10 +64,7 @@ static_library("misc_metrics_impl") {
       "//extensions/browser",
     ]
   } else {
-    sources += [
-      "//brave/browser/misc_metrics/misc_android_metrics.cc",
-      "//brave/browser/misc_metrics/misc_android_metrics.h",
-    ]
+    sources += [ "//brave/browser/misc_metrics/misc_android_metrics.h" ]
   }
 
   if (enable_ai_chat) {

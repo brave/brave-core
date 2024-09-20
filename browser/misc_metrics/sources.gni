@@ -28,5 +28,7 @@ if (enable_ai_chat) {
       [ "//brave/components/ai_chat/core/browser" ]
 }
 
-brave_browser_misc_metrics_android_sources =
-    [ "//brave/browser/misc_metrics/misc_android_metrics_factory_android.cc" ]
+brave_browser_misc_metrics_android_sources = [
+  "//brave/browser/misc_metrics/misc_android_metrics.cc",
+  "//brave/browser/misc_metrics/misc_android_metrics_factory_android.cc",
+]
