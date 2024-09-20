@@ -452,6 +452,16 @@ TEST_P(AIChatServiceUnitTest, GetOrCreateConversationHandlerForContent) {
       ai_chat_service_->GetOrCreateConversationHandlerForContent(
           associated_content.GetContentId(), associated_content.GetWeakPtr()),
       conversation_with_content2);
+  // Let the conversation be deleted
+  std::string conversation2_uuid =
+      conversation_with_content2->get_conversation_uuid();
+  auto client1 = CreateConversationClient(conversation_with_content2);
+  DisconnectConversationClient(client1.get());
+  ConversationHandler* conversation_with_content3 =
+      ai_chat_service_->GetOrCreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr());
+  EXPECT_NE(conversation_with_content3->get_conversation_uuid(),
+            conversation2_uuid);
 }
 
 TEST_P(AIChatServiceUnitTest,

@@ -26,12 +26,6 @@
 namespace ai_chat {
 namespace {
 
-// TODO(petemill):
-//  - Remove conversation metadata that don't have any messages and don't
-//    have any UI clients connected or associated content anymore.
-//  - Remove from memory conversations that don't have any UI clients
-//    or current associated content attached.
-
 static const auto kAllowedSchemes = base::MakeFixedFlatSet<std::string_view>(
     {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme, url::kDataScheme});
 
@@ -254,6 +248,8 @@ void AIChatService::MaybeEraseConversation(
     conversation_observations_.RemoveObservation(conversation_handler);
     conversation_handlers_.erase(uuid);
     conversations_.erase(uuid);
+    std::erase_if(content_conversations_,
+                  [&uuid](const auto& kv) { return kv.second == uuid; });
     DVLOG(1) << "Erased conversation (" << uuid << "). Now have "
              << conversations_.size() << " Conversation metadata items and "
              << conversation_handlers_.size()
