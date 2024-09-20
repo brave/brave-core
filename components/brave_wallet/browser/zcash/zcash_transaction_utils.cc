@@ -20,6 +20,14 @@ uint64_t CalculateInputsAmount(
   return total_value;
 }
 
+uint64_t CalculateInputsAmount(const std::vector<OrchardNote>& notes) {
+  uint64_t total_value = 0;
+  for (const auto& note : notes) {
+    total_value += note.amount;
+  }
+  return total_value;
+}
+
 }  // namespace
 
 PickInputsResult::PickInputsResult(
@@ -73,6 +81,49 @@ std::optional<PickInputsResult> PickZCashTransparentInputs(
     if (total_inputs_amount >= amount + fee) {
       return PickInputsResult{std::move(selected_inputs), fee,
                               total_inputs_amount - amount - fee};
+    }
+  }
+
+  return std::nullopt;
+}
+
+PickOrchardInputsResult::PickOrchardInputsResult(
+    std::vector<OrchardNote> inputs,
+    uint64_t fee,
+    uint64_t change)
+    : inputs(inputs), fee(fee), change(change) {}
+PickOrchardInputsResult::~PickOrchardInputsResult() {}
+PickOrchardInputsResult::PickOrchardInputsResult(
+    const PickOrchardInputsResult& other) = default;
+PickOrchardInputsResult::PickOrchardInputsResult(
+    PickOrchardInputsResult&& other) = default;
+
+std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
+    std::vector<OrchardNote> notes,
+    uint64_t amount) {
+  if (amount == kZCashFullAmount) {
+    auto fee = CalculateZCashTxFee(
+        notes.size(), notes.size() + 1 /* orchard actions count */);
+    if (CalculateInputsAmount(notes) < fee) {
+      return std::nullopt;
+    }
+    return PickOrchardInputsResult{notes, fee, 0};
+  }
+
+  base::ranges::sort(notes, [](auto& input1, auto& input2) {
+    return input1.amount < input2.amount;
+  });
+
+  std::vector<OrchardNote> selected_inputs;
+  uint64_t fee = 0;
+  for (auto& input : notes) {
+    selected_inputs.push_back(std::move(input));
+    fee = CalculateZCashTxFee(0, selected_inputs.size() + 1);
+
+    auto total_inputs_amount = CalculateInputsAmount(selected_inputs);
+    if (total_inputs_amount >= amount + fee) {
+      return PickOrchardInputsResult{std::move(selected_inputs), fee,
+                                     total_inputs_amount - amount - fee};
     }
   }
 
