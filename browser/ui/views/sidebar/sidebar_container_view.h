@@ -196,6 +196,7 @@ class SidebarContainerView
   raw_ptr<BraveSidePanel> side_panel_ = nullptr;
   raw_ptr<sidebar::SidebarModel> sidebar_model_ = nullptr;
   raw_ptr<SidebarControlView> sidebar_control_view_ = nullptr;
+  raw_ptr<SidePanelRegistry> active_contextual_registry_ = nullptr;
   bool initialized_ = false;
   bool sidebar_on_left_ = true;
   bool operation_from_active_tab_change_ = false;
