@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
-#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
@@ -21,10 +21,10 @@ PostCredentials::PostCredentials(RewardsEngine& engine) : engine_(engine) {}
 PostCredentials::~PostCredentials() = default;
 
 std::string PostCredentials::GetUrl(const std::string& order_id) {
-  auto url = URLHelpers::Resolve(
-      engine_->Get<EnvironmentConfig>().rewards_payment_url(),
-      {"/v1/orders/", order_id, "/credentials"});
-  return url.spec();
+  return engine_->Get<EnvironmentConfig>()
+      .rewards_payment_url()
+      .Resolve(base::StrCat({"/v1/orders/", order_id, "/credentials"}))
+      .spec();
 }
 
 std::string PostCredentials::GeneratePayload(

@@ -10,8 +10,8 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
-#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
@@ -59,10 +59,10 @@ Result PostCreateTransactionUphold::ProcessResponse(
 }
 
 std::optional<std::string> PostCreateTransactionUphold::Url() const {
-  auto url =
-      URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().uphold_api_url(),
-                          {"/v0/me/cards/", address_, "/transactions"});
-  return url.spec();
+  return engine_->Get<EnvironmentConfig>()
+      .uphold_api_url()
+      .Resolve(base::StrCat({"/v0/me/cards/", address_, "/transactions"}))
+      .spec();
 }
 
 std::optional<std::vector<std::string>> PostCreateTransactionUphold::Headers(

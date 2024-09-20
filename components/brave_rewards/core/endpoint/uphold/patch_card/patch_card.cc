@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
-#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
@@ -21,10 +21,10 @@ PatchCard::PatchCard(RewardsEngine& engine) : engine_(engine) {}
 PatchCard::~PatchCard() = default;
 
 std::string PatchCard::GetUrl(const std::string& address) const {
-  auto url =
-      URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().uphold_api_url(),
-                          {"/v0/me/cards/", address});
-  return url.spec();
+  return engine_->Get<EnvironmentConfig>()
+      .uphold_api_url()
+      .Resolve(base::StrCat({"/v0/me/cards/", address}))
+      .spec();
 }
 
 std::string PatchCard::GeneratePayload() const {

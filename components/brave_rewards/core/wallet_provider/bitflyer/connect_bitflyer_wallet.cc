@@ -45,7 +45,7 @@ std::string ConnectBitFlyerWallet::GetOAuthLoginURL() const {
 
   auto url = config.bitflyer_url().Resolve("/ex/OAuth/authorize");
 
-  url = URLHelpers::SetQueryParameters(
+  url = AppendOrReplaceQueryParameters(
       url, {{"client_id", config.bitflyer_client_id()},
             {"scope", "assets create_deposit_id withdraw_to_deposit_id"},
             {"redirect_uri", "rewards://bitflyer/authorization"},
