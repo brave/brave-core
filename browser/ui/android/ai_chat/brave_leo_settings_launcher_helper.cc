@@ -38,7 +38,8 @@ void HandleVoiceRecognition(content::WebContents* web_contents,
                             const std::string& conversation_uuid) {
   Java_BraveLeoSettingsLauncherHelper_handleVoiceRecognition(
       base::android::AttachCurrentThread(), web_contents->GetJavaWebContents(),
-      conversation_uuid);
+      base::android::ConvertUTF8ToJavaString(
+          base::android::AttachCurrentThread(), conversation_uuid));
 }
 
 void CloseActivity(content::WebContents* web_contents) {
