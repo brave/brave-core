@@ -826,8 +826,7 @@ bool ConversationHandler::MaybePopPendingRequests() {
 void ConversationHandler::MaybeUnlinkAssociatedContent() {
   // Only unlink if panel is closed and there is no conversation history.
   // When panel is open or has existing conversation, do not change the state.
-  // if (!is_conversation_active_ && chat_history_.empty()) {
-  if (chat_history_.empty()) {
+  if (chat_history_.empty() && !IsAnyClientConnected()) {
     SetShouldSendPageContents(false);
   }
 }
