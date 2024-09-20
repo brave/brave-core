@@ -149,6 +149,17 @@ static const auto kScopedQueryStringTrackers =
         {"si", {"youtube.com", "youtu.be"}},
     });
 
+// URLs with these hostnames will not be modified by the query filter.
+// These are exact match comparisons. Sub-domains are not
+// automatically included.
+static constexpr auto kExemptedHostnames =
+    base::MakeFixedFlatSet<std::string_view>(
+        base::sorted_unique,
+        {
+            // https://github.com/brave/brave-browser/issues/41134
+            "urldefense.com",
+        });
+
 bool IsScopedTracker(
     const std::string_view param_name,
     const std::string& spec,
@@ -242,6 +253,11 @@ std::optional<GURL> MaybeApplyQueryStringFilter(
     return std::nullopt;
   }
   if (request_method != "GET") {
+    return std::nullopt;
+  }
+
+  if (request_url.has_host() &&
+      kExemptedHostnames.count(request_url.host()) == 1) {
     return std::nullopt;
   }
 
