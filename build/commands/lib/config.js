@@ -426,6 +426,7 @@ Config.prototype.buildArgs = function () {
     brave_services_key_id: this.brave_services_key_id,
     service_key_aichat: this.service_key_aichat,
     service_key_stt: this.service_key_stt,
+    generate_about_credits: true,
   }
 
   if (!this.isBraveReleaseBuild()) {
