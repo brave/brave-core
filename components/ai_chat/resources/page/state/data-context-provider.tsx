@@ -218,7 +218,6 @@ function DataContextProvider(props: DataContextProviderProps) {
 
   const updateShouldSendPageContents = (shouldSend: boolean) => {
     setShouldSendPageContents(shouldSend)
-    getPageHandlerInstance().pageHandler.setShouldSendPageContents(shouldSend)
   }
 
   const getShouldSendPageContents = () => {
@@ -308,6 +307,10 @@ function DataContextProvider(props: DataContextProviderProps) {
     if (isCharLimitExceeded) return
     if (shouldDisableUserInput) return
     if (handleFilterActivation()) return
+
+    if (conversationHistory.length === 0) {
+      getPageHandlerInstance().pageHandler.setShouldSendPageContents(shouldSendPageContents)
+    }
 
     if (selectedActionType) {
       getPageHandlerInstance().pageHandler.submitHumanConversationEntryWithAction(inputText, selectedActionType)
