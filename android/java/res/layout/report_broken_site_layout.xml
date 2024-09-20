@@ -49,6 +49,26 @@
         android:textSize="16sp"
         android:textColor="@color/default_icon_color_tint_list"/>
 
+    <android.widget.CheckBox
+        android:id="@+id/checkbox_include_screenshot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="14sp"
+        android:button="@drawable/brave_checkbox"
+        android:paddingStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/report_broken_site_text_attach_screenshot_label"
+        android:textColor="@color/default_icon_color_tint_list" />        
+
+    <TextView
+        android:id="@+id/view_screenshot_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:textColor="@color/default_icon_color_tint_list"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

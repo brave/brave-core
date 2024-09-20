@@ -1627,6 +1627,12 @@ Are you sure you want to do this?
       <message name="IDS_REPORT_ERROR_PAGE_EXPLANATION" desc="Notifies the user that the error page cannot be reported">
         This is an error page. It cannot be reported as a broken site.
       </message>
+      <message name="IDS_REPORT_BROKEN_SITE_TEXT_ATTACH_SCREENSHOT_LABEL" desc="Label for the checkbox for attaching a screenshot with the broken website report">
+        Include screenshot of the current page
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_TEXT_VIEW_SCREENSHOT_LABEL" desc="Link text for viewing a screenshot for a broken website report">
+          View screenshot
+      </message>
       <message name="IDS_THANK_YOU" desc="Title for thank you UI for shields.">
         Thank you!
       </message>
