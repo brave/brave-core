@@ -39,7 +39,7 @@ std::string ConnectZebPayWallet::GetOAuthLoginURL() const {
   auto return_url =
       config.zebpay_oauth_url().Resolve("/connect/authorize/callback");
 
-  return_url = URLHelpers::SetQueryParameters(
+  return_url = AppendOrReplaceQueryParameters(
       return_url, {{"client_id", config.zebpay_client_id()},
                    {"grant_type", "authorization_code"},
                    {"redirect_uri", "rewards://zebpay/authorization"},
@@ -49,8 +49,8 @@ std::string ConnectZebPayWallet::GetOAuthLoginURL() const {
 
   auto url = config.zebpay_oauth_url().Resolve("/account/login");
 
-  url = URLHelpers::SetQueryParameters(
-      url, {{"returnUrl", return_url.PathForRequest()}});
+  url = net::AppendOrReplaceQueryParameter(url, "returnUrl",
+                                           return_url.PathForRequest());
 
   return url.spec();
 }

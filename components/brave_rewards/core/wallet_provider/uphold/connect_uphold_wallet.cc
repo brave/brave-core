@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/strings/strcat.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/random_util.h"
 #include "brave/components/brave_rewards/core/common/url_helpers.h"
@@ -40,10 +41,10 @@ const char* ConnectUpholdWallet::WalletType() const {
 std::string ConnectUpholdWallet::GetOAuthLoginURL() const {
   auto& config = engine_->Get<EnvironmentConfig>();
 
-  auto url = URLHelpers::Resolve(config.uphold_oauth_url(),
-                                 {"/authorize/", config.uphold_client_id()});
+  auto url = config.uphold_oauth_url().Resolve(
+      base::StrCat({"/authorize/", config.uphold_client_id()}));
 
-  url = URLHelpers::SetQueryParameters(
+  url = AppendOrReplaceQueryParameters(
       url, {{"scope",
              "cards:read "
              "cards:write "

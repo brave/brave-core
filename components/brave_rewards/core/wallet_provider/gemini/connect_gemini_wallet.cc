@@ -46,7 +46,7 @@ std::string ConnectGeminiWallet::GetOAuthLoginURL() const {
 
   auto url = config.gemini_oauth_url().Resolve("/auth");
 
-  url = URLHelpers::SetQueryParameters(
+  url = AppendOrReplaceQueryParameters(
       url, {{"client_id", config.gemini_client_id()},
             {"scope",
              "balances:read,"

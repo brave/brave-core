@@ -10,8 +10,8 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
-#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
@@ -24,10 +24,11 @@ GetCredentials::~GetCredentials() = default;
 
 std::string GetCredentials::GetUrl(const std::string& order_id,
                                    const std::string& item_id) {
-  auto url = URLHelpers::Resolve(
-      engine_->Get<EnvironmentConfig>().rewards_payment_url(),
-      {"/v1/orders/", order_id, "/credentials/", item_id});
-  return url.spec();
+  return engine_->Get<EnvironmentConfig>()
+      .rewards_payment_url()
+      .Resolve(
+          base::StrCat({"/v1/orders/", order_id, "/credentials/", item_id}))
+      .spec();
 }
 
 mojom::Result GetCredentials::CheckStatusCode(const int status_code) {

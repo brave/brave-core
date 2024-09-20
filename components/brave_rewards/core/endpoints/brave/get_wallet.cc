@@ -12,7 +12,6 @@
 #include "base/strings/strcat.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/request_signer.h"
-#include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
@@ -102,11 +101,10 @@ std::optional<std::string> GetWallet::Url() const {
     return std::nullopt;
   }
 
-  auto url =
-      URLHelpers::Resolve(engine_->Get<EnvironmentConfig>().rewards_grant_url(),
-                          {kPath, wallet->payment_id});
-
-  return url.spec();
+  return engine_->Get<EnvironmentConfig>()
+      .rewards_grant_url()
+      .Resolve(base::StrCat({kPath, wallet->payment_id}))
+      .spec();
 }
 
 mojom::UrlMethod GetWallet::Method() const {
