@@ -1,0 +1,3 @@
+group("lib") {
+  public_deps = [ "//third_party/rust/rand_chacha/v0_3:lib" ]
+}

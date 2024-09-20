@@ -1,9 +1,0 @@
-Name: ed25519-dalek
-URL: https://crates.io/crates/ed25519-dalek
-Description: Fast and efficient ed25519 EdDSA key generations, signing, and verification in pure Rust.
-Version: 1.0.1
-Security Critical: yes
-Shipped: yes
-License: BSD 3-Clause
-License File: //brave/third_party/rust/chromium_crates_io/vendor/ed25519-dalek-1.0.1/LICENSE
-Revision: 1042cb60a07cdaacb59ca209716b69f444460f8f
