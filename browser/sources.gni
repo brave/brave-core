@@ -126,7 +126,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/ethereum_remote_client/buildflags",
   "//brave/browser/metrics/buildflags",
   "//brave/browser/misc_metrics",
-  "//brave/browser/misc_metrics:process_misc_metrics",
+  "//brave/browser/misc_metrics:misc_metrics_impl",
   "//brave/browser/profiles",
   "//brave/browser/search",
   "//brave/browser/skus",

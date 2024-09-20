@@ -726,7 +726,7 @@ source_set("ui") {
     "//brave/browser:sparkle_buildflags",
     "//brave/browser/brave_rewards:util",
     "//brave/browser/ethereum_remote_client/buildflags",
-    "//brave/browser/misc_metrics:process_misc_metrics",
+    "//brave/browser/misc_metrics",
     "//brave/browser/profiles",
     "//brave/browser/shell_integrations/buildflags",
     "//brave/browser/themes",

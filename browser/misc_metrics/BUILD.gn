@@ -5,15 +5,18 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 
-# Avoid circular dependency between //chrome/browser/ui and
-# //brave/browser/misc_metrics.
-source_set("process_misc_metrics") {
+source_set("misc_metrics") {
   sources = [ "//brave/browser/misc_metrics/process_misc_metrics.h" ]
 
   deps = [ "//brave/components/ai_chat/core/common/buildflags" ]
 }
 
-static_library("misc_metrics") {
+static_library("misc_metrics_impl") {
+  visibility = [
+    "//brave/browser/misc_metrics/*",
+    "//chrome/browser",
+  ]
+
   sources = [
     "//brave/browser/misc_metrics/doh_metrics.cc",
     "//brave/browser/misc_metrics/doh_metrics.h",
@@ -27,7 +30,7 @@ static_library("misc_metrics") {
 
   deps = [
     "//brave/browser:browser_process",
-    "//brave/browser/misc_metrics:process_misc_metrics",
+    "//brave/browser/misc_metrics",
     "//brave/browser/profiles:util",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/misc_metrics",
@@ -86,6 +89,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/browser",
     "//brave/browser/misc_metrics",
+    "//brave/browser/misc_metrics:misc_metrics_impl",
     "//brave/components/misc_metrics",
     "//chrome/browser",
     "//chrome/browser/search_engines",
@@ -121,7 +125,7 @@ source_set("browser_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/browser/misc_metrics",
+    "//brave/browser/misc_metrics:misc_metrics_impl",
     "//chrome/browser/profiles:profile",
     "//chrome/test:test_support",
     "//components/prefs:test_support",
