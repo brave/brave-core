@@ -79,7 +79,7 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
           : nullptr,
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),
-      std::string(version_info::GetChannelString(chrome::GetChannel())));
+      version_info::GetChannelString(chrome::GetChannel()));
 }
 
 }  // namespace ai_chat
