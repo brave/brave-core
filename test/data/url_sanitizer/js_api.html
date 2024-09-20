@@ -58,8 +58,16 @@
             await navigator.clipboard.writeText(TEXT_TO_COPY)
         }
 
-        async function copy_password() {
+        async function copy_password_1() {
             await navigator.clipboard.writeText('Pa$$w0rd')
+        }
+
+        async function copy_password_2() {
+            await navigator.clipboard.writeText('A:^C,D')
+        }
+
+        async function copy_password_3() {
+            await navigator.clipboard.writeText('Ftp://Example.Com/?si=12345')
         }
     </script>
 
@@ -125,7 +133,21 @@
     <br>
     <div>
         <div>Copy not sanitizable password</div>
-        <button id="test_not_sanitizable_password" onclick="copy_password()"> Copy </button>
+        <button id="test_not_sanitizable_password_1" onclick="copy_password_1()"> Copy </button>
+    </div>
+
+    <br>
+    <br>
+    <div>
+        <div>Copy not sanitizable password</div>
+        <button id="test_not_sanitizable_password_2" onclick="copy_password_2()"> Copy </button>
+    </div>
+
+    <br>
+    <br>
+    <div>
+        <div>Copy not sanitizable password</div>
+        <button id="test_not_sanitizable_password_3" onclick="copy_password_3()"> Copy </button>
     </div>
 
 </body>

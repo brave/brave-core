@@ -23,7 +23,7 @@ std::u16string Sanitize(content::ContentBrowserClient* client,
   }
 
   const GURL url(data);
-  if (url.is_valid() && !url.is_empty()) {
+  if (url.is_valid() && !url.is_empty() && url.SchemeIsHTTPOrHTTPS()) {
     std::optional<GURL> sanitized_url =
         client->SanitizeURL(render_frame_host, url);
     if (!sanitized_url) {

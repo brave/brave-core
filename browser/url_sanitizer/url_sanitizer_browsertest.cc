@@ -194,7 +194,10 @@ class URLSanitizerTestBase : public InProcessBrowserTest {
     // URL is copied, we will sanitize it.
     check("test_sanitizable_password", should_sanitize, expected);
     // Not sanitazable password should be copied as is.
-    check("test_not_sanitizable_password", should_sanitize, "Pa$$w0rd");
+    check("test_not_sanitizable_password_1", should_sanitize, "Pa$$w0rd");
+    check("test_not_sanitizable_password_2", should_sanitize, "A:^C,D");
+    check("test_not_sanitizable_password_3", should_sanitize,
+          "Ftp://Example.Com/?si=12345");
 
     const GURL no_permission_url(
         "https://no_permission.com/url_sanitizer/js_api.html");
@@ -205,8 +208,11 @@ class URLSanitizerTestBase : public InProcessBrowserTest {
     check("test_3", false, unsanitized);
     check("test_4", false, unsanitized);
     check("test_5", false, unsanitized);
-    check("test_sanitizable_password", should_sanitize, unsanitized);
-    check("test_not_sanitizable_password", should_sanitize, "Pa$$w0rd");
+    check("test_sanitizable_password", false, unsanitized);
+    check("test_not_sanitizable_password_1", false, "Pa$$w0rd");
+    check("test_not_sanitizable_password_2", false, "A:^C,D");
+    check("test_not_sanitizable_password_3", false,
+          "Ftp://Example.Com/?si=12345");
   }
 
  protected:
