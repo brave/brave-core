@@ -1,0 +1,24 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("skus") {
+  sources = [
+    "//brave/browser/skus/skus_service_factory.cc",
+    "//brave/browser/skus/skus_service_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+    "//components/pref_registry",
+    "//components/user_prefs",
+    "//content/public/browser",
+  ]
+}
