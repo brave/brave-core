@@ -5,17 +5,16 @@
 
 import("//build/config/features.gni")
 
-assert(!is_android)
+#assert(!is_android)
 
 static_library("browser") {
-  sources = [
-    "fields.cc",
-    "fields.h",
-    "webcompat_report_uploader.cc",
-    "webcompat_report_uploader.h",
-  ]
 
-  deps = [
+sources = [
+  "webcompat_reporter_service.cc",
+  "webcompat_reporter_service.h"
+]
+
+deps = [
     "//base",
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_shields/core/common:mojom",
@@ -23,8 +22,20 @@ static_library("browser") {
     "//brave/components/constants",
     "//brave/components/version_info",
     "//brave/components/webcompat_reporter/buildflags",
+    "//brave/components/webcompat_reporter/common:mojom",
     "//content/public/browser",
     "//net",
     "//services/network/public/cpp",
+]
+
+if (!is_android) {
+  sources += [
+    "fields.cc",
+    "fields.h",
+    "webcompat_report_uploader.cc",
+    "webcompat_report_uploader.h",
   ]
 }
+}
+
+
