@@ -46,6 +46,8 @@ void PrintTo(const BlockchainTokenPtr& token, ::std::ostream* os);
 void PrintTo(const BitcoinBalancePtr& balance, ::std::ostream* os);
 void PrintTo(const BitcoinKeyId& key_id, ::std::ostream* os);
 void PrintTo(const BitcoinAccountInfoPtr& account_info, ::std::ostream* os);
+void PrintTo(const BtcHardwareTransactionSignInputDataPtr& input_data,
+             ::std::ostream* os);
 
 }  // namespace mojom
 

@@ -163,8 +163,8 @@ mojom::AccountInfoPtr AccountUtils::CreateHardwareAccount(
   mojom::HardwareWalletAccountPtr hw_account;
   if (keyring_id == mojom::KeyringId::kBitcoinHardware) {
     hw_account = mojom::HardwareWalletAccount::New(
-        "xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJo"
-        "Cu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8",
+        "xpub6C9TRymDq1G8ueHrv4Etbvzv1ARp4fFAHezEuLQ7X3VcZM7ZKco3aBup3fyzSHhnbF"
+        "fXtXF3m8EWTwk1TMvTVSciQ1BHxtvjMGcGLkCE2nz",
         "derivation_path", "Btc hw account", mojom::HardwareVendor::kLedger,
         "device_id", mojom::KeyringId::kBitcoinHardware);
   } else if (keyring_id == mojom::KeyringId::kBitcoinHardwareTestnet) {

@@ -15,6 +15,7 @@ import { getLocale } from '../../../common/locale'
 import type WalletApiProxy from '../../common/wallet_api_proxy'
 import {
   getHardwareKeyring,
+  getLedgerBitcoinHardwareKeyring,
   getLedgerEthereumHardwareKeyring,
   getLedgerFilecoinHardwareKeyring,
   getLedgerSolanaHardwareKeyring,
@@ -31,6 +32,7 @@ import {
   SerializableTransactionInfo
 } from '../../constants/types'
 import {
+  LedgerBitcoinKeyring,
   LedgerEthereumKeyring,
   LedgerFilecoinKeyring,
   LedgerSolanaKeyring
@@ -76,7 +78,6 @@ export async function signTrezorTransaction(
   deviceKeyring: TrezorBridgeKeyring = getTrezorHardwareKeyring()
 ): Promise<HardwareOperationResult> {
   const nonce = await apiProxy.ethTxManagerProxy.getNonceForHardwareTransaction(
-    txInfo.chainId,
     txInfo.id
   )
   if (!nonce || !nonce.nonce) {
@@ -138,12 +139,11 @@ export async function signTrezorTransaction(
 export async function signLedgerEthereumTransaction(
   apiProxy: WalletApiProxy,
   path: string,
-  txInfo: Pick<SerializableTransactionInfo, 'id' | 'chainId'>,
+  txMetaId: string,
   deviceKeyring: LedgerEthereumKeyring = getLedgerEthereumHardwareKeyring()
 ): Promise<HardwareOperationResult> {
   const nonce = await apiProxy.ethTxManagerProxy.getNonceForHardwareTransaction(
-    txInfo.chainId,
-    txInfo.id
+    txMetaId
   )
   if (!nonce || !nonce.nonce) {
     return {
@@ -153,7 +153,7 @@ export async function signLedgerEthereumTransaction(
     }
   }
   const { hexMessage } =
-    await apiProxy.ethTxManagerProxy.getEthTransactionMessageToSign(txInfo.id)
+    await apiProxy.ethTxManagerProxy.getEthTransactionMessageToSign(txMetaId)
   if (!hexMessage) {
     return {
       success: false,
@@ -172,7 +172,7 @@ export async function signLedgerEthereumTransaction(
     }
   }
   const result = await apiProxy.ethTxManagerProxy.processEthHardwareSignature(
-    txInfo.id,
+    txMetaId,
     signed.signature
   )
   if (!result || !result.status) {
@@ -187,11 +187,11 @@ export async function signLedgerEthereumTransaction(
 
 export async function signLedgerFilecoinTransaction(
   apiProxy: WalletApiProxy,
-  txInfo: Pick<SerializableTransactionInfo, 'id' | 'chainId'>,
+  txMetaId: string,
   deviceKeyring: LedgerFilecoinKeyring = getLedgerFilecoinHardwareKeyring()
 ): Promise<HardwareOperationResult> {
   const { jsonMessage } =
-    await apiProxy.filTxManagerProxy.getFilTransactionMessageToSign(txInfo.id)
+    await apiProxy.filTxManagerProxy.getFilTransactionMessageToSign(txMetaId)
   if (!jsonMessage) {
     return {
       success: false,
@@ -210,7 +210,7 @@ export async function signLedgerFilecoinTransaction(
   }
 
   const result = await apiProxy.filTxManagerProxy.processFilHardwareSignature(
-    txInfo.id,
+    txMetaId,
     signed.signature
   )
   if (!result || !result.status) {
@@ -226,13 +226,11 @@ export async function signLedgerFilecoinTransaction(
 export async function signLedgerSolanaTransaction(
   apiProxy: WalletApiProxy,
   path: string,
-  txInfo: Pick<SerializableTransactionInfo, 'id' | 'chainId'>,
+  txMetaId: string,
   deviceKeyring: LedgerSolanaKeyring = getLedgerSolanaHardwareKeyring()
 ): Promise<HardwareOperationResult> {
   const { message } =
-    await apiProxy.solanaTxManagerProxy.getSolTransactionMessageToSign(
-      txInfo.id
-    )
+    await apiProxy.solanaTxManagerProxy.getSolTransactionMessageToSign(txMetaId)
   if (!message) {
     return {
       success: false,
@@ -251,9 +249,58 @@ export async function signLedgerSolanaTransaction(
 
   const result =
     await apiProxy.solanaTxManagerProxy.processSolanaHardwareSignature(
-      txInfo.id,
+      txMetaId,
       signed.signature
     )
+  if (!result || !result.status) {
+    return {
+      success: false,
+      error: getLocale('braveWalletProcessTransactionError'),
+      code: undefined
+    }
+  }
+
+  return { success: result.status }
+}
+
+export async function signLedgerBitcoinTransaction(
+  apiProxy: WalletApiProxy,
+  txMetaId: string,
+  deviceKeyring: LedgerBitcoinKeyring = getLedgerBitcoinHardwareKeyring()
+): Promise<HardwareOperationResult> {
+  const { data } =
+    await apiProxy.btcTxManagerProxy.getBtcHardwareTransactionSignData(txMetaId)
+  if (!data) {
+    return {
+      success: false,
+      error: getLocale('braveWalletNoMessageToSignError'),
+      code: undefined
+    }
+  }
+  const signed = await deviceKeyring.signTransaction(
+    data.inputs.map((i) => {
+      return {
+        txBytes: Buffer.from(i.txBytes),
+        outputIndex: i.outputIndex,
+        associatedPath: i.associatedPath
+      }
+    }),
+    Buffer.from(data.outputScript),
+    data.changePath,
+    data.lockTime
+  )
+  if (!signed.success) {
+    return {
+      success: false,
+      error: signed.error ?? getLocale('braveWalletSignOnDeviceError'),
+      code: signed.code ?? ''
+    }
+  }
+
+  const result = await apiProxy.btcTxManagerProxy.processBtcHardwareSignature(
+    txMetaId,
+    signed.signature
+  )
   if (!result || !result.status) {
     return {
       success: false,

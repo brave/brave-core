@@ -97,6 +97,13 @@ void PrintTo(const BitcoinAccountInfoPtr& account_info, ::std::ostream* os) {
   PrintTo(account_info->next_change_address, os);
 }
 
+void PrintTo(const BtcHardwareTransactionSignInputDataPtr& input_data,
+             ::std::ostream* os) {
+  *os << input_data->output_index << "/"
+      << base::HexEncode(input_data->tx_bytes) << "/"
+      << input_data->associated_path;
+}
+
 }  // namespace mojom
 
 }  // namespace brave_wallet

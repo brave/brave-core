@@ -82,6 +82,21 @@ bool ReadHexByteArrayTo(const base::Value::Dict& dict,
   return base::HexStringToBytes(*str, &to);
 }
 
+bool ReadOptionalHexByteArrayTo(const base::Value::Dict& dict,
+                                std::string_view key,
+                                std::optional<std::vector<uint8_t>>& to) {
+  auto* str = dict.FindString(key);
+  if (!str) {
+    return true;
+  }
+  if (str->empty()) {
+    to.reset();
+    return true;
+  }
+  to.emplace();
+  return base::HexStringToBytes(*str, &to.value());
+}
+
 }  // namespace
 
 BitcoinTransaction::BitcoinTransaction() = default;
@@ -168,9 +183,9 @@ BitcoinTransaction::TxInput& BitcoinTransaction::TxInput::operator=(
 bool BitcoinTransaction::TxInput::operator==(
     const BitcoinTransaction::TxInput& other) const {
   return std::tie(this->utxo_address, this->utxo_outpoint, this->utxo_value,
-                  this->script_sig, this->witness) ==
+                  this->script_sig, this->witness, this->raw_outpoint_tx) ==
          std::tie(other.utxo_address, other.utxo_outpoint, other.utxo_value,
-                  other.script_sig, other.witness);
+                  other.script_sig, other.witness, other.raw_outpoint_tx);
 }
 bool BitcoinTransaction::TxInput::operator!=(
     const BitcoinTransaction::TxInput& other) const {
@@ -183,6 +198,9 @@ base::Value::Dict BitcoinTransaction::TxInput::ToValue() const {
   dict.Set("utxo_address", utxo_address);
   dict.Set("utxo_outpoint", utxo_outpoint.ToValue());
   dict.Set("utxo_value", base::NumberToString(utxo_value));
+  if (raw_outpoint_tx) {
+    dict.Set("raw_outpoint_tx", base::HexEncode(raw_outpoint_tx.value()));
+  }
 
   dict.Set("script_sig", base::HexEncode(script_sig));
   dict.Set("witness", base::HexEncode(witness));
@@ -212,6 +230,11 @@ BitcoinTransaction::TxInput::FromValue(const base::Value::Dict& value) {
   }
 
   if (!ReadHexByteArrayTo(value, "witness", result.witness)) {
+    return std::nullopt;
+  }
+
+  if (!ReadOptionalHexByteArrayTo(value, "raw_outpoint_tx",
+                                  result.raw_outpoint_tx)) {
     return std::nullopt;
   }
 
@@ -461,6 +484,12 @@ void BitcoinTransaction::SetInputWitness(size_t input_index,
                                          std::vector<uint8_t> witness) {
   CHECK_LT(input_index, inputs_.size());
   inputs_[input_index].witness = std::move(witness);
+}
+
+void BitcoinTransaction::SetInputRawTransaction(size_t input_index,
+                                                std::vector<uint8_t> raw_tx) {
+  CHECK_LT(input_index, inputs_.size());
+  inputs_[input_index].raw_outpoint_tx = std::move(raw_tx);
 }
 
 void BitcoinTransaction::AddOutput(TxOutput output) {

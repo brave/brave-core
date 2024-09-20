@@ -74,6 +74,18 @@ std::optional<std::string> IsTxStatusRequest(
   return std::nullopt;
 }
 
+std::optional<std::string> IsTxHexRequest(
+    const network::ResourceRequest& request) {
+  auto parts =
+      base::SplitString(ExtractApiRequestPath(request.url), "/",
+                        base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  if (parts.size() == 3 && parts[0] == "tx" && parts[2] == "hex") {
+    return parts[1];
+  }
+
+  return std::nullopt;
+}
+
 std::optional<std::string> IsAddressStatsRequest(
     const network::ResourceRequest& request) {
   auto parts =
@@ -196,6 +208,11 @@ void BitcoinTestRpcServer::RequestInterceptor(
     }
     url_loader_factory_.AddResponse(request.url.spec(), "Transaction not found",
                                     net::HTTP_NOT_FOUND);
+    return;
+  }
+
+  if (auto txid = IsTxHexRequest(request)) {
+    url_loader_factory_.AddResponse(request.url.spec(), txid->substr(0, 4));
     return;
   }
 

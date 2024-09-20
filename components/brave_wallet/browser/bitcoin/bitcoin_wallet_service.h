@@ -27,6 +27,7 @@ class PrefService;
 namespace brave_wallet {
 class CreateTransactionTask;
 class DiscoverNextUnusedAddressTask;
+class FetchRawTransactionsTask;
 class KeyringService;
 class NetworkManager;
 
@@ -82,11 +83,24 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
                               BitcoinTransaction bitcoin_transaction,
                               SignAndPostTransactionCallback callback);
 
+  using PostHwSignedTransactionCallback =
+      base::OnceCallback<void(std::string, BitcoinTransaction, std::string)>;
+  void PostHwSignedTransaction(const mojom::AccountIdPtr& account_id,
+                               BitcoinTransaction bitcoin_transaction,
+                               const mojom::BitcoinSignature& hw_signature,
+                               PostHwSignedTransactionCallback callback);
+
   using GetTransactionStatusCallback =
       base::OnceCallback<void(base::expected<bool, std::string>)>;
   void GetTransactionStatus(const std::string& chain_id,
                             const std::string& txid,
                             GetTransactionStatusCallback callback);
+
+  using FetchRawTransactionsCallback = base::OnceCallback<void(
+      base::expected<std::vector<std::vector<uint8_t>>, std::string>)>;
+  void FetchRawTransactions(const std::string& network_id,
+                            const std::vector<SHA256HashArray>& txids,
+                            FetchRawTransactionsCallback callback);
 
   using DiscoverNextUnusedAddressCallback = base::OnceCallback<void(
       base::expected<mojom::BitcoinAddressPtr, std::string>)>;
@@ -99,6 +113,10 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
   void DiscoverWalletAccount(mojom::KeyringId keyring_id,
                              uint32_t account_index,
                              DiscoverWalletAccountCallback callback);
+
+  mojom::BtcHardwareTransactionSignDataPtr GetBtcHardwareTransactionSignData(
+      const BitcoinTransaction& tx,
+      const mojom::AccountIdPtr& account_id);
 
   bitcoin_rpc::BitcoinRpc& bitcoin_rpc() { return *bitcoin_rpc_; }
   KeyringService* keyring_service() { return keyring_service_; }
@@ -142,8 +160,15 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
       mojom::AccountIdPtr account_id,
       base::expected<DiscoveredBitcoinAccount, std::string> result);
 
+  void OnFetchRawTransactionsDone(
+      FetchRawTransactionsTask* task,
+      FetchRawTransactionsCallback callback,
+      base::expected<std::vector<std::vector<uint8_t>>, std::string> result);
+
   bool SignTransactionInternal(BitcoinTransaction& tx,
                                const mojom::AccountIdPtr& account_id);
+  bool ApplyHwSignatureInternal(BitcoinTransaction& tx,
+                                const mojom::BitcoinSignature& hw_signature);
   void CreateTransactionTaskDone(CreateTransactionTask* task);
 
   raw_ptr<KeyringService> keyring_service_;
@@ -153,6 +178,8 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
       discover_wallet_account_tasks_;
   std::list<std::unique_ptr<DiscoverExtendedKeyAccountTask>>
       discover_extended_key_account_tasks_;
+  std::list<std::unique_ptr<FetchRawTransactionsTask>>
+      fetch_raw_transactions_tasks_;
 
   mojo::ReceiverSet<mojom::BitcoinWalletService> receivers_;
   std::unique_ptr<bitcoin_rpc::BitcoinRpc> bitcoin_rpc_;

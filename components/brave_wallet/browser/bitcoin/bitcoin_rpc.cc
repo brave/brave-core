@@ -109,6 +109,26 @@ const GURL MakeGetTransactionUrl(const GURL& base_url,
   return base_url.ReplaceComponents(replacements);
 }
 
+const GURL MakeGetTransactionHexUrl(const GURL& base_url,
+                                    const std::string& txid) {
+  if (!base_url.is_valid()) {
+    return GURL();
+  }
+  if (!UrlPathEndsWithSlash(base_url)) {
+    return GURL();
+  }
+  if (!IsAsciiAlphaNumeric(txid)) {
+    return GURL();
+  }
+
+  GURL::Replacements replacements;
+  std::string path = base::StrCat(
+      {base_url.path(), base::JoinString({"tx", txid, "hex"}, "/")});
+  replacements.SetPathStr(path);
+
+  return base_url.ReplaceComponents(replacements);
+}
+
 const GURL MakeAddressStatsUrl(const GURL& base_url,
                                const std::string& address) {
   if (!base_url.is_valid()) {
@@ -316,6 +336,42 @@ void BitcoinRpc::OnGetTransaction(GetTransactionCallback callback,
   }
 
   std::move(callback).Run(base::ok(std::move(*transaction)));
+}
+
+void BitcoinRpc::GetTransactionRaw(const std::string& chain_id,
+                                   const std::string& txid,
+                                   GetTransactionRawCallback callback) {
+  GURL request_url = MakeGetTransactionHexUrl(GetNetworkURL(chain_id), txid);
+  if (!request_url.is_valid()) {
+    return ReplyWithInternalError(std::move(callback));
+  }
+
+  auto internal_callback =
+      base::BindOnce(&BitcoinRpc::OnGetTransactionRaw,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(request_url, std::move(internal_callback),
+                  base::BindOnce(&ConvertPlainStringToJsonArray));
+}
+
+void BitcoinRpc::OnGetTransactionRaw(GetTransactionRawCallback callback,
+                                     APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    return ReplyWithInternalError(std::move(callback));
+  }
+
+  auto* list = api_request_result.value_body().GetIfList();
+  if (!list) {
+    return ReplyWithInvalidJsonError(std::move(callback));
+  }
+
+  std::vector<uint8_t> transaction_raw_bytes;
+  if (list->size() != 1 || !list->front().is_string() ||
+      !base::HexStringToBytes(list->front().GetString(),
+                              &transaction_raw_bytes)) {
+    return ReplyWithInvalidJsonError(std::move(callback));
+  }
+
+  std::move(callback).Run(base::ok(transaction_raw_bytes));
 }
 
 void BitcoinRpc::GetAddressStats(const std::string& chain_id,
