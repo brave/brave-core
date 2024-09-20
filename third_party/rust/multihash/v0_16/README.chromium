@@ -1,9 +1,0 @@
-Name: multihash
-URL: https://crates.io/crates/multihash
-Description: Implementation of the multihash format
-Version: 0.16.3
-Security Critical: yes
-Shipped: yes
-License: MIT
-License File: //brave/third_party/rust/chromium_crates_io/vendor/multihash-0.16.3/LICENSE
-Revision: 52b4a7fcfdb8b74fd2f1148fd11ba05fee3583c3

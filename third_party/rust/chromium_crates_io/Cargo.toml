@@ -91,6 +91,14 @@ package = "anyhow"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/base64-0.13.1"
 package = "base64"
 
+[patch.crates-io.bitflags_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/bitflags-1.3.2"
+package = "bitflags"
+
+[patch.crates-io.bitflags_v2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0"
+package = "bitflags"
+
 [patch.crates-io.cfg-if_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/cfg-if-1.0.0"
 package = "cfg-if"

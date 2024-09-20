@@ -285,7 +285,7 @@ extra_build_script_src_roots = [ "entities.rs" ]
 build_script_outputs = [ "generated.rs", "named_entities.rs", ]
 
 [crate.multihash]
-extra_kv = { rustenv = [ "CARGO_MANIFEST_DIR=\" + rebase_path(\"//brave/third_party/rust/chromium_crates_io/vendor/multihash-0.16.3\") + \"" ]}
+extra_kv = { rustenv = [ "CARGO_MANIFEST_DIR=\" + rebase_path(\"//brave/third_party/rust/chromium_crates_io/vendor/multihash-0.18.1\") + \"" ]}
 
 [crate.num-bigint]
 extra_input_roots = [ "../README.md" ]
