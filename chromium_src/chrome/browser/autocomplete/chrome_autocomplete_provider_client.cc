@@ -27,7 +27,6 @@
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
-#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
@@ -41,7 +40,12 @@ ChromeAutocompleteProviderClient::GetCommanderDelegate() {
 #if BUILDFLAG(ENABLE_AI_CHAT)
 void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
 #if !BUILDFLAG(IS_ANDROID)
-  DCHECK(base::FeatureList::IsEnabled(ai_chat::features::kAIChat));
+  ai_chat::AIChatService* ai_chat_service =
+      ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_);
+
+  if (!ai_chat_service) {
+    return;
+  }
 
   // Note that we're getting the last active browser. This is what upstream
   // does when they open the history journey from the omnibox. This seem to be
@@ -50,7 +54,6 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
   // so active browser is unlikely to be changed
   // * Even if the active browser is changed, it'd be better to open the Leo in
   // the new active browser.
-  CHECK(profile_->IsRegularProfile());
   Browser* browser =
       chrome::FindTabbedBrowser(profile_,
                                 /*match_original_profiles=*/true);
@@ -63,9 +66,8 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
   DCHECK(chat_tab_helper);
 
   auto* conversation_handler =
-      ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_)
-          ->GetOrCreateConversationHandlerForContent(
-              chat_tab_helper->GetContentId(), chat_tab_helper->GetWeakPtr());
+      ai_chat_service->GetOrCreateConversationHandlerForContent(
+          chat_tab_helper->GetContentId(), chat_tab_helper->GetWeakPtr());
   CHECK(conversation_handler);
 
   // Before trying to activate the panel, unlink page content if needed.
