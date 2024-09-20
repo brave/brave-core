@@ -104,13 +104,18 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
     return std::make_unique<TestingProfile>();
   }
 
-  // TODO(petemill): param for simulating page load
-  void NavigateTo(GURL url, bool is_same_page = false, std::string title = "") {
+  void NavigateTo(GURL url,
+                  bool keep_loading = false,
+                  bool is_same_page = false,
+                  std::string title = "") {
     if (title.empty()) {
       title = base::StrCat({url.host(), url.path()});
     }
     std::unique_ptr<content::NavigationSimulator> simulator =
         content::NavigationSimulator::CreateRendererInitiated(url, main_rfh());
+
+    simulator->SetKeepLoading(keep_loading);
+
     if (is_same_page) {
       simulator->CommitSameDocument();
     } else {
@@ -125,6 +130,10 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
                                         title);
   }
 
+  void SimulateLoadFinished() {
+    helper_->DidFinishLoad(main_rfh(), helper_->GetPageURL());
+  }
+
   void GetPageContent(ConversationHandler::GetPageContentCallback callback,
                       std::string_view invalidation_token) {
     helper_->GetPageContent(std::move(callback), invalidation_token);
@@ -132,6 +141,10 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
 
   void TitleWasSet(content::NavigationEntry* entry) {
     helper_->TitleWasSet(entry);
+  }
+
+  content::TestWebContents* test_web_contents() {
+    return static_cast<content::TestWebContents*>(web_contents());
   }
 
  protected:
@@ -184,7 +197,7 @@ TEST_P(AIChatTabHelperUnitTest, OnNewPage) {
   // Same-document navigation should not call OnNewPage if page title is the
   // same
   EXPECT_CALL(*observer_, OnAssociatedContentNavigated).Times(0);
-  NavigateTo(GURL("https://www.brave.com/2/3"), true, "www.brave.com/2");
+  NavigateTo(GURL("https://www.brave.com/2/3"), false, true, "www.brave.com/2");
   testing::Mock::VerifyAndClearExpectations(&observer_);
   // ...unless the page title changes before the next navigation.
   EXPECT_CALL(*observer_, OnAssociatedContentNavigated)
@@ -331,6 +344,132 @@ TEST_P(AIChatTabHelperUnitTest,
   base::MockCallback<ConversationHandler::GetPageContentCallback> callback;
   EXPECT_CALL(callback, Run("", false, ""));
   GetPageContent(callback.Get(), "");
+}
+
+TEST_P(AIChatTabHelperUnitTest,
+       GetPageContent_PrintPreviewTriggeringUrlWaitForLoad) {
+  // A url that does by itself trigger print preview extraction.
+  NavigateTo(GURL("https://docs.google.com"), /*keep_loading=*/true);
+  base::MockCallback<ConversationHandler::GetPageContentCallback> callback;
+  // Not epecting callback to be run until page load.
+  EXPECT_CALL(callback, Run).Times(0);
+  if (is_print_preview_supported_) {
+    // Nothing should be called until page load
+    EXPECT_CALL(*page_content_fetcher_, FetchPageContent).Times(0);
+    EXPECT_CALL(*print_preview_extractor_, Extract).Times(0);
+    GetPageContent(callback.Get(), "");
+    testing::Mock::VerifyAndClearExpectations(&page_content_fetcher_);
+    testing::Mock::VerifyAndClearExpectations(&print_preview_extractor_);
+    testing::Mock::VerifyAndClearExpectations(&callback);
+
+    // Simulate page load should trigger check again and, even with
+    // empty content, callback should run.
+    EXPECT_CALL(callback, Run("", false, ""));
+    EXPECT_CALL(*page_content_fetcher_, FetchPageContent).Times(0);
+    EXPECT_CALL(*print_preview_extractor_, Extract)
+        .WillOnce(base::test::RunOnceCallback<1>(""));
+    SimulateLoadFinished();
+
+    testing::Mock::VerifyAndClearExpectations(&page_content_fetcher_);
+    testing::Mock::VerifyAndClearExpectations(&print_preview_extractor_);
+    testing::Mock::VerifyAndClearExpectations(&callback);
+  } else {
+    // FetchPageContent will not wait for page load. Let's test that the
+    // re-try will wait for page load.
+    EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
+        .WillRepeatedly(
+            base::test::RunOnceCallbackRepeatedly<1>("", false, ""));
+    GetPageContent(callback.Get(), "");
+    testing::Mock::VerifyAndClearExpectations(&callback);
+
+    // Simulate page load should trigger check again and, even with
+    // empty content, callback should run.
+    EXPECT_CALL(callback, Run("", false, ""));
+    SimulateLoadFinished();
+
+    testing::Mock::VerifyAndClearExpectations(&page_content_fetcher_);
+    testing::Mock::VerifyAndClearExpectations(&callback);
+  }
+}
+
+TEST_P(AIChatTabHelperUnitTest, GetPageContent_RetryAfterLoad) {
+  // A url that does not by itself trigger print preview extraction.
+  NavigateTo(GURL("https://www.example.com"), /*keep_loading=*/true);
+  base::MockCallback<ConversationHandler::GetPageContentCallback> callback;
+
+  // FetchPageContent will not wait for page load. Let's test that the
+  // re-try will wait for page load.
+  EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
+      .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
+  if (is_print_preview_supported_) {
+    // Doesn't initialy ask for print preview extraction
+    EXPECT_CALL(*print_preview_extractor_, Extract).Times(0);
+  }
+  EXPECT_CALL(callback, Run).Times(0);
+  GetPageContent(callback.Get(), "");
+  testing::Mock::VerifyAndClearExpectations(&page_content_fetcher_);
+  if (is_print_preview_supported_) {
+    testing::Mock::VerifyAndClearExpectations(&print_preview_extractor_);
+  }
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Simulate page load should trigger check again and, even with
+  // empty content, callback should run.
+  const std::string expected_content = "retried content";
+  if (is_print_preview_supported_) {
+    // First it will try to see if after page load there is real content
+    EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
+        .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
+    // And if it has no content, it will finally try print preview extraction
+    EXPECT_CALL(*print_preview_extractor_, Extract)
+        .WillOnce(base::test::RunOnceCallback<1>(expected_content));
+  } else {
+    EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
+        .WillOnce(base::test::RunOnceCallback<1>(expected_content, false, ""));
+  }
+  EXPECT_CALL(callback, Run(expected_content, false, ""));
+  SimulateLoadFinished();
+
+  testing::Mock::VerifyAndClearExpectations(&page_content_fetcher_);
+  if (is_print_preview_supported_) {
+    testing::Mock::VerifyAndClearExpectations(&print_preview_extractor_);
+  }
+  testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
+TEST_P(AIChatTabHelperUnitTest,
+       GetPageContent_ClearPendingCallbackOnNavigation) {
+  const GURL initial_url =
+      GURL(is_print_preview_supported_ ? "https://docs.google.com"
+                                       : "https://www.example.com");
+  for (const bool is_same_document : {false, true}) {
+    SCOPED_TRACE(testing::Message() << "Same document: " << is_same_document);
+    NavigateTo(initial_url,
+               /*keep_loading=*/true);
+    base::MockCallback<ConversationHandler::GetPageContentCallback> callback;
+    EXPECT_CALL(callback, Run).Times(0);
+    if (!is_print_preview_supported_) {
+      EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
+          .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
+    }
+    GetPageContent(callback.Get(), "");
+    testing::Mock::VerifyAndClearExpectations(&callback);
+
+    // Navigatng should result in our pending callback being run with no content
+    // and no content extraction initiated.
+    EXPECT_CALL(*page_content_fetcher_, FetchPageContent).Times(0);
+    if (is_print_preview_supported_) {
+      EXPECT_CALL(*print_preview_extractor_, Extract).Times(0);
+    }
+    EXPECT_CALL(callback, Run("", false, ""));
+    NavigateTo(initial_url.Resolve("/2"), /*keep_loading=*/true,
+               is_same_document);
+    testing::Mock::VerifyAndClearExpectations(&callback);
+    testing::Mock::VerifyAndClearExpectations(&page_content_fetcher_);
+    if (is_print_preview_supported_) {
+      testing::Mock::VerifyAndClearExpectations(&print_preview_extractor_);
+    }
+  }
 }
 
 }  // namespace ai_chat

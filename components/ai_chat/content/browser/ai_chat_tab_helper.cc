@@ -213,6 +213,7 @@ void AIChatTabHelper::InnerWebContentsAttached(
 
 void AIChatTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
                                     const GURL& validated_url) {
+  DVLOG(4) << __func__ << ": " << validated_url.spec();
   if (validated_url == GetPageURL()) {
     is_page_loaded_ = true;
     if (pending_get_page_content_callback_) {
@@ -243,20 +244,11 @@ GURL AIChatTabHelper::GetPageURL() const {
   return web_contents()->GetLastCommittedURL();
 }
 
-void AIChatTabHelper::GetPageContent(
-    ConversationHandler::GetPageContentCallback callback,
-    std::string_view invalidation_token) {
+void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
+                                     std::string_view invalidation_token) {
   bool is_pdf = IsPdf(web_contents());
   if (is_pdf && !is_pdf_a11y_info_loaded_) {
-    if (pending_get_page_content_callback_) {
-      // TODO(petemill): Queue the callback in a OneShotEvent, instead of only
-      // allowing a single pending callback. At the moment, this doesn't matter
-      // since only higher level usage (|AssociatedContentDriver|) does
-      // queue calls to |GetPageContent| via a OneShotEvent.
-      std::move(pending_get_page_content_callback_).Run("", false, "");
-    }
-    // invalidation_token doesn't matter for PDF extraction.
-    pending_get_page_content_callback_ = std::move(callback);
+    SetPendingGetContentCallback(std::move(callback));
     // PdfAccessibilityTree::AccessibilityModeChanged handles kPDFOcr changes
     // with |always_load_or_reload_accessibility| is true
     if (inner_web_contents_) {
@@ -280,65 +272,76 @@ void AIChatTabHelper::GetPageContent(
     CheckPDFA11yTree();
     return;
   }
-  if (base::Contains(kPrintPreviewRetrievalHosts, GetPageURL().host_piece()) &&
-      print_preview_extraction_delegate_ != nullptr) {
-    if (is_page_loaded_) {
-      // Get content using a printing / OCR mechanism, instead of
-      // directly from the source.
-      print_preview_extraction_delegate_->Extract(
-          is_pdf,
-          base::BindOnce(&AIChatTabHelper::OnExtractPrintPreviewContentComplete,
-                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-    } else {
-      // Run print preview extraction after load
-      if (pending_get_page_content_callback_) {
-        std::move(pending_get_page_content_callback_).Run("", false, "");
-      }
-      pending_get_page_content_callback_ = std::move(callback);
+  if (base::Contains(kPrintPreviewRetrievalHosts, GetPageURL().host_piece())) {
+    // Get content using a printing / OCR mechanism, instead of
+    // directly from the source, if available.
+    DVLOG(1) << __func__ << " print preview url";
+    if (MaybePrintPreviewExtract(callback)) {
+      return;
     }
-  } else {
-    page_content_fetcher_delegate_->FetchPageContent(
-        invalidation_token,
-        base::BindOnce(&AIChatTabHelper::OnFetchPageContentComplete,
-                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   }
+  page_content_fetcher_delegate_->FetchPageContent(
+      invalidation_token,
+      base::BindOnce(&AIChatTabHelper::OnFetchPageContentComplete,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void AIChatTabHelper::OnFetchPageContentComplete(
-    ConversationHandler::GetPageContentCallback callback,
+    GetPageContentCallback callback,
     std::string content,
     bool is_video,
     std::string invalidation_token) {
   base::TrimWhitespaceASCII(content, base::TRIM_ALL, &content);
-  if (!did_retry_get_page_content_after_page_load_ && content.empty() &&
-      !is_video) {
-    // Only try this once
-    did_retry_get_page_content_after_page_load_ = true;
-    DVLOG(1) << __func__ << "empty content, will retry once, is_page_loaded_="
-             << is_page_loaded_;
-    if (!is_page_loaded_) {
-      // Retry after page is loaded, including possible print preview fallback
-      if (pending_get_page_content_callback_) {
-        std::move(pending_get_page_content_callback_).Run("", false, "");
-      }
-      pending_get_page_content_callback_ = std::move(callback);
+  // If content is empty, and page was not loaded yet, wait for page load.
+  // Once page load is complete, try again. If it's still empty, fallback
+  // to print preview extraction.
+  if (content.empty() && !is_video) {
+    // When page isn't loaded yet, wait until DidFinishLoad
+    DVLOG(1) << __func__ << " empty content, will attempt fallback";
+    if (MaybePrintPreviewExtract(callback)) {
+      return;
+    } else if (!is_page_loaded_) {
+      DVLOG(1) << "page was not loaded yet, will try again after load";
+      SetPendingGetContentCallback(std::move(callback));
       return;
     }
-    if (is_page_loaded_) {
-      // Fallback to print preview extraction
-      print_preview_extraction_delegate_->Extract(
-          IsPdf(web_contents()),
-          base::BindOnce(&AIChatTabHelper::OnExtractPrintPreviewContentComplete,
-                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-    }
-    return;
+    // When print preview extraction isn't available, return empty content
+    DVLOG(1) << "no fallback available";
   }
   std::move(callback).Run(std::move(content), is_video,
                           std::move(invalidation_token));
 }
 
+void AIChatTabHelper::SetPendingGetContentCallback(
+    GetPageContentCallback callback) {
+  if (pending_get_page_content_callback_) {
+    std::move(pending_get_page_content_callback_).Run("", false, "");
+  }
+  pending_get_page_content_callback_ = std::move(callback);
+}
+
+bool AIChatTabHelper::MaybePrintPreviewExtract(
+    GetPageContentCallback& callback) {
+  if (print_preview_extraction_delegate_ == nullptr) {
+    DVLOG(1) << "print preview extraction not supported";
+    return false;
+  }
+  if (!is_page_loaded_) {
+    DVLOG(1) << "will extract print preview content when page is loaded";
+    SetPendingGetContentCallback(std::move(callback));
+  } else {
+    // When page is already loaded, fallback to print preview extraction
+    DVLOG(1) << "extracting print preview content now";
+    print_preview_extraction_delegate_->Extract(
+        IsPdf(web_contents()),
+        base::BindOnce(&AIChatTabHelper::OnExtractPrintPreviewContentComplete,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  }
+  return true;
+}
+
 void AIChatTabHelper::OnExtractPrintPreviewContentComplete(
-    ConversationHandler::GetPageContentCallback callback,
+    GetPageContentCallback callback,
     std::string content) {
   // Invalidation token not applicable for print preview OCR
   std::move(callback).Run(std::move(content), false, "");
@@ -351,7 +354,6 @@ std::u16string AIChatTabHelper::GetPageTitle() const {
 void AIChatTabHelper::OnNewPage(int64_t navigation_id) {
   DVLOG(3) << __func__ << " id: " << navigation_id;
   AssociatedContentDriver::OnNewPage(navigation_id);
-  did_retry_get_page_content_after_page_load_ = false;
   if (pending_get_page_content_callback_) {
     std::move(pending_get_page_content_callback_).Run("", false, "");
   }

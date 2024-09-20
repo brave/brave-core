@@ -261,28 +261,6 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreview) {
   EXPECT_FALSE(HasPendingGetContentRequest());
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewRequests) {
-  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"),
-              false);
-  FetchPageContent(FROM_HERE, "", false);
-  EXPECT_TRUE(HasPendingGetContentRequest());
-
-  GetActiveWebContents()->GetController().Reload(content::ReloadType::NORMAL,
-                                                 false);
-  content::WaitForLoadStop(GetActiveWebContents());
-  // The request should be cleared after reload.
-  EXPECT_FALSE(HasPendingGetContentRequest());
-
-  // Try page loaded scenario
-  NavigateURL(https_server_.GetURL("docs.google.com", "/canvas.html"));
-  FetchPageContent(FROM_HERE, "", false);
-  EXPECT_TRUE(HasPendingGetContentRequest());
-
-  NavigateURL(https_server_.GetURL("a.com", "/canvas.html"), false);
-  // The request should be cleared after navigation.
-  EXPECT_FALSE(HasPendingGetContentRequest());
-}
-
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewPagesLimit) {
   NavigateURL(
@@ -344,8 +322,9 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, MAYBE_PrintPreviewFallback) {
   FetchPageContent(FROM_HERE, "this is the way");
 
   // Does not fall back when there is regular DOM content
-  NavigateURL(https_server_.GetURL(
-      "a.com", "/long_canvas_with_dom_content.html", false));
+  NavigateURL(
+      https_server_.GetURL("a.com", "/long_canvas_with_dom_content.html"),
+      false);
   FetchPageContent(FROM_HERE, "Or maybe not.");
 }
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)

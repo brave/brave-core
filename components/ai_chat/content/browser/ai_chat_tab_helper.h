@@ -39,6 +39,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
                         public favicon::FaviconDriverObserver,
                         public AssociatedContentDriver {
  public:
+  using GetPageContentCallback = ConversationHandler::GetPageContentCallback;
+
   static void BindPageContentExtractorHost(
       content::RenderFrameHost* rfh,
       mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
@@ -141,7 +143,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // ai_chat::AssociatedContentDriver
   GURL GetPageURL() const override;
-  void GetPageContent(ConversationHandler::GetPageContentCallback callback,
+  void GetPageContent(GetPageContentCallback callback,
                       std::string_view invalidation_token) override;
   std::u16string GetPageTitle() const override;
   void OnNewPage(int64_t navigation_id) override;
@@ -153,15 +155,13 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   void GetSearchSummarizerKey(GetSearchSummarizerKeyCallback callback) override;
 
-  void OnFetchPageContentComplete(
-      ConversationHandler::GetPageContentCallback callback,
-      std::string content,
-      bool is_video,
-      std::string invalidation_token);
+  void OnFetchPageContentComplete(GetPageContentCallback callback,
+                                  std::string content,
+                                  bool is_video,
+                                  std::string invalidation_token);
 
-  void OnExtractPrintPreviewContentComplete(
-      ConversationHandler::GetPageContentCallback callback,
-      std::string content);
+  void OnExtractPrintPreviewContentComplete(GetPageContentCallback callback,
+                                            std::string content);
 
   void BindPageContentExtractorReceiver(
       mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
@@ -169,6 +169,10 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // Traverse through a11y tree to check existence of status node.
   void CheckPDFA11yTree();
+
+  bool MaybePrintPreviewExtract(GetPageContentCallback& callback);
+
+  void SetPendingGetContentCallback(GetPageContentCallback callback);
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
@@ -178,13 +182,11 @@ class AIChatTabHelper : public content::WebContentsObserver,
   bool is_pdf_a11y_info_loaded_ = false;
   uint8_t check_pdf_a11y_tree_attempts_ = 0;
   bool is_page_loaded_ = false;
-  bool did_retry_get_page_content_after_page_load_ = false;
 
   raw_ptr<content::WebContents> inner_web_contents_ = nullptr;
 
   // TODO(petemill): Use signal to allow for multiple callbacks
-  ConversationHandler::GetPageContentCallback
-      pending_get_page_content_callback_;
+  GetPageContentCallback pending_get_page_content_callback_;
 
   std::unique_ptr<PrintPreviewExtractionDelegate>
       print_preview_extraction_delegate_;
