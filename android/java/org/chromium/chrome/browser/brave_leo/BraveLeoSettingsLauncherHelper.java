@@ -54,7 +54,7 @@ public class BraveLeoSettingsLauncherHelper {
     @CalledByNative
     private static void handleVoiceRecognition(WebContents webContents, String conversation_uuid) {
         new BraveLeoVoiceRecognitionHandler(
-                        webContents.getTopLevelNativeWindow(), conversation_uuid)
+                        webContents.getTopLevelNativeWindow(), webContents, conversation_uuid)
                 .startVoiceRecognition();
     }
 
