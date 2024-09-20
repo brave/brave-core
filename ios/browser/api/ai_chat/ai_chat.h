@@ -35,7 +35,7 @@ OBJC_EXPORT
 
 @property(nonatomic, readonly) bool hasPendingConversationEntry;
 
-@property(nonatomic, readonly) AiChatAPIError currentAPIError;
+@property(nonatomic, readonly) AiChatAPIError* currentAPIError;
 
 @property(nonatomic, readonly) bool canShowPremiumPrompt;
 
@@ -67,15 +67,16 @@ OBJC_EXPORT
 - (void)submitSelectedText:(NSString*)selectedText
                 actionType:(AiChatActionType)actionType
               onSuggestion:(void (^_Nullable)(NSString* _Nullable))onSuggestion
-               onCompleted:(void (^_Nullable)(NSString* _Nullable result,
-                                              AiChatAPIError error))onCompleted;
+               onCompleted:
+                   (void (^_Nullable)(NSString* _Nullable result,
+                                      AiChatAPIError* error))onCompleted;
 
 - (void)submitSelectedText:(NSString*)selectedText
                   question:(NSString*)question
                 actionType:(AiChatActionType)actionType
               onSuggestion:(void (^)(NSString* _Nullable))onSuggestion
                onCompleted:(void (^)(NSString* _Nullable result,
-                                     AiChatAPIError error))onCompleted;
+                                     AiChatAPIError* error))onCompleted;
 
 - (void)rateMessage:(bool)isLiked
              turnId:(NSUInteger)turnId

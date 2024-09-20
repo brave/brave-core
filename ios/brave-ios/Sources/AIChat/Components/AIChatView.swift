@@ -119,12 +119,13 @@ public struct AIChatView: View {
                   VStack(spacing: 0.0) {
                     if model.shouldShowPremiumPrompt {
                       AIChatPremiumUpsellView(
-                        upsellType: model.apiError == .rateLimitReached ? .rateLimit : .premium,
+                        upsellType: model.apiError?.type == .rateLimitReached
+                          ? .rateLimit : .premium,
                         upgradeAction: {
                           isPremiumPaywallPresented = true
                         },
                         dismissAction: {
-                          if model.apiError == .rateLimitReached {
+                          if model.apiError?.type == .rateLimitReached {
                             if let nonPremiumModel = model.models.first(where: {
                               guard let leoModelOptions = $0.options.leoModelOptions else {
                                 return false
@@ -176,7 +177,7 @@ public struct AIChatView: View {
                           }
                           .disabled(
                             model.requestInProgress || model.suggestionsStatus == .isGenerating
-                              || model.apiError == .contextLimitReached
+                              || model.apiError?.type == .contextLimitReached
                           )
 
                           if index == 0, model.shouldSendPageContents,
@@ -188,7 +189,7 @@ public struct AIChatView: View {
                           }
 
                           // Show loader view before first part of conversation reply
-                          if model.apiError == .none, model.requestInProgress,
+                          if model.apiError == nil, model.requestInProgress,
                             index == model.conversationHistory.count - 1
                           {
                             VStack(alignment: .leading) {
@@ -233,7 +234,7 @@ public struct AIChatView: View {
                       apiErrorViews
 
                       if model.shouldShowSuggestions && !model.requestInProgress
-                        && model.apiError == .none
+                        && model.apiError == nil
                       {
                         if model.suggestionsStatus != .isGenerating
                           && !model.suggestedQuestions.isEmpty
@@ -301,7 +302,7 @@ public struct AIChatView: View {
         }
 
         if !isShowingSlashTools
-          && (model.apiError == .none && model.isAgreementAccepted
+          && (model.apiError == nil && model.isAgreementAccepted
             || (!hasSeenIntro.value && !model.isAgreementAccepted))
         {
           if model.conversationHistory.isEmpty && model.isContentAssociationPossible {
@@ -353,7 +354,7 @@ public struct AIChatView: View {
         }
         .disabled(
           model.requestInProgress || model.suggestionsStatus == .isGenerating
-            || model.apiError == .contextLimitReached || editingTurnIndex != nil
+            || model.apiError?.type == .contextLimitReached || editingTurnIndex != nil
         )
       }
     }
@@ -585,7 +586,7 @@ public struct AIChatView: View {
       )
       .padding()
     } else {
-      switch model.apiError {
+      switch model.apiError?.type {
       case .connectionIssue:
         AIChatNetworkErrorView {
           if !model.conversationHistory.isEmpty {

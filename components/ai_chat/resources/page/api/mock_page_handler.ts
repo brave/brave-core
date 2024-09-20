@@ -69,8 +69,8 @@ export class MockPageHandlerRemote implements Public<mojom.PageHandlerRemote> {
     return Promise.resolve({ faviconImageData: null })
   }
 
-  getAPIResponseError(): Promise<{ error: number }> {
-    return Promise.resolve({ error: 0 })
+  getAPIResponseError(): Promise<{ error: mojom.APIError }> {
+    return Promise.resolve({ error: { type: mojom.APIErrorType.None, message: undefined } })
   }
 
   getCanShowPremiumPrompt(): Promise<{ canShow: boolean }> {

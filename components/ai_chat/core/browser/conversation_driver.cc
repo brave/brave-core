@@ -898,7 +898,7 @@ void ConversationDriver::CleanUp() {
   suggestion_generation_status_ = mojom::SuggestionGenerationStatus::None;
   should_send_page_contents_ = true;
   OnSuggestedQuestionsChanged();
-  SetAPIError(mojom::APIError::None);
+  SetAPIError(mojom::APIError::New(mojom::APIErrorType::None, std::nullopt));
   engine_->ClearAllQueries();
   if (text_embedder_) {
     text_embedder_->CancelAllTasks();
@@ -965,23 +965,23 @@ bool ConversationDriver::GetShouldSendPageContents() {
 void ConversationDriver::ClearConversationHistory() {
   chat_history_.clear();
   engine_->ClearAllQueries();
-  current_error_ = mojom::APIError::None;
+  SetAPIError(mojom::APIError::New(mojom::APIErrorType::None, std::nullopt));
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
-    obs.OnAPIResponseError(current_error_);
+    obs.OnAPIResponseError(current_error_.Clone());
   }
 }
 
-mojom::APIError ConversationDriver::GetCurrentAPIError() {
-  return current_error_;
+mojom::APIErrorPtr ConversationDriver::GetCurrentAPIError() {
+  return current_error_.Clone();
 }
 
 mojom::ConversationTurnPtr ConversationDriver::ClearErrorAndGetFailedMessage() {
   DCHECK(!chat_history_.empty());
 
-  SetAPIError(mojom::APIError::None);
+  SetAPIError(mojom::APIError::New(mojom::APIErrorType::None, std::nullopt));
   mojom::ConversationTurnPtr turn = chat_history_.back().Clone();
   chat_history_.pop_back();
 
@@ -1045,7 +1045,7 @@ void ConversationDriver::GenerateQuestions() {
 
 void ConversationDriver::OnSuggestedQuestionsResponse(
     int64_t navigation_id,
-    EngineConsumer::SuggestedQuestionResult result) {
+    SuggestedQuestionResult result) {
   // We might have navigated away whilst this async operation is in
   // progress, so check if we're the same navigation.
   if (navigation_id != current_navigation_id_) {
@@ -1079,8 +1079,8 @@ void ConversationDriver::MaybeUnlinkPageContent() {
 void ConversationDriver::AddSubmitSelectedTextError(
     const std::string& selected_text,
     mojom::ActionType action_type,
-    mojom::APIError error) {
-  if (error == mojom::APIError::None) {
+    mojom::APIErrorPtr error) {
+  if (error->type == mojom::APIErrorType::None) {
     return;
   }
   const std::string& question = GetActionTypeQuestion(action_type);
@@ -1089,14 +1089,14 @@ void ConversationDriver::AddSubmitSelectedTextError(
       question, selected_text, std::nullopt, base::Time::Now(), std::nullopt,
       false);
   AddToConversationHistory(std::move(turn));
-  SetAPIError(error);
+  SetAPIError(std::move(error));
 }
 
 void ConversationDriver::SubmitSelectedText(
     const std::string& selected_text,
     mojom::ActionType action_type,
     GeneratedTextCallback received_callback,
-    EngineConsumer::GenerationCompletedCallback completed_callback) {
+    GenerationCompletedCallback completed_callback) {
   const std::string& question = GetActionTypeQuestion(action_type);
   SubmitSelectedTextWithQuestion(selected_text, question, action_type,
                                  std::move(received_callback),
@@ -1108,7 +1108,7 @@ void ConversationDriver::SubmitSelectedTextWithQuestion(
     const std::string& question,
     mojom::ActionType action_type,
     GeneratedTextCallback received_callback,
-    EngineConsumer::GenerationCompletedCallback completed_callback) {
+    GenerationCompletedCallback completed_callback) {
   if (received_callback && completed_callback) {
     // Start a one-off request and replace in-place with the result.
     engine_->GenerateRewriteSuggestion(
@@ -1353,7 +1353,7 @@ void ConversationDriver::OnGetRefinedPageContent(
 }
 
 void ConversationDriver::RetryAPIRequest() {
-  SetAPIError(mojom::APIError::None);
+  SetAPIError(mojom::APIError::New(mojom::APIErrorType::None, std::nullopt));
   DCHECK(!chat_history_.empty());
 
   // We're using a reverse iterator here to find the latest human turn
@@ -1390,9 +1390,8 @@ void ConversationDriver::OnEngineCompletionDataReceived(
   }
 }
 
-void ConversationDriver::OnEngineCompletionComplete(
-    int64_t navigation_id,
-    EngineConsumer::GenerationResult result) {
+void ConversationDriver::OnEngineCompletionComplete(int64_t navigation_id,
+                                                    GenerationResult result) {
   if (navigation_id != current_navigation_id_) {
     VLOG(1) << __func__ << " for a different navigation. Ignoring.";
     return;
@@ -1432,11 +1431,11 @@ void ConversationDriver::OnPageHasContentChanged(mojom::SiteInfoPtr site_info) {
   }
 }
 
-void ConversationDriver::SetAPIError(const mojom::APIError& error) {
-  current_error_ = error;
+void ConversationDriver::SetAPIError(mojom::APIErrorPtr error) {
+  current_error_ = std::move(error);
 
   for (Observer& obs : observers_) {
-    obs.OnAPIResponseError(current_error_);
+    obs.OnAPIResponseError(current_error_.Clone());
   }
 }
 

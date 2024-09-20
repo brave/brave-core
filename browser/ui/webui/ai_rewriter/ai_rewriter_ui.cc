@@ -119,8 +119,7 @@ void AIRewriterUI::RewriteText(const std::string& text,
       base::BindRepeating(&AIRewriterUI::OnRewriteSuggestionGenerated,
                           weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(
-          [](RewriteTextCallback callback,
-             ai_chat::EngineConsumer::GenerationResult result) {
+          [](RewriteTextCallback callback, ai_chat::GenerationResult result) {
             std::move(callback).Run();
           },
           std::move(callback)));

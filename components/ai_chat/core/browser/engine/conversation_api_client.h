@@ -11,29 +11,25 @@
 #include <utility>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 
 namespace api_request_helper {
 class APIRequestResult;
+class APIRequestHelper;
 }  // namespace api_request_helper
 
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
-
 namespace ai_chat {
 
 // Performs remote request to the remote HTTP Brave Conversation API.
 class ConversationAPIClient {
  public:
-  using GenerationResult = base::expected<std::string, mojom::APIError>;
-  using GenerationDataCallback =
-      base::RepeatingCallback<void(mojom::ConversationEntryEventPtr)>;
-  using GenerationCompletedCallback =
-      base::OnceCallback<void(GenerationResult)>;
-
   enum ConversationEventType {
     System,
     ContextURL,
@@ -85,9 +81,7 @@ class ConversationAPIClient {
       const bool is_sse_enabled);
 
   void SetAPIRequestHelperForTesting(
-      std::unique_ptr<api_request_helper::APIRequestHelper> api_helper) {
-    api_request_helper_ = std::move(api_helper);
-  }
+      std::unique_ptr<api_request_helper::APIRequestHelper> api_helper);
   api_request_helper::APIRequestHelper* GetAPIRequestHelperForTesting() {
     return api_request_helper_.get();
   }
@@ -101,7 +95,7 @@ class ConversationAPIClient {
 
   void OnQueryCompleted(std::optional<CredentialCacheEntry> credential,
                         GenerationCompletedCallback callback,
-                        APIRequestResult result);
+                        api_request_helper::APIRequestResult result);
   void OnQueryDataReceived(GenerationDataCallback callback,
                            base::expected<base::Value, std::string> result);
 

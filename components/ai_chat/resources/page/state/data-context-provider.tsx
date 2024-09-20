@@ -82,7 +82,7 @@ function DataContextProvider(props: DataContextProviderProps) {
     isContentRefined: false
   })
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
-  const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
+  const [currentError, setCurrentError] = React.useState<mojom.APIError>({ type: mojom.APIErrorType.None, message: undefined })
   const [hasAcceptedAgreement, setHasAcceptedAgreement] = React.useState(loadTimeData.getBoolean("hasAcceptedAgreement"))
   const [premiumStatus, setPremiumStatus] = React.useState<mojom.PremiumStatus | undefined>(undefined)
   const [canShowPremiumPrompt, setCanShowPremiumPrompt] = React.useState<boolean | undefined>()
@@ -119,7 +119,7 @@ function DataContextProvider(props: DataContextProviderProps) {
 
   const isPremiumUser = premiumStatus !== undefined && premiumStatus !== mojom.PremiumStatus.Inactive
 
-  const apiHasError = (currentError !== mojom.APIError.None)
+  const apiHasError = currentError.type !== mojom.APIErrorType.None
   const shouldDisableUserInput = !!(apiHasError || isGenerating || (!isPremiumUser && currentModel?.options.leoModelOptions?.access === mojom.ModelAccess.PREMIUM))
 
   const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR

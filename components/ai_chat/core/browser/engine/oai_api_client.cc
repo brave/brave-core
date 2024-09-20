@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
 
 #include "base/functional/bind.h"
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/strcat.h"
@@ -14,6 +15,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
@@ -66,6 +68,23 @@ std::string CreateJSONRequestBody(
   return json;
 }
 
+std::optional<std::string> ExtractErrorMessage(const std::string& result) {
+  auto value = base::JSONReader::Read(result);
+
+  if (!value.has_value() || !value->is_dict()) {
+    return std::nullopt;
+  }
+
+  auto* error = value->GetDict().FindDict("error");
+  if (error) {
+    auto* message = error->FindString("message");
+    if (message) {
+      return *message;
+    }
+  }
+  return std::nullopt;
+}
+
 }  // namespace
 
 OAIAPIClient::OAIAPIClient(
@@ -80,15 +99,17 @@ void OAIAPIClient::ClearAllQueries() {
   api_request_helper_->CancelAll();
 }
 
+void OAIAPIClient::SetAPIRequestHelperForTesting(
+    std::unique_ptr<api_request_helper::APIRequestHelper> api_helper) {
+  api_request_helper_ = std::move(api_helper);
+}
+
 void OAIAPIClient::PerformRequest(
     const mojom::CustomModelOptions& model_options,
     base::Value::List messages,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
-  if (!model_options.endpoint.is_valid()) {
-    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
-    return;
-  }
+  CHECK(model_options.endpoint.is_valid());
 
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
@@ -122,8 +143,9 @@ void OAIAPIClient::PerformRequest(
   }
 }
 
-void OAIAPIClient::OnQueryCompleted(GenerationCompletedCallback callback,
-                                    APIRequestResult result) {
+void OAIAPIClient::OnQueryCompleted(
+    GenerationCompletedCallback callback,
+    api_request_helper::APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();
   // Handle successful request
   if (success) {
@@ -152,12 +174,19 @@ void OAIAPIClient::OnQueryCompleted(GenerationCompletedCallback callback,
   }
 
   // Handle error
-  std::move(callback).Run(base::unexpected(mojom::APIError::ConnectionIssue));
+  std::move(callback).Run(base::unexpected(mojom::APIError::New(
+      mojom::APIErrorType::ConnectionIssue, last_error_message_)));
+  last_error_message_.reset();
 }
 
 void OAIAPIClient::OnQueryDataReceived(
     GenerationDataCallback callback,
     base::expected<base::Value, std::string> result) {
+  if (result->is_string()) {
+    last_error_message_ = ExtractErrorMessage(result->GetString());
+    return;
+  }
+
   if (!result.has_value() || !result->is_dict()) {
     return;
   }

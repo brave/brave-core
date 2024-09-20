@@ -11,22 +11,27 @@ import styles from './alerts.module.scss'
 
 interface PromptAutoSuggestionProps {
   onRetry?: () => void
+  errorMessage?: string
 }
 
-function ErrorConnection (props: PromptAutoSuggestionProps) {
+function ErrorConnection(props: PromptAutoSuggestionProps) {
   return (
     <div className={styles.alert}>
       <Alert
         mode='full'
         type='error'
       >
-        {getLocale('errorNetworkLabel')}
+        <div className={styles.errorText}>
+        {props.errorMessage
+          ? props.errorMessage
+          : getLocale('errorNetworkLabel')}
+        </div>
         <Button
           slot='actions'
           kind='filled'
           onClick={props.onRetry}
         >
-            {getLocale('retryButtonLabel')}
+          {getLocale('retryButtonLabel')}
         </Button>
       </Alert>
     </div>

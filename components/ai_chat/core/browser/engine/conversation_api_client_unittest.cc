@@ -37,7 +37,6 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using ConversationHistory = std::vector<ai_chat::mojom::ConversationTurn>;
 using ::testing::_;
 using ::testing::Sequence;
 using DataReceivedCallback =
@@ -52,7 +51,7 @@ using ConversationEvent = ConversationAPIClient::ConversationEvent;
 class MockCallbacks {
  public:
   MOCK_METHOD(void, OnDataReceived, (mojom::ConversationEntryEventPtr));
-  MOCK_METHOD(void, OnCompleted, (EngineConsumer::GenerationResult));
+  MOCK_METHOD(void, OnCompleted, (GenerationResult));
 };
 
 // Mock the AIChatCredentialManager to provide premium credentials
@@ -281,8 +280,12 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
         EXPECT_EQ(event->get_completion_event()->completion,
                   expected_completion_response);
       });
-  EXPECT_CALL(mock_callbacks,
-              OnCompleted(EngineConsumer::GenerationResult("")));
+
+  // Since MOCK_METHOD does not support move-only types to be passed to
+  // functions and it always creates a copy of the params, we use std::ref to
+  // emulate a reference of GenerationResult which can be copied
+  const GenerationResult result("");
+  EXPECT_CALL(mock_callbacks, OnCompleted(testing::Eq(std::ref(result))));
 
   // Begin request
   client_->PerformRequest(
@@ -377,8 +380,8 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
         EXPECT_EQ(event->get_completion_event()->completion,
                   expected_completion_response);
       });
-  EXPECT_CALL(mock_callbacks,
-              OnCompleted(EngineConsumer::GenerationResult("")));
+  const GenerationResult result("");
+  EXPECT_CALL(mock_callbacks, OnCompleted(testing::Eq(std::ref(result))));
 
   // Begin request
   client_->PerformRequest(
@@ -397,8 +400,8 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
 TEST_F(ConversationAPIUnitTest, FailNoConversationEvents) {
   // Tests handling invalid request parameters
   std::vector<ConversationAPIClient::ConversationEvent> events;
-  EngineConsumer::GenerationResult expected_result =
-      base::unexpected(mojom::APIError::None);
+  const GenerationResult expected_result = base::unexpected(
+      mojom::APIError::New(mojom::APIErrorType::None, std::nullopt));
 
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();
@@ -411,7 +414,8 @@ TEST_F(ConversationAPIUnitTest, FailNoConversationEvents) {
   // Callbacks should be passed through and translated from APIRequestHelper
   // format.
   EXPECT_CALL(mock_callbacks, OnDataReceived).Times(0);
-  EXPECT_CALL(mock_callbacks, OnCompleted(expected_result));
+  EXPECT_CALL(mock_callbacks,
+              OnCompleted(testing::Eq(std::ref(expected_result))));
 
   // Begin request
   client_->PerformRequest(

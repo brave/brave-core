@@ -203,8 +203,9 @@
   return nullptr;
 }
 
-- (AiChatAPIError)currentAPIError {
-  return static_cast<AiChatAPIError>(driver_->GetCurrentAPIError());
+- (AiChatAPIError*)currentAPIError {
+  return [[AiChatAPIError alloc]
+      initWithAPIErrorPtr:driver_->GetCurrentAPIError()];
 }
 
 - (void)getPremiumStatus:(void (^)(AiChatPremiumStatus))completion {
@@ -231,7 +232,7 @@
                 actionType:(AiChatActionType)actionType
               onSuggestion:(void (^)(NSString*))onSuggestion
                onCompleted:(void (^)(NSString* result,
-                                     AiChatAPIError error))onCompleted {
+                                     AiChatAPIError* error))onCompleted {
   driver_->SubmitSelectedText(
       base::SysNSStringToUTF8(selectedText),
       static_cast<ai_chat::mojom::ActionType>(actionType),
@@ -239,16 +240,15 @@
         onSuggestion(base::SysUTF8ToNSString(suggestion_text));
       })
                    : base::NullCallback(),
-      onCompleted
-          ? base::BindOnce(^(ai_chat::EngineConsumer::GenerationResult result) {
-              if (auto result_string = result; result_string.has_value()) {
-                onCompleted(base::SysUTF8ToNSString(result_string.value()),
-                            AiChatAPIErrorNone);
-              } else {
-                onCompleted(nil, static_cast<AiChatAPIError>(result.error()));
-              }
-            })
-          : base::NullCallback());
+      onCompleted ? base::BindOnce(^(ai_chat::GenerationResult result) {
+        if (auto& result_string = result; result_string.has_value()) {
+          onCompleted(base::SysUTF8ToNSString(result_string.value()), nil);
+        } else {
+          onCompleted(nil, [[AiChatAPIError alloc]
+                               initWithAPIErrorPtr:result.error()->Clone()]);
+        }
+      })
+                  : base::NullCallback());
 }
 
 - (void)submitSelectedText:(NSString*)selectedText
@@ -256,7 +256,7 @@
                 actionType:(AiChatActionType)actionType
               onSuggestion:(void (^)(NSString*))onSuggestion
                onCompleted:(void (^)(NSString* result,
-                                     AiChatAPIError error))onCompleted {
+                                     AiChatAPIError* error))onCompleted {
   driver_->SubmitSelectedTextWithQuestion(
       base::SysNSStringToUTF8(selectedText), base::SysNSStringToUTF8(question),
       static_cast<ai_chat::mojom::ActionType>(actionType),
@@ -264,16 +264,15 @@
         onSuggestion(base::SysUTF8ToNSString(suggestion_text));
       })
                    : base::NullCallback(),
-      onCompleted
-          ? base::BindOnce(^(ai_chat::EngineConsumer::GenerationResult result) {
-              if (auto result_string = result; result_string.has_value()) {
-                onCompleted(base::SysUTF8ToNSString(result_string.value()),
-                            AiChatAPIErrorNone);
-              } else {
-                onCompleted(nil, static_cast<AiChatAPIError>(result.error()));
-              }
-            })
-          : base::NullCallback());
+      onCompleted ? base::BindOnce(^(ai_chat::GenerationResult result) {
+        if (auto& result_string = result; result_string.has_value()) {
+          onCompleted(base::SysUTF8ToNSString(result_string.value()), nil);
+        } else {
+          onCompleted(nil, [[AiChatAPIError alloc]
+                               initWithAPIErrorPtr:result.error()->Clone()]);
+        }
+      })
+                  : base::NullCallback());
 }
 
 - (void)rateMessage:(bool)isLiked

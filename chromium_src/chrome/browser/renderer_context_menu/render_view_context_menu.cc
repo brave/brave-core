@@ -283,7 +283,7 @@ void OnRewriteSuggestionCompleted(
     base::WeakPtr<content::WebContents> web_contents,
     const std::string& selected_text,
     ai_chat::mojom::ActionType action_type,
-    base::expected<std::string, ai_chat::mojom::APIError> result) {
+    base::expected<std::string, ai_chat::mojom::APIErrorPtr> result) {
   if (!web_contents) {
     return;
   }
@@ -321,7 +321,7 @@ void OnRewriteSuggestionCompleted(
         sidebar::SidebarItem::BuiltInItemType::kChatUI);
 
     helper->AddSubmitSelectedTextError(selected_text, action_type,
-                                       result.error());
+                                       std::move(result.error()));
   }
 
   web_contents->RemoveUserData(kAIChatRewriteDataKey);
