@@ -242,6 +242,7 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
     "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnNativeWorker.java",
     "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnServiceFactoryAndroid.java",
+    "//brave/android/java/org/chromium/chrome/browser/webcompat_reporter/WebcompatReporterServiceFactory.java",
   ]
 
   public_deps = [ "//brave/android/java/org/chromium/chrome/browser/search_engines:jni_headers" ]

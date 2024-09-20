@@ -499,6 +499,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/QuickActionSearchAndBookmarkWidgetProvider.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/promo/SearchWidgetPromoPanel.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/utils/BraveSearchWidgetUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/webcompat_reporter/WebcompatReporterServiceFactory.java",
 ]
 
 brave_java_sources += brave_ads_java_sources
