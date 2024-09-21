@@ -53,6 +53,7 @@ source_set("browser_tests") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser",
+    "//brave/browser/brave_rewards",
     "//brave/common",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_component_updater/browser",

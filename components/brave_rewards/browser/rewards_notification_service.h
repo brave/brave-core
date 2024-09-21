@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_NOTIFICATION_SERVICE_H_
 
 #include <map>
-#include <memory>
 #include <string>
 #include <vector>
 

@@ -19,6 +19,7 @@ source_set("brave_rewards_unit_tests") {
 
   deps = [
     "//base/test:test_support",
+    "//brave/browser/brave_rewards",
     "//brave/components/brave_rewards/browser:browser",
     "//brave/components/brave_rewards/browser:testutil",
     "//brave/components/brave_rewards/common:common",

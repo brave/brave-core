@@ -8,7 +8,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
-#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 
 class Profile;
 

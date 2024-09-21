@@ -1,0 +1,28 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
+
+source_set("greaselion") {
+  sources = [
+    "//brave/browser/greaselion/greaselion_service_factory.cc",
+    "//brave/browser/greaselion/greaselion_service_factory.h",
+    "//brave/browser/greaselion/greaselion_tab_helper.cc",
+    "//brave/browser/greaselion/greaselion_tab_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser:browser_process",
+    "//brave/components/brave_rewards/common",
+    "//brave/components/greaselion/browser",
+    "//chrome/browser/extensions",
+    "//chrome/browser/profiles",
+    "//chrome/common:constants",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//extensions/browser",
+  ]
+}
