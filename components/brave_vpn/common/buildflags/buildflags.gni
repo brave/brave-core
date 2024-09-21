@@ -8,6 +8,7 @@ declare_args() {
   enable_brave_vpn = is_win || is_android || is_mac
 
   # vpn panel is desktop specific UI.
+  # TODO(simonhong): rename to enable_brave_vpn_webui.
   enable_brave_vpn_panel = is_win || is_mac
 }
 
