@@ -10,9 +10,6 @@
     If the command is only available on a platform we don't support (i.e.
     ChromeOS) prefer to not add the command.
   -->
-  <message name="IDS_IDC_COMMANDER">
-    Quick Commands
-  </message>
   <message name="IDS_IDC_BACK">
     Back
   </message>
@@ -500,6 +497,9 @@
   </message>
 
   <if expr="use_titlecase">
+    <message name="IDS_IDC_COMMANDER">
+      Quick Commands
+    </message>
     <message name="IDS_IDC_NEW_SPLIT_VIEW" desc="The label of the 'New Split View' tab context menu item">
       New Split View
     </message>
@@ -514,6 +514,9 @@
     </message>
   </if>
   <if expr="not use_titlecase">
+    <message name="IDS_IDC_COMMANDER">
+      Quick commands
+    </message>
     <message name="IDS_IDC_NEW_SPLIT_VIEW" desc="The label of the 'New Split View' tab context menu item">
       New split view
     </message>
