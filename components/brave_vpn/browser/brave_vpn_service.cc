@@ -586,6 +586,10 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
   RequestCredentialSummary(domain);
 }
 
+void BraveVpnService::Initialize() {
+  ReloadPurchasedState();
+}
+
 void BraveVpnService::RequestCredentialSummary(const std::string& domain) {
   // As we request new credential, clear cached value.
   ClearSubscriberCredential(local_prefs_);

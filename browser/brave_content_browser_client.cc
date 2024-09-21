@@ -642,6 +642,12 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
           .Add<brave_new_tab_page::mojom::PageHandlerFactory>()
           .Add<brave_news::mojom::BraveNewsController>();
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN_PANEL)
+  if (brave_vpn::IsBraveVPNFeatureEnabled()) {
+    ntp_registration.Add<brave_vpn::mojom::NTPWidgetHandlerFactory>();
+  }
+#endif
+
   if (base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget)) {
     ntp_registration.Add<searchbox::mojom::PageHandler>();
   }

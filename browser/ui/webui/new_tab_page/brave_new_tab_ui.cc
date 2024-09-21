@@ -39,6 +39,12 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN_PANEL)
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#endif
+
 using ntp_background_images::NTPCustomImagesSource;
 
 BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
@@ -91,6 +97,14 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
       "featureFlagSearchWidget",
       base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget));
 
+  source->AddBoolean("vpnWidgetEnabled",
+#if BUILDFLAG(ENABLE_BRAVE_VPN_PANEL)
+                     brave_vpn::IsBraveVPNFeatureEnabled()
+#else
+                     false
+#endif
+  );
+
   web_ui->AddMessageHandler(base::WrapUnique(
       BraveNewTabMessageHandler::Create(source, profile, was_restored)));
   web_ui->AddMessageHandler(
@@ -139,6 +153,29 @@ void BraveNewTabUI::BindInterface(
       /*metrics_reporter=*/nullptr, /*lens_searchbox_client=*/nullptr,
       /*omnibox_controller=*/nullptr);
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN_PANEL)
+void BraveNewTabUI::BindInterface(
+    mojo::PendingReceiver<brave_vpn::mojom::NTPWidgetHandlerFactory>
+        pending_receiver) {
+  if (ntp_widget_factory_receiver_.is_bound()) {
+    ntp_widget_factory_receiver_.reset();
+  }
+
+  ntp_widget_factory_receiver_.Bind(std::move(pending_receiver));
+}
+
+void BraveNewTabUI::BindServiceHandler(
+    mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler>
+        vpn_service_receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  CHECK(profile);
+  auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
+  if (vpn_service) {
+    vpn_service->BindInterface(std::move(vpn_service_receiver));
+  }
+}
+#endif
 
 void BraveNewTabUI::CreatePageHandler(
     mojo::PendingRemote<brave_new_tab_page::mojom::Page> pending_page,

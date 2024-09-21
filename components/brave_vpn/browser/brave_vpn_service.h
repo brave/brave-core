@@ -127,6 +127,7 @@ class BraveVpnService :
       mojo::PendingRemote<mojom::ServiceObserver> observer) override;
   void GetPurchasedState(GetPurchasedStateCallback callback) override;
   void LoadPurchasedState(const std::string& domain) override;
+  void Initialize() override;
 
   void GetAllRegions(GetAllRegionsCallback callback) override;
 
