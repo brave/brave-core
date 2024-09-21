@@ -38,6 +38,10 @@ namespace brave_shields {
 class AdBlockService;
 }  // namespace brave_shields
 
+namespace webcompat_reporter {
+  class WebcompatReporterService;
+}  // namespace webcompat_reporter
+
 namespace brave_stats {
 class BraveStatsUpdater;
 }  // namespace brave_stats
@@ -98,6 +102,7 @@ class BraveBrowserProcess {
   virtual ~BraveBrowserProcess();
   virtual void StartBraveServices() = 0;
   virtual brave_shields::AdBlockService* ad_block_service() = 0;
+  virtual webcompat_reporter::WebcompatReporterService* webcompat_reporter_service() = 0;
   virtual https_upgrade_exceptions::HttpsUpgradeExceptionsService*
   https_upgrade_exceptions_service() = 0;
   virtual localhost_permission::LocalhostPermissionComponent*
