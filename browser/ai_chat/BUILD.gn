@@ -8,6 +8,42 @@ import("//printing/buildflags/buildflags.gni")
 
 assert(enable_ai_chat)
 
+static_library("ai_chat") {
+  sources = [
+    "//brave/browser/ai_chat/ai_chat_service_factory.cc",
+    "//brave/browser/ai_chat/ai_chat_service_factory.h",
+    "//brave/browser/ai_chat/ai_chat_settings_helper.cc",
+    "//brave/browser/ai_chat/ai_chat_settings_helper.h",
+    "//brave/browser/ai_chat/ai_chat_utils.cc",
+    "//brave/browser/ai_chat/ai_chat_utils.h",
+  ]
+
+  deps = [
+    "//brave/brave_domains",
+    "//brave/browser:browser_process",
+    "//brave/browser/misc_metrics",
+    "//brave/browser/skus",
+    "//brave/components/ai_chat/content/browser",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/resources:strings_grit",
+    "//brave/net/base:utils",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//chrome/common:channel_info",
+    "//components/keyed_service/content",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//ui/base",
+  ]
+
+  if (is_android) {
+    deps += [ "//brave/build/android:jni_headers" ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [ "ai_chat_throttle_unittest.cc" ]
@@ -44,6 +80,8 @@ source_set("browser_tests") {
     ]
     deps = [
       "//brave/app:generate_command_metadata",
+      "//brave/browser/ai_chat",
+      "//brave/browser/misc_metrics",
       "//brave/components/ai_chat/content/browser",
       "//brave/components/ai_chat/core/browser",
       "//brave/components/ai_chat/core/browser:test_support",

@@ -3,6 +3,75 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+
+source_set("misc_metrics") {
+  sources = [ "//brave/browser/misc_metrics/process_misc_metrics.h" ]
+
+  deps = [ "//brave/components/ai_chat/core/common/buildflags" ]
+}
+
+static_library("misc_metrics_impl") {
+  visibility = [
+    "//brave/browser/misc_metrics/*",
+    "//chrome/browser",
+  ]
+
+  sources = [
+    "//brave/browser/misc_metrics/doh_metrics.cc",
+    "//brave/browser/misc_metrics/doh_metrics.h",
+    "//brave/browser/misc_metrics/page_metrics_tab_helper.cc",
+    "//brave/browser/misc_metrics/page_metrics_tab_helper.h",
+    "//brave/browser/misc_metrics/process_misc_metrics.cc",
+    "//brave/browser/misc_metrics/profile_misc_metrics_service.h",
+    "//brave/browser/misc_metrics/profile_misc_metrics_service_factory.h",
+    "//brave/browser/misc_metrics/uptime_monitor.h",
+  ]
+
+  deps = [
+    "//brave/browser:browser_process",
+    "//brave/browser/misc_metrics",
+    "//brave/browser/profiles:util",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/misc_metrics",
+    "//brave/components/p3a_utils",
+    "//brave/components/time_period_storage",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/autofill",
+    "//chrome/browser/profiles:profiles",
+    "//chrome/browser/search_engines",
+    "//chrome/browser/ui",
+    "//chrome/common:constants",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+  ]
+
+  if (!is_android) {
+    sources += [
+      "//brave/browser/misc_metrics/extension_metrics.cc",
+      "//brave/browser/misc_metrics/extension_metrics.h",
+      "//brave/browser/misc_metrics/theme_metrics.cc",
+      "//brave/browser/misc_metrics/theme_metrics.h",
+      "//brave/browser/misc_metrics/vertical_tab_metrics.cc",
+      "//brave/browser/misc_metrics/vertical_tab_metrics.h",
+    ]
+    deps += [
+      "//brave/browser/themes",
+      "//chrome/browser/themes",
+      "//extensions/browser",
+    ]
+  } else {
+    sources += [ "//brave/browser/misc_metrics/misc_android_metrics.h" ]
+  }
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/browser" ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
 
@@ -16,6 +85,8 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/browser",
+    "//brave/browser/misc_metrics",
+    "//brave/browser/misc_metrics:misc_metrics_impl",
     "//brave/components/misc_metrics",
     "//chrome/browser",
     "//chrome/browser/search_engines",
@@ -51,6 +122,7 @@ source_set("browser_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/browser/misc_metrics:misc_metrics_impl",
     "//chrome/browser/profiles:profile",
     "//chrome/test:test_support",
     "//components/prefs:test_support",
