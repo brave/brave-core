@@ -9,6 +9,7 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -57,8 +58,7 @@ WebcompatReporterServiceFactory::~WebcompatReporterServiceFactory() = default;
 
 KeyedService* WebcompatReporterServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  //auto* ad_block_service = g_brave_browser_process->ad_block_service();
-  return new WebcompatReporterService(/*ad_block_service*/);
+  return g_brave_browser_process->webcompat_reporter_service();
 }
 
 content::BrowserContext* WebcompatReporterServiceFactory::GetBrowserContextToUse(

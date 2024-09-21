@@ -59,6 +59,8 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.components.browser_ui.widget.ChromeDialog;
+import org.chromium.mojo.system.MojoException;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.ui.widget.ChromeImageButton;
 
 import java.util.ArrayList;
@@ -66,10 +68,15 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+
+import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
+import org.chromium.webcompat_reporter.mojom.AdblockComponentInfo;
+
+import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
 /**
  * Object responsible for handling the creation, showing, hiding of the BraveShields menu.
  */
-public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCallback {
+public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCallback, ConnectionErrorHandler {
     private static final String TAG = "BraveShieldsHandler";
     private static final int URL_SPEC_MAX_LINES = 3;
     private static final String CHROME_ERROR = "chrome-error://";
@@ -135,6 +142,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private ImageView mImageView;
     private TextView mViewScreenshot;
     private byte[] mScreenshotBytes;
+
+    private WebcompatReporterHandler mWebcompatReporterHandler;
 
     private static Context scanForActivity(Context cont) {
         if (cont == null) {
@@ -315,6 +324,29 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         return popupWindow;
     }
 
+    @Override
+    public void onConnectionError(MojoException e) {
+    //    if (isPlaylistEnabledByPrefsAndFlags()) {
+        mWebcompatReporterHandler = null;
+        initWebcompatReporterService();
+    //    }
+    }
+
+    private void initWebcompatReporterService() {
+        // Tab currentTab = getToolbarDataProvider().getTab();
+        // if (mWebcompatReporterService != null || currentTab == null) {
+        //     return;
+        // }
+
+        // if (currentTab.isIncognito()) {
+        //     return;
+        // }
+Log.i(TAG, "initWebcompatReporterService #100");
+        mWebcompatReporterHandler =
+            WebcompatReporterServiceFactory.getInstance()
+                        .getWebcompatReporterHandler(this);
+    }
+
     public void updateUrlSpec(String urlSpec) {
         mUrlSpec = urlSpec;
     }
@@ -488,6 +520,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         setUpSecondaryLayout();
 
         setupMainSwitchClick(mShieldMainSwitch);
+
+        initWebcompatReporterService();
     }
 
     private void shareStats() {
@@ -815,6 +849,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     } else {
                         mViewScreenshot.setVisibility(View.GONE);
                     }
+                });
+
+                mWebcompatReporterHandler.getAdblockComponentInfo((AdblockComponentInfo[] subscriptions) -> {
+Log.i(TAG, "On AdblockComponentInfo #500 subscriptions.length:" + subscriptions.length);
                 });
 
         Button mSubmitButton = mReportBrokenSiteLayout.findViewById(R.id.btn_submit);

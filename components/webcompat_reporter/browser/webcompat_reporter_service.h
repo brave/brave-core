@@ -13,13 +13,17 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 
+namespace component_updater {
+class ComponentUpdateService;
+}  // namespace component_updater
+
 namespace webcompat_reporter {
 
 // This class is not thread-safe and should have single owner
 class WebcompatReporterService : public KeyedService,
                           public mojom::WebcompatReporterHandler {
  public:
-  explicit WebcompatReporterService();
+  explicit WebcompatReporterService(component_updater::ComponentUpdateService* component_update_service);
   ~WebcompatReporterService() override;
 
    mojo::PendingRemote<mojom::WebcompatReporterHandler> MakeRemote();
@@ -28,9 +32,9 @@ class WebcompatReporterService : public KeyedService,
    void GetAdblockComponentInfo(GetAdblockComponentInfoCallback callback) override;
 
  private:
-//   raw_ptr<AdBlockService> ad_block_service_ = nullptr;
-   mojo::ReceiverSet<mojom::WebcompatReporterHandler> receivers_;
-   base::WeakPtrFactory<WebcompatReporterService> weak_factory_{this};
+  raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
+  mojo::ReceiverSet<mojom::WebcompatReporterHandler> receivers_;
+  base::WeakPtrFactory<WebcompatReporterService> weak_factory_{this};
 
   WebcompatReporterService(const WebcompatReporterService&) = delete;
   WebcompatReporterService& operator=(const WebcompatReporterService&) = delete;
