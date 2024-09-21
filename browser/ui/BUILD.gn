@@ -38,8 +38,8 @@ source_set("ui") {
   ]
 
   public_deps = [
-    ":brave_tab_prefs",
     ":brave_tab_features",
+    ":brave_tab_prefs",
   ]
   sources = [
     "brave_ui_features.cc",
@@ -1356,7 +1356,7 @@ source_set("brave_tab_prefs") {
     "tabs/brave_tab_prefs.cc",
     "tabs/brave_tab_prefs.h",
   ]
-  deps =[
+  deps = [
     ":brave_tab_features",
     "//components/prefs",
   ]
@@ -1367,9 +1367,7 @@ source_set("brave_tab_features") {
     "tabs/features.cc",
     "tabs/features.h",
   ]
-  deps =[
-    "//base",
-  ]
+  deps = [ "//base" ]
 }
 
 source_set("unit_tests") {

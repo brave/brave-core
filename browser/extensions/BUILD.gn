@@ -57,8 +57,8 @@ source_set("extensions") {
     ":resources",
     "//base",
     "//brave/app:brave_generated_resources_grit",
-    "//brave/browser/brave_rewards:util",
     "//brave/browser:browser_process",
+    "//brave/browser/brave_rewards:util",
     "//brave/browser/component_updater",
     "//brave/browser/extensions/api:generated_api_registration",
     "//brave/browser/themes",
@@ -67,6 +67,7 @@ source_set("extensions") {
     "//brave/common/extensions/api",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core/public:headers",
@@ -84,12 +85,11 @@ source_set("extensions") {
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/brave_webtorrent:static_resources",
-    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/constants",
+    "//brave/components/de_amp/common",
     "//brave/components/debounce/core/common",
     "//brave/components/decentralized_dns/content",
     "//brave/components/decentralized_dns/core",
-    "//brave/components/de_amp/common",
     "//brave/components/greaselion/browser",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/common",
@@ -129,7 +129,7 @@ source_set("extensions") {
   if (enable_tor) {
     deps += [
       "//brave/components/tor",
-      "//brave/components/tor:pref_names"
+      "//brave/components/tor:pref_names",
     ]
   }
 
