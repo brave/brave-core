@@ -5,25 +5,16 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 
+# These files needs access to some files in chrome/browser target.
 brave_browser_misc_metrics_sources = [
-  "//brave/browser/misc_metrics/doh_metrics.cc",
-  "//brave/browser/misc_metrics/doh_metrics.h",
-  "//brave/browser/misc_metrics/page_metrics_tab_helper.cc",
-  "//brave/browser/misc_metrics/page_metrics_tab_helper.h",
-  "//brave/browser/misc_metrics/process_misc_metrics.cc",
-  "//brave/browser/misc_metrics/process_misc_metrics.h",
   "//brave/browser/misc_metrics/profile_misc_metrics_service.cc",
-  "//brave/browser/misc_metrics/profile_misc_metrics_service.h",
   "//brave/browser/misc_metrics/profile_misc_metrics_service_factory.cc",
-  "//brave/browser/misc_metrics/profile_misc_metrics_service_factory.h",
   "//brave/browser/misc_metrics/uptime_monitor.cc",
-  "//brave/browser/misc_metrics/uptime_monitor.h",
 ]
 
 brave_browser_misc_metrics_deps = [
   "//brave/browser:browser_process",
   "//brave/browser/profiles:util",
-  "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/misc_metrics",
   "//chrome/browser:browser_process",
   "//chrome/browser/profiles:profiles",
@@ -32,27 +23,12 @@ brave_browser_misc_metrics_deps = [
   "//content/public/browser",
 ]
 
-if (!is_android) {
-  brave_browser_misc_metrics_sources += [
-    "//brave/browser/misc_metrics/extension_metrics.cc",
-    "//brave/browser/misc_metrics/extension_metrics.h",
-    "//brave/browser/misc_metrics/theme_metrics.cc",
-    "//brave/browser/misc_metrics/theme_metrics.h",
-    "//brave/browser/misc_metrics/vertical_tab_metrics.cc",
-    "//brave/browser/misc_metrics/vertical_tab_metrics.h",
-  ]
-  brave_browser_misc_metrics_deps += [ "//brave/browser/themes" ]
-} else {
-  brave_browser_misc_metrics_sources += [
-    "//brave/browser/misc_metrics/misc_android_metrics.cc",
-    "//brave/browser/misc_metrics/misc_android_metrics.h",
-  ]
-}
-
 if (enable_ai_chat) {
   brave_browser_misc_metrics_deps +=
       [ "//brave/components/ai_chat/core/browser" ]
 }
 
-brave_browser_misc_metrics_android_sources =
-    [ "//brave/browser/misc_metrics/misc_android_metrics_factory_android.cc" ]
+brave_browser_misc_metrics_android_sources = [
+  "//brave/browser/misc_metrics/misc_android_metrics.cc",
+  "//brave/browser/misc_metrics/misc_android_metrics_factory_android.cc",
+]

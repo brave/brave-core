@@ -4,7 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/ai_chat/android/sources.gni")
-import("//brave/browser/ai_chat/sources.gni")
 import("//brave/browser/autocomplete/sources.gni")
 import("//brave/browser/brave_adaptive_captcha/sources.gni")
 import("//brave/browser/brave_ads/sources.gni")
@@ -38,7 +37,6 @@ import("//brave/browser/playlist/sources.gni")
 import("//brave/browser/renderer_context_menu/sources.gni")
 import("//brave/browser/request_otr/sources.gni")
 import("//brave/browser/search_engines/sources.gni")
-import("//brave/browser/skus/sources.gni")
 import("//brave/browser/speedreader/sources.gni")
 import("//brave/browser/sync/sources.gni")
 import("//brave/browser/themes/sources.gni")
@@ -127,8 +125,11 @@ brave_chrome_browser_deps = [
   "//brave/browser/component_updater",
   "//brave/browser/ethereum_remote_client/buildflags",
   "//brave/browser/metrics/buildflags",
+  "//brave/browser/misc_metrics",
+  "//brave/browser/misc_metrics:misc_metrics_impl",
   "//brave/browser/profiles",
   "//brave/browser/search",
+  "//brave/browser/skus",
   "//brave/browser/sync",
   "//brave/browser/themes",
   "//brave/browser/ui",
@@ -198,6 +199,7 @@ brave_chrome_browser_deps = [
   "//brave/components/resources",
   "//brave/components/skus/browser",
   "//brave/components/skus/common",
+  "//brave/components/skus/common:mojom",
   "//brave/components/speech_to_text",
   "//brave/components/speech_to_text:buildflags",
   "//brave/components/speedreader/common/buildflags",
@@ -331,14 +333,12 @@ if (enable_request_otr) {
 
 if (enable_ai_chat) {
   brave_chrome_browser_deps += [
+    "//brave/browser/ai_chat",
     "//brave/components/ai_chat/content/browser",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
   ]
-
-  brave_chrome_browser_sources += brave_browser_ai_chat_sources
-  brave_chrome_browser_deps += brave_browser_ai_chat_deps
 
   if (is_android) {
     brave_chrome_browser_sources += brave_browser_ai_chat_android_sources
@@ -521,7 +521,6 @@ brave_chrome_browser_sources += brave_browser_playlist_sources
 brave_chrome_browser_sources += brave_browser_renderer_context_menu_sources
 brave_chrome_browser_sources += brave_browser_request_otr_sources
 brave_chrome_browser_sources += brave_browser_search_engines_sources
-brave_chrome_browser_sources += brave_browser_skus_sources
 brave_chrome_browser_sources += brave_browser_speedreader_sources
 brave_chrome_browser_sources += brave_browser_sync_sources
 brave_chrome_browser_sources += brave_browser_themes_sources
@@ -559,7 +558,6 @@ brave_chrome_browser_deps += brave_browser_playlist_deps
 brave_chrome_browser_deps += brave_browser_renderer_context_menu_deps
 brave_chrome_browser_deps += brave_browser_request_otr_deps
 brave_chrome_browser_deps += brave_browser_search_engines_deps
-brave_chrome_browser_deps += brave_browser_skus_deps
 brave_chrome_browser_deps += brave_browser_speedreader_deps
 brave_chrome_browser_deps += brave_browser_sync_deps
 brave_chrome_browser_deps += brave_browser_themes_deps

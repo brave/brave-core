@@ -33,6 +33,7 @@ source_set("ui") {
   ]
 
   deps = [
+    "//brave/browser/skus",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/webcompat/core/common",
   ]
@@ -88,6 +89,8 @@ source_set("ui") {
       "webui/ai_chat/ai_chat_ui_page_handler.cc",
       "webui/ai_chat/ai_chat_ui_page_handler.h",
     ]
+
+    deps += [ "//brave/browser/ai_chat" ]
 
     if (enable_print_preview) {
       sources += [
@@ -723,6 +726,7 @@ source_set("ui") {
     "//brave/browser:sparkle_buildflags",
     "//brave/browser/brave_rewards:util",
     "//brave/browser/ethereum_remote_client/buildflags",
+    "//brave/browser/misc_metrics",
     "//brave/browser/profiles",
     "//brave/browser/shell_integrations/buildflags",
     "//brave/browser/themes",
