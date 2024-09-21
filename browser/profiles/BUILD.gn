@@ -4,9 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("util") {
-  # Remove when https://github.com/brave/brave-browser/issues/10648 is resolved
-  #check_includes = false
-
   sources = [
     "profile_util.cc",
     "profile_util.h",
