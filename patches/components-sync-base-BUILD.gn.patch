@@ -1,0 +1,13 @@
+diff --git a/components/sync/base/BUILD.gn b/components/sync/base/BUILD.gn
+index 2e3331d072c9408b27db6a97aa4e163868ef1bd5..11f14f126ff4044d58a6e52a305ebc8c06b4dba9 100644
+--- a/components/sync/base/BUILD.gn
++++ b/components/sync/base/BUILD.gn
+@@ -86,5 +86,8 @@ static_library("base") {
+     "//ui/base",
+   ]
+ 
++  import("//brave/components/sync/base/sources.gni")
++  public_deps += brave_components_sync_base_public_deps
++
+   defines = [ "SYNC_USER_AGENT_PRODUCT=$sync_user_agent_product" ]
+ }
