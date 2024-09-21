@@ -5,9 +5,13 @@
 
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 
+#include "base/check.h"
+#include "base/strings/utf_string_conversions.h"
+#include "components/component_updater/component_updater_service.h"
 namespace webcompat_reporter {
 
-WebcompatReporterService::WebcompatReporterService() = default;
+WebcompatReporterService::WebcompatReporterService(component_updater::ComponentUpdateService* component_update_service)
+  : component_update_service_(component_update_service) {}
 
 WebcompatReporterService::~WebcompatReporterService() = default;
 
@@ -25,9 +29,16 @@ void WebcompatReporterService::Bind(
 
 void WebcompatReporterService::GetAdblockComponentInfo(
     GetAdblockComponentInfoCallback callback) {
-LOG(INFO) << "[WEBCOMPAT] WebcompatReporterService::GetAdblockComponentInfo #100";
-std::move(callback).Run(
-      std::vector<mojom::AdblockComponentInfoPtr>());
+  DCHECK(component_update_service_);
+  LOG(INFO)
+      << "[WEBCOMPAT] WebcompatReporterService::GetAdblockComponentInfo #100";
+  auto components(component_update_service_->GetComponents());
+  std::vector<mojom::AdblockComponentInfoPtr> result;
+  for (auto& ci : components) {
+    result.push_back(mojom::AdblockComponentInfo::New(
+        base::UTF16ToUTF8(ci.name), ci.version.GetString(), ci.id));
+  }
+  std::move(callback).Run(std::move(result));
 }
 
 }  // namespace webcompat_reporter
