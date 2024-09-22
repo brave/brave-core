@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
@@ -36,7 +37,6 @@ source_set("brave_rewards_impl") {
     ":util",
     "//base",
     "//brave/browser/brave_wallet",
-    "//brave/browser/greaselion",
     "//brave/browser/ui:brave_rewards_source",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",
@@ -67,6 +67,10 @@ source_set("brave_rewards_impl") {
     ]
 
     deps += [ "//extensions/browser" ]
+  }
+
+  if (enable_greaselion) {
+    deps += [ "//brave/browser/greaselion" ]
   }
 }
 
