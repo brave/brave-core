@@ -4,6 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_browser_brave_rewards_android_sources = [
-  "brave/browser/brave_rewards/android/brave_rewards_native_worker.cc",
-  "brave/browser/brave_rewards/android/brave_rewards_native_worker.h",
+  "//brave/browser/brave_rewards/android/brave_rewards_native_worker.cc",
+  "//brave/browser/brave_rewards/android/brave_rewards_native_worker.h",
 ]
