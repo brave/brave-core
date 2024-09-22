@@ -51,13 +51,6 @@ source_set("brave_rewards_impl") {
     "//extensions/buildflags",
   ]
 
-  if (is_android) {
-    sources += [
-      "//brave/browser/brave_rewards/android/brave_rewards_native_worker.cc",
-      "//brave/browser/brave_rewards/android/brave_rewards_native_worker.h",
-    ]
-  }
-
   if (enable_extensions) {
     sources += [
       "extension_rewards_notification_service_observer.cc",
