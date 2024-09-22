@@ -5,7 +5,6 @@
 
 #include "brave/browser/extensions/api/brave_wallet_api.h"
 
-#include <memory>
 #include <optional>
 #include <string>
 
@@ -25,14 +24,12 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_util.h"
-#include "extensions/common/constants.h"
 
 namespace {
 

@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
@@ -56,38 +57,59 @@ source_set("extensions") {
     ":resources",
     "//base",
     "//brave/app:brave_generated_resources_grit",
+    "//brave/browser:browser_process",
     "//brave/browser/brave_rewards:util",
     "//brave/browser/component_updater",
     "//brave/browser/extensions/api:generated_api_registration",
+    "//brave/browser/themes",
+    "//brave/browser/ui:brave_tab_prefs",
     "//brave/common",
     "//brave/common/extensions/api",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_ads/browser",
-    "//brave/components/brave_ads/core",
+    "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_extension:static_resources",
+    "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/core:headers",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/core/common",
     "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wayback_machine/buildflags",
+    "//brave/components/brave_webtorrent:static_resources",
     "//brave/components/constants",
     "//brave/components/de_amp/common",
+    "//brave/components/debounce/core/common",
     "//brave/components/decentralized_dns/content",
+    "//brave/components/decentralized_dns/core",
+    "//brave/components/greaselion/browser",
+    "//brave/components/l10n/common",
+    "//brave/components/ntp_background_images/common",
     "//brave/components/ntp_widget_utils/browser",
+    "//brave/components/playlist/browser",
+    "//brave/components/playlist/common/buildflags",
+    "//brave/components/request_otr/common",
     "//brave/components/sidebar/browser",
     "//brave/components/tor/buildflags",
+    "//chrome/browser:browser_process",
     "//chrome/browser/extensions",
     "//chrome/common",
+    "//components/browsing_data/core",
     "//components/gcm_driver:gcm_buildflags",
     "//components/gcm_driver:gcm_driver",
     "//components/omnibox/browser:browser",
     "//components/prefs",
     "//components/services/patch/content",
     "//components/services/unzip/content",
+    "//components/update_client:network_impl",
     "//components/update_client:patch_impl",
     "//components/update_client:unzip_impl",
     "//content/public/browser",
@@ -99,6 +121,17 @@ source_set("extensions") {
   ]
 
   public_deps = [ "//brave/browser/ethereum_remote_client/buildflags" ]
+
+  if (enable_brave_vpn) {
+    deps += [ "//brave/components/brave_vpn/common" ]
+  }
+
+  if (enable_tor) {
+    deps += [
+      "//brave/components/tor",
+      "//brave/components/tor:pref_names",
+    ]
+  }
 
   if (enable_speedreader) {
     deps += [ "//brave/components/speedreader" ]
