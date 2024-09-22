@@ -56,6 +56,7 @@ static_library("browser") {
     "//components/prefs",
     "//components/sessions",
     "//content/public/browser",
+    "//extensions/buildflags",
     "//mojo/public/cpp/bindings",
     "//net",
     "//services/data_decoder/public/cpp",
@@ -70,10 +71,6 @@ static_library("browser") {
 
   if (is_android) {
     deps += [ "//brave/components/safetynet:android" ]
-  }
-
-  if (enable_extensions) {
-    deps += [ "//extensions/buildflags" ]
   }
 
   if (enable_greaselion) {

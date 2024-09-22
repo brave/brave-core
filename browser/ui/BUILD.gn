@@ -33,6 +33,7 @@ source_set("ui") {
   ]
 
   deps = [
+    "//brave/browser/brave_rewards",
     "//brave/browser/skus",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/webcompat/core/common",
@@ -1137,7 +1138,6 @@ source_set("ui") {
     }
 
     deps += [
-      "//brave/browser/brave_rewards",
       "//brave/browser/extensions",
       "//brave/components/brave_extension:generated_resources",
       "//brave/components/brave_extension:static_resources",
