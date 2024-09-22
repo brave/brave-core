@@ -6,11 +6,9 @@
 #include "brave/browser/search/ntp_utils.h"
 
 #include "base/logging.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
-#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
 namespace {
