@@ -342,7 +342,7 @@ void BraveBrowserCommandController::UpdateCommandForTor() {
                        browser_->profile()->IsTor());
   UpdateCommandEnabled(
       IDC_NEW_OFFTHERECORD_WINDOW_TOR,
-      !TorProfileServiceFactory::IsTorDisabled((browser_->profile()));
+      !TorProfileServiceFactory::IsTorDisabled(browser_->profile());
 }
 #endif
 
