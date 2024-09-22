@@ -2291,7 +2291,7 @@ mojom::Environment RewardsServiceImpl::GetDefaultServerEnvironment() {
 mojom::Environment RewardsServiceImpl::GetDefaultServerEnvironmentForAndroid() {
   auto result = mojom::Environment::kProduction;
   bool use_staging = false;
-  if (profile_ && prefs_) {
+  if (prefs_) {
     use_staging = prefs_->GetBoolean(prefs::kUseRewardsStagingServer);
   }
 

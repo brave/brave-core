@@ -85,7 +85,9 @@ class RewardsTabHelper : public content::WebContentsUserData<RewardsTabHelper>,
 
   void MaybeSavePublisherInfo();
 
+#if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<BrowserListObserver> browser_list_observer_;
+#endif
   SessionID tab_id_;
   raw_ptr<RewardsService> rewards_service_ = nullptr;  // NOT OWNED
   base::ObserverList<Observer> observer_list_;
