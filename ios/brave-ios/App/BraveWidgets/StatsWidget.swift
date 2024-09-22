@@ -65,6 +65,7 @@ private struct StatsView: View {
         Spacer()
         Image("brave-icon-no-bg")
           .resizable()
+          .widgetAccentedRenderingModeFullColor()
           .aspectRatio(contentMode: .fit)
           .frame(height: 24)
       }
@@ -78,6 +79,7 @@ private struct StatsView: View {
                 Text(verbatim: placeholderOrPrivacyRedaction ? "-" : data.value)
                   .font(.system(size: 32.0))
                   .foregroundColor(Color(data.color))
+                  .widgetAccentable()
                   .minimumScaleFactor(0.5)
                   .lineLimit(1)
                   .unredacted()

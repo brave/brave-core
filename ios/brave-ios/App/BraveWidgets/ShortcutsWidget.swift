@@ -78,6 +78,8 @@ private struct ShortcutProvider: IntentTimelineProvider {
 }
 
 private struct ShortcutLink<Content: View>: View {
+  @Environment(\.widgetRenderingMode) private var renderingMode
+
   var url: String
   var text: String
   var image: Content
@@ -106,8 +108,8 @@ private struct ShortcutLink<Content: View>: View {
           .foregroundColor(Color(UIColor.braveLabel))
           .frame(maxWidth: .infinity, maxHeight: .infinity)
           .background(
-            Color(UIColor.braveBackground)
-              .clipShape(ContainerRelativeShape())
+            renderingMode == .accented ? Color.white.opacity(0.1) : Color(UIColor.braveBackground),
+            in: .containerRelative
           )
         }
       )
@@ -189,6 +191,8 @@ extension WidgetShortcut {
 }
 
 private struct ShortcutsView: View {
+  @Environment(\.widgetRenderingMode) private var renderingMode
+
   var slots: [WidgetShortcut]
 
   var body: some View {
@@ -203,13 +207,15 @@ private struct ShortcutsView: View {
               Text(Strings.Widgets.shortcutsEnterURLButton)
             } icon: {
               Image("brave-logo-no-bg-small")
+                .widgetAccentedRenderingModeFullColor()
             }
             .foregroundColor(Color(UIColor.braveLabel))
             .frame(maxWidth: .infinity)
             .frame(height: 44)
             .background(
-              Color(UIColor.braveBackground)
-                .clipShape(ContainerRelativeShape())
+              renderingMode == .accented
+                ? Color.white.opacity(0.1) : Color(UIColor.braveBackground),
+              in: .containerRelative
             )
           }
         )

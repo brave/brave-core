@@ -71,6 +71,7 @@ private struct TopNewsListWidgetProvider: TimelineProvider {
 }
 
 private struct TopNewsListView: View {
+  @Environment(\.widgetRenderingMode) private var widgetRenderingMode
   @Environment(\.pixelLength) var pixelLength
   @Environment(\.widgetFamily) var widgetFamily
   var entry: TopNewsListEntry
@@ -80,6 +81,7 @@ private struct TopNewsListView: View {
       HStack(spacing: 4) {
         Image("brave-icon-no-bg")
           .resizable()
+          .widgetAccentedRenderingModeFullColor()
           .aspectRatio(contentMode: .fit)
           .frame(width: 16, height: 16)
         Text(Strings.Widgets.braveNews)
@@ -108,7 +110,10 @@ private struct TopNewsListView: View {
       if let topics = entry.topics, !topics.isEmpty {
         VStack(alignment: .leading, spacing: widgetFamily == .systemLarge ? 12 : 8) {
           headerView
-            .background(Color(.braveGroupedBackground))
+            .background(
+              widgetRenderingMode == .accented
+                ? Color.white.opacity(0.1) : Color(.braveGroupedBackground)
+            )
           VStack(alignment: .leading, spacing: 8) {
             ForEach(topics.prefix(widgetFamily == .systemLarge ? 5 : 2)) { topic in
               HStack {
@@ -138,6 +143,7 @@ private struct TopNewsListView: View {
                     .overlay(
                       Image(uiImage: image)
                         .resizable()
+                        .widgetAccentedRenderingModeFullColor()
                         .aspectRatio(contentMode: .fill)
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))

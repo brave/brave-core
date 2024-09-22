@@ -48,6 +48,7 @@
 		27D7FF7329BB816E0096DD93 /* PrivateCDN in Frameworks */ = {isa = PBXBuildFile; productRef = 27D7FF7229BB816E0096DD93 /* PrivateCDN */; };
 		27D972E628BD4D9900DDCF79 /* BraveNews in Frameworks */ = {isa = PBXBuildFile; productRef = 27D972E528BD4D9900DDCF79 /* BraveNews */; };
 		27DB270828BE9CB4005CB7AC /* LockScreenFavoriteWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DB270728BE9CAE005CB7AC /* LockScreenFavoriteWidget.swift */; };
+		27E0E2142CA0162D001DA292 /* WidgetAccentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E0E2132CA01629001DA292 /* WidgetAccentable.swift */; };
 		27E998272B7BE1BC00D9ECF7 /* BraveCore in Frameworks */ = {isa = PBXBuildFile; productRef = 27E998262B7BE1BC00D9ECF7 /* BraveCore */; };
 		27F4439F2135E11200296C58 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27F443952135E11200296C58 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27F443AD2135E25300296C58 /* ShareToBraveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */; };
@@ -235,6 +236,7 @@
 		27D7FF7129BA78820096DD93 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		27DB270728BE9CAE005CB7AC /* LockScreenFavoriteWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenFavoriteWidget.swift; sourceTree = "<group>"; };
 		27DD1330284FDAFB004E1E1F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = Shortcuts/fr.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		27E0E2132CA01629001DA292 /* WidgetAccentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetAccentable.swift; sourceTree = "<group>"; };
 		27E30417284FDB57009A07F2 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "Shortcuts/pt-BR.lproj/BrowserIntents.strings"; sourceTree = "<group>"; };
 		27EDE18129A7D98000F34870 /* Debug (AppStore).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Debug (AppStore).entitlements"; sourceTree = "<group>"; };
 		27EDE18229A7DA0E00F34870 /* Debug-AppStore.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Debug-AppStore.xcconfig"; sourceTree = "<group>"; };
@@ -711,6 +713,7 @@
 				272947DF29C8DE4300BF2FDC /* News Topics */,
 				27444B6929831B9E002E1EBE /* Development Assets */,
 				CA0391DA271E12D9000EB13C /* Entitlements */,
+				27E0E2132CA01629001DA292 /* WidgetAccentable.swift */,
 				2713FCD72A96429100398A57 /* WidgetBackground.swift */,
 				27A28ED428C00C19001466A4 /* LockScreenShortcutWidget.swift */,
 				27DB270728BE9CAE005CB7AC /* LockScreenFavoriteWidget.swift */,
@@ -1250,6 +1253,7 @@
 				CA0391FB271E143F000EB13C /* StatsWidget.swift in Sources */,
 				2713FCD82A96429600398A57 /* WidgetBackground.swift in Sources */,
 				CA0391F8271E143F000EB13C /* ShortcutsWidget.swift in Sources */,
+				27E0E2142CA0162D001DA292 /* WidgetAccentable.swift in Sources */,
 				27DB270828BE9CB4005CB7AC /* LockScreenFavoriteWidget.swift in Sources */,
 				441A6360272445F9001492C3 /* StatDataModel.swift in Sources */,
 				2F4A572529E608CC003454F8 /* BrowserIntents.intentdefinition in Sources */,
