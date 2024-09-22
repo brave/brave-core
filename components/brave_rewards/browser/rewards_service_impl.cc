@@ -53,6 +53,7 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
+#include "components/brave_rewards/browser/android_util.h"
 #include "components/country_codes/country_codes.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/os_crypt/sync/os_crypt.h"
