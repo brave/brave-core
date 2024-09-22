@@ -38,7 +38,10 @@ source_set("ui") {
     "//brave/components/webcompat/core/common",
   ]
 
-  public_deps = []
+  public_deps = [
+    ":brave_tab_features",
+    ":brave_tab_prefs",
+  ]
   sources = [
     "brave_ui_features.cc",
     "brave_ui_features.h",
@@ -204,13 +207,9 @@ source_set("ui") {
       "tabs/brave_tab_layout_constants.h",
       "tabs/brave_tab_menu_model.cc",
       "tabs/brave_tab_menu_model.h",
-      "tabs/brave_tab_prefs.cc",
-      "tabs/brave_tab_prefs.h",
       "tabs/brave_tab_strip_model.cc",
       "tabs/brave_tab_strip_model.h",
       "tabs/brave_tab_style.h",
-      "tabs/features.cc",
-      "tabs/features.h",
       "tabs/shared_pinned_tab_dummy_view.h",
       "tabs/shared_pinned_tab_service.cc",
       "tabs/shared_pinned_tab_service.h",
@@ -1354,6 +1353,25 @@ source_set("ui") {
       "//ui/views",
     ]
   }
+}
+
+source_set("brave_tab_prefs") {
+  sources = [
+    "tabs/brave_tab_prefs.cc",
+    "tabs/brave_tab_prefs.h",
+  ]
+  deps = [
+    ":brave_tab_features",
+    "//components/prefs",
+  ]
+}
+
+source_set("brave_tab_features") {
+  sources = [
+    "tabs/features.cc",
+    "tabs/features.h",
+  ]
+  deps = [ "//base" ]
 }
 
 source_set("unit_tests") {

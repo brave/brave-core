@@ -76,8 +76,6 @@ static_library("common") {
     ":common_constants",
     ":generated_eth_requests",
     ":generated_json_rpc_requests",
-    ":mojom",
-    ":mojom__generator",
     ":pref_names",
     "//brave/components/brave_wallet/rust:rust_lib",
     "//brave/net/base:utils",
@@ -90,7 +88,10 @@ static_library("common") {
     "//url",
   ]
 
-  public_deps = [ "//base" ]
+  public_deps = [
+    ":mojom",
+    "//base",
+  ]
 }
 
 source_set("common_constants") {
