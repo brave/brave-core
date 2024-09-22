@@ -54,6 +54,7 @@ struct FaviconImage: View {
   var body: some View {
     Image(uiImage: image)
       .resizable()
+      .widgetAccentedRenderingModeFullColor()
       .aspectRatio(1, contentMode: .fit)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .clipped()
@@ -65,6 +66,7 @@ private struct NoFavoritesFoundView: View {
   var body: some View {
     VStack {
       Image("brave-icon")
+        .widgetAccentedRenderingModeFullColor()
         .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
       Text(Strings.Widgets.noFavoritesFound)
         .multilineTextAlignment(.center)
