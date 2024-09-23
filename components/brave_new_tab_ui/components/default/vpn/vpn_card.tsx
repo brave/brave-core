@@ -13,6 +13,7 @@ import * as React from 'react';
 import Button from "@brave/leo/react/button";
 import Toggle from "@brave/leo/react/toggle";
 
+import * as BraveVPN from '../../../api/braveVpn';
 import * as Actions from "../../../actions/brave_vpn_actions";
 import { BraveVPNState } from "components/brave_new_tab_ui/reducers/brave_vpn";
 import { useDispatch } from "react-redux";
@@ -75,7 +76,7 @@ export const VPNWidget = ({
       <WidgetHeader icon="product-vpn">
         {locales.firewallVpn}
       </WidgetHeader>
-      <WidgetBody className={`${styles.body} ${connectionState && styles.connected}`}>
+      <WidgetBody className={`${styles.body} ${connectionState === BraveVPN.ConnectionState.CONNECTED && styles.connected}`}>
         <div className={`${styles.shield}`}>
           <Icon>
             <Shield />
@@ -83,7 +84,7 @@ export const VPNWidget = ({
         </div>
         <div className={styles.detailsAndActions}>
           <div className={styles.serverDetails}>
-            <span className={`${styles.connectionStatus}`}>{connectionState ? locales.connected : locales.disconnected}</span>
+            <span className={`${styles.connectionStatus}`}>{connectionState === BraveVPN.ConnectionState.CONNECTED ? locales.connected : locales.disconnected}</span>
             <div className={styles.detailLockup}>
               <span className={styles.region}>{selectedRegion.country}</span>
               <button className={styles.changeServerButton}>{locales.change}</button>
@@ -92,7 +93,7 @@ export const VPNWidget = ({
               {selectedRegion.regionPrecision === "city" && <span className={styles.city}>{selectedRegion.namePretty}</span>}
             </div>
           </div>
-          <Toggle checked={connectionState === 0} onChange={() => dispatch(Actions.toggleConnection())} />
+          <Toggle checked={connectionState === BraveVPN.ConnectionState.CONNECTED} onChange={() => dispatch(Actions.toggleConnection())} />
         </div>
       </WidgetBody>
     </WidgetWrapper>
