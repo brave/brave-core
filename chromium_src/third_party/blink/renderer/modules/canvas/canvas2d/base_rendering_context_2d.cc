@@ -18,7 +18,7 @@ bool IsGoogleMaps(const blink::KURL& url) {
     return false;
   }
   const auto path = url.GetPath();
-  return path.StartsWith("/maps/") || path == "/maps";
+  return path == "/maps" || path.ToString().StartsWith("/maps/");
 }
 
 }  // namespace
