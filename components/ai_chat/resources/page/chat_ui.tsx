@@ -33,7 +33,6 @@ function App() {
   const [selectedConversationUuid, setSelectedConversationUuid] = React.useState<
     string | undefined
   >()
-  const [displayedConversationId, setDisplayedConversationId] = React.useState<string>()
 
   const [conversationAPI, setConversationAPI] =
     React.useState<ConversationContextProps>()
@@ -44,7 +43,7 @@ function App() {
     React.useState(new Date().getTime())
 
   const handleSelectConversationUuid = (id: string | undefined) => {
-    if (!id || id !== selectedConversationId) {
+    if (!id || id !== selectedConversationUuid) {
       console.log('select conversation', id)
       setConversationAPI(API.bindConversation(id))
       setSelectedConversationUuid(id)
@@ -62,14 +61,7 @@ function App() {
 
   // Clean up bindings when not used anymore
   React.useEffect(() => {
-    setDisplayedConversationId(undefined)
     let cancel = false
-    conversationAPI?.conversationHandler.getConversationId().then(({conversationId}) => {
-      if (cancel) {
-        return
-      }
-      setDisplayedConversationId(conversationId)
-    })
     return () => {
       cancel = true
       conversationAPI?.callbackRouter.$.close()
@@ -96,8 +88,7 @@ function App() {
 
   return (
     <AIChatContextProvider
-      selectedConversationUuid={selectedConversationUuid}
-      isDefaultConversation={!selectedConversationId}
+      isDefaultConversation={!selectedConversationUuid}
       onNewConversation={handleNewConversation}
       onSelectConversationUuid={handleSelectConversationUuid}
     >
