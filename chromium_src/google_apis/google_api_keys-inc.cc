@@ -8,7 +8,7 @@
 namespace google_apis {
 
 void SetAPIKeyForTesting(const std::string& api_key) {
-  g_api_key_cache.Get().set_api_key_for_testing(api_key);  // IN-TEST
+  GetApiKeyCacheInstance().set_api_key_for_testing(api_key);  // IN-TEST
 }
 
 bool BraveHasAPIKeyConfigured() {
