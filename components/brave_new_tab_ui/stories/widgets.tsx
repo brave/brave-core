@@ -6,28 +6,21 @@
 import * as React from 'react'
 import { withKnobs } from '@storybook/addon-knobs'
 import { VPNWidget } from '../components/default/vpn/vpn_card';
-import { Provider as ReduxProvider } from 'react-redux';
 import * as BraveVPN from '../api/braveVpn';
-import { createStore } from 'redux';
 
 export default {
   title: 'VPN/Widgets',
   decorators: [
-    (Story: any) => {
-      const store = createStore(state => state, {
-        braveVPN: {
-          purchasedState: BraveVPN.PurchasedState.NOT_PURCHASED,
-          connectionState: BraveVPN.ConnectionState.DISCONNECTED,
-          selectedRegion: new BraveVPN.Region()
-        }
-      })
-
-      return <ReduxProvider store={store}><Story /></ReduxProvider>
-    },
     withKnobs
   ]
 }
 
+const vpnWidgetProps = {
+  purchasedState: BraveVPN.PurchasedState.NOT_PURCHASED,
+  connectionState: BraveVPN.ConnectionState.DISCONNECTED,
+  selectedRegion: new BraveVPN.Region()
+}
+
 export const VPN = () => (
-  <VPNWidget />
+  <VPNWidget {...vpnWidgetProps} />
 )
