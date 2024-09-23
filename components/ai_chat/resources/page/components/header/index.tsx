@@ -35,7 +35,7 @@ export function PageTitleHeader(props: PageTitleHeaderProps) {
           <Button
             kind='plain-faint'
             fab
-            onClick={() => {aiChatContext.onSelectConversationId(undefined)}}
+            onClick={() => {aiChatContext.onSelectConversationUuid(undefined)}}
           >
             <Icon name='arrow-left' />
           </Button>

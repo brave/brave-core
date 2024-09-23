@@ -157,7 +157,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -1258,15 +1257,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     throttles.push_back(std::move(request_otr_throttle));
   }
 #endif
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  if (Profile::FromBrowserContext(context)->IsRegularProfile()) {
-    if (auto ai_chat_throttle =
-            ai_chat::AiChatThrottle::MaybeCreateThrottleFor(handle)) {
-      throttles.push_back(std::move(ai_chat_throttle));
-    }
-  }
-#endif  // ENABLE_AI_CHAT
 
   return throttles;
 }
