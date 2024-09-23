@@ -12,7 +12,6 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/tor/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/browser.h"
@@ -25,6 +24,7 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/tor/pref_names.h"
 #endif
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)

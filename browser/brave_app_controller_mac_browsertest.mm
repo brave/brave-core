@@ -21,7 +21,6 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/tor/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
@@ -42,6 +41,7 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/tor/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_TOR)
 
 using bookmarks::BookmarkModel;
