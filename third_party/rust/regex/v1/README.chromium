@@ -3,7 +3,7 @@ URL: https://crates.io/crates/regex
 Description: An implementation of regular expressions for Rust. This implementation uses
 finite automata and guarantees linear time matching on all inputs.
 
-Version: 1.10.6
+Version: 1.11.0
 Security Critical: yes
 Shipped: yes
 License: Apache 2.0
