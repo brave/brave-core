@@ -67,7 +67,7 @@ std::optional<size_t> PickPeekingCardWithMax(
     base::flat_set<std::string> top_story_urls,
     const ArticleInfos& articles,
     size_t max_candidates) {
-  // Store now, so its consistent for everything.
+  // Store now, so it's consistent for everything.
   auto now = base::Time::Now();
 
   auto get_article =

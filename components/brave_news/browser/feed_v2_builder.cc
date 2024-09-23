@@ -36,7 +36,6 @@
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
