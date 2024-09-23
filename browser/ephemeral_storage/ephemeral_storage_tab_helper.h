@@ -39,7 +39,7 @@ class EphemeralStorageTabHelper
   ~EphemeralStorageTabHelper() override;
 
   std::optional<base::UnguessableToken> GetEphemeralStorageToken(
-      const url::Origin& origin);
+      std::optional<url::Origin> origin);
 
   void SetEphemeralStorageToken(std::optional<base::UnguessableToken> token);
   void GenerateEphemeralStorageTokenForNewTab();

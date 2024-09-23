@@ -50,15 +50,21 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
 EphemeralStorageTabHelper::~EphemeralStorageTabHelper() = default;
 
 std::optional<base::UnguessableToken>
-EphemeralStorageTabHelper::GetEphemeralStorageToken(const url::Origin& origin) {
+EphemeralStorageTabHelper::GetEphemeralStorageToken(
+    std::optional<url::Origin> origin) {
+  if (auto tab_es_token = TakeEphemeralStorageTokenForNewTab()) {
+    return tab_es_token;
+  }
+
   if (ephemeral_storage_token_) {
     return ephemeral_storage_token_;
   }
 
   if (auto* ephemeral_storage_service =
           EphemeralStorageServiceFactory::GetForContext(
-              web_contents()->GetBrowserContext())) {
-    return ephemeral_storage_service->Get1PESToken(origin);
+              web_contents()->GetBrowserContext());
+      ephemeral_storage_service && origin) {
+    return ephemeral_storage_service->Get1PESToken(*origin);
   }
   return std::nullopt;
 }
@@ -75,10 +81,28 @@ void EphemeralStorageTabHelper::GenerateEphemeralStorageTokenForNewTab() {
 
 std::optional<base::UnguessableToken>
 EphemeralStorageTabHelper::TakeEphemeralStorageTokenForNewTab() {
+  LOG(ERROR) << "EphemeralStorageTabHelper::TakeEphemeralStorageTokenForNewTab";
   if (ephemeral_storage_token_for_new_tab_) {
     auto ephemeral_storage_token_for_new_tab =
         std::move(ephemeral_storage_token_for_new_tab_);
+    LOG(ERROR) << "EPHEMERAL!";
     return ephemeral_storage_token_for_new_tab;
+  }
+
+  if (!ephemeral_storage_token_) {
+    if (auto* true_opener_wc =
+            GetWebContents().GetFirstWebContentsInLiveOriginalOpenerChain()) {
+      if (auto* opener_es_tab_helper =
+              EphemeralStorageTabHelper::FromWebContents(true_opener_wc)) {
+        ephemeral_storage_token_ =
+            opener_es_tab_helper->GetEphemeralStorageToken(std::nullopt);
+      } else {
+        LOG(ERROR) << "NO OPENER_ES_TAB_HELPER";
+      }
+    } else {
+      LOG(ERROR) << "NO TRUE_OPENER_WC, usual opener: "
+                 << GetWebContents().GetOpener();
+    }
   }
 
   return ephemeral_storage_token_;
