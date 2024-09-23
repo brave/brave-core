@@ -20,13 +20,13 @@
 #include "base/values.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "build/build_config.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_rewards {
 
-RewardsNotificationServiceImpl::RewardsNotificationServiceImpl(Profile* profile)
-    : profile_(profile) {
+RewardsNotificationServiceImpl::RewardsNotificationServiceImpl(
+    PrefService* prefs)
+    : prefs_(prefs) {
   ReadRewardsNotificationsJSON();
 }
 
@@ -141,8 +141,7 @@ RewardsNotificationServiceImpl::GenerateRewardsNotificationTimestamp() const {
 }
 
 void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
-  std::string json =
-      profile_->GetPrefs()->GetString(prefs::kNotifications);
+  std::string json = prefs_->GetString(prefs::kNotifications);
   if (json.empty())
     return;
   std::optional<base::Value> parsed = base::JSONReader::Read(json);
@@ -247,7 +246,7 @@ void RewardsNotificationServiceImpl::StoreRewardsNotifications() {
     return;
   }
 
-  profile_->GetPrefs()->SetString(prefs::kNotifications, result);
+  prefs_->SetString(prefs::kNotifications, result);
 }
 
 bool RewardsNotificationServiceImpl::Exists(RewardsNotificationID id) const {

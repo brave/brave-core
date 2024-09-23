@@ -21,14 +21,36 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #endif
 
 namespace brave_rewards {
 
+#if !BUILDFLAG(IS_ANDROID)
+class BraveBrowserListObserver : public BrowserListObserver {
+ public:
+  explicit BraveBrowserListObserver(RewardsTabHelper* tab_helper)
+      : tab_helper_(tab_helper) {}
+  ~BraveBrowserListObserver() override {}
+  void OnBrowserSetLastActive(Browser* browser) override {
+    tab_helper_->OnBrowserSetLastActive(browser);
+  }
+  void OnBrowserNoLongerActive(Browser* browser) override {
+    tab_helper_->OnBrowserNoLongerActive(browser);
+  }
+
+ private:
+  const raw_ptr<RewardsTabHelper> tab_helper_ = nullptr;  // Not owned.
+};
+#endif
+
 RewardsTabHelper::RewardsTabHelper(content::WebContents* web_contents)
     : content::WebContentsUserData<RewardsTabHelper>(*web_contents),
       WebContentsObserver(web_contents),
+#if !BUILDFLAG(IS_ANDROID)
+      browser_list_observer_(new BraveBrowserListObserver(this)),
+#endif
       tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)) {
   if (tab_id_.is_valid()) {
     rewards_service_ = RewardsServiceFactory::GetForProfile(
@@ -40,7 +62,7 @@ RewardsTabHelper::RewardsTabHelper(content::WebContents* web_contents)
   }
 
 #if !BUILDFLAG(IS_ANDROID)
-  BrowserList::AddObserver(this);
+  BrowserList::AddObserver(browser_list_observer_.get());
 #endif
 }
 
@@ -49,7 +71,7 @@ RewardsTabHelper::~RewardsTabHelper() {
     rewards_service_->RemoveObserver(this);
   }
 #if !BUILDFLAG(IS_ANDROID)
-  BrowserList::RemoveObserver(this);
+  BrowserList::RemoveObserver(browser_list_observer_.get());
 #endif
 }
 

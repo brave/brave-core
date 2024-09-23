@@ -686,6 +686,7 @@ if (!is_android) {
     deps = [
       "//base",
       "//brave/base/test:test_vendor_is_brave",
+      "//brave/browser/brave_rewards",
       "//brave/components/brave_ads/core/public:headers",
       "//brave/components/brave_rewards/browser",
       "//chrome/browser",
@@ -837,6 +838,7 @@ test("brave_browser_tests") {
     "//brave/browser/autoplay:browser_tests",
     "//brave/browser/brave_ads:browser_tests",
     "//brave/browser/brave_news:browser_tests",
+    "//brave/browser/brave_rewards",
     "//brave/browser/brave_rewards/test:browser_tests",
     "//brave/browser/brave_wallet",
     "//brave/browser/brave_wallet:browser_tests",
@@ -1037,6 +1039,8 @@ test("brave_browser_tests") {
     sources += [ "//brave/browser/greaselion/greaselion_browsertest.cc" ]
 
     deps += [
+      "//brave/browser/brave_rewards",
+      "//brave/browser/greaselion",
       "//brave/components/greaselion/browser",
       "//chrome/browser",
     ]

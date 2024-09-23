@@ -6,15 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_H_
 
-#include <memory>
 #include <string>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
 #include "base/observer_list.h"
-#include "base/types/expected.h"
-#include "base/version.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "build/build_config.h"

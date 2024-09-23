@@ -8,8 +8,6 @@
 #include <stdint.h>
 
 #include <algorithm>
-#include <functional>
-#include <limits>
 #include <optional>
 #include <set>
 #include <string>
@@ -17,28 +15,22 @@
 #include <vector>
 
 #include "base/barrier_closure.h"
-#include "base/base64.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
 #include "base/functional/bind.h"
 #include "base/i18n/time_formatting.h"
-#include "base/json/json_reader.h"
 #include "base/json/json_string_value_serializer.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/escape.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "base/strings/utf_string_conversions.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
-#include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
@@ -57,21 +49,15 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/rewards_database.h"
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
-#include "chrome/browser/favicon/favicon_service_factory.h"
-#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "components/country_codes/country_codes.h"
 #include "components/favicon/core/favicon_service.h"
-#include "components/favicon_base/favicon_types.h"
-#include "components/grit/brave_components_resources.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/service_process_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/url_data_source.h"
@@ -81,16 +67,12 @@
 #include "net/cookies/cookie_util.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "services/network/public/mojom/cookie_manager.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "third_party/icu/source/common/unicode/locid.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
-#include "url/url_canon_stdstring.h"
-#include "url/url_util.h"
 
 namespace brave_rewards {
 
@@ -269,12 +251,19 @@ const base::FilePath::StringType kPublishers_list("publishers_list");
 #endif
 
 RewardsServiceImpl::RewardsServiceImpl(
-    Profile* profile,
+    PrefService* prefs,
+    const base::FilePath& profile_path,
+    favicon::FaviconService* favicon_service,
+    BitmapFetcherService* bitmap_fetcher_service,
+    content::StoragePartition* storage_partition,
 #if BUILDFLAG(ENABLE_GREASELION)
     greaselion::GreaselionService* greaselion_service,
 #endif
     brave_wallet::BraveWalletService* brave_wallet_service)
-    : profile_(profile),
+    : prefs_(prefs),
+      favicon_service_(favicon_service),
+      bitmap_fetcher_service_(bitmap_fetcher_service),
+      storage_partition_(storage_partition),
 #if BUILDFLAG(ENABLE_GREASELION)
       greaselion_service_(greaselion_service),
 #endif
@@ -285,19 +274,15 @@ RewardsServiceImpl::RewardsServiceImpl(
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       json_sanitizer_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT})),
-      legacy_state_path_(profile_->GetPath().Append(kLegacy_state)),
-      publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),
-      publisher_info_db_path_(profile->GetPath().Append(kPublisher_info_db)),
-      publisher_list_path_(profile->GetPath().Append(kPublishers_list)),
-      diagnostic_log_(
-          new DiagnosticLog(profile_->GetPath().Append(kDiagnosticLogPath),
-                            kDiagnosticLogMaxFileSize,
-                            kDiagnosticLogKeepNumLines)),
-      notification_service_(new RewardsNotificationServiceImpl(profile)),
-      conversion_monitor_(profile->GetPrefs()) {
-  // Set up the rewards data source
-  content::URLDataSource::Add(profile_,
-                              std::make_unique<BraveRewardsSource>(profile_));
+      legacy_state_path_(profile_path.Append(kLegacy_state)),
+      publisher_state_path_(profile_path.Append(kPublisher_state)),
+      publisher_info_db_path_(profile_path.Append(kPublisher_info_db)),
+      publisher_list_path_(profile_path.Append(kPublishers_list)),
+      diagnostic_log_(new DiagnosticLog(profile_path.Append(kDiagnosticLogPath),
+                                        kDiagnosticLogMaxFileSize,
+                                        kDiagnosticLogKeepNumLines)),
+      notification_service_(new RewardsNotificationServiceImpl(prefs)),
+      conversion_monitor_(prefs) {
   ready_ = std::make_unique<base::OneShotEvent>();
 
   if (base::FeatureList::IsEnabled(features::kVerboseLoggingFeature)) {
@@ -315,7 +300,7 @@ RewardsServiceImpl::RewardsServiceImpl(
   }
 #endif
 
-  p3a::RecordAdTypesEnabled(profile_->GetPrefs());
+  p3a::RecordAdTypesEnabled(prefs_);
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
@@ -360,7 +345,7 @@ void RewardsServiceImpl::Init(
 }
 
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
-  profile_pref_change_registrar_.Init(profile_->GetPrefs());
+  profile_pref_change_registrar_.Init(prefs_);
   profile_pref_change_registrar_.Add(
       prefs::kAutoContributeEnabled,
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
@@ -382,7 +367,7 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
 
 void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
   if (key == prefs::kAutoContributeEnabled) {
-    if (profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled)) {
+    if (prefs_->GetBoolean(prefs::kAutoContributeEnabled)) {
       StartEngineProcessIfNecessary();
     }
     // Must check for connected external wallet before recording
@@ -394,7 +379,7 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
                  kNewTabPageShowSponsoredImagesBackgroundImage ||
       key == brave_ads::prefs::kOptedInToNotificationAds ||
       key == brave_ads::prefs::kOptedInToSearchResultAds) {
-    p3a::RecordAdTypesEnabled(profile_->GetPrefs());
+    p3a::RecordAdTypesEnabled(prefs_);
   }
 
   if (key == brave_ads::prefs::kOptedInToSearchResultAds) {
@@ -407,26 +392,24 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
   if (key == brave_ads::prefs::kOptedInToNotificationAds) {
     if (greaselion_service_) {
       greaselion_service_->SetFeatureEnabled(
-          greaselion::ADS, profile_->GetPrefs()->GetBoolean(
-                               brave_ads::prefs::kOptedInToNotificationAds));
+          greaselion::ADS,
+          prefs_->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds));
     }
   }
 #endif
 }
 
 void RewardsServiceImpl::CheckPreferences() {
-  auto* prefs = profile_->GetPrefs();
-
-  if (prefs->GetBoolean(prefs::kAutoContributeEnabled) ||
-      prefs->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds)) {
+  if (prefs_->GetBoolean(prefs::kAutoContributeEnabled) ||
+      prefs_->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds)) {
     // If the user has enabled Ads or AC, but the "enabled" pref is missing, set
     // the "enabled" pref to true.
-    if (!prefs->GetUserPrefValue(prefs::kEnabled)) {
-      prefs->SetBoolean(prefs::kEnabled, true);
+    if (!prefs_->GetUserPrefValue(prefs::kEnabled)) {
+      prefs_->SetBoolean(prefs::kEnabled, true);
     }
   }
 
-  if (prefs->GetUserPrefValue(prefs::kEnabled)) {
+  if (prefs_->GetUserPrefValue(prefs::kEnabled)) {
     // If the "enabled" pref is set, then start the background Rewards
     // utility process.
     StartEngineProcessIfNecessary();
@@ -434,10 +417,10 @@ void RewardsServiceImpl::CheckPreferences() {
 
   // If Rewards is enabled and the user has a linked account, then ensure that
   // the "search result ads enabled" pref has the appropriate default value.
-  if (prefs->GetBoolean(prefs::kEnabled) &&
-      !prefs->GetString(prefs::kExternalWalletType).empty() &&
-      !prefs->HasPrefPath(brave_ads::prefs::kOptedInToSearchResultAds)) {
-    prefs->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, false);
+  if (prefs_->GetBoolean(prefs::kEnabled) &&
+      !prefs_->GetString(prefs::kExternalWalletType).empty() &&
+      !prefs_->HasPrefPath(brave_ads::prefs::kOptedInToSearchResultAds)) {
+    prefs_->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, false);
   }
 }
 
@@ -511,16 +494,15 @@ void RewardsServiceImpl::CreateRewardsWallet(
         return;
       }
 
-      auto* prefs = self->profile_->GetPrefs();
-      prefs->SetString(prefs::kDeclaredGeo, country);
+      self->prefs_->SetString(prefs::kDeclaredGeo, country);
 
       // Record in which environment the wallet was created (for display on the
       // rewards internals page).
       auto on_get_environment = [](base::WeakPtr<RewardsServiceImpl> self,
                                    mojom::Environment environment) {
         if (self) {
-          self->profile_->GetPrefs()->SetInteger(
-              prefs::kWalletCreationEnvironment, static_cast<int>(environment));
+          self->prefs_->SetInteger(prefs::kWalletCreationEnvironment,
+                                   static_cast<int>(environment));
         }
       };
 
@@ -528,14 +510,17 @@ void RewardsServiceImpl::CreateRewardsWallet(
 
       // After successfully creating a Rewards wallet for the first time,
       // automatically enable Ads and AC.
-      if (!prefs->GetBoolean(prefs::kEnabled)) {
-        prefs->SetBoolean(prefs::kEnabled, true);
-        prefs->SetString(prefs::kUserVersion, prefs::kCurrentUserVersion);
-        prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, true);
+      if (!self->prefs_->GetBoolean(prefs::kEnabled)) {
+        self->prefs_->SetBoolean(prefs::kEnabled, true);
+        self->prefs_->SetString(prefs::kUserVersion,
+                                prefs::kCurrentUserVersion);
+        self->prefs_->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds,
+                                 true);
 
         // Set the user's current ToS version.
-        prefs->SetInteger(prefs::kTosVersion,
-                          RewardsParametersFromPrefs(*prefs)->tos_version);
+        self->prefs_->SetInteger(
+            prefs::kTosVersion,
+            RewardsParametersFromPrefs(*(self->prefs_))->tos_version);
 
         // Fetch the user's balance before turning on AC. We don't want to
         // automatically turn on AC if for some reason the user has a current
@@ -555,7 +540,7 @@ void RewardsServiceImpl::CreateRewardsWallet(
       }
 
       self->conversion_monitor_.RecordRewardsEnable();
-      p3a::RecordAdTypesEnabled(prefs);
+      p3a::RecordAdTypesEnabled(self->prefs_);
 
       std::move(callback).Run(CreateRewardsWalletResult::kSuccess);
     };
@@ -588,20 +573,18 @@ void RewardsServiceImpl::GetUserType(
 }
 
 bool RewardsServiceImpl::IsTermsOfServiceUpdateRequired() {
-  auto* prefs = profile_->GetPrefs();
-  if (!prefs->GetBoolean(prefs::kEnabled)) {
+  if (!prefs_->GetBoolean(prefs::kEnabled)) {
     return false;
   }
-  int params_version = RewardsParametersFromPrefs(*prefs)->tos_version;
-  int user_version = prefs->GetInteger(prefs::kTosVersion);
+  int params_version = RewardsParametersFromPrefs(*prefs_)->tos_version;
+  int user_version = prefs_->GetInteger(prefs::kTosVersion);
   return user_version < params_version;
 }
 
 void RewardsServiceImpl::AcceptTermsOfServiceUpdate() {
   if (IsTermsOfServiceUpdateRequired()) {
-    auto* prefs = profile_->GetPrefs();
-    int params_version = RewardsParametersFromPrefs(*prefs)->tos_version;
-    prefs->SetInteger(prefs::kTosVersion, params_version);
+    int params_version = RewardsParametersFromPrefs(*prefs_)->tos_version;
+    prefs_->SetInteger(prefs::kTosVersion, params_version);
     for (auto& observer : observers_) {
       observer.OnTermsOfServiceUpdateAccepted();
     }
@@ -609,12 +592,11 @@ void RewardsServiceImpl::AcceptTermsOfServiceUpdate() {
 }
 
 std::string RewardsServiceImpl::GetCountryCode() const {
-  auto* prefs = profile_->GetPrefs();
-  std::string declared_geo = prefs->GetString(prefs::kDeclaredGeo);
+  std::string declared_geo = prefs_->GetString(prefs::kDeclaredGeo);
   return !declared_geo.empty()
              ? declared_geo
              : country_codes::CountryIDToCountryString(
-                   country_codes::GetCountryIDFromPrefs(prefs));
+                   country_codes::GetCountryIDFromPrefs(prefs_));
 }
 
 void RewardsServiceImpl::GetAvailableCountries(
@@ -840,11 +822,9 @@ void RewardsServiceImpl::Shutdown() {
     RemoveObserver(extension_observer_.get());
   }
 
-  BitmapFetcherService* image_service =
-      BitmapFetcherServiceFactory::GetForBrowserContext(profile_);
-  if (image_service) {
+  if (bitmap_fetcher_service_) {
     for (auto mapping : current_media_fetchers_) {
-      image_service->CancelRequest(mapping.second);
+      bitmap_fetcher_service_->CancelRequest(mapping.second);
     }
   }
 
@@ -1025,9 +1005,7 @@ void RewardsServiceImpl::LoadURL(mojom::UrlRequestPtr request,
 
   auto loader_it = url_loaders_.insert(url_loaders_.begin(), std::move(loader));
   loader_it->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      profile_->GetDefaultStoragePartition()
-          ->GetURLLoaderFactoryForBrowserProcess()
-          .get(),
+      storage_partition_->GetURLLoaderFactoryForBrowserProcess().get(),
       base::BindOnce(&RewardsServiceImpl::OnURLLoaderComplete,
                      base::Unretained(this), loader_it, std::move(callback)));
 }
@@ -1190,8 +1168,7 @@ std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
 
   if (base::FeatureList::IsEnabled(
           features::kAllowSelfCustodyProvidersFeature)) {
-    auto& self_custody_dict =
-        profile_->GetPrefs()->GetDict(prefs::kSelfCustodyAvailable);
+    auto& self_custody_dict = prefs_->GetDict(prefs::kSelfCustodyAvailable);
 
     if (auto solana_entry =
             self_custody_dict.FindBool(internal::constant::kWalletSolana);
@@ -1220,10 +1197,10 @@ void RewardsServiceImpl::EnableGreaselion() {
   greaselion_service_->SetFeatureEnabled(greaselion::REWARDS, true);
   greaselion_service_->SetFeatureEnabled(
       greaselion::AUTO_CONTRIBUTION,
-      profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled));
+      prefs_->GetBoolean(prefs::kAutoContributeEnabled));
   greaselion_service_->SetFeatureEnabled(
-      greaselion::ADS, profile_->GetPrefs()->GetBoolean(
-                           brave_ads::prefs::kOptedInToNotificationAds));
+      greaselion::ADS,
+      prefs_->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds));
 
   greaselion_enabled_ = true;
 }
@@ -1263,12 +1240,12 @@ void RewardsServiceImpl::OnStopEngineForCompleteReset(
     SuccessCallback callback,
     const mojom::Result result) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  profile_->GetPrefs()->ClearPrefsWithPrefixSilently(pref_prefix);
+  prefs_->ClearPrefsWithPrefixSilently(pref_prefix);
   diagnostic_log_->Delete(base::BindOnce(
       &RewardsServiceImpl::OnDiagnosticLogDeletedForCompleteReset, AsWeakPtr(),
       std::move(callback)));
 
-  p3a::RecordAdTypesEnabled(profile_->GetPrefs());
+  p3a::RecordAdTypesEnabled(prefs_);
 }
 
 void RewardsServiceImpl::OnDiagnosticLogDeletedForCompleteReset(
@@ -1290,11 +1267,9 @@ void RewardsServiceImpl::OnDiagnosticLogDeletedForCompleteReset(
 void RewardsServiceImpl::Reset() {
   url_loaders_.clear();
 
-  BitmapFetcherService* image_service =
-      BitmapFetcherServiceFactory::GetForBrowserContext(profile_);
-  if (image_service) {
+  if (bitmap_fetcher_service_) {
     for (auto mapping : current_media_fetchers_) {
-      image_service->CancelRequest(mapping.second);
+      bitmap_fetcher_service_->CancelRequest(mapping.second);
     }
   }
 
@@ -1310,103 +1285,102 @@ void RewardsServiceImpl::Reset() {
 void RewardsServiceImpl::SetBooleanState(const std::string& name,
                                          bool value,
                                          SetBooleanStateCallback callback) {
-  profile_->GetPrefs()->SetBoolean(GetPrefPath(name), value);
+  prefs_->SetBoolean(GetPrefPath(name), value);
   std::move(callback).Run();
 }
 
 void RewardsServiceImpl::GetBooleanState(const std::string& name,
                                          GetBooleanStateCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetBoolean(GetPrefPath(name)));
+  std::move(callback).Run(prefs_->GetBoolean(GetPrefPath(name)));
 }
 
 void RewardsServiceImpl::SetIntegerState(const std::string& name,
                                          int32_t value,
                                          SetIntegerStateCallback callback) {
-  profile_->GetPrefs()->SetInteger(GetPrefPath(name), value);
+  prefs_->SetInteger(GetPrefPath(name), value);
   std::move(callback).Run();
 }
 
 void RewardsServiceImpl::GetIntegerState(const std::string& name,
                                          GetIntegerStateCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetInteger(GetPrefPath(name)));
+  std::move(callback).Run(prefs_->GetInteger(GetPrefPath(name)));
 }
 
 void RewardsServiceImpl::SetDoubleState(const std::string& name,
                                         double value,
                                         SetDoubleStateCallback callback) {
-  profile_->GetPrefs()->SetDouble(GetPrefPath(name), value);
+  prefs_->SetDouble(GetPrefPath(name), value);
   std::move(callback).Run();
 }
 
 void RewardsServiceImpl::GetDoubleState(const std::string& name,
                                         GetDoubleStateCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetDouble(GetPrefPath(name)));
+  std::move(callback).Run(prefs_->GetDouble(GetPrefPath(name)));
 }
 
 void RewardsServiceImpl::SetStringState(const std::string& name,
                                         const std::string& value,
                                         SetStringStateCallback callback) {
-  profile_->GetPrefs()->SetString(GetPrefPath(name), value);
+  prefs_->SetString(GetPrefPath(name), value);
   std::move(callback).Run();
 }
 
 void RewardsServiceImpl::GetStringState(const std::string& name,
                                         GetStringStateCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetString(GetPrefPath(name)));
+  std::move(callback).Run(prefs_->GetString(GetPrefPath(name)));
 }
 
 void RewardsServiceImpl::SetInt64State(const std::string& name,
                                        int64_t value,
                                        SetInt64StateCallback callback) {
-  profile_->GetPrefs()->SetInt64(GetPrefPath(name), value);
+  prefs_->SetInt64(GetPrefPath(name), value);
   std::move(callback).Run();
 }
 
 void RewardsServiceImpl::GetInt64State(const std::string& name,
                                        GetInt64StateCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetInt64(GetPrefPath(name)));
+  std::move(callback).Run(prefs_->GetInt64(GetPrefPath(name)));
 }
 
 void RewardsServiceImpl::SetUint64State(const std::string& name,
                                         uint64_t value,
                                         SetUint64StateCallback callback) {
-  profile_->GetPrefs()->SetUint64(GetPrefPath(name), value);
+  prefs_->SetUint64(GetPrefPath(name), value);
   std::move(callback).Run();
 }
 
 void RewardsServiceImpl::GetUint64State(const std::string& name,
                                         GetUint64StateCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetUint64(GetPrefPath(name)));
+  std::move(callback).Run(prefs_->GetUint64(GetPrefPath(name)));
 }
 
 void RewardsServiceImpl::SetValueState(const std::string& name,
                                        base::Value value,
                                        SetValueStateCallback callback) {
-  profile_->GetPrefs()->Set(GetPrefPath(name), std::move(value));
+  prefs_->Set(GetPrefPath(name), std::move(value));
   std::move(callback).Run();
 }
 
 void RewardsServiceImpl::GetValueState(const std::string& name,
                                        GetValueStateCallback callback) {
-  std::move(callback).Run(
-      profile_->GetPrefs()->GetValue(GetPrefPath(name)).Clone());
+  std::move(callback).Run(prefs_->GetValue(GetPrefPath(name)).Clone());
 }
 
 void RewardsServiceImpl::SetTimeState(const std::string& name,
                                       base::Time value,
                                       SetTimeStateCallback callback) {
-  profile_->GetPrefs()->SetTime(GetPrefPath(name), value);
+  prefs_->SetTime(GetPrefPath(name), value);
   std::move(callback).Run();
 }
 
 void RewardsServiceImpl::GetTimeState(const std::string& name,
                                       GetTimeStateCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetTime(GetPrefPath(name)));
+  std::move(callback).Run(prefs_->GetTime(GetPrefPath(name)));
 }
 
 void RewardsServiceImpl::ClearState(const std::string& name,
                                     ClearStateCallback callback) {
-  profile_->GetPrefs()->ClearPref(GetPrefPath(name));
+  prefs_->ClearPref(GetPrefPath(name));
   std::move(callback).Run();
 }
 
@@ -1572,10 +1546,8 @@ void RewardsServiceImpl::FetchFavIcon(const std::string& url,
     return std::move(callback).Run(false, "");
   }
 
-  BitmapFetcherService* image_service =
-      BitmapFetcherServiceFactory::GetForBrowserContext(profile_);
-  if (image_service) {
-    current_media_fetchers_[url] = image_service->RequestImage(
+  if (bitmap_fetcher_service_) {
+    current_media_fetchers_[url] = bitmap_fetcher_service_->RequestImage(
         parsedUrl,
         base::BindOnce(
             &RewardsServiceImpl::OnFetchFavIconCompleted, AsWeakPtr(),
@@ -1601,10 +1573,8 @@ void RewardsServiceImpl::OnFetchFavIconCompleted(FetchFavIconCallback callback,
                                                  const SkBitmap& image) {
   GURL favicon_url(favicon_key);
   gfx::Image gfx_image = gfx::Image::CreateFrom1xBitmap(image);
-  favicon::FaviconService* favicon_service =
-          FaviconServiceFactory::GetForProfile(profile_,
-              ServiceAccessType::EXPLICIT_ACCESS);
-  favicon_service->SetOnDemandFavicons(
+
+  favicon_service_->SetOnDemandFavicons(
       favicon_url, url, favicon_base::IconType::kFavicon, gfx_image,
       base::BindOnce(&RewardsServiceImpl::OnSetOnDemandFaviconComplete,
                      AsWeakPtr(), favicon_url.spec(), std::move(callback)));
@@ -1983,7 +1953,7 @@ void RewardsServiceImpl::PrepareEngineEnvForTesting(
       engine_state_target_version_for_testing_;
   options.retry_interval = 1;
 
-  profile_->GetPrefs()->SetInteger(prefs::kMinVisitTime, 1);
+  prefs_->SetInteger(prefs::kMinVisitTime, 1);
 }
 
 void RewardsServiceImpl::StartContributionsForTesting() {
@@ -2007,7 +1977,7 @@ p3a::ConversionMonitor* RewardsServiceImpl::GetP3AConversionMonitor() {
 }
 
 void RewardsServiceImpl::OnRewardsPageShown() {
-  p3a::RecordRewardsPageViews(profile_->GetPrefs(), true);
+  p3a::RecordRewardsPageViews(prefs_, true);
 }
 
 void RewardsServiceImpl::PublisherListNormalized(
@@ -2078,7 +2048,7 @@ void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
 }
 
 void RewardsServiceImpl::GetLegacyWallet(GetLegacyWalletCallback callback) {
-  const auto& dict = profile_->GetPrefs()->GetDict(prefs::kExternalWallets);
+  const auto& dict = prefs_->GetDict(prefs::kExternalWallets);
 
   std::string json;
   for (auto it = dict.begin(); it != dict.end(); ++it) {
@@ -2132,8 +2102,8 @@ void RewardsServiceImpl::OnExternalWalletLoginStarted(
     set_cookie_callback.Run();
   };
 
-  auto* cookie_manager = profile_->GetDefaultStoragePartition()
-                             ->GetCookieManagerForBrowserProcess();
+  auto* cookie_manager =
+      storage_partition_->GetCookieManagerForBrowserProcess();
 
   net::CookieOptions options;
   options.set_include_httponly();
@@ -2225,7 +2195,7 @@ void RewardsServiceImpl::RecordBackendP3AStats(bool delay_report) {
     return;
   }
 
-  p3a::RecordRewardsPageViews(profile_->GetPrefs(), false);
+  p3a::RecordRewardsPageViews(prefs_, false);
 
   GetExternalWallet(
       base::BindOnce(&RewardsServiceImpl::OnRecordBackendP3AExternalWallet,
@@ -2255,7 +2225,7 @@ void RewardsServiceImpl::OnRecordBackendP3AExternalWallet(
   }
 
   if (search_result_optin_changed) {
-    p3a::RecordSearchResultAdsOptinChange(profile_->GetPrefs());
+    p3a::RecordSearchResultAdsOptinChange(prefs_);
   } else if (delay_report) {
     // Use delay to ensure tips are confirmed when counting.
     p3a_tip_report_timer_.Start(
@@ -2322,9 +2292,8 @@ mojom::Environment RewardsServiceImpl::GetDefaultServerEnvironment() {
 mojom::Environment RewardsServiceImpl::GetDefaultServerEnvironmentForAndroid() {
   auto result = mojom::Environment::kProduction;
   bool use_staging = false;
-  if (profile_ && profile_->GetPrefs()) {
-    use_staging =
-        profile_->GetPrefs()->GetBoolean(prefs::kUseRewardsStagingServer);
+  if (prefs_) {
+    use_staging = prefs_->GetBoolean(prefs::kUseRewardsStagingServer);
   }
 
   if (use_staging) {
@@ -2425,8 +2394,7 @@ void RewardsServiceImpl::OnFilesDeletedForCompleteReset(
 void RewardsServiceImpl::ExternalWalletConnected() {
   // When the user connects an external wallet, turn off search result ads since
   // users cannot earn BAT for them yet. The user can turn them on manually.
-  profile_->GetPrefs()->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds,
-                                   false);
+  prefs_->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, false);
   for (auto& observer : observers_) {
     observer.OnExternalWalletConnected();
   }
@@ -2521,8 +2489,7 @@ std::string RewardsServiceImpl::GetExternalWalletType() const {
     return internal::constant::kWalletBitflyer;
   }
 
-  const std::string type =
-      profile_->GetPrefs()->GetString(prefs::kExternalWalletType);
+  const std::string type = prefs_->GetString(prefs::kExternalWalletType);
 
   if (IsValidWalletType(type)) {
     return type;

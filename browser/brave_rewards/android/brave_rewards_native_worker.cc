@@ -5,9 +5,6 @@
 
 #include "brave/browser/brave_rewards/android/brave_rewards_native_worker.h"
 
-#include <iomanip>
-#include <string>
-#include <vector>
 #include <utility>
 
 #include "base/android/jni_android.h"

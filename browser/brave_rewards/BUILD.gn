@@ -3,7 +3,69 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
+
+source_set("brave_rewards") {
+  sources = [
+    "rewards_service_factory.h",
+    "rewards_tab_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_rewards/browser",
+    "//chrome/browser/profiles",
+    "//components/keyed_service/content",
+    "//components/sessions",
+    "//content/public/browser",
+  ]
+}
+
+source_set("brave_rewards_impl") {
+  sources = [
+    "rewards_prefs_util.cc",
+    "rewards_prefs_util.h",
+    "rewards_service_factory.cc",
+    "rewards_tab_helper.cc",
+  ]
+
+  public_deps = [ ":brave_rewards" ]
+
+  deps = [
+    ":util",
+    "//base",
+    "//brave/browser/brave_wallet",
+    "//brave/browser/ui:brave_rewards_source",
+    "//brave/components/brave_rewards/browser",
+    "//brave/components/brave_rewards/common",
+    "//brave/components/greaselion/browser/buildflags",
+    "//chrome/browser/bitmap_fetcher",
+    "//chrome/browser/favicon",
+    "//chrome/browser/profiles",
+    "//chrome/browser/ui",
+    "//components/keyed_service/content",
+    "//components/prefs",
+    "//components/sessions",
+    "//extensions/buildflags",
+  ]
+
+  if (enable_extensions) {
+    sources += [
+      "extension_rewards_notification_service_observer.cc",
+      "extension_rewards_notification_service_observer.h",
+      "extension_rewards_service_observer.cc",
+      "extension_rewards_service_observer.h",
+    ]
+
+    deps += [ "//extensions/browser" ]
+  }
+
+  if (enable_greaselion) {
+    deps += [ "//brave/browser/greaselion" ]
+  }
+}
 
 source_set("util") {
   sources = [

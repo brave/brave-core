@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/sequence_checker.h"
 #include "base/task/sequenced_task_runner.h"
