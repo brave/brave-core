@@ -35,6 +35,7 @@ import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResp
 import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
@@ -229,19 +230,36 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
     }
 
+    private boolean shouldForceDefaultBrowserPrompt() {
+        Log.d(TAG, "in shouldForceDefaultBrowserPrompt");
+        boolean result = ChromeFeatureList.isEnabled(BraveFeatureList.ANDROID_FORCE_DEFAULT_BROWSER_PROMPT);
+        Log.d(TAG, "shouldForceDefaultBrowserPrompt: " + result);
+        return result;
+    }
+
     private boolean setDefaultBrowser() {
+        Log.d(TAG, "in setDefaultBrowser");
         if (!isDefaultBrowser()) {
+            Log.d(TAG, "in setDefaultBrowser: not default browser");
             BraveSetDefaultBrowserUtils.setDefaultBrowser(this);
+            Log.d(TAG, "in setDefaultBrowser: set default browser");
             if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
+                Log.d(TAG, "in setDefaultBrowser: not supported");
                 nextOnboardingStep();
+                Log.d(TAG, "in setDefaultBrowser: nextOnboardingStep");
                 return false;
             }
+            Log.d(TAG, "in setDefaultBrowser: supported");
         }
+        Log.d(TAG, "in setDefaultBrowser: is default browser");
         return true;
     }
 
     private boolean isDefaultBrowser() {
-        return BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this);
+        Log.d(TAG, "in isDefaultBrowser");
+        boolean result = BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this);
+        Log.d(TAG, "in isDefaultBrowser: " + result);
+        return result;
     }
 
     private void startTimer(int delayMillis) {
@@ -445,10 +463,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             finish();
             sendFirstRunCompletePendingIntent();
         }
-    }
-
-    private boolean shouldForceDefaultBrowserPrompt() {
-        return ChromeFeatureList.isEnabled(BraveFeatureList.ANDROID_FORCE_DEFAULT_BROWSER_PROMPT);
     }
 
     private void setLeafAnimation(
