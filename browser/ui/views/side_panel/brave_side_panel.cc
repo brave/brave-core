@@ -86,6 +86,10 @@ BraveSidePanel::~BraveSidePanel() {
   scoped_observation_.RemoveObservation(this);
 }
 
+void BraveSidePanel::UpdateWidthOnEntryChanged() {
+  // Do nothing.
+}
+
 void BraveSidePanel::SetHorizontalAlignment(HorizontalAlignment alignment) {
   horizontal_alignment_ = alignment;
   UpdateBorder();
