@@ -1,8 +1,8 @@
 diff --git a/components/sessions/core/tab_restore_service_impl.cc b/components/sessions/core/tab_restore_service_impl.cc
-index 837fbd223fe943239796589f5e33dfe7105b0932..889521e3b0317a3c232b975bc76806893cd81ad7 100644
+index 791fc1874851ebc37620c8d63f8893a6f156f69e..1539ab283512d93e9eea5bb3a2d4c2c7a977069c 100644
 --- a/components/sessions/core/tab_restore_service_impl.cc
 +++ b/components/sessions/core/tab_restore_service_impl.cc
-@@ -1603,7 +1603,7 @@ void TabRestoreServiceImpl::UpdatePersistenceDelegate() {
+@@ -1667,7 +1667,7 @@ void TabRestoreServiceImpl::UpdatePersistenceDelegate() {
        PersistenceDelegate persistence_delegate(client_.get());
        persistence_delegate.DeleteLastSession();
      }

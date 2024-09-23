@@ -1,15 +1,14 @@
 diff --git a/chrome/browser/ui/browser_tab_strip_model_delegate.cc b/chrome/browser/ui/browser_tab_strip_model_delegate.cc
-index bb683cc906eee62653f847fceb3672504dacc780..8993b3952c01ebe0e1e93eb1c462d25bf654cb53 100644
+index 825e8490af65c7b329676286cefc4904a39a161e..0b52c0085cc42ca2817ab23932b2faa0639c07f6 100644
 --- a/chrome/browser/ui/browser_tab_strip_model_delegate.cc
 +++ b/chrome/browser/ui/browser_tab_strip_model_delegate.cc
-@@ -170,8 +170,8 @@ void BrowserTabStripModelDelegate::MoveGroupToNewWindow(
+@@ -176,9 +176,6 @@ void BrowserTabStripModelDelegate::MoveGroupToNewWindow(
  
- absl::optional<SessionID> BrowserTabStripModelDelegate::CreateHistoricalTab(
+ std::optional<SessionID> BrowserTabStripModelDelegate::CreateHistoricalTab(
      content::WebContents* contents) {
 -  if (!BrowserSupportsHistoricalEntries())
--    return absl::nullopt;
-+  // if (!BrowserSupportsHistoricalEntries())
-+  //   return absl::nullopt;
- 
+-    return std::nullopt;
+-
    sessions::TabRestoreService* service =
        TabRestoreServiceFactory::GetForProfile(browser_->profile());
+ 

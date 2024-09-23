@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
-index d9c675c8aca73a6a8411735a6c6a350795fa308f..4d084dc9987b0ed82ea3dfca996f472d0302b014 100644
+index 4db37945148cb812b9e03117a2cde3c68f897d51..555ec129510532a232ce3a367ef4df261e7778e0 100644
 --- a/chrome/browser/chrome_content_browser_client.cc
 +++ b/chrome/browser/chrome_content_browser_client.cc
-@@ -4922,7 +4922,7 @@ bool ChromeContentBrowserClient::PreSpawnChild(
+@@ -5194,7 +5194,7 @@ bool ChromeContentBrowserClient::PreSpawnChild(
      return false;
  
    // Allow loading Chrome's DLLs.
@@ -11,7 +11,7 @@ index d9c675c8aca73a6a8411735a6c6a350795fa308f..4d084dc9987b0ed82ea3dfca996f472d
      result = config->AllowExtraDlls(GetModulePath(dll).value().c_str());
      if (result != sandbox::SBOX_ALL_OK)
        return false;
-@@ -4932,6 +4932,8 @@ bool ChromeContentBrowserClient::PreSpawnChild(
+@@ -5204,6 +5204,8 @@ bool ChromeContentBrowserClient::PreSpawnChild(
  }
  
  bool ChromeContentBrowserClient::IsRendererCodeIntegrityEnabled() {
