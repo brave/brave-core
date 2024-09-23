@@ -459,24 +459,32 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             boolean isTopLeaf) {
         if (leafMargin > 0 && leafAlignView != null) {
             int margin = (int) dpToPx(this, leafMargin);
-            Animation animation = new Animation() {
-                @Override
-                protected void applyTransformation(float interpolatedTime, Transformation t) {
-                    if (leafAlignView != null) {
-                        ViewGroup.MarginLayoutParams layoutParams =
-                                (ViewGroup.MarginLayoutParams) leafAlignView.getLayoutParams();
-                        if (isTopLeaf) {
-                            layoutParams.bottomMargin = margin
-                                    - (int) ((margin - layoutParams.bottomMargin)
-                                            * interpolatedTime);
-                        } else {
-                            layoutParams.topMargin = margin
-                                    - (int) ((margin - layoutParams.topMargin) * interpolatedTime);
+            Animation animation =
+                    new Animation() {
+                        @Override
+                        protected void applyTransformation(
+                                float interpolatedTime, Transformation t) {
+                            if (leafAlignView != null) {
+                                ViewGroup.MarginLayoutParams layoutParams =
+                                        (ViewGroup.MarginLayoutParams)
+                                                leafAlignView.getLayoutParams();
+                                if (isTopLeaf) {
+                                    layoutParams.bottomMargin =
+                                            margin
+                                                    - (int)
+                                                            ((margin - layoutParams.bottomMargin)
+                                                                    * interpolatedTime);
+                                } else {
+                                    layoutParams.topMargin =
+                                            margin
+                                                    - (int)
+                                                            ((margin - layoutParams.topMargin)
+                                                                    * interpolatedTime);
+                                }
+                                leafAlignView.setLayoutParams(layoutParams);
+                            }
                         }
-                        leafAlignView.setLayoutParams(layoutParams);
-                    }
-                }
-            };
+                    };
             animation.setDuration(800);
             leafAlignView.startAnimation(animation);
         }
