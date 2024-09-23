@@ -210,11 +210,12 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
     private void onClickViews() {
         if (mBtnPositive != null) {
-            mBtnPositive.setOnClickListener(view -> {
-                if (mCurrentStep != 1 || setDefaultBrowser()) {
-                    nextOnboardingStep();
-                }
-            });
+            mBtnPositive.setOnClickListener(
+                    view -> {
+                        if (mCurrentStep != 1 || setDefaultBrowser()) {
+                            nextOnboardingStep();
+                        }
+                    });
         }
 
         if (mBtnNegative != null) {
@@ -265,20 +266,25 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             if (mIvBrave != null) {
                 mIvBrave.animate().scaleX(0.8f).scaleY(0.8f).setDuration(1000);
             }
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (mTvWelcome != null) {
-                        mTvWelcome.animate()
-                                .translationYBy(-dpToPx(WelcomeOnboardingActivity.this, 20))
-                                .setDuration(3000)
-                                .start();
-                    }
-                }
-            }, 200);
+            new Handler()
+                    .postDelayed(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (mTvWelcome != null) {
+                                        mTvWelcome
+                                                .animate()
+                                                .translationYBy(
+                                                        -dpToPx(WelcomeOnboardingActivity.this, 20))
+                                                .setDuration(3000)
+                                                .start();
+                                    }
+                                }
+                            },
+                            200);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-                (!shouldForceDefaultBrowserPrompt() || !isDefaultBrowser())) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                    && (!shouldForceDefaultBrowserPrompt() || !isDefaultBrowser())) {
                 mRequestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
             } else {
                 startTimer(3000);
@@ -313,7 +319,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 String countryCode = Locale.getDefault().getCountry();
                 if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)) {
                     if (mTvCard != null) {
-                        mTvCard.setText(getResources().getString(R.string.privacy_onboarding_india));
+                        mTvCard.setText(
+                                getResources().getString(R.string.privacy_onboarding_india));
                     }
                     if (mTvDefault != null) {
                         mTvDefault.setText(
@@ -444,8 +451,12 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         return ChromeFeatureList.isEnabled(BraveFeatureList.ANDROID_FORCE_DEFAULT_BROWSER_PROMPT);
     }
 
-    private void setLeafAnimation(View leafAlignView, ImageView leafView, float scale,
-            float leafMargin, boolean isTopLeaf) {
+    private void setLeafAnimation(
+            View leafAlignView,
+            ImageView leafView,
+            float scale,
+            float leafMargin,
+            boolean isTopLeaf) {
         if (leafMargin > 0 && leafAlignView != null) {
             int margin = (int) dpToPx(this, leafMargin);
             Animation animation = new Animation() {
