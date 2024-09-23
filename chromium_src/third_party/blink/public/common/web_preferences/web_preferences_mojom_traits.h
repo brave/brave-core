@@ -27,6 +27,10 @@ struct BLINK_COMMON_EXPORT StructTraits<blink::mojom::WebPreferencesDataView,
     return r.force_cosmetic_filtering;
   }
 
+  static bool page_in_reader_mode(const blink::web_pref::WebPreferences& r) {
+    return r.page_in_reader_mode;
+  }
+
   static bool Read(blink::mojom::WebPreferencesDataView r,
                    blink::web_pref::WebPreferences* out);
 };

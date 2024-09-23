@@ -23,6 +23,7 @@ bool StructTraits<blink::mojom::WebPreferencesDataView,
     return false;
   }
   out->force_cosmetic_filtering = data.force_cosmetic_filtering();
+  out->page_in_reader_mode = data.page_in_reader_mode();
   return true;
 }
 

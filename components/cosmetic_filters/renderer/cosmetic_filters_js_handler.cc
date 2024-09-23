@@ -443,8 +443,11 @@ bool CosmeticFiltersJSHandler::ProcessURL(
 
   const bool force_cosmetic_filtering =
       render_frame_->GetBlinkPreferences().force_cosmetic_filtering;
-  if (!force_cosmetic_filtering &&
-      !content_settings->IsCosmeticFilteringEnabled(url_)) {
+  const bool page_in_reader_mode =
+      render_frame_->GetBlinkPreferences().page_in_reader_mode;
+  if (page_in_reader_mode ||
+      (!force_cosmetic_filtering &&
+       !content_settings->IsCosmeticFilteringEnabled(url_))) {
     return false;
   }
 

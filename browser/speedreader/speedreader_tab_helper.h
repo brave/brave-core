@@ -126,6 +126,8 @@ class SpeedreaderTabHelper
   void UpdateUI();
 
   // content::WebContentsObserver:
+  void ReadyToCommitNavigation(
+      content::NavigationHandle* navigation_handle) override;
   void DidStartNavigation(
       content::NavigationHandle* navigation_handle) override;
   void DidRedirectNavigation(
@@ -142,6 +144,7 @@ class SpeedreaderTabHelper
   bool IsPageContentPresent() override;
   std::string TakePageContent() override;
   void OnDistillComplete(DistillationResult result) override;
+  void OnDistilledDocumentSent() override;
 
   // speedreader::TtsPlayer::Observer:
   void OnReadingStart(content::WebContents* web_contents) override;

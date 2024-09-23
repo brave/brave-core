@@ -38,6 +38,7 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/browser/web_contents.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "ui/base/resource/resource_bundle.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -355,6 +356,18 @@ void SpeedreaderTabHelper::UpdateUI() {
 #endif
 }
 
+void SpeedreaderTabHelper::ReadyToCommitNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (!navigation_handle->IsInPrimaryMainFrame()) {
+    return;
+  }
+
+  blink::web_pref::WebPreferences prefs =
+      web_contents()->GetOrCreateWebPreferences();
+  prefs.page_in_reader_mode = DistillStates::IsDistilled(PageDistillState());
+  web_contents()->SetWebPreferences(prefs);
+}
+
 void SpeedreaderTabHelper::DidStartNavigation(
     content::NavigationHandle* navigation_handle) {
   ProcessNavigation(navigation_handle);
@@ -436,7 +449,11 @@ std::string SpeedreaderTabHelper::TakePageContent() {
 
 void SpeedreaderTabHelper::OnDistillComplete(DistillationResult result) {
   // Perform a state transition
-  TransitStateTo(DistillStates::Distilled(result));
+  Transit(distill_state_, DistillStates::Distilled(result));
+}
+
+void SpeedreaderTabHelper::OnDistilledDocumentSent() {
+  UpdateUI();
 
 #if BUILDFLAG(IS_ANDROID)
   // Attempt to reset page scale after a successful distillation.

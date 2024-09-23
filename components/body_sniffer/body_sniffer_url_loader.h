@@ -69,6 +69,9 @@ class BodyHandler {
                              network::mojom::URLResponseHead* response_head,
                              bool* defer) = 0;
 
+  // Called before sending the content to the consumer.
+  virtual void OnBeforeSending() = 0;
+
   // Called when the page content reaches the consumer.
   virtual void OnComplete() = 0;
 
@@ -102,6 +105,8 @@ class BodyProducer {
       network::mojom::URLResponseHead* response_head) = 0;
   // Content to be sent to the consumer.
   virtual std::string TakeContent() = 0;
+  // Called before sending the content to the consumer.
+  virtual void OnBeforeSending() = 0;
   // Called when the content reaches the consumer.
   virtual void OnComplete() = 0;
 };

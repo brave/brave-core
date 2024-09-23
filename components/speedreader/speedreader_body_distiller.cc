@@ -98,9 +98,15 @@ bool SpeedreaderBodyDistiller::ShouldProcess(
   return true;
 }
 
-void SpeedreaderBodyDistiller::OnComplete() {
+void SpeedreaderBodyDistiller::OnBeforeSending() {
   if (speedreader_delegate_) {
     speedreader_delegate_->OnDistillComplete(distillation_result_);
+  }
+}
+
+void SpeedreaderBodyDistiller::OnComplete() {
+  if (speedreader_delegate_) {
+    speedreader_delegate_->OnDistilledDocumentSent();
   }
 }
 
