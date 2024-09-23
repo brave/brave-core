@@ -457,6 +457,10 @@ inline constexpr char16_t kCwsEnhancedSafeBrowsingLearnMoreURL[] =
 inline constexpr char kPrivacyPolicyOnlineURLPath[] =
     "https://support.brave.com/";
 
+// The URL path to online privacy policy dark mode.
+inline constexpr char kPrivacyPolicyOnlineDarkModeURLPath[] =
+    "https://support.brave.com/";
+
 #if BUILDFLAG(IS_ANDROID)
 // "Learn more" URL for the enhanced playback notification dialog.
 inline constexpr char kEnhancedPlaybackNotificationLearnMoreURL[] =
