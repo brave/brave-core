@@ -229,7 +229,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
     }
 
-    private bool setDefaultBrowser() {
+    private boolean setDefaultBrowser() {
         if (!isDefaultBrowser()) {
             BraveSetDefaultBrowserUtils.setDefaultBrowser(this);
             if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
@@ -240,7 +240,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         return true;
     }
 
-    private bool isDefaultBrowser() {
+    private boolean isDefaultBrowser() {
         return BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this);
     }
 
@@ -447,7 +447,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
     }
 
-    private bool shouldForceDefaultBrowserPrompt() {
+    private boolean shouldForceDefaultBrowserPrompt() {
         return ChromeFeatureList.isEnabled(BraveFeatureList.ANDROID_FORCE_DEFAULT_BROWSER_PROMPT);
     }
 
