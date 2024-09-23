@@ -208,6 +208,7 @@ private struct WidgetTopNewsView: View {
         if let image = entry.image {
           Image(uiImage: image)
             .resizable()
+            .widgetAccentedRenderingModeFullColor()
             .aspectRatio(contentMode: .fill)
             .overlay(
               LinearGradient(
