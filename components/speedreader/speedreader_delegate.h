@@ -20,6 +20,7 @@ class SpeedreaderDelegate {
   virtual bool IsPageContentPresent() = 0;
   virtual std::string TakePageContent() = 0;
   virtual void OnDistillComplete(DistillationResult result) = 0;
+  virtual void OnDistilledDocumentSent() = 0;
 
  protected:
   virtual ~SpeedreaderDelegate() = default;

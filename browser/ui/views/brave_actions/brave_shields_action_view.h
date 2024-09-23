@@ -50,7 +50,8 @@ class BraveShieldsActionView
 
  private:
   void ButtonPressed(BrowserWindowInterface* browser_window_interface);
-  bool SchemeIsLocal(GURL url);
+  bool IsPageInReaderMode(content::WebContents* web_contents);
+  bool ShouldShowBubble(content::WebContents* web_contents);
   void UpdateIconState();
   gfx::ImageSkia GetIconImage(bool is_enabled);
   std::unique_ptr<IconWithBadgeImageSource> GetImageSource();

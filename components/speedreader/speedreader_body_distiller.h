@@ -35,6 +35,7 @@ class SpeedreaderBodyDistiller : public body_sniffer::BodyHandler {
   bool ShouldProcess(const GURL& response_url,
                      network::mojom::URLResponseHead* response_head,
                      bool* defer) override;
+  void OnBeforeSending() override;
   void OnComplete() override;
   Action OnBodyUpdated(const std::string& body, bool is_complete) override;
 

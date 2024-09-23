@@ -11,4 +11,5 @@ struct WebPreferences {
   // regardless of contents settings. This is used for Playlist so that it can
   // remove ads from the page.
   bool force_cosmetic_filtering;
+  bool page_in_reader_mode = false;
 };

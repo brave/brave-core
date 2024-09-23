@@ -17,6 +17,7 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
@@ -44,6 +45,10 @@
 #include "ui/views/view.h"
 #include "ui/views/view_class_properties.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/speedreader/speedreader_tab_helper.h"
+#endif
 
 namespace {
 constexpr SkColor kBadgeBg = SkColorSetRGB(0x63, 0x64, 0x72);
@@ -163,7 +168,8 @@ BraveShieldsActionView::GetImageSource() {
       badge_text = count > 99 ? "99+" : std::to_string(count);
     }
 
-    is_enabled = shields_data_controller->GetBraveShieldsEnabled();
+    is_enabled = shields_data_controller->GetBraveShieldsEnabled() &&
+                 !IsPageInReaderMode(web_contents);
 
     if (!badge_text.empty()) {
       badge = std::make_unique<IconWithBadgeImageSource::Badge>(
@@ -204,8 +210,8 @@ void BraveShieldsActionView::UpdateIconState() {
 void BraveShieldsActionView::ButtonPressed(
     BrowserWindowInterface* browser_window_interface) {
   auto* web_content = tab_strip_model_->GetActiveWebContents();
-  if (web_content && SchemeIsLocal(web_content->GetLastCommittedURL())) {
-    return;  // Do not show bubble if it's a local scheme
+  if (!ShouldShowBubble(web_content)) {
+    return;
   }
 
   if (!webui_bubble_manager_) {
@@ -222,11 +228,41 @@ void BraveShieldsActionView::ButtonPressed(
   webui_bubble_manager_->ShowBubble();
 }
 
-bool BraveShieldsActionView::SchemeIsLocal(GURL url) {
-  return url.SchemeIs(url::kAboutScheme) || url.SchemeIs(url::kBlobScheme) ||
-         url.SchemeIs(url::kDataScheme) ||
-         url.SchemeIs(url::kFileSystemScheme) || url.SchemeIs(kMagnetScheme) ||
-         url.SchemeIs(kBraveUIScheme) || url.SchemeIs(content::kChromeUIScheme);
+bool BraveShieldsActionView::IsPageInReaderMode(
+    content::WebContents* web_contents) {
+  if (!web_contents) {
+    return false;
+  }
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  if (auto* speedreader_tab_helper =
+          speedreader::SpeedreaderTabHelper::FromWebContents(web_contents)) {
+    return speedreader::DistillStates::IsDistilled(
+        speedreader_tab_helper->PageDistillState());
+  }
+#endif
+  return false;
+}
+bool BraveShieldsActionView::ShouldShowBubble(
+    content::WebContents* web_contents) {
+  if (!web_contents) {
+    return false;
+  }
+  const GURL& url = web_contents->GetLastCommittedURL();
+
+  if (url.SchemeIs(url::kAboutScheme) || url.SchemeIs(url::kBlobScheme) ||
+      url.SchemeIs(url::kDataScheme) || url.SchemeIs(url::kFileSystemScheme) ||
+      url.SchemeIs(kMagnetScheme) || url.SchemeIs(kBraveUIScheme) ||
+      url.SchemeIs(content::kChromeUIScheme)) {
+    // Do not show bubble if it's a local scheme
+    return false;
+  }
+
+  if (IsPageInReaderMode(web_contents)) {
+    // Do not show bubble on speedreader pages.
+    return false;
+  }
+
+  return true;
 }
 
 std::unique_ptr<views::LabelButtonBorder>

@@ -27,6 +27,7 @@ class SpeedreaderDistilledPageProducer : public body_sniffer::BodyProducer {
       network::mojom::URLResponseHead* response_head) override;
   std::string TakeContent() override;
 
+  void OnBeforeSending() override;
   void OnComplete() override;
 
  private:
