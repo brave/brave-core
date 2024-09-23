@@ -12,6 +12,7 @@ namespace feed {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
 #if BUILDFLAG(IS_ANDROID)
+    {kFeedContainment, base::FEATURE_DISABLED_BY_DEFAULT},
     {kInterestFeedV2, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
 }});
