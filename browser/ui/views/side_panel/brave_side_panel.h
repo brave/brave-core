@@ -64,6 +64,7 @@ class BraveSidePanel : public views::View,
   ~BraveSidePanel() override;
 
   void SetPanelWidth(int width);
+  void UpdateWidthOnEntryChanged();
   double GetAnimationValue() const;
   void SetHorizontalAlignment(HorizontalAlignment alignment);
   HorizontalAlignment GetHorizontalAlignment();
