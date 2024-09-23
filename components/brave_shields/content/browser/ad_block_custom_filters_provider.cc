@@ -37,12 +37,10 @@ AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
 
 AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() {}
 
-void AdBlockCustomFiltersProvider::HideElementOnHost(
-    const std::string& css_selector,
-    const std::string& host) {
+void AdBlockCustomFiltersProvider::AddUserCosmeticFilter(
+    const std::string& filter) {
   std::string custom_filters = GetCustomFilters();
-  UpdateCustomFilters(custom_filters + '\n' + host + "##" + css_selector +
-                      '\n');
+  UpdateCustomFilters(custom_filters + '\n' + filter);
 }
 
 std::string AdBlockCustomFiltersProvider::GetNameForDebugging() {

@@ -1,12 +1,23 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/components/common/typescript.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
 
 transpile_web_ui("cosmetic_filters_resources") {
-  entry_points = [ [
-        "cosmetic_filters",
-        rebase_path("content_cosmetic.ts"),
-      ] ]
+  entry_points = [
+    [
+      "cosmetic_filters",
+      rebase_path("content_cosmetic.ts"),
+    ],
+    [
+      "element_picker",
+      rebase_path("element_picker.ts"),
+    ],
+  ]
 
   resource_name = "cosmetic_filters"
 }

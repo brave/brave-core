@@ -345,6 +345,11 @@ void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
                      base::Unretained(default_engine_.get()), tag, enabled));
 }
 
+void AdBlockService::AddUserCosmeticFilter(const std::string& filter) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  custom_filters_provider_->AddUserCosmeticFilter(filter);
+}
+
 void AdBlockService::GetDebugInfoAsync(GetDebugInfoCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 

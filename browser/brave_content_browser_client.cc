@@ -25,6 +25,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
@@ -586,6 +587,11 @@ void BraveContentBrowserClient::
           &playlist::PlaylistMediaHandler::BindMediaResponderReceiver,
           &render_frame_host));
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+  associated_registry.AddInterface<
+      cosmetic_filters::mojom::CosmeticFiltersHandler>(base::BindRepeating(
+      &cosmetic_filters::CosmeticFiltersTabHelper::BindCosmeticFiltersHandler,
+      &render_frame_host));
 
   ChromeContentBrowserClient::
       RegisterAssociatedInterfaceBindersForRenderFrameHost(render_frame_host,

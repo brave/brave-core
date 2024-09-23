@@ -25,7 +25,9 @@ class BraveRenderViewContextMenu;
       base::OnceCallback<void(BraveRenderViewContextMenu*)> cb); \
   static void RegisterMenuShownCallbackForTesting_unused
 #define AppendReadingModeItem virtual AppendReadingModeItem
+#define AppendDeveloperItems virtual AppendDeveloperItems
 #include "src/chrome/browser/renderer_context_menu/render_view_context_menu.h"  // IWYU pragma: export
+#undef AppendDeveloperItems
 #undef AppendReadingModeItem
 #undef RegisterMenuShownCallbackForTesting
 #undef RenderViewContextMenu
@@ -50,6 +52,8 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   // Do nothing as we have our own speed reader
   void AppendReadingModeItem() override {}
 
+  void AppendDeveloperItems() override;
+
  private:
   friend class BraveRenderViewContextMenuTest;
   // RenderViewContextMenuBase:
@@ -60,16 +64,18 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   bool IsAIChatEnabled() const;
   void ExecuteAIChatCommand(int command);
   void BuildAIChatMenu();
-
-  ui::SimpleMenuModel ai_chat_submenu_model_;
-  ui::SimpleMenuModel ai_chat_change_tone_submenu_model_;
-  ui::SimpleMenuModel ai_chat_change_length_submenu_model_;
-  ui::SimpleMenuModel ai_chat_social_media_post_submenu_model_;
-#endif
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
   void CopyTextFromImage();
 #endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  ui::SimpleMenuModel ai_chat_submenu_model_;
+  ui::SimpleMenuModel ai_chat_change_tone_submenu_model_;
+  ui::SimpleMenuModel ai_chat_change_length_submenu_model_;
+  ui::SimpleMenuModel ai_chat_social_media_post_submenu_model_;
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 };
 
 // Use our own subclass as the real RenderViewContextMenu.

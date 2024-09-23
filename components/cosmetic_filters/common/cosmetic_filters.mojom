@@ -16,3 +16,20 @@ interface CosmeticFiltersResources {
   UrlCosmeticResources(string url, bool aggressive_blocking) => (
       mojo_base.mojom.Value result);
 };
+
+interface CosmeticFiltersHandler {
+  // Adds a user cosmetic rule for the current site.
+  // (currently from the content picker feature).
+  AddSiteCosmeticFilter(string filter);
+
+  // Opens the custom filter section in Shields settings .
+  ManageCustomFilters();
+};
+
+// An interface to render frame agent `CosmeticFiltersJSHandler` to control
+// cosmetic filter features.
+interface CosmeticFiltersAgent {
+  // Inject the content picker script to allow a user to select unwanted
+  // DOM elements.
+  LaunchContentPicker();
+};

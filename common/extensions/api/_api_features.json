@@ -10,15 +10,6 @@
 // WebTorrent          3D9518A72EB02667A773B69DBA9E72E0F4A37423: echo -n lgjmpdmojkpocjcopdikifhejkkjglho | openssl sha1 | tr '[:lower:]' '[:upper:]'
 
 {
-  "braveShields": {
-    "channel": "stable",
-    "dependencies": [],
-    "component_extensions_auto_granted": false,
-    "contexts": ["privileged_extension", "content_script"],
-    "allowlist": [
-      "A321D47A2B4CA86898167A55CA8B2E02385EA7CD"
-    ]
-  },
   "braveRewards": [
     {
       "channel": "stable",

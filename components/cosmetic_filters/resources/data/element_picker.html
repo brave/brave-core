@@ -51,20 +51,16 @@
     width: 50%;
   }
 
+  #buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+
   button {
-    float: left;
     background-color: #ccc;
     cursor: pointer;
     padding: 4px 6px;
     margin: 0 0 0 2px;
-  }
-
-  button:first-of-type {
-    margin-left: 0;
-  }
-
-  button:last-child {
-    float: right;
   }
 
   svg {
@@ -103,7 +99,10 @@
     <div>
       <input id="sliderSpecificity" type="range" min="0" max="4" value="4">
     </div>
-    <button id="btnCreate">Create</button>
-    <button id="btnQuit" >Quit</button>
+    <div id="buttons">
+      <button id="btnCreate">Create</button>
+      <button id="btnManage">Manage filters</button>
+      <button id="btnQuit" >Quit</button>
+    </div>
   </div>
 </section>

@@ -16,6 +16,7 @@
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "url/gurl.h"
 #include "v8/include/v8.h"
@@ -26,11 +27,11 @@ namespace cosmetic_filters {
 // a given render_frame. It also does interactions with CosmeticFiltersResources
 // class that lives in the main process.
 
-class CosmeticFiltersJSHandler {
+class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent {
  public:
   CosmeticFiltersJSHandler(content::RenderFrame* render_frame,
                            const int32_t isolated_world_id);
-  ~CosmeticFiltersJSHandler();
+  ~CosmeticFiltersJSHandler() override;
 
   // Adds the "cf_worker" JavaScript object and its functions to the current
   // render_frame_.
@@ -54,6 +55,12 @@ class CosmeticFiltersJSHandler {
   bool EnsureConnected();
   void OnRemoteDisconnect();
 
+  void Bind(
+      mojo::PendingAssociatedReceiver<mojom::CosmeticFiltersAgent> receiver);
+
+  // CosmeticFiltersAgent overrides:
+  void LaunchContentPicker() override;
+
   // Injects content_cosmetic bundle (if needed) and calls the entry point.
   void ExecuteObservingBundleEntryPoint();
 
@@ -67,6 +74,8 @@ class CosmeticFiltersJSHandler {
   void CSSRulesRoutine(const base::Value::Dict& resources_dict);
   void OnHiddenClassIdSelectors(base::Value::Dict result);
   bool OnIsFirstParty(const std::string& url_string);
+  void OnAddSiteCosmeticFilter(const std::string& selector);
+  void OnManageCustomFilters();
   int OnEventBegin(const std::string& event_name);
   void OnEventEnd(const std::string& event_name, int);
 
@@ -75,8 +84,8 @@ class CosmeticFiltersJSHandler {
   bool generichide_ = false;
 
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
-  mojo::Remote<cosmetic_filters::mojom::CosmeticFiltersResources>
-      cosmetic_filters_resources_;
+  mojo::Remote<mojom::CosmeticFiltersResources> cosmetic_filters_resources_;
+  mojo::AssociatedReceiver<mojom::CosmeticFiltersAgent> receiver_{this};
   int32_t isolated_world_id_;
   bool enabled_1st_party_cf_;
   std::vector<std::string> exceptions_;

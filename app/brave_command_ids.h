@@ -134,6 +134,9 @@
 // Wayback machine
 #define IDC_SHOW_WAYBACK_MACHINE_BUBBLE 56350
 
+// Adblock (user-defined cosmetic filters)
+#define IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS 56351
+
 #define IDC_BRAVE_COMMANDS_LAST 57000
 
 #endif  // BRAVE_APP_BRAVE_COMMAND_IDS_H_
