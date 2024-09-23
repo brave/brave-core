@@ -360,10 +360,11 @@ static bool CustomLogHandler(int severity,
 
 - (BraveBookmarksAPI*)bookmarksAPI {
   if (!_bookmarksAPI) {
+    ProfileIOS* profile = ProfileIOS::FromBrowserState(_mainBrowserState);
     bookmarks::BookmarkModel* bookmark_model =
-        ios::BookmarkModelFactory::GetForBrowserState(_mainBrowserState);
+        ios::BookmarkModelFactory::GetForProfile(profile);
     BookmarkUndoService* bookmark_undo_service =
-        ios::BookmarkUndoServiceFactory::GetForBrowserState(_mainBrowserState);
+        ios::BookmarkUndoServiceFactory::GetForProfile(profile);
 
     _bookmarksAPI =
         [[BraveBookmarksAPI alloc] initWithBookmarkModel:bookmark_model
