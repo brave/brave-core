@@ -336,6 +336,7 @@ source_set("ui") {
       "//brave/components/misc_metrics",
       "//brave/components/sidebar/browser",
       "//brave/components/sidebar/common",
+      "//brave/components/speedreader/common/buildflags",
       "//chrome/app:generated_resources",
       "//chrome/browser/profiles",
       "//chrome/browser/search",
