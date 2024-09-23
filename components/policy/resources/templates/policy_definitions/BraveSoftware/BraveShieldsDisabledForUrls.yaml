@@ -1,0 +1,32 @@
+caption: Disable Brave Shields for URLs
+default: null
+desc: |-
+  Forces the shields in Brave to be disabled for specific web sites.
+
+  You can use special syntax to wildcard a domain.
+example_value:
+- "[*.]twitter.com"
+- https://www.example.com
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: false
+  per_profile: false
+items:
+- caption: Force disable shields for example.com
+  value:
+    - https://www.example.com
+- caption: Shields on for all sites by default
+  value: null
+owners:
+- clifton@brave.com
+schema:
+  items:
+    type: string
+  type: array
+supported_on:
+- chrome.win:107-
+- chrome.mac:107-
+- chrome.linux:107-
+tags: []
+type: list
