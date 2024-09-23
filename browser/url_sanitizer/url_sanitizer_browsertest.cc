@@ -148,7 +148,8 @@ class URLSanitizerTestBase : public InProcessBrowserTest {
     const GURL url("https://www.YoUtUbE.com/url_sanitizer/js_api.html");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-    auto check = [this](const std::string& name, bool should_sanitize) {
+    auto check = [this](const std::string& name, bool should_sanitize,
+                        const std::string& expected_text) {
       {
         ui::ScopedClipboardWriter clear_clipboard(
             ui::ClipboardBuffer::kCopyPaste);
@@ -161,11 +162,11 @@ class URLSanitizerTestBase : public InProcessBrowserTest {
 
       constexpr const char kClickButton[] =
           R"js(
-        (function() {
-          const button = document.getElementById('$1');
-          button.click();
-        })();
-    )js";
+            (function() {
+              const button = document.getElementById('$1');
+              button.click();
+            })();
+        )js";
       const auto script =
           base::ReplaceStringPlaceholders(kClickButton, {name}, nullptr);
       web_contents->Focus();
@@ -173,36 +174,45 @@ class URLSanitizerTestBase : public InProcessBrowserTest {
 
       const std::string text_from_clipboard = WaitClipboard();
 
-      EXPECT_TRUE(base::StartsWith(text_from_clipboard, "https://youtu.be/"))
+      EXPECT_EQ(expected_text, text_from_clipboard)
           << name << " " << should_sanitize << " " << text_from_clipboard;
-
-      if (should_sanitize) {
-        EXPECT_EQ(std::string::npos, text_from_clipboard.find("si="))
-            << name << " " << should_sanitize << " " << text_from_clipboard;
-      } else {
-        EXPECT_NE(std::string::npos, text_from_clipboard.find("si="))
-            << name << " " << should_sanitize << " " << text_from_clipboard;
-      }
     };
 
     const bool should_sanitize =
         base::FeatureList::IsEnabled(features::kBraveCopyCleanLinkFromJs);
 
-    check("test_1", should_sanitize);
-    check("test_2", should_sanitize);
-    check("test_3", should_sanitize);
-    check("test_4", should_sanitize);
-    check("test_5", should_sanitize);
+    const std::string sanitized = "https://youtu.be/B";
+    const std::string unsanitized = "hTtPs://Youtu.Be/B?si=oLb865I64uJlLRJX";
+    const std::string& expected = (should_sanitize) ? sanitized : unsanitized;
+
+    check("test_1", should_sanitize, expected);
+    check("test_2", should_sanitize, expected);
+    check("test_3", should_sanitize, expected);
+    check("test_4", should_sanitize, expected);
+    check("test_5", should_sanitize, expected);
+    // We cannot distinguish the context, so even if a password similar to the
+    // URL is copied, we will sanitize it.
+    check("test_sanitizable_password", should_sanitize, expected);
+    // Not sanitazable password should be copied as is.
+    check("test_not_sanitizable_password_1", should_sanitize, "Pa$$w0rd");
+    check("test_not_sanitizable_password_2", should_sanitize, "A:^C,D");
+    check("test_not_sanitizable_password_3", should_sanitize,
+          "Ftp://Example.Com/?si=12345");
 
     const GURL no_permission_url(
         "https://no_permission.com/url_sanitizer/js_api.html");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), no_permission_url));
 
-    check("test_1", false);
-    check("test_2", false);
-    check("test_3", false);
-    check("test_4", false);
-    check("test_5", false);
+    check("test_1", false, unsanitized);
+    check("test_2", false, unsanitized);
+    check("test_3", false, unsanitized);
+    check("test_4", false, unsanitized);
+    check("test_5", false, unsanitized);
+    check("test_sanitizable_password", false, unsanitized);
+    check("test_not_sanitizable_password_1", false, "Pa$$w0rd");
+    check("test_not_sanitizable_password_2", false, "A:^C,D");
+    check("test_not_sanitizable_password_3", false,
+          "Ftp://Example.Com/?si=12345");
   }
 
  protected:

@@ -1349,11 +1349,11 @@ blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {
   return metadata;
 }
 
-GURL BraveContentBrowserClient::SanitizeURL(
+std::optional<GURL> BraveContentBrowserClient::SanitizeURL(
     content::RenderFrameHost* render_frame_host,
     const GURL& url) {
   if (!base::FeatureList::IsEnabled(features::kBraveCopyCleanLinkFromJs)) {
-    return url;
+    return std::nullopt;
   }
   CHECK(render_frame_host);
   CHECK(render_frame_host->GetBrowserContext());
@@ -1363,9 +1363,14 @@ GURL BraveContentBrowserClient::SanitizeURL(
   CHECK(url_sanitizer_service);
   if (!url_sanitizer_service->CheckJsPermission(
           render_frame_host->GetLastCommittedURL())) {
-    return url;
+    return std::nullopt;
   }
-  return url_sanitizer_service->SanitizeURL(url);
+  const GURL& sanitized_url = url_sanitizer_service->SanitizeURL(url);
+  if (sanitized_url == url) {
+    // No actual replacements were made.
+    return std::nullopt;
+  }
+  return sanitized_url;
 }
 
 bool BraveContentBrowserClient::AllowSignedExchange(
