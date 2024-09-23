@@ -293,35 +293,36 @@ void AIChatService::OnConversationEntriesChanged(
       // This conversation is visible once the first response begins
       conversation->has_content = true;
       notify = true;
-    if (ai_chat_metrics_ != nullptr) {
-      if (entries.size() == 1) {
-        ai_chat_metrics_->RecordNewChat();
-      }
-    // Each time the user submits an entry
-    // TODO(petemill): Verify this won't get called multiple times for the same
-    // entry.
-      if (entries.back()->character_type == mojom::CharacterType::HUMAN) {
-        ai_chat_metrics_->RecordNewPrompt();
-      }
-    if (entries.size() >= 2) {
-      if (conversation->summary.size() < 70) {
-        for (const auto& entry : entries) {
-          if (entry->character_type == mojom::CharacterType::ASSISTANT &&
-              !entry->text.empty()) {
-            conversation->summary = entry->text.substr(0, 70);
-            notify = true;
-            break;
+      if (ai_chat_metrics_ != nullptr) {
+        if (entries.size() == 1) {
+          ai_chat_metrics_->RecordNewChat();
+        }
+        // Each time the user submits an entry
+        // TODO(petemill): Verify this won't get called multiple times for the
+        // same entry.
+        if (entries.back()->character_type == mojom::CharacterType::HUMAN) {
+          ai_chat_metrics_->RecordNewPrompt();
+        }
+        if (entries.size() >= 2) {
+          if (conversation->summary.size() < 70) {
+            for (const auto &entry : entries) {
+              if (entry->character_type == mojom::CharacterType::ASSISTANT &&
+                  !entry->text.empty()) {
+                conversation->summary = entry->text.substr(0, 70);
+                notify = true;
+                break;
+              }
+            }
           }
+        }
+        if (notify) {
+          OnConversationListChanged();
         }
       }
     }
-    if (notify) {
-      OnConversationListChanged();
-    }
-    }
+    // TODO(petemill): Persist the entries, but consider receiving finer grained
+    // entry update events.
   }
-  // TODO(petemill): Persist the entries, but consider receiving finer grained
-  // entry update events.
 }
 
 void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {

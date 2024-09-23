@@ -316,11 +316,6 @@ const mojom::Model& ConversationHandler::GetCurrentModel() {
   return *model;
 }
 
-void ConversationHandler::GetConversationId(
-    GetConversationIdCallback callback) {
-  std::move(callback).Run(metadata_->uuid);
-}
-
 const std::vector<mojom::ConversationTurnPtr>&
 ConversationHandler::GetConversationHistory() const {
   return chat_history_;
