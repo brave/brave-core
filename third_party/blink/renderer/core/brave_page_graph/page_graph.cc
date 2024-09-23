@@ -941,9 +941,10 @@ void PageGraph::RegisterPageGraphJavaScriptUrl(blink::Document* document,
 
   processed_js_urls_.insert(execution_context, Vector<ProcessedJavascriptURL>())
       .stored_value->value.push_back(ProcessedJavascriptURL{
-          .script_code = blink::DecodeURLEscapeSequences(
-                             url, blink::DecodeURLMode::kUTF8OrIsomorphic)
-                             .Substring(kJavascriptSchemeLength),
+          .script_code =
+              blink::DecodeURLEscapeSequences(
+                  url.GetString(), blink::DecodeURLMode::kUTF8OrIsomorphic)
+                  .Substring(kJavascriptSchemeLength),
           .parent_script_id = GetExecutingScriptId(execution_context),
       });
 }
