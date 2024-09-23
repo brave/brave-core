@@ -114,7 +114,7 @@ function Main() {
 
   const conversationToShowInHeader =
     (!aiChatContext.isStandalone && !aiChatContext.isDefaultConversation)
-      ? aiChatContext.visibleConversations.find(c => c.uuid === aiChatContext.selectedConversationId)
+      ? aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
       : undefined
 
   const viewPortWithoutKeyboard = React.useRef(0)

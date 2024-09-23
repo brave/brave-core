@@ -9,8 +9,6 @@ import { loadTimeData } from '$web-common/loadTimeData'
 
 
 interface Props {
-  // Which conversation to higlight in list
-  selectedConversationUuid?: string
   // Whether there is a specific conversation selected
   isDefaultConversation: boolean
   // Create a new conversation and use it
