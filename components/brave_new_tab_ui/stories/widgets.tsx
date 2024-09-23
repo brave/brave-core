@@ -7,10 +7,16 @@ import * as React from 'react'
 import { withKnobs } from '@storybook/addon-knobs'
 import { VPNWidget } from '../components/default/vpn/vpn_card';
 import * as BraveVPN from '../api/braveVpn';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 
 export default {
   title: 'VPN/Widgets',
   decorators: [
+    (Story: any) => {
+      const store = createStore(state => state)
+      return <Provider store={store}><Story /></Provider>
+    },
     withKnobs
   ]
 }
