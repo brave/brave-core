@@ -41,7 +41,7 @@ class BraveBrowserListObserver : public BrowserListObserver {
   }
 
  private:
-  raw_ptr<RewardsTabHelper> tab_helper_;  // Not owned.
+  const raw_ptr<RewardsTabHelper> tab_helper_ = nullptr;  // Not owned.
 };
 #endif
 
