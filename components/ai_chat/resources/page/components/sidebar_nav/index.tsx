@@ -148,10 +148,10 @@ export default function SidebarNav(props: SidebarNavProps) {
                   <div
                     className={classnames({
                       [styles.navItem]: true,
-                      [styles.navItemActive]: item.uuid === aiChatContext.selectedConversationId
+                      [styles.navItemActive]: item.uuid === aiChatContext.selectedConversationUuid
                     })}
                     onClick={() => {
-                      aiChatContext.onSelectConversationId(item.uuid)
+                      aiChatContext.onSelectConversationUuid(item.uuid)
                       props.setIsConversationListOpen?.(false)
                     }}
                   >
