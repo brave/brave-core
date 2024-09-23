@@ -9,8 +9,6 @@
 #include <memory>
 
 #include "content/public/browser/navigation_throttle.h"
-#include "ui/base/page_transition_types.h"
-#include "url/gurl.h"
 
 namespace content {
 class NavigationHandle;

@@ -5,10 +5,6 @@
 
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 
-#include "base/feature_list.h"
-#include "base/logging.h"
-#include "base/time/time.h"
-#include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 
 namespace brave_rewards {

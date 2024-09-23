@@ -8,8 +8,8 @@
 #include <tuple>
 #include <vector>
 
-#include "brave/components/brave_rewards/browser/rewards_protocol_navigation_throttle.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 // clang-format off
 // npm run test -- brave_unit_tests --filter="*RewardsProtocolNavigationThrottleTest*"

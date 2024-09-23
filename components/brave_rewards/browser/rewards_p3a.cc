@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 
-#include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"

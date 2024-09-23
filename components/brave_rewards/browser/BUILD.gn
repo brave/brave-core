@@ -4,13 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_rewards/core/config.gni")
+import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 static_library("browser") {
-  # Remove when https://github.com/brave/brave-browser/issues/10618 is resolved
-  check_includes = false
-  public_deps = []
-
   sources = [
     "android_util.cc",
     "android_util.h",
@@ -41,39 +38,43 @@ static_library("browser") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_rewards/common",
+    "//brave/components/brave_rewards/common:features",
     "//brave/components/brave_rewards/common/buildflags",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/common",
     "//brave/components/greaselion/browser/buildflags",
+    "//brave/components/ntp_background_images/common",
+    "//brave/components/p3a_utils",
     "//brave/components/resources",
     "//brave/components/services/bat_rewards/public/interfaces",
+    "//brave/components/time_period_storage",
+    "//chrome/browser/bitmap_fetcher",  # bad
+    "//components/country_codes",
+    "//components/favicon/core",
+    "//components/os_crypt/sync:os_crypt",
+    "//components/prefs",
+    "//components/sessions",
+    "//content/public/browser",
+    "//extensions/buildflags",
     "//mojo/public/cpp/bindings",
     "//net",
     "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
     "//services/service_manager/public/cpp",
+    "//ui/base",
+    "//ui/gfx",
     "//url",
-
-    # for profile.h
-    "//components/domain_reliability",
-    "//components/keyed_service/content",
-    "//components/keyed_service/core",
-    "//components/sessions",
-    "//content/public/browser",
-    "//content/public/common",
-    "//services/network/public/mojom",
   ]
 
-  if (!is_android) {
-    # on android, one shot is part of base lib
-    deps += [
-      # for one shot event
-      "//extensions/common",
-    ]
-  }
-
-  public_deps += [ "//brave/components/brave_rewards/core:headers" ]
+  public_deps = [ "//brave/components/brave_rewards/core:headers" ]
 
   if (is_android) {
     deps += [ "//brave/components/safetynet:android" ]
+  }
+
+  if (enable_greaselion) {
+    deps += [ "//brave/components/greaselion/browser" ]
   }
 }
 
@@ -83,6 +84,7 @@ source_set("testutil") {
     ":browser",
     "//base",
     "//brave/browser",
+    "//brave/browser/brave_rewards",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/core:headers",
     "//chrome/browser/bitmap_fetcher:bitmap_fetcher",

@@ -3,15 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <map>
+#include "brave/components/brave_rewards/browser/rewards_service_impl.h"
+
 #include <memory>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/memory/ptr_util.h"
-#include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/test_util.h"
 #include "brave/components/brave_rewards/common/features.h"
@@ -67,12 +65,14 @@ class RewardsServiceTest : public testing::Test {
         std::make_unique<brave_l10n::test::ScopedDefaultLocale>("en_US");
     profile_ = CreateBraveRewardsProfile(temp_dir_.GetPath());
     ASSERT_TRUE(profile_.get());
+
+    rewards_service_ = std::make_unique<RewardsServiceImpl>(
+        profile()->GetPrefs(), profile()->GetPath(), nullptr, nullptr,
+        profile()->GetDefaultStoragePartition(),
 #if BUILDFLAG(ENABLE_GREASELION)
-    rewards_service_ =
-        std::make_unique<RewardsServiceImpl>(profile(), nullptr, nullptr);
-#else
-    rewards_service_ = std::make_unique<RewardsServiceImpl>(profile(), nullptr);
+        nullptr,
 #endif
+        nullptr);
     ASSERT_TRUE(rewards_service());
     observer_ = std::make_unique<MockRewardsServiceObserver>();
     rewards_service_->AddObserver(observer_.get());

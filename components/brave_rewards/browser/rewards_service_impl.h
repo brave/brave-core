@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_IMPL_H_
 
-#include <functional>
 #include <list>
 #include <map>
 #include <memory>
@@ -15,11 +14,9 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/observer_list.h"
 #include "base/one_shot_event.h"
 #include "base/sequence_checker.h"
 #include "base/threading/sequence_bound.h"
@@ -38,7 +35,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "components/prefs/pref_change_registrar.h"
-#include "content/public/browser/browser_thread.h"
+#include "content/public/browser/storage_partition.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -52,20 +49,19 @@
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #endif
 
+class BitmapFetcherService;
+
 namespace base {
 class OneShotTimer;
 class SequencedTaskRunner;
 }  // namespace base
 
-namespace leveldb {
-class DB;
-}  // namespace leveldb
-
+namespace favicon {
+class FaviconService;
+}  // namespace favicon
 namespace network {
 class SimpleURLLoader;
 }  // namespace network
-
-class Profile;
 
 namespace brave_wallet {
 class BraveWalletService;
@@ -100,7 +96,11 @@ class RewardsServiceImpl final : public RewardsService,
 #endif
                                  public mojom::RewardsEngineClient {
  public:
-  RewardsServiceImpl(Profile* profile,
+  RewardsServiceImpl(PrefService* prefs,
+                     const base::FilePath& profile_path,
+                     favicon::FaviconService* favicon_service,
+                     BitmapFetcherService* bitmap_fetcher_service,
+                     content::StoragePartition* storage_partition,
 #if BUILDFLAG(ENABLE_GREASELION)
                      greaselion::GreaselionService* greaselion_service,
 #endif
@@ -547,8 +547,10 @@ class RewardsServiceImpl final : public RewardsService,
   mojom::Environment GetDefaultServerEnvironmentForAndroid();
   safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
 #endif
-
-  raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
+  raw_ptr<PrefService> prefs_;                            // NOT OWNED
+  raw_ptr<favicon::FaviconService> favicon_service_;      // NOT OWNED
+  raw_ptr<BitmapFetcherService> bitmap_fetcher_service_;  // NOT OWNED
+  raw_ptr<content::StoragePartition> storage_partition_;  // NOT OWNED
 #if BUILDFLAG(ENABLE_GREASELION)
   raw_ptr<greaselion::GreaselionService> greaselion_service_ =
       nullptr;  // NOT OWNED

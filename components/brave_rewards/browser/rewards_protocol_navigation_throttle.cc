@@ -6,10 +6,8 @@
 #include "brave/components/brave_rewards/browser/rewards_protocol_navigation_throttle.h"
 
 #include <map>
-#include <memory>
 #include <string>
 #include <string_view>
-#include <utility>
 #include <vector>
 
 #include "base/ranges/algorithm.h"
@@ -18,15 +16,12 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_rewards/core/buildflags.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/navigation_throttle.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
 #include "content/public/common/referrer.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"

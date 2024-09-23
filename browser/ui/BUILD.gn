@@ -33,15 +33,18 @@ source_set("ui") {
   ]
 
   deps = [
+    "//brave/browser/brave_rewards",
     "//brave/browser/skus",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/webcompat/core/common",
   ]
 
   public_deps = [
+    ":brave_rewards_source",
     ":brave_tab_features",
     ":brave_tab_prefs",
   ]
+
   sources = [
     "brave_ui_features.cc",
     "brave_ui_features.h",
@@ -61,8 +64,6 @@ source_set("ui") {
     "webui/brave_rewards_internals_ui.h",
     "webui/brave_rewards_page_ui.cc",
     "webui/brave_rewards_page_ui.h",
-    "webui/brave_rewards_source.cc",
-    "webui/brave_rewards_source.h",
     "webui/brave_wallet/line_chart/line_chart_ui.cc",
     "webui/brave_wallet/line_chart/line_chart_ui.h",
     "webui/brave_wallet/market/market_ui.cc",
@@ -1372,6 +1373,23 @@ source_set("brave_tab_features") {
     "tabs/features.h",
   ]
   deps = [ "//base" ]
+}
+
+source_set("brave_rewards_source") {
+  sources = [
+    "webui/brave_rewards_source.cc",
+    "webui/brave_rewards_source.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/browser/bitmap_fetcher",
+    "//chrome/browser/profiles",
+    "//content/public/browser",
+    "//skia",
+    "//ui/gfx/codec",
+    "//url",
+  ]
 }
 
 source_set("unit_tests") {
