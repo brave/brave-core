@@ -247,6 +247,15 @@ if (!is_ios) {
   }
 }
 
+if (!is_android && !is_ios) {
+  group("brave_group_policy_templates") {
+    # Currently, group policy resources are only generated on Windows.
+    if (is_win) {
+      deps = [ "//brave/components/policy:pack_policy_templates" ]
+    }
+  }
+}
+
 if (!is_ios) {
   brave_paks("packed_resources") {
     if (is_mac) {

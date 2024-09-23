@@ -46,7 +46,8 @@
     "gen_env": "node ./build/commands/scripts/genEnv.js",
     "gen_gradle": "node ./build/commands/scripts/commands.js gen_gradle",
     "ios_pack_js": "webpack --config ios/brave-ios/webpack.config.js",
-    "ios_bootstrap": "node ./build/commands/scripts/iosCommands.js ios_bootstrap"
+    "ios_bootstrap": "node ./build/commands/scripts/iosCommands.js ios_bootstrap",
+    "build_policy_templates": "node ./build/commands/scripts/commands.js build --target=brave_group_policy_templates"
   },
   "repository": {
     "type": "git",
