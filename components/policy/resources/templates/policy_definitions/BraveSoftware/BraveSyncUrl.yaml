@@ -1,0 +1,29 @@
+caption: Specify Brave Sync server URL
+default: null
+desc: |-
+  Specify the URL for Brave to use with its sync service.
+
+  If this policy is set to a non empty string, that string will be used as the URL with Brave Sync.
+  If this policy is not set, the URL will default to Brave's sync server URL.
+  The provided URL must use the `https` scheme.
+example_value: https://sync-v2.brave.com/v2
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: false
+  per_profile: true
+items:
+- caption: Example of setting a host
+  value: https://sync-v2.brave.com/v2
+- caption: Default to Brave's sync service
+  value: null
+owners:
+- alexey@brave.com
+- anthony@brave.com
+- clifton@brave.com
+schema:
+  type: string
+supported_on:
+- chrome.*:129-
+tags: []
+type: string

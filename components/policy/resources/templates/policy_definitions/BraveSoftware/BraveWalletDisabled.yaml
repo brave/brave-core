@@ -1,0 +1,37 @@
+caption: Disable Brave Wallet
+default: null
+desc: |-
+  Disable Brave Wallet in Brave.
+
+  Allows users to use the secure, built-in crypto wallet that supercharges the browser for Web3.
+
+            If this policy is set to true, Brave Wallet will always be disabled.
+
+            If this policy is set to false, Brave Wallet will always be enabled.
+
+            If you set this policy, users cannot change or override it.
+
+            If this policy is left unset, Brave Wallet will be enabled by default.
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: false
+  per_profile: true
+items:
+- caption: Enable Brave Wallet
+  value: false
+- caption: Disable Brave Wallet
+  value: true
+- caption: Allow the user to decide
+  value: null
+owners:
+- james@brave.com
+- ddaniel@brave.com
+- clifton@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.*:106-
+tags: []
+type: main
