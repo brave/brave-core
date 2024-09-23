@@ -42,6 +42,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.back_press.SecondaryActivityBackPressUma.SecondaryActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -210,13 +211,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private void onClickViews() {
         if (mBtnPositive != null) {
             mBtnPositive.setOnClickListener(view -> {
-                if (mCurrentStep == 1
-                        && !BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this)) {
-                    BraveSetDefaultBrowserUtils.setDefaultBrowser(this);
-                    if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
-                        nextOnboardingStep();
-                    }
-                } else {
+                if (mCurrentStep != 1 || setDefaultBrowser()) {
                     nextOnboardingStep();
                 }
             });
@@ -231,6 +226,21 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 }
             });
         }
+    }
+
+    private bool setDefaultBrowser() {
+        if (!isDefaultBrowser()) {
+            BraveSetDefaultBrowserUtils.setDefaultBrowser(this);
+            if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
+                nextOnboardingStep();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private bool isDefaultBrowser() {
+        return BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this);
     }
 
     private void startTimer(int delayMillis) {
@@ -267,44 +277,50 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 }
             }, 200);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                (!shouldForceDefaultBrowserPrompt() || !isDefaultBrowser())) {
                 mRequestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
             } else {
                 startTimer(3000);
             }
         } else if (mCurrentStep == 1) {
-            int margin = mIsTablet ? 200 : 30;
-            setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.3f, margin, true);
-            setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.3f, margin, false);
+            if (shouldForceDefaultBrowserPrompt()) {
+                if (setDefaultBrowser()) {
+                    nextOnboardingStep();
+                }
+            } else {
+                int margin = mIsTablet ? 200 : 30;
+                setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.3f, margin, true);
+                setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.3f, margin, false);
 
-            if (BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this)) {
-                if (mBtnPositive != null) {
-                    mBtnPositive.setText(getResources().getString(R.string.continue_text));
+                if (BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this)) {
+                    if (mBtnPositive != null) {
+                        mBtnPositive.setText(getResources().getString(R.string.continue_text));
+                    }
+                    if (mBtnNegative != null) {
+                        mBtnNegative.setVisibility(View.GONE);
+                    }
                 }
-                if (mBtnNegative != null) {
-                    mBtnNegative.setVisibility(View.GONE);
+                if (mTvWelcome != null) {
+                    mTvWelcome.setVisibility(View.GONE);
+                }
+                if (mLayoutCard != null) {
+                    mLayoutCard.setVisibility(View.VISIBLE);
+                }
+                if (mIvArrowDown != null) {
+                    mIvArrowDown.setVisibility(View.VISIBLE);
+                }
+                String countryCode = Locale.getDefault().getCountry();
+                if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)) {
+                    if (mTvCard != null) {
+                        mTvCard.setText(getResources().getString(R.string.privacy_onboarding_india));
+                    }
+                    if (mTvDefault != null) {
+                        mTvDefault.setText(
+                                getResources().getString(R.string.onboarding_set_default_india));
+                    }
                 }
             }
-            if (mTvWelcome != null) {
-                mTvWelcome.setVisibility(View.GONE);
-            }
-            if (mLayoutCard != null) {
-                mLayoutCard.setVisibility(View.VISIBLE);
-            }
-            if (mIvArrowDown != null) {
-                mIvArrowDown.setVisibility(View.VISIBLE);
-            }
-            String countryCode = Locale.getDefault().getCountry();
-            if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)) {
-                if (mTvCard != null) {
-                    mTvCard.setText(getResources().getString(R.string.privacy_onboarding_india));
-                }
-                if (mTvDefault != null) {
-                    mTvDefault.setText(
-                            getResources().getString(R.string.onboarding_set_default_india));
-                }
-            }
-
         } else if (mCurrentStep == 2) {
             int margin = mIsTablet ? 250 : 60;
             setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.5f, margin, true);
@@ -422,6 +438,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             finish();
             sendFirstRunCompletePendingIntent();
         }
+    }
+
+    private bool shouldForceDefaultBrowserPrompt() {
+        return ChromeFeatureList.isEnabled(BraveFeatureList.ANDROID_FORCE_DEFAULT_BROWSER_PROMPT);
     }
 
     private void setLeafAnimation(View leafAlignView, ImageView leafView, float scale,
