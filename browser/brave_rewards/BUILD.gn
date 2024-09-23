@@ -9,8 +9,8 @@ import("//testing/test.gni")
 
 source_set("brave_rewards") {
   sources = [
-    "//brave/browser/brave_rewards/rewards_service_factory.h",
-    "//brave/browser/brave_rewards/rewards_tab_helper.h",
+    "rewards_service_factory.h",
+    "rewards_tab_helper.h",
   ]
 
   deps = [
@@ -25,10 +25,10 @@ source_set("brave_rewards") {
 
 source_set("brave_rewards_impl") {
   sources = [
-    "//brave/browser/brave_rewards/rewards_prefs_util.cc",
-    "//brave/browser/brave_rewards/rewards_prefs_util.h",
-    "//brave/browser/brave_rewards/rewards_service_factory.cc",
-    "//brave/browser/brave_rewards/rewards_tab_helper.cc",
+    "rewards_prefs_util.cc",
+    "rewards_prefs_util.h",
+    "rewards_service_factory.cc",
+    "rewards_tab_helper.cc",
   ]
 
   public_deps = [ ":brave_rewards" ]
