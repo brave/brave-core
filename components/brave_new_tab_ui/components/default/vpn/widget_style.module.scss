@@ -1,0 +1,26 @@
+.wrapper {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-white);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+
+  padding: var(--leo-spacing-2xl);
+
+  font: var(--leo-font-heading-h4);
+
+  --leo-icon-color: var(--leo-gradient-icons-active);
+}
+
+.menuButton {
+  flex-grow: 0;
+  margin-left: auto;
+}
+
+.body {
+  padding: var(--leo-spacing-2xl);
+  padding-top: 0;
+}
