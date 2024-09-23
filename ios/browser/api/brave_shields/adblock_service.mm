@@ -17,10 +17,13 @@
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
+#include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated.h"
 #include "brave/ios/browser/api/brave_shields/adblock_filter_list_catalog_entry+private.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/grit/brave_components_resources.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ui/base/resource/resource_bundle.h"
 
 namespace brave_shields {
 using OnFilterListUpdatedCallback =
@@ -203,6 +206,21 @@ void AdBlockResourceObserver::OnResourcesLoaded(
 
 - (void)updateFilterLists:(void (^)(bool))callback {
   _serviceManager->UpdateFilterLists(base::BindOnce(callback));
+}
+
++ (NSString*)cosmeticFiltersScript {
+  // The resource bundle is not available until after WebMainParts is setup
+  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
+  std::string resource_string = "";
+  if (resource_bundle.IsGzipped(
+          IDR_COSMETIC_FILTERS_COSMETIC_FILTERS_CORE_BUNDLE_JS)) {
+    resource_string = std::string(resource_bundle.LoadDataResourceString(
+        IDR_COSMETIC_FILTERS_COSMETIC_FILTERS_CORE_BUNDLE_JS));
+  } else {
+    resource_string = std::string(resource_bundle.GetRawDataResource(
+        IDR_COSMETIC_FILTERS_COSMETIC_FILTERS_CORE_BUNDLE_JS));
+  }
+  return base::SysUTF8ToNSString(resource_string);
 }
 
 @end
