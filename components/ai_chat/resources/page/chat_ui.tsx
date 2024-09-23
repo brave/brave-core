@@ -61,9 +61,7 @@ function App() {
 
   // Clean up bindings when not used anymore
   React.useEffect(() => {
-    let cancel = false
     return () => {
-      cancel = true
       conversationAPI?.callbackRouter.$.close()
       conversationAPI?.conversationHandler.$.close()
     }

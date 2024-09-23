@@ -12,6 +12,7 @@ import Button from '@brave/leo/react/button'
 import { useAIChat } from '../../state/ai_chat_context'
 import { getLocale } from '$web-common/locale'
 import getAPI from '../../api'
+import { useConversation } from '../../state/conversation_context'
 
 interface SimpleInputProps {
   text?: string
@@ -110,6 +111,7 @@ interface SidebarNavProps {
 
 export default function SidebarNav(props: SidebarNavProps) {
   const aiChatContext = useAIChat()
+  const conversationContext = useConversation()
   const [editingIndex, setEditingIndex] = React.useState<number | null>(null)
 
   return (
@@ -148,7 +150,7 @@ export default function SidebarNav(props: SidebarNavProps) {
                   <div
                     className={classnames({
                       [styles.navItem]: true,
-                      [styles.navItemActive]: item.uuid === aiChatContext.selectedConversationUuid
+                      [styles.navItemActive]: item.uuid === conversationContext.conversationUuid
                     })}
                     onClick={() => {
                       aiChatContext.onSelectConversationUuid(item.uuid)
