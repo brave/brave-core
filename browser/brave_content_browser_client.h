@@ -171,8 +171,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
                            blink::web_pref::WebPreferences* prefs) override;
   blink::UserAgentMetadata GetUserAgentMetadata() override;
 
-  GURL SanitizeURL(content::RenderFrameHost* render_frame_host,
-                   const GURL& url) override;
+  std::optional<GURL> SanitizeURL(content::RenderFrameHost* render_frame_host,
+                                  const GURL& url) override;
 
   bool AllowSignedExchange(content::BrowserContext* context) override;
 
