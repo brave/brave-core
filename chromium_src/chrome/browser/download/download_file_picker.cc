@@ -21,6 +21,9 @@ std::u16string GetTitle(content::RenderFrameHost* render_frame_host,
 #if BUILDFLAG(IS_ANDROID)
   return original_title;
 #else
+  if (!render_frame_host) {
+    return original_title;
+  }
   return brave::GetFileSelectTitle(
       content::WebContents::FromRenderFrameHost(render_frame_host),
       render_frame_host->GetLastCommittedOrigin(),
