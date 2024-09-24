@@ -212,7 +212,7 @@ void AdBlockResourceObserver::OnResourcesLoaded(
   // The resource bundle is not available until after WebMainParts is setup
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
   return base::SysUTF8ToNSString(resource_bundle.GetRawDataResource(
-        IDR_COSMETIC_FILTERS_CONTENT_COSMETIC_IOS_BUNDLE_JS));
+      IDR_COSMETIC_FILTERS_CONTENT_COSMETIC_IOS_BUNDLE_JS));
 }
 
 @end
