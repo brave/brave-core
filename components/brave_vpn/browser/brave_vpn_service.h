@@ -129,6 +129,7 @@ class BraveVpnService :
   void LoadPurchasedState(const std::string& domain) override;
   void Initialize() override;
   void LaunchVPNPanel() override;
+  void OpenVpnUI(const std::string& type) override;
 
   void GetAllRegions(GetAllRegionsCallback callback) override;
 
