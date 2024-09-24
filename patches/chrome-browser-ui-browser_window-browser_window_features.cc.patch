@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/browser_window/browser_window_features.cc b/chrome/browser/ui/browser_window/browser_window_features.cc
+index c062a4be1a56d3ca5d4f251f4eba9d093a3a211a..f2186c89d7039b53321be183626bd720d8e8f323 100644
+--- a/chrome/browser/ui/browser_window/browser_window_features.cc
++++ b/chrome/browser/ui/browser_window/browser_window_features.cc
+@@ -110,6 +110,8 @@ void BrowserWindowFeatures::InitPostWindowConstruction(Browser* browser) {
+       mv2_disabled_dialog_controller_ =
+           std::make_unique<extensions::Mv2DisabledDialogController>(browser);
+     }
++    ai_chat_associated_multi_tab_content_ =
++        std::make_unique<ai_chat::AssociatedMultiTabContent>(browser);
+   }
+ 
+   read_anything_coordinator_->Initialize();

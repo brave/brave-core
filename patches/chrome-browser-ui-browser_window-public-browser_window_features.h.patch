@@ -1,0 +1,33 @@
+diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
+index ebe3024a07da5e14d3dbea67002e58b9e131601e..faec29e03549eb4696d0273d348d4f15934d8196 100644
+--- a/chrome/browser/ui/browser_window/public/browser_window_features.h
++++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
+@@ -6,6 +6,7 @@
+ #define CHROME_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_
+ 
+ #include "base/functional/callback.h"
++#include "brave/browser/ui/ai_chat/associated_multi_tab_content.h"
+ 
+ class Browser;
+ class BrowserView;
+@@ -93,6 +94,10 @@ class BrowserWindowFeatures {
+     return read_anything_coordinator_.get();
+   }
+ 
++  ai_chat::AssociatedMultiTabContent* ai_chat_associated_multi_tab_content() {
++    return ai_chat_associated_multi_tab_content_.get();
++  }
++
+  protected:
+   BrowserWindowFeatures();
+ 
+@@ -106,6 +111,9 @@ class BrowserWindowFeatures {
+ 
+   std::unique_ptr<ChromeLabsCoordinator> chrome_labs_coordinator_;
+ 
++  std::unique_ptr<ai_chat::AssociatedMultiTabContent>
++      ai_chat_associated_multi_tab_content_;
++
+   std::unique_ptr<commerce::ProductSpecificationsEntryPointController>
+       product_specifications_entry_point_controller_;
+ 
