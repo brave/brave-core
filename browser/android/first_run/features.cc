@@ -15,4 +15,4 @@ BASE_FEATURE(kAndroidForceDefaultBrowserPrompt,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 }
-}
+}  // namespace first_run
