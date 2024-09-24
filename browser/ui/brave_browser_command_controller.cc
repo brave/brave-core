@@ -5,15 +5,11 @@
 
 #include "brave/browser/ui/brave_browser_command_controller.h"
 
-#include <memory>
 #include <optional>
-#include <utility>
 #include <vector>
 
 #include "base/containers/contains.h"
-#include "base/debug/stack_trace.h"
 #include "base/feature_list.h"
-#include "base/notreached.h"
 #include "base/types/to_address.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -29,7 +25,6 @@
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -71,6 +66,10 @@
 
 #if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/browser/ui/commander/commander_service.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
 namespace {
@@ -341,8 +340,9 @@ void BraveBrowserCommandController::UpdateCommandForTor() {
   // Enable new tor connection only for tor profile.
   UpdateCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE,
                        browser_->profile()->IsTor());
-  UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR,
-                       !brave::IsTorDisabledForProfile(browser_->profile()));
+  UpdateCommandEnabled(
+      IDC_NEW_OFFTHERECORD_WINDOW_TOR,
+      !TorProfileServiceFactory::IsTorDisabled(browser_->profile()));
 }
 #endif
 

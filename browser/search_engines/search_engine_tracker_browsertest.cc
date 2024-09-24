@@ -8,12 +8,12 @@
 #include <memory>
 
 #include "base/test/metrics/histogram_tester.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engine_choice/search_engine_choice_service_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"

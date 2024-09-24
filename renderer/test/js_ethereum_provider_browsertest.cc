@@ -10,8 +10,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/profiles/brave_renderer_updater.h"
-#include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"

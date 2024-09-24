@@ -3,55 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//extensions/buildflags/buildflags.gni")
-
-source_set("profiles") {
-  # Remove when https://github.com/brave/brave-browser/issues/10648 is resolved
-  check_includes = false
-  sources = [
-    "brave_profile_avatar_downloader.cc",
-    "brave_profile_avatar_downloader.h",
-    "brave_profile_manager.cc",
-    "brave_profile_manager.h",
-    "brave_renderer_updater.cc",
-    "brave_renderer_updater.h",
-    "brave_renderer_updater_factory.cc",
-    "brave_renderer_updater_factory.h",
-  ]
-
-  public_deps = [ ":util" ]
-
-  deps = [
-    "//base",
-    "//brave/common",
-    "//brave/components/brave_ads/browser",
-    "//brave/components/brave_rewards/browser",
-    "//brave/components/brave_sync:prefs",
-    "//brave/components/brave_wallet/browser",
-    "//brave/components/brave_wallet/common",
-    "//brave/components/constants",
-    "//brave/components/request_otr/common/buildflags",
-    "//brave/components/tor/buildflags",
-    "//chrome/common",
-    "//components/gcm_driver:gcm_buildflags",
-    "//components/keyed_service/content",
-    "//components/keyed_service/core",
-    "//components/prefs",
-    "//components/search_engines",
-    "//components/signin/public/identity_manager",
-    "//mojo/public/cpp/bindings",
-    "//ui/base",
-  ]
-
-  if (enable_extensions) {
-    deps += [ "//extensions/common" ]
-  }
-}
-
 source_set("util") {
-  # Remove when https://github.com/brave/brave-browser/issues/10648 is resolved
-  check_includes = false
-
   sources = [
     "profile_util.cc",
     "profile_util.h",
@@ -60,10 +12,16 @@ source_set("util") {
   deps = [
     "//base",
     "//brave/common",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/common",
+    "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/common",
     "//brave/components/search_engines",
     "//brave/components/tor/buildflags",
+    "//chrome/browser/profiles",
+    "//components/content_settings/core/browser:cookie_settings",
     "//components/prefs",
+    "//components/search_engines",
     "//content/public/browser",
   ]
 }
