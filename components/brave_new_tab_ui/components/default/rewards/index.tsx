@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import createWidget from '../widget/index'
-import { StyledCard, StyledTitleTab } from '../widgetCard'
+import { StyledTitleTab } from '../widgetCard'
 
 import { LocaleContext } from '../../../../brave_rewards/resources/shared/lib/locale_context'
 import { createLocaleContextForWebUI } from '../../../../brave_rewards/resources/shared/lib/webui_locale_context'
@@ -15,8 +15,9 @@ import {
   RewardsCardHeaderContent
 } from '../../../../brave_rewards/resources/shared/components/newtab'
 
-import { VPNWidget } from '../vpn/vpn_card'
+import { VPNPromoWidget, VPNWidget } from '../vpn/vpn_card'
 import { BraveVPNState } from "components/brave_new_tab_ui/reducers/brave_vpn";
+import * as BraveVPN from "../../../api/braveVpn";
 
 const locale = createLocaleContextForWebUI()
 
@@ -57,10 +58,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
 
   return (
     <LocaleContext.Provider value={locale}>
-      <StyledCard>
-        <VPNWidget {...props.braveVPNState}
-        />
-      </StyledCard>
+      {props.braveVPNState.purchasedState === BraveVPN.PurchasedState.NOT_PURCHASED ? <VPNPromoWidget /> : <VPNWidget {...props.braveVPNState} />}
     </LocaleContext.Provider>
   )
 })
