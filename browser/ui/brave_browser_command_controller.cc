@@ -360,6 +360,7 @@ void BraveBrowserCommandController::UpdateCommandForAIChat() {
   bool command_enabled = (sidebar::CanUseSidebar(&*browser_) &&
                           ai_chat::IsAllowedForContext(browser_->profile()));
   UpdateCommandEnabled(IDC_TOGGLE_AI_CHAT, command_enabled);
+  UpdateCommandEnabled(IDC_OPEN_FULL_PAGE_CHAT, true);
 }
 #endif
 
@@ -542,6 +543,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_TOGGLE_AI_CHAT:
 #if BUILDFLAG(ENABLE_AI_CHAT)
       brave::ToggleAIChat(&*browser_);
+#endif
+      break;
+    case IDC_OPEN_FULL_PAGE_CHAT:
+#if BUILDFLAG(ENABLE_AI_CHAT)
+      brave::ShowFullpageChat(&*browser_);
 #endif
       break;
     case IDC_SPEEDREADER_ICON_ONCLICK:

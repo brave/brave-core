@@ -45,6 +45,10 @@ void ShowBraveTalk(Browser* browser) {
   ShowSingletonTabOverwritingNTP(browser, GURL(sidebar::kBraveTalkURL));
 }
 
+void ShowFullpageChat(Browser* browser) {
+  ShowSingletonTabOverwritingNTP(browser, GURL("chrome-untrusted://chat"));
+}
+
 void ShowWebcompatReporter(Browser* browser) {
   content::WebContents* web_contents =
       browser->tab_strip_model()->GetActiveWebContents();
