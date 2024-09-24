@@ -8,6 +8,7 @@
 #include <initializer_list>
 
 #include "base/strings/string_util.h"
+#include "brave/browser/android/first_run/features.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
@@ -306,7 +307,7 @@
       "Force default browser prompt",                                         \
       "Forces a default browser prompt on first run.",                        \
       kOsAndroid,                                                             \
-      FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing), \
+      FEATURE_VALUE_TYPE(first_run::features::kAndroidForceDefaultBrowserPrompt), \
   })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
