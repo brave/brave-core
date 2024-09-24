@@ -76,7 +76,7 @@ AIChatButton::AIChatButton(Browser* browser)
 AIChatButton::~AIChatButton() = default;
 
 void AIChatButton::ButtonPressed() {
-  chrome::ExecuteCommand(&browser_.get(), IDC_TOGGLE_AI_CHAT);
+  chrome::ExecuteCommand(&browser_.get(), IDC_OPEN_FULL_PAGE_CHAT);
 
   ai_chat::AIChatMetrics* metrics =
       g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
