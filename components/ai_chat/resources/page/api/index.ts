@@ -78,3 +78,13 @@ export function newConversation() {
     callbackRouter
   }
 }
+
+export function newMultiTabConversation() {
+  const conversationHandler = new mojom.ConversationHandlerRemote()
+  const callbackRouter = new mojom.ConversationUICallbackRouter()
+  getAPI().UIHandler.newMultiTabConversation(conversationHandler.$.bindNewPipeAndPassReceiver(), callbackRouter.$.bindNewPipeAndPassRemote())
+  return {
+    conversationHandler,
+    callbackRouter
+  }
+}

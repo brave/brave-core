@@ -13,6 +13,7 @@ interface Props {
   isDefaultConversation: boolean
   // Create a new conversation and use it
   onNewConversation: () => unknown
+  onNewMultiTabConversation: () => void;
   // Select a new conversation
   onSelectConversationUuid: (id: string | undefined) => unknown
 }
@@ -53,6 +54,7 @@ const defaultContext: AIChatContext = {
   dismissPremiumPrompt: () => {},
   userRefreshPremiumSession: () => {},
   onNewConversation: () => {},
+  onNewMultiTabConversation: () => {},
   onSelectConversationUuid: () => {}
 }
 

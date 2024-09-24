@@ -72,6 +72,11 @@ function App() {
     setSelectedConversationUuid(undefined)
   }
 
+  const handleNewMultiTabConversation = () => {
+    setConversationAPI(API.newMultiTabConversation())
+    setSelectedConversationUuid(undefined)
+  }
+
   React.useEffect(() => {
     // Observe when default conversation changes
     const onNewDefaultConversationListenerId =
@@ -88,6 +93,7 @@ function App() {
     <AIChatContextProvider
       isDefaultConversation={!selectedConversationUuid}
       onNewConversation={handleNewConversation}
+      onNewMultiTabConversation={handleNewMultiTabConversation}
       onSelectConversationUuid={handleSelectConversationUuid}
     >
       {conversationAPI && (

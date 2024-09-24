@@ -121,7 +121,9 @@ export default function SidebarHeader(props: FeatureButtonMenuProps) {
             fab
             title='New window chat'
             kind='plain-faint'
-            onClick={console.log}
+            onClick={() =>{
+              aiChatContext.onNewMultiTabConversation()
+            }}
           >
             <Icon name='add-tab' />
           </Button>
