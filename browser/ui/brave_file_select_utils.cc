@@ -52,6 +52,7 @@ std::u16string GetFileSelectTitle(content::WebContents* web_contents,
   // TODO(sko) It's hard to test this behavior is in sync at this moment. Even
   // upstream tests aren't covering this. Need to figure out how we can test
   // extension and isolated web app case.
+  CHECK(web_contents);
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
 
