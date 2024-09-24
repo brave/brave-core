@@ -56,6 +56,24 @@ AssociatedContentDelegate::AssociatedContentDelegate()
 
 AssociatedContentDelegate::~AssociatedContentDelegate() = default;
 
+mojom::AssociatedContentType
+AssociatedContentDelegate::GetAssociatedContentType() const {
+  return mojom::AssociatedContentType::Web;
+}
+
+mojom::SiteInfoDetailPtr AssociatedContentDelegate::GetAssociatedContentDetail()
+    const {
+  const GURL url = GetURL();
+  auto detail = mojom::WebSiteInfoDetail::New();
+  detail->title = base::UTF16ToUTF8(GetTitle());
+  if (url.SchemeIsHTTPOrHTTPS()) {
+    detail->hostname = url.host();
+    detail->url = url;
+  }
+
+  return mojom::SiteInfoDetail::NewWebSiteInfo(std::move(detail));
+}
+
 void AssociatedContentDelegate::OnNewPage(int64_t navigation_id) {
   pending_top_similarity_requests_.clear();
   if (text_embedder_) {
@@ -1310,8 +1328,13 @@ void ConversationHandler::BuildAssociatedContentInfo() {
         GetContentUsedPercentage();
     associated_content_info_->is_content_refined = is_content_refined_;
     associated_content_info_->is_content_association_possible = true;
+    associated_content_info_->type =
+        associated_content_delegate_->GetAssociatedContentType();
+    associated_content_info_->detail =
+        associated_content_delegate_->GetAssociatedContentDetail();
   } else {
     associated_content_info_->is_content_association_possible = false;
+    associated_content_info_->type = mojom::AssociatedContentType::None;
   }
 }
 

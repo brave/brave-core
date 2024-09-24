@@ -62,6 +62,10 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
       mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler)
       override;
+  void NewMultiTabConversation(
+      mojo::PendingReceiver<mojom::ConversationHandler> receiver,
+      mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler)
+      override;
   void GetFaviconImageData(const std::string& conversation_id,
                            GetFaviconImageDataCallback callback) override;
 

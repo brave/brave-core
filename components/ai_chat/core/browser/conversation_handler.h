@@ -69,6 +69,12 @@ class ConversationHandler : public mojom::ConversationHandler,
     virtual void AddRelatedConversation(ConversationHandler* conversation) {}
     virtual void OnRelatedConversationDestroyed(
         ConversationHandler* conversation) {}
+
+    // General type of content this AssociatedContentDelegate represents
+    virtual mojom::AssociatedContentType GetAssociatedContentType() const;
+
+    virtual mojom::SiteInfoDetailPtr GetAssociatedContentDetail() const;
+
     // Unique ID for the content. For browser Tab content, this should be
     // a navigation ID that's re-used during back navigations.
     virtual int GetContentId() const = 0;

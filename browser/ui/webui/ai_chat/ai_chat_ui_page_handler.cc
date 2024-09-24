@@ -8,15 +8,20 @@
 #include <memory>
 #include <utility>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "components/favicon/core/favicon_service.h"
 #include "content/public/browser/browser_context.h"
@@ -223,6 +228,27 @@ void AIChatUIPageHandler::NewConversation(
     conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
                        ->CreateConversation();
   }
+
+  conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
+}
+
+void AIChatUIPageHandler::NewMultiTabConversation(
+    mojo::PendingReceiver<mojom::ConversationHandler> receiver,
+    mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
+  ConversationHandler* conversation;
+  // Make an associated content for all tabs in current window
+  Browser* browser = ai_chat::GetBrowserForWebContents(owner_web_contents_);
+  if (!browser) {
+    return;
+  }
+
+  auto* multi_tab_content = browser->browser_window_features()
+                                ->ai_chat_associated_multi_tab_content();
+
+  conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
+                     ->CreateConversation();
+
+  conversation->SetAssociatedContentDelegate(multi_tab_content->GetWeakPtr());
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
 }

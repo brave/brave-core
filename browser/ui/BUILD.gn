@@ -87,6 +87,8 @@ source_set("ui") {
 
   if (enable_ai_chat) {
     sources += [
+      "ai_chat/associated_multi_tab_content.cc",
+      "ai_chat/associated_multi_tab_content.h",
       "webui/ai_chat/ai_chat_ui.cc",
       "webui/ai_chat/ai_chat_ui.h",
       "webui/ai_chat/ai_chat_ui_page_handler.cc",

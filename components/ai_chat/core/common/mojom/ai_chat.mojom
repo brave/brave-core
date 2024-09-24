@@ -69,7 +69,30 @@ enum SuggestionGenerationStatus {
   HasGenerated,
 };
 
+enum AssociatedContentType {
+  None,
+  Web,
+  MultipleWeb,
+};
+
+struct WebSiteInfoDetail {
+  url.mojom.Url url;
+  string hostname;
+  string title;
+};
+
+struct MultipleWebSiteInfoDetail {
+  array<WebSiteInfoDetail> sites;
+};
+
+union SiteInfoDetail {
+  WebSiteInfoDetail web_site_info;
+  MultipleWebSiteInfoDetail multiple_web_site_info;
+};
+
 struct SiteInfo {
+  AssociatedContentType type;
+  SiteInfoDetail? detail;
   // Title is present if the site has associated page content
   string? title;
   // Indicates if the URL scheme is of a type that allows for content association.
@@ -309,6 +332,10 @@ interface AIChatUIHandler {
   // Make a completely new conversation, which may
   // be bound to the associated conversation, if this UI has a target
   NewConversation(pending_receiver<ConversationHandler> conversation,
+      pending_remote<ConversationUI> conversation_ui);
+
+  NewMultiTabConversation(
+      pending_receiver<ConversationHandler> conversation,
       pending_remote<ConversationUI> conversation_ui);
 
   // TODO(petemill): WebUI clients won't need this when they can
