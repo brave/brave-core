@@ -11,7 +11,7 @@
 namespace first_run {
 namespace features {
 
-BASE_DECLARE_FEATURE(kBraveAndroidSafeBrowsing);
+BASE_DECLARE_FEATURE(kAndroidForceDefaultBrowserPrompt);
 
 }
 }
