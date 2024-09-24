@@ -324,7 +324,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.3f, margin, true);
         setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.3f, margin, false);
 
-        if (BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this)) {
+        if (isDefaultBrowser()) {
             if (mBtnPositive != null) {
                 mBtnPositive.setText(getResources().getString(R.string.continue_text));
             }
