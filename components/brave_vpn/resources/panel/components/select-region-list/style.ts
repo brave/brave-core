@@ -163,9 +163,9 @@ export const RegionConnect = styled(Button)<{ right: string }>`
   opacity: 0;
   position: absolute;
   right: ${(p) => p.right};
-  transition: opacity 0.3s ease-in-out;
 
   ${RegionCountry}:hover &, ${RegionCity}:hover & {
+    transition: opacity 0.3s ease-in-out;
     opacity: 1;
   }
 `
