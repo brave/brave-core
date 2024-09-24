@@ -41,6 +41,27 @@
   min-width: 52px;
 }
 
+.right {
+  padding: 8px;
+  padding-top: 68px;
+  width: 340px;
+
+  & > h3 {
+    all: unset;
+    font: var(--leo-font-heading-h4);
+  }
+
+  & ul {
+    padding: 0;
+    margin: var(--leo-spacing-m);
+  }
+
+  & li {
+    font: var(--leo-font-default-regular);
+    list-style: none;
+  }
+}
+
 .controls {
   position: absolute;
   display: flex;

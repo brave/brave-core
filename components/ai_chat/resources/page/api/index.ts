@@ -14,6 +14,7 @@ class API {
   public UIHandler: mojom.AIChatUIHandlerRemote
   public UIObserver: mojom.ChatUICallbackRouter
   public isStandalone: boolean
+  public initialTabs: mojom.WebSiteInfoDetail[]
 
   constructor() {
     // Connect to service
@@ -23,8 +24,9 @@ class API {
     // Connect to platform UI handler
     this.UIHandler = mojom.AIChatUIHandler.getRemote()
     this.UIObserver = new mojom.ChatUICallbackRouter()
-    this.UIObserver.setInitialData.addListener((isStandalone: boolean) => {
+    this.UIObserver.setInitialData.addListener((isStandalone: boolean, initialTabs: mojom.WebSiteInfoDetail[]) => {
       this.isStandalone = isStandalone
+      this.initialTabs = initialTabs
     })
     this.UIHandler.setChatUI(this.UIObserver.$.bindNewPipeAndPassRemote())
   }

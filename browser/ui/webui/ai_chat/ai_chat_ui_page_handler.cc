@@ -7,14 +7,17 @@
 
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
@@ -192,7 +195,23 @@ void AIChatUIPageHandler::CloseUI() {
 void AIChatUIPageHandler::SetChatUI(
     mojo::PendingRemote<mojom::ChatUI> chat_ui) {
   chat_ui_.Bind(std::move(chat_ui));
-  chat_ui_->SetInitialData(active_chat_tab_helper_ == nullptr);
+
+  std::vector<mojom::WebSiteInfoDetailPtr> tabs;
+  if (auto* browser = chrome::FindBrowserWithTab(owner_web_contents_)) {
+    for (int i = 0; i < browser->tab_strip_model()->count(); ++i) {
+      auto* wc = browser->tab_strip_model()->GetWebContentsAt(i);
+      if (wc == owner_web_contents_) {
+        continue;
+      }
+      auto info = mojom::WebSiteInfoDetail::New();
+      info->hostname = wc->GetVisibleURL().host();
+      info->title = base::UTF16ToUTF8(wc->GetTitle());
+      info->url = wc->GetURL();
+
+      tabs.push_back(std::move(info));
+    }
+  }
+  chat_ui_->SetInitialData(active_chat_tab_helper_ == nullptr, std::move(tabs));
 }
 
 void AIChatUIPageHandler::BindRelatedConversation(
