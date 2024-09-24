@@ -289,7 +289,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                             200);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-                    && (!shouldForceDefaultBrowserPrompt() || !isDefaultBrowser())) {
+                    && (!shouldForceDefaultBrowserPrompt() || isDefaultBrowser())) {
                 mRequestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
             } else {
                 startTimer(3000);
