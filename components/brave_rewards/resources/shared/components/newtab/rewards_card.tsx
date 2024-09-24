@@ -13,7 +13,6 @@ import { ExternalWallet, getExternalWalletProviderName } from '../../lib/externa
 import { UserType } from '../../lib/user_type'
 import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
 import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
-import { BatIcon } from '../icons/bat_icon'
 import { OptInIcon } from '../icons/optin_icon'
 import { InfoIcon } from './icons/info_icon'
 import { CaretIcon } from '../icons/caret_icon'
@@ -35,14 +34,12 @@ const monthFormatter = new Intl.DateTimeFormat(undefined, {
 })
 
 export function RewardsCardHeaderContent () {
-  const { getString } = React.useContext(LocaleContext)
   return (
     <>
-      <style.cardHeaderIcon>
-        <BatIcon />
+      <style.cardHeaderIcon name='product-vpn'>
       </style.cardHeaderIcon>
       <div>
-        {getString('rewardsBraveRewards')}
+        Firewall + VPN
       </div>
     </>
   )
