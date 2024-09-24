@@ -213,7 +213,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (mBtnPositive != null) {
             mBtnPositive.setOnClickListener(
                     view -> {
-                        if (mCurrentStep != 1 || setDefaultBrowser()) {
+                        if (mCurrentStep == 1 && !isDefaultBrowser()) {
+                            setDefaultBrowser();
+                        } else {
                             nextOnboardingStep();
                         }
                     });
@@ -231,18 +233,16 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private boolean shouldForceDefaultBrowserPrompt() {
-        return ChromeFeatureList.isEnabled(BraveFeatureList.ANDROID_FORCE_DEFAULT_BROWSER_PROMPT);
+        return !isDefaultBrowser()
+                && ChromeFeatureList.isEnabled(
+                        BraveFeatureList.ANDROID_FORCE_DEFAULT_BROWSER_PROMPT);
     }
 
-    private boolean setDefaultBrowser() {
-        if (!isDefaultBrowser()) {
-            BraveSetDefaultBrowserUtils.setDefaultBrowser(this);
-            if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
-                nextOnboardingStep();
-                return false;
-            }
+    private void setDefaultBrowser() {
+        BraveSetDefaultBrowserUtils.setDefaultBrowser(this);
+        if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
+            nextOnboardingStep();
         }
-        return true;
     }
 
     private boolean isDefaultBrowser() {
@@ -289,16 +289,14 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                             200);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-                    && (!shouldForceDefaultBrowserPrompt() || isDefaultBrowser())) {
+                    && !shouldForceDefaultBrowserPrompt()) {
                 mRequestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
             } else {
                 startTimer(3000);
             }
         } else if (mCurrentStep == 1) {
             if (shouldForceDefaultBrowserPrompt()) {
-                if (setDefaultBrowser()) {
-                    nextOnboardingStep();
-                }
+                setDefaultBrowser();
             } else {
                 int margin = mIsTablet ? 200 : 30;
                 setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.3f, margin, true);
