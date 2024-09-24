@@ -22,6 +22,7 @@ class BraveVPNServiceDelegateMac : public BraveVPNServiceDelegate {
   void WriteConnectionState(mojom::ConnectionState state) override;
   void ShowBraveVpnStatusTrayIcon() override;
   void LaunchVPNPanel() override;
+  void OpenVpnUI(const std::string& type) override;
 };
 
 }  // namespace brave_vpn
