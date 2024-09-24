@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import WebKit
 
@@ -153,12 +154,18 @@ class ScriptFactory {
       let args = String(data: data, encoding: .utf8)!
       let proceduralActionFilters =
         proceduralActions.isEmpty ? "undefined" : "[ \(proceduralActions.joined(separator: ","))]"
-      let proceduralFiltersScript = try makeScriptSource(of: .proceduralFilters)
-      let source = try ScriptFactory.shared.makeScriptSource(of: .selectorsPoller)
-        .replacingOccurrences(of: "$<args>", with: args)
-        .replacingOccurrences(of: "$<procedural_filters_script>", with: proceduralFiltersScript)
-        .replacingOccurrences(of: "$<procedural_filters>", with: proceduralActionFilters)
-
+      let cosmeticFiltersScript = AdblockService.cosmeticFiltersScript()
+      let source = """
+        window.__firefox__.execute(function($) {
+          const args = \(args);
+          const proceduralFilters = \(proceduralActionFilters);
+          const messageHandler = '$<message_handler>';
+          const partinessMessageHandler = '$<partiness_message_handler>';
+          
+          \(cosmeticFiltersScript)
+          
+        });
+        """
       let secureSource = CosmeticFiltersScriptHandler.secureScript(
         handlerNamesMap: [
           "$<message_handler>": CosmeticFiltersScriptHandler.messageHandlerName,

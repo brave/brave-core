@@ -213,12 +213,12 @@ void AdBlockResourceObserver::OnResourcesLoaded(
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
   std::string resource_string = "";
   if (resource_bundle.IsGzipped(
-          IDR_COSMETIC_FILTERS_COSMETIC_FILTERS_CORE_BUNDLE_JS)) {
+          IDR_COSMETIC_FILTERS_CONTENT_COSMETIC_IOS_BUNDLE_JS)) {
     resource_string = std::string(resource_bundle.LoadDataResourceString(
-        IDR_COSMETIC_FILTERS_COSMETIC_FILTERS_CORE_BUNDLE_JS));
+        IDR_COSMETIC_FILTERS_CONTENT_COSMETIC_IOS_BUNDLE_JS));
   } else {
     resource_string = std::string(resource_bundle.GetRawDataResource(
-        IDR_COSMETIC_FILTERS_COSMETIC_FILTERS_CORE_BUNDLE_JS));
+        IDR_COSMETIC_FILTERS_CONTENT_COSMETIC_IOS_BUNDLE_JS));
   }
   return base::SysUTF8ToNSString(resource_string);
 }
