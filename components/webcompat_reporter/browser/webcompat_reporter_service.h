@@ -6,12 +6,15 @@
 #ifndef BRAVE_COMPONENTS_WEBCOMPAT_REPORTER_BROWSER_WEBCOMPAT_REPORTER_SERVICE_H_
 #define BRAVE_COMPONENTS_WEBCOMPAT_REPORTER_BROWSER_WEBCOMPAT_REPORTER_SERVICE_H_
 
+#include <memory>
 #include "base/memory/weak_ptr.h"
+#include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace component_updater {
 class ComponentUpdateService;
@@ -21,18 +24,23 @@ namespace webcompat_reporter {
 
 // This class is not thread-safe and should have single owner
 class WebcompatReporterService : public KeyedService,
-                          public mojom::WebcompatReporterHandler {
+                                 public mojom::WebcompatReporterHandler {
  public:
-  explicit WebcompatReporterService(component_updater::ComponentUpdateService* component_update_service);
+  explicit WebcompatReporterService(
+      component_updater::ComponentUpdateService* component_update_service,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~WebcompatReporterService() override;
 
-   mojo::PendingRemote<mojom::WebcompatReporterHandler> MakeRemote();
-   void Bind(mojo::PendingReceiver<mojom::WebcompatReporterHandler> receiver);
+  mojo::PendingRemote<mojom::WebcompatReporterHandler> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::WebcompatReporterHandler> receiver);
 
-   void GetAdblockComponentInfo(GetAdblockComponentInfoCallback callback) override;
+  void SubmitWebcompatReport(mojom::ReportInfoPtr report_info, SubmitWebcompatReportCallback callback) override;
 
+  void SubmitWebcompatReport(const Report& report_data);
  private:
+  void SubmitReportInternal(Report report_data);
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
+  std::unique_ptr<WebcompatReportUploader> report_uploader_;
   mojo::ReceiverSet<mojom::WebcompatReporterHandler> receivers_;
   base::WeakPtrFactory<WebcompatReporterService> weak_factory_{this};
 

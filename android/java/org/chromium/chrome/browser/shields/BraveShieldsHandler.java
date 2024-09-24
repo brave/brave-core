@@ -59,6 +59,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.components.browser_ui.widget.ChromeDialog;
+import org.chromium.components.version_info.BraveVersionConstants;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.ui.widget.ChromeImageButton;
@@ -70,7 +71,8 @@ import java.util.Map;
 
 
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
-import org.chromium.webcompat_reporter.mojom.AdblockComponentInfo;
+import org.chromium.webcompat_reporter.mojom.ReportInfo;
+
 
 import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
 /**
@@ -326,22 +328,12 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
     @Override
     public void onConnectionError(MojoException e) {
-    //    if (isPlaylistEnabledByPrefsAndFlags()) {
-        mWebcompatReporterHandler = null;
+        Log.i(TAG, "onConnectionError(MojoException e) #700");
         initWebcompatReporterService();
-    //    }
     }
 
     private void initWebcompatReporterService() {
-        // Tab currentTab = getToolbarDataProvider().getTab();
-        // if (mWebcompatReporterService != null || currentTab == null) {
-        //     return;
-        // }
-
-        // if (currentTab.isIncognito()) {
-        //     return;
-        // }
-Log.i(TAG, "initWebcompatReporterService #100");
+        Log.i(TAG, "initWebcompatReporterService #800");
         mWebcompatReporterHandler =
             WebcompatReporterServiceFactory.getInstance()
                         .getWebcompatReporterHandler(this);
@@ -427,9 +419,14 @@ Log.i(TAG, "initWebcompatReporterService #100");
     }
 
     public void hideBraveShieldsMenu() {
+        Log.i(TAG, "hideBraveShieldsMenu #900");
         if (isShowing()) {
             mPopupWindow.dismiss();
         }
+        if (null != mWebcompatReporterHandler) {
+            Log.i(TAG, "hideBraveShieldsMenu Close Mojo #950");
+            mWebcompatReporterHandler.close();
+        } 
     }
 
     private void initViews() {
@@ -851,10 +848,6 @@ Log.i(TAG, "initWebcompatReporterService #100");
                     }
                 });
 
-                mWebcompatReporterHandler.getAdblockComponentInfo((AdblockComponentInfo[] subscriptions) -> {
-Log.i(TAG, "On AdblockComponentInfo #500 subscriptions.length:" + subscriptions.length);
-                });
-
         Button mSubmitButton = mReportBrokenSiteLayout.findViewById(R.id.btn_submit);
         mSubmitButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -862,16 +855,34 @@ Log.i(TAG, "On AdblockComponentInfo #500 subscriptions.length:" + subscriptions.
                     public void onClick(View view) {
                         // Profile.getLastUsedRegularProfile requires to run in UI thread,
                         // so get api key here and pass it to IO worker task
-                        String referralApiKey =
-                                NTPBackgroundImagesBridge.getInstance(mProfile).getReferralApiKey();
-                        BraveShieldsUtils.BraveShieldsWorkerTask mWorkerTask =
-                                new BraveShieldsUtils.BraveShieldsWorkerTask(
-                                        siteUrl,
-                                        referralApiKey,
-                                        isScreenshotAvailable() ? mScreenshotBytes : null);
-                        mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                        mReportBrokenSiteLayout.setVisibility(View.GONE);
-                        mThankYouLayout.setVisibility(View.VISIBLE);
+                        Log.i(TAG, "Pre submitWebcompatReport #450 mScreenshotBytes.length:" + (mScreenshotBytes != null ? mScreenshotBytes.length : 0));
+                        Log.i(TAG, "Pre submitWebcompatReport #460 isScreenshotAvailable():" + isScreenshotAvailable());
+                        ReportInfo reportInfo = new ReportInfo();
+                        reportInfo.channel = BraveVersionConstants.CHANNEL;
+                        reportInfo.braveVersion = BraveVersionConstants.VERSION;
+                        reportInfo.reportUrl = siteUrl;
+                        reportInfo.adBlockSetting = "";//TODO 
+                        reportInfo.adBlockListNames = "";// TODO
+                        reportInfo.screenshotPng = isScreenshotAvailable() ? mScreenshotBytes : null;
+                        reportInfo.languages = "";//TODO 
+                        reportInfo.languageFarbling = false;//TODO 
+                        reportInfo.braveVpnConnected = false;//TODO 
+                        reportInfo.details = new java.util.HashMap<String, String>();
+                         reportInfo.contact = new java.util.HashMap<String, String>();
+                         reportInfo.adBlockComponentsVersion = new java.util.HashMap<String, String>();
+       
+                        // BraveShieldsUtils.BraveShieldsWorkerTask mWorkerTask =
+                        //         new BraveShieldsUtils.BraveShieldsWorkerTask(
+                        //                 siteUrl,
+                        //                 referralApiKey,
+                        //                 isScreenshotAvailable() ? mScreenshotBytes : null);
+                        // mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        
+                        mWebcompatReporterHandler.submitWebcompatReport(reportInfo,() -> {
+                            Log.i(TAG, "On submitWebcompatReport #500 ");
+                            mReportBrokenSiteLayout.setVisibility(View.GONE);
+                            mThankYouLayout.setVisibility(View.VISIBLE);    
+                        });
                     }
                 });
     }
