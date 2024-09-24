@@ -32,6 +32,10 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.h"
 #endif
 
+#if BUILDFLAG(IS_MAC)
+#include "brave/browser/brave_vpn/mac/brave_vpn_service_delegate_mac.h"
+#endif
+
 namespace brave_vpn {
 namespace {
 
@@ -64,6 +68,10 @@ std::unique_ptr<KeyedService> BuildVpnService(
           g_brave_browser_process->brave_vpn_connection_manager(),
           shared_url_loader_factory, local_state,
           user_prefs::UserPrefs::Get(context), callback);
+#if BUILDFLAG(IS_MAC)
+  vpn_service->set_delegate(std::make_unique<BraveVPNServiceDelegateMac>());
+#endif
+
 #if BUILDFLAG(IS_WIN)
   vpn_service->set_delegate(std::make_unique<BraveVPNServiceDelegateWin>());
   if (auto* wg_observer_service =

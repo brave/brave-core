@@ -87,7 +87,7 @@ export const VPNWidget = ({
             <span className={`${styles.connectionStatus}`}>{connectionState === BraveVPN.ConnectionState.CONNECTED ? locales.connected : locales.disconnected}</span>
             <div className={styles.detailLockup}>
               <span className={styles.region}>{selectedRegion.country}</span>
-              <button className={styles.changeServerButton}>{locales.change}</button>
+              <button className={styles.changeServerButton} onClick={() => dispatch(Actions.launchVPNPanel())}>{locales.change}</button>
             </div>
             <div className={styles.detailLockup}>
               {selectedRegion.regionPrecision === "city" && <span className={styles.city}>{selectedRegion.namePretty}</span>}
