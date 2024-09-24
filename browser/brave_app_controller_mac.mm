@@ -10,10 +10,8 @@
 
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_features.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/tor/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/browser.h"
@@ -23,6 +21,11 @@
 #include "components/policy/core/common/policy_pref_names.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/l10n/l10n_util_mac.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/tor/pref_names.h"
+#endif
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -178,7 +181,7 @@ class TorPrefObserver : public BooleanPrefMember {
   if (action == @selector(commandFromDock:) &&
       tag == IDC_NEW_OFFTHERECORD_WINDOW_TOR) {
     auto* profile = [self lastProfileIfLoaded];
-    return profile && !brave::IsTorDisabledForProfile(profile) &&
+    return profile && !TorProfileServiceFactory::IsTorDisabled(profile) &&
            [self canOpenNewBrowser];
   }
 #endif  // BUILDFLAG(ENABLE_TOR)

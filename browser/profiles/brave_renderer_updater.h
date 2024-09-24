@@ -15,7 +15,6 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_member.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
-#include "mojo/public/cpp/bindings/remote.h"
 
 class Profile;
 

@@ -727,7 +727,6 @@ source_set("ui") {
     "//brave/browser/brave_rewards:util",
     "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/browser/misc_metrics",
-    "//brave/browser/profiles",
     "//brave/browser/shell_integrations/buildflags",
     "//brave/browser/themes",
     "//brave/browser/ui/brave_ads",

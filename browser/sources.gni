@@ -33,6 +33,7 @@ import("//brave/browser/onboarding/sources.gni")
 import("//brave/browser/perf/sources.gni")
 import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/playlist/sources.gni")
+import("//brave/browser/profiles/sources.gni")
 import("//brave/browser/renderer_context_menu/sources.gni")
 import("//brave/browser/request_otr/sources.gni")
 import("//brave/browser/search_engines/sources.gni")
@@ -129,13 +130,13 @@ brave_chrome_browser_deps = [
   "//brave/browser/metrics/buildflags",
   "//brave/browser/misc_metrics",
   "//brave/browser/misc_metrics:misc_metrics_impl",
-  "//brave/browser/profiles",
   "//brave/browser/search",
   "//brave/browser/skus",
   "//brave/browser/sync",
   "//brave/browser/themes",
   "//brave/browser/ui",
   "//brave/common",
+  "//brave/common:mojo_bindings",
   "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/ai_rewriter/common/buildflags",
   "//brave/components/body_sniffer",
@@ -501,6 +502,7 @@ if (is_mac) {
   brave_chrome_framework_configs = [ "//brave/build/rust:strip_rust_symbols" ]
 }
 
+brave_chrome_browser_sources += brave_browser_profiles_sources
 brave_chrome_browser_sources += brave_browser_autocomplete_sources
 brave_chrome_browser_sources += brave_browser_brave_adaptive_captcha_sources
 brave_chrome_browser_sources += brave_browser_brave_ads_sources

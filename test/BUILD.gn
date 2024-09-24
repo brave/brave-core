@@ -75,7 +75,6 @@ static_library("brave_test_support_unit") {
 
   deps = [
     ":test_support",
-    "//brave/browser/profiles",
     "//brave/common",
     "//brave/components/constants",
     "//components/gcm_driver",
@@ -169,8 +168,8 @@ test("brave_unit_tests") {
     "//brave/browser/net:unit_tests",
     "//brave/browser/new_tab:unittest",
     "//brave/browser/permissions:unit_tests",
-    "//brave/browser/profiles:profiles",
     "//brave/browser/profiles:unit_tests",
+    "//brave/browser/profiles:util",
     "//brave/browser/safebrowsing",
     "//brave/browser/search:unit_tests",
     "//brave/browser/themes",
@@ -856,7 +855,7 @@ test("brave_browser_tests") {
     "//brave/browser/net:browser_tests",
     "//brave/browser/new_tab:browser_tests",
     "//brave/browser/permissions:browser_tests",
-    "//brave/browser/profiles",
+    "//brave/browser/profiles:util",
     "//brave/browser/psst:browser_tests",
     "//brave/browser/sandbox:browser_tests",
     "//brave/browser/script_injector:browser_tests",

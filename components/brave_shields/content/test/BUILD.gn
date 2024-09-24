@@ -50,6 +50,6 @@ source_set("unit_tests") {
       "brave_shields_util_unittest.cc",
     ]
 
-    deps += [ "//brave/browser/profiles" ]
+    deps += [ "//chrome/browser" ]
   }
 }

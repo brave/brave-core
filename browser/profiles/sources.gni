@@ -1,0 +1,15 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_browser_profiles_sources = [
+  "//brave/browser/profiles/brave_profile_avatar_downloader.cc",
+  "//brave/browser/profiles/brave_profile_avatar_downloader.h",
+  "//brave/browser/profiles/brave_profile_manager.cc",
+  "//brave/browser/profiles/brave_profile_manager.h",
+  "//brave/browser/profiles/brave_renderer_updater.cc",
+  "//brave/browser/profiles/brave_renderer_updater.h",
+  "//brave/browser/profiles/brave_renderer_updater_factory.cc",
+  "//brave/browser/profiles/brave_renderer_updater_factory.h",
+]
