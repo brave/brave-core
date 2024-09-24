@@ -58,7 +58,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
 
   return (
     <LocaleContext.Provider value={locale}>
-      {props.braveVPNState.purchasedState === BraveVPN.PurchasedState.NOT_PURCHASED ? <VPNPromoWidget /> : <VPNWidget {...props.braveVPNState} />}
+      {props.braveVPNState.purchasedState === BraveVPN.PurchasedState.PURCHASED ? <VPNWidget {...props.braveVPNState} /> : <VPNPromoWidget /> }
     </LocaleContext.Provider>
   )
 })
