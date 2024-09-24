@@ -800,6 +800,7 @@
 -ExtensionsToolbarControlsTest.*
 -ExtensionsToolbarControlsUnitTest.*
 -ExtensionSyncTypeTest.*
+-ExtensionTelemetryServiceSystemTimeTest.*
 -ExtensionTelemetryServiceTest.*
 -ExtensionUpdaterTest.*
 -ExtensionWebUITest.*
