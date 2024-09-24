@@ -8,13 +8,8 @@ import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
 
 transpile_web_ui("cosmetic_filters_resources") {
-  entry_points = [ [
-        "cosmetic_filters_core",
-        rebase_path("cosmetic_filters_core.ts"),
-      ] ]
-
   if (!is_ios) {
-    entry_points += [
+    entry_points = [
       [
         "cosmetic_filters",
         rebase_path("content_cosmetic.ts"),
@@ -24,6 +19,11 @@ transpile_web_ui("cosmetic_filters_resources") {
         rebase_path("element_picker.ts"),
       ],
     ]
+  } else {
+    entry_points = [ [
+          "content_cosmetic_ios",
+          rebase_path("content_cosmetic_ios.js"),
+        ] ]
   }
 
   resource_name = "cosmetic_filters"
