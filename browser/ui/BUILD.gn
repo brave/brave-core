@@ -880,6 +880,12 @@ source_set("ui") {
   ]
 
   if (enable_brave_vpn) {
+    if (is_mac) {
+      sources += [
+        "//brave/browser/brave_vpn/mac/brave_vpn_service_delegate_mac.cc",
+        "//brave/browser/brave_vpn/mac/brave_vpn_service_delegate_mac.h",
+      ]
+    }
     deps += [
       "//brave/browser/brave_vpn",
       "//brave/components/brave_vpn/browser",
