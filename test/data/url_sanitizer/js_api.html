@@ -9,6 +9,8 @@
     </style>
 
     <script>
+        const TEXT_TO_COPY = 'hTtPs://Youtu.Be/B?si=oLb865I64uJlLRJX'
+
         function copy_from_text_area(name) {
             const ta = document.getElementById(name)
             ta.focus()
@@ -29,7 +31,7 @@
             textArea.style.outline = 'none'
             textArea.style.boxShadow = 'none'
             textArea.style.background = 'transparent'
-            textArea.value = 'https://youtu.be/?si=oLb865I64uJlLRJX'
+            textArea.value = TEXT_TO_COPY
             document.body.appendChild(textArea)
             textArea.focus()
             textArea.select()
@@ -48,7 +50,24 @@
         }
 
         async function navigator_copy() {
-            await navigator.clipboard.writeText('https://youtu.be/B?si=oLb865I64uJlLRJX')
+            await navigator.clipboard.writeText(TEXT_TO_COPY)
+        }
+
+        async function copy_url_like_password() {
+            // TEXT_TO_COPY contains capitalized chars.
+            await navigator.clipboard.writeText(TEXT_TO_COPY)
+        }
+
+        async function copy_password_1() {
+            await navigator.clipboard.writeText('Pa$$w0rd')
+        }
+
+        async function copy_password_2() {
+            await navigator.clipboard.writeText('A:^C,D')
+        }
+
+        async function copy_password_3() {
+            await navigator.clipboard.writeText('Ftp://Example.Com/?si=12345')
         }
     </script>
 
@@ -61,28 +80,27 @@
         <div>Put any text you want, then click 'Copy'. Data should be sanitized. </div>
         <div> API: document.exec('copy') </div>
         <div>
-            <textarea id="area_1">https://youtu.be/C?si=oLb865I64uJlLRJX</textarea>
+            <textarea id="area_1">hTtPs://Youtu.Be/B?si=oLb865I64uJlLRJX</textarea>
         </div>
         <button id="test_1" onclick="copy_from_text_area('area_1')"> Copy </button>
     </div>
 
     <br>
-    <br
+    <br <div>
+    <div>Copy from text area</div>
+    <div>Data should be sanitized. </div>
+    <div>API: document.exec('copy') </div>
     <div>
-        <div>Copy from text area</div>
-        <div>Data should be sanitized. </div>
-        <div>API: document.exec('copy') </div>
-        <div>
-            <textarea id="area_2" readonly="true">https://youtu.be/D?si=oLb865I64uJlLRJX</textarea>
-        </div>
-        <button id="test_2" onclick="copy_from_text_area('area_2')"> Copy </button>
+        <textarea id="area_2" readonly="true">hTtPs://Youtu.Be/B?si=oLb865I64uJlLRJX</textarea>
+    </div>
+    <button id="test_2" onclick="copy_from_text_area('area_2')"> Copy </button>
     </div>
 
     <br>
     <br>
     <div>
         <div>Navigator Clipboard API</div>
-        <div>https://youtu.be/E?si=oLb865I64uJlLRJX</div>
+        <div>hTtPs://Youtu.Be/B?si=oLb865I64uJlLRJX</div>
         <div>API: navigator.clipboard.writeText </div>
         <button id="test_3" onclick="navigator_copy()"> Copy </button>
     </div>
@@ -91,7 +109,7 @@
     <br>
     <div>
         <div>Copy from the temporary textarea</div>
-        <div>https://youtu.be/F?si=oLb865I64uJlLRJX</div>
+        <div>hTtPs://Youtu.Be/B?si=oLb865I64uJlLRJX</div>
         <div>API: document.exec('copy') </div>
         <button id="test_4" onclick="copy_from_temp()"> Copy </button>
     </div>
@@ -100,9 +118,36 @@
     <br>
     <div>
         <div>Copy from div </div>
-        <div id="text_div" tabindex="-1">https://youtu.be/G?si=oLb865I64uJlLRJX</div>
+        <div id="text_div" tabindex="-1">hTtPs://Youtu.Be/B?si=oLb865I64uJlLRJX</div>
         <div>API: document.exec('copy') </div>
         <button id="test_5" onclick="copy_from_div()"> Copy </button>
+    </div>
+
+    <br>
+    <br>
+    <div>
+        <div>Copy sanitizable password</div>
+        <button id="test_sanitizable_password" onclick="copy_url_like_password()"> Copy </button>
+    </div>
+    <br>
+    <br>
+    <div>
+        <div>Copy not sanitizable password</div>
+        <button id="test_not_sanitizable_password_1" onclick="copy_password_1()"> Copy </button>
+    </div>
+
+    <br>
+    <br>
+    <div>
+        <div>Copy not sanitizable password</div>
+        <button id="test_not_sanitizable_password_2" onclick="copy_password_2()"> Copy </button>
+    </div>
+
+    <br>
+    <br>
+    <div>
+        <div>Copy not sanitizable password</div>
+        <button id="test_not_sanitizable_password_3" onclick="copy_password_3()"> Copy </button>
     </div>
 
 </body>
