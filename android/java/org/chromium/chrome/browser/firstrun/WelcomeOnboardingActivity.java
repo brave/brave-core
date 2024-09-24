@@ -214,7 +214,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             mBtnPositive.setOnClickListener(
                     view -> {
                         if (mCurrentStep == 1 && !isDefaultBrowser()) {
-                            setDefaultBrowser();
+                            setDefaultBrowserAndProceedToNextStep();
                         } else {
                             nextOnboardingStep();
                         }
@@ -238,11 +238,12 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                         BraveFeatureList.ANDROID_FORCE_DEFAULT_BROWSER_PROMPT);
     }
 
-    private void setDefaultBrowser() {
+    private void setDefaultBrowserAndProceedToNextStep() {
         BraveSetDefaultBrowserUtils.setDefaultBrowser(this);
         if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
             nextOnboardingStep();
         }
+        // onActivityResult will call nextOnboardingStep().
     }
 
     private boolean isDefaultBrowser() {
@@ -296,7 +297,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             }
         } else if (mCurrentStep == 1) {
             if (shouldForceDefaultBrowserPrompt()) {
-                setDefaultBrowser();
+                setDefaultBrowserAndProceedToNextStep();
             } else {
                 int margin = mIsTablet ? 200 : 30;
                 setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.3f, margin, true);
