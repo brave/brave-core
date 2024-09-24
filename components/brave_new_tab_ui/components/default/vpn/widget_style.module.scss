@@ -8,16 +8,11 @@
   align-items: center;
   gap: var(--leo-spacing-m);
 
-  padding: var(--leo-spacing-2xl);
-
+  padding-bottom: var(--leo-spacing-2xl);
   font: var(--leo-font-heading-h4);
+  color: var(--leo-color-white);
 
   --leo-icon-color: var(--leo-gradient-icons-active);
-}
-
-.menuButton {
-  flex-grow: 0;
-  margin-left: auto;
 }
 
 .body {

@@ -51,7 +51,7 @@
     transition: color 0.12s ease;
 
     .connected & {
-      color: var(--leo-color-green-30);
+      color: var(--leo-color-green-60);
     }
   }
 
@@ -76,13 +76,41 @@
     color: var(--leo-color-text-primary);
   }
 
-  .ip {
-    font: var(--leo-font-x-small-regular);
-    color: var(--leo-color-text-secondary);
-  }
-
   .city {
     font: var(--leo-font-x-small-regular);
     color: var(--leo-color-text-tertiary);
   }
+}
+
+/* Promo styles */
+
+.promo {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: center;
+
+  .title {
+    font: var(--leo-font-heading-h3);
+    color: var(--leo-color-white);
+    margin: 0;
+    padding: 0;
+  }
+
+  .poweredBy {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    align-self: center;
+    font: var(--leo-font-x-small-regular);
+    opacity: 0.5;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.shieldBg {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
