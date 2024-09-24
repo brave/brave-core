@@ -31,6 +31,12 @@ getWidgetBrowserAPI().serviceHandler.initialize();
 
 const handler = new AsyncActionHandler()
 
+handler.on(Actions.launchVPNPanel.getType(),
+  async (store) => {
+    getWidgetBrowserAPI().serviceHandler.launchVPNPanel();
+  }
+)
+
 handler.on(Actions.toggleConnection.getType(),
   async (store) => {
     const state = store.getState() as ApplicationState
@@ -45,8 +51,8 @@ handler.on(Actions.toggleConnection.getType(),
 )
 
 handler.on<PurchasedState>(Actions.purchasedStateChanged.getType(),
-  async (store, purchased_state) => {
-    if (purchased_state !== PurchasedState.PURCHASED) {
+  async (store, purchasedState) => {
+    if (purchasedState !== PurchasedState.PURCHASED) {
       return
     }
 
