@@ -7,6 +7,7 @@ import * as React from 'react'
 import classnames from '$web-common/classnames'
 import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
+import { AssociatedContentType } from '../../api'
 interface SiteTitleProps {
   size: 'default' | 'small'
 }
@@ -39,7 +40,14 @@ function SiteTitle(props: SiteTitleProps) {
           className={styles.title}
           title={context.associatedContentInfo?.title}
         >
-          {context.associatedContentInfo?.title}
+          {context.associatedContentInfo?.type == AssociatedContentType.MultipleWeb
+            ? <ul>
+              <li>{context.associatedContentInfo.title}</li>
+              {context.associatedContentInfo.detail?.multipleWebSiteInfo?.sites.map((s, i) => <li key={i}>
+                {s.title}
+              </li>)}
+            </ul>
+            : context.associatedContentInfo?.title}
         </p>
       </div>
     </div>
