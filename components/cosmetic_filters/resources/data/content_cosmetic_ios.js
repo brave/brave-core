@@ -3,19 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
-
-
 import { applyCompiledSelector, compileProceduralSelector } from './procedural_filters'
-
-// window.__firefox__.execute(function($) {
-//   const args = $<args>;
-//   const proceduralFilters = $<procedural_filters>;
-//   const messageHandler = '$<message_handler>';
-//   const partinessMessageHandler = '$<partiness_message_handler>';
 
   /**
    * Send ids and classes to iOS and await new hide selectors
@@ -200,9 +188,7 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
 
     sendPendingSelectorsTimerId = window.setTimeout(() => {
       sendPendingSelectorsIfNeeded()
-// TODO(matuchin): fix it
-//      delete sendPendingSelectorsTimerId
-        sendPendingSelectorsTimerId = undefined
+      sendPendingSelectorsTimerId = undefined
     }, args.fetchNewClassIdRulesThrottlingMs)
   }
 
@@ -655,7 +641,7 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
       CC.unhiddenSelectors.add(selector)
 
       // Remove these selectors from the run queues
-      for (let index = 0; index < CC.runQueues; index++) {
+      for (let index = 0; index < CC.runQueues.length; index++) {
         CC.runQueues[index].delete(selector)
       }
     })
@@ -1071,8 +1057,6 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
 
     setRulesTimerId = window.setTimeout(() => {
       setRulesOnStylesheet()
-      // TODO(matuchin): fix
-      //delete setRulesTimerId
       setRulesTimerId = undefined
     }, 200)
   }
