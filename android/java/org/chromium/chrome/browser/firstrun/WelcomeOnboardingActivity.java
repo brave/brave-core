@@ -231,35 +231,22 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private boolean shouldForceDefaultBrowserPrompt() {
-        Log.d(TAG, "in shouldForceDefaultBrowserPrompt");
-        boolean result = ChromeFeatureList.isEnabled(BraveFeatureList.ANDROID_FORCE_DEFAULT_BROWSER_PROMPT);
-        Log.d(TAG, "shouldForceDefaultBrowserPrompt: " + result);
-        return result;
+        return ChromeFeatureList.isEnabled(BraveFeatureList.ANDROID_FORCE_DEFAULT_BROWSER_PROMPT);
     }
 
     private boolean setDefaultBrowser() {
-        Log.d(TAG, "in setDefaultBrowser");
         if (!isDefaultBrowser()) {
-            Log.d(TAG, "in setDefaultBrowser: not default browser");
             BraveSetDefaultBrowserUtils.setDefaultBrowser(this);
-            Log.d(TAG, "in setDefaultBrowser: set default browser");
             if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
-                Log.d(TAG, "in setDefaultBrowser: not supported");
                 nextOnboardingStep();
-                Log.d(TAG, "in setDefaultBrowser: nextOnboardingStep");
                 return false;
             }
-            Log.d(TAG, "in setDefaultBrowser: supported");
         }
-        Log.d(TAG, "in setDefaultBrowser: is default browser");
         return true;
     }
 
     private boolean isDefaultBrowser() {
-        Log.d(TAG, "in isDefaultBrowser");
-        boolean result = BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this);
-        Log.d(TAG, "in isDefaultBrowser: " + result);
-        return result;
+        return BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this);
     }
 
     private void startTimer(int delayMillis) {
