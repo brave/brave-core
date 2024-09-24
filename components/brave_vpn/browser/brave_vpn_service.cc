@@ -597,6 +597,12 @@ void BraveVpnService::LaunchVPNPanel() {
   LOG(ERROR) << __func__ << " ######## ";
 }
 
+void BraveVpnService::OpenVpnUI(const std::string& type) {
+  if (delegate_) {
+    delegate_->OpenVpnUI(type);
+  }
+}
+
 void BraveVpnService::RequestCredentialSummary(const std::string& domain) {
   // As we request new credential, clear cached value.
   ClearSubscriberCredential(local_prefs_);

@@ -53,6 +53,9 @@ interface ServiceHandler {
   LaunchVPNPanel();
 
   [EnableIfNot=is_android]
+  OpenVpnUI(string type);
+
+  [EnableIfNot=is_android]
   GetConnectionState() => (ConnectionState state);
 
   [EnableIfNot=is_android]
