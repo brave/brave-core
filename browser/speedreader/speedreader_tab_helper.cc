@@ -362,10 +362,14 @@ void SpeedreaderTabHelper::ReadyToCommitNavigation(
     return;
   }
 
+  const bool is_distilled = DistillStates::IsDistilled(PageDistillState());
+
   blink::web_pref::WebPreferences prefs =
       web_contents()->GetOrCreateWebPreferences();
-  prefs.page_in_reader_mode = DistillStates::IsDistilled(PageDistillState());
-  web_contents()->SetWebPreferences(prefs);
+  if (prefs.page_in_reader_mode != is_distilled) {
+    prefs.page_in_reader_mode = DistillStates::IsDistilled(PageDistillState());
+    web_contents()->SetWebPreferences(prefs);
+  }
 }
 
 void SpeedreaderTabHelper::DidStartNavigation(

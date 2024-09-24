@@ -237,6 +237,7 @@ bool BraveShieldsActionView::IsPageInReaderMode(
 #endif
   return false;
 }
+
 bool BraveShieldsActionView::ShouldShowBubble(
     content::WebContents* web_contents) {
   if (!web_contents) {
