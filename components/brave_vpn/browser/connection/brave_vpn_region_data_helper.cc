@@ -41,7 +41,11 @@ mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
     }
   }
 
-  return nullptr;
+  // We should not reach here but if service(guardian) api give wrong list,
+  // it could be crashed if we return null.
+  // Instead, return first region in the list for safe.
+  CHECK(!region_list.empty());
+  return region_list[0].Clone();
 }
 
 base::Value::Dict GetValueFromRegionWithoutCity(
