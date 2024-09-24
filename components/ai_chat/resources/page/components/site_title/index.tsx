@@ -15,6 +15,11 @@ interface SiteTitleProps {
 function SiteTitle(props: SiteTitleProps) {
   const context = useConversation()
 
+  // We don't show the toggle when we're looking at the whole window.
+  if (context.associatedContentInfo?.detail?.multipleWebSiteInfo) {
+    return null
+  }
+
   return (
     <div
       className={classnames({
@@ -28,7 +33,7 @@ function SiteTitle(props: SiteTitleProps) {
           [styles.favIconContainerSm]: props.size === 'small'
         })}
       >
-        { context.faviconUrl && <img src={context.faviconUrl} /> }
+        {context.faviconUrl && <img src={context.faviconUrl} />}
       </div>
       <div
         className={classnames({

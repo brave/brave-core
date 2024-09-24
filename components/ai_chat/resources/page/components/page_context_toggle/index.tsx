@@ -25,6 +25,11 @@ function PageContextToggle() {
     setIsTooltipVisible(state => !state)
   }
 
+  // We don't show the toggle when we're looking at the whole window.
+  if (conversationContext.associatedContentInfo?.detail?.multipleWebSiteInfo) {
+    return null
+  }
+
   return (
     <div className={styles.box}>
       <Toggle
