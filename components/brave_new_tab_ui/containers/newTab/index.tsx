@@ -551,6 +551,7 @@ class NewTabPage extends React.Component<Props, State> {
         customMenuItems={customMenuItems}
         onSelfCustodyInviteDismissed={onSelfCustodyInviteDismissed}
         onTermsOfServiceUpdateAccepted={onTosUpdateAccepted}
+        braveVPNState={this.props.braveVPNData}
       />
     )
   }
