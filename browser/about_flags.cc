@@ -300,9 +300,18 @@
       kOsAndroid,                                                             \
       FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing), \
   })
+#define ANDROID_FORCE_DEFAULT_BROWSER_PROMPT                                  \
+  EXPAND_FEATURE_ENTRIES({                                                    \
+      "force-default-browser-prompt",                                         \
+      "Force default browser prompt",                                         \
+      "Forces a default browser prompt on first run."                         \
+      kOsAndroid,                                                             \
+      FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing)
+  })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
+#define ANDROID_FORCE_DEFAULT_BROWSER_PROMPT
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -969,6 +978,7 @@
   PLAYLIST_FEATURE_ENTRIES                                                     \
   BRAVE_COMMANDS_FEATURE_ENTRIES                                               \
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
+  ANDROID_FORCE_DEFAULT_BROWSER_PROMPT                                         \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
