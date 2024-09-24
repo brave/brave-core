@@ -28,6 +28,7 @@ void AddBraveSysColorMixer(ColorProvider* provider,
 
   mixer[kColorSysBase] = {kColorRefNeutral15};
   mixer[kColorSysOmniboxContainer] = {kColorRefNeutral5};
+  mixer[kColorSysTonalOutline] = {kColorSysPrimary};
 }
 
 }  // namespace ui
