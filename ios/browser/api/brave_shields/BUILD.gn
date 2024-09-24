@@ -25,5 +25,6 @@ source_set("brave_shields") {
     "//brave/components/resources:static_resources",
     "//components/component_updater",
     "//ios/chrome/browser/shared/model/application_context",
+    "//ui/base",
   ]
 }
