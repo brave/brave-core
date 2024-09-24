@@ -50,7 +50,7 @@
     &google_sign_in_permission::features::kBraveGoogleSignInPermission, \
     &net::features::kBraveForgetFirstPartyStorage,                      \
     &brave_shields::features::kBraveShowStrictFingerprintingMode,       \
-    &brave_shields::features::kBraveLocalhostAccessPermission           \
+    &brave_shields::features::kBraveLocalhostAccessPermission,          \
     &first_run::features::kAndroidForceDefaultBrowserPrompt
 
 // clang-format on
