@@ -117,6 +117,14 @@ export default function SidebarHeader(props: FeatureButtonMenuProps) {
       <div className={styles.actions}>
         {aiChatContext.hasAcceptedAgreement && (
           <>
+          <Button
+            fab
+            title='New window chat'
+            kind='plain-faint'
+            onClick={console.log}
+          >
+            <Icon name='add-tab' />
+          </Button>
             {shouldDisplayEraseAction && (
               <Button
                 fab
