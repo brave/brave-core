@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
+#include "base/values.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/fields.h"
@@ -39,6 +40,31 @@ constexpr char kScreenshotMultipartFilename[] = "screenshot.png";
 Report::Report() = default;
 Report::~Report() = default;
 
+Report::Report(const Report& other) {
+  *this = other;
+}
+
+Report& Report::operator=(const Report& other) {
+  if (this != &other) {
+    brave_version = other.brave_version;
+    channel = other.channel;
+    report_url = other.report_url;
+    shields_enabled = other.shields_enabled;
+    ad_block_list_names = other.ad_block_list_names;
+    fp_block_setting = other.fp_block_setting;
+    ad_block_list_names = other.ad_block_list_names;
+    languages = other.languages;
+    language_farbling = other.language_farbling;
+    brave_vpn_connected = other.brave_vpn_connected;
+    details = other.details.has_value() ? other.details->Clone() : base::Value();
+    contact = other.contact.has_value() ? other.contact->Clone() : base::Value();
+    ad_block_components = other.ad_block_components.has_value() ? other.ad_block_components->Clone() : base::Value();
+    screenshot_png = other.screenshot_png;
+  }
+
+  return *this;
+}
+
 WebcompatReportUploader::WebcompatReportUploader(
     scoped_refptr<network::SharedURLLoaderFactory> factory)
     : shared_url_loader_factory_(std::move(factory)) {}
@@ -50,25 +76,63 @@ void WebcompatReportUploader::SubmitReport(const Report& report) {
 
   const GURL upload_url(BUILDFLAG(WEBCOMPAT_REPORT_ENDPOINT));
 
-  url::Origin report_url_origin = url::Origin::Create(report.report_url);
-
   base::Value::Dict report_details_dict;
-  report_details_dict.Set(kSiteURLField, report.report_url.spec());
-  report_details_dict.Set(kDomainField, report_url_origin.Serialize());
-  report_details_dict.Set(kDetailsField, report.details.Clone());
-  report_details_dict.Set(kContactField, report.contact.Clone());
 
-  report_details_dict.Set(kChannelField, report.channel);
-  report_details_dict.Set(
-      kVersionField,
-      version_info::GetBraveVersionWithoutChromiumMajorVersion());
-  report_details_dict.Set(kShieldsEnabledField, report.shields_enabled);
-  report_details_dict.Set(kAdBlockSettingField, report.ad_block_setting);
-  report_details_dict.Set(kFPBlockSettingField, report.fp_block_setting);
-  report_details_dict.Set(kAdBlockListsField, report.ad_block_list_names);
-  report_details_dict.Set(kLanguagesField, report.languages);
-  report_details_dict.Set(kLanguageFarblingField, report.language_farbling);
-  report_details_dict.Set(kBraveVPNEnabledField, report.brave_vpn_connected);
+  if (report.report_url) {
+    report_details_dict.Set(kDomainField, url::Origin::Create(report.report_url.value()).Serialize());
+  }
+
+  if (report.report_url) {
+    report_details_dict.Set(kSiteURLField, report.report_url.value().spec());
+  }
+
+  if (report.details) {
+    report_details_dict.Set(kDetailsField, report.details.value().Clone());
+  }
+
+  if (report.ad_block_components) {
+    report_details_dict.Set(kAdBlockComponentsVersionField, report.ad_block_components.value().Clone());
+  }
+
+  if (report.contact) {
+    report_details_dict.Set(kContactField, report.contact.value().Clone());
+  }
+
+  if (report.channel) {
+    report_details_dict.Set(kChannelField, report.channel.value());
+  }
+
+  if(report.brave_version) {
+    report_details_dict.Set(kVersionField,report.brave_version.value());
+  }
+
+  if (report.shields_enabled) {
+    report_details_dict.Set(kShieldsEnabledField, report.shields_enabled.value());
+  }
+  
+  if (report.ad_block_setting) {
+    report_details_dict.Set(kAdBlockSettingField, report.ad_block_setting.value());
+  }
+  
+  if (report.fp_block_setting) {
+    report_details_dict.Set(kFPBlockSettingField, report.fp_block_setting.value());
+  }
+
+  if (report.ad_block_list_names) {
+    report_details_dict.Set(kAdBlockListsField, report.ad_block_list_names.value());
+  }
+
+  if (report.languages) {
+    report_details_dict.Set(kLanguagesField, report.languages.value());
+  }
+
+  if (report.language_farbling) {
+    report_details_dict.Set(kLanguageFarblingField, report.language_farbling.value());
+  }
+
+  if (report.brave_vpn_connected) {
+    report_details_dict.Set(kBraveVPNEnabledField, report.brave_vpn_connected.value());
+  }
 
   report_details_dict.Set(kApiKeyField, base::Value(api_key));
 
