@@ -306,7 +306,7 @@
       "Force default browser prompt",                                         \
       "Forces a default browser prompt on first run."                         \
       kOsAndroid,                                                             \
-      FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing)
+      FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing)  \
 })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
