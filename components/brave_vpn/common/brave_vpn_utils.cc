@@ -72,7 +72,7 @@ constexpr auto kV1ToV2Map =
          {"us-central", "na-usa"},  {"us-east", "na-usa"},
          {"us-mountain", "na-usa"}, {"us-north-west", "na-usa"},
          {"us-west", "na-usa"},     {"eu-ua", "eu-ua"},
-         {"eu-en", "en-en"}});
+         {"eu-en", "eu-en"}});
 
 #if !BUILDFLAG(IS_ANDROID)
 void MigrateFromV1ToV2(PrefService* local_prefs) {
