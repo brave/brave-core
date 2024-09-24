@@ -288,8 +288,11 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1f, margin, true);
         setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1f, margin, false);
         if (mTvWelcome != null) {
-            mTvWelcome.animate().alpha(1f).setDuration(200).withEndAction(
-                    () -> mTvWelcome.setVisibility(View.VISIBLE));
+            mTvWelcome
+                    .animate()
+                    .alpha(1f)
+                    .setDuration(200)
+                    .withEndAction(() -> mTvWelcome.setVisibility(View.VISIBLE));
         }
         if (mIvBrave != null) {
             mIvBrave.animate().scaleX(0.8f).scaleY(0.8f).setDuration(1000);
@@ -344,12 +347,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         String countryCode = Locale.getDefault().getCountry();
         if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)) {
             if (mTvCard != null) {
-                mTvCard.setText(
-                        getResources().getString(R.string.privacy_onboarding_india));
+                mTvCard.setText(getResources().getString(R.string.privacy_onboarding_india));
             }
             if (mTvDefault != null) {
-                mTvDefault.setText(
-                        getResources().getString(R.string.onboarding_set_default_india));
+                mTvDefault.setText(getResources().getString(R.string.onboarding_set_default_india));
             }
         }
     }
@@ -391,8 +392,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         } else {
             boolean isCrashReporting = false;
             try {
-                isCrashReporting = PrivacyPreferencesManagerImpl.getInstance()
-                                           .isUsageAndCrashReportingPermittedByUser();
+                isCrashReporting =
+                        PrivacyPreferencesManagerImpl.getInstance()
+                                .isUsageAndCrashReportingPermittedByUser();
 
             } catch (Exception e) {
                 Log.e(TAG, "isCrashReportingOnboarding: " + e.getMessage());
@@ -406,10 +408,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             mCheckboxCrash.setOnCheckedChangeListener(
                     new CompoundButton.OnCheckedChangeListener() {
                         @Override
-                        public void onCheckedChanged(
-                                CompoundButton buttonView, boolean isChecked) {
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             try {
-                                UmaSessionStats.changeMetricsReportingConsent(isChecked,
+                                UmaSessionStats.changeMetricsReportingConsent(
+                                        isChecked,
                                         ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
                             } catch (Exception e) {
                                 Log.e(TAG, "CrashReportingOnboarding: " + e.getMessage());
@@ -431,13 +433,11 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             mCheckboxP3a.setOnCheckedChangeListener(
                     new CompoundButton.OnCheckedChangeListener() {
                         @Override
-                        public void onCheckedChanged(
-                                CompoundButton buttonView, boolean isChecked) {
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             try {
-                                BraveLocalState.get().setBoolean(
-                                        BravePref.P3A_ENABLED, isChecked);
-                                BraveLocalState.get().setBoolean(
-                                        BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
+                                BraveLocalState.get().setBoolean(BravePref.P3A_ENABLED, isChecked);
+                                BraveLocalState.get()
+                                        .setBoolean(BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
                                 BraveLocalState.commitPendingWrite();
                             } catch (Exception e) {
                                 Log.e(TAG, "P3aOnboarding: " + e.getMessage());

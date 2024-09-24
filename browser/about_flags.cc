@@ -301,13 +301,14 @@
       kOsAndroid,                                                             \
       FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing), \
   })
-#define ANDROID_FORCE_DEFAULT_BROWSER_PROMPT                                  \
-  EXPAND_FEATURE_ENTRIES({                                                    \
-      "force-default-browser-prompt",                                         \
-      "Force default browser prompt",                                         \
-      "Forces a default browser prompt on first run.",                        \
-      kOsAndroid,                                                             \
-      FEATURE_VALUE_TYPE(first_run::features::kAndroidForceDefaultBrowserPrompt), \
+#define ANDROID_FORCE_DEFAULT_BROWSER_PROMPT                       \
+  EXPAND_FEATURE_ENTRIES({                                         \
+      "force-default-browser-prompt",                              \
+      "Force default browser prompt",                              \
+      "Forces a default browser prompt on first run.",             \
+      kOsAndroid,                                                  \
+      FEATURE_VALUE_TYPE(                                          \
+          first_run::features::kAndroidForceDefaultBrowserPrompt), \
   })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
