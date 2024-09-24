@@ -1,7 +1,7 @@
 // Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { applyCompiledSelector, compileProceduralSelector } from './procedural_filters'
 
@@ -25,7 +25,8 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
   /**
    * Send new urls found on the page and return their partiness
    * @param {Array} urls The urls found on this page
-   * @returns A Promise resolving to a dictionary base urls and their first party status
+   * @returns A Promise resolving to a dictionary base urls and their first
+   * party status
    */
   const getPartiness = $((urls) => {
     return $.postNativeMessage(partinessMessageHandler, {
@@ -41,9 +42,9 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
   // the backend script is up and connected (eg backgroundReady = true),
   // or sooner if the thread is idle.
   const maxTimeMSBeforeStart = 1000
-  // The cutoff for text ads.  If something has only text in it, it needs to have
-  // this many, or more, characters.  Similarly, require it to have a non-trivial
-  // number of words in it, to look like an actual text ad.
+  // The cutoff for text ads.  If something has only text in it, it needs to
+  // have this many, or more, characters.  Similarly, require it to have a
+  // non-trivial number of words in it, to look like an actual text ad.
   const minAdTextChars = 30
   const minAdTextWords = 5
   const returnToMutationObserverIntervalMs = 10000
@@ -59,7 +60,8 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
   // Elements that are not yet queried for selectors
   const notYetQueriedElements = []
   // The query to perform when extracting classes and ids
-  const classIdWithoutHtmlOrBody = '[id]:not(html):not(body),[class]:not(html):not(body)'
+  const classIdWithoutHtmlOrBody =
+      '[id]:not(html):not(body),[class]:not(html):not(body)'
 
   // Generate a random string between [a000000000, zzzzzzzzzz] (base 36)
   const generateRandomAttr = () => {
@@ -99,7 +101,8 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
   }
 
   /**
-   * Send any new urls to the iOS subrutine so we can determine its partyness (1st or 3rd party)
+   * Send any new urls to the iOS subrutine so we can determine its partyness
+   * (1st or 3rd party)
    * @returns A Promise that returns if new party information was returned or no
    */
   const sendPendingOriginsIfNeeded = async () => {
