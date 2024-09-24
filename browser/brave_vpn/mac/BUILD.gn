@@ -10,8 +10,6 @@ assert(is_mac)
 
 source_set("mac") {
   sources = [
-    "brave_vpn_service_delegate_mac.cc",
-    "brave_vpn_service_delegate_mac.h",
     "vpn_utils_mac.h",
     "vpn_utils_mac.mm",
   ]
