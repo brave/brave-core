@@ -20,6 +20,7 @@ class BraveVPNServiceDelegate {
 
   virtual void WriteConnectionState(mojom::ConnectionState state) = 0;
   virtual void ShowBraveVpnStatusTrayIcon() = 0;
+  virtual void LaunchVPNPanel() = 0;
 };
 
 }  // namespace brave_vpn
