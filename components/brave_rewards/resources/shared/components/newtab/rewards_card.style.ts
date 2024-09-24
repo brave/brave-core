@@ -5,8 +5,9 @@
 
 import styled from 'styled-components'
 
-import { color, font } from '@brave/leo/tokens/css/variables'
+import { color, font, gradient } from '@brave/leo/tokens/css/variables'
 
+import Icon from '@brave/leo/react/icon'
 import { buttonReset } from '../../lib/css_mixins'
 import selfCustodyImage from '../../assets/self_custody_invitation.svg'
 
@@ -26,13 +27,9 @@ export const cardHeader = styled.div`
   gap: 8px;
 `
 
-export const cardHeaderIcon = styled.div`
-  height: 24px;
-
-  .icon {
-    height: 24px;
-    width: auto;
-  }
+export const cardHeaderIcon = styled(Icon)`
+  --leo-icon-size: 24px;
+  --leo-icon-color: ${gradient.iconsActive};
 `
 
 export const optInIcon = styled.div`
