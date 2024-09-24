@@ -5,13 +5,15 @@
 
 import("//build/config/features.gni")
 
-#assert(!is_android)
-
 static_library("browser") {
 
 sources = [
   "webcompat_reporter_service.cc",
-  "webcompat_reporter_service.h"
+  "webcompat_reporter_service.h",
+  "webcompat_report_uploader.cc",
+  "webcompat_report_uploader.h",
+  "fields.cc",
+  "fields.h",
 ]
 
 deps = [
@@ -27,15 +29,6 @@ deps = [
     "//net",
     "//services/network/public/cpp",
 ]
-
-if (!is_android) {
-  sources += [
-    "fields.cc",
-    "fields.h",
-    "webcompat_report_uploader.cc",
-    "webcompat_report_uploader.h",
-  ]
-}
 }
 
 

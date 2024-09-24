@@ -5,12 +5,23 @@
 
 module webcompat_reporter.mojom;
 
-struct AdblockComponentInfo {
-    string title;
-    string version;
-    string id;
-  };
+struct ReportInfo {
+  string? channel;
+  string? brave_version;
+  string? report_url;
+  bool? shields_enabled;
+  string? ad_block_setting;
+  string? fp_block_setting;
+  string ad_block_list_names;
+  string languages;
+  bool? language_farbling;
+  bool? brave_vpn_connected;
+  map<string, string>? details;
+  map<string, string>? contact;
+  map<string, string>? ad_block_components_version;
+  array<uint8>? screenshot_png;
+};
 
 interface WebcompatReporterHandler {
-    GetAdblockComponentInfo() => (array<AdblockComponentInfo> subscriptions);
+  SubmitWebcompatReport(ReportInfo report_info) => ();
 };
