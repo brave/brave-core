@@ -300,14 +300,12 @@
       kOsAndroid,                                                             \
       FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing), \
   })
-#define ANDROID_FORCE_DEFAULT_BROWSER_PROMPT \
-  EXPAND_FEATURE_ENTRIES({                                                    \
-      "force-default-browser-prompt",                                         \
-      "Force default browser prompt",                                         \
-      "Forces a default browser prompt on first run."                         \
-      kOsAndroid,                                                             \
-      FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing)  \
-})
+#define ANDROID_FORCE_DEFAULT_BROWSER_PROMPT                           \
+  EXPAND_FEATURE_ENTRIES(                                              \
+      {"force-default-browser-prompt", "Force default browser prompt", \
+       "Forces a default browser prompt on first run." kOsAndroid,     \
+       FEATURE_VALUE_TYPE(                                             \
+           safe_browsing::features::kBraveAndroidSafeBrowsing)})
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
@@ -993,20 +991,20 @@
   BRAVE_WORKAROUND_NEW_WINDOW_FLASH                                            \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
-  namespace {
+namespace {
 
-  // Unused function to reference Brave feature entries for clang checks.
-  [[maybe_unused]] void UseBraveAboutFlags() {
-    // These vars are declared in anonymous namespace in
-    // //chrome/browser/about_flags.cc. We declare them here manually to
-    // instantiate BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES without errors.
-    constexpr int kOsAll = 0;
-    constexpr int kOsDesktop = 0;
+// Unused function to reference Brave feature entries for clang checks.
+[[maybe_unused]] void UseBraveAboutFlags() {
+  // These vars are declared in anonymous namespace in
+  // //chrome/browser/about_flags.cc. We declare them here manually to
+  // instantiate BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES without errors.
+  constexpr int kOsAll = 0;
+  constexpr int kOsDesktop = 0;
 
-    static_assert(
-        std::initializer_list<FeatureEntry>{BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES}
-            .size());
-  }
+  static_assert(
+      std::initializer_list<FeatureEntry>{BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES}
+          .size());
+}
 
-  }  // namespace
+}  // namespace
 }  // namespace flags_ui
