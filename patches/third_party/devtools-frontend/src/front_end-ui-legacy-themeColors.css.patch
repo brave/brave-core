@@ -1,5 +1,5 @@
 diff --git a/front_end/ui/legacy/themeColors.css b/front_end/ui/legacy/themeColors.css
-index fd0aab1edd..a2b3cc842b 100644
+index fd0aab1edd6257754bda25de16ca5063aed4bfa2..a2b3cc842b110df9553f4bf37919500f57f74654 100644
 --- a/front_end/ui/legacy/themeColors.css
 +++ b/front_end/ui/legacy/themeColors.css
 @@ -564,7 +564,7 @@
