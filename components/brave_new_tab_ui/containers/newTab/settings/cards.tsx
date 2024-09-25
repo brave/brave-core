@@ -76,10 +76,10 @@ function CardSettings({ toggleShowBraveTalk, showBraveTalk, braveTalkSupported, 
       <StyledBannerImage src={rewardsBanner} />
       <StyledSettingsInfo>
         <StyledSettingsTitle>
-          {getLocale('braveRewardsTitle')}
+          {'Firewall + VPN'}
         </StyledSettingsTitle>
         <StyledSettingsCopy>
-          {getLocale('rewardsWidgetDesc')}
+          {'Extra privacy & security online'}
         </StyledSettingsCopy>
       </StyledSettingsInfo>
       <ToggleButton on={showRewards} toggleFunc={toggleShowRewards} />
