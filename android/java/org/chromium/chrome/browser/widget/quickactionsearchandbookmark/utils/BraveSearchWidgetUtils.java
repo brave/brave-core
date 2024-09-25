@@ -19,9 +19,9 @@ import com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidge
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider.QuickActionSearchWidgetProviderDino;
-import org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider.QuickActionSearchWidgetProviderSearch;
 import org.chromium.chrome.browser.searchwidget.SearchWidgetProvider;
+import org.chromium.chrome.browser.shortcuts_widget.QuickActionSearchWidgetProvider.QuickActionSearchWidgetProviderDino;
+import org.chromium.chrome.browser.shortcuts_widget.QuickActionSearchWidgetProvider.QuickActionSearchWidgetProviderSearch;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider;
 
 public class BraveSearchWidgetUtils {
