@@ -21,10 +21,6 @@ public class BraveBookmarkUiPrefs extends BookmarkUiPrefs {
     /** Returns how the bookmark rows should be displayed, doesn't write anything to prefs. */
     @Override
     public @BookmarkRowDisplayPref int getBookmarkRowDisplayPref() {
-        if (!BookmarkFeatures.isAndroidImprovedBookmarksEnabled()) {
-            return super.getBookmarkRowDisplayPref();
-        }
-
         return mPrefsManager.readInt(
                 ChromePreferenceKeys.BOOKMARKS_VISUALS_PREF, BookmarkRowDisplayPref.COMPACT);
     }
