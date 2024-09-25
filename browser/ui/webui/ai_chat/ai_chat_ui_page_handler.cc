@@ -84,9 +84,9 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
-    favicon_service_ = FaviconServiceFactory::GetForProfile(
-        profile_, ServiceAccessType::EXPLICIT_ACCESS);
   }
+  favicon_service_ = FaviconServiceFactory::GetForProfile(
+      profile_, ServiceAccessType::EXPLICIT_ACCESS);
 }
 
 AIChatUIPageHandler::~AIChatUIPageHandler() = default;
@@ -296,6 +296,36 @@ void AIChatUIPageHandler::GetFaviconImageData(
   conversation->GetAssociatedContentInfo(base::BindOnce(
       &AIChatUIPageHandler::GetFaviconImageDataForAssociatedContent,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+// Temporary
+void AIChatUIPageHandler::GetFaviconImageDataForContent(
+    const GURL& content_url,
+    GetFaviconImageDataForContentCallback callback) {
+  if (!content_url.is_valid()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  favicon_base::IconTypeSet icon_types{favicon_base::IconType::kFavicon,
+                                       favicon_base::IconType::kTouchIcon};
+
+  auto on_favicon_available =
+      [](GetFaviconImageDataCallback callback,
+         const favicon_base::FaviconRawBitmapResult& result) {
+        if (!result.is_valid()) {
+          std::move(callback).Run(std::nullopt);
+          return;
+        }
+
+        std::vector<uint8_t> bytes(result.bitmap_data->begin(),
+                                   result.bitmap_data->end());
+        std::move(callback).Run(std::move(bytes));
+      };
+  favicon_service_->GetRawFaviconForPageURL(
+      content_url, icon_types, kDesiredFaviconSizePixels, true,
+      base::BindOnce(std::move(on_favicon_available), std::move(callback)),
+      &favicon_task_tracker_);
 }
 
 void AIChatUIPageHandler::GetFaviconImageDataForAssociatedContent(

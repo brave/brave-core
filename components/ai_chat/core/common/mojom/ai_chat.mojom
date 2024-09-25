@@ -346,6 +346,9 @@ interface AIChatUIHandler {
   // request via FaviconSource URLs via trusted webui.
   GetFaviconImageData(string conversation_uuid) => (
       array<uint8>? favicon_image_data);
+  // Temporary
+  GetFaviconImageDataForContent(url.mojom.Url url) => (
+      array<uint8>? favicon_image_data);
 };
 
 // UI-side handler for whole AI Chat UI

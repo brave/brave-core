@@ -7,6 +7,7 @@ import Button from '@brave/leo/react/button'
 import Dropdown from '@brave/leo/react/dropdown'
 import Icon from '@brave/leo/react/icon'
 import * as React from 'react'
+import * as nala from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 import { WebSiteInfoDetail } from '../../api'
 import { useAIChat } from '../../state/ai_chat_context'
@@ -16,17 +17,47 @@ import SidebarHeader from '../header'
 import Main from '../main'
 import SidebarNav from '../sidebar_nav'
 import styles from './style.module.scss'
+import { Url as MojomUrl } from 'gen/url/mojom/url.mojom.m'
 
 const TabEntryListItem = styled.li`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
 
-  & leo-button {
+  img {
+    padding: ${nala.spacing.l};
+    border: 1px solid ${nala.color.container.background};
+    border-radius: ${nala.radius.s};
+  }
+
+  & span {
     flex: 0;
   }
 `
+
+function TabImage(props: { url: MojomUrl }) {
+  const aiChatContext = useAIChat()
+  const [imgUrl, setImgUrl] = React.useState<string>()
+  React.useEffect(() => {
+    if (!aiChatContext.uiHandler) {
+      return
+    }
+    aiChatContext.uiHandler.getFaviconImageDataForContent(props.url)
+    .then(({ faviconImageData }) => {
+      if (!faviconImageData) {
+        return
+      }
+      const blob = new Blob([new Uint8Array(faviconImageData)], { type: 'image/*' })
+      setImgUrl(URL.createObjectURL(blob))
+    })
+  }, [props.url.url])
+
+  if (!imgUrl) {
+    return null
+  }
+
+  return <img src={imgUrl} />
+}
 
 function TabEntry({ site }: {
   site: WebSiteInfoDetail
@@ -35,7 +66,8 @@ function TabEntry({ site }: {
   const count = context.associatedContentInfo?.detail?.multipleWebSiteInfo?.sites.length ?? 0
 
   return <TabEntryListItem>
-    {site.title}
+    <TabImage url={site.url} />
+    <span>{site.title}</span>
     {count > 1 && <Button fab kind="plain-faint" onClick={() => context.conversationHandler?.removeTabFromMultiTabContent(site.url)}>
       <Icon name='close' />
     </Button>}
@@ -54,7 +86,7 @@ function SitePicker() {
   return <Dropdown value='' placeholder='Add a tab to the project' onChange={e => conversation.conversationHandler?.addTabToMultiTabContent({ url: e.value ?? '' })}>
     <span slot="value">Add a tab to the conversation</span>
     {availableSites.map((a, i) => <leo-option key={i} value={a.url.url}>
-      {a.title}
+      <div><TabImage url={a.url} /> <span>{a.title}</span></div>
     </leo-option>)}
   </Dropdown>
 }

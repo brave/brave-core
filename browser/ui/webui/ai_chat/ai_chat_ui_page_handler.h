@@ -68,6 +68,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       override;
   void GetFaviconImageData(const std::string& conversation_id,
                            GetFaviconImageDataCallback callback) override;
+  void GetFaviconImageDataForContent(
+      const GURL& content_url,
+      GetFaviconImageDataForContentCallback callback) override;
 
  private:
   class ChatContextObserver : public content::WebContentsObserver {
