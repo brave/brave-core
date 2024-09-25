@@ -370,6 +370,7 @@ test("brave_unit_tests") {
     deps += [
       "//brave/browser/ai_chat:unit_tests",
       "//brave/browser/ui/ai_chat:unit_tests",
+      "//brave/components/ai_chat/core/browser:unit_tests",
       "//brave/components/ai_chat/core/common:unit_tests",
       "//brave/components/ai_chat/renderer:unit_tests",
     ]
@@ -1200,9 +1201,9 @@ test("brave_browser_tests") {
     ]
   }
 
-  # if (enable_ai_chat) {
-  #   deps += [ "//brave/browser/ai_chat:browser_tests" ]
-  # }
+  if (enable_ai_chat) {
+    deps += [ "//brave/browser/ai_chat:browser_tests" ]
+  }
 
   if (is_android) {
     use_default_launcher = false
