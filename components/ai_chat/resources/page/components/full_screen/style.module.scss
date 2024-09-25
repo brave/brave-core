@@ -46,6 +46,10 @@
   padding-top: 68px;
   width: 340px;
 
+  & leo-dropdown {
+    width: 100%;
+  }
+
   & > h3 {
     all: unset;
     font: var(--leo-font-heading-h4);
@@ -58,7 +62,6 @@
 
   & li {
     font: var(--leo-font-default-regular);
-    list-style: none;
   }
 }
 

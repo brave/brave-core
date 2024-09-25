@@ -379,7 +379,7 @@ interface ConversationHandler {
 
   // TODO(petemill): should be content ID, not Url
   AddTabToMultiTabContent(url.mojom.Url url);
-  RemoteTabFromMultiTabContent(url.mojom.Url url);
+  RemoveTabFromMultiTabContent(url.mojom.Url url);
 
   // Get all the possible models for any conversation
   // TODO(petemill): Move the models part to Service

@@ -35,7 +35,7 @@ export function PageTitleHeader(props: PageTitleHeaderProps) {
           <Button
             kind='plain-faint'
             fab
-            onClick={() => {aiChatContext.onSelectConversationUuid(undefined)}}
+            onClick={() => { aiChatContext.onSelectConversationUuid(undefined) }}
           >
             <Icon name='arrow-left' />
           </Button>
@@ -62,6 +62,16 @@ export function PageTitleHeader(props: PageTitleHeaderProps) {
             >
               <Icon name='launch' />
             </Button> */}
+            <Button
+              fab
+              title='New window chat'
+              kind='plain-faint'
+              onClick={() => {
+                aiChatContext.onNewMultiTabConversation()
+              }}
+            >
+              <Icon name='add-tab' />
+            </Button>
             {shouldDisplayEraseAction && (
               <Button
                 fab
@@ -117,16 +127,6 @@ export default function SidebarHeader(props: FeatureButtonMenuProps) {
       <div className={styles.actions}>
         {aiChatContext.hasAcceptedAgreement && (
           <>
-          <Button
-            fab
-            title='New window chat'
-            kind='plain-faint'
-            onClick={() =>{
-              aiChatContext.onNewMultiTabConversation()
-            }}
-          >
-            <Icon name='add-tab' />
-          </Button>
             {shouldDisplayEraseAction && (
               <Button
                 fab

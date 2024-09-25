@@ -397,7 +397,7 @@ void ConversationHandler::AddTabToMultiTabContent(const GURL& url) {
   OnAssociatedContentInfoChanged();
 }
 
-void ConversationHandler::RemoteTabFromMultiTabContent(const GURL& url) {
+void ConversationHandler::RemoveTabFromMultiTabContent(const GURL& url) {
   if (!multi_tab_content_) {
     return;
   }

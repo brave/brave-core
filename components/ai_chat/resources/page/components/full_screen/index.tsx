@@ -3,16 +3,60 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as React from 'react'
 import Button from '@brave/leo/react/button'
+import Dropdown from '@brave/leo/react/dropdown'
 import Icon from '@brave/leo/react/icon'
-import styles from './style.module.scss'
-import Main from '../main'
-import SidebarHeader from '../header'
-import SidebarNav from '../sidebar_nav'
-import FeatureMenu from '../feature_button_menu'
+import * as React from 'react'
+import styled from 'styled-components'
+import { WebSiteInfoDetail } from '../../api'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
+import FeatureMenu from '../feature_button_menu'
+import SidebarHeader from '../header'
+import Main from '../main'
+import SidebarNav from '../sidebar_nav'
+import styles from './style.module.scss'
+
+const TabEntryListItem = styled.li`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  & leo-button {
+    flex: 0;
+  }
+`
+
+function TabEntry({ site }: {
+  site: WebSiteInfoDetail
+}) {
+  const context = useConversation()
+  const count = context.associatedContentInfo?.detail?.multipleWebSiteInfo?.sites.length ?? 0
+
+  return <TabEntryListItem>
+    {site.title}
+    {count > 1 && <Button fab kind="plain-faint" onClick={() => context.conversationHandler?.removeTabFromMultiTabContent(site.url)}>
+      <Icon name='close' />
+    </Button>}
+  </TabEntryListItem>
+}
+
+function SitePicker() {
+  const conversation = useConversation()
+  const aiChat = useAIChat()
+
+  const availableSites = React.useMemo(() => {
+    const used = new Set(conversation.associatedContentInfo?.detail?.multipleWebSiteInfo?.sites.map(a => a.url.url))
+    return aiChat.availableAssociatedContent.filter(w => !used.has(w.url.url))
+  }, [aiChat.availableAssociatedContent, conversation.associatedContentInfo])
+
+  return <Dropdown value='' placeholder='Add a tab to the project' onChange={e => conversation.conversationHandler?.addTabToMultiTabContent({ url: e.value ?? '' })}>
+    {availableSites.map((a, i) => <leo-option key={i} value={a.url.url}>
+      {a.title}
+    </leo-option>)}
+  </Dropdown>
+}
 
 export default function FullScreen() {
   const aiChatContext = useAIChat()
@@ -85,9 +129,9 @@ export default function FullScreen() {
               >
                 <Icon name='erase' />
               </Button>
-              <FeatureMenu  setIsConversationListOpen={function (value: boolean): unknown {
+              <FeatureMenu setIsConversationListOpen={function (value: boolean): unknown {
                 throw new Error('Function not implemented.')
-              } } />
+              }} />
             </>
           )}
         </div>
@@ -108,10 +152,10 @@ export default function FullScreen() {
       </div>
       {!!chat.associatedContentInfo?.detail?.multipleWebSiteInfo && <div className={styles.right}>
         <h3>Tabs used in this conversation</h3>
+        <SitePicker />
         <ul>
-          {chat.associatedContentInfo.detail.multipleWebSiteInfo.sites.map((t, i) => <li key={i}>
-            {t.title}
-          </li>)}
+          {chat.associatedContentInfo.detail.multipleWebSiteInfo.sites.map((t, i) =>
+            <TabEntry key={i} site={t} />)}
         </ul>
       </div>}
     </div>
