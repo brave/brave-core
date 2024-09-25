@@ -59,7 +59,7 @@ const FavIconImage = styled.div<{ url: string }>`
 
 function TabImage(props: { url: MojomUrl }) {
   const aiChatContext = useAIChat()
-  const [imgUrl, setImgUrl] = React.useState<string>()
+  const [imgUrl, setImgUrl] = React.useState<string | null>()
   React.useEffect(() => {
     if (!aiChatContext.uiHandler) {
       return
@@ -67,12 +67,17 @@ function TabImage(props: { url: MojomUrl }) {
     aiChatContext.uiHandler.getFaviconImageDataForContent(props.url)
       .then(({ faviconImageData }) => {
         if (!faviconImageData) {
+          setImgUrl(null)
           return
         }
         const blob = new Blob([new Uint8Array(faviconImageData)], { type: 'image/*' })
         setImgUrl(URL.createObjectURL(blob))
       })
   }, [props.url.url])
+
+  if (imgUrl === null) {
+    return <FavIconImage url='//resources/brave-icons/file-text.svg'/>
+  }
 
   if (!imgUrl) {
     return null
