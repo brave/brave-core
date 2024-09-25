@@ -460,7 +460,7 @@
           "Disable 'Move all tabs to this window'",                            \
           "Disable the stupid 'Move all tabs to this window' menu item."       \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(brave_component_updater::kUseDevUpdaterUrl),      \
+          FEATURE_VALUE_TYPE(::features::kBraveDisableMoveToWindow),           \
       },                                                                       \
       {                                                                        \
           "brave-ntp-branded-wallpaper-demo",                                  \
