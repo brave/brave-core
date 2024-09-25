@@ -8,7 +8,7 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BraveAppHooksClassAdapter extends BraveClassVisitor {
-    static String sAppHooksClassName = "org/chromium/chrome/browser/AppHooksImpl";
+    static String sAppHooksClassName = "org/chromium/chrome/browser/AppHooks";
     static String sBraveAppHooksClassName = "org/chromium/chrome/browser/BraveAppHooks";
 
     public BraveAppHooksClassAdapter(ClassVisitor visitor) {
