@@ -476,6 +476,12 @@ public class PlaylistManager: NSObject {
         }
         return true
       } catch {
+        if (error as NSError).code == NSFileNoSuchFileError {
+          PlaylistItem.updateCache(uuid: item.tagId, pageSrc: item.pageSrc, cachedData: nil)
+          onDownloadStateChanged(id: item.tagId, state: .invalid, displayName: nil, error: nil)
+          // Cached file is missing, nothing to delete
+          return true
+        }
         Logger.module.error(
           "An error occured deleting Playlist Cached Item \(cacheItem.name ?? item.tagId): \(error.localizedDescription)"
         )
