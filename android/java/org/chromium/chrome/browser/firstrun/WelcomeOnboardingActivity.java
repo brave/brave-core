@@ -55,6 +55,7 @@ import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUti
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.Locale;
@@ -215,6 +216,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                     view -> {
                         if (mCurrentStep == 1 && !isDefaultBrowser()) {
                             setDefaultBrowserAndProceedToNextStep();
+                        } else if (shouldOfferSearchWidget() && mCurrentStep == 2) {
+                            BraveSearchWidgetUtils.requestPinAppWidget();
+                            nextOnboardingStep();
                         } else {
                             nextOnboardingStep();
                         }
@@ -222,13 +226,14 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
 
         if (mBtnNegative != null) {
-            mBtnNegative.setOnClickListener(view -> {
-                if (mCurrentStep == 2) {
-                    CustomTabActivity.showInfoPage(this, P3A_URL);
-                } else {
-                    nextOnboardingStep();
-                }
-            });
+            mBtnNegative.setOnClickListener(
+                    view -> {
+                        if (mCurrentStep == getAnalyticsConsentPageStep()) {
+                            CustomTabActivity.showInfoPage(this, P3A_URL);
+                        } else {
+                            nextOnboardingStep();
+                        }
+                    });
         }
     }
 
@@ -236,6 +241,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         return !isDefaultBrowser()
                 && ChromeFeatureList.isEnabled(
                         BraveFeatureList.ANDROID_FORCE_DEFAULT_BROWSER_PROMPT);
+    }
+
+    private boolean shouldOfferSearchWidget() {
+        return ChromeFeatureList.isEnabled(BraveFeatureList.ANDROID_ONBOARDING_OFFER_SEARCH_WIDGET);
     }
 
     private void setDefaultBrowserAndProceedToNextStep() {
@@ -269,7 +278,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             } else {
                 showBrowserSelectionPage();
             }
-        } else if (mCurrentStep == 2) {
+        } else if (shouldOfferSearchWidget() && mCurrentStep == 2) {
+            showSearchWidgetPage();
+        } else if (mCurrentStep == getAnalyticsConsentPageStep()) {
             showAnalyticsConsentPage();
         } else {
             OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
@@ -281,6 +292,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             finish();
             sendFirstRunCompletePendingIntent();
         }
+    }
+
+    private int getAnalyticsConsentPageStep() {
+        return shouldOfferSearchWidget() ? 3 : 2;
     }
 
     private void showIntroPage() {
@@ -352,6 +367,32 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             if (mTvDefault != null) {
                 mTvDefault.setText(getResources().getString(R.string.onboarding_set_default_india));
             }
+        }
+    }
+
+    private void showSearchWidgetPage() {
+        int margin = mIsTablet ? 200 : 30;
+        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.3f, margin, true);
+        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.3f, margin, false);
+
+        if (mTvWelcome != null) {
+            mTvWelcome.setVisibility(View.GONE);
+        }
+        if (mTvCard != null) {
+            mTvCard.setText(getResources().getString(R.string.onboarding_search_widget_title));
+        }
+        if (mTvDefault != null) {
+            mTvDefault.setText(getResources().getString(R.string.onboarding_search_widget_text));
+        }
+        if (mBtnPositive != null) {
+            mBtnPositive.setText(
+                    getResources().getString(R.string.onboarding_search_widget_button));
+        }
+        if (mLayoutCard != null) {
+            mLayoutCard.setVisibility(View.VISIBLE);
+        }
+        if (mIvArrowDown != null) {
+            mIvArrowDown.setVisibility(View.VISIBLE);
         }
     }
 
