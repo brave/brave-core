@@ -10,7 +10,9 @@ namespace features {
 BASE_FEATURE(kBraveNtpSearchWidget,
              "BraveNtpSearchWidget",
              base::FEATURE_ENABLED_BY_DEFAULT);
-
+BASE_FEATURE(kBraveDisableMoveToWindow,
+             "kBraveDisableMoveToWindow",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 #if BUILDFLAG(IS_WIN)
 // Enables window cloaking on window creation to prevent a white flash.
 BASE_FEATURE(kBraveWorkaroundNewWindowFlash,
