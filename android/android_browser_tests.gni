@@ -136,7 +136,6 @@ android_only_test_deps = [
   "//brave/components/language/android:java",
   "//brave/third_party/android_deps:com_android_installreferrer_java",
   "//chrome:chrome_android_core",
-  "//chrome/android:app_hooks_java",
   "//chrome/android:delegate_public_impl_java",
   "//chrome/browser/flags:flags_android",
   "//chrome/browser/lens:delegate_public_impl_java",
