@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/sessions/chrome_tab_restore_service_client.cc b/chrome/browser/sessions/chrome_tab_restore_service_client.cc
+index 3dfb04556ae3e558cbdcd04b7afa21290f4117c4..1bfafc01fb94db3996e6956f190308f9dbbf7907 100644
+--- a/chrome/browser/sessions/chrome_tab_restore_service_client.cc
++++ b/chrome/browser/sessions/chrome_tab_restore_service_client.cc
+@@ -141,3 +141,7 @@ void ChromeTabRestoreServiceClient::OnTabRestored(const GURL& url) {
+   apps::RecordExtensionAppLaunchOnTabRestored(profile_, url);
+ #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
+ }
++
++bool ChromeTabRestoreServiceClient::IsOffTheRecord() const {
++  return profile_->IsOffTheRecord();
++}

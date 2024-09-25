@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/sessions/tab_restore_service_factory.cc b/chrome/browser/sessions/tab_restore_service_factory.cc
+index 83855dacb105b888ed643ad2501375e72d483120..ed984c966574cf8b1472ef357bae2d3410b24b57 100644
+--- a/chrome/browser/sessions/tab_restore_service_factory.cc
++++ b/chrome/browser/sessions/tab_restore_service_factory.cc
+@@ -15,7 +15,7 @@ namespace {
+ std::unique_ptr<KeyedService> BuildTemplateService(
+     content::BrowserContext* browser_context) {
+   Profile* profile = Profile::FromBrowserContext(browser_context);
+-  DCHECK(!profile->IsOffTheRecord());
++  // DCHECK(!profile->IsOffTheRecord());
+   auto client = std::make_unique<ChromeTabRestoreServiceClient>(profile);
+   return std::make_unique<sessions::TabRestoreServiceImpl>(
+       std::move(client), profile->GetPrefs(), nullptr);
+@@ -59,7 +59,7 @@ TabRestoreServiceFactory::TabRestoreServiceFactory()
+     : ProfileKeyedServiceFactory(
+           "sessions::TabRestoreService",
+           ProfileSelections::Builder()
+-              .WithRegular(ProfileSelection::kOriginalOnly)
++              .WithRegular(ProfileSelection::kOwnInstance)
+               // TODO(crbug.com/40257657): Check if this service is needed in
+               // Guest mode.
+               .WithGuest(ProfileSelection::kOriginalOnly)

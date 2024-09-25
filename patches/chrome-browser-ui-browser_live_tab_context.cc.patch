@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/ui/browser_live_tab_context.cc b/chrome/browser/ui/browser_live_tab_context.cc
+index e7f905e35eb2261646d4397f0f469bed7f5bed0f..1b75a3a5b5ef4576850e1fb76571539e48e33974 100644
+--- a/chrome/browser/ui/browser_live_tab_context.cc
++++ b/chrome/browser/ui/browser_live_tab_context.cc
+@@ -208,7 +208,7 @@ sessions::LiveTab* BrowserLiveTabContext::AddRestoredTab(
+     sessions::tab_restore::Type original_session_type) {
+   tab_groups::TabGroupSyncService* tab_group_service =
+       tab_groups::SavedTabGroupUtils::GetServiceForProfile(browser_->profile());
+-  CHECK(tab_group_service);
++  // CHECK(tab_group_service);
+ 
+   SessionStorageNamespace* storage_namespace =
+       tab.platform_data
+@@ -222,9 +222,9 @@ sessions::LiveTab* BrowserLiveTabContext::AddRestoredTab(
+   content::WebContents* web_contents = nullptr;
+ 
+   const bool is_normal_tab = !group_id.has_value();
+-  const bool is_grouped_tab_unsaved =
++  const bool is_grouped_tab_unsaved = tab_group_service &&
+       group_id.has_value() && !saved_group_id.has_value();
+-  const bool group_deleted_from_model =
++  const bool group_deleted_from_model = tab_group_service &&
+       group_id.has_value() && saved_group_id.has_value() &&
+       !tab_group_service->GetGroup(saved_group_id.value()).has_value();
+   if (is_normal_tab || is_grouped_tab_unsaved || group_deleted_from_model) {

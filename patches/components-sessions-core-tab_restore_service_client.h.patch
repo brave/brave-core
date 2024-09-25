@@ -1,0 +1,13 @@
+diff --git a/components/sessions/core/tab_restore_service_client.h b/components/sessions/core/tab_restore_service_client.h
+index 13d01e011635b1f2a6bd864dbf8cdcd809110e2d..7ffc179ae86be8521aa4506183b8767c941ac3a7 100644
+--- a/components/sessions/core/tab_restore_service_client.h
++++ b/components/sessions/core/tab_restore_service_client.h
+@@ -93,6 +93,8 @@ class SESSIONS_EXPORT TabRestoreServiceClient {
+   // Called when a tab is restored. |url| is the URL that the tab is currently
+   // visiting.
+   virtual void OnTabRestored(const GURL& url);
++
++  virtual bool IsOffTheRecord() const = 0;
+ };
+ 
+ }  // namespace sessions
