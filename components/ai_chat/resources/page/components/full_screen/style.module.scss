@@ -41,10 +41,22 @@
   min-width: 52px;
 }
 
+.headerSpacer {
+  height: 60px;
+  margin-bottom: 8px;
+  margin-left: -8px;
+  margin-right: -24px;
+
+  border-bottom: 1px solid var(--leo-color-divider-subtle);
+}
+
 .right {
-  padding: 8px;
-  padding-top: 68px;
+  margin-top: 6px;
+  margin-left: -8px;
+  padding-left: 8px;
+  padding-right: 24px;
   width: 340px;
+  background: var(--leo-color-container-background);
 
   & leo-dropdown {
     width: 100%;

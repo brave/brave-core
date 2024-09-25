@@ -184,6 +184,7 @@ export default function FullScreen() {
         <Main />
       </div>
       {!!chat.associatedContentInfo?.detail?.multipleWebSiteInfo && <div className={styles.right}>
+        <div className={styles.headerSpacer}/>
         <h3>Tabs used in this conversation</h3>
         <SitePicker />
         <ul>
