@@ -67,13 +67,11 @@ mojom::SiteInfoDetailPtr AssociatedMultiTabContent::GetAssociatedContentDetail()
     if (!content) {
       continue;
     }
-    if (content->GetURL().SchemeIsHTTPOrHTTPS()) {
-      auto detail = mojom::WebSiteInfoDetail::New();
-      detail->title = base::UTF16ToUTF8(content->GetTitle());
-      detail->hostname = content->GetURL().host();
-      detail->url = content->GetURL();
-      details->sites.push_back(std::move(detail));
-    }
+    auto detail = mojom::WebSiteInfoDetail::New();
+    detail->title = base::UTF16ToUTF8(content->GetTitle());
+    detail->hostname = content->GetURL().host();
+    detail->url = content->GetURL();
+    details->sites.push_back(std::move(detail));
   }
 
   return mojom::SiteInfoDetail::NewMultipleWebSiteInfo(std::move(details));
