@@ -43,11 +43,11 @@ const MenuButton = styled(Button)`
 
 const PlaceholderContainer = styled.div`
   position: relative;
-
+  
   border-radius: ${searchBoxRadius};
-
+  
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.05);
-
+  
   &:hover ${MenuContainer} {
     transition-delay: 0s;
     opacity: 1;
@@ -60,18 +60,15 @@ function Swapper() {
   const [, setShowSearchBox] = useNewTabPref('showSearchBox')
 
   return <>
-    <PlaceholderContainer
-      style={{visibility: open ? 'hidden' : 'visible'}}
-      onClick={e => {
-        // If we were clicking a button inside the SearchBox, don't open the box.
-        if (e.nativeEvent.composedPath().some(el => (el as HTMLElement).tagName === 'LEO-BUTTON')) {
-          e.preventDefault()
-          return
-        }
-        setOpen(true)
-        setBoxPos(e.currentTarget.getBoundingClientRect().y)
-      }}
-    >
+    {!open && <PlaceholderContainer onClick={e => {
+      // If we were clicking a button inside the SearchBox, don't open the box.
+      if (e.nativeEvent.composedPath().some(el => (el as HTMLElement).tagName === 'LEO-BUTTON')) {
+        e.preventDefault()
+        return
+      }
+      setOpen(true)
+      setBoxPos(e.currentTarget.getBoundingClientRect().y)
+    }}>
       <Backdrop />
       <SearchBox />
       <div data-theme="light">
@@ -87,7 +84,7 @@ function Swapper() {
           </leo-menu-item>
         </MenuContainer>
       </div>
-    </PlaceholderContainer>
+    </PlaceholderContainer>}
     {open && <SearchDialog offsetY={boxPos} onClose={() => setOpen(false)} />}
   </>
 }

@@ -133,6 +133,10 @@ export const GridPagesContainer = styled('div')<{ customLinksEnabled: boolean }>
   scroll-snap-type: x mandatory;
   scroll-snap-stop: always;
 
+  @media screen and (max-width: 870px) {
+    margin-left: var(--grid-column-width);
+  }
+
   ::-webkit-scrollbar {
     display: none;
   }
@@ -253,10 +257,6 @@ export const Tile = styled('a')<TileProps>`
   z-index: ${p => p.isDragging ? 3 : 'unset'}
   outline: unset;
   gap: 8px;
-
-  @media screen and (max-width: 870px) {
-    height: 95px;
-  }
 
   ${p => !p.isMenuShowing && css`
     &:active ${TileImageContainer} {
