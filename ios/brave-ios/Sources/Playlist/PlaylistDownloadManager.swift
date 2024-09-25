@@ -735,7 +735,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
       let asset = activeDownloadTasks.removeValue(forKey: task)
     else { return }
 
-    Task {
+    Task { @MainActor in
       if let error = error as NSError? {
         switch (error.domain, error.code) {
         case (NSURLErrorDomain, NSURLErrorCancelled):
