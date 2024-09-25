@@ -11,7 +11,6 @@ import { font, spacing } from '@brave/leo/tokens/css/variables'
 
 const breakpointLargeBlocks = '980px'
 const breakpointEveryBlock = '870px'
-const breakpointShortHeight = '700px'
 
 export const CLASSNAME_PAGE_STUCK = 'page-stuck'
 
@@ -171,9 +170,6 @@ export const GridItemClock = styled('section')`
   grid-column: 3;
   justify-self: center;
   @media screen and (max-width: ${breakpointEveryBlock}) {
-    display: none;
-  }
-  @media screen and (max-height: ${breakpointShortHeight}) {
     display: none;
   }
 `
