@@ -12,7 +12,6 @@ import SidebarHeader from '../header'
 import SidebarNav from '../sidebar_nav'
 import FeatureMenu from '../feature_button_menu'
 import { useAIChat } from '../../state/ai_chat_context'
-import getAPI from '../../api'
 import { useConversation } from '../../state/conversation_context'
 
 export default function FullScreen() {
@@ -110,7 +109,7 @@ export default function FullScreen() {
       {!!chat.associatedContentInfo?.detail?.multipleWebSiteInfo && <div className={styles.right}>
         <h3>Tabs used in this conversation</h3>
         <ul>
-          {getAPI().initialTabs.map((t, i) => <li key={i}>
+          {chat.associatedContentInfo.detail.multipleWebSiteInfo.sites.map((t, i) => <li key={i}>
             {t.title}
           </li>)}
         </ul>

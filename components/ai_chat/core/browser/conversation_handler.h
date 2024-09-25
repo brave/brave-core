@@ -38,6 +38,7 @@ namespace ai_chat {
 class AIChatFeedbackAPI;
 class AIChatService;
 class AssociatedArchiveContent;
+class AssociatedMultiTabContent;
 
 // Performs all conversation-related operations, responsible for sending
 // messages to the conversation engine, handling the responses, and owning
@@ -177,11 +178,14 @@ class ConversationHandler : public mojom::ConversationHandler,
   // content, this conversation can be reunited with the delegate.
   void SetAssociatedContentDelegate(
       base::WeakPtr<AssociatedContentDelegate> delegate);
+  void SetMultiTabContent(std::unique_ptr<AssociatedMultiTabContent> delegate);
   const mojom::Model& GetCurrentModel();
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory() const;
 
   // mojom::ConversationHandler
   void GetState(GetStateCallback callback) override;
+  void AddTabToMultiTabContent(const GURL& url) override;
+  void RemoteTabFromMultiTabContent(const GURL& url) override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
   void RateMessage(bool is_liked,
                    uint32_t turn_id,
@@ -224,6 +228,7 @@ class ConversationHandler : public mojom::ConversationHandler,
                                   mojom::ActionType action_type,
                                   mojom::APIError error);
   void OnFaviconImageDataChanged();
+  void OnAssociatedContentInfoChanged();
   void OnUserOptedIn();
 
   base::WeakPtr<ConversationHandler> GetWeakPtr() {
@@ -317,7 +322,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnModelDataChanged();
   void OnHistoryUpdate();
   void OnSuggestedQuestionsChanged();
-  void OnAssociatedContentInfoChanged();
   void OnConversationEntriesChanged();
   void OnClientConnectionChanged();
   void OnConversationTitleChanged(std::string title);
@@ -327,6 +331,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   base::WeakPtr<AssociatedContentDelegate> associated_content_delegate_;
   std::unique_ptr<AssociatedArchiveContent> archive_content_;
+  std::unique_ptr<AssociatedMultiTabContent> multi_tab_content_;
 
   std::string model_key_;
   // Chat conversation entries

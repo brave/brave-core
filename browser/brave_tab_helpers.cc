@@ -140,6 +140,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   if (ai_chat::IsAllowedForContext(context)) {
     ai_chat::AIChatTabHelper::CreateForWebContents(
         web_contents,
+        ai_chat::AIChatServiceFactory::GetForBrowserContext(
+            web_contents->GetBrowserContext()),
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
         std::make_unique<ai_chat::PrintPreviewExtractor>(web_contents)
 #else

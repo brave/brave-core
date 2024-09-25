@@ -118,6 +118,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // PrintPreviewExtractionDelegate is provided as it's implementation is
   // in a different layer.
   AIChatTabHelper(content::WebContents* web_contents,
+                  AIChatService* ai_chat_service,
                   std::unique_ptr<PrintPreviewExtractionDelegate>
                       print_preview_extraction_delegate);
 
@@ -175,6 +176,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void SetPendingGetContentCallback(GetPageContentCallback callback);
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
+  raw_ptr<AIChatService> ai_chat_service_;
 
   bool is_same_document_navigation_ = false;
   int pending_navigation_id_;

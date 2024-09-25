@@ -60,6 +60,9 @@ AssociatedContentDriver::AssociatedContentDriver(
     : url_loader_factory_(url_loader_factory) {}
 
 AssociatedContentDriver::~AssociatedContentDriver() {
+  for (auto& observer : observers_) {
+    observer.OnAssociatedContentDestroyed(this);
+  }
   for (auto& conversation : associated_conversations_) {
     if (conversation) {
       conversation->OnAssociatedContentDestroyed(cached_text_content_,
@@ -268,6 +271,12 @@ AssociatedContentDriver::ParseSearchQuerySummaryResponse(
 void AssociatedContentDriver::OnFaviconImageDataChanged() {
   for (auto& conversation : associated_conversations_) {
     conversation->OnFaviconImageDataChanged();
+  }
+}
+
+void AssociatedContentDriver::OnContentMetadataChanged() {
+  for (auto& conversation : associated_conversations_) {
+    conversation->OnAssociatedContentInfoChanged();
   }
 }
 

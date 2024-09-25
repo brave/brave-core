@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
+#include "brave/components/ai_chat/core/browser/associated_multi_tab_content.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -333,6 +334,12 @@ void ConversationHandler::SetAssociatedContentDelegate(
   OnAssociatedContentInfoChanged();
 }
 
+void ConversationHandler::SetMultiTabContent(
+    std::unique_ptr<AssociatedMultiTabContent> delegate) {
+  multi_tab_content_ = std::move(delegate);
+  SetAssociatedContentDelegate(multi_tab_content_->GetWeakPtr());
+}
+
 const mojom::Model& ConversationHandler::GetCurrentModel() {
   const mojom::Model* model = model_service_->GetModel(model_key_);
   CHECK(model);
@@ -376,6 +383,26 @@ void ConversationHandler::GetState(GetStateCallback callback) {
       current_error_);
 
   std::move(callback).Run(std::move(state));
+}
+
+void ConversationHandler::AddTabToMultiTabContent(const GURL& url) {
+  if (!multi_tab_content_) {
+    return;
+  }
+  auto* content = ai_chat_service_->GetAssociatedContentForUrl(url);
+  if (!content) {
+    return;
+  }
+  multi_tab_content_->AddContent(content);
+  OnAssociatedContentInfoChanged();
+}
+
+void ConversationHandler::RemoteTabFromMultiTabContent(const GURL& url) {
+  if (!multi_tab_content_) {
+    return;
+  }
+  multi_tab_content_->RemoveContent(url);
+  OnAssociatedContentInfoChanged();
 }
 
 void ConversationHandler::RateMessage(bool is_liked,
@@ -1032,7 +1059,10 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     const bool has_summarized = found_iter != chat_history_.end();
     if (!has_summarized) {
       suggestions_.emplace_back(
-          associated_content_delegate_->GetCachedIsVideo()
+          (associated_content_delegate_->GetAssociatedContentType() ==
+           mojom::AssociatedContentType::MultipleWeb)
+              ? "Summarize these pages"
+          : associated_content_delegate_->GetCachedIsVideo()
               ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
               : l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE));
     }

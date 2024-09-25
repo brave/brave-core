@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/fixed_flat_set.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -16,6 +17,7 @@
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
+#include "brave/components/ai_chat/core/browser/associated_multi_tab_content.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
@@ -48,6 +50,8 @@ constexpr char kURLGoPremium[] =
     "https://account.brave.com/account/?intent=checkout&product=leo";
 constexpr char kURLManagePremium[] = "https://account.brave.com/";
 #endif
+static const auto kAllowedSchemes = base::MakeFixedFlatSet<std::string_view>(
+    {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme, url::kDataScheme});
 }  // namespace
 
 namespace ai_chat {
@@ -196,22 +200,7 @@ void AIChatUIPageHandler::SetChatUI(
     mojo::PendingRemote<mojom::ChatUI> chat_ui) {
   chat_ui_.Bind(std::move(chat_ui));
 
-  std::vector<mojom::WebSiteInfoDetailPtr> tabs;
-  if (auto* browser = chrome::FindBrowserWithTab(owner_web_contents_)) {
-    for (int i = 0; i < browser->tab_strip_model()->count(); ++i) {
-      auto* wc = browser->tab_strip_model()->GetWebContentsAt(i);
-      if (wc == owner_web_contents_) {
-        continue;
-      }
-      auto info = mojom::WebSiteInfoDetail::New();
-      info->hostname = wc->GetVisibleURL().host();
-      info->title = base::UTF16ToUTF8(wc->GetTitle());
-      info->url = wc->GetURL();
-
-      tabs.push_back(std::move(info));
-    }
-  }
-  chat_ui_->SetInitialData(active_chat_tab_helper_ == nullptr, std::move(tabs));
+  chat_ui_->SetInitialData(active_chat_tab_helper_ == nullptr);
 }
 
 void AIChatUIPageHandler::BindRelatedConversation(
@@ -254,20 +243,41 @@ void AIChatUIPageHandler::NewConversation(
 void AIChatUIPageHandler::NewMultiTabConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
-  ConversationHandler* conversation;
   // Make an associated content for all tabs in current window
   Browser* browser = ai_chat::GetBrowserForWebContents(owner_web_contents_);
   if (!browser) {
     return;
   }
 
-  auto* multi_tab_content = browser->browser_window_features()
-                                ->ai_chat_associated_multi_tab_content();
+  ConversationHandler* conversation =
+      AIChatServiceFactory::GetForBrowserContext(profile_)
+          ->CreateConversation();
 
-  conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
-                     ->CreateConversation();
+  TabStripModel* tab_strip_model = browser->tab_strip_model();
+  std::vector<AssociatedContentDriver*> starting_web_contentses;
 
-  conversation->SetAssociatedContentDelegate(multi_tab_content->GetWeakPtr());
+  for (int i = 0; i < tab_strip_model->count(); ++i) {
+    content::WebContents* web_contents = tab_strip_model->GetWebContentsAt(i);
+    // Temporary fix to ensure that the tab is loaded before we try to get the
+    // content
+    web_contents->GetController().LoadIfNecessary();
+    AIChatTabHelper* associated_content =
+        ai_chat::AIChatTabHelper::FromWebContents(web_contents);
+    if (base::Contains(kAllowedSchemes,
+                       associated_content->GetURL().scheme())) {
+      DVLOG(2) << "Tab " << i
+               << " URL: " << associated_content->GetURL().spec();
+      starting_web_contentses.push_back(associated_content);
+    }
+  }
+
+  auto multi_tab_content = std::make_unique<AssociatedMultiTabContent>(
+      std::move(starting_web_contentses),
+      owner_web_contents_->GetBrowserContext()
+          ->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess());
+
+  conversation->SetMultiTabContent(std::move(multi_tab_content));
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
 }

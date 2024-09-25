@@ -11,17 +11,20 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/task_runner.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -32,6 +35,20 @@ namespace {
 
 static const auto kAllowedSchemes = base::MakeFixedFlatSet<std::string_view>(
     {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme, url::kDataScheme});
+
+std::vector<mojom::WebSiteInfoDetailPtr> BuildAssocaitedContentsMetadata(
+    const std::vector<AssociatedContentDriver*>& associated_contents) {
+  std::vector<mojom::WebSiteInfoDetailPtr> details;
+  for (const AssociatedContentDriver* content : associated_contents) {
+    mojom::SiteInfoDetailPtr detail = content->GetAssociatedContentDetail();
+    if (detail->is_web_site_info() &&
+        base::Contains(kAllowedSchemes,
+                       detail->get_web_site_info()->url.scheme())) {
+      details.push_back(std::move(detail->get_web_site_info()));
+    }
+  }
+  return details;
+}
 
 }  // namespace
 
@@ -239,6 +256,37 @@ void AIChatService::DeleteConversation(const std::string& id) {
   OnConversationListChanged();
 }
 
+void AIChatService::GetAvailableContent(GetAvailableContentCallback callback) {
+  std::move(callback).Run(
+      BuildAssocaitedContentsMetadata(associated_contents_));
+}
+
+void AIChatService::RegisterAssociatedContentsAvailable(
+    AssociatedContentDriver* content) {
+  associated_contents_.push_back(content);
+}
+
+void AIChatService::AssociatedContentsDestroyed(
+    AssociatedContentDriver* content) {
+  std::erase(associated_contents_, content);
+}
+
+void AIChatService::OnContentMetadataChanged() {
+  for (auto& remote : observer_remotes_) {
+    remote->OnAvailableContentChanged(
+        BuildAssocaitedContentsMetadata(associated_contents_));
+  }
+}
+
+AssociatedContentDriver* AIChatService::GetAssociatedContentForUrl(GURL url) {
+  for (auto* content : associated_contents_) {
+    if (content->GetURL() == url) {
+      return content;
+    }
+  }
+  return nullptr;
+}
+
 void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,
                                             mojom::PremiumStatus status,
                                             mojom::PremiumInfoPtr info) {
@@ -305,7 +353,7 @@ void AIChatService::OnConversationEntriesChanged(
         }
         if (entries.size() >= 2) {
           if (conversation->summary.size() < 70) {
-            for (const auto &entry : entries) {
+            for (const auto& entry : entries) {
               if (entry->character_type == mojom::CharacterType::ASSISTANT &&
                   !entry->text.empty()) {
                 conversation->summary = entry->text.substr(0, 70);
