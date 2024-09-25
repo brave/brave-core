@@ -645,7 +645,7 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.AppHooksImpl {
+-keep class org.chromium.chrome.browser.AppHooks {
     public <init>(...);
 }
 
