@@ -52,6 +52,7 @@ function SitePicker() {
   }, [aiChat.availableAssociatedContent, conversation.associatedContentInfo])
 
   return <Dropdown value='' placeholder='Add a tab to the project' onChange={e => conversation.conversationHandler?.addTabToMultiTabContent({ url: e.value ?? '' })}>
+    <span slot="value">Add a tab to the conversation</span>
     {availableSites.map((a, i) => <leo-option key={i} value={a.url.url}>
       {a.title}
     </leo-option>)}
