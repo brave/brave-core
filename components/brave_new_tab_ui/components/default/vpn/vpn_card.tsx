@@ -35,7 +35,7 @@ const locales = {
 }
 
 const WidgetWrapper = (props: React.PropsWithChildren) => (
-  <div className={widgetStyles.wrapper}>
+  <div data-theme="dark" className={widgetStyles.wrapper}>
     {props.children}
   </div>
 )
