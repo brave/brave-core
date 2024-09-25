@@ -39,11 +39,14 @@ class EphemeralStorageTabHelper
   ~EphemeralStorageTabHelper() override;
 
   std::optional<base::UnguessableToken> GetEphemeralStorageToken(
-      const url::Origin& origin);
+      std::optional<url::Origin> origin);
 
   void SetEphemeralStorageToken(std::optional<base::UnguessableToken> token);
   void GenerateEphemeralStorageTokenForNewTab();
   std::optional<base::UnguessableToken> TakeEphemeralStorageTokenForNewTab();
+
+  static void WebContentsCreated(content::WebContents* source_contents,
+                                 content::WebContents* new_contents);
 
  private:
   friend class content::WebContentsUserData<EphemeralStorageTabHelper>;

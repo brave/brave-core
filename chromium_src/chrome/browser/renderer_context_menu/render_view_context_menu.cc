@@ -108,6 +108,18 @@ BraveGetMenuShownCallback() {
   return callback.get();
 }
 
+TabStripModel* FindTabStripModelWithWebContents(content::WebContents* contents,
+                                                int& tab_idx) {
+  for (Browser* browser : *BrowserList::GetInstance()) {
+    TabStripModel* tab_strip_model = browser->tab_strip_model();
+    tab_idx = tab_strip_model->GetIndexOfWebContents(contents);
+    if (tab_idx != TabStripModel::kNoTab) {
+      return tab_strip_model;
+    }
+  }
+  return nullptr;
+}
+
 }  // namespace
 
 void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
@@ -478,11 +490,23 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
           WindowOpenDisposition::OFF_THE_RECORD, ui::PAGE_TRANSITION_LINK,
           /*extra_headers=*/std::string(), /*started_from_context_menu=*/true);
       params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+      params.has_rel_opener = true;
       ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
           source_web_contents_)
           ->GenerateEphemeralStorageTokenForNewTab();
 
-      source_web_contents_->OpenURL(params);
+      auto* wc = source_web_contents_->OpenURL(params, {});
+
+      int tab_idx = 0;
+      if (auto* tab_strip = FindTabStripModelWithWebContents(wc, tab_idx)) {
+        const tab_groups::TabGroupId new_group =
+            tab_groups::TabGroupId::GenerateNew();
+        tab_groups::TabGroupVisualData visual_data(
+            base::UTF8ToUTF16(
+                base::StrCat({"Ephemeral ", params_.link_url.host_piece()})),
+            0xFFaa00b0);
+        tab_strip->AddToNewGroup({tab_idx}, new_group, visual_data);
+      }
       break;
     }
 #if BUILDFLAG(ENABLE_TOR)

@@ -1,8 +1,34 @@
 diff --git a/chrome/browser/ui/browser_navigator.cc b/chrome/browser/ui/browser_navigator.cc
-index 41a7c90bc2754a4a424f62873f29c194c9417471..06be1631d3af49ad5a2891568e45ebdc08d316a7 100644
+index 41a7c90bc2754a4a424f62873f29c194c9417471..96db1ce39bf6ed613bc420d797e11bbe29459556 100644
 --- a/chrome/browser/ui/browser_navigator.cc
 +++ b/chrome/browser/ui/browser_navigator.cc
-@@ -608,6 +608,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
+@@ -15,6 +15,7 @@
+ #include "base/notreached.h"
+ #include "base/strings/utf_string_conversions.h"
+ #include "base/trace_event/trace_event.h"
++#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
+ #include "build/build_config.h"
+ #include "build/chromeos_buildflags.h"
+ #include "chrome/browser/apps/app_service/web_contents_app_id_utils.h"
+@@ -532,6 +533,7 @@ std::unique_ptr<content::WebContents> CreateTargetContents(
+   WebContents::CreateParams create_params(
+       params.browser->profile(), initial_site_instance_for_new_contents);
+   create_params.main_frame_name = params.frame_name;
++  LOG(ERROR) << "CreateTargetContents opener: " << params.opener;
+   if (params.opener) {
+     create_params.opener_render_frame_id = params.opener->GetRoutingID();
+     create_params.opener_render_process_id =
+@@ -565,6 +567,9 @@ std::unique_ptr<content::WebContents> CreateTargetContents(
+       ->set_window_type(params.captive_portal_window_type);
+ #endif
+ 
++  ephemeral_storage::EphemeralStorageTabHelper::WebContentsCreated(
++      params.source_contents, target_contents.get());
++
+   return target_contents;
+ }
+ 
+@@ -608,6 +613,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
      // Block any navigation requests in locked fullscreen mode.
      return nullptr;
    }
@@ -10,7 +36,7 @@ index 41a7c90bc2754a4a424f62873f29c194c9417471..06be1631d3af49ad5a2891568e45ebdc
  
    // Open System Apps in their standalone window if necessary.
    // TODO(crbug.com/40136163): Remove this code after we integrate with intent
-@@ -1022,6 +1023,7 @@ bool IsURLAllowedInIncognito(const GURL& url,
+@@ -1022,6 +1028,7 @@ bool IsURLAllowedInIncognito(const GURL& url,
      return stripped_url.is_valid() &&
             IsURLAllowedInIncognito(stripped_url, browser_context);
    }

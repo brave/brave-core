@@ -50,15 +50,21 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
 EphemeralStorageTabHelper::~EphemeralStorageTabHelper() = default;
 
 std::optional<base::UnguessableToken>
-EphemeralStorageTabHelper::GetEphemeralStorageToken(const url::Origin& origin) {
+EphemeralStorageTabHelper::GetEphemeralStorageToken(
+    std::optional<url::Origin> origin) {
+  if (auto tab_es_token = TakeEphemeralStorageTokenForNewTab()) {
+    return tab_es_token;
+  }
+
   if (ephemeral_storage_token_) {
     return ephemeral_storage_token_;
   }
 
   if (auto* ephemeral_storage_service =
           EphemeralStorageServiceFactory::GetForContext(
-              web_contents()->GetBrowserContext())) {
-    return ephemeral_storage_service->Get1PESToken(origin);
+              web_contents()->GetBrowserContext());
+      ephemeral_storage_service && origin) {
+    return ephemeral_storage_service->Get1PESToken(*origin);
   }
   return std::nullopt;
 }
@@ -70,14 +76,18 @@ void EphemeralStorageTabHelper::SetEphemeralStorageToken(
 }
 
 void EphemeralStorageTabHelper::GenerateEphemeralStorageTokenForNewTab() {
+  LOG(ERROR) << "GenerateEphemeralStorageTokenForNewTab " << this;
   ephemeral_storage_token_for_new_tab_ = base::UnguessableToken::Create();
 }
 
 std::optional<base::UnguessableToken>
 EphemeralStorageTabHelper::TakeEphemeralStorageTokenForNewTab() {
+  LOG(ERROR) << "EphemeralStorageTabHelper::TakeEphemeralStorageTokenForNewTab "
+             << this;
   if (ephemeral_storage_token_for_new_tab_) {
     auto ephemeral_storage_token_for_new_tab =
         std::move(ephemeral_storage_token_for_new_tab_);
+    LOG(ERROR) << "EPHEMERAL!";
     return ephemeral_storage_token_for_new_tab;
   }
 
@@ -106,6 +116,20 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
     CreateEphemeralStorageAreasForDomainAndURL(new_domain, new_url);
   }
   UpdateShieldsState(new_url);
+}
+
+// static
+void EphemeralStorageTabHelper::WebContentsCreated(
+    content::WebContents* source_contents,
+    content::WebContents* new_contents) {
+  if (!source_contents) {
+    return;
+  }
+  DCHECK(new_contents);
+  EphemeralStorageTabHelper::FromWebContents(new_contents)
+      ->SetEphemeralStorageToken(
+          EphemeralStorageTabHelper::FromWebContents(source_contents)
+              ->TakeEphemeralStorageTokenForNewTab());
 }
 
 void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
