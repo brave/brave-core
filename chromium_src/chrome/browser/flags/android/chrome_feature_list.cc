@@ -52,7 +52,8 @@
     &net::features::kBraveForgetFirstPartyStorage,                      \
     &brave_shields::features::kBraveShowStrictFingerprintingMode,       \
     &brave_shields::features::kBraveLocalhostAccessPermission,          \
-    &first_run::features::kAndroidForceDefaultBrowserPrompt
+    &first_run::features::kAndroidForceDefaultBrowserPrompt,            \
+    &first_run::features::kAndroidOnboardingOfferSearchWidget
 
 // clang-format on
 

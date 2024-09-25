@@ -14,5 +14,9 @@ BASE_FEATURE(kAndroidForceDefaultBrowserPrompt,
              "AndroidForceDefaultBrowserPrompt",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-}
+BASE_FEATURE(kAndroidOnboardingOfferSearchWidget,
+             "AndroidOnboardingOfferSearchWidget",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+}  // namespace features
 }  // namespace first_run

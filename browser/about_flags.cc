@@ -310,10 +310,20 @@
       FEATURE_VALUE_TYPE(                                          \
           first_run::features::kAndroidForceDefaultBrowserPrompt), \
   })
+#define ANDROID_ONBOARDING_OFFER_SEARCH_WIDGET                       \
+  EXPAND_FEATURE_ENTRIES({                                           \
+      "android-onboarding-offer-search-widget",                      \
+      "Offer search widget on first run",                            \
+      "Offers to install the search widget during onboarding.",      \
+      kOsAndroid,                                                    \
+      FEATURE_VALUE_TYPE(                                            \
+          first_run::features::kAndroidOnboardingOfferSearchWidget), \
+  })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
 #define ANDROID_FORCE_DEFAULT_BROWSER_PROMPT
+#define ANDROID_ONBOARDING_OFFER_SEARCH_WIDGET
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -981,6 +991,7 @@
   BRAVE_COMMANDS_FEATURE_ENTRIES                                               \
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
   ANDROID_FORCE_DEFAULT_BROWSER_PROMPT                                         \
+  ANDROID_ONBOARDING_OFFER_SEARCH_WIDGET                                       \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_TABS_FEATURE_ENTRIES                                                   \

@@ -12,8 +12,9 @@ namespace first_run {
 namespace features {
 
 BASE_DECLARE_FEATURE(kAndroidForceDefaultBrowserPrompt);
+BASE_DECLARE_FEATURE(kAndroidOnboardingOfferSearchWidget);
 
-}
+}  // namespace features
 }  // namespace first_run
 
 #endif  // BRAVE_BROWSER_ANDROID_FIRST_RUN_FEATURES_H_
