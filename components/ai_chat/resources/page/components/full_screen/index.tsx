@@ -85,7 +85,7 @@ export default function FullScreen() {
               </Button>
               <FeatureMenu  setIsConversationListOpen={function (value: boolean): unknown {
                 throw new Error('Function not implemented.')
-              } } />
+              }} />
             </>
           )}
         </div>
