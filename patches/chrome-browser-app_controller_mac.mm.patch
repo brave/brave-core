@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/app_controller_mac.mm b/chrome/browser/app_controller_mac.mm
-index e1e80a20bf14f95a4ea2d37cc6e3614d683b0a9e..7edf669964b12ee8569397bbf8ba220ef628ed2f 100644
+index e1e80a20bf14f95a4ea2d37cc6e3614d683b0a9e..c34040e6238d16626933f77addd8daeb9a8ce78e 100644
 --- a/chrome/browser/app_controller_mac.mm
 +++ b/chrome/browser/app_controller_mac.mm
-@@ -743,7 +743,7 @@ class AppControllerNativeThemeObserver : public ui::NativeThemeObserver {
+@@ -10,6 +10,7 @@
+ #include <memory>
+ #include <vector>
+ 
++#include "brave/browser/ui/brave_browser.h"
+ #include "base/apple/bridging.h"
+ #include "base/apple/foundation_util.h"
+ #include "base/auto_reset.h"
+@@ -743,7 +744,7 @@ class AppControllerNativeThemeObserver : public ui::NativeThemeObserver {
  
  + (AppController*)sharedController {
    static AppController* sharedController = [] {
@@ -11,7 +19,7 @@ index e1e80a20bf14f95a4ea2d37cc6e3614d683b0a9e..7edf669964b12ee8569397bbf8ba220e
      NSApp.delegate = sharedController;
      return sharedController;
    }();
-@@ -840,6 +840,22 @@ class AppControllerNativeThemeObserver : public ui::NativeThemeObserver {
+@@ -840,6 +841,22 @@ class AppControllerNativeThemeObserver : public ui::NativeThemeObserver {
  
    // Initialize the Profile menu.
    [self initProfileMenu];
@@ -34,7 +42,7 @@ index e1e80a20bf14f95a4ea2d37cc6e3614d683b0a9e..7edf669964b12ee8569397bbf8ba220e
  }
  
  - (void)unregisterEventHandlers {
-@@ -1338,7 +1354,7 @@ class AppControllerNativeThemeObserver : public ui::NativeThemeObserver {
+@@ -1338,7 +1355,7 @@ class AppControllerNativeThemeObserver : public ui::NativeThemeObserver {
    }
  
    auto it = _profileBookmarkMenuBridgeMap.find(profilePath);
@@ -43,3 +51,16 @@ index e1e80a20bf14f95a4ea2d37cc6e3614d683b0a9e..7edf669964b12ee8569397bbf8ba220e
        (!base::FeatureList::IsEnabled(features::kDestroyProfileOnBrowserClose) ||
         (it->second->GetProfile() && !isOffTheRecord))) {
      // Clean up the dangling Profile* in |_profileBookmarkMenuBridgeMap|.
+@@ -2324,6 +2341,12 @@ void OpenUrlsInBrowserWithProfile(const std::vector<GURL>& urls,
+         profile->GetOriginalProfile());
+   }
+   Browser* browser = chrome::FindLastActiveWithProfile(profile);
++  for (Browser* main_browser : chrome::FindAllBrowsersWithProfile(profile)) {
++    if (static_cast<BraveBrowser*>(main_browser)->is_main_window()) {
++      browser = main_browser;
++      break;
++    }
++  }
+   int startupIndex = TabStripModel::kNoTab;
+   content::WebContents* startupContent = nullptr;
+   if (browser && browser->tab_strip_model()->count() == 1) {

@@ -1351,6 +1351,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_FILE_SELECT_SAVE_TITLE_NONSTANDARD_URL_IFRAME" desc="">
         An embedded page on this page wants to save
       </message>
+      <message name="IDS_SET_AS_MAIN_WINDOW" desc="">
+        Set as Main Window
+      </message>
       <!--Add new items to the appropriate sections above -->
     </messages>
   </release>

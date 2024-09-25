@@ -76,6 +76,9 @@ class BraveBrowser : public Browser {
     ignore_enable_closing_last_tab_pref_ = true;
   }
 
+  void set_is_main_window(bool value) { is_main_window_ = value; }
+  bool is_main_window() const { return is_main_window_; }
+
  private:
   friend class BraveTestLauncherDelegate;
   friend class WindowClosingConfirmBrowserTest;
@@ -96,6 +99,8 @@ class BraveBrowser : public Browser {
   // TabStripEmpty() if there is no tab. But, in some cases, we should not add
   // new tab, like when user tries to "Bring all tabs" to other window.
   bool ignore_enable_closing_last_tab_pref_ = false;
+
+  bool is_main_window_ = false;
 
   base::WeakPtrFactory<BraveBrowser> weak_ptr_factory_{this};
 };

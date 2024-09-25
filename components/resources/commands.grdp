@@ -439,6 +439,9 @@
   <message name="IDS_IDC_SHOW_WAYBACK_MACHINE_BUBBLE">
     Show Wayback Machine bubble
   </message>
+  <message name="IDS_IDC_SET_AS_MAIN_WINDOW">
+    Set as Main Window
+  </message>
 
   <!-- Commander composite commands -->
   <message name="IDS_COMMANDER_OPEN_BOOKMARK" desc="Text for the command to begin opening a bookmark">

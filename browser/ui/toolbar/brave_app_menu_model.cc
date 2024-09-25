@@ -287,15 +287,17 @@ void BraveAppMenuModel::BuildMoreToolsSubMenu() {
     need_separator = false;
   }
 
-#if BUILDFLAG(ENABLE_COMMANDER)
   if (auto index =
           more_tools_menu_model->GetIndexOfCommandId(IDC_NAME_WINDOW)) {
+    more_tools_menu_model->InsertItemWithStringIdAt(
+        *index + 1, IDC_SET_AS_MAIN_WINDOW, IDS_SET_AS_MAIN_WINDOW);
+#if BUILDFLAG(ENABLE_COMMANDER)
     if (commander::IsEnabled()) {
-      more_tools_menu_model->InsertItemWithStringIdAt(*index + 1, IDC_COMMANDER,
+      more_tools_menu_model->InsertItemWithStringIdAt(*index + 2, IDC_COMMANDER,
                                                       IDS_IDC_COMMANDER);
     }
-  }
 #endif
+  }
 
   if (auto index =
           more_tools_menu_model->GetIndexOfCommandId(IDC_TASK_MANAGER)) {

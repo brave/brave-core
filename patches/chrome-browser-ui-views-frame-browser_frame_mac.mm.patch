@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/ui/views/frame/browser_frame_mac.mm b/chrome/browser/ui/views/frame/browser_frame_mac.mm
+index 6763207c69ea570a699a5b5ec47bcdb0be7f2d23..eb9d168935811c113427e5223241bf7e74555a0f 100644
+--- a/chrome/browser/ui/views/frame/browser_frame_mac.mm
++++ b/chrome/browser/ui/views/frame/browser_frame_mac.mm
+@@ -3,6 +3,8 @@
+ // found in the LICENSE file.
+ 
+ #import "chrome/browser/ui/views/frame/browser_frame_mac.h"
++#include "brave/browser/ui/brave_browser.h"
++#include "brave/app/brave_command_ids.h"
+ 
+ #import "base/apple/foundation_util.h"
+ #include "base/memory/raw_ptr.h"
+@@ -299,6 +301,11 @@ void BrowserFrameMac::ValidateUserInterfaceItem(
+           !model->WillContextMenuGroup(model->active_index());
+       break;
+     }
++    case IDC_SET_AS_MAIN_WINDOW: {
++      result->new_toggle_state =
++          static_cast<BraveBrowser*>(browser)->is_main_window();
++      break;
++    }
+   }
+ }
+ 

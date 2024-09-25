@@ -105,6 +105,7 @@ const std::map<int, const gfx::VectorIcon&>& GetCommandIcons() {
           {IDC_ADD_NEW_PROFILE, kLeoUserAddIcon},
           {IDC_OPEN_GUEST_PROFILE, kLeoUserCircleIcon},
           {IDC_NAME_WINDOW, kLeoEditBoxIcon},
+          {IDC_SET_AS_MAIN_WINDOW, kLeoWindowTabNewIcon},
           {IDC_COMMANDER, kLeoArrowSmallRightIcon},
           {IDC_PERFORMANCE, kLeoNetworkSpeedFastIcon},
           {IDC_DEV_TOOLS, kLeoCodeIcon},

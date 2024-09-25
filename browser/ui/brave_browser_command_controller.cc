@@ -17,6 +17,7 @@
 #include "base/types/to_address.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -141,6 +142,8 @@ void BraveBrowserCommandController::OnTabStripModelChanged(
       browser_->is_type_normal() && selection.active_tab_changed()) {
     UpdateCommandForSplitView();
   }
+
+  UpdateCommandEnabled(IDC_SET_AS_MAIN_WINDOW, true);
 }
 
 void BraveBrowserCommandController::OnTabGroupChanged(
@@ -705,6 +708,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_SWAP_SPLIT_VIEW:
       brave::SwapTabsInTile(&*browser_);
+      break;
+    case IDC_SET_AS_MAIN_WINDOW:
+      brave::SetAsMainBrowser(&*browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/ui/cocoa/main_menu_builder.mm b/chrome/browser/ui/cocoa/main_menu_builder.mm
+index f84911c1074772f39814698b4a79e6c4c6bbd0f2..f1d863617a4a5560bcecf6abeed6d513d061b2aa 100644
+--- a/chrome/browser/ui/cocoa/main_menu_builder.mm
++++ b/chrome/browser/ui/cocoa/main_menu_builder.mm
+@@ -3,6 +3,8 @@
+ // found in the LICENSE file.
+ 
+ #import "chrome/browser/ui/cocoa/main_menu_builder.h"
++#include "brave/app/brave_command_ids.h"
++#include "brave/grit/brave_generated_resources.h"
+ 
+ #include "base/feature_list.h"
+ #include "base/mac/mac_util.h"
+@@ -452,6 +454,9 @@ NSMenuItem* BuildWindowMenu(NSApplication* nsapp,
+               Item(IDS_NAME_WINDOW)
+                   .command_id(IDC_NAME_WINDOW)
+                   .remove_if(is_pwa),
++              Item(IDS_SET_AS_MAIN_WINDOW)
++                  .command_id(IDC_SET_AS_MAIN_WINDOW)
++                  .remove_if(is_pwa),
+               Item().is_separator()
+                   .remove_if(is_pwa),
+               Item(IDS_SHOW_DOWNLOADS_MAC)

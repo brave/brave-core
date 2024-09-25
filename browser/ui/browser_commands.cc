@@ -42,6 +42,7 @@
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -1080,6 +1081,17 @@ void SwapTabsInTile(Browser* browser) {
   model->MoveWebContentsAt(model->GetIndexOfTab(tile.second),
                            model->GetIndexOfTab(tile.first),
                            /*select_after_move*/ false);
+}
+
+void SetAsMainBrowser(Browser* browser) {
+  auto* brave_browser = static_cast<BraveBrowser*>(browser);
+  brave_browser->set_is_main_window(!brave_browser->is_main_window());
+  for (Browser* enumerated_browser : *BrowserList::GetInstance()) {
+    if (enumerated_browser == browser) {
+      continue;
+    }
+    static_cast<BraveBrowser*>(enumerated_browser)->set_is_main_window(false);
+  }
 }
 
 }  // namespace brave
