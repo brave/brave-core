@@ -44,7 +44,8 @@
   --leo-icon-size: 20px;
   color: var(--leo-color-icon-interactive);
   position: absolute;
-  top: 0;
+  top: 50%;
+  transform: translateY(-50%);
   right: 0;
   padding: 4px;
 }
