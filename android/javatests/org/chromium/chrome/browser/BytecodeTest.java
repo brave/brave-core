@@ -341,8 +341,6 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/identity_disc/IdentityDiscController"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs"));
         Assert.assertTrue(
-                classExists("org/chromium/components/language/LocaleManagerDelegateImpl"));
-        Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/multiwindow/MultiWindowUtils"));
         Assert.assertTrue(
@@ -1265,7 +1263,8 @@ public class BytecodeTest {
                         HomeSurfaceTracker.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        OneshotSupplier.class));
+                        OneshotSupplier.class,
+                        ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
@@ -1473,7 +1472,7 @@ public class BytecodeTest {
                         ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/AppHooksImpl",
+                        "org/chromium/chrome/browser/AppHooks",
                         "org/chromium/chrome/browser/BraveAppHooks"));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1770,7 +1769,8 @@ public class BytecodeTest {
                         OnClickListener.class,
                         OneshotSupplier.class,
                         DoubleConsumer.class,
-                        UserEducationHelper.class));
+                        UserEducationHelper.class,
+                        ObservableSupplier.class));
     }
 
     @Test
