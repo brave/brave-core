@@ -18,21 +18,41 @@ import Main from '../main'
 import SidebarNav from '../sidebar_nav'
 import styles from './style.module.scss'
 import { Url as MojomUrl } from 'gen/url/mojom/url.mojom.m'
+import Flex from '$web-common/Flex'
 
 const TabEntryListItem = styled.li`
   display: flex;
+  flex-direction: row;
   align-items: center;
   width: 100%;
-
-  img {
-    padding: ${nala.spacing.l};
-    border: 1px solid ${nala.color.container.background};
-    border-radius: ${nala.radius.s};
-  }
+  gap: ${nala.spacing.m};
 
   & span {
+    flex: 1;
+  }
+
+  & leo-button {
     flex: 0;
   }
+`
+
+const FavIconImage = styled.div<{ url: string }>`
+  display: inline-block;
+
+  background-image: url("${p => p.url}");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-origin: content-box;
+
+  padding: 2px;
+
+  border-radius: ${nala.radius.s};
+  border: 1px solid ${nala.color.divider.subtle};
+
+  width: 24px;
+  height: 24px;
+
+  flex-shrink: 0;
 `
 
 function TabImage(props: { url: MojomUrl }) {
@@ -43,20 +63,20 @@ function TabImage(props: { url: MojomUrl }) {
       return
     }
     aiChatContext.uiHandler.getFaviconImageDataForContent(props.url)
-    .then(({ faviconImageData }) => {
-      if (!faviconImageData) {
-        return
-      }
-      const blob = new Blob([new Uint8Array(faviconImageData)], { type: 'image/*' })
-      setImgUrl(URL.createObjectURL(blob))
-    })
+      .then(({ faviconImageData }) => {
+        if (!faviconImageData) {
+          return
+        }
+        const blob = new Blob([new Uint8Array(faviconImageData)], { type: 'image/*' })
+        setImgUrl(URL.createObjectURL(blob))
+      })
   }, [props.url.url])
 
   if (!imgUrl) {
     return null
   }
 
-  return <img src={imgUrl} />
+  return <FavIconImage url={imgUrl} />
 }
 
 function TabEntry({ site }: {
@@ -86,7 +106,9 @@ function SitePicker() {
   return <Dropdown value='' placeholder='Add a tab to the project' onChange={e => conversation.conversationHandler?.addTabToMultiTabContent({ url: e.value ?? '' })}>
     <span slot="value">Add a tab to the conversation</span>
     {availableSites.map((a, i) => <leo-option key={i} value={a.url.url}>
-      <div><TabImage url={a.url} /> <span>{a.title}</span></div>
+      <Flex align='center' gap={8}>
+        <TabImage url={a.url} /> <span>{a.title}</span>
+      </Flex>
     </leo-option>)}
   </Dropdown>
 }
@@ -184,7 +206,7 @@ export default function FullScreen() {
         <Main />
       </div>
       {!!chat.associatedContentInfo?.detail?.multipleWebSiteInfo && <div className={styles.right}>
-        <div className={styles.headerSpacer}/>
+        <div className={styles.headerSpacer} />
         <h3>Tabs used in this conversation</h3>
         <SitePicker />
         <ul>
