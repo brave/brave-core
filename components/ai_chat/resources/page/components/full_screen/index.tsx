@@ -29,6 +29,8 @@ const TabEntryListItem = styled.li`
 
   & span {
     flex: 1;
+    max-height: 1.2rem;
+    overflow: clip;
   }
 
   & leo-button {
