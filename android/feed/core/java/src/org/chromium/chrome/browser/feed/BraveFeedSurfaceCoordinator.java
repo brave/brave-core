@@ -23,6 +23,7 @@ import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImp
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.toolbar.top.Toolbar;
+import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.ui.UiUtils;
@@ -58,7 +59,8 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             boolean overScrollDisabled,
             @Nullable ViewGroup viewportView,
             FeedActionDelegate actionDelegate,
-            @NonNull ObservableSupplier<Integer> tabStripHeightSupplier) {
+            @NonNull ObservableSupplier<Integer> tabStripHeightSupplier,
+            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier) {
         super(
                 activity,
                 snackbarManager,
@@ -81,7 +83,8 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
                 overScrollDisabled,
                 viewportView,
                 actionDelegate,
-                tabStripHeightSupplier);
+                tabStripHeightSupplier,
+                edgeToEdgeControllerSupplier);
     }
 
     public void createFrameLayoutForPolicy() {
