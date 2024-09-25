@@ -131,7 +131,7 @@
     Unleash Leo's full powers with Premium:
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_1_DESC" desc="A premium feature that allows access to various models">
-    Priority access to powerful models with different skills
+    Priority access to powerful models with different skills.
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_2_DESC" desc="A premium feature to various AI models">
     Access models better suited for creative tasks and content generation.
