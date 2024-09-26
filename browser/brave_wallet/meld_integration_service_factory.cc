@@ -73,7 +73,7 @@ MeldIntegrationServiceFactory::BuildServiceInstanceForBrowserContext(
 
 content::BrowserContext* MeldIntegrationServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
+  return GetBrowserContextRedirectedInIncognito(context);
 }
 
 }  // namespace brave_wallet
