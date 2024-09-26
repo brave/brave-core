@@ -211,10 +211,6 @@ package = "serde"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/static_assertions-1.1.0"
 package = "static_assertions"
 
-[patch.crates-io.syn_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/syn-1.0.109"
-package = "syn"
-
 [patch.crates-io.syn_v2]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/syn-2.0.79"
 package = "syn"
