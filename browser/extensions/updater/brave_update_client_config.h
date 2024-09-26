@@ -41,7 +41,6 @@ class BraveUpdateClientConfig : public ChromeUpdateClientConfig {
   std::string GetChannel() const override;
   scoped_refptr<update_client::NetworkFetcherFactory> GetNetworkFetcherFactory()
       override;
-  bool EnabledCupSigning() const override;
 
  protected:
   friend class base::RefCountedThreadSafe<BraveUpdateClientConfig>;
