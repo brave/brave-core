@@ -73,7 +73,7 @@ SwapServiceFactory::BuildServiceInstanceForBrowserContext(
 
 content::BrowserContext* SwapServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
+  return GetBrowserContextRedirectedInIncognito(context);
 }
 
 }  // namespace brave_wallet

@@ -74,7 +74,7 @@ AssetRatioServiceFactory::BuildServiceInstanceForBrowserContext(
 
 content::BrowserContext* AssetRatioServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
+  return GetBrowserContextRedirectedInIncognito(context);
 }
 
 }  // namespace brave_wallet

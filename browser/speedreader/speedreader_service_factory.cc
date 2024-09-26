@@ -39,7 +39,7 @@ SpeedreaderServiceFactory::~SpeedreaderServiceFactory() = default;
 
 content::BrowserContext* SpeedreaderServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  return chrome::GetBrowserContextOwnInstanceInIncognito(context);
+  return GetBrowserContextOwnInstanceInIncognito(context);
 }
 
 std::unique_ptr<KeyedService>

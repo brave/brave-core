@@ -80,7 +80,7 @@ SearchEngineProviderServiceFactory::BuildServiceInstanceForBrowserContext(
 content::BrowserContext*
 SearchEngineProviderServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  return chrome::GetBrowserContextOwnInstanceInIncognito(context);
+  return GetBrowserContextOwnInstanceInIncognito(context);
 }
 
 bool SearchEngineProviderServiceFactory::ServiceIsNULLWhileTesting() const {

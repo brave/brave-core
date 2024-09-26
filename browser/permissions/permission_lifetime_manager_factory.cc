@@ -79,7 +79,7 @@ bool PermissionLifetimeManagerFactory::ServiceIsCreatedWithBrowserContext()
 content::BrowserContext*
 PermissionLifetimeManagerFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  return chrome::GetBrowserContextOwnInstanceInIncognito(context);
+  return GetBrowserContextOwnInstanceInIncognito(context);
 }
 
 void PermissionLifetimeManagerFactory::RegisterProfilePrefs(

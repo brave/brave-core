@@ -65,7 +65,7 @@ FilterListServiceFactory::BuildServiceInstanceForBrowserContext(
 
 content::BrowserContext* FilterListServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
+  return GetBrowserContextRedirectedInIncognito(context);
 }
 
 }  // namespace brave_shields

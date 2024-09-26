@@ -66,7 +66,7 @@ bool URLSanitizerServiceFactory::ServiceIsNULLWhileTesting() const {
 
 content::BrowserContext* URLSanitizerServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
+  return GetBrowserContextRedirectedInIncognito(context);
 }
 
 }  // namespace brave
