@@ -176,7 +176,7 @@ bool BraveConfigurator::EnabledBackgroundDownloader() const {
 }
 
 bool BraveConfigurator::EnabledCupSigning() const {
-  return false;
+  return configurator_impl_.EnabledCupSigning();
 }
 
 PrefService* BraveConfigurator::GetPrefService() const {
