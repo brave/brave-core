@@ -11,13 +11,28 @@ namespace blink {
 
 namespace {
 
+// These template specialisations are required because not all `T`s passed to
+// `IsOnion` have a `Host` method that returns a `String`. Recently,
+// `KURL.Host()` has been converted to return a `StringView`, which doesn't
+// offer an `EndsWith` method.
+template <typename T>
+String GetHost(const T& obj) {
+  return obj.Host();
+}
+
+template <>
+String GetHost(const KURL& obj) {
+  return obj.Host().ToString();
+}
+
 template <typename T>
 bool IsOnion(const T& obj) {
   constexpr const char kOnion[] = ".onion";
-  return obj.Host().EndsWith(kOnion) && (obj.Protocol() == url::kHttpsScheme ||
-                                         obj.Protocol() == url::kHttpScheme ||
-                                         obj.Protocol() == url::kWsScheme ||
-                                         obj.Protocol() == url::kWssScheme);
+  return GetHost(obj).EndsWith(kOnion) &&
+         (obj.Protocol() == url::kHttpsScheme ||
+          obj.Protocol() == url::kHttpScheme ||
+          obj.Protocol() == url::kWsScheme ||
+          obj.Protocol() == url::kWssScheme);
 }
 
 }  // namespace
