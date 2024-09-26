@@ -13,7 +13,7 @@
 namespace {
 
 bool IsGoogleMaps(const blink::KURL& url) {
-  const auto host = url.Host();
+  const auto host = url.Host().ToString();
   if (!host.StartsWith("google.") && !host.Contains(".google.")) {
     return false;
   }
