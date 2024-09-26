@@ -103,7 +103,7 @@ SidebarServiceFactory::BuildServiceInstanceForBrowserContext(
 content::BrowserContext* SidebarServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   // sidebar items list is not shared between normal and private windows.
-  return chrome::GetBrowserContextOwnInstanceInIncognito(context);
+  return GetBrowserContextOwnInstanceInIncognito(context);
 }
 
 void SidebarServiceFactory::RegisterProfilePrefs(
