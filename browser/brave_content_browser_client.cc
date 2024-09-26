@@ -868,12 +868,13 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     bool has_user_gesture,
     const std::optional<url::Origin>& initiating_origin,
     content::RenderFrameHost* initiator_document,
+    const net::IsolationInfo& isolation_info,
     mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory) {
   return ChromeContentBrowserClient::HandleExternalProtocol(
       url, web_contents_getter, frame_tree_node_id, navigation_data,
       is_primary_main_frame, is_in_fenced_frame_tree, sandbox_flags,
       page_transition, has_user_gesture, initiating_origin, initiator_document,
-      out_factory);
+      isolation_info, out_factory);
 }
 
 void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
