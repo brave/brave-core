@@ -13,6 +13,6 @@
 #undef IsProfilerEnabledForCurrentProcessAndThread
 
 bool ThreadProfilerConfiguration::IsProfilerEnabledForCurrentProcessAndThread(
-    base::ProfilerThreadType thread) const {
+    sampling_profiler::ProfilerThreadType thread) const {
   return false;
 }
