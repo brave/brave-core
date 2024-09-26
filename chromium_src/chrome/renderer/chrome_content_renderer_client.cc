@@ -29,7 +29,7 @@ void RenderFrameWithBinderRegistryCreated(
     service_manager::BinderRegistry* registry) {
   new feed::RssLinkReader(render_frame, registry);
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (ai_chat::features::IsAIChatEnabled() && !chrome::IsIncognitoProcess()) {
+  if (ai_chat::features::IsAIChatEnabled() && !IsIncognitoProcess()) {
     new ai_chat::PageContentExtractor(render_frame, registry,
                                       content::ISOLATED_WORLD_ID_GLOBAL,
                                       ISOLATED_WORLD_ID_BRAVE_INTERNAL);

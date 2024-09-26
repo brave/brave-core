@@ -160,7 +160,7 @@ void BraveContentRendererClient::RenderFrameCreated(
   }
 
   if (base::FeatureList::IsEnabled(skus::features::kSkusFeature) &&
-      !chrome::IsIncognitoProcess()) {
+      !IsIncognitoProcess()) {
     new skus::SkusRenderFrameObserver(render_frame);
   }
 
@@ -184,7 +184,7 @@ void BraveContentRendererClient::RenderFrameCreated(
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
-      !chrome::IsIncognitoProcess()) {
+      !IsIncognitoProcess()) {
     new playlist::PlaylistRenderFrameObserver(
         render_frame, base::BindRepeating([] {
           return BraveRenderThreadObserver::GetDynamicParams().playlist_enabled;
