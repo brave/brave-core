@@ -227,42 +227,45 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContentPDF) {
 }
 
 IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, GetSearchSummarizerKey) {
-  auto remove_first_summarizer_key = [&]() {
-    content::ExecuteScriptAsync(
-        GetActiveWebContents()->GetPrimaryMainFrame(),
-        "document.getElementsByName('summarizer-key')[0].remove()");
+  // ID and expected result for cases in summarizer_key_meta.html.
+  std::vector<std::pair<std::string, std::string>> test_cases = {
+      std::make_pair("1", R"({"query":"test","results_hash":"hash"})"),
+      std::make_pair("2", R"({"query":"test2","results_hash":"hash"})"),
+      std::make_pair("3", R"({"query":"test3","results_hash":"hash"})"),
+      std::make_pair("other_attr", R"({"test"})"),
+      std::make_pair("plain_string", "plainstring123"),
+      std::make_pair("empty_content", ""),
+      std::make_pair("empty_content_with_other_attr", ""),
+      std::make_pair("no_content", ""),
   };
 
-  NavigateURL(https_server_.GetURL("a.com", "/summarizer_key_meta.html"));
-  GetSearchSummarizerKey(FROM_HERE,
-                         R"({"query":"test","results_hash":"hash"})");
+  std::string remove_script = R"(
+    var elements = document.getElementsByName('summarizer-key')
+    Array.from(elements).forEach((element) => {
+      if (element.getAttribute('id') !== '$1') {
+        element.remove();
+      }
+    })
+  )";
 
-  // Test meta in two other formats.
-  remove_first_summarizer_key();
-  GetSearchSummarizerKey(FROM_HERE,
-                         R"({"query":"test2","results_hash":"hash"})");
+  std::string check_script = R"(
+    document.getElementsByName('summarizer-key').length === 1 &&
+    document.getElementsByName('summarizer-key')[0].getAttribute('id') === '$1'
+  )";
 
-  remove_first_summarizer_key();
-  GetSearchSummarizerKey(FROM_HERE,
-                         R"({"query":"test3","results_hash":"hash"})");
+  for (const auto& [id, expected_result] : test_cases) {
+    SCOPED_TRACE(testing::Message() << "ID: " << id);
+    NavigateURL(https_server_.GetURL("a.com", "/summarizer_key_meta.html"));
 
-  // Test meta with other attribute.
-  remove_first_summarizer_key();
-  GetSearchSummarizerKey(FROM_HERE, R"({"test"})");
+    ASSERT_TRUE(content::ExecJs(
+        GetActiveWebContents()->GetPrimaryMainFrame(),
+        base::ReplaceStringPlaceholders(remove_script, {id}, nullptr)));
 
-  // Test meta with empty key.
-  remove_first_summarizer_key();
-  GetSearchSummarizerKey(FROM_HERE, "");
+    EXPECT_TRUE(content::EvalJs(GetActiveWebContents()->GetPrimaryMainFrame(),
+                                base::ReplaceStringPlaceholders(check_script,
+                                                                {id}, nullptr))
+                    .ExtractBool());
 
-  // Test meta with empty key and other atribute.
-  remove_first_summarizer_key();
-  GetSearchSummarizerKey(FROM_HERE, "");
-
-  // Test meta with plain string key.
-  remove_first_summarizer_key();
-  GetSearchSummarizerKey(FROM_HERE, "plainstring123");
-
-  // Test no summarizer-key meta.
-  remove_first_summarizer_key();
-  GetSearchSummarizerKey(FROM_HERE, std::nullopt);
+    GetSearchSummarizerKey(FROM_HERE, expected_result);
+  }
 }
