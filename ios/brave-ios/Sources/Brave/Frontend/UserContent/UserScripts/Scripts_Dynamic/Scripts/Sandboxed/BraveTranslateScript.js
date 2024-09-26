@@ -19,2793 +19,6 @@ Object.defineProperty(window.__firefox__, "$<brave_translate_script>", {
 });
 
 
-//gCrWeb
-
-if (typeof _injected_gcrweb === 'undefined') {
-    var _injected_gcrweb = true;
-    var gcrweb = function(r) {
-        if (!window.__gCrWeb) {
-            window.__gCrWeb = {}
-        }
-        const n = window.__gCrWeb;
-        r.gCrWeb = n;
-        return r
-    }({});
-}
-
-//utils.js?
-if (typeof _injected_common === 'undefined') {
-    var _injected_common = true;
-    (function() {
-        __gCrWeb.common = {};
-        __gCrWeb["common"] = __gCrWeb.common;
-        __gCrWeb.common.JSONSafeObject = function e() {};
-        __gCrWeb.common.JSONSafeObject.prototype["toJSON"] = null;
-        __gCrWeb.common.JSONStringify = JSON.stringify;
-        __gCrWeb.stringify = function(e) {
-            if (e === null)
-                return "null";
-            if (e === undefined)
-                return "undefined";
-            if (typeof e.toJSON == "function") {
-                var n = e.toJSON;
-                e.toJSON = undefined;
-                var t = __gCrWeb.common.JSONStringify(e);
-                e.toJSON = n;
-                return t
-            }
-            return __gCrWeb.common.JSONStringify(e)
-        };
-        __gCrWeb.common.isTextField = function(e) {
-            if (!e) {
-                return false
-            }
-            if (e.type === "hidden") {
-                return false
-            }
-            return e.type === "text" || e.type === "email" || e.type === "password" || e.type === "search" || e.type === "tel" || e.type === "url" || e.type === "number"
-        };
-        __gCrWeb.common.trim = function(e) {
-            return e.replace(/^\s+|\s+$/g, "")
-        };
-        __gCrWeb.common.removeQueryAndReferenceFromURL = function(e) {
-            var n = new URL(e);
-            const t = e => typeof e !== "string";
-            if (t(n.origin) || t(n.protocol) || t(n.pathname)) {
-                return ""
-            }
-            return (n.origin !== "null" ? n.origin : n.protocol) + n.pathname
-        };
-        __gCrWeb.common.sendWebKitMessage = function(e, n) {
-            try {
-                var t = window.webkit;
-                delete window["webkit"];
-                window.webkit.messageHandlers[e].postMessage(n);
-                window.webkit = t
-            } catch (e) {}
-        }
-    })();
-}
-
-
-//Frame?
-if (typeof _injected_message === 'undefined') {
-    var _injected_message = true;
-    (function() {
-        if (!window.__gCrWeb) {
-            window.__gCrWeb = {}
-        }
-        const e = window.__gCrWeb;
-        function n(e, n) {
-            try {
-                var t = window.webkit;
-                delete window["webkit"];
-                window.webkit.messageHandlers[e].postMessage(n);
-                window.webkit = t
-            } catch (e) {}
-        }
-        function t() {
-            if (!e.hasOwnProperty("frameId")) {
-                e.frameId = r()
-            }
-            return e.frameId
-        }
-        function r() {
-            const e = new Uint32Array(4);
-            window.crypto.getRandomValues(e);
-            let n = "";
-            for (const t of e) {
-                n += t.toString(16).padStart(8, "0")
-            }
-            return n
-        }
-        function o() {
-            n("FrameBecameAvailable", {
-                crwFrameId: t()
-            })
-        }
-        function i() {
-            o();
-            const e = window.frames.length;
-            for (let n = 0; n < e; n++) {
-                const e = window.frames[n];
-                if (!e) {
-                    continue
-                }
-                e.postMessage({
-                    type: "org.chromium.registerForFrameMessaging"
-                }, "*")
-            }
-        }
-        e.message = {
-            getFrameId: t,
-            getExistingFrames: i
-        }
-    })();
-}
-
-// Navigation
-if (typeof _injected_navigation === 'undefined') {
-    var _injected_navigation = true;
-    (function() {
-        if (!window.__gCrWeb) {
-            window.__gCrWeb = {}
-        }
-        const e = window.__gCrWeb;
-        function t(e, t) {
-            try {
-                var s = window.webkit;
-                delete window["webkit"];
-                window.webkit.messageHandlers[e].postMessage(t);
-                window.webkit = s
-            } catch (e) {}
-        }
-        class s {
-            name = "DataCloneError";
-            code = 25;
-            message = "Cyclic structures are not supported."
-        }
-        class a {
-            queuedMessages = [];
-            sendQueuedMessages()
-            {
-                while (this.queuedMessages.length > 0) {
-                    try {
-                        t("NavigationEventMessage", this.queuedMessages[0]);
-                        this.queuedMessages.shift()
-                    } catch (e) {
-                        break
-                    }
-                }
-            }
-            queueNavigationEventMessage(e)
-            {
-                this.queuedMessages.push(e);
-                this.sendQueuedMessages()
-            }
-        }
-        const i = new a;
-        const n = JSON.stringify;
-        const o = window.history.pushState;
-        const d = window.history.replaceState;
-        History.prototype.pushState = function(t, a, d) {
-            i.queueNavigationEventMessage({
-                command: "willChangeState",
-                frame_id: e.message.getFrameId()
-            });
-            let r = "";
-            try {
-                if (typeof t != "undefined") {
-                    r = n(t)
-                }
-            } catch (e) {
-                throw new s
-            }
-            d = d || window.location.href;
-            o.call(history, t, a, d);
-            i.queueNavigationEventMessage({
-                command: "didPushState",
-                stateObject: r,
-                baseUrl: document.baseURI,
-                pageUrl: d.toString(),
-                frame_id: e.message.getFrameId()
-            })
-        };
-        History.prototype.replaceState = function(t, a, o) {
-            i.queueNavigationEventMessage({
-                command: "willChangeState",
-                frame_id: e.message.getFrameId()
-            });
-            let r = "";
-            try {
-                if (typeof t != "undefined") {
-                    r = n(t)
-                }
-            } catch (e) {
-                throw new s
-            }
-            o = o || window.location.href;
-            d.call(history, t, a, o);
-            i.queueNavigationEventMessage({
-                command: "didReplaceState",
-                stateObject: r,
-                baseUrl: document.baseURI,
-                pageUrl: o.toString(),
-                frame_id: e.message.getFrameId()
-            })
-        }
-    })();
-}
-
-// Navigation Hash
-(function() {
-    if (!window.__gCrWeb) {
-        window.__gCrWeb = {}
-    }
-    const e = window.__gCrWeb;
-    function n(e, n) {
-        try {
-            var w = window.webkit;
-            delete window["webkit"];
-            window.webkit.messageHandlers[e].postMessage(n);
-            window.webkit = w
-        } catch (e) {}
-    }
-    window.addEventListener("hashchange", (() => {
-        n("NavigationEventMessage", {
-            command: "hashchange",
-            frame_id: e.message.getFrameId()
-        })
-    }))
-})();
-
-// Text Fragments
-if (typeof _injected_text_fragments === 'undefined') {
-    var _injected_text_fragments = true;
-    (function() {
-        const e = ["ADDRESS", "ARTICLE", "ASIDE", "BLOCKQUOTE", "BR", "DETAILS", "DIALOG", "DD", "DIV", "DL", "DT", "FIELDSET", "FIGCAPTION", "FIGURE", "FOOTER", "FORM", "H1", "H2", "H3", "H4", "H5", "H6", "HEADER", "HGROUP", "HR", "LI", "MAIN", "NAV", "OL", "P", "PRE", "SECTION", "TABLE", "UL", "TR", "TH", "TD", "COLGROUP", "COL", "CAPTION", "THEAD", "TBODY", "TFOOT"];
-        const t = /[\t-\r -#%-\*,-\/:;\?@\[-\]_\{\}\x85\xA0\xA1\xA7\xAB\xB6\xB7\xBB\xBF\u037E\u0387\u055A-\u055F\u0589\u058A\u05BE\u05C0\u05C3\u05C6\u05F3\u05F4\u0609\u060A\u060C\u060D\u061B\u061E\u061F\u066A-\u066D\u06D4\u0700-\u070D\u07F7-\u07F9\u0830-\u083E\u085E\u0964\u0965\u0970\u0AF0\u0DF4\u0E4F\u0E5A\u0E5B\u0F04-\u0F12\u0F14\u0F3A-\u0F3D\u0F85\u0FD0-\u0FD4\u0FD9\u0FDA\u104A-\u104F\u10FB\u1360-\u1368\u1400\u166D\u166E\u1680\u169B\u169C\u16EB-\u16ED\u1735\u1736\u17D4-\u17D6\u17D8-\u17DA\u1800-\u180A\u1944\u1945\u1A1E\u1A1F\u1AA0-\u1AA6\u1AA8-\u1AAD\u1B5A-\u1B60\u1BFC-\u1BFF\u1C3B-\u1C3F\u1C7E\u1C7F\u1CC0-\u1CC7\u1CD3\u2000-\u200A\u2010-\u2029\u202F-\u2043\u2045-\u2051\u2053-\u205F\u207D\u207E\u208D\u208E\u2308-\u230B\u2329\u232A\u2768-\u2775\u27C5\u27C6\u27E6-\u27EF\u2983-\u2998\u29D8-\u29DB\u29FC\u29FD\u2CF9-\u2CFC\u2CFE\u2CFF\u2D70\u2E00-\u2E2E\u2E30-\u2E44\u3000-\u3003\u3008-\u3011\u3014-\u301F\u3030\u303D\u30A0\u30FB\uA4FE\uA4FF\uA60D-\uA60F\uA673\uA67E\uA6F2-\uA6F7\uA874-\uA877\uA8CE\uA8CF\uA8F8-\uA8FA\uA8FC\uA92E\uA92F\uA95F\uA9C1-\uA9CD\uA9DE\uA9DF\uAA5C-\uAA5F\uAADE\uAADF\uAAF0\uAAF1\uABEB\uFD3E\uFD3F\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE61\uFE63\uFE68\uFE6A\uFE6B\uFF01-\uFF03\uFF05-\uFF0A\uFF0C-\uFF0F\uFF1A\uFF1B\uFF1F\uFF20\uFF3B-\uFF3D\uFF3F\uFF5B\uFF5D\uFF5F-\uFF65]|\uD800[\uDD00-\uDD02\uDF9F\uDFD0]|\uD801\uDD6F|\uD802[\uDC57\uDD1F\uDD3F\uDE50-\uDE58\uDE7F\uDEF0-\uDEF6\uDF39-\uDF3F\uDF99-\uDF9C]|\uD804[\uDC47-\uDC4D\uDCBB\uDCBC\uDCBE-\uDCC1\uDD40-\uDD43\uDD74\uDD75\uDDC5-\uDDC9\uDDCD\uDDDB\uDDDD-\uDDDF\uDE38-\uDE3D\uDEA9]|\uD805[\uDC4B-\uDC4F\uDC5B\uDC5D\uDCC6\uDDC1-\uDDD7\uDE41-\uDE43\uDE60-\uDE6C\uDF3C-\uDF3E]|\uD807[\uDC41-\uDC45\uDC70\uDC71]|\uD809[\uDC70-\uDC74]|\uD81A[\uDE6E\uDE6F\uDEF5\uDF37-\uDF3B\uDF44]|\uD82F\uDC9F|\uD836[\uDE87-\uDE8B]|\uD83A[\uDD5E\uDD5F]/u;
-        const n = "text-fragments-polyfill-target-text";
-        const u = (e, t=document) => {
-            const n = [];
-            const u = t.createRange();
-            u.selectNodeContents(t.body);
-            while (!u.collapsed && n.length < 2) {
-                let r;
-                if (e.prefix) {
-                    const n = g(e.prefix, u);
-                    if (n == null) {
-                        break
-                    }
-                    i(u, n.startContainer, n.startOffset);
-                    const o = t.createRange();
-                    o.setStart(n.endContainer, n.endOffset);
-                    o.setEnd(u.endContainer, u.endOffset);
-                    a(o);
-                    if (o.collapsed) {
-                        break
-                    }
-                    r = g(e.textStart, o);
-                    if (r == null) {
-                        break
-                    }
-                    if (r.compareBoundaryPoints(Range.START_TO_START, o) !== 0) {
-                        continue
-                    }
-                } else {
-                    r = g(e.textStart, u);
-                    if (r == null) {
-                        break
-                    }
-                    i(u, r.startContainer, r.startOffset)
-                }
-                if (e.textEnd) {
-                    const a = t.createRange();
-                    a.setStart(r.endContainer, r.endOffset);
-                    a.setEnd(u.endContainer, u.endOffset);
-                    let c = false;
-                    while (!a.collapsed && n.length < 2) {
-                        const l = g(e.textEnd, a);
-                        if (l == null) {
-                            break
-                        }
-                        i(a, l.startContainer, l.startOffset);
-                        r.setEnd(l.endContainer, l.endOffset);
-                        if (e.suffix) {
-                            const i = s(e.suffix, r, u, t);
-                            if (i === o.NO_SUFFIX_MATCH) {
-                                break
-                            } else if (i === o.SUFFIX_MATCH) {
-                                c = true;
-                                n.push(r.cloneRange());
-                                continue
-                            } else if (i === o.MISPLACED_SUFFIX) {
-                                continue
-                            }
-                        } else {
-                            c = true;
-                            n.push(r.cloneRange())
-                        }
-                    }
-                    if (!c) {
-                        break
-                    }
-                } else if (e.suffix) {
-                    const a = s(e.suffix, r, u, t);
-                    if (a === o.NO_SUFFIX_MATCH) {
-                        break
-                    } else if (a === o.SUFFIX_MATCH) {
-                        n.push(r.cloneRange());
-                        i(u, u.startContainer, u.startOffset);
-                        continue
-                    } else if (a === o.MISPLACED_SUFFIX) {
-                        continue
-                    }
-                } else {
-                    n.push(r.cloneRange())
-                }
-            }
-            return n
-        };
-        const r = (e, t=document) => {
-            for (const n of e) {
-                const e = t.createRange();
-                e.selectNodeContents(n);
-                const u = e.extractContents();
-                const r = n.parentNode;
-                r.insertBefore(u, n);
-                r.removeChild(n)
-            }
-        };
-        const o = {
-            NO_SUFFIX_MATCH: 0,
-            SUFFIX_MATCH: 1,
-            MISPLACED_SUFFIX: 2
-        };
-        const s = (e, t, n, u) => {
-            const r = u.createRange();
-            r.setStart(t.endContainer, t.endOffset);
-            r.setEnd(n.endContainer, n.endOffset);
-            a(r);
-            const s = g(e, r);
-            if (s == null) {
-                return o.NO_SUFFIX_MATCH
-            }
-            if (s.compareBoundaryPoints(Range.START_TO_START, r) !== 0) {
-                return o.MISPLACED_SUFFIX
-            }
-            return o.SUFFIX_MATCH
-        };
-        const i = (e, t, n) => {
-            try {
-                e.setStart(t, n + 1)
-            } catch (n) {
-                e.setStartAfter(t)
-            }
-        };
-        const a = e => {
-            const t = c(e);
-            let n = t.nextNode();
-            while (!e.collapsed && n != null) {
-                if (n !== e.startContainer) {
-                    e.setStart(n, 0)
-                }
-                if (n.textContent.length > e.startOffset) {
-                    const t = n.textContent[e.startOffset];
-                    if (!t.match(/\s/)) {
-                        return
-                    }
-                }
-                try {
-                    e.setStart(n, e.startOffset + 1)
-                } catch (u) {
-                    n = t.nextNode();
-                    if (n == null) {
-                        e.collapse()
-                    } else {
-                        e.setStart(n, 0)
-                    }
-                }
-            }
-        };
-        const c = e => {
-            const t = document.createTreeWalker(e.commonAncestorContainer, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, (t => D(t, e)));
-            return t
-        };
-        const l = (t, u=document) => {
-            if (t.startContainer.nodeType != Node.TEXT_NODE || t.endContainer.nodeType != Node.TEXT_NODE)
-                return [];
-            if (t.startContainer === t.endContainer) {
-                const e = u.createElement("mark");
-                e.setAttribute("class", n);
-                t.surroundContents(e);
-                return [e]
-            }
-            const r = t.startContainer;
-            const o = t.cloneRange();
-            o.setEndAfter(r);
-            const s = t.endContainer;
-            const i = t.cloneRange();
-            i.setStartBefore(s);
-            const a = [];
-            t.setStartAfter(r);
-            t.setEndBefore(s);
-            const c = u.createTreeWalker(t.commonAncestorContainer, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
-                acceptNode: function(n) {
-                    if (!t.intersectsNode(n))
-                        return NodeFilter.FILTER_REJECT;
-                    if (e.includes(n.tagName) || n.nodeType === Node.TEXT_NODE)
-                        return NodeFilter.FILTER_ACCEPT;
-                    return NodeFilter.FILTER_SKIP
-                }
-            });
-            let l = c.nextNode();
-            while (l) {
-                if (l.nodeType === Node.TEXT_NODE) {
-                    const e = u.createElement("mark");
-                    e.setAttribute("class", n);
-                    l.parentNode.insertBefore(e, l);
-                    e.appendChild(l);
-                    a.push(e)
-                }
-                l = c.nextNode()
-            }
-            const F = u.createElement("mark");
-            F.setAttribute("class", n);
-            o.surroundContents(F);
-            const d = u.createElement("mark");
-            d.setAttribute("class", n);
-            i.surroundContents(d);
-            return [F, ...a, d]
-        };
-        const F = e => {
-            const t = {
-                behavior: "auto",
-                block: "center",
-                inline: "nearest"
-            };
-            e.scrollIntoView(t)
-        };
-        const d = e => {
-            let t = e;
-            while (t != null && !(t instanceof HTMLElement))
-                t = t.parentNode;
-            if (t != null) {
-                const e = window.getComputedStyle(t);
-                if (e.visibility === "hidden" || e.display === "none" || e.height === 0 || e.width === 0 || e.opacity === 0) {
-                    return false
-                }
-            }
-            return true
-        };
-        const f = (e, t) => {
-            if (t != null && !t.intersectsNode(e))
-                return NodeFilter.FILTER_REJECT;
-            return d(e) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
-        };
-        const D = (e, t) => {
-            if (t != null && !t.intersectsNode(e))
-                return NodeFilter.FILTER_REJECT;
-            if (!d(e)) {
-                return NodeFilter.FILTER_REJECT
-            }
-            return e.nodeType === Node.TEXT_NODE ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP
-        };
-        const E = (t, n) => {
-            const u = [];
-            let r = [];
-            const o = Array.from(A(t, (e => f(e, n))));
-            for (const t of o) {
-                if (t.nodeType === Node.TEXT_NODE) {
-                    r.push(t)
-                } else if (t instanceof HTMLElement && e.includes(t.tagName) && r.length > 0) {
-                    u.push(r);
-                    r = []
-                }
-            }
-            if (r.length > 0)
-                u.push(r);
-            return u
-        };
-        const C = (e, t, n) => {
-            let u = "";
-            if (e.length === 1) {
-                u = e[0].textContent.substring(t, n)
-            } else {
-                u = e[0].textContent.substring(t) + e.slice(1, -1).reduce(((e, t) => e + t.textContent), "") + e.slice(-1)[0].textContent.substring(0, n)
-            }
-            return u.replace(/[\t\n\r ]+/g, " ")
-        };
-        function* A(e, t) {
-            const n = document.createTreeWalker(e, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
-                acceptNode: t
-            });
-            const u = new Set;
-            while (x(n, u) !== null) {
-                yield n.currentNode
-            }
-        }
-        const g = (e, t) => {
-            const n = E(t.commonAncestorContainer, t);
-            const u = S();
-            for (const r of n) {
-                const n = T(e, t, r, u);
-                if (n !== undefined)
-                    return n
-            }
-            return undefined
-        };
-        const T = (e, t, n, u) => {
-            if (!e || !t || !(n || []).length)
-                return undefined;
-            const r = N(C(n, 0, undefined));
-            const o = N(e);
-            let s = n[0] === t.startNode ? t.startOffset : 0;
-            let i;
-            let a;
-            while (s < r.length) {
-                const e = r.indexOf(o, s);
-                if (e === -1)
-                    return undefined;
-                if (h(r, e, o.length, u)) {
-                    i = m(e, n, false);
-                    a = m(e + o.length, n, true)
-                }
-                if (i != null && a != null) {
-                    const e = new Range;
-                    e.setStart(i.node, i.offset);
-                    e.setEnd(a.node, a.offset);
-                    if (t.compareBoundaryPoints(Range.START_TO_START, e) <= 0 && t.compareBoundaryPoints(Range.END_TO_END, e) >= 0) {
-                        return e
-                    }
-                }
-                s = e + 1
-            }
-            return undefined
-        };
-        const m = (e, t, n) => {
-            let u = 0;
-            let r;
-            for (let o = 0; o < t.length; o++) {
-                const s = t[o];
-                if (!r)
-                    r = N(s.data);
-                let i = u + r.length;
-                if (n)
-                    i += 1;
-                if (i > e) {
-                    const t = e - u;
-                    let o = Math.min(e - u, s.data.length);
-                    const i = n ? r.substring(0, t) : r.substring(t);
-                    let a = n ? N(s.data.substring(0, o)) : N(s.data.substring(o));
-                    const c = (n ? -1 : 1) * (i.length > a.length ? -1 : 1);
-                    while (o >= 0 && o <= s.data.length) {
-                        if (a.length === i.length) {
-                            return {
-                                node: s,
-                                offset: o
-                            }
-                        }
-                        o += c;
-                        a = n ? N(s.data.substring(0, o)) : N(s.data.substring(o))
-                    }
-                }
-                u += r.length;
-                if (o + 1 < t.length) {
-                    const e = N(t[o + 1].data);
-                    if (r.slice(-1) === " " && e.slice(0, 1) === " ") {
-                        u -= 1
-                    }
-                    r = e
-                }
-            }
-            return undefined
-        };
-        const h = (e, n, u, r) => {
-            if (n < 0 || n >= e.length || u <= 0 || n + u > e.length) {
-                return false
-            }
-            if (r) {
-                const t = r.segment(e);
-                const o = t.containing(n);
-                if (!o)
-                    return false;
-                if (o.isWordLike && o.index != n)
-                    return false;
-                const s = n + u;
-                const i = t.containing(s);
-                if (i && i.isWordLike && i.index != s)
-                    return false
-            } else {
-                if (e[n].match(t)) {
-                    ++n;
-                    --u;
-                    if (!u) {
-                        return false
-                    }
-                }
-                if (e[n + u - 1].match(t)) {
-                    --u;
-                    if (!u) {
-                        return false
-                    }
-                }
-                if (n !== 0 && !e[n - 1].match(t))
-                    return false;
-                if (n + u !== e.length && !e[n + u].match(t))
-                    return false
-            }
-            return true
-        };
-        const N = e => (e || "").normalize("NFKD").replace(/\s+/g, " ").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-        const S = () => {
-            if (Intl.Segmenter) {
-                let e = document.documentElement.lang;
-                if (!e) {
-                    e = navigator.languages
-                }
-                return new Intl.Segmenter(e, {
-                    granularity: "word"
-                })
-            }
-            return undefined
-        };
-        const x = (e, t) => {
-            if (!t.has(e.currentNode)) {
-                const t = e.firstChild();
-                if (t !== null) {
-                    return t
-                }
-            }
-            const n = e.nextSibling();
-            if (n !== null) {
-                return n
-            }
-            const u = e.parentNode();
-            if (u !== null) {
-                t.add(u)
-            }
-            return u
-        };
-        if (typeof goog !== "undefined") {
-            goog.declareModuleId("googleChromeLabs.textFragmentPolyfill.textFragmentUtils")
-        }
-        const O = () => {
-            const e = document.getElementsByTagName("style");
-            if (!e)
-                return;
-            for (const t of e) {
-                const e = t.innerHTML;
-                const u = e.match(/(\w*)::target-text\s*{\s*((.|\n)*?)\s*}/g);
-                if (!u)
-                    continue;
-                const r = u.join("\n");
-                const o = document.createTextNode(r.replaceAll("::target-text", ` .${n}`));
-                t.appendChild(o)
-            }
-        };
-        const p = ({backgroundColor: e, color: t}) => {
-            const u = document.getElementsByTagName("style");
-            const r = `.${n} {\n    background-color: ${e};\n    color: ${t};\n  }\n  \n  .${n} a, a .${n} {\n    text-decoration: underline;\n  }\n  `;
-            if (u.length === 0) {
-                document.head.insertAdjacentHTML("beforeend", `<style type="text/css">${r}</style>`)
-            } else {
-                O();
-                const e = document.createTextNode(r);
-                u[0].insertBefore(e, u[0].firstChild)
-            }
-        };
-        if (!window.__gCrWeb) {
-            window.__gCrWeb = {}
-        }
-        const _ = window.__gCrWeb;
-        function B(e, t) {
-            try {
-                var n = window.webkit;
-                delete window["webkit"];
-                window.webkit.messageHandlers[e].postMessage(t);
-                window.webkit = n
-            } catch (e) {}
-        }
-        let R;
-        let I;
-        function L(e, t, n, u) {
-            if(R?.length)
-                return;
-            let r = null;
-            if (n && u) {
-                r = {
-                    backgroundColor: `#${n}`,
-                    color: `#${u}`
-                }
-            }
-            if (document.readyState === "complete" || document.readyState === "interactive") {
-                b(e, t, r);
-                return
-            }
-            document.addEventListener("DOMContentLoaded", (() => {
-                b(e, t, r)
-            }))
-        }
-        function y(e) {
-            if (R) {
-                r(R);
-                R = null
-            }
-            document.removeEventListener("click", w, true);
-            if (e) {
-                try {
-                    history.replaceState(history.state, "", e)
-                } catch (e) {}
-            }
-        }
-        function b(e, t, n) {
-            R = [];
-            let r = 0;
-            if (n)
-                p(n);
-            for (const t of e) {
-                const e = u(t).filter((e => !!e));
-                if (Array.isArray(e)) {
-                    if (e.length >= 1) {
-                        ++r;
-                        let t = l(e[0]);
-                        if (Array.isArray(t)) {
-                            R.push(...t)
-                        }
-                    }
-                }
-            }
-            if (t && R.length > 0) {
-                I = e;
-                F(R[0])
-            }
-            document.addEventListener("click", w, true);
-            for (let e of R) {
-                e.addEventListener("click", H.bind(e), true)
-            }
-            B("textFragments", {
-                command: "textFragments.processingComplete",
-                result: {
-                    successCount: r,
-                    fragmentsCount: e.length
-                }
-            })
-        }
-        function w() {
-            B("textFragments", {
-                command: "textFragments.onClick"
-            })
-        }
-        function H(e) {
-            if (!(e.currentTarget instanceof HTMLElement)) {
-                return
-            }
-            const t = e.currentTarget;
-            let n = t.parentNode;
-            while (n != null) {
-                if (n instanceof HTMLElement && n.tagName == "A") {
-                    return
-                }
-                n = n.parentNode
-            }
-            B("textFragments", {
-                command: "textFragments.onClickWithSender",
-                rect: k(t),
-                text: `"${t.innerText}"`,
-                fragments: I
-            })
-        }
-        function k(e) {
-            const t = e.getClientRects()[0];
-            return {
-                x:t?.x,
-                y:t?.y,
-                width:t?.width,
-                height:t?.height
-            }
-        }
-        _.textFragments = {
-            handleTextFragments: L,
-            removeHighlights: y
-        }
-    })();
-}
-
-// Annotations
-if (typeof _injected_annotations === 'undefined') {
-    var _injected_annotations = true;
-    (function() {
-        const t = new Set(["A", "APP", "APPLET", "AREA", "AUDIO", "BUTTON", "CANVAS", "CHROME_ANNOTATION", "EMBED", "FORM", "FRAME", "FRAMESET", "HEAD", "IFRAME", "IMG", "INPUT", "KEYGEN", "LABEL", "MAP", "NOSCRIPT", "OBJECT", "OPTGROUP", "OPTION", "PROGRESS", "SCRIPT", "SELECT", "STYLE", "TEXTAREA", "VIDEO"]);
-        const e = new Set(["A", "LABEL"]);
-        const n = 300;
-        if (!window.__gCrWeb) {
-            window.__gCrWeb = {}
-        }
-        const o = window.__gCrWeb;
-        function i(t, e) {
-            try {
-                var n = window.webkit;
-                delete window["webkit"];
-                window.webkit.messageHandlers[t].postMessage(e);
-                window.webkit = n
-            } catch (t) {}
-        }
-        class a {
-            index;
-            left;
-            right;
-            text;
-            type;
-            annotationText;
-            data;
-            constructor(t, e, n, o, i, a, s)
-            {
-                this.index = t;
-                this.left = e;
-                this.right = n;
-                this.text = o;
-                this.type = i;
-                this.annotationText = a;
-                this.data = s
-            }
-        }
-        class s {
-            original;
-            replacements;
-            constructor(t, e)
-            {
-                this.original = t;
-                this.replacements = e
-            }
-        }
-        class r {
-            node;
-            index;
-            constructor(t, e)
-            {
-                this.node = t;
-                this.index = e
-            }
-        }
-        class c {
-            initialEvent;
-            hasMutations = false;
-            mutationObserver;
-            mutationExtendId = 0;
-            constructor(t)
-            {
-                this.initialEvent = t;
-                this.mutationObserver = new MutationObserver((t => {
-                    for (let e of t) {
-                        if (e.target.contains(this.initialEvent.target)) {
-                            this.hasMutations = true;
-                            this.stopObserving();
-                            break
-                        }
-                    }
-                }));
-                this.mutationObserver.observe(document, {
-                    attributes: false,
-                    childList: true,
-                    subtree: true
-                })
-            }
-            hasPreventativeActivity(t)
-            {
-                return t !== this.initialEvent || t.defaultPrevented || this.hasMutations
-            }
-            extendObservation(t)
-            {
-                if (this.mutationExtendId) {
-                    clearTimeout(this.mutationExtendId)
-                }
-                this.mutationExtendId = setTimeout(t, n)
-            }
-            stopObserving()
-            {
-                if (this.mutationExtendId) {
-                    clearTimeout(this.mutationExtendId)
-                }
-                this.mutationExtendId = 0;
-                this.mutationObserver?.disconnect()
-            }
-        }
-        function l() {
-            const t = document.getElementsByTagName("meta");
-            for (let e = 0; e < t.length; e++) {
-                if (t[e].getAttribute("name") === "chrome" && t[e].getAttribute("content") === "nointentdetection") {
-                    return true
-                }
-            }
-            return false
-        }
-        function u() {
-            const t = document.getElementsByTagName("meta");
-            let e = new Set;
-            for (const n of t) {
-                if (n.getAttribute("name") !== "format-detection")
-                    continue;
-                let t = n.getAttribute("content");
-                if (!t)
-                    continue;
-                let o = t.toLowerCase().matchAll(/([a-z]+)\s*=\s*([a-z]+)/g);
-                if (!o)
-                    continue;
-                for (let t of o) {
-                    if (t && t[2] === "no" && t[1]) {
-                        e.add(t[1])
-                    }
-                }
-            }
-            return e
-        }
-        function d() {
-            const t = document.getElementsByTagName("meta");
-            for (let e = 0; e < t.length; e++) {
-                if (t[e].getAttribute("name") === "google" && t[e].getAttribute("content") === "notranslate") {
-                    return true
-                }
-            }
-            return false
-        }
-        function f(t) {
-            const e = document.getElementsByTagName("meta");
-            for (let n of e) {
-                if (n.httpEquiv.toLowerCase() === t) {
-                    return n.content
-                }
-            }
-            return ""
-        }
-        const h = "#000";
-        const m = "rgba(20,111,225,0.25)";
-        const g = "border-bottom-width: 1px; " + "border-bottom-style: dotted; " + "background-color: transparent";
-        const b = "border-bottom-width: 1px; " + "border-bottom-style: solid; " + "background-color: transparent";
-        const E = "blue";
-        let p = [];
-        let N;
-        function T(t, e) {
-            if (p.length) {
-                w()
-            }
-            let n = u();
-            i("annotations", {
-                command: "annotations.extractedText",
-                text: O(t),
-                seqId: e,
-                metadata: {
-                    hasNoIntentDetection: l(),
-                    hasNoTranslate: d(),
-                    htmlLang: document.documentElement.lang,
-                    httpContentLanguage: f("content-language"),
-                    wkNoTelephone: n.has("telephone"),
-                    wkNoEmail: n.has("email"),
-                    wkNoAddress: n.has("address"),
-                    wkNoDate: n.has("date")
-                }
-            })
-        }
-        function x(t) {
-            if (p.length || !t.length)
-                return;
-            let n = 0;
-            p = [];
-            document.addEventListener("click", L.bind(document));
-            document.addEventListener("click", L.bind(document), true);
-            t = P(t);
-            let o = 0;
-            C(((i, s, r) => {
-                if (!i.parentNode || r === "\n")
-                    return true;
-                while (o < t.length) {
-                    const e = t[o];
-                    if (!e || e.end > s) {
-                        break
-                    }
-                    n++;
-                    o++
-                }
-                const c = r.length;
-                let l = [];
-                while (o < t.length) {
-                    const e = t[o];
-                    if (!e) {
-                        break
-                    }
-                    const i = e.start;
-                    const u = e.end;
-                    if (s < u && s + c > i) {
-                        const t = Math.max(0, i - s);
-                        const d = Math.min(c, u - s);
-                        const f = r.substring(t, d);
-                        const h = Math.max(0, s - i);
-                        const m = Math.min(u - i, s + c - i);
-                        const g = e.text.substring(h, m);
-                        if (f != g) {
-                            n++;
-                            o++;
-                            continue
-                        }
-                        l.push(new a(o, t, d, f, e.type, e.text, e.data));
-                        if (u <= s + c) {
-                            o++;
-                            continue
-                        }
-                    }
-                    break
-                }
-                let u = i.parentNode;
-                while (u) {
-                    if (u instanceof HTMLElement && e.has(u.tagName)) {
-                        l = [];
-                        n++;
-                        break
-                    }
-                    u = u.parentNode
-                }
-                B(i, l, r);
-                return o < t.length
-            }));
-            n += t.length - o;
-            i("annotations", {
-                command: "annotations.decoratingComplete",
-                successes: t.length - n,
-                failures: n,
-                annotations: t.length,
-                cancelled: []
-            })
-        }
-        function w() {
-            for (let t of p) {
-                const e = t.replacements;
-                const n = e[0].parentNode;
-                if (!n)
-                    return;
-                n.insertBefore(t.original, e[0]);
-                for (let t of e) {
-                    n.removeChild(t)
-                }
-            }
-            p = []
-        }
-        function A(t) {
-            var e = [];
-            for (let s of p) {
-                const r = s.replacements;
-                const c = r[0].parentNode;
-                if (!c)
-                    return;
-                var n = false;
-                var o = false;
-                for (let e of r) {
-                    if (!(e instanceof HTMLElement)) {
-                        continue
-                    }
-                    var i = e;
-                    var a = i.getAttribute("data-type");
-                    if (a === t) {
-                        n = true
-                    } else {
-                        o = true
-                    }
-                }
-                if (!n) {
-                    e.push(s);
-                    continue
-                }
-                if (!o) {
-                    c.insertBefore(s.original, r[0]);
-                    for (let t of r) {
-                        c.removeChild(t)
-                    }
-                    continue
-                }
-                let l = [];
-                for (let e of r) {
-                    if (!(e instanceof HTMLElement)) {
-                        l.push(e);
-                        continue
-                    }
-                    var i = e;
-                    var a = i.getAttribute("data-type");
-                    if (a !== t) {
-                        l.push(e);
-                        continue
-                    }
-                    let n = document.createTextNode(i.textContent ?? "");
-                    c.replaceChild(n, i);
-                    l.push(n)
-                }
-                s.replacements = l;
-                e.push(s)
-            }
-            p = e
-        }
-        function v() {
-            for (let t of p) {
-                for (let e of t.replacements) {
-                    if (!(e instanceof HTMLElement)) {
-                        continue
-                    }
-                    e.style.color = "";
-                    e.style.background = ""
-                }
-            }
-        }
-        function y(e, n, o=true, i=true) {
-            const a = [e];
-            let s = 0;
-            let r = true;
-            while (a.length > 0) {
-                let e = a.pop();
-                if (!e) {
-                    break
-                }
-                if (e.nodeType === Node.ELEMENT_NODE) {
-                    if (t.has(e.nodeName)) {
-                        continue
-                    }
-                    if (e instanceof Element && e.getAttribute("contenteditable")) {
-                        continue
-                    }
-                    if (e.nodeName === "BR") {
-                        if (r)
-                            continue;
-                        if (!n(e, s, "\n"))
-                            break;
-                        r = true;
-                        s += 1;
-                        continue
-                    }
-                    const c = window.getComputedStyle(e);
-                    if (i && (c.display === "none" || c.visibility === "hidden")) {
-                        continue
-                    }
-                    if (e.nodeName.toUpperCase() !== "BODY" && c.display !== "inline" && !r) {
-                        if (!n(e, s, "\n"))
-                            break;
-                        r = true;
-                        s += 1
-                    }
-                    if (o) {
-                        const t = e;
-                        if (t.shadowRoot && t.shadowRoot != e) {
-                            a.push(t.shadowRoot);
-                            continue
-                        }
-                    }
-                }
-                if (e.hasChildNodes()) {
-                    for (let t = e.childNodes.length - 1; t >= 0; t--) {
-                        a.push(e.childNodes[t])
-                    }
-                } else if (e.nodeType === Node.TEXT_NODE && e.textContent) {
-                    const t = e.textContent.trim() === "";
-                    if (t && r)
-                        continue;
-                    if (!n(e, s, e.textContent))
-                        break;
-                    r = t;
-                    s += e.textContent.length
-                }
-            }
-        }
-        function C(t) {
-            for (let e of N) {
-                const n = e.node.deref();
-                if (!n)
-                    continue;
-                const o = n.nodeType === Node.ELEMENT_NODE ? "\n" : n.textContent;
-                if (o && !t(n, e.index, o))
-                    break
-            }
-        }
-        function O(t) {
-            const e = [];
-            N = [];
-            y(document.body, (function(n, o, i) {
-                N.push(new r(new WeakRef(n), o));
-                if (o + i.length > t) {
-                    e.push(i.substring(0, t - o))
-                } else {
-                    e.push(i)
-                }
-                return o + i.length < t
-            }));
-            return "".concat(...e)
-        }
-        let M;
-        function k() {
-            M?.stopObserving();
-            M = null
-        }
-        function L(t) {
-            const e = t.target;
-            if (e instanceof HTMLElement && e.tagName === "CHROME_ANNOTATION") {
-                if (t.eventPhase === Event.CAPTURING_PHASE) {
-                    k();
-                    M = new c(t)
-                } else if (M) {
-                    if (!M.hasPreventativeActivity(t)) {
-                        M.extendObservation((() => {
-                            if (M) {
-                                R(e);
-                                I(e, M.hasMutations)
-                            }
-                        }))
-                    } else {
-                        I(e, M.hasMutations)
-                    }
-                }
-            } else {
-                k()
-            }
-        }
-        function I(t, e) {
-            i("annotations", {
-                command: "annotations.onClick",
-                cancel: e,
-                data: t.dataset["data"],
-                rect: _(t),
-                text: t.dataset["annotation"]
-            });
-            k()
-        }
-        function R(t) {
-            for (let e of p) {
-                for (let n of e.replacements) {
-                    if (!(n instanceof HTMLElement)) {
-                        continue
-                    }
-                    if (n.tagName === "CHROME_ANNOTATION" && n.dataset["index"] === t.dataset["index"]) {
-                        n.style.color = h;
-                        n.style.backgroundColor = m
-                    }
-                }
-            }
-        }
-        function P(t) {
-            t.sort(((t, e) => t.start - e.start));
-            let e = undefined;
-            return t.filter((t => {
-                if (e && e.start < t.end && e.end > t.start) {
-                    return false
-                }
-                e = t;
-                return true
-            }))
-        }
-        function B(t, e, n) {
-            const o = t.parentNode;
-            if (e.length <= 0 || !o) {
-                return
-            }
-            let i = E;
-            if (o instanceof Element) {
-                i = window.getComputedStyle(o).color || i
-            }
-            let a = 0;
-            const r = [];
-            for (let t of e) {
-                if (t.left > a) {
-                    r.push(document.createTextNode(n.substring(a, t.left)))
-                }
-                const e = document.createElement("chrome_annotation");
-                e.setAttribute("data-index", "" + t.index);
-                e.setAttribute("data-data", t.data);
-                e.setAttribute("data-annotation", t.annotationText);
-                e.setAttribute("data-type", t.type);
-                e.setAttribute("role", "link");
-                e.textContent = t.text;
-                if (t.type == "PHONE_NUMBER" || t.type == "EMAIL") {
-                    e.style.cssText = b
-                } else {
-                    e.style.cssText = g
-                }
-                e.style.borderBottomColor = i;
-                r.push(e);
-                a = t.right
-            }
-            if (a < n.length) {
-                r.push(document.createTextNode(n.substring(a, n.length)))
-            }
-            for (let e of r) {
-                o.insertBefore(e, t)
-            }
-            o.removeChild(t);
-            p.push(new s(t, r))
-        }
-        function _(t) {
-            const e = t.getClientRects()[0];
-            if (!e) {
-                return {}
-            }
-            return {
-                x: e.x,
-                y: e.y,
-                width: e.width,
-                height: e.height
-            }
-        }
-        o.annotations = {
-            extractText: T,
-            decorateAnnotations: x,
-            removeDecorations: w,
-            removeDecorationsWithType: A,
-            removeHighlight: v
-        }
-    })();
-}
-
-// Frame Setup
-
-if (typeof _injected_setup_frame === 'undefined') {
-    var _injected_setup_frame = true;
-    (function() {
-        if (!window.__gCrWeb) {
-            window.__gCrWeb = {}
-        }
-        const e = window.__gCrWeb;
-        function n(e, n) {
-            try {
-                var t = window.webkit;
-                delete window["webkit"];
-                window.webkit.messageHandlers[e].postMessage(n);
-                window.webkit = t
-            } catch (e) {}
-        }
-        function t() {
-            if (!e.hasOwnProperty("frameId")) {
-                e.frameId = r()
-            }
-            return e.frameId
-        }
-        function r() {
-            const e = new Uint32Array(4);
-            window.crypto.getRandomValues(e);
-            let n = "";
-            for (const t of e) {
-                n += t.toString(16).padStart(8, "0")
-            }
-            return n
-        }
-        function o() {
-            n("FrameBecameAvailable", {
-                crwFrameId: t()
-            })
-        }
-        o()
-    })();
-}
-
-// Frame Registration
-
-(function() {
-    if (!window.__gCrWeb) {
-        window.__gCrWeb = {}
-    }
-    const e = window.__gCrWeb;
-    function n(e, n) {
-        try {
-            var t = window.webkit;
-            delete window["webkit"];
-            window.webkit.messageHandlers[e].postMessage(n);
-            window.webkit = t
-        } catch (e) {}
-    }
-    function t() {
-        if (!e.hasOwnProperty("frameId")) {
-            e.frameId = r()
-        }
-        return e.frameId
-    }
-    function r() {
-        const e = new Uint32Array(4);
-        window.crypto.getRandomValues(e);
-        let n = "";
-        for (const t of e) {
-            n += t.toString(16).padStart(8, "0")
-        }
-        return n
-    }
-    window.addEventListener("unload", (function() {
-        n("FrameBecameUnavailable", t())
-    }));
-    window.addEventListener("message", (function(n) {
-        const t = n.data;
-        if (!t || typeof t !== "object") {
-            return
-        }
-        if (t.hasOwnProperty("type") && t.type == "org.chromium.registerForFrameMessaging") {
-            e.message.getExistingFrames()
-        }
-    }))
-})();
-
-// Link To Text
-
-if (typeof _injected_link_to_text === 'undefined') {
-    var _injected_link_to_text = true;
-    (function() {
-        if (!window.__gCrWeb) {
-            window.__gCrWeb = {}
-        }
-        const e = window.__gCrWeb;
-        const t = ["ADDRESS", "ARTICLE", "ASIDE", "BLOCKQUOTE", "BR", "DETAILS", "DIALOG", "DD", "DIV", "DL", "DT", "FIELDSET", "FIGCAPTION", "FIGURE", "FOOTER", "FORM", "H1", "H2", "H3", "H4", "H5", "H6", "HEADER", "HGROUP", "HR", "LI", "MAIN", "NAV", "OL", "P", "PRE", "SECTION", "TABLE", "UL", "TR", "TH", "TD", "COLGROUP", "COL", "CAPTION", "THEAD", "TBODY", "TFOOT"];
-        const s = /[\t-\r -#%-\*,-\/:;\?@\[-\]_\{\}\x85\xA0\xA1\xA7\xAB\xB6\xB7\xBB\xBF\u037E\u0387\u055A-\u055F\u0589\u058A\u05BE\u05C0\u05C3\u05C6\u05F3\u05F4\u0609\u060A\u060C\u060D\u061B\u061E\u061F\u066A-\u066D\u06D4\u0700-\u070D\u07F7-\u07F9\u0830-\u083E\u085E\u0964\u0965\u0970\u0AF0\u0DF4\u0E4F\u0E5A\u0E5B\u0F04-\u0F12\u0F14\u0F3A-\u0F3D\u0F85\u0FD0-\u0FD4\u0FD9\u0FDA\u104A-\u104F\u10FB\u1360-\u1368\u1400\u166D\u166E\u1680\u169B\u169C\u16EB-\u16ED\u1735\u1736\u17D4-\u17D6\u17D8-\u17DA\u1800-\u180A\u1944\u1945\u1A1E\u1A1F\u1AA0-\u1AA6\u1AA8-\u1AAD\u1B5A-\u1B60\u1BFC-\u1BFF\u1C3B-\u1C3F\u1C7E\u1C7F\u1CC0-\u1CC7\u1CD3\u2000-\u200A\u2010-\u2029\u202F-\u2043\u2045-\u2051\u2053-\u205F\u207D\u207E\u208D\u208E\u2308-\u230B\u2329\u232A\u2768-\u2775\u27C5\u27C6\u27E6-\u27EF\u2983-\u2998\u29D8-\u29DB\u29FC\u29FD\u2CF9-\u2CFC\u2CFE\u2CFF\u2D70\u2E00-\u2E2E\u2E30-\u2E44\u3000-\u3003\u3008-\u3011\u3014-\u301F\u3030\u303D\u30A0\u30FB\uA4FE\uA4FF\uA60D-\uA60F\uA673\uA67E\uA6F2-\uA6F7\uA874-\uA877\uA8CE\uA8CF\uA8F8-\uA8FA\uA8FC\uA92E\uA92F\uA95F\uA9C1-\uA9CD\uA9DE\uA9DF\uAA5C-\uAA5F\uAADE\uAADF\uAAF0\uAAF1\uABEB\uFD3E\uFD3F\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE61\uFE63\uFE68\uFE6A\uFE6B\uFF01-\uFF03\uFF05-\uFF0A\uFF0C-\uFF0F\uFF1A\uFF1B\uFF1F\uFF20\uFF3B-\uFF3D\uFF3F\uFF5B\uFF5D\uFF5F-\uFF65]|\uD800[\uDD00-\uDD02\uDF9F\uDFD0]|\uD801\uDD6F|\uD802[\uDC57\uDD1F\uDD3F\uDE50-\uDE58\uDE7F\uDEF0-\uDEF6\uDF39-\uDF3F\uDF99-\uDF9C]|\uD804[\uDC47-\uDC4D\uDCBB\uDCBC\uDCBE-\uDCC1\uDD40-\uDD43\uDD74\uDD75\uDDC5-\uDDC9\uDDCD\uDDDB\uDDDD-\uDDDF\uDE38-\uDE3D\uDEA9]|\uD805[\uDC4B-\uDC4F\uDC5B\uDC5D\uDCC6\uDDC1-\uDDD7\uDE41-\uDE43\uDE60-\uDE6C\uDF3C-\uDF3E]|\uD807[\uDC41-\uDC45\uDC70\uDC71]|\uD809[\uDC70-\uDC74]|\uD81A[\uDE6E\uDE6F\uDEF5\uDF37-\uDF3B\uDF44]|\uD82F\uDC9F|\uD836[\uDE87-\uDE8B]|\uD83A[\uDD5E\uDD5F]/u;
-        const n = /[^\t-\r -#%-\*,-\/:;\?@\[-\]_\{\}\x85\xA0\xA1\xA7\xAB\xB6\xB7\xBB\xBF\u037E\u0387\u055A-\u055F\u0589\u058A\u05BE\u05C0\u05C3\u05C6\u05F3\u05F4\u0609\u060A\u060C\u060D\u061B\u061E\u061F\u066A-\u066D\u06D4\u0700-\u070D\u07F7-\u07F9\u0830-\u083E\u085E\u0964\u0965\u0970\u0AF0\u0DF4\u0E4F\u0E5A\u0E5B\u0F04-\u0F12\u0F14\u0F3A-\u0F3D\u0F85\u0FD0-\u0FD4\u0FD9\u0FDA\u104A-\u104F\u10FB\u1360-\u1368\u1400\u166D\u166E\u1680\u169B\u169C\u16EB-\u16ED\u1735\u1736\u17D4-\u17D6\u17D8-\u17DA\u1800-\u180A\u1944\u1945\u1A1E\u1A1F\u1AA0-\u1AA6\u1AA8-\u1AAD\u1B5A-\u1B60\u1BFC-\u1BFF\u1C3B-\u1C3F\u1C7E\u1C7F\u1CC0-\u1CC7\u1CD3\u2000-\u200A\u2010-\u2029\u202F-\u2043\u2045-\u2051\u2053-\u205F\u207D\u207E\u208D\u208E\u2308-\u230B\u2329\u232A\u2768-\u2775\u27C5\u27C6\u27E6-\u27EF\u2983-\u2998\u29D8-\u29DB\u29FC\u29FD\u2CF9-\u2CFC\u2CFE\u2CFF\u2D70\u2E00-\u2E2E\u2E30-\u2E44\u3000-\u3003\u3008-\u3011\u3014-\u301F\u3030\u303D\u30A0\u30FB\uA4FE\uA4FF\uA60D-\uA60F\uA673\uA67E\uA6F2-\uA6F7\uA874-\uA877\uA8CE\uA8CF\uA8F8-\uA8FA\uA8FC\uA92E\uA92F\uA95F\uA9C1-\uA9CD\uA9DE\uA9DF\uAA5C-\uAA5F\uAADE\uAADF\uAAF0\uAAF1\uABEB\uFD3E\uFD3F\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE61\uFE63\uFE68\uFE6A\uFE6B\uFF01-\uFF03\uFF05-\uFF0A\uFF0C-\uFF0F\uFF1A\uFF1B\uFF1F\uFF20\uFF3B-\uFF3D\uFF3F\uFF5B\uFF5D\uFF5F-\uFF65]|\uD800[\uDD00-\uDD02\uDF9F\uDFD0]|\uD801\uDD6F|\uD802[\uDC57\uDD1F\uDD3F\uDE50-\uDE58\uDE7F\uDEF0-\uDEF6\uDF39-\uDF3F\uDF99-\uDF9C]|\uD804[\uDC47-\uDC4D\uDCBB\uDCBC\uDCBE-\uDCC1\uDD40-\uDD43\uDD74\uDD75\uDDC5-\uDDC9\uDDCD\uDDDB\uDDDD-\uDDDF\uDE38-\uDE3D\uDEA9]|\uD805[\uDC4B-\uDC4F\uDC5B\uDC5D\uDCC6\uDDC1-\uDDD7\uDE41-\uDE43\uDE60-\uDE6C\uDF3C-\uDF3E]|\uD807[\uDC41-\uDC45\uDC70\uDC71]|\uD809[\uDC70-\uDC74]|\uD81A[\uDE6E\uDE6F\uDEF5\uDF37-\uDF3B\uDF44]|\uD82F\uDC9F|\uD836[\uDE87-\uDE8B]|\uD83A[\uDD5E\uDD5F]/u;
-        const u = (e, t=document) => {
-            const s = [];
-            const n = t.createRange();
-            n.selectNodeContents(t.body);
-            while (!n.collapsed && s.length < 2) {
-                let u;
-                if (e.prefix) {
-                    const s = F(e.prefix, n);
-                    if (s == null) {
-                        break
-                    }
-                    a(n, s.startContainer, s.startOffset);
-                    const r = t.createRange();
-                    r.setStart(s.endContainer, s.endOffset);
-                    r.setEnd(n.endContainer, n.endOffset);
-                    f(r);
-                    if (r.collapsed) {
-                        break
-                    }
-                    u = F(e.textStart, r);
-                    if (u == null) {
-                        break
-                    }
-                    if (u.compareBoundaryPoints(Range.START_TO_START, r) !== 0) {
-                        continue
-                    }
-                } else {
-                    u = F(e.textStart, n);
-                    if (u == null) {
-                        break
-                    }
-                    a(n, u.startContainer, u.startOffset)
-                }
-                if (e.textEnd) {
-                    const f = t.createRange();
-                    f.setStart(u.endContainer, u.endOffset);
-                    f.setEnd(n.endContainer, n.endOffset);
-                    let o = false;
-                    while (!f.collapsed && s.length < 2) {
-                        const c = F(e.textEnd, f);
-                        if (c == null) {
-                            break
-                        }
-                        a(f, c.startContainer, c.startOffset);
-                        u.setEnd(c.endContainer, c.endOffset);
-                        if (e.suffix) {
-                            const a = i(e.suffix, u, n, t);
-                            if (a === r.NO_SUFFIX_MATCH) {
-                                break
-                            } else if (a === r.SUFFIX_MATCH) {
-                                o = true;
-                                s.push(u.cloneRange());
-                                continue
-                            } else if (a === r.MISPLACED_SUFFIX) {
-                                continue
-                            }
-                        } else {
-                            o = true;
-                            s.push(u.cloneRange())
-                        }
-                    }
-                    if (!o) {
-                        break
-                    }
-                } else if (e.suffix) {
-                    const f = i(e.suffix, u, n, t);
-                    if (f === r.NO_SUFFIX_MATCH) {
-                        break
-                    } else if (f === r.SUFFIX_MATCH) {
-                        s.push(u.cloneRange());
-                        a(n, n.startContainer, n.startOffset);
-                        continue
-                    } else if (f === r.MISPLACED_SUFFIX) {
-                        continue
-                    }
-                } else {
-                    s.push(u.cloneRange())
-                }
-            }
-            return s
-        };
-        const r = {
-            NO_SUFFIX_MATCH: 0,
-            SUFFIX_MATCH: 1,
-            MISPLACED_SUFFIX: 2
-        };
-        const i = (e, t, s, n) => {
-            const u = n.createRange();
-            u.setStart(t.endContainer, t.endOffset);
-            u.setEnd(s.endContainer, s.endOffset);
-            f(u);
-            const i = F(e, u);
-            if (i == null) {
-                return r.NO_SUFFIX_MATCH
-            }
-            if (i.compareBoundaryPoints(Range.START_TO_START, u) !== 0) {
-                return r.MISPLACED_SUFFIX
-            }
-            return r.SUFFIX_MATCH
-        };
-        const a = (e, t, s) => {
-            try {
-                e.setStart(t, s + 1)
-            } catch (s) {
-                e.setStartAfter(t)
-            }
-        };
-        const f = e => {
-            const t = o(e);
-            let s = t.nextNode();
-            while (!e.collapsed && s != null) {
-                if (s !== e.startContainer) {
-                    e.setStart(s, 0)
-                }
-                if (s.textContent.length > e.startOffset) {
-                    const t = s.textContent[e.startOffset];
-                    if (!t.match(/\s/)) {
-                        return
-                    }
-                }
-                try {
-                    e.setStart(s, e.startOffset + 1)
-                } catch (n) {
-                    s = t.nextNode();
-                    if (s == null) {
-                        e.collapse()
-                    } else {
-                        e.setStart(s, 0)
-                    }
-                }
-            }
-        };
-        const o = e => {
-            const t = document.createTreeWalker(e.commonAncestorContainer, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, (t => d(t, e)));
-            return t
-        };
-        const c = e => {
-            let t = e;
-            while (t != null && !(t instanceof HTMLElement))
-                t = t.parentNode;
-            if (t != null) {
-                const e = window.getComputedStyle(t);
-                if (e.visibility === "hidden" || e.display === "none" || e.height === 0 || e.width === 0 || e.opacity === 0) {
-                    return false
-                }
-            }
-            return true
-        };
-        const h = (e, t) => {
-            if (t != null && !t.intersectsNode(e))
-                return NodeFilter.FILTER_REJECT;
-            return c(e) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
-        };
-        const d = (e, t) => {
-            if (t != null && !t.intersectsNode(e))
-                return NodeFilter.FILTER_REJECT;
-            if (!c(e)) {
-                return NodeFilter.FILTER_REJECT
-            }
-            return e.nodeType === Node.TEXT_NODE ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP
-        };
-        const l = (e, s) => {
-            const n = [];
-            let u = [];
-            const r = Array.from(S(e, (e => h(e, s))));
-            for (const e of r) {
-                if (e.nodeType === Node.TEXT_NODE) {
-                    u.push(e)
-                } else if (e instanceof HTMLElement && t.includes(e.tagName) && u.length > 0) {
-                    n.push(u);
-                    u = []
-                }
-            }
-            if (u.length > 0)
-                n.push(u);
-            return n
-        };
-        const D = (e, t, s) => {
-            let n = "";
-            if (e.length === 1) {
-                n = e[0].textContent.substring(t, s)
-            } else {
-                n = e[0].textContent.substring(t) + e.slice(1, -1).reduce(((e, t) => e + t.textContent), "") + e.slice(-1)[0].textContent.substring(0, s)
-            }
-            return n.replace(/[\t\n\r ]+/g, " ")
-        };
-        function* S(e, t) {
-            const s = document.createTreeWalker(e, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
-                acceptNode: t
-            });
-            const n = new Set;
-            while (N(s, n) !== null) {
-                yield s.currentNode
-            }
-        }
-        const F = (e, t) => {
-            const s = l(t.commonAncestorContainer, t);
-            const n = O();
-            for (const u of s) {
-                const s = E(e, t, u, n);
-                if (s !== undefined)
-                    return s
-            }
-            return undefined
-        };
-        const E = (e, t, s, n) => {
-            if (!e || !t || !(s || []).length)
-                return undefined;
-            const u = C(D(s, 0, undefined));
-            const r = C(e);
-            let i = s[0] === t.startNode ? t.startOffset : 0;
-            let a;
-            let f;
-            while (i < u.length) {
-                const e = u.indexOf(r, i);
-                if (e === -1)
-                    return undefined;
-                if (A(u, e, r.length, n)) {
-                    a = g(e, s, false);
-                    f = g(e + r.length, s, true)
-                }
-                if (a != null && f != null) {
-                    const e = new Range;
-                    e.setStart(a.node, a.offset);
-                    e.setEnd(f.node, f.offset);
-                    if (t.compareBoundaryPoints(Range.START_TO_START, e) <= 0 && t.compareBoundaryPoints(Range.END_TO_END, e) >= 0) {
-                        return e
-                    }
-                }
-                i = e + 1
-            }
-            return undefined
-        };
-        const g = (e, t, s) => {
-            let n = 0;
-            let u;
-            for (let r = 0; r < t.length; r++) {
-                const i = t[r];
-                if (!u)
-                    u = C(i.data);
-                let a = n + u.length;
-                if (s)
-                    a += 1;
-                if (a > e) {
-                    const t = e - n;
-                    let r = Math.min(e - n, i.data.length);
-                    const a = s ? u.substring(0, t) : u.substring(t);
-                    let f = s ? C(i.data.substring(0, r)) : C(i.data.substring(r));
-                    const o = (s ? -1 : 1) * (a.length > f.length ? -1 : 1);
-                    while (r >= 0 && r <= i.data.length) {
-                        if (f.length === a.length) {
-                            return {
-                                node: i,
-                                offset: r
-                            }
-                        }
-                        r += o;
-                        f = s ? C(i.data.substring(0, r)) : C(i.data.substring(r))
-                    }
-                }
-                n += u.length;
-                if (r + 1 < t.length) {
-                    const e = C(t[r + 1].data);
-                    if (u.slice(-1) === " " && e.slice(0, 1) === " ") {
-                        n -= 1
-                    }
-                    u = e
-                }
-            }
-            return undefined
-        };
-        const A = (e, t, n, u) => {
-            if (t < 0 || t >= e.length || n <= 0 || t + n > e.length) {
-                return false
-            }
-            if (u) {
-                const s = u.segment(e);
-                const r = s.containing(t);
-                if (!r)
-                    return false;
-                if (r.isWordLike && r.index != t)
-                    return false;
-                const i = t + n;
-                const a = s.containing(i);
-                if (a && a.isWordLike && a.index != i)
-                    return false
-            } else {
-                if (e[t].match(s)) {
-                    ++t;
-                    --n;
-                    if (!n) {
-                        return false
-                    }
-                }
-                if (e[t + n - 1].match(s)) {
-                    --n;
-                    if (!n) {
-                        return false
-                    }
-                }
-                if (t !== 0 && !e[t - 1].match(s))
-                    return false;
-                if (t + n !== e.length && !e[t + n].match(s))
-                    return false
-            }
-            return true
-        };
-        const C = e => (e || "").normalize("NFKD").replace(/\s+/g, " ").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-        const O = () => {
-            if (Intl.Segmenter) {
-                let e = document.documentElement.lang;
-                if (!e) {
-                    e = navigator.languages
-                }
-                return new Intl.Segmenter(e, {
-                    granularity: "word"
-                })
-            }
-            return undefined
-        };
-        const N = (e, t) => {
-            if (!t.has(e.currentNode)) {
-                const t = e.firstChild();
-                if (t !== null) {
-                    return t
-                }
-            }
-            const s = e.nextSibling();
-            if (s !== null) {
-                return s
-            }
-            const n = e.parentNode();
-            if (n !== null) {
-                t.add(n)
-            }
-            return n
-        };
-        const x = (e, t) => {
-            if (!t.has(e.currentNode)) {
-                const t = e.lastChild();
-                if (t !== null) {
-                    return t
-                }
-            }
-            const s = e.previousSibling();
-            if (s !== null) {
-                return s
-            }
-            const n = e.parentNode();
-            if (n !== null) {
-                t.add(n)
-            }
-            return n
-        };
-        const T = {
-            BLOCK_ELEMENTS: t,
-            BOUNDARY_CHARS: s,
-            NON_BOUNDARY_CHARS: n,
-            acceptNodeIfVisibleInRange: h,
-            normalizeString: C,
-            makeNewSegmenter: O,
-            forwardTraverse: N,
-            backwardTraverse: x,
-            makeTextNodeWalker: o,
-            isNodeVisible: c
-        };
-        if (typeof goog !== "undefined") {
-            goog.declareModuleId("googleChromeLabs.textFragmentPolyfill.textFragmentUtils")
-        }
-        const p = 300;
-        const m = 20;
-        const w = 1;
-        const _ = 3;
-        const B = 1;
-        let R = 500;
-        let b;
-        const k = {
-            SUCCESS: 0,
-            INVALID_SELECTION: 1,
-            AMBIGUOUS: 2,
-            TIMEOUT: 3,
-            EXECUTION_FAILED: 4
-        };
-        const I = (e, t=Date.now()) => {
-            try {
-                return L(e, t)
-            } catch (e) {
-                if (e.isTimeout) {
-                    return {
-                        status: k.TIMEOUT
-                    }
-                } else {
-                    return {
-                        status: k.EXECUTION_FAILED
-                    }
-                }
-            }
-        };
-        const L = (e, t) => {
-            P(t);
-            let s;
-            try {
-                s = e.getRangeAt(0)
-            } catch {
-                return {
-                    status: k.INVALID_SELECTION
-                }
-            }
-            Q(s);
-            se(s);
-            const n = s.cloneRange();
-            Z(s);
-            if (s.collapsed) {
-                return {
-                    status: k.INVALID_SELECTION
-                }
-            }
-            let u;
-            if (Y(s)) {
-                const e = T.normalizeString(s.toString());
-                const t = {
-                    textStart: e
-                };
-                if (e.length >= m && W(t)) {
-                    return {
-                        status: k.SUCCESS,
-                        fragment: t
-                    }
-                }
-                u = (new y).setExactTextMatch(e)
-            } else {
-                const e = H(s);
-                const t = U(s);
-                if (e && t) {
-                    u = (new y).setStartAndEndSearchSpace(e, t)
-                } else {
-                    u = (new y).setSharedSearchSpace(s.toString().trim())
-                }
-            }
-            const r = document.createRange();
-            r.selectNodeContents(document.body);
-            const i = r.cloneRange();
-            r.setEnd(n.startContainer, n.startOffset);
-            i.setStart(n.endContainer, n.endOffset);
-            const a = U(r);
-            const f = H(i);
-            if (a || f) {
-                u.setPrefixAndSuffixSearchSpace(a, f)
-            }
-            u.useSegmenter(T.makeNewSegmenter());
-            let o = false;
-            do {
-                M();
-                o = u.embiggen();
-                const e = u.tryToMakeUniqueFragment();
-                if (e != null) {
-                    return {
-                        status: k.SUCCESS,
-                        fragment: e
-                    }
-                }
-            } while (o);
-            return {
-                status: k.AMBIGUOUS
-            }
-        };
-        const M = () => {
-            const e = Date.now() - b;
-            if (e > R) {
-                const t = new Error(`Fragment generation timed out after ${e} ms.`);
-                t.isTimeout = true;
-                throw t
-            }
-        };
-        const P = e => {
-            b = e
-        };
-        const H = e => {
-            let t = V(e);
-            const s = $(t, e.endContainer);
-            if (!s) {
-                return undefined
-            }
-            const n = new Set;
-            if (e.startContainer.nodeType === Node.ELEMENT_NODE && e.startOffset === e.startContainer.childNodes.length) {
-                n.add(e.startContainer)
-            }
-            const u = t;
-            const r = new X(e, true);
-            const i = e.cloneRange();
-            while (!i.collapsed && t != null) {
-                M();
-                if (t.contains(u)) {
-                    i.setStartAfter(t)
-                } else {
-                    i.setStartBefore(t)
-                }
-                r.appendNode(t);
-                if (r.textInBlock !== null) {
-                    return r.textInBlock
-                }
-                t = T.forwardTraverse(s, n)
-            }
-            return undefined
-        };
-        const U = e => {
-            let t = G(e);
-            const s = $(t, e.startContainer);
-            if (!s) {
-                return undefined
-            }
-            const n = new Set;
-            if (e.endContainer.nodeType === Node.ELEMENT_NODE && e.endOffset === 0) {
-                n.add(e.endContainer)
-            }
-            const u = t;
-            const r = new X(e, false);
-            const i = e.cloneRange();
-            while (!i.collapsed && t != null) {
-                M();
-                if (t.contains(u)) {
-                    i.setEnd(t, 0)
-                } else {
-                    i.setEndAfter(t)
-                }
-                r.appendNode(t);
-                if (r.textInBlock !== null) {
-                    return r.textInBlock
-                }
-                t = T.backwardTraverse(s, n)
-            }
-            return undefined
-        };
-        const y = class {
-            constructor()
-            {
-                this.Mode = {
-                    ALL_PARTS: 1,
-                    SHARED_START_AND_END: 2,
-                    CONTEXT_ONLY: 3
-                };
-                this.startOffset = null;
-                this.endOffset = null;
-                this.prefixOffset = null;
-                this.suffixOffset = null;
-                this.prefixSearchSpace = "";
-                this.backwardsPrefixSearchSpace = "";
-                this.suffixSearchSpace = "";
-                this.numIterations = 0
-            }
-            tryToMakeUniqueFragment()
-            {
-                let e;
-                if (this.mode === this.Mode.CONTEXT_ONLY) {
-                    e = {
-                        textStart: this.exactTextMatch
-                    }
-                } else {
-                    e = {
-                        textStart: this.getStartSearchSpace().substring(0, this.startOffset).trim(),
-                        textEnd: this.getEndSearchSpace().substring(this.endOffset).trim()
-                    }
-                }
-                if (this.prefixOffset != null) {
-                    const t = this.getPrefixSearchSpace().substring(this.prefixOffset).trim();
-                    if (t) {
-                        e.prefix = t
-                    }
-                }
-                if (this.suffixOffset != null) {
-                    const t = this.getSuffixSearchSpace().substring(0, this.suffixOffset).trim();
-                    if (t) {
-                        e.suffix = t
-                    }
-                }
-                return W(e) ? e : undefined
-            }
-            embiggen()
-            {
-                let e = true;
-                if (this.mode === this.Mode.SHARED_START_AND_END) {
-                    if (this.startOffset >= this.endOffset) {
-                        e = false
-                    }
-                } else if (this.mode === this.Mode.ALL_PARTS) {
-                    if (this.startOffset === this.getStartSearchSpace().length && this.backwardsEndOffset() === this.getEndSearchSpace().length) {
-                        e = false
-                    }
-                } else if (this.mode === this.Mode.CONTEXT_ONLY) {
-                    e = false
-                }
-                if (e) {
-                    const e = this.getNumberOfRangeWordsToAdd();
-                    if (this.startOffset < this.getStartSearchSpace().length) {
-                        let t = 0;
-                        if (this.getStartSegments() != null) {
-                            while (t < e && this.startOffset < this.getStartSearchSpace().length) {
-                                this.startOffset = this.getNextOffsetForwards(this.getStartSegments(), this.startOffset, this.getStartSearchSpace());
-                                t++
-                            }
-                        } else {
-                            let s = this.startOffset;
-                            do {
-                                M();
-                                const e = this.getStartSearchSpace().substring(this.startOffset + 1).search(T.BOUNDARY_CHARS);
-                                if (e === -1) {
-                                    this.startOffset = this.getStartSearchSpace().length
-                                } else {
-                                    this.startOffset = this.startOffset + 1 + e
-                                }
-                                if (this.getStartSearchSpace().substring(s, this.startOffset).search(T.NON_BOUNDARY_CHARS) !== -1) {
-                                    s = this.startOffset;
-                                    t++
-                                }
-                            } while (this.startOffset < this.getStartSearchSpace().length && t < e)
-                        }
-                        if (this.mode === this.Mode.SHARED_START_AND_END) {
-                            this.startOffset = Math.min(this.startOffset, this.endOffset)
-                        }
-                    }
-                    if (this.backwardsEndOffset() < this.getEndSearchSpace().length) {
-                        let t = 0;
-                        if (this.getEndSegments() != null) {
-                            while (t < e && this.endOffset > 0) {
-                                this.endOffset = this.getNextOffsetBackwards(this.getEndSegments(), this.endOffset);
-                                t++
-                            }
-                        } else {
-                            let s = this.backwardsEndOffset();
-                            do {
-                                M();
-                                const e = this.getBackwardsEndSearchSpace().substring(this.backwardsEndOffset() + 1).search(T.BOUNDARY_CHARS);
-                                if (e === -1) {
-                                    this.setBackwardsEndOffset(this.getEndSearchSpace().length)
-                                } else {
-                                    this.setBackwardsEndOffset(this.backwardsEndOffset() + 1 + e)
-                                }
-                                if (this.getBackwardsEndSearchSpace().substring(s, this.backwardsEndOffset()).search(T.NON_BOUNDARY_CHARS) !== -1) {
-                                    s = this.backwardsEndOffset();
-                                    t++
-                                }
-                            } while (this.backwardsEndOffset() < this.getEndSearchSpace().length && t < e)
-                        }
-                        if (this.mode === this.Mode.SHARED_START_AND_END) {
-                            this.endOffset = Math.max(this.startOffset, this.endOffset)
-                        }
-                    }
-                }
-                let t = false;
-                if (!e || this.startOffset + this.backwardsEndOffset() < m || this.numIterations >= w) {
-                    if (this.backwardsPrefixOffset() != null && this.backwardsPrefixOffset() !== this.getPrefixSearchSpace().length || this.suffixOffset != null && this.suffixOffset !== this.getSuffixSearchSpace().length) {
-                        t = true
-                    }
-                }
-                if (t) {
-                    const e = this.getNumberOfContextWordsToAdd();
-                    if (this.backwardsPrefixOffset() < this.getPrefixSearchSpace().length) {
-                        let t = 0;
-                        if (this.getPrefixSegments() != null) {
-                            while (t < e && this.prefixOffset > 0) {
-                                this.prefixOffset = this.getNextOffsetBackwards(this.getPrefixSegments(), this.prefixOffset);
-                                t++
-                            }
-                        } else {
-                            let s = this.backwardsPrefixOffset();
-                            do {
-                                M();
-                                const e = this.getBackwardsPrefixSearchSpace().substring(this.backwardsPrefixOffset() + 1).search(T.BOUNDARY_CHARS);
-                                if (e === -1) {
-                                    this.setBackwardsPrefixOffset(this.getBackwardsPrefixSearchSpace().length)
-                                } else {
-                                    this.setBackwardsPrefixOffset(this.backwardsPrefixOffset() + 1 + e)
-                                }
-                                if (this.getBackwardsPrefixSearchSpace().substring(s, this.backwardsPrefixOffset()).search(T.NON_BOUNDARY_CHARS) !== -1) {
-                                    s = this.backwardsPrefixOffset();
-                                    t++
-                                }
-                            } while (this.backwardsPrefixOffset() < this.getPrefixSearchSpace().length && t < e)
-                        }
-                    }
-                    if (this.suffixOffset < this.getSuffixSearchSpace().length) {
-                        let t = 0;
-                        if (this.getSuffixSegments() != null) {
-                            while (t < e && this.suffixOffset < this.getSuffixSearchSpace().length) {
-                                this.suffixOffset = this.getNextOffsetForwards(this.getSuffixSegments(), this.suffixOffset, this.suffixOffset);
-                                t++
-                            }
-                        } else {
-                            let s = this.suffixOffset;
-                            do {
-                                M();
-                                const e = this.getSuffixSearchSpace().substring(this.suffixOffset + 1).search(T.BOUNDARY_CHARS);
-                                if (e === -1) {
-                                    this.suffixOffset = this.getSuffixSearchSpace().length
-                                } else {
-                                    this.suffixOffset = this.suffixOffset + 1 + e
-                                }
-                                if (this.getSuffixSearchSpace().substring(s, this.suffixOffset).search(T.NON_BOUNDARY_CHARS) !== -1) {
-                                    s = this.suffixOffset;
-                                    t++
-                                }
-                            } while (this.suffixOffset < this.getSuffixSearchSpace().length && t < e)
-                        }
-                    }
-                }
-                this.numIterations++;
-                return e || t
-            }
-            setStartAndEndSearchSpace(e, t)
-            {
-                this.startSearchSpace = e;
-                this.endSearchSpace = t;
-                this.backwardsEndSearchSpace = v(t);
-                this.startOffset = 0;
-                this.endOffset = t.length;
-                this.mode = this.Mode.ALL_PARTS;
-                return this
-            }
-            setSharedSearchSpace(e)
-            {
-                this.sharedSearchSpace = e;
-                this.backwardsSharedSearchSpace = v(e);
-                this.startOffset = 0;
-                this.endOffset = e.length;
-                this.mode = this.Mode.SHARED_START_AND_END;
-                return this
-            }
-            setExactTextMatch(e)
-            {
-                this.exactTextMatch = e;
-                this.mode = this.Mode.CONTEXT_ONLY;
-                return this
-            }
-            setPrefixAndSuffixSearchSpace(e, t)
-            {
-                if (e) {
-                    this.prefixSearchSpace = e;
-                    this.backwardsPrefixSearchSpace = v(e);
-                    this.prefixOffset = e.length
-                }
-                if (t) {
-                    this.suffixSearchSpace = t;
-                    this.suffixOffset = 0
-                }
-                return this
-            }
-            useSegmenter(e)
-            {
-                if (e == null) {
-                    return this
-                }
-                if (this.mode === this.Mode.ALL_PARTS) {
-                    this.startSegments = e.segment(this.startSearchSpace);
-                    this.endSegments = e.segment(this.endSearchSpace)
-                } else if (this.mode === this.Mode.SHARED_START_AND_END) {
-                    this.sharedSegments = e.segment(this.sharedSearchSpace)
-                }
-                if (this.prefixSearchSpace) {
-                    this.prefixSegments = e.segment(this.prefixSearchSpace)
-                }
-                if (this.suffixSearchSpace) {
-                    this.suffixSegments = e.segment(this.suffixSearchSpace)
-                }
-                return this
-            }
-            getNumberOfContextWordsToAdd()
-            {
-                return this.backwardsPrefixOffset() === 0 && this.suffixOffset === 0 ? _ : B
-            }
-            getNumberOfRangeWordsToAdd()
-            {
-                return this.startOffset === 0 && this.backwardsEndOffset() === 0 ? _ : B
-            }
-            getNextOffsetForwards(e, t, s)
-            {
-                let n = e.containing(t);
-                while (n != null) {
-                    M();
-                    const t = n.index + n.segment.length;
-                    if (n.isWordLike) {
-                        return t
-                    }
-                    n = e.containing(t)
-                }
-                return s.length
-            }
-            getNextOffsetBackwards(e, t)
-            {
-                let s = e.containing(t);
-                if (!s || t == s.index) {
-                    s = e.containing(t - 1)
-                }
-                while (s != null) {
-                    M();
-                    if (s.isWordLike) {
-                        return s.index
-                    }
-                    s = e.containing(s.index - 1)
-                }
-                return 0
-            }
-            getStartSearchSpace()
-            {
-                return this.mode === this.Mode.SHARED_START_AND_END ? this.sharedSearchSpace : this.startSearchSpace
-            }
-            getStartSegments()
-            {
-                return this.mode === this.Mode.SHARED_START_AND_END ? this.sharedSegments : this.startSegments
-            }
-            getEndSearchSpace()
-            {
-                return this.mode === this.Mode.SHARED_START_AND_END ? this.sharedSearchSpace : this.endSearchSpace
-            }
-            getEndSegments()
-            {
-                return this.mode === this.Mode.SHARED_START_AND_END ? this.sharedSegments : this.endSegments
-            }
-            getBackwardsEndSearchSpace()
-            {
-                return this.mode === this.Mode.SHARED_START_AND_END ? this.backwardsSharedSearchSpace : this.backwardsEndSearchSpace
-            }
-            getPrefixSearchSpace()
-            {
-                return this.prefixSearchSpace
-            }
-            getPrefixSegments()
-            {
-                return this.prefixSegments
-            }
-            getBackwardsPrefixSearchSpace()
-            {
-                return this.backwardsPrefixSearchSpace
-            }
-            getSuffixSearchSpace()
-            {
-                return this.suffixSearchSpace
-            }
-            getSuffixSegments()
-            {
-                return this.suffixSegments
-            }
-            backwardsEndOffset()
-            {
-                return this.getEndSearchSpace().length - this.endOffset
-            }
-            setBackwardsEndOffset(e)
-            {
-                this.endOffset = this.getEndSearchSpace().length - e
-            }
-            backwardsPrefixOffset()
-            {
-                if (this.prefixOffset == null)
-                    return null;
-                return this.getPrefixSearchSpace().length - this.prefixOffset
-            }
-            setBackwardsPrefixOffset(e)
-            {
-                if (this.prefixOffset == null)
-                    return;
-                this.prefixOffset = this.getPrefixSearchSpace().length - e
-            }
-        }
-        ;
-        const X = class {
-            constructor(e, t)
-            {
-                this.searchRange = e;
-                this.isForwardTraversal = t;
-                this.textFound = false;
-                this.textNodes = [];
-                this.textInBlock = null
-            }
-            appendNode(e)
-            {
-                if (this.textInBlock !== null) {
-                    return
-                }
-                if (ne(e)) {
-                    if (this.textFound) {
-                        if (!this.isForwardTraversal) {
-                            this.textNodes.reverse()
-                        }
-                        this.textInBlock = this.textNodes.map((e => e.textContent)).join("").trim()
-                    } else {
-                        this.textNodes = []
-                    }
-                    return
-                }
-                if (!ue(e))
-                    return;
-                const t = this.getNodeIntersectionWithRange(e);
-                this.textFound = this.textFound || t.textContent.trim() !== "";
-                this.textNodes.push(t)
-            }
-            getNodeIntersectionWithRange(e)
-            {
-                let t = null;
-                let s = null;
-                if (e === this.searchRange.startContainer && this.searchRange.startOffset !== 0) {
-                    t = this.searchRange.startOffset
-                }
-                if (e === this.searchRange.endContainer && this.searchRange.endOffset !== e.textContent.length) {
-                    s = this.searchRange.endOffset
-                }
-                if (t !== null || s !== null) {
-                    return {
-                        textContent: e.textContent.substring(t ?? 0, s ?? e.textContent.length)
-                    }
-                }
-                return e
-            }
-        }
-        ;
-        const W = e => u(e).length === 1;
-        const v = e => [...e || ""].reverse().join("");
-        const Y = e => {
-            if (e.toString().length > p)
-                return false;
-            return !q(e)
-        };
-        const V = e => {
-            let t = e.startContainer;
-            if (t.nodeType == Node.ELEMENT_NODE && e.startOffset < t.childNodes.length) {
-                t = t.childNodes[e.startOffset]
-            }
-            return t
-        };
-        const G = e => {
-            let t = e.endContainer;
-            if (t.nodeType == Node.ELEMENT_NODE && e.endOffset > 0) {
-                t = t.childNodes[e.endOffset - 1]
-            }
-            return t
-        };
-        const K = e => {
-            const t = V(e);
-            if (ue(t) && T.isNodeVisible(t)) {
-                return t
-            }
-            const s = T.makeTextNodeWalker(e);
-            s.currentNode = t;
-            return s.nextNode()
-        };
-        const J = e => {
-            const t = G(e);
-            if (ue(t) && T.isNodeVisible(t)) {
-                return t
-            }
-            const s = T.makeTextNodeWalker(e);
-            s.currentNode = t;
-            return T.backwardTraverse(s, new Set)
-        };
-        const q = e => {
-            const t = e.cloneRange();
-            let s = V(t);
-            const n = $(s);
-            if (!n) {
-                return false
-            }
-            const u = new Set;
-            while (!t.collapsed && s != null) {
-                if (ne(s))
-                    return true;
-                if (s != null)
-                    t.setStartAfter(s);
-                s = T.forwardTraverse(n, u);
-                M()
-            }
-            return false
-        };
-        const z = (e, t) => {
-            if (e.nodeType !== Node.TEXT_NODE)
-                return -1;
-            const s = t != null ? t : e.data.length;
-            if (s < e.data.length && T.BOUNDARY_CHARS.test(e.data[s]))
-                return s;
-            const n = e.data.substring(0, s);
-            const u = v(n).search(T.BOUNDARY_CHARS);
-            if (u !== -1) {
-                return s - u
-            }
-            return -1
-        };
-        const j = (e, t) => {
-            if (e.nodeType !== Node.TEXT_NODE)
-                return -1;
-            const s = t != null ? t : 0;
-            if (s < e.data.length && s > 0 && T.BOUNDARY_CHARS.test(e.data[s - 1])) {
-                return s
-            }
-            const n = e.data.substring(s);
-            const u = n.search(T.BOUNDARY_CHARS);
-            if (u !== -1) {
-                return s + u
-            }
-            return -1
-        };
-        const $ = (e, t) => {
-            if (!e) {
-                return undefined
-            }
-            let s = e;
-            const n = t != null ? t : e;
-            while (!s.contains(n) || !ne(s)) {
-                if (s.parentNode) {
-                    s = s.parentNode
-                }
-            }
-            const u = document.createTreeWalker(s, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, (e => T.acceptNodeIfVisibleInRange(e)));
-            u.currentNode = e;
-            return u
-        };
-        const Q = e => {
-            const t = T.makeNewSegmenter();
-            if (t) {
-                const s = V(e);
-                if (s !== e.startContainer) {
-                    e.setStartBefore(s)
-                }
-                ee(t, false, e)
-            } else {
-                const t = z(e.startContainer, e.startOffset);
-                if (t !== -1) {
-                    e.setStart(e.startContainer, t);
-                    return
-                }
-                if (ne(e.startContainer) && e.startOffset === 0) {
-                    return
-                }
-                const s = $(e.startContainer);
-                if (!s) {
-                    return
-                }
-                const n = new Set;
-                let u = T.backwardTraverse(s, n);
-                while (u != null) {
-                    const t = z(u);
-                    if (t !== -1) {
-                        e.setStart(u, t);
-                        return
-                    }
-                    if (ne(u)) {
-                        if (u.contains(e.startContainer)) {
-                            e.setStart(u, 0)
-                        } else {
-                            e.setStartAfter(u)
-                        }
-                        return
-                    }
-                    u = T.backwardTraverse(s, n);
-                    e.collapse()
-                }
-            }
-        };
-        const Z = e => {
-            const t = K(e);
-            if (t == null) {
-                e.collapse();
-                return
-            }
-            const s = V(e);
-            if (s !== t) {
-                e.setStart(t, 0)
-            }
-            const n = G(e);
-            const u = J(e);
-            if (n !== u) {
-                e.setEnd(u, u.textContent.length)
-            }
-        };
-        const ee = (e, t, s) => {
-            const n = t ? {
-                node: s.endContainer,
-                offset: s.endOffset
-            } : {
-                node: s.startContainer,
-                offset: s.startOffset
-            };
-            const u = te(n.node);
-            const r = u.preNodes.reduce(((e, t) => e.concat(t.textContent)), "");
-            const i = u.innerNodes.reduce(((e, t) => e.concat(t.textContent)), "");
-            let a = r.length;
-            if (n.node.nodeType === Node.TEXT_NODE) {
-                a += n.offset
-            } else if (t) {
-                a += i.length
-            }
-            const f = u.postNodes.reduce(((e, t) => e.concat(t.textContent)), "");
-            const o = [...u.preNodes, ...u.innerNodes, ...u.postNodes];
-            if (o.length == 0) {
-                return
-            }
-            const c = r.concat(i, f);
-            const h = e.segment(c);
-            const d = h.containing(a);
-            if (!d) {
-                if (t) {
-                    s.setEndAfter(o[o.length - 1])
-                } else {
-                    s.setEndBefore(o[0])
-                }
-                return
-            }
-            if (!d.isWordLike) {
-                return
-            }
-            if (a === d.index || a === d.index + d.segment.length) {
-                return
-            }
-            const l = t ? d.index + d.segment.length : d.index;
-            let D = 0;
-            for (const e of o) {
-                if (D <= l && l < D + e.textContent.length) {
-                    const n = l - D;
-                    if (t) {
-                        if (n >= e.textContent.length) {
-                            s.setEndAfter(e)
-                        } else {
-                            s.setEnd(e, n)
-                        }
-                    } else {
-                        if (n >= e.textContent.length) {
-                            s.setStartAfter(e)
-                        } else {
-                            s.setStart(e, n)
-                        }
-                    }
-                    return
-                }
-                D += e.textContent.length
-            }
-            if (t) {
-                s.setEndAfter(o[o.length - 1])
-            } else {
-                s.setStartBefore(o[0])
-            }
-        };
-        const te = e => {
-            const t = [];
-            const s = $(e);
-            if (!s) {
-                return
-            }
-            const n = new Set;
-            let u = T.backwardTraverse(s, n);
-            while (u != null && !ne(u)) {
-                M();
-                if (u.nodeType === Node.TEXT_NODE) {
-                    t.push(u)
-                }
-                u = T.backwardTraverse(s, n)
-            }
-            t.reverse();
-            const r = [];
-            if (e.nodeType === Node.TEXT_NODE) {
-                r.push(e)
-            } else {
-                const t = document.createTreeWalker(e, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, (e => T.acceptNodeIfVisibleInRange(e)));
-                t.currentNode = e;
-                let s = t.nextNode();
-                while (s != null) {
-                    M();
-                    if (s.nodeType === Node.TEXT_NODE) {
-                        r.push(s)
-                    }
-                    s = t.nextNode()
-                }
-            }
-            const i = [];
-            const a = $(e);
-            if (!a) {
-                return
-            }
-            const f = new Set([e]);
-            let o = T.forwardTraverse(a, f);
-            while (o != null && !ne(o)) {
-                M();
-                if (o.nodeType === Node.TEXT_NODE) {
-                    i.push(o)
-                }
-                o = T.forwardTraverse(a, f)
-            }
-            return {
-                preNodes: t,
-                innerNodes: r,
-                postNodes: i
-            }
-        };
-        const se = e => {
-            const t = T.makeNewSegmenter();
-            if (t) {
-                const s = G(e);
-                if (s !== e.endContainer) {
-                    e.setEndAfter(s)
-                }
-                ee(t, true, e)
-            } else {
-                let t = e.endOffset;
-                let s = e.endContainer;
-                if (s.nodeType === Node.ELEMENT_NODE) {
-                    if (e.endOffset < s.childNodes.length) {
-                        s = s.childNodes[e.endOffset]
-                    }
-                }
-                const n = $(s);
-                if (!n) {
-                    return
-                }
-                const u = new Set([s]);
-                while (s != null) {
-                    M();
-                    const r = j(s, t);
-                    t = null;
-                    if (r !== -1) {
-                        e.setEnd(s, r);
-                        return
-                    }
-                    if (ne(s)) {
-                        if (s.contains(e.endContainer)) {
-                            e.setEnd(s, s.childNodes.length)
-                        } else {
-                            e.setEndBefore(s)
-                        }
-                        return
-                    }
-                    s = T.forwardTraverse(n, u)
-                }
-                e.collapse()
-            }
-        };
-        const ne = e => e.nodeType === Node.ELEMENT_NODE && (T.BLOCK_ELEMENTS.includes(e.tagName) || e.tagName === "HTML" || e.tagName === "BODY");
-        const ue = e => e.nodeType === Node.TEXT_NODE;
-        if (typeof goog !== "undefined") {
-            goog.declareModuleId("googleChromeLabs.textFragmentPolyfill.fragmentGenerationUtils")
-        }
-        function re() {
-            const e = window.getSelection();
-            let t = {
-                x: 0,
-                y: 0,
-                width: 0,
-                height: 0
-            };
-            if (e && e.rangeCount) {
-                const s = e.getRangeAt(0).getClientRects()[0];
-                if (s) {
-                    t.x = s.x;
-                    t.y = s.y;
-                    t.width = s.width;
-                    t.height = s.height
-                }
-            }
-            const s = `"${e?.toString()}"`;
-            const n = document.querySelector("link[rel='canonical']");
-            const u = I(e);
-            return {
-                status: u.status,
-                fragment: u.fragment,
-                selectedText: s,
-                selectionRect: t,
-                canonicalUrl: n && n.getAttribute("href")
-            }
-        }
-        e.linkToText = {
-            getLinkToText: re
-        }
-    })();
-}
-
-
-// LANGUAGE DETECTION
-
-if (typeof _injected_language_detection === 'undefined') {
-    var _injected_language_detection = true;
-    (function() {
-        if (!window.__gCrWeb) {
-            window.__gCrWeb = {}
-        }
-        const e = window.__gCrWeb;
-        function t(e, t) {
-            try {
-                var n = window.webkit;
-                delete window["webkit"];
-                window.webkit.messageHandlers[e].postMessage(t);
-                window.webkit = n
-            } catch (e) {}
-        }
-        let n;
-        let o = 0;
-        function a() {
-            for (const e of document.getElementsByTagName("meta")) {
-                if (e.name === "google") {
-                    if (e.content === "notranslate" || e.getAttribute("value") === "notranslate") {
-                        return true
-                    }
-                }
-            }
-            return false
-        }
-        function i(e) {
-            for (const t of document.getElementsByTagName("meta")) {
-                if (t.httpEquiv.toLowerCase() === e) {
-                    return t.content
-                }
-            }
-            return ""
-        }
-        const r = new Set(["EMBED", "NOSCRIPT", "OBJECT", "SCRIPT", "STYLE"]);
-        function s(e, t) {
-            if (!e || t <= 0) {
-                return ""
-            }
-            let n = "";
-            if (e.nodeType === Node.ELEMENT_NODE && e instanceof Element) {
-                if (r.has(e.nodeName)) {
-                    return ""
-                }
-                if (e.nodeName === "BR") {
-                    return "\n"
-                }
-                const t = window.getComputedStyle(e);
-                if (t.display === "none" || t.visibility === "hidden") {
-                    return ""
-                }
-                if (e.nodeName.toUpperCase() !== "BODY" && t.display !== "inline") {
-                    n = "\n"
-                }
-            }
-            if (e.hasChildNodes()) {
-                for (const o of e.childNodes) {
-                    n += s(o, t - n.length);
-                    if (n.length >= t) {
-                        break
-                    }
-                }
-            } else if (e.nodeType === Node.TEXT_NODE && e.textContent) {
-                n += e.textContent.substring(0, t - n.length)
-            }
-            return n
-        }
-        function d() {
-            const r = 65535;
-            o += 1;
-            n = s(document.body, r);
-            const d = i("content-language");
-            const u = {
-                hasNoTranslate: false,
-                htmlLang: document.documentElement.lang,
-                httpContentLanguage: d,
-                frameId: e.message.getFrameId()
-            };
-            if (a()) {
-                u["hasNoTranslate"] = true
-            }
-            t("LanguageDetectionTextCaptured", u)
-        }
-        function u() {
-            const e = n;
-            o -= 1;
-            if (o === 0) {
-                n = null
-            }
-            return e
-        }
-        e.languageDetection = {
-            detectLanguage: d,
-            retrieveBufferedTextContent: u
-        }
-    })();
-}
-
 // TRANSLATE
 
 var translateApiKey = '$<brave_translate_api_key>';
@@ -2816,476 +29,3862 @@ var gtTimeInfo = {
 var serverParams = '';
 var securityOrigin = 'https://translate.brave.com/';
 
-// Copyright 2014 The Chromium Authors
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
 
-// This code is used in conjunction with the Google Translate Element script.
-// It is executed in an isolated world of a page to translate it from one
-// language to another.
-// It should be included in the page before the Translate Element script.
-
-// eslint-disable-next-line no-var
-var cr = cr || {};
-
-/**
- * An object to provide functions to interact with the Translate library.
- * @type {object}
- */
-cr.googleTranslate = (function() {
-  /**
-   * The Translate Element library's instance.
-   * @type {object}
-   */
-  let lib;
-
-  /**
-   * A flag representing if the Translate Element library is initialized.
-   * @type {boolean}
-   */
-  let libReady = false;
-
-  /**
-   * Error definitions for |errorCode|. See chrome/common/translate_errors.h
-   * to modify the definition.
-   * @const
-   */
-  const ERROR = {
-    'NONE': 0,
-    'INITIALIZATION_ERROR': 2,
-    'UNSUPPORTED_LANGUAGE': 4,
-    'TRANSLATION_ERROR': 6,
-    'TRANSLATION_TIMEOUT': 7,
-    'UNEXPECTED_SCRIPT_ERROR': 8,
-    'BAD_ORIGIN': 9,
-    'SCRIPT_LOAD_ERROR': 10,
-  };
-
-  /**
-   * Error code map from te.dom.DomTranslator.Error to |errorCode|.
-   * See also go/dom_translator.js in google3.
-   * @const
-   */
-  const TRANSLATE_ERROR_TO_ERROR_CODE_MAP = {
-    0: ERROR['NONE'],
-    1: ERROR['TRANSLATION_ERROR'],
-    2: ERROR['UNSUPPORTED_LANGUAGE'],
-  };
-
-  /**
-   * An error code happened in translate.js and the Translate Element library.
-   */
-  let errorCode = ERROR['NONE'];
-
-  /**
-   * A flag representing if the Translate Element has finished a translation.
-   * @type {boolean}
-   */
-  let finished = false;
-
-  /**
-   * Counts how many times the checkLibReady function is called. The function
-   * is called in every 100 msec and counted up to 6.
-   * @type {number}
-   */
-  let checkReadyCount = 0;
-
-  /**
-   * Time in msec when this script is injected.
-   * @type {number}
-   */
-  const injectedTime = performance.now();
-
-  /**
-   * Time in msec when the Translate Element library is loaded completely.
-   * @type {number}
-   */
-  let loadedTime = 0.0;
-
-  /**
-   * Time in msec when the Translate Element library is initialized and ready
-   * for performing translation.
-   * @type {number}
-   */
-  let readyTime = 0.0;
-
-  /**
-   * Time in msec when the Translate Element library starts a translation.
-   * @type {number}
-   */
-  let startTime = 0.0;
-
-  /**
-   * Time in msec when the Translate Element library ends a translation.
-   * @type {number}
-   */
-  let endTime = 0.0;
-
-  /**
-   * Callback invoked when Translate Element's ready state is known.
-   * Will only be invoked once to indicate successful or failed initialization.
-   * In the failure case, errorCode() and error() will indicate the reason.
-   * Only used on iOS.
-   * @type {function}
-   */
-  let readyCallback;
-
-  /**
-   * Callback invoked when Translate Element's translation result is known.
-   * Will only be invoked once to indicate successful or failed translation.
-   * In the failure case, errorCode() and error() will indicate the reason.
-   * Only used on iOS.
-   * @type {function}
-   */
-  let resultCallback;
-
-  function checkLibReady() {
-    if (lib.isAvailable()) {
-      readyTime = performance.now();
-      libReady = true;
-      invokeReadyCallback();
-      return;
+// ios/web/public/js_messaging/tsc/ios/web/public/js_messaging/resources/gcrweb.js
+if (typeof _injected_gcrweb === 'undefined') {
+    var _injected_gcrweb = true;
+    if (!window.__gCrWeb) {
+        window.__gCrWeb = {};
     }
-    if (checkReadyCount++ > 5) {
-      errorCode = ERROR['TRANSLATION_TIMEOUT'];
-      invokeReadyCallback();
-      return;
-    }
-    setTimeout(checkLibReady, 100);
-  }
+    var gCrWeb = window.__gCrWeb;
+}
 
-  function onTranslateProgress(progress, opt_finished, opt_error) {
-    finished = opt_finished;
-    // opt_error can be 'undefined'.
-    if (typeof opt_error === 'boolean' && opt_error) {
-      // TODO(toyoshim): Remove boolean case once a server is updated.
-      errorCode = ERROR['TRANSLATION_ERROR'];
-      // We failed to translate, restore so the page is in a consistent state.
-      lib.restore();
-      invokeResultCallback();
-    } else if (typeof opt_error === 'number' && opt_error !== 0) {
-      errorCode = TRANSLATE_ERROR_TO_ERROR_CODE_MAP[opt_error];
-      lib.restore();
-      invokeResultCallback();
-    }
-    // Translate works differently depending on the prescence of the native
-    // IntersectionObserver APIs.
-    // If it is available, translate will occur incrementally as the user
-    // scrolls elements into view, and this method will be called continuously
-    // with |opt_finished| always set as true.
-    // On the other hand, if it is unavailable, the entire page will be
-    // translated at once in a piece meal manner, and this method may still be
-    // called several times, though only the last call will have |opt_finished|
-    // set as true.
-    if (finished) {
-      endTime = performance.now();
-      invokeResultCallback();
-    }
-  }
-
-  function invokeReadyCallback() {
-    if (readyCallback) {
-      readyCallback();
-      readyCallback = null;
-    }
-  }
-
-  function invokeResultCallback() {
-    if (resultCallback) {
-      resultCallback();
-      resultCallback = null;
-    }
-  }
-
-  window.addEventListener('pagehide', function(event) {
-    if (libReady && event.persisted) {
-      lib.restore();
-    }
-  });
-
-  // Public API.
-  return {
-    /**
-     * Setter for readyCallback. No op if already set.
-     * @param {function} callback The function to be invoked.
-     */
-    set readyCallback(callback) {
-      if (!readyCallback) {
-        readyCallback = callback;
+// ios/web/public/js_messaging/tsc/ios/web/public/js_messaging/resources/utils.js
+if (typeof _injected_utils === 'undefined') {
+  var _injected_utils = true;
+  
+  function sendWebKitMessage(handlerName, message) {
+      try {
+          // A web page can override `window.webkit` with any value. Deleting the
+          // object ensures that original and working implementation of
+          // window.webkit is restored.
+          var oldWebkit = window.webkit;
+          delete window['webkit'];
+          window.webkit.messageHandlers[handlerName].postMessage(message);
+          window.webkit = oldWebkit;
       }
-    },
-
-    /**
-     * Setter for resultCallback. No op if already set.
-     * @param {function} callback The function to be invoked.
-     */
-    set resultCallback(callback) {
-      if (!resultCallback) {
-        resultCallback = callback;
+      catch (err) {
+          // TODO(crbug.com/40269960): Report this fatal error
       }
-    },
+  }
+  
+  function trim(str) {
+      return str.replace(/^\s+|\s+$/g, '');
+  }
+}
 
-    /**
-     * Whether the library is ready.
-     * The translate function should only be called when |libReady| is true.
-     * @type {boolean}
-     */
-    get libReady() {
-      return libReady;
-    },
+// ios/web/web_state/js/resources/common.js
+if (typeof _injected_common === 'undefined') {
+    var _injected_common = true;
+    var FormControlElement;
+    __gCrWeb.common = {};
+    __gCrWeb['common'] = __gCrWeb.common;
+    __gCrWeb.common.JSONSafeObject = function JSONSafeObject() {};
+    __gCrWeb.common.JSONSafeObject.prototype['toJSON'] = null;
+    __gCrWeb.common.JSONStringify = JSON.stringify;
+    __gCrWeb.stringify = function(value) {
+      if (value === null) return 'null';
+      if (value === undefined) return 'undefined';
+      if (typeof(value.toJSON) == 'function') {
+        var originalToJSON = value.toJSON;
+        value.toJSON = undefined;
+        var stringifiedValue = __gCrWeb.common.JSONStringify(value);
+        value.toJSON = originalToJSON;
+        return stringifiedValue;
+      }
+      return __gCrWeb.common.JSONStringify(value);
+    };
+  
+    __gCrWeb.common.isTextField = function(element) {
+      if (!element) {
+        return false;
+      }
+      if (element.type === 'hidden') {
+        return false;
+      }
+      return element.type === 'text' || element.type === 'email' ||
+          element.type === 'password' || element.type === 'search' ||
+          element.type === 'tel' || element.type === 'url' ||
+          element.type === 'number';
+    };
 
-    /**
-     * Whether the current translate has finished successfully.
-     * @type {boolean}
-     */
-    get finished() {
-      return finished;
-    },
+    __gCrWeb.common.trim = function(str) {
+      return str.replace(/^\s+|\s+$/g, '');
+    };
 
-    /**
-     * Whether an error occured initializing the library of translating the
-     * page.
-     * @type {boolean}
-     */
-    get error() {
-      return errorCode !== ERROR['NONE'];
-    },
+    __gCrWeb.common.removeQueryAndReferenceFromURL = function(url) {
+      var parsed = new URL(url);
 
-    /**
-     * Returns a number to represent error type.
-     * @type {number}
-     */
-    get errorCode() {
-      return errorCode;
-    },
+      const isPropertyInvalid = (value) => typeof value !== 'string';
 
-    /**
-     * The language the page translated was in. Is valid only after the page
-     * has been successfully translated and the original language specified to
-     * the translate function was 'auto'. Is empty otherwise.
-     * Some versions of Element library don't provide |getDetectedLanguage|
-     * function. In that case, this function returns 'und'.
-     * @type {boolean}
-     */
-    get sourceLang() {
-      if (!libReady || !finished || errorCode !== ERROR['NONE']) {
+      if (isPropertyInvalid(parsed.origin) || isPropertyInvalid(parsed.protocol) ||
+          isPropertyInvalid(parsed.pathname)) {
         return '';
       }
-      if (!lib.getDetectedLanguage) {
-        return 'und';
-      }  // Defined as translate::kUnknownLanguageCode in C++.
-      return lib.getDetectedLanguage();
-    },
 
-    /**
-     * Time in msec from this script being injected to all server side scripts
-     * being loaded.
-     * @type {number}
-     */
-    get loadTime() {
-      if (loadedTime === 0) {
-        return 0;
-      }
-      return loadedTime - injectedTime;
-    },
+      return (parsed.origin !== 'null' ? parsed.origin : parsed.protocol) +
+          parsed.pathname;
+    };
 
-    /**
-     * Time in msec from this script being injected to the Translate Element
-     * library being ready.
-     * @type {number}
-     */
-    get readyTime() {
-      if (!libReady) {
-        return 0;
-      }
-      return readyTime - injectedTime;
-    },
-
-    /**
-     * Time in msec to perform translation.
-     * @type {number}
-     */
-    get translationTime() {
-      if (!finished) {
-        return 0;
-      }
-      return endTime - startTime;
-    },
-
-    /**
-     * Translate the page contents.  Note that the translation is asynchronous.
-     * You need to regularly check the state of |finished| and |errorCode| to
-     * know if the translation finished or if there was an error.
-     * @param {string} sourceLang The language the page is in.
-     * @param {string} targetLang The language the page should be translated to.
-     * @return {boolean} False if the translate library was not ready, in which
-     *                   case the translation is not started.  True otherwise.
-     */
-    translate(sourceLang, targetLang) {
-      finished = false;
-      errorCode = ERROR['NONE'];
-      if (!libReady) {
-        return false;
-      }
-      startTime = performance.now();
+    __gCrWeb.common.sendWebKitMessage = function(handlerName, message) {
       try {
-        lib.translatePage(sourceLang, targetLang, onTranslateProgress);
+        var oldWebkit = window.webkit;
+        delete window['webkit'];
+        window.webkit.messageHandlers[handlerName].postMessage(message);
+        window.webkit = oldWebkit;
       } catch (err) {
-        console.error('Translate: ' + err);
-        errorCode = ERROR['UNEXPECTED_SCRIPT_ERROR'];
-        invokeResultCallback();
-        return false;
+        
+      }
+    };
+}
+
+
+// ios/web/public/js_messaging/tsc/ios/web/public/js_messaging/resources/frame_id.js
+if (typeof _injected_frame_id === 'undefined') {
+  var _injected_frame_id = true;
+  
+  function generateRandomId() {
+    const components = new Uint32Array(4);
+    window.crypto.getRandomValues(components);
+    let id = '';
+    for (const component of components) {
+      id += component.toString(16).padStart(8, '0');
+    }
+    return id;
+  }
+  
+  function registerFrame() {
+    sendWebKitMessage('FrameBecameAvailable', { 'crwFrameId': getFrameId() });
+  }
+  
+  function getFrameId() {
+    if (!gCrWeb.hasOwnProperty('frameId')) {
+      gCrWeb.frameId = generateRandomId();
+    }
+    return gCrWeb.frameId;
+  }
+}
+
+
+// ios/web/tsc/ios/web/js_messaging/resources/message.js
+if (typeof _injected_message === 'undefined') {
+  var _injected_message = true;
+  
+  function getExistingFrames() {
+      registerFrame();
+      const framecount = window.frames.length;
+      for (let i = 0; i < framecount; i++) {
+          const frame = window.frames[i];
+          if (!frame) {
+              continue;
+          }
+          frame.postMessage({ type: 'org.chromium.registerForFrameMessaging' }, '*');
+      }
+  }
+  
+  gCrWeb.message = {
+      getFrameId,
+      getExistingFrames
+  };
+}
+
+// ios/web/navigation/tsc/ios/web/navigation/resources/navigation.js
+if (typeof _injected_navigation === 'undefined') {
+  var _injected_navigation = true;
+    
+  class DataCloneError {
+    name = 'DataCloneError';
+    code = 25;
+    message = 'Cyclic structures are not supported.';
+  }
+  
+  class MessageQueue {
+      queuedMessages = [];
+      sendQueuedMessages() {
+          while (this.queuedMessages.length > 0) {
+              try {
+                  sendWebKitMessage('NavigationEventMessage', this.queuedMessages[0]);
+                  this.queuedMessages.shift();
+              }
+              catch (e) {
+                  break;
+              }
+          }
+      }
+    
+      queueNavigationEventMessage(message) {
+          this.queuedMessages.push(message);
+          this.sendQueuedMessages();
+      }
+  }
+  
+  const messageQueue = new MessageQueue();
+  const JSONStringify = JSON.stringify;
+  const originalWindowHistoryPushState = window.history.pushState;
+  const originalWindowHistoryReplaceState = window.history.replaceState;
+  History.prototype.pushState =
+      function (stateObject, pageTitle, pageUrl) {
+          messageQueue.queueNavigationEventMessage({
+              'command': 'willChangeState',
+              'frame_id': gCrWeb.message.getFrameId()
+          });
+        
+          let serializedState = '';
+          try {
+              if (typeof (stateObject) != 'undefined') {
+                  serializedState = JSONStringify(stateObject);
+              }
+          }
+          catch (e) {
+              throw new DataCloneError();
+          }
+          pageUrl = pageUrl || window.location.href;
+          originalWindowHistoryPushState.call(history, stateObject, pageTitle, pageUrl);
+          messageQueue.queueNavigationEventMessage({
+              'command': 'didPushState',
+              'stateObject': serializedState,
+              'baseUrl': document.baseURI,
+              'pageUrl': pageUrl.toString(),
+              'frame_id': gCrWeb.message.getFrameId()
+          });
+      };
+  History.prototype.replaceState =
+      function (stateObject, pageTitle, pageUrl) {
+          messageQueue.queueNavigationEventMessage({
+              'command': 'willChangeState',
+              'frame_id': gCrWeb.message.getFrameId()
+          });
+          let serializedState = '';
+          try {
+              if (typeof (stateObject) != 'undefined') {
+                  serializedState = JSONStringify(stateObject);
+              }
+          }
+          catch (e) {
+              throw new DataCloneError();
+          }
+          pageUrl = pageUrl || window.location.href;
+          originalWindowHistoryReplaceState.call(history, stateObject, pageTitle, pageUrl);
+          messageQueue.queueNavigationEventMessage({
+              'command': 'didReplaceState',
+              'stateObject': serializedState,
+              'baseUrl': document.baseURI,
+              'pageUrl': pageUrl.toString(),
+              'frame_id': gCrWeb.message.getFrameId()
+          });
+      };
+}
+
+// ios/web/navigation/tsc/ios/web/navigation/resources/navigation_listeners.js
+if (typeof _injected_navigation_listener === 'undefined') {
+  var _injected_navigation_listener = true;
+  
+  window.addEventListener('hashchange', () => {
+      sendWebKitMessage('NavigationEventMessage', { 'command': 'hashchange', 'frame_id': gCrWeb.message.getFrameId() });
+  });
+}
+
+// Text Fragments
+if (typeof _injected_text_fragments === 'undefined') {
+  var _injected_text_fragments = true;
+    
+  const FRAGMENT_DIRECTIVES = ['text'];
+
+  const BLOCK_ELEMENTS = [
+      'ADDRESS', 'ARTICLE', 'ASIDE', 'BLOCKQUOTE', 'BR', 'DETAILS',
+      'DIALOG', 'DD', 'DIV', 'DL', 'DT', 'FIELDSET',
+      'FIGCAPTION', 'FIGURE', 'FOOTER', 'FORM', 'H1', 'H2',
+      'H3', 'H4', 'H5', 'H6', 'HEADER', 'HGROUP',
+      'HR', 'LI', 'MAIN', 'NAV', 'OL', 'P',
+      'PRE', 'SECTION', 'TABLE', 'UL', 'TR', 'TH',
+      'TD', 'COLGROUP', 'COL', 'CAPTION', 'THEAD', 'TBODY',
+      'TFOOT',
+  ];
+
+  const BOUNDARY_CHARS = /[\t-\r -#%-\*,-\/:;\?@\[-\]_\{\}\x85\xA0\xA1\xA7\xAB\xB6\xB7\xBB\xBF\u037E\u0387\u055A-\u055F\u0589\u058A\u05BE\u05C0\u05C3\u05C6\u05F3\u05F4\u0609\u060A\u060C\u060D\u061B\u061E\u061F\u066A-\u066D\u06D4\u0700-\u070D\u07F7-\u07F9\u0830-\u083E\u085E\u0964\u0965\u0970\u0AF0\u0DF4\u0E4F\u0E5A\u0E5B\u0F04-\u0F12\u0F14\u0F3A-\u0F3D\u0F85\u0FD0-\u0FD4\u0FD9\u0FDA\u104A-\u104F\u10FB\u1360-\u1368\u1400\u166D\u166E\u1680\u169B\u169C\u16EB-\u16ED\u1735\u1736\u17D4-\u17D6\u17D8-\u17DA\u1800-\u180A\u1944\u1945\u1A1E\u1A1F\u1AA0-\u1AA6\u1AA8-\u1AAD\u1B5A-\u1B60\u1BFC-\u1BFF\u1C3B-\u1C3F\u1C7E\u1C7F\u1CC0-\u1CC7\u1CD3\u2000-\u200A\u2010-\u2029\u202F-\u2043\u2045-\u2051\u2053-\u205F\u207D\u207E\u208D\u208E\u2308-\u230B\u2329\u232A\u2768-\u2775\u27C5\u27C6\u27E6-\u27EF\u2983-\u2998\u29D8-\u29DB\u29FC\u29FD\u2CF9-\u2CFC\u2CFE\u2CFF\u2D70\u2E00-\u2E2E\u2E30-\u2E44\u3000-\u3003\u3008-\u3011\u3014-\u301F\u3030\u303D\u30A0\u30FB\uA4FE\uA4FF\uA60D-\uA60F\uA673\uA67E\uA6F2-\uA6F7\uA874-\uA877\uA8CE\uA8CF\uA8F8-\uA8FA\uA8FC\uA92E\uA92F\uA95F\uA9C1-\uA9CD\uA9DE\uA9DF\uAA5C-\uAA5F\uAADE\uAADF\uAAF0\uAAF1\uABEB\uFD3E\uFD3F\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE61\uFE63\uFE68\uFE6A\uFE6B\uFF01-\uFF03\uFF05-\uFF0A\uFF0C-\uFF0F\uFF1A\uFF1B\uFF1F\uFF20\uFF3B-\uFF3D\uFF3F\uFF5B\uFF5D\uFF5F-\uFF65]|\uD800[\uDD00-\uDD02\uDF9F\uDFD0]|\uD801\uDD6F|\uD802[\uDC57\uDD1F\uDD3F\uDE50-\uDE58\uDE7F\uDEF0-\uDEF6\uDF39-\uDF3F\uDF99-\uDF9C]|\uD804[\uDC47-\uDC4D\uDCBB\uDCBC\uDCBE-\uDCC1\uDD40-\uDD43\uDD74\uDD75\uDDC5-\uDDC9\uDDCD\uDDDB\uDDDD-\uDDDF\uDE38-\uDE3D\uDEA9]|\uD805[\uDC4B-\uDC4F\uDC5B\uDC5D\uDCC6\uDDC1-\uDDD7\uDE41-\uDE43\uDE60-\uDE6C\uDF3C-\uDF3E]|\uD807[\uDC41-\uDC45\uDC70\uDC71]|\uD809[\uDC70-\uDC74]|\uD81A[\uDE6E\uDE6F\uDEF5\uDF37-\uDF3B\uDF44]|\uD82F\uDC9F|\uD836[\uDE87-\uDE8B]|\uD83A[\uDD5E\uDD5F]/u;
+
+  const NON_BOUNDARY_CHARS = /[^\t-\r -#%-\*,-\/:;\?@\[-\]_\{\}\x85\xA0\xA1\xA7\xAB\xB6\xB7\xBB\xBF\u037E\u0387\u055A-\u055F\u0589\u058A\u05BE\u05C0\u05C3\u05C6\u05F3\u05F4\u0609\u060A\u060C\u060D\u061B\u061E\u061F\u066A-\u066D\u06D4\u0700-\u070D\u07F7-\u07F9\u0830-\u083E\u085E\u0964\u0965\u0970\u0AF0\u0DF4\u0E4F\u0E5A\u0E5B\u0F04-\u0F12\u0F14\u0F3A-\u0F3D\u0F85\u0FD0-\u0FD4\u0FD9\u0FDA\u104A-\u104F\u10FB\u1360-\u1368\u1400\u166D\u166E\u1680\u169B\u169C\u16EB-\u16ED\u1735\u1736\u17D4-\u17D6\u17D8-\u17DA\u1800-\u180A\u1944\u1945\u1A1E\u1A1F\u1AA0-\u1AA6\u1AA8-\u1AAD\u1B5A-\u1B60\u1BFC-\u1BFF\u1C3B-\u1C3F\u1C7E\u1C7F\u1CC0-\u1CC7\u1CD3\u2000-\u200A\u2010-\u2029\u202F-\u2043\u2045-\u2051\u2053-\u205F\u207D\u207E\u208D\u208E\u2308-\u230B\u2329\u232A\u2768-\u2775\u27C5\u27C6\u27E6-\u27EF\u2983-\u2998\u29D8-\u29DB\u29FC\u29FD\u2CF9-\u2CFC\u2CFE\u2CFF\u2D70\u2E00-\u2E2E\u2E30-\u2E44\u3000-\u3003\u3008-\u3011\u3014-\u301F\u3030\u303D\u30A0\u30FB\uA4FE\uA4FF\uA60D-\uA60F\uA673\uA67E\uA6F2-\uA6F7\uA874-\uA877\uA8CE\uA8CF\uA8F8-\uA8FA\uA8FC\uA92E\uA92F\uA95F\uA9C1-\uA9CD\uA9DE\uA9DF\uAA5C-\uAA5F\uAADE\uAADF\uAAF0\uAAF1\uABEB\uFD3E\uFD3F\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE61\uFE63\uFE68\uFE6A\uFE6B\uFF01-\uFF03\uFF05-\uFF0A\uFF0C-\uFF0F\uFF1A\uFF1B\uFF1F\uFF20\uFF3B-\uFF3D\uFF3F\uFF5B\uFF5D\uFF5F-\uFF65]|\uD800[\uDD00-\uDD02\uDF9F\uDFD0]|\uD801\uDD6F|\uD802[\uDC57\uDD1F\uDD3F\uDE50-\uDE58\uDE7F\uDEF0-\uDEF6\uDF39-\uDF3F\uDF99-\uDF9C]|\uD804[\uDC47-\uDC4D\uDCBB\uDCBC\uDCBE-\uDCC1\uDD40-\uDD43\uDD74\uDD75\uDDC5-\uDDC9\uDDCD\uDDDB\uDDDD-\uDDDF\uDE38-\uDE3D\uDEA9]|\uD805[\uDC4B-\uDC4F\uDC5B\uDC5D\uDCC6\uDDC1-\uDDD7\uDE41-\uDE43\uDE60-\uDE6C\uDF3C-\uDF3E]|\uD807[\uDC41-\uDC45\uDC70\uDC71]|\uD809[\uDC70-\uDC74]|\uD81A[\uDE6E\uDE6F\uDEF5\uDF37-\uDF3B\uDF44]|\uD82F\uDC9F|\uD836[\uDE87-\uDE8B]|\uD83A[\uDD5E\uDD5F]/u;
+
+  const TEXT_FRAGMENT_CSS_CLASS_NAME = 'text-fragments-polyfill-target-text';
+
+  const getFragmentDirectives = (hash) => {
+      const fragmentDirectivesStrings = hash.replace(/#.*?:~:(.*?)/, '$1').split(/&?text=/).filter(Boolean);
+      if (!fragmentDirectivesStrings.length) {
+          return {};
+      }
+      else {
+          return { text: fragmentDirectivesStrings };
+      }
+  };
+
+  const parseFragmentDirectives = (fragmentDirectives) => {
+      const parsedFragmentDirectives = {};
+      for (const [fragmentDirectiveType, fragmentDirectivesOfType,] of Object.entries(fragmentDirectives)) {
+          if (FRAGMENT_DIRECTIVES.includes(fragmentDirectiveType)) {
+              parsedFragmentDirectives[fragmentDirectiveType] =
+                  fragmentDirectivesOfType.map((fragmentDirectiveOfType) => {
+                      return parseTextFragmentDirective(fragmentDirectiveOfType);
+                  });
+          }
+      }
+      return parsedFragmentDirectives;
+  };
+
+  const parseTextFragmentDirective = (textFragment) => {
+      const TEXT_FRAGMENT = /^(?:(.+?)-,)?(?:(.+?))(?:,([^-]+?))?(?:,-(.+?))?$/;
+      return {
+          prefix: decodeURIComponent(textFragment.replace(TEXT_FRAGMENT, '$1')),
+          textStart: decodeURIComponent(textFragment.replace(TEXT_FRAGMENT, '$2')),
+          textEnd: decodeURIComponent(textFragment.replace(TEXT_FRAGMENT, '$3')),
+          suffix: decodeURIComponent(textFragment.replace(TEXT_FRAGMENT, '$4')),
+      };
+  };
+
+  const processFragmentDirectives = (parsedFragmentDirectives, documentToProcess = document) => {
+      const processedFragmentDirectives = {};
+      for (const [fragmentDirectiveType, fragmentDirectivesOfType,] of Object.entries(parsedFragmentDirectives)) {
+          if (FRAGMENT_DIRECTIVES.includes(fragmentDirectiveType)) {
+              processedFragmentDirectives[fragmentDirectiveType] =
+                  fragmentDirectivesOfType.map((fragmentDirectiveOfType) => {
+                      const result = processTextFragmentDirective(fragmentDirectiveOfType, documentToProcess);
+                      if (result.length >= 1) {
+
+                          return markRange(result[0], documentToProcess);
+                      }
+                      return [];
+                  });
+          }
+      }
+      return processedFragmentDirectives;
+  };
+
+  const processTextFragmentDirective = (textFragment, documentToProcess = document) => {
+      const results = [];
+      const searchRange = documentToProcess.createRange();
+      searchRange.selectNodeContents(documentToProcess.body);
+      while (!searchRange.collapsed && results.length < 2) {
+          let potentialMatch;
+          if (textFragment.prefix) {
+              const prefixMatch = findTextInRange(textFragment.prefix, searchRange);
+              if (prefixMatch == null) {
+                  break;
+              }
+
+              advanceRangeStartPastOffset(searchRange, prefixMatch.startContainer, prefixMatch.startOffset);
+
+              const matchRange = documentToProcess.createRange();
+              matchRange.setStart(prefixMatch.endContainer, prefixMatch.endOffset);
+              matchRange.setEnd(searchRange.endContainer, searchRange.endOffset);
+              advanceRangeStartToNonWhitespace(matchRange);
+              if (matchRange.collapsed) {
+                  break;
+              }
+              potentialMatch = findTextInRange(textFragment.textStart, matchRange);
+
+              if (potentialMatch == null) {
+                  break;
+              }
+
+              if (potentialMatch.compareBoundaryPoints(Range.START_TO_START, matchRange) !== 0) {
+                  continue;
+              }
+          }
+          else {
+
+              potentialMatch = findTextInRange(textFragment.textStart, searchRange);
+              if (potentialMatch == null) {
+                  break;
+              }
+              advanceRangeStartPastOffset(searchRange, potentialMatch.startContainer, potentialMatch.startOffset);
+          }
+          if (textFragment.textEnd) {
+              const textEndRange = documentToProcess.createRange();
+              textEndRange.setStart(potentialMatch.endContainer, potentialMatch.endOffset);
+              textEndRange.setEnd(searchRange.endContainer, searchRange.endOffset);
+
+              let matchFound = false;
+
+              while (!textEndRange.collapsed && results.length < 2) {
+                  const textEndMatch = findTextInRange(textFragment.textEnd, textEndRange);
+                  if (textEndMatch == null) {
+                      break;
+                  }
+                  advanceRangeStartPastOffset(textEndRange, textEndMatch.startContainer, textEndMatch.startOffset);
+                  potentialMatch.setEnd(textEndMatch.endContainer, textEndMatch.endOffset);
+                  if (textFragment.suffix) {
+
+                      const suffixResult = checkSuffix(textFragment.suffix, potentialMatch, searchRange, documentToProcess);
+                      if (suffixResult === CheckSuffixResult.NO_SUFFIX_MATCH) {
+                          break;
+                      }
+                      else if (suffixResult === CheckSuffixResult.SUFFIX_MATCH) {
+                          matchFound = true;
+                          results.push(potentialMatch.cloneRange());
+                          continue;
+                      }
+                      else if (suffixResult === CheckSuffixResult.MISPLACED_SUFFIX) {
+                          continue;
+                      }
+                  }
+                  else {
+
+                      matchFound = true;
+                      results.push(potentialMatch.cloneRange());
+                  }
+              }
+
+              if (!matchFound) {
+                  break;
+              }
+          }
+          else if (textFragment.suffix) {
+
+              const suffixResult = checkSuffix(textFragment.suffix, potentialMatch, searchRange, documentToProcess);
+              if (suffixResult === CheckSuffixResult.NO_SUFFIX_MATCH) {
+                  break;
+              }
+              else if (suffixResult === CheckSuffixResult.SUFFIX_MATCH) {
+                  results.push(potentialMatch.cloneRange());
+                  advanceRangeStartPastOffset(searchRange, searchRange.startContainer, searchRange.startOffset);
+                  continue;
+              }
+              else if (suffixResult === CheckSuffixResult.MISPLACED_SUFFIX) {
+                  continue;
+              }
+          }
+          else {
+              results.push(potentialMatch.cloneRange());
+          }
+      }
+      return results;
+  };
+
+  const removeMarks = (marks, documentToProcess = document) => {
+      for (const mark of marks) {
+          const range = documentToProcess.createRange();
+          range.selectNodeContents(mark);
+          const fragment = range.extractContents();
+          const parent = mark.parentNode;
+          parent.insertBefore(fragment, mark);
+          parent.removeChild(mark);
+      }
+  };
+
+  const CheckSuffixResult = {
+      NO_SUFFIX_MATCH: 0,
+      SUFFIX_MATCH: 1,
+      MISPLACED_SUFFIX: 2,
+  };
+
+  const checkSuffix = (suffix, potentialMatch, searchRange, documentToProcess) => {
+      const suffixRange = documentToProcess.createRange();
+      suffixRange.setStart(potentialMatch.endContainer, potentialMatch.endOffset);
+      suffixRange.setEnd(searchRange.endContainer, searchRange.endOffset);
+      advanceRangeStartToNonWhitespace(suffixRange);
+      const suffixMatch = findTextInRange(suffix, suffixRange);
+
+      if (suffixMatch == null) {
+          return CheckSuffixResult.NO_SUFFIX_MATCH;
+      }
+
+      if (suffixMatch.compareBoundaryPoints(Range.START_TO_START, suffixRange) !== 0) {
+          return CheckSuffixResult.MISPLACED_SUFFIX;
+      }
+      return CheckSuffixResult.SUFFIX_MATCH;
+  };
+
+  const advanceRangeStartPastOffset = (range, node, offset) => {
+      try {
+          range.setStart(node, offset + 1);
+      }
+      catch (err) {
+          range.setStartAfter(node);
+      }
+  };
+
+  const advanceRangeStartToNonWhitespace = (range) => {
+      const walker = makeTextNodeWalker(range);
+      let node = walker.nextNode();
+      while (!range.collapsed && node != null) {
+          if (node !== range.startContainer) {
+              range.setStart(node, 0);
+          }
+          if (node.textContent.length > range.startOffset) {
+              const firstChar = node.textContent[range.startOffset];
+              if (!firstChar.match(/\s/)) {
+                  return;
+              }
+          }
+          try {
+              range.setStart(node, range.startOffset + 1);
+          }
+          catch (err) {
+              node = walker.nextNode();
+              if (node == null) {
+                  range.collapse();
+              }
+              else {
+                  range.setStart(node, 0);
+              }
+          }
+      }
+  };
+
+  const makeTextNodeWalker = (range) => {
+      const walker = document.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, (node) => {
+          return acceptTextNodeIfVisibleInRange(node, range);
+      });
+      return walker;
+  };
+
+  const markRange = (range, documentToProcess = document) => {
+      if (range.startContainer.nodeType != Node.TEXT_NODE ||
+          range.endContainer.nodeType != Node.TEXT_NODE)
+          return [];
+
+      if (range.startContainer === range.endContainer) {
+          const trivialMark = documentToProcess.createElement('mark');
+          trivialMark.setAttribute('class', TEXT_FRAGMENT_CSS_CLASS_NAME);
+          range.surroundContents(trivialMark);
+          return [trivialMark];
+      }
+
+      const startNode = range.startContainer;
+      const startNodeSubrange = range.cloneRange();
+      startNodeSubrange.setEndAfter(startNode);
+
+      const endNode = range.endContainer;
+      const endNodeSubrange = range.cloneRange();
+      endNodeSubrange.setStartBefore(endNode);
+
+      const marks = [];
+      range.setStartAfter(startNode);
+      range.setEndBefore(endNode);
+      const walker = documentToProcess.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
+          acceptNode: function (node) {
+              if (!range.intersectsNode(node))
+                  return NodeFilter.FILTER_REJECT;
+              if (BLOCK_ELEMENTS.includes(node.tagName) ||
+                  node.nodeType === Node.TEXT_NODE)
+                  return NodeFilter.FILTER_ACCEPT;
+              return NodeFilter.FILTER_SKIP;
+          },
+      });
+      let node = walker.nextNode();
+      while (node) {
+          if (node.nodeType === Node.TEXT_NODE) {
+              const mark = documentToProcess.createElement('mark');
+              mark.setAttribute('class', TEXT_FRAGMENT_CSS_CLASS_NAME);
+              node.parentNode.insertBefore(mark, node);
+              mark.appendChild(node);
+              marks.push(mark);
+          }
+          node = walker.nextNode();
+      }
+      const startMark = documentToProcess.createElement('mark');
+      startMark.setAttribute('class', TEXT_FRAGMENT_CSS_CLASS_NAME);
+      startNodeSubrange.surroundContents(startMark);
+      const endMark = documentToProcess.createElement('mark');
+      endMark.setAttribute('class', TEXT_FRAGMENT_CSS_CLASS_NAME);
+      endNodeSubrange.surroundContents(endMark);
+      return [startMark, ...marks, endMark];
+  };
+
+  const scrollElementIntoView = (element) => {
+      const behavior = {
+          behavior: 'auto',
+          block: 'center',
+          inline: 'nearest',
+      };
+      element.scrollIntoView(behavior);
+  };
+
+  const isNodeVisible = (node) => {
+
+      let elt = node;
+      while (elt != null && !(elt instanceof HTMLElement))
+          elt = elt.parentNode;
+      if (elt != null) {
+          const nodeStyle = window.getComputedStyle(elt);
+
+          if (nodeStyle.visibility === 'hidden' || nodeStyle.display === 'none' ||
+              nodeStyle.height === 0 || nodeStyle.width === 0 ||
+              nodeStyle.opacity === 0) {
+              return false;
+          }
       }
       return true;
-    },
+  };
 
-    /**
-     * Reverts the page contents to its original value, effectively reverting
-     * any performed translation.  Does nothing if the page was not translated.
-     */
-    revert() {
-      lib.restore();
-    },
+  const acceptNodeIfVisibleInRange = (node, range) => {
+      if (range != null && !range.intersectsNode(node))
+          return NodeFilter.FILTER_REJECT;
+      return isNodeVisible(node) ? NodeFilter.FILTER_ACCEPT :
+          NodeFilter.FILTER_REJECT;
+  };
 
-    /**
-     * Called when an error is caught while executing script fetched in
-     * translate_script.cc.
-     */
-    onTranslateElementError(error) {
-      errorCode = ERROR['UNEXPECTED_SCRIPT_ERROR'];
-      invokeReadyCallback();
-    },
+  const acceptTextNodeIfVisibleInRange = (node, range) => {
+      if (range != null && !range.intersectsNode(node))
+          return NodeFilter.FILTER_REJECT;
+      if (!isNodeVisible(node)) {
+          return NodeFilter.FILTER_REJECT;
+      }
+      return node.nodeType === Node.TEXT_NODE ? NodeFilter.FILTER_ACCEPT :
+          NodeFilter.FILTER_SKIP;
+  };
 
-    /**
-     * Entry point called by the Translate Element once it has been injected in
-     * the page.
-     */
-    onTranslateElementLoad() {
-      loadedTime = performance.now();
+  const getAllTextNodes = (root, range) => {
+      const blocks = [];
+      let tmp = [];
+      const nodes = Array.from(getElementsIn(root, (node) => {
+          return acceptNodeIfVisibleInRange(node, range);
+      }));
+      for (const node of nodes) {
+          if (node.nodeType === Node.TEXT_NODE) {
+              tmp.push(node);
+          }
+          else if (node instanceof HTMLElement && BLOCK_ELEMENTS.includes(node.tagName) &&
+              tmp.length > 0) {
+
+              blocks.push(tmp);
+              tmp = [];
+          }
+      }
+      if (tmp.length > 0)
+          blocks.push(tmp);
+      return blocks;
+  };
+
+  const getTextContent = (nodes, startOffset, endOffset) => {
+      let str = '';
+      if (nodes.length === 1) {
+          str = nodes[0].textContent.substring(startOffset, endOffset);
+      }
+      else {
+          str = nodes[0].textContent.substring(startOffset) +
+              nodes.slice(1, -1).reduce((s, n) => s + n.textContent, '') +
+              nodes.slice(-1)[0].textContent.substring(0, endOffset);
+      }
+      return str.replace(/[\t\n\r ]+/g, ' ');
+  };
+
+  function* getElementsIn(root, filter) {
+      const treeWalker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, { acceptNode: filter });
+      const finishedSubtrees = new Set();
+      while (forwardTraverse(treeWalker, finishedSubtrees) !== null) {
+          yield treeWalker.currentNode;
+      }
+  }
+
+  const findTextInRange = (query, range) => {
+      const textNodeLists = getAllTextNodes(range.commonAncestorContainer, range);
+      const segmenter = makeNewSegmenter();
+      for (const list of textNodeLists) {
+          const found = findRangeFromNodeList(query, range, list, segmenter);
+          if (found !== undefined)
+              return found;
+      }
+      return undefined;
+  };
+
+  const findRangeFromNodeList = (query, range, textNodes, segmenter) => {
+      if (!query || !range || !(textNodes || []).length)
+          return undefined;
+      const data = normalizeString(getTextContent(textNodes, 0, undefined));
+      const normalizedQuery = normalizeString(query);
+      let searchStart = textNodes[0] === range.startNode ? range.startOffset : 0;
+      let start;
+      let end;
+      while (searchStart < data.length) {
+          const matchIndex = data.indexOf(normalizedQuery, searchStart);
+          if (matchIndex === -1)
+              return undefined;
+          if (isWordBounded(data, matchIndex, normalizedQuery.length, segmenter)) {
+              start = getBoundaryPointAtIndex(matchIndex, textNodes,  false);
+              end = getBoundaryPointAtIndex(matchIndex + normalizedQuery.length, textNodes,
+               true);
+          }
+          if (start != null && end != null) {
+              const foundRange = new Range();
+              foundRange.setStart(start.node, start.offset);
+              foundRange.setEnd(end.node, end.offset);
+
+              if (range.compareBoundaryPoints(Range.START_TO_START, foundRange) <= 0 &&
+                  range.compareBoundaryPoints(Range.END_TO_END, foundRange) >= 0) {
+                  return foundRange;
+              }
+          }
+          searchStart = matchIndex + 1;
+      }
+      return undefined;
+  };
+
+  const getBoundaryPointAtIndex = (index, textNodes, isEnd) => {
+      let counted = 0;
+      let normalizedData;
+      for (let i = 0; i < textNodes.length; i++) {
+          const node = textNodes[i];
+          if (!normalizedData)
+              normalizedData = normalizeString(node.data);
+          let nodeEnd = counted + normalizedData.length;
+          if (isEnd)
+              nodeEnd += 1;
+          if (nodeEnd > index) {
+
+              const normalizedOffset = index - counted;
+              let denormalizedOffset = Math.min(index - counted, node.data.length);
+
+              const targetSubstring = isEnd ?
+                  normalizedData.substring(0, normalizedOffset) :
+                  normalizedData.substring(normalizedOffset);
+              let candidateSubstring = isEnd ?
+                  normalizeString(node.data.substring(0, denormalizedOffset)) :
+                  normalizeString(node.data.substring(denormalizedOffset));
+
+              const direction = (isEnd ? -1 : 1) *
+                  (targetSubstring.length > candidateSubstring.length ? -1 : 1);
+              while (denormalizedOffset >= 0 &&
+                  denormalizedOffset <= node.data.length) {
+                  if (candidateSubstring.length === targetSubstring.length) {
+                      return { node: node, offset: denormalizedOffset };
+                  }
+                  denormalizedOffset += direction;
+                  candidateSubstring = isEnd ?
+                      normalizeString(node.data.substring(0, denormalizedOffset)) :
+                      normalizeString(node.data.substring(denormalizedOffset));
+              }
+          }
+          counted += normalizedData.length;
+          if (i + 1 < textNodes.length) {
+
+              const nextNormalizedData = normalizeString(textNodes[i + 1].data);
+              if (normalizedData.slice(-1) === ' ' &&
+                  nextNormalizedData.slice(0, 1) === ' ') {
+                  counted -= 1;
+              }
+
+              normalizedData = nextNormalizedData;
+          }
+      }
+      return undefined;
+  };
+
+  const isWordBounded = (text, startPos, length, segmenter) => {
+      if (startPos < 0 || startPos >= text.length || length <= 0 ||
+          startPos + length > text.length) {
+          return false;
+      }
+      if (segmenter) {
+
+          const segments = segmenter.segment(text);
+          const startSegment = segments.containing(startPos);
+          if (!startSegment)
+              return false;
+
+          if (startSegment.isWordLike && startSegment.index != startPos)
+              return false;
+
+          const endPos = startPos + length;
+          const endSegment = segments.containing(endPos);
+
+          if (endSegment && endSegment.isWordLike && endSegment.index != endPos)
+              return false;
+      }
+      else {
+
+          if (text[startPos].match(BOUNDARY_CHARS)) {
+              ++startPos;
+              --length;
+              if (!length) {
+                  return false;
+              }
+          }
+
+          if (text[startPos + length - 1].match(BOUNDARY_CHARS)) {
+              --length;
+              if (!length) {
+                  return false;
+              }
+          }
+          if (startPos !== 0 && (!text[startPos - 1].match(BOUNDARY_CHARS)))
+              return false;
+          if (startPos + length !== text.length &&
+              !text[startPos + length].match(BOUNDARY_CHARS))
+              return false;
+      }
+      return true;
+  };
+
+  const normalizeString = (str) => {
+
+      return (str || '')
+          .normalize('NFKD')
+          .replace(/\s+/g, ' ')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase();
+  };
+
+  const makeNewSegmenter = () => {
+      if (Intl.Segmenter) {
+          let lang = document.documentElement.lang;
+          if (!lang) {
+              lang = navigator.languages;
+          }
+          return new Intl.Segmenter(lang, { granularity: 'word' });
+      }
+      return undefined;
+  };
+
+  const forwardTraverse = (walker, finishedSubtrees) => {
+
+      if (!finishedSubtrees.has(walker.currentNode)) {
+          const firstChild = walker.firstChild();
+          if (firstChild !== null) {
+              return firstChild;
+          }
+      }
+
+      const nextSibling = walker.nextSibling();
+      if (nextSibling !== null) {
+          return nextSibling;
+      }
+
+      const parent = walker.parentNode();
+      if (parent !== null) {
+          finishedSubtrees.add(parent);
+      }
+      return parent;
+  };
+
+  const backwardTraverse = (walker, finishedSubtrees) => {
+
+      if (!finishedSubtrees.has(walker.currentNode)) {
+          const lastChild = walker.lastChild();
+          if (lastChild !== null) {
+              return lastChild;
+          }
+      }
+
+      const previousSibling = walker.previousSibling();
+      if (previousSibling !== null) {
+          return previousSibling;
+      }
+
+      const parent = walker.parentNode();
+      if (parent !== null) {
+          finishedSubtrees.add(parent);
+      }
+      return parent;
+  };
+
+  const forTesting = {
+      advanceRangeStartPastOffset: advanceRangeStartPastOffset,
+      advanceRangeStartToNonWhitespace: advanceRangeStartToNonWhitespace,
+      findRangeFromNodeList: findRangeFromNodeList,
+      findTextInRange: findTextInRange,
+      getBoundaryPointAtIndex: getBoundaryPointAtIndex,
+      isWordBounded: isWordBounded,
+      makeNewSegmenter: makeNewSegmenter,
+      markRange: markRange,
+      normalizeString: normalizeString,
+      parseTextFragmentDirective: parseTextFragmentDirective,
+      forwardTraverse: forwardTraverse,
+      backwardTraverse: backwardTraverse,
+      getAllTextNodes: getAllTextNodes,
+      acceptTextNodeIfVisibleInRange: acceptTextNodeIfVisibleInRange
+  };
+
+  const internal = {
+      BLOCK_ELEMENTS: BLOCK_ELEMENTS,
+      BOUNDARY_CHARS: BOUNDARY_CHARS,
+      NON_BOUNDARY_CHARS: NON_BOUNDARY_CHARS,
+      acceptNodeIfVisibleInRange: acceptNodeIfVisibleInRange,
+      normalizeString: normalizeString,
+      makeNewSegmenter: makeNewSegmenter,
+      forwardTraverse: forwardTraverse,
+      backwardTraverse: backwardTraverse,
+      makeTextNodeWalker: makeTextNodeWalker,
+      isNodeVisible: isNodeVisible
+  };
+
+  if (typeof goog !== 'undefined') {
+      goog.declareModuleId('googleChromeLabs.textFragmentPolyfill.textFragmentUtils');
+  }
+
+  const applyTargetTextStyle = () => {
+      const styles = document.getElementsByTagName('style');
+      if (!styles)
+          return;
+      for (const style of styles) {
+          const cssRules = style.innerHTML;
+          const targetTextRules = cssRules.match(/(\w*)::target-text\s*{\s*((.|\n)*?)\s*}/g);
+          if (!targetTextRules)
+              continue;
+          const markCss = targetTextRules.join('\n');
+          const newNode = document.createTextNode(markCss.replaceAll('::target-text', ` .${TEXT_FRAGMENT_CSS_CLASS_NAME}`));
+          style.appendChild(newNode);
+      }
+  };
+
+  const setDefaultTextFragmentsStyle = ({ backgroundColor, color }) => {
+      const styles = document.getElementsByTagName('style');
+      const defaultStyle = `.${TEXT_FRAGMENT_CSS_CLASS_NAME} {
+      background-color: ${backgroundColor};
+      color: ${color};
+    }
+
+    .${TEXT_FRAGMENT_CSS_CLASS_NAME} a, a .${TEXT_FRAGMENT_CSS_CLASS_NAME} {
+      text-decoration: underline;
+    }
+    `;
+      if (styles.length === 0) {
+          document.head.insertAdjacentHTML('beforeend', `<style type="text/css">${defaultStyle}</style>`);
+      }
+      else {
+          applyTargetTextStyle();
+          const defaultStyleNode = document.createTextNode(defaultStyle);
+          styles[0].insertBefore(defaultStyleNode, styles[0].firstChild);
+      }
+  };
+}
+
+// Annotations
+if (typeof _injected_annotations === 'undefined') {
+    var _injected_annotations = true;
+  
+  const NON_TEXT_NODE_NAMES = new Set([
+      'A',
+      'APP',
+      'APPLET',
+      'AREA',
+      'AUDIO',
+      'BUTTON',
+      'CANVAS',
+      'CHROME_ANNOTATION',
+      'EMBED',
+      'FORM',
+      'FRAME',
+      'FRAMESET',
+      'HEAD',
+      'IFRAME',
+      'IMG',
+      'INPUT',
+      'KEYGEN',
+      'LABEL',
+      'MAP',
+      'NOSCRIPT',
+      'OBJECT',
+      'OPTGROUP',
+      'OPTION',
+      'PROGRESS',
+      'SCRIPT',
+      'SELECT',
+      'STYLE',
+      'TEXTAREA',
+      'VIDEO',
+  ]);
+  
+  const NO_DECORATION_NODE_NAMES = new Set([
+      'A', 'LABEL'
+  ]);
+  
+  const MS_DELAY_BEFORE_TRIGGER = 300;
+  
+  class Replacement {
+      index;
+      left;
+      right;
+      text;
+      type;
+      annotationText;
+      data;
+      constructor(index, left, right, text, type, annotationText, data) {
+          this.index = index;
+          this.left = left;
+          this.right = right;
+          this.text = text;
+          this.type = type;
+          this.annotationText = annotationText;
+          this.data = data;
+      }
+  }
+
+  class Decoration {
+      original;
+      replacements;
+      constructor(original, replacements) {
+          this.original = original;
+          this.replacements = replacements;
+      }
+  }
+
+  class Section {
+      node;
+      index;
+      constructor(node, index) {
+          this.node = node;
+          this.index = index;
+      }
+  }
+
+  class MutationsDuringClickTracker {
+      initialEvent;
+      hasMutations = false;
+      mutationObserver;
+      mutationExtendId = 0;
+
+      constructor(initialEvent) {
+          this.initialEvent = initialEvent;
+          this.mutationObserver =
+              new MutationObserver((mutationList) => {
+                  for (let mutation of mutationList) {
+                      if (mutation.target.contains(this.initialEvent.target)) {
+                          this.hasMutations = true;
+                          this.stopObserving();
+                          break;
+                      }
+                  }
+              });
+          this.mutationObserver.observe(document, { attributes: false, childList: true, subtree: true });
+      }
+
+      hasPreventativeActivity(event) {
+          return event !== this.initialEvent || event.defaultPrevented ||
+              this.hasMutations;
+      }
+
+      extendObservation(then) {
+          if (this.mutationExtendId) {
+              clearTimeout(this.mutationExtendId);
+          }
+          this.mutationExtendId = setTimeout(then, MS_DELAY_BEFORE_TRIGGER);
+      }
+      stopObserving() {
+          if (this.mutationExtendId) {
+              clearTimeout(this.mutationExtendId);
+          }
+          this.mutationExtendId = 0;
+          this.mutationObserver?.disconnect();
+      }
+  }
+
+  function hasNoIntentDetection() {
+      const metas = document.getElementsByTagName('meta');
+      for (let i = 0; i < metas.length; i++) {
+          if (metas[i].getAttribute('name') === 'chrome' &&
+              metas[i].getAttribute('content') === 'nointentdetection') {
+              return true;
+          }
+      }
+      return false;
+  }
+
+  function noFormatDetectionTypes() {
+      const metas = document.getElementsByTagName('meta');
+      let types = new Set();
+      for (const meta of metas) {
+          if (meta.getAttribute('name') !== 'format-detection')
+              continue;
+          let content = meta.getAttribute('content');
+          if (!content)
+              continue;
+          let matches = content.toLowerCase().matchAll(/([a-z]+)\s*=\s*([a-z]+)/g);
+          if (!matches)
+              continue;
+          for (let match of matches) {
+              if (match && match[2] === 'no' && match[1]) {
+                  types.add(match[1]);
+              }
+          }
+      }
+      return types;
+  }
+
+  function hasNoTranslate() {
+      const metas = document.getElementsByTagName('meta');
+      for (let i = 0; i < metas.length; i++) {
+          if (metas[i].getAttribute('name') === 'google' &&
+              metas[i].getAttribute('content') === 'notranslate') {
+              return true;
+          }
+      }
+      return false;
+  }
+
+  function getMetaContentByHttpEquiv(httpEquiv) {
+      const metaTags = document.getElementsByTagName('meta');
+      for (let metaTag of metaTags) {
+          if (metaTag.httpEquiv.toLowerCase() === httpEquiv) {
+              return metaTag.content;
+          }
+      }
+      return '';
+  }
+  const highlightTextColor = '#000';
+  const highlightBackgroundColor = 'rgba(20,111,225,0.25)';
+  const decorationStyles = 'border-bottom-width: 1px; ' +
+      'border-bottom-style: dotted; ' +
+      'background-color: transparent';
+  const decorationStylesForPhoneAndEmail = 'border-bottom-width: 1px; ' +
+      'border-bottom-style: solid; ' +
+      'background-color: transparent';
+  const decorationDefaultColor = 'blue';
+  let decorations = [];
+  let sections;
+
+  function extractText(maxChars, seqId) {
+
+      if (decorations.length) {
+          removeDecorations();
+      }
+      let disabledTypes = noFormatDetectionTypes();
+      sendWebKitMessage('annotations', {
+          command: 'annotations.extractedText',
+          text: getPageText(maxChars),
+          seqId: seqId,
+
+          metadata: {
+              hasNoIntentDetection: hasNoIntentDetection(),
+              hasNoTranslate: hasNoTranslate(),
+              htmlLang: document.documentElement.lang,
+              httpContentLanguage: getMetaContentByHttpEquiv('content-language'),
+              wkNoTelephone: disabledTypes.has('telephone'),
+              wkNoEmail: disabledTypes.has('email'),
+              wkNoAddress: disabledTypes.has('address'),
+              wkNoDate: disabledTypes.has('date'),
+              wkNoUnit: disabledTypes.has('unit'),
+          },
+      });
+  }
+
+  function decorateAnnotations(annotations) {
+
+      if (decorations.length || !annotations.length)
+          return;
+      let failures = 0;
+      decorations = [];
+
+      document.addEventListener('click', handleTopTap.bind(document));
+      document.addEventListener('click', handleTopTap.bind(document), true);
+      annotations = removeOverlappingAnnotations(annotations);
+
+      let annotationIndex = 0;
+      enumerateSectionsNodes((node, index, text) => {
+          if (!node.parentNode || text === '\n')
+              return true;
+
+          while (annotationIndex < annotations.length) {
+              const annotation = annotations[annotationIndex];
+              if (!annotation || annotation.end > index) {
+                  break;
+              }
+              failures++;
+              annotationIndex++;
+          }
+          const length = text.length;
+          let replacements = [];
+          while (annotationIndex < annotations.length) {
+              const annotation = annotations[annotationIndex];
+              if (!annotation) {
+                  break;
+              }
+              const start = annotation.start;
+              const end = annotation.end;
+              if (index < end && index + length > start) {
+
+                  const left = Math.max(0, start - index);
+                  const right = Math.min(length, end - index);
+                  const nodeText = text.substring(left, right);
+                  const annotationLeft = Math.max(0, index - start);
+                  const annotationRight = Math.min(end - start, index + length - start);
+                  const annotationText = annotation.text.substring(annotationLeft, annotationRight);
+
+                  if (nodeText != annotationText) {
+                      failures++;
+                      annotationIndex++;
+                      continue;
+                  }
+                  replacements.push(new Replacement(annotationIndex, left, right, nodeText, annotation.type, annotation.text, annotation.data));
+
+                  if (end <= index + length) {
+                      annotationIndex++;
+                      continue;
+                  }
+              }
+              break;
+          }
+
+          let currentParentNode = node.parentNode;
+          while (currentParentNode) {
+              if (currentParentNode instanceof HTMLElement &&
+                  NO_DECORATION_NODE_NAMES.has(currentParentNode.tagName)) {
+                  replacements = [];
+                  failures++;
+                  break;
+              }
+              currentParentNode = currentParentNode.parentNode;
+          }
+          replaceNode(node, replacements, text);
+          return annotationIndex < annotations.length;
+      });
+
+      failures += annotations.length - annotationIndex;
+      sendWebKitMessage('annotations', {
+          command: 'annotations.decoratingComplete',
+          successes: annotations.length - failures,
+          failures: failures,
+          annotations: annotations.length,
+          cancelled: []
+      });
+  }
+
+  function removeDecorations() {
+      for (let decoration of decorations) {
+          const replacements = decoration.replacements;
+          const parentNode = replacements[0].parentNode;
+          if (!parentNode)
+              return;
+          parentNode.insertBefore(decoration.original, replacements[0]);
+          for (let replacement of replacements) {
+              parentNode.removeChild(replacement);
+          }
+      }
+      decorations = [];
+  }
+
+  function removeDecorationsWithType(type) {
+      var remainingDecorations = [];
+      for (let decoration of decorations) {
+          const replacements = decoration.replacements;
+          const parentNode = replacements[0].parentNode;
+          if (!parentNode)
+              return;
+          var hasReplacementOfType = false;
+          var hasReplacementOfAnotherType = false;
+          for (let replacement of replacements) {
+              if (!(replacement instanceof HTMLElement)) {
+                  continue;
+              }
+              var element = replacement;
+              var replacementType = element.getAttribute('data-type');
+              if (replacementType === type) {
+                  hasReplacementOfType = true;
+              }
+              else {
+                  hasReplacementOfAnotherType = true;
+              }
+          }
+          if (!hasReplacementOfType) {
+
+              remainingDecorations.push(decoration);
+              continue;
+          }
+          if (!hasReplacementOfAnotherType) {
+
+              parentNode.insertBefore(decoration.original, replacements[0]);
+              for (let replacement of replacements) {
+                  parentNode.removeChild(replacement);
+              }
+              continue;
+          }
+
+          let newReplacements = [];
+          for (let replacement of replacements) {
+              if (!(replacement instanceof HTMLElement)) {
+                  newReplacements.push(replacement);
+                  continue;
+              }
+              var element = replacement;
+              var replacementType = element.getAttribute('data-type');
+              if (replacementType !== type) {
+                  newReplacements.push(replacement);
+                  continue;
+              }
+              let text = document.createTextNode(element.textContent ?? '');
+              parentNode.replaceChild(text, element);
+              newReplacements.push(text);
+          }
+          decoration.replacements = newReplacements;
+          remainingDecorations.push(decoration);
+      }
+      decorations = remainingDecorations;
+  }
+
+  function removeHighlight() {
+      for (let decoration of decorations) {
+          for (let replacement of decoration.replacements) {
+              if (!(replacement instanceof HTMLElement)) {
+                  continue;
+              }
+              replacement.style.color = '';
+              replacement.style.background = '';
+          }
+      }
+  }
+
+  function enumerateTextNodes(root, process, includeShadowDOM = true, filterInvisibles = true) {
+      const nodes = [root];
+      let index = 0;
+      let isPreviousSpace = true;
+      while (nodes.length > 0) {
+          let node = nodes.pop();
+          if (!node) {
+              break;
+          }
+
+          if (node.nodeType === Node.ELEMENT_NODE) {
+
+              if (NON_TEXT_NODE_NAMES.has(node.nodeName)) {
+                  continue;
+              }
+
+              if (node instanceof Element && node.getAttribute('contenteditable')) {
+                  continue;
+              }
+              if (node.nodeName === 'BR') {
+                  if (isPreviousSpace)
+                      continue;
+                  if (!process(node, index, '\n'))
+                      break;
+                  isPreviousSpace = true;
+                  index += 1;
+                  continue;
+              }
+              const style = window.getComputedStyle(node);
+
+              if (filterInvisibles &&
+                  (style.display === 'none' || style.visibility === 'hidden')) {
+                  continue;
+              }
+
+              if (node.nodeName.toUpperCase() !== 'BODY' &&
+                  style.display !== 'inline' && !isPreviousSpace) {
+                  if (!process(node, index, '\n'))
+                      break;
+                  isPreviousSpace = true;
+                  index += 1;
+              }
+              if (includeShadowDOM) {
+                  const element = node;
+                  if (element.shadowRoot && element.shadowRoot != node) {
+                      nodes.push(element.shadowRoot);
+                      continue;
+                  }
+              }
+          }
+          if (node.hasChildNodes()) {
+              for (let childIdx = node.childNodes.length - 1; childIdx >= 0; childIdx--) {
+                  nodes.push(node.childNodes[childIdx]);
+              }
+          }
+          else if (node.nodeType === Node.TEXT_NODE && node.textContent) {
+              const isSpace = node.textContent.trim() === '';
+              if (isSpace && isPreviousSpace)
+                  continue;
+              if (!process(node, index, node.textContent))
+                  break;
+              isPreviousSpace = isSpace;
+              index += node.textContent.length;
+          }
+      }
+  }
+
+  function enumerateSectionsNodes(process) {
+      for (let section of sections) {
+          const node = section.node.deref();
+          if (!node)
+              continue;
+          const text = node.nodeType === Node.ELEMENT_NODE ? '\n' : node.textContent;
+          if (text && !process(node, section.index, text))
+              break;
+      }
+  }
+
+  function getPageText(maxChars) {
+      const parts = [];
+      sections = [];
+      enumerateTextNodes(document.body, function (node, index, text) {
+          sections.push(new Section(new WeakRef(node), index));
+          if (index + text.length > maxChars) {
+              parts.push(text.substring(0, maxChars - index));
+          }
+          else {
+              parts.push(text);
+          }
+          return index + text.length < maxChars;
+      });
+      return ''.concat(...parts);
+  }
+  let mutationDuringClickObserver;
+
+  function cancelObserver() {
+      mutationDuringClickObserver?.stopObserving();
+      mutationDuringClickObserver = null;
+  }
+
+  function handleTopTap(event) {
+      const annotation = event.target;
+      if (annotation instanceof HTMLElement &&
+          annotation.tagName === 'CHROME_ANNOTATION') {
+          if (event.eventPhase === Event.CAPTURING_PHASE) {
+
+              cancelObserver();
+              mutationDuringClickObserver = new MutationsDuringClickTracker(event);
+          }
+          else if (mutationDuringClickObserver) {
+
+              if (!mutationDuringClickObserver.hasPreventativeActivity(event)) {
+                  mutationDuringClickObserver.extendObservation(() => {
+                      if (mutationDuringClickObserver) {
+                          highlightAnnotation(annotation);
+                          onClickAnnotation(annotation, mutationDuringClickObserver.hasMutations);
+                      }
+                  });
+              }
+              else {
+                  onClickAnnotation(annotation, mutationDuringClickObserver.hasMutations);
+              }
+          }
+      }
+      else {
+          cancelObserver();
+      }
+  }
+
+  function onClickAnnotation(annotation, cancel) {
+      sendWebKitMessage('annotations', {
+          command: 'annotations.onClick',
+          cancel: cancel,
+          data: annotation.dataset['data'],
+          rect: rectFromElement(annotation),
+          text: annotation.dataset['annotation'],
+      });
+      cancelObserver();
+  }
+
+  function highlightAnnotation(annotation) {
+
+      for (let decoration of decorations) {
+          for (let replacement of decoration.replacements) {
+              if (!(replacement instanceof HTMLElement)) {
+                  continue;
+              }
+              if (replacement.tagName === 'CHROME_ANNOTATION' &&
+                  replacement.dataset['index'] === annotation.dataset['index']) {
+                  replacement.style.color = highlightTextColor;
+                  replacement.style.backgroundColor = highlightBackgroundColor;
+              }
+          }
+      }
+  }
+
+  function removeOverlappingAnnotations(annotations) {
+
+      annotations.sort((a, b) => {
+          return a.start - b.start;
+      });
+
+      let previous = undefined;
+      return annotations.filter((annotation) => {
+          if (previous && previous.start < annotation.end &&
+              previous.end > annotation.start) {
+              return false;
+          }
+          previous = annotation;
+          return true;
+      });
+  }
+
+  function replaceNode(node, replacements, text) {
+      const parentNode = node.parentNode;
+      if (replacements.length <= 0 || !parentNode) {
+          return;
+      }
+      let textColor = decorationDefaultColor;
+      if (parentNode instanceof Element) {
+          textColor = window.getComputedStyle(parentNode).color || textColor;
+      }
+      let cursor = 0;
+      const parts = [];
+      for (let replacement of replacements) {
+          if (replacement.left > cursor) {
+              parts.push(document.createTextNode(text.substring(cursor, replacement.left)));
+          }
+          const element = document.createElement('chrome_annotation');
+          element.setAttribute('data-index', '' + replacement.index);
+          element.setAttribute('data-data', replacement.data);
+          element.setAttribute('data-annotation', replacement.annotationText);
+          element.setAttribute('data-type', replacement.type);
+          element.setAttribute('role', 'link');
+
+          element.textContent = replacement.text;
+          if (replacement.type == 'PHONE_NUMBER' || replacement.type == 'EMAIL') {
+              element.style.cssText = decorationStylesForPhoneAndEmail;
+          }
+          else {
+              element.style.cssText = decorationStyles;
+          }
+          element.style.borderBottomColor = textColor;
+          parts.push(element);
+          cursor = replacement.right;
+      }
+      if (cursor < text.length) {
+          parts.push(document.createTextNode(text.substring(cursor, text.length)));
+      }
+      for (let part of parts) {
+          parentNode.insertBefore(part, node);
+      }
+      parentNode.removeChild(node);
+
+      decorations.push(new Decoration(node, parts));
+  }
+  function rectFromElement(element) {
+      const domRect = element.getClientRects()[0];
+      if (!domRect) {
+          return {};
+      }
+      return {
+          x: domRect.x,
+          y: domRect.y,
+          width: domRect.width,
+          height: domRect.height
+      };
+  }
+  gCrWeb.annotations = {
+      extractText,
+      decorateAnnotations,
+      removeDecorations,
+      removeDecorationsWithType,
+      removeHighlight,
+  };
+}
+
+
+// ios/chrome/browser/link_to_text/model/tsc/third_party/text-fragments-polyfill/src/src/text-fragment-utils.js
+if (typeof _injected_text_fragment_utils) {
+  var _injected_text_fragment_utils = true
+  
+  const FRAGMENT_DIRECTIVES = ['text'];
+
+  const BLOCK_ELEMENTS = [
+    'ADDRESS',    'ARTICLE',  'ASIDE',  'BLOCKQUOTE', 'BR',     'DETAILS',
+    'DIALOG',     'DD',       'DIV',    'DL',         'DT',     'FIELDSET',
+    'FIGCAPTION', 'FIGURE',   'FOOTER', 'FORM',       'H1',     'H2',
+    'H3',         'H4',       'H5',     'H6',         'HEADER', 'HGROUP',
+    'HR',         'LI',       'MAIN',   'NAV',        'OL',     'P',
+    'PRE',        'SECTION',  'TABLE',  'UL',         'TR',     'TH',
+    'TD',         'COLGROUP', 'COL',    'CAPTION',    'THEAD',  'TBODY',
+    'TFOOT',
+  ];
+
+  const BOUNDARY_CHARS =
+      /[\t-\r -#%-\*,-\/:;\?@\[-\]_\{\}\x85\xA0\xA1\xA7\xAB\xB6\xB7\xBB\xBF\u037E\u0387\u055A-\u055F\u0589\u058A\u05BE\u05C0\u05C3\u05C6\u05F3\u05F4\u0609\u060A\u060C\u060D\u061B\u061E\u061F\u066A-\u066D\u06D4\u0700-\u070D\u07F7-\u07F9\u0830-\u083E\u085E\u0964\u0965\u0970\u0AF0\u0DF4\u0E4F\u0E5A\u0E5B\u0F04-\u0F12\u0F14\u0F3A-\u0F3D\u0F85\u0FD0-\u0FD4\u0FD9\u0FDA\u104A-\u104F\u10FB\u1360-\u1368\u1400\u166D\u166E\u1680\u169B\u169C\u16EB-\u16ED\u1735\u1736\u17D4-\u17D6\u17D8-\u17DA\u1800-\u180A\u1944\u1945\u1A1E\u1A1F\u1AA0-\u1AA6\u1AA8-\u1AAD\u1B5A-\u1B60\u1BFC-\u1BFF\u1C3B-\u1C3F\u1C7E\u1C7F\u1CC0-\u1CC7\u1CD3\u2000-\u200A\u2010-\u2029\u202F-\u2043\u2045-\u2051\u2053-\u205F\u207D\u207E\u208D\u208E\u2308-\u230B\u2329\u232A\u2768-\u2775\u27C5\u27C6\u27E6-\u27EF\u2983-\u2998\u29D8-\u29DB\u29FC\u29FD\u2CF9-\u2CFC\u2CFE\u2CFF\u2D70\u2E00-\u2E2E\u2E30-\u2E44\u3000-\u3003\u3008-\u3011\u3014-\u301F\u3030\u303D\u30A0\u30FB\uA4FE\uA4FF\uA60D-\uA60F\uA673\uA67E\uA6F2-\uA6F7\uA874-\uA877\uA8CE\uA8CF\uA8F8-\uA8FA\uA8FC\uA92E\uA92F\uA95F\uA9C1-\uA9CD\uA9DE\uA9DF\uAA5C-\uAA5F\uAADE\uAADF\uAAF0\uAAF1\uABEB\uFD3E\uFD3F\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE61\uFE63\uFE68\uFE6A\uFE6B\uFF01-\uFF03\uFF05-\uFF0A\uFF0C-\uFF0F\uFF1A\uFF1B\uFF1F\uFF20\uFF3B-\uFF3D\uFF3F\uFF5B\uFF5D\uFF5F-\uFF65]|\uD800[\uDD00-\uDD02\uDF9F\uDFD0]|\uD801\uDD6F|\uD802[\uDC57\uDD1F\uDD3F\uDE50-\uDE58\uDE7F\uDEF0-\uDEF6\uDF39-\uDF3F\uDF99-\uDF9C]|\uD804[\uDC47-\uDC4D\uDCBB\uDCBC\uDCBE-\uDCC1\uDD40-\uDD43\uDD74\uDD75\uDDC5-\uDDC9\uDDCD\uDDDB\uDDDD-\uDDDF\uDE38-\uDE3D\uDEA9]|\uD805[\uDC4B-\uDC4F\uDC5B\uDC5D\uDCC6\uDDC1-\uDDD7\uDE41-\uDE43\uDE60-\uDE6C\uDF3C-\uDF3E]|\uD807[\uDC41-\uDC45\uDC70\uDC71]|\uD809[\uDC70-\uDC74]|\uD81A[\uDE6E\uDE6F\uDEF5\uDF37-\uDF3B\uDF44]|\uD82F\uDC9F|\uD836[\uDE87-\uDE8B]|\uD83A[\uDD5E\uDD5F]/u;
+
+  const NON_BOUNDARY_CHARS =
+      /[^\t-\r -#%-\*,-\/:;\?@\[-\]_\{\}\x85\xA0\xA1\xA7\xAB\xB6\xB7\xBB\xBF\u037E\u0387\u055A-\u055F\u0589\u058A\u05BE\u05C0\u05C3\u05C6\u05F3\u05F4\u0609\u060A\u060C\u060D\u061B\u061E\u061F\u066A-\u066D\u06D4\u0700-\u070D\u07F7-\u07F9\u0830-\u083E\u085E\u0964\u0965\u0970\u0AF0\u0DF4\u0E4F\u0E5A\u0E5B\u0F04-\u0F12\u0F14\u0F3A-\u0F3D\u0F85\u0FD0-\u0FD4\u0FD9\u0FDA\u104A-\u104F\u10FB\u1360-\u1368\u1400\u166D\u166E\u1680\u169B\u169C\u16EB-\u16ED\u1735\u1736\u17D4-\u17D6\u17D8-\u17DA\u1800-\u180A\u1944\u1945\u1A1E\u1A1F\u1AA0-\u1AA6\u1AA8-\u1AAD\u1B5A-\u1B60\u1BFC-\u1BFF\u1C3B-\u1C3F\u1C7E\u1C7F\u1CC0-\u1CC7\u1CD3\u2000-\u200A\u2010-\u2029\u202F-\u2043\u2045-\u2051\u2053-\u205F\u207D\u207E\u208D\u208E\u2308-\u230B\u2329\u232A\u2768-\u2775\u27C5\u27C6\u27E6-\u27EF\u2983-\u2998\u29D8-\u29DB\u29FC\u29FD\u2CF9-\u2CFC\u2CFE\u2CFF\u2D70\u2E00-\u2E2E\u2E30-\u2E44\u3000-\u3003\u3008-\u3011\u3014-\u301F\u3030\u303D\u30A0\u30FB\uA4FE\uA4FF\uA60D-\uA60F\uA673\uA67E\uA6F2-\uA6F7\uA874-\uA877\uA8CE\uA8CF\uA8F8-\uA8FA\uA8FC\uA92E\uA92F\uA95F\uA9C1-\uA9CD\uA9DE\uA9DF\uAA5C-\uAA5F\uAADE\uAADF\uAAF0\uAAF1\uABEB\uFD3E\uFD3F\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE61\uFE63\uFE68\uFE6A\uFE6B\uFF01-\uFF03\uFF05-\uFF0A\uFF0C-\uFF0F\uFF1A\uFF1B\uFF1F\uFF20\uFF3B-\uFF3D\uFF3F\uFF5B\uFF5D\uFF5F-\uFF65]|\uD800[\uDD00-\uDD02\uDF9F\uDFD0]|\uD801\uDD6F|\uD802[\uDC57\uDD1F\uDD3F\uDE50-\uDE58\uDE7F\uDEF0-\uDEF6\uDF39-\uDF3F\uDF99-\uDF9C]|\uD804[\uDC47-\uDC4D\uDCBB\uDCBC\uDCBE-\uDCC1\uDD40-\uDD43\uDD74\uDD75\uDDC5-\uDDC9\uDDCD\uDDDB\uDDDD-\uDDDF\uDE38-\uDE3D\uDEA9]|\uD805[\uDC4B-\uDC4F\uDC5B\uDC5D\uDCC6\uDDC1-\uDDD7\uDE41-\uDE43\uDE60-\uDE6C\uDF3C-\uDF3E]|\uD807[\uDC41-\uDC45\uDC70\uDC71]|\uD809[\uDC70-\uDC74]|\uD81A[\uDE6E\uDE6F\uDEF5\uDF37-\uDF3B\uDF44]|\uD82F\uDC9F|\uD836[\uDE87-\uDE8B]|\uD83A[\uDD5E\uDD5F]/u;
+
+  const TEXT_FRAGMENT_CSS_CLASS_NAME =
+      'text-fragments-polyfill-target-text';
+
+  const getFragmentDirectives = (hash) => {
+    const fragmentDirectivesStrings =
+        hash.replace(/#.*?:~:(.*?)/, '$1').split(/&?text=/).filter(Boolean);
+    if (!fragmentDirectivesStrings.length) {
+      return {};
+    } else {
+      return {text: fragmentDirectivesStrings};
+    }
+  };
+
+  const parseFragmentDirectives = (fragmentDirectives) => {
+    const parsedFragmentDirectives = {};
+    for (const
+             [fragmentDirectiveType,
+              fragmentDirectivesOfType,
+    ] of Object.entries(fragmentDirectives)) {
+      if (FRAGMENT_DIRECTIVES.includes(fragmentDirectiveType)) {
+        parsedFragmentDirectives[fragmentDirectiveType] =
+            fragmentDirectivesOfType.map((fragmentDirectiveOfType) => {
+              return parseTextFragmentDirective(fragmentDirectiveOfType);
+            });
+      }
+    }
+    return parsedFragmentDirectives;
+  };
+
+  const parseTextFragmentDirective = (textFragment) => {
+    const TEXT_FRAGMENT = /^(?:(.+?)-,)?(?:(.+?))(?:,([^-]+?))?(?:,-(.+?))?$/;
+    return {
+      prefix: decodeURIComponent(textFragment.replace(TEXT_FRAGMENT, '$1')),
+      textStart: decodeURIComponent(textFragment.replace(TEXT_FRAGMENT, '$2')),
+      textEnd: decodeURIComponent(textFragment.replace(TEXT_FRAGMENT, '$3')),
+      suffix: decodeURIComponent(textFragment.replace(TEXT_FRAGMENT, '$4')),
+    };
+  };
+
+  const processFragmentDirectives =
+      (parsedFragmentDirectives, documentToProcess = document) => {
+        const processedFragmentDirectives = {};
+        for (const
+                 [fragmentDirectiveType,
+                  fragmentDirectivesOfType,
+        ] of Object.entries(parsedFragmentDirectives)) {
+          if (FRAGMENT_DIRECTIVES.includes(fragmentDirectiveType)) {
+            processedFragmentDirectives[fragmentDirectiveType] =
+                fragmentDirectivesOfType.map((fragmentDirectiveOfType) => {
+                  const result = processTextFragmentDirective(
+                      fragmentDirectiveOfType, documentToProcess);
+                  if (result.length >= 1) {
+
+                    return markRange(result[0], documentToProcess);
+                  }
+                  return [];
+                });
+          }
+        }
+        return processedFragmentDirectives;
+      };
+
+  const processTextFragmentDirective =
+      (textFragment, documentToProcess = document) => {
+        const results = [];
+
+        const searchRange = documentToProcess.createRange();
+        searchRange.selectNodeContents(documentToProcess.body);
+
+        while (!searchRange.collapsed && results.length < 2) {
+          let potentialMatch;
+          if (textFragment.prefix) {
+            const prefixMatch = findTextInRange(textFragment.prefix, searchRange);
+            if (prefixMatch == null) {
+              break;
+            }
+
+            advanceRangeStartPastOffset(
+                searchRange,
+                prefixMatch.startContainer,
+                prefixMatch.startOffset,
+            );
+
+            const matchRange = documentToProcess.createRange();
+            matchRange.setStart(prefixMatch.endContainer, prefixMatch.endOffset);
+            matchRange.setEnd(searchRange.endContainer, searchRange.endOffset);
+
+            advanceRangeStartToNonWhitespace(matchRange);
+            if (matchRange.collapsed) {
+              break;
+            }
+
+            potentialMatch = findTextInRange(textFragment.textStart, matchRange);
+
+            if (potentialMatch == null) {
+              break;
+            }
+
+            if (potentialMatch.compareBoundaryPoints(
+                    Range.START_TO_START,
+                    matchRange,
+                    ) !== 0) {
+              continue;
+            }
+          } else {
+
+            potentialMatch = findTextInRange(textFragment.textStart, searchRange);
+            if (potentialMatch == null) {
+              break;
+            }
+            advanceRangeStartPastOffset(
+                searchRange,
+                potentialMatch.startContainer,
+                potentialMatch.startOffset,
+            );
+          }
+
+          if (textFragment.textEnd) {
+            const textEndRange = documentToProcess.createRange();
+            textEndRange.setStart(
+                potentialMatch.endContainer, potentialMatch.endOffset);
+            textEndRange.setEnd(searchRange.endContainer, searchRange.endOffset);
+
+            let matchFound = false;
+
+            while (!textEndRange.collapsed && results.length < 2) {
+              const textEndMatch =
+                  findTextInRange(textFragment.textEnd, textEndRange);
+              if (textEndMatch == null) {
+                break;
+              }
+
+              advanceRangeStartPastOffset(
+                  textEndRange, textEndMatch.startContainer,
+                  textEndMatch.startOffset);
+
+              potentialMatch.setEnd(
+                  textEndMatch.endContainer, textEndMatch.endOffset);
+
+              if (textFragment.suffix) {
+
+                const suffixResult = checkSuffix(
+                    textFragment.suffix, potentialMatch, searchRange,
+                    documentToProcess);
+                if (suffixResult === CheckSuffixResult.NO_SUFFIX_MATCH) {
+                  break;
+                } else if (suffixResult === CheckSuffixResult.SUFFIX_MATCH) {
+                  matchFound = true;
+                  results.push(potentialMatch.cloneRange());
+                  continue;
+                } else if (suffixResult === CheckSuffixResult.MISPLACED_SUFFIX) {
+                  continue;
+                }
+              } else {
+
+                matchFound = true;
+                results.push(potentialMatch.cloneRange());
+              }
+            }
+
+            if (!matchFound) {
+              break;
+            }
+
+          } else if (textFragment.suffix) {
+
+            const suffixResult = checkSuffix(
+                textFragment.suffix, potentialMatch, searchRange,
+                documentToProcess);
+            if (suffixResult === CheckSuffixResult.NO_SUFFIX_MATCH) {
+              break;
+            } else if (suffixResult === CheckSuffixResult.SUFFIX_MATCH) {
+              results.push(potentialMatch.cloneRange());
+              advanceRangeStartPastOffset(
+                  searchRange, searchRange.startContainer,
+                  searchRange.startOffset);
+              continue;
+            } else if (suffixResult === CheckSuffixResult.MISPLACED_SUFFIX) {
+              continue;
+            }
+          } else {
+            results.push(potentialMatch.cloneRange());
+          }
+        }
+        return results;
+      };
+
+  const removeMarks = (marks, documentToProcess = document) => {
+    for (const mark of marks) {
+      const range = documentToProcess.createRange();
+      range.selectNodeContents(mark);
+      const fragment = range.extractContents();
+      const parent = mark.parentNode;
+      parent.insertBefore(fragment, mark);
+      parent.removeChild(mark);
+    }
+  };
+
+  const CheckSuffixResult = {
+    NO_SUFFIX_MATCH: 0,
+    SUFFIX_MATCH: 1,
+    MISPLACED_SUFFIX: 2,
+  };
+
+  const checkSuffix =
+      (suffix, potentialMatch, searchRange, documentToProcess) => {
+        const suffixRange = documentToProcess.createRange();
+        suffixRange.setStart(
+            potentialMatch.endContainer,
+            potentialMatch.endOffset,
+        );
+        suffixRange.setEnd(searchRange.endContainer, searchRange.endOffset);
+        advanceRangeStartToNonWhitespace(suffixRange);
+
+        const suffixMatch = findTextInRange(suffix, suffixRange);
+
+        if (suffixMatch == null) {
+          return CheckSuffixResult.NO_SUFFIX_MATCH;
+        }
+
+        if (suffixMatch.compareBoundaryPoints(
+                Range.START_TO_START, suffixRange) !== 0) {
+          return CheckSuffixResult.MISPLACED_SUFFIX;
+        }
+
+        return CheckSuffixResult.SUFFIX_MATCH;
+      };
+
+  const advanceRangeStartPastOffset = (range, node, offset) => {
+    try {
+      range.setStart(node, offset + 1);
+    } catch (err) {
+      range.setStartAfter(node);
+    }
+  };
+
+  const advanceRangeStartToNonWhitespace = (range) => {
+    const walker = makeTextNodeWalker(range);
+
+    let node = walker.nextNode();
+    while (!range.collapsed && node != null) {
+      if (node !== range.startContainer) {
+        range.setStart(node, 0);
+      }
+
+      if (node.textContent.length > range.startOffset) {
+        const firstChar = node.textContent[range.startOffset];
+        if (!firstChar.match(/\s/)) {
+          return;
+        }
+      }
+
       try {
-        lib = google.translate.TranslateService({
-          // translateApiKey is predefined by translate_script.cc.
-          'key': translateApiKey,
-          'serverParams': serverParams,
-          'timeInfo': gtTimeInfo,
-          'useSecureConnection': true,
-        });
-        translateApiKey = undefined;
-        serverParams = undefined;
-        gtTimeInfo = undefined;
+        range.setStart(node, range.startOffset + 1);
       } catch (err) {
-        errorCode = ERROR['INITIALIZATION_ERROR'];
-        translateApiKey = undefined;
-        serverParams = undefined;
-        gtTimeInfo = undefined;
+        node = walker.nextNode();
+        if (node == null) {
+          range.collapse();
+        } else {
+          range.setStart(node, 0);
+        }
+      }
+    }
+  };
+
+  const makeTextNodeWalker =
+      (range) => {
+        const walker = document.createTreeWalker(
+            range.commonAncestorContainer,
+            NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT,
+            (node) => {
+              return acceptTextNodeIfVisibleInRange(node, range);
+            },
+        );
+
+        return walker;
+      }
+
+  const markRange = (range, documentToProcess = document) => {
+    if (range.startContainer.nodeType != Node.TEXT_NODE ||
+        range.endContainer.nodeType != Node.TEXT_NODE)
+      return [];
+
+    if (range.startContainer === range.endContainer) {
+      const trivialMark = documentToProcess.createElement('mark');
+      trivialMark.setAttribute('class', TEXT_FRAGMENT_CSS_CLASS_NAME);
+      range.surroundContents(trivialMark);
+      return [trivialMark];
+    }
+
+    const startNode = range.startContainer;
+    const startNodeSubrange = range.cloneRange();
+    startNodeSubrange.setEndAfter(startNode);
+
+    const endNode = range.endContainer;
+    const endNodeSubrange = range.cloneRange();
+    endNodeSubrange.setStartBefore(endNode);
+
+    const marks = [];
+    range.setStartAfter(startNode);
+    range.setEndBefore(endNode);
+    const walker = documentToProcess.createTreeWalker(
+        range.commonAncestorContainer,
+        NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT,
+        {
+          acceptNode: function(node) {
+            if (!range.intersectsNode(node)) return NodeFilter.FILTER_REJECT;
+
+            if (BLOCK_ELEMENTS.includes(node.tagName) ||
+                node.nodeType === Node.TEXT_NODE)
+              return NodeFilter.FILTER_ACCEPT;
+            return NodeFilter.FILTER_SKIP;
+          },
+        },
+    );
+    let node = walker.nextNode();
+    while (node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const mark = documentToProcess.createElement('mark');
+        mark.setAttribute('class', TEXT_FRAGMENT_CSS_CLASS_NAME);
+        node.parentNode.insertBefore(mark, node);
+        mark.appendChild(node);
+        marks.push(mark);
+      }
+      node = walker.nextNode();
+    }
+
+    const startMark = documentToProcess.createElement('mark');
+    startMark.setAttribute('class', TEXT_FRAGMENT_CSS_CLASS_NAME);
+    startNodeSubrange.surroundContents(startMark);
+    const endMark = documentToProcess.createElement('mark');
+    endMark.setAttribute('class', TEXT_FRAGMENT_CSS_CLASS_NAME);
+    endNodeSubrange.surroundContents(endMark);
+
+    return [startMark, ...marks, endMark];
+  };
+
+  const scrollElementIntoView = (element) => {
+    const behavior = {
+      behavior: 'auto',
+      block: 'center',
+      inline: 'nearest',
+    };
+    element.scrollIntoView(behavior);
+  };
+
+  const isNodeVisible =
+      (node) => {
+
+        let elt = node;
+        while (elt != null && !(elt instanceof HTMLElement)) elt = elt.parentNode;
+        if (elt != null) {
+          const nodeStyle = window.getComputedStyle(elt);
+
+          if (nodeStyle.visibility === 'hidden' || nodeStyle.display === 'none' ||
+              nodeStyle.height === 0 || nodeStyle.width === 0 ||
+              nodeStyle.opacity === 0) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+  const acceptNodeIfVisibleInRange = (node, range) => {
+    if (range != null && !range.intersectsNode(node))
+      return NodeFilter.FILTER_REJECT;
+
+    return isNodeVisible(node) ? NodeFilter.FILTER_ACCEPT :
+                                 NodeFilter.FILTER_REJECT;
+  };
+
+  const acceptTextNodeIfVisibleInRange = (node, range) => {
+    if (range != null && !range.intersectsNode(node))
+      return NodeFilter.FILTER_REJECT;
+
+    if (!isNodeVisible(node)) {
+      return NodeFilter.FILTER_REJECT;
+    }
+
+    return node.nodeType === Node.TEXT_NODE ? NodeFilter.FILTER_ACCEPT :
+                                              NodeFilter.FILTER_SKIP;
+  };
+
+  const getAllTextNodes = (root, range) => {
+    const blocks = [];
+    let tmp = [];
+
+    const nodes = Array.from(
+        getElementsIn(
+            root,
+            (node) => {
+              return acceptNodeIfVisibleInRange(node, range);
+            }),
+    );
+
+    for (const node of nodes) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        tmp.push(node);
+      } else if (
+          node instanceof HTMLElement && BLOCK_ELEMENTS.includes(node.tagName) &&
+          tmp.length > 0) {
+
+        blocks.push(tmp);
+        tmp = [];
+      }
+    }
+    if (tmp.length > 0) blocks.push(tmp);
+
+    return blocks;
+  };
+
+  const getTextContent = (nodes, startOffset, endOffset) => {
+    let str = '';
+    if (nodes.length === 1) {
+      str = nodes[0].textContent.substring(startOffset, endOffset);
+    } else {
+      str = nodes[0].textContent.substring(startOffset) +
+          nodes.slice(1, -1).reduce((s, n) => s + n.textContent, '') +
+          nodes.slice(-1)[0].textContent.substring(0, endOffset);
+    }
+    return str.replace(/[\t\n\r ]+/g, ' ');
+  };
+
+  function* getElementsIn(root, filter) {
+    const treeWalker = document.createTreeWalker(
+        root,
+        NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT,
+        {acceptNode: filter},
+    );
+
+    const finishedSubtrees = new Set();
+    while (forwardTraverse(treeWalker, finishedSubtrees) !== null) {
+      yield treeWalker.currentNode;
+    }
+  }
+
+  const findTextInRange = (query, range) => {
+    const textNodeLists = getAllTextNodes(range.commonAncestorContainer, range);
+    const segmenter = makeNewSegmenter();
+
+    for (const list of textNodeLists) {
+      const found = findRangeFromNodeList(query, range, list, segmenter);
+      if (found !== undefined) return found;
+    }
+    return undefined;
+  };
+
+  const findRangeFromNodeList = (query, range, textNodes, segmenter) => {
+    if (!query || !range || !(textNodes || []).length) return undefined;
+    const data = normalizeString(getTextContent(textNodes, 0, undefined));
+    const normalizedQuery = normalizeString(query);
+    let searchStart = textNodes[0] === range.startNode ? range.startOffset : 0;
+    let start;
+    let end;
+    while (searchStart < data.length) {
+      const matchIndex = data.indexOf(normalizedQuery, searchStart);
+      if (matchIndex === -1) return undefined;
+      if (isWordBounded(data, matchIndex, normalizedQuery.length, segmenter)) {
+        start = getBoundaryPointAtIndex(matchIndex, textNodes,  false);
+        end = getBoundaryPointAtIndex(
+            matchIndex + normalizedQuery.length,
+            textNodes,
+             true,
+        );
+      }
+
+      if (start != null && end != null) {
+        const foundRange = new Range();
+        foundRange.setStart(start.node, start.offset);
+        foundRange.setEnd(end.node, end.offset);
+
+        if (range.compareBoundaryPoints(Range.START_TO_START, foundRange) <= 0 &&
+            range.compareBoundaryPoints(Range.END_TO_END, foundRange) >= 0) {
+          return foundRange;
+        }
+      }
+      searchStart = matchIndex + 1;
+    }
+    return undefined;
+  };
+
+  const getBoundaryPointAtIndex = (index, textNodes, isEnd) => {
+    let counted = 0;
+    let normalizedData;
+    for (let i = 0; i < textNodes.length; i++) {
+      const node = textNodes[i];
+      if (!normalizedData) normalizedData = normalizeString(node.data);
+      let nodeEnd = counted + normalizedData.length;
+      if (isEnd) nodeEnd += 1;
+      if (nodeEnd > index) {
+
+        const normalizedOffset = index - counted;
+        let denormalizedOffset = Math.min(index - counted, node.data.length);
+
+        const targetSubstring = isEnd ?
+            normalizedData.substring(0, normalizedOffset) :
+            normalizedData.substring(normalizedOffset);
+
+        let candidateSubstring = isEnd ?
+            normalizeString(node.data.substring(0, denormalizedOffset)) :
+            normalizeString(node.data.substring(denormalizedOffset));
+
+        const direction = (isEnd ? -1 : 1) *
+            (targetSubstring.length > candidateSubstring.length ? -1 : 1);
+
+        while (denormalizedOffset >= 0 &&
+               denormalizedOffset <= node.data.length) {
+          if (candidateSubstring.length === targetSubstring.length) {
+            return {node: node, offset: denormalizedOffset};
+          }
+
+          denormalizedOffset += direction;
+
+          candidateSubstring = isEnd ?
+              normalizeString(node.data.substring(0, denormalizedOffset)) :
+              normalizeString(node.data.substring(denormalizedOffset));
+        }
+      }
+      counted += normalizedData.length;
+
+      if (i + 1 < textNodes.length) {
+
+        const nextNormalizedData = normalizeString(textNodes[i + 1].data);
+        if (normalizedData.slice(-1) === ' ' &&
+            nextNormalizedData.slice(0, 1) === ' ') {
+          counted -= 1;
+        }
+
+        normalizedData = nextNormalizedData;
+      }
+    }
+    return undefined;
+  };
+
+  const isWordBounded = (text, startPos, length, segmenter) => {
+    if (startPos < 0 || startPos >= text.length || length <= 0 ||
+        startPos + length > text.length) {
+      return false;
+    }
+
+    if (segmenter) {
+
+      const segments = segmenter.segment(text);
+      const startSegment = segments.containing(startPos);
+      if (!startSegment) return false;
+
+      if (startSegment.isWordLike && startSegment.index != startPos) return false;
+
+      const endPos = startPos + length;
+      const endSegment = segments.containing(endPos);
+
+      if (endSegment && endSegment.isWordLike && endSegment.index != endPos)
+        return false;
+    } else {
+
+      if (text[startPos].match(BOUNDARY_CHARS)) {
+        ++startPos;
+        --length;
+        if (!length) {
+          return false;
+        }
+      }
+
+      if (text[startPos + length - 1].match(BOUNDARY_CHARS)) {
+        --length;
+        if (!length) {
+          return false;
+        }
+      }
+
+      if (startPos !== 0 && (!text[startPos - 1].match(BOUNDARY_CHARS)))
+        return false;
+
+      if (startPos + length !== text.length &&
+          !text[startPos + length].match(BOUNDARY_CHARS))
+        return false;
+    }
+
+    return true;
+  };
+
+  const normalizeString = (str) => {
+
+    return (str || '')
+        .normalize('NFKD')
+        .replace(/\s+/g, ' ')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+  };
+
+  const makeNewSegmenter = () => {
+    if (Intl.Segmenter) {
+      let lang = document.documentElement.lang;
+      if (!lang) {
+        lang = navigator.languages;
+      }
+      return new Intl.Segmenter(lang, {granularity: 'word'});
+    }
+    return undefined;
+  };
+
+  const forwardTraverse = (walker, finishedSubtrees) => {
+
+    if (!finishedSubtrees.has(walker.currentNode)) {
+      const firstChild = walker.firstChild();
+      if (firstChild !== null) {
+        return firstChild;
+      }
+    }
+
+    const nextSibling = walker.nextSibling();
+    if (nextSibling !== null) {
+      return nextSibling;
+    }
+
+    const parent = walker.parentNode();
+
+    if (parent !== null) {
+      finishedSubtrees.add(parent);
+    }
+
+    return parent;
+  };
+
+  const backwardTraverse = (walker, finishedSubtrees) => {
+
+    if (!finishedSubtrees.has(walker.currentNode)) {
+      const lastChild = walker.lastChild();
+      if (lastChild !== null) {
+        return lastChild;
+      }
+    }
+
+    const previousSibling = walker.previousSibling();
+    if (previousSibling !== null) {
+      return previousSibling;
+    }
+
+    const parent = walker.parentNode();
+
+    if (parent !== null) {
+      finishedSubtrees.add(parent);
+    }
+
+    return parent;
+  };
+
+  const forTesting = {
+    advanceRangeStartPastOffset: advanceRangeStartPastOffset,
+    advanceRangeStartToNonWhitespace: advanceRangeStartToNonWhitespace,
+    findRangeFromNodeList: findRangeFromNodeList,
+    findTextInRange: findTextInRange,
+    getBoundaryPointAtIndex: getBoundaryPointAtIndex,
+    isWordBounded: isWordBounded,
+    makeNewSegmenter: makeNewSegmenter,
+    markRange: markRange,
+    normalizeString: normalizeString,
+    parseTextFragmentDirective: parseTextFragmentDirective,
+    forwardTraverse: forwardTraverse,
+    backwardTraverse: backwardTraverse,
+    getAllTextNodes: getAllTextNodes,
+    acceptTextNodeIfVisibleInRange: acceptTextNodeIfVisibleInRange
+  };
+
+  const internal = {
+    BLOCK_ELEMENTS: BLOCK_ELEMENTS,
+    BOUNDARY_CHARS: BOUNDARY_CHARS,
+    NON_BOUNDARY_CHARS: NON_BOUNDARY_CHARS,
+    acceptNodeIfVisibleInRange: acceptNodeIfVisibleInRange,
+    normalizeString: normalizeString,
+    makeNewSegmenter: makeNewSegmenter,
+    forwardTraverse: forwardTraverse,
+    backwardTraverse: backwardTraverse,
+    makeTextNodeWalker: makeTextNodeWalker,
+    isNodeVisible: isNodeVisible
+  }
+
+  if (typeof goog !== 'undefined') {
+
+    goog.declareModuleId('googleChromeLabs.textFragmentPolyfill.textFragmentUtils');
+
+  }
+
+  const applyTargetTextStyle = () => {
+    const styles = document.getElementsByTagName('style');
+    if (!styles) return;
+
+    for (const style of styles) {
+      const cssRules = style.innerHTML;
+      const targetTextRules =
+          cssRules.match(/(\w*)::target-text\s*{\s*((.|\n)*?)\s*}/g);
+      if (!targetTextRules) continue;
+
+      const markCss = targetTextRules.join('\n');
+      const newNode = document.createTextNode(markCss.replaceAll(
+          '::target-text', ` .${TEXT_FRAGMENT_CSS_CLASS_NAME}`));
+      style.appendChild(newNode);
+    }
+  };
+
+  const setDefaultTextFragmentsStyle = ({backgroundColor, color}) => {
+    const styles = document.getElementsByTagName('style');
+    const defaultStyle = `.${TEXT_FRAGMENT_CSS_CLASS_NAME} {
+      background-color: ${backgroundColor};
+      color: ${color};
+    }
+
+    .${TEXT_FRAGMENT_CSS_CLASS_NAME} a, a .${TEXT_FRAGMENT_CSS_CLASS_NAME} {
+      text-decoration: underline;
+    }
+    `
+    if (styles.length === 0) {
+      document.head.insertAdjacentHTML(
+          'beforeend', `<style type="text/css">${defaultStyle}</style>`);
+    }
+    else {
+      applyTargetTextStyle();
+      const defaultStyleNode = document.createTextNode(defaultStyle);
+      styles[0].insertBefore(defaultStyleNode, styles[0].firstChild);
+    }
+  };
+}
+
+
+// ios/chrome/browser/link_to_text/model/tsc/third_party/text-fragments-polyfill/src/src/fragment-generation-utils.js
+if (typeof _injected_text_fragment_generation_utils === 'undefined') {
+  var _injected_text_fragment_generation_utils = true
+  
+  const MAX_EXACT_MATCH_LENGTH = 300;
+  const MIN_LENGTH_WITHOUT_CONTEXT = 20;
+  const ITERATIONS_BEFORE_ADDING_CONTEXT = 1;
+  const WORDS_TO_ADD_FIRST_ITERATION = 3;
+  const WORDS_TO_ADD_SUBSEQUENT_ITERATIONS = 1;
+  const TRUNCATE_RANGE_CHECK_CHARS = 10000;
+  const MAX_DEPTH = 500;
+
+  let timeoutDurationMs = 500;
+  let t0;
+
+  const setTimeout = (newTimeoutDurationMs) => {
+      timeoutDurationMs = newTimeoutDurationMs;
+  };
+
+  const GenerateFragmentStatus = {
+      SUCCESS: 0,
+      INVALID_SELECTION: 1,
+      AMBIGUOUS: 2,
+      TIMEOUT: 3,
+      EXECUTION_FAILED: 4
+  };
+
+  const generateFragment = (selection, startTime = Date.now()) => {
+      try {
+          return doGenerateFragment(selection, startTime);
+      }
+      catch (err) {
+          if (err.isTimeout) {
+              return { status: GenerateFragmentStatus.TIMEOUT };
+          }
+          else {
+              return { status: GenerateFragmentStatus.EXECUTION_FAILED };
+          }
+      }
+  };
+
+  const isValidRangeForFragmentGeneration = (range) => {
+
+      if (!range.toString()
+          .substring(0, TRUNCATE_RANGE_CHECK_CHARS)
+          .match(fragments.internal.NON_BOUNDARY_CHARS)) {
+          return false;
+      }
+
+      try {
+          if (range.startContainer.ownerDocument.defaultView !== window.top) {
+              return false;
+          }
+      }
+      catch {
+
+          return false;
+      }
+
+      let node = range.commonAncestorContainer;
+      let numIterations = 0;
+      while (node) {
+          if (node.nodeType == Node.ELEMENT_NODE) {
+              if (['TEXTAREA', 'INPUT'].includes(node.tagName)) {
+                  return false;
+              }
+              const editable = node.attributes.getNamedItem('contenteditable');
+              if (editable && editable.value !== 'false') {
+                  return false;
+              }
+
+              numIterations++;
+              if (numIterations >= MAX_DEPTH) {
+                  return false;
+              }
+          }
+          node = node.parentNode;
+      }
+      return true;
+  };
+
+  const doGenerateFragment = (selection, startTime) => {
+      recordStartTime(startTime);
+      let range;
+      try {
+          range = selection.getRangeAt(0);
+      }
+      catch {
+          return { status: GenerateFragmentStatus.INVALID_SELECTION };
+      }
+      expandRangeStartToWordBound(range);
+      expandRangeEndToWordBound(range);
+
+      const rangeBeforeShrinking = range.cloneRange();
+      moveRangeEdgesToTextNodes(range);
+      if (range.collapsed) {
+          return { status: GenerateFragmentStatus.INVALID_SELECTION };
+      }
+      let factory;
+      if (canUseExactMatch(range)) {
+          const exactText = fragments.internal.normalizeString(range.toString());
+          const fragment = {
+              textStart: exactText,
+          };
+
+          if (exactText.length >= MIN_LENGTH_WITHOUT_CONTEXT &&
+              isUniquelyIdentifying(fragment)) {
+              return {
+                  status: GenerateFragmentStatus.SUCCESS,
+                  fragment: fragment,
+              };
+          }
+          factory = new FragmentFactory().setExactTextMatch(exactText);
+      }
+      else {
+
+          const startSearchSpace = getSearchSpaceForStart(range);
+          const endSearchSpace = getSearchSpaceForEnd(range);
+          if (startSearchSpace && endSearchSpace) {
+
+              factory = new FragmentFactory().setStartAndEndSearchSpace(startSearchSpace, endSearchSpace);
+          }
+          else {
+
+              factory =
+                  new FragmentFactory().setSharedSearchSpace(range.toString().trim());
+          }
+      }
+      const prefixRange = document.createRange();
+      prefixRange.selectNodeContents(document.body);
+      const suffixRange = prefixRange.cloneRange();
+      prefixRange.setEnd(rangeBeforeShrinking.startContainer, rangeBeforeShrinking.startOffset);
+      suffixRange.setStart(rangeBeforeShrinking.endContainer, rangeBeforeShrinking.endOffset);
+      const prefixSearchSpace = getSearchSpaceForEnd(prefixRange);
+      const suffixSearchSpace = getSearchSpaceForStart(suffixRange);
+      if (prefixSearchSpace || suffixSearchSpace) {
+          factory.setPrefixAndSuffixSearchSpace(prefixSearchSpace, suffixSearchSpace);
+      }
+      factory.useSegmenter(fragments.internal.makeNewSegmenter());
+      let didEmbiggen = false;
+      do {
+          checkTimeout();
+          didEmbiggen = factory.embiggen();
+          const fragment = factory.tryToMakeUniqueFragment();
+          if (fragment != null) {
+              return {
+                  status: GenerateFragmentStatus.SUCCESS,
+                  fragment: fragment,
+              };
+          }
+      } while (didEmbiggen);
+      return { status: GenerateFragmentStatus.AMBIGUOUS };
+  };
+
+  const checkTimeout = () => {
+
+      if (timeoutDurationMs === null) {
+          return;
+      }
+      const delta = Date.now() - t0;
+      if (delta > timeoutDurationMs) {
+          const timeoutError = new Error(`Fragment generation timed out after ${delta} ms.`);
+          timeoutError.isTimeout = true;
+          throw timeoutError;
+      }
+  };
+
+  const recordStartTime = (newStartTime) => {
+      t0 = newStartTime;
+  };
+
+  const getSearchSpaceForStart = (range) => {
+      let node = getFirstNodeForBlockSearch(range);
+      const walker = makeWalkerForNode(node, range.endContainer);
+      if (!walker) {
+          return undefined;
+      }
+      const finishedSubtrees = new Set();
+
+      if (range.startContainer.nodeType === Node.ELEMENT_NODE &&
+          range.startOffset === range.startContainer.childNodes.length) {
+          finishedSubtrees.add(range.startContainer);
+      }
+      const origin = node;
+      const textAccumulator = new BlockTextAccumulator(range, true);
+
+      const tempRange = range.cloneRange();
+      while (!tempRange.collapsed && node != null) {
+          checkTimeout();
+
+          if (node.contains(origin)) {
+              tempRange.setStartAfter(node);
+          }
+          else {
+              tempRange.setStartBefore(node);
+          }
+
+          textAccumulator.appendNode(node);
+
+          if (textAccumulator.textInBlock !== null) {
+              return textAccumulator.textInBlock;
+          }
+          node = fragments.internal.forwardTraverse(walker, finishedSubtrees);
+      }
+      return undefined;
+  };
+
+  const getSearchSpaceForEnd = (range) => {
+      let node = getLastNodeForBlockSearch(range);
+      const walker = makeWalkerForNode(node, range.startContainer);
+      if (!walker) {
+          return undefined;
+      }
+      const finishedSubtrees = new Set();
+
+      if (range.endContainer.nodeType === Node.ELEMENT_NODE &&
+          range.endOffset === 0) {
+          finishedSubtrees.add(range.endContainer);
+      }
+      const origin = node;
+      const textAccumulator = new BlockTextAccumulator(range, false);
+
+      const tempRange = range.cloneRange();
+      while (!tempRange.collapsed && node != null) {
+          checkTimeout();
+
+          if (node.contains(origin)) {
+              tempRange.setEnd(node, 0);
+          }
+          else {
+              tempRange.setEndAfter(node);
+          }
+
+          textAccumulator.appendNode(node);
+
+          if (textAccumulator.textInBlock !== null) {
+              return textAccumulator.textInBlock;
+          }
+          node = fragments.internal.backwardTraverse(walker, finishedSubtrees);
+      }
+      return undefined;
+  };
+
+  const FragmentFactory = class {
+
+      constructor() {
+          this.Mode = {
+              ALL_PARTS: 1,
+              SHARED_START_AND_END: 2,
+              CONTEXT_ONLY: 3,
+          };
+          this.startOffset = null;
+          this.endOffset = null;
+          this.prefixOffset = null;
+          this.suffixOffset = null;
+          this.prefixSearchSpace = '';
+          this.backwardsPrefixSearchSpace = '';
+          this.suffixSearchSpace = '';
+          this.numIterations = 0;
+      }
+
+      tryToMakeUniqueFragment() {
+          let fragment;
+          if (this.mode === this.Mode.CONTEXT_ONLY) {
+              fragment = { textStart: this.exactTextMatch };
+          }
+          else {
+              fragment = {
+                  textStart: this.getStartSearchSpace().substring(0, this.startOffset).trim(),
+                  textEnd: this.getEndSearchSpace().substring(this.endOffset).trim(),
+              };
+          }
+          if (this.prefixOffset != null) {
+              const prefix = this.getPrefixSearchSpace().substring(this.prefixOffset).trim();
+              if (prefix) {
+                  fragment.prefix = prefix;
+              }
+          }
+          if (this.suffixOffset != null) {
+              const suffix = this.getSuffixSearchSpace().substring(0, this.suffixOffset).trim();
+              if (suffix) {
+                  fragment.suffix = suffix;
+              }
+          }
+          return isUniquelyIdentifying(fragment) ? fragment : undefined;
+      }
+
+      embiggen() {
+          let canExpandRange = true;
+          if (this.mode === this.Mode.SHARED_START_AND_END) {
+              if (this.startOffset >= this.endOffset) {
+
+                  canExpandRange = false;
+              }
+          }
+          else if (this.mode === this.Mode.ALL_PARTS) {
+
+              if (this.startOffset === this.getStartSearchSpace().length &&
+                  this.backwardsEndOffset() === this.getEndSearchSpace().length) {
+                  canExpandRange = false;
+              }
+          }
+          else if (this.mode === this.Mode.CONTEXT_ONLY) {
+              canExpandRange = false;
+          }
+          if (canExpandRange) {
+              const desiredIterations = this.getNumberOfRangeWordsToAdd();
+              if (this.startOffset < this.getStartSearchSpace().length) {
+                  let i = 0;
+                  if (this.getStartSegments() != null) {
+                      while (i < desiredIterations &&
+                          this.startOffset < this.getStartSearchSpace().length) {
+                          this.startOffset = this.getNextOffsetForwards(this.getStartSegments(), this.startOffset, this.getStartSearchSpace());
+                          i++;
+                      }
+                  }
+                  else {
+
+                      let oldStartOffset = this.startOffset;
+                      do {
+                          checkTimeout();
+                          const newStartOffset = this.getStartSearchSpace()
+                              .substring(this.startOffset + 1)
+                              .search(fragments.internal.BOUNDARY_CHARS);
+                          if (newStartOffset === -1) {
+                              this.startOffset = this.getStartSearchSpace().length;
+                          }
+                          else {
+                              this.startOffset = this.startOffset + 1 + newStartOffset;
+                          }
+
+                          if (this.getStartSearchSpace()
+                              .substring(oldStartOffset, this.startOffset)
+                              .search(fragments.internal.NON_BOUNDARY_CHARS) !== -1) {
+                              oldStartOffset = this.startOffset;
+                              i++;
+                          }
+                      } while (this.startOffset < this.getStartSearchSpace().length &&
+                          i < desiredIterations);
+                  }
+
+                  if (this.mode === this.Mode.SHARED_START_AND_END) {
+                      this.startOffset = Math.min(this.startOffset, this.endOffset);
+                  }
+              }
+              if (this.backwardsEndOffset() < this.getEndSearchSpace().length) {
+                  let i = 0;
+                  if (this.getEndSegments() != null) {
+                      while (i < desiredIterations && this.endOffset > 0) {
+                          this.endOffset = this.getNextOffsetBackwards(this.getEndSegments(), this.endOffset);
+                          i++;
+                      }
+                  }
+                  else {
+
+                      let oldBackwardsEndOffset = this.backwardsEndOffset();
+                      do {
+                          checkTimeout();
+                          const newBackwardsOffset = this.getBackwardsEndSearchSpace()
+                              .substring(this.backwardsEndOffset() + 1)
+                              .search(fragments.internal.BOUNDARY_CHARS);
+                          if (newBackwardsOffset === -1) {
+                              this.setBackwardsEndOffset(this.getEndSearchSpace().length);
+                          }
+                          else {
+                              this.setBackwardsEndOffset(this.backwardsEndOffset() + 1 + newBackwardsOffset);
+                          }
+
+                          if (this.getBackwardsEndSearchSpace()
+                              .substring(oldBackwardsEndOffset, this.backwardsEndOffset())
+                              .search(fragments.internal.NON_BOUNDARY_CHARS) !== -1) {
+                              oldBackwardsEndOffset = this.backwardsEndOffset();
+                              i++;
+                          }
+                      } while (this.backwardsEndOffset() <
+                          this.getEndSearchSpace().length &&
+                          i < desiredIterations);
+                  }
+
+                  if (this.mode === this.Mode.SHARED_START_AND_END) {
+                      this.endOffset = Math.max(this.startOffset, this.endOffset);
+                  }
+              }
+          }
+          let canExpandContext = false;
+          if (!canExpandRange ||
+              this.startOffset + this.backwardsEndOffset() <
+                  MIN_LENGTH_WITHOUT_CONTEXT ||
+              this.numIterations >= ITERATIONS_BEFORE_ADDING_CONTEXT) {
+
+              if ((this.backwardsPrefixOffset() != null &&
+                  this.backwardsPrefixOffset() !==
+                      this.getPrefixSearchSpace().length) ||
+                  (this.suffixOffset != null &&
+                      this.suffixOffset !== this.getSuffixSearchSpace().length)) {
+                  canExpandContext = true;
+              }
+          }
+          if (canExpandContext) {
+              const desiredIterations = this.getNumberOfContextWordsToAdd();
+              if (this.backwardsPrefixOffset() < this.getPrefixSearchSpace().length) {
+                  let i = 0;
+                  if (this.getPrefixSegments() != null) {
+                      while (i < desiredIterations && this.prefixOffset > 0) {
+                          this.prefixOffset = this.getNextOffsetBackwards(this.getPrefixSegments(), this.prefixOffset);
+                          i++;
+                      }
+                  }
+                  else {
+
+                      let oldBackwardsPrefixOffset = this.backwardsPrefixOffset();
+                      do {
+                          checkTimeout();
+                          const newBackwardsPrefixOffset = this.getBackwardsPrefixSearchSpace()
+                              .substring(this.backwardsPrefixOffset() + 1)
+                              .search(fragments.internal.BOUNDARY_CHARS);
+                          if (newBackwardsPrefixOffset === -1) {
+                              this.setBackwardsPrefixOffset(this.getBackwardsPrefixSearchSpace().length);
+                          }
+                          else {
+                              this.setBackwardsPrefixOffset(this.backwardsPrefixOffset() + 1 + newBackwardsPrefixOffset);
+                          }
+
+                          if (this.getBackwardsPrefixSearchSpace()
+                              .substring(oldBackwardsPrefixOffset, this.backwardsPrefixOffset())
+                              .search(fragments.internal.NON_BOUNDARY_CHARS) !== -1) {
+                              oldBackwardsPrefixOffset = this.backwardsPrefixOffset();
+                              i++;
+                          }
+                      } while (this.backwardsPrefixOffset() <
+                          this.getPrefixSearchSpace().length &&
+                          i < desiredIterations);
+                  }
+              }
+              if (this.suffixOffset < this.getSuffixSearchSpace().length) {
+                  let i = 0;
+                  if (this.getSuffixSegments() != null) {
+                      while (i < desiredIterations &&
+                          this.suffixOffset < this.getSuffixSearchSpace().length) {
+                          this.suffixOffset = this.getNextOffsetForwards(this.getSuffixSegments(), this.suffixOffset, this.suffixOffset);
+                          i++;
+                      }
+                  }
+                  else {
+                      let oldSuffixOffset = this.suffixOffset;
+                      do {
+                          checkTimeout();
+                          const newSuffixOffset = this.getSuffixSearchSpace()
+                              .substring(this.suffixOffset + 1)
+                              .search(fragments.internal.BOUNDARY_CHARS);
+                          if (newSuffixOffset === -1) {
+                              this.suffixOffset = this.getSuffixSearchSpace().length;
+                          }
+                          else {
+                              this.suffixOffset = this.suffixOffset + 1 + newSuffixOffset;
+                          }
+
+                          if (this.getSuffixSearchSpace()
+                              .substring(oldSuffixOffset, this.suffixOffset)
+                              .search(fragments.internal.NON_BOUNDARY_CHARS) !== -1) {
+                              oldSuffixOffset = this.suffixOffset;
+                              i++;
+                          }
+                      } while (this.suffixOffset < this.getSuffixSearchSpace().length &&
+                          i < desiredIterations);
+                  }
+              }
+          }
+          this.numIterations++;
+
+          return canExpandRange || canExpandContext;
+      }
+
+      setStartAndEndSearchSpace(startSearchSpace, endSearchSpace) {
+          this.startSearchSpace = startSearchSpace;
+          this.endSearchSpace = endSearchSpace;
+          this.backwardsEndSearchSpace = reverseString(endSearchSpace);
+          this.startOffset = 0;
+          this.endOffset = endSearchSpace.length;
+          this.mode = this.Mode.ALL_PARTS;
+          return this;
+      }
+
+      setSharedSearchSpace(sharedSearchSpace) {
+          this.sharedSearchSpace = sharedSearchSpace;
+          this.backwardsSharedSearchSpace = reverseString(sharedSearchSpace);
+          this.startOffset = 0;
+          this.endOffset = sharedSearchSpace.length;
+          this.mode = this.Mode.SHARED_START_AND_END;
+          return this;
+      }
+
+      setExactTextMatch(exactTextMatch) {
+          this.exactTextMatch = exactTextMatch;
+          this.mode = this.Mode.CONTEXT_ONLY;
+          return this;
+      }
+
+      setPrefixAndSuffixSearchSpace(prefixSearchSpace, suffixSearchSpace) {
+          if (prefixSearchSpace) {
+              this.prefixSearchSpace = prefixSearchSpace;
+              this.backwardsPrefixSearchSpace = reverseString(prefixSearchSpace);
+              this.prefixOffset = prefixSearchSpace.length;
+          }
+          if (suffixSearchSpace) {
+              this.suffixSearchSpace = suffixSearchSpace;
+              this.suffixOffset = 0;
+          }
+          return this;
+      }
+
+      useSegmenter(segmenter) {
+          if (segmenter == null) {
+              return this;
+          }
+          if (this.mode === this.Mode.ALL_PARTS) {
+              this.startSegments = segmenter.segment(this.startSearchSpace);
+              this.endSegments = segmenter.segment(this.endSearchSpace);
+          }
+          else if (this.mode === this.Mode.SHARED_START_AND_END) {
+              this.sharedSegments = segmenter.segment(this.sharedSearchSpace);
+          }
+          if (this.prefixSearchSpace) {
+              this.prefixSegments = segmenter.segment(this.prefixSearchSpace);
+          }
+          if (this.suffixSearchSpace) {
+              this.suffixSegments = segmenter.segment(this.suffixSearchSpace);
+          }
+          return this;
+      }
+
+      getNumberOfContextWordsToAdd() {
+          return (this.backwardsPrefixOffset() === 0 && this.suffixOffset === 0) ?
+              WORDS_TO_ADD_FIRST_ITERATION :
+              WORDS_TO_ADD_SUBSEQUENT_ITERATIONS;
+      }
+
+      getNumberOfRangeWordsToAdd() {
+          return (this.startOffset === 0 && this.backwardsEndOffset() === 0) ?
+              WORDS_TO_ADD_FIRST_ITERATION :
+              WORDS_TO_ADD_SUBSEQUENT_ITERATIONS;
+      }
+
+      getNextOffsetForwards(segments, offset, searchSpace) {
+
+          let currentSegment = segments.containing(offset);
+          while (currentSegment != null) {
+              checkTimeout();
+              const currentSegmentEnd = currentSegment.index + currentSegment.segment.length;
+              if (currentSegment.isWordLike) {
+                  return currentSegmentEnd;
+              }
+              currentSegment = segments.containing(currentSegmentEnd);
+          }
+
+          return searchSpace.length;
+      }
+
+      getNextOffsetBackwards(segments, offset) {
+
+          let currentSegment = segments.containing(offset);
+
+          if (!currentSegment || offset == currentSegment.index) {
+
+              currentSegment = segments.containing(offset - 1);
+          }
+          while (currentSegment != null) {
+              checkTimeout();
+              if (currentSegment.isWordLike) {
+                  return currentSegment.index;
+              }
+              currentSegment = segments.containing(currentSegment.index - 1);
+          }
+
+          return 0;
+      }
+
+      getStartSearchSpace() {
+          return this.mode === this.Mode.SHARED_START_AND_END ?
+              this.sharedSearchSpace :
+              this.startSearchSpace;
+      }
+
+      getStartSegments() {
+          return this.mode === this.Mode.SHARED_START_AND_END ? this.sharedSegments :
+              this.startSegments;
+      }
+
+      getEndSearchSpace() {
+          return this.mode === this.Mode.SHARED_START_AND_END ?
+              this.sharedSearchSpace :
+              this.endSearchSpace;
+      }
+
+      getEndSegments() {
+          return this.mode === this.Mode.SHARED_START_AND_END ? this.sharedSegments :
+              this.endSegments;
+      }
+
+      getBackwardsEndSearchSpace() {
+          return this.mode === this.Mode.SHARED_START_AND_END ?
+              this.backwardsSharedSearchSpace :
+              this.backwardsEndSearchSpace;
+      }
+
+      getPrefixSearchSpace() {
+          return this.prefixSearchSpace;
+      }
+
+      getPrefixSegments() {
+          return this.prefixSegments;
+      }
+
+      getBackwardsPrefixSearchSpace() {
+          return this.backwardsPrefixSearchSpace;
+      }
+
+      getSuffixSearchSpace() {
+          return this.suffixSearchSpace;
+      }
+
+      getSuffixSegments() {
+          return this.suffixSegments;
+      }
+
+      backwardsEndOffset() {
+          return this.getEndSearchSpace().length - this.endOffset;
+      }
+
+      setBackwardsEndOffset(backwardsEndOffset) {
+          this.endOffset = this.getEndSearchSpace().length - backwardsEndOffset;
+      }
+
+      backwardsPrefixOffset() {
+          if (this.prefixOffset == null)
+              return null;
+          return this.getPrefixSearchSpace().length - this.prefixOffset;
+      }
+
+      setBackwardsPrefixOffset(backwardsPrefixOffset) {
+          if (this.prefixOffset == null)
+              return;
+          this.prefixOffset =
+              this.getPrefixSearchSpace().length - backwardsPrefixOffset;
+      }
+  };
+
+  const BlockTextAccumulator = class {
+
+      constructor(searchRange, isForwardTraversal) {
+          this.searchRange = searchRange;
+          this.isForwardTraversal = isForwardTraversal;
+          this.textFound = false;
+          this.textNodes = [];
+          this.textInBlock = null;
+      }
+
+      appendNode(node) {
+
+          if (this.textInBlock !== null) {
+              return;
+          }
+
+          if (isBlock(node)) {
+              if (this.textFound) {
+
+                  if (!this.isForwardTraversal) {
+                      this.textNodes.reverse();
+                  }
+
+                  this.textInBlock = this.textNodes.map(textNode => textNode.textContent)
+                      .join('')
+                      .trim();
+              }
+              else {
+
+                  this.textNodes = [];
+              }
+              return;
+          }
+
+          if (!isText(node))
+              return;
+
+          const nodeToInsert = this.getNodeIntersectionWithRange(node);
+
+          this.textFound = this.textFound || nodeToInsert.textContent.trim() !== '';
+          this.textNodes.push(nodeToInsert);
+      }
+
+      getNodeIntersectionWithRange(node) {
+          let startOffset = null;
+          let endOffset = null;
+          if (node === this.searchRange.startContainer &&
+              this.searchRange.startOffset !== 0) {
+              startOffset = this.searchRange.startOffset;
+          }
+          if (node === this.searchRange.endContainer &&
+              this.searchRange.endOffset !== node.textContent.length) {
+              endOffset = this.searchRange.endOffset;
+          }
+          if (startOffset !== null || endOffset !== null) {
+              return {
+                  textContent: node.textContent.substring(startOffset ?? 0, endOffset ?? node.textContent.length)
+              };
+          }
+          return node;
+      }
+  };
+
+  const isUniquelyIdentifying = (fragment) => {
+      return fragments.processTextFragmentDirective(fragment).length === 1;
+  };
+
+  const reverseString = (string) => {
+
+      return [...(string || '')].reverse().join('');
+  };
+
+  const canUseExactMatch = (range) => {
+      if (range.toString().length > MAX_EXACT_MATCH_LENGTH)
+          return false;
+      return !containsBlockBoundary(range);
+  };
+
+  const getFirstNodeForBlockSearch = (range) => {
+
+      let node = range.startContainer;
+      if (node.nodeType == Node.ELEMENT_NODE &&
+          range.startOffset < node.childNodes.length) {
+          node = node.childNodes[range.startOffset];
+      }
+      return node;
+  };
+
+  const getLastNodeForBlockSearch = (range) => {
+
+      let node = range.endContainer;
+      if (node.nodeType == Node.ELEMENT_NODE && range.endOffset > 0) {
+          node = node.childNodes[range.endOffset - 1];
+      }
+      return node;
+  };
+
+  const getFirstTextNode = (range) => {
+
+      const firstNode = getFirstNodeForBlockSearch(range);
+      if (isText(firstNode) && fragments.internal.isNodeVisible(firstNode)) {
+          return firstNode;
+      }
+
+      const walker = fragments.internal.makeTextNodeWalker(range);
+      walker.currentNode = firstNode;
+      return walker.nextNode();
+  };
+
+  const getLastTextNode = (range) => {
+
+      const lastNode = getLastNodeForBlockSearch(range);
+      if (isText(lastNode) && fragments.internal.isNodeVisible(lastNode)) {
+          return lastNode;
+      }
+
+      const walker = fragments.internal.makeTextNodeWalker(range);
+      walker.currentNode = lastNode;
+      return fragments.internal.backwardTraverse(walker, new Set());
+  };
+
+  const containsBlockBoundary = (range) => {
+      const tempRange = range.cloneRange();
+      let node = getFirstNodeForBlockSearch(tempRange);
+      const walker = makeWalkerForNode(node);
+      if (!walker) {
+          return false;
+      }
+      const finishedSubtrees = new Set();
+      while (!tempRange.collapsed && node != null) {
+          if (isBlock(node))
+              return true;
+          if (node != null)
+              tempRange.setStartAfter(node);
+          node = fragments.internal.forwardTraverse(walker, finishedSubtrees);
+          checkTimeout();
+      }
+      return false;
+  };
+
+  const findWordStartBoundInTextNode = (node, startOffset) => {
+      if (node.nodeType !== Node.TEXT_NODE)
+          return -1;
+      const offset = startOffset != null ? startOffset : node.data.length;
+
+      if (offset < node.data.length &&
+          fragments.internal.BOUNDARY_CHARS.test(node.data[offset]))
+          return offset;
+      const precedingText = node.data.substring(0, offset);
+      const boundaryIndex = reverseString(precedingText).search(fragments.internal.BOUNDARY_CHARS);
+      if (boundaryIndex !== -1) {
+
+          return offset - boundaryIndex;
+      }
+      return -1;
+  };
+
+  const findWordEndBoundInTextNode = (node, endOffset) => {
+      if (node.nodeType !== Node.TEXT_NODE)
+          return -1;
+      const offset = endOffset != null ? endOffset : 0;
+
+      if (offset < node.data.length && offset > 0 &&
+          fragments.internal.BOUNDARY_CHARS.test(node.data[offset - 1])) {
+          return offset;
+      }
+      const followingText = node.data.substring(offset);
+      const boundaryIndex = followingText.search(fragments.internal.BOUNDARY_CHARS);
+      if (boundaryIndex !== -1) {
+          return offset + boundaryIndex;
+      }
+      return -1;
+  };
+
+  const makeWalkerForNode = (node, endNode) => {
+      if (!node) {
+          return undefined;
+      }
+
+      let blockAncestor = node;
+      const endNodeNotNull = endNode != null ? endNode : node;
+      while (!blockAncestor.contains(endNodeNotNull) || !isBlock(blockAncestor)) {
+          if (blockAncestor.parentNode) {
+              blockAncestor = blockAncestor.parentNode;
+          }
+      }
+      const walker = document.createTreeWalker(blockAncestor, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, (node) => {
+          return fragments.internal.acceptNodeIfVisibleInRange(node);
+      });
+      walker.currentNode = node;
+      return walker;
+  };
+
+  const expandRangeStartToWordBound = (range) => {
+      const segmenter = fragments.internal.makeNewSegmenter();
+      if (segmenter) {
+
+          const startNode = getFirstNodeForBlockSearch(range);
+          if (startNode !== range.startContainer) {
+              range.setStartBefore(startNode);
+          }
+          expandToNearestWordBoundaryPointUsingSegments(segmenter,  false, range);
+      }
+      else {
+
+          const newOffset = findWordStartBoundInTextNode(range.startContainer, range.startOffset);
+          if (newOffset !== -1) {
+              range.setStart(range.startContainer, newOffset);
+              return;
+          }
+
+          if (isBlock(range.startContainer) && range.startOffset === 0) {
+              return;
+          }
+          const walker = makeWalkerForNode(range.startContainer);
+          if (!walker) {
+              return;
+          }
+          const finishedSubtrees = new Set();
+          let node = fragments.internal.backwardTraverse(walker, finishedSubtrees);
+          while (node != null) {
+              const newOffset = findWordStartBoundInTextNode(node);
+              if (newOffset !== -1) {
+                  range.setStart(node, newOffset);
+                  return;
+              }
+
+              if (isBlock(node)) {
+                  if (node.contains(range.startContainer)) {
+
+                      range.setStart(node, 0);
+                  }
+                  else {
+
+                      range.setStartAfter(node);
+                  }
+                  return;
+              }
+              node = fragments.internal.backwardTraverse(walker, finishedSubtrees);
+
+              range.collapse();
+          }
+      }
+  };
+
+  const moveRangeEdgesToTextNodes = (range) => {
+      const firstTextNode = getFirstTextNode(range);
+
+      if (firstTextNode == null) {
+          range.collapse();
+          return;
+      }
+      const firstNode = getFirstNodeForBlockSearch(range);
+
+      if (firstNode !== firstTextNode) {
+          range.setStart(firstTextNode, 0);
+      }
+      const lastNode = getLastNodeForBlockSearch(range);
+      const lastTextNode = getLastTextNode(range);
+
+      if (lastNode !== lastTextNode) {
+          range.setEnd(lastTextNode, lastTextNode.textContent.length);
+      }
+  };
+
+  const expandToNearestWordBoundaryPointUsingSegments = (segmenter, isRangeEnd, range) => {
+
+      const boundary = isRangeEnd ?
+          { node: range.endContainer, offset: range.endOffset } :
+          { node: range.startContainer, offset: range.startOffset };
+      const nodes = getTextNodesInSameBlock(boundary.node);
+      const preNodeText = nodes.preNodes.reduce((prev, cur) => {
+          return prev.concat(cur.textContent);
+      }, '');
+      const innerNodeText = nodes.innerNodes.reduce((prev, cur) => {
+          return prev.concat(cur.textContent);
+      }, '');
+      let offsetInText = preNodeText.length;
+      if (boundary.node.nodeType === Node.TEXT_NODE) {
+          offsetInText += boundary.offset;
+      }
+      else if (isRangeEnd) {
+          offsetInText += innerNodeText.length;
+      }
+
+      const postNodeText = nodes.postNodes.reduce((prev, cur) => {
+          return prev.concat(cur.textContent);
+      }, '');
+      const allNodes = [...nodes.preNodes, ...nodes.innerNodes, ...nodes.postNodes];
+
+      if (allNodes.length == 0) {
+          return;
+      }
+      const text = preNodeText.concat(innerNodeText, postNodeText);
+      const segments = segmenter.segment(text);
+      const foundSegment = segments.containing(offsetInText);
+      if (!foundSegment) {
+          if (isRangeEnd) {
+              range.setEndAfter(allNodes[allNodes.length - 1]);
+          }
+          else {
+              range.setEndBefore(allNodes[0]);
+          }
+          return;
+      }
+
+      if (!foundSegment.isWordLike) {
+          return;
+      }
+
+      if (offsetInText === foundSegment.index ||
+          offsetInText === foundSegment.index + foundSegment.segment.length) {
+          return;
+      }
+
+      const desiredOffsetInText = isRangeEnd ?
+          foundSegment.index + foundSegment.segment.length :
+          foundSegment.index;
+      let newNodeIndexInText = 0;
+      for (const node of allNodes) {
+          if (newNodeIndexInText <= desiredOffsetInText &&
+              desiredOffsetInText <
+                  newNodeIndexInText + node.textContent.length) {
+              const offsetInNode = desiredOffsetInText - newNodeIndexInText;
+              if (isRangeEnd) {
+                  if (offsetInNode >= node.textContent.length) {
+                      range.setEndAfter(node);
+                  }
+                  else {
+                      range.setEnd(node, offsetInNode);
+                  }
+              }
+              else {
+                  if (offsetInNode >= node.textContent.length) {
+                      range.setStartAfter(node);
+                  }
+                  else {
+                      range.setStart(node, offsetInNode);
+                  }
+              }
+              return;
+          }
+          newNodeIndexInText += node.textContent.length;
+      }
+
+      if (isRangeEnd) {
+          range.setEndAfter(allNodes[allNodes.length - 1]);
+      }
+      else {
+          range.setStartBefore(allNodes[0]);
+      }
+  };
+
+  const getTextNodesInSameBlock = (node) => {
+      const preNodes = [];
+
+      const backWalker = makeWalkerForNode(node);
+      if (!backWalker) {
+          return;
+      }
+      const finishedSubtrees = new Set();
+      let backNode = fragments.internal.backwardTraverse(backWalker, finishedSubtrees);
+      while (backNode != null && !isBlock(backNode)) {
+          checkTimeout();
+          if (backNode.nodeType === Node.TEXT_NODE) {
+              preNodes.push(backNode);
+          }
+          backNode =
+              fragments.internal.backwardTraverse(backWalker, finishedSubtrees);
+      }
+      ;
+      preNodes.reverse();
+      const innerNodes = [];
+      if (node.nodeType === Node.TEXT_NODE) {
+          innerNodes.push(node);
+      }
+      else {
+          const walker = document.createTreeWalker(node, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, (node) => {
+              return fragments.internal.acceptNodeIfVisibleInRange(node);
+          });
+          walker.currentNode = node;
+          let child = walker.nextNode();
+          while (child != null) {
+              checkTimeout();
+              if (child.nodeType === Node.TEXT_NODE) {
+                  innerNodes.push(child);
+              }
+              child = walker.nextNode();
+          }
+      }
+      const postNodes = [];
+      const forwardWalker = makeWalkerForNode(node);
+      if (!forwardWalker) {
+          return;
+      }
+
+      const finishedSubtreesForward = new Set([node]);
+      let forwardNode = fragments.internal.forwardTraverse(forwardWalker, finishedSubtreesForward);
+      while (forwardNode != null && !isBlock(forwardNode)) {
+          checkTimeout();
+          if (forwardNode.nodeType === Node.TEXT_NODE) {
+              postNodes.push(forwardNode);
+          }
+          forwardNode = fragments.internal.forwardTraverse(forwardWalker, finishedSubtreesForward);
+      }
+      return { preNodes: preNodes, innerNodes: innerNodes, postNodes: postNodes };
+  };
+
+  const expandRangeEndToWordBound = (range) => {
+      const segmenter = fragments.internal.makeNewSegmenter();
+      if (segmenter) {
+
+          const endNode = getLastNodeForBlockSearch(range);
+          if (endNode !== range.endContainer) {
+              range.setEndAfter(endNode);
+          }
+          expandToNearestWordBoundaryPointUsingSegments(segmenter,  true, range);
+      }
+      else {
+          let initialOffset = range.endOffset;
+          let node = range.endContainer;
+          if (node.nodeType === Node.ELEMENT_NODE) {
+              if (range.endOffset < node.childNodes.length) {
+                  node = node.childNodes[range.endOffset];
+              }
+          }
+          const walker = makeWalkerForNode(node);
+          if (!walker) {
+              return;
+          }
+
+          const finishedSubtrees = new Set([node]);
+          while (node != null) {
+              checkTimeout();
+              const newOffset = findWordEndBoundInTextNode(node, initialOffset);
+
+              initialOffset = null;
+              if (newOffset !== -1) {
+                  range.setEnd(node, newOffset);
+                  return;
+              }
+
+              if (isBlock(node)) {
+                  if (node.contains(range.endContainer)) {
+
+                      range.setEnd(node, node.childNodes.length);
+                  }
+                  else {
+
+                      range.setEndBefore(node);
+                  }
+                  return;
+              }
+              node = fragments.internal.forwardTraverse(walker, finishedSubtrees);
+          }
+
+          range.collapse();
+      }
+  };
+
+  const isBlock = (node) => {
+      return node.nodeType === Node.ELEMENT_NODE &&
+          (fragments.internal.BLOCK_ELEMENTS.includes(node.tagName) ||
+              node.tagName === 'HTML' || node.tagName === 'BODY');
+  };
+
+  const isText = (node) => {
+      return node.nodeType === Node.TEXT_NODE;
+  };
+  const forTesting = {
+      containsBlockBoundary: containsBlockBoundary,
+      doGenerateFragment: doGenerateFragment,
+      expandRangeEndToWordBound: expandRangeEndToWordBound,
+      expandRangeStartToWordBound: expandRangeStartToWordBound,
+      findWordEndBoundInTextNode: findWordEndBoundInTextNode,
+      findWordStartBoundInTextNode: findWordStartBoundInTextNode,
+      FragmentFactory: FragmentFactory,
+      getSearchSpaceForEnd: getSearchSpaceForEnd,
+      getSearchSpaceForStart: getSearchSpaceForStart,
+      getTextNodesInSameBlock: getTextNodesInSameBlock,
+      recordStartTime: recordStartTime,
+      BlockTextAccumulator: BlockTextAccumulator,
+      getFirstTextNode: getFirstTextNode,
+      getLastTextNode: getLastTextNode,
+      moveRangeEdgesToTextNodes: moveRangeEdgesToTextNodes
+  };
+
+  if (typeof goog !== 'undefined') {
+
+      goog.declareModuleId('googleChromeLabs.textFragmentPolyfill.fragmentGenerationUtils');
+
+  }
+}
+
+// ios/chrome/browser/link_to_text/model/tsc/ios/chrome/browser/link_to_text/model/resources/link_to_text.js
+if (typeof _injected_link_to_text === 'undefined') {
+    var _injected_link_to_text = true;
+   
+  function getLinkToText() {
+      const selection = window.getSelection();
+      let selectionRect = { x: 0, y: 0, width: 0, height: 0 };
+      if (selection && selection.rangeCount) {
+          // Get the selection range's first client rect.
+          const domRect = selection.getRangeAt(0).getClientRects()[0];
+          if (domRect) {
+              selectionRect.x = domRect.x;
+              selectionRect.y = domRect.y;
+              selectionRect.width = domRect.width;
+              selectionRect.height = domRect.height;
+          }
+      }
+      const selectedText = `"${selection?.toString()}"`;
+      const canonicalLinkNode = document.querySelector('link[rel=\'canonical\']');
+      const response = utils.generateFragment(selection);
+      return {
+          status: response.status,
+          fragment: response.fragment,
+          selectedText: selectedText,
+          selectionRect: selectionRect,
+          canonicalUrl: canonicalLinkNode
+              && canonicalLinkNode.getAttribute('href')
+      };
+  }
+  
+  gCrWeb.linkToText = { getLinkToText };
+}
+
+
+// components/language/ios/browser/tsc/components/language/ios/browser/resources/language_detection.js
+
+if (typeof _injected_language_detection === 'undefined') {
+    var _injected_language_detection = true;
+    
+  let bufferedTextContent;
+
+  let activeRequests = 0;
+
+  function hasNoTranslate() {
+      for (const metaTag of document.getElementsByTagName('meta')) {
+          if (metaTag.name === 'google') {
+              if (metaTag.content === 'notranslate' ||
+                  metaTag.getAttribute('value') === 'notranslate') {
+                  return true;
+              }
+          }
+      }
+      return false;
+  }
+
+  function getMetaContentByHttpEquiv(httpEquiv) {
+      for (const metaTag of document.getElementsByTagName('meta')) {
+          if (metaTag.httpEquiv.toLowerCase() === httpEquiv) {
+              return metaTag.content;
+          }
+      }
+      return '';
+  }
+
+  const NON_TEXT_NODE_NAMES = new Set([
+      'EMBED',
+      'NOSCRIPT',
+      'OBJECT',
+      'SCRIPT',
+      'STYLE',
+  ]);
+
+  function getTextContent(node, maxLen) {
+      if (!node || maxLen <= 0) {
+          return '';
+      }
+      let txt = '';
+
+      if (node.nodeType === Node.ELEMENT_NODE && node instanceof Element) {
+
+          if (NON_TEXT_NODE_NAMES.has(node.nodeName)) {
+              return '';
+          }
+          if (node.nodeName === 'BR') {
+              return '\n';
+          }
+          const style = window.getComputedStyle(node);
+
+          if (style.display === 'none' || style.visibility === 'hidden') {
+              return '';
+          }
+
+          if (node.nodeName.toUpperCase() !== 'BODY' && style.display !== 'inline') {
+              txt = '\n';
+          }
+      }
+      if (node.hasChildNodes()) {
+          for (const childNode of node.childNodes) {
+              txt += getTextContent(childNode, maxLen - txt.length);
+              if (txt.length >= maxLen) {
+                  break;
+              }
+          }
+      }
+      else if (node.nodeType === Node.TEXT_NODE && node.textContent) {
+          txt += node.textContent.substring(0, maxLen - txt.length);
+      }
+      return txt;
+  }
+
+  function detectLanguage() {
+
+      const kMaxIndexChars = 65535;
+      activeRequests += 1;
+      bufferedTextContent = getTextContent(document.body, kMaxIndexChars);
+      const httpContentLanguage = getMetaContentByHttpEquiv('content-language');
+      const textCapturedCommand = {
+          'hasNoTranslate': false,
+          'htmlLang': document.documentElement.lang,
+          'httpContentLanguage': httpContentLanguage,
+          'frameId': gCrWeb.message.getFrameId(),
+      };
+      if (hasNoTranslate()) {
+          textCapturedCommand['hasNoTranslate'] = true;
+      }
+      sendWebKitMessage('LanguageDetectionTextCaptured', textCapturedCommand);
+  }
+
+  function retrieveBufferedTextContent() {
+      const textContent = bufferedTextContent;
+      activeRequests -= 1;
+      if (activeRequests === 0) {
+          bufferedTextContent = null;
+      }
+      return textContent;
+  }
+
+  gCrWeb.languageDetection = {
+      detectLanguage,
+      retrieveBufferedTextContent,
+  };
+}
+
+// components/translate/core/browser/resources/translate.js
+if (typeof _injected_translate === 'undefined') {
+  var _injected_translate = true
+  
+  var cr = cr || {};
+
+  cr.googleTranslate = (function() {
+
+    let lib;
+
+    let libReady = false;
+
+    const ERROR = {
+      'NONE': 0,
+      'INITIALIZATION_ERROR': 2,
+      'UNSUPPORTED_LANGUAGE': 4,
+      'TRANSLATION_ERROR': 6,
+      'TRANSLATION_TIMEOUT': 7,
+      'UNEXPECTED_SCRIPT_ERROR': 8,
+      'BAD_ORIGIN': 9,
+      'SCRIPT_LOAD_ERROR': 10,
+    };
+
+    const TRANSLATE_ERROR_TO_ERROR_CODE_MAP = {
+      0: ERROR['NONE'],
+      1: ERROR['TRANSLATION_ERROR'],
+      2: ERROR['UNSUPPORTED_LANGUAGE'],
+    };
+
+    let errorCode = ERROR['NONE'];
+
+    let finished = false;
+
+    let checkReadyCount = 0;
+
+    const injectedTime = performance.now();
+
+    let loadedTime = 0.0;
+
+    let readyTime = 0.0;
+
+    let startTime = 0.0;
+
+    let endTime = 0.0;
+
+    let readyCallback;
+
+    let resultCallback;
+
+    function checkLibReady() {
+      if (lib.isAvailable()) {
+        readyTime = performance.now();
+        libReady = true;
         invokeReadyCallback();
         return;
       }
-      // The TranslateService is not available immediately as it needs to start
-      // Flash.  Let's wait until it is ready.
-      checkLibReady();
-    },
-
-    /**
-     * Entry point called by the Translate Element when it want to load an
-     * external CSS resource into the page.
-     * @param {string} url URL of an external CSS resource to load.
-     */
-    onLoadCSS(url) {
-      const element = document.createElement('link');
-      element.type = 'text/css';
-      element.rel = 'stylesheet';
-      element.charset = 'UTF-8';
-      element.href = url;
-      document.head.appendChild(element);
-    },
-
-    /**
-     * Entry point called by the Translate Element when it want to load and run
-     * an external JavaScript on the page.
-     * @param {string} url URL of an external JavaScript to load.
-     */
-    onLoadJavascript(url) {
-      // securityOrigin is predefined by translate_script.cc.
-      if (!url.startsWith(securityOrigin)) {
-        console.error('Translate: ' + url + ' is not allowed to load.');
-        errorCode = ERROR['BAD_ORIGIN'];
+      if (checkReadyCount++ > 5) {
+        errorCode = ERROR['TRANSLATION_TIMEOUT'];
+        invokeReadyCallback();
         return;
       }
+      setTimeout(checkLibReady, 100);
+    }
 
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', url, true);
-      xhr.onreadystatechange = function() {
-        if (this.readyState !== this.DONE) {
+    function onTranslateProgress(progress, opt_finished, opt_error) {
+      finished = opt_finished;
+
+      if (typeof opt_error === 'boolean' && opt_error) {
+
+        errorCode = ERROR['TRANSLATION_ERROR'];
+
+        lib.restore();
+        invokeResultCallback();
+      } else if (typeof opt_error === 'number' && opt_error !== 0) {
+        errorCode = TRANSLATE_ERROR_TO_ERROR_CODE_MAP[opt_error];
+        lib.restore();
+        invokeResultCallback();
+      }
+
+      if (finished) {
+        endTime = performance.now();
+        invokeResultCallback();
+      }
+    }
+
+    function invokeReadyCallback() {
+      if (readyCallback) {
+        readyCallback();
+        readyCallback = null;
+      }
+    }
+
+    function invokeResultCallback() {
+      if (resultCallback) {
+        resultCallback();
+        resultCallback = null;
+      }
+    }
+
+    window.addEventListener('pagehide', function(event) {
+      if (libReady && event.persisted) {
+        lib.restore();
+      }
+    });
+
+    return {
+
+      set readyCallback(callback) {
+        if (!readyCallback) {
+          readyCallback = callback;
+        }
+      },
+
+      set resultCallback(callback) {
+        if (!resultCallback) {
+          resultCallback = callback;
+        }
+      },
+
+      get libReady() {
+        return libReady;
+      },
+
+      get finished() {
+        return finished;
+      },
+
+      get error() {
+        return errorCode !== ERROR['NONE'];
+      },
+
+      get errorCode() {
+        return errorCode;
+      },
+
+      get sourceLang() {
+        if (!libReady || !finished || errorCode !== ERROR['NONE']) {
+          return '';
+        }
+        if (!lib.getDetectedLanguage) {
+          return 'und';
+        }
+        return lib.getDetectedLanguage();
+      },
+
+      get loadTime() {
+        if (loadedTime === 0) {
+          return 0;
+        }
+        return loadedTime - injectedTime;
+      },
+
+      get readyTime() {
+        if (!libReady) {
+          return 0;
+        }
+        return readyTime - injectedTime;
+      },
+
+      get translationTime() {
+        if (!finished) {
+          return 0;
+        }
+        return endTime - startTime;
+      },
+
+      translate(sourceLang, targetLang) {
+        finished = false;
+        errorCode = ERROR['NONE'];
+        if (!libReady) {
+          return false;
+        }
+        startTime = performance.now();
+        try {
+          lib.translatePage(sourceLang, targetLang, onTranslateProgress);
+        } catch (err) {
+          console.error('Translate: ' + err);
+          errorCode = ERROR['UNEXPECTED_SCRIPT_ERROR'];
+          invokeResultCallback();
+          return false;
+        }
+        return true;
+      },
+
+      revert() {
+        lib.restore();
+      },
+
+      onTranslateElementError(error) {
+        errorCode = ERROR['UNEXPECTED_SCRIPT_ERROR'];
+        invokeReadyCallback();
+      },
+
+      onTranslateElementLoad() {
+        loadedTime = performance.now();
+        try {
+          lib = google.translate.TranslateService({
+
+            'key': translateApiKey,
+            'serverParams': serverParams,
+            'timeInfo': gtTimeInfo,
+            'useSecureConnection': true,
+          });
+          translateApiKey = undefined;
+          serverParams = undefined;
+          gtTimeInfo = undefined;
+        } catch (err) {
+          errorCode = ERROR['INITIALIZATION_ERROR'];
+          translateApiKey = undefined;
+          serverParams = undefined;
+          gtTimeInfo = undefined;
+          invokeReadyCallback();
           return;
         }
-        if (this.status !== 200) {
-          errorCode = ERROR['SCRIPT_LOAD_ERROR'];
+
+        checkLibReady();
+      },
+
+      onLoadCSS(url) {
+        const element = document.createElement('link');
+        element.type = 'text/css';
+        element.rel = 'stylesheet';
+        element.charset = 'UTF-8';
+        element.href = url;
+        document.head.appendChild(element);
+      },
+
+      onLoadJavascript(url) {
+
+        if (!url.startsWith(securityOrigin)) {
+          console.error('Translate: ' + url + ' is not allowed to load.');
+          errorCode = ERROR['BAD_ORIGIN'];
           return;
         }
-        // Execute translate script using an anonymous function on the window,
-        // this prevents issues with the code being inside of the scope of the
-        // XHR request.
-        new Function(this.responseText).call(window);
-      };
-      xhr.send();
-    },
-  };
-})();
 
-// TRANSLATE_IOS
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.onreadystatechange = function() {
+          if (this.readyState !== this.DONE) {
+            return;
+          }
+          if (this.status !== 200) {
+            errorCode = ERROR['SCRIPT_LOAD_ERROR'];
+            return;
+          }
 
+          new Function(this.responseText).call(window);
+        };
+        xhr.send();
+      },
+    };
+  })();
+}
+
+
+
+
+
+// components/translate/ios/browser/tsc/components/translate/ios/browser/resources/translate_ios.js
 if (typeof _injected_translate_ios === 'undefined') {
     var _injected_translate_ios = true;
-    (function() {
-        if (!window.__gCrWeb) {
-            window.__gCrWeb = {}
-        }
-        const e = window.__gCrWeb;
-        function a(e, a) {
-            try {
-                var r = window.webkit;
-                delete window["webkit"];
-                window.webkit.messageHandlers[e].postMessage(a);
-                window.webkit = r
-            } catch (e) {}
-        }
-        function r() {
-            cr.googleTranslate.readyCallback = function() {
-                a("TranslateMessage", {
-                    command: "ready",
-                    errorCode: cr.googleTranslate.errorCode,
-                    loadTime: cr.googleTranslate.loadTime,
-                    readyTime: cr.googleTranslate.readyTime
-                })
-            };
-            cr.googleTranslate.resultCallback = function() {
-                a("TranslateMessage", {
-                    command: "status",
-                    errorCode: cr.googleTranslate.errorCode,
-                    pageSourceLanguage: cr.googleTranslate.sourceLang,
-                    translationTime: cr.googleTranslate.translationTime
-                })
-            }
-        }
-        function o(e, a) {
-            cr.googleTranslate.translate(e, a)
-        }
-        function n() {
-            try {
-                cr.googleTranslate.revert()
-            } catch {}
-        }
-        e.translate = {
-            installCallbacks: r,
-            startTranslation: o,
-            revertTranslation: n
-        }
-    })();
+  
+  function installCallbacks() {
+      cr.googleTranslate.readyCallback = function () {
+          sendWebKitMessage('TranslateMessage', {
+              'command': 'ready',
+              'errorCode': cr.googleTranslate.errorCode,
+              'loadTime': cr.googleTranslate.loadTime,
+              'readyTime': cr.googleTranslate.readyTime,
+          });
+      };
+
+      cr.googleTranslate.resultCallback = function () {
+          sendWebKitMessage('TranslateMessage', {
+              'command': 'status',
+              'errorCode': cr.googleTranslate.errorCode,
+              'pageSourceLanguage': cr.googleTranslate.sourceLang,
+              'translationTime': cr.googleTranslate.translationTime,
+          });
+      };
+  }
+  
+  function startTranslation(sourceLanguage, targetLanguage) {
+      cr.googleTranslate.translate(sourceLanguage, targetLanguage);
+  }
+  
+  function revertTranslation() {
+      try {
+          cr.googleTranslate.revert();
+      }
+      catch {
+
+      }
+  }
+
+  gCrWeb.translate = {
+      installCallbacks,
+      startTranslation,
+      revertTranslation,
+  };
 }
   
   
-// TRANSLATE_SCRIPT.cc
+// components/translate/core/browser/translate_script.cc;l=149
 try {
     __gCrWeb.translate.installCallbacks();
 } catch (error) {
@@ -3296,18 +3895,15 @@ try {
 
 // go/mss-setup#7-load-the-js-or-css-from-your-initial-page
 if (!window['_DumpException']) {
-    const _DumpException = window['_DumpException'] || function(e) {
-        throw e;
+    const _DumpException = window['_DumpException'] || function(error) {
+        throw error;
     };
     window['_DumpException'] = _DumpException;
 }
 
 
+// brave-core/components/translate/core/browser/resources/brave_translate.js
 
-
-
-
-// BRAVE TRANSLATE HOOKS???
 try {
   const useGoogleTranslateEndpoint = false;
   const braveTranslateStaticPath = '/static/v1/';
@@ -3534,7 +4130,13 @@ try {
   cr.googleTranslate.onTranslateElementError(error);
 }
 
-// BRAVE TRANSLATE (main.js)???
+
+
+
+
+
+
+// BRAVE TRANSLATE https://translate.brave.com/static/v1/js/element/main.js
 
 try {
   "use strict";
