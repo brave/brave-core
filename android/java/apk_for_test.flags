@@ -791,16 +791,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.components.language.LocaleManagerDelegateImpl {
-    public <init>(...);
-    *** getApplicationLocale(...);
-    *** setApplicationLocale(...);
-}
-
--keep class org.chromium.components.language.BraveLocaleManagerDelegateImpl {
-    public <init>(...);
-}
-
 -keep class org.chromium.chrome.browser.compositor.layouts.ToolbarSwipeLayout {
     public <init>(...);
     *** mMoveToolbar;
