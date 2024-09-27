@@ -34,13 +34,10 @@ public class BraveStatsPreferences extends BravePreferenceFragment
     public static final String PREF_BRAVE_STATS_NOTIFICATION = "brave_stats_notification";
     public static final String PREF_CLEAR_BRAVE_STATS = "clear_brave_stats";
 
-    private ChromeSwitchPreference braveStatsPref;
-    private ChromeSwitchPreference braveStatsNotificationPref;
+    private ChromeSwitchPreference mBraveStatsPref;
+    private ChromeSwitchPreference mBraveStatsNotificationPref;
 
     private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
-
-    private SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-    private SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
@@ -107,17 +104,19 @@ public class BraveStatsPreferences extends BravePreferenceFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        braveStatsPref = (ChromeSwitchPreference) findPreference(PREF_BRAVE_STATS);
-        if (braveStatsPref != null) {
-            braveStatsPref.setEnabled(true);
-            braveStatsPref.setChecked(OnboardingPrefManager.getInstance().isBraveStatsEnabled());
-            braveStatsPref.setOnPreferenceChangeListener(this);
+        mBraveStatsPref = (ChromeSwitchPreference) findPreference(PREF_BRAVE_STATS);
+        if (mBraveStatsPref != null) {
+            mBraveStatsPref.setEnabled(true);
+            mBraveStatsPref.setChecked(OnboardingPrefManager.getInstance().isBraveStatsEnabled());
+            mBraveStatsPref.setOnPreferenceChangeListener(this);
         }
-        braveStatsNotificationPref = (ChromeSwitchPreference) findPreference(PREF_BRAVE_STATS_NOTIFICATION);
-        if (braveStatsNotificationPref != null) {
-            braveStatsNotificationPref.setEnabled(true);
-            braveStatsNotificationPref.setChecked(OnboardingPrefManager.getInstance().isBraveStatsNotificationEnabled());
-            braveStatsNotificationPref.setOnPreferenceChangeListener(this);
+        mBraveStatsNotificationPref =
+                (ChromeSwitchPreference) findPreference(PREF_BRAVE_STATS_NOTIFICATION);
+        if (mBraveStatsNotificationPref != null) {
+            mBraveStatsNotificationPref.setEnabled(true);
+            mBraveStatsNotificationPref.setChecked(
+                    OnboardingPrefManager.getInstance().isBraveStatsNotificationEnabled());
+            mBraveStatsNotificationPref.setOnPreferenceChangeListener(this);
         }
     }
 

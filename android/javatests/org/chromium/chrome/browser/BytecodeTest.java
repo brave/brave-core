@@ -464,7 +464,7 @@ public class BytecodeTest {
                         null));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/ui/default_browser_promo/DefaultBrowserPromoUtils",
+                        "org/chromium/chrome/browser/ui/default_browser_promo/DefaultBrowserPromoUtils", // presubmit: ignore-long-line
                         "prepareLaunchPromoIfNeeded",
                         MethodModifier.REGULAR,
                         true,
@@ -1050,7 +1050,7 @@ public class BytecodeTest {
                         void.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController",
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
                         "getNavigationBarColor",
                         MethodModifier.REGULAR,
                         true,
@@ -2094,7 +2094,7 @@ public class BytecodeTest {
                         ResourceButtonData.class));
         Assert.assertFalse(
                 fieldExists(
-                        "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController",
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
                         "mContext"));
     }
 
@@ -2235,8 +2235,8 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/tasks/tab_management/BraveTabSwitcherPaneBase")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 checkSuperName(
-                        "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController",
-                        "org/chromium/chrome/browser/tabbed_mode/BraveTabbedNavigationBarColorControllerBase"));
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/tabbed_mode/BraveTabbedNavigationBarColorControllerBase")); // presubmit: ignore-long-line
     }
 
     private boolean classExists(String className) {
