@@ -11,6 +11,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_multi_source_observation.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/size.h"
@@ -34,16 +35,30 @@ class BraveSidePanel : public views::View,
                        public views::ResizeAreaDelegate {
   METADATA_HEADER(BraveSidePanel, views::View)
  public:
+  // In the past we have been forced to rename these values, as this unscoped
+  // enum ends up colliding with SDK constants on MacOS builds. However as these
+  // constants are referred to in chromium code, renaming them causes a
+  // growing number of substitution overrides to be necessary across the
+  // codebase. As part of simplifying the overrides for this class, this
+  // particular shadow warning is disabled on this case alone, to permit this
+  // enum to be used here.
+#if BUILDFLAG(IS_MAC)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wshadow"
+#endif  // BUILDFLAG(IS_MAC)
   // Determines the side from which the side panel will appear.
   // LTR / RTL conversions are handled in
   // BrowserViewLayout::LayoutSidePanelView. As such, left will always be on the
   // left side of the browser regardless of LTR / RTL mode.
-  enum HorizontalAlignment { kHorizontalAlignLeft = 0, kHorizontalAlignRight };
+  enum HorizontalAlignment { kAlignLeft = 0, kAlignRight };
+#if BUILDFLAG(IS_MAC)
+#pragma clang diagnostic pop
+#endif  // BUILDFLAG(IS_MAC)
 
   // Same signature as chromium SidePanel
   explicit BraveSidePanel(BrowserView* browser_view,
                           HorizontalAlignment horizontal_alignment =
-                              HorizontalAlignment::kHorizontalAlignLeft);
+                              HorizontalAlignment::kAlignLeft);
   BraveSidePanel(const BraveSidePanel&) = delete;
   BraveSidePanel& operator=(const BraveSidePanel&) = delete;
   ~BraveSidePanel() override;
@@ -91,7 +106,7 @@ class BraveSidePanel : public views::View,
   base::ScopedMultiSourceObservation<View, ViewObserver> scoped_observation_{
       this};
 
-  HorizontalAlignment horizontal_alignment_ = kHorizontalAlignLeft;
+  HorizontalAlignment horizontal_alignment_ = kAlignLeft;
   std::optional<int> starting_width_on_resize_;
 
   // If this is set, use this width for panel contents during the layout
@@ -104,5 +119,9 @@ class BraveSidePanel : public views::View,
   std::unique_ptr<ViewShadow> shadow_;
   std::unique_ptr<views::View> header_view_;
 };
+
+// Alias to the original `SidePanel` to the benefit of upstream code, as
+// `BraveSidePanel` is a complete replacement of the upstream class.
+using SidePanel = BraveSidePanel;
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_H_
