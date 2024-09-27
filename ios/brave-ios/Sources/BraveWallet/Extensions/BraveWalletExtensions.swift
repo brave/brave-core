@@ -743,3 +743,38 @@ extension BraveWallet.NftAttribute: Identifiable {
     traitType
   }
 }
+
+extension BraveWallet.TransactionType {
+  public var localizedDescription: String {
+    switch self {
+    case .erc20Approve:
+      return Strings.Wallet.txFunctionTypeERC20Approve
+    case .erc20Transfer, .solanaSplTokenTransfer:
+      return Strings.Wallet.txFunctionTypeTokenTransfer
+    case .erc721TransferFrom:
+      return Strings.Wallet.txFunctionTypeNFTTransfer
+    case .erc721SafeTransferFrom, .erc1155SafeTransferFrom:
+      return Strings.Wallet.txFunctionTypeSafeTransfer
+    case .ethFilForwarderTransfer:
+      return Strings.Wallet.txFunctionTypeForwardFil
+    case .solanaDappSignAndSendTransaction:
+      return Strings.Wallet.txFunctionTypeSignAndSendDapp
+    case .solanaSystemTransfer:
+      return String.localizedStringWithFormat(Strings.Wallet.txFunctionTypeSend, "SOL")
+    case .ethSwap, .solanaSwap:
+      return Strings.Wallet.txFunctionTypeSwap
+    case .solanaSplTokenTransferWithAssociatedTokenAccountCreation:
+      return Strings.Wallet.txFunctionTypeSplWithAssociatedTokenAccountCreation
+    case .solanaCompressedNftTransfer:
+      return Strings.Wallet.txFunctionTypeCompressedNFTTransfer
+    case .ethSend:
+      return String.localizedStringWithFormat(Strings.Wallet.txFunctionTypeSend, "ETH")
+    case .other:
+      return Strings.Wallet.txFunctionTypeOther
+    case .solanaDappSignTransaction:
+      return Strings.Wallet.txFunctionTypeSignDappTransaction
+    @unknown default:
+      return Strings.Wallet.txFunctionTypeOther
+    }
+  }
+}
