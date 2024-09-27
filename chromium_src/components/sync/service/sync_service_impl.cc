@@ -11,11 +11,19 @@
 #include "components/sync/base/command_line_switches.h"
 #include "components/sync/base/sync_util.h"
 
+#if BUILDFLAG(IS_ANDROID)
+#include "base/android/jni_android.h"
+#include "brave/build/android/jni_headers/BraveQAPreferences_jni.h"
+#endif
+
 namespace syncer {
 
 GURL BraveGetSyncServiceURL(const base::CommandLine& command_line,
                             version_info::Channel channel,
                             PrefService* prefs) {
+// TODO: Currently, we only handle the custom sync URL via GPO/Settings Page
+// on Desktop OSes. However, we should also handle it on Android in the future.
+#if !BUILDFLAG(IS_ANDROID)
   if (prefs) {
     std::string value = prefs->GetString(brave_sync::kCustomSyncServiceUrl);
     if (!value.empty()) {
@@ -45,6 +53,17 @@ GURL BraveGetSyncServiceURL(const base::CommandLine& command_line,
       }
     }
   }
+#else
+  const char kBraveSyncServiceStagingURL[] =
+      "https://sync-v2.bravesoftware.com/v2";
+
+  JNIEnv* env = base::android::AttachCurrentThread();
+  bool b_use_staging_sync_server =
+      Java_BraveQAPreferences_isSyncStagingUsed(env);
+  if (b_use_staging_sync_server) {
+    return GURL(kBraveSyncServiceStagingURL);
+  }
+#endif
 
   // Default logic.
   // See `GetSyncServiceURL` in `components/sync/base/sync_util.cc`
