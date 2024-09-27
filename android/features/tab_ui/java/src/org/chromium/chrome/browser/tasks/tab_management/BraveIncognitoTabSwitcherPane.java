@@ -12,12 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.BraveReflectionUtil;
+import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.hub.ResourceButtonData;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelFilter;
+import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.tab_ui.R;
 
@@ -33,7 +35,8 @@ public class BraveIncognitoTabSwitcherPane extends IncognitoTabSwitcherPane {
             @NonNull OnClickListener newTabButtonClickListener,
             @Nullable OneshotSupplier<IncognitoReauthController> incognitoReauthControllerSupplier,
             @NonNull DoubleConsumer onToolbarAlphaChange,
-            @NonNull UserEducationHelper userEducationHelper) {
+            @NonNull UserEducationHelper userEducationHelper,
+            @NonNull ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier) {
         super(
                 context,
                 profileProviderSupplier,
@@ -42,7 +45,8 @@ public class BraveIncognitoTabSwitcherPane extends IncognitoTabSwitcherPane {
                 newTabButtonClickListener,
                 incognitoReauthControllerSupplier,
                 onToolbarAlphaChange,
-                userEducationHelper);
+                userEducationHelper,
+                edgeToEdgeSupplier);
 
         ResourceButtonData newReferenceButtonData =
                 new ResourceButtonData(
