@@ -13,14 +13,16 @@ import SwiftUI
 
 /// A menu button that provides a shortcut to changing Brave VPN region
 struct RegionMenuButton: View {
-  /// The region information
-  var vpnRegionInfo: GRDRegion?
   /// Boolean determining if current setting subtitle is going to be shown
   var settingTitleEnabled = true
   /// A closure executed when the region select is clicked
   var regionSelectAction: () -> Void
+
+  @State private var isVPNEnabled = BraveVPN.isConnected
+  @State private var vpnRegionInfo: GRDRegion? = BraveVPN.activatedRegion
+
   /// Subtitle generation according to menu selection
-  var subTitle: String? {
+  private var subTitle: String? {
     guard settingTitleEnabled else {
       return nil
     }
@@ -31,8 +33,6 @@ struct RegionMenuButton: View {
         Strings.VPN.regionPickerAutomaticModeCellText
       )
   }
-
-  @State private var isVPNEnabled = BraveVPN.isConnected
 
   var body: some View {
     HStack {
@@ -59,11 +59,15 @@ struct RegionMenuButton: View {
         )
         .accessibilityElement()
         .accessibility(addTraits: .isButton)
-        .accessibility(label: Text(Strings.VPN.vpnRegionSelectorButtonTitle))
+        .accessibility(
+          label: Text(Strings.VPN.vpnRegionSelectorButtonTitle)
+        )
       }
+
     }
     .onReceive(NotificationCenter.default.publisher(for: .NEVPNStatusDidChange)) { _ in
       isVPNEnabled = BraveVPN.isConnected
+      vpnRegionInfo = BraveVPN.activatedRegion
     }
   }
 }

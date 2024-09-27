@@ -49,7 +49,6 @@ extension BrowserViewController {
 
       // Region Button is populated without current selected detail title for features menu
       RegionMenuButton(
-        vpnRegionInfo: BraveVPN.activatedRegion,
         settingTitleEnabled: false,
         regionSelectAction: {
           let vc = UIHostingController(
@@ -104,7 +103,6 @@ extension BrowserViewController {
 
       // Region Button is populated including the details for privacy feature menu
       RegionMenuButton(
-        vpnRegionInfo: BraveVPN.activatedRegion,
         regionSelectAction: {
           let vc = UIHostingController(
             rootView: BraveVPNRegionListView()
