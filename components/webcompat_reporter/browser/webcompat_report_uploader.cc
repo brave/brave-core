@@ -79,10 +79,9 @@ void WebcompatReportUploader::SubmitReport(const Report& report) {
   base::Value::Dict report_details_dict;
 
   if (report.report_url) {
-    report_details_dict.Set(kDomainField, url::Origin::Create(report.report_url.value()).Serialize());
-  }
-
-  if (report.report_url) {
+    report_details_dict.Set(
+        kDomainField,
+        url::Origin::Create(report.report_url.value()).Serialize());
     report_details_dict.Set(kSiteURLField, report.report_url.value().spec());
   }
 
