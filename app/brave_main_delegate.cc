@@ -41,11 +41,6 @@
 #include "base/linux_util.h"
 #endif
 
-#if BUILDFLAG(IS_ANDROID)
-#include "base/android/jni_android.h"
-#include "brave/build/android/jni_headers/BraveQAPreferences_jni.h"
-#include "components/signin/public/base/account_consistency_method.h"
-#endif
 namespace {
 
 constexpr char kBraveOriginTrialsPublicKey[] =
@@ -64,34 +59,6 @@ std::string GetUpdateURLHost() {
   }
   return BUILDFLAG(UPDATER_DEV_ENDPOINT);
 }
-
-#if BUILDFLAG(IS_ANDROID)
-// staging "https://sync-v2.bravesoftware.com/v2" can be overriden by
-// syncer::kSyncServiceURL manually
-constexpr char kBraveSyncServiceStagingURL[] =
-    "https://sync-v2.bravesoftware.com/v2";
-
-void AdjustSyncServiceUrlForAndroid(std::string* brave_sync_service_url) {
-  DCHECK_NE(brave_sync_service_url, nullptr);
-  static constexpr char kProcessTypeSwitchName[] = "type";
-
-  // On Android we can detect data dir only on host process, and we cannot
-  // for example on renderer or gpu-process, because JNI is not initialized
-  // And no sense to override sync service url for them in anyway
-  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
-          kProcessTypeSwitchName)) {
-    // This is something other than browser process
-    return;
-  }
-
-  JNIEnv* env = base::android::AttachCurrentThread();
-  bool b_use_staging_sync_server =
-      Java_BraveQAPreferences_isSyncStagingUsed(env);
-  if (b_use_staging_sync_server) {
-    *brave_sync_service_url = kBraveSyncServiceStagingURL;
-  }
-}
-#endif  // BUILDFLAG(IS_ANDROID)
 
 }  // namespace
 
@@ -156,11 +123,6 @@ void BraveMainDelegate::AppendCommandLineOptions() {
     command_line->AppendSwitchASCII(embedder_support::kOriginTrialPublicKey,
                                     kBraveOriginTrialsPublicKey);
   }
-
-  std::string brave_sync_service_url = BUILDFLAG(BRAVE_SYNC_ENDPOINT);
-#if BUILDFLAG(IS_ANDROID)
-  AdjustSyncServiceUrlForAndroid(&brave_sync_service_url);
-#endif  // BUILDFLAG(IS_ANDROID)
 
   command_line->AppendSwitchASCII(switches::kLsoUrl, kDummyUrl);
   variations::AppendBraveCommandLineOptions(*command_line);
