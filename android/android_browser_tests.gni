@@ -133,7 +133,6 @@ android_only_test_deps = [
   "//brave/browser/partnercustomizations:delegate_public_impl_java",
   "//brave/components/brave_wallet/browser:test_support",
   "//brave/components/cosmetic_filters/browser:browser",
-  "//brave/components/language/android:java",
   "//brave/third_party/android_deps:com_android_installreferrer_java",
   "//chrome:chrome_android_core",
   "//chrome/android:delegate_public_impl_java",
@@ -146,8 +145,6 @@ android_only_test_deps = [
   "//chrome/test:test_support",
   "//chrome/test:test_support_ui_android",
   "//components/browser_ui/widget/android:java",
-  "//components/externalauth/android:google_delegate_public_impl_java",
-  "//components/language/android:ulp_delegate_public_java",
 
   # TODO(crbug.com/961849): This is needed for ShellManager which is what
   # the ChromeBrowserTestsActivity is using to build the java UI. It's

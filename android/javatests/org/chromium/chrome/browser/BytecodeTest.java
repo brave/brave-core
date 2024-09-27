@@ -1699,10 +1699,6 @@ public class BytecodeTest {
                         PartialCustomTabHandleStrategyFactory.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/components/language/LocaleManagerDelegateImpl",
-                        "org/chromium/components/language/BraveLocaleManagerDelegateImpl"));
-        Assert.assertTrue(
-                constructorsMatch(
                         "org/chromium/chrome/browser/compositor/layouts/ToolbarSwipeLayout",
                         "org/chromium/chrome/browser/compositor/layouts/BraveToolbarSwipeLayout",
                         Context.class,
