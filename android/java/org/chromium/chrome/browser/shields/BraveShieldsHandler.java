@@ -854,37 +854,25 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     @Override
                     public void onClick(View view) {
                         // Profile.getLastUsedRegularProfile requires to run in UI thread,
-                        // so get api key here and pass it to IO worker task
-                        Log.i(TAG, "Pre submitWebcompatReport #450 mScreenshotBytes.length:" + (mScreenshotBytes != null ? mScreenshotBytes.length : 0));
-                        Log.i(TAG, "Pre submitWebcompatReport #460 isScreenshotAvailable():" + isScreenshotAvailable());
-                        ReportInfo reportInfo = new ReportInfo();
-                        reportInfo.channel = BraveVersionConstants.CHANNEL;
-                        reportInfo.braveVersion = BraveVersionConstants.VERSION;
-                        reportInfo.reportUrl = siteUrl;
-                        reportInfo.adBlockSetting = "";//TODO 
-                        reportInfo.adBlockListNames = "";// TODO
-                        reportInfo.screenshotPng = isScreenshotAvailable() ? mScreenshotBytes : null;
-                        reportInfo.languages = "";//TODO 
-                        reportInfo.languageFarbling = false;//TODO 
-                        reportInfo.braveVpnConnected = false;//TODO 
-                        reportInfo.details = new java.util.HashMap<String, String>();
-                         reportInfo.contact = new java.util.HashMap<String, String>();
-                         reportInfo.adBlockComponentsVersion = new java.util.HashMap<String, String>();
-       
-                        // BraveShieldsUtils.BraveShieldsWorkerTask mWorkerTask =
-                        //         new BraveShieldsUtils.BraveShieldsWorkerTask(
-                        //                 siteUrl,
-                        //                 referralApiKey,
-                        //                 isScreenshotAvailable() ? mScreenshotBytes : null);
-                        // mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                        
-                        mWebcompatReporterHandler.submitWebcompatReport(reportInfo,() -> {
-                            Log.i(TAG, "On submitWebcompatReport #500 ");
+                        // so get api key here and pass it to IO worker task                       
+                        mWebcompatReporterHandler.submitWebcompatReport(getReportInfo(siteUrl),() -> {
                             mReportBrokenSiteLayout.setVisibility(View.GONE);
                             mThankYouLayout.setVisibility(View.VISIBLE);    
                         });
                     }
                 });
+    }
+
+    private ReportInfo getReportInfo(String siteUrl) {
+        ReportInfo reportInfo = new ReportInfo();
+        reportInfo.channel = BraveVersionConstants.CHANNEL;
+        reportInfo.braveVersion = BraveVersionConstants.VERSION;
+        reportInfo.reportUrl = siteUrl;
+        reportInfo.screenshotPng = isScreenshotAvailable() ? mScreenshotBytes : null;
+        reportInfo.details = new java.util.HashMap<String, String>();
+        reportInfo.contact = new java.util.HashMap<String, String>();
+        reportInfo.adBlockComponentsVersion = new java.util.HashMap<String, String>();
+        return reportInfo;
     }
 
     private void setUpViewScreenshot(byte[] pngBytes) {

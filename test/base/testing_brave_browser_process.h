@@ -50,6 +50,7 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   // BraveBrowserProcess overrides:
   void StartBraveServices() override;
   brave_shields::AdBlockService* ad_block_service() override;
+  webcompat_reporter::WebcompatReporterService* webcompat_reporter_service() override;
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionDownloadService* greaselion_download_service() override;
 #endif
@@ -102,6 +103,7 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   ~TestingBraveBrowserProcess() override;
 
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
+  std::unique_ptr<webcompat_reporter::WebcompatReporterService> webcompat_reporter_service_;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   std::unique_ptr<brave_vpn::BraveVPNConnectionManager>

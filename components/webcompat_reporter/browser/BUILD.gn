@@ -31,4 +31,19 @@ deps = [
 ]
 }
 
+source_set("unittests") {
+  testonly = true
+
+  sources = [ "webcompat_report_uploader_unittest.cc" ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//base/test:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
+}
+
+
 
