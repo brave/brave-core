@@ -108,8 +108,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   private var activeTransactionDetails: String {
     if activeParsedTransaction.transaction.coin == .sol {
       return String.localizedStringWithFormat(
-        Strings.Wallet.inputDataPlaceholderSolana,
-        activeParsedTransaction.transaction.txType.rawValue
+        Strings.Wallet.inputDataPlaceholderTx,
+        activeParsedTransaction.transaction.txType.localizedDescription
       )
     } else if activeParsedTransaction.transaction.coin == .btc,
       let btcTxData = activeParsedTransaction.transaction.txDataUnion.btcTxData
@@ -128,6 +128,10 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       }.joined(separator: "\n\n")
       return inputs + "\n\n" + outputs
     } else {
+      let functionType = String.localizedStringWithFormat(
+        Strings.Wallet.inputDataPlaceholderTx,
+        activeParsedTransaction.transaction.txType.localizedDescription
+      )
       if activeParsedTransaction.transaction.txArgs.isEmpty {
         let data = activeParsedTransaction.transaction.ethTxData
           .map { byte in
@@ -135,18 +139,20 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           }
           .joined()
         if data.isEmpty {
-          return Strings.Wallet.inputDataPlaceholder
+          return functionType + "\n\n" + Strings.Wallet.inputDataPlaceholder
         }
-        return "0x\(data)"
+        return functionType + "\n\n" + "0x\(data)"
       } else {
-        return zip(
-          activeParsedTransaction.transaction.txParams,
-          activeParsedTransaction.transaction.txArgs
-        )
-        .map { (param, arg) in
-          "\(param): \(arg)"
-        }
-        .joined(separator: "\n\n")
+        return functionType
+          + "\n\n"
+          + zip(
+            activeParsedTransaction.transaction.txParams,
+            activeParsedTransaction.transaction.txArgs
+          )
+          .map { (param, arg) in
+            "\(param): \(arg)"
+          }
+          .joined(separator: "\n\n")
       }
     }
   }
@@ -755,7 +761,10 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     case .solDappTransaction(let details), .solSwapTransaction(let details):
       symbol = details.symbol ?? ""
       value = details.fromAmount
-      transactionDetails = details.instructions
+      transactionDetails =
+        transactionDetails
+        + "\n\n"
+        + details.instructions
         .map(\.toString)
         .joined(separator: "\n\n====\n\n")  // separator between each instruction
 

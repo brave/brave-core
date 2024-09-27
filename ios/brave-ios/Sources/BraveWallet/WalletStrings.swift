@@ -1561,13 +1561,13 @@ extension Strings {
       value: "No data.",
       comment: "A label shown inside of a box when there is no input data for a given transaction"
     )
-    public static let inputDataPlaceholderSolana = NSLocalizedString(
-      "wallet.inputDataPlaceholderSolana",
+    public static let inputDataPlaceholderTx = NSLocalizedString(
+      "wallet.inputDataPlaceholderTx",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Function Type: %d",
+      value: "Function Type:\n%@",
       comment:
-        "A label shown inside of a box when there is no input data for a given Solana transaction"
+        "A label shown inside of a box when there is no input data for a given transaction"
     )
     public static let rejectAllTransactions = NSLocalizedString(
       "wallet.rejectAllTransactions",
@@ -5459,6 +5459,102 @@ extension Strings {
       value: "Do you want to update the existing network?",
       comment:
         "A pop up message that will prompt to user before user confirms to edit the existing network."
+    )
+    public static let txFunctionTypeERC20Approve = NSLocalizedString(
+      "wallet.txFunctionTypeERC20Approve",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Approve",
+      comment:
+        "Blockchain function name for ERC-20 token approvals."
+    )
+    public static let txFunctionTypeTokenTransfer = NSLocalizedString(
+      "wallet.txFunctionTypeTokenTransfer",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Token Transfer",
+      comment:
+        "Blockchain function name for non-native token transfers."
+    )
+    public static let txFunctionTypeNFTTransfer = NSLocalizedString(
+      "wallet.txFunctionTypeNFTTransfer",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "NFT Transfer",
+      comment:
+        "Blockchain function name for NFT transfers"
+    )
+    public static let txFunctionTypeSafeTransfer = NSLocalizedString(
+      "wallet.txFunctionTypeSafeTransfer",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Safe Transfer",
+      comment:
+        "Blockchain function name for SafeTransferFrom in ERC-721 and ERC-1155 tokens."
+    )
+    public static let txFunctionTypeForwardFil = NSLocalizedString(
+      "wallet.txFunctionTypeForwardFil",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Forward FIL",
+      comment:
+        "Blockchain function name for moving FIL from an  Ethereum-based f4 address to a Filecoin address of a different type. Don't need to translate the symbol `FIL`."
+    )
+    public static let txFunctionTypeSignAndSendDapp = NSLocalizedString(
+      "wallet.txFunctionTypeSignAndSendDapp",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Sign and Send DApp transaction",
+      comment:
+        "Blockchain function name for signing and sending a Solana DApp transaction."
+    )
+    public static let txFunctionTypeSend = NSLocalizedString(
+      "wallet.txFunctionTypeSend",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Send %@",
+      comment:
+        "Blockchain function name for send native token. `%@` will be replaced with native token symbol."
+    )
+    public static let txFunctionTypeSwap = NSLocalizedString(
+      "wallet.txFunctionTypeSwap",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Swap",
+      comment:
+        "Blockchain function name for swap."
+    )
+    public static let txFunctionTypeSplWithAssociatedTokenAccountCreation = NSLocalizedString(
+      "wallet.txFunctionTypeSplWithAssociatedTokenAccountCreation",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "SPL Token Transfer With Associated Token Account Creation",
+      comment:
+        "Blockchain function name for Solana SPL token transfer with associated token account creation."
+    )
+    public static let txFunctionTypeCompressedNFTTransfer = NSLocalizedString(
+      "wallet.txFunctionTypeCompressedNFTTransfer",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Compressed NFT Transfer",
+      comment:
+        "Blockchain function name for Solana compressed NFT transfers."
+    )
+    public static let txFunctionTypeOther = NSLocalizedString(
+      "wallet.txFunctionTypeOther",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Other",
+      comment:
+        "Blockchain function name for an unknown transaction type or an FIL transaction."
+    )
+    public static let txFunctionTypeSignDappTransaction = NSLocalizedString(
+      "wallet.txFunctionTypeSignDappTransaction",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Sign DApp Transaction",
+      comment:
+        "Blockchain function name for Solana Sign DApp transactions."
     )
   }
 }
