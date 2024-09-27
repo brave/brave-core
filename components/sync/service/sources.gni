@@ -12,6 +12,7 @@ brave_components_sync_driver_sources = [
   "//brave/components/sync/service/brave_sync_stopped_reporter.h",
   "//brave/components/sync/service/sync_service_impl_delegate.h",
 ]
+
 brave_components_sync_driver_deps = [
   "//brave/components/brave_sync",
   "//brave/components/brave_sync:crypto",
@@ -19,3 +20,7 @@ brave_components_sync_driver_deps = [
   "//brave/components/brave_sync:prefs",
   "//brave/components/constants",
 ]
+
+if (is_android) {
+  brave_components_sync_driver_deps += [ "//brave/build/android:jni_headers" ]
+}
