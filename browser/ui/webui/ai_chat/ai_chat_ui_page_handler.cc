@@ -131,11 +131,16 @@ void AIChatUIPageHandler::GetModels(GetModelsCallback callback) {
 }
 
 void AIChatUIPageHandler::ChangeModel(const std::string& model_key) {
-  active_chat_tab_helper_->ChangeModel(model_key);
+  if (active_chat_tab_helper_) {
+    active_chat_tab_helper_->ChangeModel(model_key);
+  }
 }
 
 void AIChatUIPageHandler::SubmitHumanConversationEntry(
     const std::string& input) {
+  if (!active_chat_tab_helper_) {
+    return;
+  }
   DCHECK(!active_chat_tab_helper_->IsRequestInProgress())
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
@@ -150,6 +155,9 @@ void AIChatUIPageHandler::SubmitHumanConversationEntry(
 void AIChatUIPageHandler::SubmitHumanConversationEntryWithAction(
     const std::string& input,
     mojom::ActionType action_type) {
+  if (!active_chat_tab_helper_) {
+    return;
+  }
   DCHECK(!active_chat_tab_helper_->IsRequestInProgress())
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
@@ -319,24 +327,35 @@ void AIChatUIPageHandler::GetAPIResponseError(
 
 void AIChatUIPageHandler::ClearErrorAndGetFailedMessage(
     ClearErrorAndGetFailedMessageCallback callback) {
-  mojom::ConversationTurnPtr failed_turn =
-      active_chat_tab_helper_->ClearErrorAndGetFailedMessage();
+  mojom::ConversationTurnPtr failed_turn;
+  if (active_chat_tab_helper_) {
+    failed_turn = active_chat_tab_helper_->ClearErrorAndGetFailedMessage();
+  }
   std::move(callback).Run(std::move(failed_turn));
 }
 
 void AIChatUIPageHandler::GetCanShowPremiumPrompt(
     GetCanShowPremiumPromptCallback callback) {
-  std::move(callback).Run(active_chat_tab_helper_->GetCanShowPremium());
+  bool can_show = false;
+  if (active_chat_tab_helper_) {
+    can_show = active_chat_tab_helper_->GetCanShowPremium();
+  }
+  std::move(callback).Run(can_show);
 }
 
 void AIChatUIPageHandler::DismissPremiumPrompt() {
-  active_chat_tab_helper_->DismissPremiumPrompt();
+  if (active_chat_tab_helper_) {
+    active_chat_tab_helper_->DismissPremiumPrompt();
+  }
 }
 
 void AIChatUIPageHandler::RateMessage(bool is_liked,
                                       uint32_t turn_id,
                                       RateMessageCallback callback) {
-  active_chat_tab_helper_->RateMessage(is_liked, turn_id, std::move(callback));
+  if (active_chat_tab_helper_) {
+    active_chat_tab_helper_->RateMessage(is_liked, turn_id,
+                                         std::move(callback));
+  }
 }
 
 void AIChatUIPageHandler::SendFeedback(const std::string& category,
@@ -344,12 +363,16 @@ void AIChatUIPageHandler::SendFeedback(const std::string& category,
                                        const std::string& rating_id,
                                        bool send_hostname,
                                        SendFeedbackCallback callback) {
-  active_chat_tab_helper_->SendFeedback(category, feedback, rating_id,
-                                        send_hostname, std::move(callback));
+  if (active_chat_tab_helper_) {
+    active_chat_tab_helper_->SendFeedback(category, feedback, rating_id,
+                                          send_hostname, std::move(callback));
+  }
 }
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {
-  active_chat_tab_helper_->SetUserOptedIn(true);
+  if (active_chat_tab_helper_) {
+    active_chat_tab_helper_->SetUserOptedIn(true);
+  }
 }
 
 void AIChatUIPageHandler::ChatContextObserver::WebContentsDestroyed() {
@@ -359,6 +382,7 @@ void AIChatUIPageHandler::ChatContextObserver::WebContentsDestroyed() {
 void AIChatUIPageHandler::HandleWebContentsDestroyed() {
   chat_tab_helper_observation_.Reset();
   chat_context_observer_.reset();
+  active_chat_tab_helper_ = nullptr;
 }
 
 void AIChatUIPageHandler::OnHistoryUpdate() {
