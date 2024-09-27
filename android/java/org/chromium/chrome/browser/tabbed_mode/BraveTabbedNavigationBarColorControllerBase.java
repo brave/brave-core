@@ -25,7 +25,9 @@ class BraveTabbedNavigationBarColorControllerBase {
      */
     protected Context mContext;
 
-    /* Calls from the upstream's private function `TabbedNavigationBarColorController#getNavigationBarColor` will be redirected here via bytecode. */
+    // Calls from the upstream's private function
+    // `TabbedNavigationBarColorController#getNavigationBarColor`
+    // will be redirected here via bytecode.
     @ColorInt
     public int getNavigationBarColor(boolean forceDarkNavigationBar) {
         // Adjust navigation bar color to match the bottom toolbar color when it is visible.
