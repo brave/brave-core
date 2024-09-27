@@ -63,7 +63,6 @@
         app:menuMaxWidth="@dimen/tab_switcher_menu_width"
         android:visibility="gone"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/accessibility_toolbar_btn_tabswitcher_toggle_default"
         app:menuVerticalOverlapAnchor="false" />
 
     <include layout="@layout/toolbar_space" />
