@@ -36,15 +36,16 @@ extension BraveWallet.TransactionInfo: Identifiable {
 public enum AssetImageName: String {
   case ethereum = "eth-asset-icon"
   case solana = "sol-asset-icon"
-  case filecoin = "filecoin-asset-icon"
-  case bitcoin = "bitcoin-asset-icon"
-  case polygon = "matic"
+  case filecoin = "fil-asset-icon"
+  case bitcoin = "btc-asset-icon"
+  case polygon = "matic-asset-icon"
   case binance = "bnb-asset-icon"
-  case celo = "celo"
-  case avalanche = "avax"
-  case fantom = "fantom"
-  case aurora = "aurora"
-  case optimism = "optimism"
+  case celo = "celo-asset-icon"
+  case avalanche = "avax-asset-icon"
+  case fantom = "ftm-asset-icon"
+  case aurora = "aurora-asset-icon"
+  case optimism = "optimism-asset-icon"
+  case neon = "neon-asset-icon"
 }
 
 extension BraveWallet.NetworkInfo: Identifiable {
@@ -56,8 +57,16 @@ extension BraveWallet.NetworkInfo: Identifiable {
     chainName.split(separator: " ").first?.capitalized ?? chainName
   }
 
+  var isPrimaryNetwork: Bool {
+    WalletConstants.primaryNetworkChainIds.contains(chainId)
+  }
+
   var isKnownTestnet: Bool {
     WalletConstants.supportedTestNetworkChainIds.contains(chainId)
+  }
+
+  var isMandatoryNetwork: Bool {
+    WalletConstants.mandatoryNetworkChainIds.contains(chainId)
   }
 
   public var nativeToken: BraveWallet.BlockchainToken {
@@ -142,6 +151,8 @@ extension BraveWallet.NetworkInfo: Identifiable {
       return AssetImageName.aurora.rawValue
     } else if chainId.caseInsensitiveCompare(BraveWallet.OptimismMainnetChainId) == .orderedSame {
       return AssetImageName.optimism.rawValue
+    } else if chainId.caseInsensitiveCompare(BraveWallet.NeonEvmMainnetChainId) == .orderedSame {
+      return AssetImageName.neon.rawValue
     } else {
       return nil
     }

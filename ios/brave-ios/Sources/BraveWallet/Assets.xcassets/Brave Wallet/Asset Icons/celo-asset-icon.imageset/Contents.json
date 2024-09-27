@@ -1,11 +1,11 @@
 {
   "images" : [
     {
+      "filename" : "celo-color.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "matic-asset-icon.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

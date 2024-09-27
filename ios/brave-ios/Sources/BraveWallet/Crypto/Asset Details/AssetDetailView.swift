@@ -510,7 +510,7 @@ struct AssetDetailView: View {
                 .padding(8)
             }
             HStack(alignment: .top, spacing: 8) {
-              LegalCheckbox(isChecked: $isDoNotShowCheckboxChecked)
+              WalletCheckbox(isChecked: $isDoNotShowCheckboxChecked)
               Text(Strings.Wallet.auroraPopupDontShowAgain)
                 .foregroundColor(Color(.bravePrimary))
                 .font(.subheadline)

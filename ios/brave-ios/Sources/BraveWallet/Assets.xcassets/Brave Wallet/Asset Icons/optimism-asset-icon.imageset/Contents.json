@@ -1,11 +1,11 @@
 {
   "images" : [
     {
+      "filename" : "op-color.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "btc-asset-icon 1@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
