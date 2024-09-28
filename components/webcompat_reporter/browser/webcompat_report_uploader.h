@@ -51,9 +51,9 @@ class WebcompatReportUploader {
       scoped_refptr<network::SharedURLLoaderFactory>);
   WebcompatReportUploader(const WebcompatReportUploader&) = delete;
   WebcompatReportUploader& operator=(const WebcompatReportUploader&) = delete;
-  ~WebcompatReportUploader();
+  virtual ~WebcompatReportUploader();
 
-  void SubmitReport(const Report& report);
+  virtual void SubmitReport(const Report& report);
 
  private:
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
