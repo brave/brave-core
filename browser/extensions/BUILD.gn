@@ -145,6 +145,7 @@ source_set("extensions") {
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common/mojom",
     "//brave/components/brave_shields/core/common",
+    "//brave/components/brave_sync:prefs",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/browser:utils",

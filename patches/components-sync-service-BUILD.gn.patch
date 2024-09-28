@@ -6,5 +6,5 @@ index 7abbeaf0326b423530b11c10bae135db17942c23..c9b73afe0139315d1b5745a948db8c22
    }
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]
-+  sources += brave_components_sync_driver_sources deps += brave_components_sync_driver_deps
++  sources += brave_components_sync_service_sources deps += brave_components_sync_service_deps
  }
