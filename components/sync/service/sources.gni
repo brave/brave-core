@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-brave_components_sync_driver_sources = [
+brave_components_sync_service_sources = [
   "//brave/components/sync/service/brave_sync_auth_manager.cc",
   "//brave/components/sync/service/brave_sync_auth_manager.h",
   "//brave/components/sync/service/brave_sync_service_impl.cc",
@@ -13,7 +13,7 @@ brave_components_sync_driver_sources = [
   "//brave/components/sync/service/sync_service_impl_delegate.h",
 ]
 
-brave_components_sync_driver_deps = [
+brave_components_sync_service_deps = [
   "//brave/components/brave_sync",
   "//brave/components/brave_sync:crypto",
   "//brave/components/brave_sync:network_time_helper",
@@ -22,5 +22,5 @@ brave_components_sync_driver_deps = [
 ]
 
 if (is_android) {
-  brave_components_sync_driver_deps += [ "//brave/build/android:jni_headers" ]
+  brave_components_sync_service_deps += [ "//brave/build/android:jni_headers" ]
 }
