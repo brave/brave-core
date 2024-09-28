@@ -71,8 +71,6 @@ class WebcompatReportUploaderUnitTest : public testing::Test {
 
           for (base::Value::Dict::iterator it = content_dict_vals.begin();
                it != content_dict_vals.end(); ++it) {
-            LOG(INFO) << "Check key: " << it->first
-                      << " Val:" << it->second.DebugString();
             EXPECT_NE(request_dict_vals.Find(it->first), nullptr);
             EXPECT_EQ(*(request_dict_vals.Find(it->first)), it->second);
           }

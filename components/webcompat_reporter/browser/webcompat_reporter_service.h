@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_WEBCOMPAT_REPORTER_BROWSER_WEBCOMPAT_REPORTER_SERVICE_H_
 
 #include <memory>
+
 #include "base/memory/weak_ptr.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom.h"
@@ -34,16 +35,23 @@ class WebcompatReporterService : public KeyedService,
   mojo::PendingRemote<mojom::WebcompatReporterHandler> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::WebcompatReporterHandler> receiver);
 
-  void SubmitWebcompatReport(mojom::ReportInfoPtr report_info, SubmitWebcompatReportCallback callback) override;
+  void SubmitWebcompatReport(mojom::ReportInfoPtr report_info,
+                             SubmitWebcompatReportCallback callback) override;
 
   void SubmitWebcompatReport(const Report& report_data);
+
  private:
+  friend class WebcompatReporterServiceUnitTest;
+  WebcompatReporterService();
+  void SetUpWebcompatReporterServiceForTest(
+      std::unique_ptr<WebcompatReportUploader> report_uploader,
+      component_updater::ComponentUpdateService* component_update_service);
+
   void SubmitReportInternal(Report report_data);
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
   std::unique_ptr<WebcompatReportUploader> report_uploader_;
   mojo::ReceiverSet<mojom::WebcompatReporterHandler> receivers_;
   base::WeakPtrFactory<WebcompatReporterService> weak_factory_{this};
-
   WebcompatReporterService(const WebcompatReporterService&) = delete;
   WebcompatReporterService& operator=(const WebcompatReporterService&) = delete;
 };

@@ -34,7 +34,10 @@ deps = [
 source_set("unittests") {
   testonly = true
 
-  sources = [ "webcompat_report_uploader_unittest.cc" ]
+  sources = [ 
+    "webcompat_report_uploader_unittest.cc",
+    "webcompat_reporter_service_unittest.cc",
+  ]
 
   deps = [
     ":browser",
