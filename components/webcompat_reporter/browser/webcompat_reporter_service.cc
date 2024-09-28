@@ -41,18 +41,18 @@ void SetDictVal(std::optional<base::Value>& val_to_set,
 bool NeedsToGetComponentInfo(const std::string& component_id) {
   static const base::NoDestructor<std::unordered_set<std::string>>
       kComponentIds({
-          "adcocjohghhfpidemphmcmlmhnfgikei",   // Brave Ad Block First Party
-                                                    // Filters (plaintext)
-          "bfpgedeaaibpoidldhjcknekahbikncb",   // Fanboy's Mobile Notifications
-                                                    // (plaintext)
-          "cdbbhgbmjhfnhnmgeddbliobbofkgdhe",   // EasyList Cookie (plaintext)
-          "gkboaolpopklhgplhaaiboijnklogmbc",   // Regional Catalog
-          "iodkpdagapdfkphljnddpjlldadblomo",   // Brave Ad Block Updater
-                                                    // (plaintext)
-          "jcfckfokjmopfomnoebdkdhbhcgjfnbi",   // Brave Experimental Adblock
-                                                    // Rules (plaintext)
-          brave_shields::kAdBlockResourceComponentId, // Brave Ad Block Updater
-                                                          // (Resources)
+          "adcocjohghhfpidemphmcmlmhnfgikei",  // Brave Ad Block First Party
+                                               // Filters (plaintext)
+          "bfpgedeaaibpoidldhjcknekahbikncb",  // Fanboy's Mobile Notifications
+                                               // (plaintext)
+          "cdbbhgbmjhfnhnmgeddbliobbofkgdhe",  // EasyList Cookie (plaintext)
+          "gkboaolpopklhgplhaaiboijnklogmbc",  // Regional Catalog
+          "iodkpdagapdfkphljnddpjlldadblomo",  // Brave Ad Block Updater
+                                               // (plaintext)
+          "jcfckfokjmopfomnoebdkdhbhcgjfnbi",  // Brave Experimental Adblock
+                                               // Rules (plaintext)
+          brave_shields::kAdBlockResourceComponentId,  // Brave Ad Block Updater
+                                                       // (Resources)
       });
   return kComponentIds->contains(component_id);
 }
@@ -104,6 +104,8 @@ void FillReportVals(
 }  // namespace
 namespace webcompat_reporter {
 
+WebcompatReporterService::WebcompatReporterService() {}
+
 WebcompatReporterService::WebcompatReporterService(
     component_updater::ComponentUpdateService* component_update_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
@@ -131,7 +133,11 @@ void WebcompatReporterService::SubmitWebcompatReport(
   Report pending_report;
   FillReportVals(pending_report, std::move(report_info),
                  component_update_service_);
-  SubmitReportInternal(std::move(pending_report));
+  base::ThreadPool::PostTask(
+      FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
+      base::BindOnce(&WebcompatReporterService::SubmitReportInternal,
+                     weak_factory_.GetWeakPtr(), std::move(pending_report)));
+ 
   std::move(callback).Run();
 }
 
@@ -140,7 +146,7 @@ void WebcompatReporterService::SubmitWebcompatReport(
   base::ThreadPool::PostTask(
       FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
       base::BindOnce(&WebcompatReporterService::SubmitReportInternal,
-                     weak_factory_.GetWeakPtr(), std::move(report_data)));
+                     weak_factory_.GetWeakPtr(), report_data));
 }
 
 void WebcompatReporterService::SubmitReportInternal(Report report_data) {
@@ -148,5 +154,12 @@ void WebcompatReporterService::SubmitReportInternal(Report report_data) {
     return;
   }
   report_uploader_->SubmitReport(report_data);
+}
+
+void WebcompatReporterService::SetUpWebcompatReporterServiceForTest(
+    std::unique_ptr<WebcompatReportUploader> report_uploader,
+    component_updater::ComponentUpdateService* component_update_service) {
+  component_update_service_ = component_update_service,
+  report_uploader_ = std::move(report_uploader);
 }
 }  // namespace webcompat_reporter
