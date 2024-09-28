@@ -9,17 +9,13 @@
 #include <optional>
 #include <string>
 
-#include "base/base_switches.h"
 #include "base/lazy_instance.h"
 #include "base/path_service.h"
-#include "base/strings/strcat.h"
-#include "base/time/time.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/resource_bundle_helper.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_component_updater/browser/switches.h"
 #include "brave/components/brave_sync/buildflags.h"
-#include "brave/components/constants/brave_switches.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/update_client/buildflags.h"
 #include "brave/components/variations/command_line_utils.h"
@@ -27,14 +23,12 @@
 #include "brave/utility/brave_content_utility_client.h"
 #include "build/build_config.h"
 #include "chrome/app/chrome_main_delegate.h"
-#include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/chrome_paths_internal.h"
 #include "chrome/common/chrome_switches.h"
 #include "components/component_updater/component_updater_switches.h"
 #include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/embedder_support/switches.h"
-#include "components/sync/base/command_line_switches.h"
 #include "google_apis/gaia/gaia_switches.h"
 
 #if BUILDFLAG(IS_LINUX)
