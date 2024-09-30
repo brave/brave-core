@@ -72,9 +72,16 @@ bool BraveSidePanel::IsRightAligned() {
 void BraveSidePanel::UpdateBorder() {
   if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
           browser_view_->browser())) {
+    // In rounded corners mode we need to add the margin to the web contents
+    // container instead of the sidebar, so we have somewhere to render the
+    // shadow.
+    int content_margin =
+        -BraveBrowser::GetRoundedCornersWebViewMargin(browser_view_->browser());
     // Use a negative top border to hide the separator inserted by the upstream
     // side panel implementation.
-    SetBorder(views::CreateEmptyBorder(gfx::Insets::TLBR(-1, 0, 0, 0)));
+    SetBorder(views::CreateEmptyBorder(
+        gfx::Insets::TLBR(-1, IsRightAligned() ? content_margin : 0, 0,
+                          IsRightAligned() ? 0 : content_margin)));
     return;
   }
 

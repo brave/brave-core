@@ -32,6 +32,7 @@
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
@@ -1213,10 +1214,11 @@ void VerticalTabStripRegionView::UpdateBorder() {
            state_ == State::kFloating;
   };
 
+  int inset = 1 - BraveBrowser::GetRoundedCornersWebViewMargin(browser_);
   gfx::Insets border_insets =
       (!vertical_tab_on_right_.GetPrefName().empty() && *vertical_tab_on_right_)
-          ? gfx::Insets::TLBR(0, 1, 0, 0)
-          : gfx::Insets::TLBR(0, 0, 0, 1);
+          ? gfx::Insets::TLBR(0, inset, 0, 0)
+          : gfx::Insets::TLBR(0, 0, 0, inset);
 
   if (show_visible_border()) {
     SetBorder(views::CreateSolidSidedBorder(

@@ -18,6 +18,7 @@
 #include "brave/browser/ui/brave_file_select_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/lifetime/browser_close_manager.h"
 #include "chrome/browser/profiles/profile.h"
@@ -55,6 +56,12 @@ void BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(bool suppress) {
 bool BraveBrowser::ShouldUseBraveWebViewRoundedCorners(Browser* browser) {
   return base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners) &&
          browser->is_type_normal();
+}
+
+int BraveBrowser::GetRoundedCornersWebViewMargin(Browser* browser) {
+  return ShouldUseBraveWebViewRoundedCorners(browser)
+             ? BraveContentsViewUtil::kMarginThickness
+             : 0;
 }
 
 BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
