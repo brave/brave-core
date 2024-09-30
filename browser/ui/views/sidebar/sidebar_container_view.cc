@@ -127,6 +127,7 @@ SidebarContainerView::SidebarContainerView(
 
   SetNotifyEnterExitOnChild(true);
   side_panel_ = AddChildView(std::move(side_panel));
+  side_panel_view_state_observation_.Observe(side_panel_coordinator_);
 }
 
 SidebarContainerView::~SidebarContainerView() = default;
@@ -815,17 +816,27 @@ void SidebarContainerView::OnEntryWillDeregister(SidePanelRegistry* registry,
 void SidebarContainerView::OnRegistryDestroying(SidePanelRegistry* registry) {
   if (panel_registry_observations_.IsObservingSource(registry)) {
     StopObservingContextualSidePanelRegistry(registry);
-    // If this is the active tab being destroyed, then reset the active item.
-    // Note, that items persisted across tabs like reading list or bookmarks
-    // don't show as active_entry, in which case leave the active item as is.
-    if (registry == active_contextual_registry_) {
-      if (registry->active_entry()) {
-        auto* controller = browser_->sidebar_controller();
-        controller->ActivateItemAt(std::nullopt);
-      }
-      active_contextual_registry_ = nullptr;
-    }
   }
+}
+
+void SidebarContainerView::UpdateActiveItemState() {
+  DVLOG(1) << "Update active item state";
+
+  auto* controller = GetBraveBrowser()->sidebar_controller();
+  std::optional<sidebar::SidebarItem::BuiltInItemType> current_type;
+  if (auto entry_id = side_panel_coordinator_->GetCurrentEntryId()) {
+    current_type = sidebar::BuiltInItemTypeFromSidePanelId(*entry_id);
+  }
+  controller->UpdateActiveItemState(current_type);
+}
+
+void SidebarContainerView::OnSidePanelDidClose() {
+  // As contextual registry is owned by TabFeatures,
+  // that registry is destroyed before coordinator notifies OnEntryHidden() when
+  // tab is closed. In this case, we should update sidebar ui(active item state)
+  // with this notification. If not, sidebar ui's active item state is not
+  // changed.
+  UpdateActiveItemState();
 }
 
 void SidebarContainerView::OnTabStripModelChanged(
@@ -858,11 +869,17 @@ void SidebarContainerView::OnTabStripModelChanged(
         }
       }
     }
-  } else if (change.type() == TabStripModelChange::kInserted) {
+    return;
+  }
+
+  if (change.type() == TabStripModelChange::kInserted) {
     for (const auto& contents : change.GetInsert()->contents) {
       StartObservingContextualSidePanelRegistry(contents.contents);
     }
-  } else if (change.type() == TabStripModelChange::kRemoved) {
+    return;
+  }
+
+  if (change.type() == TabStripModelChange::kRemoved) {
     bool removed_for_deletion =
         (change.GetRemove()->contents[0].remove_reason ==
          TabStripModelChange::RemoveReason::kDeleted);
@@ -874,18 +891,7 @@ void SidebarContainerView::OnTabStripModelChanged(
         StopObservingContextualSidePanelRegistry(contents.contents);
       }
     }
-  }
-
-  // Keep track of the active contextual registry
-  if (selection.active_tab_changed()) {
-    active_contextual_registry_ =
-        selection.new_contents
-            ? SidePanelRegistry::GetDeprecated(selection.new_contents)
-            : nullptr;
-    if (active_contextual_registry_) {
-      DCHECK(panel_registry_observations_.IsObservingSource(
-          active_contextual_registry_));
-    }
+    return;
   }
 }
 

@@ -314,13 +314,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   EXPECT_EQ(expected_count, model()->GetAllSidebarItems().size());
   // Activate item that opens in panel.
   const size_t first_panel_item_index = GetFirstPanelItemIndex();
-  controller()->ActivateItemAt(first_panel_item_index);
+  const auto& first_panel_item =
+      controller()->model()->GetAllSidebarItems()[first_panel_item_index];
+  controller()->ActivatePanelItem(first_panel_item.built_in_item_type);
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return !!model()->active_index(); }));
   EXPECT_THAT(model()->active_index(), Optional(first_panel_item_index));
   EXPECT_TRUE(controller()->IsActiveIndex(first_panel_item_index));
-
-  // Try to activate item at index 1.
-  // Default item at index 1 opens in new tab. So, sidebar active index is not
-  // changed. Still active index is 2.
 
   // Get first index of item that opens in panel.
   const size_t first_web_item_index = GetFirstWebItemIndex();
@@ -331,10 +331,15 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   EXPECT_THAT(model()->active_index(), Optional(active_item_index));
 
   // Setting std::nullopt means deactivate current active tab.
-  controller()->ActivateItemAt(std::nullopt);
+  controller()->DeactivateCurrentPanel();
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return !model()->active_index(); }));
   EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 
-  controller()->ActivateItemAt(active_item_index);
+  controller()->ActivatePanelItem(first_panel_item.built_in_item_type);
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return !!model()->active_index(); }));
+  EXPECT_THAT(model()->active_index(), Optional(active_item_index));
 
   auto* sidebar_service =
       SidebarServiceFactory::GetForProfile(browser()->profile());
@@ -1109,7 +1114,24 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat, TabSpecificPanel) {
   ASSERT_TRUE(global_item_index.has_value());
   auto tab_specific_item_index = model()->GetIndexOf(kTabSpecificItemType);
   ASSERT_TRUE(tab_specific_item_index.has_value());
-  // Open 2 more tabs
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  ASSERT_EQ(tab_model()->GetTabCount(), 2);
+
+  // Open contextual panel from Tab 0.
+  tab_model()->ActivateTabAt(0);
+  SimulateSidebarItemClickAt(tab_specific_item_index.value());
+  EXPECT_EQ(model()->active_index(), tab_specific_item_index);
+
+  // Delete Tab 0 and check model doesn't have active index.
+  tab_model()->DetachAndDeleteWebContentsAt(0);
+  EXPECT_FALSE(!!model()->active_index());
+  ASSERT_EQ(tab_model()->GetTabCount(), 1);
+
+  // Create two more tab for test below.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("brave://newtab/"),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
@@ -1119,6 +1141,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat, TabSpecificPanel) {
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   ASSERT_EQ(tab_model()->GetTabCount(), 3);
+
   // Open a "global" panel from Tab 0
   tab_model()->ActivateTabAt(0);
   // Tab changed flag should be cleared after ActivateTabAt() executed.

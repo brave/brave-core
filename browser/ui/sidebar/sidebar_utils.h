@@ -29,6 +29,8 @@ GURL ConvertURLToBuiltInItemURL(const GURL& url);
 SidePanelEntryId SidePanelIdFromSideBarItemType(
     SidebarItem::BuiltInItemType type);
 SidePanelEntryId SidePanelIdFromSideBarItem(const SidebarItem& item);
+std::optional<SidebarItem::BuiltInItemType> BuiltInItemTypeFromSidePanelId(
+    SidePanelEntryId id);
 void SetLastUsedSidePanel(PrefService* prefs,
                           std::optional<SidePanelEntryId> id);
 std::optional<SidePanelEntryId> GetLastUsedSidePanel(Browser* browser);
