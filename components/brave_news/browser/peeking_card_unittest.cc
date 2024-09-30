@@ -61,8 +61,8 @@ TEST(BraveNewsPeekingCard, PublishersAreIncluded) {
   SubscriptionsSnapshot subscriptions(
       {std::get<0>(articles[enabled_index])->publisher_id}, {}, {}, {});
 
-  EXPECT_EQ(enabled_index,
-            PickPeekingCardWithMax(subscriptions, {}, articles, 1));
+  EXPECT_EQ(enabled_index, PickPeekingCardWithMax(subscriptions, {}, articles,
+                                                  /*max_candidates=*/1));
 }
 
 TEST(BraveNewsPeekingCard, ChannelsAreIncluded) {
@@ -75,7 +75,8 @@ TEST(BraveNewsPeekingCard, ChannelsAreIncluded) {
   channels["en_NZ"] = {"one"};
   SubscriptionsSnapshot subscriptions({}, {}, {}, channels);
 
-  EXPECT_EQ(1, PickPeekingCardWithMax(subscriptions, {}, articles, 1));
+  EXPECT_EQ(1, PickPeekingCardWithMax(subscriptions, {}, articles,
+                                      /*max_candidates=*/1));
 }
 
 TEST(BraveNewsPeekingCard, DirectFeedsAreIncluded) {
@@ -88,7 +89,8 @@ TEST(BraveNewsPeekingCard, DirectFeedsAreIncluded) {
   feeds.push_back({"foo", GURL(), ""});
   SubscriptionsSnapshot subscriptions({}, {}, feeds, {});
 
-  EXPECT_EQ(1, PickPeekingCardWithMax(subscriptions, {}, articles, 1));
+  EXPECT_EQ(1, PickPeekingCardWithMax(subscriptions, {}, articles,
+                                      /*max_candidates=*/1));
 }
 
 TEST(BraveNewsPeekingCard, DisabledPublishersExcluded) {
@@ -99,8 +101,8 @@ TEST(BraveNewsPeekingCard, DisabledPublishersExcluded) {
 
   SubscriptionsSnapshot subscriptions({"foo"}, {"foo", "bar", "frob"}, {}, {});
 
-  EXPECT_EQ(std::nullopt,
-            PickPeekingCardWithMax(subscriptions, {}, articles, 1));
+  EXPECT_EQ(std::nullopt, PickPeekingCardWithMax(subscriptions, {}, articles,
+                                                 /*max_candidates=*/1));
 }
 
 TEST(BraveNewsPeekingCard, DirectFeedsAreHigherThanPublishers) {
@@ -113,7 +115,8 @@ TEST(BraveNewsPeekingCard, DirectFeedsAreHigherThanPublishers) {
   feeds.push_back({"direct", GURL(), ""});
   SubscriptionsSnapshot subscriptions({"other", "combined"}, {}, feeds, {});
 
-  EXPECT_EQ(1, PickPeekingCardWithMax(subscriptions, {}, articles, 1));
+  EXPECT_EQ(1, PickPeekingCardWithMax(subscriptions, {}, articles,
+                                      /*max_candidates=*/1));
 }
 
 TEST(BraveNewsPeekingCard, PublishersAreHigherThanChannels) {
@@ -127,7 +130,8 @@ TEST(BraveNewsPeekingCard, PublishersAreHigherThanChannels) {
 
   SubscriptionsSnapshot subscriptions({"other", "combined"}, {}, {}, channels);
 
-  EXPECT_EQ(1, PickPeekingCardWithMax(subscriptions, {}, articles, 1));
+  EXPECT_EQ(1, PickPeekingCardWithMax(subscriptions, {}, articles,
+                                      /*max_candidates=*/1));
 }
 
 TEST(BraveNewsPeekingCard, TopNewsBoost) {
@@ -139,7 +143,7 @@ TEST(BraveNewsPeekingCard, TopNewsBoost) {
   SubscriptionsSnapshot subscriptions({"one"}, {}, {}, {});
 
   EXPECT_EQ(1, PickPeekingCardWithMax(subscriptions, {"https://one.com/2"},
-                                      articles, 1));
+                                      articles, /*max_candidates=*/1));
 }
 
 }  // namespace brave_news
