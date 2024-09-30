@@ -46,11 +46,11 @@ class NET_EXPORT TransportSecurityState
       const std::string& host,
       const NetLogWithSource& net_log = NetLogWithSource());
   bool AddHSTSHeader(const IsolationInfo& isolation_info,
-                     const std::string& host,
-                     const std::string& value);
+                     std::string_view host,
+                     std::string_view value);
 
   // This is used only for manual adding via net-internals page.
-  void AddHSTS(const std::string& host,
+  void AddHSTS(std::string_view host,
                const base::Time& expiry,
                bool include_subdomains);
   // These are used in some places where no NIK is available.
