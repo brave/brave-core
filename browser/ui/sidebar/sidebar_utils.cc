@@ -149,6 +149,24 @@ SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {
          "not have a panel Id.";
 }
 
+std::optional<BuiltInItemType> BuiltInItemTypeFromSidePanelId(
+    SidePanelEntryId id) {
+  switch (id) {
+    case SidePanelEntryId::kReadingList:
+      return BuiltInItemType::kReadingList;
+    case SidePanelEntryId::kBookmarks:
+      return BuiltInItemType::kBookmarks;
+    case SidePanelEntryId::kPlaylist:
+      return BuiltInItemType::kPlaylist;
+    case SidePanelEntryId::kChatUI:
+      return BuiltInItemType::kChatUI;
+    default:
+      break;
+  }
+
+  return std::nullopt;
+}
+
 SidePanelEntryId SidePanelIdFromSideBarItem(const SidebarItem& item) {
   CHECK(item.open_in_panel) << static_cast<int>(item.built_in_item_type);
   return SidePanelIdFromSideBarItemType(item.built_in_item_type);
