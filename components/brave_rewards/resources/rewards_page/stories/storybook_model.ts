@@ -49,7 +49,7 @@ export function createModel(): AppModel {
       autoDetectedSubdivision: 'US-NY'
     },
     externalWallet: {
-      provider: 'solana',
+      provider: 'uphold',
       name: 'Test Account',
       authenticated: true,
       url: ''
@@ -148,6 +148,7 @@ export function createModel(): AppModel {
     ],
     rewardsParameters: {
       autoContributeChoices: [1, 2, 5, 10],
+      tipChoices: [1.25, 5.0, 10.5],
       rate: .56,
       walletProviderRegions: {
         bitflyer: { allow: [], block: [] },
@@ -166,8 +167,10 @@ export function createModel(): AppModel {
       banner: {
         title: 'Wikipedia',
         description: '',
-        background: ''
-      }
+        background: '',
+        web3URL: ''
+      },
+      supportedWalletProviders: ['uphold', 'gemini']
     }
   })
 
@@ -282,7 +285,12 @@ export function createModel(): AppModel {
         return entry.site.id !== id
       })
       stateManager.update({ recurringContributions })
-    }
+    },
+
+    async sendContribution(creatorID, amount, recurring) {
+      await delay(2000)
+      return true
+    },
 
   }
 }

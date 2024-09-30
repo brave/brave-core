@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { color, font } from '@brave/leo/tokens/css/variables'
-import { css, scopedCSS } from '../../lib/scoped_css'
+import { scoped } from '../../lib/scoped_css'
 
-export const style = scopedCSS('auto-contribute-card', css`
+export const style = scoped.css`
   h4 {
     --leo-toggle-height: 24px;
     --leo-toggle-width: 40px;
@@ -158,4 +158,4 @@ export const style = scopedCSS('auto-contribute-card', css`
       color: ${color.text.tertiary};
     }
   }
-`)
+`

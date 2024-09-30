@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { color, font } from '@brave/leo/tokens/css/variables'
-import { css, scopedCSS } from '../../lib/scoped_css'
+import { scoped } from '../../lib/scoped_css'
 
-export const style = scopedCSS('recurring-contribution-card', css`
+export const style = scoped.css`
   h4 {
     padding: 16px;
   }
@@ -107,4 +107,4 @@ export const style = scopedCSS('recurring-contribution-card', css`
   .show-all {
     text-align: center;
   }
-`)
+`

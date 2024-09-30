@@ -594,6 +594,14 @@ void RewardsPageHandler::ConnectExternalWallet(
   rewards_service_->ConnectExternalWallet(provider, args, std::move(callback));
 }
 
+void RewardsPageHandler::SendContribution(const std::string& creator_id,
+                                          double amount,
+                                          bool recurring,
+                                          SendContributionCallback callback) {
+  rewards_service_->SendContribution(creator_id, amount, recurring,
+                                     std::move(callback));
+}
+
 void RewardsPageHandler::ResetRewards(ResetRewardsCallback callback) {
   rewards_service_->CompleteReset(std::move(callback));
 }

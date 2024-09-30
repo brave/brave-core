@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { color, font } from '@brave/leo/tokens/css/variables'
-import { css, scopedCSS } from '../lib/scoped_css'
+import { scoped } from '../lib/scoped_css'
 
-export const style = scopedCSS('connect-account', css`
+export const style = scoped.css`
   & {
     margin: 72px auto 16px;
     margin: 0 auto;
@@ -161,4 +161,4 @@ export const style = scopedCSS('connect-account', css`
       max-width: 300px;
     }
   }
-`)
+`

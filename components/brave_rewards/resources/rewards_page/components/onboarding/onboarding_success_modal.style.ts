@@ -4,12 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { color, font } from '@brave/leo/tokens/css/variables'
-import { css, scopedCSS } from '../../lib/scoped_css'
+import { scoped } from '../../lib/scoped_css'
 
 import successIconLight from '../../assets/onboarding_success_icon.svg'
 import successIconDark from '../../assets/onboarding_success_icon_dark.svg'
 
-export const style = scopedCSS('onboarding-success', css`
+export const style = scoped.css`
   & {
     max-width: var(--onboarding-max-width);
     display: flex;
@@ -69,4 +69,4 @@ export const style = scopedCSS('onboarding-success', css`
       text-decoration: none;
     }
   }
-`)
+`

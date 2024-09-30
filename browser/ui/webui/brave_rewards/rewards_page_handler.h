@@ -108,6 +108,10 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
       const std::string& provider,
       const base::flat_map<std::string, std::string>& args,
       ConnectExternalWalletCallback callback) override;
+  void SendContribution(const std::string& creator_id,
+                        double amount,
+                        bool recurring,
+                        SendContributionCallback callback) override;
   void ResetRewards(ResetRewardsCallback callback) override;
 
  private:
