@@ -18,6 +18,7 @@
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -31,6 +32,7 @@
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_generation_info.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"
+#include "brave/components/brave_news/browser/peeking_card.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
@@ -158,13 +160,15 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(FeedGenerationInfo& info,
 // 2. 1 - 5 Inline Articles (a percentage of which might be discover cards).
 std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
     FeedGenerationInfo& info,
-    // Ratio of inline articles to discovery articles.
-    // discover ratio % of the time, we should do a discover card here instead
-    // of a roulette card.
-    // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
-    double inline_discovery_ratio =
-        features::kBraveNewsInlineDiscoveryRatio.Get()) {
+    PickArticles pick_hero = base::NullCallback()) {
   DVLOG(1) << __FUNCTION__;
+  // Ratio of inline articles to discovery articles.
+  // discover ratio % of the time, we should do a discover card here instead
+  // of a roulette card.
+  // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
+  const double inline_discovery_ratio =
+      features::kBraveNewsInlineDiscoveryRatio.Get();
+
   auto eligible_content_groups = info.GetEligibleContentGroups();
   std::vector<mojom::FeedItemV2Ptr> result;
   if (info.GetArticleInfos().empty() || eligible_content_groups.empty()) {
@@ -225,11 +229,13 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
       info.locale(), std::move(eligible_content_groups),
       std::move(publisher_id_to_channels));
 
-  PickArticles pick_hero = base::BindRepeating(
-      [](GetWeighting weighting, const ArticleInfos& articles) {
-        return PickRouletteWithWeighting(articles, std::move(weighting));
-      },
-      get_weighting.Run(true));
+  if (pick_hero.is_null()) {
+    pick_hero = base::BindRepeating(
+        [](GetWeighting weighting, const ArticleInfos& articles) {
+          return PickRouletteWithWeighting(articles, std::move(weighting));
+        },
+        get_weighting.Run(true));
+  }
 
   PickArticles pick_article = base::BindRepeating(
       [](base::RepeatingCallback<GetWeighting(bool)> gen_weighting,
@@ -465,15 +471,17 @@ void FeedV2Builder::UpdateRequest::AlsoUpdate(
 // static
 mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(FeedGenerationInfo info,
                                                   PickArticles pick_hero,
-                                                  PickArticles pick_article) {
+                                                  PickArticles pick_article,
+                                                  PickArticles pick_peeking) {
   DVLOG(1) << __FUNCTION__;
   auto feed = mojom::FeedV2::New();
 
   constexpr size_t kIterationsPerAd = 2;
   size_t blocks = 0;
   while (!info.GetArticleInfos().empty()) {
-    auto items = GenerateBlock(info, pick_hero, pick_article,
-                               /*inline_discovery_ratio=*/0);
+    auto items = GenerateBlock(
+        info, feed->items.empty() ? pick_peeking : pick_hero, pick_article,
+        /*inline_discovery_ratio=*/0);
     if (items.empty()) {
       break;
     }
@@ -514,10 +522,14 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
     return feed;
   }
 
-  // Step 1: Generate a block
+  // Step 1: Generate the initial block. We have a special algorithm for the
+  // first hero card
+  // (https://docs.google.com/document/d/1HH7pohTPp-8uqdccwK4phOrwqK0-NRo-kkBxTDuWUsM)
   // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.rkq699fwps0
   std::vector<mojom::FeedItemV2Ptr> initial_block =
-      GenerateBlockFromContentGroups(info);
+      GenerateBlockFromContentGroups(
+          info, base::BindRepeating(&PickPeekingCard, info.subscriptions(),
+                                    GetTopStoryUrls(info.topics())));
   DVLOG(1) << "Step 1: Standard Block (" << initial_block.size()
            << " articles)";
   add_items(initial_block);
@@ -629,9 +641,13 @@ void FeedV2Builder::BuildFollowingFeed(
       subscriptions, {.signals = true},
       mojom::FeedV2Type::NewFollowing(mojom::FeedV2FollowingType::New()),
       base::BindOnce([](FeedGenerationInfo info) {
-        return GenerateBasicFeed(std::move(info),
-                                 base::BindRepeating(&PickRoulette),
-                                 base::BindRepeating(&PickRoulette));
+        auto subscriptions = info.subscriptions();
+        auto top_stories = GetTopStoryUrls(info.topics());
+        return GenerateBasicFeed(
+            std::move(info), base::BindRepeating(&PickRoulette),
+            base::BindRepeating(&PickRoulette),
+            base::BindRepeating(&PickPeekingCard, std::move(subscriptions),
+                                std::move(top_stories)));
       }),
       std::move(callback));
 }
@@ -678,10 +694,13 @@ void FeedV2Builder::BuildChannelFeed(const SubscriptionsSnapshot& subscriptions,
             }
 
             info.raw_feed_items() = std::move(feed_items);
-
-            return GenerateBasicFeed(std::move(info),
-                                     base::BindRepeating(&PickRoulette),
-                                     base::BindRepeating(&PickRoulette));
+            auto subscriptions = info.subscriptions();
+            auto top_stories = GetTopStoryUrls(info.topics());
+            return GenerateBasicFeed(
+                std::move(info), base::BindRepeating(&PickRoulette),
+                base::BindRepeating(&PickRoulette),
+                base::BindRepeating(&PickPeekingCard, std::move(subscriptions),
+                                    std::move(top_stories)));
           },
           channel),
       std::move(callback));
@@ -720,6 +739,7 @@ void FeedV2Builder::BuildPublisherFeed(
             info.raw_feed_items() = std::move(items);
 
             return GenerateBasicFeed(std::move(info),
+                                     base::BindRepeating(&PickFirstIndex),
                                      base::BindRepeating(&PickFirstIndex),
                                      base::BindRepeating(&PickFirstIndex));
           },
@@ -970,6 +990,7 @@ void FeedV2Builder::GenerateFeed(const SubscriptionsSnapshot& subscriptions,
       subscriptions, std::move(settings),
       base::BindOnce(
           [](const base::WeakPtr<FeedV2Builder> builder,
+             const SubscriptionsSnapshot& subscriptions,
              mojom::FeedV2TypePtr type, FeedGenerator generate,
              BuildFeedCallback callback) {
             if (!builder) {
@@ -991,7 +1012,7 @@ void FeedV2Builder::GenerateFeed(const SubscriptionsSnapshot& subscriptions,
             }
 
             FeedGenerationInfo info(
-                locale, builder->raw_feed_items_, publishers,
+                subscriptions, locale, builder->raw_feed_items_, publishers,
                 std::move(channels), builder->signals_,
                 builder->suggested_publisher_ids_, builder->topics_);
 
@@ -1020,8 +1041,8 @@ void FeedV2Builder::GenerateFeed(const SubscriptionsSnapshot& subscriptions,
 
             std::move(callback).Run(std::move(feed));
           },
-          weak_ptr_factory_.GetWeakPtr(), std::move(type), std::move(generator),
-          std::move(callback)));
+          weak_ptr_factory_.GetWeakPtr(), subscriptions, std::move(type),
+          std::move(generator), std::move(callback)));
 }
 
 }  // namespace brave_news

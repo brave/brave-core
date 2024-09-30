@@ -20,6 +20,7 @@
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 
 namespace brave_news {
 
@@ -172,6 +173,7 @@ ArticleInfos GetArticleInfos(const std::string& locale,
 }  // namespace
 
 FeedGenerationInfo::FeedGenerationInfo(
+    const SubscriptionsSnapshot& subscriptions,
     const std::string& locale,
     const FeedItems& feed_items,
     const Publishers& publishers,
@@ -179,7 +181,8 @@ FeedGenerationInfo::FeedGenerationInfo(
     const Signals& signals,
     const std::vector<std::string>& suggested_publisher_ids,
     const TopicsResult& topics)
-    : locale_(locale),
+    : subscriptions_(subscriptions),
+      locale_(locale),
       channels_(std::move(channels)),
       suggested_publisher_ids_(suggested_publisher_ids),
       suggested_publisher_ids_span_(base::make_span(suggested_publisher_ids_)) {

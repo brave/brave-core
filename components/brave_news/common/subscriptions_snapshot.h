@@ -67,6 +67,8 @@ class SubscriptionsSnapshot {
   bool GetChannelSubscribed(const std::string& locale,
                             const std::string& channel) const;
 
+  std::vector<std::string> GetChannelsFromAllLocales() const;
+
   // Get the changes to the publisher subscriptions between two snapshots.
   // Useful for notifying the front end of publisher changes.
   SubscriptionsDiff DiffPublishers(const SubscriptionsSnapshot& old) const;

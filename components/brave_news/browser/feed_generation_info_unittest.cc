@@ -115,8 +115,9 @@ TEST_F(BraveNewsFeedGenerationInfoTest, CanCreateFeedGenerationInfo) {
   feed_items.push_back(MakeArticleItem(kPublisher1));
   feed_items.push_back(MakeArticleItem(kPublisher2));
   feed_items.push_back(MakeArticleItem(kPublisherDisabled));
-  FeedGenerationInfo info("en_NZ", feed_items, publishers,
-                          {kTopNewsChannel, kFooChannel}, signals, {}, topics);
+  FeedGenerationInfo info(SubscriptionsSnapshot(), "en_NZ", feed_items,
+                          publishers, {kTopNewsChannel, kFooChannel}, signals,
+                          {}, topics);
 
   // ContentGroups and ArticleInfos should be lazily created.
   EXPECT_FALSE(HasCreatedArticleInfos(info));
@@ -148,8 +149,9 @@ TEST_F(BraveNewsFeedGenerationInfoTest,
   feed_items.push_back(MakeArticleItem(kPublisher1));
   feed_items.push_back(MakeArticleItem(kPublisher2));
   feed_items.push_back(MakeArticleItem(kPublisherDisabled));
-  FeedGenerationInfo info("en_NZ", feed_items, publishers,
-                          {kTopNewsChannel, kFooChannel}, signals, {}, topics);
+  FeedGenerationInfo info(SubscriptionsSnapshot(), "en_NZ", feed_items,
+                          publishers, {kTopNewsChannel, kFooChannel}, signals,
+                          {}, topics);
 
   EXPECT_EQ(3u, info.GetEligibleContentGroups().size());
 
@@ -174,8 +176,9 @@ TEST_F(BraveNewsFeedGenerationInfoTest,
   feed_items.push_back(MakeArticleItem(kPublisher1));
   feed_items.push_back(MakeArticleItem(kPublisher2));
   feed_items.push_back(MakeArticleItem(kPublisherDisabled));
-  FeedGenerationInfo info("en_NZ", feed_items, publishers,
-                          {kTopNewsChannel, kFooChannel}, signals, {}, topics);
+  FeedGenerationInfo info(SubscriptionsSnapshot(), "en_NZ", feed_items,
+                          publishers, {kTopNewsChannel, kFooChannel}, signals,
+                          {}, topics);
 
   EXPECT_EQ(3u, info.GetEligibleContentGroups().size());
   EXPECT_EQ(2u, info.EligibleChannels().size());
