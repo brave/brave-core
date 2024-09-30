@@ -400,14 +400,12 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, BraveVPNMenuTest) {
 void CheckMenuIcons(ui::MenuModel* menu,
                     int submenu_depth,
                     std::u16string path = u"") {
-  constexpr int kIconlessCommands[] = {
-      // Header, with no icon
-      RecentTabsSubMenuModel::kDisabledRecentlyClosedHeaderCommandId};
   for (size_t i = 0; i < menu->GetItemCount(); ++i) {
     auto command_id = menu->GetCommandIdAt(i);
     // Skip separators, headers, & commands which deliberately have no icons
     if (command_id == -1 || command_id == -2 ||
-        base::Contains(kIconlessCommands, command_id)) {
+        command_id == RecentTabsSubMenuModel::
+                          GetDisabledRecentlyClosedHeaderCommandId()) {
       continue;
     }
 
