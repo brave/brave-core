@@ -5,7 +5,11 @@
 
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
 
+#include <algorithm>
+#include <iterator>
+#include <string>
 #include <utility>
+#include <vector>
 
 #include "base/containers/contains.h"
 
@@ -75,6 +79,15 @@ bool SubscriptionsSnapshot::GetChannelSubscribed(
     return base::Contains(value, channel);
   }
   return false;
+}
+
+std::vector<std::string> SubscriptionsSnapshot::GetChannelsFromAllLocales()
+    const {
+  std::vector<std::string> result;
+  for (auto& [locale, channel] : channels_) {
+    base::ranges::copy(channel, std::back_inserter(result));
+  }
+  return result;
 }
 
 SubscriptionsDiff SubscriptionsSnapshot::DiffPublishers(

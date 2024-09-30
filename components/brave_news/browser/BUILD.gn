@@ -46,6 +46,8 @@ static_library("browser") {
     "initialization_promise.h",
     "network.cc",
     "network.h",
+    "peeking_card.cc",
+    "peeking_card.h",
     "publishers_controller.cc",
     "publishers_controller.h",
     "publishers_parsing.cc",

@@ -18,12 +18,14 @@
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 
 namespace brave_news {
 
 class FeedGenerationInfo {
  public:
-  FeedGenerationInfo(const std::string& locale,
+  FeedGenerationInfo(const SubscriptionsSnapshot& subscriptions,
+                     const std::string& locale,
                      const FeedItems& feed_items,
                      const Publishers& publishers,
                      std::vector<std::string> channels,
@@ -51,6 +53,7 @@ class FeedGenerationInfo {
   // maintain the list of content groups.
   mojom::FeedItemMetadataPtr PickAndConsume(PickArticles picker);
 
+  const SubscriptionsSnapshot& subscriptions() { return subscriptions_; }
   const std::string locale() { return locale_; }
   const Publishers& publishers() { return publishers_; }
 
@@ -71,6 +74,8 @@ class FeedGenerationInfo {
   void GenerateAvailableCounts();
   void ReduceCounts(const mojom::FeedItemMetadataPtr& article,
                     const ArticleMetadata& meta);
+
+  SubscriptionsSnapshot subscriptions_;
 
   std::string locale_;
   std::vector<std::string> channels_;
