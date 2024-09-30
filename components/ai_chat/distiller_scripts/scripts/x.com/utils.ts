@@ -37,15 +37,14 @@ export function isSupportedPage(document: Document) {
  * `textarea` element.
  */
 export function decodeHTMLSpecialChars(text: string) {
-  const textarea = document.createElement('textarea')
   /**
-   * We have to use `.innerHTML` to decode entities, as
-   * `.innerText` or `.textContent` will not achieve
-   * the same results.
+   * The DOMParser will create a document fragment. Any
+   * <script> tags will be marked as non-executable. This
+   * approach offers a safer way to decode HTML entities.
    */
-  // eslint-disable-next-line no-unsanitized/property
-  textarea.innerHTML = text
-  return textarea.value
+  return (
+    new DOMParser().parseFromString(text, 'text/html').body.textContent ?? ''
+  )
 }
 
 /**
