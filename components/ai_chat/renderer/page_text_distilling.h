@@ -25,7 +25,7 @@ void DistillPageText(
     int32_t isolated_world_id,
     base::OnceCallback<void(const std::optional<std::string>&)>);
 
-bool LoadSiteScriptForHost(const GURL& url,
+bool LoadSiteScriptForHost(std::string* host,
                            std::string* script_content,
                            bool* needs_main_world);
 

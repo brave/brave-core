@@ -145,18 +145,15 @@ void DistillPageText(
     int32_t isolated_world_id,
     base::OnceCallback<void(const std::optional<std::string>&)> callback) {
   blink::WebLocalFrame* main_frame = render_frame->GetWebFrame();
-  GURL origin =
+  std::string host =
       url::Origin(((const blink::WebFrame*)main_frame)->GetSecurityOrigin())
-          .GetURL();
-
-  GURL url = main_frame->GetDocument().Url();
-  std::string host = origin.host();
+          .host();
 
   // Prepare to load a site script for the host (assume no main world needed)
   std::string script_content;
   bool needs_main_world = false;
 
-  if (LoadSiteScriptForHost(url, &script_content, &needs_main_world)) {
+  if (LoadSiteScriptForHost(&host, &script_content, &needs_main_world)) {
     VLOG(1) << "Using site script for host: " << host;
     int32_t world_id = needs_main_world ? global_world_id : isolated_world_id;
     DistillPageTextViaSiteScript(render_frame, script_content, world_id,
@@ -293,13 +290,14 @@ void DistillPageTextViaSiteScript(
       blink::mojom::PromiseResultOption::kAwait);
 }
 
-bool LoadSiteScriptForHost(const GURL& url,
+bool LoadSiteScriptForHost(std::string* host,
                            std::string* script_content,
                            bool* needs_main_world) {
-  std::string host = base::ToLowerASCII(url.host());
+  std::string lower_host = base::ToLowerASCII(*host);
 
-  if (base::StartsWith(host, "www.", base::CompareCase::INSENSITIVE_ASCII)) {
-    host = host.substr(4);
+  if (base::StartsWith(lower_host, "www.",
+                       base::CompareCase::INSENSITIVE_ASCII)) {
+    lower_host = lower_host.substr(4);
   }
 
   struct ScriptResource {
@@ -312,7 +310,7 @@ bool LoadSiteScriptForHost(const GURL& url,
       {"x.com", {IDR_AI_CHAT_SITE_DISTILLER_X_COM_BUNDLE_JS, true}},
   };
 
-  auto it = kHostToScriptResource.find(host);
+  auto it = kHostToScriptResource.find(lower_host);
 
   if (it != kHostToScriptResource.end()) {
     auto& bundle = ui::ResourceBundle::GetSharedInstance();
