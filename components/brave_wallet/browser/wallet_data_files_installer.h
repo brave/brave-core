@@ -51,8 +51,7 @@ class WalletDataFilesInstaller
   void OnComponentReady(const base::FilePath& path);
 
   // component_updater::ComponentUpdateService::Observer:
-  void OnEvent(update_client::UpdateClient::Observer::Events event,
-               const std::string& id) override;
+  void OnEvent(const update_client::CrxUpdateItem& item) override;
 
   void ResetForTesting();
 

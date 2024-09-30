@@ -33,6 +33,7 @@
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/mock_component_updater_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "components/update_client/crx_update_item.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -203,12 +204,13 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   }
 
   void SetOnDemandInstallCallbackWithComponentUpdateError() {
+    update_client::CrxUpdateItem item;
+    item.id = kComponentId;
+    item.state = update_client::ComponentState::kUpdateError;
     EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
-        .WillOnce([this](const std::string& id,
-                         component_updater::Callback callback) {
-          installer().OnEvent(update_client::UpdateClient::Observer::Events::
-                                  COMPONENT_UPDATE_ERROR,
-                              kComponentId);
+        .WillOnce([=, this](const std::string& id,
+                            component_updater::Callback callback) {
+          installer().OnEvent(item);
         });
   }
 

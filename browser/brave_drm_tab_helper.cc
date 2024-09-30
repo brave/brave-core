@@ -16,6 +16,7 @@
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
+#include "components/update_client/crx_update_item.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 
@@ -125,10 +126,10 @@ void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
   }
 }
 
-void BraveDrmTabHelper::OnEvent(Events event, const std::string& id) {
+void BraveDrmTabHelper::OnEvent(const update_client::CrxUpdateItem& item) {
 #if !BUILDFLAG(IS_ANDROID)
-  if (event == ComponentUpdateService::Observer::Events::COMPONENT_UPDATED &&
-      id == kWidevineComponentId) {
+  if (item.state == update_client::ComponentState::kUpdated &&
+      item.id == kWidevineComponentId) {
 #if BUILDFLAG(IS_LINUX)
     // Ask restart instead of reloading. Widevine is only usable after
     // restarting on linux. This restart permission request is only shown if

@@ -23,6 +23,7 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/component_updater/component_installer.h"
 #include "components/prefs/pref_service.h"
+#include "components/update_client/crx_update_item.h"
 #include "crypto/sha2.h"
 
 namespace brave_wallet {
@@ -216,14 +217,12 @@ void WalletDataFilesInstaller::OnComponentReady(const base::FilePath& path) {
 }
 
 void WalletDataFilesInstaller::OnEvent(
-    update_client::UpdateClient::Observer::Events event,
-    const std::string& id) {
-  if (id != kComponentId) {
+    const update_client::CrxUpdateItem& item) {
+  if (item.id != kComponentId) {
     return;
   }
 
-  if (event ==
-      update_client::UpdateClient::Observer::Events::COMPONENT_UPDATE_ERROR) {
+  if (item.state == update_client::ComponentState::kUpdateError) {
     if (install_callback_) {
       std::move(install_callback_).Run();
     }
