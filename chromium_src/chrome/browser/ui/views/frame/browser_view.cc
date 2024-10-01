@@ -28,9 +28,6 @@
 #define BrowserTabStripController BraveBrowserTabStripController
 #define TabStrip BraveTabStrip
 #define TabStripRegionView BraveTabStripRegionView
-#define SidePanel BraveSidePanel
-#define kAlignLeft kHorizontalAlignLeft
-#define kAlignRight kHorizontalAlignRight
 #define BookmarkBarView BraveBookmarkBarView
 #define ContentsLayoutManager BraveContentsLayoutManager
 #define UpdateExclusiveAccessBubble UpdateExclusiveAccessBubble_ChromiumImpl
@@ -40,9 +37,6 @@
 #undef UpdateExclusiveAccessBubble
 #undef ContentsLayoutManager
 #undef BookmarkBarView
-#undef kAlignLeft
-#undef kAlignRight
-#undef SidePanel
 #undef TabStripRegionView
 #undef TabStrip
 #undef BrowserTabStripController

@@ -21,9 +21,7 @@
     return false;                                    \
   }
 
-#define SidePanel BraveSidePanel
 #include "src/chrome/browser/ui/views/frame/browser_view_layout.cc"
-#undef SidePanel
 #undef BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST
 #undef SupportsWindowFeature
 
