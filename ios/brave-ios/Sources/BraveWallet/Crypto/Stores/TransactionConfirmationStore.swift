@@ -287,8 +287,6 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     shouldFetchGasTokenBalance: Bool = true
   ) {
     Task { @MainActor in
-      clearTrasactionInfoBeforeUpdate()
-
       let coin = transaction.coin
       let allAccountsForCoin = await keyringService.allAccounts().accounts.filter {
         $0.coin == coin
@@ -332,6 +330,10 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         )
       else {
         return
+      }
+
+      if activeParsedTransaction.transaction.id != parsedTransaction.transaction.id {
+        clearTrasactionInfoBeforeUpdate()
       }
       activeParsedTransaction = parsedTransaction
       updateIsContractAddress()
@@ -387,7 +389,6 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     isBalanceSufficient = true
     isSolTokenTransferWithAssociatedTokenAccountCreation = false
     isUnlimitedApprovalRequested = false
-    isContractAddress = false
     // Filecoin Tx
     filTxGasPremium = nil
     filTxGasLimit = nil
