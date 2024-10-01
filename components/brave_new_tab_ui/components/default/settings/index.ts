@@ -45,7 +45,7 @@ const getTopSiteCustomizationImage = (dark: boolean, selected: boolean, favorite
   }
 }
 
-export const SettingsContent = styled('div') <{}>`
+export const SettingsContent = styled('div')`
   display: grid;
   grid-template-columns: auto 1fr;
   grid-gap: 20px;
@@ -55,7 +55,7 @@ export const SettingsContent = styled('div') <{}>`
   }
 `
 
-export const SettingsSidebar = styled('aside') <{}>`
+export const SettingsSidebar = styled('aside')`
   position: relative;
   /* normalize against SettingsMenu default padding */
   margin-inline-start: -24px;
@@ -167,14 +167,14 @@ export const SettingsSidebarButton = styled.button`
   }
 `
 
-export const SettingsFeatureBody = styled('section') <{}>`
+export const SettingsFeatureBody = styled('section')`
   padding: 10px 16px;
   height: 360px;
   overflow: auto;
   overscroll-behavior: contain;
 `
 
-export const SettingsTitle = styled('h1') <{}>`
+export const SettingsTitle = styled('h1')`
     margin: 0;
     margin-bottom: ${spacing.xl};
     font: ${font.heading.h3};
@@ -218,7 +218,7 @@ export const SettingsRow = styled('div') <SettingsRowProps>`
   }
 `
 
-export const SettingsText = styled('span') <{}>`
+export const SettingsText = styled('span')`
   display: flex;
   align-items: center;
   font-style: normal;
@@ -235,7 +235,7 @@ export const SettingsSectionTitle = styled('h3') <ControllableLayoutProps>`
   line-height: 24px;
 `
 
-export const SettingsWidget = styled('div') <{}>`
+export const SettingsWidget = styled('div')`
   width: calc(50% - var(--widget-gap));
   margin-top: calc(20px - var(--widget-gap));
   padding: 0px 1px;
@@ -253,41 +253,41 @@ export const StyledWidgetSettings = styled('div')`
   gap: var(--widget-gap);
 `
 
-export const FeaturedSettingsWidget = styled('div') <{}>`
+export const FeaturedSettingsWidget = styled('div')`
   width: 100%;
 `
 
-export const StyledBannerImage = styled('img') <{}>`
+export const StyledBannerImage = styled('img')`
   width: 100%;
   margin-bottom: 10px;
 `
 
-export const StyledSettingsInfo = styled('div') <{}>`
+export const StyledSettingsInfo = styled('div')`
   float: left;
   max-width: 250px;
   flex-grow: 1;
 `
 
-export const StyledSettingsTitle = styled('div') <{}>`
+export const StyledSettingsTitle = styled('div')`
   font-weight: 600;
   font-size: 14px;
   margin-bottom: 5px;
 `
 
-export const StyledSettingsCopy = styled('div') <{}>`
+export const StyledSettingsCopy = styled('div')`
   font-size: 13px;
   font-weight: 300;
   line-height: 17px;
 `
 
-export const StyledButtonIcon = styled('div') <{}>`
+export const StyledButtonIcon = styled('div')`
   display: inline-block;
   margin-right: 5px;
   width: 19px;
   height: 17px;
 `
 
-export const ToggleCardsWrapper = styled('div') <{}>`
+export const ToggleCardsWrapper = styled('div')`
   padding: 15px 15px 5px 15px;
   clear: both;
   border-radius: 10px;
@@ -295,21 +295,21 @@ export const ToggleCardsWrapper = styled('div') <{}>`
   color: ${p => isDarkTheme(p) ? '#FFF' : 'rgb(59, 62, 79)'};
 `
 
-export const ToggleCardsText = styled('div') <{}>`
+export const ToggleCardsText = styled('div')`
   text-align: left;
   max-width: 325px;
 `
 
-export const ToggleCardsTitle = styled('span') <{}>`
+export const ToggleCardsTitle = styled('span')`
   font-weight: bold;
 `
 
-export const ToggleCardsCopy = styled('p') <{}>`
+export const ToggleCardsCopy = styled('p')`
   line-height: 18px;
   font-weight: normal;
 `
 
-export const ToggleCardsSwitch = styled('div') <{}>`
+export const ToggleCardsSwitch = styled('div')`
   float: right;
   margin: -65px -10px 0 0;
 `
@@ -324,7 +324,7 @@ export const StyledTopSitesCustomizationSettings = styled('div')`
   gap: var(--widget-gap)
 `
 
-export const StyledTopSitesCustomizationSettingsOption = styled('button') <{}>`
+export const StyledTopSitesCustomizationSettingsOption = styled('button')`
   width: calc(50% - var(--widget-gap) / 2);
   display: flex;
   flex-direction: column;
@@ -357,7 +357,7 @@ export const StyledTopSitesCustomizationImage = styled('img') <CustomizationImag
   `}
 `
 
-export const StyledTopSitesCustomizationOptionTitle = styled('div') <{}>`
+export const StyledTopSitesCustomizationOptionTitle = styled('div')`
   font-weight: 500;
   font-size: 13px;
   line-height: 20px;
@@ -365,14 +365,14 @@ export const StyledTopSitesCustomizationOptionTitle = styled('div') <{}>`
   text-align: left;
 `
 
-export const StyledTopSitesCustomizationOptionDesc = styled('div') <{}>`
+export const StyledTopSitesCustomizationOptionDesc = styled('div')`
   font-weight: 400;
   font-size: 11px;
   line-height: 17px;
   text-align: left;
 `
 
-export const StyledCustomBackgroundSettings = styled('div') <{}>`
+export const StyledCustomBackgroundSettings = styled('div')`
   --option-gap: 10px;
   display: flex;
   flex-direction: row;
@@ -381,7 +381,7 @@ export const StyledCustomBackgroundSettings = styled('div') <{}>`
   gap: var(--option-gap)
 `
 
-export const StyledCustomBackgroundOption = styled('button') <{}>`
+export const StyledCustomBackgroundOption = styled('button')`
   width: calc(50% - var(--option-gap) / 2);
   display: flex;
   flex-direction: column;
@@ -474,14 +474,14 @@ export const StyledCustomBackgroundOptionColor = styled('div') <SelectionProps &
   background: ${p => p.colorValue};
 `
 
-export const StyledUploadLabel = styled('div') <{}>`
+export const StyledUploadLabel = styled('div')`
 font-style: normal;
 font-weight: 400;
 font-size: 11px;
 line-height: 17px;
 `
 
-export const StyledCustomBackgroundOptionLabel = styled('div') <{}>`
+export const StyledCustomBackgroundOptionLabel = styled('div')`
 font-style: normal;
 font-weight: 400;
 font-size: 14px;
