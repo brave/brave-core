@@ -24,7 +24,7 @@ const mergeWithDefault = (options) => {
   return Object.assign({}, config.defaultOptions, options)
 }
 
-async function applyPatches() {
+async function applyPatches(printPatchFailuresInJson) {
   const GitPatcher = require('./gitPatcher')
   Log.progressStart('apply patches')
   // Always detect if we need to apply patches, since user may have modified
@@ -62,7 +62,11 @@ async function applyPatches() {
   devtoolsFrontendPatchStatus.forEach(
     s => s.path = path.join('third_party', 'devtools-frontend', 'src', s.path))
   const allPatchStatus = [...chromiumPatchStatus, ...v8PatchStatus, ...catapultPatchStatus, ...devtoolsFrontendPatchStatus, ...ffmpegPatchStatus]
-  Log.allPatchStatus(allPatchStatus, 'Chromium')
+  if (printPatchFailuresInJson) {
+    Log.printFailedPatchesInJsonFormat(allPatchStatus, config.braveCoreDir)
+  } else {
+    Log.allPatchStatus(allPatchStatus, 'Chromium')
+  }
 
   const hasPatchError = allPatchStatus.some(p => p.error)
   // Exit on error in any patch
@@ -840,8 +844,8 @@ const util = {
     util.run('gclient', args, options)
   },
 
-  applyPatches: () => {
-    return applyPatches()
+  applyPatches: (printPatchFailuresInJson) => {
+    return applyPatches(printPatchFailuresInJson)
   },
 
   walkSync: (dir, filter = null, filelist = []) => {
