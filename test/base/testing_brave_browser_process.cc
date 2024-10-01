@@ -77,7 +77,7 @@ webcompat_reporter::WebcompatReporterService* TestingBraveBrowserProcess::webcom
   if (!webcompat_reporter_service_) {
     webcompat_reporter_service_ =
         std::make_unique<webcompat_reporter::WebcompatReporterService>(
-            nullptr, nullptr);
+            nullptr, nullptr, nullptr);
   }
   return webcompat_reporter_service_.get();
 
