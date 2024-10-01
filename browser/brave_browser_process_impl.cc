@@ -29,7 +29,6 @@
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
-#include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
@@ -271,16 +270,6 @@ brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {
             profile_manager()->GetInitialProfileDir()));
   }
   return ad_block_service_.get();
-}
-
-webcompat_reporter::WebcompatReporterService*
-BraveBrowserProcessImpl::webcompat_reporter_service() {
-  if (!webcompat_reporter_service_) {
-    webcompat_reporter_service_ =
-        std::make_unique<webcompat_reporter::WebcompatReporterService>(
-            ad_block_service(), component_updater(), shared_url_loader_factory());
-  }
-  return webcompat_reporter_service_.get();
 }
 
 NTPBackgroundImagesService*
