@@ -31,6 +31,8 @@ export type AdType =
   'inline-content'
 
 export interface AdsInfo {
+  browserUpgradeRequired: boolean
+  isSupportedRegion: boolean
   adsEnabled: Record<AdType, boolean>
   adsReceivedThisMonth: number
   adTypesReceivedThisMonth: Record<AdType, number>

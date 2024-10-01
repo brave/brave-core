@@ -139,6 +139,25 @@ export function EarningCard() {
     if (!adsInfo) {
       return null
     }
+
+    if (!adsInfo.isSupportedRegion) {
+      return (
+        <div className='warning-box'>
+          <Icon name='warning-circle-filled' />
+          <div>{getString('adsRegionNotSupportedText')}</div>
+        </div>
+      )
+    }
+
+    if (adsInfo.browserUpgradeRequired) {
+      return (
+        <div className='warning-box'>
+          <Icon name='warning-circle-filled' />
+          <div>{getString('adsBrowserUpgradeRequiredText')}</div>
+        </div>
+      )
+    }
+
     return (
       <section className='ads-summary'>
         <button className='ads-summary-title' onClick={toggleAdDetails}>

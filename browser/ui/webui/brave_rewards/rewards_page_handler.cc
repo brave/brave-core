@@ -18,6 +18,7 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_value_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -406,6 +407,9 @@ void RewardsPageHandler::RemoveAutoContributeSite(
 void RewardsPageHandler::GetAdsSettings(GetAdsSettingsCallback callback) {
   auto settings = mojom::AdsSettings::New();
 
+  settings->browser_upgrade_required =
+      ads_service_->IsBrowserUpgradeRequiredToServeAds();
+  settings->is_supported_region = brave_ads::IsSupportedRegion();
   settings->new_tab_page_ads_enabled =
       prefs_->GetBoolean(ntp_background_images::prefs::
                              kNewTabPageShowSponsoredImagesBackgroundImage);

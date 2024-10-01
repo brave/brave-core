@@ -38,6 +38,8 @@ struct AdsSubdivision {
 };
 
 struct AdsSettings {
+  bool browser_upgrade_required;
+  bool is_supported_region;
   bool new_tab_page_ads_enabled;
   bool notification_ads_enabled;
   bool search_ads_enabled;
