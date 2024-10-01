@@ -257,7 +257,8 @@ extension CustomEngineViewController: UITableViewDelegate, UITableViewDataSource
       }
       return cell
     default:
-      let cell = tableView.dequeueReusableCell(for: indexPath) as CustomEngineTitleInputTableViewCell
+      let cell =
+        tableView.dequeueReusableCell(for: indexPath) as CustomEngineTitleInputTableViewCell
       cell.do {
         $0.delegate = self
         $0.selectionStyle = .none
@@ -339,6 +340,9 @@ extension CustomEngineViewController {
     name: String,
     completion: @escaping ((OpenSearchEngine?, SearchEngineError?) -> Void)
   ) {
+    // Ensure the host is setup even if the user does not edit it
+    setupHost()
+
     // Check Search Query is not valid
     guard let template = getSearchTemplate(with: query),
       let urlText = template.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
@@ -351,9 +355,10 @@ extension CustomEngineViewController {
 
     // Check Engine Exists only for add mode
     if customEngineActionType == .add {
-      guard profile.searchEngines.orderedEngines.filter({
-        $0.shortName == name || $0.searchTemplate.contains(template)
-      }).isEmpty
+      guard
+        profile.searchEngines.orderedEngines.filter({
+          $0.shortName == name || $0.searchTemplate.contains(template)
+        }).isEmpty
       else {
         completion(nil, SearchEngineError.duplicate)
         return
