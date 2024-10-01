@@ -59,6 +59,7 @@ export function createModel(): AppModel {
       url: ''
     },
     balance: optional(4.167),
+    tosUpdateRequired: true,
     autoContributeInfo: {
       enabled: true,
       amount: 7,
@@ -299,6 +300,10 @@ export function createModel(): AppModel {
       await delay(2000)
       return true
     },
+
+    async acceptTermsOfServiceUpdate() {
+      stateManager.update({ tosUpdateRequired: false })
+    }
 
   }
 }

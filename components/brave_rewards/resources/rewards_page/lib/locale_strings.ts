@@ -183,6 +183,10 @@ export const localeStrings = {
   resetRewardsTitle: 'Reset Brave Rewards',
   rewardsPageTitle: 'Rewards',
   showAllButtonLabel: 'Show all',
+  tosUpdateAcceptButtonLabel: 'I agree',
+  tosUpdateLink: 'See $1Brave Rewards Terms of Service$2',
+  tosUpdateRequiredText: 'We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can $1reset$2 Brave Rewards, which will disable the feature.',
+  tosUpdateRequiredTitle: 'Updated Terms of Service',
   unconnectedAdsViewedText: 'You\'ve seen $1# Ads$2 this month'
 }
 

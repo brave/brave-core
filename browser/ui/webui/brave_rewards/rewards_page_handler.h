@@ -61,6 +61,10 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
   void GetExternalWalletProviders(
       GetExternalWalletProvidersCallback callback) override;
   void GetAvailableBalance(GetAvailableBalanceCallback callback) override;
+  void GetTermsOfServiceUpdateRequired(
+      GetTermsOfServiceUpdateRequiredCallback callback) override;
+  void AcceptTermsOfServiceUpdate(
+      AcceptTermsOfServiceUpdateCallback callback) override;
   void GetPublisherForActiveTab(
       GetPublisherForActiveTabCallback callback) override;
   void GetPublisherBannerForActiveTab(

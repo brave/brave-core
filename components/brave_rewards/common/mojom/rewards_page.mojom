@@ -81,6 +81,12 @@ interface RewardsPageHandler {
   // Returns the user's available BAT balance.
   GetAvailableBalance() => (double? balance);
 
+  // Returns a value indicating whether a terms of service update has occurred.
+  GetTermsOfServiceUpdateRequired() => (bool update_required);
+
+  // Called when ther user has accepted a terms of service update.
+  AcceptTermsOfServiceUpdate() => ();
+
   // Returns data about the publisher associated with the active tab.
   GetPublisherForActiveTab() => (PublisherInfo? publisher_info);
 
