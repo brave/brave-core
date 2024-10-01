@@ -483,8 +483,8 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
   void UpdateTabSearchButtonVisibility() {
     tab_search_button_->SetVisible(
         tab_search_button_->GetPreferredSize().width() +
-                toggle_button_->GetPreferredSize().width() <=
-            width());
+            toggle_button_->GetPreferredSize().width() <=
+        width());
     if (!tab_search_button_->GetVisible()) {
       // When it's not visible, move tab search button. Otherwise,
       // TabSearchBubble will be anchored to wrong position as LayoutManager
@@ -526,8 +526,10 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
 
     // View::ReorderChildView() didn't work for us. So remove child views and
     // add them again.
-    base::ranges::for_each(children(),
-                           [&](views::View* v) { RemoveChildView(v); });
+    while (!children().empty()) {
+      RemoveChildView(children().front());
+    }
+
     base::ranges::for_each(new_children, [&](auto* v) { AddChildView(v); });
     layout_->SetFlexForView(spacer_,
                             1 /* resize |spacer| to fill the rest of space */);
