@@ -5,7 +5,7 @@ const applyPatches = (buildConfig = config.defaultBuildConfig, options = {}) => 
   async function RunCommand () {
     config.buildConfig = buildConfig
     config.update(options)
-    await util.applyPatches()
+    await util.applyPatches(options.printPatchFailuresInJson)
   }
 
   RunCommand().catch((err) => {

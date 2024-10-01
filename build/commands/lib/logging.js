@@ -124,6 +124,28 @@ function command (dir, cmd, args) {
   status(`${cmdArrowStyle('>')} ${cmdCmdStyle(cmd)} ${args.join(' ')}`, true)
 }
 
+function printFailedPatchesInJsonFormat(allPatchStatus, bravePath) {
+  const failedPatches = allPatchStatus.filter((patch) => patch.error)
+  if (!failedPatches.length) {
+    return;
+  }
+
+  const patchFailuresOutput = failedPatches.map(({path, patchPath}) => {
+    return {
+      // Trimming the patch path to be relative to the brave core repo. We skip
+      // the first character to avoid the trailing slash from the absolute
+      // path.
+      patchPath:
+        patchPath.replace(bravePath, '').substring(1),
+      path: path
+    }
+  })
+
+  console.log(chalk.red(`${failedPatches.length} Failed patches json breakdown:`))
+  console.log(JSON.stringify(patchFailuresOutput))
+  console.log(divider)
+}
+
 function allPatchStatus(allPatchStatus, patchGroupName) {
   if (!allPatchStatus.length) {
     console.log(chalk.bold.italic(`There were no ${patchGroupName} code patch updates to apply.`))
@@ -182,5 +204,6 @@ module.exports = {
   warn,
   command,
   updateStatus,
+  printFailedPatchesInJsonFormat,
   allPatchStatus
 }

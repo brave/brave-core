@@ -68,10 +68,12 @@ program
   .arguments('[build_config]')
   .action(gnCheck)
 
-program
-  .command('apply_patches')
-  .arguments('[build_config]')
-  .action(applyPatches)
+program.command('apply_patches')
+    .option(
+        '--print-patch-failures-in-json',
+        'Emits a JSON structure with a list of patch files that failed to apply')
+    .arguments('[build_config]')
+    .action(applyPatches)
 
 program
   .command('update_symlink')
