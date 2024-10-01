@@ -173,9 +173,9 @@ void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
   sidebar_control_view_->SetSidebarOnLeft(sidebar_on_left_);
 
   DCHECK(side_panel_);
-  side_panel_->SetHorizontalAlignment(
-      sidebar_on_left ? BraveSidePanel::kHorizontalAlignLeft
-                      : BraveSidePanel::kHorizontalAlignRight);
+  side_panel_->SetHorizontalAlignment(sidebar_on_left
+                                          ? BraveSidePanel::kAlignLeft
+                                          : BraveSidePanel::kAlignRight);
 
   GetEventDetectWidget()->SetSidebarOnLeft(sidebar_on_left_);
 }
