@@ -205,19 +205,6 @@
     </intent-filter>
 </service>
 
-<service
-    android:name="org.chromium.chrome.browser.autofill.BraveAutofillService"
-    android:label="@string/app_name"
-    android:permission="android.permission.BIND_AUTOFILL_SERVICE"
-    android:exported="true">
-    <meta-data
-        android:name="android.autofill"
-        android:resource="@xml/autofill_service_configuration" />
-    <intent-filter>
-        <action android:name="android.service.autofill.AutofillService" />
-    </intent-filter>
-</service>
-
 <activity
     android:name="com.brave.playlist.activity.PlaylistMenuOnboardingActivity"
     android:exported="false"
