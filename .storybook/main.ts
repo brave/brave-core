@@ -45,6 +45,10 @@ const config: StorybookConfig = {
   core: {
     disableTelemetry: true
   },
+  env: (config) => ({
+    ...config,
+    NODE_ENV: 'test'
+  }),
   experimental_indexers: async (existing) => [...existing, slashStoriesIndexer]
 }
 

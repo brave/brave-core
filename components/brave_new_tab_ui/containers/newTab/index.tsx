@@ -40,8 +40,7 @@ import BraveNewsHint from '../../components/default/braveNews/hint'
 import SponsoredImageClickArea from '../../components/default/sponsoredImage/sponsoredImageClickArea'
 import GridWidget from './gridWidget'
 
-import Icon, { setIconBasePath } from '@brave/leo/react/icon'
-setIconBasePath('chrome://resources/brave-icons')
+import Icon from '@brave/leo/react/icon'
 
 import * as style from './style'
 import { defaultState } from '../../storage/new_tab_storage'
