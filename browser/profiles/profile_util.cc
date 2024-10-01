@@ -15,6 +15,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/ntp_background_images/browser/ntp_p3a_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -45,15 +46,6 @@ bool IsTorDisabledForProfile(Profile* profile) {
 #endif
 }
 
-void RecordSponsoredImagesEnabledP3A(Profile* profile) {
-  bool is_sponsored_image_enabled =
-      profile->GetPrefs()->GetBoolean(kNewTabPageShowBackgroundImage) &&
-      profile->GetPrefs()->GetBoolean(
-          kNewTabPageShowSponsoredImagesBackgroundImage);
-  UMA_HISTOGRAM_BOOLEAN("Brave.NTP.SponsoredMediaType",
-                        is_sponsored_image_enabled);
-}
-
 void RecordInitialP3AValues(Profile* profile) {
   // Preference is unregistered for some reason in profile_manager_unittest
   // TODO(bsclifton): create a proper testing profile
@@ -62,7 +54,7 @@ void RecordInitialP3AValues(Profile* profile) {
           kNewTabPageShowSponsoredImagesBackgroundImage)) {
     return;
   }
-  RecordSponsoredImagesEnabledP3A(profile);
+  ntp_background_images::RecordSponsoredImagesEnabledP3A(profile->GetPrefs());
   if (profile->IsRegularProfile()) {
     brave_shields::MaybeRecordInitialShieldsSettings(
         profile->GetPrefs(),

@@ -96,11 +96,6 @@ void BraveAppearanceHandler::OnBraveDarkModeChanged() {
   }
 }
 
-void BraveAppearanceHandler::OnBackgroundPreferenceChanged(
-    const std::string& pref_name) {
-  brave::RecordSponsoredImagesEnabledP3A(profile_);
-}
-
 void BraveAppearanceHandler::OnPreferenceChanged(const std::string& pref_name) {
   if (IsJavascriptAllowed()) {
     if (pref_name == kNewTabPageShowsOptions || pref_name == prefs::kHomePage ||

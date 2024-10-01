@@ -22,6 +22,7 @@
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
+#include "brave/components/ntp_background_images/browser/ntp_p3a_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -323,6 +324,11 @@ void ViewCounterService::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == brave_rewards::prefs::kEnabled) {
     ResetNotificationState();
     return;
+  }
+
+  if (pref_name == prefs::kNewTabPageShowBackgroundImage ||
+      pref_name == prefs::kNewTabPageShowSponsoredImagesBackgroundImage) {
+    RecordSponsoredImagesEnabledP3A(prefs_);
   }
 
   // Reset model because SI and SR use different policy.

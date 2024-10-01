@@ -459,12 +459,6 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     return;
   }
   prefs->SetBoolean(settingsKey, settingsValueBool);
-
-  // P3A can only be recorded after profile is updated
-  if (settingsKeyInput == "showBackgroundImage" ||
-      settingsKeyInput == "brandedWallpaperOptIn") {
-    brave::RecordSponsoredImagesEnabledP3A(profile_);
-  }
 }
 
 void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
