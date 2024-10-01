@@ -998,7 +998,6 @@ brave_java_resources = [
   "java/res/values/brave_styles.xml",
   "java/res/values/shimmer_attrs.xml",
   "java/res/xml/appearance_preferences.xml",
-  "java/res/xml/autofill_service_configuration.xml",
   "java/res/xml/background_images_preferences.xml",
   "java/res/xml/brave_download_preferences.xml",
   "java/res/xml/brave_ethereum_preferences.xml",
