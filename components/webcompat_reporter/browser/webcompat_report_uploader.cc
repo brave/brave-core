@@ -6,6 +6,7 @@
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -24,6 +25,18 @@
 #include "services/network/public/mojom/fetch_api.mojom-shared.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
+namespace {
+
+void SetOptValue(std::optional<base::Value>& dest, const std::optional<base::Value>& source) {
+  if (source) {
+    dest = source->Clone();
+  } else {
+    dest = std::nullopt;
+  }
+}
+
+}  // namespace
 
 namespace webcompat_reporter {
 
@@ -51,17 +64,17 @@ Report& Report::operator=(const Report& other) {
     report_url = other.report_url;
     shields_enabled = other.shields_enabled;
     ad_block_list_names = other.ad_block_list_names;
+    ad_block_setting = other.ad_block_setting;
     fp_block_setting = other.fp_block_setting;
     ad_block_list_names = other.ad_block_list_names;
     languages = other.languages;
     language_farbling = other.language_farbling;
     brave_vpn_connected = other.brave_vpn_connected;
-    details = other.details.has_value() ? other.details->Clone() : base::Value();
-    contact = other.contact.has_value() ? other.contact->Clone() : base::Value();
-    ad_block_components = other.ad_block_components.has_value() ? other.ad_block_components->Clone() : base::Value();
+    SetOptValue(details, other.details);
+    SetOptValue(contact, other.contact);
+    SetOptValue(ad_block_components, other.ad_block_components);
     screenshot_png = other.screenshot_png;
   }
-
   return *this;
 }
 

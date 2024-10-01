@@ -278,7 +278,7 @@ BraveBrowserProcessImpl::webcompat_reporter_service() {
   if (!webcompat_reporter_service_) {
     webcompat_reporter_service_ =
         std::make_unique<webcompat_reporter::WebcompatReporterService>(
-            component_updater(), shared_url_loader_factory());
+            ad_block_service(), component_updater(), shared_url_loader_factory());
   }
   return webcompat_reporter_service_.get();
 }
