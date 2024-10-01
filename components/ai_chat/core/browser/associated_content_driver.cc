@@ -9,6 +9,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"

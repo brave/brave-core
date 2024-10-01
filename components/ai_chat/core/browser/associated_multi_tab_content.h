@@ -8,10 +8,8 @@
 
 #include <vector>
 
-#include "base/memory/weak_ptr.h"
 #include "base/scoped_multi_source_observation.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
-#include "content/public/browser/web_contents.h"
 
 namespace network {
 class SharedURLLoaderFactory;

@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 

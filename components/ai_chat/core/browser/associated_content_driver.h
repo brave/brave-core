@@ -10,6 +10,7 @@
 #include <set>
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"

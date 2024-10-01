@@ -5,6 +5,9 @@
 
 #include "brave/components/ai_chat/core/browser/associated_multi_tab_content.h"
 
+#include <string>
+#include <utility>
+
 #include "base/barrier_callback.h"
 #include "base/containers/flat_map.h"
 #include "base/strings/utf_string_conversions.h"

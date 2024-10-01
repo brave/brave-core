@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_tab_helpers.h"
 
+#include <memory>
 #include <string>
 #include <string_view>
 
