@@ -15,7 +15,6 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
@@ -71,16 +70,6 @@ brave_shields::AdBlockService* TestingBraveBrowserProcess::ad_block_service() {
         /*profile_dir*/ base::FilePath(FILE_PATH_LITERAL("")));
   }
   return ad_block_service_.get();
-}
-
-webcompat_reporter::WebcompatReporterService* TestingBraveBrowserProcess::webcompat_reporter_service() {
-  if (!webcompat_reporter_service_) {
-    webcompat_reporter_service_ =
-        std::make_unique<webcompat_reporter::WebcompatReporterService>(
-            nullptr, nullptr, nullptr);
-  }
-  return webcompat_reporter_service_.get();
-
 }
 
 #if BUILDFLAG(ENABLE_GREASELION)

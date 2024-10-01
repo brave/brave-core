@@ -31,9 +31,6 @@ class WebcompatReporterServiceFactory : public BrowserContextKeyedServiceFactory
   static WebcompatReporterService* GetServiceForContext(
       content::BrowserContext* context);
   static WebcompatReporterServiceFactory* GetInstance();
-//   static void BindForContext(
-//       content::BrowserContext* context,
-//       mojo::PendingReceiver<mojom::FilterListAndroidHandler> receiver);
 
  private:
   friend base::NoDestructor<WebcompatReporterServiceFactory>;

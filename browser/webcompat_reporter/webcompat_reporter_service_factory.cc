@@ -39,17 +39,6 @@ WebcompatReporterService* WebcompatReporterServiceFactory::GetServiceForContext(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
-// // static
-// void WebcompatReporterServiceFactory::BindForContext(
-//     content::BrowserContext* context,
-//     mojo::PendingReceiver<mojom::FilterListAndroidHandler> receiver) {
-//   auto* filter_list_opt_in_service =
-//       WebcompatReporterServiceFactory::GetServiceForContext(context);
-//   if (filter_list_opt_in_service) {
-//     filter_list_opt_in_service->Bind(std::move(receiver));
-//   }
-// }
-
 WebcompatReporterServiceFactory::WebcompatReporterServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "WebcompatReporterService",
@@ -59,7 +48,12 @@ WebcompatReporterServiceFactory::~WebcompatReporterServiceFactory() = default;
 
 KeyedService* WebcompatReporterServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return g_brave_browser_process->webcompat_reporter_service();
+  auto* default_storage_partition = context->GetDefaultStoragePartition();
+  auto shared_url_loader_factory =
+      default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
+  return new WebcompatReporterService(
+      g_brave_browser_process->ad_block_service(),
+      g_browser_process->component_updater(), shared_url_loader_factory);
 }
 
 content::BrowserContext* WebcompatReporterServiceFactory::GetBrowserContextToUse(
