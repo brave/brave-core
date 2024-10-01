@@ -407,6 +407,7 @@ void ConversationHandler::AddAssociatedTab(const GURL& url) {
     SetMultiTabContent(std::make_unique<AssociatedMultiTabContent>(
         std::move(contentses), url_loader_factory_));
   }
+  suggestions_.clear();
   OnAssociatedContentInfoChanged();
   MaybeSeedOrClearSuggestions();
   MaybeFetchOrClearContentStagedConversation();
@@ -424,6 +425,7 @@ void ConversationHandler::RemoveAssociatedTab(const GURL& url) {
   } else {
     return;
   }
+  suggestions_.clear();
   OnAssociatedContentInfoChanged();
   MaybeSeedOrClearSuggestions();
   MaybeFetchOrClearContentStagedConversation();
