@@ -23,6 +23,8 @@ export function createModel(): AppModel {
     paymentId: 'abc123',
     countryCode: 'US',
     adsInfo: {
+      browserUpgradeRequired: true,
+      isSupportedRegion: false,
       adsEnabled: {
         'new-tab-page': true,
         'notification': false,

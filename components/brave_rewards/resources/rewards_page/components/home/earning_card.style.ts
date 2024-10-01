@@ -106,4 +106,18 @@ export const style = scoped.css`
       padding: 4px 0;
     }
   }
+
+  .warning-box {
+    --leo-icon-size: 20px;
+    --leo-icon-color: ${color.systemfeedback.warningIcon};
+
+    color: ${color.systemfeedback.warningText};
+    background: ${color.systemfeedback.warningBackground};
+    padding: 16px;
+    border-radius: 12px;
+    font: ${font.default.regular};
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
 `

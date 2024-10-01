@@ -122,6 +122,8 @@ export function createModel(): AppModel {
     if (statement && settings) {
       stateManager.update({
         adsInfo: {
+          browserUpgradeRequired: settings.browserUpgradeRequired,
+          isSupportedRegion: settings.isSupportedRegion,
           adsEnabled: {
             'new-tab-page': settings.newTabPageAdsEnabled,
             'notification': settings.notificationAdsEnabled,
