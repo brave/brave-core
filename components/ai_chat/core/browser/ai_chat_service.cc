@@ -305,7 +305,7 @@ void AIChatService::OnConversationEntriesChanged(
         }
         if (entries.size() >= 2) {
           if (conversation->summary.size() < 70) {
-            for (const auto &entry : entries) {
+            for (const auto& entry : entries) {
               if (entry->character_type == mojom::CharacterType::ASSISTANT &&
                   !entry->text.empty()) {
                 conversation->summary = entry->text.substr(0, 70);
