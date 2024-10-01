@@ -369,6 +369,8 @@ source_set("ui") {
       "//url",
     ]
 
+    public_deps += [ "//brave/components/brave_wayback_machine/buildflags" ]
+
     if (enable_request_otr) {
       deps += [
         "//brave/components/request_otr/common",
