@@ -105,10 +105,9 @@ class ActionToBraveViewController: UIViewController {
     var responder = self as UIResponder?
 
     while let currentResponder = responder {
-      let selector = sel_registerName("openURL:")
-      if currentResponder.responds(to: selector) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
-          Thread.detachNewThreadSelector(selector, toTarget: currentResponder, with: (url as NSURL))
+      if let application = currentResponder as? UIApplication {
+        DispatchQueue.main.async {
+          application.open(url, options: [:], completionHandler: nil)
         }
       }
       responder = currentResponder.next
