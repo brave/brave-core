@@ -13,6 +13,7 @@ import { formatEarningsEstimate, formatEarningsRange } from '../../lib/formatter
 import { AppModelContext, useAppState } from '../../lib/app_model_context'
 import { RouterContext } from '../../lib/router'
 import { useLocaleContext, usePluralString } from '../../lib/locale_strings'
+import { PayoutStatusView } from './payout_status_view'
 import { AdsSummary } from './ads_summary'
 import { AdsSettingsModal } from './ads_settings_modal'
 import { AdsHistoryModal } from './ads_history_modal'
@@ -175,6 +176,7 @@ export function EarningCard() {
 
   return <>
     <div className='content-card' {...style}>
+      <PayoutStatusView />
       <div className='counter'>
         <img alt='BAT' src={batCoinColor} />
         <div className='counter-text'>
