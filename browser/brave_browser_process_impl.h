@@ -109,7 +109,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 
   void StartBraveServices() override;
   brave_shields::AdBlockService* ad_block_service() override;
-  webcompat_reporter::WebcompatReporterService* webcompat_reporter_service() override;
   https_upgrade_exceptions::HttpsUpgradeExceptionsService*
   https_upgrade_exceptions_service() override;
   localhost_permission::LocalhostPermissionComponent*
@@ -180,7 +179,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<brave_component_updater::BraveComponent::Delegate>
       brave_component_updater_delegate_;
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
-  std::unique_ptr<webcompat_reporter::WebcompatReporterService> webcompat_reporter_service_;
   std::unique_ptr<https_upgrade_exceptions::HttpsUpgradeExceptionsService>
       https_upgrade_exceptions_service_;
   std::unique_ptr<localhost_permission::LocalhostPermissionComponent>
