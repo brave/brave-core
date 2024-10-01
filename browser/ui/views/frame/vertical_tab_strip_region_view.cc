@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/functional/bind.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -32,7 +33,6 @@
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
@@ -668,9 +668,13 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
 
   vertical_tab_on_right_.Init(
       brave_tabs::kVerticalTabsOnRight, browser()->profile()->GetPrefs(),
-      base::BindRepeating(
-          &VerticalTabStripRegionView::OnVerticalTabPositionChanged,
-          base::Unretained(this)));
+      base::BindRepeating(&VerticalTabStripRegionView::OnBrowserPanelsMoved,
+                          base::Unretained(this)));
+
+  sidebar_side_.Init(
+      prefs::kSidePanelHorizontalAlignment, prefs,
+      base::BindRepeating(&VerticalTabStripRegionView::OnBrowserPanelsMoved,
+                          base::Unretained(this)));
 
   widget_observation_.Observe(browser_view->GetWidget());
 
@@ -946,7 +950,7 @@ void VerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
   UpdateBorder();
 }
 
-void VerticalTabStripRegionView::OnVerticalTabPositionChanged() {
+void VerticalTabStripRegionView::OnBrowserPanelsMoved() {
   UpdateBorder();
   PreferredSizeChanged();
 }
@@ -1214,11 +1218,18 @@ void VerticalTabStripRegionView::UpdateBorder() {
            state_ == State::kFloating;
   };
 
-  int inset = 1 - BraveBrowser::GetRoundedCornersWebViewMargin(browser_);
-  gfx::Insets border_insets =
-      (!vertical_tab_on_right_.GetPrefName().empty() && *vertical_tab_on_right_)
-          ? gfx::Insets::TLBR(0, inset, 0, 0)
-          : gfx::Insets::TLBR(0, 0, 0, inset);
+  // If the sidebar is on the same side as the vertical tab strip, we shouldn't
+  // take away the margin on the vertical tabs, because the sidebar will be
+  // between it and the web_contents.
+  bool is_on_right =
+      !vertical_tab_on_right_.GetPrefName().empty() && *vertical_tab_on_right_;
+  bool sidebar_on_same_side = sidebar_side_.GetValue() == is_on_right;
+  int inset =
+      1 - (sidebar_on_same_side
+               ? 0
+               : BraveBrowser::GetRoundedCornersWebViewMargin(browser_));
+  gfx::Insets border_insets = (is_on_right) ? gfx::Insets::TLBR(0, inset, 0, 0)
+                                            : gfx::Insets::TLBR(0, 0, 0, inset);
 
   if (show_visible_border()) {
     SetBorder(views::CreateSolidSidedBorder(

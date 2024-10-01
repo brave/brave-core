@@ -86,13 +86,14 @@ void SidebarControlView::UpdateBackgroundAndBorder() {
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     SetBackground(
         views::CreateSolidBackground(color_provider->GetColor(kColorToolbar)));
-    if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_)) {
-      constexpr int kBorderThickness = 1;
-      SetBorder(views::CreateSolidSidedBorder(
-          gfx::Insets::TLBR(0, sidebar_on_left_ ? 0 : kBorderThickness, 0,
-                            sidebar_on_left_ ? kBorderThickness : 0),
-          color_provider->GetColor(kColorToolbarContentAreaSeparator)));
-    }
+    bool open =
+        browser_->sidebar_controller()->model()->active_index().has_value();
+    int border_thickness =
+        1 - (open ? 0 : BraveBrowser::GetRoundedCornersWebViewMargin(browser_));
+    SetBorder(views::CreateSolidSidedBorder(
+        gfx::Insets::TLBR(0, sidebar_on_left_ ? 0 : border_thickness, 0,
+                          sidebar_on_left_ ? border_thickness : 0),
+        color_provider->GetColor(kColorToolbarContentAreaSeparator)));
   }
 }
 
@@ -166,6 +167,13 @@ void SidebarControlView::OnItemAdded(const sidebar::SidebarItem& item,
 
 void SidebarControlView::OnItemRemoved(size_t index) {
   UpdateItemAddButtonState();
+}
+
+void SidebarControlView::OnActiveIndexChanged(std::optional<size_t> old_index,
+                                              std::optional<size_t> new_index) {
+  if (old_index.has_value() != new_index.has_value()) {
+    UpdateBackgroundAndBorder();
+  }
 }
 
 void SidebarControlView::AddChildViews() {
