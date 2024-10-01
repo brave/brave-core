@@ -1,7 +1,7 @@
-/* Copyright 2020 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/common/importer/chrome_importer_utils.h"
 #include "base/files/file_path.h"
@@ -127,6 +127,23 @@ TEST_F(BraveChromeImporterUtilsTest, ChromeImporterCanImport) {
                         kChromeSecurePreferencesFile);
   CopyTestFileToProfile(kChromePreferencesFile, kChromePreferencesFile);
   uint16_t services_supported = importer::NONE;
+  EXPECT_TRUE(
+      ChromeImporterCanImport(GetTestProfilePath(), &services_supported));
+  EXPECT_EQ(services_supported, importer::EXTENSIONS);
+}
+
+TEST_F(BraveChromeImporterUtilsTest, BadFiles) {
+  CopyTestFileToProfile("non_json_preferences", kChromeSecurePreferencesFile);
+  CopyTestFileToProfile("non_json_preferences", kChromePreferencesFile);
+  uint16_t services_supported = importer::NONE;
+  EXPECT_FALSE(
+      ChromeImporterCanImport(GetTestProfilePath(), &services_supported));
+  EXPECT_EQ(services_supported, importer::NONE);
+
+  CopyTestFileToProfile("non_dict_extension", kChromeSecurePreferencesFile);
+  CopyTestFileToProfile("non_dict_extension", kChromePreferencesFile);
+  services_supported = importer::NONE;
+  // Empty list is anyway considered as something to import.
   EXPECT_TRUE(
       ChromeImporterCanImport(GetTestProfilePath(), &services_supported));
   EXPECT_EQ(services_supported, importer::EXTENSIONS);

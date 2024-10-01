@@ -43,8 +43,9 @@ std::optional<base::Value::Dict> GetChromeExtensionsListFromFile(
 
   std::optional<base::Value> preference =
       base::JSONReader::Read(preference_content);
-  DCHECK(preference);
-  DCHECK(preference->is_dict());
+  if (!preference || !preference->is_dict()) {
+    return std::nullopt;
+  }
   if (auto* extensions = preference->GetDict().FindDictByDottedPath(
           kChromeExtensionsListPath)) {
     return std::move(*extensions);
@@ -60,7 +61,9 @@ std::vector<std::string> GetImportableListFromChromeExtensionsList(
     const base::Value::Dict& extensions_list) {
   std::vector<std::string> extensions;
   for (const auto [key, value] : extensions_list) {
-    DCHECK(value.is_dict());
+    if (!value.is_dict()) {
+      continue;
+    }
     const base::Value::Dict& dict = value.GetDict();
     // Only import if type is extension, it's came from webstore and it's not
     // installed by default.
@@ -165,7 +168,9 @@ base::Value::List GetChromeSourceProfiles(
             continue;
 
           auto* name = profile->FindString("name");
-          DCHECK(name);
+          if (!name) {
+            continue;
+          }
           base::Value::Dict entry;
           entry.Set("id", value.first);
           entry.Set("name", *name);
