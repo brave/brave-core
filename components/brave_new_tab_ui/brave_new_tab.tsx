@@ -6,19 +6,18 @@
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
+import { setIconBasePath } from '@brave/leo/react/icon'
 import Theme from 'brave-ui/theme/brave-default'
 import DarkTheme from 'brave-ui/theme/brave-dark'
 import '../common/defaultTrustedTypesPolicy'
 import BraveCoreThemeProvider from '../common/BraveCoreThemeProvider'
-import { wireApiEventsToStore } from './apiEventsToStore'
 import * as topSitesAPI from './api/topSites'
 import { init } from './actions/new_tab_actions'
-
-// Components
 import App from './containers/app'
-
-// Utils
+import { wireApiEventsToStore } from './apiEventsToStore'
 import store from './store'
+
+setIconBasePath('chrome://resources/brave-icons')
 
 // Let things handle 'init'
 store.dispatch(init())
