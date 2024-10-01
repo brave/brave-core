@@ -20,7 +20,7 @@ interface Props {
   onClose: () => void
 }
 
-export function ResetModal (props: Props) {
+export function ResetModal(props: Props) {
   const { getString } = useLocaleContext()
   const [consented, setConsented] = React.useState(false)
 

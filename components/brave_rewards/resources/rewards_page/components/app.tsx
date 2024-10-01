@@ -19,6 +19,7 @@ import { ConnectAccount } from './connect_account'
 import { AuthorizationModal } from './authorization_modal'
 import { ContributeModal } from './contribute/contribute_modal'
 import { ResetModal } from './reset_modal'
+import { TosUpdateModal } from './tos_update_modal'
 import * as routes from '../lib/app_routes'
 
 import { style } from './app.style'
@@ -27,10 +28,16 @@ export function App() {
   const model = React.useContext(AppModelContext)
   const eventHub = React.useContext(EventHubContext)
 
-  const [loading, embedder, paymentId] = useAppState((state) => [
+  const [
+    loading,
+    embedder,
+    paymentId,
+    tosUpdateRequired
+  ] = useAppState((state) => [
     state.loading,
     state.embedder,
-    state.paymentId
+    state.paymentId,
+    state.tosUpdateRequired
   ])
 
   const viewType = useBreakpoint()
@@ -112,6 +119,15 @@ export function App() {
 
     if (showContributeModal) {
       return <ContributeModal onClose={() => setShowContributeModal(false)} />
+    }
+
+    if (tosUpdateRequired) {
+      return (
+        <TosUpdateModal
+          onAccept={() => model.acceptTermsOfServiceUpdate()}
+          onReset={() => setShowResetModal(true)}
+        />
+      )
     }
 
     return null

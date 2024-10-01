@@ -140,6 +140,7 @@ export interface AppState {
   countryCode: string
   externalWallet: ExternalWallet | null
   balance: Optional<number>
+  tosUpdateRequired: boolean
   adsInfo: AdsInfo | null
   autoContributeInfo: AutoContributeInfo | null
   recurringContributions: RecurringContribution[]
@@ -177,6 +178,7 @@ export interface AppModel {
   removeRecurringContribution: (id: string) => Promise<void>
   sendContribution:
     (creatorID: string, amount: number, recurring: boolean) => Promise<boolean>
+  acceptTermsOfServiceUpdate: () => Promise<void>
 }
 
 export function defaultState(): AppState {
@@ -192,6 +194,7 @@ export function defaultState(): AppState {
     countryCode: '',
     externalWallet: null,
     balance: new Optional(),
+    tosUpdateRequired: false,
     adsInfo: null,
     autoContributeInfo: null,
     recurringContributions: [],
@@ -254,6 +257,8 @@ export function defaultModel(): AppModel {
 
     async sendContribution(creatorID, amount, recurring) {
       return false
-    }
+    },
+
+    async acceptTermsOfServiceUpdate() {}
   }
 }

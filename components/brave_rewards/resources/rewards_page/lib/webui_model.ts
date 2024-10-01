@@ -113,6 +113,12 @@ export function createModel(): AppModel {
     })
   }
 
+  async function updateTosUpdateRequired() {
+    const { updateRequired } =
+      await pageHandler.getTermsOfServiceUpdateRequired()
+    stateManager.update({ tosUpdateRequired: updateRequired })
+  }
+
   async function updateAdsInfo() {
     const [{ statement }, { settings }] = await Promise.all([
       await pageHandler.getAdsStatement(),
@@ -252,6 +258,7 @@ export function createModel(): AppModel {
       updateCountryCode(),
       updateExternalWallet(),
       inBackground(updateBalance()),
+      updateTosUpdateRequired(),
       updateAdsInfo(),
       updateRecurringContributions(),
       updateAutoContributeInfo(),
@@ -463,6 +470,11 @@ export function createModel(): AppModel {
       const { contributionSent } =
         await pageHandler.sendContribution(creatorID, amount, recurring)
       return contributionSent
+    },
+
+    async acceptTermsOfServiceUpdate() {
+      await pageHandler.acceptTermsOfServiceUpdate()
+      stateManager.update({ tosUpdateRequired: false })
     }
   }
 }

@@ -296,6 +296,17 @@ void RewardsPageHandler::GetAvailableBalance(
       base::BindOnce(fetch_balance_callback, std::move(callback)));
 }
 
+void RewardsPageHandler::GetTermsOfServiceUpdateRequired(
+    GetTermsOfServiceUpdateRequiredCallback callback) {
+  std::move(callback).Run(rewards_service_->IsTermsOfServiceUpdateRequired());
+}
+
+void RewardsPageHandler::AcceptTermsOfServiceUpdate(
+    AcceptTermsOfServiceUpdateCallback callback) {
+  rewards_service_->AcceptTermsOfServiceUpdate();
+  std::move(callback).Run();
+}
+
 void RewardsPageHandler::GetPublisherForActiveTab(
     GetPublisherForActiveTabCallback callback) {
   if (!bubble_delegate_) {

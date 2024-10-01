@@ -248,7 +248,11 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"resetRewardsText", IDS_BRAVE_UI_REWARDS_RESET_TEXT},
     {"resetRewardsTitle", IDS_BRAVE_UI_RESET_WALLET},
     {"rewardsPageTitle", IDS_REWARDS_PAGE_TITLE},
-    {"showAllButtonLabel", IDS_REWARDS_SHOW_ALL_BUTTON_LABEL}};
+    {"showAllButtonLabel", IDS_REWARDS_SHOW_ALL_BUTTON_LABEL},
+    {"tosUpdateAcceptButtonLabel", IDS_REWARDS_TOS_UPDATE_BUTTON_LABEL},
+    {"tosUpdateLink", IDS_REWARDS_TOS_UPDATE_LINK_TEXT},
+    {"tosUpdateRequiredText", IDS_REWARDS_TOS_UPDATE_TEXT},
+    {"tosUpdateRequiredTitle", IDS_REWARDS_TOS_UPDATE_HEADING}};
 
 }  // namespace
 
