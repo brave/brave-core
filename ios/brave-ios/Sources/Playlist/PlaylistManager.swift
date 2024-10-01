@@ -733,7 +733,7 @@ extension PlaylistManager: NSFetchedResultsControllerDelegate {
 extension PlaylistManager {
   public func getAssetDuration(item: PlaylistInfo, _ completion: @escaping (TimeInterval?) -> Void)
   {
-    if assetInformation.contains(where: { $0.itemId == item.tagId }) {
+    if assetInformation.contains(where: { $0.itemId == item.tagId }) || item.src.isEmpty {
       completion(nil)
       return
     }
