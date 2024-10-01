@@ -7,6 +7,7 @@ import '//resources/brave/leo.bundle.js'
 
 import {CrLitElement, css} from '//resources/lit/v3_0/lit.rollup.js';
 import {getHtml} from './cr_button.html.js';
+import type {PropertyValues} from '//resources/lit/v3_0/lit.rollup.js';
 
 export interface CrButtonElement {
   $: {
@@ -47,21 +48,17 @@ leo-button {
     return {
       disabled: {
         type: Boolean,
-        value: false,
         reflect: true,
-        observer: 'disabledChanged_'
       },
       class: {
         type: String,
-        value: '',
         reflect: true,
-        observer: 'classChanged_'
       }
     };
   }
 
-  disabled: boolean;
-  class: string;
+  disabled: boolean = false;
+  class: string = '';
 
   private onClick_(e: Event) {
     if (this.disabled) {
@@ -69,7 +66,36 @@ leo-button {
     }
   }
 
-  classChanged_() {
+  override connectedCallback() {
+    super.connectedCallback()
+    this.addEventListener('click', this.onClick_)
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback()
+    this.removeEventListener('click', this.onClick_)
+  }
+
+  override updated(changedProperties: PropertyValues<this>) {
+    super.updated(changedProperties);
+
+    if (changedProperties.has('class')) {
+      this.classChanged()
+    }
+
+    if (changedProperties.has('disabled')) {
+      // TODO(petemill): This should be a $= binding but the leo-button
+      // has a bug with treating it as a boolean attribute
+      // https://github.com/brave/leo/issues/690.
+      if (this.disabled) {
+        this.$.button.setAttribute('isDisabled', '_')
+      } else {
+        this.$.button.removeAttribute('isDisabled')
+      }
+    }
+  }
+
+  private classChanged() {
     let kind = 'outline'
     if (this.classList.contains('action-button')) {
       kind = 'filled'
@@ -87,17 +113,6 @@ leo-button {
     }
 
     this.$.button.setAttribute('kind', kind)
-  }
-
-  disabledChanged_() {
-    // TODO(petemill): This should be a $= binding but the leo-button
-    // has a bug with treating it as a boolean attribute
-    // https://github.com/brave/leo/issues/690.
-    if (this.disabled) {
-      this.$.button.setAttribute('isDisabled', '_')
-    } else {
-      this.$.button.removeAttribute('isDisabled')
-    }
   }
 }
 
