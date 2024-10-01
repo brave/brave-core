@@ -44,7 +44,7 @@ export default function useRelativeTime(time: Date | number) {
         const update = () => {
             const { formatted, updatesIn } = getRelativeTime(time)
             setFormatted(formatted)
-            setTimeout(update, updatesIn)
+            timeout = setTimeout(update, updatesIn)
         }
 
         update()
