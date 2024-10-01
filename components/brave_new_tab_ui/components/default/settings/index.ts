@@ -16,7 +16,7 @@ import frecencySelectedDark from './assets/frecency-selected-dark.svg'
 import frecencyUnselectedDark from './assets/frecency-unselected-dark.svg'
 
 import CheckedCircle from './assets/checked-circle.svg'
-import { color, effect, font, gradient, radius, spacing } from '@brave/leo/tokens/css/variables'
+import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css/variables'
 
 // Reverse decisions to have the controls define their margin. This helps
 // fill the gap before we remove all margins from these types of controls.
@@ -55,117 +55,6 @@ export const SettingsContent = styled('div')`
   }
 `
 
-export const SettingsSidebar = styled('aside')`
-  position: relative;
-  /* normalize against SettingsMenu default padding */
-  margin-inline-start: -24px;
-  padding-inline-start: 24px;
-`
-
-interface SettingsSidebarActiveButtonSliderProps {
-  translateTo: number
-}
-
-export const SettingsSidebarActiveButtonSlider =
-  styled('div') <SettingsSidebarActiveButtonSliderProps>`
-  position: absolute;
-  top: 0;
-  inset-inline-start: 0;
-  height: 48px;
-  width: 4px;
-  background: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
-  border-radius: 0px 2px 2px 0px;
-  transform: translateY(${p => p.translateTo * 48}px);
-  transition-delay: 0.05s;
-  transition-duration: 0.3s;
-  transition-timing-function: ease-in;
-  transition-property: transform;
-`
-
-export const SettingsSidebarButtonText = styled.span`
-  margin-left: 16px;
-  font-weight: 500;
-  font-size: 13px;
-  font-family: ${p => p.theme.fontFamily.heading};
-  line-height: normal;
-  position: relative;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-transform: capitalize;
-
-  transition: opacity var(--sidebar-button-transition-timing) ease-in-out,
-              color var(--sidebar-button-transition-timing) ease-in-out,
-              font-weight var(--sidebar-button-transition-timing) ease-in-out;
-
-  [data-active] & {
-    font-weight: 600;
-  }
-
-  /* Active version (hidden until item is active).
-     This is a separate element so that we can:
-     1. fade it in (no transition for background gradient)
-     2. still show ellipsis for overflowing text (which doesn't show for
-     background-clip: text) */
-  &::after {
-    content: attr(data-text);
-    position: absolute;
-    opacity: var(--active-opacity);
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: ${p => p.theme.color.panelBackground};
-    background-size: 100%;
-    background-repeat: repeat;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-image: ${gradient.hero};
-    overflow: hidden;
-    text-overflow: ellipsis;
-    transition: opacity var(--sidebar-button-transition-timing) ease-in-out,
-                font-weight var(--sidebar-button-transition-timing) ease-in-out;
-  }
-`
-
-export const SettingsSidebarButton = styled.button`
-  --leo-icon-color: ${color.icon.default};
-  --sidebar-button-transition-timing: .12s;
-  --active-opacity: 0;
-
-  appearance: none;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  width: 220px;
-  height: 48px;
-  text-align: left;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  background: inherit;
-  color: ${color.text.secondary};
-
-  &:hover {
-    --leo-icon-color: ${color.text.interactive};
-    color: ${color.text.interactive};
-  }
-
-  &[data-active], &:active {
-    --active-opacity: 1;
-    --leo-icon-color: ${gradient.hero};
-    color: ${gradient.hero};
-  }
-
-  &:active,
-  &:focus {
-    outline: none;
-  }
-
-  &:focus-visible {
-    box-shadow: ${effect.focusState};
-  }
-`
 
 export const SettingsFeatureBody = styled('section')`
   padding: 10px 16px;

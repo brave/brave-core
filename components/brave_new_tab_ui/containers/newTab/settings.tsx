@@ -8,15 +8,14 @@ import * as React from 'react'
 import {
   SettingsContent,
   SettingsFeatureBody,
-  SettingsSidebar,
-  SettingsSidebarActiveButtonSlider,
-  SettingsSidebarButton,
-  SettingsSidebarButtonText,
   SettingsTitle,
 } from '../../components/default'
 
+import Navigation from '@brave/leo/react/navigation'
+import NavigationItem from '@brave/leo/react/navigationItem'
+import NavigationMenu from '@brave/leo/react/navigationMenu'
+
 import { getLocale } from '$web-common/locale'
-import Icon from '@brave/leo/react/icon'
 import { useBraveNews } from '../../../brave_news/browser/resources/shared/Context'
 import { loadTimeData } from '$web-common/loadTimeData'
 import Dialog from '@brave/leo/react/dialog'
@@ -34,6 +33,15 @@ const SearchSettings = React.lazy(() => import('./settings/search'))
 export const SettingsDialog = styled(Dialog)`
   --leo-dialog-width: 720px;
   --leo-dialog-padding: 24px 24px 0 24px;
+`
+
+const Sidebar = styled(Navigation)`
+  /* normalize against SettingsMenu default padding */
+  margin-inline-start: -24px;
+`
+
+const SidebarItem = styled(NavigationItem)`
+  text-transform: capitalize;
 `
 
 export interface Props {
@@ -137,31 +145,13 @@ export default function Settings(props: Props) {
       {getLocale('dashboardSettingsTitle')}
     </SettingsTitle>
     <SettingsContent id='settingsBody'>
-      <SettingsSidebar id='sidebar'>
-        <SettingsSidebarActiveButtonSlider
-          translateTo={allowedTabTypes.indexOf(activeTab)}
-        />
-        {
-          allowedTabTypes.map((tabType) => {
-            const titleKey = tabTranslationKeys[tabType]
-            const isActive = activeTab === tabType
-            return (
-              <SettingsSidebarButton
-                tabIndex={0}
-                key={tabType}
-                data-active={isActive ? '' : null}
-                onClick={() => changeTab(tabType)}
-              >
-                <Icon name={tabIcons[tabType]} />
-                <SettingsSidebarButtonText
-                  data-text={getLocale(titleKey)}>
-                  {getLocale(titleKey)}
-                </SettingsSidebarButtonText>
-              </SettingsSidebarButton>
-            )
-          })
-        }
-      </SettingsSidebar>
+      <Sidebar id="sidebar">
+        <NavigationMenu>
+          {allowedTabTypes.map(tabType => <SidebarItem key={tabType} icon={tabIcons[tabType]} isCurrent={activeTab === tabType} onClick={() => changeTab(tabType)}>
+            {getLocale(tabTranslationKeys[tabType])}
+          </SidebarItem>)}
+        </NavigationMenu>
+      </Sidebar>
       <SettingsFeatureBody id='content'>
         {/* Empty loading fallback is ok here since we are loading from local disk. */}
         <React.Suspense fallback={(<div />)}>
