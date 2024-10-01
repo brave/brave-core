@@ -141,6 +141,8 @@ export function createModel(): AppModel {
           },
           minEarningsThisMonth: statement.minEarningsThisMonth,
           maxEarningsThisMonth: statement.maxEarningsThisMonth,
+          minEarningsPreviousMonth: statement.minEarningsPreviousMonth,
+          maxEarningsPreviousMonth: statement.maxEarningsPreviousMonth,
           nextPaymentDate: convertMojoTime(statement.nextPaymentDate),
           notificationAdsPerHour: settings.notificationAdsPerHour,
           shouldAllowSubdivisionTargeting:

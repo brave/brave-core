@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { ExternalWallet, ExternalWalletProvider } from '../../shared/lib/external_wallet'
+import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { Optional } from '../../shared/lib/optional'
 
 interface EmbedderInfo {
@@ -35,6 +36,8 @@ export interface AdsInfo {
   adTypesReceivedThisMonth: Record<AdType, number>
   minEarningsThisMonth: number
   maxEarningsThisMonth: number
+  minEarningsPreviousMonth: number
+  maxEarningsPreviousMonth: number
   nextPaymentDate: number
   notificationAdsPerHour: number
   shouldAllowSubdivisionTargeting: boolean
@@ -61,6 +64,7 @@ export interface RewardsParameters {
   tipChoices: number[]
   rate: number
   walletProviderRegions: Record<string, { allow: string[], block: string[] }>
+  payoutStatus: Record<string, ProviderPayoutStatus>
 }
 
 export type ConnectExternalWalletResult =
