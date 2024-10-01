@@ -125,6 +125,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void OnPDFA11yInfoLoaded();
 
   // content::WebContentsObserver
+  void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void WebContentsDestroyed() override;
   void NavigationEntryCommitted(
       const content::LoadCommittedDetails& load_details) override;
@@ -184,6 +185,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   bool is_pdf_a11y_info_loaded_ = false;
   uint8_t check_pdf_a11y_tree_attempts_ = 0;
   bool is_page_loaded_ = false;
+  bool is_navigation_from_unloaded_state_ = false;
 
   raw_ptr<content::WebContents> inner_web_contents_ = nullptr;
 

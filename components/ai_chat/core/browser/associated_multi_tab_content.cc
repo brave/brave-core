@@ -10,9 +10,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "chrome/browser/profiles/profile.h"
-#include "content/public/browser/storage_partition.h"
-#include "content/public/browser/web_contents.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace ai_chat {
@@ -30,23 +27,28 @@ AssociatedMultiTabContent::AssociatedMultiTabContent(
 AssociatedMultiTabContent::~AssociatedMultiTabContent() = default;
 
 void AssociatedMultiTabContent::AddContent(AssociatedContentDriver* content) {
+  content_observations_.AddObservation(content);
   content_.push_back(content);
 }
 
 void AssociatedMultiTabContent::RemoveContent(GURL url) {
-  std::vector<AssociatedContentDriver*> removedItems;
+  std::vector<AssociatedContentDriver*> removed_items;
   std::erase_if(content_,
-                [&url, &removedItems](AssociatedContentDriver* content) {
+                [&url, &removed_items](AssociatedContentDriver* content) {
                   if (content->GetURL() == url) {
-                    removedItems.push_back(content);
+                    removed_items.push_back(content);
                     return true;
                   }
                   return false;
                 });
 
-  for (auto erased : removedItems) {
+  for (auto erased : removed_items) {
     content_observations_.RemoveObservation(erased);
   }
+}
+
+int AssociatedMultiTabContent::GetContentCount() const {
+  return content_.size();
 }
 
 void AssociatedMultiTabContent::OnAssociatedContentDestroyed(

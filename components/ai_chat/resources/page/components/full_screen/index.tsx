@@ -3,13 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Dropdown from '@brave/leo/react/dropdown'
 import Icon from '@brave/leo/react/icon'
-import * as React from 'react'
 import * as nala from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
-import { WebSiteInfoDetail } from '../../api'
+import Flex from '$web-common/Flex'
+import { Url as MojomUrl } from 'gen/url/mojom/url.mojom.m'
+import * as mojom from '../../api'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import FeatureMenu from '../feature_button_menu'
@@ -17,8 +19,6 @@ import SidebarHeader from '../header'
 import Main from '../main'
 import SidebarNav from '../sidebar_nav'
 import styles from './style.module.scss'
-import { Url as MojomUrl } from 'gen/url/mojom/url.mojom.m'
-import Flex from '$web-common/Flex'
 
 const TabEntryListItem = styled.li`
   display: flex;
@@ -86,22 +86,24 @@ function TabImage(props: { url: MojomUrl }) {
   return <FavIconImage url={imgUrl} />
 }
 
-function TabEntry({ site }: {
-  site: WebSiteInfoDetail
+function TabEntry(props: {
+  site: mojom.WebSiteInfoDetail
+  canRemove: boolean
 }) {
   const context = useConversation()
-  const count = context.associatedContentInfo?.detail?.multipleWebSiteInfo?.sites.length ?? 0
 
   return <TabEntryListItem>
-    <TabImage url={site.url} />
-    <span>{site.title}</span>
-    {count > 1 && <Button fab kind="plain-faint" onClick={() => context.conversationHandler?.removeTabFromMultiTabContent(site.url)}>
+    <TabImage url={props.site.url} />
+    <span>{props.site.title}</span>
+    {props.canRemove &&
+    <Button fab kind="plain-faint" title={'Remove this tab from the conversation'} onClick={() => context.conversationHandler?.removeAssociatedTab(props.site.url)}>
       <Icon name='close' />
-    </Button>}
+    </Button>
+    }
   </TabEntryListItem>
 }
 
-function SitePicker() {
+function SitePicker(props: { disabled: boolean }) {
   const conversation = useConversation()
   const aiChat = useAIChat()
 
@@ -110,10 +112,10 @@ function SitePicker() {
     return aiChat.availableAssociatedContent.filter(w => !used.has(w.url.url))
   }, [aiChat.availableAssociatedContent, conversation.associatedContentInfo])
 
-  return <Dropdown value='' placeholder='Add a tab to the project' onChange={e => conversation.conversationHandler?.addTabToMultiTabContent({ url: e.value ?? '' })}>
+  return <Dropdown value='' disabled={props.disabled} placeholder='Add a tab to the conversation' onChange={e => conversation.conversationHandler?.addAssociatedTab({ url: e.value ?? '' })}>
     <span slot="value">Add a tab to the conversation</span>
     {availableSites.map((a, i) => <leo-option key={i} value={a.url.url}>
-      <Flex align='center' gap={8}>
+      <Flex align='center' gap={8} style={{maxWidth: '500px'}} title={a.title}>
         <TabImage url={a.url} /> <span>{a.title}</span>
       </Flex>
     </leo-option>)}
@@ -171,6 +173,15 @@ export default function FullScreen() {
     aiChatContext.onNewConversation()
   }
 
+  const associatedTabs: mojom.WebSiteInfoDetail[] =
+    chat.associatedContentInfo?.detail?.multipleWebSiteInfo?.sites
+      ?? (chat.associatedContentInfo?.detail?.webSiteInfo
+            ? [chat.associatedContentInfo.detail.webSiteInfo]
+            : [])
+  // Can't add or remove Tabs if conversation has history
+  // TODO(petemill): ignore staged content
+  const canModifyTabAssociation = chat.conversationHistory.length === 0 && !chat.isGenerating
+
   return (
     <div className={styles.fullscreen}>
       <div className={styles.left}>
@@ -212,15 +223,24 @@ export default function FullScreen() {
       <div className={styles.content}>
         <Main />
       </div>
-      {!!chat.associatedContentInfo?.detail?.multipleWebSiteInfo && <div className={styles.right}>
+      <div className={styles.right}>
         <div className={styles.headerSpacer} />
         <h3>Tabs used in this conversation</h3>
-        <SitePicker />
-        <ul>
-          {chat.associatedContentInfo.detail.multipleWebSiteInfo.sites.map((t, i) =>
-            <TabEntry key={i} site={t} />)}
-        </ul>
-      </div>}
+        <SitePicker disabled={!canModifyTabAssociation} />
+        {associatedTabs.length > 0 ? (
+          <ul>
+            {associatedTabs.map((t, i) => (
+              <TabEntry
+                key={i}
+                site={t}
+                canRemove={canModifyTabAssociation}
+              />
+            ))}
+          </ul>
+        ) : (
+          <p>No tabs are associated with this conversation</p>
+        )}
+      </div>
     </div>
   )
 }

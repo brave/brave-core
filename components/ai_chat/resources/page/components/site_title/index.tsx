@@ -8,15 +8,17 @@ import classnames from '$web-common/classnames'
 import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
 import { AssociatedContentType } from '../../api'
+import { useAIChat } from '../../state/ai_chat_context'
 interface SiteTitleProps {
   size: 'default' | 'small'
 }
 
 function SiteTitle(props: SiteTitleProps) {
   const context = useConversation()
+  const aiChatContext = useAIChat()
 
   // We don't show the toggle when we're looking at the whole window.
-  if (context.associatedContentInfo?.detail?.multipleWebSiteInfo) {
+  if (aiChatContext.isStandalone) {
     return null
   }
 

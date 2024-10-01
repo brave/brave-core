@@ -184,8 +184,8 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   // mojom::ConversationHandler
   void GetState(GetStateCallback callback) override;
-  void AddTabToMultiTabContent(const GURL& url) override;
-  void RemoveTabFromMultiTabContent(const GURL& url) override;
+  void AddAssociatedTab(const GURL& url) override;
+  void RemoveAssociatedTab(const GURL& url) override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
   void RateMessage(bool is_liked,
                    uint32_t turn_id,

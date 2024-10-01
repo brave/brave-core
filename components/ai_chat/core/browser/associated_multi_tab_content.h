@@ -34,6 +34,7 @@ class AssociatedMultiTabContent : public AssociatedContentDriver,
   void AddContent(AssociatedContentDriver* content);
   // TODO(petemill): by ID
   void RemoveContent(GURL url);
+  int GetContentCount() const;
 
   // AssociatedContentDriver::Observer
   void OnAssociatedContentDestroyed(AssociatedContentDriver* content) override;

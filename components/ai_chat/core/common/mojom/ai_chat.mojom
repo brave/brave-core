@@ -380,9 +380,9 @@ interface ConversationHandler {
 
   GetConversationUuid() => (string conversation_uuid);
 
-  // TODO(petemill): should be content ID, not Url
-  AddTabToMultiTabContent(url.mojom.Url url);
-  RemoveTabFromMultiTabContent(url.mojom.Url url);
+  // TODO(petemill): should be TabID using `SessionTabHelper::IdForTab`
+  AddAssociatedTab(url.mojom.Url url);
+  RemoveAssociatedTab(url.mojom.Url url);
 
   // Get all the possible models for any conversation
   // TODO(petemill): Move the models part to Service

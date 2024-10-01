@@ -385,24 +385,48 @@ void ConversationHandler::GetState(GetStateCallback callback) {
   std::move(callback).Run(std::move(state));
 }
 
-void ConversationHandler::AddTabToMultiTabContent(const GURL& url) {
-  if (!multi_tab_content_) {
+void ConversationHandler::AddAssociatedTab(const GURL& url) {
+  if (HasAnyHistory()) {
     return;
   }
-  auto* content = ai_chat_service_->GetAssociatedContentForUrl(url);
+  AssociatedContentDriver* content =
+      ai_chat_service_->GetAssociatedContentForUrl(url);
   if (!content) {
     return;
   }
-  multi_tab_content_->AddContent(content);
+  if (multi_tab_content_) {
+    multi_tab_content_->AddContent(content);
+  } else if (associated_content_delegate_) {
+    // Already associated with a single tab, cannot change it. User should
+    // not get in this UI state and should be offered to start a new
+    // conversation.
+    return;
+  } else {
+    // Can associate
+    std::vector<AssociatedContentDriver*> contentses{content};
+    SetMultiTabContent(std::make_unique<AssociatedMultiTabContent>(
+        std::move(contentses), url_loader_factory_));
+  }
   OnAssociatedContentInfoChanged();
+  MaybeSeedOrClearSuggestions();
+  MaybeFetchOrClearContentStagedConversation();
 }
 
-void ConversationHandler::RemoveTabFromMultiTabContent(const GURL& url) {
-  if (!multi_tab_content_) {
+void ConversationHandler::RemoveAssociatedTab(const GURL& url) {
+  if (HasAnyHistory()) {
     return;
   }
-  multi_tab_content_->RemoveContent(url);
+  if (multi_tab_content_) {
+    multi_tab_content_->RemoveContent(url);
+  } else if (associated_content_delegate_ &&
+             associated_content_delegate_->GetURL() == url) {
+    associated_content_delegate_ = nullptr;
+  } else {
+    return;
+  }
   OnAssociatedContentInfoChanged();
+  MaybeSeedOrClearSuggestions();
+  MaybeFetchOrClearContentStagedConversation();
 }
 
 void ConversationHandler::RateMessage(bool is_liked,
@@ -1059,8 +1083,7 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     const bool has_summarized = found_iter != chat_history_.end();
     if (!has_summarized) {
       suggestions_.emplace_back(
-          (associated_content_delegate_->GetAssociatedContentType() ==
-           mojom::AssociatedContentType::MultipleWeb)
+          (multi_tab_content_ && multi_tab_content_->GetContentCount() > 1)
               ? "Summarize these pages"
           : associated_content_delegate_->GetCachedIsVideo()
               ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
@@ -1339,7 +1362,8 @@ int ConversationHandler::GetContentUsedPercentage() {
 }
 
 bool ConversationHandler::IsContentAssociationPossible() {
-  return (associated_content_delegate_ != nullptr);
+  return (associated_content_delegate_ != nullptr) &&
+         (!multi_tab_content_ || multi_tab_content_->GetContentCount() > 0);
 }
 
 void ConversationHandler::BuildAssociatedContentInfo() {
