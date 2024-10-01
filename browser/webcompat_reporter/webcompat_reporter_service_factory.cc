@@ -32,12 +32,12 @@ WebcompatReporterServiceFactory::GetForContext(content::BrowserContext* context)
       ->MakeRemote();
 }
 
-// // static
-// WebcompatReporterService* WebcompatReporterServiceFactory::GetServiceForContext(
-//     content::BrowserContext* context) {
-//   return static_cast<WebcompatReporterService*>(
-//       GetInstance()->GetServiceForBrowserContext(context, true));
-// }
+// static
+WebcompatReporterService* WebcompatReporterServiceFactory::GetServiceForContext(
+    content::BrowserContext* context) {
+  return static_cast<WebcompatReporterService*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
+}
 
 // // static
 // void WebcompatReporterServiceFactory::BindForContext(

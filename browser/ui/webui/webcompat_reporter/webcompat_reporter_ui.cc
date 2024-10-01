@@ -17,6 +17,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
+#include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
@@ -24,6 +25,7 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/webcompat_reporter/browser/fields.h"
+#include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "brave/components/webcompat_reporter/resources/grit/webcompat_reporter_generated_map.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -53,9 +55,8 @@ constexpr int kMaxScreenshotPixelCount = 1280 * 720;
 }  // namespace
 
 WebcompatReporterDOMHandler::WebcompatReporterDOMHandler(Profile* profile)
-    : ui_task_runner_(base::SequencedTaskRunner::GetCurrentDefault()),
-      uploader_(std::make_unique<webcompat_reporter::WebcompatReportUploader>(
-          profile->GetURLLoaderFactory())) {
+    : ui_task_runner_(
+          base::SequencedTaskRunner::GetCurrentDefault()) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   InitAdditionalParameters(profile);
@@ -72,26 +73,6 @@ WebcompatReporterDOMHandler::WebcompatReporterDOMHandler(Profile* profile)
 }
 
 void WebcompatReporterDOMHandler::InitAdditionalParameters(Profile* profile) {
-  std::vector<std::string> ad_block_list_names;
-
-  // Collect all enabled adblock list names
-  brave_shields::AdBlockService* ad_block_service =
-      g_brave_browser_process->ad_block_service();
-  if (ad_block_service != nullptr) {
-    brave_shields::AdBlockComponentServiceManager* service_manager =
-        ad_block_service->component_service_manager();
-    CHECK(service_manager);
-    for (const brave_shields::FilterListCatalogEntry& entry :
-         service_manager->GetFilterListCatalog()) {
-      if (service_manager->IsFilterListEnabled(entry.uuid)) {
-        ad_block_list_names.push_back(entry.title);
-      }
-    }
-  }
-
-  pending_report_.ad_block_list_names =
-      base::JoinString(ad_block_list_names, ",");
-
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::BraveVpnService* vpn_service =
       brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
@@ -258,7 +239,12 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
     pending_report_.contact = contact_arg->Clone();
   }
 
-  uploader_->SubmitReport(pending_report_);
+  auto* reporter_service =
+      WebcompatReporterServiceFactory::GetInstance()->GetServiceForContext(
+          Profile::FromWebUI(web_ui()));
+  if (reporter_service) {
+    reporter_service->SubmitWebcompatReport(pending_report_);
+  }
 }
 
 WebcompatReporterUI::WebcompatReporterUI(content::WebUI* web_ui,

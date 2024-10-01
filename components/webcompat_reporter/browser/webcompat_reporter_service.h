@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom.h"
@@ -21,6 +22,10 @@ namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
 
+namespace brave_shields {
+    class AdBlockService;
+}  // namespace brave_shields
+
 namespace webcompat_reporter {
 
 // This class is not thread-safe and should have single owner
@@ -28,8 +33,11 @@ class WebcompatReporterService : public KeyedService,
                                  public mojom::WebcompatReporterHandler {
  public:
   explicit WebcompatReporterService(
+        brave_shields::AdBlockService* adblock_service,
       component_updater::ComponentUpdateService* component_update_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  WebcompatReporterService(const WebcompatReporterService&) = delete;
+  WebcompatReporterService& operator=(const WebcompatReporterService&) = delete;
   ~WebcompatReporterService() override;
 
   mojo::PendingRemote<mojom::WebcompatReporterHandler> MakeRemote();
@@ -38,7 +46,7 @@ class WebcompatReporterService : public KeyedService,
   void SubmitWebcompatReport(mojom::ReportInfoPtr report_info,
                              SubmitWebcompatReportCallback callback) override;
 
-  void SubmitWebcompatReport(const Report& report_data);
+  void SubmitWebcompatReport(Report report_data);
 
  private:
   friend class WebcompatReporterServiceUnitTest;
@@ -47,13 +55,12 @@ class WebcompatReporterService : public KeyedService,
       std::unique_ptr<WebcompatReportUploader> report_uploader,
       component_updater::ComponentUpdateService* component_update_service);
 
-  void SubmitReportInternal(Report report_data);
+  void SubmitReportInternal(const Report& report_data);
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
+  raw_ptr<brave_shields::AdBlockService> adblock_service_;
   std::unique_ptr<WebcompatReportUploader> report_uploader_;
   mojo::ReceiverSet<mojom::WebcompatReporterHandler> receivers_;
   base::WeakPtrFactory<WebcompatReporterService> weak_factory_{this};
-  WebcompatReporterService(const WebcompatReporterService&) = delete;
-  WebcompatReporterService& operator=(const WebcompatReporterService&) = delete;
 };
 
 }  // namespace webcompat_reporter
