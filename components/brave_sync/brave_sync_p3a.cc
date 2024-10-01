@@ -54,4 +54,18 @@ void RecordSyncedObjectsCount(int total_entities) {
                                      {1000, 10000, 49000}, total_entities);
 }
 
+void SyncCodeMonitor::RecordCodeGenerated() {
+  code_generated_ = true;
+  base::UmaHistogramEnumeration(kSyncJoinTypeHistogramName,
+                                SyncJoinType::kChainCreated);
+}
+
+void SyncCodeMonitor::RecordCodeSet() {
+  if (!code_generated_) {
+    base::UmaHistogramEnumeration(kSyncJoinTypeHistogramName,
+                                  SyncJoinType::kChainJoined);
+  }
+  code_generated_ = false;
+}
+
 }  // namespace brave_sync::p3a

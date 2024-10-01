@@ -98,6 +98,7 @@ std::string BraveSyncServiceImpl::GetOrCreateSyncCode() {
   if (sync_code.empty()) {
     std::vector<uint8_t> seed = brave_sync::crypto::GetSeed();
     sync_code = brave_sync::crypto::PassphraseFromBytes32(seed);
+    sync_code_monitor_.RecordCodeGenerated();
   }
 
   CHECK(!sync_code.empty()) << "Attempt to return empty sync code";
@@ -120,6 +121,8 @@ bool BraveSyncServiceImpl::SetSyncCode(const std::string& sync_code) {
   initiated_delete_account_ = false;
   initiated_self_device_info_deleted_ = false;
   initiated_join_chain_ = true;
+
+  sync_code_monitor_.RecordCodeSet();
 
   return true;
 }

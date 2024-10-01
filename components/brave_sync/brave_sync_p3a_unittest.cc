@@ -75,4 +75,32 @@ TEST(BraveSyncP3ATest, TestSyncedObjectsCount) {
   histogram_tester.ExpectBucketCount(kSyncedObjectsCountHistogramNameV2, 3, 1);
 }
 
+TEST(BraveSyncP3ATest, TestSyncCodeMonitor) {
+  base::HistogramTester histogram_tester;
+  SyncCodeMonitor monitor;
+
+  monitor.RecordCodeGenerated();
+  histogram_tester.ExpectUniqueSample(
+      kSyncJoinTypeHistogramName, static_cast<int>(SyncJoinType::kChainCreated),
+      1);
+
+  monitor.RecordCodeSet();
+  histogram_tester.ExpectUniqueSample(
+      kSyncJoinTypeHistogramName, static_cast<int>(SyncJoinType::kChainCreated),
+      1);
+
+  monitor.RecordCodeSet();
+  histogram_tester.ExpectBucketCount(
+      kSyncJoinTypeHistogramName, static_cast<int>(SyncJoinType::kChainJoined),
+      1);
+
+  SyncCodeMonitor monitor2;
+  monitor2.RecordCodeSet();
+  histogram_tester.ExpectBucketCount(
+      kSyncJoinTypeHistogramName, static_cast<int>(SyncJoinType::kChainJoined),
+      2);
+
+  histogram_tester.ExpectTotalCount(kSyncJoinTypeHistogramName, 3);
+}
+
 }  // namespace brave_sync::p3a
