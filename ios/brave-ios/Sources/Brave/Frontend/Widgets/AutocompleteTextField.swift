@@ -4,6 +4,7 @@
 
 // This code is loosely based on https://github.com/Antol/APAutocompleteTextField
 
+import BraveCore
 import BraveUI
 import Shared
 import UIKit
@@ -37,6 +38,7 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
   // This makes sure that the autocomplete doesnt mess with keyboard suggestions provided by third party keyboards.
   private var autocompleteTextLabel: UILabel?
   private var hideCursor: Bool = false
+  private let privateBrowsingManager: PrivateBrowsingManager
 
   var isSelectionActive: Bool {
     return autocompleteTextLabel != nil
@@ -70,17 +72,10 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
     }
   }
 
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    commonInit()
-  }
+  init(privateBrowsingManager: PrivateBrowsingManager) {
+    self.privateBrowsingManager = privateBrowsingManager
+    super.init(frame: .zero)
 
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    commonInit()
-  }
-
-  fileprivate func commonInit() {
     super.delegate = self
     super.addTarget(
       self,
@@ -114,6 +109,11 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
         }
       }
     )
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
   }
 
   override public var keyCommands: [UIKeyCommand]? {
@@ -305,6 +305,41 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
   public func textFieldShouldClear(_ textField: UITextField) -> Bool {
     removeCompletion()
     return autocompleteDelegate?.autocompleteTextFieldShouldClear(self) ?? true
+  }
+
+  public func textField(
+    _ textField: UITextField,
+    editMenuForCharactersIn range: NSRange,
+    suggestedActions: [UIMenuElement]
+  ) -> UIMenu? {
+    guard let selectedRange = textField.selectedTextRange,
+      let text = textField.text(in: selectedRange), !text.isEmpty
+    else {
+      return nil
+    }
+    if let match = AutocompleteClassifier.classify(text),
+      match.type != .searchWhatYouTyped,
+      let service = URLSanitizerServiceFactory.get(
+        privateMode: privateBrowsingManager.isPrivateBrowsing
+      )
+    {
+      let cleanedURL = service.sanitizeURL(match.destinationURL) ?? match.destinationURL
+      let copyCleanLinkAction = UIAction(
+        title: Strings.copyCleanLink,
+        image: UIImage(braveSystemNamed: "leo.broom"),
+        handler: UIAction.deferredActionHandler { _ in
+          UIPasteboard.general.url = cleanedURL
+        }
+      )
+      var actions = suggestedActions
+      if actions.count < 2 {
+        actions.append(copyCleanLinkAction)
+      } else {
+        actions.insert(copyCleanLinkAction, at: 1)
+      }
+      return UIMenu(children: actions)
+    }
+    return nil
   }
 
   override public func setMarkedText(_ markedText: String?, selectedRange: NSRange) {
