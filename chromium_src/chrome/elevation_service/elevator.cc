@@ -6,13 +6,14 @@
 #include "chrome/elevation_service/elevator.h"
 
 #include <windows.h>
-#include <winerror.h>
 
 #include <intsafe.h>
+#include <winerror.h>
 
 #include "base/path_service.h"
 #include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_utils.h"
