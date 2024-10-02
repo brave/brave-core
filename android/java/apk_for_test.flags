@@ -641,6 +641,7 @@
 
 -keep class org.chromium.chrome.browser.tasks.ReturnToChromeUtil {
     *** shouldShowTabSwitcher(...);
+    *** shouldShowNtpAsHomeSurfaceAtStartup(...);
 }
 
 -keep class org.chromium.chrome.browser.IntentHandler {
