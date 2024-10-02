@@ -40,7 +40,7 @@ NativeWebState::NativeWebState(Browser* browser, bool off_the_record)
   // Create BrowserState
   ChromeBrowserState* browser_state = browser->GetBrowserState();
   if (off_the_record) {
-    browser_state = browser_state->GetOffTheRecordChromeBrowserState();
+    browser_state = browser_state->GetOffTheRecordProfile();
   }
 
   // Create WebState with parameters
