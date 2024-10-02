@@ -310,7 +310,7 @@ class NewTabPageViewController: UIViewController {
 
     view.addSubview(backgroundView)
     view.insertSubview(gradientView, aboveSubview: backgroundView)
-    view.addSubview(videoButtonsView)
+    //view.addSubview(videoButtonsView)
     view.addSubview(collectionView)
     view.addSubview(feedOverlayView)
 
@@ -342,18 +342,21 @@ class NewTabPageViewController: UIViewController {
 
     setupBackgroundImage()
     setupBackgroundVideoIfNeeded(shouldCreatePlayer: true)
+    // backgroundView.setupWebViewLayer()
+    setupWebViewIfNeeded()
+
     backgroundView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-    videoButtonsView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
-    collectionView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
-    feedOverlayView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
+//    videoButtonsView.snp.makeConstraints {
+//      $0.edges.equalToSuperview()
+//    }
+     collectionView.snp.makeConstraints {
+       $0.edges.equalToSuperview()
+     }
+     feedOverlayView.snp.makeConstraints {
+       $0.edges.equalToSuperview()
+     }
 
     gradientView.snp.makeConstraints {
       $0.edges.equalTo(backgroundView)
@@ -495,6 +498,15 @@ class NewTabPageViewController: UIViewController {
         self?.videoAdPlayer?.seekToStopFrame()
       }
     )
+  }
+
+  func setupWebViewIfNeeded() {
+    guard let htmlPath = background.htmlPath else {
+      return
+    }
+    gradientView.isHidden = true
+    backgroundView.setupWebViewLayer(htmlPath)
+    //backgroundView.setupWebViewLayer(URL(string: "https://brave.com")!)
   }
 
   func setupBackgroundVideoIfNeeded(shouldCreatePlayer: Bool) {
@@ -1700,6 +1712,7 @@ extension NewTabPageViewController {
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
       super.init(frame: frame, collectionViewLayout: layout)
 
+      // isUserInteractionEnabled = false
       backgroundColor = .clear
       delaysContentTouches = false
       alwaysBounceVertical = true
@@ -1712,14 +1725,39 @@ extension NewTabPageViewController {
 
       // Drag should be enabled to rearrange favourite
       dragInteractionEnabled = true
+
+//     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapGestureRecognizer (sender:)))
+//     addGestureRecognizer(tapGesture)
     }
     @available(*, unavailable)
     required init(coder: NSCoder) {
       fatalError()
     }
     override func touchesShouldCancel(in view: UIView) -> Bool {
-      return true
+      return false
     }
+
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+      guard let view = super.hitTest(point, with: event) else { return nil }
+      for cell in visibleCells {
+        if cell == view {
+          return cell
+        }
+      }
+      return nil
+    }
+
+//  @objc private func tapGestureRecognizer(sender: UITapGestureRecognizer) -> Bool {
+//    let location = sender.location(in: self)
+//    let view = super.hitTest(location, with: nil)
+//    for cell in visibleCells {
+//      if cell == view {
+//        return false
+//      }
+//    }
+//    return true
+//  }
+
   }
 }
 

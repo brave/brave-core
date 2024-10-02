@@ -37,6 +37,9 @@ class NewTabPageBackground: PreferencesObserver {
   var backgroundVideoPath: URL? {
     currentBackground?.backgroundVideoPath
   }
+  var htmlPath: URL? {
+    currentBackground?.htmlPath
+  }
   /// The sponsors logo if available
   var sponsorLogoImage: UIImage? {
     currentBackground?.logoImage

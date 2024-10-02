@@ -93,6 +93,11 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
 
     super.init(frame: .zero)
 
+    // isUserInteractionEnabled = false
+
+//   let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.gestureRecognizer (sender:)))
+//   addGestureRecognizer(tapGesture)
+
     Preferences.BraveNews.isEnabled.observe(from: self)
 
     backgroundColor = .clear
@@ -115,6 +120,22 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     }
   }
 
+  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    guard let view = super.hitTest(point, with: event) else { return nil }
+    if view == imageCreditButton || view == sponsorLogoButton || view == qrCodeButton || view == playButton {
+      return view
+    }
+    return nil
+  }
+
+// @objc private func gestureRecognizer(sender: UITapGestureRecognizer) -> Bool {
+//   let location = sender.location(in: self)
+//   if let view = super.hitTest(location, with: nil), view == self {
+//     return false
+//   }
+//   return true
+// }
+//
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()

@@ -7,9 +7,10 @@ import AVKit
 import DesignSystem
 import SnapKit
 import UIKit
+import WebKit
 
 /// Non-interactive contents that appear behind the New Tab Page contents
-class NewTabPageBackgroundView: UIView {
+class NewTabPageBackgroundView: UIView, WKNavigationDelegate {
   /// The image wallpaper if the user has background images enabled
   let imageView = UIImageView().then {
     $0.contentMode = .scaleAspectFill
@@ -17,9 +18,45 @@ class NewTabPageBackgroundView: UIView {
   }
 
   let playerLayer = AVPlayerLayer()
+  
+  let webView: WKWebView
+//  let webViewLayer = CALayer()
 
   func updateImageXOffset(by x: CGFloat) {
     bounds = .init(x: -x, y: 0, width: bounds.width, height: bounds.height)
+  }
+  
+  func setupWebViewLayer(_ htmlPath: URL) {
+//    webViewLayer.contents = webView.layer
+//
+//    layer.addSublayer(webViewLayer)
+
+    webView.load(URLRequest(url: htmlPath))
+    webView.isUserInteractionEnabled = true
+    webView.navigationDelegate = self
+
+    addSubview(webView)
+    webView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+
+//    addSubview(webView)
+//    webView.snp.makeConstraints {
+//      $0.edges.equalToSuperview()
+//    }
+  }
+
+  func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+      if let url = navigationAction.request.url {
+        if url == URL(string: "brave://CTA") {
+          onTapToCTA()
+        }
+      }
+
+      decisionHandler(.cancel)
+  }
+  
+  func onTapToCTA() {
   }
 
   func setupPlayerLayer(_ backgroundVideoPath: URL, player: AVPlayer?) {
@@ -43,7 +80,10 @@ class NewTabPageBackgroundView: UIView {
   }
 
   override init(frame: CGRect) {
+    webView = WKWebView(frame: frame)
     super.init(frame: frame)
+    
+    //webViewLayer.l
 
     clipsToBounds = true
     backgroundColor = .init {
