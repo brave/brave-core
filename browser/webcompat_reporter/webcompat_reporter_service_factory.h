@@ -21,10 +21,13 @@ namespace webcompat_reporter {
 
 class WebcompatReporterService;
 
-class WebcompatReporterServiceFactory : public BrowserContextKeyedServiceFactory {
+class WebcompatReporterServiceFactory
+    : public BrowserContextKeyedServiceFactory {
  public:
-  WebcompatReporterServiceFactory(const WebcompatReporterServiceFactory&) = delete;
-  WebcompatReporterServiceFactory& operator=(const WebcompatReporterServiceFactory&) = delete;
+  WebcompatReporterServiceFactory(const WebcompatReporterServiceFactory&) =
+      delete;
+  WebcompatReporterServiceFactory& operator=(
+      const WebcompatReporterServiceFactory&) = delete;
 
   static mojo::PendingRemote<mojom::WebcompatReporterHandler> GetForContext(
       content::BrowserContext* context);

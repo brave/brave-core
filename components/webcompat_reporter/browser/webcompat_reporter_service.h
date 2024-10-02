@@ -23,7 +23,7 @@ class ComponentUpdateService;
 }  // namespace component_updater
 
 namespace brave_shields {
-    class AdBlockService;
+class AdBlockService;
 }  // namespace brave_shields
 
 namespace webcompat_reporter {
@@ -33,7 +33,7 @@ class WebcompatReporterService : public KeyedService,
                                  public mojom::WebcompatReporterHandler {
  public:
   explicit WebcompatReporterService(
-        brave_shields::AdBlockService* adblock_service,
+      brave_shields::AdBlockService* adblock_service,
       component_updater::ComponentUpdateService* component_update_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   WebcompatReporterService(const WebcompatReporterService&) = delete;

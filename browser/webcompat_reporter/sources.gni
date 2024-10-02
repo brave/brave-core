@@ -12,15 +12,14 @@ brave_browser_webcompat_reporter_deps = [
   "//base",
   "//brave/browser:browser_process",
   "//brave/common",
+  "//brave/components/webcompat_reporter/common:mojom",
   "//brave/components/webcompat_reporter/browser",
   "//components/keyed_service/content",
   "//mojo/public/cpp/bindings",
 ]
 
 if (is_android) {
-  brave_browser_webcompat_reporter_sources += [
-    "//brave/browser/webcompat_reporter/android/webcompat_report_service_factory_android.cc",
-  ]
+  brave_browser_webcompat_reporter_sources += [ "//brave/browser/webcompat_reporter/android/webcompat_report_service_factory_android.cc" ]
   brave_browser_webcompat_reporter_deps += [
     "//brave/browser/android:android_browser_process",
     "//brave/build/android:jni_headers",

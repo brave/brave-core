@@ -28,7 +28,8 @@
 
 namespace {
 
-void SetOptValue(std::optional<base::Value>& dest, const std::optional<base::Value>& source) {
+void SetOptValue(std::optional<base::Value>& dest,
+                 const std::optional<base::Value>& source) {
   if (source) {
     dest = source->Clone();
   } else {
@@ -103,7 +104,8 @@ void WebcompatReportUploader::SubmitReport(const Report& report) {
   }
 
   if (report.ad_block_components) {
-    report_details_dict.Set(kAdBlockComponentsVersionField, report.ad_block_components.value().Clone());
+    report_details_dict.Set(kAdBlockComponentsVersionField,
+                            report.ad_block_components.value().Clone());
   }
 
   if (report.contact) {
@@ -114,24 +116,28 @@ void WebcompatReportUploader::SubmitReport(const Report& report) {
     report_details_dict.Set(kChannelField, report.channel.value());
   }
 
-  if(report.brave_version) {
-    report_details_dict.Set(kVersionField,report.brave_version.value());
+  if (report.brave_version) {
+    report_details_dict.Set(kVersionField, report.brave_version.value());
   }
 
   if (report.shields_enabled) {
-    report_details_dict.Set(kShieldsEnabledField, report.shields_enabled.value());
+    report_details_dict.Set(kShieldsEnabledField,
+                            report.shields_enabled.value());
   }
-  
+
   if (report.ad_block_setting) {
-    report_details_dict.Set(kAdBlockSettingField, report.ad_block_setting.value());
+    report_details_dict.Set(kAdBlockSettingField,
+                            report.ad_block_setting.value());
   }
-  
+
   if (report.fp_block_setting) {
-    report_details_dict.Set(kFPBlockSettingField, report.fp_block_setting.value());
+    report_details_dict.Set(kFPBlockSettingField,
+                            report.fp_block_setting.value());
   }
 
   if (report.ad_block_list_names) {
-    report_details_dict.Set(kAdBlockListsField, report.ad_block_list_names.value());
+    report_details_dict.Set(kAdBlockListsField,
+                            report.ad_block_list_names.value());
   }
 
   if (report.languages) {
@@ -139,11 +145,13 @@ void WebcompatReportUploader::SubmitReport(const Report& report) {
   }
 
   if (report.language_farbling) {
-    report_details_dict.Set(kLanguageFarblingField, report.language_farbling.value());
+    report_details_dict.Set(kLanguageFarblingField,
+                            report.language_farbling.value());
   }
 
   if (report.brave_vpn_connected) {
-    report_details_dict.Set(kBraveVPNEnabledField, report.brave_vpn_connected.value());
+    report_details_dict.Set(kBraveVPNEnabledField,
+                            report.brave_vpn_connected.value());
   }
 
   report_details_dict.Set(kApiKeyField, base::Value(api_key));

@@ -7,15 +7,13 @@ import("//mojo/public/tools/bindings/mojom.gni")
 
 mojom("mojom") {
   generate_java = true
-  sources = [
-    "webcompat_reporter.mojom",
-  ]
+  sources = [ "webcompat_reporter.mojom" ]
 
-#  deps = [ "//components/content_settings/core/common:content_settings_types" ]
+  #  deps = [ "//components/content_settings/core/common:content_settings_types" ]
 
   public_deps = [
     "//mojo/public/mojom/base",
-#    "//ui/gfx/geometry/mojom",
-#    "//url/mojom:url_mojom_gurl",
+    #    "//ui/gfx/geometry/mojom",
+    #    "//url/mojom:url_mojom_gurl",
   ]
 }

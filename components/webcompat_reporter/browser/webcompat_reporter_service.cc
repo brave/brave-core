@@ -7,7 +7,10 @@
 
 #include <memory>
 #include <optional>
+#include <string>
+#include <unordered_set>
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
 #include "base/no_destructor.h"
@@ -53,7 +56,8 @@ void SetListVal(
 }
 void ConvertCompsToValue(
     std::optional<base::Value>& val_to_set,
-    const std::vector<webcompat_reporter::mojom::ComponentInfoPtr>& components) {
+    const std::vector<webcompat_reporter::mojom::ComponentInfoPtr>&
+        components) {
   if (components.empty()) {
     return;
   }
@@ -159,7 +163,7 @@ void FillReportByReportInfo(
 
   if (report_info->ad_block_components_version) {
     ConvertCompsToValue(report.ad_block_components,
-               report_info->ad_block_components_version.value());
+                        report_info->ad_block_components_version.value());
   }
 
   if (report_info->ad_block_list_names &&

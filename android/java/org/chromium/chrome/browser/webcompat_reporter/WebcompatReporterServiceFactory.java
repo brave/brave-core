@@ -5,11 +5,9 @@
 
 package org.chromium.chrome.browser.webcompat_reporter;
 
-//import org.jcp.xml.dsig.internal.dom.Utils;
+// import org.jcp.xml.dsig.internal.dom.Utils;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
-
-import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -18,19 +16,20 @@ import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
 import org.chromium.mojo.system.MessagePipeHandle;
 import org.chromium.mojo.system.impl.CoreImpl;
+import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
 @JNINamespace("chrome::android")
 public class WebcompatReporterServiceFactory {
-        private static final Object lock = new Object();
-    private static WebcompatReporterServiceFactory instance;
+    private static final Object sLock = new Object();
+    private static WebcompatReporterServiceFactory sInstance;
 
     public static WebcompatReporterServiceFactory getInstance() {
-        synchronized (lock) {
-            if (instance == null) {
-                instance = new WebcompatReporterServiceFactory();
+        synchronized (sLock) {
+            if (sInstance == null) {
+                sInstance = new WebcompatReporterServiceFactory();
             }
         }
-        return instance;
+        return sInstance;
     }
 
     private WebcompatReporterServiceFactory() {}
@@ -42,13 +41,14 @@ public class WebcompatReporterServiceFactory {
             return null;
         }
         long nativeHandle =
-            WebcompatReporterServiceFactoryJni.get().getInterfaceToWebcompatReporterService(profile);
+                WebcompatReporterServiceFactoryJni.get()
+                        .getInterfaceToWebcompatReporterService(profile);
         if (nativeHandle == -1) {
             return null;
         }
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         WebcompatReporterHandler webcompatReporterHandler =
-            WebcompatReporterHandler.MANAGER.attachProxy(handle, 0);
+                WebcompatReporterHandler.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) webcompatReporterHandler).getProxyHandler();
         handler.setErrorHandler(connectionErrorHandler);
 
@@ -63,5 +63,4 @@ public class WebcompatReporterServiceFactory {
     interface Natives {
         long getInterfaceToWebcompatReporterService(Profile profile);
     }
-
 }
