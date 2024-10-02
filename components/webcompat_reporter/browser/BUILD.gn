@@ -47,6 +47,7 @@ source_set("unittests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_stats/browser",
     "//brave/components/version_info",
     "//brave/components/webcompat_reporter/common:mojom",
     "//chrome/test:test_support",

@@ -15,6 +15,7 @@
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -41,8 +42,7 @@ class WebcompatReportUploaderUnitTest : public testing::Test {
   void SetInterceptor(
       OnRequestPayloadCallback* request_payload_callback = nullptr) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&,  // content, //http_status,
-         request_payload_callback](const network::ResourceRequest& request) {
+        [&, request_payload_callback](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           if (request_payload_callback) {
             std::string request_string(request.request_body->elements()
@@ -90,7 +90,9 @@ class WebcompatReportUploaderUnitTest : public testing::Test {
 
 TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
   Report report;
-  TestReportGeneration(report, R"({"api_key":""})");
+  TestReportGeneration(report,
+                       base::StringPrintf(R"({"api_key":"%s"})",
+                                          brave_stats::GetAPIKey().c_str()));
 
   report.channel = "dev";
   report.brave_version = "1.231.45";
@@ -122,7 +124,7 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
   "adBlockLists": "%s",
   "adBlockSetting": "%s",
   "additionalDetails": %s,
-  "api_key": "",
+  "api_key": "%s",
   "braveVPNEnabled": %s,
   "channel": "%s",
   "contactInfo": %s,
@@ -136,6 +138,7 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
 })",
           test_dict_string.c_str(), report.ad_block_list_names->c_str(),
           report.ad_block_setting->c_str(), test_dict_string.c_str(),
+          brave_stats::GetAPIKey().c_str(),
           report.brave_vpn_connected ? "true" : "false",
           report.channel->c_str(), test_dict_string.c_str(),
           url::Origin::Create(report.report_url.value()).Serialize().c_str(),
