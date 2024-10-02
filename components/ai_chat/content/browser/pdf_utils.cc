@@ -129,9 +129,12 @@ bool IsPdfLoaded(const ui::AXNode* pdf_root) {
   }
 
 #if BUILDFLAG(ENABLE_PDF)
-  if (pdf_root->GetChildAtIndex(0)->GetChildAtIndex(0)->GetStringAttribute(
-          ax::mojom::StringAttribute::kName) ==
-      l10n_util::GetStringUTF8(IDS_PDF_OCR_IN_PROGRESS)) {
+  const auto& name =
+      pdf_root->GetChildAtIndex(0)->GetChildAtIndex(0)->GetStringAttribute(
+          ax::mojom::StringAttribute::kName);
+  if (name == l10n_util::GetStringUTF8(IDS_PDF_OCR_IN_PROGRESS) ||
+      name == l10n_util::GetStringUTF8(IDS_PDF_LOADING_TO_A11Y_TREE) ||
+      name == l10n_util::GetStringUTF8(IDS_PDF_OCR_FEATURE_ALERT)) {
     return false;
   }
 #endif

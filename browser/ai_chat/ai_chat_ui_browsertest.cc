@@ -261,7 +261,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreview) {
   EXPECT_FALSE(HasPendingGetContentRequest());
 }
 
-#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION) && BUILDFLAG(ENABLE_PRINT_PREVIEW)
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewPagesLimit) {
   NavigateURL(
       https_server_.GetURL("docs.google.com", "/extra_long_canvas.html"),
@@ -271,7 +271,6 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewPagesLimit) {
   FetchPageContent(FROM_HERE, expected_string);
 }
 
-#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
 // Test print preview extraction while print dialog open
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintDiaglogExtraction) {
   NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"),
@@ -310,14 +309,8 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, ExtractionPrintDialog) {
         // defined(ARCH_CPU_64_BITS)
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, MAYBE_PrintPreviewFallback) {
   // Falls back when there is no regular DOM content
-  // TODO(darkdh): Enable text_in_image.pdf when upstream fixes the hanging
-  // blank page issue. See https://github.com/brave/brave-browser/issues/41113
-#if 0
-  NavigateURL(https_server_.GetURL("a.com", "/text_in_image.pdf"), false);
-  FetchPageContent(
-      FROM_HERE, "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
-#endif
-
+  // pdf test will be in UpstreamPDFIntegratoinTest since we enable upstream pdf
+  // ocr for all pdf files
   NavigateURL(https_server_.GetURL("a.com", "/canvas.html"), false);
   FetchPageContent(FROM_HERE, "this is the way");
 
@@ -327,8 +320,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, MAYBE_PrintPreviewFallback) {
       false);
   FetchPageContent(FROM_HERE, "Or maybe not.");
 }
-#endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
-#endif  // BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+#endif  // BUILDFLAG(ENABLE_TEXT_RECOGNITION) && BUILDFLAG(ENABLE_PRINT_PREVIEW)
 
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewDisabled) {
   prefs()->SetBoolean(prefs::kPrintPreviewDisabled, true);
@@ -451,6 +443,34 @@ IN_PROC_BROWSER_TEST_F(UpstreamPDFIntegratoinTest, PDFOcr) {
                    "Hello, world!\n"
                    "Paragraph 1 on Page 2\n"
                    "Paragraph 2 on Page 2\n"
+                   "Paragraph 1 on Page 3\n"
+                   "Paragraph 2 on Page 3");
+}
+
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION) && BUILDFLAG(ENABLE_PRINT_PREVIEW)
+IN_PROC_BROWSER_TEST_F(UpstreamPDFIntegratoinTest,
+                       PDFOcrFailed_PrintPreviewFallback) {
+  // Fallback to print preview extraction when upstream pdf ocr has empty
+  // results.
+  NavigateURL(https_server_.GetURL("b.com", "/text_in_image.pdf"), false);
+  FetchPageContent(
+      FROM_HERE, "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
+}
+#endif  // BUILDFLAG(ENABLE_TEXT_RECOGNITION) && BUILDFLAG(ENABLE_PRINT_PREVIEW)
+
+IN_PROC_BROWSER_TEST_F(UpstreamPDFIntegratoinTest, PDFOcrWithBlankPage) {
+  // Single paragraph
+  NavigateURL(
+      https_server_.GetURL("a.com", "/hello-world-in-image-has-blank.pdf"));
+  FetchPageContent(FROM_HERE, "Hello, world!");
+
+  // Multiple paragraphs
+  NavigateURL(https_server_.GetURL(
+      "a.com", "/inaccessible-text-in-three-page-has-blank.pdf"));
+  FetchPageContent(FROM_HERE,
+                   "Hello, world!\n\n"
+                   "Paragraph 1 on Page 2\n"
+                   "Paragraph 2 on Page 2\n\n"
                    "Paragraph 1 on Page 3\n"
                    "Paragraph 2 on Page 3");
 }
