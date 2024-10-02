@@ -48,7 +48,10 @@ const std::unordered_set<std::u16string_view> kOverriddenEnginesNames = {
 class BraveTemplateURLPrepopulateDataTest : public testing::Test {
  public:
   BraveTemplateURLPrepopulateDataTest()
-      : search_engine_choice_service_(prefs_, &local_state_) {}
+      : search_engine_choice_service_(
+            prefs_,
+            &local_state_,
+            /*is_profile_eligible_for_dse_guest_propagation=*/false) {}
   void SetUp() override {
     TemplateURLPrepopulateData::RegisterProfilePrefs(prefs_.registry());
     // Real registration happens in `brave/browser/brave_profile_prefs.cc`
