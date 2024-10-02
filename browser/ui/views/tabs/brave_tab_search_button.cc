@@ -19,6 +19,13 @@ BraveTabSearchButton::BraveTabSearchButton(
     TabStripController* tab_strip_controller,
     Edge flat_edge)
     : TabSearchButton(tab_strip_controller, flat_edge) {
+  // Resetting the tab search bubble host first, to avoid a dangling in
+  // `BraveTabSearchButton`, triggered `TabSearchBubbleHost` calling
+  // `SetButtonController` and in the process destroying the still alive
+  // `MenuButtonController` through a move assignment, leaving a dangliing
+  // pointer behind.
+  tab_search_bubble_host_ = nullptr;
+
   tab_search_bubble_host_ = std::make_unique<BraveTabSearchBubbleHost>(
       this, tab_strip_controller->GetProfile());
 
