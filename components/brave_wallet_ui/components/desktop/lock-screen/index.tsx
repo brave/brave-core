@@ -36,7 +36,8 @@ import {
   UnlockButton,
   InputLabel,
   DoubleTapIcon,
-  AndroidLockScreenWrapper
+  AndroidLockScreenWrapper,
+  BraveLogo
 } from './style'
 import { VerticalSpace, Row, Text } from '../../shared/style'
 
@@ -132,11 +133,10 @@ export const LockScreen = () => {
 
   return (
     <StyledWrapper>
+      {isPanel && <BraveLogo />}
       <PageIcon />
       <Title>{getLocale('braveWalletUnlockWallet')}</Title>
-      <Description textSize='16px'>
-        {getLocale('braveWalletLockScreenTitle')}
-      </Description>
+      <Description>{getLocale('braveWalletLockScreenTitle')}</Description>
       <InputColumn fullWidth={true}>
         <Row
           justifyContent='flex-start'
@@ -164,7 +164,7 @@ export const LockScreen = () => {
           onClick={unlockWallet}
           isDisabled={disabled}
           kind='filled'
-          size='large'
+          size={isPanel ? 'medium' : 'large'}
         >
           {getLocale('braveWalletLockScreenButton')}
         </UnlockButton>
