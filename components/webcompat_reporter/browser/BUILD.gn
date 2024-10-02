@@ -6,19 +6,22 @@
 import("//build/config/features.gni")
 
 static_library("browser") {
+  sources = [
+    "fields.cc",
+    "fields.h",
+    "webcompat_report_uploader.cc",
+    "webcompat_report_uploader.h",
+    "webcompat_reporter_service.cc",
+    "webcompat_reporter_service.h",
+  ]
 
-sources = [
-  "webcompat_reporter_service.cc",
-  "webcompat_reporter_service.h",
-  "webcompat_report_uploader.cc",
-  "webcompat_report_uploader.h",
-  "fields.cc",
-  "fields.h",
-]
-
-deps = [
+  deps = [
     "//base",
+    "//brave/common",
     "//brave/components/brave_referrals/browser",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/browser",
+    "//brave/components/brave_shields/core/common",
     "//brave/components/brave_shields/core/common:mojom",
     "//brave/components/brave_stats/browser",
     "//brave/components/constants",
@@ -28,13 +31,13 @@ deps = [
     "//content/public/browser",
     "//net",
     "//services/network/public/cpp",
-]
+  ]
 }
 
 source_set("unittests") {
   testonly = true
 
-  sources = [ 
+  sources = [
     "webcompat_report_uploader_unittest.cc",
     "webcompat_reporter_service_unittest.cc",
   ]
@@ -43,10 +46,11 @@ source_set("unittests") {
     ":browser",
     "//base",
     "//base/test:test_support",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/version_info",
+    "//brave/components/webcompat_reporter/common:mojom",
+    "//chrome/test:test_support",
     "//testing/gtest",
     "//url",
   ]
 }
-
-
-

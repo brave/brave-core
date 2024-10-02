@@ -43,7 +43,6 @@ import androidx.appcompat.widget.SwitchCompat;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
-import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -52,33 +51,28 @@ import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
-import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
 import org.chromium.components.browser_ui.widget.ChromeDialog;
 import org.chromium.components.version_info.BraveVersionConstants;
-import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.ChromeImageButton;
+import org.chromium.webcompat_reporter.mojom.ReportInfo;
+import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-
-import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
-import org.chromium.webcompat_reporter.mojom.ReportInfo;
-
-
-import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
-/**
- * Object responsible for handling the creation, showing, hiding of the BraveShields menu.
- */
-public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCallback, ConnectionErrorHandler {
+/** Object responsible for handling the creation, showing, hiding of the BraveShields menu. */
+public class BraveShieldsHandler
+        implements BraveRewardsHelper.LargeIconReadyCallback, ConnectionErrorHandler {
     private static final String TAG = "BraveShieldsHandler";
     private static final int URL_SPEC_MAX_LINES = 3;
     private static final String CHROME_ERROR = "chrome-error://";
@@ -335,8 +329,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private void initWebcompatReporterService() {
         Log.i(TAG, "initWebcompatReporterService #800");
         mWebcompatReporterHandler =
-            WebcompatReporterServiceFactory.getInstance()
-                        .getWebcompatReporterHandler(this);
+                WebcompatReporterServiceFactory.getInstance().getWebcompatReporterHandler(this);
     }
 
     public void updateUrlSpec(String urlSpec) {
@@ -426,7 +419,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         if (null != mWebcompatReporterHandler) {
             Log.i(TAG, "hideBraveShieldsMenu Close Mojo #950");
             mWebcompatReporterHandler.close();
-        } 
+        }
     }
 
     private void initViews() {
@@ -854,11 +847,13 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     @Override
                     public void onClick(View view) {
                         // Profile.getLastUsedRegularProfile requires to run in UI thread,
-                        // so get api key here and pass it to IO worker task                       
-                        mWebcompatReporterHandler.submitWebcompatReport(getReportInfo(siteUrl),() -> {
-                            mReportBrokenSiteLayout.setVisibility(View.GONE);
-                            mThankYouLayout.setVisibility(View.VISIBLE);    
-                        });
+                        // so get api key here and pass it to IO worker task
+                        mWebcompatReporterHandler.submitWebcompatReport(
+                                getReportInfo(siteUrl),
+                                () -> {
+                                    mReportBrokenSiteLayout.setVisibility(View.GONE);
+                                    mThankYouLayout.setVisibility(View.VISIBLE);
+                                });
                     }
                 });
     }
@@ -871,7 +866,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         reportInfo.screenshotPng = isScreenshotAvailable() ? mScreenshotBytes : null;
         reportInfo.details = new java.util.HashMap<String, String>();
         reportInfo.contact = new java.util.HashMap<String, String>();
-        reportInfo.adBlockComponentsVersion = new java.util.HashMap<String, String>();
         return reportInfo;
     }
 

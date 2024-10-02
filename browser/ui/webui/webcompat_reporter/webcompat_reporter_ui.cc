@@ -55,8 +55,7 @@ constexpr int kMaxScreenshotPixelCount = 1280 * 720;
 }  // namespace
 
 WebcompatReporterDOMHandler::WebcompatReporterDOMHandler(Profile* profile)
-    : ui_task_runner_(
-          base::SequencedTaskRunner::GetCurrentDefault()) {
+    : ui_task_runner_(base::SequencedTaskRunner::GetCurrentDefault()) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   InitAdditionalParameters(profile);

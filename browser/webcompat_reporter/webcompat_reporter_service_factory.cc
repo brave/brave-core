@@ -19,14 +19,16 @@
 namespace webcompat_reporter {
 
 // static
-WebcompatReporterServiceFactory* WebcompatReporterServiceFactory::GetInstance() {
+WebcompatReporterServiceFactory*
+WebcompatReporterServiceFactory::GetInstance() {
   static base::NoDestructor<WebcompatReporterServiceFactory> instance;
   return instance.get();
 }
 
 // static
 mojo::PendingRemote<mojom::WebcompatReporterHandler>
-WebcompatReporterServiceFactory::GetForContext(content::BrowserContext* context) {
+WebcompatReporterServiceFactory::GetForContext(
+    content::BrowserContext* context) {
   return static_cast<WebcompatReporterService*>(
              GetInstance()->GetServiceForBrowserContext(context, true))
       ->MakeRemote();
@@ -56,7 +58,8 @@ KeyedService* WebcompatReporterServiceFactory::BuildServiceInstanceFor(
       g_browser_process->component_updater(), shared_url_loader_factory);
 }
 
-content::BrowserContext* WebcompatReporterServiceFactory::GetBrowserContextToUse(
+content::BrowserContext*
+WebcompatReporterServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   return chrome::GetBrowserContextRedirectedInIncognito(context);
 }
