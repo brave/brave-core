@@ -10,16 +10,13 @@ import Tooltip from '@brave/leo/react/tooltip'
 
 import { formatMessage } from '../../../shared/lib/locale_context'
 import { formatEarningsEstimate, formatEarningsRange } from '../../lib/formatters'
-import { AppModelContext, useAppState } from '../../lib/app_model_context'
-import { RouterContext } from '../../lib/router'
+import { useAppState } from '../../lib/app_model_context'
 import { useLocaleContext, usePluralString } from '../../lib/locale_strings'
+import { useConnectAccountRouter } from '../../lib/connect_account_router'
 import { PayoutStatusView } from './payout_status_view'
 import { AdsSummary } from './ads_summary'
 import { AdsSettingsModal } from './ads_settings_modal'
 import { AdsHistoryModal } from './ads_history_modal'
-
-import * as routes from '../../lib/app_routes'
-import * as urls from '../../../shared/lib/rewards_urls'
 
 import batCoinGray from '../../assets/bat_coin_gray_animated.svg'
 import batCoinColor from '../../assets/bat_coin_color_animated.svg'
@@ -27,8 +24,7 @@ import batCoinColor from '../../assets/bat_coin_color_animated.svg'
 import { style } from './earning_card.style'
 
 export function EarningCard() {
-  const model = React.useContext(AppModelContext)
-  const router = React.useContext(RouterContext)
+  const connectAccount = useConnectAccountRouter()
   const { getString } = useLocaleContext()
 
   const [externalWallet, adsInfo, isBubble] = useAppState((state) => [
@@ -55,14 +51,6 @@ export function EarningCard() {
 
   function toggleAdsHistoryModal() {
     setShowAdsHistoryModal(!showAdsHistoryModal)
-  }
-
-  function onConnect() {
-    if (isBubble) {
-      model.openTab(urls.connectURL)
-    } else {
-      router.setRoute(routes.connectAccount)
-    }
   }
 
   function renderLimited() {
@@ -93,7 +81,11 @@ export function EarningCard() {
               {getString('connectAccountSubtext')}
             </div>
           </div>
-          <Button className='connect-button' size='small' onClick={onConnect}>
+          <Button
+            className='connect-button'
+            size='small'
+            onClick={connectAccount}
+          >
             {getString('connectButtonLabel')}
           </Button>
         </section>
