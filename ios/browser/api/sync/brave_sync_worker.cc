@@ -112,7 +112,7 @@ bool BraveSyncWorker::RequestSync() {
 const syncer::DeviceInfo* BraveSyncWorker::GetLocalDeviceInfo() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* device_info_service =
-      DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
+      DeviceInfoSyncServiceFactory::GetForProfile(browser_state_);
 
   if (!device_info_service) {
     return nullptr;
@@ -126,7 +126,7 @@ std::vector<std::unique_ptr<syncer::BraveDeviceInfo>>
 BraveSyncWorker::GetDeviceList() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* device_info_service =
-      DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
+      DeviceInfoSyncServiceFactory::GetForProfile(browser_state_);
 
   if (!device_info_service) {
     return std::vector<std::unique_ptr<syncer::BraveDeviceInfo>>();
@@ -314,7 +314,7 @@ void BraveSyncWorker::ResetSync() {
   sync_service->prefs().AddLeaveChainDetail(__FILE__, __LINE__, __func__);
 
   auto* device_info_service =
-      DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
+      DeviceInfoSyncServiceFactory::GetForProfile(browser_state_);
   DCHECK(device_info_service);
 
   brave_sync::ResetSync(sync_service, device_info_service,
@@ -331,7 +331,7 @@ void BraveSyncWorker::DeleteDevice(const std::string& device_guid) {
   }
 
   auto* device_info_service =
-      DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
+      DeviceInfoSyncServiceFactory::GetForProfile(browser_state_);
   DCHECK(device_info_service);
 
   brave_sync::DeleteDevice(sync_service, device_info_service, device_guid);
