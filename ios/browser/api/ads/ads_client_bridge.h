@@ -62,10 +62,12 @@
             (brave_ads::mojom::DBTransactionInfoPtr)mojom_db_transaction
                 callback:(brave_ads::RunDBTransactionCallback)callback;
 - (void)setProfilePref:(const std::string&)path value:(base::Value)value;
+- (bool)findProfilePref:(const std::string&)path;
 - (std::optional<base::Value>)getProfilePref:(const std::string&)path;
 - (void)clearProfilePref:(const std::string&)path;
 - (bool)hasProfilePrefPath:(const std::string&)path;
 - (void)setLocalStatePref:(const std::string&)path value:(base::Value)value;
+- (bool)findLocalStatePref:(const std::string&)path;
 - (std::optional<base::Value>)getLocalStatePref:(const std::string&)path;
 - (void)clearLocalStatePref:(const std::string&)path;
 - (bool)hasLocalStatePrefPath:(const std::string&)path;

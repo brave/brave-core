@@ -29,6 +29,9 @@ inline constexpr char kCampaignIdKey[] = "campaignId";
 
 inline constexpr char kWallpapersKey[] = "wallpapers";
 inline constexpr char kWallpaperFocalPointKey[] = "focalPoint";
+inline constexpr char kWallpaperConditionMatchersKey[] = "conditionMatchers";
+inline constexpr char kWallpaperConditionMatcherPrefPathKey[] = "prefPath";
+inline constexpr char kWallpaperConditionMatcherKey[] = "condition";
 
 inline constexpr char kImagesKey[] = "images";
 inline constexpr char kIsBackgroundKey[] = "isBackground";

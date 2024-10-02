@@ -37,12 +37,14 @@ void MockLoadDataResource(AdsClientMock& ads_client_mock);
 
 void MockRunDBTransaction(AdsClientMock& ads_client_mock, Database& database);
 
+void MockFindProfilePref(const AdsClientMock& ads_client_mock);
 void MockGetProfilePref(const AdsClientMock& ads_client_mock);
 void MockSetProfilePref(const AdsClientMock& ads_client_mock,
                         TestBase& test_base);
 void MockClearProfilePref(AdsClientMock& ads_client_mock);
 void MockHasProfilePrefPath(const AdsClientMock& ads_client_mock);
 
+void MockFindLocalStatePref(const AdsClientMock& ads_client_mock);
 void MockGetLocalStatePref(const AdsClientMock& ads_client_mock);
 void MockSetLocalStatePref(const AdsClientMock& ads_client_mock,
                            TestBase& test_base);

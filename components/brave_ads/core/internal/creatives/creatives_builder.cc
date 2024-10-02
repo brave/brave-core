@@ -236,11 +236,14 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         CHECK(!creative.payload.wallpapers.empty());
         for (const auto& catalog_new_tab_page_ad_wallpaper :
              creative.payload.wallpapers) {
-          creative_ad.wallpapers.push_back(CreativeNewTabPageAdWallpaperInfo{
-              .image_url = catalog_new_tab_page_ad_wallpaper.image_url,
-              .focal_point = CreativeNewTabPageAdWallpaperFocalPointInfo{
-                  .x = catalog_new_tab_page_ad_wallpaper.focal_point.x,
-                  .y = catalog_new_tab_page_ad_wallpaper.focal_point.y}});
+          CreativeNewTabPageAdWallpaperInfo wallpaper;
+          wallpaper.image_url = catalog_new_tab_page_ad_wallpaper.image_url;
+          wallpaper.focal_point = CreativeNewTabPageAdWallpaperFocalPointInfo{
+              .x = catalog_new_tab_page_ad_wallpaper.focal_point.x,
+              .y = catalog_new_tab_page_ad_wallpaper.focal_point.y};
+          wallpaper.condition_matchers =
+              catalog_new_tab_page_ad_wallpaper.condition_matchers;
+          creative_ad.wallpapers.push_back(wallpaper);
         }
 
         // Segments

@@ -22,6 +22,11 @@ base::flat_map</*uuid=*/std::string, PrefValueInfo>& LocalStatePrefStorage() {
 
 }  // namespace
 
+bool FindLocalStatePref(const std::string& path) {
+  const std::string uuid = GetUuidForCurrentTestAndValue(path);
+  return base::Contains(LocalStatePrefStorage(), uuid);
+}
+
 PrefValueInfo& LocalStatePref(const std::string& path) {
   const std::string uuid = GetUuidForCurrentTestAndValue(path);
   return LocalStatePrefStorage()[uuid];

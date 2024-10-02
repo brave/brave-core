@@ -124,6 +124,9 @@ class ADS_EXPORT AdsClient {
   // Record P2A (Private Advertising Analytics) `events`.
   virtual void RecordP2AEvents(const std::vector<std::string>& events) = 0;
 
+  // Returns `true` if the specified profile preference `path` exists.
+  virtual bool FindProfilePref(const std::string& path) const = 0;
+
   // Get the value from the specified profile preference `path`. Returns the
   // default value if the path does not exist.
   virtual std::optional<base::Value> GetProfilePref(
@@ -138,6 +141,9 @@ class ADS_EXPORT AdsClient {
   // Returns `true` if a value has been set for the specified profile preference
   // `path`.
   virtual bool HasProfilePrefPath(const std::string& path) const = 0;
+
+  // Returns `true` if the specified local state preference `path` exists.
+  virtual bool FindLocalStatePref(const std::string& path) const = 0;
 
   // Get the value from the specified local state preference `path`. Returns the
   // default value if the path does not exist.

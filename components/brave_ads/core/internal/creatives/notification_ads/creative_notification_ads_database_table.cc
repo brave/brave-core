@@ -394,8 +394,8 @@ void CreativeNotificationAds::Migrate(
       break;
     }
 
-    case 43: {
-      MigrateToV43(mojom_db_transaction);
+    case 45: {
+      MigrateToV45(mojom_db_transaction);
       break;
     }
   }
@@ -412,7 +412,7 @@ void CreativeNotificationAds::MigrateToV37(
   DropTable(mojom_db_transaction, "text_embedding_html_events");
 }
 
-void CreativeNotificationAds::MigrateToV43(
+void CreativeNotificationAds::MigrateToV45(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
