@@ -50,6 +50,7 @@ source_set("unittests") {
     "//brave/components/version_info",
     "//brave/components/webcompat_reporter/common:mojom",
     "//chrome/test:test_support",
+    "//components/component_updater:test_support",
     "//testing/gtest",
     "//url",
   ]
