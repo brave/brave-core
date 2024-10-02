@@ -29,7 +29,7 @@ public class AssetStore: Identifiable, ObservableObject, Equatable, WalletObserv
   private let rpcService: BraveWalletJsonRpcService
   private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
-  private(set) var isCustomToken: Bool
+  private(set) var isRemovable: Bool
 
   var isObserving: Bool = false
 
@@ -39,7 +39,7 @@ public class AssetStore: Identifiable, ObservableObject, Equatable, WalletObserv
     token: BraveWallet.BlockchainToken,
     ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType,
-    isCustomToken: Bool,
+    isRemovable: Bool,
     isVisible: Bool
   ) {
     self.rpcService = rpcService
@@ -47,7 +47,7 @@ public class AssetStore: Identifiable, ObservableObject, Equatable, WalletObserv
     self.token = token
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
-    self.isCustomToken = isCustomToken
+    self.isRemovable = isRemovable
     self.isVisible = isVisible
   }
 
@@ -192,19 +192,8 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
         .sorted(by: { $0.sortOrder < $1.sortOrder })
         .flatMap { assetsForNetwork in
           assetsForNetwork.tokens.map { token in
-            var isCustomToken: Bool {
-              if token.contractAddress.isEmpty {
-                return false
-              }
-              // Any token with a tokenId should be considered a custom token.
-              if !token.tokenId.isEmpty {
-                return true
-              }
-              return !allTokens.flatMap(\.tokens).contains(where: {
-                $0.contractAddress(in: assetsForNetwork.network).caseInsensitiveCompare(
-                  token.contractAddress
-                ) == .orderedSame
-              })
+            var isRemovable: Bool {
+              !token.contractAddress.isEmpty && (token.isErc721 || token.isErc1155 || token.isNft)
             }
             return AssetStore(
               rpcService: rpcService,
@@ -212,7 +201,7 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
               token: token,
               ipfsApi: self.ipfsApi,
               userAssetManager: assetManager,
-              isCustomToken: isCustomToken,
+              isRemovable: isRemovable,
               isVisible: visibleIds.contains(where: {
                 $0.caseInsensitiveCompare(token.id) == .orderedSame
               })
