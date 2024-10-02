@@ -172,6 +172,7 @@ export const Container = () => {
           hideNav={true}
           hideHeaderMenu={true}
           noBorderRadius={true}
+          useDarkBackground={isPanel}
         >
           <LockScreen />
         </WalletPageWrapper>
