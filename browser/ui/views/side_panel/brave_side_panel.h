@@ -35,30 +35,16 @@ class BraveSidePanel : public views::View,
                        public views::ResizeAreaDelegate {
   METADATA_HEADER(BraveSidePanel, views::View)
  public:
-  // In the past we have been forced to rename these values, as this unscoped
-  // enum ends up colliding with SDK constants on MacOS builds. However as these
-  // constants are referred to in chromium code, renaming them causes a
-  // growing number of substitution overrides to be necessary across the
-  // codebase. As part of simplifying the overrides for this class, this
-  // particular shadow warning is disabled on this case alone, to permit this
-  // enum to be used here.
-#if BUILDFLAG(IS_MAC)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wshadow"
-#endif  // BUILDFLAG(IS_MAC)
   // Determines the side from which the side panel will appear.
   // LTR / RTL conversions are handled in
   // BrowserViewLayout::LayoutSidePanelView. As such, left will always be on the
   // left side of the browser regardless of LTR / RTL mode.
-  enum HorizontalAlignment { kAlignLeft = 0, kAlignRight };
-#if BUILDFLAG(IS_MAC)
-#pragma clang diagnostic pop
-#endif  // BUILDFLAG(IS_MAC)
+  enum class HorizontalAlignment { kLeft = 0, kRight };
 
   // Same signature as chromium SidePanel
-  explicit BraveSidePanel(BrowserView* browser_view,
-                          HorizontalAlignment horizontal_alignment =
-                              HorizontalAlignment::kAlignLeft);
+  explicit BraveSidePanel(
+      BrowserView* browser_view,
+      HorizontalAlignment horizontal_alignment = HorizontalAlignment::kLeft);
   BraveSidePanel(const BraveSidePanel&) = delete;
   BraveSidePanel& operator=(const BraveSidePanel&) = delete;
   ~BraveSidePanel() override;
@@ -119,7 +105,7 @@ class BraveSidePanel : public views::View,
   base::ScopedMultiSourceObservation<View, ViewObserver> scoped_observation_{
       this};
 
-  HorizontalAlignment horizontal_alignment_ = kAlignLeft;
+  HorizontalAlignment horizontal_alignment_ = HorizontalAlignment::kLeft;
   std::optional<int> starting_width_on_resize_;
 
   // If this is set, use this width for panel contents during the layout
