@@ -12,8 +12,8 @@ brave_browser_webcompat_reporter_deps = [
   "//base",
   "//brave/browser:browser_process",
   "//brave/common",
-  "//brave/components/webcompat_reporter/common:mojom",
   "//brave/components/webcompat_reporter/browser",
+  "//brave/components/webcompat_reporter/common:mojom",
   "//components/keyed_service/content",
   "//mojo/public/cpp/bindings",
 ]
