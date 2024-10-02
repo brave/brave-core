@@ -18,11 +18,6 @@ public class BraveReturnToChromeUtilClassAdapter extends BraveClassVisitor {
 
         changeMethodOwner(
                 sReturnToChromeUtilClassName,
-                "shouldShowTabSwitcher",
-                sBraveReturnToChromeUtilClassName);
-
-        changeMethodOwner(
-                sReturnToChromeUtilClassName,
                 "shouldShowNtpAsHomeSurfaceAtStartup",
                 sBraveReturnToChromeUtilClassName);
     }
