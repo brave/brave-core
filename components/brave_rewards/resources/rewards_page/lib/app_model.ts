@@ -139,8 +139,10 @@ export interface AppState {
   paymentId: string
   countryCode: string
   externalWallet: ExternalWallet | null
+  externalWalletProviders: ExternalWalletProvider[]
   balance: Optional<number>
   tosUpdateRequired: boolean
+  selfCustodyInviteDismissed: boolean
   adsInfo: AdsInfo | null
   autoContributeInfo: AutoContributeInfo | null
   recurringContributions: RecurringContribution[]
@@ -159,7 +161,6 @@ export interface AppModel {
   getPluralString: (key: string, count: number) => Promise<string>
   enableRewards: (countryCode: string) => Promise<EnableRewardsResult>
   getAvailableCountries: () => Promise<AvailableCountryInfo>
-  getExternalWalletProviders: () => Promise<ExternalWalletProvider[]>
   beginExternalWalletLogin:
     (provider: ExternalWalletProvider) => Promise<boolean>
   connectExternalWallet:
@@ -179,6 +180,7 @@ export interface AppModel {
   sendContribution:
     (creatorID: string, amount: number, recurring: boolean) => Promise<boolean>
   acceptTermsOfServiceUpdate: () => Promise<void>
+  dismissSelfCustodyInvite: () => Promise<void>
 }
 
 export function defaultState(): AppState {
@@ -193,8 +195,10 @@ export function defaultState(): AppState {
     paymentId: '',
     countryCode: '',
     externalWallet: null,
+    externalWalletProviders: [],
     balance: new Optional(),
     tosUpdateRequired: false,
+    selfCustodyInviteDismissed: false,
     adsInfo: null,
     autoContributeInfo: null,
     recurringContributions: [],
@@ -227,8 +231,6 @@ export function defaultModel(): AppModel {
       }
     },
 
-    async getExternalWalletProviders() { return [] },
-
     async beginExternalWalletLogin(provider) { return true },
 
     async connectExternalWallet(provider, args) { return 'unexpected-error' },
@@ -259,6 +261,8 @@ export function defaultModel(): AppModel {
       return false
     },
 
-    async acceptTermsOfServiceUpdate() {}
+    async acceptTermsOfServiceUpdate() {},
+
+    async dismissSelfCustodyInvite() {}
   }
 }

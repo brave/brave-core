@@ -58,8 +58,10 @@ export function createModel(): AppModel {
       authenticated: true,
       url: ''
     },
+    externalWalletProviders: ['uphold', 'gemini', 'solana'],
     balance: optional(4.167),
-    tosUpdateRequired: true,
+    tosUpdateRequired: false,
+    selfCustodyInviteDismissed: false,
     autoContributeInfo: {
       enabled: true,
       amount: 7,
@@ -198,10 +200,6 @@ export function createModel(): AppModel {
       }
     },
 
-    async getExternalWalletProviders() {
-      return ['uphold', 'gemini', 'solana']
-    },
-
     async enableRewards(countryCode) {
       await delay(500)
       setTimeout(() => {
@@ -303,6 +301,10 @@ export function createModel(): AppModel {
 
     async acceptTermsOfServiceUpdate() {
       stateManager.update({ tosUpdateRequired: false })
+    },
+
+    async dismissSelfCustodyInvite() {
+      stateManager.update({ selfCustodyInviteDismissed: true })
     }
 
   }

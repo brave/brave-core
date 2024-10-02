@@ -106,6 +106,18 @@ export function createModel(): AppModel {
     })
   }
 
+  async function updateExternalWalletProviders() {
+    const providers: ExternalWalletProvider[] = []
+    const result = await pageHandler.getExternalWalletProviders()
+    for (const key of result.providers) {
+      const provider = externalWalletProviderFromString(key)
+      if (provider) {
+        providers.push(provider)
+      }
+    }
+    stateManager.update({ externalWalletProviders: providers })
+  }
+
   async function updateBalance() {
     const { balance } = await pageHandler.getAvailableBalance()
     stateManager.update({
@@ -117,6 +129,12 @@ export function createModel(): AppModel {
     const { updateRequired } =
       await pageHandler.getTermsOfServiceUpdateRequired()
     stateManager.update({ tosUpdateRequired: updateRequired })
+  }
+
+  async function updateSelfCustodyInviteDismissed() {
+    const { inviteDismissed } =
+      await pageHandler.getSelfCustodyInviteDismissed()
+    stateManager.update({ selfCustodyInviteDismissed: inviteDismissed })
   }
 
   async function updateAdsInfo() {
@@ -257,8 +275,10 @@ export function createModel(): AppModel {
       updatePaymentId(),
       updateCountryCode(),
       updateExternalWallet(),
+      updateExternalWalletProviders(),
       inBackground(updateBalance()),
       updateTosUpdateRequired(),
+      updateSelfCustodyInviteDismissed(),
       updateAdsInfo(),
       updateRecurringContributions(),
       updateAutoContributeInfo(),
@@ -336,18 +356,6 @@ export function createModel(): AppModel {
     async getAvailableCountries() {
       const { availableCountries } = await pageHandler.getAvailableCountries()
       return availableCountries
-    },
-
-    async getExternalWalletProviders() {
-      const providers: ExternalWalletProvider[] = []
-      const result = await pageHandler.getExternalWalletProviders()
-      for (const key of result.providers) {
-        const provider = externalWalletProviderFromString(key)
-        if (provider) {
-          providers.push(provider)
-        }
-      }
-      return providers
     },
 
     async beginExternalWalletLogin(provider) {
@@ -475,6 +483,11 @@ export function createModel(): AppModel {
     async acceptTermsOfServiceUpdate() {
       await pageHandler.acceptTermsOfServiceUpdate()
       stateManager.update({ tosUpdateRequired: false })
+    },
+
+    async dismissSelfCustodyInvite() {
+      await pageHandler.dismissSelfCustodyInvite()
+      stateManager.update({ selfCustodyInviteDismissed: true })
     }
   }
 }

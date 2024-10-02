@@ -307,6 +307,18 @@ void RewardsPageHandler::AcceptTermsOfServiceUpdate(
   std::move(callback).Run();
 }
 
+void RewardsPageHandler::GetSelfCustodyInviteDismissed(
+    GetSelfCustodyInviteDismissedCallback callback) {
+  std::move(callback).Run(
+      prefs_->GetBoolean(prefs::kSelfCustodyInviteDismissed));
+}
+
+void RewardsPageHandler::DismissSelfCustodyInvite(
+    DismissSelfCustodyInviteCallback callback) {
+  prefs_->SetBoolean(prefs::kSelfCustodyInviteDismissed, true);
+  std::move(callback).Run();
+}
+
 void RewardsPageHandler::GetPublisherForActiveTab(
     GetPublisherForActiveTabCallback callback) {
   if (!bubble_delegate_) {

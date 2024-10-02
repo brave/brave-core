@@ -37,22 +37,21 @@ export function ConnectAccount() {
   const { getString } = useLocaleContext()
   const wrapCallback = useCallbackWrapper()
 
-  const [providers, setProviders] =
-    React.useState<ExternalWalletProvider[] | null>(null)
-
-  const [countryCode, regions, externalWallet] = useAppState((state) => [
+  const [
+    countryCode,
+    regions,
+    providers,
+    externalWallet
+  ] = useAppState((state) => [
     state.countryCode,
     state.rewardsParameters?.walletProviderRegions ?? null,
+    state.externalWalletProviders,
     state.externalWallet
   ])
 
   const [loadingState, setLoadingState] = React.useState<LoadingState>('')
   const [selectedProvider, setSelectedProvider] =
     React.useState<ExternalWalletProvider | null>(null)
-
-  React.useEffect(() => {
-    model.getExternalWalletProviders().then(wrapCallback(setProviders))
-  }, [model])
 
   React.useEffect(() => {
     // If the user has connected an external wallet but is not longer logged in,
