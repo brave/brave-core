@@ -43,8 +43,7 @@ class WebcompatReporterService : public KeyedService,
   mojo::PendingRemote<mojom::WebcompatReporterHandler> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::WebcompatReporterHandler> receiver);
 
-  void SubmitWebcompatReport(mojom::ReportInfoPtr report_info,
-                             SubmitWebcompatReportCallback callback) override;
+  void SubmitWebcompatReport(mojom::ReportInfoPtr report_info) override;
 
   void SubmitWebcompatReport(Report report_data);
 

@@ -848,12 +848,9 @@ public class BraveShieldsHandler
                     public void onClick(View view) {
                         // Profile.getLastUsedRegularProfile requires to run in UI thread,
                         // so get api key here and pass it to IO worker task
-                        mWebcompatReporterHandler.submitWebcompatReport(
-                                getReportInfo(siteUrl),
-                                () -> {
-                                    mReportBrokenSiteLayout.setVisibility(View.GONE);
-                                    mThankYouLayout.setVisibility(View.VISIBLE);
-                                });
+                        mWebcompatReporterHandler.submitWebcompatReport(getReportInfo(siteUrl));
+                        mReportBrokenSiteLayout.setVisibility(View.GONE);
+                        mThankYouLayout.setVisibility(View.VISIBLE);
                     }
                 });
     }

@@ -162,8 +162,6 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
 }
 
 TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojo) {
-  base::MockCallback<base::OnceCallback<void()>> callback;
-
   base::flat_map<std::string, std::string> key_val_data{{"key1", "val1"},
                                                         {"key2", "val2"}};
   std::vector<webcompat_reporter::mojom::ComponentInfoPtr> components;
@@ -221,15 +219,11 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojo) {
         EXPECT_TRUE(report.screenshot_png);
         EXPECT_EQ(report.screenshot_png.value(), screenshot);
       });
-  EXPECT_CALL(callback, Run()).Times(1);
-
-  webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info),
-                                                     callback.Get());
+  webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info));
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojoWithNoPropsOverride) {
-  base::MockCallback<base::OnceCallback<void()>> callback;
   auto report_info = webcompat_reporter::mojom::ReportInfo::New();
   std::vector<component_updater::ComponentInfo> get_components_ret_value{
       component_updater::ComponentInfo("adcocjohghhfpidemphmcmlmhnfgikei", "fp",
@@ -267,9 +261,7 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojoWithNoPropsOverride) {
         EXPECT_FALSE(report.ad_block_list_names);
         EXPECT_FALSE(report.languages);
       });
-  EXPECT_CALL(callback, Run()).Times(1);
-  webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info),
-                                                     callback.Get());
+  webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info));
   task_environment_.RunUntilIdle();
 }
 

@@ -29,5 +29,5 @@ struct ReportInfo {
 };
 
 interface WebcompatReporterHandler {
-  SubmitWebcompatReport(ReportInfo report_info) => ();
+  SubmitWebcompatReport(ReportInfo report_info);
 };
