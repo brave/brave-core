@@ -34,30 +34,13 @@ export function isSupportedPage(document: Document) {
 
 /**
  * Decodes HTML entities in a given string using an ad-hoc
- * `textarea` element. The scope of this function is simply
- * to give Leo a plain-text representation of what the user
- * sees within the content of a post/notification.
- * 
- * Due to the sensitive nature of this function, some rules
- * ought to be followed:
- * 
- * - Never attach the `textarea` to the DOM.
- * - Never eval or execute code from the `textarea`.
- * 
- * Other approaches were considered, but found to be
- * insufficient:
- * 
- * - Using a `DOMParser` instance correctly decodes entities,
- *   but will not preserve original contents such as HTML
- *   comments, or purposefully invalid HTML (e.g., in a post
- *   by a web developer sharing examples of HTML code).
- * - Using `.innerText` or `.textContent` will not decode
- *   entities at all, as they handle the input as plain text.
- *   As such, "&gt;" will remain "&gt;" when reading from
- *   the `.value` property.
+ * `textarea` element, constructed in an ad-hoc document (for
+ * namespace isolation). The `textarea` is then leveraged to
+ * decode the HTML entities in the given string.
  */
 export function decodeHTMLSpecialChars(text: string) {
-  const textarea = document.createElement('textarea')
+  const isolatedDocument = document.implementation.createHTMLDocument()
+  const textarea = isolatedDocument.createElement("textarea");
   // eslint-disable-next-line no-unsanitized/property
   textarea.innerHTML = text
   return textarea.value
