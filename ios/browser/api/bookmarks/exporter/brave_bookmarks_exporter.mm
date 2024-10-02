@@ -109,14 +109,12 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 
         listener(BraveBookmarksExporterStateStarted);
 
-        ChromeBrowserState* chromeBrowserState =
-            GetApplicationContext()
-                ->GetProfileManager()
-                ->GetLastUsedProfileDeprecatedDoNotUse();
-        DCHECK(chromeBrowserState);
+        std::vector<ProfileIOS*> profiles =
+            GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
+        ProfileIOS* last_used_profile = profiles.at(0);
 
         bookmark_html_writer::WriteBookmarks(
-            chromeBrowserState, destination_file_path,
+            last_used_profile, destination_file_path,
             new BraveBookmarksExportObserver(listener));
       };
 
