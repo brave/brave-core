@@ -905,6 +905,18 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   WaitUntil(base::BindLambdaForTesting([&]() {
     return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
   }));
+
+  // Check per-url contextual panel close.
+  // If current tab load another url, customize panel should be hidden.
+  tab_model()->ActivateTabAt(0);
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kCustomizeChrome;
+  }));
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/")));
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
+  }));
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {

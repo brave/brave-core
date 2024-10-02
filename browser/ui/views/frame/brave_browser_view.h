@@ -57,6 +57,7 @@ class BraveBrowser;
 class BraveHelpBubbleHostView;
 class ContentsLayoutManager;
 class SidebarContainerView;
+class SidePanelEntry;
 class SplitViewLocationBar;
 class SplitViewSeparator;
 class VerticalTabStripWidgetDelegateView;
@@ -80,6 +81,8 @@ class BraveBrowserView : public BrowserView,
   void CloseWalletBubble();
   WalletButton* GetWalletButton();
   views::View* GetWalletButtonAnchorView();
+  void WillShowSidePanel();
+  void WillDeregisterSidePanelEntry(SidePanelEntry* entry);
 
   // Triggers layout of web modal dialogs
   void NotifyDialogPositionRequiresUpdate();

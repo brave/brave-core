@@ -22,7 +22,6 @@
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_observer.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_registry_observer.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_view_state_observer.h"
 #include "components/prefs/pref_member.h"
 #include "ui/events/event_observer.h"
@@ -58,7 +57,6 @@ class SidebarContainerView
       public SidebarShowOptionsEventDetectWidget::Delegate,
       public sidebar::SidebarModel::Observer,
       public SidePanelEntryObserver,
-      public SidePanelRegistryObserver,
       public SidePanelViewStateObserver,
       public TabStripModelObserver {
   METADATA_HEADER(SidebarContainerView, views::View)
@@ -80,6 +78,8 @@ class SidebarContainerView
 
   BraveSidePanel* side_panel() { return side_panel_; }
 
+  void WillShowSidePanel();
+  void WillDeregisterSidePanelEntry(SidePanelEntry* entry);
   bool IsFullscreenForCurrentEntry() const;
 
   void set_operation_from_active_tab_change(bool tab_change) {
@@ -123,18 +123,8 @@ class SidebarContainerView
   void OnEntryShown(SidePanelEntry* entry) override;
   void OnEntryHidden(SidePanelEntry* entry) override;
 
-  // SidePanelRegistryObserver:
-  void OnEntryRegistered(SidePanelRegistry* registry,
-                         SidePanelEntry* entry) override;
-  void OnEntryWillDeregister(SidePanelRegistry* registry,
-                             SidePanelEntry* entry) override;
-  void OnRegistryDestroying(SidePanelRegistry* registry) override;
-
   // TabStripModelObserver:
-  void OnTabStripModelChanged(
-      TabStripModel* tab_strip_model,
-      const TabStripModelChange& change,
-      const TabStripSelectionChange& selection) override;
+  void OnTabWillBeRemoved(content::WebContents* contents, int index) override;
 
   // SidePanelViewStateObserver:
   void OnSidePanelDidClose() override;
@@ -187,10 +177,10 @@ class SidebarContainerView
   void StartBrowserWindowEventMonitoring();
   void StopBrowserWindowEventMonitoring();
 
-  void StartObservingContextualSidePanelRegistry(
-      content::WebContents* contents);
-  void StopObservingContextualSidePanelRegistry(content::WebContents* contents);
-  void StopObservingContextualSidePanelRegistry(SidePanelRegistry* registry);
+  void StartObservingContextualSidePanelEntry(content::WebContents* contents);
+  void StopObservingContextualSidePanelEntry(content::WebContents* contents);
+  void StartObservingForEntry(SidePanelEntry* entry);
+  void StopObservingForEntry(SidePanelEntry* entry);
   void UpdateActiveItemState();
 
   // Casts |browser_| to BraveBrowser, as storing it as BraveBrowser would cause
@@ -222,9 +212,6 @@ class SidebarContainerView
       sidebar_model_observation_{this};
   base::ScopedMultiSourceObservation<SidePanelEntry, SidePanelEntryObserver>
       panel_entry_observations_{this};
-  base::ScopedMultiSourceObservation<SidePanelRegistry,
-                                     SidePanelRegistryObserver>
-      panel_registry_observations_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_CONTAINER_VIEW_H_
