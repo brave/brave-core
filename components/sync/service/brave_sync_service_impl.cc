@@ -365,20 +365,9 @@ void BraveSyncServiceImpl::OnSyncCycleCompleted(
 void BraveSyncServiceImpl::UpdateP3AObjectsNumber() {
   synced_objects_context_.Reset(GetUserSettings()->GetSelectedTypes().size());
 
-  for (UserSelectableType user_selected_type :
-       GetUserSettings()->GetSelectedTypes()) {
-    DataType data_type =
-        UserSelectableTypeToCanonicalDataType(user_selected_type);
-
-    auto dtc_it = data_type_manager_->GetControllerMap().find(data_type);
-    CHECK(dtc_it != data_type_manager_->GetControllerMap().end())
-        << "Missing controller for type " << DataTypeToDebugString(data_type);
-
-    DataTypeController* controller = dtc_it->second.get();
-    controller->GetTypeEntitiesCount(
-        base::BindOnce(&BraveSyncServiceImpl::OnGetTypeEntitiesCount,
-                       weak_ptr_factory_.GetWeakPtr()));
-  }
+  data_type_manager_->GetEntityCountsForDebugging(
+      base::BindRepeating(&BraveSyncServiceImpl::OnGetTypeEntitiesCount,
+                          weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveSyncServiceImpl::OnGetTypeEntitiesCount(
