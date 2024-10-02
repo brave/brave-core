@@ -340,11 +340,11 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
                        FetchSearchQuerySummary_NotBraveSearchSERP) {
   // Test non-brave search SERP URL, should return null result.
   NavigateURL(https_server_.GetURL("brave.com", "/search?q=query"));
-  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
+  ASSERT_TRUE(content::ExecJs(GetActiveWebContents()->GetPrimaryMainFrame(),
                               "var meta = document.createElement('meta');"
                               "meta.name = 'summarizer-key';"
                               "meta.content = '{test_key}';"
-                              "document.head.appendChild(meta);");
+                              "document.head.appendChild(meta);"));
   FetchSearchQuerySummary(FROM_HERE, std::nullopt);
 }
 
@@ -352,9 +352,11 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
                        FetchSearchQuerySummary_EmptyMetaTag) {
   // Test empty summarizer-key meta tag, should return null result.
   NavigateURL(https_server_.GetURL("search.brave.com", "/search?q=query"));
-  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
-                              "document.querySelector('meta[name=summarizer-"
-                              "key').content = '';");
+  ASSERT_TRUE(content::ExecJs(GetActiveWebContents()->GetPrimaryMainFrame(),
+                              "var meta = document.createElement('meta');"
+                              "meta.name = 'summarizer-key';"
+                              "meta.content = '';"
+                              "document.head.appendChild(meta);"));
   FetchSearchQuerySummary(FROM_HERE, std::nullopt);
 }
 
@@ -363,17 +365,17 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
   // Test when summarizer-key meta tag is dynamically inserted, should return
   // the search query summary from the mock response.
   NavigateURL(https_server_.GetURL("search.brave.com", "/search?q=query"));
-  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
+  ASSERT_TRUE(content::ExecJs(GetActiveWebContents()->GetPrimaryMainFrame(),
                               "var meta = document.createElement('meta');"
                               "meta.name = 'summarizer-key';"
                               "meta.content = '{test_key}';"
-                              "document.head.appendChild(meta);");
+                              "document.head.appendChild(meta);"));
   FetchSearchQuerySummary(FROM_HERE, std::vector<ai_chat::SearchQuerySummary>(
                                          {{"test query", "test summary"}}));
 
-  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
+  ASSERT_TRUE(content::ExecJs(GetActiveWebContents()->GetPrimaryMainFrame(),
                               "document.querySelector('meta[name=summarizer-"
-                              "key').content = 'multi';");
+                              "key').content = 'multi';"));
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
@@ -381,11 +383,11 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
   // Test when summarizer-key meta tag is dynamically inserted, should return
   // the search query summary from the mock response.
   NavigateURL(https_server_.GetURL("search.brave.com", "/search?q=query"));
-  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
+  ASSERT_TRUE(content::ExecJs(GetActiveWebContents()->GetPrimaryMainFrame(),
                               "var meta = document.createElement('meta');"
                               "meta.name = 'summarizer-key';"
                               "meta.content = 'multi';"
-                              "document.head.appendChild(meta);");
+                              "document.head.appendChild(meta);"));
 
   FetchSearchQuerySummary(FROM_HERE, std::vector<ai_chat::SearchQuerySummary>(
                                          {{"test query", "test summary"},
