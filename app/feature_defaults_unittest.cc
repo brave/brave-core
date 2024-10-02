@@ -94,7 +94,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kBackgroundResourceFetch,
       &blink::features::kBiddingAndScoringDebugReportingAPI,
       &blink::features::kBrowsingTopics,
-      &blink::features::kClientHintsFormFactors,
       &blink::features::kControlledFrame,
       &blink::features::kCssSelectorFragmentAnchor,
       &blink::features::kFencedFrames,

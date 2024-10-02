@@ -25,7 +25,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kBackgroundResourceFetch, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBiddingAndScoringDebugReportingAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBrowsingTopics, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kClientHintsFormFactors, base::FEATURE_DISABLED_BY_DEFAULT},
     {kControlledFrame, base::FEATURE_DISABLED_BY_DEFAULT},
     {kCssSelectorFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFencedFrames, base::FEATURE_DISABLED_BY_DEFAULT},
