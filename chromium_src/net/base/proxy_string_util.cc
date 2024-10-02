@@ -15,9 +15,8 @@ namespace {
 
 // Based on FromSchemeHostAndPort() from proxy_server.cc, but to consider auth
 // information when creating a ProxyServer, instead of bailing out.
-ProxyServer CreateProxyServerWithAuthInfo(
-    const ProxyServer::Scheme& scheme,
-    const std::string_view host_and_port) {
+ProxyServer CreateProxyServerWithAuthInfo(const ProxyServer::Scheme& scheme,
+                                          std::string_view host_and_port) {
   url::Component username_component;
   url::Component password_component;
   url::Component hostname_component;

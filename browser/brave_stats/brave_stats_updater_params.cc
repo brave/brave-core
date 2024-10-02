@@ -183,9 +183,9 @@ base::Time BraveStatsUpdaterParams::GetCurrentTimeNow() const {
 
 GURL BraveStatsUpdaterParams::GetUpdateURL(
     const GURL& base_update_url,
-    const std::string platform_id,
-    const std::string channel_name,
-    const std::string full_brave_version) const {
+    std::string_view platform_id,
+    std::string_view channel_name,
+    std::string_view full_brave_version) const {
   GURL update_url(base_update_url);
   update_url = net::AppendQueryParameter(update_url, "platform", platform_id);
   update_url = net::AppendQueryParameter(update_url, "channel", channel_name);

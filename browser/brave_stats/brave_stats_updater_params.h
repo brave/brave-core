@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <string>
+#include <string_view>
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
@@ -49,9 +50,9 @@ class BraveStatsUpdaterParams {
   std::string GetProcessArchParam() const;
   std::string GetWalletEnabledParam() const;
   GURL GetUpdateURL(const GURL& base_update_url,
-                    const std::string platform_id,
-                    const std::string channel_name,
-                    const std::string full_brave_version) const;
+                    std::string_view platform_id,
+                    std::string_view channel_name,
+                    std::string_view full_brave_version) const;
 
   void SavePrefs();
 
