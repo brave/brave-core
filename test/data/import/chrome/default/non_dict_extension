@@ -1,0 +1,7 @@
+{
+  "extensions" : {
+    "settings" : {
+      "someextensionid" : "not a dict for testing"
+    }
+  }
+}
