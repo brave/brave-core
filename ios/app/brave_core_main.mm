@@ -412,7 +412,7 @@ static bool CustomLogHandler(int severity,
 - (BraveSendTabAPI*)sendTabAPI {
   if (!_sendTabAPI) {
     send_tab_to_self::SendTabToSelfSyncService* sync_service_ =
-        SendTabToSelfSyncServiceFactory::GetForBrowserState(_mainBrowserState);
+        SendTabToSelfSyncServiceFactory::GetForProfile(_mainBrowserState);
 
     _sendTabAPI = [[BraveSendTabAPI alloc] initWithSyncService:sync_service_];
   }
