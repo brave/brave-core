@@ -5,14 +5,16 @@
 
 package org.chromium.chrome.browser.tasks;
 
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import android.content.Intent;
+import android.os.Bundle;
+
+import org.chromium.chrome.browser.ChromeInactivityTracker;
 
 public final class BraveReturnToChromeUtil {
-    public static boolean shouldShowTabSwitcher(final long lastTimeMillis) {
-        if (!ChromeFeatureList.sStartSurfaceReturnTime.isEnabled()) {
-            return false;
-        }
-
-        return ReturnToChromeUtil.shouldShowTabSwitcher(lastTimeMillis);
+    /** Returns whether should show a NTP as the home surface at startup. */
+    public static boolean shouldShowNtpAsHomeSurfaceAtStartup(
+            Intent intent, Bundle bundle, ChromeInactivityTracker inactivityTracker) {
+        // We do not want to show the NTP at start up in Brave.
+        return false;
     }
 }
