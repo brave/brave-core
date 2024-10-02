@@ -126,8 +126,9 @@ void AssociatedContentDelegate::OnTextEmbedderInitialized(bool initialized) {
   CHECK(text_embedder_);
   for (auto& request_info : pending_top_similarity_requests_) {
     text_embedder_->GetTopSimilarityWithPromptTilContextLimit(
-        std::get<0>(request_info), std::get<1>(request_info),
-        std::get<2>(request_info), std::move(std::get<3>(request_info)));
+        std::move(std::get<0>(request_info)),
+        std::move(std::get<1>(request_info)), std::get<2>(request_info),
+        std::move(std::get<3>(request_info)));
   }
   pending_top_similarity_requests_.clear();
 }

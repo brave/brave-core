@@ -1239,9 +1239,9 @@ TEST_P(PageContentRefineTest, TextEmbedder) {
     std::string page_content;
     bool should_refine_page_content;
   } test_cases[] = {
-      {"prompt", std::string(max_page_content_length - 1, 'A'), false},
-      {"prompt", std::string(max_page_content_length, 'A'), false},
-      {"prompt", std::string(max_page_content_length + 1, 'A'), true},
+      {"prompt1", std::string(max_page_content_length - 1, 'A'), false},
+      {"prompt2", std::string(max_page_content_length, 'A'), false},
+      {"prompt3", std::string(max_page_content_length + 1, 'A'), true},
       {l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE),
        std::string(max_page_content_length + 1, 'A'), false},
   };
@@ -1254,7 +1254,9 @@ TEST_P(PageContentRefineTest, TextEmbedder) {
                  << test_case.should_refine_page_content);
     if (test_case.should_refine_page_content && IsPageContentRefineEnabled()) {
       EXPECT_CALL(*mock_text_embedder,
-                  GetTopSimilarityWithPromptTilContextLimit(_, _, _, _))
+                  GetTopSimilarityWithPromptTilContextLimit(
+                      test_case.prompt, test_case.page_content,
+                      max_page_content_length, _))
           .Times(1);
       EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
           .Times(0);
@@ -1295,6 +1297,8 @@ TEST_P(PageContentRefineTest, TextEmbedderInitialized) {
   uint32_t max_page_content_length = conversation_handler_->GetCurrentModel()
                                          .options->get_leo_model_options()
                                          ->max_page_content_length;
+  constexpr char test_prompt[] = "prompt";
+  const std::string test_page_content(max_page_content_length + 1, 'A');
   for (const auto& test_case : test_cases) {
     SCOPED_TRACE(testing::Message()
                  << "IsInitialized: " << test_case.is_initialized
@@ -1306,8 +1310,10 @@ TEST_P(PageContentRefineTest, TextEmbedderInitialized) {
       EXPECT_CALL(*mock_text_embedder, Initialize).Times(0);
       EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
           .Times(0);
-      EXPECT_CALL(*mock_text_embedder,
-                  GetTopSimilarityWithPromptTilContextLimit(_, _, _, _))
+      EXPECT_CALL(
+          *mock_text_embedder,
+          GetTopSimilarityWithPromptTilContextLimit(
+              test_prompt, test_page_content, max_page_content_length, _))
           .Times(1);
     } else {
       EXPECT_CALL(*mock_text_embedder, Initialize)
@@ -1322,14 +1328,16 @@ TEST_P(PageContentRefineTest, TextEmbedderInitialized) {
       } else {
         EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
             .Times(0);
-        EXPECT_CALL(*mock_text_embedder,
-                    GetTopSimilarityWithPromptTilContextLimit(_, _, _, _))
+        EXPECT_CALL(
+            *mock_text_embedder,
+            GetTopSimilarityWithPromptTilContextLimit(
+                test_prompt, test_page_content, max_page_content_length, _))
             .Times(1);
       }
     }
 
     conversation_handler_->PerformAssistantGeneration(
-        "prompt", std::string(max_page_content_length + 1, 'A'), false, "");
+        test_prompt, test_page_content, false, "");
 
     testing::Mock::VerifyAndClearExpectations(mock_engine);
     testing::Mock::VerifyAndClearExpectations(mock_text_embedder);
