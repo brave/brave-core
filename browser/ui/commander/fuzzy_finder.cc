@@ -12,6 +12,7 @@
 
 #include <algorithm>
 
+#include "base/containers/span.h"
 #include "base/i18n/case_conversion.h"
 #include "base/i18n/char_iterator.h"
 #include "base/ranges/algorithm.h"
@@ -98,13 +99,13 @@ size_t LengthInCodePoints(const std::u16string& str) {
 // to be performant.
 double ConsecutiveMatchWithGaps(const std::u16string& needle,
                                 const std::u16string& haystack,
-                                std::vector<gfx::Range>* matched_ranges) {
+                                std::vector<gfx::Range>& matched_ranges) {
   DCHECK(needle == base::i18n::FoldCase(needle));
   DCHECK(haystack == base::i18n::FoldCase(haystack));
-  DCHECK(matched_ranges->empty());
+  DCHECK(matched_ranges.empty());
   // Special case for prefix.
   if (base::StartsWith(haystack, needle)) {
-    matched_ranges->emplace_back(0, needle.size());
+    matched_ranges.emplace_back(0, needle.size());
     return kPrefixScore;
   }
   base::i18n::UTF16CharIterator n_iter(needle);
@@ -145,7 +146,7 @@ double ConsecutiveMatchWithGaps(const std::u16string& needle,
   }
   if (!n_iter.end()) {
     // Didn't match all of |needle|.
-    matched_ranges->clear();
+    matched_ranges.clear();
     return 0;
   }
   if (match_length > 0) {
@@ -154,7 +155,7 @@ double ConsecutiveMatchWithGaps(const std::u16string& needle,
                          match_began_on_boundary, gap_size_before_match);
   }
   for (const MatchRecord& match : matches) {
-    matched_ranges->push_back(match.range);
+    matched_ranges.push_back(match.range);
   }
   double score = ScoreForMatches(matches, LengthInCodePoints(needle),
                                  LengthInCodePoints(haystack));
@@ -165,7 +166,7 @@ double ConsecutiveMatchWithGaps(const std::u16string& needle,
 // `matched_ranges` with the result.
 // For example: [0, 1, 4, 7, 8, 9] -> [{0, 2}, {4, 1}, {7, 3}].
 void ConvertPositionsToRanges(const std::vector<size_t>& positions,
-                              std::vector<gfx::Range>* matched_ranges) {
+                              std::vector<gfx::Range>& matched_ranges) {
   size_t n = positions.size();
   DCHECK(n > 0);
   size_t start = positions.front();
@@ -173,23 +174,23 @@ void ConvertPositionsToRanges(const std::vector<size_t>& positions,
   for (size_t i = 0; i < n - 1; ++i) {
     if (positions.at(i) + 1 < positions.at(i + 1)) {
       // Noncontiguous positions -> close out the range.
-      matched_ranges->emplace_back(start, start + length);
+      matched_ranges.emplace_back(start, start + length);
       start = positions.at(i + 1);
       length = 1;
     } else {
       ++length;
     }
   }
-  matched_ranges->emplace_back(start, start + length);
+  matched_ranges.emplace_back(start, start + length);
 }
 
 // Returns the maximum score for the given matrix, then backtracks to fill in
 // `matched_ranges`. See fuzzy_finder.md for extended discussion.
-int ScoreForMatrix(const std::vector<int> score_matrix,
+int ScoreForMatrix(base::span<int> score_matrix,
                    size_t width,
                    size_t height,
-                   const std::vector<size_t> codepoint_to_offset,
-                   std::vector<gfx::Range>* matched_ranges) {
+                   base::span<size_t> codepoint_to_offset,
+                   std::vector<gfx::Range>& matched_ranges) {
   // Find winning score and its index.
   size_t max_index = 0;
   int max_score = 0;
@@ -243,8 +244,8 @@ FuzzyFinder::FuzzyFinder(const std::u16string& needle)
 FuzzyFinder::~FuzzyFinder() = default;
 
 double FuzzyFinder::Find(const std::u16string& haystack,
-                         std::vector<gfx::Range>* matched_ranges) {
-  matched_ranges->clear();
+                         std::vector<gfx::Range>& matched_ranges) {
+  matched_ranges.clear();
   const std::u16string& folded = base::i18n::FoldCase(haystack);
   size_t m = needle_.size();
   size_t n = folded.size();
@@ -257,7 +258,7 @@ double FuzzyFinder::Find(const std::u16string& haystack,
   // or a non-match.
   if (m == n) {
     if (folded == needle_) {
-      matched_ranges->emplace_back(0, needle_.length());
+      matched_ranges.emplace_back(0, needle_.length());
       return kMaxScore;
     } else {
       return 0;
@@ -265,7 +266,7 @@ double FuzzyFinder::Find(const std::u16string& haystack,
   }
   // Special case 2: needle is a prefix of haystack
   if (base::StartsWith(folded, needle_)) {
-    matched_ranges->emplace_back(0, needle_.length());
+    matched_ranges.emplace_back(0, needle_.length());
     return kPrefixScore;
   }
   // Special case 3: M == 1. Scan through all matches, and return:
@@ -283,32 +284,32 @@ double FuzzyFinder::Find(const std::u16string& haystack,
     while (substring_position != std::string::npos) {
       if (substring_position == 0) {
         // Prefix match.
-        matched_ranges->emplace_back(0, 1);
+        matched_ranges.emplace_back(0, 1);
         return kPrefixScore;
       } else {
         wchar_t previous = folded.at(substring_position - 1);
         if (base::IsUnicodeWhitespace(previous)) {
           // Word boundary. Since we've eliminated prefix by now, this is as
           // good as we're going to get, so we can return.
-          matched_ranges->clear();
-          matched_ranges->emplace_back(substring_position,
-                                       substring_position + 1);
+          matched_ranges.clear();
+          matched_ranges.emplace_back(substring_position,
+                                      substring_position + 1);
           return kVeryHighScore;
           // Internal match. If |matched_ranges| is already populated, we've
           // seen another internal match previously, so ignore this one.
-        } else if (matched_ranges->empty()) {
-          matched_ranges->emplace_back(substring_position,
-                                       substring_position + 1);
+        } else if (matched_ranges.empty()) {
+          matched_ranges.emplace_back(substring_position,
+                                      substring_position + 1);
         }
       }
       substring_position = folded.find(needle_, substring_position + 1);
     }
-    if (matched_ranges->empty()) {
+    if (matched_ranges.empty()) {
       return 0;
     } else {
       // First internal match.
-      DCHECK_EQ(matched_ranges->size(), 1u);
-      double position = static_cast<double>(matched_ranges->back().start());
+      DCHECK_EQ(matched_ranges.size(), 1u);
+      double position = static_cast<double>(matched_ranges.back().start());
       return std::min(1 - position / folded.length(), 0.01);
     }
   }
@@ -320,18 +321,18 @@ double FuzzyFinder::Find(const std::u16string& haystack,
   //    full O(mn) matching algorithm.
   double score = ConsecutiveMatchWithGaps(needle_, folded, matched_ranges);
   if (score == 0) {
-    matched_ranges->clear();
+    matched_ranges.clear();
     return 0;
   } else if (n > kMaxHaystack || m > kMaxNeedle) {
     return score;
   }
-  matched_ranges->clear();
+  matched_ranges.clear();
   return MatrixMatch(needle_, folded, matched_ranges);
 }
 
 double FuzzyFinder::MatrixMatch(const std::u16string& needle_string,
                                 const std::u16string& haystack_string,
-                                std::vector<gfx::Range>* matched_ranges) {
+                                std::vector<gfx::Range>& matched_ranges) {
   static constexpr int kMatchScore = 16;
   static constexpr int kBoundaryBonus = 8;
   static constexpr int kConsecutiveBonus = 4;

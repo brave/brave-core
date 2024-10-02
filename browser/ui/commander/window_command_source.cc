@@ -106,7 +106,7 @@ CommandSource::CommandResults WindowCommandSource::GetCommands(
   std::u16string merge_title =
       l10n_util::GetStringUTF16(IDS_COMMANDER_MERGE_WINDOW_INTO);
 
-  double score = finder.Find(open_title, &ranges);
+  double score = finder.Find(open_title, ranges);
   if (score > 0) {
     auto verb = std::make_unique<CommandItem>(open_title, score, ranges);
     verb->command = std::make_pair(
@@ -114,7 +114,7 @@ CommandSource::CommandResults WindowCommandSource::GetCommands(
                                         base::Unretained(browser)));
     results.push_back(std::move(verb));
   }
-  score = finder.Find(merge_title, &ranges);
+  score = finder.Find(merge_title, ranges);
   if (score > 0 && !browser->is_type_devtools()) {
     auto verb = std::make_unique<CommandItem>(merge_title, score, ranges);
     verb->command = std::make_pair(

@@ -53,7 +53,7 @@ CommandSource::CommandResults GetMatchingBookmarks(
   FuzzyFinder finder(input);
   std::vector<gfx::Range> ranges;
   for (bookmarks::UrlAndTitle& bookmark : model->GetUniqueUrls()) {
-    double score = finder.Find(bookmark.title, &ranges);
+    double score = finder.Find(bookmark.title, ranges);
     if (score > 0) {
       auto item = CreateOpenBookmarkItem(bookmark, browser);
       item->score = score;
@@ -85,7 +85,7 @@ CommandSource::CommandResults BookmarkCommandSource::GetCommands(
   std::vector<gfx::Range> ranges;
   std::u16string open_title =
       l10n_util::GetStringUTF16(IDS_COMMANDER_OPEN_BOOKMARK);
-  double score = finder.Find(open_title, &ranges);
+  double score = finder.Find(open_title, ranges);
   if (score > 0) {
     auto verb = std::make_unique<CommandItem>(open_title, score, ranges);
     // base::Unretained is safe because commands are cleared on browser close.

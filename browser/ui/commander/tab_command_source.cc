@@ -45,10 +45,10 @@ namespace {
 // method or a free function in some common place. Not committing yet.
 std::unique_ptr<CommandItem> ItemForTitle(const std::u16string& title,
                                           FuzzyFinder& finder,
-                                          std::vector<gfx::Range>* ranges) {
+                                          std::vector<gfx::Range>& ranges) {
   double score = finder.Find(title, ranges);
   if (score > 0) {
-    return std::make_unique<CommandItem>(title, score, *ranges);
+    return std::make_unique<CommandItem>(title, score, ranges);
   }
   return nullptr;
 }
@@ -189,7 +189,7 @@ CommandSource::CommandResults MoveTabsToWindowCommandsForWindowsMatching(
   } else {
     FuzzyFinder finder(input);
     std::vector<gfx::Range> ranges;
-    item = ItemForTitle(new_window_title, finder, &ranges);
+    item = ItemForTitle(new_window_title, finder, ranges);
   }
   if (item) {
     item->entity_type = CommandItem::Entity::kWindow;
@@ -229,7 +229,7 @@ CommandSource::CommandResults AddTabsToGroupCommandsForGroupsMatching(
   } else {
     FuzzyFinder finder(input);
     std::vector<gfx::Range> ranges;
-    item = ItemForTitle(new_group_title, finder, &ranges);
+    item = ItemForTitle(new_group_title, finder, ranges);
   }
   if (item) {
     item->entity_type = CommandItem::Entity::kGroup;
@@ -263,7 +263,7 @@ CommandSource::CommandResults TabCommandSource::GetCommands(
 
   if (CanMoveTabsToExistingWindow(browser)) {
     auto text = l10n_util::GetStringUTF16(IDS_COMMANDER_MOVE_TABS_TO_WINDOW);
-    if (auto item = ItemForTitle(text, finder, &ranges)) {
+    if (auto item = ItemForTitle(text, finder, ranges)) {
       item->command = std::make_pair(
           text, base::BindRepeating(&MoveTabsToWindowCommandsForWindowsMatching,
                                     base::Unretained(browser)));
@@ -273,7 +273,7 @@ CommandSource::CommandResults TabCommandSource::GetCommands(
 
   auto add_tab_to_existing_group =
       l10n_util::GetStringUTF16(IDS_COMMANDER_ADD_TABS_TO_EXISTING_GROUP);
-  if (auto item = ItemForTitle(add_tab_to_existing_group, finder, &ranges)) {
+  if (auto item = ItemForTitle(add_tab_to_existing_group, finder, ranges)) {
     item->command = std::make_pair(
         add_tab_to_existing_group,
         base::BindRepeating(&AddTabsToGroupCommandsForGroupsMatching,
@@ -283,7 +283,7 @@ CommandSource::CommandResults TabCommandSource::GetCommands(
 
   if (HasUnpinnedTabs(tab_strip_model)) {
     auto text = l10n_util::GetStringUTF16(IDS_COMMANDER_PIN_TAB);
-    if (auto item = ItemForTitle(text, finder, &ranges)) {
+    if (auto item = ItemForTitle(text, finder, ranges)) {
       item->command = std::make_pair(
           text, base::BindRepeating(&TogglePinTabCommandsForTabsMatching,
                                     base::Unretained(browser), true));
@@ -293,7 +293,7 @@ CommandSource::CommandResults TabCommandSource::GetCommands(
 
   if (HasPinnedTabs(tab_strip_model)) {
     auto text = l10n_util::GetStringUTF16(IDS_COMMANDER_UNPIN_TAB);
-    if (auto item = ItemForTitle(text, finder, &ranges)) {
+    if (auto item = ItemForTitle(text, finder, ranges)) {
       item->command = std::make_pair(
           text, base::BindRepeating(&TogglePinTabCommandsForTabsMatching,
                                     base::Unretained(browser), false));

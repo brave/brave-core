@@ -116,7 +116,7 @@ std::vector<TabMatch> TabsMatchingInput(const Browser* browser,
       results.push_back(std::move(match));
       ordering_score *= .95;
     } else {
-      double score = finder.Find(title, &ranges);
+      double score = finder.Find(title, ranges);
       if (score > 0) {
         TabMatch match(i, sessions::SessionTabHelper::IdForTab(contents).id(),
                        title, score);
@@ -148,7 +148,7 @@ std::vector<WindowMatch> WindowsMatchingInput(const Browser* browser_to_exclude,
       results.push_back(std::move(match));
       mru_score *= .95;
     } else {
-      double score = finder.Find(title, &ranges);
+      double score = finder.Find(title, ranges);
       if (score > 0) {
         WindowMatch match(browser, std::move(title), score);
         match.matched_ranges = ranges;
@@ -187,7 +187,7 @@ std::vector<GroupMatch> GroupsMatchingInput(
       results.push_back(std::move(match));
       ordering_score *= .95;
     } else {
-      double score = finder.Find(title, &ranges);
+      double score = finder.Find(title, ranges);
       if (score > 0) {
         GroupMatch match(group_id, title, score);
         match.matched_ranges = ranges;
