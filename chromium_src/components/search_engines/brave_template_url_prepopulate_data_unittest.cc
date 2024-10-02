@@ -43,15 +43,6 @@ const PrepopulatedEngine* const kBraveAddedEngines[] = {
 
 const std::unordered_set<std::u16string_view> kOverriddenEnginesNames = {
     u"DuckDuckGo", u"Qwant"};
-
-std::vector<const PrepopulatedEngine*> GetAllPrepopulatedEngines() {
-  std::vector<const PrepopulatedEngine*> engines =
-      TemplateURLPrepopulateData::GetAllPrepopulatedEngines();
-  engines.insert(engines.end(), std::begin(kBraveAddedEngines),
-                 std::end(kBraveAddedEngines));
-  return engines;
-}
-
 }  // namespace
 
 class BraveTemplateURLPrepopulateDataTest : public testing::Test {
@@ -66,6 +57,14 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
     registry->RegisterIntegerPref(
         prefs::kBraveDefaultSearchVersion,
         TemplateURLPrepopulateData::kBraveCurrentDataVersion);
+
+    const auto engines =
+        TemplateURLPrepopulateData::GetAllPrepopulatedEngines();
+    brave_prepopulated_engines_.insert(brave_prepopulated_engines_.end(),
+                                       engines.begin(), engines.end());
+    brave_prepopulated_engines_.insert(brave_prepopulated_engines_.end(),
+                                       std::begin(kBraveAddedEngines),
+                                       std::end(kBraveAddedEngines));
   }
 
   void CheckForCountry(char digit1, char digit2, int prepopulate_id) {
@@ -78,10 +77,16 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
     EXPECT_EQ(fallback_t_url_data->prepopulate_id, prepopulate_id);
   }
 
+  const base::span<const PrepopulatedEngine* const>
+  GetAllPrepopulatedEngines() {
+    return brave_prepopulated_engines_;
+  }
+
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
   TestingPrefServiceSimple local_state_;
   search_engines::SearchEngineChoiceService search_engine_choice_service_;
+  std::vector<const PrepopulatedEngine*> brave_prepopulated_engines_;
 };
 
 // Verifies that the set of all prepopulate data doesn't contain entries with
@@ -89,8 +94,8 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
 // engine in the future that Brave already added.
 TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueKeywords) {
   using PrepopulatedEngine = TemplateURLPrepopulateData::PrepopulatedEngine;
-  const std::vector<const PrepopulatedEngine*> all_engines =
-      ::GetAllPrepopulatedEngines();
+  const base::span<const PrepopulatedEngine* const> all_engines =
+      GetAllPrepopulatedEngines();
   std::set<std::u16string_view> unique_keywords;
   for (const PrepopulatedEngine* engine : all_engines) {
     ASSERT_TRUE(unique_keywords.find(engine->keyword) == unique_keywords.end());
@@ -101,8 +106,8 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueKeywords) {
 // Verifies that engines we override are used and not the original engines.
 TEST_F(BraveTemplateURLPrepopulateDataTest, OverriddenEngines) {
   using PrepopulatedEngine = TemplateURLPrepopulateData::PrepopulatedEngine;
-  const std::vector<const PrepopulatedEngine*> all_engines =
-      ::GetAllPrepopulatedEngines();
+  const base::span<const PrepopulatedEngine* const> all_engines =
+      GetAllPrepopulatedEngines();
   for (const PrepopulatedEngine* engine : all_engines) {
     if (kOverriddenEnginesNames.count(engine->name) > 0)
       ASSERT_GE(static_cast<unsigned int>(engine->id),
