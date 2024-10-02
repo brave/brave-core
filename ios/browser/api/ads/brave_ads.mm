@@ -1442,6 +1442,10 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
   // P3A analytics.
 }
 
+- (bool)findProfilePref:(const std::string&)path {
+  return !!self.profilePrefService->FindPreference(path);
+}
+
 - (std::optional<base::Value>)getProfilePref:(const std::string&)path {
   if (path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
       path == ntp_background_images::prefs::
@@ -1466,6 +1470,10 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
 
 - (bool)hasProfilePrefPath:(const std::string&)path {
   return self.profilePrefService->HasPrefPath(path);
+}
+
+- (bool)findLocalStatePref:(const std::string&)path {
+  return !!self.localStatePrefService->FindPreference(path);
 }
 
 - (std::optional<base::Value>)getLocalStatePref:(const std::string&)path {

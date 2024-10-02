@@ -1753,6 +1753,11 @@ void AdsServiceImpl::RecordP2AEvents(const std::vector<std::string>& events) {
   }
 }
 
+void AdsServiceImpl::FindProfilePref(const std::string& path,
+                                     FindProfilePrefCallback callback) {
+  std::move(callback).Run(prefs_->FindPreference(path) != nullptr);
+}
+
 void AdsServiceImpl::GetProfilePref(const std::string& path,
                                     GetProfilePrefCallback callback) {
   std::move(callback).Run(prefs_->GetValue(path).Clone());
@@ -1772,6 +1777,11 @@ void AdsServiceImpl::ClearProfilePref(const std::string& path) {
 void AdsServiceImpl::HasProfilePrefPath(const std::string& path,
                                         HasProfilePrefPathCallback callback) {
   std::move(callback).Run(prefs_->HasPrefPath(path));
+}
+
+void AdsServiceImpl::FindLocalStatePref(const std::string& path,
+                                        FindLocalStatePrefCallback callback) {
+  std::move(callback).Run(local_state_->FindPreference(path) != nullptr);
 }
 
 void AdsServiceImpl::GetLocalStatePref(const std::string& path,

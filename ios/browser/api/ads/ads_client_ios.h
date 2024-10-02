@@ -67,10 +67,12 @@ class AdsClientIOS : public brave_ads::AdsClient {
       brave_ads::mojom::DBTransactionInfoPtr mojom_db_transaction,
       brave_ads::RunDBTransactionCallback callback) override;
   void SetProfilePref(const std::string& path, base::Value value) override;
+  bool FindProfilePref(const std::string& path) const override;
   std::optional<base::Value> GetProfilePref(const std::string& path) override;
   void ClearProfilePref(const std::string& path) override;
   bool HasProfilePrefPath(const std::string& path) const override;
   void SetLocalStatePref(const std::string& path, base::Value value) override;
+  bool FindLocalStatePref(const std::string& path) const override;
   std::optional<base::Value> GetLocalStatePref(
       const std::string& path) override;
   void ClearLocalStatePref(const std::string& path) override;

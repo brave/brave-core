@@ -227,6 +227,26 @@ Campaign NTPSponsoredImagesData::GetCampaignFromValue(
                                   focal_point->FindInt(kYKey).value_or(0)};
       }
 
+      if (const auto* const condition_matchers =
+              wallpaper.FindList(kWallpaperConditionMatchersKey)) {
+        for (const auto& condition_matcher : *condition_matchers) {
+          const auto& dict = condition_matcher.GetDict();
+          const auto* const pref_path =
+              dict.FindString(kWallpaperConditionMatcherPrefPathKey);
+          if (!pref_path) {
+            continue;
+          }
+
+          const auto* const condition =
+              dict.FindString(kWallpaperConditionMatcherKey);
+          if (!condition) {
+            continue;
+          }
+
+          background.condition_matchers.emplace(*pref_path, *condition);
+        }
+      }
+
       if (auto* viewbox = wallpaper.FindDict(kViewboxKey)) {
         gfx::Rect rect(viewbox->FindInt(kXKey).value_or(0),
                        viewbox->FindInt(kYKey).value_or(0),
@@ -327,6 +347,16 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
            campaign.backgrounds[background_index].focal_point.x());
   data.Set(kWallpaperFocalPointYKey,
            campaign.backgrounds[background_index].focal_point.y());
+
+  base::Value::List condition_matchers;
+  for (const auto& [pref_path, condition] :
+       campaign.backgrounds[background_index].condition_matchers) {
+    base::Value::Dict dict;
+    dict.Set(kWallpaperConditionMatcherPrefPathKey, pref_path);
+    dict.Set(kWallpaperConditionMatcherKey, condition);
+    condition_matchers.Append(std::move(dict));
+  }
+  data.Set(kWallpaperConditionMatchersKey, std::move(condition_matchers));
 
   data.Set(kCreativeInstanceIDKey,
            campaign.backgrounds[background_index].creative_instance_id);

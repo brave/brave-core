@@ -116,12 +116,16 @@ interface BatAdsClient {
   RecordP2AEvents(array<string> events);
 
   [Sync]
+  FindProfilePref(string path) => (bool value);
+  [Sync]
   GetProfilePref(string path) => (mojo_base.mojom.Value? value);
   SetProfilePref(string path, mojo_base.mojom.Value value);
   ClearProfilePref(string path);
   [Sync]
   HasProfilePrefPath(string path) => (bool value);
 
+  [Sync]
+  FindLocalStatePref(string path) => (bool value);
   [Sync]
   GetLocalStatePref(string path) => (mojo_base.mojom.Value? value);
   SetLocalStatePref(string path, mojo_base.mojom.Value value);

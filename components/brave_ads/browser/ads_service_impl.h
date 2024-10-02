@@ -361,6 +361,8 @@ class AdsServiceImpl final : public AdsService,
   // business logic.
   void RecordP2AEvents(const std::vector<std::string>& events) override;
 
+  void FindProfilePref(const std::string& path,
+                       FindProfilePrefCallback callback) override;
   void GetProfilePref(const std::string& path,
                       GetProfilePrefCallback callback) override;
   void SetProfilePref(const std::string& path, base::Value value) override;
@@ -368,6 +370,8 @@ class AdsServiceImpl final : public AdsService,
   void HasProfilePrefPath(const std::string& path,
                           HasProfilePrefPathCallback callback) override;
 
+  void FindLocalStatePref(const std::string& path,
+                          FindLocalStatePrefCallback callback) override;
   void GetLocalStatePref(const std::string& path,
                          GetLocalStatePrefCallback callback) override;
   void SetLocalStatePref(const std::string& path, base::Value value) override;

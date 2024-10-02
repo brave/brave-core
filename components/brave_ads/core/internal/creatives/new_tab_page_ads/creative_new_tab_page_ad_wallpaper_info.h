@@ -9,15 +9,30 @@
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_focal_point_info.h"
+#include "brave/components/brave_ads/core/public/serving/new_tab_page_ad_serving_condition_matcher_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
 
 struct CreativeNewTabPageAdWallpaperInfo final {
+  CreativeNewTabPageAdWallpaperInfo();
+
+  CreativeNewTabPageAdWallpaperInfo(const CreativeNewTabPageAdWallpaperInfo&);
+  CreativeNewTabPageAdWallpaperInfo& operator=(
+      const CreativeNewTabPageAdWallpaperInfo&);
+
+  CreativeNewTabPageAdWallpaperInfo(
+      CreativeNewTabPageAdWallpaperInfo&&) noexcept;
+  CreativeNewTabPageAdWallpaperInfo& operator=(
+      CreativeNewTabPageAdWallpaperInfo&&) noexcept;
+
+  ~CreativeNewTabPageAdWallpaperInfo();
+
   bool operator==(const CreativeNewTabPageAdWallpaperInfo&) const = default;
 
   GURL image_url;
   CreativeNewTabPageAdWallpaperFocalPointInfo focal_point;
+  NewTabPageAdConditionMatchers condition_matchers;
 };
 
 using CreativeNewTabPageAdWallpaperList =

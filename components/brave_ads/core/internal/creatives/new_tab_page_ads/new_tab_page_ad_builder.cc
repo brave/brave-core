@@ -35,7 +35,7 @@ NewTabPageAdInfo BuildNewTabPageAd(
   ad.alt = creative_ad.alt;
   ad.target_url = creative_ad.target_url;
 
-  for (const auto& [image_url, focal_point] : creative_ad.wallpapers) {
+  for (const auto& [image_url, focal_point, _] : creative_ad.wallpapers) {
     ad.wallpapers.push_back(NewTabPageAdWallpaperInfo{
         .image_url = image_url,
         .focal_point =

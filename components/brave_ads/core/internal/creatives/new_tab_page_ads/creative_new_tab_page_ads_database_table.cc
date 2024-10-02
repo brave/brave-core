@@ -9,10 +9,11 @@
 #include <map>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
+#include "base/strings/string_split.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/containers/container_util.h"
@@ -26,6 +27,7 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
+#include "brave/components/brave_ads/core/public/serving/new_tab_page_ad_serving_condition_matcher_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads::database::table {
@@ -38,6 +40,40 @@ namespace {
 constexpr char kTableName[] = "creative_new_tab_page_ads";
 
 constexpr int kDefaultBatchSize = 50;
+
+NewTabPageAdConditionMatchers StringToConditionMatchers(
+    const std::string& value) {
+  const std::vector<std::string> condition_matchers_as_string =
+      base::SplitString(value, ";", base::TRIM_WHITESPACE,
+                        base::SPLIT_WANT_NONEMPTY);
+
+  NewTabPageAdConditionMatchers condition_matchers;
+  for (const auto& condition_matcher_as_string : condition_matchers_as_string) {
+    const std::vector<std::string> condition_matcher =
+        base::SplitString(condition_matcher_as_string, "|",
+                          base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+    if (condition_matcher.size() != 2) {
+      // Malfomed condition matcher.
+      continue;
+    }
+
+    std::string pref_path;
+    if (!base::Base64Decode(condition_matcher[0], &pref_path)) {
+      // Malfomed condition matcher.
+      continue;
+    }
+
+    std::string condition;
+    if (!base::Base64Decode(condition_matcher[1], &condition)) {
+      // Malfomed condition matcher.
+      continue;
+    }
+
+    condition_matchers.emplace(pref_path, condition);
+  }
+
+  return condition_matchers;
+}
 
 void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
   CHECK(mojom_db_action);
@@ -72,7 +108,9 @@ void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
       mojom::DBBindColumnType::
           kInt,  // creative_new_tab_page_ad_wallpapers->focal_point->x
       mojom::DBBindColumnType::
-          kInt  // creative_new_tab_page_ad_wallpapers->focal_point->y
+          kInt,  // creative_new_tab_page_ad_wallpapers->focal_point->y
+      mojom::DBBindColumnType::
+          kString  // creative_new_tab_page_ad_wallpapers->condition_matchers
   };
 }
 
@@ -136,6 +174,8 @@ CreativeNewTabPageAdInfo FromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
   wallpaper.image_url = GURL(ColumnString(mojom_db_row, 24));
   wallpaper.focal_point.x = ColumnInt(mojom_db_row, 25);
   wallpaper.focal_point.y = ColumnInt(mojom_db_row, 26);
+  wallpaper.condition_matchers =
+      StringToConditionMatchers(ColumnString(mojom_db_row, 27));
   creative_ad.wallpapers.push_back(wallpaper);
 
   return creative_ad;
@@ -336,7 +376,8 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
             dayparts.end_minute,
             creative_new_tab_page_ad_wallpapers.image_url,
             creative_new_tab_page_ad_wallpapers.focal_point_x,
-            creative_new_tab_page_ad_wallpapers.focal_point_y
+            creative_new_tab_page_ad_wallpapers.focal_point_y,
+            creative_new_tab_page_ad_wallpapers.condition_matchers
           FROM
             $1 AS creative_new_tab_page_ad
             INNER JOIN campaigns ON campaigns.id = creative_new_tab_page_ad.campaign_id
@@ -398,7 +439,8 @@ void CreativeNewTabPageAds::GetForSegments(
             dayparts.end_minute,
             creative_new_tab_page_ad_wallpapers.image_url,
             creative_new_tab_page_ad_wallpapers.focal_point_x,
-            creative_new_tab_page_ad_wallpapers.focal_point_y
+            creative_new_tab_page_ad_wallpapers.focal_point_y,
+            creative_new_tab_page_ad_wallpapers.condition_matchers
           FROM
             $1 AS creative_new_tab_page_ad
             INNER JOIN campaigns ON campaigns.id = creative_new_tab_page_ad.campaign_id
@@ -463,7 +505,8 @@ void CreativeNewTabPageAds::GetForActiveCampaigns(
             dayparts.end_minute,
             creative_new_tab_page_ad_wallpapers.image_url,
             creative_new_tab_page_ad_wallpapers.focal_point_x,
-            creative_new_tab_page_ad_wallpapers.focal_point_y
+            creative_new_tab_page_ad_wallpapers.focal_point_y,
+            creative_new_tab_page_ad_wallpapers.condition_matchers
           FROM
             $1 AS creative_new_tab_page_ad
             INNER JOIN campaigns ON campaigns.id = creative_new_tab_page_ad.campaign_id
@@ -508,8 +551,8 @@ void CreativeNewTabPageAds::Migrate(
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 43: {
-      MigrateToV43(mojom_db_transaction);
+    case 45: {
+      MigrateToV45(mojom_db_transaction);
       break;
     }
   }
@@ -517,7 +560,7 @@ void CreativeNewTabPageAds::Migrate(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void CreativeNewTabPageAds::MigrateToV43(
+void CreativeNewTabPageAds::MigrateToV45(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 

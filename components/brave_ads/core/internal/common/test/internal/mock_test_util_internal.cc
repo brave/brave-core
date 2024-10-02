@@ -22,7 +22,9 @@
 #include "brave/components/brave_ads/core/internal/common/test/file_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/command_line_switch_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/current_test_util_internal.h"
+#include "brave/components/brave_ads/core/internal/common/test/internal/local_state_pref_storage_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/local_state_pref_value_test_util_internal.h"
+#include "brave/components/brave_ads/core/internal/common/test/internal/profile_pref_storage_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/profile_pref_value_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/local_state_pref_value_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
@@ -229,6 +231,13 @@ void MockRunDBTransaction(AdsClientMock& ads_client_mock, Database& database) {
           }));
 }
 
+void MockFindProfilePref(const AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, FindProfilePref)
+      .WillByDefault(::testing::Invoke([](const std::string& path) -> bool {
+        return FindProfilePref(path);
+      }));
+}
+
 void MockGetProfilePref(const AdsClientMock& ads_client_mock) {
   ON_CALL(ads_client_mock, GetProfilePref)
       .WillByDefault(::testing::Invoke(
@@ -257,6 +266,13 @@ void MockHasProfilePrefPath(const AdsClientMock& ads_client_mock) {
   ON_CALL(ads_client_mock, HasProfilePrefPath)
       .WillByDefault(::testing::Invoke([](const std::string& path) -> bool {
         return HasProfilePrefPathValue(path);
+      }));
+}
+
+void MockFindLocalStatePref(const AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, FindLocalStatePref)
+      .WillByDefault(::testing::Invoke([](const std::string& path) -> bool {
+        return FindLocalStatePref(path);
       }));
 }
 

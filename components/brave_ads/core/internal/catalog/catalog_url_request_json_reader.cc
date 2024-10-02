@@ -342,20 +342,31 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
                   }),
               creative_set.conversions.cend());
 
-          for (const auto& wallerpaper_node :
-               payload["wallpapers"].GetArray()) {
+          for (const auto& wallpaper_node : payload["wallpapers"].GetArray()) {
             CatalogNewTabPageAdWallpaperInfo wallpaper;
-            wallpaper.image_url =
-                GURL(wallerpaper_node["imageUrl"].GetString());
+            wallpaper.image_url = GURL(wallpaper_node["imageUrl"].GetString());
             if (!ShouldSupportUrl(wallpaper.image_url)) {
               BLOG(1, "Image URL for creative instance id "
                           << creative_instance_id << " is unsupported");
               continue;
             }
             wallpaper.focal_point = CatalogNewTabPageAdWallpaperFocalPointInfo{
-                .x = wallerpaper_node["focalPoint"]["x"].GetInt(),
-                .y = wallerpaper_node["focalPoint"]["y"].GetInt()};
+                .x = wallpaper_node["focalPoint"]["x"].GetInt(),
+                .y = wallpaper_node["focalPoint"]["y"].GetInt()};
 
+            if (wallpaper_node.HasMember("conditionMatchers")) {
+              if (wallpaper_node["conditionMatchers"].IsArray()) {
+                for (const auto& condition_matchers_node :
+                     wallpaper_node["conditionMatchers"].GetArray()) {
+                  if (condition_matchers_node["prefPath"].IsString() &&
+                      condition_matchers_node["condition"].IsString()) {
+                    wallpaper.condition_matchers.emplace(
+                        condition_matchers_node["prefPath"].GetString(),
+                        condition_matchers_node["condition"].GetString());
+                  }
+                }
+              }
+            }
             creative.payload.wallpapers.push_back(wallpaper);
           }
 

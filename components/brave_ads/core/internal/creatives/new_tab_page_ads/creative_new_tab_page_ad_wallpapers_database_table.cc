@@ -8,10 +8,12 @@
 #include <cstddef>
 #include <iterator>
 #include <utility>
+#include <vector>
 
+#include "base/base64.h"
 #include "base/check.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/string_util.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
@@ -22,6 +24,23 @@ namespace brave_ads::database::table {
 namespace {
 
 constexpr char kTableName[] = "creative_new_tab_page_ad_wallpapers";
+
+std::string ConditionMatchersToString(
+    const NewTabPageAdConditionMatchers& condition_matchers) {
+  std::vector<std::string> condition_matchers_as_string;
+  condition_matchers_as_string.reserve(condition_matchers.size());
+
+  for (const auto& [pref_name, condition] : condition_matchers) {
+    // We base64 encode the `pref_name` and `condition` to avoid any issues with
+    // pref paths and conditions that contain either `|` or `;`.
+
+    const std::string condition_matcher = base::StrCat(
+        {base::Base64Encode(pref_name), "|", base::Base64Encode(condition)});
+    condition_matchers_as_string.push_back(condition_matcher);
+  }
+
+  return base::JoinString(condition_matchers_as_string, ";");
+}
 
 size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
                    const CreativeNewTabPageAdList& creative_ads) {
@@ -38,6 +57,8 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
       BindColumnString(mojom_db_action, index++, wallpaper.image_url.spec());
       BindColumnInt(mojom_db_action, index++, wallpaper.focal_point.x);
       BindColumnInt(mojom_db_action, index++, wallpaper.focal_point.y);
+      BindColumnString(mojom_db_action, index++,
+                       ConditionMatchersToString(wallpaper.condition_matchers));
     }
 
     row_count += creative_ad.wallpapers.size();
@@ -92,11 +113,13 @@ void CreativeNewTabPageAdWallpapers::Create(
         image_url TEXT NOT NULL,
         focal_point_x INT NOT NULL,
         focal_point_y INT NOT NULL,
+        condition_matchers TEXT NOT NULL,
         PRIMARY KEY (
           creative_instance_id,
           image_url,
           focal_point_x,
-          focal_point_y
+          focal_point_y,
+          condition_matchers
         ) ON CONFLICT REPLACE
       );)");
 }
@@ -107,8 +130,8 @@ void CreativeNewTabPageAdWallpapers::Migrate(
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 43: {
-      MigrateToV43(mojom_db_transaction);
+    case 45: {
+      MigrateToV45(mojom_db_transaction);
       break;
     }
   }
@@ -116,7 +139,7 @@ void CreativeNewTabPageAdWallpapers::Migrate(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void CreativeNewTabPageAdWallpapers::MigrateToV43(
+void CreativeNewTabPageAdWallpapers::MigrateToV45(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
@@ -140,10 +163,11 @@ std::string CreativeNewTabPageAdWallpapers::BuildInsertSql(
             creative_instance_id,
             image_url,
             focal_point_x,
-            focal_point_y
+            focal_point_y,
+            condition_matchers
           ) VALUES $2;)",
       {GetTableName(),
-       BuildBindColumnPlaceholders(/*column_count=*/4, row_count)},
+       BuildBindColumnPlaceholders(/*column_count=*/5, row_count)},
       nullptr);
 }
 

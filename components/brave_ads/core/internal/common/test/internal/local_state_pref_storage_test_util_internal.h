@@ -12,6 +12,8 @@ namespace brave_ads::test {
 
 struct PrefValueInfo;
 
+bool FindLocalStatePref(const std::string& path);
+
 PrefValueInfo& LocalStatePref(const std::string& path);
 
 bool HasLocalStatePref(const std::string& path);

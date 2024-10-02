@@ -571,8 +571,8 @@ void CreativeInlineContentAds::Migrate(
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 43: {
-      MigrateToV43(mojom_db_transaction);
+    case 45: {
+      MigrateToV45(mojom_db_transaction);
       break;
     }
   }
@@ -580,7 +580,7 @@ void CreativeInlineContentAds::Migrate(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void CreativeInlineContentAds::MigrateToV43(
+void CreativeInlineContentAds::MigrateToV45(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 

@@ -462,6 +462,8 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_delegate_mock.h",
     "//brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_feature_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_unittest.cc",
+    "//brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_condition_matcher_util_internal_unittest.cc",
+    "//brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_condition_matcher_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_delegate_mock.cc",
     "//brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_delegate_mock.h",
     "//brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_feature_unittest.cc",

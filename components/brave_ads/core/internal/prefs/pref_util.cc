@@ -174,6 +174,10 @@ void SetProfileTimeDeltaPref(const std::string& path,
   GetAdsClient()->SetProfilePref(path, base::TimeDeltaToValue(value));
 }
 
+bool FindProfilePref(const std::string& path) {
+  return GetAdsClient()->FindProfilePref(path);
+}
+
 void ClearProfilePref(const std::string& path) {
   GetAdsClient()->ClearProfilePref(path);
 }
@@ -358,6 +362,10 @@ void SetLocalStateTimeDeltaPref(const std::string& path,
 
 void ClearLocalStatePref(const std::string& path) {
   GetAdsClient()->ClearLocalStatePref(path);
+}
+
+bool FindLocalStatePrefPath(const std::string& path) {
+  return GetAdsClient()->FindLocalStatePref(path);
 }
 
 bool HasLocalStatePrefPath(const std::string& path) {

@@ -18,6 +18,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_provider.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -100,6 +101,7 @@ ViewCounterService::ViewCounterService(
     : service_(service),
       ads_service_(ads_service),
       prefs_(prefs),
+      local_state_prefs_(local_state),
       is_supported_locale_(is_supported_locale),
       model_(prefs),
       custom_bi_service_(custom_service),
@@ -221,7 +223,7 @@ std::optional<base::Value::Dict> ViewCounterService::GetCurrentWallpaper()
 }
 
 std::optional<base::Value::Dict>
-ViewCounterService::GetCurrentBrandedWallpaper() const {
+ViewCounterService::GetCurrentBrandedWallpaper() {
   NTPSponsoredImagesData* images_data = GetCurrentBrandedWallpaperData();
   if (!images_data) {
     return std::nullopt;
@@ -230,9 +232,79 @@ ViewCounterService::GetCurrentBrandedWallpaper() const {
   const bool should_frequency_cap_ads =
       prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
 
-  return should_frequency_cap_ads && !images_data->IsSuperReferral()
-             ? GetCurrentBrandedWallpaperFromAdInfo()
-             : GetCurrentBrandedWallpaperFromModel();
+  if (should_frequency_cap_ads && !images_data->IsSuperReferral()) {
+    return GetCurrentBrandedWallpaperFromAdInfo();
+  }
+
+  return GetNextBrandedWallpaperWhichMatchesConditions();
+}
+
+std::optional<brave_ads::NewTabPageAdConditionMatchers>
+ViewCounterService::GetConditionMatchers(const base::Value::Dict& dict) {
+  const auto* const list = dict.FindList(kWallpaperConditionMatchersKey);
+  if (!list || list->empty()) {
+    return std::nullopt;
+  }
+
+  brave_ads::NewTabPageAdConditionMatchers condition_matchers;
+
+  for (const auto& value : *list) {
+    const auto& condition_matcher = value.GetDict();
+
+    const auto* const pref_path =
+        condition_matcher.FindString(kWallpaperConditionMatcherPrefPathKey);
+    if (!pref_path) {
+      continue;
+    }
+
+    const auto* const condition =
+        condition_matcher.FindString(kWallpaperConditionMatcherKey);
+    if (!condition) {
+      continue;
+    }
+
+    condition_matchers.insert({*pref_path, *condition});
+  }
+
+  return condition_matchers;
+}
+
+std::optional<base::Value::Dict>
+ViewCounterService::GetNextBrandedWallpaperWhichMatchesConditions() {
+  const auto initial_branded_wallpaper_index =
+      model_.GetCurrentBrandedImageIndex();
+
+  do {
+    std::optional<base::Value::Dict> branded_wallpaper =
+        GetCurrentBrandedWallpaperFromModel();
+    if (!branded_wallpaper) {
+      // Branded wallpaper is unavailable, so it cannot be displayed.
+      return std::nullopt;
+    }
+
+    const std::optional<brave_ads::NewTabPageAdConditionMatchers>
+        condition_matchers = GetConditionMatchers(*branded_wallpaper);
+    if (!condition_matchers) {
+      // No condition matchers, so we can return the branded wallpaper.
+      return branded_wallpaper;
+    }
+
+    const brave_ads::PrefProvider pref_provider(prefs_, local_state_prefs_);
+    if (brave_ads::MatchConditions(&pref_provider, *condition_matchers)) {
+      // The branded wallpaper matches the conditions, so we can return it.
+      return branded_wallpaper;
+    }
+
+    // The branded wallpaper does not match the conditions, so we need to try
+    // the next one. This will loop until we've tried all the branded
+    // wallpapers.
+    model_.NextBrandedImage();
+  } while (model_.GetCurrentBrandedImageIndex() !=
+           initial_branded_wallpaper_index);
+
+  // We've looped through all the branded images and none of them matched the
+  // conditions, so we cannot display a branded wallpaper.
+  return std::nullopt;
 }
 
 std::optional<base::Value::Dict>

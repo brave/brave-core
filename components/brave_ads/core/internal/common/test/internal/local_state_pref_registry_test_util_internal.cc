@@ -44,12 +44,12 @@ void RegisterLocalStateStringPref(const std::string& path,
 }
 
 void RegisterLocalStateDictPref(const std::string& path,
-                                base::Value::List default_value) {
+                                base::Value::Dict default_value) {
   RegisterLocalStatePref(path, base::Value(std::move(default_value)));
 }
 
 void RegisterLocalStateListPref(const std::string& path,
-                                base::Value::Dict default_value) {
+                                base::Value::List default_value) {
   RegisterLocalStatePref(path, base::Value(std::move(default_value)));
 }
 

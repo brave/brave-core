@@ -100,11 +100,13 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
 
   void RecordP2AEvents(const std::vector<std::string>& events) override;
 
+  bool FindProfilePref(const std::string& path) const override;
   std::optional<base::Value> GetProfilePref(const std::string& path) override;
   void SetProfilePref(const std::string& path, base::Value value) override;
   void ClearProfilePref(const std::string& path) override;
   bool HasProfilePrefPath(const std::string& path) const override;
 
+  bool FindLocalStatePref(const std::string& path) const override;
   std::optional<base::Value> GetLocalStatePref(
       const std::string& path) override;
   void SetLocalStatePref(const std::string& path, base::Value value) override;
