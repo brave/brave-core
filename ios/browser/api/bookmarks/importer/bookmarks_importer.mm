@@ -78,12 +78,12 @@ void BookmarksImporter::AddBookmarks(
   if (bookmarks.empty())
     return;
 
-  ChromeBrowserState* browser_state =
-      GetApplicationContext()
-          ->GetProfileManager()
-          ->GetLastUsedProfileDeprecatedDoNotUse();
+  std::vector<ProfileIOS*> profiles =
+      GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
+  ProfileIOS* last_used_profile = profiles.at(0);
+
   bookmarks::BookmarkModel* model =
-      ios::BookmarkModelFactory::GetForBrowserState(browser_state);
+      ios::BookmarkModelFactory::GetForBrowserState(last_used_profile);
   DCHECK(model->loaded());
 
   // If the bookmark bar is currently empty, we should import directly to it.
@@ -179,5 +179,5 @@ void BookmarksImporter::AddBookmarks(
 
   // If the user was previously using a toolbar, we should show the bar.
   if (import_to_top_level && !add_all_to_top_level)
-    ShowBookmarkBar(browser_state);
+    ShowBookmarkBar(last_used_profile);
 }
