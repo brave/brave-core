@@ -19,6 +19,7 @@
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom-forward.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/component_updater/mock_component_updater_service.h"
 #include "components/update_client/update_client.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -30,44 +31,6 @@
 #include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 
 using testing::_;
-
-namespace component_updater {
-class MockComponentUpdateService : public ComponentUpdateService {
- public:
-  MOCK_METHOD(void,
-              AddObserver,
-              (update_client::UpdateClient::Observer*),
-              (override));
-  MOCK_METHOD(void,
-              RemoveObserver,
-              (update_client::UpdateClient::Observer*),
-              (override));
-  MOCK_METHOD(base::Version,
-              GetRegisteredVersion,
-              (const std::string&),
-              (override));
-  MOCK_METHOD(std::vector<ComponentInfo>, GetComponents, (), (const, override));
-  MOCK_METHOD(base::Version,
-              GetMaxPreviousProductVersion,
-              (const std::string& app_id),
-              (override));
-  MOCK_METHOD(bool,
-              RegisterComponent,
-              (const ComponentRegistration& component),
-              (override));
-  MOCK_METHOD(bool, UnregisterComponent, (const std::string& id), (override));
-  MOCK_METHOD(std::vector<std::string>, GetComponentIDs, (), (const, override));
-  MOCK_METHOD(OnDemandUpdater&, GetOnDemandUpdater, (), (override));
-  MOCK_METHOD(void,
-              MaybeThrottle,
-              (const std::string& id, base::OnceClosure callback),
-              (override));
-  MOCK_METHOD(bool,
-              GetComponentDetails,
-              (const std::string& id, update_client::CrxUpdateItem* item),
-              (const, override));
-};
-}  // namespace component_updater
 
 namespace webcompat_reporter {
 
@@ -85,7 +48,8 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
       : webcompat_reporter_service_(std::unique_ptr<WebcompatReporterService>(
             new WebcompatReporterService())),
         updater_(std::unique_ptr<component_updater::MockComponentUpdateService>(
-            new component_updater::MockComponentUpdateService())) {
+            new component_updater::MockComponentUpdateService())),
+        task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
     webcompat_reporter_service_->SetUpWebcompatReporterServiceForTest(
         std::unique_ptr<WebcompatReportUploader>(
             new MockWebcompatReportUploader()),
@@ -102,8 +66,6 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
  protected:
   std::unique_ptr<WebcompatReporterService> webcompat_reporter_service_;
   std::unique_ptr<component_updater::ComponentUpdateService> updater_;
-
- private:
   content::BrowserTaskEnvironment task_environment_;
 };
 
@@ -152,6 +114,7 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithReportPropsOverride) {
         EXPECT_EQ(report_source.report_url, report.report_url);
       });
   webcompat_reporter_service_->SubmitWebcompatReport(report_source);
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
@@ -195,6 +158,7 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
         EXPECT_EQ(report_source.languages, report.languages);
       });
   webcompat_reporter_service_->SubmitWebcompatReport(report_source);
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojo) {
@@ -261,6 +225,7 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojo) {
 
   webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info),
                                                      callback.Get());
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojoWithNoPropsOverride) {
@@ -305,6 +270,7 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojoWithNoPropsOverride) {
   EXPECT_CALL(callback, Run()).Times(1);
   webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info),
                                                      callback.Get());
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace webcompat_reporter

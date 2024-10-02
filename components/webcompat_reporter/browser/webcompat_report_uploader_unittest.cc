@@ -29,7 +29,8 @@ class WebcompatReportUploaderUnitTest : public testing::Test {
   WebcompatReportUploaderUnitTest()
       : shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {
+                &url_loader_factory_)),
+        task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
     webcompat_report_uploader_ =
         std::make_unique<WebcompatReportUploader>(shared_url_loader_factory_);
   }
@@ -80,7 +81,7 @@ class WebcompatReportUploaderUnitTest : public testing::Test {
     GetWebcompatUploader()->SubmitReport(report);
   }
 
- private:
+ protected:
   std::unique_ptr<WebcompatReportUploader> webcompat_report_uploader_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
@@ -143,6 +144,7 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
           report.languages->c_str(), report.shields_enabled ? "true" : "false",
           report.report_url.value().spec().c_str(),
           report.brave_version->c_str()));
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace webcompat_reporter
