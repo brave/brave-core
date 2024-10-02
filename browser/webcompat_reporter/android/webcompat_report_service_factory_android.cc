@@ -11,7 +11,8 @@
 
 namespace chrome {
 namespace android {
-static jlong JNI_WebcompatReporterServiceFactory_GetInterfaceToWebcompatReporterService(
+static jlong
+JNI_WebcompatReporterServiceFactory_GetInterfaceToWebcompatReporterService(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
@@ -20,8 +21,8 @@ static jlong JNI_WebcompatReporterServiceFactory_GetInterfaceToWebcompatReporter
   }
 
   auto pending =
-      webcompat_reporter::WebcompatReporterServiceFactory::GetInstance()->GetForContext(
-          profile);
+      webcompat_reporter::WebcompatReporterServiceFactory::GetInstance()
+          ->GetForContext(profile);
 
   return static_cast<jlong>(pending.PassPipe().release().value());
 }

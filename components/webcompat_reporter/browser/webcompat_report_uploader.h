@@ -41,7 +41,7 @@ struct Report {
   std::optional<base::Value> details;
   std::optional<base::Value> contact;
   std::optional<base::Value> ad_block_components;
-  
+
   std::optional<std::vector<unsigned char>> screenshot_png;
 };
 
