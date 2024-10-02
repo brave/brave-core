@@ -39,8 +39,12 @@ export function isSupportedPage(document: Document) {
  * decode the HTML entities in the given string.
  */
 export function decodeHTMLSpecialChars(text: string) {
-  const isolatedDocument = document.implementation.createHTMLDocument()
-  const textarea = isolatedDocument.createElement("textarea");
+  const isolatedDocument = document.implementation.createDocument(
+    "http://www.w3.org/1999/xhtml",
+    "distiller_body",
+    null,
+  )
+  const textarea = isolatedDocument.createElement("textarea")
   // eslint-disable-next-line no-unsanitized/property
   textarea.innerHTML = text
   return textarea.value
