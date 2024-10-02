@@ -12,6 +12,11 @@
             {
 
                 "name": "Profile 2"
+            },
+            "Profile 3":
+            {
+
+                "badname": "no crash please"
             }
         }
     }
