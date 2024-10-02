@@ -42,7 +42,10 @@ AdsServiceDelegate::AdsServiceDelegate(
         notification_ad_platform_bridge)
     : profile_(profile),
       local_state_(local_state),
-      search_engine_choice_service_(*profile_->GetPrefs(), local_state_),
+      search_engine_choice_service_(
+          *profile_->GetPrefs(),
+          local_state_,
+          /*is_profile_eligible_for_dse_guest_propagation=*/false),
       adaptive_captcha_service_(adaptive_captcha_service),
       notification_display_service_(notification_display_service),
       notification_ad_platform_bridge_(
