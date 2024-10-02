@@ -545,12 +545,11 @@
 
 - (bool)editingEnabled {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  ChromeBrowserState* browserState =
-      GetApplicationContext()
-          ->GetProfileManager()
-          ->GetLastUsedProfileDeprecatedDoNotUse();
+  std::vector<ProfileIOS*> profiles =
+      GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
+  ProfileIOS* last_used_profile = profiles.at(0);
 
-  PrefService* prefs = user_prefs::UserPrefs::Get(browserState);
+  PrefService* prefs = user_prefs::UserPrefs::Get(last_used_profile);
   return prefs->GetBoolean(bookmarks::prefs::kEditBookmarksEnabled);
 }
 

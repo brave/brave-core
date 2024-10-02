@@ -19,13 +19,14 @@
 
 + (nullable id)getForPrivateMode:(bool)isPrivateBrowsing {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  auto* browserState = GetApplicationContext()
-                           ->GetProfileManager()
-                           ->GetLastUsedProfileDeprecatedDoNotUse();
+  std::vector<ProfileIOS*> profiles =
+      GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
+  ProfileIOS* last_used_profile = profiles.at(0);
+
   if (isPrivateBrowsing) {
-    browserState = browserState->GetOffTheRecordChromeBrowserState();
+    last_used_profile = last_used_profile->GetOffTheRecordProfile();
   }
-  return [self serviceForBrowserState:browserState];
+  return [self serviceForBrowserState:last_used_profile];
 }
 
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {

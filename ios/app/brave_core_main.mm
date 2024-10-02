@@ -209,15 +209,14 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     _webMain = std::make_unique<web::WebMain>(std::move(params));
 
     // Initialize and set the main browser state.
-    ChromeBrowserState* chromeBrowserState =
-        GetApplicationContext()
-            ->GetProfileManager()
-            ->GetLastUsedProfileDeprecatedDoNotUse();
-    _mainBrowserState = chromeBrowserState;
+    std::vector<ProfileIOS*> profiles =
+        GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
+    ProfileIOS* last_used_profile = profiles.at(0);
+    _mainBrowserState = last_used_profile;
 
     // Disable Safe-Browsing via Prefs
-    chromeBrowserState->GetPrefs()->SetBoolean(prefs::kSafeBrowsingEnabled,
-                                               false);
+    last_used_profile->GetPrefs()->SetBoolean(prefs::kSafeBrowsingEnabled,
+                                              false);
 
     // Setup main browser
     _browserList = BrowserListFactory::GetForBrowserState(_mainBrowserState);
@@ -225,11 +224,11 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     _browserList->AddBrowser(_browser.get());
 
     // Setup otr browser
-    ChromeBrowserState* otrChromeBrowserState =
-        chromeBrowserState->GetOffTheRecordChromeBrowserState();
+    ProfileIOS* otr_last_used_profile =
+        last_used_profile->GetOffTheRecordProfile();
     _otr_browserList =
-        BrowserListFactory::GetForBrowserState(otrChromeBrowserState);
-    _otr_browser = Browser::Create(otrChromeBrowserState, {});
+        BrowserListFactory::GetForBrowserState(otr_last_used_profile);
+    _otr_browser = Browser::Create(otr_last_used_profile, {});
     _otr_browserList->AddBrowser(_otr_browser.get());
 
     // Initialize the provider UI global state.
