@@ -31,21 +31,18 @@ export class CrToggleElement extends CrLitElement {
     return {
       checked: {
         type: Boolean,
-        value: false,
         reflect: true,
-        notify: true,
       },
 
       disabled: {
         type: Boolean,
-        value: false,
         reflect: true,
       },
     };
   }
 
-  checked: boolean;
-  disabled: boolean;
+  checked: boolean = false;
+  disabled: boolean = false;
 
   // The Nala event looks a bit different to the Chromium one, so we need to
   // convert it.
