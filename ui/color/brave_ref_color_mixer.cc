@@ -42,7 +42,7 @@ void AddBaseline(ColorProvider* provider) {
   mixer[kColorRefNeutral87] = {SkColorSetRGB(0xdb, 0xd9, 0xdd)};
   mixer[kColorRefNeutral90] = {SkColorSetRGB(0xe3, 0xe3, 0xe8)};
   mixer[kColorRefNeutral92] = {SkColorSetRGB(0xe9, 0xe7, 0xec)};
-  mixer[kColorRefNeutral94] = {SkColorSetRGB(0xef, 0xed, 0xf1)};
+  mixer[kColorRefNeutral94] = {SkColorSetRGB(0xed, 0xed, 0xf2)};
   mixer[kColorRefNeutral95] = {SkColorSetRGB(0xf0, 0xf0, 0xf4)};
   mixer[kColorRefNeutral96] = {SkColorSetRGB(0xf5, 0xf3, 0xf7)};
   mixer[kColorRefNeutral98] = {SkColorSetRGB(0xfa, 0xfa, 0xfb)};
