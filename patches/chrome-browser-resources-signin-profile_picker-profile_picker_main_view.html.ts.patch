@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
-index fd4c6fd187a8e9e09530f92a9350e62a0d1044c0..5625b10b4b7643733902926d02ce4533e0431d01 100644
+index 9fc2c17d32bf14170eda3eff9b2b36eefa68c042..ac0c7445a1746e09e95e16977e97ac279d2c2439 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
 +++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
 @@ -25,7 +25,7 @@ export function getHtml(this: ProfilePickerMainViewElement) {
@@ -11,12 +11,3 @@ index fd4c6fd187a8e9e09530f92a9350e62a0d1044c0..5625b10b4b7643733902926d02ce4533
            @click="${this.onAddProfileClick_}"
            aria-labelledby="addProfileButtonLabel">
          <div id="addProfileButtonLabel"
-@@ -44,7 +44,7 @@ export function getHtml(this: ProfilePickerMainViewElement) {
-     $i18n{browseAsGuestButton}
-   </cr-button>
-   <cr-checkbox id="askOnStartup" ?checked="${this.askOnStartup_}"
--      @change="${this.onAskOnStartupChangedByUser_}"
-+      @checked-changed="${this.onAskOnStartupChangedByUser_}"
-       ?hidden="${this.hideAskOnStartup_}">
-     $i18n{askOnStartupCheckboxText}
-   </cr-checkbox>
