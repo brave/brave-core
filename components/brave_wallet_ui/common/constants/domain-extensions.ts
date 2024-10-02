@@ -34,6 +34,11 @@ export const supportedUDExtensions = [
   '.kryptic',
   '.farms',
   '.dfz',
+  '.kresus',
+  '.binanceus',
+  '.austin',
+  '.bitget',
+  '.wrkx',
 ]
 export const allSupportedExtensions = [
   ...supportedENSExtensions,
