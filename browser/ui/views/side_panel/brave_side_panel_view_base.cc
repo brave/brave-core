@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel_view_base.h"
 
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_content_proxy.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -23,8 +24,9 @@ BraveSidePanelViewBase::BraveSidePanelViewBase() {
   // NOTE: If we use our own reading list page and it has loading spinner, maybe
   // we can set `true` here.
   SidePanelUtil::GetSidePanelContentProxy(this)->SetAvailable(false);
-  SetBackground(
-      views::CreateThemedSolidBackground(kColorSidebarPanelHeaderBackground));
+  SetBackground(views::CreateRoundedRectBackground(
+      kColorSidebarPanelHeaderBackground,
+      BraveContentsViewUtil::kMarginThickness));
 }
 
 BraveSidePanelViewBase::~BraveSidePanelViewBase() = default;
