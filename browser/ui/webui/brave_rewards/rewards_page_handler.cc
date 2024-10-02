@@ -18,6 +18,7 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_value_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -295,6 +296,29 @@ void RewardsPageHandler::GetAvailableBalance(
       base::BindOnce(fetch_balance_callback, std::move(callback)));
 }
 
+void RewardsPageHandler::GetTermsOfServiceUpdateRequired(
+    GetTermsOfServiceUpdateRequiredCallback callback) {
+  std::move(callback).Run(rewards_service_->IsTermsOfServiceUpdateRequired());
+}
+
+void RewardsPageHandler::AcceptTermsOfServiceUpdate(
+    AcceptTermsOfServiceUpdateCallback callback) {
+  rewards_service_->AcceptTermsOfServiceUpdate();
+  std::move(callback).Run();
+}
+
+void RewardsPageHandler::GetSelfCustodyInviteDismissed(
+    GetSelfCustodyInviteDismissedCallback callback) {
+  std::move(callback).Run(
+      prefs_->GetBoolean(prefs::kSelfCustodyInviteDismissed));
+}
+
+void RewardsPageHandler::DismissSelfCustodyInvite(
+    DismissSelfCustodyInviteCallback callback) {
+  prefs_->SetBoolean(prefs::kSelfCustodyInviteDismissed, true);
+  std::move(callback).Run();
+}
+
 void RewardsPageHandler::GetPublisherForActiveTab(
     GetPublisherForActiveTabCallback callback) {
   if (!bubble_delegate_) {
@@ -406,6 +430,9 @@ void RewardsPageHandler::RemoveAutoContributeSite(
 void RewardsPageHandler::GetAdsSettings(GetAdsSettingsCallback callback) {
   auto settings = mojom::AdsSettings::New();
 
+  settings->browser_upgrade_required =
+      ads_service_->IsBrowserUpgradeRequiredToServeAds();
+  settings->is_supported_region = brave_ads::IsSupportedRegion();
   settings->new_tab_page_ads_enabled =
       prefs_->GetBoolean(ntp_background_images::prefs::
                              kNewTabPageShowSponsoredImagesBackgroundImage);

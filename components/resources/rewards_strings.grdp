@@ -958,4 +958,11 @@
     Use your Web3 wallet
   </message>
 
+  <message name="IDS_REWARDS_ADS_REGION_NOT_SUPPORTED_TEXT" desc="">
+    Brave Private Ads are not yet available in your region.
+  </message>
+  <message name="IDS_REWARDS_ADS_BROWSER_UPGRADE_REQUIRED_TEXT" desc="">
+    Your browser needs to be updated to continue seeing ads.
+  </message>
+
 </grit-part>

@@ -43,12 +43,15 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"acSiteCountLabel", IDS_REWARDS_AC_SITE_COUNT_LABEL},
     {"acSiteLabel", IDS_REWARDS_AC_SITE_LABEL},
     {"acTitle", IDS_REWARDS_AC_TITLE},
+    {"adsBrowserUpgradeRequiredText",
+     IDS_REWARDS_ADS_BROWSER_UPGRADE_REQUIRED_TEXT},
     {"adsHistoryButtonLabel", IDS_REWARDS_ADS_HISTORY_BUTTON_LABEL},
     {"adsHistoryMarkInappropriateLabel",
      IDS_REWARDS_ADS_HISTORY_MARK_INAPPROPRIATE_LABEL},
     {"adsHistoryEmptyText", IDS_REWARDS_ADS_HISTORY_EMPTY_TEXT},
     {"adsHistoryTitle", IDS_REWARDS_ADS_HISTORY_TITLE},
     {"adsHistoryText", IDS_REWARDS_ADS_HISTORY_TEXT},
+    {"adsRegionNotSupportedText", IDS_REWARDS_ADS_REGION_NOT_SUPPORTED_TEXT},
     {"adsSettingsAdsPerHourNoneText",
      IDS_REWARDS_ADS_SETTINGS_ADS_PER_HOUR_NONE_TEXT},
     {"adsSettingsAdsPerHourText", IDS_REWARDS_ADS_SETTINGS_ADS_PER_HOUR_TEXT},
@@ -230,6 +233,11 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"payoutAccountLoginText", IDS_REWARDS_PAYOUT_ACCOUNT_LOGIN_TEXT},
     {"payoutAccountTitle", IDS_REWARDS_PAYOUT_ACCOUNT_TITLE},
     {"payoutAccountTooltip", IDS_REWARDS_PAYOUT_ACCOUNT_TOOLTIP},
+    {"payoutCheckStatusLink", IDS_REWARDS_PAYMENT_CHECK_STATUS},
+    {"payoutCompletedText", IDS_REWARDS_PAYMENT_COMPLETED},
+    {"payoutPendingText", IDS_REWARDS_PAYMENT_PENDING},
+    {"payoutProcessingText", IDS_REWARDS_PAYMENT_PROCESSING},
+    {"payoutSupportLink", IDS_REWARDS_PAYMENT_SUPPORT},
     {"recurringListEmptyText", IDS_REWARDS_RECURRING_LIST_EMPTY_TEXT},
     {"recurringNextContributionLabel",
      IDS_REWARDS_RECURRING_NEXT_CONTRIBUTION_LABEL},
@@ -240,7 +248,14 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"resetRewardsText", IDS_BRAVE_UI_REWARDS_RESET_TEXT},
     {"resetRewardsTitle", IDS_BRAVE_UI_RESET_WALLET},
     {"rewardsPageTitle", IDS_REWARDS_PAGE_TITLE},
-    {"showAllButtonLabel", IDS_REWARDS_SHOW_ALL_BUTTON_LABEL}};
+    {"selfCustodyInviteDismissButtonLabel", IDS_REWARDS_NOT_NOW},
+    {"selfCustodyInviteText", IDS_REWARDS_SELF_CUSTODY_INVITE_TEXT},
+    {"selfCustodyInviteTitle", IDS_REWARDS_SELF_CUSTODY_INVITE_HEADER},
+    {"showAllButtonLabel", IDS_REWARDS_SHOW_ALL_BUTTON_LABEL},
+    {"tosUpdateAcceptButtonLabel", IDS_REWARDS_TOS_UPDATE_BUTTON_LABEL},
+    {"tosUpdateLink", IDS_REWARDS_TOS_UPDATE_LINK_TEXT},
+    {"tosUpdateRequiredText", IDS_REWARDS_TOS_UPDATE_TEXT},
+    {"tosUpdateRequiredTitle", IDS_REWARDS_TOS_UPDATE_HEADING}};
 
 }  // namespace
 

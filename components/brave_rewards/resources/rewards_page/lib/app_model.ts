@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { ExternalWallet, ExternalWalletProvider } from '../../shared/lib/external_wallet'
+import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { Optional } from '../../shared/lib/optional'
 
 interface EmbedderInfo {
@@ -30,11 +31,15 @@ export type AdType =
   'inline-content'
 
 export interface AdsInfo {
+  browserUpgradeRequired: boolean
+  isSupportedRegion: boolean
   adsEnabled: Record<AdType, boolean>
   adsReceivedThisMonth: number
   adTypesReceivedThisMonth: Record<AdType, number>
   minEarningsThisMonth: number
   maxEarningsThisMonth: number
+  minEarningsPreviousMonth: number
+  maxEarningsPreviousMonth: number
   nextPaymentDate: number
   notificationAdsPerHour: number
   shouldAllowSubdivisionTargeting: boolean
@@ -61,6 +66,7 @@ export interface RewardsParameters {
   tipChoices: number[]
   rate: number
   walletProviderRegions: Record<string, { allow: string[], block: string[] }>
+  payoutStatus: Record<string, ProviderPayoutStatus>
 }
 
 export type ConnectExternalWalletResult =
@@ -133,7 +139,10 @@ export interface AppState {
   paymentId: string
   countryCode: string
   externalWallet: ExternalWallet | null
+  externalWalletProviders: ExternalWalletProvider[]
   balance: Optional<number>
+  tosUpdateRequired: boolean
+  selfCustodyInviteDismissed: boolean
   adsInfo: AdsInfo | null
   autoContributeInfo: AutoContributeInfo | null
   recurringContributions: RecurringContribution[]
@@ -152,7 +161,6 @@ export interface AppModel {
   getPluralString: (key: string, count: number) => Promise<string>
   enableRewards: (countryCode: string) => Promise<EnableRewardsResult>
   getAvailableCountries: () => Promise<AvailableCountryInfo>
-  getExternalWalletProviders: () => Promise<ExternalWalletProvider[]>
   beginExternalWalletLogin:
     (provider: ExternalWalletProvider) => Promise<boolean>
   connectExternalWallet:
@@ -171,6 +179,8 @@ export interface AppModel {
   removeRecurringContribution: (id: string) => Promise<void>
   sendContribution:
     (creatorID: string, amount: number, recurring: boolean) => Promise<boolean>
+  acceptTermsOfServiceUpdate: () => Promise<void>
+  dismissSelfCustodyInvite: () => Promise<void>
 }
 
 export function defaultState(): AppState {
@@ -185,7 +195,10 @@ export function defaultState(): AppState {
     paymentId: '',
     countryCode: '',
     externalWallet: null,
+    externalWalletProviders: [],
     balance: new Optional(),
+    tosUpdateRequired: false,
+    selfCustodyInviteDismissed: false,
     adsInfo: null,
     autoContributeInfo: null,
     recurringContributions: [],
@@ -218,8 +231,6 @@ export function defaultModel(): AppModel {
       }
     },
 
-    async getExternalWalletProviders() { return [] },
-
     async beginExternalWalletLogin(provider) { return true },
 
     async connectExternalWallet(provider, args) { return 'unexpected-error' },
@@ -248,6 +259,10 @@ export function defaultModel(): AppModel {
 
     async sendContribution(creatorID, amount, recurring) {
       return false
-    }
+    },
+
+    async acceptTermsOfServiceUpdate() {},
+
+    async dismissSelfCustodyInvite() {}
   }
 }

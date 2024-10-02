@@ -19,6 +19,10 @@ import { ConnectAccount } from './connect_account'
 import { AuthorizationModal } from './authorization_modal'
 import { ContributeModal } from './contribute/contribute_modal'
 import { ResetModal } from './reset_modal'
+import { TosUpdateModal } from './tos_update_modal'
+import { SelfCustodyInviteModal } from './self_custody_invite_modal'
+import { useShouldShowSelfCustodyInvite } from '../lib/self_custody_invite'
+import { useConnectAccountRouter } from '../lib/connect_account_router'
 import * as routes from '../lib/app_routes'
 
 import { style } from './app.style'
@@ -27,10 +31,16 @@ export function App() {
   const model = React.useContext(AppModelContext)
   const eventHub = React.useContext(EventHubContext)
 
-  const [loading, embedder, paymentId] = useAppState((state) => [
+  const [
+    loading,
+    embedder,
+    paymentId,
+    tosUpdateRequired
+  ] = useAppState((state) => [
     state.loading,
     state.embedder,
-    state.paymentId
+    state.paymentId,
+    state.tosUpdateRequired
   ])
 
   const viewType = useBreakpoint()
@@ -46,6 +56,9 @@ export function App() {
       router.replaceRoute('/')
     }
   })
+
+  const shouldShowSelfCustodyInvite = useShouldShowSelfCustodyInvite()
+  const connectAccount = useConnectAccountRouter()
 
   React.useEffect(() => {
     return eventHub.addListener('open-modal', (data) => {
@@ -112,6 +125,29 @@ export function App() {
 
     if (showContributeModal) {
       return <ContributeModal onClose={() => setShowContributeModal(false)} />
+    }
+
+    if (tosUpdateRequired) {
+      return (
+        <TosUpdateModal
+          onAccept={() => model.acceptTermsOfServiceUpdate()}
+          onReset={() => setShowResetModal(true)}
+        />
+      )
+    }
+
+    if (shouldShowSelfCustodyInvite) {
+      return (
+        <SelfCustodyInviteModal
+          onDismiss={() => {
+            model.dismissSelfCustodyInvite()
+          }}
+          onConnect={() => {
+            model.dismissSelfCustodyInvite()
+            connectAccount()
+          }}
+        />
+      )
     }
 
     return null

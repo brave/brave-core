@@ -38,6 +38,8 @@ struct AdsSubdivision {
 };
 
 struct AdsSettings {
+  bool browser_upgrade_required;
+  bool is_supported_region;
   bool new_tab_page_ads_enabled;
   bool notification_ads_enabled;
   bool search_ads_enabled;
@@ -78,6 +80,19 @@ interface RewardsPageHandler {
 
   // Returns the user's available BAT balance.
   GetAvailableBalance() => (double? balance);
+
+  // Returns a value indicating whether a terms of service update has occurred.
+  GetTermsOfServiceUpdateRequired() => (bool update_required);
+
+  // Called when the user has accepted a terms of service update.
+  AcceptTermsOfServiceUpdate() => ();
+
+  // Returns a value indicating whether the user has dismissed the self-custody
+  // inviate UI.
+  GetSelfCustodyInviteDismissed() => (bool invite_dismissed);
+
+  // Called when the user dismisses the self-custody invite.
+  DismissSelfCustodyInvite() => ();
 
   // Returns data about the publisher associated with the active tab.
   GetPublisherForActiveTab() => (PublisherInfo? publisher_info);

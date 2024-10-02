@@ -23,6 +23,8 @@ export function createModel(): AppModel {
     paymentId: 'abc123',
     countryCode: 'US',
     adsInfo: {
+      browserUpgradeRequired: true,
+      isSupportedRegion: false,
       adsEnabled: {
         'new-tab-page': true,
         'notification': false,
@@ -38,7 +40,9 @@ export function createModel(): AppModel {
       },
       minEarningsThisMonth: 21.244,
       maxEarningsThisMonth: 32.980,
-      nextPaymentDate: Date.now(),
+      minEarningsPreviousMonth: 1.244,
+      maxEarningsPreviousMonth: 2.980,
+      nextPaymentDate: Date.now() + (4 * 24 * 60 * 60 * 1000),
       notificationAdsPerHour: 5,
       shouldAllowSubdivisionTargeting: true,
       currentSubdivision: 'US-NY',
@@ -54,7 +58,10 @@ export function createModel(): AppModel {
       authenticated: true,
       url: ''
     },
+    externalWalletProviders: ['uphold', 'gemini', 'solana'],
     balance: optional(4.167),
+    tosUpdateRequired: false,
+    selfCustodyInviteDismissed: false,
     autoContributeInfo: {
       enabled: true,
       amount: 7,
@@ -154,6 +161,10 @@ export function createModel(): AppModel {
         bitflyer: { allow: [], block: [] },
         gemini: { allow: [], block: ['US'] },
         uphold: { allow: [], block: [] }
+      },
+      payoutStatus: {
+        uphold: 'off',
+        bitflyer: 'processing'
       }
     },
     currentCreator: {
@@ -187,10 +198,6 @@ export function createModel(): AppModel {
         countryCodes: ['US'],
         defaultCountryCode: 'US'
       }
-    },
-
-    async getExternalWalletProviders() {
-      return ['uphold', 'gemini', 'solana']
     },
 
     async enableRewards(countryCode) {
@@ -291,6 +298,14 @@ export function createModel(): AppModel {
       await delay(2000)
       return true
     },
+
+    async acceptTermsOfServiceUpdate() {
+      stateManager.update({ tosUpdateRequired: false })
+    },
+
+    async dismissSelfCustodyInvite() {
+      stateManager.update({ selfCustodyInviteDismissed: true })
+    }
 
   }
 }
