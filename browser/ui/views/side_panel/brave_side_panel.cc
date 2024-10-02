@@ -100,7 +100,7 @@ BraveSidePanel::HorizontalAlignment BraveSidePanel::GetHorizontalAlignment() {
 }
 
 bool BraveSidePanel::IsRightAligned() {
-  return horizontal_alignment_ == kAlignRight;
+  return horizontal_alignment_ == HorizontalAlignment::kRight;
 }
 
 void BraveSidePanel::UpdateBorder() {
