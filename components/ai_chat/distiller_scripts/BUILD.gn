@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
+import("//tools/grit/repack.gni")
 
 assert(enable_ai_chat)
 
