@@ -372,7 +372,7 @@ BraveSyncAPIWordsValidationStatus const
 
 - (id)createSyncDeviceObserver:(void (^)())onDeviceInfoChanged {
   auto* tracker =
-      DeviceInfoSyncServiceFactory::GetForBrowserState(_chromeBrowserState)
+      DeviceInfoSyncServiceFactory::GetForProfile(_chromeBrowserState)
           ->GetDeviceInfoTracker();
   return [[BraveSyncDeviceObserver alloc]
       initWithDeviceInfoTracker:tracker

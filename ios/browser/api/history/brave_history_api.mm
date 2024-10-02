@@ -176,7 +176,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
     _mainBrowserState = mainBrowserState;
 
-    history_service_ = ios::HistoryServiceFactory::GetForBrowserState(
+    history_service_ = ios::HistoryServiceFactory::GetForProfile(
         _mainBrowserState, ServiceAccessType::EXPLICIT_ACCESS);
     web_history_service_ =
         ios::WebHistoryServiceFactory::GetForBrowserState(_mainBrowserState);
@@ -187,7 +187,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 
     _browsingHistoryService = std::make_unique<history::BrowsingHistoryService>(
         _browsingHistoryDriver.get(),
-        ios::HistoryServiceFactory::GetForBrowserState(
+        ios::HistoryServiceFactory::GetForProfile(
             _mainBrowserState, ServiceAccessType::EXPLICIT_ACCESS),
         SyncServiceFactory::GetForBrowserState(_mainBrowserState));
   }
