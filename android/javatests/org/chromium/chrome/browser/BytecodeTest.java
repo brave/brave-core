@@ -658,6 +658,16 @@ public class BytecodeTest {
                         long.class));
         Assert.assertTrue(
                 methodExists(
+                        "org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
+                        "shouldShowNtpAsHomeSurfaceAtStartup",
+                        MethodModifier.STATIC,
+                        true,
+                        boolean.class,
+                        Intent.class,
+                        Bundle.class,
+                        ChromeInactivityTracker.class));
+        Assert.assertTrue(
+                methodExists(
                         "org/chromium/chrome/browser/IntentHandler",
                         "getUrlForCustomTab",
                         MethodModifier.STATIC,
