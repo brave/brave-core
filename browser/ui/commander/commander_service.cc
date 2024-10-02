@@ -35,6 +35,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
 #include "components/omnibox/browser/omnibox_view.h"
@@ -122,6 +123,13 @@ void CommanderService::Shutdown() {
   items_.clear();
 }
 
+void CommanderService::OnBrowserClosing(Browser* browser) {
+  if (last_browser_ == browser) {
+    last_browser_ = nullptr;
+    browser_list_observation_.Reset();
+  }
+}
+
 void CommanderService::Toggle() {
   if (IsShowing()) {
     Hide();
@@ -202,6 +210,9 @@ void CommanderService::UpdateText(const std::u16string& text, bool force) {
   }
   last_searched_ = trimmed_text;
   last_browser_ = browser;
+  if (!browser_list_observation_.IsObserving()) {
+    browser_list_observation_.Observe(BrowserList::GetInstance());
+  }
 
   UpdateCommands();
 }
