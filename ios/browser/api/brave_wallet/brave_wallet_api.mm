@@ -68,7 +68,7 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* browserState = _mainBrowserState.get();
   if (isPrivateBrowsing) {
-    browserState = browserState->GetOffTheRecordChromeBrowserState();
+    browserState = browserState->GetOffTheRecordProfile();
   }
 
   auto* brave_wallet_service =
@@ -93,7 +93,7 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* browserState = _mainBrowserState.get();
   if (isPrivateBrowsing) {
-    browserState = browserState->GetOffTheRecordChromeBrowserState();
+    browserState = browserState->GetOffTheRecordProfile();
   }
 
   auto* brave_wallet_service =
