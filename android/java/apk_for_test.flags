@@ -640,7 +640,6 @@
 }
 
 -keep class org.chromium.chrome.browser.tasks.ReturnToChromeUtil {
-    *** shouldShowTabSwitcher(...);
     *** shouldShowNtpAsHomeSurfaceAtStartup(...);
 }
 
