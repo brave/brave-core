@@ -101,6 +101,7 @@
     <color name="text_interactive">#3f39e8</color>
     <color name="container_background">#ffffff</color>
     <color name="primitive_private_window_5">#160041</color>
+    <color name="primitive_private_window_80">#cfbcff</color>
 
     <!-- Sync colors -->
     <color name="brave_sync_bg_color">@android:color/transparent</color>
@@ -127,7 +128,7 @@
     <color name="wallet_gradient_start_color">#4C54D2</color>
 
     <!-- Brave news colors -->
-    <!-- <color name="card_background">#DC353535</color> -->    
+    <!-- <color name="card_background">#DC353535</color> -->
     <color name="card_background">#F23B3E4F</color>
     <color name="card_background_solid">#353535</color>
     <color name="blurple">#5455cd</color>
