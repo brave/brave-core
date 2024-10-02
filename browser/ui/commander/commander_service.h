@@ -12,21 +12,26 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/ui/commander/command_source.h"
 #include "brave/browser/ui/commander/ranker.h"
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #include "brave/components/commander/browser/commander_item_model.h"
+#include "chrome/browser/ui/browser_list_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 class OmniboxView;
 class Profile;
+class BrowserList;
 
 namespace commander {
 
 // Returns true if the commander UI should be made available.
 bool IsEnabled();
 
-class CommanderService : public CommanderFrontendDelegate, public KeyedService {
+class CommanderService : public CommanderFrontendDelegate,
+                         public KeyedService,
+                         public BrowserListObserver {
  public:
   using CommandSources = std::vector<std::unique_ptr<CommandSource>>;
 
@@ -52,6 +57,9 @@ class CommanderService : public CommanderFrontendDelegate, public KeyedService {
 
   // KeyedService:
   void Shutdown() override;
+
+  // overrides BrowserListObserver:
+  void OnBrowserClosing(Browser* browser) override;
 
  private:
   void UpdateTextFromCurrentBrowserOmnibox();
@@ -82,6 +90,8 @@ class CommanderService : public CommanderFrontendDelegate, public KeyedService {
   Ranker ranker_;
 
   base::ObserverList<Observer> observers_;
+  base::ScopedObservation<BrowserList, BrowserListObserver>
+      browser_list_observation_{this};
   base::WeakPtrFactory<CommanderService> weak_ptr_factory_{this};
 };
 }  // namespace commander
