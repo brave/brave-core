@@ -114,9 +114,9 @@ class ConversationHandler : public mojom::ConversationHandler,
     // a single cache as page content is unlikely to change between messages
     // and conversations.
     std::unique_ptr<TextEmbedder, base::OnTaskRunnerDeleter> text_embedder_;
-    std::vector<std::tuple<const std::string&,  // prompt
-                           const std::string&,  // text
-                           uint32_t,            // context_limit
+    std::vector<std::tuple<std::string,  // prompt
+                           std::string,  // text
+                           uint32_t,     // context_limit
                            TextEmbedder::TopSimilarityCallback>>
         pending_top_similarity_requests_;
 
