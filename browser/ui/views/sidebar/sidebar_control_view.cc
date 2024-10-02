@@ -19,8 +19,10 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_command_controller.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/singleton_tabs.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -86,14 +88,11 @@ void SidebarControlView::UpdateBackgroundAndBorder() {
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     SetBackground(
         views::CreateSolidBackground(color_provider->GetColor(kColorToolbar)));
-    bool open =
-        browser_->sidebar_controller()->model()->active_index().has_value();
     int border_thickness =
-        1 - (open ? 0 : BraveBrowser::GetRoundedCornersWebViewMargin(browser_));
-    SetBorder(views::CreateSolidSidedBorder(
+        1 - BraveBrowser::GetRoundedCornersWebViewMargin(browser_);
+    SetBorder(views::CreateEmptyBorder(
         gfx::Insets::TLBR(0, sidebar_on_left_ ? 0 : border_thickness, 0,
-                          sidebar_on_left_ ? border_thickness : 0),
-        color_provider->GetColor(kColorToolbarContentAreaSeparator)));
+                          sidebar_on_left_ ? border_thickness : 0)));
   }
 }
 
@@ -167,13 +166,6 @@ void SidebarControlView::OnItemAdded(const sidebar::SidebarItem& item,
 
 void SidebarControlView::OnItemRemoved(size_t index) {
   UpdateItemAddButtonState();
-}
-
-void SidebarControlView::OnActiveIndexChanged(std::optional<size_t> old_index,
-                                              std::optional<size_t> new_index) {
-  if (old_index.has_value() != new_index.has_value()) {
-    UpdateBackgroundAndBorder();
-  }
 }
 
 void SidebarControlView::AddChildViews() {

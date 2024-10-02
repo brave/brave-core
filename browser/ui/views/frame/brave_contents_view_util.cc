@@ -14,7 +14,7 @@ constexpr ViewShadow::ShadowParameters kShadow{
     .offset_x = 0,
     .offset_y = 0,
     .blur_radius = BraveContentsViewUtil::kMarginThickness,
-    .shadow_color = SkColorSetA(SK_ColorBLACK, 0.1 * 255)};
+    .shadow_color = SkColorSetA(SK_ColorBLACK, 0.8 * 255)};
 }  // namespace
 
 std::unique_ptr<ViewShadow> BraveContentsViewUtil::CreateShadow(

@@ -69,8 +69,6 @@ class SidebarControlView : public views::View,
                    size_t index,
                    bool user_gesture) override;
   void OnItemRemoved(size_t index) override;
-  void OnActiveIndexChanged(std::optional<size_t> old_index,
-                            std::optional<size_t> new_index) override;
 
   void Update();
 

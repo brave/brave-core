@@ -231,7 +231,13 @@ void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {
   // Side panel doesn't need margin as sidebar UI and contents container
   // will have margins if needed.
   gfx::Insets panel_margins = GetContentsMargins();
-  panel_margins.set_left_right(0, 0);
+
+  // We need somewhere to draw the panel shadow in rounded mode, so don't clear
+  // the margins.
+  if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+          browser_view_->browser())) {
+    panel_margins.set_left_right(0, 0);
+  }
   sidebar_container_->side_panel()->SetProperty(views::kMarginsKey,
                                                 panel_margins);
 

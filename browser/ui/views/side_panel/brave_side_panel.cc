@@ -24,8 +24,10 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
+#include "ui/gfx/geometry/insets.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
+#include "ui/views/view_class_properties.h"
 
 BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
                                HorizontalAlignment horizontal_alignment)
@@ -75,13 +77,11 @@ void BraveSidePanel::UpdateBorder() {
     // In rounded corners mode we need to add the margin to the web contents
     // container instead of the sidebar, so we have somewhere to render the
     // shadow.
-    int content_margin =
-        -BraveBrowser::GetRoundedCornersWebViewMargin(browser_view_->browser());
+    // int content_margin =
+    //     -BraveBrowser::GetRoundedCornersWebViewMargin(browser_view_->browser());
     // Use a negative top border to hide the separator inserted by the upstream
     // side panel implementation.
-    SetBorder(views::CreateEmptyBorder(
-        gfx::Insets::TLBR(-1, IsRightAligned() ? content_margin : 0, 0,
-                          IsRightAligned() ? 0 : content_margin)));
+    SetBorder(views::NullBorder());
     return;
   }
 
