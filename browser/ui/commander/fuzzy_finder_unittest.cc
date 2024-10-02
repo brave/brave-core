@@ -20,22 +20,22 @@ namespace {
 // objects in-test.
 double FuzzyFind(const std::u16string& needle,
                  const std::u16string& haystack,
-                 std::vector<gfx::Range>* matched_ranges) {
+                 std::vector<gfx::Range>& matched_ranges) {
   return FuzzyFinder(needle).Find(haystack, matched_ranges);
 }
 }  // namespace
 
 TEST(CommanderFuzzyFinder, NonmatchIsZero) {
   std::vector<gfx::Range> ranges;
-  EXPECT_EQ(0, FuzzyFind(u"orange", u"orangutan", &ranges));
+  EXPECT_EQ(0, FuzzyFind(u"orange", u"orangutan", ranges));
   EXPECT_TRUE(ranges.empty());
-  EXPECT_EQ(0, FuzzyFind(u"elephant", u"orangutan", &ranges));
+  EXPECT_EQ(0, FuzzyFind(u"elephant", u"orangutan", ranges));
   EXPECT_TRUE(ranges.empty());
 }
 
 TEST(CommanderFuzzyFinder, ExactMatchIsOne) {
   std::vector<gfx::Range> ranges;
-  EXPECT_EQ(1, FuzzyFind(u"orange", u"orange", &ranges));
+  EXPECT_EQ(1, FuzzyFind(u"orange", u"orange", ranges));
   EXPECT_EQ(ranges, std::vector<gfx::Range>({{0, 6}}));
 }
 
@@ -43,7 +43,7 @@ TEST(CommanderFuzzyFinder, ExactMatchIsOne) {
 // tested in ExactMatchIsOne() above.
 TEST(CommanderFuzzyFinder, NeedleHaystackSameLength) {
   std::vector<gfx::Range> ranges;
-  EXPECT_EQ(0, FuzzyFind(u"ranges", u"orange", &ranges));
+  EXPECT_EQ(0, FuzzyFind(u"ranges", u"orange", ranges));
   EXPECT_TRUE(ranges.empty());
 }
 
@@ -53,11 +53,11 @@ TEST(CommanderFuzzyFinder, SingleCharNeedle) {
   std::vector<gfx::Range> ranges;
   FuzzyFinder finder(u"o");
 
-  double prefix_score = finder.Find(u"orange", &ranges);
+  double prefix_score = finder.Find(u"orange", ranges);
   EXPECT_EQ(ranges, std::vector<gfx::Range>({{0, 1}}));
-  double internal_score = finder.Find(u"phone", &ranges);
+  double internal_score = finder.Find(u"phone", ranges);
   EXPECT_EQ(ranges, std::vector<gfx::Range>({{2, 3}}));
-  double boundary_score = finder.Find(u"phone operator", &ranges);
+  double boundary_score = finder.Find(u"phone operator", ranges);
   EXPECT_EQ(ranges, std::vector<gfx::Range>({{6, 7}}));
 
   // Expected ordering:
@@ -69,21 +69,21 @@ TEST(CommanderFuzzyFinder, SingleCharNeedle) {
   EXPECT_GT(boundary_score, internal_score);
 
   // ...and non-matches should have score = 0.
-  EXPECT_EQ(0, finder.Find(u"aquarium", &ranges));
+  EXPECT_EQ(0, finder.Find(u"aquarium", ranges));
   EXPECT_TRUE(ranges.empty());
 }
 
 TEST(CommanderFuzzyFinder, CaseInsensitive) {
   std::vector<gfx::Range> ranges;
-  EXPECT_EQ(1, FuzzyFind(u"orange", u"Orange", &ranges));
+  EXPECT_EQ(1, FuzzyFind(u"orange", u"Orange", ranges));
   EXPECT_EQ(ranges, std::vector<gfx::Range>({{0, 6}}));
 }
 
 TEST(CommanderFuzzyFinder, PrefixRanksHigherThanInternal) {
   std::vector<gfx::Range> ranges;
   FuzzyFinder finder(u"orange");
-  double prefix_rank = finder.Find(u"Orange juice", &ranges);
-  double non_prefix_rank = finder.Find(u"William of Orange", &ranges);
+  double prefix_rank = finder.Find(u"Orange juice", ranges);
+  double non_prefix_rank = finder.Find(u"William of Orange", ranges);
 
   EXPECT_GT(prefix_rank, 0);
   EXPECT_GT(non_prefix_rank, 0);
@@ -94,13 +94,13 @@ TEST(CommanderFuzzyFinder, PrefixRanksHigherThanInternal) {
 
 TEST(CommanderFuzzyFinder, NeedleLongerThanHaystack) {
   std::vector<gfx::Range> ranges;
-  EXPECT_EQ(0, FuzzyFind(u"orange juice", u"orange", &ranges));
+  EXPECT_EQ(0, FuzzyFind(u"orange juice", u"orange", ranges));
   EXPECT_TRUE(ranges.empty());
 }
 
 TEST(CommanderFuzzyFinder, Noncontiguous) {
   std::vector<gfx::Range> ranges;
-  EXPECT_GT(FuzzyFind(u"tuot", u"Tlön, Uqbar, Orbis Tertius", &ranges), 0);
+  EXPECT_GT(FuzzyFind(u"tuot", u"Tlön, Uqbar, Orbis Tertius", ranges), 0);
   EXPECT_EQ(ranges,
             std::vector<gfx::Range>({{0, 1}, {6, 7}, {13, 14}, {19, 20}}));
 }

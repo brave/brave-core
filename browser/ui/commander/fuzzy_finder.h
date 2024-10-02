@@ -30,7 +30,7 @@ class FuzzyFinder {
   // |haystack| that match |needle| so they can be highlighted in the UI; see
   // comment on commander::CommandItem |matched_ranges| for a worked example.
   double Find(const std::u16string& haystack,
-              std::vector<gfx::Range>* matched_ranges);
+              std::vector<gfx::Range>& matched_ranges);
 
  private:
   // Implementation of the O(mn) matching algorithm. Only run if:
@@ -44,7 +44,7 @@ class FuzzyFinder {
   // See fuzzy_finder.md for full details.
   double MatrixMatch(const std::u16string& needle,
                      const std::u16string& haystack,
-                     std::vector<gfx::Range>* matched_ranges);
+                     std::vector<gfx::Range>& matched_ranges);
   // Case-folded input string.
   std::u16string needle_;
   // Scratch space for MatrixMatch().
