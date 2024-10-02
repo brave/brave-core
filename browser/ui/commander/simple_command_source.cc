@@ -68,7 +68,7 @@ CommandSource::CommandResults SimpleCommandSource::GetCommands(
     std::u16string name =
         base::UTF8ToUTF16(commands::GetCommandName(command_id));
 
-    double score = finder.Find(name, &ranges);
+    double score = finder.Find(name, ranges);
     if (score == 0) {
       continue;
     }

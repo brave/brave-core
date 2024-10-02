@@ -61,7 +61,7 @@ CommandSource::CommandResults OpenURLCommandSource::GetCommands(
   FuzzyFinder finder(input);
   for (const auto& command_spec : title_url_map_) {
     std::u16string title = command_spec.first;
-    double score = finder.Find(title, &ranges);
+    double score = finder.Find(title, ranges);
     if (score == 0) {
       continue;
     }
