@@ -8,6 +8,7 @@
 #ifndef BRAVE_IOS_BROWSER_API_HISTORY_HISTORY_SERVICE_LISTENER_IOS_H_
 #define BRAVE_IOS_BROWSER_API_HISTORY_HISTORY_SERVICE_LISTENER_IOS_H_
 
+#include "base/memory/raw_ptr.h"
 #include "brave/ios/browser/api/history/brave_history_observer.h"
 #include "components/history/core/browser/history_service_observer.h"
 
@@ -37,7 +38,7 @@ class HistoryServiceListenerIOS : public history::HistoryServiceObserver {
                           const history::DeletionInfo& deletion_info) override;
 
   id<HistoryServiceObserver> observer_;
-  history::HistoryService* service_;  // NOT OWNED
+  raw_ptr<history::HistoryService> service_;
 };
 
 }  // namespace ios

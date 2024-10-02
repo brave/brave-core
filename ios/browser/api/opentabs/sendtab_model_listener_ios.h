@@ -11,8 +11,8 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_observer.h"
-
 #include "components/send_tab_to_self/send_tab_to_self_entry.h"
 #include "components/send_tab_to_self/send_tab_to_self_model.h"
 #include "components/send_tab_to_self/send_tab_to_self_model_observer.h"
@@ -46,7 +46,7 @@ class SendTabToSelfModelListenerIOS
           opened_entries) override;
 
   id<SendTabToSelfModelStateObserver> observer_;
-  send_tab_to_self::SendTabToSelfModel* model_;  // NOT OWNED
+  raw_ptr<send_tab_to_self::SendTabToSelfModel> model_;
 };
 
 }  // namespace ios

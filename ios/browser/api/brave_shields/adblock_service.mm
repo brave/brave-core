@@ -6,6 +6,7 @@
 #include <Foundation/Foundation.h>
 
 #include "base/apple/foundation_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
@@ -91,7 +92,7 @@ void AdBlockResourceObserver::OnResourcesLoaded(
 }  // namespace brave_shields
 
 @interface AdblockService () {
-  component_updater::ComponentUpdateService* _cus;  // NOT OWNED
+  raw_ptr<component_updater::ComponentUpdateService> _cus;  // NOT OWNED
   std::unique_ptr<brave_shields::AdBlockListP3A> _adblockListP3A;
   std::unique_ptr<brave_shields::AdBlockFilterListCatalogProvider>
       _catalogProvider;

@@ -6,12 +6,14 @@
 #import "brave/ios/browser/api/sync/brave_sync_api.h"
 
 #import <CoreImage/CoreImage.h>
+
 #include <string>
 #include <vector>
 
 #include "base/compiler_specific.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/sys_string_conversions.h"
@@ -21,7 +23,6 @@
 #include "brave/components/brave_sync/time_limited_words.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
-
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/service/sync_service.h"
 #include "components/sync/service/sync_service_impl.h"
@@ -159,7 +160,7 @@ BraveSyncAPIWordsValidationStatus const
 
 @interface BraveSyncAPI () {
   std::unique_ptr<BraveSyncWorker> _worker;
-  ChromeBrowserState* _chromeBrowserState;
+  raw_ptr<ChromeBrowserState> _chromeBrowserState;
 }
 @end
 
@@ -175,7 +176,7 @@ BraveSyncAPIWordsValidationStatus const
 
 - (void)dealloc {
   _worker.reset();
-  _chromeBrowserState = NULL;
+  _chromeBrowserState = nullptr;
 }
 
 - (bool)canSyncFeatureStart {
