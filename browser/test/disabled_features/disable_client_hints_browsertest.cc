@@ -38,13 +38,9 @@ constexpr char kClientHintsMetaNameAcceptCH[] = "/ch-meta-name-accept-ch.html";
 
 const std::reference_wrapper<const base::Feature> kTestFeatures[] = {
     // Individual hints features
-    blink::features::kClientHintsDeviceMemory,
     blink::features::kClientHintsDeviceMemory_DEPRECATED,
-    blink::features::kClientHintsDPR,
     blink::features::kClientHintsDPR_DEPRECATED,
-    blink::features::kClientHintsResourceWidth,
     blink::features::kClientHintsResourceWidth_DEPRECATED,
-    blink::features::kClientHintsViewportWidth,
     blink::features::kClientHintsViewportWidth_DEPRECATED,
     blink::features::kViewportHeightClientHintHeader,
 };
