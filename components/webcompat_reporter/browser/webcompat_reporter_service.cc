@@ -225,12 +225,10 @@ void WebcompatReporterService::Bind(
 }
 
 void WebcompatReporterService::SubmitWebcompatReport(
-    mojom::ReportInfoPtr report_info,
-    SubmitWebcompatReportCallback callback) {
+    mojom::ReportInfoPtr report_info) {
   Report pending_report;
   FillReportByReportInfo(pending_report, std::move(report_info));
   SubmitWebcompatReport(pending_report);
-  std::move(callback).Run();
 }
 
 void WebcompatReporterService::SubmitWebcompatReport(Report report_data) {
