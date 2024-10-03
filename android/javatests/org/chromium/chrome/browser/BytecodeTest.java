@@ -286,7 +286,7 @@ public class BytecodeTest {
                 classExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher"));
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateImpl"));
+                        "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateUpstreamImpl"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView")); // presubmit: ignore-long-line
@@ -1371,7 +1371,7 @@ public class BytecodeTest {
                         Profile.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateImpl",
+                        "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateUpstreamImpl",
                         "org/chromium/chrome/browser/partnercustomizations/BraveCustomizationProviderDelegateImpl"));
         Assert.assertTrue(
                 constructorsMatch(
