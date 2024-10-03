@@ -87,6 +87,7 @@
     <messages fallback_to_english="true">
       <part file="bookmark_bar_strings_override.grdp" />
       <part file="error_page_strings_override.grdp" />
+      <part file="management_strings_override.grdp" />
       <part file="new_or_sad_tab_strings_override.grdp" />
       <part file="omnibox_strings_override.grdp" />
       <part file="page_info_strings_override.grdp" />

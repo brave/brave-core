@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  Strings for the management disclosure panel
+
+  Disclosing admin capabilities to managed users is an important part of
+  striking a balance between the data needs of admins and the privacy
+  expectations of users.
+
+  Please consult with the privacy team when adding or changing strings.
+-->
+<grit-part>
+  <if expr="not is_ios">
+    </if>
+
+  <if expr="chromeos_ash">
+    </if>
+
+  <if expr="not chromeos_ash">
+    </if>
+
+  <if expr="not is_ios">
+    <if expr="not chromeos_ash">
+      <if expr="_google_chrome">
+        </if>
+      <if expr="not _google_chrome">
+        </if>
+      </if>
+  </if>
+
+  <if expr="is_chromeos">
+    </if>
+
+  <if expr="is_chromeos">
+    </if>
+
+  <if expr="not is_ios">
+    <message name="IDS_MANAGEMENT_EXTENSION_TELEMETRY_VISIBLE_DATA" desc="Description of the visible data for the extension telemetry feature.">
+      When extensions are added to Brave, relevant data about these extensions is sent to third parties for analysis and may be visible to your administrator. The data includes information about the extensions such as name, install time, source of install as well as activity associated with these extensions (like changing tabs, contacting websites, or accessing cookies). This data is collected for extensions installed from the Web Store as well as off-store extensions.
+    </message>
+  </if>
+
+  <if expr="is_win or is_linux or is_macosx">
+    </if>
+
+  </grit-part>

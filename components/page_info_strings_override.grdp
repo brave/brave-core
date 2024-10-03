@@ -47,4 +47,11 @@
       </if>
     </if>
 
-     </grit-part>
+     <if expr="is_ios">
+    <then>
+      </then>
+    <else>
+      </else>
+  </if>
+
+  </grit-part>

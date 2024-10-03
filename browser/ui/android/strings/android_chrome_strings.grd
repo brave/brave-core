@@ -474,15 +474,31 @@ For more settings that use data to improve your Brave experience, go to <ph name
         You can choose your search engine
       </message>
 
-      <!-- Search engine choice screen. TODO(b/280753530): replace with final versions -->
-      <message name="IDS_SEARCH_ENGINE_CHOICE_SCREEN_TITLE" desc="" translateable="false">
-        *Title*
+      <!-- Address bar settings -->
+      <message name="IDS_ADDRESS_BAR_SETTINGS" desc="Title for Address Bar settings. [CHAR_LIMIT=32]">
+        Address bar
       </message>
-      <message name="IDS_SEARCH_ENGINE_CHOICE_SCREEN_SUBTITLE" desc="" translateable="false">
-        *Subtitle*
+
+      <message name="IDS_ADDRESS_BAR_SETTINGS_TOP" desc="Title for the toggle that will show the address bar on the top. [CHAR_LIMIT=32]">
+        Top
       </message>
-      <message name="IDS_SEARCH_ENGINE_CHOICE_SCREEN_PRIMARY_ACTION" desc="" translateable="false">
-        *Primary Action*
+
+      <message name="IDS_ADDRESS_BAR_SETTINGS_BOTTOM" desc="Title for the toggle that will show the address bar on the bottom. [CHAR_LIMIT=32]">
+        Bottom
+      </message>
+
+      <!-- Blocking choice dialog strings. -->
+      <message name="IDS_BLOCKING_CHOICE_DIALOG_FIRST_TITLE" desc="This string is the heading of a dialog that prompts the user to select the search engine and web browser that they want to use by default. (A search engine provides answers to search queries; this is different from a browser, which displays web pages. A search engine powers many experiences within a browser.) This dialog appears when the user opens Brave after they’ve ignored the Android notification to choose their default apps. This string is before the “Based on a law in your region, you need to choose your browser and search engine” string. We want users to read this dialog and understand that they can use the search engine and browser of their choice. The user can tap “Next” to start the selection flow.">
+        Choose your default apps
+      </message>
+      <message name="IDS_BLOCKING_CHOICE_DIALOG_FIRST_MESSAGE" desc="This is the body text of a dialog that explains why users are being prompted to choose a search engine and browser. This dialog appears when the user opens Brave after they’ve ignored the Android notification to choose their default apps. The headline for this dialog is “Choose your default apps”. We want users to read this dialog and understand that they can use the search engine and browser of their choice. The user can tap “Next” to start the selection flow.">
+        Based on a law in your region, you need to choose your browser and search engine
+      </message>
+      <message name="IDS_BLOCKING_CHOICE_DIALOG_SECOND_TITLE" desc="This string is the heading of a dialog that confirms to the user that Android has saved their choices for the search engine and web browser that they want to use by default. This dialog appears after the user finishes the flow to choose their default apps. This string is before the “The apps you chose will be used by default. If an app isn’t already on this device, it’ll be downloaded shortly.” string. The user can tap “Done” to close the dialog and continue to use Brave (regardless of whether it was chosen as the default browser).">
+        Choices saved
+      </message>
+      <message name="IDS_BLOCKING_CHOICE_DIALOG_SECOND_MESSAGE" desc="This is the body text of a dialog that confirms to the user that Android has saved their choices for the search engine and web browser that they want to use by default. It’s possible that the user has chosen a default app that wasn’t previously on their device: if so, that app is now being downloaded in the background. This dialog appears after the user finishes the flow to choose their default apps; now, the user can continue to use Brave (regardless of whether it was chosen as the default browser). The headline for this dialog is “Choices saved”. The user can tap “Done” to close the dialog and continue to use Brave (regardless of whether it was chosen as the default browser).">
+        The apps you chose will be used by default. If an app isn’t already on this device, it’ll be downloaded shortly.
       </message>
 
       <!-- Autofill and Payments preferences -->
@@ -573,25 +589,33 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_AUTOFILL_CARD_EDITOR_VIRTUAL_CARD_TURN_OFF_BUTTON_LABEL" desc="Label shown on the button that the user clicks on to unenroll from virtual cards.">
         Turn off
       </message>
-      <!-- TODO(crbug.com/40898980): Use finalized string.-->
-      <message translateable="false" name="IDS_AUTOFILL_OPTIONS_TITLE" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
-        Autofill Options
+
+      <message name="IDS_PREFS_SECTION_AUTOFILL" desc="Title for the Passwords and Autofill preferences. [CHAR_LIMIT=32]">
+        Passwords and Autofill
       </message>
-      <!-- TODO(crbug.com/40898980): Use finalized string.-->
-      <message translateable="false" name="IDS_AUTOFILL_OPTIONS_CONFIRM_RESTART" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
-        Restart now
+      <message name="IDS_AUTOFILL_OPTIONS_TITLE" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
+        Autofill Services
       </message>
-      <!-- TODO(crbug.com/40898980): Use finalized string.-->
-      <message translateable="false" name="IDS_AUTOFILL_OPTIONS_UNDO_TOGGLE_CHANGE" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
-        Undo setting change
+      <message name="IDS_AUTOFILL_OPTIONS_CONFIRM_RESTART" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
+        Restart Brave
       </message>
-      <!-- TODO(crbug.com/40898980): Use finalized string.-->
-      <message translateable="false" name="IDS_AUTOFILL_OPTIONS_HINT_POLICY" desc="Explanation that a policy prevents toggling the use of third-party autofill in Brave." formatter_data="android_java">
-        Disabled by the administrator of this device
+      <message name="IDS_AUTOFILL_OPTIONS_RESTART_PROMPT_TITLE" desc="Title of the dialog prompting the user to restart to apply the new Autofill settings." formatter_data="android_java">
+        Restart Brave?
       </message>
-      <!-- TODO(crbug.com/40898980): Use finalized string.-->
-      <message translateable="false" name="IDS_AUTOFILL_OPTIONS_HINT_3P_SETTING" desc="Explanation that a 3P password manager must be selected to toggle the use of third-party autofill in Brave." formatter_data="android_java">
-        Disabled because a different password manager must be set up in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Android System Settings<ph name="END_LINK">&lt;/link&gt;</ph> to use this setting.
+      <message name="IDS_AUTOFILL_OPTIONS_RESTART_PROMPT_TEXT" desc="Title of the dialog prompting the user to restart to apply the new Autofill settings." formatter_data="android_java">
+        To finish setting up autofill, restart Brave now. Your tabs will automatically reopen.
+      </message>
+      <message name="IDS_AUTOFILL_OPTIONS_UNDO_TOGGLE_CHANGE" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
+        Cancel
+      </message>
+      <message name="IDS_AUTOFILL_OPTIONS_HINT_POLICY" desc="Explanation that a policy prevents toggling the use of third-party autofill in Brave." formatter_data="android_java">
+        Your administrator manages this setting.
+      </message>
+      <message name="IDS_AUTOFILL_OPTIONS_HINT_3P_SETTING_DISABLED" desc="Explanation that a 3P password manager must be selected to toggle the use of third-party autofill in Brave." formatter_data="android_java">
+        To set your preferred service for autofill, first add the service in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Android Settings<ph name="END_LINK">&lt;/link&gt;</ph> .
+      </message>
+      <message name="IDS_AUTOFILL_OPTIONS_HINT_3P_SETTING_READY" desc="Explanation that third-party autofill in Brave will defer to the 3P password manager as selected in Android settings." formatter_data="android_java">
+        Autofill services are also managed in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Android Settings<ph name="END_LINK">&lt;/link&gt;</ph>.
       </message>
       <message name="IDS_AUTOFILL_DELETE_SAVED_CVCS_CONFIRMATION_DIALOG_TITLE" desc="Title for the dialog where the user confirms their intention to delete their saved CVCs.">
         Delete saved security codes?
@@ -836,6 +860,30 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_PWD_ACCESS_LOSS_WARNING_NO_GMS_CORE_BUTTON_TEXT" desc="The button text of the password access loss warning sheet when there is no GMS Core." formatter_data="android_java">
         Export passwords
       </message>
+      <message name="IDS_PWD_ACCESS_LOSS_WARNING_MANUAL_MIGRATION_TITLE" desc="The title of the password access loss warning sheet when the automatic password migration failed." formatter_data="android_java">
+        Fix problem with saved passwords
+      </message>
+      <message name="IDS_PWD_ACCESS_LOSS_WARNING_MANUAL_MIGRATION_TEXT" desc="The text of the password access loss warning sheet when the automatic password migration failed." formatter_data="android_java">
+        Some passwords on this device will stop working soon. You can move these passwords to Brave Password Manager.
+      </message>
+      <message name="IDS_PWD_ACCESS_LOSS_WARNING_MANUAL_MIGRATION_BUTTON_TEXT" desc="The button text of the password access loss warning sheet when the automatic password migration failed." formatter_data="android_java">
+        Help me fix this
+      </message>
+      <message name="IDS_PWD_ACCESS_LOSS_WARNING_UPDATE_GMS_CORE_TITLE" desc="The title of the password access loss warning sheet when the GMS Core version doesn't support local passwords." formatter_data="android_java">
+        Update Google Play services
+      </message>
+      <message name="IDS_PWD_ACCESS_LOSS_WARNING_UPDATE_GMS_CORE_TEXT" desc="The text of the password access loss warning sheet when the GMS Core version doesn't support local passwords." formatter_data="android_java">
+        Passwords may stop working soon on this device. To keep using your passwords, update Google Play services. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
+      <message name="IDS_PWD_ACCESS_LOSS_WARNING_UPDATE_GMS_CORE_BUTTON_TEXT" desc="The button text of the password access loss warning sheet when the GMS Core version doesn't support local passwords." formatter_data="android_java">
+        Update
+      </message>
+      <message name="IDS_PWD_ACCESS_LOSS_NOTIFICATION_NO_GMS_CORE_TEXT" desc="The text of the password access loss notification when there is no GMS Core." formatter_data="android_java">
+        Passwords will stop working soon because Google Play services isn’t available. You can make a copy of your saved passwords before they stop working.
+      </message>
+      <message name="IDS_PWD_ACCESS_LOSS_NOTIFICATION_UPDATE_GMS_CORE_TEXT" desc="The text of the password access loss notification when the GMS Core version doesn't support local passwords." formatter_data="android_java">
+        Passwords may stop working soon on this device. To keep using your passwords, update Google Play services.
+      </message>
       <message name="IDS_PASSWORD_MIGRATION_WARNING_TITLE" desc="The title of the password migration warning sheet.">
         We’re changing how passwords are saved on this device
       </message>
@@ -935,11 +983,26 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_ACCESS_LOSS_EXPORT_DIALOG_TITLE" desc="The title of the modal dialog proposing the user to export their passwords from Brave and remove them from Brave's database (to later import them in Google Play Services).">
         First, export and delete the passwords from Brave
       </message>
+      <message name="IDS_ACCESS_LOSS_EXPORT_DIALOG_TITLE_NO_GMS" desc="The title of the modal dialog proposing the user to export their passwords from Brave and remove them from Brave's database.">
+        Export and delete the passwords
+      </message>
       <message name="IDS_ACCESS_LOSS_EXPORT_DIALOG_MESSAGE" desc="The message of the modal dialog proposing the user to export their passwords from Brave and remove them from Brave's database (to later import them in Google Play Services).">
         Your passwords will be downloaded as a CSV file. They will be visible to anyone who can access the file, including apps. Exported passwords will be deleted from Brave.
       </message>
       <message name="IDS_ACCESS_LOSS_EXPORT_DIALOG_POSITIVE_BUTTON_TEXT" desc="The text on the button, confirming the user's agreement to export passwords and remove them from Brave's database.">
         Export and delete
+      </message>
+      <message name="IDS_ACCESS_LOSS_IMPORT_DIALOG_TITLE" desc="The title of the dialog instructing the user to import passwords into Brave Password Manager.">
+        Next, import the passwords
+      </message>
+      <message name="IDS_ACCESS_LOSS_IMPORT_DIALOG_DESC" desc="The message of the dialog instructing the user to import passwords into Brave Password Manager.">
+        Open Brave Password Manager and go to settings. Select “Import“ and add the CSV file that contains your exported passwords.
+      </message>
+      <message name="IDS_ACCESS_LOSS_IMPORT_DIALOG_POSITIVE_BUTTON_TEXT" desc="The positive button text in the dialog instructing the user to import passwords into Brave Password Manager.">
+        Take me there
+      </message>
+      <message name="IDS_ACCESS_LOSS_PREF_DESC" desc="The subtitle of the Brave Password Manager item in Brave main settings. Displayed only if the UPM is not functioning properly.">
+        Some passwords will stop working soon
       </message>
 
       <!-- Lock Screen Fragment -->
@@ -1118,12 +1181,6 @@ For example, some websites may respond to this request by showing you ads that a
 
       <!-- Privacy Sandbox v4 - Topics Page -->
       <!-- Where possible, these strings have been unified on Desktop & Android in privacy_sandox_strings.grdp. The strings here either only appear on one platform, or have platform specific requirements, e.g. the format of placeholders, and so cannot be unified. For the latter case, they have corresponding _CANONICAL representations used when consent is recorded on either platform, and so they must stay in sync -->
-      <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCKED_TOPICS_SUB_PAGE_TITLE" desc="A page title. Topics that the user blocked appear on this page.">
-        Topics you blocked
-      </message>
-      <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_DESCRIPTION" desc="A description that appear beneath the 'Your topics' label. * 'You can block': There is a 'Block' button (or an X on mobile) that appears next to each topic in the list. * 'auto-deletes': this could also read 'Brave deletes...' We included the 'auto' to reinforce that this is part of a system and the deletion is done regularly.">
-        You can block topics you don't want shared with sites. Brave also auto-deletes your topics older than 4 weeks. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
-      </message>
       <message name="IDS_SETTINGS_TOPICS_PAGE_LEARN_MORE_BULLET_3" desc="Paragraph 3 of 3 on the Learn more about ad topics page. * 'auto-deletes': this could also read 'Brave deletes...' We included the 'auto' to reinforce that this is part of a system and the deletion is done regularly.">
         Brave auto-deletes topics that are older than 4 weeks. As you keep browsing, a topic might reappear on the list. Or you can block topics you don’t want Brave to share with sites. Learn more about <ph name="BEGIN_LINK">&lt;link&gt;</ph>managing your ad privacy in Brave.<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
@@ -1132,9 +1189,6 @@ For example, some websites may respond to this request by showing you ads that a
       </message>
       <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCK_TOPIC_SNACKBAR" desc="A confirmation that appears after a user blocks a topic. This page is only applicable if the user has the Ad topics setting turned on. If they do, Brave estimates the user's topics of interests and then sites can ask for topics to help personalize ads. If a user dosn't like a specific topic, they can block it.">
         Blocked topic
-      </message>
-      <message name="IDS_SETTINGS_TOPICS_PAGE_ADD_TOPIC_SNACKBAR" desc="A confirmation that appears after a user un-blocks a topic. This page is only applicable if the user has the Ad topics setting turned on. If they do, Brave estimates the user's topics of interests and then sites can ask for topics to help personalize ads. If a user dosn't like a specific topic, they can block it. **** The user can also unblock a topic, the language is important, because 'unblocking' doesn't bring the topic back to the list of active topics. It simply adds a topic back to the list of potential topics that Brave might estimate at a later time as the user continues browsing.">
-        Added topic back to potential topics
       </message>
 
       <!-- Privacy Sandbox v4 - Fledge Page -->
@@ -1527,6 +1581,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_PRIVACY_GUIDE_PRIVACY_SANDBOX_DESCRIPTION" desc="Description for the Privacy Sandbox item on the final page of the privacy guide">
         Brave gives you more control over the ads you see and limits what sites can learn about you when they show you personalized ads.
+      </message>
+      <message name="IDS_PRIVACY_GUIDE_PRIVACY_SANDBOX_DESCRIPTION_AD_TOPICS" desc="Description for the Privacy Sandbox item on the final page of the privacy guide - This text is used when the ad topics card is added.">
+        Manage your ad topics and other settings to limit what sites can learn about you to show you personalized ads
       </message>
       <message name="IDS_PRIVACY_GUIDE_WEB_APP_ACTIVITY_HEADING" desc="Title for the Web and App Activity item on the final page of the privacy guide">
         Web &amp; App Activity
@@ -2836,6 +2893,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB" desc="Content description for the tab title.">
         <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, tab
       </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_NOTIFICATION" desc="Content description for the tab title with a notification status.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, new or updated tab
+      </message>
       <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_CLOSE_TAB" desc="Content description for the close tab button.">
         Close <ph name="TAB_TITLE">%1$s<ex>Brave</ex></ph> tab
       </message>
@@ -2880,6 +2940,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         {FILE_COUNT, plural,
           =1 {1 download pending}
           other {# downloads pending}}
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_MULTIPLE_DOWNLOAD_BLOCKED" desc="Download message label describing that one or more downloads are blocked due to corporate policy">
+        {FILE_COUNT, plural,
+          =1 {Blocked by your organization}
+          other {# were blocked by your organization}}
       </message>
 
       <message name="IDS_INCOGNITO_DOWNLOAD_MESSAGE_TITLE" desc="Download title displayed in a prompt message when the user downloads a file in Private mode.">
@@ -4021,10 +4086,19 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         <ph name="TAB_COUNT">%1$s<ex>6</ex></ph> tabs
       </message>
       <message name="IDS_RECENT_TABS_GROUP_CLOSURE_WITH_TITLE" desc="Text for a Recent Tabs Page &gt; Recently Closed row item that represents a single group of tabs closed together that had a user specified group title. TITLE_OF_GROUP is the user specified title of the group.">
-        Tab group - <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph>
+        <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph>
       </message>
       <message name="IDS_RECENT_TABS_GROUP_CLOSURE_WITHOUT_TITLE" desc="Text for a Recent Tabs Page &gt; Recently Closed row item that represents a single group of tabs closed together that does not have a user specified title. TAB_COUNT is the total number of tabs closed in the group.">
-        Tab group - <ph name="TAB_COUNT">%1$s<ex>5</ex></ph> tabs
+        {TAB_COUNT, plural,
+          =1 {<ph name="TAB_COUNT_ONE">%1$s<ex>1</ex></ph> tab}
+          other {<ph name="TAB_COUNT_MANY">%1$s<ex>5</ex></ph> tabs}
+        }
+      </message>
+      <message name="IDS_RECENT_TABS_GROUP_CLOSURE_DOMAIN_TEXT" desc="Description text for a Recent Tabs Page &gt; Recently Closed row item that represents a single group of tabs closed together. TAB_COUNT is the total number of tabs closed in the group. URL_LIST is the list of tab urls in the group.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="TAB_COUNT_ONE">%1$s<ex>1</ex></ph> tab - <ph name="URL_LIST">%2$s<ex>example.com</ex></ph>}
+          other {<ph name="TAB_COUNT_MANY">%1$s<ex>5</ex></ph> tabs - <ph name="URL_LIST">%2$s<ex>example.com</ex></ph>}
+        }
       </message>
       <message name="IDS_RECENT_TABS_BULK_CLOSURE_ACCESSIBILITY" desc="Accessibility content description for a Recent Tabs Page &gt; Recently closed row item that represents multiple tabs/groups closed together. TAB_COUNT is the total number of tabs closed in the action including grouped tabs.">
         Restore <ph name="TAB_COUNT">%1$s<ex>6</ex></ph> tabs as new background tabs.
@@ -4032,8 +4106,20 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_RECENT_TABS_GROUP_CLOSURE_WITH_TITLE_ACCESSIBILITY" desc="Accessibility content description for a Recent Tabs Page &gt; Recently Closed row item that represents a single group of tabs closed together that had a user specified group title. TITLE_OF_GROUP is the user specified title of the group.">
         Restore tab group <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph> as a new background tab group.
       </message>
+      <message name="IDS_RECENT_TABS_GROUP_CLOSURE_WITH_TITLE_WITH_COLOR_ACCESSIBILITY" desc="Accessibility content description for a Recent Tabs Page &gt; Recently Closed row item that represents a single group of tabs closed together that had a user specified group title, and has a group color. TITLE_OF_GROUP is the user specified title of the group.">
+        Restore tab group <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph>, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>, as a new background tab group.
+      </message>
       <message name="IDS_RECENT_TABS_GROUP_CLOSURE_WITHOUT_TITLE_ACCESSIBILITY" desc="Accessibility content description for a Recent Tabs Page &gt; Recently Closed row item that represents a single group of tabs closed together that did not have a user specified title. TAB_COUNT is the total number of tabs closed in the group.">
-        Restore tab group of <ph name="TAB_COUNT">%1$s<ex>5</ex></ph> tabs as a new background tab group.
+        {TAB_COUNT, plural,
+          =1 {Restore tab group of <ph name="TAB_COUNT_ONE">%1$s<ex>1</ex></ph> tab as a new background tab group.}
+          other {Restore tab group of <ph name="TAB_COUNT_MANY">%1$s<ex>5</ex></ph> tabs as a new background tab group.}
+        }
+      </message>
+      <message name="IDS_RECENT_TABS_GROUP_CLOSURE_WITHOUT_TITLE_WITH_COLOR_ACCESSIBILITY" desc="Accessibility content description for a Recent Tabs Page &gt; Recently Closed row item that represents a single group of tabs closed together that did not have a user specified title, and has a group color. TAB_COUNT is the total number of tabs closed in the group.">
+        {TAB_COUNT, plural,
+          =1 {Restore tab group of <ph name="TAB_COUNT_ONE">%1$s<ex>1</ex></ph> tab, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>, as a new background tab group.}
+          other {Restore tab group of <ph name="TAB_COUNT_MANY">%1$s<ex>5</ex></ph> tabs, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>, as a new background tab group.}
+        }
       </message>
       <message name="IDS_WEB_FEED_AWARENESS" desc="Educating the user about the web feed.">
         Explore content to follow
@@ -4093,6 +4179,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_ADAPTIVE_TOOLBAR_BUTTON_PREFERENCE_READ_ALOUD" desc="Title name for the read aloud option in the preference.">
         Listen to this page
+      </message>
+      <message name="IDS_ADAPTIVE_TOOLBAR_BUTTON_PREFERENCE_PAGE_SUMMARY" desc="Title name for the page_summary option in the preference.">
+        Page summary
       </message>
       <message name="IDS_ADAPTIVE_TOOLBAR_BUTTON_PREFERENCE_BASED_ON_YOUR_USAGE" desc="Title name for the based on your usage option in the preference.">
         Based on your usage
@@ -4247,7 +4336,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Close all tabs
       </message>
       <message name="IDS_MENU_CLOSE_ALL_INCOGNITO_TABS" desc="Menu item for closing all open Private tabs. [CHAR_LIMIT=27]">
-        Close Private tabs
+        Close all Private tabs
       </message>
       <message name="IDS_MENU_SELECT_TABS" desc="Menu item for bulk editing tabs. [CHAR_LIMIT=27]">
         Select tabs
@@ -4444,8 +4533,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_PRICE_INSIGHTS_CONTENT_PRICE_TRACKING_ENABLED_BUTTON_TEXT" desc="The label of the price tracking button when the user is tracking the product.">
         Tracking
       </message>
-      <message name="IDS_PRICE_INSIGHTS_CONTENT_PRICE_TRACKING_BUTTON_CONTENT_DESCRIPTION" desc="Accessibility string that describes the price tracking button to track or untrack a product.">
-        Tap to track or untrack a product.
+      <message name="IDS_PRICE_INSIGHTS_CONTENT_PRICE_TRACKING_BUTTON_ACTION_DESCRIPTION" desc="Accessibility string that describes the price tracking button to track or untrack a product.">
+        Track or untrack a product.
       </message>
       <message name="IDS_PRICE_INSIGHTS_CONTENT_PRICE_TRACKING_ERROR_MESSAGE" desc="Error message when user is tracking or untracking a product encountered an error.">
         Something went wrong
@@ -4457,7 +4546,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Bookmark saved
       </message>
       <message name="IDS_PRICE_INSIGHTS_CONTENT_PRICE_UNTRACKED_SUCCESS_MESSAGE" desc="Confirmation message when user untrack a product successfully.">
-        Alerts for this product have been turned off
+        Price tracking stopped
       </message>
       <message name="IDS_PRICE_INSIGHTS_TITLE" desc="The title for the price insights button.">
         Price insights
@@ -4731,6 +4820,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCESSIBILITY_INCOGNITO_BADGE" desc="Content description for the badge indicating that the user is in Private mode.">
         Private mode
       </message>
+      <message name="IDS_INCOGNITO_BADGE" desc="Text appearing in the private badge on toolbar indicating that the user is in Private mode.">
+        Private
+      </message>
 
       <message name="IDS_TABSWITCHER_NO_TABS_EMPTY_STATE" desc="Text appearing on an empty tab switcher that indicates that tabs opened will appear here.">
         You’ll find your tabs here
@@ -4827,9 +4919,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_ACCESSIBILITY_OMNIBOX_MOST_VISITED_LIST" desc="Category name of the most visited sites. Announced as: 'amazon.com, 1 of 10 in list Most Visited Sites, 10 items.'">
         Most visited sites
-      </message>
-      <message name="IDS_ACCESSIBILITY_OMNIBOX_QUERY_TILES_LIST" desc="Category name of the most visited sites. Announced as: 'News, 1 of 10 in list Query Tiles, 10 items.'">
-        Query tiles
       </message>
 
       <message name="IDS_ACCESSIBILITY_SHARE_SELECTED_ITEMS" desc="Content description for the button to share selected items. [ICU Syntax]">
@@ -5202,6 +5291,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Using Brave for search
       </message>
 
+      <!-- AuthTab -->
+      <message name="IDS_AUTH_TAB_SECURED_BY_CHROME_TEMPLATE" desc="Message template that used to indicating that the Auth Tab is securely running on Brave. [CHAR_LIMIT=32]">
+        Secured by <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>
+      </message>
+
       <!-- WebAPK/TWA related strings -->
       <message name="IDS_TWA_RUNNING_IN_CHROME" desc="Message on a snackbar indicating that the current Activity may use Brave data (the rest of the app may not be).">
         Running in Brave
@@ -5439,6 +5533,18 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_IPH_ANDROID_TAB_DECLUTTER_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text for the android tab declutter feature.">
         To open tabs and visit different pages at the same time, tap the open tabs button
+      </message>
+      <message name="IDS_IPH_TAB_SWITCHER_SWITCH_INTO_INCOGNITO_TEXT" desc="The in-product-help message to long press the tab switcher button to switch to private.">
+        Touch and hold to switch to Private
+      </message>
+      <message name="IDS_IPH_TAB_SWITCHER_SWITCH_INTO_INCOGNITO_ACCESSIBILITY_TEXT" desc="The in-product-help message to long press the tab switcher button to switch to private.">
+        Double tap and hold to switch to Private
+      </message>
+      <message name="IDS_IPH_TAB_SWITCHER_SWITCH_OUT_OF_INCOGNITO_TEXT" desc="The in-product-help message to long press the tab switcher button to switch to private.">
+        Touch and hold to switch out of Private
+      </message>
+      <message name="IDS_IPH_TAB_SWITCHER_SWITCH_OUT_OF_INCOGNITO_ACCESSIBILITY_TEXT" desc="The in-product-help message to long press the tab switcher button to switch to private.">
+        Double tap and hold to switch out of Private
       </message>
       <message name="IDS_IPH_TRANSLATE_MENU_BUTTON_TEXT" desc="The in-product-help message after a successful navigation prompting user to translate current page.">
         Translate this page to any language
@@ -6582,6 +6688,21 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_DATA_SHARING_INVITATION_DIALOG_ACCEPT" desc="The positive button text of the dialog shown when a user has received a tab group invitation.">
         Accept
+      </message>
+      <message name="IDS_DATA_SHARING_INVITATION_FAILURE_TITLE" desc="The title of the dialog shown when a share invitation link fails">
+        The invite link couldn’t be opened
+      </message>
+      <message name="IDS_DATA_SHARING_INVITATION_FAILURE_DESCRIPTION" desc="The body text the dialog shown when a share invitation link fails">
+        You can contact the sender to ask for a new link.
+      </message>
+      <message name="IDS_DATA_SHARING_INVITATION_FAILURE_BUTTON" desc="The positive button text of the dialog shown when a share invitation link fails.">
+        Got it
+      </message>
+      <message name="IDS_DATA_SHARING_GENERIC_FAILURE_TITLE" desc="The title of the dialog shown when some share backend call fails, for example when leaving a group.">
+        Something went wrong
+      </message>
+      <message name="IDS_DATA_SHARING_GENERIC_FAILURE_DESCRIPTION" desc="The body text the dialog shown when some share backend call fails, for example when leaving a group.">
+        There was an error. Try again.
       </message>
 
       <!-- Interstitial shown prior to making digital identity request to wallet -->

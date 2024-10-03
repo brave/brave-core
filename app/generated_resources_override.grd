@@ -310,9 +310,7 @@ are declared in tools/grit/grit_rule.gni.
             </if>
            <if expr="not is_macosx">
             </if>
-          </if>  <if expr="is_win">
-          </if>
-        </if>
+          </if>  </if>
 
       <if expr="is_macosx">
         </if>
@@ -467,7 +465,7 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
-      <if expr="enable_extensions">
+      <if expr="enable_extensions_core">
         <if expr="is_win">
           </if>
         <if expr="is_macosx or is_linux">
@@ -1337,6 +1335,10 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
       </if>
+
+    <if expr="not is_android">
+      </if>
+
     <if expr="is_android">
       </if>
 

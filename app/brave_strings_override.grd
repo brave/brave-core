@@ -259,11 +259,12 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="not chromeos_ash">
         </if>
 
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+
       <if expr="not chromeos_ash and not is_android and not chromeos_lacros">
-        <if expr="not use_titlecase">
-          </if>
-        <if expr="use_titlecase">
-          </if>
         </if>
 
       <if expr="not chromeos_ash and not is_android">
