@@ -261,6 +261,8 @@ source_set("ui") {
       "webui/new_tab_page/brave_new_tab_ui.h",
       "webui/new_tab_page/brave_new_tab_ui_utils.cc",
       "webui/new_tab_page/brave_new_tab_ui_utils.h",
+      "webui/new_tab_page/live_ntt_ui.cc",
+      "webui/new_tab_page/live_ntt_ui.h",
       "webui/new_tab_page/top_sites_message_handler.cc",
       "webui/new_tab_page/top_sites_message_handler.h",
       "webui/private_new_tab_page/brave_private_new_tab_page_handler.cc",
@@ -313,6 +315,7 @@ source_set("ui") {
     deps += [
       "//base",
       "//brave/browser/profiles:util",
+      "//brave/components/live_ntt:live_ntt_generated",
       "//brave/common",
       "//brave/components/constants",
       "//brave/components/misc_metrics",

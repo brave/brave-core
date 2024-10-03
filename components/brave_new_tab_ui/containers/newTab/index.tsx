@@ -162,6 +162,8 @@ class NewTabPage extends React.Component<Props, State> {
     })
     window.addEventListener('resize', this.handleResize)
     window.navigation.addEventListener('currententrychange', this.checkShouldOpenSettings)
+
+    this.createLiveNttBackground()
   }
 
   componentWillUnmount () {
@@ -229,6 +231,26 @@ class NewTabPage extends React.Component<Props, State> {
     this.setState({
       forceToHideWidget: GetShouldForceToHideWidget(this.props, this.state.showSearchPromotion)
     })
+  }
+
+  createLiveNttBackground() {
+    let element = document.createElement('iframe');
+    element.id = 'backgroundLiveNtt';
+    element.src = "chrome-untrusted://live-ntt/"
+
+    element.style.position = 'absolute';
+    element.style.top = '0';
+    element.style.bottom = '0';
+    element.style.left = '0';
+    element.style.right = '0';
+    element.style.padding = '0';
+    element.style.margin = '0';
+    element.style.border = '0';
+    element.style.width = '100%';
+    element.style.height = '100%';
+    element.style.zIndex = '-1';
+
+    document.body.appendChild(element);
   }
 
   trackCachedImage () {

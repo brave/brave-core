@@ -163,6 +163,19 @@ export const Page: React.FunctionComponent<React.PropsWithChildren<PageProps>> =
   )
 }
 
+export const BackgroundLiveNtt = styled('iframe')`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding 0;
+  margin: 0;
+  border: 0;
+  width: 100%; height: 100%;
+  z-index: -1;
+`
+
 export const GridItemStats = styled('section')`
   grid-column: 1 / span 2;
 `

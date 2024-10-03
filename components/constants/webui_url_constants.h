@@ -87,4 +87,9 @@ inline constexpr char kRewriterUIHost[] = "rewriter";
 inline constexpr char16_t kTransactionSimulationLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/Transaction-Simulation";
 
+inline constexpr char kBraveNewTabPageURL[] = "chrome://newtab/";
+inline constexpr char kUntrustedLiveNTTHost[] = "live-ntt";
+inline constexpr char kUntrustedLiveNTTURL[] =
+    "chrome-untrusted://live-ntt/";
+
 #endif  // BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_

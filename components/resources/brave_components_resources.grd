@@ -69,6 +69,8 @@
         </if>
       </if>
 
+      <include name="IDR_LIVE_NTT_HTML" file="../live_ntt/live_ntt.html" type="BINDATA" />
+
       <!-- Imagery links -->
       <if expr="not is_android">
         <include name="IDR_BRAVE_NEW_TAB_BACKGROUND1" file="../img/newtab/backgrounds/dylan-malval_sea-min.webp" type="BINDATA" />
