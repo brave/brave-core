@@ -434,15 +434,12 @@ void EngineConsumerLlamaRemote::GenerateAssistantResponse(
     const std::string& human_input,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
-  if (conversation_history.empty()) {
+  if (!CanPerformCompletionRequest(conversation_history)) {
     std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
     return;
   }
-  const mojom::ConversationTurnPtr& last_turn = conversation_history.back();
-  if (last_turn->character_type != mojom::CharacterType::HUMAN) {
-    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
-    return;
-  }
+
+  const auto& last_turn = conversation_history.back();
   std::optional<std::string> selected_text = std::nullopt;
   if (last_turn->selected_text.has_value()) {
     selected_text =

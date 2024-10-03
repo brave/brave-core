@@ -238,6 +238,9 @@
   <message name="IDS_CHAT_UI_PAGE_CONTENT_REFINED_WARNING" desc="A warning issued when the page content has been refined">
     The page content has been refined through extracting the most relevant information from the page because it was too long for Leo.
   </message>
+  <message name="IDS_CHAT_UI_PAGE_CONTENT_REFINED_IN_PROGRESS" desc="An indicator to show page content refined is in progress">
+    Finding the relevant parts of the web page...
+  </message>
   <message name="IDS_CHAT_UI_CONVERSATION_END_ERROR" desc="An error issued when the user cannot continue chatting">
     This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.
   </message>

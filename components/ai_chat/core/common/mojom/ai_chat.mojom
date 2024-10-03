@@ -109,6 +109,10 @@ enum ActionType {
   EXPAND,
 };
 
+struct PageContentRefineEvent {
+  bool is_refining = true;
+};
+
 struct SearchQueriesEvent {
   array<string> search_queries;
 };
@@ -124,6 +128,7 @@ struct CompletionEvent {
 // Events that occur during a conversation turn (only assistant for now)
 union ConversationEntryEvent {
   CompletionEvent completion_event;
+  PageContentRefineEvent page_content_refine_event;
   SearchQueriesEvent search_queries_event;
   SearchStatusEvent search_status_event;
 };

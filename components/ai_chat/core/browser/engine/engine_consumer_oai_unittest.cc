@@ -221,7 +221,7 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
           {date_and_time_string}, nullptr)});
 
   auto* client = GetClient();
-  base::RunLoop run_loop;
+  auto run_loop = std::make_unique<base::RunLoop>();
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
       .WillOnce(
@@ -262,14 +262,14 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             EXPECT_STREQ(result.value().c_str(), "I dont know");
-            run_loop.Quit();
+            run_loop->Quit();
           }));
 
-  run_loop.Run();
+  run_loop->Run();
   testing::Mock::VerifyAndClearExpectations(client);
 
   // Test with a modified server reply.
-  base::RunLoop run_loop2;
+  run_loop = std::make_unique<base::RunLoop>();
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
       .WillOnce([&](const mojom::CustomModelOptions, base::Value::List messages,
                     EngineConsumer::GenerationDataCallback,
@@ -298,10 +298,75 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
   engine_->GenerateAssistantResponse(
       false, "", GetHistoryWithModifiedReply(), "test", base::DoNothing(),
       base::BindLambdaForTesting(
-          [&run_loop2](EngineConsumer::GenerationResult result) {
-            run_loop2.Quit();
+          [&run_loop](EngineConsumer::GenerationResult result) {
+            run_loop->Quit();
           }));
-  run_loop2.Run();
+  run_loop->Run();
+  testing::Mock::VerifyAndClearExpectations(client);
+
+  // Test with page content refine event.
+  {
+    mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
+        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+        mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
+        std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
+        std::nullopt, false);
+    entry->events->push_back(
+        mojom::ConversationEntryEvent::NewPageContentRefineEvent(
+            mojom::PageContentRefineEvent::New()));
+    history.push_back(std::move(entry));
+  }
+  run_loop = std::make_unique<base::RunLoop>();
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+      .WillOnce(
+          [&](const mojom::CustomModelOptions, base::Value::List messages,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback) {
+            std::move(completed_callback)
+                .Run(EngineConsumer::GenerationResult(""));
+          });
+
+  engine_->GenerateAssistantResponse(
+      false, "This is my page.", GetHistoryWithModifiedReply(), "Who?",
+      base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
+  run_loop->Run();
+  testing::Mock::VerifyAndClearExpectations(client);
+}
+
+TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
+  EngineConsumer::ConversationHistory history;
+  auto* client = GetClient();
+  auto run_loop = std::make_unique<base::RunLoop>();
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _)).Times(0);
+  engine_->GenerateAssistantResponse(
+      false, "This is my page.", history, "Who?", base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult result) {
+            run_loop->Quit();
+          }));
+  run_loop->Run();
+  testing::Mock::VerifyAndClearExpectations(client);
+
+  mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
+      std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
+      std::nullopt, false);
+  entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("Me")));
+  history.push_back(std::move(entry));
+
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _)).Times(0);
+  run_loop = std::make_unique<base::RunLoop>();
+  engine_->GenerateAssistantResponse(
+      false, "This is my page.", history, "Who?", base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult result) {
+            run_loop->Quit();
+          }));
+  run_loop->Run();
   testing::Mock::VerifyAndClearExpectations(client);
 }
 

@@ -67,7 +67,12 @@ export default function AssistantResponse(props: { entry: mojom.ConversationTurn
       }
       if (event.searchStatusEvent && props.isEntryInProgress && !hasCompletionStarted) {
         return (
-          <div className={styles.searchInProgress}><ProgressRing />Improving answer with Brave Search…</div>
+          <div className={styles.actionInProgress}><ProgressRing />Improving answer with Brave Search…</div>
+        )
+      }
+      if (event.pageContentRefineEvent && props.isEntryInProgress && !hasCompletionStarted) {
+        return (
+          <div className={styles.actionInProgress}><ProgressRing />{getLocale('pageContentRefinedInProgress')}</div>
         )
       }
       // TODO(petemill): Consider displaying in-progress queries if the API

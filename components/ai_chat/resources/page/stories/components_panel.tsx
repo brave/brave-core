@@ -22,6 +22,7 @@ import styles from './style.module.scss'
 function getCompletionEvent(text: string): mojom.ConversationEntryEvent {
   return {
     completionEvent: { completion: text },
+    pageContentRefineEvent: undefined,
     searchQueriesEvent: undefined,
     searchStatusEvent: undefined
   }
@@ -30,6 +31,7 @@ function getCompletionEvent(text: string): mojom.ConversationEntryEvent {
 function getSearchEvent(queries: string[]): mojom.ConversationEntryEvent {
   return {
     completionEvent: undefined,
+    pageContentRefineEvent: undefined,
     searchQueriesEvent: { searchQueries: queries },
     searchStatusEvent: undefined
   }
@@ -38,8 +40,18 @@ function getSearchEvent(queries: string[]): mojom.ConversationEntryEvent {
 function getSearchStatusEvent(): mojom.ConversationEntryEvent {
   return {
     completionEvent: undefined,
+    pageContentRefineEvent: undefined,
     searchQueriesEvent: undefined,
     searchStatusEvent: { isSearching: true }
+  }
+}
+
+function getPageContentRefineEvent(): mojom.ConversationEntryEvent {
+  return {
+    completionEvent: undefined,
+    pageContentRefineEvent: { isRefining: true },
+    searchQueriesEvent: undefined,
+    searchStatusEvent: undefined
   }
 }
 
@@ -86,6 +98,17 @@ const HISTORY: mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent(`## How We Created an Accessible, Scalable Color Palette\n\nDuring the latter part of 2021, I reflected on the challenges we were facing at Modern Health. One recurring problem that stood out was our struggle to create new products with an unstructured color palette. This resulted in poor [communication](https://www.google.com) between designers and developers, an inconsistent product brand, and increasing accessibility problems.\n\n1. Inclusivity: our palette provides easy ways to ensure our product uses accessible contrasts.\n 2. Efficiency: our palette is diverse enough for our current and future product design, yet values are still predictable and constrained.\n 3. Reusability: our palette is on-brand but versatile. There are very few one-offs that fall outside the palette.\n\n This article shares the process I followed to apply these principles to develop a more adaptable color palette that prioritizes accessibility and is built to scale into all of our future product **design** needs.`)],
+    fromBraveSearchSERP: false
+  },
+  {
+    text: '',
+    characterType: mojom.CharacterType.ASSISTANT,
+    actionType: mojom.ActionType.UNSPECIFIED,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [getPageContentRefineEvent()],
     fromBraveSearchSERP: false
   },
   {

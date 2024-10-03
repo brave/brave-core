@@ -898,6 +898,9 @@ void ConversationHandler::PerformAssistantGeneration(
                        std::move(data_received_callback),
                        std::move(data_completed_callback), page_content,
                        is_video));
+    UpdateOrCreateLastAssistantEntry(
+        mojom::ConversationEntryEvent::NewPageContentRefineEvent(
+            mojom::PageContentRefineEvent::New()));
     return;
   } else if (!should_refine_page_content && is_content_refined_) {
     // If we previously refined content but we're not anymore (perhaps the

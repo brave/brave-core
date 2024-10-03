@@ -1269,6 +1269,16 @@ TEST_P(PageContentRefineTest, TextEmbedder) {
     }
     conversation_handler_->PerformAssistantGeneration(
         test_case.prompt, test_case.page_content, false, "");
+
+    if (test_case.should_refine_page_content && IsPageContentRefineEnabled()) {
+      const auto& conversation_history =
+          conversation_handler_->GetConversationHistory();
+      ASSERT_FALSE(conversation_history.empty());
+      ASSERT_FALSE(conversation_history.back()->events->empty());
+      EXPECT_TRUE(conversation_history.back()
+                      ->events->back()
+                      ->is_page_content_refine_event());
+    }
   }
 }
 
@@ -1338,6 +1348,16 @@ TEST_P(PageContentRefineTest, TextEmbedderInitialized) {
 
     conversation_handler_->PerformAssistantGeneration(
         test_prompt, test_page_content, false, "");
+
+    if (test_case.is_initialized || test_case.initialize_result) {
+      const auto& conversation_history =
+          conversation_handler_->GetConversationHistory();
+      ASSERT_FALSE(conversation_history.empty());
+      ASSERT_FALSE(conversation_history.back()->events->empty());
+      EXPECT_TRUE(conversation_history.back()
+                      ->events->back()
+                      ->is_page_content_refine_event());
+    }
 
     testing::Mock::VerifyAndClearExpectations(mock_engine);
     testing::Mock::VerifyAndClearExpectations(mock_text_embedder);
