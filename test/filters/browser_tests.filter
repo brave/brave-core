@@ -1660,9 +1660,6 @@
 -SearchEngineRepromptBrowserTest.Reprompt/1
 -TaggedOnlySearchEngineChoiceDialogBrowserTest.DialogTriggers
 
-# This test fails because we disable kVisualQuerySuggestions
--VisualQuerySuggestionsServiceBrowserTest.VisualQuerySuggestionsServiceEnabled
-
 # Fails because we customized PIP UI.
 # https://github.com/brave/brave-browser/issues/35263
 -PictureInPicturePixelComparisonBrowserTest.VideoPlay

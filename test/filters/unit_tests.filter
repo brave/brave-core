@@ -556,9 +556,6 @@
 -All/SiteSettingsHandlerTest.NotificationPermissionRevokeUkm/*
 -All/UnusedSitePermissionsServiceTest.UnusedSitePermissionsServiceTest/*
 
-# This test fails because we disable kVisualQuerySuggestions
--CompanionUrlBuilderTest.MsbbAndPcOn
-
 # This test fails because we replace WebUI chrome:// scheme with brave://
 -ChromeURLsTest.ContainsConfigURLs
 

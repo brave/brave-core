@@ -123,7 +123,6 @@ source_set("unit_tests") {
     "//chrome/browser/enterprise/connectors/analysis:features",
     "//chrome/browser/ui",
     "//chrome/browser/ui:ui_features",
-    "//chrome/common/companion/visual_query:flags",
     "//chrome/common/privacy_budget",
     "//components/aggregation_service",
     "//components/attribution_reporting",
