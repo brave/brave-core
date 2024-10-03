@@ -920,6 +920,15 @@ extension Strings {
       comment:
         "The text displayed on the loading screen when searching for a user query"
     )
+    public static let leoPageContentRefineInProgress = NSLocalizedString(
+      "aichat.leoPageContentRefineInProgress",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Finding the relevant parts of the web page...",
+      comment:
+        "An indicator to show page content refined is in progress"
+    )
     public static let leoImprovedAnswerBraveSearch = NSLocalizedString(
       "aichat.leoImprovedAnswerBraveSearch",
       tableName: "BraveLeo",
