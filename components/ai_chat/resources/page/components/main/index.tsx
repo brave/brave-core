@@ -110,7 +110,7 @@ function Main() {
 
   // Ask for opt-in once the first message is sent
   const showAgreementModal = !aiChatContext.hasAcceptedAgreement &&
-      conversationContext.conversationHistory.length
+      !!conversationContext.conversationHistory.length
 
   const viewPortWithoutKeyboard = React.useRef(0)
   const keyboardSize = React.useRef(0)
