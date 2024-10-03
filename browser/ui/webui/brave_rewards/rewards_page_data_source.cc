@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/feature_list.h"
+#include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_rewards/resources/grit/rewards_page_generated_map.h"
@@ -138,6 +139,13 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"benefitsStoreText", IDS_REWARDS_BENEFITS_STORE_TEXT},
     {"benefitsTitle", IDS_REWARDS_BENEFITS_TITLE},
     {"cancelButtonLabel", IDS_REWARDS_PANEL_CANCEL},
+    {"captchaMaxAttemptsExceededText",
+     IDS_REWARDS_CAPTCHA_MAX_ATTEMPTS_EXCEEDED_TEXT},
+    {"captchaMaxAttemptsExceededTitle",
+     IDS_REWARDS_CAPTCHA_MAX_ATTEMPTS_EXCEEDED_TITLE},
+    {"captchaSolvedText", IDS_REWARDS_CAPTCHA_SOLVED_TEXT},
+    {"captchaSolvedTitle", IDS_REWARDS_CAPTCHA_SOLVED_TITLE},
+    {"captchaSupportButtonLabel", IDS_REWARDS_CAPTCHA_CONTACT_SUPPORT},
     {"closeButtonLabel", IDS_BRAVE_REWARDS_ONBOARDING_CLOSE},
     {"connectAccountSubtext", IDS_REWARDS_CONNECT_ACCOUNT_SUBTEXT},
     {"connectAccountText", IDS_REWARDS_CONNECT_ACCOUNT_TEXT_2},
@@ -267,6 +275,15 @@ void CreateAndAddRewardsPageDataSource(content::WebUI& web_ui,
   webui::SetupWebUIDataSource(
       source, base::make_span(kRewardsPageGenerated, kRewardsPageGeneratedSize),
       IDR_NEW_BRAVE_REWARDS_PAGE_HTML);
+
+  // Adaptive captcha challenges are displayed in an iframe on the Rewards
+  // panel. In order to display these challenges we need to specify in CSP that
+  // frames can be loaded from the adaptive captcha server URL.
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ChildSrc,
+      "frame-src 'self' " +
+          brave_adaptive_captcha::ServerUtil::GetInstance()->GetServerUrl("/") +
+          ";");
 
   // Override img-src to allow chrome://rewards-image support.
   source->OverrideContentSecurityPolicy(

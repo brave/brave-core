@@ -7,6 +7,7 @@ module brave_rewards.mojom;
 
 import "brave/components/brave_ads/core/mojom/brave_ads.mojom";
 import "brave/components/brave_rewards/common/mojom/rewards.mojom";
+import "mojo/public/mojom/base/time.mojom";
 
 // Initializes messaging between the browser and the page.
 interface RewardsPageHandlerFactory {
@@ -49,6 +50,32 @@ struct AdsSettings {
   string current_subdivision;
   string auto_detected_subdivision;
   array<AdsSubdivision> available_subdivisions;
+};
+
+struct AdTypeSummary {
+  int32 notification_ads;
+  int32 new_tab_page_ads;
+  int32 inline_content_ads;
+  int32 search_result_ads;
+};
+
+// We introduce a new struct instead of using `brave_ads.mojom.StatementInfo`
+// directly, because the "ad type summary" map does not currently generate an
+// appropriate TypeScript type, and the compiler can fail to detect breaking
+// changes to that structure. Instead, we use named fields on `AdTypeSummary`.
+struct AdsStatement {
+  double min_earnings_previous_month;
+  double max_earnings_previous_month;
+  double min_earnings_this_month;
+  double max_earnings_this_month;
+  mojo_base.mojom.Time next_payment_date;
+  int32 ads_received_this_month;
+  AdTypeSummary ad_type_summary_this_month;
+};
+
+struct CaptchaInfo {
+  string url;
+  bool max_attempts_exceeded;
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -123,7 +150,7 @@ interface RewardsPageHandler {
   GetAdsSettings() => (AdsSettings settings);
 
   // Returns information about the current state of ad views.
-  GetAdsStatement() => (brave_ads.mojom.StatementInfo? statement);
+  GetAdsStatement() => (AdsStatement? statement);
 
   // Returns Ads history for the current user.
   GetAdsHistory() => (string history);
@@ -156,6 +183,13 @@ interface RewardsPageHandler {
   // provider.
   SendContribution(string creator_id, double amount, bool recurring)
       => (bool contribution_sent);
+
+  // Returns the current adaptive captcha info for the current user.
+  GetCaptchaInfo() => (CaptchaInfo? captchaInfo);
+
+  // Called when the user completes (with success or failure) an adaptive
+  // captcha attempt.
+  OnCaptchaResult(bool success) => ();
 
   // Clears all Rewards-related user state.
   ResetRewards() => (bool success);

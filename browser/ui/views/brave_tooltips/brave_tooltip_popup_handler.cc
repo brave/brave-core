@@ -31,9 +31,10 @@ void BraveTooltipPopupHandler::Show(Profile* profile,
   DCHECK(tooltip);
 
   const std::string tooltip_id = tooltip->id();
-  DCHECK(!tooltip_popups_[tooltip_id]);
-  tooltip_popups_[tooltip_id] =
-      new brave_tooltips::BraveTooltipPopup(profile, std::move(tooltip));
+  if (!tooltip_popups_[tooltip_id]) {
+    tooltip_popups_[tooltip_id] =
+        new brave_tooltips::BraveTooltipPopup(profile, std::move(tooltip));
+  }
 }
 
 // static

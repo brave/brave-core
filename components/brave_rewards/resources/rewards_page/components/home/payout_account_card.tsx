@@ -15,6 +15,7 @@ import { formatMessage } from '../../../shared/lib/locale_context'
 import { TabOpenerContext } from '../../../shared/components/new_tab_link'
 import { WalletProviderIcon } from '../../../shared/components/icons/wallet_provider_icon'
 import { getExternalWalletProviderName } from '../../../shared/lib/external_wallet'
+import { AccountBalance } from '../account_balance'
 
 import { style } from './payout_account_card.style'
 
@@ -74,13 +75,6 @@ export function PayoutAccountCard() {
     )
   }
 
-  function renderBalance() {
-    if (!balance.hasValue()) {
-      return null
-    }
-    return `${balance.value()} BAT`
-  }
-
   function renderAccountInfo() {
     if (!externalWallet) {
       return null
@@ -92,7 +86,7 @@ export function PayoutAccountCard() {
             {getString('payoutAccountBalanceLabel')}
           </label>
           <span>
-            {renderBalance()}
+            <AccountBalance balance={balance} />
           </span>
         </div>
         <div className='account'>

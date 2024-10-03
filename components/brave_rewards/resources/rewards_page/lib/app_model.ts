@@ -132,6 +132,11 @@ export interface RecurringContribution {
   nextContributionDate: number
 }
 
+export interface CaptchaInfo {
+  url: string
+  maxAttemptsExceeded: boolean
+}
+
 export interface AppState {
   loading: boolean
   openTime: number
@@ -148,6 +153,7 @@ export interface AppState {
   recurringContributions: RecurringContribution[]
   rewardsParameters: RewardsParameters | null
   currentCreator: CreatorInfo | null
+  captchaInfo: CaptchaInfo | null
 }
 
 export type AppStateListener = (state: AppState) => void
@@ -181,6 +187,7 @@ export interface AppModel {
     (creatorID: string, amount: number, recurring: boolean) => Promise<boolean>
   acceptTermsOfServiceUpdate: () => Promise<void>
   dismissSelfCustodyInvite: () => Promise<void>
+  onCaptchaResult: (success: boolean) => Promise<void>
 }
 
 export function defaultState(): AppState {
@@ -203,7 +210,8 @@ export function defaultState(): AppState {
     autoContributeInfo: null,
     recurringContributions: [],
     rewardsParameters: null,
-    currentCreator: null
+    currentCreator: null,
+    captchaInfo: null
   }
 }
 
@@ -263,6 +271,8 @@ export function defaultModel(): AppModel {
 
     async acceptTermsOfServiceUpdate() {},
 
-    async dismissSelfCustodyInvite() {}
+    async dismissSelfCustodyInvite() {},
+
+    async onCaptchaResult(success) {}
   }
 }

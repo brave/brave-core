@@ -15,6 +15,7 @@ import { formatMessage } from '../../../shared/lib/locale_context'
 import { TabOpenerContext } from '../../../shared/components/new_tab_link'
 import { WalletProviderIcon } from '../../../shared/components/icons/wallet_provider_icon'
 import { getExternalWalletProviderName } from '../../../shared/lib/external_wallet'
+import { AccountBalance } from '../account_balance'
 
 import { style } from './payment_form.style'
 
@@ -116,10 +117,7 @@ export function PaymentForm(props: Props) {
     if (!externalWallet?.authenticated) {
       return getString('contributeBalanceUnavailableText')
     }
-    if (!balance.hasValue()) {
-      return ''
-    }
-    return `${balance.value()} BAT`
+    return <AccountBalance balance={balance} />
   }
 
   function renderBalance() {

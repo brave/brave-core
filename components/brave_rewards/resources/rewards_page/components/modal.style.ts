@@ -10,10 +10,11 @@ export const modalStyle = scoped.css`
   & {
     --self-animation-duration: 250ms;
     --modal-header-padding-bottom: 32px;
+    --modal-padding: 32px;
 
     border: none;
     border-radius: 16px;
-    padding: 32px;
+    padding: var(--modal-padding);
     background: var(--modal-background, ${color.container.background});
     color: ${color.text.primary};
     outline: none;
@@ -29,12 +30,13 @@ export const modalStyle = scoped.css`
 
     @container style(--is-narrow-view) {
       --modal-header-padding-bottom: 24px;
+      --modal-padding: 16px;
+
       animation-name: modal-content-slide-in;
       width: 100%;
       max-width: 100%;
       max-height: calc(100% - 12px);
       border-radius: 16px 16px 0 0;
-      padding: 16px;
       margin: auto 0 0 0;
     }
   }
