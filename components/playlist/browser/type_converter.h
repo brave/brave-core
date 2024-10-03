@@ -31,7 +31,6 @@ mojom::PlaylistPtr ConvertValueToPlaylist(
     const base::Value::Dict& playlist_dict,
     const base::Value::Dict& items_dict);
 base::Value::Dict ConvertPlaylistToValue(const mojom::PlaylistPtr& playlist);
-
 }  // namespace playlist
 
 #endif  // BRAVE_COMPONENTS_PLAYLIST_BROWSER_TYPE_CONVERTER_H_

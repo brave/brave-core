@@ -1,0 +1,42 @@
+<!--
+  ~ Copyright (c) 2023 The Brave Authors. All rights reserved.
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this file,
+  ~ You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="30dp"
+    android:height="30dp"
+    android:viewportWidth="30"
+    android:viewportHeight="30">
+    <path android:pathData="M22.837,13.701C23.837,14.278 23.837,15.722 22.837,16.299L8.25,24.721C7.25,25.298 6,24.576 6,23.422L6,6.578C6,5.424 7.25,4.702 8.25,5.279L22.837,13.701Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:endX="4.021"
+                android:endY="7.356"
+                android:startX="22.673"
+                android:startY="23.552"
+                android:type="linear">
+                <item
+                    android:color="#FFFA7250"
+                    android:offset="0.026" />
+                <item
+                    android:color="#FFFF1893"
+                    android:offset="0.401" />
+                <item
+                    android:color="#FFA78AFF"
+                    android:offset="0.995" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:fillColor="#ffffff"
+        android:fillType="evenOdd"
+        android:pathData="M22.553,10.183C22.195,10.591 21.573,10.635 21.162,10.275L14.64,6.368V22.757C14.64,22.782 14.628,22.803 14.626,22.827C14.628,22.865 14.64,22.9 14.64,22.938C14.64,25.109 12.428,26.875 9.709,26.875C6.991,26.875 4.779,25.109 4.779,22.938C4.779,20.759 6.991,18.986 9.709,18.986C10.854,18.986 11.895,19.313 12.733,19.84V4.17C12.733,3.782 12.894,3.457 13.247,3.297C13.598,3.137 14.011,3.199 14.304,3.453L22.461,8.79C22.871,9.149 22.912,9.771 22.553,10.183Z" />
+    <path
+        android:fillColor="#F0F2FF"
+        android:fillType="evenOdd"
+        android:pathData="M21.547,25.922C21.547,26.448 21.973,26.875 22.5,26.875C23.027,26.875 23.453,26.448 23.453,25.922V23.511H25.865C26.391,23.511 26.818,23.084 26.818,22.557C26.818,22.031 26.391,21.604 25.865,21.604H23.453V19.193C23.453,18.666 23.027,18.239 22.5,18.239C21.973,18.239 21.547,18.666 21.547,19.193V21.604H19.135C18.609,21.604 18.182,22.031 18.182,22.557C18.182,23.084 18.609,23.511 19.135,23.511H21.547V25.922Z" />
+</vector>

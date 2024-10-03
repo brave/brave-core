@@ -264,6 +264,7 @@
     <color name="text_secondary">#BECAD0</color>
     <color name="text_tertiary">#a1b2ba</color>
     <color name="primary_20">#2A118E</color>
+
     <color name="button_background">#3f39e8</color>
     <color name="systemfeedback_error_text">#ffb1b0</color>
 
@@ -275,4 +276,14 @@
     <color name="schemes_outline_variant">#3b3b3f</color>
     <color name="schemes_primary">#c1c4ff</color>
     <color name="schemes_surface_container_highest">#303034</color>
+
+    <!-- Playlist colors -->
+    <color name="playlist_background">#1E2029</color>
+    <color name="red_playlist">#FB542B</color>
+    <color name="icon_tint">#FFFFFF</color>
+    <color name="hint_color">#501E2029</color>
+    <color name="media_stats_color">#84889C</color>
+    <color name="playlist_text_color">#FFFFFF</color>
+    <color name="day_night_icon_color">#F0F2FF</color>
+    <!-- End Playlist colors -->
 </resources>

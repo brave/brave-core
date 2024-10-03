@@ -5,6 +5,12 @@
 
 brave_app_playlist_deps = [
   "//brave/third_party/android_deps:androidx_media3_media3_exoplayer_hls_java",
-  "//brave/third_party/android_deps:com_brave_playlist_java",
+  "//third_party/android_deps:material_design_java",
+  "//third_party/androidx:androidx_constraintlayout_constraintlayout_java",
   "//third_party/androidx:androidx_media3_media3_common_java",
+  "//third_party/androidx:androidx_media3_media3_datasource_java",
+  "//third_party/androidx:androidx_media3_media3_exoplayer_java",
+  "//third_party/androidx:androidx_media3_media3_session_java",
+  "//third_party/androidx:androidx_media3_media3_ui_java",
+  "//third_party/androidx:androidx_transition_transition_java",
 ]

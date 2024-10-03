@@ -16,9 +16,9 @@ import android.os.Build;
 
 import androidx.core.content.ContextCompat;
 
+import org.chromium.chrome.browser.util.ServiceUtils;
 import org.chromium.chrome.browser.vpn.timer.TimerUtils;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardService;
-import org.chromium.chrome.browser.vpn.wireguard.WireguardUtils;
 
 public class BraveVpnProfileUtils {
     private static volatile BraveVpnProfileUtils sBraveVpnProfileUtils;
@@ -38,7 +38,7 @@ public class BraveVpnProfileUtils {
     }
 
     public boolean isBraveVPNConnected(Context context) {
-        return WireguardUtils.isServiceRunningInForeground(context, WireguardService.class);
+        return ServiceUtils.isServiceRunning(context, WireguardService.class);
     }
 
     public boolean isVPNRunning(Context context) {

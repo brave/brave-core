@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.vpn.wireguard;
 
-import android.app.ActivityManager;
 import android.content.Context;
 
 import com.wireguard.config.BadConfigException;
@@ -60,18 +59,6 @@ public class WireguardUtils {
         builder.parsePublicKey(serverPublicKey);
         peers.add(builder.build());
         return peers;
-    }
-
-    public static boolean isServiceRunningInForeground(Context context, Class<?> serviceClass) {
-        ActivityManager manager =
-                (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service :
-                manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public static String formatBytes(Context context, Long bytes) {

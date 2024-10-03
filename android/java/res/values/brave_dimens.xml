@@ -49,8 +49,12 @@
     <dimen name="heading_h1">32sp</dimen>
     <dimen name="heading_h3">22sp</dimen>
     <dimen name="heading_h4">16sp</dimen>
+
     <dimen name="small_semibold">12sp</dimen>
     <dimen name="monospace_small">12sp</dimen>
 
     <dimen name="brave_toolbar_edge_padding_ntp">8dp</dimen>
+
+    <!-- Playlist dimens -->
+    <dimen name="playlist_toolbar_height">64dp</dimen>
 </resources>

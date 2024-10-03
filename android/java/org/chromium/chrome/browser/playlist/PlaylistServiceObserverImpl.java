@@ -5,12 +5,9 @@
 
 package org.chromium.chrome.browser.playlist;
 
-import com.brave.playlist.model.PlaylistItemModel;
-import com.brave.playlist.playback_service.VideoPlaybackService;
-import com.brave.playlist.util.ConstantUtils;
-import com.brave.playlist.util.MediaUtils;
-
 import org.chromium.chrome.browser.playlist.hls_content.HlsUtils;
+import org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService;
+import org.chromium.chrome.browser.playlist.kotlin.util.MediaUtils;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.Playlist;
 import org.chromium.playlist.mojom.PlaylistItem;
@@ -18,8 +15,6 @@ import org.chromium.playlist.mojom.PlaylistServiceObserver;
 import org.chromium.url.mojom.Url;
 
 public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
-    private static final String TAG = "Playlist/PlaylistServiceObserverImpl";
-
     public interface PlaylistServiceObserverImplDelegate {
         default void onItemCreated(PlaylistItem item) {}
 
@@ -81,26 +76,9 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     public void onItemCached(PlaylistItem playlistItem) {
         if (mDelegate == null) return;
         mDelegate.onItemCached(playlistItem);
-
         if (!MediaUtils.isHlsFile(playlistItem.mediaPath.url)
                 && HlsUtils.isVideoPlaybackServiceRunning()) {
-            PlaylistItemModel playlistItemModel =
-                    new PlaylistItemModel(
-                            playlistItem.id,
-                            ConstantUtils.DEFAULT_PLAYLIST,
-                            playlistItem.name,
-                            playlistItem.pageSource.url,
-                            playlistItem.mediaPath.url,
-                            playlistItem.hlsMediaPath.url,
-                            playlistItem.mediaSource.url,
-                            playlistItem.thumbnailPath.url,
-                            playlistItem.author,
-                            playlistItem.duration,
-                            playlistItem.lastPlayedPosition,
-                            playlistItem.mediaFileBytes,
-                            playlistItem.cached,
-                            false);
-            VideoPlaybackService.Companion.addNewPlaylistItemModel(playlistItemModel);
+            VideoPlaybackService.Companion.addNewPlaylistItemModel(playlistItem);
         }
     }
 

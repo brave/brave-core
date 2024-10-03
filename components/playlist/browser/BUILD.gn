@@ -33,8 +33,6 @@ static_library("browser") {
     "playlist_p3a.h",
     "playlist_service.cc",
     "playlist_service.h",
-    "playlist_streaming.cc",
-    "playlist_streaming.h",
     "playlist_tab_helper.cc",
     "playlist_tab_helper.h",
     "playlist_tab_helper_observer.h",
@@ -69,4 +67,10 @@ static_library("browser") {
     "//ui/gfx",
     "//url",
   ]
+  if (is_android) {
+    sources += [
+      "playlist_streaming.cc",
+      "playlist_streaming.h",
+    ]
+  }
 }
