@@ -1,0 +1,25 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("renderer") {
+  sources = [
+    "creator_detection_agent.cc",
+    "creator_detection_agent.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_rewards/common",
+    "//brave/components/brave_rewards/common:features",
+    "//brave/components/brave_rewards/common/mojom",
+    "//brave/components/brave_rewards/resources",
+    "//content/public/renderer",
+    "//gin",
+    "//mojo/public/cpp/bindings",
+    "//third_party/blink/public:blink",
+    "//third_party/blink/public/common",
+    "//v8",
+  ]
+}

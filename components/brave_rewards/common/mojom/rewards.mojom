@@ -382,3 +382,7 @@ struct SolanaAccountBalance {
   string amount;
   uint8 decimals;
 };
+
+interface CreatorDetectionHost {
+  OnCreatorDetected(string id, string name, string url, string image_url);
+};

@@ -9,6 +9,7 @@ source_set("browser_tests") {
   testonly = true
   if (!is_android) {
     sources = [
+      "creator_detection_browsertest.cc",
       "rewards_ofac_browsertest.cc",
       "rewards_page_browsertest.cc",
       "rewards_policy_browsertest.cc",

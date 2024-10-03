@@ -245,29 +245,6 @@
         "parameters": []
       },
       {
-        "name": "updateMediaDuration",
-        "type": "function",
-        "description": "Update the media duration for a given resource",
-        "parameters": [
-          {
-            "name": "windowId",
-            "type": "number"
-          },
-          {
-            "name": "publisherKey",
-            "type": "string"
-          },
-          {
-            "name": "duration",
-            "type": "integer"
-          },
-          {
-            "name": "firstVisit",
-            "type": "boolean"
-          }
-        ]
-      },
-      {
         "name": "getPublisherInfo",
         "type": "function",
         "description": "Get the details for a particular publisher",
@@ -318,21 +295,6 @@
           ],
           "does_not_support_promises": "Multi-parameter callback"
         }
-      },
-      {
-        "name": "setPublisherIdForTab",
-        "type": "function",
-        "description": "Sets the current publisher ID for the specified tab",
-        "parameters": [
-          {
-            "name": "tabId",
-            "type": "integer"
-          },
-          {
-            "name": "publisherId",
-            "type": "string"
-          }
-        ]
       },
       {
         "name": "getPublisherInfoForTab",
@@ -391,107 +353,6 @@
         "does_not_support_promises": "Requires refactoring"
       },
       {
-        "name": "getPublisherPanelInfo",
-        "type": "function",
-        "description": "Get the panel info for a particular publisher",
-        "parameters": [
-          {
-            "name": "publisherKey",
-            "type": "string"
-          }
-        ],
-        "returns_async": {
-          "name": "callback",
-          "parameters": [
-            {
-              "name": "result",
-              "type": "integer"
-            },
-            {
-              "name": "publisher",
-              "type": "object",
-              "optional": true,
-              "properties": {
-                "percentage": {
-                  "type": "integer",
-                  "description": "publisher attention score"
-                },
-                "excluded": {
-                  "type": "boolean",
-                  "description": "is site excluded from auto contribute"
-                },
-                "provider": {
-                  "type": "string",
-                  "description": "provider (if media publisher) for this publisher"
-                },
-                "favIconUrl": {
-                  "type": "string",
-                  "description": "publisher image url"
-                },
-                "publisherKey": {
-                  "type": "string",
-                  "description": "publisher key, unique identifier"
-                },
-                "name": {
-                  "type": "string",
-                  "description": "publisher name"
-                },
-                "url": {
-                  "type": "string",
-                  "description": "url of the current tab"
-                },
-                "status": {
-                  "type": "integer",
-                  "description": "publisher status"
-                }
-              }
-            }
-          ],
-          "does_not_support_promises": "Multi-parameter callback"
-        }
-      },
-      {
-        "name": "savePublisherInfo",
-        "type": "function",
-        "description": "Save the publisher info when visiting a site",
-        "parameters": [
-          {
-            "name": "windowId",
-            "type": "number"
-          },
-          {
-            "name": "mediaType",
-            "type": "string"
-          },
-          {
-            "name": "url",
-            "type": "string"
-          },
-          {
-            "name": "publisherKey",
-            "type": "string"
-          },
-          {
-            "name": "publisherName",
-            "type": "string"
-          },
-          {
-            "name": "favIconUrl",
-            "type": "string"
-          }
-        ],
-        "returns_async": {
-          "name": "callback",
-          "parameters": [
-            {
-              "name": "result",
-              "type": "integer"
-            }
-          ]
-        },
-        "does_not_support_promises": "Requires refactoring"
-      },
-      {
         "name": "tipSite",
         "type": "function",
         "description": "Allow the user to perform a tip to a tab's site",
@@ -506,29 +367,6 @@
           },
           {
             "name": "entryPoint",
-            "type": "string"
-          }
-        ]
-      },
-      {
-        "name": "getPublisherData",
-        "type": "function",
-        "description": "Get publisher data",
-        "parameters": [
-          {
-            "name": "windowId",
-            "type": "integer"
-          },
-          {
-            "name": "url",
-            "type": "string"
-          },
-          {
-            "name": "faviconUrl",
-            "type": "string"
-          },
-          {
-            "name": "publisherBlob",
             "type": "string"
           }
         ]

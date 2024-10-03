@@ -36,7 +36,6 @@
 #include "brave/components/brave_rewards/browser/android_util.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/logging.h"
-#include "brave/components/brave_rewards/browser/publisher_utils.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
@@ -45,6 +44,7 @@
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/common/publisher_utils.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
@@ -256,17 +256,11 @@ RewardsServiceImpl::RewardsServiceImpl(
     favicon::FaviconService* favicon_service,
     BitmapFetcherService* bitmap_fetcher_service,
     content::StoragePartition* storage_partition,
-#if BUILDFLAG(ENABLE_GREASELION)
-    greaselion::GreaselionService* greaselion_service,
-#endif
     brave_wallet::BraveWalletService* brave_wallet_service)
     : prefs_(prefs),
       favicon_service_(favicon_service),
       bitmap_fetcher_service_(bitmap_fetcher_service),
       storage_partition_(storage_partition),
-#if BUILDFLAG(ENABLE_GREASELION)
-      greaselion_service_(greaselion_service),
-#endif
       brave_wallet_service_(brave_wallet_service),
       receiver_(this),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
@@ -289,28 +283,11 @@ RewardsServiceImpl::RewardsServiceImpl(
     persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
   }
 
-#if BUILDFLAG(ENABLE_GREASELION)
-  if (greaselion_service_) {
-    // Greaselion's rules may be ready before we register our observer, so check
-    // for that here
-    if (!greaselion_enabled_ && greaselion_service_->rules_ready()) {
-      OnRulesReady(greaselion_service_);
-    }
-    greaselion_service_->AddObserver(this);
-  }
-#endif
-
   p3a::RecordAdTypesEnabled(prefs_);
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-#if BUILDFLAG(ENABLE_GREASELION)
-  if (greaselion_service_) {
-    greaselion_service_->RemoveObserver(this);
-  }
-#endif
 }
 
 void RewardsServiceImpl::ConnectionClosed() {
@@ -387,16 +364,6 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
         base::BindOnce(&RewardsServiceImpl::OnRecordBackendP3AExternalWallet,
                        AsWeakPtr(), false, true));
   }
-
-#if BUILDFLAG(ENABLE_GREASELION)
-  if (key == brave_ads::prefs::kOptedInToNotificationAds) {
-    if (greaselion_service_) {
-      greaselion_service_->SetFeatureEnabled(
-          greaselion::ADS,
-          prefs_->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds));
-    }
-  }
-#endif
 }
 
 void RewardsServiceImpl::CheckPreferences() {
@@ -683,12 +650,15 @@ void RewardsServiceImpl::OnGetPublisherInfoList(
   std::move(callback).Run(std::move(list));
 }
 
-void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
+void RewardsServiceImpl::OnLoad(mojom::VisitDataPtr visit_data) {
   if (!Connected()) {
     return;
   }
+  engine_->OnLoad(std::move(visit_data), GetCurrentTimestamp());
+}
 
-  if (IsAutoContributeHandledByContentScript(url)) {
+void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
+  if (!Connected()) {
     return;
   }
 
@@ -754,8 +724,12 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
     return;
   }
 
-  if (IsAutoContributeHandledByContentScript(url) ||
-      !GetPublisherDomainFromURL(url)) {
+  if (base::FeatureList::IsEnabled(
+          features::kPlatformCreatorDetectionFeature)) {
+    return;
+  }
+
+  if (!GetPublisherDomainFromURL(url)) {
     return;
   }
 
@@ -1188,29 +1162,6 @@ void RewardsServiceImpl::GetReconcileStamp(GetReconcileStampCallback callback) {
   engine_->GetReconcileStamp(std::move(callback));
 }
 
-#if BUILDFLAG(ENABLE_GREASELION)
-void RewardsServiceImpl::EnableGreaselion() {
-  if (!greaselion_service_) {
-    return;
-  }
-
-  greaselion_service_->SetFeatureEnabled(greaselion::REWARDS, true);
-  greaselion_service_->SetFeatureEnabled(
-      greaselion::AUTO_CONTRIBUTION,
-      prefs_->GetBoolean(prefs::kAutoContributeEnabled));
-  greaselion_service_->SetFeatureEnabled(
-      greaselion::ADS,
-      prefs_->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds));
-
-  greaselion_enabled_ = true;
-}
-
-void RewardsServiceImpl::OnRulesReady(
-    greaselion::GreaselionService* greaselion_service) {
-  EnableGreaselion();
-}
-#endif
-
 void RewardsServiceImpl::StopEngine(StopEngineCallback callback) {
   BLOG(1, "Shutting down rewards process");
   if (!Connected()) {
@@ -1478,14 +1429,29 @@ void RewardsServiceImpl::GetBalanceReport(
 }
 
 void RewardsServiceImpl::GetPublisherActivityFromUrl(
+    mojom::VisitDataPtr visit_data) {
+  if (!Connected()) {
+    return;
+  }
+  uint32_t tab_id = visit_data->tab_id;
+  engine_->GetPublisherActivityFromUrl(tab_id, std::move(visit_data), "");
+}
+
+void RewardsServiceImpl::GetPublisherActivityFromUrl(
     uint64_t windowId,
     const std::string& url,
     const std::string& favicon_url,
     const std::string& publisher_blob) {
   GURL parsed_url(url);
-  if (!parsed_url.is_valid() ||
-      IsAutoContributeHandledByContentScript(parsed_url)) {
+  if (!parsed_url.is_valid()) {
     return;
+  }
+
+  if (base::FeatureList::IsEnabled(
+          features::kPlatformCreatorDetectionFeature)) {
+    if (IsMediaPlatformURL(parsed_url)) {
+      return;
+    }
   }
 
   auto publisher_domain = GetPublisherDomainFromURL(parsed_url);
@@ -1663,18 +1629,6 @@ void RewardsServiceImpl::OnContributionSent(
   RecordBackendP3AStats(/*delay_report*/ true);
 
   std::move(callback).Run(success);
-}
-
-void RewardsServiceImpl::UpdateMediaDuration(
-    const uint64_t window_id,
-    const std::string& publisher_key,
-    const uint64_t duration,
-    const bool first_visit) {
-  if (!Connected()) {
-    return;
-  }
-
-  engine_->UpdateMediaDuration(window_id, publisher_key, duration, first_visit);
 }
 
 void RewardsServiceImpl::IsPublisherRegistered(

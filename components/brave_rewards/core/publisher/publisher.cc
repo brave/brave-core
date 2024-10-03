@@ -724,39 +724,6 @@ void Publisher::OnSearchPrefixListForGetServerPublisherInfo(
   }
 }
 
-void Publisher::UpdateMediaDuration(const uint64_t window_id,
-                                    const std::string& publisher_key,
-                                    const uint64_t duration,
-                                    const bool first_visit) {
-  engine_->Log(FROM_HERE) << "Media duration: " << duration;
-  engine_->database()->GetPublisherInfo(
-      publisher_key,
-      base::BindOnce(&Publisher::OnGetPublisherInfoForUpdateMediaDuration,
-                     weak_factory_.GetWeakPtr(), window_id, duration,
-                     first_visit));
-}
-
-void Publisher::OnGetPublisherInfoForUpdateMediaDuration(
-    const uint64_t window_id,
-    const uint64_t duration,
-    const bool first_visit,
-    mojom::Result result,
-    mojom::PublisherInfoPtr info) {
-  if (result != mojom::Result::OK) {
-    engine_->LogError(FROM_HERE)
-        << "Failed to retrieve publisher info while updating media duration";
-    return;
-  }
-
-  mojom::VisitData visit_data;
-  visit_data.name = info->name;
-  visit_data.url = info->url;
-  visit_data.provider = info->provider;
-  visit_data.favicon_url = info->favicon_url;
-
-  SaveVisit(info->id, visit_data, duration, first_visit, 0, base::DoNothing());
-}
-
 void Publisher::GetPublisherPanelInfo(const std::string& publisher_key,
                                       GetPublisherPanelInfoCallback callback) {
   auto filter = CreateActivityFilter(

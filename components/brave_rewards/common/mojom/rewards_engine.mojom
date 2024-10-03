@@ -110,11 +110,6 @@ interface RewardsEngine {
 
   StartContributionsForTesting();
 
-  UpdateMediaDuration(uint64 window_id,
-                      string publisher_key,
-                      uint64 duration,
-                      bool first_visit);
-
   IsPublisherRegistered(string publisher_id) => (bool registered);
 
   GetPublisherInfo(string publisher_key)

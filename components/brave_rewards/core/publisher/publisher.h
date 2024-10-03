@@ -85,11 +85,6 @@ class Publisher {
                               bool use_prefix_list,
                               GetServerPublisherInfoCallback callback);
 
-  void UpdateMediaDuration(const uint64_t window_id,
-                           const std::string& publisher_key,
-                           const uint64_t duration,
-                           const bool first_visit);
-
   void GetPublisherPanelInfo(const std::string& publisher_key,
                              GetPublisherPanelInfoCallback callback);
 
@@ -111,12 +106,6 @@ class Publisher {
       const std::string& publisher_key,
       GetServerPublisherInfoCallback callback,
       bool publisher_exists);
-
-  void OnGetPublisherInfoForUpdateMediaDuration(const uint64_t window_id,
-                                                const uint64_t duration,
-                                                const bool first_visit,
-                                                mojom::Result result,
-                                                mojom::PublisherInfoPtr info);
 
   void OnGetPanelPublisherInfo(GetPublisherPanelInfoCallback callback,
                                const mojom::Result result,

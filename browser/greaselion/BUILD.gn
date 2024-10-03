@@ -16,7 +16,6 @@ source_set("greaselion") {
   deps = [
     "//base",
     "//brave/browser:browser_process",
-    "//brave/components/brave_rewards/common",
     "//brave/components/greaselion/browser",
     "//chrome/browser/extensions",
     "//chrome/browser/profiles",

@@ -59,9 +59,6 @@ export const getMockChrome = () => {
   let mock = {
     send: (methodName: string, ...args: any[]) => undefined,
     getVariableValue: () => undefined,
-    braveRewards: {
-      getPublisherData: (id: number, url: string, favicon: string) => undefined
-    },
     runtime: {
       onMessage: new ChromeEvent(),
       onConnect: new ChromeEvent(),
