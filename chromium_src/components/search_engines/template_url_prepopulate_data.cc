@@ -18,6 +18,10 @@
 #include "components/country_codes/country_codes.h"
 #include "components/search_engines/search_engines_pref_names.h"
 
+// IMPORTANT! If you make changes to any of the search engine mappings below,
+// it's critical to also increment the value `kBraveCurrentDataVersion` in
+// `//brave/components/search_engines/brave_prepopulated_engines.cc`.
+
 namespace TemplateURLPrepopulateData {
 
 // This redeclaration of the upstream prototype for `GetPrepopulatedEngines` is
@@ -172,6 +176,19 @@ constexpr auto kDefaultEnginesByCountryIdMap =
           kBraveEnginesWithYandex}});
 
 // A versioned map tracking the singular default search engine per-country.
+//
+// When a profile is created, the current value for `kBraveCurrentDataVersion`
+// in `//brave/components/search_engines/brave_prepopulated_engines.cc` is
+// stored as a profile preference.
+//
+// See:
+// - `SetDefaultSearchVersion` in `//brave/browser/profiles/profile_util.cc`
+// - `//brave/browser/profiles/brave_profile_manager.cc` where it is called
+//
+// If that person resets the profile using brave://settings/reset, we need to
+// set the default search engine back to what it was when the profile was
+// originally created. This way, a person doesn't get a new unexpected default
+// when they reset the profile; it goes back to the original value.
 BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
   const BravePrepopulatedEngineID default_v6 = PREPOPULATED_ENGINE_ID_GOOGLE;
   static constexpr auto kContentV6 =
