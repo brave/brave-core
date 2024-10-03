@@ -163,14 +163,6 @@ class BraveIdentityManagerTest : public testing::Test {
         std::make_unique<TestIdentityManagerObserver>(identity_manager_.get());
   }
 
-  void TriggerListAccounts() {
-    std::vector<gaia::ListedAccount> signed_in_accounts;
-    std::vector<gaia::ListedAccount> signed_out_accounts;
-    bool accounts_are_fresh = gaia_cookie_manager_service()->ListAccounts(
-        &signed_in_accounts, &signed_out_accounts);
-    static_cast<void>(accounts_are_fresh);
-  }
-
   const CoreAccountId& primary_account_id() const {
     return primary_account_id_;
   }
@@ -200,7 +192,7 @@ TEST_F(BraveIdentityManagerTest, GetAccountsInCookieJarWithNoAccounts) {
 
   SetListAccountsResponseNoAccounts(test_url_loader_factory());
 
-  TriggerListAccounts();
+  gaia_cookie_manager_service()->TriggerListAccounts();
   const AccountsInCookieJarInfo& accounts_in_cookie_jar =
       identity_manager()->GetAccountsInCookieJar();
   EXPECT_FALSE(accounts_in_cookie_jar.AreAccountsFresh());
@@ -209,7 +201,7 @@ TEST_F(BraveIdentityManagerTest, GetAccountsInCookieJarWithNoAccounts) {
 
   run_loop.Run();
 
-  TriggerListAccounts();
+  gaia_cookie_manager_service()->TriggerListAccounts();
   const AccountsInCookieJarInfo updated_accounts_in_cookie_jar =
       identity_manager()->GetAccountsInCookieJar();
 
@@ -226,7 +218,7 @@ TEST_F(BraveIdentityManagerTest, GetAccountsInCookieJarWithOneAccount) {
   SetListAccountsResponseOneAccount(kTestEmail, kTestGaiaId,
                                     test_url_loader_factory());
 
-  TriggerListAccounts();
+  gaia_cookie_manager_service()->TriggerListAccounts();
   const AccountsInCookieJarInfo& accounts_in_cookie_jar =
       identity_manager()->GetAccountsInCookieJar();
   EXPECT_FALSE(accounts_in_cookie_jar.AreAccountsFresh());
@@ -235,7 +227,7 @@ TEST_F(BraveIdentityManagerTest, GetAccountsInCookieJarWithOneAccount) {
 
   run_loop.Run();
 
-  TriggerListAccounts();
+  gaia_cookie_manager_service()->TriggerListAccounts();
   const AccountsInCookieJarInfo& updated_accounts_in_cookie_jar =
       identity_manager()->GetAccountsInCookieJar();
 
@@ -252,7 +244,7 @@ TEST_F(BraveIdentityManagerTest, GetAccountsInCookieJarWithTwoAccounts) {
   SetListAccountsResponseTwoAccounts(kTestEmail, kTestGaiaId, kTestEmail2,
                                      kTestGaiaId2, test_url_loader_factory());
 
-  TriggerListAccounts();
+  gaia_cookie_manager_service()->TriggerListAccounts();
   const AccountsInCookieJarInfo& accounts_in_cookie_jar =
       identity_manager()->GetAccountsInCookieJar();
   EXPECT_FALSE(accounts_in_cookie_jar.AreAccountsFresh());
@@ -261,7 +253,7 @@ TEST_F(BraveIdentityManagerTest, GetAccountsInCookieJarWithTwoAccounts) {
 
   run_loop.Run();
 
-  TriggerListAccounts();
+  gaia_cookie_manager_service()->TriggerListAccounts();
   const AccountsInCookieJarInfo& updated_accounts_in_cookie_jar =
       identity_manager()->GetAccountsInCookieJar();
 
