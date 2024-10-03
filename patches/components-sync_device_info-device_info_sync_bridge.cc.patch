@@ -1,5 +1,5 @@
 diff --git a/components/sync_device_info/device_info_sync_bridge.cc b/components/sync_device_info/device_info_sync_bridge.cc
-index beffc314308164ca6cbc2b23f8ea31ed85eb3725..3c6706650f38248a236805f4d23cbf0ed847fedb 100644
+index 510ec2ca914af71b66360ea9648629e11fb49e8c..041a019626bfa13b30be5a09575050403b363b04 100644
 --- a/components/sync_device_info/device_info_sync_bridge.cc
 +++ b/components/sync_device_info/device_info_sync_bridge.cc
 @@ -301,6 +301,7 @@ std::unique_ptr<DeviceInfoSpecifics> MakeLocalDeviceSpecifics(
@@ -27,7 +27,7 @@ index beffc314308164ca6cbc2b23f8ea31ed85eb3725..3c6706650f38248a236805f4d23cbf0e
      }
  
      if (change->type() == EntityChange::ACTION_DELETE) {
-@@ -783,6 +785,7 @@ void DeviceInfoSyncBridge::OnReadAllMetadata(
+@@ -794,6 +796,7 @@ void DeviceInfoSyncBridge::OnReadAllMetadata(
      return;
    }
  
@@ -35,7 +35,7 @@ index beffc314308164ca6cbc2b23f8ea31ed85eb3725..3c6706650f38248a236805f4d23cbf0e
    // In the regular case for sync being disabled, wait for MergeFullSyncData()
    // before initializing the LocalDeviceInfoProvider.
    if (!syncer::IsInitialSyncDone(
-@@ -1018,6 +1021,7 @@ DeviceInfoSyncBridge::CountActiveDevicesByType() const {
+@@ -1029,6 +1032,7 @@ DeviceInfoSyncBridge::CountActiveDevicesByType() const {
  void DeviceInfoSyncBridge::ExpireOldEntries() {
    CHECK(store_);
    TRACE_EVENT0("sync", "DeviceInfoSyncBridge::ExpireOldEntries");

@@ -128,9 +128,9 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void NavigationEntryCommitted(
       const content::LoadCommittedDetails& load_details) override;
   void TitleWasSet(content::NavigationEntry* entry) override;
-  void InnerWebContentsAttached(content::WebContents* inner_web_contents,
-                                content::RenderFrameHost* render_frame_host,
-                                bool is_full_page) override;
+  void InnerWebContentsAttached(
+      content::WebContents* inner_web_contents,
+      content::RenderFrameHost* render_frame_host) override;
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override;
 

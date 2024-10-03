@@ -12,10 +12,12 @@
 
 class TabHoverCardBubbleView;
 
-#define BRAVE_TAB_HOVER_CARD_BUBBLE_VIEW_H_             \
-  bool has_thumbnail_view() { return thumbnail_view_; } \
-                                                        \
- protected:                                             \
+#define BRAVE_TAB_HOVER_CARD_BUBBLE_VIEW_H_ \
+  bool has_thumbnail_view() {               \
+    return thumbnail_view_;                 \
+  }                                         \
+                                            \
+ protected:                                 \
   void BraveUpdateCardContent(const Tab* tab);
 
 #define TabHoverCardBubbleView TabHoverCardBubbleView_ChromiumImpl

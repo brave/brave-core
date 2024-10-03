@@ -80,3 +80,7 @@
 -keep class org.chromium.chrome.browser.tasks.tab_management.IncognitoTabSwitcherPane {
     *** mReferenceButtonData;
 }
+
+-keep class org.chromium.chrome.browser.tabbed_mode.TabbedNavigationBarColorController {
+    *** getNavigationBarColor(...);
+}

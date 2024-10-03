@@ -15,5 +15,8 @@ android_library("brave_safe_browsing_java") {
     "//third_party/android_deps:google_play_services_basement_java",
     "//third_party/android_deps:google_play_services_tasks_java",
   ]
+
+  # TODO(alexeybarabash): needs to be redone for cr130
+  # https://github.com/brave/brave-browser/issues/41165
   sources = [ "java/src/org/chromium/components/safe_browsing/BraveSafeBrowsingApiHandler.java" ]
 }

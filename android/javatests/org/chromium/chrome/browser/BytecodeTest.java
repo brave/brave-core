@@ -13,6 +13,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.ActionMode;
 import android.view.View;
@@ -27,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.filters.SmallTest;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -150,6 +152,7 @@ import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.externalauth.ExternalAuthUtils;
 import org.chromium.components.favicon.LargeIconBridge;
+import org.chromium.components.feature_engagement.Tracker;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.permissions.PermissionDialogController;
@@ -190,6 +193,11 @@ public class BytecodeTest {
     enum MethodModifier {
         REGULAR,
         STATIC
+    }
+
+    @BeforeClass
+    public static void beforeClass() {
+        Looper.prepare();
     }
 
     @Test
@@ -458,9 +466,13 @@ public class BytecodeTest {
                 methodExists(
                         "org/chromium/chrome/browser/ui/default_browser_promo/DefaultBrowserPromoUtils", // presubmit: ignore-long-line
                         "prepareLaunchPromoIfNeeded",
-                        MethodModifier.STATIC,
-                        false,
-                        null));
+                        MethodModifier.REGULAR,
+                        true,
+                        boolean.class,
+                        Activity.class,
+                        WindowAndroid.class,
+                        Tracker.class,
+                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
@@ -1036,6 +1048,14 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         true,
                         void.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
+                        "getNavigationBarColor",
+                        MethodModifier.REGULAR,
+                        true,
+                        int.class,
+                        boolean.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
@@ -1114,7 +1134,6 @@ public class BytecodeTest {
                         DataSharingTabManager.class,
                         TabContentManager.class,
                         TabCreatorManager.class,
-                        SnackbarManager.class,
                         Supplier.class,
                         OmniboxActionDelegate.class,
                         Supplier.class,
@@ -1131,6 +1150,7 @@ public class BytecodeTest {
                         WindowAndroid.class,
                         PropertyModel.class,
                         BottomControlsStacker.class,
+                        BrowserStateBrowserControlsVisibilityDelegate.class,
                         FullscreenManager.class,
                         TabObscuringHandler.class,
                         int.class,
@@ -1169,10 +1189,8 @@ public class BytecodeTest {
                         DataSharingTabManager.class,
                         TabModelSelector.class,
                         TabContentManager.class,
-                        ViewGroup.class,
                         TabCreatorManager.class,
                         OneshotSupplier.class,
-                        SnackbarManager.class,
                         ModalDialogManager.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1865,9 +1883,6 @@ public class BytecodeTest {
                         "mTabCreatorManager"));
         Assert.assertTrue(
                 fieldExists(
-                        "org/chromium/chrome/browser/toolbar/ToolbarManager", "mSnackbarManager"));
-        Assert.assertTrue(
-                fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
                         "mModalDialogManagerSupplier"));
         Assert.assertTrue(
@@ -2015,10 +2030,6 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
                         "mIsLocationBarFocusedFromNtpScroll"));
         Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/omnibox/LocationBarMediator",
-                        "mShouldClearOmniboxOnFocus"));
-        Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/omnibox/LocationBarMediator", "mContext"));
         Assert.assertTrue(
                 fieldExists(
@@ -2081,6 +2092,10 @@ public class BytecodeTest {
                         "mReferenceButtonData",
                         true,
                         ResourceButtonData.class));
+        Assert.assertFalse(
+                fieldExists(
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
+                        "mContext"));
     }
 
     @Test
@@ -2156,10 +2171,6 @@ public class BytecodeTest {
                         "org/chromium/components/browser_ui/site_settings/BraveSiteSettingsPreferencesBase"));
         Assert.assertTrue(
                 checkSuperName(
-                        "org/chromium/chrome/browser/infobar/TranslateCompactInfoBar",
-                        "org/chromium/chrome/browser/infobar/BraveTranslateCompactInfoBarBase"));
-        Assert.assertTrue(
-                checkSuperName(
                         "org/chromium/chrome/browser/download/DownloadMessageUiControllerImpl",
                         "org/chromium/chrome/browser/download/BraveDownloadMessageUiControllerImpl")); // presubmit: ignore-long-line
         Assert.assertTrue(
@@ -2222,6 +2233,10 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/tasks/tab_management/IncognitoTabSwitcherPane",
                         "org/chromium/chrome/browser/tasks/tab_management/BraveTabSwitcherPaneBase")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/tabbed_mode/BraveTabbedNavigationBarColorControllerBase")); // presubmit: ignore-long-line
     }
 
     private boolean classExists(String className) {

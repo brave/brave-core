@@ -227,7 +227,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/homepage/settings/BraveHomepageSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/identity_disc/BraveIdentityDiscController.java",
   "../../brave/android/java/org/chromium/chrome/browser/infobar/BraveInfoBarIdentifier.java",
-  "../../brave/android/java/org/chromium/chrome/browser/infobar/BraveTranslateCompactInfoBarBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/informers/BraveSyncAccountDeletedInformer.java",
   "../../brave/android/java/org/chromium/chrome/browser/language/settings/BraveLanguageSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/local_database/BraveStatsTable.java",
@@ -410,6 +409,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/sync/settings/BraveManageSyncSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/settings/BravePasswordAccessReauthenticationHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/tab/BraveTabHelpers.java",
+  "../../brave/android/java/org/chromium/chrome/browser/tabbed_mode/BraveTabbedNavigationBarColorControllerBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/tabbed_mode/BraveTabbedRootUiCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/tabmodel/BraveTabCreator.java",
   "../../brave/android/java/org/chromium/chrome/browser/tasks/BraveReturnToChromeUtil.java",
@@ -509,9 +509,11 @@ brave_java_sources += brave_public_tab_management_java_sources
 brave_java_sources += brave_share_java_sources
 brave_java_sources += brave_app_billing_sources
 
-brave_browser_ui_android_appmenu_internal_sources = [
-  "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenu.java",
-  "//brave/browser/ui/android/default_browser_promo/java/src/org/chromium/chrome/browser/ui/default_browser_promo/BraveDefaultBrowserPromoUtils.java",
+brave_browser_ui_android_appmenu_internal_sources = [ "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenu.java" ]
+
+brave_browser_ui_android_default_browser_promo_java_sources = [
+  # TODO(alexeybarabash): BraveDefaultBrowserPromoUtils now causes crash on debug build at start app
+  # "//brave/browser/ui/android/default_browser_promo/java/src/org/chromium/chrome/browser/ui/default_browser_promo/BraveDefaultBrowserPromoUtils.java"
 ]
 
 brave_browser_ui_android_toolbar_sources = [

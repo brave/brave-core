@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/router.ts b/chrome/browser/resources/settings/router.ts
-index 7e03316d8975291611bb095bd3b87c5133f1e33b..ffe04f2f3c6602c6d12434715568c69a9aebe1c3 100644
+index 1fb0b38fef0dcee31015a939fd31202e0294bca7..3abf7c2b1083ad32841b1ef5064da971f6ab1fb7 100644
 --- a/chrome/browser/resources/settings/router.ts
 +++ b/chrome/browser/resources/settings/router.ts
-@@ -118,6 +118,7 @@ export interface SettingsRoutes {
+@@ -120,6 +120,7 @@ export interface SettingsRoutes {
    IMPORT_DATA: Route;
    SIGN_OUT: Route;
    // </if>

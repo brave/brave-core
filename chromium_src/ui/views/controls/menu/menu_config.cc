@@ -5,6 +5,8 @@
 
 #include "ui/views/controls/menu/menu_config.h"
 
+#include "ui/views/controls/menu/menu_controller.h"
+
 #define instance instance_ChromiumImpl
 
 #include "src/ui/views/controls/menu/menu_config.cc"

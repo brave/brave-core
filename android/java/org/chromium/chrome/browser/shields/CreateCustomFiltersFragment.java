@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
@@ -36,6 +38,7 @@ public class CreateCustomFiltersFragment extends BravePreferenceFragment
 
     private FilterListAndroidHandler mFilterListAndroidHandler;
     private EditText mEtCustomFilters;
+    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
     @Override
     public View onCreateView(
@@ -45,12 +48,15 @@ public class CreateCustomFiltersFragment extends BravePreferenceFragment
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        if (getActivity() != null) {
-            getActivity().setTitle(R.string.create_custom_filters_title);
-        }
+        mPageTitle.set(getString(R.string.create_custom_filters_title));
         super.onActivityCreated(savedInstanceState);
 
         setData();
+    }
+
+    @Override
+    public ObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
     }
 
     private void setData() {

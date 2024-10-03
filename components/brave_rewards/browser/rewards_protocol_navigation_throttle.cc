@@ -92,7 +92,7 @@ GURL TransformUrl(const GURL& url) {
   DCHECK(url.is_valid());
 
   return GURL(base::StrCat(
-      {base::StrCat({"chrome", url::kStandardSchemeSeparator, "rewards/"}),
+      {"chrome", url::kStandardSchemeSeparator, "rewards/", url.host(), "/",
        base::TrimString(url.path(), "/", base::TrimPositions::TRIM_LEADING),
        url.has_query() ? "?" + base::EscapeExternalHandlerValue(url.query())
                        : ""}));

@@ -26,8 +26,8 @@
 #include "components/user_prefs/user_prefs.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_model_factory.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
@@ -78,10 +78,10 @@ void BookmarksImporter::AddBookmarks(
   if (bookmarks.empty())
     return;
 
-  ChromeBrowserStateManager* browser_state_manager =
-      GetApplicationContext()->GetChromeBrowserStateManager();
   ChromeBrowserState* browser_state =
-      browser_state_manager->GetLastUsedBrowserStateDeprecatedDoNotUse();
+      GetApplicationContext()
+          ->GetProfileManager()
+          ->GetLastUsedProfileDeprecatedDoNotUse();
   bookmarks::BookmarkModel* model =
       ios::BookmarkModelFactory::GetForBrowserState(browser_state);
   DCHECK(model->loaded());

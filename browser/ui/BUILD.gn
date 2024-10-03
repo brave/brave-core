@@ -24,6 +24,21 @@ import("//mojo/public/tools/bindings/mojom.gni")
 import("//printing/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
+# Some targets have allow_circular_includes_from for //chrome/browser/ui so they
+# are missing the dependency that would otherwise be required for it. This is a
+# workaround to add the public deps from //brave/browser/ui that would be added
+# automatically if the //chrome/browser/ui dependency was present.
+group("public_deps") {
+  public_deps = [
+    ":brave_rewards_source",
+    ":brave_tab_features",
+    ":brave_tab_prefs",
+    "//brave/components/brave_wayback_machine/buildflags",
+    "//brave/components/playlist/common/buildflags",
+    "//brave/components/speedreader/common/buildflags",
+  ]
+}
+
 source_set("ui") {
   # Depend on //chrome/browser/ui instead of //brave/browser/ui.
   visibility = [
@@ -37,13 +52,10 @@ source_set("ui") {
     "//brave/browser/skus",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/webcompat/core/common",
+    "//chrome/browser/ui:browser_navigator_params_headers",
   ]
 
-  public_deps = [
-    ":brave_rewards_source",
-    ":brave_tab_features",
-    ":brave_tab_prefs",
-  ]
+  public_deps = [ ":public_deps" ]
 
   sources = [
     "brave_ui_features.cc",
@@ -327,6 +339,7 @@ source_set("ui") {
       "//chrome/browser/sync",
       "//chrome/browser/themes",
       "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/content_settings",
       "//chrome/browser/ui/omnibox",
       "//chrome/browser/ui/views/side_panel",
       "//chrome/browser/ui/webui/searchbox",
@@ -773,7 +786,6 @@ source_set("ui") {
     "//brave/components/brave_wallet_ui/market:market_display_generated",
     "//brave/components/brave_wallet_ui/nft:nft_display_generated",
     "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
-    "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/de_amp/common",
@@ -790,7 +802,6 @@ source_set("ui") {
     "//brave/components/p3a",
     "//brave/components/p3a:buildflags",
     "//brave/components/p3a_utils",
-    "//brave/components/playlist/common/buildflags",
     "//brave/components/query_filter",
     "//brave/components/resources:static_resources",
     "//brave/components/skus/browser",
@@ -813,6 +824,7 @@ source_set("ui") {
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/webui",
+    "//chrome/browser/ui/webui:webui_util",
     "//chrome/common",
     "//components/bookmarks/common",
     "//components/content_settings/browser",
@@ -1341,6 +1353,7 @@ source_set("ui") {
     deps += [
       "//brave/components/playlist/browser",
       "//brave/components/playlist/browser/resources:generated_resources",
+      "//chrome/browser/picture_in_picture",
       "//chrome/browser/ui/exclusive_access",
       "//components/user_prefs",
     ]

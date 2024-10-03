@@ -39,7 +39,7 @@
 #include "components/sync/base/features.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_model_factory.h"
 #include "ios/chrome/browser/favicon/model/favicon_service_factory.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using bookmarks::BookmarkCodec;

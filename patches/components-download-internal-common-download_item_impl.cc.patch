@@ -1,15 +1,15 @@
 diff --git a/components/download/internal/common/download_item_impl.cc b/components/download/internal/common/download_item_impl.cc
-index af2f86b01a3fa1c95de646cf6a960b7421cb1552..f58a55b807f68cf16df566c39fbbe620edf7816b 100644
+index 5056a48022e2c6dca1e74a9bfacb55bca8901729..36b67291aac6446b92da2e49711253fe944b76f4 100644
 --- a/components/download/internal/common/download_item_impl.cc
 +++ b/components/download/internal/common/download_item_impl.cc
-@@ -1982,8 +1982,8 @@ void DownloadItemImpl::OnDownloadCompleting() {
-                      base::Unretained(download_file_.get()),
-                      GetTargetFilePath(),
-                      delegate_->GetApplicationClientIdForFileScanning(),
--                     delegate_->IsOffTheRecord() ? GURL() : GetURL(),
--                     delegate_->IsOffTheRecord() ? GURL() : GetReferrerUrl(),
-+                     GURL(),  // Never leak download URLs in metadata.
-+                     GURL(),  // See brave-browser#2766.
-                      std::move(quarantine), std::move(rename_callback)));
+@@ -1970,8 +1970,8 @@ void DownloadItemImpl::OnDownloadCompleting() {
+           &DownloadFile::RenameAndAnnotate,
+           base::Unretained(download_file_.get()), GetTargetFilePath(),
+           delegate_->GetApplicationClientIdForFileScanning(),
+-          delegate_->IsOffTheRecord() ? GURL() : GetURL(),
+-          delegate_->IsOffTheRecord() ? GURL() : GetReferrerUrl(),
++          GURL(),  // Never leak download URLs in metadata.
++          GURL(),  // See brave-browser#2766.
+           delegate_->IsOffTheRecord() ? std::nullopt : GetRequestInitiator(),
+           std::move(quarantine), std::move(rename_callback)));
  }
- 

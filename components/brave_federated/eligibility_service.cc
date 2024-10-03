@@ -10,14 +10,14 @@ namespace brave_federated {
 
 EligibilityService::EligibilityService()
     : is_on_battery_power_(
-          base::PowerMonitor::AddPowerStateObserverAndReturnOnBatteryState(
-              this)) {
+          base::PowerMonitor::GetInstance()
+              ->AddPowerStateObserverAndReturnOnBatteryState(this)) {
   connection_type_ = net::NetworkChangeNotifier::GetConnectionType();
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 }
 
 EligibilityService::~EligibilityService() {
-  base::PowerMonitor::RemovePowerStateObserver(this);
+  base::PowerMonitor::GetInstance()->RemovePowerStateObserver(this);
   net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
 }
 
@@ -59,8 +59,11 @@ bool EligibilityService::IsConnectedToWifiOrEthernet() const {
          connection_type_ == net::NetworkChangeNotifier::CONNECTION_ETHERNET;
 }
 
-void EligibilityService::OnPowerStateChange(bool on_battery_power) {
-  is_on_battery_power_ = on_battery_power;
+void EligibilityService::OnBatteryPowerStatusChange(
+    base::PowerStateObserver::BatteryPowerStatus battery_power_status) {
+  is_on_battery_power_ =
+      (battery_power_status ==
+       base::PowerStateObserver::BatteryPowerStatus::kBatteryPower);
   MaybeChangeEligibility();
 }
 

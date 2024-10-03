@@ -1,8 +1,8 @@
 diff --git a/components/permissions/permission_uma_util.cc b/components/permissions/permission_uma_util.cc
-index 6696064ead3d236b3714ef5d512efb9e145c38db..65476d5560bb6b8d0153c67510c2808535eaecfb 100644
+index 4dcd5a9e808e5c6ddc477944500b3948ea7b5ea0..6b140284b5a7a8e7afd0526962c1a1ed6c7dfd0d 100644
 --- a/components/permissions/permission_uma_util.cc
 +++ b/components/permissions/permission_uma_util.cc
-@@ -150,6 +150,7 @@ RequestTypeForUma GetUmaValueForRequestType(RequestType request_type) {
+@@ -154,6 +154,7 @@ RequestTypeForUma GetUmaValueForRequestType(RequestType request_type) {
  #endif
      case RequestType::kIdentityProvider:
        return RequestTypeForUma::PERMISSION_IDENTITY_PROVIDER;
@@ -10,7 +10,7 @@ index 6696064ead3d236b3714ef5d512efb9e145c38db..65476d5560bb6b8d0153c67510c28085
    }
  }
  
-@@ -175,6 +176,7 @@ RequestTypeForUma GetUmaValueForRequests(
+@@ -179,6 +180,7 @@ RequestTypeForUma GetUmaValueForRequests(
      return RequestTypeForUma::MULTIPLE_KEYBOARD_AND_POINTER_LOCK;
    }
  #endif

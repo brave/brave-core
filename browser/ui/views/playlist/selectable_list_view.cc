@@ -51,10 +51,6 @@ SelectableView::SelectableView(const std::string& id,
 
 SelectableView::~SelectableView() = default;
 
-int SelectableView::GetHeightForWidth(int width) const {
-  return GetPreferredSize().height();
-}
-
 void SelectableView::OnThemeChanged() {
   views::Button::OnThemeChanged();
   UpdateBackground();

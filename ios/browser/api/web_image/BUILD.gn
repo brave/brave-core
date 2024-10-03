@@ -17,6 +17,7 @@ source_set("web_image") {
     "//brave/ios/browser/svg",
     "//components/image_fetcher/ios",
     "//ios/chrome/browser/shared/model/browser_state",
+    "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/shared/ui/util",
     "//net",
     "//skia",

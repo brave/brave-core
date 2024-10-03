@@ -38,8 +38,7 @@ namespace update_client {
 class SequentialUpdateChecker : public UpdateChecker {
  public:
   static std::unique_ptr<UpdateChecker> Create(
-      scoped_refptr<Configurator> config,
-      PersistedData* persistent);
+      scoped_refptr<Configurator> config);
 
   void CheckForUpdates(
       scoped_refptr<UpdateContext> update_context,
@@ -47,8 +46,7 @@ class SequentialUpdateChecker : public UpdateChecker {
       UpdateCheckCallback update_check_callback) override;
 
   // Needs to be public so std::make_unique(...) works in Create(...).
-  SequentialUpdateChecker(scoped_refptr<Configurator> config,
-                          PersistedData* metadata);
+  explicit SequentialUpdateChecker(scoped_refptr<Configurator> config);
   SequentialUpdateChecker(const SequentialUpdateChecker&) = delete;
   SequentialUpdateChecker& operator=(const SequentialUpdateChecker&) = delete;
   ~SequentialUpdateChecker() override;
@@ -64,7 +62,6 @@ class SequentialUpdateChecker : public UpdateChecker {
   THREAD_CHECKER(thread_checker_);
 
   const scoped_refptr<Configurator> config_;
-  const raw_ptr<PersistedData> metadata_ = nullptr;
 
   // This update conext instance is stored locally and then used to create
   // individidual UpdateContext instances based on each application id.

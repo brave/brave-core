@@ -1,0 +1,12 @@
+diff --git a/scripts/build/typescript/typescript.gni b/scripts/build/typescript/typescript.gni
+index b2af3fa42b04abd30ea36245c5517e94a6fdf79a..eaaea43776fe398322451d48983417f81e31995d 100644
+--- a/scripts/build/typescript/typescript.gni
++++ b/scripts/build/typescript/typescript.gni
+@@ -202,6 +202,7 @@ template("ts_library") {
+ 
+       foreach(src, sources) {
+         _extension = get_path_info(src, "extension")
++        if (label_matches(src, ["//brave/*"])) { src = get_path_info(src, "name") }
+         _relative_file_name = rebase_path(src, _rootdir)
+         _fileName = get_path_info(_relative_file_name, "dir") + "/" +
+                     get_path_info(_relative_file_name, "name")

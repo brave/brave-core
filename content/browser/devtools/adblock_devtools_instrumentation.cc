@@ -17,7 +17,7 @@
 namespace {
 
 void SendAdblockInfoInternal(
-    int frame_tree_node_id,
+    content::FrameTreeNodeId frame_tree_node_id,
     const std::string& request_id,
     const content::devtools_instrumentation::AdblockInfo& info) {
   if (!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI)) {
@@ -77,7 +77,7 @@ AdblockInfo::AdblockInfo(AdblockInfo&&) = default;
 AdblockInfo& AdblockInfo::operator=(const AdblockInfo&) = default;
 AdblockInfo& AdblockInfo::operator=(AdblockInfo&&) = default;
 
-void SendAdblockInfo(int frame_tree_node_id,
+void SendAdblockInfo(content::FrameTreeNodeId frame_tree_node_id,
                      const std::string& request_id,
                      const AdblockInfo& info) {
   SendAdblockInfoInternal(frame_tree_node_id, request_id, info);

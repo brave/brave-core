@@ -14,6 +14,8 @@ import androidx.preference.Preference.OnPreferenceChangeListener;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.ThreadUtils;
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
@@ -32,49 +34,66 @@ public class BraveStatsPreferences extends BravePreferenceFragment
     public static final String PREF_BRAVE_STATS_NOTIFICATION = "brave_stats_notification";
     public static final String PREF_CLEAR_BRAVE_STATS = "clear_brave_stats";
 
-    private ChromeSwitchPreference braveStatsPref;
-    private ChromeSwitchPreference braveStatsNotificationPref;
+    private ChromeSwitchPreference mBraveStatsPref;
+    private ChromeSwitchPreference mBraveStatsNotificationPref;
 
     private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
 
-    private SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-    private SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
     public static int getPreferenceSummary() {
-        return OnboardingPrefManager.getInstance().isBraveStatsEnabled() ? R.string.text_on : R.string.text_off;
+        return OnboardingPrefManager.getInstance().isBraveStatsEnabled()
+                ? R.string.text_on
+                : R.string.text_off;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().setTitle(R.string.brave_stats);
+        mPageTitle.set(getString(R.string.brave_stats));
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_stats_preferences);
-        findPreference(PREF_CLEAR_BRAVE_STATS).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                new AsyncTask<Void>() {
-                    @Override
-                    protected Void doInBackground() {
-                        try {
-                            mDatabaseHelper.clearStatsTable();
-                            mDatabaseHelper.clearSavedBandwidthTable();
-                        } catch (Exception e) {
-                            // Do nothing if url is invalid.
-                            // Just return w/o showing shields popup.
-                            return null;
-                        }
-                        return null;
-                    }
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        assert ThreadUtils.runningOnUiThread();
-                        if (isCancelled()) return;
-                        Toast.makeText(ContextUtils.getApplicationContext(), ContextUtils.getApplicationContext().getResources().getString(R.string.data_has_been_cleared), Toast.LENGTH_SHORT).show();
-                    }
-                } .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                return true;
-            }
-        });
+        findPreference(PREF_CLEAR_BRAVE_STATS)
+                .setOnPreferenceClickListener(
+                        new Preference.OnPreferenceClickListener() {
+                            @Override
+                            public boolean onPreferenceClick(Preference preference) {
+                                new AsyncTask<Void>() {
+                                    @Override
+                                    protected Void doInBackground() {
+                                        try {
+                                            mDatabaseHelper.clearStatsTable();
+                                            mDatabaseHelper.clearSavedBandwidthTable();
+                                        } catch (Exception e) {
+                                            // Do nothing if url is invalid.
+                                            // Just return w/o showing shields popup.
+                                            return null;
+                                        }
+                                        return null;
+                                    }
+
+                                    @Override
+                                    protected void onPostExecute(Void result) {
+                                        assert ThreadUtils.runningOnUiThread();
+                                        if (isCancelled()) return;
+                                        Toast.makeText(
+                                                        ContextUtils.getApplicationContext(),
+                                                        ContextUtils.getApplicationContext()
+                                                                .getResources()
+                                                                .getString(
+                                                                        R.string
+                                                                                .data_has_been_cleared),
+                                                        Toast.LENGTH_SHORT)
+                                                .show();
+                                    }
+                                }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                                return true;
+                            }
+                        });
+    }
+
+    @Override
+    public ObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
     }
 
     private void removePreferenceIfPresent(String key) {
@@ -85,17 +104,19 @@ public class BraveStatsPreferences extends BravePreferenceFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        braveStatsPref = (ChromeSwitchPreference) findPreference(PREF_BRAVE_STATS);
-        if (braveStatsPref != null) {
-            braveStatsPref.setEnabled(true);
-            braveStatsPref.setChecked(OnboardingPrefManager.getInstance().isBraveStatsEnabled());
-            braveStatsPref.setOnPreferenceChangeListener(this);
+        mBraveStatsPref = (ChromeSwitchPreference) findPreference(PREF_BRAVE_STATS);
+        if (mBraveStatsPref != null) {
+            mBraveStatsPref.setEnabled(true);
+            mBraveStatsPref.setChecked(OnboardingPrefManager.getInstance().isBraveStatsEnabled());
+            mBraveStatsPref.setOnPreferenceChangeListener(this);
         }
-        braveStatsNotificationPref = (ChromeSwitchPreference) findPreference(PREF_BRAVE_STATS_NOTIFICATION);
-        if (braveStatsNotificationPref != null) {
-            braveStatsNotificationPref.setEnabled(true);
-            braveStatsNotificationPref.setChecked(OnboardingPrefManager.getInstance().isBraveStatsNotificationEnabled());
-            braveStatsNotificationPref.setOnPreferenceChangeListener(this);
+        mBraveStatsNotificationPref =
+                (ChromeSwitchPreference) findPreference(PREF_BRAVE_STATS_NOTIFICATION);
+        if (mBraveStatsNotificationPref != null) {
+            mBraveStatsNotificationPref.setEnabled(true);
+            mBraveStatsNotificationPref.setChecked(
+                    OnboardingPrefManager.getInstance().isBraveStatsNotificationEnabled());
+            mBraveStatsNotificationPref.setOnPreferenceChangeListener(this);
         }
     }
 
