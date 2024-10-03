@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "base/functional/function_ref.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
@@ -55,7 +56,7 @@ constexpr char kGetHighEntropyValuesScript[] = R"(
 void CheckUserAgentMetadataVersionsList(
     const base::Value::List& versions_list,
     const std::string& expected_version,
-    std::function<void(const std::string&)> check_greased_version) {
+    base::FunctionRef<void(const std::string&)> check_greased_version) {
   // Expect 3 items in the list: Brave, Chromium, and greased.
   EXPECT_EQ(3UL, versions_list.size());
 

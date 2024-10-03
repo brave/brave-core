@@ -50,7 +50,7 @@ class BraveComponentLoader : public ComponentLoader {
                     const std::string& public_key);
 
  private:
-  void ReinstallAsNonComponent(std::string extension_id);
+  void ReinstallAsNonComponent(const std::string& extension_id);
   void UpdateBraveExtension();
 
   bool UseBraveExtensionBackgroundPage();

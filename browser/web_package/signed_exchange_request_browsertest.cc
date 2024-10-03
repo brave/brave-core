@@ -5,6 +5,7 @@
 
 #include <map>
 #include <optional>
+#include <string_view>
 
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
@@ -32,7 +33,7 @@ class SignedExchangeRequestBrowserTest : public InProcessBrowserTest {
   ~SignedExchangeRequestBrowserTest() override = default;
 
  protected:
-  void NavigateAndWaitForTitle(const GURL& url, const std::string title) {
+  void NavigateAndWaitForTitle(const GURL& url, std::string_view title) {
     std::u16string expected_title = base::ASCIIToUTF16(title);
     content::TitleWatcher title_watcher(
         browser()->tab_strip_model()->GetActiveWebContents(), expected_title);

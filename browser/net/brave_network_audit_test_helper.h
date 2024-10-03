@@ -17,7 +17,7 @@ namespace brave {
 void VerifyNetworkAuditLog(
     const base::FilePath& net_log_path,
     const base::FilePath& audit_results_path,
-    const std::vector<std::string> extra_allowed_prefixes);
+    const std::vector<std::string>& extra_allowed_prefixes);
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_NET_BRAVE_NETWORK_AUDIT_TEST_HELPER_H_

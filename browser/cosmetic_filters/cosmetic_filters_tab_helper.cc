@@ -5,6 +5,7 @@
 
 #include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
 
+#include <string_view>
 #include <utility>
 
 #include "base/strings/string_util.h"
@@ -21,19 +22,19 @@
 namespace cosmetic_filters {
 
 namespace {
-std::string SanitizeSelector(const std::string selector) {
+bool IsValidFilterText(std::string_view selector) {
   if (!base::IsStringUTF8(selector)) {
-    return {};
+    return false;
   }
 
   // The rules are parsed by adblock-rust via lines() method.
   // The method checks a newline byte (the 0xA byte) or CRLF (0xD, 0xA bytes).
   // https://doc.rust-lang.org/stable/std/io/trait.BufRead.html#method.lines
   if (base::Contains(selector, '\n')) {
-    return {};
+    return false;
   }
 
-  return selector;
+  return true;
 }
 }  // namespace
 
@@ -70,11 +71,10 @@ void CosmeticFiltersTabHelper::AddSiteCosmeticFilter(
   // Instead, we calculate and add the host explicitly here.
   const auto* sender_rfh = receivers_.GetCurrentTargetFrame();
   CHECK(sender_rfh);
-  const std::string sanitized_filter = SanitizeSelector(filter);
-  if (!sanitized_filter.empty()) {
+  if (IsValidFilterText(filter)) {
     const auto host = sender_rfh->GetLastCommittedOrigin().host();
     g_brave_browser_process->ad_block_service()->AddUserCosmeticFilter(
-        host + "##" + sanitized_filter);
+        host + "##" + filter);
   }
 }
 

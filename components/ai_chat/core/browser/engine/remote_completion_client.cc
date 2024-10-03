@@ -62,15 +62,15 @@ base::Value::Dict CreateApiParametersDict(
     const std::string& prompt,
     const std::string& model_name,
     const base::flat_set<std::string_view>& stop_sequences,
-    const std::vector<std::string> additional_stop_sequences,
+    const std::vector<std::string>& additional_stop_sequences,
     const bool is_sse_enabled) {
   base::Value::Dict dict;
 
   base::Value::List all_stop_sequences;
-  for (auto& item : additional_stop_sequences) {
+  for (const auto& item : additional_stop_sequences) {
     all_stop_sequences.Append(item);
   }
-  for (auto& item : stop_sequences) {
+  for (const auto& item : stop_sequences) {
     all_stop_sequences.Append(item);
   }
 
@@ -155,7 +155,7 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
   const base::Value::Dict& dict =
       CreateApiParametersDict(prompt, model_name_, stop_sequences_,
-                              std::move(extra_stop_sequences), is_sse_enabled);
+                              extra_stop_sequences, is_sse_enabled);
   const std::string request_body = CreateJSONRequestBody(dict);
 
   base::flat_map<std::string, std::string> headers;

@@ -48,7 +48,7 @@ bool isPrivateURL(const GURL& url) {
 
 bool PerformNetworkAuditProcess(
     base::Value::List* events,
-    const std::vector<std::string> extra_allowed_prefixes) {
+    const std::vector<std::string>& extra_allowed_prefixes) {
   DCHECK(events);
 
   bool failed = false;
@@ -158,7 +158,7 @@ bool PerformNetworkAuditProcess(
 void VerifyNetworkAuditLog(
     const base::FilePath& net_log_path,
     const base::FilePath& audit_results_path,
-    const std::vector<std::string> extra_allowed_prefixes) {
+    const std::vector<std::string>& extra_allowed_prefixes) {
   // Read the netlog from disk.
   std::string file_contents;
   ASSERT_TRUE(base::ReadFileToString(net_log_path, &file_contents))

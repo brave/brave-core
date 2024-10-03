@@ -15,6 +15,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -161,13 +162,6 @@ using AllowancesMap = std::map<std::string, mojom::AllowanceInfoPtr>;
 using AllowancesMapCallback = base::OnceCallback<void(const AllowancesMap&)>;
 using OnDiscoverEthAllowancesCompletedValidation =
     base::RepeatingCallback<void(const std::vector<mojom::AllowanceInfoPtr>&)>;
-
-base::Value::Dict ParseTestJson(const std::string_view json) {
-  std::optional<base::Value> potential_response_dict_val =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  return std::move(potential_response_dict_val.value().GetDict());
-}
 
 void FillAllowanceLogItem(base::Value::Dict& current_item,
                           const std::string& contract_address,
@@ -472,7 +466,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
   }
 
   std::map<GURL, std::map<std::string, std::string>> PrepareResponses(
-      const std::string_view response_json,
+      std::string_view response_json,
       const std::vector<std::string>& eth_account_address,
       const TokenListMap& token_list_map,
       base::RepeatingCallback<void(base::Value::Dict,
@@ -487,7 +481,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
       std::map<std::string, std::string> resp_jsns_map;
       for (auto const& tkn : token_info) {
         chain_id = tkn->chain_id;
-        auto dict = ParseTestJson(response_json);
+        auto dict = base::test::ParseJsonDict(response_json);
         if (!dict.FindList("error")) {
           auto* pr_result_ptr = dict.FindList("result");
           DCHECK(pr_result_ptr);
