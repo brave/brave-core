@@ -228,13 +228,32 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
     isAddingAsset = true
     let success = await assetManager.addUserAsset(token, isAutoDiscovery: false)
     isAddingAsset = false
+    if success {
+      update()
+    }
     return success
   }
 
   @MainActor func removeUserAsset(
     token: BraveWallet.BlockchainToken
   ) async -> Bool {
-    let success = await assetManager.removeUserAsset(token)
+    // update database
+    await WalletUserAsset.updateUserAsset(
+      for: token,
+      visible: false,
+      isSpam: token.isSpam,
+      isDeletedByUser: true
+    )
+    // remove cached balance
+    await WalletUserAssetBalance.removeBalances(
+      for: token
+    )
+
+    // remove user asset from WalletService
+    let success = await walletService.removeUserAsset(token: token)
+    if success {
+      update()
+    }
     return success
   }
 
@@ -341,6 +360,5 @@ extension UserAssetsStore: WalletUserAssetDataObserver {
   }
 
   public func userAssetUpdated() {
-    update()
   }
 }
