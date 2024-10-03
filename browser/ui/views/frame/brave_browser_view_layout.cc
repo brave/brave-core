@@ -208,8 +208,8 @@ void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {
 #endif
 
   gfx::Rect separator_bounds;
-
-  if (sidebar_container_->sidebar_on_left()) {
+  const bool on_left = sidebar_container_->sidebar_on_left();
+  if (on_left) {
     contents_bounds.set_x(contents_bounds.x() + sidebar_bounds.width());
 
     // When vertical tabs and the sidebar are adjacent, add a separator between
@@ -228,14 +228,20 @@ void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {
     sidebar_bounds.set_x(contents_bounds.right());
   }
 
-  // Side panel doesn't need margin as sidebar UI and contents container
-  // will have margins if needed.
   gfx::Insets panel_margins = GetContentsMargins();
-
-  // We need somewhere to draw the panel shadow in rounded mode, so don't clear
-  // the margins.
-  if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+  if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
           browser_view_->browser())) {
+    // In rounded mode, there is already a gap between the sidebar and the main
+    // contents view, so we only remove from the margin from that side (we need
+    // to keep it between the sidebar controls and the sidebar content).
+    if (on_left) {
+      panel_margins.set_right(0);
+    } else {
+      panel_margins.set_left(0);
+    }
+  } else {
+    // Side panel doesn't need margin as sidebar UI and contents container
+    // will have margins if needed.
     panel_margins.set_left_right(0, 0);
   }
   sidebar_container_->side_panel()->SetProperty(views::kMarginsKey,
