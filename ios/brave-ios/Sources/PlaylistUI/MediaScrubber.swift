@@ -161,7 +161,7 @@ struct MediaScrubber<Label: View>: View {
       isScrubbing = newValue
     }
     .accessibilityRepresentation {
-      if case .seconds(let duration) = duration {
+      if case .seconds(let duration) = duration, duration > 0 {
         Slider(
           value: $currentTime,
           in: 0.0...duration,
