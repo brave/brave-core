@@ -5,27 +5,18 @@
 
 package org.chromium.chrome.browser.ntp;
 
-import static org.chromium.ui.base.ViewUtils.dpToPx;
-
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
-import android.text.SpannableString;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.ScrollView;
 
 import org.chromium.chrome.R;
 import org.chromium.components.content_settings.CookieControlsEnforcement;
 import org.chromium.ui.base.ViewUtils;
-import org.chromium.ui.text.NoUnderlineClickableSpan;
 
-/**
- * The New Tab Page for use in the incognito profile.
- */
+/** The New Tab Page to use in the incognito profile. */
 public class IncognitoNewTabPageView extends FrameLayout {
     private IncognitoNewTabPageManager mManager;
     private boolean mFirstShow = true;
