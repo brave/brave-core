@@ -19,6 +19,10 @@
 class PrefService;
 class Profile;
 
+namespace brave_adaptive_captcha {
+class BraveAdaptiveCaptchaService;
+}
+
 namespace brave_ads {
 class AdsService;
 }
@@ -93,7 +97,7 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
   void GetAdsSettings(GetAdsSettingsCallback callback) override;
   void GetAdsStatement(GetAdsStatementCallback callback) override;
   void GetAdsHistory(GetAdsHistoryCallback callback) override;
-  void SetAdTypeEnabled(brave_ads::mojom::AdType mojom_ad_type,
+  void SetAdTypeEnabled(brave_ads::mojom::AdType ad_type,
                         bool enabled,
                         SetAdTypeEnabledCallback callback) override;
   void SetNotificationAdsPerHour(
@@ -120,6 +124,8 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
                         double amount,
                         bool recurring,
                         SendContributionCallback callback) override;
+  void GetCaptchaInfo(GetCaptchaInfoCallback callback) override;
+  void OnCaptchaResult(bool success, OnCaptchaResultCallback callback) override;
   void ResetRewards(ResetRewardsCallback callback) override;
 
  private:
@@ -133,6 +139,8 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
   std::unique_ptr<UpdateObserver> update_observer_;
   raw_ptr<RewardsService> rewards_service_ = nullptr;
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
+  raw_ptr<brave_adaptive_captcha::BraveAdaptiveCaptchaService>
+      captcha_service_ = nullptr;
   raw_ptr<PrefService> prefs_ = nullptr;
 };
 
