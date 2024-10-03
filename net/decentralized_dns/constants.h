@@ -14,7 +14,8 @@ inline constexpr const char* kUnstoppableDomains[] = {
     ".klever",     ".manga",      ".polygon", ".unstoppable", ".pudgy",
     ".tball",      ".stepn",      ".secret",  ".raiin",       ".pog",
     ".clay",       ".metropolis", ".witg",    ".ubu",         ".kryptic",
-    ".farms",      ".dfz"};
+    ".farms",      ".dfz",        ".kresus",  ".binanceus",   ".austin",
+    ".bitget",     ".wrkx"};
 
 inline constexpr char kEthDomain[] = ".eth";
 inline constexpr char kDNSForEthDomain[] = ".eth.link";
