@@ -6,17 +6,15 @@
 #include "brave/ios/browser/api/opentabs/sendtab_model_listener_ios.h"
 
 #include "base/check.h"
+#include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
-
-#include "components/send_tab_to_self/send_tab_to_self_entry.h"
-#include "components/send_tab_to_self/send_tab_to_self_model.h"
-#include "components/send_tab_to_self/send_tab_to_self_model_observer.h"
-
-#include "net/base/apple/url_conversions.h"
-
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_observer.h"
+#include "components/send_tab_to_self/send_tab_to_self_entry.h"
+#include "components/send_tab_to_self/send_tab_to_self_model.h"
+#include "components/send_tab_to_self/send_tab_to_self_model_observer.h"
+#include "net/base/apple/url_conversions.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -87,7 +85,7 @@ void SendTabToSelfModelListenerIOS::EntriesOpenedRemotely(
 
 @interface SendTabToSelfModelListenerImpl () {
   std::unique_ptr<brave::ios::SendTabToSelfModelListenerIOS> observer_;
-  send_tab_to_self::SendTabToSelfModel* model_;
+  raw_ptr<send_tab_to_self::SendTabToSelfModel> model_;
 }
 @end
 

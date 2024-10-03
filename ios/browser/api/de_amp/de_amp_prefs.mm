@@ -3,15 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/ios/browser/api/de_amp/de_amp_prefs+private.h"
-
+#include "base/memory/raw_ptr.h"
 #include "brave/components/de_amp/common/pref_names.h"
+#include "brave/ios/browser/api/de_amp/de_amp_prefs+private.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 
 @implementation DeAmpPrefs {
-  PrefService* _profileState;
+  raw_ptr<PrefService> _profileState;
 }
 
 - (instancetype)initWithProfileState:(PrefService*)profileState {

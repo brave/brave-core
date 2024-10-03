@@ -8,8 +8,8 @@
 #ifndef BRAVE_IOS_BROWSER_API_OPENTABS_OPENTABS_SESSION_LISTENER_IOS_H_
 #define BRAVE_IOS_BROWSER_API_OPENTABS_OPENTABS_SESSION_LISTENER_IOS_H_
 
+#include "base/memory/raw_ptr.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_observer.h"
-
 #include "components/sync/service/sync_service.h"
 #include "components/sync/service/sync_service_observer.h"
 
@@ -34,7 +34,7 @@ class OpenTabsSessionListenerIOS : public syncer::SyncServiceObserver {
   void OnSyncShutdown(syncer::SyncService* sync) override;
 
   id<OpenTabsSessionStateObserver> observer_;
-  syncer::SyncService* service_;  // NOT OWNED
+  raw_ptr<syncer::SyncService> service_;
 };
 
 }  // namespace ios

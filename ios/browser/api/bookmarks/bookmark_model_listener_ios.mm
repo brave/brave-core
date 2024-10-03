@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/compiler_specific.h"
+#include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api.h"
 #include "components/bookmarks/browser/bookmark_model.h"
@@ -145,7 +146,7 @@ void BookmarkModelListener::BookmarkAllUserNodesRemoved(
 
 @interface BookmarkModelListenerImpl () {
   std::unique_ptr<brave::ios::BookmarkModelListener> observer_;
-  bookmarks::BookmarkModel* bookmarkModel_;
+  raw_ptr<bookmarks::BookmarkModel> bookmarkModel_;
 }
 @end
 

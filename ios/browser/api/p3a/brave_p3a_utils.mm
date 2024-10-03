@@ -6,6 +6,7 @@
 #include "brave/ios/browser/api/p3a/brave_p3a_utils.h"
 
 #include "base/callback_list.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
@@ -43,7 +44,7 @@ NSString* const P3ACreativeMetricPrefix =
 @end
 
 @implementation BraveP3AUtils {
-  PrefService* _localState;
+  raw_ptr<PrefService> _localState;
   scoped_refptr<p3a::P3AService> _p3aService;
 }
 

@@ -8,6 +8,7 @@
 #include "base/compiler_specific.h"
 #include "base/containers/adapters.h"
 #include "base/containers/stack.h"
+#include "base/memory/raw_ptr.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
@@ -49,8 +50,8 @@
 @end
 
 @interface IOSBookmarkNode () {
-  const bookmarks::BookmarkNode* node_;
-  bookmarks::BookmarkModel* model_;  // UNOWNED
+  raw_ptr<const bookmarks::BookmarkNode> node_;
+  raw_ptr<bookmarks::BookmarkModel> model_;
   bool owned_;
 }
 @end
@@ -106,7 +107,7 @@
                               // Allocated from iOS/Swift.
       child->owned_ = false;
       child->node_ = node->Add(std::unique_ptr<bookmarks::BookmarkNode>(
-          const_cast<bookmarks::BookmarkNode*>(child->node_)));
+          const_cast<bookmarks::BookmarkNode*>(child->node_.get())));
     }
 
     node_ = node;
@@ -465,14 +466,14 @@
   DCHECK(owned_);
   owned_ = false;
   node_ = parent->Add(std::unique_ptr<bookmarks::BookmarkNode>(
-      const_cast<bookmarks::BookmarkNode*>(node_)));
+      const_cast<bookmarks::BookmarkNode*>(node_.get())));
 }
 
 @end
 
 @interface BraveBookmarksAPI () {
-  bookmarks::BookmarkModel* bookmark_model_;    // NOT OWNED
-  BookmarkUndoService* bookmark_undo_service_;  // NOT OWNED
+  raw_ptr<bookmarks::BookmarkModel> bookmark_model_;    // NOT OWNED
+  raw_ptr<BookmarkUndoService> bookmark_undo_service_;  // NOT OWNED
 }
 @end
 

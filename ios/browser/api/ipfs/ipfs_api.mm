@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/api/ipfs/ipfs_api.h"
 
+#include "base/memory/raw_ptr.h"
 #import "brave/base/mac/conversions.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
@@ -15,7 +16,7 @@
 #include "url/gurl.h"
 
 @implementation IpfsAPIImpl {
-  ChromeBrowserState* _mainBrowserState;  // NOT OWNED
+  raw_ptr<ChromeBrowserState> _mainBrowserState;  // NOT OWNED
 }
 
 - (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState {

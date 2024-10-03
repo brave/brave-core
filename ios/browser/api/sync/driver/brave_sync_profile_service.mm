@@ -7,6 +7,7 @@
 
 #include <unordered_map>
 
+#include "base/memory/raw_ptr.h"
 #include "components/sync/base/data_type.h"
 #include "components/sync/base/user_selectable_type.h"
 #include "components/sync/service/sync_service.h"
@@ -65,7 +66,7 @@ BraveSyncUserSelectableTypes options_from_user_types(
 }  // namespace brave
 
 @interface BraveSyncProfileServiceIOS () {
-  syncer::SyncService* sync_service_;
+  raw_ptr<syncer::SyncService> sync_service_;
   std::unordered_map<syncer::UserSelectableType, BraveSyncUserSelectableTypes>
       type_mapping;
 }

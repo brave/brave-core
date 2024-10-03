@@ -6,14 +6,14 @@
 #include "brave/ios/browser/api/history/history_service_listener_ios.h"
 
 #include "base/check.h"
+#include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/ios/browser/api/history/brave_history_api.h"
+#include "brave/ios/browser/api/history/brave_history_observer.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_service_observer.h"
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
-
-#include "brave/ios/browser/api/history/brave_history_api.h"
-#include "brave/ios/browser/api/history/brave_history_observer.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -116,7 +116,7 @@ void HistoryServiceListenerIOS::OnHistoryDeletions(
 
 @interface HistoryServiceListenerImpl () {
   std::unique_ptr<brave::ios::HistoryServiceListenerIOS> observer_;
-  history::HistoryService* history_service_;
+  raw_ptr<history::HistoryService> history_service_;
 }
 @end
 

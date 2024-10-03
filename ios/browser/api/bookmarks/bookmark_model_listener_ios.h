@@ -10,6 +10,7 @@
 
 #include <set>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_observer.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_model_observer.h"
@@ -51,7 +52,7 @@ class BookmarkModelListener : public bookmarks::BookmarkModelObserver {
                                    const base::Location& location) override;
 
   __strong id<BookmarkModelObserver> observer_;
-  bookmarks::BookmarkModel* model_;  // NOT OWNED
+  raw_ptr<bookmarks::BookmarkModel> model_;
 };
 
 }  // namespace ios
