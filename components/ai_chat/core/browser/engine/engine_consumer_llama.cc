@@ -171,7 +171,7 @@ std::string BuildLlamaGenerateRewriteSuggestionPrompt(
 }
 
 std::string BuildLlamaGenerateQuestionsPrompt(bool is_video,
-                                              const std::string content,
+                                              const std::string& content,
                                               bool is_mixtral) {
   std::string content_template;
   if (is_video) {
@@ -200,7 +200,7 @@ std::string BuildLlamaPrompt(
     const std::optional<std::string>& selected_text,
     const bool& is_video,
     const bool& is_mixtral,
-    const std::string user_message) {
+    const std::string& user_message) {
   // Always use a generic system message
   std::string system_message =
       l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC);

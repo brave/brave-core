@@ -87,7 +87,7 @@ void BraveComponentLoader::OnComponentReady(std::string extension_id,
 }
 
 void BraveComponentLoader::ReinstallAsNonComponent(
-    const std::string extension_id) {
+    const std::string& extension_id) {
   extensions::ExtensionService* service =
       extensions::ExtensionSystem::Get(profile_)->extension_service();
   extensions::ExtensionRegistry* registry =

@@ -136,7 +136,7 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     return navigation_url.ReplaceComponents(replacement);
   }
 
-  GURL landing_url(const std::string_view query, const GURL& landing_url) {
+  GURL landing_url(std::string_view query, const GURL& landing_url) {
     GURL::Replacements replacement;
     if (!query.empty()) {
       replacement.SetQueryStr(query);

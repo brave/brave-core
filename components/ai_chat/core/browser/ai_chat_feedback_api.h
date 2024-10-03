@@ -39,7 +39,7 @@ class AIChatFeedbackAPI {
   void SendFeedback(const std::string& category,
                     const std::string& feedback,
                     const std::string& rating_id,
-                    const std::optional<std::string> hostname,
+                    const std::optional<std::string>& hostname,
                     api_request_helper::APIRequestHelper::ResultCallback
                         on_complete_callback);
 
