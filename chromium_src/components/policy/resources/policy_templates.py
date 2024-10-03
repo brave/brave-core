@@ -46,11 +46,7 @@ def _LoadPolicies(orig_func):
     policy_yaml = policies['policies']
     policy_section = policy_yaml['policies']
 
-    # get the highest ID in the file
-    highest_number = 0
-    for key, _ in policy_section.items():
-        if int(key) > highest_number:
-            highest_number = int(key)
+    offset = max(map(int, policy_section), default=0)
 
     # append our entries to the ones from policies.yaml
     # TODO(bsclifton): we can create this array dynamically by reading the file
@@ -61,10 +57,8 @@ def _LoadPolicies(orig_func):
         'BraveVPNDisabled', 'BraveAIChatEnabled', 'BraveSyncUrl',
         'BraveShieldsDisabledForUrls', 'BraveShieldsEnabledForUrls'
     ]
-    for entry in brave_policies:
-        highest_number += 1
-        #policy_key = str(highest_number)
-        policy_section[highest_number] = entry
+    for i, entry in enumerate(brave_policies):
+        policy_section[offset + i + 1] = entry
 
     return policies
 
@@ -92,12 +86,10 @@ def update_policy_files():
         for entry in entries:
             if not entry.is_dir():
                 continue
-            src_dir = entry.path
-            src_dir_name = entry.name
             dst_dir = wspath(
-                f"//components/policy/resources/templates/policy_definitions/{src_dir_name}"  # pylint: disable=line-too-long
-            )
-            shutil.copytree(src_dir,
+                f"//components/policy/resources/templates/policy_definitions/"
+                + entry.name)
+            shutil.copytree(entry.path,
                             dst_dir,
                             dirs_exist_ok=True,
                             copy_function=copy_only_if_modified)
