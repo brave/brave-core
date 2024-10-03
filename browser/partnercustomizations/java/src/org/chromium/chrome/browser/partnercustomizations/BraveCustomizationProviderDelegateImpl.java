@@ -6,7 +6,8 @@
 package org.chromium.chrome.browser.partnercustomizations;
 
 /** Default ContextProviderPackageDelegateImpl implementation. */
-public class BraveCustomizationProviderDelegateImpl extends CustomizationProviderDelegateImpl {
+public class BraveCustomizationProviderDelegateImpl
+        extends CustomizationProviderDelegateUpstreamImpl {
     @Override
     public String getHomepage() {
         return null;
