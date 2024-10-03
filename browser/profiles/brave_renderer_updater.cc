@@ -35,6 +35,12 @@
 #include "extensions/browser/extension_registry.h"
 #endif
 
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/android/youtube/constants.h"
+#include "brave/browser/android/youtube/pref_names.h"
+#include "net/base/network_change_notifier.h"
+#endif
+
 BraveRendererUpdater::BraveRendererUpdater(
     Profile* profile,
     brave_wallet::KeyringService* keyring_service,
@@ -95,6 +101,13 @@ BraveRendererUpdater::BraveRendererUpdater(
       playlist::kPlaylistEnabledPref,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
+
+#if BUILDFLAG(IS_ANDROID)
+  pref_change_registrar_.Add(
+      kYoutubeVideoQualityPref,
+      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                          base::Unretained(this)));
+#endif
 }
 
 BraveRendererUpdater::~BraveRendererUpdater() = default;
@@ -232,6 +245,8 @@ void BraveRendererUpdater::UpdateRenderer(
       base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
       pref_service->GetBoolean(playlist::kPlaylistEnabledPref);
 
+  bool is_youtube_hd_quality_playback_enabled =
+      IsYoutubeHDQualityPlaybackEnabled(pref_service);
   (*renderer_configuration)
       ->SetConfiguration(brave::mojom::DynamicParams::New(
           install_window_brave_ethereum_provider,
@@ -239,5 +254,20 @@ void BraveRendererUpdater::UpdateRenderer(
           allow_overwrite_window_ethereum_provider,
           brave_use_native_solana_wallet,
           allow_overwrite_window_solana_provider, de_amp_enabled,
-          onion_only_in_tor_windows, widevine_enabled, playlist_enabled));
+          onion_only_in_tor_windows, widevine_enabled, playlist_enabled,
+          is_youtube_hd_quality_playback_enabled));
+}
+
+bool BraveRendererUpdater::IsYoutubeHDQualityPlaybackEnabled(
+    PrefService* pref_service) {
+#if BUILDFLAG(IS_ANDROID)
+  int qualityPref = pref_service->GetInteger(kYoutubeVideoQualityPref);
+  return qualityPref == static_cast<int>(settings::YoutubeVideoQuality::kOn) ||
+         (qualityPref ==
+              static_cast<int>(settings::YoutubeVideoQuality::kAllowOverWifi) &&
+          net::NetworkChangeNotifier::GetConnectionType() ==
+              net::NetworkChangeNotifier::CONNECTION_WIFI);
+#else
+  return false;
+#endif
 }

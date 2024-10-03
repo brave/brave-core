@@ -59,6 +59,8 @@ class BraveRendererUpdater : public KeyedService {
       mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>*
           renderer_configuration);
 
+  bool IsYoutubeHDQualityPlaybackEnabled(PrefService* pref_service);
+
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<brave_wallet::KeyringService> keyring_service_ = nullptr;
   raw_ptr<PrefService> local_state_ = nullptr;
