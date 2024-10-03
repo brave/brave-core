@@ -94,7 +94,7 @@ Logo GetLogoFromValue(const base::FilePath& installed_dir,
 
 TopSite::TopSite() = default;
 TopSite::TopSite(const std::string& i_name,
-                 const std::string i_destination_url,
+                 const std::string& i_destination_url,
                  const std::string& i_image_path,
                  const base::FilePath& i_image_file)
     : name(i_name),

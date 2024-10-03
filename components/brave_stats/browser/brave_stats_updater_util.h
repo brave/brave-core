@@ -28,7 +28,7 @@ int GetIsoWeekNumber(const base::Time& time);
 
 base::Time GetLastMondayTime(const base::Time& time);
 
-base::Time GetYMDAsDate(const std::string_view ymd);
+base::Time GetYMDAsDate(std::string_view ymd);
 
 std::string GetAPIKey();
 

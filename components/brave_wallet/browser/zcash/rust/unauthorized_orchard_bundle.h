@@ -28,7 +28,7 @@ class UnauthorizedOrchardBundle {
   // Creates UnauthorizedOrchardBundle without shielded inputs
   static std::unique_ptr<UnauthorizedOrchardBundle> Create(
       base::span<const uint8_t> tree_state,
-      const std::vector<::brave_wallet::OrchardOutput> orchard_outputs,
+      const std::vector<::brave_wallet::OrchardOutput>& orchard_outputs,
       std::optional<size_t> random_seed_for_testing);
 
   // Before Complete is called we need to calculate signature digest which

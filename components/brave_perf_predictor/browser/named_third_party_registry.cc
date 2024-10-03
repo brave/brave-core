@@ -29,7 +29,7 @@ namespace {
 
 std::tuple<base::flat_map<std::string, std::string>,
            base::flat_map<std::string, std::string>>
-ParseMappings(const std::string_view entities, bool discard_irrelevant) {
+ParseMappings(std::string_view entities, bool discard_irrelevant) {
   base::flat_map<std::string, std::string> entity_by_domain;
   base::flat_map<std::string, std::string> entity_by_root_domain;
 
@@ -101,7 +101,7 @@ ParseFromResource(int resource_id) {
 
 }  // namespace
 
-bool NamedThirdPartyRegistry::LoadMappings(const std::string_view entities,
+bool NamedThirdPartyRegistry::LoadMappings(std::string_view entities,
                                            bool discard_irrelevant) {
   // Reset previous mappings
   entity_by_domain_.clear();
@@ -127,7 +127,7 @@ void NamedThirdPartyRegistry::UpdateMappings(
 }
 
 std::optional<std::string> NamedThirdPartyRegistry::GetThirdParty(
-    const std::string_view request_url) const {
+    std::string_view request_url) const {
   if (!IsInitialized()) {
     VLOG(2) << "Named Third Party Registry not initialized";
     return std::nullopt;
