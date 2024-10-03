@@ -109,12 +109,13 @@ class ShareToBraveViewController: SLComposeServiceViewController {
   private func handleUrl(_ url: URL) {
     // From http://stackoverflow.com/questions/24297273/openurl-not-work-in-action-extension
     var responder = self as UIResponder?
-    while let strongResponder = responder {
-      let selector = sel_registerName("openURL:")
-      if strongResponder.responds(to: selector) {
-        strongResponder.callSelector(selector, object: url as NSURL, delay: 0)
+    while let currentResponder = responder {
+      if let application = currentResponder as? UIApplication {
+        DispatchQueue.main.async {
+          application.open(url, options: [:], completionHandler: nil)
+        }
       }
-      responder = strongResponder.next
+      responder = currentResponder.next
     }
 
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -142,13 +143,5 @@ extension NSItemProvider {
 
   var isUrl: Bool {
     return hasItemConformingToTypeIdentifier(UTType.url.identifier)
-  }
-}
-
-extension NSObject {
-  func callSelector(_ selector: Selector, object: AnyObject?, delay: TimeInterval) {
-    DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-      Thread.detachNewThreadSelector(selector, toTarget: self, with: object)
-    }
   }
 }
