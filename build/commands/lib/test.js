@@ -20,9 +20,9 @@ const getTestsToRun = (config, suite) => {
   if (suite === 'brave_unit_tests') {
     if (config.targetOS !== 'android') {
       testsToRun.push('brave_installer_unittests')
-    } else {
-      testsToRun.push('bin/run_brave_public_test_apk')
     }
+  } else if (suite === 'brave_java_unit_tests') {
+    testsToRun = ['bin/run_brave_java_unit_tests']
   }
   return testsToRun
 }
@@ -71,14 +71,11 @@ const buildTests = async (suite, buildConfig = config.defaultBuildConfig, option
   let testSuites = [
     'brave_unit_tests',
     'brave_browser_tests',
+    'brave_java_unit_tests',
     'brave_network_audit_tests',
   ]
   if (testSuites.includes(suite)) {
     config.buildTargets = ['brave/test:' + suite]
-    if (suite === 'brave_unit_tests' && config.targetOS === 'android') {
-      // We need to build the APK for the java tests as well.
-      config.buildTargets.push('brave/test:brave_public_test_apk')
-    }
   } else {
     config.buildTargets = [suite]
   }
@@ -168,8 +165,8 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
       }
       if (config.targetOS === 'android') {
         assert(
-            config.targetArch === 'x86' || options.manual_android_test_device,
-            'Only x86 build can be run automatically. For other builds please run test device manually and specify manual_android_test_device flag.')
+            config.targetArch === 'x86' || config.targetArch === 'x64' || options.manual_android_test_device,
+            'Only x86 and x64 builds can be run automatically. For other builds please run test device manually and specify manual_android_test_device flag.')
       }
       if (config.targetOS === 'android' && !options.manual_android_test_device) {
         // Specify emulator to run tests on
