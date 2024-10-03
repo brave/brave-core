@@ -1097,8 +1097,10 @@ void VerticalTabStripRegionView::OnBoundsChanged(
 #if DCHECK_IS_ON()
   if (auto width = GetContentsBounds().width();
       width && !IsBrowserFullscren()) {
-    CHECK_GE(width, tabs::kVerticalTabMinWidth +
-                        tabs::kMarginForVerticalTabContainers * 2);
+    CHECK_GE(
+        width,
+        tabs::kVerticalTabMinWidth + tabs::kMarginForVerticalTabContainers * 2 -
+            BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_));
   }
 #endif
 }
