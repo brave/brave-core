@@ -1391,19 +1391,16 @@ Are you sure you want to do this?
         Browsing visibility
       </message>
       <message name="IDS_BRAVE_NEW_TAB_PRIVATE_VISIBILITY_DESCRIPTION" desc="Browsing visibility description shown when a user opens a private tab explaining private mode">
-        Sites you visit in private windows won't appear in your history. Cookies, form data, and site data vanish once all private windows are closed.
+        Note that -even in private windows- your browsing activity may still be visible to your ISP, network observers, or your employer (if you're using a work machine/network).
       </message>
       <message name="IDS_BRAVE_NEW_TAB_PRIVATE_VPN" desc="VPN title shown when a user opens a private tab explaining private mode">
-        Browsing visibility
+        Brave VPN
       </message>
       <message name="IDS_BRAVE_NEW_TAB_PRIVATE_VPN_DESCRIPTION" desc="VPN description shown when a user opens a private tab explaining private mode">
-        Sites you visit in private windows won't appear in your history. Cookies, form data, and site data vanish once all private windows are closed.
+        Brave VPN encrypts and protects anything you do online, even outside the Brave browser.
       </message>
       <message name="IDS_BRAVE_NEW_TAB_PRIVATE_VPN_CTA" desc="VPN call to action text shown when a user opens a private tab explaining private mode">
         Try for free for 7 days
-      </message>
-      <message name="IDS_NEW_TAB_PRIVATE_DESC" desc="Message shown when a user opens a private tab explaining private mode">
-        Even though sites you visit in private tabs are not saved locally, they do not make you anonymous or invisible to your ISP, your employer, or to the sites you are visiting.
       </message>
       <message name="IDS_NOTIFICATION_CATEGORY_BRAVE_ADS_BACKGROUND" desc="Label for Brave Ads in background.">
         Brave Ads sent when browser is in the background
