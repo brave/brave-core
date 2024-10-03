@@ -4,54 +4,18 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import styled from 'styled-components'
-import { ArrowLeftIcon } from 'brave-ui/components/icons'
-import { getLocale } from '../../../../common/locale'
+import { getLocale } from '$web-common/locale'
+import Icon from '@brave/leo/react/icon'
+import Button from '@brave/leo/react/button'
 
 type Props = {
   onBack: () => any
   title?: string
 }
 
-const Back = styled('button')`
-  appearance: none;
-  margin: 0 0 14px 0;
-  padding: 0;
-  outline: none;
-  border: none;
-  background: none;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  cursor: pointer;
-  color: inherit;
-  font-weight: 800;
-
-  &:focus,
-  &:hover {
-    color: ${p => p.theme.color.brandBraveInteracting}
-  }
-  &:active {
-    color: ${p => p.theme.color.brandBraveActive}
-  }
-  &:focus-visible {
-    outline: solid 1px ${p => p.theme.color.brandBrave};
-  }
-`
-
-const Icon = styled('div')`
-  width: 16px;
-  height: 16px;
-`
-
-export default function NavigateBack (props: Props) {
-  const onClick = React.useCallback(() => {
-    props.onBack()
-  }, [props.onBack])
-  return (
-    <Back onClick={onClick}>
-      <Icon><ArrowLeftIcon /></Icon>
-      <span>{ props.title ? props.title : getLocale('settingsNavigateBack')}</span>
-    </Back>
-  )
+export default function NavigateBack(props: Props) {
+  return <Button onClick={props.onBack} kind='plain-faint' fab size='tiny'>
+    <Icon name='arrow-left' slot='icon-before' />
+    <span>{props.title ? props.title : getLocale('settingsNavigateBack')}</span>
+  </Button>
 }
