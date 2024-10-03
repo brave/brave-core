@@ -901,3 +901,7 @@
 -keep class org.chromium.chrome.browser.tasks.tab_management.BraveIncognitoTabSwitcherPane {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarController {
+    *** showUndoBar(...);
+}
