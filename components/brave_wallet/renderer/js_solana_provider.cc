@@ -1077,14 +1077,13 @@ bool JSSolanaProvider::LoadSolanaWeb3ModuleIfNeeded(v8::Isolate* isolate) {
       {"(function() {", LoadDataResource(IDR_BRAVE_WALLET_SOLANA_WEB3_JS),
        "return solanaWeb3; })()"});
 
-  solana_web3_module_.Reset(
-      isolate,
-      ExecuteScript(render_frame()->GetWebFrame(), solana_web3_module_str)
-          .ToLocalChecked());
+  v8::Local<v8::Value> solana_web3_module;
   // loading SolanaWeb3 module failed
-  if (solana_web3_module_.IsEmpty()) {
+  if (!ExecuteScript(render_frame()->GetWebFrame(), solana_web3_module_str)
+           .ToLocal(&solana_web3_module)) {
     return false;
   }
+  solana_web3_module_.Reset(isolate, solana_web3_module);
   return true;
 }
 
