@@ -24,6 +24,7 @@ source_set("webui") {
     "//components/profile_metrics",
     "//components/resources",
     "//ios/chrome/browser/shared/model/browser_state",
+    "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/shared/model/url:constants",
     "//ios/chrome/browser/webui/ui_bundled:coordinator",
     "//ios/chrome/browser/webui/ui_bundled:webui_internal",

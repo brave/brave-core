@@ -15,10 +15,8 @@ import org.jni_zero.CalledByNative;
 import org.chromium.base.Callback;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.signin.services.SigninManager;
-import org.chromium.components.signin.base.CoreAccountId;
 import org.chromium.components.signin.base.CoreAccountInfo;
 import org.chromium.components.signin.identitymanager.AccountInfoServiceProvider;
-import org.chromium.components.signin.identitymanager.AccountTrackerService;
 import org.chromium.components.signin.identitymanager.IdentityManager;
 import org.chromium.components.signin.identitymanager.IdentityMutator;
 import org.chromium.components.signin.metrics.SigninAccessPoint;
@@ -93,20 +91,16 @@ public class BraveSigninManager implements SigninManager {
     @Override
     public String extractDomainName(String accountEmail) {
         return "";
-    };
-
-    @Override
-    public void reloadAllAccountsFromSystem(@Nullable CoreAccountId primaryAccountId) {}
+    }
 
     @CalledByNative
     static SigninManager create(
             long nativeSigninManagerAndroid,
             Profile profile,
-            AccountTrackerService accountTrackerService,
             IdentityManager identityManager,
             IdentityMutator identityMutator,
             SyncService syncService) {
-        AccountInfoServiceProvider.init(identityManager, accountTrackerService);
+        AccountInfoServiceProvider.init(identityManager);
         return new BraveSigninManager(identityManager);
     }
 

@@ -45,6 +45,7 @@ static_library("browser") {
     "//brave/components/greaselion/browser/buildflags",
     "//brave/components/resources",
     "//brave/components/services/bat_rewards/public/interfaces",
+    "//brave/components/services/brave_wallet/public/mojom",
     "//mojo/public/cpp/bindings",
     "//net",
     "//services/data_decoder/public/cpp",

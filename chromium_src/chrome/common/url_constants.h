@@ -452,6 +452,10 @@ inline constexpr char16_t kWhoIsMyAdministratorHelpURL[] =
 inline constexpr char16_t kCwsEnhancedSafeBrowsingLearnMoreURL[] =
     u"https://support.brave.com/";
 
+// The URL path to online privacy policy.
+inline constexpr char kPrivacyPolicyOnlineURLPath[] =
+    "https://support.brave.com/";
+
 #if BUILDFLAG(IS_ANDROID)
 // "Learn more" URL for the enhanced playback notification dialog.
 inline constexpr char kEnhancedPlaybackNotificationLearnMoreURL[] =

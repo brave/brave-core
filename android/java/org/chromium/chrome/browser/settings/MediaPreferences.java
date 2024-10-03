@@ -10,6 +10,8 @@ import android.os.Bundle;
 import androidx.preference.Preference;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.FilterListConstants;
 import org.chromium.chrome.R;
@@ -39,15 +41,22 @@ public class MediaPreferences extends BravePreferenceFragment
 
     private FilterListAndroidHandler mFilterListAndroidHandler;
 
+    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().setTitle(R.string.prefs_media);
+        mPageTitle.set(getString(R.string.prefs_media));
         SettingsUtils.addPreferencesFromResource(this, R.xml.media_preferences);
     }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {}
+
+    @Override
+    public ObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

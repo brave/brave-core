@@ -144,7 +144,8 @@ bool PlaylistUI::ShouldBlockPlaylistWebUI(
 PlaylistUI::PlaylistUI(content::WebUI* web_ui)
     : UntrustedWebUIController(web_ui) {
   // From MojoWebUIController
-  web_ui->SetBindings(content::BINDINGS_POLICY_MOJO_WEB_UI);
+  web_ui->SetBindings(
+      content::BindingsPolicySet({content::BindingsPolicyValue::kWebUi}));
 
   auto* source =
       CreateAndAddWebUIDataSource(web_ui, kPlaylistURL, kPlaylistGenerated,

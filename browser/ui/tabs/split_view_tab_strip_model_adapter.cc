@@ -189,7 +189,7 @@ void SplitViewTabStripModelAdapter::OnTabInserted(
                 return;
               }
 
-              if (UNLIKELY(index != adapter->model_->GetIndexOfTab(tab))) {
+              if (index != adapter->model_->GetIndexOfTab(tab)) [[unlikely]] {
                 // Index changed. Cancel the move.
                 return;
               }
@@ -280,7 +280,7 @@ void SplitViewTabStripModelAdapter::TabPinnedStateChanged(
 
 void SplitViewTabStripModelAdapter::TabGroupedStateChanged(
     std::optional<tab_groups::TabGroupId> group,
-    content::WebContents* contents,
+    tabs::TabModel* tab,
     int index) {
   if (!model_->ContainsIndex(index)) {
     return;

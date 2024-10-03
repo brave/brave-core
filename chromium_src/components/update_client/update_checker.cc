@@ -28,9 +28,8 @@ bool IsBraveComponent(const Component* component) {
 }  // namespace
 
 SequentialUpdateChecker::SequentialUpdateChecker(
-    scoped_refptr<Configurator> config,
-    PersistedData* metadata)
-    : config_(config), metadata_(metadata) {
+    scoped_refptr<Configurator> config)
+    : config_(config) {
   VLOG(3) << "SequentialUpdateChecker";
 }
 
@@ -106,7 +105,7 @@ void SequentialUpdateChecker::CheckNext() {
     context->components_to_check_for_updates.push_back(id);
   }
 
-  update_checker_ = UpdateChecker::Create(config_, metadata_);
+  update_checker_ = UpdateChecker::Create(config_);
 
   update_checker_->CheckForUpdates(
       context, additional_attributes_,
@@ -153,10 +152,9 @@ void SequentialUpdateChecker::UpdateResultAvailable(
 }
 
 std::unique_ptr<UpdateChecker> SequentialUpdateChecker::Create(
-    scoped_refptr<Configurator> config,
-    PersistedData* persistent) {
+    scoped_refptr<Configurator> config) {
   VLOG(3) << "Create";
-  return std::make_unique<SequentialUpdateChecker>(config, persistent);
+  return std::make_unique<SequentialUpdateChecker>(std::move(config));
 }
 
 }  // namespace update_client

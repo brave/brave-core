@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/component_updater/updater_state_win.cc b/chrome/browser/component_updater/updater_state_win.cc
-index 56f5f518937560daf34b9d475e84d72e7926e28c..930924c19b99a9a8f003bdec6386899c5a31a7fd 100644
+index 421e774aece9561f3b64189dc81efb1c35a0b70f..9629c319ef9336aa5ccd595accda45615075aa67 100644
 --- a/chrome/browser/component_updater/updater_state_win.cc
 +++ b/chrome/browser/component_updater/updater_state_win.cc
 @@ -20,20 +20,32 @@ namespace {

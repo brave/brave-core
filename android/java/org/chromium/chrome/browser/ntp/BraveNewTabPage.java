@@ -127,7 +127,6 @@ public class BraveNewTabPage extends NewTabPage {
             Activity activity,
             WindowAndroid windowAndroid,
             SnackbarManager snackbarManager,
-            NewTabPageUma uma,
             boolean isInNightMode,
             Supplier<ShareDelegate> shareDelegateSupplier,
             String url) {

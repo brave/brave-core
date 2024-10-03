@@ -105,9 +105,9 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
   void TitleWasSet(content::NavigationEntry* entry) override;
-  void InnerWebContentsAttached(content::WebContents* inner_web_contents,
-                                content::RenderFrameHost* render_frame_host,
-                                bool is_full_page) override;
+  void InnerWebContentsAttached(
+      content::WebContents* inner_web_contents,
+      content::RenderFrameHost* render_frame_host) override;
 
   // favicon::FaviconDriverObserver
   void OnFaviconUpdated(favicon::FaviconDriver* favicon_driver,

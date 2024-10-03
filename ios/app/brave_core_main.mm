@@ -64,9 +64,9 @@
 #include "ios/chrome/browser/shared/model/browser/browser.h"
 #include "ios/chrome/browser/shared/model/browser/browser_list.h"
 #include "ios/chrome/browser/shared/model/browser/browser_list_factory.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/shared/model/paths/paths.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
 #include "ios/chrome/browser/shared/public/commands/command_dispatcher.h"
 #include "ios/chrome/browser/sync/model/send_tab_to_self_sync_service_factory.h"
@@ -209,10 +209,10 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     _webMain = std::make_unique<web::WebMain>(std::move(params));
 
     // Initialize and set the main browser state.
-    ChromeBrowserStateManager* browserStateManager =
-        GetApplicationContext()->GetChromeBrowserStateManager();
     ChromeBrowserState* chromeBrowserState =
-        browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse();
+        GetApplicationContext()
+            ->GetProfileManager()
+            ->GetLastUsedProfileDeprecatedDoNotUse();
     _mainBrowserState = chromeBrowserState;
 
     // Disable Safe-Browsing via Prefs

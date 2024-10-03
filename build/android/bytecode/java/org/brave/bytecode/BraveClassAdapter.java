@@ -67,7 +67,6 @@ public class BraveClassAdapter {
         chain = new BraveManageAccountDevicesLinkViewClassAdapter(chain);
         chain = new BraveManageSyncSettingsClassAdapter(chain);
         chain = new BraveMultiInstanceManagerApi31ClassAdapter(chain);
-        chain = new BraveTranslateCompactInfoBarBaseClassAdapter(chain);
         chain = new BraveMenuButtonCoordinatorClassAdapter(chain);
         chain = new BraveMimeUtilsClassAdapter(chain);
         chain = new BraveMostVisitedTilesLayoutBaseClassAdapter(chain);
@@ -110,6 +109,7 @@ public class BraveClassAdapter {
         chain = new BraveTabUiThemeProviderClassAdapter(chain);
         chain = new BraveTabUiThemeUtilsClassAdapter(chain);
         chain = new BraveTabbedActivityClassAdapter(chain);
+        chain = new BraveTabbedNavigationBarColorControllerBaseClassAdapter(chain);
         chain = new BraveTabbedRootUiCoordinatorClassAdapter(chain);
         chain = new BraveTabGroupModelFilterClassAdapter(chain);
         chain = new BraveThemeUtilsClassAdapter(chain);

@@ -1,3 +1,0 @@
-include_rules = [
-  "+brave/ios/browser/browser_state"
-]

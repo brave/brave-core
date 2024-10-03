@@ -57,6 +57,7 @@
 #include "services/network/public/cpp/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/features.h"
+#include "ui/accessibility/accessibility_features.h"
 #include "ui/base/ui_base_features.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -71,7 +72,6 @@
 #include "components/translate/core/common/translate_util.h"
 #include "extensions/common/extension_features.h"
 #include "services/device/public/cpp/device_features.h"
-#include "ui/accessibility/accessibility_features.h"
 #endif
 
 TEST(FeatureDefaultsTest, DisabledFeatures) {
@@ -98,7 +98,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kControlledFrame,
       &blink::features::kCssSelectorFragmentAnchor,
       &blink::features::kFencedFrames,
-      &blink::features::kFencedFramesM120FeaturesPart2,
       &blink::features::kFledge,
       &blink::features::kFledgeBiddingAndAuctionServer,
       &blink::features::kFledgeConsiderKAnonymity,
@@ -142,9 +141,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kChromeLabs,
       &features::kChromeStructuredMetrics,
       &features::kCookieDeprecationFacilitatedTesting,
-#if !BUILDFLAG(IS_ANDROID)
-      &features::kDesktopPWAsLinkCapturing,
-#endif
       &features::kDevToolsConsoleInsights,
       &features::kDigitalGoodsApi,
       &features::kDIPS,
@@ -166,6 +162,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &features::kPrivacySandboxAdsAPIsOverride,
 #if !BUILDFLAG(IS_ANDROID)
+      &features::kPwaNavigationCapturing,
       &features::kReportPakFileIntegrity,
 #endif
       &features::kResourceTimingForCancelledNavigationInFrame,
@@ -188,7 +185,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kWebOTP,
       &heap_profiling::kHeapProfilerReporting,
       &history::kOrganicRepeatableQueries,
-      &history::kSyncSegmentsData,
       &history_clusters::kSidePanelJourneys,
       &history_clusters::features::kOnDeviceClustering,
       &history_clusters::features::kOnDeviceClusteringKeywordFiltering,
@@ -224,8 +220,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &ntp_features::kNtpAlphaBackgroundCollections,
       &ntp_features::kNtpBackgroundImageErrorDetection,
       &ntp_features::kNtpChromeCartModule,
-      &ntp_features::kNtpHistoryClustersModule,
-      &ntp_features::kNtpHistoryClustersModuleLoad,
       &omnibox::kDocumentProviderNoSetting,
       &omnibox::kDocumentProviderNoSyncRequirement,
       &omnibox::kExpandedStateHeight,
@@ -284,7 +278,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 
 TEST(FeatureDefaultsTest, EnabledFeatures) {
   const base::Feature* enabled_features[] = {
-      &autofill::features::kAutofillDisableShadowHeuristics,
       &blink::features::kPrefetchPrivacyChanges,
       &blink::features::kReducedReferrerGranularity,
       &blink::features::kReduceUserAgentMinorVersion,
@@ -295,6 +288,9 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
 #endif
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,
+#if BUILDFLAG(IS_ANDROID)
+      &omnibox::kRetainOmniboxOnFocus,
+#endif
 #if !BUILDFLAG(IS_ANDROID)
       &sharing_hub::kDesktopScreenshots,
 #endif

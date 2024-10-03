@@ -31,6 +31,7 @@
 #include "ui/accessibility/ax_enums.mojom-shared.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/gfx/font.h"
 #include "ui/gfx/font_list.h"
@@ -84,7 +85,7 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   CHECK(controller);
   controller_ = controller->AsWeakPtr();
 
-  SetButtons(ui::DIALOG_BUTTON_NONE);
+  SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   SetAccessibleWindowRole(ax::mojom::Role::kDialog);
   set_adjust_if_offscreen(true);
 

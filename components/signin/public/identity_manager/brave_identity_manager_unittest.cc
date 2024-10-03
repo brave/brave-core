@@ -123,8 +123,6 @@ class BraveIdentityManagerTest : public testing::Test {
     base::CommandLine* cmd_line = base::CommandLine::ForCurrentProcess();
     cmd_line->AppendSwitch(switches::kClearTokenService);
 
-    primary_account_manager->Initialize();
-
     IdentityManager::InitParameters init_params;
 
     init_params.accounts_cookie_mutator =
