@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
-index 375f3a4b69b917446d4699381e60ab95c3f26855..00403e3f4cc4cd8dfda9c701e6a35b0ef87b3652 100644
+index 233226153482533729508107fbcdd70a448d8b47..a7bcd5a4e8afc181c65dc54c2a268ab383b6d2cc 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
-@@ -117,10 +117,10 @@ interface CanvasRenderingContext2D {
+@@ -119,10 +119,10 @@ interface CanvasRenderingContext2D {
  
      void clip(optional CanvasFillRule winding);
      void clip(Path2D path, optional CanvasFillRule winding);
@@ -17,7 +17,7 @@ index 375f3a4b69b917446d4699381e60ab95c3f26855..00403e3f4cc4cd8dfda9c701e6a35b0e
  
      // text (see also the CanvasDrawingStyles interface)
      [HighEntropy] void fillText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double maxWidth);
-@@ -149,8 +149,8 @@ interface CanvasRenderingContext2D {
+@@ -151,8 +151,8 @@ interface CanvasRenderingContext2D {
      [RaisesException] ImageData createImageData(ImageData imagedata);
      [RaisesException] ImageData createImageData([EnforceRange] long sw, [EnforceRange] long sh);
      [RaisesException] ImageData createImageData([EnforceRange] long sw, [EnforceRange] long sh, ImageDataSettings imageDataSettings);
