@@ -23,8 +23,8 @@ constexpr char kGetHtmlTagPattern[] = "(<\\s*?html\\s.*?>)";
 // To see the expected behaviour of this regex, please see unit tests in
 // de_amp_util_unittest.cc
 constexpr char kDetectAmpPattern[] =
-    "(?:<.*?\\s.*?(amp|⚡|⚡=\"(?:true|\\s*)\"|⚡=\'(?:true|\\s*)\'|amp=\"(?:true|"
-    "\\s*)\"|amp='(?:true|\\s*)')(?:\\s.*?>|>|/>))";
+    "(?:<.*?\\s.*?(amp|⚡|⚡=\"(?:true|\\s*)\"|⚡=\'(?:true|\\s*)\'|amp=\"(?:"
+    "true|\\s*)\"|amp='(?:true|\\s*)')(?:\\s.*?>|>|/>))";
 // Look for canonical link tag and get href
 // https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=websites#canon
 constexpr char kFindCanonicalLinkTagPattern[] =
@@ -54,7 +54,7 @@ bool VerifyCanonicalAmpUrl(const GURL& canonical_link,
          canonical_link != original_url;
 }
 
-bool CheckIfAmpPage(const std::string& body) {
+bool CheckIfAmpPage(std::string_view body) {
   auto opt = InitRegexOptions();
   // The order of running these regexes is important:
   // we first get the relevant HTML tag and then find the info.
@@ -76,7 +76,7 @@ bool CheckIfAmpPage(const std::string& body) {
 }
 
 base::expected<std::string, std::string> FindCanonicalAmpUrl(
-    const std::string& body) {
+    std::string_view body) {
   auto opt = InitRegexOptions();
   // The order of running these regexes is important
   static const base::NoDestructor<re2::RE2> kFindCanonicalLinkTagRegex(
