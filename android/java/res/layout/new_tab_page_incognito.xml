@@ -34,8 +34,9 @@
             android:paddingTop="24dp"
             android:paddingBottom="16dp" >
 
+            <!-- Keep the same ID as it's been tested in Chromium code by IncognitoNewTabPageStation. -->
             <ImageView
-                android:id="@+id/new_tab_incognito_icon2"
+                android:id="@+id/new_tab_incognito_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -43,16 +44,6 @@
                 android:layout_gravity="center_horizontal"
                 tools:ignore="ContentDescription"
                 android:src="@drawable/incognito_splash" />
-
-            <ImageView
-                android:id="@+id/new_tab_incognito_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                tools:ignore="ContentDescription"
-                android:visibility="gone"
-                android:src="@drawable/brave_sync_btn_laptop" />
 
             <TextView
                 android:id="@+id/ntp_incognito_header"
@@ -70,21 +61,6 @@
                 android:text="@string/new_tab_private_desc"
                 android:textColor="@color/baseline_neutral_60"
                 android:gravity="center" />
-
-            <!-- This is just dummy view to avoid crashes within Chromium's part of code-->
-            <TextView
-                android:id="@+id/new_tab_incognito_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
-
-
-            <TextView
-                android:id="@+id/learn_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/learn_more"
-                android:visibility = "gone" />
 
         </LinearLayout>
 
