@@ -2678,11 +2678,6 @@ are declared in tools/grit/grit_rule.gni.
             &amp;Learn More
           </message>
         </if>  <!-- not use_titlecase -->
-        <if expr="is_win">
-          <message name="IDS_DOWNLOAD_MENU_ALWAYS_OPEN_PDF_IN_READER" desc="Download context menu: Always open PDFs using Adobe Reader">
-            Always open in Adobe Reader
-          </message>
-        </if>
         <message name="IDS_DOWNLOAD_MENU_DEEP_SCAN" desc="Download context menu: send file for deep scanning">
           Scan file
         </message>
@@ -5049,7 +5044,7 @@ are declared in tools/grit/grit_rule.gni.
         Open in Web Store
       </message>
 
-      <if expr="enable_extensions">
+      <if expr="enable_extensions_core">
         <message name="IDS_EXTENSION_PROMPT_WARNING_FULL_ACCESS" desc="Permission string for full access to the computer and all websites.">
           Read and change all your data on your computer and all websites
         </message>
@@ -6243,6 +6238,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSIONS_MENU_CANT_ACCESS_SITE_DATA" desc="Longer explanation for section of extensions that can't access the current site's data">
         These extensions don't need to see and change information on this site.
       </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_SETTINGS_LABEL" desc="Text of the label next to the site settings toggle button that allows extensions on site pointed by $1.">
+        Allow extensions on <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
+      </message>
       <message name="IDS_EXTENSIONS_MENU_SITE_SETTINGS_TOGGLE_ON_TOOLTIP" desc="Tooltip text for the site setting toggle button when is on.">
         Extensions allowed on this site
       </message>
@@ -6250,13 +6248,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Extensions are not allowed on this site
       </message>
        <message name="IDS_EXTENSIONS_MENU_SITE_SETTINGS_TOGGLE_ACCESSIBLE_NAME" desc="Accessibility string for the site setting toggle button.">
-        Allow extensions on this site
-      </message>
-      <message name="IDS_EXTENSIONS_MENU_SITE_SETTINGS_TOGGLE_ON_ACCESSIBLE_NAME" desc="Accessibility string for the site setting toggle button when is on.">
-        Select to block all extensions on this site
-      </message>
-      <message name="IDS_EXTENSIONS_MENU_SITE_SETTINGS_TOGGLE_OFF_ACCESSIBLE_NAME" desc="Accessibility string for the site setting toggle button when is off.'">
-        Select to allow extensions on this site
+        Allow extensions
       </message>
       <message name="IDS_EXTENSIONS_MENU_MESSAGE_SECTION_RESTRICTED_ACCESS_TEXT" desc="Text of the message section when this site is restricted to all extensions.">
         No extensions need access to this site
@@ -6715,18 +6707,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_GENERATION_SUGGESTION_GPM_WITHOUT_STRONG" desc="Text shown next to a generated password describing it as a suggestion.">
           Use suggested password
         </message>
-        <message name="IDS_PASSWORD_GENERATION_SUGGESTION_TRUSTED_ADVICE" desc="Text shown next to a generated password describing it as recommended.">
-          Use recommended password
-        </message>
-        <message name="IDS_PASSWORD_GENERATION_SUGGESTION_SAFETY_FIRST" desc="Text shown next to a generated password describing it as safe.">
-          Use a safer password
-        </message>
-        <message name="IDS_PASSWORD_GENERATION_SUGGESTION_TRY_SOMETHING_NEW" desc="Text shown next to a generated password describing it in a reassuring way.">
-          Try a new password
-        </message>
-        <message name="IDS_PASSWORD_GENERATION_SUGGESTION_CONVENIENCE" desc="Text shown next to a generated password describing its convenience.">
-          Quickly use a strong password
-        </message>
         <message name="IDS_PASSWORD_GENERATION_NUDGE_CANCEL_BUTTON" desc="Text shown on a cancel button in the password generation flow.">
           Choose your own
         </message>
@@ -6743,18 +6723,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_PASSWORD_GENERATION_SUGGESTION_GPM_WITHOUT_STRONG" desc="In Title Case: Text shown next to a generated password describing it as a suggestion.">
           Use Suggested Password
-        </message>
-        <message name="IDS_PASSWORD_GENERATION_SUGGESTION_TRUSTED_ADVICE" desc="Text shown next to a generated password describing it as recommended.">
-          Use Recommended Password
-        </message>
-        <message name="IDS_PASSWORD_GENERATION_SUGGESTION_SAFETY_FIRST" desc="Text shown next to a generated password describing it as safe.">
-          Use a Safer Password
-        </message>
-        <message name="IDS_PASSWORD_GENERATION_SUGGESTION_TRY_SOMETHING_NEW" desc="Text shown next to a generated password describing it in a reassuring way.">
-          Try a New Password
-        </message>
-        <message name="IDS_PASSWORD_GENERATION_SUGGESTION_CONVENIENCE" desc="Text shown next to a generated password describing its convenience.">
-          Quickly Use a Strong Password
         </message>
         <message name="IDS_PASSWORD_GENERATION_NUDGE_CANCEL_BUTTON" desc="Text shown on a cancel button in the password generation flow.">
           Choose Your Own
@@ -6846,35 +6814,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_PASSWORD_GENERATION_PROMPT_GOOGLE_PASSWORD_MANAGER" desc="Autofill dropdown text describing password generation.">
           You won't need to remember this password. It will be saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph> for <ph name="EMAIL">$2<ex>user@gmail.com</ex></ph>.
       </message>
-      <message name="IDS_PASSWORD_GENERATION_HELP_TEXT_TRUSTED_ADVICE" desc="Autofill dropdown text describing password generation focusing on strong security messaging.">
-          Keep this account more secure with a strong password. It will be saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph> for <ph name="EMAIL">$2<ex>user@gmail.com</ex></ph>.
-      </message>
-      <message name="IDS_PASSWORD_GENERATION_HELP_TEXT_SAFETY_FIRST" desc="Autofill dropdown text describing password generation focusing on safety.">
-          Stay safer online with a strong password. It will be saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph> for <ph name="EMAIL">$2<ex>user@gmail.com</ex></ph>.
-      </message>
-      <message name="IDS_PASSWORD_GENERATION_HELP_TEXT_TRY_SOMETHING_NEW" desc="Autofill dropdown text describing password generation with a more persuasive and reassuring tone.">
-          You can always change this password later. It will be saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph> for <ph name="EMAIL">$2<ex>user@gmail.com</ex></ph>.
-      </message>
-      <message name="IDS_PASSWORD_GENERATION_HELP_TEXT_CONVENIENCE" desc="Autofill dropdown text describing password generation with a convenience proposition.">
-          Sign up and sign in faster when your password is automatically saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph> for <ph name="EMAIL">$2<ex>user@gmail.com</ex></ph>.
-      </message>
       <message name="IDS_PASSWORD_GENERATION_NUDGE_TITLE" desc="Autofill dropdown title describing password generation.">
           Brave Password Manager created a strong password for this website
-      </message>
-      <message name="IDS_PASSWORD_GENERATION_BENEFITS" desc="Autofill dropdown text before listing bullet points of password generation benefits.">
-          When you use and save this password:
-      </message>
-      <message name="IDS_PASSWORD_GENERATION_CROSS_DEVICE" desc="Autofill dropdown text describing that the generated password is available cross-device.">
-          It's available on any device
-      </message>
-      <message name="IDS_PASSWORD_GENERATION_SECURITY" desc="Autofill dropdown text describing that the generated password is protected by the best Brave technologies.">
-          It's protected by the best of Brave
-      </message>
-      <message name="IDS_PASSWORD_GENERATION_PROACTIVE_CHECK" desc="Autofill dropdown text describing that the user will be notified whenever their saved generated password is at risk.">
-          You'll be notified if it's ever at risk
-      </message>
-      <message name="IDS_PASSWORD_GENERATION_HELP_TEXT" desc="Autofill dropdown text describing where the generated password is saved and how to access it.">
-          It will be saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph> for <ph name="EMAIL">$2<ex>user@gmail.com</ex></ph>.
       </message>
       <message name="IDS_PASSWORD_MANAGEMENT_BUBBLE_FOOTER_ACCOUNT_STORE_USERS" desc="The footer text of the managment bubble the lists saved password for this website. This is used only for account store users.">
         Passwords are saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph>.
@@ -7390,7 +7331,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_OMNIBOX_WHY_THIS_SUGGESTION" desc="The title of a menu entry and bubble that explains why this suggestion appears in the omnibox popup.">
         Why this suggestion?
       </message>
-      <message name="IDS_OMNIBOX_CLOSE_IPH_SUGGESTION" desc="The text displayed when hovering over the button to close the omnibox IPH suggestion." translateable="false">
+      <message name="IDS_OMNIBOX_CLOSE_IPH_SUGGESTION" desc="The text displayed when hovering over the button to close the omnibox IPH suggestion.">
         Close
       </message>
       <message name="IDS_OMNIBOX_THUMBS_UP_SUGGESTION" desc="The text displayed when hovering over the thumbs up button to provide feedback about an omnibox suggestion." translateable="false">
@@ -8246,6 +8187,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_WALLPAPER_SEARCH_INSPIRATION_DESCRIPTION_9" desc="Accessibility label describing a wallpaper search inspiration image.">
         A large wave engulfs the ocean, with a dark forest ashore.
       </message>
+      <message name="IDS_NTP_WALLPAPER_SEARCH_SEPARATOR" desc="Text/punctuation that separates strings in a list. For example, 'meadow, oil painting, intellectual, and yellow.'" meaning="List separator for strings.">
+         , '''
+      </message>
       <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_BUTTON_A11Y_LABEL" is_accessibility_with_no_ui="true" desc="Accessibility label describing the functionality of the button that opens the toolbar customization section of Customize Brave.">
         Customize toolbar buttons
       </message>
@@ -8317,6 +8261,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_MORE_ACTIONS" desc="The tooltip and accessibility label for the 3 dot menu on a module.">
         More actions for <ph name="MODULE_NAME">$1<ex>shopping suggestions</ex></ph>
+      </message>
+      <message name="IDS_NTP_MODULE_HEADER_MORE_ACTIONS_MENU" desc="Text read to screen reader users when navigating to a module's more actions menu.">
+        More actions
       </message>
       <message name="IDS_NTP_MODULES_CUSTOMIZE_BUTTON_TEXT" desc="Text shown on the customize button of an NTP module.">
         Customize cards
@@ -8673,6 +8620,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ACCNAME_SIDE_PANEL_RESIZE" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the side panel resize handle is focused.">
         Side Panel Resize Handle
       </message>
+      <message name="IDS_ACCNAME_SIDE_PANEL_CLOSE" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the side panel close button is focused.">
+        Close side panel
+      </message>
       <message name="IDS_SIDE_PANEL_RESIZE_ACCESSIBLE_ALERT" is_accessibility_with_no_ui="true" desc="Accessible alert text announced after a user has resized the side panel via keyboard. This message is for screen reader users.">
                <ph name="WINDOW_SIDE">$1<ex>left</ex></ph> window now <ph name="WINDOW_SIZE_PERCENT">$2<ex>60%</ex></ph> wide, <ph name="PANE_SIDE">$3<ex>right</ex></ph> pane now <ph name="PANE_SIZE_PERCENT">$4<ex>40%</ex></ph> wide.
       </message>
@@ -8770,8 +8720,23 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SIDE_PANEL_LENS_OVERLAY_PINNABLE_FOLLOWUP_IPH_SCREENREADER" desc="The screen reader text of the IPH describing that the Lens Overlay panel has been pinned." is_accessibility_with_no_ui="true">
         Pinned! You can access Google Lens again from the new button on the toolbar
       </message>
+      <message name="IDS_SIDE_PANEL_HEADER_MORE_INFO_BUTTON_TOOLTIP" desc="The tooltip for the side panel more info button.">
+        More info
+      </message>
 
       <!-- Bookmarks strings -->
+      <!-- TODO(crbug.com/363277495): Update and mark translateable. -->
+      <message name="IDS_BOOKMARKS_MOVE_TO_ACCOUNT_DIALOG_TITLE" translateable="false" desc="Title for the dialog that offers the user to move a bookmark from their device to their signed-in account.">
+        Save to a folder in your Brave sync chain?
+      </message>
+      <!-- TODO(crbug.com/363277495): Update and mark translateable. -->
+      <message name="IDS_BOOKMARKS_MOVE_TO_ACCOUNT_DIALOG_SUBTITLE" translateable="false" desc="Subtitle for the dialog that offers the user to move a bookmark from their device to their signed-in account.">
+        This bookmark is saved only on this device. You can save it in your Brave sync chain.
+      </message>
+      <!-- TODO(crbug.com/363277495): Update and mark translateable. -->
+      <message name="IDS_BOOKMARKS_MOVE_TO_ACCOUNT_DIALOG_OK_BUTTON_LABEL" translateable="false" desc="OK button label for the dialog that offers the user to move a bookmark from their device to their signed-in account.">
+        Save in account
+      </message>
       <message name="IDS_BOOKMARKS_SORT_BY_TYPE" desc="Menu item label for selecting the bookmarks sort type.">
         Sort by <ph name="SORT_TYPE">$1<ex>Newest</ex></ph>
       </message>
@@ -9051,6 +9016,24 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_READING_MODE_BLUE_COLOR_LABEL" desc="Combobox option for setting the color theme for the reading mode feature.">
         Blue
+      </message>
+      <message name="IDS_READING_MODE_VOICE_HIGHLIGHT" desc="Accessibility label for button that opens a dropdown with options for changing the highlight granularity for following along with speech in Read Aloud.">
+        Voice highlight
+      </message>
+      <message name="IDS_READING_MODE_AUTO_HIGHLIGHT_LABEL" desc="Dropdown option for setting the automatic highlight granularity in Read Aloud.">
+        Auto
+      </message>
+      <message name="IDS_READING_MODE_WORD_HIGHLIGHT_LABEL" desc="Dropdown option for setting the word highlight granularity in Read Aloud.">
+        Word
+      </message>
+      <message name="IDS_READING_MODE_PHRASE_HIGHLIGHT_LABEL" desc="Dropdown option for setting the phrase highlight granularity in Read Aloud.">
+        Phrase
+      </message>
+      <message name="IDS_READING_MODE_SENTENCE_HIGHLIGHT_LABEL" desc="Dropdown option for setting the sentence highlight granularity in Read Aloud.">
+        Sentence
+      </message>
+      <message name="IDS_READING_MODE_OFF_HIGHLIGHT_LABEL" desc="Dropdown option for turning off highlighting in Read Aloud.">
+        Off
       </message>
       <message name="IDS_READ_ANYTHING_LOADING" desc="Message to show while Read Anything is figuring out what text to display.">
         Getting ready
@@ -9357,6 +9340,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TOOLTIP_TAB_SEARCH" desc="The tooltip for the Tab Search bubble.">
         Search tabs
+      </message>
+
+      <!-- Strings for tab declutter -->
+      <message name="IDS_TOOLTIP_TAB_DECLUTTER" desc="The tooltip for the Tab Declutter button.">
+        Close unused tabs?
+      </message>
+      <message name="IDS_TAB_DECLUTTER" desc="The text label of the Tab Declutter button.">
+        Close unused tabs?
+      </message>
+      <message name="IDS_ACCNAME_TAB_DECLUTTER" desc="The accessible name for the Tab Declutter button." is_accessibility_with_no_ui="true">
+        Close unused tabs
       </message>
 
       <!-- Strings for tab organization -->
@@ -10341,6 +10335,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_PASSWORD_LIST_EMPTY_MESSAGE" desc="Message indicating that the list of saved passwords for this site is empty.">
           No saved passwords for <ph name="domain">$1<ex>example.com</ex></ph>
         </message>
+        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_PASSWORD_LIST_TITLE" desc="The title of a list of saved passwords for the currently visible site." translateable="false">
+          Saved passwords for <ph name="domain">$1<ex>example.com</ex></ph>
+        </message>
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_ALL_PASSWORDS_LINK" desc="The text of the link in the password sheet that opens the password management section.">
           Manage passwords
         </message>
@@ -11187,6 +11184,27 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_TAB_ORGANIZATION_THUMBS_UP" desc="Accessibility label for the thumbs up icon that a user can click to provide positive feedback about a tab organization." is_accessibility_with_no_ui="true">
         Thumbs up submits feedback that you like this tab group suggestion
+      </message>
+      <message name="IDS_AUTO_TAB_GROUPS_SELECTOR_HEADING" desc="Heading for the auto tab groups button in the tab organization selector.">
+        Group tabs
+      </message>
+      <message name="IDS_AUTO_TAB_GROUPS_SELECTOR_SUBHEADING" desc="Subheading for the auto tab groups button in the tab organization selector.">
+        Check for suggestions
+      </message>
+      <message name="IDS_DECLUTTER_SELECTOR_HEADING" desc="Heading for the declutter button in the tab organization selector.">
+        {NUM_TABS, plural,
+          =0 {No unused tabs}
+          =1 {Close 1 unused tab}
+          other {Close # unused tabs}}
+      </message>
+      <message name="IDS_DECLUTTER_SELECTOR_SUBHEADING" desc="Subheading for the declutter button in the tab organization selector.">
+        Review and decide
+      </message>
+      <message name="IDS_DECLUTTER_TITLE" desc="The header text for the declutter UI">
+        Close unused tabs
+      </message>
+      <message name="IDS_DECLUTTER_BODY" desc="The body text for the declutter UI">
+        These tabs have been unused for <ph name="COUNT">$1<ex>7</ex></ph> or more days.
       </message>
 
       <!-- Strings for Window Titles in Menus -->
@@ -12278,6 +12296,18 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
 
       <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_EMPTY_STATE_LABEL" desc="The text used to explain to users that there are no cookies set and that this is the place where they will be shown. The label is shown in the `Cookies and site data` dialog.">
         If a site uses cookies, it will appear here
+      </message>
+
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_RELATED_APPS_TITLE" desc="This is a title of a section that displays a list of related installed web applications to the site the user is currently visiting. The label is shown in the `Cookies and site data` dialog.">
+        Related installed applications
+      </message>
+
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_RELATED_APPS_SUBTITLE" desc="This is a subtitle of a section that displays a list of related installed web applications to the site the user is currently visiting. It provides more information about what related installed web applications means. The label is shown in the `Cookies and site data` dialog.">
+        A site can find out if related web applications are installed on your machine. This info is available to the site and its subdomains.
+      </message>
+
+      <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_RELATED_APPS_SETTINGS_LINK_TOOLTIP" desc="This is a tooltip for a link to an app settings page displayed on a related installed web application on the on-site data dialog. The label is shown in the `Cookies and site data` dialog.">
+        Go to app settings
       </message>
 
       <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_ALLOW_MENU_ITEM" desc="The name of a menu item that allows storage access (creates an allow exception) for a site. The menu item is shown in the `Cookies and site data` dialog.">
@@ -13430,6 +13460,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
           <message name="IDS_TRANSLATE_BUBBLE_CHANGE_SOURCE_LANGUAGE" desc="Text for the menu item that lets the user open a dialog to choose another source language for translation, from a list of available languages.">
             Page is not in <ph name="language">$1<ex>French</ex></ph>
           </message>
+          <message name="IDS_TRANSLATE_BUBBLE_OPEN_LANGUAGE_SETTINGS" desc="Text to show for the translate bubble menu item that opens language settings.">
+            Open language settings
+          </message>
           <message name="IDS_PARTIAL_TRANSLATE_BUBBLE_CHANGE_SOURCE_LANGUAGE" desc="Text for the partial translate bubble menu item that lets the user open a dialog to choose another source language for translation, from a list of available languages.">
             Selection is not in <ph name="language">$1<ex>French</ex></ph>
           </message>
@@ -13494,6 +13527,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_CHANGE_SOURCE_LANGUAGE" desc="In Title Case: Text to show for the translate bubble menu item which invokes the source language menu.">
             Page Is Not in <ph name="language">$1<ex>French</ex></ph>
+          </message>
+          <message name="IDS_TRANSLATE_BUBBLE_OPEN_LANGUAGE_SETTINGS" desc="In Title Case: Text to show for the translate bubble menu item that opens language settings.">
+            Open Language Settings
           </message>
           <message name="IDS_PARTIAL_TRANSLATE_BUBBLE_CHANGE_SOURCE_LANGUAGE" desc="In Title Case: Text to show for the partial translate bubble menu item which invokes the source language menu.">
             Selection Is Not in <ph name="language">$1<ex>French</ex></ph>
@@ -16008,23 +16044,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_STORAGE_FULL_DESC" desc="The description on a dialog informing the user that the security key (an external physical device for user authentication) that they selected does not have enough storage capacity to create the requested account.">
         Your security key does not have enough space for any more accounts.
       </message>
-      <message name="IDS_WEBAUTHN_REQUEST_ATTESTATION_PERMISSION_TITLE" desc="Title of a dialog informing the user that the website wants to see information that identifies the user's Security Key, such as make and model number. The 'make' of a device is the brand name of the manufacturer, e.g. Yubikey is a make of Security Key. The 'model' of a device is the specific product, e.g. Yubikey Neo is a model of Security Key.">
-        Allow this site to see your security key?
+      <message name="IDS_WEBAUTHN_ATTESTATION_WARNING" desc="This message is included on a dialog that asks a user to touch their security key. It tells the user that the website has requested 'attestation' information from the security key which will disclose the make and model of the security key to the site if they tap it.">
+        <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> will learn the make and model of your security key
       </message>
-      <message name="IDS_WEBAUTHN_REQUEST_ATTESTATION_PERMISSION_DESC" desc="The description on a dialog informing the user that the website wants to see information that identifies the user's Security Key, such as make and model number. The 'make' of a device is the brand name of the manufacturer, e.g. Yubikey is a make of Security Key. The 'model' of a device is the specific product, e.g. Yubikey Neo is a model of Security Key.">
-        <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> wants to see the make and model of your security key
-      </message>
-      <message name="IDS_WEBAUTHN_REQUEST_ENTERPRISE_ATTESTATION_PERMISSION_TITLE" desc="Title of a dialog informing the user that the website wants to read the serial number of the user's security key. A security key is a physical device used for authentication.">
-        Allow this site to identify your security key?
-      </message>
-      <message name="IDS_WEBAUTHN_REQUEST_ENTERPRISE_ATTESTATION_PERMISSION_DESC" desc="The description on a dialog informing the user that the website wants to wants to read the serial number of the user's security key. A security key is a physical device used for authentication. The word 'issued' here means that the company linked to the website had the security key specially manufactured and, typically, the user is an employee of that company who received the security key as part of their employment.">
-        <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> issued your security key and wants to learn its ID number. The site will know exactly which security key you're using.
-      </message>
-      <message name="IDS_WEBAUTHN_ALLOW_ATTESTATION" desc="Label on button to allow a website to see information that identifies the user's Security Key, such as make and model number. The 'make' of a device is the brand name of the manufacturer, e.g. Yubikey is a make of Security Key. The 'model' of a device is the specific product, e.g. Yubikey Neo is a model of Security Key.">
-        Allow
-      </message>
-      <message name="IDS_WEBAUTHN_DENY_ATTESTATION" desc="Label on button to deny a website's request to see information that identifies the user's Security Key, such as make and model number. The 'make' of a device is the brand name of the manufacturer, e.g. Yubikey is a make of Security Key. The 'model' of a device is the specific product, e.g. Yubikey Neo is a model of Security Key. This was previously the word 'Block', but that is used in contexts where the decision is persistent so we wanted a different word for this because it is a one-time decision: the user will be asked again if the website requests again. Thus the translation would hopefully be distinct from the translation for 'Block' as used, for example, in IDS_COLLECTED_COOKIES_BLOCK_BUTTON.">
-        Skip
+      <message name="IDS_WEBAUTHN_ENTERPRISE_ATTESTATION_WARNING" desc="This message is included on a dialog that asks a user to touch their security key. It tells the user that the website has requested 'attestation' information from the security key which will disclose the make and model of the security key to the site if they tap it. Additionally, Brave will send the name of the site to the security key and the site has requested that, if the security key recognizes and trusts that site, it return its serial number. This will uniquely identity the security key.">
+        <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> wants to learn the ID number of your security key. The site will know exactly which security key you're using.
       </message>
       <message name="IDS_WEBAUTHN_RETRY" desc="Button text. The user clicks this to retry the authentication flow after an error happened, e.g. to try with a different Security Key.">
         Try again
@@ -16897,6 +16921,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_LENS_OVERLAY_COPY_TOAST_MESSAGE" desc="Notification shown in the Lens Overlay when the user has copied selected text to the clipboard.">
       Text copied
     </message>
+    <message name="IDS_LENS_OVERLAY_COPY_AS_IMAGE_TOAST_MESSAGE" desc="Notification shown in the Lens Overlay when the user has copied the selected image to the clipboard.">
+      Image copied
+    </message>
     <message name="IDS_LENS_OVERLAY_MORE_OPTIONS_BUTTON_LABEL" desc="Text that is shown in the tooltip of the more options button in the Lens Overlay.">
       More options
     </message>
@@ -16912,6 +16939,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_LENS_OVERLAY_SELECT_TEXT" desc="Command in the Lens Overlay context menu to select text.">
       Select text
     </message>
+    <message name="IDS_LENS_OVERLAY_COPY_AS_IMAGE" desc="Command in the Lens Overlay context menu to copy the selected screen region to the clipboard as an image.">
+      Copy as image
+    </message>
+    <message name="IDS_LENS_OVERLAY_SAVE_AS_IMAGE" desc="Command in the Lens Overlay context menu to save the selected screen region to disk as an image file.">
+      Save as image
+    </message>
     <message name="IDS_LENS_OVERLAY_LEARN_MORE" desc="Text that is shown in the more options menu to open the help center article.">
       Learn more
     </message>
@@ -16920,6 +16953,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_LENS_OVERLAY_INITIAL_TOAST_MESSAGE" desc="Text that is shown in the Lens Overlay education bubble when starting the feature. Informs the user to tap an object or drag over the screen to select a region to search with Google Lens.">
       Select anything to search with Google Lens
+    </message>
+    <message name="IDS_LENS_OVERLAY_INITIAL_TOAST_MESSAGE_SELECT_TEXT" desc="Text that is shown in the Lens Overlay education bubble when starting the feature. Informs the user to drag over the screen to select text to search with Google Lens.">
+      Select text with Google Lens
     </message>
     <message name="IDS_LENS_OVERLAY_INITIAL_TOAST_ERROR_MESSAGE" desc="Text that is shown in the Lens Overlay education bubble when starting the feature in an offline state. Informs the user that Lens is not currently available.">
       Google Lens is not available. Try again later.
@@ -17059,17 +17095,32 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_ACCOUNT_SELECTION_CHOOSE_AN_ACCOUNT_BUTTON" desc="Title of the button that lets the user look at all account options. Used when we want to highlight a single returning account in the UI.">
       Choose an account
     </message>
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_NAME" desc="A user's name, to be used in a list of items shared with a website">
+      name
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_EMAIL" desc="A user's email address, to be used in a list of items shared with a website">
+      email address
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_PICTURE" desc="A user's profile picture, to be used in a list of items shared with a website">
+      profile picture
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_STRING" desc="A list of a number of items (that will be shared with a website), for example 'name and email address'.">
+      {count, plural,
+        =1 {{field_1}}
+        =2 {{field_1} and {field_2}}
+        other {{field_1}, {field_2}, and {field_3}}}
+    </message>
     <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_PP_OR_TOS" desc="The consent text shown to the user before sign up when there is no privacy policy or terms of service.">
-      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site.
+      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.com</ex></ph> will share your <ph name="FIELDS_STRING">$2<ex>name and email address</ex></ph> with this site.
     </message>
     <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_PP" desc="The consent text shown to the user before sign up when there is no privacy policy.">
-      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site. See this site's <ph name="BEGIN_LINK">$2</ph>terms of service<ph name="END_LINK">$3</ph>.
+      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.com</ex></ph> will share your <ph name="FIELDS_STRING">$2<ex>name and email address</ex></ph> with this site. See this site's <ph name="BEGIN_LINK">$3</ph>terms of service<ph name="END_LINK">$4</ph>.
     </message>
     <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_TOS" desc="The consent text shown to the user before sign up when there is no terms of service.">
-      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site. See this site's <ph name="BEGIN_LINK">$2</ph>privacy policy<ph name="END_LINK">$3</ph>.
+      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.com</ex></ph> will share your <ph name="FIELDS_STRING">$2<ex>name and email address</ex></ph> with this site. See this site's <ph name="BEGIN_LINK">$3</ph>privacy policy<ph name="END_LINK">$4</ph>.
     </message>
     <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT" desc="The consent text shown to the user before sign up.">
-      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site. See this site's <ph name="BEGIN_LINK1">$2</ph>privacy policy<ph name="END_LINK1">$3</ph> and <ph name="BEGIN_LINK2">$4</ph>terms of service<ph name="END_LINK2">$5</ph>.
+      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.com</ex></ph> will share your <ph name="FIELDS_STRING">$2<ex>name and email address</ex></ph> with this site. See this site's <ph name="BEGIN_LINK1">$3</ph>privacy policy<ph name="END_LINK1">$4</ph> and <ph name="BEGIN_LINK2">$5</ph>terms of service<ph name="END_LINK2">$6</ph>.
     </message>
     <message name="IDS_ACCOUNT_SELECTION_USE_OTHER_ACCOUNT" desc="Title of the button that lets the user log in to a different account.">
       Use a different account
@@ -17505,6 +17556,26 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Performance issue alert
       </message>
     </if>
+
+    <!-- Toast Strings-->
+    <if expr="not is_android">
+      <message name="IDS_LINK_COPIED_TOAST_BODY" desc="Text on a toast notification that is shown when a link is successfully copied.">
+        Link copied
+      </message>
+      <message name="IDS_IMAGE_COPIED_TOAST_BODY" desc="Text on a toast notification that is shown when an image is successfully copied.">
+        Image copied
+      </message>
+      <message name="IDS_LINK_COPIED_TO_HIGHLIGHT_TOAST_BODY" desc="Text on a toast notification that is shown when a link to highlight is successfully copied.">
+        Link copied to highlight
+      </message>
+      <message name="IDS_READING_LIST_TOAST_BODY" desc="Text on a toast notification that is shown when an item is added to the reading list.">
+        Page added to reading list
+      </message>
+      <message name="IDS_READING_LIST_TOAST_BUTTON" desc="Button on a toast notification that allows a user to open a reading list entry.">
+        Open
+      </message>
+    </if>
+
     <message name="IDS_ACCNAME_SIDEBAR_WEBVIEW_LOCATION_BAR" desc="The accessible name of the sidebar webview's location bar.">
       Location
     </message>
