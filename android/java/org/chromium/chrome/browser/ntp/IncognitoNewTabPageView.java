@@ -86,18 +86,8 @@ public class IncognitoNewTabPageView extends FrameLayout {
         // any shortcut causes the UrlBar to be focused. See ViewRootImpl.leaveTouchMode().
         mScrollView.setDescendantFocusability(FOCUS_BEFORE_DESCENDANTS);
 
-        View learnMore = findViewById(R.id.learn_more);
-        learnMore.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mManager.loadIncognitoLearnMore();
-            }
-        });
-
         mWidthDp = getContext().getResources().getConfiguration().screenWidthDp;
         mHeightDp = getContext().getResources().getConfiguration().screenHeightDp;
-
-        adjustView();
     }
 
     /**
@@ -193,54 +183,8 @@ public class IncognitoNewTabPageView extends FrameLayout {
         if (mWidthDp != config.screenWidthDp || mHeightDp != config.screenHeightDp) {
             mWidthDp = config.screenWidthDp;
             mHeightDp = config.screenHeightDp;
-            adjustView();
         }
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    private void adjustView() {
-        adjustIcon();
-        adjustLearnMore();
-    }
-
-    /** Adjust the Incognito icon. */
-    private void adjustIcon() {
-        // The icon resource is 120dp x 120dp (i.e. 120px x 120px at MDPI). This method always
-        // resizes the icon view to 120dp x 120dp or smaller, therefore image quality is not lost.
-
-        int sizeDp;
-        if (mWidthDp <= WIDE_LAYOUT_THRESHOLD_DP) {
-            sizeDp = (mWidthDp <= 240 || mHeightDp <= 480) ? 48 : 72;
-        } else {
-            sizeDp = mHeightDp <= 480 ? 72 : 120;
-        }
-
-        ImageView icon = (ImageView) findViewById(R.id.new_tab_incognito_icon);
-        icon.getLayoutParams().width = dpToPx(getContext(), sizeDp);
-        icon.getLayoutParams().height = dpToPx(getContext(), sizeDp);
-    }
-
-    /** Adjust the "Learn More" link. */
-    private void adjustLearnMore() {
-        final String subtitleText = getContext().getResources().getString(
-                R.string.new_tab_otr_subtitle_with_reading_list);
-        boolean learnMoreInSubtitle = mWidthDp > WIDE_LAYOUT_THRESHOLD_DP;
-
-        if (!learnMoreInSubtitle) {
-            return;
-        }
-
-        // Concatenate the original text with a clickable "Learn more" link.
-        StringBuilder concatenatedText = new StringBuilder();
-        concatenatedText.append(subtitleText);
-        concatenatedText.append(" ");
-        concatenatedText.append(getContext().getResources().getString(R.string.learn_more));
-        SpannableString textWithLearnMoreLink = new SpannableString(concatenatedText.toString());
-
-        NoUnderlineClickableSpan span = new NoUnderlineClickableSpan(getContext(),
-                R.color.modern_blue_300, (view) -> getManager().loadIncognitoLearnMore());
-        textWithLearnMoreLink.setSpan(
-                span, subtitleText.length() + 1, textWithLearnMoreLink.length(), 0 /* flags */);
     }
 }
