@@ -12,6 +12,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_sync/brave_sync_p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/sync/engine/sync_protocol_error.h"
@@ -118,6 +119,8 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   brave_sync::Prefs brave_sync_prefs_;
 
   PrefChangeRegistrar brave_sync_prefs_change_registrar_;
+
+  brave_sync::p3a::SyncCodeMonitor sync_code_monitor_;
 
   // This is set to true between |PermanentlyDeleteAccount| succeeded call and
   // new sync chain setup or browser exit. This is used to avoid show the

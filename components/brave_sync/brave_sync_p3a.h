@@ -17,6 +17,7 @@ inline constexpr char kEnabledTypesHistogramName[] = "Brave.Sync.EnabledTypes";
 // Improved version of metric which includes count of synced History objects
 inline constexpr char kSyncedObjectsCountHistogramNameV2[] =
     "Brave.Sync.SyncedObjectsCount.2";
+inline constexpr char kSyncJoinTypeHistogramName[] = "Brave.Sync.JoinType";
 
 enum class EnabledTypesAnswer {
   kEmptyOrBookmarksOnly = 0,
@@ -26,9 +27,32 @@ enum class EnabledTypesAnswer {
   kMaxValue = kAllTypes
 };
 
+enum class SyncJoinType {
+  kChainCreated = 1,
+  kChainJoined = 2,
+  kMaxValue = kChainJoined
+};
+
 void RecordEnabledTypes(bool sync_everything_enabled,
                         const syncer::UserSelectableTypeSet& selected_types);
 void RecordSyncedObjectsCount(int total_entities);
+
+// Monitors sync code generation and setting events in order
+// to report the `Brave.Sync.JoinType` metric.
+class SyncCodeMonitor {
+ public:
+  SyncCodeMonitor() = default;
+  ~SyncCodeMonitor() = default;
+
+  SyncCodeMonitor(const SyncCodeMonitor&) = delete;
+  SyncCodeMonitor& operator=(const SyncCodeMonitor&) = delete;
+
+  void RecordCodeGenerated();
+  void RecordCodeSet();
+
+ private:
+  bool code_generated_ = false;
+};
 
 }  // namespace p3a
 }  // namespace brave_sync
