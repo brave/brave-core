@@ -1438,7 +1438,8 @@ public class BytecodeTest {
                         OmniboxSuggestionsDropdownScrollListener.class,
                         ObservableSupplier.class,
                         LocationBarEmbedderUiOverrides.class,
-                        View.class));
+                        View.class,
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
