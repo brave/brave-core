@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 51f7c978a0b321ce46f32df985a2321468dfb5bd..ae85d2083c75005f0ff701dde9f79445b0829eb6 100644
+index ce94b6fb4aa55af63cb6736bae0f8a22f7d6939c..3dca622f293c9a65cc37a7db1eff0df0d77af079 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -60,6 +60,7 @@ if (build_with_internal_optimization_guide) {
@@ -52,7 +52,7 @@ index 51f7c978a0b321ce46f32df985a2321468dfb5bd..ae85d2083c75005f0ff701dde9f79445
  
    if (is_chrome_branded) {
      package = "google-chrome"
-@@ -555,3 +563,6 @@ linux_package("unstable") {
+@@ -559,3 +567,6 @@ linux_package("unstable") {
  linux_package("canary") {
    channel = "canary"
  }

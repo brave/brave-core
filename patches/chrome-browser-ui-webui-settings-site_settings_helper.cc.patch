@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 6ac41c94ddaa8e94154c07deef1a94ab7980f247..7eb0d7b2451cab74281c667f55bcfd2fc5a47e70 100644
+index d34354c29d963cded0b9ac480847b00a31391df7..91896187382590c4ae3a69acdf98ffa5d57bd4e3 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -245,6 +245,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
+@@ -244,6 +244,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      {ContentSettingsType::TOP_LEVEL_TPCD_ORIGIN_TRIAL, nullptr},
      {ContentSettingsType::DISPLAY_MEDIA_SYSTEM_AUDIO, nullptr},
      {ContentSettingsType::STORAGE_ACCESS_HEADER_ORIGIN_TRIAL, nullptr},
@@ -10,7 +10,7 @@ index 6ac41c94ddaa8e94154c07deef1a94ab7980f247..7eb0d7b2451cab74281c667f55bcfd2f
  };
  
  static_assert(
-@@ -487,6 +488,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -486,6 +487,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
@@ -18,7 +18,7 @@ index 6ac41c94ddaa8e94154c07deef1a94ab7980f247..7eb0d7b2451cab74281c667f55bcfd2f
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      // Content setting types that aren't represented in the settings UI
      // will have `nullptr` as their `name`. However, converting `nullptr`
-@@ -501,6 +503,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
+@@ -500,6 +502,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
  }
  
  std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
@@ -26,7 +26,7 @@ index 6ac41c94ddaa8e94154c07deef1a94ab7980f247..7eb0d7b2451cab74281c667f55bcfd2f
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      if (type == entry.type) {
        // Content setting types that aren't represented in the settings UI
-@@ -676,6 +679,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+@@ -679,6 +682,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
  SiteSettingSource ProviderTypeToSiteSettingsSource(
      const ProviderType provider_type) {
    switch (provider_type) {
@@ -34,7 +34,7 @@ index 6ac41c94ddaa8e94154c07deef1a94ab7980f247..7eb0d7b2451cab74281c667f55bcfd2f
      case ProviderType::kWebuiAllowlistProvider:
        return SiteSettingSource::kAllowlist;
      case ProviderType::kPolicyProvider:
-@@ -702,6 +706,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
+@@ -705,6 +709,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
  
  std::string ProviderToDefaultSettingSourceString(const ProviderType provider) {
    switch (provider) {

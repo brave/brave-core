@@ -1,8 +1,8 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-index e57cc7addfbae88f9f7ebe5a61244c40408faaca..9357bb2492b3c005736c5a0de8c52819b9d65260 100644
+index 24eb2d64419b1bd96583446864f79cfba596fb1a..baa6f0dab30fee983e7972817f262dba0731a00b 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-@@ -71,7 +71,7 @@ public class SiteSettingsCategory {
+@@ -73,7 +73,7 @@ public class SiteSettingsCategory {
          Type.ZOOM,
          Type.STORAGE_ACCESS,
          Type.TRACKING_PROTECTION,
@@ -11,7 +11,7 @@ index e57cc7addfbae88f9f7ebe5a61244c40408faaca..9357bb2492b3c005736c5a0de8c52819
      })
      @Retention(RetentionPolicy.SOURCE)
      public @interface Type {
-@@ -109,9 +109,10 @@ public class SiteSettingsCategory {
+@@ -111,9 +111,10 @@ public class SiteSettingsCategory {
          int STORAGE_ACCESS = 29;
          int TRACKING_PROTECTION = 30;
          int HAND_TRACKING = 31;
