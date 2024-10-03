@@ -5,6 +5,10 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# These tests won't work without TPM hardware
+-TPMMetricsProviderTest.GetMetricsFullName
+-TpmIdentifierTest.TpmTest
+
 # This test fails because of the following CHECK in identity_test_utils.cc:
 # identity_manager->AreRefreshTokensLoaded()
 -AutofillBubbleSignInPromoControllerTest.RunsCallbackUponSignInWithExistingAccount
@@ -24,6 +28,12 @@
 # 8. The tests fail because they expect the file to be present.
 -MV2/ExtensionProtocolsTest.MetadataFolder/0
 -MV3/ExtensionProtocolsTest.MetadataFolder/0
+
+# These tests fail because sync_helper::IsSyncable(extension) resturns false
+# due to UPDATER_DEV_ENDPOINT being empty and not matching expected store URL.
+-ExtensionSyncServiceCustomGalleryTest.ProcessSyncDataDeferredEnable
+-ExtensionSyncServiceCustomGalleryTest.ProcessSyncDataPermissionApproval
+-ExtensionSyncServiceTest.AccountExtensionTypeChangesWithSync
 
 # This test fails because BRAVE_FINGERPRINTING_V2 and BRAVE_HTTPS_UPGRADE don't
 # have readable names and aren't in the test's list of types that are expected
@@ -134,6 +144,19 @@
 -RelatedWebsiteSetsSourceTest.RWS
 -RelatedWebsiteSetsSourceTest.RWS_Empty
 -RelatedWebsiteSetsSourceTest.SubsetsAreSorted
+
+# These tests fail because we override PrivacySandboxSettings, specifically
+# BravePrivacySandboxSettings::AreRelatedWebsiteSetsEnabled() returns false.
+-All/FirstPartySetsPolicyServicePrefTest.FindEntry_*
+-All/FirstPartySetsPolicyServicePrefTest.ForEachEffectiveSetEntry_*
+-FirstPartySetsPolicyServiceFactoryTest.OffTheRecordProfile_DistinctAndDisabled
+-FirstPartySetsPolicyServiceResumeThrottleTest.RegisterThrottleResumeCallback
+-FirstPartySetsPolicyServiceTest.*
+
+# These tests fail because we change the default for TOP_LEVEL_STORAGE_ACCESS
+# to CONTENT_SETTING_BLOCK.
+-TopLevelStorageAccessPermissionContextAPIWithFirstPartySetsTest.ImplicitGrant_AutograntedWithinFPS
+-TopLevelStorageAccessPermissionContextAPIWithFirstPartySetsTest.ImplicitGrant_CrossSiteFrameQueryStillAsk
 
 # These tests crash due to TestingBraveBrowserProcess::extension_whitelist_service()
 # having NOTREACHED which causes an immediate crash
@@ -329,6 +352,13 @@
 
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
+-AccountExtensionTrackerUnitTest.AccountExtensionTypeResetWhenSignedOut
+-AccountExtensionTrackerUnitTest.AccountExtensionTypeSignedIn
+-AccountExtensionTrackerUnitTest.AccountExtensionTypeTransportMode
+-ChromeAutofillPredictionImprovementsClientTest.EligibilityOfNotSignedInUser
+-ChromeAutofillPredictionImprovementsClientTest.EligibilityOfSignedInUser
+-ChromeAutofillPredictionImprovementsClientTest.EligibilityOfSignedInUserWithMlDisabled
+-ChromeAutofillPredictionImprovementsClientTest.EligibilityOfSignedInUserWithMlEnabled
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailable
 -EnclaveManagerTest.PrimaryUserChange
 -ManagePasswordsUIControllerWithBrowserTestExplicitBrowserSignin.MovePasswordUponSigninWithExistingAccount
@@ -419,10 +449,12 @@
 -ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerNotTriggerClassificationRequestAlreadyPhishing
 -ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerNotTriggerClassificationRequestNoEnforcedPing
 -ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerTriggersClassificationRequest
+-ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerTriggersClassificationRequestOnAllowlistMatch
 -DownloadBubblePrefsTest.EnhancedProtectionEnabled
 -DownloadBubbleRowViewInfoTest.ShouldShowNoticeForEnhancedProtectionScan
 -DownloadWarningDesktopHatsUtilsTest.ProductSpecificData_EnhancedSafeBrowsing
 -EnhancedProtectionDownloadTest.*
+-ExternalAppRedirectCheckingTest.ShouldReportExternalAppRedirect
 -ImmediateDeepScanTest.ESBRequestScan
 -ImmediateDeepScanTest.EncryptedArchive
 -NotificationMetricsLoggerTest.PersistentNotificationSize
@@ -467,6 +499,10 @@
 -EncryptedReportingUploadProviderTest.SuccessfullyUploadsRecord
 -MemorySaverChipViewWithPerformanceSidePanelTest.OpensSidePanel
 -ReadAnythingCoordinatorScreen2xDataCollectionModeTest.OnBrowserSetLastActive_SidePanelIsVisible
+
+# https://issues.chromium.org/issues/41484323
+-TabSearchPageHandlerDeclutterTest.TabDeclutterFindStaleTabs
+-TabSearchPageHandlerDeclutterTest.TabDeclutterObserverTest
 
 # This test fails because we insert our own bookmarks submenu into the app menu
 # model
@@ -1010,6 +1046,7 @@
 -ThemeProviderRedirectedEquivalenceTest.*
 -ThemeServiceTest.*
 -ThemeSyncableServiceTest.*
+-ThemeSyncableServiceTestWithAccountThemesSeparation.LoadsLocalGrayscaleThemeFromPrefUponSyncStop
 -ThemeSyncableServiceWithMigrationFlag*.*
 -ToolbarActionsModelUnitTest.*
 -TranslateManagerRenderViewHostTest.*
