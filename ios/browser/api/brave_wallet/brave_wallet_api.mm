@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api.h"
 
+#include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
@@ -41,7 +42,7 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
 @end
 
 @implementation BraveWalletAPI {
-  ChromeBrowserState* _mainBrowserState;  // NOT OWNED
+  raw_ptr<ChromeBrowserState> _mainBrowserState;  // NOT OWNED
   NSMutableDictionary<NSNumber* /* BraveWalletCoinType */,
                       NSDictionary<BraveWalletProviderScriptKey, NSString*>*>*
       _providerScripts;
@@ -65,7 +66,7 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
     ethereumProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
                isPrivateBrowsing:(bool)isPrivateBrowsing {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  auto* browserState = _mainBrowserState;
+  auto* browserState = _mainBrowserState.get();
   if (isPrivateBrowsing) {
     browserState = browserState->GetOffTheRecordChromeBrowserState();
   }
@@ -90,7 +91,7 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
     solanaProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
              isPrivateBrowsing:(bool)isPrivateBrowsing {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  auto* browserState = _mainBrowserState;
+  auto* browserState = _mainBrowserState.get();
   if (isPrivateBrowsing) {
     browserState = browserState->GetOffTheRecordChromeBrowserState();
   }

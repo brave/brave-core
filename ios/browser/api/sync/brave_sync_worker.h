@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_multi_source_observation.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_sync/time_limited_words.h"
@@ -118,7 +119,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
 
   std::string passphrase_;
 
-  ChromeBrowserState* browser_state_;  // NOT OWNED
+  raw_ptr<ChromeBrowserState> browser_state_;  // NOT OWNED
   base::ScopedMultiSourceObservation<syncer::SyncService,
                                      syncer::SyncServiceObserver>
       sync_service_observer_{this};

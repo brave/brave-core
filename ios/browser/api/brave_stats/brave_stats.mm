@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/api/brave_stats/brave_stats.h"
 
+#include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
@@ -24,8 +25,8 @@ NSString* const kWebcompatReportEndpoint =
     @BUILDFLAG(WEBCOMPAT_REPORT_ENDPOINT);
 
 @implementation BraveStats {
-  PrefService* _localPrefs;
-  PrefService* _profilePrefs;
+  raw_ptr<PrefService> _localPrefs;
+  raw_ptr<PrefService> _profilePrefs;
 }
 
 - (instancetype)initWithBrowserState:(ChromeBrowserState*)browserState {

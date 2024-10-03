@@ -6,11 +6,11 @@
 #include "brave/ios/browser/api/opentabs/opentabs_session_listener_ios.h"
 
 #include "base/check.h"
-#include "components/sync/service/sync_service.h"
-#include "components/sync/service/sync_service_observer.h"
-
+#include "base/memory/raw_ptr.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_observer.h"
+#include "components/sync/service/sync_service.h"
+#include "components/sync/service/sync_service_observer.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -57,7 +57,7 @@ void OpenTabsSessionListenerIOS::OnSyncShutdown(syncer::SyncService* sync) {
 
 @interface OpenTabsSessionListenerImpl () {
   std::unique_ptr<brave::ios::OpenTabsSessionListenerIOS> observer_;
-  syncer::SyncService* sync_service_;
+  raw_ptr<syncer::SyncService> sync_service_;
 }
 @end
 

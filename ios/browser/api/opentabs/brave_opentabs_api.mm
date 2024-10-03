@@ -4,11 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api.h"
-#include "brave/ios/browser/api/opentabs/brave_opentabs_observer.h"
-#include "brave/ios/browser/api/opentabs/opentabs_session_listener_ios.h"
 
+#include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/ios/browser/api/opentabs/brave_opentabs_observer.h"
+#include "brave/ios/browser/api/opentabs/opentabs_session_listener_ios.h"
 #include "components/sync/service/sync_service.h"
 #include "components/sync_device_info/device_info.h"
 #include "components/sync_sessions/open_tabs_ui_delegate.h"
@@ -150,11 +151,11 @@ SyncDeviceFormFactor const SyncDeviceFormFactorTablet =
 
 @interface BraveOpenTabsAPI () {
   // SyncService is needed in order to observe sync changes
-  syncer::SyncService* sync_service_;
+  raw_ptr<syncer::SyncService> sync_service_;
 
   // Session Sync Service is needed in order to receive session details from
   // different instances
-  sync_sessions::SessionSyncService* session_sync_service_;
+  raw_ptr<sync_sessions::SessionSyncService> session_sync_service_;
 }
 @end
 

@@ -104,9 +104,9 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   std::unique_ptr<web::WebMain> _webMain;
   std::unique_ptr<Browser> _browser;
   std::unique_ptr<Browser> _otr_browser;
-  BrowserList* _browserList;
-  BrowserList* _otr_browserList;
-  ChromeBrowserState* _mainBrowserState;
+  raw_ptr<BrowserList> _browserList;
+  raw_ptr<BrowserList> _otr_browserList;
+  raw_ptr<ChromeBrowserState> _mainBrowserState;
   scoped_refptr<p3a::P3AService> _p3a_service;
   scoped_refptr<p3a::HistogramsBraveizer> _histogram_braveizer;
 }

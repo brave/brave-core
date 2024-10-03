@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "base/functional/bind.h"
+#include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/history/brave_history_observer.h"
 #include "brave/ios/browser/api/history/history_driver_ios.h"
@@ -151,9 +152,9 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 
 @interface BraveHistoryAPI () {
   // History Service for adding and querying
-  history::HistoryService* history_service_;
+  raw_ptr<history::HistoryService> history_service_;
   // WebhistoryService for delete operations
-  history::WebHistoryService* web_history_service_;
+  raw_ptr<history::WebHistoryService> web_history_service_;
   // Tracker for history requests.
   base::CancelableTaskTracker tracker_;
 
@@ -167,7 +168,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 @end
 
 @implementation BraveHistoryAPI {
-  ChromeBrowserState* _mainBrowserState;  // NOT OWNED
+  raw_ptr<ChromeBrowserState> _mainBrowserState;  // NOT OWNED
 }
 
 - (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState {

@@ -101,10 +101,10 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
 @end
 
 @interface BraveAds () <AdsClientBridge> {
-  AdsClientIOS* adsClient;
-  brave_ads::AdsClientNotifier* adsClientNotifier;
-  brave_ads::Ads* ads;
-  brave_ads::AdEventCache* adEventCache;
+  raw_ptr<AdsClientIOS> adsClient;
+  raw_ptr<brave_ads::AdsClientNotifier> adsClientNotifier;
+  raw_ptr<brave_ads::Ads> ads;
+  raw_ptr<brave_ads::AdEventCache> adEventCache;
   scoped_refptr<base::SequencedTaskRunner> databaseQueue;
   base::SequenceBound<brave_ads::Database> adsDatabase;
   nw_path_monitor_t networkMonitor;

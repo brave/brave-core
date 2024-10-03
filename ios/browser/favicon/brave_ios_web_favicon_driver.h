@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#import "base/memory/raw_ptr.h"
 #import "brave/ios/browser/api/web_image/image_downloader.h"
 #include "components/favicon/core/favicon_driver_impl.h"
 #include "ios/web/public/favicon/favicon_url.h"
@@ -92,7 +93,7 @@ class BraveIOSWebFaviconDriver
 
   // The WebState this instance is observing. Will be null after
   // WebStateDestroyed has been called.
-  web::WebState* web_state_ = nullptr;
+  raw_ptr<web::WebState> web_state_ = nullptr;
 
   WEB_STATE_USER_DATA_KEY_DECL();
 };

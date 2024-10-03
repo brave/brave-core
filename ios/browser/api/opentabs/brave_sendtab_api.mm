@@ -4,10 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api.h"
+
+#include "base/memory/raw_ptr.h"
+#include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_observer.h"
 #include "brave/ios/browser/api/opentabs/sendtab_model_listener_ios.h"
-
-#include "base/strings/sys_string_conversions.h"
 #include "components/send_tab_to_self/send_tab_to_self_model.h"
 #include "components/send_tab_to_self/send_tab_to_self_sync_service.h"
 #include "components/send_tab_to_self/target_device_info.h"
@@ -76,10 +77,10 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
 @interface BraveSendTabAPI () {
   // SendTab Sync Service is needed in order to send session data to
   // different devices - receive device information
-  send_tab_to_self::SendTabToSelfSyncService* sendtab_sync_service_;
+  raw_ptr<send_tab_to_self::SendTabToSelfSyncService> sendtab_sync_service_;
 
   // Model to send current tab to other devices
-  send_tab_to_self::SendTabToSelfModel* send_tab_to_self_model_;
+  raw_ptr<send_tab_to_self::SendTabToSelfModel> send_tab_to_self_model_;
 }
 @end
 

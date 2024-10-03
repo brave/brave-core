@@ -23,6 +23,7 @@
 #include "base/functional/callback.h"
 #include "base/location.h"
 #include "base/logging.h"
+#include "base/memory/raw_ptr.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -136,7 +137,7 @@ class BookmarkFaviconFetcher : public base::SupportsUserData::Data {
       const favicon_base::FaviconRawBitmapResult& bitmap_result);
 
   // The Profile object used for accessing FaviconService, bookmarks model.
-  ChromeBrowserState* browser_state_;
+  raw_ptr<ChromeBrowserState> browser_state_;
 
   // All URLs that are extracted from bookmarks. Used to fetch favicons
   // for each of them. After favicon is fetched top url is removed from list.
@@ -151,7 +152,7 @@ class BookmarkFaviconFetcher : public base::SupportsUserData::Data {
   // Path where html output is stored.
   base::FilePath path_;
 
-  BookmarksExportObserver* observer_;
+  raw_ptr<BookmarksExportObserver> observer_;
 };
 
 // Class responsible for the actual writing. Takes ownership of favicons_map.
@@ -426,7 +427,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
   std::unique_ptr<BookmarkFaviconFetcher::URLFaviconMap> favicons_map_;
 
   // Observer to be notified on finish.
-  BookmarksExportObserver* observer_;
+  raw_ptr<BookmarksExportObserver> observer_;
 
   // File we're writing to.
   std::unique_ptr<base::File> file_;
@@ -450,7 +451,7 @@ class BookmarkWriter {
 
   base::Value::Dict bookmarks_;
   base::FilePath path_;
-  BookmarksExportObserver* observer_;
+  raw_ptr<BookmarksExportObserver> observer_;
   std::unique_ptr<BookmarkFaviconFetcher::URLFaviconMap> favicons_map_;
 };
 
