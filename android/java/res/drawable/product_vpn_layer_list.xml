@@ -8,6 +8,6 @@
         android:drawable="@drawable/ic_midnight_purple_circle"
         android:gravity="center"/>
     <item
-        android:drawable="@drawable/ic_product_private_window"
+        android:drawable="@drawable/ic_product_vpn"
         android:gravity="center"/>
 </layer-list>
