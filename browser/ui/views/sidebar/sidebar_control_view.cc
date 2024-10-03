@@ -11,6 +11,7 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_add_button.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -89,7 +90,7 @@ void SidebarControlView::UpdateBackgroundAndBorder() {
     SetBackground(
         views::CreateSolidBackground(color_provider->GetColor(kColorToolbar)));
     int border_thickness =
-        1 - BraveBrowser::GetRoundedCornersWebViewMargin(browser_);
+        1 - BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_);
     SetBorder(views::CreateEmptyBorder(
         gfx::Insets::TLBR(0, sidebar_on_left_ ? 0 : border_thickness, 0,
                           sidebar_on_left_ ? border_thickness : 0)));

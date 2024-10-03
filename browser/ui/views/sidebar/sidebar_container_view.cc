@@ -528,7 +528,10 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
 
   // Calculate the start & end width for animation. Both are used when
   // calculating preferred width during the show animation.
-  animation_start_width_ = width();
+  // Note: as margins of |side_panel_| are part of |width()| we need to remove
+  // them when calculating the ideal start width of the contents.
+  animation_start_width_ =
+      width() - side_panel_->GetProperty(views::kMarginsKey)->width();
   animation_end_width_ = sidebar_control_view_->GetPreferredSize().width();
   if (show_side_panel) {
     animation_end_width_ += side_panel_->GetPreferredSize().width();

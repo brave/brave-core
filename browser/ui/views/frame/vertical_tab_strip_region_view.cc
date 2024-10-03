@@ -16,6 +16,7 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
@@ -1225,9 +1226,10 @@ void VerticalTabStripRegionView::UpdateBorder() {
       !vertical_tab_on_right_.GetPrefName().empty() && *vertical_tab_on_right_;
   bool sidebar_on_same_side = sidebar_side_.GetValue() == is_on_right;
   int inset =
-      1 - (sidebar_on_same_side
-               ? 0
-               : BraveBrowser::GetRoundedCornersWebViewMargin(browser_));
+      1 -
+      (sidebar_on_same_side
+           ? 0
+           : BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_));
   gfx::Insets border_insets = (is_on_right) ? gfx::Insets::TLBR(0, inset, 0, 0)
                                             : gfx::Insets::TLBR(0, 0, 0, inset);
 

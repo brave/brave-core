@@ -24,10 +24,8 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
-#include "ui/gfx/geometry/insets.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
-#include "ui/views/view_class_properties.h"
 
 BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
                                HorizontalAlignment horizontal_alignment)
@@ -74,7 +72,9 @@ bool BraveSidePanel::IsRightAligned() {
 void BraveSidePanel::UpdateBorder() {
   if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
           browser_view_->browser())) {
-    SetBorder(views::NullBorder());
+    // Use a negative top border to hide the separator inserted by the upstream
+    // side panel implementation.
+    SetBorder(views::CreateEmptyBorder(gfx::Insets::TLBR(-1, 0, 0, 0)));
     return;
   }
 

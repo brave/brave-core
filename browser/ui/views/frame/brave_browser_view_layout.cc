@@ -269,7 +269,8 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
   // In rounded corners mode, we need to include a little margin so we have
   // somewhere to draw the shadow.
   int contents_margin_for_rounded_corners =
-      BraveBrowser::GetRoundedCornersWebViewMargin(browser_view_->browser());
+      BraveContentsViewUtil::GetRoundedCornersWebViewMargin(
+          browser_view_->browser());
 
   // Don't need contents container's left or right margin with vertical tab as
   // vertical tab itself has sufficient padding.

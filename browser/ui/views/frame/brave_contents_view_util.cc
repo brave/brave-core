@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 
+#include "brave/browser/ui/brave_browser.h"
+#include "chrome/browser/ui/browser.h"
 #include "ui/compositor/layer.h"
 #include "ui/views/view.h"
 
@@ -24,4 +26,10 @@ std::unique_ptr<ViewShadow> BraveContentsViewUtil::CreateShadow(
   view->layer()->SetRoundedCornerRadius(gfx::RoundedCornersF(kBorderRadius));
   view->layer()->SetIsFastRoundedCorner(true);
   return shadow;
+}
+
+int BraveContentsViewUtil::GetRoundedCornersWebViewMargin(Browser* browser) {
+  return BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser)
+             ? BraveContentsViewUtil::kMarginThickness
+             : 0;
 }
