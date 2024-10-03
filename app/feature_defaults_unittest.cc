@@ -13,7 +13,6 @@
 #include "chrome/browser/preloading/preloading_features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
-#include "chrome/common/companion/visual_query/features.h"
 #include "chrome/common/privacy_budget/privacy_budget_features.h"
 #include "components/aggregation_service/features.h"
 #include "components/attribution_reporting/features.h"
@@ -122,7 +121,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &commerce::kShoppingList,
       &commerce::kShoppingPDPMetrics,
       &commerce::kRetailCoupons,
-      &companion::visual_query::features::kVisualQuerySuggestions,
       &compose::features::kEnableCompose,
       &content_settings::features::kTrackingProtection3pcd,
       &content_settings::features::kUserBypassUI,
