@@ -84,6 +84,15 @@
   width: 100%;
 }
 
+// For users submitting content that requires preserving
+// tabs, spaces, and newlines (e.g., poetry, code snippets)
+// we will use the pre-wrap white-space property. This is
+// exclusively applied to the user's messages, and not the
+// responses from the AI itself.
+.turn:not(.turnAI) .message {
+  white-space: pre-wrap;
+}
+
 .feedbackFormPortal {
   padding: 0 16px;
 }

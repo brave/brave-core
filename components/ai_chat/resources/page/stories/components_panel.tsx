@@ -201,6 +201,28 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    text: 'Can you spot the issue with my code?\n\nfunction calculateAverage(numbers: number[]): number {\n  const sum = numbers.reduce((acc, num) => acc + num);\n  return sum / numbers.length;\n}',
+    characterType: mojom.CharacterType.HUMAN,
+    actionType: mojom.ActionType.QUERY,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [],
+    fromBraveSearchSERP: false
+  },
+  {
+    text: '',
+    characterType: mojom.CharacterType.ASSISTANT,
+    actionType: mojom.ActionType.UNSPECIFIED,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [getCompletionEvent("The code you've provided is generally correct, but there's a potential issue that could be considered a bug in certain scenarios. You should provide an initial value to the reduce function. This ensures that the function will return 0 for an empty array instead of throwing an error.")],
+    fromBraveSearchSERP: false
+  },
+  {
     text: 'Will an LTT store backpack fit in a Tesla Model Y frunk?',
     characterType: mojom.CharacterType.HUMAN,
     actionType: mojom.ActionType.SHORTEN,
