@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_OPERATIONAL_PATTERNS_UTIL_H_
 
 #include <string>
+#include <string_view>
 
 #include "base/time/time.h"
 
@@ -17,11 +18,11 @@ std::string CreateCollectionId();
 
 std::u16string FriendlyTime(const base::Time time);
 
-std::string BuildCollectionPingPayload(const std::string collection_id,
+std::string BuildCollectionPingPayload(std::string_view collection_id,
                                        int slot);
-std::string BuildDeletePingPayload(const std::string collection_id);
+std::string BuildDeletePingPayload(std::string_view collection_id);
 
-bool ShouldResetCollectionId(const std::string collection_id,
+bool ShouldResetCollectionId(std::string_view collection_id,
                              const base::Time expiration_time);
 
 }  // namespace brave_federated

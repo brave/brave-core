@@ -227,14 +227,14 @@ std::string BraveSyncWorker::GetQrCodeJsonFromHexSeed(
 }
 
 brave_sync::QrCodeDataValidationResult
-BraveSyncWorker::GetQrCodeValidationResult(const std::string json) {
+BraveSyncWorker::GetQrCodeValidationResult(const std::string& json) {
   DCHECK(!json.empty());
   return brave_sync::QrCodeDataValidator::ValidateQrDataJson(json);
 }
 
 brave_sync::TimeLimitedWords::ValidationStatus
 BraveSyncWorker::GetWordsValidationResult(
-    const std::string time_limited_words) {
+    const std::string& time_limited_words) {
   DCHECK(!time_limited_words.empty());
   auto words_with_status =
       brave_sync::TimeLimitedWords::Parse(time_limited_words);

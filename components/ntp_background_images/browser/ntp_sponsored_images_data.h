@@ -31,7 +31,7 @@ struct TopSite {
   TopSite();
   // For unit test.
   TopSite(const std::string& name,
-          const std::string destination_url,
+          const std::string& destination_url,
           const std::string& image_path,
           const base::FilePath& image_file);
   TopSite(const TopSite& data);

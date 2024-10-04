@@ -15,6 +15,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
@@ -171,13 +172,6 @@ constexpr char sidebar_builtin_ai_chat_not_listed_json[] = R"({
          } ],
          "sidebar_show_option": 0
       })";
-
-base::Value::Dict ParseTestJson(const std::string_view json) {
-  std::optional<base::Value> potential_response_dict_val =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  return std::move(potential_response_dict_val.value().GetDict());
-}
 }  // namespace
 
 namespace sidebar {
@@ -1041,7 +1035,8 @@ TEST_F(SidebarServiceOrderingTest, BuiltInItemsDefaultOrder) {
 }
 
 TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
-  base::Value::Dict sidebar(ParseTestJson(sidebar_all_builtin_visible_json));
+  base::Value::Dict sidebar =
+      base::test::ParseJsonDict(sidebar_all_builtin_visible_json);
 
   const auto* sidebar_items = sidebar.FindList("sidebar_items");
   CHECK(sidebar_items);
@@ -1068,7 +1063,8 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
 }
 
 TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
-  base::Value::Dict sidebar(ParseTestJson(sidebar_builtin_wallet_hidden_json));
+  base::Value::Dict sidebar =
+      base::test::ParseJsonDict(sidebar_builtin_wallet_hidden_json);
 
   const auto* sidebar_items = sidebar.FindList("sidebar_items");
   CHECK(sidebar_items);
@@ -1098,8 +1094,8 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
 }
 
 TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAiChatBuiltInNotListed) {
-  base::Value::Dict sidebar(
-      ParseTestJson(sidebar_builtin_ai_chat_not_listed_json));
+  base::Value::Dict sidebar =
+      base::test::ParseJsonDict(sidebar_builtin_ai_chat_not_listed_json);
 
   const auto* sidebar_items = sidebar.FindList("sidebar_items");
   CHECK(sidebar_items);

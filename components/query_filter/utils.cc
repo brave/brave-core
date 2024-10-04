@@ -161,8 +161,8 @@ static constexpr auto kExemptedHostnames =
         });
 
 bool IsScopedTracker(
-    const std::string_view param_name,
-    const std::string& spec,
+    std::string_view param_name,
+    std::string_view spec,
     const std::map<std::string_view, std::vector<std::string_view>>& trackers) {
   if (!base::Contains(trackers, param_name)) {
     return false;
@@ -184,8 +184,8 @@ bool IsScopedTracker(
 
 // Remove tracking query parameters from a GURL, leaving all
 // other parts untouched.
-std::optional<std::string> StripQueryParameter(const std::string_view query,
-                                               const std::string& spec) {
+std::optional<std::string> StripQueryParameter(std::string_view query,
+                                               std::string_view spec) {
   // We are using custom query string parsing code here. See
   // https://github.com/brave/brave-core/pull/13726#discussion_r897712350
   // for more information on why this approach was selected.
@@ -286,8 +286,8 @@ std::optional<GURL> MaybeApplyQueryStringFilter(
 }
 
 bool IsScopedTrackerForTesting(
-    const std::string_view param_name,
-    const std::string& spec,
+    std::string_view param_name,
+    std::string_view spec,
     const std::map<std::string_view, std::vector<std::string_view>>& trackers) {
   return IsScopedTracker(param_name, spec, trackers);
 }

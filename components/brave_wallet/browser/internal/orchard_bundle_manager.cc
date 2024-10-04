@@ -5,6 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
 
+#include <memory>
+#include <utility>
+#include <vector>
+
 #include "base/memory/ptr_util.h"
 
 namespace brave_wallet {
@@ -18,7 +22,7 @@ std::optional<size_t> OrchardBundleManager::random_seed_for_testing_ =
 // static
 std::unique_ptr<OrchardBundleManager> OrchardBundleManager::Create(
     base::span<const uint8_t> tree_state,
-    const std::vector<::brave_wallet::OrchardOutput> orchard_outputs) {
+    const std::vector<::brave_wallet::OrchardOutput>& orchard_outputs) {
   if (orchard_outputs.empty()) {
     return nullptr;
   }

@@ -1169,7 +1169,7 @@ base::FilePath PlaylistService::GetMediaPathForPlaylistItemItem(
 }
 
 void PlaylistService::OnGetOrphanedPaths(
-    const std::vector<base::FilePath> orphaned_paths) {
+    const std::vector<base::FilePath>& orphaned_paths) {
   if (orphaned_paths.empty()) {
     VLOG(2) << __func__ << ": No orphaned playlist";
     return;

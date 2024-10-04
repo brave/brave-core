@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_federated/operational_patterns_util.h"
 
+#include <string_view>
+
 #include "base/json/json_writer.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
@@ -39,7 +41,7 @@ std::string CreateCollectionId() {
   return base::ToUpperASCII(base::UnguessableToken::Create().ToString());
 }
 
-std::string BuildCollectionPingPayload(const std::string collection_id,
+std::string BuildCollectionPingPayload(std::string_view collection_id,
                                        int slot) {
   base::Value::Dict root;
   root.Set("collection_id", collection_id);
@@ -53,7 +55,7 @@ std::string BuildCollectionPingPayload(const std::string collection_id,
   return result;
 }
 
-std::string BuildDeletePingPayload(const std::string collection_id) {
+std::string BuildDeletePingPayload(std::string_view collection_id) {
   base::Value::Dict root;
   root.Set("collection_id", collection_id);
   root.Set("wiki-link", kWikiUrl);
@@ -64,7 +66,7 @@ std::string BuildDeletePingPayload(const std::string collection_id) {
   return result;
 }
 
-bool ShouldResetCollectionId(const std::string collection_id,
+bool ShouldResetCollectionId(std::string_view collection_id,
                              const base::Time expiration_time) {
   if (collection_id.empty() || expiration_time.is_null()) {
     return true;

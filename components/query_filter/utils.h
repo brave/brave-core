@@ -35,8 +35,8 @@ std::optional<GURL> MaybeApplyQueryStringFilter(
     const bool internal_redirect);
 
 bool IsScopedTrackerForTesting(
-    const std::string_view param_name,
-    const std::string& spec,
+    std::string_view param_name,
+    std::string_view spec,
     const std::map<std::string_view, std::vector<std::string_view>>& trackers);
 }  // namespace query_filter
 #endif  // BRAVE_COMPONENTS_QUERY_FILTER_UTILS_H_

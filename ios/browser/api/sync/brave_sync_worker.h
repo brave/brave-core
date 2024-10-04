@@ -86,9 +86,9 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   std::string GetHexSeedFromSyncCode(const std::string& code_words);
   std::string GetQrCodeJsonFromHexSeed(const std::string& hex_seed);
   brave_sync::QrCodeDataValidationResult GetQrCodeValidationResult(
-      const std::string json);
+      const std::string& json);
   brave_sync::TimeLimitedWords::ValidationStatus GetWordsValidationResult(
-      const std::string time_limited_words);
+      const std::string& time_limited_words);
   std::string GetWordsFromTimeLimitedWords(
       const std::string& time_limited_words);
   std::string GetTimeLimitedWordsFromWords(const std::string& words);

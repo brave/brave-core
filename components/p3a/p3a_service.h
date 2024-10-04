@@ -113,7 +113,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   friend class base::RefCountedThreadSafe<P3AService>;
   ~P3AService() override;
 
-  void InitCallback(const std::string_view histogram_name);
+  void InitCallback(std::string_view histogram_name);
 
   void LoadDynamicMetrics();
 

@@ -284,7 +284,7 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
   void VerifyConsoleOutputNoErrors(
       const content::ConsoleObserver& console_observer,
       const blink::mojom::ConsoleMessageLevel max_accepted_log_level,
-      const std::vector<std::string> ignore_patterns) {
+      const std::vector<std::string>& ignore_patterns) {
     const std::vector<content::WebContentsConsoleObserver::Message>&
         console_messages = console_observer.messages();
     const int expected = static_cast<int>(max_accepted_log_level);
@@ -312,7 +312,7 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
 
   void VerifyPage(const GURL& url,
                   const GURL& expected_url,
-                  const std::vector<std::string> ignore_patterns) {
+                  const std::vector<std::string>& ignore_patterns) {
     content::NavigationController::LoadURLParams params(url);
     params.transition_type = ui::PageTransitionFromInt(
         ui::PAGE_TRANSITION_TYPED | ui::PAGE_TRANSITION_FROM_ADDRESS_BAR);

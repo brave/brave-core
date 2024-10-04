@@ -40,7 +40,7 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
 
   void UpdateCoingeckoIdsMap(CoingeckoIdsMap coingecko_ids_map);
   void UpdateTokenList(TokenListMap tokens);
-  void UpdateTokenList(const std::string key,
+  void UpdateTokenList(const std::string& key,
                        std::vector<mojom::BlockchainTokenPtr> list);
   void UpdateChainList(ChainList chains);
   void UpdateDappList(DappListMap dapp_lists);

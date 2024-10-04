@@ -32,10 +32,10 @@ class NamedThirdPartyRegistry : public KeyedService {
   // Parse the provided mappings (in JSON format), potentially discarding
   // entities not relevant to the bandwith prediction model (i.e. those not
   // seen in training the model).
-  bool LoadMappings(const std::string_view entities, bool discard_irrelevant);
+  bool LoadMappings(std::string_view entities, bool discard_irrelevant);
   // Default initialization - asynchronously load from bundled resource
   void InitializeDefault();
-  std::optional<std::string> GetThirdParty(const std::string_view domain) const;
+  std::optional<std::string> GetThirdParty(std::string_view domain) const;
 
  private:
   bool IsInitialized() const { return initialized_; }

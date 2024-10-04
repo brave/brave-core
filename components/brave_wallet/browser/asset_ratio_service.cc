@@ -53,7 +53,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 std::string VectorToCommaSeparatedList(const std::vector<std::string>& assets) {
   std::stringstream ss;
-  std::for_each(assets.begin(), assets.end(), [&ss](const std::string asset) {
+  std::for_each(assets.begin(), assets.end(), [&ss](const std::string& asset) {
     if (ss.tellp() != 0) {
       ss << ",";
     }
@@ -175,12 +175,12 @@ void AssetRatioService::SetBaseURLForTest(const GURL& base_url_for_test) {
   base_url_for_test_ = base_url_for_test;
 }
 
-GURL AssetRatioService::GetSardineBuyURL(const std::string chain_id,
-                                         const std::string address,
-                                         const std::string symbol,
-                                         const std::string amount,
-                                         const std::string currency_code,
-                                         const std::string auth_token) {
+GURL AssetRatioService::GetSardineBuyURL(const std::string& chain_id,
+                                         const std::string& address,
+                                         const std::string& symbol,
+                                         const std::string& amount,
+                                         const std::string& currency_code,
+                                         const std::string& auth_token) {
   const std::string sardine_network_name = GetSardineNetworkName(chain_id);
   GURL url = GURL(kSardineStorefrontBaseURL);
   url = net::AppendQueryParameter(url, "address", address);

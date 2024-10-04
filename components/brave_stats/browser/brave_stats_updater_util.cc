@@ -82,7 +82,7 @@ base::Time GetLastMondayTime(const base::Time& time) {
   return last_monday;
 }
 
-base::Time GetYMDAsDate(const std::string_view ymd) {
+base::Time GetYMDAsDate(std::string_view ymd) {
   const auto pieces = base::SplitStringPiece(ymd, "-", base::TRIM_WHITESPACE,
                                              base::SPLIT_WANT_NONEMPTY);
   DCHECK_EQ(pieces.size(), 3ull);

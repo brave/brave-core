@@ -14,12 +14,12 @@
 
 namespace brave_l10n {
 
-bool IsISOCountryCodeOFACSanctioned(const std::string_view country_code) {
+bool IsISOCountryCodeOFACSanctioned(std::string_view country_code) {
   return base::Contains(kOFACSactionedISO31661CountryCodes,
                         base::ToUpperASCII(country_code));
 }
 
-bool IsUNM49CodeOFACSanctioned(const std::string_view code) {
+bool IsUNM49CodeOFACSanctioned(std::string_view code) {
   return base::Contains(kOFACSactionedUnM49Codes, code);
 }
 

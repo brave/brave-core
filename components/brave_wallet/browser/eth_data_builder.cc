@@ -33,7 +33,7 @@ bool IsValidHostLabelCharacter(char c, bool is_first_char) {
 }
 
 std::optional<std::string> ChainIdToVersion(const std::string& symbol,
-                                            const std::string chain_id) {
+                                            const std::string& chain_id) {
   static base::NoDestructor<std::map<std::string, std::string>> mapping({
       {"0x1", "ERC20"},
       {"0x38", "BEP20"},

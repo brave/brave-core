@@ -125,14 +125,14 @@ std::string EthSignTypedDataHelper::EncodeTypes(
 }
 
 std::vector<uint8_t> EthSignTypedDataHelper::GetTypeHash(
-    const std::string primary_type_name) const {
+    const std::string& primary_type_name) const {
   const std::string type_hash =
       KeccakHash(EncodeTypes(primary_type_name), false);
   return std::vector<uint8_t>(type_hash.begin(), type_hash.end());
 }
 
 std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
-EthSignTypedDataHelper::HashStruct(const std::string primary_type_name,
+EthSignTypedDataHelper::HashStruct(const std::string& primary_type_name,
                                    const base::Value::Dict& data) const {
   auto encoded_data = EncodeData(primary_type_name, data);
   if (!encoded_data) {
