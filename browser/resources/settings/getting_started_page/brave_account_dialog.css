@@ -1,0 +1,95 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #css_wrapper_metadata_end */
+
+:host {
+  --cr-dialog-body-border-bottom: 0px;
+  --cr-dialog-body-border-top: 0px;
+  --cr-dialog-border-radius: var(--leo-radius-xl);
+  --cr-dialog-top-container-min-height: 0px;
+  --cr-dialog-width: 500px;
+}
+
+[slot=header] {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 0px 0px var(--leo-spacing-4xl);
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  min-height: var(--leo-spacing-4xl);
+  width: 100%;
+}
+
+:host([show-back-button]) .buttons {
+  justify-content: space-between;
+}
+
+leo-button {
+  --leo-button-padding: 0px;
+  flex: none;
+  margin: var(--leo-spacing-l) var(--leo-spacing-l) 0px var(--leo-spacing-l);
+}
+
+leo-icon {
+  --leo-icon-size: var(--leo-icon-m);
+}
+
+.logo {
+  background-image: url('../images/full_brave_brand.svg');
+  background-size: cover;
+  height: var(--leo-spacing-4xl);
+  width: calc(var(--leo-spacing-4xl) * 129/40);
+}
+
+@media (prefers-color-scheme: dark) {
+  .logo {
+    background-image: url('../images/full_brave_brand_dark.svg');
+  }
+}
+
+[slot=body] {
+  padding: 0px var(--leo-spacing-2xl) var(--leo-spacing-2xl) var(--leo-spacing-2xl);
+}
+
+.title-and-description {
+  color: var(--leo-color-text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+  margin: 0px 0px var(--leo-spacing-3xl);
+}
+
+.title {
+  font: var(--leo-font-heading-h4);
+}
+
+.description {
+  font: var(--leo-font-default-regular);
+}
+
+:host ::slotted([slot=inputs]) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-2xl);
+  margin: 0px 0px var(--leo-spacing-2xl);
+}
+
+:host ::slotted([slot=buttons]) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+}
+
+:host([horizontal-buttons]) ::slotted([slot=buttons]) {
+  flex-direction: row;
+  justify-content: flex-end;
+}

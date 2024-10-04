@@ -51,6 +51,8 @@ generate_grd("build_grd") {
     "brave_sync_page/start_icon.svg",
     "images/cookies_banner.svg",
     "images/cookies_banner_dark.svg",
+    "images/full_brave_brand.svg",
+    "images/full_brave_brand_dark.svg",
     "images/permissions_banner.svg",
     "images/permissions_banner_dark.svg",
     "images/safe_browsing_banner.svg",
@@ -79,5 +81,6 @@ preprocess_if_expr("preprocess") {
   out_folder =
       "$root_gen_dir/chrome/browser/resources/settings/$preprocess_folder"
 
-  in_files = brave_settings_local_ts_files + brave_settings_local_html_files
+  in_files = brave_settings_local_ts_files + brave_settings_local_html_files +
+             brave_settings_local_css_files
 }
