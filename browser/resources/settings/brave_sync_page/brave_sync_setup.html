@@ -8,9 +8,20 @@
     grid-template-rows: auto;
     column-gap: 20px;
   }
+  .graphic
+  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px; /* fix start_icon.svg's positioning and get rid of this line */
+  }
   .graphic img
   {
     max-width: 100%;
+  }
+  .h1
+  {
+    margin-block-start: 0;
   }
   .actions
   {
@@ -30,8 +41,23 @@
     <img alt="" src="chrome://settings/brave_sync_page/start_icon.svg" />
   </div>
   <div class="content">
-    <h1>$i18n{braveSyncSetupTitle}</h1>
-    <p>$i18n{braveSyncSetupSubtitle}</p>
+    <h1 class="h1">$i18n{braveSyncSetupTitle}</h1>
+    <p>$i18n{braveSyncSetupSubtitle1}</p>
+    <div class="actions">
+      <cr-button class="action-button"
+        on-click="handleStartSyncChain_"
+      >
+        <paper-spinner-lite hidden="[[!isGettingSyncCode_]]">
+        </paper-spinner-lite>
+        <span hidden="[[isGettingSyncCode_]]">$i18n{braveSyncCreateBraveAccount}</span>
+      </cr-button>
+      <cr-button
+        on-click="handleJoinSyncChain_"
+      >
+        $i18n{braveSyncSignInToBraveAccount}
+      </cr-button>
+    </div>
+    <p>$i18n{braveSyncSetupSubtitle2}</p>
     <div class="actions">
       <cr-button class="action-button"
         on-click="handleStartSyncChain_"
