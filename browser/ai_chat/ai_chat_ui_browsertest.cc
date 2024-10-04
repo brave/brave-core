@@ -56,6 +56,7 @@
 
 #if defined(PDF_OCR_INTEGRATION_TEST_ENABLED)
 #include "chrome/browser/screen_ai/screen_ai_install_state.h"
+#include "components/strings/grit/components_strings.h"
 #include "services/screen_ai/public/cpp/utilities.h"
 #include "ui/accessibility/accessibility_features.h"
 #include "ui/accessibility/ax_features.mojom-features.h"
@@ -103,6 +104,7 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
   AIChatUIBrowserTest() : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(&https_server_);
@@ -427,6 +429,28 @@ class UpstreamPDFIntegratoinTest : public AIChatUIBrowserTest {
     command_line->RemoveSwitch(network::switches::kHostResolverRules);
   }
 
+  void FetchPageContentAndWaitForOCR(
+      const base::Location& location,
+      std::string_view expected_text,
+      int ocr_status_message_id = IDS_PDF_OCR_COMPLETED) {
+    SCOPED_TRACE(testing::Message() << location.ToString());
+    base::RunLoop run_loop;
+    chat_tab_helper_->GetPageContent(
+        base::BindLambdaForTesting(
+            [&run_loop, expected_text](std::string text, bool is_video,
+                                       std::string invalidation_token) {
+              EXPECT_FALSE(is_video);
+              EXPECT_EQ(text, expected_text);
+              run_loop.Quit();
+            }),
+        "");
+    auto inner_web_contents = GetActiveWebContents()->GetInnerWebContents();
+    ASSERT_TRUE(inner_web_contents.size() == 1);
+    WaitForAccessibilityTreeToContainNodeWithName(
+        inner_web_contents[0], l10n_util::GetStringUTF8(ocr_status_message_id));
+    run_loop.Run();
+  }
+
  protected:
   net::test_server::EmbeddedTestServer embedded_test_server_;
   base::test::ScopedFeatureList feature_list_;
@@ -436,17 +460,17 @@ IN_PROC_BROWSER_TEST_F(UpstreamPDFIntegratoinTest, PDFOcr) {
   // Single paragraph
   NavigateURL(
       embedded_test_server_.GetURL("a.com", "/hello-world-in-image.pdf"));
-  FetchPageContent(FROM_HERE, "Hello, world!");
+  FetchPageContentAndWaitForOCR(FROM_HERE, "Hello, world!");
 
   // Multiple paragraphs
   NavigateURL(embedded_test_server_.GetURL(
       "a.com", "/inaccessible-text-in-three-page.pdf"));
-  FetchPageContent(FROM_HERE,
-                   "Hello, world!\n"
-                   "Paragraph 1 on Page 2\n"
-                   "Paragraph 2 on Page 2\n"
-                   "Paragraph 1 on Page 3\n"
-                   "Paragraph 2 on Page 3");
+  FetchPageContentAndWaitForOCR(FROM_HERE,
+                                "Hello, world!\n"
+                                "Paragraph 1 on Page 2\n"
+                                "Paragraph 2 on Page 2\n"
+                                "Paragraph 1 on Page 3\n"
+                                "Paragraph 2 on Page 3");
 }
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION) && BUILDFLAG(ENABLE_PRINT_PREVIEW)
@@ -455,8 +479,9 @@ IN_PROC_BROWSER_TEST_F(UpstreamPDFIntegratoinTest,
   // Fallback to print preview extraction when upstream pdf ocr has empty
   // results.
   NavigateURL(https_server_.GetURL("b.com", "/text_in_image.pdf"), false);
-  FetchPageContent(
-      FROM_HERE, "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
+  FetchPageContentAndWaitForOCR(
+      FROM_HERE, "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.",
+      IDS_PDF_OCR_NO_RESULT);
 }
 #endif  // BUILDFLAG(ENABLE_TEXT_RECOGNITION) && BUILDFLAG(ENABLE_PRINT_PREVIEW)
 
@@ -464,16 +489,16 @@ IN_PROC_BROWSER_TEST_F(UpstreamPDFIntegratoinTest, PDFOcrWithBlankPage) {
   // Single paragraph
   NavigateURL(
       https_server_.GetURL("a.com", "/hello-world-in-image-has-blank.pdf"));
-  FetchPageContent(FROM_HERE, "Hello, world!");
+  FetchPageContentAndWaitForOCR(FROM_HERE, "Hello, world!");
 
   // Multiple paragraphs
   NavigateURL(https_server_.GetURL(
       "a.com", "/inaccessible-text-in-three-page-has-blank.pdf"));
-  FetchPageContent(FROM_HERE,
-                   "Hello, world!\n\n"
-                   "Paragraph 1 on Page 2\n"
-                   "Paragraph 2 on Page 2\n\n"
-                   "Paragraph 1 on Page 3\n"
-                   "Paragraph 2 on Page 3");
+  FetchPageContentAndWaitForOCR(FROM_HERE,
+                                "Hello, world!\n\n"
+                                "Paragraph 1 on Page 2\n"
+                                "Paragraph 2 on Page 2\n\n"
+                                "Paragraph 1 on Page 3\n"
+                                "Paragraph 2 on Page 3");
 }
-#endif
+#endif  // defined(PDF_OCR_INTEGRATION_TEST_ENABLED)
