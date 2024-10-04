@@ -9,6 +9,7 @@ import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//build/config/zip.gni")
+import("//chrome/browser/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//media/media_options.gni")
 import("//third_party/icu/config.gni")
@@ -585,6 +586,10 @@ if (is_mac) {
 
     if (skip_signing) {
       args += [ "--skip_signing" ]
+    }
+
+    if (enable_updater) {
+      args += [ "--enable_updater" ]
     }
 
     deps = [ "//chrome:chrome_app_plist" ]

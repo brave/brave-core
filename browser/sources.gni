@@ -316,7 +316,6 @@ if (is_mac) {
 
 if (enable_sparkle) {
   brave_chrome_browser_sources += [
-    "//brave/browser/mac/keystone_infobar_delegate.mm",
     "//brave/browser/mac/sparkle_glue.h",
     "//brave/browser/mac/sparkle_glue.mm",
     "//brave/browser/mac/su_updater.h",

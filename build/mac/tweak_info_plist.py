@@ -85,6 +85,9 @@ def Main():
     parser.add_argument('--skip_signing',
                         dest='skip_signing',
                         action='store_true')
+    parser.add_argument('--enable_updater',
+                        dest='enable_updater',
+                        action='store_true')
     args = parser.parse_args()
 
     # Read the plist into its parsed format. Convert the file to 'xml1' as
@@ -121,6 +124,10 @@ def Main():
 
     # Explicitly disable profiling
     plist['SUEnableSystemProfiling'] = False
+
+    if args.enable_updater:
+        plist['KSProductID'] = plist['CFBundleIdentifier']
+        plist['KSVersion'] = plist['CFBundleShortVersionString']
 
     # Now that all keys have been mutated, rewrite the file.
     # Convert Info.plist to the format requested by the --format flag. Any
