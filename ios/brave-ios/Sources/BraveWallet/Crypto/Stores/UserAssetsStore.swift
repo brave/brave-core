@@ -168,7 +168,7 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
       )
       // Filter `allTokens` to remove any tokens existing in `allUserAssets`. This is possible for ERC721 tokens in the registry without a `tokenId`, which requires the user to add as a custom token
       let allUserTokens = allUserAssetsExcludeDeleted.flatMap(\.tokens)
-      allTokens = allTokens.map { assetsForNetwork in
+      let updatedAllTokens: [NetworkAssets] = allTokens.map { assetsForNetwork in
         NetworkAssets(
           network: assetsForNetwork.network,
           tokens: assetsForNetwork.tokens.filter { token in
@@ -188,12 +188,22 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
           }
         }
         .map(\.id)
-      assetStores = (allUserAssetsExcludeDeleted + allTokens)
+      assetStores = (allUserAssetsExcludeDeleted + updatedAllTokens)
         .sorted(by: { $0.sortOrder < $1.sortOrder })
         .flatMap { assetsForNetwork in
           assetsForNetwork.tokens.map { token in
             var isRemovable: Bool {
-              !token.contractAddress.isEmpty && (token.isErc721 || token.isErc1155 || token.isNft)
+              if token.contractAddress.isEmpty {
+                return false
+              }
+              if token.isErc721 || token.isErc1155 || token.isNft {
+                return true
+              }
+              return !allTokens.flatMap(\.tokens).contains(where: {
+                $0.contractAddress(in: assetsForNetwork.network).caseInsensitiveCompare(
+                  token.contractAddress
+                ) == .orderedSame
+              })
             }
             return AssetStore(
               rpcService: rpcService,
