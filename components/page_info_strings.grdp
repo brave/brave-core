@@ -75,13 +75,13 @@
     You should not enter any sensitive information on this site (for example, passwords or credit cards), because it could be stolen by attackers.
   </message>
   <message name="IDS_PAGE_INFO_MALWARE_DETAILS" desc="A short paragraph explaining to the user that the current website has been flagged as containing malware.">
-    Attackers on the site you're trying to visit might install harmful software that steals or deletes things like your password, photos, messages, or credit card number.
+    Attackers on the site you tried visiting might install harmful software that steals or deletes things like your passwords, photos, messages, or credit card numbers.
   </message>
   <message name="IDS_PAGE_INFO_SOCIAL_ENGINEERING_DETAILS" desc="A short paragraph explaining to the user that the current website has been flagged as social engineering.">
-    Attackers on the site you're trying to visit might trick you into installing software or revealing things like your password, phone, or credit card number.
+    Attackers on the site you tried visiting might trick you into installing software or revealing things like your passwords, phone, or credit card numbers.
   </message>
   <message name="IDS_PAGE_INFO_UNWANTED_SOFTWARE_DETAILS" desc="A short paragraph explaining to the user that the current website has been flagged as containing unwanted software.">
-    Attackers on the site you're trying to visit might trick you into installing harmful software that affects the way you browse — for example, by changing your homepage or showing you extra ads on sites you visit.
+    Attackers on the site you tried visiting might trick you into installing harmful software that affects the way you browse — for example, by changing your homepage or showing you extra ads on sites you visit.
   </message>
 
   <!-- Identity detail strings shared with iOS -->
@@ -440,6 +440,9 @@
     <message name="IDS_PAGE_INFO_STATE_TEXT_WEB_APP_INSTALLATION_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the web app installation permission is in the ask state and the site can prompt the user to ask if they allow the site to install web apps.">
       Can ask to install web apps
     </message>
+    <message name="IDS_PAGE_INFO_STATE_TEXT_WEB_PRINTING_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the bluetooth devices permission is in the ask state and the site can prompt the user to ask if they allow the site to use advanced printer features.">
+      Can ask to use advanced printer features
+    </message>
 
     <!-- UI for device access granted to the site using the device chooser (e.g. USB, Bluetooth) -->
     <message name="IDS_PAGE_INFO_USB_DEVICE_SECONDARY_LABEL" desc="The label displayed underneath the device name to inform the user that the item refers to a USB device.">
@@ -749,23 +752,23 @@
   <message name="IDS_PAGE_INFO_COOKIES_DESCRIPTION" desc="The description of cookies in Cookies Subpage with placeholder for link to settings.">
     Cookies and other site data are used to remember you, for example to sign you in or to personalize ads. To manage cookies for all sites, see <ph name="SETTINGS">$1<ex>Settings</ex></ph>.
   </message>
-  <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_SITE_GRANT_DESCRIPTION" desc="Description text for the Tracking Protection subpage in the page info bubble for when a site has a TPCD grant. Contains a link to the Tracking Protection settings page.">
-   Brave limits most sites from using third-party cookies. But third-party cookies are allowed on this site because it relies on them to provide basic services. Visit settings to <ph name="LINK">$1<ex>manage your tracking protections</ex></ph>.
+  <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_SITE_GRANT_DESCRIPTION" desc="Description text for the 'Cookies and site data' subpage in the page info bubble for when a site has a TPCD grant. Contains a link to the third-party cookies settings page.">
+   Brave limits most sites from using third-party cookies. But third-party cookies are allowed on this site because it relies on them to provide basic services. Visit settings to <ph name="LINK">$1<ex>manage access to third-party cookies</ex></ph>.
   </message>
-  <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_DESCRIPTION" desc="Description text for the Tracking Protection subpage in the page info bubble. Contains a link to the Tracking Protection settings page.">
-    Brave limits most sites from using third-party cookies to track you as you browse. Visit settings to <ph name="LINK">$1<ex>manage your tracking protections</ex></ph>.
+  <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_DESCRIPTION" desc="Description text for the 'Cookies and site data' subpage in the page info bubble. Contains a link to the third-party cookies settings page.">
+    Brave limits most sites from using third-party cookies to track you as you browse. Visit settings to <ph name="LINK">$1<ex>manage access to third-party cookies</ex></ph>.
   </message>
-  <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_BLOCKED_COOKIES_DESCRIPTION" desc="Description text for the Tracking Protection subpage in the page info bubble if all cookies are blocked. Contains a link to the Tracking Protection settings page.">
-    You blocked sites from using third-party cookies to track you as you browse. Visit settings to <ph name="LINK">$1<ex>manage your tracking protections</ex></ph>.
+  <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_BLOCKED_COOKIES_DESCRIPTION" desc="Description text for the 'Cookies and site data' subpage in the page info bubble if all cookies are blocked. Contains a link to the third-party cookies settings page.">
+    You blocked sites from using third-party cookies to track you as you browse. Visit settings to <ph name="LINK">$1<ex>manage access to third-party cookies</ex></ph>.
   </message>
-  <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_INCOGNITO_BLOCKED_COOKIES_DESCRIPTION" desc="Description text for the Tracking Protection subpage in the page info bubble in private mode when cookies are blocked. Contains a link to the Tracking Protection settings page.">
-    Brave blocks sites from using third-party cookies to track you as you browse. Visit settings to <ph name="LINK">$1<ex>manage your tracking protections</ex></ph>.
+  <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_INCOGNITO_BLOCKED_COOKIES_DESCRIPTION" desc="Description text for the 'Cookies and site data' subpage in the page info bubble in private mode when cookies are blocked. Contains a link to the third-party cookies settings page.">
+    Brave blocks sites from using third-party cookies to track you as you browse. Visit settings to <ph name="LINK">$1<ex>manage access to third-party cookies</ex></ph>.
   </message>
   <message name="IDS_PAGE_INFO_COOKIES_SETTINGS_LINK" desc="The text of the link to cookies settings.">
     Settings
   </message>
-  <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_SETTINGS_LINK" desc="The text of the link to the tracking protection settings used within the tracking protection description.">
-    manage your tracking protections
+  <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_SETTINGS_LINK" desc="The text of the link to the third-party cookies settings within the 'Cookies and site data' page info subpage description.">
+    manage access to third-party cookies
   </message>
   <message name="IDS_PAGE_INFO_BLOCK_THIRD_PARTY_COOKIES_TITLE" desc="The title on the blocking third-party cookies toggle in cookies subpage.">
     Block third-party cookies

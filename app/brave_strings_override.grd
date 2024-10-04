@@ -356,6 +356,13 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="is_macosx">
         </if>
 
+      <if expr="not is_android">
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
+      </if>
+
       <if expr="chromeos_ash">
         </if>
 
@@ -409,6 +416,7 @@ Permissions you've already given to websites and apps may apply to this account.
 
       <if expr="is_win">
         </if>
+
       <if expr="not is_android">
         </if>
 
@@ -425,6 +433,9 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="not is_android and not is_chromeos">
         </if>
       <if expr="is_macosx">
+        </if>
+
+      <if expr="not is_android">
         </if>
     </messages>
   </release>
