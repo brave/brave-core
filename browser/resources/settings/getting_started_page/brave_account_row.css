@@ -1,0 +1,61 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * you can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #css_wrapper_metadata_end */
+
+.row {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  min-height: 82px;
+  padding: 0 24px;
+}
+
+.circle {
+  align-items: center;
+  background-color: var(--leo-color-container-background);
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: 50%;
+  display: flex;
+  flex-shrink: 0;
+  height: 38px;
+  justify-content: center;
+  width: 38px;
+}
+
+.logo {
+  background-image: url('../images/brave-favicon.svg');
+  background-size: cover;
+  height: 24px;
+  width: 24px;
+}
+
+.texts {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0px;
+}
+
+.text-top {
+  color: var(--leo-color-text-primary);
+  font: var(--leo-font-default-semibold);
+}
+
+.text-bottom {
+  color: var(--leo-color-text-secondary);
+  font: var(--leo-font-small-regular);
+}
+
+.button-wrapper {
+  flex-shrink: 0;
+  width: 89px;
+}
+
+.button {
+  --leo-button-padding: 0px; /* feels hackish - there must be a better way */
+  width: 100%;
+}
