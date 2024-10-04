@@ -199,154 +199,28 @@
   }
 </style>
 
-<!-- device chooser -->
-<template is="dom-if" if="[[isCodeType('choose',codeType)]]">
+<!-- create -->
+<template is="dom-if" if="[[isCodeType('create',codeType)]]">
   <cr-dialog
     on-close="handleClose_"
     show-close-button
     show-on-attach
   >
     <div slot="title">
-      <span clas="dialog-title">$i18n{braveSyncChooseDeviceTitle}</span>
-      <span class="dialog-subtitle">$i18n{braveSyncChooseDeviceDesc}</span>
-    </div>
-    <div slot="body" class="devices">
-      <button class="device mobile" on-click="handleChooseMobile_">
-        <img alt="" class="device-image" src="chrome://settings/brave_sync_page/device_mobile.svg" />
-        <h2 class="device-title">$i18n{braveSyncChooseDeviceMobileTitle}</h2>
-      </button>
-      <button class="device computer" on-click="handleChooseComputer_">
-        <img alt="" class="device-image" src="chrome://settings/brave_sync_page/device_computer.svg" />
-        <h2 class="device-title">$i18n{braveSyncChooseDeviceComputerTitle}</h2>
-      </button>
+      <span clas="dialog-title">Create</span>
     </div>
   </cr-dialog>
 </template>
 
-<!-- qr code -->
-<template is="dom-if" if="[[isCodeType('qr',codeType)]]">
+<!-- sign in -->
+<template is="dom-if" if="[[isCodeType('signin',codeType)]]">
   <cr-dialog
     on-close="handleClose_"
     show-close-button
     show-on-attach
   >
     <div slot="title">
-      <span clas="dialog-title">$i18n{braveSyncScanCodeTitle}</span>
-      <span class="dialog-subtitle">$i18n{braveSyncScanCodeDesc1}
-        $i18n{braveSyncScanCodeDesc2}
-        $i18n{braveSyncScanCodeDesc3}
-        <b>
-          $i18n{braveSyncCodeWarning}
-        </b>
-      </span>
-    </div>
-    <div slot="body">
-      <div class="qr-viewer">
-        <template is="dom-if" if="[[qrCodeImageUrl_]]">
-            <img
-              class="qr-image"
-              src="[[qrCodeImageUrl_]]"
-              alt="$i18n{braveSyncQRCodeAlt}"
-            >
-        </template>
-        <template is="dom-if" if="[[!qrCodeImageUrl_]]">
-          <p>
-            $i18n{braveSyncQRError}
-          </p>
-        </template>
-      </div>
-    </div>
-    <div slot="button-container" class="button-group">
-      <button class="tertiary-button"
-        on-click="handleChooseComputer_"
-      >
-        $i18n{braveSyncViewCodeButton}
-      </button>
-      <cr-button class="action-button" on-click="handleDone_">
-        $i18n{ok}
-      </cr-button>
-    </div>
-  </cr-dialog>
-</template>
-
-<!-- words -->
-<template is="dom-if" if="[[isCodeType('words',codeType)]]">
-  <cr-dialog
-    on-close="handleClose_"
-    show-close-button
-    show-on-attach
-  >
-    <div slot="title">
-      <span class="dialog-title">$i18n{braveSyncViewCodeTitle}</span>
-      <span class="dialog-subtitle">$i18n{braveSyncViewCodeDesc1}
-        $i18n{braveSyncViewCodeDesc2}
-        $i18n{braveSyncViewCodeDesc3}
-        <b>
-          $i18n{braveSyncCodeWarning}
-        </b>
-      </span>
-    </div>
-    <div slot="body" class="sync-code-widget">
-      <textarea class="sync-code-text" readonly>[[syncCode]]</textarea>
-      <div class="sync-code-footer">
-        [[i18n('braveSyncWordCount', syncCodeWordCount_)]]
-        <div class="sync-code-clipboard">
-          <span class$="clipboard-success is-success-[[hasCopiedSyncCode_]]">
-            $i18n{braveSyncCopied}
-          </span>
-          <cr-icon-button
-            class="clipboard-button"
-            iron-icon="copy"
-            on-click="handleSyncCodeCopy_"
-            aria-label="Copy sync words to clipboard" />
-        </div>
-      </div>
-    </div>
-    <div slot="button-container" class="button-group">
-      <button class="tertiary-button"
-        on-click="handleChooseMobile_"
-      >
-        $i18n{braveSyncViewCodeQRCodeButton}
-      </button>
-      <cr-button class="action-button"
-        on-click="handleDone_"
-      >
-        $i18n{ok}
-      </cr-button>
-    </div>
-  </cr-dialog>
-</template>
-
-<!-- input words-->
-<template is="dom-if" if="[[isCodeType('input',codeType)]]">
-  <cr-dialog
-    on-close="handleClose_"
-    show-close-button
-    show-on-attach
-  >
-    <div slot="title">
-      <span clas="dialog-title">$i18n{braveSyncEnterCodeTitle}</span>
-      <span class="dialog-subtitle">$i18n{braveSyncEnterCodeDesc}</span>
-    </div>
-
-    <div slot="body" class="sync-code-widget">
-      <textarea autofocus class="sync-code-text" value="{{syncCode::input}}"></textarea>
-      <div class="sync-code-footer">
-        [[i18n('braveSyncWordCount', syncCodeWordCount_)]]
-      </div>
-      <template is="dom-if" if="[[syncCodeValidationError]]">
-        <div class="invalid-sync-code">
-          [[syncCodeValidationError]]
-        </div>
-      </template>
-    </div>
-
-    <div slot="button-container">
-      <cr-button class="action-button"
-        on-click="handleDone_"
-      >
-        $i18n{confirm}
-      </cr-button>
+      <span clas="dialog-title">Sign in</span>
     </div>
   </cr-dialog>
 </template>
