@@ -3,7 +3,7 @@ default: null
 desc: |-
   Disable Brave Rewards in Brave.
 
-  Allows users to support content creators and earn tokens for ads seen in Brave. Folks can use tokens to buy gift cards, exchange for other currencies, and more..
+  Brave Rewards is a feature that allows users to get paid for ads they see in Brave and send contributions to their favorite websites and content creators.
 
             If this policy is set to true, Brave Rewards will always be disabled.
 
