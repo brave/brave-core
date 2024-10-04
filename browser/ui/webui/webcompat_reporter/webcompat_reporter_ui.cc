@@ -261,12 +261,11 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
   uploader_->SubmitReport(pending_report_);
 }
 
-WebcompatReporterUI::WebcompatReporterUI(content::WebUI* web_ui,
-                                         const std::string& name)
+WebcompatReporterUI::WebcompatReporterUI(content::WebUI* web_ui)
     : ConstrainedWebDialogUI(web_ui) {
-  CreateAndAddWebUIDataSource(web_ui, name, kWebcompatReporterGenerated,
-                              kWebcompatReporterGeneratedSize,
-                              IDR_WEBCOMPAT_REPORTER_HTML);
+  CreateAndAddWebUIDataSource(
+      web_ui, kWebcompatReporterHost, kWebcompatReporterGenerated,
+      kWebcompatReporterGeneratedSize, IDR_WEBCOMPAT_REPORTER_HTML);
   Profile* profile = Profile::FromWebUI(web_ui);
 
   web_ui->AddMessageHandler(
