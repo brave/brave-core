@@ -29,7 +29,7 @@ public class AssetStore: Identifiable, ObservableObject, Equatable, WalletObserv
   private let rpcService: BraveWalletJsonRpcService
   private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
-  private(set) var isCustomToken: Bool
+  private(set) var isRemovable: Bool
 
   var isObserving: Bool = false
 
@@ -39,7 +39,7 @@ public class AssetStore: Identifiable, ObservableObject, Equatable, WalletObserv
     token: BraveWallet.BlockchainToken,
     ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType,
-    isCustomToken: Bool,
+    isRemovable: Bool,
     isVisible: Bool
   ) {
     self.rpcService = rpcService
@@ -47,7 +47,7 @@ public class AssetStore: Identifiable, ObservableObject, Equatable, WalletObserv
     self.token = token
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
-    self.isCustomToken = isCustomToken
+    self.isRemovable = isRemovable
     self.isVisible = isVisible
   }
 
@@ -162,13 +162,13 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
         networks: networks,
         visible: false
       )
-      var allTokens = await self.blockchainRegistry.allTokens(
+      let allTokens = await self.blockchainRegistry.allTokens(
         in: networks,
         includingUserDeleted: false
       )
       // Filter `allTokens` to remove any tokens existing in `allUserAssets`. This is possible for ERC721 tokens in the registry without a `tokenId`, which requires the user to add as a custom token
       let allUserTokens = allUserAssetsExcludeDeleted.flatMap(\.tokens)
-      allTokens = allTokens.map { assetsForNetwork in
+      let updatedAllTokens: [NetworkAssets] = allTokens.map { assetsForNetwork in
         NetworkAssets(
           network: assetsForNetwork.network,
           tokens: assetsForNetwork.tokens.filter { token in
@@ -188,16 +188,15 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
           }
         }
         .map(\.id)
-      assetStores = (allUserAssetsExcludeDeleted + allTokens)
+      assetStores = (allUserAssetsExcludeDeleted + updatedAllTokens)
         .sorted(by: { $0.sortOrder < $1.sortOrder })
         .flatMap { assetsForNetwork in
           assetsForNetwork.tokens.map { token in
-            var isCustomToken: Bool {
+            var isRemovable: Bool {
               if token.contractAddress.isEmpty {
                 return false
               }
-              // Any token with a tokenId should be considered a custom token.
-              if !token.tokenId.isEmpty {
+              if token.isErc721 || token.isErc1155 || token.isNft {
                 return true
               }
               return !allTokens.flatMap(\.tokens).contains(where: {
@@ -212,7 +211,7 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
               token: token,
               ipfsApi: self.ipfsApi,
               userAssetManager: assetManager,
-              isCustomToken: isCustomToken,
+              isRemovable: isRemovable,
               isVisible: visibleIds.contains(where: {
                 $0.caseInsensitiveCompare(token.id) == .orderedSame
               })

@@ -141,11 +141,11 @@ struct EditUserAssetsView: View {
                 .frame(maxWidth: .infinity)
             } else {
               ForEach(tokens, id: \.token.id) { store in
-                if store.isCustomToken {
+                if store.isRemovable {
                   EditTokenView(assetStore: store, tokenNeedsTokenId: $tokenNeedsTokenId)
                     .swipeActions(edge: .trailing) {
                       Button(role: .destructive) {
-                        removeCustomToken(store.token)
+                        removeToken(store.token)
                       } label: {
                         Label(Strings.Wallet.delete, systemImage: "trash")
                       }
@@ -248,7 +248,7 @@ struct EditUserAssetsView: View {
     )
   }
 
-  private func removeCustomToken(_ token: BraveWallet.BlockchainToken) {
+  private func removeToken(_ token: BraveWallet.BlockchainToken) {
     Task { @MainActor in
       let success = await userAssetsStore.removeUserAsset(token: token)
       isPresentingAssetRemovalError = !success
