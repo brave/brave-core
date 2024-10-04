@@ -275,6 +275,12 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
     }
   }
 
+  func checkDuplication(_ address: String) -> Bool {
+    return assetStores.first(where: {
+      $0.token.contractAddress.caseInsensitiveCompare(address) == .orderedSame
+    }) != nil
+  }
+
   @MainActor func networkInfo(
     by chainId: String,
     coin: BraveWallet.CoinType

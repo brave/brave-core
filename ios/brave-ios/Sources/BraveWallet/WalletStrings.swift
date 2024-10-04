@@ -5556,5 +5556,13 @@ extension Strings {
       comment:
         "Blockchain function name for Solana Sign DApp transactions."
     )
+    public static let duplicationTokenError = NSLocalizedString(
+      "wallet.duplicationTokenError",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "This token has already been added to your portfolio.",
+      comment:
+        "An error message that will get displayed when user is trying to add an existed custom token."
+    )
   }
 }

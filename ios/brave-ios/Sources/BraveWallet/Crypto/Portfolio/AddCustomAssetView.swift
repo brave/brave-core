@@ -45,8 +45,12 @@ struct AddCustomAssetView: View {
   @State private var showError = false
   @State private var showAdvanced = false
   @State private var isPresentingNetworkSelection = false
+  @State private var showDuplicationTokenError = false
 
   private var addButtonDisabled: Bool {
+    if showDuplicationTokenError {
+      return true
+    }
     switch selectedTokenType {
     case .token:
       return nameInput.isEmpty || symbolInput.isEmpty || decimalsInput.isEmpty
@@ -69,6 +73,15 @@ struct AddCustomAssetView: View {
       return false
     }
     return true
+  }
+
+  private var duplicationTokenErrorView: some View {
+    Section {
+      Text(Strings.Wallet.duplicationTokenError)
+        .fontWeight(.semibold)
+        .foregroundColor(Color(braveSystemName: .systemfeedbackErrorText))
+        .listRowBackground(Color.clear)
+    }
   }
 
   var body: some View {
@@ -130,6 +143,7 @@ struct AddCustomAssetView: View {
                   decimalsInput = "\(token.decimals)"
                 }
               }
+              showDuplicationTokenError = userAssetStore.checkDuplication(newValue)
             }
             .autocapitalization(.none)
             .autocorrectionDisabled()
@@ -182,6 +196,11 @@ struct AddCustomAssetView: View {
             }
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
+
+          if showDuplicationTokenError {
+            duplicationTokenErrorView
+          }
+
           Section {
             Button {
               withAnimation(.easeInOut(duration: 0.25)) {
@@ -244,6 +263,10 @@ struct AddCustomAssetView: View {
               }
               .listRowBackground(Color(.secondaryBraveGroupedBackground))
             }
+          }
+
+          if showDuplicationTokenError {
+            duplicationTokenErrorView
           }
         }
       }
