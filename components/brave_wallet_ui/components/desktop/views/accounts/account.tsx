@@ -490,6 +490,7 @@ export const Account = () => {
       wrapContentInBox
       hideDivider={true}
       noCardPadding={true}
+      useCardInPanel={true}
       cardHeader={
         <AccountDetailsHeader
           account={selectedAccount}

@@ -108,6 +108,7 @@ export const ContainerCard = styled.div<{
   useDarkBackground?: boolean
   useFullHeight?: boolean
   noBackground?: boolean
+  usePanelCard?: boolean
 }>`
   display: flex;
   flex: none;
@@ -140,10 +141,11 @@ export const ContainerCard = styled.div<{
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
     min-height: calc(100vh - var(--bottom-position) - var(--top-position));
+    padding: ${(p) => (p.noPadding ? 0 : 16)}px;
     border-radius: ${(p) =>
       p.noBorderRadius
         ? '0px'
-        : p.hideCardHeader
+        : p.hideCardHeader || p.usePanelCard
         ? '24px 24px 0px 0px'
         : '0px'};
   }
