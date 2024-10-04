@@ -5,11 +5,12 @@
 
 import * as React from 'react'
 import { useArgs } from '@storybook/preview-api'
-import { Meta } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import '@brave/leo/tokens/css/variables.css'
 import '$web-components/app.global.scss'
 import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
+import { InferControlsFromArgs } from '../../../../../.storybook/utils'
 import Main from '../components/main'
 import * as mojom from '../api/'
 import FeedbackForm from '../components/feedback_form'
@@ -312,12 +313,49 @@ const SITE_INFO: mojom.SiteInfo = {
   isContentRefined: false,
 }
 
-const preview: Meta = {
+type CustomArgs = {
+  currentErrorState: keyof typeof mojom.APIError
+  model: string
+  inputText: string
+  hasConversation: boolean
+  hasSuggestedQuestions: boolean
+  hasSiteInfo: boolean
+  canShowPremiumPrompt: boolean
+  hasAcceptedAgreement: boolean
+  isPremiumModel: boolean
+  isPremiumUser: boolean
+  isPremiumUserDisconnected: boolean
+  suggestionStatus: keyof typeof mojom.SuggestionGenerationStatus
+  isMobile: boolean
+  shouldShowLongConversationInfo: boolean
+  shouldShowLongPageWarning: boolean
+}
+
+const args: CustomArgs = {
+  inputText: `Write a Star Trek poem about Data's life on board the Enterprise`,
+  hasConversation: true,
+  hasSuggestedQuestions: true,
+  hasSiteInfo: true,
+  canShowPremiumPrompt: false,
+  hasAcceptedAgreement: true,
+  isPremiumModel: false,
+  isPremiumUser: true,
+  isPremiumUserDisconnected: false,
+  currentErrorState: 'ConnectionIssue' satisfies keyof typeof mojom.APIError,
+  suggestionStatus: 'None' satisfies keyof typeof mojom.SuggestionGenerationStatus,
+  model: MODELS[0].key,
+  isMobile: false,
+  shouldShowLongConversationInfo: false,
+  shouldShowLongPageWarning: false,
+}
+
+const preview: Meta<CustomArgs> = {
   title: 'Chat/Chat',
   parameters: {
     layout: 'centered'
   },
   argTypes: {
+    ...InferControlsFromArgs(args),
     currentErrorState: {
       options: getKeysForMojomEnum(mojom.APIError),
       control: { type: 'select' }
@@ -329,25 +367,9 @@ const preview: Meta = {
     model: {
       options: MODELS.map(model => model.displayName),
       control: { type: 'select' }
-    }
+    },
   },
-  args: {
-    inputText: `Write a Star Trek poem about Data's life on board the Enterprise`,
-    hasConversation: true,
-    hasSuggestedQuestions: true,
-    hasSiteInfo: true,
-    canShowPremiumPrompt: false,
-    hasAcceptedAgreement: true,
-    isPremiumModel: false,
-    isPremiumUser: true,
-    isPremiumUserDisconnected: false,
-    currentErrorState: 'ConnectionIssue' satisfies keyof typeof mojom.APIError,
-    suggestionStatus: 'None' satisfies keyof typeof mojom.SuggestionGenerationStatus,
-    model: MODELS[0].key,
-    isMobile: false,
-    shouldShowLongConversationInfo: false,
-    shouldShowLongPageWarning: false,
-  },
+  args,
   decorators: [
     (Story, options) => {
       const [, setArgs] = useArgs()
@@ -444,8 +466,10 @@ const preview: Meta = {
 
 export default preview
 
-export const _Panel = {
-  render: () => {
+type Story = StoryObj<CustomArgs>
+
+export const _Panel: Story = {
+  render: (args) => {
     return (
       <div className={styles.container}>
         <Main />
