@@ -727,8 +727,11 @@
   <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_TITLE" desc="Title for the Brave Sync settings setup section">
     Sync Setup
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_SUBTITLE" desc="Subtitle for the Brave Sync settings setup section">
-    To start, you will need Brave installed on all the devices you plan to sync. Then, securely link them together with a sync code.
+  <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_SUBTITLE_1" desc="Subtitle for the Brave Sync settings setup section">
+    To start, you will need Brave installed on all the devices you plan to sync. Then, securely link them together either with a Brave account:
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_SUBTITLE_2" desc="Subtitle for the Brave Sync settings setup section">
+    or with a Sync code:
   </message>
   <message name="IDS_SETTINGS_BRAVE_SYNC_MANAGE_ACTION_LABEL" desc="Brave Sync manage action label">
     Manage your synced devices
@@ -786,6 +789,12 @@
   </message>
   <message name="IDS_BRAVE_SYNC_ENTER_CODE_BUTTON" desc="The Sync button that triggers a modal asking for the sync chain code passphrase">
     I have a Sync Code
+  </message>
+  <message name="IDS_BRAVE_SYNC_CREATE_BRAVE_ACCOUNT_BUTTON" desc="The Sync button that triggers a modal to create a Brave account">
+    Create a Brave account
+  </message>
+  <message name="IDS_BRAVE_SYNC_SIGN_IN_TO_BRAVE_ACCOUNT_BUTTON" desc="The Sync button that triggers a modal to sign in to a Brave account">
+    Sign in to your Brave account
   </message>
   <message name="IDS_BRAVE_SYNC_VIEW_CODE_BUTTON" desc="The Sync button `view sync code` for viewing the passphrase and qr code needed to add a new device. triggers a modal with sync code">
     View Sync Code
