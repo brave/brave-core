@@ -26,6 +26,7 @@ struct BLINK_COMMON_EXPORT WebPreferences : public WebPreferences_ChromiumImpl {
   WebPreferences& operator=(WebPreferences&& other);
 
   bool force_cosmetic_filtering = false;
+  bool page_in_reader_mode = false;
 };
 
 }  // namespace web_pref
