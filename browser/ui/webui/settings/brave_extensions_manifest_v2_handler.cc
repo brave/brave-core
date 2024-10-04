@@ -25,7 +25,7 @@ namespace {
 constexpr const char kNoScriptId[] = "doojmbjmlfjjnbmnoijecmcbfeoakpjm";
 constexpr const char kUBlockId[] = "cjpalhdlnbpafiamejdnhcphjbkeiagm";
 constexpr const char kUMatrixId[] = "ogfcmafjalglgifnmanfmnieipoejdcf";
-constexpr const char kAdGuardId[] = "bgnkhhnnamicmpeenaelnjfhikgbkllg";
+constexpr const char kAdGuardId[] = "gfggjaccafhcbfogfkogggoepomehbjl";
 }  // namespace
 
 BASE_FEATURE(kExtensionsManifestV2,
