@@ -39,6 +39,9 @@
     </message>
   </if>
 
+  <if expr="is_ios">
+    </if>
+
   <if expr="is_win or is_linux or is_macosx">
     </if>
 
