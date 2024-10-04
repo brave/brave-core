@@ -47,7 +47,7 @@
       <cr-button class="action-button" on-click="handleCreateBraveAccount_">
         $i18n{braveSyncCreateBraveAccount}
       </cr-button>
-      <cr-button on-click="handleJoinSyncChain_">
+      <cr-button on-click="handleSignInToBraveAccount_">
         $i18n{braveSyncSignInToBraveAccount}
       </cr-button>
     </div>
@@ -80,11 +80,8 @@
   ></settings-brave-sync-code-dialog>
 </template>
 
-<template is="dom-if" if="[[braveAccountDialogType]]" restamp>
+<template is="dom-if" if="[[accountDialogType]]" restamp>
   <settings-brave-account-dialog
-    code-type="{{braveAccountDialogType}}"
-    sync-code="{{syncCode}}"
-    sync-code-validation-error="{{syncCodeValidationError_}}"
-    on-done="handleSyncCodeDialogDone_"
+    code-type="{{accountDialogType}}"
   ></settings-brave-account-dialog>
 </template>

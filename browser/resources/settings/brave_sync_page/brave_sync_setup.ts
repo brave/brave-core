@@ -38,7 +38,7 @@ export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElement
         type: String,
         notify: true
       },
-      braveAccountDialogType: {
+      accountDialogType: {
         type: String,
         notify: true,
       },
@@ -66,7 +66,7 @@ export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElement
   }
 
   private syncCode: string | undefined;
-  private braveAccountDialogType: 'qr' | 'create' | 'signin' | null;
+  private accountDialogType: 'create' | 'signin' | null;
   private syncCodeDialogType: 'qr' | 'words' | 'input' | 'choose' | null;
   private isSubmittingSyncCode_: boolean;
   private isGettingSyncCode_: boolean;
@@ -75,9 +75,11 @@ export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElement
   syncBrowserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance();
 
   handleCreateBraveAccount_() {
-    this.syncCode = undefined
-    this.braveAccountDialogType = 'qr'
-    console.log('handleCreateBraveAccount_')
+    this.accountDialogType = 'create'
+  }
+
+  handleSignInToBraveAccount_ () {
+    this.accountDialogType = 'signin'
   }
 
   async handleStartSyncChain_() {
