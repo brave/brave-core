@@ -149,14 +149,14 @@ class CustomEngineViewController: UIViewController {
       switch type {
       case .enabled:
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-          barButtonSystemItem: self.customEngineActionType == .add ? .done : .edit,
+          barButtonSystemItem: .done,
           target: self,
           action: #selector(self.checkAddEngineType)
         )
         self.spinnerView.stopAnimating()
       case .disabled:
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-          barButtonSystemItem: self.customEngineActionType == .add ? .done : .edit,
+          barButtonSystemItem: .done,
           target: self,
           action: #selector(self.checkAddEngineType)
         )
