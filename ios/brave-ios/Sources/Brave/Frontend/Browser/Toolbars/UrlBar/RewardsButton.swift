@@ -32,6 +32,8 @@ class RewardsButton: UIButton {
 
     adjustsImageWhenHighlighted = false
     imageView?.contentMode = .scaleAspectFit
+    contentHorizontalAlignment = .fill
+    contentVerticalAlignment = .fill
     imageView?.adjustsImageSizeForAccessibilityContentSizeCategory = true
 
     accessibilityLabel = Strings.rewardsPanel

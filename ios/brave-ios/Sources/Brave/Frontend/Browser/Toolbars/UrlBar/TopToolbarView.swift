@@ -275,15 +275,14 @@ class TopToolbarView: UIView, ToolbarProtocol {
     button.accessibilityLabel = Strings.bravePanel
     button.imageView?.adjustsImageSizeForAccessibilityContentSizeCategory = true
     button.accessibilityIdentifier = "urlBar-shieldsButton"
-    button.contentEdgeInsets = .init(top: 4, left: 5, bottom: 4, right: 5)
+    button.contentHorizontalAlignment = .fill
+    button.contentVerticalAlignment = .fill
     return button
   }()
 
   private(set) lazy var rewardsButton: RewardsButton = {
     let button = RewardsButton()
     button.addTarget(self, action: #selector(didTapBraveRewardsButton), for: .touchUpInside)
-    // Visual centering
-    button.contentEdgeInsets = .init(top: 4, left: 4, bottom: 6, right: 4)
     return button
   }()
 
@@ -389,7 +388,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
         self.updateColors()
         self.helper?.updateForTraitCollection(
           self.traitCollection,
-          browserColors: privateBrowsingManager.browserColors
+          browserColors: privateBrowsingManager.browserColors,
+          isBottomToolbar: false
         )
       })
 
@@ -397,6 +397,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     helper?.updateForTraitCollection(
       traitCollection,
       browserColors: privateBrowsingManager.browserColors,
+      isBottomToolbar: false,
       additionalButtons: [shortcutButton]
     )
     updateForTraitCollection()
@@ -439,6 +440,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     helper?.updateForTraitCollection(
       traitCollection,
       browserColors: privateBrowsingManager.browserColors,
+      isBottomToolbar: false,
       additionalButtons: [shortcutButton]
     )
     updateForTraitCollection()
@@ -447,7 +449,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   private func updateForTraitCollection() {
     let toolbarSizeCategory = traitCollection.toolbarButtonContentSizeCategory
     let pointSize = UIFontMetrics(forTextStyle: .body).scaledValue(
-      for: 28,
+      for: 24,
       compatibleWith: .init(preferredContentSizeCategory: toolbarSizeCategory)
     )
     shieldsButton.snp.remakeConstraints {
@@ -751,10 +753,10 @@ class TopToolbarView: UIView, ToolbarProtocol {
     if cancelButton.isHidden == inOverlayMode {
       cancelButton.isHidden = !inOverlayMode
     }
-    backButton.isHidden = !toolbarIsShowing || inOverlayMode
-    forwardButton.isHidden = !toolbarIsShowing || inOverlayMode
-    shareButton.isHidden = !toolbarIsShowing || inOverlayMode
-    trailingItemsStackView.isHidden = !toolbarIsShowing || inOverlayMode
+    backButton.isHidden = toolbarIsShowing || inOverlayMode
+    forwardButton.isHidden = toolbarIsShowing || inOverlayMode
+    shareButton.isHidden = toolbarIsShowing || inOverlayMode
+    trailingItemsStackView.isHidden = toolbarIsShowing || inOverlayMode
     locationView.contentView.isHidden = inOverlayMode
     shieldsRewardsStack.isHidden = inOverlayMode
 

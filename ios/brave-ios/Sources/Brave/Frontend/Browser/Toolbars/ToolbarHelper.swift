@@ -113,14 +113,17 @@ class ToolbarHelper: NSObject {
   func updateForTraitCollection(
     _ traitCollection: UITraitCollection,
     browserColors: some BrowserColors,
+    isBottomToolbar: Bool,
     additionalButtons: [UIButton] = []
   ) {
     let toolbarTraitCollection = UITraitCollection(
       preferredContentSizeCategory: traitCollection.toolbarButtonContentSizeCategory
     )
     let config = UIImage.SymbolConfiguration(
-      pointSize: UIFont.preferredFont(forTextStyle: .body, compatibleWith: toolbarTraitCollection)
-        .pointSize,
+      pointSize: isBottomToolbar
+        ? UIFont.preferredFont(forTextStyle: .body, compatibleWith: toolbarTraitCollection)
+          .pointSize
+        : UIFontMetrics.default.scaledValue(for: 14, compatibleWith: toolbarTraitCollection),
       weight: .regular,
       scale: .large
     )
