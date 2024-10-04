@@ -162,7 +162,7 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
         networks: networks,
         visible: false
       )
-      var allTokens = await self.blockchainRegistry.allTokens(
+      let allTokens = await self.blockchainRegistry.allTokens(
         in: networks,
         includingUserDeleted: false
       )
