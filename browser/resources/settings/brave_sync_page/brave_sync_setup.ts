@@ -68,6 +68,11 @@ export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElement
 
   syncBrowserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance();
 
+  handleCreateBraveAccount_() {
+    this.syncCode = undefined
+    this.syncCodeDialogType = 'qr'
+  }
+
   async handleStartSyncChain_() {
     this.isGettingSyncCode_ = true
     const syncCode = await this.syncBrowserProxy_.getSyncCode()
