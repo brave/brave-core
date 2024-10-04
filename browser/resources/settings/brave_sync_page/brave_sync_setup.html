@@ -80,3 +80,12 @@
     on-done="handleSyncCodeDialogDone_"
   ></settings-brave-sync-code-dialog>
 </template>
+
+<template is="dom-if" if="[[braveAccountDialogType]]" restamp>
+  <settings-brave-account-dialog
+    code-type="{{braveAccountDialogType}}"
+    sync-code="{{syncCode}}"
+    sync-code-validation-error="{{syncCodeValidationError_}}"
+    on-done="handleSyncCodeDialogDone_"
+  ></settings-brave-account-dialog>
+</template>
