@@ -8,10 +8,22 @@
 #include <memory>
 
 #include "base/environment.h"
+#include "brave/browser/ethereum_remote_client/pref_names.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/constants/brave_services_key.h"
+#include "components/prefs/pref_service.h"
 
 namespace extensions {
+
+bool ShouldLoadEthereumRemoteClientExtension(PrefService* prefs) {
+  // Only load Crypto Wallets if it is set as the default wallet
+  auto default_wallet = brave_wallet::GetDefaultEthereumWallet(prefs);
+  const bool is_opted_into_cw = prefs->GetBoolean(kERCOptedIntoCryptoWallets);
+  return HasInfuraProjectID() && is_opted_into_cw &&
+         default_wallet == brave_wallet::mojom::DefaultWallet::CryptoWallets;
+}
 
 bool HasInfuraProjectID() {
   std::string project_id = GetInfuraProjectID();

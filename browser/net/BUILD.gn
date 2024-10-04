@@ -59,7 +59,10 @@ source_set("browser_tests") {
     ]
   }
   if (enable_tor) {
-    deps += [ "//brave/components/tor" ]
+    deps += [
+      "//brave/browser/tor",
+      "//brave/components/tor",
+    ]
   }
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }

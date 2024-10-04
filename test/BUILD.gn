@@ -1016,6 +1016,7 @@ test("brave_browser_tests") {
 
   if (enable_tor) {
     deps += [
+      "//brave/browser/tor",
       "//brave/browser/tor/test:browser_tests",
       "//brave/components/tor",
     ]

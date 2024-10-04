@@ -50,10 +50,6 @@ bool IsWebtorrentEnabled(content::BrowserContext* browser_context) {
   return registry->enabled_extensions().Contains(brave_webtorrent_extension_id);
 }
 
-bool IsWebtorrentPrefEnabled(PrefService* prefs) {
-  return prefs->GetBoolean(kWebTorrentEnabled);
-}
-
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kWebTorrentEnabled, true);
 }
@@ -92,4 +88,3 @@ bool IsTorrentFile(const GURL& url, const net::HttpResponseHeaders* headers) {
 }
 
 }  // namespace webtorrent
-

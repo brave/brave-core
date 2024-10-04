@@ -19,6 +19,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/browser/tor",
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/constants",
     "//brave/components/tor",
@@ -54,6 +55,7 @@ source_set("browser_tests") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser",
     "//brave/browser/brave_rewards",
+    "//brave/browser/tor",
     "//brave/common",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_component_updater/browser",

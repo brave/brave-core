@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/command_line.h"
-#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
@@ -36,10 +35,7 @@
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
-#include "brave/browser/ethereum_remote_client/pref_names.h"
 #include "brave/browser/extensions/ethereum_remote_client_util.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #endif
 
 using extensions::mojom::ManifestLocation;
@@ -130,11 +126,7 @@ void BraveComponentLoader::AddEthereumRemoteClientExtension() {
 
 void BraveComponentLoader::AddEthereumRemoteClientExtensionOnStartup() {
   // Only load Crypto Wallets if it is set as the default wallet
-  auto default_wallet = brave_wallet::GetDefaultEthereumWallet(profile_prefs_);
-  const bool is_opted_into_cw =
-      profile_prefs_->GetBoolean(kERCOptedIntoCryptoWallets);
-  if (HasInfuraProjectID() && is_opted_into_cw &&
-      default_wallet == brave_wallet::mojom::DefaultWallet::CryptoWallets) {
+  if (ShouldLoadEthereumRemoteClientExtension(profile_prefs_)) {
     AddEthereumRemoteClientExtension();
   }
 }
