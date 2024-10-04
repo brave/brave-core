@@ -25,10 +25,10 @@ namespace brave {
 
 namespace {
 
-const char kClassName[] = "brave::SafeBuiltins";
+constexpr char kClassName[] = "brave::SafeBuiltins";
 
 // see //extensions/renderer/safe_builtins.cc for details
-const char kScript[] =
+constexpr char kScript[] =
     "(function() {\n"
     "'use strict';\n"
     "native function Apply();\n"

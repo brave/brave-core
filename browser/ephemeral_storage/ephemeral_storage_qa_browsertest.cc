@@ -78,7 +78,7 @@ class TabActivationWaiter : public TabStripModelObserver {
 
 }  // namespace
 
-const char kEphemeralStorageTestPage[] = "/storage/ephemeral-storage.html";
+constexpr char kEphemeralStorageTestPage[] = "/storage/ephemeral-storage.html";
 
 typedef enum StorageResult {
   kSuccess,

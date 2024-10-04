@@ -12,7 +12,7 @@
 
 namespace {
 
-const char kTableName[] = "server_publisher_banner";
+constexpr char kTableName[] = "server_publisher_banner";
 
 }  // namespace
 

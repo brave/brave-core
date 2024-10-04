@@ -23,7 +23,7 @@ const wchar_t kProductPathName[] = L"Brave-Browser-Development";
 
 const size_t kProductPathNameLength = _countof(kProductPathName) - 1;
 
-const char kSafeBrowsingName[] = "chromium";
+constexpr char kSafeBrowsingName[] = "chromium";
 
 #if defined(OFFICIAL_BUILD)
 // Regarding the install switch, use the same values that are in

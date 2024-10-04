@@ -21,45 +21,46 @@ namespace brave_sync {
 namespace {
 
 // Stored as bip39 keywords (encrypted)
-const char kSyncV2Seed[] = "brave_sync_v2.seed";
-const char kSyncFailedDecryptSeedNoticeDismissed[] =
+constexpr char kSyncV2Seed[] = "brave_sync_v2.seed";
+constexpr char kSyncFailedDecryptSeedNoticeDismissed[] =
     "brave_sync_v2.failed_decrypt_seed_notice_dismissed";
-const char kSyncAccountDeletedNoticePending[] =
+constexpr char kSyncAccountDeletedNoticePending[] =
     "brave_sync_v2.account_deleted_notice_pending";
-const char kSyncLeaveChainDetails[] = "brave_sync_v2.diag.leave_chain_details";
+constexpr char kSyncLeaveChainDetails[] =
+    "brave_sync_v2.diag.leave_chain_details";
 
 // Deprecated
 // ============================================================================
-const char kSyncSeed[] = "brave_sync.seed";
-const char kSyncEnabled[] = "brave_sync.enabled";
-const char kSyncDeviceId[] = "brave_sync.device_id";
-const char kSyncDeviceIdV2[] = "brave_sync.device_id_v2";
-const char kSyncDeviceObjectId[] = "brave_sync.device_object_id";
-const char kSyncPrevSeed[] = "brave_sync.previous_seed";
-const char kSyncDeviceName[] = "brave_sync.device_name";
-const char kSyncBookmarksBaseOrder[] = "brave_sync.bookmarks_base_order";
-const char kSyncBookmarksEnabled[] = "brave_sync.bookmarks_enabled";
-const char kSyncSiteSettingsEnabled[] = "brave_sync.site_settings_enabled";
-const char kSyncHistoryEnabled[] = "brave_sync.history_enabled";
-const char kSyncLatestRecordTime[] = "brave_sync.latest_record_time";
-const char kSyncLatestDeviceRecordTime[] =
+constexpr char kSyncSeed[] = "brave_sync.seed";
+constexpr char kSyncEnabled[] = "brave_sync.enabled";
+constexpr char kSyncDeviceId[] = "brave_sync.device_id";
+constexpr char kSyncDeviceIdV2[] = "brave_sync.device_id_v2";
+constexpr char kSyncDeviceObjectId[] = "brave_sync.device_object_id";
+constexpr char kSyncPrevSeed[] = "brave_sync.previous_seed";
+constexpr char kSyncDeviceName[] = "brave_sync.device_name";
+constexpr char kSyncBookmarksBaseOrder[] = "brave_sync.bookmarks_base_order";
+constexpr char kSyncBookmarksEnabled[] = "brave_sync.bookmarks_enabled";
+constexpr char kSyncSiteSettingsEnabled[] = "brave_sync.site_settings_enabled";
+constexpr char kSyncHistoryEnabled[] = "brave_sync.history_enabled";
+constexpr char kSyncLatestRecordTime[] = "brave_sync.latest_record_time";
+constexpr char kSyncLatestDeviceRecordTime[] =
     "brave_sync.latest_device_record_time";
-const char kSyncLastFetchTime[] = "brave_sync.last_fetch_time";
-const char kSyncLastCompactTimeBookmarks[] =
+constexpr char kSyncLastFetchTime[] = "brave_sync.last_fetch_time";
+constexpr char kSyncLastCompactTimeBookmarks[] =
     "brave_sync.last_compact_time.bookmarks";
-const char kSyncDeviceList[] = "brave_sync.device_list";
-const char kSyncApiVersion[] = "brave_sync.api_version";
-const char kSyncMigrateBookmarksVersion[]
-                                       = "brave_sync.migrate_bookmarks_version";
-const char kSyncRecordsToResend[] = "brave_sync_records_to_resend";
-const char kSyncRecordsToResendMeta[] = "brave_sync_records_to_resend_meta";
-const char kDuplicatedBookmarksRecovered[] =
+constexpr char kSyncDeviceList[] = "brave_sync.device_list";
+constexpr char kSyncApiVersion[] = "brave_sync.api_version";
+constexpr char kSyncMigrateBookmarksVersion[] =
+    "brave_sync.migrate_bookmarks_version";
+constexpr char kSyncRecordsToResend[] = "brave_sync_records_to_resend";
+constexpr char kSyncRecordsToResendMeta[] = "brave_sync_records_to_resend_meta";
+constexpr char kDuplicatedBookmarksRecovered[] =
     "brave_sync_duplicated_bookmarks_recovered";
-const char kDuplicatedBookmarksMigrateVersion[] =
+constexpr char kDuplicatedBookmarksMigrateVersion[] =
     "brave_sync_duplicated_bookmarks_migrate_version";
-const char kSyncV1Migrated[] = "brave_sync_v2.v1_migrated";
-const char kSyncV1MetaInfoCleared[] = "brave_sync_v2.v1_meta_info_cleared";
-const char kSyncV2MigrateNoticeDismissed[] =
+constexpr char kSyncV1Migrated[] = "brave_sync_v2.v1_migrated";
+constexpr char kSyncV1MetaInfoCleared[] = "brave_sync_v2.v1_meta_info_cleared";
+constexpr char kSyncV2MigrateNoticeDismissed[] =
     "brave_sync_v2.migrate_notice_dismissed";
 // ============================================================================
 

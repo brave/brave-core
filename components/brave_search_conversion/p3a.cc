@@ -19,22 +19,22 @@ namespace brave_search_conversion::p3a {
 
 namespace {
 
-const char kButtonShownKey[] = "button.shown";
-const char kButtonTriggeredKey[] = "button.triggered";
-const char kNTPShownKey[] = "ntp.shown";
-const char kNTPTriggeredKey[] = "ntp.triggered";
-const char kBannerBShownKey[] = "banner_b.shown";
-const char kBannerBTriggeredKey[] = "banner_b.triggered";
-const char kBannerCShownKey[] = "banner_c.shown";
-const char kBannerCTriggeredKey[] = "banner_c.triggered";
-const char kBannerDShownKey[] = "banner_d.shown";
-const char kBannerDTriggeredKey[] = "banner_d.triggered";
-const char kDDGBannerCShownKey[] = "ddg_banner_c.shown";
-const char kDDGBannerCTriggeredKey[] = "ddg_banner_c.triggered";
-const char kDDGBannerDShownKey[] = "ddg_banner_d.shown";
-const char kDDGBannerDTriggeredKey[] = "ddg_banner_d.triggered";
+constexpr char kButtonShownKey[] = "button.shown";
+constexpr char kButtonTriggeredKey[] = "button.triggered";
+constexpr char kNTPShownKey[] = "ntp.shown";
+constexpr char kNTPTriggeredKey[] = "ntp.triggered";
+constexpr char kBannerBShownKey[] = "banner_b.shown";
+constexpr char kBannerBTriggeredKey[] = "banner_b.triggered";
+constexpr char kBannerCShownKey[] = "banner_c.shown";
+constexpr char kBannerCTriggeredKey[] = "banner_c.triggered";
+constexpr char kBannerDShownKey[] = "banner_d.shown";
+constexpr char kBannerDTriggeredKey[] = "banner_d.triggered";
+constexpr char kDDGBannerCShownKey[] = "ddg_banner_c.shown";
+constexpr char kDDGBannerCTriggeredKey[] = "ddg_banner_c.triggered";
+constexpr char kDDGBannerDShownKey[] = "ddg_banner_d.shown";
+constexpr char kDDGBannerDTriggeredKey[] = "ddg_banner_d.triggered";
 
-const char kSwitchSearchEngineMetric[] = "Brave.Search.SwitchEngine";
+constexpr char kSwitchSearchEngineMetric[] = "Brave.Search.SwitchEngine";
 
 const int kMaxStoredQueryCount = 41;
 const int kQueriesBeforeChurnBuckets[] = {0, 1, 2, 5, 10, 20, 40};

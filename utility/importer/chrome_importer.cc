@@ -54,10 +54,10 @@ namespace {
 // Most of below code is copied from os_crypt_win.cc
 #if BUILDFLAG(IS_WIN)
 // Contains base64 random key encrypted with DPAPI.
-const char kOsCryptEncryptedKeyPrefName[] = "os_crypt.encrypted_key";
+constexpr char kOsCryptEncryptedKeyPrefName[] = "os_crypt.encrypted_key";
 
 // Key prefix for a key encrypted with DPAPI.
-const char kDPAPIKeyPrefix[] = "DPAPI";
+constexpr char kDPAPIKeyPrefix[] = "DPAPI";
 
 bool DecryptStringWithDPAPI(const std::string& ciphertext,
                             std::string* plaintext) {

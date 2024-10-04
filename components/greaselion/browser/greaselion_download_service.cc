@@ -45,21 +45,21 @@ bool StartFilePathWatcher(base::FilePathWatcher* watcher,
 }
 #endif
 
-const char kRuleNameFormat[] = "greaselion-%zu";
+constexpr char kRuleNameFormat[] = "greaselion-%zu";
 // Greaselion.json keys
-const char kPreconditions[] = "preconditions";
-const char kURLs[] = "urls";
-const char kScripts[] = "scripts";
-const char kRunAt[] = "run_at";
-const char kMessages[] = "messages";
+constexpr char kPreconditions[] = "preconditions";
+constexpr char kURLs[] = "urls";
+constexpr char kScripts[] = "scripts";
+constexpr char kRunAt[] = "run_at";
+constexpr char kMessages[] = "messages";
 // Note(petemill): "brave" instead of "browser" version in order
 // to preserve some sense of cross-browser targetting of the scripts.
-const char kMinimumBraveVersion[] = "minimum_brave_version";
+constexpr char kMinimumBraveVersion[] = "minimum_brave_version";
 // precondition keys
-const char kRewards[] = "rewards-enabled";
-const char kAutoContribution[] = "auto-contribution-enabled";
-const char kAds[] = "ads-enabled";
-const char kSupportsMinimumBraveVersion[] =
+constexpr char kRewards[] = "rewards-enabled";
+constexpr char kAutoContribution[] = "auto-contribution-enabled";
+constexpr char kAds[] = "ads-enabled";
+constexpr char kSupportsMinimumBraveVersion[] =
     "supports-minimum-brave-version";
 
 }  // namespace

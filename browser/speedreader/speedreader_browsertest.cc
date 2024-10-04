@@ -67,26 +67,28 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
 
-const char kTestHost[] = "a.test";
-const char kTestPageSimple[] = "/simple.html";
-const char kTestPageReadable[] = "/speedreader/article/guardian.html";
-const char kTestEsPageReadable[] = "/speedreader/article/es.html";
-const char kTestPageReadableOnUnreadablePath[] =
+constexpr char kTestHost[] = "a.test";
+constexpr char kTestPageSimple[] = "/simple.html";
+constexpr char kTestPageReadable[] = "/speedreader/article/guardian.html";
+constexpr char kTestEsPageReadable[] = "/speedreader/article/es.html";
+constexpr char kTestPageReadableOnUnreadablePath[] =
     "/speedreader/pages/simple.html";
-const char kTestPageRedirect[] = "/articles/redirect_me.html";
-const char kTestXml[] = "/speedreader/article/rss.xml";
-const char kTestTtsSimple[] = "/speedreader/article/simple.html";
-const char kTestTtsTags[] = "/speedreader/article/tags.html";
-const char kTestTtsStructure[] = "/speedreader/article/structure.html";
-const char kTestErrorPage[] = "/speedreader/article/page_not_reachable.html";
-const char kTestCSPHtmlPage[] = "/speedreader/article/csp_html.html";
-const char kTestCSPHttpPage[] = "/speedreader/article/csp_http.html";
-const char kTestCSPHackEquivPage[] = "/speedreader/article/csp_hack_equiv.html";
-const char kTestCSPHackCharsetPage[] =
+constexpr char kTestPageRedirect[] = "/articles/redirect_me.html";
+constexpr char kTestXml[] = "/speedreader/article/rss.xml";
+constexpr char kTestTtsSimple[] = "/speedreader/article/simple.html";
+constexpr char kTestTtsTags[] = "/speedreader/article/tags.html";
+constexpr char kTestTtsStructure[] = "/speedreader/article/structure.html";
+constexpr char kTestErrorPage[] =
+    "/speedreader/article/page_not_reachable.html";
+constexpr char kTestCSPHtmlPage[] = "/speedreader/article/csp_html.html";
+constexpr char kTestCSPHttpPage[] = "/speedreader/article/csp_http.html";
+constexpr char kTestCSPHackEquivPage[] =
+    "/speedreader/article/csp_hack_equiv.html";
+constexpr char kTestCSPHackCharsetPage[] =
     "/speedreader/article/csp_hack_charset.html";
-const char kTestCSPOrderPage1[] = "/speedreader/article/csp_order_1.html";
-const char kTestCSPOrderPage2[] = "/speedreader/article/csp_order_2.html";
-const char kTestCSPInBodyPage[] = "/speedreader/article/csp_in_body.html";
+constexpr char kTestCSPOrderPage1[] = "/speedreader/article/csp_order_1.html";
+constexpr char kTestCSPOrderPage2[] = "/speedreader/article/csp_order_2.html";
+constexpr char kTestCSPInBodyPage[] = "/speedreader/article/csp_in_body.html";
 
 class SpeedReaderBrowserTest : public InProcessBrowserTest {
  public:

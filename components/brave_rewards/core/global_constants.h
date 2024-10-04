@@ -9,12 +9,12 @@
 namespace brave_rewards::internal {
 namespace constant {
 
-const char kWalletUphold[] = "uphold";
-const char kWalletUnBlinded[] = "blinded";
-const char kWalletBitflyer[] = "bitflyer";
-const char kWalletGemini[] = "gemini";
-const char kWalletZebPay[] = "zebpay";
-const char kWalletSolana[] = "solana";
+inline constexpr char kWalletUphold[] = "uphold";
+inline constexpr char kWalletUnBlinded[] = "blinded";
+inline constexpr char kWalletBitflyer[] = "bitflyer";
+inline constexpr char kWalletGemini[] = "gemini";
+inline constexpr char kWalletZebPay[] = "zebpay";
+inline constexpr char kWalletSolana[] = "solana";
 
 }  // namespace constant
 }  // namespace brave_rewards::internal

@@ -21,7 +21,7 @@
 
 namespace {
 
-const char kDefaultAcceptHeaderValue[] = "*/*";
+constexpr char kDefaultAcceptHeaderValue[] = "*/*";
 
 }  // namespace
 

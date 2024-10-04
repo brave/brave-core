@@ -18,8 +18,8 @@ namespace brave_rewards::internal::database {
 
 namespace {
 
-const char kTableName[] = "contribution_info";
-const char kChildTableName[] = "contribution_info_publishers";
+constexpr char kTableName[] = "contribution_info";
+constexpr char kChildTableName[] = "contribution_info_publishers";
 
 }  // namespace
 

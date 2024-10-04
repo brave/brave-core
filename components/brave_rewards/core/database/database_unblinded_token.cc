@@ -19,7 +19,7 @@ namespace brave_rewards::internal::database {
 
 namespace {
 
-const char kTableName[] = "unblinded_tokens";
+constexpr char kTableName[] = "unblinded_tokens";
 
 }  // namespace
 

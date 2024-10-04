@@ -13,7 +13,7 @@ namespace blink {
 
 namespace {
 
-const char kHandwritingDisabledError[] =
+constexpr char kHandwritingDisabledError[] =
     "Feature \"Handwriting Recognition\" is disabled.";
 
 }  // namespace

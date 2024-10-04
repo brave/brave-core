@@ -23,7 +23,7 @@
 #include "url/gurl.h"
 
 namespace {
-const char16_t k_youtube_background_playback_script[] =
+constexpr char16_t kYoutubeBackgroundPlaybackScript[] =
     u"(function() {"
     "    if (document._addEventListener === undefined) {"
     "        document._addEventListener = document.addEventListener;"
@@ -76,7 +76,7 @@ void BackgroundVideoPlaybackTabHelper::DidFinishNavigation(
   }
   if (IsBackgroundVideoPlaybackEnabled(web_contents())) {
     web_contents()->GetPrimaryMainFrame()->ExecuteJavaScript(
-        k_youtube_background_playback_script, base::NullCallback());
+        kYoutubeBackgroundPlaybackScript, base::NullCallback());
   }
 }
 

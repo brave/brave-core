@@ -27,11 +27,11 @@
 
 using brave_shields::ControlType;
 
-const char kEmbeddedTestServerDirectory[] = "canvas";
-const char kTitleScript[] = "document.title;";
-const char kExpectedImageDataHashFarblingBalanced[] = "204";
-const char kExpectedImageDataHashFarblingOff[] = "0";
-const char kExpectedImageDataHashFarblingMaximum[] = "204";
+constexpr char kEmbeddedTestServerDirectory[] = "canvas";
+constexpr char kTitleScript[] = "document.title;";
+constexpr char kExpectedImageDataHashFarblingBalanced[] = "204";
+constexpr char kExpectedImageDataHashFarblingOff[] = "0";
+constexpr char kExpectedImageDataHashFarblingMaximum[] = "204";
 
 class BraveOffscreenCanvasFarblingBrowserTest : public InProcessBrowserTest {
  public:

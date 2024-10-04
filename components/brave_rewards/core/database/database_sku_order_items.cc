@@ -15,7 +15,7 @@ namespace brave_rewards::internal::database {
 
 namespace {
 
-const char kTableName[] = "sku_order_items";
+constexpr char kTableName[] = "sku_order_items";
 
 }  // namespace
 

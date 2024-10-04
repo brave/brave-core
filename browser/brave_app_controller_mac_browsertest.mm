@@ -49,7 +49,7 @@ using bookmarks::BookmarkNode;
 
 namespace {
 
-const char kTestingPage[] = "/empty.html";
+constexpr char kTestingPage[] = "/empty.html";
 
 class BraveAppControllerBrowserTest : public InProcessBrowserTest {
  public:

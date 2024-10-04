@@ -25,7 +25,7 @@
 
 namespace {
 
-const char kScript[] = R"(
+constexpr char kScript[] = R"(
       (() => {
         return new Promise((resolve) => {
           document.title = 'test';

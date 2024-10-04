@@ -24,7 +24,7 @@
 #include "net/test/test_data_directory.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
-const char kMockSecureHostname[] = "example-secure.test";
+constexpr char kMockSecureHostname[] = "example-secure.test";
 struct SecurityIndicatorTestParams {
   bool use_secure_url;
   net::CertStatus cert_status;

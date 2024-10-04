@@ -29,7 +29,7 @@
 
 namespace {
 
-const char kCountryIDAtInstall[] = "countryid_at_install";
+constexpr char kCountryIDAtInstall[] = "countryid_at_install";
 
 std::string GetHostFromTemplateURLData(const TemplateURLData& data) {
   return TemplateURL(data).url_ref().GetHost(SearchTermsData());

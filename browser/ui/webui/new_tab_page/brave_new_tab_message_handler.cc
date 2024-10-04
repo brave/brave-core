@@ -124,7 +124,8 @@ constexpr char kNTPCustomizeUsageStatus[] =
 constexpr char kCustomizeUsageHistogramName[] =
     "Brave.NTP.CustomizeUsageStatus.2";
 
-const char kNeedsBrowserUpgradeToServeAds[] = "needsBrowserUpgradeToServeAds";
+constexpr char kNeedsBrowserUpgradeToServeAds[] =
+    "needsBrowserUpgradeToServeAds";
 
 }  // namespace
 

@@ -12,9 +12,9 @@ namespace webcompat_reporter {
 
 namespace {
 
-const char kAggressive[] = "aggressive";
-const char kStandard[] = "standard";
-const char kAllow[] = "allow";
+constexpr char kAggressive[] = "aggressive";
+constexpr char kStandard[] = "standard";
+constexpr char kAllow[] = "allow";
 
 }  // namespace
 

@@ -48,11 +48,11 @@ constexpr char kObsoleteShieldCookies[] =
 constexpr char kBraveShieldsFPSettingsMigration[] =
     "brave.shields_fp_settings_migration";
 
-const char kExpirationPath[] = "expiration";
-const char kLastModifiedPath[] = "last_modified";
-const char kSessionModelPath[] = "model";
-const char kSettingPath[] = "setting";
-const char kPerResourcePath[] = "per_resource";
+constexpr char kExpirationPath[] = "expiration";
+constexpr char kLastModifiedPath[] = "last_modified";
+constexpr char kSessionModelPath[] = "model";
+constexpr char kSettingPath[] = "setting";
+constexpr char kPerResourcePath[] = "per_resource";
 
 std::unique_ptr<Rule> CloneRule(const Rule* original_rule) {
   DCHECK(original_rule);

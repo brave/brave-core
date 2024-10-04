@@ -17,7 +17,7 @@ namespace brave_rewards::internal {
 
 namespace {
 
-const char kTableName[] = "balance_report_info";
+constexpr char kTableName[] = "balance_report_info";
 
 std::string GetBalanceReportId(mojom::ActivityMonth month, int year) {
   return base::StringPrintf("%u_%u", year, base::to_underlying(month));

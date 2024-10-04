@@ -41,14 +41,14 @@ namespace ai_chat {
 
 namespace {
 
-const char16_t kYoutubeTranscriptUrlExtractionScript[] =
+constexpr char16_t kYoutubeTranscriptUrlExtractionScript[] =
     uR"JS(
       (function() {
         return ytplayer?.config?.args?.raw_player_response?.captions?.playerCaptionsTracklistRenderer?.captionTracks
       })()
     )JS";
 
-const char16_t kVideoTrackTranscriptUrlExtractionScript[] =
+constexpr char16_t kVideoTrackTranscriptUrlExtractionScript[] =
     // TODO(petemill): Make more informed srclang choice.
     // TODO(petemill): Observe <video>.textTracks
     uR"JS(

@@ -51,10 +51,10 @@ const int kFaviconSize = 16;
 
 namespace {
 
-const char kBookmarkFaviconFetcherKey[] = "bookmark-favicon-fetcher";
+constexpr char kBookmarkFaviconFetcherKey[] = "bookmark-favicon-fetcher";
 
 // File header.
-const char kHeader[] =
+constexpr char kHeader[] =
     "<!DOCTYPE NETSCAPE-Bookmark-file-1>\r\n"
     "<!-- This is an automatically generated file.\r\n"
     "     It will be read and overwritten.\r\n"
@@ -66,37 +66,37 @@ const char kHeader[] =
     "<DL><p>\r\n";
 
 // Newline separator.
-const char kNewline[] = "\r\n";
+constexpr char kNewline[] = "\r\n";
 
 // The following are used for bookmarks.
 
 // Start of a bookmark.
-const char kBookmarkStart[] = "<DT><A HREF=\"";
+constexpr char kBookmarkStart[] = "<DT><A HREF=\"";
 // After kBookmarkStart.
-const char kAddDate[] = "\" ADD_DATE=\"";
+constexpr char kAddDate[] = "\" ADD_DATE=\"";
 // After kAddDate.
-const char kIcon[] = "\" ICON=\"";
+constexpr char kIcon[] = "\" ICON=\"";
 // After kIcon.
-const char kBookmarkAttributeEnd[] = "\">";
+constexpr char kBookmarkAttributeEnd[] = "\">";
 // End of a bookmark.
-const char kBookmarkEnd[] = "</A>";
+constexpr char kBookmarkEnd[] = "</A>";
 
 // The following are used when writing folders.
 
 // Start of a folder.
-const char kFolderStart[] = "<DT><H3 ADD_DATE=\"";
+constexpr char kFolderStart[] = "<DT><H3 ADD_DATE=\"";
 // After kFolderStart.
-const char kLastModified[] = "\" LAST_MODIFIED=\"";
+constexpr char kLastModified[] = "\" LAST_MODIFIED=\"";
 // After kLastModified when writing the bookmark bar.
-const char kBookmarkBar[] = "\" PERSONAL_TOOLBAR_FOLDER=\"true\">";
+constexpr char kBookmarkBar[] = "\" PERSONAL_TOOLBAR_FOLDER=\"true\">";
 // After kLastModified when writing a user created folder.
-const char kFolderAttributeEnd[] = "\">";
+constexpr char kFolderAttributeEnd[] = "\">";
 // End of the folder.
-const char kFolderEnd[] = "</H3>";
+constexpr char kFolderEnd[] = "</H3>";
 // Start of the children of a folder.
-const char kFolderChildren[] = "<DL><p>";
+constexpr char kFolderChildren[] = "<DL><p>";
 // End of the children for a folder.
-const char kFolderChildrenEnd[] = "</DL><p>";
+constexpr char kFolderChildrenEnd[] = "</DL><p>";
 
 // Number of characters to indent by.
 const size_t kIndentSize = 4;

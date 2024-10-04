@@ -19,7 +19,7 @@ namespace brave_rewards::internal {
 
 namespace {
 
-const char kTableName[] = "publisher_prefix_list";
+constexpr char kTableName[] = "publisher_prefix_list";
 
 constexpr size_t kHashPrefixSize = 4;
 constexpr size_t kMaxInsertRecords = 100'000;

@@ -22,7 +22,7 @@ namespace cosmetic_filters {
 
 namespace {
 
-const char kSecurityOrigin[] = "chrome://cosmetic_filters";
+constexpr char kSecurityOrigin[] = "chrome://cosmetic_filters";
 
 void EnsureIsolatedWorldInitialized(int world_id) {
   static std::optional<int> last_used_world_id;

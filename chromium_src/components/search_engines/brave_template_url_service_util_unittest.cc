@@ -28,7 +28,7 @@ extern void LocalizeEngineList(int country_id,
 
 namespace {
 
-const char kCountryIDAtInstall[] = "countryid_at_install";
+constexpr char kCountryIDAtInstall[] = "countryid_at_install";
 
 std::unique_ptr<TemplateURLData> CreatePrepopulateTemplateURLData(
     int prepopulate_id,

@@ -11,7 +11,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 
-const char kBatteryTest[] = "/battery.html";
+constexpr char kBatteryTest[] = "/battery.html";
 
 class NavigatorGetBatteryDisabledTest : public InProcessBrowserTest {
  public:

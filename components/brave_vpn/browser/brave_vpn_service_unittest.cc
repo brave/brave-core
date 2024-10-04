@@ -54,7 +54,7 @@
 namespace brave_vpn {
 
 namespace {
-const char kTestVpnOrders[] = R"(
+constexpr char kTestVpnOrders[] = R"(
 {
     "credentials":
     {

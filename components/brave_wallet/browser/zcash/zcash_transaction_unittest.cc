@@ -19,12 +19,12 @@ using testing::_;
 
 namespace brave_wallet {
 namespace {
-const char kTxid1[] =
+constexpr char kTxid1[] =
     "aa388f50b725767653e150ad8990ec11a2146d75acafbe492af08213849fe2c5";
-const char kTxid2[] =
+constexpr char kTxid2[] =
     "bd1c9cfb126a519f3ee593bbbba41a0f9d55b4d267e9483673a848242bc5c2be";
-const char kAddress1[] = "t1WU75sSfiPbK5ez33uuhEbd9ZD3XNCxMRj";
-const char kAddress2[] = "t1MmQ8PGfRygwhSK6qyianhMtb5tixuK8ZS";
+constexpr char kAddress1[] = "t1WU75sSfiPbK5ez33uuhEbd9ZD3XNCxMRj";
+constexpr char kAddress2[] = "t1MmQ8PGfRygwhSK6qyianhMtb5tixuK8ZS";
 
 }  // namespace
 

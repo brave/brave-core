@@ -28,13 +28,13 @@ namespace brave_vpn {
 
 namespace {
 
-const char kProfileCredentialData[] = R"(
+constexpr char kProfileCredentialData[] = R"(
         {
           "eap-username": "brave-user",
           "eap-password": "brave-pwd"
         }
       )";
-const char kHostNamesTestData[] = R"([
+constexpr char kHostNamesTestData[] = R"([
         {
           "hostname": "host-1.brave.com",
           "display-name": "host-1",

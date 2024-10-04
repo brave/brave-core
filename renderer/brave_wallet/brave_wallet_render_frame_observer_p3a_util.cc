@@ -17,9 +17,9 @@ namespace brave_wallet {
 
 namespace {
 
-const char kEthereumProviderObjectKey[] = "ethereum";
-const char kSolanaProviderObjectKey[] = "solana";
-const char kIsBraveWalletPropertyName[] = "isBraveWallet";
+constexpr char kEthereumProviderObjectKey[] = "ethereum";
+constexpr char kSolanaProviderObjectKey[] = "solana";
+constexpr char kIsBraveWalletPropertyName[] = "isBraveWallet";
 
 }  // namespace
 
