@@ -211,8 +211,8 @@ constexpr auto kOrderedLangCodes = base::MakeFixedFlatSet<std::string_view>(
     });
 
 constexpr LanguageSynonymPair kLanguageSynonyms[] = {
-    {"in", "id"}, {"iw", "he"}, {"ji", "yi"}, {"jw", "jv"}, {"mo", "ro"},
-};
+    {"in", "id"}, {"iw", "he"}, {"ji", "yi"},
+    {"jw", "jv"}, {"mo", "ro"}, {"gsw", "de"}};
 
 LanguageMetrics::LanguageMetrics(PrefService* profile_prefs)
     : profile_prefs_(profile_prefs) {
