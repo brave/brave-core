@@ -129,20 +129,20 @@ ImageData* BaseRenderingContext2D::getImageData(
 bool BaseRenderingContext2D::isPointInPath(ScriptState* script_state,
                                            const double x,
                                            const double y,
-                                           const String& winding_rule_string) {
+                                           const V8CanvasFillRule& winding) {
   if (!AllowFingerprintingFromScriptState(script_state))
     return false;
-  return isPointInPath(x, y, winding_rule_string);
+  return isPointInPath(x, y, winding);
 }
 
 bool BaseRenderingContext2D::isPointInPath(ScriptState* script_state,
                                            Path2D* dom_path,
                                            const double x,
                                            const double y,
-                                           const String& winding_rule_string) {
+                                           const V8CanvasFillRule& winding) {
   if (!AllowFingerprintingFromScriptState(script_state))
     return false;
-  return isPointInPath(dom_path, x, y, winding_rule_string);
+  return isPointInPath(dom_path, x, y, winding);
 }
 
 bool BaseRenderingContext2D::isPointInStroke(ScriptState* script_state,
