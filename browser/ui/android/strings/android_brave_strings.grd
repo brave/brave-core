@@ -1400,7 +1400,7 @@ Are you sure you want to do this?
         Brave VPN encrypts and protects anything you do online, even outside the Brave browser.
       </message>
       <message name="IDS_BRAVE_NEW_TAB_PRIVATE_VPN_CTA" desc="VPN call to action text shown when a user opens a private tab explaining private mode">
-        Try for free for 7 days
+        Try free for 7 days
       </message>
       <message name="IDS_NOTIFICATION_CATEGORY_BRAVE_ADS_BACKGROUND" desc="Label for Brave Ads in background.">
         Brave Ads sent when browser is in the background

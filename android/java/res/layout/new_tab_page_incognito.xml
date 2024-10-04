@@ -199,6 +199,20 @@
                 android:textColor="@color/primitive_private_window_80"
                 android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@+id/tv_third_title"
+                app:layout_constraintBottom_toTopOf="@+id/tv_try_vpn"
+                app:layout_constraintStart_toStartOf="@id/tv_third_title"
+                app:layout_constraintEnd_toEndOf="@id/tv_third_title"
+                />
+
+            <TextView
+                android:id="@+id/tv_try_vpn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_new_tab_private_vpn_cta"
+                android:textColor="@color/primitive_private_window_60"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/tv_third_description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tv_third_title"
                 app:layout_constraintEnd_toEndOf="@id/tv_third_title"
