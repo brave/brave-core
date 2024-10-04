@@ -12,10 +12,13 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "content/public/browser/web_ui_message_handler.h"
+#include "content/public/browser/webui_config.h"
+#include "content/public/common/url_constants.h"
 
 namespace content {
 class RenderWidgetHostView;
@@ -23,6 +26,15 @@ class WebUI;
 }
 
 namespace webcompat_reporter {
+
+class WebcompatReporterUI;
+
+class WebcompatReporterUIConfig
+    : public content::DefaultWebUIConfig<WebcompatReporterUI> {
+ public:
+  WebcompatReporterUIConfig()
+      : DefaultWebUIConfig(content::kChromeUIScheme, kWebcompatReporterHost) {}
+};
 
 class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
  public:
@@ -60,7 +72,7 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
 
 class WebcompatReporterUI : public ConstrainedWebDialogUI {
  public:
-  WebcompatReporterUI(content::WebUI* web_ui, const std::string& host);
+  explicit WebcompatReporterUI(content::WebUI* web_ui);
   WebcompatReporterUI(const WebcompatReporterUI&) = delete;
   WebcompatReporterUI& operator=(const WebcompatReporterUI&) = delete;
   ~WebcompatReporterUI() override;
