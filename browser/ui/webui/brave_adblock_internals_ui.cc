@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <optional>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -130,12 +131,11 @@ class BraveAdblockInternalsMessageHandler
 
 }  // namespace
 
-BraveAdblockInternalsUI::BraveAdblockInternalsUI(content::WebUI* web_ui,
-                                                 const std::string& name)
+BraveAdblockInternalsUI::BraveAdblockInternalsUI(content::WebUI* web_ui)
     : content::WebUIController(web_ui) {
-  CreateAndAddWebUIDataSource(web_ui, name, kBraveAdblockInternalsGenerated,
-                              kBraveAdblockInternalsGeneratedSize,
-                              IDR_BRAVE_ADBLOCK_INTERNALS_HTML);
+  CreateAndAddWebUIDataSource(
+      web_ui, kAdblockInternalsHost, kBraveAdblockInternalsGenerated,
+      kBraveAdblockInternalsGeneratedSize, IDR_BRAVE_ADBLOCK_INTERNALS_HTML);
 
   web_ui->AddMessageHandler(
       std::make_unique<BraveAdblockInternalsMessageHandler>());

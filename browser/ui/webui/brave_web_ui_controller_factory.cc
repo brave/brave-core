@@ -13,8 +13,6 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
-#include "brave/browser/ui/webui/brave_adblock_internals_ui.h"
-#include "brave/browser/ui/webui/brave_adblock_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_web_ui_utils.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
@@ -93,11 +91,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   auto host = url.host_piece();
   Profile* profile = Profile::FromBrowserContext(
       web_ui->GetWebContents()->GetBrowserContext());
-  if (host == kAdblockHost) {
-    return new BraveAdblockUI(web_ui, url.host());
-  } else if (host == kAdblockInternalsHost) {
-    return new BraveAdblockInternalsUI(web_ui, url.host());
-  } else if (host == kSkusInternalsHost) {
+  if (host == kSkusInternalsHost) {
     return new SkusInternalsUI(web_ui, url.host());
 #if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWebcompatReporterHost) {
@@ -186,9 +180,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
     return nullptr;
   }
 
-  if (url.host_piece() == kAdblockHost ||
-      url.host_piece() == kAdblockInternalsHost ||
-      url.host_piece() == kWebcompatReporterHost ||
+  if (url.host_piece() == kWebcompatReporterHost ||
       (url.host_piece() == kSkusInternalsHost &&
        base::FeatureList::IsEnabled(skus::features::kSkusFeature)) ||
 #if BUILDFLAG(IS_ANDROID)

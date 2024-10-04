@@ -6,13 +6,23 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_ADBLOCK_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_ADBLOCK_UI_H_
 
-#include <string>
-
+#include "brave/components/constants/webui_url_constants.h"
 #include "content/public/browser/web_ui_controller.h"
+#include "content/public/browser/webui_config.h"
+#include "content/public/common/url_constants.h"
+
+class BraveAdblockUI;
+
+class BraveAdblockUIConfig
+    : public content::DefaultWebUIConfig<BraveAdblockUI> {
+ public:
+  BraveAdblockUIConfig()
+      : DefaultWebUIConfig(content::kChromeUIScheme, kAdblockHost) {}
+};
 
 class BraveAdblockUI : public content::WebUIController {
  public:
-  BraveAdblockUI(content::WebUI* web_ui, const std::string& host);
+  explicit BraveAdblockUI(content::WebUI* web_ui);
   ~BraveAdblockUI() override;
   BraveAdblockUI(const BraveAdblockUI&) = delete;
   BraveAdblockUI& operator=(const BraveAdblockUI&) = delete;
