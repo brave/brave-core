@@ -55,6 +55,7 @@ export interface Props {
   noMinCardHeight?: boolean
   noBorderRadius?: boolean
   useDarkBackground?: boolean
+  useCardInPanel?: boolean
   useFullHeight?: boolean
   isPortfolio?: boolean
   children?: React.ReactNode
@@ -74,6 +75,7 @@ export const WalletPageWrapper = (props: Props) => {
     noMinCardHeight,
     noBorderRadius,
     useDarkBackground,
+    useCardInPanel,
     useFullHeight,
     isPortfolio
   } = props
@@ -93,6 +95,9 @@ export const WalletPageWrapper = (props: Props) => {
   const [headerBackgroundOpacity, setHeaderBackgroundOpacity] =
     React.useState<number>(0)
   const [headerHeight, setHeaderHeight] = React.useState<number>(0)
+
+  // Computed
+  const shouldUsePanelCard = useCardInPanel && isPanel
 
   // Refs
   let scrollRef = React.useRef<HTMLDivElement | null>(null)
@@ -200,6 +205,7 @@ export const WalletPageWrapper = (props: Props) => {
               useDarkBackground={useDarkBackground}
               useFullHeight={useFullHeight}
               noBackground={isPanel && isPortfolio}
+              usePanelCard={shouldUsePanelCard}
             >
               {children}
             </ContainerCard>
@@ -213,12 +219,12 @@ export const WalletPageWrapper = (props: Props) => {
                   shadowOpacity={headerShadowOpacity}
                   isPanel={isPanel}
                   isAndroid={isAndroid}
-                  useDarkBackground={useDarkBackground}
+                  useDarkBackground={useDarkBackground || shouldUsePanelCard}
                   backgroundOpacity={headerBackgroundOpacity}
                 >
                   <CardHeaderContentWrapper
                     dividerOpacity={headerDividerOpacity}
-                    hideDivider={hideDivider}
+                    hideDivider={shouldUsePanelCard || hideDivider}
                   >
                     {cardHeader}
                   </CardHeaderContentWrapper>

@@ -210,9 +210,10 @@ export const Accounts = () => {
     <WalletPageWrapper
       wrapContentInBox
       cardHeader={<AccountsHeader />}
+      useCardInPanel={true}
     >
       <Row
-        padding='8px'
+        padding='0px 8px 8px 8px'
         justifyContent='flex-start'
       >
         <SectionTitle>{getLocale('braveWalletAccounts')}</SectionTitle>

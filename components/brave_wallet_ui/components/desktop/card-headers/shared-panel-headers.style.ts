@@ -16,6 +16,8 @@ export const Button = styled(WalletButton)`
   outline: none;
   background: none;
   border: none;
+  padding: 0px;
+  margin: 0px;
 `
 
 export const ButtonIcon = styled(Icon)`

@@ -388,6 +388,7 @@ export const MarketAsset = () => {
       wrapContentInBox={true}
       noCardPadding={true}
       hideDivider={true}
+      useCardInPanel={true}
       cardHeader={
         <AssetDetailsHeader
           selectedTimeline={selectedTimeline}

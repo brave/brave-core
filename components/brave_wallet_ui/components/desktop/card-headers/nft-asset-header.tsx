@@ -20,7 +20,7 @@ import { getLocale } from '../../../../common/locale'
 import {
   MenuButton,
   HeaderTitle,
-  ButtonIcon,
+  MenuButtonIcon,
   SendButton
 } from './shared-card-headers.style'
 import { Row } from '../../shared/style'
@@ -55,7 +55,7 @@ export const NftAssetHeader = ({
           marginRight={16}
           onClick={onBack}
         >
-          <ButtonIcon
+          <MenuButtonIcon
             size={16}
             name='arrow-left'
           />

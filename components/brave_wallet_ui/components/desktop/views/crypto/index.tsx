@@ -7,6 +7,9 @@ import * as React from 'react'
 import { Route, useHistory, Switch, Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
+// Options
+import { ExploreNavOptions } from '../../../../options/nav-options'
+
 // utils
 import { loadTimeData } from '../../../../../common/loadTimeData'
 import { getLocale } from '../../../../../common/locale'
@@ -35,7 +38,11 @@ import {
 } from '../../../../common/hooks/use_portfolio_accounts'
 
 // style
-import { StyledWrapper } from './style'
+import {
+  StyledWrapper,
+  SegmentedControlsWrapperMarket,
+  SegmentedControlsWrapperWeb3
+} from './style'
 import { Column } from '../../../shared/style'
 
 // components
@@ -66,7 +73,9 @@ import {
 import { MarketAsset } from '../market/market_asset'
 import { ExploreWeb3View } from '../explore_web3/explore_web3'
 import { NftCollection } from '../nfts/components/nft_collection'
-
+import {
+  SegmentedControl //
+} from '../../../shared/segmented_control/segmented_control'
 export interface Props {
   sessionRoute: string | undefined
 }
@@ -310,10 +319,15 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           <WalletPageWrapper
             wrapContentInBox
             cardHeader={<ExploreWeb3Header />}
-            hideDivider
+            useCardInPanel={true}
           >
             <StyledWrapper>
-              {banners}
+              <SegmentedControlsWrapperMarket>
+                <SegmentedControl
+                  maxWidth='384px'
+                  navOptions={ExploreNavOptions}
+                />
+              </SegmentedControlsWrapperMarket>
               <MarketView />
             </StyledWrapper>
           </WalletPageWrapper>
@@ -325,7 +339,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         >
           <WalletPageWrapper wrapContentInBox={true}>
             <StyledWrapper>
-              {banners}
               <MarketAsset />
             </StyledWrapper>
           </WalletPageWrapper>
@@ -339,11 +352,16 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           <WalletPageWrapper
             wrapContentInBox
             cardHeader={<ExploreWeb3Header />}
-            hideDivider
+            useCardInPanel={true}
             noCardPadding
           >
             <StyledWrapper>
-              {banners}
+              <SegmentedControlsWrapperWeb3>
+                <SegmentedControl
+                  maxWidth='384px'
+                  navOptions={ExploreNavOptions}
+                />
+              </SegmentedControlsWrapperWeb3>
               <ExploreWeb3View />
             </StyledWrapper>
           </WalletPageWrapper>

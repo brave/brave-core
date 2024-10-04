@@ -11,7 +11,7 @@ import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.
 export const ControlsWrapper = styled(Column)`
   padding: 0px 32px;
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    padding: 0px 16px;
+    padding: 16px 16px 0px 16px;
   }
 `
 

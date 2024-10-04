@@ -51,7 +51,7 @@ export const MenuButton = styled(WalletButton)<{
   }
 `
 
-export const ButtonIcon = styled(Icon)<{
+export const MenuButtonIcon = styled(Icon)<{
   size?: number
 }>`
   --leo-icon-size: ${(p) => (p.size !== undefined ? p.size : 18)}px;

@@ -47,7 +47,7 @@ import { CreateNetworkIcon } from '../../shared/create-network-icon'
 // Styled Components
 import {
   MenuButton,
-  ButtonIcon,
+  MenuButtonIcon,
   MenuWrapper,
   HorizontalDivider
 } from './shared-card-headers.style'
@@ -61,6 +61,7 @@ import {
   IconsWrapper,
   NetworkIconWrapper
 } from './asset-details-header.style'
+import { Button, ButtonIcon } from './shared-panel-headers.style'
 import { Row, Column, HorizontalSpace } from '../../shared/style'
 import { Skeleton } from '../../shared/loading-skeleton/styles'
 
@@ -180,19 +181,30 @@ export const AssetDetailsHeader = (props: Props) => {
 
   return (
     <Row
-      padding={isPanel ? '12px 20px' : '24px 0px'}
+      padding={isPanel ? '20px 16px' : '24px 0px'}
       justifyContent='space-between'
     >
       <Row width='unset'>
-        <MenuButton
-          marginRight={16}
-          onClick={onBack}
-        >
-          <ButtonIcon
-            size={16}
-            name='arrow-left'
-          />
-        </MenuButton>
+        {isPanel ? (
+          <Row
+            width='unset'
+            margin='0px 12px 0px 0px'
+          >
+            <Button onClick={onBack}>
+              <ButtonIcon name='carat-left' />
+            </Button>
+          </Row>
+        ) : (
+          <MenuButton
+            marginRight={16}
+            onClick={onBack}
+          >
+            <MenuButtonIcon
+              size={16}
+              name='arrow-left'
+            />
+          </MenuButton>
+        )}
         <Row
           width='unset'
           gap='8px'
@@ -280,15 +292,29 @@ export const AssetDetailsHeader = (props: Props) => {
           !selectedAsset.isNft &&
           !isRewardsToken && (
             <>
-              <HorizontalSpace space='16px' />
-              <HorizontalDivider />
-              <HorizontalSpace space='16px' />
+              {isPanel ? (
+                <HorizontalSpace space='12px' />
+              ) : (
+                <>
+                  <HorizontalSpace space='16px' />
+                  <HorizontalDivider />
+                  <HorizontalSpace space='16px' />
+                </>
+              )}
               <MenuWrapper ref={assetDetailsMenuRef}>
-                <MenuButton
-                  onClick={() => setShowAssetDetailsMenu((prev) => !prev)}
-                >
-                  <ButtonIcon name='more-vertical' />
-                </MenuButton>
+                {isPanel ? (
+                  <Button
+                    onClick={() => setShowAssetDetailsMenu((prev) => !prev)}
+                  >
+                    <ButtonIcon name='more-vertical' />
+                  </Button>
+                ) : (
+                  <MenuButton
+                    onClick={() => setShowAssetDetailsMenu((prev) => !prev)}
+                  >
+                    <MenuButtonIcon name='more-vertical' />
+                  </MenuButton>
+                )}
                 {showAssetDetailsMenu && (
                   <AssetDetailsMenu
                     assetSymbol={selectedAsset?.symbol ?? ''}

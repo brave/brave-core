@@ -62,7 +62,7 @@ export const DefaultPanelHeader = (props: Props) => {
 
   return (
     <Row
-      padding='18px 16px'
+      padding='12px 16px'
       justifyContent='space-between'
     >
       <LeftRightContainer

@@ -70,11 +70,12 @@ import {
 } from './account-details-header.style'
 import {
   MenuButton,
-  ButtonIcon,
+  MenuButtonIcon,
   MenuWrapper,
   HorizontalDivider
 } from './shared-card-headers.style'
 import { Row, Column, HorizontalSpace } from '../../shared/style'
+import { Button, ButtonIcon } from './shared-panel-headers.style'
 
 interface Props {
   account: BraveWallet.AccountInfo
@@ -218,15 +219,26 @@ export const AccountDetailsHeader = (props: Props) => {
       justifyContent='space-between'
     >
       <Row width='unset'>
-        <MenuButton
-          marginRight={16}
-          onClick={goBack}
-        >
-          <ButtonIcon
-            size={16}
-            name='arrow-left'
-          />
-        </MenuButton>
+        {isPanel ? (
+          <Row
+            width='unset'
+            margin='0px 12px 0px 0px'
+          >
+            <Button onClick={goBack}>
+              <ButtonIcon name='carat-left' />
+            </Button>
+          </Row>
+        ) : (
+          <MenuButton
+            marginRight={16}
+            onClick={goBack}
+          >
+            <MenuButtonIcon
+              size={16}
+              name='arrow-left'
+            />
+          </MenuButton>
+        )}
         <CreateAccountIcon
           account={account}
           size='huge'
@@ -281,11 +293,17 @@ export const AccountDetailsHeader = (props: Props) => {
           </>
         )}
         <MenuWrapper ref={accountDetailsMenuRef}>
-          <MenuButton
-            onClick={() => setShowAccountDetailsMenu((prev) => !prev)}
-          >
-            <ButtonIcon name='more-vertical' />
-          </MenuButton>
+          {isPanel ? (
+            <Button onClick={() => setShowAccountDetailsMenu((prev) => !prev)}>
+              <ButtonIcon name='more-vertical' />
+            </Button>
+          ) : (
+            <MenuButton
+              onClick={() => setShowAccountDetailsMenu((prev) => !prev)}
+            >
+              <MenuButtonIcon name='more-vertical' />
+            </MenuButton>
+          )}
           {showAccountDetailsMenu && (
             <AccountDetailsMenu
               options={menuOptions}

@@ -25,7 +25,7 @@ import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import {
   HeaderTitle,
   MenuButton,
-  ButtonIcon
+  MenuButtonIcon
 } from './shared-card-headers.style'
 import { Row } from '../../shared/style'
 
@@ -46,7 +46,7 @@ export const PortfolioOverviewHeader = () => {
       <HeaderTitle>{getLocale('braveWalletTopNavPortfolio')}</HeaderTitle>
       {/* ToDo: Route to Add Token or Add NFT, to be handled in https://github.com/brave/brave-browser/issues/37258 */}
       <MenuButton onClick={() => history.push(WalletRoutes.AddAssetModal)}>
-        <ButtonIcon name='plus-add' />
+        <MenuButtonIcon name='plus-add' />
       </MenuButton>
     </Row>
   )
