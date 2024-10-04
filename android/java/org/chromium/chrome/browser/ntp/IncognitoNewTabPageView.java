@@ -6,15 +6,20 @@
 package org.chromium.chrome.browser.ntp;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.InternetConnection;
+import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.components.content_settings.CookieControlsEnforcement;
 import org.chromium.ui.base.ViewUtils;
+import org.chromium.ui.widget.Toast;
 
 /** The New Tab Page to use in the incognito profile. */
 public class IncognitoNewTabPageView extends FrameLayout {
@@ -25,11 +30,7 @@ public class IncognitoNewTabPageView extends FrameLayout {
     private int mSnapshotWidth;
     private int mSnapshotHeight;
     private int mSnapshotScrollY;
-
-    private int mWidthDp;
-    private int mHeightDp;
-
-    private static final int WIDE_LAYOUT_THRESHOLD_DP = 720;
+    private TextView mVpnCta;
 
     /**
      * Manages the view interaction with the rest of the system.
@@ -69,16 +70,23 @@ public class IncognitoNewTabPageView extends FrameLayout {
         super.onFinishInflate();
 
         mScrollView = (NewTabPageScrollView) findViewById(R.id.ntp_scrollview);
-        mScrollView.setBackgroundColor(getContext().getColor(R.color.ntp_bg_incognito));
-        setContentDescription(
-                getResources().getText(R.string.accessibility_new_incognito_tab_page));
 
         // FOCUS_BEFORE_DESCENDANTS is needed to support keyboard shortcuts. Otherwise, pressing
         // any shortcut causes the UrlBar to be focused. See ViewRootImpl.leaveTouchMode().
         mScrollView.setDescendantFocusability(FOCUS_BEFORE_DESCENDANTS);
 
-        mWidthDp = getContext().getResources().getConfiguration().screenWidthDp;
-        mHeightDp = getContext().getResources().getConfiguration().screenHeightDp;
+        mVpnCta = findViewById(R.id.tv_try_vpn);
+        if (BraveVpnUtils.isVpnFeatureSupported(getContext()) && !BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+            mVpnCta.setOnClickListener(v -> {
+                if (!InternetConnection.isNetworkAvailable(getContext())) {
+                    Toast.makeText(getContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
+                } else {
+                    BraveVpnUtils.openBraveVpnPlansActivity(getContext());
+                }
+            });
+        } else {
+            mVpnCta.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -164,18 +172,5 @@ public class IncognitoNewTabPageView extends FrameLayout {
             mManager.onLoadingComplete();
             mFirstShow = false;
         }
-    }
-
-    @Override
-    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        // View#onConfigurationChanged() doesn't get called when resizing this view in
-        // multi-window mode, so #onMeasure() is used instead.
-        Configuration config = getContext().getResources().getConfiguration();
-        if (mWidthDp != config.screenWidthDp || mHeightDp != config.screenHeightDp) {
-            mWidthDp = config.screenWidthDp;
-            mHeightDp = config.screenHeightDp;
-        }
-
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 }
