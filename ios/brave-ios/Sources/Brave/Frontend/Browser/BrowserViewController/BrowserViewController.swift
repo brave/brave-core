@@ -3303,9 +3303,6 @@ extension BrowserViewController: PreferencesObserver {
             ?? Preferences.General.defaultPageZoomLevel.value
         $0.webView?.setValue(zoomLevel, forKey: PageZoomHandler.propertyName)
       })
-    case ShieldPreferences.httpsUpgradeLevelRaw.key:
-      tabManager.reset()
-      tabManager.reloadSelectedTab()
     case Preferences.Privacy.blockAllCookies.key,
       Preferences.Shields.googleSafeBrowsing.key:
       // All `block all cookies` toggle requires a hard reset of Webkit configuration.
