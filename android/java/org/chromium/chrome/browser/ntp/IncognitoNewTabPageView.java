@@ -32,9 +32,7 @@ public class IncognitoNewTabPageView extends FrameLayout {
     private int mSnapshotScrollY;
     private TextView mVpnCta;
 
-    /**
-     * Manages the view interaction with the rest of the system.
-     */
+    /** Manages the view interaction with the rest of the system. */
     interface IncognitoNewTabPageManager {
         /** Loads a page explaining details about incognito mode in the current tab. */
         void loadIncognitoLearnMore();
@@ -76,14 +74,17 @@ public class IncognitoNewTabPageView extends FrameLayout {
         mScrollView.setDescendantFocusability(FOCUS_BEFORE_DESCENDANTS);
 
         mVpnCta = findViewById(R.id.tv_try_vpn);
-        if (BraveVpnUtils.isVpnFeatureSupported(getContext()) && !BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
-            mVpnCta.setOnClickListener(v -> {
-                if (!InternetConnection.isNetworkAvailable(getContext())) {
-                    Toast.makeText(getContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
-                } else {
-                    BraveVpnUtils.openBraveVpnPlansActivity(getContext());
-                }
-            });
+        if (BraveVpnUtils.isVpnFeatureSupported(getContext())
+                && !BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+            mVpnCta.setOnClickListener(
+                    v -> {
+                        if (!InternetConnection.isNetworkAvailable(getContext())) {
+                            Toast.makeText(getContext(), R.string.no_internet, Toast.LENGTH_SHORT)
+                                    .show();
+                        } else {
+                            BraveVpnUtils.openBraveVpnPlansActivity(getContext());
+                        }
+                    });
         } else {
             mVpnCta.setVisibility(View.GONE);
         }
@@ -91,6 +92,7 @@ public class IncognitoNewTabPageView extends FrameLayout {
 
     /**
      * Initialize the incognito New Tab Page.
+     *
      * @param manager The manager that handles external dependencies of the view.
      */
     void initialize(IncognitoNewTabPageManager manager) {
