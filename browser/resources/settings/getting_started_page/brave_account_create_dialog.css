@@ -1,0 +1,116 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * you can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #css_wrapper_metadata_end */
+
+.label {
+  color: var(--leo-color-text-primary);
+  font: var(--leo-font-small-semibold);
+  margin: 0px 0px 0px 4px;
+}
+
+leo-input {
+  --leo-control-border-color: var(--leo-color-divider-strong);
+}
+
+leo-input:not(:focus).red-border {
+  --leo-control-border-color: var(--leo-color-systemfeedback-error-icon);
+}
+
+#password_strength_indicator {
+  --primary-color: inherit;
+  --secondary-color: inherit;
+  align-items: center;
+  display: flex;
+  height: 16px;
+  justify-content: space-between;
+  margin: -16px 0px 0px 0px;
+  padding: 0px 4px;
+  position: relative;
+  transition: 750ms;
+  z-index: -1;
+}
+
+#password_strength_indicator.weak {
+  --primary-color: var(--leo-color-systemfeedback-error-icon);
+  --secondary-color: var(--leo-color-systemfeedback-error-background);
+}
+
+#password_strength_indicator.medium {
+  --primary-color: var(--leo-color-systemfeedback-warning-icon);
+  --secondary-color: var(--leo-color-systemfeedback-warning-background);
+}
+
+#password_strength_indicator.strong {
+  --primary-color: var(--leo-color-systemfeedback-success-icon);
+  --secondary-color: var(--leo-color-systemfeedback-success-background);
+}
+
+#password_strength_indicator.visible {
+  margin: 4px 0px 0px 0px;
+}
+
+.password-strength-bar {
+  background-color: var(--secondary-color);
+  border-radius: var(--leo-radius-m);
+  height: 4px;
+  transition: 750ms;
+  width: 344px;
+}
+
+#password_strength_value {
+  background-color: var(--primary-color);
+  border-radius: var(--leo-radius-m);
+  height: 100%;
+  transition: 750ms;
+  width: 0%;
+}
+
+#password_strength_category {
+  color: var(--primary-color);
+  font: var(--leo-font-x-small-regular);
+  transition: 750ms;
+}
+
+.password-confirmation-result {
+  --leo-icon-size: 14px;
+  align-items: center;
+  display: flex;
+  font: var(--leo-font-x-small-regular);
+  gap: 4px;
+  margin: -16px 0px 0px 4px;
+  position: relative;
+  transition: 750ms;
+  z-index: -1;
+}
+
+.password-confirmation-result.visible {
+  margin: 4px 0px 0px 4px;
+}
+
+leo-checkbox a {
+  color: var(--leo-color-text-interactive);
+  font: var(--leo-font-default-link);
+  text-decoration-skip-ink: none;
+  text-underline-offset: 2.8px;
+}
+
+leo-icon[name="check-circle-filled"] {
+  color: var(--leo-color-text-interactive);
+}
+
+leo-icon[name="check-circle-filled"] + div {
+  color: var(--leo-color-text-interactive);
+}
+
+leo-icon[name="warning-triangle-filled"] {
+  color: var(--leo-color-systemfeedback-error-icon);
+}
+
+leo-icon[name="warning-triangle-filled"] + div {
+  color: var(--leo-color-systemfeedback-error-text);
+}
