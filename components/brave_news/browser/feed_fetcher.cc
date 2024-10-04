@@ -39,7 +39,7 @@ namespace brave_news {
 
 namespace {
 
-const char kEtagHeaderKey[] = "etag";
+constexpr char kEtagHeaderKey[] = "etag";
 
 GURL GetFeedUrl(const std::string& locale) {
   GURL feed_url("https://" + brave_news::GetHostname() + "/brave-today/feed." +

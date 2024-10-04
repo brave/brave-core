@@ -71,17 +71,17 @@
 #include "brave/components/playlist/common/features.h"
 #endif
 
-const char kAdBlockTestPage[] = "/blocking.html";
+constexpr char kAdBlockTestPage[] = "/blocking.html";
 
-const char kAdBlockEasyListFranceUUID[] =
+constexpr char kAdBlockEasyListFranceUUID[] =
     "9852EFC4-99E4-4F2D-A915-9C3196C7A1DE";
 
-const char kDefaultAdBlockComponentTestId[] =
+constexpr char kDefaultAdBlockComponentTestId[] =
     "naccapggpomhlhoifnlebfoocegenbol";
-const char kRegionalAdBlockComponentTestId[] =
+constexpr char kRegionalAdBlockComponentTestId[] =
     "dlpmaigjliompnelofkljgcmlenklieh";
 
-const char kDefaultAdBlockComponentTest64PublicKey[] =
+constexpr char kDefaultAdBlockComponentTest64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtV7Vr69kkvSvu2lhcMDh"
     "j4Jm3FKU1zpUkALaum5719/cccVvGpMKKFyy4WYXsmAfcIONmGO4ThK/q6jkgC5v"
     "8HrkjPOf7HHebKEnsJJucz/Z1t6dq0CE+UA2IWfbGfFM4nJ8AKIv2gqiw2d4ydAs"
@@ -89,7 +89,7 @@ const char kDefaultAdBlockComponentTest64PublicKey[] =
     "Qdk+dZ9r8NRQnpjChQzwhMAkxyrdjT1N7NcfTufiYQTOyiFvxPAC9D7vAzkpGgxU"
     "Ikylk7cYRxqkRGS/AayvfipJ/HOkoBd0yKu1MRk4YcKGd/EahDAhUtd9t4+v33Qv"
     "uwIDAQAB";
-const char kRegionalAdBlockComponentTest64PublicKey[] =
+constexpr char kRegionalAdBlockComponentTest64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoKYkdDM8vWZXBbDJXTP6"
     "1m9yLuH9iL/TvqAqu1zOd91VJu4bpcCMZjfGPC1g+O+pZrCaFVv5NJeZxGqT6DUB"
     "RZUdXPkGGUC1ebS4LLJbggNQb152LFk8maR0/ItvMOW8eTcV8VFKHk4UrVhPTggf"

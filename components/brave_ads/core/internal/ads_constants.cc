@@ -7,12 +7,12 @@
 
 namespace brave_ads {
 
-const char kDatabaseFilename[] = "database.sqlite";
+constexpr char kDatabaseFilename[] = "database.sqlite";
 
-const char kClientJsonFilename[] = "client.json";
+constexpr char kClientJsonFilename[] = "client.json";
 
-const char kConfirmationsJsonFilename[] = "confirmations.json";
+constexpr char kConfirmationsJsonFilename[] = "confirmations.json";
 
-const char kCatalogJsonSchemaDataResourceName[] = "catalog-schema.json";
+constexpr char kCatalogJsonSchemaDataResourceName[] = "catalog-schema.json";
 
 }  // namespace brave_ads

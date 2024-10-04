@@ -11,9 +11,9 @@
 namespace brave_rewards::internal {
 namespace constant {
 
-const char kClearFavicon[] = "clear";
+inline constexpr char kClearFavicon[] = "clear";
 
-const char kIgnorePublisherBlob[] = "ignore";
+inline constexpr char kIgnorePublisherBlob[] = "ignore";
 
 const uint64_t kReconcileInterval =
     30 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;

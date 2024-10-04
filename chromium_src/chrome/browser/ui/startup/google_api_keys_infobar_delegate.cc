@@ -6,7 +6,7 @@
 #include "google_apis/google_api_keys.h"
 
 namespace google_apis {
-const char kBraveAPIKeysDevelopersHowToURL[] =
+constexpr char kBraveAPIKeysDevelopersHowToURL[] =
     "https://community.brave.com";
 }  // namespace google_apis
 

@@ -23,8 +23,8 @@
 namespace {
 
 // request-otr.json keys
-const char kInclude[] = "include";
-const char kExclude[] = "exclude";
+constexpr char kInclude[] = "include";
+constexpr char kExclude[] = "exclude";
 
 // Removes trailing dot from |host_piece| if any.
 // Copied from extensions/common/url_pattern.cc

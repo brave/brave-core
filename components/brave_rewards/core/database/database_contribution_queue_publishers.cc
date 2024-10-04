@@ -16,7 +16,7 @@ namespace brave_rewards::internal::database {
 
 namespace {
 
-const char kTableName[] = "contribution_queue_publishers";
+constexpr char kTableName[] = "contribution_queue_publishers";
 
 }  // namespace
 

@@ -73,9 +73,9 @@ std::pair<base::FilePath, base::FilePath> InitTorPath(
 }  // namespace
 
 #if BUILDFLAG(IS_WIN)
-const char kTorClientComponentName[] = "Brave Tor Client Updater (Windows)";
-const char kTorClientComponentId[] = "cpoalefficncklhjfpglfiplenlpccdb";
-const char kTorClientComponentBase64PublicKey[] =
+constexpr char kTorClientComponentName[] = "Brave Tor Client Updater (Windows)";
+constexpr char kTorClientComponentId[] = "cpoalefficncklhjfpglfiplenlpccdb";
+constexpr char kTorClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1AYAsmR/VoRwkZCsjRpD"
     "58xjrgngW5y17H6BqQ7/CeNSpmXlcMXy6bJs2D/yeS96rhZSrQSHTzS9h/ieo/NZ"
     "F5PIwcv07YsG5sRd6zF5a6m92aWCQa1OkbL6jpcpL2Tbc4mCqNxhKMErT7EtIIWL"
@@ -84,9 +84,9 @@ const char kTorClientComponentBase64PublicKey[] =
     "IuZjyySVzGNcOfASeHkhxhlwMQSQuhCN5mdFW5YBnVZ/5QWx8WzbhqBny/ZynS4e"
     "rQIDAQAB";
 #elif BUILDFLAG(IS_MAC)
-const char kTorClientComponentName[] = "Brave Tor Client Updater (Mac)";
-const char kTorClientComponentId[] = "cldoidikboihgcjfkhdeidbpclkineef";
-const char kTorClientComponentBase64PublicKey[] =
+constexpr char kTorClientComponentName[] = "Brave Tor Client Updater (Mac)";
+constexpr char kTorClientComponentId[] = "cldoidikboihgcjfkhdeidbpclkineef";
+constexpr char kTorClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw2QUXSbVuRxYpItYApZ8"
     "Ly/fGeUD3A+vb3J7Ot62CF32wTfWweANWyyB+EBGfbtNDAuRlAbNk0QYeCQEttuf"
     "jLh3Kd5KR5fSyyNNd2cAzAckQ8p7JdiFYjvqZLGC5vlnHgqq4O8xACX5EPwHLNFD"
@@ -95,10 +95,10 @@ const char kTorClientComponentBase64PublicKey[] =
     "9CBOMNjaHeCVz0MKxdCWGPieQM0R7S1KvDCVqAkss6NAbLB6AVM0JulqxC9b+hr/"
     "xwIDAQAB";
 #elif BUILDFLAG(IS_LINUX)
-const char kTorClientComponentName[] = "Brave Tor Client Updater (Linux)";
+constexpr char kTorClientComponentName[] = "Brave Tor Client Updater (Linux)";
 #if defined(ARCH_CPU_ARM64)
-const char kTorClientComponentId[] = "monolafkoghdlanndjfeebmdfkbklejg";
-const char kTorClientComponentBase64PublicKey[] =
+constexpr char kTorClientComponentId[] = "monolafkoghdlanndjfeebmdfkbklejg";
+constexpr char kTorClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzqb14fggDpbjZtv3HKmR"
     "UTnvfDTcqVbVZo0DdCHQi6SwxDlRweGwsvsHuy9U37VBr41ha/neemQGf+5qkWgY"
     "y+mzzAkb5ZtrHkBSOOsZdyO9WEj7GwXuAx9FvcxG2zPpA/CvagnC14VhMyUFLL8v"
@@ -107,8 +107,8 @@ const char kTorClientComponentBase64PublicKey[] =
     "KveT4LgWtObrHoZtrg+/LnHAi1GYf8PHrRc+o/FptobOWoUN5lt8NvhLjv85ERBt"
     "rQIDAQAB";
 #else
-const char kTorClientComponentId[] = "biahpgbdmdkfgndcmfiipgcebobojjkp";
-const char kTorClientComponentBase64PublicKey[] =
+constexpr char kTorClientComponentId[] = "biahpgbdmdkfgndcmfiipgcebobojjkp";
+constexpr char kTorClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAseuq8dXKawkZC7RSE7xb"
     "lRwh6DD+oPEGEjZWKh596/42IrWNQw60gRIR6s7x0YHh5geFnBRkx9bisEXOrFkq"
     "oArVY7eD0gMkjpor9CneD5CnCxc9/2uIPajtXfAmmLAHtN6Wk7yW30SkRf/WvLWX"

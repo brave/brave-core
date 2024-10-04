@@ -36,10 +36,10 @@
 
 namespace {
 
-const char kEmbeddedTestServerDirectory[] = "brave-wallet";
-const char kSomeChainId[] = "0xabcde";
+constexpr char kEmbeddedTestServerDirectory[] = "brave-wallet";
+constexpr char kSomeChainId[] = "0xabcde";
 
-const char kScriptWaitForEvent[] = R"(
+constexpr char kScriptWaitForEvent[] = R"(
     new Promise(resolve => {
       const timer = setInterval(function () {
         if (request_finished) {
@@ -50,7 +50,7 @@ const char kScriptWaitForEvent[] = R"(
     });
   )";
 
-const char kScriptRunAndCheckAddChainResult[] = R"(
+constexpr char kScriptRunAndCheckAddChainResult[] = R"(
     new Promise(resolve => {
       const timer = setInterval(function () {
         if (!window.ethereum)
@@ -70,7 +70,7 @@ const char kScriptRunAndCheckAddChainResult[] = R"(
     });
   )";
 
-const char kScriptRunEmptyAndCheckChainResult[] = R"(
+constexpr char kScriptRunEmptyAndCheckChainResult[] = R"(
     new Promise(resolve => {
       const timer = setInterval(function () {
         if (!window.ethereum)

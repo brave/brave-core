@@ -23,9 +23,9 @@
 #include "components/crash/core/app/run_as_crashpad_handler_win.h"
 
 namespace {
-const char kUserDataDir[] = "user-data-dir";
-const char kProcessType[] = "type";
-const char kLogFile[] = "log-file";
+constexpr char kUserDataDir[] = "user-data-dir";
+constexpr char kProcessType[] = "type";
+constexpr char kLogFile[] = "log-file";
 }  // namespace
 
 int main(int argc, char* argv[]) {

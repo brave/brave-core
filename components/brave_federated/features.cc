@@ -12,31 +12,31 @@ namespace brave_federated::features {
 
 namespace {
 
-const char kFieldTrialParameterOperationalPatternsEnabled[] =
+constexpr char kFieldTrialParameterOperationalPatternsEnabled[] =
     "operational_patterns_enabled";
 const bool kDefaultOperationalPatternsEnabled = false;
 
-const char kFieldTrialParameterCollectionIDLifetimeInSeconds[] =
+constexpr char kFieldTrialParameterCollectionIDLifetimeInSeconds[] =
     "collection_id_lifetime_in_seconds";
 const int kDefaultCollectionIdLifetimeInSeconds = 1 * base::Time::kHoursPerDay *
                                                   base::Time::kMinutesPerHour *
                                                   base::Time::kSecondsPerMinute;
 
-const char kFieldTrialParameterCollectionSlotSizeInSeconds[] =
+constexpr char kFieldTrialParameterCollectionSlotSizeInSeconds[] =
     "collection_slot_size_in_seconds";
 const int kDefaultCollectionSlotSizeInSeconds =
     30 * base::Time::kSecondsPerMinute;
 
-const char kFieldTrialParameterCollectionTimerIntervalInSeconds[] =
+constexpr char kFieldTrialParameterCollectionTimerIntervalInSeconds[] =
     "collection_timer_interval_in_seconds";
 const int kDefaultCollectionTimerIntervalInSeconds =
     1 * base::Time::kSecondsPerMinute;
 
-const char kFieldTrialParameterMockTaskDurationInSeconds[] =
+constexpr char kFieldTrialParameterMockTaskDurationInSeconds[] =
     "mock_task_duration_in_seconds";
 const int kDefaultMockTaskDurationInSeconds = 2 * base::Time::kSecondsPerMinute;
 
-const char kFieldTrialParameterMockCollectionRequests[] =
+constexpr char kFieldTrialParameterMockCollectionRequests[] =
     "mock_collection_requests";
 const bool kDefaultMockCollectionRequests = false;
 

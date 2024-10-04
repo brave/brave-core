@@ -31,9 +31,9 @@
 
 namespace brave_vpn {
 namespace {
-const char kCustomServersURLs[] =
+constexpr char kCustomServersURLs[] =
     "https://server1.com\nhttps://server2.com/{?dns}";
-const char kCloudflareDnsProviderURL[] =
+constexpr char kCloudflareDnsProviderURL[] =
     "https://chrome.cloudflare-dns.com/dns-query";
 }  // namespace
 

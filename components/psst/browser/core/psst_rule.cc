@@ -22,11 +22,11 @@
 namespace {
 
 // psst.json keys
-const char kInclude[] = "include";
-const char kExclude[] = "exclude";
-const char kVersion[] = "version";
-const char kTestScript[] = "test_script";
-const char kPolicyScript[] = "policy_script";
+constexpr char kInclude[] = "include";
+constexpr char kExclude[] = "exclude";
+constexpr char kVersion[] = "version";
+constexpr char kTestScript[] = "test_script";
+constexpr char kPolicyScript[] = "policy_script";
 
 bool GetURLPatternSetFromValue(const base::Value* value,
                                extensions::URLPatternSet* result) {

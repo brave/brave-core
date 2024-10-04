@@ -16,7 +16,7 @@
 #include "url/url_constants.h"
 
 namespace {
-const char kInvalidUrl[] = "https://no-thanks.invalid";
+constexpr char kInvalidUrl[] = "https://no-thanks.invalid";
 }  // namespace
 
 void CheckUrl(const std::string& test_url,

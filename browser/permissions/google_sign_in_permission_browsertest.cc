@@ -42,19 +42,19 @@ using net::test_server::EmbeddedTestServer;
 
 namespace {
 
-const char kAccountsGoogleUrl[] = "https://accounts.google.com";
-const char kEmbeddingPageUrl[] = "/google_sign_in_link.html";
-const char kTestDomain[] = "a.com";
-const char kThirdPartyTestDomain[] = "b.com";
+constexpr char kAccountsGoogleUrl[] = "https://accounts.google.com";
+constexpr char kEmbeddingPageUrl[] = "/google_sign_in_link.html";
+constexpr char kTestDomain[] = "a.com";
+constexpr char kThirdPartyTestDomain[] = "b.com";
 
 // Used to identify the buttons on the test page.
-const char kGoogleAuthButtonHtmlId[] = "auth-button-google";
-const char kFirebaseAuthButtonHtmlId[] = "auth-button-firebase";
-const char kGoogleAuthButtonWithoutParamHtmlId[] =
+constexpr char kGoogleAuthButtonHtmlId[] = "auth-button-google";
+constexpr char kFirebaseAuthButtonHtmlId[] = "auth-button-firebase";
+constexpr char kGoogleAuthButtonWithoutParamHtmlId[] =
     "auth-button-google-without-param";
-const char kFirebaseAuthButtonDiffParamHtmlId[] =
+constexpr char kFirebaseAuthButtonDiffParamHtmlId[] =
     "auth-button-firebase-diff-param";
-const char kGoogleAuthButtonPopupHtmlId[] = "auth-button-google-popup";
+constexpr char kGoogleAuthButtonPopupHtmlId[] = "auth-button-google-popup";
 
 }  // namespace
 

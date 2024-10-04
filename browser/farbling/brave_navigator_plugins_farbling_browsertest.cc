@@ -30,8 +30,8 @@ using brave_shields::ControlType;
 
 namespace {
 
-const char kPluginsLengthScript[] = "navigator.plugins.length;";
-const char kNavigatorPdfViewerEnabledCrashTest[] =
+constexpr char kPluginsLengthScript[] = "navigator.plugins.length;";
+constexpr char kNavigatorPdfViewerEnabledCrashTest[] =
     "navigator.pdfViewerEnabled == navigator.pdfViewerEnabled";
 
 }  // namespace

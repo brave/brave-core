@@ -15,7 +15,8 @@
 
 namespace component_updater {
 
-const char kFileTypePoliciesComponentId[] = "khaoiebndkojlmppeemjhbpbandiljpe";
+constexpr char kFileTypePoliciesComponentId[] =
+    "khaoiebndkojlmppeemjhbpbandiljpe";
 
 void OnFileTypePoliciesRegistered() {
   brave_component_updater::BraveOnDemandUpdater::GetInstance()->EnsureInstalled(

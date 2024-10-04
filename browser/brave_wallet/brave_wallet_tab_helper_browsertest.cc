@@ -35,7 +35,7 @@
 
 namespace {
 
-const char kEmbeddedTestServerDirectory[] = "brave-wallet";
+constexpr char kEmbeddedTestServerDirectory[] = "brave-wallet";
 
 base::OnceClosure ShowChooserBubble(
     content::WebContents* contents,

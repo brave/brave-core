@@ -66,8 +66,8 @@ namespace brave_wallet {
 
 namespace {
 
-const char kPasswordBrave[] = "brave";
-const char kPasswordBrave123[] = "brave123";
+constexpr char kPasswordBrave[] = "brave";
+constexpr char kPasswordBrave123[] = "brave123";
 
 struct ImportData {
   const char* network;

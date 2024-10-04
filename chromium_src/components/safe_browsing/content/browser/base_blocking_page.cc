@@ -7,7 +7,7 @@
 
 namespace {
 
-const char kSafeBrowsingHelpCenterURL[] =
+constexpr char kSafeBrowsingHelpCenterURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "15222663599629-Safe-Browsing-in-Brave";
 

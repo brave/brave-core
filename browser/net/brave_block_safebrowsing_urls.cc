@@ -14,7 +14,7 @@
 
 namespace brave {
 
-const char kDummyUrl[] = "https://no-thanks.invalid";
+constexpr char kDummyUrl[] = "https://no-thanks.invalid";
 
 bool IsSafeBrowsingReportingURL(const GURL& gurl) {
   static const base::NoDestructor<std::vector<URLPattern>> allowed_patterns({

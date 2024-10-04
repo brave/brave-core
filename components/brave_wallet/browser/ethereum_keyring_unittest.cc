@@ -20,7 +20,7 @@
 using testing::ElementsAre;
 
 namespace {
-const char kMnemonic[] =
+constexpr char kMnemonic[] =
     "home various adjust motion canvas stand combine gravity cluster behave "
     "despair dove";
 }

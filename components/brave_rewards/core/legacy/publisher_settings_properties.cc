@@ -20,14 +20,15 @@ namespace brave_rewards::internal {
 namespace {
 
 // Do not change these values as they are required to transition legacy state
-const char kAllowNonVerifiedSitesInListKey[] = "allow_non_verified";
+constexpr char kAllowNonVerifiedSitesInListKey[] = "allow_non_verified";
 // There is a spelling error with min_pubslisher_duration, however we cannot
 // change this otherwise we will break legacy installs. This will be resolved as
 // part of https://github.com/brave/brave-browser/issues/7024
-const char kMinPageTimeBeforeLoggingAVisitKey[] = "min_pubslisher_duration";
-const char kMinVisitsForPublisherRelevancy[] = "min_visits";
-const char kMonthlyBalancesKey[] = "monthly_balances";
-const char kProcessedPendingPublishersKey[] = "processed_pending_publishers";
+constexpr char kMinPageTimeBeforeLoggingAVisitKey[] = "min_pubslisher_duration";
+constexpr char kMinVisitsForPublisherRelevancy[] = "min_visits";
+constexpr char kMonthlyBalancesKey[] = "monthly_balances";
+constexpr char kProcessedPendingPublishersKey[] =
+    "processed_pending_publishers";
 
 }  // namespace
 

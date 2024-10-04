@@ -15,7 +15,7 @@
 
 using BraveMainDelegateBrowserTest = PlatformBrowserTest;
 
-const char kBraveOriginTrialsPublicKey[] =
+constexpr char kBraveOriginTrialsPublicKey[] =
     "bYUKPJoPnCxeNvu72j4EmPuK7tr1PAC7SHh8ld9Mw3E=,"
     "fMS4mpO6buLQ/QMd+zJmxzty/VQ6B1EUZqoCU04zoRU=";
 

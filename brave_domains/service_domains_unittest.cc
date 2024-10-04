@@ -23,9 +23,9 @@ namespace brave_domains {
 namespace {
 
 // Setup expected answers based on the buildflag values
-const char kProductionValue[] = BUILDFLAG(BRAVE_SERVICES_PRODUCTION_DOMAIN);
-const char kStagingValue[] = BUILDFLAG(BRAVE_SERVICES_STAGING_DOMAIN);
-const char kDevValue[] = BUILDFLAG(BRAVE_SERVICES_DEV_DOMAIN);
+constexpr char kProductionValue[] = BUILDFLAG(BRAVE_SERVICES_PRODUCTION_DOMAIN);
+constexpr char kStagingValue[] = BUILDFLAG(BRAVE_SERVICES_STAGING_DOMAIN);
+constexpr char kDevValue[] = BUILDFLAG(BRAVE_SERVICES_DEV_DOMAIN);
 
 }  // namespace
 

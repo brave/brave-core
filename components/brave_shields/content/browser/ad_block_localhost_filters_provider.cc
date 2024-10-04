@@ -21,7 +21,7 @@ void AddDATBufferToFilterSet(DATFileDataBuffer buffer,
   (*filter_set)->add_filter_list(buffer);
 }
 
-const char kLocalhostBadfilters[] = R"(
+constexpr char kLocalhostBadfilters[] = R"(
 ||0.0.0.0^$third-party,domain=~[::]|~[::ffff:0:0],badfilter
 ||[::]^$third-party,domain=~0.0.0.0|~[::ffff:0:0],badfilter
 ||[::ffff:0:0]^$third-party,domain=~0.0.0.0|~[::],badfilter

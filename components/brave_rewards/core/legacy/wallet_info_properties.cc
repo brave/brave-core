@@ -17,9 +17,9 @@ namespace brave_rewards::internal {
 namespace {
 
 // Do not change these values as they are required to transition legacy state
-const char kPaymentIdKey[] = "paymentId";
-const char kAddressCardIdKey[] = "addressCARD_ID";
-const char kKeyInfoSeedKey[] = "keyInfoSeed";
+constexpr char kPaymentIdKey[] = "paymentId";
+constexpr char kAddressCardIdKey[] = "addressCARD_ID";
+constexpr char kKeyInfoSeedKey[] = "keyInfoSeed";
 
 }  // namespace
 

@@ -11,7 +11,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 
-const char kStorageEstimateTest[] = "/storage_estimate.html";
+constexpr char kStorageEstimateTest[] = "/storage_estimate.html";
 
 class NavigatorStorageEstimateQuotaTest : public InProcessBrowserTest {
  public:

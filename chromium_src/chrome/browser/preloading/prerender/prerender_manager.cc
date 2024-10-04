@@ -6,9 +6,9 @@
 #include "chrome/browser/preloading/prerender/prerender_manager.h"
 
 namespace internal {
-const char kHistogramPrerenderPredictionStatusDefaultSearchEngine[] =
+constexpr char kHistogramPrerenderPredictionStatusDefaultSearchEngine[] =
     "Prerender.Experimental.PredictionStatus.DefaultSearchEngine";
-const char kHistogramPrerenderPredictionStatusDirectUrlInput[] =
+constexpr char kHistogramPrerenderPredictionStatusDirectUrlInput[] =
     "Prerender.Experimental.PredictionStatus.DirectUrlInput";
 }  // namespace internal
 

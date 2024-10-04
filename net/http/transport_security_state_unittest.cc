@@ -18,7 +18,7 @@ namespace net {
 
 namespace {
 
-const char kHSTSHeaderValue[] = "max-age=600000";
+constexpr char kHSTSHeaderValue[] = "max-age=600000";
 
 }  // namespace
 

@@ -34,7 +34,7 @@ const base::FilePath::CharType kDefaultDisplayFileName[] =
     FILE_PATH_LITERAL("foo.bar");
 
 // Default URL for a mock download item in DownloadItemModelTest.
-const char kDefaultURL[] = "http://example.com/foo.bar";
+constexpr char kDefaultURL[] = "http://example.com/foo.bar";
 }  // namespace
 
 class DownloadBubbleTest : public testing::Test {

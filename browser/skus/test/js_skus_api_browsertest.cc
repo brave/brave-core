@@ -31,7 +31,7 @@ constexpr char kScriptTemplate[] = R"((async () => {
       }
   })();)";
 
-const char kSkusState[] = R"({
+constexpr char kSkusState[] = R"({
     "credentials": null,
     "orders": {
       "f24787ab-7bc3-46b9-bc05-65befb360cb8": {

@@ -24,8 +24,8 @@
 using brave_shields::ControlType;
 
 namespace {
-const char kEmbeddedTestServerDirectory[] = "speech";
-const char kTitleScript[] = "document.title";
+constexpr char kEmbeddedTestServerDirectory[] = "speech";
+constexpr char kTitleScript[] = "document.title";
 }  // namespace
 
 class BraveSpeechSynthesisFarblingBrowserTest : public InProcessBrowserTest {

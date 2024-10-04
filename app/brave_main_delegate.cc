@@ -48,11 +48,11 @@
 #endif
 namespace {
 
-const char kBraveOriginTrialsPublicKey[] =
+constexpr char kBraveOriginTrialsPublicKey[] =
     "bYUKPJoPnCxeNvu72j4EmPuK7tr1PAC7SHh8ld9Mw3E=,"
     "fMS4mpO6buLQ/QMd+zJmxzty/VQ6B1EUZqoCU04zoRU=";
 
-const char kDummyUrl[] = "https://no-thanks.invalid";
+constexpr char kDummyUrl[] = "https://no-thanks.invalid";
 
 std::string GetUpdateURLHost() {
   const base::CommandLine& command_line =
@@ -68,7 +68,7 @@ std::string GetUpdateURLHost() {
 #if BUILDFLAG(IS_ANDROID)
 // staging "https://sync-v2.bravesoftware.com/v2" can be overriden by
 // syncer::kSyncServiceURL manually
-const char kBraveSyncServiceStagingURL[] =
+constexpr char kBraveSyncServiceStagingURL[] =
     "https://sync-v2.bravesoftware.com/v2";
 
 void AdjustSyncServiceUrlForAndroid(std::string* brave_sync_service_url) {

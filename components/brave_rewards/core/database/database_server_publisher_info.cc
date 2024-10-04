@@ -13,7 +13,7 @@
 
 namespace {
 
-const char kTableName[] = "server_publisher_info";
+constexpr char kTableName[] = "server_publisher_info";
 
 }  // namespace
 

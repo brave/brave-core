@@ -28,8 +28,8 @@ namespace {
 
 const int kAutoSecureRequestsBuckets[] = {0, 5, 50, 90};
 
-const char kDohModeAutomatic[] = "automatic";
-const char kDohModeSecure[] = "secure";
+constexpr char kDohModeAutomatic[] = "automatic";
+constexpr char kDohModeSecure[] = "secure";
 const base::TimeDelta kAutoSecureInitDelay = base::Seconds(6);
 const base::TimeDelta kAutoSecureReportInterval = base::Seconds(20);
 

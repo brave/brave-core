@@ -40,10 +40,10 @@ namespace {
 // See psst_rule.cc for the format of psst.json.
 
 constexpr size_t kHashSize = 32;
-const char kPsstComponentName[] =
+constexpr char kPsstComponentName[] =
     "Brave Privacy Settings Selection for Sites Tool (PSST) Files";
-const char kPsstComponentId[] = "lhhcaamjbmbijmjbnnodjaknblkiagon";
-const char kPsstComponentBase64PublicKey[] =
+constexpr char kPsstComponentId[] = "lhhcaamjbmbijmjbnnodjaknblkiagon";
+constexpr char kPsstComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAphUFFHyK+"
     "qUOXSw3OJXRQwKs79bt7zqnmkeFp/szXmmhj6/"
     "i4fmNiXVaxFuVOryM9OiaVxBIGHjN1BWYCQdylgbmgVTqLWpJAy/AAKEH9/"

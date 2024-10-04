@@ -43,9 +43,9 @@ using net::test_server::EmbeddedTestServer;
 
 namespace {
 
-const char kTestEmbeddingDomain[] = "a.com";
-const char kTestTargetPath[] = "/logo.png";
-const char kSimplePage[] = "/simple.html";
+constexpr char kTestEmbeddingDomain[] = "a.com";
+constexpr char kTestTargetPath[] = "/logo.png";
+constexpr char kSimplePage[] = "/simple.html";
 
 }  // namespace
 

@@ -19,7 +19,7 @@
 
 namespace {
 
-const char kProceduralActionsScript[] =
+constexpr char kProceduralActionsScript[] =
     R"((function() {
           const CC = window.content_cosmetic;
           let stylesheet = '';

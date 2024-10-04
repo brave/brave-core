@@ -37,9 +37,9 @@ inline constexpr char kP3AActionStatuses[] =
 
 inline constexpr char kP3ADefaultEngineConverted[] =
     "brave.brave_search_conversion.default_changed";
-const char kP3AQueryCountBeforeChurn[] =
+inline constexpr char kP3AQueryCountBeforeChurn[] =
     "brave.brave_search_conversion.query_count";
-const char kP3AAlreadyChurned[] =
+inline constexpr char kP3AAlreadyChurned[] =
     "brave.brave_search_conversion.already_churned";
 
 inline constexpr char kP3ABannerShown[] =

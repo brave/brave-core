@@ -11,10 +11,10 @@
 
 namespace {
 
-const char kPublisherKeySwitch[] = "brave-extension-publisher-key";
+constexpr char kPublisherKeySwitch[] = "brave-extension-publisher-key";
 
 // A second publisher key; Useful for when we prepare to rotate the key:
-const char kAltPublisherKeySwitch[] = "brave-extension-publisher-key-alt";
+constexpr char kAltPublisherKeySwitch[] = "brave-extension-publisher-key-alt";
 
 }  // namespace
 

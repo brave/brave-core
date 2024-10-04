@@ -29,8 +29,8 @@
 
 using brave_shields::ControlType;
 
-const char kHardwareConcurrencyScript[] = "navigator.hardwareConcurrency;";
-const char kTitleScript[] = "document.title;";
+constexpr char kHardwareConcurrencyScript[] = "navigator.hardwareConcurrency;";
+constexpr char kTitleScript[] = "document.title;";
 
 class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
     : public InProcessBrowserTest {

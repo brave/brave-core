@@ -42,10 +42,10 @@ using greaselion::GreaselionDownloadService;
 using greaselion::GreaselionService;
 using greaselion::GreaselionServiceFactory;
 
-const char kTestDataDirectory[] = "greaselion-data";
-const char kEmbeddedTestServerDirectory[] = "greaselion";
+constexpr char kTestDataDirectory[] = "greaselion-data";
+constexpr char kEmbeddedTestServerDirectory[] = "greaselion";
 
-const char kWaitForTitleChangeScript[] = R"(
+constexpr char kWaitForTitleChangeScript[] = R"(
   new Promise((resolve) => {
     if (document.title !== 'OK') {
       resolve(document.title)

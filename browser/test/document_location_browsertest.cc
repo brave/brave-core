@@ -25,11 +25,10 @@
 
 namespace {
 
-const char kAddIframeScript[] =
+constexpr char kAddIframeScript[] =
     "var frame = document.createElement('iframe');\n"
     "frame.src = $1;\n"
     "document.body.appendChild(frame);\n";
-
 }
 
 class DocumentLocationBrowserTest : public InProcessBrowserTest {

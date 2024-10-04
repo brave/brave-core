@@ -42,9 +42,9 @@ using net::test_server::HttpResponse;
 
 namespace {
 
-const char kIframeID[] = "test";
+constexpr char kIframeID[] = "test";
 
-const char kPointInPathScript[] = R"(
+constexpr char kPointInPathScript[] = R"(
   var canvas = document.createElement('canvas');
   var ctx = canvas.getContext('2d');
   ctx.rect(10, 10, 100, 100);
@@ -52,7 +52,7 @@ const char kPointInPathScript[] = R"(
   ctx.isPointInPath(10, 10);
 )";
 
-const char kGetImageDataScript[] =
+constexpr char kGetImageDataScript[] =
     "var adder = (a, x) => a + x;"
     "var canvas = document.createElement('canvas');"
     "canvas.width = 16;"
@@ -62,7 +62,7 @@ const char kGetImageDataScript[] =
     "ctx.putImageData(data, 0, 0);"
     "ctx.getImageData(0, 0, canvas.width, canvas.height).data.reduce(adder);";
 
-const char kImageScript[] = R"(
+constexpr char kImageScript[] = R"(
   let frame = document.createElement('img');
   frame.src = $1;
   new Promise(resolve => {
@@ -80,23 +80,23 @@ const int kExpectedImageDataHashFarblingMaximum =
     kExpectedImageDataHashFarblingBalanced;
 const int kExpectedImageDataHashFarblingBalancedGoogleCom = 182;
 
-const char kEmptyCookie[] = "";
+constexpr char kEmptyCookie[] = "";
 
 #define COOKIE_STR "test=hi"
 
-const char kTestCookie[] = COOKIE_STR;
+constexpr char kTestCookie[] = COOKIE_STR;
 
-const char kCookieScript[] = "document.cookie = '" COOKIE_STR
-                             "'"
-                             "; document.cookie;";
+constexpr char kCookieScript[] = "document.cookie = '" COOKIE_STR
+                                 "'"
+                                 "; document.cookie;";
 
-const char kCookie3PScript[] = "document.cookie = '" COOKIE_STR
-                               ";SameSite=None;Secure'"
-                               "; document.cookie;";
+constexpr char kCookie3PScript[] = "document.cookie = '" COOKIE_STR
+                                   ";SameSite=None;Secure'"
+                                   "; document.cookie;";
 
-const char kReferrerScript[] = "document.referrer;";
+constexpr char kReferrerScript[] = "document.referrer;";
 
-const char kTitleScript[] = "document.title;";
+constexpr char kTitleScript[] = "document.title;";
 
 GURL GetOriginURL(const GURL& url) {
   return url::Origin::Create(url).GetURL();

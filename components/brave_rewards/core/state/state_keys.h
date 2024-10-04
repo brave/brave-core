@@ -9,30 +9,33 @@
 namespace brave_rewards::internal {
 namespace state {
 
-const char kServerPublisherListStamp[] = "publisher_prefix_list_stamp";
-const char kUpholdAnonAddress[] = "uphold_anon_address";  // DEPRECATED
-const char kVersion[] = "version";
-const char kMinVisitTime[] = "ac.min_visit_time";
-const char kMinVisits[] = "ac.min_visits";
-const char kScoreA[] = "ac.score.a";
-const char kScoreB[] = "ac.score.b";
-const char kAutoContributeEnabled[] = "ac.enabled";
-const char kAutoContributeAmount[] = "ac.amount";
-const char kNextReconcileStamp[] = "ac.next_reconcile_stamp";
-const char kCreationStamp[] = "creation_stamp";
-const char kRecoverySeed[] = "wallet.seed";     // DEPRECATED
-const char kPaymentId[] = "wallet.payment_id";  // DEPRECATED
-const char kParameters[] = "parameters";
-const char kExternalWalletType[] = "external_wallet_type";
-const char kSelfCustodyAvailable[] = "self_custody_available";
-const char kSelfCustodyInviteDismissed[] = "self_custody_invite_dismissed";
-const char kWalletBrave[] = "wallets.brave";
-const char kWalletUphold[] = "wallets.uphold";
-const char kWalletBitflyer[] = "wallets.bitflyer";
-const char kWalletGemini[] = "wallets.gemini";
-const char kDeclaredGeo[] = "declared_geo";
-const char kWalletZebPay[] = "wallets.zebpay";
-const char kWalletSolana[] = "wallets.solana";
+inline constexpr char kServerPublisherListStamp[] =
+    "publisher_prefix_list_stamp";
+inline constexpr char kUpholdAnonAddress[] =
+    "uphold_anon_address";  // DEPRECATED
+inline constexpr char kVersion[] = "version";
+inline constexpr char kMinVisitTime[] = "ac.min_visit_time";
+inline constexpr char kMinVisits[] = "ac.min_visits";
+inline constexpr char kScoreA[] = "ac.score.a";
+inline constexpr char kScoreB[] = "ac.score.b";
+inline constexpr char kAutoContributeEnabled[] = "ac.enabled";
+inline constexpr char kAutoContributeAmount[] = "ac.amount";
+inline constexpr char kNextReconcileStamp[] = "ac.next_reconcile_stamp";
+inline constexpr char kCreationStamp[] = "creation_stamp";
+inline constexpr char kRecoverySeed[] = "wallet.seed";     // DEPRECATED
+inline constexpr char kPaymentId[] = "wallet.payment_id";  // DEPRECATED
+inline constexpr char kParameters[] = "parameters";
+inline constexpr char kExternalWalletType[] = "external_wallet_type";
+inline constexpr char kSelfCustodyAvailable[] = "self_custody_available";
+inline constexpr char kSelfCustodyInviteDismissed[] =
+    "self_custody_invite_dismissed";
+inline constexpr char kWalletBrave[] = "wallets.brave";
+inline constexpr char kWalletUphold[] = "wallets.uphold";
+inline constexpr char kWalletBitflyer[] = "wallets.bitflyer";
+inline constexpr char kWalletGemini[] = "wallets.gemini";
+inline constexpr char kDeclaredGeo[] = "declared_geo";
+inline constexpr char kWalletZebPay[] = "wallets.zebpay";
+inline constexpr char kWalletSolana[] = "wallets.solana";
 
 }  // namespace state
 }  // namespace brave_rewards::internal

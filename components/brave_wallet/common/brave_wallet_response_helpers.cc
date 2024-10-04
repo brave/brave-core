@@ -15,7 +15,7 @@
 namespace brave_wallet {
 
 namespace {
-const char kRequestJsonRPC[] = "2.0";
+constexpr char kRequestJsonRPC[] = "2.0";
 
 base::Value GetProviderErrorDictionaryInternal(int code,
                                                const std::string& message) {

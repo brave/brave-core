@@ -37,9 +37,9 @@ using testing::HasSubstr;
 
 // npm run test -- brave_unit_tests --filter=BraveStatsUpdaterTest.*
 
-const char kYesterday[] = "2018-06-21";
-const char kToday[] = "2018-06-22";
-const char kTomorrow[] = "2018-06-23";
+constexpr char kYesterday[] = "2018-06-21";
+constexpr char kToday[] = "2018-06-22";
+constexpr char kTomorrow[] = "2018-06-23";
 
 const int kLastWeek = 24;
 const int kThisWeek = 25;

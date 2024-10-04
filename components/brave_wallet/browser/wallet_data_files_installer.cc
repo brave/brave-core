@@ -38,8 +38,8 @@ const uint8_t kWalletDataFilesSha2Hash[] = {
     0x11, 0x2a, 0xa2, 0x38, 0x4f, 0x4,  0x24, 0x56, 0x5d, 0x81, 0x4c,
     0x49, 0xb8, 0x4c, 0x9d, 0x8e, 0xeb, 0xb3, 0xbd, 0x55, 0xdc, 0xf7,
     0xc0, 0x3e, 0x9b, 0x2a, 0xc2, 0xf5, 0x6a, 0x37, 0x71, 0x67};
-const char kWalletDataFilesDisplayName[] = "Brave Wallet data files";
-const char kComponentId[] = "bbckkcdiepaecefgfnibemejliemjnio";
+constexpr char kWalletDataFilesDisplayName[] = "Brave Wallet data files";
+constexpr char kComponentId[] = "bbckkcdiepaecefgfnibemejliemjnio";
 
 static_assert(std::size(kWalletDataFilesSha2Hash) == crypto::kSHA256Length,
               "Wrong hash length");

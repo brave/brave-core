@@ -20,7 +20,7 @@ using brave_shields::features::kBraveReduceLanguage;
 
 namespace {
 
-const char kFontLocalSourceHTML[] =
+constexpr char kFontLocalSourceHTML[] =
     "<html><head><style>@font-face{font-family:Helvetica "
     "Shadow;src:local('Helvetica')}</style></head><body><p><span id='test1' "
     "style=\"font-family: 'Helvetica'\">mmMwWLliI0fiflO&1</span></p><p><span "

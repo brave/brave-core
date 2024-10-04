@@ -24,21 +24,21 @@ namespace syncer {
 
 namespace {
 
-const char kSyncCode[] =
+constexpr char kSyncCode[] =
     "badge unique kiwi orient spring venue piano "
     "lake admit ill roof brother grant hour better "
     "proud cabbage fee slow economy wage final fox cancel";
 
-const char kAccessToken[] =
+constexpr char kAccessToken[] =
     "MzEzMjMzMzQzNTM2Mzd8MDBGNkExNjgxODkxQzU5RDZGMEYwNkVDQ0VGQzBFMTQ3QjA2NDE2RD"
     "EzNzE0QkQ3MzE3ODJGRjE1NUZFNjMxMTNBNTE2Qzk2NTFFM0ZGQTEyRDhDMzcyQTcyNUZEMzZG"
     "RjE3QUIxMDRDNDVBNTcyMDVCRkIwNjUwRjgxQ0MyMDl8NTAyMDQyMjcwQzgxNDUyNDdFRDcwQT"
     "E4Rjg3MDIyQTM5ODg2OTAwQUIzNkYyRkZGNjU1NjM1REJFNTE2NzY1RQ==";
 
-const char kAccountId[] =
+constexpr char kAccountId[] =
     "502042270C8145247ED70A18F87022A39886900AB36F2FFF655635DBE516765E";
 
-const char kAccountEmail[] =
+constexpr char kAccountEmail[] =
     "502042270C8145247ED70A18F87022A3 "
     "9886900AB36F2FFF655635DBE516765E @brave.com";
 

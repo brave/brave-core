@@ -28,8 +28,8 @@
 
 using brave_shields::ControlType;
 
-const char kEmbeddedTestServerDirectory[] = "webgl";
-const char kTitleScript[] = "document.title";
+constexpr char kEmbeddedTestServerDirectory[] = "webgl";
+constexpr char kTitleScript[] = "document.title";
 
 class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
  public:

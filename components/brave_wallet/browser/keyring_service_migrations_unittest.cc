@@ -24,11 +24,11 @@ using testing::_;
 namespace brave_wallet {
 
 namespace {
-const char kPassword[] = "brave123!";
+constexpr char kPassword[] = "brave123!";
 
 // "brave.wallet.keyrings" pref for 1.43.93 before encryptor's pbkdf2 iterations
 // were changed from 100000 to 310000.
-const char kLegacyKeyringsDict143[] = R"(
+constexpr char kLegacyKeyringsDict143[] = R"(
     {
       "default": {
           "account_metas": {
@@ -102,7 +102,7 @@ const char kLegacyKeyringsDict143[] = R"(
     }
   )";
 
-const char kUpgradedKeyringsDict143[] = R"(
+constexpr char kUpgradedKeyringsDict143[] = R"(
   {
     "bitcoin_84": {},
     "bitcoin_84_test": {},
@@ -167,7 +167,7 @@ const char kUpgradedKeyringsDict143[] = R"(
 
 // "brave.wallet.keyrings" pref for 1.66.95 before encrypted mnemonic was
 // extracted to a separate pref.
-const char kLegacyKeyringsDict166[] = R"(
+constexpr char kLegacyKeyringsDict166[] = R"(
   {
     "bitcoin_84": {
       "account_metas": [
@@ -310,7 +310,7 @@ const char kLegacyKeyringsDict166[] = R"(
     }
   })";
 
-const char kUpgradedKeyringsDict166[] = R"(
+constexpr char kUpgradedKeyringsDict166[] = R"(
   {
     "bitcoin_84": {
         "account_metas": [ {

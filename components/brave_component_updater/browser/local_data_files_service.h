@@ -17,9 +17,11 @@ namespace brave_component_updater {
 
 class LocalDataFilesObserver;
 
-const char kLocalDataFilesComponentName[] = "Brave Local Data Updater";
-const char kLocalDataFilesComponentId[] = "afalakplffnnnlkncjhbmahjfjhmlkal";
-const char kLocalDataFilesComponentBase64PublicKey[] =
+inline constexpr char kLocalDataFilesComponentName[] =
+    "Brave Local Data Updater";
+inline constexpr char kLocalDataFilesComponentId[] =
+    "afalakplffnnnlkncjhbmahjfjhmlkal";
+inline constexpr char kLocalDataFilesComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs4TIQXRCftLpGmQZxmm6"
     "AU8pqGKLoDyi537HGQyRKcK7j/CSXCf3vwJr7xkV72p7bayutuzyNZ3740QxBPie"
     "sfBOp8bBb8d2VgTHP3b+SuNmK/rsSRsMRhT05x8AAr/7ab6U3rW0Gsalm2653xnn"

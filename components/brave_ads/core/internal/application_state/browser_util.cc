@@ -18,7 +18,7 @@ namespace {
 
 bool g_browser_version_number_for_testing = false;
 
-const char kBrowserVersionNumberForTesting[] = "1.2.3.4";
+constexpr char kBrowserVersionNumberForTesting[] = "1.2.3.4";
 
 }  // namespace
 

@@ -475,7 +475,7 @@ TEST_F(NTPBackgroundImagesServiceTest, TestOnNonReferralService) {
 
 #else
 
-const char kTestMappingTable[] = R"(
+constexpr char kTestMappingTable[] = R"(
     {
         "schemaVersion": 1,
         "BRV003": {
@@ -490,8 +490,8 @@ const char kTestMappingTable[] = R"(
         }
     })";
 
-  // Super referral wallpaper json data.
-const char kTestSuperReferral[] = R"(
+// Super referral wallpaper json data.
+constexpr char kTestSuperReferral[] = R"(
     {
       "schemaVersion": 1,
       "themeName": "Technikke",

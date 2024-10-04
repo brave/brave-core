@@ -16,7 +16,7 @@
 namespace brave {
 
 namespace {
-const char kTestPatterns[] = R"(
+constexpr char kTestPatterns[] = R"(
 [
   {
     "include": [

@@ -101,8 +101,8 @@ brave_wallet::mojom::TxDataPtr ValueToTxData(
 }
 
 // null request ID when unspecified is expected
-const char kDefaultRequestIdWhenUnspecified[] = "1";
-const char kRequestJsonRPC[] = "2.0";
+constexpr char kDefaultRequestIdWhenUnspecified[] = "1";
+constexpr char kRequestJsonRPC[] = "2.0";
 
 }  // namespace
 

@@ -15,7 +15,7 @@
 #include "ui/resources/grit/webui_resources.h"
 
 namespace {
-const char kTrezorConnectURL[] = "https://connect.trezor.io/";
+constexpr char kTrezorConnectURL[] = "https://connect.trezor.io/";
 }  // namespace
 
 namespace trezor {

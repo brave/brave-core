@@ -21,9 +21,9 @@
 
 namespace {
 
-const char kEmbeddedTestServerDirectory[] = "window_name";
-const char kWindowNameScript[] = "window.name";
-const char kLinkID[] = "clickme";
+constexpr char kEmbeddedTestServerDirectory[] = "window_name";
+constexpr char kWindowNameScript[] = "window.name";
+constexpr char kLinkID[] = "clickme";
 
 }  // namespace
 

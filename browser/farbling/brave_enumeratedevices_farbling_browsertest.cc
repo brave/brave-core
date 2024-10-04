@@ -30,7 +30,7 @@
 
 using brave_shields::ControlType;
 
-const char kEnumerateDevicesScript[] =
+constexpr char kEnumerateDevicesScript[] =
     "navigator.mediaDevices.enumerateDevices()"
     ".then(function(devices) {"
     "  var devicekinds = '';"

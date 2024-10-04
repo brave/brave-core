@@ -14,7 +14,7 @@ namespace brave_rewards::internal::database {
 
 namespace {
 
-const char kTableName[] = "creds_batch";
+constexpr char kTableName[] = "creds_batch";
 
 }  // namespace
 

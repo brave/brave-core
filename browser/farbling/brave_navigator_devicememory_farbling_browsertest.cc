@@ -31,7 +31,7 @@
 
 using brave_shields::ControlType;
 
-const char kDeviceMemoryScript[] = "navigator.deviceMemory * 1024";
+constexpr char kDeviceMemoryScript[] = "navigator.deviceMemory * 1024";
 
 class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
  public:

@@ -17,7 +17,7 @@ namespace brave_rewards::internal {
 
 namespace {
 
-const char kTableName[] = "activity_info";
+constexpr char kTableName[] = "activity_info";
 
 std::string GenerateActivityFilterQuery(const int start,
                                         const int limit,

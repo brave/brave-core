@@ -41,7 +41,7 @@
 
 namespace {
 
-const char kEmbeddedTestServerDirectory[] = "brave-wallet";
+constexpr char kEmbeddedTestServerDirectory[] = "brave-wallet";
 
 std::string CheckForEventScript(const std::string& event_var) {
   return base::StringPrintf(R"(

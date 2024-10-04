@@ -11,7 +11,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 
-const char kBluetoothTest[] = "/bluetooth.html";
+constexpr char kBluetoothTest[] = "/bluetooth.html";
 
 class NavigatorBluetoothDisabledTest : public InProcessBrowserTest {
  public:
