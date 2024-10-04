@@ -91,6 +91,7 @@ public class BraveClassAdapter {
         chain = new BraveReturnToChromeUtilClassAdapter(chain);
         chain = new BraveSearchEngineAdapterClassAdapter(chain);
         chain = new BraveSearchEnginePreferenceClassAdapter(chain);
+        chain = new BraveSettingsIntentUtilClassAdapter(chain);
         chain = new BraveSettingsLauncherImplClassAdapter(chain);
         chain = new BraveShareDelegateImplClassAdapter(chain);
         chain = new BraveSingleCategorySettingsClassAdapter(chain);
