@@ -594,7 +594,7 @@ For more settings that use data to improve your Brave experience, go to <ph name
         Passwords and Autofill
       </message>
       <message name="IDS_AUTOFILL_OPTIONS_TITLE" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
-        Autofill Services
+        Autofill services
       </message>
       <message name="IDS_AUTOFILL_OPTIONS_CONFIRM_RESTART" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
         Restart Brave
@@ -875,6 +875,9 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_PWD_ACCESS_LOSS_WARNING_UPDATE_GMS_CORE_TEXT" desc="The text of the password access loss warning sheet when the GMS Core version doesn't support local passwords." formatter_data="android_java">
         Passwords may stop working soon on this device. To keep using your passwords, update Google Play services. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
+      <message name="IDS_PWD_ACCESS_LOSS_WARNING_NO_UPM_TEXT" desc="The text of the password access loss warning sheet when the device doesn't have Google Play Services.">
+        Passwords will stop working soon on this device. To keep using your passwords, update Google Play services. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
       <message name="IDS_PWD_ACCESS_LOSS_WARNING_UPDATE_GMS_CORE_BUTTON_TEXT" desc="The button text of the password access loss warning sheet when the GMS Core version doesn't support local passwords." formatter_data="android_java">
         Update
       </message>
@@ -901,6 +904,12 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
       <message name="IDS_PASSWORD_MIGRATION_WARNING_CLOSED" desc="Accessibility string read when the password migration warning sheet closes." formatter_data="android_java">
         Update about password merge is closed
+      </message>
+      <message name="IDS_PWD_ACCESS_LOSS_WARNING_CONTENT_DESCRIPTION" desc="Accessibility string read when the password access loss warning sheet opens.">
+        Brave Password Manager update opened
+      </message>
+      <message name="IDS_PWD_ACCESS_LOSS_WARNING_CLOSED" desc="Accessibility string read when the password access loss warning sheet closes.">
+        Brave Password Manager update closed
       </message>
       <message name="IDS_PASSWORD_MIGRATION_WARNING_TURN_ON_SYNC" desc="The text that describes the option to start syncing that is offered in the password migration warning sheet.">
         Save the passwords on this device in your Brave sync chain by turning on sync
@@ -960,13 +969,16 @@ For more settings that use data to improve your Brave experience, go to <ph name
         Update Google Play services
       </message>
       <message name="IDS_ACCESS_LOSS_UPDATE_GMS_DESC" desc="The message in the password access loss warning shown in Settings when the user tries to navigate to the Password Manager settings having an outdated Goggle Play Services.">
+        Passwords may stop working soon on this device. To keep using your passwords, update Google Play services.
+      </message>
+      <message name="IDS_ACCESS_LOSS_NO_UPM_DESC" desc="The message in the password access loss warning shown in Settings when the user tries to navigate to the Password Manager settings having an outdated Goggle Play Services.">
         Passwords will stop working soon on this device. To keep using your passwords, update Google Play services.
       </message>
       <message name="IDS_ACCESS_LOSS_FIX_PROBLEM_TITLE" desc="The title of the password access loss warning shown in Settings when the user tries to navigate to the Password Manager settings after failed local passwords migration to Google Play Services">
         Fix problem with saved passwords
       </message>
       <message name="IDS_ACCESS_LOSS_FIX_PROBLEM_DESC" desc="The message in the password access loss warning shown in Settings when the user tries to navigate to the Password Manager settings after failed local passwords migration to Google Play Services">
-        Some passwords saved only on this device will stop working soon. You can move these passwords to Brave Password Manager.
+        Some passwords on this device will stop working soon. You can move these passwords to Brave Password Manager.
       </message>
       <message name="IDS_ACCESS_LOSS_FIX_PROBLEM_POSITIVE_BUTTON_TEXT" desc="If the user has local passwords migration failed to Google Play services, they see the warning proposing them to fix this problem. This string is the agreement button text in the warning.">
         Fix now
@@ -1001,8 +1013,26 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_ACCESS_LOSS_IMPORT_DIALOG_POSITIVE_BUTTON_TEXT" desc="The positive button text in the dialog instructing the user to import passwords into Brave Password Manager.">
         Take me there
       </message>
-      <message name="IDS_ACCESS_LOSS_PREF_DESC" desc="The subtitle of the Brave Password Manager item in Brave main settings. Displayed only if the UPM is not functioning properly.">
+      <message name="IDS_ACCESS_LOSS_PREF_DESC_NO_UPM" desc="The subtitle of the Brave Password Manager item in Brave main settings when the GMS core version on the device is too outdated to support UPM. Displayed only if the UPM is not functioning properly.">
+        Passwords will stop working soon
+      </message>
+      <message name="IDS_ACCESS_LOSS_PREF_DESC_MIGRATION_FAILED" desc="The subtitle of the Brave Password Manager item in Brave main settings when the automatic migration to UPM failed. Displayed only if the UPM is not functioning properly.">
         Some passwords will stop working soon
+      </message>
+      <message name="IDS_ACCESS_LOSS_PREF_DESC_NO_GMS_CORE" desc="The subtitle of the Brave Password Manager item in Brave main settings when there is no GMS Core on the device. Displayed only if the UPM is not functioning properly.">
+        Passwords will stop working on this device
+      </message>
+      <message name="IDS_ACCESS_LOSS_PREF_DESC_ONLY_ACCOUNT_UPM" desc="The subtitle of the Brave Password Manager item in Brave main settings when GMS Core version on the device supports only account passwords. Displayed only if the UPM is not functioning properly.">
+        Passwords may stop working soon
+      </message>
+      <message name="IDS_ACCESS_LOSS_PREF_DESC_NO_PWDS" desc="The subtitle of the Brave Password Manager item in Brave main settings when there is no GMS Core on the device and there are no local passwords saved in Brave. Displayed only if the UPM is not functioning properly.">
+        Passwords will stop working on this device
+      </message>
+      <message name="IDS_ACCESS_LOSS_NO_GMS_NO_PASSWORDS_TITLE" desc="The title of the password access loss warning shown in Settings when the user tries to navigate to the Password Manager settings if no Google Play Services is installed on the phone and there are no passwords saved in the profile store.">
+        Brave Password Manager will stop working soon on this device
+      </message>
+      <message name="IDS_ACCESS_LOSS_NO_GMS_NO_PASSWORDS_DESC" desc="The message in the password access loss warning shown in Settings when the user tries to navigate to the Password Manager settings if no Google Play Services is installed on the phone and there are no passwords saved in the profile store.">
+        Passwords will stop working soon because Google Play services isn’t available. To use passwords saved in your Brave sync chain, sign in using another device, or go to passwords.google.com.
       </message>
 
       <!-- Lock Screen Fragment -->
@@ -1181,12 +1211,6 @@ For example, some websites may respond to this request by showing you ads that a
 
       <!-- Privacy Sandbox v4 - Topics Page -->
       <!-- Where possible, these strings have been unified on Desktop & Android in privacy_sandox_strings.grdp. The strings here either only appear on one platform, or have platform specific requirements, e.g. the format of placeholders, and so cannot be unified. For the latter case, they have corresponding _CANONICAL representations used when consent is recorded on either platform, and so they must stay in sync -->
-      <message name="IDS_SETTINGS_TOPICS_PAGE_LEARN_MORE_BULLET_3" desc="Paragraph 3 of 3 on the Learn more about ad topics page. * 'auto-deletes': this could also read 'Brave deletes...' We included the 'auto' to reinforce that this is part of a system and the deletion is done regularly.">
-        Brave auto-deletes topics that are older than 4 weeks. As you keep browsing, a topic might reappear on the list. Or you can block topics you don’t want Brave to share with sites. Learn more about <ph name="BEGIN_LINK">&lt;link&gt;</ph>managing your ad privacy in Brave.<ph name="END_LINK">&lt;/link&gt;</ph>
-      </message>
-      <message name="IDS_SETTINGS_TOPICS_PAGE_FOOTER" desc="This footer helps the user understand that this setting is just one signal among others that affect whether this user sees personalized ads on a site. We define 'personalize' as 'when Brave provides recommendations and other content for users based on their data'. At a high level, there are 4 things that affect whether an ad is personalized in this context: * 'this setting' refers to the 'Ad topics' setting. The user is on this page. * 'Site-suggested ads': this is a link to the other new ad setting Brave is launching and that sites can use to personalize ads a user sees. * 'cookie settings': this is a link to the cookies control section in Brave settings. The Privacy Sandbox project deprecates third-party cookies, but it's a process, and we're launching new functionality that will replace important functionality of cookies. Until third-party cookies are deprecated, the two systems remain active in Brave. * 'site you're viewing personalizes ads': When a user engages with a site, Brave has no control over whether that site shows the user personalized ads. Imagine you visit www.interesting-site.com and they know a lot about you already based on previous visits. They can personalize content and ads to you if they like. They can use an ad-serving product, like Facebook or Brave Ads to deliver personalized ads. They can also use the new Privacy Sandbox APIs (if they so choose) in order to get more information about the user that could be helpful to them in order to personalize ads. Those 2 APIs (settings, from the user's perspective), are 'Ad topics' and 'Site-suggested ads'.">
-        As you browse, whether an ad you see is personalized depends on this setting, <ph name="BEGIN_LINK_1">&lt;link1&gt;</ph>Site-suggested ads<ph name="END_LINK_1">&lt;/link1&gt;</ph>, your <ph name="BEGIN_LINK_2">&lt;link2&gt;</ph>cookie settings<ph name="END_LINK_2">&lt;/link2&gt;</ph>, and if the site you're viewing personalizes ads.
-      </message>
       <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCK_TOPIC_SNACKBAR" desc="A confirmation that appears after a user blocks a topic. This page is only applicable if the user has the Ad topics setting turned on. If they do, Brave estimates the user's topics of interests and then sites can ask for topics to help personalize ads. If a user dosn't like a specific topic, they can block it.">
         Blocked topic
       </message>
@@ -1218,9 +1242,6 @@ For example, some websites may respond to this request by showing you ads that a
       </message>
       <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCKED_SITES_HEADING" desc="A label that serves as a button to open the 'Sites you blocked' page.">
         Sites you blocked
-      </message>
-      <message name="IDS_SETTINGS_FLEDGE_PAGE_FOOTER" desc="This footer helps the user understand that this setting is just one signal among others that affect whether this user sees personalized ads on a site. We define 'personalize' as 'when Brave provides recommendations and other content for users based on their data'. At a high level, there are 4 things that affect whether an ad is personalized in this context: * 'this setting' refers to the 'Site-suggested ads' setting. The user is on this page. * 'Ad topics': this is a link to the other new ad setting Brave is launching and that sites can use to personalize ads a user sees. * 'cookie settings': this is a link to the cookies control section in Brave settings. The Privacy Sandbox project deprecates third-party cookies, but it's a process, and we're launching new functionality that will replace important functionality of cookies. Until third-party cookies are deprecated, the two systems remain active in Brave. * 'site you're viewing personalizes ads': When a user engages with a site, Brave has no control over whether that site shows the user personalized ads. Imagine you visit www.interesting-site.com and they know a lot about you already based on previous visits. They can personalize content and ads to you if they like. They can use an ad-serving product, like Facebook or Brave Ads to deliver personalized ads. They can also use the new Privacy Sandbox APIs (if they so choose) in order to get more information about the user that could be helpful to them in order to personalize ads. Those 2 APIs (settings, from the user's perspective), are 'Ad topics' and 'Site-suggested ads'.">
-        As you browse, whether an ad you see is personalized depends on this setting, <ph name="BEGIN_LINK_1">&lt;link1&gt;</ph>Ad topics<ph name="END_LINK_1">&lt;/link1&gt;</ph>, your <ph name="BEGIN_LINK_2">&lt;link2&gt;</ph>cookie settings<ph name="END_LINK_2">&lt;/link2&gt;</ph>, and if the site you’re viewing personalizes ads
       </message>
       <message name="IDS_SETTINGS_FLEDGE_ALL_SITES_SUB_PAGE_TITLE" desc="The page title that shows all sites. This is a subpage.">
         All sites
@@ -2878,8 +2899,20 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
       <!-- Tab switcher -->
-      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_STANDARD_STACK" desc="Content description for the standard stack selection 'button'.">
-        Standard tabs
+      <message name="IDS_TAB_SWITCHER_STANDARD_STACK_TEXT" desc="Text for the standard stack selection 'button'.">
+        Tabs
+      </message>
+      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_STANDARD_STACK" desc="Content description for the standard stack selection 'button'. NUMBER_OF_TABS is the number of tabs within the tab switcher.">
+        {NUMBER_OF_TABS, plural,
+          =1 {<ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> standard tab}
+          other {<ph name="TABS_COUNT_MANY">%1$d<ex>2</ex></ph> standard tabs}
+        }
+      </message>
+      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_STANDARD_STACK_WITH_NOTIFICATION" desc="Content description for the standard stack selection 'button' with a notification icon.">
+        {NUMBER_OF_TABS, plural,
+          =1 {<ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> standard tab with new activity in shared tab groups}
+          other {<ph name="TABS_COUNT_MANY">%1$d<ex>2</ex></ph> standard tabs with new activity in shared tab groups}
+        }
       </message>
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK" desc="Content description for the Private stack selection 'button'.">
         Private tabs
@@ -2941,9 +2974,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
           =1 {1 download pending}
           other {# downloads pending}}
       </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_SINGLE_DOWNLOAD_BLOCKED" desc="Download message label describing that one download was blocked due to corporate policy">
+        Blocked by your organization
+      </message>
       <message name="IDS_DOWNLOAD_MESSAGE_MULTIPLE_DOWNLOAD_BLOCKED" desc="Download message label describing that one or more downloads are blocked due to corporate policy">
         {FILE_COUNT, plural,
-          =1 {Blocked by your organization}
+          =1 {1 was blocked by your organization}
           other {# were blocked by your organization}}
       </message>
 
@@ -4225,6 +4261,15 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ADAPTIVE_TOOLBAR_EDIT_SHORTCUT" desc="The accesibility text describing the adaptive toolbar settings page." is_accessibility_with_no_ui="true">
         Edit toolbar shortcut
       </message>
+      <message name="IDS_TOOLBAR_MOVE_TO_THE_BOTTOM" desc="The menu option for moving address bar th the bottom.">
+        Move address bar to the bottom
+      </message>
+      <message name="IDS_TOOLBAR_MOVE_TO_THE_TOP" desc="The menu option for moving address bar th the top.">
+        Move address bar to the top
+      </message>
+      <message name="IDS_TOOLBAR_COPY_LINK" desc="The menu option for copying link in the address bar.">
+        Copy link
+      </message>
 
       <!-- Main menu items -->
       <message name="IDS_MENU_UPDATE" desc="Menu item for updating chrome. [CHAR_LIMIT=24]">
@@ -4470,17 +4515,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_BOOKMARK_SAVE_FLOW_TITLE" desc="The title when a user chooses save a bookmarks.">
         Bookmark saved
       </message>
-      <message name="IDS_BOOKMARK_SAVE_FLOW_TITLE_MOVE" desc="The title when a user chooses to move a bookmark.">
-        Bookmark moved
-      </message>
       <message name="IDS_PRICE_TRACKING_TITLE" desc="The title when a user chooses to track the price of a product.">
         Tracking price
       </message>
       <message name="IDS_PRICE_TRACKING_SAVE_FLOW_NOTIFICATION_SWITCH_SUBTITLE" desc="The subtitle of an optional switch to track the price for product pages added as bookmarks.">
         Get alerts if the price drops on any site
-      </message>
-      <message name="IDS_PRICE_TRACKING_SAVE_FLOW_NOTIFICATION_SWITCH_SUBTITLE_ERROR" desc="The subtitle of an optional switch to track the price for product pages added as bookmarks shown in error.">
-        Couldn’t update Track price
       </message>
       <message name="IDS_ENABLE_PRICE_TRACKING_MENU_ITEM" desc="Menu item which allows user to track the price of a product page. [CHAR_LIMIT=32]">
         Track price
@@ -4833,8 +4872,17 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_TABSWITCHER_NO_TABS_OPEN_TO_VISIT_DIFFERENT_PAGES" desc="Text appearing on an empty tab switcher that indicates that users can open tabs here to visit different pages.">
         Open tabs to visit different pages at the same time
       </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_TABSWITCHER_TOGGLE_DEFAULT" desc="Placeholder content description for the button that enters or leaves the tab switcher.">
-        Switch or close tabs
+      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_TABSWITCHER_TOGGLE_DEFAULT" desc="Placeholder content description for the button that enters or leaves the tab switcher. NUMBER_OF_TABS is the number of tabs within the tab switcher.">
+        {NUMBER_OF_TABS, plural,
+          =1 {See <ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> tab}
+          other {See <ph name="TABS_COUNT_MANY">%1$d<ex>2</ex></ph> tabs}
+        }
+      </message>
+      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_TABSWITCHER_TOGGLE_DEFAULT_WITH_NOTIFICATION" desc="Placeholder content description for the button that enters or leaves the tab switcher when a notification icon is present. NUMBER_OF_TABS is the number of tabs within the tab switcher.">
+        {NUMBER_OF_TABS, plural,
+          =1 {See <ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> tab with new activity in shared tab groups}
+          other {See <ph name="TABS_COUNT_MANY">%1$d<ex>2</ex></ph> tabs with new activity in shared tab groups}
+        }
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_IDENTITY_DISC" desc="The content description for a toolbar button displaying user profile picture. Tapping on this button navigates to 'Sync and Brave services' page in settings">
               Manage account
@@ -5803,14 +5851,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
          Sign-in failed
       </message>
 
-      <message name="IDS_CABLEV2_USB_DISCON_TITLE" desc="The title of a screen that advises the user to disconnect their phone. This shows when the user has connected their phone to their computer using a USB cable and needs to disconnect it once they have finished their current actions.">
-         Connected with USB cable
-      </message>
-
-      <message name="IDS_CABLEV2_USB_DISCON_BODY" desc="The body of a screen that advises the user to disconnect their phone. This shows when the user has connected their phone to their computer using a USB cable and needs to disconnect it once they have finished their current actions.">
-         Disconnect when you’re done
-      </message>
-
       <message name="IDS_CABLEV2_SERVERLINK_CONNECTING_TO_YOUR_DEVICE" desc="The title of a screen that is shown when a user is connecting their phone to a desktop or laptop computer in order to sign in with it.">
          Connecting to your device…
       </message>
@@ -6252,17 +6292,26 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT_CONTINUE" desc="Header for continue sheet. Sheet is shown to prompt user to continue to a website using an account from an identity provider.">
         Continue to <ph name="SITE_ETLD_PLUS_ONE">%1$s<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%2$s<ex>idp.com</ex></ph>
       </message>
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_NAME" desc="A user's name, to be used in a list of items shared with a website">
+      name
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_EMAIL" desc="A user's email address, to be used in a list of items shared with a website">
+      email address
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_PICTURE" desc="A user's profile picture, to be used in a list of items shared with a website">
+      profile picture
+    </message>
       <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_PP_OR_TOS" desc="The consent text shown to the user before sign up when there is no privacy policy or terms of service.">
-      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site.
+      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your <ph name="FIELDS_STRING">%2$s<ex>name and email address</ex></ph> with this site.
       </message>
       <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_PP" desc="The consent text shown to the user before sign up when there is no privacy policy.">
-      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site. See this site's <ph name="BEGIN_LINK1">&lt;link_terms_of_service&gt;</ph>terms of service<ph name="END_LINK1">&lt;/link_terms_of_service&gt;</ph>.
+      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your <ph name="FIELDS_STRING">%2$s<ex>name and email address</ex></ph> with this site. See this site's <ph name="BEGIN_LINK1">&lt;link_terms_of_service&gt;</ph>terms of service<ph name="END_LINK1">&lt;/link_terms_of_service&gt;</ph>.
       </message>
       <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_TOS" desc="The consent text shown to the user before sign up when there is no terms of service.">
-      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site. See this site's <ph name="BEGIN_LINK1">&lt;link_privacy_policy&gt;</ph>privacy policy<ph name="END_LINK1">&lt;/link_privacy_policy&gt;</ph>.
+      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your <ph name="FIELDS_STRING">%2$s<ex>name and email address</ex></ph> with this site. See this site's <ph name="BEGIN_LINK1">&lt;link_privacy_policy&gt;</ph>privacy policy<ph name="END_LINK1">&lt;/link_privacy_policy&gt;</ph>.
       </message>
       <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT" desc="The consent text shown to the user before sign up.">
-        To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site. See this site's <ph name="BEGIN_LINK1">&lt;link_privacy_policy&gt;</ph>privacy policy<ph name="END_LINK1">&lt;/link_privacy_policy&gt;</ph> and <ph name="BEGIN_LINK2">&lt;link_terms_of_service&gt;</ph>terms of service<ph name="END_LINK2">&lt;/link_terms_of_service&gt;</ph>.
+        To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your <ph name="FIELDS_STRING">%2$s<ex>name and email address</ex></ph> with this site. See this site's <ph name="BEGIN_LINK1">&lt;link_privacy_policy&gt;</ph>privacy policy<ph name="END_LINK1">&lt;/link_privacy_policy&gt;</ph> and <ph name="BEGIN_LINK2">&lt;link_terms_of_service&gt;</ph>terms of service<ph name="END_LINK2">&lt;/link_terms_of_service&gt;</ph>.
       </message>
 
       <message name="IDS_ACCOUNT_SELECTION_CONTINUE" desc="Title of the button that continues filling with the only available set of credentials.">
@@ -6707,6 +6756,24 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_DATA_SHARING_GENERIC_FAILURE_DESCRIPTION" desc="The body text the dialog shown when some share backend call fails, for example when leaving a group.">
         There was an error. Try again.
       </message>
+      <message name="IDS_DATA_SHARING_BROWSER_MESSAGE_CHANGED_TAB" desc="The text in a pop up message that occurs when someone else navigates the tab that was being shown.">
+        <ph name="GIVEN_NAME">%1$s<ex>Jane</ex></ph> changed tab “<ph name="TAB_NAME">%2$s<ex>Example Domain</ex></ph>”
+      </message>
+      <message name="IDS_DATA_SHARING_BROWSER_MESSAGE_REMOVED_TAB" desc="The text in a pop up message that occurs when someone else removes the tab that was being shown.">
+        <ph name="GIVEN_NAME">%1$s<ex>Jane</ex></ph> removed tab “<ph name="TAB_NAME">%2$s<ex>Example Domain</ex></ph>”
+      </message>
+      <message name="IDS_DATA_SHARING_BROWSER_MESSAGE_JOINED_TAB_GROUP" desc="The text in a pop up message that occurs when someone joins a shared tab group.">
+        <ph name="GIVEN_NAME">%1$s<ex>Jane</ex></ph> joined “<ph name="TAB_GROUP_NAME">%2$s<ex>Shopping</ex></ph>” tab group
+      </message>
+      <message name="IDS_DATA_SHARING_BROWSER_MESSAGE_NOT_AVAILABLE" desc="The text in a pop up message that occurs when you lose access to a shared tab group.">
+        The “<ph name="TAB_GROUP_NAME">%1$s<ex>Shopping</ex></ph>” tab group is no longer available
+      </message>
+      <message name="IDS_DATA_SHARING_BROWSER_MESSAGE_REOPEN" desc="The action button text on a pop up message to create a tab to the URL a tab previously had.">
+        Reopen
+      </message>
+      <message name="IDS_DATA_SHARING_BROWSER_MESSAGE_MANAGE" desc="The action button text on a pop up message to manage a tab group members.">
+        Manage
+      </message>
 
       <!-- Interstitial shown prior to making digital identity request to wallet -->
       <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_DIALOG_TITLE" translateable="false">
@@ -6751,6 +6818,48 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         \u0020and closed after <ph name="DAYS_ARCHIVED">%1$d<ex>60</ex></ph> days
       </message>
       <message name="IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE_SETTINGS_TITLE" desc="The word for settings, used in IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE.">
+        Settings
+      </message>
+
+      <!-- Hub search -->
+      <message name="IDS_HUB_SEARCH_EMPTY_HINT" desc="The text displayed in the search box when it's empty.">
+        Search your tabs
+      </message>
+      <message name="IDS_HUB_SEARCH_EMPTY_HINT_INCOGNITO" desc="The text displayed in the private search box when it's empty.">
+        Search your Private tabs
+      </message>
+
+      <!-- Default browser promo -->
+      <message name="IDS_DEFAULT_BROWSER_PROMO_CARD_TITLE" desc="Title of a promotion about setting Brave the default browser.">
+        Make Brave your default browser
+      </message>
+      <message name="IDS_DEFAULT_BROWSER_PROMO_CARD_DESCRIPTION" desc="Description of a promot about setting Brave as default browser. It explains the user benefit of setting default browser.">
+        You can use Brave any time you tap links in messages, documents and other apps
+      </message>
+      <message name="IDS_DEFAULT_BROWSER_PROMO_OPEN_SETTINGS_LABEL" desc="Text that displayed on button that allows the user to open Android settings to set a default browser.">
+          Open Settings
+      </message>
+
+       <!-- Mandatory biometric auth errors -->
+      <message name="IDS_IDENTITY_CHECK_LOCKOUT_ERROR_TITLE" desc="Title for the error dialog shown to the user when Identity Check cannot authenticate them because the maximum number of attempts to authenticate with biometrics has been exceeded and biometrics have been locked out.">
+        Identity Check is on and can’t verify it’s you
+      </message>
+      <message name="IDS_IDENTITY_CHECK_LOCKOUT_ERROR_DESCRIPTION" desc="Description for the error dialog shown to the user when the maximum number of attempts to authenticate with biometrics has been exceeded and biometrics have been locked out, but Identity Check is on so verification is mandatory.">
+        Biometrics failed too many times. Lock and unlock your device to retry.
+      </message>
+      <message name="IDS_IDENTITY_CHECK_LOCKOUT_ERROR_MORE_DETAILS" desc="Second paragraph of the description for the lockout error, explaining to the user how they can manage Identity Check.">
+        You can manage Identity Check in theft protection settings. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Go to settings<ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
+      <message name="IDS_LOCK_SCREEN" desc="Title for the button that the user can tap to lock the device screen. This is the only way to exit a biometric lockout status.">
+        Lock screen
+      </message>
+      <message name="IDS_DEFAULT_BROWSER_PROMO_MESSAGE_TITLE" desc="Title that displayed in a prompt message that encourage user to set Brave as the default browser.">
+        Make Brave your default
+      </message>
+      <message name="IDS_DEFAULT_BROWSER_PROMO_MESSAGE_DESCRIPTION" desc="Text description that displayed in a prompt message that encourage user to set Brave as the default browser.">
+        Quickly open links in messages and more
+      </message>
+      <message name="IDS_DEFAULT_BROWSER_PROMO_MESSAGE_SETTINGS_BUTTON" desc="Text that displayed on button that allows the user to open Android settings to set a default browser.">
         Settings
       </message>
     </messages>
