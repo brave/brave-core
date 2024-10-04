@@ -168,7 +168,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
         browser()->profile());
   }
 
-  void NonBlockingDelay(const base::TimeDelta& delay) {
+  void NonBlockingDelay(base::TimeDelta delay) {
     base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
     base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
         FROM_HERE, run_loop.QuitWhenIdleClosure(), delay);

@@ -15,7 +15,7 @@ namespace misc_metrics {
 
 namespace {
 const int kPercentBucketValues[] = {25, 50, 75};
-const base::TimeDelta kReportUpdateInterval = base::Days(1);
+constexpr base::TimeDelta kReportUpdateInterval = base::Days(1);
 }  // namespace
 
 TabMetrics::TabMetrics(PrefService* local_state)
