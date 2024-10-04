@@ -44,7 +44,6 @@
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
-#include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_ui.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -93,10 +92,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
       web_ui->GetWebContents()->GetBrowserContext());
   if (host == kSkusInternalsHost) {
     return new SkusInternalsUI(web_ui, url.host());
-#if !BUILDFLAG(IS_ANDROID)
-  } else if (host == kWebcompatReporterHost) {
-    return new webcompat_reporter::WebcompatReporterUI(web_ui, url.host());
-#endif  // !BUILDFLAG(IS_ANDROID)
 #if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWalletPageHost &&
              brave_wallet::IsAllowedForContext(profile)) {
@@ -180,8 +175,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
     return nullptr;
   }
 
-  if (url.host_piece() == kWebcompatReporterHost ||
-      (url.host_piece() == kSkusInternalsHost &&
+  if ((url.host_piece() == kSkusInternalsHost &&
        base::FeatureList::IsEnabled(skus::features::kSkusFeature)) ||
 #if BUILDFLAG(IS_ANDROID)
       (url.is_valid() && url.host_piece() == kWalletPageHost) ||
