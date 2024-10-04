@@ -1,0 +1,27 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #scheme=relative
+ * #import=./brave_account_common.css.js
+ * #include=brave-account-common
+ * #css_wrapper_metadata_end */
+
+.password {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.forgot-password {
+  color: var(--leo-color-text-secondary);
+  cursor: pointer;
+  font: var(--leo-font-small-link);
+  margin: 0px var(--leo-spacing-s) 0px 0px;
+  text-decoration-line: underline;
+  text-decoration-skip-ink: none;
+  text-underline-offset: 2.4px;
+}
