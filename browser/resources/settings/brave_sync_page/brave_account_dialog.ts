@@ -36,123 +36,27 @@ export class SettingsBraveAccountDialogElement extends SettingsBraveAccountDialo
 
   static get properties() {
     return {
-      syncCode: {
-        type: String,
-        notify: true
-      },
       /**
-       * 'qr' | 'words' | 'choose' | 'input'
+       * 'create' | 'signin'
        */
       codeType: {
         type: String,
-        value: 'choose',
+        value: 'signin',
         notify: true
-      },
-      syncCodeValidationError: {
-        type: String,
-        value: '',
-        notify: true
-      },
-      syncCodeWordCount_: {
-        type: Number,
-        value: 0
-      },
-      hasCopiedSyncCode_: {
-        type: Boolean,
-        value: false
-      },
-      qrCodeImageUrl_: {
-        type: String,
-        value: null
       },
     };
   }
 
-  static get observers() {
-    console.log('observers')
-    return [
-      'getQRCode_(syncCode, codeType)',
-      'computeSyncCodeWordCount_(syncCode, codeType)',
-    ];
-  }
-
-  private syncCode: string;
-  private codeType: 'qr' | 'words' | 'choose' | 'input' | null;
-  private syncCodeValidationError: string;
-  private syncCodeWordCount_: number;
-  private hasCopiedSyncCode_: boolean;
-  private qrCodeImageUrl_: string;
-  private hasCopiedSyncCodeTimer_: ReturnType<typeof window.setTimeout>;
+  private codeType: 'create' | 'signin' | null;
 
   syncBrowserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance();
 
-  async computeSyncCodeWordCount_() {
-    console.log('computeSyncCodeWordCount_')
-
-    if (this.codeType !== 'input') {
-      return
-    }
-
-    if (!this.syncCode) {
-      return
-    }
-
-    this.syncCodeWordCount_ =
-      await this.syncBrowserProxy_.getWordsCount(this.syncCode)
-  }
-
   isCodeType(askingType: string) {
-    console.log('isCodeType')
     return (this.codeType === askingType)
   }
 
   handleClose_() {
     this.codeType = null
-    this.syncCodeValidationError = ''
-  }
-
-  handleChooseMobile_() {
-    this.codeType = null
-    window.setTimeout(() => {
-      this.codeType = 'qr'
-    }, 0)
-  }
-
-  handleChooseComputer_() {
-    this.codeType = null
-    window.setTimeout(() => {
-      this.codeType = 'words'
-    }, 0)
-  }
-
-  handleSyncCodeCopy_() {
-    window.clearTimeout(this.hasCopiedSyncCodeTimer_)
-    navigator.clipboard.writeText(this.syncCode)
-    this.hasCopiedSyncCode_ = true
-    this.hasCopiedSyncCodeTimer_ = window.setTimeout(() => {
-      this.hasCopiedSyncCode_ = false
-    }, 4000)
-  }
-
-  handleDone_() {
-    this.dispatchEvent(new CustomEvent('done'))
-  }
-
-  async getQRCode_() {
-    console.log('getQRCode_')
-
-    if (this.codeType !== 'qr') {
-      return
-    }
-    if (!this.syncCode) {
-      console.warn('Skip getQRCode because code words are empty')
-      return
-    }
-    try {
-      this.qrCodeImageUrl_ = await this.syncBrowserProxy_.getQRCode(this.syncCode)
-    } catch (e) {
-      console.error('getQRCode failed', e)
-    }
   }
 }
 
