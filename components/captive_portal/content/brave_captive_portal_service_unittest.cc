@@ -199,7 +199,7 @@ class CaptivePortalServiceTest : public testing::Test,
 
   // Changes test time for the service and service's captive portal
   // detector.
-  void AdvanceTime(const base::TimeDelta& delta) {
+  void AdvanceTime(base::TimeDelta delta) {
     tick_clock_->Advance(delta);
     CaptivePortalDetectorTestBase::AdvanceTime(delta);
   }
