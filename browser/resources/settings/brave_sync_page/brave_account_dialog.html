@@ -207,7 +207,21 @@
     show-on-attach
   >
     <div slot="title">
-      <span clas="dialog-title">Create</span>
+      <span class="dialog-title">Create your account</span>
+      <span class="dialog-subtitle">A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.</span>
+    </div>
+    <div slot="body">
+      <cr-input autofocus required
+        placeholder="Email address">
+      </cr-input>
+      <cr-checkbox checked="true">
+        I have read and accept the <a href="#">Terms of service</a> and <a href="#">Privacy agreement</a>.
+      </cr-checkbox>
+    </div>
+    <div slot="button-container">
+      <cr-button class="action-button">
+        Create account
+      </cr-button>
     </div>
   </cr-dialog>
 </template>
@@ -220,7 +234,7 @@
     show-on-attach
   >
     <div slot="title">
-      <span clas="dialog-title">Sign in</span>
+      <span class="dialog-title">Sign in</span>
     </div>
   </cr-dialog>
 </template>
