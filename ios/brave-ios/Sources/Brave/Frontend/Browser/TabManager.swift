@@ -859,6 +859,8 @@ class TabManager: NSObject {
   ) {
     guard let etldP1 = url.baseDomain else { return }
     forgetTasks[tab.type] = forgetTasks[tab.type] ?? [:]
+    // Start a task to delete all data for this etldP1
+    // The task may be delayed in case we want to cancel it
     forgetTasks[tab.type]?[etldP1] = Task {
       try await Task.sleep(seconds: delay)
       await self.forgetData(for: url, in: tab)
@@ -869,12 +871,21 @@ class TabManager: NSObject {
     await FaviconFetcher.deleteCache(for: url)
     guard let etldP1 = url.baseDomain else { return }
 
-    // Start a task to delete all data for this etldP1
-    // The task may be delayed in case we want to cancel it
     let dataStore = tab.webView?.configuration.websiteDataStore
+    // Delete 1P data records
     await dataStore?.deleteDataRecords(
       forDomain: etldP1
     )
+    if BraveCore.FeatureList.kBraveShredCacheData.enabled {
+      // Delete all cache data (otherwise 3P cache entries left behind
+      // are visible in Manage Website Data view brave-browser #41095)
+      let cacheTypes = Set([
+        WKWebsiteDataTypeMemoryCache, WKWebsiteDataTypeDiskCache,
+        WKWebsiteDataTypeOfflineWebApplicationCache,
+      ])
+      let cacheRecords = await dataStore?.dataRecords(ofTypes: cacheTypes) ?? []
+      await dataStore?.removeData(ofTypes: cacheTypes, for: cacheRecords)
+    }
 
     // Delete the history for forgotten websites
     if let historyAPI = self.historyAPI {

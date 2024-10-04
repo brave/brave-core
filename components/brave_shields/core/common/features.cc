@@ -93,6 +93,10 @@ BASE_FEATURE(kBraveReduceLanguage,
 BASE_FEATURE(kBraveShredFeature,
              "BraveShredFeature",
              base::FEATURE_DISABLED_BY_DEFAULT);
+// When enabled, brave shred will clear all cache data when shredding.
+BASE_FEATURE(kBraveShredCacheData,
+             "BraveShredCacheData",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, show Strict (aggressive) fingerprinting mode in Brave Shields.
 BASE_FEATURE(kBraveShowStrictFingerprintingMode,
              "BraveShowStrictFingerprintingMode",
