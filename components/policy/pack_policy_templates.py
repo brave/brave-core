@@ -5,7 +5,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 # Script that prepares a Brave-specific version of the `policy_templates.zip`
-# file that folks expect for administering Brave via group policy.
+# file that folks expect for administering Brave via Windows group policy.
 #
 # For more info, see:
 # https://support.brave.com/hc/en-us/articles/360039248271-Group-Policy
