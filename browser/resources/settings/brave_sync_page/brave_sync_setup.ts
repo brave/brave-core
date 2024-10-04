@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import './brave_account_dialog.js';
 import './brave_sync_code_dialog.js';
 
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
@@ -37,6 +38,10 @@ export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElement
         type: String,
         notify: true
       },
+      braveAccountDialogType: {
+        type: String,
+        notify: true,
+      },
       /**
       * Sync code dialog type. Can only have 1 at a time, so use a single property.
       * 'qr' | 'words' | 'input' | 'choose' | null
@@ -61,6 +66,7 @@ export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElement
   }
 
   private syncCode: string | undefined;
+  private braveAccountDialogType: 'qr' | 'create' | 'signin' | null;
   private syncCodeDialogType: 'qr' | 'words' | 'input' | 'choose' | null;
   private isSubmittingSyncCode_: boolean;
   private isGettingSyncCode_: boolean;
@@ -70,7 +76,8 @@ export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElement
 
   handleCreateBraveAccount_() {
     this.syncCode = undefined
-    this.syncCodeDialogType = 'qr'
+    this.braveAccountDialogType = 'qr'
+    console.log('handleCreateBraveAccount_')
   }
 
   async handleStartSyncChain_() {

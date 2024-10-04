@@ -1,0 +1,352 @@
+<style include="settings-shared">
+  :host
+  {
+    --line-color: #c2c4cf;
+  }
+  @media (prefers-color-scheme: dark) {
+    :host
+    {
+      --line-color: #5e6175;
+    }
+  }
+  .dialog-title
+  {
+    display: block;
+    font-weight: 700;
+    line-height: 1.6;
+  }
+  .dialog-subtitle
+  {
+    display: block;
+    font-size: 90%;
+    line-height: 1.4;
+    margin-top: 10px;
+  }
+  .tertiary-button
+  {
+    background: none;
+    border: none;
+    color: var(--cr-primary-text-color);
+    cursor: pointer;
+    font-family: Poppins, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: underline;
+  }
+  .button-group > *
+  {
+    margin-inline-end: 8px;
+  }
+  .button-group:last-child
+  {
+    margin-inline-end: 0;
+  }
+  .invalid-sync-code
+  {
+    color: red;
+  }
+  .devices
+  {
+    align-items: center;
+    display: grid;
+    grid-gap: 30px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    height: 220px;
+    justify-content: center;
+    margin: 0 20px 20px 20px;
+    padding: 0;
+    width: -webkit-fill-available;
+  }
+  .device
+  {
+    -webkit-appearance: none;
+    align-items: center;
+    background: none;
+    border-color: var(--line-color);
+    border-image: initial;
+    border-radius: 6px;
+    border-style: solid;
+    border-width: 1px;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    padding: 0;
+  }
+  .device[disabled]
+  {
+    cursor: not-allowed;
+  }
+
+  .device-image
+  {
+    height: 100px;
+    margin-bottom: 20px;
+  }
+  [disabled] > .device-image
+  {
+    opacity: .3;
+  }
+  .device-title
+  {
+    align-self: unset;
+    color: var(--cr-primary-text-color);
+    font-family: Poppins, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+  }
+  .device-subtitle
+  {
+    align-self: unset;
+    font-style: italic;
+    font-weight: 400;
+    margin: 0;
+  }
+  [disabled] > .device-title,
+  [disabled] > .device-subtitle
+  {
+    color: var(--cr-secondary-text-color);
+  }
+
+  .qr-viewer
+  {
+    align-items: center;
+    background-image: url(chrome://settings/brave_sync_page/qr_scanning.svg);
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 40%;
+    color: var(--cr-primary-text-color);
+    display: flex;
+    justify-content: center;
+    min-height: 130px;
+    padding-inline-start: 50%;
+  }
+
+  .qr-image
+  {
+    background: white;
+    border: solid 1px var(--line-color);
+    box-sizing: border-box;
+    max-width: 100%;
+    padding: 15px;
+    width: 300px;
+  }
+
+  .sync-code-widget
+  {
+    border-color: var(--line-color);
+    border-image: initial;
+    border-radius: 6px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Poppins, sans-serif;
+    margin: 0 20px;
+    padding: 10px;
+    width: -webkit-fill-available;
+  }
+  .sync-code-text
+  {
+    border-color: var(--line-color);
+    border-radius: 6px;
+    border-style: solid;
+    border-width: 1px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 26px;
+    min-height: 140px;
+    padding: 15px 20px;
+    resize: vertical;
+    width: 100%;
+  }
+  .sync-code-footer
+  {
+    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto;
+    margin-top: 10px;
+    /* check muli */
+  }
+  .clipboard-button
+  {
+    height: 24px;
+    margin: 0;
+    width: 24px;
+  }
+  .sync-code-clipboard
+  {
+    align-items: center;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+  }
+  .clipboard-success
+  {
+    opacity: 0;
+    transition: opacity 2s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .clipboard-success.is-success-true
+  {
+    opacity: 1;
+  }
+</style>
+
+<!-- device chooser -->
+<template is="dom-if" if="[[isCodeType('choose',codeType)]]">
+  <cr-dialog
+    on-close="handleClose_"
+    show-close-button
+    show-on-attach
+  >
+    <div slot="title">
+      <span clas="dialog-title">$i18n{braveSyncChooseDeviceTitle}</span>
+      <span class="dialog-subtitle">$i18n{braveSyncChooseDeviceDesc}</span>
+    </div>
+    <div slot="body" class="devices">
+      <button class="device mobile" on-click="handleChooseMobile_">
+        <img alt="" class="device-image" src="chrome://settings/brave_sync_page/device_mobile.svg" />
+        <h2 class="device-title">$i18n{braveSyncChooseDeviceMobileTitle}</h2>
+      </button>
+      <button class="device computer" on-click="handleChooseComputer_">
+        <img alt="" class="device-image" src="chrome://settings/brave_sync_page/device_computer.svg" />
+        <h2 class="device-title">$i18n{braveSyncChooseDeviceComputerTitle}</h2>
+      </button>
+    </div>
+  </cr-dialog>
+</template>
+
+<!-- qr code -->
+<template is="dom-if" if="[[isCodeType('qr',codeType)]]">
+  <cr-dialog
+    on-close="handleClose_"
+    show-close-button
+    show-on-attach
+  >
+    <div slot="title">
+      <span clas="dialog-title">$i18n{braveSyncScanCodeTitle}</span>
+      <span class="dialog-subtitle">$i18n{braveSyncScanCodeDesc1}
+        $i18n{braveSyncScanCodeDesc2}
+        $i18n{braveSyncScanCodeDesc3}
+        <b>
+          $i18n{braveSyncCodeWarning}
+        </b>
+      </span>
+    </div>
+    <div slot="body">
+      <div class="qr-viewer">
+        <template is="dom-if" if="[[qrCodeImageUrl_]]">
+            <img
+              class="qr-image"
+              src="[[qrCodeImageUrl_]]"
+              alt="$i18n{braveSyncQRCodeAlt}"
+            >
+        </template>
+        <template is="dom-if" if="[[!qrCodeImageUrl_]]">
+          <p>
+            $i18n{braveSyncQRError}
+          </p>
+        </template>
+      </div>
+    </div>
+    <div slot="button-container" class="button-group">
+      <button class="tertiary-button"
+        on-click="handleChooseComputer_"
+      >
+        $i18n{braveSyncViewCodeButton}
+      </button>
+      <cr-button class="action-button" on-click="handleDone_">
+        $i18n{ok}
+      </cr-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<!-- words -->
+<template is="dom-if" if="[[isCodeType('words',codeType)]]">
+  <cr-dialog
+    on-close="handleClose_"
+    show-close-button
+    show-on-attach
+  >
+    <div slot="title">
+      <span class="dialog-title">$i18n{braveSyncViewCodeTitle}</span>
+      <span class="dialog-subtitle">$i18n{braveSyncViewCodeDesc1}
+        $i18n{braveSyncViewCodeDesc2}
+        $i18n{braveSyncViewCodeDesc3}
+        <b>
+          $i18n{braveSyncCodeWarning}
+        </b>
+      </span>
+    </div>
+    <div slot="body" class="sync-code-widget">
+      <textarea class="sync-code-text" readonly>[[syncCode]]</textarea>
+      <div class="sync-code-footer">
+        [[i18n('braveSyncWordCount', syncCodeWordCount_)]]
+        <div class="sync-code-clipboard">
+          <span class$="clipboard-success is-success-[[hasCopiedSyncCode_]]">
+            $i18n{braveSyncCopied}
+          </span>
+          <cr-icon-button
+            class="clipboard-button"
+            iron-icon="copy"
+            on-click="handleSyncCodeCopy_"
+            aria-label="Copy sync words to clipboard" />
+        </div>
+      </div>
+    </div>
+    <div slot="button-container" class="button-group">
+      <button class="tertiary-button"
+        on-click="handleChooseMobile_"
+      >
+        $i18n{braveSyncViewCodeQRCodeButton}
+      </button>
+      <cr-button class="action-button"
+        on-click="handleDone_"
+      >
+        $i18n{ok}
+      </cr-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<!-- input words-->
+<template is="dom-if" if="[[isCodeType('input',codeType)]]">
+  <cr-dialog
+    on-close="handleClose_"
+    show-close-button
+    show-on-attach
+  >
+    <div slot="title">
+      <span clas="dialog-title">$i18n{braveSyncEnterCodeTitle}</span>
+      <span class="dialog-subtitle">$i18n{braveSyncEnterCodeDesc}</span>
+    </div>
+
+    <div slot="body" class="sync-code-widget">
+      <textarea autofocus class="sync-code-text" value="{{syncCode::input}}"></textarea>
+      <div class="sync-code-footer">
+        [[i18n('braveSyncWordCount', syncCodeWordCount_)]]
+      </div>
+      <template is="dom-if" if="[[syncCodeValidationError]]">
+        <div class="invalid-sync-code">
+          [[syncCodeValidationError]]
+        </div>
+      </template>
+    </div>
+
+    <div slot="button-container">
+      <cr-button class="action-button"
+        on-click="handleDone_"
+      >
+        $i18n{confirm}
+      </cr-button>
+    </div>
+  </cr-dialog>
+</template>
