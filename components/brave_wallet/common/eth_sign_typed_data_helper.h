@@ -33,9 +33,9 @@ class EthSignTypedDataHelper {
   void SetTypes(base::Value::Dict types);
   void SetVersion(Version version);
 
-  std::vector<uint8_t> GetTypeHash(const std::string primary_type_name) const;
+  std::vector<uint8_t> GetTypeHash(const std::string& primary_type_name) const;
   std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>> HashStruct(
-      const std::string primary_type_name,
+      const std::string& primary_type_name,
       const base::Value::Dict& data) const;
   std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>> EncodeData(
       const std::string& primary_type_name,

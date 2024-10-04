@@ -276,7 +276,7 @@ void BlockchainRegistry::UpdateTokenList(TokenListMap token_list_map) {
 }
 
 void BlockchainRegistry::UpdateTokenList(
-    const std::string key,
+    const std::string& key,
     std::vector<mojom::BlockchainTokenPtr> list) {
   token_list_map_[key] = std::move(list);
 }

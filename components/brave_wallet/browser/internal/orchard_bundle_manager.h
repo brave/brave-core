@@ -7,7 +7,9 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_ORCHARD_BUNDLE_MANAGER_H_
 
 #include <array>
+#include <memory>
 #include <optional>
+#include <vector>
 
 #include "brave/components/brave_wallet/browser/zcash/rust/authorized_orchard_bundle.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/unauthorized_orchard_bundle.h"
@@ -43,7 +45,7 @@ class OrchardBundleManager {
   // Returns in unauthorized state
   static std::unique_ptr<OrchardBundleManager> Create(
       base::span<const uint8_t> tree_state,
-      const std::vector<::brave_wallet::OrchardOutput> orchard_outputs);
+      const std::vector<::brave_wallet::OrchardOutput>& orchard_outputs);
 
   static void OverrideRandomSeedForTesting(size_t seed) {
     random_seed_for_testing_ = seed;

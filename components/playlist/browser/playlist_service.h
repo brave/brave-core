@@ -273,7 +273,7 @@ class PlaylistService : public KeyedService,
 
   // Delete orphaned playlist item directories that are not included in prefs.
   void CleanUpOrphanedPlaylistItemDirs();
-  void OnGetOrphanedPaths(const std::vector<base::FilePath> paths);
+  void OnGetOrphanedPaths(const std::vector<base::FilePath>& paths);
 
   // TODO(sko) Remove this version
   // https://github.com/brave/brave-browser/issues/30735

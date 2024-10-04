@@ -56,7 +56,7 @@ bool HasAnyLocale(const base::flat_set<std::string>& locales,
 
 std::optional<std::string> GetBestMissingLocale(
     const base::flat_set<std::string>& locales,
-    const std::vector<mojom::Publisher*> publishers) {
+    const std::vector<mojom::Publisher*>& publishers) {
   base::flat_map<std::string, uint32_t> missing_locale_counts;
   for (auto const* publisher : publishers) {
     // If this publisher is already covered by the list of locales we don't want

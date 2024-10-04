@@ -12,7 +12,7 @@
 
 namespace brave_l10n {
 
-bool IsUNM49Code(const std::string_view code) {
+bool IsUNM49Code(std::string_view code) {
   return base::Contains(kUnM49Codes, code);
 }
 
