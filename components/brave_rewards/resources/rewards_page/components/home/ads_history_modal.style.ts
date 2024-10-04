@@ -66,8 +66,22 @@ export const style = scoped.css`
     display: flex;
     gap: 12px;
 
+    button {
+      padding: 4px;
+      border-radius: 8px;
+      border: solid 1px transparent;
+    }
+
+    button:hover {
+      --leo-icon-color: ${color.text.interactive};
+    }
+
     button.on {
       --leo-icon-color: ${color.icon.interactive};
+
+      background: ${color.container.interactive};
+      border-color:
+        color-mix(in srgb, ${color.text.interactive} 60%, transparent);
     }
   }
 

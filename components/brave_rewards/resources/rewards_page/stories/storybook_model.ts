@@ -23,8 +23,8 @@ export function createModel(): AppModel {
     paymentId: 'abc123',
     countryCode: 'US',
     adsInfo: {
-      browserUpgradeRequired: true,
-      isSupportedRegion: false,
+      browserUpgradeRequired: false,
+      isSupportedRegion: true,
       adsEnabled: {
         'new-tab-page': true,
         'notification': false,
@@ -182,7 +182,8 @@ export function createModel(): AppModel {
         web3URL: ''
       },
       supportedWalletProviders: ['uphold', 'gemini']
-    }
+    },
+    captchaInfo: null
   })
 
   return {
@@ -305,6 +306,10 @@ export function createModel(): AppModel {
 
     async dismissSelfCustodyInvite() {
       stateManager.update({ selfCustodyInviteDismissed: true })
+    },
+
+    async onCaptchaResult(success) {
+      stateManager.update({ captchaInfo: null })
     }
 
   }
