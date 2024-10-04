@@ -49,7 +49,7 @@ const int kMaxReferralServerResponseSizeBytes = 1024 * 1024;
 
 // Default promo code, used when no promoCode file exists on first
 // run.
-const char kDefaultPromoCode[] = "BRV001";
+constexpr char kDefaultPromoCode[] = "BRV001";
 
 namespace brave {
 

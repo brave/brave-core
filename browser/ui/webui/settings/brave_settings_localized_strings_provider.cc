@@ -47,29 +47,29 @@ namespace settings {
 
 namespace {
 
-const char16_t kWebRTCLearnMoreURL[] =
+constexpr char16_t kWebRTCLearnMoreURL[] =
     u"https://support.brave.com/hc/en-us/articles/"
     u"360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
-const char16_t kBraveBuildInstructionsUrl[] =
+constexpr char16_t kBraveBuildInstructionsUrl[] =
     u"https://github.com/brave/brave-browser/wiki";
-const char16_t kBraveLicenseUrl[] = u"https://mozilla.org/MPL/2.0/";
-const char16_t kBraveReleaseTagPrefix[] =
+constexpr char16_t kBraveLicenseUrl[] = u"https://mozilla.org/MPL/2.0/";
+constexpr char16_t kBraveReleaseTagPrefix[] =
     u"https://github.com/brave/brave-browser/releases/tag/v";
-const char16_t kGoogleLoginLearnMoreURL[] =
+constexpr char16_t kGoogleLoginLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"Allow-Google-login---Third-Parties-and-Extensions";
-const char16_t kUnstoppableDomainsLearnMoreURL[] =
+constexpr char16_t kUnstoppableDomainsLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"Resolve-Methods-for-Unstoppable-Domains";
-const char16_t kEnsOffchainLookupLearnMoreURL[] =
+constexpr char16_t kEnsOffchainLookupLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup";
-const char16_t kBraveSyncGuideUrl[] =
+constexpr char16_t kBraveSyncGuideUrl[] =
     u"https://support.brave.com/hc/en-us/articles/360047642371-Sync-FAQ";
-const char16_t kDeAmpLearnMoreUrl[] =
+constexpr char16_t kDeAmpLearnMoreUrl[] =
     u"https://support.brave.com/hc/en-us/articles/8611298579981";
-const char16_t kDebounceLearnMoreUrl[] =
+constexpr char16_t kDebounceLearnMoreUrl[] =
     u"https://brave.com/privacy-updates/11-debouncing/";
-const char16_t kEnableNftDiscoveryLearnMoreUrl[] =
+constexpr char16_t kEnableNftDiscoveryLearnMoreUrl[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"NFT-Discovery";
 

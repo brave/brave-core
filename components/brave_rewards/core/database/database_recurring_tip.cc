@@ -23,7 +23,7 @@ namespace {
 
 // TODO(https://github.com/brave/brave-browser/issues/7144):
 //  rename to recurring_tip
-const char kTableName[] = "recurring_donation";
+constexpr char kTableName[] = "recurring_donation";
 
 void MapDatabaseResultToSuccess(base::OnceCallback<void(bool)> callback,
                                 mojom::DBCommandResponsePtr response) {

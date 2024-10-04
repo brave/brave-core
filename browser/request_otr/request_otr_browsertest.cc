@@ -50,8 +50,8 @@ using ::testing::_;
 
 namespace {
 
-const char kTestDataDirectory[] = "request-otr-data";
-const char kRequestOTRResponseHeader[] = "Request-OTR";
+constexpr char kTestDataDirectory[] = "request-otr-data";
+constexpr char kRequestOTRResponseHeader[] = "Request-OTR";
 
 class TestObserver : public infobars::InfoBarManager::Observer {
  public:

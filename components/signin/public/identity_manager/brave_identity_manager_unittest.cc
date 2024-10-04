@@ -41,10 +41,10 @@
 namespace signin {
 namespace {
 
-const char kTestGaiaId[] = "dummyId";
-const char kTestGaiaId2[] = "dummyId2";
-const char kTestEmail[] = "me@gmail.com";
-const char kTestEmail2[] = "me2@gmail.com";
+constexpr char kTestGaiaId[] = "dummyId";
+constexpr char kTestGaiaId2[] = "dummyId2";
+constexpr char kTestEmail[] = "me@gmail.com";
+constexpr char kTestEmail2[] = "me2@gmail.com";
 
 }  // namespace
 

@@ -36,8 +36,8 @@ using content_settings::mojom::ContentSettingsType;
 namespace {
 
 // WebcompatExceptionService keys
-const char kInclude[] = "include";
-const char kExceptions[] = "exceptions";
+constexpr char kInclude[] = "include";
+constexpr char kExceptions[] = "exceptions";
 
 using enum ContentSettingsType;
 

@@ -42,7 +42,7 @@ using brave_shields::features::kBraveShowStrictFingerprintingMode;
 using content::TitleWatcher;
 
 namespace {
-const char kNavigatorLanguagesScript[] = "navigator.languages.toString()";
+constexpr char kNavigatorLanguagesScript[] = "navigator.languages.toString()";
 const uint64_t kTestingSessionToken = 12345;
 }  // namespace
 

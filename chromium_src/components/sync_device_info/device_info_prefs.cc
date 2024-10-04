@@ -17,7 +17,7 @@ namespace {
 // Preference name for storing the time when reset of progress token for devices
 // was done. This happens when we need to re-fetch the devices which were
 // expired and are hidden on the client but still present on the server.
-const char kResetDevicesProgressTokenTime[] =
+constexpr char kResetDevicesProgressTokenTime[] =
     "brave_sync_v2.reset_devices_progress_token_time";
 
 }  // namespace

@@ -62,9 +62,9 @@ std::optional<bool> GetEip1559ForKnownChain(const std::string& chain_id_lwr) {
   return it->second;
 }
 
-const char kGanacheLocalhostURL[] = "http://localhost:7545/";
-const char kSolanaLocalhostURL[] = "http://localhost:8899/";
-const char kFilecoinLocalhostURL[] = "http://localhost:1234/rpc/v0";
+constexpr char kGanacheLocalhostURL[] = "http://localhost:7545/";
+constexpr char kSolanaLocalhostURL[] = "http://localhost:8899/";
+constexpr char kFilecoinLocalhostURL[] = "http://localhost:1234/rpc/v0";
 
 const std::string GetChainSubdomain(const std::string& chain_id) {
   static base::NoDestructor<base::flat_map<std::string, std::string>>

@@ -37,13 +37,13 @@ namespace brave_wallet {
 namespace {
 
 const int kPbkdf2IterationsLegacy = 100000;
-const char kBackupCompleteDeprecated[] = "backup_complete";
-const char kLegacyBraveWalletDeprecated[] = "legacy_brave_wallet";
-const char kPasswordEncryptorSaltDeprecated[] = "password_encryptor_salt";
-const char kPasswordEncryptorNonceDeprecated[] = "password_encryptor_nonce";
-const char kEncryptedMnemonicDeprecated[] = "encrypted_mnemonic";
-const char kImportedAccountCoinTypeDeprecated[] = "coin_type";
-const char kSelectedAccountDeprecated[] = "selected_account";
+constexpr char kBackupCompleteDeprecated[] = "backup_complete";
+constexpr char kLegacyBraveWalletDeprecated[] = "legacy_brave_wallet";
+constexpr char kPasswordEncryptorSaltDeprecated[] = "password_encryptor_salt";
+constexpr char kPasswordEncryptorNonceDeprecated[] = "password_encryptor_nonce";
+constexpr char kEncryptedMnemonicDeprecated[] = "encrypted_mnemonic";
+constexpr char kImportedAccountCoinTypeDeprecated[] = "coin_type";
+constexpr char kSelectedAccountDeprecated[] = "selected_account";
 
 std::optional<uint32_t> ExtractAccountIndex(mojom::KeyringId keyring_id,
                                             const std::string& path) {

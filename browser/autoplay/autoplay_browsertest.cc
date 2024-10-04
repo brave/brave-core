@@ -25,10 +25,10 @@
 #include "media/base/media_switches.h"
 #include "net/dns/mock_host_resolver.h"
 
-const char kVideoPlaying[] = "Video playing";
-const char kVideoPlayingDetect[] =
+constexpr char kVideoPlaying[] = "Video playing";
+constexpr char kVideoPlayingDetect[] =
     "document.getElementById('status').textContent;";
-const char kEmbeddedTestServerDirectory[] = "autoplay";
+constexpr char kEmbeddedTestServerDirectory[] = "autoplay";
 
 class AutoplayBrowserTest : public InProcessBrowserTest {
  public:

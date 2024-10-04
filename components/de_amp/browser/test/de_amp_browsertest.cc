@@ -45,13 +45,13 @@
 
 namespace {
 
-const char kTestHost[] = "a.test.com";
-const char kTestAmpPage[] = "/test_amp_page";
-const char kTestRedirectingAmpPage1[] = "/redirecting_amp_page_1";
-const char kTestRedirectingAmpPage2[] = "/redirecting_amp_page_2";
-const char kTestSimpleNonAmpPage[] = "/simple_page";
-const char kTestCanonicalPage[] = "/simple_canonical_page";
-const char kTestAmpBodyScaffolding[] =
+constexpr char kTestHost[] = "a.test.com";
+constexpr char kTestAmpPage[] = "/test_amp_page";
+constexpr char kTestRedirectingAmpPage1[] = "/redirecting_amp_page_1";
+constexpr char kTestRedirectingAmpPage2[] = "/redirecting_amp_page_2";
+constexpr char kTestSimpleNonAmpPage[] = "/simple_page";
+constexpr char kTestCanonicalPage[] = "/simple_canonical_page";
+constexpr char kTestAmpBodyScaffolding[] =
     R"(
     <html amp>
     <head>
@@ -60,7 +60,7 @@ const char kTestAmpBodyScaffolding[] =
     </html>
     )";
 constexpr uint32_t kTestReadBufferSize = 65536;  // bytes
-const char kTestAmpCanonicalLink[] = "<link rel='canonical' href='%s'>";
+constexpr char kTestAmpCanonicalLink[] = "<link rel='canonical' href='%s'>";
 
 // HELPERS
 std::unique_ptr<net::test_server::HttpResponse> BuildHttpResponse(

@@ -16,7 +16,7 @@
 
 namespace gcm {
 
-const char kBraveGCMStatusKey[] = "brave_gcm_channel_status";
+constexpr char kBraveGCMStatusKey[] = "brave_gcm_channel_status";
 
 BraveGCMChannelStatus::BraveGCMChannelStatus(Profile* profile, bool enabled)
     : profile_(profile), gcm_enabled_(enabled) {}

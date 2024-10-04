@@ -68,7 +68,7 @@ constexpr TestCase kTestCases[] = {
     {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
      ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA}};
 
-const char kPreTestDataFileName[] = "pre_test_data";
+constexpr char kPreTestDataFileName[] = "pre_test_data";
 
 std::string GetContentSettingTypeString(ContentSettingsType type) {
   std::string type_string;

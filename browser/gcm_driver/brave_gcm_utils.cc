@@ -13,7 +13,7 @@
 namespace gcm {
 
 // Chromium pref deprecated as of 01/2020.
-const char kGCMChannelStatus[] = "gcm.channel_status";
+constexpr char kGCMChannelStatus[] = "gcm.channel_status";
 
 void RegisterGCMProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Deprecated Chromium pref.

@@ -29,12 +29,12 @@
 #include "third_party/blink/public/common/features.h"
 
 namespace {
-const char kNoClientHintsHeaders[] = "/simple.html";
-const char kClientHints[] = "/ch.html";
-const char kClientHintsDelegationMerge[] = "/ch_delegation_merge.html";
-const char KClientHintsMetaHTTPEquivAcceptCH[] =
+constexpr char kNoClientHintsHeaders[] = "/simple.html";
+constexpr char kClientHints[] = "/ch.html";
+constexpr char kClientHintsDelegationMerge[] = "/ch_delegation_merge.html";
+constexpr char kClientHintsMetaHTTPEquivAcceptCH[] =
     "/ch-meta-http-equiv-accept-ch.html";
-const char KClientHintsMetaNameAcceptCH[] = "/ch-meta-name-accept-ch.html";
+constexpr char kClientHintsMetaNameAcceptCH[] = "/ch-meta-name-accept-ch.html";
 
 const std::reference_wrapper<const base::Feature> kTestFeatures[] = {
     // Individual hints features
@@ -94,9 +94,9 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
     client_hints_delegation_merge_url_ =
         https_server_.GetURL(kClientHintsDelegationMerge);
     client_hints_meta_http_equiv_accept_ch_url_ =
-        https_server_.GetURL(KClientHintsMetaHTTPEquivAcceptCH);
+        https_server_.GetURL(kClientHintsMetaHTTPEquivAcceptCH);
     client_hints_meta_name_accept_ch_url_ =
-        https_server_.GetURL(KClientHintsMetaNameAcceptCH);
+        https_server_.GetURL(kClientHintsMetaNameAcceptCH);
 
     host_resolver()->AddRule("*", "127.0.0.1");
     InProcessBrowserTest::SetUpOnMainThread();

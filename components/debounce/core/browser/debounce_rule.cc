@@ -28,12 +28,12 @@
 
 namespace {
 // debounce.json keys
-const char kInclude[] = "include";
-const char kExclude[] = "exclude";
-const char kAction[] = "action";
-const char kPrependScheme[] = "prepend_scheme";
-const char kParam[] = "param";
-const char kPref[] = "pref";
+constexpr char kInclude[] = "include";
+constexpr char kExclude[] = "exclude";
+constexpr char kAction[] = "action";
+constexpr char kPrependScheme[] = "prepend_scheme";
+constexpr char kParam[] = "param";
+constexpr char kPref[] = "pref";
 
 // Max memory per regex: 4kb. This is just an upper bound
 const int64_t kMaxMemoryPerRegexPattern = 2 << 11;

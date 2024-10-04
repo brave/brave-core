@@ -14,7 +14,7 @@
 
 namespace {
 
-const char kReportingObserver[] = "/reporting_observer.html";
+constexpr char kReportingObserver[] = "/reporting_observer.html";
 
 }  // namespace
 

@@ -32,7 +32,7 @@
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 
 namespace {
-const char kTestDataDirectory[] = "debounce-data";
+constexpr char kTestDataDirectory[] = "debounce-data";
 static base::NoDestructor<std::string> gLastSiteForCookies("");
 }  // namespace
 

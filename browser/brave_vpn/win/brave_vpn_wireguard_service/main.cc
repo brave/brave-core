@@ -30,9 +30,9 @@
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
-const char kUserDataDir[] = "user-data-dir";
-const char kProcessType[] = "type";
-const char kLogFile[] = "log-file";
+constexpr char kUserDataDir[] = "user-data-dir";
+constexpr char kProcessType[] = "type";
+constexpr char kLogFile[] = "log-file";
 }  // namespace
 
 // List of commands executed on user level and interacting with users.

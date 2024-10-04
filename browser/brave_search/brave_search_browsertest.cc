@@ -43,23 +43,23 @@ using RequestExpectationsCallback =
 
 namespace {
 
-const char kEmbeddedTestServerDirectory[] = "brave-search";
-const char kAllowedDomain[] = "search.brave.com";
-const char kAllowedDomainDev[] = "search.brave.software";
-const char kNotAllowedDomain[] = "brave.com";
-const char kBraveSearchPath[] = "/bravesearch.html";
-const char kPageWithCookie[] = "/simple_page_with_cookie.html";
-const char kPageWithoutCookie[] = "/simple_page_without_cookie.html";
-const char kSearchAdsHeader[] = "Brave-Search-Ads";
-const char kSearchAdsDisabledValue[] = "?0";
-const char kBackupSearchContent[] = "<html><body>results</body></html>";
-const char kScriptDefaultAPIExists[] =
+constexpr char kEmbeddedTestServerDirectory[] = "brave-search";
+constexpr char kAllowedDomain[] = "search.brave.com";
+constexpr char kAllowedDomainDev[] = "search.brave.software";
+constexpr char kNotAllowedDomain[] = "brave.com";
+constexpr char kBraveSearchPath[] = "/bravesearch.html";
+constexpr char kPageWithCookie[] = "/simple_page_with_cookie.html";
+constexpr char kPageWithoutCookie[] = "/simple_page_without_cookie.html";
+constexpr char kSearchAdsHeader[] = "Brave-Search-Ads";
+constexpr char kSearchAdsDisabledValue[] = "?0";
+constexpr char kBackupSearchContent[] = "<html><body>results</body></html>";
+constexpr char kScriptDefaultAPIExists[] =
     "!!(window.brave && window.brave.getCanSetDefaultSearchProvider)";
 // Use setTimeout to allow opensearch xml to be fetched
 // and template url created.
 // If this is flakey, consider making TemplateURL manually,
 // or observing the TemplateURLService for changes.
-const char kScriptDefaultAPIGetValue[] = R"(
+constexpr char kScriptDefaultAPIGetValue[] = R"(
   new Promise(resolve => {
     setTimeout(function () {
     brave.getCanSetDefaultSearchProvider()

@@ -7,6 +7,5 @@
 
 namespace commander::prefs {
 
-const char kCommanderFrecencies[] = "brave.commander.command_frecencies";
-
+constexpr char kCommanderFrecencies[] = "brave.commander.command_frecencies";
 }

@@ -9,11 +9,11 @@
 namespace brave_rewards::internal {
 namespace notifications {
 
-const char kUpholdBATNotAllowed[] = "uphold_bat_not_allowed";
-const char kUpholdInsufficientCapabilities[] =
+inline constexpr char kUpholdBATNotAllowed[] = "uphold_bat_not_allowed";
+inline constexpr char kUpholdInsufficientCapabilities[] =
     "uphold_insufficient_capabilities";
-const char kWalletDisconnected[] = "wallet_disconnected";
-const char kSelfCustodyAvailable[] = "self_custody_available";
+inline constexpr char kWalletDisconnected[] = "wallet_disconnected";
+inline constexpr char kSelfCustodyAvailable[] = "self_custody_available";
 
 }  // namespace notifications
 }  // namespace brave_rewards::internal

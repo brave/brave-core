@@ -42,10 +42,10 @@ static base::NoDestructor<std::vector<std::string>> g_vetted_search_engines(
      "brave"});
 
 // Entry point to content_cosmetic.ts script.
-const char kObservingScriptletEntryPoint[] =
+constexpr char kObservingScriptletEntryPoint[] =
     "window.content_cosmetic.tryScheduleQueuePump()";
 
-const char kScriptletInitScript[] =
+constexpr char kScriptletInitScript[] =
     R"((function() {
           let text = '(function() {\nconst scriptletGlobals = (() => {\nconst forwardedMapMethods = ["has", "get", "set"];\nconst handler = {\nget(target, prop) { if (forwardedMapMethods.includes(prop)) { return Map.prototype[prop].bind(target) } return target.get(prop); },\nset(target, prop, value) { if (!forwardedMapMethods.includes(prop)) { target.set(prop, value); } }\n};\nreturn new Proxy(new Map(%s), handler);\n})();\nlet deAmpEnabled = %s;\n' + %s + '})()';
           let script;
@@ -65,7 +65,7 @@ const char kScriptletInitScript[] =
           }
         })();)";
 
-const char kPreInitScript[] =
+constexpr char kPreInitScript[] =
     R"((function() {
           if (window.content_cosmetic == undefined) {
             window.content_cosmetic = {};
@@ -73,7 +73,7 @@ const char kPreInitScript[] =
           %s
         })();)";
 
-const char kCosmeticFilteringInitScript[] =
+constexpr char kCosmeticFilteringInitScript[] =
     R"({
         const CC = window.content_cosmetic
         if (CC.hide1pContent === undefined)
@@ -88,7 +88,7 @@ const char kCosmeticFilteringInitScript[] =
           CC.fetchNewClassIdRulesThrottlingMs = %s;
        })";
 
-const char kHideSelectorsInjectScript[] =
+constexpr char kHideSelectorsInjectScript[] =
     R"((function() {
           let nextIndex =
               window.content_cosmetic.cosmeticStyleSheet.rules.length;

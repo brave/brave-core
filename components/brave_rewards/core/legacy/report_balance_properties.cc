@@ -19,11 +19,11 @@ namespace brave_rewards::internal {
 namespace {
 
 // Do not change these values as they are required to transition legacy state
-const char kAutoContributionsKey[] = "auto_contribute";
-const char kAdEarningsKey[] = "earning_from_ads";
-const char kGrantsKey[] = "grants";
-const char kOneTimeDonationsKey[] = "one_time_donation";
-const char kRecurringDonationsKey[] = "recurring_donation";
+constexpr char kAutoContributionsKey[] = "auto_contribute";
+constexpr char kAdEarningsKey[] = "earning_from_ads";
+constexpr char kGrantsKey[] = "grants";
+constexpr char kOneTimeDonationsKey[] = "one_time_donation";
+constexpr char kRecurringDonationsKey[] = "recurring_donation";
 
 bool GetPropertyFromDict(const base::Value::Dict& dict,
                          std::string_view key,

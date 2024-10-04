@@ -37,11 +37,11 @@ namespace {
 constexpr char kUserProfilePluginsPath[] =
     "profile.content_settings.exceptions.plugins";
 
-const char kExpirationPath[] = "expiration";
-const char kLastModifiedPath[] = "last_modified";
-const char kSessionModelPath[] = "model";
-const char kSettingPath[] = "setting";
-const char kPerResourcePath[] = "per_resource";
+constexpr char kExpirationPath[] = "expiration";
+constexpr char kLastModifiedPath[] = "last_modified";
+constexpr char kSessionModelPath[] = "model";
+constexpr char kSettingPath[] = "setting";
+constexpr char kPerResourcePath[] = "per_resource";
 
 using GURLSourcePair = std::pair<GURL, ContentSettingsType>;
 

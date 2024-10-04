@@ -20,9 +20,9 @@ namespace misc_metrics {
 
 namespace {
 
-const char kTabWindowPrefKey[] = "tab_window";
-const char kBraveFeaturesPrefKey[] = "brave_features";
-const char kBrowserViewsPrefKey[] = "browser_views";
+constexpr char kTabWindowPrefKey[] = "tab_window";
+constexpr char kBraveFeaturesPrefKey[] = "brave_features";
+constexpr char kBrowserViewsPrefKey[] = "browser_views";
 
 constexpr base::TimeDelta kUpdateInterval = base::Days(1);
 

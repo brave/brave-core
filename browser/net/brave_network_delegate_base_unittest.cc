@@ -23,12 +23,12 @@ using net::HttpResponseHeaders;
 
 namespace {
 
-const char kFirstPartyDomain[] = "http://firstparty.com/";
-const char kThirdPartyDomain[] = "http://thirdparty.com/";
-const char kAcceptLanguageHeader[] = "Accept-Language";
-const char kXSSProtectionHeader[] = "X-XSS-Protection";
+constexpr char kFirstPartyDomain[] = "http://firstparty.com/";
+constexpr char kThirdPartyDomain[] = "http://thirdparty.com/";
+constexpr char kAcceptLanguageHeader[] = "Accept-Language";
+constexpr char kXSSProtectionHeader[] = "X-XSS-Protection";
 
-const char kRawHeaders[] =
+constexpr char kRawHeaders[] =
     "HTTP/1.0 200 OK\n"
     "Strict-Transport-Security: max-age=31557600\n"
     "Accept-Language: *\n"

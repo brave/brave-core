@@ -30,8 +30,8 @@
 
 using brave_shields::ControlType;
 
-const char kEmbeddedTestServerDirectory[] = "webaudio";
-const char kTitleScript[] = "document.title;";
+constexpr char kEmbeddedTestServerDirectory[] = "webaudio";
+constexpr char kTitleScript[] = "document.title;";
 
 class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
  public:

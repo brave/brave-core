@@ -46,9 +46,9 @@ namespace {
 // Both timeouts in seconds
 const int kMaxTimeoutForAdsServiceInit = 10;
 const int kMaxTimeoutPerLoadedURL = 30;
-const char kEmbeddedTestServerDirectory[] = "brave_ads";
-const char kDomain[] = "search.brave.com";
-const char kBraveSearchPath[] = "/search_result_ad_click.html";
+constexpr char kEmbeddedTestServerDirectory[] = "brave_ads";
+constexpr char kDomain[] = "search.brave.com";
+constexpr char kBraveSearchPath[] = "/search_result_ad_click.html";
 
 void WaitForTimeout(int timeout) {
   base::test::ScopedRunLoopTimeout file_download_timeout(

@@ -29,7 +29,7 @@
 
 namespace {
 
-const char kLeoSkuHostnamePart[] = "leo";
+constexpr char kLeoSkuHostnamePart[] = "leo";
 
 }  // namespace
 

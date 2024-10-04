@@ -18,13 +18,13 @@ namespace brave_rewards::internal {
 namespace {
 
 // Do not change these values as they are required to transition legacy state
-const char kAutoContributeKey[] = "auto_contribute";
-const char kBootTimestampKey[] = "bootStamp";
-const char kFeeAmountKey[] = "fee_amount";
-const char kReconcileTimestampKey[] = "reconcileStamp";
-const char kRewardsEnabledKey[] = "rewards_enabled";
-const char kUserChangedFeeKey[] = "user_changed_fee";
-const char kWalletInfoKey[] = "walletInfo";
+constexpr char kAutoContributeKey[] = "auto_contribute";
+constexpr char kBootTimestampKey[] = "bootStamp";
+constexpr char kFeeAmountKey[] = "fee_amount";
+constexpr char kReconcileTimestampKey[] = "reconcileStamp";
+constexpr char kRewardsEnabledKey[] = "rewards_enabled";
+constexpr char kUserChangedFeeKey[] = "user_changed_fee";
+constexpr char kWalletInfoKey[] = "walletInfo";
 
 }  // namespace
 

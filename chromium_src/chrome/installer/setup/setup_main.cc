@@ -17,7 +17,7 @@
 
 namespace {
 
-const char kBraveReferralCode[] = "brave-referral-code";
+constexpr char kBraveReferralCode[] = "brave-referral-code";
 
 void SavePromoCode(installer::InstallStatus install_status) {
   if (!InstallUtil::GetInstallReturnCode(install_status)) {
