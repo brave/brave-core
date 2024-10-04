@@ -25,6 +25,136 @@
   <message name="IDS_SETTINGS_BRAVE_GET_STARTED_TITLE" desc="The title for the Get Started section in settings">
     Get started
   </message>
+
+  <!-- <Brave Account> -->
+  <!-- Row: -->
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ROW_TITLE" translateable="false" desc="Title of the Brave Account row in the Get Started section">
+    Sign in or create a Brave account
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ROW_DESCRIPTION" translateable="false" desc="Description of the Brave Account row in the Get Started section">
+    A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to the 'Entry' dialog">
+    Get started
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_MANAGE_ACCOUNT_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to their Brave Account settings">
+    Manage account
+  </message>
+
+  <!-- 'Entry' dialog: -->
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ENTRY_DIALOG_TITLE" translateable="false" desc="Title for the dialog where the user can choose to create a Brave Account, or sign in">
+    Get started with your Brave account
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ENTRY_DIALOG_DESCRIPTION" translateable="false" desc="Description for the dialog where the user can choose to create a Brave Account, or sign in">
+    A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ENTRY_DIALOG_CREATE_BRAVE_ACCOUNT_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to the 'Create' dialog">
+    Create a Brave account
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ALREADY_HAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to the 'Sign In' dialog">
+    Already have an account? Sign in
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_SELF_CUSTODY_DESCRIPTION" translateable="false" desc="Description of the self-custody option which we provide for advanced users">
+    For advanced users, we also support self-custody of your Brave account keys for an extra layer of privacy. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_SELF_CUSTODY_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to the self-custody settings">
+    Use self-custody
+  </message>
+
+  <!-- 'Create' dialog: -->
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CREATE_DIALOG_TITLE" translateable="false" desc="Title for the dialog where the user can create their Brave Account">
+    Create your account
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CREATE_DIALOG_DESCRIPTION" translateable="false" desc="Description for the dialog where the user can create their Brave Account">
+    A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE" translateable="false" desc="Error message for when the user tries to use a @bravealias.com email address when creating their Brave Account">
+    You can't use @bravealias.com addresses for creating Brave accounts. Please try again with a different domain.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ACCOUNT_NAME_INPUT_LABEL" translateable="false" desc="Label for the 'Account name' input field">
+    Account name
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ACCOUNT_NAME_INPUT_PLACEHOLDER" translateable="false" desc="Placeholder for the 'Account name' input field">
+    Enter a name for your account
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CREATE_PASSWORD_INPUT_LABEL" translateable="false" desc="Label for the 'Create a password' input field">
+    Create a password
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_WEAK" translateable="false" desc="The password strength meter's 'weak' state">
+    Weak
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_MEDIUM" translateable="false" desc="The password strength meter's 'medium' state">
+    Medium
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG" translateable="false" desc="The password strength meter's 'strong' state">
+    Strong
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_LABEL" translateable="false" desc="Label for the 'Confirm password' input field">
+    Confirm password
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_PLACEHOLDER" translateable="false" desc="Placeholder for the 'Confirm password' input field">
+    Confirm your password
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_ERROR_MESSAGE" translateable="false" desc="Message for a failed password confirmation">
+    Passwords don't match
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_SUCCESS_MESSAGE" translateable="false" desc="Message for a successful password confirmation">
+    Passwords match
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CONSENT_CHECKBOX_LABEL" translateable="false" desc="Label for the checkbox where the user consents to the Terms of service and Privacy agreement">
+    I have read and accept the <ph name="BEGIN_LINK_1">&lt;a target="_blank" href="$1"&gt;</ph>Terms of service<ph name="END_LINK_1">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_2">&lt;a target="_blank" href="$2"&gt;</ph>Privacy agreement<ph name="END_LINK_2">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CREATE_ACCOUNT_BUTTON_LABEL" translateable="false" desc="Label for the button that submits the 'Create' dialog">
+    Create account
+  </message>
+
+  <!-- 'Sign In' dialog: -->
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_TITLE" translateable="false" desc="Title for the dialog where the user can sign in to their Brave Account">
+    Sign in to your account
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_DESCRIPTION" translateable="false" desc="Description for the dialog where the user can sign in to their Brave Account">
+    A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_INPUT_LABEL" translateable="false" desc="Label for the 'Password' input field">
+    Password
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_FORGOT_PASSWORD_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to the 'Forgot Password' dialog">
+    Forgot your password?
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL" translateable="false" desc="Label for the button that submits the 'Sign In' dialog">
+    Sign in
+  </message>
+
+  <!-- 'Forgot Password' dialog: -->
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_TITLE" translateable="false" desc="Title for the dialog where the user can reset their Brave Account password">
+    Forgot your password?
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION" translateable="false" desc="Description for the dialog where the user can reset their Brave Account password">
+    Confirm your Brave account email and we'll email you a link to reset your password. The link will only be valid for 30 minutes.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ALERT_MESSAGE" translateable="false" desc="Alert message explaining that if the user resets their password without having an active login, all their data will be deleted">
+    [Explain that if they reset their password without having an active login, all the user data will be deleted]
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user back to the 'Sign In' dialog">
+    Cancel
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL" translateable="false" desc="Label for the button that submits the 'Forgot Password' dialog">
+    Reset your password
+  </message>
+
+  <!-- Common: -->
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_EMAIL_INPUT_LABEL" translateable="false" desc="Label for the 'Email address' input field">
+    Email address
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER" translateable="false" desc="Placeholder for the 'Email address' input field">
+    Enter your email address
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER" translateable="false" desc="Placeholder for the 'Create a password'/'Password' input fields">
+    Enter your password
+  </message>
+  <!-- </Brave Account> -->
+
+  <!-- Settings / Get started / Profile name and icon -->
   <message name="IDS_SETTINGS_BRAVE_EDIT_PROFILE" desc="Title to edit the profile user name and picture">
     Profile name and icon
   </message>
