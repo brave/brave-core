@@ -542,7 +542,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   private func createLocationTextFieldContainer() {
     guard locationTextField == nil else { return }
 
-    locationTextField = AutocompleteTextField()
+    locationTextField = AutocompleteTextField(privateBrowsingManager: privateBrowsingManager)
 
     guard let locationTextField = locationTextField else { return }
 
