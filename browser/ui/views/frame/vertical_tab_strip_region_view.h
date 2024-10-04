@@ -202,7 +202,6 @@ class VerticalTabStripRegionView : public views::View,
   BooleanPrefMember collapsed_pref_;
   BooleanPrefMember expanded_state_per_window_pref_;
   BooleanPrefMember floating_mode_pref_;
-  BooleanPrefMember sidebar_side_;
 
   IntegerPrefMember expanded_width_pref_;
   int expanded_width_ = 220;
@@ -229,6 +228,7 @@ class VerticalTabStripRegionView : public views::View,
       fullscreen_observation_{this};
 
   BooleanPrefMember vertical_tab_on_right_;
+  BooleanPrefMember sidebar_side_;
 
   base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
 };

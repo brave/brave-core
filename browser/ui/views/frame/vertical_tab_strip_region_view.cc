@@ -658,7 +658,6 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
       base::BindRepeating(
           &VerticalTabStripRegionView::OnFloatingModePrefChanged,
           base::Unretained(this)));
-  OnFloatingModePrefChanged();
 
 #if BUILDFLAG(IS_MAC)
   show_toolbar_on_fullscreen_pref_.Init(
@@ -686,6 +685,9 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
          BrowserList::GetInstance()->end())
       << "Browser shouldn't be added at this point.";
   BrowserList::AddObserver(this);
+
+  // Note: This should happen after all the PrefMembers have been initialized.
+  OnFloatingModePrefChanged();
 }
 
 VerticalTabStripRegionView::~VerticalTabStripRegionView() {
