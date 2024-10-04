@@ -353,6 +353,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/notifications/NotificationPlatformBridge"));
+
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/settings/SettingsIntentUtil"));
     }
 
     @Test
@@ -855,6 +857,16 @@ public class BytecodeTest {
                         boolean.class,
                         boolean.class,
                         BraveNotificationPlatformBridge.getActionInfoArrayClass()));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/settings/SettingsIntentUtil",
+                        "createIntent",
+                        MethodModifier.STATIC,
+                        true,
+                        Intent.class,
+                        Context.class,
+                        String.class,
+                        Bundle.class));
     }
 
     @Test
