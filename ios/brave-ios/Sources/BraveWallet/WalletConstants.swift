@@ -141,6 +141,7 @@ public struct WalletConstants {
     ".klever", ".manga", ".polygon", ".unstoppable", ".pudgy",
     ".tball", ".stepn", ".secret", ".raiin", ".pog", ".clay",
     ".metropolis", ".witg", ".ubu", ".kryptic", ".farms", ".dfz",
+    ".kresus", ".binanceus", ".austin", ".bitget", ".wrkx",
   ]
 
   /// The supported IPFS schemes
