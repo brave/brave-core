@@ -689,7 +689,7 @@ public class BrowserViewController: UIViewController {
   ) {
     let showToolbar = shouldShowFooterForTraitCollection(newCollection)
     bottomTouchArea.isEnabled = showToolbar
-    topToolbar.setShowToolbar(!showToolbar)
+    topToolbar.setShowToolbar(showToolbar)
 
     if (showToolbar && toolbar == nil) || (!showToolbar && toolbar != nil) {
       toolbar?.removeFromSuperview()

@@ -61,13 +61,15 @@ class BottomToolbarView: UIView, ToolbarProtocol {
         self.updateColors()
         self.helper?.updateForTraitCollection(
           self.traitCollection,
-          browserColors: privateBrowsingManager.browserColors
+          browserColors: privateBrowsingManager.browserColors,
+          isBottomToolbar: true
         )
       })
 
     helper?.updateForTraitCollection(
       traitCollection,
-      browserColors: privateBrowsingManager.browserColors
+      browserColors: privateBrowsingManager.browserColors,
+      isBottomToolbar: true
     )
 
     updateColors()
@@ -106,7 +108,8 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     super.traitCollectionDidChange(previousTraitCollection)
     helper?.updateForTraitCollection(
       traitCollection,
-      browserColors: privateBrowsingManager.browserColors
+      browserColors: privateBrowsingManager.browserColors,
+      isBottomToolbar: true
     )
   }
 
