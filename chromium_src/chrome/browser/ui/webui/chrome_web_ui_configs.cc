@@ -21,12 +21,14 @@
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_adblock_internals_ui.h"
+#include "brave/browser/ui/webui/brave_adblock_ui.h"
 
 void RegisterChromeWebUIConfigs() {
   RegisterChromeWebUIConfigs_ChromiumImpl();
 
-#if !BUILDFLAG(IS_ANDROID)
   auto& map = content::WebUIConfigMap::GetInstance();
+#if !BUILDFLAG(IS_ANDROID)
   map.AddWebUIConfig(std::make_unique<brave_rewards::RewardsPageTopUIConfig>());
   map.AddWebUIConfig(std::make_unique<brave_rewards::RewardsPanelUIConfig>());
   map.AddWebUIConfig(std::make_unique<brave_rewards::TipPanelUIConfig>());
@@ -35,4 +37,6 @@ void RegisterChromeWebUIConfigs() {
   map.AddWebUIConfig(std::make_unique<WalletPanelUIConfig>());
   map.AddWebUIConfig(std::make_unique<SpeedreaderToolbarUIConfig>());
 #endif  // !BUILDFLAG(IS_ANDROID)
+  map.AddWebUIConfig(std::make_unique<BraveAdblockUIConfig>());
+  map.AddWebUIConfig(std::make_unique<BraveAdblockInternalsUIConfig>());
 }
