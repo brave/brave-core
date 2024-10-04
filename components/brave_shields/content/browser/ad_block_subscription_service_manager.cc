@@ -41,6 +41,8 @@ base::TimeDelta* g_testing_subscription_retry_interval = nullptr;
 namespace {
 
 const uint16_t kSubscriptionMaxExpiresHours = 14 * 24;
+constexpr base::TimeDelta kListRetryInterval = base::Hours(1);
+constexpr base::TimeDelta kListCheckInitialDelay = base::Minutes(1);
 
 bool SkipGURLField(std::string_view value, GURL* field) {
   return true;
@@ -83,9 +85,6 @@ bool ParseExpiresWithFallback(const base::Value* value, uint16_t* field) {
     return true;
   }
 }
-
-const base::TimeDelta kListRetryInterval = base::Hours(1);
-const base::TimeDelta kListCheckInitialDelay = base::Minutes(1);
 
 SubscriptionInfo BuildInfoFromDict(const GURL& sub_url,
                                    const base::Value::Dict& dict) {

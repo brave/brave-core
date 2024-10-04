@@ -30,8 +30,8 @@ const int kAutoSecureRequestsBuckets[] = {0, 5, 50, 90};
 
 constexpr char kDohModeAutomatic[] = "automatic";
 constexpr char kDohModeSecure[] = "secure";
-const base::TimeDelta kAutoSecureInitDelay = base::Seconds(6);
-const base::TimeDelta kAutoSecureReportInterval = base::Seconds(20);
+constexpr base::TimeDelta kAutoSecureInitDelay = base::Seconds(6);
+constexpr base::TimeDelta kAutoSecureReportInterval = base::Seconds(20);
 
 const char* GetAutoSecureRequestsHistogramName() {
   std::string histogram_name = kAutoSecureRequestsHistogramName;

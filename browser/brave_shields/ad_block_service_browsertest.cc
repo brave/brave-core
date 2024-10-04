@@ -3077,7 +3077,7 @@ class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
         target, content::JsReplace(kTemplate, start_number, end_number)));
   }
 
-  void NonBlockingDelay(const base::TimeDelta& delay) {
+  void NonBlockingDelay(base::TimeDelta delay) {
     base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
     base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
         FROM_HERE, run_loop.QuitWhenIdleClosure(), delay);

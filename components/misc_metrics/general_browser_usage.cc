@@ -19,7 +19,7 @@ namespace misc_metrics {
 
 namespace {
 
-const base::TimeDelta kReportInterval = base::Minutes(10);
+constexpr base::TimeDelta kReportInterval = base::Minutes(10);
 
 #if !BUILDFLAG(IS_ANDROID)
 constexpr int kProfileCountBuckets[] = {0, 1, 2, 3, 5};

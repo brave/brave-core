@@ -32,7 +32,7 @@ namespace {
 
 constexpr int kTopControlIconSize = 20;
 
-std::u16string ToString(const base::TimeDelta& time) {
+std::u16string ToString(base::TimeDelta time) {
   const int time_in_seconds = time.InSecondsF();
   const int hours = time_in_seconds / 3600;
   const int minutes = (time_in_seconds % 3600) / 60;
