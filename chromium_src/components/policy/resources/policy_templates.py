@@ -16,9 +16,9 @@ from brave_chromium_utils import wspath
 def _LoadPolicies(orig_func):
     policies = orig_func()
 
-    # `policies` will have the following notable keys:
-    #
-    # "policy_definitions"
+    # `policies` has two notable keys:
+
+    # 1) "policy_definitions"
     # there will be one "group" for every folder found under
     # `//components/policy/resources/templates/policy_definitions`
     # Chromium considers the folder name the group name for the policy.
@@ -30,35 +30,29 @@ def _LoadPolicies(orig_func):
     # `//brave/components/policy/resources/templates/policy_definitions/BraveSoftware` # pylint: disable=line-too-long
     # to:
     # `//components/policy/resources/templates/policy_definitions`
-    #
-    #
-    # "policies"
+    policy_definition_yaml = policies['policy_definitions']
+    brave_policies = []
+    if policy_definition_yaml is not None:
+        brave_policy_section = policy_definition_yaml['BraveSoftware']
+        if brave_policy_section is not None:
+            brave_policy_items = brave_policy_section['policies']
+            for key, _ in brave_policy_items.items():
+                brave_policies.append(key)
+
+    # 2) "policies"
     # This has the contents of:
     # `//components/policy/resources/templates/policies.yaml`
     # This is where we need to inject the Brave specific names. The policies
     # themselves are already defined (under `policy_definitions`), we just need
     # to add a mapping for ID (integer; unique) and name (matches name under
     # `policy_definitions`).
-    #
-    #
-    # There are some other fields which are not used by this script.
-
     policy_yaml = policies['policies']
-    policy_section = policy_yaml['policies']
-
-    offset = max(map(int, policy_section), default=0)
-
-    # append our entries to the ones from policies.yaml
-    # TODO(bsclifton): we can create this array dynamically by reading the file
-    # names from:
-    # `//brave/components/policy/resources/templates/policy_definitions/BraveSoftware` # pylint: disable=line-too-long
-    brave_policies = [
-        'TorDisabled', 'BraveRewardsDisabled', 'BraveWalletDisabled',
-        'BraveVPNDisabled', 'BraveAIChatEnabled', 'BraveSyncUrl',
-        'BraveShieldsDisabledForUrls', 'BraveShieldsEnabledForUrls'
-    ]
-    for i, entry in enumerate(brave_policies):
-        policy_section[offset + i + 1] = entry
+    if policy_yaml is not None:
+        policy_section = policy_yaml['policies']
+        if policy_section is not None:
+            offset = max(map(int, policy_section), default=0)
+            for i, entry in enumerate(brave_policies):
+                policy_section[offset + i + 1] = entry
 
     return policies
 
@@ -87,8 +81,8 @@ def update_policy_files():
             if not entry.is_dir():
                 continue
             dst_dir = wspath(
-                f"//components/policy/resources/templates/policy_definitions/"
-                + entry.name)
+                "//components/policy/resources/templates/policy_definitions/" +
+                entry.name)
             shutil.copytree(entry.path,
                             dst_dir,
                             dirs_exist_ok=True,
