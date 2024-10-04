@@ -897,3 +897,7 @@
 }
 
 -keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedNavigationBarColorControllerBase
+
+-keep class org.chromium.chrome.browser.settings.SettingsIntentUtil {
+    *** createIntent(...);
+}
