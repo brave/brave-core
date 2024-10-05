@@ -211,8 +211,10 @@
       <span class="dialog-subtitle">A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.</span>
     </div>
     <div slot="body">
-      <cr-input autofocus required
-        placeholder="Email address">
+      <cr-input id="emailAddressInput" autofocus required
+        placeholder="Email address"
+        pattern="[0-9]{4}"
+        auto-validate error-message="Must be a valid email address">
       </cr-input>
       <cr-checkbox checked="true">
         I have read and accept the <a href="#">Terms of service</a> and <a href="#">Privacy agreement</a>.
@@ -234,7 +236,18 @@
     show-on-attach
   >
     <div slot="title">
-      <span class="dialog-title">Sign in</span>
+      <span class="dialog-title">Sign in to your account</span>
+      <span class="dialog-subtitle">A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.</span>
+    </div>
+    <div slot="body">
+      <cr-input autofocus required
+        placeholder="Email address">
+      </cr-input>
+    </div>
+    <div slot="button-container">
+      <cr-button class="action-button">
+        Send login link
+      </cr-button>
     </div>
   </cr-dialog>
 </template>
