@@ -8,7 +8,6 @@
 
 // Inject a protected method that will have access to the private members of the
 // base class. Then, we can call this method from the subclass' override.
-#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/image/image_skia.h"
 
 class TabHoverCardBubbleView;
@@ -33,7 +32,6 @@ class TabHoverCardBubbleView;
 #undef BRAVE_TAB_HOVER_CARD_BUBBLE_VIEW_H_
 
 class TabHoverCardBubbleView : public TabHoverCardBubbleView_ChromiumImpl {
-  METADATA_HEADER(TabHoverCardBubbleView, TabHoverCardBubbleView_ChromiumImpl)
  public:
   using TabHoverCardBubbleView_ChromiumImpl::
       TabHoverCardBubbleView_ChromiumImpl;
