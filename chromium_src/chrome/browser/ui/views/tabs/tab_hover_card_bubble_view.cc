@@ -52,5 +52,3 @@ void TabHoverCardBubbleView::SetPlaceholderImage() {
   }
   TabHoverCardBubbleView_ChromiumImpl::SetPlaceholderImage();
 }
-BEGIN_METADATA(TabHoverCardBubbleView)
-END_METADATA
