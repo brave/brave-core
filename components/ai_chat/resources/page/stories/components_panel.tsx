@@ -26,7 +26,8 @@ function getCompletionEvent(text: string): mojom.ConversationEntryEvent {
     completionEvent: { completion: text },
     pageContentRefineEvent: undefined,
     searchQueriesEvent: undefined,
-    searchStatusEvent: undefined
+    searchStatusEvent: undefined,
+    conversationTitleEvent: undefined
   }
 }
 
@@ -35,7 +36,8 @@ function getSearchEvent(queries: string[]): mojom.ConversationEntryEvent {
     completionEvent: undefined,
     pageContentRefineEvent: undefined,
     searchQueriesEvent: { searchQueries: queries },
-    searchStatusEvent: undefined
+    searchStatusEvent: undefined,
+    conversationTitleEvent: undefined
   }
 }
 
@@ -44,7 +46,8 @@ function getSearchStatusEvent(): mojom.ConversationEntryEvent {
     completionEvent: undefined,
     pageContentRefineEvent: undefined,
     searchQueriesEvent: undefined,
-    searchStatusEvent: { isSearching: true }
+    searchStatusEvent: { isSearching: true },
+    conversationTitleEvent: undefined
   }
 }
 
@@ -53,7 +56,8 @@ function getPageContentRefineEvent(): mojom.ConversationEntryEvent {
     completionEvent: undefined,
     pageContentRefineEvent: { isRefining: true },
     searchQueriesEvent: undefined,
-    searchStatusEvent: undefined
+    searchStatusEvent: undefined,
+    conversationTitleEvent: undefined
   }
 }
 
@@ -396,6 +400,7 @@ const preview: Meta<CustomArgs> = {
       }
 
       const aiChatContext: AIChatContext = {
+        isDefaultConversation: true,
         visibleConversations: [],
         hasAcceptedAgreement: options.args.hasAcceptedAgreement,
         isPremiumStatusFetching: false,
