@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
+#include "brave/components/ai_chat/core/browser/associated_multi_tab_content.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -55,6 +56,24 @@ AssociatedContentDelegate::AssociatedContentDelegate()
     : text_embedder_(nullptr, base::OnTaskRunnerDeleter(nullptr)) {}
 
 AssociatedContentDelegate::~AssociatedContentDelegate() = default;
+
+mojom::AssociatedContentType
+AssociatedContentDelegate::GetAssociatedContentType() const {
+  return mojom::AssociatedContentType::Web;
+}
+
+mojom::SiteInfoDetailPtr AssociatedContentDelegate::GetAssociatedContentDetail()
+    const {
+  const GURL url = GetURL();
+  auto detail = mojom::WebSiteInfoDetail::New();
+  detail->title = base::UTF16ToUTF8(GetTitle());
+  if (url.SchemeIsHTTPOrHTTPS()) {
+    detail->hostname = url.host();
+    detail->url = url;
+  }
+
+  return mojom::SiteInfoDetail::NewWebSiteInfo(std::move(detail));
+}
 
 void AssociatedContentDelegate::OnNewPage(int64_t navigation_id) {
   pending_top_similarity_requests_.clear();
@@ -315,6 +334,12 @@ void ConversationHandler::SetAssociatedContentDelegate(
   OnAssociatedContentInfoChanged();
 }
 
+void ConversationHandler::SetMultiTabContent(
+    std::unique_ptr<AssociatedMultiTabContent> delegate) {
+  multi_tab_content_ = std::move(delegate);
+  SetAssociatedContentDelegate(multi_tab_content_->GetWeakPtr());
+}
+
 const mojom::Model& ConversationHandler::GetCurrentModel() {
   const mojom::Model* model = model_service_->GetModel(model_key_);
   CHECK(model);
@@ -358,6 +383,52 @@ void ConversationHandler::GetState(GetStateCallback callback) {
       current_error_);
 
   std::move(callback).Run(std::move(state));
+}
+
+void ConversationHandler::AddAssociatedTab(const GURL& url) {
+  if (HasAnyHistory()) {
+    return;
+  }
+  AssociatedContentDriver* content =
+      ai_chat_service_->GetAssociatedContentForUrl(url);
+  if (!content) {
+    return;
+  }
+  if (multi_tab_content_) {
+    multi_tab_content_->AddContent(content);
+  } else if (associated_content_delegate_) {
+    // Already associated with a single tab, cannot change it. User should
+    // not get in this UI state and should be offered to start a new
+    // conversation.
+    return;
+  } else {
+    // Can associate
+    std::vector<AssociatedContentDriver*> contentses{content};
+    SetMultiTabContent(std::make_unique<AssociatedMultiTabContent>(
+        std::move(contentses), url_loader_factory_));
+  }
+  suggestions_.clear();
+  OnAssociatedContentInfoChanged();
+  MaybeSeedOrClearSuggestions();
+  MaybeFetchOrClearContentStagedConversation();
+}
+
+void ConversationHandler::RemoveAssociatedTab(const GURL& url) {
+  if (HasAnyHistory()) {
+    return;
+  }
+  if (multi_tab_content_) {
+    multi_tab_content_->RemoveContent(url);
+  } else if (associated_content_delegate_ &&
+             associated_content_delegate_->GetURL() == url) {
+    associated_content_delegate_ = nullptr;
+  } else {
+    return;
+  }
+  suggestions_.clear();
+  OnAssociatedContentInfoChanged();
+  MaybeSeedOrClearSuggestions();
+  MaybeFetchOrClearContentStagedConversation();
 }
 
 void ConversationHandler::RateMessage(bool is_liked,
@@ -1014,7 +1085,9 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     const bool has_summarized = found_iter != chat_history_.end();
     if (!has_summarized) {
       suggestions_.emplace_back(
-          associated_content_delegate_->GetCachedIsVideo()
+          (multi_tab_content_ && multi_tab_content_->GetContentCount() > 1)
+              ? "Summarize these pages"
+          : associated_content_delegate_->GetCachedIsVideo()
               ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
               : l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE));
     }
@@ -1291,7 +1364,8 @@ int ConversationHandler::GetContentUsedPercentage() {
 }
 
 bool ConversationHandler::IsContentAssociationPossible() {
-  return (associated_content_delegate_ != nullptr);
+  return (associated_content_delegate_ != nullptr) &&
+         (!multi_tab_content_ || multi_tab_content_->GetContentCount() > 0);
 }
 
 void ConversationHandler::BuildAssociatedContentInfo() {
@@ -1310,8 +1384,13 @@ void ConversationHandler::BuildAssociatedContentInfo() {
         GetContentUsedPercentage();
     associated_content_info_->is_content_refined = is_content_refined_;
     associated_content_info_->is_content_association_possible = true;
+    associated_content_info_->type =
+        associated_content_delegate_->GetAssociatedContentType();
+    associated_content_info_->detail =
+        associated_content_delegate_->GetAssociatedContentDetail();
   } else {
     associated_content_info_->is_content_association_possible = false;
+    associated_content_info_->type = mojom::AssociatedContentType::None;
   }
 }
 

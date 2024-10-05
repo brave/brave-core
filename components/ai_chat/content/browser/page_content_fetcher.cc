@@ -374,7 +374,7 @@ std::optional<GURL> GetGithubPatchURLForPRURL(const GURL& url) {
   std::vector<std::string> path_parts = base::SplitString(
       url.path(), "/", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   // Only handle URLs of the form: /<user>/<repo>/pull/<number>
-  if (path_parts.size() < 4 || path_parts[2] != "pull") {
+  if (path_parts.size() < 5 || path_parts[2] != "pull") {
     return std::nullopt;
   }
   std::string patch_url_str = url.GetWithEmptyPath().spec() + path_parts[0] +

@@ -69,7 +69,30 @@ enum SuggestionGenerationStatus {
   HasGenerated,
 };
 
+enum AssociatedContentType {
+  None,
+  Web,
+  MultipleWeb,
+};
+
+struct WebSiteInfoDetail {
+  url.mojom.Url url;
+  string hostname;
+  string title;
+};
+
+struct MultipleWebSiteInfoDetail {
+  array<WebSiteInfoDetail> sites;
+};
+
+union SiteInfoDetail {
+  WebSiteInfoDetail web_site_info;
+  MultipleWebSiteInfoDetail multiple_web_site_info;
+};
+
 struct SiteInfo {
+  AssociatedContentType type;
+  SiteInfoDetail? detail;
   // Title is present if the site has associated page content
   string? title;
   // Indicates if the URL scheme is of a type that allows for content association.
@@ -253,6 +276,9 @@ interface Service {
   // Get metadata for non-archived conversations
   GetVisibleConversations() => (array<Conversation> conversations);
 
+  // Get content that can be associated with a (multiple web) conversation
+  GetAvailableContent() => (array<WebSiteInfoDetail> available_content);
+
   // Get metadata for all quick actions
   GetActionMenuList() => (array<ActionGroup> action_list);
 
@@ -279,6 +305,7 @@ interface Service {
 interface ServiceObserver {
   OnConversationListChanged(array<Conversation> conversations);
   OnAgreementAccepted();
+  OnAvailableContentChanged(array<WebSiteInfoDetail> available_content);
 };
 
 // Browser-side handler for general AI Chat UI functions, implemented
@@ -311,9 +338,16 @@ interface AIChatUIHandler {
   NewConversation(pending_receiver<ConversationHandler> conversation,
       pending_remote<ConversationUI> conversation_ui);
 
+  NewMultiTabConversation(
+      pending_receiver<ConversationHandler> conversation,
+      pending_remote<ConversationUI> conversation_ui);
+
   // TODO(petemill): WebUI clients won't need this when they can
   // request via FaviconSource URLs via trusted webui.
   GetFaviconImageData(string conversation_uuid) => (
+      array<uint8>? favicon_image_data);
+  // Temporary
+  GetFaviconImageDataForContent(url.mojom.Url url) => (
       array<uint8>? favicon_image_data);
 };
 
@@ -345,6 +379,10 @@ interface ConversationHandler {
   GetState() => (ConversationState conversation_state);
 
   GetConversationUuid() => (string conversation_uuid);
+
+  // TODO(petemill): should be TabID using `SessionTabHelper::IdForTab`
+  AddAssociatedTab(url.mojom.Url url);
+  RemoveAssociatedTab(url.mojom.Url url);
 
   // Get all the possible models for any conversation
   // TODO(petemill): Move the models part to Service

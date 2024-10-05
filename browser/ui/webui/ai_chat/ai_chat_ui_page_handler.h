@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UI_PAGE_HANDLER_H_
 
 #include <memory>
+#include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
@@ -62,8 +63,15 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
       mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler)
       override;
+  void NewMultiTabConversation(
+      mojo::PendingReceiver<mojom::ConversationHandler> receiver,
+      mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler)
+      override;
   void GetFaviconImageData(const std::string& conversation_id,
                            GetFaviconImageDataCallback callback) override;
+  void GetFaviconImageDataForContent(
+      const GURL& content_url,
+      GetFaviconImageDataForContentCallback callback) override;
 
  private:
   class ChatContextObserver : public content::WebContentsObserver {

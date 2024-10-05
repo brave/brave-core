@@ -6,17 +6,28 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 
 #include <memory>
+#include <string>
 #include <utility>
+#include <vector>
 
+#include "base/containers/fixed_flat_set.h"
+#include "base/memory/weak_ptr.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
+#include "brave/components/ai_chat/core/browser/associated_multi_tab_content.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "components/favicon/core/favicon_service.h"
 #include "content/public/browser/browser_context.h"
@@ -40,6 +51,8 @@ constexpr char kURLGoPremium[] =
     "https://account.brave.com/account/?intent=checkout&product=leo";
 constexpr char kURLManagePremium[] = "https://account.brave.com/";
 #endif
+static const auto kAllowedSchemes = base::MakeFixedFlatSet<std::string_view>(
+    {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme, url::kDataScheme});
 }  // namespace
 
 namespace ai_chat {
@@ -72,9 +85,9 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
-    favicon_service_ = FaviconServiceFactory::GetForProfile(
-        profile_, ServiceAccessType::EXPLICIT_ACCESS);
   }
+  favicon_service_ = FaviconServiceFactory::GetForProfile(
+      profile_, ServiceAccessType::EXPLICIT_ACCESS);
 }
 
 AIChatUIPageHandler::~AIChatUIPageHandler() = default;
@@ -187,6 +200,7 @@ void AIChatUIPageHandler::CloseUI() {
 void AIChatUIPageHandler::SetChatUI(
     mojo::PendingRemote<mojom::ChatUI> chat_ui) {
   chat_ui_.Bind(std::move(chat_ui));
+
   chat_ui_->SetInitialData(active_chat_tab_helper_ == nullptr);
 }
 
@@ -227,6 +241,48 @@ void AIChatUIPageHandler::NewConversation(
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
 }
 
+void AIChatUIPageHandler::NewMultiTabConversation(
+    mojo::PendingReceiver<mojom::ConversationHandler> receiver,
+    mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
+  // Make an associated content for all tabs in current window
+  Browser* browser = ai_chat::GetBrowserForWebContents(owner_web_contents_);
+  if (!browser) {
+    return;
+  }
+
+  ConversationHandler* conversation =
+      AIChatServiceFactory::GetForBrowserContext(profile_)
+          ->CreateConversation();
+
+  TabStripModel* tab_strip_model = browser->tab_strip_model();
+  std::vector<AssociatedContentDriver*> starting_web_contentses;
+
+  for (int i = 0; i < tab_strip_model->count(); ++i) {
+    content::WebContents* web_contents = tab_strip_model->GetWebContentsAt(i);
+    // Temporary fix to ensure that the tab is loaded before we try to get the
+    // content
+    web_contents->GetController().LoadIfNecessary();
+    AIChatTabHelper* associated_content =
+        ai_chat::AIChatTabHelper::FromWebContents(web_contents);
+    if (base::Contains(kAllowedSchemes,
+                       associated_content->GetURL().scheme())) {
+      DVLOG(2) << "Tab " << i
+               << " URL: " << associated_content->GetURL().spec();
+      starting_web_contentses.push_back(associated_content);
+    }
+  }
+
+  auto multi_tab_content = std::make_unique<AssociatedMultiTabContent>(
+      std::move(starting_web_contentses),
+      owner_web_contents_->GetBrowserContext()
+          ->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess());
+
+  conversation->SetMultiTabContent(std::move(multi_tab_content));
+
+  conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
+}
+
 void AIChatUIPageHandler::GetFaviconImageData(
     const std::string& conversation_id,
     GetFaviconImageDataCallback callback) {
@@ -241,6 +297,36 @@ void AIChatUIPageHandler::GetFaviconImageData(
   conversation->GetAssociatedContentInfo(base::BindOnce(
       &AIChatUIPageHandler::GetFaviconImageDataForAssociatedContent,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+// Temporary
+void AIChatUIPageHandler::GetFaviconImageDataForContent(
+    const GURL& content_url,
+    GetFaviconImageDataForContentCallback callback) {
+  if (!content_url.is_valid()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  favicon_base::IconTypeSet icon_types{favicon_base::IconType::kFavicon,
+                                       favicon_base::IconType::kTouchIcon};
+
+  auto on_favicon_available =
+      [](GetFaviconImageDataCallback callback,
+         const favicon_base::FaviconRawBitmapResult& result) {
+        if (!result.is_valid()) {
+          std::move(callback).Run(std::nullopt);
+          return;
+        }
+
+        std::vector<uint8_t> bytes(result.bitmap_data->begin(),
+                                   result.bitmap_data->end());
+        std::move(callback).Run(std::move(bytes));
+      };
+  favicon_service_->GetRawFaviconForPageURL(
+      content_url, icon_types, kDesiredFaviconSizePixels, true,
+      base::BindOnce(std::move(on_favicon_available), std::move(callback)),
+      &favicon_task_tracker_);
 }
 
 void AIChatUIPageHandler::GetFaviconImageDataForAssociatedContent(

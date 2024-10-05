@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <utility>
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
@@ -118,12 +119,14 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // PrintPreviewExtractionDelegate is provided as it's implementation is
   // in a different layer.
   AIChatTabHelper(content::WebContents* web_contents,
+                  AIChatService* ai_chat_service,
                   std::unique_ptr<PrintPreviewExtractionDelegate>
                       print_preview_extraction_delegate);
 
   void OnPDFA11yInfoLoaded();
 
   // content::WebContentsObserver
+  void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void WebContentsDestroyed() override;
   void NavigationEntryCommitted(
       const content::LoadCommittedDetails& load_details) override;
@@ -175,6 +178,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void SetPendingGetContentCallback(GetPageContentCallback callback);
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
+  raw_ptr<AIChatService> ai_chat_service_;
 
   bool is_same_document_navigation_ = false;
   int pending_navigation_id_;
@@ -182,6 +186,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   bool is_pdf_a11y_info_loaded_ = false;
   uint8_t check_pdf_a11y_tree_attempts_ = 0;
   bool is_page_loaded_ = false;
+  bool is_navigation_from_unloaded_state_ = false;
 
   raw_ptr<content::WebContents> inner_web_contents_ = nullptr;
 

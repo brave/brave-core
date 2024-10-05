@@ -3,18 +3,128 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as React from 'react'
+ import * as React from 'react'
 import Button from '@brave/leo/react/button'
+import Dropdown from '@brave/leo/react/dropdown'
 import Icon from '@brave/leo/react/icon'
-import styles from './style.module.scss'
-import Main from '../main'
-import SidebarHeader from '../header'
-import SidebarNav from '../sidebar_nav'
-import FeatureMenu from '../feature_button_menu'
+import * as nala from '@brave/leo/tokens/css/variables'
+import styled from 'styled-components'
+import Flex from '$web-common/Flex'
+import { Url as MojomUrl } from 'gen/url/mojom/url.mojom.m'
+import * as mojom from '../../api'
 import { useAIChat } from '../../state/ai_chat_context'
+import { useConversation } from '../../state/conversation_context'
+import FeatureMenu from '../feature_button_menu'
+import SidebarHeader from '../header'
+import Main from '../main'
+import SidebarNav from '../sidebar_nav'
+import styles from './style.module.scss'
+
+const TabEntryListItem = styled.li`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  gap: ${nala.spacing.m};
+
+  & span {
+    flex: 1;
+    max-height: 1.2rem;
+    overflow: clip;
+  }
+
+  & leo-button {
+    flex: 0;
+  }
+`
+
+const FavIconImage = styled.div<{ url: string }>`
+  display: inline-block;
+
+  background-image: url("${p => p.url}");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-origin: content-box;
+
+  padding: 2px;
+
+  border-radius: ${nala.radius.s};
+  border: 1px solid ${nala.color.divider.subtle};
+
+  width: 24px;
+  height: 24px;
+
+  flex-shrink: 0;
+`
+
+function TabImage(props: { url: MojomUrl }) {
+  const aiChatContext = useAIChat()
+  const [imgUrl, setImgUrl] = React.useState<string | null>()
+  React.useEffect(() => {
+    if (!aiChatContext.uiHandler) {
+      return
+    }
+    aiChatContext.uiHandler.getFaviconImageDataForContent(props.url)
+      .then(({ faviconImageData }) => {
+        if (!faviconImageData) {
+          setImgUrl(null)
+          return
+        }
+        const blob = new Blob([new Uint8Array(faviconImageData)], { type: 'image/*' })
+        setImgUrl(URL.createObjectURL(blob))
+      })
+  }, [props.url.url])
+
+  if (imgUrl === null) {
+    return <FavIconImage url='//resources/brave-icons/file-text.svg'/>
+  }
+
+  if (!imgUrl) {
+    return null
+  }
+
+  return <FavIconImage url={imgUrl} />
+}
+
+function TabEntry(props: {
+  site: mojom.WebSiteInfoDetail
+  canRemove: boolean
+}) {
+  const context = useConversation()
+
+  return <TabEntryListItem>
+    <TabImage url={props.site.url} />
+    <span>{props.site.title}</span>
+    {props.canRemove &&
+    <Button fab kind="plain-faint" title={'Remove this tab from the conversation'} onClick={() => context.conversationHandler?.removeAssociatedTab(props.site.url)}>
+      <Icon name='close' />
+    </Button>
+    }
+  </TabEntryListItem>
+}
+
+function SitePicker(props: { disabled: boolean }) {
+  const conversation = useConversation()
+  const aiChat = useAIChat()
+
+  const availableSites = React.useMemo(() => {
+    const used = new Set(conversation.associatedContentInfo?.detail?.multipleWebSiteInfo?.sites.map(a => a.url.url))
+    return aiChat.availableAssociatedContent.filter(w => !used.has(w.url.url))
+  }, [aiChat.availableAssociatedContent, conversation.associatedContentInfo])
+
+  return <Dropdown value='' disabled={props.disabled} placeholder='Add a tab to the conversation' onChange={e => conversation.conversationHandler?.addAssociatedTab({ url: e.value ?? '' })}>
+    <span slot="value">Add a tab to the conversation</span>
+    {availableSites.map((a, i) => <leo-option key={i} value={a.url.url}>
+      <Flex align='center' gap={8} style={{maxWidth: '500px'}} title={a.title}>
+        <TabImage url={a.url} /> <span>{a.title}</span>
+      </Flex>
+    </leo-option>)}
+  </Dropdown>
+}
 
 export default function FullScreen() {
   const aiChatContext = useAIChat()
+  const chat = useConversation();
   const asideAnimationRef = React.useRef<Animation | null>()
   const controllerRef = React.useRef(new AbortController())
   const [isOpen, setIsOpen] = React.useState(false)
@@ -63,6 +173,15 @@ export default function FullScreen() {
     aiChatContext.onNewConversation()
   }
 
+  const associatedTabs: mojom.WebSiteInfoDetail[] =
+    chat.associatedContentInfo?.detail?.multipleWebSiteInfo?.sites
+      ?? (chat.associatedContentInfo?.detail?.webSiteInfo
+            ? [chat.associatedContentInfo.detail.webSiteInfo]
+            : [])
+  // Can't add or remove Tabs if conversation has history
+  // TODO(petemill): ignore staged content
+  const canModifyTabAssociation = chat.conversationHistory.length === 0 && !chat.isGenerating
+
   return (
     <div className={styles.fullscreen}>
       <div className={styles.left}>
@@ -83,7 +202,7 @@ export default function FullScreen() {
               >
                 <Icon name='erase' />
               </Button>
-              <FeatureMenu  setIsConversationListOpen={function (value: boolean): unknown {
+              <FeatureMenu setIsConversationListOpen={function (value: boolean): unknown {
                 throw new Error('Function not implemented.')
               }} />
             </>
@@ -103,6 +222,24 @@ export default function FullScreen() {
       </div>
       <div className={styles.content}>
         <Main />
+      </div>
+      <div className={styles.right}>
+        <div className={styles.headerSpacer} />
+        <h3>Tabs used in this conversation</h3>
+        <SitePicker disabled={!canModifyTabAssociation} />
+        {associatedTabs.length > 0 ? (
+          <ul>
+            {associatedTabs.map((t, i) => (
+              <TabEntry
+                key={i}
+                site={t}
+                canRemove={canModifyTabAssociation}
+              />
+            ))}
+          </ul>
+        ) : (
+          <p>No tabs are associated with this conversation</p>
+        )}
       </div>
     </div>
   )

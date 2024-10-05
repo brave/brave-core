@@ -37,6 +37,7 @@ static const ax::mojom::Role kContentRoles[]{
     ax::mojom::Role::kHeading,
     ax::mojom::Role::kParagraph,
     ax::mojom::Role::kNote,
+    ax::mojom::Role::kStaticText,
 };
 
 static const ax::mojom::Role kRolesToSkip[]{

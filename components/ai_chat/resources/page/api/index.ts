@@ -23,7 +23,7 @@ class API {
     // Connect to platform UI handler
     this.UIHandler = mojom.AIChatUIHandler.getRemote()
     this.UIObserver = new mojom.ChatUICallbackRouter()
-    this.UIObserver.setInitialData.addListener((isStandalone: boolean) => {
+    this.UIObserver.setInitialData.addListener((isStandalone: boolean, initialTabs: mojom.WebSiteInfoDetail[]) => {
       this.isStandalone = isStandalone
     })
     this.UIHandler.setChatUI(this.UIObserver.$.bindNewPipeAndPassRemote())
@@ -73,6 +73,16 @@ export function newConversation() {
   getAPI().UIHandler.newConversation(
       conversationHandler.$.bindNewPipeAndPassReceiver(),
       callbackRouter.$.bindNewPipeAndPassRemote())
+  return {
+    conversationHandler,
+    callbackRouter
+  }
+}
+
+export function newMultiTabConversation() {
+  const conversationHandler = new mojom.ConversationHandlerRemote()
+  const callbackRouter = new mojom.ConversationUICallbackRouter()
+  getAPI().UIHandler.newMultiTabConversation(conversationHandler.$.bindNewPipeAndPassReceiver(), callbackRouter.$.bindNewPipeAndPassRemote())
   return {
     conversationHandler,
     callbackRouter

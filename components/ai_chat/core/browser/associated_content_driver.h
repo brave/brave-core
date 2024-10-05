@@ -10,6 +10,7 @@
 #include <set>
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
@@ -33,6 +34,8 @@ class AssociatedContentDriver
    public:
     ~Observer() override {}
 
+    virtual void OnAssociatedContentDestroyed(
+        AssociatedContentDriver* content) {}
     virtual void OnAssociatedContentNavigated(int new_navigation_id) {}
   };
 
@@ -94,6 +97,9 @@ class AssociatedContentDriver
   void OnPageContentUpdated(std::string content,
                             bool is_video,
                             std::string invalidation_token);
+
+  // Implementers call this when page titles, etc change
+  void OnContentMetadataChanged();
 
   // Implementer should call this when a page navigation is detected and a new
   // conversation is expected.
