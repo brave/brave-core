@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
@@ -19,6 +20,7 @@
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "ui/message_center/public/cpp/notification.h"
 
 class GURL;
 
@@ -26,7 +28,36 @@ namespace brave_ads {
 
 class AdsService : public KeyedService {
  public:
-  AdsService();
+  class Delegate {
+   public:
+    virtual void InitNotificationHelper() = 0;
+    virtual bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() = 0;
+    virtual bool DoesSupportSystemNotifications() = 0;
+    virtual bool CanShowNotifications() = 0;
+    virtual bool ShowOnboardingNotification() = 0;
+    virtual void ShowScheduledCaptcha(const std::string& payment_id,
+                                      const std::string& captcha_id) = 0;
+    virtual void ClearScheduledCaptcha() = 0;
+    virtual void SnoozeScheduledCaptcha() = 0;
+    virtual void Display(const message_center::Notification& notification) = 0;
+    virtual void Close(const std::string& notification_id) = 0;
+    virtual void ShowNotificationAd(const std::string& id,
+                                    const std::u16string& title,
+                                    const std::u16string& body);
+    virtual void CloseNotificationAd(const std::string& id) = 0;
+    virtual void OpenNewTabWithUrl(const GURL& url) = 0;
+#if BUILDFLAG(IS_ANDROID)
+    virtual void MaybeRegenerateNotification(
+        const std::string& notification_id,
+        const GURL& service_worker_scope) = 0;
+#else
+    virtual bool IsFullScreenMode() = 0;
+#endif
+   protected:
+    virtual ~Delegate() = default;
+  };
+
+  explicit AdsService(Delegate* delegate);
 
   AdsService(const AdsService&) = delete;
   AdsService& operator=(const AdsService&) = delete;
@@ -254,6 +285,9 @@ class AdsService : public KeyedService {
 
   // Called when the user solves an adaptive captcha.
   virtual void NotifyDidSolveAdaptiveCaptcha() = 0;
+
+ protected:
+  raw_ptr<Delegate> delegate_ = nullptr;  // NOT OWNED
 };
 
 }  // namespace brave_ads

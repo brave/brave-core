@@ -7,7 +7,7 @@
 
 namespace brave_ads {
 
-AdsServiceMock::AdsServiceMock() = default;
+AdsServiceMock::AdsServiceMock(Delegate* delegate) : AdsService(delegate) {}
 
 AdsServiceMock::~AdsServiceMock() = default;
 

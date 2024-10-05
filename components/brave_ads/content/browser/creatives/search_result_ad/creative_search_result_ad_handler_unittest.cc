@@ -88,7 +88,7 @@ class BraveAdsCreativeSearchResultAdHandlerTest : public ::testing::Test {
   }
 
  protected:
-  AdsServiceMock ads_service_mock_;
+  AdsServiceMock ads_service_mock_{nullptr};
 
   base::test::ScopedFeatureList scoped_feature_list_;
 };
