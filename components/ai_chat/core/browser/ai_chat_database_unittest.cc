@@ -1,188 +1,330 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 
 #include <stdint.h>
 
 #include <memory>
+#include <optional>
+#include <string>
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_tree.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
+#include "base/run_loop.h"
+#include "base/strings/strcat.h"
+#include "base/strings/stringprintf.h"
+#include "base/test/bind.h"
+#include "base/test/task_environment.h"
+#include "base/time/time.h"
+#include "base/uuid.h"
+#include "brave/components/ai_chat/core/browser/test_utils.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "components/os_crypt/async/browser/test_utils.h"
 #include "sql/test/test_helpers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace {
-int64_t GetInternalValue(const base::Time& time) {
-  return time.ToDeltaSinceWindowsEpoch().InMicroseconds();
-}
-}  // namespace
-
 namespace ai_chat {
-
-class AIChatDatabaseTest : public testing::Test {
+class AIChatDatabaseTest : public testing::Test,
+                           public testing::WithParamInterface<bool> {
  public:
   AIChatDatabaseTest() = default;
 
   void SetUp() override {
-    ASSERT_TRUE(temp_directory_.CreateUniqueTempDir());
-    // We take ownership of the path for adhoc inspection of the spitted
-    // db. This is useful to test sql queries. If you do this, make sure to
-    // comment out the base::DeletePathRecursively line.
-    path_ = temp_directory_.Take();
-    db_ = std::make_unique<AIChatDatabase>();
-    ASSERT_TRUE(db_->Init(db_file_path()));
+    CHECK(temp_directory_.CreateUniqueTempDir());
+    os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
+        /*is_sync_for_unittests=*/true);
+
+    // Create database when os_crypt is ready
+    base::RunLoop run_loop;
+    encryptor_ready_subscription_ =
+        os_crypt_->GetInstance(base::BindLambdaForTesting(
+            [&](os_crypt_async::Encryptor encryptor, bool success) {
+              ASSERT_TRUE(success);
+              db_ = std::make_unique<AIChatDatabase>(db_file_path(),
+                                                     std::move(encryptor));
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+
+    ASSERT_TRUE(IsOpen());
+
+    if (GetParam()) {
+      db_->DeleteAllData();
+    }
   }
 
   void TearDown() override {
     db_.reset();
-    ASSERT_TRUE(base::DeletePathRecursively(path_));
+    CHECK(temp_directory_.Delete());
   }
 
-  base::FilePath db_file_path() { return path_.AppendASCII("ai_chat"); }
+  bool IsOpen() { return db_->GetDB().is_open(); }
+
+  base::FilePath db_file_path() {
+    return temp_directory_.GetPath().AppendASCII("ai_chat");
+  }
 
  protected:
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   base::ScopedTempDir temp_directory_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
+  base::CallbackListSubscription encryptor_ready_subscription_;
   std::unique_ptr<AIChatDatabase> db_;
   base::FilePath path_;
 };
 
-TEST_F(AIChatDatabaseTest, AddConversations) {
-  int64_t first_id = db_->AddConversation(mojom::Conversation::New(
-      INT64_C(1), base::Time::Now(), "Initial conversation", GURL(),
-      "Sample page content"));
-  EXPECT_EQ(first_id, INT64_C(1));
-  std::vector<mojom::ConversationPtr> conversations =
-      db_->GetAllConversations();
-  EXPECT_EQ(conversations.size(), UINT64_C(1));
-  int64_t second_id = db_->AddConversation(mojom::Conversation::New(
-      INT64_C(2), base::Time::Now(), "Another conversation", GURL(),
-      "Another sample page content"));
-  EXPECT_EQ(second_id, INT64_C(2));
-  std::vector<mojom::ConversationPtr> conversations_updated =
-      db_->GetAllConversations();
-  EXPECT_EQ(conversations_updated.size(), UINT64_C(2));
-}
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    AIChatDatabaseTest,
+    // Run all tests with the initial schema and the schema created
+    // after calling DeleteAllData, to verify the schemas are the same
+    // and no tables are missing or different.
+    ::testing::Bool(),
+    [](const testing::TestParamInfo<AIChatDatabaseTest::ParamType>& info) {
+      return base::StringPrintf("DropTablesFirst_%s",
+                                info.param ? "Yes" : "No");
+    });
 
-TEST_F(AIChatDatabaseTest, AddConversationEntries) {
-  static const int64_t kConversationId = INT64_C(1);
-  static const int64_t kConversationEntryId = INT64_C(1);
+// Functions tested:
+// - AddConversation
+// - GetAllConversations
+// - GetConversationData
+// - AddConversationEntry
+// - DeleteConversationEntry
+// - DeleteConversation
+TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
+  auto now = base::Time::Now();
 
-  static const GURL kURL = GURL("https://brave.com/");
-  static const char kConversationTitle[] = "Summarizing Brave";
-  static const char kPageContents[] = "Brave is a web browser.";
-  static const char kFirstResponse[] = "This is a generated response";
-  static const char kSecondResponse[] = "This is a re-generated response";
+  // Do this for both associated content and non-associated content
+  for (bool has_content : {true, false}) {
+    std::string uuid = has_content ? "first" : "second";
+    // Create the conversation metadata which gets persisted
+    // when the first entry is asked to be persisted.
+    // Put an incorrect time value to show that the time from the
+    // mojom::Conversation is not persisted and instead is taken from the most
+    // recent entry.
+    GURL page_url = GURL("https://example.com/page");
+    std::string expected_contents = "Page contents";
+    mojom::SiteInfoPtr associated_content =
+        has_content
+            ? mojom::SiteInfo::New(
+                  std::nullopt, mojom::ContentType::PageContent, "page title",
+                  page_url.host(), page_url, 62, true, true)
+            : mojom::SiteInfo::New(
+                  std::nullopt, mojom::ContentType::PageContent, std::nullopt,
+                  std::nullopt, std::nullopt, 0, false, false);
+    mojom::ConversationPtr metadata =
+        mojom::Conversation::New(uuid, "title", now - base::Hours(2), true,
+                                 std::move(associated_content));
 
-  static const base::Time kFirstTextCreatedAt(base::Time::Now());
-  static const base::Time kSecondTextCreatedAt(base::Time::Now() +
-                                               base::Minutes(5));
+    // Persist the first entry (and get the response ready)
+    auto history = CreateSampleChatHistory(1u);
 
-  // Add conversation
-  int64_t conversation_id = db_->AddConversation(
-      mojom::Conversation::New(kConversationId, kFirstTextCreatedAt,
-                               kConversationTitle, kURL, kPageContents));
-  EXPECT_EQ(conversation_id, kConversationId);
+    auto ids = db_->AddConversation(
+        metadata->Clone(),
+        has_content ? std::make_optional(expected_contents) : std::nullopt,
+        history[0]->Clone());
 
-  // Add first conversation entry
-  {
-    std::vector<mojom::ConversationEntryTextPtr> texts;
-    texts.emplace_back(mojom::ConversationEntryText::New(1, kFirstTextCreatedAt,
-                                                         kFirstResponse));
+    // Verify database thinks it was successful
+    if (has_content) {
+      EXPECT_NE(ids.associated_content_id, -1);
+    } else {
+      EXPECT_EQ(ids.associated_content_id, -1);
+    }
 
-    std::vector<std::string> search_queries{"brave", "browser", "web"};
-    std::vector<mojom::ConversationEntryEventPtr> events;
-    events.emplace_back(mojom::ConversationEntryEvent::NewSearchQueriesEvent(
-        mojom::SearchQueriesEvent::New(std::move(search_queries))));
-
-    int64_t entry_id = db_->AddConversationEntry(
-        conversation_id,
-        mojom::ConversationEntry::New(
-            INT64_C(-1), kFirstTextCreatedAt, mojom::CharacterType::ASSISTANT,
-            mojom::ActionType::UNSPECIFIED, std::nullopt /* selected_text */,
-            std::move(texts), std::move(events)));
-    EXPECT_EQ(entry_id, kConversationEntryId);
-  }
-
-  // Get and verify conversations
-  {
+    // Test getting the conversation metadata
     std::vector<mojom::ConversationPtr> conversations =
         db_->GetAllConversations();
-    EXPECT_FALSE(conversations.empty());
-    EXPECT_EQ(conversations[0]->id, INT64_C(1));
-    EXPECT_EQ(conversations[0]->title, kConversationTitle);
-    EXPECT_EQ(conversations[0]->page_url->spec(), kURL.spec());
-    EXPECT_EQ(conversations[0]->page_contents, kPageContents);
-    // A conversation is created with the first entry's date
-    EXPECT_EQ(GetInternalValue(conversations[0]->date),
-              GetInternalValue(kFirstTextCreatedAt));
+    EXPECT_EQ(conversations.size(), has_content ? 1u : 2u);
+    auto& conversation = has_content ? conversations[0] : conversations[1];
+    ExpectConversationEquals(FROM_HERE, conversation, metadata);
+    EXPECT_EQ(conversation->updated_time, history.front()->created_time);
+
+    // Persist the response entry
+    EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
+
+    // Test getting the conversation entries
+    mojom::ConversationArchivePtr result = db_->GetConversationData(uuid);
+    ExpectConversationHistoryEquals(FROM_HERE, result->entries, history);
+    EXPECT_EQ(result->associated_content.size(), has_content ? 1u : 0u);
+    if (has_content) {
+      EXPECT_EQ(result->associated_content[0]->content_id,
+                ids.associated_content_id);
+      EXPECT_EQ(result->associated_content[0]->content, expected_contents);
+    }
+
+    // Add another pair of entries
+    auto next_history = CreateSampleChatHistory(1u, 1);
+    EXPECT_TRUE(db_->AddConversationEntry(uuid, next_history[0]->Clone()));
+    EXPECT_TRUE(db_->AddConversationEntry(uuid, next_history[1]->Clone()));
+
+    // Verify all entries are returned
+    mojom::ConversationArchivePtr result_2 = db_->GetConversationData(uuid);
+    for (auto& entry : next_history) {
+      history.push_back(std::move(entry));
+    }
+    ExpectConversationHistoryEquals(FROM_HERE, result_2->entries, history);
+
+    // Edits (delete, re-add and check edit re-construction)
+
+    // Delete the last response
+    EXPECT_TRUE(
+        db_->DeleteConversationEntry(result_2->entries.back()->uuid.value()));
+
+    // Verify the last entry is gone
+    history.erase(history.end() - 1);
+    mojom::ConversationArchivePtr result_3 = db_->GetConversationData(uuid);
+    ExpectConversationHistoryEquals(FROM_HERE, result_3->entries, history);
+
+    // Add an edit to the last query
+    {
+      auto& last_query = result_3->entries.back();
+      last_query->edits = std::vector<mojom::ConversationTurnPtr>{};
+      last_query->edits->emplace_back(mojom::ConversationTurn::New(
+          base::Uuid::GenerateRandomV4().AsLowercaseString(),
+          mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+          mojom::ConversationTurnVisibility::VISIBLE, "edited query 1",
+          std::nullopt, std::nullopt, base::Time::Now() + base::Minutes(121),
+          std::nullopt, false));
+      EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
+      EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
+    }
+    // Verify the edit is persisted
+    mojom::ConversationArchivePtr result_4 = db_->GetConversationData(uuid);
+    ExpectConversationHistoryEquals(FROM_HERE, result_4->entries,
+                                    result_3->entries);
+
+    // Add another edit to test multiple edits for the same turn
+    {
+      auto& last_query = result_4->entries.back();
+      last_query->edits->emplace_back(mojom::ConversationTurn::New(
+          base::Uuid::GenerateRandomV4().AsLowercaseString(),
+          mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+          mojom::ConversationTurnVisibility::VISIBLE, "edited query 2",
+          std::nullopt, std::nullopt, base::Time::Now() + base::Minutes(122),
+          std::nullopt, false));
+      EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
+      EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
+    }
+    // Verify multiple edits are persisted
+    mojom::ConversationArchivePtr result_5 = db_->GetConversationData(uuid);
+    ExpectConversationHistoryEquals(FROM_HERE, result_5->entries,
+                                    result_4->entries);
   }
 
-  // Get and verify conversation entries
-  {
-    std::vector<mojom::ConversationEntryPtr> entries =
-        db_->GetConversationEntries(conversation_id);
-    EXPECT_EQ(UINT64_C(1), entries.size());
-    EXPECT_EQ(entries[0]->character_type, mojom::CharacterType::ASSISTANT);
-    EXPECT_EQ(GetInternalValue(entries[0]->date),
-              GetInternalValue(kFirstTextCreatedAt));
-    EXPECT_EQ(UINT64_C(1), entries[0]->texts.size());
-    EXPECT_EQ(entries[0]->texts[0]->text, kFirstResponse);
-    EXPECT_EQ(entries[0]->action_type, mojom::ActionType::UNSPECIFIED);
-    EXPECT_TRUE(entries[0]->selected_text.value().empty());
+  // Test deleting conversation (after loop so that we can test conversation
+  // entry selection with multiple conversations in the database).
+  EXPECT_TRUE(db_->DeleteConversation("second"));
+  // Verify no data for deleted conversation
+  mojom::ConversationArchivePtr conversation_data =
+      db_->GetConversationData("second");
+  EXPECT_EQ(conversation_data->entries.size(), 0u);
+  EXPECT_EQ(conversation_data->associated_content.size(), 0u);
+  // Verify deleted conversation metadata not returned
+  std::vector<mojom::ConversationPtr> conversations =
+      db_->GetAllConversations();
+  EXPECT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->uuid, "first");
+  // Verify there's still data for other conversations
+  mojom::ConversationArchivePtr conversation_data_2 =
+      db_->GetConversationData("first");
+  EXPECT_GT(conversation_data_2->entries.size(), 0u);
+  EXPECT_EQ(conversation_data_2->associated_content.size(), 1u);
+  // Delete last conversation
+  EXPECT_TRUE(db_->DeleteConversation("first"));
+  conversations = db_->GetAllConversations();
+  EXPECT_EQ(conversations.size(), 0u);
+}
 
-    // Verify search queries
-    EXPECT_TRUE(entries.front()->events.has_value());
-    EXPECT_EQ(UINT64_C(3), entries[0]
-                               ->events.value()[0]
-                               ->get_search_queries_event()
-                               ->search_queries.size());
+TEST_P(AIChatDatabaseTest, UpdateConversationTitle) {
+  std::vector<std::string> initial_titles = {"first title", ""};
+  for (const auto& initial_title : initial_titles) {
+    const std::string uuid =
+        base::StrCat({"for_conversation_title_", initial_title});
+    const std::string updated_title = "updated title";
+    mojom::ConversationPtr metadata = mojom::Conversation::New(
+        uuid, initial_title, base::Time::Now(), true,
+        mojom::SiteInfo::New(std::nullopt, mojom::ContentType::PageContent,
+                             std::nullopt, std::nullopt, std::nullopt, 0, false,
+                             false));
+
+    // Persist the first entry (and get the response ready)
+    auto history = CreateSampleChatHistory(1u);
+
+    db_->AddConversation(metadata->Clone(), std::nullopt, history[0]->Clone());
+
+    // Verify initial title
+    std::vector<mojom::ConversationPtr> conversations =
+        db_->GetAllConversations();
+    // get this conversation
+    auto* conversation = GetConversation(FROM_HERE, conversations, uuid);
+    EXPECT_EQ(conversation->title, initial_title);
+
+    // Update title
+    EXPECT_TRUE(db_->UpdateConversationTitle(uuid, updated_title));
+    // Verify
+    conversations = db_->GetAllConversations();
+    conversation = GetConversation(FROM_HERE, conversations, uuid);
+    EXPECT_EQ(conversation->title, updated_title);
   }
+}
 
-  // Add another text to the first entry
-  db_->AddConversationEntryText(
-      UINT64_C(1), mojom::ConversationEntryText::New(
-                       UINT64_C(1), kSecondTextCreatedAt, kSecondResponse));
+TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
+  std::string uuid = "for_associated_content";
+  GURL page_url = GURL("https://example.com/page");
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now() - base::Hours(2), true,
+      mojom::SiteInfo::New(std::nullopt, mojom::ContentType::PageContent,
+                           "page title", page_url.host(), page_url, 62, true,
+                           true));
 
-  {
-    auto entries = db_->GetConversationEntries(conversation_id);
-    EXPECT_EQ(UINT64_C(2), entries[0]->texts.size());
-    EXPECT_EQ(entries[0]->texts[1]->text, kSecondResponse);
-  }
+  auto history = CreateSampleChatHistory(1u);
 
-  // Add another entry
-  {
-    base::Time created_at(base::Time::Now());
-    std::string text("Is this a question?");
-    std::string selected_text("The brown fox jumps over the lazy dog");
+  std::string expected_contents = "First contents";
+  AIChatDatabase::AddConversationResult ids = db_->AddConversation(
+      metadata->Clone(), std::make_optional(expected_contents),
+      history[0]->Clone());
 
-    std::vector<mojom::ConversationEntryTextPtr> texts;
-    texts.emplace_back(mojom::ConversationEntryText::New(1, created_at, text));
+  EXPECT_GT(ids.associated_content_id, -1);
 
-    int64_t entry_id = db_->AddConversationEntry(
-        conversation_id,
-        mojom::ConversationEntry::New(
-            INT64_C(-1), created_at, mojom::CharacterType::HUMAN,
-            mojom::ActionType::CASUALIZE, selected_text, std::move(texts),
-            std::nullopt /* search_query */));
+  metadata->associated_content->id = ids.associated_content_id;
 
-    EXPECT_EQ(entry_id, 2);
-  }
+  // Verify data is persisted
+  mojom::ConversationArchivePtr result = db_->GetConversationData(uuid);
+  EXPECT_EQ(result->associated_content.size(), 1u);
+  EXPECT_EQ(result->associated_content[0]->content_id,
+            ids.associated_content_id);
+  EXPECT_EQ(result->associated_content[0]->content, expected_contents);
+  auto conversations = db_->GetAllConversations();
+  EXPECT_EQ(conversations.size(), 1u);
+  ExpectConversationEquals(FROM_HERE, conversations[0], metadata);
 
-  // Get and verify conversation entries
-  {
-    const std::vector<mojom::ConversationEntryPtr>& entries =
-        db_->GetConversationEntries(conversation_id);
-    EXPECT_EQ(UINT64_C(2), entries.size());
-    EXPECT_EQ(entries[1]->selected_text.value(),
-              "The brown fox jumps over the lazy dog");
-  }
+  // Change data and call AddOrUpdateAssociatedContent
+  expected_contents = "Second contents";
+  metadata->associated_content->content_used_percentage = 50;
+  metadata->associated_content->is_content_refined = false;
+  db_->AddOrUpdateAssociatedContent(uuid, metadata->associated_content->Clone(),
+                                    std::make_optional(expected_contents));
+  // Verify data is changed
+  result = db_->GetConversationData(uuid);
+  EXPECT_EQ(result->associated_content.size(), 1u);
+  EXPECT_EQ(result->associated_content[0]->content_id,
+            metadata->associated_content->id.value());
+  EXPECT_EQ(result->associated_content[0]->content, expected_contents);
+  conversations = db_->GetAllConversations();
+  EXPECT_EQ(conversations.size(), 1u);
+  ExpectConversationEquals(FROM_HERE, conversations[0], metadata);
 }
 
 }  // namespace ai_chat

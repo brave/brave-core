@@ -15,12 +15,16 @@
 #include <string_view>
 #include <vector>
 
+#include "base/callback_list.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_multi_source_observation.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/threading/sequence_bound.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
@@ -34,6 +38,11 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+
+namespace os_crypt_async {
+class Encryptor;
+class OSCryptAsync;
+}  // namespace os_crypt_async
 
 class PrefService;
 namespace network {
@@ -58,8 +67,10 @@ class AIChatService : public KeyedService,
       std::unique_ptr<AIChatCredentialManager> ai_chat_credential_manager,
       PrefService* profile_prefs,
       AIChatMetrics* ai_chat_metrics,
+      os_crypt_async::OSCryptAsync* os_crypt_async,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      std::string_view channel_string);
+      std::string_view channel_string,
+      base::FilePath profile_path);
 
   ~AIChatService() override;
   AIChatService(const AIChatService&) = delete;
@@ -72,9 +83,14 @@ class AIChatService : public KeyedService,
   void Shutdown() override;
 
   // ConversationHandler::Observer
-  void OnConversationEntriesChanged(
+  void OnRequestInProgressChanged(ConversationHandler* handler,
+                                  bool in_progress) override;
+  void OnConversationEntryAdded(
       ConversationHandler* handler,
-      std::vector<mojom::ConversationTurnPtr> entries) override;
+      mojom::ConversationTurnPtr& entry,
+      std::optional<std::string_view> associated_content_value) override;
+  void OnConversationEntryRemoved(ConversationHandler* handler,
+                                  std::string entry_uuid) override;
   void OnClientConnectionChanged(ConversationHandler* handler) override;
   void OnConversationTitleChanged(ConversationHandler* handler,
                                   std::string title) override;
@@ -82,7 +98,9 @@ class AIChatService : public KeyedService,
   // Adds new conversation and returns the handler
   ConversationHandler* CreateConversation();
 
-  ConversationHandler* GetConversation(const std::string& uuid);
+  ConversationHandler* GetConversation(std::string_view uuid);
+  void GetConversation(std::string_view conversation_uuid,
+                       base::OnceCallback<void(ConversationHandler*)>);
 
   // Creates and owns a ConversationHandler if one hasn't been made for the
   // associated_content_id yet. |associated_content_id| should not be stored. It
@@ -99,6 +117,9 @@ class AIChatService : public KeyedService,
       int associated_content_id,
       base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
           associated_content);
+
+  // Removes all in-memory and persisted data for all conversations
+  void ClearAllHistory();
 
   void OpenConversationWithStagedEntries(
       base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
@@ -138,11 +159,35 @@ class AIChatService : public KeyedService,
   size_t GetInMemoryConversationCountForTesting();
 
  private:
+  // Called when the encryptor is ready.
+  void OnOsCryptAsyncReady(const base::FilePath& storage_dir,
+                           os_crypt_async::Encryptor encryptor,
+                           bool success);
+
+  void OnDBInit(bool success);
+  void OnAllConversationsRetrieved(
+      std::vector<mojom::ConversationPtr> conversations);
+  void OnConversationDataReceived(
+      std::string conversation_uuid,
+      base::OnceCallback<void(ConversationHandler*)> callback,
+      mojom::ConversationArchivePtr data);
+
   void MaybeAssociateContentWithConversation(
       ConversationHandler* conversation,
       int associated_content_id,
       base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
           associated_content);
+  void MaybeEraseConversation(ConversationHandler* conversation);
+  void HandleFirstEntry(
+      ConversationHandler* handler,
+      mojom::ConversationTurnPtr& entry,
+      std::optional<std::string_view> associated_content_value,
+      mojom::ConversationPtr& conversation);
+  void HandleNewEntry(ConversationHandler* handler,
+                      mojom::ConversationTurnPtr& entry,
+                      std::optional<std::string_view> associated_content_value,
+                      mojom::ConversationPtr& conversation);
+
   void OnUserOptedIn();
   void OnSkusServiceReceived(
       SkusServiceGetter getter,
@@ -152,7 +197,8 @@ class AIChatService : public KeyedService,
   void OnPremiumStatusReceived(GetPremiumStatusCallback callback,
                                mojom::PremiumStatus status,
                                mojom::PremiumInfoPtr info);
-  void MaybeEraseConversation(ConversationHandler* conversation);
+
+  base::SequencedTaskRunner* GetDBTaskRunner();
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<PrefService> profile_prefs_;
@@ -162,6 +208,9 @@ class AIChatService : public KeyedService,
 
   std::unique_ptr<AIChatFeedbackAPI> feedback_api_;
   std::unique_ptr<AIChatCredentialManager> credential_manager_;
+
+  base::SequenceBound<AIChatDatabase> ai_chat_db_;
+  scoped_refptr<base::SequencedTaskRunner> db_task_runner_;
 
   // All conversation metadata. Mainly just titles and uuids. Key is uuid
   std::map<std::string, mojom::ConversationPtr> conversations_;
@@ -190,6 +239,9 @@ class AIChatService : public KeyedService,
   // subscription status changes. So we cache it and fetch latest fairly
   // often (whenever UI is focused).
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Unknown;
+
+  // Maintains the subscription for `OSCryptAsync` and cancels upon destruction.
+  base::CallbackListSubscription encryptor_ready_subscription_;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };

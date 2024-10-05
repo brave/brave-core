@@ -88,6 +88,7 @@ const CONVERSATIONS: mojom.Conversation[] = [
 
 const HISTORY: mojom.ConversationTurn[] = [
   {
+    uuid: undefined,
     text: 'Summarize this page',
     characterType: mojom.CharacterType.HUMAN,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
@@ -99,6 +100,7 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: '',
     characterType: mojom.CharacterType.ASSISTANT,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
@@ -110,6 +112,7 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: 'What is pointer compression?\n...and how does it work?\n    - tell me something interesting',
     characterType: mojom.CharacterType.HUMAN,
     actionType: mojom.ActionType.QUERY,
@@ -121,6 +124,7 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: '',
     characterType: mojom.CharacterType.ASSISTANT,
     actionType: mojom.ActionType.UNSPECIFIED,
@@ -132,6 +136,7 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: '',
     characterType: mojom.CharacterType.ASSISTANT,
     actionType: mojom.ActionType.UNSPECIFIED,
@@ -143,6 +148,7 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: 'What is taylor series?',
     characterType: mojom.CharacterType.HUMAN,
     actionType: mojom.ActionType.QUERY,
@@ -154,6 +160,7 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: '',
     characterType: mojom.CharacterType.ASSISTANT,
     actionType: mojom.ActionType.UNSPECIFIED,
@@ -165,6 +172,7 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: 'Write a hello world program in c++',
     characterType: mojom.CharacterType.HUMAN,
     actionType: mojom.ActionType.QUERY,
@@ -176,6 +184,7 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: '',
     characterType: mojom.CharacterType.ASSISTANT,
     actionType: mojom.ActionType.UNSPECIFIED,
@@ -187,6 +196,7 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: 'Summarize this excerpt',
     characterType: mojom.CharacterType.HUMAN,
     actionType: mojom.ActionType.SUMMARIZE_SELECTED_TEXT,
@@ -198,6 +208,7 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: '',
     characterType: mojom.CharacterType.ASSISTANT,
     actionType: mojom.ActionType.UNSPECIFIED,
@@ -209,6 +220,7 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: 'Shorten this selected text',
     characterType: mojom.CharacterType.HUMAN,
     actionType: mojom.ActionType.SHORTEN,
@@ -220,6 +232,7 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: '',
     characterType: mojom.CharacterType.ASSISTANT,
     actionType: mojom.ActionType.UNSPECIFIED,
@@ -231,12 +244,14 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: 'Will an LTT store backpack fit in a Tesla Model Y frunk?',
     characterType: mojom.CharacterType.HUMAN,
     actionType: mojom.ActionType.SHORTEN,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
     selectedText: '',
     edits: [{
+      uuid: undefined,
       text: 'Will it fit in a Tesla Model Y frunk?',
       characterType: mojom.CharacterType.HUMAN,
       actionType: mojom.ActionType.SHORTEN,
@@ -252,6 +267,7 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: '',
     characterType: mojom.CharacterType.ASSISTANT,
     actionType: mojom.ActionType.UNSPECIFIED,
@@ -345,6 +361,8 @@ const SAMPLE_QUESTIONS = [
 ]
 
 const SITE_INFO: mojom.SiteInfo = {
+  id: undefined,
+  contentType: mojom.ContentType.PageContent,
   title: 'Tiny Tweaks to Neurons Can Rewire Animal Motion',
   contentUsedPercentage: 40,
   isContentAssociationPossible: true,

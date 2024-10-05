@@ -34,6 +34,7 @@
 #include "brave/components/ai_chat/core/browser/text_embedder.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -151,9 +152,16 @@ class ConversationHandler : public mojom::ConversationHandler,
     ~Observer() override {}
 
     // Called when the conversation history changess
-    virtual void OnConversationEntriesChanged(
+    virtual void OnRequestInProgressChanged(ConversationHandler* handler,
+                                            bool in_progress) {}
+    virtual void OnConversationEntryAdded(
         ConversationHandler* handler,
-        std::vector<mojom::ConversationTurnPtr> entries) {}
+        mojom::ConversationTurnPtr& entry,
+        std::optional<std::string_view> associated_content_value) {}
+    virtual void OnConversationEntryRemoved(ConversationHandler* handler,
+                                            std::string turn_uuid) {}
+    virtual void OnConversationEntryUpdated(ConversationHandler* handler,
+                                            mojom::ConversationTurnPtr entry) {}
 
     // Called when a mojo client connects or disconnects
     virtual void OnClientConnectionChanged(ConversationHandler* handler) {}
@@ -165,12 +173,21 @@ class ConversationHandler : public mojom::ConversationHandler,
   };
 
   ConversationHandler(
-      const mojom::Conversation* conversation,
+      mojom::Conversation* conversation,
       AIChatService* ai_chat_service,
       ModelService* model_service,
       AIChatCredentialManager* credential_manager,
       AIChatFeedbackAPI* feedback_api,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+
+  ConversationHandler(
+      mojom::Conversation* conversation,
+      AIChatService* ai_chat_service,
+      ModelService* model_service,
+      AIChatCredentialManager* credential_manager,
+      AIChatFeedbackAPI* feedback_api,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      std::optional<mojom::ConversationArchivePtr> initial_state);
 
   ~ConversationHandler() override;
   ConversationHandler(const ConversationHandler&) = delete;
@@ -185,7 +202,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   bool IsAnyClientConnected();
   bool HasAnyHistory();
-  void OnConversationDeleted();
+  bool IsRequestInProgress();
 
   // Called when the associated content is destroyed or navigated away. If
   // it's a navigation, the AssociatedContentDelegate will set itself to a new
@@ -265,7 +282,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   void SetChatHistoryForTesting(
       std::vector<mojom::ConversationTurnPtr> history) {
     chat_history_ = std::move(history);
-    OnHistoryUpdate();
+    for (auto& entry : chat_history_) {
+      OnConversationEntryAdded(entry);
+    }
   }
 
   AssociatedContentDelegate* GetAssociatedContentDelegateForTesting() {
@@ -344,11 +363,11 @@ class ConversationHandler : public mojom::ConversationHandler,
       const std::optional<std::vector<SearchQuerySummary>>& entries);
 
   void GeneratePageContent(GetPageContentCallback callback);
-  void SetPageContent(std::string contents_text,
-                      bool is_video,
-                      std::string invalidation_token);
+
+  void SetArchiveContent(std::string text_content, bool is_video);
 
   void OnGeneratePageContentComplete(GetPageContentCallback callback,
+                                     std::string previous_content,
                                      std::string contents_text,
                                      bool is_video,
                                      std::string invalidation_token);
@@ -365,10 +384,12 @@ class ConversationHandler : public mojom::ConversationHandler,
       EngineConsumer::SuggestedQuestionResult result);
 
   void OnModelDataChanged();
+  void OnConversationDeleted();
   void OnHistoryUpdate();
+  void OnConversationEntryAdded(mojom::ConversationTurnPtr& entry);
+  void OnConversationEntryRemoved(std::optional<std::string> turn_id);
   void OnSuggestedQuestionsChanged();
   void OnAssociatedContentInfoChanged();
-  void OnConversationEntriesChanged();
   void OnClientConnectionChanged();
   void OnConversationTitleChanged(std::string title);
   void OnConversationUIConnectionChanged(mojo::RemoteSetElementId id);
@@ -389,7 +410,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Is a conversation engine request in progress (does not include
   // non-conversation engine requests.
   bool is_request_in_progress_ = false;
-  mojom::SiteInfoPtr associated_content_info_ = nullptr;
 
   // TODO(petemill): Tracking whether the UI is open
   // for a conversation might not be neccessary anymore as there
@@ -414,6 +434,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   // different pages.
   bool should_send_page_contents_ = false;
   bool is_content_refined_ = false;
+  // When this is true, the most recent content retrieval was different to the
+  // previous one.
+  bool is_content_different_ = false;
 
   bool is_print_preview_fallback_requested_ = false;
 
@@ -421,7 +444,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   mojom::APIError current_error_ = mojom::APIError::None;
 
   // Data store UUID for conversation
-  raw_ptr<const mojom::Conversation> metadata_;
+  raw_ptr<mojom::Conversation> metadata_;
   raw_ptr<AIChatService, DanglingUntriaged> ai_chat_service_;
   raw_ptr<ModelService> model_service_;
   raw_ptr<AIChatCredentialManager, DanglingUntriaged> credential_manager_;

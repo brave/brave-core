@@ -13,6 +13,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/overloaded.h"
@@ -30,10 +31,14 @@
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
+#include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
+#include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -53,40 +58,6 @@ using ::testing::NiceMock;
 namespace ai_chat {
 
 namespace {
-
-std::vector<mojom::ConversationTurnPtr> CreateSampleHistory() {
-  auto created_time1 = base::Time::Now();
-  std::vector<mojom::ConversationTurnPtr> history;
-  history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      mojom::ConversationTurnVisibility::VISIBLE, "prompt1", std::nullopt,
-      std::nullopt, created_time1, std::nullopt, false));
-  history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, "answer1", std::nullopt,
-      std::nullopt, base::Time::Now(), std::nullopt, false));
-  return history;
-}
-
-class MockConversationHandlerObserver : public ConversationHandler::Observer {
- public:
-  MockConversationHandlerObserver() = default;
-  ~MockConversationHandlerObserver() override = default;
-
-  void Observe(ConversationHandler* conversation) {
-    conversation_observations_.AddObservation(conversation);
-  }
-
-  MOCK_METHOD(void,
-              OnClientConnectionChanged,
-              (ConversationHandler*),
-              (override));
-
- private:
-  base::ScopedMultiSourceObservation<ConversationHandler,
-                                     ConversationHandler::Observer>
-      conversation_observations_{this};
-};
 
 class MockAIChatCredentialManager : public AIChatCredentialManager {
  public:
@@ -224,13 +195,39 @@ class AIChatServiceUnitTest : public testing::Test,
   }
 
   void SetUp() override {
+    CHECK(temp_directory_.CreateUniqueTempDir());
+    DVLOG(0) << "Temp directory: " << temp_directory_.GetPath().value();
     prefs::RegisterProfilePrefs(prefs_.registry());
     prefs::RegisterLocalStatePrefs(local_state_.registry());
     ModelService::RegisterProfilePrefs(prefs_.registry());
 
+    os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
+        /*is_sync_for_unittests=*/true);
+
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
+
+    model_service_ = std::make_unique<ModelService>(&prefs_);
+
+    CreateService();
+
+    if (is_opted_in_) {
+      EmulateUserOptedIn();
+    } else {
+      EmulateUserOptedOut();
+    }
+  }
+
+  void TearDown() override {
+    ai_chat_service_.reset();
+    // Allow handles on the db to be released, otherwise for very quick
+    // tests, we get crashes on temp_directory_.Delete().
+    task_environment_.RunUntilIdle();
+    CHECK(temp_directory_.Delete());
+  }
+
+  void CreateService() {
     std::unique_ptr<MockAIChatCredentialManager> credential_manager =
         std::make_unique<MockAIChatCredentialManager>(base::NullCallback(),
                                                       &local_state_);
@@ -242,20 +239,19 @@ class AIChatServiceUnitTest : public testing::Test,
                                   std::move(premium_info));
         });
 
-    model_service_ = std::make_unique<ModelService>(&prefs_);
-
     ai_chat_service_ = std::make_unique<AIChatService>(
         model_service_.get(), std::move(credential_manager), &prefs_, nullptr,
-        shared_url_loader_factory_, "");
+        os_crypt_.get(), shared_url_loader_factory_, "",
+        temp_directory_.GetPath());
 
     client_ =
         std::make_unique<NiceMock<MockServiceClient>>(ai_chat_service_.get());
+  }
 
-    if (is_opted_in_) {
-      EmulateUserOptedIn();
-    } else {
-      EmulateUserOptedOut();
-    }
+  void ResetService() {
+    ai_chat_service_.reset();
+    task_environment_.RunUntilIdle();
+    CreateService();
   }
 
   void ExpectVisibleConversationsSize(base::Location location, size_t size) {
@@ -306,8 +302,6 @@ class AIChatServiceUnitTest : public testing::Test,
 
   void EmulateUserOptedOut() { ::ai_chat::SetUserOptedIn(&prefs_, false); }
 
-  void TearDown() override { ai_chat_service_.reset(); }
-
  protected:
   base::test::TaskEnvironment task_environment_;
   std::unique_ptr<AIChatService> ai_chat_service_;
@@ -315,6 +309,7 @@ class AIChatServiceUnitTest : public testing::Test,
   std::unique_ptr<NiceMock<MockServiceClient>> client_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
@@ -322,6 +317,7 @@ class AIChatServiceUnitTest : public testing::Test,
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
+  base::ScopedTempDir temp_directory_;
 };
 
 INSTANTIATE_TEST_SUITE_P(
@@ -373,10 +369,10 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
       .Times(testing::AtLeast(1));
 
   ConversationHandler* conversation_handler1 = CreateConversation();
-  conversation_handler1->SetChatHistoryForTesting(CreateSampleHistory());
+  conversation_handler1->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
 
   ConversationHandler* conversation_handler2 = CreateConversation();
-  conversation_handler2->SetChatHistoryForTesting(CreateSampleHistory());
+  conversation_handler2->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
 
   ExpectVisibleConversationsSize(FROM_HERE, 2u);
 
@@ -386,17 +382,16 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
   // Connect a client then disconnect
   auto client1 = CreateConversationClient(conversation_handler1);
   DisconnectConversationClient(client1.get());
-  // Only 1 should be deleted, or none if we're preserving history
-  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(),
-            IsAIChatHistoryEnabled() ? 2u : 1u);
+  // Only 1 should be deleted, whether we preserve history or not (is preserved
+  // in the database).
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
 
   ExpectVisibleConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 2u : 1u);
 
   // Connect a client then disconnect
   auto client2 = CreateConversationClient(conversation_handler2);
   DisconnectConversationClient(client2.get());
-  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(),
-            IsAIChatHistoryEnabled() ? 2u : 0u);
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
 
   ExpectVisibleConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 2u : 0u);
 
@@ -496,6 +491,46 @@ TEST_P(AIChatServiceUnitTest,
   run_loop.Run();
 }
 
+TEST_P(AIChatServiceUnitTest, GetConversation_AfterRestart) {
+  auto history = CreateSampleChatHistory(1u);
+  std::string uuid;
+  {
+    ConversationHandler* conversation_handler = CreateConversation();
+    uuid = conversation_handler->get_conversation_uuid();
+    auto client = CreateConversationClient(conversation_handler);
+    conversation_handler->SetChatHistoryForTesting(CloneHistory(history));
+    ExpectVisibleConversationsSize(FROM_HERE, 1);
+    DisconnectConversationClient(client.get());
+  }
+  ExpectVisibleConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 1 : 0);
+
+  // Allow entries to finish being persisted before restarting service
+  task_environment_.RunUntilIdle();
+  DVLOG(0) << "Restarting service";
+  ResetService();
+
+  if (IsAIChatHistoryEnabled()) {
+    EXPECT_CALL(*client_, OnConversationListChanged(testing::SizeIs(1)))
+        .Times(testing::AtLeast(1));
+  } else {
+    EXPECT_CALL(*client_, OnConversationListChanged).Times(0);
+  }
+  task_environment_.RunUntilIdle();
+  // Can get conversation data
+  if (IsAIChatHistoryEnabled()) {
+    base::RunLoop run_loop;
+    ai_chat_service_->GetConversation(
+        uuid, base::BindLambdaForTesting(
+                  [&](ConversationHandler* conversation_handler) {
+                    EXPECT_TRUE(conversation_handler);
+                    ExpectConversationHistoryEquals(
+                        FROM_HERE,
+                        conversation_handler->GetConversationHistory(),
+                        history);
+                    run_loop.Quit();
+                  }));
+    run_loop.Run();
+  }
 TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries_NoPermission) {
   NiceMock<MockAssociatedContent> associated_content{};
   ConversationHandler* conversation =

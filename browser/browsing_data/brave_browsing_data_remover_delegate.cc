@@ -21,6 +21,8 @@
 #include "chrome/common/buildflags.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 BraveBrowsingDataRemoverDelegate::BraveBrowsingDataRemoverDelegate(
     content::BrowserContext* browser_context)
     : ChromeBrowsingDataRemoverDelegate(browser_context),
@@ -95,6 +97,7 @@ void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
 
 void BraveBrowsingDataRemoverDelegate::ClearAiChatHistory(base::Time begin_time,
                                                           base::Time end_time) {
-  // Handler for the Brave Leo History clearing.
-  // It is prepared for future implementation.
+  // Delete all Leo data
+  ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_)
+      ->ClearAllHistory();
 }
