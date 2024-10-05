@@ -23,7 +23,6 @@ const Logo = ({ isPremium }: { isPremium: boolean }) => <div className={styles.l
 </div>
 
 const getTitle = (activeConversation?: Conversation) => activeConversation?.title
-  || activeConversation?.summary
   || getLocale('conversationListUntitled')
 
 

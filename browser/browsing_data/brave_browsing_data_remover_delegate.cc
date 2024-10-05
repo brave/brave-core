@@ -20,6 +20,8 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
@@ -102,7 +104,8 @@ void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
 #if BUILDFLAG(ENABLE_AI_CHAT)
 void BraveBrowsingDataRemoverDelegate::ClearAiChatHistory(base::Time begin_time,
                                                           base::Time end_time) {
-  // Handler for the Brave Leo History clearing.
-  // It is prepared for future implementation.
+  // Delete all Leo data
+  ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_)
+      ->ClearAllHistory();
 }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
