@@ -6,11 +6,15 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_DATABASE_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_DATABASE_H_
 
+#include <string>
+#include <string_view>
 #include <vector>
 
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "base/sequence_checker.h"
+#include "base/thread_annotations.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "components/os_crypt/async/common/encryptor.h"
 #include "sql/database.h"
-#include "sql/init_status.h"
 
 namespace sql {
 class Database;
@@ -18,38 +22,100 @@ class Database;
 
 namespace ai_chat {
 
+// Persists AI Chat conversations and associated content. Conversations are
+// mainly formed of their conversation entries. Edits to conversation entries
+// should be handled with removal and re-adding so that other classes can make
+// decisions about how it affects the rest of history.
+// All data should be stored encrypted.
 class AIChatDatabase {
  public:
-  AIChatDatabase();
+  struct AddConversationResult {
+    int32_t associated_content_id = -1;
+  };
+
+  AIChatDatabase(const base::FilePath& storage_dir,
+                 os_crypt_async::Encryptor encryptor);
   AIChatDatabase(const AIChatDatabase&) = delete;
   AIChatDatabase& operator=(const AIChatDatabase&) = delete;
   ~AIChatDatabase();
 
-  bool Init(const base::FilePath& db_file_path);
+  bool IsInitialized() const;
 
+  // Gets lightweight metadata for all conversations. No high-memory-consuming
+  // data is returned.
   std::vector<mojom::ConversationPtr> GetAllConversations();
-  std::vector<mojom::ConversationEntryPtr> GetConversationEntries(
-      int64_t conversation_id);
-  int64_t AddConversation(mojom::ConversationPtr conversation);
-  int64_t AddConversationEntry(int64_t conversation_id,
-                               mojom::ConversationEntryPtr entry);
-  int64_t AddConversationEntryText(int64_t conversation_entry_id,
-                                   mojom::ConversationEntryTextPtr entry_text);
-  int64_t AddSearchQuery(int64_t conversation_id,
-                         int64_t conversation_entry_id,
-                         const std::string& query);
-  bool DeleteConversation(int64_t conversation_id);
-  bool DropAllTables();
+
+  // Gets all data needed to rehydrate a conversation
+  mojom::ConversationArchivePtr GetConversationData(
+      std::string_view conversation_uuid);
+
+  // Returns new ID for the provided entry and any provided associated content
+  AddConversationResult AddConversation(mojom::ConversationPtr conversation,
+                                        std::optional<std::string> contents,
+                                        mojom::ConversationTurnPtr first_entry);
+
+  // Update any properties of associated content metadata or full-text content
+  int32_t AddOrUpdateAssociatedContent(std::string_view conversation_uuid,
+                                       mojom::SiteInfoPtr associated_content,
+                                       std::optional<std::string> content);
+
+  // Adds a new conversation entry to the conversation with the provided UUID
+  bool AddConversationEntry(
+      std::string_view conversation_uuid,
+      mojom::ConversationTurnPtr entry,
+      std::optional<std::string> editing_id = std::nullopt);
+
+  // Updates the title of the conversation with the provided UUID
+  bool UpdateConversationTitle(std::string conversation_uuid,
+                               std::string title);
+
+  // Deletes the conversation with the provided UUID
+  bool DeleteConversation(std::string_view conversation_uuid);
+
+  // Deletes the conversation entry with the provided ID and all associated
+  // edits and events.
+  bool DeleteConversationEntry(std::string conversation_entry_uuid);
+
+  // Drops all data and tables in the database, and re-creates empty tables
+  bool DeleteAllData();
 
  private:
+  friend class AIChatDatabaseTest;
+
   sql::Database& GetDB();
 
+  bool Init(const base::FilePath& db_file_path);
+
+  std::vector<mojom::ConversationTurnPtr> GetConversationEntries(
+      std::string_view conversation_id);
+  std::vector<mojom::ContentArchivePtr> GetArchiveContentsForConversation(
+      std::string_view conversation_uuid);
+
+  std::string DecryptColumnToString(sql::Statement& statement, int index);
+  std::optional<std::string> DecryptOptionalColumnToString(
+      sql::Statement& statement,
+      int index);
+  void BindAndEncryptOptionalString(sql::Statement& statement,
+                                    int index,
+                                    const std::optional<std::string>& value);
+  bool BindAndEncryptString(sql::Statement& statement,
+                            int index,
+                            const std::string& value);
+
   bool CreateConversationTable();
+  bool CreateAssociatedContentTable();
   bool CreateConversationEntryTable();
   bool CreateConversationEntryTextTable();
   bool CreateSearchQueriesTable();
 
-  sql::Database db_;
+  bool is_initialized_ GUARDED_BY_CONTEXT(sequence_checker_) = false;
+
+  // The underlying SQL database
+  sql::Database db_ GUARDED_BY_CONTEXT(sequence_checker_);
+  os_crypt_async::Encryptor encryptor_ GUARDED_BY_CONTEXT(sequence_checker_);
+
+  // Verifies that all operations happen on the same sequence.
+  SEQUENCE_CHECKER(sequence_checker_);
 };
 
 }  // namespace ai_chat
