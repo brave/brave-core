@@ -8,7 +8,11 @@
 
 #include <string>
 
+class PrefService;
+
 namespace extensions {
+
+bool ShouldLoadEthereumRemoteClientExtension(PrefService* prefs);
 
 std::string GetInfuraProjectID();
 

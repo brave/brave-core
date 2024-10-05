@@ -8,8 +8,10 @@
 #include <string>
 
 #include "base/strings/string_util.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
@@ -40,7 +42,7 @@ BraveAutocompleteSchemeClassifier::GetInputTypeForScheme(
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   if (base::IsStringASCII(scheme) &&
-      webtorrent::IsWebtorrentPrefEnabled(profile_->GetPrefs()) &&
+      profile_->GetPrefs()->GetBoolean(kWebTorrentEnabled) &&
       base::EqualsCaseInsensitiveASCII(scheme, kMagnetScheme)) {
     return metrics::OmniboxInputType::URL;
   }

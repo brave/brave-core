@@ -50,8 +50,7 @@ source_set("brave_wallet") {
   ]
   if (enable_extensions) {
     deps += [
-      "//brave/browser/extensions",
-      "//chrome/browser/extensions:extensions",
+      "//chrome/browser/extensions",
       "//extensions/browser",
     ]
   }
