@@ -25,6 +25,7 @@ brave_browser_brave_ads_sources = [
 
 brave_browser_brave_ads_deps = [
   "//base",
+  "//brave/browser/brave_adaptive_captcha",
   "//brave/browser/brave_ads/device_id",
   "//brave/browser/brave_ads/services",
   "//brave/browser/brave_rewards:util",

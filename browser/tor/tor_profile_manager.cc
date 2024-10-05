@@ -10,7 +10,6 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
-#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/components/tor/tor_launcher_factory.h"
@@ -21,6 +20,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -32,12 +32,33 @@
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 
 namespace {
-size_t GetTorBrowserCount() {
-  BrowserList* list = BrowserList::GetInstance();
-  return std::count_if(list->begin(), list->end(), [](Browser* browser) {
-    return browser->profile()->IsTor();
-  });
-}
+
+class TorBrowserListObserver : public BrowserListObserver {
+ public:
+  TorBrowserListObserver() {}
+  ~TorBrowserListObserver() override {}
+
+  size_t GetTorBrowserCount() {
+    BrowserList* list = BrowserList::GetInstance();
+    return std::count_if(list->begin(), list->end(), [](Browser* browser) {
+      return browser->profile()->IsTor();
+    });
+  }
+
+  // BrowserListObserver:
+  void OnBrowserRemoved(Browser* browser) override {
+    if (!browser || !browser->profile()->IsTor()) {
+      return;
+    }
+
+    if (!GetTorBrowserCount()) {
+      tor::TorProfileService* service =
+          TorProfileServiceFactory::GetForContext(browser->profile());
+      service->KillTor();
+    }
+  }
+};
+
 }  // namespace
 
 // static
@@ -168,12 +189,13 @@ void TorProfileManager::CloseTorProfileWindows(Profile* tor_profile) {
       true /* skip_beforeunload */);
 }
 
-TorProfileManager::TorProfileManager() {
-  BrowserList::AddObserver(this);
+TorProfileManager::TorProfileManager()
+    : browser_list_observer_(new TorBrowserListObserver()) {
+  BrowserList::AddObserver(browser_list_observer_.get());
 }
 
 TorProfileManager::~TorProfileManager() {
-  BrowserList::RemoveObserver(this);
+  BrowserList::RemoveObserver(browser_list_observer_.get());
 }
 
 Profile* TorProfileManager::GetTorProfile(Profile* profile) {
@@ -212,18 +234,6 @@ void TorProfileManager::CloseAllTorWindows() {
   }
 }
 
-void TorProfileManager::OnBrowserRemoved(Browser* browser) {
-  if (!browser || !browser->profile()->IsTor()) {
-    return;
-  }
-
-  if (!GetTorBrowserCount()) {
-    tor::TorProfileService* service =
-        TorProfileServiceFactory::GetForContext(browser->profile());
-    service->KillTor();
-  }
-}
-
 void TorProfileManager::OnProfileWillBeDestroyed(Profile* profile) {
   const std::string context_id = profile->UniqueId();
   tor_profiles_.erase(context_id);
@@ -239,9 +249,8 @@ void TorProfileManager::InitTorProfileUserPrefs(Profile* profile) {
     pref_service->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
   }
   // https://blog.torproject.org/bittorrent-over-tor-isnt-good-idea
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   pref_service->SetBoolean(kWebTorrentEnabled, false);
-#endif
+
   // Disable the automatic translate bubble in Tor because we currently don't
   // support extensions in Tor mode and users cannot disable this through
   // settings page for Tor windows.

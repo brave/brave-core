@@ -8,8 +8,6 @@
 
 #include <memory>
 
-#include "brave/browser/brave_ads/tooltips/ads_tooltips_delegate_impl.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 class Profile;
@@ -20,6 +18,9 @@ class NoDestructor;
 }  // namespace base
 
 namespace brave_ads {
+
+class AdsService;
+class AdsTooltipsDelegateImpl;
 
 // Singleton that owns all AdsService and associates them with Profiles.
 class AdsServiceFactory : public BrowserContextKeyedServiceFactory {

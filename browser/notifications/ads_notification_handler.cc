@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
 #include "url/gurl.h"
 
 namespace brave_ads {

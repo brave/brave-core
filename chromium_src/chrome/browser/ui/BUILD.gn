@@ -30,9 +30,6 @@ group("ui") {
   }
 
   if (enable_brave_webtorrent) {
-    deps += [
-      "//brave/browser/extensions",
-      "//brave/components/brave_webtorrent/browser",
-    ]
+    deps += [ "//brave/components/brave_webtorrent/browser" ]
   }
 }

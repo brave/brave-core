@@ -409,7 +409,10 @@ source_set("ui") {
         "webui/settings/brave_tor_handler.h",
       ]
 
-      deps += [ "//chrome/browser/image_fetcher" ]
+      deps += [
+        "//brave/browser/tor",
+        "//chrome/browser/image_fetcher",
+      ]
     }
     if (enable_extensions) {
       sources += [
@@ -691,6 +694,12 @@ source_set("ui") {
       "views/profiles/brave_profile_menu_view.cc",
       "views/profiles/brave_profile_menu_view.h",
     ]
+
+    deps += [ "//brave/components/tor/buildflags" ]
+
+    if (enable_tor) {
+      deps += [ "//brave/browser/tor" ]
+    }
   }
 
   if (is_win || is_mac || is_linux) {
@@ -1128,7 +1137,10 @@ source_set("ui") {
         "webui/settings/brave_default_extensions_handler.h",
       ]
 
-      deps += [ "//third_party/widevine/cdm:buildflags" ]
+      deps += [
+        "//brave/browser/extensions:component_loader",
+        "//third_party/widevine/cdm:buildflags",
+      ]
 
       if (enable_widevine) {
         deps += [ "//brave/browser/widevine" ]
@@ -1142,6 +1154,7 @@ source_set("ui") {
       ]
 
       deps += [
+        "//brave/browser/tor",
         "//brave/components/tor",
         "//brave/components/tor:pref_names",
         "//brave/components/tor/resources",
@@ -1149,7 +1162,7 @@ source_set("ui") {
     }
 
     deps += [
-      "//brave/browser/extensions",
+      # "//brave/browser/extensions",
       "//brave/components/brave_extension:generated_resources",
       "//brave/components/brave_extension:static_resources",
       "//brave/components/decentralized_dns/content",

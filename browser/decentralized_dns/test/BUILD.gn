@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import("//brave/build/config.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
 source_set("browser_tests") {
@@ -55,4 +56,8 @@ source_set("unit_tests") {
     "//testing/gmock",
     "//testing/gtest",
   ]
+
+  if (enable_tor) {
+    deps += [ "//brave/browser/tor" ]
+  }
 }  # source_set("unit_tests")

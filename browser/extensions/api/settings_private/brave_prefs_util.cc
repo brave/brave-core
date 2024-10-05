@@ -9,7 +9,6 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -24,20 +23,14 @@
 #include "brave/components/request_otr/common/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "chrome/browser/content_settings/cookie_settings_factory.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/extensions/api/settings_private.h"
 #include "chrome/common/pref_names.h"
 #include "components/browsing_data/core/pref_names.h"
-#include "components/content_settings/core/browser/cookie_settings.h"
-#include "components/content_settings/core/common/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "extensions/buildflags/buildflags.h"
-#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
@@ -322,23 +315,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #endif
 
   return *s_brave_allowlist;
-}
-
-std::optional<api::settings_private::PrefObject> BravePrefsUtil::GetPref(
-    const std::string& name) {
-  auto pref = PrefsUtil::GetPref(name);
-  // Simulate "Enforced" mode for kCookieControlsMode pref when Cookies are
-  // fully blocked via Shields. This will effectively disable the "Third-party
-  // cookies" mode selector on Settings page.
-  if (pref && name == prefs::kCookieControlsMode &&
-      pref->enforcement == api::settings_private::Enforcement::kNone &&
-      brave_shields::GetCookieControlType(
-          HostContentSettingsMapFactory::GetForProfile(profile()),
-          CookieSettingsFactory::GetForProfile(profile()).get(),
-          GURL()) == brave_shields::ControlType::BLOCK) {
-    pref->enforcement = api::settings_private::Enforcement::kEnforced;
-  }
-  return pref;
 }
 
 }  // namespace extensions

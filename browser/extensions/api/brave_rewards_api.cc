@@ -5,7 +5,6 @@
 
 #include "brave/browser/extensions/api/brave_rewards_api.h"
 
-#include <optional>
 #include <string>
 #include <utility>
 
@@ -21,9 +20,6 @@
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/core/public/ads_util.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -36,7 +32,6 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/event_router.h"
-#include "extensions/common/constants.h"
 
 using brave_ads::AdsService;
 using brave_ads::AdsServiceFactory;

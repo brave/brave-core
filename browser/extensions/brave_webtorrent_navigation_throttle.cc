@@ -6,7 +6,6 @@
 #include "brave/browser/extensions/brave_webtorrent_navigation_throttle.h"
 
 #include "brave/browser/extensions/brave_component_loader.h"
-#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
@@ -20,10 +19,6 @@
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-#include "brave/browser/net/brave_torrent_redirect_network_delegate_helper.h"
-#endif
 
 namespace extensions {
 
@@ -53,8 +48,8 @@ bool BraveWebTorrentNavigationThrottle::MaybeLoadWebtorrent(
   content::BrowserContext* context,
   const GURL& url) {
   // No need to load Webtorrent if pref is off or it is already enabled.
-  if (!webtorrent::IsWebtorrentPrefEnabled(
-          Profile::FromBrowserContext(context)->GetPrefs()) ||
+  auto* prefs = Profile::FromBrowserContext(context)->GetPrefs();
+  if (!prefs->GetBoolean(kWebTorrentEnabled) ||
       webtorrent::IsWebtorrentEnabled(context)) {
     return false;
   }

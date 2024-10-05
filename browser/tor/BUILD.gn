@@ -1,0 +1,67 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/tor/buildflags/buildflags.gni")
+
+assert(enable_tor)
+
+source_set("tor") {
+  sources = [
+    "tor_profile_manager.h",
+    "tor_profile_service_factory.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/tor:common",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+    "//url",
+  ]
+}
+
+source_set("impl") {
+  sources = [
+    "tor_profile_manager.cc",
+    "tor_profile_service_factory.cc",
+  ]
+
+  deps = [
+    ":tor",
+    ":util",
+    "//base",
+    "//brave/browser:browser_process",
+    "//brave/components/brave_webtorrent/browser/buildflags",
+    "//brave/components/constants",
+    "//brave/components/tor",
+    "//brave/components/tor:common",
+    "//brave/components/tor:pref_names",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
+    "//components/keyed_service/content",
+    "//components/policy/core/common:common_constants",
+    "//components/prefs",
+    "//components/safe_browsing/core/common:safe_browsing_prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//url",
+  ]
+}
+
+source_set("util") {
+  check_includes = false  # workaround for incognito mode prefs
+  sources = [
+    "util.cc",
+    "util.h",
+  ]
+
+  deps = [
+    "//chrome/browser:browser_public_dependencies",
+    "//components/policy/core/common",
+    "//components/user_prefs",
+    "//content/public/browser",
+  ]
+}
