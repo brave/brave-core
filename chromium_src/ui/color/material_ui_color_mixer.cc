@@ -44,6 +44,18 @@ void AddMaterialUiColorMixer(ColorProvider* provider,
   mixer[kColorComboboxBackgroundDisabled] = {GetResultingPaintColor(
       {kColorSysStateDisabledContainer}, {kColorComboboxBackground})};
   mixer[kColorComboboxContainerOutline] = {kColorSysNeutralOutline};
+  mixer[kColorTabBorderSelected] = {kColorSysPrimary};
+  mixer[kColorTabForeground] = {kColorSecondaryForeground};
+  mixer[kColorTabForegroundSelected] = {kColorSysPrimary};
+  mixer[kColorTableBackground] = {kColorPrimaryBackground};
+  mixer[kColorTableBackgroundAlternate] = {kColorTableBackground};
+  mixer[kColorTableBackgroundSelectedFocused] = {kColorSysTonalContainer};
+  mixer[kColorTableBackgroundSelectedUnfocused] = {
+      kColorTableBackgroundSelectedFocused};
+  mixer[kColorTableForeground] = {kColorPrimaryForeground};
+  mixer[kColorTableForegroundSelectedFocused] = {kColorTableForeground};
+  mixer[kColorTableForegroundSelectedUnfocused] = {
+      kColorTableForegroundSelectedFocused};
   mixer[ui::kColorToolbarSearchFieldBackground] = {
       ui::kColorSysBaseContainerElevated};
   mixer[ui::kColorToolbarSearchFieldBackgroundHover] = {
