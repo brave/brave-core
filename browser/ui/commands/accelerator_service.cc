@@ -83,7 +83,7 @@ AcceleratorService::AcceleratorService(
     base::flat_set<ui::Accelerator> system_managed)
     : pref_manager_(pref_service, commands::GetCommands()),
       default_accelerators_(std::move(default_accelerators)),
-      system_managed_(system_managed) {
+      system_managed_(std::move(system_managed)) {
   Initialize();
 }
 

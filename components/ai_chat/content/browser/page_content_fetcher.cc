@@ -290,7 +290,6 @@ class PageContentFetcherInternal {
       std::string invalidation_token,
       std::unique_ptr<std::string> response_body) {
     auto response_code = -1;
-    base::flat_map<std::string, std::string> headers;
     if (loader->ResponseInfo()) {
       auto headers_list = loader->ResponseInfo()->headers;
       if (headers_list) {
@@ -328,7 +327,6 @@ class PageContentFetcherInternal {
                             std::unique_ptr<network::SimpleURLLoader> loader,
                             std::unique_ptr<std::string> response_body) {
     auto response_code = -1;
-    base::flat_map<std::string, std::string> headers;
     if (loader->ResponseInfo()) {
       auto headers_list = loader->ResponseInfo()->headers;
       if (headers_list) {

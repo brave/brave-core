@@ -93,11 +93,10 @@ base::flat_set<std::string> GetPublisherLocales(const Publishers& publishers) {
 }
 
 base::flat_set<std::string> GetMinimalLocalesSet(
-    const base::flat_set<std::string>& channel_locales,
+    base::flat_set<std::string> channel_locales,
     const Publishers& publishers) {
   // All channel locales are part of the minimal set - we need to include all of
   // them.
-  base::flat_set<std::string> result = channel_locales;
 
   std::vector<mojom::Publisher*> subscribed_publishers;
   for (const auto& [id, publisher] : publishers) {
@@ -115,11 +114,11 @@ base::flat_set<std::string> GetMinimalLocalesSet(
   // locale and recalculate what's missing.
   std::optional<std::string> best_missing_locale;
   while ((best_missing_locale =
-              GetBestMissingLocale(result, subscribed_publishers))) {
-    result.insert(best_missing_locale.value());
+              GetBestMissingLocale(channel_locales, subscribed_publishers))) {
+    channel_locales.insert(best_missing_locale.value());
   }
 
-  return result;
+  return channel_locales;
 }
 
 bool IsUserInDefaultEnabledLocale() {

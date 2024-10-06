@@ -188,8 +188,11 @@ DebounceRule::ParseRules(const std::string& contents) {
   if (!root) {
     return base::unexpected("Failed to parse debounce configuration");
   }
-  std::vector<std::string> hosts;
-  std::vector<std::unique_ptr<DebounceRule>> rules;
+
+  std::pair<std::vector<std::unique_ptr<DebounceRule>>,
+            base::flat_set<std::string>>
+      result;
+  auto& [rules, hosts] = result;
   base::JSONValueConverter<DebounceRule> converter;
   for (base::Value& it : root->GetList()) {
     std::unique_ptr<DebounceRule> rule = std::make_unique<DebounceRule>();
@@ -201,14 +204,13 @@ DebounceRule::ParseRules(const std::string& contents) {
         const std::string etldp1 =
             DebounceRule::GetETLDForDebounce(pattern.host());
         if (!etldp1.empty()) {
-          hosts.push_back(std::move(etldp1));
+          hosts.insert(std::move(etldp1));
         }
       }
     }
     rules.push_back(std::move(rule));
   }
-  return std::pair<std::vector<std::unique_ptr<DebounceRule>>,
-                   base::flat_set<std::string>>(std::move(rules), hosts);
+  return result;
 }
 
 bool DebounceRule::CheckPrefForRule(const PrefService* prefs) const {
