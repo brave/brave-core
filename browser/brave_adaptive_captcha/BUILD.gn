@@ -6,9 +6,7 @@
 source_set("impl") {
   visibility = [ "//chrome/browser" ]
 
-  sources = [
-    "brave_adaptive_captcha_service_factory.cc",
-  ]
+  sources = [ "brave_adaptive_captcha_service_factory.cc" ]
 
   deps = [
     ":brave_adaptive_captcha",
@@ -23,9 +21,7 @@ source_set("impl") {
 }
 
 source_set("brave_adaptive_captcha") {
-  sources = [
-    "brave_adaptive_captcha_service_factory.h",
-  ]
+  sources = [ "brave_adaptive_captcha_service_factory.h" ]
 
   public_deps = [
     "//components/keyed_service/content",
