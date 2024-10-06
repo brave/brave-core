@@ -16,14 +16,15 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "brave/browser/brave_ads/application_state/background_helper/background_helper.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/browser/application_state/background_helper.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -38,9 +39,7 @@
 #include "ui/base/idle/idle.h"
 
 class GURL;
-class NotificationDisplayService;
 class PrefService;
-class Profile;
 
 namespace base {
 class OneShotTimer;
@@ -53,6 +52,7 @@ class RewardsService;
 
 namespace network {
 class SimpleURLLoader;
+class SharedURLLoaderFactory;
 }  // namespace network
 
 namespace brave_ads {
@@ -72,10 +72,11 @@ class AdsServiceImpl final : public AdsService,
                              public brave_rewards::RewardsServiceObserver {
  public:
   explicit AdsServiceImpl(
-      Profile* profile,
+      Delegate* delegate,
+      PrefService* prefs,
       PrefService* local_state,
-      brave_adaptive_captcha::BraveAdaptiveCaptchaService*
-          adaptive_captcha_service,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader,
+      const base::FilePath& profile_path,
       std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
       std::unique_ptr<DeviceId> device_id,
       std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
@@ -435,9 +436,11 @@ class AdsServiceImpl final : public AdsService,
 
   SimpleURLLoaderList url_loaders_;
 
-  const raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
+  const raw_ptr<PrefService> prefs_ = nullptr;  // NOT OWNED
 
   const raw_ptr<PrefService> local_state_ = nullptr;  // NOT OWNED
+
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_ = nullptr;
 
   const raw_ptr<brave_ads::ResourceComponent> resource_component_ =
       nullptr;  // NOT OWNED
@@ -445,8 +448,6 @@ class AdsServiceImpl final : public AdsService,
   const raw_ptr<history::HistoryService> history_service_ =
       nullptr;  // NOT OWNED
 
-  const raw_ptr<brave_adaptive_captcha::BraveAdaptiveCaptchaService>
-      adaptive_captcha_service_ = nullptr;  // NOT OWNED
   const std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate_;
 
   const std::unique_ptr<DeviceId> device_id_;
@@ -457,8 +458,6 @@ class AdsServiceImpl final : public AdsService,
 
   const base::FilePath ads_service_path_;
 
-  const raw_ptr<NotificationDisplayService> display_service_ =
-      nullptr;  // NOT OWNED
   const raw_ptr<brave_rewards::RewardsService> rewards_service_{
       nullptr};  // NOT OWNED
 

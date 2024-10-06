@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_ADS_APPLICATION_STATE_BACKGROUND_HELPER_BACKGROUND_HELPER_LINUX_H_
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/brave_ads/application_state/background_helper/background_helper.h"
+#include "brave/components/brave_ads/browser/application_state/background_helper.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 
 namespace brave_ads {

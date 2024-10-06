@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_ads/application_state/background_helper/background_helper.h"
+#include "brave/components/brave_ads/browser/application_state/background_helper.h"
 
 #include "brave/browser/brave_ads/application_state/background_helper/background_helper_holder.h"
 #include "build/build_config.h"  // IWYU pragma: keep

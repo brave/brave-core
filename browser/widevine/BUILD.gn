@@ -17,12 +17,15 @@ source_set("widevine") {
   deps = [
     "//base",
     "//brave/app:brave_generated_resources_grit",
+    "//brave/components/brave_component_updater/browser",
     "//brave/components/constants",
+    "//brave/components/l10n/common",
     "//brave/components/widevine:constants",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
     "//chrome/common",
     "//components/component_updater/",
     "//components/content_settings/core/common",
-    "//components/permissions",
     "//components/pref_registry",
     "//components/prefs",
     "//components/subresource_filter/content/browser",
@@ -32,6 +35,10 @@ source_set("widevine") {
     "//third_party/widevine/cdm:buildflags",
     "//third_party/widevine/cdm:headers",
     "//ui/base",
+  ]
+
+  public_deps = [
+    "//components/permissions",
     "//url",
   ]
 

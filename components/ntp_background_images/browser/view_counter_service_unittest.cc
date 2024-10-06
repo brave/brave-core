@@ -266,7 +266,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
 #endif
 
   std::unique_ptr<ViewCounterService> view_counter_;
-  brave_ads::AdsServiceMock ads_service_mock_;
+  brave_ads::AdsServiceMock ads_service_mock_{nullptr};
 };
 
 TEST_F(NTPBackgroundImagesViewCounterTest, SINotActiveInitially) {

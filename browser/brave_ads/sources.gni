@@ -5,12 +5,13 @@
 
 brave_browser_brave_ads_sources = [
   "//brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.h",
+  "//brave/browser/brave_ads/ads_service_delegate.cc",
+  "//brave/browser/brave_ads/ads_service_delegate.h",
   "//brave/browser/brave_ads/ads_service_factory.cc",
   "//brave/browser/brave_ads/ads_service_factory.h",
   "//brave/browser/brave_ads/analytics/p3a/brave_stats_helper.cc",
   "//brave/browser/brave_ads/analytics/p3a/brave_stats_helper.h",
   "//brave/browser/brave_ads/application_state/background_helper/background_helper.cc",
-  "//brave/browser/brave_ads/application_state/background_helper/background_helper.h",
   "//brave/browser/brave_ads/application_state/background_helper/background_helper_holder.cc",
   "//brave/browser/brave_ads/application_state/background_helper/background_helper_holder.h",
   "//brave/browser/brave_ads/application_state/notification_helper/notification_helper.cc",
