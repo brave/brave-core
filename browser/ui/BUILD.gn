@@ -48,6 +48,7 @@ source_set("ui") {
   ]
 
   deps = [
+    "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_rewards",
     "//brave/browser/skus",
     "//brave/components/brave_shields/core/browser",

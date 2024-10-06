@@ -3,18 +3,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("brave_adaptive_captcha") {
-  sources = [
-    "brave_adaptive_captcha_service_factory.cc",
-    "brave_adaptive_captcha_service_factory.h",
-  ]
+source_set("impl") {
+  visibility = [ "//chrome/browser" ]
 
-  public_deps = [
-    "//components/keyed_service/content",
-    "//content/public/browser",
-  ]
+  sources = [ "brave_adaptive_captcha_service_factory.cc" ]
 
   deps = [
+    ":brave_adaptive_captcha",
     "//base",
     "//brave/browser/brave_rewards",
     "//brave/components/brave_adaptive_captcha",
@@ -22,5 +17,14 @@ source_set("brave_adaptive_captcha") {
     "//chrome/browser/ui",
     "//components/keyed_service/content",
     "//components/user_prefs",
+  ]
+}
+
+source_set("brave_adaptive_captcha") {
+  sources = [ "brave_adaptive_captcha_service_factory.h" ]
+
+  public_deps = [
+    "//components/keyed_service/content",
+    "//content/public/browser",
   ]
 }
