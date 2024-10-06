@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color } from '@brave/leo/tokens/css/variables'
 import { scoped } from '../../lib/scoped_css'
 
 import successBackground1URL from '../../assets/success_background_1.svg'
@@ -47,14 +46,12 @@ export const backgroundStyle = scoped.css`
   &.success {
     --modal-background:
       var(--success-background-1-url) no-repeat center top / auto 366px,
-      var(--success-background-2-url) no-repeat center top / cover,
-      ${color.container.background};
+      var(--success-background-2-url) no-repeat center top / cover;
 
     @container style(--is-wide-view) {
       --modal-background:
         var(--success-background-1-url) no-repeat center 22px / auto 366px,
-        var(--success-background-2-url) no-repeat center top / cover,
-        ${color.container.background};
+        var(--success-background-2-url) no-repeat center top / cover;
     }
   }
 `

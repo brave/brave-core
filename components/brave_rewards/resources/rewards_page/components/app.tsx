@@ -17,7 +17,6 @@ import { Onboarding } from './onboarding/onboarding'
 import { OnboardingSuccessModal } from './onboarding/onboarding_success_modal'
 import { ConnectAccount } from './connect_account'
 import { AuthorizationModal } from './authorization_modal'
-import { CaptchaModal } from './captcha_modal'
 import { ContributeModal } from './contribute/contribute_modal'
 import { ResetModal } from './reset_modal'
 import { TosUpdateModal } from './tos_update_modal'
@@ -36,21 +35,18 @@ export function App() {
     loading,
     embedder,
     paymentId,
-    tosUpdateRequired,
-    captchaInfo,
+    tosUpdateRequired
   ] = useAppState((state) => [
     state.loading,
     state.embedder,
     state.paymentId,
-    state.tosUpdateRequired,
-    state.captchaInfo
+    state.tosUpdateRequired
   ])
 
   const viewType = useBreakpoint()
 
   const [showResetModal, setShowResetModal] = React.useState(false)
   const [showContributeModal, setShowContributeModal] = React.useState(false)
-  const [hideCaptcha, setHideCaptcha] = React.useState(false)
   const [showOnboardingSuccess, setShowOnboardingSuccess]
     = React.useState(false)
 
@@ -129,16 +125,6 @@ export function App() {
 
     if (showContributeModal) {
       return <ContributeModal onClose={() => setShowContributeModal(false)} />
-    }
-
-    if (captchaInfo && !hideCaptcha) {
-      return (
-        <CaptchaModal
-          captchaInfo={captchaInfo}
-          onCaptchaResult={(success) => model.onCaptchaResult(success)}
-          onClose={() => setHideCaptcha(true)}
-        />
-      )
     }
 
     if (tosUpdateRequired) {

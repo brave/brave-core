@@ -15,10 +15,8 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/scoped_observation.h"
-#include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
@@ -44,8 +42,6 @@
 namespace brave_rewards {
 
 namespace {
-
-using brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory;
 
 static constexpr auto kPluralStrings =
     base::MakeFixedFlatMap<std::string_view, int>(
@@ -202,8 +198,6 @@ RewardsPageHandler::RewardsPageHandler(
       bubble_delegate_(std::move(bubble_delegate)),
       rewards_service_(RewardsServiceFactory::GetForProfile(profile)),
       ads_service_(brave_ads::AdsServiceFactory::GetForProfile(profile)),
-      captcha_service_(
-          BraveAdaptiveCaptchaServiceFactory::GetForProfile(profile)),
       prefs_(profile->GetPrefs()) {
   CHECK(rewards_service_);
   CHECK(ads_service_);
@@ -475,38 +469,7 @@ void RewardsPageHandler::GetAdsSettings(GetAdsSettingsCallback callback) {
 }
 
 void RewardsPageHandler::GetAdsStatement(GetAdsStatementCallback callback) {
-  auto on_statement = [](decltype(callback) callback,
-                         brave_ads::mojom::StatementInfoPtr info) {
-    if (!info) {
-      std::move(callback).Run(nullptr);
-      return;
-    }
-
-    auto statement = mojom::AdsStatement::New();
-
-    statement->min_earnings_previous_month = info->min_earnings_previous_month;
-    statement->max_earnings_previous_month = info->max_earnings_previous_month;
-    statement->min_earnings_this_month = info->min_earnings_this_month;
-    statement->max_earnings_this_month = info->max_earnings_this_month;
-    statement->next_payment_date = info->next_payment_date;
-    statement->ads_received_this_month = info->ads_received_this_month;
-    statement->ad_type_summary_this_month = mojom::AdTypeSummary::New();
-
-    auto& summary = statement->ad_type_summary_this_month;
-    auto& ad_type_map = info->ads_summary_this_month;
-
-    using AdType = brave_ads::mojom::AdType;
-
-    summary->notification_ads = ad_type_map[AdType::kNotificationAd];
-    summary->new_tab_page_ads = ad_type_map[AdType::kNewTabPageAd];
-    summary->inline_content_ads = ad_type_map[AdType::kInlineContentAd];
-    summary->search_result_ads = ad_type_map[AdType::kSearchResultAd];
-
-    std::move(callback).Run(std::move(statement));
-  };
-
-  ads_service_->GetStatementOfAccounts(
-      base::BindOnce(on_statement, std::move(callback)));
+  ads_service_->GetStatementOfAccounts(std::move(callback));
 }
 
 void RewardsPageHandler::GetAdsHistory(GetAdsHistoryCallback callback) {
@@ -594,8 +557,10 @@ void RewardsPageHandler::ToggleAdLike(const std::string& history_item,
   // reactions to use `mojom::ReactionInfo` instead of `AdHistoryItemInfo`.
   const brave_ads::AdHistoryItemInfo ad_history_item =
       brave_ads::AdHistoryItemFromValue(*dict);
+  brave_ads::mojom::ReactionInfoPtr mojom_reaction =
+      brave_ads::CreateReaction(ad_history_item);
 
-  ads_service_->ToggleLikeAd(brave_ads::CreateReaction(ad_history_item),
+  ads_service_->ToggleLikeAd(std::move(mojom_reaction),
                              base::IgnoreArgs<bool>(std::move(callback)));
 }
 
@@ -611,8 +576,10 @@ void RewardsPageHandler::ToggleAdDislike(const std::string& history_item,
   // reactions to use `mojom::ReactionInfo` instead of `AdHistoryItemInfo`.
   const brave_ads::AdHistoryItemInfo ad_history_item =
       brave_ads::AdHistoryItemFromValue(*dict);
+  brave_ads::mojom::ReactionInfoPtr mojom_reaction =
+      brave_ads::CreateReaction(ad_history_item);
 
-  ads_service_->ToggleDislikeAd(brave_ads::CreateReaction(ad_history_item),
+  ads_service_->ToggleDislikeAd(std::move(mojom_reaction),
                                 base::IgnoreArgs<bool>(std::move(callback)));
 }
 
@@ -629,10 +596,11 @@ void RewardsPageHandler::ToggleAdInappropriate(
   // reactions to use `mojom::ReactionInfo` instead of `AdHistoryItemInfo`.
   const brave_ads::AdHistoryItemInfo ad_history_item =
       brave_ads::AdHistoryItemFromValue(*dict);
+  brave_ads::mojom::ReactionInfoPtr mojom_reaction =
+      brave_ads::CreateReaction(ad_history_item);
 
   ads_service_->ToggleMarkAdAsInappropriate(
-      brave_ads::CreateReaction(ad_history_item),
-      base::IgnoreArgs<bool>(std::move(callback)));
+      std::move(mojom_reaction), base::IgnoreArgs<bool>(std::move(callback)));
 }
 
 void RewardsPageHandler::EnableRewards(const std::string& country_code,
@@ -659,32 +627,6 @@ void RewardsPageHandler::SendContribution(const std::string& creator_id,
                                           SendContributionCallback callback) {
   rewards_service_->SendContribution(creator_id, amount, recurring,
                                      std::move(callback));
-}
-
-void RewardsPageHandler::GetCaptchaInfo(GetCaptchaInfoCallback callback) {
-  if (!captcha_service_) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-
-  auto info = mojom::CaptchaInfo::New();
-  captcha_service_->GetScheduledCaptchaInfo(&info->url,
-                                            &info->max_attempts_exceeded);
-
-  if (info->url.empty()) {
-    info = nullptr;
-  }
-
-  std::move(callback).Run(std::move(info));
-}
-
-void RewardsPageHandler::OnCaptchaResult(bool success,
-                                         OnCaptchaResultCallback callback) {
-  if (captcha_service_) {
-    captcha_service_->UpdateScheduledCaptchaResult(success);
-  }
-  ads_service_->NotifyDidSolveAdaptiveCaptcha();
-  std::move(callback).Run();
 }
 
 void RewardsPageHandler::ResetRewards(ResetRewardsCallback callback) {

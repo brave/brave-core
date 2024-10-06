@@ -74,7 +74,6 @@ export function createModel(): AppModel {
   const adsHistoryAdapter = createAdsHistoryAdapter()
   const stateManager = createStateManager<AppState>(defaultState())
   const isBubble = loadTimeData.getBoolean('isBubble')
-  const platform = normalizePlatform(loadTimeData.getString('platform'))
 
   // Expose the state manager for devtools diagnostic purposes.
   Object.assign(self, {
@@ -84,7 +83,7 @@ export function createModel(): AppModel {
   stateManager.update({
     embedder: {
       isBubble,
-      platform,
+      platform: normalizePlatform(loadTimeData.getString('platform')),
       animatedBackgroundEnabled:
         loadTimeData.getBoolean('animatedBackgroundEnabled')
     }
@@ -145,7 +144,6 @@ export function createModel(): AppModel {
     ])
 
     if (statement && settings) {
-      const { adTypeSummaryThisMonth } = statement
       stateManager.update({
         adsInfo: {
           browserUpgradeRequired: settings.browserUpgradeRequired,
@@ -158,10 +156,14 @@ export function createModel(): AppModel {
           },
           adsReceivedThisMonth: statement.adsReceivedThisMonth,
           adTypesReceivedThisMonth: {
-            'new-tab-page': adTypeSummaryThisMonth.newTabPageAds,
-            'notification': adTypeSummaryThisMonth.notificationAds,
-            'search-result': adTypeSummaryThisMonth.searchResultAds,
-            'inline-content': adTypeSummaryThisMonth.inlineContentAds
+            'new-tab-page':
+              Number(statement.adsSummaryThisMonth.new_tab_page_ad) || 0,
+            'notification':
+              Number(statement.adsSummaryThisMonth.ad_notification) || 0,
+            'search-result':
+              Number(statement.adsSummaryThisMonth.search_result_ad) || 0,
+            'inline-content':
+              Number(statement.adsSummaryThisMonth.inline_content_ad) || 0,
           },
           minEarningsThisMonth: statement.minEarningsThisMonth,
           maxEarningsThisMonth: statement.maxEarningsThisMonth,
@@ -263,22 +265,6 @@ export function createModel(): AppModel {
     })
   }
 
-  async function updateCaptchaInfo(opts: { pendingOnly: boolean }) {
-    // Captchas can only be solved from the Rewards panel on desktop.
-    if (!isBubble || platform !== 'desktop') {
-      return
-    }
-
-    let { captchaInfo } = await pageHandler.getCaptchaInfo()
-    if (opts.pendingOnly) {
-      if (captchaInfo &&  captchaInfo.maxAttemptsExceeded) {
-        captchaInfo = null
-      }
-    }
-
-    stateManager.update({ captchaInfo })
-  }
-
   async function loadData() {
     // Discards the supplied promise so that the `Promise.all` below does not
     // block on the result. Any calls that may be blocked on a network request
@@ -297,8 +283,7 @@ export function createModel(): AppModel {
       updateRecurringContributions(),
       updateAutoContributeInfo(),
       updateRewardsParameters(),
-      inBackground(updateCurrentCreator()),
-      inBackground(updateCaptchaInfo({ pendingOnly: true }))
+      inBackground(updateCurrentCreator())
     ])
 
     stateManager.update({ loading: false })
@@ -503,13 +488,6 @@ export function createModel(): AppModel {
     async dismissSelfCustodyInvite() {
       await pageHandler.dismissSelfCustodyInvite()
       stateManager.update({ selfCustodyInviteDismissed: true })
-    },
-
-    async onCaptchaResult(success) {
-      await pageHandler.onCaptchaResult(success)
-      if (!success) {
-        await updateCaptchaInfo({ pendingOnly: false })
-      }
     }
   }
 }
