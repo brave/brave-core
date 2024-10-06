@@ -35,6 +35,7 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
+#include "chrome/browser/bookmarks/bookmark_html_writer.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -898,6 +899,15 @@ void ScrollTabToTop(Browser* browser) {
 void ScrollTabToBottom(Browser* browser) {
   auto* contents = browser->tab_strip_model()->GetActiveWebContents();
   contents->ScrollToBottomOfDocument();
+}
+
+void ExportAllBookmarks(Browser* browser) {
+  Profile* profile = browser->profile();
+  // @TODO: Get the path from the user, like we do when the user clicks the export bookmarks button manually.
+  base::FilePath path("/home/hamir/Downloads/Brave browser bookmarks.html");
+  BookmarksExportObserver* observer = nullptr;
+
+  bookmark_html_writer::WriteBookmarks(profile, path, observer);
 }
 
 void ToggleAllBookmarksButtonVisibility(Browser* browser) {

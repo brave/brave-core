@@ -309,6 +309,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandsForPin();
 
   UpdateCommandEnabled(IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY, true);
+  UpdateCommandEnabled(IDC_EXPORT_ALL_BOOKMARKS, true);
 
   if (browser_->is_type_normal()) {
     // Delete these when upstream enables by default.
@@ -653,6 +654,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY:
       brave::ToggleAllBookmarksButtonVisibility(base::to_address(browser_));
+      break;
+    case IDC_EXPORT_ALL_BOOKMARKS:
+      brave::ExportAllBookmarks(&*browser_);
       break;
     case IDC_COMMANDER:
 #if BUILDFLAG(ENABLE_COMMANDER)

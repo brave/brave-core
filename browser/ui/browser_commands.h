@@ -112,6 +112,7 @@ void UnmuteAllTabs(Browser* browser);
 void ScrollTabToTop(Browser* browser);
 void ScrollTabToBottom(Browser* browser);
 
+void ExportAllBookmarks(Browser* browser);
 void ToggleAllBookmarksButtonVisibility(Browser* browser);
 
 // In case |tab| is not provided, the active tab will be used.
