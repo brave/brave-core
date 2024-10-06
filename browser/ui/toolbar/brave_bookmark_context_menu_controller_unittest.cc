@@ -3,17 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/ui/toolbar/brave_bookmark_context_menu_controller.h"
+
 #include <stddef.h>
 
 #include <memory>
 #include <string>
 
-#include "brave/browser/ui/toolbar/brave_bookmark_context_menu_controller.h"
-
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/bookmarks/bookmark_merged_surface_service_factory.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/bookmarks/bookmark_context_menu_controller.h"
@@ -42,6 +43,9 @@ class BraveBookmarkContextMenuControllerTest : public testing::Test {
     TestingProfile::Builder builder;
     builder.AddTestingFactory(BookmarkModelFactory::GetInstance(),
                               BookmarkModelFactory::GetDefaultFactory());
+    builder.AddTestingFactory(
+        BookmarkMergedSurfaceServiceFactory::GetInstance(),
+        BookmarkMergedSurfaceServiceFactory::GetDefaultFactory());
     profile_ = builder.Build();
     model_ = BookmarkModelFactory::GetForBrowserContext(profile_.get());
     bookmarks::test::WaitForBookmarkModelToLoad(model_);
