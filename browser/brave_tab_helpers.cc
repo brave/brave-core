@@ -5,8 +5,7 @@
 
 #include "brave/browser/brave_tab_helpers.h"
 
-#include <string>
-#include <string_view>
+#include <memory>
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
@@ -49,7 +48,7 @@
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/android/preferences/background_video_playback_tab_helper.h"
+#include "brave/browser/android/background_video/background_video_playback_tab_helper.h"
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)

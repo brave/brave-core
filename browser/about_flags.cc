@@ -73,7 +73,7 @@
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/android/preferences/features.h"
+#include "brave/browser/android/background_video/features.h"
 #include "brave/browser/android/safe_browsing/features.h"
 #else
 #include "brave/components/commander/common/features.h"
