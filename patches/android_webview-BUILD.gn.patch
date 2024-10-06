@@ -1,0 +1,12 @@
+diff --git a/android_webview/BUILD.gn b/android_webview/BUILD.gn
+index 2be3d2d8aab8ec0023196d7efc9e3f832cab458b..a4558144ca5f63fec07c66ffd339c3f8ccc671c7 100644
+--- a/android_webview/BUILD.gn
++++ b/android_webview/BUILD.gn
+@@ -773,6 +773,7 @@ android_library("browser_java") {
+   ]
+ 
+   resources_package = "org.chromium.android_webview"
++  srcjar_deps -= brave_android_webview_browser_java_srcjar_deps_exclude
+ }
+ 
+ android_library("common_variations_java") {

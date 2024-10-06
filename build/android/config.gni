@@ -39,9 +39,7 @@ brave_chrome_java_deps = [
   "//brave/components/browser_ui/site_settings/android:java",
   "//brave/components/misc_metrics/common:mojom_java",
   "//brave/components/playlist/common/mojom:mojom_java",
-
-  # TODO(alexeybarabash): needs to be redone for cr130
-  #"//brave/components/safe_browsing/android:brave_safe_browsing_java",
+  "//brave/components/safe_browsing/android:brave_safe_browsing_java",
   "//brave/components/url_sanitizer/common/mojom:mojom_java",
   "//brave/components/variations/android:java",
   "//brave/components/version_info/android:java",
@@ -95,6 +93,16 @@ brave_resources_exclusion_exceptions =
 # Re-define play core target to use full library as we need it for seemless review processes.
 playcore_target =
     "//brave/third_party/android_deps:com_google_android_play_core_java"
+
+# The variable below are required to use SBThreatType enum at
+# BraveSafeBrowsingApiHandler / BraveSafeBrowsingUtils.
+# Direct add "//components/safe_browsing/core/browser/db:sb_threat_values" into
+# //brave/components/safe_browsing/android:brave_safe_browsing_java
+# causes 'Type org.chromium.components.safe_browsing.SBThreatType is defined multiple times' error
+brave_android_webview_browser_java_srcjar_deps_exclude =
+    [ "//components/safe_browsing/core/browser/db:sb_threat_values" ]
+brave_components_safe_browsing_android_safe_browsing_java_srcjar_deps =
+    [ "//components/safe_browsing/core/browser/db:sb_threat_values" ]
 
 brave_jni_headers_sources = [
   "//brave/android/java/org/chromium/chrome/browser/BraveFeatureUtil.java",
