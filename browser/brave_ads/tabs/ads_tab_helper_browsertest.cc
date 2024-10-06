@@ -98,7 +98,7 @@ class AdsTabHelperTest : public CertVerifierBrowserTest {
  private:
   net::EmbeddedTestServer https_server_{
       net::test_server::EmbeddedTestServer::TYPE_HTTPS};
-  AdsServiceMock ads_service_mock_;
+  AdsServiceMock ads_service_mock_{nullptr};
 };
 
 IN_PROC_BROWSER_TEST_F(AdsTabHelperTest, UserHasNotJoinedBraveRewards) {

@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "base/win/windows_types.h"
-#include "brave/browser/brave_ads/application_state/background_helper/background_helper.h"
+#include "brave/components/brave_ads/browser/application_state/background_helper.h"
 #include "ui/gfx/win/singleton_hwnd_observer.h"
 
 namespace brave_ads {

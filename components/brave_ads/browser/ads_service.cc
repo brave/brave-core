@@ -7,7 +7,7 @@
 
 namespace brave_ads {
 
-AdsService::AdsService() = default;
+AdsService::AdsService(Delegate* delegate) : delegate_(delegate) {}
 
 AdsService::~AdsService() = default;
 

@@ -27,9 +27,8 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.h"
-#include "brave/browser/brave_ads/application_state/notification_helper/notification_helper.h"
 #include "brave/common/brave_channel_info.h"
+#include "brave/components/brave_adaptive_captcha/pref_names.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
 #include "brave/components/brave_ads/browser/analytics/p3a/notification_ad.h"
@@ -37,6 +36,7 @@
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/device_id/device_id.h"
 #include "brave/components/brave_ads/browser/reminder/reminder_util.h"
+#include "brave/components/brave_ads/browser/tooltips/ads_tooltips_delegate.h"
 #include "brave/components/brave_ads/browser/user_engagement/ad_events/ad_event_cache_helper.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
@@ -53,46 +53,26 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom-forward.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "build/build_config.h"  // IWYU pragma: keep
-#include "chrome/browser/notifications/notification_display_service.h"
-#include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/storage_partition.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/mojom/url_response_head.mojom.h"
-#if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/fullscreen.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_navigator.h"
-#include "chrome/browser/ui/browser_navigator_params.h"
-#endif
-#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#include "brave/components/brave_adaptive_captcha/pref_names.h"
-#include "brave/components/brave_ads/browser/tooltips/ads_tooltips_delegate.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
-#include "components/prefs/pref_service.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "ui/message_center/public/cpp/notification_types.h"
 #include "ui/message_center/public/cpp/notifier_id.h"
 #include "url/gurl.h"
-
-#if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/notifications/brave_notification_platform_bridge_helper_android.h"
-#include "chrome/browser/android/service_tab_launcher.h"
-#include "chrome/browser/android/tab_android.h"
-#include "chrome/browser/ui/android/tab_model/tab_model_list.h"
-#include "content/public/browser/page_navigator.h"
-#endif
 
 namespace brave_ads {
 
@@ -198,37 +178,35 @@ void OnUrlLoaderResponseStartedCallback(
 }  // namespace
 
 AdsServiceImpl::AdsServiceImpl(
-    Profile* profile,
+    Delegate* delegate,
+    PrefService* prefs,
     PrefService* local_state,
-    brave_adaptive_captcha::BraveAdaptiveCaptchaService*
-        adaptive_captcha_service,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader,
+    const base::FilePath& profile_path,
     std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
     std::unique_ptr<DeviceId> device_id,
     std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
     brave_ads::ResourceComponent* resource_component,
     history::HistoryService* history_service,
     brave_rewards::RewardsService* rewards_service)
-    : profile_(profile),
+    : AdsService(delegate),
+      prefs_(prefs),
       local_state_(local_state),
+      url_loader_(std::move(url_loader)),
       resource_component_(resource_component),
       history_service_(history_service),
-      adaptive_captcha_service_(adaptive_captcha_service),
       ads_tooltips_delegate_(std::move(ads_tooltips_delegate)),
       device_id_(std::move(device_id)),
       bat_ads_service_factory_(std::move(bat_ads_service_factory)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      ads_service_path_(profile_->GetPath().AppendASCII("ads_service")),
-      display_service_(NotificationDisplayService::GetForProfile(profile_)),
+      ads_service_path_(profile_path.AppendASCII("ads_service")),
       rewards_service_(rewards_service),
       bat_ads_client_associated_receiver_(this) {
-  CHECK(profile_);
-  CHECK(adaptive_captcha_service_);
   CHECK(device_id_);
   CHECK(bat_ads_service_factory_);
   CHECK(rewards_service_);
-  CHECK(profile->IsRegularProfile());
 
   if (!history_service_ || !local_state_) {
     CHECK_IS_TEST();
@@ -282,10 +260,10 @@ void AdsServiceImpl::RegisterResourceComponents() const {
 
 void AdsServiceImpl::Migrate() {
   int64_t ads_per_hour =
-      profile_->GetPrefs()->GetInt64(prefs::kMaximumNotificationAdsPerHour);
+      prefs_->GetInt64(prefs::kMaximumNotificationAdsPerHour);
   if (ads_per_hour == 0) {
-    profile_->GetPrefs()->ClearPref(prefs::kMaximumNotificationAdsPerHour);
-    profile_->GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, false);
+    prefs_->ClearPref(prefs::kMaximumNotificationAdsPerHour);
+    prefs_->SetBoolean(prefs::kOptedInToNotificationAds, false);
   }
 }
 
@@ -305,38 +283,34 @@ void AdsServiceImpl::RegisterResourceComponentsForDefaultLanguageCode() const {
 }
 
 bool AdsServiceImpl::UserHasJoinedBraveRewards() const {
-  return profile_->GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled);
+  return prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
 }
 
 bool AdsServiceImpl::UserHasOptedInToBraveNewsAds() const {
-  return profile_->GetPrefs()->GetBoolean(
-             brave_news::prefs::kBraveNewsOptedIn) &&
-         profile_->GetPrefs()->GetBoolean(
-             brave_news::prefs::kNewTabPageShowToday);
+  return prefs_->GetBoolean(brave_news::prefs::kBraveNewsOptedIn) &&
+         prefs_->GetBoolean(brave_news::prefs::kNewTabPageShowToday);
 }
 
 bool AdsServiceImpl::UserHasOptedInToNewTabPageAds() const {
-  return profile_->GetPrefs()->GetBoolean(
+  return prefs_->GetBoolean(
              ntp_background_images::prefs::kNewTabPageShowBackgroundImage) &&
-         profile_->GetPrefs()->GetBoolean(
-             ntp_background_images::prefs::
-                 kNewTabPageShowSponsoredImagesBackgroundImage);
+         prefs_->GetBoolean(ntp_background_images::prefs::
+                                kNewTabPageShowSponsoredImagesBackgroundImage);
 }
 
 bool AdsServiceImpl::UserHasOptedInToNotificationAds() const {
-  return profile_->GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled) &&
-         profile_->GetPrefs()->GetBoolean(prefs::kOptedInToNotificationAds);
+  return prefs_->GetBoolean(brave_rewards::prefs::kEnabled) &&
+         prefs_->GetBoolean(prefs::kOptedInToNotificationAds);
 }
 
 bool AdsServiceImpl::UserHasOptedInToSearchResultAds() const {
-  return profile_->GetPrefs()->GetBoolean(prefs::kOptedInToSearchResultAds);
+  return prefs_->GetBoolean(prefs::kOptedInToSearchResultAds);
 }
 
 void AdsServiceImpl::InitializeNotificationsForCurrentProfile() {
-  NotificationHelper::GetInstance()->InitForProfile(profile_);
+  delegate_->InitNotificationHelper();
 
-  RecordNotificationAdPositionMetric(ShouldShowCustomNotificationAds(),
-                                     profile_->GetPrefs());
+  RecordNotificationAdPositionMetric(ShouldShowCustomNotificationAds(), prefs_);
 }
 
 void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsService() {
@@ -532,7 +506,7 @@ void AdsServiceImpl::ShutdownAndClearData() {
 
   VLOG(6) << "Clearing ads data";
 
-  profile_->GetPrefs()->ClearPrefsWithPrefixSilently("brave.brave_ads");
+  prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
   local_state_->ClearPref(brave_l10n::prefs::kCountryCode);
 
   file_task_runner_->PostTaskAndReplyWithResult(
@@ -578,8 +552,7 @@ void AdsServiceImpl::SetFlags() {
   mojom::FlagsPtr mojom_flags = BuildFlags();
   CHECK(mojom_flags);
 #if BUILDFLAG(IS_ANDROID)
-  if (profile_->GetPrefs()->GetBoolean(
-          brave_rewards::prefs::kUseRewardsStagingServer)) {
+  if (prefs_->GetBoolean(brave_rewards::prefs::kUseRewardsStagingServer)) {
     mojom_flags->environment_type = mojom::EnvironmentType::kStaging;
   }
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -589,8 +562,7 @@ void AdsServiceImpl::SetFlags() {
 
 bool AdsServiceImpl::ShouldShowOnboardingNotification() {
   const bool should_show_onboarding_notification =
-      profile_->GetPrefs()->GetBoolean(
-          prefs::kShouldShowOnboardingNotification);
+      prefs_->GetBoolean(prefs::kShouldShowOnboardingNotification);
   return should_show_onboarding_notification &&
          UserHasOptedInToNotificationAds() && CheckIfCanShowNotificationAds();
 }
@@ -600,7 +572,7 @@ void AdsServiceImpl::MaybeShowOnboardingNotification() {
     return;
   }
 
-  if (NotificationHelper::GetInstance()->ShowOnboardingNotification()) {
+  if (delegate_->ShowOnboardingNotification()) {
     SetProfilePref(prefs::kShouldShowOnboardingNotification,
                    base::Value(false));
   }
@@ -620,7 +592,7 @@ void AdsServiceImpl::ShowReminder(
 }
 
 void AdsServiceImpl::CloseAdaptiveCaptcha() {
-  adaptive_captcha_service_->ClearScheduledCaptcha();
+  delegate_->ClearScheduledCaptcha();
 #if !BUILDFLAG(IS_ANDROID)
   ads_tooltips_delegate_->CloseCaptchaTooltip();
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -640,7 +612,7 @@ void AdsServiceImpl::InitializeLocalStatePrefChangeRegistrar() {
 }
 
 void AdsServiceImpl::InitializePrefChangeRegistrar() {
-  pref_change_registrar_.Init(profile_->GetPrefs());
+  pref_change_registrar_.Init(prefs_);
 
   InitializeBraveRewardsPrefChangeRegistrar();
   InitializeSubdivisionTargetingPrefChangeRegistrar();
@@ -828,7 +800,7 @@ bool AdsServiceImpl::CheckIfCanShowNotificationAds() {
     return false;
   }
 
-  if (!NotificationHelper::GetInstance()->CanShowNotifications()) {
+  if (!delegate_->CanShowNotifications()) {
     return ShouldShowCustomNotificationAds();
   }
 
@@ -836,8 +808,7 @@ bool AdsServiceImpl::CheckIfCanShowNotificationAds() {
 }
 
 bool AdsServiceImpl::ShouldShowCustomNotificationAds() {
-  const bool can_show_native_notifications =
-      NotificationHelper::GetInstance()->CanShowNotifications();
+  const bool can_show_native_notifications = delegate_->CanShowNotifications();
 
   const bool can_fallback_to_custom_notification_ads =
       base::FeatureList::IsEnabled(
@@ -857,8 +828,8 @@ bool AdsServiceImpl::ShouldShowCustomNotificationAds() {
                    base::Value(true));
   }
 
-  const bool did_fallback = profile_->GetPrefs()->GetBoolean(
-      prefs::kNotificationAdDidFallbackToCustom);
+  const bool did_fallback =
+      prefs_->GetBoolean(prefs::kNotificationAdDidFallbackToCustom);
 
   return should_show || should_fallback || did_fallback;
 }
@@ -910,7 +881,7 @@ void AdsServiceImpl::NotificationAdTimedOut(const std::string& placement_id) {
   }
 
   if (!ShouldShowCustomNotificationAds() &&
-      NotificationHelper::GetInstance()->DoesSupportSystemNotifications()) {
+      delegate_->DoesSupportSystemNotifications()) {
     bat_ads_associated_remote_->TriggerNotificationAdEvent(
         placement_id, mojom::NotificationAdEventType::kTimedOut,
         /*intentional*/ base::DoNothing());
@@ -928,7 +899,7 @@ void AdsServiceImpl::CloseAllNotificationAds() {
   }
 #endif
 
-  const auto& list = profile_->GetPrefs()->GetList(prefs::kNotificationAds);
+  const auto& list = prefs_->GetList(prefs::kNotificationAds);
 
   const base::circular_deque<NotificationAdInfo> ads =
       NotificationAdsFromValue(list);
@@ -937,7 +908,7 @@ void AdsServiceImpl::CloseAllNotificationAds() {
     CloseNotificationAd(ad.placement_id);
   }
 
-  profile_->GetPrefs()->SetList(prefs::kNotificationAds, {});
+  prefs_->SetList(prefs::kNotificationAds, {});
 }
 
 void AdsServiceImpl::PrefetchNewTabPageAdCallback(
@@ -1003,25 +974,7 @@ void AdsServiceImpl::OpenNewTabWithUrl(const GURL& url) {
     return VLOG(1) << "Failed to open new tab due to invalid URL: " << url;
   }
 
-#if BUILDFLAG(IS_ANDROID)
-  // ServiceTabLauncher can currently only launch new tabs
-  const content::OpenURLParams params(url, content::Referrer(),
-                                      WindowOpenDisposition::NEW_FOREGROUND_TAB,
-                                      ui::PAGE_TRANSITION_LINK, true);
-  ServiceTabLauncher::GetInstance()->LaunchTab(
-      profile_, params, base::BindOnce([](content::WebContents*) {}));
-#else
-  Browser* browser = chrome::FindTabbedBrowser(profile_, false);
-  if (!browser) {
-    browser = Browser::Create(Browser::CreateParams(profile_, true));
-  }
-
-  NavigateParams nav_params(browser, url, ui::PAGE_TRANSITION_LINK);
-  nav_params.disposition = WindowOpenDisposition::SINGLETON_TAB;
-  nav_params.window_action = NavigateParams::SHOW_WINDOW;
-  nav_params.path_behavior = NavigateParams::RESPECT;
-  Navigate(&nav_params);
-#endif
+  delegate_->OpenNewTabWithUrl(url);
 }
 
 void AdsServiceImpl::RetryOpeningNewTabWithAd(const std::string& placement_id) {
@@ -1071,16 +1024,15 @@ void AdsServiceImpl::URLRequestCallback(
 void AdsServiceImpl::ShowScheduledCaptchaCallback(
     const std::string& payment_id,
     const std::string& captcha_id) {
-  adaptive_captcha_service_->ShowScheduledCaptcha(payment_id, captcha_id);
+  delegate_->ShowScheduledCaptcha(payment_id, captcha_id);
 }
 
 void AdsServiceImpl::SnoozeScheduledCaptchaCallback() {
-  adaptive_captcha_service_->SnoozeScheduledCaptcha();
+  delegate_->SnoozeScheduledCaptcha();
 }
 
 void AdsServiceImpl::OnNotificationAdPositionChanged() {
-  RecordNotificationAdPositionMetric(ShouldShowCustomNotificationAds(),
-                                     profile_->GetPrefs());
+  RecordNotificationAdPositionMetric(ShouldShowCustomNotificationAds(), prefs_);
 }
 
 void AdsServiceImpl::ShutdownAdsService() {
@@ -1145,7 +1097,7 @@ bool AdsServiceImpl::IsBrowserUpgradeRequiredToServeAds() const {
 
 int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
   int64_t ads_per_hour =
-      profile_->GetPrefs()->GetInt64(prefs::kMaximumNotificationAdsPerHour);
+      prefs_->GetInt64(prefs::kMaximumNotificationAdsPerHour);
   if (ads_per_hour == -1) {
     ads_per_hour = kDefaultNotificationAdsPerHour.Get();
   }
@@ -1516,7 +1468,7 @@ void AdsServiceImpl::IsBrowserActive(IsBrowserActiveCallback callback) {
 void AdsServiceImpl::IsBrowserInFullScreenMode(
     IsBrowserInFullScreenModeCallback callback) {
 #if !BUILDFLAG(IS_ANDROID)
-  std::move(callback).Run(IsFullScreenMode());
+  std::move(callback).Run(delegate_->IsFullScreenMode());
 #else
   std::move(callback).Run(true);
 #endif
@@ -1530,17 +1482,13 @@ void AdsServiceImpl::CanShowNotificationAds(
 void AdsServiceImpl::CanShowNotificationAdsWhileBrowserIsBackgrounded(
     CanShowNotificationAdsWhileBrowserIsBackgroundedCallback callback) {
   std::move(callback).Run(
-      NotificationHelper::GetInstance()
-          ->CanShowSystemNotificationsWhileBrowserIsBackgrounded());
+      delegate_->CanShowSystemNotificationsWhileBrowserIsBackgrounded());
 }
 
 void AdsServiceImpl::ShowNotificationAd(base::Value::Dict dict) {
   const NotificationAdInfo ad = NotificationAdFromValue(dict);
 
   if (ShouldShowCustomNotificationAds()) {
-    std::unique_ptr<NotificationAdPlatformBridge> platform_bridge =
-        std::make_unique<NotificationAdPlatformBridge>(*profile_);
-
     std::u16string title;
     if (base::IsStringUTF8(ad.title)) {
       title = base::UTF8ToUTF16(ad.title);
@@ -1551,8 +1499,7 @@ void AdsServiceImpl::ShowNotificationAd(base::Value::Dict dict) {
       body = base::UTF8ToUTF16(ad.body);
     }
 
-    const NotificationAd notification_ad(ad.placement_id, title, body, nullptr);
-    platform_bridge->ShowNotificationAd(notification_ad);
+    delegate_->ShowNotificationAd(ad.placement_id, title, body);
   } else {
     std::u16string title;
     if (base::IsStringUTF8(ad.title)) {
@@ -1584,8 +1531,7 @@ void AdsServiceImpl::ShowNotificationAd(base::Value::Dict dict) {
     notification->set_never_timeout(true);
 #endif
 
-    display_service_->Display(NotificationHandler::Type::BRAVE_ADS,
-                              *notification, /*metadata=*/nullptr);
+    delegate_->Display(*notification);
   }
 
   StartNotificationAdTimeOutTimer(ad.placement_id);
@@ -1593,19 +1539,15 @@ void AdsServiceImpl::ShowNotificationAd(base::Value::Dict dict) {
 
 void AdsServiceImpl::CloseNotificationAd(const std::string& placement_id) {
   if (ShouldShowCustomNotificationAds()) {
-    std::unique_ptr<NotificationAdPlatformBridge> platform_bridge =
-        std::make_unique<NotificationAdPlatformBridge>(*profile_);
-
-    platform_bridge->CloseNotificationAd(placement_id);
+    delegate_->CloseNotificationAd(placement_id);
   } else {
 #if BUILDFLAG(IS_ANDROID)
     const std::string brave_ads_url_prefix = kNotificationAdUrlPrefix;
     const GURL url =
         GURL(brave_ads_url_prefix.substr(0, brave_ads_url_prefix.size() - 1));
-    BraveNotificationPlatformBridgeHelperAndroid::MaybeRegenerateNotification(
-        placement_id, url);
+    delegate_->MaybeRegenerateNotification(placement_id, url);
 #endif
-    display_service_->Close(NotificationHandler::Type::BRAVE_ADS, placement_id);
+    delegate_->Close(placement_id);
   }
 }
 
@@ -1689,12 +1631,9 @@ void AdsServiceImpl::UrlRequest(mojom::UrlRequestInfoPtr mojom_url_request,
   auto url_loader_iter =
       url_loaders_.insert(url_loaders_.cend(), std::move(url_loader));
   url_loader_iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      profile_->GetDefaultStoragePartition()
-          ->GetURLLoaderFactoryForBrowserProcess()
-          .get(),
-      base::BindOnce(&AdsServiceImpl::URLRequestCallback,
-                     base::Unretained(this), url_loader_iter,
-                     std::move(callback)));
+      url_loader_.get(), base::BindOnce(&AdsServiceImpl::URLRequestCallback,
+                                        base::Unretained(this), url_loader_iter,
+                                        std::move(callback)));
 }
 
 void AdsServiceImpl::Save(const std::string& name,
@@ -1777,12 +1716,12 @@ void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
 #if BUILDFLAG(IS_ANDROID)
   ShowScheduledCaptchaCallback(payment_id, captcha_id);
 #else   // BUILDFLAG(IS_ANDROID)
-  if (profile_->GetPrefs()->GetBoolean(
+  if (prefs_->GetBoolean(
           brave_adaptive_captcha::prefs::kScheduledCaptchaPaused)) {
     return VLOG(1) << "Ads paused; support intervention required";
   }
 
-  const int snooze_count = profile_->GetPrefs()->GetInteger(
+  const int snooze_count = prefs_->GetInteger(
       brave_adaptive_captcha::prefs::kScheduledCaptchaSnoozeCount);
 
   CHECK(ads_tooltips_delegate_);
@@ -1809,30 +1748,30 @@ void AdsServiceImpl::RunDBTransaction(
 
 void AdsServiceImpl::RecordP2AEvents(const std::vector<std::string>& events) {
   for (const auto& event : events) {
-    RecordAndEmitP2AHistogramName(profile_->GetPrefs(),
+    RecordAndEmitP2AHistogramName(prefs_,
                                   /*name*/ event);
   }
 }
 
 void AdsServiceImpl::GetProfilePref(const std::string& path,
                                     GetProfilePrefCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetValue(path).Clone());
+  std::move(callback).Run(prefs_->GetValue(path).Clone());
 }
 
 void AdsServiceImpl::SetProfilePref(const std::string& path,
                                     base::Value value) {
-  profile_->GetPrefs()->Set(path, value);
+  prefs_->Set(path, value);
   NotifyPrefChanged(path);
 }
 
 void AdsServiceImpl::ClearProfilePref(const std::string& path) {
-  profile_->GetPrefs()->ClearPref(path);
+  prefs_->ClearPref(path);
   NotifyPrefChanged(path);
 }
 
 void AdsServiceImpl::HasProfilePrefPath(const std::string& path,
                                         HasProfilePrefPathCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->HasPrefPath(path));
+  std::move(callback).Run(prefs_->HasPrefPath(path));
 }
 
 void AdsServiceImpl::GetLocalStatePref(const std::string& path,

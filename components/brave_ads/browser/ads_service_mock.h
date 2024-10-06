@@ -19,7 +19,7 @@ namespace brave_ads {
 
 class AdsServiceMock : public AdsService {
  public:
-  AdsServiceMock();
+  explicit AdsServiceMock(Delegate* delegate);
 
   AdsServiceMock(const AdsServiceMock&) = delete;
   AdsServiceMock& operator=(const AdsServiceMock&) = delete;

@@ -12,7 +12,6 @@ static_library("browser") {
     "ad_units/notification_ad/custom_notification_ad_feature.h",
     "ads_service.cc",
     "ads_service.h",
-    "ads_service_observer.h",
     "analytics/p2a/p2a.cc",
     "analytics/p2a/p2a.h",
     "analytics/p2a/p2a_constants.h",
@@ -39,25 +38,28 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/brave_adaptive_captcha",
-    "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/resources",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/l10n/common",
+    "//brave/components/ntp_background_images/common",
     "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
-    "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/prefs",
     "//components/sessions",
-    "//sql",
     "//third_party/blink/public/common",
+    "//ui/base/idle",
     "//url",
   ]
 
-  public_deps = [ "//brave/components/brave_ads/core/mojom" ]
-
-  # TODO(https://github.com/brave/brave-browser/issues/24163)
-  check_includes = false
+  public_deps = [
+    "application_state",
+    "//brave/components/brave_ads/core",
+    "//brave/components/brave_ads/core/mojom",
+    "//brave/components/services/bat_ads/public/interfaces",
+    "//components/keyed_service/core",
+    "//mojo/public/cpp/bindings",
+  ]
 
   sources += [
     "ads_service_impl.cc",
@@ -74,8 +76,6 @@ static_library("browser") {
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",
-    "//chrome/browser/notifications",
-    "//chrome/browser/profiles:profile",
     "//components/history/core/browser",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
