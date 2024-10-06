@@ -33,9 +33,10 @@ WalletNotificationServiceFactory::WalletNotificationServiceFactory()
 
 WalletNotificationServiceFactory::~WalletNotificationServiceFactory() = default;
 
-KeyedService* WalletNotificationServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+WalletNotificationServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return new WalletNotificationService(
+  return std::make_unique<WalletNotificationService>(
       BraveWalletServiceFactory::GetServiceForContext(context), context);
 }
 

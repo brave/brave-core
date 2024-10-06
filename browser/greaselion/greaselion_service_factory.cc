@@ -114,7 +114,8 @@ GreaselionServiceFactory::GreaselionServiceFactory()
 
 GreaselionServiceFactory::~GreaselionServiceFactory() = default;
 
-KeyedService* GreaselionServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+GreaselionServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   extensions::ExtensionSystem* extension_system =
       extensions::ExtensionSystem::Get(context);
@@ -130,12 +131,10 @@ KeyedService* GreaselionServiceFactory::BuildServiceInstanceFor(
     return nullptr;
   }
 
-  std::unique_ptr<GreaselionServiceImpl> greaselion_service(
-      new GreaselionServiceImpl(
-          download_service, GetInstallDirectory(), extension_system,
-          extension_registry, task_runner,
-          std::make_unique<GreaselionServiceDelegateImpl>(context)));
-  return greaselion_service.release();
+  return std::make_unique<GreaselionServiceImpl>(
+      download_service, GetInstallDirectory(), extension_system,
+      extension_registry, task_runner,
+      std::make_unique<GreaselionServiceDelegateImpl>(context));
 }
 
 bool GreaselionServiceFactory::ServiceIsNULLWhileTesting() const {

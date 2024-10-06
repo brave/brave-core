@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_NTP_BACKGROUND_ANDROID_NTP_BACKGROUND_IMAGES_BRIDGE_H_
 #define BRAVE_BROWSER_NTP_BACKGROUND_ANDROID_NTP_BACKGROUND_IMAGES_BRIDGE_H_
 
+#include <memory>
+
 #include "base/android/jni_android.h"
 #include "base/compiler_specific.h"
 #include "base/memory/raw_ptr.h"
@@ -103,7 +105,7 @@ class NTPBackgroundImagesBridgeFactory
   ~NTPBackgroundImagesBridgeFactory() override;
 
   // BrowserContextKeyedServiceFactory:
-  KeyedService* BuildServiceInstanceFor(
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
   bool ServiceIsCreatedWithBrowserContext() const override;
 };

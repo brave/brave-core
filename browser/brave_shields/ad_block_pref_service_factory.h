@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_BRAVE_SHIELDS_AD_BLOCK_PREF_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_BRAVE_SHIELDS_AD_BLOCK_PREF_SERVICE_FACTORY_H_
 
+#include <memory>
+
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 namespace base {
@@ -35,8 +37,8 @@ class AdBlockPrefServiceFactory : public BrowserContextKeyedServiceFactory {
   ~AdBlockPrefServiceFactory() override;
 
   // BrowserContextKeyedServiceFactory:
-  KeyedService* BuildServiceInstanceFor(
-      content::BrowserContext* profile) const override;
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
+      content::BrowserContext* context) const override;
 
   // We use the same service in both normal and incognito modes.
   content::BrowserContext* GetBrowserContextToUse(

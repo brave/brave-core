@@ -5,6 +5,8 @@
 
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 
+#include <memory>
+
 #include "base/no_destructor.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -40,12 +42,13 @@ content::BrowserContext* SpeedreaderServiceFactory::GetBrowserContextToUse(
   return chrome::GetBrowserContextOwnInstanceInIncognito(context);
 }
 
-KeyedService* SpeedreaderServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+SpeedreaderServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   if (!features::IsSpeedreaderEnabled()) {
-    return nullptr;
+    return {};
   }
-  return new SpeedreaderService(
+  return std::make_unique<SpeedreaderService>(
       context, HostContentSettingsMapFactory::GetForProfile(context));
 }
 

@@ -259,7 +259,8 @@ PlaylistServiceFactory::PlaylistServiceFactory()
 
 PlaylistServiceFactory::~PlaylistServiceFactory() = default;
 
-KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+PlaylistServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     return nullptr;
@@ -273,14 +274,14 @@ KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
   GetInstance()->PrepareMediaDetectorComponentManager();
 
   PrefService* local_state = g_browser_process->local_state();
-  auto* service = new PlaylistService(
+  auto service = std::make_unique<PlaylistService>(
       context, local_state, media_detector_component_manager_.get(),
       std::make_unique<PlaylistServiceDelegateImpl>(profile),
       brave_stats::GetFirstRunTime(local_state));
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   content::URLDataSource::Add(
-      context, std::make_unique<PlaylistDataSource>(profile, service));
+      context, std::make_unique<PlaylistDataSource>(profile, service.get()));
 #endif
 
   return service;

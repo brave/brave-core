@@ -91,11 +91,12 @@ BraveAdaptiveCaptchaServiceFactory::BraveAdaptiveCaptchaServiceFactory()
 BraveAdaptiveCaptchaServiceFactory::~BraveAdaptiveCaptchaServiceFactory() =
     default;
 
-KeyedService* BraveAdaptiveCaptchaServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+BraveAdaptiveCaptchaServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto url_loader_factory = context->GetDefaultStoragePartition()
                                 ->GetURLLoaderFactoryForBrowserProcess();
-  return new BraveAdaptiveCaptchaService(
+  return std::make_unique<BraveAdaptiveCaptchaService>(
       user_prefs::UserPrefs::Get(context), std::move(url_loader_factory),
       brave_rewards::RewardsServiceFactory::GetForProfile(
           Profile::FromBrowserContext(context)),

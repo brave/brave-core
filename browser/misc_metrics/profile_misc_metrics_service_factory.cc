@@ -5,6 +5,8 @@
 
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 
+#include <memory>
+
 #include "base/no_destructor.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "chrome/browser/autofill/personal_data_manager_factory.h"
@@ -57,9 +59,10 @@ ProfileMiscMetricsServiceFactory::ProfileMiscMetricsServiceFactory()
 
 ProfileMiscMetricsServiceFactory::~ProfileMiscMetricsServiceFactory() = default;
 
-KeyedService* ProfileMiscMetricsServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+ProfileMiscMetricsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return new ProfileMiscMetricsService(context);
+  return std::make_unique<ProfileMiscMetricsService>(context);
 }
 
 content::BrowserContext*

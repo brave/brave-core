@@ -5,6 +5,7 @@
 
 #include "brave/browser/skus/skus_service_factory.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/feature_list.h"
@@ -56,7 +57,8 @@ SkusServiceFactory::SkusServiceFactory()
 
 SkusServiceFactory::~SkusServiceFactory() = default;
 
-KeyedService* SkusServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+SkusServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   // Return null if feature is disabled
   if (!base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
@@ -69,7 +71,7 @@ KeyedService* SkusServiceFactory::BuildServiceInstanceFor(
   }
   skus::MigrateSkusSettings(user_prefs::UserPrefs::Get(context),
                             g_browser_process->local_state());
-  return new skus::SkusServiceImpl(
+  return std::make_unique<skus::SkusServiceImpl>(
       g_browser_process->local_state(),
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess());

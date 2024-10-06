@@ -5,6 +5,8 @@
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 
+#include <memory>
+
 #include "base/no_destructor.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.h"
@@ -65,7 +67,8 @@ AdsServiceFactory::CreateAdsTooltipsDelegate(Profile* profile) const {
 #endif
 }
 
-KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+AdsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
   auto* brave_adaptive_captcha_service =
@@ -83,17 +86,15 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
       brave_rewards::RewardsServiceFactory::GetInstance()->GetForProfile(
           profile);
 
-  std::unique_ptr<AdsServiceImpl> ads_service =
-      std::make_unique<AdsServiceImpl>(
-          delegate, profile->GetPrefs(), g_browser_process->local_state(),
-          profile->GetDefaultStoragePartition()
-              ->GetURLLoaderFactoryForBrowserProcess(),
-          profile->GetPath(), CreateAdsTooltipsDelegate(profile),
-          std::make_unique<DeviceIdImpl>(),
-          std::make_unique<BatAdsServiceFactoryImpl>(),
-          g_brave_browser_process->resource_component(), history_service,
-          rewards_service);
-  return ads_service.release();
+  return std::make_unique<AdsServiceImpl>(
+      delegate, profile->GetPrefs(), g_browser_process->local_state(),
+      profile->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess(),
+      profile->GetPath(), CreateAdsTooltipsDelegate(profile),
+      std::make_unique<DeviceIdImpl>(),
+      std::make_unique<BatAdsServiceFactoryImpl>(),
+      g_brave_browser_process->resource_component(), history_service,
+      rewards_service);
 }
 
 bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {

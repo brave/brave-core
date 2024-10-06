@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_BRAVE_FEDERATED_BRAVE_FEDERATED_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_BRAVE_FEDERATED_BRAVE_FEDERATED_SERVICE_FACTORY_H_
 
+#include <memory>
+
 #include "brave/components/brave_federated/brave_federated_service.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
@@ -39,7 +41,7 @@ class BraveFederatedServiceFactory : public BrowserContextKeyedServiceFactory {
   ~BraveFederatedServiceFactory() override;
 
   // BrowserContextKeyedServiceFactory:
-  KeyedService* BuildServiceInstanceFor(
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
   bool ServiceIsCreatedWithBrowserContext() const override;
   void RegisterProfilePrefs(

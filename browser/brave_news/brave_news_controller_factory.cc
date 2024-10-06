@@ -5,6 +5,8 @@
 
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 
+#include <memory>
+
 #include "base/no_destructor.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
@@ -54,7 +56,8 @@ bool BraveNewsControllerFactory::ServiceIsCreatedWithBrowserContext() const {
   return true;
 }
 
-KeyedService* BraveNewsControllerFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+BraveNewsControllerFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   if (!Profile::FromBrowserContext(context)->IsRegularProfile()) {
     return nullptr;
@@ -68,9 +71,9 @@ KeyedService* BraveNewsControllerFactory::BuildServiceInstanceFor(
   auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile);
   auto* history_service = HistoryServiceFactory::GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
-  return new BraveNewsController(profile->GetPrefs(), favicon_service,
-                                 ads_service, history_service,
-                                 profile->GetURLLoaderFactory());
+  return std::make_unique<BraveNewsController>(
+      profile->GetPrefs(), favicon_service, ads_service, history_service,
+      profile->GetURLLoaderFactory());
 }
 
 bool BraveNewsControllerFactory::ServiceIsNULLWhileTesting() const {

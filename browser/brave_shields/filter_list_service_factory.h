@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_BRAVE_SHIELDS_FILTER_LIST_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_BRAVE_SHIELDS_FILTER_LIST_SERVICE_FACTORY_H_
 
+#include <memory>
+
 #include "brave/components/brave_shields/core/common/filter_list.mojom.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -41,7 +43,7 @@ class FilterListServiceFactory : public BrowserContextKeyedServiceFactory {
   FilterListServiceFactory();
   ~FilterListServiceFactory() override;
 
-  KeyedService* BuildServiceInstanceFor(
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
