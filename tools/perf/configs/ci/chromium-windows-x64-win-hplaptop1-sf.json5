@@ -24,6 +24,7 @@
       "pageset-repeat": 10,
       "stories": [
         "example.com_cold",
+        "load:site:example:2023",
       ]
     },
     {
