@@ -350,6 +350,7 @@ source_set("ui") {
       "//chrome/browser/ui/prefs",
       "//chrome/browser/ui/views/side_panel",
       "//chrome/browser/ui/webui/searchbox",
+      "//chrome/browser/ui/webui/settings",
       "//chrome/browser/ui/webui/side_panel/reading_list:mojo_bindings",
       "//chrome/common:channel_info",
       "//components/bookmarks/common",
