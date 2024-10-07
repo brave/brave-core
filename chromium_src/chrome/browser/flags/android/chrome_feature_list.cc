@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/feature_override.h"
-#include "brave/browser/android/first_run/features.h"
 #include "brave/browser/android/preferences/features.h"
 #include "brave/browser/android/safe_browsing/features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -50,9 +49,7 @@
     &google_sign_in_permission::features::kBraveGoogleSignInPermission, \
     &net::features::kBraveForgetFirstPartyStorage,                      \
     &brave_shields::features::kBraveShowStrictFingerprintingMode,       \
-    &brave_shields::features::kBraveLocalhostAccessPermission,          \
-    &first_run::features::kAndroidForceDefaultBrowserPrompt,            \
-    &first_run::features::kAndroidOnboardingOfferSearchWidget
+    &brave_shields::features::kBraveLocalhostAccessPermission
 
 // clang-format on
 
