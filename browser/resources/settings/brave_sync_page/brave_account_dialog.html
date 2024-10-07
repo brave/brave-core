@@ -214,11 +214,11 @@
       <cr-input id="emailAddressInput" autofocus required
         placeholder="Email address"
         pattern="^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$"
-        auto-validate error-message="Must be a valid email address"
-        on-input="onTermsCheckboxChanged_"
+        auto-validate error-message="Please provide a valid email address"
+        on-input="onConditionsChanged_"
         invalid="{{isEmailAddressInvalid_}}">
       </cr-input>
-      <cr-checkbox checked="{{isTermsAccepted_}}" on-change="onTermsCheckboxChanged_">
+      <cr-checkbox checked="{{isTermsAccepted_}}" on-change="onConditionsChanged_">
         I have read and accept the <a href="#">Terms of service</a> and <a href="#">Privacy agreement</a>.
       </cr-checkbox>
     </div>

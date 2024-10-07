@@ -5,12 +5,10 @@
 
 import '../settings_shared.css.js';
 
-// import 'chrome://resources/cr_elements/cr_checkbox/cr_checkbox.js';
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
 import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.js';
 
-// import type {CrCheckboxElement} from 'chrome://resources/cr_elements/cr_checkbox/cr_checkbox.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {BaseMixin} from '../base_mixin.js'
@@ -21,12 +19,6 @@ import {getTemplate} from './brave_account_dialog.html.js'
  * @fileoverview
  * 'settings-brave-account-dialog'...
  */
-
-// export interface SettingsBraveAccountDialogElement {
-//   $: {
-//     termsAndConditionsCheckbox: CrCheckboxElement,
-//   };
-// }
 
 const SettingsBraveAccountDialogElementBase =
   I18nMixin(BaseMixin(PolymerElement)) as {
@@ -63,12 +55,12 @@ export class SettingsBraveAccountDialogElement extends SettingsBraveAccountDialo
     };
   }
 
-  protected onTermsCheckboxChanged_() {
+  protected onConditionsChanged_() {
     this.canCreateAccount_ = this.isTermsAccepted_ && !this.isEmailAddressInvalid_;
   }
 
   private codeType: 'create' | 'signin' | null;
-  private isTermsAccepted_: boolean;
+  private isTermsAccepted_: boolean = false;
   private isEmailAddressInvalid_: boolean = true;
   private canCreateAccount_: boolean = false;
 
