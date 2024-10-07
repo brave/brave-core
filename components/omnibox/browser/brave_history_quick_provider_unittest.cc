@@ -28,6 +28,7 @@
 #include "components/omnibox/browser/fake_autocomplete_provider_client.h"
 #include "components/omnibox/browser/history_test_util.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
@@ -88,8 +89,9 @@ class BraveHistoryQuickProviderTest : public testing::Test {
 
   void SetUp() override {
     client_ = std::make_unique<FakeAutocompleteProviderClient>();
-    auto* registry =
-        static_cast<TestingPrefServiceSimple*>(client_->GetPrefs())->registry();
+    auto* registry = static_cast<sync_preferences::TestingPrefServiceSyncable*>(
+                         client_->GetPrefs())
+                         ->registry();
     omnibox::RegisterBraveProfilePrefs(registry);
     CHECK(history_dir_.CreateUniqueTempDir());
 
