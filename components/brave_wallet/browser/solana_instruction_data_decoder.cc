@@ -850,15 +850,9 @@ std::optional<uint32_t> DecodeUint32(base::span<const uint8_t> input,
   if (offset >= input.size() || input.size() - offset < sizeof(uint32_t)) {
     return std::nullopt;
   }
-
-  // Read bytes in little endian order.
-  base::span<const uint8_t> s =
-      base::make_span(input.begin() + offset, sizeof(uint32_t));
-  uint32_t uint32_le = *reinterpret_cast<const uint32_t*>(s.data());
-
-  offset += sizeof(uint32_t);
-
-  return uint32_le;
+  auto value = input.subspan(offset).first<4u>();
+  offset += 4u;
+  return base::U32FromLittleEndian(value);
 }
 
 std::optional<std::string> DecodePublicKey(base::span<const uint8_t> input,
