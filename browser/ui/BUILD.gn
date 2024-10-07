@@ -348,6 +348,7 @@ source_set("ui") {
       "//chrome/browser/ui/content_settings",
       "//chrome/browser/ui/omnibox",
       "//chrome/browser/ui/prefs",
+      "//chrome/browser/ui/tabs:tab_menu",
       "//chrome/browser/ui/views/side_panel",
       "//chrome/browser/ui/webui/searchbox",
       "//chrome/browser/ui/webui/settings",
