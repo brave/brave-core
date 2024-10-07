@@ -470,7 +470,7 @@ public class BraveToolbarManager extends ToolbarManager {
     }
 
     protected void updateReloadState(boolean tabCrashed) {
-        assert (false);
+        assert false;
     }
 
     private void setBottomToolbarVisible(boolean visible) {
