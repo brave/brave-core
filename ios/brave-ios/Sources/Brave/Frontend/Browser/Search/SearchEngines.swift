@@ -74,13 +74,30 @@ public class SearchEngines {
     setInitialDefaultEngine(engine.legacyName ?? engine.rawValue)
   }
 
+  private var loadingStream: AsyncStream<Void>?
+
   public func loadSearchEngines() async {
+    let loading = AsyncStream<Void>.makeStream()
+    loadingStream = loading.stream
+
     await loadCustomEngines()
     orderedEngines = await getOrderedEngines()
+    loading.continuation.yield()
 
     recordSearchEngineP3A()
     if let defaultEngine = defaultEngine(forType: .standard) {
       recordSearchEngineChangedP3A(from: defaultEngine)
+    }
+  }
+
+  /// Waits until a previous call to `loadSearchEngines` completes
+  public func waitForSearchEngines() async {
+    if !orderedEngines.isEmpty {
+      return
+    }
+    guard let loadingStream else { return }
+    for await _ in loadingStream {
+      return
     }
   }
 
@@ -97,7 +114,7 @@ public class SearchEngines {
     let defaultEngineName = initialSearchEngines.defaultSearchEngine.rawValue
 
     let defaultEngine = orderedEngines.first(where: { $0.engineID == defaultEngineName })
-    return defaultEngine ?? orderedEngines[0]
+    return defaultEngine ?? orderedEngines.first
   }
 
   /// Initialize default engine and set order of remaining search engines.
