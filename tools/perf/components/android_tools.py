@@ -25,7 +25,7 @@ def GetPackageVersion(package: str) -> str:
 
 def GetPackageName(apk_path: str) -> str:
   aapt2 = os.path.join(path_util.GetSrcDir(), 'third_party',
-                       'android_build_tools', 'aapt2', 'aapt2')
+                       'android_build_tools', 'aapt2', 'cipd', 'aapt2')
   assert apk_path.endswith('.apk')
   _, aapt2_info = GetProcessOutput([aapt2, 'dump', 'badging', apk_path],
                                    check=True)
