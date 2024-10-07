@@ -479,19 +479,19 @@ void EthereumProviderImpl::RecoverAddress(const std::string& message,
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
 
-  std::vector<uint8_t> message_bytes;
-  if (!PrefixedHexStringToBytes(message, &message_bytes)) {
+  auto message_bytes = PrefixedHexStringToBytes(message);
+  if (!message_bytes) {
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
 
-  std::vector<uint8_t> signature_bytes;
-  if (!PrefixedHexStringToBytes(signature, &signature_bytes)) {
+  auto signature_bytes = PrefixedHexStringToBytes(signature);
+  if (!signature_bytes) {
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
 
-  std::string address;
-  if (!keyring_service_->RecoverAddressByDefaultKeyring(
-          message_bytes, signature_bytes, &address)) {
+  auto address = keyring_service_->RecoverAddressByDefaultKeyring(
+      *message_bytes, *signature_bytes);
+  if (!address) {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -502,7 +502,8 @@ void EthereumProviderImpl::RecoverAddress(const std::string& message,
   }
 
   reject = false;
-  std::move(callback).Run(std::move(id), base::Value(address), reject, "",
+  std::move(callback).Run(std::move(id),
+                          base::Value(std::move(address).value()), reject, "",
                           false);
 }
 
@@ -669,8 +670,8 @@ void EthereumProviderImpl::ContinueDecryptWithSanitizedJson(
 void EthereumProviderImpl::SignTypedMessage(
     const std::string& address,
     const std::string& message,
-    const std::vector<uint8_t>& domain_hash,
-    const std::vector<uint8_t>& primary_hash,
+    base::span<const uint8_t> domain_hash,
+    base::span<const uint8_t> primary_hash,
     mojom::EthSignTypedDataMetaPtr meta,
     base::Value::Dict domain,
     RequestCallback callback,

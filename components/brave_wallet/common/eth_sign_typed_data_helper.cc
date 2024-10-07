@@ -9,6 +9,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/containers/span.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -383,8 +384,8 @@ EthSignTypedDataHelper::GetTypedDataPrimaryHash(
 // static
 std::optional<std::vector<uint8_t>>
 EthSignTypedDataHelper::GetTypedDataMessageToSign(
-    const std::vector<uint8_t>& domain_hash,
-    const std::vector<uint8_t>& primary_hash) {
+    base::span<const uint8_t> domain_hash,
+    base::span<const uint8_t> primary_hash) {
   if (domain_hash.empty() || primary_hash.empty()) {
     return std::nullopt;
   }
