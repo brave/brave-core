@@ -10,7 +10,9 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/containers/span.h"
 #include "base/json/json_writer.h"
+#include "base/numerics/byte_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -24,24 +26,15 @@
 
 namespace {
 
-std::optional<uint32_t> DecodeUint32(const std::vector<uint8_t>& input,
+std::optional<uint32_t> DecodeUint32(base::span<const uint8_t> input,
                                      size_t& offset) {
-  if (offset >= input.size() || input.size() - offset < sizeof(uint32_t)) {
+  if (offset >= input.size() || input.size() - offset < 4u) {
     return std::nullopt;
   }
 
-  // Read bytes in little endian order.
-  base::span<const uint8_t> s =
-      base::make_span(input.begin() + offset, sizeof(uint32_t));
-  uint32_t uint32_le = *reinterpret_cast<const uint32_t*>(s.data());
-
-  offset += sizeof(uint32_t);
-
-#if defined(ARCH_CPU_LITTLE_ENDIAN)
-  return uint32_le;
-#else
-  return base::ByteSwap(uint32_le);
-#endif
+  auto value = input.subspan(offset).first<4u>();
+  offset += 4u;
+  return base::U32FromLittleEndian(value);
 }
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
@@ -340,7 +333,7 @@ void NftMetadataFetcher::CompleteGetSolTokenMetadata(
 // https://docs.rs/spl-token-metadata/latest/spl_token_metadata/state/struct.Data.html)
 // as a GURL.
 std::optional<GURL> NftMetadataFetcher::DecodeMetadataUri(
-    const std::vector<uint8_t>& data) {
+    base::span<const uint8_t> data) {
   size_t offset = 0;
   offset = offset + /* Skip first byte for metadata.key */ 1 +
            /* Skip next 32 bytes for `metadata.update_authority` */ 32 +

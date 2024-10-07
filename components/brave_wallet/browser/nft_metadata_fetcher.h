@@ -9,8 +9,8 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <vector>
 
+#include "base/containers/span.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -98,8 +98,7 @@ class NftMetadataFetcher {
   friend class NftMetadataFetcherUnitTest;
   FRIEND_TEST_ALL_PREFIXES(NftMetadataFetcherUnitTest, DecodeMetadataUri);
 
-  static std::optional<GURL> DecodeMetadataUri(
-      const std::vector<uint8_t>& data);
+  static std::optional<GURL> DecodeMetadataUri(base::span<const uint8_t> data);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<APIRequestHelper> api_request_helper_;
