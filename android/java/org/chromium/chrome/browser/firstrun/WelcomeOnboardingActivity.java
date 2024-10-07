@@ -238,15 +238,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private boolean shouldForceDefaultBrowserPrompt() {
-        return ChromeFeatureList.isEnabled(
-            BraveFeatureList.BRAVE_DAY_ZERO_EXPERIMENT) && 
-            !isDefaultBrowser();
+        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_DAY_ZERO_EXPERIMENT)
+                && !isDefaultBrowser();
     }
 
     private boolean shouldOfferSearchWidget() {
-        return ChromeFeatureList.isEnabled(
-            BraveFeatureList.BRAVE_DAY_ZERO_EXPERIMENT) && 
-            BraveSearchWidgetUtils.getShouldShowWidgetPromo(this);
+        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_DAY_ZERO_EXPERIMENT)
+                && BraveSearchWidgetUtils.getShouldShowWidgetPromo(this);
     }
 
     private void setDefaultBrowserAndProceedToNextStep() {
