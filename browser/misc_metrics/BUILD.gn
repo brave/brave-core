@@ -61,6 +61,7 @@ static_library("misc_metrics_impl") {
     deps += [
       "//brave/browser/themes",
       "//chrome/browser/themes",
+      "//chrome/browser/ui/tabs:tab_strip",
       "//extensions/browser",
     ]
   } else {

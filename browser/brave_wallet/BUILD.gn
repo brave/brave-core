@@ -97,7 +97,10 @@ source_set("brave_wallet_delegate") {
       "brave_wallet_service_delegate_impl.cc",
       "brave_wallet_service_delegate_impl.h",
     ]
-    deps += [ "//chrome/browser/ui" ]
+    deps += [
+      "//chrome/browser/ui",
+      "//chrome/browser/ui/tabs:tab_strip",
+    ]
     if (enable_extensions) {
       deps += [ ":external_wallets_importer" ]
     }
