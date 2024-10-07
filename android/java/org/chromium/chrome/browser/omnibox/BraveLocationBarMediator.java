@@ -147,7 +147,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
     }
 
     protected boolean shouldShowDeleteButton() {
-        assert (false);
+        assert false;
         return false;
     }
 
