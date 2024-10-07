@@ -143,7 +143,12 @@ struct AddCustomAssetView: View {
                   decimalsInput = "\(token.decimals)"
                 }
               }
-              showDuplicationTokenError = userAssetStore.checkDuplication(newValue)
+              Task { @MainActor in
+                showDuplicationTokenError = await userAssetStore.checkDuplication(
+                  address: newValue,
+                  network: network
+                )
+              }
             }
             .autocapitalization(.none)
             .autocorrectionDisabled()
@@ -376,6 +381,7 @@ struct AddCustomAssetView: View {
     logo = ""
     coingeckoId = ""
     networkSelectionStore.networkSelectionInForm = nil
+    showDuplicationTokenError = false
   }
 
   private func addCustomToken() {

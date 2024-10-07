@@ -275,10 +275,28 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
     }
   }
 
-  func checkDuplication(_ address: String) -> Bool {
-    return assetStores.first(where: {
-      $0.token.contractAddress.caseInsensitiveCompare(address) == .orderedSame
-    }) != nil
+  @MainActor func checkDuplication(
+    address: String,
+    network: BraveWallet.NetworkInfo
+  ) async -> Bool {
+    let allUserAssetsExcludeDeleted = await assetManager.getAllUserAssetsInNetworkAssets(
+      networks: [network],
+      includingUserDeleted: false
+    )
+    let allTokens = await self.blockchainRegistry.allTokens(
+      in: [network],
+      includingUserDeleted: false
+    )
+    let existedInUserAsset =
+      allUserAssetsExcludeDeleted.flatMap(\.tokens).first(where: {
+        $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame
+      }) != nil
+    let existedInTokenRegistry =
+      allTokens.flatMap(\.tokens).first(where: {
+        $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame
+      }) != nil
+
+    return existedInUserAsset || existedInTokenRegistry
   }
 
   @MainActor func networkInfo(
