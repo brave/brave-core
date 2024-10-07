@@ -16,7 +16,7 @@
 
     <org.chromium.chrome.browser.ntp.NewTabPageScrollView
         android:id="@+id/ntp_scrollview"
-        android:background="@color/ntp_bg_incognito"
+        android:background="@drawable/private_tab_gradient_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fadingEdgeLength="9dp"

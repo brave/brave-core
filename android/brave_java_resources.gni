@@ -639,6 +639,7 @@ brave_java_resources = [
   "java/res/drawable/onboarding_gradient_background_center.xml",
   "java/res/drawable/onboarding_gradient_background_end.xml",
   "java/res/drawable/onboarding_gradient_background_start.xml",
+  "java/res/drawable/private_tab_gradient_background.xml",
   "java/res/drawable/orange_rounded_button.xml",
   "java/res/drawable/p2p_rewards_inside_background.xml",
   "java/res/drawable/password_match.xml",
