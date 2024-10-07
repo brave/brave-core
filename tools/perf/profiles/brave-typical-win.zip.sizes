@@ -1,30 +1,30 @@
-Total size 135312K
+Total size 135283K
 
-GROUP Adblock [8523K total]
-   129K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.221 [adcocjohghhfpidemphmcmlmhnfgikei]
-    53K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.8629 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1385K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.9372 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+GROUP Adblock [8564K total]
+   131K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.225 [adcocjohghhfpidemphmcmlmhnfgikei]
+    53K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.8859 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1393K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.9708 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
    145K Brave Ad Block Updater (Regional Catalog) 1.0.67 [gkboaolpopklhgplhaaiboijnklogmbc]
-  5763K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.8032 [iodkpdagapdfkphljnddpjlldadblomo]
+  5793K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.8249 [iodkpdagapdfkphljnddpjlldadblomo]
      6K Brave Ad Block Updater (Brave Experimental Adblock Rules (plaintext)) 1.0.39 [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
-  1040K Brave Ad Block Updater (Resources) 1.0.99 [mfddibmblmbccpadfndgakiopmmhebop]
+  1041K Brave Ad Block Updater (Resources) 1.0.100 [mfddibmblmbccpadfndgakiopmmhebop]
 
 GROUP Ads [22973K total]
     70K Brave Ads Resources 1.0.104 [iblokdlgekdjophgeonmanpnjihcjkjj]
  22903K Brave Ads Resources 1.0.67 [ocilmpijebaopmdifcomolmpigakocmo]
 
-GROUP Ntp [13135K total]
+GROUP Ntp [12857K total]
  12360K Brave NTP background images 1.0.15 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-   775K Brave NTP sponsored images 1.0.1727 [gccbbckogglekeggclmmekihdgdpdgoe]
+   496K Brave NTP sponsored images 1.0.1744 [gccbbckogglekeggclmmekihdgdpdgoe]
 
-GROUP Other [165K total]
-   165K Brave Local Data Files Updater 1.0.906 [afalakplffnnnlkncjhbmahjfjhmlkal]
+GROUP Other [166K total]
+   166K Brave Local Data Files Updater 1.0.922 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
-GROUP large_files [80301K total]
+GROUP large_files [80333K total]
   3262K Default\Local Extension Settings\mnojpmjdmbbfmejpflffifhffcmidifd\000003.log
   1022K Default\Local Storage\leveldb\000003.ldb
   1010K Default\Session Storage\000003.ldb
- 44160K Default\publisher_info_db
+ 44192K Default\publisher_info_db
   1945K Safe Browsing\ChromeExtMalware.store.32_13357744536199942
   1011K Safe Browsing\UrlMalBin.store.4_13357744536174233
  27889K Safe Browsing\UrlSoceng.store.4_13357744535888997
