@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/containers/contains.h"
+#include "base/containers/span.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -64,7 +65,7 @@ void SolanaKeyring::RemoveLastHDAccount() {
   accounts_.pop_back();
 }
 
-std::string SolanaKeyring::ImportAccount(const std::vector<uint8_t>& keypair) {
+std::string SolanaKeyring::ImportAccount(base::span<const uint8_t> keypair) {
   // extract private key from keypair
   std::vector<uint8_t> private_key = std::vector<uint8_t>(
       keypair.begin(), keypair.begin() + kSolanaPrikeySize);
@@ -106,7 +107,7 @@ std::string SolanaKeyring::EncodePrivateKeyForExport(
 
 std::vector<uint8_t> SolanaKeyring::SignMessage(
     const std::string& address,
-    const std::vector<uint8_t>& message) {
+    base::span<const uint8_t> message) {
   HDKeyEd25519* hd_key =
       static_cast<HDKeyEd25519*>(GetHDKeyFromAddress(address));
   if (!hd_key) {

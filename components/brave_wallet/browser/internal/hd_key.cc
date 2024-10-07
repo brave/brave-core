@@ -62,7 +62,7 @@ const secp256k1_context* GetSecp256k1Ctx() {
 }
 
 bool UTCPasswordVerification(const std::string& derived_key,
-                             const std::vector<uint8_t>& ciphertext,
+                             base::span<const uint8_t> ciphertext,
                              const std::string& mac,
                              size_t dklen) {
   std::vector<uint8_t> mac_verification_input(derived_key.end() - dklen / 2,
@@ -79,8 +79,8 @@ bool UTCPasswordVerification(const std::string& derived_key,
 }
 
 bool UTCDecryptPrivateKey(const std::string& derived_key,
-                          const std::vector<uint8_t>& ciphertext,
-                          const std::vector<uint8_t>& iv,
+                          base::span<const uint8_t> ciphertext,
+                          base::span<const uint8_t> iv,
                           std::vector<uint8_t>* private_key,
                           size_t dklen) {
   if (!private_key) {
@@ -198,7 +198,7 @@ std::unique_ptr<HDKey::ParsedExtendedKey> HDKey::GenerateFromExtendedKey(
 
 // static
 std::unique_ptr<HDKey> HDKey::GenerateFromPrivateKey(
-    const std::vector<uint8_t>& private_key) {
+    base::span<const uint8_t> private_key) {
   if (private_key.size() != 32) {
     return nullptr;
   }

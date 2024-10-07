@@ -59,7 +59,7 @@ class HDKey {
   static std::unique_ptr<ParsedExtendedKey> GenerateFromExtendedKey(
       const std::string& key);
   static std::unique_ptr<HDKey> GenerateFromPrivateKey(
-      const std::vector<uint8_t>& private_key);
+      base::span<const uint8_t> private_key);
   // https://github.com/ethereum/wiki/wiki/Web3-Secret-Storage-Definition
   static std::unique_ptr<HDKey> GenerateFromV3UTC(const std::string& password,
                                                   const std::string& json);

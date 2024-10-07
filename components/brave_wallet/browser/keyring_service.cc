@@ -1333,7 +1333,7 @@ mojom::AccountInfoPtr KeyringService::ImportAccountForKeyring(
     mojom::CoinType coin,
     mojom::KeyringId keyring_id,
     const std::string& account_name,
-    const std::vector<uint8_t>& private_key) {
+    base::span<const uint8_t> private_key) {
   auto* keyring = GetHDKeyringById(keyring_id);
   if (!keyring) {
     return {};
@@ -1607,7 +1607,7 @@ KeyringService::SignatureWithError::~SignatureWithError() = default;
 
 KeyringService::SignatureWithError KeyringService::SignMessageByDefaultKeyring(
     const mojom::AccountIdPtr& account_id,
-    const std::vector<uint8_t>& message,
+    base::span<const uint8_t> message,
     bool is_eip712) {
   CHECK(account_id);
   SignatureWithError ret;
@@ -1634,12 +1634,10 @@ KeyringService::SignatureWithError KeyringService::SignMessageByDefaultKeyring(
   return ret;
 }
 
-bool KeyringService::RecoverAddressByDefaultKeyring(
-    const std::vector<uint8_t>& message,
-    const std::vector<uint8_t>& signature,
-    std::string* address) {
-  CHECK(address);
-  return EthereumKeyring::RecoverAddress(message, signature, address);
+std::optional<std::string> KeyringService::RecoverAddressByDefaultKeyring(
+    base::span<const uint8_t> message,
+    base::span<const uint8_t> signature) {
+  return EthereumKeyring::RecoverAddress(message, signature);
 }
 
 bool KeyringService::GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
@@ -1659,9 +1657,9 @@ std::optional<std::vector<uint8_t>>
 KeyringService::DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
     const mojom::AccountIdPtr& account_id,
     const std::string& version,
-    const std::vector<uint8_t>& nonce,
-    const std::vector<uint8_t>& ephemeral_public_key,
-    const std::vector<uint8_t>& ciphertext) {
+    base::span<const uint8_t> nonce,
+    base::span<const uint8_t> ephemeral_public_key,
+    base::span<const uint8_t> ciphertext) {
   CHECK(account_id);
   if (account_id->keyring_id != mojom::kDefaultKeyringId) {
     return std::nullopt;
@@ -1677,7 +1675,7 @@ KeyringService::DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
 
 std::vector<uint8_t> KeyringService::SignMessageBySolanaKeyring(
     const mojom::AccountIdPtr& account_id,
-    const std::vector<uint8_t>& message) {
+    base::span<const uint8_t> message) {
   if (account_id->keyring_id != mojom::KeyringId::kSolana) {
     return {};
   }

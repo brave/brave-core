@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
@@ -34,8 +35,7 @@ class HDKeyring {
   // TODO(apaymyshev): imported accounts should be handled by separate keyring
   // class.
   // address will be returned
-  virtual std::string ImportAccount(
-      const std::vector<uint8_t>& private_key) = 0;
+  virtual std::string ImportAccount(base::span<const uint8_t> private_key) = 0;
   virtual bool RemoveImportedAccount(const std::string& address) = 0;
 
   virtual std::string GetDiscoveryAddress(size_t index) const = 0;
