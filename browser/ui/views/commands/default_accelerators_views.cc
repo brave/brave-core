@@ -4,11 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include <utility>
+
 #include "base/containers/flat_set.h"
 #include "base/ranges/algorithm.h"
-#include "brave/browser/ui/commands/default_accelerators.h"
-
 #include "brave/browser/ui/commands/accelerator_service.h"
+#include "brave/browser/ui/commands/default_accelerators.h"
 #include "chrome/browser/ui/views/accelerator_table.h"
 #include "ui/base/accelerators/accelerator.h"
 
@@ -20,8 +20,8 @@ namespace commands {
 
 std::pair<Accelerators, base::flat_set<ui::Accelerator>>
 GetDefaultAccelerators() {
-  Accelerators defaults;
-  base::flat_set<ui::Accelerator> system_commands;
+  std::pair<Accelerators, base::flat_set<ui::Accelerator>> result;
+  auto& [defaults, system_commands] = result;
 
   auto add_to_accelerators = [&defaults](const AcceleratorMapping& mapping) {
     defaults[mapping.command_id].push_back(
@@ -39,7 +39,7 @@ GetDefaultAccelerators() {
                                mapping.keycode, mapping.modifiers));
                          });
 #endif  // BUILDFLAG(IS_MAC)
-  return std::tie(defaults, system_commands);
+  return result;
 }
 
 }  // namespace commands

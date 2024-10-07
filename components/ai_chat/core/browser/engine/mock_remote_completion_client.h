@@ -22,7 +22,7 @@ class MockRemoteCompletionClient : public RemoteCompletionClient {
   MOCK_METHOD(void,
               QueryPrompt,
               (const std::string&,
-               const std::vector<std::string>&,
+               std::vector<std::string>,
                GenerationCompletedCallback,
                GenerationDataCallback),
               (override));

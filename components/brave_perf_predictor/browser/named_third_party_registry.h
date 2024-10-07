@@ -9,7 +9,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
-#include <tuple>
+#include <utility>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
@@ -41,8 +41,8 @@ class NamedThirdPartyRegistry : public KeyedService {
   bool IsInitialized() const { return initialized_; }
   void MarkInitialized(bool initialized) { initialized_ = initialized; }
   void UpdateMappings(
-      std::tuple<base::flat_map<std::string, std::string>,
-                 base::flat_map<std::string, std::string>> entity_mappings);
+      std::pair<base::flat_map<std::string, std::string>,
+                base::flat_map<std::string, std::string>> entity_mappings);
 
   bool initialized_ = false;
   base::flat_map<std::string, std::string> entity_by_domain_;

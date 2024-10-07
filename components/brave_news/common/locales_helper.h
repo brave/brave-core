@@ -28,7 +28,7 @@ base::flat_set<std::string> GetPublisherLocales(const Publishers& publishers);
 // should work well enough for our purposes.
 // Complexity is O(subscribed_publishers * subscribed_locales).
 base::flat_set<std::string> GetMinimalLocalesSet(
-    const base::flat_set<std::string>& channel_locales,
+    base::flat_set<std::string> channel_locales,
     const Publishers& publishers);
 
 // Calculate if Brave News should be enabled on the NTP by checking the

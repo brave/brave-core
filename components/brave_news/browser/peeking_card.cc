@@ -64,7 +64,7 @@ base::flat_set<std::string> GetTopStoryUrls(
 
 std::optional<size_t> PickPeekingCardWithMax(
     SubscriptionsSnapshot subscriptions,
-    base::flat_set<std::string> top_story_urls,
+    const base::flat_set<std::string>& top_story_urls,
     const ArticleInfos& articles,
     size_t max_candidates) {
   // Store now, so it's consistent for everything.
@@ -217,11 +217,10 @@ std::optional<size_t> PickPeekingCardWithMax(
 
 std::optional<size_t> PickPeekingCard(
     SubscriptionsSnapshot subscriptions,
-    base::flat_set<std::string> top_story_urls,
+    const base::flat_set<std::string>& top_story_urls,
     const ArticleInfos& articles) {
-  return PickPeekingCardWithMax(std::move(subscriptions),
-                                std::move(top_story_urls), articles,
-                                kMaxPeekingCardCandidates);
+  return PickPeekingCardWithMax(std::move(subscriptions), top_story_urls,
+                                articles, kMaxPeekingCardCandidates);
 }
 
 }  // namespace brave_news

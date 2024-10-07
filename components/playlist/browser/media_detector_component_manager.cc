@@ -5,6 +5,8 @@
 
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
 
+#include <utility>
+
 #include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -67,7 +69,7 @@ std::string ReadScript(const base::FilePath& path) {
 }
 
 base::flat_map<ScriptName, std::string> ReadScriptsFromComponent(
-    base::flat_set<base::FilePath> files) {
+    const base::flat_set<base::FilePath>& files) {
   base::flat_map<ScriptName, std::string> script_map;
   for (const auto& path : files) {
     if (auto script = ReadScript(path); !script.empty()) {
@@ -130,7 +132,7 @@ void MediaDetectorComponentManager::OnComponentReady(
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, base::MayBlock(),
-      base::BindOnce(&ReadScriptsFromComponent, files),
+      base::BindOnce(&ReadScriptsFromComponent, std::move(files)),
       base::BindOnce(&MediaDetectorComponentManager::OnGetScripts,
                      weak_factory_.GetWeakPtr()));
 }

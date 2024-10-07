@@ -84,11 +84,9 @@ std::optional<std::string> SanitizeJson(const std::string& json) {
 GURL AppendFilterParams(
     GURL url,
     const brave_wallet::mojom::MeldFilterPtr& filter,
-    std::optional<base::flat_map<std::string, std::string>> def_params) {
-  if (def_params) {
-    for (const auto& [key, val] : *def_params) {
-      url = net::AppendQueryParameter(url, key, val);
-    }
+    const base::flat_map<std::string, std::string>& def_params) {
+  for (const auto& [key, val] : def_params) {
+    url = net::AppendQueryParameter(url, key, val);
   }
 
   url = net::AppendQueryParameter(

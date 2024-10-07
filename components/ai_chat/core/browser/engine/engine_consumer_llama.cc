@@ -330,8 +330,8 @@ EngineConsumerLlamaRemote::EngineConsumerLlamaRemote(
   base::flat_set<std::string_view> stop_sequences(kStopSequences.begin(),
                                                   kStopSequences.end());
   api_ = std::make_unique<RemoteCompletionClient>(
-      model_options.name, stop_sequences, url_loader_factory,
-      credential_manager);
+      model_options.name, std::move(stop_sequences),
+      std::move(url_loader_factory), credential_manager);
 
   max_page_content_length_ = model_options.max_page_content_length;
 
@@ -374,7 +374,7 @@ void EngineConsumerLlamaRemote::GenerateQuestionSuggestions(
   stop_sequences.push_back("</ul>");
   DCHECK(api_);
   api_->QueryPrompt(
-      prompt, stop_sequences,
+      prompt, std::move(stop_sequences),
       base::BindOnce(
           &EngineConsumerLlamaRemote::OnGenerateQuestionSuggestionsResponse,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));

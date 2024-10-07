@@ -769,7 +769,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
             : "";
 
     engine->OnXHRLoad(tabId, base::SysNSStringToUTF8(url.absoluteString),
-                      partsMap, fpu, ref, std::move(visit));
+                      std::move(partsMap), fpu, ref, std::move(visit));
   }];
 }
 
