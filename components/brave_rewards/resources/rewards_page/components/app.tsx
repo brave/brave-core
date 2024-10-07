@@ -21,6 +21,7 @@ import { CaptchaModal } from './captcha_modal'
 import { ContributeModal } from './contribute/contribute_modal'
 import { ResetModal } from './reset_modal'
 import { TosUpdateModal } from './tos_update_modal'
+import { NotificationModal } from './notification_modal'
 import { SelfCustodyInviteModal } from './self_custody_invite_modal'
 import { useShouldShowSelfCustodyInvite } from '../lib/self_custody_invite'
 import { useConnectAccountRouter } from '../lib/connect_account_router'
@@ -38,12 +39,14 @@ export function App() {
     paymentId,
     tosUpdateRequired,
     captchaInfo,
+    notifications,
   ] = useAppState((state) => [
     state.loading,
     state.embedder,
     state.paymentId,
     state.tosUpdateRequired,
-    state.captchaInfo
+    state.captchaInfo,
+    state.notifications
   ])
 
   const viewType = useBreakpoint()
@@ -148,6 +151,10 @@ export function App() {
           onReset={() => setShowResetModal(true)}
         />
       )
+    }
+
+    if (notifications.length > 0) {
+      return <NotificationModal notification={notifications[0]} />
     }
 
     if (shouldShowSelfCustodyInvite) {

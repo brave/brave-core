@@ -183,7 +183,13 @@ export function createModel(): AppModel {
       },
       supportedWalletProviders: ['uphold', 'gemini']
     },
-    captchaInfo: null
+    captchaInfo: null,
+    notifications: [{
+      id: 'notification-123',
+      type: 'external-wallet-disconnected',
+      timeStamp: Date.now(),
+      provider: 'uphold'
+    } as any]
   })
 
   return {
@@ -310,6 +316,14 @@ export function createModel(): AppModel {
 
     async onCaptchaResult(success) {
       stateManager.update({ captchaInfo: null })
+    },
+
+    async clearNotification(id: string) {
+      stateManager.update({
+        notifications: stateManager.getState().notifications.filter((item) => {
+          return item.id !== id
+        })
+      })
     }
 
   }
