@@ -51,9 +51,7 @@
     &google_sign_in_permission::features::kBraveGoogleSignInPermission, \
     &net::features::kBraveForgetFirstPartyStorage,                      \
     &brave_shields::features::kBraveShowStrictFingerprintingMode,       \
-    &brave_shields::features::kBraveLocalhostAccessPermission,          \
-    &first_run::features::kAndroidForceDefaultBrowserPrompt,            \
-    &first_run::features::kAndroidOnboardingOfferSearchWidget
+    &brave_shields::features::kBraveLocalhostAccessPermission
 
 // clang-format on
 

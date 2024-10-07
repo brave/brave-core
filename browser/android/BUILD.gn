@@ -20,7 +20,6 @@ source_set("android_browser_process") {
 
   deps = [
     "//base",
-    "//brave/browser/android/first_run:features",
     "//brave/browser/android/preferences",
     "//brave/browser/android/safe_browsing",
     "//brave/browser/brave_ads/android:jni_headers",
