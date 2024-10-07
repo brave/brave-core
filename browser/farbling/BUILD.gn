@@ -39,6 +39,7 @@ if (!is_android) {
       "//brave/components/webcompat/core/common",
       "//brave/third_party/blink/renderer",
       "//chrome/browser",
+      "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/ui",
       "//chrome/common",
       "//chrome/test:test_support",
