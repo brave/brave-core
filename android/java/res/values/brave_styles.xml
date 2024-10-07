@@ -260,14 +260,6 @@
         <item name="android:statusBarColor">#00000000</item>
     </style>
 
-    <style name="BraveTranslucentMaterial" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@color/translucent_activity_background_color</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:backgroundDimEnabled">false</item>
-    </style>
-
     <style name="BraveWalletAlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="android:background">@color/wallet_bg</item>
         <item name="android:colorBackground">@color/wallet_bg</item>
@@ -326,6 +318,22 @@
     <style name="BraveWalletDialogTopAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_in_top</item>
         <item name="android:windowExitAnimation">@anim/slide_out_top</item>
+    </style>
+
+    <style name="ApproveTxBottomSheetDialogStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="shapeAppearance">@style/ShapeAppearanceRoundedCorners</item>
+        <item name="shouldRemoveExpandedCorners">false</item>
+        <item name="behavior_skipCollapsed">true</item>
+        <item name="backgroundTint">@color/container_background</item>
+    </style>
+
+    <style name="ShapeAppearanceRoundedCorners" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">30dp</item>
+    </style>
+
+    <style name="ApproveTxBottomSheetDialogTheme" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ApproveTxBottomSheetDialogStyle</item>
     </style>
     
     <!-- Brave Ads Notifications -->

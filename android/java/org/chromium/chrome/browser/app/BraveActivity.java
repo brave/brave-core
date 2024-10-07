@@ -314,8 +314,8 @@ public abstract class BraveActivity extends ChromeActivity
     private BraveNewsController mBraveNewsController;
     private BraveNewsConnectionErrorHandler mBraveNewsConnectionErrorHandler;
     private MiscAndroidMetricsConnectionErrorHandler mMiscAndroidMetricsConnectionErrorHandler;
-
     private AppUpdateManager mAppUpdateManager;
+    private boolean mWalletBadgeVisible;
 
     /** Serves as a general exception for failed attempts to get BraveActivity. */
     public static class BraveActivityNotFoundException extends Exception {
@@ -414,9 +414,7 @@ public abstract class BraveActivity extends ChromeActivity
             openPlaylist(true);
         } else if (id == R.id.add_to_playlist_id) {
             BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-            if (layout != null) {
-                layout.addMediaToPlaylist();
-            }
+            layout.addMediaToPlaylist();
         } else if (id == R.id.brave_news_id) {
             openBraveNewsSettings();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {
@@ -501,28 +499,10 @@ public abstract class BraveActivity extends ChromeActivity
         return mWalletModel;
     }
 
-    private void maybeHasPendingUnlockRequest() {
-        assert mKeyringService != null;
-        mKeyringService.hasPendingUnlockRequest(
-                pending -> {
-                    if (pending) {
-                        BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-                        if (layout != null) {
-                            layout.showWalletPanel();
-                        }
-
-                        return;
-                    }
-                    maybeShowPendingTransactions();
-                    maybeShowSignSolTransactionsRequestLayout();
-                });
-    }
-
-    private void setWalletBadgeVisibility(boolean visibile) {
+    private void setWalletBadgeVisibility(boolean visible) {
+        mWalletBadgeVisible = visible;
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-        if (layout != null) {
-            layout.updateWalletBadgeVisibility(visibile);
-        }
+        layout.updateWalletBadgeVisibility(visible);
     }
 
     private void maybeShowPendingTransactions() {
@@ -532,8 +512,8 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
-    // TODO(apaymyshev): refactor this to have a better name.
-    private void maybeShowSignSolTransactionsRequestLayout() {
+    private void maybeShowSignSolTransactionsRequestLayout(
+            @NonNull final Runnable openWalletPanelRunnable) {
         assert mBraveWalletService != null;
         mBraveWalletService.getPendingSignSolTransactionsRequests(
                 requests -> {
@@ -542,138 +522,169 @@ public abstract class BraveActivity extends ChromeActivity
                                 BraveWalletDAppsActivity.ActivityType.SIGN_SOL_TRANSACTIONS);
                         return;
                     }
-                    maybeShowSignMessageErrorsLayout();
+                    maybeShowSignMessageErrorsLayout(openWalletPanelRunnable);
                 });
     }
 
-    private void maybeShowSignMessageErrorsLayout() {
+    private void maybeShowSignMessageErrorsLayout(@NonNull final Runnable openWalletPanelRunnable) {
         assert mBraveWalletService != null;
-        mBraveWalletService.getPendingSignMessageErrors(errors -> {
-            if (errors != null && errors.length != 0) {
-                openBraveWalletDAppsActivity(
-                        BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE_ERROR);
-                return;
-            }
-        });
-        maybeShowSignMessageRequestLayout();
+        mBraveWalletService.getPendingSignMessageErrors(
+                errors -> {
+                    if (errors != null && errors.length != 0) {
+                        openBraveWalletDAppsActivity(
+                                BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE_ERROR);
+                    }
+                });
+        maybeShowSignMessageRequestLayout(openWalletPanelRunnable);
     }
 
-    private void maybeShowSignMessageRequestLayout() {
+    private void maybeShowSignMessageRequestLayout(
+            @NonNull final Runnable openWalletPanelRunnable) {
         assert mBraveWalletService != null;
-        mBraveWalletService.getPendingSignMessageRequests(requests -> {
-            if (requests != null && requests.length != 0) {
-                BraveWalletDAppsActivity.ActivityType activityType =
-                        (requests[0].signData.which() == SignDataUnion.Tag.EthSiweData)
-                        ? BraveWalletDAppsActivity.ActivityType.SIWE_MESSAGE
-                        : BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE;
-                openBraveWalletDAppsActivity(activityType);
-                return;
-            }
-            maybeShowChainRequestLayout();
-        });
+        mBraveWalletService.getPendingSignMessageRequests(
+                requests -> {
+                    if (requests != null && requests.length != 0) {
+                        BraveWalletDAppsActivity.ActivityType activityType =
+                                (requests[0].signData.which() == SignDataUnion.Tag.EthSiweData)
+                                        ? BraveWalletDAppsActivity.ActivityType.SIWE_MESSAGE
+                                        : BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE;
+                        openBraveWalletDAppsActivity(activityType);
+                        return;
+                    }
+                    maybeShowChainRequestLayout(openWalletPanelRunnable);
+                });
     }
 
-    private void maybeShowChainRequestLayout() {
+    private void maybeShowChainRequestLayout(@NonNull final Runnable openWalletPanelRunnable) {
         assert mJsonRpcService != null;
-        mJsonRpcService.getPendingAddChainRequests(networks -> {
-            if (networks != null && networks.length != 0) {
-                openBraveWalletDAppsActivity(
-                        BraveWalletDAppsActivity.ActivityType.ADD_ETHEREUM_CHAIN);
+        mJsonRpcService.getPendingAddChainRequests(
+                networks -> {
+                    if (networks != null && networks.length != 0) {
+                        openBraveWalletDAppsActivity(
+                                BraveWalletDAppsActivity.ActivityType.ADD_ETHEREUM_CHAIN);
 
-                return;
-            }
-            maybeShowSwitchChainRequestLayout();
-        });
+                        return;
+                    }
+                    maybeShowSwitchChainRequestLayout(openWalletPanelRunnable);
+                });
     }
 
-    private void maybeShowSwitchChainRequestLayout() {
+    private void maybeShowSwitchChainRequestLayout(
+            @NonNull final Runnable openWalletPanelRunnable) {
         assert mJsonRpcService != null;
-        mJsonRpcService.getPendingSwitchChainRequests(requests -> {
-            if (requests != null && requests.length != 0) {
-                openBraveWalletDAppsActivity(
-                        BraveWalletDAppsActivity.ActivityType.SWITCH_ETHEREUM_CHAIN);
+        mJsonRpcService.getPendingSwitchChainRequests(
+                requests -> {
+                    if (requests != null && requests.length != 0) {
+                        openBraveWalletDAppsActivity(
+                                BraveWalletDAppsActivity.ActivityType.SWITCH_ETHEREUM_CHAIN);
 
-                return;
-            }
-            maybeShowAddSuggestTokenRequestLayout();
-        });
+                        return;
+                    }
+                    maybeShowAddSuggestTokenRequestLayout(openWalletPanelRunnable);
+                });
     }
 
-    private void maybeShowAddSuggestTokenRequestLayout() {
+    private void maybeShowAddSuggestTokenRequestLayout(
+            @NonNull final Runnable openWalletPanelRunnable) {
         assert mBraveWalletService != null;
-        mBraveWalletService.getPendingAddSuggestTokenRequests(requests -> {
-            if (requests != null && requests.length != 0) {
-                openBraveWalletDAppsActivity(BraveWalletDAppsActivity.ActivityType.ADD_TOKEN);
+        mBraveWalletService.getPendingAddSuggestTokenRequests(
+                requests -> {
+                    if (requests != null && requests.length != 0) {
+                        openBraveWalletDAppsActivity(
+                                BraveWalletDAppsActivity.ActivityType.ADD_TOKEN);
 
-                return;
-            }
-            maybeShowGetEncryptionPublicKeyRequestLayout();
-        });
+                        return;
+                    }
+                    maybeShowGetEncryptionPublicKeyRequestLayout(openWalletPanelRunnable);
+                });
     }
 
-    private void maybeShowGetEncryptionPublicKeyRequestLayout() {
+    private void maybeShowGetEncryptionPublicKeyRequestLayout(
+            @NonNull final Runnable openWalletPanelRunnable) {
         assert mBraveWalletService != null;
-        mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
-            if (requests != null && requests.length != 0) {
-                openBraveWalletDAppsActivity(
-                        BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
+        mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(
+                requests -> {
+                    if (requests != null && requests.length != 0) {
+                        openBraveWalletDAppsActivity(
+                                BraveWalletDAppsActivity.ActivityType
+                                        .GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
 
-                return;
-            }
-            maybeShowDecryptRequestLayout();
-        });
+                        return;
+                    }
+                    maybeShowDecryptRequestLayout(openWalletPanelRunnable);
+                });
     }
 
-    private void maybeShowDecryptRequestLayout() {
+    private void maybeShowDecryptRequestLayout(@NonNull final Runnable openWalletPanelRunnable) {
         assert mBraveWalletService != null;
-        mBraveWalletService.getPendingDecryptRequests(requests -> {
-            if (requests != null && requests.length != 0) {
-                openBraveWalletDAppsActivity(BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST);
+        mBraveWalletService.getPendingDecryptRequests(
+                requests -> {
+                    if (requests != null && requests.length != 0) {
+                        openBraveWalletDAppsActivity(
+                                BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST);
 
-                return;
-            }
-            BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-            if (layout != null) {
-                layout.showWalletPanel();
-            }
-        });
+                        return;
+                    }
+                    openWalletPanelRunnable.run();
+                });
     }
 
     public void dismissWalletPanelOrDialog() {
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-        if (layout != null) {
-            layout.dismissWalletPanelOrDialog();
-        }
+        layout.dismissWalletPanelOrDialog();
     }
 
-    public void showWalletPanel(boolean ignoreWeb3NotificationPreference) {
-        BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-        if (layout != null) {
-            layout.showWalletIcon(true);
-        }
+    public void showWalletPanel(final boolean ignoreWeb3NotificationPreference) {
+        showWalletPanel(true, ignoreWeb3NotificationPreference);
+    }
+
+    public void showWalletPanel(
+            final boolean showPendingTransactions, final boolean ignoreWeb3NotificationPreference) {
+        final BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
+        layout.showWalletIcon(true);
         if (!ignoreWeb3NotificationPreference
                 && !BraveWalletPreferences.getPrefWeb3NotificationsEnabled()) {
             return;
         }
         assert mKeyringService != null;
-        mKeyringService.isLocked(locked -> {
-            if (locked) {
-                layout.showWalletPanel();
-                return;
-            }
-            maybeHasPendingUnlockRequest();
-        });
+        mKeyringService.isLocked(
+                locked -> {
+                    if (locked) {
+                        if (showPendingTransactions) {
+                            layout.showWalletPanel();
+                        }
+                        return;
+                    }
+                    mKeyringService.hasPendingUnlockRequest(
+                            pending -> {
+                                if (pending) {
+                                    layout.showWalletPanel();
+                                    return;
+                                }
+                                if (showPendingTransactions && mWalletBadgeVisible) {
+                                    maybeShowPendingTransactions();
+                                } else {
+                                    // Create a runnable that opens the Wallet
+                                    // if the pending requests reach the end of the chain
+                                    // without returning earlier.
+                                    final Runnable openWalletPanelRunnable =
+                                            () -> {
+                                                getBraveToolbarLayout().showWalletPanel();
+                                            };
+                                    maybeShowSignSolTransactionsRequestLayout(
+                                            openWalletPanelRunnable);
+                                }
+                            });
+                });
     }
 
     public void showWalletOnboarding() {
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-        if (layout != null) {
-            layout.showWalletIcon(true);
-            if (!BraveWalletPreferences.getPrefWeb3NotificationsEnabled()) {
-                return;
-            }
-            layout.showWalletPanel();
+        layout.showWalletIcon(true);
+        if (!BraveWalletPreferences.getPrefWeb3NotificationsEnabled()) {
+            return;
         }
+        layout.showWalletPanel();
     }
 
     public void walletInteractionDetected(WebContents webContents) {
@@ -684,10 +695,8 @@ public abstract class BraveActivity extends ChromeActivity
             return;
         }
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-        if (layout != null) {
-            layout.showWalletIcon(true);
-            updateWalletBadgeVisibility();
-        }
+        layout.showWalletIcon(true);
+        updateWalletBadgeVisibility();
     }
 
     public void showAccountCreation(@CoinType.EnumType int coinType) {
@@ -1579,7 +1588,8 @@ public abstract class BraveActivity extends ChromeActivity
         Utils.openAddress("/address/" + address, this, coinType, networkInfo);
     }
 
-    public void openBraveWalletDAppsActivity(BraveWalletDAppsActivity.ActivityType activityType) {
+    public void openBraveWalletDAppsActivity(
+            @NonNull final BraveWalletDAppsActivity.ActivityType activityType) {
         Intent braveWalletIntent = new Intent(this, BraveWalletDAppsActivity.class);
         braveWalletIntent.putExtra("activityType", activityType.getValue());
         braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -1700,9 +1710,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void hideRewardsOnboardingIcon() {
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-        if (layout != null) {
-            layout.hideRewardsOnboardingIcon();
-        }
+        layout.hideRewardsOnboardingIcon();
     }
 
     private void createNotificationChannel() {
@@ -1733,30 +1741,22 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void onRewardsPanelDismiss() {
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-        if (layout != null) {
-            layout.onRewardsPanelDismiss();
-        }
+        layout.onRewardsPanelDismiss();
     }
 
     public void dismissRewardsPanel() {
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-        if (layout != null) {
-            layout.dismissRewardsPanel();
-        }
+        layout.dismissRewardsPanel();
     }
 
     public void dismissShieldsTooltip() {
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-        if (layout != null) {
-            layout.dismissShieldsTooltip();
-        }
+        layout.dismissShieldsTooltip();
     }
 
     public void openRewardsPanel() {
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-        if (layout != null) {
-            layout.openRewardsPanel();
-        }
+        layout.openRewardsPanel();
     }
 
     public Profile getCurrentProfile() {
@@ -1872,9 +1872,7 @@ public abstract class BraveActivity extends ChromeActivity
         Tab currentTab = getActivityTab();
         BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
         if (currentTab != null) {
-            if (layout != null) {
-                layout.updateBraveShieldsButtonState(currentTab);
-            }
+            layout.updateBraveShieldsButtonState(currentTab);
             if (UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec())) {
                 TabUtils.openNewTab();
             }

@@ -8,7 +8,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Scroller;
 
@@ -50,20 +49,6 @@ public class TxNonSwipeableViewPager extends ViewPager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        View firstChild = getChildAt(0);
-        if (firstChild != null) {
-            firstChild.measure(widthMeasureSpec, heightMeasureSpec);
-            super.onMeasure(
-                    widthMeasureSpec,
-                    MeasureSpec.makeMeasureSpec(
-                            firstChild.getMeasuredHeight(), MeasureSpec.EXACTLY));
-            return;
-        }
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     public static class ViewPagerScroller extends Scroller {

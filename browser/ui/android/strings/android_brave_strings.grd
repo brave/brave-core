@@ -3595,12 +3595,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_SOLANA_ADDRESS_LOOKUP_TABLE_INDEX" desc="Label for Solana Address Lookup Table Index section">
       Address Lookup Table Index:
     </message>
-    <message name="IDS_DATE_TEXT" desc="Date text as heading">
-      Date
-    </message>
-    <message name="IDS_MARKET_PRICE_TEXT" desc="Market price text title as heading of an asset">
-      Market Price
-    </message>
     <message name="IDS_BRAVE_WALLET_SELECT_ALL" desc="Action title for select all button">
       Select all
     </message>
