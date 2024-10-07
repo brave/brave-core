@@ -383,7 +383,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
         
         // Do one last check (if the page took too long to load - DailyMotion)
         setTimeout(function() {
-          checkPageForVideos(false);
+          fetchMedia();
         }, 5000);
       }
 
