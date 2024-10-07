@@ -43,7 +43,7 @@ class AdsService : public KeyedService {
     virtual void Close(const std::string& notification_id) = 0;
     virtual void ShowNotificationAd(const std::string& id,
                                     const std::u16string& title,
-                                    const std::u16string& body);
+                                    const std::u16string& body) = 0;
     virtual void CloseNotificationAd(const std::string& id) = 0;
     virtual void OpenNewTabWithUrl(const GURL& url) = 0;
 #if BUILDFLAG(IS_ANDROID)
