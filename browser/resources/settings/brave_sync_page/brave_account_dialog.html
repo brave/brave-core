@@ -213,15 +213,18 @@
     <div slot="body">
       <cr-input id="emailAddressInput" autofocus required
         placeholder="Email address"
-        pattern="[0-9]{4}"
-        auto-validate error-message="Must be a valid email address">
+        pattern="^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$"
+        auto-validate error-message="Must be a valid email address"
+        on-input="onTermsCheckboxChanged_"
+        invalid="{{isEmailAddressInvalid_}}">
       </cr-input>
-      <cr-checkbox checked="true">
+      <cr-checkbox checked="{{isTermsAccepted_}}" on-change="onTermsCheckboxChanged_">
         I have read and accept the <a href="#">Terms of service</a> and <a href="#">Privacy agreement</a>.
       </cr-checkbox>
     </div>
     <div slot="button-container">
-      <cr-button class="action-button">
+      <cr-button class="action-button"
+                 disabled="[[!canCreateAccount_]]">
         Create account
       </cr-button>
     </div>
