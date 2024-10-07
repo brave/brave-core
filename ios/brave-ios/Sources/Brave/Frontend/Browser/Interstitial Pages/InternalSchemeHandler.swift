@@ -40,6 +40,17 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
   // Responders are looked up based on the path component, for instance responder["about/license"] is used for 'internal://local/about/license'
   public static var responders = [String: InternalSchemeResponse]()
 
+  private class TaskHolder {
+    var task: Task<Void, Never>
+    init(task: Task<Void, Never>) {
+      self.task = task
+    }
+    deinit {
+      task.cancel()
+    }
+  }
+  private var activeTasks = NSMapTable<WKURLSchemeTask, TaskHolder>.weakToStrongObjects()
+
   // Unprivileged internal:// urls might be internal resources in the app bundle ( i.e. <link href="errorpage-resource/NetError.css"> )
   nonisolated func downloadResource(urlSchemeTask: WKURLSchemeTask) async -> Bool {
     guard let url = urlSchemeTask.request.url else { return false }
@@ -116,7 +127,7 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
 
     let path = url.path.starts(with: "/") ? String(url.path.dropFirst()) : url.path
 
-    Task {
+    let task = Task {
       // For non-main doc URL, try load it as a resource
       if !urlSchemeTask.request.isPrivileged,
         urlSchemeTask.request.mainDocumentURL != urlSchemeTask.request.url,
@@ -145,10 +156,16 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
         return
       }
 
+      if activeTasks.object(forKey: urlSchemeTask) == nil || Task.isCancelled {
+        return
+      }
+
       urlSchemeTask.didReceive(urlResponse)
       urlSchemeTask.didReceive(data)
       urlSchemeTask.didFinish()
+      activeTasks.removeObject(forKey: urlSchemeTask)
     }
+    activeTasks.setObject(TaskHolder(task: task), forKey: urlSchemeTask)
   }
 
   public func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {}
