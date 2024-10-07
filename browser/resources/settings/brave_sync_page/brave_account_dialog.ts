@@ -5,14 +5,9 @@
 
 import '../settings_shared.css.js';
 
-import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
-import 'chrome://resources/cr_elements/cr_button/cr_button.js';
-import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.js';
-
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {BaseMixin} from '../base_mixin.js'
-import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
 import {getTemplate} from './brave_account_dialog.html.js'
 
 /**
@@ -63,8 +58,6 @@ export class SettingsBraveAccountDialogElement extends SettingsBraveAccountDialo
   private isTermsAccepted_: boolean = false;
   private isEmailAddressInvalid_: boolean = true;
   private canCreateAccount_: boolean = false;
-
-  syncBrowserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance();
 
   isCodeType(askingType: string) {
     return (this.codeType === askingType)
