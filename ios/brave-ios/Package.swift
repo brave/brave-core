@@ -313,7 +313,6 @@ var package = Package(
         .copy("WelcomeFocus/Resources/Fonts/Poppins-SemiBold.ttf"),
         .copy("WelcomeFocus/Resources/Fonts/Poppins-Medium.ttf"),
         .copy("WelcomeFocus/Resources/Fonts/Poppins-Regular.ttf"),
-        .copy("ProductNotifications/Resources/blocking-summary.json"),
       ],
       plugins: ["LoggerPlugin"]
     ),
@@ -386,7 +385,6 @@ var package = Package(
         .copy("Resources/scripts/farbling-tests.js"),
         .copy("Resources/scripts/request-blocking-tests.js"),
         .copy("Resources/scripts/cosmetic-filter-tests.js"),
-        .copy("blocking-summary-test.json"),
       ]
     ),
     .target(name: "Strings"),
