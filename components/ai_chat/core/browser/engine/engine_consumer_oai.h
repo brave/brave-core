@@ -30,7 +30,7 @@ using api_request_helper::APIRequestResult;
 class EngineConsumerOAIRemote : public EngineConsumer {
  public:
   explicit EngineConsumerOAIRemote(
-      const mojom::CustomModelOptions& model_options,
+      const mojom::Model& model,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   EngineConsumerOAIRemote(const EngineConsumerOAIRemote&) = delete;
   EngineConsumerOAIRemote& operator=(const EngineConsumerOAIRemote&) = delete;

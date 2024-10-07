@@ -15,10 +15,12 @@
 #include "base/strings/strcat.h"
 #include "base/uuid.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_claude.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_llama.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
+#include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
@@ -35,6 +37,7 @@ inline constexpr char kCustomModelsList[] = "brave.ai_chat.custom_models";
 namespace {
 inline constexpr char kCustomModelItemLabelKey[] = "label";
 inline constexpr char kCustomModelItemModelKey[] = "model_request_name";
+inline constexpr char kCustomModelContextSizeKey[] = "context_size";
 inline constexpr char kCustomModelItemEndpointUrlKey[] = "endpoint_url";
 inline constexpr char kCustomModelItemApiKey[] = "api_key";
 inline constexpr char kCustomModelItemKey[] = "key";
@@ -211,8 +214,38 @@ base::Value::Dict GetModelDict(mojom::ModelPtr model) {
   model_dict.Set(
       kCustomModelItemApiKey,
       EncryptAPIKey(model->options->get_custom_model_options()->api_key));
+  model_dict.Set(kCustomModelContextSizeKey,
+                 static_cast<int32_t>(model->options->get_custom_model_options()
+                                          ->context_size.value_or(0)));
   model_dict.Set(kCustomModelItemKey, model->key);
   return model_dict;
+}
+
+// Custom models do not have fixed properties pertaining to the number of
+// characters they can process before a warning is shown. Leo Models have
+// hard-coded values, but custom models' properties are based on their context
+// size, which may or may not have been provided by the user. For this reason,
+// we set the long_conversation_warning_character_limit  and
+// max_page_content_length after the model has been loaded and validated.
+void SetAssociatedContentLengthMetrics(mojom::Model& model) {
+  CHECK(ModelValidator::ValidateModel(model) == ModelValidationResult::kSuccess)
+      << "Model must be validated before setting associated content length "
+         "metrics.";
+
+  if (model.options->is_custom_model_options()) {
+    uint32_t max_page_content_length =
+        ModelService::GetMaxAssociatedContentLengthForModel(model);
+    model.options->get_custom_model_options()->max_page_content_length =
+        max_page_content_length;
+
+    base::CheckedNumeric<uint32> result = base::CheckMul<size_t>(
+        max_page_content_length, kMaxContentLengthThreshold);
+
+    if (result.IsValid()) {
+      model.options->get_custom_model_options()
+          ->long_conversation_warning_character_limit = result.ValueOrDie();
+    }
+  }
 }
 
 }  // namespace
@@ -260,6 +293,27 @@ void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
       }
     }
   }
+}
+
+// static
+size_t ModelService::GetMaxAssociatedContentLengthForModel(
+    const mojom::Model& model) {
+  if (model.options->is_leo_model_options()) {
+    return model.options->get_leo_model_options()->max_page_content_length;
+  }
+
+  const auto context_size =
+      model.options->get_custom_model_options()->context_size.value_or(
+          kDefaultCustomModelContextSize);
+
+  base::CheckedNumeric<uint32_t> max_content_length =
+      base::CheckMul(context_size, kDefaultCharsPerToken);
+
+  base::CheckedNumeric<uint32_t> default_content_length =
+      base::CheckMul(kDefaultCustomModelContextSize, kDefaultCharsPerToken);
+
+  return static_cast<size_t>(
+      max_content_length.ValueOrDefault(default_content_length.ValueOrDie()));
 }
 
 // static
@@ -353,6 +407,16 @@ void ModelService::AddCustomModel(mojom::ModelPtr model) {
       {"custom:",
        base::Uuid::GenerateRandomV4().AsLowercaseString().substr(0, 8)});
 
+  // Validate the model
+  ModelValidationResult result = ModelValidator::ValidateModel(*model);
+  if (result != ModelValidationResult::kSuccess) {
+    if (result == ModelValidationResult::kInvalidContextSize) {
+      VLOG(2) << "Invalid context size for model: " << model->key;
+      model->options->get_custom_model_options()->context_size =
+          kDefaultCustomModelContextSize;
+    }
+  }
+
   base::Value::List custom_models_pref =
       pref_service_->GetList(kCustomModelsList).Clone();
   base::Value::Dict model_dict = GetModelDict(std::move(model));
@@ -363,6 +427,19 @@ void ModelService::AddCustomModel(mojom::ModelPtr model) {
 }
 
 void ModelService::SaveCustomModel(uint32_t index, mojom::ModelPtr model) {
+  // Validate the model
+  ModelValidationResult result = ModelValidator::ValidateModel(*model);
+  if (result != ModelValidationResult::kSuccess) {
+    if (result == ModelValidationResult::kInvalidContextSize) {
+      VLOG(2) << "Invalid context size for model: " << model->key;
+      model->options->get_custom_model_options()->context_size =
+          kDefaultCustomModelContextSize;
+    }
+  }
+
+  // Set metrics for AI Chat content length warnings
+  SetAssociatedContentLengthMetrics(*model);
+
   base::Value::List custom_models_pref =
       pref_service_->GetList(kCustomModelsList).Clone();
 
@@ -473,6 +550,8 @@ std::vector<mojom::ModelPtr> ModelService::GetCustomModelsFromPrefs() {
         *model_pref.FindString(kCustomModelItemModelKey);
     custom_model_opts->endpoint =
         GURL(*model_pref.FindString(kCustomModelItemEndpointUrlKey));
+    custom_model_opts->context_size =
+        model_pref.FindInt(kCustomModelContextSizeKey);
     custom_model_opts->api_key =
         DecryptAPIKey(*model_pref.FindString(kCustomModelItemApiKey));
 
@@ -481,6 +560,19 @@ std::vector<mojom::ModelPtr> ModelService::GetCustomModelsFromPrefs() {
     model->display_name = *model_pref.FindString(kCustomModelItemLabelKey);
     model->options = mojom::ModelOptions::NewCustomModelOptions(
         std::move(custom_model_opts));
+
+    // Validate the model
+    ModelValidationResult result = ModelValidator::ValidateModel(*model);
+    if (result != ModelValidationResult::kSuccess) {
+      if (result == ModelValidationResult::kInvalidContextSize) {
+        VLOG(2) << "Invalid context size for model: " << model->key;
+        model->options->get_custom_model_options()->context_size =
+            kDefaultCustomModelContextSize;
+      }
+    }
+
+    // Set metrics for AI Chat content length warnings
+    SetAssociatedContentLengthMetrics(*model);
 
     models.push_back(std::move(model));
   }
@@ -523,10 +615,9 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
           *leo_model_opts, url_loader_factory, credential_manager);
     }
   } else if (model->options->is_custom_model_options()) {
-    auto& custom_model_opts = model->options->get_custom_model_options();
     DVLOG(1) << "Started AI engine: custom";
-    engine = std::make_unique<EngineConsumerOAIRemote>(*custom_model_opts,
-                                                       url_loader_factory);
+    engine =
+        std::make_unique<EngineConsumerOAIRemote>(*model, url_loader_factory);
   }
 
   return engine;

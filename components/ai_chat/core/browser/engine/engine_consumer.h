@@ -87,7 +87,7 @@ class EngineConsumer {
   // human message except page refine event.
   bool CanPerformCompletionRequest(
       const ConversationHistory& conversation_history) const;
-  int max_page_content_length_ = 0;
+  uint32_t max_page_content_length_ = 0;
 };
 
 }  // namespace ai_chat

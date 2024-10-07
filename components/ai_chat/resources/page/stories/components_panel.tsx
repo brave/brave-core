@@ -290,6 +290,12 @@ const MODELS: mojom.Model[] = [
       leoModelOptions: undefined,
       customModelOptions: {
         modelRequestName: 'phi3',
+        contextSize: 131072,
+        // The maxPageContentLength (131072 tokens * 4 chars per token) and
+        // longConversationWarningCharacterLimit (60% of maxPageContentLength)
+        // are both here only to satisfy the type checker.
+        maxPageContentLength: 131072 * 4,
+        longConversationWarningCharacterLimit: 131072 * 4 * 0.6,
         endpoint: { url: 'https://example.com' },
         apiKey: '123456',
       },

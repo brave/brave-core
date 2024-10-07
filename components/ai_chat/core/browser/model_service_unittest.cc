@@ -195,7 +195,8 @@ TEST_F(ModelServiceTest, AddAndModifyCustomModel) {
     mojom::ModelPtr model = mojom::Model::New();
     model->display_name = kDisplayName;
     model->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New(kRequestName, kEndpoint, kAPIKey));
+        mojom::CustomModelOptions::New(kRequestName, std::nullopt, std::nullopt,
+                                       std::nullopt, kEndpoint, kAPIKey));
 
     GetService()->AddCustomModel(std::move(model));
   }

@@ -46,6 +46,8 @@ class ModelService : public KeyedService {
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
   static void MigrateProfilePrefs(PrefService* profile_prefs);
+  static size_t GetMaxAssociatedContentLengthForModel(
+      const mojom::Model& model);
 
   void OnPremiumStatus(mojom::PremiumStatus status);
 

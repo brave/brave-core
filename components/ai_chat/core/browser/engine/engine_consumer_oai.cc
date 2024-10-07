@@ -24,6 +24,7 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
@@ -110,10 +111,13 @@ base::Value::List BuildMessages(
 }  // namespace
 
 EngineConsumerOAIRemote::EngineConsumerOAIRemote(
-    const mojom::CustomModelOptions& model_options,
+    const mojom::Model& model,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
-  model_options_ = model_options;
-  max_page_content_length_ = kCustomModelMaxPageContentLength;
+  model_options_ = *model.options->get_custom_model_options();
+  max_page_content_length_ =
+      ModelService::GetMaxAssociatedContentLengthForModel(model);
+
+  // Initialize the API client
   api_ = std::make_unique<OAIAPIClient>(url_loader_factory);
 }
 

@@ -68,8 +68,7 @@ class EngineConsumerOAIUnitTest : public testing::Test {
     model_->options =
         mojom::ModelOptions::NewCustomModelOptions(std::move(options));
 
-    engine_ = std::make_unique<EngineConsumerOAIRemote>(
-        *model_->options->get_custom_model_options(), nullptr);
+    engine_ = std::make_unique<EngineConsumerOAIRemote>(*model_, nullptr);
 
     engine_->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
   }

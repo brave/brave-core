@@ -58,13 +58,11 @@ class ModelListSection extends ModelListSectionBase {
   override ready() {
     super.ready()
 
-    // Fetch the custom models list
-    this.browserProxy_
-      .getSettingsHelper()
-      .getCustomModels()
-      .then((value: { models: Model[] }) => {
-        this.customModelsList_ = value.models
-      })
+    const settingsHelper = this.browserProxy_.getSettingsHelper()
+
+    settingsHelper.getCustomModels().then((value: { models: Model[] }) => {
+      this.customModelsList_ = value.models
+    })
 
     this.browserProxy_
       .getCallbackRouter()
