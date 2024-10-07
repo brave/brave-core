@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/containers/span.h"
 #include "base/notimplemented.h"
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
@@ -60,7 +61,7 @@ std::optional<std::vector<uint8_t>> BitcoinHDKeyring::SignMessage(
 }
 
 std::string BitcoinHDKeyring::ImportAccount(
-    const std::vector<uint8_t>& private_key) {
+    base::span<const uint8_t> private_key) {
   NOTREACHED_IN_MIGRATION();
   return "";
 }

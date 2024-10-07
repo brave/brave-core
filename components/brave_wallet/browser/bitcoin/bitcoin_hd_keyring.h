@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_base_keyring.h"
 #include "brave/components/brave_wallet/browser/secp256k1_hd_keyring.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -36,7 +37,7 @@ class BitcoinHDKeyring : public BitcoinBaseKeyring, public Secp256k1HDKeyring {
       const mojom::BitcoinKeyId& key_id,
       base::span<const uint8_t, 32> message) override;
 
-  std::string ImportAccount(const std::vector<uint8_t>& private_key) override;
+  std::string ImportAccount(base::span<const uint8_t> private_key) override;
   bool RemoveImportedAccount(const std::string& address) override;
   std::string GetDiscoveryAddress(size_t index) const override;
   std::vector<std::string> GetImportedAccountsForTesting() const override;

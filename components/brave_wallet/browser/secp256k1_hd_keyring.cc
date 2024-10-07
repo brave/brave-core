@@ -77,7 +77,7 @@ void Secp256k1HDKeyring::RemoveLastHDAccount() {
 }
 
 std::string Secp256k1HDKeyring::ImportAccount(
-    const std::vector<uint8_t>& private_key) {
+    base::span<const uint8_t> private_key) {
   std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromPrivateKey(private_key);
   if (!hd_key) {
     return std::string();
