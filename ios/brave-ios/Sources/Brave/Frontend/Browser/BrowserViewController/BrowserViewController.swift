@@ -245,13 +245,6 @@ public class BrowserViewController: UIViewController {
 
   // Product Notification Related Properties
 
-  /// Boolean which is tracking If a product notification is presented
-  /// in order to not to try to present another one over existing popover
-  var adblockProductNotificationPresented = false
-  /// The string domain will be kept temporarily which is tracking site notification presented
-  /// in order to not to process site list again and again
-  var currentBenchmarkWebsite = ""
-
   /// Used to determine when to present benchmark pop-overs
   /// Current session ad count is compared with live ad count
   /// So user will not be introduced with a pop-over directly
@@ -264,9 +257,6 @@ public class BrowserViewController: UIViewController {
   /// Boolean tracking  if Tab Tray is active on the screen
   /// Used to determine If pop-over should be presented
   var isTabTrayActive = false
-
-  /// Data Source object used to determine blocking stats
-  var benchmarkBlockingDataSource: BlockingSummaryDataSource?
 
   /// Boolean which is tracking If a full screen callout or onboarding is presented
   /// in order to not to try to present another callout  over existing one
@@ -353,10 +343,6 @@ public class BrowserViewController: UIViewController {
     self.deviceCheckClient = DeviceCheckClient(
       environment: BraveRewards.Configuration.current().environment
     )
-
-    if Locale.current.region?.identifier == "JP" {
-      benchmarkBlockingDataSource = BlockingSummaryDataSource()
-    }
 
     iapObserver = BraveVPN.iapObserver
     ntpP3AHelper = .init(p3aUtils: braveCore.p3aUtils, rewards: rewards)
@@ -956,12 +942,6 @@ public class BrowserViewController: UIViewController {
         self,
         selector: #selector(vpnConfigChanged),
         name: .NEVPNConfigurationChange,
-        object: nil
-      )
-      $0.addObserver(
-        self,
-        selector: #selector(showEducationalNotifications),
-        name: NSNotification.Name(rawValue: BraveGlobalShieldStats.didUpdateNotification),
         object: nil
       )
     }
