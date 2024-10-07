@@ -79,6 +79,7 @@ source_set("brave_prefs_util_impl") {
   deps = [
     "//brave/components/brave_shields/content/browser",
     "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/profiles:profile",
     "//chrome/common/extensions/api",
     "//components/content_settings/core/browser:cookie_settings",

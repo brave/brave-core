@@ -338,6 +338,7 @@ source_set("ui") {
       "//brave/components/sidebar/common",
       "//brave/components/speedreader/common/buildflags",
       "//chrome/app:generated_resources",
+      "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/profiles",
       "//chrome/browser/search",
       "//chrome/browser/sync",

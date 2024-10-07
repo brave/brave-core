@@ -40,6 +40,7 @@ source_set("browser_tests") {
     "//brave/components/tor/buildflags",
     "//chrome/browser",
     "//chrome/browser:browser_process",
+    "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
     "//chrome/browser/ui:browser_navigator_params_headers",
