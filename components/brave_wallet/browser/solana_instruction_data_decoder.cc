@@ -13,6 +13,7 @@
 #include "base/containers/span.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
+#include "base/numerics/byte_conversions.h"
 #include "base/sys_byteorder.h"
 #include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
@@ -638,22 +639,14 @@ std::optional<std::string> DecodeUint32String(base::span<const uint8_t> input,
 
 std::optional<uint64_t> DecodeUint64(base::span<const uint8_t> input,
                                      size_t& offset) {
-  if (offset >= input.size() || input.size() - offset < sizeof(uint64_t)) {
+  if (offset >= input.size() || input.size() - offset < 8u) {
     return std::nullopt;
   }
 
   // Read bytes in little endian order.
-  base::span<const uint8_t> s =
-      base::make_span(input.begin() + offset, sizeof(uint64_t));
-  uint64_t uint64_le = *reinterpret_cast<const uint64_t*>(s.data());
-
-  offset += sizeof(uint64_t);
-
-#if defined(ARCH_CPU_LITTLE_ENDIAN)
-  return uint64_le;
-#else
-  return base::ByteSwap(uint64_le);
-#endif
+  auto value = input.subspan(offset).first<8u>();
+  offset += 8u;
+  return base::U64FromLittleEndian(value);
 }
 
 std::optional<std::string> DecodeUint64String(base::span<const uint8_t> input,
