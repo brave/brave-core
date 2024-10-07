@@ -70,6 +70,10 @@ import os
   @Published var httpsUpgradeLevel: HTTPSUpgradeLevel {
     didSet {
       ShieldPreferences.httpsUpgradeLevel = httpsUpgradeLevel
+      HttpsUpgradeServiceFactory.get(privateMode: false)?.clearAllowlist(
+        fromStart: Date.distantPast,
+        end: Date.distantFuture
+      )
     }
   }
   @Published var shredLevel: SiteShredLevel {
@@ -122,7 +126,10 @@ import os
     var clearableSettings = [
       ClearableSetting(
         id: .history,
-        clearable: HistoryClearable(historyAPI: braveCore.historyAPI),
+        clearable: HistoryClearable(
+          historyAPI: braveCore.historyAPI,
+          httpsUpgradeService: HttpsUpgradeServiceFactory.get(privateMode: false)
+        ),
         isEnabled: true
       ),
       ClearableSetting(id: .cache, clearable: CacheClearable(), isEnabled: true),

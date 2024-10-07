@@ -16,11 +16,8 @@ OBJC_EXPORT
 @property(readonly) bool isHttpsByDefaultFeatureEnabled;
 
 - (instancetype)init;
-/// This returns a new URL with HTTPS if the url can be upgraded to HTTPS
-- (nullable NSURL*)upgradeToHTTPSForURL:(NSURL*)url;
-/// Add an exception for the URL so it will no longer upgrade it to HTTPS
-/// It will use the host of the URL to add the exception
-- (void)addExceptionForURL:(NSURL*)url;
+/// This returns if a url can be upgraded to HTTPS
+- (bool)canUpgradeToHTTPSForURL:(NSURL*)url;
 @end
 
 NS_ASSUME_NONNULL_END
