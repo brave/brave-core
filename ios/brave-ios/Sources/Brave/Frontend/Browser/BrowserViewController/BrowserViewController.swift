@@ -500,7 +500,6 @@ public class BrowserViewController: UIViewController {
     Preferences.Playlist.syncSharedFoldersAutomatically.observe(from: self)
     Preferences.NewTabPage.backgroundMediaTypeRaw.observe(from: self)
     ShieldPreferences.blockAdsAndTrackingLevelRaw.observe(from: self)
-    ShieldPreferences.httpsUpgradeLevelRaw.observe(from: self)
     Preferences.Privacy.screenTimeEnabled.observe(from: self)
 
     pageZoomListener = NotificationCenter.default.addObserver(
