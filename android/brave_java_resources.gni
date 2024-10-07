@@ -958,7 +958,6 @@ brave_java_resources = [
   "java/res/layout/tipping_warning_message_layout.xml",
   "java/res/layout/toolbar_space.xml",
   "java/res/layout/tracker_item_layout.xml",
-  "java/res/layout/tx_details_bottom_sheet.xml",
   "java/res/layout/user_wallet_activity.xml",
   "java/res/layout/view_holder_account_selector.xml",
   "java/res/layout/view_holder_onboarding_header_network_selector.xml",

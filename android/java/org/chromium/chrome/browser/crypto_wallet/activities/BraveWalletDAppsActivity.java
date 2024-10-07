@@ -91,12 +91,14 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
     private ActivityType mActivityType;
 
     @Override
-    protected void triggerLayoutInflation() {
+    protected void onPreCreate() {
+        super.onPreCreate();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow()
-                .setFlags(
-                        WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+    }
+
+    @Override
+    protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_brave_wallet_dapps);
         Intent intent = getIntent();
         mActivityType =
@@ -224,8 +226,9 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                                 this,
                                 transactionInfo -> {
                                     if (transactionInfo == null
-                                            || mPendingTxHelper.getPendingTransactions().size()
-                                                    == 0) {
+                                            || mPendingTxHelper
+                                                    .getPendingTransactions()
+                                                    .isEmpty()) {
                                         return;
                                     }
                                     if (mApproveTxBottomSheetDialogFragment != null
@@ -240,8 +243,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                                                     transactionInfo,
                                                     this);
                                     mApproveTxBottomSheetDialogFragment.show(
-                                            getSupportFragmentManager(),
-                                            ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
+                                            getSupportFragmentManager());
                                     mPendingTxHelper.mTransactionInfoLd.observe(
                                             this,
                                             transactionInfos -> {
@@ -280,8 +282,11 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         // TODO (pavi): update the flow with dapps model
         // (under-development) and get rid of explicit clear state call
         try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.getWalletModel().getDappsModel().clearDappsState();
+            final BraveActivity activity = BraveActivity.getBraveActivity();
+            final WalletModel walletModel = activity.getWalletModel();
+            if (walletModel != null) {
+                walletModel.getDappsModel().clearDappsState();
+            }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onDestroy " + e);
         }

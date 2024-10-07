@@ -58,7 +58,7 @@ public class BalanceHelper {
 
         // Native balances
         for (AccountInfo accountInfo : accounts) {
-            if (accountInfo.accountId.coin != selectedNetwork.coin) continue;
+            if (accountInfo == null || accountInfo.accountId.coin != selectedNetwork.coin) continue;
 
             // Get CoinType SOL balances
             if (selectedNetwork.coin == CoinType.SOL) {

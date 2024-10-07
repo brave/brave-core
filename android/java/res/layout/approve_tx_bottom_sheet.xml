@@ -3,20 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/wallet_bg"
-    android:layout_margin="12dp"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ApproveTxBottomSheetDialogFragment"
-    tools:ignore="RtlSymmetry,NestedWeights">
+    tools:context=".browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment">
 
     <TextView
         android:id="@+id/network_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="4dp"
-        android:paddingStart="24dp"
         android:text="@string/mainnet"
         android:textColor="@color/wallet_text_color"
         android:textSize="16sp"
@@ -166,20 +163,18 @@
         android:id="@+id/navigation_view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintHeight_default="spread"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tabs"
-        app:layout_constraintHeight_min="240dp"
-        app:layout_constraintBottom_toTopOf="@id/actions_container"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_constraintBottom_toTopOf="@id/actions_container" />
 
     <LinearLayout
         android:id="@+id/actions_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/navigation_view_pager">
+        app:layout_constraintTop_toBottomOf="@id/navigation_view_pager"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
             android:id="@+id/btn_reject_transactions"
