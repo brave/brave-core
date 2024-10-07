@@ -1,9 +1,9 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/android/signin/signin_manager_android.h"
+#include "chrome/browser/signin/android/signin_manager_android.h"
 
 #include "base/android/callback_android.h"
 #include "base/android/jni_string.h"
@@ -24,6 +24,6 @@ class UnusedClass {
 
 #define Java_SigninManagerImpl_create Java_BraveSigninManager_create
 #define Java_SigninManagerImpl_destroy Java_BraveSigninManager_destroy
-#include "src/chrome/browser/android/signin/signin_manager_android.cc"
+#include "src/chrome/browser/signin/android/signin_manager_android.cc"
 #undef Java_SigninManagerImpl_create
 #undef Java_SigninManagerImpl_destroy
