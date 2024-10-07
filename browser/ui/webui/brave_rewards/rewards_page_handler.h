@@ -114,6 +114,11 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
                        ToggleAdDislikeCallback callback) override;
   void ToggleAdInappropriate(const std::string& history_item,
                              ToggleAdInappropriateCallback callback) override;
+  void GetRewardsNotifications(
+      GetRewardsNotificationsCallback callback) override;
+  void ClearRewardsNotification(
+      const std::string& id,
+      ClearRewardsNotificationCallback callback) override;
   void EnableRewards(const std::string& country_code,
                      EnableRewardsCallback callback) override;
   void BeginExternalWalletLogin(

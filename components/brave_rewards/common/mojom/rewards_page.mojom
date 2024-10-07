@@ -78,6 +78,19 @@ struct CaptchaInfo {
   bool max_attempts_exceeded;
 };
 
+enum RewardsNotificationType {
+  kAutoContribute,
+  kTipsProcessed,
+  kGeneral
+};
+
+struct RewardsNotification {
+  string id;
+  RewardsNotificationType type;
+  mojo_base.mojom.Time timestamp;
+  array<string> args;
+};
+
 // Browser-side handler for requests from WebUI page.
 interface RewardsPageHandler {
   // Notifies the browser that that Rewards page has rendered and is ready to be
@@ -164,6 +177,12 @@ interface RewardsPageHandler {
   ToggleAdLike(string history_item) => ();
   ToggleAdDislike(string history_item) => ();
   ToggleAdInappropriate(string history_item) => ();
+
+  // Returns the currently active Rewards notifications for the user.
+  GetRewardsNotifications() => (array<RewardsNotification> notifications);
+
+  // Clears the Rewards notification with the specified ID.
+  ClearRewardsNotification(string id) => ();
 
   // Returns the list of available countries that the user can select from.
   GetAvailableCountries() => (AvailableCountryInfo available_countries);

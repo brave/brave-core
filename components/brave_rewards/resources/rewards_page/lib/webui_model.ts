@@ -11,12 +11,19 @@ import {
   externalWalletProviderFromString
 } from '../../shared/lib/external_wallet'
 
-import { AppModel, AppState, AdType, defaultState } from './app_model'
+import { AppModel, AppState, Notification, defaultState } from './app_model'
 import { RewardsPageProxy } from './rewards_page_proxy'
 import { createStateManager } from '../../shared/lib/state_manager'
 import { createAdsHistoryAdapter } from './ads_history_adapter'
 import { optional } from '../../shared/lib/optional'
 import * as mojom from './mojom'
+
+import {
+  convertMojoTime,
+  convertAdType,
+  mapNotification,
+  walletProvidersFromPublisherStatus
+} from './mojom_helpers'
 
 function normalizePlatform(name: string) {
   switch (name) {
@@ -26,15 +33,6 @@ function normalizePlatform(name: string) {
   }
   console.error('Invalid platform name: ' + name)
   return 'desktop'
-}
-
-function convertAdType(adType: AdType) {
-  switch (adType) {
-    case 'new-tab-page': return mojom.AdType.kNewTabPageAd
-    case 'notification': return mojom.AdType.kNotificationAd
-    case 'search-result': return mojom.AdType.kSearchResultAd
-    case 'inline-content': return mojom.AdType.kInlineContentAd
-  }
 }
 
 function parseCreatorPlatform(value: string) {
@@ -48,24 +46,6 @@ function parseCreatorPlatform(value: string) {
       return value
   }
   return ''
-}
-
-function convertMojoTime(time: any) {
-  return (Number(time?.internalValue) / 1000 - Date.UTC(1601, 0, 1)) || 0
-}
-
-function walletProvidersFromPublisherStatus(
-  value: number
-) : ExternalWalletProvider[] {
-  switch (value) {
-    case mojom.PublisherStatus.BITFLYER_VERIFIED:
-      return ['bitflyer']
-    case mojom.PublisherStatus.GEMINI_VERIFIED:
-      return ['gemini']
-    case mojom.PublisherStatus.UPHOLD_VERIFIED:
-      return ['uphold']
-  }
-  return []
 }
 
 export function createModel(): AppModel {
@@ -279,6 +259,20 @@ export function createModel(): AppModel {
     stateManager.update({ captchaInfo })
   }
 
+  async function updateNotifications() {
+    const { notifications } = await pageHandler.getRewardsNotifications()
+    const list: Notification[] = []
+    for (const item of notifications) {
+      const notification = mapNotification(item)
+      if (notification) {
+        list.push(notification)
+      } else {
+        await pageHandler.clearRewardsNotification(item.id)
+      }
+    }
+    stateManager.update({ notifications: list })
+  }
+
   async function loadData() {
     // Discards the supplied promise so that the `Promise.all` below does not
     // block on the result. Any calls that may be blocked on a network request
@@ -297,6 +291,7 @@ export function createModel(): AppModel {
       updateRecurringContributions(),
       updateAutoContributeInfo(),
       updateRewardsParameters(),
+      updateNotifications(),
       inBackground(updateCurrentCreator()),
       inBackground(updateCaptchaInfo({ pendingOnly: true }))
     ])
@@ -305,7 +300,9 @@ export function createModel(): AppModel {
   }
 
   browserProxy.callbackRouter.onRewardsStateUpdated.addListener(() => {
-    loadData()
+    if (document.visibilityState === 'visible') {
+      loadData()
+    }
   })
 
   // When displayed in a bubble, this page may be cached. In order to reset the
@@ -313,9 +310,12 @@ export function createModel(): AppModel {
   // "openTime" state when the document visibility changes and reload data.
   if (isBubble) {
     document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState !== 'visible') {
+        return
+      }
       const now = Date.now()
       const { openTime } = stateManager.getState()
-      if (now - openTime > 100) {
+      if (now - openTime > 200) {
         stateManager.update({ openTime: now })
         loadData()
       }
@@ -510,6 +510,15 @@ export function createModel(): AppModel {
       if (!success) {
         await updateCaptchaInfo({ pendingOnly: false })
       }
+    },
+
+    async clearNotification(id: string) {
+      stateManager.update({
+        notifications: stateManager.getState().notifications.filter((item) => {
+          return item.id !== id
+        })
+      })
+      await pageHandler.clearRewardsNotification(id)
     }
   }
 }

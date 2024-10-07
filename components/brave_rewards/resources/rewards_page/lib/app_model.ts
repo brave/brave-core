@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { ExternalWallet, ExternalWalletProvider } from '../../shared/lib/external_wallet'
+import { Notification } from '../../shared/components/notifications'
 import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { Optional } from '../../shared/lib/optional'
 
@@ -137,6 +138,8 @@ export interface CaptchaInfo {
   maxAttemptsExceeded: boolean
 }
 
+export { Notification }
+
 export interface AppState {
   loading: boolean
   openTime: number
@@ -154,6 +157,7 @@ export interface AppState {
   rewardsParameters: RewardsParameters | null
   currentCreator: CreatorInfo | null
   captchaInfo: CaptchaInfo | null
+  notifications: Notification[]
 }
 
 export type AppStateListener = (state: AppState) => void
@@ -188,6 +192,7 @@ export interface AppModel {
   acceptTermsOfServiceUpdate: () => Promise<void>
   dismissSelfCustodyInvite: () => Promise<void>
   onCaptchaResult: (success: boolean) => Promise<void>
+  clearNotification: (id: string) => Promise<void>
 }
 
 export function defaultState(): AppState {
@@ -211,7 +216,8 @@ export function defaultState(): AppState {
     recurringContributions: [],
     rewardsParameters: null,
     currentCreator: null,
-    captchaInfo: null
+    captchaInfo: null,
+    notifications: []
   }
 }
 
@@ -273,6 +279,8 @@ export function defaultModel(): AppModel {
 
     async dismissSelfCustodyInvite() {},
 
-    async onCaptchaResult(success) {}
+    async onCaptchaResult(success) {},
+
+    async clearNotification(id: string) {}
   }
 }
