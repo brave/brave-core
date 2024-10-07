@@ -4,3 +4,5 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import 'chrome://resources/brave/br_elements/br_toolbar/br_toolbar.js'
+
+import './item.js'
