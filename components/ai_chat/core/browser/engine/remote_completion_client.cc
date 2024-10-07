@@ -120,25 +120,26 @@ GURL GetEndpointUrl(bool premium, const std::string& path) {
 
 RemoteCompletionClient::RemoteCompletionClient(
     const std::string& model_name,
-    const base::flat_set<std::string_view>& stop_sequences,
+    base::flat_set<std::string_view> stop_sequences,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     AIChatCredentialManager* credential_manager)
     : model_name_(model_name),
-      stop_sequences_(stop_sequences),
-      api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
+      stop_sequences_(std::move(stop_sequences)),
+      api_request_helper_(GetNetworkTrafficAnnotationTag(),
+                          std::move(url_loader_factory)),
       credential_manager_(credential_manager) {}
 
 RemoteCompletionClient::~RemoteCompletionClient() = default;
 
 void RemoteCompletionClient::QueryPrompt(
     const std::string& prompt,
-    const std::vector<std::string>& extra_stop_sequences,
+    std::vector<std::string> extra_stop_sequences,
     GenerationCompletedCallback data_completed_callback,
     GenerationDataCallback
         data_received_callback /* = base::NullCallback() */) {
   auto callback = base::BindOnce(
       &RemoteCompletionClient::OnFetchPremiumCredential,
-      weak_ptr_factory_.GetWeakPtr(), prompt, extra_stop_sequences,
+      weak_ptr_factory_.GetWeakPtr(), prompt, std::move(extra_stop_sequences),
       std::move(data_completed_callback), std::move(data_received_callback));
   credential_manager_->FetchPremiumCredential(std::move(callback));
 }

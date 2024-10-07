@@ -92,7 +92,8 @@ class SubscriptionsSnapshot {
 
   // A map of |locale ==> channels[]| representing the channels subscribed to in
   // different locales.
-  const base::flat_map<std::string, std::vector<std::string>> channels() const {
+  const base::flat_map<std::string, std::vector<std::string>>& channels()
+      const {
     return channels_;
   }
 

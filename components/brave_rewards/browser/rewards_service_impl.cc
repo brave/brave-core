@@ -964,7 +964,7 @@ void RewardsServiceImpl::LoadURL(mojom::UrlRequestPtr request,
     response->url = request->url;
     response->status_code = response_status_code;
     response->body = test_response;
-    response->headers = test_headers;
+    response->headers = std::move(test_headers);
     std::move(callback).Run(std::move(response));
     return;
   }

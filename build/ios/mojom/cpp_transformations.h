@@ -69,7 +69,7 @@ NS_INLINE NSArray<NSNumber*>* NSArrayFromVector(std::vector<T> v) {
   typedef NSNumber* (*NSNumberCall)(id, SEL, T);
   NSNumberCall call = (NSNumberCall)method_getImplementation(method);
 
-  for (auto t : v) {
+  for (const auto& t : v) {
     NSNumber* number =
         reinterpret_cast<NSNumber*>(call(NSNumber.class, selector, t));
     [a addObject:number];
@@ -102,7 +102,7 @@ NS_INLINE std::vector<T> VectorFromNSArray(NSArray<NSNumber*>* a) {
 /// Convert a vector storing strings to an array of NSString's
 NS_INLINE NSArray<NSString*>* NSArrayFromVector(std::vector<std::string> v) {
   const auto a = [NSMutableArray new];
-  for (auto s : v) {
+  for (const auto& s : v) {
     [a addObject:[NSString stringWithCString:s.c_str()
                                     encoding:NSUTF8StringEncoding]];
   }
@@ -175,12 +175,12 @@ NS_INLINE NSNumber* NumberFromPrimitive(T t) {
 /// NSNumber *>
 template <typename T>
 NS_INLINE NSDictionary<NSString*, NSNumber*>* NSDictionaryFromMap(
-    std::map<std::string, T> m) {
+    const std::map<std::string, T>& m) {
   const auto d = [NSMutableDictionary new];
   if (m.empty()) {
     return @{};
   }
-  for (auto item : m) {
+  for (const auto& item : m) {
     d[[NSString stringWithCString:item.first.c_str()
                          encoding:NSUTF8StringEncoding]] =
         NumberFromPrimitive(item.second);
@@ -192,12 +192,12 @@ NS_INLINE NSDictionary<NSString*, NSNumber*>* NSDictionaryFromMap(
 /// NSNumber *>
 template <typename T>
 NS_INLINE NSDictionary<NSString*, NSNumber*>* NSDictionaryFromMap(
-    base::flat_map<std::string, T> m) {
+    const base::flat_map<std::string, T>& m) {
   const auto d = [NSMutableDictionary new];
   if (m.empty()) {
     return @{};
   }
-  for (auto item : m) {
+  for (const auto& item : m) {
     d[[NSString stringWithCString:item.first.c_str()
                          encoding:NSUTF8StringEncoding]] =
         NumberFromPrimitive(item.second);
@@ -207,12 +207,12 @@ NS_INLINE NSDictionary<NSString*, NSNumber*>* NSDictionaryFromMap(
 
 /// Convert a String to String mapping to an NSDictionary
 NS_INLINE NSDictionary<NSString*, NSString*>* NSDictionaryFromMap(
-    std::map<std::string, std::string> m) {
+    const std::map<std::string, std::string>& m) {
   const auto d = [NSMutableDictionary new];
   if (m.empty()) {
     return @{};
   }
-  for (auto item : m) {
+  for (const auto& item : m) {
     d[[NSString stringWithCString:item.first.c_str()
                          encoding:NSUTF8StringEncoding]] =
         [NSString stringWithCString:item.second.c_str()
@@ -223,12 +223,12 @@ NS_INLINE NSDictionary<NSString*, NSString*>* NSDictionaryFromMap(
 
 /// Convert a String to String mapping to an NSDictionary
 NS_INLINE NSDictionary<NSString*, NSString*>* NSDictionaryFromMap(
-    base::flat_map<std::string, std::string> m) {
+    const base::flat_map<std::string, std::string>& m) {
   const auto d = [NSMutableDictionary new];
   if (m.empty()) {
     return @{};
   }
-  for (auto item : m) {
+  for (const auto& item : m) {
     d[[NSString stringWithCString:item.first.c_str()
                          encoding:NSUTF8StringEncoding]] =
         [NSString stringWithCString:item.second.c_str()
@@ -241,13 +241,13 @@ NS_INLINE NSDictionary<NSString*, NSString*>* NSDictionaryFromMap(
 /// objects
 template <typename V, typename ObjCObj>
 NS_INLINE NSDictionary<NSString*, ObjCObj>* NSDictionaryFromMap(
-    std::map<std::string, V> m,
+    const std::map<std::string, V>& m,
     ObjCObj (^transformValue)(V)) {
   const auto d = [NSMutableDictionary new];
   if (m.empty()) {
     return @{};
   }
-  for (auto item : m) {
+  for (const auto& item : m) {
     d[[NSString stringWithCString:item.first.c_str()
                          encoding:NSUTF8StringEncoding]] =
         transformValue(item.second);
@@ -259,13 +259,13 @@ NS_INLINE NSDictionary<NSString*, ObjCObj>* NSDictionaryFromMap(
 /// objects
 template <typename V, typename ObjCObj>
 NS_INLINE NSDictionary<NSString*, ObjCObj>* NSDictionaryFromMap(
-    base::flat_map<std::string, V> m,
+    const base::flat_map<std::string, V>& m,
     ObjCObj (^transformValue)(V)) {
   const auto d = [NSMutableDictionary new];
   if (m.empty()) {
     return @{};
   }
-  for (auto item : m) {
+  for (const auto& item : m) {
     d[[NSString stringWithCString:item.first.c_str()
                          encoding:NSUTF8StringEncoding]] =
         transformValue(item.second);
@@ -277,14 +277,14 @@ NS_INLINE NSDictionary<NSString*, ObjCObj>* NSDictionaryFromMap(
 /// the key and the value types to Obj-C types
 template <typename K, typename KObjC, typename V, typename VObjC>
 NS_INLINE NSDictionary<KObjC, VObjC>* NSDictionaryFromMap(
-    std::map<K, V> m,
+    const std::map<K, V>& m,
     KObjC (^transformKey)(K),
     VObjC (^transformValue)(V)) {
   const auto d = [NSMutableDictionary new];
   if (m.empty()) {
     return @{};
   }
-  for (auto item : m) {
+  for (const auto& item : m) {
     d[transformKey(item.first)] = transformValue(item.second);
   }
   return d;
@@ -294,14 +294,14 @@ NS_INLINE NSDictionary<KObjC, VObjC>* NSDictionaryFromMap(
 /// the key and the value types to Obj-C types
 template <typename K, typename KObjC, typename V, typename VObjC>
 NS_INLINE NSDictionary<KObjC, VObjC>* NSDictionaryFromMap(
-    base::flat_map<K, V> m,
+    const base::flat_map<K, V>& m,
     KObjC (^transformKey)(K),
     VObjC (^transformValue)(V)) {
   const auto d = [NSMutableDictionary new];
   if (m.empty()) {
     return @{};
   }
-  for (auto item : m) {
+  for (const auto& item : m) {
     d[transformKey(item.first)] = transformValue(item.second);
   }
   return d;

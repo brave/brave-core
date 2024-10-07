@@ -54,8 +54,8 @@ KeyedService* AcceleratorServiceFactory::BuildServiceInstanceFor(
   DCHECK(profile);
 
   auto [accelerators, system_managed] = GetDefaultAccelerators();
-  return new AcceleratorService(profile->GetPrefs(), accelerators,
-                                system_managed);
+  return new AcceleratorService(profile->GetPrefs(), std::move(accelerators),
+                                std::move(system_managed));
 }
 
 }  // namespace commands

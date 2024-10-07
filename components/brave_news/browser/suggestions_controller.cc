@@ -48,14 +48,7 @@ double ProjectToRange(double value, double min, double max) {
 }
 
 base::flat_map<std::string, double> GetVisitWeightings(
-    const Publishers& publishers,
     const history::QueryResults& history) {
-  // Get a flat list of hostnames from publishers
-  base::flat_set<std::string> publisher_hosts;
-  for (const auto& [_, publisher] : publishers) {
-    publisher_hosts.insert(publisher->site_url.host());
-  }
-
   // Score hostnames from browsing history by how many times they appear
   base::flat_map<std::string, double> weightings;
   for (const auto& entry : history) {
@@ -80,8 +73,9 @@ base::flat_map<std::string, double> GetVisitWeightings(
 }
 
 // Get score for having visited a source.
-double GetVisitWeighting(const mojom::PublisherPtr& publisher,
-                         base::flat_map<std::string, double> visit_weightings) {
+double GetVisitWeighting(
+    const mojom::PublisherPtr& publisher,
+    const base::flat_map<std::string, double>& visit_weightings) {
   const auto host_name = publisher->site_url.host();
   auto it = visit_weightings.find(host_name);
   if (it == visit_weightings.end()) {
@@ -188,7 +182,7 @@ std::vector<std::string>
 SuggestionsController::GetSuggestedPublisherIdsWithHistory(
     const Publishers& publishers,
     const history::QueryResults& history) {
-  const auto visit_weightings = GetVisitWeightings(publishers, history);
+  const auto visit_weightings = GetVisitWeightings(history);
   base::flat_map<std::string, double> scores;
 
   for (const auto& [publisher_id, publisher] : publishers) {

@@ -38,7 +38,7 @@ class RemoteCompletionClient {
 
   RemoteCompletionClient(
       const std::string& model_name,
-      const base::flat_set<std::string_view>& stop_sequences,
+      base::flat_set<std::string_view> stop_sequences,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       AIChatCredentialManager* credential_manager);
 
@@ -50,7 +50,7 @@ class RemoteCompletionClient {
   // In non-SSE cases, only the data_completed_callback will be triggered.
   virtual void QueryPrompt(
       const std::string& prompt,
-      const std::vector<std::string>& stop_sequences,
+      std::vector<std::string> stop_sequences,
       GenerationCompletedCallback data_completed_callback,
       GenerationDataCallback data_received_callback = base::NullCallback());
   // Clears all in-progress requests

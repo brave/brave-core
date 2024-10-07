@@ -94,8 +94,10 @@ RequestOTRRule::ParseRules(const std::string& contents) {
   if (!root) {
     return base::unexpected("Failed to parse request_otr configuration");
   }
-  std::vector<std::string> hosts;
-  std::vector<std::unique_ptr<RequestOTRRule>> rules;
+  std::pair<std::vector<std::unique_ptr<RequestOTRRule>>,
+            base::flat_set<std::string>>
+      result;
+  auto& [rules, hosts] = result;
   base::JSONValueConverter<RequestOTRRule> converter;
   for (base::Value& it : root->GetList()) {
     std::unique_ptr<RequestOTRRule> rule = std::make_unique<RequestOTRRule>();
@@ -107,14 +109,13 @@ RequestOTRRule::ParseRules(const std::string& contents) {
         const std::string etldp1 =
             RequestOTRRule::GetETLDForRequestOTR(pattern.host());
         if (!etldp1.empty()) {
-          hosts.push_back(std::move(etldp1));
+          hosts.insert(std::move(etldp1));
         }
       }
     }
     rules.push_back(std::move(rule));
   }
-  return std::pair<std::vector<std::unique_ptr<RequestOTRRule>>,
-                   base::flat_set<std::string>>(std::move(rules), hosts);
+  return result;
 }
 
 bool RequestOTRRule::ShouldBlock(const GURL& url) const {

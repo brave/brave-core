@@ -1016,7 +1016,7 @@ void AdsServiceImpl::URLRequestCallback(
   mojom_url_response->url = url_loader->GetFinalURL();
   mojom_url_response->status_code = response_code;
   mojom_url_response->body = response_body ? *response_body : "";
-  mojom_url_response->headers = headers;
+  mojom_url_response->headers = std::move(headers);
 
   std::move(callback).Run(std::move(mojom_url_response));
 }

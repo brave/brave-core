@@ -53,8 +53,7 @@ YouTube::~YouTube() = default;
 std::string YouTube::GetMediaIdFromParts(
     const base::flat_map<std::string, std::string>& parts) {
   std::string result;
-  base::flat_map<std::string, std::string>::const_iterator iter =
-      parts.find("docid");
+  auto iter = parts.find("docid");
   if (iter != parts.end()) {
     result = iter->second;
   }
@@ -67,10 +66,8 @@ uint64_t YouTube::GetMediaDurationFromParts(
     const base::flat_map<std::string, std::string>& data,
     const std::string& media_key) {
   uint64_t duration = 0;
-  base::flat_map<std::string, std::string>::const_iterator iter_st =
-      data.find("st");
-  base::flat_map<std::string, std::string>::const_iterator iter_et =
-      data.find("et");
+  auto iter_st = data.find("st");
+  auto iter_et = data.find("et");
   if (iter_st != data.end() && iter_et != data.end()) {
     const auto start_time = base::SplitString(
         iter_st->second, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);

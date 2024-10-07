@@ -37,33 +37,25 @@ BraveWalletTabHelper::~BraveWalletTabHelper() {
 void BraveWalletTabHelper::AddSolanaConnectedAccount(
     const content::GlobalRenderFrameHostId& id,
     const std::string& account) {
-  base::flat_set<std::string> connection_set;
-  if (solana_connected_accounts_.contains(id)) {
-    connection_set = solana_connected_accounts_.at(id);
-  }
-  connection_set.insert(account);
-  solana_connected_accounts_[id] = std::move(connection_set);
+  solana_connected_accounts_[id].insert(account);
 }
 
 void BraveWalletTabHelper::RemoveSolanaConnectedAccount(
     const content::GlobalRenderFrameHostId& id,
     const std::string& account) {
-  if (!solana_connected_accounts_.contains(id)) {
+  auto it = solana_connected_accounts_.find(id);
+  if (it == solana_connected_accounts_.end()) {
     return;
   }
-  auto connection_set = solana_connected_accounts_.at(id);
-  connection_set.erase(account);
-  solana_connected_accounts_[id] = std::move(connection_set);
+  it->second.erase(account);
 }
 
 bool BraveWalletTabHelper::IsSolanaAccountConnected(
     const content::GlobalRenderFrameHostId& id,
     const std::string& account) {
-  if (!solana_connected_accounts_.contains(id)) {
-    return false;
-  }
-  auto connection_set = solana_connected_accounts_.at(id);
-  return connection_set.contains(account);
+  auto it = solana_connected_accounts_.find(id);
+  return it == solana_connected_accounts_.end() ? false
+                                                : it->second.contains(account);
 }
 
 void BraveWalletTabHelper::ClearSolanaConnectedAccounts(

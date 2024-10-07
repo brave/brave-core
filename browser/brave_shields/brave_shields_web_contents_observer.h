@@ -80,10 +80,6 @@ class BraveShieldsWebContentsObserver
   friend class content::WebContentsUserData<BraveShieldsWebContentsObserver>;
   friend class BraveShieldsWebContentsObserverBrowserTest;
 
-  using BraveShieldsRemotesMap = base::flat_map<
-      content::RenderFrameHost*,
-      mojo::AssociatedRemote<brave_shields::mojom::BraveShields>>;
-
   // Allows indicating a implementor of brave_shields::mojom::BraveShieldsHost
   // other than this own class, for testing purposes only.
   static void SetReceiverImplForTesting(BraveShieldsWebContentsObserver* impl);
