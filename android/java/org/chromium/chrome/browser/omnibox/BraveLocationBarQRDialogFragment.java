@@ -52,6 +52,13 @@ public class BraveLocationBarQRDialogFragment
     // Intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
 
+    // The Android Fragment framework requires a zero-argument constructor to
+    // instantiate fragments. It usually happens on a fragment re-creation
+    // https://github.com/brave/brave-browser/issues/41454
+    public BraveLocationBarQRDialogFragment() {
+        super();
+    }
+
     private BraveLocationBarQRDialogFragment(LocationBarMediator locationBarMediator) {
         mLocationBarMediator = locationBarMediator;
     }
@@ -64,6 +71,13 @@ public class BraveLocationBarQRDialogFragment
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // That could happen on a fragment re-creation, not a big deal if we don't
+        // show the QR code dialog as everything gets re-created at that stage
+        if (mLocationBarMediator == null) {
+            dismiss();
+
+            return null;
+        }
         View view =
                 inflater.inflate(R.layout.fragment_brave_location_bar_qr_dialog, container, false);
 
