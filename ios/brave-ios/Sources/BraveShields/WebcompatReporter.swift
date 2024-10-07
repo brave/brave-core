@@ -10,6 +10,7 @@ import os.log
 
 public class WebcompatReporter {
   static let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "WebcompatReporter")
+//private var api: WebcompatReporterAPI!
 
   /// The raw values of the web-report.
   public struct Report {
@@ -139,9 +140,9 @@ public class WebcompatReporter {
   /// - Returns: A deferred boolean on whether or not it reported successfully (default queue: main)
   @discardableResult
   public static func send(report: Report) async -> Bool {
+//    let api: WebcompatReporterAPI!
     let apiKey = kBraveStatsAPIKey
     let payload = Payload(report: report, apiKey: apiKey, languageCode: currentLanguageCode)
-
     guard !kWebcompatReportEndpoint.isEmpty, let endpoint = URL(string: kWebcompatReportEndpoint)
     else {
       Self.log.error(

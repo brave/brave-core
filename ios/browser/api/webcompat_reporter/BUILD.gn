@@ -1,0 +1,63 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/ios/mojom/mojom_wrappers.gni")
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+config("mojom_header_config") {
+  visibility = [
+    ":*",
+    "//brave/ios/app",
+  ]
+  include_dirs =
+      [ "$root_gen_dir/brave/components/webcompat_reporter/common/ios" ]
+}
+
+source_set("webcompat_reporter") {
+  configs += [ ":mojom_header_config" ]
+  sources = [
+    "webcompat_reporter+private.h",
+    "webcompat_reporter.h",
+    "webcompat_reporter.mm",
+    "webcompat_reporter_service_factory.h",
+    "webcompat_reporter_service_factory.mm",
+  ]
+
+    deps = [
+    ":webcompat_reporter_mojom_wrappers",
+    "//base",
+    "//brave/base/mac",
+    "//brave/components/webcompat_reporter/browser:browser",
+#    "//brave/components/webcompat_reporter/common",
+#    "//brave/components/api_request_helper",
+#    "//brave/components/brave_stats/browser",
+#    "//brave/components/constants",
+#    "//brave/components/l10n/common",
+#    "//brave/components/resources:strings_grit",
+#    "//brave/ios/browser/skus",
+#    "//components/keyed_service/ios",
+#    "//components/prefs",
+#    "//components/user_prefs",
+#    "//components/version_info",
+    "//ios/chrome/browser/shared/model/application_context",
+#    "//ios/chrome/browser/shared/model/browser_state",
+#    "//ios/chrome/common",
+#    "//net/traffic_annotation",
+#    "//services/data_decoder/public/cpp",
+#    "//services/network/public/cpp",
+#    "//services/service_manager/public/cpp",
+#    "//ui/base",
+#    "//url",
+  ]
+
+  frameworks = [ "Foundation.framework" ]
+}
+
+ios_objc_mojom_wrappers("webcompat_reporter_mojom_wrappers") {
+  mojom_target = "//brave/components/webcompat_reporter/common:mojom"
+  sources = [ "//brave/components/webcompat_reporter/common/webcompat_reporter.mojom" ]
+  output_dir = "$root_gen_dir/brave/components/webcompat_reporter/common/ios"
+}

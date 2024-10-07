@@ -33,8 +33,10 @@ class WebcompatReporterService : public KeyedService,
                                  public mojom::WebcompatReporterHandler {
  public:
   explicit WebcompatReporterService(
+#if !BUILDFLAG(IS_IOS)
       brave_shields::AdBlockService* adblock_service,
       component_updater::ComponentUpdateService* component_update_service,
+#endif  // !BUILDFLAG(IS_IOS)
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   WebcompatReporterService(const WebcompatReporterService&) = delete;
   WebcompatReporterService& operator=(const WebcompatReporterService&) = delete;
@@ -51,12 +53,17 @@ class WebcompatReporterService : public KeyedService,
   friend class WebcompatReporterServiceUnitTest;
   WebcompatReporterService();
   void SetUpWebcompatReporterServiceForTest(
-      std::unique_ptr<WebcompatReportUploader> report_uploader,
-      component_updater::ComponentUpdateService* component_update_service);
+      std::unique_ptr<WebcompatReportUploader> report_uploader
+#if !BUILDFLAG(IS_IOS)
+      ,component_updater::ComponentUpdateService* component_update_service
+#endif  // !BUILDFLAG(IS_IOS)
+     );
 
   void SubmitReportInternal(const Report& report_data);
+#if !BUILDFLAG(IS_IOS)
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
   raw_ptr<brave_shields::AdBlockService> adblock_service_;
+#endif  // !BUILDFLAG(IS_IOS)
   std::unique_ptr<WebcompatReportUploader> report_uploader_;
   mojo::ReceiverSet<mojom::WebcompatReporterHandler> receivers_;
   base::WeakPtrFactory<WebcompatReporterService> weak_factory_{this};

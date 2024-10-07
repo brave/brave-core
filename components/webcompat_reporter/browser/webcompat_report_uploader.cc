@@ -192,7 +192,9 @@ void WebcompatReportUploader::CreateAndStartURLLoader(
     const GURL& upload_url,
     const std::string& content_type,
     const std::string& post_data) {
+#if !BUILDFLAG(IS_IOS)
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+#endif  // !BUILDFLAG(IS_IOS)
 
   auto resource_request = std::make_unique<network::ResourceRequest>();
   // upload_url only includes the origin and path, and not the fragment or
@@ -235,7 +237,9 @@ void WebcompatReportUploader::CreateAndStartURLLoader(
 
 void WebcompatReportUploader::OnSimpleURLLoaderComplete(
     std::unique_ptr<std::string> response_body) {
+#if !BUILDFLAG(IS_IOS)
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+#endif  // !BUILDFLAG(IS_IOS)
 
   bool success = !!response_body;
 

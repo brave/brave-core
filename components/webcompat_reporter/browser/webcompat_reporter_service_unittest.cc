@@ -169,9 +169,9 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojo) {
       webcompat_reporter::mojom::ComponentInfo::New("name", "id", "version"));
   std::vector<uint8_t> screenshot{1, 2, 3, 4};
   auto report_info = webcompat_reporter::mojom::ReportInfo::New(
-      "channel", "brave_version", "https://abc.url/p1/p2", true,
+      "channel", "brave_version", "https://abc.url/p1/p2", "true",
       "ad_block_setting", "fp_block_setting", "ad_block_list_names",
-      "languages", true, true, key_val_data, key_val_data,
+      "languages", "true", "true", key_val_data, key_val_data,
       std::move(components), screenshot);
 
   EXPECT_CALL(*static_cast<component_updater::MockComponentUpdateService*>(
@@ -193,13 +193,13 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojo) {
         EXPECT_EQ(report.channel, "channel");
         EXPECT_EQ(report.brave_version, "brave_version");
         EXPECT_EQ(report.report_url, "https://abc.url/p1/p2");
-        EXPECT_TRUE(report.shields_enabled);
+        EXPECT_EQ(report.shields_enabled, "true");
         EXPECT_EQ(report.ad_block_setting, "ad_block_setting");
         EXPECT_EQ(report.fp_block_setting, "fp_block_setting");
         EXPECT_EQ(report.ad_block_list_names, "ad_block_list_names");
         EXPECT_EQ(report.languages, "languages");
-        EXPECT_TRUE(report.language_farbling);
-        EXPECT_TRUE(report.brave_vpn_connected);
+        EXPECT_EQ(report.language_farbling, "true");
+        EXPECT_EQ(report.brave_vpn_connected, true);
 
         check_report_dict(report.details);
         check_report_dict(report.contact);

@@ -43,6 +43,7 @@
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/api/web_image/web_image+private.h"
+#include "brave/ios/browser/api/webcompat_reporter/webcompat_reporter+private.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/ui/webui/brave_web_ui_controller_factory.h"
 #include "components/component_updater/component_updater_paths.h"
@@ -512,6 +513,10 @@ static bool CustomLogHandler(int severity,
   return [[AIChat alloc] initWithChromeBrowserState:_mainBrowserState
                                            delegate:delegate];
 }
+
+- (WebcompatReporter*)webcompatReporterAPI {
+  return [[WebcompatReporter alloc] initWithChromeBrowserState:_mainBrowserState];
+} 
 
 + (bool)initializeICUForTesting {
   NSBundle* bundle = [NSBundle bundleForClass:self];

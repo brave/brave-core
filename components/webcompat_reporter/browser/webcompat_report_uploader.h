@@ -31,13 +31,13 @@ struct Report {
   std::optional<std::string> brave_version;
   std::optional<std::string> channel;
   std::optional<GURL> report_url;
-  std::optional<bool> shields_enabled;
+  std::optional<std::string> shields_enabled;
   std::optional<std::string> ad_block_setting;
   std::optional<std::string> fp_block_setting;
   std::optional<std::string> ad_block_list_names;
   std::optional<std::string> languages;
-  std::optional<bool> language_farbling;
-  std::optional<bool> brave_vpn_connected;
+  std::optional<std::string> language_farbling;
+  std::optional<std::string> brave_vpn_connected;
   std::optional<base::Value> details;
   std::optional<base::Value> contact;
   std::optional<base::Value> ad_block_components;

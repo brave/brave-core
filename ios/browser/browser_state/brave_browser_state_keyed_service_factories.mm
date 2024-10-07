@@ -16,6 +16,7 @@
 #include "brave/ios/browser/favicon/brave_ios_favicon_loader_factory.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
 #include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory+private.h"
+#include "brave/ios/browser/api/webcompat_reporter/webcompat_reporter_service_factory.h"
 
 namespace brave {
 
@@ -31,6 +32,7 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   skus::SkusServiceFactory::GetInstance();
   brave::URLSanitizerServiceFactory::GetInstance();
   debounce::DebounceServiceFactory::GetInstance();
+  webcompat_reporter::WebcompatReporterServiceFactory::GetInstance();
 }
 
 }  // namespace brave

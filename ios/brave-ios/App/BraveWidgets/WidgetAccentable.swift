@@ -7,10 +7,10 @@ import SwiftUI
 
 extension Image {
   func widgetAccentedRenderingModeFullColor() -> some View {
-    if #available(iOS 18.0, *) {
-      return self.widgetAccentedRenderingMode(.fullColor)
-    } else {
+  //  if #available(iOS 18.0, *) {
+ //     return self.widgetAccentedRenderingMode(.fullColor)
+ //   } else {
       return self
-    }
+ //   }
   }
 }

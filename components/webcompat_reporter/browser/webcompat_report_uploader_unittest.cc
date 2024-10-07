@@ -96,9 +96,9 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
 
   report.channel = "dev";
   report.brave_version = "1.231.45";
-  report.shields_enabled = true;
-  report.language_farbling = true;
-  report.brave_vpn_connected = true;
+  report.shields_enabled = "true";
+  report.language_farbling = "true";
+  report.brave_vpn_connected = "true";
   report.ad_block_setting = "ad_block_setting";
   report.fp_block_setting = "fp_block_setting";
   report.ad_block_list_names = "ad_block_list_names";

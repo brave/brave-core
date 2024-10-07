@@ -52,6 +52,11 @@ namespace {
 constexpr char kUISourceHistogramName[] = "Brave.Webcompat.UISource";
 constexpr int kMaxScreenshotPixelCount = 1280 * 720;
 
+
+const std::string BoolToString(bool value) {
+  return value ? "true" : "false";
+}
+
 }  // namespace
 
 WebcompatReporterDOMHandler::WebcompatReporterDOMHandler(Profile* profile)
@@ -76,7 +81,7 @@ void WebcompatReporterDOMHandler::InitAdditionalParameters(Profile* profile) {
   brave_vpn::BraveVpnService* vpn_service =
       brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
   if (vpn_service != nullptr) {
-    pending_report_.brave_vpn_connected = vpn_service->IsConnected();
+    pending_report_.brave_vpn_connected = BoolToString(vpn_service->IsConnected());
   }
 #endif
 
@@ -84,7 +89,7 @@ void WebcompatReporterDOMHandler::InitAdditionalParameters(Profile* profile) {
   pending_report_.languages =
       profile_prefs->GetString(language::prefs::kAcceptLanguages);
   pending_report_.language_farbling =
-      profile_prefs->GetBoolean(brave_shields::prefs::kReduceLanguageEnabled);
+      BoolToString(profile_prefs->GetBoolean(brave_shields::prefs::kReduceLanguageEnabled));
   pending_report_.channel = brave::GetChannelName();
 }
 
@@ -214,7 +219,7 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
   const base::Value* details_arg = submission_args.Find(kDetailsField);
   const base::Value* contact_arg = submission_args.Find(kContactField);
   pending_report_.shields_enabled =
-      submission_args.FindBool(kShieldsEnabledField).value_or(false);
+      BoolToString(submission_args.FindBool(kShieldsEnabledField).value_or(false));
 
   const auto ui_source_int = submission_args.FindInt(kUISourceField);
   if (ui_source_int) {

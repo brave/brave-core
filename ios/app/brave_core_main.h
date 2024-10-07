@@ -26,6 +26,7 @@
 @class NTPBackgroundImagesService;
 @class DeAmpPrefs;
 @class AIChat;
+@class WebcompatReporter;
 @class HTTPSUpgradeExceptionsService;
 @protocol AIChatDelegate;
 @protocol IpfsAPI;
@@ -105,6 +106,7 @@ OBJC_EXPORT
 
 - (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate;
 
+- (WebcompatReporter*)webcompatReporterAPI;
 /// Sets up bundle path overrides and initializes ICU from the BraveCore bundle
 /// without setting up a BraveCoreMain instance.
 ///
