@@ -46,15 +46,22 @@
           net::ERR_SSL_PINNED_KEY_NOT_IN_CERT_CHAIN) { \
     policyDecisionCancellationError = nil;             \
   }
-#define BRAVE_DID_FAIL_PROVISIONAL_NAVIGATION                        \
-  if (self.pendingNavigationInfo.cancellationError &&                \
-      self.pendingNavigationInfo.cancellationError.code ==           \
-          net::ERR_SSL_PINNED_KEY_NOT_IN_CERT_CHAIN) {               \
-    error = web::NetErrorFromError([NSError                          \
-        errorWithDomain:NSURLErrorDomain                             \
-                   code:NSURLErrorServerCertificateUntrusted         \
-               userInfo:self.pendingNavigationInfo.cancellationError \
-                            .userInfo]);                             \
+#define BRAVE_DID_FAIL_PROVISIONAL_NAVIGATION                                \
+  if (self.pendingNavigationInfo.cancellationError &&                        \
+      self.pendingNavigationInfo.cancellationError.code ==                   \
+          net::ERR_SSL_PINNED_KEY_NOT_IN_CERT_CHAIN) {                       \
+    NSMutableDictionary* userInfo =                                          \
+        [self.pendingNavigationInfo.cancellationError.userInfo mutableCopy]; \
+    userInfo[NSURLErrorFailingURLStringErrorKey] =                           \
+        base::SysUTF8ToNSString(navigationContext->GetUrl().spec());         \
+    userInfo[web::kNSErrorFailingURLKey] =                                   \
+        [NSURL URLWithString:base::SysUTF8ToNSString(                        \
+                                 navigationContext->GetUrl().spec())];       \
+    error = [NSError errorWithDomain:NSURLErrorDomain                        \
+                                code:NSURLErrorServerCertificateUntrusted    \
+                            userInfo:userInfo];                              \
+    self.pendingNavigationInfo.cancellationError = nil;                      \
+    self.pendingNavigationInfo.cancelled = NO;                               \
   }
 #include "src/ios/web/navigation/crw_wk_navigation_handler.mm"
 #undef BRAVE_DID_FAIL_PROVISIONAL_NAVIGATION
@@ -67,7 +74,8 @@
 
 - (NSURL*)URLForProtectionSpace:(NSURLProtectionSpace*)protectionSpace {
   return [NSURL
-      URLWithString:[NSString stringWithFormat:@"https://%@:%ld",
+      URLWithString:[NSString stringWithFormat:@"%@://%@:%ld",
+                                               protectionSpace.protocol,
                                                protectionSpace.host,
                                                static_cast<long>(
                                                    protectionSpace.port)]];
@@ -92,13 +100,36 @@
       NSMutableDictionary* userInfo = [[NSMutableDictionary alloc] init];
       userInfo[web::kNSErrorPeerCertificateChainKey] =
           [self certificateChainForTrust:challenge.protectionSpace.serverTrust];
-      userInfo[web::kNSErrorFailingURLKey] =
-          [self URLForProtectionSpace:challenge.protectionSpace];
       self.pendingNavigationInfo.cancellationError =
           [NSError errorWithDomain:net::kNSErrorDomain
                               code:net::ERR_SSL_PINNED_KEY_NOT_IN_CERT_CHAIN
                           userInfo:userInfo];
     }
+
+    if (SecTrustGetCertificateCount(challenge.protectionSpace.serverTrust)) {
+      scoped_refptr<net::X509Certificate> leafCert = nil;
+      base::apple::ScopedCFTypeRef<CFArrayRef> certificateChain(
+          SecTrustCopyCertificateChain(challenge.protectionSpace.serverTrust));
+      SecCertificateRef secCertificate =
+          base::apple::CFCastStrict<SecCertificateRef>(
+              CFArrayGetValueAtIndex(certificateChain.get(), 0));
+      leafCert = net::x509_util::CreateX509CertificateFromSecCertificate(
+          base::apple::ScopedCFTypeRef<SecCertificateRef>(
+              secCertificate, base::scoped_policy::RETAIN),
+          {});
+
+      if (leafCert) {
+        bool is_recoverable =
+            policy ==
+            web::CERT_ACCEPT_POLICY_RECOVERABLE_ERROR_UNDECIDED_BY_USER;
+        std::string host =
+            base::SysNSStringToUTF8(challenge.protectionSpace.host);
+        _certVerificationErrors->Put(
+            web::CertHostPair(leafCert, host),
+            web::CertVerificationError(is_recoverable, certStatus));
+      }
+    }
+
     completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge,
                       nil);
     return YES;
