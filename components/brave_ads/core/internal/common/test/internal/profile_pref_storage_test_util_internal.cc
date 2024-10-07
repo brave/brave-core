@@ -22,6 +22,11 @@ base::flat_map</*uuid=*/std::string, PrefValueInfo>& ProfilePrefStorage() {
 
 }  // namespace
 
+bool FindProfilePref(const std::string& path) {
+  return base::Contains(ProfilePrefStorage(),
+                        GetUuidForCurrentTestAndValue(path));
+}
+
 PrefValueInfo& ProfilePref(const std::string& path) {
   const std::string uuid = GetUuidForCurrentTestAndValue(path);
   return ProfilePrefStorage()[uuid];

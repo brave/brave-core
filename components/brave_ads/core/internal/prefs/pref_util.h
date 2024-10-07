@@ -39,6 +39,7 @@ void SetProfileTimePref(const std::string& path, base::Time value);
 void SetProfileTimeDeltaPref(const std::string& path, base::TimeDelta value);
 
 void ClearProfilePref(const std::string& path);
+bool FindProfilePref(const std::string& path);
 bool HasProfilePrefPath(const std::string& path);
 
 // Gets local state preference values.
@@ -66,6 +67,7 @@ void SetLocalStateTimePref(const std::string& path, base::Time value);
 void SetLocalStateTimeDeltaPref(const std::string& path, base::TimeDelta value);
 
 void ClearLocalStatePref(const std::string& path);
+bool FindLocalStatePref(const std::string& path);
 bool HasLocalStatePrefPath(const std::string& path);
 
 }  // namespace brave_ads

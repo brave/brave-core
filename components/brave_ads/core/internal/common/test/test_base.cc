@@ -240,11 +240,13 @@ void TestBase::MockAdsClient() {
       std::make_unique<Database>(ProfilePath().AppendASCII(kDatabaseFilename));
   MockRunDBTransaction(ads_client_mock_, *database_);
 
+  MockFindProfilePref(ads_client_mock_);
   MockGetProfilePref(ads_client_mock_);
   MockSetProfilePref(ads_client_mock_, *this);
   MockClearProfilePref(ads_client_mock_);
   MockHasProfilePrefPath(ads_client_mock_);
 
+  MockFindLocalStatePref(ads_client_mock_);
   MockGetLocalStatePref(ads_client_mock_);
   MockSetLocalStatePref(ads_client_mock_, *this);
   MockClearLocalStatePref(ads_client_mock_);

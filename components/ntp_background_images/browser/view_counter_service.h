@@ -15,6 +15,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/timer/wall_clock_timer.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/public/serving/new_tab_page_ad_serving_condition_matcher_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
@@ -81,7 +82,11 @@ class ViewCounterService : public KeyedService,
   std::optional<base::Value::Dict> GetNextWallpaperForDisplay();
   std::optional<base::Value::Dict> GetCurrentWallpaperForDisplay();
   std::optional<base::Value::Dict> GetCurrentWallpaper() const;
-  std::optional<base::Value::Dict> GetCurrentBrandedWallpaper() const;
+  std::optional<base::Value::Dict> GetCurrentBrandedWallpaper();
+  std::optional<brave_ads::NewTabPageAdConditionMatchers> GetConditionMatchers(
+      const base::Value::Dict& dict);
+  std::optional<base::Value::Dict>
+  GetNextBrandedWallpaperWhichMatchesConditions();
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaperFromAdInfo() const;
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaperFromModel() const;
   std::vector<TopSite> GetTopSitesData() const;
@@ -168,6 +173,7 @@ class ViewCounterService : public KeyedService,
   raw_ptr<NTPBackgroundImagesService> service_ = nullptr;
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
   raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<PrefService> local_state_prefs_ = nullptr;
   bool is_supported_locale_ = false;
   PrefChangeRegistrar pref_change_registrar_;
   ViewCounterModel model_;

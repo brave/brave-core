@@ -99,20 +99,11 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
       "Test New Tab Page Ad Campaign 1";
   catalog_creative_new_tab_page_ad.payload.target_url =
       GURL("https://brave.com/1/new_tab_page_ad");
-  CatalogNewTabPageAdWallpaperInfo wallpaper_1;
-  wallpaper_1.image_url = GURL("https://brave.com/1/test2.jpg");
-  CatalogNewTabPageAdWallpaperFocalPointInfo focal_point_1;
-  focal_point_1.x = 1200;
-  focal_point_1.y = 1400;
-  wallpaper_1.focal_point = focal_point_1;
-  catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper_1);
-  CatalogNewTabPageAdWallpaperInfo wallpaper_2;
-  wallpaper_2.image_url = GURL("https://brave.com/1/test3.jpg");
-  CatalogNewTabPageAdWallpaperFocalPointInfo focal_point_2;
-  focal_point_2.x = 1200;
-  focal_point_2.y = 1400;
-  wallpaper_2.focal_point = focal_point_2;
-  catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper_2);
+  CatalogNewTabPageAdWallpaperInfo wallpaper;
+  wallpaper.image_url = GURL("https://brave.com/1/test2.jpg");
+  wallpaper.focal_point =
+      CatalogNewTabPageAdWallpaperFocalPointInfo{.x = 1'200, .y = 1'400};
+  catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper);
 
   catalog_creative_new_tab_page_ads.push_back(catalog_creative_new_tab_page_ad);
 
@@ -297,20 +288,12 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
       "Test New Tab Page Ad Campaign 2";
   catalog_creative_new_tab_page_ad.payload.target_url =
       GURL("https://brave.com/2/new_tab_page_ad");
-  CatalogNewTabPageAdWallpaperInfo wallpaper_1;
-  wallpaper_1.image_url = GURL("https://brave.com/2/test2.jpg");
-  CatalogNewTabPageAdWallpaperFocalPointInfo focal_point_1;
-  focal_point_1.x = 1'000;
-  focal_point_1.y = 1'200;
-  wallpaper_1.focal_point = focal_point_1;
-  catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper_1);
-  CatalogNewTabPageAdWallpaperInfo wallpaper_2;
-  wallpaper_2.image_url = GURL("https://brave.com/2/test3.jpg");
-  CatalogNewTabPageAdWallpaperFocalPointInfo focal_point_2;
-  focal_point_2.x = 500;
-  focal_point_2.y = 600;
-  wallpaper_2.focal_point = focal_point_2;
-  catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper_2);
+  CatalogNewTabPageAdWallpaperInfo wallpaper;
+  wallpaper.image_url = GURL("https://brave.com/2/test2.jpg");
+  wallpaper.focal_point =
+      CatalogNewTabPageAdWallpaperFocalPointInfo{.x = 1'000, .y = 1'200};
+  wallpaper.condition_matchers.emplace("brave.today.opted_in", "1");
+  catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper);
 
   catalog_creative_new_tab_page_ads.push_back(catalog_creative_new_tab_page_ad);
 

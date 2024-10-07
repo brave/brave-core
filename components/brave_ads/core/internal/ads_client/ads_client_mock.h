@@ -96,6 +96,7 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD(void, RecordP2AEvents, (const std::vector<std::string>& events));
 
+  MOCK_METHOD(bool, FindProfilePref, (const std::string& path), (const));
   MOCK_METHOD(std::optional<base::Value>,
               GetProfilePref,
               (const std::string& path));
@@ -105,6 +106,7 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD(void, ClearProfilePref, (const std::string& path));
   MOCK_METHOD(bool, HasProfilePrefPath, (const std::string& path), (const));
 
+  MOCK_METHOD(bool, FindLocalStatePref, (const std::string& path), (const));
   MOCK_METHOD(std::optional<base::Value>,
               GetLocalStatePref,
               (const std::string& path));

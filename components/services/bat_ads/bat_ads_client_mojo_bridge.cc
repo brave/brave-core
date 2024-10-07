@@ -271,6 +271,19 @@ void BatAdsClientMojoBridge::Log(const char* file,
   }
 }
 
+bool BatAdsClientMojoBridge::FindProfilePref(const std::string& path) const {
+  if (!bat_ads_client_associated_remote_.is_bound()) {
+    return cached_profile_prefs_.contains(path);
+  }
+
+  bool value;
+  if (!bat_ads_client_associated_remote_->FindProfilePref(path, &value)) {
+    return cached_profile_prefs_.contains(path);
+  }
+
+  return value;
+}
+
 std::optional<base::Value> BatAdsClientMojoBridge::GetProfilePref(
     const std::string& path) {
   if (!bat_ads_client_associated_remote_.is_bound()) {
@@ -314,6 +327,19 @@ bool BatAdsClientMojoBridge::HasProfilePrefPath(const std::string& path) const {
   bool value = false;
   if (!bat_ads_client_associated_remote_->HasProfilePrefPath(path, &value)) {
     return cached_profile_prefs_.contains(path);
+  }
+
+  return value;
+}
+
+bool BatAdsClientMojoBridge::FindLocalStatePref(const std::string& path) const {
+  if (!bat_ads_client_associated_remote_.is_bound()) {
+    return cached_local_state_prefs_.contains(path);
+  }
+
+  bool value;
+  if (!bat_ads_client_associated_remote_->FindLocalStatePref(path, &value)) {
+    return cached_local_state_prefs_.contains(path);
   }
 
   return value;

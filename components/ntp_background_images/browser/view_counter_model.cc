@@ -137,6 +137,20 @@ void ViewCounterModel::RotateBackgroundWallpaperImageIndex() {
   current_wallpaper_image_index_ %= total_image_count_;
 }
 
+void ViewCounterModel::NextBrandedImage() {
+  campaigns_current_branded_image_index_[current_campaign_index_]++;
+  if (campaigns_current_branded_image_index_[current_campaign_index_] >=
+      campaigns_total_branded_image_count_[current_campaign_index_]) {
+    campaigns_current_branded_image_index_[current_campaign_index_] = 0;
+
+    current_campaign_index_++;
+    if (current_campaign_index_ >= total_campaign_count_) {
+      current_campaign_index_ = 0;
+      campaigns_current_branded_image_index_[current_campaign_index_] = 0;
+    }
+  }
+}
+
 void ViewCounterModel::MaybeResetBrandedWallpaperCount() {
   // Set count so that user is more likely to see new branded data at least once
   // Only reset count for SI images

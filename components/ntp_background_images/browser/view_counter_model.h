@@ -48,6 +48,7 @@ class ViewCounterModel {
   bool ShouldShowBrandedWallpaper() const;
   void RegisterPageView();
   void MaybeResetBrandedWallpaperCount();
+  void NextBrandedImage();
   void Reset();
   void RotateBackgroundWallpaperImageIndex();
 

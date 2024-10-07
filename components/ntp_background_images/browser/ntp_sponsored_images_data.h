@@ -6,12 +6,14 @@
 #ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_DATA_H_
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_DATA_H_
 
+#include <map>
 #include <optional>
 #include <string>
 #include <vector>
 
 #include "base/files/file_path.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/public/serving/new_tab_page_ad_serving_condition_matcher_util.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
 
@@ -56,6 +58,7 @@ struct Logo {
 struct SponsoredBackground {
   base::FilePath image_file;
   gfx::Point focal_point;
+  brave_ads::NewTabPageAdConditionMatchers condition_matchers;
   std::string background_color;
 
   std::string creative_instance_id;

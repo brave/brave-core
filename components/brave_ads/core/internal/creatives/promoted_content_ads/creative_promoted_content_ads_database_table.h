@@ -77,7 +77,7 @@ class CreativePromotedContentAds final : public TableInterface {
                int to_version) override;
 
  private:
-  void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
+  void MigrateToV45(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
 
   void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
               const CreativePromotedContentAdList& creative_ads);

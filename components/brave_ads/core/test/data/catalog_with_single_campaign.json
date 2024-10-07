@@ -42,13 +42,6 @@
                       "y": 1400
                     },
                     "imageUrl": "https://brave.com/1/test2.jpg"
-                  },
-                  {
-                    "focalPoint": {
-                      "x": 1200,
-                      "y": 1400
-                    },
-                    "imageUrl": "https://brave.com/1/test3.jpg"
                   }
                 ]
               }

@@ -42,13 +42,6 @@
                       "y": 1400
                     },
                     "imageUrl": "https://brave.com/1/test2.jpg"
-                  },
-                  {
-                    "focalPoint": {
-                      "x": 1200,
-                      "y": 1400
-                    },
-                    "imageUrl": "https://brave.com/1/test3.jpg"
                   }
                 ]
               }
@@ -185,18 +178,17 @@
                 },
                 "wallpapers": [
                   {
+                    "conditionMatchers": [
+                      {
+                        "prefPath": "brave.today.opted_in",
+                        "condition": "1"
+                      }
+                    ],
                     "focalPoint": {
                       "x": 1000,
                       "y": 1200
                     },
                     "imageUrl": "https://brave.com/2/test2.jpg"
-                  },
-                  {
-                    "focalPoint": {
-                      "x": 500,
-                      "y": 600
-                    },
-                    "imageUrl": "https://brave.com/2/test3.jpg"
                   }
                 ]
               }

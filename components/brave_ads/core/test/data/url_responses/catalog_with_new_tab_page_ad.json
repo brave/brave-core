@@ -23,18 +23,17 @@
                 },
                 "wallpapers": [
                   {
+                    "conditionMatchers": [
+                      {
+                        "prefPath": "brave.today.opted_in",
+                        "condition": "1"
+                      }
+                    ],
                     "focalPoint": {
                       "x": 1200,
                       "y": 1400
                     },
                     "imageUrl": "https://brave.com/wallpaper_1.jpg"
-                  },
-                  {
-                    "focalPoint": {
-                      "x": 1200,
-                      "y": 1400
-                    },
-                    "imageUrl": "https://brave.com/wallpaper_2.jpg"
                   }
                 ]
               }
