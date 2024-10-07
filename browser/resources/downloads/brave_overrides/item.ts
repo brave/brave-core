@@ -11,4 +11,10 @@ injectStyle(DownloadsItemElement, css`
     #progress {
         --cr-progress-active-color: var(--leo-color-icon-interactive) !important;
     }
+    @media (prefers-color-scheme: light) {
+        #content:not(.is-active) {
+            /* Color for "filled cards" */
+            background-color: var(--leo-color-container-highlight) !important;
+        }
+    }
 `)
