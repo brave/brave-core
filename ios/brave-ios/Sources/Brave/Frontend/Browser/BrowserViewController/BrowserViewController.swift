@@ -2662,7 +2662,7 @@ extension BrowserViewController: TabDelegate {
       ErrorPageHelper(certStore: profile.certStore),
       SessionRestoreScriptHandler(tab: tab),
       BlockedDomainScriptHandler(tab: tab),
-      HTTPBlockedScriptHandler(tab: tab, exceptionService: braveCore.httpsUpgradeExceptionsService),
+      HTTPBlockedScriptHandler(tab: tab),
       PrintScriptHandler(browserController: self, tab: tab),
       CustomSearchScriptHandler(tab: tab),
       DarkReaderScriptHandler(tab: tab),
@@ -3303,9 +3303,6 @@ extension BrowserViewController: PreferencesObserver {
             ?? Preferences.General.defaultPageZoomLevel.value
         $0.webView?.setValue(zoomLevel, forKey: PageZoomHandler.propertyName)
       })
-    case ShieldPreferences.httpsUpgradeLevelRaw.key:
-      tabManager.reset()
-      tabManager.reloadSelectedTab()
     case Preferences.Privacy.blockAllCookies.key,
       Preferences.Shields.googleSafeBrowsing.key:
       // All `block all cookies` toggle requires a hard reset of Webkit configuration.

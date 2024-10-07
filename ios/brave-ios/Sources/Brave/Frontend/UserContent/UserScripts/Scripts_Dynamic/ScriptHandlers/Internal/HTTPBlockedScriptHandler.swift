@@ -10,11 +10,9 @@ import WebKit
 
 class HTTPBlockedScriptHandler: TabContentScript {
   private weak var tab: Tab?
-  private weak var exceptionService: HTTPSUpgradeExceptionsService?
 
-  required init(tab: Tab, exceptionService: HTTPSUpgradeExceptionsService) {
+  required init(tab: Tab) {
     self.tab = tab
-    self.exceptionService = exceptionService
   }
 
   static let scriptName = "HTTPBlockedScript"
@@ -53,7 +51,7 @@ class HTTPBlockedScriptHandler: TabContentScript {
   }
 
   private func didProceed() {
-    guard let url = tab?.upgradedHTTPSRequest?.url ?? tab?.url?.strippedInternalURL else {
+    guard let tab, let url = tab.upgradedHTTPSRequest?.url ?? tab.url?.strippedInternalURL else {
       //      assertionFailure(
       //        "There should be no way this method can be triggered if the tab is not on an internal url"
       //      )
@@ -62,9 +60,13 @@ class HTTPBlockedScriptHandler: TabContentScript {
 
     // When restoring the page, `upgradedHTTPSRequest` will be nil
     // So we default to the embedded internal page URL
-    let request = tab?.upgradedHTTPSRequest ?? URLRequest(url: url)
-    exceptionService?.addException(for: url)
-    tab?.loadRequest(request)
+    let request = tab.upgradedHTTPSRequest ?? URLRequest(url: url)
+    if let httpsUpgradeService = HttpsUpgradeServiceFactory.get(privateMode: tab.isPrivate),
+      let host = url.host(percentEncoded: false)
+    {
+      httpsUpgradeService.allowHttp(forHost: host)
+    }
+    tab.loadRequest(request)
   }
 
   private func didGoBack() {

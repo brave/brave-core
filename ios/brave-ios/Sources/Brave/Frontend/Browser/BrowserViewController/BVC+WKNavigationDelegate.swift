@@ -1834,28 +1834,49 @@ extension BrowserViewController: WKUIDelegate {
       return request
     }
 
-    // Attempt to upgrade to HTTPS
-    if FeatureList.kBraveHttpsByDefault.enabled, ShieldPreferences.httpsUpgradeLevel.isEnabled,
-      let upgradedURL = braveCore.httpsUpgradeExceptionsService.upgradeToHTTPS(for: requestURL)
+    // HTTPS by Default
+    if shouldUpgradeToHttps(url: requestURL, isPrivate: tab.isPrivate),
+      var urlComponents = URLComponents(url: requestURL, resolvingAgainstBaseURL: true)
     {
-      guard tab.upgradedHTTPSRequest?.url?.baseDomain != requestURL.baseDomain else {
-        // Avoid circular upgrades. This should be nil or we already tried to upgrade this
-        // and somehow it went back to http (i.e. server side redirect).
-        // We handle this as an invalid https upgrade right away
+      // Attempt to upgrade to HTTPS
+      urlComponents.scheme = "https"
+      if let upgradedURL = urlComponents.url {
+        Self.log.debug(
+          "Upgrading `\(requestURL.absoluteString)` to HTTPS"
+        )
         tab.upgradedHTTPSRequest = navigationAction.request
-        return handleInvalidHTTPSUpgrade(tab: tab, responseURL: upgradedURL)
+        var request = navigationAction.request
+        request.url = upgradedURL
+        return request
       }
-      Self.log.debug(
-        "Upgrading `\(requestURL.absoluteString)` to HTTPS"
-      )
-
-      tab.upgradedHTTPSRequest = navigationAction.request
-      var request = navigationAction.request
-      request.url = upgradedURL
-      return request
     }
 
     return nil
+  }
+
+  /// Determines if the given url should be upgraded from http to https.
+  private func shouldUpgradeToHttps(url: URL, isPrivate: Bool) -> Bool {
+    guard FeatureList.kBraveHttpsByDefault.enabled,
+      let httpUpgradeService = HttpsUpgradeServiceFactory.get(privateMode: isPrivate),
+      url.scheme == "http", let host = url.host
+    else {
+      return false
+    }
+    let isInUserAllowList = httpUpgradeService.isHttpAllowed(forHost: host)
+    let shouldUpgrade: Bool
+    switch ShieldPreferences.httpsUpgradeLevel {
+    case .strict:
+      // Always upgrade for Strict HTTPS upgrade unless previously allowed by user.
+      shouldUpgrade = !isInUserAllowList
+    case .standard:
+      // Upgrade for Standard HTTPS upgrade if host is not on the exceptions list and not previously allowed by user.
+      shouldUpgrade =
+        braveCore.httpsUpgradeExceptionsService.canUpgradeToHTTPS(for: url)
+        && !isInUserAllowList
+    case .disabled:
+      shouldUpgrade = false
+    }
+    return shouldUpgrade
   }
 
   /// Upon an invalid response, check that we need to roll back any HTTPS upgrade
@@ -1885,7 +1906,11 @@ extension BrowserViewController: WKUIDelegate {
       )
 
       tab.upgradedHTTPSRequest = nil
-      braveCore.httpsUpgradeExceptionsService.addException(for: originalURL)
+      if let httpsUpgradeService = HttpsUpgradeServiceFactory.get(privateMode: tab.isPrivate),
+        let host = originalURL.host
+      {
+        httpsUpgradeService.allowHttp(forHost: host)
+      }
       return originalRequest
     }
   }
