@@ -24,6 +24,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
+#include "base/numerics/byte_conversions.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
@@ -408,10 +409,10 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
 
   static std::vector<uint8_t> MakeMintData(int supply) {
     std::vector<uint8_t> data(82);
-    auto supply_span =
-        base::as_writable_bytes(base::make_span(data)).subspan(36, 8);
-    (*reinterpret_cast<uint64_t*>(supply_span.data())) = supply;
-
+    base::as_writable_bytes(base::make_span(data))
+        .subspan(36)
+        .first<8u>()
+        .copy_from(base::U64ToNativeEndian(supply));
     return data;
   }
 
