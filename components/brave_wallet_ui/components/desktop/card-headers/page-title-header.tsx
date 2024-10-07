@@ -19,7 +19,7 @@ import { DefaultPanelHeader } from './default-panel-header'
 // styles
 import { Row } from '../../shared/style'
 import {
-  ButtonIcon,
+  MenuButtonIcon,
   MenuButton,
   HeaderTitle
 } from './shared-card-headers.style'
@@ -55,7 +55,7 @@ export const PageTitleHeader = ({
           marginRight={16}
           onClick={onBack}
         >
-          <ButtonIcon
+          <MenuButtonIcon
             size={16}
             name='arrow-left'
           />

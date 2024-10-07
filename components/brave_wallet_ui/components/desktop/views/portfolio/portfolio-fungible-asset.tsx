@@ -455,6 +455,7 @@ export const PortfolioFungibleAsset = () => {
       wrapContentInBox={true}
       noCardPadding={true}
       hideDivider={true}
+      useCardInPanel={true}
       cardHeader={
         <AssetDetailsHeader
           selectedTimeline={selectedTimeline}

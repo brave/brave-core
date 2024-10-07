@@ -27,7 +27,7 @@ import { AccountsMenu } from '../wallet-menus/accounts-menu'
 import {
   HeaderTitle,
   MenuButton,
-  ButtonIcon,
+  MenuButtonIcon,
   MenuWrapper
 } from './shared-card-headers.style'
 import { Row } from '../../shared/style'
@@ -65,7 +65,7 @@ export const AccountsHeader = () => {
         <MenuButton
           onClick={() => setShowPortfolioOverviewMenu((prev) => !prev)}
         >
-          <ButtonIcon name='plus-add' />
+          <MenuButtonIcon name='plus-add' />
         </MenuButton>
         {showPortfolioOverviewMenu && <AccountsMenu />}
       </MenuWrapper>

@@ -219,6 +219,7 @@ export const TransactionsScreen: React.FC = () => {
     return (
       <WalletPageWrapper
         wrapContentInBox={true}
+        useCardInPanel={true}
         cardHeader={
           <ActivityPageHeader
             searchValue={searchValue}
@@ -240,6 +241,7 @@ export const TransactionsScreen: React.FC = () => {
   return (
     <WalletPageWrapper
       wrapContentInBox={true}
+      useCardInPanel={true}
       cardHeader={
         <ActivityPageHeader
           searchValue={searchValue}
