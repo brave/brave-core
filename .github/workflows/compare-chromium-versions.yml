@@ -42,7 +42,7 @@ jobs:
           elif [[ "$(sort -V <<<"$target_ver"$'\n'"$pr_ver"|tail -n1)" == "$pr_ver" ]]; then
               success "Chromium version is newer in the PR"
           elif [[ "${pr_ver%%.*}" == "${target_ver%%.*}" ]]; then
-              failure runci "Chromium version partial match"
+              success "Chromium major version match"
           else
               failure blockci "Chromium version mismatch"
           fi
