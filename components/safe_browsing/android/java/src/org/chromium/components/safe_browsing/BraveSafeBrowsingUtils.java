@@ -39,7 +39,6 @@ public class BraveSafeBrowsingUtils {
         int MAX_VALUE = 17;
     }
 
-    // SUCCESS_WITH_REAL_TIME
     @IntDef({
         SafeBrowsingJavaResponseStatus.SUCCESS_WITH_LOCAL_BLOCKLIST,
         SafeBrowsingJavaResponseStatus.SUCCESS_WITH_REAL_TIME,
@@ -59,27 +58,45 @@ public class BraveSafeBrowsingUtils {
         int FAILURE_INVALID_URL = 6;
     };
 
-    private static int sbThreatTypeToSafetyNetJavaThreatType(int safeBrowsingThreatType) {
+    @IntDef({
+        SafeBrowsingJavaThreatType.NO_THREAT,
+        SafeBrowsingJavaThreatType.SOCIAL_ENGINEERING,
+        SafeBrowsingJavaThreatType.UNWANTED_SOFTWARE,
+        SafeBrowsingJavaThreatType.POTENTIALLY_HARMFUL_APPLICATION,
+        SafeBrowsingJavaThreatType.BILLING,
+        SafeBrowsingJavaThreatType.ABUSIVE_EXPERIENCE_VIOLATION,
+        SafeBrowsingJavaThreatType.BETTER_ADS_VIOLATION
+    })
+    public @interface SafeBrowsingJavaThreatType {
+        int NO_THREAT = 0;
+        int SOCIAL_ENGINEERING = 2;
+        int UNWANTED_SOFTWARE = 3;
+        int POTENTIALLY_HARMFUL_APPLICATION = 4;
+        int BILLING = 15;
+        int ABUSIVE_EXPERIENCE_VIOLATION = 20;
+        int BETTER_ADS_VIOLATION = 21;
+    };
+
+    private static int safeBrowsingToSafetyNetJavaThreatType(int safeBrowsingThreatType) {
         switch (safeBrowsingThreatType) {
-            case SBThreatType.BILLING:
-                return SafetyNetJavaThreatType.BILLING;
-            case SBThreatType.SUBRESOURCE_FILTER:
-                return SafetyNetJavaThreatType.SUBRESOURCE_FILTER;
-            case SBThreatType.URL_PHISHING:
+            case SafeBrowsingJavaThreatType.NO_THREAT:
+                return 0;
+            case SafeBrowsingJavaThreatType.SOCIAL_ENGINEERING:
                 return SafetyNetJavaThreatType.SOCIAL_ENGINEERING;
-            case SBThreatType.URL_MALWARE:
-                return SafetyNetJavaThreatType.POTENTIALLY_HARMFUL_APPLICATION;
-            case SBThreatType.URL_UNWANTED:
+            case SafeBrowsingJavaThreatType.UNWANTED_SOFTWARE:
                 return SafetyNetJavaThreatType.UNWANTED_SOFTWARE;
-            case SBThreatType.CSD_ALLOWLIST:
-                return SafetyNetJavaThreatType.CSD_ALLOWLIST;
+            case SafeBrowsingJavaThreatType.POTENTIALLY_HARMFUL_APPLICATION:
+                return SafetyNetJavaThreatType.POTENTIALLY_HARMFUL_APPLICATION;
+            case SafeBrowsingJavaThreatType.BILLING:
+                return SafetyNetJavaThreatType.BILLING;
+            case SafeBrowsingJavaThreatType.ABUSIVE_EXPERIENCE_VIOLATION:
+            case SafeBrowsingJavaThreatType.BETTER_ADS_VIOLATION:
+                // See SafeBrowsingJavaToSBThreatType at safe_browsing_api_handler_bridge.cc
+                return SafetyNetJavaThreatType.SUBRESOURCE_FILTER;
             default:
-                // Threats codes seen here without SafetyNet counterpart:
-                // int SUSPICIOUS_SITE = 20;
-                // int SIGNED_IN_SYNC_PASSWORD_REUSE = 15;
                 Log.w(
                         TAG,
-                        "sbThreatTypeToSafetyNetJavaThreatType: unexpected safeBrowsingThreatType="
+                        "safeBrowsingToSafetyNetJavaThreatType: unexpected safeBrowsingThreatType="
                                 + safeBrowsingThreatType);
                 return SafetyNetJavaThreatType.MAX_VALUE;
         }
@@ -89,7 +106,7 @@ public class BraveSafeBrowsingUtils {
         List<Integer> arrSafetyNetThreatTypes = new ArrayList<Integer>();
         for (int i = 0; i < safeBrowsingThreatTypes.length; ++i) {
             int safetyNetThreatType =
-                    sbThreatTypeToSafetyNetJavaThreatType(safeBrowsingThreatTypes[i]);
+                    safeBrowsingToSafetyNetJavaThreatType(safeBrowsingThreatTypes[i]);
             if (safetyNetThreatType != SafetyNetJavaThreatType.MAX_VALUE) {
                 arrSafetyNetThreatTypes.add(safetyNetThreatType);
             }
@@ -97,26 +114,30 @@ public class BraveSafeBrowsingUtils {
         return arrSafetyNetThreatTypes.stream().mapToInt(i -> i).toArray();
     }
 
-    public static int safetyNetJavaThreatTypeToSBThreatType(int safetyNetThreatType) {
+    public static int safetyNetToSafeBrowsingJavaThreatType(int safetyNetThreatType) {
         switch (safetyNetThreatType) {
             case SafetyNetJavaThreatType.BILLING:
-                return SBThreatType.BILLING;
+                return SafeBrowsingJavaThreatType.BILLING;
             case SafetyNetJavaThreatType.SUBRESOURCE_FILTER:
-                return SBThreatType.SUBRESOURCE_FILTER;
+                Log.w(TAG, "safetyNetToSafeBrowsingJavaThreatType: unexpected SUBRESOURCE_FILTER");
+                assert false;
+                return SafeBrowsingJavaThreatType.NO_THREAT;
             case SafetyNetJavaThreatType.SOCIAL_ENGINEERING:
-                return SBThreatType.URL_PHISHING;
+                return SafeBrowsingJavaThreatType.SOCIAL_ENGINEERING;
             case SafetyNetJavaThreatType.POTENTIALLY_HARMFUL_APPLICATION:
-                return SBThreatType.URL_MALWARE;
+                return SafeBrowsingJavaThreatType.POTENTIALLY_HARMFUL_APPLICATION;
             case SafetyNetJavaThreatType.UNWANTED_SOFTWARE:
-                return SBThreatType.URL_UNWANTED;
+                return SafeBrowsingJavaThreatType.UNWANTED_SOFTWARE;
             case SafetyNetJavaThreatType.CSD_ALLOWLIST:
-                return SBThreatType.CSD_ALLOWLIST;
+                Log.w(TAG, "safetyNetToSafeBrowsingJavaThreatType: unexpected CSD_ALLOWLIST");
+                assert false;
+                return SafeBrowsingJavaThreatType.NO_THREAT;
             default:
                 Log.w(
                         TAG,
-                        "safetyNetJavaThreatTypeToSBThreatType: unexpected safetyNetThreatType="
+                        "safetyNetToSafeBrowsingJavaThreatType: unexpected safetyNetThreatType="
                                 + safetyNetThreatType);
-                return SafetyNetJavaThreatType.MAX_VALUE;
+                return SafeBrowsingJavaThreatType.NO_THREAT;
         }
     }
 }

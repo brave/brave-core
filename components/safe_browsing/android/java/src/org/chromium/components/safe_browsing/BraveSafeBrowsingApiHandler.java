@@ -17,6 +17,8 @@ import com.google.android.gms.safetynet.SafetyNetStatusCodes;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.components.safe_browsing.BraveSafeBrowsingUtils.SafeBrowsingJavaResponseStatus;
+import org.chromium.components.safe_browsing.BraveSafeBrowsingUtils.SafeBrowsingJavaThreatType;
 import org.chromium.components.safe_browsing.SafeBrowsingApiHandler.LookupResult;
 
 /**
@@ -87,9 +89,9 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
             mObserver.onUrlCheckDone(
                     callbackId,
                     LookupResult.FAILURE_API_CALL_TIMEOUT,
-                    SBThreatType.UNUSED,
+                    SafeBrowsingJavaThreatType.NO_THREAT,
                     THREAT_ATTRIBUTES_STUB,
-                    BraveSafeBrowsingUtils.SafeBrowsingJavaResponseStatus.SUCCESS_WITH_REAL_TIME,
+                    SafeBrowsingJavaResponseStatus.SUCCESS_WITH_REAL_TIME,
                     DEFAULT_CHECK_DELTA);
             return;
         }
@@ -108,15 +110,13 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                         mBraveSafeBrowsingApiHandlerDelegate.getActivity(),
                         sbResponse -> {
                             mTriesCount = 0;
-
                             if (sbResponse.getDetectedThreats().isEmpty()) {
                                 mObserver.onUrlCheckDone(
                                         callbackId,
                                         LookupResult.SUCCESS,
-                                        SBThreatType.SAFE,
+                                        SafeBrowsingJavaThreatType.NO_THREAT,
                                         THREAT_ATTRIBUTES_STUB,
-                                        BraveSafeBrowsingUtils.SafeBrowsingJavaResponseStatus
-                                                .SUCCESS_WITH_REAL_TIME,
+                                        SafeBrowsingJavaResponseStatus.SUCCESS_WITH_REAL_TIME,
                                         DEFAULT_CHECK_DELTA);
                                 return;
                             } else {
@@ -127,14 +127,13 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                                         callbackId,
                                         LookupResult.SUCCESS,
                                         BraveSafeBrowsingUtils
-                                                .safetyNetJavaThreatTypeToSBThreatType(
+                                                .safetyNetToSafeBrowsingJavaThreatType(
                                                         sbResponse
                                                                 .getDetectedThreats()
                                                                 .get(0)
                                                                 .getThreatType()),
                                         THREAT_ATTRIBUTES_STUB,
-                                        BraveSafeBrowsingUtils.SafeBrowsingJavaResponseStatus
-                                                .SUCCESS_WITH_REAL_TIME,
+                                        SafeBrowsingJavaResponseStatus.SUCCESS_WITH_REAL_TIME,
                                         DEFAULT_CHECK_DELTA);
                                 return;
                             }
@@ -180,10 +179,9 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                                     mObserver.onUrlCheckDone(
                                             callbackId,
                                             LookupResult.FAILURE_API_CALL_TIMEOUT,
-                                            SBThreatType.UNUSED,
+                                            SafeBrowsingJavaThreatType.NO_THREAT,
                                             THREAT_ATTRIBUTES_STUB,
-                                            BraveSafeBrowsingUtils.SafeBrowsingJavaResponseStatus
-                                                    .SUCCESS_WITH_REAL_TIME,
+                                            SafeBrowsingJavaResponseStatus.SUCCESS_WITH_REAL_TIME,
                                             DEFAULT_CHECK_DELTA);
                                 }
                             } else {
@@ -194,10 +192,9 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                                 mObserver.onUrlCheckDone(
                                         callbackId,
                                         LookupResult.FAILURE_API_CALL_TIMEOUT,
-                                        SBThreatType.UNUSED,
+                                        SafeBrowsingJavaThreatType.NO_THREAT,
                                         THREAT_ATTRIBUTES_STUB,
-                                        BraveSafeBrowsingUtils.SafeBrowsingJavaResponseStatus
-                                                .SUCCESS_WITH_REAL_TIME,
+                                        SafeBrowsingJavaResponseStatus.SUCCESS_WITH_REAL_TIME,
                                         DEFAULT_CHECK_DELTA);
                             }
                             mTriesCount = 0;
