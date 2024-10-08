@@ -65,6 +65,11 @@ TEST(BitcoinTransaction, TxInput_Value) {
   parsed = input.FromValue(input.ToValue());
   ASSERT_TRUE(parsed);
   EXPECT_EQ(*parsed->raw_outpoint_tx, input.raw_outpoint_tx);
+
+  input.raw_outpoint_tx->clear();
+  parsed = input.FromValue(input.ToValue());
+  ASSERT_TRUE(parsed);
+  ASSERT_FALSE(parsed->raw_outpoint_tx);
 }
 
 TEST(BitcoinTransaction, TxInput_FromRpcUtxo) {
