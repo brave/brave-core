@@ -63,15 +63,16 @@ public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragm
                 .getBehavior()
                 .setState(BottomSheetBehavior.STATE_EXPANDED);
         Button nextButton = view.findViewById(R.id.btn_next);
-        nextButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getActivity() != null) {
-                    BraveSetDefaultBrowserUtils.setDefaultBrowser(getActivity());
-                }
-                dismiss();
-            }
-        }));
+        nextButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (getActivity() != null) {
+                            BraveSetDefaultBrowserUtils.setDefaultBrowser(getActivity());
+                        }
+                        dismiss();
+                    }
+                });
 
         CheckBox dontAskCheckBox = view.findViewById(R.id.checkbox_dont_ask);
 
@@ -96,15 +97,16 @@ public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragm
         });
 
         Button cancelButton = view.findViewById(R.id.btn_cancel);
-        cancelButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (dontAskCheckBox.isChecked()) {
-                    BraveSetDefaultBrowserUtils.setBraveDefaultDontAsk();
-                }
-                dismiss();
-            }
-        }));
+        cancelButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (dontAskCheckBox.isChecked()) {
+                            BraveSetDefaultBrowserUtils.setBraveDefaultDontAsk();
+                        }
+                        dismiss();
+                    }
+                });
     }
 
     @Override

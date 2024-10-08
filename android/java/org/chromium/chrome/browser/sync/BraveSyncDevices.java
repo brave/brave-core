@@ -53,12 +53,17 @@ public class BraveSyncDevices {
         }
     }
 
+    /**
+     * A finalizer is required to ensure that the native object associated with this descriptor gets
+     * torn down, otherwise there would be a memory leak.
+     */
+    @SuppressWarnings("Finalize")
     @Override
     protected void finalize() {
-        Destroy();
+        destroy();
     }
 
-    private void Destroy() {
+    private void destroy() {
         if (mNativeBraveSyncDevicesAndroid != 0) {
             BraveSyncDevicesJni.get().destroy(mNativeBraveSyncDevicesAndroid);
             mNativeBraveSyncDevicesAndroid = 0;

@@ -41,17 +41,17 @@ public class BraveLeoDefaultModelPreferences extends BravePreferenceFragment
     public void fetchModels() {
         BraveLeoMojomHelper.getInstance(getProfile())
                 .getModels(
-                        (models -> {
+                        models -> {
                             fetchDefaultModelInitRadioButtons(models);
-                        }));
+                        });
     }
 
     private void fetchDefaultModelInitRadioButtons(ModelWithSubtitle[] models) {
         BraveLeoMojomHelper.getInstance(getProfile())
                 .getDefaultModelKey(
-                        (defaultModel -> {
+                        defaultModel -> {
                             mRadioButtons.initializeModels(models, defaultModel);
-                        }));
+                        });
     }
 
     @Override

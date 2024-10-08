@@ -210,18 +210,21 @@ class BraveBookmarkManagerMediator
     }
 
     private void doExportBookmarks() {
-        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
-            File downloadDir =
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            int num = 1;
-            String exportFileName = "bookmarks.html";
-            File file = new File(downloadDir, exportFileName);
-            while (file.exists()) {
-                exportFileName = "bookmarks (" + (num++) + ").html";
-                file = new File(downloadDir, exportFileName);
-            }
-            doExportBookmarksOnUI(file);
-        });
+        PostTask.postTask(
+                TaskTraits.BEST_EFFORT_MAY_BLOCK,
+                () -> {
+                    File downloadDir =
+                            Environment.getExternalStoragePublicDirectory(
+                                    Environment.DIRECTORY_DOWNLOADS);
+                    int num = 1;
+                    String exportFileName = "bookmarks.html";
+                    File file = new File(downloadDir, exportFileName);
+                    while (file.exists()) {
+                        exportFileName = "bookmarks (" + num++ + ").html";
+                        file = new File(downloadDir, exportFileName);
+                    }
+                    doExportBookmarksOnUI(file);
+                });
     }
 
     private void doExportBookmarksOnUI(File file) {

@@ -219,7 +219,7 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         });
 
         mContinueButton.setOnClickListener(
-                (new View.OnClickListener() {
+                new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (!BravePermissionUtils.hasPermission(
@@ -237,7 +237,7 @@ public class RewardsOnboarding implements BraveRewardsObserver {
                             mContinueButton.setText("");
                         }
                     }
-                }));
+                });
     }
 
     private void shouldShowContinueProgress(boolean shouldShow) {

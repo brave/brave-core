@@ -352,9 +352,9 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         float r = 0;
 
         if (bitmap.getWidth() > bitmap.getHeight()) {
-            r = bitmap.getHeight() / 2;
+            r = bitmap.getHeight() / 2f;
         } else {
-            r = bitmap.getWidth() / 2;
+            r = bitmap.getWidth() / 2f;
         }
 
         paint.setAntiAlias(true);

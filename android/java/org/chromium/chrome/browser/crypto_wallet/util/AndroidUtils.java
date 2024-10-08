@@ -113,7 +113,7 @@ public class AndroidUtils {
      */
     public static int getSkeletonRowCount(int skeletonRowHeight) {
         int pxHeight = getScreenHeight();
-        return (int) Math.floor(pxHeight / skeletonRowHeight);
+        return (int) Math.floor((double) (pxHeight / ((double) skeletonRowHeight)));
     }
 
     /**

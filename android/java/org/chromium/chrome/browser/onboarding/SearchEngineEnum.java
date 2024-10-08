@@ -27,9 +27,9 @@ public enum SearchEngineEnum {
     DAUM(R.drawable.daum, SearchEngineEnumConstants.SEARCH_DAUM_ID, R.string.daum_desc),
     NAVER(R.drawable.naver, SearchEngineEnumConstants.SEARCH_NAVER_ID, R.string.naver_desc);
 
-    private int icon;
-    private int id;
-    private int desc;
+    private final int icon;
+    private final int id;
+    private final int desc;
 
     SearchEngineEnum(int icon, int id, int desc) {
         this.icon = icon;

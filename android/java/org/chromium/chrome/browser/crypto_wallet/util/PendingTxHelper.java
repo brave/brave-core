@@ -259,8 +259,8 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
                 mTransactionInfos.clear();
                 mTransactionInfos.addAll(newTransactionInfos);
                 Collections.sort(mTransactionInfos, sortByDateComparator);
-                if ((_mSelectedPendingRequest.getValue() != null
-                                && _mSelectedPendingRequest.getValue().id.equals(txInfo.id)
+                if (((_mSelectedPendingRequest.getValue() != null
+                                && _mSelectedPendingRequest.getValue().id.equals(txInfo.id))
                         || _mSelectedPendingRequest.getValue() == null)) {
                     postTxUpdates();
                 }

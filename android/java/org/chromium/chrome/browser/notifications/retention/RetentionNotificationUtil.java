@@ -25,7 +25,6 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 public class RetentionNotificationUtil {
@@ -47,45 +46,111 @@ public class RetentionNotificationUtil {
     public static final String DORMANT_USERS_DAY_25 = "dormant_users_days_25";
     public static final String DORMANT_USERS_DAY_40 = "dormant_users_days_40";
 
-    private static Map<String, RetentionNotification> mNotificationMap = new HashMap<String, RetentionNotification>() {
-        {
-            put(HOUR_3,
-                    new RetentionNotification(
-                            3, 3 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(HOUR_24,
-                    new RetentionNotification(
-                            24, 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(DAY_6, new RetentionNotification(6, 6 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(EVERY_SUNDAY, new RetentionNotification(7, -1, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(DAY_10, new RetentionNotification(10, 10 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(DAY_30, new RetentionNotification(30, 30 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(DAY_35,
-                    new RetentionNotification(35, 35 * 24 * 60,
-                            BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(DEFAULT_BROWSER_1,
-                    new RetentionNotification(17, 3 * 24 * 60,
-                            BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(DEFAULT_BROWSER_2, new RetentionNotification(18, 6 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(DEFAULT_BROWSER_3,
-                    new RetentionNotification(19, 30 * 24 * 60,
-                            BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(DORMANT_USERS_DAY_14,
-                    new RetentionNotification(20, 14 * 24 * 60,
-                            BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
-                            ContextUtils.getApplicationContext().getResources().getString(
-                                    R.string.dormant_users_engagement_notification_text_1)));
-            put(DORMANT_USERS_DAY_25,
-                    new RetentionNotification(21, 25 * 24 * 60,
-                            BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
-                            ContextUtils.getApplicationContext().getResources().getString(
-                                    R.string.dormant_users_engagement_notification_text_2)));
-            put(DORMANT_USERS_DAY_40,
-                    new RetentionNotification(22, 40 * 24 * 60,
-                            BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
-                            ContextUtils.getApplicationContext().getResources().getString(
-                                    R.string.dormant_users_engagement_notification_text_3)));
-        }
-    };
+    private static Map<String, RetentionNotification> mNotificationMap =
+            Map.ofEntries(
+                    Map.entry(
+                            HOUR_3,
+                            new RetentionNotification(
+                                    3,
+                                    3 * 60,
+                                    BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                                    BRAVE_BROWSER)),
+                    Map.entry(
+                            HOUR_24,
+                            new RetentionNotification(
+                                    24,
+                                    24 * 60,
+                                    BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                                    BRAVE_BROWSER)),
+                    Map.entry(
+                            DAY_6,
+                            new RetentionNotification(
+                                    6,
+                                    6 * 24 * 60,
+                                    BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                                    BRAVE_BROWSER)),
+                    Map.entry(
+                            EVERY_SUNDAY,
+                            new RetentionNotification(
+                                    7,
+                                    -1,
+                                    BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                                    BRAVE_BROWSER)),
+                    Map.entry(
+                            DAY_10,
+                            new RetentionNotification(
+                                    10,
+                                    10 * 24 * 60,
+                                    BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                                    BRAVE_BROWSER)),
+                    Map.entry(
+                            DAY_30,
+                            new RetentionNotification(
+                                    30,
+                                    30 * 24 * 60,
+                                    BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                                    BRAVE_BROWSER)),
+                    Map.entry(
+                            DAY_35,
+                            new RetentionNotification(
+                                    35,
+                                    35 * 24 * 60,
+                                    BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                                    BRAVE_BROWSER)),
+                    Map.entry(
+                            DEFAULT_BROWSER_1,
+                            new RetentionNotification(
+                                    17,
+                                    3 * 24 * 60,
+                                    BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                                    BRAVE_BROWSER)),
+                    Map.entry(
+                            DEFAULT_BROWSER_2,
+                            new RetentionNotification(
+                                    18,
+                                    6 * 24 * 60,
+                                    BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                                    BRAVE_BROWSER)),
+                    Map.entry(
+                            DEFAULT_BROWSER_3,
+                            new RetentionNotification(
+                                    19,
+                                    30 * 24 * 60,
+                                    BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                                    BRAVE_BROWSER)),
+                    Map.entry(
+                            DORMANT_USERS_DAY_14,
+                            new RetentionNotification(
+                                    20,
+                                    14 * 24 * 60,
+                                    BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                                    ContextUtils.getApplicationContext()
+                                            .getResources()
+                                            .getString(
+                                                    R.string
+                                                            .dormant_users_engagement_notification_text_1))),
+                    Map.entry(
+                            DORMANT_USERS_DAY_25,
+                            new RetentionNotification(
+                                    21,
+                                    25 * 24 * 60,
+                                    BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                                    ContextUtils.getApplicationContext()
+                                            .getResources()
+                                            .getString(
+                                                    R.string
+                                                            .dormant_users_engagement_notification_text_2))),
+                    Map.entry(
+                            DORMANT_USERS_DAY_40,
+                            new RetentionNotification(
+                                    22,
+                                    40 * 24 * 60,
+                                    BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                                    ContextUtils.getApplicationContext()
+                                            .getResources()
+                                            .getString(
+                                                    R.string
+                                                            .dormant_users_engagement_notification_text_3))));
 
     public static RetentionNotification getNotificationObject(String notificationType) {
         return mNotificationMap.get(notificationType);

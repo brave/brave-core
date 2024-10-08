@@ -66,7 +66,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         SIGN_MESSAGE_ERROR(11),
         FINISH(12);
 
-        private int mValue;
+        private final int mValue;
         private static Map sMap = new HashMap<>();
 
         private ActivityType(int value) {
