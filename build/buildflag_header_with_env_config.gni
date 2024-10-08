@@ -6,20 +6,36 @@
 import("//brave/build/env_config.gni")
 import("//build/buildflag_header.gni")
 
-# Similar to buildflag_header(), but supports flags defined in a .env file.
+# Similar to buildflag_header(), but supports flags defined in `//brave/.env`.
 #
-# For example, `sample_secret_key=iamsecret` in the .env file can be generated
-# as a buildflag_header() flag `SAMPLE_SECRET_KEY=\"iamsecret\"` using the
-# following format:
+# For example, `sample_secret_key=iamsecret` in the .env file will be generated
+# as `SAMPLE_SECRET_KEY=\"iamsecret\"` buildflag using the following:
 #
-#     env_config_flags = [ "SAMPLE_SECRET_KEY" ]
+#     buildflag_header_with_env_config("my_flags") {
+#       env_config_flags = [ "SAMPLE_SECRET_KEY" ]
+#     }
 #
-# If the flag is not found, it will default to an empty string. A custom default
-# value can be provided using the following format:
+# If the flag is not found in .env, it will default to an empty string. A custom
+# default value can be provided using the following format:
 #
-#     env_config_flags = [ "SAMPLE_SECRET_KEY=\"iamdefault\"" ]
-#     env_config_flags = [ "SAMPLE_BOOLEAN_KEY=false" ]
-#     env_config_flags = [ "SAMPLE_INTEGER_KEY=0" ]
+#     buildflag_header_with_env_config("my_flags") {
+#       env_config_flags = [ "SAMPLE_SECRET_KEY=\"iamdefault\"" ]
+#       env_config_flags = [ "SAMPLE_BOOLEAN_KEY=false" ]
+#       env_config_flags = [ "SAMPLE_INTEGER_KEY=0" ]
+#     }
+#
+# All flags by default are required in official builds and will fail the build
+# if not found in .env. To declare optional flags in official builds, you can
+# use the following format:
+#
+#     buildflag_header_with_env_config("my_flags") {
+#       env_config_flags = [ "PRODUCTION_SECRET_KEY" ]
+#       env_config_optional_flags = [ "SANDBOX_SECRET_KEY" ]
+#     }
+#
+# To treat all flags as optional, you can set the following flag in .env:
+#
+#     all_flags_are_optional=true
 #
 # Values parsed from the .env file are stringified as JSON, meaning strings will
 # be quoted and have all unusual symbols escaped. Numbers and booleans will not
@@ -27,29 +43,54 @@ import("//build/buildflag_header.gni")
 # the correct definition of multiline strings, booleans, and integers in the
 # generated header.
 
-# Prevent unset .env flags in official builds, but allow this to be configurable
-# for development.
-if (defined(env_config.allow_unset_env_config_flags)) {
-  allow_unset_env_config_flags = env_config.allow_unset_env_config_flags
+# Allow all flags to be optional in official builds. Use with caution.
+if (defined(env_config.all_flags_are_optional)) {
+  all_flags_are_optional = env_config.all_flags_are_optional
 } else {
-  allow_unset_env_config_flags = !is_official_build
+  all_flags_are_optional = !is_official_build
 }
 
 template("buildflag_header_with_env_config") {
   buildflag_header(target_name) {
-    forward_variables_from(invoker, "*", [ "env_config_flags" ])
+    forward_variables_from(invoker,
+                           "*",
+                           [
+                             "env_config_flags",
+                             "env_config_optional_flags",
+                           ])
 
     if (defined(invoker.env_config_flags)) {
       if (!defined(flags)) {
         flags = []
       }
 
-      foreach(_env_config_flag, invoker.env_config_flags) {
+      _env_config_flags = []
+      foreach(item, invoker.env_config_flags) {
+        _env_config_flags += [
+          {
+            item = item
+            optional = false
+          },
+        ]
+      }
+
+      if (defined(invoker.env_config_optional_flags)) {
+        foreach(item, invoker.env_config_optional_flags) {
+          _env_config_flags += [
+            {
+              item = item
+              optional = true
+            },
+          ]
+        }
+      }
+
+      foreach(_env_config_flag, _env_config_flags) {
         _name_and_default_value = []
-        _name_and_default_value = string_split(_env_config_flag, "=")
-        if (_name_and_default_value[0] == _env_config_flag) {
+        _name_and_default_value = string_split(_env_config_flag.item, "=")
+        if (_name_and_default_value[0] == _env_config_flag.item) {
           # Default to empty string.
-          _env_config_flag_name = _env_config_flag
+          _env_config_flag_name = _env_config_flag.item
           _env_config_flag_value = "\"\""
         } else {
           # Default to the provided value.
@@ -62,13 +103,16 @@ template("buildflag_header_with_env_config") {
         _escaped_env_config_flag_name = _env_config_flag_name + "_escaped"
         if (defined(env_config[_escaped_env_config_flag_name])) {
           _env_config_flag_value = env_config[_escaped_env_config_flag_name]
-        } else {
+        } else if (!_env_config_flag.optional) {
           # If the flag is not found in .env, make sure this is allowed in the
           # current configuration.
-          assert(allow_unset_env_config_flags,
-                 _env_config_flag_name +
-                     " (or its lowercase variant) is not found in: " +
-                     string_join(" or ", env_config_files))
+          assert(
+              all_flags_are_optional,
+              _env_config_flag_name +
+                  " (or its lowercase variant) is not found in: " +
+                  string_join(" or ", env_config_files) + "\n" +
+                  "For local builds, you can set the following flag in .env:\n" +
+                  "  all_flags_are_optional=true")
         }
         flags += [ "$_env_config_flag_name=$_env_config_flag_value" ]
       }
