@@ -9,7 +9,6 @@ import { scoped } from '../../lib/scoped_css'
 export const style = scoped.css`
   & {
     overflow: auto;
-    max-width: 600px;
     min-height: 275px;
     display: flex;
     flex-direction: column;
@@ -17,6 +16,7 @@ export const style = scoped.css`
     font: ${font.default.regular};
 
     @container style(--is-wide-view) {
+      max-width: 600px;
       min-width: 400px;
     }
   }

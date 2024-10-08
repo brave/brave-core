@@ -10,15 +10,12 @@ import selectCountry from '../../assets/select_country.svg'
 
 export const style = scoped.css`
   & {
-    max-width: var(--onboarding-max-width);
     display: flex;
     flex-direction: column;
-  }
 
-  .header {
-    padding: 4px 0 26px;
-    display: flex;
-    justify-content: flex-end;
+    @container style(--is-wide-view) {
+      max-width: var(--onboarding-max-width);
+    }
   }
 
   .graphic {

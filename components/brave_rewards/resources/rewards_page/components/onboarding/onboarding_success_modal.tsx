@@ -6,9 +6,11 @@
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
+import { AppModelContext } from '../../lib/app_model_context'
 import { TabOpenerContext , NewTabLink } from '../../../shared/components/new_tab_link'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { Modal } from '../modal'
+import { WdpOptInModal } from './wdp_opt_in_modal'
 import * as urls from '../../../shared/lib/rewards_urls'
 
 import { style } from './onboarding_success_modal.style'
@@ -18,8 +20,21 @@ interface Props {
 }
 
 export function OnboardingSuccessModal(props: Props) {
+  const model = React.useContext(AppModelContext)
   const tabOpener = React.useContext(TabOpenerContext)
   const { getString } = useLocaleContext()
+  const [showWdpModal, setShowWdpModal] = React.useState(true)
+
+  if (showWdpModal) {
+    return (
+      <WdpOptInModal
+        onContinue={(enableWdp) => {
+          model.setWebDiscoveryProjectEnabled(enableWdp)
+          setShowWdpModal(false)
+        }}
+      />
+    )
+  }
 
   function onDoneClick() {
     tabOpener.openTab(urls.rewardsTourURL)

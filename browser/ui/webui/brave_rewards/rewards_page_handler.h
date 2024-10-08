@@ -121,6 +121,9 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
       ClearRewardsNotificationCallback callback) override;
   void EnableRewards(const std::string& country_code,
                      EnableRewardsCallback callback) override;
+  void SetWebDiscoveryProjectEnabled(
+      bool enabled,
+      SetWebDiscoveryProjectEnabledCallback callback) override;
   void BeginExternalWalletLogin(
       const std::string& provider,
       BeginExternalWalletLoginCallback callback) override;

@@ -8,15 +8,18 @@ import { scoped } from '../lib/scoped_css'
 export const style = scoped.css`
   & {
     overflow: auto;
-    max-width: 500px;
     display: flex;
     flex-direction: column;
     gap: 16px;
 
-    button {
-      text-decoration: underline;
-      cursor: pointer;
+    @container style(--is-wide-view) {
+      max-width: 500px;
     }
+  }
+
+  button {
+    text-decoration: underline;
+    cursor: pointer;
   }
 `
 

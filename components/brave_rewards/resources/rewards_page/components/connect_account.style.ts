@@ -8,7 +8,6 @@ import { scoped } from '../lib/scoped_css'
 
 export const style = scoped.css`
   & {
-    margin: 72px auto 16px;
     margin: 0 auto;
     padding: 72px 32px 16px;
     max-width: 620px;
