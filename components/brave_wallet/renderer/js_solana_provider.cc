@@ -164,13 +164,14 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
   // Create a proxy to the actual JSSolanaProvider object which will be
   // exposed via window.braveSolana and window.solana.
   blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
-  v8::Local<v8::Proxy> solana_proxy;
-  auto solana_proxy_handler_val =
-      ExecuteScript(web_frame, kSolanaProxyHandlerScript);
+  v8::Local<v8::Value> solana_proxy_handler_val;
+  if (!ExecuteScript(web_frame, kSolanaProxyHandlerScript)
+           .ToLocal(&solana_proxy_handler_val)) {
+    return;
+  }
   v8::Local<v8::Object> solana_proxy_handler_obj =
-      solana_proxy_handler_val.ToLocalChecked()
-          ->ToObject(context)
-          .ToLocalChecked();
+      solana_proxy_handler_val->ToObject(context).ToLocalChecked();
+  v8::Local<v8::Proxy> solana_proxy;
   if (!v8::Proxy::New(context, provider_object, solana_proxy_handler_obj)
            .ToLocal(&solana_proxy)) {
     return;
@@ -630,8 +631,11 @@ void JSSolanaProvider::WalletStandardInit(gin::Arguments* arguments) {
       {"(function() {", LoadDataResource(IDR_BRAVE_WALLET_STANDARD_JS),
        "return walletStandardBrave; })()"});
 
-  v8::Local<v8::Value> wallet_standard =
-      ExecuteScript(web_frame, wallet_standard_module_str).ToLocalChecked();
+  v8::Local<v8::Value> wallet_standard;
+  if (!ExecuteScript(web_frame, wallet_standard_module_str)
+           .ToLocal(&wallet_standard)) {
+    return;
+  }
   v8::Local<v8::Value> object;
   v8::Isolate* isolate = arguments->isolate();
   v8::Local<v8::Context> context = isolate->GetCurrentContext();
