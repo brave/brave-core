@@ -23,7 +23,6 @@ import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -269,20 +268,17 @@ public class OnboardingPrefManager {
     }
 
     public static Map<String, SearchEngineEnum> searchEngineMap =
-    new HashMap<String, SearchEngineEnum>() {
-        {
-            put(GOOGLE, SearchEngineEnum.GOOGLE);
-            put(BRAVE, SearchEngineEnum.BRAVE);
-            put(DUCKDUCKGO, SearchEngineEnum.DUCKDUCKGO);
-            put(QWANT, SearchEngineEnum.QWANT);
-            put(BING, SearchEngineEnum.BING);
-            put(STARTPAGE, SearchEngineEnum.STARTPAGE);
-            put(YANDEX, SearchEngineEnum.YANDEX);
-            put(ECOSIA, SearchEngineEnum.ECOSIA);
-            put(DAUM, SearchEngineEnum.DAUM);
-            put(NAVER, SearchEngineEnum.NAVER);
-        }
-    };
+            Map.ofEntries(
+                    Map.entry(GOOGLE, SearchEngineEnum.GOOGLE),
+                    Map.entry(BRAVE, SearchEngineEnum.BRAVE),
+                    Map.entry(DUCKDUCKGO, SearchEngineEnum.DUCKDUCKGO),
+                    Map.entry(QWANT, SearchEngineEnum.QWANT),
+                    Map.entry(BING, SearchEngineEnum.BING),
+                    Map.entry(STARTPAGE, SearchEngineEnum.STARTPAGE),
+                    Map.entry(YANDEX, SearchEngineEnum.YANDEX),
+                    Map.entry(ECOSIA, SearchEngineEnum.ECOSIA),
+                    Map.entry(DAUM, SearchEngineEnum.DAUM),
+                    Map.entry(NAVER, SearchEngineEnum.NAVER));
 
     public boolean isFromNotification() {
         return mSharedPreferences.getBoolean(FROM_NOTIFICATION, false);

@@ -141,8 +141,8 @@ public class Blockies {
         RAND_SEED[2] = RAND_SEED[3];
         RAND_SEED[3] = (RAND_SEED[3] ^ (RAND_SEED[3] >> 19) ^ t ^ (t >> 8));
 
-        double num = (RAND_SEED[3]);
-        double den = ((1 << 31));
+        double num = RAND_SEED[3];
+        double den = (1 << 31);
 
         return Math.abs(num / den);
     }

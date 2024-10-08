@@ -2280,15 +2280,17 @@ public class BytecodeTest {
             if (m.getName().equals(methodName)) {
                 if (checkTypes) {
                     Class<?> type = m.getReturnType();
-                    if (type == null && returnType != null || type != null && returnType == null
-                            || type != null && returnType != null && !type.equals(returnType)) {
+                    if ((type == null && returnType != null)
+                            || (type != null && returnType == null)
+                            || (type != null && returnType != null && !type.equals(returnType))) {
                         return false;
                     }
                     Class<?>[] types = m.getParameterTypes();
-                    if (types == null && parameterTypes != null
-                            || types != null && parameterTypes == null
-                            || types != null && parameterTypes != null
-                                    && types.length != parameterTypes.length) {
+                    if ((types == null && parameterTypes != null)
+                            || (types != null && parameterTypes == null)
+                            || (types != null
+                                    && parameterTypes != null
+                                    && types.length != parameterTypes.length)) {
                         return false;
                     }
                     for (int i = 0; i < (types == null ? 0 : types.length); i++) {
