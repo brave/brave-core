@@ -752,27 +752,6 @@ class TabManager: NSObject {
     }
   }
 
-  /// Forget all data for websites that have forget me enabled
-  /// Will forget all data instantly with no delay
-  @MainActor func forgetDataOnAppClose() {
-    for tab in tabs(withType: .regular) {
-      guard let url = tab.url, !InternalURL.isValid(url: url) else {
-        continue
-      }
-
-      let siteDomain = Domain.getOrCreate(
-        forUrl: url,
-        persistent: !tab.isPrivate
-      )
-
-      if siteDomain.shredLevel.shredOnAppExit {
-        Task {
-          await forgetData(for: url, in: tab)
-        }
-      }
-    }
-  }
-
   /// Forget all data for websites if the website has "Forget Me" enabled
   ///
   /// A delay allows us to cancel this forget in case the user goes back to this website.
@@ -867,13 +846,13 @@ class TabManager: NSObject {
     }
   }
 
-  @MainActor private func forgetData(for url: URL, in tab: Tab) async {
+  @MainActor private func forgetData(for url: URL, in tab: Tab?) async {
     await FaviconFetcher.deleteCache(for: url)
     guard let etldP1 = url.baseDomain else { return }
 
-    let dataStore = tab.webView?.configuration.websiteDataStore
+    let dataStore = (tab?.webView?.configuration.websiteDataStore ?? WKWebsiteDataStore.default())
     // Delete 1P data records
-    await dataStore?.deleteDataRecords(
+    await dataStore.deleteDataRecords(
       forDomain: etldP1
     )
     if BraveCore.FeatureList.kBraveShredCacheData.enabled {
@@ -883,8 +862,8 @@ class TabManager: NSObject {
         WKWebsiteDataTypeMemoryCache, WKWebsiteDataTypeDiskCache,
         WKWebsiteDataTypeOfflineWebApplicationCache,
       ])
-      let cacheRecords = await dataStore?.dataRecords(ofTypes: cacheTypes) ?? []
-      await dataStore?.removeData(ofTypes: cacheTypes, for: cacheRecords)
+      let cacheRecords = await dataStore.dataRecords(ofTypes: cacheTypes)
+      await dataStore.removeData(ofTypes: cacheTypes, for: cacheRecords)
     }
 
     // Delete the history for forgotten websites
@@ -905,7 +884,9 @@ class TabManager: NSObject {
     }
 
     ContentBlockerManager.log.debug("Cleared website data for `\(etldP1)`")
-    forgetTasks[tab.type]?.removeValue(forKey: etldP1)
+    if let tab {
+      forgetTasks[tab.type]?.removeValue(forKey: etldP1)
+    }
   }
 
   /// Cancel a forget data request in case we navigate back to the tab within a certain period
@@ -1206,6 +1187,25 @@ class TabManager: NSObject {
     savedTabs = savedTabs.filter({ $0.sessionWindow?.windowId == windowId })
     if savedTabs.isEmpty { return nil }
 
+    /// Cache on if we should shred a given domain.
+    var shouldShredDomainCache: [String: Bool] = [:]
+    /// Checks if we should shred a Tab
+    let shouldShredDomain: (_ tabURL: URL, _ isPrivate: Bool) -> Bool = { url, isPrivate in
+      var shouldShredTab = false
+      let cacheKey = "\(url.domainURL.absoluteString)\(isPrivate)"
+      if let shouldShredDomain = shouldShredDomainCache[cacheKey] {
+        shouldShredTab = shouldShredDomain
+      } else {
+        let siteDomain = Domain.getOrCreate(
+          forUrl: url,
+          persistent: !isPrivate
+        )
+        shouldShredTab = siteDomain.shredLevel.shredOnAppExit
+        shouldShredDomainCache[cacheKey] = shouldShredTab
+      }
+      return shouldShredTab
+    }
+
     var tabToSelect: Tab?
     for savedTab in savedTabs {
       if let tabURL = savedTab.url {
@@ -1213,6 +1213,19 @@ class TabManager: NSObject {
         let request =
           InternalURL.isValid(url: tabURL)
           ? PrivilegedRequest(url: tabURL) as URLRequest : URLRequest(url: tabURL)
+
+        if FeatureList.kBraveShredFeature.enabled,
+          shouldShredDomain(tabURL, savedTab.isPrivate)
+        {
+          Task {
+            // Shred it's data
+            await forgetData(for: tabURL, in: nil)
+            // Delete SessionTab to prevent restore next launch
+            SessionTab.delete(tabId: savedTab.tabId)
+          }
+          // don't restore this tab after shredding
+          continue
+        }
 
         let tab = addTab(
           request,
