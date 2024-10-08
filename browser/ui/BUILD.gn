@@ -28,7 +28,7 @@ import("//third_party/widevine/cdm/widevine.gni")
 # are missing the dependency that would otherwise be required for it. This is a
 # workaround to add the public deps from //brave/browser/ui that would be added
 # automatically if the //chrome/browser/ui dependency was present.
-group("public_deps") {
+group("ui_public_dependencies") {
   public_deps = [
     ":brave_rewards_source",
     ":brave_tab_features",
@@ -56,7 +56,7 @@ source_set("ui") {
     "//chrome/browser/ui:browser_navigator_params_headers",
   ]
 
-  public_deps = [ ":public_deps" ]
+  public_deps = [ ":ui_public_dependencies" ]
 
   sources = [
     "brave_ui_features.cc",

@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/safe_browsing/BUILD.gn b/chrome/browser/safe_browsing/BUILD.gn
-index fd47cd395ad8e531da57dc4ca0666162f5b28caa..a699bfed09e1561be4e98cd865a79aa62a7ac259 100644
+index fd47cd395ad8e531da57dc4ca0666162f5b28caa..bca0790d681e96af37930e36b8c0adb01803e5d4 100644
 --- a/chrome/browser/safe_browsing/BUILD.gn
 +++ b/chrome/browser/safe_browsing/BUILD.gn
 @@ -475,6 +475,7 @@ static_library("safe_browsing") {
          "//components/safe_browsing/android:safe_browsing_mobile",
        ]
      }
-+    deps += [ "//brave/browser/ui:public_deps" ] # safe_browsing should depend on //chrome/browser/ui but it would cause a circular dependency
++    deps += [ "//brave/browser/ui:ui_public_dependencies" ] # safe_browsing should depend on //chrome/browser/ui but it would cause a circular dependency
    }
  }
  

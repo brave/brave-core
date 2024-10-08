@@ -51,8 +51,10 @@ source_set("impl") {
   ]
 }
 
+# This is split out from tor/impl because it has circular dependencies on
+# //chrome/browser.
+# https://github.com/brave/brave-browser/issues/41464
 source_set("util") {
-  check_includes = false  # workaround for incognito mode prefs
   sources = [
     "util.cc",
     "util.h",
