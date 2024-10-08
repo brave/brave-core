@@ -649,11 +649,13 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
-                        "shouldShowTabSwitcher",
+                        "shouldShowNtpAsHomeSurfaceAtStartup",
                         MethodModifier.STATIC,
                         true,
                         boolean.class,
-                        long.class));
+                        Intent.class,
+                        Bundle.class,
+                        ChromeInactivityTracker.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/IntentHandler",
