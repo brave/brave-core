@@ -11,9 +11,9 @@ if (is_win) {
 
 assert(enable_widevine)
 
+# This has circular dependencies on //chrome/browser.
+# https://github.com/brave/brave-browser/issues/10644
 source_set("widevine") {
-  # Remove when https://github.com/brave/brave-browser/issues/10644 is resolved
-  check_includes = false
   deps = [
     "//base",
     "//brave/app:brave_generated_resources_grit",
@@ -22,6 +22,7 @@ source_set("widevine") {
     "//brave/components/l10n/common",
     "//brave/components/widevine:constants",
     "//chrome/browser:browser_process",
+    "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/profiles:profile",
     "//chrome/common",
     "//components/component_updater/",

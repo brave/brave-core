@@ -67,14 +67,13 @@ if (ethereum_remote_client_enabled) {
 }
 
 # This is split out from extensions and the rest of brave_prefs_util because it
-# has dependencies on //chrome/browser that can't easily be resolved. This is a
-# temporary workaround.
+# has circular dependencies on //chrome/browser.
+# https://github.com/brave/brave-browser/issues/41418
 source_set("brave_prefs_util_impl") {
-  # Remove and combine with extensions when
-  # https://github.com/brave/brave-browser/issues/41418 is resolved
-  check_includes = false
-
-  visibility = [ ":*" ]
+  visibility = [
+    ":*",
+    "//chrome/browser",
+  ]
   sources = [ "api/settings_private/brave_prefs_util_impl.cc" ]
 
   deps = [
@@ -89,37 +88,42 @@ source_set("brave_prefs_util_impl") {
   ]
 }
 
-# This is split out from extensions because it has dependencies on
-# //chrome/browser/ui that can't easily be resolved. This is a temporary
-# workaround.
+# This is split out from extensions because it has circular dependencies on
+# //chrome/browser.
+# https://github.com/brave/brave-browser/issues/41419
 source_set("brave_rewards_api") {
-  # Remove and combine with extensions when
-  # https://github.com/brave/brave-browser/issues/41419 is resolved
-  check_includes = false
+  visibility = [
+    ":*",
+    "//chrome/browser",
+  ]
 
-  visibility = [ ":*" ]
   sources = [
     "api/brave_rewards_api.cc",
     "api/brave_rewards_api.h",
   ]
 
   public_deps = [
+    "//brave/components/brave_ads/core/mojom",
+    "//brave/components/brave_rewards/common/mojom",
+    "//extensions/browser",
+  ]
+
+  deps = [
     "//base",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_rewards",
     "//brave/browser/brave_rewards:util",
+    "//brave/browser/ui:ui_public_dependencies",
     "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_ads/browser",
-    "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",
-    "//brave/components/brave_rewards/common/mojom",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/extensions",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
     "//components/prefs",
     "//content/public/browser",
-    "//extensions/browser",
   ]
 }
 
@@ -161,6 +165,7 @@ source_set("extensions") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser:browser_process",
+    "//brave/browser/brave_rewards",
     "//brave/browser/component_updater",
     "//brave/browser/extensions/api:generated_api_registration",
     "//brave/browser/greaselion",
@@ -175,6 +180,7 @@ source_set("extensions") {
     "//brave/components/brave_extension:static_resources",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/browser",
+    "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common/mojom",
     "//brave/components/brave_shields/core/common",
     "//brave/components/brave_vpn/common/buildflags",
@@ -267,6 +273,8 @@ source_set("extensions") {
     ]
     deps += [ "//brave/components/brave_webtorrent/browser" ]
   }
+
+  allow_circular_includes_from = [ ":brave_prefs_util_impl" ]
 }
 
 group("resources") {
