@@ -836,11 +836,11 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
       if (!token_id) {
         continue;
       }
-      uint256_t token_id_uint256;
-      if (!Base10ValueToUint256(*token_id, &token_id_uint256)) {
+      auto token_id_uint256 = Base10ValueToUint256(*token_id);
+      if (!token_id_uint256) {
         continue;
       }
-      token->token_id = Uint256ValueToHex(token_id_uint256);
+      token->token_id = Uint256ValueToHex(*token_id_uint256);
     }
 
     // coin
@@ -983,11 +983,11 @@ SimpleHashClient::ParseBalances(const base::Value& json_value,
     const std::string* token_id = nft->FindString("token_id");
     if (token_id) {
       // Convert the decimal string SimpleHash gives us to a hex string
-      uint256_t token_id_uint256;
-      if (!Base10ValueToUint256(*token_id, &token_id_uint256)) {
+      auto token_id_uint256 = Base10ValueToUint256(*token_id);
+      if (!token_id_uint256) {
         continue;
       }
-      nft_identifier->token_id = Uint256ValueToHex(token_id_uint256);
+      nft_identifier->token_id = Uint256ValueToHex(*token_id_uint256);
     }
 
     const base::Value::List* owners_list = nft->FindList("owners");
@@ -1075,11 +1075,11 @@ SimpleHashClient::ParseMetadatas(const base::Value& json_value,
     const std::string* token_id = nft->FindString("token_id");
     if (token_id) {
       // Convert the decimal string SimpleHash gives us to a hex string
-      uint256_t token_id_uint256;
-      if (!Base10ValueToUint256(*token_id, &token_id_uint256)) {
+      auto token_id_uint256 = Base10ValueToUint256(*token_id);
+      if (!token_id_uint256) {
         continue;
       }
-      nft_identifier->token_id = Uint256ValueToHex(token_id_uint256);
+      nft_identifier->token_id = Uint256ValueToHex(*token_id_uint256);
     }
 
     mojom::NftMetadataPtr nft_metadata = mojom::NftMetadata::New();
