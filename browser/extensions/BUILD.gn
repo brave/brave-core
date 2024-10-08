@@ -70,7 +70,10 @@ if (ethereum_remote_client_enabled) {
 # has dependencies on //chrome/browser.
 # https://github.com/brave/brave-browser/issues/41418
 source_set("brave_prefs_util_impl") {
-  visibility = [ ":*", "//chrome/browser" ]
+  visibility = [
+    ":*",
+    "//chrome/browser",
+  ]
   sources = [ "api/settings_private/brave_prefs_util_impl.cc" ]
 
   deps = [
@@ -89,7 +92,10 @@ source_set("brave_prefs_util_impl") {
 # //chrome/browser.
 # https://github.com/brave/brave-browser/issues/41419
 source_set("brave_rewards_api") {
-  visibility = [ ":*", "//chrome/browser" ]
+  visibility = [
+    ":*",
+    "//chrome/browser",
+  ]
 
   sources = [
     "api/brave_rewards_api.cc",
@@ -104,7 +110,6 @@ source_set("brave_rewards_api") {
 
   deps = [
     "//base",
-    "//chrome/browser/ui",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_rewards",
     "//brave/browser/brave_rewards:util",
@@ -116,9 +121,9 @@ source_set("brave_rewards_api") {
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/extensions",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
     "//components/prefs",
     "//content/public/browser",
-
   ]
 }
 
@@ -156,12 +161,11 @@ source_set("extensions") {
 
   deps = [
     ":brave_prefs_util_impl",
-    "//brave/components/brave_rewards/common",
     ":resources",
     "//base",
-    "//brave/browser/brave_rewards",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser:browser_process",
+    "//brave/browser/brave_rewards",
     "//brave/browser/component_updater",
     "//brave/browser/extensions/api:generated_api_registration",
     "//brave/browser/greaselion",
@@ -176,6 +180,7 @@ source_set("extensions") {
     "//brave/components/brave_extension:static_resources",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/browser",
+    "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common/mojom",
     "//brave/components/brave_shields/core/common",
     "//brave/components/brave_vpn/common/buildflags",
