@@ -11,6 +11,8 @@ if (is_win) {
 
 assert(enable_widevine)
 
+# This has circular dependencies on //chrome/browser.
+# https://github.com/brave/brave-browser/issues/10644
 source_set("widevine") {
   deps = [
     "//base",

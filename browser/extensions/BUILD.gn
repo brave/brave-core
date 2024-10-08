@@ -67,7 +67,7 @@ if (ethereum_remote_client_enabled) {
 }
 
 # This is split out from extensions and the rest of brave_prefs_util because it
-# has dependencies on //chrome/browser.
+# has circular dependencies on //chrome/browser.
 # https://github.com/brave/brave-browser/issues/41418
 source_set("brave_prefs_util_impl") {
   visibility = [
@@ -88,7 +88,7 @@ source_set("brave_prefs_util_impl") {
   ]
 }
 
-# This is split out from extensions because it has dependencies on
+# This is split out from extensions because it has circular dependencies on
 # //chrome/browser.
 # https://github.com/brave/brave-browser/issues/41419
 source_set("brave_rewards_api") {
