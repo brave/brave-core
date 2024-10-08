@@ -159,50 +159,11 @@ const Config = function () {
   this.infuraProjectId = getEnvConfig(['brave_infura_project_id']) || ''
   this.sardineClientId = getEnvConfig(['sardine_client_id']) || ''
   this.sardineClientSecret = getEnvConfig(['sardine_client_secret']) || ''
-  this.bitFlyerProductionClientId = getEnvConfig(['bitflyer_production_client_id']) || ''
-  this.bitFlyerProductionClientSecret = getEnvConfig(['bitflyer_production_client_secret']) || ''
-  this.bitFlyerProductionFeeAddress = getEnvConfig(['bitflyer_production_fee_address']) || ''
-  this.bitFlyerProductionUrl = getEnvConfig(['bitflyer_production_url']) || ''
-  this.bitFlyerSandboxClientId = getEnvConfig(['bitflyer_sandbox_client_id']) || ''
-  this.bitFlyerSandboxClientSecret = getEnvConfig(['bitflyer_sandbox_client_secret']) || ''
-  this.bitFlyerSandboxFeeAddress = getEnvConfig(['bitflyer_sandbox_fee_address']) || ''
-  this.bitFlyerSandboxUrl = getEnvConfig(['bitflyer_sandbox_url']) || ''
-  this.geminiProductionApiUrl = getEnvConfig(['gemini_production_api_url']) || ''
-  this.geminiProductionClientId = getEnvConfig(['gemini_production_client_id']) || ''
-  this.geminiProductionClientSecret = getEnvConfig(['gemini_production_client_secret']) || ''
-  this.geminiProductionFeeAddress = getEnvConfig(['gemini_production_fee_address']) || ''
-  this.geminiProductionOauthUrl = getEnvConfig(['gemini_production_oauth_url']) || ''
-  this.geminiSandboxApiUrl = getEnvConfig(['gemini_sandbox_api_url']) || ''
-  this.geminiSandboxClientId = getEnvConfig(['gemini_sandbox_client_id']) || ''
-  this.geminiSandboxClientSecret = getEnvConfig(['gemini_sandbox_client_secret']) || ''
-  this.geminiSandboxFeeAddress = getEnvConfig(['gemini_sandbox_fee_address']) || ''
-  this.geminiSandboxOauthUrl = getEnvConfig(['gemini_sandbox_oauth_url']) || ''
-  this.upholdProductionApiUrl = getEnvConfig(['uphold_production_api_url']) || ''
-  this.upholdProductionClientId = getEnvConfig(['uphold_production_client_id']) || ''
-  this.upholdProductionClientSecret = getEnvConfig(['uphold_production_client_secret']) || ''
-  this.upholdProductionFeeAddress = getEnvConfig(['uphold_production_fee_address']) || ''
-  this.upholdProductionOauthUrl = getEnvConfig(['uphold_production_oauth_url']) || ''
-  this.upholdSandboxApiUrl = getEnvConfig(['uphold_sandbox_api_url']) || ''
-  this.upholdSandboxClientId = getEnvConfig(['uphold_sandbox_client_id']) || ''
-  this.upholdSandboxClientSecret = getEnvConfig(['uphold_sandbox_client_secret']) || ''
-  this.upholdSandboxFeeAddress = getEnvConfig(['uphold_sandbox_fee_address']) || ''
-  this.upholdSandboxOauthUrl = getEnvConfig(['uphold_sandbox_oauth_url']) || ''
-  this.zebPayProductionApiUrl = getEnvConfig(['zebpay_production_api_url']) || ''
-  this.zebPayProductionClientId = getEnvConfig(['zebpay_production_client_id']) || ''
-  this.zebPayProductionClientSecret = getEnvConfig(['zebpay_production_client_secret']) || ''
-  this.zebPayProductionOauthUrl = getEnvConfig(['zebpay_production_oauth_url']) || ''
-  this.zebPaySandboxApiUrl = getEnvConfig(['zebpay_sandbox_api_url']) || ''
-  this.zebPaySandboxClientId = getEnvConfig(['zebpay_sandbox_client_id']) || ''
-  this.zebPaySandboxClientSecret = getEnvConfig(['zebpay_sandbox_client_secret']) || ''
-  this.zebPaySandboxOauthUrl = getEnvConfig(['zebpay_sandbox_oauth_url']) || ''
   this.braveSyncEndpoint = getEnvConfig(['brave_sync_endpoint']) || ''
   this.safeBrowsingApiEndpoint = getEnvConfig(['safebrowsing_api_endpoint']) || ''
   this.updaterProdEndpoint = getEnvConfig(['updater_prod_endpoint']) || ''
   this.updaterDevEndpoint = getEnvConfig(['updater_dev_endpoint']) || ''
   this.webcompatReportApiEndpoint = getEnvConfig(['webcompat_report_api_endpoint']) || 'https://webcompat.brave.com/1/webcompat'
-  this.rewardsGrantDevEndpoint = getEnvConfig(['rewards_grant_dev_endpoint']) || ''
-  this.rewardsGrantStagingEndpoint = getEnvConfig(['rewards_grant_staging_endpoint']) || ''
-  this.rewardsGrantProdEndpoint = getEnvConfig(['rewards_grant_prod_endpoint']) || ''
   this.ignorePatchVersionNumber = !this.isBraveReleaseBuild() && getEnvConfig(['ignore_patch_version_number'], !this.isCI)
   this.braveVersion = getBraveVersion(this.ignorePatchVersionNumber)
   this.braveIOSMarketingPatchVersion = getEnvConfig(['brave_ios_marketing_version_patch']) || ''
@@ -360,42 +321,6 @@ Config.prototype.buildArgs = function () {
     google_default_client_id: this.googleDefaultClientId,
     google_default_client_secret: this.googleDefaultClientSecret,
     brave_infura_project_id: this.infuraProjectId,
-    bitflyer_production_client_id: this.bitFlyerProductionClientId,
-    bitflyer_production_client_secret: this.bitFlyerProductionClientSecret,
-    bitflyer_production_fee_address: this.bitFlyerProductionFeeAddress,
-    bitflyer_production_url: this.bitFlyerProductionUrl,
-    bitflyer_sandbox_client_id: this.bitFlyerSandboxClientId,
-    bitflyer_sandbox_client_secret: this.bitFlyerSandboxClientSecret,
-    bitflyer_sandbox_fee_address: this.bitFlyerSandboxFeeAddress,
-    bitflyer_sandbox_url: this.bitFlyerSandboxUrl,
-    gemini_production_api_url: this.geminiProductionApiUrl,
-    gemini_production_client_id: this.geminiProductionClientId,
-    gemini_production_client_secret: this.geminiProductionClientSecret,
-    gemini_production_fee_address: this.geminiProductionFeeAddress,
-    gemini_production_oauth_url: this.geminiProductionOauthUrl,
-    gemini_sandbox_api_url: this.geminiSandboxApiUrl,
-    gemini_sandbox_client_id: this.geminiSandboxClientId,
-    gemini_sandbox_client_secret: this.geminiSandboxClientSecret,
-    gemini_sandbox_fee_address: this.geminiSandboxFeeAddress,
-    gemini_sandbox_oauth_url: this.geminiSandboxOauthUrl,
-    uphold_production_api_url: this.upholdProductionApiUrl,
-    uphold_production_client_id: this.upholdProductionClientId,
-    uphold_production_client_secret: this.upholdProductionClientSecret,
-    uphold_production_fee_address: this.upholdProductionFeeAddress,
-    uphold_production_oauth_url: this.upholdProductionOauthUrl,
-    uphold_sandbox_api_url: this.upholdSandboxApiUrl,
-    uphold_sandbox_client_id: this.upholdSandboxClientId,
-    uphold_sandbox_client_secret: this.upholdSandboxClientSecret,
-    uphold_sandbox_fee_address: this.upholdSandboxFeeAddress,
-    uphold_sandbox_oauth_url: this.upholdSandboxOauthUrl,
-    zebpay_production_api_url: this.zebPayProductionApiUrl,
-    zebpay_production_client_id: this.zebPayProductionClientId,
-    zebpay_production_client_secret: this.zebPayProductionClientSecret,
-    zebpay_production_oauth_url: this.zebPayProductionOauthUrl,
-    zebpay_sandbox_api_url: this.zebPaySandboxApiUrl,
-    zebpay_sandbox_client_id: this.zebPaySandboxClientId,
-    zebpay_sandbox_client_secret: this.zebPaySandboxClientSecret,
-    zebpay_sandbox_oauth_url: this.zebPaySandboxOauthUrl,
     brave_version_major: version_parts[0],
     brave_version_minor: version_parts[1],
     brave_version_build: version_parts[2],
@@ -406,9 +331,6 @@ Config.prototype.buildArgs = function () {
     updater_prod_endpoint: this.updaterProdEndpoint,
     updater_dev_endpoint: this.updaterDevEndpoint,
     webcompat_report_api_endpoint: this.webcompatReportApiEndpoint,
-    rewards_grant_dev_endpoint: this.rewardsGrantDevEndpoint,
-    rewards_grant_staging_endpoint: this.rewardsGrantStagingEndpoint,
-    rewards_grant_prod_endpoint: this.rewardsGrantProdEndpoint,
     brave_stats_api_key: this.braveStatsApiKey,
     brave_stats_updater_url: this.braveStatsUpdaterUrl,
     enable_hangout_services_extension: this.enable_hangout_services_extension,
@@ -710,42 +632,6 @@ Config.prototype.buildArgs = function () {
     delete args.brave_google_api_endpoint
     delete args.brave_google_api_key
     delete args.brave_stats_updater_url
-    delete args.bitflyer_production_client_id
-    delete args.bitflyer_production_client_secret
-    delete args.bitflyer_production_fee_address
-    delete args.bitflyer_production_url
-    delete args.bitflyer_sandbox_client_id
-    delete args.bitflyer_sandbox_client_secret
-    delete args.bitflyer_sandbox_fee_address
-    delete args.bitflyer_sandbox_url
-    delete args.gemini_production_api_url
-    delete args.gemini_production_client_id
-    delete args.gemini_production_client_secret
-    delete args.gemini_production_fee_address
-    delete args.gemini_production_oauth_url
-    delete args.gemini_sandbox_api_url
-    delete args.gemini_sandbox_client_id
-    delete args.gemini_sandbox_client_secret
-    delete args.gemini_sandbox_fee_address
-    delete args.gemini_sandbox_oauth_url
-    delete args.uphold_production_api_url
-    delete args.uphold_production_client_id
-    delete args.uphold_production_client_secret
-    delete args.uphold_production_fee_address
-    delete args.uphold_production_oauth_url
-    delete args.uphold_sandbox_api_url
-    delete args.uphold_sandbox_client_id
-    delete args.uphold_sandbox_client_secret
-    delete args.uphold_sandbox_fee_address
-    delete args.uphold_sandbox_oauth_url
-    delete args.zebpay_production_api_url
-    delete args.zebpay_production_client_id
-    delete args.zebpay_production_client_secret
-    delete args.zebpay_production_oauth_url
-    delete args.zebpay_sandbox_api_url
-    delete args.zebpay_sandbox_client_id
-    delete args.zebpay_sandbox_client_secret
-    delete args.zebpay_sandbox_oauth_url
     delete args.use_blink_v8_binding_new_idl_interface
     delete args.v8_enable_verify_heap
     delete args.service_key_stt

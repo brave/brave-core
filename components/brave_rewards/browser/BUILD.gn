@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_rewards/core/config.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
