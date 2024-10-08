@@ -1022,6 +1022,10 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
 
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   if (GetParam()) {
+    // Wait till browser has active panel.
+    WaitUntil(base::BindLambdaForTesting(
+        [&]() { return !!panel_ui->GetCurrentEntryId(); }));
+
     EXPECT_EQ(SidePanelEntryId::kChatUI, panel_ui->GetCurrentEntryId());
   }
   testing::Mock::VerifyAndClearExpectations(&observer_);
