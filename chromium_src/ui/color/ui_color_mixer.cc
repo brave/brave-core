@@ -47,12 +47,6 @@ void AddBraveUiColorMixer(ColorProvider* provider,
   mixer[kColorButtonForegroundProminent] = {SK_ColorWHITE};
 
   // --------------------------------------------------------------------------
-  // Label colors
-  // --------------------------------------------------------------------------
-  // For deprecated kColorId_LabelEnabledColor
-  mixer[kColorLabelForeground] = {kColorButtonForeground};
-
-  // --------------------------------------------------------------------------
   // Link colors
   // --------------------------------------------------------------------------
   // For deprecated kColorId_LinkEnabled & kColorId_LinkPressed
