@@ -8,6 +8,12 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useHistory, useLocation } from 'react-router'
 import { Route, Switch, Redirect } from 'react-router-dom'
 
+// Selectors
+import {
+  useSafeUISelector //
+} from '../../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../../common/selectors'
+
 // hooks
 import {
   useBalancesFetcher //
@@ -55,7 +61,11 @@ import {
 import { makePortfolioAssetRoute } from '../../../../utils/routes-utils'
 
 // Options
-import { PortfolioNavOptions } from '../../../../options/nav-options'
+import {
+  PortfolioNavOptions,
+  PortfolioPanelNavOptions,
+  PortfolioPanelNavOptionsNoNFTsTab
+} from '../../../../options/nav-options'
 import {
   AccountsGroupByOption, //
   NoneGroupByOption
@@ -79,6 +89,9 @@ import {
 import {
   PortfolioFiltersModal //
 } from '../../popup-modals/filter-modals/portfolio-filters-modal'
+import {
+  TransactionsScreen //
+} from '../../../../page/screens/transactions/transactions-screen'
 
 // Styled Components
 import {
@@ -88,7 +101,8 @@ import {
   ControlsRow,
   BalanceAndButtonsWrapper,
   BalanceAndChangeWrapper,
-  BalanceAndLineChartWrapper
+  BalanceAndLineChartWrapper,
+  ActivityWrapper
 } from './style'
 import { Column, Row, HorizontalSpace } from '../../../shared/style'
 
@@ -115,6 +129,9 @@ export const PortfolioOverview = () => {
   const isCollectionView = location.pathname.includes(
     WalletRoutes.PortfolioNFTCollection.replace(':collectionName', '')
   )
+
+  // UI Selectors (safe)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // custom hooks
   const {
@@ -577,10 +594,16 @@ export const PortfolioOverview = () => {
               />
             </ColumnReveal>
           </BalanceAndLineChartWrapper>
-          <ControlsRow controlsHidden={hidePortfolioNFTsTab}>
-            {!hidePortfolioNFTsTab && (
+          <ControlsRow controlsHidden={!isPanel && hidePortfolioNFTsTab}>
+            {!isPanel && hidePortfolioNFTsTab ? null : (
               <SegmentedControl
-                navOptions={PortfolioNavOptions}
+                navOptions={
+                  isPanel && hidePortfolioNFTsTab
+                    ? PortfolioPanelNavOptionsNoNFTsTab
+                    : isPanel
+                    ? PortfolioPanelNavOptions
+                    : PortfolioNavOptions
+                }
                 maxWidth='384px'
               />
             )}
@@ -612,6 +635,18 @@ export const PortfolioOverview = () => {
             accounts={usersFilteredAccounts}
             onShowPortfolioSettings={() => setShowPortfolioSettings(true)}
           />
+        </Route>
+
+        <Route
+          path={WalletRoutes.PortfolioActivity}
+          exact
+        >
+          <ActivityWrapper
+            fullWidth={true}
+            padding='0px 16px'
+          >
+            <TransactionsScreen />
+          </ActivityWrapper>
         </Route>
 
         <Route
