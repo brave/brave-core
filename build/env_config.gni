@@ -1,0 +1,30 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+declare_args() {
+  # Path to .env file that contains variables to be used in the build.
+  env_config_file = "//brave/.env"
+}
+
+# Parsed .env as a GN scope.
+env_config = exec_script("env_config.py",
+                         [ rebase_path(env_config_file) ],
+                         "json",
+                         [ env_config_file ])
+
+# A list of .env files that were used to generate the env_config.
+env_config_files = [ rebase_path(env_config_file) ]
+
+# If there were any extra .env files included, add GN dependencies on them so
+# that GN is re-run if they change.
+if (defined(env_config.include_env) && env_config.include_env != []) {
+  foreach(env_file, env_config.include_env) {
+    # Read the file to register it as a gen-time dependency.
+    read_file(env_file, "")
+  }
+
+  # Add the extra .env files to the list.
+  env_config_files += rebase_path(env_config.include_env)
+}

@@ -1,0 +1,9 @@
+diff --git a/build/dotfile_settings.gni b/build/dotfile_settings.gni
+index bd7f4553e89ebde76214178b9dd2e8e10af916de..40918c48054ed11829b9757f7093f7df01b8e0d0 100644
+--- a/build/dotfile_settings.gni
++++ b/build/dotfile_settings.gni
+@@ -41,3 +41,4 @@ build_dotfile_settings = {
+     "//build/util/branding.gni",
+   ]
+ }
++import("//brave/build/dotfile_settings.gni") build_dotfile_settings.exec_script_whitelist += brave_exec_script_whitelist

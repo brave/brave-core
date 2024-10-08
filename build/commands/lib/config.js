@@ -45,9 +45,14 @@ const getEnvConfig = (key, default_value = undefined) => {
 
     // Parse src/brave/.env with all included env files.
     let envConfigPath = path.join(braveCoreDir, '.env')
-    // It's okay to not have the initial `.env` file.
     if (fs.existsSync(envConfigPath)) {
       dotenvPopulateWithIncludes(envConfig, envConfigPath)
+    } else {
+      // The .env file is used by `gn gen`. Create it if it doesn't exist.
+      const defaultEnvConfigContent =
+        '# This is a placeholder .env config file for the build system.\n' +
+        '# See for details: https://github.com/brave/brave-browser/wiki/Build-configuration\n'
+      fs.writeFileSync(envConfigPath, defaultEnvConfigContent)
     }
 
     // Convert 'true' and 'false' strings into booleans.
@@ -147,7 +152,6 @@ const Config = function () {
   this.braveServicesProductionDomain = getEnvConfig(['brave_services_production_domain']) || ''
   this.braveServicesStagingDomain = getEnvConfig(['brave_services_staging_domain']) || ''
   this.braveServicesDevDomain = getEnvConfig(['brave_services_dev_domain']) || ''
-  this.braveServicesKey = getEnvConfig(['brave_services_key']) || ''
   this.braveGoogleApiKey = getEnvConfig(['brave_google_api_key']) || 'AIzaSyAREPLACEWITHYOUROWNGOOGLEAPIKEY2Q'
   this.googleApiEndpoint = getEnvConfig(['brave_google_api_endpoint']) || 'https://www.googleapis.com/geolocation/v1/geolocate?key='
   this.googleDefaultClientId = getEnvConfig(['google_default_client_id']) || ''
@@ -331,7 +335,6 @@ Config.prototype.buildArgs = function () {
     v8_enable_verify_heap: this.isAsan(),
     disable_fieldtrial_testing_config: true,
     safe_browsing_mode: 1,
-    brave_services_key: this.braveServicesKey,
     root_extra_deps: ["//brave"],
     clang_unsafe_buffers_paths: "//brave/build/config/unsafe_buffers_paths.txt",
     // TODO: Re-enable when chromium_src overrides work for files in relative
