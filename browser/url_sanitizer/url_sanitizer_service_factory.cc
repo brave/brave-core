@@ -48,13 +48,14 @@ URLSanitizerServiceFactory::URLSanitizerServiceFactory()
 
 URLSanitizerServiceFactory::~URLSanitizerServiceFactory() = default;
 
-KeyedService* URLSanitizerServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+URLSanitizerServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  auto* service = new URLSanitizerService();
+  auto service = std::make_unique<URLSanitizerService>();
   if (g_brave_browser_process &&
       g_brave_browser_process->URLSanitizerComponentInstaller()) {
     g_brave_browser_process->URLSanitizerComponentInstaller()->AddObserver(
-        service);
+        service.get());
   }
   return service;
 }

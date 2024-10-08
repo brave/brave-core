@@ -43,9 +43,10 @@ EthereumRemoteClientServiceFactory::EthereumRemoteClientServiceFactory()
 EthereumRemoteClientServiceFactory::~EthereumRemoteClientServiceFactory() =
     default;
 
-KeyedService* EthereumRemoteClientServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+EthereumRemoteClientServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return new EthereumRemoteClientService(
+  return std::make_unique<EthereumRemoteClientService>(
       context, std::make_unique<EthereumRemoteClientDelegateImpl>());
 }
 

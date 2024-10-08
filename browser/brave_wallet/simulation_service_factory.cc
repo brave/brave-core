@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_wallet/simulation_service_factory.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/no_destructor.h"
@@ -67,14 +68,12 @@ SimulationServiceFactory::SimulationServiceFactory()
 
 SimulationServiceFactory::~SimulationServiceFactory() = default;
 
-KeyedService* SimulationServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+SimulationServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  auto* default_storage_partition = context->GetDefaultStoragePartition();
-  auto shared_url_loader_factory =
-      default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
-
-  return new SimulationService(
-      shared_url_loader_factory,
+  return std::make_unique<SimulationService>(
+      context->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess(),
       BraveWalletServiceFactory::GetServiceForContext(context));
 }
 

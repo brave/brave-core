@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_TABS_SHARED_PINNED_TAB_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_UI_TABS_SHARED_PINNED_TAB_SERVICE_FACTORY_H_
 
+#include <memory>
+
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
 
 namespace base {
@@ -28,7 +30,7 @@ class SharedPinnedTabServiceFactory : public ProfileKeyedServiceFactory {
   ~SharedPinnedTabServiceFactory() override;
 
   // BrowserContextKeyedServiceFactory:
-  KeyedService* BuildServiceInstanceFor(
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
   bool ServiceIsCreatedWithBrowserContext() const override;
 };

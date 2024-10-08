@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_EPHEMERAL_STORAGE_EPHEMERAL_STORAGE_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_EPHEMERAL_STORAGE_EPHEMERAL_STORAGE_SERVICE_FACTORY_H_
 
+#include <memory>
+
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 namespace base {
@@ -33,7 +35,7 @@ class EphemeralStorageServiceFactory
   void RegisterProfilePrefs(
       user_prefs::PrefRegistrySyncable* registry) override;
 
-  KeyedService* BuildServiceInstanceFor(
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;

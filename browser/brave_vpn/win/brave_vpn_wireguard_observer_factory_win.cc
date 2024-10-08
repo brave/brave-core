@@ -5,6 +5,8 @@
 
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_factory_win.h"
 
+#include <memory>
+
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
@@ -29,9 +31,10 @@ BraveVpnWireguardObserverFactory::BraveVpnWireguardObserverFactory()
           "BraveVpnWireguardObserverService",
           BrowserContextDependencyManager::GetInstance()) {}
 
-KeyedService* BraveVpnWireguardObserverFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+BraveVpnWireguardObserverFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return new BraveVpnWireguardObserverService();
+  return std::make_unique<BraveVpnWireguardObserverService>();
 }
 
 // static

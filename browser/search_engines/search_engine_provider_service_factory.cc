@@ -5,6 +5,7 @@
 
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 
+#include <memory>
 #include <string>
 
 #include "base/no_destructor.h"
@@ -26,38 +27,6 @@
 #include "brave/browser/search_engines/tor_window_search_engine_provider_service.h"
 #endif
 
-namespace {
-
-// Factory owns service object.
-KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
-#if BUILDFLAG(IS_ANDROID)
-  if (profile->IsIncognitoProfile()) {
-    return new PrivateWindowSearchEngineProviderServiceAndroid(profile);
-  }
-
-  if (profile->IsRegularProfile()) {
-    return new NormalWindowSearchEngineProviderServiceAndroid(profile);
-  }
-#else
-  // Set search engine handler for tor or private profile.
-  if (profile->IsTor()) {
-    return new TorWindowSearchEngineProviderService(profile);
-  }
-
-  if (profile->IsIncognitoProfile()) {
-    return new PrivateWindowSearchEngineProviderService(profile);
-  }
-
-  if (profile->IsRegularProfile()) {
-    return new NormalWindowSearchEngineProviderService(profile);
-  }
-#endif
-
-  return nullptr;
-}
-
-}  // namespace
-
 // static
 SearchEngineProviderServiceFactory*
 SearchEngineProviderServiceFactory::GetInstance() {
@@ -75,10 +44,37 @@ SearchEngineProviderServiceFactory::SearchEngineProviderServiceFactory()
 SearchEngineProviderServiceFactory::~SearchEngineProviderServiceFactory() =
     default;
 
-KeyedService* SearchEngineProviderServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+SearchEngineProviderServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return InitializeSearchEngineProviderServiceIfNeeded(
-      Profile::FromBrowserContext(context));
+  Profile* profile = Profile::FromBrowserContext(context);
+
+#if BUILDFLAG(IS_ANDROID)
+  if (profile->IsIncognitoProfile()) {
+    return std::make_unique<PrivateWindowSearchEngineProviderServiceAndroid>(
+        profile);
+  }
+
+  if (profile->IsRegularProfile()) {
+    return std::make_unique<NormalWindowSearchEngineProviderServiceAndroid>(
+        profile);
+  }
+#else
+  // Set search engine handler for tor or private profile.
+  if (profile->IsTor()) {
+    return std::make_unique<TorWindowSearchEngineProviderService>(profile);
+  }
+
+  if (profile->IsIncognitoProfile()) {
+    return std::make_unique<PrivateWindowSearchEngineProviderService>(profile);
+  }
+
+  if (profile->IsRegularProfile()) {
+    return std::make_unique<NormalWindowSearchEngineProviderService>(profile);
+  }
+#endif
+
+  return nullptr;
 }
 
 content::BrowserContext*

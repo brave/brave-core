@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_COMMANDER_COMMANDER_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_UI_COMMANDER_COMMANDER_SERVICE_FACTORY_H_
 
+#include <memory>
+
 #include "brave/browser/ui/commander/commander_service.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -33,7 +35,7 @@ class CommanderServiceFactory : public ProfileKeyedServiceFactory {
   friend base::NoDestructor<CommanderServiceFactory>;
 
   // ProfileKeyedServiceFactory:
-  KeyedService* BuildServiceInstanceFor(
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
   void RegisterProfilePrefs(
       user_prefs::PrefRegistrySyncable* registry) override;

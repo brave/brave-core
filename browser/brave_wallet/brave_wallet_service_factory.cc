@@ -47,14 +47,13 @@ BraveWalletServiceFactory::BraveWalletServiceFactory()
 
 BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
 
-KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+BraveWalletServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  auto* default_storage_partition = context->GetDefaultStoragePartition();
-  auto shared_url_loader_factory =
-      default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
-
-  return new BraveWalletService(
-      shared_url_loader_factory, BraveWalletServiceDelegate::Create(context),
+  return std::make_unique<BraveWalletService>(
+      context->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess(),
+      BraveWalletServiceDelegate::Create(context),
       user_prefs::UserPrefs::Get(context), g_browser_process->local_state());
 }
 

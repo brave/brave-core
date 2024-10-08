@@ -39,7 +39,8 @@ RequestOTRServiceFactory::RequestOTRServiceFactory()
 
 RequestOTRServiceFactory::~RequestOTRServiceFactory() = default;
 
-KeyedService* RequestOTRServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+RequestOTRServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   // Don't create service is request_otr feature is disabled
   if (!base::FeatureList::IsEnabled(
@@ -47,8 +48,8 @@ KeyedService* RequestOTRServiceFactory::BuildServiceInstanceFor(
     return nullptr;
   }
 
-  RequestOTRService* service =
-      new RequestOTRService(Profile::FromBrowserContext(context)->GetPrefs());
+  auto service = std::make_unique<RequestOTRService>(
+      Profile::FromBrowserContext(context)->GetPrefs());
   request_otr::RequestOTRComponentInstallerPolicy* component_installer =
       nullptr;
   // Brave browser process may be null if we are being created within a unit
@@ -58,7 +59,7 @@ KeyedService* RequestOTRServiceFactory::BuildServiceInstanceFor(
         g_brave_browser_process->request_otr_component_installer();
   }
   if (component_installer) {
-    component_installer->AddObserver(service);
+    component_installer->AddObserver(service.get());
   }
   return service;
 }

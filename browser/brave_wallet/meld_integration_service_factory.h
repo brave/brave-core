@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_MELD_INTEGRATION_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_MELD_INTEGRATION_SERVICE_FACTORY_H_
 
+#include <memory>
+
 #include "base/no_destructor.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
@@ -35,7 +37,7 @@ class MeldIntegrationServiceFactory : public BrowserContextKeyedServiceFactory {
 
   ~MeldIntegrationServiceFactory() override;
 
-  KeyedService* BuildServiceInstanceFor(
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;

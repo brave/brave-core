@@ -36,10 +36,11 @@ BraveVpnDnsObserverFactory::BraveVpnDnsObserverFactory()
           "BraveVpnDNSObserverService",
           BrowserContextDependencyManager::GetInstance()) {}
 
-KeyedService* BraveVpnDnsObserverFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+BraveVpnDnsObserverFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return new BraveVpnDnsObserverService(g_browser_process->local_state(),
-                                        user_prefs::UserPrefs::Get(context));
+  return std::make_unique<BraveVpnDnsObserverService>(
+      g_browser_process->local_state(), user_prefs::UserPrefs::Get(context));
 }
 
 // static

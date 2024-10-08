@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/no_destructor.h"
@@ -62,13 +63,12 @@ SwapServiceFactory::SwapServiceFactory()
 
 SwapServiceFactory::~SwapServiceFactory() = default;
 
-KeyedService* SwapServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+SwapServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  auto* default_storage_partition = context->GetDefaultStoragePartition();
-  auto shared_url_loader_factory =
-      default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
-
-  return new SwapService(shared_url_loader_factory);
+  return std::make_unique<SwapService>(
+      context->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess());
 }
 
 content::BrowserContext* SwapServiceFactory::GetBrowserContextToUse(
