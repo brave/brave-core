@@ -36,6 +36,7 @@ export function isPersistableSessionRoute(
     route.includes(WalletRoutes.PortfolioAssets) ||
     route.includes(WalletRoutes.PortfolioNFTs) ||
     route.includes(WalletRoutes.PortfolioNFTAsset) ||
+    route.includes(WalletRoutes.PortfolioActivity) ||
     route.includes(WalletRoutes.Market) ||
     route.includes(WalletRoutes.Explore)
   if (isPanel) {
@@ -268,7 +269,7 @@ export const makeSwapOrBridgeRoute = ({
 }
 
 export const makeTransactionDetailsRoute = (transactionId: string) => {
-  return WalletRoutes.Activity + `#${transactionId}`
+  return WalletRoutes.PortfolioActivity + `#${transactionId}`
 }
 
 export const makePortfolioAssetRoute = (isNft: boolean, assetId: string) => {

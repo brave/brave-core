@@ -218,7 +218,8 @@ export const WalletSettingsMenu = (props: Props) => {
       </Column>
 
       {(walletLocation === WalletRoutes.PortfolioNFTs ||
-        walletLocation === WalletRoutes.PortfolioAssets) && (
+        walletLocation === WalletRoutes.PortfolioAssets ||
+        (walletLocation === WalletRoutes.PortfolioActivity && isPanel)) && (
         <>
           <SectionLabel justifyContent='flex-start'>
             {getLocale('braveWalletPortfolioSettings')}

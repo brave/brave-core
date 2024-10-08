@@ -550,6 +550,7 @@ export enum WalletRoutes {
   PortfolioNFTCollection = '/crypto/portfolio/collections/:collectionName',
   PortfolioNFTAsset = '/crypto/portfolio/nfts/' + ':assetId',
   PortfolioAsset = '/crypto/portfolio/assets/' + ':assetId',
+  PortfolioActivity = '/crypto/portfolio/activity',
 
   // portfolio asset modals
   AddAssetModal = '/crypto/portfolio/add-asset',

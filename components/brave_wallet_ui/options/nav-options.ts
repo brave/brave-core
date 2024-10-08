@@ -84,6 +84,20 @@ const ActivityNavOption: NavOption = {
   route: WalletRoutes.Activity
 }
 
+const PortfolioActivityNavOption: NavOption = {
+  id: 'activity',
+  name: 'braveWalletActivity',
+  icon: 'activity',
+  route: WalletRoutes.PortfolioActivity
+}
+
+const AssetsNavOption: NavOption = {
+  id: 'assets',
+  name: 'braveWalletAccountsAssets',
+  icon: 'coins',
+  route: WalletRoutes.PortfolioAssets
+}
+
 const ExploreNavOption: NavOption = {
   id: 'explore',
   name: 'braveWalletTopNavExplore',
@@ -98,7 +112,6 @@ export const PanelNavOptions: NavOption[] = [
     icon: 'coins',
     route: WalletRoutes.Portfolio
   },
-  ActivityNavOption,
   {
     id: 'accounts',
     name: 'braveWalletTopNavAccounts',
@@ -132,18 +145,23 @@ export const AllNavOptions: NavOption[] = [
 ]
 
 export const PortfolioNavOptions: NavOption[] = [
-  {
-    id: 'assets',
-    name: 'braveWalletAccountsAssets',
-    icon: 'coins',
-    route: WalletRoutes.PortfolioAssets
-  },
+  AssetsNavOption,
   {
     id: 'nfts',
     name: 'braveWalletTopNavNFTS',
     icon: 'grid04',
     route: WalletRoutes.PortfolioNFTs
   }
+]
+
+export const PortfolioPanelNavOptions: NavOption[] = [
+  ...PortfolioNavOptions,
+  PortfolioActivityNavOption
+]
+
+export const PortfolioPanelNavOptionsNoNFTsTab: NavOption[] = [
+  AssetsNavOption,
+  PortfolioActivityNavOption
 ]
 
 export const ExploreNavOptions: NavOption[] = [
