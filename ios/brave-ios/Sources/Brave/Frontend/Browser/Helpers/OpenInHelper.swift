@@ -96,6 +96,35 @@ class DownloadHelper: NSObject {
 
     return downloadAlert
   }
+
+  func cancelDownloadAlert(from view: UIView, okAction: @escaping () -> Void) -> UIAlertController?
+  {
+    let alert = UIAlertController(
+      title: Strings.downloadAlreadyInProgressToastLabelTitle,
+      message: Strings.downloadAlreadyInProgressToastLabelText,
+      preferredStyle: .alert
+    )
+
+    alert.addAction(
+      UIAlertAction(
+        title: Strings.OKString,
+        style: .default,
+        handler: { _ in
+          okAction()
+        }
+      )
+    )
+
+    alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel))
+
+    alert.popoverPresentationController?.do {
+      $0.sourceView = view
+      $0.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.maxY - 16, width: 0, height: 0)
+      $0.permittedArrowDirections = []
+    }
+
+    return alert
+  }
 }
 
 class OpenPassBookHelper: NSObject {

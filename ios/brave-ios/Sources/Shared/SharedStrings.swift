@@ -207,6 +207,20 @@ extension Strings {
     comment:
       "The label text in the Download Cancelled toast for showing confirmation that the download was cancelled."
   )
+  public static let downloadAlreadyInProgressToastLabelTitle = NSLocalizedString(
+    "DownloadAlreadyInProgressToastLabelTitle",
+    bundle: .module,
+    value: "Start a new download?",
+    comment:
+      "The label title in the Download Toast when there's already a download currently in progress"
+  )
+  public static let downloadAlreadyInProgressToastLabelText = NSLocalizedString(
+    "DownloadAlreadyInProgressToastLabelText",
+    bundle: .module,
+    value: "This will stop all progress for your current download.",
+    comment:
+      "The label text in the Download Toast when there's already a download currently in progress"
+  )
   public static let downloadFailedToastLabelText = NSLocalizedString(
     "DownloadFailedToastLabelText",
     bundle: .module,

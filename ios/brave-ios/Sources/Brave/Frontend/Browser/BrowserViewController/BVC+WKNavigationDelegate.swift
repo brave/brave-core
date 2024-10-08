@@ -924,10 +924,41 @@ extension BrowserViewController: CWVNavigationDelegate {
     }
 
     // Open our helper and cancel this response from the webview.
-    if tab === tabManager.selectedTab,
-      let downloadAlert = downloadHelper.downloadAlert(from: view, okAction: downloadAlertAction)
-    {
-      present(downloadAlert, animated: true, completion: nil)
+    if tab === tabManager.selectedTab {
+      // There's already an existing download happening
+      // Prompt the user to cancel the existing download in order to start a new one
+      if let downloadToast = downloadToast, !downloadToast.downloads.isEmpty {
+        let cancelExistingDownloadAction = { [weak self] in
+          guard let self = self,
+            let downloadAlert = downloadHelper.downloadAlert(
+              from: self.view,
+              okAction: downloadAlertAction
+            )
+          else { return }
+
+          // Cancel the download
+          downloadToast.downloads.forEach({ $0.cancel() })
+
+          // Dismiss the existing download toast, and display the new download alert
+          downloadToast.dismiss(false) { [weak self] in
+            self?.present(downloadAlert, animated: true, completion: nil)
+          }
+        }
+
+        if let alert = downloadHelper.cancelDownloadAlert(
+          from: view,
+          okAction: cancelExistingDownloadAction
+        ) {
+          present(alert, animated: true, completion: nil)
+        }
+      } else {
+        if let downloadAlert = downloadHelper.downloadAlert(
+          from: view,
+          okAction: downloadAlertAction
+        ) {
+          present(downloadAlert, animated: true, completion: nil)
+        }
+      }
     }
   }
 
