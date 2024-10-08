@@ -793,8 +793,17 @@
   <message name="IDS_BRAVE_SYNC_CREATE_BRAVE_ACCOUNT_BUTTON" desc="The Sync button that triggers a modal to create a Brave account">
     Create a Brave account
   </message>
+  <message name="IDS_BRAVE_SYNC_CREATE_BRAVE_ACCOUNT_TITLE" desc="Title for the `create your account` modal.">
+    Create your account
+  </message>
   <message name="IDS_BRAVE_SYNC_SIGN_IN_TO_BRAVE_ACCOUNT_BUTTON" desc="The Sync button that triggers a modal to sign in to a Brave account">
     Sign in to your Brave account
+  </message>
+  <message name="IDS_BRAVE_SYNC_SIGN_IN_TO_BRAVE_ACCOUNT_TITLE" desc="Title for the `sign in to your account` modal.">
+    Sign in to your account
+  </message>
+  <message name="IDS_BRAVE_SYNC_BRAVE_ACCOUNT_DESC" desc="Description of what a Brave account is.">
+    A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.
   </message>
   <message name="IDS_BRAVE_SYNC_VIEW_CODE_BUTTON" desc="The Sync button `view sync code` for viewing the passphrase and qr code needed to add a new device. triggers a modal with sync code">
     View Sync Code
