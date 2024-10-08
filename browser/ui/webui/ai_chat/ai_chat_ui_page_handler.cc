@@ -67,6 +67,8 @@ AIChatUIPageHandler::AIChatUIPageHandler(
       receiver_(this, std::move(receiver)) {
   // Standalone mode means Chat is opened as its own tab in the tab strip and
   // not a side panel. chat_context_web_contents is nullptr in that case
+  favicon_service_ = FaviconServiceFactory::GetForProfile(
+      profile_, ServiceAccessType::EXPLICIT_ACCESS);
   const bool is_standalone = chat_context_web_contents == nullptr;
   if (!is_standalone) {
     active_chat_tab_helper_ =
@@ -74,8 +76,6 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
-    favicon_service_ = FaviconServiceFactory::GetForProfile(
-        profile_, ServiceAccessType::EXPLICIT_ACCESS);
   }
 }
 
