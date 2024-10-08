@@ -10,10 +10,7 @@
 
 void SidePanelWebUIView::AddedToWidget() {
   if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
-    // Side panel WebUI views are positioned at the bottom of the side panel. In
-    // order to maintain rounded corners around the side panel, give the web
-    // contents native view rounded corners on the bottom.
-    constexpr auto radius = BraveContentsViewUtil::kBorderRadius;
-    holder()->SetCornerRadii(gfx::RoundedCornersF(0, 0, radius, radius));
+    constexpr auto kRadius = BraveContentsViewUtil::kBorderRadius;
+    holder()->SetCornerRadii(gfx::RoundedCornersF(kRadius));
   }
 }
