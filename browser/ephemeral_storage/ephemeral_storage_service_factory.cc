@@ -50,7 +50,8 @@ void EphemeralStorageServiceFactory::RegisterProfilePrefs(
       ephemeral_storage::kFirstPartyStorageOriginsToCleanup);
 }
 
-KeyedService* EphemeralStorageServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+EphemeralStorageServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage) &&
       !base::FeatureList::IsEnabled(
@@ -67,7 +68,7 @@ KeyedService* EphemeralStorageServiceFactory::BuildServiceInstanceFor(
     return nullptr;
   }
   Profile* profile = Profile::FromBrowserContext(context);
-  return new ephemeral_storage::EphemeralStorageService(
+  return std::make_unique<ephemeral_storage::EphemeralStorageService>(
       context, host_content_settings_map,
       std::make_unique<ephemeral_storage::BraveEphemeralStorageServiceDelegate>(
           context, host_content_settings_map,

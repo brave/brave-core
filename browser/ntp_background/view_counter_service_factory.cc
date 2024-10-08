@@ -59,7 +59,8 @@ ViewCounterServiceFactory::ViewCounterServiceFactory()
 
 ViewCounterServiceFactory::~ViewCounterServiceFactory() = default;
 
-KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+ViewCounterServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* browser_context) const {
   // Only NTP in normal profile uses sponsored services.
   if (!Profile::FromBrowserContext(browser_context)->IsRegularProfile()) {
@@ -86,7 +87,7 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
           g_brave_browser_process->p3a_service(), profile->GetPrefs());
     }
 
-    return new ViewCounterService(
+    return std::make_unique<ViewCounterService>(
         service,
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
         BraveNTPCustomBackgroundServiceFactory::GetForContext(profile),

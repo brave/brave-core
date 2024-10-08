@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/no_destructor.h"
@@ -63,9 +64,11 @@ BraveWalletIpfsServiceFactory::BraveWalletIpfsServiceFactory()
 
 BraveWalletIpfsServiceFactory::~BraveWalletIpfsServiceFactory() = default;
 
-KeyedService* BraveWalletIpfsServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+BraveWalletIpfsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return new BraveWalletIpfsService(user_prefs::UserPrefs::Get(context));
+  return std::make_unique<BraveWalletIpfsService>(
+      user_prefs::UserPrefs::Get(context));
 }
 
 content::BrowserContext* BraveWalletIpfsServiceFactory::GetBrowserContextToUse(

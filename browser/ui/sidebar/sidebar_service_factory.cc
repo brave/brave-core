@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 
+#include <memory>
+
 #include "base/no_destructor.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/sidebar/browser/pref_names.h"
@@ -90,11 +92,12 @@ SidebarServiceFactory::GetBuiltInItemTypesForProfile(Profile* profile) const {
   return types;
 }
 
-KeyedService* SidebarServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+SidebarServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
-  return new SidebarService(profile->GetPrefs(),
-                            GetBuiltInItemTypesForProfile(profile));
+  return std::make_unique<SidebarService>(
+      profile->GetPrefs(), GetBuiltInItemTypesForProfile(profile));
 }
 
 content::BrowserContext* SidebarServiceFactory::GetBrowserContextToUse(

@@ -5,6 +5,8 @@
 
 #include "brave/browser/tor/tor_profile_service_factory.h"
 
+#include <memory>
+
 #include "base/check_is_test.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
@@ -116,7 +118,8 @@ TorProfileServiceFactory::TorProfileServiceFactory()
 
 TorProfileServiceFactory::~TorProfileServiceFactory() = default;
 
-KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+TorProfileServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   tor::BraveTorClientUpdater* tor_client_updater = nullptr;
   tor::BraveTorPluggableTransportUpdater* tor_pluggable_transport_updater =
@@ -126,7 +129,7 @@ KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
     tor_pluggable_transport_updater =
         g_brave_browser_process->tor_pluggable_transport_updater();
   }
-  return new tor::TorProfileServiceImpl(
+  return std::make_unique<tor::TorProfileServiceImpl>(
       Profile::FromBrowserContext(context)->GetOriginalProfile(), context,
       g_browser_process->local_state(), tor_client_updater,
       tor_pluggable_transport_updater);

@@ -5,6 +5,8 @@
 
 #include "brave/browser/search_engines/search_engine_tracker.h"
 
+#include <memory>
+
 #include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/no_destructor.h"
@@ -120,18 +122,19 @@ SearchEngineTracker* SearchEngineTrackerFactory::GetForBrowserContext(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
-KeyedService* SearchEngineTrackerFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+SearchEngineTrackerFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
   auto* template_url_service =
       TemplateURLServiceFactory::GetForProfile(profile);
   auto* profile_prefs = profile->GetPrefs();
   auto* local_state = g_browser_process->local_state();
-  if (template_url_service && profile_prefs && local_state) {
-    return new SearchEngineTracker(template_url_service, profile_prefs,
-                                   local_state);
+  if (!template_url_service || !profile_prefs || !local_state) {
+    return nullptr;
   }
-  return nullptr;
+  return std::make_unique<SearchEngineTracker>(template_url_service,
+                                               profile_prefs, local_state);
 }
 
 bool SearchEngineTrackerFactory::ServiceIsCreatedWithBrowserContext() const {

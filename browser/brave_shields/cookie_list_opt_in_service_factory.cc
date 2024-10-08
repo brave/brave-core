@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_shields/cookie_list_opt_in_service_factory.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/no_destructor.h"
@@ -55,11 +56,12 @@ CookieListOptInServiceFactory::CookieListOptInServiceFactory()
 
 CookieListOptInServiceFactory::~CookieListOptInServiceFactory() = default;
 
-KeyedService* CookieListOptInServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+CookieListOptInServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  auto* ad_block_service = g_brave_browser_process->ad_block_service();
-  return new CookieListOptInService(ad_block_service,
-                                    g_browser_process->local_state());
+  return std::make_unique<CookieListOptInService>(
+      g_brave_browser_process->ad_block_service(),
+      g_browser_process->local_state());
 }
 
 content::BrowserContext* CookieListOptInServiceFactory::GetBrowserContextToUse(

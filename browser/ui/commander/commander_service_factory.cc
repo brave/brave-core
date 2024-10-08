@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/commander/commander_service_factory.h"
 
+#include <memory>
+
 #include "base/no_destructor.h"
 #include "brave/browser/ui/commander/commander_service.h"
 #include "brave/components/commander/common/pref_names.h"
@@ -40,9 +42,11 @@ CommanderServiceFactory::CommanderServiceFactory()
               .Build()) {}
 CommanderServiceFactory::~CommanderServiceFactory() = default;
 
-KeyedService* CommanderServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+CommanderServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return new CommanderService(Profile::FromBrowserContext(context));
+  return std::make_unique<CommanderService>(
+      Profile::FromBrowserContext(context));
 }
 
 void CommanderServiceFactory::RegisterProfilePrefs(

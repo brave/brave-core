@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/no_destructor.h"
@@ -48,14 +49,15 @@ void AcceleratorServiceFactory::RegisterProfilePrefs(
   AcceleratorPrefManager::RegisterProfilePrefs(registry);
 }
 
-KeyedService* AcceleratorServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+AcceleratorServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
   DCHECK(profile);
 
   auto [accelerators, system_managed] = GetDefaultAccelerators();
-  return new AcceleratorService(profile->GetPrefs(), std::move(accelerators),
-                                std::move(system_managed));
+  return std::make_unique<AcceleratorService>(
+      profile->GetPrefs(), std::move(accelerators), std::move(system_managed));
 }
 
 }  // namespace commands

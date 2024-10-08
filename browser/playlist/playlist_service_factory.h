@@ -52,7 +52,7 @@ class PlaylistServiceFactory : public BrowserContextKeyedServiceFactory {
   ~PlaylistServiceFactory() override;
 
   // BrowserContextKeyedServiceFactory overrides:
-  KeyedService* BuildServiceInstanceFor(
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
 
   void PrepareMediaDetectorComponentManager();

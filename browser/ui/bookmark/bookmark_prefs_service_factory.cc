@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 
+#include <memory>
+
 #include "base/no_destructor.h"
 #include "brave/browser/ui/bookmark/bookmark_prefs_service.h"
 #include "brave/components/constants/pref_names.h"
@@ -33,9 +35,11 @@ BookmarkPrefsServiceFactory::BookmarkPrefsServiceFactory()
 
 BookmarkPrefsServiceFactory::~BookmarkPrefsServiceFactory() = default;
 
-KeyedService* BookmarkPrefsServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+BookmarkPrefsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return new BookmarkPrefsService(Profile::FromBrowserContext(context));
+  return std::make_unique<BookmarkPrefsService>(
+      Profile::FromBrowserContext(context));
 }
 
 content::BrowserContext* BookmarkPrefsServiceFactory::GetBrowserContextToUse(

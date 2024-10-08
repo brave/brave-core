@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_wallet/meld_integration_service_factory.h"
 
+#include <memory>
 #include <utility>
 
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
@@ -62,13 +63,12 @@ MeldIntegrationServiceFactory::MeldIntegrationServiceFactory()
 
 MeldIntegrationServiceFactory::~MeldIntegrationServiceFactory() = default;
 
-KeyedService* MeldIntegrationServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+MeldIntegrationServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  auto* default_storage_partition = context->GetDefaultStoragePartition();
-  auto shared_url_loader_factory =
-      default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
-
-  return new MeldIntegrationService(shared_url_loader_factory);
+  return std::make_unique<MeldIntegrationService>(
+      context->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess());
 }
 
 content::BrowserContext* MeldIntegrationServiceFactory::GetBrowserContextToUse(

@@ -72,7 +72,8 @@ RewardsServiceFactory::RewardsServiceFactory()
   DependsOn(brave_wallet::BraveWalletServiceFactory::GetInstance());
 }
 
-KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+RewardsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   std::unique_ptr<RewardsServiceObserver> extension_observer = nullptr;
   std::unique_ptr<RewardsNotificationServiceObserver> notification_observer =
@@ -87,19 +88,21 @@ KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
   // Set up the rewards data source
   content::URLDataSource::Add(profile,
                               std::make_unique<BraveRewardsSource>(profile));
-  std::unique_ptr<RewardsServiceImpl> rewards_service(new RewardsServiceImpl(
-      profile->GetPrefs(), profile->GetPath(),
-      FaviconServiceFactory::GetForProfile(profile,
-                                           ServiceAccessType::EXPLICIT_ACCESS),
-      BitmapFetcherServiceFactory::GetForBrowserContext(profile),
-      profile->GetDefaultStoragePartition(),
+  std::unique_ptr<RewardsServiceImpl> rewards_service =
+      std::make_unique<RewardsServiceImpl>(
+          profile->GetPrefs(), profile->GetPath(),
+          FaviconServiceFactory::GetForProfile(
+              profile, ServiceAccessType::EXPLICIT_ACCESS),
+          BitmapFetcherServiceFactory::GetForBrowserContext(profile),
+          profile->GetDefaultStoragePartition(),
 #if BUILDFLAG(ENABLE_GREASELION)
-      greaselion::GreaselionServiceFactory::GetForBrowserContext(context),
+          greaselion::GreaselionServiceFactory::GetForBrowserContext(context),
 #endif
-      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(context)));
+          brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+              context));
   rewards_service->Init(std::move(extension_observer),
                         std::move(notification_observer));
-  return rewards_service.release();
+  return rewards_service;
 }
 
 // static

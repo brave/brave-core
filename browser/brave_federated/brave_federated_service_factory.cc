@@ -42,19 +42,18 @@ BraveFederatedServiceFactory::BraveFederatedServiceFactory()
 
 BraveFederatedServiceFactory::~BraveFederatedServiceFactory() = default;
 
-KeyedService* BraveFederatedServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+BraveFederatedServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   if (!base::FeatureList::IsEnabled(features::kFederatedLearning)) {
     return nullptr;
   }
 
-  auto url_loader_factory = context->GetDefaultStoragePartition()
-                                ->GetURLLoaderFactoryForBrowserProcess();
-  std::unique_ptr<BraveFederatedService> brave_federated_service(
-      new BraveFederatedService(user_prefs::UserPrefs::Get(context),
-                                g_browser_process->local_state(),
-                                context->GetPath(), url_loader_factory));
-  return brave_federated_service.release();
+  return std::make_unique<BraveFederatedService>(
+      user_prefs::UserPrefs::Get(context), g_browser_process->local_state(),
+      context->GetPath(),
+      context->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess());
 }
 
 void BraveFederatedServiceFactory::RegisterProfilePrefs(

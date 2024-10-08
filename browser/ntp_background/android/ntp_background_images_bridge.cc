@@ -63,9 +63,11 @@ NTPBackgroundImagesBridgeFactory::GetInstance() {
   return instance.get();
 }
 
-KeyedService* NTPBackgroundImagesBridgeFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+NTPBackgroundImagesBridgeFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return new NTPBackgroundImagesBridge(Profile::FromBrowserContext(context));
+  return std::make_unique<NTPBackgroundImagesBridge>(
+      Profile::FromBrowserContext(context));
 }
 
 bool NTPBackgroundImagesBridgeFactory::ServiceIsCreatedWithBrowserContext()

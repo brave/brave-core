@@ -43,7 +43,8 @@ PermissionLifetimeManagerFactory::PermissionLifetimeManagerFactory()
 
 PermissionLifetimeManagerFactory::~PermissionLifetimeManagerFactory() = default;
 
-KeyedService* PermissionLifetimeManagerFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+PermissionLifetimeManagerFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   if (!base::FeatureList::IsEnabled(
           permissions::features::kPermissionLifetime)) {
@@ -64,7 +65,7 @@ KeyedService* PermissionLifetimeManagerFactory::BuildServiceInstanceFor(
   if (!host_content_settings_map) {
     return nullptr;
   }
-  return new permissions::PermissionLifetimeManager(
+  return std::make_unique<permissions::PermissionLifetimeManager>(
       *host_content_settings_map,
       profile->IsOffTheRecord() ? nullptr : profile->GetPrefs(),
       std::move(permission_origin_lifetime_monitor));

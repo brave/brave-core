@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_NTP_BACKGROUND_BRAVE_NTP_CUSTOM_BACKGROUND_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_NTP_BACKGROUND_BRAVE_NTP_CUSTOM_BACKGROUND_SERVICE_FACTORY_H_
 
+#include <memory>
+
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 namespace base {
@@ -36,7 +38,7 @@ class BraveNTPCustomBackgroundServiceFactory
       const BraveNTPCustomBackgroundServiceFactory&) = delete;
 
   // BrowserContextKeyedServiceFactory overrides:
-  KeyedService* BuildServiceInstanceFor(
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
 };
 

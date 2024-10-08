@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_COMMANDS_ACCELERATOR_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_UI_COMMANDS_ACCELERATOR_SERVICE_FACTORY_H_
 
+#include <memory>
+
 #include "base/no_destructor.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
@@ -37,7 +39,7 @@ class AcceleratorServiceFactory : public ProfileKeyedServiceFactory {
   void RegisterProfilePrefs(
       user_prefs::PrefRegistrySyncable* registry) override;
 
-  KeyedService* BuildServiceInstanceFor(
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
 };
 

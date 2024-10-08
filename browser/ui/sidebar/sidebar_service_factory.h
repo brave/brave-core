@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_SERVICE_FACTORY_H_
 
+#include <memory>
 #include <vector>
 
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -59,7 +60,7 @@ class SidebarServiceFactory : public BrowserContextKeyedServiceFactory {
       Profile* profile) const;
 
   // BrowserContextKeyedServiceFactory overrides:
-  KeyedService* BuildServiceInstanceFor(
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;

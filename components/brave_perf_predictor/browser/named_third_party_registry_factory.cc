@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 
+#include <memory>
+
 #include "base/no_destructor.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -31,9 +33,10 @@ NamedThirdPartyRegistryFactory::NamedThirdPartyRegistryFactory()
 
 NamedThirdPartyRegistryFactory::~NamedThirdPartyRegistryFactory() = default;
 
-KeyedService* NamedThirdPartyRegistryFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+NamedThirdPartyRegistryFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  auto* registry = new NamedThirdPartyRegistry();
+  auto registry = std::make_unique<NamedThirdPartyRegistry>();
   registry->InitializeDefault();
   return registry;
 }
