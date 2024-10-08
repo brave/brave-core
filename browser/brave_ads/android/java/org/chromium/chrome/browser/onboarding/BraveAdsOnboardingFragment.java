@@ -139,30 +139,34 @@ public class BraveAdsOnboardingFragment extends Fragment implements FirstRunFrag
 
         progress = 0;
 
-        countDownTimer = new CountDownTimer(endTime * 1000, 100) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                setProgress(progress, endTime);
-                progress = progress + 100;
-                tvTimer.setText(String.valueOf((millisUntilFinished / 1000) + 1));
-            }
-
-            @Override
-            public void onFinish() {
-                setProgress(progress, endTime);
-                tvTimer.setText("0");
-
-                OnboardingPrefManager.getInstance().onboardingNotification();
-                new Handler().postDelayed(new Runnable() {
+        countDownTimer =
+                new CountDownTimer((long) endTime * 1000, 100) {
                     @Override
-                    public void run() {
-                        assert onViewPagerAction != null;
-                        if (onViewPagerAction != null)
-                            onViewPagerAction.onNext();
+                    public void onTick(long millisUntilFinished) {
+                        setProgress(progress, endTime);
+                        progress = progress + 100;
+                        tvTimer.setText(String.valueOf((millisUntilFinished / 1000) + 1));
                     }
-                }, 1000);
-            }
-        };
+
+                    @Override
+                    public void onFinish() {
+                        setProgress(progress, endTime);
+                        tvTimer.setText("0");
+
+                        OnboardingPrefManager.getInstance().onboardingNotification();
+                        new Handler()
+                                .postDelayed(
+                                        new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                assert onViewPagerAction != null;
+                                                if (onViewPagerAction != null)
+                                                    onViewPagerAction.onNext();
+                                            }
+                                        },
+                                        1000);
+                    }
+                };
         countDownTimer.start();
     }
 

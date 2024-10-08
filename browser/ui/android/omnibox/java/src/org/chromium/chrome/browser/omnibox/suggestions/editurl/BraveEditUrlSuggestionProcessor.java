@@ -39,8 +39,8 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
         Tab activeTab = mTabSupplier.get();
         if (position == 0
                 && activeTab != null
-                && (suggestion.getType() == OmniboxSuggestionType.URL_WHAT_YOU_TYPED
-                                && tabMatchesSuggestion(activeTab, suggestion)
+                && ((suggestion.getType() == OmniboxSuggestionType.URL_WHAT_YOU_TYPED
+                                && tabMatchesSuggestion(activeTab, suggestion))
                         || suggestion.getUrl().equals(activeTab.getUrl()))) {
             // Show edit url suggestion for typed URLs.
             // If url hasn't changed we still want to show the edit url suggestion.
