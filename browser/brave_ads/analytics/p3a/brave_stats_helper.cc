@@ -7,13 +7,15 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
-#include "base/time/time.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
 
 namespace brave_ads {
 

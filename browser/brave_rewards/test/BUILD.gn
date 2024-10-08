@@ -18,6 +18,7 @@ source_set("browser_tests") {
       "//base/test:test_support",
       "//brave/app:command_ids",
       "//brave/browser",
+      "//brave/browser/brave_ads",
       "//brave/browser/brave_rewards",
       "//brave/browser/brave_rewards:util",
       "//brave/components/brave_rewards/browser",
