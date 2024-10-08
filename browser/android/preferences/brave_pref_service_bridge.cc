@@ -3,20 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/build/android/jni_headers/BravePrefServiceBridge_jni.h"
+#include <jni.h>
+
+#include <string>
 
 #include "base/android/jni_string.h"
-#include "brave/components/brave_adaptive_captcha/pref_names.h"
+#include "brave/build/android/jni_headers/BravePrefServiceBridge_jni.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
-#include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/de_amp/common/pref_names.h"
-#include "brave/components/decentralized_dns/core/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -74,6 +72,7 @@ std::string GetWebRTCIPHandlingPreference(WebRTCIPHandlingPolicy policy) {
 namespace chrome {
 namespace android {
 
+// This file is deprecated, prefs should be accessed directly from Java
 void JNI_BravePrefServiceBridge_SetCookiesBlockType(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& type) {

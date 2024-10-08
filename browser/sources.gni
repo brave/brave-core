@@ -385,6 +385,8 @@ if (is_android) {
 
   brave_chrome_browser_deps += [
     "//brave/browser/android:android_browser_process",
+    "//brave/browser/android/background_video",
+    "//brave/browser/android/background_video:features",
     "//brave/browser/android/preferences",
     "//brave/browser/android/safe_browsing:buildflags",
     "//brave/browser/download/android:jni_headers",
@@ -609,4 +611,10 @@ if (enable_widevine) {
   brave_chrome_browser_deps += [ "//brave/browser/widevine" ]
   brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/widevine" ]
+}
+
+# https://github.com/brave/brave-browser/issues/41486
+if (is_android) {
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/android/preferences" ]
 }

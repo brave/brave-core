@@ -17,6 +17,9 @@ browser/brave_browser_process.h @bridiver
 components/brave_component_updater/browser/brave_component.h @bridiver @antonok-edm
 components/brave_component_updater/browser/local_data_files_observer.h @bridiver @antonok-edm
 
+# BravePrefServiceBridge is deprecated
+browser/android/preferences/brave_pref_service_bridge.cc @bridiver
+
 # sources.gni - see docs/gni_sources.md
 **/sources.gni @brave/sources-gni-reviewers
 **/*_sources.gni @brave/sources-gni-reviewers
