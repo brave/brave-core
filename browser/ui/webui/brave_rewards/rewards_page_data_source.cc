@@ -281,7 +281,10 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"tosUpdateAcceptButtonLabel", IDS_REWARDS_TOS_UPDATE_BUTTON_LABEL},
     {"tosUpdateLink", IDS_REWARDS_TOS_UPDATE_LINK_TEXT},
     {"tosUpdateRequiredText", IDS_REWARDS_TOS_UPDATE_TEXT},
-    {"tosUpdateRequiredTitle", IDS_REWARDS_TOS_UPDATE_HEADING}};
+    {"tosUpdateRequiredTitle", IDS_REWARDS_TOS_UPDATE_HEADING},
+    {"wdpCheckboxLabel", IDS_REWARDS_WDP_CHECKBOX_LABEL},
+    {"wdpOptInText", IDS_REWARDS_WDP_OPT_IN_TEXT},
+    {"wdpOptInTitle", IDS_REWARDS_WDP_OPT_IN_TITLE}};
 
 }  // namespace
 

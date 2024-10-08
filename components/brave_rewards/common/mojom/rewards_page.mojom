@@ -190,6 +190,9 @@ interface RewardsPageHandler {
   // Creates a new Rewards user for the current profile.
   EnableRewards(string country_code) => (CreateRewardsWalletResult result);
 
+  // Enables or disables the WDP feature from the Rewards page.
+  SetWebDiscoveryProjectEnabled(bool enabled) => ();
+
   // Begins an external wallet login flow.
   BeginExternalWalletLogin(string provider)
       => (ExternalWalletLoginParams? params);

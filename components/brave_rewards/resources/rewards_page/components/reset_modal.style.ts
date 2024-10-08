@@ -16,6 +16,10 @@ export const style = scoped.css`
       font-weight: 600;
       text-decoration: none;
     }
+
+    @container style(--is-wide-view) {
+      max-width: 600px;
+    }
   }
 
   .message-icon {

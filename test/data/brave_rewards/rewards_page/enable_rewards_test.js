@@ -22,6 +22,12 @@ testing.addTest(async () => {
   ])
   continueButton.click()
 
+  continueButton = await waitForShadowElement([
+    '.wdp-opt-in-modal .continue-button',
+    'button'
+  ])
+  continueButton.click()
+
   await waitForElement('.onboarding-success')
 
 })

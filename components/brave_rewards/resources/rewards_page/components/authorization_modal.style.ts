@@ -8,7 +8,9 @@ import { scoped } from '../lib/scoped_css'
 
 export const style = scoped.css`
   & {
-    max-width: 600px;
+    @container style(--is-wide-view) {
+      max-width: 600px;
+    }
   }
 
   .processing {

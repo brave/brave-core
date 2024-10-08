@@ -11,12 +11,15 @@ import successIconDark from '../../assets/onboarding_success_icon_dark.svg'
 
 export const style = scoped.css`
   & {
-    max-width: var(--onboarding-max-width);
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     margin-top: calc(-1 * var(--modal-header-padding-bottom) - 24px);
+
+    @container style(--is-wide-view) {
+      max-width: var(--onboarding-max-width);
+    }
   }
 
   .success-icon {

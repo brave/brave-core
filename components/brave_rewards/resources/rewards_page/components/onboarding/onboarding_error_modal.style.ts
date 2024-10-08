@@ -8,12 +8,15 @@ import { scoped } from '../../lib/scoped_css'
 
 export const style = scoped.css`
   & {
-    max-width: var(--onboarding-max-width);
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     margin-top: calc(-1 * var(--modal-header-padding-bottom) - 12px);
+
+    @container style(--is-wide-view) {
+      max-width: var(--onboarding-max-width);
+    }
   }
 
   .icon {

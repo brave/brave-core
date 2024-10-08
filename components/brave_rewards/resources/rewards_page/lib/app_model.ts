@@ -170,6 +170,7 @@ export interface AppModel {
   getString: (key: string) => string
   getPluralString: (key: string, count: number) => Promise<string>
   enableRewards: (countryCode: string) => Promise<EnableRewardsResult>
+  setWebDiscoveryProjectEnabled: (enabled: boolean) => Promise<void>
   getAvailableCountries: () => Promise<AvailableCountryInfo>
   beginExternalWalletLogin:
     (provider: ExternalWalletProvider) => Promise<boolean>
@@ -237,6 +238,8 @@ export function defaultModel(): AppModel {
     async getPluralString(key, count) { return '' },
 
     async enableRewards(countryCode) { return 'unexpected-error' },
+
+    async setWebDiscoveryProjectEnabled(enabled) {},
 
     async getAvailableCountries() {
       return {
