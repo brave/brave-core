@@ -144,7 +144,7 @@ class VerticalTabStripRegionView : public views::View,
   void UpdateStateAfterDragAndDropFinished(State original_state);
 
   void OnShowVerticalTabsPrefChanged();
-  void OnBrowserPanelsMoved();
+  void OnVerticalTabPositionChanged();
 
   void UpdateLayout(bool in_destruction = false);
 
@@ -228,7 +228,6 @@ class VerticalTabStripRegionView : public views::View,
       fullscreen_observation_{this};
 
   BooleanPrefMember vertical_tab_on_right_;
-  BooleanPrefMember sidebar_side_;
 
   base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
 };
