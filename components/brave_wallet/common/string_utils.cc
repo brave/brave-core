@@ -6,20 +6,21 @@
 #include "brave/components/brave_wallet/common/string_utils.h"
 
 #include <limits>
+#include <string>
+#include <string_view>
 
+#include "base/numerics/safe_math.h"
 #include "base/strings/string_util.h"
 
 namespace brave_wallet {
 
 // Determines if the passed in base-10 string is valid
-bool IsValidBase10String(const std::string& input) {
+bool IsValidBase10String(std::string_view input) {
   if (input.empty()) {
     return false;
   }
-  std::string check_input = input;
-  if (input.size() > 0 && input[0] == '-') {
-    check_input = input.substr(1);
-  }
+  auto check_input =
+      !input.empty() && input.front() == '-' ? input.substr(1) : input;
   for (const auto& c : check_input) {
     if (!base::IsAsciiDigit(c)) {
       return false;
@@ -28,59 +29,45 @@ bool IsValidBase10String(const std::string& input) {
   return true;
 }
 
-bool Base10ValueToUint256(const std::string& input, uint256_t* out) {
-  if (!out) {
-    return false;
-  }
+std::optional<uint256_t> Base10ValueToUint256(std::string_view input) {
   if (!IsValidBase10String(input)) {
-    return false;
+    return std::nullopt;
   }
-  *out = 0;
-  uint256_t last_val = 0;  // Used to check overflows
+
+  base::CheckedNumeric<uint256_t> out = 0;
   for (char c : input) {
-    (*out) *= 10;
-    // We can use this because we know the input string is 0-9 digits only
-    (*out) += static_cast<uint256_t>(base::HexDigitToInt(c));
-    if (last_val > *out) {
-      return false;
-    }
-    last_val = *out;
+    out *= 10u;
+    out += static_cast<uint8_t>(base::HexDigitToInt(c));
   }
-  return true;
+
+  if (!out.IsValid()) {
+    return std::nullopt;
+  }
+  return out.ValueOrDie();
 }
 
-bool Base10ValueToInt256(const std::string& input, int256_t* out) {
-  if (!out) {
-    return false;
-  }
+std::optional<int256_t> Base10ValueToInt256(std::string_view input) {
   if (!IsValidBase10String(input)) {
-    return false;
-  }
-  *out = 0;
-  int256_t last_val = 0;  // Used to check overflows
-  std::string check_input = input;
-  bool negative = false;
-  if (input.size() > 0 && input[0] == '-') {
-    check_input = input.substr(1);
-    negative = true;
+    return std::nullopt;
   }
 
+  base::CheckedNumeric<int256_t> out = 0;
+  bool negative = (!input.empty() && input.front() == '-');
+  auto check_input = negative ? input.substr(1) : input;
+
   for (char c : check_input) {
-    (*out) *= 10;
-    // We can use this because we know the input string is 0-9 digits only
+    out *= 10;
     if (negative) {
-      (*out) -= static_cast<int256_t>(base::HexDigitToInt(c));
+      out -= base::HexDigitToInt(c);
     } else {
-      (*out) += static_cast<int256_t>(base::HexDigitToInt(c));
+      out += base::HexDigitToInt(c);
     }
-    if (!negative && (last_val > *out || *out > kMax256BitInt)) {
-      return false;
-    } else if (negative && (last_val < *out || *out < kMin256BitInt)) {
-      return false;
-    }
-    last_val = *out;
   }
-  return true;
+
+  if (!out.IsValid()) {
+    return std::nullopt;
+  }
+  return out.ValueOrDie();
 }
 
 std::string Uint256ValueToBase10(uint256_t input) {

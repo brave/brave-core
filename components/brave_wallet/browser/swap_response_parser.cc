@@ -372,12 +372,12 @@ std::optional<std::string> ChainIdToHex(const std::string& value) {
     return mojom::kSolanaMainnet;
   }
 
-  uint256_t out;
-  if (!Base10ValueToUint256(value, &out)) {
+  std::optional<uint256_t> out = Base10ValueToUint256(value);
+  if (!out) {
     return std::nullopt;
   }
 
-  return Uint256ValueToHex(out);
+  return Uint256ValueToHex(*out);
 }
 
 mojom::LiFiStatusCode ParseStatusCode(const swap_responses::LiFiStatus& value) {

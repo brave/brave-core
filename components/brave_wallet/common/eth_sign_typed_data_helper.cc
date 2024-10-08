@@ -299,10 +299,14 @@ std::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
         return std::nullopt;
       }
     } else if (value_str) {
-      if (!value_str->empty() &&
-          !HexValueToUint256(*value_str, &encoded_value) &&
-          !Base10ValueToUint256(*value_str, &encoded_value)) {
-        return std::nullopt;
+      if (!value_str->empty()) {
+        if (!HexValueToUint256(*value_str, &encoded_value)) {
+          if (auto v = Base10ValueToUint256(*value_str)) {
+            encoded_value = *v;
+          } else {
+            return std::nullopt;
+          }
+        }
       }
     } else {
       return std::nullopt;
@@ -333,10 +337,14 @@ std::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
         return std::nullopt;
       }
     } else if (value_str) {
-      if (!value_str->empty() &&
-          !HexValueToInt256(*value_str, &encoded_value) &&
-          !Base10ValueToInt256(*value_str, &encoded_value)) {
-        return std::nullopt;
+      if (!value_str->empty()) {
+        if (!HexValueToInt256(*value_str, &encoded_value)) {
+          if (auto v = Base10ValueToInt256(*value_str)) {
+            encoded_value = *v;
+          } else {
+            return std::nullopt;
+          }
+        }
       }
     } else {
       return std::nullopt;
