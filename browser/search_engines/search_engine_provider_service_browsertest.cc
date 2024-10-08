@@ -143,6 +143,8 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PRE_InvalidPrivateSearchProviderRestoreTest) {
   auto* profile = browser()->profile();
+  auto* service = TemplateURLServiceFactory::GetForProfile(profile);
+  EXPECT_TRUE(VerifyTemplateURLServiceLoad(service));
   profile->GetPrefs()->SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
                                  "invalid_id");
 }
