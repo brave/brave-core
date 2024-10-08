@@ -24,6 +24,13 @@ const getTestsToRun = (config, suite) => {
       testsToRun.push('bin/run_brave_public_test_apk')
     }
   }
+
+  if (suite === 'chrome_public_test_apk' && config.targetOS === 'android') {
+    testsToRun = ['bin/run_chrome_public_test_apk']
+    // Full command line to run it is
+    // npm run test -- chrome_public_test_apk  Release  --target_os=android --target_arch=x86  --filter=org.chromium.chrome.browser.SafeBrowsingTest*
+  }
+
   return testsToRun
 }
 
@@ -177,6 +184,13 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
             `--avd-config tools/android/avd/proto/${options.android_test_emulator_name}.textpb`)
       }
       let runOptions = config.defaultOptions
+
+      if (suite === 'chrome_public_test_apk' && config.targetOS === 'android') {
+        if (options.filter) {
+          braveArgs.push('--gtest_filter=' + options.filter)
+        }
+      }
+
       if (config.isTeamcity) {
         // Stdout and stderr must be separate for a test launcher.
         runOptions.stdio = 'inherit'
