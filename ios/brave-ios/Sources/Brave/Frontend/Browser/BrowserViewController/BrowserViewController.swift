@@ -3437,7 +3437,14 @@ extension BrowserViewController {
     }
 
     executeAfterSetup {
-      NavigationPath.handle(nav: path, with: self)
+      Task { @MainActor in
+        if self.profile.searchEngines.orderedEngines.isEmpty {
+          // Wait until search engines are ready
+          await self.profile.searchEngines.waitForSearchEngines()
+        }
+
+        NavigationPath.handle(nav: path, with: self)
+      }
     }
   }
 
