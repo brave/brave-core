@@ -519,9 +519,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         }
                         if (PackageUtils.isFirstInstall(getContext())
                                 && tab.getUrl().getSpec() != null
-                                && (tab.getUrl()
+                                && tab.getUrl()
                                         .getSpec()
-                                        .equals(BraveActivity.BRAVE_REWARDS_SETTINGS_URL))
+                                        .equals(BraveActivity.BRAVE_REWARDS_SETTINGS_URL)
                                 && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
                                 && mBraveRewardsNativeWorker != null
                                 && !mBraveRewardsNativeWorker.isRewardsEnabled()
@@ -1000,25 +1000,27 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
         TextView takeQuickTourButton =
                 braveRewardsOnboardingModalView.findViewById(R.id.take_quick_tour_button);
-        takeQuickTourButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(true);
-                openRewardsPanel();
-                dialog.dismiss();
-            }
-        }));
+        takeQuickTourButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(true);
+                        openRewardsPanel();
+                        dialog.dismiss();
+                    }
+                });
         BraveTouchUtils.ensureMinTouchTarget(takeQuickTourButton);
         TextView btnBraveRewards =
                 braveRewardsOnboardingModalView.findViewById(R.id.start_using_brave_rewards_text);
-        btnBraveRewards.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BraveRewardsHelper.setShowDeclareGeoModal(true);
-                openRewardsPanel();
-                dialog.dismiss();
-            }
-        }));
+        btnBraveRewards.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BraveRewardsHelper.setShowDeclareGeoModal(true);
+                        openRewardsPanel();
+                        dialog.dismiss();
+                    }
+                });
 
         dialog.show();
     }

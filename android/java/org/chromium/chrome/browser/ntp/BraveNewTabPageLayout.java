@@ -1292,7 +1292,7 @@ public class BraveNewTabPageLayout
             SponsoredTab sponsoredTab = new SponsoredTab(mNTPBackgroundImagesBridge);
             TabAttributes.from(getTab()).set(String.valueOf(getTab().getId()), sponsoredTab);
         }
-        mSponsoredTab = TabAttributes.from(getTab()).get(String.valueOf((getTab()).getId()));
+        mSponsoredTab = TabAttributes.from(getTab()).get(String.valueOf(getTab().getId()));
         if (shouldShowSuperReferral()) mNTPBackgroundImagesBridge.getTopSites();
     }
 
