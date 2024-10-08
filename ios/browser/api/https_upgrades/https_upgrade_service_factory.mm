@@ -12,7 +12,8 @@
 
 @implementation BraveHttpsUpgradeServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto* service = HttpsUpgradeServiceFactory::GetForBrowserState(browserState);
+  ProfileIOS* profile = ProfileIOS::FromBrowserState(browserState);
+  auto* service = HttpsUpgradeServiceFactory::GetForProfile(profile);
   if (!service) {
     return nil;
   }
