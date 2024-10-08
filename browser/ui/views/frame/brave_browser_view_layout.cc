@@ -67,9 +67,8 @@ void BraveBrowserViewLayout::Layout(views::View* host) {
 }
 
 void BraveBrowserViewLayout::LayoutVerticalTabs() {
-  if (!vertical_tab_strip_host_.get()) {
+  if (!vertical_tab_strip_host_.get())
     return;
-  }
 
   if (!tabs::utils::ShouldShowVerticalTabs(browser_view_->browser())) {
     vertical_tab_strip_host_->SetBorder(nullptr);
@@ -109,11 +108,10 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
   insets = AdjustInsetsConsideringFrameBorder(insets);
 #endif
 
-  if (insets.IsEmpty()) {
+  if (insets.IsEmpty())
     vertical_tab_strip_host_->SetBorder(nullptr);
-  } else {
+  else
     vertical_tab_strip_host_->SetBorder(views::CreateEmptyBorder(insets));
-  }
 
   const auto width =
       vertical_tab_strip_host_->GetPreferredSize().width() + insets.width();
@@ -149,9 +147,8 @@ int BraveBrowserViewLayout::LayoutTabStripRegion(int top) {
 
 int BraveBrowserViewLayout::LayoutBookmarkAndInfoBars(int top,
                                                       int browser_view_y) {
-  if (!vertical_tab_strip_host_ || !ShouldPushBookmarkBarForVerticalTabs()) {
+  if (!vertical_tab_strip_host_ || !ShouldPushBookmarkBarForVerticalTabs())
     return BrowserViewLayout::LayoutBookmarkAndInfoBars(top, browser_view_y);
-  }
 
   auto new_rect = vertical_layout_rect_;
   new_rect.Inset(GetInsetsConsideringVerticalTabHost());
@@ -160,9 +157,8 @@ int BraveBrowserViewLayout::LayoutBookmarkAndInfoBars(int top,
 }
 
 int BraveBrowserViewLayout::LayoutInfoBar(int top) {
-  if (!vertical_tab_strip_host_) {
+  if (!vertical_tab_strip_host_)
     return BrowserViewLayout::LayoutInfoBar(top);
-  }
 
   if (ShouldPushBookmarkBarForVerticalTabs()) {
     // Insets are already applied from LayoutBookmarkAndInfoBar().
@@ -208,8 +204,8 @@ void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {
 #endif
 
   gfx::Rect separator_bounds;
-  const bool on_left = sidebar_container_->sidebar_on_left();
-  if (on_left) {
+
+  if (sidebar_container_->sidebar_on_left()) {
     contents_bounds.set_x(contents_bounds.x() + sidebar_bounds.width());
 
     // When vertical tabs and the sidebar are adjacent, add a separator between
@@ -228,22 +224,10 @@ void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {
     sidebar_bounds.set_x(contents_bounds.right());
   }
 
+  // Side panel doesn't need margin as sidebar UI and contents container
+  // will have margins if needed.
   gfx::Insets panel_margins = GetContentsMargins();
-  if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
-          browser_view_->browser())) {
-    // In rounded mode, there is already a gap between the sidebar and the main
-    // contents view, so we only remove from the margin from that side (we need
-    // to keep it between the sidebar controls and the sidebar content).
-    if (on_left) {
-      panel_margins.set_right(0);
-    } else {
-      panel_margins.set_left(0);
-    }
-  } else {
-    // Side panel doesn't need margin as sidebar UI and contents container
-    // will have margins if needed.
-    panel_margins.set_left_right(0, 0);
-  }
+  panel_margins.set_left_right(0, 0);
   sidebar_container_->side_panel()->SetProperty(views::kMarginsKey,
                                                 panel_margins);
 
@@ -266,20 +250,14 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
   // Control contents's margin with sidebar & vertical tab state.
   gfx::Insets contents_margins = GetContentsMargins();
 
-  // In rounded corners mode, we need to include a little margin so we have
-  // somewhere to draw the shadow.
-  int contents_margin_for_rounded_corners =
-      BraveContentsViewUtil::GetRoundedCornersWebViewMargin(
-          browser_view_->browser());
-
   // Don't need contents container's left or right margin with vertical tab as
   // vertical tab itself has sufficient padding.
   if (tabs::utils::ShouldShowVerticalTabs(browser_view_->browser()) &&
       !IsFullscreenForBrowser()) {
     if (tabs::utils::IsVerticalTabOnRight(browser_view_->browser())) {
-      contents_margins.set_right(contents_margin_for_rounded_corners);
+      contents_margins.set_right(0);
     } else {
-      contents_margins.set_left(contents_margin_for_rounded_corners);
+      contents_margins.set_left(0);
     }
   }
 
@@ -304,9 +282,9 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
   // If sidebar is shown in left-side, contents container doens't need its
   // left margin.
   if (sidebar_container_->sidebar_on_left()) {
-    contents_margins.set_left(contents_margin_for_rounded_corners);
+    contents_margins.set_left(0);
   } else {
-    contents_margins.set_right(contents_margin_for_rounded_corners);
+    contents_margins.set_right(0);
   }
   contents_container_bounds.Inset(contents_margins);
 }

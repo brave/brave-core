@@ -10,8 +10,6 @@
 
 #include "brave/browser/ui/views/view_shadow.h"
 
-class Browser;
-
 namespace views {
 class View;
 }
@@ -30,10 +28,6 @@ class BraveContentsViewUtil {
 
   // Creates a drop shadow for the specified content area view.
   static std::unique_ptr<ViewShadow> CreateShadow(views::View* view);
-
-  // If rounded corners are enabled, returns the additional margin required to
-  // get the shadow to display properly. Otherwise 0.
-  static int GetRoundedCornersWebViewMargin(Browser* browser);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_CONTENTS_VIEW_UTIL_H_
