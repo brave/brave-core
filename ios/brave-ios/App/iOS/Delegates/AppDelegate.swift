@@ -74,6 +74,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Set the Safari UA for browsing.
     setUserAgent()
 
+    WebcompatReporter.webcompatReporterAPI =  AppState.shared.braveCore.webcompatReporterAPI
+
     // Fetching details of GRDRegion for Automatic Region selection
     BraveVPN.fetchLastUsedRegionDetail()
 

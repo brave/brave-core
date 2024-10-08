@@ -10,7 +10,7 @@
 
 class ChromeBrowserState;
 
-@interface WebcompatReporter (Private)
+@interface WebcompatReporterAPI (Private)
 - (instancetype)initWithChromeBrowserState:(ChromeBrowserState*)browserState;
 @end
 

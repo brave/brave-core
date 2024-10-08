@@ -16,6 +16,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
+//#include "base/task/single_thread_task_runner.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
@@ -247,6 +248,8 @@ void WebcompatReporterService::SubmitWebcompatReport(
   Report pending_report;
   FillReportByReportInfo(pending_report, std::move(report_info));
   SubmitWebcompatReport(pending_report);
+//  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+//    FROM_HERE, base::BindOnce(&WebcompatReporterService::SubmitReportInternal, weak_factory_.GetWeakPtr(), std::move(pending_report)));   
 }
 
 void WebcompatReporterService::SubmitWebcompatReport(Report report_data) {
@@ -256,6 +259,8 @@ void WebcompatReporterService::SubmitWebcompatReport(Report report_data) {
     ,adblock_service_
 #endif  // !BUILDFLAG(IS_IOS)
    );
+//base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+//    FROM_HERE, base::BindOnce(&WebcompatReporterService::SubmitReportInternal, weak_factory_.GetWeakPtr(), report_data));   
   SubmitReportInternal(report_data);
 }
 

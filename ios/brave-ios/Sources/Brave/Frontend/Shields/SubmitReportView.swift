@@ -121,8 +121,7 @@ struct SubmitReportView: View {
       }),
       isVPNEnabled: BraveVPN.isConnected
     )
-
-    await WebcompatReporter.send(report: report)
+      await WebcompatReporter.send(report: report)
   }
 }
 

@@ -10,7 +10,8 @@ import os.log
 
 public class WebcompatReporter {
   static let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "WebcompatReporter")
-//private var api: WebcompatReporterAPI!
+  
+    public static var webcompatReporterAPI: BraveCore.WebcompatReporterAPI?
 
   /// The raw values of the web-report.
   public struct Report {
@@ -129,6 +130,7 @@ public class WebcompatReporter {
 
   /// A custom user agent to send along with reports
   public static var userAgent: String?
+//    public static var webcompatReporterApi: BraveCore.WebcompatReporterAPI?
 
   /// Get the user's language code
   private static var currentLanguageCode: String? {
@@ -139,8 +141,10 @@ public class WebcompatReporter {
   ///
   /// - Returns: A deferred boolean on whether or not it reported successfully (default queue: main)
   @discardableResult
-  public static func send(report: Report) async -> Bool {
-//    let api: WebcompatReporterAPI!
+    public static func send(report: Report) async -> Bool {
+
+        webcompatReporterAPI!.submitReport()
+      
     let apiKey = kBraveStatsAPIKey
     let payload = Payload(report: report, apiKey: apiKey, languageCode: currentLanguageCode)
     guard !kWebcompatReportEndpoint.isEmpty, let endpoint = URL(string: kWebcompatReportEndpoint)
