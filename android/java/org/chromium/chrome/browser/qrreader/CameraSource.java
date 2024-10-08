@@ -458,7 +458,7 @@ public class CameraSource {
             currentZoom = parameters.getZoom() + 1;
             float newZoom;
             if (scale > 1) {
-                newZoom = currentZoom + scale * (maxZoom / 10);
+                newZoom = currentZoom + scale * (maxZoom / 10f);
             } else {
                 newZoom = currentZoom * scale;
             }
@@ -764,7 +764,9 @@ public class CameraSource {
                     mFocusMode)) {
                 parameters.setFocusMode(mFocusMode);
             } else {
-                Log.i(TAG, "Camera focus mode: " + mFocusMode + " is not supported on this device.");
+                Log.i(
+                        TAG,
+                        "Camera focus mode: " + mFocusMode + " is not supported on this device.");
             }
         }
 
@@ -776,7 +778,9 @@ public class CameraSource {
                     mFlashMode)) {
                 parameters.setFlashMode(mFlashMode);
             } else {
-                Log.i(TAG, "Camera flash mode: " + mFlashMode + " is not supported on this device.");
+                Log.i(
+                        TAG,
+                        "Camera flash mode: " + mFlashMode + " is not supported on this device.");
             }
         }
 
@@ -1007,14 +1011,15 @@ public class CameraSource {
     }
 
     /**
-     * Creates one buffer for the camera preview callback.  The size of the buffer is based off of
+     * Creates one buffer for the camera preview callback. The size of the buffer is based off of
      * the camera preview size and the format of the camera image.
      *
      * @return a new preview buffer of the appropriate size for the current camera settings
      */
     private byte[] createPreviewBuffer(Size previewSize) {
         int bitsPerPixel = ImageFormat.getBitsPerPixel(ImageFormat.NV21);
-        long sizeInBits = previewSize.getHeight() * previewSize.getWidth() * bitsPerPixel;
+        long sizeInBits =
+                previewSize.getHeight() * (long) previewSize.getWidth() * (long) bitsPerPixel;
         int bufferSize = (int) Math.ceil(sizeInBits / 8.0d) + 1;
 
         //

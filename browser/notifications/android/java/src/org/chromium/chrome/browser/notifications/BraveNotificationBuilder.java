@@ -141,9 +141,10 @@ public class BraveNotificationBuilder extends StandardNotificationBuilder {
         // Note: under the hood this is not a NotificationCompat builder so be mindful of the
         // API level of methods you call on the builder.
         // TODO(crbug.com/697104) We should probably use a Compat builder.
-        String channelId = (ApplicationStatus.hasVisibleActivities())
-                ? BraveChannelDefinitions.ChannelId.BRAVE_ADS
-                : BraveChannelDefinitions.ChannelId.BRAVE_ADS_BACKGROUND;
+        String channelId =
+                ApplicationStatus.hasVisibleActivities()
+                        ? BraveChannelDefinitions.ChannelId.BRAVE_ADS
+                        : BraveChannelDefinitions.ChannelId.BRAVE_ADS_BACKGROUND;
         NotificationWrapperBuilder builder =
                 NotificationWrapperBuilderFactory.createNotificationWrapperBuilder(
                         channelId, metadata);
@@ -151,8 +152,10 @@ public class BraveNotificationBuilder extends StandardNotificationBuilder {
         builder.setContentIntent(mContentIntent);
         builder.setDeleteIntent(mDeleteIntent);
 
-        int priority = (ApplicationStatus.hasVisibleActivities()) ? Notification.PRIORITY_HIGH
-                                                                  : Notification.PRIORITY_LOW;
+        int priority =
+                ApplicationStatus.hasVisibleActivities()
+                        ? Notification.PRIORITY_HIGH
+                        : Notification.PRIORITY_LOW;
         builder.setPriorityBeforeO(priority);
         builder.setDefaults(mDefaults);
         if (mVibratePattern != null) builder.setVibrate(mVibratePattern);
