@@ -7,30 +7,27 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//build/config/android/rules.gni")
 
 source_set("preferences") {
-  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
-  check_includes = false
-  sources = [
-    "background_video_playback_tab_helper.cc",
-    "background_video_playback_tab_helper.h",
-    "brave_pref_service_bridge.cc",
-    "features.cc",
-    "features.h",
-  ]
+  sources = [ "brave_pref_service_bridge.cc" ]
 
   deps = [
     "//base",
     "//brave/build/android:jni_headers",
-    "//brave/common",
+    "//brave/components/brave_adaptive_captcha",
+    "//brave/components/brave_news/common",
+    "//brave/components/brave_perf_predictor/common",
     "//brave/components/brave_referrals/common",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_shields/content/browser",
-    "//brave/components/brave_shields/core/common",
-    "//brave/components/brave_sync",
-    "//brave/components/p3a",
+    "//brave/components/brave_sync:prefs",
+    "//brave/components/constants",
+    "//chrome/browser:browser_process",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/profiles:profile",
+    "//chrome/common",
     "//components/content_settings/core/browser",
+    "//components/content_settings/core/browser:cookie_settings",
     "//components/prefs",
-    "//content/public/browser",
-    "//net",
+    "//third_party/blink/public/common",
     "//url",
   ]
 }

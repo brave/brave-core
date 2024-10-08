@@ -1,20 +1,16 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/android/preferences/background_video_playback_tab_helper.h"
-
-#include <string>
+#include "brave/browser/android/background_video/background_video_playback_tab_helper.h"
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/android/preferences/features.h"
+#include "brave/browser/android/background_video/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/pref_names.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
-#include "content/browser/web_contents/web_contents_impl.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
@@ -51,8 +47,9 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
 
   if (!base::FeatureList::IsEnabled(
           ::preferences::features::kBraveBackgroundVideoPlayback) &&
-      !prefs->GetBoolean(kBackgroundVideoPlaybackEnabled))
+      !prefs->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
     return false;
+  }
 
   content::RenderFrameHost::AllowInjectingJavaScript();
 
