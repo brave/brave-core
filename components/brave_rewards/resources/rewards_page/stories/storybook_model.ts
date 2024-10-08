@@ -184,12 +184,7 @@ export function createModel(): AppModel {
       supportedWalletProviders: ['uphold', 'gemini']
     },
     captchaInfo: null,
-    notifications: [{
-      id: 'notification-123',
-      type: 'external-wallet-disconnected',
-      timeStamp: Date.now(),
-      provider: 'uphold'
-    } as any]
+    notifications: []
   })
 
   return {

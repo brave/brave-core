@@ -368,6 +368,10 @@ export function createModel(): AppModel {
       }
     },
 
+    async setWebDiscoveryProjectEnabled(enabled) {
+      await pageHandler.setWebDiscoveryProjectEnabled(enabled)
+    },
+
     async getAvailableCountries() {
       const { availableCountries } = await pageHandler.getAvailableCountries()
       return availableCountries

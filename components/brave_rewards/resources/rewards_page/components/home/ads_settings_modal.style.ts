@@ -9,11 +9,14 @@ import { scoped } from '../../lib/scoped_css'
 export const style = scoped.css`
   & {
     overflow: auto;
-    max-width: 600px;
     display: flex;
     flex-direction: column;
     gap: 8px;
     font: ${font.default.regular};
+
+    @container style(--is-wide-view) {
+      max-width: 600px;
+    }
   }
 
   .description {
