@@ -3,7 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-brave_downloads_non_web_component_files = [ "brave_overrides/index.ts" ]
+brave_downloads_non_web_component_files = [
+  "brave_overrides/index.ts",
+  "brave_overrides/item.ts",
+]
 
 brave_downloads_preprocess_extra_deps =
     [ "//brave/browser/resources/downloads:preprocess" ]
