@@ -133,7 +133,6 @@ export const Swap = () => {
         wrapContentInBox={true}
         noCardPadding={true}
         noMinCardHeight={true}
-        hideDivider={true}
         hideNav={isPanel}
         cardHeader={
           isPanel ? (
