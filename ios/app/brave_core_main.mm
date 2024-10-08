@@ -620,6 +620,27 @@ static bool CustomLogHandler(int severity,
   }
 }
 
+// Matches cleanupBrowser from Chrome's BrowserViewWrangler
+- (void)cleanupBrowser:(Browser*)browser {
+  DCHECK(browser);
+
+  // Remove the Browser from the browser list. The browser itself is still
+  // alive during this call, so any observer can act on it.
+  ProfileIOS* profile = browser->GetProfile();
+  BrowserList* browserList = BrowserListFactory::GetForProfile(profile);
+  browserList->RemoveBrowser(browser);
+
+  WebStateList* webStateList = browser->GetWebStateList();
+  // Close all webstates in `webStateList`. Do this in an @autoreleasepool as
+  // WebStateList observers will be notified (they are unregistered later). As
+  // some of them may be implemented in Objective-C and unregister themselves
+  // in their -dealloc method, ensure the -autorelease introduced by ARC are
+  // processed before the WebStateList destructor is called.
+  @autoreleasepool {
+    CloseAllWebStates(*webStateList, WebStateList::CLOSE_NO_FLAGS);
+  }
+}
+
 - (void)destroyAndRebuildIncognitoBrowserState {
   DCHECK(_mainBrowserState->HasOffTheRecordChromeBrowserState());
   _nonPersistentWebViewConfiguration = nil;
@@ -633,9 +654,18 @@ static bool CustomLogHandler(int severity,
                               BrowsingDataRemoveMask::REMOVE_ALL,
                               base::DoNothing());
 
+  [self cleanupBrowser:_otr_browser.get()];
+  _otr_browser.reset();
+
   // Destroy and recreate the off-the-record BrowserState.
   _mainBrowserState->DestroyOffTheRecordChromeBrowserState();
-  _mainBrowserState->GetOffTheRecordChromeBrowserState();
+
+  otrBrowserState = _mainBrowserState->GetOffTheRecordChromeBrowserState();
+  _otr_browser = Browser::Create(otrBrowserState, {});
+
+  BrowserList* browserList =
+      BrowserListFactory::GetForBrowserState(otrBrowserState);
+  browserList->AddBrowser(_otr_browser.get());
 }
 
 @end
