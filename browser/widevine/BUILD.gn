@@ -12,8 +12,6 @@ if (is_win) {
 assert(enable_widevine)
 
 source_set("widevine") {
-  # Remove when https://github.com/brave/brave-browser/issues/10644 is resolved
-  check_includes = false
   deps = [
     "//base",
     "//brave/app:brave_generated_resources_grit",
@@ -23,6 +21,7 @@ source_set("widevine") {
     "//brave/components/widevine:constants",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser:browser_public_dependencies",
     "//chrome/common",
     "//components/component_updater/",
     "//components/content_settings/core/common",
