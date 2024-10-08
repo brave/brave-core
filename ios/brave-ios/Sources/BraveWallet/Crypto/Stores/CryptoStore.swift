@@ -669,9 +669,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   func closeUserAssetsStore() {
     userAssetsStore?.tearDown()
     userAssetsStore = nil
-
-    // update `PortfolioStore` and `NFTStore` since user might have edited user assets
-    updateAssets()
   }
 
   public private(set) lazy var settingsStore = SettingsStore(
