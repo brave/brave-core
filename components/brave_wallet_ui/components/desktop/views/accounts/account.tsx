@@ -488,7 +488,6 @@ export const Account = () => {
   return (
     <WalletPageWrapper
       wrapContentInBox
-      hideDivider={true}
       noCardPadding={true}
       useCardInPanel={true}
       cardHeader={

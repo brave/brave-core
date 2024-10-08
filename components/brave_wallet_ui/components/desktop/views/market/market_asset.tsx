@@ -387,7 +387,6 @@ export const MarketAsset = () => {
     <WalletPageWrapper
       wrapContentInBox={true}
       noCardPadding={true}
-      hideDivider={true}
       useCardInPanel={true}
       cardHeader={
         <AssetDetailsHeader

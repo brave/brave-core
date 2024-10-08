@@ -454,7 +454,6 @@ export const PortfolioFungibleAsset = () => {
     <WalletPageWrapper
       wrapContentInBox={true}
       noCardPadding={true}
-      hideDivider={true}
       useCardInPanel={true}
       cardHeader={
         <AssetDetailsHeader

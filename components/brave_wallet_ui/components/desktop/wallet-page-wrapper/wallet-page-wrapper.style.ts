@@ -219,18 +219,7 @@ export const CardHeaderShadow = styled(CardHeader)<{
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
 `
 
-export const CardHeaderContentWrapper = styled(Row)<{
-  dividerOpacity?: number
-  hideDivider?: boolean
-}>`
-  --divider-opacity: ${(p) =>
-    p.dividerOpacity !== undefined ? p.dividerOpacity : 1};
-  --divider-color: rgba(232, 233, 238, var(--divider-opacity));
-  @media (prefers-color-scheme: dark) {
-    --divider-color: rgba(43, 46, 59, var(--divider-opacity));
-  }
-  border-bottom: ${(p) =>
-    p.hideDivider ? 'none' : '1px solid var(--divider-color)'};
+export const CardHeaderContentWrapper = styled(Row)`
   height: 100%;
 `
 
