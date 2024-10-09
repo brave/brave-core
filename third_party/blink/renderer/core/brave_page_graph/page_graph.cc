@@ -652,7 +652,9 @@ void PageGraph::DidReceiveData(uint64_t identifier,
   if (TrackedRequestRecord* request_record =
           request_tracker_.GetTrackingRecord(identifier)) {
     if (TrackedRequest* request = request_record->request.get()) {
-      request->UpdateResponseBodyHash(*data.span());
+      if (auto data_span = data.span()) {
+        request->UpdateResponseBodyHash(*data_span);
+      }
     }
     return;
   }
