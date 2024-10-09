@@ -77,7 +77,8 @@ void CreativeSearchResultAdHandler::
 }
 
 void CreativeSearchResultAdHandler::MaybeTriggerCreativeAdClickedEvent(
-    const GURL& url) {
+    const GURL& url,
+    TriggerAdEventCallback callback) {
   if (!creative_search_result_ads_) {
     // No creative search result ads are present on the web page.
     return;
@@ -100,8 +101,7 @@ void CreativeSearchResultAdHandler::MaybeTriggerCreativeAdClickedEvent(
 
   ads_service_->TriggerSearchResultAdEvent(
       creative_search_result_ad->Clone(),
-      mojom::SearchResultAdEventType::kClicked,
-      /*intentional*/ base::DoNothing());
+      mojom::SearchResultAdEventType::kClicked, std::move(callback));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

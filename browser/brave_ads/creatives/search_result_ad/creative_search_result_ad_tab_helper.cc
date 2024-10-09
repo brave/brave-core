@@ -5,12 +5,15 @@
 
 #include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
 
+#include <utility>
+
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_clicked_infobar_delegate.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_handler.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
@@ -93,15 +96,15 @@ bool CreativeSearchResultAdTabHelper::ShouldHandleCreativeAdEvents() const {
 
   // If the feature is enabled, we should only trigger creative ad events when
   // the user has joined Brave Rewards.
-  const Profile* const profile =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
-  return profile->GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled);
+  return GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled);
 }
 
 void CreativeSearchResultAdTabHelper::MaybeTriggerCreativeAdClickedEvent(
-    const GURL& url) {
+    const GURL& url,
+    TriggerAdEventCallback callback) {
   if (creative_search_result_ad_handler_) {
-    creative_search_result_ad_handler_->MaybeTriggerCreativeAdClickedEvent(url);
+    creative_search_result_ad_handler_->MaybeTriggerCreativeAdClickedEvent(
+        url, std::move(callback));
   }
 }
 
@@ -117,6 +120,22 @@ AdsService* CreativeSearchResultAdTabHelper::GetAdsService() const {
   Profile* const profile =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
   return AdsServiceFactory::GetForProfile(profile);
+}
+
+PrefService* CreativeSearchResultAdTabHelper::GetPrefs() const {
+  Profile* const profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  return profile->GetPrefs();
+}
+
+void CreativeSearchResultAdTabHelper::
+    MaybeTriggerCreativeAdClickedEventCallback(const bool success) {
+  if (!success) {
+    return;
+  }
+
+  CreativeSearchResultAdClickedInfoBarDelegate::Create(web_contents(),
+                                                       GetPrefs());
 }
 
 void CreativeSearchResultAdTabHelper::MaybeCreateCreativeSearchResultAdHandler(
@@ -231,7 +250,10 @@ void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdClickedEvent(
   CHECK(!navigation_handle->GetRedirectChain().empty());
   const GURL url = navigation_handle->GetRedirectChain().back();
 
-  creative_search_result_ad_tab_helper->MaybeTriggerCreativeAdClickedEvent(url);
+  creative_search_result_ad_tab_helper->MaybeTriggerCreativeAdClickedEvent(
+      url, base::BindOnce(&CreativeSearchResultAdTabHelper::
+                              MaybeTriggerCreativeAdClickedEventCallback,
+                          weak_factory_.GetWeakPtr()));
 }
 
 void CreativeSearchResultAdTabHelper::DidStartNavigation(

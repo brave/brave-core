@@ -211,6 +211,10 @@ extension BrowserViewController: TabManagerDelegate {
       self.downloadToast = downloadToast
     }
 
+    if let searchResultAdClickedInfoBar = toast as? SearchResultAdClickedInfoBar {
+      self.searchResultAdClickedInfoBar = searchResultAdClickedInfoBar
+    }
+
     // If BVC isnt visible hold on to this toast until viewDidAppear
     if view.window == nil {
       pendingToast = toast
@@ -239,6 +243,13 @@ extension BrowserViewController: TabManagerDelegate {
         }
       }
     )
+  }
+
+  func hideToastsOnNavigationStartIfNeeded(_ tabManager: TabManager) {
+    if tabManager.selectedTab?.braveSearchResultAdManager == nil {
+      searchResultAdClickedInfoBar?.dismiss(false)
+      searchResultAdClickedInfoBar = nil
+    }
   }
 
   func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {

@@ -97,6 +97,8 @@ extension BrowserViewController: WKNavigationDelegate {
       }
     }
 
+    hideToastsOnNavigationStartIfNeeded(tabManager)
+
     resetRedirectChain(webView)
 
     // Append source URL to redirect chain
@@ -414,13 +416,25 @@ extension BrowserViewController: WKNavigationDelegate {
     if navigationAction.targetFrame?.isMainFrame == true,
       BraveSearchManager.isValidURL(requestURL)
     {
-
       if let braveSearchResultAdManager = tab?.braveSearchResultAdManager,
         braveSearchResultAdManager.isSearchResultAdClickedURL(requestURL),
         navigationAction.navigationType == .linkActivated
       {
-        braveSearchResultAdManager.maybeTriggerSearchResultAdClickedEvent(requestURL)
-        tab?.braveSearchResultAdManager = nil
+        let showSearchResultAdClickedPrivacyNotice =
+          rewards.ads.shouldShowSearchResultAdClickedInfoBar()
+
+        braveSearchResultAdManager.maybeTriggerSearchResultAdClickedEvent(
+          requestURL,
+          completion: { [weak self] success in
+            guard let self, success, showSearchResultAdClickedPrivacyNotice else {
+              return
+            }
+            let searchResultClickedInfobar = SearchResultAdClickedInfoBar(
+              tabManager: self.tabManager
+            )
+            self.show(toast: searchResultClickedInfobar, duration: nil)
+          }
+        )
       } else {
         // The Brave-Search-Ads header should be added with a negative value when all
         // of the following conditions are met:

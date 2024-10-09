@@ -15,6 +15,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom-forward.h"
 
@@ -53,7 +54,8 @@ class CreativeSearchResultAdHandler final {
       ExtractCreativeAdPlacementIdsFromWebPageCallback callback);
 
   void MaybeTriggerCreativeAdViewedEvent(const std::string& placement_id);
-  void MaybeTriggerCreativeAdClickedEvent(const GURL& url);
+  void MaybeTriggerCreativeAdClickedEvent(const GURL& url,
+                                          TriggerAdEventCallback callback);
 
  private:
   friend class BraveAdsCreativeSearchResultAdHandlerTest;

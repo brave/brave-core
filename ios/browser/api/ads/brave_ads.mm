@@ -235,6 +235,11 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
       brave_ads::prefs::kOptedInToSearchResultAds);
 }
 
+- (BOOL)shouldShowSearchResultAdClickedInfoBar {
+  return self.profilePrefService->GetBoolean(
+      brave_ads::prefs::kShouldShowSearchResultAdClickedInfoBar);
+}
+
 - (void)notifyBraveNewsIsEnabledPreferenceDidChange:(BOOL)isEnabled {
   [self setProfilePref:brave_news::prefs::kBraveNewsOptedIn
                  value:base::Value(isEnabled)];
@@ -1638,10 +1643,19 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
     return;
   }
 
+  const auto mojom_event_type =
+      static_cast<brave_ads::mojom::SearchResultAdEventType>(eventType);
   ads->TriggerSearchResultAdEvent(
-      searchResultAd.cppObjPtr,
-      static_cast<brave_ads::mojom::SearchResultAdEventType>(eventType),
-      base::BindOnce(completion));
+      searchResultAd.cppObjPtr, mojom_event_type,
+      base::BindOnce(^(const bool success) {
+        if (success &&
+            mojom_event_type ==
+                brave_ads::mojom::SearchResultAdEventType::kClicked) {
+          self.profilePrefService->SetBoolean(
+              brave_ads::prefs::kShouldShowSearchResultAdClickedInfoBar, false);
+        }
+        completion(success);
+      }));
 }
 
 - (void)purgeOrphanedAdEventsForType:(BraveAdsAdType)adType

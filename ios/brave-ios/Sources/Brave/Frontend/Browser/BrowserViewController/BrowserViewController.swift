@@ -210,6 +210,8 @@ public class BrowserViewController: UIViewController {
   var downloadToast: DownloadToast?
   /// A toast which is active and not yet dismissed
   var activeButtonToast: Toast?
+  /// An infobar displaying a privacy notice when a search result ad is clicked
+  var searchResultAdClickedInfoBar: SearchResultAdClickedInfoBar?
   /// A boolean to determine If AddToListActivity should be added
   var addToPlayListActivityItem: (enabled: Bool, item: PlaylistInfo?)?
   /// A boolean to determine if OpenInPlaylistActivity should be shown
