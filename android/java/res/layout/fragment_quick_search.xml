@@ -12,30 +12,69 @@
      android:layout_height="match_parent"
      android:orientation="vertical">
 
-     <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          style="@style/SmallRegular"
-          android:layout_marginHorizontal="16dp"
-          android:layout_marginVertical="8dp"
-          android:text="@string/currently_used_search_engines"
-          android:textColor="@color/text_secondary"/>
+     <LinearLayout
+          android:id="@+id/quick_search_feature_layout"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:paddingHorizontal="16dp"
+         android:orientation="horizontal">
 
-     <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/quick_search_settings_recyclerview"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:overScrollMode="never" />
+          <TextView
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               style="@style/LargeRegular"
+               android:text="@string/show_quick_search_bar"
+               android:layout_marginEnd="16dp"
+               android:textColor="@color/text_primary"/>
 
-     <TextView
+          <com.google.android.material.materialswitch.MaterialSwitch
+               android:id="@+id/quick_search_feature_switch"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               app:trackTint="@color/vpn_server_selection_switch_stroke_color"
+               app:showText="false"
+               android:clickable="false"/>
+
+     </LinearLayout>
+
+     <View
+          android:id="@+id/divider"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/divider_subtle"/>
+
+     <LinearLayout
+          android:id="@+id/quick_search_options_layout"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          style="@style/SmallRegular"
-          android:layout_marginHorizontal="16dp"
-          android:layout_marginTop="16dp"
-          app:drawableStartCompat="@drawable/ic_arrow_up_and_down"
-          android:drawablePadding="8dp"
-          android:text="@string/long_press_to_change_order"
-          android:textColor="@color/text_secondary"/>
+          android:orientation="vertical">
+
+          <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               style="@style/SmallRegular"
+               android:layout_marginHorizontal="16dp"
+               android:layout_marginVertical="8dp"
+               android:text="@string/currently_used_search_engines"
+               android:textColor="@color/text_secondary"/>
+
+          <androidx.recyclerview.widget.RecyclerView
+               android:id="@+id/quick_search_settings_recyclerview"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:overScrollMode="never" />
+
+          <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               style="@style/SmallRegular"
+               android:layout_marginHorizontal="16dp"
+               android:layout_marginTop="16dp"
+               app:drawableStartCompat="@drawable/ic_arrow_up_and_down"
+               android:drawablePadding="8dp"
+               android:text="@string/long_press_to_change_order"
+               android:textColor="@color/text_secondary"/>
+     </LinearLayout>
 
 </LinearLayout>
