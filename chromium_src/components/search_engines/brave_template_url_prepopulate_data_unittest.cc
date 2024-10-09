@@ -186,7 +186,7 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForCanada) {
 
 TEST_F(BraveTemplateURLPrepopulateDataTest,
        DefaultSearchProvidersForAustralia) {
-  CheckForCountry('A', 'U', PREPOPULATED_ENGINE_ID_GOOGLE);
+  CheckForCountry('A', 'U', PREPOPULATED_ENGINE_ID_BRAVE);
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest,
