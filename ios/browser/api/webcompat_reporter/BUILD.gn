@@ -19,7 +19,6 @@ config("mojom_header_config") {
 source_set("webcompat_reporter") {
   configs += [ ":mojom_header_config" ]
   sources = [
-    "webcompat_reporter+private.h",
     "webcompat_reporter_service_factory.h",
     "webcompat_reporter_service_factory.mm",
     "webcompat_reporter_service_factory_wrapper.h",
