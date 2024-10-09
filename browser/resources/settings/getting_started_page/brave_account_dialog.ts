@@ -31,14 +31,6 @@ export class SettingsBraveAccountDialogElement extends SettingsBraveAccountDialo
 
   static get properties() {
     return {
-      /**
-       * 'create' | 'signin'
-       */
-      codeType: {
-        type: String,
-        value: 'signin',
-        notify: true
-      },
       isTermsAccepted_: {
         type: Boolean,
         value: false,
@@ -54,18 +46,9 @@ export class SettingsBraveAccountDialogElement extends SettingsBraveAccountDialo
     this.canCreateAccount_ = this.isTermsAccepted_ && !this.isEmailAddressInvalid_;
   }
 
-  private codeType: 'create' | 'signin' | null;
   private isTermsAccepted_: boolean = false;
   private isEmailAddressInvalid_: boolean = true;
   private canCreateAccount_: boolean = false;
-
-  isCodeType(askingType: string) {
-    return (this.codeType === askingType)
-  }
-
-  handleClose_() {
-    this.codeType = null
-  }
 }
 
 customElements.define(
