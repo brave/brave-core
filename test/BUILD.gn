@@ -11,7 +11,6 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
-import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
@@ -1041,17 +1040,6 @@ test("brave_browser_tests") {
 
   if (enable_crash_dialog) {
     sources += [ "//brave/browser/ui/views/crash_report_permission_ask_dialog_browsertest.cc" ]
-  }
-
-  if (enable_greaselion) {
-    sources += [ "//brave/browser/greaselion/greaselion_browsertest.cc" ]
-
-    deps += [
-      "//brave/browser/brave_rewards",
-      "//brave/browser/greaselion",
-      "//brave/components/greaselion/browser",
-      "//chrome/browser",
-    ]
   }
 
   if (ethereum_remote_client_enabled) {

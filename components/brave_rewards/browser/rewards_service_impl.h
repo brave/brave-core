@@ -30,7 +30,6 @@
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -42,10 +41,6 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/safetynet/safetynet_check.h"
-#endif
-
-#if BUILDFLAG(ENABLE_GREASELION)
-#include "brave/components/greaselion/browser/greaselion_service.h"
 #endif
 
 namespace base {
@@ -92,9 +87,6 @@ using RequestImageCallback = base::RepeatingCallback<int(
     const net::NetworkTrafficAnnotationTag& traffic_annotation)>;
 using CancelImageRequestCallback = base::RepeatingCallback<void(int)>;
 class RewardsServiceImpl final : public RewardsService,
-#if BUILDFLAG(ENABLE_GREASELION)
-                                 public greaselion::GreaselionService::Observer,
-#endif
                                  public mojom::RewardsEngineClient {
  public:
   RewardsServiceImpl(PrefService* prefs,
@@ -103,9 +95,6 @@ class RewardsServiceImpl final : public RewardsService,
                      RequestImageCallback request_image_callback,
                      CancelImageRequestCallback cancel_image_request_callback,
                      content::StoragePartition* storage_partition,
-#if BUILDFLAG(ENABLE_GREASELION)
-                     greaselion::GreaselionService* greaselion_service,
-#endif
                      brave_wallet::BraveWalletService* brave_wallet_service);
 
   RewardsServiceImpl(const RewardsServiceImpl&) = delete;
@@ -151,6 +140,7 @@ class RewardsServiceImpl final : public RewardsService,
 
   void OnGetPublisherInfoList(GetPublisherInfoListCallback callback,
                               std::vector<mojom::PublisherInfoPtr> list);
+  void OnLoad(mojom::VisitDataPtr visit_data) override;
   void OnLoad(SessionID tab_id, const GURL& url) override;
   void OnUnload(SessionID tab_id) override;
   void OnShow(SessionID tab_id) override;
@@ -172,11 +162,12 @@ class RewardsServiceImpl final : public RewardsService,
       const uint32_t month,
       const uint32_t year,
       GetBalanceReportCallback callback) override;
-  void GetPublisherActivityFromUrl(
-      uint64_t window_id,
-      const std::string& url,
-      const std::string& favicon_url,
-      const std::string& publisher_blob) override;
+  void GetPublisherActivityFromVisitData(
+      mojom::VisitDataPtr visit_data) override;
+  void GetPublisherActivityFromUrl(uint64_t tab_id,
+                                   const std::string& url,
+                                   const std::string& favicon_url,
+                                   const std::string& publisher_blob) override;
   void GetAutoContributionAmount(
       GetAutoContributionAmountCallback callback) override;
   void GetPublisherBanner(const std::string& publisher_id,
@@ -224,12 +215,6 @@ class RewardsServiceImpl final : public RewardsService,
     GetAllNotifications() override;
 
   void SetAutoContributionAmount(const double amount) const override;
-
-  void UpdateMediaDuration(
-      const uint64_t window_id,
-      const std::string& publisher_key,
-      const uint64_t duration,
-      const bool first_visit) override;
 
   void IsPublisherRegistered(const std::string& publisher_id,
                              base::OnceCallback<void(bool)> callback) override;
@@ -312,13 +297,6 @@ class RewardsServiceImpl final : public RewardsService,
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
-#if BUILDFLAG(ENABLE_GREASELION)
-  void EnableGreaselion();
-
-  // GreaselionService::Observer:
-  void OnRulesReady(greaselion::GreaselionService* greaselion_service) override;
-#endif
-
   void InitPrefChangeRegistrar();
 
   void OnPreferenceChanged(const std::string& key);
@@ -389,7 +367,7 @@ class RewardsServiceImpl final : public RewardsService,
   void SetPublisherMinVisits(int visits) const override;
   void OnPanelPublisherInfo(mojom::Result result,
                             mojom::PublisherInfoPtr info,
-                            uint64_t window_id) override;
+                            uint64_t tab_id) override;
   void FetchFavIcon(const std::string& url,
                     const std::string& favicon_key,
                     FetchFavIconCallback callback) override;
@@ -554,11 +532,6 @@ class RewardsServiceImpl final : public RewardsService,
   const RequestImageCallback request_image_callback_;
   const CancelImageRequestCallback cancel_image_request_callback_;
   raw_ptr<content::StoragePartition> storage_partition_;  // NOT OWNED
-#if BUILDFLAG(ENABLE_GREASELION)
-  raw_ptr<greaselion::GreaselionService> greaselion_service_ =
-      nullptr;  // NOT OWNED
-  bool greaselion_enabled_ = false;
-#endif
   raw_ptr<brave_wallet::BraveWalletService> brave_wallet_service_ = nullptr;
   mojo::AssociatedReceiver<mojom::RewardsEngineClient> receiver_;
   mojo::AssociatedRemote<mojom::RewardsEngine> engine_;
