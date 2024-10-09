@@ -125,12 +125,17 @@ struct CompletionEvent {
   string completion;
 };
 
+struct SelectedLanguageEvent {
+  string selected_language;
+};
+
 // Events that occur during a conversation turn (only assistant for now)
 union ConversationEntryEvent {
   CompletionEvent completion_event;
   PageContentRefineEvent page_content_refine_event;
   SearchQueriesEvent search_queries_event;
   SearchStatusEvent search_status_event;
+  SelectedLanguageEvent selected_language_event;
 };
 
 // Represents a single turn in a conversation.
@@ -235,6 +240,8 @@ struct ActionGroup {
 struct Conversation {
   string uuid;
   string title;
+  // Set by the LLM after detecting the user's language in the first message
+  string selected_language;
   bool has_content;
 };
 
