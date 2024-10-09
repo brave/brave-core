@@ -36,6 +36,7 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
+
 namespace {
 
 constexpr char kBraveEthereum[] = "braveEthereum";
@@ -192,13 +193,14 @@ void JSEthereumProvider::Install(bool install_ethereum_provider,
   // invocation: Function must be called on an object of type
   // JSEthereumProvider" error.
   blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
-  v8::Local<v8::Proxy> ethereum_proxy;
-  auto ethereum_proxy_handler_val =
-      ExecuteScript(web_frame, kEthereumProxyHandlerScript);
+  v8::Local<v8::Value> ethereum_proxy_handler_val;
+  if (!ExecuteScript(web_frame, kEthereumProxyHandlerScript)
+           .ToLocal(&ethereum_proxy_handler_val)) {
+    return;
+  }
   v8::Local<v8::Object> ethereum_proxy_handler_obj =
-      ethereum_proxy_handler_val.ToLocalChecked()
-          ->ToObject(context)
-          .ToLocalChecked();
+      ethereum_proxy_handler_val->ToObject(context).ToLocalChecked();
+  v8::Local<v8::Proxy> ethereum_proxy;
   if (!v8::Proxy::New(context, provider_object, ethereum_proxy_handler_obj)
            .ToLocal(&ethereum_proxy)) {
     return;
