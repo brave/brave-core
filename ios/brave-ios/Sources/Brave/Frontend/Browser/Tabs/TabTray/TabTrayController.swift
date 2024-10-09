@@ -432,10 +432,7 @@ class TabTrayController: AuthenticationController {
 
     tabTypeSelector.snp.makeConstraints {
       $0.width.equalTo(contentStackView.snp.width).dividedBy(2)
-      $0.centerX.equalTo(tabTypeSelectorContainerView.snp.centerX)
-      $0.centerY.equalTo(tabTypeSelectorContainerView.snp.centerY)
-      $0.top.equalTo(tabTypeSelectorContainerView.snp.top)
-      $0.bottom.equalTo(tabTypeSelectorContainerView.snp.bottom)
+      $0.center.top.bottom.equalTo(tabTypeSelectorContainerView)
     }
 
     tabContentView.addSubview(tabTrayView)
