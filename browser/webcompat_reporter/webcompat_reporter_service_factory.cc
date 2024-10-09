@@ -5,10 +5,12 @@
 
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/webcompat_reporter/webcompat_reporter_service_delegate.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/browser_process.h"
@@ -51,10 +53,15 @@ WebcompatReporterServiceFactory::~WebcompatReporterServiceFactory() = default;
 KeyedService* WebcompatReporterServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   auto* default_storage_partition = context->GetDefaultStoragePartition();
+  if (!default_storage_partition) {
+    return nullptr;
+  }
+
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
   return new WebcompatReporterService(
-      g_brave_browser_process->ad_block_service(),
+      std::make_unique<WebcompatReporterServiceDelegateImpl>(
+          g_brave_browser_process->ad_block_service()),
       g_browser_process->component_updater(), shared_url_loader_factory);
 }
 

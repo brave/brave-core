@@ -7,8 +7,8 @@
 
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 
 namespace webcompat_reporter {
 // static
@@ -43,12 +43,11 @@ WebcompatReporterServiceFactory::BuildServiceInstanceFor(
   if (browser_state->IsOffTheRecord()) {
     return nullptr;
   }
-  
-  //auto* adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
-  component_updater::ComponentUpdateService* cus = GetApplicationContext()->GetComponentUpdateService();
 
-  return std::make_unique<WebcompatReporterService>(cus,
-      context->GetSharedURLLoaderFactory());
+  component_updater::ComponentUpdateService* cus =
+      GetApplicationContext()->GetComponentUpdateService();
+  return std::make_unique<WebcompatReporterService>(
+      nullptr, cus, context->GetSharedURLLoaderFactory());
 }
 
 }  // namespace webcompat_reporter

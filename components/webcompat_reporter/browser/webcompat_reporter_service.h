@@ -7,6 +7,8 @@
 #define BRAVE_COMPONENTS_WEBCOMPAT_REPORTER_BROWSER_WEBCOMPAT_REPORTER_SERVICE_H_
 
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -22,20 +24,21 @@ namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
 
-namespace brave_shields {
-class AdBlockService;
-}  // namespace brave_shields
-
 namespace webcompat_reporter {
-
-// This class is not thread-safe and should have single owner
 class WebcompatReporterService : public KeyedService,
                                  public mojom::WebcompatReporterHandler {
  public:
+  class WebCompatServiceDelegate {
+   public:
+    virtual ~WebCompatServiceDelegate() = default;
+
+    virtual std::optional<std::vector<std::string>> GetAdblockFilterListNames()
+        const = 0;
+    virtual std::string GetChannelName() const = 0;
+  };
+
   explicit WebcompatReporterService(
-#if !BUILDFLAG(IS_IOS)
-      brave_shields::AdBlockService* adblock_service,
-#endif  // !BUILDFLAG(IS_IOS)
+      std::unique_ptr<WebCompatServiceDelegate> service_delegate,
       component_updater::ComponentUpdateService* component_update_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   WebcompatReporterService(const WebcompatReporterService&) = delete;
@@ -53,18 +56,12 @@ class WebcompatReporterService : public KeyedService,
   friend class WebcompatReporterServiceUnitTest;
   WebcompatReporterService();
   void SetUpWebcompatReporterServiceForTest(
-      std::unique_ptr<WebcompatReportUploader> report_uploader
-//#if !BUILDFLAG(IS_IOS)
-      ,
-      component_updater::ComponentUpdateService* component_update_service
-//#endif  // !BUILDFLAG(IS_IOS)
-  );
+      std::unique_ptr<WebcompatReportUploader> report_uploader,
+      component_updater::ComponentUpdateService* component_update_service);
 
   void SubmitReportInternal(const Report& report_data);
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
-#if !BUILDFLAG(IS_IOS)
-  raw_ptr<brave_shields::AdBlockService> adblock_service_;
-#endif  // !BUILDFLAG(IS_IOS)
+  std::unique_ptr<WebCompatServiceDelegate> service_delegate_;
   std::unique_ptr<WebcompatReportUploader> report_uploader_;
   mojo::ReceiverSet<mojom::WebcompatReporterHandler> receivers_;
   base::WeakPtrFactory<WebcompatReporterService> weak_factory_{this};

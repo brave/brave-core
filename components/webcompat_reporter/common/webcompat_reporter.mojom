@@ -22,8 +22,8 @@ struct ReportInfo {
   string? languages;
   string? language_farbling;
   string? brave_vpn_connected;
-  map<string, string>? details;
-  map<string, string>? contact;
+  string? details;
+  string? contact;
   array<ComponentInfo>? ad_block_components_version;
   array<uint8>? screenshot_png;
 };

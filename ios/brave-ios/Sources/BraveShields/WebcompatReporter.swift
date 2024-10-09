@@ -54,8 +54,8 @@ public class WebcompatReporterUploader {
           ? String(
             braveVpnConnected!
           ) : "",
-        details: ["": additionalDetails!],
-        contact: ["": contactInfo!],
+        details: additionalDetails,
+        contact: contactInfo,
         adBlockComponentsVersion: nil,
         screenshotPng: screenshotPng
       )

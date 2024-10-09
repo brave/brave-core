@@ -71,8 +71,8 @@ Report& Report::operator=(const Report& other) {
     languages = other.languages;
     language_farbling = other.language_farbling;
     brave_vpn_connected = other.brave_vpn_connected;
-    SetOptValue(details, other.details);
-    SetOptValue(contact, other.contact);
+    details = other.details;
+    contact = other.contact;
     SetOptValue(ad_block_components, other.ad_block_components);
     screenshot_png = other.screenshot_png;
   }
@@ -100,7 +100,7 @@ void WebcompatReportUploader::SubmitReport(const Report& report) {
   }
 
   if (report.details) {
-    report_details_dict.Set(kDetailsField, report.details.value().Clone());
+    report_details_dict.Set(kDetailsField, report.details.value());
   }
 
   if (report.ad_block_components) {
@@ -109,7 +109,7 @@ void WebcompatReportUploader::SubmitReport(const Report& report) {
   }
 
   if (report.contact) {
-    report_details_dict.Set(kContactField, report.contact.value().Clone());
+    report_details_dict.Set(kContactField, report.contact.value());
   }
 
   if (report.channel) {

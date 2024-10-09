@@ -16,35 +16,16 @@
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
-#include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 #include "components/component_updater/component_updater_service.h"
 
-#if !BUILDFLAG(IS_IOS)
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
-#endif  // !BUILDFLAG(IS_IOS)
-
 namespace {
 constexpr char kComponentItemName[] = "name";
 constexpr char kComponentItemId[] = "id";
 constexpr char kComponentItemVersion[] = "version";
-
-void SetDictVal(std::optional<base::Value>& val_to_set,
-                const std::optional<base::flat_map<std::string, std::string>>&
-                    opt_dict_val) {
-  if (!opt_dict_val || opt_dict_val->empty()) {
-    return;
-  }
-  auto detail_dict = base::Value::Dict();
-  for (const auto& detail_item : opt_dict_val.value()) {
-    detail_dict.Set(detail_item.first, detail_item.second);
-  }
-  val_to_set = base::Value(std::move(detail_dict));
-}
 
 void SetListVal(
     std::optional<base::Value>& val_to_set,
@@ -94,33 +75,25 @@ bool NeedsToGetComponentInfo(const std::string& component_id) {
       });
   return kComponentIds->contains(component_id);
 }
-#if !BUILDFLAG(IS_IOS)
+
 void FillReportWithAdblockListNames(
     webcompat_reporter::Report& report,
-    raw_ptr<brave_shields::AdBlockService>& ad_block_service) {
+    webcompat_reporter::WebcompatReporterService::WebCompatServiceDelegate*
+        service_delegate) {
   if (report.ad_block_list_names && !report.ad_block_list_names->empty()) {
     return;
   }
 
-  if (!ad_block_service) {
+  if (!service_delegate) {
     return;
   }
 
-  std::vector<std::string> ad_block_list_names;
-  if (ad_block_service != nullptr) {
-    brave_shields::AdBlockComponentServiceManager* service_manager =
-        ad_block_service->component_service_manager();
-    CHECK(service_manager);
-    for (const brave_shields::FilterListCatalogEntry& entry :
-         service_manager->GetFilterListCatalog()) {
-      if (service_manager->IsFilterListEnabled(entry.uuid)) {
-        ad_block_list_names.push_back(entry.title);
-      }
-    }
+  auto filter_list = service_delegate->GetAdblockFilterListNames();
+  if (!filter_list) {
+    return;
   }
-  report.ad_block_list_names = base::JoinString(ad_block_list_names, ",");
+  report.ad_block_list_names = base::JoinString(filter_list.value(), ",");
 }
-#endif  // !BUILDFLAG(IS_IOS)
 
 void FillReportWithComponetsInfo(
     webcompat_reporter::Report& report,
@@ -183,31 +156,25 @@ void FillReportByReportInfo(
   report.languages = report_info->languages;
   report.language_farbling = report_info->language_farbling;
   report.brave_vpn_connected = report_info->brave_vpn_connected;
-  SetDictVal(report.details, report_info->details);
-  SetDictVal(report.contact, report_info->contact);
+  report.details = report_info->details;
+  report.contact = report_info->contact;
   report.screenshot_png = report_info->screenshot_png;
 }
 
 void FillReportValues(
     webcompat_reporter::Report& report,
-    raw_ptr<component_updater::ComponentUpdateService>& component_updater
-#if !BUILDFLAG(IS_IOS)
-    ,raw_ptr<brave_shields::AdBlockService>& ad_block_service
-#endif  // !BUILDFLAG(IS_IOS)
-) {
-#if !BUILDFLAG(IS_IOS)
-  if (!report.channel) {
-    report.channel = brave::GetChannelName();
+    raw_ptr<component_updater::ComponentUpdateService>& component_updater,
+    webcompat_reporter::WebcompatReporterService::WebCompatServiceDelegate*
+        service_delegate) {
+  if (!report.channel && service_delegate) {
+    report.channel = service_delegate->GetChannelName();
   }
-#endif  // !BUILDFLAG(IS_IOS)
   if (!report.brave_version) {
     report.brave_version =
         version_info::GetBraveVersionWithoutChromiumMajorVersion();
   }
   FillReportWithComponetsInfo(report, component_updater);
-#if !BUILDFLAG(IS_IOS)
-  FillReportWithAdblockListNames(report, ad_block_service);
-#endif  // !BUILDFLAG(IS_IOS)
+  FillReportWithAdblockListNames(report, service_delegate);
 }
 }  // namespace
 namespace webcompat_reporter {
@@ -215,18 +182,13 @@ namespace webcompat_reporter {
 WebcompatReporterService::WebcompatReporterService() = default;
 
 WebcompatReporterService::WebcompatReporterService(
-#if !BUILDFLAG(IS_IOS)
-    brave_shields::AdBlockService* adblock_service,
-#endif  // !BUILDFLAG(IS_IOS)
+    std::unique_ptr<WebCompatServiceDelegate> service_delegate,
     component_updater::ComponentUpdateService* component_update_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : component_update_service_(component_update_service),
-#if !BUILDFLAG(IS_IOS)
-      adblock_service_(adblock_service),
-#endif  // !BUILDFLAG(IS_IOS)
+      service_delegate_(std::move(service_delegate)),
       report_uploader_(
-          std::make_unique<WebcompatReportUploader>(url_loader_factory)) {
-}
+          std::make_unique<WebcompatReportUploader>(url_loader_factory)) {}
 
 WebcompatReporterService::~WebcompatReporterService() = default;
 
@@ -250,11 +212,8 @@ void WebcompatReporterService::SubmitWebcompatReport(
 }
 
 void WebcompatReporterService::SubmitWebcompatReport(Report report_data) {
-  FillReportValues(report_data, component_update_service_
-#if !BUILDFLAG(IS_IOS)
-                   , adblock_service_
-#endif  // !BUILDFLAG(IS_IOS)
-  );
+  FillReportValues(report_data, component_update_service_,
+                   service_delegate_ ? service_delegate_.get() : nullptr);
   SubmitReportInternal(report_data);
 }
 

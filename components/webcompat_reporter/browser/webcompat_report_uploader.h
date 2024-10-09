@@ -38,8 +38,8 @@ struct Report {
   std::optional<std::string> languages;
   std::optional<std::string> language_farbling;
   std::optional<std::string> brave_vpn_connected;
-  std::optional<base::Value> details;
-  std::optional<base::Value> contact;
+  std::optional<std::string> details;
+  std::optional<std::string> contact;
   std::optional<base::Value> ad_block_components;
 
   std::optional<std::vector<unsigned char>> screenshot_png;
