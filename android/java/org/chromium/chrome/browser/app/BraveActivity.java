@@ -168,10 +168,7 @@ import org.chromium.chrome.browser.quick_search_engines.views.QuickSearchEngines
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.rewards.adaptive_captcha.AdaptiveCaptchaHelper;
-import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
-import org.chromium.chrome.browser.safe_browsing.SafeBrowsingState;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
-
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.set_default_browser.OnBraveSetDefaultBrowserListener;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
@@ -223,7 +220,6 @@ import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.favicon.LargeIconBridge;
 import org.chromium.components.favicon.LargeIconBridge.GoogleFaviconServerCallback;
 import org.chromium.components.favicon.LargeIconBridge.LargeIconCallback;
-import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -242,8 +238,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /** Brave's extension for ChromeActivity */
@@ -2687,11 +2683,10 @@ public abstract class BraveActivity extends ChromeActivity
                                 quickSearchEngineModel.getKeyword()));
         // Use a placeholder image while trying to fetch the logo.
         int uiElementSizeInPx =
-                getActivity()
-                        .getResources()
-                        .getDimensionPixelSize(R.dimen.search_engine_favicon_size);
+                getResources().getDimensionPixelSize(R.dimen.search_engine_favicon_size);
         logoView.setImageBitmap(
-                FaviconUtils.createGenericFaviconBitmap(getActivity(), uiElementSizeInPx, null));
+                FaviconUtils.createGenericFaviconBitmap(
+                        BraveActivity.this, uiElementSizeInPx, null));
         LargeIconCallback onFaviconAvailable =
                 (icon, fallbackColor, isFallbackColorDefault, iconType) -> {
                     if (icon != null) {
