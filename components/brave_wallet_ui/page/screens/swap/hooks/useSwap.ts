@@ -996,7 +996,7 @@ export const useSwap = () => {
 
       // EVM specific validations
       if (
-        (quoteUnion?.zeroExQuote || quoteUnion?.lifiQuote) &&
+        (quoteUnion?.zeroExQuote || quoteUnion?.lifiQuote || quoteUnion?.squidQuote) &&
         fromToken.coin === BraveWallet.CoinType.ETH &&
         fromToken.contractAddress &&
         !hasAllowance

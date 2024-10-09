@@ -217,9 +217,7 @@ GURL AppendJupiterQuoteParams(const GURL& swap_url,
 }
 
 base::flat_map<std::string, std::string> GetHeaders() {
-  return {
-      {kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY)}
-  };
+  return {{kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY)}};
 }
 
 std::string GetBaseSwapURL(const std::string& chain_id) {

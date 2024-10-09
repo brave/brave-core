@@ -1706,7 +1706,7 @@ TEST_F(SwapServiceUnitTest, GetLiFiStatus) {
 
 TEST_F(SwapServiceUnitTest, GetSquidURL) {
   auto url = swap_service_->GetSquidURL();
-  EXPECT_EQ(url, "https://apiplus.squidrouter.com/v2/route");
+  EXPECT_EQ(url, "https://squid.wallet.brave.com/v2/route");
 }
 
 TEST_F(SwapServiceUnitTest, GetSquidQuote) {

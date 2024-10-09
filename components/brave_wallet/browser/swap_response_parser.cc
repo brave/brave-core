@@ -1001,8 +1001,6 @@ mojom::SquidQuotePtr ParseQuoteResponse(const base::Value& json_value) {
     return nullptr;
   }
 
-  LOG(ERROR) << "PHASE 0";
-
   auto result = mojom::SquidQuote::New();
   for (const auto& action_value : value->route.estimate.actions) {
     auto action = ParseAction(action_value);
