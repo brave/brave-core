@@ -13,6 +13,7 @@
 #include "ui/color/color_provider.h"
 #include "ui/color/color_provider_key.h"
 #include "ui/color/color_recipe.h"
+#include "ui/color/color_transform.h"
 
 namespace tabs {
 
@@ -30,6 +31,10 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorBraveVerticalTabActiveBackground] = {
       kColorTabBackgroundInactiveFrameActive};
   mixer[kColorBraveVerticalTabInactiveBackground] = {kColorToolbar};
+  mixer[kColorBraveVerticalTabInactiveHoverBackground] =
+      ui::AlphaBlend(kColorBraveVerticalTabActiveBackground,
+                     kColorBraveVerticalTabInactiveBackground,
+                     /* 40% opacity */ 0.4 * SK_AlphaOPAQUE);
   mixer[kColorBraveVerticalTabSeparator] = {kColorToolbarContentAreaSeparator};
   mixer[kColorBraveVerticalTabNTBIconColor] = {
       kColorTabForegroundInactiveFrameActive};
