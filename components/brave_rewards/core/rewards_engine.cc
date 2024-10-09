@@ -456,16 +456,6 @@ void RewardsEngine::StartContributionsForTesting() {
   });
 }
 
-void RewardsEngine::UpdateMediaDuration(uint64_t window_id,
-                                            const std::string& publisher_key,
-                                            uint64_t duration,
-                                            bool first_visit) {
-  WhenReady([this, window_id, publisher_key, duration, first_visit] {
-    publisher()->UpdateMediaDuration(window_id, publisher_key, duration,
-                                     first_visit);
-  });
-}
-
 void RewardsEngine::IsPublisherRegistered(
     const std::string& publisher_id,
     IsPublisherRegisteredCallback callback) {
