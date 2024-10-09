@@ -57,6 +57,7 @@ class BitcoinTransaction {
     std::string utxo_address;
     Outpoint utxo_outpoint;
     uint64_t utxo_value = 0;
+    std::optional<std::vector<uint8_t>> raw_outpoint_tx;
 
     std::vector<uint8_t> script_sig;  // scriptSig aka unlock script.
     std::vector<uint8_t> witness;     // serialized witness stack.
@@ -158,6 +159,7 @@ class BitcoinTransaction {
   void AddInputs(std::vector<TxInput> input);
   void ClearInputs();
   void SetInputWitness(size_t input_index, std::vector<uint8_t> witness);
+  void SetInputRawTransaction(size_t input_index, std::vector<uint8_t> raw_tx);
 
   const std::vector<TxOutput>& outputs() const { return outputs_; }
   void AddOutput(TxOutput output);

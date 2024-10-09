@@ -20,6 +20,7 @@ export class WalletApiProxy {
   ethTxManagerProxy = new BraveWallet.EthTxManagerProxyRemote()
   solanaTxManagerProxy = new BraveWallet.SolanaTxManagerProxyRemote()
   filTxManagerProxy = new BraveWallet.FilTxManagerProxyRemote()
+  btcTxManagerProxy = new BraveWallet.BtcTxManagerProxyRemote()
   braveWalletService = new BraveWallet.BraveWalletServiceRemote()
   braveWalletP3A = new BraveWallet.BraveWalletP3ARemote()
   braveWalletIpfsService = new BraveWallet.IpfsServiceRemote()

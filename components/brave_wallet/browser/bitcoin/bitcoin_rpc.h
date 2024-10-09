@@ -49,6 +49,7 @@ class BitcoinRpc {
   using GetFeeEstimatesCallback =
       RpcResponseCallback<std::map<uint32_t, double>>;
   using GetTransactionCallback = RpcResponseCallback<Transaction>;
+  using GetTransactionRawCallback = RpcResponseCallback<std::vector<uint8_t>>;
   using GetAddressStatsCallback = RpcResponseCallback<AddressStats>;
   using GetUtxoListCallback = RpcResponseCallback<UnspentOutputs>;
   using PostTransactionCallback = RpcResponseCallback<std::string>;
@@ -60,6 +61,9 @@ class BitcoinRpc {
   void GetTransaction(const std::string& chain_id,
                       const std::string& txid,
                       GetTransactionCallback callback);
+  void GetTransactionRaw(const std::string& chain_id,
+                         const std::string& txid,
+                         GetTransactionRawCallback callback);
   void GetAddressStats(const std::string& chain_id,
                        const std::string& address,
                        GetAddressStatsCallback callback);
@@ -90,6 +94,8 @@ class BitcoinRpc {
                          APIRequestResult api_request_result);
   void OnGetTransaction(GetTransactionCallback callback,
                         APIRequestResult api_request_result);
+  void OnGetTransactionRaw(GetTransactionRawCallback callback,
+                           APIRequestResult api_request_result);
   void OnGetAddressStats(GetAddressStatsCallback callback,
                          APIRequestResult api_request_result);
   void OnGetUtxoList(GetUtxoListCallback callback,

@@ -144,9 +144,11 @@ const getMockedProxyServices = (args: {
   ethMessageToSign?: string
   solMessageToSign?: Buffer
   filMessageToSign?: string | undefined
+  btcMessageToSign?: Buffer
   processHardwareSignatureResult?: boolean
   expectedEthereumSignatureVRS?: BraveWallet.EthereumSignatureVRS
   expectedFilSignedTransaction?: BraveWallet.FilecoinSignature
+  expectedBtcSignedTransaction?: BraveWallet.BitcoinSignature
   expectedSolSignature?: BraveWallet.SolanaSignature
 }) => {
   return {
@@ -160,9 +162,8 @@ const getMockedProxyServices = (args: {
         expect(id).toStrictEqual(args.expectedId)
         return Promise.resolve({ hexMessage: args.ethMessageToSign ?? null })
       },
-      getNonceForHardwareTransaction: (chainId: string, id: string) => {
+      getNonceForHardwareTransaction: (id: string) => {
         expect(id).toStrictEqual(args.expectedId)
-        expect(chainId).toStrictEqual(args.expectedChainId)
         return Promise.resolve({ nonce: args.nonce ?? null })
       },
       processEthHardwareSignature: (
@@ -189,6 +190,24 @@ const getMockedProxyServices = (args: {
       ) => {
         expect(id).toStrictEqual(args.expectedId)
         expect(hwSignature).toStrictEqual(args.expectedFilSignedTransaction)
+        return Promise.resolve({
+          status: !!args.processHardwareSignatureResult,
+          errorUnion: emptyProviderErrorCodeUnion,
+          errorMessage: ''
+        })
+      }
+    },
+    btcTxManagerProxy: {
+      getBtcTransactionMessageToSign: (id: string) => {
+        expect(id).toStrictEqual(args.expectedId)
+        return Promise.resolve({ jsonMessage: args.btcMessageToSign! })
+      },
+      processBtcHardwareSignature: (
+        id: string,
+        hwSignature: BraveWallet.BitcoinSignature
+      ) => {
+        expect(id).toStrictEqual(args.expectedId)
+        expect(hwSignature).toStrictEqual(args.expectedBtcSignedTransaction)
         return Promise.resolve({
           status: !!args.processHardwareSignatureResult,
           errorUnion: emptyProviderErrorCodeUnion,
@@ -242,7 +261,7 @@ const signEthTransactionWithLedger = (args?: {
   return signLedgerEthereumTransaction(
     apiProxy as unknown as WalletApiProxy,
     expectedPath,
-    txInfo,
+    txInfo.id,
     mockedKeyring as unknown as LedgerBridgeKeyring
   )
 }
@@ -269,7 +288,7 @@ const signSolTransactionWithLedger = (args: {
   return signLedgerSolanaTransaction(
     apiProxy as unknown as WalletApiProxy,
     expectedPath,
-    txInfo,
+    txInfo.id,
     mockedKeyring as unknown as SolanaLedgerBridgeKeyring
   )
 }
@@ -294,7 +313,7 @@ const signFilTransactionWithLedger = (args: {
   })
   return signLedgerFilecoinTransaction(
     apiProxy as unknown as WalletApiProxy,
-    txInfo,
+    txInfo.id,
     mockedKeyring as unknown as FilecoinLedgerBridgeKeyring
   )
 }
@@ -350,7 +369,7 @@ test('Test sign Ledger transaction, approved, no message to sign', () => {
     signLedgerEthereumTransaction(
       apiProxy as unknown as WalletApiProxy,
       'path',
-      txInfo
+      txInfo.id
     )
   ).resolves.toStrictEqual(
     hardwareTransactionErrorResponse('braveWalletNoMessageToSignError')

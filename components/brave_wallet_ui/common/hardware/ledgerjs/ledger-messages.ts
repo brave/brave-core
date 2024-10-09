@@ -93,7 +93,7 @@ export type LedgerCommandHandlerUnion<T> =
 // Solana
 // GetAccounts command
 export type SolGetAccountResponse = CommandMessage &
-  LedgerResponsePayload<{ address: Buffer }>
+  LedgerResponsePayload<{ address: Uint8Array }>
 export type SolGetAccountCommand = CommandMessage & {
   command: LedgerCommand.GetAccount
   path: string
@@ -102,12 +102,12 @@ export type SolGetAccountCommand = CommandMessage & {
 // SignTransaction command
 export type SolSignTransactionResponse = CommandMessage &
   LedgerResponsePayload<{
-    untrustedSignatureBytes: Buffer
+    untrustedSignatureBytes: Uint8Array
   }>
 export type SolSignTransactionCommand = CommandMessage & {
   command: LedgerCommand.SignTransaction
   path: string
-  rawTxBytes: Buffer
+  rawTxBytes: Uint8Array
 }
 
 export type SolLedgerFrameCommand =
@@ -152,14 +152,20 @@ export type BtcGetAccountCommand = CommandMessage & {
 }
 export type BtcSignTransactionCommand = CommandMessage & {
   command: LedgerCommand.SignTransaction
-  path: string
-  rawTxBytes: Buffer
+  inputTransactions: Array<{
+    txBytes: Uint8Array
+    outputIndex: number
+    associatedPath: string
+  }>
+  outputScript: Uint8Array
+  changePath: string | undefined
+  lockTime: number
 }
 
 export type BtcGetAccountResponse = CommandMessage &
   LedgerResponsePayload<{ xpub: string }>
 export type BtcSignTransactionResponse = CommandMessage &
-  LedgerResponsePayload<{ signature: Buffer }>
+  LedgerResponsePayload<{ witnesses: Uint8Array[] }>
 
 export type BtcLedgerFrameCommand =
   | BtcGetAccountCommand

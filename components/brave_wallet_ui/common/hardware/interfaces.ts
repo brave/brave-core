@@ -11,7 +11,8 @@ import {
   HardwareOperationResultAccounts,
   HardwareOperationResultEthereumSignatureBytes,
   HardwareOperationResultSolanaSignature,
-  HardwareOperationResultFilecoinSignature
+  HardwareOperationResultFilecoinSignature,
+  HardwareOperationResultBitcoinSignature
 } from './types'
 import { BridgeType } from './untrusted_shared_types'
 
@@ -66,11 +67,22 @@ export abstract class LedgerFilecoinKeyring extends HardwareKeyring {
   ): Promise<HardwareOperationResultFilecoinSignature>
 }
 
+export abstract class LedgerBitcoinKeyring extends HardwareKeyring {
+  abstract signTransaction(
+    inputTransactions: Array<{
+      txBytes: Buffer
+      outputIndex: number
+      associatedPath: string
+    }>,
+    outputScript: Buffer,
+    changePath: string | undefined,
+    lockTime: number
+  ): Promise<HardwareOperationResultBitcoinSignature>
+}
+
 export abstract class LedgerSolanaKeyring extends HardwareKeyring {
   abstract signTransaction(
     path: string,
     rawTxBytes: Buffer
   ): Promise<HardwareOperationResultSolanaSignature>
 }
-
-export abstract class LedgerBitcoinKeyring extends HardwareKeyring {}

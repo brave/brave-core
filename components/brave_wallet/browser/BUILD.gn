@@ -38,6 +38,8 @@ static_library("browser") {
     "bitcoin/bitcoin_block_tracker.h",
     "bitcoin/bitcoin_discover_account_task.cc",
     "bitcoin/bitcoin_discover_account_task.h",
+    "bitcoin/bitcoin_fetch_raw_transactions_task.cc",
+    "bitcoin/bitcoin_fetch_raw_transactions_task.h",
     "bitcoin/bitcoin_knapsack_solver.cc",
     "bitcoin/bitcoin_knapsack_solver.h",
     "bitcoin/bitcoin_max_send_solver.cc",

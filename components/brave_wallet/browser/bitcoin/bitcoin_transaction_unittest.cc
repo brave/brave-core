@@ -59,6 +59,17 @@ TEST(BitcoinTransaction, TxInput_Value) {
   EXPECT_EQ(parsed->script_sig, input.script_sig);
   EXPECT_EQ(parsed->witness, input.witness);
   EXPECT_EQ(parsed->n_sequence(), 0xfffffffd);
+  EXPECT_FALSE(parsed->raw_outpoint_tx);
+
+  input.raw_outpoint_tx = {3, 2, 1};
+  parsed = input.FromValue(input.ToValue());
+  ASSERT_TRUE(parsed);
+  EXPECT_EQ(*parsed->raw_outpoint_tx, input.raw_outpoint_tx);
+
+  input.raw_outpoint_tx->clear();
+  parsed = input.FromValue(input.ToValue());
+  ASSERT_TRUE(parsed);
+  ASSERT_FALSE(parsed->raw_outpoint_tx);
 }
 
 TEST(BitcoinTransaction, TxInput_FromRpcUtxo) {
