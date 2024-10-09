@@ -727,11 +727,8 @@
   <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_TITLE" desc="Title for the Brave Sync settings setup section">
     Sync Setup
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_SUBTITLE_1" desc="Subtitle for the Brave Sync settings setup section">
-    To start, you will need Brave installed on all the devices you plan to sync. Then, securely link them together either with a Brave account:
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_SUBTITLE_2" desc="Subtitle for the Brave Sync settings setup section">
-    or with a Sync code:
+  <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_SUBTITLE" desc="Subtitle for the Brave Sync settings setup section">
+    To start, you will need Brave installed on all the devices you plan to sync. Then, securely link them together with a sync code.
   </message>
   <message name="IDS_SETTINGS_BRAVE_SYNC_MANAGE_ACTION_LABEL" desc="Brave Sync manage action label">
     Manage your synced devices
