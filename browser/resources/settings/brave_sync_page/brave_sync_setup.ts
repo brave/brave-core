@@ -37,10 +37,6 @@ export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElement
         type: String,
         notify: true
       },
-      accountDialogType: {
-        type: String,
-        notify: true,
-      },
       /**
       * Sync code dialog type. Can only have 1 at a time, so use a single property.
       * 'qr' | 'words' | 'input' | 'choose' | null
@@ -65,21 +61,12 @@ export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElement
   }
 
   private syncCode: string | undefined;
-  private accountDialogType: 'create' | 'signin' | null;
   private syncCodeDialogType: 'qr' | 'words' | 'input' | 'choose' | null;
   private isSubmittingSyncCode_: boolean;
   private isGettingSyncCode_: boolean;
   private syncCodeValidationError_: string;
 
   syncBrowserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance();
-
-  handleCreateBraveAccount_() {
-    this.accountDialogType = 'create'
-  }
-
-  handleSignInToBraveAccount_ () {
-    this.accountDialogType = 'signin'
-  }
 
   async handleStartSyncChain_() {
     this.isGettingSyncCode_ = true

@@ -8,20 +8,9 @@
     grid-template-rows: auto;
     column-gap: 20px;
   }
-  .graphic
-  {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 10px; /* fix empty space at the bottom of start_icon.svg and remove this line */
-  }
   .graphic img
   {
     max-width: 100%;
-  }
-  .h1
-  {
-    margin-block-start: 0;
   }
   .actions
   {
@@ -41,17 +30,8 @@
     <img alt="" src="chrome://settings/brave_sync_page/start_icon.svg" />
   </div>
   <div class="content">
-    <h1 class="h1">$i18n{braveSyncSetupTitle}</h1>
-    <p>$i18n{braveSyncSetupSubtitle1}</p>
-    <div class="actions">
-      <cr-button class="action-button" on-click="handleCreateBraveAccount_">
-        $i18n{braveSyncCreateBraveAccountButton}
-      </cr-button>
-      <cr-button on-click="handleSignInToBraveAccount_">
-        $i18n{braveSyncSignInToBraveAccountButton}
-      </cr-button>
-    </div>
-    <p>$i18n{braveSyncSetupSubtitle2}</p>
+    <h1>$i18n{braveSyncSetupTitle}</h1>
+    <p>$i18n{braveSyncSetupSubtitle}</p>
     <div class="actions">
       <cr-button class="action-button"
         on-click="handleStartSyncChain_"
@@ -78,10 +58,4 @@
     sync-code-validation-error="{{syncCodeValidationError_}}"
     on-done="handleSyncCodeDialogDone_"
   ></settings-brave-sync-code-dialog>
-</template>
-
-<template is="dom-if" if="[[accountDialogType]]" restamp>
-  <settings-brave-account-dialog
-    code-type="{{accountDialogType}}"
-  ></settings-brave-account-dialog>
 </template>
