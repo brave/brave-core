@@ -7,12 +7,14 @@
 #define BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_TAB_HELPER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
+#include "brave/browser/brave_rewards/creator_detection_script_injector.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
@@ -85,6 +87,10 @@ class RewardsTabHelper : public content::WebContentsUserData<RewardsTabHelper>,
 
   void MaybeSavePublisherInfo();
 
+  void OnCreatorDetected(
+      int64_t navigation_id,
+      std::optional<CreatorDetectionScriptInjector::Result> result);
+
 #if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<BrowserListObserver> browser_list_observer_;
 #endif
@@ -95,6 +101,9 @@ class RewardsTabHelper : public content::WebContentsUserData<RewardsTabHelper>,
   raw_ptr<RewardsService> rewards_service_ = nullptr;
   base::ObserverList<Observer> observer_list_;
   std::string publisher_id_;
+  GURL last_detection_url_;
+  int64_t detection_navigation_id_ = 0;
+  CreatorDetectionScriptInjector creator_detection_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

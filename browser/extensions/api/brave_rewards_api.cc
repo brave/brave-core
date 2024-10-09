@@ -157,29 +157,6 @@ ExtensionFunction::ResponseAction BraveRewardsOpenRewardsPanelFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsUpdateMediaDurationFunction::
-    ~BraveRewardsUpdateMediaDurationFunction() = default;
-
-ExtensionFunction::ResponseAction
-BraveRewardsUpdateMediaDurationFunction::Run() {
-  std::optional<brave_rewards::UpdateMediaDuration::Params> params =
-      brave_rewards::UpdateMediaDuration::Params::Create(args());
-  EXTENSION_FUNCTION_VALIDATE(params);
-
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(NoArguments());
-  }
-
-  rewards_service->UpdateMediaDuration(params->window_id, params->publisher_key,
-                                       params->duration, params->first_visit);
-
-  return RespondNow(NoArguments());
-}
-
 BraveRewardsGetPublisherInfoFunction::~BraveRewardsGetPublisherInfoFunction() =
     default;
 
@@ -224,24 +201,6 @@ void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
   dict.Set("favIconUrl", info->favicon_url);
 
   Respond(WithArguments(static_cast<int>(result), std::move(dict)));
-}
-
-BraveRewardsSetPublisherIdForTabFunction::
-    ~BraveRewardsSetPublisherIdForTabFunction() = default;
-
-ExtensionFunction::ResponseAction
-BraveRewardsSetPublisherIdForTabFunction::Run() {
-  auto params = brave_rewards::SetPublisherIdForTab::Params::Create(args());
-  EXTENSION_FUNCTION_VALIDATE(params);
-
-  auto* tab_helper =
-      GetRewardsTabHelperForTabId(params->tab_id, browser_context());
-
-  if (tab_helper) {
-    tab_helper->SetPublisherIdForTab(params->publisher_id);
-  }
-
-  return RespondNow(NoArguments());
 }
 
 BraveRewardsGetPublisherInfoForTabFunction::
@@ -300,90 +259,6 @@ void BraveRewardsGetPublisherInfoForTabFunction::OnGetPublisherPanelInfo(
   Respond(WithArguments(std::move(dict)));
 }
 
-BraveRewardsGetPublisherPanelInfoFunction::
-    ~BraveRewardsGetPublisherPanelInfoFunction() = default;
-
-ExtensionFunction::ResponseAction
-BraveRewardsGetPublisherPanelInfoFunction::Run() {
-  std::optional<brave_rewards::GetPublisherPanelInfo::Params> params =
-      brave_rewards::GetPublisherPanelInfo::Params::Create(args());
-  EXTENSION_FUNCTION_VALIDATE(params);
-
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not available"));
-  }
-
-  rewards_service->GetPublisherPanelInfo(
-      params->publisher_key,
-      base::BindOnce(
-          &BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo,
-          this));
-
-  return RespondLater();
-}
-
-void BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo(
-    const ::brave_rewards::mojom::Result result,
-    ::brave_rewards::mojom::PublisherInfoPtr info) {
-  if (!info) {
-    Respond(WithArguments(static_cast<int>(result)));
-    return;
-  }
-
-  base::Value::Dict dict;
-  dict.Set("publisherKey", info->id);
-  dict.Set("name", info->name);
-  dict.Set("percentage", static_cast<int>(info->percent));
-  dict.Set("status", static_cast<int>(info->status));
-  dict.Set("excluded", info->excluded ==
-                           ::brave_rewards::mojom::PublisherExclude::EXCLUDED);
-  dict.Set("url", info->url);
-  dict.Set("provider", info->provider);
-  dict.Set("favIconUrl", info->favicon_url);
-
-  Respond(WithArguments(static_cast<int>(result), std::move(dict)));
-}
-
-BraveRewardsSavePublisherInfoFunction::
-    ~BraveRewardsSavePublisherInfoFunction() = default;
-
-ExtensionFunction::ResponseAction BraveRewardsSavePublisherInfoFunction::Run() {
-  std::optional<brave_rewards::SavePublisherInfo::Params> params =
-      brave_rewards::SavePublisherInfo::Params::Create(args());
-  EXTENSION_FUNCTION_VALIDATE(params);
-
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not available"));
-  }
-
-  auto publisher_info = ::brave_rewards::mojom::PublisherInfo::New();
-  publisher_info->id = params->publisher_key;
-  publisher_info->name = params->publisher_name;
-  publisher_info->url = params->url;
-  publisher_info->provider = params->media_type;
-  publisher_info->favicon_url = params->fav_icon_url;
-
-  rewards_service->SavePublisherInfo(
-      params->window_id, std::move(publisher_info),
-      base::BindOnce(
-          &BraveRewardsSavePublisherInfoFunction::OnSavePublisherInfo, this));
-
-  return RespondLater();
-}
-
-void BraveRewardsSavePublisherInfoFunction::OnSavePublisherInfo(
-    const ::brave_rewards::mojom::Result result) {
-  Respond(WithArguments(static_cast<int>(result)));
-}
-
 BraveRewardsTipSiteFunction::~BraveRewardsTipSiteFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
@@ -420,22 +295,6 @@ BraveRewardsIncludeInAutoContributionFunction::Run() {
   if (rewards_service) {
     rewards_service->SetPublisherExclude(params->publisher_key,
                                          params->exclude);
-  }
-  return RespondNow(NoArguments());
-}
-
-BraveRewardsGetPublisherDataFunction::~BraveRewardsGetPublisherDataFunction() =
-    default;
-
-ExtensionFunction::ResponseAction BraveRewardsGetPublisherDataFunction::Run() {
-  std::optional<brave_rewards::GetPublisherData::Params> params =
-      brave_rewards::GetPublisherData::Params::Create(args());
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service) {
-    rewards_service->GetPublisherActivityFromUrl(params->window_id, params->url,
-                                                 params->favicon_url,
-                                                 params->publisher_blob);
   }
   return RespondNow(NoArguments());
 }

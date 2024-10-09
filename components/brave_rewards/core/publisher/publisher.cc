@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/publisher/publisher.h"
+
 #include <algorithm>
 #include <cmath>
 #include <ctime>
@@ -11,8 +13,10 @@
 #include <utility>
 #include <vector>
 
+#include "base/feature_list.h"
 #include "base/strings/stringprintf.h"
 #include "base/uuid.h"
+#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
@@ -20,7 +24,6 @@
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/publisher/media/media.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_util.h"
-#include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_prefix_list_updater.h"
 #include "brave/components/brave_rewards/core/publisher/server_publisher_fetcher.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
@@ -550,8 +553,10 @@ void Publisher::GetPublisherActivityFromUrl(uint64_t windowId,
     return;
   }
 
-  const bool is_media = visit_data->domain == YOUTUBE_DOMAIN ||
-                        visit_data->domain == GITHUB_DOMAIN;
+  const bool is_media = !base::FeatureList::IsEnabled(
+                            features::kPlatformCreatorDetectionFeature) &&
+                        (visit_data->domain == YOUTUBE_DOMAIN ||
+                         visit_data->domain == GITHUB_DOMAIN);
 
   if (is_media && visit_data->path != "" && visit_data->path != "/") {
     std::string type = YOUTUBE_MEDIA_TYPE;
@@ -722,39 +727,6 @@ void Publisher::OnSearchPrefixListForGetServerPublisherInfo(
   } else {
     std::move(callback).Run(nullptr);
   }
-}
-
-void Publisher::UpdateMediaDuration(const uint64_t window_id,
-                                    const std::string& publisher_key,
-                                    const uint64_t duration,
-                                    const bool first_visit) {
-  engine_->Log(FROM_HERE) << "Media duration: " << duration;
-  engine_->database()->GetPublisherInfo(
-      publisher_key,
-      base::BindOnce(&Publisher::OnGetPublisherInfoForUpdateMediaDuration,
-                     weak_factory_.GetWeakPtr(), window_id, duration,
-                     first_visit));
-}
-
-void Publisher::OnGetPublisherInfoForUpdateMediaDuration(
-    const uint64_t window_id,
-    const uint64_t duration,
-    const bool first_visit,
-    mojom::Result result,
-    mojom::PublisherInfoPtr info) {
-  if (result != mojom::Result::OK) {
-    engine_->LogError(FROM_HERE)
-        << "Failed to retrieve publisher info while updating media duration";
-    return;
-  }
-
-  mojom::VisitData visit_data;
-  visit_data.name = info->name;
-  visit_data.url = info->url;
-  visit_data.provider = info->provider;
-  visit_data.favicon_url = info->favicon_url;
-
-  SaveVisit(info->id, visit_data, duration, first_visit, 0, base::DoNothing());
 }
 
 void Publisher::GetPublisherPanelInfo(const std::string& publisher_key,

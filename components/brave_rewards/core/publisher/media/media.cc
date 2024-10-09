@@ -3,10 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/publisher/media/media.h"
+
 #include <utility>
 
 #include "base/containers/flat_map.h"
-#include "brave/components/brave_rewards/core/publisher/media/media.h"
+#include "base/feature_list.h"
+#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
@@ -23,6 +26,11 @@ Media::~Media() = default;
 std::string Media::GetLinkType(const std::string& url,
                                const std::string& first_party_url,
                                const std::string& referrer) {
+  if (base::FeatureList::IsEnabled(
+          features::kPlatformCreatorDetectionFeature)) {
+    return "";
+  }
+
   std::string type = YouTube::GetLinkType(url);
 
   if (type.empty()) {

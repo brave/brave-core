@@ -144,6 +144,7 @@ class RewardsService : public KeyedService {
   virtual void GetExcludedList(GetPublisherInfoListCallback callback) = 0;
 
   virtual void RestorePublishers() = 0;
+  virtual void OnLoad(mojom::VisitDataPtr visit_data) = 0;
   virtual void OnLoad(SessionID tab_id, const GURL& gurl) = 0;
   virtual void OnUnload(SessionID tab_id) = 0;
   virtual void OnShow(SessionID tab_id) = 0;
@@ -171,8 +172,10 @@ class RewardsService : public KeyedService {
       const uint32_t month,
       const uint32_t year,
       GetBalanceReportCallback callback) = 0;
+  virtual void GetPublisherActivityFromVisitData(
+      mojom::VisitDataPtr visit_data) = 0;
   virtual void GetPublisherActivityFromUrl(
-      uint64_t windowId,
+      uint64_t tab_id,
       const std::string& url,
       const std::string& favicon_url,
       const std::string& publisher_blob) = 0;
@@ -222,12 +225,6 @@ class RewardsService : public KeyedService {
 
   virtual const RewardsNotificationService::RewardsNotificationsMap&
   GetAllNotifications() = 0;
-
-  virtual void UpdateMediaDuration(
-      const uint64_t window_id,
-      const std::string& publisher_key,
-      const uint64_t duration,
-      const bool firstVisit) = 0;
 
   virtual void IsPublisherRegistered(
       const std::string& publisher_id,

@@ -11,11 +11,9 @@
 #include "base/command_line.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
-#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/components/brave_component_updater/browser/brave_component_installer.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
@@ -51,11 +49,6 @@ BraveComponentLoader::BraveComponentLoader(ExtensionSystem* extension_system,
 
   pref_change_registrar_.Add(
       kWebDiscoveryEnabled,
-      base::BindRepeating(&BraveComponentLoader::UpdateBraveExtension,
-                          base::Unretained(this)));
-
-  pref_change_registrar_.Add(
-      brave_rewards::prefs::kEnabled,
       base::BindRepeating(&BraveComponentLoader::UpdateBraveExtension,
                           base::Unretained(this)));
 }
@@ -155,8 +148,7 @@ void BraveComponentLoader::AddWebTorrentExtension() {
 
 bool BraveComponentLoader::UseBraveExtensionBackgroundPage() {
   // Keep sync with `pref_change_registrar_` in the ctor.
-  return profile_prefs_->GetBoolean(brave_rewards::prefs::kEnabled) ||
-         profile_prefs_->GetBoolean(kWebDiscoveryEnabled);
+  return profile_prefs_->GetBoolean(kWebDiscoveryEnabled);
 }
 
 void BraveComponentLoader::UpdateBraveExtension() {

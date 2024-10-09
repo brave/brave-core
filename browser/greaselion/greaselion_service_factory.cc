@@ -12,7 +12,6 @@
 #include "base/no_destructor.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "brave/components/greaselion/browser/greaselion_service_impl.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -38,20 +37,9 @@ class GreaselionServiceDelegateImpl
       content::BrowserContext* browser_context)
       : browser_context_(browser_context) {
     DCHECK(browser_context_);
-    pref_change_registrar_.Init(
-        Profile::FromBrowserContext(browser_context)->GetPrefs());
-    pref_change_registrar_.Add(
-        brave_rewards::prefs::kEnabled,
-        base::BindRepeating(
-            &GreaselionServiceDelegateImpl::UpdateGreaselionExtensions,
-            base::Unretained(this)));
   }
 
-  bool IsEnabled() const override {
-    return Profile::FromBrowserContext(browser_context_)
-        ->GetPrefs()
-        ->GetBoolean(brave_rewards::prefs::kEnabled);
-  }
+  bool IsEnabled() const override { return false; }
 
   void AddExtension(extensions::Extension* extension) override {
     if (auto* extension_service =
@@ -80,7 +68,6 @@ class GreaselionServiceDelegateImpl
   }
 
   raw_ptr<content::BrowserContext> browser_context_;  // Not owned
-  PrefChangeRegistrar pref_change_registrar_;
 };
 
 }  // namespace
