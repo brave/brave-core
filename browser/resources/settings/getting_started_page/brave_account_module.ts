@@ -3,8 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * you can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
-
+import './brave_account_dialog.js';
 import '../settings_shared.css.js';
 import '../settings_vars.css.js';
 
