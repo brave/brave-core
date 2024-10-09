@@ -23,7 +23,7 @@ private struct TranslationOptionsView: View {
   var body: some View {
     NavigationStack {
       List {
-        ForEach(languages, id: \.self) { language in
+        ForEach(filteredLanguages, id: \.self) { language in
           Button(
             action: {
               self.language = language
@@ -62,6 +62,14 @@ private struct TranslationOptionsView: View {
         }
       )
     }
+  }
+
+  private var filteredLanguages: [Locale.Language] {
+    return searchText.isEmpty
+      ? languages
+      : languages.filter({
+        languageName(for: $0).lowercased().contains(searchText.lowercased())
+      })
   }
 
   // TODO: Take from Brave-Core's list

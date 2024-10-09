@@ -102,12 +102,18 @@ extension BrowserViewController {
       BasicMenuActivity(
         activityType: .translatePage,
         callback: { [weak self] in
-          guard let self = self else { return }
+          guard let self = self, let tab = tab else { return }
 
-          if let scriptHandler = tab?.getContentScript(name: BraveTranslateScriptHandler.scriptName)
+          if let scriptHandler = tab.getContentScript(name: BraveTranslateScriptHandler.scriptName)
             as? BraveTranslateScriptHandler
           {
             scriptHandler.presentUI(on: self)
+
+            if tab.translationState == .active {
+              scriptHandler.revertTranslation()
+            } else if tab.translationState != .active {
+              scriptHandler.startTranslation(canShowToast: true)
+            }
           }
         }
       )

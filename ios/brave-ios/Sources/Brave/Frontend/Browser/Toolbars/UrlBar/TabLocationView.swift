@@ -79,7 +79,7 @@ class TabLocationView: UIView {
     configuration.buttonSize = .small
     configuration.imagePadding = 4
     // A bit extra on the leading edge for visual spacing
-    configuration.contentInsets = .init(top: 0, leading: 12, bottom: 0, trailing: 8)
+    configuration.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 8)
 
     var title = AttributedString(Strings.tabToolbarNotSecureTitle)
     title.font = .preferredFont(forTextStyle: .subheadline, compatibleWith: clampedTraitCollection)
@@ -131,6 +131,9 @@ class TabLocationView: UIView {
     // Display security status
     secureContentStateButton.configuration = secureContentStateButtonConfiguration
     secureContentStateButton.isHidden = false
+
+    // Consider brave translate
+    translateButton.isHidden = translationState == .unavailable
   }
 
   deinit {
@@ -291,6 +294,7 @@ class TabLocationView: UIView {
   private let leadingItemStackView = UIStackView().then {
     $0.alignment = .center
     $0.insetsLayoutMarginsFromSafeArea = false
+    $0.spacing = 8.0
   }
 
   private var leadingItemView: UIView? {
@@ -375,7 +379,7 @@ class TabLocationView: UIView {
     }
 
     leadingItemStackView.snp.makeConstraints {
-      $0.leading.equalToSuperview()
+      $0.leading.equalToSuperview().offset(TabLocationViewUX.spacing * 2)
       $0.top.bottom.equalToSuperview()
     }
 
