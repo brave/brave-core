@@ -7,6 +7,7 @@ import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//chrome/browser/resources/settings/settings.gni")
 
 settings_namespace_rewrites = [
+  "settings.BraveAccountPageBrowserProxyImpl|BraveAccountPageBrowserProxyImpl",
   "settings.BraveAppearanceBrowserProxyImpl|BraveAppearanceBrowserProxyImpl",
   "settings.BraveLeoAssistantBrowserProxyImpl|BraveLeoAssistantBrowserProxyImpl",
   "settings.BraveVPNBrowserProxyImpl|BraveVPNBrowserProxyImpl",
