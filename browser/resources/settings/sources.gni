@@ -14,6 +14,7 @@ brave_settings_preprocess_deps =
     [ "//brave/browser/resources/settings:preprocess" ]
 
 brave_settings_web_component_files = [
+  "brave_account_page/brave_account_page.ts",
   "brave_appearance_page/bookmark_bar.ts",
   "brave_appearance_page/brave_theme.ts",
   "brave_appearance_page/sidebar.ts",
@@ -59,6 +60,7 @@ brave_settings_web_component_files = [
 ]
 
 brave_settings_non_web_component_files = [
+  "brave_account_page/brave_account_page_browser_proxy.ts",
   "brave_appearance_page/brave_appearance_browser_proxy.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_proxy.ts",
