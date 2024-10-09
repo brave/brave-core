@@ -60,9 +60,9 @@ void HttpsUpgradeExceptionsService::OnDATFileDataReady(
 
 bool HttpsUpgradeExceptionsService::CanUpgradeToHTTPS(const GURL& url) {
   if (!is_ready_) {
-    // We don't have the exceptions list loaded yet. To avoid breakage,
-    // don't upgrade any websites yet.
-    return false;
+    // We don't have the exceptions list loaded yet. To fail secure, we just
+    // allow all domains to upgrade for now.
+    return true;
   }
   // Allow upgrade only if the domain is not on the exceptions list.
   return !base::Contains(exceptional_domains_, url.host());
