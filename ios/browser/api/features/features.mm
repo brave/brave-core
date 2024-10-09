@@ -201,6 +201,11 @@
       initWithFeature:&brave_shields::features::kBraveShredFeature];
 }
 
++ (Feature*)kBraveShredCacheData {
+  return [[Feature alloc]
+      initWithFeature:&brave_shields::features::kBraveShredCacheData];
+}
+
 + (Feature*)kBraveShowStrictFingerprintingMode {
   return
       [[Feature alloc] initWithFeature:&brave_shields::features::
