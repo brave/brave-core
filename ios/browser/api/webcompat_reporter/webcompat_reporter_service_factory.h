@@ -6,7 +6,10 @@
 #ifndef BRAVE_IOS_BROWSER_API_WEBCOMPAT_REPORTER_WEBCOMPAT_REPORTER_SERVICE_FACTORY_H_
 #define BRAVE_IOS_BROWSER_API_WEBCOMPAT_REPORTER_WEBCOMPAT_REPORTER_SERVICE_FACTORY_H_
 
+#include <memory>
+
 #include "base/no_destructor.h"
+#include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom.h"
 #include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
 
 class ChromeBrowserState;
@@ -18,15 +21,16 @@ class NoDestructor;
 
 namespace webcompat_reporter {
 
-class WebcompatReporterService;
-
 class WebcompatReporterServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
-  static WebcompatReporterService* GetForBrowserState(ChromeBrowserState* browser_state);
+  static mojo::PendingRemote<mojom::WebcompatReporterHandler>
+  GetForBrowserState(ChromeBrowserState* browser_state);
   static WebcompatReporterServiceFactory* GetInstance();
 
-  WebcompatReporterServiceFactory(const WebcompatReporterServiceFactory&) = delete;
-  WebcompatReporterServiceFactory& operator=(const WebcompatReporterServiceFactory&) = delete;
+  WebcompatReporterServiceFactory(const WebcompatReporterServiceFactory&) =
+      delete;
+  WebcompatReporterServiceFactory& operator=(
+      const WebcompatReporterServiceFactory&) = delete;
 
  private:
   friend class base::NoDestructor<WebcompatReporterServiceFactory>;
@@ -37,11 +41,6 @@ class WebcompatReporterServiceFactory : public BrowserStateKeyedServiceFactory {
   // BrowserStateKeyedServiceFactory implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       web::BrowserState* context) const override;
-//  web::BrowserState* GetBrowserStateToUse(
-//      web::BrowserState* context) const override;
-//  bool ServiceIsNULLWhileTesting() const override;
-
-//  std::unique_ptr<AIChatMetrics> ai_chat_metrics_;
 };
 
 }  // namespace webcompat_reporter

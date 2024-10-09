@@ -20,37 +20,22 @@ source_set("webcompat_reporter") {
   configs += [ ":mojom_header_config" ]
   sources = [
     "webcompat_reporter+private.h",
-    "webcompat_reporter.h",
-    "webcompat_reporter.mm",
     "webcompat_reporter_service_factory.h",
     "webcompat_reporter_service_factory.mm",
+    "webcompat_reporter_service_factory_wrapper.h",
+    "webcompat_reporter_service_factory_wrapper.mm",
   ]
 
-    deps = [
+  deps = [
     ":webcompat_reporter_mojom_wrappers",
     "//base",
     "//brave/base/mac",
     "//brave/components/webcompat_reporter/browser:browser",
-#    "//brave/components/webcompat_reporter/common",
-#    "//brave/components/api_request_helper",
-#    "//brave/components/brave_stats/browser",
-#    "//brave/components/constants",
-#    "//brave/components/l10n/common",
-#    "//brave/components/resources:strings_grit",
-#    "//brave/ios/browser/skus",
-#    "//components/keyed_service/ios",
-#    "//components/prefs",
-#    "//components/user_prefs",
-#    "//components/version_info",
+    "//brave/ios/browser/keyed_service",
+    "//components/keyed_service/core",
+    "//components/keyed_service/ios:ios",
     "//ios/chrome/browser/shared/model/application_context",
-#    "//ios/chrome/browser/shared/model/browser_state",
-#    "//ios/chrome/common",
-#    "//net/traffic_annotation",
-#    "//services/data_decoder/public/cpp",
-#    "//services/network/public/cpp",
-#    "//services/service_manager/public/cpp",
-#    "//ui/base",
-#    "//url",
+    "//mojo/public/cpp/bindings",
   ]
 
   frameworks = [ "Foundation.framework" ]
@@ -58,6 +43,8 @@ source_set("webcompat_reporter") {
 
 ios_objc_mojom_wrappers("webcompat_reporter_mojom_wrappers") {
   mojom_target = "//brave/components/webcompat_reporter/common:mojom"
-  sources = [ "//brave/components/webcompat_reporter/common/webcompat_reporter.mojom" ]
+  sources = [
+    "//brave/components/webcompat_reporter/common/webcompat_reporter.mojom",
+  ]
   output_dir = "$root_gen_dir/brave/components/webcompat_reporter/common/ios"
 }

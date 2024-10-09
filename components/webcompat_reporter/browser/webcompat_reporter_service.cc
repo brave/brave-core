@@ -16,7 +16,6 @@
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
-//#include "base/task/single_thread_task_runner.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
@@ -192,10 +191,11 @@ void FillReportByReportInfo(
 void FillReportValues(
     webcompat_reporter::Report& report
 #if !BUILDFLAG(IS_IOS)
-    ,raw_ptr<component_updater::ComponentUpdateService>& component_updater
-    ,raw_ptr<brave_shields::AdBlockService>& ad_block_service
+    ,
+    raw_ptr<component_updater::ComponentUpdateService>& component_updater,
+    raw_ptr<brave_shields::AdBlockService>& ad_block_service
 #endif  // !BUILDFLAG(IS_IOS)
-    ) {
+) {
 #if !BUILDFLAG(IS_IOS)
   if (!report.channel) {
     report.channel = brave::GetChannelName();
@@ -221,13 +221,14 @@ WebcompatReporterService::WebcompatReporterService(
     component_updater::ComponentUpdateService* component_update_service,
 #endif  // !BUILDFLAG(IS_IOS)
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : 
+    :
 #if !BUILDFLAG(IS_IOS)
       component_update_service_(component_update_service),
       adblock_service_(adblock_service),
 #endif  // !BUILDFLAG(IS_IOS)
       report_uploader_(
-          std::make_unique<WebcompatReportUploader>(url_loader_factory)) {}
+          std::make_unique<WebcompatReportUploader>(url_loader_factory)) {
+}
 
 WebcompatReporterService::~WebcompatReporterService() = default;
 
@@ -248,19 +249,15 @@ void WebcompatReporterService::SubmitWebcompatReport(
   Report pending_report;
   FillReportByReportInfo(pending_report, std::move(report_info));
   SubmitWebcompatReport(pending_report);
-//  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-//    FROM_HERE, base::BindOnce(&WebcompatReporterService::SubmitReportInternal, weak_factory_.GetWeakPtr(), std::move(pending_report)));   
 }
 
 void WebcompatReporterService::SubmitWebcompatReport(Report report_data) {
   FillReportValues(report_data
 #if !BUILDFLAG(IS_IOS)
-    ,component_update_service_
-    ,adblock_service_
+                   ,
+                   component_update_service_, adblock_service_
 #endif  // !BUILDFLAG(IS_IOS)
-   );
-//base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-//    FROM_HERE, base::BindOnce(&WebcompatReporterService::SubmitReportInternal, weak_factory_.GetWeakPtr(), report_data));   
+  );
   SubmitReportInternal(report_data);
 }
 
@@ -274,9 +271,10 @@ void WebcompatReporterService::SubmitReportInternal(const Report& report_data) {
 void WebcompatReporterService::SetUpWebcompatReporterServiceForTest(
     std::unique_ptr<WebcompatReportUploader> report_uploader
 #if !BUILDFLAG(IS_IOS)
-    ,component_updater::ComponentUpdateService* component_update_service
+    ,
+    component_updater::ComponentUpdateService* component_update_service
 #endif  // !BUILDFLAG(IS_IOS)
-  ) {
+) {
 #if !BUILDFLAG(IS_IOS)
   component_update_service_ = component_update_service;
 #endif  // !BUILDFLAG(IS_IOS)

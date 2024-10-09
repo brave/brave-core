@@ -74,8 +74,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Set the Safari UA for browsing.
     setUserAgent()
 
-    WebcompatReporter.webcompatReporterAPI =  AppState.shared.braveCore.webcompatReporterAPI
-
     // Fetching details of GRDRegion for Automatic Region selection
     BraveVPN.fetchLastUsedRegionDetail()
 
@@ -363,8 +361,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // readable from extensions, so they can just use the cached identifier.
 
     SDWebImageDownloader.shared.setValue(userAgent, forHTTPHeaderField: "User-Agent")
-
-    WebcompatReporter.userAgent = userAgent
 
     // Record the user agent for use by search suggestion clients.
     SearchViewController.userAgent = userAgent

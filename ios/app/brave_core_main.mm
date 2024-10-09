@@ -127,7 +127,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
 @property(nonatomic)
     HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
-@property(nonatomic) WebcompatReporterAPI* webcompatReporterAPI;
 @end
 
 @implementation BraveCoreMain
@@ -514,13 +513,6 @@ static bool CustomLogHandler(int severity,
   return [[AIChat alloc] initWithChromeBrowserState:_mainBrowserState
                                            delegate:delegate];
 }
-
-- (WebcompatReporterAPI*)webcompatReporterAPI {
-  if (!_webcompatReporterAPI) {
-    _webcompatReporterAPI = [[WebcompatReporterAPI alloc] initWithChromeBrowserState:_mainBrowserState];
-  }
-  return _webcompatReporterAPI;
-} 
 
 + (bool)initializeICUForTesting {
   NSBundle* bundle = [NSBundle bundleForClass:self];

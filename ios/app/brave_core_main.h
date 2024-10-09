@@ -26,7 +26,6 @@
 @class NTPBackgroundImagesService;
 @class DeAmpPrefs;
 @class AIChat;
-@class WebcompatReporterAPI;
 @class HTTPSUpgradeExceptionsService;
 @protocol AIChatDelegate;
 @protocol IpfsAPI;
@@ -103,8 +102,6 @@ OBJC_EXPORT
 @property(readonly) DeAmpPrefs* deAmpPrefs;
 
 @property(readonly) NTPBackgroundImagesService* backgroundImagesService;
-
-@property(readonly) WebcompatReporterAPI* webcompatReporterAPI;
 
 - (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate;
 

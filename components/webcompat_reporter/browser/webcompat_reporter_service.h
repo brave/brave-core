@@ -55,9 +55,10 @@ class WebcompatReporterService : public KeyedService,
   void SetUpWebcompatReporterServiceForTest(
       std::unique_ptr<WebcompatReportUploader> report_uploader
 #if !BUILDFLAG(IS_IOS)
-      ,component_updater::ComponentUpdateService* component_update_service
+      ,
+      component_updater::ComponentUpdateService* component_update_service
 #endif  // !BUILDFLAG(IS_IOS)
-     );
+  );
 
   void SubmitReportInternal(const Report& report_data);
 #if !BUILDFLAG(IS_IOS)
