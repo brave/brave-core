@@ -6,6 +6,7 @@
 #include "brave/components/de_amp/browser/de_amp_body_handler.h"
 
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -128,7 +129,7 @@ DeAmpBodyHandler::Action DeAmpBodyHandler::OnBodyUpdated(
 
   switch (state_) {
     case State::kCheckForAmp:
-      if (!CheckIfAmpPage(body)) {
+      if (!CheckIfAmpPage(std::string_view(body).substr(0, kMaxBytesToCheck))) {
         // if we did find AMP, complete the load.
         return DeAmpBodyHandler::Action::kComplete;
       }
