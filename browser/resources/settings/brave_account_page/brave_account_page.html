@@ -1,0 +1,41 @@
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this file,
+You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<style include="cr-shared-style settings-shared iron-flex">
+  :host {
+    --brave-account-page-image-space: 10px;
+  }
+  .title {
+    display: block;
+    font-weight: 600;
+  }
+  .subtitle {
+    display: block;
+    font-size: 85%;
+    line-height: 130%;
+  }
+  img {
+    margin-inline-end: var(--brave-account-page-image-space);
+  }
+</style>
+<div class="cr-row">
+  <img srcset="chrome://theme/current-channel-logo@1x 1x,
+               chrome://theme/current-channel-logo@2x 2x">
+  <div class="flex cr-padded-text">
+    <span class="title">
+      <!--$i18n{canPinShortcut}-->
+      Sign in or create a Brave account
+    </span>
+    <span class="subtitle">
+      <!--$i18n{canPinShortcut}-->
+      A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.
+    </span>
+  </div>
+  <div class="separator"></div>
+  <cr-button class="action-button" on-click="onPinShortcutTap_">
+    <!--i18n{pinShortcut}-->
+    Get started
+  </cr-button>
+</div>
