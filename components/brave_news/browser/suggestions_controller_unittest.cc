@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -15,12 +16,11 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
-#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
-#include "chrome/test/base/testing_profile.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/history/core/browser/url_row.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -61,14 +61,19 @@ class BraveNewsSuggestionsControllerTest : public testing::Test {
  public:
   BraveNewsSuggestionsControllerTest()
       : api_request_helper_(TRAFFIC_ANNOTATION_FOR_TESTS,
-                            test_url_loader_factory_.GetSafeWeakWrapper()),
-        publishers_controller_(&api_request_helper_),
-        suggestions_controller_(&publishers_controller_,
-                                &api_request_helper_,
-                                querier_) {
-    profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
-    profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
-                                    true);
+                            test_url_loader_factory_.GetSafeWeakWrapper()) {
+    prefs::RegisterProfilePrefs(pref_service_.registry());
+
+    pref_manager_ = std::make_unique<BraveNewsPrefManager>(pref_service_);
+    // Ensure Brave News is enabled.
+    pref_manager_->SetConfig(mojom::Configuration::New(true, true, true));
+
+    publishers_controller_ =
+        std::make_unique<PublishersController>(&api_request_helper_);
+
+    suggestions_controller_ = std::make_unique<SuggestionsController>(
+        publishers_controller_.get(), &api_request_helper_, querier_);
+
     SetLocale("en_US");
   }
   ~BraveNewsSuggestionsControllerTest() override = default;
@@ -77,27 +82,28 @@ class BraveNewsSuggestionsControllerTest : public testing::Test {
   std::vector<std::string> GetSuggestedPublisherIds(
       const Publishers& publishers,
       const history::QueryResults& history) {
-    return suggestions_controller_.GetSuggestedPublisherIdsWithHistory(
+    return suggestions_controller_->GetSuggestedPublisherIdsWithHistory(
         publishers, history);
   }
 
   void SetSimilarityMatrix(
       SuggestionsController::PublisherSimilarities similarities) {
-    suggestions_controller_.similarities_ = std::move(similarities);
+    suggestions_controller_->similarities_ = std::move(similarities);
   }
 
   void SetLocale(const std::string& locale) {
-    suggestions_controller_.locale_ = locale;
+    suggestions_controller_->locale_ = locale;
   }
 
   content::BrowserTaskEnvironment browser_task_environment_;
-  TestingProfile profile_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   api_request_helper::APIRequestHelper api_request_helper_;
 
   BackgroundHistoryQuerier querier_ = base::DoNothing();
-  PublishersController publishers_controller_;
-  SuggestionsController suggestions_controller_;
+  sync_preferences::TestingPrefServiceSyncable pref_service_;
+  std::unique_ptr<BraveNewsPrefManager> pref_manager_;
+  std::unique_ptr<PublishersController> publishers_controller_;
+  std::unique_ptr<SuggestionsController> suggestions_controller_;
 };
 
 TEST_F(BraveNewsSuggestionsControllerTest, VisitedSourcesAreSuggested) {
