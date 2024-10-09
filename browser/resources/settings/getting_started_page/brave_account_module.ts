@@ -33,7 +33,7 @@ class SettingsBraveAccountModule extends SettingsBraveAccountModuleBase {
 
   private showBraveAccountDialog_: boolean;
 
-  onGetStartedButtonClicked_() {
+  private onGetStartedButtonClicked_() {
     this.showBraveAccountDialog_ = true
   }
 
