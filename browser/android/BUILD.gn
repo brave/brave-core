@@ -4,11 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
-import("//build/config/android/rules.gni")
+
+assert(is_android)
 
 source_set("android_browser_process") {
-  check_includes = false
-
   sources = [
     "brave_feature_util.cc",
     "brave_local_state_android.cc",
@@ -31,10 +30,16 @@ source_set("android_browser_process") {
     "//brave/components/brave_sync:crypto",
     "//brave/components/brave_sync:prefs",
     "//brave/components/brave_sync:sync_service_impl_helper",
+    "//brave/components/brave_sync:time_limited_codes",
     "//brave/components/l10n/common",
     "//chrome/android:jni_headers",
+    "//chrome/browser:browser_process",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/sync",
     "//chrome/common",
     "//components/content_settings/core/browser",
+    "//components/content_settings/core/browser:cookie_settings",
     "//components/flags_ui",
     "//components/ntp_tiles",
     "//components/sync",
