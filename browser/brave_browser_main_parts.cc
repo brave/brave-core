@@ -70,21 +70,21 @@
 #include "extensions/browser/extension_system.h"
 #endif
 
-BraveBrowserMainParts::BraveBrowserMainParts(bool is_integration_test,
-                                             StartupData* startup_data)
-    : ChromeBrowserMainParts(is_integration_test, startup_data) {}
+ChromeBrowserMainParts::ChromeBrowserMainParts(bool is_integration_test,
+                                               StartupData* startup_data)
+    : ChromeBrowserMainParts_ChromiumImpl(is_integration_test, startup_data) {}
 
-BraveBrowserMainParts::~BraveBrowserMainParts() = default;
+ChromeBrowserMainParts::~ChromeBrowserMainParts() = default;
 
-int BraveBrowserMainParts::PreMainMessageLoopRun() {
+int ChromeBrowserMainParts::PreMainMessageLoopRun() {
   brave_component_updater::BraveOnDemandUpdater::GetInstance()
       ->RegisterOnDemandUpdater(
           &g_browser_process->component_updater()->GetOnDemandUpdater());
 
-  return ChromeBrowserMainParts::PreMainMessageLoopRun();
+  return ChromeBrowserMainParts_ChromiumImpl::PreMainMessageLoopRun();
 }
 
-void BraveBrowserMainParts::PreBrowserStart() {
+void ChromeBrowserMainParts::PreBrowserStart() {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Register() must be called after the SerializedNavigationDriver is
   // initialized, but before any calls to
@@ -95,11 +95,11 @@ void BraveBrowserMainParts::PreBrowserStart() {
   speedreader::SpeedreaderExtendedInfoHandler::Register();
 #endif
 
-  ChromeBrowserMainParts::PreBrowserStart();
+  ChromeBrowserMainParts_ChromiumImpl::PreBrowserStart();
 }
 
-void BraveBrowserMainParts::PostBrowserStart() {
-  ChromeBrowserMainParts::PostBrowserStart();
+void ChromeBrowserMainParts::PostBrowserStart() {
+  ChromeBrowserMainParts_ChromiumImpl::PostBrowserStart();
 
 #if BUILDFLAG(ENABLE_TOR)
   ProfileManager* profile_manager = g_browser_process->profile_manager();
@@ -169,12 +169,13 @@ void BraveBrowserMainParts::PostBrowserStart() {
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 
-void BraveBrowserMainParts::PreShutdown() {
+void ChromeBrowserMainParts::PreShutdown() {
   content::BraveClearBrowsingData::ClearOnExit();
+  ChromeBrowserMainParts_ChromiumImpl::PreShutdown();
 }
 
-void BraveBrowserMainParts::PreProfileInit() {
-  ChromeBrowserMainParts::PreProfileInit();
+void ChromeBrowserMainParts::PreProfileInit() {
+  ChromeBrowserMainParts_ChromiumImpl::PreProfileInit();
 #if !BUILDFLAG(IS_ANDROID)
   auto* command_line = base::CommandLine::ForCurrentProcess();
   if (!base::FeatureList::IsEnabled(brave_sync::features::kBraveSync)) {
@@ -189,9 +190,10 @@ void BraveBrowserMainParts::PreProfileInit() {
 #endif
 }
 
-void BraveBrowserMainParts::PostProfileInit(Profile* profile,
-                                            bool is_initial_profile) {
-  ChromeBrowserMainParts::PostProfileInit(profile, is_initial_profile);
+void ChromeBrowserMainParts::PostProfileInit(Profile* profile,
+                                             bool is_initial_profile) {
+  ChromeBrowserMainParts_ChromiumImpl::PostProfileInit(profile,
+                                                       is_initial_profile);
 
 #if BUILDFLAG(IS_ANDROID)
   if (base::FeatureList::IsEnabled(
