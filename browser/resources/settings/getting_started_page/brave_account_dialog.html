@@ -199,58 +199,31 @@
   }
 </style>
 
-<!-- create -->
-<template is="dom-if" if="[[isCodeType('create',codeType)]]">
-  <cr-dialog
-    on-close="handleClose_"
-    show-close-button
-    show-on-attach
-  >
-    <div slot="title">
-      <span class="dialog-title">$i18n{braveSyncCreateBraveAccountTitle}</span>
-      <span class="dialog-subtitle">$i18n{braveSyncBraveAccountDesc}</span>
-    </div>
-    <div slot="body">
-      <cr-input id="emailAddressInput" autofocus required
-        placeholder="Email address"
-        pattern="^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$"
-        auto-validate error-message="Please provide a valid email address"
-        on-input="onConditionsChanged_"
-        invalid="{{isEmailAddressInvalid_}}">
-      </cr-input>
-      <cr-checkbox checked="{{isTermsAccepted_}}" on-change="onConditionsChanged_">
-        I have read and accept the <a href="#">Terms of service</a> and <a href="#">Privacy agreement</a>.
-      </cr-checkbox>
-    </div>
-    <div slot="button-container">
-      <cr-button class="action-button"
-                 disabled="[[!canCreateAccount_]]">
-        Create account
-      </cr-button>
-    </div>
-  </cr-dialog>
-</template>
-
-<!-- sign in -->
-<template is="dom-if" if="[[isCodeType('signin',codeType)]]">
-  <cr-dialog
-    on-close="handleClose_"
-    show-close-button
-    show-on-attach
-  >
-    <div slot="title">
-      <span class="dialog-title">$i18n{braveSyncSignInToBraveAccountTitle}</span>
-      <span class="dialog-subtitle">$i18n{braveSyncBraveAccountDesc}</span>
-    </div>
-    <div slot="body">
-      <cr-input autofocus required
-        placeholder="Email address">
-      </cr-input>
-    </div>
-    <div slot="button-container">
-      <cr-button class="action-button">
-        Send login link
-      </cr-button>
-    </div>
-  </cr-dialog>
-</template>
+<cr-dialog
+  on-close="handleClose_"
+  show-close-button
+  show-on-attach
+>
+  <div slot="title">
+    <span class="dialog-title">$i18n{braveSyncCreateBraveAccountTitle}</span>
+    <span class="dialog-subtitle">$i18n{braveSyncBraveAccountDesc}</span>
+  </div>
+  <div slot="body">
+    <cr-input id="emailAddressInput" autofocus required
+      placeholder="Email address"
+      pattern="^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$"
+      auto-validate error-message="Please provide a valid email address"
+      on-input="onConditionsChanged_"
+      invalid="{{isEmailAddressInvalid_}}">
+    </cr-input>
+    <cr-checkbox checked="{{isTermsAccepted_}}" on-change="onConditionsChanged_">
+      I have read and accept the <a href="#">Terms of service</a> and <a href="#">Privacy agreement</a>.
+    </cr-checkbox>
+  </div>
+  <div slot="button-container">
+    <cr-button class="action-button"
+               disabled="[[!canCreateAccount_]]">
+      Create account
+    </cr-button>
+  </div>
+</cr-dialog>
