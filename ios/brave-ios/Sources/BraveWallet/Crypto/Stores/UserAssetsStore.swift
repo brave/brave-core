@@ -292,6 +292,50 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
     }
   }
 
+  @MainActor func isDuplicate(
+    address: String,
+    tokenId: String,
+    network: BraveWallet.NetworkInfo,
+    isNFT: Bool
+  ) async -> Bool {
+    let allUserAssetsExcludeDeleted = await assetManager.getAllUserAssetsInNetworkAssets(
+      networks: [network],
+      includingUserDeleted: false
+    )
+    let allTokens = await self.blockchainRegistry.allTokens(
+      in: [network],
+      includingUserDeleted: false
+    )
+    var existedInUserAsset = false
+    var existedInTokenRegistry = false
+    if !isNFT || network.coin != .eth {
+      existedInUserAsset =
+        allUserAssetsExcludeDeleted.flatMap(\.tokens).first(where: {
+          $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame
+        }) != nil
+      existedInTokenRegistry =
+        allTokens.flatMap(\.tokens).first(where: {
+          $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame
+        }) != nil
+    } else {
+      var tokenIdToHex = "0x"
+      if let tokenIdValue = Int16(tokenId) {
+        tokenIdToHex = "0x\(String(format: "%02x", tokenIdValue))"
+      }
+      existedInUserAsset =
+        allUserAssetsExcludeDeleted.flatMap(\.tokens).first(where: {
+          $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame
+            && $0.tokenId == tokenIdToHex
+        }) != nil
+      existedInTokenRegistry =
+        allTokens.flatMap(\.tokens).first(where: {
+          $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame
+            && $0.tokenId == tokenIdToHex
+        }) != nil
+    }
+    return existedInUserAsset || existedInTokenRegistry
+  }
+
   @MainActor func networkInfo(
     by chainId: String,
     coin: BraveWallet.CoinType

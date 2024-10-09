@@ -45,8 +45,12 @@ struct AddCustomAssetView: View {
   @State private var showError = false
   @State private var showAdvanced = false
   @State private var isPresentingNetworkSelection = false
+  @State private var showDuplicationTokenError = false
 
   private var addButtonDisabled: Bool {
+    if showDuplicationTokenError {
+      return true
+    }
     switch selectedTokenType {
     case .token:
       return nameInput.isEmpty || symbolInput.isEmpty || decimalsInput.isEmpty
@@ -69,6 +73,15 @@ struct AddCustomAssetView: View {
       return false
     }
     return true
+  }
+
+  private var duplicationTokenErrorView: some View {
+    Section {
+      Text(Strings.Wallet.duplicationTokenError)
+        .fontWeight(.semibold)
+        .foregroundColor(Color(braveSystemName: .systemfeedbackErrorText))
+        .listRowBackground(Color.clear)
+    }
   }
 
   var body: some View {
@@ -130,6 +143,14 @@ struct AddCustomAssetView: View {
                   decimalsInput = "\(token.decimals)"
                 }
               }
+              Task { @MainActor in
+                showDuplicationTokenError = await userAssetStore.isDuplicate(
+                  address: newValue,
+                  tokenId: tokenId,
+                  network: network,
+                  isNFT: selectedTokenType == .nft
+                )
+              }
             }
             .autocapitalization(.none)
             .autocorrectionDisabled()
@@ -182,6 +203,11 @@ struct AddCustomAssetView: View {
             }
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
+
+          if showDuplicationTokenError {
+            duplicationTokenErrorView
+          }
+
           Section {
             Button {
               withAnimation(.easeInOut(duration: 0.25)) {
@@ -241,9 +267,26 @@ struct AddCustomAssetView: View {
               HStack {
                 TextField(Strings.Wallet.enterTokenId, text: $tokenId)
                   .keyboardType(.numberPad)
+                  .onChange(of: tokenId) { newValue in
+                    guard !newValue.isEmpty,
+                      let network = networkSelectionStore.networkSelectionInForm
+                    else { return }
+                    Task { @MainActor in
+                      showDuplicationTokenError = await userAssetStore.isDuplicate(
+                        address: addressInput,
+                        tokenId: newValue,
+                        network: network,
+                        isNFT: selectedTokenType == .nft
+                      )
+                    }
+                  }
               }
               .listRowBackground(Color(.secondaryBraveGroupedBackground))
             }
+          }
+
+          if showDuplicationTokenError {
+            duplicationTokenErrorView
           }
         }
       }
@@ -353,6 +396,7 @@ struct AddCustomAssetView: View {
     logo = ""
     coingeckoId = ""
     networkSelectionStore.networkSelectionInForm = nil
+    showDuplicationTokenError = false
   }
 
   private func addCustomToken() {
