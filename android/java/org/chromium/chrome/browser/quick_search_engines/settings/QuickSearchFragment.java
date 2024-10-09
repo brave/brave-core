@@ -9,12 +9,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.materialswitch.MaterialSwitch;
+
 import org.chromium.base.Log;
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter;
@@ -41,6 +47,8 @@ public class QuickSearchFragment extends BravePreferenceFragment
     private LargeIconBridge mLargeIconBridge;
 
     private TemplateUrlService mTemplateUrlService;
+
+    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
     private static final NetworkTrafficAnnotationTag TRAFFIC_ANNOTATION =
             NetworkTrafficAnnotationTag.createComplete(
@@ -74,9 +82,41 @@ public class QuickSearchFragment extends BravePreferenceFragment
             }""");
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPageTitle.set(getString(R.string.prefs_appearance));
+    }
+
+    @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quick_search, container, false);
+
+        LinearLayout quickSearchOptionsLayout = view.findViewById(R.id.quick_search_options_layout);
+        LinearLayout quickSearchFeatureLayout = view.findViewById(R.id.quick_search_feature_layout);
+        MaterialSwitch quickSearchFeatureSwitch =
+                view.findViewById(R.id.quick_search_feature_switch);
+        quickSearchFeatureLayout.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean isChecked = quickSearchFeatureSwitch.isChecked();
+                        quickSearchFeatureSwitch.setChecked(!isChecked);
+                        // quickSearchOptionsLayout.setVisibility(!isChecked?View.VISIBLE:View.GONE);
+                        // QuickSearchEnginesUtil.setQuickSearchEnginesFeature(!isChecked);
+                    }
+                });
+        quickSearchFeatureSwitch.setChecked(QuickSearchEnginesUtil.getQuickSearchEnginesFeature());
+        quickSearchFeatureSwitch.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        quickSearchOptionsLayout.setVisibility(
+                                isChecked ? View.VISIBLE : View.GONE);
+                        QuickSearchEnginesUtil.setQuickSearchEnginesFeature(isChecked);
+                    }
+                });
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.quick_search_settings_recyclerview);
         LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -94,6 +134,11 @@ public class QuickSearchFragment extends BravePreferenceFragment
         refreshData();
     }
 
+    @Override
+    public ObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
+    }
+
     private void refreshData() {
         mTemplateUrlService = TemplateUrlServiceFactory.getForProfile(getProfile());
         if (!mTemplateUrlService.isLoaded()) {
@@ -109,8 +154,7 @@ public class QuickSearchFragment extends BravePreferenceFragment
         SearchEngineAdapter.sortAndFilterUnnecessaryTemplateUrl(
                 templateUrls,
                 defaultSearchEngineTemplateUrl,
-                mTemplateUrlService.isEeaChoiceCountry(),
-                mTemplateUrlService.shouldShowUpdatedSettings());
+                mTemplateUrlService.isEeaChoiceCountry());
         List<QuickSearchEngineModel> searchEngines = new ArrayList<>();
         if (QuickSearchEnginesUtil.getSearchEngines() != null) {
             Map<String, QuickSearchEngineModel> searchEnginesMap =

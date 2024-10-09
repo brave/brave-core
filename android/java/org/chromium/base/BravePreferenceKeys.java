@@ -80,6 +80,7 @@ public final class BravePreferenceKeys {
     public static final String DAY_ZERO_EXPT_FLAG = "day_zero_expt_flag";
 
     public static final String BRAVE_QUICK_SEARCH_ENGINES = "quick_search_engines";
+    public static final String BRAVE_QUICK_SEARCH_ENGINES_FEATURE = "quick_search_engines_feature";
 
     /*
      * Checks if preference key is used in Brave.

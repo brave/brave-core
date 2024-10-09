@@ -37,6 +37,7 @@
                android:id="@+id/search_engine_switch"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
+               app:trackTint="@color/vpn_server_selection_switch_stroke_color"
                app:showText="false"
                android:clickable="false"/>
 

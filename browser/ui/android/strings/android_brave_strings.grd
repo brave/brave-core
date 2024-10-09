@@ -509,8 +509,14 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_INDEX_OTHER_SEARCH_ENGINES_TEXT" desc="Text for the settings related to index other search engines">
         Automatically indexes websites that follow the OpenSearch spec.
       </message>
-      <message name="IDS_QUICK_SEARCH_ENGINES" desc="Title for quick search engine option">
+      <message name="IDS_QUICK_SEARCH_ENGINE" desc="Title for quick search engine option">
+        Quick-Search Engine
+      </message>
+      <message name="IDS_QUICK_SEARCH_ENGINES" desc="Title for quick search engines option">
         Quick-Search Engines
+      </message>
+      <message name="IDS_SHOW_QUICK_SEARCH_BAR" desc="Title for show quick search bar switch">
+        Show quick search bar
       </message>
       <message name="IDS_CURRENTLY_USED_SEARCH_ENGINES" desc="Description text for quick-search engines">
         Currently used search engines
