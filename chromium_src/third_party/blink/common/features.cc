@@ -80,7 +80,7 @@ BASE_FEATURE(kBraveBlockScreenFingerprinting,
 // Enables protection against fingerprinting via high-resolution time stamps.
 BASE_FEATURE(kBraveRoundTimeStamps,
              "BraveRoundTimeStamps",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables the Global Privacy Control header and navigator APIs.
 BASE_FEATURE(kBraveGlobalPrivacyControl,
