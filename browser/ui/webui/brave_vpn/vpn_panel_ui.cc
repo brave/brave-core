@@ -34,7 +34,8 @@
 VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
     : ui::UntrustedWebUIController(web_ui) {
   // From MojoWebUIController
-  web_ui->SetBindings(content::BINDINGS_POLICY_MOJO_WEB_UI);
+  web_ui->SetBindings(
+      content::BindingsPolicySet({content::BindingsPolicyValue::kWebUi}));
 
   content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
       web_ui->GetWebContents()->GetBrowserContext(), kVPNPanelURL);

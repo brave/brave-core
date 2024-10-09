@@ -24,7 +24,6 @@ import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider.IncognitoStat
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
-import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.tab_ui.R;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
@@ -50,10 +49,8 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             @NonNull DataSharingTabManager dataSharingTabManager,
             @NonNull TabModelSelector tabModelSelector,
             @NonNull TabContentManager tabContentManager,
-            @NonNull ViewGroup rootView,
             @NonNull TabCreatorManager tabCreatorManager,
             @NonNull OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
-            @NonNull SnackbarManager snackbarManager,
             @NonNull ModalDialogManager modalDialogManager) {
         super(
                 activity,
@@ -66,10 +63,8 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
                 dataSharingTabManager,
                 tabModelSelector,
                 tabContentManager,
-                rootView,
                 tabCreatorManager,
                 layoutStateProviderSupplier,
-                snackbarManager,
                 modalDialogManager);
 
         mIncognitoStateProvider = incognitoStateProvider;
@@ -86,10 +81,11 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
         if (fadingEdgeEnd != null) {
             fadingEdgeEnd.setVisibility(View.GONE);
         }
-        ChromeImageView toolbarRightButton = mToolbarView.findViewById(R.id.toolbar_right_button);
-        assert toolbarRightButton != null : "Something has changed in upstream.";
-        if (toolbarRightButton != null) {
-            toolbarRightButton.setImageResource(R.drawable.brave_new_group_tab);
+        ChromeImageView toolbarNewTabButton =
+                mToolbarView.findViewById(R.id.toolbar_new_tab_button);
+        assert toolbarNewTabButton != null : "Something has changed in upstream.";
+        if (toolbarNewTabButton != null) {
+            toolbarNewTabButton.setImageResource(R.drawable.brave_new_group_tab);
         }
     }
 

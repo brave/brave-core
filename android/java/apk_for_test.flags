@@ -142,7 +142,6 @@
     *** mBottomSheetController;
     *** mTabContentManager;
     *** mTabCreatorManager;
-    *** mSnackbarManager;
     *** mModalDialogManagerSupplier;
     *** mTabObscuringHandler;
     *** mReadAloudControllerSupplier;
@@ -446,14 +445,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.infobar.TranslateCompactInfoBar {
-    public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.infobar.BraveTranslateCompactInfoBarBase {
-    public <init>(...);
-}
-
 -keep class org.chromium.chrome.browser.tasks.tab_management.TabUiThemeProvider {
     *** getActionButtonTintList(...);
 }
@@ -559,7 +550,6 @@
     *** mIsTablet;
     *** mNativeInitialized;
     *** mIsLocationBarFocusedFromNtpScroll;
-    *** mShouldClearOmniboxOnFocus;
     *** mContext;
     *** mBrandedColorScheme;
     *** mAssistantVoiceSearchServiceSupplier;
@@ -900,4 +890,14 @@
 
 -keep class org.chromium.chrome.browser.tasks.tab_management.BraveIncognitoTabSwitcherPane {
     public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tabbed_mode.TabbedNavigationBarColorController {
+    *** mContext;
+}
+
+-keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedNavigationBarColorControllerBase
+
+-keep class org.chromium.chrome.browser.settings.SettingsIntentUtil {
+    *** createIntent(...);
 }

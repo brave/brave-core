@@ -21,7 +21,7 @@
 namespace brave {
 
 void OnPermissionRequestStatus(
-    int frame_tree_node_id,
+    content::FrameTreeNodeId frame_tree_node_id,
     const std::vector<blink::mojom::PermissionStatus>& permission_statuses) {
   DCHECK_EQ(1u, permission_statuses.size());
   // Once permission status has been updated, reload the page.

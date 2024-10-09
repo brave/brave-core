@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
+#include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -37,8 +38,8 @@ std::optional<std::string> PostConnectBitflyer::Content() const {
   return json;
 }
 
-const char* PostConnectBitflyer::Path() const {
-  return "/v3/wallet/bitflyer/%s/claim";
+std::string PostConnectBitflyer::Path(base::cstring_view payment_id) const {
+  return base::StringPrintf("/v3/wallet/bitflyer/%s/claim", payment_id.c_str());
 }
 
 }  // namespace brave_rewards::internal::endpoints

@@ -292,25 +292,25 @@
   <message name="IDS_AUTOFILL_ENABLE_CREDIT_CARDS_TOGGLE_SUBLABEL" desc="Sublabel for a toggle that allows users to control whether credit cards should be saved and forms should be autofilled with it." formatter_data="android_java">
     Fills in payment forms with your saved payment methods
   </message>
-  <message name="IDS_AUTOFILL_DELETE_ACCOUNT_ADDRESS_SOURCE_NOTICE" desc="The notice/warning for the user before the address deletion." formatter_data="android_java">
+  <message name="IDS_AUTOFILL_DELETE_ACCOUNT_ADDRESS_RECORD_TYPE_NOTICE" desc="The notice/warning for the user before the address deletion." formatter_data="android_java">
     This address will be deleted from your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>
   </message>
-  <message name="IDS_AUTOFILL_DELETE_SYNC_ADDRESS_SOURCE_NOTICE" desc="The notice/warning for the user before the address deletion (with syncing enabled)." formatter_data="android_java">
+  <message name="IDS_AUTOFILL_DELETE_SYNC_ADDRESS_RECORD_TYPE_NOTICE" desc="The notice/warning for the user before the address deletion (with syncing enabled)." formatter_data="android_java">
     This address will be deleted from this and your other signed-in devices
   </message>
-  <message name="IDS_AUTOFILL_DELETE_LOCAL_ADDRESS_SOURCE_NOTICE" desc="The notice/warning for the user before a local (syncing is disabled) address deletion." formatter_data="android_java">
+  <message name="IDS_AUTOFILL_DELETE_LOCAL_ADDRESS_RECORD_TYPE_NOTICE" desc="The notice/warning for the user before a local (syncing is disabled) address deletion." formatter_data="android_java">
     This address will be deleted from this device
   </message>
-  <message name="IDS_AUTOFILL_SAVE_IN_ACCOUNT_MESSAGE_ADDRESS_SOURCE_NOTICE" desc="The notice/warning message for the user that this address is going to be stored in their account.">
+  <message name="IDS_AUTOFILL_SAVE_IN_ACCOUNT_MESSAGE_ADDRESS_RECORD_TYPE_NOTICE" desc="The notice/warning message for the user that this address is going to be stored in their account.">
     In your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>
   </message>
-  <message name="IDS_AUTOFILL_SAVE_IN_ACCOUNT_MESSAGE_ADDRESS_MIGRATION_SOURCE_NOTICE" desc="The notice/warning message for the user that this address is going to be migrated in their account.">
+  <message name="IDS_AUTOFILL_SAVE_IN_ACCOUNT_MESSAGE_ADDRESS_MIGRATION_RECORD_TYPE_NOTICE" desc="The notice/warning message for the user that this address is going to be migrated in their account.">
     You will be able to use it across Brave products
   </message>
-  <message name="IDS_AUTOFILL_ADDRESS_ALREADY_SAVED_IN_ACCOUNT_SOURCE_NOTICE" desc="The footer message used to notify user that their address is stored in their account." formatter_data="android_java">
+  <message name="IDS_AUTOFILL_ADDRESS_ALREADY_SAVED_IN_ACCOUNT_RECORD_TYPE_NOTICE" desc="The footer message used to notify user that their address is stored in their account." formatter_data="android_java">
     You can use saved addresses across Brave products. This address is saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
   </message>
-  <message name="IDS_AUTOFILL_ADDRESS_WILL_BE_SAVED_IN_ACCOUNT_SOURCE_NOTICE" desc="The footer message used to notify user that their address will be saved in their account." formatter_data="android_java">
+  <message name="IDS_AUTOFILL_ADDRESS_WILL_BE_SAVED_IN_ACCOUNT_RECORD_TYPE_NOTICE" desc="The footer message used to notify user that their address will be saved in their account." formatter_data="android_java">
     You can use saved addresses across Brave products. This address will be saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
   </message>
   <message name="IDS_AUTOFILL_EDIT_ADDRESS_REQUIRED_FIELD_FORM_ERROR" desc="The form error message shown to the user in case of a single required field missing.">
@@ -370,21 +370,17 @@
     </else>
   </if>
   <if expr="is_android">
-    <!-- TODO(crbug.com/40068611): Use finalized string.-->
-    <message translateable="false" name="IDS_AUTOFILL_THIRD_PARTY_FILLING_DEFAULT" desc="Title of the option to use the default Brave autofill experience." formatter_data="android_java">
-      Default
+    <message name="IDS_AUTOFILL_THIRD_PARTY_FILLING_DEFAULT" desc="Title of the option to use the default Brave autofill experience." formatter_data="android_java">
+      Autofill with Brave
     </message>
-    <!-- TODO(crbug.com/40068611): Use finalized string.-->
-    <message translateable="false" name="IDS_AUTOFILL_THIRD_PARTY_FILLING_OPT_IN" desc="Title of the option to use third-party autofill in Brave." formatter_data="android_java">
-      Use other providers
+    <message name="IDS_AUTOFILL_THIRD_PARTY_FILLING_OPT_IN" desc="Title of the option to use third-party autofill in Brave." formatter_data="android_java">
+      Autofill using another service
     </message>
-    <!-- TODO(crbug.com/40068611): Use finalized string.-->
-    <message translateable="false" name="IDS_AUTOFILL_THIRD_PARTY_FILLING_DEFAULT_DESCRIPTION" desc="Description shown on the option to use the default Brave autofill experience." formatter_data="android_java">
-      Use Brave Password Manager and Brave Autofill to save and fill passwords, passkeys, payment methods, and addresses
+    <message name="IDS_AUTOFILL_THIRD_PARTY_FILLING_DEFAULT_DESCRIPTION" desc="Description shown on the option to use the default Brave autofill experience." formatter_data="android_java">
+      Use Brave Password Manager and Brave Autofill to save and fill passwords, payment methods, and addresses
     </message>
-    <!-- TODO(crbug.com/40068611): Use finalized string.-->
-    <message translateable="false" name="IDS_AUTOFILL_THIRD_PARTY_FILLING_OPT_IN_DESCRIPTION" desc="Description shown on the option enabling the use of third-party autofill in Brave." formatter_data="android_java">
-      Use password managers and autofill services that are turned on in Android Settings
+    <message name="IDS_AUTOFILL_THIRD_PARTY_FILLING_OPT_IN_DESCRIPTION" desc="Description shown on the option enabling the use of third-party autofill in Brave." formatter_data="android_java">
+      To use another autofill service in Brave, turn it on in Android settings and here
     </message>
   </if>
 

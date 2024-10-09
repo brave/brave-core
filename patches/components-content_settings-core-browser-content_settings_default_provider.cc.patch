@@ -1,11 +1,11 @@
 diff --git a/components/content_settings/core/browser/content_settings_default_provider.cc b/components/content_settings/core/browser/content_settings_default_provider.cc
-index 8366ae934aa83b4b3e9aeb5bfb00ba6a41c19ca8..80ad757bf0a711363b97ae58a8f2a45ed6c69fb0 100644
+index 3a7d5b3d4a6ab7ef5504787c9fdee6ed68abac9a..44c7ff5aa263263b35962b8e2bdeb932f81646f0 100644
 --- a/components/content_settings/core/browser/content_settings_default_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_default_provider.cc
-@@ -378,6 +378,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
- #endif  // !BUILDFLAG(IS_ANDROID)
+@@ -403,6 +403,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
+     prefs_->SetBoolean(kBug364820109AlreadyWorkedAroundPref, true);
+   }
  #endif  // !BUILDFLAG(IS_IOS)
-   prefs_->ClearPref(kObsoleteFederatedIdentityDefaultPref);
 +BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES
  }
  

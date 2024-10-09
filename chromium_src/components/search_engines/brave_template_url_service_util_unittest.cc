@@ -149,6 +149,6 @@ TEST_F(BraveTemplateURLServiceUtilTest,
 
   // Verify count and order.
   TestDefaultOrder(template_urls,
-                   {":d", ":q", ":g", ":b", ":sp", ":ya", "@bookmarks",
-                    "@history", "@tabs", "@gemini"});
+                   {":br", ":d", ":q", ":g", ":b", ":sp", ":e", ":ya",
+                    "@bookmarks", "@history", "@tabs", "@gemini"});
 }

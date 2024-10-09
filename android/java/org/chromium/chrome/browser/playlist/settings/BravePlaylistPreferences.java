@@ -13,6 +13,8 @@ import com.brave.playlist.local_database.PlaylistRepository;
 import com.brave.playlist.util.PlaylistPreferenceUtils;
 
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
@@ -36,6 +38,8 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
     private BravePlaylistResetPreference mResetPlaylist;
 
     private PlaylistService mPlaylistService;
+
+    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -122,9 +126,14 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        getActivity().setTitle(R.string.brave_playlist);
+        mPageTitle.set(getString(R.string.brave_playlist));
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_playlist_preferences);
         initPlaylistService();
+    }
+
+    @Override
+    public ObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
     }
 
     @Override

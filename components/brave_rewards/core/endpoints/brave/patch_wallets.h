@@ -48,8 +48,6 @@ class PatchWallets final : public RequestBuilder,
   ~PatchWallets() override;
 
  private:
-  const char* Path() const;
-
   std::optional<std::string> Url() const override;
   mojom::UrlMethod Method() const override;
   std::optional<std::vector<std::string>> Headers(

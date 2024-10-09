@@ -79,7 +79,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerViewedEvent) {
   test::ForcePermissionRules();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -102,7 +102,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerClickedEvent) {
   test::ForcePermissionRules();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -127,7 +127,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerDismissedEvent) {
   test::ForcePermissionRules();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -150,7 +150,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerTimedOutEvent) {
   test::ForcePermissionRules();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 

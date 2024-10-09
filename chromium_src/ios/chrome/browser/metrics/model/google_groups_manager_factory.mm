@@ -8,12 +8,17 @@
 #import "base/no_destructor.h"
 #import "components/keyed_service/ios/browser_state_dependency_manager.h"
 #import "components/variations/service/google_groups_manager.h"
-#import "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#import "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
 // static
-GoogleGroupsManager*
-GoogleGroupsManagerFactory::GetForBrowserState(
-    ChromeBrowserState* browser_state) {
+GoogleGroupsManager* GoogleGroupsManagerFactory::GetForBrowserState(
+    ProfileIOS* profile) {
+  return nullptr;
+}
+
+// static
+GoogleGroupsManager* GoogleGroupsManagerFactory::GetForProfile(
+    ProfileIOS* profile) {
   return nullptr;
 }
 

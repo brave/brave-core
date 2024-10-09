@@ -85,10 +85,8 @@ void NTPBackgroundImagesSource::OnGotImageFile(
   if (!input)
     return;
 
-  scoped_refptr<base::RefCountedMemory> bytes;
-  bytes = new base::RefCountedBytes(
-       reinterpret_cast<const unsigned char*>(input->c_str()), input->length());
-  std::move(callback).Run(std::move(bytes));
+  std::move(callback).Run(
+      new base::RefCountedBytes(base::as_byte_span(*input)));
 }
 
 std::string NTPBackgroundImagesSource::GetMimeType(const GURL& url) {

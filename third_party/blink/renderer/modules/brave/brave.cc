@@ -23,10 +23,10 @@ Brave* Brave::brave(NavigatorBase& navigator) {
   return supplement;
 }
 
-ScriptPromiseUntyped Brave::isBrave(ScriptState* script_state) {
+ScriptPromise<IDLBoolean> Brave::isBrave(ScriptState* script_state) {
   auto* resolver =
       MakeGarbageCollected<ScriptPromiseResolver<IDLBoolean>>(script_state);
-  ScriptPromiseUntyped promise = resolver->Promise();
+  ScriptPromise<IDLBoolean> promise = resolver->Promise();
   resolver->Resolve(true);
   return promise;
 }

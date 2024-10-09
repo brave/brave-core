@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/favicon/favicon_loader.h"
+
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
@@ -12,8 +13,8 @@
 #import "brave/ios/browser/favicon/brave_ios_favicon_loader_factory.h"
 #include "components/favicon_base/favicon_types.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "ios/chrome/common/ui/favicon/favicon_attributes.h"
 #import "ios/chrome/common/ui/favicon/favicon_constants.h"
 #import "net/base/apple/url_conversions.h"
@@ -55,12 +56,10 @@ FaviconLoaderSize const FaviconLoaderSizeDesiredLargest =
 }
 
 + (instancetype)getForPrivateMode:(bool)privateMode {
-  ChromeBrowserStateManager* browser_state_manager =
-      GetApplicationContext()->GetChromeBrowserStateManager();
-  CHECK(browser_state_manager);
-
   ChromeBrowserState* browser_state =
-      browser_state_manager->GetLastUsedBrowserStateDeprecatedDoNotUse();
+      GetApplicationContext()
+          ->GetProfileManager()
+          ->GetLastUsedProfileDeprecatedDoNotUse();
   CHECK(browser_state);
 
   if (privateMode) {

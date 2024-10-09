@@ -18,6 +18,7 @@
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/color/color_provider.h"
 #include "ui/views/bubble/bubble_frame_view.h"
 #include "ui/views/controls/label.h"
@@ -174,7 +175,7 @@ void SidebarEditItemBubbleDelegateView::UpdateOKButtonEnabledState() {
   const bool ok_button_enabled =
       target_item_.url != new_url || target_item_.title != title_tf_->GetText();
 
-  SetButtonEnabled(ui::DialogButton::DIALOG_BUTTON_OK, ok_button_enabled);
+  SetButtonEnabled(ui::mojom::DialogButton::kOk, ok_button_enabled);
 }
 
 BEGIN_METADATA(SidebarEditItemBubbleDelegateView)

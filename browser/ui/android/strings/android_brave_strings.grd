@@ -464,7 +464,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_REWARDS" desc="Content description for the button that is enable, disable Brave Rewards.">
         Manage Brave Rewards
       </message>
-      <message name="IDS_PREFS_SECTION_AUTOFILL" desc="Title for Autofill section">
+      <message name="IDS_PREFS_SECTION_AUTOFILL_BRAVE" desc="Title for Autofill section">
         Autofill
       </message>
       <message name="IDS_PREFS_AUTOFILL_PRIVATE_WINDOW_TITLE" desc="Title for Autofill in private window option in settings">

@@ -34,7 +34,7 @@ import org.chromium.chrome.browser.init.EmptyBrowserParts;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.autofill.AutofillProfile;
 import org.chromium.components.autofill.FieldType;
-import org.chromium.components.autofill.Source;
+import org.chromium.components.autofill.RecordType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -290,7 +290,7 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
                             PersonalDataManagerFactory.getForProfile(
                                     ProfileManager.getLastUsedRegularProfile()));
             AutofillProfile profile = autofillAddress.getProfile();
-            profile.setSource(Source.ACCOUNT);
+            profile.setRecordType(RecordType.ACCOUNT);
             profile.setInfo(FieldType.ADDRESS_HOME_COUNTRY, country);
             profile.setInfo(FieldType.PHONE_HOME_WHOLE_NUMBER, phone);
             profile.setInfo(FieldType.NAME_FULL, name);
