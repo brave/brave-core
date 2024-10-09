@@ -35,8 +35,8 @@ class WebcompatReporterService : public KeyedService,
   explicit WebcompatReporterService(
 #if !BUILDFLAG(IS_IOS)
       brave_shields::AdBlockService* adblock_service,
-      component_updater::ComponentUpdateService* component_update_service,
 #endif  // !BUILDFLAG(IS_IOS)
+      component_updater::ComponentUpdateService* component_update_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   WebcompatReporterService(const WebcompatReporterService&) = delete;
   WebcompatReporterService& operator=(const WebcompatReporterService&) = delete;
@@ -54,15 +54,15 @@ class WebcompatReporterService : public KeyedService,
   WebcompatReporterService();
   void SetUpWebcompatReporterServiceForTest(
       std::unique_ptr<WebcompatReportUploader> report_uploader
-#if !BUILDFLAG(IS_IOS)
+//#if !BUILDFLAG(IS_IOS)
       ,
       component_updater::ComponentUpdateService* component_update_service
-#endif  // !BUILDFLAG(IS_IOS)
+//#endif  // !BUILDFLAG(IS_IOS)
   );
 
   void SubmitReportInternal(const Report& report_data);
-#if !BUILDFLAG(IS_IOS)
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
+#if !BUILDFLAG(IS_IOS)
   raw_ptr<brave_shields::AdBlockService> adblock_service_;
 #endif  // !BUILDFLAG(IS_IOS)
   std::unique_ptr<WebcompatReportUploader> report_uploader_;

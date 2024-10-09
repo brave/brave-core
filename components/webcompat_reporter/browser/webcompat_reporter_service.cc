@@ -21,11 +21,11 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
+#include "components/component_updater/component_updater_service.h"
 
 #if !BUILDFLAG(IS_IOS)
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
-#include "components/component_updater/component_updater_service.h"
 #endif  // !BUILDFLAG(IS_IOS)
 
 namespace {
@@ -45,7 +45,7 @@ void SetDictVal(std::optional<base::Value>& val_to_set,
   }
   val_to_set = base::Value(std::move(detail_dict));
 }
-#if !BUILDFLAG(IS_IOS)
+
 void SetListVal(
     std::optional<base::Value>& val_to_set,
     const base::flat_map<std::string, base::Value::Dict>& opt_dict_val) {
@@ -58,7 +58,7 @@ void SetListVal(
   }
   val_to_set = base::Value(std::move(list));
 }
-#endif  // !BUILDFLAG(IS_IOS)
+
 void ConvertCompsToValue(
     std::optional<base::Value>& val_to_set,
     const std::vector<webcompat_reporter::mojom::ComponentInfoPtr>&
@@ -76,7 +76,6 @@ void ConvertCompsToValue(
   }
   val_to_set = base::Value(std::move(components_list));
 }
-#if !BUILDFLAG(IS_IOS)
 bool NeedsToGetComponentInfo(const std::string& component_id) {
   static const base::NoDestructor<std::unordered_set<std::string>>
       kComponentIds({
@@ -95,6 +94,7 @@ bool NeedsToGetComponentInfo(const std::string& component_id) {
       });
   return kComponentIds->contains(component_id);
 }
+#if !BUILDFLAG(IS_IOS)
 void FillReportWithAdblockListNames(
     webcompat_reporter::Report& report,
     raw_ptr<brave_shields::AdBlockService>& ad_block_service) {
@@ -120,6 +120,7 @@ void FillReportWithAdblockListNames(
   }
   report.ad_block_list_names = base::JoinString(ad_block_list_names, ",");
 }
+#endif  // !BUILDFLAG(IS_IOS)
 
 void FillReportWithComponetsInfo(
     webcompat_reporter::Report& report,
@@ -149,7 +150,6 @@ void FillReportWithComponetsInfo(
 
   SetListVal(report.ad_block_components, ad_block_components_version);
 }
-#endif  // !BUILDFLAG(IS_IOS)
 
 void FillReportByReportInfo(
     webcompat_reporter::Report& report,
@@ -189,11 +189,10 @@ void FillReportByReportInfo(
 }
 
 void FillReportValues(
-    webcompat_reporter::Report& report
+    webcompat_reporter::Report& report,
+    raw_ptr<component_updater::ComponentUpdateService>& component_updater
 #if !BUILDFLAG(IS_IOS)
-    ,
-    raw_ptr<component_updater::ComponentUpdateService>& component_updater,
-    raw_ptr<brave_shields::AdBlockService>& ad_block_service
+    ,raw_ptr<brave_shields::AdBlockService>& ad_block_service
 #endif  // !BUILDFLAG(IS_IOS)
 ) {
 #if !BUILDFLAG(IS_IOS)
@@ -205,8 +204,8 @@ void FillReportValues(
     report.brave_version =
         version_info::GetBraveVersionWithoutChromiumMajorVersion();
   }
-#if !BUILDFLAG(IS_IOS)
   FillReportWithComponetsInfo(report, component_updater);
+#if !BUILDFLAG(IS_IOS)
   FillReportWithAdblockListNames(report, ad_block_service);
 #endif  // !BUILDFLAG(IS_IOS)
 }
@@ -218,12 +217,11 @@ WebcompatReporterService::WebcompatReporterService() = default;
 WebcompatReporterService::WebcompatReporterService(
 #if !BUILDFLAG(IS_IOS)
     brave_shields::AdBlockService* adblock_service,
-    component_updater::ComponentUpdateService* component_update_service,
 #endif  // !BUILDFLAG(IS_IOS)
+    component_updater::ComponentUpdateService* component_update_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    :
+    : component_update_service_(component_update_service),
 #if !BUILDFLAG(IS_IOS)
-      component_update_service_(component_update_service),
       adblock_service_(adblock_service),
 #endif  // !BUILDFLAG(IS_IOS)
       report_uploader_(
@@ -252,10 +250,9 @@ void WebcompatReporterService::SubmitWebcompatReport(
 }
 
 void WebcompatReporterService::SubmitWebcompatReport(Report report_data) {
-  FillReportValues(report_data
+  FillReportValues(report_data, component_update_service_
 #if !BUILDFLAG(IS_IOS)
-                   ,
-                   component_update_service_, adblock_service_
+                   , adblock_service_
 #endif  // !BUILDFLAG(IS_IOS)
   );
   SubmitReportInternal(report_data);
@@ -269,15 +266,9 @@ void WebcompatReporterService::SubmitReportInternal(const Report& report_data) {
 }
 
 void WebcompatReporterService::SetUpWebcompatReporterServiceForTest(
-    std::unique_ptr<WebcompatReportUploader> report_uploader
-#if !BUILDFLAG(IS_IOS)
-    ,
-    component_updater::ComponentUpdateService* component_update_service
-#endif  // !BUILDFLAG(IS_IOS)
-) {
-#if !BUILDFLAG(IS_IOS)
+    std::unique_ptr<WebcompatReportUploader> report_uploader,
+    component_updater::ComponentUpdateService* component_update_service) {
   component_update_service_ = component_update_service;
-#endif  // !BUILDFLAG(IS_IOS)
   report_uploader_ = std::move(report_uploader);
 }
 }  // namespace webcompat_reporter
