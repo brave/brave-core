@@ -1,0 +1,5 @@
+specific_include_rules = {
+  "crypto_util\.cc": [
+    "+third_party/boringssl/src/include/openssl/curve25519.h",
+  ],
+}

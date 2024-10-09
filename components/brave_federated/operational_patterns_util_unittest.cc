@@ -13,7 +13,6 @@
 #include "brave/components/brave_federated/features.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/re2/src/re2/re2.h"
 
 // npm run test -- brave_unit_tests
 // -filter=BraveFederatedOperationalPatternsUtilTest*

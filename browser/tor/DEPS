@@ -1,5 +1,5 @@
 specific_include_rules = {
-  "brave_tor_browsertest.cc": [
+  "brave_tor_browsertest\.cc": [
     "+gmock/gmock.h",
   ]
 }

@@ -1,8 +1,10 @@
 include_rules = [
   "+brave/components/version_info",
   "+content/public/browser",
+  "+content/public/test",
   "+ios/web/public/thread",
   "+services/network/public",
+  "+services/network/test",
   "+third_party/boringssl",
   "+third_party/metrics_proto",
 ]

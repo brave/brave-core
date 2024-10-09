@@ -6,7 +6,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
-#include "content/public/renderer/render_frame.h"
 #include "content/public/test/render_view_test.h"
 #include "third_party/blink/public/common/features.h"
 

@@ -76,6 +76,7 @@ class AdsServiceImpl final : public AdsService,
       PrefService* prefs,
       PrefService* local_state,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader,
+      std::string_view channel_name,
       const base::FilePath& profile_path,
       std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
       std::unique_ptr<DeviceId> device_id,
@@ -445,6 +446,8 @@ class AdsServiceImpl final : public AdsService,
   const raw_ptr<PrefService> local_state_ = nullptr;  // NOT OWNED
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_ = nullptr;
+
+  const std::string channel_name_;
 
   const raw_ptr<brave_ads::ResourceComponent> resource_component_ =
       nullptr;  // NOT OWNED

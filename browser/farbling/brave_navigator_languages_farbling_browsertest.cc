@@ -29,12 +29,10 @@
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/render_frame_host.h"
-#include "content/public/renderer/render_frame.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
-#include "third_party/blink/public/web/web_local_frame.h"
 
 using brave_shields::ControlType;
 using brave_shields::features::kBraveReduceLanguage;

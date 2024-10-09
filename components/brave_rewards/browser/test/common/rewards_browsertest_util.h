@@ -11,10 +11,10 @@
 
 #include "base/files/file_path.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
-#include "chrome/browser/ui/browser.h"
-#include "net/test/embedded_test_server/default_handlers.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
 #include "url/gurl.h"
 
+class Browser;
 class Profile;
 
 namespace brave_rewards::test_util {

@@ -29,7 +29,6 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/public/mojom/url_loader_factory.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {

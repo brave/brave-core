@@ -88,12 +88,40 @@ RewardsServiceFactory::BuildServiceInstanceForBrowserContext(
   // Set up the rewards data source
   content::URLDataSource::Add(profile,
                               std::make_unique<BraveRewardsSource>(profile));
+
+  // BitmapFetcherServiceFactory has private ProfileKeyedServiceFactory so we
+  // can't add `DependsOn` to ensure proper lifetime management.
+  auto request_image_callback = base::BindRepeating(
+      [](Profile* profile, const GURL& url,
+         BitmapFetcherService::BitmapFetchedCallback callback,
+         const net::NetworkTrafficAnnotationTag& tag) {
+        auto* bitmap_fetcher_service =
+            BitmapFetcherServiceFactory::GetForBrowserContext(profile);
+        if (bitmap_fetcher_service) {
+          return bitmap_fetcher_service
+              ->RequestImageWithNetworkTrafficAnnotationTag(
+                  url, std::move(callback), tag);
+        } else {
+          return BitmapFetcherService::REQUEST_ID_INVALID;
+        }
+      },
+      profile);
+  auto cancel_request_image_callback = base::BindRepeating(
+      [](Profile* profile, BitmapFetcherService::RequestId request_id) {
+        auto* bitmap_fetcher_service =
+            BitmapFetcherServiceFactory::GetForBrowserContext(profile);
+        if (bitmap_fetcher_service) {
+          return bitmap_fetcher_service->CancelRequest(request_id);
+        }
+      },
+      profile);
+
   std::unique_ptr<RewardsServiceImpl> rewards_service =
       std::make_unique<RewardsServiceImpl>(
           profile->GetPrefs(), profile->GetPath(),
           FaviconServiceFactory::GetForProfile(
               profile, ServiceAccessType::EXPLICIT_ACCESS),
-          BitmapFetcherServiceFactory::GetForBrowserContext(profile),
+          request_image_callback, cancel_request_image_callback,
           profile->GetDefaultStoragePartition(),
 #if BUILDFLAG(ENABLE_GREASELION)
           greaselion::GreaselionServiceFactory::GetForBrowserContext(context),

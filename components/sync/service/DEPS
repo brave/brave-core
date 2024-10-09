@@ -1,5 +1,7 @@
 include_rules = [
   "+brave/components/constants",
   "+brave/components/sync/test",
+  "+content/public/test",
   "+services/network/public",
+  "+services/network/test",
 ]

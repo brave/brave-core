@@ -5,7 +5,23 @@
 
 include_rules = [
   "+brave/components/ai_chat/core/common",
+  "+content/public/test",
+  "+services/network/public",
+  "+services/network/test",
   "+third_party/metrics_proto",
   "+third_party/omnibox_proto",
   "+ui/gfx",
 ]
+
+specific_include_rules = {
+  # component unit tests should not have chrome deps
+  "brave_search_provider_unittest\.cc": [
+    "!chrome/browser/autocomplete/autocomplete_classifier_factory.h",
+    "!chrome/browser/autocomplete/chrome_autocomplete_provider_client.h",
+    "!chrome/browser/autocomplete/document_suggestions_service_factory.h",
+    "!chrome/browser/autocomplete/remote_suggestions_service_factory.h",
+    "!chrome/browser/history/history_service_factory.h",
+    "!chrome/browser/search_engines/template_url_service_factory.h",
+    "!chrome/test/base/testing_profile.h",
+  ]
+}
