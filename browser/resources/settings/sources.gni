@@ -84,6 +84,7 @@ brave_settings_non_web_component_files = [
   "brave_overrides/passwords_section.ts",
   "brave_overrides/payments_section.ts",
   "brave_overrides/people_page.ts",
+  "brave_overrides/performance_page.ts",
   "brave_overrides/personalization_options.ts",
   "brave_overrides/printing_page.ts",
   "brave_overrides/privacy_page.ts",

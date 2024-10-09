@@ -1,6 +1,15 @@
 <!-- This file will be converted into tabs.html.js using //tools/grit/preprocess_if_expr -->
 <style include="settings-shared iron-flex"></style>
 
+<!-- Inactive tabs appearance  -->
+<settings-toggle-button
+  pref="{{prefs.performance_tuning.discard_ring_treatment.enabled}}"
+  class="cr-row"
+  label="$i18n{discardRingTreatmentEnabledLabel}"
+  sub-label-with-link="$i18n{discardRingTreatmentEnabledDescriptionWithLearnLink}"
+  on-sub-label-link-clicked="onDiscardRingTreatmentLearnMoreLinkClick_">
+</settings-toggle-button>
+
 <!-- Vertical Tab strip -->
 <settings-toggle-button
   class="cr-row first"

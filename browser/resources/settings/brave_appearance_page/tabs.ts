@@ -9,6 +9,7 @@ import '../settings_vars.css.js'
 import {PrefsMixin, PrefsMixinInterface} from '/shared/settings/prefs/prefs_mixin.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {OpenWindowProxyImpl} from 'chrome://resources/js/open_window_proxy.js';
 
 import {loadTimeData} from '../i18n_setup.js'
 
@@ -38,6 +39,11 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
 
   private isSharedPinnedTabsEnabled_() {
     return loadTimeData.getBoolean('isSharedPinnedTabsEnabled')
+  }
+
+  private onDiscardRingTreatmentLearnMoreLinkClick_() {
+    OpenWindowProxyImpl.getInstance().openUrl(
+      loadTimeData.getString('discardRingTreatmentLearnMoreUrl'));
   }
 }
 
