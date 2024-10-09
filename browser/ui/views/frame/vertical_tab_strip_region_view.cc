@@ -627,6 +627,11 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
 
   auto* prefs = browser_->profile()->GetPrefs();
 
+  sidebar_side_.Init(
+      prefs::kSidePanelHorizontalAlignment, prefs,
+      base::BindRepeating(&VerticalTabStripRegionView::OnBrowserPanelsMoved,
+                          base::Unretained(this)));
+
   expanded_width_pref_.Init(
       brave_tabs::kVerticalTabsExpandedWidth, prefs,
       base::BindRepeating(
@@ -668,11 +673,6 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
 
   vertical_tab_on_right_.Init(
       brave_tabs::kVerticalTabsOnRight, browser()->profile()->GetPrefs(),
-      base::BindRepeating(&VerticalTabStripRegionView::OnBrowserPanelsMoved,
-                          base::Unretained(this)));
-
-  sidebar_side_.Init(
-      prefs::kSidePanelHorizontalAlignment, prefs,
       base::BindRepeating(&VerticalTabStripRegionView::OnBrowserPanelsMoved,
                           base::Unretained(this)));
 
@@ -1222,6 +1222,9 @@ void VerticalTabStripRegionView::UpdateBorder() {
     return tabs::utils::ShouldShowVerticalTabs(browser_) &&
            state_ == State::kFloating;
   };
+
+  // At this point |sidebar_side_| needs to be initialized.
+  CHECK(!sidebar_side_.GetPrefName().empty());
 
   // If the sidebar is on the same side as the vertical tab strip, we shouldn't
   // take away the margin on the vertical tabs, because the sidebar will be

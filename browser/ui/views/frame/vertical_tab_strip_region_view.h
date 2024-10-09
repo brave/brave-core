@@ -198,6 +198,7 @@ class VerticalTabStripRegionView : public views::View,
   State state_ = State::kExpanded;
   State last_state_ = State::kExpanded;
 
+  BooleanPrefMember sidebar_side_;
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember collapsed_pref_;
   BooleanPrefMember expanded_state_per_window_pref_;
@@ -228,7 +229,6 @@ class VerticalTabStripRegionView : public views::View,
       fullscreen_observation_{this};
 
   BooleanPrefMember vertical_tab_on_right_;
-  BooleanPrefMember sidebar_side_;
 
   base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
 };
