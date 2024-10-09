@@ -144,9 +144,11 @@ struct AddCustomAssetView: View {
                 }
               }
               Task { @MainActor in
-                showDuplicationTokenError = await userAssetStore.checkDuplication(
+                showDuplicationTokenError = await userAssetStore.isDuplicate(
                   address: newValue,
-                  network: network
+                  tokenId: tokenId,
+                  network: network,
+                  isNFT: selectedTokenType == .nft
                 )
               }
             }
@@ -265,6 +267,19 @@ struct AddCustomAssetView: View {
               HStack {
                 TextField(Strings.Wallet.enterTokenId, text: $tokenId)
                   .keyboardType(.numberPad)
+                  .onChange(of: tokenId) { newValue in
+                    guard !newValue.isEmpty,
+                      let network = networkSelectionStore.networkSelectionInForm
+                    else { return }
+                    Task { @MainActor in
+                      showDuplicationTokenError = await userAssetStore.isDuplicate(
+                        address: addressInput,
+                        tokenId: newValue,
+                        network: network,
+                        isNFT: selectedTokenType == .nft
+                      )
+                    }
+                  }
               }
               .listRowBackground(Color(.secondaryBraveGroupedBackground))
             }

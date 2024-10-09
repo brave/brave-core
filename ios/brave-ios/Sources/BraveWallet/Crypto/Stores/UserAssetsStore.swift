@@ -275,9 +275,11 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
     }
   }
 
-  @MainActor func checkDuplication(
+  @MainActor func isDuplicate(
     address: String,
-    network: BraveWallet.NetworkInfo
+    tokenId: String,
+    network: BraveWallet.NetworkInfo,
+    isNFT: Bool
   ) async -> Bool {
     let allUserAssetsExcludeDeleted = await assetManager.getAllUserAssetsInNetworkAssets(
       networks: [network],
@@ -287,15 +289,33 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
       in: [network],
       includingUserDeleted: false
     )
-    let existedInUserAsset =
-      allUserAssetsExcludeDeleted.flatMap(\.tokens).first(where: {
-        $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame
-      }) != nil
-    let existedInTokenRegistry =
-      allTokens.flatMap(\.tokens).first(where: {
-        $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame
-      }) != nil
-
+    var existedInUserAsset = false
+    var existedInTokenRegistry = false
+    if !isNFT || network.coin != .eth {
+      existedInUserAsset =
+        allUserAssetsExcludeDeleted.flatMap(\.tokens).first(where: {
+          $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame
+        }) != nil
+      existedInTokenRegistry =
+        allTokens.flatMap(\.tokens).first(where: {
+          $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame
+        }) != nil
+    } else {
+      var tokenIdToHex = "0x"
+      if let tokenIdValue = Int16(tokenId) {
+        tokenIdToHex = "0x\(String(format: "%02x", tokenIdValue))"
+      }
+      existedInUserAsset =
+        allUserAssetsExcludeDeleted.flatMap(\.tokens).first(where: {
+          $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame
+            && $0.tokenId == tokenIdToHex
+        }) != nil
+      existedInTokenRegistry =
+        allTokens.flatMap(\.tokens).first(where: {
+          $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame
+            && $0.tokenId == tokenIdToHex
+        }) != nil
+    }
     return existedInUserAsset || existedInTokenRegistry
   }
 
