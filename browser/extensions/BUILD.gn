@@ -88,49 +88,12 @@ source_set("brave_prefs_util_impl") {
   ]
 }
 
-# This is split out from extensions because it has circular dependencies on
-# //chrome/browser.
-# https://github.com/brave/brave-browser/issues/41419
-source_set("brave_rewards_api") {
-  visibility = [
-    ":*",
-    "//chrome/browser",
-  ]
-
-  sources = [
-    "api/brave_rewards_api.cc",
-    "api/brave_rewards_api.h",
-  ]
-
-  public_deps = [
-    "//brave/components/brave_ads/core/mojom",
-    "//brave/components/brave_rewards/common/mojom",
-    "//extensions/browser",
-  ]
-
-  deps = [
-    "//base",
-    "//brave/browser/brave_adaptive_captcha",
-    "//brave/browser/brave_rewards",
-    "//brave/browser/brave_rewards:util",
-    "//brave/browser/ui:ui_public_dependencies",
-    "//brave/components/brave_adaptive_captcha",
-    "//brave/components/brave_ads/browser",
-    "//brave/components/brave_rewards/browser",
-    "//brave/components/brave_rewards/common",
-    "//chrome/browser:browser_public_dependencies",
-    "//chrome/browser/extensions",
-    "//chrome/browser/profiles:profile",
-    "//chrome/browser/ui",
-    "//components/prefs",
-    "//content/public/browser",
-  ]
-}
-
 source_set("extensions") {
   sources = [
     "api/brave_extensions_api_client.cc",
     "api/brave_extensions_api_client.h",
+    "api/brave_rewards_api.cc",
+    "api/brave_rewards_api.h",
     "api/brave_talk_api.cc",
     "api/brave_talk_api.h",
     "api/brave_theme_api.cc",
@@ -163,23 +126,33 @@ source_set("extensions") {
     ":brave_prefs_util_impl",
     ":resources",
     "//base",
+    "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser:browser_process",
+    "//brave/browser/brave_adaptive_captcha",
+    "//brave/browser/brave_ads",
     "//brave/browser/brave_rewards",
+    "//brave/browser/brave_rewards",
+    "//brave/browser/brave_rewards:util",
     "//brave/browser/component_updater",
     "//brave/browser/extensions/api:generated_api_registration",
     "//brave/browser/greaselion",
     "//brave/browser/themes",
     "//brave/browser/ui:brave_tab_prefs",
+    "//brave/browser/ui:ui_public_dependencies",
     "//brave/common",
     "//brave/common/extensions/api",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_adaptive_captcha",
+    "//brave/components/brave_adaptive_captcha",
+    "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_extension:static_resources",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/browser",
+    "//brave/components/brave_rewards/browser",
+    "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common/mojom",
     "//brave/components/brave_shields/core/common",
@@ -200,19 +173,27 @@ source_set("extensions") {
     "//brave/components/sidebar/browser",
     "//brave/components/tor/buildflags",
     "//chrome/browser:browser_process",
+    "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/extensions",
+    "//chrome/browser/extensions",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
     "//chrome/common",
     "//components/browsing_data/core",
     "//components/gcm_driver:gcm_buildflags",
     "//components/prefs",
+    "//components/prefs",
     "//components/update_client:network_impl",
+    "//content/public/browser",
     "//content/public/browser",
   ]
 
   public_deps = [
-    ":brave_rewards_api",
     ":component_loader",
     "//brave/browser/ethereum_remote_client/buildflags",
+    "//brave/components/brave_ads/core/mojom",
+    "//brave/components/brave_rewards/common/mojom",
+    "//extensions/browser",
   ]
 
   if (use_gcm_from_platform) {

@@ -1,0 +1,55 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("search_result_ad") {
+  sources = [
+    "creative_search_result_ad_tab_helper.cc",
+    "creative_search_result_ad_tab_helper.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//content/public/browser",
+  ]
+
+  deps = [
+    "//brave/browser/brave_ads",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/content/browser",
+    "//brave/components/brave_ads/core",
+    "//brave/components/brave_rewards/common",
+    "//brave/components/brave_search/common",
+    "//chrome/browser/profiles:profile",
+    "//chrome/common",
+    "//components/prefs",
+    "//url",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "creative_search_result_ad_tab_helper_browsertest.cc" ]
+
+  deps = [
+    ":search_result_ad",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/browser:test_support",
+    "//brave/components/brave_ads/core/mojom",
+    "//brave/components/brave_ads/core/mojom",
+    "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/brave_rewards/common",
+    "//chrome/browser/ui",
+    "//net:test_support",
+  ]
+
+  if (is_android) {
+    deps += [ "//chrome/test:test_support_ui_android" ]
+  } else {
+    deps += [ "//chrome/test:test_support_ui" ]
+  }
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}

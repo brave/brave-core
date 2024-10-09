@@ -54,6 +54,7 @@ source_set("browser_tests") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser",
+    "//brave/browser/brave_ads",
     "//brave/browser/brave_rewards",
     "//brave/browser/tor",
     "//brave/common",

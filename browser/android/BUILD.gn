@@ -10,7 +10,6 @@ source_set("android_browser_process") {
   check_includes = false
 
   sources = [
-    "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",
     "brave_feature_util.cc",
     "brave_local_state_android.cc",
     "brave_relaunch_utils.cc",

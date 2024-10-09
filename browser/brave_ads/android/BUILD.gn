@@ -4,8 +4,27 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
-import("//build/config/android/rules.gni")
 import("//third_party/jni_zero/jni_zero.gni")
+
+assert(is_android)
+
+source_set("android") {
+  sources = [
+    "brave_ads_native_helper.cc",
+    "brave_ads_native_helper.h",
+  ]
+
+  public_deps = [ "//base" ]
+
+  deps = [
+    "//brave/browser/brave_ads",
+    "//brave/browser/brave_ads/android:jni_headers",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/core/public:headers",
+    "//chrome/browser/profiles:profile",
+    "//components/prefs",
+  ]
+}
 
 generate_jni("jni_headers") {
   sources = [
