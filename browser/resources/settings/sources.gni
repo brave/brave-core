@@ -14,7 +14,6 @@ brave_settings_preprocess_deps =
     [ "//brave/browser/resources/settings:preprocess" ]
 
 brave_settings_web_component_files = [
-  "brave_account_page/brave_account_page.ts",
   "brave_appearance_page/bookmark_bar.ts",
   "brave_appearance_page/brave_theme.ts",
   "brave_appearance_page/sidebar.ts",
@@ -54,13 +53,13 @@ brave_settings_web_component_files = [
   "default_brave_shields_page/components/brave_adblock_editor.ts",
   "default_brave_shields_page/components/brave_adblock_subscribe_dropdown.ts",
   "default_brave_shields_page/default_brave_shields_page.ts",
+  "getting_started_page/brave_account_module.ts",
   "getting_started_page/getting_started.ts",
   "social_blocking_page/social_blocking_page.ts",
   "ui/searchable_drop_down_cros.ts",
 ]
 
 brave_settings_non_web_component_files = [
-  "brave_account_page/brave_account_page_browser_proxy.ts",
   "brave_appearance_page/brave_appearance_browser_proxy.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_proxy.ts",
