@@ -1802,6 +1802,11 @@
 -ChromeLabsMultipleFeaturesUiTest.InvokeUi_default
 -ChromeLabsUiTest.InvokeUi_default
 
+# These tests fail because we stub captions::IsLiveCaptionFeatureSuppported to
+# always return false
+-LiveCaptionAutomaticLanguageDownloadTest.*
+-LiveCaptionControllerTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*
