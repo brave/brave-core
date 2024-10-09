@@ -838,7 +838,6 @@ test("brave_browser_tests") {
     "//brave/browser/autoplay:browser_tests",
     "//brave/browser/brave_ads",
     "//brave/browser/brave_ads:browser_tests",
-    "//brave/browser/brave_ads/creatives/search_result_ad:browser_tests",
     "//brave/browser/brave_news:browser_tests",
     "//brave/browser/brave_rewards",
     "//brave/browser/brave_rewards/test:browser_tests",
@@ -1150,6 +1149,7 @@ test("brave_browser_tests") {
     deps += [
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
+      "//brave/browser/brave_ads/creatives/search_result_ad:browser_tests",
       "//brave/browser/sharing_hub:browser_tests",
       "//brave/browser/ui/ai_rewriter:browsertest",
       "//brave/browser/ui/geolocation:browser_tests",
