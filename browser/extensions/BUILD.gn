@@ -25,11 +25,9 @@ source_set("component_loader") {
 
   deps = [
     "//base",
-    "//brave/browser/brave_rewards:util",
     "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_extension:static_resources",
-    "//brave/components/brave_rewards/common",
     "//brave/components/brave_webtorrent:static_resources",
     "//chrome/browser:browser_process",
     "//chrome/browser/extensions",
