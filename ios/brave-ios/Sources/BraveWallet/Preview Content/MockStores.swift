@@ -234,6 +234,21 @@ extension TransactionConfirmationStore {
   }
 }
 
+extension TransactionStatusStore {
+  static var previewStore: TransactionStatusStore {
+    .init(
+      activeTxStatus: .submitted,
+      activeTxParsed: .init(),
+      txProviderError: nil,
+      keyringService: MockKeyringService(),
+      rpcService: MockJsonRpcService(),
+      assetRatioService: MockAssetRatioService(),
+      txService: MockTxService(),
+      ethTxManagerProxy: MockEthTxManagerProxy()
+    )
+  }
+}
+
 extension SettingsStore {
   static var previewStore: SettingsStore {
     .init(

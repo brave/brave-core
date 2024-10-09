@@ -310,3 +310,180 @@ struct EditPriorityFeeView_Previews: PreviewProvider {
   }
 }
 #endif
+
+struct EditSpeedPriorityView: View {
+  /// The transaction being confirmed
+  let transaction: BraveWallet.TransactionInfo
+  let gasEstimation: BraveWallet.GasEstimation1559
+  let gasAssetRatio: Double
+  let currencyFormatter: NumberFormatter
+
+  var onUpdate: (
+    _ speedPriority: SpeedPriorityType,
+    _ transaction: BraveWallet.TransactionInfo,
+    _ gasEstimation: BraveWallet.GasEstimation1559
+  ) -> Void
+
+  @Environment(\.dismiss) private var dismiss
+
+  @State private var gasLimit: String = ""
+
+  enum SpeedPriorityType: Int, CaseIterable, Identifiable {
+    case slow, standard, fast
+
+    var id: Int {
+      rawValue
+    }
+
+    var title: String {
+      switch self {
+      case .slow:
+        return "Slow"
+      case .standard:
+        return "Standard"
+      case .fast:
+        return "Fast"
+      }
+    }
+  }
+
+  @State private var speedPriority: SpeedPriorityType = .standard
+
+  // (gas value, gas fiat value)
+  private func calculatedMaximumFee(
+    _ speedPriority: SpeedPriorityType
+  ) -> (String, String) {
+    let formatter = WalletAmountFormatter(
+      decimalFormatStyle: .gasFee(limit: gasLimit, radix: .decimal)
+    )
+    let gasFeeInWei: String
+    switch speedPriority {
+    case .slow:
+      gasFeeInWei = gasEstimation.slowMaxFeePerGas
+    case .standard:
+      gasFeeInWei = gasEstimation.avgMaxFeePerGas
+    case .fast:
+      gasFeeInWei = gasEstimation.fastMaxFeePerGas
+    }
+    let proposedGasValue =
+      formatter.decimalString(for: gasFeeInWei.removingHexPrefix, radix: .hex, decimals: 18) ?? ""
+    let proposedGasFiat =
+    currencyFormatter.formatAsFiat(
+      gasAssetRatio * (Double(proposedGasValue) ?? 0.0)
+    ) ?? "–"
+    return (proposedGasValue, proposedGasFiat)
+  }
+
+  private let feeGrids = [GridItem(.adaptive(minimum: 112), spacing: 12, alignment: .top)]
+
+  var body: some View {
+    NavigationView {
+      LazyVGrid(columns: feeGrids, spacing: 12) {
+        ForEach(SpeedPriorityType.allCases) { priorityType in
+          VStack(alignment: .leading) {
+            HStack {
+              Text(priorityType.title)
+                .font(.footnote.weight(.semibold))
+              Spacer()
+              Button {
+                speedPriority = priorityType
+              } label: {
+                Image(
+                  braveSystemName: priorityType == speedPriority
+                    ? "leo.radio.checked" : "leo.radio.unchecked"
+                )
+                .font(.footnote.weight(.semibold))
+                .foregroundColor(Color(braveSystemName: .iconInteractive))
+              }
+            }
+            let maximumFee = calculatedMaximumFee(priorityType)
+            Text("\(maximumFee.0) ETH")
+              .font(.caption.weight(.semibold))
+            Text("\(maximumFee.1)")
+              .font(.caption)
+          }
+          .foregroundColor(Color(braveSystemName: .textPrimary))
+          .padding(12)
+          .background(
+            Color(braveSystemName: .containerHighlight)
+              .clipShape(RoundedRectangle(cornerRadius: 8))
+          )
+        }
+      }
+      .padding(.horizontal, 16)
+      .safeAreaInset(
+        edge: .bottom,
+        content: {
+          VStack {
+            Button {
+              onUpdate(
+                speedPriority,
+                transaction,
+                gasEstimation
+              )
+            } label: {
+              Text("Update")
+                .font(.system(size: 13).weight(.semibold))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 4)
+            }
+            .buttonStyle(BraveFilledButtonStyle(size: .large))
+          }
+          .padding(.horizontal)
+          .padding(.vertical, 14)
+          .background(
+            Color(uiColor: WalletV2Design.containerBackground)
+              .ignoresSafeArea()
+          )
+        }
+      )
+      .transparentNavigationBar()
+      .navigationTitle("Network Fee")
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        ToolbarItem(placement: .navigationBarTrailing) {
+          Button {
+            dismiss()
+          } label: {
+            Image(braveSystemName: "leo.close")
+              .foregroundColor(Color(braveSystemName: .iconDefault))
+          }
+        }
+      }
+      .onAppear {
+        setup()
+      }
+    }
+  }
+
+  private func setup() {
+    let selectedMaxPrice = transaction.txDataUnion.ethTxData1559?.maxFeePerGas ?? ""
+    let selectedMaxTip = transaction.txDataUnion.ethTxData1559?.maxPriorityFeePerGas ?? ""
+
+    // Gas limit is already in Gwei…
+    gasLimit = {
+      guard let value = BDouble(transaction.ethTxGasLimit.removingHexPrefix, radix: 16) else {
+        return ""
+      }
+      if value.denominator == [1] {
+        return value.rounded().asString(radix: 10)
+      }
+      return value.decimalExpansion(precisionAfterDecimalPoint: 2)
+    }()
+
+    // Comparing from high to low as sometimes avg/slow fees are the same
+    if selectedMaxPrice == gasEstimation.fastMaxFeePerGas
+      && selectedMaxTip == gasEstimation.fastMaxPriorityFeePerGas
+    {
+      speedPriority = .fast
+    } else if selectedMaxPrice == gasEstimation.avgMaxFeePerGas
+      && selectedMaxTip == gasEstimation.avgMaxPriorityFeePerGas
+    {
+      speedPriority = .standard
+    } else if selectedMaxPrice == gasEstimation.slowMaxFeePerGas
+      && selectedMaxTip == gasEstimation.slowMaxPriorityFeePerGas
+    {
+      speedPriority = .slow
+    }
+  }
+}

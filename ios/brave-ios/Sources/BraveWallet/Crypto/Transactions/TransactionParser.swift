@@ -986,7 +986,9 @@ struct ParsedTransaction: Equatable {
   }
 
   /// The transaction
-  let transaction: BraveWallet.TransactionInfo
+  /// make this property a `var` for transaction confirmation screen
+  /// when transaction status or other fields have been updated
+  var transaction: BraveWallet.TransactionInfo
 
   /// Account name for the from address of the transaction
   let namedFromAddress: String
