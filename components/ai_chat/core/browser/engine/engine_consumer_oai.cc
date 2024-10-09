@@ -149,6 +149,7 @@ void EngineConsumerOAIRemote::UpdateModelOptions(
 void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
     std::string text,
     const std::string& question,
+    const std::string& selected_language,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
   const std::string& truncated_text =
@@ -175,6 +176,7 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
 void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
     const bool& is_video,
     const std::string& page_content,
+    const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
   const std::string& truncated_page_content =
       page_content.substr(0, max_associated_content_length_);
@@ -245,6 +247,7 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
     const std::string& page_content,
     const ConversationHistory& conversation_history,
     const std::string& human_input,
+    const std::string& selected_language,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   if (!CanPerformCompletionRequest(conversation_history)) {

@@ -124,7 +124,8 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
     history.push_back(std::move(entry));
   }
   engine_->GenerateAssistantResponse(
-      false, "This is a page.", history, "What's his name?", base::DoNothing(),
+      false, "This is a page.", history, "What's his name?", "",
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
@@ -173,7 +174,8 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
     history2.push_back(std::move(entry));
   }
   engine_->GenerateAssistantResponse(
-      false, "This is a page.", history2, "What's his name?", base::DoNothing(),
+      false, "This is a page.", history2, "What's his name?", "",
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
@@ -208,7 +210,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
     history.push_back(std::move(entry));
   }
   engine_->GenerateAssistantResponse(
-      false, "12345", history, "user question", base::DoNothing(),
+      false, "12345", history, "user question", "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
@@ -229,7 +231,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
       });
 
   engine_->GenerateAssistantResponse(
-      false, "12345", GetHistoryWithModifiedReply(), "user question",
+      false, "12345", GetHistoryWithModifiedReply(), "user question", "",
       base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
@@ -258,7 +260,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
       });
 
   engine_->GenerateAssistantResponse(
-      false, "This is my page.", GetHistoryWithModifiedReply(), "Who?",
+      false, "This is my page.", GetHistoryWithModifiedReply(), "Who?", "",
       base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
@@ -272,7 +274,7 @@ TEST_F(EngineConsumerLlamaUnitTest, GenerateAssistantResponseEarlyReturn) {
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _)).Times(0);
   auto run_loop = std::make_unique<base::RunLoop>();
   engine_->GenerateAssistantResponse(
-      false, "This is my page.", history, "Who?", base::DoNothing(),
+      false, "This is my page.", history, "Who?", "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
@@ -290,7 +292,7 @@ TEST_F(EngineConsumerLlamaUnitTest, GenerateAssistantResponseEarlyReturn) {
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _)).Times(0);
   run_loop = std::make_unique<base::RunLoop>();
   engine_->GenerateAssistantResponse(
-      false, "This is my page.", history, "Who?", base::DoNothing(),
+      false, "This is my page.", history, "Who?", "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
@@ -348,6 +350,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateRewriteSuggestion) {
 
   engine_->GenerateRewriteSuggestion(
       "<excerpt>Hello World</excerpt>", "Rewrite the excerpt in a funny tone.",
+      "",
       base::BindRepeating(&MockCallback::OnDataReceived,
                           base::Unretained(&mock_callback)),
       base::BindOnce(&MockCallback::OnCompleted,

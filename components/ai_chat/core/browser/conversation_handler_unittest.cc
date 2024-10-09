@@ -16,6 +16,7 @@
 #include "base/functional/callback.h"
 #include "base/functional/overloaded.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/ranges/algorithm.h"
 #include "base/scoped_observation.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
@@ -347,15 +348,15 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
   // Expect the ConversationHandler to call the engine with the selected text
   // and the action's expanded text.
   EXPECT_CALL(*engine,
-              GenerateAssistantResponse(false, StrEq(""),
-                                        LastTurnHasSelectedText(selected_text),
-                                        StrEq(expected_turn_text), _, _))
+              GenerateAssistantResponse(
+                  false, StrEq(""), LastTurnHasSelectedText(selected_text),
+                  StrEq(expected_turn_text), StrEq(""), _, _))
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(
+          base::test::RunOnceCallback<5>(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("This is the way."))),
-          base::test::RunOnceCallback<5>(base::ok(""))));
+          base::test::RunOnceCallback<6>(base::ok(""))));
 
   EXPECT_FALSE(conversation_handler_->HasAnyHistory());
 
@@ -432,16 +433,16 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
   std::string selected_text = "I have spoken again.";
   std::string expected_turn_text =
       l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT);
-  EXPECT_CALL(*engine,
-              GenerateAssistantResponse(false, StrEq(page_content),
-                                        LastTurnHasSelectedText(selected_text),
-                                        StrEq(expected_turn_text), _, _))
+  EXPECT_CALL(*engine, GenerateAssistantResponse(
+                           false, StrEq(page_content),
+                           LastTurnHasSelectedText(selected_text),
+                           StrEq(expected_turn_text), StrEq(""), _, _))
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(
+          base::test::RunOnceCallback<5>(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("This is the way."))),
-          base::test::RunOnceCallback<5>(base::ok(""))));
+          base::test::RunOnceCallback<6>(base::ok(""))));
 
   ON_CALL(*associated_content_, GetURL)
       .WillByDefault(testing::Return(GURL("https://www.brave.com")));
@@ -766,15 +767,15 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
   conversation_handler_->SetChatHistoryForTesting(std::move(history));
 
   // Modify an entry for the first time.
-  EXPECT_CALL(*engine, GenerateAssistantResponse(false, StrEq(""),
-                                                 LastTurnHasText("prompt2"),
-                                                 StrEq("prompt2"), _, _))
+  EXPECT_CALL(*engine, GenerateAssistantResponse(
+                           false, StrEq(""), LastTurnHasText("prompt2"),
+                           StrEq("prompt2"), StrEq(""), _, _))
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(
+          base::test::RunOnceCallback<5>(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("new answer"))),
-          base::test::RunOnceCallback<5>(base::ok(""))));
+          base::test::RunOnceCallback<6>(base::ok(""))));
   conversation_handler_->ModifyConversation(0, "prompt2");
   const auto& conversation_history =
       conversation_handler_->GetConversationHistory();
@@ -793,15 +794,15 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
   auto created_time2 = conversation_history[0]->edits->at(0)->created_time;
 
   // Modify the same entry again.
-  EXPECT_CALL(*engine, GenerateAssistantResponse(false, StrEq(""),
-                                                 LastTurnHasText("prompt3"),
-                                                 StrEq("prompt3"), _, _))
+  EXPECT_CALL(*engine, GenerateAssistantResponse(
+                           false, StrEq(""), LastTurnHasText("prompt3"),
+                           StrEq("prompt3"), StrEq(""), _, _))
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(
+          base::test::RunOnceCallback<5>(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("new answer"))),
-          base::test::RunOnceCallback<5>(base::ok(""))));
+          base::test::RunOnceCallback<6>(base::ok(""))));
 
   conversation_handler_->ModifyConversation(0, "prompt3");
   ASSERT_EQ(conversation_history.size(), 2u);
@@ -824,7 +825,7 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
   // Modify server response should have text and completion event updated in
   // the entry of edits.
   // Engine should not be called for an assistant edit
-  EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _)).Times(0);
+  EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _)).Times(0);
   conversation_handler_->ModifyConversation(1, " answer2 ");
   ASSERT_EQ(conversation_history.size(), 2u);
   EXPECT_EQ(conversation_history[1]->text, "new answer");
@@ -1121,9 +1122,9 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions) {
   // Mock engine response
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
-  EXPECT_CALL(*engine,
-              GenerateQuestionSuggestions(false, StrEq(page_content), _))
-      .WillOnce(base::test::RunOnceCallback<2>(questions));
+  EXPECT_CALL(*engine, GenerateQuestionSuggestions(false, StrEq(page_content),
+                                                   StrEq(""), _))
+      .WillOnce(base::test::RunOnceCallback<3>(questions));
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   testing::Sequence s;
@@ -1156,7 +1157,7 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions_DisableSendPageContent) {
   // Mock engine response
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
-  EXPECT_CALL(*engine, GenerateQuestionSuggestions(_, _, _)).Times(0);
+  EXPECT_CALL(*engine, GenerateQuestionSuggestions(_, _, _, _)).Times(0);
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   testing::Sequence s;
@@ -1172,7 +1173,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, GenerateQuestions) {
   // Mock engine response
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
-  EXPECT_CALL(*engine, GenerateQuestionSuggestions(_, _, _)).Times(0);
+  EXPECT_CALL(*engine, GenerateQuestionSuggestions(_, _, _, _)).Times(0);
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   testing::Sequence s;
@@ -1180,6 +1181,66 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, GenerateQuestions) {
   conversation_handler_->GenerateQuestions();
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&client);
+  testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+TEST_F(ConversationHandlerUnitTest, SelectedLanguage) {
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  std::string expected_input1 = "Now stand aside, worthy adversary.";
+  std::string expected_input2 = "A scratch? Your arm's off!";
+  std::string expected_selected_language = "fr";
+
+  testing::Sequence s;
+  EXPECT_CALL(*engine,
+              GenerateAssistantResponse(false, StrEq(""), _, expected_input1,
+                                        StrEq(""), _, _))
+      .Times(1)
+      .WillOnce(::testing::DoAll(
+          base::test::RunOnceCallback<5>(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Tis but a scratch."))),
+          base::test::RunOnceCallback<5>(
+              mojom::ConversationEntryEvent::NewSelectedLanguageEvent(
+                  mojom::SelectedLanguageEvent::New(
+                      expected_selected_language))),
+          base::test::RunOnceCallback<6>(base::ok(""))));
+  EXPECT_CALL(*engine, GenerateAssistantResponse(
+                           false, StrEq(""), _, expected_input2,
+                           StrEq(expected_selected_language), _, _))
+      .WillOnce(::testing::DoAll(
+          base::test::RunOnceCallback<5>(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("No, it isn't."))),
+          base::test::RunOnceCallback<6>(base::ok(""))));
+
+  conversation_handler_->PerformAssistantGeneration(expected_input1, "", false,
+                                                    "");
+  conversation_handler_->PerformAssistantGeneration(expected_input2, "", false,
+                                                    "");
+
+  // Selected Language events should not be added to the conversation events
+  // history
+  const auto& conversation_history =
+      conversation_handler_->GetConversationHistory();
+  ASSERT_FALSE(conversation_history.empty());
+  bool has_selected_language_event =
+      base::ranges::any_of(conversation_history, [](const auto& conversation) {
+        return base::ranges::any_of(
+            *conversation->events, [](const auto& event) {
+              return event->is_selected_language_event();
+            });
+      });
+  EXPECT_FALSE(has_selected_language_event)
+      << "There is an 'is_selected_language_event' present.";
+
+  // And internally the conversation handler should know the selected language
+  // was set
+  EXPECT_EQ(conversation_handler_->selected_language_,
+            expected_selected_language);
+
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(engine);
 }
 
@@ -1260,13 +1321,13 @@ TEST_P(PageContentRefineTest, TextEmbedder) {
                       test_case.prompt, test_case.page_content,
                       max_associated_content_length, _))
           .Times(1);
-      EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
+      EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _, _))
           .Times(0);
     } else {
       EXPECT_CALL(*mock_text_embedder,
                   GetTopSimilarityWithPromptTilContextLimit(_, _, _, _))
           .Times(0);
-      EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
+      EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _, _))
           .Times(1);
     }
     conversation_handler_->PerformAssistantGeneration(
@@ -1321,7 +1382,7 @@ TEST_P(PageContentRefineTest, TextEmbedderInitialized) {
         .WillByDefault(testing::Return(test_case.is_initialized));
     if (test_case.is_initialized) {
       EXPECT_CALL(*mock_text_embedder, Initialize).Times(0);
-      EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
+      EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _, _))
           .Times(0);
       EXPECT_CALL(
           *mock_text_embedder,
@@ -1333,13 +1394,15 @@ TEST_P(PageContentRefineTest, TextEmbedderInitialized) {
           .WillOnce(
               base::test::RunOnceCallback<0>(test_case.initialize_result));
       if (!test_case.initialize_result) {
-        EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
+        EXPECT_CALL(*mock_engine,
+                    GenerateAssistantResponse(_, _, _, _, _, _, _))
             .Times(1);
         EXPECT_CALL(*mock_text_embedder,
                     GetTopSimilarityWithPromptTilContextLimit(_, _, _, _))
             .Times(0);
       } else {
-        EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
+        EXPECT_CALL(*mock_engine,
+                    GenerateAssistantResponse(_, _, _, _, _, _, _))
             .Times(0);
         EXPECT_CALL(*mock_text_embedder,
                     GetTopSimilarityWithPromptTilContextLimit(
