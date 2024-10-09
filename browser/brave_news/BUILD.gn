@@ -3,33 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("brave_news") {
-  sources = [
-    "brave_news_controller_factory.cc",
-    "brave_news_controller_factory.h",
-  ]
-
-  deps = [
-    "//base",
-    "//brave/components/brave_news/browser",
-    "//brave/components/brave_news/common",
-    "//brave/components/brave_news/common:mojom",
-    "//chrome/browser:browser",
-    "//chrome/browser/favicon",
-    "//chrome/browser/profiles",
-    "//chrome/browser/profiles:profile",
-    "//components/favicon/core",
-    "//components/keyed_service/content",
-    "//components/user_prefs",
-    "//content/public/browser",
-  ]
-
-  if (is_android) {
-    sources += [ "android/brave_news_controller_factory_android.cc" ]
-    deps += [ "//brave/build/android:jni_headers" ]
-  }
-}
-
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]

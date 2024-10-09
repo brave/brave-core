@@ -5,6 +5,8 @@
 
 #include "brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.h"
 
+#include <jni.h>
+
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
 #include "brave/browser/brave_ads/android/jni_headers/BraveAdsNotificationDialog_jni.h"

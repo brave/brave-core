@@ -3,6 +3,139 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//build/config/ozone.gni")
+import("//build/config/ui.gni")
+
+source_set("brave_ads") {
+  sources = [
+    "ads_service_delegate.h",
+    "ads_service_factory.h",
+    "analytics/p3a/brave_stats_helper.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_ads/browser",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+    "//components/prefs",
+    "//components/sessions:session_id",
+    "//content/public/browser",
+  ]
+
+  if (!is_android) {
+    public_deps += [ "//chrome/browser/ui:browser_list" ]
+  }
+}
+
+source_set("impl") {
+  visibility = [
+    ":*",
+    "//chrome/browser",
+  ]
+
+  sources = [
+    "ad_units/notification_ad/notification_ad_platform_bridge.h",
+    "ads_service_delegate.cc",
+    "ads_service_factory.cc",
+    "analytics/p3a/brave_stats_helper.cc",
+    "application_state/background_helper/background_helper.cc",
+    "application_state/background_helper/background_helper_holder.cc",
+    "application_state/background_helper/background_helper_holder.h",
+    "application_state/notification_helper/notification_helper.cc",
+    "application_state/notification_helper/notification_helper.h",
+    "application_state/notification_helper/notification_helper_impl.cc",
+    "application_state/notification_helper/notification_helper_impl.h",
+  ]
+
+  deps = [
+    ":brave_ads",
+    "//base",
+    "//brave/browser/brave_adaptive_captcha",
+    "//brave/browser/brave_ads/device_id",
+    "//brave/browser/brave_ads/services",
+    "//brave/browser/brave_ads/tooltips",
+    "//brave/browser/brave_rewards",
+    "//brave/browser/brave_rewards:util",
+    "//brave/browser/ui/brave_ads",
+    "//brave/components/brave_ads/browser/application_state",
+    "//brave/components/p3a_utils",
+    "//chrome/browser:browser_process",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser:primitives",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
+    "//chrome/common:chrome_features",
+    "//chrome/common:chrome_features",
+    "//chrome/common:constants",
+    "//components/keyed_service/content",
+    "//ui/gfx",
+  ]
+
+  if (toolkit_views) {
+    deps += [ "//ui/views" ]
+  }
+
+  if (use_aura) {
+    deps += [ "//ui/aura" ]
+  }
+
+  if (ozone_platform_x11) {
+    deps += [
+      "//ui/base/x",
+      "//ui/gfx/x",
+    ]
+  }
+
+  if (!is_android) {
+    sources += [ "ad_units/notification_ad/notification_ad_platform_bridge.cc" ]
+  } else {
+    sources += [
+      "ad_units/notification_ad/notification_ad_platform_bridge_android.cc",
+      "application_state/background_helper/background_helper_android.cc",
+      "application_state/background_helper/background_helper_android.h",
+      "application_state/notification_helper/notification_helper_impl_android.cc",
+      "application_state/notification_helper/notification_helper_impl_android.h",
+    ]
+
+    deps += [
+      "//brave/browser/brave_ads/android:jni_headers",
+      "//brave/build/android:jni_headers",
+      "//chrome/browser/notifications:jni_headers",
+      "//chrome/browser/notifications:notifications_java_enum_srcjar",
+    ]
+  }  # is_android
+
+  if (is_linux) {
+    sources += [
+      "application_state/background_helper/background_helper_linux.cc",
+      "application_state/background_helper/background_helper_linux.h",
+      "application_state/notification_helper/notification_helper_impl_linux.cc",
+      "application_state/notification_helper/notification_helper_impl_linux.h",
+    ]
+  }
+
+  if (is_mac) {
+    sources += [
+      "application_state/background_helper/background_helper_mac.h",
+      "application_state/background_helper/background_helper_mac.mm",
+      "application_state/notification_helper/notification_helper_impl_mac.h",
+      "application_state/notification_helper/notification_helper_impl_mac.mm",
+    ]
+  }
+
+  if (is_win) {
+    sources += [
+      "application_state/background_helper/background_helper_win.cc",
+      "application_state/background_helper/background_helper_win.h",
+      "application_state/notification_helper/notification_helper_impl_win.cc",
+      "application_state/notification_helper/notification_helper_impl_win.h",
+    ]
+
+    deps += [ "//chrome/installer/util:with_no_strings" ]
+  }
+}
+
 source_set("browser_tests") {
   testonly = true
 
@@ -10,30 +143,20 @@ source_set("browser_tests") {
     "analytics/p3a/brave_stats_helper_browsertest.cc",
     "application_state/notification_helper/notification_helper_impl_mock.cc",
     "application_state/notification_helper/notification_helper_impl_mock.h",
-    "creatives/search_result_ad/creative_search_result_ad_tab_helper_browsertest.cc",
-    "tabs/ads_tab_helper_browsertest.cc",
   ]
 
   deps = [
-    "//base",
-    "//base/test:test_support",
-    "//brave/browser",
-    "//brave/components/brave_ads/browser",
-    "//brave/components/brave_ads/browser:test_support",
-    "//brave/components/brave_ads/core",
-    "//brave/components/brave_rewards/common",
+    ":brave_ads",
+    ":impl",
     "//chrome/browser",
-    "//chrome/browser:browser_process",
-    "//chrome/browser/profiles",
-    "//chrome/browser/ui:ui",
     "//chrome/test:test_support",
-    "//chrome/test:test_support_ui",
-    "//components/prefs",
-    "//content/public/browser",
-    "//content/test:test_support",
-    "//net",
-    "//testing/gmock",
   ]
+
+  if (is_android) {
+    deps += [ "//chrome/test:test_support_ui_android" ]
+  } else {
+    deps += [ "//chrome/test:test_support_ui" ]
+  }
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }
