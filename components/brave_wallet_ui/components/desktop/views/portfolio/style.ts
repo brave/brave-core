@@ -313,3 +313,7 @@ export const ContentWrapper = styled(Column)<{
 export const BalanceAndLineChartWrapper = styled(Column)`
   position: relative;
 `
+
+export const ActivityWrapper = styled(Column)`
+  background-color: ${leo.color.container.background};
+`

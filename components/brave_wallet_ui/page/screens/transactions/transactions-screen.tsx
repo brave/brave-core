@@ -58,12 +58,7 @@ import {
 } from '../../../components/desktop/popup-modals/transaction_details_modal/transaction_details_modal'
 
 // styles
-import {
-  Column,
-  LoadingIcon,
-  Text,
-  VerticalSpacer
-} from '../../../components/shared/style'
+import { Column, Text, VerticalSpacer } from '../../../components/shared/style'
 import {
   LoadingSkeletonStyleProps,
   Skeleton
@@ -168,6 +163,19 @@ export const TransactionsScreen: React.FC = () => {
     (tx) => tx.id === selectedTransactionId
   )
 
+  // Methods
+  const onClickTransaction = React.useCallback(
+    (
+      tx: Pick<BraveWallet.TransactionInfo | SerializableTransactionInfo, 'id'>
+    ): void => {
+      history.push(
+        window.location.pathname + window.location.search + '#' + tx.id
+      )
+    },
+    [history]
+  )
+
+  // Memos
   const combinedTokensList = React.useMemo(() => {
     return userTokensList.concat(knownTokensList)
   }, [userTokensList, knownTokensList])
@@ -205,50 +213,8 @@ export const TransactionsScreen: React.FC = () => {
     )
   }, [searchValue, searchableTransactions])
 
-  // methods
-  const onClickTransaction = (
-    tx: Pick<BraveWallet.TransactionInfo | SerializableTransactionInfo, 'id'>
-  ): void => {
-    history.push(
-      window.location.pathname + window.location.search + '#' + tx.id
-    )
-  }
-
-  // render
-  if (isLoadingAccounts || isLoadingTxsList) {
+  const transactionsView = React.useMemo(() => {
     return (
-      <WalletPageWrapper
-        wrapContentInBox={true}
-        useCardInPanel={true}
-        cardHeader={
-          <ActivityPageHeader
-            searchValue={searchValue}
-            onSearchValueChange={(e) => setSearchValue(e.target.value)}
-          />
-        }
-      >
-        <Column fullHeight>
-          <LoadingIcon
-            opacity={100}
-            size='50px'
-            color='interactive05'
-          />
-        </Column>
-      </WalletPageWrapper>
-    )
-  }
-
-  return (
-    <WalletPageWrapper
-      wrapContentInBox={true}
-      useCardInPanel={true}
-      cardHeader={
-        <ActivityPageHeader
-          searchValue={searchValue}
-          onSearchValueChange={(e) => setSearchValue(e.target.value)}
-        />
-      }
-    >
       <>
         {isPanel && (
           <Column
@@ -264,7 +230,7 @@ export const TransactionsScreen: React.FC = () => {
             <VerticalSpacer space={24} />
           </Column>
         )}
-        {isLoadingTxsList ? (
+        {isLoadingAccounts || isLoadingTxsList ? (
           <Column
             fullHeight
             fullWidth
@@ -323,6 +289,46 @@ export const TransactionsScreen: React.FC = () => {
           </>
         )}
       </>
+    )
+  }, [
+    filteredTransactions,
+    isLoadingTxsList,
+    isPanel,
+    onClickTransaction,
+    searchValue,
+    txsForSelectedChain,
+    isLoadingAccounts
+  ])
+
+  // render
+  if (isPanel) {
+    return (
+      <>
+        {transactionsView}
+        {selectedTransaction && (
+          <TransactionDetailsModal
+            onClose={() => {
+              // remove the transaction id from the URL hash
+              history.push(window.location.pathname + window.location.search)
+            }}
+            transaction={selectedTransaction}
+          />
+        )}
+      </>
+    )
+  }
+
+  return (
+    <WalletPageWrapper
+      wrapContentInBox={true}
+      cardHeader={
+        <ActivityPageHeader
+          searchValue={searchValue}
+          onSearchValueChange={(e) => setSearchValue(e.target.value)}
+        />
+      }
+    >
+      {transactionsView}
       {selectedTransaction && (
         <TransactionDetailsModal
           onClose={() => {
