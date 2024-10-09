@@ -354,6 +354,67 @@ TEST_F(BitcoinRpcUnitTest, GetTransaction) {
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
+TEST_F(BitcoinRpcUnitTest, GetTransactionRaw) {
+  base::MockCallback<bitcoin_rpc::BitcoinRpc::GetTransactionRawCallback>
+      callback;
+
+  const std::string txid =
+      "aa388f50b725767653e150ad8990ec11a2146d75acafbe492af08213849fe2c5";
+  const std::string req_url = mainnet_rpc_url_ + "tx/" + txid + "/hex";
+
+  const std::string tx_json = R"(010203)";
+
+  std::vector<uint8_t> tx_expected = {1, 2, 3};
+
+  // GetTransaction works.
+  EXPECT_CALL(callback,
+              Run(Truly([&](auto& arg) { return arg == tx_expected; })));
+  url_loader_factory_.AddResponse(req_url, tx_json);
+  bitcoin_rpc_->GetTransactionRaw(mojom::kBitcoinMainnet, txid, callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Invalid value returned.
+  EXPECT_CALL(callback, Run(MatchError(ParsingError())));
+  url_loader_factory_.AddResponse(req_url, "some string");
+  bitcoin_rpc_->GetTransactionRaw(mojom::kBitcoinMainnet, txid, callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // HTTP Error returned.
+  EXPECT_CALL(callback, Run(MatchError(InternalError())));
+  url_loader_factory_.AddResponse(req_url, tx_json,
+                                  net::HTTP_INTERNAL_SERVER_ERROR);
+  bitcoin_rpc_->GetTransactionRaw(mojom::kBitcoinMainnet, txid, callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Testnet works.
+  EXPECT_CALL(callback,
+              Run(Truly([&](auto& arg) { return arg == tx_expected; })));
+  url_loader_factory_.ClearResponses();
+  url_loader_factory_.AddResponse(testnet_rpc_url_ + "tx/" + txid + "/hex",
+                                  tx_json);
+  bitcoin_rpc_->GetTransactionRaw(mojom::kBitcoinTestnet, txid, callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Invalid chain fails.
+  EXPECT_CALL(callback, Run(MatchError(InternalError())));
+  url_loader_factory_.ClearResponses();
+  bitcoin_rpc_->GetTransactionRaw("0x123", txid, callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Invalid txid arg format fails.
+  EXPECT_CALL(callback, Run(MatchError(InternalError())));
+  url_loader_factory_.ClearResponses();
+  bitcoin_rpc_->GetTransactionRaw(mojom::kBitcoinMainnet, txid + "/",
+                                  callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
 TEST_F(BitcoinRpcUnitTest, GetAddressStats) {
   base::MockCallback<bitcoin_rpc::BitcoinRpc::GetAddressStatsCallback> callback;
 

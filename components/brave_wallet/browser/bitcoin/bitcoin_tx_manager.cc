@@ -12,12 +12,12 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_block_tracker.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_meta.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -49,6 +49,56 @@ BitcoinTxManager::~BitcoinTxManager() = default;
 std::unique_ptr<BitcoinTxMeta> BitcoinTxManager::GetTxForTesting(
     const std::string& tx_meta_id) {
   return GetBitcoinTxStateManager()->GetBitcoinTx(tx_meta_id);
+}
+
+void BitcoinTxManager::GetBtcHardwareTransactionSignData(
+    const std::string& tx_meta_id,
+    GetBtcHardwareTransactionSignDataCallback callback) {
+  std::unique_ptr<BitcoinTxMeta> meta =
+      GetBitcoinTxStateManager()->GetBitcoinTx(tx_meta_id);
+  if (!meta || !meta->tx()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  std::move(callback).Run(
+      bitcoin_wallet_service_->GetBtcHardwareTransactionSignData(*meta->tx(),
+                                                                 meta->from()));
+}
+
+void BitcoinTxManager::ProcessBtcHardwareSignature(
+    const std::string& tx_meta_id,
+    const mojom::BitcoinSignaturePtr& hw_signature,
+    ProcessBtcHardwareSignatureCallback callback) {
+  CHECK(hw_signature);
+  std::unique_ptr<BitcoinTxMeta> meta =
+      GetBitcoinTxStateManager()->GetBitcoinTx(tx_meta_id);
+  if (!meta) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  meta->set_status(mojom::TransactionStatus::Approved);
+  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  bitcoin_wallet_service_->PostHwSignedTransaction(
+      meta->from(), *meta->tx(), *hw_signature,
+      base::BindOnce(
+          &BitcoinTxManager::ContinueApproveTransaction,
+          weak_factory_.GetWeakPtr(), tx_meta_id,
+          base::BindOnce(&BitcoinTxManager::ContinueProcessBtcHardwareSignature,
+                         weak_factory_.GetWeakPtr(), std::move(callback))));
+}
+
+void BitcoinTxManager::ContinueProcessBtcHardwareSignature(
+    ProcessBtcHardwareSignatureCallback callback,
+    bool success,
+    mojom::ProviderErrorUnionPtr error,
+    const std::string& message) {
+  std::move(callback).Run(success);
 }
 
 void BitcoinTxManager::OnLatestHeightUpdated(const std::string& chain_id,

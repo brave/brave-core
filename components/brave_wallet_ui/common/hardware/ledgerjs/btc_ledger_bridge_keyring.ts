@@ -8,13 +8,15 @@ import {
   AccountFromDevice,
   HardwareImportScheme,
   DerivationSchemes,
-  HardwareOperationResultAccounts
+  HardwareOperationResultAccounts,
+  HardwareOperationResultBitcoinSignature
 } from '../types'
 import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import {
   LedgerCommand,
   LedgerBridgeErrorCodes,
-  BtcGetAccountResponse
+  BtcGetAccountResponse,
+  BtcSignTransactionResponse
 } from './ledger-messages'
 
 import LedgerBridgeKeyring from './ledger_bridge_keyring'
@@ -80,5 +82,45 @@ export default class BitcoinLedgerBridgeKeyring
       })
     }
     return { success: true, accounts: accounts }
+  }
+
+  signTransaction = async (
+    inputTransactions: Array<{
+      txBytes: Buffer
+      outputIndex: number
+      associatedPath: string
+    }>,
+    outputScript: Buffer,
+    changePath: string | undefined,
+    lockTime: number
+  ): Promise<HardwareOperationResultBitcoinSignature> => {
+    const result = await this.unlock()
+    if (!result.success) {
+      return result
+    }
+    const data = await this.sendCommand<BtcSignTransactionResponse>({
+      command: LedgerCommand.SignTransaction,
+      id: LedgerCommand.SignTransaction,
+      origin: window.origin,
+      inputTransactions,
+      outputScript,
+      changePath,
+      lockTime
+    })
+    if (
+      data === LedgerBridgeErrorCodes.BridgeNotReady ||
+      data === LedgerBridgeErrorCodes.CommandInProgress
+    ) {
+      return this.createErrorFromCode(data)
+    }
+
+    if (!data.payload.success) {
+      return { ...data.payload }
+    }
+
+    return {
+      success: true,
+      signature: { witnessArray: data.payload.witnesses.map((w) => [...w]) }
+    }
   }
 }

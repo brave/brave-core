@@ -50,7 +50,8 @@ class ZCashTxManager;
 class TxService : public mojom::TxService,
                   public mojom::EthTxManagerProxy,
                   public mojom::SolanaTxManagerProxy,
-                  public mojom::FilTxManagerProxy {
+                  public mojom::FilTxManagerProxy,
+                  public mojom::BtcTxManagerProxy {
  public:
   TxService(JsonRpcService* json_rpc_service,
             BitcoinWalletService* bitcoin_wallet_service,
@@ -177,7 +178,6 @@ class TxService : public mojom::TxService,
       const std::string& nonce,
       SetNonceForUnapprovedTransactionCallback) override;
   void GetNonceForHardwareTransaction(
-      const std::string& chain_id,
       const std::string& tx_meta_id,
       GetNonceForHardwareTransactionCallback callback) override;
   void GetEthTransactionMessageToSign(
@@ -237,6 +237,15 @@ class TxService : public mojom::TxService,
       mojom::FilecoinSignaturePtr hw_signature,
       ProcessFilHardwareSignatureCallback callback) override;
 
+  // mojom::BtcTxManagerProxy
+  void GetBtcHardwareTransactionSignData(
+      const std::string& tx_meta_id,
+      GetBtcHardwareTransactionSignDataCallback callback) override;
+  void ProcessBtcHardwareSignature(
+      const std::string& tx_meta_id,
+      mojom::BitcoinSignaturePtr hw_signature,
+      ProcessBtcHardwareSignatureCallback callback) override;
+
   TxStorageDelegate* GetDelegateForTesting();
 
  private:
@@ -269,6 +278,7 @@ class TxService : public mojom::TxService,
   mojo::ReceiverSet<mojom::EthTxManagerProxy> eth_tx_manager_receivers_;
   mojo::ReceiverSet<mojom::SolanaTxManagerProxy> solana_tx_manager_receivers_;
   mojo::ReceiverSet<mojom::FilTxManagerProxy> fil_tx_manager_receivers_;
+  mojo::ReceiverSet<mojom::BtcTxManagerProxy> btc_tx_manager_receivers_;
 
   base::WeakPtrFactory<TxService> weak_factory_;
 };

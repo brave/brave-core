@@ -29,6 +29,11 @@ class BitcoinTxStateManager;
 class BitcoinTxManager : public TxManager,
                          public BitcoinBlockTracker::Observer {
  public:
+  using GetBtcHardwareTransactionSignDataCallback =
+      mojom::BtcTxManagerProxy::GetBtcHardwareTransactionSignDataCallback;
+  using ProcessBtcHardwareSignatureCallback =
+      mojom::BtcTxManagerProxy::ProcessBtcHardwareSignatureCallback;
+
   BitcoinTxManager(TxService* tx_service,
                    BitcoinWalletService* bitcoin_wallet_service,
                    KeyringService* keyring_service,
@@ -39,6 +44,15 @@ class BitcoinTxManager : public TxManager,
   BitcoinTxManager(const BitcoinTxManager&) = delete;
   BitcoinTxManager& operator=(const BitcoinTxManager&) = delete;
   std::unique_ptr<BitcoinTxMeta> GetTxForTesting(const std::string& tx_meta_id);
+
+  void GetBtcHardwareTransactionSignData(
+      const std::string& tx_meta_id,
+      GetBtcHardwareTransactionSignDataCallback callback);
+
+  void ProcessBtcHardwareSignature(
+      const std::string& tx_meta_id,
+      const mojom::BitcoinSignaturePtr& hw_signature,
+      ProcessBtcHardwareSignatureCallback callback);
 
  private:
   friend class BitcoinTxManagerUnitTest;
@@ -83,6 +97,11 @@ class BitcoinTxManager : public TxManager,
                                   std::string tx_cid,
                                   BitcoinTransaction transaction,
                                   std::string error);
+  void ContinueProcessBtcHardwareSignature(
+      ProcessBtcHardwareSignatureCallback callback,
+      bool success,
+      mojom::ProviderErrorUnionPtr error,
+      const std::string& message);
 
   void OnGetTransactionStatus(const std::string& tx_meta_id,
                               base::expected<bool, std::string> confirm_status);

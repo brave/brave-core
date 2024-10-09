@@ -192,6 +192,10 @@ export type HardwareOperationResultFilecoinSignature = HardwareOperationResult<{
   signature: BraveWallet.FilecoinSignature
 }>
 
+export type HardwareOperationResultBitcoinSignature = HardwareOperationResult<{
+  signature: BraveWallet.BitcoinSignature
+}>
+
 // Batch size of accounts imported from the device in one step.
 export const DerivationBatchSize = 5
 

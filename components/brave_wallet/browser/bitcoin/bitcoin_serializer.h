@@ -6,13 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_SERIALIZER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_SERIALIZER_H_
 
-#include <map>
 #include <optional>
-#include <set>
 #include <string>
 #include <vector>
 
-#include "base/containers/span.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 
@@ -31,6 +28,9 @@ class BitcoinSerializer {
   static std::vector<uint8_t> SerializeWitness(
       const std::vector<uint8_t>& signature,
       const std::vector<uint8_t>& pubkey);
+
+  static std::vector<uint8_t> SerializeOutputsForHardwareSigning(
+      const BitcoinTransaction& tx);
 
   static std::vector<uint8_t> SerializeSignedTransaction(
       const BitcoinTransaction& tx);

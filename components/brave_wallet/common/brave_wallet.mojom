@@ -189,6 +189,11 @@ struct FilecoinSignature {
   string signed_message_json;
 };
 
+struct BitcoinSignature {
+  // Each item corresponds to each input of a transaction.
+  array<array<uint8>> witness_array;
+};
+
 // https://github.com/solana-labs/solana-web3.js/blob/6482d0d/src/transaction.ts#L126
 struct SignaturePubkeyPair {
   SolanaSignature? signature;
@@ -273,6 +278,7 @@ interface PanelHandlerFactory {
                      pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
                      pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
                      pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
+                     pending_receiver<BtcTxManagerProxy> btc_tx_manager_proxy,
                      pending_receiver<BraveWalletService> brave_wallet_service,
                      pending_receiver<BraveWalletP3A> brave_wallet_p3a,
                      pending_receiver<IpfsService>
@@ -296,6 +302,7 @@ interface PageHandlerFactory {
                     pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
                     pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
                     pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
+                    pending_receiver<BtcTxManagerProxy> btc_tx_manager_proxy,
                     pending_receiver<BraveWalletService> brave_wallet_service,
                     pending_receiver<BraveWalletP3A> brave_wallet_p3a,
                     pending_receiver<IpfsService> brave_wallet_ipfs_service,
@@ -2029,8 +2036,7 @@ interface EthTxManagerProxy {
   GetEthTransactionMessageToSign(string tx_meta_id)
     => (string? hex_message);
 
-  GetNonceForHardwareTransaction(string chain_id, string tx_meta_id)
-    => (string? nonce);
+  GetNonceForHardwareTransaction(string tx_meta_id) => (string? nonce);
   ProcessEthHardwareSignature(string tx_meta_id, EthereumSignatureVRS hw_signature)
     => (bool status, ProviderError error, string error_message);
 };
@@ -2098,6 +2104,27 @@ interface FilTxManagerProxy {
   // Publishes signed transaction.
   ProcessFilHardwareSignature(string tx_meta_id, FilecoinSignature hw_signature)
     => (bool status, ProviderErrorUnion error_union, string error_message);
+};
+
+struct BtcHardwareTransactionSignInputData {
+  array<uint8> tx_bytes;
+  uint32 output_index;
+  string associated_path;
+};
+
+struct BtcHardwareTransactionSignData {
+  array<BtcHardwareTransactionSignInputData> inputs;
+  array<uint8> output_script;
+  string? change_path;
+  uint32 lock_time;
+};
+
+interface BtcTxManagerProxy {
+  GetBtcHardwareTransactionSignData(string tx_meta_id)
+    => (BtcHardwareTransactionSignData data);
+
+  ProcessBtcHardwareSignature(string tx_meta_id, BitcoinSignature hw_signature)
+    => (bool status);
 };
 
 interface BraveWalletServiceObserver {

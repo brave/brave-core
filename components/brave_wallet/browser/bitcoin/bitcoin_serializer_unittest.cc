@@ -71,19 +71,19 @@ TEST(BitcoinSerializer, SerializeInputForSign) {
   EXPECT_EQ(base::HexEncode(*BitcoinSerializer::SerializeInputForSign(tx, 1)),
             "FBD8650BA68214C9659928A7E16A6B4148D895755BC5036B328532CAFC4267FB");
 
-  // P2PKH addresses are not suppported.
+  // P2PKH addresses are not supported.
   input1.utxo_address = "1N4Qbzg6LSXUXyXu2MDuGfzxwMA7do8AyL";
   tx.ClearInputs();
   tx.AddInput(input1);
   EXPECT_FALSE(BitcoinSerializer::SerializeInputForSign(tx, 0));
 
-  // P2SH addresses are not suppported.
+  // P2SH addresses are not supported.
   input1.utxo_address = "3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy";
   tx.ClearInputs();
   tx.AddInput(input1);
   EXPECT_FALSE(BitcoinSerializer::SerializeInputForSign(tx, 0));
 
-  // P2TR addresses are not suppported.
+  // P2TR addresses are not supported.
   input1.utxo_address =
       "bc1peu5hzzyj8cnqm05le6ag7uwry0ysmtf3v4uuxv3v8hqhvsatca8ss2vuwx";
   tx.ClearInputs();
@@ -97,6 +97,31 @@ TEST(BitcoinSerializer, SerializeWitness) {
   EXPECT_EQ(
       base::HexEncode(BitcoinSerializer::SerializeWitness(signature, pubkey)),
       "02040001020304AABBCCDD");
+}
+
+TEST(BitcoinSerializer, SerializeOutputsForHardwareSigning) {
+  BitcoinTransaction tx;
+
+  BitcoinTransaction::TxOutput output1;
+  output1.address = kAddress1;
+  output1.script_pubkey =
+      BitcoinSerializer::AddressToScriptPubkey(kAddress1, true);
+  output1.amount = 5;
+  tx.AddOutput(std::move(output1));
+
+  BitcoinTransaction::TxOutput output2;
+  output2.address = kAddress2;
+  output2.script_pubkey =
+      BitcoinSerializer::AddressToScriptPubkey(kAddress2, true);
+  output2.amount = 50;
+  tx.AddOutput(std::move(output2));
+
+  tx.set_locktime(777);
+
+  EXPECT_EQ(base::HexEncode(
+                BitcoinSerializer::SerializeOutputsForHardwareSigning(tx)),
+            "02050000000000000016001427623E8F36A16A7D3A35A32B45B3531F6A9228C632"
+            "00000000000000160014674F8F912B5A9305F5D3A348F9B069D9101173E9");
 }
 
 TEST(BitcoinSerializer, SerializeSignedTransaction) {

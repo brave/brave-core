@@ -54,7 +54,8 @@ import {
   signLedgerSolanaTransaction,
   dialogErrorFromLedgerErrorCode,
   signTrezorTransaction,
-  signSolTransactionWithHardwareKeyring
+  signSolTransactionWithHardwareKeyring,
+  signLedgerBitcoinTransaction
 } from '../../async/hardware'
 import { getLocale } from '../../../../common/locale'
 
@@ -1068,17 +1069,23 @@ export const transactionEndpoints = ({
                 result = await signLedgerEthereumTransaction(
                   apiProxy,
                   hardwareAccount.path,
-                  txInfo
+                  txInfo.id
                 )
                 break
               case BraveWallet.CoinType.FIL:
-                result = await signLedgerFilecoinTransaction(apiProxy, txInfo)
+                result = await signLedgerFilecoinTransaction(
+                  apiProxy,
+                  txInfo.id
+                )
+                break
+              case BraveWallet.CoinType.BTC:
+                result = await signLedgerBitcoinTransaction(apiProxy, txInfo.id)
                 break
               case BraveWallet.CoinType.SOL:
                 result = await signLedgerSolanaTransaction(
                   apiProxy,
                   hardwareAccount.path,
-                  txInfo
+                  txInfo.id
                 )
                 break
               default:

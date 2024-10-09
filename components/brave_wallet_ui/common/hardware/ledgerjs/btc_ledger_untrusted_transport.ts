@@ -7,13 +7,17 @@ import Transport from '@ledgerhq/hw-transport'
 import { TransportStatusError } from '@ledgerhq/errors'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import Btc from '@ledgerhq/hw-app-btc'
+import { BufferReader, BufferWriter } from '@ledgerhq/hw-app-btc/buffertools'
 import {
   BtcGetAccountCommand,
   BtcGetAccountResponse,
+  BtcSignTransactionCommand,
+  BtcSignTransactionResponse,
   LedgerCommand,
   UnlockResponse
 } from './ledger-messages'
 import { LedgerUntrustedMessagingTransport } from './ledger-untrusted-transport'
+import { CreateTransactionArg } from '@ledgerhq/hw-app-btc/lib/createTransaction'
 
 /** makes calls to the Btc app on a Ledger device */
 export class BitcoinLedgerUntrustedMessagingTransport //
@@ -28,6 +32,10 @@ export class BitcoinLedgerUntrustedMessagingTransport //
     this.addCommandHandler<BtcGetAccountResponse>(
       LedgerCommand.GetAccount,
       this.handleGetAccount
+    )
+    this.addCommandHandler<BtcSignTransactionResponse>(
+      LedgerCommand.SignTransaction,
+      this.handleSignTransaction
     )
   }
 
@@ -59,9 +67,83 @@ export class BitcoinLedgerUntrustedMessagingTransport //
       }
       return response
     } finally {
-      if (transport) {
-        await transport.close()
+      await transport?.close()
+    }
+  }
+
+  private handleSignTransaction = async (
+    command: BtcSignTransactionCommand
+  ): Promise<BtcSignTransactionResponse> => {
+    let transport: Transport | undefined
+
+    try {
+      transport = await TransportWebHID.create()
+      const app = new Btc({ transport })
+      const signedTransactionHex = await app.createPaymentTransaction({
+        inputs: command.inputTransactions.map((i) => {
+          return [
+            app.splitTransaction(Buffer.from(i.txBytes).toString('hex'), true),
+            i.outputIndex,
+            undefined,
+            0xfffffffd // sequence number same as for core transactions.
+          ]
+        }),
+        associatedKeysets: command.inputTransactions.map(
+          (i) => i.associatedPath
+        ),
+        outputScriptHex: Buffer.from(command.outputScript).toString('hex'),
+        additionals: ['bech32'],
+        changePath: command.changePath,
+        lockTime: command.lockTime,
+        sigHashType: 1, // SIGHASH_ALL
+        segwit: true
+      } satisfies CreateTransactionArg)
+
+      const signedTransaction = app.splitTransaction(signedTransactionHex, true)
+
+      if (!signedTransaction.witness) {
+        throw new Error('Unexpected empty witness.')
       }
+
+      const witnesses: Uint8Array[] = []
+      const witnessesReader = new BufferReader(signedTransaction.witness)
+      while (!witnessesReader.available) {
+        const witnessField = witnessesReader.readVector()
+        if (witnessField.length !== 2) {
+          throw new Error('Invalid witness field size.')
+        }
+        const witnessBuf = new BufferWriter()
+        witnessBuf.writeVarInt(2)
+        witnessBuf.writeVarSlice(witnessField[0])
+        witnessBuf.writeVarSlice(witnessField[1])
+        witnesses.push(witnessBuf.buffer())
+      }
+
+      if (witnesses.length !== command.inputTransactions.length) {
+        throw new Error('Invalid number of witness fields.')
+      }
+
+      const response: BtcSignTransactionResponse = {
+        ...command,
+        payload: {
+          success: true,
+          witnesses
+        }
+      }
+      return response
+    } catch (error) {
+      const response: BtcSignTransactionResponse = {
+        ...command,
+        payload: {
+          success: false,
+          error: (error as Error).message,
+          code:
+            error instanceof TransportStatusError ? error.statusCode : undefined
+        }
+      }
+      return response
+    } finally {
+      await transport?.close()
     }
   }
 }

@@ -72,6 +72,8 @@ function getAppName(coinType: BraveWallet.CoinType): string {
       return 'Filecoin'
     case BraveWallet.CoinType.ETH:
       return 'Ethereum'
+    case BraveWallet.CoinType.BTC:
+      return 'Bitcoin'
   }
 
   assertNotReached(`Unsupported coin ${coinType}`)

@@ -362,6 +362,15 @@ std::vector<uint8_t> BitcoinSerializer::SerializeWitness(
 }
 
 // static
+std::vector<uint8_t> BitcoinSerializer::SerializeOutputsForHardwareSigning(
+    const BitcoinTransaction& tx) {
+  std::vector<uint8_t> result;
+  BtcLikeSerializerStream outputs_stream(&result);
+  SerializeOutputs(tx, outputs_stream);
+  return result;
+}
+
+// static
 std::vector<uint8_t> BitcoinSerializer::SerializeSignedTransaction(
     const BitcoinTransaction& tx) {
   DCHECK(tx.IsSigned());

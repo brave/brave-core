@@ -14,7 +14,8 @@ import {
   DerivationScheme,
   HardwareImportScheme,
   AllHardwareImportSchemes,
-  AccountFromDevice
+  AccountFromDevice,
+  DerivationSchemes
 } from '../../../common/hardware/types'
 
 // Utils
@@ -72,13 +73,39 @@ interface Props {
   onAddAccounts: () => void
 }
 
-const defaultNetworkId = (coin: BraveWallet.CoinType) => {
-  if (coin === BraveWallet.CoinType.ETH) return BraveWallet.MAINNET_CHAIN_ID
-  if (coin === BraveWallet.CoinType.SOL) return BraveWallet.SOLANA_MAINNET
-  if (coin === BraveWallet.CoinType.BTC) return BraveWallet.BITCOIN_MAINNET
-  if (coin === BraveWallet.CoinType.FIL) return BraveWallet.FILECOIN_MAINNET
+const defaultNetworkId = (
+  currentHardwareImportScheme: HardwareImportScheme
+) => {
+  if (currentHardwareImportScheme.coin === BraveWallet.CoinType.ETH) {
+    return BraveWallet.MAINNET_CHAIN_ID
+  }
 
-  assertNotReached(`Unknown coin ${coin}`)
+  if (currentHardwareImportScheme.coin === BraveWallet.CoinType.SOL) {
+    return BraveWallet.SOLANA_MAINNET
+  }
+
+  if (currentHardwareImportScheme.coin === BraveWallet.CoinType.FIL) {
+    return BraveWallet.FILECOIN_MAINNET
+  }
+
+  if (currentHardwareImportScheme.coin === BraveWallet.CoinType.BTC) {
+    if (
+      currentHardwareImportScheme.derivationScheme ===
+      DerivationSchemes.BtcLedgerMainnet
+    ) {
+      return BraveWallet.BITCOIN_MAINNET
+    }
+    if (
+      currentHardwareImportScheme.derivationScheme ===
+      DerivationSchemes.BtcLedgerTestnet
+    ) {
+      return BraveWallet.BITCOIN_TESTNET
+    }
+  }
+
+  assertNotReached(
+    `Unknown currentHardwareImportScheme ${currentHardwareImportScheme}`
+  )
 }
 
 const coinsSupportingSchemesDropdown = [
@@ -110,7 +137,7 @@ export const HardwareWalletAccountsList = ({
   >([])
   const [isLoadingMore, setIsLoadingMore] = React.useState<boolean>(false)
   const [selectedNetworkId, setSelectedNetworkId] = React.useState<EntityId>(
-    defaultNetworkId(coin)
+    defaultNetworkId(currentHardwareImportScheme)
   )
 
   // memos
