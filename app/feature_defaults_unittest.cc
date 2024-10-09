@@ -10,6 +10,7 @@
 #include "base/logging.h"
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/companion/core/features.h"
+#include "chrome/browser/devtools/features.h"
 #include "chrome/browser/preloading/preloading_features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
