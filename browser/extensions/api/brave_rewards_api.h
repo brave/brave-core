@@ -48,16 +48,6 @@ class BraveRewardsOpenRewardsPanelFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsUpdateMediaDurationFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.updateMediaDuration", UNKNOWN)
-
- protected:
-  ~BraveRewardsUpdateMediaDurationFunction() override;
-
-  ResponseAction Run() override;
-};
-
 class BraveRewardsGetPublisherInfoFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getPublisherInfo", UNKNOWN)
@@ -70,15 +60,6 @@ class BraveRewardsGetPublisherInfoFunction : public ExtensionFunction {
  private:
   void OnGetPublisherInfo(const brave_rewards::mojom::Result result,
                           brave_rewards::mojom::PublisherInfoPtr info);
-};
-
-class BraveRewardsSetPublisherIdForTabFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.setPublisherIdForTab", UNKNOWN)
-
- protected:
-  ~BraveRewardsSetPublisherIdForTabFunction() override;
-  ResponseAction Run() override;
 };
 
 class BraveRewardsGetPublisherInfoForTabFunction : public ExtensionFunction {
@@ -95,49 +76,12 @@ class BraveRewardsGetPublisherInfoForTabFunction : public ExtensionFunction {
                                brave_rewards::mojom::PublisherInfoPtr info);
 };
 
-class BraveRewardsGetPublisherPanelInfoFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getPublisherPanelInfo", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetPublisherPanelInfoFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnGetPublisherPanelInfo(const brave_rewards::mojom::Result result,
-                               brave_rewards::mojom::PublisherInfoPtr info);
-};
-
-class BraveRewardsSavePublisherInfoFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.savePublisherInfo", UNKNOWN)
-
- protected:
-  ~BraveRewardsSavePublisherInfoFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnSavePublisherInfo(const brave_rewards::mojom::Result result);
-};
-
 class BraveRewardsTipSiteFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.tipSite", UNKNOWN)
 
  protected:
   ~BraveRewardsTipSiteFunction() override;
-
-  ResponseAction Run() override;
-};
-
-class BraveRewardsGetPublisherDataFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getPublisherData", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetPublisherDataFunction() override;
 
   ResponseAction Run() override;
 };
