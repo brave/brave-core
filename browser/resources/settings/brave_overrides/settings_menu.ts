@@ -102,7 +102,7 @@ RegisterStyleOverride(
       }
 
       a[href] {
-        font-weight: 400 !important;
+        font-weight: 500 !important;
         margin: 0 20px 20px 0 !important;
         margin-inline-start: 0 !important;
         margin-inline-end: 0 !important;
@@ -120,7 +120,6 @@ RegisterStyleOverride(
 
       a[href].selected {
         color: #DB2F04;
-        font-weight: 400 !important;
       }
 
       a:hover, cr-icon:hover {
