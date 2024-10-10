@@ -38,6 +38,7 @@ import("//brave/ios/browser/api/url/headers.gni")
 import("//brave/ios/browser/api/url_sanitizer/headers.gni")
 import("//brave/ios/browser/api/web/ui/headers.gni")
 import("//brave/ios/browser/api/web/web_state/headers.gni")
+import("//brave/ios/browser/api/webcompat_reporter/headers.gni")
 import("//brave/ios/browser/debounce/headers.gni")
 import("//brave/ios/browser/url_sanitizer/headers.gni")
 import("//build/apple/tweak_info_plist.gni")
@@ -124,6 +125,7 @@ brave_core_public_headers += browser_api_features_public_headers
 brave_core_public_headers += credential_provider_public_headers
 brave_core_public_headers += developer_options_code_public_headers
 brave_core_public_headers += browser_api_storekit_receipt_public_headers
+brave_core_public_headers += webcompat_reporter_public_headers
 
 action("brave_core_umbrella_header") {
   script = "//build/config/ios/generate_umbrella_header.py"
@@ -175,6 +177,7 @@ ios_framework_bundle("brave_core_ios_framework") {
   deps += rewards_public_deps
   deps += skus_public_deps
   deps += credential_provider_public_deps
+  deps += webcompat_reporter_public_deps
 
   sources = brave_core_public_headers
 

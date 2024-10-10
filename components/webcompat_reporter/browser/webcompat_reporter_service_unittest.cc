@@ -32,6 +32,10 @@
 
 using testing::_;
 
+namespace {
+constexpr char kChannelMockedValue[] = "MockedChannelValue";
+}  // namespace
+
 namespace webcompat_reporter {
 
 class MockWebcompatReportUploader : public WebcompatReportUploader {
@@ -40,6 +44,19 @@ class MockWebcompatReportUploader : public WebcompatReportUploader {
 
   ~MockWebcompatReportUploader() override {}
   MOCK_METHOD(void, SubmitReport, (const Report& report), (override));
+};
+
+class MockWebCompatServiceDelegate
+    : public WebcompatReporterService::WebCompatServiceDelegate {
+ public:
+  MockWebCompatServiceDelegate() = default;
+  ~MockWebCompatServiceDelegate() override = default;
+
+  MOCK_METHOD(std::optional<std::vector<std::string>>,
+              GetAdblockFilterListNames,
+              (),
+              (const));
+  MOCK_METHOD(std::string, GetChannelName, (), (const));
 };
 
 class WebcompatReporterServiceUnitTest : public testing::Test {
@@ -63,6 +80,18 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
         webcompat_reporter_service_->report_uploader_.get());
   }
 
+  MockWebCompatServiceDelegate* SetUpWebCompatServiceDelegateMock() {
+    auto delegate = std::unique_ptr<MockWebCompatServiceDelegate>(
+        new MockWebCompatServiceDelegate());
+    auto raw_delegate_ptr = delegate.get();
+    webcompat_reporter_service_->SetDelegateForTest(std::move(delegate));
+    return raw_delegate_ptr;
+  }
+
+  void ResetWebCompatServiceDelegateMock() {
+    webcompat_reporter_service_->SetDelegateForTest(nullptr);
+  }
+
  protected:
   std::unique_ptr<WebcompatReporterService> webcompat_reporter_service_;
   std::unique_ptr<component_updater::ComponentUpdateService> updater_;
@@ -73,9 +102,9 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithReportPropsOverride) {
   Report report_source;
   report_source.channel = "channel";
   report_source.brave_version = "1.231.45";
-  report_source.shields_enabled = true;
-  report_source.language_farbling = true;
-  report_source.brave_vpn_connected = true;
+  report_source.shields_enabled = "true";
+  report_source.language_farbling = "true";
+  report_source.brave_vpn_connected = "true";
   report_source.ad_block_setting = "ad_block_setting";
   report_source.fp_block_setting = "fp_block_setting";
   report_source.ad_block_list_names = "ad_block_list_names";
@@ -84,8 +113,8 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithReportPropsOverride) {
   test_dict.Set("key1", "val1");
   test_dict.Set("key1", "val1");
   report_source.ad_block_components = base::Value(test_dict.Clone());
-  report_source.details = base::Value(test_dict.Clone());
-  report_source.contact = base::Value(test_dict.Clone());
+  report_source.details = "details";
+  report_source.contact = "contact";
   report_source.report_url = GURL("https://abc.url/p1/p2");
 
   EXPECT_CALL(*static_cast<component_updater::MockComponentUpdateService*>(
@@ -122,6 +151,8 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
   std::vector<component_updater::ComponentInfo> get_components_ret_value{
       component_updater::ComponentInfo("adcocjohghhfpidemphmcmlmhnfgikei", "fp",
                                        u"name", base::Version("1.234"), "c")};
+  std::vector<std::string> get_adblock_list_names_ret_value{"val1", "val2",
+                                                            "val3"};
   EXPECT_CALL(*static_cast<component_updater::MockComponentUpdateService*>(
                   updater_.get()),
               GetComponents)
@@ -132,7 +163,7 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
       .WillOnce([&](const Report& report) {
         // check values, which must be filled by the service
         EXPECT_TRUE(report.channel.has_value());
-        EXPECT_EQ(report.channel, brave::GetChannelName());
+        EXPECT_EQ(report.channel, kChannelMockedValue);
         EXPECT_TRUE(report.brave_version.has_value());
         EXPECT_EQ(report.brave_version,
                   version_info::GetBraveVersionWithoutChromiumMajorVersion());
@@ -153,10 +184,20 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
         EXPECT_EQ(report_source.language_farbling, report.language_farbling);
         EXPECT_EQ(report_source.brave_vpn_connected,
                   report.brave_vpn_connected);
-        EXPECT_EQ(report_source.ad_block_list_names,
-                  report.ad_block_list_names);
+
+        EXPECT_TRUE(report.ad_block_list_names.has_value());
+        EXPECT_EQ(base::JoinString(get_adblock_list_names_ret_value, ","),
+                  report.ad_block_list_names.value());
         EXPECT_EQ(report_source.languages, report.languages);
       });
+  auto* delegate_mock = SetUpWebCompatServiceDelegateMock();
+  EXPECT_CALL(*delegate_mock, GetChannelName)
+      .Times(1)
+      .WillOnce(testing::Return(kChannelMockedValue));
+  EXPECT_CALL(*delegate_mock, GetAdblockFilterListNames)
+      .Times(1)
+      .WillOnce(testing::Return(get_adblock_list_names_ret_value));
+
   webcompat_reporter_service_->SubmitWebcompatReport(report_source);
   task_environment_.RunUntilIdle();
 }
@@ -169,23 +210,15 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojo) {
       webcompat_reporter::mojom::ComponentInfo::New("name", "id", "version"));
   std::vector<uint8_t> screenshot{1, 2, 3, 4};
   auto report_info = webcompat_reporter::mojom::ReportInfo::New(
-      "channel", "brave_version", "https://abc.url/p1/p2", true,
+      "channel", "brave_version", "https://abc.url/p1/p2", "true",
       "ad_block_setting", "fp_block_setting", "ad_block_list_names",
-      "languages", true, true, key_val_data, key_val_data,
-      std::move(components), screenshot);
+      "languages", "true", "true", "details", "contact", std::move(components),
+      screenshot);
 
   EXPECT_CALL(*static_cast<component_updater::MockComponentUpdateService*>(
                   updater_.get()),
               GetComponents)
       .Times(0);
-
-  const auto check_report_dict =
-      [](const std::optional<base::Value>& dict_to_check) {
-        EXPECT_TRUE(dict_to_check);
-        EXPECT_TRUE(dict_to_check->is_dict());
-        EXPECT_EQ(*dict_to_check->GetDict().FindString("key1"), "val1");
-        EXPECT_EQ(*dict_to_check->GetDict().FindString("key1"), "val1");
-      };
 
   EXPECT_CALL(*GetMockWebcompatReportUploader(), SubmitReport(_))
       .Times(1)
@@ -193,16 +226,16 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojo) {
         EXPECT_EQ(report.channel, "channel");
         EXPECT_EQ(report.brave_version, "brave_version");
         EXPECT_EQ(report.report_url, "https://abc.url/p1/p2");
-        EXPECT_TRUE(report.shields_enabled);
+        EXPECT_EQ(report.shields_enabled, "true");
         EXPECT_EQ(report.ad_block_setting, "ad_block_setting");
         EXPECT_EQ(report.fp_block_setting, "fp_block_setting");
         EXPECT_EQ(report.ad_block_list_names, "ad_block_list_names");
         EXPECT_EQ(report.languages, "languages");
-        EXPECT_TRUE(report.language_farbling);
-        EXPECT_TRUE(report.brave_vpn_connected);
+        EXPECT_EQ(report.language_farbling, "true");
+        EXPECT_EQ(report.brave_vpn_connected, "true");
 
-        check_report_dict(report.details);
-        check_report_dict(report.contact);
+        EXPECT_EQ(report.details, "details");
+        EXPECT_EQ(report.contact, "contact");
 
         EXPECT_TRUE(report.ad_block_components);
         EXPECT_TRUE(report.ad_block_components->is_list());
@@ -219,11 +252,17 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojo) {
         EXPECT_TRUE(report.screenshot_png);
         EXPECT_EQ(report.screenshot_png.value(), screenshot);
       });
+  auto* delegate_mock = SetUpWebCompatServiceDelegateMock();
+  EXPECT_CALL(*delegate_mock, GetChannelName).Times(0);
+  EXPECT_CALL(*delegate_mock, GetAdblockFilterListNames).Times(0);
+
   webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info));
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojoWithNoPropsOverride) {
+  std::vector<std::string> get_adblock_list_names_ret_value{"val1", "val2",
+                                                            "val3"};
   auto report_info = webcompat_reporter::mojom::ReportInfo::New();
   std::vector<component_updater::ComponentInfo> get_components_ret_value{
       component_updater::ComponentInfo("adcocjohghhfpidemphmcmlmhnfgikei", "fp",
@@ -238,7 +277,7 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojoWithNoPropsOverride) {
       .WillOnce([&](const Report& report) {
         // check values, which must be filled by the service
         EXPECT_TRUE(report.channel.has_value());
-        EXPECT_EQ(report.channel, brave::GetChannelName());
+        EXPECT_EQ(report.channel, kChannelMockedValue);
         EXPECT_TRUE(report.brave_version.has_value());
         EXPECT_EQ(report.brave_version,
                   version_info::GetBraveVersionWithoutChromiumMajorVersion());
@@ -248,6 +287,9 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojoWithNoPropsOverride) {
         EXPECT_TRUE(ad_block_components.front().is_dict());
         EXPECT_EQ(*ad_block_components.front().GetDict().FindString("id"),
                   "adcocjohghhfpidemphmcmlmhnfgikei");
+        EXPECT_TRUE(report.ad_block_list_names.has_value());
+        EXPECT_EQ(base::JoinString(get_adblock_list_names_ret_value, ","),
+                  report.ad_block_list_names.value());
 
         // check values, which we pass to the service
         EXPECT_FALSE(report.report_url);
@@ -258,9 +300,16 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojoWithNoPropsOverride) {
         EXPECT_FALSE(report.ad_block_setting);
         EXPECT_FALSE(report.language_farbling);
         EXPECT_FALSE(report.brave_vpn_connected);
-        EXPECT_FALSE(report.ad_block_list_names);
         EXPECT_FALSE(report.languages);
       });
+  auto* delegate_mock = SetUpWebCompatServiceDelegateMock();
+  EXPECT_CALL(*delegate_mock, GetChannelName)
+      .Times(1)
+      .WillOnce(testing::Return(kChannelMockedValue));
+  EXPECT_CALL(*delegate_mock, GetAdblockFilterListNames)
+      .Times(1)
+      .WillOnce(testing::Return(get_adblock_list_names_ret_value));
+
   webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info));
   task_environment_.RunUntilIdle();
 }

@@ -3,11 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShields
 import BraveUI
 import BraveVPN
 import Data
 import DesignSystem
+import Shared
 import Strings
 import SwiftUI
 
@@ -109,20 +111,27 @@ struct SubmitReportView: View {
   @MainActor func createAndSubmitReport() async {
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing)
 
-    let report = WebcompatReporter.Report(
-      cleanedURL: url,
+    await WebcompatReporterUploader.send(
+      braveVersion: String(
+        format: "%@ (%@)",
+        AppInfo.appVersion,
+        AppInfo.buildNumber
+      ),
+      reportUrl: url.absoluteString,
+      fpBlockSetting: domain.finterprintProtectionLevel,
+      shieldsEnabled: !domain.areAllShieldsOff,
+      adBlockSetting: domain.globalBlockAdsAndTrackingLevel,
+      adBlockListNames: FilterListStorage.shared.filterLists
+        .compactMap({ return $0.isEnabled ? $0.entry.title : nil })
+        .joined(separator: ","),
+      languages: Locale.current.language.languageCode?.identifier,
+      languageFarbling: true,
+      braveVpnConnected: BraveVPN.isConnected,
       additionalDetails: additionalDetails,
       contactInfo: contactDetails,
-      areShieldsEnabled: !domain.areAllShieldsOff,
-      adBlockLevel: domain.globalBlockAdsAndTrackingLevel,
-      fingerprintProtectionLevel: domain.finterprintProtectionLevel,
-      adBlockListTitles: FilterListStorage.shared.filterLists.compactMap({
-        return $0.isEnabled ? $0.entry.title : nil
-      }),
-      isVPNEnabled: BraveVPN.isConnected
+      adBlockComponentsVersion: nil,
+      screenshotPng: nil
     )
-
-    await WebcompatReporter.send(report: report)
   }
 }
 
