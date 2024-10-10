@@ -14,11 +14,11 @@ import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.infobar.BraveInfoBarIdentifier;
 import org.chromium.chrome.browser.settings.BraveSyncScreensPreference;
-import org.chromium.chrome.browser.settings.SettingsLauncherFactory;
+import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.ui.messages.infobar.BraveSimpleConfirmInfoBarBuilder;
 import org.chromium.chrome.browser.ui.messages.infobar.SimpleConfirmInfoBarBuilder;
-import org.chromium.components.browser_ui.settings.SettingsLauncher;
+import org.chromium.components.browser_ui.settings.SettingsNavigation;
 
 public class BraveSyncAccountDeletedInformer {
     private static final String TAG = "SyncAccountDeleted";
@@ -59,9 +59,9 @@ public class BraveSyncAccountDeletedInformer {
                             // Pressing link `re-create the account`
                             // Don't show the informer again
                             disableInformer();
-                            SettingsLauncher settingsLauncher =
-                                    SettingsLauncherFactory.createSettingsLauncher();
-                            settingsLauncher.launchSettingsActivity(
+                            SettingsNavigation settingsLauncher =
+                                    SettingsNavigationFactory.createSettingsNavigation();
+                            settingsLauncher.startSettings(
                                     ContextUtils.getApplicationContext(),
                                     BraveSyncScreensPreference.class);
                             return false;
