@@ -653,12 +653,12 @@
     public <init>(...);
 }
 
--keep class org.chromium.base.cached_flags.CachedFlag {
+-keep class org.chromium.components.cached_flags.CachedFlag {
     *** mDefaultValue;
     <init>(...);
 }
 
--keep class org.chromium.base.cached_flags.BraveCachedFlag {
+-keep class org.chromium.components.cached_flags.BraveCachedFlag {
     <init>(...);
 }
 
