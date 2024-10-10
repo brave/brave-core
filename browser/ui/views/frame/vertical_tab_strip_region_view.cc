@@ -11,10 +11,12 @@
 #include <utility>
 #include <vector>
 
+#include "base/functional/bind.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
@@ -625,6 +627,11 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
 
   auto* prefs = browser_->profile()->GetPrefs();
 
+  sidebar_side_.Init(
+      prefs::kSidePanelHorizontalAlignment, prefs,
+      base::BindRepeating(&VerticalTabStripRegionView::OnBrowserPanelsMoved,
+                          base::Unretained(this)));
+
   expanded_width_pref_.Init(
       brave_tabs::kVerticalTabsExpandedWidth, prefs,
       base::BindRepeating(
@@ -656,7 +663,6 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
       base::BindRepeating(
           &VerticalTabStripRegionView::OnFloatingModePrefChanged,
           base::Unretained(this)));
-  OnFloatingModePrefChanged();
 
 #if BUILDFLAG(IS_MAC)
   show_toolbar_on_fullscreen_pref_.Init(
@@ -667,9 +673,8 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
 
   vertical_tab_on_right_.Init(
       brave_tabs::kVerticalTabsOnRight, browser()->profile()->GetPrefs(),
-      base::BindRepeating(
-          &VerticalTabStripRegionView::OnVerticalTabPositionChanged,
-          base::Unretained(this)));
+      base::BindRepeating(&VerticalTabStripRegionView::OnBrowserPanelsMoved,
+                          base::Unretained(this)));
 
   widget_observation_.Observe(browser_view->GetWidget());
 
@@ -680,6 +685,9 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
          BrowserList::GetInstance()->end())
       << "Browser shouldn't be added at this point.";
   BrowserList::AddObserver(this);
+
+  // Note: This should happen after all the PrefMembers have been initialized.
+  OnFloatingModePrefChanged();
 }
 
 VerticalTabStripRegionView::~VerticalTabStripRegionView() {
@@ -945,7 +953,7 @@ void VerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
   UpdateBorder();
 }
 
-void VerticalTabStripRegionView::OnVerticalTabPositionChanged() {
+void VerticalTabStripRegionView::OnBrowserPanelsMoved() {
   UpdateBorder();
   PreferredSizeChanged();
 }
@@ -1091,8 +1099,10 @@ void VerticalTabStripRegionView::OnBoundsChanged(
 #if DCHECK_IS_ON()
   if (auto width = GetContentsBounds().width();
       width && !IsBrowserFullscren()) {
-    CHECK_GE(width, tabs::kVerticalTabMinWidth +
-                        tabs::kMarginForVerticalTabContainers * 2);
+    CHECK_GE(
+        width,
+        tabs::kVerticalTabMinWidth + tabs::kMarginForVerticalTabContainers * 2 -
+            BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_));
   }
 #endif
 }
@@ -1213,10 +1223,22 @@ void VerticalTabStripRegionView::UpdateBorder() {
            state_ == State::kFloating;
   };
 
-  gfx::Insets border_insets =
-      (!vertical_tab_on_right_.GetPrefName().empty() && *vertical_tab_on_right_)
-          ? gfx::Insets::TLBR(0, 1, 0, 0)
-          : gfx::Insets::TLBR(0, 0, 0, 1);
+  // At this point |sidebar_side_| needs to be initialized.
+  CHECK(!sidebar_side_.GetPrefName().empty());
+
+  // If the sidebar is on the same side as the vertical tab strip, we shouldn't
+  // take away the margin on the vertical tabs, because the sidebar will be
+  // between it and the web_contents.
+  bool is_on_right =
+      !vertical_tab_on_right_.GetPrefName().empty() && *vertical_tab_on_right_;
+  bool sidebar_on_same_side = sidebar_side_.GetValue() == is_on_right;
+  int inset =
+      1 -
+      (sidebar_on_same_side
+           ? 0
+           : BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_));
+  gfx::Insets border_insets = (is_on_right) ? gfx::Insets::TLBR(0, inset, 0, 0)
+                                            : gfx::Insets::TLBR(0, 0, 0, inset);
 
   if (show_visible_border()) {
     SetBorder(views::CreateSolidSidedBorder(

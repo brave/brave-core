@@ -144,7 +144,7 @@ class VerticalTabStripRegionView : public views::View,
   void UpdateStateAfterDragAndDropFinished(State original_state);
 
   void OnShowVerticalTabsPrefChanged();
-  void OnVerticalTabPositionChanged();
+  void OnBrowserPanelsMoved();
 
   void UpdateLayout(bool in_destruction = false);
 
@@ -198,6 +198,7 @@ class VerticalTabStripRegionView : public views::View,
   State state_ = State::kExpanded;
   State last_state_ = State::kExpanded;
 
+  BooleanPrefMember sidebar_side_;
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember collapsed_pref_;
   BooleanPrefMember expanded_state_per_window_pref_;
