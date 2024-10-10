@@ -8,6 +8,7 @@
 
 #include "base/command_line.h"
 #include "base/files/file_util.h"
+#include "base/test/run_until.h"
 #include "brave/browser/onboarding/onboarding_tab_helper.h"
 #include "brave/browser/onboarding/pref_names.h"
 #include "chrome/browser/first_run/first_run.h"
@@ -107,7 +108,10 @@ TEST_F(OnboardingTest, HelperCreationTestForNonFirstRun) {
   TestingBrowserProcess::GetGlobal()->local_state()->SetTime(
       onboarding::prefs::kLastShieldsIconHighlightTime, base::Time());
   OnboardingTabHelper::MaybeCreateForWebContents(web_contents.get());
-  tab_helper = OnboardingTabHelper::FromWebContents(web_contents.get());
+  ASSERT_TRUE(base::test::RunUntil([&tab_helper, &web_contents]() {
+    tab_helper = OnboardingTabHelper::FromWebContents(web_contents.get());
+    return tab_helper;
+  }));
   ASSERT_TRUE(tab_helper->CanHighlightBraveShields());
 
   // Check exiting tab doesn't give highlight when 7 days passed.
