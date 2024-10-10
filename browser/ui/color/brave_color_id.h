@@ -117,12 +117,13 @@
 // as brave_color_mixer depends on this without deps to //ui/views:flags.
 // But it's safe have without the guard as this file is included only when
 // !is_android.
-#define BRAVE_VERTICAL_TAB_COLOR_IDS                   \
-    E_CPONLY(kColorBraveVerticalTabSeparator)          \
-    E_CPONLY(kColorBraveVerticalTabActiveBackground)   \
-    E_CPONLY(kColorBraveVerticalTabInactiveBackground) \
-    E_CPONLY(kColorBraveVerticalTabNTBIconColor)       \
-    E_CPONLY(kColorBraveVerticalTabNTBTextColor)       \
+#define BRAVE_VERTICAL_TAB_COLOR_IDS                        \
+    E_CPONLY(kColorBraveVerticalTabSeparator)               \
+    E_CPONLY(kColorBraveVerticalTabActiveBackground)        \
+    E_CPONLY(kColorBraveVerticalTabInactiveBackground)      \
+    E_CPONLY(kColorBraveVerticalTabInactiveHoverBackground) \
+    E_CPONLY(kColorBraveVerticalTabNTBIconColor)            \
+    E_CPONLY(kColorBraveVerticalTabNTBTextColor)            \
     E_CPONLY(kColorBraveVerticalTabNTBShortcutTextColor)
 
 #define BRAVE_SHARED_PINNED_TAB_COLOR_IDS                    \
