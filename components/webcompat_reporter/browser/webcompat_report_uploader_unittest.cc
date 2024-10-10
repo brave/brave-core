@@ -63,6 +63,7 @@ class WebcompatReportUploaderUnitTest : public testing::Test {
     EXPECT_TRUE(content_vals.is_dict());
     auto& content_dict_vals = content_vals.GetDict();
 
+    base::RunLoop run_loop;
     auto request_payload_check_callback =
         base::BindLambdaForTesting([&](const std::string& request_payload) {
           auto request_vals = base::test::ParseJson(request_payload);
@@ -75,10 +76,12 @@ class WebcompatReportUploaderUnitTest : public testing::Test {
             EXPECT_NE(request_dict_vals.Find(it->first), nullptr);
             EXPECT_EQ(*(request_dict_vals.Find(it->first)), it->second);
           }
+          run_loop.Quit();
         });
 
     SetInterceptor(&request_payload_check_callback);
     GetWebcompatUploader()->SubmitReport(report);
+    run_loop.Run();
   }
 
  protected:
@@ -147,7 +150,6 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
           report.languages->c_str(), report.shields_enabled ? "true" : "false",
           report.report_url.value().spec().c_str(),
           report.brave_version->c_str()));
-  task_environment_.RunUntilIdle();
 }
 
 }  // namespace webcompat_reporter

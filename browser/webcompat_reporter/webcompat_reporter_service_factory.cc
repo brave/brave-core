@@ -61,8 +61,9 @@ KeyedService* WebcompatReporterServiceFactory::BuildServiceInstanceFor(
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
   return new WebcompatReporterService(
       std::make_unique<WebcompatReporterServiceDelegateImpl>(
+          g_browser_process->component_updater(),
           g_brave_browser_process->ad_block_service()),
-      g_browser_process->component_updater(), shared_url_loader_factory);
+      shared_url_loader_factory);
 }
 
 content::BrowserContext*
