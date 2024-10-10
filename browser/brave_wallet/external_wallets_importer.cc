@@ -17,6 +17,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/types/cxx23_to_underlying.h"
+#include "base/types/fixed_array.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "brave/third_party/argon2/src/include/argon2.h"
@@ -103,7 +104,7 @@ std::string GetLegacyCryptoWalletsPassword(const std::string& password,
     }
   }
 
-  std::vector<uint8_t> master_key(*hash_len);
+  base::FixedArray<uint8_t> master_key(*hash_len);
   if (argon2id_hash_raw(*time, *mem, 1, password.data(), password.size(),
                         salt_str->data(), character_count, master_key.data(),
                         *hash_len) != ARGON2_OK) {
@@ -111,7 +112,7 @@ std::string GetLegacyCryptoWalletsPassword(const std::string& password,
     return std::string();
   }
   const std::string info = "metamask-encryptor";
-  std::vector<uint8_t> sub_key(*hash_len);
+  base::FixedArray<uint8_t> sub_key(*hash_len);
   if (!HKDF(sub_key.data(), sub_key.size(), EVP_sha512(), master_key.data(),
             master_key.size(), nullptr, 0, (uint8_t*)info.data(),
             info.size())) {
