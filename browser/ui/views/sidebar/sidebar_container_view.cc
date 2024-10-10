@@ -835,6 +835,40 @@ void SidebarContainerView::OnSidePanelDidClose() {
   UpdateActiveItemState();
 }
 
+void SidebarContainerView::OnTabStripModelChanged(
+    TabStripModel* tab_strip_model,
+    const TabStripModelChange& change,
+    const TabStripSelectionChange& selection) {
+  if ((change.type() == TabStripModelChange::kReplaced)) {
+    // Pre-cr129's change
+    // https://chromium.googlesource.com/chromium/src/+/2fd6b53ce, we would
+    // handle shared pinned tab moving from one window to another here by
+    // starting to observe the new contents registry and stoping observing the
+    // old contents registry. But since the registry is no longer associated
+    // with the contents and is now associated with the tab instead we don't
+    // need to do the swap here. However, we may need to take some action here
+    // to fix https://github.com/brave/brave-browser/issues/40681.
+
+    // For AI Chat, if the contents got replaced then the AI Chat UI associated
+    // with that contetnts will no longer work, so just close it.
+    auto* replace = change.GetReplace();
+    // old_contents is already removed from the tab, so use the new_contents to
+    // get the registry.
+    auto* registry = SidePanelRegistry::GetDeprecated(replace->new_contents);
+    if (registry) {
+      if (auto* entry = registry->GetEntryForKey(
+              SidePanelEntry::Key(SidePanelEntryId::kChatUI))) {
+        if (side_panel_coordinator_->IsSidePanelEntryShowing(entry->key())) {
+          side_panel_coordinator_->Close();
+        } else {
+          entry->ClearCachedView();
+        }
+      }
+    }
+    return;
+  }
+}
+
 void SidebarContainerView::StopObservingContextualSidePanelEntry(
     content::WebContents* contents) {
   auto* tab = tabs::TabInterface::GetFromContents(contents);

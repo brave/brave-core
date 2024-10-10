@@ -124,6 +124,10 @@ class SidebarContainerView
   void OnEntryHidden(SidePanelEntry* entry) override;
 
   // TabStripModelObserver:
+  void OnTabStripModelChanged(
+      TabStripModel* tab_strip_model,
+      const TabStripModelChange& change,
+      const TabStripSelectionChange& selection) override;
   void OnTabWillBeRemoved(content::WebContents* contents, int index) override;
 
   // SidePanelViewStateObserver:
