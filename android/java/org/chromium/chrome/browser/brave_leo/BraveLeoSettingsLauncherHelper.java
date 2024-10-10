@@ -12,16 +12,16 @@ import org.jni_zero.CalledByNative;
 
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveLeoPreferences;
-import org.chromium.chrome.browser.settings.SettingsLauncherFactory;
+import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.components.browser_ui.settings.SettingsLauncher;
+import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.base.WindowAndroid;
 
 /** Launches Brave Leo settings page or subscription. */
 public class BraveLeoSettingsLauncherHelper {
     private static final String ACCOUNT_PAGE_URL = "https://account.brave.com/";
-    private static SettingsLauncher sLauncher;
+    private static SettingsNavigation sLauncher;
 
     @CalledByNative
     private static void showBraveLeoSettings(WebContents webContents) {
@@ -29,7 +29,7 @@ public class BraveLeoSettingsLauncherHelper {
         if (context == null) {
             return;
         }
-        getLauncher().launchSettingsActivity(context, BraveLeoPreferences.class);
+        getLauncher().startSettings(context, BraveLeoPreferences.class);
     }
 
     @CalledByNative
@@ -71,7 +71,7 @@ public class BraveLeoSettingsLauncherHelper {
         activity.finish();
     }
 
-    private static SettingsLauncher getLauncher() {
-        return sLauncher != null ? sLauncher : SettingsLauncherFactory.createSettingsLauncher();
+    private static SettingsNavigation getLauncher() {
+        return sLauncher != null ? sLauncher : SettingsNavigationFactory.createSettingsNavigation();
     }
 }
