@@ -33,6 +33,7 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "net/base/network_change_notifier.h"
+#include "services/data_decoder/public/cpp/data_decoder.h"
 #include "services/network/public/cpp/network_connection_tracker.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -169,6 +170,12 @@ class BraveNewsController
                                SubscribeToNewDirectFeedCallback callback,
                                bool is_valid,
                                const std::string& feed_title);
+  void OnGetImageDataFetched(GetImageDataCallback callback,
+                             const bool is_padded,
+                             const int response_code,
+                             const std::string& body);
+  void OnGetImageDataDecoded(GetImageDataCallback callback,
+                             const SkBitmap& decoded_image);
 
   void NotifyPublishersChanged(mojom::PublishersEventPtr event);
   void NotifyChannelsChanged(mojom::ChannelsEventPtr event);
@@ -215,6 +222,12 @@ class BraveNewsController
   mojo::RemoteSet<mojom::ChannelsListener> channels_listeners_;
   mojo::RemoteSet<mojom::FeedListener> feed_listeners_;
   mojo::RemoteSet<mojom::ConfigurationListener> configuration_listeners_;
+
+  // The instance of the Data Decoder used to perform any image decoding
+  // operations. The underlying service instance is
+  // started lazily when needed and torn down when not in use.
+  data_decoder::DataDecoder data_decoder_;
+
   base::WeakPtrFactory<BraveNewsController> weak_ptr_factory_{this};
 };
 

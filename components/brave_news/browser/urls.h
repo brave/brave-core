@@ -13,6 +13,7 @@ namespace brave_news {
 inline constexpr char kRegionUrlPart[] = "global.";
 
 std::string GetHostname();
+std::string GetMatchingPCDNHostname();
 
 }  // namespace brave_news
 
