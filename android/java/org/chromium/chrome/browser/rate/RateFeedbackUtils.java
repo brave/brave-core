@@ -35,7 +35,7 @@ import java.nio.charset.StandardCharsets;
 
 public class RateFeedbackUtils {
     private static final String TAG = "Rate_Brave";
-    private static final String RATE_URL = "https://laptop-updates.brave.com/1/feedback";
+    private static final String RATE_URL = "https://feedback.brave.com/1/feedback";
 
     public interface RateFeedbackCallback {
         void rateFeedbackSubmitted();
@@ -69,8 +69,9 @@ public class RateFeedbackUtils {
 
     private static void sendRateFeedback(String userSelection, String userFeedback) {
         Context context = ContextUtils.getApplicationContext();
-        String appVersion = AboutChromeSettings.getApplicationVersion(
-                context, AboutSettingsBridge.getApplicationVersion());
+        String appVersion =
+                AboutChromeSettings.getApplicationVersion(
+                        context, AboutSettingsBridge.getApplicationVersion());
         StringBuilder sb = new StringBuilder();
 
         Profile mProfile = ProfileManager.getLastUsedRegularProfile();
@@ -80,8 +81,10 @@ public class RateFeedbackUtils {
         HttpURLConnection urlConnection = null;
         try {
             URL url = new URL(RATE_URL);
-            urlConnection = (HttpURLConnection) ChromiumNetworkAdapter.openConnection(
-                    url, NetworkTrafficAnnotationTag.MISSING_TRAFFIC_ANNOTATION);
+            urlConnection =
+                    (HttpURLConnection)
+                            ChromiumNetworkAdapter.openConnection(
+                                    url, NetworkTrafficAnnotationTag.MISSING_TRAFFIC_ANNOTATION);
             urlConnection.setDoOutput(true);
             urlConnection.setRequestMethod("POST");
             urlConnection.setUseCaches(false);
