@@ -61,7 +61,7 @@ class SidebarContainerView
       public TabStripModelObserver {
   METADATA_HEADER(SidebarContainerView, views::View)
  public:
-  SidebarContainerView(BraveBrowser* browser,
+  SidebarContainerView(Browser* browser,
                        SidePanelCoordinator* side_panel_coordinator,
                        std::unique_ptr<BraveSidePanel> side_panel);
   ~SidebarContainerView() override;
@@ -187,7 +187,11 @@ class SidebarContainerView
   void StopObservingContextualSidePanelRegistry(content::WebContents* contents);
   void StopObservingContextualSidePanelRegistry(SidePanelRegistry* registry);
 
-  raw_ptr<BraveBrowser> browser_ = nullptr;
+  // Casts |browser_| to BraveBrowser, as storing it as BraveBrowser would cause
+  // a precocious downcast.
+  BraveBrowser* GetBraveBrowser() const;
+
+  raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<SidePanelCoordinator> side_panel_coordinator_ = nullptr;
   raw_ptr<BraveSidePanel> side_panel_ = nullptr;
   raw_ptr<sidebar::SidebarModel> sidebar_model_ = nullptr;

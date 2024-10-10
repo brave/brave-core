@@ -114,7 +114,7 @@ class SidebarContainerView::BrowserWindowEventObserver
 };
 
 SidebarContainerView::SidebarContainerView(
-    BraveBrowser* browser,
+    Browser* browser,
     SidePanelCoordinator* side_panel_coordinator,
     std::unique_ptr<BraveSidePanel> side_panel)
     : views::AnimationDelegateViews(this),
@@ -134,7 +134,7 @@ SidebarContainerView::~SidebarContainerView() = default;
 void SidebarContainerView::Init() {
   initialized_ = true;
 
-  sidebar_model_ = browser_->sidebar_controller()->model();
+  sidebar_model_ = GetBraveBrowser()->sidebar_controller()->model();
   sidebar_model_observation_.Observe(sidebar_model_);
   browser_->tab_strip_model()->AddObserver(this);
 
@@ -157,7 +157,8 @@ void SidebarContainerView::Init() {
 
   AddChildViews();
   UpdateToolbarButtonVisibility();
-  SetSidebarShowOption(GetSidebarService(browser_)->GetSidebarShowOption());
+  SetSidebarShowOption(
+      GetSidebarService(GetBraveBrowser())->GetSidebarShowOption());
 }
 
 void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
@@ -275,8 +276,8 @@ void SidebarContainerView::UpdateBackground() {
 }
 
 void SidebarContainerView::AddChildViews() {
-  sidebar_control_view_ =
-      AddChildView(std::make_unique<SidebarControlView>(this, browser_));
+  sidebar_control_view_ = AddChildView(
+      std::make_unique<SidebarControlView>(this, GetBraveBrowser()));
   sidebar_control_view_->SetPaintToLayer();
 
   // To prevent showing layered-children while its bounds is invisible.
@@ -698,7 +699,7 @@ void SidebarContainerView::UpdateToolbarButtonVisibility() {
   // This is similar to how chromium's side_panel_coordinator View
   // also has some control on the toolbar button.
   auto has_panel_item =
-      GetSidebarService(browser_)->GetDefaultPanelItem().has_value();
+      GetSidebarService(GetBraveBrowser())->GetDefaultPanelItem().has_value();
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
   auto* brave_toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
   if (brave_toolbar && brave_toolbar->side_panel_button()) {
@@ -728,7 +729,7 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
   // as well as Sidebar as there are other ways than Sidebar for SidePanel
   // items to be shown and hidden, e.g. toolbar button.
   DVLOG(1) << "Panel shown: " << SidePanelEntryIdToString(entry->key().id());
-  auto* controller = browser_->sidebar_controller();
+  auto* controller = GetBraveBrowser()->sidebar_controller();
 
   // Handling if |entry| is managed one.
   for (const auto& item : sidebar_model_->GetAllSidebarItems()) {
@@ -760,7 +761,7 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
 void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   // Make sure item is deselected
   DVLOG(1) << "Panel hidden: " << SidePanelEntryIdToString(entry->key().id());
-  auto* controller = browser_->sidebar_controller();
+  auto* controller = GetBraveBrowser()->sidebar_controller();
 
   // Handling if |entry| is managed one.
   for (const auto& item : sidebar_model_->GetAllSidebarItems()) {
@@ -928,6 +929,10 @@ void SidebarContainerView::StartObservingContextualSidePanelRegistry(
       OnEntryShown(*active_entry);
     }
   }
+}
+
+BraveBrowser* SidebarContainerView::GetBraveBrowser() const {
+  return static_cast<BraveBrowser*>(browser_.get());
 }
 
 BEGIN_METADATA(SidebarContainerView)
