@@ -59,8 +59,11 @@ public class IncognitoNewTabPageView extends FrameLayout {
         void onLoadingComplete();
     }
 
-    /** Default constructor needed to inflate via XML.
-     * @noinspection ConstantValue*/
+    /**
+     * Default constructor needed to inflate via XML.
+     *
+     * @noinspection ConstantValue
+     */
     public IncognitoNewTabPageView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -69,8 +72,7 @@ public class IncognitoNewTabPageView extends FrameLayout {
         assert R.string.accessibility_new_incognito_tab_page > 0
                 : "Something has changed in the upstream!";
 
-        assert R.drawable.incognito_splash > 0
-                : "Something has changed in the upstream!";
+        assert R.drawable.incognito_splash > 0 : "Something has changed in the upstream!";
     }
 
     @Override
