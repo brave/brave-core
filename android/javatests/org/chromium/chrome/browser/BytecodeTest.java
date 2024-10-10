@@ -1468,15 +1468,15 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/BraveAppHooks"));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/base/cached_flags/CachedFlag",
-                        "org/chromium/base/cached_flags/BraveCachedFlag",
+                        "org/chromium/components/cached_flags/CachedFlag",
+                        "org/chromium/components/cached_flags/BraveCachedFlag",
                         FeatureMap.class,
                         String.class,
                         boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/base/cached_flags/CachedFlag",
-                        "org/chromium/base/cached_flags/BraveCachedFlag",
+                        "org/chromium/components/cached_flags/CachedFlag",
+                        "org/chromium/components/cached_flags/BraveCachedFlag",
                         FeatureMap.class,
                         String.class,
                         boolean.class,
