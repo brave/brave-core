@@ -1,5 +1,9 @@
 diff --git a/base/BUILD.gn b/base/BUILD.gn
+<<<<<<< HEAD
 index aa1654d428420e99bdce3abf3140f764d73e7c48..cbe7fe8fa1f99202d4904ee3d9ccb6355312146b 100644
+=======
+index 3a08c3bde5977eeb0bfa1f14713b715394f2cd6f..1a891b80b9b1e93ce7a40e1a3bdd02d55507533a 100644
+>>>>>>> a6a09ab89ec ([Android] Move base.cached_flags to components.cached_flags)
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
 @@ -4417,6 +4417,7 @@ if (is_android) {
@@ -18,11 +22,3 @@ index aa1654d428420e99bdce3abf3140f764d73e7c48..cbe7fe8fa1f99202d4904ee3d9ccb635
    }
  
    # Most cached_flags code is in components/cached_flags. These classes are
-@@ -4900,6 +4902,7 @@ if (is_android) {
-       "android/java/src/org/chromium/base/cached_flags/ValuesOverridden.java",
-       "android/java/src/org/chromium/base/cached_flags/ValuesReturned.java",
-     ]
-+    sources += brave_base_cached_flags_java_sources
-   }
- 
-   android_aidl("process_launcher_aidl") {

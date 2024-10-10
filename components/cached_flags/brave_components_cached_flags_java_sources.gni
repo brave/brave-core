@@ -6,4 +6,4 @@
 # Since CachedFlag that we extend and ChromeFeatureList that we patch are parts of the same
 # component, we have to embed our class to this component. Otherwise we will have cycled
 # dependency.
-brave_base_cached_flags_java_sources = [ "//brave/base/android/java/src/org/chromium/base/cached_flags/BraveCachedFlag.java" ]
+brave_components_cached_flags_java_sources = [ "//brave/components/cached_flags/android/java/src/org/chromium/components/cached_flags/BraveCachedFlag.java" ]
