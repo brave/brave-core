@@ -1,8 +1,12 @@
 include_rules = [
   "+brave/services/printing",
   "+content/public/browser",
+  "+content/public/common",
   "+pdf/buildflags.h",
   "+services/strings/grit/services_strings.h",
   "+ui/accessibility",
   "+ui/accessibility/ax_updates_and_events.h",
+  "+services/data_decoder/public",
+  "+services/network/public",
+  "+services/service_manager/public",
 ]

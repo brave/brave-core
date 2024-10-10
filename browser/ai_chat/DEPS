@@ -1,4 +1,4 @@
 include_rules = [
   "+printing/buildflags",
+  "+services/screen_ai",
 ]
-

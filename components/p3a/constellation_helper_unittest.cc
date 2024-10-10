@@ -28,7 +28,6 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 
 #if !BUILDFLAG(IS_IOS)
 #include "brave/components/brave_referrals/common/pref_names.h"

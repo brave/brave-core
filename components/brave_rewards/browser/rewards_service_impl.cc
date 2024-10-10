@@ -53,7 +53,6 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "components/country_codes/country_codes.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/os_crypt/sync/os_crypt.h"
@@ -254,7 +253,8 @@ RewardsServiceImpl::RewardsServiceImpl(
     PrefService* prefs,
     const base::FilePath& profile_path,
     favicon::FaviconService* favicon_service,
-    BitmapFetcherService* bitmap_fetcher_service,
+    RequestImageCallback request_image_callback,
+    CancelImageRequestCallback cancel_image_request_callback,
     content::StoragePartition* storage_partition,
 #if BUILDFLAG(ENABLE_GREASELION)
     greaselion::GreaselionService* greaselion_service,
@@ -262,7 +262,8 @@ RewardsServiceImpl::RewardsServiceImpl(
     brave_wallet::BraveWalletService* brave_wallet_service)
     : prefs_(prefs),
       favicon_service_(favicon_service),
-      bitmap_fetcher_service_(bitmap_fetcher_service),
+      request_image_callback_(request_image_callback),
+      cancel_image_request_callback_(cancel_image_request_callback),
       storage_partition_(storage_partition),
 #if BUILDFLAG(ENABLE_GREASELION)
       greaselion_service_(greaselion_service),
@@ -822,9 +823,9 @@ void RewardsServiceImpl::Shutdown() {
     RemoveObserver(extension_observer_.get());
   }
 
-  if (bitmap_fetcher_service_) {
+  if (!cancel_image_request_callback_.is_null()) {
     for (auto mapping : current_media_fetchers_) {
-      bitmap_fetcher_service_->CancelRequest(mapping.second);
+      cancel_image_request_callback_.Run(mapping.second);
     }
   }
 
@@ -1267,9 +1268,9 @@ void RewardsServiceImpl::OnDiagnosticLogDeletedForCompleteReset(
 void RewardsServiceImpl::Reset() {
   url_loaders_.clear();
 
-  if (bitmap_fetcher_service_) {
+  if (!cancel_image_request_callback_.is_null()) {
     for (auto mapping : current_media_fetchers_) {
-      bitmap_fetcher_service_->CancelRequest(mapping.second);
+      cancel_image_request_callback_.Run(mapping.second);
     }
   }
 
@@ -1546,8 +1547,8 @@ void RewardsServiceImpl::FetchFavIcon(const std::string& url,
     return std::move(callback).Run(false, "");
   }
 
-  if (bitmap_fetcher_service_) {
-    current_media_fetchers_[url] = bitmap_fetcher_service_->RequestImage(
+  if (!request_image_callback_.is_null()) {
+    current_media_fetchers_[url] = request_image_callback_.Run(
         parsedUrl,
         base::BindOnce(
             &RewardsServiceImpl::OnFetchFavIconCompleted, AsWeakPtr(),

@@ -5,8 +5,9 @@
 
 include_rules = [
   "+content/public/renderer",
-  "+third_party/abseil-cpp/absl",
   "+third_party/blink/public",
   "+v8/include",
   "+ui/accessibility",
+  "+services/network/public",
+  "+services/network/test",
 ]

@@ -51,7 +51,6 @@ static_library("browser") {
     "//brave/components/services/bat_rewards/public/interfaces",
     "//brave/components/services/brave_wallet/public/mojom",
     "//brave/components/time_period_storage",
-    "//chrome/browser/bitmap_fetcher",  # bad
     "//components/country_codes",
     "//components/favicon/core",
     "//components/os_crypt/sync:os_crypt",

@@ -1,0 +1,42 @@
+specific_include_rules = {
+  # browser tests should not be in renderer
+  "digital_goods_api_browsertest\.cc": [
+    "!chrome/browser/ui/browser.h",
+    "!chrome/browser/ui/tabs/tab_strip_model.h",
+    "!content/public/browser/render_frame_host.h",
+    "!content/public/browser/web_contents.h",
+    "!content/public/common/content_switches.h",
+  ],
+  "file_system_access_browsertest\.cc": [
+    "!chrome/browser/ui/browser.h",
+    "!chrome/browser/ui/tabs/tab_strip_model.h",
+    "!content/public/browser/render_frame_host.h",
+    "!content/public/browser/web_contents.h",
+  ],
+  "js_ethereum_provider_browsertest\.cc": [
+    "!brave/browser/brave_wallet/brave_wallet_service_factory.h",
+    "!chrome/browser/profiles/profile.h",
+    "!chrome/browser/ui/browser.h",
+    "!chrome/browser/ui/browser_commands.h",
+    "!chrome/browser/ui/tabs/tab_strip_model.h",
+    "!content/public/browser/web_contents.h",
+    "!brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h",
+    "!chrome/browser/extensions/extension_service.h",
+    "!extensions/browser/extension_system.h",
+    "!extensions/common/extension.h",
+    "!extensions/common/extension_builder.h",
+  ],
+  "navigator_connection_attribute_browsertest\.cc": [
+    "!chrome/browser/ui/browser.h",
+    "!chrome/browser/ui/tabs/tab_strip_model.h",
+    "!content/public/browser/render_frame_host.h",
+    "!content/public/browser/web_contents.h",
+  ],
+  "subresource_web_bundles_browsertest\.cc": [
+    "!chrome/browser/ui/browser.h",
+    "!chrome/browser/ui/tabs/tab_strip_model.h",
+    "!components/web_package/web_bundle_builder.h",
+    "!content/public/browser/render_frame_host.h",
+    "!content/public/browser/web_contents.h",
+  ]
+}

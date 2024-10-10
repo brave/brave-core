@@ -1,6 +1,7 @@
 include_rules = [
   "+content/public/browser",
   "+content/public/common",
+  "+content/public/test",
   "+extensions/common",
   "+services/data_decoder/public",
   "+services/network/public",
@@ -8,8 +9,9 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "tor_utils.cc": [
-    "+chrome/common/chrome_constants.h",
-    "+chrome/common/pref_names.h"
-  ],
+  # component code should not have chrome deps
+  "tor_utils\.cc": [
+    "!chrome/common/chrome_constants.h",
+    "!chrome/common/pref_names.h",
+  ]
 }

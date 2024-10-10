@@ -25,7 +25,6 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
