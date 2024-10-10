@@ -33,7 +33,6 @@
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
 #include "build/build_config.h"
-#include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/storage_partition.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
@@ -48,8 +47,6 @@
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #endif
-
-class BitmapFetcherService;
 
 namespace base {
 class OneShotTimer;
@@ -89,7 +86,11 @@ using GetTestResponseCallback = base::RepeatingCallback<void(
     base::flat_map<std::string, std::string>* headers)>;
 
 using StopEngineCallback = base::OnceCallback<void(mojom::Result)>;
-
+using RequestImageCallback = base::RepeatingCallback<int(
+    const GURL& url,
+    base::OnceCallback<void(const SkBitmap& bitmap)>,
+    const net::NetworkTrafficAnnotationTag& traffic_annotation)>;
+using CancelImageRequestCallback = base::RepeatingCallback<void(int)>;
 class RewardsServiceImpl final : public RewardsService,
 #if BUILDFLAG(ENABLE_GREASELION)
                                  public greaselion::GreaselionService::Observer,
@@ -99,7 +100,8 @@ class RewardsServiceImpl final : public RewardsService,
   RewardsServiceImpl(PrefService* prefs,
                      const base::FilePath& profile_path,
                      favicon::FaviconService* favicon_service,
-                     BitmapFetcherService* bitmap_fetcher_service,
+                     RequestImageCallback request_image_callback,
+                     CancelImageRequestCallback cancel_image_request_callback,
                      content::StoragePartition* storage_partition,
 #if BUILDFLAG(ENABLE_GREASELION)
                      greaselion::GreaselionService* greaselion_service,
@@ -549,7 +551,8 @@ class RewardsServiceImpl final : public RewardsService,
 #endif
   raw_ptr<PrefService> prefs_;                            // NOT OWNED
   raw_ptr<favicon::FaviconService> favicon_service_;      // NOT OWNED
-  raw_ptr<BitmapFetcherService> bitmap_fetcher_service_;  // NOT OWNED
+  const RequestImageCallback request_image_callback_;
+  const CancelImageRequestCallback cancel_image_request_callback_;
   raw_ptr<content::StoragePartition> storage_partition_;  // NOT OWNED
 #if BUILDFLAG(ENABLE_GREASELION)
   raw_ptr<greaselion::GreaselionService> greaselion_service_ =
@@ -575,8 +578,7 @@ class RewardsServiceImpl final : public RewardsService,
 
   std::unique_ptr<base::OneShotEvent> ready_;
   SimpleURLLoaderList url_loaders_;
-  std::map<std::string, BitmapFetcherService::RequestId>
-      current_media_fetchers_;
+  std::map<std::string, int> current_media_fetchers_;
   PrefChangeRegistrar profile_pref_change_registrar_;
 
   bool engine_for_testing_ = false;

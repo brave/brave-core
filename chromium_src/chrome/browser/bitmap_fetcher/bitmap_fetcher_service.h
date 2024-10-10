@@ -6,9 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BITMAP_FETCHER_BITMAP_FETCHER_SERVICE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BITMAP_FETCHER_BITMAP_FETCHER_SERVICE_H_
 
-#define RequestImage                                                        \
-  RequestImage(const GURL& url, BitmapFetchedCallback callback,             \
-               const net::NetworkTrafficAnnotationTag& traffic_annotation); \
+#define RequestImage                                               \
+  RequestImageWithNetworkTrafficAnnotationTag(                     \
+      const GURL& url, BitmapFetchedCallback callback,             \
+      const net::NetworkTrafficAnnotationTag& traffic_annotation); \
   RequestId RequestImage
 
 #include "src/chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"  // IWYU pragma: export

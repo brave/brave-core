@@ -17,6 +17,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
+#include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "chrome/browser/browser_process.h"
@@ -90,8 +91,8 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
       delegate, profile->GetPrefs(), g_browser_process->local_state(),
       profile->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),
-      profile->GetPath(), CreateAdsTooltipsDelegate(profile),
-      std::make_unique<DeviceIdImpl>(),
+      brave::GetChannelName(), profile->GetPath(),
+      CreateAdsTooltipsDelegate(profile), std::make_unique<DeviceIdImpl>(),
       std::make_unique<BatAdsServiceFactoryImpl>(),
       g_brave_browser_process->resource_component(), history_service,
       rewards_service);

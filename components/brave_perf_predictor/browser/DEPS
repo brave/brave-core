@@ -1,13 +1,18 @@
 include_rules = [
-  "+content/public/browser",
-  "+services/metrics/public",
-  "+third_party/blink/public/mojom",
-  "+ui/base",
+    "+content/public/browser",
+    "+content/public/test",
+    "+services/metrics/public",
+    "+third_party/blink/public/mojom",
+    "+ui/base",
 ]
 
-# Existing exceptions
 specific_include_rules = {
-  "perf_predictor_tab_helper.cc": [
-    "+brave/browser/android/brave_shields_content_settings.h",
-  ],
+    "bandwidth_savings_predictor_unittest\.cc": [
+        # chrome deps are not allowed in components
+        "!chrome/browser/predictors/loading_test_util.h",
+    ],
+    "perf_predictor_tab_helper\.cc": [
+        # brave/browser deps are not allowed in components
+        "!brave/browser/android/brave_shields_content_settings.h",
+    ],
 }

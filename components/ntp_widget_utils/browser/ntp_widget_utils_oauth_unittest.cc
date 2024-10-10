@@ -5,7 +5,7 @@
 
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth.h"
 
-#include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=NTPWidgetUtilsOauthUtilTest.*
 

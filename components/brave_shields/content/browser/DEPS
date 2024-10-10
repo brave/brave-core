@@ -5,8 +5,13 @@ include_rules = [
   "+content/public/common",
   "+services/network/public",
   "+storage/browser/blob",
-  "+third_party/abseil-cpp/absl/random",
   "+third_party/blink/public/mojom",
   "+third_party/re2",
   "+third_party/zlib",
 ]
+
+specific_include_rules = {
+  "brave_farbling_service\.h": [
+    "+third_party/abseil-cpp/absl/random/random.h",
+  ]
+}

@@ -6,25 +6,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_MAIN_PARTS_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_MAIN_PARTS_H_
 
-#include "chrome/browser/chrome_browser_main.h"
-
-class BraveBrowserMainParts : public ChromeBrowserMainParts {
- public:
-  BraveBrowserMainParts(bool is_integration_test, StartupData* startup_data);
-
-  BraveBrowserMainParts(const BraveBrowserMainParts&) = delete;
-  BraveBrowserMainParts& operator=(const BraveBrowserMainParts&) = delete;
-  ~BraveBrowserMainParts() override;
-
-  int PreMainMessageLoopRun() override;
-  void PreBrowserStart() override;
-  void PostBrowserStart() override;
-  void PreShutdown() override;
-  void PreProfileInit() override;
-  void PostProfileInit(Profile* profile, bool is_initial_profile) override;
-
- private:
-  friend class ChromeBrowserMainExtraPartsTor;
-};
+#include "chrome/browser/chrome_browser_main.h"  // IWYU pragma: export
 
 #endif  // BRAVE_BROWSER_BRAVE_BROWSER_MAIN_PARTS_H_

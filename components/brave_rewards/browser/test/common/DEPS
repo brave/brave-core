@@ -1,0 +1,11 @@
+specific_include_rules = {
+  "rewards_browsertest_context_helper\.cc": [
+    "!chrome/browser/ui/browser.h",
+  ],
+  "rewards_browsertest_contribution\.cc": [
+    "!chrome/browser/ui/browser.h",
+  ],
+  "rewards_browsertest_util\.cc": [
+    "!chrome/browser/ui/browser.h",
+  ],
+}

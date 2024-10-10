@@ -197,18 +197,3 @@ include_rules = [
   "-brave/third_party/bitcoin-core",
   "-brave/third_party/argon2",
 ]
-
-# Temporary workaround for massive nummber of incorrect test includes
-specific_include_rules = {
-  ".*test.*(\.cc|\.mm|\.h)": [
-    "+bat",
-    "+brave",
-    "+chrome",
-    "+components",
-    "+content",
-    "+extensions",
-    "+mojo",
-    "+services",
-    "+third_party",
-  ],
-}

@@ -5,9 +5,10 @@
 
 #include "src/chrome/browser/bitmap_fetcher/bitmap_fetcher_service.cc"
 
-BitmapFetcherService::RequestId BitmapFetcherService::RequestImage(
+BitmapFetcherService::RequestId
+BitmapFetcherService::RequestImageWithNetworkTrafficAnnotationTag(
     const GURL& url,
     BitmapFetchedCallback callback,
-    const net::NetworkTrafficAnnotationTag& ta) {
-  return RequestImageImpl(url, std::move(callback), ta);
+    const net::NetworkTrafficAnnotationTag& tag) {
+  return RequestImageImpl(url, std::move(callback), tag);
 }

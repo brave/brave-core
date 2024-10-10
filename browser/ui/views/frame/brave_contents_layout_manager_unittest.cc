@@ -12,7 +12,6 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 #include "ui/views/controls/webview/webview.h"
 
 class BraveContentsLayoutManagerUnitTest : public testing::Test {

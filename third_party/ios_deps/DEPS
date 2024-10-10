@@ -1,0 +1,5 @@
+noparent = True
+
+include_rules = [
+  "+GRDWireGuardKit",
+]

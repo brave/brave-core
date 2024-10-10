@@ -9,7 +9,6 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/test_util.h"
 #include "brave/components/brave_rewards/common/features.h"
@@ -67,7 +66,11 @@ class RewardsServiceTest : public testing::Test {
     ASSERT_TRUE(profile_.get());
 
     rewards_service_ = std::make_unique<RewardsServiceImpl>(
-        profile()->GetPrefs(), profile()->GetPath(), nullptr, nullptr,
+        profile()->GetPrefs(), profile()->GetPath(), nullptr,
+        base::RepeatingCallback<int(
+            const GURL& url, base::OnceCallback<void(const SkBitmap& bitmap)>,
+            const net::NetworkTrafficAnnotationTag& traffic_annotation)>(),
+        base::RepeatingCallback<void(int)>(),
         profile()->GetDefaultStoragePartition(),
 #if BUILDFLAG(ENABLE_GREASELION)
         nullptr,

@@ -11,3 +11,9 @@ include_rules = [
   "+extensions/common/url_pattern.h",
   "+third_party/widevine/cdm/buildflags.h",
 ]
+
+specific_include_rules = {
+  "brave_content_client_unittest\.cc": [
+    "+content/common/url_schemes.h",
+  ],
+}

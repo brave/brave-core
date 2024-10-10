@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/brave_domains/service_domains.h"
+
 #include <cstring>
 
 #include "base/command_line.h"
@@ -16,7 +17,6 @@
 #include "build/build_config.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 
 namespace brave_domains {
 

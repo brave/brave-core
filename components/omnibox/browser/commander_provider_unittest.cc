@@ -26,7 +26,6 @@
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 #include "ui/gfx/range/range.h"
 
 namespace {

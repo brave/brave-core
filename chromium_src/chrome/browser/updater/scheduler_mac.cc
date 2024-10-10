@@ -19,7 +19,6 @@
 #include "chrome/common/chrome_features.h"
 #include "chrome/updater/updater_scope.h"
 #include "chrome/updater/util/mac_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 #define DoPeriodicTasks DoPeriodicTasks_ChromiumImpl
 

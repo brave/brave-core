@@ -27,7 +27,6 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_adaptive_captcha/pref_names.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
@@ -182,6 +181,7 @@ AdsServiceImpl::AdsServiceImpl(
     PrefService* prefs,
     PrefService* local_state,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader,
+    std::string_view channel_name,
     const base::FilePath& profile_path,
     std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
     std::unique_ptr<DeviceId> device_id,
@@ -193,6 +193,7 @@ AdsServiceImpl::AdsServiceImpl(
       prefs_(prefs),
       local_state_(local_state),
       url_loader_(std::move(url_loader)),
+      channel_name_(channel_name),
       resource_component_(resource_component),
       history_service_(history_service),
       ads_tooltips_delegate_(std::move(ads_tooltips_delegate)),
@@ -538,7 +539,7 @@ void AdsServiceImpl::SetBuildChannel() {
 
   mojom::BuildChannelInfoPtr mojom_build_channel =
       mojom::BuildChannelInfo::New();
-  mojom_build_channel->name = brave::GetChannelName();
+  mojom_build_channel->name = channel_name_;
   mojom_build_channel->is_release = mojom_build_channel->name == "release";
 
   bat_ads_associated_remote_->SetBuildChannel(std::move(mojom_build_channel));

@@ -1,6 +1,7 @@
 include_rules = [
   "+content/public/browser",
   "+content/public/common",
+  "+content/public/test",
   "+extensions/buildflags",
   "+extensions/common",
   "+services/data_decoder/public",
@@ -9,9 +10,24 @@ include_rules = [
   "+ui/gfx",
 ]
 
-# Existing exceptions
 specific_include_rules = {
-  "rewards_service_impl.cc": [
-    "+chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h",
+  "rewards_service_impl_unittest\.cc": [
+    # component unit tests should not have chrome deps
+    "!chrome/browser/profiles/profile.h",
+    "!chrome/test/base/testing_browser_process.h",
+  ],
+  "rewards_service_impl_jp_unittest\.cc": [
+    # component unit tests should not have chrome deps
+    "!chrome/browser/profiles/profile.h",
+    "!chrome/test/base/testing_browser_process.h",
+  ],
+  "test_util\.cc": [
+    # component unit tests should not have chrome or brave / browser deps
+    "!brave/browser/brave_rewards/rewards_service_factory.h",
+    "!chrome/test/base/testing_browser_process.h",
+    "!chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h",
+    "!chrome/browser/prefs/browser_prefs.h",
+    "!chrome/test/base/testing_profile.h",
+    "!chrome/test/base/testing_profile_manager.h",
   ],
 }

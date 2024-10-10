@@ -1,0 +1,23 @@
+include_rules = [
+  "+content/public/test",
+  "+services/network/public",
+]
+
+specific_include_rules = {
+  "brave_shields_p3a_unittest\.cc": [
+    # component unit tests should not have chrome deps
+    "!chrome/browser/content_settings/host_content_settings_map_factory.h",
+    "!chrome/test/base/testing_profile.h",
+  ],
+  "brave_shields_util_unittest\.cc": [
+    # component unit tests should not have chrome deps
+    "!brave/browser/profiles/brave_profile_manager.h",
+    "!chrome/browser/browser_process.h",
+    "!chrome/browser/content_settings/cookie_settings_factory.h",
+    "!chrome/browser/content_settings/host_content_settings_map_factory.h",
+    "!chrome/browser/profiles/profile.h",
+    "!chrome/test/base/scoped_testing_local_state.h",
+    "!chrome/test/base/testing_browser_process.h",
+    "!chrome/test/base/testing_profile.h",
+  ],
+}

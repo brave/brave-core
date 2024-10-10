@@ -78,7 +78,7 @@ void BraveRewardsSource::StartDataRequest(
             "Not implemented."
         })");
     resource_fetchers_.emplace_back(actual_url);
-    image_service->RequestImage(
+    image_service->RequestImageWithNetworkTrafficAnnotationTag(
         actual_url,
         base::BindOnce(&BraveRewardsSource::OnBitmapFetched,
                        weak_factory_.GetWeakPtr(), std::move(got_data_callback),

@@ -12,7 +12,6 @@
 #include <utility>
 #include <vector>
 
-#include "absl/types/optional.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"

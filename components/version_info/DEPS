@@ -1,0 +1,6 @@
+specific_include_rules = {
+  # component unit tests should not have chrome deps
+  "version_info_unittest\.cc": [
+    "!chrome/common/chrome_constants.h",
+  ]
+}

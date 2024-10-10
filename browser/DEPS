@@ -16,6 +16,7 @@ include_rules = [
   "+content/public/browser",
   "+content/public/common",
   "+content/public/test",
+  "+content/test",
   # TODO(bridiver) - narrow this down
   "+components",
   "+device",
@@ -26,9 +27,9 @@ include_rules = [
   "+extensions/test",
   "+google_apis",
   "+media/media_buildflags.h",
-  "+media/audio", # For media audio hang monitor.
+  "+media/audio",  # For media audio hang monitor.
   "+media/base",  # For media switches
-  "+media/capabilities", # For InMemoryVideoDecodeStatsDB
+  "+media/capabilities",  # For InMemoryVideoDecodeStatsDB
   "+media/cdm/cdm_paths.h",
   "+media/capture",
   "+media/midi",  # For midi switches
@@ -104,7 +105,7 @@ include_rules = [
   "+third_party/icu/source/i18n/unicode",
   "+third_party/leveldatabase",
   "+third_party/libxml/chromium/xml_writer.h",
-  "+third_party/mozilla",     # Mozilla interface headers.
+  "+third_party/mozilla",  # Mozilla interface headers.
   "+third_party/ocmock/gtest_support.h",
   "+third_party/protobuf/src/google/protobuf",
   "+third_party/re2",
@@ -124,10 +125,7 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "brave_browser_main_loop.h": [
-    "+content/browser/browser_main_loop.h",
-  ],
-  "brave_content_browser_client.cc": [
-    "+content/browser/renderer_host/render_frame_host_impl.h",
-  ],
+  "brave_browser_main_parts\.h": [
+    "+src/chrome/browser/chrome_browser_main.h",
+  ]
 }

@@ -1,0 +1,7 @@
+specific_include_rules = {
+  # this test belongs in renderer
+  "brave_font_whitelist_browsertest.cc": [
+    "+content/public/renderer/render_frame.h",
+    "+third_party/blink/public",
+  ],
+}

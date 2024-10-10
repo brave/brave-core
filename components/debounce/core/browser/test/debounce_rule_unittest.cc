@@ -4,11 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/debounce/core/browser/debounce_rule.h"
+
 #include "base/json/json_reader.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
 namespace debounce {

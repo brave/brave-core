@@ -1,0 +1,5 @@
+specific_include_rules = {
+  "module_file_name_patch_browsertest\.cc": [
+    "+content/browser/gpu/gpu_process_host.h",
+  ],
+}

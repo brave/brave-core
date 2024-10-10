@@ -1,0 +1,11 @@
+include_rules = [
+  "+content/public/test",
+]
+
+specific_include_rules = {
+  # component unit tests should not have chrome deps
+  "ntp_widget_utils_region_unittest\.cc": [
+    "!chrome/test/base/testing_browser_process.h",
+    "!chrome/test/base/testing_profile.h",
+  ]
+}

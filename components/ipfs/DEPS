@@ -1,0 +1,11 @@
+include_rules = [
+  "+content/public/test",
+]
+
+specific_include_rules = {
+  # component unit tests should not have chrome deps
+  "ipfs_component_cleaner_unittest\.cc": [
+    "!chrome/browser/prefs/browser_prefs.h",
+    "!chrome/common/chrome_paths.h",
+  ],
+}
