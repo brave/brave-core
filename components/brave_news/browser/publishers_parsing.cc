@@ -38,7 +38,7 @@ std::optional<Publishers> ParseCombinedPublisherList(const base::Value& value) {
     }
     auto& entry = *parsed_publisher;
 
-    GURL site_url = [&entry]() {
+    GURL site_url = [&entry] {
       if (base::StartsWith(entry.site_url, "https://")) {
         return GURL(entry.site_url);
       } else {
