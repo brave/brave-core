@@ -8,7 +8,7 @@ import type { CrButtonElement } from './cr_button.js';
 
 export function getHtml(this: CrButtonElement) {
   return html`
-<leo-button id="button" kind="outline" size="small">
+<leo-button id="button" kind="outline" size="${this.size}">
   <slot slot="icon-before" name="prefix-icon"></slot>
   <slot></slot>
   <slot slot="icon-after" name="suffix-icon"></slot>

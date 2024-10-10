@@ -52,12 +52,17 @@ leo-button {
       class: {
         type: String,
         reflect: true,
+      },
+      size: {
+        type: String,
+        reflect: true,
       }
     };
   }
 
   disabled: boolean = false;
   class: string = '';
+  size = 'small';
 
   private onClick_(e: Event) {
     if (this.disabled) {
@@ -91,6 +96,10 @@ leo-button {
       } else {
         this.$.button.removeAttribute('isDisabled')
       }
+    }
+
+    if (changedProperties.has('size')) {
+      this.$.button.setAttribute('size', this.size)
     }
   }
 
