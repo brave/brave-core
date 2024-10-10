@@ -10,9 +10,9 @@ RegisterStyleOverride(
   'settings-section',
   html`
     <style include="settings-shared">
-    #header .title {
-    font-weight: 500 !important;
-    }
+      #header .title {
+        font-weight: 500 !important;
+      }
     </style>
   `
 )
