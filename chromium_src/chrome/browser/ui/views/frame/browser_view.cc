@@ -8,8 +8,8 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
-#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/split_view_contents_layout_manager.h"
 #include "brave/browser/ui/views/infobars/brave_infobar_container_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_coordinator.h"
@@ -29,7 +29,7 @@
 #define TabStrip BraveTabStrip
 #define TabStripRegionView BraveTabStripRegionView
 #define BookmarkBarView BraveBookmarkBarView
-#define ContentsLayoutManager BraveContentsLayoutManager
+#define ContentsLayoutManager SplitViewContentsLayoutManager
 #define UpdateExclusiveAccessBubble UpdateExclusiveAccessBubble_ChromiumImpl
 
 #include "src/chrome/browser/ui/views/frame/browser_view.cc"

@@ -65,6 +65,9 @@ class WalletButton;
 
 class BraveBrowserView : public BrowserView,
                          public commands::AcceleratorService::Observer,
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+                         public ReaderModeToolbarView::Observer,
+#endif
                          public SplitViewBrowserDataObserver {
   METADATA_HEADER(BraveBrowserView, BrowserView)
  public:
@@ -93,8 +96,11 @@ class BraveBrowserView : public BrowserView,
   speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
       speedreader::SpeedreaderTabHelper* tab_helper,
       speedreader::SpeedreaderBubbleLocation location) override;
-  void ShowReaderModeToolbar() override;
-  void HideReaderModeToolbar() override;
+  void ShowReaderModeToolbar(content::WebContents* web_contents) override;
+  void HideReaderModeToolbar(content::WebContents* web_contents) override;
+  void OnReaderModeToolbarActive(ReaderModeToolbarView* toolbar) override;
+  void UpdateReaderModeToolbar(ReaderModeToolbarView* toolbar, bool visible);
+  void UpdateReaderModeToolbars();
 #endif
   bool GetTabStripVisible() const override;
 #if BUILDFLAG(IS_WIN)
@@ -149,6 +155,7 @@ class BraveBrowserView : public BrowserView,
                            DragTabToReorder);
   FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, Toolbar);
   FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, ToolbarLangs);
+  FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, SplitView);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedWidth);
 
@@ -224,6 +231,7 @@ class BraveBrowserView : public BrowserView,
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   std::unique_ptr<ReaderModeToolbarView> reader_mode_toolbar_view_;
+  std::unique_ptr<ReaderModeToolbarView> secondary_reader_mode_toolbar_view_;
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;

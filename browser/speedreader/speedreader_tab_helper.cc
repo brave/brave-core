@@ -252,6 +252,10 @@ void SpeedreaderTabHelper::OnToolbarStateChanged(mojom::MainButtonType button) {
   }
 }
 
+void SpeedreaderTabHelper::ForceUIUpdate() {
+  UpdateUI();
+}
+
 void SpeedreaderTabHelper::ClearPersistedData() {
   if (auto* entry = web_contents()->GetController().GetLastCommittedEntry()) {
     SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
@@ -343,10 +347,10 @@ void SpeedreaderTabHelper::UpdateUI() {
   if (const auto* browser = chrome::FindBrowserWithTab(web_contents())) {
     if (!DistillStates::IsDistilled(PageDistillState())) {
       static_cast<BraveBrowserWindow*>(browser->window())
-          ->HideReaderModeToolbar();
+          ->HideReaderModeToolbar(web_contents());
     } else {
       static_cast<BraveBrowserWindow*>(browser->window())
-          ->ShowReaderModeToolbar();
+          ->ShowReaderModeToolbar(web_contents());
     }
 
     browser->window()->UpdatePageActionIcon(
