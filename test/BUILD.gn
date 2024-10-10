@@ -503,7 +503,6 @@ test("brave_unit_tests") {
       "//chrome/android:chrome_apk_paks",
       "//chrome/test/android:chrome_java_test_support_common",
       "//components/gcm_driver/instance_id/android:instance_id_driver_test_support_java",
-      "//components/search_engines/android:delegate_public_impl_java",
     ]
     if (enable_brave_vpn || enable_ai_chat) {
       deps += [ "//brave/components/brave_mobile_subscription/renderer/android:unit_tests" ]
