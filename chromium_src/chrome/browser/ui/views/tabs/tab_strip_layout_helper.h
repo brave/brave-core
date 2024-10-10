@@ -19,17 +19,18 @@ class BraveTabStrip;
   void set_use_vertical_tabs(bool vertical) {                       \
     use_vertical_tabs_ = vertical;                                  \
   }                                                                 \
-  void set_tab_strip(BraveTabStrip* tab_strip) {                    \
+  void set_tab_strip(TabStrip* tab_strip) {                         \
     tab_strip_ = tab_strip;                                         \
   }                                                                 \
                                                                     \
  private:                                                           \
   friend class BraveTabContainer;                                   \
   bool FillGroupInfo(std::vector<TabWidthConstraints>& tab_widths); \
+  BraveTabStrip* GetBraveTabStrip() const;                          \
   bool FillTiledState(std::vector<TabWidthConstraints>& tab_widths, \
                       BraveTabStrip* tab_strip);                    \
   bool use_vertical_tabs_ = false;                                  \
-  raw_ptr<BraveTabStrip> tab_strip_ = nullptr;                      \
+  raw_ptr<TabStrip> tab_strip_ = nullptr;                           \
                                                                     \
  public:                                                            \
   int UpdateIdealBounds

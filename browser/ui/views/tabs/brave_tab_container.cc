@@ -283,7 +283,7 @@ void BraveTabContainer::UpdateLayoutOrientation() {
   layout_helper_->set_use_vertical_tabs(
       tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()));
   layout_helper_->set_tab_strip(
-      static_cast<BraveTabStrip*>(base::to_address(tab_slot_controller_)));
+      static_cast<TabStrip*>(base::to_address(tab_slot_controller_)));
   InvalidateLayout();
 }
 

@@ -7,17 +7,21 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 
-#define CalculateTabBounds                                \
-  FillTiledState(tab_widths, tab_strip_) &&               \
-          use_vertical_tabs_&& FillGroupInfo(tab_widths)  \
-      ? tabs::CalculateVerticalTabBounds(                 \
-            layout_constants, tab_widths, tabstrip_width, \
-            tab_strip_ -> IsVerticalTabsFloating())       \
+#define CalculateTabBounds                                                     \
+  FillTiledState(tab_widths, static_cast<BraveTabStrip*>(tab_strip_.get())) && \
+          use_vertical_tabs_&& FillGroupInfo(tab_widths)                       \
+      ? tabs::CalculateVerticalTabBounds(                                      \
+            layout_constants, tab_widths, tabstrip_width,                      \
+            GetBraveTabStrip() -> IsVerticalTabsFloating())                    \
       : CalculateTabBounds
 
 #include "src/chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc"
 
 #undef CalculateTabBounds
+
+BraveTabStrip* TabStripLayoutHelper::GetBraveTabStrip() const {
+  return static_cast<BraveTabStrip*>(tab_strip_.get());
+}
 
 // Unfortunately, TabStripLayout::TabSlot is declared and defined in the .cc
 // file, we can't move this method out of this file.
@@ -44,7 +48,7 @@ bool TabStripLayoutHelper::FillTiledState(
   }
 
   for (int i = 0; i < static_cast<int>(slots_.size()); i++) {
-    auto index = tab_strip_->GetModelIndexOf(slots_.at(i).view);
+    auto index = GetBraveTabStrip()->GetModelIndexOf(slots_.at(i).view);
     if (!index) {
       continue;
     }
