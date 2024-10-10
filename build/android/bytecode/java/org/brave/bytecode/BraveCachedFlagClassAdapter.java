@@ -8,8 +8,9 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BraveCachedFlagClassAdapter extends BraveClassVisitor {
-    static String sCachedFlagClassName = "org/chromium/base/cached_flags/CachedFlag";
-    static String sBraveCachedFlagClassName = "org/chromium/base/cached_flags/BraveCachedFlag";
+    static String sCachedFlagClassName = "org/chromium/components/cached_flags/CachedFlag";
+    static String sBraveCachedFlagClassName =
+            "org/chromium/components/cached_flags/BraveCachedFlag";
 
     public BraveCachedFlagClassAdapter(ClassVisitor visitor) {
         super(visitor);
