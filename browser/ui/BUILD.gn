@@ -344,6 +344,7 @@ source_set("ui") {
       "//chrome/browser/search",
       "//chrome/browser/sync",
       "//chrome/browser/themes",
+      "//chrome/browser/ui:url_identity",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/content_settings",
       "//chrome/browser/ui/omnibox",
