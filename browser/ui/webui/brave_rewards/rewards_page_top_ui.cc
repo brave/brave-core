@@ -7,8 +7,6 @@
 
 #include <utility>
 
-#include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_data_source.h"
@@ -20,8 +18,6 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "content/public/common/url_constants.h"
-
-using brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory;
 
 namespace brave_rewards {
 
@@ -88,16 +84,12 @@ void RewardsPageTopUI::CreatePageHandler(
 
   auto* profile = Profile::FromWebUI(web_ui());
   CHECK(profile);
-
   auto bubble_delegate = std::make_unique<RewardsPageBubbleDelegate>(
       profile->GetWeakPtr(), embedder());
 
   handler_ = std::make_unique<RewardsPageHandler>(
       std::move(page), std::move(handler), std::move(bubble_delegate),
-      RewardsServiceFactory::GetForProfile(profile),
-      brave_ads::AdsServiceFactory::GetForProfile(profile),
-      BraveAdaptiveCaptchaServiceFactory::GetForProfile(profile),
-      profile->GetPrefs());
+      Profile::FromWebUI(web_ui()));
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(RewardsPageTopUI)

@@ -17,6 +17,7 @@
 #include "mojo/public/cpp/bindings/remote.h"
 
 class PrefService;
+class Profile;
 
 namespace brave_adaptive_captcha {
 class BraveAdaptiveCaptchaService;
@@ -43,14 +44,10 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
     virtual std::string GetPublisherIdForActiveTab() = 0;
   };
 
-  RewardsPageHandler(
-      mojo::PendingRemote<mojom::RewardsPage> page,
-      mojo::PendingReceiver<mojom::RewardsPageHandler> receiver,
-      std::unique_ptr<BubbleDelegate> bubble_delegate,
-      RewardsService* rewards_service,
-      brave_ads::AdsService* ads_service,
-      brave_adaptive_captcha::BraveAdaptiveCaptchaService* captcha_service,
-      PrefService* prefs);
+  RewardsPageHandler(mojo::PendingRemote<mojom::RewardsPage> page,
+                     mojo::PendingReceiver<mojom::RewardsPageHandler> receiver,
+                     std::unique_ptr<BubbleDelegate> bubble_delegate,
+                     Profile* profile);
 
   ~RewardsPageHandler() override;
 

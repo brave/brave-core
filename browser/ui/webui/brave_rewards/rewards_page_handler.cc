@@ -15,6 +15,9 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/scoped_observation.h"
+#include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
@@ -33,6 +36,7 @@
 #include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -41,6 +45,8 @@
 namespace brave_rewards {
 
 namespace {
+
+using brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory;
 
 static constexpr auto kPluralStrings =
     base::MakeFixedFlatMap<std::string_view, int>(
@@ -191,17 +197,15 @@ RewardsPageHandler::RewardsPageHandler(
     mojo::PendingRemote<mojom::RewardsPage> page,
     mojo::PendingReceiver<mojom::RewardsPageHandler> receiver,
     std::unique_ptr<BubbleDelegate> bubble_delegate,
-    RewardsService* rewards_service,
-    brave_ads::AdsService* ads_service,
-    brave_adaptive_captcha::BraveAdaptiveCaptchaService* captcha_service,
-    PrefService* prefs)
+    Profile* profile)
     : receiver_(this, std::move(receiver)),
       page_(std::move(page)),
       bubble_delegate_(std::move(bubble_delegate)),
-      rewards_service_(rewards_service),
-      ads_service_(ads_service),
-      captcha_service_(captcha_service),
-      prefs_(prefs) {
+      rewards_service_(RewardsServiceFactory::GetForProfile(profile)),
+      ads_service_(brave_ads::AdsServiceFactory::GetForProfile(profile)),
+      captcha_service_(
+          BraveAdaptiveCaptchaServiceFactory::GetForProfile(profile)),
+      prefs_(profile->GetPrefs()) {
   CHECK(rewards_service_);
   CHECK(ads_service_);
   CHECK(prefs_);
