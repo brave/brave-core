@@ -308,7 +308,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                                     (ImageView)
                                                             listItemView.findViewById(
                                                                     R.id.brave_sync_device_image);
-                                            int deviceTypeRes = R.drawable.ic_monitor;
+                                            int deviceTypeRes = R.drawable.ic_laptop;
                                             if (DeviceType.PHONE.getValue().equals(device.mType)) {
                                                 deviceTypeRes = R.drawable.ic_smartphone;
                                             } else if (DeviceType.TABLET
