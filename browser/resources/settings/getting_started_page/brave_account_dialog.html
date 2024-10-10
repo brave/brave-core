@@ -3,41 +3,107 @@ This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this file,
 You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<style include="settings-shared">
-  .title {
-    display: block;
-    font-weight: 600;
-    line-height: 1.6;
+<style include="cr-shared-style iron-flex settings-shared">
+  :host {
+    --brave-account-dialog-logo-width: 129px;
+    --brave-account-dialog-logo-height: calc(var(--brave-account-dialog-logo-width) * 40/129);
+    --cr-dialog-body-padding-horizontal: 40px;
+    --cr-dialog-top-container-min-height: 40px;
+    --cr-dialog-width: 500px;
   }
-  .subtitle {
-    display: block;
-    font-size: 90%;
-    line-height: 1.4;
-    margin-top: 10px;
+  .logo {
+    background-image: url('../images/brave-logo-light.svg');
+    background-size: cover;
+    height: var(--brave-account-dialog-logo-height);
+    width: var(--brave-account-dialog-logo-width);
+  }
+  @media (prefers-color-scheme: dark) {
+    .logo {
+      background-image: url('../images/brave-logo-dark.svg');
+    }
+  }
+  .header {
+    padding: 0px 0px var(--brave-account-dialog-logo-height);
+  }
+  .texts {
+    gap: 8px;
+  }
+  .body-text-top {
+    color: #46464A;
+    font-family: 'Poppins';
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    line-height: 28px;
+  }
+  .body-text-bottom {
+    color: #76767A;
+    font-family: 'Inter Variable';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    text-align: center;
+  }
+  .buttons {
+    gap: 8px;
+    margin: 35px 0px 35px;
+  }
+  .footer {
+    gap: 16px;
+    padding: 24px 40px;
+  }
+  .footer-text-left {
+    color: #76767A;
+    font-family: 'Inter Variable';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+    width: 270px;
+  }
+  .footer-text-left a {
+    color: inherit;
+  }
+  .footer-text-right {
+    font-family: 'Inter Variable';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+    width: 134px;
   }
 </style>
 
 <cr-dialog show-close-button show-on-attach>
-  <div slot="title">
-    <span class="title">$i18n{braveSyncCreateBraveAccountTitle}</span>
-    <span class="subtitle">$i18n{braveSyncBraveAccountDesc}</span>
+  <div slot="header" class="center-center header horizontal layout">
+    <div class="logo"></div>
   </div>
   <div slot="body">
-    <cr-input id="emailAddressInput" autofocus required
-      placeholder="Email address"
-      pattern="^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$"
-      auto-validate error-message="Please provide a valid email address"
-      on-input="onConditionsChanged_"
-      invalid="{{isEmailAddressInvalid_}}">
-    </cr-input>
-    <cr-checkbox checked="{{isTermsAccepted_}}" on-change="onConditionsChanged_">
-      I have read and accept the <a href="#">Terms of service</a> and <a href="#">Privacy agreement</a>.
-    </cr-checkbox>
+    <div class="layout texts vertical">
+      <div class="body-text-top center-center horizontal layout">
+        Get started with your Brave account
+      </div>
+      <div class="body-text-bottom center-center horizontal layout">
+        $i18n{braveSyncBraveAccountDesc}
+      </div>
+    </div>
+    <div class="buttons layout vertical">
+      <cr-button class="action-button" size="medium">
+        Create a Brave account
+      </cr-button>
+      <cr-button size="medium">
+        Already have an account? Sign in
+      </cr-button>
+    </div>
   </div>
-  <div slot="button-container">
-    <cr-button class="action-button"
-               disabled="[[!canCreateAccount_]]">
-      Create account
-    </cr-button>
+  <div slot="footer" class="footer horizontal layout">
+    <div class="footer-text-left">
+      For advanced users, we also support self-custody of your Brave account keys for an extra layer of privacy. <a href="#"><u>Learn more</u></a>
+    </div>
+    <div class="center-center footer-text-right horizontal layout">
+      <a href="#">Use self-custody</a>
+    </div>
   </div>
 </cr-dialog>
