@@ -422,6 +422,10 @@ inline constexpr char16_t kHistorySearchSettingURL[] =
 inline constexpr char kWallpaperSearchLearnMorePageURL[] =
     "https://support.brave.com/";
 
+// The URL for the "Learn more" page for Tab Organization.
+inline constexpr char kTabOrganizationLearnMorePageURL[] =
+    "https://support.brave.com/";
+
 // The URL for the "Learn more" link in the enterprise disclaimer for managed
 // profile in the Signin Intercept bubble.
 inline constexpr char kSigninInterceptManagedDisclaimerLearnMoreURL[] =
