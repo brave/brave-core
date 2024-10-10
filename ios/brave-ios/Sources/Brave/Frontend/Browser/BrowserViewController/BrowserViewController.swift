@@ -1152,6 +1152,9 @@ public class BrowserViewController: UIViewController {
     }
     self.tabManager.selectTab(tabToSelect)
 
+    // Shred Domain's with SiteShieldLevel.appExit
+    self.tabManager.forgetDataOnAppExitDomains()
+
     if !setupTasksCompleted {
       for task in postSetupTasks {
         DispatchQueue.main.async {

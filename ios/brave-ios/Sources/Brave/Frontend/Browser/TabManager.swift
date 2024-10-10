@@ -752,6 +752,23 @@ class TabManager: NSObject {
     }
   }
 
+  /// Forget all data for websites that have forget me enabled
+  /// Will forget all data instantly with no delay
+  @MainActor func forgetDataOnAppExitDomains() {
+    guard BraveCore.FeatureList.kBraveShredFeature.enabled else { return }
+    Domain.allDomainsWithShredLevelAppExit()?.forEach({ domain in
+      guard let urlString = domain.url,
+        let url = URL(string: urlString),
+        !InternalURL.isValid(url: url)
+      else {
+        return
+      }
+      Task {
+        await forgetData(for: url, in: nil)
+      }
+    })
+  }
+
   /// Forget all data for websites if the website has "Forget Me" enabled
   ///
   /// A delay allows us to cancel this forget in case the user goes back to this website.
@@ -774,7 +791,10 @@ class TabManager: NSObject {
     )
 
     switch siteDomain.shredLevel {
-    case .appExit, .never:
+    case .never:
+      return
+    case .appExit:
+      // Will be Shred on startup at next launch in `forgetDataOnAppExitDomains()`.
       return
     case .whenSiteClosed:
       let tabs = tabs(withType: tab.type).filter { existingTab in
@@ -1217,13 +1237,9 @@ class TabManager: NSObject {
         if FeatureList.kBraveShredFeature.enabled,
           shouldShredDomain(tabURL, savedTab.isPrivate)
         {
-          Task {
-            // Shred it's data
-            await forgetData(for: tabURL, in: nil)
-            // Delete SessionTab to prevent restore next launch
-            SessionTab.delete(tabId: savedTab.tabId)
-          }
-          // don't restore this tab after shredding
+          // Delete SessionTab to prevent restore next launch
+          SessionTab.delete(tabId: savedTab.tabId)
+          // Don't restore this tab, it will be Shred after setup
           continue
         }
 
