@@ -13,7 +13,9 @@ static_library("browser") {
     "webcompat_report_uploader.h",
     "webcompat_reporter_service.cc",
     "webcompat_reporter_service.h",
-  ]
+    "webcompat_reporter_utils.cc",
+    "webcompat_reporter_utils.h",
+ ]
 
   deps = [
     "//base",
@@ -24,7 +26,7 @@ static_library("browser") {
     "//brave/components/constants",
     "//brave/components/version_info",
     "//brave/components/webcompat_reporter/buildflags",
-    "//brave/components/webcompat_reporter/common",
+    "//brave/components/webcompat_reporter/common:mojom",
     "//components/keyed_service/core",
     "//net",
     "//services/network/public/cpp",

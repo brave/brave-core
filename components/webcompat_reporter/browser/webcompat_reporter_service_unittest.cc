@@ -46,7 +46,7 @@ class MockWebCompatServiceDelegate
               GetAdblockFilterListNames,
               (),
               (const));
-  MOCK_METHOD(std::string, GetChannelName, (), (const));
+  MOCK_METHOD(std::optional<std::string>, GetChannelName, (), (const));
   MOCK_METHOD(std::optional<std::vector<ComponentInfo>>,
               GetComponentInfos,
               (),
