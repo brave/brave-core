@@ -120,6 +120,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/variations:buildflags",
     "//chrome/browser",
+    "//chrome/browser/devtools",
     "//chrome/browser/enterprise/connectors/analysis:features",
     "//chrome/browser/ui",
     "//chrome/browser/ui:ui_features",
