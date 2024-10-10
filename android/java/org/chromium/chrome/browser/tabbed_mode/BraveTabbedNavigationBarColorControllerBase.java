@@ -9,6 +9,7 @@ import android.content.Context;
 import android.os.Build;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import org.chromium.base.BraveReflectionUtil;
@@ -24,9 +25,9 @@ class BraveTabbedNavigationBarColorControllerBase {
      * This variable will be used instead of `TabGroupModelFilter#mContext`, that will be deleted in
      * bytecode.
      */
-    protected Context mContext;
+    protected @Nullable Context mContext;
 
-    protected TabModelSelector mTabModelSelector;
+    protected @Nullable TabModelSelector mTabModelSelector;
 
     // Calls from the upstream's private function
     // `TabbedNavigationBarColorController#getNavigationBarColor`
@@ -36,7 +37,8 @@ class BraveTabbedNavigationBarColorControllerBase {
         // Adjust navigation bar color to match the bottom toolbar color when it is visible.
         if (BottomToolbarConfiguration.isBottomToolbarEnabled()
                 && BraveMenuButtonCoordinator.isMenuFromBottom()
-                && mContext != null) {
+                && mContext != null
+                && mTabModelSelector != null) {
             if (mTabModelSelector.isIncognitoSelected()) {
                 return mContext.getColor(R.color.toolbar_background_primary_dark);
             } else {
