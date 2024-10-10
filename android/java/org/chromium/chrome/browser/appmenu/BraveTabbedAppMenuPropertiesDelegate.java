@@ -58,9 +58,9 @@ import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
-/**
- * Brave's extension for TabbedAppMenuPropertiesDelegate
- */
+import java.util.Locale;
+
+/** Brave's extension for TabbedAppMenuPropertiesDelegate */
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
     private Menu mMenu;
     private AppMenuDelegate mAppMenuDelegate;
@@ -131,12 +131,18 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         menu.findItem(R.id.request_vpn_location_row_menu_id).getSubMenu();
                 MenuItem vpnLocationSubMenuItem =
                         vpnLocationSubMenu.findItem(R.id.request_vpn_location_id);
+                String isoCode = BraveVpnPrefUtils.getRegionIsoCode();
+                String country =
+                        !BraveVpnPrefUtils.getRegionCountry().equals("")
+                                ? BraveVpnPrefUtils.getRegionCountry()
+                                : new Locale("", isoCode).getDisplayCountry();
+
                 vpnLocationSubMenuItem.setTitle(
                         String.format(
                                 serverLocation,
                                 BraveVpnUtils.countryCodeToEmoji(
                                         BraveVpnPrefUtils.getRegionIsoCode()),
-                                BraveVpnPrefUtils.getRegionNamePretty()));
+                                country));
                 MenuItem vpnLocationIconSubMenuItem =
                         vpnLocationSubMenu.findItem(R.id.request_vpn_location_icon_id);
                 Drawable drawable = vpnLocationIconSubMenuItem.getIcon();

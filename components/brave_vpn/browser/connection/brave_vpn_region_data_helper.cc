@@ -53,6 +53,7 @@ base::Value::Dict GetValueFromRegionWithoutCity(
   base::Value::Dict region_dict;
   region_dict.Set(kRegionNameKey, region->name);
   region_dict.Set(kRegionNamePrettyKey, region->name_pretty);
+  region_dict.Set(kRegionCountryKey, region->country);
   region_dict.Set(kRegionContinentKey, region->continent);
   region_dict.Set(kRegionCountryIsoCodeKey, region->country_iso_code);
   region_dict.Set(kRegionPrecisionKey, region->region_precision);
@@ -77,6 +78,7 @@ base::Value::Dict GetValueFromRegion(const mojom::RegionPtr& region) {
 bool IsValidRegionValue(const base::Value::Dict& value) {
   if (!value.FindString(kRegionNameKey) ||
       !value.FindString(kRegionNamePrettyKey) ||
+      !value.FindString(kRegionCountryKey) ||
       !value.FindString(kRegionContinentKey) ||
       !value.FindString(kRegionCountryIsoCodeKey) ||
       !value.FindString(kRegionPrecisionKey) ||
@@ -97,6 +99,9 @@ mojom::RegionPtr GetRegionFromValueWithoutCity(const base::Value::Dict& value) {
   }
   if (auto* name_pretty = value.FindString(brave_vpn::kRegionNamePrettyKey)) {
     region->name_pretty = *name_pretty;
+  }
+  if (auto* country = value.FindString(brave_vpn::kRegionCountryKey)) {
+    region->country = *country;
   }
   if (auto* continent = value.FindString(brave_vpn::kRegionContinentKey)) {
     region->continent = *continent;

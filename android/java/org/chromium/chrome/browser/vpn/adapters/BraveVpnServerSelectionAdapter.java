@@ -63,7 +63,7 @@ public class BraveVpnServerSelectionAdapter
                                     R.plurals.server_text, region.serverCount, region.serverCount);
             holder.cityServerText.setText(cityText.concat(serverText));
             holder.serverRadioButton.setChecked(
-                    BraveVpnPrefUtils.getRegionName().equals(region.name));
+                    BraveVpnPrefUtils.getRegionIsoCode().equals(region.countryIsoCode));
             holder.serverSelectionItemLayout.setOnClickListener(
                     new View.OnClickListener() {
                         @Override

@@ -17,11 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.radiobutton.MaterialRadioButton;
 
+import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.activities.VpnServerActivity.OnCitySelection;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
-import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,13 +54,26 @@ public class VpnServerAdapter extends RecyclerView.Adapter<VpnServerAdapter.View
                             .getQuantityString(
                                     R.plurals.server_text, city.serverCount, city.serverCount);
             holder.cityServerText.setText((position == 0) ? city.name : cityServerText);
+
+            boolean isCountryPrecision =
+                    BraveVpnPrefUtils.getRegionPrecision()
+                            .equals(BraveVpnConstants.REGION_PRECISION_COUNTRY);
+            boolean isCityPrecision =
+                    BraveVpnPrefUtils.getRegionPrecision()
+                            .equals(BraveVpnConstants.REGION_PRECISION_CITY);
+            boolean regionMatches = BraveVpnPrefUtils.getRegionName().equals(mRegion.name);
+            boolean cityMatches = BraveVpnPrefUtils.getRegionName().equals(city.name);
+            boolean isoCodeMatches =
+                    isCountryPrecision
+                            && !regionMatches
+                            && !cityMatches
+                            && BraveVpnPrefUtils.getRegionIsoCode().equals(mRegion.countryIsoCode)
+                            && position == 0;
+
             boolean isEnabled =
-                    BraveVpnPrefUtils.getRegionName().equals(mRegion.name)
-                            && BraveVpnPrefUtils.getRegionCityName()
-                                    .equals(
-                                            position == 0
-                                                    ? BraveVpnUtils.OPTIMAL_SERVER
-                                                    : city.name);
+                    (isCountryPrecision && regionMatches && position == 0)
+                            || (isCityPrecision && cityMatches)
+                            || isoCodeMatches;
             holder.serverRadioButton.setChecked(isEnabled);
             holder.serverSelectionItemLayout.setOnClickListener(
                     new View.OnClickListener() {
