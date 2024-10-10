@@ -399,7 +399,7 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
 
   auto* coordinator = GetTipPanelCoordinator(params->tab_id, browser_context());
   if (!coordinator) {
-    return RespondNow(Error(tabs_constants::kTabNotFoundError,
+    return RespondNow(Error(extensions::ExtensionTabUtil::kTabNotFoundError,
                             base::NumberToString(params->tab_id)));
   }
 
