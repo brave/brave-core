@@ -756,17 +756,20 @@ class TabManager: NSObject {
   /// Will forget all data instantly with no delay
   @MainActor func forgetDataOnAppExitDomains() {
     guard BraveCore.FeatureList.kBraveShredFeature.enabled else { return }
-    Domain.allDomainsWithShredLevelAppExit()?.forEach({ domain in
-      guard let urlString = domain.url,
-        let url = URL(string: urlString),
-        !InternalURL.isValid(url: url)
-      else {
-        return
+    let shredOnAppExitURLs = Domain.allDomainsWithShredLevelAppExit()?
+      .compactMap { domain -> URL? in
+        guard let urlString = domain.url,
+          let url = URL(string: urlString),
+          !InternalURL.isValid(url: url)
+        else {
+          return nil
+        }
+        return url
       }
-      Task {
-        await forgetData(for: url, in: nil)
-      }
-    })
+    guard let shredOnAppExitURLs, !shredOnAppExitURLs.isEmpty else { return }
+    Task {
+      await forgetData(for: shredOnAppExitURLs)
+    }
   }
 
   /// Forget all data for websites if the website has "Forget Me" enabled
@@ -867,14 +870,24 @@ class TabManager: NSObject {
   }
 
   @MainActor private func forgetData(for url: URL, in tab: Tab?) async {
-    await FaviconFetcher.deleteCache(for: url)
-    guard let etldP1 = url.baseDomain else { return }
+    await forgetData(for: [url], dataStore: tab?.webView?.configuration.websiteDataStore)
 
-    let dataStore = (tab?.webView?.configuration.websiteDataStore ?? WKWebsiteDataStore.default())
+    ContentBlockerManager.log.debug("Cleared website data for `\(url.baseDomain ?? "")`")
+    if let etldP1 = url.baseDomain, let tab {
+      forgetTasks[tab.type]?.removeValue(forKey: etldP1)
+    }
+  }
+
+  @MainActor private func forgetData(for urls: [URL], dataStore: WKWebsiteDataStore? = nil) async {
+    let baseDomains = Set(urls.compactMap { $0.baseDomain })
+    guard !baseDomains.isEmpty else { return }
+
+    let dataStore = dataStore ?? WKWebsiteDataStore.default()
     // Delete 1P data records
     await dataStore.deleteDataRecords(
-      forDomain: etldP1
+      forDomains: baseDomains
     )
+
     if BraveCore.FeatureList.kBraveShredCacheData.enabled {
       // Delete all cache data (otherwise 3P cache entries left behind
       // are visible in Manage Website Data view brave-browser #41095)
@@ -888,8 +901,10 @@ class TabManager: NSObject {
 
     // Delete the history for forgotten websites
     if let historyAPI = self.historyAPI {
+      // if we're only forgetting 1 site, we can query history by it's domain
+      let query = urls.count == 1 ? urls.first?.baseDomain : nil
       let nodes = await historyAPI.search(
-        withQuery: etldP1,
+        withQuery: query,
         options: HistorySearchOptions(
           maxCount: 0,
           hostOnly: false,
@@ -898,14 +913,14 @@ class TabManager: NSObject {
           end: nil
         )
       ).filter { node in
-        node.url.baseDomain == etldP1
+        guard let baseDomain = node.url.baseDomain else { return false }
+        return baseDomains.contains(baseDomain)
       }
       historyAPI.removeHistory(for: nodes)
     }
 
-    ContentBlockerManager.log.debug("Cleared website data for `\(etldP1)`")
-    if let tab {
-      forgetTasks[tab.type]?.removeValue(forKey: etldP1)
+    for url in urls {
+      await FaviconFetcher.deleteCache(for: url)
     }
   }
 
@@ -1635,11 +1650,15 @@ extension TabManager: NSFetchedResultsControllerDelegate {
 
 extension WKWebsiteDataStore {
   @MainActor fileprivate func deleteDataRecords(forDomain domain: String) async {
+    await deleteDataRecords(forDomains: Set([domain]))
+  }
+
+  @MainActor fileprivate func deleteDataRecords(forDomains domains: Set<String>) async {
     let records = await dataRecords(
       ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()
     )
     let websiteRecords = records.filter { record in
-      record.displayName == domain
+      domains.contains(record.displayName)
     }
 
     await removeData(
