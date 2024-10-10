@@ -170,7 +170,7 @@ class DeAmpBrowserTest : public InProcessBrowserTest {
                       const std::string& content_type,
                       const net::test_server::HttpRequest& request)
         -> std::unique_ptr<net::test_server::HttpResponse> {
-      [&request]() {
+      [&request] {
         // This should never happen, abort test
         ASSERT_EQ(request.headers.find("X-Brave-De-AMP"),
                   request.headers.end());

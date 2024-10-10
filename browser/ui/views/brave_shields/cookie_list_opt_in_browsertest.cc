@@ -52,7 +52,7 @@ class CookieListFilterEnabledObserver {
   CookieListFilterEnabledObserver() {
     pref_observer_.Init(g_browser_process->local_state());
     pref_observer_.Add(prefs::kAdBlockRegionalFilters,
-                       base::BindLambdaForTesting([this]() {
+                       base::BindLambdaForTesting([this] {
                          if (IsCookieListFilterEnabled()) {
                            run_loop_.Quit();
                          }

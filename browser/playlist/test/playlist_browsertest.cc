@@ -75,7 +75,7 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
 
     base::RepeatingTimer scheduler;
     scheduler.Start(FROM_HERE, base::Milliseconds(100),
-                    base::BindLambdaForTesting([this, &condition]() {
+                    base::BindLambdaForTesting([this, &condition] {
                       if (condition.Run()) {
                         run_loop_->Quit();
                       }
