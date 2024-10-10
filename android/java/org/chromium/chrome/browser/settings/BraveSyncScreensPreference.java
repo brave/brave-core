@@ -75,7 +75,7 @@ import org.chromium.chrome.browser.share.qrcode.QRCodeGenerator;
 import org.chromium.chrome.browser.sync.BraveSyncDevices;
 import org.chromium.chrome.browser.sync.SyncServiceFactory;
 import org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings;
-import org.chromium.components.browser_ui.settings.SettingsLauncher;
+import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.sync.SyncService;
 import org.chromium.ui.base.DeviceFormFactor;
 
@@ -742,8 +742,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                         });
             }
         } else if (mShowCategoriesButton == v) {
-            SettingsLauncher settingsLauncher = SettingsLauncherFactory.createSettingsLauncher();
-            settingsLauncher.launchSettingsActivity(getContext(), BraveManageSyncSettings.class);
+            SettingsNavigation settingsLauncher =
+                    SettingsNavigationFactory.createSettingsNavigation();
+            settingsLauncher.startSettings(getContext(), BraveManageSyncSettings.class);
         } else if (mAddDeviceButton == v) {
             setNewChainLayout();
         } else if (mDeleteAccountButton == v) {

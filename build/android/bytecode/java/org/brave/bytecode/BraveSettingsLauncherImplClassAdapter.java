@@ -8,14 +8,14 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BraveSettingsLauncherImplClassAdapter extends BraveClassVisitor {
-    static String sSettingsLauncherImplClassName =
-            "org/chromium/chrome/browser/settings/SettingsLauncherImpl";
+    static String sSettingsNavigationImplClassName =
+            "org/chromium/chrome/browser/settings/SettingsNavigationImpl";
     static String sBraveSettingsLauncherImplClassName =
             "org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl";
 
     public BraveSettingsLauncherImplClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        redirectConstructor(sSettingsLauncherImplClassName, sBraveSettingsLauncherImplClassName);
+        redirectConstructor(sSettingsNavigationImplClassName, sBraveSettingsLauncherImplClassName);
     }
 }
