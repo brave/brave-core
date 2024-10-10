@@ -11,3 +11,16 @@ mojom("mojom") {
 
   public_deps = [ "//mojo/public/mojom/base" ]
 }
+
+source_set("common") {
+  sources = [
+    "webcompat_reporter_utils.cc",
+    "webcompat_reporter_utils.h",
+  ]
+
+  deps = [
+    ":mojom",
+    "//base",
+    "//brave/components/brave_shields/core/common",
+  ]
+}

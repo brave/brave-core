@@ -19,6 +19,8 @@ config("mojom_header_config") {
 source_set("webcompat_reporter") {
   configs += [ ":mojom_header_config" ]
   sources = [
+    "webcompat_reporter_service_delegate.h",
+    "webcompat_reporter_service_delegate.mm",
     "webcompat_reporter_service_factory.h",
     "webcompat_reporter_service_factory.mm",
     "webcompat_reporter_service_factory_wrapper.h",
@@ -30,6 +32,7 @@ source_set("webcompat_reporter") {
     "//base",
     "//brave/base/mac",
     "//brave/components/webcompat_reporter/browser:browser",
+    "//brave/components/webcompat_reporter/common",
     "//brave/ios/browser/keyed_service",
     "//components/keyed_service/core",
     "//components/keyed_service/ios:ios",
