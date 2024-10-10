@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.omnibox;
 
 import android.view.ActionMode;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -88,7 +89,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             LocationBarEmbedderUiOverrides uiOverrides,
             @Nullable View baseChromeLayout,
-            Supplier<Integer> bottomWindowPaddingSupplier) {
+            Supplier<Integer> bottomWindowPaddingSupplier,
+            @Nullable OnLongClickListener onLongClickListener) {
         super(
                 locationBarLayout,
                 autocompleteAnchorView,
@@ -120,7 +122,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 tabModelSelectorSupplier,
                 uiOverrides,
                 baseChromeLayout,
-                bottomWindowPaddingSupplier);
+                bottomWindowPaddingSupplier,
+                onLongClickListener);
 
         if (mUrlBar != null) {
             ((UrlBar) mUrlBar).setSelectAllOnFocus(true);
