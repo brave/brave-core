@@ -117,41 +117,14 @@ void DayZeroBrowserUIExptManager::OnProfileManagerDestroying() {
 
 void DayZeroBrowserUIExptManager::SetForDayZeroBrowserUI(Profile* profile) {
   VLOG(2) << __func__ << " Update prefs for day zero expt.";
-
-  auto* prefs = profile->GetPrefs();
-  prefs->SetDefaultPrefValue(kNewTabPageShowRewards, base::Value(false));
-  prefs->SetDefaultPrefValue(kNewTabPageShowBraveTalk, base::Value(false));
-  prefs->SetDefaultPrefValue(kShowWalletIconOnToolbar, base::Value(false));
-  prefs->SetDefaultPrefValue(brave_rewards::prefs::kShowLocationBarButton,
-                             base::Value(false));
-  bool should_show_ntp_si_and_news = false;
 #if BUILDFLAG(IS_ANDROID)
-  should_show_ntp_si_and_news = true;
   Java_DayZeroHelper_setDayZeroExptAndroid(
       base::android::AttachCurrentThread(), false);
 #endif  // #BUILDFLAG(IS_ANDROID)
-  prefs->SetDefaultPrefValue(ntp_background_images::prefs::
-                                 kNewTabPageShowSponsoredImagesBackgroundImage,
-                             base::Value(should_show_ntp_si_and_news));
-  prefs->SetDefaultPrefValue(brave_news::prefs::kNewTabPageShowToday,
-                             base::Value(should_show_ntp_si_and_news));
 }
 
 void DayZeroBrowserUIExptManager::ResetForDayZeroBrowserUI(Profile* profile) {
   VLOG(2) << __func__ << " Update prefs for day zero expt.";
-
-  auto* prefs = profile->GetPrefs();
-  prefs->SetDefaultPrefValue(kNewTabPageShowRewards, base::Value(true));
-  prefs->SetDefaultPrefValue(kNewTabPageShowBraveTalk, base::Value(true));
-  prefs->SetDefaultPrefValue(kShowWalletIconOnToolbar, base::Value(true));
-  prefs->SetDefaultPrefValue(ntp_background_images::prefs::
-                                 kNewTabPageShowSponsoredImagesBackgroundImage,
-                             base::Value(true));
-  prefs->SetDefaultPrefValue(brave_rewards::prefs::kShowLocationBarButton,
-                             base::Value(true));
-  prefs->SetDefaultPrefValue(
-      brave_news::prefs::kNewTabPageShowToday,
-      base::Value(brave_news::IsUserInDefaultEnabledLocale()));
 #if BUILDFLAG(IS_ANDROID)
   Java_DayZeroHelper_setDayZeroExptAndroid(
       base::android::AttachCurrentThread(), true);
