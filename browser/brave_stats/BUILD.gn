@@ -3,15 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import("//brave/browser/brave_stats/buildflags.gni")
 import("//build/buildflag_header.gni")
-
-declare_args() {
-  brave_stats_updater_url = ""
-}
-
-if (is_official_build) {
-  assert(brave_stats_updater_url != "")
-}
 
 buildflag_header("buildflags") {
   header = "buildflags.h"

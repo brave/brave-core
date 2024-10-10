@@ -20,8 +20,8 @@ public class DAU {
     // TODO: Handle via brave-stats-updater-server switch and get URL from brave_stats_updater_url
     let domain =
       AppConstants.isOfficialBuild
-      ? "https://laptop-updates.brave.com/"
-      : "https://laptop-updates.bravesoftware.com/"
+      ? "https://usage-ping.brave.com/"
+      : "https://usage-ping.bravesoftware.com/"
 
     return "\(domain)\(apiVersion)/usage/ios?platform=ios"
   }

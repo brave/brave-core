@@ -18,8 +18,8 @@ public class UserReferralProgram {
   public static let shared = UserReferralProgram()
 
   struct HostUrl {
-    static let staging = "https://laptop-updates.bravesoftware.com"
-    static let prod = "https://laptop-updates.brave.com"
+    static let staging = "https://usage-ping.bravesoftware.com"
+    static let prod = "https://usage-ping.brave.com"
   }
 
   let adServicesURLString = "https://api-adservices.apple.com/api/v1/"
