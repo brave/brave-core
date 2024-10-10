@@ -935,7 +935,7 @@ TEST_F(KeyringServiceUnitTest, CreateAndRestoreWallet) {
   service.Reset();
 
   auto verify_restore_wallet = base::BindLambdaForTesting(
-      [&mnemonic_to_be_restored, &service, &address0]() {
+      [&mnemonic_to_be_restored, &service, &address0] {
         EXPECT_TRUE(
             RestoreWallet(&service, *mnemonic_to_be_restored, "brave1", false));
         {

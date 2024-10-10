@@ -17,7 +17,7 @@
 class MockBraveTooltipDelegate : public brave_tooltips::BraveTooltipDelegate {
  public:
   MockBraveTooltipDelegate() {
-    ON_CALL(*this, OnTooltipWidgetDestroyed).WillByDefault([this]() {
+    ON_CALL(*this, OnTooltipWidgetDestroyed).WillByDefault([this] {
       run_loop_.Quit();
     });
   }

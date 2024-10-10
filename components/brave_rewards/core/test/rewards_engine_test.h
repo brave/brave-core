@@ -48,7 +48,7 @@ class RewardsEngineTest : public testing::Test {
   template <typename F>
   void WaitFor(F fn) {
     base::RunLoop run_loop;
-    fn(base::BindLambdaForTesting([&run_loop]() { run_loop.Quit(); }));
+    fn(base::BindLambdaForTesting([&run_loop] { run_loop.Quit(); }));
     run_loop.Run();
   }
 

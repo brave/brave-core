@@ -289,7 +289,7 @@ void EnsResolverTask::FetchEnsResolver() {
 
 void EnsResolverTask::OnFetchEnsResolverDone(
     APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -335,7 +335,7 @@ void EnsResolverTask::FetchEnsip10Support() {
 
 void EnsResolverTask::OnFetchEnsip10SupportDone(
     APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -371,7 +371,7 @@ void EnsResolverTask::FetchEnsRecord() {
 
 void EnsResolverTask::OnFetchEnsRecordDone(
     APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -422,7 +422,7 @@ void EnsResolverTask::FetchWithEnsip10Resolve() {
 
 void EnsResolverTask::OnFetchWithEnsip10ResolveDone(
     APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -527,7 +527,7 @@ void EnsResolverTask::FetchOffchainData() {
 }
 
 void EnsResolverTask::OnFetchOffchainDone(APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -568,7 +568,7 @@ void EnsResolverTask::FetchOffchainCallback() {
 
 void EnsResolverTask::OnFetchOffchainCallbackDone(
     APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());

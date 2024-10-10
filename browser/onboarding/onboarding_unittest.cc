@@ -108,7 +108,7 @@ TEST_F(OnboardingTest, HelperCreationTestForNonFirstRun) {
   TestingBrowserProcess::GetGlobal()->local_state()->SetTime(
       onboarding::prefs::kLastShieldsIconHighlightTime, base::Time());
   OnboardingTabHelper::MaybeCreateForWebContents(web_contents.get());
-  ASSERT_TRUE(base::test::RunUntil([&tab_helper, &web_contents]() {
+  ASSERT_TRUE(base::test::RunUntil([&tab_helper, &web_contents] {
     tab_helper = OnboardingTabHelper::FromWebContents(web_contents.get());
     return tab_helper;
   }));

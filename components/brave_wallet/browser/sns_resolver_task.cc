@@ -789,7 +789,7 @@ void SnsResolverTask::FetchNftSplMint() {
 }
 
 void SnsResolverTask::OnFetchNftSplMint(APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     SetError(MakeInternalError());
@@ -827,7 +827,7 @@ void SnsResolverTask::FetchNftTokenOwner() {
 
 void SnsResolverTask::OnFetchNftTokenOwner(
     APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     SetError(MakeInternalError());
@@ -857,7 +857,7 @@ void SnsResolverTask::FetchDomainRegistryState() {
 
 void SnsResolverTask::OnFetchDomainRegistryState(
     APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     SetError(MakeInternalError());
@@ -896,7 +896,7 @@ void SnsResolverTask::FetchNextRecord() {
 }
 
 void SnsResolverTask::OnFetchNextRecord(APIRequestResult api_request_result) {
-  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
+  absl::Cleanup cleanup([this] { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     SetError(MakeInternalError());

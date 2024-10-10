@@ -125,7 +125,7 @@ TEST(TorControlTest, ReadDone) {
       std::make_unique<TorControl>(delegate.AsWeakPtr(), io_task_runner);
   base::RunLoop run_loop;
   io_task_runner->PostTask(
-      FROM_HERE, base::BindLambdaForTesting([&run_loop, &control, &delegate]() {
+      FROM_HERE, base::BindLambdaForTesting([&run_loop, &control, &delegate] {
         constexpr char test_str[] =
             "250-SOCKSPORT=9050\r\n250 ORPORT=0\r\n250 OK";
         control->reading_ = true;

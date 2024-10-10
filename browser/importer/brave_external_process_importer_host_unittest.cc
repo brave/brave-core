@@ -134,7 +134,7 @@ class BraveExternalProcessImporterHostUnitTest : public testing::Test {
     external_process_host()->StartImportSettings(source_profile, GetProfile(),
                                                  importer::EXTENSIONS, nullptr);
     base::RunLoop loop;
-    ImportEndedObserver observer(base::BindLambdaForTesting([&loop, this]() {
+    ImportEndedObserver observer(base::BindLambdaForTesting([&loop, this] {
       external_process_host_ = nullptr;
       loop.Quit();
     }));

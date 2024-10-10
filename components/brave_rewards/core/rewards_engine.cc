@@ -272,21 +272,21 @@ void RewardsEngine::RestorePublishers(RestorePublishersCallback callback) {
 }
 
 void RewardsEngine::SetPublisherMinVisitTime(int duration_in_seconds) {
-  WhenReady([this, duration_in_seconds]() {
+  WhenReady([this, duration_in_seconds] {
     state()->SetPublisherMinVisitTime(duration_in_seconds);
   });
 }
 
 void RewardsEngine::SetPublisherMinVisits(int visits) {
-  WhenReady([this, visits]() { state()->SetPublisherMinVisits(visits); });
+  WhenReady([this, visits] { state()->SetPublisherMinVisits(visits); });
 }
 
 void RewardsEngine::SetAutoContributionAmount(double amount) {
-  WhenReady([this, amount]() { state()->SetAutoContributionAmount(amount); });
+  WhenReady([this, amount] { state()->SetAutoContributionAmount(amount); });
 }
 
 void RewardsEngine::SetAutoContributeEnabled(bool enabled) {
-  WhenReady([this, enabled]() { state()->SetAutoContributeEnabled(enabled); });
+  WhenReady([this, enabled] { state()->SetAutoContributeEnabled(enabled); });
 }
 
 void RewardsEngine::GetBalanceReport(mojom::ActivityMonth month,
@@ -451,7 +451,7 @@ void RewardsEngine::RefreshPublisher(const std::string& publisher_key,
 }
 
 void RewardsEngine::StartContributionsForTesting() {
-  WhenReady([this]() {
+  WhenReady([this] {
     contribution()->StartContributionsForTesting();  // IN-TEST
   });
 }
@@ -460,7 +460,7 @@ void RewardsEngine::UpdateMediaDuration(uint64_t window_id,
                                             const std::string& publisher_key,
                                             uint64_t duration,
                                             bool first_visit) {
-  WhenReady([this, window_id, publisher_key, duration, first_visit]() {
+  WhenReady([this, window_id, publisher_key, duration, first_visit] {
     publisher()->UpdateMediaDuration(window_id, publisher_key, duration,
                                      first_visit);
   });

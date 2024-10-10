@@ -516,7 +516,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, FoldersAreRemovedOnUpdate) {
   auto io_runner = base::ThreadPool::CreateSequencedTaskRunner(
       {base::MayBlock(), base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
 
-  auto count_folders_on_io_runner = [&io_runner]() {
+  auto count_folders_on_io_runner = [&io_runner] {
     base::RunLoop run_loop;
     size_t folder_count;
 

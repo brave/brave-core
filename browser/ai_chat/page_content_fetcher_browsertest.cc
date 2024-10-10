@@ -191,7 +191,7 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContentPDF) {
   ASSERT_TRUE(chat_tab_helper);
   auto run_loop = std::make_unique<base::RunLoop>();
   chat_tab_helper->SetOnPDFA11yInfoLoadedCallbackForTesting(
-      base::BindLambdaForTesting([this, &run_loop, &kExpectedText]() {
+      base::BindLambdaForTesting([this, &run_loop, &kExpectedText] {
         FetchPageContent(FROM_HERE, kExpectedText, false, false);
         run_loop->Quit();
       }));
@@ -200,7 +200,7 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContentPDF) {
 
   run_loop = std::make_unique<base::RunLoop>();
   chat_tab_helper->SetOnPDFA11yInfoLoadedCallbackForTesting(
-      base::BindLambdaForTesting([this, &run_loop]() {
+      base::BindLambdaForTesting([this, &run_loop] {
         FetchPageContent(FROM_HERE, "", false, false);
         run_loop->Quit();
       }));
@@ -217,7 +217,7 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContentPDF) {
   chat_tab_helper = ai_chat::AIChatTabHelper::FromWebContents(
       browser()->tab_strip_model()->GetWebContentsAt(1));
   chat_tab_helper->SetOnPDFA11yInfoLoadedCallbackForTesting(
-      base::BindLambdaForTesting([this, &run_loop, &kExpectedText]() {
+      base::BindLambdaForTesting([this, &run_loop, &kExpectedText] {
         FetchPageContent(FROM_HERE, kExpectedText, false, false);
         run_loop->Quit();
       }));

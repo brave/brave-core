@@ -42,7 +42,7 @@ class CommanderServiceBrowserTest : public InProcessBrowserTest {
   void TearDownOnMainThread() override {
     commander()->Hide();
     WaitUntil(base::BindLambdaForTesting(
-        [this]() { return !commander()->IsShowing(); }));
+        [this] { return !commander()->IsShowing(); }));
   }
 
  protected:
@@ -62,7 +62,7 @@ class CommanderServiceBrowserTest : public InProcessBrowserTest {
 
     base::RepeatingTimer scheduler;
     scheduler.Start(FROM_HERE, base::Milliseconds(100),
-                    base::BindLambdaForTesting([this, &condition]() {
+                    base::BindLambdaForTesting([this, &condition] {
                       if (condition.Run()) {
                         run_loop_->Quit();
                       }

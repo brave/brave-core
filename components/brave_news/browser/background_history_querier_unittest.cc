@@ -52,7 +52,7 @@ class BraveNewsBackgroundHistoryQuerierTest : public testing::Test {
             {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
              base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {
     querier_ = MakeHistoryQuerier(
-        history_service_.AsWeakPtr(), base::BindLambdaForTesting([this]() {
+        history_service_.AsWeakPtr(), base::BindLambdaForTesting([this] {
           return fake_destroyed_ ? nullptr : &tracker_;
         }));
   }
