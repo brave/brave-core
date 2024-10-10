@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.toolbar.top;
 import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
@@ -85,7 +86,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             FullscreenManager fullscreenManager,
             TabObscuringHandler tabObscuringHandler,
             @Nullable DesktopWindowStateProvider desktopWindowStateProvider,
-            OneshotSupplier<TabStripTransitionDelegate> tabStripTransitionDelegateSupplier) {
+            OneshotSupplier<TabStripTransitionDelegate> tabStripTransitionDelegateSupplier,
+            @Nullable OnLongClickListener onLongClickListener) {
         super(
                 controlContainer,
                 toolbarLayout,
@@ -111,7 +113,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 fullscreenManager,
                 tabObscuringHandler,
                 desktopWindowStateProvider,
-                tabStripTransitionDelegateSupplier);
+                tabStripTransitionDelegateSupplier,
+                onLongClickListener);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
