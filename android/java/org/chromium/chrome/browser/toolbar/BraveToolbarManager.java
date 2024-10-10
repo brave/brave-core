@@ -29,7 +29,7 @@ import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_leo.BraveLeoActivity;
 import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
-import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
@@ -128,7 +128,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private BraveScrollingBottomViewResourceFrameLayout mBottomControls;
     private ObservableSupplier<EdgeToEdgeController> mEdgeToEdgeControllerSupplier;
     private ObservableSupplier<Profile> mProfileSupplier;
-    private BrowserControlsVisibilityManager mBrowserControlsVisibilityManager;
+    private final BrowserControlsSizer mBrowserControlsSizer;
     private OneshotSupplierImpl<BottomControlsContentDelegate> mContentDelegateSupplier =
             new OneshotSupplierImpl<>();
     private final DataSharingTabManager mDataSharingTabManager;
@@ -137,7 +137,7 @@ public class BraveToolbarManager extends ToolbarManager {
     public BraveToolbarManager(
             AppCompatActivity activity,
             BottomControlsStacker bottomControlsStacker,
-            BrowserControlsVisibilityManager controlsVisibilityManager,
+            BrowserControlsSizer controlsSizer,
             FullscreenManager fullscreenManager,
             ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             ToolbarControlContainer controlContainer,
@@ -184,7 +184,7 @@ public class BraveToolbarManager extends ToolbarManager {
         super(
                 activity,
                 bottomControlsStacker,
-                controlsVisibilityManager,
+                controlsSizer,
                 fullscreenManager,
                 edgeToEdgeControllerSupplier,
                 controlContainer,
@@ -234,7 +234,7 @@ public class BraveToolbarManager extends ToolbarManager {
         mCompositorViewHolder = compositorViewHolder;
         mEdgeToEdgeControllerSupplier = edgeToEdgeControllerSupplier;
         mProfileSupplier = profileSupplier;
-        mBrowserControlsVisibilityManager = controlsVisibilityManager;
+        mBrowserControlsSizer = controlsSizer;
         mDataSharingTabManager = dataSharingTabManager;
         mTabModelSelectorSupplier = tabModelSelectorSupplier;
 
@@ -275,7 +275,7 @@ public class BraveToolbarManager extends ToolbarManager {
                             .createTabGroupUi(
                                     mActivity,
                                     mBottomControls.findViewById(R.id.bottom_container_slot),
-                                    mBrowserControlsVisibilityManager,
+                                    mBrowserControlsSizer,
                                     mIncognitoStateProvider,
                                     mScrimCoordinator,
                                     mOmniboxFocusStateSupplier,
@@ -290,7 +290,7 @@ public class BraveToolbarManager extends ToolbarManager {
             mContentDelegateSupplier.set(mTabGroupUi);
 
             BrowserStateBrowserControlsVisibilityDelegate controlsVisibilityDelegate =
-                    mBrowserControlsVisibilityManager.getBrowserVisibilityDelegate();
+                    mBrowserControlsSizer.getBrowserVisibilityDelegate();
             assert controlsVisibilityDelegate != null;
 
             mBottomControlsCoordinatorSupplier.set(
@@ -348,7 +348,7 @@ public class BraveToolbarManager extends ToolbarManager {
     public void initializeWithNative(
             @NonNull LayoutManagerImpl layoutManager,
             @Nullable StripLayoutHelperManager stripLayoutHelperManager,
-            OnClickListener tabSwitcherClickHandler,
+            Runnable openGridTabSwitcherHandler,
             OnClickListener bookmarkClickHandler,
             OnClickListener customTabsBackClickHandler,
             @Nullable ObservableSupplier<Integer> archivedTabCountSupplier) {
@@ -356,7 +356,7 @@ public class BraveToolbarManager extends ToolbarManager {
         super.initializeWithNative(
                 layoutManager,
                 stripLayoutHelperManager,
-                tabSwitcherClickHandler,
+                openGridTabSwitcherHandler,
                 bookmarkClickHandler,
                 customTabsBackClickHandler,
                 archivedTabCountSupplier);
@@ -390,7 +390,7 @@ public class BraveToolbarManager extends ToolbarManager {
                             mActivity,
                             mCompositorViewHolder.getResourceManager(),
                             mCompositorViewHolder.getLayoutManager(),
-                            /*tabSwitcherListener*/ tabSwitcherClickHandler,
+                            /*tabSwitcherListener*/ v -> openGridTabSwitcherHandler.run(),
                             /*newTabClickListener*/ wrappedNewTabClickHandler,
                             mWindowAndroid,
                             mTabModelSelector,
