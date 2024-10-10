@@ -101,6 +101,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
   private var translationSession: BraveTranslateSession?
   private var urlObserver: NSObjectProtocol?
   fileprivate var currentLanguageInfo = BraveTranslateLanguageInfo()
+  private static var elementScriptTask: Task<String, Error> = downloadElementScript()
 
   struct RequestMessage: Codable {
     let method: String
@@ -153,21 +154,6 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
       return nil
     }
 
-    //    return WKUserScript(
-    //      source: secureScript(
-    //        handlerNamesMap: ["$<message_handler>": messageHandlerName,
-    //                          "$<brave_translate_api_key>": kBraveServicesKey,
-    //                          "$<brave_translate_script>": namespace],
-    //        securityToken: scriptId,
-    //        script: script
-    //      ),
-    //      injectionTime: .atDocumentEnd,
-    //      forMainFrameOnly: true,
-    //      in: scriptSandbox
-    //    )
-
-    // HACKS! Need a better way to do this.
-    // Chromium Scripts do NOT have a secure message handler and cannot be sandboxed the same way!
     return WKUserScript(
       source:
         script
@@ -360,6 +346,29 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     )
   }
 
+  private static func downloadElementScript() -> Task<String, Error> {
+    return Task {
+      var urlRequest = URLRequest(
+        url: URL(string: "https://translate.brave.com/static/v1/element.js")!
+      )
+      urlRequest.httpMethod = "GET"
+
+      let session = URLSession(configuration: .ephemeral)
+      defer { session.finishTasksAndInvalidate() }
+      let (data, response) = try await session.data(for: urlRequest)
+
+      guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+        throw BraveTranslateError.invalidTranslationResponse
+      }
+
+      guard let script = String(data: data, encoding: .utf8) else {
+        throw BraveTranslateError.invalidTranslationResponse
+      }
+
+      return script
+    }
+  }
+
   func userContentController(
     _ userContentController: WKUserContentController,
     didReceiveScriptMessage message: WKScriptMessage,
@@ -372,6 +381,14 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
 
     guard let body = message.body as? [String: Any] else {
       Logger.module.error("Invalid Brave Translate Message")
+      return
+    }
+
+    if body["command"] as? String == "load_brave_translate_script" {
+      Task {
+        let script = try await BraveTranslateScriptHandler.elementScriptTask.value
+        replyHandler(script, nil)
+      }
       return
     }
 
