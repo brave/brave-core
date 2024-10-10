@@ -5,17 +5,20 @@
 
 import './brave_account_dialog.js';
 import '../settings_shared.css.js';
-import '../settings_vars.css.js';
+import 'chrome://resources/cr_elements/cr_shared_style.css.js';
+import 'chrome://resources/polymer/v3_0/iron-flex-layout/iron-flex-layout-classes.js';
 
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
-import {getTemplate} from './brave_account_module.html.js'
+import {getTemplate} from './brave_account_row.html.js'
 
-const SettingsBraveAccountModuleBase = WebUiListenerMixin(PolymerElement)
+/**
+ * @fileoverview
+ * 'settings-brave-account-row'...
+ */
 
-class SettingsBraveAccountModule extends SettingsBraveAccountModuleBase {
+class SettingsBraveAccountRow extends PolymerElement {
   static get is() {
-    return 'settings-brave-account-module'
+    return 'settings-brave-account-row'
   }
 
   static get template() {
@@ -31,7 +34,7 @@ class SettingsBraveAccountModule extends SettingsBraveAccountModuleBase {
     }
   }
 
-  private showBraveAccountDialog_: boolean;
+  private showBraveAccountDialog_: boolean = false;
 
   private onGetStartedButtonClicked_() {
     this.showBraveAccountDialog_ = true
@@ -42,4 +45,4 @@ class SettingsBraveAccountModule extends SettingsBraveAccountModuleBase {
   }
 }
 
-customElements.define(SettingsBraveAccountModule.is, SettingsBraveAccountModule);
+customElements.define(SettingsBraveAccountRow.is, SettingsBraveAccountRow);
