@@ -89,6 +89,7 @@ brave/components/brave_ads/core/internal/security/**/*.mm @brave/ads-client
 
 # Network
 browser/net/ @iefremov
+chromium_src/chrome/browser/net/profile_network_context_service.cc @brave/sec-team
 chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc @brave/sec-team
 
 # Tor
