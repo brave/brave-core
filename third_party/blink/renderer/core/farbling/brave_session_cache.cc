@@ -216,9 +216,8 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key_),
                sizeof session_key_));
   CHECK(h.Sign(domain, domain_key_, sizeof domain_key_));
-  settings_client_ = GetContentSettingsClientFor(&context, true);
-  if (settings_client_ != nullptr) {
-    auto raw_farbling_level = settings_client_->GetBraveFarblingLevel(
+  if (auto* settings_client = GetContentSettingsClientFor(&context, true)) {
+    auto raw_farbling_level = settings_client->GetBraveFarblingLevel(
         ContentSettingsType::BRAVE_WEBCOMPAT_NONE);
     farbling_level_ =
         base::FeatureList::IsEnabled(
@@ -409,13 +408,15 @@ BraveFarblingLevel BraveSessionCache::GetBraveFarblingLevel(
   }
   // The farbling level for webcompat_content_settings is not known yet,
   // so we will make a more expensive call to learn what it is.
-  if (settings_client_ != nullptr &&
-      webcompat_content_settings > ContentSettingsType::BRAVE_WEBCOMPAT_NONE &&
+  if (webcompat_content_settings > ContentSettingsType::BRAVE_WEBCOMPAT_NONE &&
       webcompat_content_settings < ContentSettingsType::BRAVE_WEBCOMPAT_ALL) {
-    auto farbling_level =
-        settings_client_->GetBraveFarblingLevel(webcompat_content_settings);
-    farbling_levels_.insert(webcompat_content_settings, farbling_level);
-    return farbling_level;
+    if (auto* settings_client =
+            GetContentSettingsClientFor(GetSupplementable(), true)) {
+      auto farbling_level =
+          settings_client->GetBraveFarblingLevel(webcompat_content_settings);
+      farbling_levels_.insert(webcompat_content_settings, farbling_level);
+      return farbling_level;
+    }
   }
   return farbling_level_;
 }
