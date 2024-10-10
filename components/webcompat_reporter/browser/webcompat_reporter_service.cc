@@ -8,37 +8,17 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
-#include "base/check.h"
-#include "base/no_destructor.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
-#include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
-#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
-#include "components/component_updater/component_updater_service.h"
 
 namespace {
 constexpr char kComponentItemName[] = "name";
 constexpr char kComponentItemId[] = "id";
 constexpr char kComponentItemVersion[] = "version";
-
-void SetListVal(
-    std::optional<base::Value>& val_to_set,
-    const base::flat_map<std::string, base::Value::Dict>& opt_dict_val) {
-  if (opt_dict_val.empty()) {
-    return;
-  }
-  auto list = base::Value::List();
-  for (const auto& item : opt_dict_val) {
-    list.Append(item.second.Clone());
-  }
-  val_to_set = base::Value(std::move(list));
-}
 
 void ConvertCompsToValue(
     std::optional<base::Value>& val_to_set,
@@ -56,24 +36,6 @@ void ConvertCompsToValue(
     components_list.Append(std::move(component_dict));
   }
   val_to_set = base::Value(std::move(components_list));
-}
-bool NeedsToGetComponentInfo(const std::string& component_id) {
-  static const base::NoDestructor<std::unordered_set<std::string>>
-      kComponentIds({
-          "adcocjohghhfpidemphmcmlmhnfgikei",  // Brave Ad Block First Party
-                                               // Filters (plaintext)
-          "bfpgedeaaibpoidldhjcknekahbikncb",  // Fanboy's Mobile Notifications
-                                               // (plaintext)
-          "cdbbhgbmjhfnhnmgeddbliobbofkgdhe",  // EasyList Cookie (plaintext)
-          "gkboaolpopklhgplhaaiboijnklogmbc",  // Regional Catalog
-          "iodkpdagapdfkphljnddpjlldadblomo",  // Brave Ad Block Updater
-                                               // (plaintext)
-          "jcfckfokjmopfomnoebdkdhbhcgjfnbi",  // Brave Experimental Adblock
-                                               // Rules (plaintext)
-          brave_shields::kAdBlockResourceComponentId,  // Brave Ad Block Updater
-                                                       // (Resources)
-      });
-  return kComponentIds->contains(component_id);
 }
 
 void FillReportWithAdblockListNames(
@@ -97,31 +59,29 @@ void FillReportWithAdblockListNames(
 
 void FillReportWithComponetsInfo(
     webcompat_reporter::Report& report,
-    raw_ptr<component_updater::ComponentUpdateService>& component_updater) {
+    webcompat_reporter::WebcompatReporterService::WebCompatServiceDelegate*
+        service_delegate) {
   if (report.ad_block_components && !report.ad_block_components->is_none()) {
     return;
   }
-  if (!component_updater) {
-    return;
-  }
-  base::flat_map<std::string, base::Value::Dict> ad_block_components_version;
-  auto components(component_updater->GetComponents());
-  for (const auto& ci : components) {
-    if (!NeedsToGetComponentInfo(ci.id)) {
-      continue;
-    }
-    base::Value::Dict dict;
-    dict.Set(kComponentItemName, base::UTF16ToUTF8(ci.name));
-    dict.Set(kComponentItemId, ci.id);
-    dict.Set(kComponentItemVersion, ci.version.GetString());
-
-    ad_block_components_version.insert_or_assign(ci.id, std::move(dict));
-  }
-  if (ad_block_components_version.empty()) {
+  if (!service_delegate) {
     return;
   }
 
-  SetListVal(report.ad_block_components, ad_block_components_version);
+  auto component_infos = service_delegate->GetComponentInfos();
+  if (!component_infos) {
+    return;
+  }
+
+  auto components_list = base::Value::List();
+  for (const auto& component : component_infos.value()) {
+    base::Value::Dict component_dict;
+    component_dict.Set(kComponentItemName, component.name);
+    component_dict.Set(kComponentItemId, component.id);
+    component_dict.Set(kComponentItemVersion, component.version);
+    components_list.Append(std::move(component_dict));
+  }
+  report.ad_block_components = base::Value(std::move(components_list));
 }
 
 void FillReportByReportInfo(
@@ -163,7 +123,6 @@ void FillReportByReportInfo(
 
 void FillReportValues(
     webcompat_reporter::Report& report,
-    raw_ptr<component_updater::ComponentUpdateService>& component_updater,
     webcompat_reporter::WebcompatReporterService::WebCompatServiceDelegate*
         service_delegate) {
   if (!report.channel && service_delegate) {
@@ -174,7 +133,7 @@ void FillReportValues(
     report.brave_version =
         version_info::GetBraveVersionWithoutChromiumMajorVersion();
   }
-  FillReportWithComponetsInfo(report, component_updater);
+  FillReportWithComponetsInfo(report, service_delegate);
   FillReportWithAdblockListNames(report, service_delegate);
 }
 }  // namespace
@@ -184,10 +143,8 @@ WebcompatReporterService::WebcompatReporterService() = default;
 
 WebcompatReporterService::WebcompatReporterService(
     std::unique_ptr<WebCompatServiceDelegate> service_delegate,
-    component_updater::ComponentUpdateService* component_update_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : component_update_service_(component_update_service),
-      service_delegate_(std::move(service_delegate)),
+    : service_delegate_(std::move(service_delegate)),
       report_uploader_(
           std::make_unique<WebcompatReportUploader>(url_loader_factory)) {}
 
@@ -213,7 +170,7 @@ void WebcompatReporterService::SubmitWebcompatReport(
 }
 
 void WebcompatReporterService::SubmitWebcompatReport(Report report_data) {
-  FillReportValues(report_data, component_update_service_,
+  FillReportValues(report_data,
                    service_delegate_ ? service_delegate_.get() : nullptr);
   SubmitReportInternal(report_data);
 }
@@ -225,10 +182,8 @@ void WebcompatReporterService::SubmitReportInternal(const Report& report_data) {
   report_uploader_->SubmitReport(report_data);
 }
 
-void WebcompatReporterService::SetUpWebcompatReporterServiceForTest(
-    std::unique_ptr<WebcompatReportUploader> report_uploader,
-    component_updater::ComponentUpdateService* component_update_service) {
-  component_update_service_ = component_update_service;
+void WebcompatReporterService::SetReportUploaderForTest(
+    std::unique_ptr<WebcompatReportUploader> report_uploader) {
   report_uploader_ = std::move(report_uploader);
 }
 void WebcompatReporterService::SetDelegateForTest(

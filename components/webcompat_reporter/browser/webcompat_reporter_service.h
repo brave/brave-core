@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_WEBCOMPAT_REPORTER_BROWSER_WEBCOMPAT_REPORTER_SERVICE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -20,26 +21,28 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
-namespace component_updater {
-class ComponentUpdateService;
-}  // namespace component_updater
-
 namespace webcompat_reporter {
 class WebcompatReporterService : public KeyedService,
                                  public mojom::WebcompatReporterHandler {
  public:
   class WebCompatServiceDelegate {
    public:
+    struct ComponentInfo {
+      std::string id;
+      std::string name;
+      std::string version;
+    };
     virtual ~WebCompatServiceDelegate() = default;
 
     virtual std::optional<std::vector<std::string>> GetAdblockFilterListNames()
         const = 0;
     virtual std::string GetChannelName() const = 0;
+    virtual std::optional<std::vector<ComponentInfo>> GetComponentInfos()
+        const = 0;
   };
 
   explicit WebcompatReporterService(
       std::unique_ptr<WebCompatServiceDelegate> service_delegate,
-      component_updater::ComponentUpdateService* component_update_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   WebcompatReporterService(const WebcompatReporterService&) = delete;
   WebcompatReporterService& operator=(const WebcompatReporterService&) = delete;
@@ -55,14 +58,12 @@ class WebcompatReporterService : public KeyedService,
  private:
   friend class WebcompatReporterServiceUnitTest;
   WebcompatReporterService();
-  void SetUpWebcompatReporterServiceForTest(
-      std::unique_ptr<WebcompatReportUploader> report_uploader,
-      component_updater::ComponentUpdateService* component_update_service);
+  void SetReportUploaderForTest(
+      std::unique_ptr<WebcompatReportUploader> report_uploader);
   void SetDelegateForTest(
       std::unique_ptr<WebCompatServiceDelegate> service_delegate);
 
   void SubmitReportInternal(const Report& report_data);
-  raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
   std::unique_ptr<WebCompatServiceDelegate> service_delegate_;
   std::unique_ptr<WebcompatReportUploader> report_uploader_;
   mojo::ReceiverSet<mojom::WebcompatReporterHandler> receivers_;

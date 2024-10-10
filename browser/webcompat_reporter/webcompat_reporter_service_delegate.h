@@ -11,16 +11,23 @@
 
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 
+namespace component_updater {
+class ComponentUpdateService;
+}  // namespace component_updater
+
 namespace brave_shields {
 class AdBlockService;
 }  // namespace brave_shields
 
 namespace webcompat_reporter {
-
-class WebcompatReporterServiceDelegateImpl
-    : public WebcompatReporterService::WebCompatServiceDelegate {
+using WebCompatServiceDelegate =
+    WebcompatReporterService::WebCompatServiceDelegate;
+using ComponentInfo =
+    WebcompatReporterService::WebCompatServiceDelegate::ComponentInfo;
+class WebcompatReporterServiceDelegateImpl : public WebCompatServiceDelegate {
  public:
   explicit WebcompatReporterServiceDelegateImpl(
+      component_updater::ComponentUpdateService* component_update_service,
       brave_shields::AdBlockService* adblock_service);
   WebcompatReporterServiceDelegateImpl(
       const WebcompatReporterServiceDelegateImpl&) = delete;
@@ -31,8 +38,10 @@ class WebcompatReporterServiceDelegateImpl
   std::optional<std::vector<std::string>> GetAdblockFilterListNames()
       const override;
   std::string GetChannelName() const override;
+  std::optional<std::vector<ComponentInfo>> GetComponentInfos() const override;
 
  private:
+  raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
   raw_ptr<brave_shields::AdBlockService> adblock_service_;
 };
 
