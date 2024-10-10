@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 
@@ -25,6 +26,8 @@ class BraveTabbedNavigationBarColorControllerBase {
      */
     protected Context mContext;
 
+    protected TabModelSelector mTabModelSelector;
+
     // Calls from the upstream's private function
     // `TabbedNavigationBarColorController#getNavigationBarColor`
     // will be redirected here via bytecode.
@@ -34,7 +37,11 @@ class BraveTabbedNavigationBarColorControllerBase {
         if (BottomToolbarConfiguration.isBottomToolbarEnabled()
                 && BraveMenuButtonCoordinator.isMenuFromBottom()
                 && mContext != null) {
-            return mContext.getColor(R.color.default_bg_color_baseline);
+            if (mTabModelSelector.isIncognitoSelected()) {
+                return mContext.getColor(R.color.toolbar_background_primary_dark);
+            } else {
+                return mContext.getColor(R.color.default_bg_color_baseline);
+            }
         }
 
         // Otherwise just call upstream's method.
