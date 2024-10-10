@@ -29,8 +29,8 @@ import org.chromium.brave_shields.mojom.SubscriptionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.settings.BraveSettingsActivity;
-import org.chromium.components.browser_ui.settings.FragmentSettingsLauncher;
-import org.chromium.components.browser_ui.settings.SettingsLauncher;
+import org.chromium.components.browser_ui.settings.FragmentSettingsNavigation;
+import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo_base.mojom.Value;
@@ -40,7 +40,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ContentFilteringFragment extends BravePreferenceFragment
-        implements FragmentSettingsLauncher, BraveContentFilteringListener, ConnectionErrorHandler {
+        implements FragmentSettingsNavigation,
+                BraveContentFilteringListener,
+                ConnectionErrorHandler {
     private RecyclerView mRecyclerView;
 
     private ContentFilteringAdapter mAdapter;
@@ -53,8 +55,8 @@ public class ContentFilteringFragment extends BravePreferenceFragment
     private boolean mIsMenuLoaded;
     private boolean mIsGetSubscriptionsLoaded;
 
-    // SettingsLauncher injected from main Settings Activity.
-    private SettingsLauncher mSettingsLauncher;
+    // SettingsNavigation injected from main Settings Activity.
+    private SettingsNavigation mSettingsLauncher;
     private ActivityResultLauncher<Intent> mAddCustomFilterResultLauncher;
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
@@ -141,7 +143,7 @@ public class ContentFilteringFragment extends BravePreferenceFragment
             isEditSelected(false);
         }
         Intent intent =
-                mSettingsLauncher.createSettingsActivityIntent(
+                mSettingsLauncher.createSettingsIntent(
                         getActivity(), AddCustomFilterListsFragment.class, null);
         mAddCustomFilterResultLauncher.launch(intent);
     }
@@ -164,7 +166,7 @@ public class ContentFilteringFragment extends BravePreferenceFragment
             isEditSelected(false);
         }
         Intent intent =
-                mSettingsLauncher.createSettingsActivityIntent(
+                mSettingsLauncher.createSettingsIntent(
                         getActivity(), CreateCustomFiltersFragment.class, null);
         getActivity().startActivity(intent);
     }
@@ -186,7 +188,7 @@ public class ContentFilteringFragment extends BravePreferenceFragment
     }
 
     @Override
-    public void setSettingsLauncher(SettingsLauncher settingsLauncher) {
+    public void setSettingsNavigation(SettingsNavigation settingsLauncher) {
         mSettingsLauncher = settingsLauncher;
     }
 
