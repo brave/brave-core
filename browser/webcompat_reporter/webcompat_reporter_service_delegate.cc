@@ -6,37 +6,14 @@
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_delegate.h"
 
 #include <optional>
-#include <unordered_set>
 
-#include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
-#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/webcompat_reporter/common/webcompat_reporter_utils.h"
 #include "components/component_updater/component_updater_service.h"
-
-namespace {
-bool NeedsToGetComponentInfo(const std::string& component_id) {
-  static const base::NoDestructor<std::unordered_set<std::string>>
-      kComponentIds({
-          "adcocjohghhfpidemphmcmlmhnfgikei",  // Brave Ad Block First Party
-                                               // Filters (plaintext)
-          "bfpgedeaaibpoidldhjcknekahbikncb",  // Fanboy's Mobile Notifications
-                                               // (plaintext)
-          "cdbbhgbmjhfnhnmgeddbliobbofkgdhe",  // EasyList Cookie (plaintext)
-          "gkboaolpopklhgplhaaiboijnklogmbc",  // Regional Catalog
-          "iodkpdagapdfkphljnddpjlldadblomo",  // Brave Ad Block Updater
-                                               // (plaintext)
-          "jcfckfokjmopfomnoebdkdhbhcgjfnbi",  // Brave Experimental Adblock
-                                               // Rules (plaintext)
-          brave_shields::kAdBlockResourceComponentId,  // Brave Ad Block Updater
-                                                       // (Resources)
-      });
-  return kComponentIds->contains(component_id);
-}
-}  // namespace
 
 namespace webcompat_reporter {
 
@@ -73,9 +50,11 @@ WebcompatReporterServiceDelegateImpl::GetAdblockFilterListNames() const {
   return ad_block_list_names;
 }
 
-std::string WebcompatReporterServiceDelegateImpl::GetChannelName() const {
+std::optional<std::string>
+WebcompatReporterServiceDelegateImpl::GetChannelName() const {
   return brave::GetChannelName();
 }
+
 std::optional<std::vector<ComponentInfo>>
 WebcompatReporterServiceDelegateImpl::GetComponentInfos() const {
   if (!component_update_service_) {
