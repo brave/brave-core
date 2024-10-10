@@ -3,37 +3,36 @@ This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this file,
 You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<style include="cr-shared-style settings-shared iron-flex">
+<style include="cr-shared-style iron-flex settings-shared">
   :host {
     --brave-account-page-image-space: 10px;
   }
-  .title {
-    display: block;
-    font-weight: 600;
-  }
-  .subtitle {
-    display: block;
-    font-size: 85%;
-    line-height: 130%;
-  }
   img {
     margin-inline-end: var(--brave-account-page-image-space);
+  }
+  .title-text {
+    font-weight: 600;
+  }
+  .secondary-text {
+    font-size: 85%;
+    line-height: 150%;
   }
 </style>
 
 <div class="cr-row">
   <img srcset="chrome://theme/current-channel-logo@1x 1x,
                chrome://theme/current-channel-logo@2x 2x">
-  <div class="flex cr-padded-text">
-    <span class="title">
+  <div class="cr-padded-text flex layout vertical">
+    <div class="cr-title-text title-text">
       Sign in or create a Brave account
-    </span>
-    <span class="subtitle">
+    </div>
+    <div class="cr-secondary-text secondary-text">
       $i18n{braveSyncBraveAccountDesc}
-    </span>
+    </div>
   </div>
   <div class="separator"></div>
-  <cr-button class="action-button" on-click="onGetStartedButtonClicked_">
+  <cr-button class="action-button"
+             on-click="onGetStartedButtonClicked_">
     Get started
   </cr-button>
 </div>
