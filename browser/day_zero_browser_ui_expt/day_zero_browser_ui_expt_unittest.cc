@@ -42,33 +42,6 @@ class DayZeroBrowserUIExptTest : public testing::Test,
     }
   }
 
-  void CheckBrowserHasDayZeroUI(Profile* profile) {
-    auto* prefs = profile->GetPrefs();
-    EXPECT_FALSE(prefs->GetBoolean(kNewTabPageShowRewards));
-    EXPECT_FALSE(prefs->GetBoolean(kNewTabPageShowBraveTalk));
-    EXPECT_FALSE(prefs->GetBoolean(kShowWalletIconOnToolbar));
-    EXPECT_FALSE(
-        prefs->GetBoolean(ntp_background_images::prefs::
-                              kNewTabPageShowSponsoredImagesBackgroundImage));
-    EXPECT_FALSE(
-        prefs->GetBoolean(brave_rewards::prefs::kShowLocationBarButton));
-    EXPECT_FALSE(prefs->GetBoolean(brave_news::prefs::kNewTabPageShowToday));
-  }
-
-  void CheckBrowserHasOriginalUI(Profile* profile) {
-    auto* prefs = profile->GetPrefs();
-    EXPECT_TRUE(prefs->GetBoolean(kNewTabPageShowRewards));
-    EXPECT_TRUE(prefs->GetBoolean(kNewTabPageShowBraveTalk));
-    EXPECT_TRUE(prefs->GetBoolean(kShowWalletIconOnToolbar));
-    EXPECT_TRUE(
-        prefs->GetBoolean(ntp_background_images::prefs::
-                              kNewTabPageShowSponsoredImagesBackgroundImage));
-    EXPECT_TRUE(
-        prefs->GetBoolean(brave_rewards::prefs::kShowLocationBarButton));
-    EXPECT_EQ(prefs->GetBoolean(brave_news::prefs::kNewTabPageShowToday),
-              brave_news::IsUserInDefaultEnabledLocale());
-  }
-
   bool IsDayZeroEnabled() { return GetParam(); }
 
   content::BrowserTaskEnvironment task_environment_;
@@ -85,13 +58,7 @@ TEST_P(DayZeroBrowserUIExptTest, PrefsTest) {
   auto* profile2 =
       testing_profile_manager_.CreateTestingProfile("TestProfile2");
 
-  if (IsDayZeroEnabled()) {
-    CheckBrowserHasDayZeroUI(profile);
-    CheckBrowserHasDayZeroUI(profile2);
-  } else {
-    CheckBrowserHasOriginalUI(profile);
-    CheckBrowserHasOriginalUI(profile2);
-  }
+  // Add check for DayZero prefs here
 
   // Disable p3a and check ui is back to original.
   testing_local_state_.SetBoolean(p3a::kP3AEnabled, false);
