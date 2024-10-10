@@ -71,8 +71,8 @@ Report& Report::operator=(const Report& other) {
     languages = other.languages;
     language_farbling = other.language_farbling;
     brave_vpn_connected = other.brave_vpn_connected;
-    SetOptValue(details, other.details);
-    SetOptValue(contact, other.contact);
+    details = other.details;
+    contact = other.contact;
     SetOptValue(ad_block_components, other.ad_block_components);
     screenshot_png = other.screenshot_png;
   }
@@ -100,7 +100,7 @@ void WebcompatReportUploader::SubmitReport(const Report& report) {
   }
 
   if (report.details) {
-    report_details_dict.Set(kDetailsField, report.details.value().Clone());
+    report_details_dict.Set(kDetailsField, report.details.value());
   }
 
   if (report.ad_block_components) {
@@ -109,7 +109,7 @@ void WebcompatReportUploader::SubmitReport(const Report& report) {
   }
 
   if (report.contact) {
-    report_details_dict.Set(kContactField, report.contact.value().Clone());
+    report_details_dict.Set(kContactField, report.contact.value());
   }
 
   if (report.channel) {
@@ -192,7 +192,9 @@ void WebcompatReportUploader::CreateAndStartURLLoader(
     const GURL& upload_url,
     const std::string& content_type,
     const std::string& post_data) {
+#if !BUILDFLAG(IS_IOS)
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+#endif  // !BUILDFLAG(IS_IOS)
 
   auto resource_request = std::make_unique<network::ResourceRequest>();
   // upload_url only includes the origin and path, and not the fragment or
@@ -235,7 +237,9 @@ void WebcompatReportUploader::CreateAndStartURLLoader(
 
 void WebcompatReportUploader::OnSimpleURLLoaderComplete(
     std::unique_ptr<std::string> response_body) {
+#if !BUILDFLAG(IS_IOS)
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+#endif  // !BUILDFLAG(IS_IOS)
 
   bool success = !!response_body;
 

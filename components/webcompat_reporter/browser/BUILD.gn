@@ -17,9 +17,6 @@ static_library("browser") {
 
   deps = [
     "//base",
-    "//brave/common",
-    "//brave/components/brave_referrals/browser",
-    "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/core/common",
     "//brave/components/brave_shields/core/common:mojom",
@@ -28,31 +25,41 @@ static_library("browser") {
     "//brave/components/version_info",
     "//brave/components/webcompat_reporter/buildflags",
     "//brave/components/webcompat_reporter/common:mojom",
-    "//content/public/browser",
     "//net",
     "//services/network/public/cpp",
   ]
+
+  if (!is_ios) {
+    deps += [
+      "//brave/common",
+      "//brave/components/brave_referrals/browser",
+      "//brave/components/brave_shields/content/browser",
+      "//content/public/browser",
+    ]
+  }
 }
 
-source_set("unittests") {
-  testonly = true
+if (!is_ios) {
+  source_set("unittests") {
+    testonly = true
 
-  sources = [
-    "webcompat_report_uploader_unittest.cc",
-    "webcompat_reporter_service_unittest.cc",
-  ]
+    sources = [
+      "webcompat_report_uploader_unittest.cc",
+      "webcompat_reporter_service_unittest.cc",
+    ]
 
-  deps = [
-    ":browser",
-    "//base",
-    "//base/test:test_support",
-    "//brave/components/brave_shields/content/browser",
-    "//brave/components/brave_stats/browser",
-    "//brave/components/version_info",
-    "//brave/components/webcompat_reporter/common:mojom",
-    "//chrome/test:test_support",
-    "//components/component_updater:test_support",
-    "//testing/gtest",
-    "//url",
-  ]
+    deps = [
+      ":browser",
+      "//base",
+      "//base/test:test_support",
+      "//brave/components/brave_shields/content/browser",
+      "//brave/components/brave_stats/browser",
+      "//brave/components/version_info",
+      "//brave/components/webcompat_reporter/common:mojom",
+      "//chrome/test:test_support",
+      "//components/component_updater:test_support",
+      "//testing/gtest",
+      "//url",
+    ]
+  }
 }

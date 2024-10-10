@@ -96,9 +96,9 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
 
   report.channel = "dev";
   report.brave_version = "1.231.45";
-  report.shields_enabled = true;
-  report.language_farbling = true;
-  report.brave_vpn_connected = true;
+  report.shields_enabled = "true";
+  report.language_farbling = "true";
+  report.brave_vpn_connected = "true";
   report.ad_block_setting = "ad_block_setting";
   report.fp_block_setting = "fp_block_setting";
   report.ad_block_list_names = "ad_block_list_names";
@@ -107,8 +107,8 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
   test_dict.Set("key1", "val1");
   test_dict.Set("key1", "val1");
   report.ad_block_components = base::Value(test_dict.Clone());
-  report.details = base::Value(test_dict.Clone());
-  report.contact = base::Value(test_dict.Clone());
+  report.details = "details";
+  report.contact = "contact";
   report.report_url = GURL("https://abc.url/p1/p2");
 
   std::string test_dict_string;
@@ -123,24 +123,24 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
   "adBlockComponentsInfo": %s,
   "adBlockLists": "%s",
   "adBlockSetting": "%s",
-  "additionalDetails": %s,
+  "additionalDetails": "%s",
   "api_key": "%s",
-  "braveVPNEnabled": %s,
+  "braveVPNEnabled": "%s",
   "channel": "%s",
-  "contactInfo": %s,
+  "contactInfo": "%s",
   "domain": "%s",
   "fpBlockSetting": "%s",
-  "languageFarblingEnabled": %s,
+  "languageFarblingEnabled": "%s",
   "languages": "%s",
-  "shieldsEnabled": %s,
+  "shieldsEnabled": "%s",
   "url": "%s",
   "version": "%s"
 })",
           test_dict_string.c_str(), report.ad_block_list_names->c_str(),
-          report.ad_block_setting->c_str(), test_dict_string.c_str(),
+          report.ad_block_setting->c_str(), report.details->c_str(),
           brave_stats::GetAPIKey().c_str(),
           report.brave_vpn_connected ? "true" : "false",
-          report.channel->c_str(), test_dict_string.c_str(),
+          report.channel->c_str(), report.contact->c_str(),
           url::Origin::Create(report.report_url.value()).Serialize().c_str(),
           report.fp_block_setting->c_str(),
           report.language_farbling ? "true" : "false",
