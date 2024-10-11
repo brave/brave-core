@@ -29,6 +29,7 @@
 #include "base/timer/timer.h"
 #include "brave/components/brave_adaptive_captcha/pref_names.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
+#include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
 #include "brave/components/brave_ads/browser/analytics/p3a/notification_ad.h"
 #include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
@@ -232,6 +233,18 @@ AdsServiceImpl::AdsServiceImpl(
 }
 
 AdsServiceImpl::~AdsServiceImpl() = default;
+
+void AdsServiceImpl::AddObserver(AdsServiceObserver* const observer) {
+  CHECK(observer);
+
+  observers_.AddObserver(observer);
+}
+
+void AdsServiceImpl::RemoveObserver(AdsServiceObserver* const observer) {
+  CHECK(observer);
+
+  observers_.RemoveObserver(observer);
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -490,6 +503,14 @@ void AdsServiceImpl::InitializeBatAdsCallback(const bool success) {
 
   if (bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyDidInitializeAds();
+  }
+
+  NotifyAdsServiceInitialized();
+}
+
+void AdsServiceImpl::NotifyAdsServiceInitialized() const {
+  for (AdsServiceObserver& observer : observers_) {
+    observer.OnAdsServiceInitialized();
   }
 }
 

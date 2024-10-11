@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -28,6 +29,9 @@ class AdsServiceMock : public AdsService {
   AdsServiceMock& operator=(AdsServiceMock&&) noexcept = delete;
 
   ~AdsServiceMock() override;
+
+  MOCK_METHOD(void, AddObserver, (AdsServiceObserver * observer));
+  MOCK_METHOD(void, RemoveObserver, (AdsServiceObserver * observer));
 
   MOCK_METHOD(void,
               AddBatAdsObserver,
