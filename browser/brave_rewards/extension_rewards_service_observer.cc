@@ -98,6 +98,7 @@ void ExtensionRewardsServiceObserver::OnPublisherListNormalized(
   std::vector<extensions::api::brave_rewards::OnPublisherListNormalized::
         PublishersType> publishers;
 
+  publishers.reserve(list.size());
   for (const auto& item : list) {
     extensions::api::brave_rewards::OnPublisherListNormalized::PublishersType
         publisher;

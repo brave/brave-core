@@ -61,10 +61,9 @@ bool BraveWalletServiceDelegateImpl::AddPermission(mojom::CoinType coin,
 void BraveWalletServiceDelegateImpl::GetWebSitesWithPermission(
     mojom::CoinType coin,
     GetWebSitesWithPermissionCallback callback) {
-  std::vector<std::string> result;
   auto type = CoinTypeToPermissionType(coin);
   if (!type) {
-    std::move(callback).Run(result);
+    std::move(callback).Run({});
     return;
   }
   std::move(callback).Run(
