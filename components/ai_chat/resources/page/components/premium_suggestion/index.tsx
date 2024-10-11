@@ -63,18 +63,16 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
       </div>
       <div className={styles.features}>
         <ul>
-          {featuresList.map((entry) => {
-            return (
-              <li>
-                <div className={styles.icon}>
-                  <Icon name={entry.icon} />
-                </div>
-                <span>
-                  {entry.title}
-                  <p>{entry.desc}</p>
-                </span>
-              </li>
-            )
+          {featuresList.map((entry, i) => {
+            return <li key={i}>
+              <div className={styles.icon}>
+                <Icon name={entry.icon} />
+              </div>
+              <span>
+                {entry.title}
+                <p>{entry.desc}</p>
+              </span>
+            </li>
           })}
         </ul>
       </div>
