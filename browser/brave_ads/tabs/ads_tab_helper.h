@@ -14,9 +14,8 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
-#include "content/public/browser/media_player_id.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -26,6 +25,10 @@
 
 class Browser;
 class GURL;
+
+namespace content {
+struct MediaPlayerId;
+}  // namespace content
 
 namespace brave_ads {
 
@@ -37,7 +40,7 @@ class AdsTabHelper : public content::WebContentsObserver,
 #endif
                      public content::WebContentsUserData<AdsTabHelper> {
  public:
-  explicit AdsTabHelper(content::WebContents*);
+  explicit AdsTabHelper(content::WebContents* const);
   ~AdsTabHelper() override;
 
   AdsTabHelper(const AdsTabHelper&) = delete;
@@ -45,7 +48,7 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   AdsService* ads_service() { return ads_service_; }
 
-  void SetAdsServiceForTesting(AdsService* ads_service);
+  void SetAdsServiceForTesting(AdsService* const ads_service);
 
  private:
   friend class content::WebContentsUserData<AdsTabHelper>;
@@ -60,12 +63,12 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   // Returns 'false' if the navigation was a back/forward navigation or a
   // reload, otherwise 'true'.
-  bool IsNewNavigation(content::NavigationHandle* navigation_handle);
+  bool IsNewNavigation(content::NavigationHandle* const navigation_handle);
 
   // NOTE: DO NOT use this method before the navigation commit as it will return
   // null. It is safe to use from `WebContentsObserver::DidFinishNavigation()`.
   std::optional<int> HttpStatusCode(
-      content::NavigationHandle* navigation_handle);
+      content::NavigationHandle* const navigation_handle);
 
   bool IsErrorPage(int http_status_code) const;
 
@@ -77,7 +80,7 @@ class AdsTabHelper : public content::WebContentsObserver,
   void MaybeNotifyBrowserDidResignActive();
 
   void MaybeNotifyUserGestureEventTriggered(
-      content::NavigationHandle* navigation_handle);
+      content::NavigationHandle* const navigation_handle);
 
   void MaybeNotifyTabDidChange();
 

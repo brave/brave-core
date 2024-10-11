@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_AD_UNITS_NOTIFICATION_AD_CUSTOM_NOTIFICATION_AD_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_AD_UNITS_NOTIFICATION_AD_CUSTOM_NOTIFICATION_AD_CONSTANTS_H_
 
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "build/build_config.h"
 
 namespace brave_ads {
 

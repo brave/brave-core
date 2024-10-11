@@ -18,6 +18,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "components/sessions/core/session_id.h"
+#include "content/public/browser/media_player_id.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -51,12 +52,11 @@ std::string MediaPlayerUuid(const content::MediaPlayerId& id) {
 
 }  // namespace
 
-AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
+AdsTabHelper::AdsTabHelper(content::WebContents* const web_contents)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<AdsTabHelper>(*web_contents),
       session_id_(sessions::SessionTabHelper::IdForTab(web_contents)) {
   if (!session_id_.is_valid()) {
-    // Invalid session id instance.
     return;
   }
 
@@ -64,7 +64,6 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
   ads_service_ = AdsServiceFactory::GetForProfile(profile);
   if (!ads_service_) {
-    // No-op if the ads service is unavailable.
     return;
   }
 
@@ -84,7 +83,7 @@ AdsTabHelper::~AdsTabHelper() {
 #endif
 }
 
-void AdsTabHelper::SetAdsServiceForTesting(AdsService* ads_service) {
+void AdsTabHelper::SetAdsServiceForTesting(AdsService* const ads_service) {
   CHECK_IS_TEST();
 
   ads_service_ = ads_service;
@@ -108,6 +107,7 @@ bool AdsTabHelper::UserHasOptedInToNotificationAds() const {
 }
 
 bool AdsTabHelper::IsVisible() const {
+  // The web contents must be visible and the browser must be active.
   return is_web_contents_visible_ && is_browser_active_.value_or(false);
 }
 
@@ -142,7 +142,7 @@ void AdsTabHelper::MaybeSetBrowserIsNoLongerActive() {
 }
 
 bool AdsTabHelper::IsNewNavigation(
-    content::NavigationHandle* navigation_handle) {
+    content::NavigationHandle* const navigation_handle) {
   CHECK(navigation_handle);
 
   return ui::PageTransitionIsNewNavigation(
@@ -150,7 +150,7 @@ bool AdsTabHelper::IsNewNavigation(
 }
 
 std::optional<int> AdsTabHelper::HttpStatusCode(
-    content::NavigationHandle* navigation_handle) {
+    content::NavigationHandle* const navigation_handle) {
   CHECK(navigation_handle);
 
   if (const net::HttpResponseHeaders* const response_headers =
@@ -198,11 +198,10 @@ void AdsTabHelper::MaybeNotifyBrowserDidResignActive() {
 }
 
 void AdsTabHelper::MaybeNotifyUserGestureEventTriggered(
-    content::NavigationHandle* navigation_handle) {
+    content::NavigationHandle* const navigation_handle) {
   CHECK(navigation_handle);
 
   if (!ads_service_) {
-    // No-op if the ads service is unavailable.
     return;
   }
 
@@ -225,7 +224,6 @@ void AdsTabHelper::MaybeNotifyUserGestureEventTriggered(
 
 void AdsTabHelper::MaybeNotifyTabDidChange() {
   if (!ads_service_) {
-    // No-op if the ads service is unavailable.
     return;
   }
 
@@ -273,8 +271,7 @@ void AdsTabHelper::MaybeNotifyTabHtmlContentDidChange() {
     // for Brave Rewards users. However, we must notify that the tab content has
     // changed with empty HTML to ensure that regular conversions are processed.
     return ads_service_->NotifyTabHtmlContentDidChange(
-        /*tab_id=*/session_id_.id(), redirect_chain_,
-        /*html=*/"");
+        /*tab_id=*/session_id_.id(), redirect_chain_, /*html=*/"");
   }
 
   // Only utilized for verifiable conversions, which requires the user to have
@@ -342,7 +339,12 @@ void AdsTabHelper::MaybeNotifyTabdidClose() {
 
 void AdsTabHelper::DidStartNavigation(
     content::NavigationHandle* navigation_handle) {
-  if (!ads_service_ || !navigation_handle->IsInPrimaryMainFrame()) {
+  if (!ads_service_) {
+    // No-op if the ads service is unavailable.
+    return;
+  }
+
+  if (!navigation_handle->IsInPrimaryMainFrame()) {
     return;
   }
 
@@ -360,7 +362,6 @@ void AdsTabHelper::DidStartNavigation(
 void AdsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   if (!ads_service_) {
-    // No-op if the ads service is unavailable.
     return;
   }
 
@@ -400,7 +401,6 @@ void AdsTabHelper::DidFinishNavigation(
 // have finished loading.
 void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
   if (!ads_service_) {
-    // No-op if the ads service is unavailable.
     return;
   }
 

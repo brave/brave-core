@@ -9,7 +9,7 @@
 #include <cstdint>
 
 #include "base/time/time.h"
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "build/build_config.h"
 
 namespace brave_ads {
 

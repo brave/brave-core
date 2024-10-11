@@ -62,8 +62,8 @@ class AdsTooltipsDelegate;
 class BatAdsServiceFactory;
 class Database;
 class DeviceId;
-struct NewTabPageAdInfo;
 class ResourceComponent;
+struct NewTabPageAdInfo;
 
 class AdsServiceImpl final : public AdsService,
                              public bat_ads::mojom::BatAdsClient,
@@ -480,7 +480,6 @@ class AdsServiceImpl final : public AdsService,
 
   mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
       this};
-
   mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_remote_;
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
       bat_ads_client_associated_receiver_;

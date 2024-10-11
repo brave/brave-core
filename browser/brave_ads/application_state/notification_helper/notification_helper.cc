@@ -8,7 +8,7 @@
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl.h"
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_platform_bridge.h"
 #include "chrome/browser/profiles/profile.h"
