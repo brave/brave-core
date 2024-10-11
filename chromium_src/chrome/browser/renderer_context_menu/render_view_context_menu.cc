@@ -715,8 +715,9 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
   auto* shields_tab_helper =
       brave_shields::BraveShieldsTabHelper::FromWebContents(
           source_web_contents_);
-  bool add_block_elements =
-      shields_tab_helper && shields_tab_helper->GetAdBlockMode() !=
+  bool add_block_elements = shields_tab_helper &&
+                            shields_tab_helper->GetBraveShieldsEnabled() &&
+                            shields_tab_helper->GetAdBlockMode() !=
                                 brave_shields::mojom::AdBlockMode::ALLOW;
 #if BUILDFLAG(IS_ANDROID)
   // Content picker doesn't available for Android.
