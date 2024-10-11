@@ -1,3 +1,8 @@
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="40dp"
     android:height="40dp"
@@ -5,9 +10,9 @@
     android:viewportHeight="40">
   <path
       android:pathData="M0,19.2C0,12.479 0,9.119 1.308,6.552C2.458,4.294 4.294,2.458 6.552,1.308C9.119,0 12.479,0 19.2,0H20.8C27.521,0 30.881,0 33.448,1.308C35.706,2.458 37.542,4.294 38.692,6.552C40,9.119 40,12.479 40,19.2V20.8C40,27.521 40,30.881 38.692,33.448C37.542,35.706 35.706,37.542 33.448,38.692C30.881,40 27.521,40 20.8,40H19.2C12.479,40 9.119,40 6.552,38.692C4.294,37.542 2.458,35.706 1.308,33.448C0,30.881 0,27.521 0,20.8V19.2Z"
-      android:fillColor="#BFC3FE"/>
+      android:fillColor="@color/primitive_blurple_40"/>
   <path
       android:pathData="M28.652,16.98C29.745,15.886 29.745,14.114 28.652,13.02L27.237,11.606C26.144,10.512 24.371,10.512 23.278,11.606L12.182,22.701C11.717,23.166 11.43,23.78 11.373,24.435L11.13,27.176C11.032,28.292 11.966,29.226 13.082,29.127L15.822,28.885C16.477,28.827 17.091,28.541 17.556,28.076L28.652,16.98ZM27.52,14.151C27.989,14.62 27.989,15.38 27.52,15.849L26.606,16.763L23.494,13.652L24.409,12.737C24.878,12.269 25.637,12.269 26.106,12.737L27.52,14.151ZM22.363,14.783L25.474,17.894L16.424,26.944C16.225,27.143 15.962,27.266 15.682,27.291L12.941,27.533C12.817,27.544 12.713,27.44 12.724,27.316L12.966,24.576C12.991,24.295 13.114,24.032 13.313,23.833L22.363,14.783Z"
-      android:fillColor="#2F0D8D"
+      android:fillColor="@color/primitive_blurple_90"
       android:fillType="evenOdd"/>
 </vector>

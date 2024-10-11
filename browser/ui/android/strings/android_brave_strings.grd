@@ -3646,6 +3646,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_LEO_PREMIUM" desc="Title for Brave Leo plans dialog">
       Leo Premium
     </message>
+    <message name="IDS_YEARLY_SUBSCRIPTION_LEO" desc="Brave Leo yearly plan text">
+      One year
+    </message>
+    <message name="IDS_YEARLY_SUBSCRIPTION_LEO_BEST_VALUE" desc="Brave Leo yearly plan best value text">
+      BEST VALUE
+    </message>
     <message name="IDS_MONTHLY_SUBSCRIPTION_LEO" desc="Brave Leo monthly plan text">
       Monthly
     </message>
@@ -3864,8 +3870,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_LEO_SUBSCRIPTION_DISCLAIMER" desc="Disclaimer for Brave Leo subscription">
       All subscriptions are auto-renewed but can be\ncancelled at any time before renewal.
     </message>
-    <message name="IDS_LEO_SUBSCRIPTION_UPGRADE_NOW" desc="Upgrade now button for Brave Leo subscription">
-      Upgrade now
+    <message name="IDS_LEO_SUBSCRIPTION_TRY_FREE_TRIAL" desc="Try free trial now button for Brave Leo subscription">
+      Try 7 days free
     </message>
     <message name="IDS_LEO_SUBSCRIPTION_PREF" desc="Brave Leo Subscription section">
       Subscription
