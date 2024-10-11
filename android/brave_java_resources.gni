@@ -531,7 +531,6 @@ brave_java_resources = [
   "java/res/drawable/ic_message_bubble_comments.xml",
   "java/res/drawable/ic_metamask.xml",
   "java/res/drawable/ic_midnight_purple_circle.xml",
-  "java/res/drawable/ic_monitor.xml",
   "java/res/drawable/ic_neon_color.xml",
   "java/res/drawable/ic_new_tab_page.xml",
   "java/res/drawable/ic_news.xml",
