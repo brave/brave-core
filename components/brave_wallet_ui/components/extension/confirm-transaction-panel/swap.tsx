@@ -61,8 +61,6 @@ export function ConfirmSwapTransaction() {
   const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
     useGetActiveOriginQuery()
 
-  console.log(selectedPendingTransaction)
-
   // computed
   const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
   const isBridgeTx = selectedPendingTransaction
