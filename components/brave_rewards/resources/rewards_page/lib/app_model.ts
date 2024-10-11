@@ -64,6 +64,7 @@ export interface AdsHistoryItem {
 
 export interface RewardsParameters {
   autoContributeChoices: number[]
+  autoContributeChoice: number
   tipChoices: number[]
   rate: number
   walletProviderRegions: Record<string, { allow: string[], block: string[] }>
