@@ -34,9 +34,11 @@
   virtual NotifyPinnedContainerOfActiveStateChange
 
 #define PopulateSidePanel virtual PopulateSidePanel
+#define OnEntryWillDeregister virtual OnEntryWillDeregister
 
 #include "src/chrome/browser/ui/views/side_panel/side_panel_coordinator.h"  // IWYU pragma: export
 
+#undef OnEntryWillDeregister
 #undef PopulateSidePanel
 #undef NotifyPinnedContainerOfActiveStateChange
 #undef CreateHeader
