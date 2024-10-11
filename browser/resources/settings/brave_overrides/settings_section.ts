@@ -15,7 +15,7 @@ RegisterStyleOverride(
       }
 
       :host(:not(.expanded)) #card {
-        box-shadow: 0px var(--Elevation-xxs, 1px) 0px 0px var(--Semantic-Elevation-Primary, rgba(0, 0, 0, 0.05)), 0px var(--Elevation-xxs, 1px) var(--Elevation-xs, 4px) 0px var(--Semantic-Elevation-Secondary, rgba(0, 0, 0, 0.10)) !important;
+        box-shadow: var(--leo-effect-elevation-01) !important;
       }
     </style>
   `
