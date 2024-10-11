@@ -66,8 +66,8 @@ class BraveAutofillBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(BraveAutofillBrowserTest,
                        AutofillIsNotAllowedInPrivateWindows) {
-  GURL url(
-      embedded_https_test_server().GetURL("example.com", "/brave_scheme_load.html"));
+  GURL url(embedded_https_test_server().GetURL("example.com",
+                                               "/brave_scheme_load.html"));
 
   // Disable autofill in private windows.
   browser()->profile()->GetPrefs()->SetBoolean(kBraveAutofillPrivateWindows,
