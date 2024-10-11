@@ -3285,7 +3285,8 @@ TEST(EthDataParser,
   EXPECT_EQ(swap_info->to_chain_id, "");
   EXPECT_EQ(swap_info->to_asset,
             "0x6b175474e89094c44da98b954eedeac495271d0f");  // DAI
-  EXPECT_EQ(swap_info->to_amount, "0x53259bfcdc6572");      // 0.02340377495944536 DAI
+  EXPECT_EQ(swap_info->to_amount,
+            "0x53259bfcdc6572");  // 0.02340377495944536 DAI
 
   EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
   EXPECT_EQ(swap_info->provider, "squid");
