@@ -25,6 +25,9 @@ const getTitle = (activeConversation?: Conversation) => activeConversation?.titl
   || activeConversation?.summary
   || getLocale('conversationListUntitled')
 
+
+const newChatButtonLabel = getLocale('newChatButtonLabel')
+
 export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMenuProps, ref: React.Ref<HTMLDivElement>) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
@@ -70,8 +73,8 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
               <Button
                 fab
                 kind='plain-faint'
-                aria-label='Start a new conversation'
-                title='Start a new conversation'
+                aria-label={newChatButtonLabel}
+                title={newChatButtonLabel}
                 onClick={newConversation}
               >
                 <Icon name={aiChatContext.isHistoryEnabled ? 'plus-add' : 'erase'} />
@@ -117,8 +120,8 @@ export function SidebarHeader() {
           <Button
             fab
             kind='plain-faint'
-            aria-label='Start new conversation'
-            title='Start new conversation'
+            aria-label={newChatButtonLabel}
+            title={newChatButtonLabel}
             onClick={newConversation}
           >
             <Icon name='plus-add' />

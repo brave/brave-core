@@ -101,6 +101,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"braveLeoModelSubtitle-chat-claude-sonnet",
        IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE},
       {"clearChatButtonLabel", IDS_CHAT_UI_CLEAR_CHAT_BUTTON_LABEL},
+      {"newChatButtonLabel", IDS_CHAT_UI_NEW_CONVERSATION_BUTTON_LABEL},
       {"sendChatButtonLabel", IDS_CHAT_UI_SEND_CHAT_BUTTON_LABEL},
       {"errorContextLimitReaching", IDS_CHAT_UI_ERROR_CONTEXT_LIMIT_REACHING},
       {"gotItButtonLabel", IDS_CHAT_UI_GOT_IT_BUTTON_LABEL},
