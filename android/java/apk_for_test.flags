@@ -300,7 +300,7 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.settings.SettingsLauncherImpl {
+-keep class org.chromium.chrome.browser.settings.SettingsNavigationImpl {
     <init>(...);
 }
 
