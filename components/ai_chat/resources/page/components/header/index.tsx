@@ -6,16 +6,19 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
-import getAPI from '../../api'
+import getAPI, { Conversation } from '../../api'
 import FeatureButtonMenu, { Props as FeatureButtonMenuProps } from '../feature_button_menu'
 import styles from './style.module.scss'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 
 interface PageTitleHeaderProps extends FeatureButtonMenuProps {
-  title?: string
   ref?: React.Ref<HTMLDivElement>
 }
+
+const getTitle = (activeConversation?: Conversation) => activeConversation?.title
+  || activeConversation?.summary
+  || 'New chat'
 
 export function PageTitleHeader(props: PageTitleHeaderProps) {
   const aiChatContext = useAIChat()
@@ -28,18 +31,21 @@ export function PageTitleHeader(props: PageTitleHeaderProps) {
     aiChatContext.onNewConversation()
   }
 
+  const activeConversation = aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
+  const showTitle = (!aiChatContext.isDefaultConversation || aiChatContext.isStandalone)
+
   return (
     <div className={styles.header} ref={props.ref}>
-      {(props.title && !aiChatContext.isStandalone) ? (
+      {showTitle ? (
         <div className={styles.pageTitle}>
           <Button
             kind='plain-faint'
             fab
-            onClick={() => {aiChatContext.onSelectConversationUuid(undefined)}}
+            onClick={() => { aiChatContext.onSelectConversationUuid(undefined) }}
           >
             <Icon name='arrow-left' />
           </Button>
-          <div className={styles.pageText}>{props.title}</div>
+          <div className={styles.pageText}>{getTitle(activeConversation)}</div>
         </div>
       ) : (
         <div className={styles.logo}>
