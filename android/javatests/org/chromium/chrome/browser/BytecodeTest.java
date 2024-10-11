@@ -18,6 +18,7 @@ import android.util.AttributeSet;
 import android.view.ActionMode;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.Window;
@@ -53,8 +54,8 @@ import org.chromium.chrome.browser.bookmarks.BookmarkOpener;
 import org.chromium.chrome.browser.bookmarks.BookmarkUiPrefs;
 import org.chromium.chrome.browser.bookmarks.BookmarkUndoController;
 import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
-import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
@@ -315,7 +316,7 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/omnibox/LocationBarMediator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tasks/ReturnToChromeUtil"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/IntentHandler"));
-        Assert.assertTrue(classExists("org/chromium/base/cached_flags/CachedFlag"));
+        Assert.assertTrue(classExists("org/chromium/components/cached_flags/CachedFlag"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/LogoMediator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tracing/settings/DeveloperSettings"));
@@ -1120,7 +1121,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/toolbar/BraveToolbarManager",
                         AppCompatActivity.class,
                         BottomControlsStacker.class,
-                        BrowserControlsVisibilityManager.class,
+                        BrowserControlsSizer.class,
                         FullscreenManager.class,
                         ObservableSupplier.class,
                         ToolbarControlContainer.class,
@@ -1192,7 +1193,7 @@ public class BytecodeTest {
                         Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/settings/SettingsLauncherImpl",
+                        "org/chromium/chrome/browser/settings/SettingsNavigationImpl",
                         "org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl"));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1293,7 +1294,8 @@ public class BytecodeTest {
                         FullscreenManager.class,
                         TabObscuringHandler.class,
                         DesktopWindowStateProvider.class,
-                        OneshotSupplier.class));
+                        OneshotSupplier.class,
+                        OnLongClickListener.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
@@ -1448,7 +1450,8 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         LocationBarEmbedderUiOverrides.class,
                         View.class,
-                        Supplier.class));
+                        Supplier.class,
+                        OnLongClickListener.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
@@ -2072,7 +2075,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/bookmarks/BookmarkPage",
                         "mBookmarkManagerCoordinator"));
         Assert.assertTrue(
-                fieldExists("org/chromium/base/cached_flags/CachedFlag", "mDefaultValue"));
+                fieldExists("org/chromium/components/cached_flags/CachedFlag", "mDefaultValue"));
         Assert.assertFalse(
                 fieldExists("org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
                         "mIsResetting"));
