@@ -43,7 +43,6 @@
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
-#include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -135,10 +134,15 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == chrome::kChromeUISettingsHost) {
     return new BraveSettingsUI(web_ui, url.host());
   } else if (host == chrome::kChromeUINewTabHost) {
-    if (profile->IsIncognitoProfile() || profile->IsTor() ||
-        profile->IsGuestSession()) {
-      return new BravePrivateNewTabUI(web_ui, url.host());
-    }
+    // For private profiles the webui handling kChromeUINewTabHost is configured
+    // with RegisterChromeWebUIConfigs, so we should not get called here with a
+    // private profile.
+    DCHECK(!profile->IsIncognitoProfile() && !profile->IsTor() &&
+           !profile->IsGuestSession());
+    // We will need to follow up on transitioning BraveNewTabUI to using
+    // WebUIConfig. Currently, we can't add both BravePrivateNewTabUI and
+    // BraveNewTabUI configs in RegisterChromeWebUIConfigs because they use the
+    // same origin (content::kChromeUIScheme + chrome::kChromeUINewTabHost).
     return new BraveNewTabUI(web_ui, url.host());
 #endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
