@@ -33,9 +33,11 @@ source_set("webcompat_reporter") {
     "//brave/base/mac",
     "//brave/components/webcompat_reporter/browser:browser",
     "//brave/ios/browser/keyed_service",
+    "//components/component_updater:component_updater",
     "//components/keyed_service/core",
     "//components/keyed_service/ios:ios",
     "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile:profile",
     "//mojo/public/cpp/bindings",
   ]
 

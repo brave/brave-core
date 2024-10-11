@@ -6,7 +6,7 @@
 #include "brave/ios/browser/api/webcompat_reporter/webcompat_reporter_service_delegate.h"
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/webcompat_reporter/common/webcompat_reporter_utils.h"
+#include "brave/components/webcompat_reporter/browser/webcompat_reporter_utils.h"
 #include "components/component_updater/component_updater_service.h"
 
 namespace webcompat_reporter {
