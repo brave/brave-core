@@ -62,6 +62,8 @@ class AIChatService : public KeyedService,
   void OnConversationEntriesChanged(
       ConversationHandler* handler,
       std::vector<mojom::ConversationTurnPtr> entries) override;
+  void OnAssociatedContentIdChanged(ConversationHandler* handler,
+                                    int content_id) override;
   void OnClientConnectionChanged(ConversationHandler* handler) override;
 
   // Adds new conversation and returns the handler
@@ -76,6 +78,11 @@ class AIChatService : public KeyedService,
       int associated_content_id,
       base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
           associated_content);
+  void GetOrCreateConversationHandlerForContent(
+      int associated_content_id,
+      base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
+          associated_content,
+      base::OnceCallback<void(ConversationHandler*)>);
 
   // Creates and owns a new ConversationHandler and associated with the provided
   // content ID. |associated_content_id| should not be stored. It

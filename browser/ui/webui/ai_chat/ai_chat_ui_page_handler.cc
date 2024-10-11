@@ -10,6 +10,7 @@
 
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
@@ -67,11 +68,7 @@ AIChatUIPageHandler::AIChatUIPageHandler(
   // not a side panel. chat_context_web_contents is nullptr in that case
   const bool is_standalone = chat_context_web_contents == nullptr;
   if (!is_standalone) {
-    active_chat_tab_helper_ =
-        ai_chat::AIChatTabHelper::FromWebContents(chat_context_web_contents);
-    chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
-    chat_context_observer_ =
-        std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
+    AssociateWithConversationContextWebContents(chat_context_web_contents);
   } else {
     // TODO(petemill): Enable conversation without the TabHelper now that
     // all conversation logic is extracted to ConversationHandler.
@@ -166,12 +163,38 @@ void AIChatUIPageHandler::OpenModelSupportUrl() {
 }
 
 void AIChatUIPageHandler::ChatContextObserver::WebContentsDestroyed() {
+  DVLOG(2) << "Chat context WebContents destroyed";
   page_handler_->HandleWebContentsDestroyed();
+}
+
+void AIChatUIPageHandler::ChatContextObserver::AboutToBeDiscarded(
+    content::WebContents* new_contents) {
+  // We don't need to notify the UI about this, since the ConversationHandler
+  // will stay the same. AIChatTabHelper will change, so we need to start
+  // observing the new one instead. AIChatTabHelper and AIChatService will
+  // deal with continuation of conversation association.
+  DVLOG(2) << "Chat context WebContents replaced";
+  page_handler_->HandleWebContentsReplaced(new_contents);
+}
+
+void AIChatUIPageHandler::AssociateWithConversationContextWebContents(
+    content::WebContents* context_web_contents) {
+  active_chat_tab_helper_ =
+      ai_chat::AIChatTabHelper::FromWebContents(context_web_contents);
+  chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
+  chat_context_observer_ =
+      std::make_unique<ChatContextObserver>(context_web_contents, *this);
 }
 
 void AIChatUIPageHandler::HandleWebContentsDestroyed() {
   chat_tab_helper_observation_.Reset();
   chat_context_observer_.reset();
+}
+
+void AIChatUIPageHandler::HandleWebContentsReplaced(
+    content::WebContents* new_contents) {
+  HandleWebContentsDestroyed();
+  AssociateWithConversationContextWebContents(new_contents);
 }
 
 void AIChatUIPageHandler::OnAssociatedContentNavigated(int new_navigation_id) {
@@ -202,13 +225,25 @@ void AIChatUIPageHandler::BindRelatedConversation(
     return;
   }
 
-  ConversationHandler* conversation =
-      AIChatServiceFactory::GetForBrowserContext(profile_)
-          ->GetOrCreateConversationHandlerForContent(
-              active_chat_tab_helper_->GetContentId(),
-              active_chat_tab_helper_->GetWeakPtr());
-
-  conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
+  AIChatServiceFactory::GetForBrowserContext(profile_)
+      ->GetOrCreateConversationHandlerForContent(
+          active_chat_tab_helper_->GetContentId(),
+          active_chat_tab_helper_->GetWeakPtr(),
+          base::BindOnce(
+              [](mojo::PendingReceiver<mojom::ConversationHandler> receiver,
+                 mojo::PendingRemote<mojom::ConversationUI>
+                     conversation_ui_handler,
+                 ConversationHandler* handler) {
+                if (!handler) {
+                  DVLOG(0) << "Failed to get conversation for binding";
+                  return;
+                }
+                DVLOG(0) << "Binding conversation "
+                         << handler->get_conversation_uuid();
+                handler->Bind(std::move(receiver),
+                              std::move(conversation_ui_handler));
+              },
+              std::move(receiver), std::move(conversation_ui_handler)));
 }
 
 void AIChatUIPageHandler::NewConversation(

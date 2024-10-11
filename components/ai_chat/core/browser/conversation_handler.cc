@@ -174,7 +174,11 @@ void ConversationHandler::RemoveObserver(Observer* observer) {
 
 void ConversationHandler::Bind(
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
-  conversation_ui_handlers_.Add(std::move(conversation_ui_handler));
+  auto id = conversation_ui_handlers_.Add(std::move(conversation_ui_handler));
+
+  // Notify the UI of the current state
+  conversation_ui_handlers_.Get(id)->OnState(GetUIConversationState());
+
   OnClientConnectionChanged();
 
   MaybeFetchOrClearContentStagedConversation();
@@ -246,6 +250,22 @@ void ConversationHandler::InitEngine() {
   }
 }
 
+mojom::ConversationStatePtr ConversationHandler::GetUIConversationState() {
+  const auto& models = model_service_->GetModels();
+  std::vector<mojom::ModelPtr> models_copy(models.size());
+  std::transform(models.cbegin(), models.cend(), models_copy.begin(),
+                 [](auto& model) { return model.Clone(); });
+  auto model_key = GetCurrentModel().key;
+
+  BuildAssociatedContentInfo();
+
+  return mojom::ConversationState::New(
+      metadata_->uuid, is_request_in_progress_, std::move(models_copy),
+      model_key, suggestions_, suggestion_generation_status_,
+      metadata_->associated_content->Clone(), should_send_page_contents_,
+      current_error_);
+}
+
 void ConversationHandler::OnAssociatedContentDestroyed(
     std::string last_text_content,
     bool is_video) {
@@ -261,6 +281,17 @@ void ConversationHandler::OnAssociatedContentDestroyed(
     // the associated conversation, then construct a "content archive"
     // implementation of AssociatedContentDelegate with a duplicate of the
     // article text.
+void ConversationHandler::OnAssociatedContentReplaced(
+    base::WeakPtr<AssociatedContentDelegate> associated_content) {
+  associated_content_delegate_ = associated_content;
+}
+
+void ConversationHandler::OnAssociatedContentIdChanged(int content_id) {
+  for (auto& observer : observers_) {
+    observer.OnAssociatedContentIdChanged(this, content_id);
+  }
+}
+
     auto archive_content = std::make_unique<AssociatedArchiveContent>(
         associated_content_info_->url.value_or(GURL()), last_text_content,
         base::UTF8ToUTF16(associated_content_info_->title.value_or("")),
@@ -337,21 +368,7 @@ void ConversationHandler::GetConversationHistory(
 }
 
 void ConversationHandler::GetState(GetStateCallback callback) {
-  const auto& models = model_service_->GetModels();
-  std::vector<mojom::ModelPtr> models_copy(models.size());
-  std::transform(models.cbegin(), models.cend(), models_copy.begin(),
-                 [](auto& model) { return model.Clone(); });
-  auto model_key = GetCurrentModel().key;
-
-  BuildAssociatedContentInfo();
-
-  mojom::ConversationStatePtr state = mojom::ConversationState::New(
-      metadata_->uuid, is_request_in_progress_, std::move(models_copy),
-      model_key, suggestions_, suggestion_generation_status_,
-      associated_content_info_->Clone(), should_send_page_contents_,
-      current_error_);
-
-  std::move(callback).Run(std::move(state));
+  std::move(callback).Run(GetUIConversationState());
 }
 
 void ConversationHandler::RateMessage(bool is_liked,
@@ -1065,7 +1082,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
     std::vector<mojom::ConversationEntryEventPtr> events;
     events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
         mojom::CompletionEvent::New(entry.summary)));
-    chat_history_.push_back(mojom::ConversationTurn::New(
+    chat_history_.push_back(mojom::ConversationTurn::New(,
         CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
         mojom::ConversationTurnVisibility::VISIBLE, entry.summary, std::nullopt,
         std::move(events), base::Time::Now(), std::nullopt, true));

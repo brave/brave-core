@@ -75,10 +75,15 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
    private:
     // content::WebContentsObserver
     void WebContentsDestroyed() override;
+    void AboutToBeDiscarded(content::WebContents* new_contents) override;
+
     raw_ref<AIChatUIPageHandler> page_handler_;
   };
 
+  void AssociateWithConversationContextWebContents(
+      content::WebContents* web_contents);
   void HandleWebContentsDestroyed();
+  void HandleWebContentsReplaced(content::WebContents* new_contents);
 
   // AIChatTabHelper::Observer
   void OnAssociatedContentNavigated(int new_navigation_id) override;

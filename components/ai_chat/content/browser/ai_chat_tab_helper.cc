@@ -101,8 +101,11 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
           std::move(print_preview_extraction_delegate)),
       page_content_fetcher_delegate_(
           std::make_unique<PageContentFetcher>(web_contents)) {
-  favicon::ContentFaviconDriver::FromWebContents(web_contents)
-      ->AddObserver(this);
+  favicon::ContentFaviconDriver* favicon_driver =
+      favicon::ContentFaviconDriver::FromWebContents(web_contents);
+  if (favicon_driver) {
+    favicon_driver->AddObserver(this);
+  }
   previous_page_title_ = web_contents->GetTitle();
 }
 
@@ -135,20 +138,75 @@ void AIChatTabHelper::WebContentsDestroyed() {
   inner_web_contents_ = nullptr;
 }
 
+void AIChatTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
+  // We don't use RenderFrameCreated to check when a previously-non-alive frame
+  // is created as we won't have the document to get content from.
+  if (pending_get_page_content_callback_) {
+    GetPageContent(std::move(pending_get_page_content_callback_), "");
+  }
+}
+
 void AIChatTabHelper::NavigationEntryCommitted(
     const content::LoadCommittedDetails& load_details) {
+  DVLOG(2) << __func__ << " id: " << load_details.entry->GetUniqueID()
+           << "\n previous id: " << GetContentId()
+           << "\n url: " << load_details.entry->GetVirtualURL()
+           << "\n current page title: " << GetPageTitle()
+           << "\n is main frame: " << load_details.is_main_frame
+           << "\n was discarded: " << web_contents()->WasDiscarded()
+           << "\n is navigation from unloaded state: "
+           << is_navigation_from_unloaded_state_
+           << "\n previous page title: " << previous_page_title_
+           << "\n is initial navigation: "
+           << web_contents()->GetController().IsInitialNavigation()
+           << "\n is live: "
+           << web_contents()->GetPrimaryMainFrame()->IsRenderFrameLive()
+           << "\n is prerender activation: "
+           << load_details.is_prerender_activation << "\n same document? "
+           << load_details.is_same_document;
+
   if (!load_details.is_main_frame) {
     return;
   }
+
+  auto previous_page_title = previous_page_title_;
+  previous_page_title_ = GetPageTitle();
+
   // UniqueID will provide a consistent value for the entry when navigating
   // through history, allowing us to re-join conversations and navigations.
-  int pending_navigation_id = load_details.entry->GetUniqueID();
-  pending_navigation_id_ = pending_navigation_id;
-  DVLOG(2) << __func__ << " id: " << pending_navigation_id_
-           << "\n url: " << load_details.entry->GetVirtualURL()
-           << "\n current page title: " << GetPageTitle()
-           << "\n previous page title: " << previous_page_title_
-           << "\n same document? " << load_details.is_same_document;
+  const int new_navigation_id = load_details.entry->GetUniqueID();
+
+  // Previous navigation id for the content, even if was swapped with another
+  // WebContents.
+  const int previous_navigation_id = GetContentId();
+
+  if (previous_navigation_id == new_navigation_id) {
+    return;
+  }
+
+  // Previous navigation id for this specific WebContents
+  // (could use web_contents()->GetController() instead)
+  const int previous_web_contents_navigation_id = pending_navigation_id_;
+
+  // Remember for next time or for same-document navigations
+  pending_navigation_id_ = new_navigation_id;
+
+  // If the navigation is the first of the webcontents, we don't need to call
+  // OnNewPage as either it's the first ever, in which case we don't
+  // need to break any conversation relationships, or it's a first load
+  // of an undiscarded WebContents, in which case we want to preserve the
+  // relationship with any conversations.
+  if (previous_web_contents_navigation_id == -1) {
+    SetContentId(new_navigation_id);
+    return;
+  }
+
+  // Ignore the first navigation from unloaded to loaded
+  if (is_navigation_from_unloaded_state_) {
+    is_navigation_from_unloaded_state_ = false;
+    SetContentId(new_navigation_id);
+    return;
+  }
 
   // Allow same-document navigation, as content often changes as a result
   // of framgment / pushState / replaceState navigations.
@@ -166,10 +224,11 @@ void AIChatTabHelper::NavigationEntryCommitted(
   if (!is_same_document_navigation_) {
     is_page_loaded_ = false;
   }
-  if (!is_same_document_navigation_ || previous_page_title_ != GetPageTitle()) {
-    OnNewPage(pending_navigation_id_);
+  if (!is_same_document_navigation_ || previous_page_title != GetPageTitle()) {
+    OnNewPage(new_navigation_id);
+    return;
   }
-  previous_page_title_ = GetPageTitle();
+  // Same-document navigation, wait for an event to confirm it's a new page
 }
 
 void AIChatTabHelper::TitleWasSet(content::NavigationEntry* entry) {
@@ -221,6 +280,32 @@ void AIChatTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
   }
 }
 
+void AIChatTabHelper::AboutToBeDiscarded(content::WebContents* new_contents) {
+  LOG(ERROR) << __func__ << __LINE__;
+  // replace this associated content with the new one
+  AIChatTabHelper* new_helper = AIChatTabHelper::FromWebContents(new_contents);
+  LOG(ERROR) << __func__ << __LINE__;
+  if (!new_helper) {
+    AIChatTabHelper::CreateForWebContents(
+        new_contents, std::move(print_preview_extraction_delegate_));
+    new_helper = AIChatTabHelper::FromWebContents(new_contents);
+    if (!new_helper) {
+      DVLOG(1) << __func__
+               << ": AIChatTabHelper could not be created from replacement "
+                  "WebContents";
+      return;
+    }
+  }
+
+  // Make sure the new associated content uses the same content id so that
+  // existing conversations can be retrieved.
+  new_helper->SetContentId(GetContentId());
+
+  DVLOG(4) << __func__ << ": current content id = " << GetContentId()
+           << ", new content id = " << new_helper->GetContentId();
+  OnAboutToBeReplaced(new_helper);
+}
+
 // favicon::FaviconDriverObserver
 void AIChatTabHelper::OnFaviconUpdated(
     favicon::FaviconDriver* favicon_driver,
@@ -245,6 +330,21 @@ GURL AIChatTabHelper::GetPageURL() const {
 
 void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
                                      std::string_view invalidation_token) {
+  DVLOG(1) << __func__ << "\n url: " << GetPageURL()
+           << "\n is initial navigation: "
+           << web_contents()->GetController().IsInitialNavigation()
+           << "\n is live: "
+           << web_contents()->GetPrimaryMainFrame()->IsRenderFrameLive()
+           << "\n is discarded: " << web_contents()->WasDiscarded();
+  // If page is not loaded yet (maybe it's a restored tab), ignore the first
+  // navigation event.
+  if (!web_contents()->GetPrimaryMainFrame()->IsRenderFrameLive()) {
+    is_navigation_from_unloaded_state_ = true;
+    SetPendingGetContentCallback(std::move(callback));
+    web_contents()->GetController().LoadIfNecessary();
+    return;
+  }
+
   bool is_pdf = IsPdf(web_contents());
   if (is_pdf && !is_pdf_a11y_info_loaded_) {
     SetPendingGetContentCallback(std::move(callback));

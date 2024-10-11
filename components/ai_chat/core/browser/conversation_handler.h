@@ -132,6 +132,10 @@ class ConversationHandler : public mojom::ConversationHandler,
         ConversationHandler* handler,
         std::vector<mojom::ConversationTurnPtr> entries) {}
 
+    // Occurs when associated content gets a new ID for the same content
+    virtual void OnAssociatedContentIdChanged(ConversationHandler* handler,
+                                              int content_id) {}
+
     // Called when a mojo client connects or disconnects
     virtual void OnClientConnectionChanged(ConversationHandler* handler) {}
   };
@@ -163,6 +167,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   // ConversationHandler.
   void OnAssociatedContentDestroyed(std::string last_text_content,
                                     bool is_video);
+
+  void OnAssociatedContentReplaced(
+      base::WeakPtr<AssociatedContentDelegate> associated_content);
+  void OnAssociatedContentIdChanged(int content_id);
 
   // This can be called multiple times, e.g. when the user navigates back to
   // content, this conversation can be reunited with the delegate.
@@ -263,6 +271,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedderInitialized);
 
   void InitEngine();
+  mojom::ConversationStatePtr GetUIConversationState();
   void BuildAssociatedContentInfo();
   bool IsContentAssociationPossible();
   int GetContentUsedPercentage();
