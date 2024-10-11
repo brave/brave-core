@@ -27,9 +27,9 @@ class BraveAutofillBrowserTest : public InProcessBrowserTest {
 
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    embedded_https_test_server().ServeFilesFromDirectory(test_data_dir);
 
-    ASSERT_TRUE(embedded_test_server()->Start());
+    ASSERT_TRUE(embedded_https_test_server().Start());
   }
 
   content::WebContents* PrepareWebContents(Browser* browser, const GURL& url) {
@@ -67,7 +67,7 @@ class BraveAutofillBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveAutofillBrowserTest,
                        AutofillIsNotAllowedInPrivateWindows) {
   GURL url(
-      embedded_test_server()->GetURL("example.com", "/brave_scheme_load.html"));
+      embedded_https_test_server().GetURL("example.com", "/brave_scheme_load.html"));
 
   // Disable autofill in private windows.
   browser()->profile()->GetPrefs()->SetBoolean(kBraveAutofillPrivateWindows,
