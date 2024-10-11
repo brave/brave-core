@@ -86,14 +86,18 @@ AdBlockPrefService::GetLatestProxyConfig(
 void AdBlockPrefService::Shutdown() {
   pref_change_registrar_.reset();
 
-  if (proxy_config_service_) {
-    proxy_config_service_->RemoveObserver(this);
-    proxy_config_service_.reset();
-  }
+  // `pref_proxy_config_tracker_` has a reference to `proxy_config_service_`,
+  // therefore detach `pref_proxy_config_tracker_` first, to prevent the
+  // reference from dangling.
 
   if (pref_proxy_config_tracker_) {
     pref_proxy_config_tracker_->DetachFromPrefService();
     pref_proxy_config_tracker_.reset();
+  }
+
+  if (proxy_config_service_) {
+    proxy_config_service_->RemoveObserver(this);
+    proxy_config_service_.reset();
   }
 }
 
