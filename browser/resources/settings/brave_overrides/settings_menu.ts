@@ -52,8 +52,8 @@ RegisterStyleOverride(
   html`
     <style>
       :host {
-        --brave-settings-menu-margin-v: 30px;
-        --brave-settings-menu-padding: 30px;
+        --brave-settings-menu-margin-v: 24px;
+        --brave-settings-menu-padding: 24px;
         --settings-nav-item-color: #424242 !important;
         position: sticky;
         top: var(--brave-settings-menu-margin-v);
@@ -63,7 +63,8 @@ RegisterStyleOverride(
         border-radius: 6px;
         background-color: #fff;
         overflow-y: auto;
-        padding: 30px !important;
+        padding: 24px !important;
+        box-shadow: 0px var(--Elevation-xxs, 1px) 0px 0px var(--Semantic-Elevation-Primary, rgba(0, 0, 0, 0.05)), 0px var(--Elevation-xxs, 1px) var(--Elevation-xs, 4px) 0px var(--Semantic-Elevation-Secondary, rgba(0, 0, 0, 0.10));
       }
 
       .cr-nav-menu-item {
@@ -73,8 +74,8 @@ RegisterStyleOverride(
         box-sizing: content-box !important;
         overflow: visible !important;
 
-        --iron-icon-width: 24px;
-        --iron-icon-height: 24px;
+        --iron-icon-width: 20px;
+        --iron-icon-height: 20px;
         --iron-icon-fill-color: currentColor;
       }
 
@@ -103,7 +104,7 @@ RegisterStyleOverride(
 
       a[href] {
         font-weight: 500 !important;
-        margin: 0 20px 20px 0 !important;
+        margin: 0 20px 24px 0 !important;
         margin-inline-start: 0 !important;
         margin-inline-end: 0 !important;
         padding-bottom: 0 !important;
@@ -128,8 +129,8 @@ RegisterStyleOverride(
 
       cr-icon, leo-icon {
         margin-inline-end: 14px !important;
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
       }
 
       a[href].selected::before {
