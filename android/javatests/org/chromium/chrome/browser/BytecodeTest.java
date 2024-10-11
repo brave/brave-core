@@ -2077,7 +2077,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/components/cached_flags/CachedFlag", "mDefaultValue"));
         Assert.assertFalse(
-                fieldExists("org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
+                fieldExists(
+                        "org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
                         "mIsResetting"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/SwipeRefreshHandler", "mSwipeType"));
