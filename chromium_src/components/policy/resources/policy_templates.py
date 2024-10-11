@@ -31,13 +31,15 @@ def _LoadPolicies(orig_func):
     # to:
     # `//components/policy/resources/templates/policy_definitions`
     policy_definition_yaml = policies['policy_definitions']
+    assert policy_definition_yaml, "'policy_definitions' is None (did upstream change?)"  # pylint: disable=line-too-long
+
     brave_policies = []
-    if policy_definition_yaml is not None:
-        brave_policy_section = policy_definition_yaml['BraveSoftware']
-        if brave_policy_section is not None:
-            brave_policy_items = brave_policy_section['policies']
-            for key, _ in brave_policy_items.items():
-                brave_policies.append(key)
+    brave_policy_section = policy_definition_yaml['BraveSoftware']
+    assert brave_policy_section, "'policy_definitions > BraveSoftware' entries not found (failed to copy?)"  # pylint: disable=line-too-long
+
+    brave_policy_items = brave_policy_section['policies']
+    for key, _ in brave_policy_items.items():
+        brave_policies.append(key)
 
     # 2) "policies"
     # This has the contents of:
@@ -47,12 +49,14 @@ def _LoadPolicies(orig_func):
     # to add a mapping for ID (integer; unique) and name (matches name under
     # `policy_definitions`).
     policy_yaml = policies['policies']
-    if policy_yaml is not None:
-        policy_section = policy_yaml['policies']
-        if policy_section is not None:
-            offset = max(map(int, policy_section), default=0)
-            for i, entry in enumerate(brave_policies):
-                policy_section[offset + i + 1] = entry
+    assert policy_yaml, "'policies' is None (did upstream change?)"
+
+    policy_section = policy_yaml['policies']
+    assert policy_section, "'policies > policies' is None (did upstream change?)"  # pylint: disable=line-too-long
+
+    offset = max(map(int, policy_section), default=0)
+    for i, entry in enumerate(brave_policies):
+        policy_section[offset + i + 1] = entry
 
     return policies
 
@@ -61,8 +65,8 @@ def update_policy_files():
     # Chromium stores all group policy definitions under
     # `//components/policy/resources/templates/policy_definitions/`
     #
-    # The name of the file (minus the extension; ex: TorDisable.yaml => TorDisable)
-    # corresponds to an auto-generated entry in:
+    # The name of the file (minus the extension; ex: TorDisable.yaml would be
+    # TorDisable) corresponds to an auto-generated entry in:
     # `//out/<build_type_here>/gen/chrome/app/policy/policy_templates.json
     #
     # That auto-generated value (ex: `policy::key::kTorDisabled`) is referenced
@@ -74,19 +78,18 @@ def update_policy_files():
     # to their expected place in Chromium:
     # `//components/policy/resources/templates/policy_definitions/`
     #
-    policy_dir = wspath(
-        "//brave/components/policy/resources/templates/policy_definitions/")
-    with os.scandir(policy_dir) as entries:
-        for entry in entries:
-            if not entry.is_dir():
-                continue
-            dst_dir = wspath(
-                "//components/policy/resources/templates/policy_definitions/" +
-                entry.name)
-            shutil.copytree(entry.path,
-                            dst_dir,
-                            dirs_exist_ok=True,
-                            copy_function=copy_only_if_modified)
+    # NOTE: only the `BraveSoftware` folder is copied.
+    # If you want to create a policy in an existing Chromium group, this
+    # would need to be updated.
+    shutil.copytree(
+        wspath(
+            "//brave/components/policy/resources/templates/policy_definitions/BraveSoftware"  # pylint: disable=line-too-long
+        ),
+        wspath(
+            "//components/policy/resources/templates/policy_definitions/BraveSoftware"  # pylint: disable=line-too-long
+        ),
+        dirs_exist_ok=True,
+        copy_function=copy_only_if_modified)
 
 
 def copy_only_if_modified(src, dst):
