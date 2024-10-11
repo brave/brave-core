@@ -210,7 +210,10 @@ function ConversationList(props: ConversationListProps) {
                     />
                   )}
                   {!isAIAssistant && !turn.selectedText && !showEditInput &&
-                    latestTurnText}
+                    <span className={styles.humanMessageContent}>
+                      {latestTurnText}
+                    </span>
+                  }
                   {showEditIndicator && (
                     <EditIndicator time={lastEditedTime} />
                   )}

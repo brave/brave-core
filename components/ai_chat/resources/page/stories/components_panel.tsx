@@ -80,7 +80,7 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
-    text: 'What is pointer compression?',
+    text: 'What is pointer compression?\n...and how does it work?\n    - tell me something interesting',
     characterType: mojom.CharacterType.HUMAN,
     actionType: mojom.ActionType.QUERY,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
