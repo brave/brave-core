@@ -481,7 +481,6 @@ export const SendScreen = React.memo((props: Props) => {
         noCardPadding={true}
         hideNav={isAndroid || isPanel}
         hideHeader={isAndroid}
-        hideDivider={true}
         cardHeader={
           isPanel ? (
             <PanelActionHeader

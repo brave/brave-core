@@ -143,7 +143,6 @@ export const PortfolioNftAsset = () => {
     <WalletPageWrapper
       wrapContentInBox={true}
       noCardPadding={false}
-      hideDivider={false}
       cardHeader={
         <NftAssetHeader
           onBack={history.goBack}

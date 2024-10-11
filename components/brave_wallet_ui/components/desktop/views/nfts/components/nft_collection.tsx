@@ -363,7 +363,6 @@ export const NftCollection = ({ networks, accounts }: Props) => {
     <WalletPageWrapper
       wrapContentInBox={true}
       noCardPadding={false}
-      hideDivider={false}
       cardHeader={
         <NftAssetHeader
           onBack={history.goBack}
