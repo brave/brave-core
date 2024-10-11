@@ -8,7 +8,7 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import styles from './style.module.scss'
 import Main from '../main'
-import SidebarHeader from '../header'
+import { SidebarHeader } from '../header'
 import SidebarNav from '../sidebar_nav'
 import FeatureMenu from '../feature_button_menu'
 import { useAIChat } from '../../state/ai_chat_context'
@@ -83,7 +83,7 @@ export default function FullScreen() {
               >
                 <Icon name='erase' />
               </Button>
-              <FeatureMenu  setIsConversationListOpen={function (value: boolean): unknown {
+              <FeatureMenu setIsConversationListOpen={function (value: boolean): unknown {
                 throw new Error('Function not implemented.')
               }} />
             </>
