@@ -322,12 +322,10 @@ public class BraveShieldsHandler
 
     @Override
     public void onConnectionError(MojoException e) {
-        Log.i(TAG, "onConnectionError(MojoException e) #700");
         initWebcompatReporterService();
     }
 
     private void initWebcompatReporterService() {
-        Log.i(TAG, "initWebcompatReporterService #800");
         mWebcompatReporterHandler =
                 WebcompatReporterServiceFactory.getInstance().getWebcompatReporterHandler(this);
     }
@@ -412,12 +410,10 @@ public class BraveShieldsHandler
     }
 
     public void hideBraveShieldsMenu() {
-        Log.i(TAG, "hideBraveShieldsMenu #900");
         if (isShowing()) {
             mPopupWindow.dismiss();
         }
         if (null != mWebcompatReporterHandler) {
-            Log.i(TAG, "hideBraveShieldsMenu Close Mojo #950");
             mWebcompatReporterHandler.close();
         }
     }
