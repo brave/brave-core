@@ -4,6 +4,8 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .fullscreen {
+  --top-padding: 6px;
+
   display: flex;
   overflow: hidden;
   width: 100%;
@@ -35,6 +37,8 @@
     z-index: 2;
     box-shadow: 0px var(--leo-elevation-xxs, 1px) 0px 0px var(--leo-color-elevation-primary, rgba(0, 0, 0, 0.05)), 0px var(--leo-elevation-xs, 4px) var(--leo-elevation-xs, 16px) -2px var(--leo-color-elevation-secondary, rgba(0, 0, 0, 0.10));
   }
+
+  padding-top: var(--top-padding);
 }
 
 .left {
@@ -52,6 +56,6 @@
   left: 0;
   z-index: 3;
   padding-left: 16px;
-  padding-top: 20px;
+  padding-top: calc(20px + var(--top-padding));
   color: var(--leo-color-icon-default);
 }
