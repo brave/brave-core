@@ -861,8 +861,6 @@ public class BraveShieldsHandler
         reportInfo.braveVersion = BraveVersionConstants.VERSION;
         reportInfo.reportUrl = siteUrl;
         reportInfo.screenshotPng = isScreenshotAvailable() ? mScreenshotBytes : null;
-        reportInfo.details = new java.util.HashMap<String, String>();
-        reportInfo.contact = new java.util.HashMap<String, String>();
         return reportInfo;
     }
 
