@@ -894,6 +894,7 @@
 
 -keep class org.chromium.chrome.browser.tabbed_mode.TabbedNavigationBarColorController {
     *** mContext;
+    *** mTabModelSelector;
 }
 
 -keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedNavigationBarColorControllerBase

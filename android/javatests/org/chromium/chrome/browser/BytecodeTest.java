@@ -2108,6 +2108,10 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
                         "mContext"));
+        Assert.assertFalse(
+                fieldExists(
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
+                        "mTabModelSelector"));
     }
 
     @Test

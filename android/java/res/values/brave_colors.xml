@@ -100,6 +100,7 @@
     <color name="systemfeedback_info_text">#0061aa</color>
     <color name="text_interactive">#3f39e8</color>
     <color name="container_background">#ffffff</color>
+    <color name="primitive_private_window_5">#160041</color>
 
     <!-- Sync colors -->
     <color name="brave_sync_bg_color">@android:color/transparent</color>
@@ -143,6 +144,7 @@
     <color name="news_settings_unfollow_color">#4C54D2</color>
 
     <!-- Incognito mode colors -->
+    <color name="toolbar_background_primary_dark">@color/primitive_private_window_5</color>
     <color name="ntp_bg_incognito">@color/incognito_modern_primary_color</color>
     <color name="brave_private_tabs_bg_color">#13052A</color>
     <color name="brave_private_reauth_unlock_button_bg_color">#4B415D</color>

@@ -22,6 +22,8 @@ public class BraveTabbedNavigationBarColorControllerBaseClassAdapter extends Bra
 
         deleteField(sTabbedNavigationBarColorControllerClassName, "mContext");
 
+        deleteField(sTabbedNavigationBarColorControllerClassName, "mTabModelSelector");
+
         changeMethodOwner(
                 sTabbedNavigationBarColorControllerClassName,
                 "getNavigationBarColor",
