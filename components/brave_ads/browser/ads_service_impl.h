@@ -57,6 +57,7 @@ class SharedURLLoaderFactory;
 
 namespace brave_ads {
 
+class AdsServiceObserver;
 class AdsTooltipsDelegate;
 class BatAdsServiceFactory;
 class Database;
@@ -92,6 +93,9 @@ class AdsServiceImpl final : public AdsService,
   AdsServiceImpl& operator=(AdsServiceImpl&&) noexcept = delete;
 
   ~AdsServiceImpl() override;
+
+  void AddObserver(AdsServiceObserver* observer) override;
+  void RemoveObserver(AdsServiceObserver* observer) override;
 
  private:
   using SimpleURLLoaderList =
@@ -133,6 +137,8 @@ class AdsServiceImpl final : public AdsService,
   void InitializeBatAds(
       brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet);
   void InitializeBatAdsCallback(bool success);
+
+  void NotifyAdsServiceInitialized() const;
 
   void ShutdownAndClearData();
   void ShutdownAndClearDataCallback(bool success);
@@ -469,6 +475,8 @@ class AdsServiceImpl final : public AdsService,
   base::ScopedObservation<brave_rewards::RewardsService,
                           brave_rewards::RewardsServiceObserver>
       rewards_service_observation_{this};
+
+  base::ObserverList<AdsServiceObserver> observers_;
 
   mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
       this};

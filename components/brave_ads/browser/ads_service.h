@@ -14,6 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
+#include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -66,6 +67,9 @@ class AdsService : public KeyedService {
   AdsService& operator=(AdsService&&) noexcept = delete;
 
   ~AdsService() override;
+
+  virtual void AddObserver(AdsServiceObserver* observer) = 0;
+  virtual void RemoveObserver(AdsServiceObserver* observer) = 0;
 
   // Returns true if a browser upgrade is required to serve ads.
   virtual bool IsBrowserUpgradeRequiredToServeAds() const = 0;
