@@ -15,7 +15,7 @@ static_library("browser") {
     "webcompat_reporter_service.h",
     "webcompat_reporter_utils.cc",
     "webcompat_reporter_utils.h",
- ]
+  ]
 
   deps = [
     "//base",
