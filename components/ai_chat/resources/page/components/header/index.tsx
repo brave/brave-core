@@ -94,7 +94,7 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
   )
 })
 
-export function SidebarHeader(props: FeatureButtonMenuProps) {
+export function SidebarHeader() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
@@ -118,21 +118,16 @@ export function SidebarHeader(props: FeatureButtonMenuProps) {
         </div>
       </div>
       <div className={styles.actions}>
-        {aiChatContext.hasAcceptedAgreement && (
-          <>
-            {shouldDisplayEraseAction && (
-              <Button
-                fab
-                kind='plain-faint'
-                aria-label='Erase conversation history'
-                title='Erase conversation history'
-                onClick={handleEraseClick}
-              >
-                <Icon name='plus-add' />
-              </Button>
-            )}
-            <FeatureButtonMenu {...props} />
-          </>
+        {aiChatContext.hasAcceptedAgreement && shouldDisplayEraseAction && (
+          <Button
+            fab
+            kind='plain-faint'
+            aria-label='Erase conversation history'
+            title='Erase conversation history'
+            onClick={handleEraseClick}
+          >
+            <Icon name='plus-add' />
+          </Button>
         )}
       </div>
     </div>
