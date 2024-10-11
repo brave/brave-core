@@ -71,7 +71,11 @@ class NTPP3AHelperImplTest : public testing::Test {
         &local_state_, p3a_service_.get(), &prefs_, true);
   }
 
-  void TearDown() override { p3a_service_ = nullptr; }
+  void TearDown() override {
+    ntp_p3a_helper_ =
+        nullptr;  // It depends on the service to not dangle, so reset it first.
+    p3a_service_ = nullptr;
+  }
 
   std::string GetExpectedHistogramName(const std::string& event_type) {
     return base::StrCat(

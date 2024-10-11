@@ -145,15 +145,19 @@ class BraveSyncServiceImplTest : public testing::Test {
     return sync_service_impl_bundle_.identity_manager();
   }
 
+  SyncServiceImplDelegateMock* sync_service_delegate() {
+    return sync_service_delegate_;
+  }
+
  protected:
   content::BrowserTaskEnvironment task_environment_;
-  raw_ptr<SyncServiceImplDelegateMock> sync_service_delegate_;
 
  private:
   SyncServiceImplBundle sync_service_impl_bundle_;
   brave_sync::Prefs brave_sync_prefs_;
   SyncPrefs sync_prefs_;
   std::unique_ptr<BraveSyncServiceImpl> sync_service_impl_;
+  raw_ptr<SyncServiceImplDelegateMock> sync_service_delegate_;
 };
 
 TEST_F(BraveSyncServiceImplTest, GroupPolicyOverride) {
@@ -660,7 +664,7 @@ TEST_F(BraveSyncServiceImplTest, P3aForHistoryThroughDelegate) {
   brave_sync_service_impl()->GetUserSettings()->SetSelectedTypes(
       false, selected_types);
 
-  ON_CALL(*sync_service_delegate_, GetKnownToSyncHistoryCount(_))
+  ON_CALL(*sync_service_delegate(), GetKnownToSyncHistoryCount(_))
       .WillByDefault(
           [](base::OnceCallback<void(std::pair<bool, int>)> callback) {
             std::move(callback).Run(std::pair<bool, int>(true, 10001));
