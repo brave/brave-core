@@ -1,17 +1,17 @@
-caption: Disable Tor functionality
+caption: Disable Tor Connectivity
 default: null
 desc: |-
-  Disable Tor functionality in Brave.
+  Disable Tor connectivity in Brave.
 
-  Using Tor makes it more difficult to trace a user's Internet activity by preventing any single point on the Internet (other than the user's device) from being able to view both where traffic originated from and where it is ultimately going to at the same time. This conceals a user's location and usage from anyone performing network surveillance or traffic analysis from any such point, protecting the user's freedom and ability to communicate confidentially.
+  Using Tor connectivity in Private Windows makes it more difficult for sites to see a user's true IP address and for network observers to see what sites they visit. This may be used for enhanced confidentiality and censorship resistance in Private Windows.
 
-            If this policy is set to true, Tor functionality will always be disabled.
+            If this policy is set to true, Tor connectivity will always be disabled.
 
-            If this policy is set to false, Tor functionality will always be enabled.
+            If this policy is set to false, Tor connectivity will be enabled if the user opens a Private Window with Tor.
 
             If you set this policy, users cannot change or override it.
 
-            If this policy is left unset, Tor functionality will be enabled by default.
+            If this policy is left unset, Tor connectivity will be enabled if the user opens a Private Window with Tor.
 example_value: true
 features:
   can_be_mandatory: true
