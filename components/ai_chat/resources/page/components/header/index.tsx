@@ -13,15 +13,11 @@ import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
 
-interface PageTitleHeaderProps extends FeatureButtonMenuProps {
-  ref?: React.Ref<HTMLDivElement>
-}
-
 const getTitle = (activeConversation?: Conversation) => activeConversation?.title
   || activeConversation?.summary
   || getLocale('conversationListUntitled')
 
-export function PageTitleHeader(props: PageTitleHeaderProps) {
+export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMenuProps, ref: React.Ref<HTMLDivElement>) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
@@ -36,7 +32,7 @@ export function PageTitleHeader(props: PageTitleHeaderProps) {
   const showTitle = (!aiChatContext.isDefaultConversation || aiChatContext.isStandalone)
 
   return (
-    <div className={styles.header} ref={props.ref}>
+    <div className={styles.header} ref={ref}>
       {showTitle ? (
         <div className={styles.pageTitle}>
           <Button
@@ -61,14 +57,14 @@ export function PageTitleHeader(props: PageTitleHeaderProps) {
         {aiChatContext.hasAcceptedAgreement && (
           <>
             {/* <Button
-              fab
-              kind='plain-faint'
-              aria-label='Launch'
-              title='Launch'
-              onClick={() => {}}
-            >
-              <Icon name='launch' />
-            </Button> */}
+                fab
+                kind='plain-faint'
+                aria-label='Launch'
+                title='Launch'
+                onClick={() => {}}
+              >
+                <Icon name='launch' />
+              </Button> */}
             {shouldDisplayEraseAction && (
               <Button
                 fab
@@ -96,7 +92,7 @@ export function PageTitleHeader(props: PageTitleHeaderProps) {
       </div>
     </div>
   )
-}
+})
 
 export default function SidebarHeader(props: FeatureButtonMenuProps) {
   const aiChatContext = useAIChat()
