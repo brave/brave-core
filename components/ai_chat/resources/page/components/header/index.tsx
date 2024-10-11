@@ -11,6 +11,7 @@ import FeatureButtonMenu, { Props as FeatureButtonMenuProps } from '../feature_b
 import styles from './style.module.scss'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
+import { getLocale } from '$web-common/locale'
 
 interface PageTitleHeaderProps extends FeatureButtonMenuProps {
   ref?: React.Ref<HTMLDivElement>
@@ -18,7 +19,7 @@ interface PageTitleHeaderProps extends FeatureButtonMenuProps {
 
 const getTitle = (activeConversation?: Conversation) => activeConversation?.title
   || activeConversation?.summary
-  || 'New chat'
+  || getLocale('conversationListUntitled')
 
 export function PageTitleHeader(props: PageTitleHeaderProps) {
   const aiChatContext = useAIChat()
