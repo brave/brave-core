@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/browser/application_state/background_helper.h"
 
 #include "brave/browser/brave_ads/application_state/background_helper/background_helper_holder.h"
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "build/build_config.h"
 
 namespace brave_ads {
 

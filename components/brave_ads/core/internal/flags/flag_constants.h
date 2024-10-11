@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_FLAGS_FLAG_CONSTANTS_H_
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "build/build_config.h"
 
 namespace brave_ads {
 

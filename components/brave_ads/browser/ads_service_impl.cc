@@ -59,7 +59,7 @@
 #include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "build/build_config.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"

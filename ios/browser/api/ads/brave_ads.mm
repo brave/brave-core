@@ -1738,7 +1738,7 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
   const std::vector<GURL> urls = [self GURLsWithNSURLs:redirectChain];
 
   adsClientNotifier->NotifyTabTextContentDidChange(
-      (int32_t)tabId, urls, base::SysNSStringToUTF8(text));
+      static_cast<int32_t>(tabId), urls, base::SysNSStringToUTF8(text));
 }
 
 - (void)notifyTabHtmlContentDidChange:(NSInteger)tabId
@@ -1751,18 +1751,20 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
   const std::vector<GURL> urls = [self GURLsWithNSURLs:redirectChain];
 
   adsClientNotifier->NotifyTabHtmlContentDidChange(
-      (int32_t)tabId, urls, base::SysNSStringToUTF8(html));
+      static_cast<int32_t>(tabId), urls, base::SysNSStringToUTF8(html));
 }
 
 - (void)notifyTabDidStartPlayingMedia:(NSInteger)tabId {
   if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyTabDidStartPlayingMedia((int32_t)tabId);
+    adsClientNotifier->NotifyTabDidStartPlayingMedia(
+        static_cast<int32_t>(tabId));
   }
 }
 
 - (void)notifyTabDidStopPlayingMedia:(NSInteger)tabId {
   if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyTabDidStopPlayingMedia((int32_t)tabId);
+    adsClientNotifier->NotifyTabDidStopPlayingMedia(
+        static_cast<int32_t>(tabId));
   }
 }
 
@@ -1779,8 +1781,9 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
 
   const bool isVisible = isSelected && [self isBrowserActive];
 
-  adsClientNotifier->NotifyTabDidChange((int32_t)tabId, urls, isNewNavigation,
-                                        isRestoring, isVisible);
+  adsClientNotifier->NotifyTabDidChange(static_cast<int32_t>(tabId), urls,
+                                        isNewNavigation, isRestoring,
+                                        isVisible);
 }
 
 - (void)notifyTabDidLoad:(NSInteger)tabId
@@ -1789,12 +1792,13 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
     return;
   }
 
-  adsClientNotifier->NotifyTabDidLoad((int32_t)tabId, (int32_t)httpStatusCode);
+  adsClientNotifier->NotifyTabDidLoad(static_cast<int32_t>(tabId),
+                                      static_cast<int32_t>(httpStatusCode));
 }
 
 - (void)notifyDidCloseTab:(NSInteger)tabId {
   if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyDidCloseTab((int32_t)tabId);
+    adsClientNotifier->NotifyDidCloseTab(static_cast<int32_t>(tabId));
   }
 }
 
