@@ -53,7 +53,7 @@ function Main() {
     !aiChatContext.isPremiumUser
 
 
-    const isLastTurnBraveSearchSERPSummary =
+  const isLastTurnBraveSearchSERPSummary =
     conversationContext.conversationHistory.at(-1)?.fromBraveSearchSERP ?? false
 
   const showContextToggle =
@@ -110,46 +110,46 @@ function Main() {
 
   // Ask for opt-in once the first message is sent
   const showAgreementModal = !aiChatContext.hasAcceptedAgreement &&
-      !!conversationContext.conversationHistory.length
+    !!conversationContext.conversationHistory.length
 
   const viewPortWithoutKeyboard = React.useRef(0)
   const keyboardSize = React.useRef(0)
 
-    React.useEffect(() => {
-      const handler = () => {
-        if (!aiChatContext.isMobile || !window.visualViewport) {
-          return
-        }
-        const viewPortWithKeyboard = window.visualViewport.height
-        if (!headerElement.current || !conversationContentElement.current ||
-          viewPortWithKeyboard === 0 || viewPortWithoutKeyboard.current === 0) {
-          return
-        }
-        if (keyboardSize.current === 0 ||
-            keyboardSize.current <
-              viewPortWithoutKeyboard.current - viewPortWithKeyboard) {
-          keyboardSize.current =
-            viewPortWithoutKeyboard.current - viewPortWithKeyboard
-        }
-        const mountPoint = document.getElementById('mountPoint')
-        if (mountPoint) {
-          if (mountPoint.clientHeight >=
-              (headerElement.current.clientHeight +
-                conversationContentElement.current.clientHeight) * 2) {
-            const percent = viewPortWithKeyboard * 100 /
-              viewPortWithoutKeyboard.current
-            mountPoint.style.height = `${percent}%`
-          } else if (keyboardSize.current >
-              viewPortWithoutKeyboard.current - viewPortWithKeyboard) {
-            mountPoint.style.height = '100%'
-          }
+  React.useEffect(() => {
+    const handler = () => {
+      if (!aiChatContext.isMobile || !window.visualViewport) {
+        return
+      }
+      const viewPortWithKeyboard = window.visualViewport.height
+      if (!headerElement.current || !conversationContentElement.current ||
+        viewPortWithKeyboard === 0 || viewPortWithoutKeyboard.current === 0) {
+        return
+      }
+      if (keyboardSize.current === 0 ||
+        keyboardSize.current <
+        viewPortWithoutKeyboard.current - viewPortWithKeyboard) {
+        keyboardSize.current =
+          viewPortWithoutKeyboard.current - viewPortWithKeyboard
+      }
+      const mountPoint = document.getElementById('mountPoint')
+      if (mountPoint) {
+        if (mountPoint.clientHeight >=
+          (headerElement.current.clientHeight +
+            conversationContentElement.current.clientHeight) * 2) {
+          const percent = viewPortWithKeyboard * 100 /
+            viewPortWithoutKeyboard.current
+          mountPoint.style.height = `${percent}%`
+        } else if (keyboardSize.current >
+          viewPortWithoutKeyboard.current - viewPortWithKeyboard) {
+          mountPoint.style.height = '100%'
         }
       }
-      window.addEventListener('resize', handler)
-      return () => {
-        window.removeEventListener('resize', handler)
-      }
-    }, [])
+    }
+    window.addEventListener('resize', handler)
+    return () => {
+      window.removeEventListener('resize', handler)
+    }
+  }, [])
 
   const handleOnFocusInputMobile = () => {
     if (window.visualViewport != null) {
@@ -237,14 +237,14 @@ function Main() {
             )
           }
           {aiChatContext.isPremiumUserDisconnected && (!conversationContext.currentModel || isLeoModel(conversationContext.currentModel)) &&
-          <div className={styles.promptContainer}>
-            <WarningPremiumDisconnected />
-          </div>
+            <div className={styles.promptContainer}>
+              <WarningPremiumDisconnected />
+            </div>
           }
           {conversationContext.shouldShowLongConversationInfo &&
-          <div className={styles.promptContainer}>
+            <div className={styles.promptContainer}>
               <LongConversationInfo />
-          </div>}
+            </div>}
           {!aiChatContext.hasAcceptedAgreement && <WelcomeGuide />}
         </div>
       </div>
@@ -256,7 +256,7 @@ function Main() {
         )}
         <ToolsButtonMenu {...conversationContext}>
           <InputBox
-            context={{...conversationContext, ...aiChatContext}}
+            context={{ ...conversationContext, ...aiChatContext }}
             onFocusInputMobile={handleOnFocusInputMobile}
           />
         </ToolsButtonMenu>
