@@ -107,7 +107,7 @@ ViewCounterService::ViewCounterService(
       custom_bi_service_(custom_service),
       ntp_p3a_helper_(std::move(ntp_p3a_helper)) {
   DCHECK(service_);
-  service_->AddObserver(this);
+  ntp_background_images_service_observation_.Observe(service_);
 
   new_tab_count_state_ =
       std::make_unique<WeeklyStorage>(local_state, kNewTabsCreated);
@@ -345,7 +345,7 @@ std::vector<TopSite> ViewCounterService::GetTopSitesData() const {
 }
 
 void ViewCounterService::Shutdown() {
-  service_->RemoveObserver(this);
+  ntp_background_images_service_observation_.Reset();
 }
 
 void ViewCounterService::OnUpdated(NTPBackgroundImagesData* data) {
