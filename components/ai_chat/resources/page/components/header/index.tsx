@@ -13,6 +13,14 @@ import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
 
+const Logo = ({ isPremium }: { isPremium: boolean }) => <div className={styles.logo}>
+  <Icon name='product-brave-leo' />
+  <div className={styles.logoTitle}>Leo AI</div>
+  {isPremium && (
+    <div className={styles.badgePremium}>PREMIUM</div>
+  )}
+</div>
+
 const getTitle = (activeConversation?: Conversation) => activeConversation?.title
   || activeConversation?.summary
   || getLocale('conversationListUntitled')
@@ -44,15 +52,8 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
           </Button>
           <div className={styles.pageText}>{getTitle(activeConversation)}</div>
         </div>
-      ) : (
-        <div className={styles.logo}>
-          <Icon name='product-brave-leo' />
-          <div className={styles.logoTitle}>Leo AI</div>
-          {aiChatContext.isPremiumUser && (
-            <div className={styles.badgePremium}>PREMIUM</div>
-          )}
-        </div>
-      )}
+      )
+        : <Logo isPremium={aiChatContext.isPremiumUser} />}
       <div className={styles.actions}>
         {aiChatContext.hasAcceptedAgreement && (
           <>
@@ -98,33 +99,27 @@ export function SidebarHeader() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
-  const handleEraseClick = () => {
+  const newConversation = () => {
     aiChatContext.onNewConversation()
   }
 
-  const shouldDisplayEraseAction =
-    conversationContext.conversationHistory.length >= 1
+  const canStartNewConversation = conversationContext.conversationHistory.length >= 1
+    && aiChatContext.hasAcceptedAgreement
 
   return (
     <div className={styles.header}>
       <div className={styles.logoBody}>
         <div className={styles.divider} />
-        <div className={styles.logo}>
-          <Icon name='product-brave-leo' />
-          <div className={styles.logoTitle}>Leo AI</div>
-          {aiChatContext.isPremiumUser && (
-            <div className={styles.badgePremium}>PREMIUM</div>
-          )}
-        </div>
+        <Logo isPremium={aiChatContext.isPremiumUser} />
       </div>
       <div className={styles.actions}>
-        {aiChatContext.hasAcceptedAgreement && shouldDisplayEraseAction && (
+        {canStartNewConversation && (
           <Button
             fab
             kind='plain-faint'
-            aria-label='Erase conversation history'
-            title='Erase conversation history'
-            onClick={handleEraseClick}
+            aria-label='Start new conversation'
+            title='Start new conversation'
+            onClick={newConversation}
           >
             <Icon name='plus-add' />
           </Button>
