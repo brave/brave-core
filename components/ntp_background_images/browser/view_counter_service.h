@@ -13,6 +13,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "base/timer/wall_clock_timer.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/public/serving/new_tab_page_ad_serving_condition_matcher_util.h"
@@ -188,6 +189,9 @@ class ViewCounterService : public KeyedService,
   std::unique_ptr<WeeklyStorage> branded_new_tab_count_state_;
 
   std::unique_ptr<NTPP3AHelper> ntp_p3a_helper_;
+  base::ScopedObservation<NTPBackgroundImagesService,
+                          NTPBackgroundImagesService::Observer>
+      ntp_background_images_service_observation_{this};
 };
 
 }  // namespace ntp_background_images
