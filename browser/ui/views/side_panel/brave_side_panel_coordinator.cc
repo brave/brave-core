@@ -93,8 +93,10 @@ void BraveSidePanelCoordinator::Toggle(
     SidePanelUtil::SidePanelOpenTrigger open_trigger) {
   // Notify to give opportunity to observe another panel entries from
   // global or active tab's contextual registry.
-  auto* brave_browser_view = static_cast<BraveBrowserView*>(browser_view_);
-  brave_browser_view->WillShowSidePanel();
+  if (!IsSidePanelShowing()) {
+    auto* brave_browser_view = static_cast<BraveBrowserView*>(browser_view_);
+    brave_browser_view->WillShowSidePanel();
+  }
 
   SidePanelCoordinator::Toggle(key, open_trigger);
 }
@@ -165,6 +167,11 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
 void BraveSidePanelCoordinator::NotifyPinnedContainerOfActiveStateChange(
     SidePanelEntryKey key,
     bool is_active) {
+  // // Notify to give opportunity to observe another panel entries from
+  // // global or active tab's contextual registry.
+  // auto* brave_browser_view = static_cast<BraveBrowserView*>(browser_view_);
+  // brave_browser_view->WillShowSidePanel();
+
   if (!browser_view_->toolbar()->pinned_toolbar_actions_container()) {
     return;
   }
