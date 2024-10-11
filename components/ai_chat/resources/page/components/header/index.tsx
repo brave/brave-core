@@ -94,7 +94,7 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
   )
 })
 
-export default function SidebarHeader(props: FeatureButtonMenuProps) {
+export function SidebarHeader(props: FeatureButtonMenuProps) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
