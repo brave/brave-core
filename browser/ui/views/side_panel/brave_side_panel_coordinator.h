@@ -35,6 +35,8 @@ class BraveSidePanelCoordinator : public SidePanelCoordinator {
       const UniqueKey& unique_key,
       SidePanelEntry* entry,
       std::optional<std::unique_ptr<views::View>> content_view) override;
+  void OnEntryWillDeregister(SidePanelRegistry* registry,
+                             SidePanelEntry* entry) override;
 
   void NotifyPinnedContainerOfActiveStateChange(SidePanelEntryKey key,
                                                 bool is_active) override;

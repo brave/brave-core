@@ -38,6 +38,7 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_within_tab_helper.h"
+#include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
@@ -139,18 +140,6 @@ void SidebarContainerView::Init() {
   sidebar_model_observation_.Observe(sidebar_model_);
   browser_->tab_strip_model()->AddObserver(this);
 
-  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
-  DCHECK(browser_view);
-
-  auto* global_registry = side_panel_coordinator_->GetWindowRegistry();
-  panel_registry_observations_.AddObservation(global_registry);
-
-  for (const auto& entry : global_registry->entries()) {
-    DVLOG(1) << "Observing panel entry in ctor: "
-             << SidePanelEntryIdToString(entry->key().id());
-    panel_entry_observations_.AddObservation(entry.get());
-  }
-
   show_side_panel_button_.Init(
       kShowSidePanelButton, browser_->profile()->GetPrefs(),
       base::BindRepeating(&SidebarContainerView::UpdateToolbarButtonVisibility,
@@ -183,6 +172,29 @@ void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
 
 bool SidebarContainerView::IsSidebarVisible() const {
   return sidebar_control_view_ && sidebar_control_view_->GetVisible();
+}
+
+void SidebarContainerView::WillShowSidePanel() {
+  // It's good timing to start observing any panel entries
+  // from global and contextual if not yet observed.
+  auto* tab_model = browser_->tab_strip_model();
+  auto* active_web_contents = tab_model->GetActiveWebContents();
+  if (!active_web_contents) {
+    return;
+  }
+  StartObservingContextualSidePanelEntry(active_web_contents);
+
+  auto* global_registry = side_panel_coordinator_->GetWindowRegistry();
+  for (const auto& entry : global_registry->entries()) {
+    StartObservingForEntry(entry.get());
+  }
+}
+
+void SidebarContainerView::WillDeregisterSidePanelEntry(SidePanelEntry* entry) {
+  // If entry's life cycle is tied with tab, we stop observing from
+  // OnTabWillBeRemoved(). However, some entry could be deregistered while tab
+  // is live. In that case, we need to stop observing here explicitely.
+  StopObservingForEntry(entry);
 }
 
 bool SidebarContainerView::IsFullscreenForCurrentEntry() const {
@@ -792,26 +804,10 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   }
 }
 
-void SidebarContainerView::OnEntryRegistered(SidePanelRegistry* registry,
-                                             SidePanelEntry* entry) {
-  // Observe when it's shown or hidden
-  DVLOG(1) << "Observing panel entry in registry observer: "
-           << SidePanelEntryIdToString(entry->key().id());
-  panel_entry_observations_.AddObservation(entry);
-}
-
-void SidebarContainerView::OnEntryWillDeregister(SidePanelRegistry* registry,
-                                                 SidePanelEntry* entry) {
-  // Stop observing
-  DVLOG(1) << "Unobserving panel entry in registry observer: "
-           << SidePanelEntryIdToString(entry->key().id());
-  panel_entry_observations_.RemoveObservation(entry);
-}
-
-void SidebarContainerView::OnRegistryDestroying(SidePanelRegistry* registry) {
-  if (panel_registry_observations_.IsObservingSource(registry)) {
-    StopObservingContextualSidePanelRegistry(registry);
-  }
+void SidebarContainerView::OnTabWillBeRemoved(content::WebContents* contents,
+                                              int index) {
+  // At this time, we can stop observing as TabFeatures is available.
+  StopObservingContextualSidePanelEntry(contents);
 }
 
 void SidebarContainerView::UpdateActiveItemState() {
@@ -866,70 +862,39 @@ void SidebarContainerView::OnTabStripModelChanged(
     }
     return;
   }
-
-  if (change.type() == TabStripModelChange::kInserted) {
-    for (const auto& contents : change.GetInsert()->contents) {
-      StartObservingContextualSidePanelRegistry(contents.contents);
-    }
-    return;
-  }
-
-  if (change.type() == TabStripModelChange::kRemoved) {
-    bool removed_for_deletion =
-        (change.GetRemove()->contents[0].remove_reason ==
-         TabStripModelChange::RemoveReason::kDeleted);
-    // If the tab is removed for deletion the side panel registry has already
-    // been destroyed. We stop observing that registry in
-    // SidePanelRegistryObserver::OnRegistryDestroying override above.
-    if (!removed_for_deletion) {
-      for (const auto& contents : change.GetRemove()->contents) {
-        StopObservingContextualSidePanelRegistry(contents.contents);
-      }
-    }
-    return;
-  }
 }
 
-void SidebarContainerView::StopObservingContextualSidePanelRegistry(
+void SidebarContainerView::StopObservingContextualSidePanelEntry(
     content::WebContents* contents) {
-  auto* registry = SidePanelRegistry::GetDeprecated(contents);
-  StopObservingContextualSidePanelRegistry(registry);
-}
+  auto* tab = tabs::TabInterface::GetFromContents(contents);
+  if (!tab->GetTabFeatures()) {
+    return;
+  }
 
-void SidebarContainerView::StopObservingContextualSidePanelRegistry(
-    SidePanelRegistry* registry) {
+  auto* registry = tab->GetTabFeatures()->side_panel_registry();
   if (!registry) {
     return;
   }
 
-  panel_registry_observations_.RemoveObservation(registry);
-
   for (const auto& entry : registry->entries()) {
-    if (panel_entry_observations_.IsObservingSource(entry.get())) {
-      DVLOG(1) << "Removing panel entry observation from removed contextual "
-                  "registry : "
-               << SidePanelEntryIdToString(entry->key().id());
-      panel_entry_observations_.RemoveObservation(entry.get());
-    }
+    StopObservingForEntry(entry.get());
   }
 }
 
-void SidebarContainerView::StartObservingContextualSidePanelRegistry(
+void SidebarContainerView::StartObservingContextualSidePanelEntry(
     content::WebContents* contents) {
-  auto* registry = SidePanelRegistry::GetDeprecated(contents);
+  auto* tab = tabs::TabInterface::GetFromContents(contents);
+  if (!tab->GetTabFeatures()) {
+    return;
+  }
+
+  auto* registry = tab->GetTabFeatures()->side_panel_registry();
   if (!registry) {
     return;
   }
 
-  panel_registry_observations_.AddObservation(registry);
-
   for (const auto& entry : registry->entries()) {
-    if (!panel_entry_observations_.IsObservingSource(entry.get())) {
-      DVLOG(1) << "Observing existing panel entry from newly added contextual "
-                  "registry : "
-               << SidePanelEntryIdToString(entry->key().id());
-      panel_entry_observations_.AddObservation(entry.get());
-    }
+    StartObservingForEntry(entry.get());
   }
 
   SharedPinnedTabService* shared_pinned_tab_service =
@@ -948,6 +913,22 @@ void SidebarContainerView::StartObservingContextualSidePanelRegistry(
     if (auto active_entry = registry->active_entry()) {
       OnEntryShown(*active_entry);
     }
+  }
+}
+
+void SidebarContainerView::StartObservingForEntry(SidePanelEntry* entry) {
+  if (!panel_entry_observations_.IsObservingSource(entry)) {
+    DVLOG(1) << "Observing panel entry: "
+             << SidePanelEntryIdToString(entry->key().id());
+    panel_entry_observations_.AddObservation(entry);
+  }
+}
+
+void SidebarContainerView::StopObservingForEntry(SidePanelEntry* entry) {
+  if (panel_entry_observations_.IsObservingSource(entry)) {
+    DVLOG(1) << "Removing panel entry observation: "
+             << SidePanelEntryIdToString(entry->key().id());
+    panel_entry_observations_.RemoveObservation(entry);
   }
 }
 
