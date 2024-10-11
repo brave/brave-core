@@ -5,8 +5,10 @@
 
 #include "brave/browser/brave_ads/device_id/device_id_impl.h"
 
+#include <array>
 #include <cstdint>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -20,20 +22,16 @@ namespace brave_ads {
 
 namespace {
 
-bool ComputeHmacSha256(const std::string& key,
-                       const std::string& text,
-                       std::string* signature_return) {
+std::optional<std::string> ComputeHmacSha256(std::string_view key,
+                                             std::string_view text) {
   crypto::HMAC hmac(crypto::HMAC::SHA256);
-  const size_t digest_length = hmac.DigestLength();
-  std::vector<uint8_t> digest(digest_length);
-  const bool result =
-      hmac.Init(key) && hmac.Sign(text, &digest[0], digest.size());
-  if (result) {
-    *signature_return =
-        base::ToLowerASCII(base::HexEncode(digest.data(), digest.size()));
+  std::array<uint8_t, 32u> digest;
+  if (!hmac.Init(key) ||
+      !hmac.Sign(base::as_bytes(base::make_span(text)), digest)) {
+    return std::nullopt;
   }
 
-  return result;
+  return base::ToLowerASCII(base::HexEncode(digest));
 }
 
 void GetRawDeviceIdCallback(DeviceIdCallback callback,
@@ -44,12 +42,8 @@ void GetRawDeviceIdCallback(DeviceIdCallback callback,
     return std::move(callback).Run({});
   }
 
-  std::string device_id;
-  if (!ComputeHmacSha256(raw_device_id, "FOOBAR", &device_id)) {
-    return std::move(callback).Run({});
-  }
-
-  std::move(callback).Run(std::move(device_id));
+  std::move(callback).Run(
+      ComputeHmacSha256(raw_device_id, "FOOBAR").value_or(std::string()));
 }
 
 bool IsValidMacAddressImpl(const void* bytes, size_t size) {

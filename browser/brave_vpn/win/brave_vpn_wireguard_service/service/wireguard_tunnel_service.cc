@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_tunnel_service.h"
 
+#include <array>
 #include <optional>
 #include <string>
 #include <vector>
@@ -371,8 +372,8 @@ bool WireguardGenerateKeypair(std::string* public_key,
   }
   base::ScopedNativeLibrary tunnel_lib(directory.Append(L"tunnel.dll"));
   typedef bool WireGuardGenerateKeypair(uint8_t[32], uint8_t[32]);
-  std::vector<uint8_t> public_key_bytes(32);
-  std::vector<uint8_t> private_key_bytes(32);
+  std::array<uint8_t, 32u> public_key_bytes = {0};
+  std::array<uint8_t, 32u> private_key_bytes = {0};
 
   WireGuardGenerateKeypair* generate_proc =
       reinterpret_cast<WireGuardGenerateKeypair*>(

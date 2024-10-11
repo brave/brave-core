@@ -5,12 +5,14 @@
 
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/vpn_utils.h"
 
+#include <windows.h>
+
 #include <fwpmu.h>
 #include <iphlpapi.h>
 #include <ras.h>
-#include <windows.h>
 #include <winerror.h>
 
+#include <array>
 #include <ios>
 #include <optional>
 #include <vector>
@@ -157,9 +159,9 @@ std::optional<int> GetAdapterIndexByName(const std::string& name) {
 
 DWORD BlockIPv4Queries(HANDLE engine_handle) {
   std::vector<FWPM_FILTER_CONDITION0> conditions = {
-      {FWPM_CONDITION_IP_REMOTE_PORT,
-       FWP_MATCH_EQUAL,
-       {FWP_UINT16, {.uint16 = 53}}}};
+      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_PORT,
+                             FWP_MATCH_EQUAL,
+                             {FWP_UINT16, {.uint16 = 53}}}};
 
   FWPM_FILTER0 filter = {};
   filter.subLayerKey = GetVpnDnsSublayerGUID();
@@ -210,13 +212,13 @@ DWORD PermitQueriesFromTAP(HANDLE engine_handle,
     return result;
   }
 
-  std::vector<FWPM_FILTER_CONDITION0> conditions = {
-      {FWPM_CONDITION_IP_REMOTE_PORT,
-       FWP_MATCH_EQUAL,
-       {FWP_UINT16, {.uint16 = 53}}},
-      {FWPM_CONDITION_IP_LOCAL_INTERFACE,
-       FWP_MATCH_EQUAL,
-       {FWP_UINT64, {.uint64 = &tapluid.Value}}}};
+  std::array<FWPM_FILTER_CONDITION0, 2u> conditions = {
+      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_PORT,
+                             FWP_MATCH_EQUAL,
+                             {FWP_UINT16, {.uint16 = 53}}},
+      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_LOCAL_INTERFACE,
+                             FWP_MATCH_EQUAL,
+                             {FWP_UINT64, {.uint64 = &tapluid.Value}}}};
 
   FWPM_FILTER0 Filter = {};
   Filter.subLayerKey = GetVpnDnsSublayerGUID();

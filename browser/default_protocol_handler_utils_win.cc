@@ -135,21 +135,19 @@ std::wstring FormatUserChoiceString(std::wstring_view ext,
   // version. There isn't any known way of deriving it, so we assume this
   // constant value. If we are wrong, we will not be able to generate correct
   // UserChoice hashes.
-  const wchar_t* user_experience =
+  constexpr wchar_t user_experience[] =
       L"User Choice set via Windows User Experience "
       L"{D18B6DD5-6124-4341-9318-804003BAFA0B}";
 
   const std::wstring file_time_str = base::ASCIIToWide(base::StringPrintf(
       "%08lx%08lx", file_time.dwHighDateTime, file_time.dwLowDateTime));
 
-  const std::wstring user_choice =
+  std::wstring user_choice =
       base::StrCat({ext, sid, prog_id, file_time_str, user_experience});
   // For using CharLowerW instead of base::ToLowerASCII().
   // Otherwise, hash test with non-ascii inputs are failed.
-  std::vector<wchar_t> buf(user_choice.begin(), user_choice.end());
-  buf.push_back(0);
-  ::CharLowerW(buf.data());
-  return std::wstring(buf.data());
+  ::CharLowerW(user_choice.data());
+  return user_choice;
 }
 
 bool AddMillisecondsToSystemTime(SYSTEMTIME* system_time,

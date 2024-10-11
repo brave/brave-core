@@ -82,9 +82,8 @@ void AIChatSettingsHelper::OnPremiumStatusReceived(
 
 void AIChatSettingsHelper::OnModelListUpdated() {
   if (client_page_.is_bound()) {
-    std::vector<mojom::ModelPtr> models_copy =
-        GetCustomModelsFromService(model_service_);
-    client_page_->OnModelListChanged(std::move(models_copy));
+    client_page_->OnModelListChanged(
+        GetCustomModelsFromService(model_service_));
   }
 }
 
@@ -146,9 +145,7 @@ void AIChatSettingsHelper::GetManageUrl(GetManageUrlCallback callback) {
 }
 
 void AIChatSettingsHelper::GetCustomModels(GetCustomModelsCallback callback) {
-  std::vector<mojom::ModelPtr> models_copy =
-      GetCustomModelsFromService(model_service_);
-  std::move(callback).Run(std::move(models_copy));
+  std::move(callback).Run(GetCustomModelsFromService(model_service_));
 }
 
 void AIChatSettingsHelper::AddCustomModel(mojom::ModelPtr model,
