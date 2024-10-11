@@ -29,7 +29,6 @@ export function isPersistableSessionRoute(
   }
   const isPersistableInPanel =
     route.includes(WalletRoutes.Accounts) ||
-    route.includes(WalletRoutes.Activity) ||
     route.includes(WalletRoutes.Backup) ||
     route.includes(WalletRoutes.DepositFundsPageStart) ||
     route.includes(WalletRoutes.FundWalletPageStart) ||
