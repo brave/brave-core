@@ -147,6 +147,15 @@ public class ContentFilteringFragment extends BravePreferenceFragment
     }
 
     @Override
+    public void onSubscriptionFilterRefresh(int position) {
+        if (mFilterListAndroidHandler != null) {
+            SubscriptionInfo customFilter = mSubscriptionFilterLists.get(position);
+            mFilterListAndroidHandler.refreshSubscription(customFilter.subscriptionUrl, true);
+            mAdapter.notifyItemChanged(position + 1);
+        }
+    }
+
+    @Override
     public void onSubscriptionFilterDelete(int position) {
         if (mFilterListAndroidHandler != null) {
             SubscriptionInfo customFilter = mSubscriptionFilterLists.get(position);

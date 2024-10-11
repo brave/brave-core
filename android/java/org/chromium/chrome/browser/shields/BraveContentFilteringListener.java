@@ -10,6 +10,8 @@ public interface BraveContentFilteringListener {
 
     public void onSubscriptionFilterToggle(int position, boolean isEnable);
 
+    public void onSubscriptionFilterRefresh(int position);
+
     public void onSubscriptionFilterDelete(int position);
 
     public void onFilterToggle(String uuid, boolean isEnable);
