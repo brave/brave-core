@@ -80,13 +80,13 @@ export function App() {
     })
   }, [eventHub])
 
-  function onMount(elem: HTMLElement | null) {
+  const onMount = React.useCallback((elem: HTMLElement | null) => {
     if (elem) {
       elem.style.setProperty(
         '--app-screen-height',
         window.screen.availHeight + 'px')
     }
-  }
+  }, [])
 
   function getClassNames() {
     const list: string[] = []

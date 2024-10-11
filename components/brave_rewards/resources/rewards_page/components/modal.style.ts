@@ -53,11 +53,16 @@ export const modalStyle = scoped.css`
 
   &::backdrop {
     background: rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
 
     animation-name: modal-backdrop-fade;
     animation-timing-function: ease-out;
     animation-duration: var(--self-animation-duration);
     animation-fill-mode: both;
+  }
+
+  .modal-skip-animations &::backdrop {
+    animation-duration: 0ms;
   }
 
   @keyframes modal-backdrop-fade {

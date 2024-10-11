@@ -155,6 +155,7 @@ export function createModel(): AppModel {
     ],
     rewardsParameters: {
       autoContributeChoices: [1, 2, 5, 10],
+      autoContributeChoice: 1,
       tipChoices: [1.25, 5.0, 10.5],
       rate: .56,
       walletProviderRegions: {

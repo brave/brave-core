@@ -22,14 +22,14 @@ interface Props {
 export function TosUpdateModal(props: Props) {
   const { getString } = useLocaleContext()
 
-  const onMount = (elem: HTMLElement | null) => {
+  const onMount = React.useCallback((elem: HTMLElement | null) => {
     if (elem) {
       const link = elem.querySelector<HTMLLinkElement>('a')
       if (link) {
         link.focus()
       }
     }
-  }
+  }, [])
 
   return (
     <Modal>

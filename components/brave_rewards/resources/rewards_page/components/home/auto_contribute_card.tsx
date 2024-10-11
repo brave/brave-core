@@ -110,9 +110,14 @@ export function AutoContributeCard() {
       return null
     }
 
+    let { amount } = acInfo
+    if (!amount) {
+      amount = parameters.autoContributeChoice
+    }
+
     const amounts = [...parameters.autoContributeChoices]
-    if (!amounts.includes(acInfo.amount)) {
-      amounts.push(acInfo.amount)
+    if (!amounts.includes(amount)) {
+      amounts.push(amount)
     }
     amounts.sort((a, b) => a - b)
 
@@ -135,7 +140,7 @@ export function AutoContributeCard() {
             <span className='value'>
               <select
                 className='subtle'
-                value={acInfo.amount}
+                value={amount}
                 onChange={(event) => {
                   model.setAutoContributeAmount(
                     parseFloat(event.currentTarget.value))
