@@ -10,7 +10,7 @@ import Icon from '@brave/leo/react/icon'
 import Label from '@brave/leo/react/label'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
-import * as mojom from '../../api'
+import getAPI, * as mojom from '../../api'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
@@ -134,7 +134,7 @@ export default function FeatureMenu(props: Props) {
             </div>
           </div>
         </leo-menu-item>
-        <leo-menu-item>
+        <leo-menu-item onClick={() => getAPI().Service.deleteConversation(conversationContext.conversationUuid!)}>
           <div className={classnames(
             styles.menuItemWithIcon,
             styles.menuItemMainItem

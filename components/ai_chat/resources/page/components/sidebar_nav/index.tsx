@@ -89,13 +89,13 @@ function DisplayTitle(props: DisplayTitleProps) {
           <leo-menu-item onClick={props.onEditTitle}>
             <div className={styles.optionsMenuItmWithIcon}>
               <Icon name='edit-pencil' />
-              <div>Rename</div>
+              <div>{getLocale('menuRenameConversation')}</div>
             </div>
           </leo-menu-item>
           <leo-menu-item onClick={props.onDelete}>
             <div className={styles.optionsMenuItmWithIcon}>
               <Icon name='trash' />
-              <div>Delete</div>
+              <div>{getLocale('menuDeleteConversation')}</div>
             </div>
           </leo-menu-item>
         </ButtonMenu>
