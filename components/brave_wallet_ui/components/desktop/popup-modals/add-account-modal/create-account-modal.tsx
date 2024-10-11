@@ -3,13 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { assert } from 'chrome://resources/js/assert.js'
 import * as React from 'react'
 import { useHistory, useLocation, useParams } from 'react-router'
 import Input, { InputEventDetail } from '@brave/leo/react/input'
-import Dropdown from '@brave/leo/react/dropdown'
-import {
-  SelectItemEventDetail //
-} from '@brave/leo/types/src/components/menu/menu.svelte'
 
 // utils
 import { getLocale } from '$web-common/locale'
@@ -20,18 +17,9 @@ import { CreateAccountOptions } from '../../../../options/create-account-options
 
 // types
 import {
-  BitcoinNetwork,
-  BitcoinNetworkLocaleMapping,
-  BitcoinNetworkTypes,
   BraveWallet,
   CreateAccountOptionsType,
-  FilecoinNetwork,
-  FilecoinNetworkLocaleMapping,
-  FilecoinNetworkTypes,
-  WalletRoutes,
-  ZCashNetwork,
-  ZCashNetworkLocaleMapping,
-  ZCashNetworkTypes
+  WalletRoutes
 } from '../../../../constants/types'
 
 // components
@@ -50,7 +38,10 @@ import {
   useSafeWalletSelector //
 } from '../../../../common/hooks/use-safe-selector'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
-import { useAddAccountMutation } from '../../../../common/slices/api.slice'
+import {
+  useAddAccountMutation,
+  useGetVisibleNetworksQuery
+} from '../../../../common/slices/api.slice'
 import { LeoSquaredButton } from '../../../shared/style'
 
 interface Params {
@@ -71,6 +62,7 @@ export const CreateAccountModal = () => {
 
   // queries
   const { accounts } = useAccountsQuery()
+  const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
 
   // mutations
   const [addAccount] = useAddAccountMutation()
@@ -79,23 +71,15 @@ export const CreateAccountModal = () => {
   const [fullLengthAccountName, setFullLengthAccountName] =
     React.useState<string>('')
   const accountName = fullLengthAccountName.substring(0, 30)
-  const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>(
-    BraveWallet.FILECOIN_MAINNET
-  )
-  const [bitcoinNetwork, setBitcoinNetwork] = React.useState<BitcoinNetwork>(
-    BraveWallet.BITCOIN_MAINNET
-  )
-  const [zcashNetwork, setZCashNetwork] = React.useState<ZCashNetwork>(
-    BraveWallet.Z_CASH_MAINNET
-  )
 
   // memos
   const createAccountOptions = React.useMemo(() => {
     return CreateAccountOptions({
+      visibleNetworks,
       isBitcoinEnabled,
       isZCashEnabled
     })
-  }, [isBitcoinEnabled, isZCashEnabled])
+  }, [visibleNetworks, isBitcoinEnabled, isZCashEnabled])
 
   const selectedAccountType = React.useMemo(() => {
     return createAccountOptions.find((option) => {
@@ -120,16 +104,20 @@ export const CreateAccountModal = () => {
     if (!selectedAccountType) {
       return
     }
-    const network =
-      (selectedAccountType.coin === BraveWallet.CoinType.FIL &&
-        filecoinNetwork) ||
-      (selectedAccountType.coin === BraveWallet.CoinType.BTC &&
-        bitcoinNetwork) ||
-      (selectedAccountType.coin === BraveWallet.CoinType.ZEC && zcashNetwork) ||
-      undefined
+    let network
+    if (
+      [
+        BraveWallet.CoinType.FIL,
+        BraveWallet.CoinType.BTC,
+        BraveWallet.CoinType.ZEC
+      ].includes(selectedAccountType.coin)
+    ) {
+      network = selectedAccountType.fixedNetwork
+      assert(network)
+    }
 
     return keyringIdForNewAccount(selectedAccountType.coin, network)
-  }, [selectedAccountType, filecoinNetwork, bitcoinNetwork, zcashNetwork])
+  }, [selectedAccountType])
 
   // computed
   const isDisabled = accountName === ''
@@ -148,27 +136,6 @@ export const CreateAccountModal = () => {
   const handleAccountNameChanged = React.useCallback(
     (detail: InputEventDetail) => {
       setFullLengthAccountName(detail.value)
-    },
-    []
-  )
-
-  const onChangeFilecoinNetwork = React.useCallback(
-    (detail: SelectItemEventDetail) => {
-      setFilecoinNetwork(detail.value as FilecoinNetwork)
-    },
-    []
-  )
-
-  const onChangeBitcoinNetwork = React.useCallback(
-    (detail: SelectItemEventDetail) => {
-      setBitcoinNetwork(detail.value as BitcoinNetwork)
-    },
-    []
-  )
-
-  const onChangeZCashNetwork = React.useCallback(
-    (detail: SelectItemEventDetail) => {
-      setZCashNetwork(detail.value as ZCashNetwork)
     },
     []
   )
@@ -232,82 +199,6 @@ export const CreateAccountModal = () => {
       <DividerLine />
       {selectedAccountType && (
         <CreateAccountStyledWrapper>
-          {selectedAccountType?.coin === BraveWallet.CoinType.FIL && (
-            <Dropdown
-              value={filecoinNetwork}
-              onChange={onChangeFilecoinNetwork}
-            >
-              <div slot='label'>
-                {getLocale('braveWalletAllowAddNetworkNetworkPanelTitle')}
-              </div>
-
-              <div slot='value'>
-                {FilecoinNetworkLocaleMapping[filecoinNetwork]}
-              </div>
-
-              {FilecoinNetworkTypes.map((network, index) => {
-                return (
-                  <leo-option
-                    key={index}
-                    value={network}
-                  >
-                    {FilecoinNetworkLocaleMapping[network]}
-                  </leo-option>
-                )
-              })}
-            </Dropdown>
-          )}
-
-          {selectedAccountType?.coin === BraveWallet.CoinType.BTC && (
-            <Dropdown
-              value={bitcoinNetwork}
-              onChange={onChangeBitcoinNetwork}
-            >
-              <div slot='label'>
-                {getLocale('braveWalletAllowAddNetworkNetworkPanelTitle')}
-              </div>
-
-              <div slot='value'>
-                {BitcoinNetworkLocaleMapping[bitcoinNetwork]}
-              </div>
-
-              {BitcoinNetworkTypes.map((network) => {
-                return (
-                  <leo-option
-                    key={network}
-                    value={network}
-                  >
-                    {BitcoinNetworkLocaleMapping[network]}
-                  </leo-option>
-                )
-              })}
-            </Dropdown>
-          )}
-
-          {selectedAccountType?.coin === BraveWallet.CoinType.ZEC && (
-            <Dropdown
-              value={zcashNetwork}
-              onChange={onChangeZCashNetwork}
-            >
-              <div slot='label'>
-                {getLocale('braveWalletAllowAddNetworkNetworkPanelTitle')}
-              </div>
-
-              <div slot='value'>{ZCashNetworkLocaleMapping[zcashNetwork]}</div>
-
-              {ZCashNetworkTypes.map((network) => {
-                return (
-                  <leo-option
-                    key={network}
-                    value={network}
-                  >
-                    {ZCashNetworkLocaleMapping[network]}
-                  </leo-option>
-                )
-              })}
-            </Dropdown>
-          )}
-
           <Input
             value={accountName}
             placeholder={getLocale('braveWalletAddAccountPlaceholder')}

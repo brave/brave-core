@@ -596,6 +596,7 @@ export interface CreateAccountOptionsType {
   name: string
   description: string
   coin: BraveWallet.CoinType
+  fixedNetwork?: string
   icon: string
   chainIcons?: string[]
 }

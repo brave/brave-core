@@ -257,8 +257,11 @@
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_ETHEREUM_DESCRIPTION" desc="Add account modal create account Ethereum description">Supports EVM compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_SOLANA_DESCRIPTION" desc="Add account modal create account Solana description">Supports SPL compatible assets on the Solana blockchain</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_FILECOIN_DESCRIPTION" desc="Add account modal create account Filecoin description">Store FIL asset</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_FILECOIN_TESTNET_DESCRIPTION" desc="Add account modal create account Filecoin Testnet description">Store FIL Testnet asset</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_BITCOIN_DESCRIPTION" desc="Add account modal create account Bitcoin description">Store BTC assets</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_BITCOIN_TESTNET_DESCRIPTION" desc="Add account modal create account Bitcoin Testnet description">Store BTC Testnet assets</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_ZCASH_DESCRIPTION" desc="Add account modal create account ZCash description">Store ZEC assets</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_ZCASH_TESTNET_DESCRIPTION" desc="Add account modal create accounr ZCash Testnet description">Store ZEC Testnet assets</message>
   <message name="IDS_BRAVE_WALLET_FILECOIN_PRIVATE_KEY_PROTOCOL" desc="Add account modal filecoin private key protocol">Private key <ph name="PROTOCOL"><ex>BLS12-381</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_IMPORT" desc="Add account modal import button">Import</message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_IMPORT_HARDWARE" desc="Add account modal import hardware wallet button">Import from hardware wallet</message>
@@ -321,7 +324,7 @@
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DISCLAIMER" desc="Account settings modal warning">WARNING: Never share your private key. Anyone with this private key can take your assets forever.</message>
   <message name="IDS_BRAVE_WALLET_FIL_EXPORT_PRIVATE_KEY_FORMAT_DESCRIPTION" desc="Filecoin private key format description">NOTE: Private key is provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START">$1</ph>Learn more<ph name="LINK_END">$2</ph>.</message>
   <message name="IDS_BRAVE_WALLET_FIL_IMPORT_PRIVATE_KEY_FORMAT_DESCRIPTION" desc="Filecoin private key format description">NOTE: Private key must be provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START">$1</ph>Learn more<ph name="LINK_END">$2</ph>.</message>
-  <message name="IDS_BRAVE_WALLET_BTC_IMPORT_PRIVATE_KEY_FORMAT_DESCRIPTION" desc="Bitcoin private key input format description">NOTE: Only zprv(or vprv for Testnet) extended keys are supported.</message>
+  <message name="IDS_BRAVE_WALLET_BTC_IMPORT_PRIVATE_KEY_FORMAT_DESCRIPTION" desc="Bitcoin private key input format description">NOTE: Only <ph name="FORMAT"><ex>zprv</ex>$1</ph> extended keys are supported.</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_EXPORT" desc="Account list item Export button">Export</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_DEPOSIT" desc="Account list item Deposit button">Deposit</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_REMOVE" desc="Account list item Remove button">Remove</message>
