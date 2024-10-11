@@ -24,7 +24,7 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
   const shouldDisplayEraseAction = !aiChatContext.isStandalone &&
     conversationContext.conversationHistory.length >= 1
 
-  const handleEraseClick = () => {
+  const newConversation = () => {
     aiChatContext.onNewConversation()
   }
 
@@ -69,9 +69,9 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
               <Button
                 fab
                 kind='plain-faint'
-                aria-label='Erase conversation history'
-                title='Erase conversation history'
-                onClick={handleEraseClick}
+                aria-label='Start a new conversation'
+                title='Start a new conversation'
+                onClick={newConversation}
               >
                 <Icon name={aiChatContext.isHistoryEnabled ? 'plus-add' : 'erase'} />
               </Button>
