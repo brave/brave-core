@@ -28,11 +28,13 @@ export default function FeatureMenu(props: Props) {
     aiChatContext.uiHandler?.openAIChatSettings()
   }
 
+  const inConversation = conversationContext.conversationHistory.length >= 1
+
   const customModels = conversationContext.allModels.filter(
-    (model) => model.options.customModelOptions !== undefined
+    (model) => model.options.customModelOptions
   )
   const leoModels = conversationContext.allModels.filter(
-    (model) => model.options.leoModelOptions !== undefined
+    (model) => model.options.leoModelOptions
   )
 
   return (
@@ -109,6 +111,43 @@ export default function FeatureMenu(props: Props) {
       })}
       <div className={styles.menuSeparator} />
 
+      {aiChatContext.isStandalone && inConversation && <>
+        <leo-menu-item>
+          <div className={classnames(
+            styles.menuItemWithIcon,
+            styles.menuItemMainItem
+          )}>
+            <Icon name='info-outline' />
+            <div className={styles.menuText}>
+              <div>{getLocale('menuAboutConversation')}</div>
+            </div>
+          </div>
+        </leo-menu-item>
+        <leo-menu-item>
+          <div className={classnames(
+            styles.menuItemWithIcon,
+            styles.menuItemMainItem
+          )}>
+            <Icon name='edit-pencil' />
+            <div className={styles.menuText}>
+              <div>{getLocale('menuRenameConversation')}</div>
+            </div>
+          </div>
+        </leo-menu-item>
+        <leo-menu-item>
+          <div className={classnames(
+            styles.menuItemWithIcon,
+            styles.menuItemMainItem
+          )}>
+            <Icon name='trash' />
+            <div className={styles.menuText}>
+              <div>{getLocale('menuDeleteConversation')}</div>
+            </div>
+          </div>
+        </leo-menu-item>
+        <div className={styles.menuSeparator} />
+      </>}
+
       {!aiChatContext.isPremiumUser && (
         <leo-menu-item onClick={aiChatContext.goPremium}>
           <div
@@ -155,7 +194,7 @@ export default function FeatureMenu(props: Props) {
               <span className={styles.menuText}>Search and history</span>
             </div>
           </leo-menu-item>
-          <leo-menu-item onClick={() => {}}>
+          <leo-menu-item onClick={() => { }}>
             <div
               className={classnames(
                 styles.menuItemWithIcon,

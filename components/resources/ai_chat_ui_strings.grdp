@@ -222,6 +222,15 @@
   <message name="IDS_CHAT_UI_NEW_CONVERSATION_BUTTON_LABEL" desc="A label for the button which starts a new conversation">
     Start a new conversation
   </message>
+  <message name="IDS_CHAT_UI_MENU_ABOUT_CONVERSATION" desc="Menu entry for getting conversation info">
+    About this conversation
+  </message>
+  <message name="IDS_CHAT_UI_MENU_RENAME_CONVERSATION" desc="Menu entry for renaming a conversation">
+    Rename conversation
+  </message>
+  <message name="IDS_CHAT_UI_MENU_DELETE_CONVERSATION" desc="Menu entry for removing a conversation">
+    Delete conversation
+  </message>
   <message name="IDS_CHAT_UI_SEND_CHAT_BUTTON_LABEL" desc="An button label for sending a chat message">
     Send message to Leo
   </message>
