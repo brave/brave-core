@@ -300,9 +300,18 @@
       kOsAndroid,                                                             \
       FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing), \
   })
+#define BRAVE_DAY_ZERO_EXPERIMENT                            \
+  EXPAND_FEATURE_ENTRIES({                                   \
+      "brave-day-zero-experiment",                           \
+      "Day Zero Experiment",                                 \
+      "Enables the Day Zero Experiment",                     \
+      kOsAndroid,                                            \
+      FEATURE_VALUE_TYPE(features::kBraveDayZeroExperiment), \
+  })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
+#define BRAVE_DAY_ZERO_EXPERIMENT
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -969,6 +978,7 @@
   PLAYLIST_FEATURE_ENTRIES                                                     \
   BRAVE_COMMANDS_FEATURE_ENTRIES                                               \
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
+  BRAVE_DAY_ZERO_EXPERIMENT                                                    \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
