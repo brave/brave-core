@@ -127,6 +127,7 @@ SidebarContainerView::SidebarContainerView(
 
   SetNotifyEnterExitOnChild(true);
   side_panel_ = AddChildView(std::move(side_panel));
+  side_panel_view_state_observation_.Observe(side_panel_coordinator_);
 }
 
 SidebarContainerView::~SidebarContainerView() = default;
@@ -818,6 +819,26 @@ void SidebarContainerView::OnRegistryDestroying(SidePanelRegistry* registry) {
   }
 }
 
+void SidebarContainerView::UpdateActiveItemState() {
+  DVLOG(1) << "Update active item state";
+
+  auto* controller = GetBraveBrowser()->sidebar_controller();
+  std::optional<sidebar::SidebarItem::BuiltInItemType> current_type;
+  if (auto entry_id = side_panel_coordinator_->GetCurrentEntryId()) {
+    current_type = sidebar::BuiltInItemTypeFromSidePanelId(*entry_id);
+  }
+  controller->UpdateActiveItemState(current_type);
+}
+
+void SidebarContainerView::OnSidePanelDidClose() {
+  // As contextual registry is owned by TabFeatures,
+  // that registry is destroyed before coordinator notifies OnEntryHidden() when
+  // tab is closed. In this case, we should update sidebar ui(active item state)
+  // with this notification. If not, sidebar ui's active item state is not
+  // changed.
+  UpdateActiveItemState();
+}
+
 void SidebarContainerView::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
@@ -869,8 +890,8 @@ void SidebarContainerView::OnTabStripModelChanged(
       for (const auto& contents : change.GetRemove()->contents) {
         StopObservingContextualSidePanelRegistry(contents.contents);
       }
-      return;
     }
+    return;
   }
 }
 
