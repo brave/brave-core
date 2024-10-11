@@ -41,6 +41,7 @@
 #include "brave/components/sidebar/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -51,6 +52,7 @@
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
@@ -1031,6 +1033,16 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
     EXPECT_CALL(observer_, OnActiveIndexChanged(testing::_, testing::_))
         .Times(0);
   }
+
+  // Need to make sure template url service is loaded before testing one-shot
+  // leo panel open. As we don't want to show one-shot leo panel open for
+  // SERP, SidebarTabHelper uses template url service for checking current
+  // url is SERP page or not. If template url service is not loaded, it just
+  // does early return w/o opening leo panel.
+  // See SidebarTabHelper::PrimaryPageChanged() for more details.
+  auto* service =
+      TemplateURLServiceFactory::GetForProfile(browser()->profile());
+  search_test_utils::WaitForTemplateURLServiceToLoad(service);
 
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("https://www.brave.com/"),
