@@ -55,8 +55,11 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
 
   // Brave News feed cache
   if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY) {
-    brave_news::BraveNewsControllerFactory::GetForBrowserContext(profile_)
-        ->ClearHistory();
+    if (auto* brave_news_controller =
+            brave_news::BraveNewsControllerFactory::GetForBrowserContext(
+                profile_)) {
+      brave_news_controller->ClearHistory();
+    }
   }
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY &&
