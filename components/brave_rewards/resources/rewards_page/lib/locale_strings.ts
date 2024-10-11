@@ -206,7 +206,7 @@ export const localeStrings = {
   tosUpdateRequiredTitle: 'Updated Terms of Service',
   unconnectedAdsViewedText: 'You\'ve seen $1# Ads$2 this month',
   wdpCheckboxLabel: 'Yes, I’d also like to contribute to Brave Search and opt in to $1Web Discovery Project$2.',
-  wdpOptInText: 'Contribute some anonymous search & browsing data to refine Brave Search with Web Discovery Project. It’s completely open-source.',
+  wdpOptInText: 'Contribute some anonymous search and browsing data to refine Brave Search with Web Discovery Project. It’s completely open-source.',
   wdpOptInTitle: 'Web Discovery Project'
 }
 

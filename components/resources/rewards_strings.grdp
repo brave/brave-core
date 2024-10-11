@@ -969,7 +969,7 @@
     Yes, I’d also like to contribute to Brave Search and opt in to <ph name="LINK_BEGIN">$1</ph>Web Discovery Project<ph name="LINK_END">$2</ph>.
   </message>
   <message name="IDS_REWARDS_WDP_OPT_IN_TEXT" desc="">
-    Contribute some anonymous search &amp; browsing data to refine Brave Search with Web Discovery Project. It’s completely open-source.
+    Contribute some anonymous search and browsing data to refine Brave Search with Web Discovery Project. It’s completely open-source.
   </message>
   <message name="IDS_REWARDS_WDP_OPT_IN_TITLE" desc="">
     Web Discovery Project
