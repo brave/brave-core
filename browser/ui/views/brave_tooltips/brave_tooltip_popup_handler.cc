@@ -30,8 +30,8 @@ void BraveTooltipPopupHandler::Show(std::unique_ptr<BraveTooltip> tooltip) {
 
   const std::string tooltip_id = tooltip->id();
   if (!tooltip_popups_[tooltip_id]) {
-    tooltip_popups_[tooltip_id] =
-        new brave_tooltips::BraveTooltipPopup(std::move(tooltip));
+    tooltip_popups_[tooltip_id] = new BraveTooltipPopup(std::move(tooltip));
+    tooltip_popups_[tooltip_id]->Show();
   }
 }
 
