@@ -7,12 +7,9 @@
 
 #include <utility>
 
-#include "chrome/browser/profiles/profile.h"
-
 namespace brave_ads {
 
-AdsTooltipsDelegateImpl::AdsTooltipsDelegateImpl(Profile* profile)
-    : ads_tooltips_controller_(profile) {}
+AdsTooltipsDelegateImpl::AdsTooltipsDelegateImpl() {}
 
 void AdsTooltipsDelegateImpl::ShowCaptchaTooltip(
     const std::string& payment_id,

@@ -11,13 +11,11 @@
 #include "brave/browser/brave_ads/tooltips/ads_tooltips_controller.h"
 #include "brave/components/brave_ads/browser/tooltips/ads_tooltips_delegate.h"
 
-class Profile;
-
 namespace brave_ads {
 
 class AdsTooltipsDelegateImpl : public AdsTooltipsDelegate {
  public:
-  explicit AdsTooltipsDelegateImpl(Profile* profile);
+  AdsTooltipsDelegateImpl();
 
   AdsTooltipsDelegateImpl(const AdsTooltipsDelegateImpl&) = delete;
   AdsTooltipsDelegateImpl& operator=(const AdsTooltipsDelegateImpl&) = delete;

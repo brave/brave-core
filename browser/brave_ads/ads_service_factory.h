@@ -42,8 +42,7 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
 
   ~AdsServiceFactory() override;
 
-  std::unique_ptr<AdsTooltipsDelegateImpl> CreateAdsTooltipsDelegate(
-      Profile* profile) const;
+  std::unique_ptr<AdsTooltipsDelegateImpl> CreateAdsTooltipsDelegate() const;
 
   // BrowserContextKeyedServiceFactory:
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(

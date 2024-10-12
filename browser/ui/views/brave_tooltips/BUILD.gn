@@ -5,7 +5,6 @@
 
 import("//build/config/features.gni")
 import("//build/config/ui.gni")
-import("//testing/test.gni")
 import("//ui/base/ui_features.gni")
 
 assert(is_win || is_linux || is_mac)
@@ -25,10 +24,7 @@ source_set("brave_tooltips") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/app/vector_icons",
-    "//brave/browser/profiles:util",
     "//brave/browser/ui/brave_tooltips",
-    "//components/prefs",
-    "//skia",
     "//ui/accessibility",
     "//ui/base",
     "//ui/compositor",
