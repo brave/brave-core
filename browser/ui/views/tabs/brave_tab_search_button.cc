@@ -17,8 +17,11 @@
 
 BraveTabSearchButton::BraveTabSearchButton(
     TabStripController* tab_strip_controller,
+    tabs::TabDeclutterController* tab_declutter_controller,
     Edge flat_edge)
-    : TabSearchButton(tab_strip_controller, flat_edge) {
+    : TabSearchButton(tab_strip_controller,
+                      tab_declutter_controller,
+                      flat_edge) {
   // Resetting the tab search bubble host first, to avoid a dangling in
   // `BraveTabSearchButton`, triggered `TabSearchBubbleHost` calling
   // `SetButtonController` and in the process destroying the still alive
@@ -27,7 +30,7 @@ BraveTabSearchButton::BraveTabSearchButton(
   tab_search_bubble_host_ = nullptr;
 
   tab_search_bubble_host_ = std::make_unique<BraveTabSearchBubbleHost>(
-      this, tab_strip_controller->GetProfile());
+      this, tab_declutter_controller, tab_strip_controller->GetProfile());
 
   // Apply toolbar's icon color to search button.
   SetForegroundFrameActiveColorId(kColorToolbarButtonIcon);

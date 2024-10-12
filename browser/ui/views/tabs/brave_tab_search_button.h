@@ -13,9 +13,10 @@
 class BraveTabSearchButton : public TabSearchButton {
   METADATA_HEADER(BraveTabSearchButton, TabSearchButton)
  public:
-
-  explicit BraveTabSearchButton(TabStripController* tab_strip_controller,
-                                Edge flat_edge);
+  explicit BraveTabSearchButton(
+      TabStripController* tab_strip_controller,
+      tabs::TabDeclutterController* tab_declutter_controller,
+      Edge flat_edge);
   ~BraveTabSearchButton() override;
   BraveTabSearchButton(const BraveTabSearchButton&) = delete;
   BraveTabSearchButton& operator=(const BraveTabSearchButton&) = delete;
