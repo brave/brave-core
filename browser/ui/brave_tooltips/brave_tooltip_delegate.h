@@ -19,10 +19,8 @@ class BraveTooltipDelegate {
   // Called when the tooltip is shown
   virtual void OnTooltipShow(const std::string& tooltip_id) {}
 
-  // Called when the tooltip is closed. If closed by a user explicitly
-  // then |by_user| should be true, otherwise false
-  virtual void OnTooltipClose(const std::string& tooltip_id,
-                              const bool by_user) {}
+  // Called when the tooltip is closed
+  virtual void OnTooltipClose(const std::string& tooltip_id) {}
 
   // Called when the underlying widget for the tooltip is destroyed
   virtual void OnTooltipWidgetDestroyed(const std::string& tooltip_id) {}

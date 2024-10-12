@@ -43,7 +43,7 @@ void BraveTooltipPopupHandler::Close(const std::string& tooltip_id) {
     return;
   }
 
-  tooltip_popups_[tooltip_id]->Close(false);
+  tooltip_popups_[tooltip_id]->Close();
 }
 
 // static
