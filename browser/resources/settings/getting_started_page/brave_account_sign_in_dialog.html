@@ -8,9 +8,17 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
     --brave-account-dialog-logo-width: 129px;
     --brave-account-dialog-logo-height: calc(var(--brave-account-dialog-logo-width) * 40/129);
     --cr-dialog-border-radius: 16px;
+    --cr-icon-button-margin-end: 0px;
+    --cr-icon-button-margin-start: 0px;
     --cr-dialog-body-padding-horizontal: 40px;
-    --cr-dialog-top-container-min-height: 40px;
+    --cr-dialog-top-container-min-height: 0px;
     --cr-dialog-width: 500px;
+  }
+  .top-container {
+    display: flex;
+    justify-content: space-between;
+    min-height: 40px;
+    width: 100%;
   }
   .logo {
     background-image: url('../images/brave-logo-light.svg');
@@ -45,64 +53,55 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
     line-height: 22px;
     text-align: center;
   }
-  .buttons {
+  .inputs {
     gap: 8px;
-    margin: 36px 0px;
+    margin: 35px 0px 35px;
   }
-  .footer {
-    gap: 16px;
-    padding: 24px 40px;
-  }
-  .footer-text-left {
-    color: #76767A;
-    font-family: 'Inter Variable';
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 18px;
-    width: 270px;
-  }
-  .footer-text-left a {
-    color: inherit;
-  }
-  .footer-text-right {
-    font-family: 'Inter Variable';
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 20px;
-    width: 134px;
+  #close {
+    align-self: flex-start;
+    margin: 4px 4px 0px 4px;
   }
 </style>
 
-<cr-dialog show-close-button show-on-attach>
-  <div slot="header" class="center-center horizontal layout">
+<cr-dialog show-on-attach>
+  <div slot="header" class="center-center layout vertical">
+    <div class="top-container">
+      <cr-icon-button id="close" class="icon-clear" aria-label$="[[closeText]]"
+          on-click="cancel" on-keypress="onCloseKeypress_">
+      </cr-icon-button>
+      <cr-icon-button id="close" class="icon-clear" aria-label$="[[closeText]]"
+          on-click="cancel" on-keypress="onCloseKeypress_">
+      </cr-icon-button>
+    </div>
     <div class="logo"></div>
   </div>
   <div slot="body">
     <div class="layout texts vertical">
       <div class="body-text-top center-center horizontal layout">
-        Get started with your Brave account
+        Sign in to your account
       </div>
       <div class="body-text-bottom center-center horizontal layout">
         $i18n{braveSyncBraveAccountDesc}
       </div>
     </div>
-    <div class="buttons layout vertical">
+    <div class="inputs layout vertical">
+      <cr-input id="emailAddressInput" autofocus required
+        placeholder="Email address"
+        pattern="^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$"
+        auto-validate error-message="Please provide a valid email address"
+        on-input="onConditionsChanged_"
+        invalid="{{isEmailAddressInvalid_}}">
+      </cr-input>
+      <cr-input id="emailAddressInput" autofocus required
+        placeholder="Email address"
+        pattern="^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$"
+        auto-validate error-message="Please provide a valid email address"
+        on-input="onConditionsChanged_"
+        invalid="{{isEmailAddressInvalid_}}">
+      </cr-input>
       <cr-button class="action-button" size="medium">
-        Create a Brave account
+        Sign in
       </cr-button>
-      <cr-button size="medium" on-click="onSignInButtonClicked_">
-        Already have an account? Sign in
-      </cr-button>
-    </div>
-  </div>
-  <div slot="footer" class="footer horizontal layout">
-    <div class="footer-text-left">
-      For advanced users, we also support self-custody of your Brave account keys for an extra layer of privacy. <a href="#"><u>Learn more</u></a>
-    </div>
-    <div class="center-center footer-text-right horizontal layout">
-      <a href="#">Use self-custody</a>
     </div>
   </div>
 </cr-dialog>

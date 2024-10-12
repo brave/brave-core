@@ -37,8 +37,14 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
   </cr-button>
 </div>
 
-<template is="dom-if" if="[[showBraveAccountDialog_]]" restamp>
+<template is="dom-if" if="[[isDialogType('main',dialogType)]]" restamp>
   <settings-brave-account-dialog
-    on-close="onBraveAccountDialogClosed_">
+    on-close="onBraveAccountDialogClosed_"
+    on-sign-in-button-clicked="onSignInButtonClicked_">
   </settings-brave-account-dialog>
+</template>
+
+<template is="dom-if" if="[[isDialogType('sign-in',dialogType)]]" restamp>
+  <settings-brave-account-sign-in-dialog>
+  </settings-brave-account-sign-in-dialog>
 </template>
