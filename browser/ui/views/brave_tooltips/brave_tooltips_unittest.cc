@@ -80,8 +80,6 @@ TEST_F(BraveTooltipsTest, OkButtonPressed) {
 
   ClickButton(tooltip_popup->ok_button_for_testing());
 
-  tooltip_popup->Close();
-
   mock_tooltip_delegate_.WaitForWidgetDestroyedNotification();
 
   tooltip_popup.release();
@@ -101,8 +99,6 @@ TEST_F(BraveTooltipsTest, CancelButtonPressed) {
   tooltip_popup->Show();
 
   ClickButton(tooltip_popup->cancel_button_for_testing());
-
-  tooltip_popup->Close();
 
   mock_tooltip_delegate_.WaitForWidgetDestroyedNotification();
 
