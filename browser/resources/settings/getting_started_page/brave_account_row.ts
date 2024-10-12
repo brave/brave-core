@@ -43,6 +43,10 @@ class SettingsBraveAccountRow extends PolymerElement {
     this.dialogType = 'sign-in'
   }
 
+  private onBackButtonClicked_() {
+    this.dialogType = 'main'
+  }
+
   private onBraveAccountSignInDialogClosed_() {
   }
 }
