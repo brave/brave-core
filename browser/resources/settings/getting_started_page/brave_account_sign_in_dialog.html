@@ -58,8 +58,30 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
     text-align: center;
   }
   .inputs {
-    gap: 8px;
-    margin: 35px 0px 35px;
+    gap: 24px;
+    margin: 24px 0px 24px;
+  }
+  .input-label {
+    color: #1B1B1F;
+    font-family: 'Inter Variable';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 18px;
+    margin: 0px 0px 4px;
+  }
+  .input {
+    --cr-input-background-color: white;
+    --cr-input-underline-display: none;
+    --cr-input-error-display: none;
+    border: 1px solid #C7C7CC;
+    border-radius: 8px;
+  }
+  #inner-input-content {
+    margin-bottom: 10px;
+  }
+  .suffix {
+    margin-bottom: 10px;
   }
 </style>
 
@@ -85,23 +107,25 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
       </div>
     </div>
     <div class="inputs layout vertical">
-      <cr-input id="emailAddressInput" autofocus required
-        placeholder="Email address"
-        pattern="^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$"
-        auto-validate error-message="Please provide a valid email address"
-        on-input="onConditionsChanged_"
-        invalid="{{isEmailAddressInvalid_}}">
-      </cr-input>
-      <cr-input id="emailAddressInput" autofocus required
-        placeholder="Email address"
-        pattern="^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$"
-        auto-validate error-message="Please provide a valid email address"
-        on-input="onConditionsChanged_"
-        invalid="{{isEmailAddressInvalid_}}">
-      </cr-input>
-      <cr-button class="action-button" size="medium">
-        Sign in
-      </cr-button>
+      <div>
+        <div class="input-label">Email address</div>
+        <cr-input class="input" autofocus required
+          pattern="^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$"
+          auto-validate
+          on-input="onConditionsChanged_"
+          invalid="{{isEmailAddressInvalid_}}">
+          <div slot="suffix" class="suffix"></div>
+        </cr-input>
+      </div>
+      <div>
+        <div class="input-label">Password</div>
+        <cr-input class="input" autofocus required
+          pattern="^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$"
+          auto-validate
+          on-input="onConditionsChanged_"
+          invalid="{{isEmailAddressInvalid_}}">
+        </cr-input>
+      </div>
     </div>
   </div>
 </cr-dialog>
