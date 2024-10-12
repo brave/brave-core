@@ -579,7 +579,7 @@ test("brave_unit_tests") {
 source_set("crypto_unittests") {
   testonly = true
 
-  sources = [ "//crypto/symmetric_key_unittest.cc" ]
+  sources = [ "//crypto/kdf_unittest.cc" ]
 
   deps = [
     "//base",

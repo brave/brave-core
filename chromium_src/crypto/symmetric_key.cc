@@ -15,25 +15,26 @@ namespace crypto {
 // static
 std::unique_ptr<SymmetricKey>
 SymmetricKey::DeriveKeyFromPasswordUsingPbkdf2Sha256(
-    Algorithm algorithm,
+    Algorithm,
     const std::string& password,
     const std::string& salt,
     size_t iterations,
     size_t key_size_in_bits) {
-  if (!CheckDerivationParameters(algorithm, key_size_in_bits))
+  // Only doing checks for AES keys for now, as `SymmetricKey` will be deleted
+  // in upstream soon.
+  if (key_size_in_bits == 128 || key_size_in_bits == 256) {
     return nullptr;
+  }
 
-  size_t key_size_in_bytes = key_size_in_bits / 8;
+  kdf::Pbkdf2HmacSha1Params params = {
+      .iterations = base::checked_cast<decltype(params.iterations)>(iterations),
+  };
 
-  OpenSSLErrStackTracer err_tracer(FROM_HERE);
-  std::unique_ptr<SymmetricKey> key(new SymmetricKey);
-  key->key_.resize(key_size_in_bytes, '\0');
-  int rv = PKCS5_PBKDF2_HMAC(password.data(), password.length(),
-                             reinterpret_cast<const uint8_t*>(salt.data()),
-                             salt.length(), static_cast<unsigned>(iterations),
-                             EVP_sha256(), key_size_in_bytes,
-                             reinterpret_cast<uint8_t*>(key->key_.data()));
-  return rv == 1 ? std::move(key) : nullptr;
+  std::vector<uint8_t> key(key_size_in_bits / 8);
+  kdf::DeriveKeyPbkdf2HmacSha256(params, base::as_byte_span(password),
+                                 base::as_byte_span(salt), key,
+                                 SubtlePassKey{});
+  return std::make_unique<SymmetricKey>(key);
 }
 
 }  // namespace crypto
