@@ -128,7 +128,8 @@ content::URLDataSource::RangeDataResult ReadFileRange(
   buffer.resize(read_size);
 
   content::URLDataSource::RangeDataResult result;
-  result.buffer = base::RefCountedBytes::TakeVector(&buffer);
+  result.buffer =
+      base::MakeRefCounted<base::RefCountedBytes>(std::move(buffer));
   result.file_size = file_length;
   result.range = net::HttpByteRange::Bounded(
       first_byte_position, first_byte_position + read_size - 1);
