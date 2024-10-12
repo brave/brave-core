@@ -7,6 +7,7 @@ import '../settings_shared.css.js';
 import 'chrome://resources/cr_elements/cr_shared_style.css.js';
 import 'chrome://resources/polymer/v3_0/iron-flex-layout/iron-flex-layout-classes.js';
 
+import type {CrDialogElement} from 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {getTemplate} from './brave_account_sign_in_dialog.html.js'
 
@@ -14,6 +15,12 @@ import {getTemplate} from './brave_account_sign_in_dialog.html.js'
  * @fileoverview
  * 'settings-brave-account-sign-in-dialog'...
  */
+
+interface SettingsBraveAccountSignInDialogElement {
+  $: {
+    dialog: CrDialogElement,
+  };
+}
 
 class SettingsBraveAccountSignInDialogElement extends PolymerElement {
   static get is() {
@@ -37,6 +44,14 @@ class SettingsBraveAccountSignInDialogElement extends PolymerElement {
     };
   }
 
+  private onBackButtonClicked_() {
+    this.dispatchEvent(new CustomEvent('back-button-clicked'))
+  }
+
+  private cancel() {
+    this.$.dialog.cancel();
+  }
+
   protected onConditionsChanged_() {
     this.canCreateAccount_ = this.isTermsAccepted_ && !this.isEmailAddressInvalid_;
   }
@@ -44,6 +59,12 @@ class SettingsBraveAccountSignInDialogElement extends PolymerElement {
   private isTermsAccepted_: boolean = false;
   private isEmailAddressInvalid_: boolean = true;
   private canCreateAccount_: boolean = false;
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'settings-brave-account-sign-in-dialog': SettingsBraveAccountSignInDialogElement;
+  }
 }
 
 customElements.define(
