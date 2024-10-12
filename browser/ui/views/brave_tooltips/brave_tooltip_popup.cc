@@ -91,10 +91,10 @@ void BraveTooltipPopup::Show() {
   }
 }
 
-void BraveTooltipPopup::Close(const bool by_user) {
+void BraveTooltipPopup::Close() {
   BraveTooltipDelegate* delegate = tooltip_->delegate();
   if (delegate) {
-    delegate->OnTooltipClose(tooltip_->id(), by_user);
+    delegate->OnTooltipClose(tooltip_->id());
   }
 
   FadeOut();

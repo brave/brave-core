@@ -69,9 +69,8 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
   // Show the tooltip popup view
   void Show();
 
-  // Close the tooltip popup view. |by_user| is true if the tooltip popup was
-  // closed by the user, otherwise false
-  void Close(const bool by_user);
+  // Close the tooltip popup view
+  void Close();
 
   // Close the widget
   void CloseWidget();

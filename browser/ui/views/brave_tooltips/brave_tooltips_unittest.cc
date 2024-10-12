@@ -22,7 +22,7 @@ class MockBraveTooltipDelegate : public brave_tooltips::BraveTooltipDelegate {
   }
 
   MOCK_METHOD1(OnTooltipShow, void(const std::string&));
-  MOCK_METHOD2(OnTooltipClose, void(const std::string&, const bool));
+  MOCK_METHOD1(OnTooltipClose, void(const std::string&));
   MOCK_METHOD1(OnTooltipWidgetDestroyed, void(const std::string&));
   MOCK_METHOD1(OnTooltipOkButtonPressed, void(const std::string&));
   MOCK_METHOD1(OnTooltipCancelButtonPressed, void(const std::string&));
@@ -67,13 +67,10 @@ class BraveTooltipsTest : public ChromeViewsTestBase {
 };
 
 TEST_F(BraveTooltipsTest, OkButtonPressed) {
-  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipShow(testing::_)).Times(1);
-  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipOkButtonPressed(testing::_))
-      .Times(1);
-  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipClose(testing::_, testing::_))
-      .Times(1);
-  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipWidgetDestroyed(testing::_))
-      .Times(1);
+  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipShow(testing::_));
+  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipOkButtonPressed(testing::_));
+  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipClose(testing::_));
+  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipWidgetDestroyed(testing::_));
 
   auto tooltip_popup = CreateTooltipPopup(
       "id", brave_tooltips::BraveTooltipAttributes(u"Title", u"Body", u"OK"));
@@ -83,7 +80,7 @@ TEST_F(BraveTooltipsTest, OkButtonPressed) {
 
   ClickButton(tooltip_popup->ok_button_for_testing());
 
-  tooltip_popup->Close(true);
+  tooltip_popup->Close();
 
   mock_tooltip_delegate_.WaitForWidgetDestroyedNotification();
 
@@ -91,13 +88,10 @@ TEST_F(BraveTooltipsTest, OkButtonPressed) {
 }
 
 TEST_F(BraveTooltipsTest, CancelButtonPressed) {
-  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipShow(testing::_)).Times(1);
-  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipCancelButtonPressed(testing::_))
-      .Times(1);
-  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipClose(testing::_, testing::_))
-      .Times(1);
-  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipWidgetDestroyed(testing::_))
-      .Times(1);
+  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipShow(testing::_));
+  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipCancelButtonPressed(testing::_));
+  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipClose(testing::_));
+  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipWidgetDestroyed(testing::_));
 
   auto tooltip_popup =
       CreateTooltipPopup("id", brave_tooltips::BraveTooltipAttributes(
@@ -108,7 +102,7 @@ TEST_F(BraveTooltipsTest, CancelButtonPressed) {
 
   ClickButton(tooltip_popup->cancel_button_for_testing());
 
-  tooltip_popup->Close(true);
+  tooltip_popup->Close();
 
   mock_tooltip_delegate_.WaitForWidgetDestroyedNotification();
 
