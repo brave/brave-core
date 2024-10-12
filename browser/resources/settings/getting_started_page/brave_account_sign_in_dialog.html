@@ -14,11 +14,15 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
     --cr-dialog-top-container-min-height: 0px;
     --cr-dialog-width: 500px;
   }
-  .top-container {
+  .buttons {
     display: flex;
     justify-content: space-between;
     min-height: 40px;
     width: 100%;
+  }
+  .button {
+    align-self: flex-start;
+    margin: 4px 4px 0px 4px;
   }
   .logo {
     background-image: url('../images/brave-logo-light.svg');
@@ -57,19 +61,15 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
     gap: 8px;
     margin: 35px 0px 35px;
   }
-  #close {
-    align-self: flex-start;
-    margin: 4px 4px 0px 4px;
-  }
 </style>
 
-<cr-dialog show-on-attach>
+<cr-dialog id="dialog" show-on-attach>
   <div slot="header" class="center-center layout vertical">
-    <div class="top-container">
-      <cr-icon-button id="close" class="icon-clear" aria-label$="[[closeText]]"
-          on-click="cancel" on-keypress="onCloseKeypress_">
+    <div class="buttons">
+      <cr-icon-button class="button icon-arrow-back" aria-label$="[[closeText]]"
+          on-click="onBackButtonClicked_" on-keypress="onCloseKeypress_">
       </cr-icon-button>
-      <cr-icon-button id="close" class="icon-clear" aria-label$="[[closeText]]"
+      <cr-icon-button class="button icon-clear" aria-label$="[[closeText]]"
           on-click="cancel" on-keypress="onCloseKeypress_">
       </cr-icon-button>
     </div>
