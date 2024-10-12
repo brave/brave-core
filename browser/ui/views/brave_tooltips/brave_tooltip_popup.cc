@@ -80,6 +80,8 @@ BraveTooltipPopup::~BraveTooltipPopup() {
 }
 
 void BraveTooltipPopup::Show() {
+  GetWidget()->ShowInactive();
+
   BraveTooltipDelegate* delegate = tooltip_->delegate();
   if (delegate) {
     delegate->OnTooltipShow(tooltip_->id());
@@ -334,8 +336,6 @@ void BraveTooltipPopup::CreateWidgetView() {
 #endif
 
   widget->Init(std::move(params));
-
-  widget->ShowInactive();
 }
 
 void BraveTooltipPopup::CloseWidgetView() {
