@@ -18,8 +18,6 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
 #include "ui/display/screen.h"
-#include "ui/gfx/animation/linear_animation.h"
-#include "ui/gfx/animation/tween.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/geometry/insets.h"
@@ -63,8 +61,7 @@ constexpr int kCornerRadius = 7;
 namespace brave_tooltips {
 
 BraveTooltipPopup::BraveTooltipPopup(std::unique_ptr<BraveTooltip> tooltip)
-    : tooltip_(std::move(tooltip)),
-      animation_(std::make_unique<gfx::LinearAnimation>(this)) {
+    : tooltip_(std::move(tooltip)) {
   CreatePopup();
 
   NotifyAccessibilityEvent(ax::mojom::Event::kAlert, true);
@@ -73,8 +70,6 @@ BraveTooltipPopup::BraveTooltipPopup(std::unique_ptr<BraveTooltip> tooltip)
   if (screen) {
     screen->AddObserver(this);
   }
-
-  FadeIn();
 }
 
 BraveTooltipPopup::~BraveTooltipPopup() {
@@ -97,7 +92,7 @@ void BraveTooltipPopup::Close() {
     delegate->OnTooltipClose(tooltip_->id());
   }
 
-  FadeOut();
+  CloseWidget();
 }
 
 void BraveTooltipPopup::CloseWidget() {
@@ -112,7 +107,7 @@ void BraveTooltipPopup::OnOkButtonPressed() {
     delegate->OnTooltipOkButtonPressed(tooltip_->id());
   }
 
-  FadeOut();
+  Close();
 }
 
 void BraveTooltipPopup::OnCancelButtonPressed() {
@@ -127,7 +122,7 @@ void BraveTooltipPopup::OnCancelButtonPressed() {
     delegate->OnTooltipCancelButtonPressed(tooltip_->id());
   }
 
-  FadeOut();
+  Close();
 }
 
 void BraveTooltipPopup::set_normalized_display_coordinates(double x, double y) {
@@ -228,35 +223,6 @@ void BraveTooltipPopup::OnWidgetBoundsChanged(views::Widget* widget,
                                               const gfx::Rect& new_bounds) {
   DCHECK(widget);
   widget_origin_ = new_bounds.origin();
-}
-
-void BraveTooltipPopup::AnimationEnded(const gfx::Animation* animation) {
-  UpdateAnimation();
-
-  switch (animation_state_) {
-    case AnimationState::kIdle: {
-      break;
-    }
-
-    case AnimationState::kFadeIn: {
-      animation_state_ = AnimationState::kIdle;
-      break;
-    }
-
-    case AnimationState::kFadeOut: {
-      animation_state_ = AnimationState::kIdle;
-      CloseWidget();
-      break;
-    }
-  }
-}
-
-void BraveTooltipPopup::AnimationProgressed(const gfx::Animation* animation) {
-  UpdateAnimation();
-}
-
-void BraveTooltipPopup::AnimationCanceled(const gfx::Animation* animation) {
-  UpdateAnimation();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -369,7 +335,6 @@ void BraveTooltipPopup::CreateWidgetView() {
 
   widget->Init(std::move(params));
 
-  widget->SetOpacity(0.0);
   widget->ShowInactive();
 }
 
@@ -384,45 +349,6 @@ void BraveTooltipPopup::CloseWidgetView() {
   }
 
   GetWidget()->CloseNow();
-}
-
-void BraveTooltipPopup::FadeIn() {
-  animation_state_ = AnimationState::kFadeIn;
-  animation_->SetDuration(base::Milliseconds(fade_duration_));
-  StartAnimation();
-}
-
-void BraveTooltipPopup::FadeOut() {
-  animation_state_ = AnimationState::kFadeOut;
-  animation_->SetDuration(base::Milliseconds(fade_duration_));
-  StartAnimation();
-}
-
-void BraveTooltipPopup::StartAnimation() {
-  animation_->Start();
-
-  UpdateAnimation();
-
-  DCHECK(animation_->is_animating());
-}
-
-void BraveTooltipPopup::UpdateAnimation() {
-  DCHECK_NE(animation_state_, AnimationState::kIdle);
-
-  if (!IsWidgetValid()) {
-    return;
-  }
-
-  const double value = gfx::Tween::CalculateValue(
-      animation_state_ == AnimationState::kFadeOut ? gfx::Tween::EASE_IN
-                                                   : gfx::Tween::EASE_OUT,
-      animation_->GetCurrentValue());
-
-  if (animation_state_ == AnimationState::kFadeIn) {
-    GetWidget()->SetOpacity(gfx::Tween::FloatValueBetween(value, 0.0f, 1.0f));
-  } else if (animation_state_ == AnimationState::kFadeOut) {
-    GetWidget()->SetOpacity(gfx::Tween::FloatValueBetween(value, 1.0f, 0.0f));
-  }
 }
 
 bool BraveTooltipPopup::IsWidgetValid() const {

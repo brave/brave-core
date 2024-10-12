@@ -16,7 +16,6 @@
 #include "brave/browser/ui/views/brave_tooltips/brave_tooltip_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/display/display_observer.h"
-#include "ui/gfx/animation/animation_delegate.h"
 #include "ui/gfx/shadow_util.h"
 #include "ui/gfx/shadow_value.h"
 #include "ui/views/controls/button/button.h"
@@ -24,7 +23,6 @@
 #include "ui/views/widget/widget_observer.h"
 
 namespace gfx {
-class LinearAnimation;
 class Point;
 class Rect;
 class Size;
@@ -56,7 +54,6 @@ class BraveTooltipView;
 // constructor). Finally, the tooltip is closed.
 class BraveTooltipPopup : public views::WidgetDelegateView,
                           public views::WidgetObserver,
-                          public gfx::AnimationDelegate,
                           public display::DisplayObserver {
   METADATA_HEADER(BraveTooltipPopup, views::WidgetDelegateView)
  public:
@@ -113,11 +110,6 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
   void OnWidgetBoundsChanged(views::Widget* widget,
                              const gfx::Rect& new_bounds) override;
 
-  // AnimationDelegate:
-  void AnimationEnded(const gfx::Animation* animation) override;
-  void AnimationProgressed(const gfx::Animation* animation) override;
-  void AnimationCanceled(const gfx::Animation* animation) override;
-
  private:
   void CreatePopup();
 
@@ -133,12 +125,6 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
 
   bool IsWidgetValid() const;
 
-  void StartAnimation();
-  void UpdateAnimation();
-
-  void FadeIn();
-  void FadeOut();
-
   std::unique_ptr<BraveTooltip> tooltip_;
 
   raw_ptr<BraveTooltipView> tooltip_view_ = nullptr;
@@ -150,17 +136,6 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
 
   int display_work_area_inset_x_ = -13;
   int display_work_area_inset_y_ = 18;
-
-  int fade_duration_ = 200;
-
-  enum class AnimationState {
-    kIdle,
-    kFadeIn,
-    kFadeOut,
-  };
-
-  const std::unique_ptr<gfx::LinearAnimation> animation_;
-  AnimationState animation_state_ = AnimationState::kIdle;
 
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};
