@@ -25,23 +25,25 @@ class SettingsBraveAccountRow extends PolymerElement {
     return getTemplate()
   }
 
-  static get properties() {
-    return {
-      showBraveAccountDialog_: {
-        type: Boolean,
-        value: false,
-      },
-    }
+  private dialogType: 'main' | 'sign-in' | null;
+
+  isDialogType(askingType: string) {
+    return (this.dialogType === askingType)
   }
 
-  private showBraveAccountDialog_: boolean = false;
-
   private onGetStartedButtonClicked_() {
-    this.showBraveAccountDialog_ = true
+    this.dialogType = 'main'
   }
 
   private onBraveAccountDialogClosed_() {
-    this.showBraveAccountDialog_ = false
+    this.dialogType = null
+  }
+
+  private onSignInButtonClicked_() {
+    this.dialogType = 'sign-in'
+  }
+
+  private onBraveAccountSignInDialogClosed_() {
   }
 }
 

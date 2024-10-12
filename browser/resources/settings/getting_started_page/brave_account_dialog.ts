@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * you can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import './brave_account_sign_in_dialog.js';
 import '../settings_shared.css.js';
 import 'chrome://resources/cr_elements/cr_shared_style.css.js';
 import 'chrome://resources/polymer/v3_0/iron-flex-layout/iron-flex-layout-classes.js';
@@ -24,26 +25,9 @@ class SettingsBraveAccountDialogElement extends PolymerElement {
     return getTemplate()
   }
 
-  static get properties() {
-    return {
-      isTermsAccepted_: {
-        type: Boolean,
-        value: false,
-      },
-      isEmailAddressInvalid_: {
-        type: Boolean,
-        value: true,
-      }
-    };
+  private onSignInButtonClicked_() {
+    this.dispatchEvent(new CustomEvent('sign-in-button-clicked'))
   }
-
-  protected onConditionsChanged_() {
-    this.canCreateAccount_ = this.isTermsAccepted_ && !this.isEmailAddressInvalid_;
-  }
-
-  private isTermsAccepted_: boolean = false;
-  private isEmailAddressInvalid_: boolean = true;
-  private canCreateAccount_: boolean = false;
 }
 
 customElements.define(
