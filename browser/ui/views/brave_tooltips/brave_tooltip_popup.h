@@ -23,8 +23,6 @@
 #include "ui/views/widget/widget_delegate.h"
 #include "ui/views/widget/widget_observer.h"
 
-class Profile;
-
 namespace gfx {
 class LinearAnimation;
 class Point;
@@ -48,7 +46,7 @@ class BraveTooltipView;
 //       "id", brave_tooltips::BraveTooltipAttributes(u"Title", u"Body", u"OK"),
 //       this);
 //   auto popup = std::make_unique<brave_tooltips::BraveTooltipPopup>(
-//       profile(), std::move(tooltip));
+//       std::move(tooltip));
 //   popup->Show();
 //   ...
 //   popup->Close();
@@ -62,8 +60,7 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
                           public display::DisplayObserver {
   METADATA_HEADER(BraveTooltipPopup, views::WidgetDelegateView)
  public:
-
-  BraveTooltipPopup(Profile* profile, std::unique_ptr<BraveTooltip> tooltip);
+  explicit BraveTooltipPopup(std::unique_ptr<BraveTooltip> tooltip);
   ~BraveTooltipPopup() override;
 
   BraveTooltipPopup(const BraveTooltipPopup&) = delete;
@@ -142,8 +139,6 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
 
   void FadeIn();
   void FadeOut();
-
-  raw_ptr<Profile> profile_ = nullptr;
 
   std::unique_ptr<BraveTooltip> tooltip_;
 

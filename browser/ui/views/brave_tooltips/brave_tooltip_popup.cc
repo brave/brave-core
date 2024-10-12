@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/time/time.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_tooltips/bounds_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
@@ -63,13 +62,9 @@ constexpr int kCornerRadius = 7;
 
 namespace brave_tooltips {
 
-BraveTooltipPopup::BraveTooltipPopup(Profile* profile,
-                                     std::unique_ptr<BraveTooltip> tooltip)
-    : profile_(profile),
-      tooltip_(std::move(tooltip)),
+BraveTooltipPopup::BraveTooltipPopup(std::unique_ptr<BraveTooltip> tooltip)
+    : tooltip_(std::move(tooltip)),
       animation_(std::make_unique<gfx::LinearAnimation>(this)) {
-  DCHECK(profile_);
-
   CreatePopup();
 
   NotifyAccessibilityEvent(ax::mojom::Event::kAlert, true);

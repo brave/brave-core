@@ -12,15 +12,11 @@
 #include "brave/browser/ui/brave_tooltips/brave_tooltip_attributes.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip_popup_handler.h"
 #include "brave/components/l10n/common/localization_util.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_strings.h"
 
 namespace brave_ads {
 
-AdsTooltipsController::AdsTooltipsController(Profile* profile)
-    : profile_(profile) {
-  CHECK(profile_);
-}
+AdsTooltipsController::AdsTooltipsController() = default;
 
 AdsTooltipsController::~AdsTooltipsController() = default;
 
@@ -53,8 +49,7 @@ void AdsTooltipsController::ShowCaptchaTooltip(
   // handler
   captcha_tooltip->set_delegate(AsWeakPtr());
 
-  brave_tooltips::BraveTooltipPopupHandler::Show(profile_,
-                                                 std::move(captcha_tooltip));
+  brave_tooltips::BraveTooltipPopupHandler::Show(std::move(captcha_tooltip));
 }
 
 void AdsTooltipsController::CloseCaptchaTooltip() {

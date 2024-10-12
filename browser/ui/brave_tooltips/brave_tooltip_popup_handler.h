@@ -9,8 +9,6 @@
 #include <memory>
 #include <string>
 
-class Profile;
-
 namespace brave_tooltips {
 
 class BraveTooltip;
@@ -23,8 +21,8 @@ class BraveTooltipPopupHandler {
   BraveTooltipPopupHandler(const BraveTooltipPopupHandler&) = delete;
   BraveTooltipPopupHandler& operator=(const BraveTooltipPopupHandler&) = delete;
 
-  // Show the |tooltip| for the given |profile|.
-  static void Show(Profile* profile, std::unique_ptr<BraveTooltip> tooltip);
+  // Show the |tooltip|.
+  static void Show(std::unique_ptr<BraveTooltip> tooltip);
 
   // Close the tooltip with the associated |tooltip_id|.
   static void Close(const std::string& tooltip_id);
