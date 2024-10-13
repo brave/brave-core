@@ -14,6 +14,7 @@ import getAPI, * as mojom from '../../api'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
+import useIsConversationVisible from '../../hooks/useIsConversationVisible'
 
 export interface Props {
   isConversationListOpen?: boolean
@@ -28,7 +29,7 @@ export default function FeatureMenu(props: Props) {
     aiChatContext.uiHandler?.openAIChatSettings()
   }
 
-  const inConversation = conversationContext.conversationHistory.length >= 1
+  const isVisible = useIsConversationVisible(conversationContext.conversationUuid)
 
   const customModels = conversationContext.allModels.filter(
     (model) => model.options.customModelOptions
@@ -111,7 +112,7 @@ export default function FeatureMenu(props: Props) {
       })}
       <div className={styles.menuSeparator} />
 
-      {aiChatContext.isStandalone && inConversation && <>
+      {aiChatContext.isStandalone && isVisible && <>
         <leo-menu-item>
           <div className={classnames(
             styles.menuItemWithIcon,
