@@ -26,6 +26,7 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/clipboard/clipboard.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -133,6 +134,7 @@ class BraveRenderViewContextMenuTest : public testing::Test {
     client_.reset();
     browser_.reset();
     profile_.reset();
+    ui::Clipboard::DestroyClipboardForCurrentThread();
   }
 
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
