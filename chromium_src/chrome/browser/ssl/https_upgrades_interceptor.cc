@@ -5,9 +5,11 @@
 
 #include "chrome/browser/ssl/https_upgrades_interceptor.h"
 
+#include "base/feature_list.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/common/chrome_features.h"
 #include "net/base/features.h"
 #include "net/base/url_util.h"
 
@@ -34,15 +36,31 @@
   }                                                                           \
   void HttpsUpgradesInterceptor::MaybeCreateLoader_ChromiumImpl(__VA_ARGS__)
 
-#define IsEnabled(FLAG)                                \
-  IsEnabled(FLAG.name == features::kHttpsUpgrades.name \
-                ? net::features::kBraveHttpsByDefault  \
-                : FLAG)
+namespace base {
+namespace {
 
+class BraveFeatureList {
+ public:
+  static bool BraveIsEnabled(const base::Feature& feature) {
+    if (feature.name == features::kHttpsUpgrades.name) {
+      return base::FeatureList::IsEnabled(features::kHttpsUpgrades) &&
+             base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault);
+    } else {
+      return base::FeatureList::IsEnabled(feature);
+    }
+  }
+};
+
+}  // namespace
+}  // namespace base
+
+#define IsEnabled BraveIsEnabled
+#define FeatureList BraveFeatureList
 #define IsLocalhost(URL) IsLocalhostOrOnion(URL)
 
 #include "src/chrome/browser/ssl/https_upgrades_interceptor.cc"
 
 #undef MaybeCreateLoader
 #undef IsEnabled
+#undef BraveFeatureList
 #undef IsLocalhost
