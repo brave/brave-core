@@ -48,7 +48,8 @@ class BraveStatsHelper : public ProfileManagerObserver, public ProfileObserver {
   PrefChangeRegistrar last_used_profile_pref_change_registrar_;
 #endif
   PrefChangeRegistrar ads_enabled_pref_change_registrar_;
-  raw_ptr<Profile> current_profile_ = nullptr;
+  base::ScopedObservation<Profile, ProfileObserver>
+      current_profile_observation_{this};
 
   base::ScopedObservation<ProfileManager, ProfileManagerObserver>
       profile_manager_observer_{this};
