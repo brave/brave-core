@@ -13,7 +13,7 @@ namespace brave_l10n {
 struct LocaleSubtagInfo;
 
 // Parses the given |locale| and returns |LocaleSubtagInfo|.
-LocaleSubtagInfo ParseLocaleSubtags(const std::string& locale);
+LocaleSubtagInfo ParseLocaleSubtags(std::string_view locale);
 
 }  // namespace brave_l10n
 
