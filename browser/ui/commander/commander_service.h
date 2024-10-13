@@ -78,7 +78,7 @@ class CommanderService : public CommanderFrontendDelegate,
   std::u16string prompt_;
   std::vector<std::unique_ptr<CommandItem>> items_;
   uint32_t current_result_set_id_ = 0;
-  raw_ptr<Browser> last_browser_;
+  raw_ptr<Browser, DanglingUntriaged> last_browser_;
   raw_ptr<Profile> profile_;
 
   // Some commands have multiple steps (like move tab to window, pick a

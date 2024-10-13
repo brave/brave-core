@@ -97,7 +97,8 @@ struct BraveRequestInfo {
   // |set_headers| contains headers which values were added or modified.
   std::set<std::string> set_headers;
   std::set<std::string> removed_headers;
-  raw_ptr<const net::HttpResponseHeaders> original_response_headers = nullptr;
+  raw_ptr<const net::HttpResponseHeaders, DanglingUntriaged>
+      original_response_headers = nullptr;
   raw_ptr<scoped_refptr<net::HttpResponseHeaders>> override_response_headers =
       nullptr;
 

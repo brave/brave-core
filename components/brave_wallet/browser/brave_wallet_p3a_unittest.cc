@@ -351,8 +351,8 @@ class BraveWalletP3AUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable local_state_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
   std::unique_ptr<BitcoinTestRpcServer> bitcoin_test_rpc_server_;
-  raw_ptr<KeyringService> keyring_service_;
-  raw_ptr<TxService> tx_service_;
+  raw_ptr<KeyringService, DanglingUntriaged> keyring_service_;
+  raw_ptr<TxService, DanglingUntriaged> tx_service_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
   raw_ptr<BraveWalletP3A> wallet_p3a_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
