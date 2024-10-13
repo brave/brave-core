@@ -12,6 +12,7 @@ import styles from './style.module.scss'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
+import useIsConversationVisible from '../../hooks/useIsConversationVisible'
 
 const Logo = ({ isPremium }: { isPremium: boolean }) => <div className={styles.logo}>
   <Icon name='product-brave-leo' />
@@ -41,18 +42,19 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
 
   const activeConversation = aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
   const showTitle = (!aiChatContext.isDefaultConversation || aiChatContext.isStandalone)
+  const isVisible = useIsConversationVisible(conversationContext.conversationUuid)
 
   return (
     <div className={styles.header} ref={ref}>
       {showTitle ? (
         <div className={styles.pageTitle}>
-          <Button
+          {isVisible && <Button
             kind='plain-faint'
             fab
             onClick={() => { aiChatContext.onSelectConversationUuid(undefined) }}
           >
             <Icon name='arrow-left' />
-          </Button>
+          </Button>}
           <div className={styles.pageText}>{getTitle(activeConversation)}</div>
         </div>
       )
