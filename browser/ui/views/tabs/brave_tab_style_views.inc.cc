@@ -413,9 +413,12 @@ SkColor BraveVerticalTabStyle::GetTargetTabBackgroundColor(
     return gfx::kPlaceholderColor;
   }
 
-  return cp->GetColor(selection_state == TabStyle::TabSelectionState::kActive
-                          ? kColorBraveVerticalTabActiveBackground
-                          : kColorBraveVerticalTabInactiveBackground);
+  if (selection_state == TabStyle::TabSelectionState::kInactive) {
+    return cp->GetColor(hovered ? kColorBraveVerticalTabInactiveHoverBackground
+                                : kColorBraveVerticalTabInactiveBackground);
+  }
+
+  return cp->GetColor(kColorBraveVerticalTabActiveBackground);
 }
 
 bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {
