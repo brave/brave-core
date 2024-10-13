@@ -49,6 +49,33 @@ TEST_F(ModelValidatorUnitTest, IsValidContextSize) {
   }
 }
 
+// Test HasValidContextSize with various models
+TEST_F(ModelValidatorUnitTest, HasValidContextSize) {
+  // Valid custom model
+  mojom::CustomModelOptionsPtr valid_custom_options =
+      mojom::CustomModelOptions::New();
+  valid_custom_options->context_size = 5000;
+
+  mojom::Model valid_custom_model;
+  valid_custom_model.options = mojom::ModelOptions::NewCustomModelOptions(
+      std::move(valid_custom_options));
+
+  EXPECT_EQ(ModelValidator::HasValidContextSize(valid_custom_model), true);
+
+  // Invalid context size
+  mojom::CustomModelOptionsPtr invalid_context_size_options =
+      mojom::CustomModelOptions::New();
+  invalid_context_size_options->context_size = 0;  // Invalid context size
+
+  mojom::Model invalid_context_size_model;
+  invalid_context_size_model.options =
+      mojom::ModelOptions::NewCustomModelOptions(
+          std::move(invalid_context_size_options));
+
+  EXPECT_EQ(ModelValidator::HasValidContextSize(invalid_context_size_model),
+            false);
+}
+
 // Test IsValidEndpoint with various URLs
 TEST_F(ModelValidatorUnitTest, IsValidEndpoint) {
   struct TestCase {

@@ -31,6 +31,18 @@ bool ModelValidator::IsValidContextSize(const std::optional<int32_t>& size) {
 }
 
 // Static
+bool ModelValidator::HasValidContextSize(const mojom::Model& model) {
+  if (model.options->is_custom_model_options()) {
+    return IsValidContextSize(
+        model.options->get_custom_model_options()->context_size);
+  }
+
+  // Should not be reached
+  DCHECK(false);
+  return false;
+}
+
+// Static
 bool ModelValidator::IsValidEndpoint(const GURL& endpoint) {
   return net::IsHTTPSOrLocalhostURL(endpoint);
 }

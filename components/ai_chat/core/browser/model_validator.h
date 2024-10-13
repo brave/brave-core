@@ -31,6 +31,7 @@ class ModelValidator {
  public:
   // Validates if the context size is within the valid range (1 to 50,000,000)
   static bool IsValidContextSize(const std::optional<int32_t>& context_size);
+  static bool HasValidContextSize(const mojom::Model& model);
 
   static bool IsValidEndpoint(const GURL& endpoint);
 

@@ -222,29 +222,34 @@ base::Value::Dict GetModelDict(mojom::ModelPtr model) {
 }
 
 // Custom models do not have fixed properties pertaining to the number of
-// characters they can process before a warning is shown. Leo Models have
-// hard-coded values, but custom models' properties are based on their context
-// size, which may or may not have been provided by the user. For this reason,
-// we set the long_conversation_warning_character_limit  and
-// max_page_content_length after the model has been loaded and validated.
+// characters they can process before a potential-coherence-loss warning is
+// shown. Leo Models have hard-coded values, but custom models' properties are
+// based on their context size, which may or may not have been provided by the
+// user. For this reason, we set the long_conversation_warning_character_limit
+// and max_page_content_length after the model has been loaded and validated.
 void SetAssociatedContentLengthMetrics(mojom::Model& model) {
-  CHECK(ModelValidator::ValidateModel(model) == ModelValidationResult::kSuccess)
-      << "Model must be validated before setting associated content length "
-         "metrics.";
+  if (!model.options->is_custom_model_options()) {
+    // Only set metrics for custom models
+    return;
+  }
 
-  if (model.options->is_custom_model_options()) {
-    uint32_t max_page_content_length =
-        ModelService::GetMaxAssociatedContentLengthForModel(model);
-    model.options->get_custom_model_options()->max_page_content_length =
-        max_page_content_length;
+  if (!ModelValidator::HasValidContextSize(model)) {
+    model.options->get_custom_model_options()->context_size =
+        kDefaultCustomModelContextSize;
+  }
 
-    base::CheckedNumeric<uint32> result = base::CheckMul<size_t>(
-        max_page_content_length, kMaxContentLengthThreshold);
+  uint32_t max_page_content_length =
+      ModelService::GetMaxAssociatedContentLengthForModel(model);
 
-    if (result.IsValid()) {
-      model.options->get_custom_model_options()
-          ->long_conversation_warning_character_limit = result.ValueOrDie();
-    }
+  model.options->get_custom_model_options()->max_page_content_length =
+      max_page_content_length;
+
+  base::CheckedNumeric<uint32> warn_at = base::CheckMul<size_t>(
+      max_page_content_length, kMaxContentLengthThreshold);
+
+  if (warn_at.IsValid()) {
+    model.options->get_custom_model_options()
+        ->long_conversation_warning_character_limit = warn_at.ValueOrDie();
   }
 }
 
@@ -570,6 +575,8 @@ std::vector<mojom::ModelPtr> ModelService::GetCustomModelsFromPrefs() {
             kDefaultCustomModelContextSize;
       }
     }
+
+    VLOG(2) << "Loaded custom model: " << model->key;
 
     // Set metrics for AI Chat content length warnings
     SetAssociatedContentLengthMetrics(*model);
