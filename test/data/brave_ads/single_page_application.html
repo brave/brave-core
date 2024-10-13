@@ -1,48 +1,56 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
   <title>Single Page Application</title>
   <script>
+    // Function to update the page header.
     function displayContent(state) {
       const pageHeader = document.querySelector("#pageHeader");
       pageHeader.textContent = state.header;
     }
 
+    // Event listener for clicks on the document.
     document.addEventListener("click", async (event) => {
-      const creature = event.target.getAttribute("data-creature");
-      if (creature) {
-        event.preventDefault();
-        try {
-          displayContent(creature);
-          // Add a new entry to the history.
-          // This simulates loading a new page.
-          const newState = { header: creature };
-          history.pushState(json, "", newState);
-        } catch (err) {
-          console.error(err);
+      const navigationType = event.target.getAttribute("data-navigation-type");
+      if (navigationType) {
+        event.preventDefault(); // Stop the default link behavior.
+        if (navigationType === "same_document") {
+          try {
+            // Update the header.
+            displayContent({ header: navigationType });
+
+            // Change the URL without reloading.
+            const newState = { header: navigationType };
+            history.pushState(newState, "", navigationType);
+          } catch (err) {
+            // Log any errors.
+            console.error(err);
+          }
         }
       }
     });
 
-    // Handle forward/back buttons
+    // Event listener for browser navigation (back/forward).
     window.addEventListener("popstate", (event) => {
-      // If a state has been provided, we have a "simulated" page
-      // and we update the current page.
       if (event.state) {
-        // Simulate the loading of the previous page
+        // Update the header based on the state.
         displayContent(event.state);
       }
     });
 
-    // Create state on page load and replace the current history with it
+    // Set the initial state of the page.
     const initialState = { header: "Home" };
     history.replaceState(initialState, "", document.location.href);
   </script>
 </head>
-<body>
-  <h1 id="pageHeader">Header</h1>
 
-  <li><a href="/brave_ads/history_api_spa.html">Home</a></li>
-  <li><a href="eagle" data-creature="eagle">Eagle</a></li>
-  <li><a href="vulture" data-creature="vulture">Vulture</a></li>
+<body>
+  <h1 id="pageHeader">Home</h1>
+  <ul>
+    <li><a href="/" data-navigation-type="home">Home</a></li>
+    <li><a href="same_document" data-navigation-type="same_document">Same Document</a></li>
+  </ul>
 </body>
+
 </html>
