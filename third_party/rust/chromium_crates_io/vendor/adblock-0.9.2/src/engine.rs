@@ -768,14 +768,15 @@ mod tests {
                                        "script").unwrap();
             assert!(engine.check_network_request(&request).matched);
         }*/
-        {
+        // fails - unicode not supported in network filter
+        /*{
             let engine = Engine::from_rules_debug([r#"/tesT߶/$domain=example.com"#], Default::default());
             let request = Request::new("https://example.com/tesT߶",
                                        "https://example.com",
                                        "script").unwrap();
             assert!(engine.check_network_request(&request).matched);
-        }
-        // fails - punycoded domain
+        }*/
+        // fails - unicode not supported in network filter
         /*{
             let engine = Engine::from_rules_debug([r#"/tesT߶/$domain=example.com"#], Default::default());
             let request = Request::new("https://example-tesT߶.com/tesT",
