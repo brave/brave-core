@@ -5,7 +5,7 @@
 
 import '//resources/brave/leo.bundle.js'
 
-import {CrLitElement, css} from '//resources/lit/v3_0/lit.rollup.js';
+import { CrLitElement, css } from '//resources/lit/v3_0/lit.rollup.js';
 import { getHtml } from './cr_toggle.html.js';
 
 export interface CrToggleElement {
@@ -32,6 +32,7 @@ export class CrToggleElement extends CrLitElement {
       checked: {
         type: Boolean,
         reflect: true,
+        notify: true,
       },
 
       disabled: {
@@ -44,11 +45,26 @@ export class CrToggleElement extends CrLitElement {
   checked: boolean = false;
   disabled: boolean = false;
 
+  override firstUpdated(){
+    this.addEventListener('click', e => {
+      // Prevent |click| event from bubbling. It can cause parents of this
+      // elements to erroneously re-toggle this control.
+      e.stopPropagation();
+      e.preventDefault();
+    })
+  }
+
   // The Nala event looks a bit different to the Chromium one, so we need to
   // convert it.
-  onChange_(e: { checked: boolean }) {
+  async onChange_(e: { checked: boolean }) {
     this.checked = e.checked
-    this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true, detail: e.checked }))
+
+    // Yield, so that 'checked-changed' (originating from `notify: 'true'`) fire
+    // before the 'change' event below, which guarantees that any Polymer parent
+    // with 2-way bindings on the `checked` attribute are updated first.
+    await this.updateComplete
+
+    this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true, detail: this.checked }))
   }
 }
 
