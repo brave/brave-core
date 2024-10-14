@@ -124,7 +124,7 @@ export default function FeatureMenu(props: Props) {
             </div>
           </div>
         </leo-menu-item>
-        <leo-menu-item>
+        <leo-menu-item onClick={() => aiChatContext.setEditingConversationId(conversationContext.conversationUuid!)}>
           <div className={classnames(
             styles.menuItemWithIcon,
             styles.menuItemMainItem
