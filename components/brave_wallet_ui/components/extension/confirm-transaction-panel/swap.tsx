@@ -112,7 +112,6 @@ export function ConfirmSwapTransaction() {
 
       <Origin originInfo={originInfo} />
 
-
       <SwapBase
         sellToken={sellToken}
         buyToken={buyToken}
@@ -132,7 +131,6 @@ export function ConfirmSwapTransaction() {
         toChainId={selectedPendingTransaction?.swapInfo?.toChainId}
         toCoin={selectedPendingTransaction?.swapInfo?.toCoin}
       />
-
 
       <PendingTransactionNetworkFeeAndSettings
         onToggleAdvancedTransactionSettings={

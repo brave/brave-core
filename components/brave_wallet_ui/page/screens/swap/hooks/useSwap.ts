@@ -14,6 +14,7 @@ import { SwapAndSendOptions } from '../../../../options/swap-and-send-options'
 import { useJupiter } from './useJupiter'
 import { useZeroEx } from './useZeroEx'
 import { useLifi } from './useLifi'
+import { useSquid } from './useSquid'
 import { useDebouncedCallback } from './useDebouncedCallback'
 import {
   useScopedBalanceUpdater //
@@ -52,7 +53,10 @@ import {
   getJupiterToAmount,
   getLiFiQuoteOptions,
   getLiFiFromAmount,
-  getLiFiToAmount
+  getLiFiToAmount,
+  getSquidFromAmount,
+  getSquidToAmount,
+  getSquidQuoteOptions
 } from '../swap.utils'
 import {
   makeSwapOrBridgeRoute //
@@ -123,27 +127,6 @@ const getAssetBalance = (
     getBalance(fromAccount.accountId, token, tokenBalancesRegistry)
   )
 }
-
-const defaultProviders = [
-  BraveWallet.SwapProvider.kAuto,
-  BraveWallet.SwapProvider.kLiFi
-]
-
-const allProviders = [
-  ...defaultProviders,
-  BraveWallet.SwapProvider.kZeroEx,
-  BraveWallet.SwapProvider.kJupiter
-]
-
-const solSupportedProviders = [
-  ...defaultProviders,
-  BraveWallet.SwapProvider.kJupiter
-]
-
-const ethSupportedProviders = [
-  ...defaultProviders,
-  BraveWallet.SwapProvider.kZeroEx
-]
 
 export const useSwap = () => {
   // routing
@@ -336,6 +319,15 @@ export const useSwap = () => {
       })
     }
 
+    if (quoteUnion.squidQuote) {
+      return getSquidQuoteOptions({
+        quote: quoteUnion.squidQuote,
+        fromNetwork,
+        spotPrices: spotPriceRegistry,
+        defaultFiatCurrency
+      })
+    }
+
     return []
   }, [
     fromNetwork,
@@ -372,6 +364,7 @@ export const useSwap = () => {
   const jupiter = useJupiter(swapProviderHookParams)
   const zeroEx = useZeroEx(swapProviderHookParams)
   const lifi = useLifi(swapProviderHookParams)
+  const squid = useSquid(swapProviderHookParams)
   const { approveSpendAllowance, checkAllowance, hasAllowance } =
     useTokenAllowance()
 
@@ -593,6 +586,31 @@ export const useSwap = () => {
             account: fromAccount,
             spendAmount: fromAssetBalance.format(),
             spenderAddress: quoteResponse.response.zeroExQuote.allowanceTarget,
+            token: params.fromToken
+          })
+        }
+
+        if (quoteResponse.response.squidQuote) {
+          if (params.editingFromOrToAmount === 'from') {
+            setToAmount(
+              getSquidToAmount({
+                quote: quoteResponse.response.squidQuote,
+                toToken: params.toToken
+              }).format(6)
+            )
+          } else {
+            setFromAmount(
+              getSquidFromAmount({
+                quote: quoteResponse.response.squidQuote,
+                fromToken: params.fromToken
+              }).format(6)
+            )
+          }
+
+          await checkAllowance({
+            account: fromAccount,
+            spendAmount: fromAssetBalance.format(),
+            spenderAddress: quoteResponse.response.squidQuote.allowanceTarget,
             token: params.fromToken
           })
         }
@@ -876,21 +894,47 @@ export const useSwap = () => {
   }, [quoteOptions])
 
   const availableProvidersForSwap = useMemo(() => {
-    // Bridge only supports Auto and Li.Fi.
-    if (isBridge) {
-      return defaultProviders
+    // If no tokens are selected, we cannot reliably determine the available
+    // providers.
+    if (!fromToken && !toToken) {
+      return [BraveWallet.SwapProvider.kAuto]
     }
-    // Returns all providers if no from token has been selected yet.
-    if (!fromToken) {
-      return allProviders
+
+    const hasSolInFillPath =
+      fromToken?.coin === BraveWallet.CoinType.SOL ||
+      toToken?.coin === BraveWallet.CoinType.SOL
+
+    const hasEthInFillPath =
+      fromToken?.coin === BraveWallet.CoinType.ETH ||
+      toToken?.coin === BraveWallet.CoinType.ETH
+
+    if (!isBridge && hasSolInFillPath) {
+      return [BraveWallet.SwapProvider.kAuto, BraveWallet.SwapProvider.kJupiter]
     }
-    // Returns default providers and Jupiter for SOL swaps.
-    if (fromToken && fromToken.coin === BraveWallet.CoinType.SOL) {
-      return solSupportedProviders
+
+    if (!isBridge && hasEthInFillPath) {
+      return [
+        BraveWallet.SwapProvider.kAuto,
+        BraveWallet.SwapProvider.kLiFi,
+        BraveWallet.SwapProvider.kZeroEx,
+        BraveWallet.SwapProvider.kSquid
+      ]
     }
-    // Returns default providers and Ox for ETH swaps.
-    return ethSupportedProviders
-  }, [isBridge, fromToken])
+
+    if (isBridge && hasSolInFillPath) {
+      return [BraveWallet.SwapProvider.kAuto, BraveWallet.SwapProvider.kLiFi]
+    }
+
+    if (isBridge && hasEthInFillPath) {
+      return [
+        BraveWallet.SwapProvider.kAuto,
+        BraveWallet.SwapProvider.kLiFi,
+        BraveWallet.SwapProvider.kSquid
+      ]
+    }
+
+    return [BraveWallet.SwapProvider.kAuto]
+  }, [isBridge, fromToken, toToken])
 
   const swapValidationError: SwapValidationErrorType | undefined =
     useMemo(() => {
@@ -952,7 +996,9 @@ export const useSwap = () => {
 
       // EVM specific validations
       if (
-        (quoteUnion?.zeroExQuote || quoteUnion?.lifiQuote) &&
+        (quoteUnion?.zeroExQuote ||
+          quoteUnion?.lifiQuote ||
+          quoteUnion?.squidQuote) &&
         fromToken.coin === BraveWallet.CoinType.ETH &&
         fromToken.contractAddress &&
         !hasAllowance
@@ -1008,6 +1054,7 @@ export const useSwap = () => {
       quoteUnion?.zeroExQuote,
       quoteUnion?.lifiQuote,
       quoteUnion?.jupiterQuote?.routePlan.length,
+      quoteUnion?.squidQuote,
       hasAllowance,
       quoteErrorUnion,
       backendError,
@@ -1097,6 +1144,28 @@ export const useSwap = () => {
       }
     }
 
+    if (quoteUnion.squidQuote) {
+      if (hasAllowance) {
+        const error = await squid.exchange()
+        if (error) {
+          console.log('squid.exchange error', error.squidError)
+          setQuoteErrorUnion(error)
+        } else {
+          setFromAmount('')
+          setToAmount('')
+          reset()
+        }
+      } else {
+        await approveSpendAllowance({
+          account: fromAccount,
+          network: fromNetwork,
+          spenderAddress: quoteUnion.squidQuote.allowanceTarget,
+          token: fromToken,
+          spendAmount: fromAssetBalance.format()
+        })
+      }
+    }
+
     setIsSubmittingSwap(false)
   }, [
     selectedQuoteOptionId,
@@ -1110,7 +1179,8 @@ export const useSwap = () => {
     reset,
     approveSpendAllowance,
     lifi,
-    jupiter
+    jupiter,
+    squid
   ])
 
   const onChangeSwapProvider = useCallback(

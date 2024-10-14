@@ -482,7 +482,8 @@ mojom::BlockchainTokenPtr ParseToken(const swap_responses::LiFiToken& value) {
   result->symbol = value.symbol;
   result->logo = value.logo_uri.value_or("");
   result->contract_address =
-      (value.address == kLiFiNativeEVMAssetContractAddress ||
+      (base::ToLowerASCII(value.address) ==
+           kLiFiNativeEVMAssetContractAddress ||
        value.address == kLiFiNativeSVMAssetContractAddress)
           ? ""
           : value.address;
@@ -711,7 +712,7 @@ mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
     return nullptr;
   }
 
-  auto evm_transaction = mojom::LiFiEVMTransaction::New();
+  auto evm_transaction = mojom::LiFiEvmTransaction::New();
   evm_transaction->data = value->transaction_request.data;
   evm_transaction->from = value->transaction_request.from.value();
   evm_transaction->to = value->transaction_request.to.value();
@@ -884,5 +885,227 @@ mojom::LiFiStatusPtr ParseStatusResponse(const base::Value& json_value) {
 }
 
 }  // namespace lifi
+
+namespace squid {
+
+namespace {
+
+std::optional<std::string> ChainIdToHex(const std::string& value) {
+  std::optional<uint256_t> out = Base10ValueToUint256(value);
+  if (!out) {
+    return std::nullopt;
+  }
+
+  return Uint256ValueToHex(*out);
+}
+
+mojom::SquidErrorType ParseErrorType(const std::string& value) {
+  if (value == "BAD_REQUEST") {
+    return mojom::SquidErrorType::kBadRequest;
+  }
+
+  if (value == "SCHEMA_VALIDATION_ERROR") {
+    return mojom::SquidErrorType::kSchemaValidationError;
+  }
+
+  return mojom::SquidErrorType::kUnknownError;
+}
+
+mojom::SquidActionType ParseActionType(const std::string& value) {
+  if (value == "wrap") {
+    return mojom::SquidActionType::kWrap;
+  }
+
+  if (value == "unwrap") {
+    return mojom::SquidActionType::kUnwrap;
+  }
+
+  if (value == "swap") {
+    return mojom::SquidActionType::kSwap;
+  }
+
+  if (value == "bridge") {
+    return mojom::SquidActionType::kBridge;
+  }
+
+  return mojom::SquidActionType::kUnknown;
+}
+
+mojom::BlockchainTokenPtr ParseToken(const swap_responses::SquidToken& value) {
+  auto result = mojom::BlockchainToken::New();
+  result->name = value.name;
+  result->symbol = value.symbol;
+  result->logo = value.logo_uri.value_or("");
+  result->contract_address =
+      base::ToLowerASCII(value.address) == kNativeEVMAssetContractAddress
+          ? ""
+          : value.address;
+
+  if (!base::StringToInt(value.decimals, &result->decimals)) {
+    return nullptr;
+  }
+
+  auto chain_id = ChainIdToHex(value.chain_id);
+  if (!chain_id) {
+    return nullptr;
+  }
+  result->chain_id = chain_id.value();
+
+  if (value.type == "evm") {
+    result->coin = mojom::CoinType::ETH;
+  } else {
+    return nullptr;
+  }
+
+  result->coingecko_id = value.coingecko_id.value_or("");
+
+  return result;
+}
+
+mojom::SquidGasCostPtr ParseGasCost(const swap_responses::SquidGasCost& value) {
+  auto result = mojom::SquidGasCost::New();
+  result->amount = value.amount;
+  result->gas_limit = value.gas_limit;
+  result->token = ParseToken(value.token);
+  return result;
+}
+
+mojom::SquidFeeCostPtr ParseFeeCost(const swap_responses::SquidFeeCost& value) {
+  auto result = mojom::SquidFeeCost::New();
+  result->amount = value.amount;
+  result->description = value.description;
+  result->name = value.name;
+  result->token = ParseToken(value.token);
+  return result;
+}
+
+mojom::SquidActionPtr ParseAction(const swap_responses::SquidAction& value) {
+  auto result = mojom::SquidAction::New();
+  result->type = ParseActionType(value.type);
+  result->description = value.description;
+  result->provider = value.provider;
+  result->logo_uri = value.logo_uri.value_or("");
+  result->from_amount = value.from_amount;
+  result->from_token = ParseToken(value.from_token);
+  result->to_amount = value.to_amount;
+  result->to_amount_min = value.to_amount_min;
+  result->to_token = ParseToken(value.to_token);
+  return result;
+}
+
+}  // namespace
+
+mojom::SquidQuotePtr ParseQuoteResponse(const base::Value& json_value) {
+  auto value = swap_responses::SquidQuoteResponse::FromValue(json_value);
+  if (!value) {
+    return nullptr;
+  }
+
+  auto result = mojom::SquidQuote::New();
+  for (const auto& action_value : value->route.estimate.actions) {
+    auto action = ParseAction(action_value);
+    if (!action) {
+      return nullptr;
+    }
+
+    result->actions.push_back(std::move(action));
+  }
+
+  result->aggregate_price_impact = value->route.estimate.aggregate_price_impact;
+  result->aggregate_slippage = value->route.estimate.aggregate_slippage;
+  result->estimated_route_duration =
+      value->route.estimate.estimated_route_duration;
+  result->exchange_rate = value->route.estimate.exchange_rate;
+
+  for (const auto& gas_cost_value : value->route.estimate.gas_costs) {
+    auto gas_cost = ParseGasCost(gas_cost_value);
+    if (!gas_cost) {
+      return nullptr;
+    }
+
+    result->gas_costs.push_back(std::move(gas_cost));
+  }
+
+  for (const auto& fee_cost_value : value->route.estimate.fee_costs) {
+    auto fee_cost = ParseFeeCost(fee_cost_value);
+    if (!fee_cost) {
+      return nullptr;
+    }
+
+    result->fee_costs.push_back(std::move(fee_cost));
+  }
+
+  result->is_boost_supported = value->route.estimate.is_boost_supported;
+  result->from_amount = value->route.estimate.from_amount;
+  result->from_token = ParseToken(value->route.estimate.from_token);
+  result->to_amount = value->route.estimate.to_amount;
+  result->to_amount_min = value->route.estimate.to_amount_min;
+  result->to_token = ParseToken(value->route.estimate.to_token);
+
+  // We pass quoteOnly=false to the Squid API, so the response will always
+  // contain a transactionRequest field.
+  //
+  // This is a workaround to avoid having to make an additional request to the
+  // Squid API to get Squid router contract address.
+  if (!value->route.transaction_request) {
+    return nullptr;
+  }
+
+  result->allowance_target = value->route.transaction_request->target;
+
+  return result;
+}
+
+mojom::SquidTransactionUnionPtr ParseTransactionResponse(
+    const base::Value& json_value) {
+  auto value = swap_responses::SquidQuoteResponse::FromValue(json_value);
+  if (!value) {
+    return nullptr;
+  }
+
+  if (!value->route.transaction_request) {
+    return nullptr;
+  }
+
+  auto result = mojom::SquidEvmTransaction::New();
+  result->data = value->route.transaction_request->data;
+  result->target = value->route.transaction_request->target;
+  result->value = value->route.transaction_request->value;
+  result->gas_limit = value->route.transaction_request->gas_limit;
+  result->gas_price = value->route.transaction_request->gas_price;
+  result->last_base_fee_per_gas =
+      value->route.transaction_request->last_base_fee_per_gas;
+  result->max_priority_fee_per_gas =
+      value->route.transaction_request->max_priority_fee_per_gas;
+  result->max_fee_per_gas = value->route.transaction_request->max_fee_per_gas;
+
+  auto chain_id = ChainIdToHex(value->route.estimate.from_token.chain_id);
+  if (!chain_id) {
+    return nullptr;
+  }
+  result->chain_id = chain_id.value();
+
+  return mojom::SquidTransactionUnion::NewEvmTransaction(std::move(result));
+}
+
+mojom::SquidErrorPtr ParseErrorResponse(const base::Value& json_value) {
+  // {
+  //   "message": "onChainQuoting must be a `boolean` type.",
+  //   "statusCode": "400",
+  //   "type": "SCHEMA_VALIDATION_ERROR"
+  // }
+  auto value = swap_responses::SquidErrorResponse::FromValue(json_value);
+  if (!value) {
+    return nullptr;
+  }
+
+  auto result = mojom::SquidError::New();
+  result->message = value->message;
+  result->type = ParseErrorType(value->type);
+
+  return result;
+}
+
+}  // namespace squid
 
 }  // namespace brave_wallet
