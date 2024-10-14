@@ -38,10 +38,10 @@ static const float animated_image_frame_delay = 2.0;
 @end
 
 @implementation WebImageDownloader
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)browserState {
+- (instancetype)initWithBrowserState:(ProfileIOS*)profile {
   if ((self = [super init])) {
     image_fetcher_ = std::make_unique<brave::ImageDownloader>(
-        browserState->GetSharedURLLoaderFactory());
+        profile->GetSharedURLLoaderFactory());
   }
   return self;
 }
