@@ -10,7 +10,6 @@ import styles from './style.module.scss'
 import Main from '../main'
 import { SidebarHeader } from '../header'
 import SidebarNav from '../sidebar_nav'
-import FeatureMenu from '../feature_button_menu'
 import { useAIChat } from '../../state/ai_chat_context'
 
 export default function FullScreen() {
@@ -59,6 +58,13 @@ export default function FullScreen() {
     }
   }
 
+  React.useEffect(() => {
+    const isOpen = asideAnimationRef.current?.playbackRate === 1
+    if (aiChatContext.editingConversationId && isOpen) {
+      toggleAside()
+    }
+  }, [aiChatContext.editingConversationId, isOpen]);
+
   return (
     <div className={styles.fullscreen}>
       <div className={styles.left}>
@@ -79,9 +85,6 @@ export default function FullScreen() {
               >
                 <Icon name='erase' />
               </Button>
-              <FeatureMenu setIsConversationListOpen={function (value: boolean): unknown {
-                throw new Error('Function not implemented.')
-              }} />
             </>
           )}
         </div>
