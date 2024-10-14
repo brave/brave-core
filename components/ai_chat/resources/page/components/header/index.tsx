@@ -62,15 +62,6 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
       <div className={styles.actions}>
         {aiChatContext.hasAcceptedAgreement && (
           <>
-            {/* <Button
-                fab
-                kind='plain-faint'
-                aria-label='Launch'
-                title='Launch'
-                onClick={() => {}}
-              >
-                <Icon name='launch' />
-              </Button> */}
             {shouldDisplayEraseAction && (
               <Button
                 fab
