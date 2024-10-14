@@ -16,6 +16,7 @@
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/tip_panel_ui.h"
+#include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
@@ -46,6 +47,9 @@ void RemoveOverridenWebUIs(content::WebUIConfigMap& map) {
   // chrome::kChromeUINewTabHost).
   map.RemoveConfig(
       GetWebUIConfigURL(content::kChromeUIScheme, chrome::kChromeUINewTabHost));
+  // Remove SettingsUIConfig. It will be replaced with BraveSettingsUIConfig.
+  map.RemoveConfig(GetWebUIConfigURL(content::kChromeUIScheme,
+                                     chrome::kChromeUISettingsHost));
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 
@@ -65,6 +69,7 @@ void RegisterChromeWebUIConfigs() {
   map.AddWebUIConfig(std::make_unique<brave_rewards::RewardsPanelUIConfig>());
   map.AddWebUIConfig(std::make_unique<brave_rewards::TipPanelUIConfig>());
   map.AddWebUIConfig(std::make_unique<BravePrivateNewTabUIConfig>());
+  map.AddWebUIConfig(std::make_unique<BraveSettingsUIConfig>());
   map.AddWebUIConfig(std::make_unique<CookieListOptInUIConfig>());
   map.AddWebUIConfig(std::make_unique<ShieldsPanelUIConfig>());
   map.AddWebUIConfig(std::make_unique<SpeedreaderToolbarUIConfig>());
