@@ -20,14 +20,13 @@ import org.chromium.chrome.browser.omnibox.suggestions.base.BaseSuggestionViewBi
 import org.chromium.chrome.browser.omnibox.suggestions.brave_leo.BraveLeoSuggestionViewBinder;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_search.BraveSearchBannerViewBinder;
 import org.chromium.ui.ViewProvider;
-import org.chromium.ui.modelutil.MVCListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BraveAutocompleteCoordinator {
     public ViewProvider<SuggestionListViewHolder> createViewProvider(
-            Context context, MVCListAdapter.ModelList modelList, boolean forcePhoneStyleOmnibox) {
+            Context context, boolean forcePhoneStyleOmnibox) {
         ViewProvider<SuggestionListViewHolder> provider =
                 (ViewProvider<SuggestionListViewHolder>)
                         BraveReflectionUtil.invokeMethod(
@@ -36,8 +35,6 @@ public class BraveAutocompleteCoordinator {
                                 "createViewProvider",
                                 Context.class,
                                 context,
-                                MVCListAdapter.ModelList.class,
-                                modelList,
                                 boolean.class,
                                 forcePhoneStyleOmnibox);
 
