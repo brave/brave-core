@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/feature_list.h"
+#include "base/numerics/byte_conversions.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -45,11 +46,11 @@ bool BraveFarblingService::MakePseudoRandomGeneratorForURL(const GURL& url,
   uint8_t domain_key[32];
   uint64_t session_key = session_token();
   crypto::HMAC h(crypto::HMAC::SHA256);
-  CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key),
-               sizeof session_key));
-  CHECK(h.Sign(domain, domain_key, sizeof domain_key));
-  uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key);
-  *prng = FarblingPRNG(seed);
+  CHECK(h.Init(base::byte_span_from_ref(session_key)));
+  CHECK(h.Sign(base::as_byte_span(domain),
+               base::as_writable_byte_span(domain_key)));
+  *prng = FarblingPRNG(
+      base::U64FromNativeEndian(base::as_byte_span(domain_key).first<8>()));
   return true;
 }
 

@@ -6,20 +6,25 @@
 #include "brave/browser/default_protocol_handler_utils_win.h"
 
 #include <shobjidl.h>
+
 #include <winternl.h>
 #include <wrl/client.h>
 
 #include <memory>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include "base/base64.h"
 #include "base/containers/span.h"
+#include "base/containers/span_reader.h"
 #include "base/files/file_path.h"
 #include "base/hash/md5.h"
 #include "base/logging.h"
 #include "base/notreached.h"
+#include "base/numerics/byte_conversions.h"
 #include "base/path_service.h"
+#include "base/strings/cstring_view.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util_win.h"
 #include "base/strings/stringprintf.h"
@@ -45,57 +50,57 @@ constexpr wchar_t kUserChoiceKey[] = L"UserChoice";
 constexpr wchar_t kProgIDKey[] = L"ProgID";
 constexpr wchar_t kHashKey[] = L"Hash";
 
-inline DWORD WordSwap(DWORD v) {
+inline uint32_t WordSwap(uint32_t v) {
   return (v >> 16) | (v << 16);
 }
 
-std::wstring HashString(std::wstring_view input_string) {
-  auto* input_bytes =
-      reinterpret_cast<const unsigned char*>(input_string.data());
-  const size_t input_byte_count = (input_string.length() + 1) * sizeof(wchar_t);
-
-  constexpr size_t kDWordsPerBlock = 2;
-  constexpr size_t kBlockSize = sizeof(DWORD) * kDWordsPerBlock;
-  // Incomplete blocks are ignored.
-  const int block_count = input_byte_count / kBlockSize;
-
-  if (block_count == 0) {
+std::wstring HashString(base::wcstring_view input) {
+  if (input.size() < 8u) {
+    // It seems this algo doesn't consider anything on the modulo of blocks, so
+    // there's nothing for us to do with small strings.
     return std::wstring();
   }
+  auto bytes = base::as_bytes(base::make_span(input.data(), input.size() + 1));
 
   // Compute an MD5 hash. md5[0] and md5[1] will be used as constant multipliers
   // in the scramble below.
   base::MD5Digest digest;
-  base::MD5Sum(base::span(input_bytes, input_byte_count), &digest);
-  auto* md5 = reinterpret_cast<DWORD*>(digest.a.data());
+  base::MD5Sum(bytes, &digest);
+  auto md5 = base::as_byte_span(digest.a).first<8u>();
+
   // The following loop effectively computes two checksums, scrambled like a
   // hash after every DWORD is added.
+  struct MagicBlock {
+    std::pair<std::array<uint32_t, 5u>, std::array<uint32_t, 5u>> line;
+  };
 
-  // Constant multipliers for the scramble, one set for each DWORD in a block.
-  const DWORD c0s[kDWordsPerBlock][5] = {
-      {md5[0] | 1, 0xCF98B111uL, 0x87085B9FuL, 0x12CEB96DuL, 0x257E1D83uL},
-      {md5[1] | 1, 0xA27416F5uL, 0xD38396FFuL, 0x7C932B89uL, 0xBFA49F69uL}};
-  const DWORD c1s[kDWordsPerBlock][5] = {
-      {md5[0] | 1, 0xEF0569FBuL, 0x689B6B9FuL, 0x79F8A395uL, 0xC3EFEA97uL},
-      {md5[1] | 1, 0xC31713DBuL, 0xDDCD1F0FuL, 0x59C3AF2DuL, 0x35BD1EC9uL}};
+  auto magic_numbers_table = std::to_array<MagicBlock>(
+      {{{{base::numerics::U32FromNativeEndian(md5.first<4u>()) | 1,
+          0xCF98B111uL, 0x87085B9FuL, 0x12CEB96DuL, 0x257E1D83uL},
+         {base::numerics::U32FromNativeEndian(md5.first<4u>()) | 1,
+          0xEF0569FBuL, 0x689B6B9FuL, 0x79F8A395uL, 0xC3EFEA97uL}}},
+       {{{base::numerics::U32FromNativeEndian(md5.last<4u>()) | 1, 0xA27416F5uL,
+          0xD38396FFuL, 0x7C932B89uL, 0xBFA49F69uL},
+         {base::numerics::U32FromNativeEndian(md5.last<4u>()) | 1, 0xC31713DBuL,
+          0xDDCD1F0FuL, 0x59C3AF2DuL, 0x35BD1EC9uL}}}});
 
   // The checksums.
-  DWORD h0 = 0;
-  DWORD h1 = 0;
-  // Accumulated total of the checksum after each DWORD.
-  DWORD h0_acc = 0;
-  DWORD h1_acc = 0;
+  uint32_t h0 = 0;
+  uint32_t h1 = 0;
+  // Accumulated total of the checksum after each uint32_t.
+  uint32_t h0_acc = 0;
+  uint32_t h1_acc = 0;
 
-  for (int i = 0; i < block_count; ++i) {
-    for (size_t j = 0; j < kDWordsPerBlock; ++j) {
-      const DWORD* c0 = c0s[j];
-      const DWORD* c1 = c1s[j];
+  auto reader = base::SpanReader(bytes);
+  while (reader.remaining() >= 8u) {
+    // We clearly don't care about anything under 8u bytes as the mozilla
+    // implementation also doesn't seem to care.
 
-      DWORD input;
-      memcpy(&input, &input_bytes[(i * kDWordsPerBlock + j) * sizeof(DWORD)],
-             sizeof(DWORD));
+    for (const auto& magic_block : magic_numbers_table) {
+      const auto& [c0, c1] = magic_block.line;
+      uint32_t ui32 = base::numerics::U32FromNativeEndian(*reader.Read<4u>());
 
-      h0 += input;
+      h0 += ui32;
       // Scramble 0
       h0 *= c0[0];
       h0 = WordSwap(h0) * c0[1];
@@ -104,7 +109,7 @@ std::wstring HashString(std::wstring_view input_string) {
       h0 = WordSwap(h0) * c0[4];
       h0_acc += h0;
 
-      h1 += input;
+      h1 += ui32;
       // Scramble 1
       h1 = WordSwap(h1) * c1[1] + h1 * c1[0];
       h1 = (h1 >> 16) * c1[2] + h1 * c1[3];
@@ -113,7 +118,7 @@ std::wstring HashString(std::wstring_view input_string) {
     }
   }
 
-  DWORD hash[2] = {h0 ^ h1, h0_acc ^ h1_acc};
+  uint32_t hash[2] = {h0 ^ h1, h0_acc ^ h1_acc};
   return base::UTF8ToWide(
       base::Base64Encode(base::as_bytes(base::make_span(hash))));
 }
