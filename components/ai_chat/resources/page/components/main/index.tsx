@@ -169,7 +169,6 @@ function Main() {
       )}
       {showAgreementModal && <PrivacyMessage />}
       <PageTitleHeader ref={headerElement}
-        isConversationListOpen={isConversationListOpen}
         setIsConversationListOpen={setIsConversationListOpen}
       />
       <div className={classnames({
