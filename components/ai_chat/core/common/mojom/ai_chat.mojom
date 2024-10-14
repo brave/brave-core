@@ -270,6 +270,7 @@ interface Service {
   DismissPremiumPrompt();
 
   DeleteConversation(string id);
+  RenameConversation(string id, string new_name);
 
   // Send events to the UI
   BindObserver(pending_remote<ServiceObserver> ui);

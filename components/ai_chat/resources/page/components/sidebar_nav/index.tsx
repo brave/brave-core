@@ -163,8 +163,8 @@ export default function SidebarNav(props: SidebarNavProps) {
                           text={item.title}
                           onBlur={() => setEditingIndex(null)}
                           onSubmit={(value) => {
-                            console.log(value)
                             setEditingIndex(null)
+                            getAPI().Service.renameConversation(item.uuid, value)
                           }}
                         />
                       </div>
