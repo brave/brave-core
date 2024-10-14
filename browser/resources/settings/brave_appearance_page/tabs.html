@@ -49,9 +49,7 @@
         name="true"
         no-extension-indicator>
       </controlled-radio-button>
-  </settings-radio-group>
-
-
+    </settings-radio-group>
   </div>
 </template> <!-- vertical_tabs_enabled.value -->
 
@@ -94,4 +92,13 @@
   pref="{{prefs.browser.hovercard.memory_usage_enabled}}"
   class="cr-row"
   label="$i18n{showHoverCardMemoryUsageStandalone}">
+</settings-toggle-button>
+
+<!-- Inactive tabs appearance  -->
+<settings-toggle-button
+  pref="{{prefs.performance_tuning.discard_ring_treatment.enabled}}"
+  class="cr-row"
+  label="$i18n{discardRingTreatmentEnabledLabel}"
+  sub-label-with-link="$i18n{discardRingTreatmentEnabledDescriptionWithLearnLink}"
+  on-sub-label-link-clicked="onDiscardRingTreatmentLearnMoreLinkClick_">
 </settings-toggle-button>
