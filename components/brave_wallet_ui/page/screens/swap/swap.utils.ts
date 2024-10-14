@@ -13,6 +13,11 @@ import Amount from '../../../utils/amount'
 import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
 
+function ensureUnique<T>(array: T[], key: keyof T): T[] {
+  return [...new Set(array.map(a => a[key]))]
+              .map(k => array.find(a => a[key] === k)!) as T[];
+}
+
 function getZeroExNetworkFee({
   quote,
   fromNetwork
@@ -79,7 +84,7 @@ export function getZeroExQuoteOptions({
         .divideByDecimals(toToken.decimals)
         .div(new Amount(quote.sellAmount).divideByDecimals(fromToken.decimals)),
       impact: new Amount(quote.estimatedPriceImpact),
-      sources: quote.sources
+      sources: ensureUnique(quote.sources, 'name')
         .map((source) => ({
           name: source.name,
           proportion: new Amount(source.proportion)
@@ -283,7 +288,9 @@ export function getLiFiQuoteOptions({
         .reduce((a, b) => a + b, 0)
         .toString(),
       provider: BraveWallet.SwapProvider.kLiFi,
-      tags: route.tags.filter((tag) =>
+      tags: [
+        ...new Set(route.tags)
+      ].filter((tag) =>
         ['CHEAPEST', 'FASTEST'].includes(tag)
       ) as RouteTagsType[],
       id: route.uniqueId
@@ -353,11 +360,12 @@ export function getSquidQuoteOptions({
       toToken: quote.toToken,
       rate: toAmount.div(fromAmount),
       impact: new Amount(quote.aggregatePriceImpact).times(100),
-      sources: quote.actions.map((action) => ({
-        name: action.provider,
-        proportion: new Amount(1),
-        logo: action.logoUri
-      })),
+      sources: ensureUnique(quote.actions, 'provider')
+        .map((action) => ({
+          name: action.provider,
+          proportion: new Amount(1),
+          logo: action.logoUri
+        })),
       routing: 'flow',
       networkFee,
       networkFeeFiat: networkFee.isUndefined()
