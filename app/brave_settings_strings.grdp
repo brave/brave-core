@@ -1381,8 +1381,8 @@ Leo. This action can't be undone.
   <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_CONTEXT_SIZE" desc="An input title for context size, which refers to the maximum number of tokens (small units of text, usually a few characters or words) that an AI model can process in one go. The context size determines how much data the model can consider simultaneously. For example, the Phi 3.5 model can process up to 131072 tokens in its context window.">
     Context size
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_CONTEXT_SIZE_TOOLTIP_INFO" desc="A note for users explaining how to find the appropriate context size for their AI model.">
-    The context size (in tokens) affects the model's ability to maintain coherence in longer interactions (4 tokens ≈ 3 words). Choose a value between <ph name="MIN_CONTEXT_SIZE">$1<ex>1</ex></ph> and <ph name="MAX_CONTEXT_SIZE">$2<ex>2000000</ex></ph>. Consult your model for the appropriate value; Ollama users can use `ollama show ...`. If not specified, Brave will use a default context size of <ph name="DEFAULT_CONTEXT_SIZE">$3<ex>4000</ex></ph> tokens.
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_CONTEXT_SIZE_TOOLTIP_INFO" desc="A brief description for context size, as well as a concise explanation for how it relates to the the user's experience.">
+    The maximum number of tokens the model can process in a single interaction. Each token is roughly 3/4 of a word. A larger context size allows the model to handle longer conversations. Different models support different maximum context sizes.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_CLOSE_BUTTON_LABEL" desc="A label for a button that closes configuration UI">
     Close

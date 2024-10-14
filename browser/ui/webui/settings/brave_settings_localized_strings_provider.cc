@@ -459,6 +459,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_LABEL_TOOLTIP_INFO},
       {"braveLeoAssistantInputContextSizeLabel",
        IDS_SETTINGS_LEO_ASSISTANT_INPUT_CONTEXT_SIZE},
+      {"braveLeoAssistantInputContextSizeTooltipInfo",
+       IDS_SETTINGS_LEO_ASSISTANT_INPUT_CONTEXT_SIZE_TOOLTIP_INFO},
       {"braveLeoAssistantInputModelRequestNameTooltipInfo",
        IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_REQUEST_NAME_TOOLTIP_INFO},
       {"braveLeoAssistantInputModelServerEndpointTooltipInfo",
@@ -765,14 +767,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString(
       "braveLeoAssistantInputDefaultContextSize",
       base::NumberToString16(ai_chat::kDefaultCustomModelContextSize));
-
-  html_source->AddString(
-      "braveLeoAssistantInputContextSizeTooltipInfo",
-      l10n_util::GetStringFUTF8(
-          IDS_SETTINGS_LEO_ASSISTANT_INPUT_CONTEXT_SIZE_TOOLTIP_INFO,
-          base::NumberToString16(ai_chat::kMinCustomModelContextSize),
-          base::NumberToString16(ai_chat::kMaxCustomModelContextSize),
-          base::NumberToString16(ai_chat::kDefaultCustomModelContextSize)));
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   html_source->AddString("webDiscoveryLearnMoreURL", kWebDiscoveryLearnMoreUrl);
