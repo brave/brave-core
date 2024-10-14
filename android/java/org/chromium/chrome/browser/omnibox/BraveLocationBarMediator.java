@@ -19,7 +19,6 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
-import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeUtils;
@@ -93,10 +92,6 @@ public class BraveLocationBarMediator extends LocationBarMediator {
 
     public static Class<LocaleManager> getLocaleManagerClass() {
         return LocaleManager.class;
-    }
-
-    public static Class<PrivacyPreferencesManager> getPrivacyPreferencesManagerClass() {
-        return PrivacyPreferencesManager.class;
     }
 
     public static Class<OmniboxSuggestionsDropdownEmbedderImpl>
