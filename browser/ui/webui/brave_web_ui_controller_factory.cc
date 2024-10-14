@@ -40,7 +40,6 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
-#include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
@@ -131,8 +130,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new BraveNewsInternalsUI(web_ui, url.host());
   } else if (host == kWelcomeHost && !profile->IsGuestSession()) {
     return new BraveWelcomeUI(web_ui, url.host());
-  } else if (host == chrome::kChromeUISettingsHost) {
-    return new BraveSettingsUI(web_ui, url.host());
   } else if (host == chrome::kChromeUINewTabHost) {
     DCHECK(!profile->IsIncognitoProfile() && !profile->IsTor() &&
            !profile->IsGuestSession());
