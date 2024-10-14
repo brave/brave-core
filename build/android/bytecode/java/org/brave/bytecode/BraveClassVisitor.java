@@ -30,7 +30,7 @@ class BraveClassVisitor extends ClassVisitor {
 
     private ClassVisitor mTarget;
 
-    class Method {
+    static class Method {
         public int access;
         public String name;
         public String desc;

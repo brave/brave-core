@@ -657,10 +657,8 @@ public class CameraSource {
     private CameraSource() {
     }
 
-    /**
-     * Wraps the camera1 shutter callback so that the deprecated API isn't exposed.
-     */
-    private class PictureStartCallback implements Camera.ShutterCallback {
+    /** Wraps the camera1 shutter callback so that the deprecated API isn't exposed. */
+    private static class PictureStartCallback implements Camera.ShutterCallback {
         private ShutterCallback mDelegate;
 
         @Override
@@ -691,10 +689,8 @@ public class CameraSource {
         }
     }
 
-    /**
-     * Wraps the camera1 auto focus callback so that the deprecated API isn't exposed.
-     */
-    private class CameraAutoFocusCallback implements Camera.AutoFocusCallback {
+    /** Wraps the camera1 auto focus callback so that the deprecated API isn't exposed. */
+    private static class CameraAutoFocusCallback implements Camera.AutoFocusCallback {
         private AutoFocusCallback mDelegate;
 
         @Override
@@ -705,11 +701,9 @@ public class CameraSource {
         }
     }
 
-    /**
-     * Wraps the camera1 auto focus move callback so that the deprecated API isn't exposed.
-     */
+    /** Wraps the camera1 auto focus move callback so that the deprecated API isn't exposed. */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private class CameraAutoFocusMoveCallback implements Camera.AutoFocusMoveCallback {
+    private static class CameraAutoFocusMoveCallback implements Camera.AutoFocusMoveCallback {
         private AutoFocusMoveCallback mDelegate;
 
         @Override

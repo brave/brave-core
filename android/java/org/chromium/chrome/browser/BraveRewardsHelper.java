@@ -506,11 +506,13 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
 
     /**
      * Expands touchable area of a small view
-      * @param parentView
-     * @param childView
-     * @param extraPadding: dp
+     *
+     * @param parentView Parent view.
+     * @param childView Child view.
+     * @param extraPadding Extra padding in dp.
      */
-  public static void expandTouchArea(final View parentView, final View childView, final int extraPadding) {
+    public static void expandTouchArea(
+            final View parentView, final View childView, final int extraPadding) {
         parentView.post(new Runnable() {
             @Override
             public void run() {
@@ -527,11 +529,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         });
     }
 
-    /**
-     * Converts DP into PX
-     * @param dp
-     * @return
-     */
+    /** Converts DP into PX */
     public static int dp2px(int dp) {
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         float px = dp * (metrics.densityDpi / DP_PER_INCH_MDPI);
