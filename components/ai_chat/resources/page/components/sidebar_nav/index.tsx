@@ -141,9 +141,8 @@ export default function SidebarNav(props: SidebarNavProps) {
       </div>
       <div className={styles.scroller}>
         <nav className={styles.nav}>
-          {/* <div className={styles.timeLabel}>Today</div> */}
           <ol>
-            {aiChatContext.visibleConversations.map((item, index) => {
+            {aiChatContext.visibleConversations.map(item => {
               return (
                 <li key={item.uuid}>
                   <div
