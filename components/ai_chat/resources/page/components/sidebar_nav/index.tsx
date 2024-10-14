@@ -112,7 +112,6 @@ interface SidebarNavProps {
 export default function SidebarNav(props: SidebarNavProps) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
-  const [editingIndex, setEditingIndex] = React.useState<number | null>(null)
 
   return (
     <>
@@ -157,13 +156,13 @@ export default function SidebarNav(props: SidebarNavProps) {
                       props.setIsConversationListOpen?.(false)
                     }}
                   >
-                    {editingIndex === index ? (
+                    {item.uuid === aiChatContext.editingConversationId ? (
                       <div className={styles.editibleTitle}>
                         <SimpleInput
                           text={item.title}
-                          onBlur={() => setEditingIndex(null)}
+                          onBlur={() => aiChatContext.setEditingConversationId(null)}
                           onSubmit={(value) => {
-                            setEditingIndex(null)
+                            aiChatContext.setEditingConversationId(null)
                             getAPI().Service.renameConversation(item.uuid, value)
                           }}
                         />
@@ -172,7 +171,7 @@ export default function SidebarNav(props: SidebarNavProps) {
                       <DisplayTitle
                         title={item.title ? item.title : item.summary ? item.summary : getLocale('conversationListUntitled')}
                         description={''}
-                        onEditTitle={() => setEditingIndex(index)}
+                        onEditTitle={() => aiChatContext.setEditingConversationId(item.uuid)}
                         onDelete={() => getAPI().Service.deleteConversation(item.uuid)}
                       />
                     )}

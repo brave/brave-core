@@ -59,10 +59,6 @@ export default function FullScreen() {
     }
   }
 
-  const handleEraseClick = () => {
-    aiChatContext.onNewConversation()
-  }
-
   return (
     <div className={styles.fullscreen}>
       <div className={styles.left}>
@@ -79,7 +75,7 @@ export default function FullScreen() {
               <Button
                 fab
                 kind='plain-faint'
-                onClick={handleEraseClick}
+                onClick={aiChatContext.onNewConversation}
               >
                 <Icon name='erase' />
               </Button>
