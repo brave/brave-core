@@ -100,18 +100,13 @@ NotificationAdPopup::NotificationAdPopup(
 
   display::Screen* screen = display::Screen::GetScreen();
   if (screen) {
-    screen->AddObserver(this);
+    screen_observation_.Observe(screen);
   }
 
   FadeIn();
 }
 
-NotificationAdPopup::~NotificationAdPopup() {
-  display::Screen* screen = display::Screen::GetScreen();
-  if (screen) {
-    screen->RemoveObserver(this);
-  }
-}
+NotificationAdPopup::~NotificationAdPopup() = default;
 
 // static
 void NotificationAdPopup::SetDisableFadeInAnimationForTesting(
