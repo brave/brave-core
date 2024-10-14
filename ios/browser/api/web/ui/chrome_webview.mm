@@ -164,7 +164,7 @@ void WebViewJavaScriptDialogPresenter::SetUIDelegate(
 @interface ChromeWebViewController () <CRWWebStateDelegate,
                                        CRWWebStateObserver,
                                        ChromeWebControllerUIDelegate> {
-  raw_ptr<ChromeBrowserState> browser_state_;
+  raw_ptr<ProfileIOS> profile_;
   std::unique_ptr<web::WebState> web_state_;
   std::unique_ptr<web::WebStateObserverBridge> web_state_observer_;
   std::unique_ptr<web::WebStateDelegateBridge> web_state_delegate_;
@@ -182,14 +182,13 @@ void WebViewJavaScriptDialogPresenter::SetUIDelegate(
         GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
     ProfileIOS* last_used_profile = profiles.at(0);
 
-    browser_state_ = last_used_profile->GetOriginalProfile();
+    profile_ = last_used_profile->GetOriginalProfile();
 
     if (isPrivateBrowsing) {
-      browser_state_ = browser_state_->GetOffTheRecordProfile();
+      profile_ = profile_->GetOffTheRecordProfile();
     }
 
-    web_state_ =
-        web::WebState::Create(web::WebState::CreateParams(browser_state_));
+    web_state_ = web::WebState::Create(web::WebState::CreateParams(profile_));
 
     web_state_observer_ = std::make_unique<web::WebStateObserverBridge>(self);
     web_state_->AddObserver(web_state_observer_.get());
@@ -217,7 +216,7 @@ void WebViewJavaScriptDialogPresenter::SetUIDelegate(
   web_state_delegate_.reset();
   web_state_.reset();
   dialog_presenter_.reset();
-  browser_state_ = nullptr;
+  profile_ = nullptr;
 }
 
 - (WKWebView*)webView {
@@ -225,7 +224,7 @@ void WebViewJavaScriptDialogPresenter::SetUIDelegate(
 }
 
 - (bool)isOffTheRecord {
-  return profile_metrics::GetBrowserProfileType(browser_state_) ==
+  return profile_metrics::GetBrowserProfileType(profile_) ==
          profile_metrics::BrowserProfileType::kIncognito;
 }
 

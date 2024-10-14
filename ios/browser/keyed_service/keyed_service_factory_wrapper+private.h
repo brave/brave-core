@@ -10,13 +10,13 @@
 
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper.h"
 
-class ChromeBrowserState;
+class ProfileIOS;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KeyedServiceFactoryWrapper (Private)
 
-+ (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState;
++ (nullable id)serviceForBrowserState:(ProfileIOS*)profile;
 
 @end
 

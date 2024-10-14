@@ -8,10 +8,10 @@
 
 #include "brave/ios/browser/api/brave_stats/brave_stats.h"
 
-class ChromeBrowserState;
+class ProfileIOS;
 
 @interface BraveStats (Private)
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)browserState;
+- (instancetype)initWithBrowserState:(ProfileIOS*)profile;
 @end
 
 #endif  // BRAVE_IOS_BROWSER_API_BRAVE_STATS_BRAVE_STATS_PRIVATE_H_

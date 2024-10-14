@@ -12,7 +12,7 @@
 #include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
-class ChromeBrowserState;
+class ProfileIOS;
 class KeyedService;
 
 namespace base {
@@ -34,11 +34,10 @@ class BraveWalletIpfsServiceFactory : public BrowserStateKeyedServiceFactory {
   BraveWalletIpfsServiceFactory& operator=(
       const BraveWalletIpfsServiceFactory&) = delete;
 
-  // Creates the service if it doesn't exist already for |browser_state|.
+  // Creates the service if it doesn't exist already for |profile|.
   static mojo::PendingRemote<mojom::IpfsService> GetForBrowserState(
-      ChromeBrowserState* browser_state);
-  static BraveWalletIpfsService* GetServiceForState(
-      ChromeBrowserState* browser_state);
+      ProfileIOS* profile);
+  static BraveWalletIpfsService* GetServiceForState(ProfileIOS* profile);
 
   static BraveWalletIpfsServiceFactory* GetInstance();
 

@@ -12,7 +12,7 @@
 #include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
-class ChromeBrowserState;
+class ProfileIOS;
 class KeyedService;
 
 namespace base {
@@ -30,11 +30,10 @@ class AssetRatioService;
 
 class AssetRatioServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
-  // Creates the service if it doesn't exist already for |browser_state|.
+  // Creates the service if it doesn't exist already for |profile|.
   static mojo::PendingRemote<mojom::AssetRatioService> GetForBrowserState(
-      ChromeBrowserState* browser_state);
-  static AssetRatioService* GetServiceForState(
-      ChromeBrowserState* browser_state);
+      ProfileIOS* profile);
+  static AssetRatioService* GetServiceForState(ProfileIOS* profile);
 
   static AssetRatioServiceFactory* GetInstance();
 

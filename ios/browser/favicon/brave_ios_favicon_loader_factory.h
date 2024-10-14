@@ -11,19 +11,17 @@
 #include "base/no_destructor.h"
 #include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
 
-class ChromeBrowserState;
+class ProfileIOS;
 
 namespace brave_favicon {
 class BraveFaviconLoader;
 
 // Singleton that owns all FaviconLoaders and associates them with
-// ChromeBrowserState.
+// ProfileIOS.
 class BraveIOSFaviconLoaderFactory : public BrowserStateKeyedServiceFactory {
  public:
-  static BraveFaviconLoader* GetForBrowserState(
-      ChromeBrowserState* browser_state);
-  static BraveFaviconLoader* GetForBrowserStateIfExists(
-      ChromeBrowserState* browser_state);
+  static BraveFaviconLoader* GetForBrowserState(ProfileIOS* profile);
+  static BraveFaviconLoader* GetForBrowserStateIfExists(ProfileIOS* profile);
   static BraveIOSFaviconLoaderFactory* GetInstance();
   static TestingFactory GetDefaultFactory();
 

@@ -33,7 +33,7 @@
 #include "ios/web/public/thread/web_thread.h"
 
 @interface AIChat () {
-  raw_ptr<ChromeBrowserState> browser_state_;
+  raw_ptr<ProfileIOS> profile_;
   raw_ptr<ai_chat::AIChatService> service_;
   raw_ptr<ai_chat::ModelService> model_service_;
   raw_ptr<ai_chat::ConversationHandler> current_conversation_;
@@ -49,19 +49,17 @@
 @end
 
 @implementation AIChat
-- (instancetype)initWithChromeBrowserState:(ChromeBrowserState*)browserState
-                                  delegate:(id<AIChatDelegate>)delegate {
+- (instancetype)initWithProfileIOS:(ProfileIOS*)profile
+                          delegate:(id<AIChatDelegate>)delegate {
   if ((self = [super init])) {
-    browser_state_ = browserState;
+    profile_ = profile;
     delegate_ = delegate;
 
-    model_service_ =
-        ai_chat::ModelServiceFactory::GetForBrowserState(browser_state_);
-    service_ =
-        ai_chat::AIChatServiceFactory::GetForBrowserState(browser_state_);
+    model_service_ = ai_chat::ModelServiceFactory::GetForBrowserState(profile_);
+    service_ = ai_chat::AIChatServiceFactory::GetForBrowserState(profile_);
 
     current_content_ = std::make_unique<ai_chat::AssociatedContentDriverIOS>(
-        browser_state_->GetSharedURLLoaderFactory(), delegate);
+        profile_->GetSharedURLLoaderFactory(), delegate);
 
     [self createNewConversation];
   }
@@ -89,7 +87,7 @@
 }
 
 - (void)setIsAgreementAccepted:(bool)accepted {
-  ai_chat::SetUserOptedIn(user_prefs::UserPrefs::Get(browser_state_), accepted);
+  ai_chat::SetUserOptedIn(user_prefs::UserPrefs::Get(profile_), accepted);
 }
 
 - (void)changeModel:(NSString*)modelKey {

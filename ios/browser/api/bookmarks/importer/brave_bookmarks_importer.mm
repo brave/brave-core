@@ -146,7 +146,7 @@
               listener(BraveBookmarksImporterStateAutoCompleted, nullptr);
             };
 
-        // Import into the Profile/ChromeBrowserState on the main-thread.
+        // Import into the Profile/ProfileIOS on the main-thread.
         web::GetUIThreadTaskRunner({})->PostTask(
             FROM_HERE, base::BindOnce(complete_import, std::move(bookmarks),
                                       top_level_folder_name, listener));
@@ -193,7 +193,7 @@
         listener(BraveBookmarksImporterStateCompleted);
       };
 
-  // Import into the Profile/ChromeBrowserState on the main-thread.
+  // Import into the Profile/ProfileIOS on the main-thread.
   __weak BraveBookmarksImporter* weakSelf = self;
   import_thread_->PostTask(FROM_HERE,
                            base::BindOnce(start_import, weakSelf, bookmarks,

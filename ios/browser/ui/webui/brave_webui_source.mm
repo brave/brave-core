@@ -37,8 +37,7 @@ web::WebUIIOSDataSource* CreateWebUIDataSource(
     int html_resource_id,
     bool disable_trusted_types_csp) {
   web::WebUIIOSDataSource* source = web::WebUIIOSDataSource::Create(name);
-  web::WebUIIOSDataSource::Add(ChromeBrowserState::FromWebUIIOS(web_ui),
-                               source);
+  web::WebUIIOSDataSource::Add(ProfileIOS::FromWebUIIOS(web_ui), source);
 
   source->UseStringsJs();
   source->AddResourcePaths(

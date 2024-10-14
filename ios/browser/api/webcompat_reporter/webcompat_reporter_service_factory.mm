@@ -15,9 +15,8 @@ namespace webcompat_reporter {
 
 // static
 mojo::PendingRemote<mojom::WebcompatReporterHandler>
-WebcompatReporterServiceFactory::GetHandlerForContext(
-    ChromeBrowserState* browser_state) {
-  auto* service = GetInstance()->GetServiceForBrowserState(browser_state, true);
+WebcompatReporterServiceFactory::GetHandlerForContext(ProfileIOS* profile) {
+  auto* service = GetInstance()->GetServiceForBrowserState(profile, true);
   if (!service) {
     return mojo::PendingRemote<mojom::WebcompatReporterHandler>();
   }

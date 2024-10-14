@@ -13,7 +13,7 @@ void AttachBrowserAgents(Browser* browser) {
   SyncedWindowDelegateBrowserAgent::CreateForBrowser(browser);
 
   // Send Tab To Self is non-OTR only.
-  if (!browser->GetBrowserState()->IsOffTheRecord()) {
+  if (!browser->GetProfile()->IsOffTheRecord()) {
     SendTabToSelfBrowserAgent::CreateForBrowser(browser);
   }
 }

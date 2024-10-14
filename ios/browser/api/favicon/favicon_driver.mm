@@ -81,13 +81,13 @@ void FaviconDriverObserver::OnFaviconUpdated(
     web::WebState* real_web_state = [webState internalWebState].get();
     DCHECK(real_web_state);
 
-    ChromeBrowserState* original_browser_state =
-        ChromeBrowserState::FromBrowserState(real_web_state->GetBrowserState());
+    ProfileIOS* original_profile =
+        ProfileIOS::FromBrowserState(real_web_state->GetBrowserState());
 
     brave_favicon::BraveIOSWebFaviconDriver::CreateForWebState(
         real_web_state,
         ios::FaviconServiceFactory::GetForBrowserState(
-            original_browser_state, ServiceAccessType::EXPLICIT_ACCESS));
+            original_profile, ServiceAccessType::EXPLICIT_ACCESS));
   }
   return self;
 }

@@ -21,18 +21,17 @@ namespace brave_wallet {
 
 // static
 mojo::PendingRemote<mojom::MeldIntegrationService>
-MeldIntegrationServiceFactory::GetForBrowserState(
-    ChromeBrowserState* browser_state) {
+MeldIntegrationServiceFactory::GetForBrowserState(ProfileIOS* profile) {
   return static_cast<MeldIntegrationService*>(
-             GetInstance()->GetServiceForBrowserState(browser_state, true))
+             GetInstance()->GetServiceForBrowserState(profile, true))
       ->MakeRemote();
 }
 
 // static
 MeldIntegrationService* MeldIntegrationServiceFactory::GetServiceForState(
-    ChromeBrowserState* browser_state) {
+    ProfileIOS* profile) {
   return static_cast<MeldIntegrationService*>(
-      GetInstance()->GetServiceForBrowserState(browser_state, true));
+      GetInstance()->GetServiceForBrowserState(profile, true));
 }
 
 // static
@@ -51,9 +50,9 @@ MeldIntegrationServiceFactory::~MeldIntegrationServiceFactory() = default;
 std::unique_ptr<KeyedService>
 MeldIntegrationServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
-  auto* browser_state = ChromeBrowserState::FromBrowserState(context);
+  auto* profile = ProfileIOS::FromBrowserState(context);
   return std::make_unique<MeldIntegrationService>(
-      browser_state->GetSharedURLLoaderFactory());
+      profile->GetSharedURLLoaderFactory());
 }
 
 bool MeldIntegrationServiceFactory::ServiceIsNULLWhileTesting() const {

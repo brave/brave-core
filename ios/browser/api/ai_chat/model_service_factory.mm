@@ -14,16 +14,15 @@
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
 namespace ai_chat {
-ModelService* ModelServiceFactory::GetForBrowserState(
-    ChromeBrowserState* browser_state) {
+ModelService* ModelServiceFactory::GetForBrowserState(ProfileIOS* profile) {
   return static_cast<ModelService*>(
-      GetInstance()->GetServiceForBrowserState(browser_state, true));
+      GetInstance()->GetServiceForBrowserState(profile, true));
 }
 
 ModelService* ModelServiceFactory::GetForBrowserStateIfExists(
-    ChromeBrowserState* browser_state) {
+    ProfileIOS* profile) {
   return static_cast<ModelService*>(
-      GetInstance()->GetServiceForBrowserState(browser_state, false));
+      GetInstance()->GetServiceForBrowserState(profile, false));
 }
 
 ModelServiceFactory* ModelServiceFactory::GetInstance() {
