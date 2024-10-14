@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ipfs/buildflags/buildflags.gni")
+
 static_library("ipfs") {
   sources = [
     "ipfs_prefs.cc",
@@ -11,7 +13,16 @@ static_library("ipfs") {
     "ipfs_utils.h",
   ]
 
+  if (deprecate_ipfs) {
+    sources += [
+      "ipfs_common.h",
+      "ipfs_component_cleaner.cc",
+      "ipfs_component_cleaner.h",
+    ]
+  }
+
   deps = [
+    "buildflags",
     "//base",
     "//brave/components/filecoin/rs:rust_lib",
     "//components/base32",
@@ -19,12 +30,4 @@ static_library("ipfs") {
     "//net",
     "//url",
   ]
-
-  if (!is_android && !is_ios) {
-    sources += [
-      "ipfs_common.h",
-      "ipfs_component_cleaner.cc",
-      "ipfs_component_cleaner.h",
-    ]
-  }
 }
