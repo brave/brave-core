@@ -239,6 +239,18 @@ void AIChatService::DeleteConversation(const std::string& id) {
   OnConversationListChanged();
 }
 
+void AIChatService::RenameConversation(const std::string& id,
+                                       const std::string& new_name) {
+  ConversationHandler* conversation_handler =
+      conversation_handlers_.at(id).get();
+  if (!conversation_handler) {
+    return;
+  }
+
+  DVLOG(1) << "Renamed conversation " << id << " to '" << new_name << "'";
+  OnConversationTitleChanged(conversation_handler, new_name);
+}
+
 void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,
                                             mojom::PremiumStatus status,
                                             mojom::PremiumInfoPtr info) {
