@@ -51,6 +51,7 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3975865347033939965">Perkhidmatan penyegerakan tidak dapat dimulakan, Brave Sync tidak berjalan</translation>
 <translation id="4450893287417543264">Jangan tunjuk lagi</translation>
 <translation id="4595286989346610620">Semak butiran</translation>
+<translation id="8324318899000695659">Sekat elemen</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Buka menggunakan alamat .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Tampal Paksa</translation>
@@ -707,7 +708,7 @@ Leo. Tindakan ini tidak dapat dibuat asal.</translation>
 <translation id="7634775528597575156">Titik akhir pelayan</translation>
 <translation id="6374563306438145841">Kunci API</translation>
 <translation id="8008271349880309090">Nama model yang akan dipaparkan dalam menu pemilihan model</translation>
-<translation id="7131172845656551327">Nama model yang akan dipaparkan dalam permintaan kepada rangkai kerja pelayan, iaitu phi-3 (harap maklum bahawa jika nama ini tidak tepat-tepat sepadan dengan nama yang dijangkakan oleh rangkai kerja pelayan, penyepaduan tidak akan berfungsi)</translation>
+<translation id="1355326130503900056">Nama model sebagaimana yang sepatutnya dipaparkan dalam permintaan kepada rangka kerja penyediaan, contohnya, phi-3 (harap maklum bahawa jika nama ini tidak betul-betul sepadan dengan nama yang dijangkakan oleh rangka kerja penyediaan, penyepaduan tidak akan berfungsi)</translation>
 <translation id="3286410514484292784">Url tempat rangka kerja pelayan anda mendengar permintaan. Jika anda tidak pasti, semak dokumentasi rangkai kerja pelayan. Cth. untuk Ollama, url ini sentiasa http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Sesetengah rangkai kerja pelayan mungkin mengehendaki bukti kelayakan pengesahan, seperti kunci API atau token akses. Keperluan ini akan ditambahkan pada pengepala permintaan.</translation>
 <translation id="217141195370578385">Brave tidak menjadi perantara untuk permintaan ini, sila baca terma privasi penyedia yang dipilih.</translation>

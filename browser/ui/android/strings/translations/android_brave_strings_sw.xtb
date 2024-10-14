@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">Huonyesha mapendekezo ya tovuti kulingana na ualamishaji wako na historia ya kuvinjari.</translation>
 <translation id="924029461438529367">Onyesha mapendekezo ya utafutaji</translation>
 <translation id="1571106259128580884">Onyesha mapendekezo ya tovuti maarufu</translation>
+<translation id="6285118765755298263">Orodhesha mitambo mingine ya kutafuta</translation>
+<translation id="919715748352669592">Inaorodhesha kiotomatiki tovuti zinazofuata OpenSearch</translation>
 <translation id="9148058034647219655">Ondoka</translation>
 <translation id="8047754398610073499">Zuia taarifa za idhini ya vidakuzi</translation>
 <translation id="2621893359845808115">Huzuia madirisha ibukizi ya tovuti ambayo hukuomba kukubali/kukataa vidakuzi kwenye tovuti yao</translation>
@@ -740,7 +742,19 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="755448900483975096">Mtoa Huduma wa Simu ya Mkononi</translation>
 <translation id="1279441577056010362">Nenda kwenye Barua pepe</translation>
 <translation id="7125582363614011660">Usaidizi unatolewa kwa kusaidiwa na timu ya Guardian.\n\nTafadhali teua maelezo ambayo hungependa kushiriki nasi.\n\nKadri unavyoshiriki nasi maelezo zaidi mwanzoni ndivyo itakavyokuwa rahisi kwa wafanyakazi wetu wa usaidizi kukusaidia kusuluhisha tatizo lako</translation>
-<translation id="7999094850625689785">Eneo la seva lililo karibu nawe sana litateuliwa kiotomatiki, kulingana na saa za eneo za mfumo wako. Hii inapendekezwa ili kuhakikisha kuwa intaneti ina kasi ya haraka.</translation>
+<translation id="8813171284214934811">Chagua kiotomatiki eneo la seva ya VPN iliyo karibu nawe kulingana na saa za mahali ulipo. Chaguo hili linapendekezwa ili kuongeza kasi ya mtandao.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 { jiji <ph name="CITY_COUNT_ONE"/>- }
+          other {majiji <ph name="CITY_COUNT_MANY"/>- }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {seva <ph name="SERVER_COUNT_ONE"/>}
+          other {seva <ph name="SERVER_COUNT_MANY"/>}
+        }</translation>
+<translation id="3199127022143353223">Seva</translation>
+<translation id="5431902940483264007">Bora</translation>
+<translation id="6527596624419285047">Tumia seva bora zaidi inayopatikana</translation>
+<translation id="6789157560111825412">Seva Zinazopatikana</translation>
 <translation id="4397083831618200686">Chagua Tatizo</translation>
 <translation id="6687228121145903051">Haiwezi kuunganisha kwenye VPN (Hitilafu nyingine)</translation>
 <translation id="9184988385244077767">Hakuna intaneti inapounganishwa</translation>
@@ -808,7 +822,6 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="7358989216567322955">Ada ya Juu Zaidi ya Kipaumbele</translation>
 <translation id="9091334651803050473">Ingawa si hakikisho, wachimbaji migodi huenda wakaupa kipaumbele muamala wako ukilipa ada ya juu zaidi.</translation>
 <translation id="2941112035454246133">Chini</translation>
-<translation id="5431902940483264007">Bora</translation>
 <translation id="7304030187361489308">Juu</translation>
 <translation id="4853037749278079787">Ada ya juu zaidi: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Ada ya msingi ya sasa: Gwei <ph name="ASSET_VALUE"/></translation>

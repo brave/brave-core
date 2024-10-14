@@ -51,6 +51,7 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3975865347033939965">Usluga sinhronizacije nije mogla da se pokrene, Brave sinhronizacija ne radi</translation>
 <translation id="4450893287417543264">Ne prikazuj ponovo</translation>
 <translation id="4595286989346610620">Proverite detalje</translation>
+<translation id="8324318899000695659">Blokirati elemente</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Otvorite koristeći .onion adresu: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Prinudno nalepi</translation>
@@ -707,7 +708,7 @@ Leom. Ова радња се не може опозвати.</translation>
 <translation id="7634775528597575156">Крајња тачка сервера</translation>
 <translation id="6374563306438145841">API кључ</translation>
 <translation id="8008271349880309090">Назив модела онако како ће се појавити у менију за избор модела</translation>
-<translation id="7131172845656551327">Назив модела онако како би требало да се појави у захтеву за оквир за приказ, нпр. phi-3 (имајте у виду да интеграција неће радити ако овај назив не одговара тачно ономе што се очекује у оквиру за  приказ)</translation>
+<translation id="1355326130503900056">Naziv modela onako kako bi trebalo da se pojavi u zahtevu za okvir za prikaz, npr. phi-3 (imajte u vidu da integracija neće raditi ako ovaj naziv ne odgovara tačno onome što se očekuje u okviru za prikaz)</translation>
 <translation id="3286410514484292784">Url адрееса на којој ваш оквир за приказ слуша захтеве. Ако нисте сигурни, проверите документацију оквира за приказ. Нпр. за Ollama, то је увек http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Неки оквири за приказ могу захтевати податке за пријаву као што су API кључ или токен за приступ. Они ће бити додати у заглавље захтева.</translation>
 <translation id="217141195370578385">Brave не прослеђује ове захтеве, прочитајте услове приватности изабраног провајдера.</translation>

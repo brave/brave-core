@@ -2,6 +2,7 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="gl">
 <translation id="1001033507375626788">Esta rede compártese contigo</translation>
+<translation id="1001360573085135660">Fai clic para activar ou desactivar o permiso.</translation>
 <translation id="1002085272681738789">Pestana activa de novo</translation>
 <translation id="1003088604756913841">Abrir ligazón nunha nova ventá da aplicación <ph name="APP"/></translation>
 <translation id="100323615638474026">Dispositivo USB (<ph name="VENDOR_ID"/>: <ph name="PRODUCT_ID"/>)</translation>
@@ -15,7 +16,6 @@
 <translation id="1006873397406093306">Esta extensión pode ler e cambiar os teus datos nos sitios. Podes controlar os sitios aos que pode acceder a extensión.</translation>
 <translation id="1007057452468855774">Activar Google Play Store</translation>
 <translation id="1008186147501209563">Exportar marcadores</translation>
-<translation id="3901381663982727081">Por ese motivo Brave planea eliminar gradualmente o uso de cookies de terceiros unha vez que resolvamos todas as cuestións en materia de competencia formuladas pola <ph name="BEGIN_LINK"/>Competition and Markets Authority (CMA, o organismo británico que se encarga de regular os mercados e a competencia)<ph name="END_LINK"/>.</translation>
 <translation id="1008261151167010035">O <ph name="BRAND"/> lembrará a forma na que accedes e iniciará a túa sesión automaticamente cando sexa posible. Se esta opción está desactivada, pediráseche sempre unha confirmación.</translation>
 <translation id="1008544602823861396">non ten permitido usar a túa información en</translation>
 <translation id="1008557486741366299">Agora non</translation>
@@ -78,7 +78,6 @@
 <translation id="1049324577536766607">{COUNT,plural, =1{Recibindo <ph name="ATTACHMENTS"/> do dispositivo (<ph name="DEVICE_NAME"/>)}other{Recibindo <ph name="ATTACHMENTS"/> do dispositivo (<ph name="DEVICE_NAME"/>)}}</translation>
 <translation id="1049795001945932310">&amp;Configuración de idioma</translation>
 <translation id="1050693411695664090">Mala</translation>
-<translation id="1053776357096024725">Mellora o son do micrófono integrado con varios efectos</translation>
 <translation id="1054048317165655285">Finaliza a configuración no teléfono</translation>
 <translation id="1054153489933238809">Abrir imaxe orixinal na pestana nova</translation>
 <translation id="1054187194995068149">Ola. Esta á unha vista previa</translation>
@@ -148,7 +147,6 @@ Comproba os teus contrasinais cando queiras no <ph name="GOOGLE_PASSWORD_MANAGER
 <translation id="1093457606523402488">Redes visibles:</translation>
 <translation id="1093645050124056515">control + alt + frecha abaixo</translation>
 <translation id="1094219634413363886">Verás unha notificación se a gravación se inicia neste dispositivo xestionado</translation>
-<translation id="1095557482034465422">Revisa os permisos dos sitios en <ph name="BEGIN_LINK_PERMISSIONS"/><ph name="PERMISSIONS"/><ph name="END_LINK_PERMISSIONS"/></translation>
 <translation id="1095761715416917775">Asegúrate de poder acceder sempre aos teus datos sincronizados</translation>
 <translation id="1676423917671990874">Xestor de contrasinais de Brave na Web</translation>
 <translation id="109647177154844434">A desinstalación de Parallels Desktop eliminará a túa imaxe de Windows. Aquí inclúense as súas aplicacións, opcións de configuración e datos. Seguro que queres continuar?</translation>
@@ -239,7 +237,6 @@ Comproba os teus contrasinais cando queiras no <ph name="GOOGLE_PASSWORD_MANAGER
 <translation id="7442743521469696229">Usar e gardar contrasinais e claves de acceso da túa Conta de Brave</translation>
 <translation id="1166583374608765787">Revisa o cambio do nome</translation>
 <translation id="1166596238782048887"><ph name="TAB_TITLE"/> é do escritorio <ph name="DESK_TITLE"/></translation>
-<translation id="1167262726334064738">Proba un contrasinal novo</translation>
 <translation id="1168020859489941584">O ficheiro abrirase en <ph name="TIME_REMAINING"/>...</translation>
 <translation id="1168704243733734901">Tema de IA recente <ph name="INDEX"/> de <ph name="SUBJECT"/>. Estilo: <ph name="STYLE"/>. Estado de ánimo: <ph name="MOOD"/>.</translation>
 <translation id="116896278675803795">Cambiar automaticamente o idioma para que coincida co do contido seleccionado</translation>
@@ -272,7 +269,6 @@ Comproba os teus contrasinais cando queiras no <ph name="GOOGLE_PASSWORD_MANAGER
 <translation id="1183237619868651138">Non se pode instalar <ph name="EXTERNAL_CRX_FILE"/> na caché local.</translation>
 <translation id="1184037892196730210">Non se puido emitir a pantalla</translation>
 <translation id="1185924365081634987">Tamén podes intentar <ph name="GUEST_SIGNIN_LINK_START"/>navegar como invitado<ph name="GUEST_SIGNIN_LINK_END"/> para corrixir este erro de rede.</translation>
-<translation id="1187692277738768150">Cando uses e gardes este contrasinal:</translation>
 <translation id="1187722533808055681">Activacións desde o modo inactivo</translation>
 <translation id="1188807932851744811">Rexistro non cargado.</translation>
 <translation id="1190086046506744802">Moi separadas</translation>
@@ -284,11 +280,11 @@ Comproba os teus contrasinais cando queiras no <ph name="GOOGLE_PASSWORD_MANAGER
 <ph name="DOMAIN"/> require que manteñas a tarxeta intelixente inserida.}}</translation>
 <translation id="119330003005586565">Páxinas que liches</translation>
 <translation id="1193927020065025187">É posible que este sitio estea tentando enganarte para que permitas notificacións intrusivas</translation>
+<translation id="11947597112837849">enderezo de correo electrónico</translation>
 <translation id="1195210374336998651">Ir á configuración da aplicación</translation>
 <translation id="1195447618553298278">Erro descoñecido.</translation>
 <translation id="1195558154361252544">Bloquéanse automaticamente as notificacións para todos os sitios, excepto para os que permitas</translation>
 <translation id="1197088940767939838">Laranxa</translation>
-<translation id="1197185198920566650">Almacenarase no <ph name="GOOGLE_PASSWORD_MANAGER"/> para <ph name="EMAIL"/>.</translation>
 <translation id="11978075283960463">Datos almacenados na aplicación: <ph name="APP_SIZE"/></translation>
 <translation id="1198066799963193307">Ferramentas de voz para persoas con problemas de vista</translation>
 <translation id="119944043368869598">Borrar todo</translation>
@@ -349,7 +345,6 @@ Comproba os teus contrasinais cando queiras no <ph name="GOOGLE_PASSWORD_MANAGER
 <translation id="1238293488628890871">Queres cambiar de perfil?</translation>
 <translation id="1239594683407221485">Explora o contido do dispositivo na aplicación Ficheiros.</translation>
 <translation id="1239841552505950173">Iniciar aplicación</translation>
-<translation id="1240903469550363138">Para continuar, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> compartirá o teu nome, enderezo de correo electrónico e imaxe do perfil con este sitio. Consulta a <ph name="BEGIN_LINK1"/>política de privacidade<ph name="END_LINK1"/> e as <ph name="BEGIN_LINK2"/>condicións de servizo<ph name="END_LINK2"/> deste sitio.</translation>
 <translation id="1241066500170667906">Seleccionar o estado do experimento <ph name="EXPERIMENT_NAME"/></translation>
 <translation id="124116460088058876">Máis idiomas</translation>
 <translation id="1241381048229838873">Mostrar todos os marcadores</translation>
@@ -440,6 +435,7 @@ Comproba os teus contrasinais cando queiras no <ph name="GOOGLE_PASSWORD_MANAGER
 <translation id="1307431692088049276">Non preguntarme de novo</translation>
 <translation id="1307559529304613120">O sistema non puido almacenar o token de acceso á API de longo prazo para este dispositivo.</translation>
 <translation id="1308548450293664112">O ficheiro é creación miña, grupo de botóns de opción, 1 de 3</translation>
+<translation id="1310482092992808703">Agrupar pestanas</translation>
 <translation id="131112695174432497">Elimínanse os datos que repercuten na personalización dos anuncios</translation>
 <translation id="1311294419381837540">Estás emitindo unha pestana. Podes pór en pausa ou deter a emisión cando queiras.</translation>
 <translation id="1092870157695460112">Descubre a protección mellorada para dispor do máximo nivel de seguranza de Brave nas descargas</translation>
@@ -500,6 +496,7 @@ Comproba os teus contrasinais cando queiras no <ph name="GOOGLE_PASSWORD_MANAGER
 <translation id="1355088139103479645">Queres eliminar todos os datos?</translation>
 <translation id="1356376170199999104">Permiso concedido: <ph name="PERMISSION_DETAILS"/>. Usa o interruptor físico para activar o micrófono.</translation>
 <translation id="1356959069439783953">As pestanas inactivas teñen un novo deseño</translation>
+<translation id="1357766361161708728">Queres pechar as pestanas sen usar?</translation>
 <translation id="1358741672408003399">Ortografía e gramática</translation>
 <translation id="1359923111303110318">O dispositivo pode desbloquearse con Smart Lock. Preme Intro para desbloquealo.</translation>
 <translation id="1361164813881551742">Engadir impresora manualmente</translation>
@@ -555,6 +552,7 @@ Comproba os teus contrasinais cando queiras no <ph name="GOOGLE_PASSWORD_MANAGER
 <translation id="1401216725754314428">Máis información sobre sitios relacionados nunha pestana nova</translation>
 <translation id="1402426911829176748">Conectando co teu dispositivo</translation>
 <translation id="1403222014593521787">Non se puido establecer conexión co proxy</translation>
+<translation id="1405336513195181336">Esta opción aplicarase aos marcadores, ás extensións e ao teu historial de navegación dos sitios.</translation>
 <translation id="1405779994569073824">Produciuse un fallo.</translation>
 <translation id="1406500794671479665">Verificando...</translation>
 <translation id="1407069428457324124">Tema escuro</translation>
@@ -686,6 +684,7 @@ Pode que se lle apliquen a esta conta os permisos que xa lles concedeses ás apl
 <translation id="1486486872607808064">Escanea este código QR coa cámara do dispositivo no que queiras crear unha clave de acceso para <ph name="APP_NAME"/></translation>
 <translation id="1486616492435615702">Crea borradores ou púe o traballo que xa teñas feito.</translation>
 <translation id="1487335504823219454">Activado: configuración personalizada</translation>
+<translation id="1487905215557235729">A túa organización pode ver e xestionar os datos de navegación do teu perfil de traballo (como, por exemplo, os marcadores, o historial e os contrasinais).</translation>
 <translation id="1493892686965953381">Agardando por <ph name="LOAD_STATE_PARAMETER"/>...</translation>
 <translation id="1494349716233667318">Os sitios poden pedirche permiso para utilizar os tipos de letra instalados no dispositivo</translation>
 <translation id="1494429729245089920">A máquina virtual <ph name="VM_NAME"/> existe, pero parece que non é unha máquina virtual válida de <ph name="APP_NAME"/>. Fala coa persoa administradora.</translation>
@@ -910,7 +909,6 @@ Pode que se lle apliquen a esta conta os permisos que xa lles concedeses ás apl
     <ph name="BEGIN_PARAGRAPH2"/>Podes desactivar este servizo en Configuración.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="1637224376458524414">Accede a este marcador no iPhone</translation>
 <translation id="1637765355341780467">Produciuse un erro ao abrir o perfil. É posible que algunhas funcións non estean dispoñibles.</translation>
-<translation id="1637830036924985819">Ás veces os sitios usan cookies dunha maneira que non estaba prevista inicialmente</translation>
 <translation id="1639239467298939599">Cargando</translation>
 <translation id="1640235262200048077">Aínda non é compatible con aplicacións de Linux: <ph name="IME_NAME"/></translation>
 <translation id="1640283014264083726">PKCS #1 MD4 con cifrado RSA</translation>
@@ -979,7 +977,6 @@ Pode que se lle apliquen a esta conta os permisos que xa lles concedeses ás apl
 <translation id="168991973552362966">Engadir unha impresora que estea cerca</translation>
 <translation id="1689945336726856614">Copiar &amp;URL</translation>
 <translation id="1690068335127678634">Configuración da pantalla dividida</translation>
-<translation id="1690443285859726589">Axusta o límite de detección para poder activar comodamente o xesto</translation>
 <translation id="1692115862433274081">Utilizar outra conta</translation>
 <translation id="1692118695553449118">A sincronización está activada</translation>
 <translation id="1692210323591458290">Púrpura escuro</translation>
@@ -1029,7 +1026,6 @@ Pode que se lle apliquen a esta conta os permisos que xa lles concedeses ás apl
 <translation id="1720318856472900922">Autenticación do servidor TLS WWW</translation>
 <translation id="172123215662733643">Buscar imaxes con <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="1722460139690167654">O dominio <ph name="ENROLLMENT_DOMAIN"/> xestiona o teu dispositivo (<ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/><ph name="END_LINK"/>)</translation>
-<translation id="12216295917829487">Como axudan os datos a que Brave che funcione mellor?</translation>
 <translation id="1723824996674794290">&amp;Nova ventá</translation>
 <translation id="1724801751621173132">Modo de introdución de texto</translation>
 <translation id="1725562816265788801">Desprazamento polas pestanas</translation>
@@ -1056,7 +1052,6 @@ Pode que se lle apliquen a esta conta os permisos que xa lles concedeses ás apl
 <translation id="1743970419083351269">Pechar barra de descargas</translation>
 <translation id="1744108098763830590">páxina en segundo plano</translation>
 <translation id="1745732479023874451">Xestionar contactos</translation>
-<translation id="1746797507422124818">Os teus datos mentres navegas</translation>
 <translation id="1748283190377208783">{0,plural, =1{unused plural form}other{Queres abrir e editar # ficheiros nesta aplicación web?}}</translation>
 <translation id="1748329107062243374">Usa unha clave de acceso de <ph name="DEVICE_NAME"/> para iniciar sesión en <ph name="WEBSITE"/></translation>
 <translation id="1901235742643584247">Podes gardar este contrasinal na túa Conta de Brave ou só neste dispositivo</translation>
@@ -1194,9 +1189,11 @@ Pode que se lle apliquen a esta conta os permisos que xa lles concedeses ás apl
 <translation id="1838374766361614909">Borrar busca</translation>
 <translation id="1839021455997460752">O teu enderezo de correo electrónico</translation>
 <translation id="1839540115464516994">Mostrar en: <ph name="LOCATION"/></translation>
+<translation id="184050083485873615">Bota unha ollada e decide que facer</translation>
 <translation id="1841616161104323629">Falta o rexistro do dispositivo.</translation>
 <translation id="1841705068325380214">Desactivouse: <ph name="EXTENSION_NAME"/></translation>
 <translation id="184183613002882946">Non, continuar con 1 interruptor</translation>
+<translation id="1842681835432895345">Excluír esta pantalla no modo de espello</translation>
 <translation id="184273675144259287">Substitúe as aplicacións e os ficheiros de Linux por unha copia de seguranza creada anteriormente</translation>
 <translation id="1842766183094193446">Seguro que queres activar o modo de demostración?</translation>
 <translation id="1843048149176045210">Copiar ligazón de descarga</translation>
@@ -1397,6 +1394,7 @@ Pode que se lle apliquen a esta conta os permisos que xa lles concedeses ás apl
 <translation id="197989455406964291">O KDC non é compatible co tipo de encriptación</translation>
 <translation id="1980168597243156">Estación espacial</translation>
 <translation id="1981434377190976112">Ler todos os teus datos en todos os sitios web</translation>
+<translation id="1983074053702805575">{count,plural, =1{{field_1}}=2{{field_1} e {field_2}}other{{field_1}, {field_2} e {field_3}}}</translation>
 <translation id="1984417487208496350">Sen protección (non recomendado)</translation>
 <translation id="1986836014090708999">Configuración de localización avanzada</translation>
 <translation id="1987317783729300807">Contas</translation>
@@ -1415,6 +1413,7 @@ Pode que se lle apliquen a esta conta os permisos que xa lles concedeses ás apl
 <translation id="199610894463449797">{0,plural, =1{Pechar este perfil}other{Pechar este perfil (# ventás)}}</translation>
 <translation id="5123795870522389058">Para conectarse ao dispositivo, Brave precisa permiso para usar o Bluetooth</translation>
 <translation id="1997616988432401742">Os teus certificados</translation>
+<translation id="1998715278591719161">Permiso concedido para facer un seguimento das mans</translation>
 <translation id="1999115740519098545">No inicio</translation>
 <translation id="2002109485265116295">Tempo real</translation>
 <translation id="2002160221914907025">IA experimental</translation>
@@ -1564,6 +1563,7 @@ https://www.chromium.org/chromium-os/how-tos-and-troubleshooting/debugging-featu
 <translation id="2105809836724866556">Ocultouse <ph name="MODULE_TITLE"/></translation>
 <translation id="2108204112555497972">Comprobáronse hai <ph name="NUM_DAYS_HOURS_MINUTES"/></translation>
 <translation id="2108349519800154983">{COUNT,plural, =1{Número de teléfono}other{# números de teléfono}}</translation>
+<translation id="2109384632594340939">imaxe do perfil</translation>
 <translation id="2110941575868943054">Permiso concedido para buscar dispositivos Bluetooth</translation>
 <translation id="211144231511833662">Borrar tipos</translation>
 <translation id="2111670510994270194">Nova pestana á dereita</translation>
@@ -1581,6 +1581,7 @@ https://www.chromium.org/chromium-os/how-tos-and-troubleshooting/debugging-featu
 <translation id="211803431539496924">Queres confirmar as actualizacións de seguranza ampliadas?</translation>
 <translation id="2118594521750010466">Corrixir agora</translation>
 <translation id="2119461801241504254">A opción Navegación segura está activada e protéxete contra descargas e sitios daniños</translation>
+<translation id="2119602978828978573">Idiomas nos que se ofrecen os subtítulos instantáneos</translation>
 <translation id="2120297377148151361">Actividade e interaccións</translation>
 <translation id="2120639962942052471">Bloqueouse o permiso: <ph name="PERMISSION"/></translation>
 <translation id="2121055421682309734">{COUNT,plural, =0{Bloqueáronse as cookies}=1{Bloqueáronse as cookies (1 excepción)}other{Bloqueáronse as cookies ({COUNT} excepcións)}}</translation>
@@ -1604,14 +1605,12 @@ https://www.chromium.org/chromium-os/how-tos-and-troubleshooting/debugging-featu
 <translation id="2137128126782078222">Non permitir notificacións de <ph name="WEBSITE"/></translation>
 <translation id="2139919072249842737">Botón Configurar</translation>
 <translation id="2140788884185208305">Estado da batería</translation>
-<translation id="2140902257485550046">Seleccionar para bloquear todas as extensións neste sitio</translation>
 <translation id="2142328300403846845">Abrir ligazón como</translation>
 <translation id="9170678194652701692">Crear un PIN de recuperación de 6 díxitos para o xestor de contrasinais de Brave; díxito <ph name="NUM_DIGIT"/> de 6 do PIN</translation>
 <translation id="6699507173861768979">Activa <ph name="LINK1_BEGIN"/>Sincronización de Brave<ph name="LINK1_END"/> para ver as pestanas recentes de Brave. <ph name="LINK2_BEGIN"/>Máis información<ph name="LINK2_END"/></translation>
 <translation id="2143089736086572103">Visible para algúns contactos</translation>
 <translation id="2143765403545170146">Mostrar sempre a barra de ferramentas no modo de pantalla completa</translation>
 <translation id="2143778271340628265">Configuración manual do proxy</translation>
-<translation id="2143808295261240440">Usa o contrasinal recomendado</translation>
 <translation id="2143915448548023856">Configuración da pantalla</translation>
 <translation id="2144536955299248197">Visualizador de certificados: <ph name="CERTIFICATE_NAME"/></translation>
 <translation id="2144557304298909478">Programación de aplicacións para Android en Linux</translation>
@@ -1700,6 +1699,7 @@ https://www.chromium.org/chromium-os/how-tos-and-troubleshooting/debugging-featu
 <translation id="2421570739058774699">Para crear esta clave de acceso co xestor de contrasinais de Brave, verifica a túa identidade</translation>
 <translation id="2204387456724731099">Non se puido traducir o texto seleccionado</translation>
 <translation id="2207116775853792104">Manter esta extensión</translation>
+<translation id="2209841631181508629">Para continuar, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> compartirá con este sitio os seguintes datos: <ph name="FIELDS_STRING"/>. Consulta as <ph name="BEGIN_LINK"/>condicións de servizo<ph name="END_LINK"/> do sitio.</translation>
 <translation id="2210462644007531147">Non puido completarse a instalación</translation>
 <translation id="2211043920024403606">Información de perfil</translation>
 <translation id="2211245494465528624">Xestionar as opcións de sincronización</translation>
@@ -1778,7 +1778,6 @@ https://www.chromium.org/chromium-os/how-tos-and-troubleshooting/debugging-featu
 <translation id="2266957463645820432">Protocolo IPP por USB (IPPUSB)</translation>
 <translation id="2268130516524549846">Bluetooth desactivado</translation>
 <translation id="2268182915828370037">Queres desactivar a sincronización de ficheiros?</translation>
-<translation id="2269895253281481171">Recibirás unha notificación se algunha vez corre perigo</translation>
 <translation id="2270450558902169558">Intercambiar datos con calquera dispositivo do dominio <ph name="DOMAIN"/></translation>
 <translation id="2270612886833477697"><ph name="BEGIN_PARAGRAPH1"/>Coa instalación <ph name="BEGIN_BOLD"/>borrarase toda a unidade de disco duro<ph name="END_BOLD"/>. Asegúrate de ter copias de seguranza dos teus datos.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Unha vez que comeza a instalación, non se pode cancelar.<ph name="END_PARAGRAPH2"/></translation>
@@ -1956,6 +1955,7 @@ Se máis tarde decides que prefires que o teu fillo ou filla non utilice Voice M
 <translation id="2379281330731083556">Imprimir usando a caixa de diálogo do sistema... <ph name="SHORTCUT_KEY"/></translation>
 <translation id="2381461748765773292">Este proceso pode provocar que a rede de telefonía móbil se desconecte durante uns minutos</translation>
 <translation id="2381499968174336913">Vista previa da pestana compartida</translation>
+<translation id="2382368170666222719">Desactivar panel táctil integrado</translation>
 <translation id="2382875860893882175">A emisión está en pausa. Podes retomala ou detela en calquera momento.</translation>
 <translation id="2383825469508278924">Cambia as accións asignadas ás teclas, as teclas de función e moito máis</translation>
 <translation id="2387052489799050037">Ir á páxina de inicio</translation>
@@ -2046,12 +2046,6 @@ Se máis tarde decides que prefires que o teu fillo ou filla non utilice Voice M
 <translation id="2444874983932528148">Retoma facilmente a túa actividade onde a deixaches</translation>
 <translation id="2445081178310039857">É obrigatorio o directorio raíz da extensión.</translation>
 <translation id="2445484935443597917">Crear un novo perfil</translation>
-<translation id="4684615723024689090">Esta información pode ser útil. Por exemplo, pode axudarlle a Brave a mellorar ao entender a rapidez coa que se cargan as páxinas segundo as condicións. Ademais, segundo a configuración, esta información tamén pode servir para o seguinte:
-      &lt;ul&gt;
-        &lt;li&gt;Axudarche a navegar máis rápido. Por exemplo, as buscas que fixeses en Brave poden axudarlle a Brave a ofrecerche predicións para as buscas futuras.&lt;/li&gt;
-        &lt;li&gt;Permitir que os sitios optimicen a túa experiencia no teu dispositivo. Por exemplo, un sitio pode optimizar o seu contido para o teu teléfono móbil e lembrar as túas preferencias, como o teu idioma. &lt;/li&gt;
-        &lt;li&gt;Axudarlles aos anunciantes, como Brave, a mostrarche anuncios máis relevantes.&lt;/li&gt;
-      &lt;/ul&gt;</translation>
 <translation id="2445726032315793326">Lupa parcial</translation>
 <translation id="244641233057214044">Contido relacionado coa túa busca</translation>
 <translation id="2447587550790814052">Xa podes usar Steam para Chromebook (beta)</translation>
@@ -2096,6 +2090,7 @@ Se máis tarde decides que prefires que o teu fillo ou filla non utilice Voice M
 <translation id="247051149076336810">URL do sistema de ficheiros compartido</translation>
 <translation id="2471469610750100598">Negro (predeterminado)</translation>
 <translation id="2471506181342525583">Permitiuse o acceso á localización</translation>
+<translation id="2471632709106952369">Táboas de comparación</translation>
 <translation id="2473195200299095979">Traducir esta páxina</translation>
 <translation id="2475982808118771221">Produciuse un erro</translation>
 <translation id="247616523300581745">Ocultar estes ficheiros</translation>
@@ -2158,6 +2153,7 @@ Se máis tarde decides que prefires que o teu fillo ou filla non utilice Voice M
 <ph name="BREAK"/>
 Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións en Personalizar Brave.</translation>
 <translation id="2514326558286966059">Desbloquea o dispositivo máis rápido coa impresión dixital</translation>
+<translation id="2514465118223423406">Cando se conecte un rato</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="251722524540674480">Confirma o teu nome de usuario</translation>
 <translation id="2517472476991765520">Buscar</translation>
@@ -2177,6 +2173,7 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="2526590354069164005">Ordenador</translation>
 <translation id="2526619973349913024">Buscar actualizacións</translation>
 <translation id="2527167509808613699">Calquera tipo de conexión</translation>
+<translation id="2529459639389641691">{NUM_TABS,plural, =0{Non hai pestanas sen usar}=1{Pechar 1 pestana sen usar}other{Pechar # pestanas sen usar}}</translation>
 <translation id="2529887123641260401">Sempre podes cambiar as opcións ou abrir de novo a guía de configuración desde o menú de configuración de Acceso con interruptores.</translation>
 <translation id="2530166226437958497">Solución de problemas</translation>
 <translation id="2531530485656743109"><ph name="BEGIN_PARAGRAPH1"/>Produciuse un erro e <ph name="DEVICE_OS"/> non puido instalarse.<ph name="END_PARAGRAPH1"/>
@@ -2481,6 +2478,7 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="2749881179542288782">Comprobar a gramática e a ortografía</translation>
 <translation id="7507149186999809092">Máis opcións de configuración e permisos da aplicación Brave</translation>
 <translation id="2750602041558385535">Carga non verificada bloqueada</translation>
+<translation id="2751883373055093745"><ph name="WEBSITE"/> quere coñecer o número de identificación da túa chave de seguranza. O sitio saberá que chave de seguranza estás utilizando exactamente.</translation>
 <translation id="275213133112113418">Gardouse a tarxeta</translation>
 <translation id="2753623023919742414">Fai clic nun obxecto para buscalo</translation>
 <translation id="2754226775788136540">Buscando dispositivos de Vinculación rápida gardados en <ph name="PRIMARY_EMAIL"/></translation>
@@ -2535,6 +2533,7 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="2787354132612937472">—</translation>
 <translation id="2788135150614412178">+</translation>
 <translation id="2789486458103222910">Aceptar</translation>
+<translation id="2790750268015892264">As aplicacións web illadas non poderán controlar os lectores de tarxetas intelixentes. As aplicacións non obterán acceso a ningunha tarxeta intelixente.</translation>
 <translation id="2791529110887957050">Quitar Linux</translation>
 <translation id="2791952154587244007">Produciuse un erro. A aplicación de quiosco non poderá iniciarse automaticamente neste dispositivo.</translation>
 <translation id="2792290659606763004">Queres eliminar as aplicacións para Android?</translation>
@@ -2566,6 +2565,7 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="2806372837663997957">O dispositivo co que estás tentando compartir o ficheiro non o aceptou</translation>
 <translation id="2806891468525657116">O atallo xa existe</translation>
 <translation id="2807517655263062534">Os ficheiros que descargas aparecen aquí</translation>
+<translation id="2808481877345177494">Inicia sesión para separar de maneira segura a navegación persoal e a do traballo. Aumenta a produtividade mentres protexes os datos confidenciais da empresa.</translation>
 <translation id="2811205483104563968">Contas</translation>
 <translation id="2812049959647166806">A tecnoloxía Thunderbolt non é compatible</translation>
 <translation id="2812171980080389735">Redes e contrasinais gardados para que poidas conectarte ao instante</translation>
@@ -2575,7 +2575,6 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="2814489978934728345">Deixa de cargar esta páxina</translation>
 <translation id="2815693974042551705">Cartafol de marcadores</translation>
 <translation id="2576226373705473566">Activa a sincronización para gardar contrasinais na túa Conta de Brave.</translation>
-<translation id="2816628817680324566">Queres permitir que este sitio identifique a túa chave de seguranza?</translation>
 <translation id="2817435998497102771">Definir o teu estilo e fondo de pantalla</translation>
 <translation id="2817861546829549432">Ao activar "Non realizar seguimento" incluirase unha solicitude no teu tráfico de navegación. O efecto producido depende de se o sitio web responde á solicitude e da interpretación desta. Por exemplo, algúns sitios web poden responder a esta solicitude mostrándoche anuncios que non están baseados noutros sitios web que visitaches. Moitos sitios web seguirán recompilando e utilizando os teus datos de navegación para, por exemplo, mellorar a seguranza, fornecer contido, servizos, anuncios e recomendacións nos seus sitios web, e para crear estatísticas de informes.</translation>
 <translation id="2818476747334107629">Detalles da impresora</translation>
@@ -2600,7 +2599,6 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="2835177225987815960">Restablecerase a configuración actual de exploración, dentro da que se inclúen as asignacións de interruptores e as preferencias de velocidade da exploración automática.</translation>
 <translation id="2835547721736623118">Servizo de recoñecemento de voz</translation>
 <translation id="2835761321523638096">Ler e cambiar entradas na lista de lectura</translation>
-<translation id="2836232638504556905">Para continuar, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> compartirá o teu nome, enderezo de correo electrónico e imaxe do perfil con este sitio. Consulta a <ph name="BEGIN_LINK"/>política de privacidade<ph name="END_LINK"/> deste sitio.</translation>
 <translation id="2836269494620652131">Erro</translation>
 <translation id="283669119850230892">Para utilizar a rede <ph name="NETWORK_ID"/>, primeiro completa a túa conexión a Internet a continuación.</translation>
 <translation id="2838379631617906747">Instalando</translation>
@@ -2639,6 +2637,7 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="2864601841139725659">Definir a túa foto do perfil</translation>
 <translation id="2865057607286263192">Mantén premidas as teclas para ver os acentos e outros caracteres especiais. Esta opción desactiva a repetición de tecla premida no caso das letras do alfabeto. Só está dispoñible en inglés (EUA).</translation>
 <translation id="2865919525181940183">Captura de pantalla dos programas que se atopan actualmente na pantalla</translation>
+<translation id="286643536820867504">Xeraranse automaticamente subtítulos nos idiomas nos que se ofreza esta función. O audio non sairá do dispositivo.</translation>
 <translation id="286674810810214575">Comprobando fontes de alimentación…</translation>
 <translation id="2867768963760577682">Abrir como pestana fixada</translation>
 <translation id="2868746137289129307">Esta extensión é obsoleta e está desactivada pola política da empresa. Quizais se active automaticamente cando estea dispoñible unha nova versión.</translation>
@@ -2974,11 +2973,6 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="3113970906450647715">Deixouse de fixar o botón</translation>
 <translation id="3115147772012638511">Agardando pola caché...</translation>
 <translation id="3115580024857770654">Contraer todo</translation>
-<translation id="3115728370128632723">Se a Web funciona mellor para ti, contribúese ao seguinte:
-      &lt;ul&gt;
-        &lt;li&gt;Protexerte mentres navegas.&lt;/li&gt;
-        &lt;li&gt;Fomentar un ecosistema dinámico que protexe a Web e permite que sea aberta, rápida e sen custo económico.&lt;/li&gt;
-      &lt;/ul&gt;</translation>
 <translation id="8322945005389987780">Xestionar idioma da Conta de Brave</translation>
 <translation id="3117362587799608430">A base non é totalmente compatible</translation>
 <translation id="3117791853215125017">{COUNT,plural, =1{Produciuse un erro ao enviar <ph name="ATTACHMENTS"/> a este dispositivo: <ph name="DEVICE_NAME"/>}other{Produciuse un erro ao enviar <ph name="ATTACHMENTS"/> a este dispositivo: <ph name="DEVICE_NAME"/>}}</translation>
@@ -3059,6 +3053,7 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="3184591616546256659">Usa este PIN para cambiar a configuración dos controis parentais.
     Se esqueces o PIN, fai Powerwash neste dispositivo e configúrao de novo.</translation>
 <translation id="3185014249447200271">{NUM_APPS,plural, =1{Esta aplicación está bloqueada}other{Algunhas aplicacións están bloqueadas}}</translation>
+<translation id="3185454065699440434">Permitir extensións en <ph name="SITE_NAME"/></translation>
 <translation id="3187472288455401631">Medición de anuncios</translation>
 <translation id="7586329819243474001">Ves o dispositivo de emisión na
     <ph name="BEGIN_LINK"/>
@@ -3135,7 +3130,6 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="3247649647204519958">Desde aquí, podes ver e xestionar os permisos das extensións do sitio no que esteas</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/>: erro da rede</translation>
 <translation id="3248902735035392926">A seguranza é importante. Dedica un momento a <ph name="BEGIN_LINK"/>comprobar as túas extensións agora<ph name="END_LINK"/></translation>
-<translation id="3249323165366527554">Cando o teu contrasinal de <ph name="EMAIL"/> se garda automaticamente en <ph name="GOOGLE_PASSWORD_MANAGER"/>, podes rexistrarte e iniciar sesión máis rápido.</translation>
 <translation id="3251119461199395237">Sincronización de ficheiros</translation>
 <translation id="3251714896659475029">Permite que <ph name="SUPERVISED_USER_NAME"/> acceda ao Asistente de Brave ao dicir “Hey Brave”</translation>
 <translation id="3251759466064201842">&lt;Non forma parte do certificado&gt;</translation>
@@ -3225,6 +3219,7 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="3308852433423051161">Estase cargando o Asistente de Brave...</translation>
 <translation id="3309124184713871355">Estruturas</translation>
 <translation id="3309330461362844500">Identificador do perfil do certificado</translation>
+<translation id="331080746368555063">Os sitios privados poden incluír, por exemplo, a intranet da túa empresa</translation>
 <translation id="3311445899360743395">Os datos asociados a esta aplicación pódense quitar deste dispositivo.</translation>
 <translation id="3312470654018965389">Configurando o contedor de Linux</translation>
 <translation id="365826660749219377">Para realizar buscas nunha parte ou sitio específico de Brave, escribe o seu atallo na barra de enderezos, seguido do atallo de teclado que prefiras. Por exemplo, para facer buscas só en Marcadores, escribe "@marcadores" e despois preme Tabulador ou Espazo.</translation>
@@ -3251,11 +3246,14 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="3333190335304955291">Podes desactivar este servizo en Configuración.</translation>
 <translation id="3333961966071413176">Todos os contactos</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/>: reproducindo vídeo no modo de pantalla superposta</translation>
+<translation id="3335380372402547327">Previsualizar as notificacións con luz</translation>
 <translation id="3335947283844343239">Abrir de novo a pestana pechada</translation>
 <translation id="3336855445806447827">Non estou seguro</translation>
 <translation id="3337568642696914359">Non permitir que os sitios xestionen protocolos</translation>
+<translation id="333863344734218290">Recibir avisos dos sitios públicos e privados pouco seguros</translation>
 <translation id="3340620525920140773">Completouse a descarga: <ph name="FILE_NAME"/>.</translation>
 <translation id="3340978935015468852">configuración</translation>
+<translation id="2462927274144730162">Brave pode crear e traducir subtítulos para os idiomas que se mostran a continuación</translation>
 <translation id="3341699307020049241">O PIN é incorrecto. Quédanche <ph name="RETRIES"/> intentos.</translation>
 <translation id="3341703758641437857">Permitir acceso aos URL dos ficheiros</translation>
 <translation id="334171495789408663">Token copiado</translation>
@@ -3383,13 +3381,11 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="3435738964857648380">Seguranza</translation>
 <translation id="343578350365773421">Non hai papel</translation>
 <translation id="3435896845095436175">Activar</translation>
-<translation id="3436545938885366107">Imaxina que tes unha cafetaría favorita na que tomas o café polas mañás. Quizais sexas un cliente tan habitual que a persoa propietaria saiba o teu nome e che poña, xusto cando entras pola porta, o que pides normalmente, un café dobre cun só azucre.</translation>
 <translation id="3438633801274389918">Ninja</translation>
 <translation id="3439153939049640737">Permitir sempre a <ph name="HOST"/> acceder ao teu micrófono</translation>
 <translation id="3439970425423980614">Abrindo PDF en vista previa</translation>
 <translation id="3440663250074896476">Máis accións en relación co marcador <ph name="BOOKMARK_NAME"/></translation>
 <translation id="3441653493275994384">Pantalla</translation>
-<translation id="3441663102605358937">Inicia sesión en <ph name="ACCOUNT"/> de novo para verificar esta conta</translation>
 <translation id="3338111307694111747">Permitir que Brave use os datos do hardware para axudar a mellorar <ph name="DEVICE_OS"/>. Se non dás o teu permiso, estes datos enviaránselle a Brave de todas as formas co obxecto de determinar as actualizacións necesarias, pero non se almacenarán nin se utilizarán con outros fins.</translation>
 <translation id="3443545121847471732">Pon un PIN de 6 díxitos</translation>
 <translation id="3443744348829035122">Esgotouse o tempo de espera de <ph name="BRAND"/></translation>
@@ -3411,6 +3407,7 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="3450157232394774192">Porcentaxe de ocupación de estado de inactividade</translation>
 <translation id="3450180775417907283"><ph name="MANAGER"/> require que te conectes agora á wifi e descargues unha actualización.</translation>
 <translation id="345078987193237421">Desta forma, as aplicacións, sitios web co permiso correspondente e os servizos do sistema poderán acceder á cámara</translation>
+<translation id="3451362021220965191">As aplicacións web illadas controlarán os lectores para obter acceso ás tarxetas intelixentes que se lles insiran ou se lles pasen por enriba. As tarxetas intelixentes normalmente conteñen identidades que se utilizan para autenticar ou autorizar operacións, iniciar sesión en servizos etc.</translation>
 <translation id="3452999110156026232">Acceso parental</translation>
 <translation id="3453082738208775226">Queres liberar espazo de almacenamento sen conexión?</translation>
 <translation id="3453597230179205517">O acceso á localización está bloqueado</translation>
@@ -3454,6 +3451,7 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="3484869148456018791">Obter novo certificado</translation>
 <translation id="3487007233252413104">función anónima</translation>
 <translation id="3487649228420469005">Completouse a análise</translation>
+<translation id="3488199663160411179">nome</translation>
 <translation id="3490695139702884919">Descargando… <ph name="PERCENT"/> %</translation>
 <translation id="3491669675709357988">A conta do teu fillo ou filla non está configurada para os controis parentais de Family Link. Podes engadilos unha vez rematada a configuración. Atoparás información ao respecto na aplicación Explorar.</translation>
 <translation id="3491678231052507920">Os sitios adoitan usar os datos e dispositivos de realidade virtual para permitirche acceder a sesións de RV</translation>
@@ -3504,6 +3502,7 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="3521606918211282604">Cambiar tamaño do disco</translation>
 <translation id="3522088408596898827">Queda pouquísimo espazo no disco. Libera espazo e téntao de novo.</translation>
 <translation id="3522979239100719575">Buscando perfís dispoñibles. Esta acción pode tardar uns minutos.</translation>
+<translation id="3523447078673133727">Non permitir que os sitios fagan un seguimento das mans</translation>
 <translation id="3524518036046613664">Descubrir dispositivos (por exemplo, impresoras) na túa rede local</translation>
 <translation id="3524965460886318643">Exportar actividades</translation>
 <translation id="3525426269008462093">Revisar sincronización do dispositivo despois da configuración</translation>
@@ -3596,6 +3595,7 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="3596012367874587041">Axustes da aplicación</translation>
 <translation id="3599221874935822507">Elevada</translation>
 <translation id="3600051066689725006">Información sobre solicitudes web</translation>
+<translation id="3600956933576601730">Revisa e acepta as condicións para poder usar estas funcións</translation>
 <translation id="3601374594714740284">Para descargar voces de alta calidade, libera espazo no teu dispositivo</translation>
 <translation id="360180734785106144">Ofrecerche funcións novas a medida que estean dispoñibles</translation>
 <translation id="3602290021589620013">Previsualizar</translation>
@@ -3699,6 +3699,7 @@ https://allthings.how/content/images/wordpress/2023/02/allthings.how-how-to-make
 <translation id="2334029754052191847">Brave detectou que outro programa danou algunhas opcións de configuración e restableceunas aos valores predeterminados orixinais.</translation>
 <translation id="3665919494326051362">A versión actual é <ph name="CURRENT_VERSION"/></translation>
 <translation id="3666196264870170605">Baleirado de depuración para Intel Wifi NICs</translation>
+<translation id="3666529246018937077">Os datos de navegación actuais permanecerán no teu perfil antigo. O teu perfil de traballo non conterá ningún dato de navegación anterior.</translation>
 <translation id="3666971425390608309">Descarga en pausa: <ph name="FILE_NAME"/>.</translation>
 <translation id="3670113805793654926">Dispositivos de calquera provedor</translation>
 <translation id="3670229581627177274">Activar Bluetooth</translation>
@@ -3766,6 +3767,7 @@ https://allthings.how/content/images/wordpress/2023/02/allthings.how-how-to-make
 <translation id="3708295717182051206">Subtítulos</translation>
 <translation id="3708684582558000260">Non permitir que os sitios pechados rematen de enviar nin de recibir datos</translation>
 <translation id="3709244229496787112">Pechouse o navegador antes de completar a descarga.</translation>
+<translation id="3710501561113687889">Para continuar, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> compartirá con este sitio os seguintes datos: <ph name="FIELDS_STRING"/>.</translation>
 <translation id="3711931198657368127">Pegar e ir a <ph name="URL"/></translation>
 <translation id="3711945201266135623">Atopáronse <ph name="NUM_PRINTERS"/> impresoras no servidor de impresión</translation>
 <translation id="3712050472459130149">É necesario actualizar a conta</translation>
@@ -3967,6 +3969,7 @@ Pode tratarse de información sobre o software instalado, os ficheiros, o explor
 <translation id="3828953470056652895">Lin e acepto as <ph name="BEGIN_LINK1"/>Condicións de servizo de Brave<ph name="END_LINK1"/>, as <ph name="BEGIN_LINK2"/>Condicións de servizo adicionais de Brave e ChromeOS<ph name="END_LINK2"/> e as <ph name="BEGIN_LINK3"/>Condicións de servizo de Play<ph name="END_LINK3"/>.</translation>
 <translation id="3829530269338026191"><ph name="WINDOW_TITLE"/> - Uso elevado da memoria - <ph name="MEMORY_VALUE"/></translation>
 <translation id="3829765597456725595">Sistema de ficheiros compartido SMB</translation>
+<translation id="38298897782945211">As aplicacións web illadas seguirán automaticamente esta opción de configuración.</translation>
 <translation id="3830470485672984938">Usar outra clave de acceso</translation>
 <translation id="3830654885961023588">{NUM_EXTENSIONS,plural, =1{O teu administrador activou de novo 1 extensión potencialmente daniña}other{O teu administrador activou de novo {NUM_EXTENSIONS} extensións potencialmente daniñas}}</translation>
 <translation id="3834728400518755610">Para cambiar a configuración do micrófono é necesario pechar Linux. Péchao para continuar.</translation>
@@ -3980,6 +3983,7 @@ Pode tratarse de información sobre o software instalado, os ficheiros, o explor
 <translation id="3839516600093027468">Impedir sempre que o host <ph name="HOST"/> vexa o contido do portapapeis</translation>
 <translation id="3841282988425489367">Non se puido configurar Steam para Chromebook (beta)</translation>
 <translation id="3841319830220785495">Voz natural predeterminada</translation>
+<translation id="3841356782900714251">Lectores de tarxetas intelixentes</translation>
 <translation id="3841964634449506551">O contrasinal non é válido</translation>
 <translation id="3842552989725514455">Tipo de letra Serif</translation>
 <translation id="3843464315703645664">Lista de entidades permitidas internamente</translation>
@@ -4111,7 +4115,6 @@ Pode tratarse de información sobre o software instalado, os ficheiros, o explor
 <translation id="3937640725563832867">Nome alternativo do emisor do certificado</translation>
 <translation id="3937734102568271121">Traducir sempre o <ph name="LANGUAGE"/></translation>
 <translation id="3938128855950761626">Dispositivos do provedor <ph name="VENDOR_ID"/></translation>
-<translation id="3939622756852381766">Crea subtítulos automaticamente para o contido de audio e de vídeo</translation>
 <translation id="3941565636838060942">Para ocultar o acceso a este programa, debes desinstalalo usando
   <ph name="CONTROL_PANEL_APPLET_NAME"/> no Panel de control.
 
@@ -4178,7 +4181,6 @@ Pode tratarse de información sobre o software instalado, os ficheiros, o explor
 <translation id="3983769721878416534">Atraso antes de facer clic</translation>
 <translation id="3984135167056005094">Non incluír enderezo de correo electrónico</translation>
 <translation id="3984159763196946143">Non se puido iniciar o modo de demostración</translation>
-<translation id="3984431586879874039">Queres permitir que este sitio vexa a túa chave de seguranza?</translation>
 <translation id="3984536049089846927">Páxina seguinte</translation>
 <translation id="398477389655464998">Copiar ligazón ao texto destacado</translation>
 <translation id="3984862166739904574">Definición de Respostas rápidas</translation>
@@ -4188,6 +4190,7 @@ Pode tratarse de información sobre o software instalado, os ficheiros, o explor
 <translation id="3987993985790029246">Copiar ligazón</translation>
 <translation id="3988124842897276887">Esta pestana está conectada a un dispositivo USB</translation>
 <translation id="3988996860813292272">Selecciona un fuso horario</translation>
+<translation id="3989635538409502728">Pechar sesión</translation>
 <translation id="3991055816270226534">Xestiona as cookies de terceiros e as proteccións contra o rastrexo</translation>
 <translation id="3991746210745534318"><ph name="BEGIN_PARAGRAPH1"/>Cando está activada a opción Precisión da localización, a información dos sinais sen fíos (os puntos de acceso wifi, as torres das redes de telefonía móbil…) e os datos dos sensores do dispositivo, como o acelerómetro e o xiroscopio, utilízanse para calcular con maior exactitude onde está dispositivo, un dato que empregan os servizos e as aplicacións para Android para ofrecer funcións baseadas na localización. Con este fin, Brave recompila periodicamente a información captada polos sensores e os sinais sen fíos que estean preto deste dispositivo para obter con participación colectiva as localizacións deses sinais.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Brave usa a información recollida deste dispositivo para mellorar a precisión da localización e os servizos baseados nela, así como para perfeccionar, proporcionar e manter os servizos de Brave en xeral. Procesamos esta información, que non se usará para identificar a ninguén, en función dos intereses lexítimos de Brave e de terceiros coa finalidade de satisfacer as necesidades dos usuarios.<ph name="END_PARAGRAPH2"/>
@@ -4348,7 +4351,6 @@ Pode tratarse de información sobre o software instalado, os ficheiros, o explor
 <translation id="4106054677122819586">Vamos organizar as túas pestanas</translation>
 <translation id="4107048419833779140">Identificar e expulsar dispositivos de almacenamento</translation>
 <translation id="4107522742068568249">Ir a Comprobación de seguranza</translation>
-<translation id="4108692279517313721">Recibir avisos de todos os sitios pouco seguros</translation>
 <translation id="4109135793348361820">Mover ventá a <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
 <translation id="4110485659976215879">Restaurar advertencia</translation>
 <translation id="4112194537011183136"><ph name="DEVICE_NAME"/> (sen conexión)</translation>
@@ -4363,6 +4365,7 @@ Pode tratarse de información sobre o software instalado, os ficheiros, o explor
 Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións en Personalizar Brave.</translation>
 <translation id="4115002065223188701">A rede está fóra de alcance</translation>
 <translation id="4115378294792113321">Maxenta</translation>
+<translation id="4116480382905329353">Detectado unha vez</translation>
 <translation id="4116704186509653070">Abrir de novo</translation>
 <translation id="4117714603282104018">Resposta háptica a través do panel táctil</translation>
 <translation id="4118579674665737931">Reinicia o dispositivo e téntao de novo.</translation>
@@ -4432,6 +4435,7 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="4181841719683918333">Idiomas</translation>
 <translation id="4182339886482390129">Navegación segura mellorada é máis eficaz á hora de protexerte de descargas, sitios web e extensións perigosos</translation>
 <translation id="4184803915913850597">Dispositivo HID (<ph name="VENDOR_ID"/>: <ph name="PRODUCT_ID"/>)</translation>
+<translation id="418527077671811642"><ph name="WEBSITE"/> aprenderá a marca e o modelo da túa chave de seguranza</translation>
 <translation id="4186749321808907788"><ph name="QUERY_NAME"/>: Busca de <ph name="DEFAULT_SEARCH_ENGINE_NAME"/></translation>
 <translation id="4187424053537113647">Configurando <ph name="APP_NAME"/>…</translation>
 <translation id="4190446002599583608">Buscas no historial con tecnoloxía de IA</translation>
@@ -4505,7 +4509,6 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="4243624244759495699"><ph name="LOCALE"/>, grao <ph name="GRADE"/></translation>
 <translation id="4244238649050961491">Buscar máis aplicacións de lapis óptico</translation>
 <translation id="4246980464509998944">Comentarios adicionais:</translation>
-<translation id="424726838611654458">Abrir sempre en Adobe Reader</translation>
 <translation id="4248401726442101648">Non hai ningunha cámara conectada</translation>
 <translation id="4249116869350613769">Aforro de batería</translation>
 <translation id="4249248555939881673">Esperando conexión de rede...</translation>
@@ -4559,6 +4562,7 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="4278779213160967034">Este proceso pode tardar uns minutiños. Descargando ficheiros.</translation>
 <translation id="4279129444466079448">Podes instalar ata <ph name="PROFILE_LIMIT"/> perfís de eSIM neste dispositivo. Para engadir outro perfil, primeiro quita un que xa teñas.</translation>
 <translation id="4280325816108262082">O dispositivo desconectarase automaticamente cando se atope apagado ou non se estea utilizando</translation>
+<translation id="4281412694055934031">Os sitios poden solicitar permiso para instalar aplicacións web no teu dispositivo</translation>
 <translation id="4281789858103154731">Crear</translation>
 <translation id="4281844954008187215">Condicións de servizo</translation>
 <translation id="4281849573951338030">Personalizar botóns do lapis</translation>
@@ -4729,7 +4733,6 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="4405781821077215583">Reduce ou amplía os elementos da pantalla, como o texto</translation>
 <translation id="4406308048672435032">Podes desactivar esta pestana ou actualizar a páxina para ver a lista completa de novo</translation>
 <translation id="4406883609789734330">Subtítulos instantáneos</translation>
-<translation id="4407039574263172582">Para continuar, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> compartirá o teu nome, enderezo de correo electrónico e imaxe do perfil con este sitio. Consulta as <ph name="BEGIN_LINK"/>condicións de servizo<ph name="END_LINK"/> deste sitio.</translation>
 <translation id="4408599188496843485">A&amp;xuda</translation>
 <translation id="4409271659088619928">O teu motor de busca é <ph name="DSE"/>. En caso aplicable, consulta as súas instrucións para eliminar o historial de busca.</translation>
 <translation id="4409697491990005945">Marxes</translation>
@@ -4763,7 +4766,9 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="4426508677408162512">Todos os marcadores</translation>
 <translation id="4426513927906544654">Recibir recomendacións de contido</translation>
 <translation id="4426857487270413362">Non se puideron descargar os ficheiros do instalador. Comproba a túa conexión a Internet, asegúrate de que tes suficiente espazo no disco e téntao de novo. O código de erro é <ph name="ERROR"/>.</translation>
+<translation id="4427111270137140798">Detectado <ph name="COUNT"/> veces</translation>
 <translation id="4427365070557649936">Verificando código de confirmación…</translation>
+<translation id="4428579202668721841">Queres manter os datos de navegación separados do teu perfil de traballo?</translation>
 <translation id="4429163740524851942">Deseño do teclado físico</translation>
 <translation id="4430019312045809116">Volume</translation>
 <translation id="443031431654216610">Utiliza só díxitos</translation>
@@ -4828,7 +4833,6 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="4481448477173043917">O teu dispositivo (<ph name="DEVICE_TYPE"/>) reiniciouse de xeito inesperado</translation>
 <translation id="4481467543947557978">service worker</translation>
 <translation id="4482990632723642375">Pestana pechada recentemente</translation>
-<translation id="7799508326030156990">Grazas a Brave, podes gozar dun mellor funcionamento da Web</translation>
 <translation id="4486333480498805415">Precisión da localización</translation>
 <translation id="4487489714832036847">Os Chromebooks utilizan aplicacións en lugar de software tradicional. Obtén aplicacións de produtividade, entretemento e moito máis.</translation>
 <translation id="4488257340342212116">Permiso concedido para usar a cámara</translation>
@@ -5003,6 +5007,7 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="4612841084470706111">Conceder acceso a todos os sitios solicitados.</translation>
 <translation id="4613144866899789710">Cancelando instalación de Linux…</translation>
 <translation id="4613271546271159013">Unha extensión cambiou a páxina que se mostra ao abrir unha pestana nova.</translation>
+<translation id="461613135510474570">Frase</translation>
 <translation id="461661862154729886">Fonte de alimentación</translation>
 <translation id="4617001782309103936">PIN demasiado curto</translation>
 <translation id="4617270414136722281">Opcións de extensión</translation>
@@ -5398,8 +5403,10 @@ Se queres afastala, usa Control + Alt + Reducir brillo.</translation>
 <translation id="490031510406860025">Non se permite neste sitio</translation>
 <translation id="490051679772058907"><ph name="REFRESH_RATE"/> Hz: liñas entrelazadas</translation>
 <translation id="4900652253009739885">Non se pode quitar o único interruptor que ten asignada a acción Seleccionar. Preme calquera tecla para <ph name="RESPONSE"/>.</translation>
+<translation id="4900908761825556116">Non permitir que os sitios instalen aplicacións web no teu dispositivo</translation>
 <translation id="4901154724271753917">Despregar as pestanas pechadas recentemente</translation>
 <translation id="4901309472892185668">Seleccionar estado do experimento <ph name="EXPERIMENT_NAME"/>.</translation>
+<translation id="4902675024946078396">Non, movelos ao perfil de traballo</translation>
 <translation id="49027928311173603">A política descargada do servidor non é válida: <ph name="VALIDATION_ERROR"/>.</translation>
 <translation id="4903967893652864401">Desta forma afórrase batería limitando as actividades en segundo plano e os efectos visuais, como o desprazamento suave.</translation>
 <translation id="4906490889887219338">Configurar ou xestionar sistemas de ficheiros compartidos en rede. <ph name="LINK_BEGIN"/>Máis información<ph name="LINK_END"/></translation>
@@ -5418,6 +5425,7 @@ Se queres afastala, usa Control + Alt + Reducir brillo.</translation>
 <translation id="4918086044614829423">Aceptar</translation>
 <translation id="4918134162946436591">Mostrar superposición de suxestións</translation>
 <translation id="4918762404810341788">Copiar e abrir</translation>
+<translation id="4918844574251943176">Copiouse a imaxe</translation>
 <translation id="4921348630401250116">Conversión de texto a voz</translation>
 <translation id="1298471559729553235">Para poder usar o xestor de contrasinais co teu sistema operativo, reinicia Brave e permite o acceso ao xestor de contrasinais do teu ordenador. Despois do reinicio volverán abrirse as pestanas.</translation>
 <translation id="492299503953721473">Eliminar aplicacións para Android</translation>
@@ -5428,7 +5436,6 @@ Se queres afastala, usa Control + Alt + Reducir brillo.</translation>
 <translation id="4925320384394644410">Os teus portos aparecerán aquí</translation>
 <translation id="49265687513387605">Non se puido emitir a pantalla. Comproba se confirmaches a solicitude para empezar a compartila.</translation>
 <translation id="4927753642311223124">Non hai ningunha notificación.</translation>
-<translation id="4928629450964837566">Usa un contrasinal máis seguro</translation>
 <translation id="4929120497462893830">Copiouse o hash no portapapeis</translation>
 <translation id="4929386379796360314">Destinos de impresión</translation>
 <translation id="4930406318748549391">Posición do panel lateral</translation>
@@ -5530,7 +5537,6 @@ Se queres afastala, usa Control + Alt + Reducir brillo.</translation>
 <translation id="5015344424288992913">Resolvendo proxy...</translation>
 <translation id="5016305686459575361">Se conectas o teléfono, poderás usar as seguintes funcións:</translation>
 <translation id="5016491575926936899">Podes enviar mensaxes de texto desde o ordenador, compartir a conexión a Internet, responder cando recibas notificacións de conversas e desbloquear o dispositivo <ph name="DEVICE_TYPE"/> co teléfono.<ph name="FOOTNOTE_POINTER"/> <ph name="LINK_BEGIN"/>Máis información<ph name="LINK_END"/></translation>
-<translation id="5016983299133677671">Proba un contrasinal novo</translation>
 <translation id="5017250179386090956">Descargando ficheiros de anotación do nó principal</translation>
 <translation id="5017529052065664584">Últimos 15 minutos</translation>
 <translation id="5018207570537526145">Abrir sitio web da extensión</translation>
@@ -5576,6 +5582,7 @@ Se queres afastala, usa Control + Alt + Reducir brillo.</translation>
 <translation id="5052853071318006357">Fai clic co botón dereito nunha pestana e selecciona Engadir pestana ao novo grupo</translation>
 <translation id="5053233576223592551">Engadir nome de usuario</translation>
 <translation id="505347685865235222">Grupo sen nome: <ph name="GROUP_CONTENT_STRING"/></translation>
+<translation id="5054634168672649013">{COUNT,plural, =1{Recomendámosche que o cambies agora}other{Recomendámosche que os cambies agora}}</translation>
 <translation id="5056950756634735043">Conectando co contedor</translation>
 <translation id="5057110919553308744">Cando fagas clic na extensión</translation>
 <translation id="5057127674016624293">A exploración está levando máis tempo do normal</translation>
@@ -5676,6 +5683,7 @@ Se queres afastala, usa Control + Alt + Reducir brillo.</translation>
 <translation id="5120886753782992638">Fai clic aquí para visitar <ph name="APPROVED_URL"/></translation>
 <translation id="5121052518313988218">Xa non se admite o sistema operativo do teu contedor de Linux. Deixará de recibir actualizacións de seguranza e correccións de erros, e as funcións que agora mesmo funcionan poderían deixar de facelo inesperadamente. Para seguir utilizando Linux, actualiza o contedor á última versión.</translation>
 <translation id="5121130586824819730">O teu disco duro está cheo. Garda o ficheiro noutra localización ou libera espazo no disco duro.</translation>
+<translation id="5121803000325086087">As aplicacións web illadas poderán pedir permiso para controlar os lectores de tarxetas intelixentes. As aplicacións obterán acceso ás tarxetas intelixentes que se atopen nos lectores baixo o seu control.</translation>
 <translation id="5123433949759960244">Baloncesto</translation>
 <translation id="5125714798187802869">Activar</translation>
 <translation id="5125751979347152379">URL non válido.</translation>
@@ -5691,7 +5699,6 @@ Se queres afastala, usa Control + Alt + Reducir brillo.</translation>
 <translation id="5130080518784460891">Eten</translation>
 <translation id="5130675701626084557">Non se puido descargar o perfil. Téntao de novo máis tarde ou ponte en contacto co operador para obter axuda.</translation>
 <translation id="5131591206283983824">Acción de tocar e arrastrar no panel táctil</translation>
-<translation id="5132130020119156609">As cookies son unha maneira de que os sitios, en función dos seus permisos, poidan almacenar información sobre a túa actividade en liña.</translation>
 <translation id="5135533361271311778">Non se puido crear o elemento do marcador.</translation>
 <translation id="513555878193063507">Engadir novo APN</translation>
 <translation id="5136343472380336530">Asegúrate de que os dous dispositivos estean desbloqueados, preto un do outro e co Bluetooth activado. <ph name="LINK_BEGIN"/>Máis información<ph name="LINK_END"/></translation>
@@ -5716,7 +5723,6 @@ Se queres afastala, usa Control + Alt + Reducir brillo.</translation>
 <translation id="5147097165869384760">Estás buscando a páxina do sistema operativo? Visita <ph name="BEGIN_LINK"/><ph name="CHROME_ABOUT_SYS_LINK"/><ph name="END_LINK"/>.</translation>
 <translation id="5147113439721488265">Recomendación</translation>
 <translation id="5147516217412920887">Sigue as instrucións do teléfono para verificar o código</translation>
-<translation id="5147992672778369947">Usa o contrasinal recomendado</translation>
 <translation id="5148285448107770349">O contrasinal debe ter, como mínimo, 8 caracteres</translation>
 <translation id="5149602533174716626">Copia&amp;r fotograma de vídeo</translation>
 <translation id="5150254825601720210">Nome do servidor SSL de certificados Netscape</translation>
@@ -5736,17 +5742,10 @@ Se queres afastala, usa Control + Alt + Reducir brillo.</translation>
 <translation id="5160857336552977725">Inicia sesión no teu <ph name="DEVICE_TYPE"/></translation>
 <translation id="5161251470972801814">Dispositivos USB de <ph name="VENDOR_NAME"/></translation>
 <translation id="5161442190864186925">Unirse ao encontro</translation>
-<translation id="7751424777632461902">Cal é a diferencia entre o historial de navegación de Brave e o historial de busca?</translation>
 <translation id="5162905305237671850">Bloqueouse o <ph name="DEVICE_TYPE"/></translation>
 <translation id="5163910114647549394">A pestana moveuse ao final da franxa de pestanas</translation>
 <translation id="5164530241085602114">Non se permiten notificacións para <ph name="SITE"/></translation>
 <translation id="516747639689914043">Protocolo de Transferencia de Hipertexto (HTTP)</translation>
-<translation id="5170299781084543513">Cando atopas un sitio que queres explorar, decides mediante os seus permisos se pode usar determinadas funcións, por exemplo:
-      &lt;ul&gt;
-        &lt;li&gt;Usar a cámara, a localización e o micrófono do dispositivo.&lt;/li&gt;
-        &lt;li&gt;Almacenar datos no dispositivo.&lt;/li&gt;
-        &lt;li&gt;Fornecer funcións do sitio, como notificacións.&lt;/li&gt;
-      &lt;/ul&gt;</translation>
 <translation id="5170568018924773124">Mostrar no cartafol</translation>
 <translation id="5171045022955879922">Buscar ou escribir o URL</translation>
 <translation id="5171343362375269016">Memoria cambiada</translation>
@@ -5813,6 +5812,7 @@ Se queres afastala, usa Control + Alt + Reducir brillo.</translation>
 <translation id="5214639857958972833">Marcador creado: <ph name="BOOKMARK_TITLE"/>.</translation>
 <translation id="5215450412607891876">Activar as actualizacións de seguranza ampliadas</translation>
 <translation id="5215502535566372932">Seleccionar país</translation>
+<translation id="6678492270788037697">Traduciranse automaticamente os subtítulos instantáneos. Os subtítulos envíanse a Brave para que se traduzan.</translation>
 <translation id="5220011581825921581">busca + frecha arriba</translation>
 <translation id="5221516927483787768">Non se puido emitir <ph name="HOST_NAME"/></translation>
 <translation id="5222403284441421673">Bloqueouse unha descarga non segura</translation>
@@ -5861,6 +5861,7 @@ Se queres afastala, usa Control + Alt + Reducir brillo.</translation>
 <translation id="52550593576409946">Non se puido iniciar a aplicación de quiosco.</translation>
 <translation id="5255726914791076208">Ao editar a clave de acceso, a túa conta de <ph name="RP_ID"/> non cambiará</translation>
 <translation id="5255859108402770436">Iniciar sesión de novo</translation>
+<translation id="5256174546894739043">Preguntar cando un sitio queira facer un seguimento das mans</translation>
 <translation id="52566111838498928">Cargando tipos de letra…</translation>
 <translation id="5256861893479663409">En todos os sitios</translation>
 <translation id="5258992782919386492">Instalar neste dispositivo</translation>
@@ -5926,6 +5927,7 @@ Se queres afastala, usa Control + Alt + Reducir brillo.</translation>
 <translation id="5297984209202974345">Tema de IA recente <ph name="INDEX"/> de <ph name="SUBJECT"/>. Estilo: <ph name="STYLE"/></translation>
 <translation id="5298219193514155779">Tema creado por</translation>
 <translation id="5298315677001348398">Queres continuar e permitir que este software faga cambios no teu dispositivo?</translation>
+<translation id="5298611529917615393">Revisa e acepta as condicións para poder usar esta función</translation>
 <translation id="5299109548848736476">Non realizar seguimento</translation>
 <translation id="5299558715747014286">Ver e xestionar os grupos de pestanas</translation>
 <translation id="5300589172476337783">Mostrar</translation>
@@ -5934,6 +5936,7 @@ Se queres afastala, usa Control + Alt + Reducir brillo.</translation>
 <translation id="5301954838959518834">Entendido</translation>
 <translation id="5302032366299160685">Espera a que se abra o ficheiro antes de tentalo de novo</translation>
 <translation id="5302048478445481009">Idioma</translation>
+<translation id="5302435492906794790">Buscando dispositivos detectables próximos...</translation>
 <translation id="5302932258331363306">Mostrar substitucións</translation>
 <translation id="5305145881844743843"><ph name="BEGIN_LINK"/><ph name="DOMAIN"/><ph name="END_LINK"/> xestiona esta conta</translation>
 <translation id="5307030433605830021">A fonte non é compatible</translation>
@@ -5980,7 +5983,6 @@ Se queres afastala, usa Control + Alt + Reducir brillo.</translation>
 <translation id="5344128444027639014"><ph name="BATTERY_PERCENTAGE"/> % (dispositivo dereito)</translation>
 <translation id="534449933710420173">Cartafol sen nome</translation>
 <translation id="5345916423802287046">Iniciar aplicación ao iniciar sesión</translation>
-<translation id="5296013226900466189">Brave ofrece unha Web sen custo económico</translation>
 <translation id="5350116201946341974">Extravagante</translation>
 <translation id="5305142070289640735">Desactivar Asistente de Brave</translation>
 <translation id="535123479159372765">Copiouse o texto desde outro dispositivo</translation>
@@ -6047,7 +6049,6 @@ Se queres afastala, usa Control + Alt + Reducir brillo.</translation>
 <translation id="5398572795982417028">A referencia da páxina supera o límite, que é <ph name="MAXIMUM_PAGE"/></translation>
 <translation id="5400196580536813396">Permiso denegado para buscar ou usar as impresoras ás que pode acceder o teu dispositivo</translation>
 <translation id="5400836586163650660">Gris</translation>
-<translation id="5401851137404501592">Para continuar, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> compartirá o teu nome, enderezo de correo electrónico e imaxe do perfil con este sitio.</translation>
 <translation id="5402367795255837559">Braille</translation>
 <translation id="5402815541704507626">Utiliza os datos móbiles para descargar a actualización</translation>
 <translation id="5404740137318486384">Preme un interruptor ou unha tecla para asignarlle a acción <ph name="ACTION"/>.
@@ -6069,8 +6070,8 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="5414566801737831689">Ler as iconas dos sitios web que visitas</translation>
 <translation id="5414836363063783498">Verificando...</translation>
 <translation id="5415328625985164836">Este é un programa beta. Xa podes usar Steam para xogar no Chromebook.</translation>
+<translation id="5415497281076257439">Expresión</translation>
 <translation id="5417312524372586921">Temas do navegador</translation>
-<translation id="5417353542809767994">Usa rapidamente un contrasinal seguro</translation>
 <translation id="541737483547792035">Ampliar pantalla</translation>
 <translation id="541822678830750798">Solicitando acceso para ler e cambiar este sitio</translation>
 <translation id="5419405654816502573">Voice Match</translation>
@@ -6188,7 +6189,6 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="5493792505296048976">pantalla activada</translation>
 <translation id="5494016731375030300">Pestanas pechadas recentemente</translation>
 <translation id="5494362494988149300">Abrir ao fi&amp;nalizar</translation>
-<translation id="1355780416265200556">Brave permíteche elixir</translation>
 <translation id="5494920125229734069">Seleccionar todo</translation>
 <translation id="5495466433285976480">Esta acción eliminará todos os usuarios, ficheiros, datos e outras configuracións locais a próxima vez que reinicies. Todos os usuarios deberán iniciar sesión de novo.</translation>
 <translation id="5495597166260341369">Manter a pantalla activada</translation>
@@ -6224,16 +6224,8 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="5517304475148761050">Esta aplicación require acceso a Play Store</translation>
 <translation id="5517412723934627386"><ph name="NETWORK_TYPE"/>: <ph name="NETWORK_DISPLAY_NAME"/></translation>
 <translation id="5519195206574732858">LTE</translation>
-<translation id="5519900055135507385">Aumenta a seguranza desta conta cun contrasinal seguro. Gardarase no <ph name="GOOGLE_PASSWORD_MANAGER"/> para <ph name="EMAIL"/>.</translation>
 <translation id="5521078259930077036">É esta a páxina de inicio que esperabas?</translation>
 <translation id="5522156646677899028">Esta extensión contén unha vulnerabilidade de seguranza grave.</translation>
-<translation id="7621480275083910874">Podes revisar o teu historial de navegación e a configuración en <ph name="BEGIN_LINK"/>A miña actividade<ph name="END_LINK"/>, se:
-      &lt;ul&gt;
-        &lt;li&gt;Usas a Busca de Brave.&lt;/li&gt;
-        &lt;li&gt;Tes a sesión iniciada na túa Conta de Brave.&lt;/li&gt;
-        &lt;li&gt;Tes a opción Actividade web e das aplicacións activada.&lt;/li&gt;
-      &lt;/ul&gt;</translation>
-<translation id="5522403133543437426">O motor de busca que se utiliza na barra de enderezos.</translation>
 <translation id="5523149538118225875">{NUM_EXTENSIONS,plural, =1{O administrador instalou 1 extensión}other{O administrador instalou # extensións}}</translation>
 <translation id="5523532775593636291">Os sitios que engadas sempre estarán activos e non se liberará a memoria que ocupen</translation>
 <translation id="5523558474028191231">O nome pode conter letras, números e caracteres especiais; debe incluír como máximo <ph name="MAX_CHARACTER_COUNT"/> caracteres</translation>
@@ -6252,12 +6244,6 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="5542132724887566711">Perfil</translation>
 <translation id="5542750926112347543">Bloqueáronse as cookies de <ph name="DOMAIN"/></translation>
 <translation id="5542949973455282971">Conectando con <ph name="CARRIER_NAME"/></translation>
-<translation id="5518662007020013933">Para moitas empresas en liña, os anuncios son fundamentais. Permiten que haxa contido en liña sen custo económico, o que axuda a garantir que calquera usuario poida acceder ao contido. Brave desenvolve maneiras para que os sitios poidan mostrarche anuncios personalizados protexendo a túa privacidade.  Se se fai ben, os anuncios benefician a todos os usuarios da Web porque cando ves un anuncio todos saen gañando:
-      &lt;ul&gt;
-        &lt;li&gt;Podes atopar algo novo ou interesante&lt;/li&gt;
-        &lt;li&gt;O anunciante pode conseguir un novo cliente&lt;/li&gt;
-        &lt;li&gt;O sitio que visites gaña diñeiro ao aloxar o anuncio&lt;/li&gt;
-      &lt;/ul&gt;</translation>
 <translation id="5543983818738093899">Comprobando estado...</translation>
 <translation id="5544482392629385159">Dispositivo <ph name="DEVICE_INDEX"/> de <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/></translation>
 <translation id="554517701842997186">Renderizador</translation>
@@ -6388,7 +6374,6 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="5637476008227280525">Activación/desactivación de datos móbiles</translation>
 <translation id="5638170200695981015">Se queres usar as opcións de edición e de visualización limitadas, selecciona Abrir no editor básico.</translation>
 <translation id="563821631542362636">Permitir que o sitio garde datos</translation>
-<translation id="5638653188468353257">Recibirás avisos tanto de sitios públicos como privados (como a intranet da túa empresa, por exemplo)</translation>
 <translation id="5639549361331209298">Volve cargar esta páxina e agarda para ver máis opcións</translation>
 <translation id="5640133431808313291">Xestionar chaves de seguranza</translation>
 <translation id="8241685692197561941">Este contrasinal está gardado só neste dispositivo. Para usalo noutros, <ph name="BEGIN_LINK"/>gárdao na túa Conta de Brave<ph name="END_LINK"/>.</translation>
@@ -6443,6 +6428,7 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="5680050361008726776">Queres quitar <ph name="ESIM_PROFILE_NAME"/>?</translation>
 <translation id="5681586175480958839">O ficheiro xa se está abrindo</translation>
 <translation id="3146085026894954224">Acabas de eliminar datos en Brave. Encantaríanos coñecer a túa experiencia para mellorar o produto.</translation>
+<translation id="5682660502190512219">Comproba se hai suxestións</translation>
 <translation id="5684181005476681636">Detalles da rede wifi</translation>
 <translation id="5684661240348539843">Identificador de recursos</translation>
 <translation id="5684950556880280580">Actualizouse o contrasinal</translation>
@@ -6487,7 +6473,6 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="5713960379473463904">Estilo de introdución de espazos</translation>
 <translation id="5714100381896040477">Limita o movemento na pantalla</translation>
 <translation id="5715711091495208045">Axente do plugin: <ph name="PLUGIN_NAME"/></translation>
-<translation id="5718049162805123412">Recomendámosche que os cambies agora</translation>
 <translation id="5719854774000914513">Os sitios poden pedirche permiso para conectarse a dispositivos de interface humana</translation>
 <translation id="572155275267014074">Configuración de Android</translation>
 <translation id="5722086096420375088">Verde e branco</translation>
@@ -6526,6 +6511,7 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="5750288053043553775">0</translation>
 <translation id="5751345516399502412">Comprobar preparación para conexión compartida</translation>
 <translation id="5753570386948603678">Eliminar do historial</translation>
+<translation id="5753652925946671505">Estas pestanas levan sen usarse <ph name="COUNT"/> ou máis días.</translation>
 <translation id="5756163054456765343">C&amp;entro de axuda</translation>
 <translation id="5757187557809630523">pista seguinte</translation>
 <translation id="5758631781033351321">Aquí atoparás a túa lista de lecturas</translation>
@@ -6560,7 +6546,6 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="5780973441651030252">Prioridade do proceso</translation>
 <translation id="5781092003150880845">Sincronizar como <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="5781865261247219930">Envía comandos a: <ph name="EXTENSION_NAME"/></translation>
-<translation id="5782040878821624922">Estará dispoñible en calquera dispositivo</translation>
 <translation id="5782227691023083829">Traducindo…</translation>
 <translation id="57838592816432529">Silenciar</translation>
 <translation id="5784291589716625675">Cambiar o idioma da aplicación</translation>
@@ -6579,7 +6564,6 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="5793339252089865437">Se descargas a actualización a través da rede de telefonía móbil, pódense producir cargos elevados.</translation>
 <translation id="5793420564274426163">Confirmación de vinculación</translation>
 <translation id="5794034487966529952">O escritorio <ph name="DESK_TITLE"/> ten abertas <ph name="NUM_BROWSERS"/> ventás do navegador</translation>
-<translation id="5794086402489402632">En que se diferencian o historial de busca e o de navegación?</translation>
 <translation id="5794414402486823030">Abrir sempre co visualizador do sistema</translation>
 <translation id="5794700615121138172">Cartafoles compartidos de Linux</translation>
 <translation id="7397305826909094212">Saír de todas as aplicacións de Brave</translation>
@@ -6589,7 +6573,6 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="579915268381781820">Quitouse a túa chave de seguranza.</translation>
 <translation id="5799478978078236781">Recibe consellos sobre <ph name="DEVICE_TYPE"/>, mantente ao tanto das novidades e das ofertas, e envíanos os teus comentarios.</translation>
 <translation id="5799508265798272974">Máquina virtual de Linux: <ph name="LINUX_VM_NAME"/></translation>
-<translation id="5799971219262397777">Restablece a configuración do dispositivo ChromeOS aos valores predeterminados seguros.</translation>
 <translation id="5800020978570554460">O ficheiro de destino truncouse ou eliminouse desde a última descarga.</translation>
 <translation id="5800290746557538611">Activar zona wifi instantánea</translation>
 <translation id="5800351251499368110">Pechar busca no panel lateral. A busca está aberta no panel lateral.</translation>
@@ -6597,6 +6580,7 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="5801051031414037185">Configurar teléfono</translation>
 <translation id="5801568494490449797">Preferencias</translation>
 <translation id="5803689677801500549">Os contrasinais gardados aparecerán aquí. Para importar os contrasinais de <ph name="USER_EMAIL"/> ao <ph name="BRAND"/>, <ph name="BEGIN_LINK"/> selecciona un ficheiro CSV<ph name="END_LINK"/>.</translation>
+<translation id="5804198298544152115">Os sitios normalmente fan un seguimento das mans e dos dedos para mellorar as experiencias envolventes</translation>
 <translation id="5804241973901381774">Permisos</translation>
 <translation id="5804259315582798390">Non se puido activar a recuperación de datos locais</translation>
 <translation id="5805268472388605531">Mantén premidas as teclas para ver os acentos e outros caracteres especiais</translation>
@@ -6661,6 +6645,7 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="5854066326260337683">Nestes momentos, a función de compatibilidade con navegadores antigos está desactivada. Para activala, podes definir a política <ph name="BEGIN_LINK"/>{BrowserSwitcherEnabled}<ph name="END_LINK"/>.</translation>
 <translation id="5854912040170951372">Porción</translation>
 <translation id="5855267860608268405">Redes wifi coñecidas</translation>
+<translation id="5855375823365231964">Acerca deste perfil</translation>
 <translation id="5855643921295613558">0,6 segundos</translation>
 <translation id="5856721540245522153">Activar funcións de depuración</translation>
 <translation id="5857090052475505287">Novo cartafol</translation>
@@ -6844,8 +6829,8 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="5983716913605894570">Xerando...</translation>
 <translation id="5984222099446776634">Visitados recentemente</translation>
 <translation id="5985458664595100876">O formato do URL non é válido. Só se admiten os formatos \\server\share e smb://server/share.</translation>
+<translation id="7939939035456567166">Esta aplicación de Brave instalouna a persoa que che administra o dispositivo.</translation>
 <translation id="598810097218913399">Quitar asignación</translation>
-<translation id="5989629029899728491">Máis alá das cookies</translation>
 <translation id="5990266201903445068">Só por wifi</translation>
 <translation id="5990386583461751448">Páxina traducida</translation>
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{Para asegurarte de que podes seguir navegando pola web, pídelle ao administrador que elimine esta aplicación.}other{Para asegurarte de que podes seguir navegando pola web, pídelle ao administrador que elimine estas aplicacións.}}</translation>
@@ -6869,6 +6854,7 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="6005045517426700202">Edificio de ladrillos</translation>
 <translation id="6006392003290068688">Quitáronse os permisos <ph name="PERMISSION_1"/> e <ph name="PERMISSION_2"/></translation>
 <translation id="6006484371116297560">Clásico</translation>
+<translation id="6007053304250788613">Só se pode excluír unha pantalla no modo de espello</translation>
 <translation id="6007240208646052708">A busca por voz no teu idioma non está dispoñible.</translation>
 <translation id="2626511583221319874">Cando esta opción estea activada, o Tradutor de Brave ofrecerase a traducir os distintos sitios ao teu idioma preferido. Tamén pode traducir sitios de forma automática.</translation>
 <translation id="6011193465932186973">Impresión dixital</translation>
@@ -6888,11 +6874,9 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="6020431688553761150">O servidor non che autorizou acceso a este recurso.</translation>
 <translation id="6021293122504240352"><ph name="APPS"/> aplicacións xa non son compatibles</translation>
 <translation id="6021969570711251331">Intercalado</translation>
-<translation id="602212068530399867">O motor de busca que se utiliza na barra de enderezos e no menú de aplicacións.</translation>
 <translation id="6022526133015258832">Abrir pantalla completa</translation>
 <translation id="296137235951584143">Personaliza Brave</translation>
 <translation id="6023643151125006053">O administrador de <ph name="SAML_DOMAIN"/> bloqueou este dispositivo (número de serie: <ph name="SERIAL_NUMBER"/>).</translation>
-<translation id="6024072172641380781">Permitir as extensións neste sitio</translation>
 <translation id="6024317249717725918">&amp;Buscar fotograma de vídeo con <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="6025215716629925253">Seguimento da pilla</translation>
 <translation id="6026819612896463875"><ph name="WINDOW_TITLE"/>: conectouse a un dispositivo USB</translation>
@@ -6945,6 +6929,7 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="6064764629679333574">Mellora a calidade do son do micrófono Bluetooth cambiando o audio de baixa resolución a alta.</translation>
 <translation id="6065289257230303064">Atributos de directorio da entidade do certificado</translation>
 <translation id="6066794465984119824">Non se configurou o hash da imaxe</translation>
+<translation id="6069027071882229820">Copiar como imaxe</translation>
 <translation id="6069464830445383022">A túa Conta de Brave permite iniciar sesión no Chromebook</translation>
 <translation id="6069500411969514374">Traballo</translation>
 <translation id="6071181508177083058">confirma o contrasinal</translation>
@@ -7259,6 +7244,7 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="628726841779494414">Xestiona as túas impresoras na configuración de impresoras</translation>
 <translation id="6287828400772161253">Teléfono Android (<ph name="HOST_DEVICE_NAME"/>)</translation>
 <translation id="6290613030083731160">Non hai dispositivos próximos dispoñibles para compartir ficheiros. <ph name="LINK_BEGIN"/>Máis información<ph name="LINK_END"/></translation>
+<translation id="6291580570300353047">Non se puido restaurar o contido porque non hai suficiente espazo de almacenamento.</translation>
 <translation id="6291741848715722067">Código de confirmación</translation>
 <translation id="6291953229176937411">&amp;Mostrar en Finder</translation>
 <translation id="6292699686837272722">As pestanas redúcense a unha anchura media</translation>
@@ -7296,7 +7282,6 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="6318407754858604988">Iniciouse a descarga</translation>
 <translation id="6318944945640833942">Non se puido detectar ningunha impresora. Introduce o enderezo dunha impresora de novo.</translation>
 <translation id="6687282219696132355">Para eliminar os datos de navegación de todos os dispositivos sincronizados e da túa Conta de Brave, tes que <ph name="BEGIN_LINK"/>acceder á configuración de sincronización<ph name="END_LINK"/>.</translation>
-<translation id="6319476488490641553">Non hai espazo suficiente neste dispositivo para completar a actualización. Libera <ph name="NECESSARY_SPACE"/> e téntao de novo.</translation>
 <translation id="6322370287306604163">Desbloquear o dispositivo máis rápido coa impresión dixital</translation>
 <translation id="6322559670748154781">Este ficheiro non se descarga habitualmente; por iso o bloqueou Protección avanzada</translation>
 <translation id="6324916366299863871">Editar atallo</translation>
@@ -7326,7 +7311,6 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="6344576354370880196">Impresoras gardadas</translation>
 <translation id="6344608411615208519">O teu pai ou nai encárgase da <ph name="BEGIN_LINK"/>xestión do teu navegador<ph name="END_LINK"/></translation>
 <translation id="6344622098450209924">Protección contra o seguimento</translation>
-<translation id="7009756869527598531">O historial de navegación de Brave inclúe todos os sitios que visitaches en Brave durante un período de tempo determinado.</translation>
 <translation id="6345418402353744910">O proxy <ph name="PROXY"/> necesita o teu nome de usuario e contrasinal para que o administrador poida configurar a rede</translation>
 <translation id="6345566021391290381">Compartíronse contrasinais contigo para <ph name="WEBSITE_NAME"/>. Podes usalos no formulario de inicio de sesión.</translation>
 <translation id="6345878117466430440">Marcar como lido</translation>
@@ -7433,6 +7417,7 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="6434104957329207050">Velocidade da exploración por punto</translation>
 <translation id="6434309073475700221">Descartar</translation>
 <translation id="6434325376267409267">É necesario actualizar o teu dispositivo para que poidas utilizar <ph name="APP_NAME"/>.</translation>
+<translation id="6434690603850475457">Si, mantelos separados (opción recomendada)</translation>
 <translation id="6434755719322447931">Caótico</translation>
 <translation id="6435339218366409950">Elixir idioma ao que se traducirán os subtítulos</translation>
 <translation id="6436778875248895551">O teu administrador bloqueou a extensión "<ph name="EXTENSION_NAME"/>"</translation>
@@ -7515,7 +7500,6 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="6497789971060331894">Desprazamento inverso do rato</translation>
 <translation id="6498249116389603658">&amp;Todos os teus idiomas</translation>
 <translation id="6499143127267478107">Resolvendo host en script de proxy...</translation>
-<translation id="6499764981457476645">Non se atoparon dispositivos preto</translation>
 <translation id="6501957628055559556">Todos os contedores</translation>
 <translation id="6503077044568424649">Máis visitados</translation>
 <translation id="650457560773015827">Botón esquerdo</translation>
@@ -7568,7 +7552,6 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="6538036594527795020">Cambiar o idioma de <ph name="APP"/>. Actualmente úsase o <ph name="LANGUAGE"/>.</translation>
 <translation id="6538098297809675636">Produciuse un erro á hora de detectar o código</translation>
 <translation id="653920215766444089">Buscando dispositivo apuntador</translation>
-<translation id="6539674013849300372">Dispón de máis protección en liña cun contrasinal seguro. Gardarase no <ph name="GOOGLE_PASSWORD_MANAGER"/> para <ph name="EMAIL"/>.</translation>
 <translation id="653983593749614101">Retomando…</translation>
 <translation id="6540174167103635041">Instalar aplicación</translation>
 <translation id="654039047105555694"><ph name="BEGIN_BOLD"/>Nota:<ph name="END_BOLD"/> Activar só se sabes o que estás facendo ou se se che solicitou facelo, xa que é posible que a recompilación de datos reduza o rendemento.</translation>
@@ -7675,6 +7658,7 @@ Quédanche # máis. O xestor de contrasinais de Brave recomenda que comprobes es
 <translation id="661266467055912436">Mellora a túa seguranza e a do resto dos usuarios da Web.</translation>
 <translation id="6613267708691765962">Analizando en busca de software malicioso...</translation>
 <translation id="6613668613087513143">Non hai espazo suficiente neste dispositivo para completar a actualización. Libera <ph name="NECESSARY_SPACE"/> de espazo e téntao de novo desde o navegador Brave.</translation>
+<translation id="6614172284067813496">Engadiuse a páxina á lista de lectura</translation>
 <translation id="6615455863669487791">Mostrar</translation>
 <translation id="6618744767048954150">En execución</translation>
 <translation id="6619058681307408113">Line Printer Daemon (LPD)</translation>
@@ -7688,6 +7672,7 @@ Quédanche # máis. O xestor de contrasinais de Brave recomenda que comprobes es
 <translation id="6622980291894852883">Continuar bloqueando as imaxes</translation>
 <translation id="6624036901798307345">No modo de tableta, toca o botón do contador de pestanas que se atopa na barra de ferramentas para abrir a nova franxa de pestanas na que se mostra cadansúa miniatura.</translation>
 <translation id="6624687053722465643">Dozura</translation>
+<translation id="6627743754845412571">Permiso denegado para facer un seguimento das mans</translation>
 <translation id="6628316682330029452">Os certificados de cliente serven para identificarte noutros servidores.</translation>
 <translation id="6628328486509726751">Data da carga: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
 <translation id="6630117778953264026">Máis seguranza</translation>
@@ -7753,7 +7738,6 @@ Quédanche # máis. O xestor de contrasinais de Brave recomenda que comprobes es
 <translation id="6673898378497337661">aumentar o brillo do teclado</translation>
 <translation id="6674571176963658787">Para comezar a sincronizar datos, escribe a túa frase de acceso</translation>
 <translation id="6675665718701918026">Conectouse o dispositivo apuntador</translation>
-<translation id="6676021247432396306">Cando navegas pola Web xeras datos, por exemplo, as palabras que buscas, os sitios que visitas e o navegador e dispositivo que usas.</translation>
 <translation id="6676212663108450937">Considera a opción de usar auriculares mentres adestras a voz</translation>
 <translation id="7995449485376471452">Envíanse a Brave as túas pestanas, títulos das páxinas e URL</translation>
 <translation id="667752334740867460">Recibindo información da wifi...</translation>
@@ -7790,6 +7774,7 @@ Se <ph name="SUPERVISED_USER_NAME"/> precisa axuda para ler, dille que repita o 
 <translation id="6701535245008341853">Non se puido obter o perfil.</translation>
 <translation id="6702639462873609204">&amp;Editar...</translation>
 <translation id="6702859741546259407">Para poder usar <ph name="FEATURE_NAME"/>, activa o Bluetooth e a wifi</translation>
+<translation id="6703109186846420472">,</translation>
 <translation id="6703212423117969852">Podes tentalo de novo máis tarde en Brave.</translation>
 <translation id="6703254819490889819">Restaurar copia de seguranza</translation>
 <translation id="6703613667804166784">Este ficheiro pode danar as túas contas de redes sociais e persoais, como <ph name="USER_EMAIL"/></translation>
@@ -7897,6 +7882,7 @@ Se <ph name="SUPERVISED_USER_NAME"/> precisa axuda para ler, dille que repita o 
 <translation id="6785739405821760313">Vendo escritorios gardados. Para navegar, preme Tabulador.</translation>
 <translation id="6785915470941880363">Desprazamento inverso <ph name="LINK_BEGIN"/>Máis información<ph name="LINK_END"/></translation>
 <translation id="67862343314499040">Violeta</translation>
+<translation id="6786480815699355166">Só se poden traducir os subtítulos instantáneos que estean nos idiomas ofrecidos</translation>
 <translation id="6786747875388722282">Extensións</translation>
 <translation id="6787097042755590313">Outra pestana</translation>
 <translation id="6787531944787756058">o nome de usuario <ph name="USER_EMAIL"/> está gardado só neste dispositivo. Ver os detalles</translation>
@@ -7927,6 +7913,7 @@ Se <ph name="SUPERVISED_USER_NAME"/> precisa axuda para ler, dille que repita o 
 <translation id="6802031077390104172"><ph name="USAGE"/> (<ph name="OID"/>)</translation>
 <translation id="6803766346203101854">Non se permite que este sitio garde datos no teu dispositivo.</translation>
 <translation id="680488281839478944">Xa existe unha máquina virtual chamada "<ph name="DEFAULT_VM_NAME"/>"</translation>
+<translation id="6805236548654699520">Para quitar as ventás emerxentes non desexadas, solucionar problemas de rede e moito máis, restaura a configuración aos valores predeterminados seguros.</translation>
 <translation id="6805478749741295868">Esta función de IA é experimental e non sempre acerta.</translation>
 <translation id="6805647936811177813">Inicia sesión en <ph name="TOKEN_NAME"/> para importar o certificado do cliente de <ph name="HOST_NAME"/>.</translation>
 <translation id="680572642341004180">Activar seguimento RLZ en <ph name="SHORT_PRODUCT_OS_NAME"/>.</translation>
@@ -7967,7 +7954,6 @@ Se máis tarde decides que non queres usar Voice Match, tan só tes que desactiv
 <translation id="6823561724060793716">Na barra de enderezos, poderás abrir a información da páxina que esteas visitando para ver datos adicionais sobre ela</translation>
 <translation id="6824564591481349393">Copiar &amp;enderezo de correo electrónico</translation>
 <translation id="6824584962142919697">&amp;Inspeccionar elementos</translation>
-<translation id="6824725898506587159">Xestionar idiomas</translation>
 <translation id="6825184156888454064">Ordenar por nome</translation>
 <translation id="6826872289184051766">Verificación mediante USB</translation>
 <translation id="6827121912381363404">Permitir que todas as extensións lean e cambien o sitio <ph name="PERMITTED_SITE"/></translation>
@@ -8009,6 +7995,7 @@ Se máis tarde decides que non queres usar Voice Match, tan só tes que desactiv
 <translation id="6845038076637626672">Abrir a aplicación maximizada</translation>
 <translation id="6845231585063669905">Do A ao Z</translation>
 <translation id="6846178040388691741">"<ph name="EXTENSION_NAME"/>" quere imprimir <ph name="FILE_NAME"/> con <ph name="PRINTER_NAME"/>.</translation>
+<translation id="6846843854964504403">Restablecemento de seguranza</translation>
 <translation id="6847125920277401289">Libera espazo para continuar</translation>
 <translation id="6848388270925200958">Neste momento, tes algunhas tarxetas que só se poden utilizar neste dispositivo</translation>
 <translation id="6848716236260083778">Para configurar a impresión dixital, pídelle ao teu fillo ou filla que toque o sensor correspondente. Os datos da súa impresión dixital almacenaranse de maneira segura neste dispositivo (<ph name="DEVICE_TYPE"/>) e nunca sairán del.</translation>
@@ -8056,6 +8043,7 @@ Se máis tarde decides que non queres usar Voice Match, tan só tes que desactiv
 <translation id="6881845890692344060">A persoa administradora pechou a sesión. Agora ti tes o control.</translation>
 <translation id="6882210908253838664">Se un sitio non funciona, proba a concederlle permiso temporal para usar as cookies de terceiros. <ph name="BEGIN_LINK"/>Máis información<ph name="END_LINK"/></translation>
 <translation id="6883319974225028188">Produciuse un erro no sistema e non se puido gardar a configuración do dispositivo.</translation>
+<translation id="6883606786470492001">Xestiona os temas dos anuncios e outras opcións de configuración para limitar a información sobre ti que poden obter os sitios co fin de mostrarche anuncios personalizados</translation>
 <translation id="6884474387073389421">Seguro que queres eliminar os datos de inicio de sesión seleccionados?</translation>
 <translation id="6885122019363983153">Os fondos de escritorio coinciden en todos os dispositivos</translation>
 <translation id="6885771755599377173">Vista previa da información do sistema</translation>
@@ -8148,6 +8136,7 @@ Se máis tarde decides que non queres usar Voice Match, tan só tes que desactiv
 <translation id="8979541182892637256">Non se puideron descargar os ficheiros de voz en <ph name="LANGUAGE"/>. Tentarase de novo máis tarde. Ata que finalice a descarga, enviaráselle a Brave o que se fale para que o procese.</translation>
 <translation id="696103774840402661">Elimináronse permanentemente todos os ficheiros e os datos locais de todos os usuarios deste dispositivo (<ph name="DEVICE_TYPE"/>).</translation>
 <translation id="6961327401577924850">Os sitios adoitan buscar dispositivos Bluetooth para ofrecerche determinadas funcións (por exemplo, configurar ou sincronizar unha baliza de baixo consumo, un dispositivo de seguimento da saúde ou da forma física, ou unha lámpada de luz intelixente)</translation>
+<translation id="6963772203726867701">Non detectado</translation>
 <translation id="6963872466817251924">Marcador de cursor de texto</translation>
 <translation id="6964390816189577014">Heroe</translation>
 <translation id="6964760285928603117">Quitar do grupo</translation>
@@ -8240,6 +8229,7 @@ Se máis tarde decides que non queres usar Voice Match, tan só tes que desactiv
 <translation id="7014174261166285193">Non se puido efectuar a instalación.</translation>
 <translation id="7014480873681694324">Deixar de salientar texto</translation>
 <translation id="7014741021609395734">Nivel de zoom</translation>
+<translation id="7015135594296285641">Permitir extensións</translation>
 <translation id="7016995776279438971">Vermello-verde, vermello suave (protanomalía)</translation>
 <translation id="7017004637493394352">Di "Ok Brave" de novo</translation>
 <translation id="7017219178341817193">Engadir unha nova páxina</translation>
@@ -8319,6 +8309,7 @@ Se máis tarde decides que non queres usar Voice Match, tan só tes que desactiv
 <translation id="708060913198414444">C&amp;opiar enderezo de audio</translation>
 <translation id="7082568314107259011">O teu administrador xestiona a rede <ph name="NETWORK_NAME"/></translation>
 <translation id="7082850163410901674">As notificacións están desactivadas na configuración do sistema de Mac</translation>
+<translation id="7083729794572207131">Os sitios normalmente piden permiso para instalar aplicacións web co obxecto de mellorar a túa experiencia neles</translation>
 <translation id="7083774521940805477">Steam para Chromebook (beta) non está dispoñible no teu Chromebook.</translation>
 <translation id="708550780726587276">(sen configurar)</translation>
 <translation id="7086377898680121060">Aumenta o brillo</translation>
@@ -8381,6 +8372,7 @@ Se máis tarde decides que non queres usar Voice Match, tan só tes que desactiv
 <translation id="7131431455372521159">Desconectáronse todos os TrackPoints</translation>
 <translation id="7131896909366247105"><ph name="APP_NAME"/>, pendente</translation>
 <translation id="7134098520442464001">Reduce o tamaño do texto</translation>
+<translation id="713415364723069564">Os sitios poden verificar se hai aplicacións web relacionadas na túa máquina. Esta información estará dispoñible nos sitios en cuestión e nos seus subdominios.</translation>
 <translation id="7134951043985383439">Ficheiro perigoso descargado</translation>
 <translation id="7135729336746831607">Queres activar o Bluetooth?</translation>
 <translation id="7136694880210472378">Converter en predeterminado</translation>
@@ -8421,7 +8413,6 @@ Se máis tarde decides que non queres usar Voice Match, tan só tes que desactiv
 <translation id="7168109975831002660">Tamaño mínimo do tipo de letra</translation>
 <translation id="7169122689956315694">Activar notificacións cando haxa dispositivos nas proximidades</translation>
 <translation id="7170236477717446850">Imaxe do perfil</translation>
-<translation id="4923446673325939067">Visita <ph name="BEGIN_LINK_HISTORY"/><ph name="HISTORY"/><ph name="END_LINK_HISTORY"/> para revisar e xestionar o teu historial de navegación. Obtén máis información sobre <ph name="BEGIN_LINK_HELPCENTER"/>os teus datos de navegación en Brave e como xestionalos<ph name="END_LINK_HELPCENTER"/>.</translation>
 <translation id="7171259390164035663">Non inscribirse</translation>
 <translation id="7172470549472604877">{NUM_TABS,plural, =1{Engadir pestana ao grupo novo}other{Engadir pestanas ao grupo novo}}</translation>
 <translation id="7173114856073700355">Abrir Configuración</translation>
@@ -8455,7 +8446,6 @@ Se máis tarde decides que non queres usar Voice Match, tan só tes que desactiv
 <translation id="7196272782924897510">Queres usar unha clave de acceso doutro dispositivo?</translation>
 <translation id="96037229054033864">Goza da Busca e da tecnoloxía de Brave cada vez que navegues</translation>
 <translation id="719791532916917144">Atallo de teclado</translation>
-<translation id="822137494909042639">Por que Brave vai abandonar as cookies de terceiros?</translation>
 <translation id="7198503619164954386">Debes conectarte a través dun dispositivo inscrito nunha empresa</translation>
 <translation id="7199158086730159431">Obter a&amp;xuda</translation>
 <translation id="7199452998289813782">Pór en pausa a emisión no seguinte dispositivo: <ph name="DEVICE_NAME"/></translation>
@@ -8502,6 +8492,7 @@ Se máis tarde decides que non queres usar Voice Match, tan só tes que desactiv
 <translation id="7232750842195536390">Produciuse un erro ao cambiar o nome</translation>
 <translation id="723343421145275488">Buscar imaxes con <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="7234010996000898150">Cancelando a restauración de Linux</translation>
+<translation id="7235305658956131898">Esta aplicación para Android instalouna a persoa que che administra o dispositivo.</translation>
 <translation id="7235716375204803342">Obtendo actividades…</translation>
 <translation id="7235737137505019098">A túa chave de seguranza non ten suficiente espazo para máis contas.</translation>
 <translation id="7235873936132740888">Os sitios poden realizar tarefas especiais (por exemplo, crear unha mensaxe nova no teu cliente de correo electrónico ou engadir eventos novos ao teu calendario en liña) cando fas clic en certos tipos de ligazóns</translation>
@@ -8522,7 +8513,6 @@ Se máis tarde decides que non queres usar Voice Match, tan só tes que desactiv
 <translation id="7250616558727237648">O dispositivo co que tentaches compartir o ficheiro non respondeu. Téntao de novo.</translation>
 <translation id="725109152065019550">O teu administrador desactivou o almacenamento externo na túa conta.</translation>
 <translation id="7251635775446614726">O teu administrador di o seguinte: "<ph name="CUSTOM_MESSAGE"/>"</translation>
-<translation id="7251979364707973467"><ph name="WEBSITE"/> expediu a túa chave de seguranza e quere saber o seu número de identificación. O sitio saberá a chave de seguranza que estás utilizando exactamente.</translation>
 <translation id="7252023374029588426">Mostrarase unha serie de globos de axuda con instrucións.
           Preme |<ph name="ACCELERATOR"/>| para enfocar un globo e, logo, volve premelo para enfocar o elemento cara ao que apunta.</translation>
 <translation id="7253521419891527137">&amp;Máis información</translation>
@@ -8539,6 +8529,7 @@ Se máis tarde decides que non queres usar Voice Match, tan só tes que desactiv
 <translation id="7258192266780953209">Transformacións</translation>
 <translation id="7258225044283673131">A aplicación non responde. Para pechala, selecciona Forzar peche.</translation>
 <translation id="7260186537988033909">Completouse a inscrición do dispositivo coa actualización de quiosco e de sinalización</translation>
+<translation id="7260206782629605806">Se reduces o límite, bastará con que fagas movementos sutís. Se o aumentas, pode que necesites movementos máis esaxerados.</translation>
 <translation id="7261217796641151584">Compartir grupo</translation>
 <translation id="7261612856573623172">Voz da conversión de texto a voz do sistema</translation>
 <translation id="7262004276116528033">Este servizo de inicio de sesión está aloxado por <ph name="SAML_DOMAIN"/></translation>
@@ -8580,6 +8571,7 @@ Se máis tarde decides que non queres usar Voice Match, tan só tes que desactiv
 <translation id="7289386924227731009"><ph name="WINDOW_TITLE"/>: permiso solicitado; preme F6 para responder</translation>
 <translation id="7290005709287747471">Desactivar</translation>
 <translation id="7290242001003353852">Este servizo de inicio de sesión, que está aloxado por <ph name="SAML_DOMAIN"/>, está accedendo á túa cámara.</translation>
+<translation id="7290524928495200538">Aplicacións instaladas relacionadas</translation>
 <translation id="7292067737327289208"><ph name="BEGIN_LINK"/>O teu navegador está xestionado<ph name="END_LINK"/> pola túa organización e <ph name="BEGIN_LINK"/>o teu perfil está xestionado<ph name="END_LINK"/> por <ph name="PROFILE_DOMAIN"/></translation>
 <translation id="7292147651179697920">Pídelle ao teu pai ou nai que permita o acceso en Configuración</translation>
 <translation id="7292195267473691167"><ph name="LOCALE"/> (<ph name="VARIANT"/>)</translation>
@@ -8615,6 +8607,7 @@ Se máis tarde decides que non queres usar Voice Match, tan só tes que desactiv
 <translation id="7321545336522791733">Non se pode acceder ao servidor</translation>
 <translation id="7322515217754205362">Permisos de sitios</translation>
 <translation id="7323315405936922211">Tamaño da área do cursor</translation>
+<translation id="7324020307732396723">Abrir configuración de idioma</translation>
 <translation id="7324297612904500502">Foro de Brave Beta</translation>
 <translation id="7325209047678309347">O papel está atascado</translation>
 <translation id="7325953439504232954">Queres cambiar de perfil?</translation>
@@ -8869,7 +8862,6 @@ Se máis tarde decides que non queres usar Voice Match, tan só tes que desactiv
 <translation id="7497981768003291373">Non se capturou ningún rexistro WebRTC recentemente.</translation>
 <translation id="7501957181231305652">ou</translation>
 <translation id="7502220299952823578">Engadir á lista Sitios que se manteñen sempre activos</translation>
-<translation id="8140581203553613648">Cando fas unha busca na barra de enderezos de Brave, o teu buscador predeterminado recibe a solicitude e responde mostrando resultados relevantes. O historial de busca inclúe o contido que buscaches durante un período de tempo determinado.</translation>
 <translation id="7502528909759062987">Pór en pausa a emisión da pestana no seguinte dispositivo: <ph name="DEVICE_NAME"/></translation>
 <translation id="7502804472671406749">É posible desprazarse e facer zoom polas pestanas compartidas</translation>
 <translation id="7503191893372251637">Tipo de certificado de Netscape</translation>
@@ -9129,7 +9121,6 @@ Se máis tarde decides que non queres usar Voice Match, tan só tes que desactiv
 <translation id="7685087414635069102">PIN obrigatorio</translation>
 <translation id="7685351732518564314">Preme o botón no teu dispositivo <ph name="DEVICE_NAME"/>.</translation>
 <translation id="7686086654630106285">Máis información sobre os anuncios suxeridos polos sitios</translation>
-<translation id="7686581688229391955">Seleccionar para permitir as extensións neste sitio</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
 <translation id="7690378713476594306">Escoller unha opción da lista</translation>
 <translation id="7690853182226561458">Engadir &amp;cartafol...</translation>
@@ -9155,7 +9146,6 @@ Se máis tarde decides que non queres usar Voice Match, tan só tes que desactiv
 <translation id="7705524343798198388">VPN</translation>
 <translation id="7707108266051544351">Bloqueouse o uso dos sensores de movemento por parte deste sitio.</translation>
 <translation id="7707922173985738739">Utilizaranse datos móbiles</translation>
-<translation id="7708143783728142771">As cookies permiten desfrutar desa mesma personalización das preferencias na web. Cando visitas un sitio, este pode gardar unha cookie no almacenamento do navegador do teu dispositivo para lembrar as túas preferencias, por exemplo, o idioma que falas ou os produtos que queres ter gardados no carro da compra. Se volves visitar o sitio noutro momento co mesmo navegador, o sitio pode ler a cookie que estableceu de modo que poidas retomar a navegación onde a deixaches a última vez. Este tipo de cookies normalmente denomínase cookies propias, xa que é o propio sitio que visitas o que as establece.</translation>
 <translation id="770831926727930011">Os datos locais están protexidos co contrasinal antigo. Introduce ese contrasinal para recuperalos.</translation>
 <translation id="7709152031285164251">Erro: <ph name="INTERRUPT_REASON"/></translation>
 <translation id="7710568461918838723">&amp;Emitir...</translation>
@@ -9365,7 +9355,6 @@ Para quitar unha asignación, preme un interruptor ou unha tecla que teñan unha
 <translation id="7851720427268294554">Analizador de IPP</translation>
 <translation id="1037569431519018426">Non está permitido engadir máis Contas de Brave</translation>
 <translation id="7853747251428735">Máis ferrament&amp;as</translation>
-<translation id="7853999103056713222">Usa un contrasinal máis seguro</translation>
 <translation id="7855678561139483478">Mover pestana a ventá nova</translation>
 <translation id="7857004848504343806">O ordenador contén un módulo seguro que se utiliza para implementar moitas funcións de seguranza esenciais en Chrome OS Flex. Consulta o Centro de Axuda de Chromebook para obter máis información: https://support.google.com/chromebook/?p=sm</translation>
 <translation id="7857093393627376423">Suxestións de texto</translation>
@@ -9404,6 +9393,7 @@ Para quitar unha asignación, preme un interruptor ou unha tecla que teñan unha
 <translation id="7883792253546618164">Podes cancelar a subscrición en calquera momento.</translation>
 <translation id="7884372232153418877">{NUM_SITES,plural, =1{Revisar 1 sitio que enviou moitas notificacións}other{Revisar {NUM_SITES} sitios que enviaron moitas notificacións}}</translation>
 <translation id="788453346724465748">Cargando información da conta...</translation>
+<translation id="7886087451482920026">Selecciona o texto con Google Lens</translation>
 <translation id="7886279613512920452">{COUNT,plural, =1{1 elemento}other{# elementos}}</translation>
 <translation id="7886605625338676841">eSIM</translation>
 <translation id="7887174313503389866">Realiza un percorrido guiado polos controis clave de privacidade e seguranza. Para obter máis opcións, vai á configuración individual.</translation>
@@ -9576,6 +9566,7 @@ Ficheiro da clave: <ph name="KEY_FILE"/>
 
 Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear novas versións da túa extensión.</translation>
 <translation id="8000020256436988724">Barra de ferramentas</translation>
+<translation id="800117767980299235">Selección de voz</translation>
 <translation id="8002274832045662704">Configuración avanzada da impresora</translation>
 <translation id="8002670234429879764">Xa non está dispoñible: <ph name="PRINTER_NAME"/></translation>
 <translation id="8004092996156083991">Avisarémoste se se vulneran os teus contrasinais.</translation>
@@ -9624,6 +9615,7 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8037357227543935929">Preguntar (predeterminado)</translation>
 <translation id="803771048473350947">Ficheiro</translation>
 <translation id="8037801708772278989">A comprobación realizouse agora mesmo</translation>
+<translation id="8038111231936746805">(predeterminado)</translation>
 <translation id="8039151841428107077">{NUM_OF_FILES,plural, =1{Copiando 1 ficheiro en <ph name="CLOUD_PROVIDER"/>}other{Copiando {NUM_OF_FILES} ficheiros en <ph name="CLOUD_PROVIDER"/>}}</translation>
 <translation id="8041089156583427627">Enviar comentarios</translation>
 <translation id="8041093619605951337">Feliz</translation>
@@ -9701,12 +9693,10 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8086610718778464681">Non se puido facer unha copia de seguranza dos ficheiros nin das aplicacións de Linux</translation>
 <translation id="80866457114322936">{NUM_FILES,plural, =1{Este ficheiro está encriptado. Pídelle ao seu propietario que o desencripte.}other{Algúns destes ficheiros están encriptados. Pídelle ao seu propietario que os desencripte.}}</translation>
 <translation id="808894953321890993">Cambiar contrasinal</translation>
-<translation id="6058906268938103011">Estará protexido pola mellor tecnoloxía de Brave</translation>
 <translation id="8090234456044969073">Ler unha lista dos sitios web que visitas con máis frecuencia</translation>
 <translation id="8090513782447872344">Podes volver cando queiras para botarlle outra ollada</translation>
 <translation id="8090579562279016251">Reduce o rendemento, pero fai que o motor V8 sexa máis resistente aos ataques</translation>
 <translation id="8090686009202681725">Crear un tema con IA</translation>
-<translation id="8091655032047076676">Experimental</translation>
 <translation id="8093359998839330381">O complemento <ph name="PLUGIN_NAME"/> non responde</translation>
 <translation id="8094536695728193970">Albaricoque</translation>
 <translation id="8095105960962832018"><ph name="BEGIN_PARAGRAPH1"/>Crear copia de seguranza en Google Drive. Restaura facilmente os teus datos ou cambia de dispositivo en calquera momento. A copia de seguranza inclúe os datos das aplicacións.<ph name="END_PARAGRAPH1"/>
@@ -9721,6 +9711,7 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8097959162767603171">O teu administrador ten que aceptar as condicións de servizo que se atopan na lista de dispositivos Brave, na consola de administración.</translation>
 <translation id="8098156986344908134">Queres instalar <ph name="DEVICE_OS"/> e borrar a información da unidade de disco duro?</translation>
 <translation id="8098616321286360457">Necesítase conexión de rede</translation>
+<translation id="8100057926383586173">Abrir configuración de idioma</translation>
 <translation id="8100230553590752325">Usa desde calquera dispositivo os contrasinais gardados</translation>
 <translation id="810068641062493918"><ph name="LANGUAGE"/> seleccionado. Preme Buscar e Espazo para anular a selección.</translation>
 <translation id="8101409298456377967">Crea, garda e xestiona os teus contrasinais para que poidas iniciar sesión facilmente nos sitios e nas aplicacións. <ph name="BEGIN_LINK"/>Máis información<ph name="END_LINK"/></translation>
@@ -10018,6 +10009,7 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8319414634934645341">Uso ampliado de claves</translation>
 <translation id="8321476692217554900">notificacións</translation>
 <translation id="8321837372750396788"><ph name="MANAGER"/> xestionará este dispositivo (<ph name="DEVICE_TYPE"/>).</translation>
+<translation id="8321888067342493336">Gardar como imaxe</translation>
 <translation id="8322814362483282060">Bloqueouse o acceso desta páxina ao teu micrófono.</translation>
 <translation id="8323167517179506834">Escribe o URL</translation>
 <translation id="8323317289166663449">Ler e cambiar todos os teus datos no teu ordenador e en todos os sitios web</translation>
@@ -10027,7 +10019,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8325413836429495820">Permiso denegado para consultar o portapapeis</translation>
 <translation id="8326478304147373412">PKCS n.º 7, cadea de certificados</translation>
 <translation id="8327386430364625757">Tipo de letra matemático</translation>
-<translation id="8327538105740918488">Podes cambiar este contrasinal máis adiante sempre que queiras. Gardarase no <ph name="GOOGLE_PASSWORD_MANAGER"/> para <ph name="EMAIL"/>.</translation>
 <translation id="8327676037044516220">Permisos e configuración de contido</translation>
 <translation id="8328228852664998535">Se continúas, os teus contrasinais, as claves de acceso e outros datos eliminaranse de maneira permanente de <ph name="BRAND"/>. Non se eliminarán as contas que creases para os sitios ou aplicacións.</translation>
 <translation id="8328777765163860529">Pechar todo</translation>
@@ -10186,6 +10177,7 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8440630305826533614">Aplicacións de Linux</translation>
 <translation id="844063558976952706">Sempre neste sitio</translation>
 <translation id="8441313165929432954">Activar/Desactivar conexión compartida</translation>
+<translation id="8443542808381875261">Pechar as pestanas que non se estean usando</translation>
 <translation id="8443986842926457191">O URL contén máis de 2048 caracteres</translation>
 <translation id="8445281870900174108">Esta pestana está utilizando a túa cámara</translation>
 <translation id="8446884382197647889">Máis información</translation>
@@ -10261,7 +10253,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8494147475618188843">Configuración de Android</translation>
 <translation id="849488240089599592">Volver a Descargas recentes</translation>
 <translation id="8496717697661868878">Executar este plugin</translation>
-<translation id="8497136774043290050">Que son as cookies de terceiros? Os sitios que visites poderán inserir contido doutros sitios ou servizos (por exemplo, imaxes, anuncios, contido de redes sociais e texto). Se algún deses outros sitios usa cookies para gardar información sobre ti, chamámolas cookies de terceiros. Se visitas varios sitios que insiren contido da mesma fonte, como unha rede de anuncios, poden usarse cookies de terceiros con fins publicitarios e para facer un seguimento da túa actividade mentres navegas.</translation>
 <translation id="8497219075884839166">Utilidades de Windows</translation>
 <translation id="8498214519255567734">Fai que sexa máis fácil mirar a pantalla ou ler con pouca luz</translation>
 <translation id="8499083585497694743">Activar son do micro</translation>
@@ -10289,7 +10280,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8517759303731677493">Editar…</translation>
 <translation id="8518942514525208851">Ocultar palabras malsoantes</translation>
 <translation id="8519895319663397036">Non se puideron importar os contrasinais. O ficheiro debe ocupar menos de 150 kB.</translation>
-<translation id="851991974800416566">Usa rapidamente un contrasinal seguro</translation>
 <translation id="8523493869875972733">Manter cambios</translation>
 <translation id="8523849605371521713">Engadida pola política</translation>
 <translation id="8524594273111932386">busca + frecha abaixo</translation>
@@ -10407,6 +10397,7 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8617601976406256334">Queres eliminar os datos do sitio e os permisos de <ph name="SITE_NAME"/>?</translation>
 <translation id="8617748779076050570">Código de conexión segura: <ph name="CONNECTION_ID"/></translation>
 <translation id="8619000641825875669">OneDrive</translation>
+<translation id="8619369551122276044">Permiso denegado para instalar aplicacións web no teu dispositivo</translation>
 <translation id="8619803522055190423">Sombra paralela</translation>
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
 <translation id="8620206585293032550">Aspecto das pestanas inactivas</translation>
@@ -10465,6 +10456,7 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8656888282555543604">Activar rexistro de braille</translation>
 <translation id="8657393004602556571">Queres descartar o comentario?</translation>
 <translation id="8657542881463614516">Usar un xesto de pasar o dedo para navegar entre páxinas</translation>
+<translation id="865857184419171576">Traducir subtítulos ao</translation>
 <translation id="865936634714975126">Engade un parámetro de consulta ao URL para seleccionar tipos na carga da páxina. Exemplo: chrome://device-log/?types=Bluetooth,USB</translation>
 <translation id="8659608856364348875">Contactos de <ph name="FEATURE_NAME"/></translation>
 <translation id="8659609431223166673">A ventá moveuse cara abaixo</translation>
@@ -10574,7 +10566,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8725178340343806893">Favoritos/Marcadores</translation>
 <translation id="87254326763805752">Confirmar a clave de acceso</translation>
 <translation id="8726206820263995930">Produciuse un erro ao obter a configuración da política do servidor: <ph name="CLIENT_ERROR"/>.</translation>
-<translation id="6614332522102257453">Tira o máximo proveito de Brave</translation>
 <translation id="8727333994464775697">Personaliza o que ves nesta páxina</translation>
 <translation id="8727751378406387165">Enviar <ph name="BEGIN_LINK1"/>metadatos de Autocompletar<ph name="END_LINK1"/>
           <ph name="LINE_BREAK"/>
@@ -10640,6 +10631,7 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="876956356450740926">Utiliza editores, contornos de desenvolvemento integrado e ferramentas para programadores. <ph name="LINK_BEGIN"/>Máis información<ph name="LINK_END"/></translation>
 <translation id="8770406935328356739">Directorio raíz da extensión</translation>
 <translation id="8771300903067484968">Restableceuse o fondo predeterminado da pantalla de inicio.</translation>
+<translation id="8773535891252326047">Copiouse a ligazón ao contido destacado</translation>
 <translation id="8774379074441005279">Confirmar restauración</translation>
 <translation id="8774934320277480003">Marxe superior</translation>
 <translation id="8775144690796719618">URL non válido</translation>
@@ -10647,6 +10639,7 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <ph name="DOMAIN"/> require que manteñas a tarxeta intelixente inserida.}other{O teu dispositivo (<ph name="DEVICE_TYPE"/>) bloquearase automaticamente en # segundos.
 <ph name="DOMAIN"/> require que manteñas a tarxeta intelixente inserida.}}</translation>
 <translation id="8776294611668764629">A túa organización bloqueou este ficheiro porque é demasiado grande para realizar unha Comprobación de seguranza. Podes abrir ficheiros de ata 50 MB.</translation>
+<translation id="8776420827344913317">A túa organización xestiona este perfil e pode ver certo tipo de información</translation>
 <translation id="8777509665768981163">Engade botóns na tableta ou cámbialles a localización</translation>
 <translation id="8777628254805677039">contrasinal raíz</translation>
 <translation id="877985182522063539">A4</translation>
@@ -10663,7 +10656,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8786824282808281903">Cando o teu fillo ou filla vexa esta icona, poderase usar unha impresión dixital para identificarse ou autorizar compras.</translation>
 <translation id="1427237635463348414">Para axudarnos a mellorar Brave, cóntanos por que permitiches as cookies de terceiros</translation>
 <translation id="8788008845761123079">Selecciona un xesto para <ph name="SELECTED_ACTION"/></translation>
-<translation id="6925082544593251076">Brave participa <ph name="LINK_BEGIN"/>nunha iniciativa conxunta<ph name="LINK_END"/> para reducir o seguimento en varios sitios e eliminar gradualmente o uso de cookies de terceiros. Pero tentamos facelo de maneira responsable porque moitos sitios confían nas cookies de terceiros para funcionar segundo o previsto. Por exemplo, moitos úsanas para simplificar o inicio de sesión e ofrecer un chat inserido, sistemas de comentarios e servizos de pago. Ademais os anunciantes adoitan usalas para personalizar mellor os anuncios. E iso é importante porque, grazas aos anuncios, os sitios a miúdo pagan gastos e poden fornecer o seu contido en liña sen custo económico.</translation>
 <translation id="8791157330927639737">Máis información sobre a actualización</translation>
 <translation id="8791534160414513928">Enviar unha solicitude de "Do Not Track" co teu tráfico de navegación</translation>
 <translation id="8793390639824829328">Os sitios usan esta función para desprazarse e facer zoom nas pestanas compartidas</translation>
@@ -10736,7 +10728,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8846132060409673887">Consultar o fabricante e o modelo deste ordenador</translation>
 <translation id="8846163936679269230">Restablecer perfís de eSIM</translation>
 <translation id="8846239054091760429">Audio en mono, inicio, Subtítulos instantáneos e moito máis</translation>
-<translation id="1899218434110015565">Os ingresos por anuncios tamén financian os moitos produtos e servizos sen custo económico de Brave, como Brave, Gmail, Maps e YouTube.</translation>
 <translation id="8847988622838149491">USB</translation>
 <translation id="8849001918648564819">Oculto</translation>
 <translation id="8849219423513870962">Cancelar eliminación do perfil de eSIM chamado "<ph name="PROFILE_NAME"/>"</translation>
@@ -10807,7 +10798,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8890529496706615641">Non se puido cambiar o nome do perfil. Téntao de novo ou ponte en contacto co teu operador para obter asistencia técnica.</translation>
 <translation id="8892168913673237979">Todo listo!</translation>
 <translation id="8892246501904593980">Consulta todos os marcadores en Marcadores e listas</translation>
-<translation id="8893479486525393799">Micrófono de estudio</translation>
 <translation id="8893801527741465188">Desinstalación completa</translation>
 <translation id="8893928184421379330">Non se puido recoñecer o dispositivo <ph name="DEVICE_LABEL"/>.</translation>
 <translation id="8894761918470382415">Protección para periféricos contra o acceso aos datos</translation>
@@ -10854,7 +10844,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8931693637927865341">Asteroide</translation>
 <translation id="8931713990831679796">Estas impresoras están conectadas e listas para utilizarse. Gárdaas no teu perfil para acceder máis facilmente.</translation>
 <translation id="8932654652795262306">Detalles da rede habilitada mediante a función Conexión compartida instantánea</translation>
-<translation id="8933314208895863334">As cookies poden mellorar a túa experiencia en liña, xa que permiten que os sitios ofrezan funcións útiles</translation>
 <translation id="8933709832356869375">Quitarase unha aplicación instalada</translation>
 <translation id="8933960630081805351">&amp;Mostrar no localizador</translation>
 <translation id="8934585454328207858">{NUM_EXTENSION,plural, =1{<ph name="EXTENSION1"/> ten acceso a dispositivos USB}=2{Extensións con acceso a dispositivos: <ph name="EXTENSION1"/>, <ph name="EXTENSION2"/>}other{Extensións con acceso a dispositivos: <ph name="EXTENSION1"/>, <ph name="EXTENSION2"/> e {3} máis}}</translation>
@@ -10874,10 +10863,10 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 
 Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web e ás aplicacións. Podes xestionar as túas Contas de Brave en <ph name="SETTINGS_LINK_BEGIN"/>Configuración<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="8945274638472141382">Tamaño das iconas</translation>
+<translation id="8945508919180478719">Micrófono de estudio</translation>
 <translation id="8946359700442089734">As funcións de depuración non se activaron completamente neste dispositivo <ph name="IDS_SHORT_PRODUCT_NAME"/>.</translation>
 <translation id="8946954897220903437">Contraer todas as solicitudes na barra de enderezos</translation>
 <translation id="894763922177556086">Boa</translation>
-<translation id="8948939328578167195"><ph name="WEBSITE"/> quere ver a marca e o modelo da túa chave de seguranza</translation>
 <translation id="875637110216978122">Xestionar a sincronización do navegador Brave</translation>
 <translation id="895054485242522631">Os sitios poden usar os sensores de movemento</translation>
 <translation id="8951256747718668828">Non se puido completar a restauración debido a un erro</translation>
@@ -10910,6 +10899,7 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="8973263196882835828">&amp;Activar Subtítulos instantáneos</translation>
 <translation id="8973557916016709913">Quitar o nivel de zoom</translation>
 <translation id="8973596347849323817">Podes personalizar este dispositivo segundo as túas necesidades. Podes cambiar estas funcións de accesibilidade máis tarde en Configuración.</translation>
+<translation id="8973648401056792381">Esta aplicación web instalouna a persoa que che administra o dispositivo.</translation>
 <translation id="897414447285476047">O ficheiro de destino está incompleto debido a un problema de conexión.</translation>
 <translation id="8974261761101622391">Buscar unha alternativa para <ph name="EXTENSION_NAME"/></translation>
 <translation id="897525204902889653">Servizo de corentena</translation>
@@ -10975,7 +10965,6 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="9011262023858991985">Emitindo esta pestana</translation>
 <translation id="9011393886518328654">Notas da versión</translation>
 <translation id="9012122671773859802">Mover pantalla de maneira continua a medida que se mova o rato</translation>
-<translation id="9012157139067635194">Limpar</translation>
 <translation id="9012585441087414258">Protéxete contra os sitios, as descargas e as extensións que se consideren perigosos. Se algunha páxina leva a cabo unha acción sospeitosa, os URL e algúns fragmentos do contido da páxina enviaranse a Navegación segura de Brave.</translation>
 <translation id="9013037634206938463">Para instalar Linux, precísase un espazo libre de <ph name="INSTALL_SIZE"/>. Se queres aumentar o espazo libre, elimina ficheiros do dispositivo.</translation>
 <translation id="9014206344398081366">Titorial de ChromeVox</translation>
@@ -11154,6 +11143,7 @@ Consulta máis información sobre os datos que recompila Brave e por que o fai e
 <translation id="9128870381267983090">Conectarse á rede</translation>
 <translation id="9129562557082598582">Exportar todos (<ph name="CERT_GROUP"/>)</translation>
 <translation id="9130015405878219958">Modo non válido introducido.</translation>
+<translation id="9130135798965366513">Para continuar, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> compartirá con este sitio os seguintes datos: <ph name="FIELDS_STRING"/>. Consulta a <ph name="BEGIN_LINK1"/>política de privacidade<ph name="END_LINK1"/> e as <ph name="BEGIN_LINK2"/>condicións de servizo<ph name="END_LINK2"/> do sitio.</translation>
 <translation id="9130208109420587135">Editar nome do grupo <ph name="NAME"/></translation>
 <translation id="9130364135697530260">O contido inserido neste sitio poderá usar a información que gardase sobre ti</translation>
 <translation id="9131209053278896908">Os sitios que bloquees mostraranse aquí</translation>
@@ -11217,6 +11207,7 @@ Consulta máis información sobre os datos que recompila Brave e por que o fai e
 <translation id="917350715406657904">Chegaches ao límite que definiu teu pai ou túa nai para <ph name="APP_NAME"/>. Mañá poderás utilizala durante <ph name="TIME_LIMIT"/>.</translation>
 <translation id="9174401638287877180">Enviar datos de uso e diagnóstico. Envía automaticamente datos de diagnóstico e de uso do dispositivo e das aplicacións a Brave para axudar a mellorar a experiencia do teu fillo en Android. Esta información non se utilizará para identificar o teu fillo, senón co obxectivo de aumentar a estabilidade do sistema e das aplicacións, e de realizar outras melloras. Algúns datos agregados tamén serán útiles para as aplicacións e os socios de Brave, como os programadores de Android. Se está activada a opción de configuración Actividade web e das aplicacións adicional para o teu fillo, estes datos pódense gardar na súa Conta de Brave</translation>
 <translation id="9176611096776448349"><ph name="WINDOW_TITLE"/>: conectouse a un dispositivo Bluetooth</translation>
+<translation id="9177859716483578738">Para continuar, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> compartirá con este sitio os seguintes datos: <ph name="FIELDS_STRING"/>. Consulta a <ph name="BEGIN_LINK"/>política de privacidade<ph name="END_LINK"/> do sitio.</translation>
 <translation id="9178061802301856367">Eliminar os datos de inicio de sesión</translation>
 <translation id="9179243438030184085">Usa o botón Compartir que está na parte inferior da tarxeta para compartir unha copia do teu contrasinal con calquera persoa do teu grupo familiar</translation>
 <translation id="9179524979050048593">Nome de usuario da pantalla de inicio de sesión</translation>
@@ -11228,7 +11219,6 @@ Consulta máis información sobre os datos que recompila Brave e por que o fai e
 <translation id="918352324374649435">{COUNT,plural, =1{Aplicación}other{# aplicacións}}</translation>
 <translation id="9186963452600581158">Iniciar sesión cunha Conta de Brave infantil</translation>
 <translation id="9187967020623675250">As teclas non coinciden. Preme calquera tecla para <ph name="RESPONSE"/>.</translation>
-<translation id="2952668551425843140">Envía os subtítulos a Brave para traducilos automaticamente</translation>
 <translation id="9192019773545828776">Escoita comentarios de voz para poder utilizar o dispositivo sen mirar a pantalla. Os comentarios están dispoñibles en braille cun dispositivo conectado. Para activar e desactivar ChromeVox, utiliza a combinación Control + Alt + Z. Para navegar, preme Buscar + Frecha esquerda ou Frecha dereita. Para seleccionar (activar) a función, preme Buscar + Espazo.</translation>
 <translation id="919686179725692564">Máis información sobre a realización de copias de seguranza das aplicacións</translation>
 <translation id="9199503643457729322">Fai clic para saír da Guía de privacidade.</translation>
@@ -11276,6 +11266,7 @@ Consulta máis información sobre os datos que recompila Brave e por que o fai e
 <translation id="93393615658292258">Só contrasinal</translation>
 <translation id="934244546219308557">Ponlle un nome a este grupo</translation>
 <translation id="93480724622239549">Erro</translation>
+<translation id="9354763467503131">Permiso concedido para instalar aplicacións web no teu dispositivo</translation>
 <translation id="936646668635477464">Cámara e micrófono</translation>
 <translation id="936801553271523408">Datos de diagnóstico do sistema</translation>
 <translation id="93766956588638423">Reparar extensión</translation>
@@ -11299,6 +11290,7 @@ Consulta máis información sobre os datos que recompila Brave e por que o fai e
 <translation id="949807244219288032">Esta pestana está conectada a un dispositivo de interface humana</translation>
 <translation id="950079950995628542">De <ph name="PHONE_NAME"/></translation>
 <translation id="950307215746360464">Guía de configuración</translation>
+<translation id="950728747178241190">Aplicaranse a cancelación de ruído e outras melloras de audio. <ph name="LINK_BEGIN"/>Máis información<ph name="LINK_END"/></translation>
 <translation id="951273949038779544"><ph name="SITE_ACCESS"/>. Elemento instalado pola persoa administradora</translation>
 <translation id="951991426597076286">Rexeitar</translation>
 <translation id="952471655966876828">O dispositivo conectarase automaticamente cando se atope acendido e se estea utilizando</translation>
@@ -11348,7 +11340,6 @@ Consulta máis información sobre os datos que recompila Brave e por que o fai e
 <translation id="98515147261107953">Horizontal</translation>
 <translation id="987068745968718743">Parallels Desktop: <ph name="PLUGIN_VM_NAME"/></translation>
 <translation id="987264212798334818">Xeral</translation>
-<translation id="987475089238841621">Os paquetes de idiomas úsanse para a función Subtítulos instantáneos e almacénanse no teu dispositivo</translation>
 <translation id="988320949174893488">Pestanexo ocasional</translation>
 <translation id="988978206646512040">A frase de acceso non pode estar baleira</translation>
 <translation id="992032470292211616">As extensións, as aplicacións e os temas poden danar o teu dispositivo. Seguro que queres continuar?</translation>
@@ -11454,12 +11445,6 @@ Consulta máis información sobre os datos que recompila Brave e por que o fai e
 <translation id="3216703137209942563">{COUNT, plural,
       =1 {A túa ventá no modo de incógnito non se abrirá despois do reinicio}
       other {As túas {COUNT} ventás no modo de incógnito non se abrirán de novo despois do reinicio}}</translation>
-<translation id="2631725725020498527">Podes personalizar Brave como queiras:
-      &lt;ul&gt;
-        &lt;li&gt;&lt;em&gt;O mellor de Brave&lt;/em&gt;, para aqueles que o queiran. Por exemplo, podes escoller Busca de Brave como motor de busca predeterminado de Brave e usar Xestor de contrasinais de Brave para ter todos os teus contrasinais en calquera dispositivo. &lt;/li&gt;
-        &lt;li&gt;&lt;em&gt;Elección significativa&lt;/em&gt;: Brave ofréceche elección e control con opcións de configuración e información para axudarche a tomar decisións significativas.&lt;/li&gt;
-        &lt;li&gt;&lt;em&gt;Extensións&lt;/em&gt;: Podes ampliar a funcionalidade de Brave con máis de 100 000 extensións na <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/>.&lt;/li&gt;
-      &lt;/ul&gt;</translation>
 <translation id="5840822070878669614">Abrir Brave Web Store</translation>
 <translation id="383007806262310953">Mostrar barra de marcadores</translation>
 <translation id="1375809909601272984">Mostrar o grupo aos marcadores</translation>

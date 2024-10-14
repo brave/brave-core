@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">A könyvjelzői és böngészési előzményei alapján ajánlott weboldalak megjelenítése.</translation>
 <translation id="924029461438529367">Keresési javaslatok megjelenítése</translation>
 <translation id="1571106259128580884">A legnépszerűbb webhelyekre vonatkozó javaslatok megjelenítése</translation>
+<translation id="6285118765755298263">Egyéb keresőmotorok indexálása</translation>
+<translation id="919715748352669592">Automatikusan indexálja a weboldalakat, amelyek követik az OpenSearch specet.</translation>
 <translation id="9148058034647219655">Kilépés</translation>
 <translation id="8047754398610073499">Cookie-khoz való hozzájárulással kapcsolatos értesítések letiltása</translation>
 <translation id="2621893359845808115">Blokkolja a webhelyek felugró ablakait, amelyek a cookie-k elfogadásáról/elutasításáról kérdezik a webhelyükön.</translation>
@@ -740,7 +742,19 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="755448900483975096">Mobilszolgáltató</translation>
 <translation id="1279441577056010362">Tovább az e-mailhez</translation>
 <translation id="7125582363614011660">A támogatást a Guardian csapat segítségével nyújtjuk.\n\nAdja meg az adatokat, amelyeket szívesen megoszt velünk.\n\nMinél több adatot ad meg előzetesen, ügyfélszolgálatunk annál könnyebben fog tudni segíteni Önnek a probléma megoldásában.</translation>
-<translation id="7999094850625689785">A rendszer időzónája alapján automatikusan az Önhöz legközelebb eső szerverrégió lesz kiválasztva. Ezt azért ajánljuk, hogy biztosan a lehető leggyorsabb legyen az internetsebessége.</translation>
+<translation id="8813171284214934811">Az Önhöz legközelebbi VPN szerverrégió automatikus kiválasztása az időzóna alapján. Ezt az opciót az internetsebesség maximalizálása érdekében javasoljuk.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+=1 {<ph name="CITY_COUNT_ONE"/> város - }
+other {<ph name="CITY_COUNT_MANY"/> város - }
+}</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+  =1 {<ph name="SERVER_COUNT_ONE"/> szerver}
+  other {<ph name="SERVER_COUNT_MANY"/> szerver}
+ }</translation>
+<translation id="3199127022143353223">Szerverek</translation>
+<translation id="5431902940483264007">Optimális</translation>
+<translation id="6527596624419285047">Az elérhető legjobb szerver használata</translation>
+<translation id="6789157560111825412">Rendelkezésre álló szerverek</translation>
 <translation id="4397083831618200686">Probléma kiválasztása</translation>
 <translation id="6687228121145903051">Nem tudok a VPN-hez csatlakozni (Egyéb hiba)</translation>
 <translation id="9184988385244077767">A kapcsolódás után nincs internet</translation>
@@ -808,7 +822,6 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="7358989216567322955">Maximum prioritási díj</translation>
 <translation id="9091334651803050473">Nincs rá garancia, de a bányászok nagyobb valószínűséggel részesítik előnyben a tranzakcióját, ha magasabb díjat fizet nekik.</translation>
 <translation id="2941112035454246133">Alacsony</translation>
-<translation id="5431902940483264007">Optimális</translation>
 <translation id="7304030187361489308">Magas</translation>
 <translation id="4853037749278079787">Maximális díj: ~<ph name="FIAT_VALUE"/> $ (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Jelenlegi alapdíj: <ph name="ASSET_VALUE"/> Gwei</translation>

@@ -50,6 +50,7 @@
 <translation id="3975865347033939965">Sinhronizācijas pakalpojumu nevarēja palaist, Brave Sync nedarbojas</translation>
 <translation id="4450893287417543264">Vairs nerādīt</translation>
 <translation id="4595286989346610620">Pārbaudiet informāciju</translation>
+<translation id="8324318899000695659">Bloķēt elementus</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Atvērt, izmantojot .onion adresi: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Piespiedu ielīmēšana</translation>
@@ -706,7 +707,7 @@ Leo. Šo darbību nevar atsaukt.</translation>
 <translation id="7634775528597575156">Servera galapunkts</translation>
 <translation id="6374563306438145841">API atslēga</translation>
 <translation id="8008271349880309090">Modeļa nosaukums, kāds tiks parādīts modeļa atlases izvēlnē</translation>
-<translation id="7131172845656551327">Modeļa nosaukums, kādam tam jāparādās pieprasījumā apkalpojošai struktūrai, proti, phi-3 (ņemiet vērā, ka, ja šis nosaukums precīzi neatbilst tam, ko sagaida apkalpojošā struktūra, integrācija nedarbosies)</translation>
+<translation id="1355326130503900056">Modeļa nosaukums, kādam tam jāparādās pieprasījumā apkalpojošai struktūrai, piemēram, phi-3 (ņemiet vērā, ka šis nosaukums precīzi neatbilst tam, ko sagaida apkalpojošā struktūra, integrācija nedarbosies)</translation>
 <translation id="3286410514484292784">Url vietrādis, kurā apkalpojošā struktūra uzklausa pieprasījumus. Ja neesat pārliecināts, pārbaudiet apkalpojošās struktūras dokumentāciju. Piemēram, Ollama tā vienmēr ir: http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Atsevišķas apkalpojošās struktūras var pieprasīt autentifikācijas akreditācijas datus, piemēram, API atslēgu vai piekļuves marķieri. Tie tiks pievienoti pieprasījuma galvenei.</translation>
 <translation id="217141195370578385">Tā kā Brave nepilnvaro šos pieprasījumus, lūdzu, izlasiet izvēlētā pakalpojumu sniedzēja privātuma noteikumus.</translation>

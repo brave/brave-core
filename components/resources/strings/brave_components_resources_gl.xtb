@@ -671,6 +671,29 @@
 <translation id="4284417062730522399"><ph name="NUM"/> anuncios recibidos este mes</translation>
 <translation id="7697696066810593560">Levas gañado <ph name="NUM"/> este mes</translation>
 <translation id="6733193230212030816">Estímase que gañarás entre: <ph name="RANGE"/></translation>
+<translation id="7924320838799747606">O seu saldo</translation>
+<translation id="8714473477079007268">Carteira de <ph name="PROVIDER"/></translation>
+<translation id="3175337080016717494">Conta de pagos</translation>
+<translation id="453760933181416879">Ir á miña conta</translation>
+<translation id="8290994471756102241">Pechouse sesión</translation>
+<translation id="8414447476773253869">Inicia sesión en <ph name="PROVIDER"/> para ver o saldo</translation>
+<translation id="615483366383024791">Conta de pagos</translation>
+<translation id="1060062421977823695">As túas ganancias en BAT pagaranse nesta conta de pagos.</translation>
+<translation id="2544805415966048917">Enviarás</translation>
+<translation id="6708522254106492579">Ata <ph name="AMOUNT"/> BAT</translation>
+<translation id="7666058404763778706">Unha forma automática de apoiar os sitios web e os creadores de contido, en función do tempo que dedicas ao seu contido.</translation>
+<translation id="4319242254058427792">A opción Contribución automática está desactivada</translation>
+<translation id="1091835891554961609">Os creadores verificados que visites aparecerán aquí mentres navegues.</translation>
+<translation id="7714706530499503523">A opción Contribución automática envía automaticamente contribucións mensuais a creadores verificados con Brave, en función do tempo que dedicas ao seu contido.</translation>
+<translation id="2358028754328876971">Como funciona Contribución automática?</translation>
+<translation id="2870560284913253234">Sitio</translation>
+<translation id="1184072843013036520">Obtén produtos da marca Brave.</translation>
+<translation id="1170674812179664523">Tenda de produtos de Brave</translation>
+<translation id="8673202990286883068">Os teus beneficios</translation>
+<translation id="3699766258844277472">Aínda non tes ningunha contribución recorrente configurada.</translation>
+<translation id="957921474773060718">Próxima contribución:</translation>
+<translation id="351973834053818251">Contribucións recorrentes</translation>
+<translation id="7751260505918304024">Mostrar todo</translation>
 <translation id="7090992647511817643">conta</translation>
 <translation id="4822132585477111396">ID da cadea</translation>
 <translation id="3269475789479462358">dominio</translation>
@@ -860,6 +883,8 @@
 <translation id="9111102763498581341">Desbloquear</translation>
 <translation id="5045550434625856497">Contrasinal incorrecto</translation>
 <translation id="9195657745688986798">Desbloquear carteira</translation>
+<translation id="2274014756904854136">Toca dúas veces a pantalla para continuar</translation>
+<translation id="7795718119973968770">A túa carteira está bloqueada pola túa segurabza. Desbloquea a carteira para continuar.</translation>
 <translation id="9175546523521600401">Bloquear carteira</translation>
 <translation id="765834632354589737">Copia de seguranza da carteira</translation>
 <translation id="1108298724135935307">Sitios conectados</translation>
@@ -1755,7 +1780,6 @@
 <translation id="6709133671862442373">Noticias</translation>
 <translation id="3553513561058684206">Para ti</translation>
 <translation id="2217013723701900638">Editores</translation>
-<translation id="7751260505918304024">Mostrar todo</translation>
 <translation id="5138227688689900538">Mostrar menos</translation>
 <translation id="1041218419402648959">Ocultar contido de  <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3992393738853907417">Quizais che guste tamén</translation>
@@ -2016,6 +2040,7 @@
 <translation id="7355096922131918313">Forneza comentarios aquí</translation>
 <translation id="3027575440738035995">Leo Premium fornece acceso a un conxunto ampliado de modelos de idioma para obter respostas con aínda máis matices. <ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="7488762544858401571">Editado</translation>
+<translation id="1406205536570262057">Editar resposta</translation>
 <translation id="2399439821649319175">Non útil</translation>
 <translation id="2976167228906046828">Incorrecto</translation>
 <translation id="1183055847065865059">Inseguro/daniño</translation>
@@ -2026,6 +2051,7 @@
 <translation id="7494736170250048402">Enviar mensaxe a Leo</translation>
 <translation id="8712637175834984815">De acordo</translation>
 <translation id="1093419424466417703">A páxina é demasiado longa para Leo. Podería faltar algún contexto na conversa. Leo puido ler o<ph name="PERCENTAGE"/> do contido da páxina.</translation>
+<translation id="2186990448773134544">O contido da páxina redefiniuse ao extraer a información máis relevante da páxina porque era demasiado longo para Leo.</translation>
 <translation id="4370698775470316661">Esta conversa é demasiado longa e non pode continuar. Pode haber outros modelos dispoñibles cos que Leo é capaz de manter a precisión en conversas máis longas.</translation>
 <translation id="5719170755629028558">Mellorando a túa resposta con Busca de Brave</translation>
 <translation id="5794962229997281366">Mellorouse a busca de respostas para<ph name="SEARCH_TERMS"/>.</translation>
@@ -2115,7 +2141,8 @@
 Bloqueáronse <ph name="NUMBER"/> rastreadores, anuncios e demais elementos</translation>
 <translation id="4292121526390005808">Guións bloqueados</translation>
 <translation id="5046271170844958713">Guións permitidos</translation>
-<translation id="4575452981007854269">Proteccións de impresións dixitais aplicadas</translation>
+<translation id="199862531047218413">Proteccións anti-impresións dixitais aplicadas</translation>
+<translation id="5032505924781383272">As proteccións aplicadas non indican necesariamente que esta páxina web estea tentando facer unha impresión dixital do teu navegador.</translation>
 <translation id="1905384713982899903">Impresións dixitais bloqueadas</translation>
 <translation id="314364527871618241">Impresións dixitais  permitidas</translation>
 <translation id="264682546981571963">Cánsanche os avisos de consentimento das cookies?</translation>
@@ -2180,6 +2207,12 @@ Bloqueáronse <ph name="NUMBER"/> rastreadores, anuncios e demais elementos</tra
 <translation id="2422309687188612485">Protexe ata 10 dispositivos cun só plan</translation>
 <translation id="1693568075761612600">Non se puido crear o tícket de asistencia. Comproba a túa conexión.</translation>
 <translation id="1407707415819020643">Selecciona o teu servidor</translation>
+<translation id="7406947191797765434"><ph name="CITY_COUNT"/> cidades - <ph name="SERVER_COUNT"/> servidores</translation>
+<translation id="7337680029337389658">1 cidade</translation>
+<translation id="1616613632573101617"><ph name="CITY_COUNT"/> cidades</translation>
+<translation id="5647994901467053283">1 servidor</translation>
+<translation id="8828637853024704314"><ph name="SERVER_COUNT"/> servidores</translation>
+<translation id="6527596624419285047">Usar o mellor servidor dispoñible</translation>
 <translation id="8463313539532697053">Agarde un momento mentres carga...</translation>
 <translation id="2542131205769293399">Non se puido comprobar o estado da túa compra. Trátase probablemente dun problema de rede. Téntao de novo ou ponte en contacto co servizo de asistencia.</translation>
 <translation id="4613076894734402086">Editar método de pagamento</translation>

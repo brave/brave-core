@@ -671,6 +671,29 @@
 <translation id="4284417062730522399"><ph name="NUM"/> огласа примљено овог месеца</translation>
 <translation id="7697696066810593560">Зарадили сте <ph name="NUM"/> до сада овог месеца</translation>
 <translation id="6733193230212030816">Процењено је да ћете зарадити између: <ph name="RANGE"/></translation>
+<translation id="7924320838799747606">Vaše stanje</translation>
+<translation id="8714473477079007268"><ph name="PROVIDER"/> novčanik</translation>
+<translation id="3175337080016717494">Nalog za isplatu</translation>
+<translation id="453760933181416879">Idi na moj nalog</translation>
+<translation id="8290994471756102241">Odjavljeno</translation>
+<translation id="8414447476773253869">Prijavite se na <ph name="PROVIDER"/> da biste videli svoj saldo</translation>
+<translation id="615483366383024791">Nalog za isplatu</translation>
+<translation id="1060062421977823695">Vaša BAT zarada će biti uplaćena na ovaj nalog za isplatu</translation>
+<translation id="2544805415966048917">Poslaćete</translation>
+<translation id="6708522254106492579">Do <ph name="AMOUNT"/> BAT</translation>
+<translation id="7666058404763778706">Automatski način podrške veb-sajtovima i autorima sadržaja, na osnovu toga koliko vremena provodite koristeći njihov sadržaj.</translation>
+<translation id="4319242254058427792">Automatski doprinos je onemogućen</translation>
+<translation id="1091835891554961609">Verifikovani autori koje posećujete pojaviće se ovde dok pretražujete.</translation>
+<translation id="7714706530499503523">Opcija Automatski doprinos automatski šalje mesečne doprinose autorima koji su verifikovani na Brave, na osnovu toga koliko vremena provodite koristeći njihov sadržaj.</translation>
+<translation id="2358028754328876971">Kako funkcioniše Automatski doprinos?</translation>
+<translation id="2870560284913253234">Сајт</translation>
+<translation id="1184072843013036520">Navabite Brave proizvode.</translation>
+<translation id="1170674812179664523">Brave prodavnica robe</translation>
+<translation id="8673202990286883068">Vaše koristi</translation>
+<translation id="3699766258844277472">Još uvek nemate postavljene doprinose koji se ponavljaju.</translation>
+<translation id="957921474773060718">Sledeći doprinos:</translation>
+<translation id="351973834053818251">Doprinosi koji se ponavljaju</translation>
+<translation id="7751260505918304024">Прикажи све</translation>
 <translation id="7090992647511817643">nalog</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="3269475789479462358">domen</translation>
@@ -860,6 +883,8 @@
 <translation id="9111102763498581341">Откључај</translation>
 <translation id="5045550434625856497">Неисправна лозинка</translation>
 <translation id="9195657745688986798">Otključaj novčanik</translation>
+<translation id="2274014756904854136">Dvaput dodirnite ekran da biste nastavili</translation>
+<translation id="7795718119973968770">Vaš novčanik je zaključan radi vaše bezbednosti. Otključajte novčanik da biste nastavili.</translation>
 <translation id="9175546523521600401">Zaključajte novčanik</translation>
 <translation id="765834632354589737">Napravite rezervnu kopiju novčanika</translation>
 <translation id="1108298724135935307">Povezane lokacije</translation>
@@ -1757,7 +1782,6 @@
 <translation id="6709133671862442373">Vesti</translation>
 <translation id="3553513561058684206">Za vas</translation>
 <translation id="2217013723701900638">Izdavači</translation>
-<translation id="7751260505918304024">Прикажи све</translation>
 <translation id="5138227688689900538">Prikazati manje</translation>
 <translation id="1041218419402648959">Sakrij sadržaj od <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3992393738853907417">Možda vam se takođe sviđa</translation>
@@ -2018,6 +2042,7 @@
 <translation id="7355096922131918313">Pružite povratne informacije ovde</translation>
 <translation id="3027575440738035995">Leo Premium pruža pristup proširenom skupu jezičkih modela za još veću jasnoću odgovora. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="7488762544858401571">Измењено</translation>
+<translation id="1406205536570262057">Izmenite odgovor</translation>
 <translation id="2399439821649319175">Nije od pomoći</translation>
 <translation id="2976167228906046828">Netačno</translation>
 <translation id="1183055847065865059">Nije bezbedno/Štetno</translation>
@@ -2028,6 +2053,7 @@
 <translation id="7494736170250048402">Pošaljite poruku Leu</translation>
 <translation id="8712637175834984815">Важи</translation>
 <translation id="1093419424466417703">Ova stranica je predugačka Lea. Neki kontekst bi mogao da nedostaje u razgovoru. Leo je mogao da pročita<ph name="PERCENTAGE"/> sadržaja stranice.</translation>
+<translation id="2186990448773134544">Sadržaj stranice je poboljšan izdvajanjem najrelevantnijih informacija sa stranice jer je bila preduga za Lea.</translation>
 <translation id="4370698775470316661">Ovaj razgovor je predugačak i ne može se nastaviti. Možda postoje i drugi modeli sa kojima je Leo sposoban da održi tačnost za duže razgovore.</translation>
 <translation id="5719170755629028558">Unapredite odgovor uz Brave pretragu...</translation>
 <translation id="5794962229997281366">Unapređena pretraga odgovora za<ph name="SEARCH_TERMS"/>.</translation>
@@ -2117,7 +2143,8 @@
 <ph name="NUMBER"/> trakera, oglasa i tome slično</translation>
 <translation id="4292121526390005808">Blokirane skripte</translation>
 <translation id="5046271170844958713">Dozvoljene skripte</translation>
-<translation id="4575452981007854269">Примењена је заштита отиском прста</translation>
+<translation id="199862531047218413">primenjena zaštita protiv otiska prsta</translation>
+<translation id="5032505924781383272">Primenjene zaštite ne ukazuju bezuslovno na to da ovaj veb-sajt pokušava da unese otisak prsta za vaš pretraživač.</translation>
 <translation id="1905384713982899903">Блокирани су отисци прста</translation>
 <translation id="314364527871618241">Омогућени су отисци прста</translation>
 <translation id="264682546981571963">Umorni ste od obaveštenja o davanju saglasnosti za kolačiće?</translation>
@@ -2182,6 +2209,12 @@
 <translation id="2422309687188612485">Заштитите до 10 уређаја једним планом</translation>
 <translation id="1693568075761612600">Kreiranje tiketa za podršku nije uspelo. Proverite vezu.</translation>
 <translation id="1407707415819020643">Изаберите свој сервер</translation>
+<translation id="7406947191797765434"><ph name="CITY_COUNT"/> gradova - <ph name="SERVER_COUNT"/> servera</translation>
+<translation id="7337680029337389658">1 grad</translation>
+<translation id="1616613632573101617"><ph name="CITY_COUNT"/> gradova</translation>
+<translation id="5647994901467053283">1 server</translation>
+<translation id="8828637853024704314"><ph name="SERVER_COUNT"/> servera</translation>
+<translation id="6527596624419285047">Koristite najbolji server koji je dostupan</translation>
 <translation id="8463313539532697053">Samo trenutak. Učitavanje…</translation>
 <translation id="2542131205769293399">Није могуће проверити статус ваше куповине. То је вероватно проблем с мрежом. Покушајте поново или се обратите подршци.</translation>
 <translation id="4613076894734402086">Promeniti način plaćanja</translation>

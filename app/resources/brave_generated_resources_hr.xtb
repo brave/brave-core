@@ -51,6 +51,7 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="3975865347033939965">Usluga sinkronizacije nije se mogla pokrenuti, sinkronizacija preglednika Brave nije pokrenuta</translation>
 <translation id="4450893287417543264">Ne prikazuj ponovo</translation>
 <translation id="4595286989346610620">Provjeri pojedinosti</translation>
+<translation id="8324318899000695659">Blokiraj elemente</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Otvorite adresom .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Prisilno lijepljenje</translation>
@@ -706,7 +707,7 @@ preglednika Brave. Ta se radnja ne može poništiti.</translation>
 <translation id="7634775528597575156">Završna točka poslužitelja</translation>
 <translation id="6374563306438145841">API ključ</translation>
 <translation id="8008271349880309090">Naziv modela koji će se pojavljivati u izborniku za odabir modela</translation>
-<translation id="7131172845656551327">Naziv modela koji se treba pojaviti u zahtjevu za okvir za posluživanje, na primjer, phi-3 (napominjemo da integracija neće radiiti ako se taj naziv ne podudara točno s onim što se očekuje u okviru posluživanja)</translation>
+<translation id="1355326130503900056">Naziv modela koji se treba pojaviti u zahtjevu za okvir za posluživanje, na primjer, phi-3 (napominjemo da integracija neće radiiti ako se taj naziv ne podudara točno s onim što se očekuje u okviru posluživanja)</translation>
 <translation id="3286410514484292784">Url adresa na kojoj vaš okvir za posluživanje sluša vaše zahtjeve. Ako niste sigurni, provjerite dokumentaciju okvira posluživanja. Npr., za okvir Ollama, to je http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Neki okviri za posluživanje mogu zahtijevati podatke za provjeru vjerodostojnosti, poput API ključa ili pristupnog tokena. Oni će biti dodani zaglavlju zahtjeva.</translation>
 <translation id="217141195370578385">Platforma Brave nije posrednik za te zahtjeve, pročitajte politiku zaštite privatnosti odabranog pružatelja.</translation>

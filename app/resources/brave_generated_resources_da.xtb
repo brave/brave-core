@@ -51,6 +51,7 @@ Eller skift senere på<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3975865347033939965">Synkroniseringstjeneste kunne ikke startes, Brave Sync kører ikke</translation>
 <translation id="4450893287417543264">Vis ikke igen</translation>
 <translation id="4595286989346610620">Kontroller oplysninger</translation>
+<translation id="8324318899000695659">Blokér elementer</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Åbn ved at bruge .onion-adresse: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Tving indsæt</translation>
@@ -706,7 +707,7 @@ Leo fremover, og denne handling sletter også din chathistorik. Hvis du sletter 
 <translation id="7634775528597575156">Serverslutpunkt</translation>
 <translation id="6374563306438145841">API-nøgle</translation>
 <translation id="8008271349880309090">Navnet på modellen, som det vil blive vist i menuen til valg af model</translation>
-<translation id="7131172845656551327">Navnet på modellen, som det skal vises i anmodningen til serversystemet, dvs. phi-3 (bemærk, at hvis dette navn ikke stemmer overens med præcis det, der forventes af serversystemet, vil integrationen ikke fungere).</translation>
+<translation id="1355326130503900056">Navnet på modellen, som den skal vises i anmodningen til serverrammen, f.eks. phi-3 (bemærk, at hvis dette navn ikke passer præcist til det, der forventes af serveringsrammen, fungerer integrationen ikke).</translation>
 <translation id="3286410514484292784">Den url, hvor dit serversystem lytter efter anmodninger. Hvis du ikke er sikker, så tjek dokumentationen for serversystemet. For Ollama er det f.eks. altid http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Nogle serversystemer kan kræve autentificeringsoplysninger, f.eks. en API-nøgle eller et adgangstoken. Disse vil blive tilføjet til anmodningsheaderen.</translation>
 <translation id="217141195370578385">Brave bruger ikke proxy på disse anmodninger, læs den valgte udbyders vilkår for beskyttelse af personlige oplysninger.</translation>

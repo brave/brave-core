@@ -51,6 +51,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3975865347033939965">El servei de sincronització no s'ha pogut iniciar, la Sincronització de Brave no s'està executant</translation>
 <translation id="4450893287417543264">No m'ho tornis a mostrar</translation>
 <translation id="4595286989346610620">Consulta els detalls</translation>
+<translation id="8324318899000695659">Bloqueja elements</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Obre amb una adreça .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Força l'enganxada</translation>
@@ -707,7 +708,7 @@ Leo. Aquesta acció no es pot desfer.</translation>
 <translation id="7634775528597575156">Punt final del servidor</translation>
 <translation id="6374563306438145841">Clau API</translation>
 <translation id="8008271349880309090">El nom del model tal com apareix al menú de selecció de models</translation>
-<translation id="7131172845656551327">El nom del model tal com hauria d'aparèixer a la sol·licitud a l'entorn del servidor, p. ex., phi-3 (tingueu en compte que si aquest nom no coincideix exactament amb el que espera l'entorn del servidor, la integració no funcionarà)</translation>
+<translation id="1355326130503900056">El nom del model tal com hauria d'aparèixer a la sol·licitud a l'entorn del servidor, p. ex., phi-3 (tingueu en compte que si aquest nom no coincideix exactament amb el que espera l'entorn del servidor, la integració no funcionarà)</translation>
 <translation id="3286410514484292784">L'URL en què l'entorn del servidor escolta sol·licituds. Si no ho sabeu del cert, comproveu la documentació de l'entorn del servidor. Per exemple, per a Ollama sempre és http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Alguns entorns de servidor poden requerir credencials d'autenticació, com una clau API o un token d'accés. S'afegiran a l'encapçalament de la sol·licitud.</translation>
 <translation id="217141195370578385">El servidor de Brave no admet aquestes sol·licituds, llegiu els termes de privacitat del proveïdor triat.</translation>

@@ -51,6 +51,7 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3975865347033939965">Nie można uruchomić usługi synchronizacji, Synchronizacja Brave nie działa</translation>
 <translation id="4450893287417543264">Nie pokazuj ponownie</translation>
 <translation id="4595286989346610620">Sprawdź szczegóły</translation>
+<translation id="8324318899000695659">Blokuj elementy</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Otwórz za pomocą adresu .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Wklejanie wymuszone</translation>
@@ -706,7 +707,7 @@ poprzednich rozmów z asystentem Leo Brave. Tego działania nie można cofnąć.
 <translation id="7634775528597575156">Punkt końcowy serwera</translation>
 <translation id="6374563306438145841">Klucz interfejsu API</translation>
 <translation id="8008271349880309090">Taka nazwa modelu, jaką pokazano w menu wyboru modelu</translation>
-<translation id="7131172845656551327">Taka nazwa modelu, jaka powinna być użyta w prośbie obsługującej struktury, np. phi-3 (Należy pamiętać, że jeśli ta nazwa nie pasuje dokładnie do wymogu obsługującej struktury, integracja nie zadziała).</translation>
+<translation id="1355326130503900056">Taka nazwa modelu, jaka powinna być użyta w prośbie obsługującej struktury, np. phi-3 (należy pamiętać, że jeśli ta nazwa nie pasuje dokładnie do wymogu obsługującej struktury, integracja nie zadziała)</translation>
 <translation id="3286410514484292784">Adres URL, pod którym platforma obsługujące odbiera przesyłane prośby. Jeśli nie masz pewności, sprawdź dokumentację obsługującej struktury. Przykładowo w przypadku Ollama jest to zawsze http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Niektóre obsługujące struktury mogą wymagać podania poświadczeń uwierzytelniających, takich jak klucz interfejsu API lub token dostępu. Zostanie to dodane do nagłówka prośby.</translation>
 <translation id="217141195370578385">Brave nie uczestniczy w przekazywaniu tych próśb. Zapoznaj się z Polityką ochrony prywatności wybranego dostawcy</translation>

@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">Remiantis jūsų žymomis ir naršymo istorija rodomi svetainių pasiūlymai.</translation>
 <translation id="924029461438529367">Rodyti paieškos pasiūlymus</translation>
 <translation id="1571106259128580884">Rodyti populiariausių svetainių pasiūlymus</translation>
+<translation id="6285118765755298263">Indeksuoti kitus ieškos modulius</translation>
+<translation id="919715748352669592">Automatiškai indeksuoja svetaines, kurios atitinka „OpenSearch“ specifikaciją.</translation>
 <translation id="9148058034647219655">Išeiti</translation>
 <translation id="8047754398610073499">Blokuoti pranešimus sutikti su slapukais</translation>
 <translation id="2621893359845808115">Blokuojami svetainių iškylantieji langai, kuriuose jūsų prašoma sutikti su slapukais arba juos atmesti toje svetainėje</translation>
@@ -744,7 +746,19 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="755448900483975096">Mobiliojo ryšio operatorius</translation>
 <translation id="1279441577056010362">Tęsti naudojant el. paštą</translation>
 <translation id="7125582363614011660">Pagalba teikiama bendradarbiaujant su „Guardian“ komanda.\n\nPasirinkite informaciją, kurią sutinkate su mumis bendrinti.\n\nKuo daugiau informacijos iš pat pradžių su mumis bendrinsite, tuo greičiau pagalbos tarnybos darbuotojams pavyks išspręsti kilusią problemą.</translation>
-<translation id="7999094850625689785">Priklausomai nuo jūsų sistemoje nustatytos laiko juostos, bus automatiškai parinktas artimiausias serverio regionas. Rekomenduojama naudoti šią parinktį, nes taip bus užtikrinta didžiausia interneto sparta.</translation>
+<translation id="8813171284214934811">Automatiškai pasirinkite arčiausiai esantį VPN serverio regioną pagal savo laiko juostą. Šią parinktį rekomenduojama naudoti norint padidinti interneto spartą.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> miestas - }
+          other {<ph name="CITY_COUNT_MANY"/> miestai (-ų) - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> serveris}
+          other {<ph name="SERVER_COUNT_MANY"/> serveriai (-ių)}
+        }</translation>
+<translation id="3199127022143353223">Serveriai</translation>
+<translation id="5431902940483264007">Optimalus</translation>
+<translation id="6527596624419285047">Naudokite geriausią prieinamą serverį</translation>
+<translation id="6789157560111825412">Prieinami serveriai</translation>
 <translation id="4397083831618200686">Pasirinkite sutrikimą</translation>
 <translation id="6687228121145903051">Negalima prisijungti prie VPN (kita klaida)</translation>
 <translation id="9184988385244077767">Prisijungus nėra interneto ryšio</translation>
@@ -812,7 +826,6 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="7358989216567322955">Maksimalus pirmenybės mokestis</translation>
 <translation id="9091334651803050473">Negalime užtikrinti, tačiau sumokėjus daugiau kasėjai gali jūsų operacijai taikyti prioritetą.</translation>
 <translation id="2941112035454246133">Žemas</translation>
-<translation id="5431902940483264007">Optimalus</translation>
 <translation id="7304030187361489308">Didelis</translation>
 <translation id="4853037749278079787">Maksimalus mokestis: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Dabartinis bazinis mokestis: <ph name="ASSET_VALUE"/> Gwei</translation>
