@@ -167,7 +167,6 @@ import org.chromium.ui.base.IntentRequestTracker;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.base.WindowDelegate;
 import org.chromium.ui.modaldialog.ModalDialogManager;
-import org.chromium.ui.modelutil.MVCListAdapter;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.url.GURL;
@@ -894,7 +893,6 @@ public class BytecodeTest {
                         true,
                         ViewProvider.class,
                         Context.class,
-                        MVCListAdapter.ModelList.class,
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
@@ -1219,7 +1217,6 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/status/StatusMediator",
                         "org/chromium/chrome/browser/omnibox/status/BraveStatusMediator",
                         PropertyModel.class,
-                        Resources.class,
                         Context.class,
                         UrlBarEditingTextStateProvider.class,
                         boolean.class,
@@ -1414,7 +1411,6 @@ public class BytecodeTest {
                         View.class,
                         View.class,
                         ObservableSupplier.class,
-                        BraveLocationBarMediator.getPrivacyPreferencesManagerClass(),
                         LocationBarDataProvider.class,
                         ActionMode.Callback.class,
                         WindowDelegate.class,
@@ -1452,7 +1448,6 @@ public class BytecodeTest {
                         LocationBarDataProvider.class,
                         LocationBarEmbedderUiOverrides.class,
                         ObservableSupplier.class,
-                        BraveLocationBarMediator.getPrivacyPreferencesManagerClass(),
                         OverrideUrlLoadingDelegate.class,
                         BraveLocationBarMediator.getLocaleManagerClass(),
                         OneshotSupplier.class,
