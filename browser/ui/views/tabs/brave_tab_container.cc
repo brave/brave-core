@@ -403,7 +403,7 @@ void BraveTabContainer::SetTabSlotVisibility() {
   for (Tab* tab : layout_helper_->GetTabs()) {
     if (std::optional<tab_groups::TabGroupId> group = tab->group();
         group && !base::Contains(group_views_, *group)) {
-      tab->set_group(std::nullopt);
+      tab->SetGroup(std::nullopt);
     }
   }
 
