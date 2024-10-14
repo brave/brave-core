@@ -24,7 +24,7 @@ const std::string& GetDefaultLocaleString() {
   return DefaultLocaleString();
 }
 
-std::string GetISOLanguageCode(const std::string& locale) {
+std::string GetISOLanguageCode(std::string_view locale) {
   std::string language = ParseLocaleSubtags(locale).language;
   if (language.empty()) {
     return kFallbackLanguageCode;
@@ -37,7 +37,7 @@ std::string GetDefaultISOLanguageCodeString() {
   return GetISOLanguageCode(GetDefaultLocaleString());
 }
 
-std::optional<std::string> GetISOScriptCode(const std::string& locale) {
+std::optional<std::string> GetISOScriptCode(std::string_view locale) {
   std::string script = ParseLocaleSubtags(locale).script;
   if (script.empty()) {
     return std::nullopt;
@@ -50,7 +50,7 @@ std::optional<std::string> GetDefaultISOScriptCodeString() {
   return GetISOScriptCode(GetDefaultLocaleString());
 }
 
-std::string GetISOCountryCode(const std::string& locale) {
+std::string GetISOCountryCode(std::string_view locale) {
   std::string country = ParseLocaleSubtags(locale).country;
   if (country.empty()) {
     return kFallbackCountryCode;
@@ -63,7 +63,7 @@ std::string GetDefaultISOCountryCodeString() {
   return GetISOCountryCode(GetDefaultLocaleString());
 }
 
-std::optional<std::string> GetCharSet(const std::string& locale) {
+std::optional<std::string> GetCharSet(std::string_view locale) {
   std::string charset = ParseLocaleSubtags(locale).charset;
   if (charset.empty()) {
     return std::nullopt;
@@ -76,7 +76,7 @@ std::optional<std::string> GetDefaultCharSetString() {
   return GetCharSet(GetDefaultLocaleString());
 }
 
-std::optional<std::string> GetVariant(const std::string& locale) {
+std::optional<std::string> GetVariant(std::string_view locale) {
   std::string variant_code = ParseLocaleSubtags(locale).variant;
   if (variant_code.empty()) {
     return std::nullopt;
