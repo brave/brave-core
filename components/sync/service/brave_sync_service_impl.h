@@ -85,6 +85,9 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, HistoryPreconditions);
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
                            P3aForHistoryThroughDelegate);
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
+                           OnAccountsCookieDeletedByUserAction);
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, OnAccountsInCookieUpdated);
 
   BraveSyncAuthManager* GetBraveSyncAuthManager();
   SyncServiceCrypto* GetCryptoForTests();
@@ -115,6 +118,15 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   void UpdateP3AObjectsNumber();
   void OnGetTypeEntitiesCount(const TypeEntitiesCount& count);
+
+  // IdentityManager::Observer implementation.
+  // Override with an empty implementation.
+  void OnAccountsCookieDeletedByUserAction() override;
+  void OnAccountsInCookieUpdated(
+      const signin::AccountsInCookieJarInfo& accounts_in_cookie_jar_info,
+      const GoogleServiceAuthError& error) override;
+  void OnPrimaryAccountChanged(
+      const signin::PrimaryAccountChangeEvent& event_details) override;
 
   brave_sync::Prefs brave_sync_prefs_;
 

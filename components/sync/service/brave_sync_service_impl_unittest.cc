@@ -22,10 +22,12 @@
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "components/signin/public/identity_manager/accounts_in_cookie_jar_info.h"
 #include "components/sync/engine/nigori/key_derivation_params.h"
 #include "components/sync/engine/nigori/nigori.h"
 #include "components/sync/model/type_entities_count.h"
 #include "components/sync/service/data_type_manager_impl.h"
+#include "components/sync/service/glue/sync_transport_data_prefs.h"
 #include "components/sync/test/data_type_manager_mock.h"
 #include "components/sync/test/fake_data_type_controller.h"
 #include "components/sync/test/fake_sync_engine.h"
@@ -45,6 +47,8 @@ using testing::Return;
 namespace syncer {
 
 namespace {
+
+constexpr char kCacheGuid[] = "cache_guid";
 
 constexpr char kValidSyncCode[] =
     "fringe digital begin feed equal output proof cheap "
@@ -707,5 +711,43 @@ TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitializeIOS) {
   EXPECT_EQ(leave_chain_pref_changed_count, 0u);
   EXPECT_FALSE(brave_sync_prefs()->GetLeaveChainDetails().empty());
 }
+
+TEST_F(BraveSyncServiceImplTest, OnAccountsCookieDeletedByUserAction) {
+  SyncTransportDataPrefs::RegisterProfilePrefs(pref_service()->registry());
+
+  SyncTransportDataPrefs sync_transport_data_prefs(
+      pref_service(), signin::GaiaIdHash::FromGaiaId("user_gaia_id"));
+
+  sync_transport_data_prefs.SetCacheGuid(kCacheGuid);
+
+  CreateSyncService();
+
+  brave_sync_service_impl()->OnAccountsCookieDeletedByUserAction();
+
+  EXPECT_EQ(sync_transport_data_prefs.GetCacheGuid(), kCacheGuid);
+}
+
+TEST_F(BraveSyncServiceImplTest, OnAccountsInCookieUpdated) {
+  SyncTransportDataPrefs::RegisterProfilePrefs(pref_service()->registry());
+
+  SyncTransportDataPrefs sync_transport_data_prefs(
+      pref_service(), signin::GaiaIdHash::FromGaiaId("user_gaia_id"));
+
+  sync_transport_data_prefs.SetCacheGuid(kCacheGuid);
+
+  CreateSyncService();
+
+  brave_sync_service_impl()->OnAccountsInCookieUpdated(
+      signin::AccountsInCookieJarInfo(), GoogleServiceAuthError());
+
+  EXPECT_EQ(sync_transport_data_prefs.GetCacheGuid(), kCacheGuid);
+}
+
+// No test for SyncServiceImplBrave::OnPrimaryAccountChanged
+// Because MaybeClearAccountKeyedPreferences at sync_service_impl.cc
+// requires accounts_in_cookie_jar_info.accounts_are_fresh to be true
+// but IdentityManager::GetAccountsInCookieJar() override at
+// chromium_src/components/signin/public/identity_manager/identity_manager.cc
+// gives false.
 
 }  // namespace syncer
