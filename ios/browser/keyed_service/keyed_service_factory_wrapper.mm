@@ -29,7 +29,7 @@
   return [self serviceForBrowserState:last_used_profile];
 }
 
-+ (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
++ (nullable id)serviceForBrowserState:(ProfileIOS*)profile {
   NOTIMPLEMENTED();
   return nil;
 }

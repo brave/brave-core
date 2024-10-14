@@ -34,11 +34,10 @@
 namespace {
 
 history::WebHistoryService* WebHistoryServiceGetter(
-    base::WeakPtr<ChromeBrowserState> weak_browser_state) {
-  DCHECK(weak_browser_state.get())
-      << "Getter should not be called after ChromeBrowserState destruction.";
-  return ios::WebHistoryServiceFactory::GetForBrowserState(
-      weak_browser_state.get());
+    base::WeakPtr<ProfileIOS> profile) {
+  DCHECK(profile.get())
+      << "Getter should not be called after ProfileIOS destruction.";
+  return ios::WebHistoryServiceFactory::GetForBrowserState(profile.get());
 }
 
 }  // anonymous namespace
@@ -168,10 +167,10 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 @end
 
 @implementation BraveHistoryAPI {
-  raw_ptr<ChromeBrowserState> _mainBrowserState;  // NOT OWNED
+  raw_ptr<ProfileIOS> _mainBrowserState;  // NOT OWNED
 }
 
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState {
+- (instancetype)initWithBrowserState:(ProfileIOS*)mainBrowserState {
   if ((self = [super init])) {
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
     _mainBrowserState = mainBrowserState;
