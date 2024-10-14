@@ -24,7 +24,7 @@ TEST(JsonParser, ConvertUint64ToString) {
   EXPECT_TRUE(json::convert_uint64_value_to_string("/a", json, false).empty());
   EXPECT_TRUE(json::convert_uint64_value_to_string("/a", json, true).empty());
 
-  // std::numeric_limits<int32_t>::min()
+  // std::numeric_limits<int64_t>::min()
   json =
       "{\"a\": " + base::NumberToString(std::numeric_limits<int64_t>::min()) +
       "}";
