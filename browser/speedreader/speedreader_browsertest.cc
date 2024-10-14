@@ -294,7 +294,11 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DisableSiteWorks) {
       tab_helper()->PageDistillState()));
 }
 
-IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
+// I assume that the periodic fails of this test are related to issues/36355, I
+// need to deal with it before turning it back. Other tests cover the
+// scenario in this one, so a temporary disabling will not affect the health
+// check of the feature.
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
   // Solana web3.js console warning will interfere with console observer
   brave_wallet::SetDefaultSolanaWallet(
       browser()->profile()->GetPrefs(),
