@@ -13,10 +13,10 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tabmodel.TabModel;
-import org.chromium.chrome.browser.tabmodel.TabModelFilter;
+import org.chromium.chrome.browser.tabmodel.TabModelFilterBase;
 
 /** Brave's super class for {@link TabGroupModelFilter} */
-public abstract class BraveTabGroupModelFilter extends TabModelFilter {
+public abstract class BraveTabGroupModelFilter extends TabModelFilterBase {
     /**
      * This variable will be used instead of {@link TabGroupModelFilter}'s variable, that will be
      * deleted in bytecode.
