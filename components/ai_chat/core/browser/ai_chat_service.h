@@ -97,7 +97,8 @@ class AIChatService : public KeyedService,
       GetCanShowPremiumPromptCallback callback) override;
   void DismissPremiumPrompt() override;
   void DeleteConversation(const std::string& id) override;
-  void RenameConversation(const std::string& id, const std::string& new_name) override;
+  void RenameConversation(const std::string& id,
+                          const std::string& new_name) override;
 
   void BindConversation(
       const std::string& uuid,
