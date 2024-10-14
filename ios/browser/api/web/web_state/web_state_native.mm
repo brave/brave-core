@@ -38,13 +38,13 @@ NativeWebState::NativeWebState(Browser* browser, bool off_the_record)
       SyncedWindowDelegateBrowserAgent::FromBrowser(browser_)->GetSessionId();
 
   // Create BrowserState
-  ChromeBrowserState* browser_state = browser->GetBrowserState();
+  ProfileIOS* profile = browser->GetProfile();
   if (off_the_record) {
-    browser_state = browser_state->GetOffTheRecordProfile();
+    profile = profile->GetOffTheRecordProfile();
   }
 
   // Create WebState with parameters
-  web::WebState::CreateParams create_params(browser_state);
+  web::WebState::CreateParams create_params(profile);
   create_params.last_active_time = base::Time::Now();
   auto web_state = web::WebState::Create(create_params);
   web_state->ForceRealized();

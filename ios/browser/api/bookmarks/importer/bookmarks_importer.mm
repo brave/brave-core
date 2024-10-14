@@ -65,9 +65,8 @@ std::u16string GenerateUniqueFolderName(BookmarkModel* model,
 }
 
 // Shows the bookmarks toolbar.
-void ShowBookmarkBar(ChromeBrowserState* browser_state) {
-  browser_state->GetPrefs()->SetBoolean(bookmarks::prefs::kShowBookmarkBar,
-                                        true);
+void ShowBookmarkBar(ProfileIOS* profile) {
+  profile->GetPrefs()->SetBoolean(bookmarks::prefs::kShowBookmarkBar, true);
 }
 
 }  // namespace

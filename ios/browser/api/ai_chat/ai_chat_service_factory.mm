@@ -25,10 +25,9 @@
 namespace ai_chat {
 
 // static
-AIChatService* AIChatServiceFactory::GetForBrowserState(
-    ChromeBrowserState* browser_state) {
+AIChatService* AIChatServiceFactory::GetForBrowserState(ProfileIOS* profile) {
   return static_cast<AIChatService*>(
-      GetInstance()->GetServiceForBrowserState(browser_state, true));
+      GetInstance()->GetServiceForBrowserState(profile, true));
 }
 
 // static
@@ -51,20 +50,20 @@ std::unique_ptr<KeyedService> AIChatServiceFactory::BuildServiceInstanceFor(
   if (!features::IsAIChatEnabled()) {
     return nullptr;
   }
-  auto* browser_state = ChromeBrowserState::FromBrowserState(context);
-  if (browser_state->IsOffTheRecord()) {
+  auto* profile = ProfileIOS::FromBrowserState(context);
+  if (profile->IsOffTheRecord()) {
     return nullptr;
   }
 
   auto skus_service_getter = base::BindRepeating(
-      [](ChromeBrowserState* browser_state) {
-        return skus::SkusServiceFactory::GetForBrowserState(browser_state);
+      [](ProfileIOS* profile) {
+        return skus::SkusServiceFactory::GetForBrowserState(profile);
       },
-      base::Unretained(browser_state));
+      base::Unretained(profile));
   auto credential_manager = std::make_unique<AIChatCredentialManager>(
       std::move(skus_service_getter), GetApplicationContext()->GetLocalState());
   ModelService* model_service =
-      ModelServiceFactory::GetForBrowserState(browser_state);
+      ModelServiceFactory::GetForBrowserState(profile);
   return std::make_unique<AIChatService>(
       model_service, std::move(credential_manager),
       user_prefs::UserPrefs::Get(context), ai_chat_metrics_.get(),
