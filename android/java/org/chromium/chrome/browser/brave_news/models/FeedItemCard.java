@@ -40,6 +40,7 @@ public class FeedItemCard {
         this.imageByte = imageByte;
     }
 
+    @SuppressWarnings("ObjectToString")
     @Override
     public String toString() {
         return "FeedItemCard{"

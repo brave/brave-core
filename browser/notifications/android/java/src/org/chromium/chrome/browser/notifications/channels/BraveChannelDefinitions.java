@@ -18,13 +18,13 @@ import java.util.Map;
 import java.util.Set;
 
 public class BraveChannelDefinitions {
-    public class ChannelId {
+    public static class ChannelId {
         public static final String BRAVE_ADS = "com.brave.browser.ads";
         public static final String BRAVE_ADS_BACKGROUND = "com.brave.browser.ads.background";
         public static final String BRAVE_BROWSER = "com.brave.browser";
     }
 
-    public class ChannelGroupId {
+    public static class ChannelGroupId {
         public static final String BRAVE_ADS = "com.brave.browser.ads";
         public static final String GENERAL = "general";
     }
