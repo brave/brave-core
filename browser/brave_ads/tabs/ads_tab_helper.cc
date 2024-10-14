@@ -18,6 +18,7 @@
 #include "components/sessions/content/session_tab_helper.h"
 #include "components/sessions/core/session_id.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/page.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "net/http/http_response_headers.h"
@@ -327,6 +328,18 @@ void AdsTabHelper::MaybeNotifyTabdidClose() {
   }
 }
 
+void AdsTabHelper::PrimaryPageChanged(content::Page& page) {
+  if (!ads_service_) {
+    // No-op if the ads service is unavailable.
+    return;
+  }
+
+  // Calling `ResetNavigationState` from `DidStartNavigation` causes an issue
+  // where `NotifyTab[Text|Html]ContentDidChange` is not triggered when a user
+  // enables aggressive tracker and ad blocking, then proceeds to the page.
+  ResetNavigationState();
+}
+
 void AdsTabHelper::DidStartNavigation(
     content::NavigationHandle* navigation_handle) {
   if (!ads_service_ || !navigation_handle->IsInPrimaryMainFrame()) {
@@ -337,8 +350,6 @@ void AdsTabHelper::DidStartNavigation(
       navigation_handle->GetRestoreType() == content::RestoreType::kRestored;
 
   is_new_navigation_ = IsNewNavigation(navigation_handle);
-
-  ResetNavigationState();
 }
 
 void AdsTabHelper::DidFinishNavigation(

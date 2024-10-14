@@ -95,6 +95,7 @@ class AdsTabHelper : public content::WebContentsObserver,
   void MaybeNotifyTabdidClose();
 
   // content::WebContentsObserver:
+  void PrimaryPageChanged(content::Page& page) override;
   void DidStartNavigation(
       content::NavigationHandle* navigation_handle) override;
   void DidFinishNavigation(
