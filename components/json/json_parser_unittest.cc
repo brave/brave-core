@@ -90,14 +90,14 @@ TEST(JsonParser, ConvertInt64ToString) {
   std::string json = "{\"a\": 18446744073709551615 }";
   EXPECT_TRUE(json::convert_int64_value_to_string("/a", json, false).empty());
 
-  // std::numeric_limits<int32_t>::min()
+  // std::numeric_limits<int64_t>::min()
   json =
-      "{\"a\": " + base::NumberToString(std::numeric_limits<int32_t>::min()) +
+      "{\"a\": " + base::NumberToString(std::numeric_limits<int64_t>::min()) +
       "}";
   EXPECT_EQ(json::convert_int64_value_to_string("/a", json, false),
             R"({"a":"-9223372036854775808"})");
 
-  // std::numeric_limits<int32_t>::min() - 1
+  // std::numeric_limits<int64_t>::min() - 1
   json = "{\"a\": -9223372036854775809 }";
   EXPECT_TRUE(json::convert_int64_value_to_string("/a", json, false).empty());
   EXPECT_TRUE(json::convert_int64_value_to_string("/a", json, true).empty());
@@ -241,11 +241,11 @@ TEST(JsonParser, ConvertStringToUint64) {
 }
 
 TEST(JsonParser, ConvertStringToInt64) {
-  // std::numeric_limits<int32_t>::min()
+  // std::numeric_limits<int64_t>::min()
   std::string json = R"({"a":"-9223372036854775808"})";
   EXPECT_EQ(json::convert_string_value_to_int64("/a", json, false),
             R"({"a":-9223372036854775808})");
-  // std::numeric_limits<int32_t>::min() - 1
+  // std::numeric_limits<int64_t>::min() - 1
   json = R"({"a":"-9223372036854775809"})";
   EXPECT_TRUE(json::convert_string_value_to_int64("/a", json, false).empty());
   EXPECT_TRUE(json::convert_string_value_to_int64("/a", json, true).empty());
@@ -381,9 +381,9 @@ TEST(JsonParser, ConvertUint64InObjectArrayToString) {
       R"({"a":[{"key":"1"}]})",
       // std::numeric_limits<uint64_t>::max + 1
       R"("{a":[{"key":18446744073709551616}]})",
-      // std::numeric_limits<int32_t>::min()
+      // std::numeric_limits<int64_t>::min()
       R"("{a":[{"key":)" +
-          base::NumberToString(std::numeric_limits<int32_t>::min()) + "}]}"};
+          base::NumberToString(std::numeric_limits<int64_t>::min()) + "}]}"};
   for (const auto& invalid_case : invalid_cases) {
     EXPECT_EQ("", json::convert_uint64_in_object_array_to_string(
                       "/a", "", "key", invalid_case))
@@ -473,13 +473,15 @@ TEST(JsonParser, ConvertAllNumbersToString) {
       R"({"a": hello})",
       // std::numeric_limits<uint64_t>::max + 1
       R"("{a":[{"key":18446744073709551616}]})",
-      // std::numeric_limits<int32_t>::min()
+      // std::numeric_limits<int64_t>::min()
       R"("{a":[{"key":)" +
-          base::NumberToString(std::numeric_limits<int32_t>::min()) + "}]}",
-      // DBL_MIN
-      R"("{a":[{"key":)" + base::NumberToString(DBL_MIN) + "}]}",
-      // DBL_MAX
-      R"("{a":[{"key":)" + base::NumberToString(DBL_MAX + 1) + "}]}"};
+          base::NumberToString(std::numeric_limits<int64_t>::min()) + "}]}",
+      // std::numeric_limits<double>::min()
+      R"("{a":[{"key":)" +
+          base::NumberToString(std::numeric_limits<double>::min()) + "}]}",
+      // std::numeric_limits<double>::max()
+      R"("{a":[{"key":)" +
+          base::NumberToString(std::numeric_limits<double>::max() + 1) + "}]}"};
   for (const auto& invalid_case : invalid_cases) {
     EXPECT_EQ("", json::convert_all_numbers_to_string(invalid_case, ""))
         << invalid_case;
