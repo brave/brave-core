@@ -318,11 +318,7 @@ public class TabUtils {
         context.startActivity(intent);
     }
 
-    /**
-     * Returns transition for the given tab
-     *
-     * @param tab
-     */
+    /** Returns transition for the given tab */
     public static int getTransition(Tab tab) {
         if (tab != null
                 && tab.getWebContents() != null
