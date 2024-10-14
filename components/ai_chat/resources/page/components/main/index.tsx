@@ -181,17 +181,6 @@ function Main() {
         <AlertCenter position='top-left' className={styles.alertCenter} />
         <div className={styles.conversationContent}
           ref={conversationContentElement}>
-          {/* {aiChatContext.isHistoryEnabled &&
-          <ul>
-            <li onClick={() => aiChatContext.onSelectConversationUuid(undefined)}>This page's conversation</li>
-          {aiChatContext.visibleConversations.map(conversation => (
-            <li key={conversation.uuid} onClick={() => aiChatContext.onSelectConversationUuid(conversation.uuid)}>
-              <div>{conversation.uuid}</div>
-              <div>{conversation.title}</div>
-            </li>
-          ))}
-          </ul>
-          } */}
           {aiChatContext.hasAcceptedAgreement && <>
             <ModelIntro />
             <ConversationList

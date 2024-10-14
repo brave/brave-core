@@ -105,7 +105,7 @@ function Content () {
   const aiChatContext = useAIChat()
 
   if (aiChatContext.isStandalone === undefined) {
-    return <div>"loading..."</div>
+    return <div>loading...</div>
   }
 
   if (!aiChatContext.isStandalone) {
