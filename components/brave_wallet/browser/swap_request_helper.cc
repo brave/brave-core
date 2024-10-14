@@ -447,4 +447,74 @@ std::optional<std::string> EncodeTransactionParams(mojom::LiFiStepPtr step) {
 
 }  // namespace lifi
 
+namespace squid {
+
+namespace {
+
+std::optional<std::string> EncodeChainId(const std::string& value) {
+  uint256_t val;
+  if (!HexValueToUint256(value, &val)) {
+    return std::nullopt;
+  }
+
+  if (val > std::numeric_limits<uint64_t>::max()) {
+    return std::nullopt;
+  }
+
+  return base::NumberToString(static_cast<uint64_t>(val));
+}
+
+std::optional<std::string> EncodeParams(mojom::SwapQuoteParamsPtr params) {
+  base::Value::Dict result;
+  if (auto chain_id = EncodeChainId(params->from_chain_id)) {
+    result.Set("fromChain", *chain_id);
+  } else {
+    return std::nullopt;
+  }
+
+  result.Set("fromAddress", params->from_account_id->address);
+  result.Set("fromToken", params->from_token.empty()
+                              ? kNativeEVMAssetContractAddress
+                              : params->from_token);
+  result.Set("fromAmount", params->from_amount);
+
+  if (auto chain_id = EncodeChainId(params->to_chain_id)) {
+    result.Set("toChain", *chain_id);
+  } else {
+    return std::nullopt;
+  }
+
+  result.Set("toAddress", params->to_account_id->address);
+  result.Set("toToken", params->to_token.empty()
+                            ? kNativeEVMAssetContractAddress
+                            : params->to_token);
+
+  double slippage_percentage = 0.0;
+  if (base::StringToDouble(params->slippage_percentage, &slippage_percentage)) {
+    result.Set("slippage", slippage_percentage);
+  }
+
+  base::Value::Dict slippage_config;
+  slippage_config.Set("autoMode", 1);
+  result.Set("slippageConfig", std::move(slippage_config));
+
+  result.Set("enableBoost", true);
+  result.Set("quoteOnly", false);
+
+  return GetJSON(base::Value(std::move(result)));
+}
+
+}  // namespace
+
+std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params) {
+  return EncodeParams(std::move(params));
+}
+
+std::optional<std::string> EncodeTransactionParams(
+    mojom::SwapQuoteParamsPtr params) {
+  return EncodeParams(std::move(params));
+}
+
+}  // namespace squid
+
 }  // namespace brave_wallet

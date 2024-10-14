@@ -40,6 +40,15 @@ mojom::LiFiStatusPtr ParseStatusResponse(const base::Value& json_value);
 
 }  // namespace lifi
 
+namespace squid {
+
+mojom::SquidQuotePtr ParseQuoteResponse(const base::Value& json_value);
+mojom::SquidErrorPtr ParseErrorResponse(const base::Value& json_value);
+mojom::SquidTransactionUnionPtr ParseTransactionResponse(
+    const base::Value& json_value);
+
+}  // namespace squid
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_RESPONSE_PARSER_H_

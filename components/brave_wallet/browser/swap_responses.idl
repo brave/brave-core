@@ -280,4 +280,102 @@ namespace swap_responses {
     DOMString message;
     DOMString? code;
   };
+
+  // Squid response types
+
+  enum SquidChainType {
+    kEvm
+  };
+
+  enum SquidActionType {
+    kWrap,
+    kUnwrap,
+    kSwap,
+    kBridge
+  };
+
+  dictionary SquidToken {
+    DOMString address;
+    DOMString symbol;
+    DOMString name;
+    DOMString decimals;
+    DOMString chainId;
+    DOMString? coingeckoId;
+    DOMString? logoURI;
+    DOMString type;
+  };
+
+  dictionary SquidAction {
+    DOMString type;
+    DOMString description;
+    DOMString fromAmount;
+    DOMString fromChain;
+    SquidToken fromToken;
+
+    DOMString provider;
+    // logoURI is found to be missing in some cases
+    DOMString? logoURI;
+
+    DOMString toAmount;
+    DOMString toAmountMin;
+    DOMString toChain;
+    SquidToken toToken;
+  };
+
+  dictionary SquidFeeCost {
+    DOMString amount;
+    DOMString description;
+    DOMString name;
+    SquidToken token;
+  };
+
+  dictionary SquidGasCost {
+    DOMString amount;
+    DOMString gasLimit;
+    SquidToken token;
+  };
+
+  dictionary SquidEstimate {
+    SquidAction[] actions;
+    DOMString aggregatePriceImpact;
+    DOMString aggregateSlippage;
+    DOMString estimatedRouteDuration;
+    DOMString exchangeRate;
+    SquidFeeCost[] feeCosts;
+    SquidGasCost[] gasCosts;
+    boolean isBoostSupported;
+
+    DOMString fromAmount;
+    SquidToken fromToken;
+
+    DOMString toAmount;
+    DOMString toAmountMin;
+    SquidToken toToken;
+  };
+
+  dictionary SquidTransactionRequest {
+    DOMString data;
+    DOMString target;
+    DOMString value;
+    DOMString gasLimit;
+    DOMString gasPrice;
+    DOMString lastBaseFeePerGas;
+    DOMString maxFeePerGas;
+    DOMString maxPriorityFeePerGas;
+  };
+
+  dictionary SquidRoute {
+    SquidEstimate estimate;
+    SquidTransactionRequest? transactionRequest;
+  };
+
+  dictionary SquidQuoteResponse {
+    SquidRoute route;
+  };
+
+  dictionary SquidErrorResponse {
+    DOMString message;
+    DOMString statusCode;
+    DOMString type;
+  };
 };

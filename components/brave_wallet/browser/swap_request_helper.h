@@ -26,6 +26,12 @@ std::optional<std::string> EncodeQuoteParams(
 std::optional<std::string> EncodeTransactionParams(mojom::LiFiStepPtr step);
 }  // namespace lifi
 
+namespace squid {
+std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params);
+std::optional<std::string> EncodeTransactionParams(
+    mojom::SwapQuoteParamsPtr params);
+}  // namespace squid
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_REQUEST_HELPER_H_

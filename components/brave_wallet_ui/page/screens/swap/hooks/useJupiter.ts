@@ -28,10 +28,7 @@ export function useJupiter(params: SwapParams) {
 
   const exchange = useCallback(
     async function (quote: BraveWallet.JupiterQuote) {
-      if (
-        !fromAccount ||
-        !fromNetwork
-      ) {
+      if (!fromAccount || !fromNetwork) {
         return
       }
 
@@ -55,7 +52,8 @@ export function useJupiter(params: SwapParams) {
                 quote
               },
               zeroExTransactionParams: undefined,
-              lifiTransactionParams: undefined
+              lifiTransactionParams: undefined,
+              squidTransactionParams: undefined
             },
             'jupiterTransactionParams'
           )

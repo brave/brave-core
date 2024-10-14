@@ -88,6 +88,24 @@ bool IsNetworkSupportedByLiFi(const std::string& chain_id) {
           chain_id == mojom::kSolanaMainnet);
 }
 
+bool IsNetworkSupportedBySquid(const std::string& chain_id) {
+  return (chain_id == mojom::kMainnetChainId ||
+          chain_id == mojom::kArbitrumMainnetChainId ||
+          chain_id == mojom::kAvalancheMainnetChainId ||
+          chain_id == mojom::kOptimismMainnetChainId ||
+          chain_id == mojom::kPolygonMainnetChainId ||
+          chain_id == mojom::kBaseMainnetChainId ||
+          chain_id == mojom::kLineaChainId ||
+          chain_id == mojom::kBnbSmartChainMainnetChainId ||
+          chain_id == mojom::kFantomMainnetChainId ||
+          chain_id == mojom::kMoonbeamChainId ||
+          chain_id == mojom::kCeloMainnetChainId ||
+          chain_id == mojom::kScrollChainId ||
+          chain_id == mojom::kFilecoinEthereumMainnetChainId ||
+          chain_id == mojom::kBlastMainnetChainId ||
+          chain_id == mojom::kImmutableZkEVMChainId);
+}
+
 bool HasRFQTLiquidity(const std::string& chain_id) {
   return (chain_id == mojom::kMainnetChainId ||
           chain_id == mojom::kPolygonMainnetChainId);
@@ -321,13 +339,25 @@ GURL SwapService::GetLiFiStatusURL(const std::string& tx_hash) {
   return GURL(kLiFiBaseAPIURL).Resolve("/v1/status?txHash=" + tx_hash);
 }
 
+// static
+GURL SwapService::GetSquidURL() {
+  return GURL(kSquidBaseAPIURL).Resolve("/v2/route");
+}
+
 void SwapService::IsSwapSupported(const std::string& chain_id,
                                   IsSwapSupportedCallback callback) {
   std::move(callback).Run(IsNetworkSupportedByZeroEx(chain_id) ||
                           IsNetworkSupportedByJupiter(chain_id) ||
-                          IsNetworkSupportedByLiFi(chain_id));
+                          IsNetworkSupportedByLiFi(chain_id) ||
+                          IsNetworkSupportedBySquid(chain_id));
 }
 
+// Method to fetch a quote for a swap or a bridge transaction.
+//
+// If the provider is set to kAuto, the method will attempt to fetch a quote
+// based on the following priority:
+//   P1. LiFi, Jupiter
+//   P2. 0x, Squid
 void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
                            GetQuoteCallback callback) {
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
@@ -340,26 +370,8 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
                           IsNetworkSupportedByLiFi(params->to_chain_id) &&
                           // LiFi does not support ExactOut swaps.
                           !params->from_amount.empty();
-
-  // EVM swaps are served via 0x only if the provider is set to kZeroEx.
-  if ((params->provider == mojom::SwapProvider::kZeroEx &&
-       has_zero_ex_support) ||
-      (params->provider == mojom::SwapProvider::kAuto && has_zero_ex_support &&
-       !has_lifi_support)) {
-    auto swap_fee = GetZeroSwapFee();
-    auto fee_param = swap_fee->fee_param;
-
-    auto internal_callback = base::BindOnce(
-        &SwapService::OnGetZeroExQuote, weak_ptr_factory_.GetWeakPtr(),
-        std::move(swap_fee), std::move(callback));
-
-    api_request_helper_.Request(net::HttpRequestHeaders::kGetMethod,
-                                GetZeroExQuoteURL(*params, fee_param), "", "",
-                                std::move(internal_callback), GetHeaders(), {},
-                                std::move(conversion_callback));
-
-    return;
-  }
+  auto has_squid_support = IsNetworkSupportedBySquid(params->from_chain_id) &&
+                           IsNetworkSupportedBySquid(params->to_chain_id);
 
   // If the provider is set to Auto, Solana swaps are served via Jupiter.
   if ((params->provider == mojom::SwapProvider::kJupiter ||
@@ -403,6 +415,49 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
         net::HttpRequestHeaders::kPostMethod, GetLiFiQuoteURL(),
         *encoded_params, "application/json", std::move(internal_callback),
         GetHeaders(), {}, std::move(conversion_callback));
+    return;
+  }
+
+  // EVM swaps are served via 0x only if the provider is set to kZeroEx.
+  if ((params->provider == mojom::SwapProvider::kZeroEx ||
+       params->provider == mojom::SwapProvider::kAuto) &&
+      has_zero_ex_support) {
+    auto swap_fee = GetZeroSwapFee();
+    auto fee_param = swap_fee->fee_param;
+
+    auto internal_callback = base::BindOnce(
+        &SwapService::OnGetZeroExQuote, weak_ptr_factory_.GetWeakPtr(),
+        std::move(swap_fee), std::move(callback));
+
+    api_request_helper_.Request(net::HttpRequestHeaders::kGetMethod,
+                                GetZeroExQuoteURL(*params, fee_param), "", "",
+                                std::move(internal_callback), GetHeaders(), {},
+                                std::move(conversion_callback));
+
+    return;
+  }
+
+  if ((params->provider == mojom::SwapProvider::kSquid ||
+       params->provider == mojom::SwapProvider::kAuto) &&
+      has_squid_support) {
+    auto encoded_params = squid::EncodeQuoteParams(std::move(params));
+    if (!encoded_params) {
+      std::move(callback).Run(
+          nullptr, nullptr, nullptr,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+      return;
+    }
+
+    auto swap_fee = GetZeroSwapFee();
+
+    auto internal_callback = base::BindOnce(
+        &SwapService::OnGetSquidQuote, weak_ptr_factory_.GetWeakPtr(),
+        std::move(swap_fee), std::move(callback));
+
+    api_request_helper_.Request(
+        net::HttpRequestHeaders::kPostMethod, GetSquidURL(), *encoded_params,
+        "application/json", std::move(internal_callback), GetHeaders(), {},
+        std::move(conversion_callback));
     return;
   }
 
@@ -508,6 +563,33 @@ void SwapService::OnGetLiFiQuote(mojom::SwapFeesPtr swap_fee,
   }
 }
 
+void SwapService::OnGetSquidQuote(mojom::SwapFeesPtr swap_fee,
+                                  GetQuoteCallback callback,
+                                  APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    if (auto error_response =
+            squid::ParseErrorResponse(api_request_result.value_body())) {
+      std::move(callback).Run(
+          nullptr, nullptr,
+          mojom::SwapErrorUnion::NewSquidError(std::move(error_response)), "");
+    } else {
+      std::move(callback).Run(
+          nullptr, nullptr, nullptr,
+          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    }
+    return;
+  }
+
+  if (auto quote = squid::ParseQuoteResponse(api_request_result.value_body())) {
+    std::move(callback).Run(
+        mojom::SwapQuoteUnion::NewSquidQuote(std::move(quote)),
+        std::move(swap_fee), nullptr, "");
+  } else {
+    std::move(callback).Run(nullptr, nullptr, nullptr,
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  }
+}
+
 void SwapService::GetTransaction(mojom::SwapTransactionParamsUnionPtr params,
                                  GetTransactionCallback callback) {
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
@@ -573,6 +655,29 @@ void SwapService::GetTransaction(mojom::SwapTransactionParamsUnionPtr params,
         net::HttpRequestHeaders::kPostMethod, GetLiFiTransactionURL(),
         *encoded_params, "application/json", std::move(internal_callback),
         GetHeaders(), {}, std::move(conversion_callback));
+
+    return;
+  }
+
+  if (params->is_squid_transaction_params()) {
+    auto& squid_transaction_params = params->get_squid_transaction_params();
+    auto encoded_params =
+        squid::EncodeTransactionParams(std::move(squid_transaction_params));
+    if (!encoded_params) {
+      std::move(callback).Run(
+          nullptr, nullptr,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+      return;
+    }
+
+    auto internal_callback =
+        base::BindOnce(&SwapService::OnGetSquidTransaction,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+    api_request_helper_.Request(
+        net::HttpRequestHeaders::kPostMethod, GetSquidURL(), *encoded_params,
+        "application/json", std::move(internal_callback), GetHeaders(), {},
+        std::move(conversion_callback));
 
     return;
   }
@@ -659,6 +764,33 @@ void SwapService::OnGetLiFiTransaction(GetTransactionCallback callback,
     std::move(callback).Run(
         mojom::SwapTransactionUnion::NewLifiTransaction(std::move(transaction)),
         nullptr, "");
+  } else {
+    std::move(callback).Run(nullptr, nullptr,
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  }
+}
+
+void SwapService::OnGetSquidTransaction(GetTransactionCallback callback,
+                                        APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    if (auto error_response =
+            squid::ParseErrorResponse(api_request_result.value_body())) {
+      std::move(callback).Run(
+          nullptr,
+          mojom::SwapErrorUnion::NewSquidError(std::move(error_response)), "");
+    } else {
+      std::move(callback).Run(
+          nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    }
+
+    return;
+  }
+
+  if (auto transaction =
+          squid::ParseTransactionResponse(api_request_result.value_body())) {
+    std::move(callback).Run(mojom::SwapTransactionUnion::NewSquidTransaction(
+                                std::move(transaction)),
+                            nullptr, "");
   } else {
     std::move(callback).Run(nullptr, nullptr,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));

@@ -1627,9 +1627,12 @@ inline constexpr char kLiFiNativeSVMAssetContractAddress[] =
     "11111111111111111111111111111111";
 inline constexpr char kLiFiSolanaMainnetChainID[] = "1151111081099710";
 
-// LiFi // 0x common constants
+// LiFi // 0x // Squid common constants
 inline constexpr char kNativeEVMAssetContractAddress[] =
     "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+
+// Squid constants
+inline constexpr char kSquidBaseAPIURL[] = "https://squid.wallet.brave.com";
 
 constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
 constexpr int64_t kLogTrackerDefaultTimeInSeconds = 20;

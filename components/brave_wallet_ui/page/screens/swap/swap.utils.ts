@@ -13,6 +13,11 @@ import Amount from '../../../utils/amount'
 import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
 
+function ensureUnique<T>(array: T[], key: keyof T): T[] {
+  return [...new Set(array.map(a => a[key]))]
+              .map(k => array.find(a => a[key] === k)!) as T[];
+}
+
 function getZeroExNetworkFee({
   quote,
   fromNetwork
@@ -79,7 +84,7 @@ export function getZeroExQuoteOptions({
         .divideByDecimals(toToken.decimals)
         .div(new Amount(quote.sellAmount).divideByDecimals(fromToken.decimals)),
       impact: new Amount(quote.estimatedPriceImpact),
-      sources: quote.sources
+      sources: ensureUnique(quote.sources, 'name')
         .map((source) => ({
           name: source.name,
           proportion: new Amount(source.proportion)
@@ -137,14 +142,6 @@ export function getJupiterToAmount({
   toToken: BraveWallet.BlockchainToken
 }): Amount {
   return new Amount(quote.outAmount).divideByDecimals(toToken.decimals)
-}
-
-export function getLiFiFromAmount(route: BraveWallet.LiFiRoute): Amount {
-  return new Amount(route.fromAmount).divideByDecimals(route.fromToken.decimals)
-}
-
-export function getLiFiToAmount(route: BraveWallet.LiFiRoute): Amount {
-  return new Amount(route.toAmount).divideByDecimals(route.toToken.decimals)
 }
 
 export function getJupiterQuoteOptions({
@@ -206,6 +203,14 @@ export function getJupiterQuoteOptions({
 }
 
 // LiFi
+
+export function getLiFiFromAmount(route: BraveWallet.LiFiRoute): Amount {
+  return new Amount(route.fromAmount).divideByDecimals(route.fromToken.decimals)
+}
+
+export function getLiFiToAmount(route: BraveWallet.LiFiRoute): Amount {
+  return new Amount(route.toAmount).divideByDecimals(route.toToken.decimals)
+}
 
 export function getLiFiQuoteOptions({
   quote,
@@ -283,12 +288,100 @@ export function getLiFiQuoteOptions({
         .reduce((a, b) => a + b, 0)
         .toString(),
       provider: BraveWallet.SwapProvider.kLiFi,
-      tags: route.tags.filter((tag) =>
+      tags: [
+        ...new Set(route.tags)
+      ].filter((tag) =>
         ['CHEAPEST', 'FASTEST'].includes(tag)
       ) as RouteTagsType[],
       id: route.uniqueId
     }
   })
+}
+
+// Squid
+
+export function getSquidFromAmount({
+  quote,
+  fromToken
+}: {
+  quote: BraveWallet.SquidQuote
+  fromToken: BraveWallet.BlockchainToken
+}): Amount {
+  return new Amount(quote.fromAmount).divideByDecimals(fromToken.decimals)
+}
+
+export function getSquidToAmount({
+  quote,
+  toToken
+}: {
+  quote: BraveWallet.SquidQuote
+  toToken: BraveWallet.BlockchainToken
+}): Amount {
+  return new Amount(quote.toAmount).divideByDecimals(toToken.decimals)
+}
+
+export function getSquidQuoteOptions({
+  quote,
+  fromNetwork,
+  spotPrices,
+  defaultFiatCurrency
+}: {
+  quote: BraveWallet.SquidQuote
+  fromNetwork: BraveWallet.NetworkInfo
+  spotPrices: SpotPriceRegistry
+  defaultFiatCurrency: string
+}): QuoteOption[] {
+  const networkFee = quote.gasCosts
+    .filter((e) => e.token.chainId === fromNetwork.chainId)
+    .reduce(
+      (total, cost) =>
+        total.plus(
+          new Amount(cost.amount).divideByDecimals(cost.token.decimals)
+        ),
+      Amount.zero()
+    )
+
+  const fromAmount = new Amount(quote.fromAmount).divideByDecimals(
+    quote.fromToken.decimals
+  )
+
+  const toAmount = new Amount(quote.toAmount).divideByDecimals(
+    quote.toToken.decimals
+  )
+
+  return [
+    {
+      fromAmount,
+      toAmount,
+      minimumToAmount: new Amount(quote.toAmountMin).divideByDecimals(
+        quote.toToken.decimals
+      ),
+      fromToken: quote.fromToken,
+      toToken: quote.toToken,
+      rate: toAmount.div(fromAmount),
+      impact: new Amount(quote.aggregatePriceImpact).times(100),
+      sources: ensureUnique(quote.actions, 'provider')
+        .map((action) => ({
+          name: action.provider,
+          proportion: new Amount(1),
+          logo: action.logoUri
+        })),
+      routing: 'flow',
+      networkFee,
+      networkFeeFiat: networkFee.isUndefined()
+        ? ''
+        : networkFee
+            .times(
+              getTokenPriceAmountFromRegistry(
+                spotPrices,
+                makeNetworkAsset(fromNetwork)
+              )
+            )
+            .formatAsFiat(defaultFiatCurrency),
+      provider: BraveWallet.SwapProvider.kSquid,
+      tags: ['CHEAPEST', 'FASTEST']
+    }
+  ]
 }
 
 export const getLPIcon = (source: Pick<LiquiditySource, 'name' | 'logo'>) => {

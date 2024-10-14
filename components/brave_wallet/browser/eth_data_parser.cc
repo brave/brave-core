@@ -145,6 +145,15 @@ constexpr char kLiFiSwapAndStartBridgeTokensViaSymbiosis[] = "0x6e067161";
 constexpr char kLiFiStartBridgeTokensViaThorSwap[] = "0x2541ec57";
 constexpr char kLiFiSwapAndStartBridgeTokensViaThorSwap[] = "0xad673d88";
 
+// Squid function selectors
+// Ref:
+// https://etherscan.io/address/0x9c01172bdbed2eea06e4e18ad534bf651c9089ea#code#F1#L87
+constexpr char kSquidFundAndRunMulticall[] = "0x58181a80";
+constexpr char kSquidExactInputSingle[] = "0x04e45aaf";
+constexpr char kSquidExactInputSingleV2[] = "0xbc651188";
+constexpr char kSquidSwapExactTokensForTokens[] = "0xcac88ea9";
+constexpr char kSquidExchange[] = "0x3df02124";
+
 struct LiFiSwapData {
   std::string from_amount;
   std::string sending_asset_id;
@@ -159,6 +168,12 @@ struct LiFiBridgeData {
   std::string min_amount;
   std::string destination_chain_id;
   mojom::CoinType destination_coin;
+};
+
+struct SquidSwapData {
+  std::string to_amount;
+  std::string receiving_asset_id;
+  std::string receiver;
 };
 
 std::string TransformContractAddress(const std::string& address) {
@@ -229,6 +244,226 @@ std::optional<LiFiSwapData> LiFiSwapDataDecode(
   }
 
   // Invalid transaction.
+  return std::nullopt;
+}
+
+std::optional<SquidSwapData> SquidDecodeCall(const base::Value::List& call) {
+  auto calldata_with_selector = PrefixedHexStringToBytes(call[3].GetString());
+  if (!calldata_with_selector) {
+    return std::nullopt;
+  }
+
+  if (calldata_with_selector->size() == 0) {
+    return SquidSwapData{
+        .to_amount = "",  // Not available in native transfer.
+        .receiving_asset_id = TransformContractAddress(""),
+        .receiver = TransformEoaAddress(call[1].GetString()),
+    };
+  }
+
+  // Calldata must have at least 4 bytes for the function selector.
+  if (calldata_with_selector->size() < 4) {
+    return std::nullopt;
+  }
+
+  std::vector<uint8_t> calldata(calldata_with_selector->begin() + 4,
+                                calldata_with_selector->end());
+
+  auto selector = "0x" + HexEncodeLower(calldata_with_selector->data(), 4);
+
+  if (selector == kSquidExactInputSingle) {
+    // exactInputSingle((address tokenIn,
+    //                   address tokenOut,
+    //                   uint24 fee,
+    //                   address recipient,
+    //                   uint256 amountIn,
+    //                   uint256 amountOutMinimum,
+    //                   uint160 sqrtPriceLimitX96))
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Bytes(32))
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(eth_abi::Bytes(32))
+                    .build();
+
+    auto decoded_swap = ABIDecode(type, calldata);
+    if (!decoded_swap) {
+      return std::nullopt;
+    }
+
+    return SquidSwapData{
+        .to_amount = decoded_swap.value()[5].GetString(),
+        .receiving_asset_id =
+            TransformContractAddress(decoded_swap.value()[1].GetString()),
+        .receiver = TransformEoaAddress(decoded_swap.value()[3].GetString()),
+    };
+  } else if (selector == kSquidExactInputSingleV2) {
+    // exactInputSingle((address tokenIn,
+    //                   address tokenOut,
+    //                   address recipient,
+    //                   uint256 deadline,
+    //                   uint256 amountIn,
+    //                   uint256 amountOutMinimum,
+    //                   uint160 sqrtPriceLimitX96))
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(eth_abi::Bytes(32))
+                    .build();
+
+    auto decoded_swap = ABIDecode(type, calldata);
+    if (!decoded_swap) {
+      return std::nullopt;
+    }
+
+    return SquidSwapData{
+        .to_amount = decoded_swap.value()[5].GetString(),
+        .receiving_asset_id =
+            TransformContractAddress(decoded_swap.value()[1].GetString()),
+        .receiver = TransformEoaAddress(decoded_swap.value()[2].GetString()),
+    };
+  } else if (selector == kSquidSwapExactTokensForTokens) {
+    // swapExactTokensForTokens(uint256 amountIn,
+    //                          uint256 amountOutMin,
+    //                          (address from,
+    //                           address to,
+    //                           bool stable,
+    //                           address factory)[] routes,
+    //                          address to,
+    //                          uint256 deadline)
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(
+                        eth_abi::Array()
+                            .SetArrayType(eth_abi::Tuple()
+                                              .AddTupleType(eth_abi::Address())
+                                              .AddTupleType(eth_abi::Address())
+                                              .AddTupleType(eth_abi::Bool())
+                                              .AddTupleType(eth_abi::Address())
+                                              .build())
+                            .build())
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .build();
+
+    auto decoded_swap = ABIDecode(type, calldata);
+    if (!decoded_swap) {
+      return std::nullopt;
+    }
+
+    auto& route = decoded_swap.value()[2].GetList().back().GetList();
+    return SquidSwapData{
+        .to_amount = decoded_swap.value()[1].GetString(),
+        .receiving_asset_id = TransformContractAddress(route[1].GetString()),
+        .receiver = TransformEoaAddress(decoded_swap.value()[3].GetString()),
+    };
+  } else if (selector == kERC20TransferSelector) {
+    // transfer(address recipient, uint256 amount)
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .build();
+
+    auto decoded_swap = ABIDecode(type, calldata);
+    if (!decoded_swap) {
+      return std::nullopt;
+    }
+
+    return SquidSwapData{
+        .to_amount = "",
+        .receiving_asset_id = call[1].GetString(),
+        .receiver = TransformEoaAddress(decoded_swap.value()[0].GetString()),
+    };
+  } else if (selector == kSquidExchange) {
+    // exchange(int128 tokenInIndex,
+    //          int128 tokenOutIndex,
+    //          uint256 amountIn,
+    //          uint256 amountOutMin)
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Bytes(32))
+                    .AddTupleType(eth_abi::Bytes(32))
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(eth_abi::Uint(256))
+                    .build();
+
+    auto decoded_swap = ABIDecode(type, calldata);
+    if (!decoded_swap) {
+      return std::nullopt;
+    }
+
+    return SquidSwapData{
+        .to_amount = decoded_swap.value()[3].GetString(),
+        .receiving_asset_id = "",
+        .receiver = "",
+    };
+  }
+
+  return std::nullopt;
+}
+
+std::optional<SquidSwapData> SquidDecodeMulticall(
+    const base::Value::List& multicall) {
+  std::optional<SquidSwapData> last_call_swap_data = std::nullopt;
+  for (int i = multicall.size() - 1; i >= 0; --i) {
+    auto& call = multicall[i].GetList();
+    const auto& swap_data = SquidDecodeCall(call);
+    if (!swap_data) {
+      // Skip calls in the multicall series that are not swaps.
+      if (last_call_swap_data.has_value()) {
+        continue;
+      }
+
+      return std::nullopt;
+    }
+
+    // If the last call in the multicall chain does not contain certain fields,
+    // we extract it from the current call.
+    //
+    // For example, if the last call in the multicall is a native transfer, we
+    // extract the full swap data from the corresponding call for the wrapped
+    // native token.
+    if (last_call_swap_data.has_value()) {
+      if (last_call_swap_data->to_amount.empty() &&
+          !swap_data->to_amount.empty()) {
+        last_call_swap_data->to_amount = swap_data->to_amount;
+      }
+
+      if (last_call_swap_data->receiving_asset_id.empty() &&
+          !swap_data->receiving_asset_id.empty()) {
+        last_call_swap_data->receiving_asset_id = swap_data->receiving_asset_id;
+      }
+
+      if (last_call_swap_data->receiver.empty() &&
+          !swap_data->receiver.empty()) {
+        last_call_swap_data->receiver = swap_data->receiver;
+      }
+
+      return last_call_swap_data;
+    }
+
+    if (swap_data->receiving_asset_id == kNativeEVMAssetContractAddress) {
+      last_call_swap_data = swap_data;
+      continue;
+    }
+
+    // If the last call in the multicall chain does not contain the to_amount,
+    // we save the swap data for the next iteration.
+    if (swap_data->to_amount.empty()) {
+      last_call_swap_data = swap_data;
+      continue;
+    }
+
+    return swap_data;
+  }
+
   return std::nullopt;
 }
 
@@ -1034,6 +1269,58 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     // to_asset and to_amount are unavailable.
     swap_info->receiver = bridge_data->receiver;
     swap_info->provider = "lifi";
+
+    return std::make_tuple(mojom::TransactionType::ETHSwap,
+                           std::vector<std::string>{},
+                           std::vector<std::string>{}, std::move(swap_info));
+  } else if (selector == kSquidFundAndRunMulticall) {
+    // The following block handles decoding of calldata for Squid swap orders.
+    //
+    // Function:
+    // fundAndRunMulticall(address token,
+    //                     uint256 amount,
+    //                     (bytes32 callType,
+    //                      address target,
+    //                      uint256 value,
+    //                      bytes callData,
+    //                      bytes payload)[] calls)
+    //
+    // Ref:
+    // https://etherscan.io/address/0x9c01172bdbed2eea06e4e18ad534bf651c9089ea#code#F1#L88
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(
+                        eth_abi::Array()
+                            .SetArrayType(eth_abi::Tuple()
+                                              .AddTupleType(eth_abi::Bytes(32))
+                                              .AddTupleType(eth_abi::Address())
+                                              .AddTupleType(eth_abi::Uint(256))
+                                              .AddTupleType(eth_abi::Bytes())
+                                              .AddTupleType(eth_abi::Bytes())
+                                              .build())
+                            .build())
+                    .build();
+    auto decoded = ABIDecode(type, calldata);
+    if (!decoded) {
+      return std::nullopt;
+    }
+
+    auto decoded_swap_data = SquidDecodeMulticall(decoded.value()[2].GetList());
+    if (!decoded_swap_data) {
+      return std::nullopt;
+    }
+
+    auto swap_info = mojom::SwapInfo::New();
+    swap_info->from_coin = mojom::CoinType::ETH;
+    // from_chain_id and to_chain_id are filled by caller.
+    swap_info->from_asset = decoded.value()[0].GetString();
+    swap_info->from_amount = decoded.value()[1].GetString();
+    swap_info->to_coin = mojom::CoinType::ETH;
+    swap_info->to_asset = decoded_swap_data->receiving_asset_id;
+    swap_info->to_amount = decoded_swap_data->to_amount;
+    swap_info->receiver = decoded_swap_data->receiver;
+    swap_info->provider = "squid";
 
     return std::make_tuple(mojom::TransactionType::ETHSwap,
                            std::vector<std::string>{},

@@ -20,7 +20,7 @@ import {
   useSendEvmTransactionMutation
 } from '../../../../common/slices/api.slice'
 
-export function useZeroEx(params: SwapParams) {
+export function useSquid(params: SwapParams) {
   const {
     fromAccount,
     fromToken,
@@ -72,7 +72,7 @@ export function useZeroEx(params: SwapParams) {
         transactionResponse = await generateSwapTransaction(
           toMojoUnion(
             {
-              zeroExTransactionParams: {
+              squidTransactionParams: {
                 fromAccountId: fromAccount.accountId,
                 fromChainId: fromToken.chainId,
                 fromAmount:
@@ -91,42 +91,50 @@ export function useZeroEx(params: SwapParams) {
                 toToken: toToken.contractAddress,
                 slippagePercentage: slippageTolerance,
                 routePriority: BraveWallet.RoutePriority.kCheapest,
-                provider: BraveWallet.SwapProvider.kZeroEx
+                provider: BraveWallet.SwapProvider.kSquid
               },
               jupiterTransactionParams: undefined,
               lifiTransactionParams: undefined,
-              squidTransactionParams: undefined
+              zeroExTransactionParams: undefined
             },
-            'zeroExTransactionParams'
+            'squidTransactionParams'
           )
         ).unwrap()
       } catch (e) {
-        console.log(`Error getting 0x swap quote: ${e}`)
+        console.log(`Error getting Squid swap quote: ${e}`)
       }
 
       if (transactionResponse?.error) {
         return transactionResponse?.error
       }
 
-      if (!transactionResponse?.response?.zeroExTransaction) {
+      if (!transactionResponse?.response?.squidTransaction?.evmTransaction) {
         return
       }
 
-      const { data, to, value, estimatedGas } =
-        transactionResponse.response.zeroExTransaction
+      const { data, target, value, gasLimit, chainId } =
+        transactionResponse.response.squidTransaction.evmTransaction
+
+      if (fromNetwork.chainId !== chainId) {
+        console.error(
+          `[useSquid.exchange] Chain ID mismatch:
+          expected ${fromNetwork.chainId}, got ${chainId}`
+        )
+        return
+      }
 
       try {
         await sendEvmTransaction({
           fromAccount,
-          to,
+          to: target,
           value: new Amount(value).toHex(),
-          gasLimit: new Amount(estimatedGas).toHex(),
+          gasLimit: new Amount(gasLimit).toHex(),
           data: hexStrToNumberArray(data),
           network: fromNetwork
         })
       } catch (e) {
         // bubble up error
-        console.error(`Error creating 0x transaction: ${e}`)
+        console.error(`Error creating Squid transaction: ${e}`)
       }
 
       return undefined

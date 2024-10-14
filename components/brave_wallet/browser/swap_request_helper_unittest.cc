@@ -1577,4 +1577,84 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
   EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
 }
 
+TEST(SwapRequestHelperUnitTest, EncodeSquidQuoteParams) {
+  auto params = mojom::SwapQuoteParams::New();
+  params->from_account_id =
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  params->from_chain_id = mojom::kPolygonMainnetChainId;
+  params->from_token = "";
+  params->from_amount = "1000000000000000000000";
+  params->to_account_id =
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  params->to_chain_id = mojom::kBnbSmartChainMainnetChainId;
+  params->to_token = "0x2170ed0880ac9a755fd29b2688956bd959f933f8";
+  params->slippage_percentage = "3";
+  params->route_priority = mojom::RoutePriority::kCheapest;
+
+  auto encoded_params = squid::EncodeQuoteParams(std::move(params));
+  ASSERT_NE(encoded_params, std::nullopt);
+  std::string expected_params(R"(
+    {
+      "fromAddress": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+      "fromAmount": "1000000000000000000000",
+      "fromChain": "137",
+      "fromToken": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "toAddress": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+      "toChain": "56",
+      "toToken": "0x2170ed0880ac9a755fd29b2688956bd959f933f8",
+      "slippage": 3.0,
+      "slippageConfig": {
+        "autoMode": 1
+      },
+      "quoteOnly": false,
+      "enableBoost": true
+    }
+  )");
+  EXPECT_EQ(ParseJson(*encoded_params), ParseJson(expected_params));
+}
+
+TEST(SwapRequestHelperUnitTest, EncodeSquidTransactionParams) {
+  auto params = mojom::SwapQuoteParams::New();
+  params->from_account_id =
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  params->from_chain_id = mojom::kPolygonMainnetChainId;
+  params->from_token = "";
+  params->from_amount = "1000000000000000000000";
+  params->to_account_id =
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  params->to_chain_id = mojom::kBnbSmartChainMainnetChainId;
+  params->to_token = "0x2170ed0880ac9a755fd29b2688956bd959f933f8";
+  params->slippage_percentage = "3";
+  params->route_priority = mojom::RoutePriority::kCheapest;
+
+  auto encoded_params = squid::EncodeTransactionParams(std::move(params));
+  ASSERT_NE(encoded_params, std::nullopt);
+  std::string expected_params(R"(
+    {
+      "fromAddress": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+      "fromAmount": "1000000000000000000000",
+      "fromChain": "137",
+      "fromToken": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "toAddress": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+      "toChain": "56",
+      "toToken": "0x2170ed0880ac9a755fd29b2688956bd959f933f8",
+      "slippage": 3.0,
+      "slippageConfig": {
+        "autoMode": 1
+      },
+      "quoteOnly": false,
+      "enableBoost": true
+    }
+  )");
+  EXPECT_EQ(ParseJson(*encoded_params), ParseJson(expected_params));
+}
+
 }  // namespace brave_wallet

@@ -48,6 +48,7 @@ import SarosIcon from '../assets/lp-icons/saros.svg'
 import SerumIcon from '../assets/lp-icons/serum.svg'
 import ShellIcon from '../assets/lp-icons/shell.jpg'
 import ShibaSwapIcon from '../assets/lp-icons/shibaswap.svg'
+import SquidIncon from '../assets/lp-icons/squid.svg'
 import StepIcon from '../assets/lp-icons/step.svg'
 import StepnIcon from '../assets/lp-icons/stepn.png'
 import SushiSwapIcon from '../assets/lp-icons/sushiswap.svg'
@@ -61,7 +62,8 @@ const SwapProviderMetadata = {
   [BraveWallet.SwapProvider.kAuto]: BraveIcon,
   [BraveWallet.SwapProvider.kZeroEx]: ZeroXIcon,
   [BraveWallet.SwapProvider.kJupiter]: JupiterIcon,
-  [BraveWallet.SwapProvider.kLiFi]: LiFiIcon
+  [BraveWallet.SwapProvider.kLiFi]: LiFiIcon,
+  [BraveWallet.SwapProvider.kSquid]: SquidIncon
 }
 
 type LPMetadataType = {
