@@ -117,7 +117,8 @@ export function useSquid(params: SwapParams) {
 
       if (fromNetwork.chainId !== chainId) {
         console.error(
-          `[useSquid.exchange] Chain ID mismatch: expected ${fromNetwork.chainId}, got ${chainId}`
+          `[useSquid.exchange] Chain ID mismatch:
+          expected ${fromNetwork.chainId}, got ${chainId}`
         )
         return
       }
