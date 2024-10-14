@@ -99,9 +99,9 @@ class AdsServiceImpl final : public AdsService,
 
   bool IsBatAdsServiceBound() const;
 
-  void RegisterResourceComponents() const;
-  void RegisterResourceComponentsForCurrentCountryCode() const;
-  void RegisterResourceComponentsForDefaultLanguageCode() const;
+  void RegisterResourceComponents();
+  void RegisterResourceComponentsForCurrentCountryCode();
+  void RegisterResourceComponentsForDefaultLanguageCode();
 
   void Migrate();
 
@@ -449,8 +449,9 @@ class AdsServiceImpl final : public AdsService,
 
   const std::string channel_name_;
 
-  const raw_ptr<brave_ads::ResourceComponent> resource_component_ =
-      nullptr;  // NOT OWNED
+  base::ScopedObservation<brave_ads::ResourceComponent,
+                          ResourceComponentObserver>
+      resource_component_observation_{this};
 
   const raw_ptr<history::HistoryService> history_service_ =
       nullptr;  // NOT OWNED
@@ -465,8 +466,9 @@ class AdsServiceImpl final : public AdsService,
 
   const base::FilePath ads_service_path_;
 
-  const raw_ptr<brave_rewards::RewardsService> rewards_service_{
-      nullptr};  // NOT OWNED
+  base::ScopedObservation<brave_rewards::RewardsService,
+                          brave_rewards::RewardsServiceObserver>
+      rewards_service_observation_{this};
 
   mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
       this};

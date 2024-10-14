@@ -39,11 +39,7 @@ BraveStatsHelper::BraveStatsHelper()
   profile_manager_observer_.Observe(profile_manager_);
 }
 
-BraveStatsHelper::~BraveStatsHelper() {
-  if (current_profile_) {
-    current_profile_->RemoveObserver(this);
-  }
-}
+BraveStatsHelper::~BraveStatsHelper() = default;
 
 void BraveStatsHelper::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kEnabledForLastProfile, false);
@@ -65,11 +61,10 @@ void BraveStatsHelper::OnProfileAdded(Profile* profile) {
 }
 
 void BraveStatsHelper::OnProfileWillBeDestroyed(Profile* profile) {
-  if (profile != current_profile_) {
+  if (!current_profile_observation_.IsObservingSource(profile)) {
     return;
   }
-  profile->RemoveObserver(this);
-  current_profile_ = nullptr;
+  current_profile_observation_.Reset();
 #if !BUILDFLAG(IS_ANDROID)
   last_used_profile_pref_change_registrar_.RemoveAll();
 #endif
@@ -77,13 +72,12 @@ void BraveStatsHelper::OnProfileWillBeDestroyed(Profile* profile) {
 }
 
 void BraveStatsHelper::OnProfileManagerDestroying() {
-  if (current_profile_ != nullptr) {
+  if (current_profile_observation_.IsObserving()) {
 #if !BUILDFLAG(IS_ANDROID)
     last_used_profile_pref_change_registrar_.RemoveAll();
 #endif
     ads_enabled_pref_change_registrar_.RemoveAll();
-    current_profile_->RemoveObserver(this);
-    current_profile_ = nullptr;
+    current_profile_observation_.Reset();
   }
   profile_manager_observer_.Reset();
 }
@@ -109,12 +103,10 @@ PrefService* BraveStatsHelper::GetLastUsedProfilePrefs() {
   if (profile == nullptr || profile->IsOffTheRecord()) {
     return nullptr;
   }
-  if (current_profile_ != nullptr) {
-    current_profile_->RemoveObserver(this);
-    current_profile_ = nullptr;
+  if (current_profile_observation_.IsObserving()) {
+    current_profile_observation_.Reset();
   }
-  current_profile_ = profile;
-  profile->AddObserver(this);
+  current_profile_observation_.Observe(profile);
   return profile->GetPrefs();
 #endif
 }

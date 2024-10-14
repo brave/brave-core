@@ -194,7 +194,6 @@ AdsServiceImpl::AdsServiceImpl(
       local_state_(local_state),
       url_loader_(std::move(url_loader)),
       channel_name_(channel_name),
-      resource_component_(resource_component),
       history_service_(history_service),
       ads_tooltips_delegate_(std::move(ads_tooltips_delegate)),
       device_id_(std::move(device_id)),
@@ -203,15 +202,16 @@ AdsServiceImpl::AdsServiceImpl(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       ads_service_path_(profile_path.AppendASCII("ads_service")),
-      rewards_service_(rewards_service),
       bat_ads_client_associated_receiver_(this) {
   CHECK(device_id_);
   CHECK(bat_ads_service_factory_);
-  CHECK(rewards_service_);
+  CHECK(rewards_service);
 
   if (!history_service_ || !local_state_) {
     CHECK_IS_TEST();
   }
+
+  rewards_service_observation_.Observe(rewards_service);
 
   if (CanStartBatAdsService()) {
     bat_ads_client_notifier_pending_receiver_ =
@@ -224,24 +224,14 @@ AdsServiceImpl::AdsServiceImpl(
 
   GetDeviceIdAndMaybeStartBatAdsService();
 
-  if (resource_component_) {
-    resource_component_->AddObserver(this);
+  if (resource_component) {
+    resource_component_observation_.Observe(resource_component);
   } else {
     CHECK_IS_TEST();
   }
-
-  rewards_service_->AddObserver(this);
 }
 
-AdsServiceImpl::~AdsServiceImpl() {
-  if (resource_component_) {
-    resource_component_->RemoveObserver(this);
-  }
-
-  bat_ads_observer_receiver_.reset();
-
-  rewards_service_->RemoveObserver(this);
-}
+AdsServiceImpl::~AdsServiceImpl() = default;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -249,7 +239,7 @@ bool AdsServiceImpl::IsBatAdsServiceBound() const {
   return bat_ads_service_remote_.is_bound();
 }
 
-void AdsServiceImpl::RegisterResourceComponents() const {
+void AdsServiceImpl::RegisterResourceComponents() {
   RegisterResourceComponentsForCurrentCountryCode();
 
   if (UserHasOptedInToNotificationAds()) {
@@ -268,18 +258,19 @@ void AdsServiceImpl::Migrate() {
   }
 }
 
-void AdsServiceImpl::RegisterResourceComponentsForCurrentCountryCode() const {
-  if (resource_component_) {
-    const std::string country_code = brave_l10n::GetCountryCode(local_state_);
-    resource_component_->RegisterComponentForCountryCode(country_code);
+void AdsServiceImpl::RegisterResourceComponentsForCurrentCountryCode() {
+  if (resource_component_observation_.IsObserving()) {
+    resource_component_observation_.GetSource()
+        ->RegisterComponentForCountryCode(
+            brave_l10n::GetCountryCode(local_state_));
   }
 }
 
-void AdsServiceImpl::RegisterResourceComponentsForDefaultLanguageCode() const {
-  if (resource_component_) {
-    const std::string& locale = brave_l10n::GetDefaultLocaleString();
-    const std::string language_code = brave_l10n::GetISOLanguageCode(locale);
-    resource_component_->RegisterComponentForLanguageCode(language_code);
+void AdsServiceImpl::RegisterResourceComponentsForDefaultLanguageCode() {
+  if (resource_component_observation_.IsObserving()) {
+    resource_component_observation_.GetSource()
+        ->RegisterComponentForLanguageCode(brave_l10n::GetISOLanguageCode(
+            brave_l10n::GetDefaultLocaleString()));
   }
 }
 
@@ -434,7 +425,7 @@ void AdsServiceImpl::InitializeDatabase() {
 
 void AdsServiceImpl::InitializeRewardsWallet(
     const size_t current_start_number) {
-  rewards_service_->GetRewardsWallet(
+  rewards_service_observation_.GetSource()->GetRewardsWallet(
       base::BindOnce(&AdsServiceImpl::InitializeRewardsWalletCallback,
                      weak_ptr_factory_.GetWeakPtr(), current_start_number));
 }
@@ -730,7 +721,7 @@ void AdsServiceImpl::NotifyPrefChanged(const std::string& path) const {
 }
 
 void AdsServiceImpl::GetRewardsWallet() {
-  rewards_service_->GetRewardsWallet(
+  rewards_service_observation_.GetSource()->GetRewardsWallet(
       base::BindOnce(&AdsServiceImpl::NotifyRewardsWalletDidUpdate,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -1664,12 +1655,12 @@ void AdsServiceImpl::LoadResourceComponent(
     const std::string& id,
     const int version,
     LoadResourceComponentCallback callback) {
-  if (!resource_component_) {
+  if (!resource_component_observation_.IsObserving()) {
     return std::move(callback).Run({});
   }
 
   std::optional<base::FilePath> file_path =
-      resource_component_->MaybeGetPath(id, version);
+      resource_component_observation_.GetSource()->MaybeGetPath(id, version);
   if (!file_path) {
     return std::move(callback).Run({});
   }
@@ -1811,7 +1802,8 @@ void AdsServiceImpl::Log(const std::string& file,
                          const int32_t line,
                          const int32_t verbose_level,
                          const std::string& message) {
-  rewards_service_->WriteDiagnosticLog(file, line, verbose_level, message);
+  rewards_service_observation_.GetSource()->WriteDiagnosticLog(
+      file, line, verbose_level, message);
 
   const int vlog_level =
       ::logging::GetVlogLevelHelper(file.c_str(), file.length());

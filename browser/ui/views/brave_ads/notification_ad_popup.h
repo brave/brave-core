@@ -22,6 +22,10 @@
 
 class Profile;
 
+namespace display {
+class Screen;
+}  // namespace display
+
 namespace gfx {
 class LinearAnimation;
 class Insets;
@@ -157,6 +161,9 @@ class NotificationAdPopup : public views::WidgetDelegateView,
 
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};
+
+  base::ScopedObservation<display::Screen, display::DisplayObserver>
+      screen_observation_{this};
 };
 
 }  // namespace brave_ads
