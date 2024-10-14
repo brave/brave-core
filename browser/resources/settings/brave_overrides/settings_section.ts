@@ -10,6 +10,12 @@ RegisterStyleOverride(
   'settings-section',
   html`
     <style include="settings-shared">
-    </style>
+      #header .title {
+        font-weight: 500 !important;
+      }
+      :host(:not(.expanded)) #card {
+        box-shadow: var(--leo-effect-elevation-01) !important;
+      }
+      </style>
   `
 )

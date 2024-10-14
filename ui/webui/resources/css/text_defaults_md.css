@@ -19,7 +19,7 @@ html {
 }
 
 body {
-  font-family: Poppins, $i18nRaw{fontfamily};
+  font-family: $i18nRaw{fontfamily};
   font-size: 81.25%;
 }
 
@@ -28,7 +28,6 @@ h2,
 h3,
 h4,
 h5,
-h6,
-button {
+h6 {
   font-family: Poppins, $i18nRaw{fontfamily};
 }
