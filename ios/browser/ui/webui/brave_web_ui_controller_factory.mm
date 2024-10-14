@@ -47,8 +47,8 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
   }
 
   // TODO: Handle RewardsInternalUI, AdsInternalUI, AdblockInternalUI URLs here
-  // ChromeBrowserState* browser_state =
-  // ChromeBrowserState::FromWebUIIOS(web_ui);
+  // ProfileIOS* browser_state =
+  // ProfileIOS::FromWebUIIOS(web_ui);
 
   const std::string url_host = url.host();
   /*if (url_host == kAdblockInternalsHost) {

@@ -16,12 +16,12 @@
 #include "url/gurl.h"
 
 @implementation IpfsAPIImpl {
-  raw_ptr<ChromeBrowserState> _mainBrowserState;  // NOT OWNED
+  raw_ptr<ProfileIOS> _profile;  // NOT OWNED
 }
 
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState {
+- (instancetype)initWithBrowserState:(ProfileIOS*)profile {
   if ((self = [super init])) {
-    _mainBrowserState = mainBrowserState;
+    _profile = profile;
   }
   return self;
 }

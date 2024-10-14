@@ -21,15 +21,14 @@ class BrowserState;
 }  // namespace web
 
 class KeyedService;
-class ChromeBrowserState;
+class ProfileIOS;
 
 namespace brave {
 class URLSanitizerService;
 
 class URLSanitizerServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
-  static brave::URLSanitizerService* GetServiceForState(
-      ChromeBrowserState* browser_state);
+  static brave::URLSanitizerService* GetServiceForState(ProfileIOS* profile);
 
   static URLSanitizerServiceFactory* GetInstance();
 

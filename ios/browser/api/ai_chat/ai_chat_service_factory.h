@@ -12,7 +12,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
 
-class ChromeBrowserState;
+class ProfileIOS;
 
 namespace base {
 
@@ -27,7 +27,7 @@ class AIChatService;
 
 class AIChatServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
-  static AIChatService* GetForBrowserState(ChromeBrowserState* browser_state);
+  static AIChatService* GetForBrowserState(ProfileIOS* profile);
   static AIChatServiceFactory* GetInstance();
 
   AIChatServiceFactory(const AIChatServiceFactory&) = delete;

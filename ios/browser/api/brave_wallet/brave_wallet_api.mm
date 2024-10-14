@@ -42,15 +42,15 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
 @end
 
 @implementation BraveWalletAPI {
-  raw_ptr<ChromeBrowserState> _mainBrowserState;  // NOT OWNED
+  raw_ptr<ProfileIOS> _profile;  // NOT OWNED
   NSMutableDictionary<NSNumber* /* BraveWalletCoinType */,
                       NSDictionary<BraveWalletProviderScriptKey, NSString*>*>*
       _providerScripts;
 }
 
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState {
+- (instancetype)initWithBrowserState:(ProfileIOS*)profile {
   if ((self = [super init])) {
-    _mainBrowserState = mainBrowserState;
+    _profile = profile;
     _providerScripts = [[NSMutableDictionary alloc] init];
   }
   return self;
@@ -66,7 +66,7 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
     ethereumProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
                isPrivateBrowsing:(bool)isPrivateBrowsing {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  auto* browserState = _mainBrowserState.get();
+  auto* browserState = _profile.get();
   if (isPrivateBrowsing) {
     browserState = browserState->GetOffTheRecordProfile();
   }
@@ -91,7 +91,7 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
     solanaProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
              isPrivateBrowsing:(bool)isPrivateBrowsing {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  auto* browserState = _mainBrowserState.get();
+  auto* browserState = _profile.get();
   if (isPrivateBrowsing) {
     browserState = browserState->GetOffTheRecordProfile();
   }
@@ -175,8 +175,8 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
 }
 
 - (nullable id<BraveWalletBraveWalletP3A>)walletP3A {
-  auto* service = brave_wallet::BraveWalletServiceFactory::GetServiceForState(
-      _mainBrowserState);
+  auto* service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(_profile);
   if (!service) {
     return nil;
   }
