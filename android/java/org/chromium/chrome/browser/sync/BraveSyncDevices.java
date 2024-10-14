@@ -103,7 +103,7 @@ public class BraveSyncDevices {
         }
     }
 
-    public class SyncDeviceInfo {
+    public static class SyncDeviceInfo {
         public String mName;
         public boolean mIsCurrentDevice;
         public boolean mSupportsSelfDelete;
