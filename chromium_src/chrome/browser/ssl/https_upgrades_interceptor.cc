@@ -62,5 +62,5 @@ class BraveFeatureList {
 
 #undef MaybeCreateLoader
 #undef IsEnabled
-#undef BraveFeatureList
+#undef FeatureList
 #undef IsLocalhost
