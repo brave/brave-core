@@ -139,7 +139,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kChromeLabs,
       &features::kChromeStructuredMetrics,
       &features::kCookieDeprecationFacilitatedTesting,
+#if !BUILDFLAG(IS_ANDROID)
       &features::kDevToolsConsoleInsights,
+#endif  // !BUILDFLAG(IS_ANDROID)
       &features::kDigitalGoodsApi,
       &features::kDIPS,
       &features::kFedCm,

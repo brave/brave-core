@@ -9,7 +9,9 @@
 
 namespace features {
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+#if !BUILDFLAG(IS_ANDROID)
     {kDevToolsConsoleInsights, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif  // !BUILDFLAG(IS_ANDROID)
 }});
 
 }  // namespace features
