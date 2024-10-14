@@ -70,6 +70,7 @@ public class FeedItemsCard {
         this.displayAd = displayAd;
     }
 
+    @SuppressWarnings("ObjectToString")
     @Override
     public String toString() {
         return "FeedItemsCard{"
