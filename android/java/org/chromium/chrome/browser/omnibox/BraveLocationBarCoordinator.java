@@ -24,7 +24,6 @@ import org.chromium.chrome.browser.omnibox.LocationBarMediator.SaveOfflineButton
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
-import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
@@ -39,16 +38,17 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 import java.util.function.BooleanSupplier;
 
 public class BraveLocationBarCoordinator extends LocationBarCoordinator {
-    /*
+    /**
      * {@link LocationBarCoordinator#mLocationBarMediator} is private so we add a private
      * `mLocationBarMediator` here so this code compiles and then remove it and make {@link
      * LocationBarCoordinator#mLocationBarMediator} protected via asm.
      */
     private LocationBarMediator mLocationBarMediator;
-    /*
-     * {@link LocationBarCoordinator#mUrlBar} is private so we add a private
-     * `mUrlBar` here so this code compiles and then remove it and make {@link
-     * LocationBarCoordinator#mUrlBar} protected via asm.
+
+    /**
+     * {@link LocationBarCoordinator#mUrlBar} is private so we add a private `mUrlBar` here so this
+     * code compiles and then remove it and make {@link LocationBarCoordinator#mUrlBar} protected
+     * via asm.
      */
     private View mUrlBar;
 
@@ -58,7 +58,6 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             View locationBarLayout,
             View autocompleteAnchorView,
             ObservableSupplier<Profile> profileObservableSupplier,
-            PrivacyPreferencesManager privacyPreferencesManager,
             LocationBarDataProvider locationBarDataProvider,
             ActionMode.Callback actionModeCallback,
             WindowDelegate windowDelegate,
@@ -95,7 +94,6 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 locationBarLayout,
                 autocompleteAnchorView,
                 profileObservableSupplier,
-                privacyPreferencesManager,
                 locationBarDataProvider,
                 actionModeCallback,
                 windowDelegate,
