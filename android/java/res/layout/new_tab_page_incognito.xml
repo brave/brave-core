@@ -45,8 +45,8 @@
             <!-- Keep the ID below as it's been tested in Chromium code by IncognitoNewTabPageStation. -->
             <ImageView
                 android:id="@+id/new_tab_incognito_icon"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
+                android:layout_width="@dimen/new_tab_page_incognito_logo_size"
+                android:layout_height="@dimen/new_tab_page_incognito_logo_size"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_brave_logo"
                 app:layout_constraintHorizontal_chainStyle="packed"
@@ -58,7 +58,7 @@
 
             <TextView
                 android:id="@+id/title"
-                style="@style/HeadingH3"
+                android:textSize="@dimen/new_tab_page_incognito_title_text_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/brave_new_tab_private_header"
@@ -75,8 +75,8 @@
             <ImageView
                 android:id="@+id/iv_first_icon"
                 app:layout_constraintHorizontal_chainStyle="packed"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="@dimen/new_tab_page_incognito_icon_size"
+                android:layout_height="@dimen/new_tab_page_incognito_icon_size"
                 android:layout_marginEnd="16dp"
                 android:contentDescription="@null"
                 android:src="@drawable/product_private_layer_list"
@@ -119,8 +119,8 @@
             <ImageView
                 android:id="@+id/iv_second_icon"
                 app:layout_constraintHorizontal_chainStyle="packed"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="@dimen/new_tab_page_incognito_icon_size"
+                android:layout_height="@dimen/new_tab_page_incognito_icon_size"
                 android:layout_marginEnd="16dp"
                 android:contentDescription="@null"
                 android:src="@drawable/antenna_layer_list"
@@ -162,8 +162,8 @@
             <ImageView
                 android:id="@+id/iv_third_icon"
                 app:layout_constraintHorizontal_chainStyle="packed"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="@dimen/new_tab_page_incognito_icon_size"
+                android:layout_height="@dimen/new_tab_page_incognito_icon_size"
                 android:layout_marginEnd="16dp"
                 android:contentDescription="@null"
                 android:src="@drawable/product_vpn_layer_list"
