@@ -94,11 +94,5 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
       }
     }
     .navigationViewStyle(.stack)
-    .onDisappear {
-      // `onDisappear` on individual views will trigger for navigation pushes.
-      // Close stores when navigation covers manual dismiss & onDismiss() cases.
-      cryptoStore.closeConfirmationStore()
-      cryptoStore.closeSignMessageRequestStore()
-    }
   }
 }
