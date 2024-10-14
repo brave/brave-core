@@ -40,13 +40,13 @@ bool ShouldSupportUrl(const GURL& url) {
     return false;
   }
 
-  if (internal::DoesETLDPlusOneContainWildcards(url)) {
+  if (DoesETLDPlusOneContainWildcards(url)) {
     return false;
   }
 
   return url.SchemeIs(url::kHttpsScheme)
-             ? internal::HostHasRegistryControlledDomain(url.host_piece())
-             : internal::ShouldSupportInternalUrl(url);
+             ? HostHasRegistryControlledDomain(url.host_piece())
+             : ShouldSupportInternalUrl(url);
 }
 
 bool MatchUrlPattern(const GURL& url, const std::string& pattern) {

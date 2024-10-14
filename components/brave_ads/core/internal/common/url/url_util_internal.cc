@@ -12,11 +12,10 @@
 #include "net/base/url_util.h"
 #include "url/gurl.h"
 
-namespace brave_ads::internal {
+namespace brave_ads {
 
 namespace {
 
-constexpr char kBraveScheme[] = "brave";
 constexpr char kChromeScheme[] = "chrome";
 
 constexpr char kRewardsHostName[] = "rewards";
@@ -30,20 +29,6 @@ constexpr char kSearchPath[] = "/search";
 constexpr char kSearchQuery[] = "search";
 
 }  // namespace
-
-GURL ReplaceBraveSchemeWithChromeScheme(const GURL& url) {
-  if (!url.is_valid()) {
-    return url;
-  }
-
-  if (!url.SchemeIs(kBraveScheme)) {
-    return url;
-  }
-
-  GURL::Replacements replacements;
-  replacements.SetSchemeStr(kChromeScheme);
-  return url.ReplaceComponents(replacements);
-}
 
 bool HasSearchQuery(const GURL& url) {
   CHECK(url.is_valid());
@@ -63,16 +48,12 @@ bool ShouldSupportInternalUrl(const GURL& url) {
     return false;
   }
 
-  // The internal brave:// scheme must be replaced with chrome:// because `GURL`
-  // does not parse the brave:// scheme.
-  const GURL modified_url = ReplaceBraveSchemeWithChromeScheme(url);
-
-  if (!modified_url.SchemeIs(kChromeScheme)) {
+  if (!url.SchemeIs(kChromeScheme)) {
     // Do not support schemes other than chrome://.
     return false;
   }
 
-  const std::string host_name = modified_url.host();
+  const std::string host_name = url.host();
 
   if (host_name == kRewardsHostName || host_name == kSyncHostName ||
       host_name == kWalletHostName) {
@@ -85,15 +66,14 @@ bool ShouldSupportInternalUrl(const GURL& url) {
     return false;
   }
 
-  if (modified_url.path() == kSearchEnginesPath ||
-      modified_url.path() == kSearchPath) {
-    if (!modified_url.has_query()) {
+  if (url.path() == kSearchEnginesPath || url.path() == kSearchPath) {
+    if (!url.has_query()) {
       // Support chrome://settings/searchEngines and chrome://settings/search
       // paths without a query.
       return true;
     }
 
-    return HasSearchQuery(modified_url);
+    return HasSearchQuery(url);
   }
 
   // We can reject everything else!
@@ -122,4 +102,4 @@ bool DoesETLDPlusOneContainWildcards(const GURL& url) {
       kUrlEncodedAsteriskWildcard);
 }
 
-}  // namespace brave_ads::internal
+}  // namespace brave_ads

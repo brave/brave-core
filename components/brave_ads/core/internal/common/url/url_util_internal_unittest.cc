@@ -12,18 +12,6 @@
 
 namespace brave_ads::internal {
 
-TEST(BraveAdsUrlUtilInternalTest, ReplaceBraveSchemeWithChromeScheme) {
-  // Act & Assert
-  EXPECT_EQ(GURL("chrome://xyzzy"),
-            ReplaceBraveSchemeWithChromeScheme(GURL("brave://xyzzy")));
-}
-
-TEST(BraveAdsUrlUtilInternalTest, DoNotReplaceNonBraveSchemeWithChromeScheme) {
-  // Act & Assert
-  EXPECT_EQ(GURL("file://xyzzy"),
-            ReplaceBraveSchemeWithChromeScheme(GURL("file://xyzzy")));
-}
-
 TEST(BraveAdsUrlUtilInternalTest, HasUrlSearchQueryNameAndValue) {
   // Act & Assert
   EXPECT_TRUE(HasSearchQuery(GURL("https://xyzzy.com/?search=thud")));
@@ -75,63 +63,64 @@ TEST(BraveAdsUrlUtilInternalTest, HostDoesNotHaveRegistryControlledDomain) {
 TEST(BraveAdsUrlUtilInternalTest,
      ShouldNotSupportInternalUrlWithBraveSchemeAndFooBarHostName) {
   // Act & Assert
-  EXPECT_FALSE(ShouldSupportInternalUrl(GURL("brave://foobar")));
+  EXPECT_FALSE(ShouldSupportInternalUrl(GURL("chrome://foobar")));
 }
 
 TEST(BraveAdsUrlUtilInternalTest,
      ShouldSupportInternalUrlWithBraveSchemeAndWalletHostName) {
   // Act & Assert
-  EXPECT_TRUE(ShouldSupportInternalUrl(GURL("brave://wallet")));
+  EXPECT_TRUE(ShouldSupportInternalUrl(GURL("chrome://wallet")));
 }
 
 TEST(BraveAdsUrlUtilInternalTest,
      ShouldSupportInternalUrlWithBraveSchemeAndWalletHostNameAndPath) {
   // Act & Assert
-  EXPECT_TRUE(ShouldSupportInternalUrl(GURL("brave://wallet/foo")));
+  EXPECT_TRUE(ShouldSupportInternalUrl(GURL("chrome://wallet/foo")));
 }
 
 TEST(BraveAdsUrlUtilInternalTest,
      ShouldSupportInternalUrlWithBraveSchemeAndSyncHostName) {
   // Act & Assert
-  EXPECT_TRUE(ShouldSupportInternalUrl(GURL("brave://sync")));
+  EXPECT_TRUE(ShouldSupportInternalUrl(GURL("chrome://sync")));
 }
 
 TEST(BraveAdsUrlUtilInternalTest,
      ShouldSupportInternalUrlWithBraveSchemeAndSyncHostNameAndPath) {
   // Act & Assert
-  EXPECT_TRUE(ShouldSupportInternalUrl(GURL("brave://sync/foo")));
+  EXPECT_TRUE(ShouldSupportInternalUrl(GURL("chrome://sync/foo")));
 }
 
 TEST(BraveAdsUrlUtilInternalTest,
      ShouldSupportInternalUrlWithBraveSchemeAndRewardsHostName) {
   // Act & Assert
-  EXPECT_TRUE(ShouldSupportInternalUrl(GURL("brave://rewards")));
+  EXPECT_TRUE(ShouldSupportInternalUrl(GURL("chrome://rewards")));
 }
 
 TEST(BraveAdsUrlUtilInternalTest,
      ShouldSupportInternalUrlWithBraveSchemeAndRewardsHostNameAndPath) {
   // Act & Assert
-  EXPECT_TRUE(ShouldSupportInternalUrl(GURL("brave://rewards/foo")));
+  EXPECT_TRUE(ShouldSupportInternalUrl(GURL("chrome://rewards/foo")));
 }
 
 TEST(BraveAdsUrlUtilInternalTest,
      ShouldNotSupportInternalUrlWithBraveSchemeAndSettingsHostName) {
   // Act & Assert
-  EXPECT_FALSE(ShouldSupportInternalUrl(GURL("brave://settings")));
+  EXPECT_FALSE(ShouldSupportInternalUrl(GURL("chrome://settings")));
 }
 
 TEST(
     BraveAdsUrlUtilInternalTest,
     ShouldNotSupportInternalUrlWithBraveSchemeAndSettingsHostNameAndFooBarPath) {
   // Act & Assert
-  EXPECT_FALSE(ShouldSupportInternalUrl(GURL("brave://settings/foobar")));
+  EXPECT_FALSE(ShouldSupportInternalUrl(GURL("chrome://settings/foobar")));
 }
 
 TEST(
     BraveAdsUrlUtilInternalTest,
     ShouldSupportInternalUrlWithBraveSchemeAndSettingsHostNameAndSearchEnginesPath) {
   // Act & Assert
-  EXPECT_TRUE(ShouldSupportInternalUrl(GURL("brave://settings/searchEngines")));
+  EXPECT_TRUE(
+      ShouldSupportInternalUrl(GURL("chrome://settings/searchEngines")));
 }
 
 TEST(
@@ -139,7 +128,7 @@ TEST(
     ShouldSupportInternalUrlWithBraveSchemeAndSettingsHostNameSearchEnginesPathAndSearchQuery) {
   // Act & Assert
   EXPECT_TRUE(ShouldSupportInternalUrl(
-      GURL("brave://settings/searchEngines?search=foobar")));
+      GURL("chrome://settings/searchEngines?search=foobar")));
 }
 
 TEST(
@@ -147,7 +136,7 @@ TEST(
     ShouldNotSupportInternalUrlWithBraveSchemeAndSettingsHostNameSearchEnginesPathAndMultipleSearchQueries) {
   // Act & Assert
   EXPECT_FALSE(ShouldSupportInternalUrl(
-      GURL("brave://settings/searchEngines?search=foo&bar=baz")));
+      GURL("chrome://settings/searchEngines?search=foo&bar=baz")));
 }
 
 TEST(
@@ -155,13 +144,13 @@ TEST(
     ShouldNotSupportInternalUrlWithBraveSchemeAndSettingsHostNameSearchEnginesPathAndInvalidQuery) {
   // Act & Assert
   EXPECT_FALSE(
-      ShouldSupportInternalUrl(GURL("brave://settings/searchEngines?search")));
+      ShouldSupportInternalUrl(GURL("chrome://settings/searchEngines?search")));
 }
 
 TEST(BraveAdsUrlUtilInternalTest,
      ShouldSupportInternalUrlWithBraveSchemeAndSettingsHostNameAndSearchPath) {
   // Act & Assert
-  EXPECT_TRUE(ShouldSupportInternalUrl(GURL("brave://settings/search")));
+  EXPECT_TRUE(ShouldSupportInternalUrl(GURL("chrome://settings/search")));
 }
 
 TEST(
@@ -169,7 +158,7 @@ TEST(
     ShouldSupportInternalUrlWithBraveSchemeAndSettingsHostNameSearchPathAndSearchQuery) {
   // Act & Assert
   EXPECT_TRUE(
-      ShouldSupportInternalUrl(GURL("brave://settings/search?search=foobar")));
+      ShouldSupportInternalUrl(GURL("chrome://settings/search?search=foobar")));
 }
 
 TEST(
@@ -177,7 +166,7 @@ TEST(
     ShouldNotSupportInternalUrlWithBraveSchemeAndSettingsHostNameSearchPathAndMultipleSearchQueries) {
   // Act & Assert
   EXPECT_FALSE(ShouldSupportInternalUrl(
-      GURL("brave://settings/search?search=foo&bar=baz")));
+      GURL("chrome://settings/search?search=foo&bar=baz")));
 }
 
 TEST(
@@ -185,27 +174,27 @@ TEST(
     ShouldNotSupportInternalUrlWithBraveSchemeAndSettingsHostNameSearchPathAndInvalidQuery) {
   // Act & Assert
   EXPECT_FALSE(
-      ShouldSupportInternalUrl(GURL("brave://settings/search?search")));
+      ShouldSupportInternalUrl(GURL("chrome://settings/search?search")));
 }
 
 TEST(BraveAdsUrlUtilInternalTest,
      ShouldNotSupportInternalUrlWithBraveSchemeAndSettingsHostNameAndQuery) {
   // Act & Assert
   EXPECT_FALSE(
-      ShouldSupportInternalUrl(GURL("brave://settings/?search=foobar")));
+      ShouldSupportInternalUrl(GURL("chrome://settings/?search=foobar")));
 }
 
 TEST(
     BraveAdsUrlUtilInternalTest,
     ShouldNotSupportInternalUrlWithBraveSchemeAndSettingsHostNameAndInvalidQuery) {
   // Act & Assert
-  EXPECT_FALSE(ShouldSupportInternalUrl(GURL("brave://settings/?search")));
+  EXPECT_FALSE(ShouldSupportInternalUrl(GURL("chrome://settings/?search")));
 }
 
 TEST(BraveAdsUrlUtilInternalTest, ShouldNotSupportMalformedUrl) {
   // Act & Assert
   EXPECT_FALSE(
-      ShouldSupportInternalUrl(GURL("http://foobar.com/brave://wallet")));
+      ShouldSupportInternalUrl(GURL("http://foobar.com/chrome://wallet")));
 }
 
 }  // namespace brave_ads::internal
