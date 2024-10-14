@@ -17,7 +17,6 @@ import styles from './style.module.scss'
 import useIsConversationVisible from '../../hooks/useIsConversationVisible'
 
 export interface Props {
-  isConversationListOpen?: boolean
   setIsConversationListOpen?: (value: boolean) => unknown
 }
 
