@@ -883,12 +883,9 @@ void ConversationHandler::PerformAssistantGeneration(
   const std::string summarize_page_question =
       l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
 
-  const bool should_refine_page_content =
-      features::IsPageContentRefineEnabled() &&
+  if (features::IsPageContentRefineEnabled() &&
       page_content.length() > max_content_length &&
-      input != summarize_page_question && associated_content_delegate_;
-
-  if (should_refine_page_content) {
+      input != summarize_page_question && associated_content_delegate_) {
     DVLOG(2) << "Refining content of length: " << page_content.length();
 
     auto refined_content_callback = base::BindOnce(
@@ -905,7 +902,7 @@ void ConversationHandler::PerformAssistantGeneration(
         mojom::ConversationEntryEvent::NewPageContentRefineEvent(
             mojom::PageContentRefineEvent::New()));
     return;
-  } else if (!should_refine_page_content && is_content_refined_) {
+  } else if (is_content_refined_) {
     // If we previously refined content but we're not anymore (perhaps the
     // content shrunk or the model changed to one with a larger content length
     // limit), update the UI to let them know we're not refining content
