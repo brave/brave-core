@@ -10,9 +10,7 @@
 
 class GURL;
 
-namespace brave_ads::internal {
-
-GURL ReplaceBraveSchemeWithChromeScheme(const GURL& url);
+namespace brave_ads {
 
 bool HasSearchQuery(const GURL& url);
 bool ShouldSupportInternalUrl(const GURL& url);
@@ -21,6 +19,6 @@ bool HostHasRegistryControlledDomain(std::string_view host);
 
 bool DoesETLDPlusOneContainWildcards(const GURL& url);
 
-}  // namespace brave_ads::internal
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_URL_URL_UTIL_INTERNAL_H_
