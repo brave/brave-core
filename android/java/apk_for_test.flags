@@ -902,3 +902,7 @@
 -keep class org.chromium.chrome.browser.settings.SettingsIntentUtil {
     *** createIntent(...);
 }
+
+-keep class org.chromium.chrome.browser.safe_browsing.settings.SafeBrowsingSettingsFragment {
+    *** getSafeBrowsingSummaryString(...);
+}

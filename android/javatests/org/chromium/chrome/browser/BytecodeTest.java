@@ -355,6 +355,10 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/notifications/NotificationPlatformBridge"));
 
         Assert.assertTrue(classExists("org/chromium/chrome/browser/settings/SettingsIntentUtil"));
+
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/safe_browsing/settings/SafeBrowsingSettingsFragment")); // presubmit: ignore-long-line
     }
 
     @Test
@@ -867,6 +871,15 @@ public class BytecodeTest {
                         Context.class,
                         String.class,
                         Bundle.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/safe_browsing/settings/SafeBrowsingSettingsFragment", // presubmit: ignore-long-line
+                        "getSafeBrowsingSummaryString",
+                        MethodModifier.STATIC,
+                        true,
+                        String.class,
+                        Context.class,
+                        Profile.class));
     }
 
     @Test
