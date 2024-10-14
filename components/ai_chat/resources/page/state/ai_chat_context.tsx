@@ -34,6 +34,9 @@ export interface AIChatContext extends Props {
   dismissPremiumPrompt: () => void
   userRefreshPremiumSession: () => void,
   uiHandler?: mojom.AIChatUIHandlerRemote
+
+  editingConversationId: string | null,
+  setEditingConversationId: (uuid: string | null) => void
 }
 
 const defaultContext: AIChatContext = {
@@ -47,13 +50,16 @@ const defaultContext: AIChatContext = {
   isMobile: Boolean(loadTimeData.getBoolean('isMobile')),
   isHistoryEnabled: Boolean(loadTimeData.getBoolean('isHistoryEnabled')),
   allActions: [],
-  goPremium: () => {},
-  managePremium: () => {},
-  handleAgreeClick: () => {},
-  dismissPremiumPrompt: () => {},
-  userRefreshPremiumSession: () => {},
-  onNewConversation: () => {},
-  onSelectConversationUuid: () => {}
+  goPremium: () => { },
+  managePremium: () => { },
+  handleAgreeClick: () => { },
+  dismissPremiumPrompt: () => { },
+  userRefreshPremiumSession: () => { },
+  onNewConversation: () => { },
+  onSelectConversationUuid: () => { },
+
+  editingConversationId: null,
+  setEditingConversationId: () => { }
 }
 
 export const AIChatReactContext =
@@ -61,6 +67,7 @@ export const AIChatReactContext =
 
 export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
   const [context, setContext] = React.useState<AIChatContext>(defaultContext)
+  const [editingConversationId, setEditingConversationId] = React.useState<string | null>(null)
 
   const setPartialContext = (partialContext: Partial<AIChatContext>) => {
     setContext((value) => ({
@@ -88,7 +95,7 @@ export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
       })
     }
 
-    async function updateCurrentPremiumStatus () {
+    async function updateCurrentPremiumStatus() {
       const { status } = await getAPI().Service.getPremiumStatus()
       setPartialContext({
         isPremiumStatusFetching: false,
@@ -141,7 +148,9 @@ export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
     dismissPremiumPrompt: () => Service.dismissPremiumPrompt(),
     userRefreshPremiumSession: () => UIHandler.refreshPremiumSession(),
     handleAgreeClick: () => Service.markAgreementAccepted(),
-    uiHandler: UIHandler
+    uiHandler: UIHandler,
+    editingConversationId,
+    setEditingConversationId
   }
 
   return (
