@@ -42,7 +42,6 @@ namespace android {
 BraveRewardsNativeWorker::BraveRewardsNativeWorker(JNIEnv* env,
     const base::android::JavaRef<jobject>& obj):
     weak_java_brave_rewards_native_worker_(env, obj),
-    brave_rewards_service_(nullptr),
     weak_factory_(this) {
   Java_BraveRewardsNativeWorker_setNativePtr(env, obj,
     reinterpret_cast<intptr_t>(this));
@@ -50,11 +49,11 @@ BraveRewardsNativeWorker::BraveRewardsNativeWorker(JNIEnv* env,
   brave_rewards_service_ = brave_rewards::RewardsServiceFactory::GetForProfile(
       ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
   if (brave_rewards_service_) {
-    brave_rewards_service_->AddObserver(this);
-    brave_rewards::RewardsNotificationService* notification_service =
-      brave_rewards_service_->GetNotificationService();
-    if (notification_service) {
-      notification_service->AddObserver(this);
+    rewards_service_observation_.Observe(brave_rewards_service_);
+
+    if (auto* notification_service =
+            brave_rewards_service_->GetNotificationService()) {
+      rewards_notification_service_observation_.Observe(notification_service);
     }
   }
 }
@@ -63,14 +62,6 @@ BraveRewardsNativeWorker::~BraveRewardsNativeWorker() {
 }
 
 void BraveRewardsNativeWorker::Destroy(JNIEnv* env) {
-  if (brave_rewards_service_) {
-    brave_rewards_service_->RemoveObserver(this);
-    brave_rewards::RewardsNotificationService* notification_service =
-      brave_rewards_service_->GetNotificationService();
-    if (notification_service) {
-      notification_service->RemoveObserver(this);
-    }
-  }
   delete this;
 }
 
@@ -251,8 +242,8 @@ void BraveRewardsNativeWorker::GetPublisherInfo(
     int tabId,
     const base::android::JavaParamRef<jstring>& host) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->GetPublisherActivityFromUrl(tabId,
-      base::android::ConvertJavaStringToUTF8(env, host), "", "");
+    brave_rewards_service_->GetPublisherActivityFromUrl(
+        tabId, base::android::ConvertJavaStringToUTF8(env, host), "", "");
   }
 }
 
@@ -578,26 +569,16 @@ void BraveRewardsNativeWorker::OnSendContribution(bool result) {
 }
 
 void BraveRewardsNativeWorker::GetAllNotifications(JNIEnv* env) {
-  if (!brave_rewards_service_) {
-    return;
-  }
-  brave_rewards::RewardsNotificationService* notification_service =
-    brave_rewards_service_->GetNotificationService();
-  if (notification_service) {
-    notification_service->GetNotifications();
+  if (rewards_notification_service_observation_.IsObserving()) {
+    rewards_notification_service_observation_.GetSource()->GetNotifications();
   }
 }
 
 void BraveRewardsNativeWorker::DeleteNotification(JNIEnv* env,
         const base::android::JavaParamRef<jstring>& notification_id) {
-  if (!brave_rewards_service_) {
-    return;
-  }
-  brave_rewards::RewardsNotificationService* notification_service =
-    brave_rewards_service_->GetNotificationService();
-  if (notification_service) {
-    notification_service->DeleteNotification(
-      base::android::ConvertJavaStringToUTF8(env, notification_id));
+  if (rewards_notification_service_observation_.IsObserving()) {
+    rewards_notification_service_observation_.GetSource()->DeleteNotification(
+        base::android::ConvertJavaStringToUTF8(env, notification_id));
   }
 }
 
@@ -704,14 +685,14 @@ double BraveRewardsNativeWorker::GetPublisherRecurrentDonationAmount(
 void BraveRewardsNativeWorker::RemoveRecurring(JNIEnv* env,
     const base::android::JavaParamRef<jstring>& publisher) {
   if (brave_rewards_service_) {
-      brave_rewards_service_->RemoveRecurringTip(
+    brave_rewards_service_->RemoveRecurringTip(
         base::android::ConvertJavaStringToUTF8(env, publisher));
-      auto it = map_recurrent_publishers_.find(
-          base::android::ConvertJavaStringToUTF8(env, publisher));
+    auto it = map_recurrent_publishers_.find(
+        base::android::ConvertJavaStringToUTF8(env, publisher));
 
-      if (it != map_recurrent_publishers_.end()) {
-        map_recurrent_publishers_.erase(it);
-      }
+    if (it != map_recurrent_publishers_.end()) {
+      map_recurrent_publishers_.erase(it);
+    }
   }
 }
 
