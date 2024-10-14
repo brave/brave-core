@@ -49,7 +49,7 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
-#include "brave/components/json/rs/src/lib.rs.h"
+#include "brave/components/json/json_helper.h"
 #include "brave/net/base/url_util.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"

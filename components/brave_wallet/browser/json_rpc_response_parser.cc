@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/json/rs/src/lib.rs.h"
+#include "brave/components/json/json_helper.h"
 
 namespace brave_wallet {
 
@@ -143,8 +143,8 @@ std::optional<std::string> ConvertMultiUint64InObjectArrayToString(
     if (key.empty()) {
       return std::nullopt;
     }
-    converted_json = std::string(json::convert_uint64_in_object_array_to_string(
-        path_to_list, path_to_object, key, converted_json));
+    converted_json = json::convert_uint64_in_object_array_to_string(
+        path_to_list, path_to_object, key, converted_json);
     if (converted_json.empty()) {
       return std::nullopt;
     }
@@ -195,8 +195,7 @@ bool GetUint64FromDictValue(const base::Value::Dict& dict_value,
 
 std::optional<std::string> ConvertAllNumbersToString(const std::string& path,
                                                      const std::string& json) {
-  auto converted_json =
-      std::string(json::convert_all_numbers_to_string(json, path));
+  auto converted_json = json::convert_all_numbers_to_string(json, path);
   if (converted_json.empty()) {
     return std::nullopt;
   }

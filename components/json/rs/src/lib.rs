@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #[allow(unsafe_op_in_unsafe_fn)]
-#[cxx::bridge(namespace = json)]
+#[cxx::bridge(namespace = rust_json)]
 mod ffi {
     extern "Rust" {
         fn convert_uint64_value_to_string(path: &str, json: &str, optional: bool) -> String;
