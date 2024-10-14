@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.omnibox.status;
 
 import android.content.Context;
-import android.content.res.Resources;
 
 import androidx.annotation.Nullable;
 
@@ -27,7 +26,6 @@ public class BraveStatusMediator extends StatusMediator {
 
     public BraveStatusMediator(
             PropertyModel model,
-            Resources resources,
             Context context,
             UrlBarEditingTextStateProvider urlBarEditingTextStateProvider,
             boolean isTablet,
@@ -42,7 +40,6 @@ public class BraveStatusMediator extends StatusMediator {
                             merchantTrustSignalsCoordinatorSupplier) {
         super(
                 model,
-                resources,
                 context,
                 urlBarEditingTextStateProvider,
                 isTablet,
