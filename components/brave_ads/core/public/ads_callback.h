@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 namespace brave_ads {
@@ -33,6 +34,9 @@ using MaybeServeNewTabPageAdCallback =
 using MaybeServeInlineContentAdCallback =
     base::OnceCallback<void(const std::string& dimensions,
                             const std::optional<InlineContentAdInfo>& ad)>;
+
+using MaybeGetNotificationAdCallback =
+    base::OnceCallback<void(const std::optional<NotificationAdInfo>& ad)>;
 
 using TriggerAdEventCallback = base::OnceCallback<void(bool success)>;
 

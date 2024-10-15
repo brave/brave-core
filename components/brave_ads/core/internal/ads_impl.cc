@@ -25,6 +25,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
@@ -86,7 +87,9 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
   if (!is_initialized_) {
     BLOG(0, "Shutdown failed as not initialized");
 
-    return std::move(callback).Run(/*success=*/false);
+    pending_task_queue_.Add(base::BindOnce(
+        &AdsImpl::Shutdown, weak_factory_.GetWeakPtr(), std::move(callback)));
+    return;
   }
 
   NotificationAdManager::GetInstance().RemoveAll(/*should_close=*/true);
@@ -96,7 +99,10 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
 
 void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*diagnostics=*/std::nullopt);
+    pending_task_queue_.Add(base::BindOnce(&AdsImpl::GetDiagnostics,
+                                           weak_factory_.GetWeakPtr(),
+                                           std::move(callback)));
+    return;
   }
 
   DiagnosticManager::GetInstance().GetDiagnostics(std::move(callback));
@@ -104,7 +110,10 @@ void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
 
 void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*statement=*/nullptr);
+    pending_task_queue_.Add(base::BindOnce(&AdsImpl::GetStatementOfAccounts,
+                                           weak_factory_.GetWeakPtr(),
+                                           std::move(callback)));
+    return;
   }
 
   GetAccount().GetStatement(std::move(callback));
@@ -114,7 +123,10 @@ void AdsImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(dimensions, /*ad=*/std::nullopt);
+    pending_task_queue_.Add(base::BindOnce(&AdsImpl::MaybeServeInlineContentAd,
+                                           weak_factory_.GetWeakPtr(),
+                                           dimensions, std::move(callback)));
+    return;
   }
 
   GetAdHandler().MaybeServeInlineContentAd(dimensions, std::move(callback));
@@ -126,7 +138,11 @@ void AdsImpl::TriggerInlineContentAdEvent(
     const mojom::InlineContentAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success=*/false);
+    pending_task_queue_.Add(base::BindOnce(
+        &AdsImpl::TriggerInlineContentAdEvent, weak_factory_.GetWeakPtr(),
+        placement_id, creative_instance_id, mojom_ad_event_type,
+        std::move(callback)));
+    return;
   }
 
   GetAdHandler().TriggerInlineContentAdEvent(placement_id, creative_instance_id,
@@ -136,7 +152,10 @@ void AdsImpl::TriggerInlineContentAdEvent(
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*ad=*/std::nullopt);
+    pending_task_queue_.Add(base::BindOnce(&AdsImpl::MaybeServeNewTabPageAd,
+                                           weak_factory_.GetWeakPtr(),
+                                           std::move(callback)));
+    return;
   }
 
   GetAdHandler().MaybeServeNewTabPageAd(std::move(callback));
@@ -148,7 +167,11 @@ void AdsImpl::TriggerNewTabPageAdEvent(
     const mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success=*/false);
+    pending_task_queue_.Add(base::BindOnce(
+        &AdsImpl::TriggerNewTabPageAdEvent, weak_factory_.GetWeakPtr(),
+        placement_id, creative_instance_id, mojom_ad_event_type,
+        std::move(callback)));
+    return;
   }
 
   GetAdHandler().TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
@@ -156,10 +179,18 @@ void AdsImpl::TriggerNewTabPageAdEvent(
                                           std::move(callback));
 }
 
-std::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(
-    const std::string& placement_id) {
-  return NotificationAdManager::GetInstance().MaybeGetForPlacementId(
-      placement_id);
+void AdsImpl::MaybeGetNotificationAd(const std::string& placement_id,
+                                     MaybeGetNotificationAdCallback callback) {
+  if (!is_initialized_) {
+    pending_task_queue_.Add(base::BindOnce(&AdsImpl::MaybeGetNotificationAd,
+                                           weak_factory_.GetWeakPtr(),
+                                           placement_id, std::move(callback)));
+    return;
+  }
+
+  std::move(callback).Run(
+      NotificationAdManager::GetInstance().MaybeGetForPlacementId(
+          placement_id));
 }
 
 void AdsImpl::TriggerNotificationAdEvent(
@@ -167,7 +198,10 @@ void AdsImpl::TriggerNotificationAdEvent(
     const mojom::NotificationAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success=*/false);
+    pending_task_queue_.Add(base::BindOnce(
+        &AdsImpl::TriggerNotificationAdEvent, weak_factory_.GetWeakPtr(),
+        placement_id, mojom_ad_event_type, std::move(callback)));
+    return;
   }
 
   GetAdHandler().TriggerNotificationAdEvent(placement_id, mojom_ad_event_type,
@@ -180,7 +214,11 @@ void AdsImpl::TriggerPromotedContentAdEvent(
     const mojom::PromotedContentAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success=*/false);
+    pending_task_queue_.Add(base::BindOnce(
+        &AdsImpl::TriggerPromotedContentAdEvent, weak_factory_.GetWeakPtr(),
+        placement_id, creative_instance_id, mojom_ad_event_type,
+        std::move(callback)));
+    return;
   }
 
   GetAdHandler().TriggerPromotedContentAdEvent(
@@ -193,7 +231,11 @@ void AdsImpl::TriggerSearchResultAdEvent(
     const mojom::SearchResultAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success=*/false);
+    pending_task_queue_.Add(
+        base::BindOnce(&AdsImpl::TriggerSearchResultAdEvent,
+                       weak_factory_.GetWeakPtr(), std::move(mojom_creative_ad),
+                       mojom_ad_event_type, std::move(callback)));
+    return;
   }
 
   GetAdHandler().TriggerSearchResultAdEvent(
@@ -204,7 +246,10 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
     const mojom::AdType mojom_ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success=*/false);
+    pending_task_queue_.Add(base::BindOnce(
+        &AdsImpl::PurgeOrphanedAdEventsForType, weak_factory_.GetWeakPtr(),
+        mojom_ad_type, std::move(callback)));
+    return;
   }
 
   PurgeOrphanedAdEvents(
@@ -229,7 +274,10 @@ void AdsImpl::GetAdHistory(const base::Time from_time,
                            const base::Time to_time,
                            GetAdHistoryForUICallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*ad_history=*/std::nullopt);
+    pending_task_queue_.Add(
+        base::BindOnce(&AdsImpl::GetAdHistory, weak_factory_.GetWeakPtr(),
+                       from_time, to_time, std::move(callback)));
+    return;
   }
 
   AdHistoryManager::GetForUI(from_time, to_time, std::move(callback));
@@ -238,7 +286,10 @@ void AdsImpl::GetAdHistory(const base::Time from_time,
 void AdsImpl::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
                            ToggleReactionCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success=*/false);
+    pending_task_queue_.Add(
+        base::BindOnce(&AdsImpl::ToggleLikeAd, weak_factory_.GetWeakPtr(),
+                       std::move(mojom_reaction), std::move(callback)));
+    return;
   }
 
   GetReactions().ToggleLikeAd(std::move(mojom_reaction), std::move(callback));
@@ -247,7 +298,10 @@ void AdsImpl::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
 void AdsImpl::ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
                               ToggleReactionCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success=*/false);
+    pending_task_queue_.Add(
+        base::BindOnce(&AdsImpl::ToggleDislikeAd, weak_factory_.GetWeakPtr(),
+                       std::move(mojom_reaction), std::move(callback)));
+    return;
   }
 
   GetReactions().ToggleDislikeAd(std::move(mojom_reaction),
@@ -257,7 +311,10 @@ void AdsImpl::ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
 void AdsImpl::ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
                                 ToggleReactionCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success=*/false);
+    pending_task_queue_.Add(
+        base::BindOnce(&AdsImpl::ToggleLikeSegment, weak_factory_.GetWeakPtr(),
+                       std::move(mojom_reaction), std::move(callback)));
+    return;
   }
 
   GetReactions().ToggleLikeSegment(std::move(mojom_reaction),
@@ -267,7 +324,10 @@ void AdsImpl::ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
 void AdsImpl::ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
                                    ToggleReactionCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success=*/false);
+    pending_task_queue_.Add(base::BindOnce(
+        &AdsImpl::ToggleDislikeSegment, weak_factory_.GetWeakPtr(),
+        std::move(mojom_reaction), std::move(callback)));
+    return;
   }
 
   GetReactions().ToggleDislikeSegment(std::move(mojom_reaction),
@@ -277,7 +337,10 @@ void AdsImpl::ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
 void AdsImpl::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
                            ToggleReactionCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success=*/false);
+    pending_task_queue_.Add(
+        base::BindOnce(&AdsImpl::ToggleSaveAd, weak_factory_.GetWeakPtr(),
+                       std::move(mojom_reaction), std::move(callback)));
+    return;
   }
 
   GetReactions().ToggleSaveAd(std::move(mojom_reaction), std::move(callback));
@@ -286,7 +349,10 @@ void AdsImpl::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
 void AdsImpl::ToggleMarkAdAsInappropriate(mojom::ReactionInfoPtr mojom_reaction,
                                           ToggleReactionCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success=*/false);
+    pending_task_queue_.Add(base::BindOnce(
+        &AdsImpl::ToggleMarkAdAsInappropriate, weak_factory_.GetWeakPtr(),
+        std::move(mojom_reaction), std::move(callback)));
+    return;
   }
 
   GetReactions().ToggleMarkAdAsInappropriate(std::move(mojom_reaction),
@@ -328,6 +394,8 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
   }
 
   GetAdsClient()->NotifyPendingObservers();
+
+  pending_task_queue_.Process();
 
   std::move(callback).Run(/*success=*/true);
 }

@@ -32,6 +32,8 @@ class AdsClientNotifierForTesting : public AdsClientNotifier {
     task_environment_ = task_environment;
   }
 
+  void NotifyPendingObservers() override;
+
   void NotifyDidInitializeAds() override;
 
   void NotifyLocaleDidChange(const std::string& locale) override;
