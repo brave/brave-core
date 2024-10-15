@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">Hiển thị các đề xuất trang web dựa trên dấu trang và lịch sử duyệt web của bạn.</translation>
 <translation id="924029461438529367">Hiển thị gợi ý tìm kiếm</translation>
 <translation id="1571106259128580884">Hiển thị các đề xuất trang web hàng đầu</translation>
+<translation id="6285118765755298263">Lập chỉ mục các công cụ tìm kiếm khác</translation>
+<translation id="919715748352669592">Tự động lập chỉ mục các trang web tuân theo thông số OpenSearch.</translation>
 <translation id="9148058034647219655">Thoát</translation>
 <translation id="8047754398610073499">Chặn thông báo chấp thuận cookie</translation>
 <translation id="2621893359845808115">Chặn cửa sổ bật lên của trang web yêu cầu bạn chấp nhận / từ chối cookie trên trang web của họ</translation>
@@ -740,7 +742,19 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="755448900483975096">Nhà mạng di động</translation>
 <translation id="1279441577056010362">Tiếp tục đến email</translation>
 <translation id="7125582363614011660">Hỗ trợ được cung cấp với sự trợ giúp của nhóm Guardian.\n\nVui lòng chọn thông tin bạn cảm thấy thoải mái khi chia sẻ với chúng tôi.\n\nBạn càng chia sẻ nhiều thông tin từ đầu thì nhân viên hỗ trợ của chúng tôi càng dễ hỗ trợ giải quyết vấn đề của bạn.</translation>
-<translation id="7999094850625689785">Một khu vực máy chủ gần nhất với bạn sẽ được tự động chọn dựa trên múi giờ hệ thống của bạn. Điều này được khuyến nghị để bảo đảm tốc độ internet nhanh.</translation>
+<translation id="8813171284214934811">Tự động chọn vùng máy chủ VPN gần nhất với bạn dựa trên múi giờ của bạn. Tùy chọn này được khuyến nghị để tối đa hóa tốc độ Internet.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> thành phố - }
+          other {<ph name="CITY_COUNT_MANY"/> thành phố - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> máy chủ}
+          other {<ph name="SERVER_COUNT_MANY"/> máy chủ}
+        }</translation>
+<translation id="3199127022143353223">Máy chủ</translation>
+<translation id="5431902940483264007">Tối ưu</translation>
+<translation id="6527596624419285047">Sử dụng máy chủ tốt nhất hiện có</translation>
+<translation id="6789157560111825412">Máy chủ khả dụng</translation>
 <translation id="4397083831618200686">Chọn lỗi</translation>
 <translation id="6687228121145903051">Không thể kết nối với VPN (Lỗi khác)</translation>
 <translation id="9184988385244077767">Không có internet khi kết nối</translation>
@@ -808,7 +822,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="7358989216567322955">Phí ưu tiên tối đa</translation>
 <translation id="9091334651803050473">Mặc dù không đây không phải là một sự bảo đảm, người đào tiền nhiều khả năng sẽ ưu tiên giao dịch của bạn nếu bạn trả một khoản phí cao hơn.</translation>
 <translation id="2941112035454246133">Thấp</translation>
-<translation id="5431902940483264007">Tối ưu</translation>
 <translation id="7304030187361489308">Cao</translation>
 <translation id="4853037749278079787">Phí tối đa: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Phí cơ sở hiện tại: <ph name="ASSET_VALUE"/> Gwei</translation>

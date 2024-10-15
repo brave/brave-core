@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">Mostra i suggerimenti del sito web in base ai tuoi preferiti e alla cronologia di navigazione.</translation>
 <translation id="924029461438529367">Mostra suggerimenti di ricerca</translation>
 <translation id="1571106259128580884">Mostra suggerimenti dei siti migliori</translation>
+<translation id="6285118765755298263">Indicizza altri motori di ricerca</translation>
+<translation id="919715748352669592">Indicizza automaticamente i siti web che seguono le specifiche OpenSearch.</translation>
 <translation id="9148058034647219655">Esci</translation>
 <translation id="8047754398610073499">Blocca le notifiche di consenso ai cookie</translation>
 <translation id="2621893359845808115">Blocca i pop-up dei siti che ti chiedono di accettare/rifiutare i cookie</translation>
@@ -740,7 +742,19 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="755448900483975096">Operatore di telefonia mobile</translation>
 <translation id="1279441577056010362">Continua con l'e-mail</translation>
 <translation id="7125582363614011660">Assistenza fornita con l’aiuto del team Guardian.\n\nSeleziona le informazioni che ti va di condividere con noi.\n\nPiù informazioni condividerai da subito con noi, più sarà facile per la nostra assistenza aiutarti a risolvere il problema.</translation>
-<translation id="7999094850625689785">Verrà selezionata automaticamente la regione del server più vicina a te, in base al fuso orario del tuo sistema. Si consiglia questa impostazione per garantire velocità Internet elevate.</translation>
+<translation id="8813171284214934811">Seleziona automaticamente la regione del server VPN più vicina in base al tuo fuso orario. Questa opzione è consigliata per massimizzare la velocità di internet.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> città - }
+          other {<ph name="CITY_COUNT_MANY"/> città - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> server}
+          other {<ph name="SERVER_COUNT_MANY"/> server}
+        }</translation>
+<translation id="3199127022143353223">Server</translation>
+<translation id="5431902940483264007">Ottimale</translation>
+<translation id="6527596624419285047">Usa il server migliore disponibile</translation>
+<translation id="6789157560111825412">Server disponibili</translation>
 <translation id="4397083831618200686">Seleziona il problema</translation>
 <translation id="6687228121145903051">Impossibile connettersi alla VPN (altro errore)</translation>
 <translation id="9184988385244077767">Internet assente durante la connessione</translation>
@@ -808,7 +822,6 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="7358989216567322955">Commissione per priorità massima</translation>
 <translation id="9091334651803050473">Anche se non è una garanzia, se paghi una commissione più alta i minatori daranno probabilmente priorità alla tua transazione.</translation>
 <translation id="2941112035454246133">Basso</translation>
-<translation id="5431902940483264007">Ottimale</translation>
 <translation id="7304030187361489308">Alto</translation>
 <translation id="4853037749278079787">Commissione massima: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Attuale commissione di base: <ph name="ASSET_VALUE"/> Gwei</translation>

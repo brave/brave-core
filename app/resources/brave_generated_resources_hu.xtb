@@ -51,6 +51,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="3975865347033939965">A szinkronizálási szolgáltatás nem indítható el, mert a Brave-szinkronizálás nem fut</translation>
 <translation id="4450893287417543264">Ne mutassa többé</translation>
 <translation id="4595286989346610620">Részletek megtekintése</translation>
+<translation id="8324318899000695659">Elemek letiltása</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Megnyitás .onion cím használatával: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Kényszerített beillesztés</translation>
@@ -707,7 +708,7 @@ Leóval. Ezt a műveletet nem lehet visszavonni.</translation>
 <translation id="7634775528597575156">Kiszolgálói végpont</translation>
 <translation id="6374563306438145841">API-kulcs</translation>
 <translation id="8008271349880309090">A modell neve a modellkiválasztó menüben megjelenő formában.</translation>
-<translation id="7131172845656551327">A modell neve abban a formában, ahogyan a kiszolgáló keretrendszerhez küldött kérésben meg kell jelennie, pl. phi-3 (vegye figyelembe, hogy ha ez a név nem egyezik meg pontosan azzal, amit a kiszolgáló keretrendszer elvár, az integráció nem fog működni).</translation>
+<translation id="1355326130503900056">A modell neve abban a formában, ahogyan a kiszolgáló keretrendszerhez küldött kérésben meg kell jelennie, pl. phi-3 (vegye figyelembe, hogy ha ez a név nem egyezik meg pontosan azzal, amit a kiszolgáló keretrendszer elvár, az integráció nem fog működni).</translation>
 <translation id="3286410514484292784">Az az url, ahol az Ön kiszolgáló keretrendszere figyeli a kéréseket. Ha nem biztos benne, nézze meg a kiszolgáló keretrendszer dokumentációját. Például az Ollama esetében ez mindig a http://localhost:11434/v1/chat/completions.</translation>
 <translation id="1058790648388035953">Egyes kiszolgáló keretrendszerek hitelesítő adatokat, például API-kulcsot vagy hozzáférési tokent igényelhetnek. Ezek bekerülnek a kérés fejlécébe.</translation>
 <translation id="217141195370578385">A Brave nem kezeli proxyként ezeket a kéréseket, kérjük, olvassa el a kiválasztott szolgáltató adatvédelmi feltételeit.</translation>

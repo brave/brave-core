@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">Приказује препоручене веб-сајтове на основу ваших обележивача и историје прегледанја.</translation>
 <translation id="924029461438529367">Приказати предлоге за претрагу</translation>
 <translation id="1571106259128580884">Приказати предлоге најпопуларнијих страница</translation>
+<translation id="6285118765755298263">Indeksirajte ostale pretraživače</translation>
+<translation id="919715748352669592">Automatski indeksira veb-sajtove koji slede OpenSearch specifikacije.</translation>
 <translation id="9148058034647219655">Изађи</translation>
 <translation id="8047754398610073499">Блокиранје обавештенја о даванју сагласности за колачиће</translation>
 <translation id="2621893359845808115">Блокира искачуће прозоре веб-сајта који од вас траже да прихватите / одбијете колачиће на сајту</translation>
@@ -740,7 +742,19 @@
 <translation id="755448900483975096">Мобилни оператер</translation>
 <translation id="1279441577056010362">Пређите на имејл</translation>
 <translation id="7125582363614011660">Подршка је обезбеђена уз помоћ Гуардиан тима.\н\нИзаберите информације које можете да поделите с нама.\н\нШто више информација нам доставите у почетку то ће нашој техничкој подршци бити лакше да вам помогне да решите проблем.</translation>
-<translation id="7999094850625689785">На основу временске зоне вашег система, аутоматски ће бити изабран регион сервера који вам је најближи. Ово се препоручује да би се омогућиле велике брзине интернета.</translation>
+<translation id="8813171284214934811">Automatski izaberite područje VPN servera koje vam je najbliže na osnovu vaše vremenske zone. Ova opcija se preporučuje kako bi internet brzina bila maksimalna.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> grad - }
+          other {<ph name="CITY_COUNT_MANY"/> gradova - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> server}
+          other {<ph name="SERVER_COUNT_MANY"/> servera}
+        }</translation>
+<translation id="3199127022143353223">Serveri</translation>
+<translation id="5431902940483264007">Optimalno</translation>
+<translation id="6527596624419285047">Koristite najbolji server koji je dostupan</translation>
+<translation id="6789157560111825412">Dostupni serveri</translation>
 <translation id="4397083831618200686">Изаберите ситуацију</translation>
 <translation id="6687228121145903051">Није могуће повезиванје на ВПН (друга грешка)</translation>
 <translation id="9184988385244077767">Нема везе са интернетом при повезиванју</translation>
@@ -808,7 +822,6 @@
 <translation id="7358989216567322955">Максимална накнада за приоритет</translation>
 <translation id="9091334651803050473">Иако то није гаранција, рудари ће вероватно дати приоритет вашој трансакцији ако платите већу накнаду.</translation>
 <translation id="2941112035454246133">Ниско</translation>
-<translation id="5431902940483264007">Оптимално</translation>
 <translation id="7304030187361489308">Високо</translation>
 <translation id="4853037749278079787">Максимална накнада: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Тренутна основна накнада: <ph name="ASSET_VALUE"/> Gwei</translation>

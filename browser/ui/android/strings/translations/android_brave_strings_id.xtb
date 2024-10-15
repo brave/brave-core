@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">Menampilkan usulan situs web berdasarkan markah dan riwayat penelusuran Anda.</translation>
 <translation id="924029461438529367">Tampilkan saran pencarian</translation>
 <translation id="1571106259128580884">Tampilkan saran situs teratas</translation>
+<translation id="6285118765755298263">Masukkan mesin pencarian lain ke dalam daftar</translation>
+<translation id="919715748352669592">Susun indeks situs web yang mengikuti spesifikasi OpenSearch secara otomatis.</translation>
 <translation id="9148058034647219655">Keluar</translation>
 <translation id="8047754398610073499">Pemberitahuan izin pemblokiran kuki</translation>
 <translation id="2621893359845808115">Memblokir pesan timbul situs web yang meminta Anda untuk menerima/menolak kuki di situs mereka</translation>
@@ -740,7 +742,19 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="755448900483975096">Operator Seluler</translation>
 <translation id="1279441577056010362">Lanjutkan ke Surel</translation>
 <translation id="7125582363614011660">Dukungan diberikan dengan bantuan tim Penjaga.\n\nSilakan pilih informasi yang Anda rasa nyaman untuk dibagikan kepada kami.\n\nSemakin banyak informasi yang awalnya Anda bagikan kepada kami, akan semakin mudah bagi staf pendukung kami untuk membantu menyelesaikan masalah Anda.</translation>
-<translation id="7999094850625689785">Wilayah peladen yang terdekat dengan Anda akan dipilih secara otomatis, berdasarkan zona waktu sistem Anda. Hal ini disarankan untuk memastikan internet berkecepatan tinggi.</translation>
+<translation id="8813171284214934811">Memilih secara otomatis wilayah peladen VPN yang terdekat dengan Anda berdasarkan zona waktu Anda. Opsi ini direkomendasikan guna memaksimalkan kecepatan Internet.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> kota - }
+          other {<ph name="CITY_COUNT_MANY"/> kota - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> peladen}
+          other {<ph name="SERVER_COUNT_MANY"/> peladen}
+        }</translation>
+<translation id="3199127022143353223">Peladen</translation>
+<translation id="5431902940483264007">Optimal</translation>
+<translation id="6527596624419285047">Menggunakan peladen terbaik yang ada</translation>
+<translation id="6789157560111825412">Peladen yang tersedia</translation>
 <translation id="4397083831618200686">Pilih Masalah</translation>
 <translation id="6687228121145903051">Tidak dapat menyambung ke VPN (Kesalahan lain)</translation>
 <translation id="9184988385244077767">Tidak ada internet ketika tersambung</translation>
@@ -808,7 +822,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="7358989216567322955">Biaya Prioritas Maks</translation>
 <translation id="9091334651803050473">Meskipun tidak dijamin, penambang kemungkinan akan memprioritaskan transaksi Anda jika Anda membayar biaya yang lebih tinggi.</translation>
 <translation id="2941112035454246133">Rendah</translation>
-<translation id="5431902940483264007">Optimal</translation>
 <translation id="7304030187361489308">Tinggi</translation>
 <translation id="4853037749278079787">Biaya maksimum: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Biaya dasar saat ini: <ph name="ASSET_VALUE"/> Gwei</translation>

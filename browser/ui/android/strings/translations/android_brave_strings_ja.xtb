@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">ブックマークおよび閲覧履歴に基づきおすすめのウェブサイトを表示します。</translation>
 <translation id="924029461438529367">検索候補を表示</translation>
 <translation id="1571106259128580884">トップサイトのサジェスチョンを表示</translation>
+<translation id="6285118765755298263">他の検索エンジンインデックス</translation>
+<translation id="919715748352669592">OpenSearchの仕様に従うウェブサイトのインデックスを自動的に作成します。</translation>
 <translation id="9148058034647219655">終了</translation>
 <translation id="8047754398610073499">Cookieの同意通知をブロック</translation>
 <translation id="2621893359845808115">サイト上でCookieの承認 / 拒否を求めるポップアップをブロックします</translation>
@@ -740,7 +742,19 @@
 <translation id="755448900483975096">セルラーキャリア</translation>
 <translation id="1279441577056010362">メールに進む</translation>
 <translation id="7125582363614011660">Guardian チームの支援を得てサポートが提供されます。\n\n私たちと共有しても構わない情報を選択してください。\n\n最初に私たちと共有する情報が多いほど、サポートスタッフが問題の解決を支援しやすくなります。</translation>
-<translation id="7999094850625689785">システム設定のタイムゾーンに基づいて、最も近いサーバーリージョンが自動的に選択されます。高速のインターネット速度を確保するためにこの設定が推奨されます。</translation>
+<translation id="8813171284214934811">タイムゾーンに基づき、最も近いVPNサーバー地域を自動選択します。このオプションは、インターネット速度を最大化するために推奨されます。</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> 都市 - }
+          other {<ph name="CITY_COUNT_MANY"/> 都市 - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {サーバー<ph name="SERVER_COUNT_ONE"/> 台}
+          other {サーバー<ph name="SERVER_COUNT_MANY"/> 台}
+        }</translation>
+<translation id="3199127022143353223">サーバー</translation>
+<translation id="5431902940483264007">最適</translation>
+<translation id="6527596624419285047">利用できる最適なサーバーを使用</translation>
+<translation id="6789157560111825412">利用可能なサーバー</translation>
 <translation id="4397083831618200686">問題を選択</translation>
 <translation id="6687228121145903051">VPN に接続できません (その他のエラー)</translation>
 <translation id="9184988385244077767">接続時にインターネットがない</translation>
@@ -808,7 +822,6 @@
 <translation id="7358989216567322955">最大優先料金</translation>
 <translation id="9091334651803050473">保証されているわけではありませんが、あなたがより高い手数料を支払う場合、マイナーはあなたのトランザクションを優先する可能性があります。</translation>
 <translation id="2941112035454246133">低</translation>
-<translation id="5431902940483264007">最適</translation>
 <translation id="7304030187361489308">高</translation>
 <translation id="4853037749278079787">最大料金: ~$ <ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">現在の基本料金: <ph name="ASSET_VALUE"/> Gwei</translation>

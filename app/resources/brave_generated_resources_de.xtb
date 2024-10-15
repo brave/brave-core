@@ -51,6 +51,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3975865347033939965">Synchronisierungsdienst konnte nicht gestartet werden, Brave-Synchronisierung läuft nicht</translation>
 <translation id="4450893287417543264">Nicht noch einmal anzeigen</translation>
 <translation id="4595286989346610620">Details prüfen</translation>
+<translation id="8324318899000695659">Elemente blockieren</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Mit .onion-Adresse öffnen: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Einfügen erzwingen</translation>
@@ -708,7 +709,7 @@ rückgängig gemacht werden.</translation>
 <translation id="7634775528597575156">Server-Endpunkt</translation>
 <translation id="6374563306438145841">API-Schlüssel</translation>
 <translation id="8008271349880309090">Der Name des Modells, der im Menü für die Modellauswahl angezeigt wird</translation>
-<translation id="7131172845656551327">Der Name des Modells, wie er in der Anfrage an das Serving-Framework erscheinen soll, z. B. phi-3 (beachten Sie, dass die Integration nicht funktioniert, wenn dieser Name nicht genau dem entspricht, was das Serving-Framework erwartet)</translation>
+<translation id="1355326130503900056">Der Name des Modells, wie er in der Anfrage an das Serving-Framework erscheinen soll, z. B. phi-3 (beachten Sie, dass die Integration nicht funktioniert, wenn dieser Name nicht genau dem entspricht, was das Serving-Framework erwartet)</translation>
 <translation id="3286410514484292784">Die URL, unter der Ihr Serving-Framework auf Anfragen wartet. Wenn Sie sich nicht sicher sind, sehen Sie in der Dokumentation des Serving-Frameworks nach. Für Ollama ist dies z.B. immer http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Einige Serving-Frameworks können Authentifizierungsdaten wie einen API-Schlüssel oder ein Zugriffstoken erfordern. Diese werden dem Request-Header hinzugefügt.</translation>
 <translation id="217141195370578385">Brave fungiert nicht als Proxy für diese Anfragen. Bitte lesen Sie die Datenschutzbestimmungen des gewählten Anbieters.</translation>
