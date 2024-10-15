@@ -371,11 +371,7 @@ void AdsTabHelper::DidFinishNavigation(
 
   redirect_chain_ = navigation_handle->GetRedirectChain();
 
-  http_status_code_ = HttpStatusCode(navigation_handle);
-  if (!http_status_code_) {
-    // No-op if the HTTP status code is unavailable.
-    return;
-  }
+  http_status_code_ = HttpStatusCode(navigation_handle).value_or(net::HTTP_OK);
 
   MaybeNotifyUserGestureEventTriggered(navigation_handle);
 
