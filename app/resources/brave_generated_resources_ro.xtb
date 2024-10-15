@@ -689,7 +689,6 @@ Leo. Această acțiune nu poate fi anulată.</translation>
 <translation id="7634775528597575156">Punct final server</translation>
 <translation id="6374563306438145841">Cheie API</translation>
 <translation id="8008271349880309090">Numele modelului, după cum va apărea în meniul de selectare a modelului</translation>
-<translation id="7131172845656551327">Numele modelului, după cum ar trebui să apară în solicitarea către cadrul furnizor, de ex., phi-3 (rețineți că, în cazul în care acest nume nu corespunde exact cu ceea ce este preconizat de cadrul furnizor, integrarea nu va funcționa)</translation>
 <translation id="3286410514484292784">URL-ul în care cadrul furnizor recepționează solicitările. Dacă nu sunteți sigur(ă), verificați documentația privind cadrul furnizor. De ex., pentru Ollama, acesta este întotdeauna http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Este posibil ca unele cadre furnizoare să necesite date de conectare pentru autentificare, precum o cheie API sau un token de acces. Acestea vor fi adăugate la antetul solicitării.</translation>
 <translation id="217141195370578385">Brave nu utilizează un server proxy pentru aceste solicitări, vă rugăm să citiți termenii de confidențialitate privind furnizorul ales.</translation>

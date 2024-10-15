@@ -76,7 +76,6 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="937700699752351322">No has visitado el sitio recientemente. Brave ha eliminado <ph name="PERMISSION_1"/> y <ph name="PERMISSION_2"/>.</translation>
 <translation id="5659384504794665581">Si compartes un ordenador, tus amigos y familiares pueden navegar de forma independiente y configurar Brave a su gusto.</translation>
 <translation id="7810992039564280750">Comprueba las URLs guardadas en Brave con una lista de sitios que no son seguros. Si un sitio intenta robarte tu contraseña o si te descargas un archivo dañino, puede que Brave también envíe URLs, así como fragmentos de contenido de la página, a Navegación segura.</translation>
-<translation id="7682239218279776307">Cuando esta opción está activada, Brave precarga las páginas, lo que te permite navegar y hacer búsquedas más rápido.</translation>
 <translation id="9095263438435683933">Para enviar un número desde aquí a tu teléfono Android, inicia sesión en Brave con ambos dispositivos.</translation>
 <translation id="2359808026110333948">Continuar</translation>
 <translation id="6485997157403727556">La extensión "<ph name="EXTENSION_NAME"/>" quiere que inicies sesión en Brave</translation>
@@ -84,6 +83,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="8418845734693287262">ChromeOS no ha podido sincronizar tus datos porque la información de inicio de sesión de tu cuenta está obsoleta.</translation>
 <translation id="5617265241715541684">{NUM_DEVICES,plural, =0{Una o varias extensiones de Brave estaban accediendo a 1 dispositivo HID}=1{Una o varias extensiones de Brave están accediendo a 1 dispositivo HID}other{Una o varias extensiones de Brave están accediendo a # dispositivos HID}}</translation>
 <translation id="1248225940185478633">Brave necesita los permisos del micrófono y de la cámara para este sitio</translation>
+<translation id="2403703063067034158">Error de arranque: se está ejecutando otra instancia de la configuración. Inténtalo de nuevo más tarde.</translation>
 <translation id="2118275934191847461">Las <ph name="BEGIN_LINK"/>herramientas de Brave<ph name="END_LINK"/> te permiten navegar de forma segura y mantener el control</translation>
 <translation id="2451727308784734061">Usa el acceso directo para acceder rápidamente al Gestor de contraseñas. Puedes mover el acceso directo a la pantalla de inicio o al menú de aplicaciones de tu ordenador.</translation>
 <translation id="6381750314821942592">Brave se cerrará dentro de poco</translation>
@@ -165,6 +165,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="6637642329430475361">Para compartir tu pantalla, permite la grabación de pantalla de Brave en Preferencias del sistema.</translation>
 <translation id="4304059894777924102">Brave no puede comprobar tus contraseñas. Revisa tu conexión a Internet.</translation>
 <translation id="2100587595569959771">Más información sobre la personalización de anuncios en Brave</translation>
+<translation id="8625237079044151166">Brave precarga las páginas, lo que te permite navegar y hacer búsquedas más rápido.</translation>
 <translation id="1807774211756215222">Abrir enlace en una pes&amp;taña nueva de Brave</translation>
 <translation id="387105482057676379">Vincula Brave y otros servicios de Brave con fines de personalización y otros propósitos</translation>
 <translation id="3867175562099983425">Gestionar perfiles de Brave</translation>
@@ -191,7 +192,6 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="6217792792122501564">{COUNT,plural, =1{Tu organización cerrará Brave automáticamente cuando lleve 1 minuto sin usarse. Los datos de navegación se eliminarán. Esto podría incluir el historial, los datos de Autocompletar y las descargas.}other{Tu organización cerrará Brave automáticamente cuando lleve # minutos sin usarse. Los datos de navegación se eliminarán. Esto podría incluir el historial, los datos de Autocompletar y las descargas.}}</translation>
 <translation id="5794951150713244901">Ir a la página Información de Brave</translation>
 <translation id="4148957013307229264">Instalando...</translation>
-<translation id="5506080358066715848">Tu organización puede ver y gestionar los datos de navegación de tu perfil de trabajo, como los marcadores, el historial y las contraseñas. No puede ver los datos de navegación de los perfiles personales de Brave.</translation>
 <translation id="4658486203392098459"><ph name="PAGE_TITLE"/>, inicio de sesión en la red, Brave</translation>
 <translation id="2871190378186459992">Descubre aplicaciones, juegos, extensiones y temas increíbles para Brave.</translation>
 <translation id="5757460455745382269">La UI de Brave se muestra en este idioma</translation>
@@ -214,6 +214,8 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="4434353761996769206">Error del instalador: <ph name="INSTALLER_ERROR"/></translation>
 <translation id="175926951572479413"><ph name="MANAGER"/> gestiona Brave</translation>
 <translation id="6786534271003695094">Información de Brave for Testing</translation>
+<translation id="526235294307144732">Para usar y guardar los datos de Brave en tu cuenta de Brave, debes introducir tu frase de contraseña</translation>
+<translation id="4493028449971051158">Error de arranque: ejecuta el instalador como administrador.</translation>
 <translation id="4501471624619070934">Se ha producido un error en la instalación debido a una restricción de acceso en este país.</translation>
 <translation id="8594994021633965927">Esta extensión no ha publicado sus prácticas de privacidad, como la forma en la que recoge y usa los datos. Brave te recomienda que la elimines.</translation>
 <translation id="7084397798469173252">Te damos la bienvenida a Brave. Se ha abierto una nueva ventana del navegador.</translation>
@@ -250,6 +252,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="7406627712452599344">Los invitados pueden utilizar Brave sin dejar nada atrás.</translation>
 <translation id="5952898964075639679">Añadirte a Brave</translation>
 <translation id="8112581848375017126">Brave está explorando nuevas funciones que permitan que los sitios ofrezcan la misma experiencia de navegación usando menos información tuya</translation>
+<translation id="1204184037023366446">Brave necesita permiso para hacer seguimiento de tus manos</translation>
 <translation id="8157129267754368853">La cuenta de Brave debe volver a autenticarse</translation>
 <translation id="9078804073692109646">No hay ninguna contraseña guardada. Brave puede comprobar tus contraseñas si las guardas.</translation>
 <translation id="6234515504547364178">Cerrar sesión en Brave</translation>
@@ -275,6 +278,8 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="1744365871163268756">Espera mientras Brave instala las últimas actualizaciones del sistema.</translation>
 <translation id="3861679447659630159">Brave está intentando cambiar contraseñas. Para permitirlo, escribe tu contraseña de Windows.</translation>
 <translation id="232381795826373334">Abrir archivos PDF en Brave</translation>
+<translation id="4262657160814225216">Tus contraseñas y otros datos de Brave se guardan en tu cuenta de Brave y se eliminarán de este dispositivo. Para usarlos en el futuro, vuelve a iniciar sesión en Brave.</translation>
+<translation id="5579324208890605088">Error de arranque: ejecuta el instalador como usuario normal, no como administrador.</translation>
 <translation id="1026406809507858026">{0,plural, =0{Hay una actualización de Brave disponible}=1{Hay una actualización de Brave disponible}other{Hay una actualización de Brave disponible desde hace # días}}</translation>
 <translation id="1023472437588692618">Eliminar siempre los datos de sitios de tu dispositivo al cerrar Brave</translation>
 <translation id="5646769069113654257">Reinicia Brave ahora</translation>
@@ -289,6 +294,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="3955583201925082436">Brave comprueba de forma periódica si tu navegador tiene la configuración más segura. Te avisaremos si tienes que revisar algo.</translation>
 <translation id="5895138241574237353">Reiniciar</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/>, inicio de sesión en la red</translation>
+<translation id="2156249226728081478">Brave ahorra batería limitando la actividad en segundo plano y los efectos visuales, como el desplazamiento fluido y la velocidad de fotogramas de los vídeos.</translation>
 <translation id="5924017743176219022">Conectando a Internet...</translation>
 <translation id="690491870562219491">Brave puede inactivar esta pestaña para mejorar tu experiencia de navegación y liberar recursos.</translation>
 <translation id="5941711191222866238">Minimizar</translation>
@@ -305,7 +311,6 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="3693188491491843187">Haz que Brave sea más rápido</translation>
 <translation id="608006075545470555">Añadir perfil de trabajo a este navegador</translation>
 <translation id="5849446944780602366">Personaliza y controla Brave. Hay una actualización disponible.</translation>
-<translation id="5505258595603236622">Si se activa esta opción, Brave ahorrará batería limitando la actividad en segundo plano y los efectos visuales, como el desplazamiento fluido y la velocidad de fotogramas de los vídeos.</translation>
 <translation id="5711722515923392428">Activado • Brave no puede verificar el origen de esta extensión</translation>
 <translation id="7433698744896946664">Permitir que la extensión muestre solicitudes de acceso en la barra de herramientas de Brave</translation>
 <translation id="492209281555538239">Brave guardará esta contraseña en tu cuenta de Brave para que no tengas que recordarla.</translation>
@@ -353,6 +358,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="5324409579559361527">Mientras tengas la sesión iniciada, puedes usar tus contraseñas y más de tu cuenta de Brave en Brave. Puedes cambiar esta opción en cualquier momento en el menú de configuración.</translation>
 <translation id="3617744907966785605">Tu organización cierra Brave cuando lleva <ph name="TIMEOUT_DURATION"/> sin usarse. Se han eliminado los datos de navegación. Entre estos datos, podrían incluirse el historial, la función Autocompletar y las descargas.</translation>
 <translation id="8646609321956191980">Cada perfil almacena su propia información de Brave, como los marcadores, el historial, las contraseñas y mucho más.</translation>
+<translation id="3426839233411581346">Brave libera memoria de las pestañas inactivas. Esto proporciona más recursos informáticos a las pestañas activas y a otras aplicaciones, y permite que Brave siga funcionando con rapidez. Tus pestañas inactivas volverán a activarse automáticamente cuando vuelvas a ellas.</translation>
 <translation id="6756656512757374876">Más información sobre <ph name="BEGIN_LINK"/>cómo protege Brave la privacidad de tus datos<ph name="END_LINK"/></translation>
 <translation id="2535436634051789953">Puedes cambiar de perfil para ver las contraseñas de otro perfil de Brave</translation>
 <translation id="2312399718665761438">Para corregir errores ortográficos, Brave envía a Brave el texto que escribes en los campos de texto</translation>
@@ -382,7 +388,6 @@ Es posible que algunas funciones no estén disponibles. Especifica un directorio
 <translation id="126871877963043118">Cuando las pruebas están activas, la medición de anuncios permite a los sitios que visitas pedir a Brave información que les ayude a medir el rendimiento de sus anuncios. La medición de anuncios restringe el seguimiento entre sitios al transferir la menor cantidad de información posible entre ellos.</translation>
 <translation id="4392161457256085190">Después, un sitio que visites puede pedirle a Brave consultar tus intereses para personalizar los anuncios que veas. Brave puede compartir hasta 3 intereses.</translation>
 <translation id="6418340404893954563">Las contraseñas poco seguras son fáciles de adivinar. Permite que Brave <ph name="BEGIN_LINK"/>cree y recuerde contraseñas seguras por ti<ph name="END_LINK"/>.</translation>
-<translation id="7164968566146897003">Cuando esta opción está activada, Brave libera memoria de las pestañas inactivas. Esto proporciona más recursos informáticos a las pestañas activas y a otras aplicaciones, y permite que Brave siga funcionando con rapidez. Tus pestañas inactivas volverán a activarse automáticamente cuando vuelvas a ellas.</translation>
 <translation id="3453763134178591239">Términos de ChromeOS</translation>
 <translation id="3335606533094650083">Brave necesita permiso para acceder al micrófono en este sitio web</translation>
 <translation id="7011190694940573312">No se ha podido realizar la instalación porque esta versión del sistema operativo no es compatible.</translation>
@@ -459,6 +464,7 @@ Brave no puede recuperar tu configuración.</translation>
 <translation id="7792526144795244436">¿Iniciar sesión en Brave con un perfil nuevo?</translation>
 <translation id="8622246347342688645">Brave no puede comprobar tus contraseñas porque no has iniciado sesión</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave te advierte<ph name="END_LINK"/> sobre sitios y descargas no seguros</translation>
+<translation id="8313851650939857356">Error de arranque: <ph name="STARTUP_ERROR"/>.</translation>
 <translation id="6098476632210317894">Tu organización cierra Brave cuando lleva <ph name="TIMEOUT_DURATION"/> sin usarse.</translation>
 <translation id="3360368475735266712">Inicia sesión para sincronizar y personalizar Brave en todos tus dispositivos</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> usaba Brave anteriormente</translation>

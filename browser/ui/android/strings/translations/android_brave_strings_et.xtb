@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">Näitab teie järjehoidjate ja sirvimisajaloo põhjal veebisaitide soovitusi.</translation>
 <translation id="924029461438529367">Näita otsingusoovitusi</translation>
 <translation id="1571106259128580884">Näita tuntumaid lehti</translation>
+<translation id="6285118765755298263">Indekseeri muid otsimootoreid</translation>
+<translation id="919715748352669592">Indekseerib automaatselt veebisaidid, mis järgivad OpenSearchi spetsifikatsiooni.</translation>
 <translation id="9148058034647219655">Välju</translation>
 <translation id="8047754398610073499">Blokeeri küpsistega nõustumise teated</translation>
 <translation id="2621893359845808115">Blokeerib veebisaitide hüpikaknad, mis paluvad teil sellel saidil küpsistega nõustuda või neist keelduda</translation>
@@ -741,7 +743,19 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="755448900483975096">Mobiilsideoperaator</translation>
 <translation id="1279441577056010362">Jätka e-postiga</translation>
 <translation id="7125582363614011660">Tugiteenust pakutakse Guardiani meeskonna abiga.\n\nPalun valige teave, mida olete nõus meiega jagama.\n\nMida rohkem teavet alguses meiega jagate, seda lihtsam on meie tugitöötajatel aidata teie probleemi lahendada.</translation>
-<translation id="7999094850625689785">Teie süsteemi ajavööndi alusel valitakse automaatselt teile kõige lähem serveripiirkond. See on soovitatav, et tagada kiire internetiühendus.</translation>
+<translation id="8813171284214934811">Ajavööndi alusel valitakse automaatselt teile lähim VPN-serveri piirkond. See suvand on soovitatav interneti kiiruse maksimaalseks suurendamiseks.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> linn – }
+          other {<ph name="CITY_COUNT_MANY"/> linna – }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> server}
+          other {<ph name="SERVER_COUNT_MANY"/> serverit}
+        }</translation>
+<translation id="3199127022143353223">Serverid</translation>
+<translation id="5431902940483264007">Optimaalne</translation>
+<translation id="6527596624419285047">Kasutage parimat saadaolevat serverit</translation>
+<translation id="6789157560111825412">Saadaolevad serverid</translation>
 <translation id="4397083831618200686">Valige probleem</translation>
 <translation id="6687228121145903051">VPN-iga ei saa ühendust luua (muu tõrge)</translation>
 <translation id="9184988385244077767">Pärast ühendamist pole internetti</translation>
@@ -809,7 +823,6 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="7358989216567322955">Maksimaalse prioriteetsuse tasu</translation>
 <translation id="9091334651803050473">Kui maksate suuremat tasu, prioriseerivad kaevurid tõenäoliselt teie tehingu, kuid see ei ole garanteeritud.</translation>
 <translation id="2941112035454246133">Madal</translation>
-<translation id="5431902940483264007">Optimaalne</translation>
 <translation id="7304030187361489308">Kõrge</translation>
 <translation id="4853037749278079787">Maksimaalne tasu: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH-i)</translation>
 <translation id="5939983758912255310">Praegune põhitasu: <ph name="ASSET_VALUE"/> Gwei</translation>
