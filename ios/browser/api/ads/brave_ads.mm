@@ -1533,9 +1533,8 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
 }
 
 - (void)maybeServeInlineContentAd:(NSString*)dimensionsArg
-                       completion:
-                           (void (^)(NSString* dimensions,
-                                     InlineContentAdIOS* _Nullable))completion {
+                       completion:(void (^)(NSString* dimensions,
+                                            InlineContentAdIOS*))completion {
   if (![self isServiceRunning]) {
     return;
   }
@@ -1590,8 +1589,7 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
 }
 
 - (void)maybeGetNotificationAd:(NSString*)identifier
-                    completion:
-                        (void (^)(NotificationAdIOS* _Nullable))completion {
+                    completion:(void (^)(NotificationAdIOS*))completion {
   if (![self isServiceRunning]) {
     completion(nil);
     return;

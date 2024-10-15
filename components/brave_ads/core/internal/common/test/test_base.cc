@@ -213,6 +213,8 @@ void TestBase::MockAdsClient() {
   // `ShowScheduledCaptcha`, `RecordP2AEvents`, and `Log` are not mocked here;
   // they should be mocked as needed.
 
+  MockNotifyPendingObservers(ads_client_mock_, *this);
+
   MockIsNetworkConnectionAvailable(ads_client_mock_, true);
 
   MockIsBrowserActive(ads_client_mock_, true);
@@ -323,8 +325,6 @@ void TestBase::SetUpIntegrationTestCallback(const bool success) {
   NotifyBrowserDidBecomeActive();
 
   NotifyDidInitializeAds();
-
-  NotifyPendingObservers();
 }
 
 void TestBase::SetUpUnitTest() {
