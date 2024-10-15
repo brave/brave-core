@@ -14,6 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
+#include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -66,6 +67,9 @@ class AdsService : public KeyedService {
   AdsService& operator=(AdsService&&) noexcept = delete;
 
   ~AdsService() override;
+
+  virtual void AddObserver(AdsServiceObserver* observer) = 0;
+  virtual void RemoveObserver(AdsServiceObserver* observer) = 0;
 
   // Returns true if a browser upgrade is required to serve ads.
   virtual bool IsBrowserUpgradeRequiredToServeAds() const = 0;
@@ -258,15 +262,17 @@ class AdsService : public KeyedService {
   // page. The current page is the last one in the list (so even when there's no
   // redirect, there should be one entry in the list). `is_restoring` should be
   // set to `true` if the page is restoring otherwise should be set to `false`.
-  // `is_error_page` should be set to `true` if an error occurred otherwise
-  // should be set to `false`. `is_visible` should be set to `true` if `tab_id`
-  // refers to the currently visible tab otherwise should be set to `false`.
+  // `is_visible` should be set to `true` if `tab_id` refers to the currently
+  // visible tab otherwise should be set to `false`.
   virtual void NotifyTabDidChange(int32_t tab_id,
                                   const std::vector<GURL>& redirect_chain,
                                   bool is_new_navigation,
                                   bool is_restoring,
-                                  bool is_error_page,
                                   bool is_visible) = 0;
+
+  // Called when a browser tab has loaded. `http_status_code` should be set to
+  // the HTTP status code.
+  virtual void NotifyTabDidLoad(int32_t tab_id, int http_status_code) = 0;
 
   // Called when a browser tab with the specified `tab_id` is closed.
   virtual void NotifyDidCloseTab(int32_t tab_id) = 0;

@@ -144,6 +144,8 @@ source_set("browser_tests") {
     "analytics/p3a/brave_stats_helper_browsertest.cc",
     "application_state/notification_helper/notification_helper_impl_mock.cc",
     "application_state/notification_helper/notification_helper_impl_mock.h",
+    "test_ads_service_waiter.cc",
+    "test_ads_service_waiter.h",
   ]
 
   deps = [

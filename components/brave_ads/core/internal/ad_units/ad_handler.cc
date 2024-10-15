@@ -11,7 +11,6 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/page_land_user_data.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_util.h"
@@ -143,33 +142,35 @@ void AdHandler::OnMaybeLandOnPage(const AdInfo& ad,
   BLOG(1, "Maybe land on page for " << ad.target_url << " in " << after);
 }
 
-void AdHandler::OnDidSuspendPageLand(const TabInfo& tab,
+void AdHandler::OnDidSuspendPageLand(const int32_t tab_id,
                                      const base::TimeDelta remaining_time) {
   BLOG(1, "Suspended page landing on tab id "
-              << tab.id << " with " << remaining_time << " remaining");
+              << tab_id << " with " << remaining_time << " remaining");
 }
 
-void AdHandler::OnDidResumePageLand(const TabInfo& tab,
+void AdHandler::OnDidResumePageLand(const int32_t tab_id,
                                     const base::TimeDelta remaining_time) {
-  BLOG(1, "Resumed page landing on tab id " << tab.id << " and maybe land in "
+  BLOG(1, "Resumed page landing on tab id " << tab_id << " and maybe land in "
                                             << remaining_time);
 }
 
-void AdHandler::OnDidLandOnPage(const TabInfo& tab, const AdInfo& ad) {
+void AdHandler::OnDidLandOnPage(const int32_t tab_id,
+                                const int32_t http_response_code,
+                                const AdInfo& ad) {
   CHECK(ad.IsValid());
 
-  BLOG(1, "Landed on page for " << ad.target_url << " on tab id " << tab.id);
+  BLOG(1, "Landed on page for " << ad.target_url << " on tab id " << tab_id);
 
   GetAccount().DepositWithUserData(ad.creative_instance_id, ad.segment, ad.type,
                                    mojom::ConfirmationType::kLanded,
-                                   BuildPageLandUserData(tab));
+                                   BuildPageLandUserData(http_response_code));
 }
 
-void AdHandler::OnDidNotLandOnPage(const TabInfo& tab, const AdInfo& ad) {
+void AdHandler::OnDidNotLandOnPage(const int32_t tab_id, const AdInfo& ad) {
   CHECK(ad.IsValid());
 
   BLOG(1,
-       "Did not land on page for " << ad.target_url << " on tab id " << tab.id);
+       "Did not land on page for " << ad.target_url << " on tab id " << tab_id);
 }
 
 void AdHandler::OnCanceledPageLand(const int32_t tab_id, const AdInfo& ad) {

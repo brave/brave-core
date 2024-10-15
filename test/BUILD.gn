@@ -838,6 +838,7 @@ test("brave_browser_tests") {
     "//brave/browser/autoplay:browser_tests",
     "//brave/browser/brave_ads",
     "//brave/browser/brave_ads:browser_tests",
+    "//brave/browser/brave_ads/tabs:browser_tests",
     "//brave/browser/brave_news:browser_tests",
     "//brave/browser/brave_rewards",
     "//brave/browser/brave_rewards/test:browser_tests",

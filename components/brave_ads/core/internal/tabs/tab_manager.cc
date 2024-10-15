@@ -60,8 +60,11 @@ std::optional<TabInfo> TabManager::MaybeGetForId(const int32_t tab_id) const {
 }
 
 bool TabManager::IsPlayingMedia(const int32_t tab_id) const {
-  const std::optional<TabInfo> tab = MaybeGetForId(tab_id);
-  return tab ? tab->is_playing_media : false;
+  if (const std::optional<TabInfo> tab = MaybeGetForId(tab_id)) {
+    return tab->is_playing_media;
+  }
+
+  return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -86,6 +89,14 @@ void TabManager::RemoveForId(const int32_t tab_id) {
 
   if (tabs_.empty()) {
     BLOG(2, "There are no tabs");
+
+    // If there are no tabs left, clear the visible tab id.
+    visible_tab_id_.reset();
+    return;
+  }
+
+  if (visible_tab_id_ == tab_id) {
+    // If the removed tab was the visible one, clear the visible tab id.
     visible_tab_id_.reset();
   }
 }
@@ -99,6 +110,13 @@ void TabManager::NotifyTabDidChangeFocus(const int32_t tab_id) const {
 void TabManager::NotifyTabDidChange(const TabInfo& tab) const {
   for (TabManagerObserver& observer : observers_) {
     observer.OnTabDidChange(tab);
+  }
+}
+
+void TabManager::NotifyTabDidLoad(const TabInfo& tab,
+                                  const int http_status_code) const {
+  for (TabManagerObserver& observer : observers_) {
+    observer.OnTabDidLoad(tab, http_status_code);
   }
 }
 
@@ -206,7 +224,6 @@ void TabManager::OnNotifyTabDidChange(const int32_t tab_id,
                                       const std::vector<GURL>& redirect_chain,
                                       const bool is_new_navigation,
                                       const bool is_restoring,
-                                      const bool is_error_page,
                                       const bool is_visible) {
   CHECK(!redirect_chain.empty());
 
@@ -224,11 +241,15 @@ void TabManager::OnNotifyTabDidChange(const int32_t tab_id,
   // Update the tab.
   tab.is_visible = is_visible;
   tab.redirect_chain = redirect_chain;
-  tab.is_error_page = is_error_page;
 
   if (is_visible) {
     // Update the visible tab id.
     visible_tab_id_ = tab_id;
+  } else {
+    if (visible_tab_id_ == tab_id) {
+      // The visible tab id has become occluded.
+      visible_tab_id_.reset();
+    }
   }
 
   if (is_restoring) {
@@ -251,6 +272,13 @@ void TabManager::OnNotifyTabDidChange(const int32_t tab_id,
     BLOG(2, "Tab id " << tab_id << " did become "
                       << (is_visible ? "focused" : "occluded"));
     NotifyTabDidChangeFocus(tab_id);
+  }
+}
+
+void TabManager::OnNotifyTabDidLoad(const int32_t tab_id,
+                                    const int http_status_code) {
+  if (const std::optional<TabInfo> tab = MaybeGetForId(tab_id)) {
+    NotifyTabDidLoad(*tab, http_status_code);
   }
 }
 

@@ -38,6 +38,7 @@ class TabManager final : public AdsClientNotifierObserver {
   void AddObserver(TabManagerObserver* observer);
   void RemoveObserver(TabManagerObserver* observer);
 
+  bool IsVisible(int32_t tab_id) const { return visible_tab_id_ == tab_id; }
   std::optional<TabInfo> MaybeGetVisible() const;
 
   std::optional<TabInfo> MaybeGetForId(int32_t tab_id) const;
@@ -51,6 +52,7 @@ class TabManager final : public AdsClientNotifierObserver {
 
   void NotifyTabDidChangeFocus(int32_t tab_id) const;
   void NotifyTabDidChange(const TabInfo& tab) const;
+  void NotifyTabDidLoad(const TabInfo& tab, int http_status_code) const;
   void NotifyDidOpenNewTab(const TabInfo& tab) const;
   void NotifyTextContentDidChange(int32_t tab_id,
                                   const std::vector<GURL>& redirect_chain,
@@ -75,8 +77,8 @@ class TabManager final : public AdsClientNotifierObserver {
                             const std::vector<GURL>& redirect_chain,
                             bool is_new_navigation,
                             bool is_restoring,
-                            bool is_error_page,
                             bool is_visible) override;
+  void OnNotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
   void OnNotifyDidCloseTab(int32_t tab_id) override;
 
   base::ObserverList<TabManagerObserver> observers_;

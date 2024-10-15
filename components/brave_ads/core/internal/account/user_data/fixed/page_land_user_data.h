@@ -10,9 +10,7 @@
 
 namespace brave_ads {
 
-struct TabInfo;
-
-base::Value::Dict BuildPageLandUserData(const TabInfo& tab);
+base::Value::Dict BuildPageLandUserData(int http_status_code);
 
 }  // namespace brave_ads
 

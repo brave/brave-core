@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "build/build_config.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_ads/core/internal/application_state/browser_util.h"

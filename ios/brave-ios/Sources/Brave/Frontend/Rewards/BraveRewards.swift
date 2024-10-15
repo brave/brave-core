@@ -244,7 +244,6 @@ public class BraveRewards: PreferencesObserver {
         redirectChain: tab.redirectChain,
         isNewNavigation: tab.rewardsReportingState.isNewNavigation,
         isRestoring: tab.rewardsReportingState.wasRestored,
-        isErrorPage: tab.rewardsReportingState.isErrorPage,
         isSelected: isSelected
       )
     }
@@ -253,28 +252,45 @@ public class BraveRewards: PreferencesObserver {
   /// Report that a page has loaded in the current browser tab, and the
   /// text/HTML content is available for analysis.
   func reportLoadedPage(
-    redirectChain: [URL],
-    tabId: Int,
+    tab: Tab,
     htmlContent: String?,
     textContent: String?
   ) {
-    guard let url = redirectChain.last else {
+    guard let url = tab.redirectChain.last else {
+      // Don't report update for tabs that haven't finished loading.
       return
     }
 
+    let tabId = Int(tab.rewardsId)
+
     tabRetrieved(tabId, url: url, html: htmlContent)
     if ads.isServiceRunning() {
-      ads.notifyTabHtmlContentDidChange(
+      ads.notifyTabDidLoad(
         tabId,
-        redirectChain: redirectChain,
-        html: htmlContent ?? ""
+        httpStatusCode: tab.rewardsReportingState.httpStatusCode
       )
-      if let textContent {
-        ads.notifyTabTextContentDidChange(
+
+      let kHttpClientErrorResponseStatusCodeClass = 4
+      let kHttpServerErrorResponseStatusCodeClass = 5
+      let responseStatusCodeClass = tab.rewardsReportingState.httpStatusCode / 100
+
+      if !tab.rewardsReportingState.wasRestored
+        && tab.rewardsReportingState.isNewNavigation
+        && responseStatusCodeClass != kHttpClientErrorResponseStatusCodeClass
+        && responseStatusCodeClass != kHttpServerErrorResponseStatusCodeClass
+      {
+        ads.notifyTabHtmlContentDidChange(
           tabId,
-          redirectChain: redirectChain,
-          text: textContent
+          redirectChain: tab.redirectChain,
+          html: htmlContent ?? ""
         )
+        if let textContent {
+          ads.notifyTabTextContentDidChange(
+            tabId,
+            redirectChain: tab.redirectChain,
+            text: textContent
+          )
+        }
       }
     }
     rewardsAPI?.reportLoadedPage(url: url, tabId: UInt32(tabId))

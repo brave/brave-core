@@ -50,35 +50,40 @@ class SiteVisit final : public BrowserManagerObserver,
   void SetLastClickedAd(const AdInfo& ad) { last_clicked_ad_ = ad; }
 
  private:
-  bool IsLandingPage(int32_t tab_id) const;
+  // Returns true if the tab is currently landing on a page.
+  bool IsLandingOnPage(int32_t tab_id) const;
 
-  void MaybeLandOnPage(const TabInfo& tab);
+  void MaybeLandOnPage(const TabInfo& tab, int http_status_code);
   void MaybeLandOnPageAfter(const TabInfo& tab,
+                            int http_status_code,
                             const AdInfo& ad,
                             base::TimeDelta page_land_after);
-  void MaybeLandOnPageAfterCallback(const TabInfo& tab);
-  void LandedOnPage(const TabInfo& tab, const AdInfo& ad);
-  void LandedOnPageCallback(const TabInfo& tab,
+  void MaybeLandOnPageAfterCallback(int32_t tab_id, int http_status_code);
+  void LandedOnPage(int32_t tab_id, int http_status_code, const AdInfo& ad);
+  void LandedOnPageCallback(int32_t tab_id,
+                            int http_status_code,
                             const AdInfo& ad,
                             bool success) const;
-  void DidNotLandOnPage(const TabInfo& tab, const AdInfo& ad) const;
-  void MaybeCancelPageLand(const TabInfo& tab);
+  void DidNotLandOnPage(int32_t tab_id, const AdInfo& ad) const;
+  void MaybeCancelPageLand(int32_t tab_id);
   void CancelPageLand(int32_t tab_id);
   void StopPageLand(int32_t tab_id);
 
   void MaybeSuspendOrResumePageLandForVisibleTab();
   void MaybeSuspendOrResumePageLand(int32_t tab_id);
   base::TimeDelta CalculateRemainingTimeToLandOnPage(int32_t tab_id);
-  void SuspendPageLand(const TabInfo& tab);
-  void ResumePageLand(const TabInfo& tab);
+  void SuspendPageLand(int32_t tab_id);
+  void ResumePageLand(int32_t tab_id);
 
   void NotifyMaybeLandOnPage(const AdInfo& ad, base::TimeDelta after) const;
-  void NotifyDidSuspendPageLand(const TabInfo& tab,
+  void NotifyDidSuspendPageLand(int32_t tab_id,
                                 base::TimeDelta remaining_time) const;
-  void NotifyDidResumePageLand(const TabInfo& tab,
+  void NotifyDidResumePageLand(int32_t tab_id,
                                base::TimeDelta remaining_time) const;
-  void NotifyDidLandOnPage(const TabInfo& tab, const AdInfo& ad) const;
-  void NotifyDidNotLandOnPage(const TabInfo& tab, const AdInfo& ad) const;
+  void NotifyDidLandOnPage(int32_t tab_id,
+                           int http_status_code,
+                           const AdInfo& ad) const;
+  void NotifyDidNotLandOnPage(int32_t tab_id, const AdInfo& ad) const;
   void NotifyCanceledPageLand(int32_t tab_id, const AdInfo& ad) const;
 
   // BrowserManagerObserver:
@@ -90,7 +95,7 @@ class SiteVisit final : public BrowserManagerObserver,
   // TabManagerObserver:
   void OnTabDidChangeFocus(int32_t tab_id) override;
   void OnTabDidChange(const TabInfo& tab) override;
-  void OnDidOpenNewTab(const TabInfo& tab) override;
+  void OnTabDidLoad(const TabInfo& tab, int http_status_code) override;
   void OnDidCloseTab(int32_t tab_id) override;
 
   base::ObserverList<SiteVisitObserver> observers_;

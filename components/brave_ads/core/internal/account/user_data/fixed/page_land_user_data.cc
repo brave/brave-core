@@ -5,28 +5,28 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/page_land_user_data.h"
 
+#include "brave/components/brave_ads/core/internal/common/net/http/http_status_code_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
-#include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 
 namespace brave_ads {
 
 namespace {
 
 constexpr char kHttpResponseStatusKey[] = "httpResponseStatus";
-constexpr char kHttpErrorPageResponseStatus[] = "errorPage";
+constexpr char kNonsensicalHttpStatusCode[] = "---";
 
 }  // namespace
 
-base::Value::Dict BuildPageLandUserData(const TabInfo& tab) {
+base::Value::Dict BuildPageLandUserData(const int http_status_code) {
   if (!UserHasJoinedBraveRewards()) {
     return {};
   }
 
   base::Value::Dict user_data;
 
-  if (tab.is_error_page) {
-    user_data.Set(kHttpResponseStatusKey, kHttpErrorPageResponseStatus);
-  }
+  user_data.Set(kHttpResponseStatusKey,
+                HttpStatusCodeToString(http_status_code)
+                    .value_or(kNonsensicalHttpStatusCode));
 
   return user_data;
 }

@@ -162,10 +162,7 @@ extension Tab {
       adsRewardsLog.warning("No favicon found in \(self) to report to rewards panel")
     }
 
-    if rewardsReportingState.wasRestored
-      || !rewardsReportingState.isNewNavigation
-      || rewardsReportingState.isErrorPage
-    {
+    if rewardsReportingState.wasRestored {
       return
     }
 
@@ -199,8 +196,7 @@ extension Tab {
 
     group.notify(queue: .main) {
       rewards.reportLoadedPage(
-        redirectChain: redirectChain,
-        tabId: Int(self.rewardsId),
+        tab: self,
         htmlContent: htmlContent,
         textContent: textContent
       )

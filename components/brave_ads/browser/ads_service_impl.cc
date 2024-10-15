@@ -29,6 +29,7 @@
 #include "base/timer/timer.h"
 #include "brave/components/brave_adaptive_captcha/pref_names.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
+#include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
 #include "brave/components/brave_ads/browser/analytics/p3a/notification_ad.h"
 #include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
@@ -58,7 +59,7 @@
 #include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "build/build_config.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
@@ -232,6 +233,18 @@ AdsServiceImpl::AdsServiceImpl(
 }
 
 AdsServiceImpl::~AdsServiceImpl() = default;
+
+void AdsServiceImpl::AddObserver(AdsServiceObserver* const observer) {
+  CHECK(observer);
+
+  observers_.AddObserver(observer);
+}
+
+void AdsServiceImpl::RemoveObserver(AdsServiceObserver* const observer) {
+  CHECK(observer);
+
+  observers_.RemoveObserver(observer);
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -490,6 +503,14 @@ void AdsServiceImpl::InitializeBatAdsCallback(const bool success) {
 
   if (bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyDidInitializeAds();
+  }
+
+  NotifyAdsServiceInitialized();
+}
+
+void AdsServiceImpl::NotifyAdsServiceInitialized() const {
+  for (AdsServiceObserver& observer : observers_) {
+    observer.OnAdsServiceInitialized();
   }
 }
 
@@ -1407,12 +1428,17 @@ void AdsServiceImpl::NotifyTabDidChange(const int32_t tab_id,
                                         const std::vector<GURL>& redirect_chain,
                                         const bool is_new_navigation,
                                         const bool is_restoring,
-                                        const bool is_error_page,
                                         const bool is_visible) {
   if (bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyTabDidChange(
-        tab_id, redirect_chain, is_new_navigation, is_restoring, is_error_page,
-        is_visible);
+        tab_id, redirect_chain, is_new_navigation, is_restoring, is_visible);
+  }
+}
+
+void AdsServiceImpl::NotifyTabDidLoad(const int32_t tab_id,
+                                      const int http_status_code) {
+  if (bat_ads_client_notifier_remote_.is_bound()) {
+    bat_ads_client_notifier_remote_->NotifyTabDidLoad(tab_id, http_status_code);
   }
 }
 

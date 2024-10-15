@@ -89,15 +89,17 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
   // page. The current page is the last one in the list (so even when there's no
   // redirect, there should be one entry in the list). `is_restoring` should be
   // set to `true` if the page is restoring otherwise should be set to `false`.
-  // `is_error_page` should be set to `true` if an error occurred otherwise
-  // should be set to `false`. `is_visible` should be set to `true` if `tab_id`
-  // refers to the currently visible tab otherwise should be set to `false`.
+  // `is_visible` should be set to `true` if `tab_id` refers to the currently
+  // visible tab otherwise should be set to `false`.
   virtual void OnNotifyTabDidChange(int32_t tab_id,
                                     const std::vector<GURL>& redirect_chain,
                                     const bool is_new_navigation,
                                     bool is_restoring,
-                                    bool is_error_page,
                                     bool is_visible) {}
+
+  // Invoked when a browser tab has loaded. `http_status_code` should be set to
+  // the HTTP response code.
+  virtual void OnNotifyTabDidLoad(int32_t tab_id, int http_status_code) {}
 
   // Invoked when a browser tab with the specified `tab_id` is closed.
   virtual void OnNotifyDidCloseTab(int32_t tab_id) {}

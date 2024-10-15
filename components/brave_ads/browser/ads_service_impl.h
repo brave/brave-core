@@ -57,12 +57,13 @@ class SharedURLLoaderFactory;
 
 namespace brave_ads {
 
+class AdsServiceObserver;
 class AdsTooltipsDelegate;
 class BatAdsServiceFactory;
 class Database;
 class DeviceId;
-struct NewTabPageAdInfo;
 class ResourceComponent;
+struct NewTabPageAdInfo;
 
 class AdsServiceImpl final : public AdsService,
                              public bat_ads::mojom::BatAdsClient,
@@ -92,6 +93,9 @@ class AdsServiceImpl final : public AdsService,
   AdsServiceImpl& operator=(AdsServiceImpl&&) noexcept = delete;
 
   ~AdsServiceImpl() override;
+
+  void AddObserver(AdsServiceObserver* observer) override;
+  void RemoveObserver(AdsServiceObserver* observer) override;
 
  private:
   using SimpleURLLoaderList =
@@ -133,6 +137,8 @@ class AdsServiceImpl final : public AdsService,
   void InitializeBatAds(
       brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet);
   void InitializeBatAdsCallback(bool success);
+
+  void NotifyAdsServiceInitialized() const;
 
   void ShutdownAndClearData();
   void ShutdownAndClearDataCallback(bool success);
@@ -292,8 +298,8 @@ class AdsServiceImpl final : public AdsService,
                           const std::vector<GURL>& redirect_chain,
                           bool is_new_navigation,
                           bool is_restoring,
-                          bool is_error_page,
                           bool is_visible) override;
+  void NotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
   void NotifyDidCloseTab(int32_t tab_id) override;
 
   void NotifyUserGestureEventTriggered(int32_t page_transition_type) override;
@@ -470,9 +476,10 @@ class AdsServiceImpl final : public AdsService,
                           brave_rewards::RewardsServiceObserver>
       rewards_service_observation_{this};
 
+  base::ObserverList<AdsServiceObserver> observers_;
+
   mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
       this};
-
   mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_remote_;
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
       bat_ads_client_associated_receiver_;
