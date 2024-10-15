@@ -7,10 +7,10 @@
 #define BRAVE_BROWSER_BRAVE_ADS_CREATIVES_SEARCH_RESULT_AD_CREATIVE_SEARCH_RESULT_AD_TAB_HELPER_H_
 
 #include <memory>
-#include <string>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -39,8 +39,6 @@ class CreativeSearchResultAdTabHelper
 
   bool ShouldHandleCreativeAdEvents() const;
 
-  void MaybeTriggerCreativeAdClickedEvent(const GURL& url);
-
  private:
   friend class content::WebContentsUserData<CreativeSearchResultAdTabHelper>;
 
@@ -52,13 +50,17 @@ class CreativeSearchResultAdTabHelper
   void MaybeExtractCreativeAdPlacementIdsFromWebPageAndHandleViewedEvents();
 
   void MaybeHandleCreativeAdViewedEvents(
-      std::vector<std::string> placement_ids);
-  void MaybeHandleCreativeAdViewedEvent(const std::string& placement_id);
-  void MaybeHandleCreativeAdViewedEventCallback(const std::string& placement_id,
-                                                const base::Value value);
+      std::vector<mojom::CreativeSearchResultAdInfoPtr>
+          creative_search_result_ads);
+  void MaybeHandleCreativeAdViewedEvent(
+      mojom::CreativeSearchResultAdInfoPtr creative_search_result_ad);
+  void MaybeHandleCreativeAdViewedEventCallback(
+      mojom::CreativeSearchResultAdInfoPtr creative_search_result_ad,
+      const base::Value value);
 
-  void MaybeHandleCreativeAdClickedEvent(
-      content::NavigationHandle* navigation_handle);
+  void MaybeHandleCreativeAdClickedEvent(const GURL& url);
+  void MaybeHandleCreativeAdClickedEventCallback(
+      mojom::CreativeSearchResultAdInfoPtr creative_search_result_ad);
 
   // content::WebContentsObserver:
   void DidStartNavigation(

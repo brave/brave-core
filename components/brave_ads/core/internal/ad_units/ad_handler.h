@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <string>
 
+#include "brave/components/brave_ads/core/internal/ad_units/creative_ad_cache.h"
 #include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler.h"
@@ -73,6 +74,9 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
       mojom::PromotedContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback);
 
+  std::optional<mojom::CreativeSearchResultAdInfoPtr> MaybeGetSearchResultAd(
+      const std::string& placement_id);
+
   void TriggerSearchResultAdEvent(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,
@@ -95,6 +99,8 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
   void OnCanceledPageLand(int32_t tab_id, const AdInfo& ad) override;
 
   Catalog catalog_;
+
+  CreativeAdCache creative_ad_cache_;
 
   Conversions conversions_;
 

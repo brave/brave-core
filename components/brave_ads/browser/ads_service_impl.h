@@ -262,6 +262,8 @@ class AdsServiceImpl final : public AdsService,
       mojom::PromotedContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) override;
 
+  void MaybeGetSearchResultAd(const std::string& placement_id,
+                              MaybeGetSearchResultAdCallback callback) override;
   void TriggerSearchResultAdEvent(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,

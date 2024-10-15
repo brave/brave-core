@@ -7,38 +7,28 @@ import BraveCore
 
 // A helper class to handle Brave Search Result Ads.
 class BraveSearchResultAdManager: NSObject {
-  private let searchResultAdClickedUrlPath = "/a/redirect"
+  private static let searchResultAdClickedUrlPath = "/a/redirect"
 
-  private let placementId = "placement_id"
+  private static let placementId = "placement_id"
 
-  private let rewards: BraveRewards
-
-  private var searchResultAds = [String: BraveAds.CreativeSearchResultAdInfo]()
+  let rewards: BraveRewards
 
   init?(url: URL, rewards: BraveRewards, isPrivateBrowsing: Bool, isAggressiveAdsBlocking: Bool) {
-    if isPrivateBrowsing || isAggressiveAdsBlocking || !BraveSearchManager.isValidURL(url)
-      || !BraveAds.shouldSupportSearchResultAds()
-    {
+    if !BraveSearchResultAdManager.shouldTriggerSearchResultAd(
+      url: url,
+      isPrivateBrowsing: isPrivateBrowsing,
+      isAggressiveAdsBlocking: isAggressiveAdsBlocking
+    ) {
       return nil
     }
 
     self.rewards = rewards
   }
 
-  func isSearchResultAdClickedURL(_ url: URL) -> Bool {
-    return getPlacementID(url) != nil
-  }
-
   func triggerSearchResultAdViewedEvent(
     placementId: String,
     searchResultAd: BraveAds.CreativeSearchResultAdInfo
   ) {
-    searchResultAds[placementId] = searchResultAd
-
-    guard let searchResultAd = searchResultAds[placementId] else {
-      return
-    }
-
     rewards.ads.triggerSearchResultAdEvent(
       searchResultAd,
       eventType: .viewedImpression,
@@ -46,23 +36,30 @@ class BraveSearchResultAdManager: NSObject {
     )
   }
 
-  func maybeTriggerSearchResultAdClickedEvent(_ url: URL) {
+  static func maybeTriggerSearchResultAdClickedEvent(_ url: URL, rewards: BraveRewards) {
     guard let placementId = getPlacementID(url) else {
       return
     }
 
-    guard let searchResultAd = searchResultAds[placementId] else {
-      return
-    }
-
-    rewards.ads.triggerSearchResultAdEvent(
-      searchResultAd,
-      eventType: .clicked,
+    rewards.ads.triggerSearchResultAdClickedEvent(
+      placementId,
       completion: { _ in }
     )
   }
 
-  private func getPlacementID(_ url: URL) -> String? {
+  static func shouldTriggerSearchResultAdClickedEvent(
+    _ url: URL,
+    isPrivateBrowsing: Bool,
+    isAggressiveAdsBlocking: Bool
+  ) -> Bool {
+    return shouldTriggerSearchResultAd(
+      url: url,
+      isPrivateBrowsing: isPrivateBrowsing,
+      isAggressiveAdsBlocking: isAggressiveAdsBlocking
+    ) && getPlacementID(url) != nil
+  }
+
+  private static func getPlacementID(_ url: URL) -> String? {
     if !BraveSearchManager.isValidURL(url) || url.path != searchResultAdClickedUrlPath {
       return nil
     }
@@ -71,5 +68,14 @@ class BraveSearchResultAdManager: NSObject {
       return nil
     }
     return queryItems.first(where: { $0.name == placementId })?.value
+  }
+
+  private static func shouldTriggerSearchResultAd(
+    url: URL,
+    isPrivateBrowsing: Bool,
+    isAggressiveAdsBlocking: Bool
+  ) -> Bool {
+    return !isPrivateBrowsing && !isAggressiveAdsBlocking && BraveSearchManager.isValidURL(url)
+      && BraveAds.shouldSupportSearchResultAds()
   }
 }

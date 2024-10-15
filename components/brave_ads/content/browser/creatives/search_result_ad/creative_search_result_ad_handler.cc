@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_handler.h"
 
-#include <iterator>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -76,34 +75,6 @@ void CreativeSearchResultAdHandler::
       std::move(callback)));
 }
 
-void CreativeSearchResultAdHandler::MaybeTriggerCreativeAdClickedEvent(
-    const GURL& url) {
-  if (!creative_search_result_ads_) {
-    // No creative search result ads are present on the web page.
-    return;
-  }
-
-  const std::optional<std::string> placement_id =
-      MaybeExtractCreativeAdPlacementIdFromUrl(url);
-  if (!placement_id || placement_id->empty()) {
-    // The URL does not contain a placement id.
-    return;
-  }
-
-  const auto iter = creative_search_result_ads_->find(*placement_id);
-  if (iter == creative_search_result_ads_->cend()) {
-    // The placement id does not match any creative search result ad.
-    return;
-  }
-  const auto& [_, creative_search_result_ad] = *iter;
-  CHECK(creative_search_result_ad);
-
-  ads_service_->TriggerSearchResultAdEvent(
-      creative_search_result_ad->Clone(),
-      mojom::SearchResultAdEventType::kClicked,
-      /*intentional*/ base::DoNothing());
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 void CreativeSearchResultAdHandler::
@@ -116,43 +87,23 @@ void CreativeSearchResultAdHandler::
     return std::move(callback).Run(/*placement_ids=*/{});
   }
 
-  creative_search_result_ads_ =
+  std::vector<mojom::CreativeSearchResultAdInfoPtr> creative_search_result_ads =
       ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
           mojom_web_page->entities);
-  if (!creative_search_result_ads_) {
-    return std::move(callback).Run(/*placement_ids=*/{});
-  }
 
-  std::vector<std::string> placement_ids;
-  base::ranges::transform(*creative_search_result_ads_,
-                          std::back_inserter(placement_ids),
-                          [](const auto& creative_search_result_ad) {
-                            return creative_search_result_ad.first;
-                          });
-
-  std::move(callback).Run(std::move(placement_ids));
+  std::move(callback).Run(std::move(creative_search_result_ads));
 }
 
 void CreativeSearchResultAdHandler::MaybeTriggerCreativeAdViewedEvent(
-    const std::string& placement_id) {
-  CHECK(!placement_id.empty());
-
+    mojom::CreativeSearchResultAdInfoPtr creative_search_result_ad) {
   if (!should_trigger_creative_ad_viewed_events_) {
     return;
   }
 
-  if (!creative_search_result_ads_) {
+  if (!creative_search_result_ad) {
     // No creative search result ads are present on the web page.
     return;
   }
-
-  const auto iter = creative_search_result_ads_->find(placement_id);
-  if (iter == creative_search_result_ads_->cend()) {
-    // The placement id does not match any creative search result ad.
-    return;
-  }
-  const auto& [_, creative_search_result_ad] = *iter;
-  CHECK(creative_search_result_ad);
 
   ads_service_->TriggerSearchResultAdEvent(
       creative_search_result_ad->Clone(),

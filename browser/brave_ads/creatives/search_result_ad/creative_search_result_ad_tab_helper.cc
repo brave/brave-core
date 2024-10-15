@@ -5,6 +5,9 @@
 
 #include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
 
+#include <string>
+#include <utility>
+
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
@@ -13,6 +16,8 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_handler.h"
+#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_url_placement_id_extractor.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
@@ -98,13 +103,6 @@ bool CreativeSearchResultAdTabHelper::ShouldHandleCreativeAdEvents() const {
   return profile->GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled);
 }
 
-void CreativeSearchResultAdTabHelper::MaybeTriggerCreativeAdClickedEvent(
-    const GURL& url) {
-  if (creative_search_result_ad_handler_) {
-    creative_search_result_ad_handler_->MaybeTriggerCreativeAdClickedEvent(url);
-  }
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 AdsService* CreativeSearchResultAdTabHelper::GetAdsService() const {
@@ -157,14 +155,16 @@ void CreativeSearchResultAdTabHelper::
 }
 
 void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdViewedEvents(
-    const std::vector<std::string> placement_ids) {
-  for (const auto& placement_id : placement_ids) {
-    MaybeHandleCreativeAdViewedEvent(placement_id);
+    std::vector<mojom::CreativeSearchResultAdInfoPtr>
+        creative_search_result_ads) {
+  for (auto& creative_search_result_ad : creative_search_result_ads) {
+    MaybeHandleCreativeAdViewedEvent(std::move(creative_search_result_ad));
   }
 }
 
 void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdViewedEvent(
-    const std::string& placement_id) {
+    mojom::CreativeSearchResultAdInfoPtr creative_search_result_ad) {
+  const std::string& placement_id = creative_search_result_ad->placement_id;
   CHECK(!placement_id.empty());
 
   // It is safe to pass `placement_id` directly to the JavaScript function as it
@@ -176,12 +176,13 @@ void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdViewedEvent(
       base::UTF8ToUTF16(javascript),
       base::BindOnce(&CreativeSearchResultAdTabHelper::
                          MaybeHandleCreativeAdViewedEventCallback,
-                     weak_factory_.GetWeakPtr(), placement_id),
+                     weak_factory_.GetWeakPtr(),
+                     std::move(creative_search_result_ad)),
       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
 void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdViewedEventCallback(
-    const std::string& placement_id,
+    mojom::CreativeSearchResultAdInfoPtr creative_search_result_ad,
     const base::Value value) {
   const bool is_visible = value.is_bool() && value.GetBool();
   if (!is_visible) {
@@ -191,53 +192,58 @@ void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdViewedEventCallback(
 
   if (creative_search_result_ad_handler_) {
     creative_search_result_ad_handler_->MaybeTriggerCreativeAdViewedEvent(
-        placement_id);
+        std::move(creative_search_result_ad));
   }
 }
 
 void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdClickedEvent(
-    content::NavigationHandle* const navigation_handle) {
-  CHECK(navigation_handle);
+    const GURL& url) {
+  AdsService* ads_service = GetAdsService();
+  if (!ads_service) {
+    return;
+  }
 
   if (!ShouldHandleCreativeAdEvents()) {
     return;
   }
 
-  const auto& initiator_origin = navigation_handle->GetInitiatorOrigin();
-  if (!navigation_handle->IsInPrimaryMainFrame() ||
-      !ui::PageTransitionCoreTypeIs(navigation_handle->GetPageTransition(),
-                                    ui::PAGE_TRANSITION_LINK) ||
-      !initiator_origin ||
-      !brave_search::IsAllowedHost(initiator_origin->GetURL())) {
+  const std::optional<std::string> placement_id =
+      MaybeExtractCreativeAdPlacementIdFromUrl(url);
+  if (!placement_id || placement_id->empty()) {
+    // The URL does not contain a placement id.
     return;
   }
 
-  content::WebContents* web_contents = navigation_handle->GetWebContents();
-  if (!web_contents) {
+  ads_service->MaybeGetSearchResultAd(
+      *placement_id,
+      base::BindOnce(&CreativeSearchResultAdTabHelper::
+                         MaybeHandleCreativeAdClickedEventCallback,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdClickedEventCallback(
+    mojom::CreativeSearchResultAdInfoPtr creative_search_result_ad) {
+  if (!creative_search_result_ad) {
     return;
   }
 
-  if (content::WebContents* original_opener_web_contents =
-          web_contents->GetFirstWebContentsInLiveOriginalOpenerChain()) {
-    web_contents = original_opener_web_contents;
-  }
-
-  CreativeSearchResultAdTabHelper* const creative_search_result_ad_tab_helper =
-      CreativeSearchResultAdTabHelper::FromWebContents(web_contents);
-  if (!creative_search_result_ad_tab_helper) {
+  AdsService* ads_service = GetAdsService();
+  if (!ads_service) {
     return;
   }
 
-  CHECK(!navigation_handle->GetRedirectChain().empty());
-  const GURL url = navigation_handle->GetRedirectChain().back();
-
-  creative_search_result_ad_tab_helper->MaybeTriggerCreativeAdClickedEvent(url);
+  ads_service->TriggerSearchResultAdEvent(
+      std::move(creative_search_result_ad),
+      mojom::SearchResultAdEventType::kClicked, base::DoNothing());
 }
 
 void CreativeSearchResultAdTabHelper::DidStartNavigation(
     content::NavigationHandle* navigation_handle) {
   if (navigation_handle->IsInPrimaryMainFrame()) {
-    MaybeHandleCreativeAdClickedEvent(navigation_handle);
+    CHECK(!navigation_handle->GetRedirectChain().empty());
+    const GURL url = navigation_handle->GetRedirectChain().back();
+
+    MaybeHandleCreativeAdClickedEvent(url);
   }
 }
 
