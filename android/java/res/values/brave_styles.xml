@@ -400,6 +400,7 @@
         -->
         <!-- <item name="android:fontFamily">@font/roboto</item> -->
         <item name="android:textSize">@dimen/small_semibold</item>
+        <item name="android:textStyle">bold</item>
         <item name="lineHeight">16sp</item>
         <item name="fontStyle">normal</item>
         <item name="fontWeight">600</item>
@@ -416,6 +417,7 @@
     <style name="LargeSemibold">
         <!-- Default browser size for fonts -->
         <item name="android:textSize">@dimen/large_semibold</item>
+        <item name="android:textStyle">bold</item>
         <item name="lineHeight">24sp</item>
         <item name="fontStyle">normal</item>
         <item name="fontWeight">600</item>
@@ -428,6 +430,7 @@
     <style name="DefaultSemibold">
         <!-- Default Brave UI size -->
         <item name="android:textSize">@dimen/default_semibold</item>
+        <item name="android:textStyle">bold</item>
         <item name="lineHeight">20sp</item>
         <item name="fontStyle">normal</item>
         <item name="fontWeight">600</item>
@@ -435,6 +438,7 @@
 
     <style name="XSmallSemibold">
         <item name="android:textSize">@dimen/x_small_semibold</item>
+        <item name="android:textStyle">bold</item>
         <item name="lineHeight">16sp</item>
         <item name="fontStyle">normal</item>
         <item name="fontWeight">600</item>

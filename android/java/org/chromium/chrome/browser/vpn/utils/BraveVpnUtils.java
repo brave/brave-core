@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Pair;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import com.wireguard.config.Config;
@@ -62,14 +63,14 @@ public class BraveVpnUtils {
     public static String IS_KILL_SWITCH = "is_kill_switch";
     public static String REGION = "region";
 
-    public static void openBraveVpnPlansActivity(Activity activity) {
-        if (activity == null) {
+    public static void openBraveVpnPlansActivity(@Nullable Context context) {
+        if (context == null) {
             return;
         }
-        Intent braveVpnPlanIntent = new Intent(activity, VpnPaywallActivity.class);
+        Intent braveVpnPlanIntent = new Intent(context, VpnPaywallActivity.class);
         braveVpnPlanIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         braveVpnPlanIntent.setAction(Intent.ACTION_VIEW);
-        activity.startActivity(braveVpnPlanIntent);
+        context.startActivity(braveVpnPlanIntent);
     }
 
     public static void openBraveVpnProfileActivity(Activity activity) {

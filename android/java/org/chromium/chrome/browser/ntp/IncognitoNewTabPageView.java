@@ -5,27 +5,24 @@
 
 package org.chromium.chrome.browser.ntp;
 
-import static org.chromium.ui.base.ViewUtils.dpToPx;
-
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Canvas;
-import android.text.SpannableString;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.InternetConnection;
+import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.components.content_settings.CookieControlsEnforcement;
 import org.chromium.ui.base.ViewUtils;
-import org.chromium.ui.text.NoUnderlineClickableSpan;
+import org.chromium.ui.widget.Toast;
 
-/**
- * The New Tab Page for use in the incognito profile.
- */
+/** The New Tab Page to use in the incognito profile. */
 public class IncognitoNewTabPageView extends FrameLayout {
     private IncognitoNewTabPageManager mManager;
     private boolean mFirstShow = true;
@@ -34,15 +31,9 @@ public class IncognitoNewTabPageView extends FrameLayout {
     private int mSnapshotWidth;
     private int mSnapshotHeight;
     private int mSnapshotScrollY;
+    private TextView mVpnCta;
 
-    private int mWidthDp;
-    private int mHeightDp;
-
-    private static final int WIDE_LAYOUT_THRESHOLD_DP = 720;
-
-    /**
-     * Manages the view interaction with the rest of the system.
-     */
+    /** Manages the view interaction with the rest of the system. */
     interface IncognitoNewTabPageManager {
         /** Loads a page explaining details about incognito mode in the current tab. */
         void loadIncognitoLearnMore();
@@ -68,9 +59,20 @@ public class IncognitoNewTabPageView extends FrameLayout {
         void onLoadingComplete();
     }
 
-    /** Default constructor needed to inflate via XML. */
+    /**
+     * Default constructor needed to inflate via XML.
+     *
+     * @noinspection ConstantValue
+     */
     public IncognitoNewTabPageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        // These checks are just making sure that these values are still used in Chromium to avoid
+        // lint issues.
+        assert R.string.accessibility_new_incognito_tab_page > 0
+                : "Something has changed in the upstream!";
+
+        assert R.drawable.incognito_splash > 0 : "Something has changed in the upstream!";
     }
 
     @Override
@@ -78,30 +80,31 @@ public class IncognitoNewTabPageView extends FrameLayout {
         super.onFinishInflate();
 
         mScrollView = (NewTabPageScrollView) findViewById(R.id.ntp_scrollview);
-        mScrollView.setBackgroundColor(getContext().getColor(R.color.ntp_bg_incognito));
-        setContentDescription(
-                getResources().getText(R.string.accessibility_new_incognito_tab_page));
 
         // FOCUS_BEFORE_DESCENDANTS is needed to support keyboard shortcuts. Otherwise, pressing
         // any shortcut causes the UrlBar to be focused. See ViewRootImpl.leaveTouchMode().
         mScrollView.setDescendantFocusability(FOCUS_BEFORE_DESCENDANTS);
 
-        View learnMore = findViewById(R.id.learn_more);
-        learnMore.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mManager.loadIncognitoLearnMore();
-            }
-        });
-
-        mWidthDp = getContext().getResources().getConfiguration().screenWidthDp;
-        mHeightDp = getContext().getResources().getConfiguration().screenHeightDp;
-
-        adjustView();
+        mVpnCta = findViewById(R.id.tv_try_vpn);
+        if (BraveVpnUtils.isVpnFeatureSupported(getContext())
+                && !BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+            mVpnCta.setOnClickListener(
+                    v -> {
+                        if (!InternetConnection.isNetworkAvailable(getContext())) {
+                            Toast.makeText(getContext(), R.string.no_internet, Toast.LENGTH_SHORT)
+                                    .show();
+                        } else {
+                            BraveVpnUtils.openBraveVpnPlansActivity(getContext());
+                        }
+                    });
+        } else {
+            mVpnCta.setVisibility(View.GONE);
+        }
     }
 
     /**
      * Initialize the incognito New Tab Page.
+     *
      * @param manager The manager that handles external dependencies of the view.
      */
     void initialize(IncognitoNewTabPageManager manager) {
@@ -183,64 +186,5 @@ public class IncognitoNewTabPageView extends FrameLayout {
             mManager.onLoadingComplete();
             mFirstShow = false;
         }
-    }
-
-    @Override
-    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        // View#onConfigurationChanged() doesn't get called when resizing this view in
-        // multi-window mode, so #onMeasure() is used instead.
-        Configuration config = getContext().getResources().getConfiguration();
-        if (mWidthDp != config.screenWidthDp || mHeightDp != config.screenHeightDp) {
-            mWidthDp = config.screenWidthDp;
-            mHeightDp = config.screenHeightDp;
-            adjustView();
-        }
-
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    private void adjustView() {
-        adjustIcon();
-        adjustLearnMore();
-    }
-
-    /** Adjust the Incognito icon. */
-    private void adjustIcon() {
-        // The icon resource is 120dp x 120dp (i.e. 120px x 120px at MDPI). This method always
-        // resizes the icon view to 120dp x 120dp or smaller, therefore image quality is not lost.
-
-        int sizeDp;
-        if (mWidthDp <= WIDE_LAYOUT_THRESHOLD_DP) {
-            sizeDp = (mWidthDp <= 240 || mHeightDp <= 480) ? 48 : 72;
-        } else {
-            sizeDp = mHeightDp <= 480 ? 72 : 120;
-        }
-
-        ImageView icon = (ImageView) findViewById(R.id.new_tab_incognito_icon);
-        icon.getLayoutParams().width = dpToPx(getContext(), sizeDp);
-        icon.getLayoutParams().height = dpToPx(getContext(), sizeDp);
-    }
-
-    /** Adjust the "Learn More" link. */
-    private void adjustLearnMore() {
-        final String subtitleText = getContext().getResources().getString(
-                R.string.new_tab_otr_subtitle_with_reading_list);
-        boolean learnMoreInSubtitle = mWidthDp > WIDE_LAYOUT_THRESHOLD_DP;
-
-        if (!learnMoreInSubtitle) {
-            return;
-        }
-
-        // Concatenate the original text with a clickable "Learn more" link.
-        StringBuilder concatenatedText = new StringBuilder();
-        concatenatedText.append(subtitleText);
-        concatenatedText.append(" ");
-        concatenatedText.append(getContext().getResources().getString(R.string.learn_more));
-        SpannableString textWithLearnMoreLink = new SpannableString(concatenatedText.toString());
-
-        NoUnderlineClickableSpan span = new NoUnderlineClickableSpan(getContext(),
-                R.color.modern_blue_300, (view) -> getManager().loadIncognitoLearnMore());
-        textWithLearnMoreLink.setSpan(
-                span, subtitleText.length() + 1, textWithLearnMoreLink.length(), 0 /* flags */);
     }
 }

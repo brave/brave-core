@@ -53,4 +53,7 @@
     <dimen name="monospace_small">12sp</dimen>
 
     <dimen name="brave_toolbar_edge_padding_ntp">8dp</dimen>
+    <dimen name="new_tab_page_incognito_title_text_size">28sp</dimen>
+    <dimen name="new_tab_page_incognito_logo_size">42sp</dimen>
+    <dimen name="new_tab_page_incognito_icon_size">32sp</dimen>
 </resources>
