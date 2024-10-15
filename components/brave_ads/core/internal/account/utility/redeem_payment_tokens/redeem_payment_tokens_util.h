@@ -13,7 +13,7 @@ class TimeDelta;
 
 namespace brave_ads {
 
-void SetNextTokenRedemptionAt(base::Time next_token_redemption_at);
+void SetNextTokenRedemptionAt(base::Time next_payment_token_redemption_at);
 base::Time ScheduleNextTokenRedemptionAt();
 
 base::TimeDelta CalculateDelayBeforeRedeemingTokens();

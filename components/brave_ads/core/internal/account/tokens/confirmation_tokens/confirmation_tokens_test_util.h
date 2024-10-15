@@ -14,6 +14,10 @@ class ConfirmationTokens;
 
 namespace test {
 
+// Call this function to refill confirmation tokens for testing purposes if
+// code paths call `Confirmations::Confirm`, `MaybeGetConfirmationToken`, or
+// `BuildReward`. If code paths call `RefillConfirmationTokens::MaybeRefill`,
+// call `MockTokenGenerator` instead and do not call this function.
 ConfirmationTokenList RefillConfirmationTokens(int count);
 
 ConfirmationTokenInfo BuildConfirmationToken();

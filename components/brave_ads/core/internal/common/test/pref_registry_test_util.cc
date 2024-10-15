@@ -49,7 +49,8 @@ void RegisterProfilePrefs() {
   RegisterProfileListPref(prefs::kNotificationAds);
   RegisterProfileTimePref(prefs::kServeAdAt, Now());
 
-  RegisterProfileTimePref(prefs::kNextTokenRedemptionAt, DistantFuture());
+  RegisterProfileTimePref(prefs::kNextPaymentTokenRedemptionAt,
+                          DistantFuture());
 
   RegisterProfileDictPref(prefs::kAdReactions);
   RegisterProfileDictPref(prefs::kSegmentReactions);

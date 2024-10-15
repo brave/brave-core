@@ -11,8 +11,9 @@
 
 namespace brave_ads {
 
-base::Time CalculateNextPaymentDate(const base::Time next_token_redemption_at,
-                                    const TransactionList& transactions) {
+base::Time CalculateNextPaymentDate(
+    const base::Time next_payment_token_redemption_at,
+    const TransactionList& transactions) {
   const base::Time now = base::Time::Now();
 
   base::Time::Exploded now_exploded;
@@ -37,10 +38,11 @@ base::Time CalculateNextPaymentDate(const base::Time next_token_redemption_at,
       // will occur next month
       ++month;
     } else {
-      base::Time::Exploded next_token_redemption_at_exploded;
-      next_token_redemption_at.UTCExplode(&next_token_redemption_at_exploded);
+      base::Time::Exploded next_payment_token_redemption_at_exploded;
+      next_payment_token_redemption_at.UTCExplode(
+          &next_payment_token_redemption_at_exploded);
 
-      if (next_token_redemption_at_exploded.month == month) {
+      if (next_payment_token_redemption_at_exploded.month == month) {
         // If this month does not have reconciled transactions and our next
         // token redemption date is this month, then the next payment date will
         // occur next month

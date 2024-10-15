@@ -21,7 +21,8 @@ TEST_F(BraveAdsRedeemPaymentTokensUtilTest, SetNextTokenRedemptionAt) {
   SetNextTokenRedemptionAt(test::DistantFuture());
 
   // Act & Assert
-  EXPECT_FALSE(GetProfileTimePref(prefs::kNextTokenRedemptionAt).is_null());
+  EXPECT_FALSE(
+      GetProfileTimePref(prefs::kNextPaymentTokenRedemptionAt).is_null());
 }
 
 TEST_F(BraveAdsRedeemPaymentTokensUtilTest, ScheduleNextTokenRedemptionAt) {
