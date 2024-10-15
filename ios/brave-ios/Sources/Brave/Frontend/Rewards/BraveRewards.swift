@@ -274,7 +274,8 @@ public class BraveRewards: PreferencesObserver {
       let kHttpServerErrorResponseStatusCodeClass = 5
       let responseStatusCodeClass = tab.rewardsReportingState.httpStatusCode / 100
 
-      if tab.rewardsReportingState.isNewNavigation
+      if !tab.rewardsReportingState.wasRestored
+        && tab.rewardsReportingState.isNewNavigation
         && responseStatusCodeClass != kHttpClientErrorResponseStatusCodeClass
         && responseStatusCodeClass != kHttpServerErrorResponseStatusCodeClass
       {
