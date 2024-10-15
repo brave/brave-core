@@ -85,6 +85,8 @@ BASE_FEATURE(kBraveDomainBlock1PES,
 BASE_FEATURE(kBraveExtensionNetworkBlocking,
              "BraveExtensionNetworkBlocking",
              base::FEATURE_DISABLED_BY_DEFAULT);
+// Enables Brave farbling (randomization of fingerprinting-susceptible WebAPIs).
+BASE_FEATURE(kBraveFarbling, "BraveFarbling", base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, language headers and APIs may be altered by Brave Shields.
 BASE_FEATURE(kBraveReduceLanguage,
              "BraveReduceLanguage",
