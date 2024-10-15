@@ -38,16 +38,15 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
 </div>
 
 <template is="dom-if" if="[[isDialogType('main', dialogType)]]" restamp>
-  <settings-brave-account-dialog
+  <settings-brave-account-entry-dialog
     on-close="onBraveAccountDialogClosed_"
     on-sign-in-button-clicked="onSignInButtonClicked_">
-  </settings-brave-account-dialog>
+  </settings-brave-account-entry-dialog>
 </template>
 
 <template is="dom-if" if="[[isDialogType('sign-in', dialogType)]]" restamp>
   <settings-brave-account-sign-in-dialog
     on-close="onBraveAccountDialogClosed_"
-    show-back-button
     on-back-button-clicked="onBackButtonClicked_">
   </settings-brave-account-sign-in-dialog>
 </template>
