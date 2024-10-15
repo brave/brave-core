@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_REWARDS_ANDROID_BRAVE_REWARDS_NATIVE_WORKER_H_
 
 #include <jni.h>
+
 #include <map>
 #include <memory>
 #include <string>
@@ -16,6 +17,7 @@
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -273,6 +275,12 @@ class BraveRewardsNativeWorker
   std::map<std::string, brave_rewards::mojom::PublisherInfoPtr>
       map_recurrent_publishers_;
   std::map<std::string, std::string> addresses_;
+  base::ScopedObservation<brave_rewards::RewardsService,
+                          brave_rewards::RewardsServiceObserver>
+      rewards_service_observation_{this};
+  base::ScopedObservation<brave_rewards::RewardsNotificationService,
+                          brave_rewards::RewardsNotificationServiceObserver>
+      rewards_notification_service_observation_{this};
   base::WeakPtrFactory<BraveRewardsNativeWorker> weak_factory_;
 };
 

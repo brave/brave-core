@@ -89,7 +89,10 @@ class RewardsTabHelper : public content::WebContentsUserData<RewardsTabHelper>,
   std::unique_ptr<BrowserListObserver> browser_list_observer_;
 #endif
   SessionID tab_id_;
-  raw_ptr<RewardsService> rewards_service_ = nullptr;  // NOT OWNED
+  base::ScopedObservation<brave_rewards::RewardsService,
+                          brave_rewards::RewardsServiceObserver>
+      rewards_service_observation_{this};
+  raw_ptr<RewardsService> rewards_service_ = nullptr;
   base::ObserverList<Observer> observer_list_;
   std::string publisher_id_;
 

@@ -55,10 +55,9 @@ RewardsTabHelper::RewardsTabHelper(content::WebContents* web_contents)
   if (tab_id_.is_valid()) {
     rewards_service_ = RewardsServiceFactory::GetForProfile(
         Profile::FromBrowserContext(GetWebContents().GetBrowserContext()));
-  }
-
-  if (rewards_service_) {
-    rewards_service_->AddObserver(this);
+    if (rewards_service_) {
+      rewards_service_observation_.Observe(rewards_service_);
+    }
   }
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -67,9 +66,6 @@ RewardsTabHelper::RewardsTabHelper(content::WebContents* web_contents)
 }
 
 RewardsTabHelper::~RewardsTabHelper() {
-  if (rewards_service_) {
-    rewards_service_->RemoveObserver(this);
-  }
 #if !BUILDFLAG(IS_ANDROID)
   BrowserList::RemoveObserver(browser_list_observer_.get());
 #endif
@@ -186,10 +182,8 @@ void RewardsTabHelper::OnRewardsInitialized(RewardsService* rewards_service) {
   // When Rewards is initialized for the current profile, we need to inform the
   // utility process about the currently active tab so that it can start
   // measuring auto-contribute correctly.
-  if (rewards_service_) {
-    rewards_service_->OnShow(tab_id_);
-    rewards_service_->OnLoad(tab_id_, GetWebContents().GetLastCommittedURL());
-  }
+  rewards_service->OnShow(tab_id_);
+  rewards_service->OnLoad(tab_id_, GetWebContents().GetLastCommittedURL());
 }
 
 void RewardsTabHelper::MaybeSavePublisherInfo() {
