@@ -8,13 +8,12 @@
 #include <optional>
 
 #include "base/ranges/algorithm.h"
-#include "base/strings/pattern.h"
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_condition_matcher_util_internal.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_provider_interface.h"
 
 namespace brave_ads {
 
-bool MatchConditions(const PrefProviderInterface* pref_provider,
+bool MatchConditions(const PrefProviderInterface* const pref_provider,
                      const NewTabPageAdConditionMatchers& condition_matchers) {
   CHECK(pref_provider);
 
@@ -31,8 +30,7 @@ bool MatchConditions(const PrefProviderInterface* pref_provider,
         }
 
         return MatchOperator(*value, condition) ||
-               base::MatchPattern(*value, condition) ||
-               MatchRegex(*value, condition);
+               MatchPattern(*value, condition) || MatchRegex(*value, condition);
       });
 }
 
