@@ -13,7 +13,7 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 #include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
-#include "brave/components/json/rs/src/lib.rs.h"
+#include "brave/components/json/json_helper.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -88,7 +88,7 @@ TEST(BitcoinTransaction, TxInput_FromRpcUtxo) {
   )";
 
   auto rpc_utxo = bitcoin_rpc::UnspentOutput::FromValue(base::test::ParseJson(
-      std::string(json::convert_all_numbers_to_string(rpc_utxo_json, ""))));
+      json::convert_all_numbers_to_string(rpc_utxo_json, "")));
   ASSERT_TRUE(rpc_utxo);
 
   auto input = BitcoinTransaction::TxInput::FromRpcUtxo(kAddress1, *rpc_utxo);

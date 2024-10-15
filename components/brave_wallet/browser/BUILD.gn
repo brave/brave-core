@@ -278,7 +278,7 @@ static_library("browser") {
     "//brave/components/decentralized_dns/core",
     "//brave/components/filecoin/rs:rust_lib",
     "//brave/components/ipfs",
-    "//brave/components/json/rs:rust_lib",
+    "//brave/components/json",
     "//brave/components/p3a_utils",
     "//brave/components/resources:strings_grit",
     "//brave/components/services/brave_wallet/public/cpp",
@@ -458,7 +458,7 @@ source_set("transaction") {
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/filecoin/rs:rust_lib",
-    "//brave/components/json/rs:rust_lib",
+    "//brave/components/json",
   ]
 }
 

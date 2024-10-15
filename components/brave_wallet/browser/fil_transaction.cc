@@ -16,7 +16,7 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/filecoin/rs/src/lib.rs.h"
-#include "brave/components/json/rs/src/lib.rs.h"
+#include "brave/components/json/json_helper.h"
 
 namespace brave_wallet {
 
@@ -222,12 +222,10 @@ std::optional<std::string> FilTransaction::ConvertMesssageStringFieldsToInt64(
   std::string converted_json =
       json::convert_string_value_to_int64(path + "/GasLimit", json, true)
           .c_str();
-  converted_json = json::convert_string_value_to_uint64(
-                       path + "/Nonce", converted_json.c_str(), true)
-                       .c_str();
-  converted_json = json::convert_string_value_to_uint64(
-                       path + "/Method", converted_json.c_str(), true)
-                       .c_str();
+  converted_json = json::convert_string_value_to_uint64(path + "/Nonce",
+                                                        converted_json, true);
+  converted_json = json::convert_string_value_to_uint64(path + "/Method",
+                                                        converted_json, true);
   if (converted_json.empty()) {
     return std::nullopt;
   }
@@ -245,12 +243,9 @@ std::optional<std::string> FilTransaction::ConvertSignedTxStringFieldsToInt64(
 std::optional<base::Value> FilTransaction::DeserializeSignedTx(
     const std::string& signed_tx) {
   std::string json =
-      json::convert_int64_value_to_string("/Message/GasLimit", signed_tx, true)
-          .c_str();
-  json =
-      json::convert_int64_value_to_string("/Message/Nonce", json, true).c_str();
-  json = json::convert_int64_value_to_string("/Message/Method", json, true)
-             .c_str();
+      json::convert_int64_value_to_string("/Message/GasLimit", signed_tx, true);
+  json = json::convert_int64_value_to_string("/Message/Nonce", json, true);
+  json = json::convert_int64_value_to_string("/Message/Method", json, true);
   return base::JSONReader::Read(json);
 }
 

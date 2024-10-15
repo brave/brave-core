@@ -19,7 +19,7 @@
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/json/rs/src/lib.rs.h"
+#include "brave/components/json/json_helper.h"
 #include "net/base/url_util.h"
 #include "services/data_decoder/public/cpp/json_sanitizer.h"
 
@@ -171,8 +171,7 @@ void DoParseDappLists(const base::FilePath& dir, ParseListsResult& out) {
     return;
   }
 
-  auto converted_json =
-      std::string(json::convert_all_numbers_to_string(*result, ""));
+  auto converted_json = json::convert_all_numbers_to_string(*result, "");
   if (converted_json.empty()) {
     return;
   }

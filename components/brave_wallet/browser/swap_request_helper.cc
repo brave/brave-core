@@ -19,7 +19,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/json/rs/src/lib.rs.h"
+#include "brave/components/json/json_helper.h"
 
 namespace brave_wallet {
 
@@ -121,18 +121,18 @@ std::optional<std::string> EncodeTransactionParams(
   // FIXME - GetJSON should be refactored to accept a base::Value::Dict
   std::string result = GetJSON(base::Value(std::move(tx_params)));
 
-  result = std::string(json::convert_string_value_to_uint64(
-      "/quoteResponse/slippageBps", result, false));
+  result = json::convert_string_value_to_uint64("/quoteResponse/slippageBps",
+                                                result, false);
 
   if (params.quote->platform_fee) {
-    result = std::string(json::convert_string_value_to_uint64(
-        "/quoteResponse/platformFee/feeBps", result, false));
+    result = json::convert_string_value_to_uint64(
+        "/quoteResponse/platformFee/feeBps", result, false);
   }
 
   for (int i = 0; i < static_cast<int>(params.quote->route_plan.size()); i++) {
-    result = std::string(json::convert_string_value_to_uint64(
+    result = json::convert_string_value_to_uint64(
         base::StringPrintf("/quoteResponse/routePlan/%d/percent", i), result,
-        false));
+        false);
   }
 
   return result;

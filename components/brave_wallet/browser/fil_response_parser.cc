@@ -11,7 +11,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
-#include "brave/components/json/rs/src/lib.rs.h"
+#include "brave/components/json/json_helper.h"
 
 namespace brave_wallet {
 

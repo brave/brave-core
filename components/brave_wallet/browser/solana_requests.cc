@@ -11,7 +11,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
-#include "brave/components/json/rs/src/lib.rs.h"
+#include "brave/components/json/json_helper.h"
 
 namespace brave_wallet::solana {
 
@@ -51,8 +51,8 @@ std::string sendTransaction(
 
   base::Value::Dict dictionary =
       GetJsonRpcDictionary("sendTransaction", std::move(params));
-  return std::string(json::convert_string_value_to_uint64(
-      "/params/1/maxRetries", GetJSON(dictionary), true));
+  return json::convert_string_value_to_uint64("/params/1/maxRetries",
+                                              GetJSON(dictionary), true);
 }
 
 std::string getLatestBlockhash() {
