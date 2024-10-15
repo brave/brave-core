@@ -7,35 +7,3 @@ include_rules = [
   "+services/network/test",
   "+third_party/re2",
 ]
-
-specific_include_rules = {
-  # unit tests should not depend on Profile
-  # also components should not depend on Profile
-  "brave_news_pref_manager_unittest\.cc": [
-    "!chrome/test/base/testing_profile.h",
-  ],
-  "channels_controller_unittest\.cc": [
-    "!chrome/test/base/testing_profile.h",
-  ],
-  "direct_feed_controller_unittest\.cc": [
-    "!chrome/test/base/testing_profile.h",
-  ],
-  "direct_feed_controller_unittest\.cc": [
-    "!chrome/test/base/testing_profile.h",
-  ],
-  "initialization_promise_unittest\.cc": [
-    "!chrome/test/base/testing_profile.h",
-  ],
-  "publishers_controller_unittest\.cc": [
-    "!chrome/test/base/testing_profile.h",
-  ],
-  "suggestions_controller_unittest\.cc": [
-    "!chrome/test/base/testing_profile.h",
-  ],
-  "topics_fetcher_unittest\.cc": [
-    "!chrome/test/base/testing_profile.h",
-  ],
-  "feed_building_unittest\.cc": [
-    "!chrome/test/base/testing_profile.h",
-  ],
-}
