@@ -39,9 +39,7 @@ brave_chrome_java_deps = [
   "//brave/components/browser_ui/site_settings/android:java",
   "//brave/components/misc_metrics/common:mojom_java",
   "//brave/components/playlist/common/mojom:mojom_java",
-
-  # TODO(alexeybarabash): needs to be redone for cr130
-  #"//brave/components/safe_browsing/android:brave_safe_browsing_java",
+  "//brave/components/safe_browsing/android:brave_safe_browsing_java",
   "//brave/components/url_sanitizer/common/mojom:mojom_java",
   "//brave/components/variations/android:java",
   "//brave/components/version_info/android:java",
