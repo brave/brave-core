@@ -80,7 +80,8 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   @Published var isPresentingPendingRequest: Bool = false {
     didSet {
       if !isPresentingPendingRequest {
-        confirmationStore = nil
+        closeConfirmationStore()
+        closeSignMessageRequestStore()
       }
     }
   }
