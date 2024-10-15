@@ -114,7 +114,8 @@ OBJC_EXPORT
                       completion:(void (^)(BOOL success))completion;
 
 - (void)maybeGetNotificationAd:(NSString*)identifier
-                    completion:(void (^)(NotificationAdIOS*))completion;
+                    completion:
+                        (void (^)(NotificationAdIOS* _Nullable))completion;
 
 - (void)triggerNotificationAdEvent:(NSString*)placementId
                          eventType:(BraveAdsNotificationAdEventType)eventType
