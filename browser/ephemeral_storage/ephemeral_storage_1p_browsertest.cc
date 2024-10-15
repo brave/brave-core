@@ -605,6 +605,34 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   }
 }
 
+IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
+                       FarblingTokenIsEphemeral) {
+  SetCookieSetting(a_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
+
+  WebContents* first_party_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+
+  const std::string plugins_before_cleanup =
+      content::EvalJs(
+          first_party_tab,
+          "Array.from(navigator.plugins).map(p => p.name).join(', ');")
+          .ExtractString();
+
+  // After keepalive the farbling token should be cleared.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+  WaitForCleanupAfterKeepAlive();
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
+
+  const std::string plugins_after_cleanup =
+      content::EvalJs(
+          first_party_tab,
+          "Array.from(navigator.plugins).map(p => p.name).join(', ');")
+          .ExtractString();
+
+  EXPECT_NE(plugins_before_cleanup, plugins_after_cleanup);
+}
+
 class EphemeralStorage1pDisabledBrowserTest
     : public EphemeralStorageBrowserTest {
  public:
