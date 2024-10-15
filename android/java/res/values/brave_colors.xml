@@ -101,6 +101,11 @@
     <color name="text_interactive">#3f39e8</color>
     <color name="container_background">#ffffff</color>
     <color name="primitive_private_window_5">#160041</color>
+    <color name="primitive_private_window_10">#22005D</color>
+    <color name="primitive_private_window_20">#3A0092</color>
+    <color name="primitive_private_window_60">#9E7BF9</color>
+    <color name="primitive_private_window_80">#CFBCFF</color>
+    <color name="primitive_private_window_90">#E9DDFF</color>
 
     <!-- Sync colors -->
     <color name="brave_sync_bg_color">@android:color/transparent</color>
@@ -127,7 +132,7 @@
     <color name="wallet_gradient_start_color">#4C54D2</color>
 
     <!-- Brave news colors -->
-    <!-- <color name="card_background">#DC353535</color> -->    
+    <!-- <color name="card_background">#DC353535</color> -->
     <color name="card_background">#F23B3E4F</color>
     <color name="card_background_solid">#353535</color>
     <color name="blurple">#5455cd</color>
@@ -152,7 +157,7 @@
     <!-- Incognito background and branding colors -->
     <color name="incognito_modern_primary_color">#210950</color>
 
-    <color name="toolbar_text_box_background_incognito">#3D2742</color>
+    <color name="toolbar_text_box_background_incognito">@color/primitive_private_window_10</color>
 
     <color name="compositor_tab_title_bar_text_incognito">@android:color/white</color>
 

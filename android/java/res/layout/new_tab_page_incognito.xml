@@ -6,7 +6,7 @@
 
 <org.chromium.chrome.browser.ntp.IncognitoNewTabPageView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ntp_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,77 +16,206 @@
 
     <org.chromium.chrome.browser.ntp.NewTabPageScrollView
         android:id="@+id/ntp_scrollview"
-        android:background="@color/ntp_bg_incognito"
+        android:background="@drawable/private_tab_gradient_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fadingEdgeLength="9dp"
-        android:fillViewport="false"
+        android:fillViewport="true"
         android:requiresFadingEdge="vertical" >
 
-        <LinearLayout
-            android:id="@+id/new_tab_incognito_container"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:paddingVertical="32dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingStart="32dp"
-            android:paddingEnd="32dp"
-            android:paddingTop="24dp"
-            android:paddingBottom="16dp" >
+            android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/new_tab_incognito_icon2"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_begin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                android:layout_gravity="center_horizontal"
-                tools:ignore="ContentDescription"
-                android:src="@drawable/incognito_splash" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="32dp" />
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="32dp" />
+
+            <!-- Keep the ID below as it's been tested in Chromium code by IncognitoNewTabPageStation. -->
             <ImageView
                 android:id="@+id/new_tab_incognito_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                tools:ignore="ContentDescription"
-                android:visibility="gone"
-                android:src="@drawable/brave_sync_btn_laptop" />
+                android:layout_width="@dimen/new_tab_page_incognito_logo_size"
+                android:layout_height="@dimen/new_tab_page_incognito_logo_size"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_brave_logo"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintTop_toTopOf="@+id/title"
+                app:layout_constraintBottom_toBottomOf="@+id/title"
+                app:layout_constraintStart_toStartOf="@id/guideline_begin"
+                app:layout_constraintEnd_toStartOf="@+id/title"
+                />
 
             <TextView
-                android:id="@+id/ntp_incognito_header"
+                android:id="@+id/title"
+                android:textStyle="bold"
+                android:textSize="@dimen/new_tab_page_incognito_title_text_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:text="@string/brave_new_tab_private_header"
-                android:textAppearance="@style/TextAppearance.Headline.Primary.Baseline.Light" />
+                android:textColor="@color/brave_white"
+                android:layout_marginStart="14dp"
+                android:layout_marginBottom="64dp"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/tv_first_title"
+                app:layout_constraintStart_toEndOf="@+id/new_tab_incognito_icon"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                />
+
+            <ImageView
+                android:id="@+id/iv_first_icon"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                android:layout_width="@dimen/new_tab_page_incognito_icon_size"
+                android:layout_height="@dimen/new_tab_page_incognito_icon_size"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@null"
+                android:src="@drawable/product_private_layer_list"
+                app:layout_constraintTop_toTopOf="@+id/tv_first_title"
+                app:layout_constraintStart_toStartOf="@+id/guideline_begin"
+                app:layout_constraintEnd_toStartOf="@+id/tv_first_title"
+                />
+
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_first_title"
+                style="@style/DefaultSemibold"
+                app:layout_constraintWidth_max="460dp"
+                android:layout_marginBottom="4dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="60dp"
-                android:text="@string/new_tab_private_desc"
-                android:textColor="@color/baseline_neutral_60"
-                android:gravity="center" />
-
-            <!-- This is just dummy view to avoid crashes within Chromium's part of code-->
-            <TextView
-                android:id="@+id/new_tab_incognito_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
-
+                android:text="@string/brave_new_tab_private_no_trace"
+                android:textColor="@color/primitive_private_window_90"
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                app:layout_constraintBottom_toTopOf="@+id/tv_first_description"
+                app:layout_constraintStart_toEndOf="@id/iv_first_icon"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                />
 
             <TextView
-                android:id="@+id/learn_more"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_first_description"
+                style="@style/DefaultRegular"
+                android:layout_marginBottom="32dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/learn_more"
-                android:visibility = "gone" />
+                android:layout_marginTop="4dp"
+                android:text="@string/brave_new_tab_private_no_trace_description"
+                android:textColor="@color/primitive_private_window_80"
+                app:layout_constraintTop_toBottomOf="@+id/tv_first_title"
+                app:layout_constraintBottom_toTopOf="@+id/tv_second_title"
+                app:layout_constraintStart_toStartOf="@id/tv_first_title"
+                app:layout_constraintEnd_toEndOf="@id/tv_first_title"
+                />
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_second_icon"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                android:layout_width="@dimen/new_tab_page_incognito_icon_size"
+                android:layout_height="@dimen/new_tab_page_incognito_icon_size"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@null"
+                android:src="@drawable/antenna_layer_list"
+                app:layout_constraintTop_toTopOf="@+id/tv_second_title"
+                app:layout_constraintStart_toStartOf="@+id/guideline_begin"
+                app:layout_constraintEnd_toStartOf="@+id/tv_second_title"
+                />
+
+            <TextView
+                android:id="@+id/tv_second_title"
+                style="@style/DefaultSemibold"
+                app:layout_constraintWidth_max="460dp"
+                android:layout_marginBottom="4dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_new_tab_private_visibility"
+                android:textColor="@color/primitive_private_window_90"
+                app:layout_constraintTop_toBottomOf="@+id/tv_first_description"
+                app:layout_constraintBottom_toTopOf="@+id/tv_second_description"
+                app:layout_constraintStart_toEndOf="@id/iv_second_icon"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                />
+
+            <TextView
+                android:id="@+id/tv_second_description"
+                style="@style/DefaultRegular"
+                android:layout_marginBottom="32dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/brave_new_tab_private_visibility_description"
+                android:textColor="@color/primitive_private_window_80"
+                app:layout_constraintTop_toBottomOf="@+id/tv_second_title"
+                app:layout_constraintBottom_toTopOf="@+id/tv_third_title"
+                app:layout_constraintStart_toStartOf="@id/tv_second_title"
+                app:layout_constraintEnd_toEndOf="@id/tv_second_title"
+                />
+
+            <ImageView
+                android:id="@+id/iv_third_icon"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                android:layout_width="@dimen/new_tab_page_incognito_icon_size"
+                android:layout_height="@dimen/new_tab_page_incognito_icon_size"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@null"
+                android:src="@drawable/product_vpn_layer_list"
+                app:layout_constraintTop_toTopOf="@+id/tv_third_title"
+                app:layout_constraintStart_toStartOf="@+id/guideline_begin"
+                app:layout_constraintEnd_toStartOf="@+id/tv_third_title"
+                />
+
+            <TextView
+                android:id="@+id/tv_third_title"
+                style="@style/DefaultSemibold"
+                app:layout_constraintWidth_max="460dp"
+                android:layout_marginBottom="4dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_new_tab_private_vpn"
+                android:textColor="@color/primitive_private_window_90"
+                app:layout_constraintTop_toBottomOf="@+id/tv_second_description"
+                app:layout_constraintBottom_toTopOf="@+id/tv_third_description"
+                app:layout_constraintStart_toEndOf="@id/iv_third_icon"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                />
+
+            <TextView
+                android:id="@+id/tv_third_description"
+                style="@style/DefaultRegular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/brave_new_tab_private_vpn_description"
+                android:textColor="@color/primitive_private_window_80"
+                app:layout_constraintTop_toBottomOf="@+id/tv_third_title"
+                app:layout_constraintBottom_toTopOf="@+id/tv_try_vpn"
+                app:layout_constraintStart_toStartOf="@id/tv_third_title"
+                app:layout_constraintEnd_toEndOf="@id/tv_third_title"
+                />
+
+            <TextView
+                android:id="@+id/tv_try_vpn"
+                style="@style/DefaultSemibold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_new_tab_private_vpn_cta"
+                android:textColor="@color/primitive_private_window_60"
+                app:layout_constraintTop_toBottomOf="@+id/tv_third_description"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tv_third_title"
+                app:layout_constraintEnd_toEndOf="@id/tv_third_title"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </org.chromium.chrome.browser.ntp.NewTabPageScrollView>
 
