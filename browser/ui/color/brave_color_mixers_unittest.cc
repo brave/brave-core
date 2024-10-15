@@ -32,7 +32,7 @@ TEST_F(BraveColorMixersTest, ColorOverrideTest) {
 
   EXPECT_EQ(color_provider().GetColor(kColorToolbar),
             color_provider().GetColor(kColorInfoBarBackground));
-  EXPECT_EQ(color_provider().GetColor(kColorPageInfoIconHover),
+  EXPECT_EQ(color_provider().GetColor(kColorOmniboxIconHover),
             SkColorSetA(color_provider().GetColor(kColorOmniboxText),
                         std::ceil(0.10f * 255.0f)));
 }
