@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">يعرض اقتراحات مواقع الويب بناءً على الإشارات المرجعية وسجل التصفح.</translation>
 <translation id="924029461438529367">إظهار اقتراحات ميزة البحث</translation>
 <translation id="1571106259128580884">إظهار اقتراحات أفضل المواقع</translation>
+<translation id="6285118765755298263">فهرس محركات البحث الأخرى</translation>
+<translation id="919715748352669592">يقوم تلقائيًا بفهرسة مواقع الويب التي تتبع مواصفات OpenSearch.</translation>
 <translation id="9148058034647219655">إنهاء</translation>
 <translation id="8047754398610073499">حظر إشعارات الموافقة على ملفات تعريف الارتباط</translation>
 <translation id="2621893359845808115">حظر النوافذ المنبثقة لمواقع الويب التي تطلب قبول / رفض ملفات تعريف الارتباط على موقعها</translation>
@@ -737,7 +739,19 @@
 <translation id="755448900483975096">الناقل الخلوي</translation>
 <translation id="1279441577056010362">المتابعة إلى البريد الإلكتروني</translation>
 <translation id="7125582363614011660">الدعم المُقدم بمساعدة فريق Guardian.\n\nيُرجى تحديد المعلومات التي تشعر بارتياح عند مشاركتها معنا.\n\nوكلما زادت المعلومات التي تشاركها معنا في البداية، سيسهل على فريق الدعم لدينا مساعدتك في حل مشكلتك.</translation>
-<translation id="7999094850625689785">سيتم تحديد منطقة الخادم الأقرب إليك تلقائيًا، بناءً على المنطقة الزمنية لنظامك. يوصى بذلك لضمان سرعات إنترنت عالية.</translation>
+<translation id="8813171284214934811">التحديد التلقائي لمنطقة خادم VPN الأقرب إليك بناءً على منطقتك الزمنية. يوصى بهذا الخيار لزيادة سرعة الإنترنت إلى أقصى حد.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> city - }
+          other {<ph name="CITY_COUNT_MANY"/> cities - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> server}
+          other {<ph name="SERVER_COUNT_MANY"/> servers}
+        }</translation>
+<translation id="3199127022143353223">الخوادم</translation>
+<translation id="5431902940483264007">أمثل</translation>
+<translation id="6527596624419285047">استخدام أفضل خادم متاح</translation>
+<translation id="6789157560111825412">الخوادم المتاحة</translation>
 <translation id="4397083831618200686">تحديد المشكلة</translation>
 <translation id="6687228121145903051">لا يمكن الاتصال بـ VPN (خطأ آخر)</translation>
 <translation id="9184988385244077767">لا يوجد إنترنت عند الاتصال</translation>
@@ -805,7 +819,6 @@
 <translation id="7358989216567322955">رسوم الأولوية القصوى</translation>
 <translation id="9091334651803050473">على الرغم من أنه ليس ضمانًا، فمن المرجح أن يعطي عمال المناجم الأولوية لمعاملتك إذا دفعت رسومًا أعلى.</translation>
 <translation id="2941112035454246133">منخفض</translation>
-<translation id="5431902940483264007">أمثل</translation>
 <translation id="7304030187361489308">عالٍ</translation>
 <translation id="4853037749278079787">أقصى مقدار من الرسوم  ~$ <ph name="FIAT_VALUE"/>(<ph name="ASSET_VALUE"/>من عملة الإيثيريوم)</translation>
 <translation id="5939983758912255310">الرسوم الأساسية الحالية: <ph name="ASSET_VALUE"/> من عملة Gwei</translation>

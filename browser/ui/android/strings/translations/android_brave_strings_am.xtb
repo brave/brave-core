@@ -107,6 +107,8 @@
 <translation id="1468415711258933398">መደበኛ ትር</translation>
 <translation id="3377025655491224618">የግል ትር</translation>
 <translation id="8982438328166986164">በእርስዎ ዕልባቶች እና የአሰሳ ታሪክ ላይ በመመስረት የድር ጣቢያ ጥቆማዎችን ያሳያል።</translation>
+<translation id="6285118765755298263">ማውጫ ሌላ የፍለጋ ፕሮግራሞች</translation>
+<translation id="919715748352669592">የ OpenSearch ዝርዝርን የሚከተሉ ድር ጣቢያዎችን በራስ -ሰር ይጠቁማል።</translation>
 <translation id="9148058034647219655">ውጣ</translation>
 <translation id="8047754398610073499">የኩኪ አግድ ፈቃድ ማስታወቂያዎች</translation>
 <translation id="2621893359845808115">በጣቢያቸው ላይ ኩኪዎችን ይቀበሉ/አይቀበሉ የሚጠይቁ የድር ጣቢያ ብቅ-ባዮችን ያግዳል።</translation>
@@ -687,7 +689,7 @@
 <translation id="755448900483975096">የግንኙነት አቅራቢ</translation>
 <translation id="1279441577056010362">ወደ ኢሜል ይቀጥሉ</translation>
 <translation id="7125582363614011660">በጋርዲያን ቡድን እገዛ የሚሰጥ ድጋፍ።\n\nእባክዎ እኛን ለማጋራት የሚመችዎትን መረጃ ይምረጡ።\n\nበመጀመሪያ ለእኛ ባጋሩ ቁጥር የድጋፍ ሰራተኞቻችን የእርስዎን ችግር ለመፍታት እንዲያግዙዎት ቀላል ይሆናል።</translation>
-<translation id="7999094850625689785">ለእርስዎ በጣም ቅርብ የሆነ የአገልጋይ ክልል በራስ-ሰር በስርዓትዎ የሰዓት ሰቅ ላይ የተመሠረተ ይሆናል። ፈጣን የበይነመረብ ፍጥነትን ለማረጋገጥ ይህ ይመከራል።</translation>
+<translation id="5431902940483264007">ምርጥ</translation>
 <translation id="4397083831618200686">ጉዳይ ይምረጡ</translation>
 <translation id="6687228121145903051">ከ VPN ጋር መገናኘት አይቻልም (ሌላ ስህተት)</translation>
 <translation id="9184988385244077767">ሲገናኝ ምንም በይነመረብ የለም</translation>
@@ -755,7 +757,6 @@
 <translation id="7358989216567322955">ቅድሚያ የማግኛ የክፍያ ጣሪያ</translation>
 <translation id="9091334651803050473">ዋስትና ባይሆንም ፣ ከፍ ያለ ክፍያ ከከፈሉ የማዕድን ሠራተኞች ለግብይትዎ ቅድሚያ ይሰጣሉ።</translation>
 <translation id="2941112035454246133">ዝቅተኛ</translation>
-<translation id="5431902940483264007">ምርጥ</translation>
 <translation id="7304030187361489308">ከፍተኛ</translation>
 <translation id="4853037749278079787">ከፍተኛው ክፍያ: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ብር)</translation>
 <translation id="5939983758912255310">የአሁን የመነሻ ተመን: <ph name="ASSET_VALUE"/> Gwei</translation>

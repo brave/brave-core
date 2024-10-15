@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">پیشنهادهای وب‌سایت را بر اساس نشانک‌ها و سابقه مرور شما نمایش می‌دهد.</translation>
 <translation id="924029461438529367">نمایش پیشنهادهای جستجو</translation>
 <translation id="1571106259128580884">نمایش پیشنهادهای سایت‌های برتر</translation>
+<translation id="6285118765755298263">فهرست‌بندی سایر موتورهای جستجو</translation>
+<translation id="919715748352669592">فهرست‌بندی خودکار وبسایت‌هایی که از مشخصات OpenSearch پیروی می‌کنند.</translation>
 <translation id="9148058034647219655">خروج</translation>
 <translation id="8047754398610073499">اعلامیه‌های رضایت کوکی را مسدود کنید</translation>
 <translation id="2621893359845808115">پاپ-آپ های وب‌سایت را که از شما می‌خواهند تا کوکی‌های وب‌سایتشان را قبول / رد کنید، مسدود کنید.</translation>
@@ -742,7 +744,19 @@
 <translation id="755448900483975096">شبکه محابراتی تلفن همراه</translation>
 <translation id="1279441577056010362">ادامه و رفتن به ایمیل</translation>
 <translation id="7125582363614011660">پشتیبانی با کمک تیم Guardian ارائه می‌شود.\n\nلطفاً اطلاعاتی را که اشتراک‌گذاریشان با ما مانعی ندارد انتخاب کنید.\n\nهرچه اطلاعاتی که در ابتدا با ما به اشتراک می‌گذارید بیشتر باشد، کارکنان پشتیبانی ما راحت‌تر می‌توانند به شما کمک کنند تا مشکلتان را حل کنید.</translation>
-<translation id="7999094850625689785">بر اساس منطقه زمانی سیستم شما، منطقه سروری که به شما نزدیک‌تر است به‌طور خودکار انتخاب می‌شود. این امر به‌منظور اطمینان از سرعت بالای اینترنت توصیه می‌شود.</translation>
+<translation id="8813171284214934811">به‌طور خودکار نزدیکترین منطقه سرور VPN را بر اساس منطقه زمانی خود انتخاب کنید. این گزینه برای حداکثر کردن سرعت اینترنت توصیه می‌شود.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> شهر - }
+          other {<ph name="CITY_COUNT_MANY"/> شهر - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> سرور}
+          other {<ph name="SERVER_COUNT_MANY"/> سرور}
+        }</translation>
+<translation id="3199127022143353223">سرورها</translation>
+<translation id="5431902940483264007">بهینه</translation>
+<translation id="6527596624419285047">استفاده از بهترین سرور موجود</translation>
+<translation id="6789157560111825412">سرورهای موجود</translation>
 <translation id="4397083831618200686">انتخاب مشکل</translation>
 <translation id="6687228121145903051">اتصال به VPN امکان‌پذیر نیست (خطای دیگر)</translation>
 <translation id="9184988385244077767">هنگام اتصال اینترنت وجود ندارد</translation>
@@ -810,7 +824,6 @@
 <translation id="7358989216567322955">حداکثر کارمزد اولویت‌دار</translation>
 <translation id="9091334651803050473">اگر هزینه بیشتری بپردازید، ماینرها تراکنش شما را در اولویت قرار می‌دهند، هرچند تضمینی برای آن وجود ندارد.</translation>
 <translation id="2941112035454246133">پایین</translation>
-<translation id="5431902940483264007">بهینه</translation>
 <translation id="7304030187361489308">بالا</translation>
 <translation id="4853037749278079787">حداکثر کارمزد: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">کارمزد پایه فعلی: <ph name="ASSET_VALUE"/> Gwei</translation>

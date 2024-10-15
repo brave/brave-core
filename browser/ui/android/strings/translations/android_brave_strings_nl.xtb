@@ -109,6 +109,8 @@
 <translation id="1468415711258933398">Standaard Tab</translation>
 <translation id="3377025655491224618">Privétabblad</translation>
 <translation id="8982438328166986164">Hiermee worden websitesuggesties weergegeven op basis van uw bladwijzers en browsegeschiedenis.</translation>
+<translation id="6285118765755298263">Overzicht van andere zoekmachines</translation>
+<translation id="919715748352669592">Indexeert automatisch websites die de OpenSearch spec volgen.</translation>
 <translation id="9148058034647219655">Sluiten</translation>
 <translation id="8047754398610073499">Kennisgevingen over cookietoestemming blokkeren</translation>
 <translation id="2621893359845808115">Websites die pop-ups geven die vragen om cookies op hun site te accepteren/weigeren worden geblokkeerd</translation>
@@ -705,7 +707,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="755448900483975096">Mobiele provider</translation>
 <translation id="1279441577056010362">Doorgaan naar e-mail</translation>
 <translation id="7125582363614011660">Ondersteuning met de hulp van het Guardian-team.\n\nSelecteer de informatie die u met ons wilt delen.\n\nHoe meer informatie u met ons deelt, hoe gemakkelijker het voor ons ondersteunend personeel is om u te helpen bij het oplossen van uw probleem.</translation>
-<translation id="7999094850625689785">De dichtstbijzijnde regio van de server wordt automatisch geselecteerd op basis van de tijdzone van je systeem. Dit wordt aanbevolen om sneller internet te garanderen.</translation>
+<translation id="5431902940483264007">Optimaal</translation>
 <translation id="4397083831618200686">Probleem selecteren</translation>
 <translation id="6687228121145903051">Kan geen verbinding maken met de VPN (andere fout)</translation>
 <translation id="9184988385244077767">Geen internet bij verbinding</translation>
@@ -773,7 +775,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="7358989216567322955">Max. prioriteitskosten</translation>
 <translation id="9091334651803050473">Hoewel het geen garantie is, zullen miners waarschijnlijk prioriteit geven aan je transactie als je een hoger bedrag betaalt.</translation>
 <translation id="2941112035454246133">Laag</translation>
-<translation id="5431902940483264007">Optimaal</translation>
 <translation id="7304030187361489308">Hoog</translation>
 <translation id="4853037749278079787">Maximale kosten: ~$ <ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Huidige basiskosten: <ph name="ASSET_VALUE"/> Gwei</translation>

@@ -671,6 +671,29 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="4284417062730522399"><ph name="NUM"/> anuncios recibidos este mes</translation>
 <translation id="7697696066810593560">Ha ganado <ph name="NUM"/> en lo que va de mes</translation>
 <translation id="6733193230212030816">Ganancias estimadas: <ph name="RANGE"/></translation>
+<translation id="7924320838799747606">Su saldo</translation>
+<translation id="8714473477079007268">Cartera de <ph name="PROVIDER"/></translation>
+<translation id="3175337080016717494">Cuenta de pagos</translation>
+<translation id="453760933181416879">Ir a mi cuenta</translation>
+<translation id="8290994471756102241">Sesión cerrada</translation>
+<translation id="8414447476773253869">Inicie sesión en <ph name="PROVIDER"/> para consultar su saldo</translation>
+<translation id="615483366383024791">Cuenta de pagos</translation>
+<translation id="1060062421977823695">Sus ganancias en BAT se abonarán en esta cuenta de pagos.</translation>
+<translation id="2544805415966048917">Enviará</translation>
+<translation id="6708522254106492579">Un máximo de <ph name="AMOUNT"/> BAT</translation>
+<translation id="7666058404763778706">Una forma automática de dar apoyo a sitios web y creadores de contenido según el tiempo que dedica a su contenido.</translation>
+<translation id="4319242254058427792">La contribución automática está deshabilitada</translation>
+<translation id="1091835891554961609">Los creadores verificados que visite se mostrarán aquí mientras navega.</translation>
+<translation id="7714706530499503523">La contribución automática envía automáticamente contribuciones mensuales a creadores verificados con Brave según el tiempo que dedica a su contenido.</translation>
+<translation id="2358028754328876971">¿Cómo funciona la contribución automática?</translation>
+<translation id="2870560284913253234">Sitio</translation>
+<translation id="1184072843013036520">Obtenga productos de Brave.</translation>
+<translation id="1170674812179664523">Tienda de Brave</translation>
+<translation id="8673202990286883068">Sus ventajas</translation>
+<translation id="3699766258844277472">Aún no ha establecido ninguna contribución periódica.</translation>
+<translation id="957921474773060718">Siguiente contribución:</translation>
+<translation id="351973834053818251">Contribuciones periódicas</translation>
+<translation id="7751260505918304024">Mostrar todo</translation>
 <translation id="7090992647511817643">cuenta</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="3269475789479462358">dominio</translation>
@@ -860,6 +883,8 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="9111102763498581341">Desbloquear</translation>
 <translation id="5045550434625856497">Contraseña incorrecta</translation>
 <translation id="9195657745688986798">Desbloquear cartera</translation>
+<translation id="2274014756904854136">Toque dos veces la pantalla para continuar</translation>
+<translation id="7795718119973968770">Su cartera está bloqueada como medida de seguridad. Desbloquéela para continuar.</translation>
 <translation id="9175546523521600401">Bloquear cartera</translation>
 <translation id="765834632354589737">Respaldar Monedero</translation>
 <translation id="1108298724135935307">Sitios conectados</translation>
@@ -1755,7 +1780,6 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="6709133671862442373">Noticias</translation>
 <translation id="3553513561058684206">Para Ti</translation>
 <translation id="2217013723701900638">Editores</translation>
-<translation id="7751260505918304024">Mostrar todo</translation>
 <translation id="5138227688689900538">Mostrar menos</translation>
 <translation id="1041218419402648959">Ocultar el contenido de <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3992393738853907417">Puede que también te guste</translation>
@@ -2016,6 +2040,7 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="7355096922131918313">Proporciona tus comentarios aquí</translation>
 <translation id="3027575440738035995">Leo Premium brinda acceso a un conjunto más amplio de modelos de lenguaje para proporcionar respuestas más complejas y con más matices si cabe. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="7488762544858401571">Editado</translation>
+<translation id="1406205536570262057">Editar respuesta</translation>
 <translation id="2399439821649319175">No es útil</translation>
 <translation id="2976167228906046828">Incorrecta</translation>
 <translation id="1183055847065865059">Poco segura o peligrosa</translation>
@@ -2026,6 +2051,7 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="7494736170250048402">Enviar mensaje a Leo</translation>
 <translation id="8712637175834984815">Listo</translation>
 <translation id="1093419424466417703">Esta página es demasiado extensa para las capacidades de Leo. Es posible que se pierda algo de contexto. Leo ha podido leer un <ph name="PERCENTAGE"/> del contenido de la página.</translation>
+<translation id="2186990448773134544">Se ha extraído y sintetizado la información más relevante de la página porque era demasiado extensa para Leo.</translation>
 <translation id="4370698775470316661">Esta conversación es demasiado larga y no puede extenderse más. Es posible que haya disponibles otros modelos que permitan a Leo mantener conversaciones prolongadas sin perder eficacia.</translation>
 <translation id="5719170755629028558">Mejorando la respuesta con Búsqueda de Brave...</translation>
 <translation id="5794962229997281366">Mejorando los resultados de la búsqueda de respuestas para <ph name="SEARCH_TERMS"/>.</translation>
@@ -2115,7 +2141,8 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</translation>
 <translation id="4292121526390005808">Scripts bloqueados</translation>
 <translation id="5046271170844958713">Scripts permitidos</translation>
-<translation id="4575452981007854269">Protecciones mediante huella digital aplicadas</translation>
+<translation id="199862531047218413">protecciones contra el rastreo de huellas digitales aplicadas</translation>
+<translation id="5032505924781383272">La aplicación de tales protecciones no implica necesariamente que la página web esté intentando obtener la huella digital de su navegador.</translation>
 <translation id="1905384713982899903">Huellas digitales bloqueadas</translation>
 <translation id="314364527871618241">Huellas digitales permitidas</translation>
 <translation id="264682546981571963">¿Ya te aburren los avisos de consentimiento de cookies?</translation>
@@ -2180,6 +2207,12 @@ Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</t
 <translation id="2422309687188612485">Proteja hasta 10 dispositivos con un solo plan</translation>
 <translation id="1693568075761612600">No se ha podido crear la incidencia de soporte técnico. Comprueba tu conexión.</translation>
 <translation id="1407707415819020643">Seleccione su servidor</translation>
+<translation id="7406947191797765434"><ph name="CITY_COUNT"/> ciudades; <ph name="SERVER_COUNT"/> servidores</translation>
+<translation id="7337680029337389658">1 ciudad</translation>
+<translation id="1616613632573101617"><ph name="CITY_COUNT"/> ciudades</translation>
+<translation id="5647994901467053283">1 servidor</translation>
+<translation id="8828637853024704314"><ph name="SERVER_COUNT"/> servidores</translation>
+<translation id="6527596624419285047">Usar el mejor servidor que haya disponible</translation>
 <translation id="8463313539532697053">Espera a que se cargue…</translation>
 <translation id="2542131205769293399">No se puede comprobar el estado de su compra. Probablemente se deba a un problema con la red. Vuelva a intentarlo o contacte con el equipo de asistencia.</translation>
 <translation id="4613076894734402086">Editar forma de pago</translation>
