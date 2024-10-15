@@ -2479,6 +2479,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_AVAILABLE_SERVERS" desc="Available servers text">
       Available Servers
     </message>
+    <message name="IDS_SERVER_REGION" desc="Server region title for vpn server selection page">
+      Server region
+    </message>
+    <message name="IDS_REGION_TEXT" desc="Specific region title for vpn server selection page">
+      <ph name="REGION_NAME">%1$s<ex>United states</ex></ph> server
+    </message>
     <message name="IDS_OTHER_ISSUES" desc="Brave Vpn support text">
       Select Issue
     </message>
