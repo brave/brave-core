@@ -2,6 +2,7 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="sv">
 <translation id="1001033507375626788">Nätverket delas med dig</translation>
+<translation id="1001360573085135660">Klicka för att aktivera eller inaktivera behörighet.</translation>
 <translation id="1002085272681738789">Fliken är aktiv igen</translation>
 <translation id="1003088604756913841">Öppna länken i ett nytt fönster i <ph name="APP"/></translation>
 <translation id="100323615638474026">USB-enhet (<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>)</translation>
@@ -15,7 +16,6 @@
 <translation id="1006873397406093306">Det här tillägget kan läsa och ändra dina uppgifter på webbplatser. Du kan styra vilka webbplatser som tillägget har tillgång till.</translation>
 <translation id="1007057452468855774">Aktivera Google Play Butik</translation>
 <translation id="1008186147501209563">Exportera bokmärken</translation>
-<translation id="3901381663982727081">Därför planerar Brave att fasa ut användningen av tredjepartscookies när vi har besvarat eventuella kvarstående konkurrensfrågor från <ph name="BEGIN_LINK"/>den brittiska konkurrens- och marknadsmyndigheten (CMA)<ph name="END_LINK"/>.</translation>
 <translation id="1008261151167010035"><ph name="BRAND"/> kommer ihåg hur du loggade in och loggar in dig automatiskt när det är möjligt. När funktionen är inaktiverad måste du bekräfta varje gång.</translation>
 <translation id="1008544602823861396">har blockerats från att använda dina uppgifter på</translation>
 <translation id="1008557486741366299">Inte nu</translation>
@@ -78,7 +78,6 @@
 <translation id="1049324577536766607">{COUNT,plural, =1{Tar emot <ph name="ATTACHMENTS"/> från <ph name="DEVICE_NAME"/>}other{Tar emot <ph name="ATTACHMENTS"/> från <ph name="DEVICE_NAME"/>}}</translation>
 <translation id="1049795001945932310">&amp;Språkinställningar</translation>
 <translation id="1050693411695664090">Dålig</translation>
-<translation id="1053776357096024725">Förbättra ljudet från den inbyggda mikrofonen med olika effekter</translation>
 <translation id="1054048317165655285">Slutför konfigurationen på telefonen</translation>
 <translation id="1054153489933238809">Öppna originalbilden i en ny flik</translation>
 <translation id="1054187194995068149">Hej! Det här är en förhandsgranskning</translation>
@@ -148,7 +147,6 @@ Du kan kontrollera dina lösenord när du vill i <ph name="GOOGLE_PASSWORD_MANAG
 <translation id="1093457606523402488">Synliga nätverk:</translation>
 <translation id="1093645050124056515">ctrl + alt + nedåtpil</translation>
 <translation id="1094219634413363886">Du får en avisering om inspelning påbörjas på den här hanterade enheten</translation>
-<translation id="1095557482034465422">Granska webbplatsbehörigheter på <ph name="BEGIN_LINK_PERMISSIONS"/><ph name="PERMISSIONS"/><ph name="END_LINK_PERMISSIONS"/></translation>
 <translation id="1095761715416917775">Se till att du alltid får åtkomst till din synkroniserade data</translation>
 <translation id="1676423917671990874">Brave Lösenordshantering på webben</translation>
 <translation id="109647177154844434">Om du avinstallerar Parallels Desktop tas Windows-avbildningen bort. Även appar, inställningar och data raderas. Vill du fortsätta?</translation>
@@ -239,7 +237,6 @@ Du kan kontrollera dina lösenord när du vill i <ph name="GOOGLE_PASSWORD_MANAG
 <translation id="7442743521469696229">Använd och spara lösenord och nycklar från Brave-kontot</translation>
 <translation id="1166583374608765787">Granska uppdaterat namn</translation>
 <translation id="1166596238782048887"><ph name="TAB_TITLE"/> hör till skrivbordet <ph name="DESK_TITLE"/></translation>
-<translation id="1167262726334064738">Testa ett nytt lösenord</translation>
 <translation id="1168020859489941584">Öppnar om <ph name="TIME_REMAINING"/>...</translation>
 <translation id="1168704243733734901">Aktuellt AI-tema <ph name="INDEX"/> på <ph name="SUBJECT"/>, i <ph name="STYLE"/>-stil, med <ph name="MOOD"/>-stämning.</translation>
 <translation id="116896278675803795">Ändra språk automatiskt för att matcha valt innehåll</translation>
@@ -272,7 +269,6 @@ Du kan kontrollera dina lösenord när du vill i <ph name="GOOGLE_PASSWORD_MANAG
 <translation id="1183237619868651138">Det går inte att installera <ph name="EXTERNAL_CRX_FILE"/> i det lokala cacheminnet.</translation>
 <translation id="1184037892196730210">Det gick inte att casta skärmen</translation>
 <translation id="1185924365081634987">Du kan också försöka lösa nätverksproblemet genom att <ph name="GUEST_SIGNIN_LINK_START"/>surfa som gäst<ph name="GUEST_SIGNIN_LINK_END"/>.</translation>
-<translation id="1187692277738768150">När du använder och sparar detta lösenord:</translation>
 <translation id="1187722533808055681">Antal gånger som systemets vänteprocess har väckts</translation>
 <translation id="1188807932851744811">Loggen har inte laddats upp.</translation>
 <translation id="1190086046506744802">Mycket stort</translation>
@@ -284,11 +280,11 @@ Du kan kontrollera dina lösenord när du vill i <ph name="GOOGLE_PASSWORD_MANAG
 <ph name="DOMAIN"/> kräver att du har smartkortet isatt.}}</translation>
 <translation id="119330003005586565">Sidor du har läst</translation>
 <translation id="1193927020065025187">Den här webbplatsen kan försöka lura dig att tillåta påträngande aviseringar</translation>
+<translation id="11947597112837849">din e-postadress</translation>
 <translation id="1195210374336998651">Öppna appinställningarna</translation>
 <translation id="1195447618553298278">Okänt fel.</translation>
 <translation id="1195558154361252544">Aviseringar blockeras automatiskt på alla webbplatser utom sådana du tillåter</translation>
 <translation id="1197088940767939838">Orange</translation>
-<translation id="1197185198920566650">Det sparas i <ph name="GOOGLE_PASSWORD_MANAGER"/> för <ph name="EMAIL"/>.</translation>
 <translation id="11978075283960463">Data som lagras i appen: <ph name="APP_SIZE"/></translation>
 <translation id="1198066799963193307">Talverktyg för personer med nedsatt syn</translation>
 <translation id="119944043368869598">Ta bort alla</translation>
@@ -349,7 +345,6 @@ Du kan kontrollera dina lösenord när du vill i <ph name="GOOGLE_PASSWORD_MANAG
 <translation id="1238293488628890871">Vill du byta profil?</translation>
 <translation id="1239594683407221485">Utforska innehållet på den här enheten i appen Filer.</translation>
 <translation id="1239841552505950173">Starta app</translation>
-<translation id="1240903469550363138"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> delar ditt namn, din e-postadress, din adress och din profilbild med den här webbplatsen om du fortsätter. Läs webbplatsens <ph name="BEGIN_LINK1"/>integritetspolicy<ph name="END_LINK1"/> och <ph name="BEGIN_LINK2"/>användarvillkor<ph name="END_LINK2"/>.</translation>
 <translation id="1241066500170667906">Välj experimentstatus för <ph name="EXPERIMENT_NAME"/></translation>
 <translation id="124116460088058876">Fler språk</translation>
 <translation id="1241381048229838873">Visa alla bokmärken</translation>
@@ -440,6 +435,7 @@ Du kan kontrollera dina lösenord när du vill i <ph name="GOOGLE_PASSWORD_MANAG
 <translation id="1307431692088049276">Fråga mig inte igen</translation>
 <translation id="1307559529304613120">Hoppsan! Det gick inte att lagra någon långsiktig API-åtkomsttoken för den här enheten.</translation>
 <translation id="1308548450293664112">Jag har skapat den här filen, alternativknappsgrupp, 1 av 3</translation>
+<translation id="1310482092992808703">Gruppera flikar</translation>
 <translation id="131112695174432497">Data som påverkar annonsanpassning raderas</translation>
 <translation id="1311294419381837540">Du castar en flik. Du kan pausa eller sluta casta när du vill.</translation>
 <translation id="1092870157695460112">Upptäck utökat skydd och få Braves bästa säkerhet för nedladdningar</translation>
@@ -500,6 +496,7 @@ Du kan kontrollera dina lösenord när du vill i <ph name="GOOGLE_PASSWORD_MANAG
 <translation id="1355088139103479645">Vill du radera all data?</translation>
 <translation id="1356376170199999104">Tillåts – <ph name="PERMISSION_DETAILS"/>. Slå på mikrofonen med det fysiska reglaget.</translation>
 <translation id="1356959069439783953">Inaktiva flikar får ett nytt utseende</translation>
+<translation id="1357766361161708728">Vill du stänga oanvända flikar?</translation>
 <translation id="1358741672408003399">Stavning och grammatik</translation>
 <translation id="1359923111303110318">Enheten kan låsas upp med Smart Lock. Tryck på Retur för att låsa upp.</translation>
 <translation id="1361164813881551742">Lägg till manuellt</translation>
@@ -555,6 +552,7 @@ Du kan kontrollera dina lösenord när du vill i <ph name="GOOGLE_PASSWORD_MANAG
 <translation id="1401216725754314428">Läs mer om relaterade webbplatser på en ny flik</translation>
 <translation id="1402426911829176748">Ansluter till enheten</translation>
 <translation id="1403222014593521787">Det gick inte att ansluta till proxyservern</translation>
+<translation id="1405336513195181336">Detta omfattar bokmärken, tillägg och webbplatshistorik.</translation>
 <translation id="1405779994569073824">Har kraschat.</translation>
 <translation id="1406500794671479665">Verifierar …</translation>
 <translation id="1407069428457324124">Mörkt tema</translation>
@@ -687,6 +685,7 @@ Behörigheter som du redan har gett appar kan gälla för det här kontot. Du ka
 <translation id="1486486872607808064">Skanna den här QR-koden med kameran på enheten där du vill skapa en nyckel för <ph name="APP_NAME"/></translation>
 <translation id="1486616492435615702">Skapa ett utkast eller finjustera befintligt arbete.</translation>
 <translation id="1487335504823219454">Aktiverat – anpassade inställningar</translation>
+<translation id="1487905215557235729">Organisationen kan se och hantera webbinformation i jobbprofilen, till exempel bokmärken, historik och lösenord.</translation>
 <translation id="1493892686965953381">Väntar på <ph name="LOAD_STATE_PARAMETER"/> ...</translation>
 <translation id="1494349716233667318">Webbplatser kan begära tillstånd att använda teckensnitt som har installerats på enheten</translation>
 <translation id="1494429729245089920">Den virtuella maskinen <ph name="VM_NAME"/> finns men verkar inte vara en giltig <ph name="APP_NAME"/>-VM. Kontakta administratören.</translation>
@@ -912,7 +911,6 @@ Behörigheter som du redan har gett appar kan gälla för det här kontot. Du ka
     <ph name="BEGIN_PARAGRAPH2"/>Du kan inaktivera den här tjänsten i Inställningar.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="1637224376458524414">Få det här bokmärket till din iPhone</translation>
 <translation id="1637765355341780467">Något gick snett när profilen skulle öppnas. Vissa funktioner kanske inte är tillgängliga.</translation>
-<translation id="1637830036924985819">Ibland använder webbplatser cookies på sätt som de inte var avsedda för</translation>
 <translation id="1639239467298939599">Profilen läses in</translation>
 <translation id="1640235262200048077"><ph name="IME_NAME"/> fungerar inte i Linux-appar ännu</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 med RSA-kryptering</translation>
@@ -981,7 +979,6 @@ Behörigheter som du redan har gett appar kan gälla för det här kontot. Du ka
 <translation id="168991973552362966">Lägg till en skrivare i närheten</translation>
 <translation id="1689945336726856614">Kopiera webbadress</translation>
 <translation id="1690068335127678634">Konfigurera delad skärm</translation>
-<translation id="1690443285859726589">Justera identifieringsgränsen så att du bekvämt kan utlösa rörelsen</translation>
 <translation id="1692115862433274081">Använd ett annat konto</translation>
 <translation id="1692118695553449118">Synkronisering är på</translation>
 <translation id="1692210323591458290">Mörklila</translation>
@@ -1039,7 +1036,6 @@ Behörigheter som du redan har gett appar kan gälla för det här kontot. Du ka
 <translation id="1720318856472900922">TLS WWW-serverautentisering</translation>
 <translation id="172123215662733643">Bildsökning med <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="1722460139690167654">Din <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> hanteras<ph name="END_LINK"/> av <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="12216295917829487">På vilket sätt kan data användas för att Brave ska fungera bättre för dig?</translation>
 <translation id="1723824996674794290">&amp;Nytt fönster</translation>
 <translation id="1724801751621173132">Inmatningsläge</translation>
 <translation id="1725562816265788801">Scrolla mellan flikar</translation>
@@ -1066,7 +1062,6 @@ Behörigheter som du redan har gett appar kan gälla för det här kontot. Du ka
 <translation id="1743970419083351269">Stäng nedladdningsfältet</translation>
 <translation id="1744108098763830590">bakgrundssida</translation>
 <translation id="1745732479023874451">Hantera kontakter</translation>
-<translation id="1746797507422124818">Din data när du surfar</translation>
 <translation id="1748283190377208783">{0,plural, =1{unused plural form}other{Vill du öppna och redigera # filer i den här webbappen?}}</translation>
 <translation id="1748329107062243374">Använd en nyckel från <ph name="DEVICE_NAME"/> för att logga in på <ph name="WEBSITE"/></translation>
 <translation id="1901235742643584247">Du kan spara det här lösenordet i Brave-kontot eller endast på den här enheten</translation>
@@ -1204,9 +1199,11 @@ Behörigheter som du redan har gett appar kan gälla för det här kontot. Du ka
 <translation id="1838374766361614909">Rensa sökning</translation>
 <translation id="1839021455997460752">Din e-postadress</translation>
 <translation id="1839540115464516994">Visa i <ph name="LOCATION"/></translation>
+<translation id="184050083485873615">Granska och välj</translation>
 <translation id="1841616161104323629">Uppgift om enheten saknas.</translation>
 <translation id="1841705068325380214"><ph name="EXTENSION_NAME"/> har inaktiverats</translation>
 <translation id="184183613002882946">Nej, 1 brytare räcker</translation>
+<translation id="1842681835432895345">Uteslut den här skärmen i spegelläget</translation>
 <translation id="184273675144259287">Ersätt Linux-appar och Linux-filer med en säkerhetskopia</translation>
 <translation id="1842766183094193446">Vill du aktivera demoläget?</translation>
 <translation id="1843048149176045210">Kopiera nedladdningslänk</translation>
@@ -1408,6 +1405,7 @@ Behörigheter som du redan har gett appar kan gälla för det här kontot. Du ka
 <translation id="197989455406964291">KDC har inte stöd för krypteringstypen</translation>
 <translation id="1980168597243156">Rymdstation</translation>
 <translation id="1981434377190976112">Läsa all din data på alla webbplatser</translation>
+<translation id="1983074053702805575">{count,plural, =1{{field_1}}=2{{field_1} och {field_2}}other{{field_1}, {field_2} och {field_3}}}</translation>
 <translation id="1984417487208496350">Inget skydd (rekommenderas inte)</translation>
 <translation id="1986836014090708999">Avancerade platsinställningar</translation>
 <translation id="1987317783729300807">Konton</translation>
@@ -1426,6 +1424,7 @@ Behörigheter som du redan har gett appar kan gälla för det här kontot. Du ka
 <translation id="199610894463449797">{0,plural, =1{Stäng den här profilen}other{Stäng den här profilen (# fönster)}}</translation>
 <translation id="5123795870522389058">Brave behöver behörighet för att ansluta till enheten via Bluetooth</translation>
 <translation id="1997616988432401742">Dina certifikat</translation>
+<translation id="1998715278591719161">Får spåra dina händer</translation>
 <translation id="1999115740519098545">Vid start</translation>
 <translation id="2002109485265116295">Realtid</translation>
 <translation id="2002160221914907025">Experimentell AI</translation>
@@ -1575,6 +1574,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="2105809836724866556"><ph name="MODULE_TITLE"/> har dolts</translation>
 <translation id="2108204112555497972">Genomsöktes för <ph name="NUM_DAYS_HOURS_MINUTES"/> sedan</translation>
 <translation id="2108349519800154983">{COUNT,plural, =1{Telefonnummer}other{# telefonnummer}}</translation>
+<translation id="2109384632594340939">din profilbild</translation>
 <translation id="2110941575868943054">Tillåts att söka efter Bluetooth-enheter</translation>
 <translation id="211144231511833662">Rensa typer</translation>
 <translation id="2111670510994270194">Ny flik till höger</translation>
@@ -1592,6 +1592,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="211803431539496924">Vill du bekräfta utökade säkerhetsuppdateringar?</translation>
 <translation id="2118594521750010466">Åtgärda nu</translation>
 <translation id="2119461801241504254">Säker webbsökning är aktiverat och skyddar dig från skadliga webbplatser och nedladdningar</translation>
+<translation id="2119602978828978573">Språk som Live Caption har stöd för</translation>
 <translation id="2120297377148151361">Aktivitet och interaktion</translation>
 <translation id="2120639962942052471"><ph name="PERMISSION"/> har blockerats</translation>
 <translation id="2121055421682309734">{COUNT,plural, =0{Cookies blockeras}=1{Cookies blockeras, 1 undantag}other{Cookies blockeras, {COUNT} undantag}}</translation>
@@ -1615,14 +1616,12 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="2137128126782078222">Tillåt inte aviseringar från <ph name="WEBSITE"/></translation>
 <translation id="2139919072249842737">Konfigureringsknapp</translation>
 <translation id="2140788884185208305">Batterihälsa</translation>
-<translation id="2140902257485550046">Välj att blockera alla tillägg på webbplatsen</translation>
 <translation id="2142328300403846845">Öppna länk som</translation>
 <translation id="9170678194652701692">Skapa en sexsiffrig pinkod för återställning för Brave Lösenordshantering, pinkodsiffra <ph name="NUM_DIGIT"/> av 6</translation>
 <translation id="6699507173861768979">Aktivera <ph name="LINK1_BEGIN"/>Brave Sync<ph name="LINK1_END"/> för att se de senaste flikarna i Brave. <ph name="LINK2_BEGIN"/>Läs mer<ph name="LINK2_END"/></translation>
 <translation id="2143089736086572103">Visas för vissa kontakter</translation>
 <translation id="2143765403545170146">Visa alltid verktygsfältet i helskärmsläge</translation>
 <translation id="2143778271340628265">Manuell proxykonfiguration</translation>
-<translation id="2143808295261240440">Använd rekommenderat lösenord</translation>
 <translation id="2143915448548023856">Skärminställningar</translation>
 <translation id="2144536955299248197">Certifikatvisare: <ph name="CERTIFICATE_NAME"/></translation>
 <translation id="2144557304298909478">Android-apputveckling i Linux</translation>
@@ -1711,6 +1710,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="2421570739058774699">Verifiera din identitet om du vill skapa den här nyckeln med Brave Lösenordshantering</translation>
 <translation id="2204387456724731099">Det gick inte att översätta urvalet</translation>
 <translation id="2207116775853792104">Behåll det här tillägget</translation>
+<translation id="2209841631181508629"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> delar <ph name="FIELDS_STRING"/> med den här webbplatsen om du fortsätter. Läs webbplatsens <ph name="BEGIN_LINK"/>användarvillkor<ph name="END_LINK"/>.</translation>
 <translation id="2210462644007531147">Det gick inte att slutföra installationen</translation>
 <translation id="2211043920024403606">Profilinformation</translation>
 <translation id="2211245494465528624">Hantera synkroniseringsalternativ</translation>
@@ -1792,7 +1792,6 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="2266957463645820432">IPP över USB (IPPUSB)</translation>
 <translation id="2268130516524549846">Bluetooth inaktiverat</translation>
 <translation id="2268182915828370037">Vill du inaktivera filsynkronisering?</translation>
-<translation id="2269895253281481171">Du meddelas om lösenordet någon gång är utsatt</translation>
 <translation id="2270450558902169558">Utväxla  data med enheter i domänen <ph name="DOMAIN"/></translation>
 <translation id="2270612886833477697"><ph name="BEGIN_PARAGRAPH1"/>Installationen <ph name="BEGIN_BOLD"/>innebär att hårddisken rensas fullständigt<ph name="END_BOLD"/>. Kontrollera att du har en säkerhetskopia av din data.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>När installationen har påbörjats går den inte att avbryta.<ph name="END_PARAGRAPH2"/></translation>
@@ -1970,6 +1969,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="2379281330731083556">Skriv ut via systemets dialogruta ... <ph name="SHORTCUT_KEY"/></translation>
 <translation id="2381461748765773292">Mobilnätverket kan kopplas från i några minuter</translation>
 <translation id="2381499968174336913">Förhandsgranskning av delad flik</translation>
+<translation id="2382368170666222719">Inaktivera inbyggd styrplatta</translation>
 <translation id="2382875860893882175">Castingen har pausats. Du kan återuppta castingen eller sluta casta när du vill.</translation>
 <translation id="2383825469508278924">Ändra tangentmappning, funktionstangenter med mera</translation>
 <translation id="2387052489799050037">Öppna startskärmen</translation>
@@ -2060,12 +2060,6 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="2444874983932528148">Fortsätt enkelt där du slutade</translation>
 <translation id="2445081178310039857">Tilläggets rotkatalog måste anges.</translation>
 <translation id="2445484935443597917">Skapa en ny profil</translation>
-<translation id="4684615723024689090">Den här informationen kan vara användbar. Den kan till exempel bidra till att Brave förbättras genom att ge insikter om hur snabbt sidor läses in under olika förhållanden. Beroende på dina inställningar kan den även
-      &lt;ul&gt;
-        &lt;li&gt;hjälpa dig att surfa snabbare (dina tidigare sökningar på Brave kan till exempel hjälpa Brave att förutsäga framtida sökningar)&lt;/li&gt;
-        &lt;li&gt;göra det möjligt för webbplatser att optimera din upplevelse för enheten (en webbplats kan till exempel anpassa innehållet för telefonen och komma ihåg dina inställningar, t.ex. vilket språk du föredrar) &lt;/li&gt;
-        &lt;li&gt;hjälpa annonsörer, inklusive Brave, att visa mer relevanta annonser.&lt;/li&gt;
-      &lt;/ul&gt;</translation>
 <translation id="2445726032315793326">Partiell skärmförstoring</translation>
 <translation id="244641233057214044">Relaterat till din sökning</translation>
 <translation id="2447587550790814052">Nu kan du använda Steam för Chromebook (beta)</translation>
@@ -2110,6 +2104,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="247051149076336810">Webbadress för filresurs</translation>
 <translation id="2471469610750100598">Svart (standard)</translation>
 <translation id="2471506181342525583">Platsåtkomst tillåts</translation>
+<translation id="2471632709106952369">Jämförelsetabeller</translation>
 <translation id="2473195200299095979">Översätt den här sidan</translation>
 <translation id="2475982808118771221">Det uppstod ett fel</translation>
 <translation id="247616523300581745">Dölj de här filerna</translation>
@@ -2172,6 +2167,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
         <ph name="BREAK"/>
         Du kan hantera inställningarna i kortmenyn. Det finns även fler alternativ i Anpassa Brave.</translation>
 <translation id="2514326558286966059">Lås upp snabbare med ditt fingeravtryck</translation>
+<translation id="2514465118223423406">När en mus är ansluten</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="251722524540674480">Bekräfta ditt användarnamn</translation>
 <translation id="2517472476991765520">Sök</translation>
@@ -2191,6 +2187,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="2526590354069164005">Skrivbord</translation>
 <translation id="2526619973349913024">Sök efter uppdatering</translation>
 <translation id="2527167509808613699">Ospecificerad anslutning</translation>
+<translation id="2529459639389641691">{NUM_TABS,plural, =0{Inga oanvända flikar}=1{Stäng 1 oanvänd flik}other{Stäng # oanvända flikar}}</translation>
 <translation id="2529887123641260401">Du kan när som helst ändra inställningarna och öppna konfigureringsguiden via inställningarna för brytarstyrning.</translation>
 <translation id="2530166226437958497">Felsökning</translation>
 <translation id="2531530485656743109"><ph name="BEGIN_PARAGRAPH1"/>Något gick fel och <ph name="DEVICE_OS"/> kunde inte installeras.<ph name="END_PARAGRAPH1"/>
@@ -2495,6 +2492,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="2749881179542288782">Kontrollera grammatik och stavning</translation>
 <translation id="7507149186999809092">Fler inställningar och behörigheter för Brave-appen</translation>
 <translation id="2750602041558385535">Overifierad nedladdning har blockerats</translation>
+<translation id="2751883373055093745"><ph name="WEBSITE"/> vill få tillgång till id-numret på din säkerhetsnyckel. Webbplatsen får reda på exakt vilken säkerhetsnyckel du använder.</translation>
 <translation id="275213133112113418">Kortet har sparats</translation>
 <translation id="2753623023919742414">Klicka för att söka</translation>
 <translation id="2754226775788136540">Söker efter enheter med snabb parkoppling som sparats i <ph name="PRIMARY_EMAIL"/></translation>
@@ -2549,6 +2547,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="2787354132612937472">–</translation>
 <translation id="2788135150614412178">+</translation>
 <translation id="2789486458103222910">OK</translation>
+<translation id="2790750268015892264">Isolerade webbappar kan inte styra smartkortsläsare. Appar får inte åtkomst till något smartkort.</translation>
 <translation id="2791529110887957050">Ta bort Linux</translation>
 <translation id="2791952154587244007">Ett fel har inträffat. Kioskappen kan inte startas automatiskt på den här enheten.</translation>
 <translation id="2792290659606763004">Vill du ta bort Android-appar?</translation>
@@ -2580,6 +2579,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="2806372837663997957">Enheten som du försökte att dela med godkände inte delningsförsöket</translation>
 <translation id="2806891468525657116">Genvägen finns redan</translation>
 <translation id="2807517655263062534">Filer som du laddar ned visas här</translation>
+<translation id="2808481877345177494">Logga in för att hålla jobbsurfandet och ditt privata surfande åtskilda på ett säkert sätt. Öka din produktivitet samtidigt som du skyddar känslig företagsdata.</translation>
 <translation id="2811205483104563968">Konton</translation>
 <translation id="2812049959647166806">Thunderbolt stöds inte</translation>
 <translation id="2812171980080389735">Spara nätverk och lösenord så att du kan ansluta direkt</translation>
@@ -2589,7 +2589,6 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="2814489978934728345">Sluta ladda den här sidan</translation>
 <translation id="2815693974042551705">Bokmärkesmapp</translation>
 <translation id="2576226373705473566">Aktivera synkronisering om du vill spara lösenord i Brave-kontot.</translation>
-<translation id="2816628817680324566">Vill du tillåta webbplatsen att identifiera din säkerhetsnyckel?</translation>
 <translation id="2817435998497102771">Ställ in bakgrund och stil</translation>
 <translation id="2817861546829549432">Om du aktiverar Spåra inte betyder det att en begäran kommer att ingå i din webbtrafik. Eventuella effekter beror på om webbplatsen svarar på begäran och hur begäran tolkas. Vissa webbplatser kan till exempel svara på begäran genom att visa annonser som inte bygger på andra webbplatser som du har besökt. Många webbplatser kommer ändå att samla in och använda din webbinformation – till exempel för att förbättra säkerheten, tillhandahålla innehåll, tjänster, annonser och rekommendationer på sina webbplatser samt generera rapportstatistik.</translation>
 <translation id="2818476747334107629">Skrivarinformation</translation>
@@ -2614,7 +2613,6 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="2835177225987815960">Din nuvarande konfiguration för genomsökning återställs, inklusive brytartilldelningar och hastighetsinställning för automatisk genomsökning.</translation>
 <translation id="2835547721736623118">Tjänst för taligenkänning</translation>
 <translation id="2835761321523638096">Läsa och ändra poster i läslistan</translation>
-<translation id="2836232638504556905"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> delar ditt namn, din e-postadress, din adress och din profilbild med den här webbplatsen om du fortsätter. Läs webbplatsens <ph name="BEGIN_LINK"/>integritetspolicy<ph name="END_LINK"/>.</translation>
 <translation id="2836269494620652131">Krasch</translation>
 <translation id="283669119850230892">För att kunna använda nätverket <ph name="NETWORK_ID"/> måste du först ansluta till Internet nedan.</translation>
 <translation id="2838379631617906747">Installerar</translation>
@@ -2653,6 +2651,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="2864601841139725659">Ange profilbild</translation>
 <translation id="2865057607286263192">Tryck länge på tangenterna för att se accenttecken och specialtecken. Detta inaktiverar upprepad tangenttryckning för alfabetiska tangenter. Endast tillgängligt på engelska (USA).</translation>
 <translation id="2865919525181940183">Skärmbild av program som visas på skärmen</translation>
+<translation id="286643536820867504">Textar automatiskt på språk som stöds. Ljudet lämnar aldrig enheten.</translation>
 <translation id="286674810810214575">Kontrollerar strömkällor …</translation>
 <translation id="2867768963760577682">Öppna som en fast flik</translation>
 <translation id="2868746137289129307">Tillägget är inaktuellt och inaktiverat av företagspolicyn. Det kan aktiveras automatiskt när en ny version blir tillgänglig.</translation>
@@ -2988,11 +2987,6 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="3113970906450647715">Knappen har lossats</translation>
 <translation id="3115147772012638511">Väntar på cache-minnet...</translation>
 <translation id="3115580024857770654">Komprimera alla</translation>
-<translation id="3115728370128632723">Att webben fungerar bättre för dig innebär att
-      &lt;ul&gt;
-        &lt;li&gt;du skyddas när du surfar&lt;/li&gt;
-        &lt;li&gt;webbläsaren bidrar till ett framgångsrikt ekosystem som håller webben säker och öppen, snabb och kostnadsfri.&lt;/li&gt;
-      &lt;/ul&gt;</translation>
 <translation id="8322945005389987780">Hantera språk för Brave-konto</translation>
 <translation id="3117362587799608430">Dockningsstationen är inte fullständigt kompatibel</translation>
 <translation id="3117791853215125017">{COUNT,plural, =1{Det gick inte att skicka <ph name="ATTACHMENTS"/> till <ph name="DEVICE_NAME"/>}other{Det gick inte att skicka <ph name="ATTACHMENTS"/> till <ph name="DEVICE_NAME"/>}}</translation>
@@ -3073,6 +3067,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="3184591616546256659">Använd den här pinkoden om du vill ändra inställningarna för föräldrakontroller.
     Om du glömmer pinkoden använder du Powerwash på den här enheten och konfigurerar den på nytt.</translation>
 <translation id="3185014249447200271">{NUM_APPS,plural, =1{Den här appen har blockerats}other{Vissa appar har blockerats}}</translation>
+<translation id="3185454065699440434">Tillåt tillägg på <ph name="SITE_NAME"/></translation>
 <translation id="3187472288455401631">Annonsmätning</translation>
 <translation id="7586329819243474001">Visas Cast-enheten i
     <ph name="BEGIN_LINK"/>
@@ -3149,7 +3144,6 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="3247649647204519958">Härifrån kan du se och hantera tilläggsbehörigheter för webbplatsen som du besöker</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/> – nätverksfel</translation>
 <translation id="3248902735035392926">Säkerheten har betydelse. Ta dig tid att <ph name="BEGIN_LINK"/>kolla igenom dina tillägg nu<ph name="END_LINK"/></translation>
-<translation id="3249323165366527554">Registrera dig och logga in snabbare när ditt lösenord sparas automatiskt i <ph name="GOOGLE_PASSWORD_MANAGER"/> för <ph name="EMAIL"/>.</translation>
 <translation id="3251119461199395237">Filsynkronisering</translation>
 <translation id="3251714896659475029">Låt <ph name="SUPERVISED_USER_NAME"/> få åtkomst till Brave Assistent med ”Hey Brave”</translation>
 <translation id="3251759466064201842">&lt;ingår inte i certifikat&gt;</translation>
@@ -3239,6 +3233,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="3308852433423051161">Brave Assistent läses in …</translation>
 <translation id="3309124184713871355">Byggnader</translation>
 <translation id="3309330461362844500">Id för certifikatprofil</translation>
+<translation id="331080746368555063">Privata webbplatser kan vara till exempel företagets intranät</translation>
 <translation id="3311445899360743395">Data kopplad till den här appen kanske tas bort från enheten.</translation>
 <translation id="3312470654018965389">Linux-behållaren konfigureras</translation>
 <translation id="365826660749219377">Du kan söka på en viss webbplats eller i en viss avdelning i Brave genom att först skriva genvägen i adressfältet och därefter trycka på önskat kortkommando. Till exempel kan du skriva @bookmarks och trycka på tabb eller blanksteg om du vill söka enbart bland bokmärkena.</translation>
@@ -3265,11 +3260,14 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="3333190335304955291">Du kan inaktivera den här tjänsten i Inställningar.</translation>
 <translation id="3333961966071413176">Alla kontakter</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – video spelas upp bild-i-bild-läge</translation>
+<translation id="3335380372402547327">Förhandsgranska blinkande aviseringar</translation>
 <translation id="3335947283844343239">Öppna stängd flik igen</translation>
 <translation id="3336855445806447827">Vet ej</translation>
 <translation id="3337568642696914359">Tillåt inte att webbplatser hanterar protokoll</translation>
+<translation id="333863344734218290">Varnar för osäkra offentliga och privata webbplatser</translation>
 <translation id="3340620525920140773">Nedladdningen är klar: <ph name="FILE_NAME"/>.</translation>
 <translation id="3340978935015468852">inställningar</translation>
+<translation id="2462927274144730162">Brave kan skapa och översätta textning för de språk som visas här</translation>
 <translation id="3341699307020049241">Fel pinkod. Du har <ph name="RETRIES"/> försök kvar.</translation>
 <translation id="3341703758641437857">Tillåt åtkomst till webbadresser i filen</translation>
 <translation id="334171495789408663">Token har kopierats</translation>
@@ -3397,13 +3395,11 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="3435738964857648380">Säkerhet</translation>
 <translation id="343578350365773421">Slut på papper</translation>
 <translation id="3435896845095436175">Aktivera</translation>
-<translation id="3436545938885366107">Tänk dig att du har ett favoritkafé där du dricker ditt morgonkaffe. Du kanske är en så frekvent kund att butiksägaren vet vad du heter och kan göra i ordning din beställning, en dubbel espresso med en sockerbit, direkt när du kliver in genom dörren.</translation>
 <translation id="3438633801274389918">Ninja</translation>
 <translation id="3439153939049640737">Låt alltid <ph name="HOST"/> använda din mikrofon</translation>
 <translation id="3439970425423980614">Öppnar PDF i förhandsgranskning</translation>
 <translation id="3440663250074896476">Fler åtgärder för <ph name="BOOKMARK_NAME"/></translation>
 <translation id="3441653493275994384">Skärm</translation>
-<translation id="3441663102605358937">Logga in på <ph name="ACCOUNT"/> igen för att verifiera kontot</translation>
 <translation id="3338111307694111747">Låt Brave använda din hårdvarudata för att förbättra <ph name="DEVICE_OS"/>. Om du nekar skickas denna data ändå till Brave i syfte att fastställa lämpliga uppdateringar, men den varken lagras eller används på andra sätt.</translation>
 <translation id="3443545121847471732">Ange en sexsiffrig pinkod</translation>
 <translation id="3443744348829035122"><ph name="BRAND"/> överskred tidsgränsen</translation>
@@ -3425,6 +3421,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="3450157232394774192">Kapacitetsprocentsats för inaktivitet</translation>
 <translation id="3450180775417907283"><ph name="MANAGER"/> kräver att du ansluter till wifi och laddar ned en uppdatering nu.</translation>
 <translation id="345078987193237421">Detta ger kameraåtkomst för appar, webbplatser med kamerabehörighet och systemtjänster</translation>
+<translation id="3451362021220965191">Isolerade webbappar styr smartkortsläsare för att få åtkomst till smartkort som har infogats eller visats för dem. Smartkort innehåller vanligtvis identiteter som används för att autentisera eller auktorisera åtgärder, logga in på tjänster och liknande.</translation>
 <translation id="3452999110156026232">Föräldraåtkomst</translation>
 <translation id="3453082738208775226">Vill du rensa i lagringsutrymmet offline?</translation>
 <translation id="3453597230179205517">Platsåtkomst har blockerats</translation>
@@ -3468,6 +3465,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="3484869148456018791">Hämta nytt certifikat</translation>
 <translation id="3487007233252413104">anonym funktion</translation>
 <translation id="3487649228420469005">Genomsökningen är klar</translation>
+<translation id="3488199663160411179">ditt namn</translation>
 <translation id="3490695139702884919">Laddas ned … <ph name="PERCENT"/> %</translation>
 <translation id="3491669675709357988">Ditt barns konto har inte konfigurerats för föräldrakontroller i Family Link. Du kan lägga till föräldrakontroller när du har slutfört konfigureringen. Information om föräldrakontroller finns i Utforska-appen.</translation>
 <translation id="3491678231052507920">Åtkomst till VR-enheter och VR-data brukar kunna behövas för VR-sessioner på webbplatsen</translation>
@@ -3518,6 +3516,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="3521606918211282604">Ändra diskstorlek</translation>
 <translation id="3522088408596898827">Mycket ont om diskutrymme. Frigör diskutrymme och försök igen.</translation>
 <translation id="3522979239100719575">Söker efter tillgängliga profiler. Det kan ta några minuter.</translation>
+<translation id="3523447078673133727">Tillåt inte att webbplatser spårar dina händer</translation>
 <translation id="3524518036046613664">Upptäck enheter i det lokala nätverket, t.ex. skrivare</translation>
 <translation id="3524965460886318643">Exportera aktivitet</translation>
 <translation id="3525426269008462093">Granska enhetssynkronisering efter konfigureringen</translation>
@@ -3610,6 +3609,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="3596012367874587041">Appinställningar</translation>
 <translation id="3599221874935822507">Upphöjd</translation>
 <translation id="3600051066689725006">Information om webbegäran</translation>
+<translation id="3600956933576601730">Du måste läsa igenom och godkänna villkoren för att använda dessa funktioner</translation>
 <translation id="3601374594714740284">Frigör utrymme på enheten för röster av högre kvalitet</translation>
 <translation id="360180734785106144">Visa erbjudanden om nya funktioner när de blir tillgängliga</translation>
 <translation id="3602290021589620013">Förhandsgranskning</translation>
@@ -3710,6 +3710,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="2334029754052191847">Brave har upptäckt att visa av inställningarna har skadats av ett annat program och återställer dem till standardinställningarna.</translation>
 <translation id="3665919494326051362">Den aktuella versionen är <ph name="CURRENT_VERSION"/></translation>
 <translation id="3666196264870170605">Intel WiFi NICs-felsökningsdump</translation>
+<translation id="3666529246018937077">Din befintliga webbinformation finns kvar i den gamla profilen. Din jobbprofil innehåller ingen tidigare webbinformation.</translation>
 <translation id="3666971425390608309">Nedladdningen har pausats: <ph name="FILE_NAME"/></translation>
 <translation id="3670113805793654926">Enheter från alla leverantörer</translation>
 <translation id="3670229581627177274">Aktivera Bluetooth</translation>
@@ -3777,6 +3778,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="3708295717182051206">Textning</translation>
 <translation id="3708684582558000260">Tillåt inte att stängda webbplatser fortsätter skicka eller ta emot data</translation>
 <translation id="3709244229496787112">Webbläsaren stängdes innan nedladdningen var klar.</translation>
+<translation id="3710501561113687889"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> delar <ph name="FIELDS_STRING"/> med den här webbplatsen om du fortsätter.</translation>
 <translation id="3711931198657368127">Kli&amp;stra in och besök <ph name="URL"/></translation>
 <translation id="3711945201266135623"><ph name="NUM_PRINTERS"/> skrivare från utskriftsservern hittades</translation>
 <translation id="3712050472459130149">Kontouppdatering krävs</translation>
@@ -3978,6 +3980,7 @@ Detta kan omfatta information om installerad mjukvara, filer, webbläsaren och e
 <translation id="3828953470056652895">Jag har läst och godkänner <ph name="BEGIN_LINK1"/>Braves användarvillkor<ph name="END_LINK1"/>, <ph name="BEGIN_LINK2"/>de ytterligare användarvillkoren för Brave och ChromeOS<ph name="END_LINK2"/> samt <ph name="BEGIN_LINK3"/>användarvillkoren för Play<ph name="END_LINK3"/>.</translation>
 <translation id="3829530269338026191"><ph name="WINDOW_TITLE"/> – Hög minnesanvändning – <ph name="MEMORY_VALUE"/></translation>
 <translation id="3829765597456725595">SMB-filresurs</translation>
+<translation id="38298897782945211">Isolerade webbappar följer automatiskt den här inställningen.</translation>
 <translation id="3830470485672984938">Använd en annan nyckel</translation>
 <translation id="3830654885961023588">{NUM_EXTENSIONS,plural, =1{Administratören har återaktiverat 1 tillägg som kan vara skadligt}other{Administratören har återaktiverat {NUM_EXTENSIONS} tillägg som kan vara skadliga}}</translation>
 <translation id="3834728400518755610">Ändringen av mikrofoninställning kräver att Linux avslutas. Avsluta Linux för att fortsätta.</translation>
@@ -3991,6 +3994,7 @@ Detta kan omfatta information om installerad mjukvara, filer, webbläsaren och e
 <translation id="3839516600093027468">Blockera alltid tillgången till Urklipp för <ph name="HOST"/></translation>
 <translation id="3841282988425489367">Det går inte att konfigurera Steam för Chromebook (beta)</translation>
 <translation id="3841319830220785495">Naturlig standardröst</translation>
+<translation id="3841356782900714251">Smartkortsläsare</translation>
 <translation id="3841964634449506551">Ogiltigt lösenord</translation>
 <translation id="3842552989725514455">Serif-teckensnitt</translation>
 <translation id="3843464315703645664">Tillagd på den interna godkännandelistan</translation>
@@ -4122,7 +4126,6 @@ Detta kan omfatta information om installerad mjukvara, filer, webbläsaren och e
 <translation id="3937640725563832867">Certifikatutfärdarens alternativa namn</translation>
 <translation id="3937734102568271121">Översätt alltid <ph name="LANGUAGE"/></translation>
 <translation id="3938128855950761626">Enheter från leverantör <ph name="VENDOR_ID"/></translation>
-<translation id="3939622756852381766">Ljud- och videouppspelning textas automatiskt</translation>
 <translation id="3941565636838060942">Om du vill dölja programmet måste du avinstallera det med
   <ph name="CONTROL_PANEL_APPLET_NAME"/> i kontrollpanelen.
 
@@ -4189,7 +4192,6 @@ Detta kan omfatta information om installerad mjukvara, filer, webbläsaren och e
 <translation id="3983769721878416534">Fördröjning före klick</translation>
 <translation id="3984135167056005094">Ange inga e-postadresser</translation>
 <translation id="3984159763196946143">Det gick inte att starta demoläget</translation>
-<translation id="3984431586879874039">Vill du tillåta att webbplatsen ser din säkerhetsnyckel?</translation>
 <translation id="3984536049089846927">Nästa sida</translation>
 <translation id="398477389655464998">Kopiera länk till markering</translation>
 <translation id="3984862166739904574">Definition i Snabbinfo</translation>
@@ -4199,6 +4201,7 @@ Detta kan omfatta information om installerad mjukvara, filer, webbläsaren och e
 <translation id="3987993985790029246">Kopiera länk</translation>
 <translation id="3988124842897276887">Den här fliken är ansluten till en USB-enhet</translation>
 <translation id="3988996860813292272">Välj tidszon</translation>
+<translation id="3989635538409502728">Logga ut</translation>
 <translation id="3991055816270226534">Hantera tredjepartscookies och spårningsskydd</translation>
 <translation id="3991746210745534318"><ph name="BEGIN_PARAGRAPH1"/>När Platsangivelsens exakthet är aktiverad används information om trådlösa signaler, som wifi-åtkomstpunkter och mobilnätverksmaster, tillsammans med enheters sensordata, som accelerometer och gyroskop, för att uppskatta mer exakta enhetsplatser som appar och tjänster använder för att tillhandahålla platsbaserade funktioner. För att göra detta samlar Brave med jämna mellanrum in information om enhetssensorer och trådlösa signaler i närheten av enheten för att bidra till identifiering av platser för trådlösa signaler som fastställs med hjälp av massinsamling.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Brave använder informationen som samlas in från enheten för att förbättra platsangivelsens exakthet och platsbaserade tjänster samt i allmänhet förbättra, tillhandahålla och underhålla Braves tjänster. Vi behandlar informationen utifrån Braves och tredje parts berättigade intresse för att tillgodose användarnas behov. Informationen används inte för att identifiera någon person.<ph name="END_PARAGRAPH2"/>
@@ -4359,7 +4362,6 @@ Detta kan omfatta information om installerad mjukvara, filer, webbläsaren och e
 <translation id="4106054677122819586">Nu ordnar vi dina flikar</translation>
 <translation id="4107048419833779140">Identifiera och mata ut lagringsenheter</translation>
 <translation id="4107522742068568249">Öppna säkerhetskontrollen</translation>
-<translation id="4108692279517313721">Varnar för alla osäkra webbplatser</translation>
 <translation id="4109135793348361820">Flytta fönster till <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
 <translation id="4110485659976215879">Återställ varning</translation>
 <translation id="4112194537011183136"><ph name="DEVICE_NAME"/> (offline)</translation>
@@ -4374,6 +4376,7 @@ Detta kan omfatta information om installerad mjukvara, filer, webbläsaren och e
         Du kan hantera inställningarna i kortmenyn. Det finns även fler alternativ i Anpassa Brave.</translation>
 <translation id="4115002065223188701">Nätverket är utanför räckvidden</translation>
 <translation id="4115378294792113321">Magenta</translation>
+<translation id="4116480382905329353">Upptäcktes en gång</translation>
 <translation id="4116704186509653070">Öppna igen</translation>
 <translation id="4117714603282104018">Haptisk återkoppling för styrplatta</translation>
 <translation id="4118579674665737931">Starta om enheten och försök igen.</translation>
@@ -4443,6 +4446,7 @@ Detta kan omfatta information om installerad mjukvara, filer, webbläsaren och e
 <translation id="4181841719683918333">Språk</translation>
 <translation id="4182339886482390129">Förbättrad säker webbsökning gör mer för att skydda dig mot farliga webbplatser, nedladdningar och tillägg</translation>
 <translation id="4184803915913850597">HID-enhet (<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>)</translation>
+<translation id="418527077671811642"><ph name="WEBSITE"/> får reda på märket och modellen på din säkerhetsnyckel</translation>
 <translation id="4186749321808907788"><ph name="QUERY_NAME"/> – sökning på <ph name="DEFAULT_SEARCH_ENGINE_NAME"/></translation>
 <translation id="4187424053537113647">Konfigurerar <ph name="APP_NAME"/> …</translation>
 <translation id="4190446002599583608">Historiksökning med hjälp av AI</translation>
@@ -4516,7 +4520,6 @@ Detta kan omfatta information om installerad mjukvara, filer, webbläsaren och e
 <translation id="4243624244759495699"><ph name="LOCALE"/>, grad <ph name="GRADE"/></translation>
 <translation id="4244238649050961491">Hitta fler appar för e-penna</translation>
 <translation id="4246980464509998944">Fler kommentarer:</translation>
-<translation id="424726838611654458">Öppna alltid i Adobe Reader</translation>
 <translation id="4248401726442101648">Ingen kamera är ansluten</translation>
 <translation id="4249116869350613769">Batterisparläge</translation>
 <translation id="4249248555939881673">Väntar på nätverksanslutning ...</translation>
@@ -4570,6 +4573,7 @@ Detta kan omfatta information om installerad mjukvara, filer, webbläsaren och e
 <translation id="4278779213160967034">Detta kan ta några minuter. Laddar ned filer.</translation>
 <translation id="4279129444466079448">Du kan installera högst <ph name="PROFILE_LIMIT"/> eSIM-profiler på den här enheten. Om du vill lägga till en ny profil måste du först ta bort en av de gamla.</translation>
 <translation id="4280325816108262082">Enheten kopplas från automatiskt när den är inaktiverad eller inte används</translation>
+<translation id="4281412694055934031">Webbplatser kan begära att få installera webbappar på enheten</translation>
 <translation id="4281789858103154731">Skapa</translation>
 <translation id="4281844954008187215">Användarvillkor</translation>
 <translation id="4281849573951338030">Anpassa pennknappar</translation>
@@ -4740,7 +4744,6 @@ Detta kan omfatta information om installerad mjukvara, filer, webbläsaren och e
 <translation id="4405781821077215583">Gör objekt på skärmen, bland annat text, mindre eller större</translation>
 <translation id="4406308048672435032">Du kan inaktivera den här fliken eller uppdatera för att se hela listan igen</translation>
 <translation id="4406883609789734330">Live Caption</translation>
-<translation id="4407039574263172582"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> delar ditt namn, din e-postadress och din profilbild med den här webbplatsen om du fortsätter. Läs webbplatsens <ph name="BEGIN_LINK"/>användarvillkor<ph name="END_LINK"/>.</translation>
 <translation id="4408599188496843485">H&amp;jälp</translation>
 <translation id="4409271659088619928">Du använder <ph name="DSE"/> som sökmotor. Läs den sökmotorns anvisningar för att radera sökhistoriken om tillämpligt.</translation>
 <translation id="4409697491990005945">Marginaler</translation>
@@ -4774,7 +4777,9 @@ Detta kan omfatta information om installerad mjukvara, filer, webbläsaren och e
 <translation id="4426508677408162512">Alla bokmärken</translation>
 <translation id="4426513927906544654">Få innehållsrekommendationer</translation>
 <translation id="4426857487270413362">Det gick inte att ladda ned installationsfiler. Kontrollera internetanslutningen och att du har tillräckligt med ledigt diskutrymme och försök igen. Felkoden är <ph name="ERROR"/>.</translation>
+<translation id="4427111270137140798">Upptäcktes <ph name="COUNT"/> gånger</translation>
 <translation id="4427365070557649936">Bekräftelsekoden verifieras …</translation>
+<translation id="4428579202668721841">Vill du hålla befintlig webbinformation åtskild från jobbprofilen?</translation>
 <translation id="4429163740524851942">Layout på fysiskt tangentbord</translation>
 <translation id="4430019312045809116">Volym</translation>
 <translation id="443031431654216610">Använd bara siffror</translation>
@@ -4839,7 +4844,6 @@ Detta kan omfatta information om installerad mjukvara, filer, webbläsaren och e
 <translation id="4481448477173043917"><ph name="DEVICE_TYPE"/> startades om oväntat</translation>
 <translation id="4481467543947557978">tjänstefunktion</translation>
 <translation id="4482990632723642375">Nyligen stängd flik</translation>
-<translation id="7799508326030156990">Med Brave fungerar webben bättre för dig</translation>
 <translation id="4486333480498805415">Platsangivelsens exakthet</translation>
 <translation id="4487489714832036847">På en Chromebook används appar i stället för vanliga program. Skaffa produktivitetsappar, underhållningsappar och mycket annat.</translation>
 <translation id="4488257340342212116">Får använda kameran</translation>
@@ -5014,6 +5018,7 @@ Detta kan omfatta information om installerad mjukvara, filer, webbläsaren och e
 <translation id="4612841084470706111">Bevilja åtkomst till alla begärda webbplatser.</translation>
 <translation id="4613144866899789710">Linux-installationen avbryts …</translation>
 <translation id="4613271546271159013">Vilken sida som visas när du öppnar en ny flik har ändrats av ett tillägg.</translation>
+<translation id="461613135510474570">Mening</translation>
 <translation id="461661862154729886">Energikälla</translation>
 <translation id="4617001782309103936">För kort</translation>
 <translation id="4617270414136722281">Tilläggsalternativ</translation>
@@ -5409,8 +5414,10 @@ Zooma ut med Ctrl + Alt + Minska ljusstyrkan.</translation>
 <translation id="490031510406860025">Tillåts inte på den här webbplatsen</translation>
 <translation id="490051679772058907"><ph name="REFRESH_RATE"/> Hz – med flätning</translation>
 <translation id="4900652253009739885">Det går inte att ta bort den enda brytaren som tilldelats Välj. Tryck på valfri tangent för att <ph name="RESPONSE"/>.</translation>
+<translation id="4900908761825556116">Tillåt inte att webbplatser installerar webbappar på enheten</translation>
 <translation id="4901154724271753917">Utöka nyligen stängda</translation>
 <translation id="4901309472892185668">Välj experimentstatus för experimentet <ph name="EXPERIMENT_NAME"/>.</translation>
+<translation id="4902675024946078396">Nej, flytta den till jobbprofilen</translation>
 <translation id="49027928311173603">Policyn som laddades ned från servern är ogiltig: <ph name="VALIDATION_ERROR"/>.</translation>
 <translation id="4903967893652864401">Detta förlänger batteritiden genom att begränsa bakgrundsaktiviteter och visuella effekter, t.ex. jämn scrollning.</translation>
 <translation id="4906490889887219338">Konfigurera eller hantera filresurser i nätverk. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/></translation>
@@ -5429,6 +5436,7 @@ Zooma ut med Ctrl + Alt + Minska ljusstyrkan.</translation>
 <translation id="4918086044614829423">Acceptera</translation>
 <translation id="4918134162946436591">Visa överlägg med tangentmappningar</translation>
 <translation id="4918762404810341788">Kopiera och öppna</translation>
+<translation id="4918844574251943176">Bilden har kopierats</translation>
 <translation id="4921348630401250116">Text till tal</translation>
 <translation id="1298471559729553235">Om du vill använda Lösenordshantering med operativsystemet ska du starta om Brave och tillåta åtkomst till datorns lösenordshanterare. Flikarna öppnas igen när du har startat om enheten.</translation>
 <translation id="492299503953721473">Ta bort Android-appar</translation>
@@ -5439,7 +5447,6 @@ Zooma ut med Ctrl + Alt + Minska ljusstyrkan.</translation>
 <translation id="4925320384394644410">Portarna visas här</translation>
 <translation id="49265687513387605">Det gick inte att casta skärmen. Kontrollera att du har svarat på frågan om att dela skärmen.</translation>
 <translation id="4927753642311223124">Här finns inget att se, fortsätt.</translation>
-<translation id="4928629450964837566">Använd ett säkrare lösenord</translation>
 <translation id="4929120497462893830">Hashvärdet har kopierats till urklipp</translation>
 <translation id="4929386379796360314">Utskriftsmål</translation>
 <translation id="4930406318748549391">Sidopanelens position</translation>
@@ -5541,7 +5548,6 @@ Zooma ut med Ctrl + Alt + Minska ljusstyrkan.</translation>
 <translation id="5015344424288992913">Tolkar proxy...</translation>
 <translation id="5016305686459575361">Om du ansluter telefonen kan du göra följande:</translation>
 <translation id="5016491575926936899">Du kan skicka sms från datorn, dela internetanslutning, svara på aviseringar om konversationer och låsa upp <ph name="DEVICE_TYPE"/> med telefonen.<ph name="FOOTNOTE_POINTER"/> <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/></translation>
-<translation id="5016983299133677671">Testa ett nytt lösenord</translation>
 <translation id="5017250179386090956">Laddar ned kommentarsfiler för huvudnod</translation>
 <translation id="5017529052065664584">De senaste 15 minuterna</translation>
 <translation id="5018207570537526145">Öppna webbplatsen för tillägget</translation>
@@ -5587,6 +5593,7 @@ Zooma ut med Ctrl + Alt + Minska ljusstyrkan.</translation>
 <translation id="5052853071318006357">Högerklicka på en flik och välj Lägg till fliken i en ny grupp</translation>
 <translation id="5053233576223592551">Lägg till användarnamn</translation>
 <translation id="505347685865235222">Namnlös grupp – <ph name="GROUP_CONTENT_STRING"/></translation>
+<translation id="5054634168672649013">{COUNT,plural, =1{Du bör ändra det nu}other{Du bör ändra dessa nu}}</translation>
 <translation id="5056950756634735043">Ansluter till behållaren</translation>
 <translation id="5057110919553308744">När du klickar på tillägget</translation>
 <translation id="5057127674016624293">Genomsökningen tar längre tid än väntat</translation>
@@ -5687,6 +5694,7 @@ Zooma ut med Ctrl + Alt + Minska ljusstyrkan.</translation>
 <translation id="5120886753782992638">Klicka här om du vill besöka <ph name="APPROVED_URL"/></translation>
 <translation id="5121052518313988218">Operativsystemet i Linux-behållaren stöds inte längre. Det får inga fler säkerhetsuppdateringar eller felkorrigeringar, och funktioner som fungerar för närvarande kan oväntat få problem. Uppgradera till den senaste versionen för att fortsätta använda Linux.</translation>
 <translation id="5121130586824819730">Hårddisken är full. Spara på en annan plats eller gör mer plats på hårddisken.</translation>
+<translation id="5121803000325086087">Isolerade webbappar kan begära behörighet att styra smartkortsläsare. Appar får åtkomst till smartkort som visas för läsare som de styr.</translation>
 <translation id="5123433949759960244">Basketboll</translation>
 <translation id="5125714798187802869">Aktivera</translation>
 <translation id="5125751979347152379">Ogiltig webbadress.</translation>
@@ -5702,7 +5710,6 @@ Zooma ut med Ctrl + Alt + Minska ljusstyrkan.</translation>
 <translation id="5130080518784460891">Eten</translation>
 <translation id="5130675701626084557">Det gick inte att ladda ned profilen. Försök igen eller kontakta operatören om du behöver hjälp.</translation>
 <translation id="5131591206283983824">Trycka och dra på styrplattan</translation>
-<translation id="5132130020119156609">Webbplatser kan använda cookies för att lagra information om din onlineaktivitet, beroende på vilka behörigheter webbplatsen har.</translation>
 <translation id="5135533361271311778">Det gick inte att skapa bokmärkesobjektet.</translation>
 <translation id="513555878193063507">Lägg till ett nytt APN</translation>
 <translation id="5136343472380336530">Se till att båda enheterna är upplåsta, att de är nära varandra och att Bluetooth är aktiverat. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/></translation>
@@ -5727,7 +5734,6 @@ Zooma ut med Ctrl + Alt + Minska ljusstyrkan.</translation>
 <translation id="5147097165869384760">Letar du efter operativsystemsidan? Besök <ph name="BEGIN_LINK"/><ph name="CHROME_ABOUT_SYS_LINK"/><ph name="END_LINK"/>.</translation>
 <translation id="5147113439721488265">Rekommendation</translation>
 <translation id="5147516217412920887">Följ anvisningarna på telefonen för att verifiera koden</translation>
-<translation id="5147992672778369947">Använd rekommenderat lösenord</translation>
 <translation id="5148285448107770349">Lösenordet måste vara minst fyra tecken långt</translation>
 <translation id="5149602533174716626">Kopiera videobildrutan</translation>
 <translation id="5150254825601720210">SSL-servernamn för Netscape-certifikat</translation>
@@ -5747,17 +5753,10 @@ Zooma ut med Ctrl + Alt + Minska ljusstyrkan.</translation>
 <translation id="5160857336552977725">Logga in på din <ph name="DEVICE_TYPE"/></translation>
 <translation id="5161251470972801814">USB-enheter från <ph name="VENDOR_NAME"/></translation>
 <translation id="5161442190864186925">Anslut till möte</translation>
-<translation id="7751424777632461902">Vad är skillnaden mellan webbhistoriken i Brave och sökhistoriken?</translation>
 <translation id="5162905305237671850"><ph name="DEVICE_TYPE"/> har blockerats</translation>
 <translation id="5163910114647549394">Fliken flyttades till slutet av flikhuvudet</translation>
 <translation id="5164530241085602114">Aviseringar är inte tillåtna för <ph name="SITE"/></translation>
 <translation id="516747639689914043">HTTP (Hypertext Transfer Protocol)</translation>
-<translation id="5170299781084543513">När du hittar en webbplats som du vill utforska bestämmer du (med webbplatsbehörigheter) om webbplatsen får använda vissa funktioner, till exempel
-      &lt;ul&gt;
-        &lt;li&gt;använda enhetens kamera, plats och mikrofon&lt;/li&gt;
-        &lt;li&gt;lagra data på enheten&lt;/li&gt;
-        &lt;li&gt;tillhandahålla webbplatsfunktioner, t.ex. aviseringar.&lt;/li&gt;
-      &lt;/ul&gt;</translation>
 <translation id="5170568018924773124">Visa i mapp</translation>
 <translation id="5171045022955879922">Sök eller ange webbadress</translation>
 <translation id="5171343362375269016">Bytt minne</translation>
@@ -5824,6 +5823,7 @@ Zooma ut med Ctrl + Alt + Minska ljusstyrkan.</translation>
 <translation id="5214639857958972833">Bokmärket <ph name="BOOKMARK_TITLE"/> har skapats.</translation>
 <translation id="5215450412607891876">Aktivera utökade säkerhetsuppdateringar</translation>
 <translation id="5215502535566372932">Välj land</translation>
+<translation id="6678492270788037697">Översätter livetextning automatiskt. Textning skickas till Brave för översättning.</translation>
 <translation id="5220011581825921581">sök + uppåtpil</translation>
 <translation id="5221516927483787768">Det gick inte att casta <ph name="HOST_NAME"/></translation>
 <translation id="5222403284441421673">En osäker nedladdning blockerades</translation>
@@ -5872,6 +5872,7 @@ Zooma ut med Ctrl + Alt + Minska ljusstyrkan.</translation>
 <translation id="52550593576409946">Det gick inte att starta kioskappen.</translation>
 <translation id="5255726914791076208">Ditt <ph name="RP_ID"/>-konto ändras inte när du redigerar nyckeln</translation>
 <translation id="5255859108402770436">Logga in igen</translation>
+<translation id="5256174546894739043">Fråga när en webbplats försöker spåra dina händer</translation>
 <translation id="52566111838498928">Läser in teckensnitt …</translation>
 <translation id="5256861893479663409">På alla webbplatser</translation>
 <translation id="5258992782919386492">Installera på den här enheten</translation>
@@ -5937,6 +5938,7 @@ Zooma ut med Ctrl + Alt + Minska ljusstyrkan.</translation>
 <translation id="5297984209202974345">Senaste AI-temat <ph name="INDEX"/> på <ph name="SUBJECT"/>, i <ph name="STYLE"/>-stil</translation>
 <translation id="5298219193514155779">Temat skapades av</translation>
 <translation id="5298315677001348398">Vill du fortsätta och tillåta att den här mjukvaran gör ändringar på din enhet?</translation>
+<translation id="5298611529917615393">Du måste läsa igenom och godkänna villkoren för att använda den här funktionen</translation>
 <translation id="5299109548848736476">Do Not Track</translation>
 <translation id="5299558715747014286">Visa och hantera dina flikgrupper</translation>
 <translation id="5300589172476337783">Visa</translation>
@@ -5945,6 +5947,7 @@ Zooma ut med Ctrl + Alt + Minska ljusstyrkan.</translation>
 <translation id="5301954838959518834">Ok, jag förstår</translation>
 <translation id="5302032366299160685">Vänta på att filen ska öppnas innan du försöker igen</translation>
 <translation id="5302048478445481009">Språk</translation>
+<translation id="5302435492906794790">Söker efter synliga enheter i närheten …</translation>
 <translation id="5302932258331363306">Visa ersättningar</translation>
 <translation id="5305145881844743843">Det här kontot hanteras av <ph name="BEGIN_LINK"/><ph name="DOMAIN"/><ph name="END_LINK"/></translation>
 <translation id="5307030433605830021">Källan stöds inte</translation>
@@ -5991,7 +5994,6 @@ Zooma ut med Ctrl + Alt + Minska ljusstyrkan.</translation>
 <translation id="5344128444027639014"><ph name="BATTERY_PERCENTAGE"/> % (höger)</translation>
 <translation id="534449933710420173">Namnlös mapp</translation>
 <translation id="5345916423802287046">Starta appen när du loggar in</translation>
-<translation id="5296013226900466189">Brave bidrar till en fri webb</translation>
 <translation id="5350116201946341974">Lekfull</translation>
 <translation id="5305142070289640735">Inaktivera Brave Assistent</translation>
 <translation id="535123479159372765">Text kopierad från en annan enhet</translation>
@@ -6058,7 +6060,6 @@ Zooma ut med Ctrl + Alt + Minska ljusstyrkan.</translation>
 <translation id="5398572795982417028">Sidreferensen faller utanför intervallet. Gränsen är <ph name="MAXIMUM_PAGE"/>.</translation>
 <translation id="5400196580536813396">Tillåts inte att söka efter eller använda skrivare som är tillgängliga för din enhet</translation>
 <translation id="5400836586163650660">Grå</translation>
-<translation id="5401851137404501592"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> delar ditt namn, din e-postadress och din profilbild med den här webbplatsen om du fortsätter.</translation>
 <translation id="5402367795255837559">Punktskrift</translation>
 <translation id="5402815541704507626">Ladda ned uppdateringen via mobildata</translation>
 <translation id="5404740137318486384">Tryck på en brytare eller en tangent för att tilldela den åtgärden <ph name="ACTION"/>.
@@ -6080,8 +6081,8 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="5414566801737831689">Läsa in ikonerna för de webbplatser du besöker</translation>
 <translation id="5414836363063783498">Verifierar ...</translation>
 <translation id="5415328625985164836">Det här är ett betaprogram. Nu kan du använda Steam för att spela vissa spel på Chromebook.</translation>
+<translation id="5415497281076257439">Fras</translation>
 <translation id="5417312524372586921">Webbläsarteman</translation>
-<translation id="5417353542809767994">Använd snabbt ett starkt lösenord</translation>
 <translation id="541737483547792035">Skärmförstoring</translation>
 <translation id="541822678830750798">Begär att få läsa och ändra den här webbplatsen</translation>
 <translation id="5419405654816502573">Voice Match</translation>
@@ -6199,7 +6200,6 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="5493792505296048976">skärm på</translation>
 <translation id="5494016731375030300">Nyligen stängda flikar</translation>
 <translation id="5494362494988149300">Öppna när nedladdning är &amp;klar</translation>
-<translation id="1355780416265200556">Brave ger dig valmöjligheter</translation>
 <translation id="5494920125229734069">Markera alla</translation>
 <translation id="5495466433285976480">Om du gör detta tas alla lokala användare, filer, data och andra inställningar bort efter nästa omstart. Alla användare måste logga in igen.</translation>
 <translation id="5495597166260341369">Låt skärmen vara på</translation>
@@ -6235,16 +6235,8 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="5517304475148761050">Den här appen kräver åtkomst till Play Butik</translation>
 <translation id="5517412723934627386"><ph name="NETWORK_TYPE"/> – <ph name="NETWORK_DISPLAY_NAME"/></translation>
 <translation id="5519195206574732858">LTE</translation>
-<translation id="5519900055135507385">Skydda kontot med ett starkt lösenord. Det sparas i <ph name="GOOGLE_PASSWORD_MANAGER"/> för <ph name="EMAIL"/>.</translation>
 <translation id="5521078259930077036">Är det här den startsida du väntade dig?</translation>
 <translation id="5522156646677899028">Det förekommer en allvarlig säkerhetsbrist i det här tillägget.</translation>
-<translation id="7621480275083910874">Du kan granska sökhistoriken och inställningarna i <ph name="BEGIN_LINK"/>Min aktivitet<ph name="END_LINK"/> om
-      &lt;ul&gt;
-        &lt;li&gt;du använder Brave Sök&lt;/li&gt;
-        &lt;li&gt;du är inloggad på ditt Brave-konto&lt;/li&gt;
-        &lt;li&gt;du har aktiverat webb- och appaktivitet.&lt;/li&gt;
-      &lt;/ul&gt;</translation>
-<translation id="5522403133543437426">Sökmotorn som används i adressfältet.</translation>
 <translation id="5523149538118225875">{NUM_EXTENSIONS,plural, =1{Ett tillägg har installerats av administratören}other{# tillägg har installerats av administratören}}</translation>
 <translation id="5523532775593636291">Webbplatser du lägger till är alltid aktiva och minne frigörs inte från dem</translation>
 <translation id="5523558474028191231">Namnet kan innehålla bokstäver, siffror och specialtecken och får vara högst <ph name="MAX_CHARACTER_COUNT"/> tecken långt</translation>
@@ -6263,12 +6255,6 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="5542132724887566711">Profil</translation>
 <translation id="5542750926112347543">Cookies från <ph name="DOMAIN"/> blockeras</translation>
 <translation id="5542949973455282971">Ansluter till <ph name="CARRIER_NAME"/></translation>
-<translation id="5518662007020013933">Annonser är avgörande för många onlineföretag. De gör det möjligt att låta innehåll vara kostnadsfritt online, vilket bidrar till att ge alla åtkomst till innehållet. Brave utvecklar sätt att låta webbplatser visa anpassade annonser samtidigt som din integritet skyddas.  Annonsering som görs på ett bra sätt gynnar alla på webben, för när du ser en annons
-      &lt;ul&gt;
-        &lt;li&gt;kanske du hittar något nytt eller intressant&lt;/li&gt;
-        &lt;li&gt;kanske annonsören hittar en ny kund&lt;/li&gt;
-        &lt;li&gt;tjänar webbplatsen som du besöker pengar genom att visa annonsen.&lt;/li&gt;
-      &lt;/ul&gt;</translation>
 <translation id="5543983818738093899">Kontrollerar status …</translation>
 <translation id="5544482392629385159">Enhet <ph name="DEVICE_INDEX"/> av <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/></translation>
 <translation id="554517701842997186">Renderare</translation>
@@ -6401,7 +6387,6 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="5637476008227280525">Aktivera mobildata</translation>
 <translation id="5638170200695981015">Välj Öppna i grundläggande redigeringsläge för att använda begränsad vy med begränsade redigeringsalternativ.</translation>
 <translation id="563821631542362636">Tillåt att webbplatsen sparar data</translation>
-<translation id="5638653188468353257">Varnar dig för både offentliga och privata webbplatser, till exempel företagets intranät</translation>
 <translation id="5639549361331209298">Uppdatera sidan och vänta om du vill se fler alternativ</translation>
 <translation id="5640133431808313291">Hantera säkerhetsnycklar</translation>
 <translation id="8241685692197561941">Lösenordet sparas endast på den här enheten. Om du vill använda det på dina andra enheter <ph name="BEGIN_LINK"/>sparar du det i Brave-kontot<ph name="END_LINK"/>.</translation>
@@ -6456,6 +6441,7 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="5680050361008726776">Vill du ta bort <ph name="ESIM_PROFILE_NAME"/>?</translation>
 <translation id="5681586175480958839">Filen öppnas redan</translation>
 <translation id="3146085026894954224">Du raderade precis data i Brave. Vi vill gärna veta vad du tycker så att vi kan förbättra Brave.</translation>
+<translation id="5682660502190512219">Kolla efter förslag</translation>
 <translation id="5684181005476681636">Information om wifi</translation>
 <translation id="5684661240348539843">Tillgångsidentifierare</translation>
 <translation id="5684950556880280580">Ditt lösenord har uppdaterats</translation>
@@ -6500,7 +6486,6 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="5713960379473463904">Inmatningsformat för blanksteg</translation>
 <translation id="5714100381896040477">Begränsa rörelse på skärmen</translation>
 <translation id="5715711091495208045">Agent för pluginprogram: <ph name="PLUGIN_NAME"/></translation>
-<translation id="5718049162805123412">Du bör ändra dessa nu</translation>
 <translation id="5719854774000914513">Webbplatser får begära tillstånd att ansluta till HID-enheter</translation>
 <translation id="572155275267014074">Android-inställningar</translation>
 <translation id="5722086096420375088">Grön och vit</translation>
@@ -6539,6 +6524,7 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="5750288053043553775">0</translation>
 <translation id="5751345516399502412">Kontrollera beredskap för internetdelning</translation>
 <translation id="5753570386948603678">Radera från historiken</translation>
+<translation id="5753652925946671505">Dessa flikar har inte använts på <ph name="COUNT"/> eller fler dagar.</translation>
 <translation id="5756163054456765343">Hjälpc&amp;enter</translation>
 <translation id="5757187557809630523">nästa spår</translation>
 <translation id="5758631781033351321">Du hittar läslistan här</translation>
@@ -6573,7 +6559,6 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="5780973441651030252">Prioriteringsprocess</translation>
 <translation id="5781092003150880845">Synkronisera till <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="5781865261247219930">Skicka kommandon till <ph name="EXTENSION_NAME"/></translation>
-<translation id="5782040878821624922">Det är tillgängligt på alla enheter</translation>
 <translation id="5782227691023083829">Översätter...</translation>
 <translation id="57838592816432529">Stäng av ljudet</translation>
 <translation id="5784291589716625675">Ändra appspråk</translation>
@@ -6592,7 +6577,6 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="5793339252089865437">Om du laddar ned uppdateringen via mobilnätverket kan det leda till avgifter för överskriden förbrukningsgräns.</translation>
 <translation id="5793420564274426163">Bekräftelse av parkoppling</translation>
 <translation id="5794034487966529952">Skrivbordet <ph name="DESK_TITLE"/> har <ph name="NUM_BROWSERS"/> webbläsarfönster öppna</translation>
-<translation id="5794086402489402632">På vilket sätt skiljer sig webb- och sökhistorik från varandra?</translation>
 <translation id="5794414402486823030">Öppna alltid med systemets visningsprogram</translation>
 <translation id="5794700615121138172">Delade mappar i Linux</translation>
 <translation id="7397305826909094212">Stäng alla Brave-appar</translation>
@@ -6602,7 +6586,6 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="579915268381781820">Säkerhetsnyckeln har tagits bort.</translation>
 <translation id="5799478978078236781">Få tips, erbjudanden och uppdateringar för <ph name="DEVICE_TYPE"/> och dela din feedback.</translation>
 <translation id="5799508265798272974">Virtuell maskin för Linux: <ph name="LINUX_VM_NAME"/></translation>
-<translation id="5799971219262397777">Återställ inställningarna på ChromeOS-enheten till säkra standardinställningar.</translation>
 <translation id="5800020978570554460">Målfilen har trunkerats eller tagits bort efter den senaste nedladdningen.</translation>
 <translation id="5800290746557538611">Aktivera snabb surfzon</translation>
 <translation id="5800351251499368110">Stäng sökning på sidopanelen. Sökning är öppet på sidopanelen.</translation>
@@ -6610,6 +6593,7 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="5801051031414037185">Konfigurera telefon</translation>
 <translation id="5801568494490449797">Inställningar</translation>
 <translation id="5803689677801500549">Sparade lösenord visas här. <ph name="BEGIN_LINK"/>Välj en CSV-fil<ph name="END_LINK"/> för att importera lösenord till <ph name="BRAND"/> för <ph name="USER_EMAIL"/>.</translation>
+<translation id="5804198298544152115">Webbplatser brukar spåra händerna och fingrarna för att förbättra fängslande upplevelser</translation>
 <translation id="5804241973901381774">Behörigheter</translation>
 <translation id="5804259315582798390">Det gick inte att aktivera lokal dataåterställning</translation>
 <translation id="5805268472388605531">Tryck länge på tangenterna för att se accenttecken och specialtecken</translation>
@@ -6674,6 +6658,7 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="5854066326260337683">Stöd för äldre webbläsare är inaktiverat för närvarande. Du kan aktivera Stöd för äldre webbläsare genom att ställa in principen <ph name="BEGIN_LINK"/>{BrowserSwitcherEnabled}<ph name="END_LINK"/>.</translation>
 <translation id="5854912040170951372">Pizzaslajs</translation>
 <translation id="5855267860608268405">Kända wifi-nätverk</translation>
+<translation id="5855375823365231964">Om den här profilen</translation>
 <translation id="5855643921295613558">0,6 sekunder</translation>
 <translation id="5856721540245522153">Aktivera felsökningsfunktioner</translation>
 <translation id="5857090052475505287">Ny mapp</translation>
@@ -6858,8 +6843,8 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="5983716913605894570">Genererar …</translation>
 <translation id="5984222099446776634">Nyligen besökta</translation>
 <translation id="5985458664595100876">Ogiltigt webbadressformat. Följande format stöds: \\server\share och smb://server/share.</translation>
+<translation id="7939939035456567166">Brave-appen har installerats av enhetens administratör.</translation>
 <translation id="598810097218913399">Ta bort tilldelning</translation>
-<translation id="5989629029899728491">Utöver cookies</translation>
 <translation id="5990266201903445068">Endast wifi</translation>
 <translation id="5990386583461751448">Översatt</translation>
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{Be administratören att ta bort den här appen så att du kan fortsätta att surfa på internet.}other{Be administratören att ta bort de här apparna så att du kan fortsätta att surfa på internet.}}</translation>
@@ -6883,6 +6868,7 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="6005045517426700202">Tegelbyggnad</translation>
 <translation id="6006392003290068688">Borttagna behörigheter: <ph name="PERMISSION_1"/> och <ph name="PERMISSION_2"/></translation>
 <translation id="6006484371116297560">Klassiskt</translation>
+<translation id="6007053304250788613">Endast en skärm kan uteslutas i spegelläget</translation>
 <translation id="6007240208646052708">Röstsökning är inte tillgängligt på ditt språk.</translation>
 <translation id="2626511583221319874">När detta är aktiverat blir du tillfrågad om du vill översätta webbplatser till språket du föredrar med Brave Översätt. Funktionen kan också översätta webbplatser automatiskt.</translation>
 <translation id="6011193465932186973">Fingeravtryck</translation>
@@ -6902,11 +6888,9 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="6020431688553761150">Servern auktoriserade inte din åtkomst till den här resursen.</translation>
 <translation id="6021293122504240352"><ph name="APPS"/>-appar stöds inte längre</translation>
 <translation id="6021969570711251331">Omlott</translation>
-<translation id="602212068530399867">Sökmotorn som används i adressfältet och appstartaren.</translation>
 <translation id="6022526133015258832">Öppna helskärmsläge</translation>
 <translation id="296137235951584143">Anpassa Brave</translation>
 <translation id="6023643151125006053">Den här enheten (serienr: <ph name="SERIAL_NUMBER"/>) har låsts av administratören för <ph name="SAML_DOMAIN"/>.</translation>
-<translation id="6024072172641380781">Tillåt tillägg på den här webbplatsen</translation>
 <translation id="6024317249717725918">Sök i videobildrutan med <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="6025215716629925253">Stack trace</translation>
 <translation id="6026819612896463875"><ph name="WINDOW_TITLE"/> – ansluten till USB-enhet</translation>
@@ -6959,6 +6943,7 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="6064764629679333574">Förbättra kvaliteten på Bluetooth-mikrofonljudet genom att skala upp lågupplöst ljud till hög upplösning.</translation>
 <translation id="6065289257230303064">Attribut för certifikatämneskatalog</translation>
 <translation id="6066794465984119824">Avbildningens hashvärde har inte angetts</translation>
+<translation id="6069027071882229820">Kopiera som bild</translation>
 <translation id="6069464830445383022">Du loggar in på Chromebook med ditt Brave-konto.</translation>
 <translation id="6069500411969514374">Jobb</translation>
 <translation id="6071181508177083058">bekräfta lösenord</translation>
@@ -7273,6 +7258,7 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="628726841779494414">Hantera dina skrivare i skrivarinställningarna</translation>
 <translation id="6287828400772161253">Android-telefon (<ph name="HOST_DEVICE_NAME"/>)</translation>
 <translation id="6290613030083731160">Det finns inga enheter i närheten som delar. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/></translation>
+<translation id="6291580570300353047">Återställningen misslyckades eftersom det inte finns tillräckligt med lagringsutrymme.</translation>
 <translation id="6291741848715722067">Bekräftelsekod</translation>
 <translation id="6291953229176937411">&amp;Visa i Finder</translation>
 <translation id="6292699686837272722">Flikar förminskas till medelstor bredd</translation>
@@ -7310,7 +7296,6 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="6318407754858604988">Nedladdning påbörjad</translation>
 <translation id="6318944945640833942">Det gick inte att hitta skrivaren. Ange skrivarens adress igen.</translation>
 <translation id="6687282219696132355"><ph name="BEGIN_LINK"/>Besök inställningarna för synkronisering<ph name="END_LINK"/> om du vill radera webbinformation från alla synkroniserade enheter och ditt Brave-konto.</translation>
-<translation id="6319476488490641553">Det gick inte att slutföra uppdateringen eftersom utrymmet inte räcker till. Frigör <ph name="NECESSARY_SPACE"/> på enheten och försök igen.</translation>
 <translation id="6322370287306604163">Lås upp snabbare med fingeravtryck</translation>
 <translation id="6322559670748154781">Den här filen brukar inte laddas ned och har blockerats av Avancerat skydd</translation>
 <translation id="6324916366299863871">Redigera genväg</translation>
@@ -7340,7 +7325,6 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="6344576354370880196">Sparade skrivare</translation>
 <translation id="6344608411615208519"><ph name="BEGIN_LINK"/>Webbläsaren hanteras<ph name="END_LINK"/> av din förälder</translation>
 <translation id="6344622098450209924">Spårningsskydd</translation>
-<translation id="7009756869527598531">Webbhistoriken i Brave är alla webbplatser du har besökt i Brave under en viss tidsperiod.</translation>
 <translation id="6345418402353744910">Ditt användarnamn och lösenord krävs för proxyservern <ph name="PROXY"/>, så att administratören kan konfigurera nätverket.</translation>
 <translation id="6345566021391290381">Det finns lösenord som delas med dig för <ph name="WEBSITE_NAME"/>. Du kan använda dem i inloggningsformuläret.</translation>
 <translation id="6345878117466430440">Markera som läst</translation>
@@ -7447,6 +7431,7 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="6434104957329207050">Hastighet för punktgenomsökning</translation>
 <translation id="6434309073475700221">Släng</translation>
 <translation id="6434325376267409267">Enheten måste uppdateras innan du kan använda <ph name="APP_NAME"/>.</translation>
+<translation id="6434690603850475457">Ja, håll den åtskild (rekommenderas)</translation>
 <translation id="6434755719322447931">Kaotisk</translation>
 <translation id="6435339218366409950">Välj vilket språk som textningen ska översättas till</translation>
 <translation id="6436778875248895551">Tillägget <ph name="EXTENSION_NAME"/> har blockerats av administratören</translation>
@@ -7529,7 +7514,6 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="6497789971060331894">Omvänd scrollning på musen</translation>
 <translation id="6498249116389603658">&amp;Alla dina språk</translation>
 <translation id="6499143127267478107">Slår upp adress i proxyscript</translation>
-<translation id="6499764981457476645">Inga enheter hittades i närheten</translation>
 <translation id="6501957628055559556">Alla behållare</translation>
 <translation id="6503077044568424649">Mest besökta</translation>
 <translation id="650457560773015827">Vänster knapp</translation>
@@ -7582,7 +7566,6 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="6538036594527795020">Byt språk för <ph name="APP"/>. Just nu används <ph name="LANGUAGE"/>.</translation>
 <translation id="6538098297809675636">Det gick inte att läsa av koden</translation>
 <translation id="653920215766444089">Söker efter pekdon</translation>
-<translation id="6539674013849300372">Skydda dig på webben med ett starkt lösenord. Det sparas i <ph name="GOOGLE_PASSWORD_MANAGER"/> för <ph name="EMAIL"/>.</translation>
 <translation id="653983593749614101">Nedladdningen återupptas …</translation>
 <translation id="6540174167103635041">Installera appen</translation>
 <translation id="654039047105555694"><ph name="BEGIN_BOLD"/>Obs!<ph name="END_BOLD"/> Aktivera endast om du vet vad du gör eller om du har blivit ombedd att göra det eftersom insamling av data kan försämra resultatet.</translation>
@@ -7689,6 +7672,7 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="661266467055912436">Förbättrar säkerheten för dig och alla andra på webben.</translation>
 <translation id="6613267708691765962">Söker efter skadlig kod …</translation>
 <translation id="6613668613087513143">Det gick inte att slutföra uppdateringen eftersom utrymmet inte räcker till. Frigör <ph name="NECESSARY_SPACE"/> på enheten och försök igen i webbläsaren Brave.</translation>
+<translation id="6614172284067813496">Sidan har lagts till i läslistan</translation>
 <translation id="6615455863669487791">Visa mig</translation>
 <translation id="6618744767048954150">Körs</translation>
 <translation id="6619058681307408113">Line Printer Daemon (LPD)</translation>
@@ -7702,6 +7686,7 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="6622980291894852883">Fortsätt att blockera bilder</translation>
 <translation id="6624036901798307345">Öppna det nya flikhuvudet med miniatyrer av alla flikar genom att trycka på flikräknaren i verktygsfältet i surfplatteläge.</translation>
 <translation id="6624687053722465643">Sockersöt</translation>
+<translation id="6627743754845412571">Får inte spåra dina händer</translation>
 <translation id="6628316682330029452">Klientcertifikat är certifikat som identifierar dig för andra servrar.</translation>
 <translation id="6628328486509726751">Uppladdat <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
 <translation id="6630117778953264026">Bättre säkerhet</translation>
@@ -7767,7 +7752,6 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="6673898378497337661">öka ljusstyrkan på tangentbordet</translation>
 <translation id="6674571176963658787">Ange din lösenfras för att starta synkroniseringen</translation>
 <translation id="6675665718701918026">Pekdon har anslutits</translation>
-<translation id="6676021247432396306">När du surfar på webben genererar du data, till exempel orden du söker efter, webbplatser du besöker, webbläsaren och enheten du använder.</translation>
 <translation id="6676212663108450937">Vi rekommenderar att du använder hörlurar när du tränar rösten</translation>
 <translation id="7995449485376471452">Dina flikar, sidrubriker och webbadresser skickas till Brave</translation>
 <translation id="667752334740867460">Tar emot wifi-information …</translation>
@@ -7804,6 +7788,7 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="6701535245008341853">Profilen kunde inte hämtas.</translation>
 <translation id="6702639462873609204">&amp;Redigera ...</translation>
 <translation id="6702859741546259407">Aktivera Bluetooth och wifi om du vill använda <ph name="FEATURE_NAME"/></translation>
+<translation id="6703109186846420472">,</translation>
 <translation id="6703212423117969852">Du kan försöka igen senare i Brave.</translation>
 <translation id="6703254819490889819">Återställ säkerhetskopia</translation>
 <translation id="6703613667804166784">Den här filen kan skada dina personliga konton och sociala nätverkskonton, bland annat <ph name="USER_EMAIL"/></translation>
@@ -7911,6 +7896,7 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="6785739405821760313">Visar sparade skrivbord. Tryck på tabb för att navigera.</translation>
 <translation id="6785915470941880363">Omvänd rullning <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/></translation>
 <translation id="67862343314499040">Violett</translation>
+<translation id="6786480815699355166">Endast språk som Live Caption har stöd för kan översättas</translation>
 <translation id="6786747875388722282">Tillägg</translation>
 <translation id="6787097042755590313">Annan flik</translation>
 <translation id="6787531944787756058">användarnamnet <ph name="USER_EMAIL"/> sparas endast på den här enheten. Se information</translation>
@@ -7941,6 +7927,7 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="6802031077390104172"><ph name="USAGE"/> (<ph name="OID"/>)</translation>
 <translation id="6803766346203101854">Den här webbplatsen har tillåtelse att spara data på din enhet.</translation>
 <translation id="680488281839478944">Det finns en virtuell maskin med namnet <ph name="DEFAULT_VM_NAME"/></translation>
+<translation id="6805236548654699520">Ta bort oönskade popup-fönster, åtgärda nätverksproblem med mera genom att återställa inställningarna till säkra standardinställningar.</translation>
 <translation id="6805478749741295868">Det här är en experimentell AI-funktion som inte alltid fungerar som den ska.</translation>
 <translation id="6805647936811177813">Logga in på <ph name="TOKEN_NAME"/> om du vill importera klientcertifikat från <ph name="HOST_NAME"/>.</translation>
 <translation id="680572642341004180">Aktivera RLZ-spårning på <ph name="SHORT_PRODUCT_OS_NAME"/>.</translation>
@@ -7981,7 +7968,6 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="6823561724060793716">Från adressfältet kan du öppna sidinformationen för att läsa mer om den sida du besöker</translation>
 <translation id="6824564591481349393">Kopiera &amp;e-postadress</translation>
 <translation id="6824584962142919697">&amp;Inspektera element</translation>
-<translation id="6824725898506587159">Hantera språk</translation>
 <translation id="6825184156888454064">Sortera efter namn</translation>
 <translation id="6826872289184051766">Verifiera via USB</translation>
 <translation id="6827121912381363404">Ge alla tillägg behörighet att läsa och ändra <ph name="PERMITTED_SITE"/></translation>
@@ -8023,6 +8009,7 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="6845038076637626672">Öppna maximerad</translation>
 <translation id="6845231585063669905">A till Ö</translation>
 <translation id="6846178040388691741"><ph name="EXTENSION_NAME"/> försöker skriva ut <ph name="FILE_NAME"/> med <ph name="PRINTER_NAME"/>.</translation>
+<translation id="6846843854964504403">Säkerhetsåterställning</translation>
 <translation id="6847125920277401289">Frigör utrymme om du vill fortsätta</translation>
 <translation id="6848388270925200958">Du har för närvarande några kort som bara kan användas på den här enheten</translation>
 <translation id="6848716236260083778">Låt ditt barn trycka på fingeravtryckssensorn om fingeravtryck ska användas. Ditt barns fingeravtrycksdata lagras på ett säkert sätt och lämnar aldrig denna <ph name="DEVICE_TYPE"/>.</translation>
@@ -8070,6 +8057,7 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="6881845890692344060">Administratören har loggat ut. Du har återfått kontrollen.</translation>
 <translation id="6882210908253838664">Om en webbplats inte fungerar kan du testa att ge den tillfällig behörighet att använda tredjepartscookies. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="6883319974225028188">Det gick inte att spara enhetskonfigurationen.</translation>
+<translation id="6883606786470492001">Hantera dina annonsämnen och andra inställningar för att begränsa vilken information webbplatser kan få om dig när de visar anpassade annonser</translation>
 <translation id="6884474387073389421">Vill du radera de valda inloggningsuppgifterna?</translation>
 <translation id="6885122019363983153">Skrivbordsbakgrunder synkroniseras mellan enheter</translation>
 <translation id="6885771755599377173">Förhandsgranska systeminformation</translation>
@@ -8162,6 +8150,7 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="8979541182892637256">Det gick inte att ladda ned filer för taligenkänning på <ph name="LANGUAGE"/>. Ett nytt nedladdningsförsök görs senare. Tal skickas till Brave för bearbetning tills nedladdningen har slutförts.</translation>
 <translation id="696103774840402661">Alla filer och lokal data för alla användare på denna <ph name="DEVICE_TYPE"/> har raderats permanent.</translation>
 <translation id="6961327401577924850">Webbplatser söker vanligtvis efter Bluetooth-enheter för funktioner som att konfigurera eller synkronisera en beacon-sändare med låg energiförbrukning, ett aktivitetsarmband eller en smart glödlampa</translation>
+<translation id="6963772203726867701">Upptäcktes inte</translation>
 <translation id="6963872466817251924">Framhäv textmarkören</translation>
 <translation id="6964390816189577014">Hjälte</translation>
 <translation id="6964760285928603117">Ta bort från gruppen</translation>
@@ -8254,6 +8243,7 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="7014174261166285193">Installationen misslyckades.</translation>
 <translation id="7014480873681694324">Ta bort markering</translation>
 <translation id="7014741021609395734">Zoomnivå</translation>
+<translation id="7015135594296285641">Tillåt tillägg</translation>
 <translation id="7016995776279438971">Rödgrönt filter, rödsvaghet (protanomali)</translation>
 <translation id="7017004637493394352">Säg ”Ok Brave” igen</translation>
 <translation id="7017219178341817193">Lägg till ny sida</translation>
@@ -8334,6 +8324,7 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="708060913198414444">K&amp;opiera ljudadress</translation>
 <translation id="7082568314107259011"><ph name="NETWORK_NAME"/> hanteras av administratören</translation>
 <translation id="7082850163410901674">Aviseringar har inaktiverats i systeminställningarna för Mac</translation>
+<translation id="7083729794572207131">Webbplatser brukar be om att få installera webbappar för att förbättra upplevelsen på webbplatsen</translation>
 <translation id="7083774521940805477">Steam för Chromebook (beta) är inte tillgängligt på din Chromebook.</translation>
 <translation id="708550780726587276">(inte konfigurerad)</translation>
 <translation id="7086377898680121060">öka ljusstyrkan</translation>
@@ -8396,6 +8387,7 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="7131431455372521159">Alla TrackPoints har kopplats bort</translation>
 <translation id="7131896909366247105"><ph name="APP_NAME"/>, väntar</translation>
 <translation id="7134098520442464001">Förminska texten</translation>
+<translation id="713415364723069564">En webbplats kan ta reda på om relaterade webbappar är installerade på din dator. Informationen är tillgänglig för webbplatsen och dess underdomäner.</translation>
 <translation id="7134951043985383439">Laddade ned farlig fil</translation>
 <translation id="7135729336746831607">Vill du aktivera Bluetooth?</translation>
 <translation id="7136694880210472378">Ange som standard</translation>
@@ -8436,7 +8428,6 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="7168109975831002660">Minsta teckenstorlek</translation>
 <translation id="7169122689956315694">Aktivera avisering när det finns enheter i närheten</translation>
 <translation id="7170236477717446850">Profilbild</translation>
-<translation id="4923446673325939067">Besök <ph name="BEGIN_LINK_HISTORY"/><ph name="HISTORY"/><ph name="END_LINK_HISTORY"/> om du vill granska och hantera webbhistoriken. Läs mer om <ph name="BEGIN_LINK_HELPCENTER"/>din webbinformation i Brave och hur du hanterar den<ph name="END_LINK_HELPCENTER"/>.</translation>
 <translation id="7171259390164035663">Registrera dig inte</translation>
 <translation id="7172470549472604877">{NUM_TABS,plural, =1{Lägg till fliken i en ny grupp}other{Lägg till flikarna i en ny grupp}}</translation>
 <translation id="7173114856073700355">Inställningar</translation>
@@ -8470,7 +8461,6 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="7196272782924897510">Vill du använda en nyckel från en annan enhet?</translation>
 <translation id="96037229054033864">Få Brave Sök och Brave-teknik varje gång du surfar</translation>
 <translation id="719791532916917144">Kortkommando</translation>
-<translation id="822137494909042639">Varför övergår Brave till mer än tredjepartscookies?</translation>
 <translation id="7198503619164954386">Du måste använda en företagsregistrerad enhet</translation>
 <translation id="7199158086730159431">Få h&amp;jälp</translation>
 <translation id="7199452998289813782">Pausa castingen till <ph name="DEVICE_NAME"/></translation>
@@ -8517,6 +8507,7 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="7232750842195536390">Det gick inte att byta namn</translation>
 <translation id="723343421145275488">Bildsökning med <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="7234010996000898150">Återställningen av Linux avbryts</translation>
+<translation id="7235305658956131898">Android-appen har installerats av enhetsadministratören.</translation>
 <translation id="7235716375204803342">Hämtar aktiviteter …</translation>
 <translation id="7235737137505019098">Det finns inte tillräckligt mycket utrymme på säkerhetsnyckeln för fler konton.</translation>
 <translation id="7235873936132740888">Särskilda uppgifter kan hanteras på webbplatser när du klickar på vissa typer av länkar, som att skapa ett nytt meddelande i e-postklienten eller lägga till nya händelser i din onlinekalender</translation>
@@ -8537,7 +8528,6 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="7250616558727237648">Enheten som du delar med svarade inte. Försök igen.</translation>
 <translation id="725109152065019550">Administratören har inaktiverat extern lagring för ditt konto.</translation>
 <translation id="7251635775446614726">Meddelande från administratören: <ph name="CUSTOM_MESSAGE"/></translation>
-<translation id="7251979364707973467"><ph name="WEBSITE"/> gav ut säkerhetsnyckeln och vill veta vilket id-nummer den har. Webbplatsen får reda på exakt vilken säkerhetsnyckel du använder.</translation>
 <translation id="7252023374029588426">En serie hjälpbubblor med anvisningar visas nu.
           Flytta fokus till en bubbla genom att trycka på |<ph name="ACCELERATOR"/>|. Flytta sedan fokus till det som bubblan pekar på genom att trycka på samma tangent en gång till.</translation>
 <translation id="7253521419891527137">&amp;Läs mer</translation>
@@ -8554,6 +8544,7 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="7258192266780953209">Transformationer</translation>
 <translation id="7258225044283673131">Appen svarar inte. Stäng appen med Tvångsavsluta.</translation>
 <translation id="7260186537988033909">Kiosk- och skyltningsenheten har registrerats</translation>
+<translation id="7260206782629605806">Om du sänker gränsen kan du använda en subtil rörelse. Om du höjer gränsen kan du behöva göra en större rörelse.</translation>
 <translation id="7261217796641151584">Dela grupp</translation>
 <translation id="7261612856573623172">Systemets röst för text till tal</translation>
 <translation id="7262004276116528033">Inloggningstjänsten tillhandahålls av <ph name="SAML_DOMAIN"/>.</translation>
@@ -8595,6 +8586,7 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="7289386924227731009"><ph name="WINDOW_TITLE"/> – Behörighet har begärts, tryck på F6 för att svara</translation>
 <translation id="7290005709287747471">Inaktivera</translation>
 <translation id="7290242001003353852">Inloggningstjänsten som tillhandahålls av <ph name="SAML_DOMAIN"/> använder din kamera.</translation>
+<translation id="7290524928495200538">Relaterade installerade appar</translation>
 <translation id="7292067737327289208">Din <ph name="BEGIN_LINK"/>webbläsare hanteras<ph name="END_LINK"/> av din organisation och din <ph name="BEGIN_LINK"/>profil hanteras<ph name="END_LINK"/> av <ph name="PROFILE_DOMAIN"/></translation>
 <translation id="7292147651179697920">Be en förälder att tillåta åtkomst i Inställningar</translation>
 <translation id="7292195267473691167"><ph name="LOCALE"/> (<ph name="VARIANT"/>)</translation>
@@ -8630,6 +8622,7 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="7321545336522791733">Servern kan inte nås</translation>
 <translation id="7322515217754205362">Webbplatsbehörigheter</translation>
 <translation id="7323315405936922211">Markörområdets storlek</translation>
+<translation id="7324020307732396723">Öppna språkinställningarna</translation>
 <translation id="7324297612904500502">Forum för betaversionen</translation>
 <translation id="7325209047678309347">Papper har fastnat</translation>
 <translation id="7325953439504232954">Vill du byta profil?</translation>
@@ -8884,7 +8877,6 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="7497981768003291373">Du har inga nyligen registrerade WebRTC-textloggar.</translation>
 <translation id="7501957181231305652">eller</translation>
 <translation id="7502220299952823578">Lägg till i listan Låt alltid dessa webbplatser vara aktiva</translation>
-<translation id="8140581203553613648">När du söker efter något i adressfältet i Brave tar standardsökmotorn emot begäran och visar relevanta resultat. Sökhistoriken innehåller sådant som du har sökt efter under en tidsperiod.</translation>
 <translation id="7502528909759062987">Pausa castingen av fliken till <ph name="DEVICE_NAME"/></translation>
 <translation id="7502804472671406749">Det går att scrolla och zooma på delade flikar</translation>
 <translation id="7503191893372251637">Certifieringstyp för Netscape</translation>
@@ -9144,7 +9136,6 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="7685087414635069102">Pinkod krävs</translation>
 <translation id="7685351732518564314">Tryck på en knapp på din <ph name="DEVICE_NAME"/>.</translation>
 <translation id="7686086654630106285">Mer om föreslagna annonser på webbplatser</translation>
-<translation id="7686581688229391955">Välj om du vill tillåta tillägg på den här webbplatsen</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
 <translation id="7690378713476594306">Välj i lista</translation>
 <translation id="7690853182226561458">Lägg till &amp;mapp ...</translation>
@@ -9170,7 +9161,6 @@ Det finns # utsatta lösenord till. Du rekommenderas av Brave Lösenordshanterin
 <translation id="7705524343798198388">VPN</translation>
 <translation id="7707108266051544351">Den här webbplatsen har blockerats från att använda rörelsesensorerna.</translation>
 <translation id="7707922173985738739">Mobildata används</translation>
-<translation id="7708143783728142771">Med cookies kan du anpassa dina inställningar på webben på samma sätt. När du besöker en webbplats kan webbplatsen spara en cookie i enhetens webbläsarlagring för att komma ihåg dina webbplatsinställningar, till exempel vilket språk du talar eller vilka artiklar du vill spara i kundvagnen. Om du senare besöker webbplatsen igen med samma webbläsare kan webbplatsen läsa cookien som skapades så att du kan fortsätta där du slutade. Den här typen av cookies kallas ofta förstapartscookies eftersom de anges av webbplatsen du besöker.</translation>
 <translation id="770831926727930011">Lokala uppgifter skyddas med ditt gamla lösenord. Ange ditt gamla lösenord för att återställa dem.</translation>
 <translation id="7709152031285164251">Misslyckades – <ph name="INTERRUPT_REASON"/></translation>
 <translation id="7710568461918838723">&amp;Casta …</translation>
@@ -9380,7 +9370,6 @@ Tryck på en brytare eller tangent som redan tilldelats en åtgärd om du vill t
 <translation id="7851720427268294554">IPP-analysator</translation>
 <translation id="1037569431519018426">Möjligheten att lägga till fler Brave-konton har inaktiverats</translation>
 <translation id="7853747251428735">Fler verk&amp;tyg</translation>
-<translation id="7853999103056713222">Använd ett säkrare lösenord</translation>
 <translation id="7855678561139483478">Flytta fliken till ett nytt fönster</translation>
 <translation id="7857004848504343806">Datorn innehåller en säker modul som används för att implementera flera viktiga säkerhetsfunktioner i ChromeOS Flex. Besök hjälpcentret för Chromebook om du vill läsa mer: https://support.google.com/chromebook/?p=sm</translation>
 <translation id="7857093393627376423">Textförslag</translation>
@@ -9419,6 +9408,7 @@ Tryck på en brytare eller tangent som redan tilldelats en åtgärd om du vill t
 <translation id="7883792253546618164">Du kan avsluta prenumerationen när du vill.</translation>
 <translation id="7884372232153418877">{NUM_SITES,plural, =1{Granska 1 webbplats som nyligen har skickat många aviseringar}other{Granska {NUM_SITES} webbplatser som nyligen har skickat många aviseringar}}</translation>
 <translation id="788453346724465748">Läser in kontouppgifter …</translation>
+<translation id="7886087451482920026">Välj text med Google Lens</translation>
 <translation id="7886279613512920452">{COUNT,plural, =1{ett objekt}other{# objekt}}</translation>
 <translation id="7886605625338676841">eSIM</translation>
 <translation id="7887174313503389866">Få en guidad rundtur av viktiga integritets- och säkerhetskontroller. Öppna den enskilda inställningarna för att se fler alternativ.</translation>
@@ -9591,6 +9581,7 @@ Nyckelfil: <ph name="KEY_FILE"/>
 
 Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versioner av ditt tillägg.</translation>
 <translation id="8000020256436988724">Verktygsfält</translation>
+<translation id="800117767980299235">Ljudinspelning av mötespunkter</translation>
 <translation id="8002274832045662704">Avancerad skrivarkonfiguration</translation>
 <translation id="8002670234429879764"><ph name="PRINTER_NAME"/> är inte längre tillgänglig</translation>
 <translation id="8004092996156083991">Vi meddelar dig om dina lösenord är utsatta.</translation>
@@ -9640,6 +9631,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8037357227543935929">Fråga (standard)</translation>
 <translation id="803771048473350947">Arkiv</translation>
 <translation id="8037801708772278989">Genomsöktes alldeles nyss</translation>
+<translation id="8038111231936746805">(standard)</translation>
 <translation id="8039151841428107077">{NUM_OF_FILES,plural, =1{Kopierar 1 fil till <ph name="CLOUD_PROVIDER"/>}other{{NUM_OF_FILES} filer kopieras till <ph name="CLOUD_PROVIDER"/>}}</translation>
 <translation id="8041089156583427627">Skicka feedback</translation>
 <translation id="8041093619605951337">Glad</translation>
@@ -9717,12 +9709,10 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8086610718778464681">Det gick inte att säkerhetskopiera Linux-appar och Linux-filer</translation>
 <translation id="80866457114322936">{NUM_FILES,plural, =1{Den här filen är krypterad. Be ägaren att dekryptera den.}other{Några av de här filerna är krypterade. Be ägaren att dekryptera dem.}}</translation>
 <translation id="808894953321890993">Ändra lösenord</translation>
-<translation id="6058906268938103011">Det skyddas av Braves bästa teknik</translation>
 <translation id="8090234456044969073">Läsa en lista över de webbplatser du besöker oftast</translation>
 <translation id="8090513782447872344">Du kan när som helst komma tillbaka och ta en ny titt</translation>
 <translation id="8090579562279016251">Minskar prestandan men gör V8 mer motståndskraftig mot attacker</translation>
 <translation id="8090686009202681725">Skapa tema med AI</translation>
-<translation id="8091655032047076676">Experimentellt</translation>
 <translation id="8093359998839330381"><ph name="PLUGIN_NAME"/> svarar inte</translation>
 <translation id="8094536695728193970">Aprikos</translation>
 <translation id="8095105960962832018"><ph name="BEGIN_PARAGRAPH1"/>Säkerhetskopiera till Google Drive. Återställ enkelt data eller byt enhet när som helst. Säkerhetskopian innehåller appdata.<ph name="END_PARAGRAPH1"/>
@@ -9737,6 +9727,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8097959162767603171">Administratören måste först godkänna användarvillkoren i listan över Brave-enheter i administratörskonsolen.</translation>
 <translation id="8098156986344908134">Vill du installera <ph name="DEVICE_OS"/> och rensa hårddisken?</translation>
 <translation id="8098616321286360457">En nätverksanslutning krävs</translation>
+<translation id="8100057926383586173">Öppna språkinställningarna</translation>
 <translation id="8100230553590752325">Använd sparade lösenord på vilken enhet som helst</translation>
 <translation id="810068641062493918"><ph name="LANGUAGE"/> har markerats. Avmarkera genom att trycka på Sök och mellanslagstangenten.</translation>
 <translation id="8101409298456377967">Skapa, spara och hantera dina lösenord så att du enkelt kan logga in på webbplatser och i appar. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
@@ -10034,6 +10025,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8319414634934645341">Utökad nyckelanvändning</translation>
 <translation id="8321476692217554900">aviseringar</translation>
 <translation id="8321837372750396788">Denna <ph name="DEVICE_TYPE"/> hanteras av <ph name="MANAGER"/>.</translation>
+<translation id="8321888067342493336">Spara som bild</translation>
 <translation id="8322814362483282060">Den här sidan har blockerats och kan inte komma åt mikrofonen.</translation>
 <translation id="8323167517179506834">Skriv en webbadress</translation>
 <translation id="8323317289166663449">Läsa och ändra all din data på datorn och alla webbplatser</translation>
@@ -10043,7 +10035,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8325413836429495820">Får inte se urklippet</translation>
 <translation id="8326478304147373412">PKCS #7, certifikatkedja</translation>
 <translation id="8327386430364625757">Matematiskt teckensnitt</translation>
-<translation id="8327538105740918488">Du kan alltid ändra lösenordet senare. Det sparas i <ph name="GOOGLE_PASSWORD_MANAGER"/> för <ph name="EMAIL"/>.</translation>
 <translation id="8327676037044516220">Behörigheter och innehållsinställningar</translation>
 <translation id="8328228852664998535">Om du fortsätter kommer dina lösenord, nycklar och annan data att raderas permanent från <ph name="BRAND"/>. Konton som du har skapat för webbplatser eller appar raderas inte.</translation>
 <translation id="8328777765163860529">Stäng alla</translation>
@@ -10202,6 +10193,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8440630305826533614">Linux-appar</translation>
 <translation id="844063558976952706">Alltid på den här webbplatsen</translation>
 <translation id="8441313165929432954">Aktivera/inaktivera internetdelning</translation>
+<translation id="8443542808381875261">Stäng flikar som inte används</translation>
 <translation id="8443986842926457191">Webbadressen är längre än 2 048 tecken</translation>
 <translation id="8445281870900174108">Den här fliken använder kameran</translation>
 <translation id="8446884382197647889">Läs mer</translation>
@@ -10277,7 +10269,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8494147475618188843">Android-inställningar</translation>
 <translation id="849488240089599592">Tillbaka till Senaste nedladdningarna</translation>
 <translation id="8496717697661868878">Kör det här plugin-programmet</translation>
-<translation id="8497136774043290050">Vad är tredjepartscookies? En webbplats som du besöker kan bädda in innehåll från andra webbplatser eller tjänster, till exempel bilder, annonser, innehåll från sociala medier och text. När någon av dessa andra webbplatser använder cookies för att spara information om dig kallar vi det för en tredjepartscookie. Om du besöker flera webbplatser som bäddar in innehåll från samma källa, till exempel ett annonsnätverk, kan tredjepartscookies användas för annonsering och för att spåra dig när du surfar.</translation>
 <translation id="8497219075884839166">Fönsterverktyg</translation>
 <translation id="8498214519255567734">Gör det behagligare för ögonen att titta på skärmen eller läsa i svag belysning</translation>
 <translation id="8499083585497694743">Slå på mikrofonen</translation>
@@ -10305,7 +10296,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8517759303731677493">Redigera …</translation>
 <translation id="8518942514525208851">Dölj svordomar</translation>
 <translation id="8519895319663397036">Det gick inte att importera lösenorden. Filstorleken får högst vara 150 kB.</translation>
-<translation id="851991974800416566">Använd snabbt ett starkt lösenord</translation>
 <translation id="8523493869875972733">Behåll ändringarna</translation>
 <translation id="8523849605371521713">Har lagts till av en policy</translation>
 <translation id="8524594273111932386">sök + nedåtpil</translation>
@@ -10423,11 +10413,12 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8617601976406256334">Vill du radera webbplatsdata och behörigheter för <ph name="SITE_NAME"/>?</translation>
 <translation id="8617748779076050570">Id för säker anslutning: <ph name="CONNECTION_ID"/></translation>
 <translation id="8619000641825875669">OneDrive</translation>
+<translation id="8619369551122276044">Får inte installera webbappar på enheten</translation>
 <translation id="8619803522055190423">Skugga</translation>
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
 <translation id="8620206585293032550">Inaktiva flikars utseende</translation>
 <translation id="8621979332865976405">Dela hela skärmen</translation>
-<translation id="8624315169751085215">Kopiera till Urklipp</translation>
+<translation id="8624315169751085215">Kopiera till urklipp</translation>
 <translation id="8624944202475729958"><ph name="PROFILE_NAME"/>: <ph name="ERROR_DESCRIPTION"/></translation>
 <translation id="8625124982056504555">Läsa serienummer för ChromeOS-enheter och komponenter</translation>
 <translation id="862542460444371744">&amp;Tillägg</translation>
@@ -10481,6 +10472,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8656888282555543604">Aktivera loggning av punktskrift</translation>
 <translation id="8657393004602556571">Vill du inte skicka feedback?</translation>
 <translation id="8657542881463614516">Navigera mellan sidor med en sveprörelse</translation>
+<translation id="865857184419171576">Översätt textning till</translation>
 <translation id="865936634714975126">Lägg till en frågeparameter i webbadressen för att välja typer vid sidhämtningen. Exempel: chrome://device-log/?types=Bluetooth,USB</translation>
 <translation id="8659608856364348875">Kontakter för <ph name="FEATURE_NAME"/></translation>
 <translation id="8659609431223166673">Fönstret har flyttats nedåt</translation>
@@ -10590,7 +10582,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8725178340343806893">Favoriter/bokmärken</translation>
 <translation id="87254326763805752">Bekräfta nyckel</translation>
 <translation id="8726206820263995930">Det uppstod ett fel när policyinställningarna hämtades från servern: <ph name="CLIENT_ERROR"/>.</translation>
-<translation id="6614332522102257453">Få ut mesta möjliga av Brave</translation>
 <translation id="8727333994464775697">Anpassa vad som visas på den här sidan</translation>
 <translation id="8727751378406387165">Skicka <ph name="BEGIN_LINK1"/>metadata för autofyll<ph name="END_LINK1"/>
           <ph name="LINE_BREAK"/>
@@ -10656,6 +10647,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="876956356450740926">Kör utvecklarverktyg, IDE:er och redigerare. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/></translation>
 <translation id="8770406935328356739">Tilläggets rotkatalog</translation>
 <translation id="8771300903067484968">Startsidans bakgrund har återställts till standardbakgrunden.</translation>
+<translation id="8773535891252326047">Länken har kopierats till höjdpunkt</translation>
 <translation id="8774379074441005279">Bekräfta återställning</translation>
 <translation id="8774934320277480003">Övre marginal</translation>
 <translation id="8775144690796719618">Ogiltig webbadress</translation>
@@ -10663,6 +10655,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <ph name="DOMAIN"/> kräver att du har smartkortet isatt.}other{Din <ph name="DEVICE_TYPE"/> kommer att låsas automatiskt om # sekunder.
 <ph name="DOMAIN"/> kräver att du har smartkortet isatt.}}</translation>
 <translation id="8776294611668764629">Organisationen blockerade filen eftersom den är för stor för en säkerhetskontroll. Du kan öppna filer som är upp till 50 MB stora.</translation>
+<translation id="8776420827344913317">Den här profilen hanteras av organisationen, som kan visa vissa typer av information</translation>
 <translation id="8777509665768981163">Lägg till eller hitta knappar på ritplattan</translation>
 <translation id="8777628254805677039">rotlösenord</translation>
 <translation id="877985182522063539">A4</translation>
@@ -10679,7 +10672,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8786824282808281903">När den här ikonen visas kan ditt barn använda sitt fingeravtryck för att identifiera sig eller godkänna köp.</translation>
 <translation id="1427237635463348414">Hjälp oss att förbättra Brave genom att berätta varför du har tillåtit cookies från tredje part</translation>
 <translation id="8788008845761123079">Välj en rörelse för <ph name="SELECTED_ACTION"/></translation>
-<translation id="6925082544593251076">Brave ingår i ett <ph name="LINK_BEGIN"/>samarbete<ph name="LINK_END"/> för att minska spårning från webbplats till webbplats och fasa ut användningen av tredjepartscookies. Men vi försöker göra det på ett ansvarsfullt sätt eftersom många webbplatser förlitar sig på tredjepartscookies för att fungera som avsett. Till exempel används tredjepartscookies på många webbplatser för att förenkla inloggningen, stödja inbäddade chatt- och kommentarssystem och för betaltjänster. Och annonsörer använder ofta tredjepartscookies för att anpassa annonser bättre. Det är viktigt eftersom webbplatser ofta förlitar sig på annonser för att betala utgifter och erbjuda sitt onlineinnehåll kostnadsfritt.</translation>
 <translation id="8791157330927639737">Läs mer om uppdateringar</translation>
 <translation id="8791534160414513928">Skicka en Do Not Track-begäran med din webbtrafik</translation>
 <translation id="8793390639824829328">Webbplatser använder den här funktionen för att scrolla och zooma delade flikar</translation>
@@ -10752,7 +10744,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8846132060409673887">Läsa information om datorns tillverkare och modell</translation>
 <translation id="8846163936679269230">Återställ eSIM-profiler</translation>
 <translation id="8846239054091760429">Monoljud, start, Live Caption med mera</translation>
-<translation id="1899218434110015565">Annonsintäkterna finansierar också Braves många kostnadsfria produkter och tjänster, bland annat Brave, Gmail, Maps och YouTube.</translation>
 <translation id="8847988622838149491">USB</translation>
 <translation id="8849001918648564819">Dold</translation>
 <translation id="8849219423513870962">Avbryt borttagning av eSIM-profilen som heter <ph name="PROFILE_NAME"/></translation>
@@ -10823,7 +10814,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8890529496706615641">Det gick inte att byta namn på profilen. Försök igen eller kontakta operatören om du behöver teknisk support.</translation>
 <translation id="8892168913673237979">Klart!</translation>
 <translation id="8892246501904593980">Se alla dina bokmärken i Bokmärken och Listor</translation>
-<translation id="8893479486525393799">Studiomikrofon</translation>
 <translation id="8893801527741465188">Avinstallationen är slutförd</translation>
 <translation id="8893928184421379330">Det gick tyvärr inte att identifiera enheten <ph name="DEVICE_LABEL"/>.</translation>
 <translation id="8894761918470382415">Dataåtkomstskydd för kringutrustning</translation>
@@ -10870,7 +10860,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8931693637927865341">Asteroid</translation>
 <translation id="8931713990831679796">Dessa skrivare är anslutna och klara att användas. Spara dem i din profil för enklare åtkomst.</translation>
 <translation id="8932654652795262306">Information om Direktinternetdelning</translation>
-<translation id="8933314208895863334">Cookies kan berika din onlineupplevelse genom att göra det möjligt för webbplatser att erbjuda användbara funktioner</translation>
 <translation id="8933709832356869375">1 installerad app tas bort</translation>
 <translation id="8933960630081805351">&amp;Visa i Finder</translation>
 <translation id="8934585454328207858">{NUM_EXTENSION,plural, =1{<ph name="EXTENSION1"/> har åtkomst till USB-enheter}=2{Tillägg som har åtkomst till enheter: <ph name="EXTENSION1"/>, <ph name="EXTENSION2"/>}other{Tillägg som har åtkomst till enheter: <ph name="EXTENSION1"/>, <ph name="EXTENSION2"/> + {3} till}}</translation>
@@ -10890,10 +10879,10 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 
 Behörigheter som du redan har gett webbplatser och appar kan gälla för det här kontot. Du kan hantera dina Brave-konton i <ph name="SETTINGS_LINK_BEGIN"/>inställningarna<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="8945274638472141382">Ikonstorlek</translation>
+<translation id="8945508919180478719">Studiomikrofon</translation>
 <translation id="8946359700442089734">Felsökningsfunktionerna aktiverades inte helt på den här <ph name="IDS_SHORT_PRODUCT_NAME"/>-enheten.</translation>
 <translation id="8946954897220903437">Komprimera alla begäranden i adressfältet</translation>
 <translation id="894763922177556086">Bra</translation>
-<translation id="8948939328578167195"><ph name="WEBSITE"/> vill få tillgång till din säkerhetsnyckels märke och modell</translation>
 <translation id="875637110216978122">Hantera synkronisering av webbläsaren Brave</translation>
 <translation id="895054485242522631">Webbplatser får använda rörelsesensorer</translation>
 <translation id="8951256747718668828">Det gick inte att slutföra återställningen på grund av ett fel</translation>
@@ -10926,6 +10915,7 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="8973263196882835828">&amp;Aktivera Live Caption</translation>
 <translation id="8973557916016709913">Ta bort zoomnivå</translation>
 <translation id="8973596347849323817">Du kan anpassa enheten efter dina behov. Tillgänglighetsfunktionerna kan ändras senare under Inställningar.</translation>
+<translation id="8973648401056792381">Webbappen har installerats av enhetsadministratören.</translation>
 <translation id="897414447285476047">Hela målfilen laddades inte ned på grund av ett anslutningsfel.</translation>
 <translation id="8974261761101622391">Hitta alternativ för <ph name="EXTENSION_NAME"/></translation>
 <translation id="897525204902889653">Karantäntjänst</translation>
@@ -10991,7 +10981,6 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="9011262023858991985">Casta den här fliken</translation>
 <translation id="9011393886518328654">Viktig information</translation>
 <translation id="9012122671773859802">Flytta skärmen kontinuerligt när muspekaren rör sig</translation>
-<translation id="9012157139067635194">Rensa</translation>
 <translation id="9012585441087414258">Skyddar mot skadliga webbplatser, nedladdningar och tillägg. Om något misstänkt händer på en sida skickas webbadresser och delar av sidinnehållet till Brave Säker webbsökning.</translation>
 <translation id="9013037634206938463"><ph name="INSTALL_SIZE"/> ledigt utrymme krävs för att installera Linux. Frigör utrymme genom att radera filer på enheten.</translation>
 <translation id="9014206344398081366">Självstudier för ChromeVox</translation>
@@ -11170,6 +11159,7 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="9128870381267983090">Anslut till ett nätverk</translation>
 <translation id="9129562557082598582">Exportera alla <ph name="CERT_GROUP"/></translation>
 <translation id="9130015405878219958">Du har angett ett ogiltigt läge.</translation>
+<translation id="9130135798965366513"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> delar <ph name="FIELDS_STRING"/> med den här webbplatsen om du fortsätter. Läs webbplatsens <ph name="BEGIN_LINK1"/>integritetspolicy<ph name="END_LINK1"/> och <ph name="BEGIN_LINK2"/>användarvillkor<ph name="END_LINK2"/>.</translation>
 <translation id="9130208109420587135">Redigera gruppnamnet <ph name="NAME"/></translation>
 <translation id="9130364135697530260">Inbäddat innehåll på den här webbplatsen kan använda information som sparats om dig</translation>
 <translation id="9131209053278896908">Blockerade webbplatser visas här</translation>
@@ -11233,6 +11223,7 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="917350715406657904">Du har nått gränsen som din förälder har ställt in för <ph name="APP_NAME"/>. Du kan använda den i <ph name="TIME_LIMIT"/> i morgon.</translation>
 <translation id="9174401638287877180">Skicka diagnostik- och användningsdata. Hjälp till att göra Android bättre för ditt barn genom att skicka diagnostikdata, enhetsdata och data om appanvändning till Brave automatiskt. Denna data används till att förbättra systemets och apparnas stabilitet med mera och inte till att identifiera ditt barn. Viss samlad data används även till att förbättra appar från Brave och Braves partner, till exempel Android-utvecklare. Om ytterligare webb- och appaktivitet har aktiverats för ditt barn kan denna data sparas i Brave-kontot.</translation>
 <translation id="9176611096776448349"><ph name="WINDOW_TITLE"/> – Bluetooth-enhet ansluten</translation>
+<translation id="9177859716483578738"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> delar <ph name="FIELDS_STRING"/> med den här webbplatsen om du fortsätter. Läs webbplatsens <ph name="BEGIN_LINK"/>integritetspolicy<ph name="END_LINK"/>.</translation>
 <translation id="9178061802301856367">Radera inloggningsuppgifter</translation>
 <translation id="9179243438030184085">Använd delningsknappen längst ned på kortet för att dela en kopia av ditt lösenord med någon i familjegruppen</translation>
 <translation id="9179524979050048593">Användarnamn på inloggningsskärmen</translation>
@@ -11244,7 +11235,6 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="918352324374649435">{COUNT,plural, =1{App}other{# appar}}</translation>
 <translation id="9186963452600581158">Logga in med ett barns Brave-konto</translation>
 <translation id="9187967020623675250">Tangenterna matchar inte. Tryck på valfri tangent för att <ph name="RESPONSE"/>.</translation>
-<translation id="2952668551425843140">Skickar textning till Brave så att den översätts automatiskt</translation>
 <translation id="9192019773545828776">Få talad feedback så att du kan använda enheten utan att titta på skärmen. Punktskriftsfeedback är tillgängligt med en ansluten enhet. Aktivera och inaktivera ChromeVox med Ctrl + Alt + Z. Använd Sök + vänsterpil eller högerpil för att navigera. Välj (aktivera) med Sök + mellanslagstangenten.</translation>
 <translation id="919686179725692564">Läs mer om hur du säkerhetskopierar appar</translation>
 <translation id="9199503643457729322">Klicka för att navigera bort från Integritetsguide.</translation>
@@ -11292,6 +11282,7 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="93393615658292258">Endast lösenord</translation>
 <translation id="934244546219308557">Namnge den här gruppen</translation>
 <translation id="93480724622239549">Problem eller fel</translation>
+<translation id="9354763467503131">Får begära att installera webbappar på enheten</translation>
 <translation id="936646668635477464">Kamera och mikrofon</translation>
 <translation id="936801553271523408">Systemets diagnostikresultat</translation>
 <translation id="93766956588638423">Reparera tillägg</translation>
@@ -11315,6 +11306,7 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="949807244219288032">Den här fliken är ansluten till en HID-enhet</translation>
 <translation id="950079950995628542">Från <ph name="PHONE_NAME"/></translation>
 <translation id="950307215746360464">Konfigureringsguide</translation>
+<translation id="950728747178241190">Använd brusreducering och ljudförbättringar. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/></translation>
 <translation id="951273949038779544"><ph name="SITE_ACCESS"/>. Har installerats av administratören</translation>
 <translation id="951991426597076286">Godkänn inte</translation>
 <translation id="952471655966876828">Enheten ansluts automatiskt när den är aktiverad eller används</translation>
@@ -11364,7 +11356,6 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="98515147261107953">Landskap</translation>
 <translation id="987068745968718743">Parallels Desktop: <ph name="PLUGIN_VM_NAME"/></translation>
 <translation id="987264212798334818">Allmänt</translation>
-<translation id="987475089238841621">Språkpaket används för Live Caption och lagras på enheten</translation>
 <translation id="988320949174893488">Hackar ibland</translation>
 <translation id="988978206646512040">Lösenfrasen får inte vara tom</translation>
 <translation id="992032470292211616">Tillägg, appar och teman kan skada enheten. Vill du fortsätta?</translation>
@@ -11473,12 +11464,6 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="3216703137209942563">{COUNT, plural,
       =1 {Ditt privata fönster öppnas inte när du startar om}
       other {Dina {COUNT} privata fönster öppnas inte när du startar om}}</translation>
-<translation id="2631725725020498527">Du kan anpassa Brave på det sätt du vill:
-      &lt;ul&gt;
-        &lt;li&gt;&lt;em&gt;Det bästa av Brave&lt;/em&gt;, för dem som vill ha det. Du kan till exempel välja Brave Sök som Braves standardsökmotor och använda Brave Password Manager för att få alla dina lösenord på alla enheter. &lt;/li&gt;
-        &lt;li&gt;&lt;em&gt;Meningsfulla val&lt;/em&gt;: Brave ger dig valmöjligheter och kontroll med inställningar och information som hjälper dig att fatta meningsfulla beslut.&lt;/li&gt;
-        &lt;li&gt;&lt;em&gt;Tillägg&lt;/em&gt;: Du kan utöka Brave-funktionaliteten med över 100 000 tillägg i <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/>&lt;/li&gt;
-      &lt;/ul&gt;</translation>
 <translation id="5840822070878669614">Öppna Web Store</translation>
 <translation id="383007806262310953">Visa bokmärkesfältet</translation>
 <translation id="1375809909601272984">Visa flikgrupper i bokmärken</translation>

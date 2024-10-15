@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">Viser forslag til nettsider basert på bokmerkene og nettleserhistorikken din.</translation>
 <translation id="924029461438529367">Vis søkeforslag</translation>
 <translation id="1571106259128580884">Vis forslag til de beste nettstedene</translation>
+<translation id="6285118765755298263">Indekser andre søkemotorer</translation>
+<translation id="919715748352669592">Indekserer automatisk nettsider som er i tråd med OpenSearch-spesifikasjonene.</translation>
 <translation id="9148058034647219655">Avslutt</translation>
 <translation id="8047754398610073499">Blokker varsler om informasjonskapselinnstillinger</translation>
 <translation id="2621893359845808115">Blokkerer popuper fra nettsider som ber deg om å godta eller avslå bruk av informasjonskapsler</translation>
@@ -740,7 +742,19 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="755448900483975096">Mobiloperatør</translation>
 <translation id="1279441577056010362">Fortsett til e-post</translation>
 <translation id="7125582363614011660">Brukerstøtte gis med bistand fra Guardian-teamet.\n\n Velg informasjonen du er komfortabel med å gi oss. \n\n Jo mer informasjon du gir oss innledningsvis, jo enklere blir det for brukerstøtteveilederne å hjelpe deg å løse problemet.</translation>
-<translation id="7999094850625689785">En serverregion i relativt nær avstad til deg blir valgt automatisk basert på tidssonen for systemet ditt. Dette anbefales for å sikre raskest mulig internetthastighet.</translation>
+<translation id="8813171284214934811">Velg automatisk VPN-serverregionen som er nærmest deg, basert på tidssonen du er i. Dette alternativet anbefales for å maksimere internetthastigheten.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> by – }
+          other {<ph name="CITY_COUNT_MANY"/> byer – }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> server}
+          other {<ph name="SERVER_COUNT_MANY"/> servere}
+        }</translation>
+<translation id="3199127022143353223">Tjenere</translation>
+<translation id="5431902940483264007">Optimalt</translation>
+<translation id="6527596624419285047">Bruk den beste tilgjengelige serveren</translation>
+<translation id="6789157560111825412">Tilgjengelige servere</translation>
 <translation id="4397083831618200686">Velg problem</translation>
 <translation id="6687228121145903051">Kan ikke koble til VPN-nettverket (annen feil)</translation>
 <translation id="9184988385244077767">Ikke internett når tilkoblet</translation>
@@ -808,7 +822,6 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="7358989216567322955">Maks. prioritetsavgift</translation>
 <translation id="9091334651803050473">Selv om det ikke garanteres, er det sannsynlig at minere prioriterer transaksjonen din hvis du betaler en høyere avgift.</translation>
 <translation id="2941112035454246133">Lav</translation>
-<translation id="5431902940483264007">Optimalt</translation>
 <translation id="7304030187361489308">Høy</translation>
 <translation id="4853037749278079787">Maksimal avgift: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Gjeldende grunnavgift: <ph name="ASSET_VALUE"/> Gwei</translation>

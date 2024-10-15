@@ -643,6 +643,9 @@
 <translation id="135956957367307069">Cererea dvs. este încă în curs de procesare. Vă rugăm să așteptați.</translation>
 <translation id="5860033963881614850">Oprit</translation>
 <translation id="5916664084637901428">Pornit</translation>
+<translation id="7924320838799747606">Soldul dvs.</translation>
+<translation id="2870560284913253234">Site</translation>
+<translation id="7751260505918304024">Afișați-le pe toate</translation>
 <translation id="7090992647511817643">cont</translation>
 <translation id="4822132585477111396">ID lanț</translation>
 <translation id="3269475789479462358">domeniu</translation>
@@ -1669,7 +1672,6 @@ other {# surse}
 <translation id="6709133671862442373">Știri</translation>
 <translation id="3553513561058684206">Pentru dvs.</translation>
 <translation id="2217013723701900638">Editori</translation>
-<translation id="7751260505918304024">Afișați-le pe toate</translation>
 <translation id="5138227688689900538">Afișează mai puțin</translation>
 <translation id="1041218419402648959">Ascundeți conținutul de la <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3992393738853907417">E posibil să vă placă</translation>
@@ -1891,6 +1893,7 @@ other {# surse}
 <translation id="6500567629965936637">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit și oferit de Brave, structurat pe baza Mixtral 8x7B, un model creat de Mistral AI pentru a gestiona sarcini complexe.<ph name="LINK_BEFORE"/>Aflați mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Salut, eu sunt Leo. Sunt oferit prin proxy de către Brave și structurat pe baza Claude Instant, un model creat de Anthropic pentru sarcini conversaționale și de procesare de text. <ph name="LINK_BEFORE"/>Aflați mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">Salut, eu sunt Leo. Sunt oferit de către Brave și furnizat de Claude 3 Haiku, un model creat de Anthropic pentru a asigura activități de conversație și de procesare de text.</translation>
+<translation id="1107977270364670952">Salut, eu sunt Leo. Sunt oferit prin proxy de către Brave și furnizat de Claude 3.5 Sonnet, un model creat de Anthropic pentru a asigura activități de conversație și de procesare de text.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> oferit de <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -1926,6 +1929,7 @@ other {# surse}
 <translation id="9018766373792005944">Despre ce e feedbackul?</translation>
 <translation id="7355096922131918313">Oferiți feedback aici</translation>
 <translation id="3027575440738035995">Leo Premium oferă acces la un set extins de modele de limbaj pentru și mai multă precizie a răspunsurilor. <ph name="LINK_BEFORE"/>Aflați mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="7488762544858401571">Editat</translation>
 <translation id="2399439821649319175">Inutil</translation>
 <translation id="2976167228906046828">Incorect</translation>
 <translation id="1183055847065865059">Nesigur/dăunător</translation>
@@ -2074,6 +2078,7 @@ other {# surse}
 <translation id="434523916398030617">Contactați asistența tehnică</translation>
 <translation id="1116694919640316211">Despre</translation>
 <translation id="1693568075761612600">Nu s-a reușit crearea unui tichet de asistență; verificați conexiunea.</translation>
+<translation id="6527596624419285047">Folosește cel mai bun server disponibil</translation>
 <translation id="8463313539532697053">Așteptați puțin până se încarcă...</translation>
 <translation id="4613076894734402086">Modificați metoda de plată</translation>
 <translation id="427718751211990320">Data de expirare a datelor de conectare a trecut.</translation>

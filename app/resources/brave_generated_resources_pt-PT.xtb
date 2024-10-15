@@ -51,6 +51,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3975865347033939965">Não foi possível iniciar o serviço de sincronização. A Sincronização Brave não está a funcionar</translation>
 <translation id="4450893287417543264">Não mostrar de novo</translation>
 <translation id="4595286989346610620">Verificar detalhes</translation>
+<translation id="8324318899000695659">Bloquear elementos</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Abrir através do endereço .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Forçar colar</translation>
@@ -706,7 +707,7 @@ Leo. Esta ação não pode ser anulada.</translation>
 <translation id="7634775528597575156">Ponto final do servidor</translation>
 <translation id="6374563306438145841">Chave de API</translation>
 <translation id="8008271349880309090">O nome do modelo como será exibido no menu de seleção de modelos</translation>
-<translation id="7131172845656551327">O nome do modelo como deverá ser apresentado na solicitação ao framework de serviço, ou seja, phi-3 (note que, caso este nome não corresponda exatamente ao que é esperado pelo framework de serviço, a integração não funciona)</translation>
+<translation id="1355326130503900056">O nome do modelo tal como deve aparecer no pedido à estrutura de serviço, por exemplo, phi-3 (note que se este nome não corresponder exatamente ao que é esperado pela estrutura de serviço, a integração não funcionará)</translation>
 <translation id="3286410514484292784">O URL onde o seu framework de serviço está à escuta de solicitações. Se não tiver a certeza, consulte a documentação do framework de serviço. Por exemplo, para Ollama, é sempre http://localhost:11434/v1/chat/completions.</translation>
 <translation id="1058790648388035953">Alguns frameworks de serviço podem exigir credenciais de autenticação, como uma chave de API ou um token de acesso. Estas serão adicionadas ao cabeçalho da solicitação.</translation>
 <translation id="217141195370578385">A Brave não faz proxy destas solicitações, leia os termos de privacidade do fornecedor escolhido.</translation>

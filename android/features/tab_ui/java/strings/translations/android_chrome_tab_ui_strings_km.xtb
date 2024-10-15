@@ -80,7 +80,6 @@
 <translation id="4460014764210899310">បំបែក​ក្រុម</translation>
 <translation id="4590027107044272416">ឥឡូវនេះ អ្នកអាចបើកផ្ទាំងថ្មីនៅទីនេះ</translation>
 <translation id="4632233446660511480">{TAB_COUNT,plural, =1{បិទ​ផ្ទាំង​អសកម្ម 1 ឬ?}other{បិទ​ផ្ទាំង​អសកម្ម <ph name="TAB_COUNT_MANY"/> ឬ?}}</translation>
-<translation id="4648718555153979859">ផ្ទាំងរបស់អ្នកត្រូវ​បានដាក់ជាក្រុម​រួមគ្នានៅទីនេះ</translation>
 <translation id="4686942373615810936">ទើប​បាន​បង្កើត​អម្បាញ់​មិញ</translation>
 <translation id="47070857600201406">{DAY_COUNT,plural, =1{បិទក្រោយពេល 1 ថ្ងៃ}other{បិទក្រោយពេល <ph name="DAY_COUNT_MANY"/> ថ្ងៃ}}</translation>
 <translation id="4777866634702576038">លុបក្រុមផ្ទាំងឬ?</translation>
@@ -105,6 +104,7 @@
 <translation id="5400836586163650660">ប្រផេះ</translation>
 <translation id="5490235265819901748">បានពង្រីក​ក្រុមផ្ទាំង</translation>
 <translation id="5494920125229734069">ជ្រើសរើសទាំងអស់</translation>
+<translation id="5549653163690032080">បើក​ម៉ឺនុយ​សកម្មភាព​ក្រុមផ្ទាំង​សម្រាប់​ក្រុមផ្ទាំង <ph name="TITLE_OF_GROUP"/> ដែលបាន​ចែករំលែក</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{បិទ​ក្រុមផ្ទាំង​ដែលមាន <ph name="TABS_COUNT_ONE"/> ផ្ទាំង ពណ៌<ph name="COLOR_NAME"/>។}other{បិទ​ក្រុមផ្ទាំង​ដែលមាន <ph name="TABS_COUNT_MANY"/> ផ្ទាំង ពណ៌<ph name="COLOR_NAME"/>។}}</translation>
 <translation id="5556417849629758491">មើលព័ត៌មានអំពីហាង ជម្រើសមាននៅជិតផ្នែកខាងលើអេក្រង់</translation>
 <translation id="5627941783489838464">មិនមានការធ្វើបច្ចុប្បន្នភាពផ្ទាំងទេ</translation>
@@ -136,6 +136,7 @@
 <translation id="6694634756612002311">គ្រប់គ្រង​ការចែករំលែក</translation>
 <translation id="6744956528665271406">កែ​ពណ៌​ក្រុម</translation>
 <translation id="6856809498882026482">លាក់មុខងារ​ជ្រើសរើសច្រើន</translation>
+<translation id="7064815189603108598">{NUMBER_OF_TABS,plural, =1{ពង្រីក​ក្រុមផ្ទាំង <ph name="TITLE_OF_GROUP"/> ដែលបាន​ចែករំលែក​ដែលមាន <ph name="TABS_COUNT_ONE"/> ផ្ទាំង ពណ៌<ph name="COLOR_NAME"/>។}other{ពង្រីក​ក្រុមផ្ទាំង <ph name="TITLE_OF_GROUP"/> ដែលបាន​ចែករំលែក​ដែលមាន <ph name="TABS_COUNT_MANY"/> ផ្ទាំង ពណ៌<ph name="COLOR_NAME"/>។}}</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{ចែករំលែក​ផ្ទាំង}other{ចែករំលែក​ផ្ទាំង}}</translation>
 <translation id="7129458170538955174">បានបើក​ព័ត៌មានអំពី​ហាងនេះ​ពាក់កណ្ដាល​អេក្រង់</translation>
 <translation id="7200189319044305940">{NUMBER_OF_TABS,plural, =1{បិទ​ក្រុម <ph name="TITLE_OF_GROUP"/> ដែលមាន <ph name="TABS_COUNT_ONE"/> ផ្ទាំង។}other{បិទ​ក្រុម <ph name="TITLE_OF_GROUP"/> ដែលមាន <ph name="TABS_COUNT_MANY"/> ផ្ទាំង។}}</translation>
@@ -171,6 +172,7 @@
 <translation id="8205266828577616993">រំកិល​ផ្ទាំង​ឡើងលើ</translation>
 <translation id="8261506727792406068">លុប</translation>
 <translation id="8338427544764842461">ក្រុមផ្ទាំងរបស់អ្នកត្រូវបានរក្សាទុកនៅទីនេះ និងទទួលបានការធ្វើបច្ចុប្បន្នភាពលើគ្រប់ឧបករណ៍ដែល​ចូលគណនីរបស់អ្នក</translation>
+<translation id="8344020191144794051">{NUMBER_OF_TABS,plural, =1{ពង្រីក​ក្រុមផ្ទាំង​ដែលបាន​ចែករំលែក​ដែលមាន <ph name="TABS_COUNT_ONE"/> ផ្ទាំង ពណ៌<ph name="COLOR_NAME"/>។}other{ពង្រីក​ក្រុមផ្ទាំង​ដែលបាន​ចែករំលែក​ដែលមាន <ph name="TABS_COUNT_MANY"/> ផ្ទាំង ពណ៌<ph name="COLOR_NAME"/>។}}</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{បិទ​ផ្ទាំង​ដែលបាន​ជ្រើសរើស <ph name="TABS_COUNT_ONE"/>}other{បិទ​ផ្ទាំង​ដែលបាន​ជ្រើសរើស <ph name="TABS_COUNT_MANY"/>}}</translation>
 <translation id="8398929769197326728">ថតថ្មី - <ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="8428213095426709021">ការកំណត់</translation>
