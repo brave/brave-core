@@ -72,7 +72,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
 
   label: string
   modelRequestName: string
-  contextSize: number | null
+  contextSize: number
   endpointUrl: string
   apiKey: string
   modelItem: mojom.Model | null
@@ -106,9 +106,9 @@ export class ModelConfigUI extends ModelConfigUIBase {
           modelRequestName: this.modelRequestName,
           contextSize: this.contextSize,
           // Determined at runtime based on contextSize
-          maxPageContentLength: null,
+          maxPageContentLength: -1,
           // Determined at runtime based on contextSize
-          longConversationWarningCharacterLimit: null,
+          longConversationWarningCharacterLimit: -1,
           endpoint: mojomUrl,
           apiKey: this.apiKey
         }

@@ -195,24 +195,12 @@ struct LeoModelOptions {
 
 struct CustomModelOptions {
   string model_request_name;
-
-  // This value is provided by the user when adding/configuring a custom model.
-  // If not provided, Brave will default to using
-  // ai_chat::kCustomModelDefaultContextSize.
-  uint32? context_size;
-
-  // Instructs handler's of the model to truncate page contents when they
-  // exceed this limit. This is measured in characters, not tokens. The value
-  // is determined at runtime based on the context size and
-  // ai_chat::kStandardCharactersPerToken.
-  uint32? max_page_content_length;
-
-  // Instructs handlers of the model as to the overall limits of the
-  // conversation. If the conversation exceeds this limit, it is likely that
-  // coherence and recall will be impacted. This is measured in characters, not
-  // tokens. This value is also determined at runtime based on the model's
-  // context size and ai_chat::kStandardCharactersPerToken.
-  uint32? long_conversation_warning_character_limit;
+  // number of tokens supported by the given model
+  uint32 context_size;
+  // max limit to truncate page contents (measured in chars, not tokens)
+  uint32 max_page_content_length;
+  // max limit for overall conversation (measured in chars, not tokens)
+  uint32 long_conversation_warning_character_limit;
   url.mojom.Url endpoint;
   string api_key;
 };

@@ -215,8 +215,8 @@ base::Value::Dict GetModelDict(mojom::ModelPtr model) {
       kCustomModelItemApiKey,
       EncryptAPIKey(model->options->get_custom_model_options()->api_key));
   model_dict.Set(kCustomModelContextSizeKey,
-                 static_cast<int32_t>(model->options->get_custom_model_options()
-                                          ->context_size.value_or(0)));
+                 static_cast<int32_t>(
+                     model->options->get_custom_model_options()->context_size));
   model_dict.Set(kCustomModelItemKey, model->key);
   return model_dict;
 }
@@ -308,8 +308,7 @@ size_t ModelService::GetMaxAssociatedContentLengthForModel(
   }
 
   const auto context_size =
-      model.options->get_custom_model_options()->context_size.value_or(
-          kDefaultCustomModelContextSize);
+      model.options->get_custom_model_options()->context_size;
 
   constexpr uint32_t reserved_tokens =
       kReservedTokensForMaxNewTokens + kReservedTokensForPrompt;
@@ -558,7 +557,8 @@ std::vector<mojom::ModelPtr> ModelService::GetCustomModelsFromPrefs() {
     custom_model_opts->endpoint =
         GURL(*model_pref.FindString(kCustomModelItemEndpointUrlKey));
     custom_model_opts->context_size =
-        model_pref.FindInt(kCustomModelContextSizeKey);
+        model_pref.FindInt(kCustomModelContextSizeKey)
+            .value_or(kDefaultCustomModelContextSize);
     custom_model_opts->api_key =
         DecryptAPIKey(*model_pref.FindString(kCustomModelItemApiKey));
 
@@ -577,8 +577,6 @@ std::vector<mojom::ModelPtr> ModelService::GetCustomModelsFromPrefs() {
             kDefaultCustomModelContextSize;
       }
     }
-
-    VLOG(2) << "Loaded custom model: " << model->key;
 
     // Set metrics for AI Chat content length warnings
     SetAssociatedContentLengthMetrics(*model);

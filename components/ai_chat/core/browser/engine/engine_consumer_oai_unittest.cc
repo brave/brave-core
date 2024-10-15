@@ -60,6 +60,7 @@ class EngineConsumerOAIUnitTest : public testing::Test {
     auto options = mojom::CustomModelOptions::New();
     options->endpoint = GURL("https://test.com/");
     options->model_request_name = "request_name";
+    options->context_size = 5000;
     options->api_key = "api_key";
 
     model_ = mojom::Model::New();

@@ -145,20 +145,6 @@ TEST_F(ModelValidatorUnitTest, ValidateModel) {
 
   EXPECT_EQ(ModelValidator::ValidateModel(invalid_endpoint_model),
             ModelValidationResult::kInvalidUrl);
-
-  // Nullopt for context size should fail
-  mojom::CustomModelOptionsPtr nullopt_context_size_options =
-      mojom::CustomModelOptions::New();
-  nullopt_context_size_options->context_size = std::nullopt;
-  nullopt_context_size_options->endpoint = GURL("https://valid-url.com");
-
-  mojom::Model nullopt_context_size_model;
-  nullopt_context_size_model.options =
-      mojom::ModelOptions::NewCustomModelOptions(
-          std::move(nullopt_context_size_options));
-
-  EXPECT_EQ(ModelValidator::ValidateModel(nullopt_context_size_model),
-            ModelValidationResult::kInvalidContextSize);
 }
 
 }  // namespace ai_chat

@@ -197,8 +197,8 @@ TEST_F(ModelServiceTest, AddAndModifyCustomModel) {
     mojom::ModelPtr model = mojom::Model::New();
     model->display_name = kDisplayName;
     model->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New(kRequestName, std::nullopt, std::nullopt,
-                                       std::nullopt, kEndpoint, kAPIKey));
+        mojom::CustomModelOptions::New(kRequestName, 0, 0, 0, kEndpoint,
+                                       kAPIKey));
 
     GetService()->AddCustomModel(std::move(model));
   }
@@ -240,7 +240,7 @@ TEST_F(ModelServiceTest, SetAssociatedContentLengthMetrics_CustomModel) {
   // Setup a custom model with no valid context size
   mojom::CustomModelOptionsPtr custom_options =
       mojom::CustomModelOptions::New();
-  custom_options->context_size = std::nullopt;  // Invalid context size
+  custom_options->context_size = 0;  // Invalid context size
 
   mojom::Model custom_model;
   custom_model.options =
@@ -271,9 +271,10 @@ TEST_F(ModelServiceTest, SetAssociatedContentLengthMetrics_CustomModel) {
 
 TEST_F(ModelServiceTest, SetAssociatedContentLengthMetrics_ValidContextSize) {
   // Setup a custom model with a valid context size
+  static constexpr size_t kContextSize = 5000;
   mojom::CustomModelOptionsPtr custom_options =
       mojom::CustomModelOptions::New();
-  custom_options->context_size = 5000;
+  custom_options->context_size = kContextSize;
 
   mojom::Model custom_model;
   custom_model.options =
@@ -284,7 +285,7 @@ TEST_F(ModelServiceTest, SetAssociatedContentLengthMetrics_ValidContextSize) {
 
   // Validate that the provided context size is retained
   EXPECT_EQ(custom_model.options->get_custom_model_options()->context_size,
-            5000);
+            kContextSize);
 
   // Validate that max_page_content_length is calculated correctly
   size_t expected_content_length =
@@ -326,31 +327,6 @@ TEST_F(ModelServiceTest, GetMaxAssociatedContentLengthForModel_CustomModel) {
 
   static constexpr size_t expected_content_length =
       (5000 - reserved_tokens) * kDefaultCharsPerToken;
-
-  EXPECT_EQ(max_content_length, expected_content_length);
-}
-
-TEST_F(ModelServiceTest, GetMaxAssociatedContentLengthForModel_NoContextSize) {
-  // Setup a custom model with no context size (should fallback to default)
-  mojom::CustomModelOptionsPtr custom_options =
-      mojom::CustomModelOptions::New();
-  custom_options->context_size = std::nullopt;
-
-  mojom::Model custom_model;
-  custom_model.options =
-      mojom::ModelOptions::NewCustomModelOptions(std::move(custom_options));
-
-  // Calculate max associated content length
-  size_t max_content_length =
-      GetService()->GetMaxAssociatedContentLengthForModel(custom_model);
-
-  // Validate max content length calculation
-  static constexpr uint32_t reserved_tokens =
-      kReservedTokensForMaxNewTokens + kReservedTokensForPrompt;
-
-  static constexpr size_t expected_content_length =
-      (kDefaultCustomModelContextSize - reserved_tokens) *
-      kDefaultCharsPerToken;
 
   EXPECT_EQ(max_content_length, expected_content_length);
 }
