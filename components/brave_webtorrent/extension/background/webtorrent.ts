@@ -3,19 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as WebTorrent from 'webtorrent'
+import WebTorrent from 'webtorrent'
 import { addTorrentEvents, removeTorrentEvents } from './events/torrentEvents'
 import { addWebtorrentEvents } from './events/webtorrentEvents'
 import { AddressInfo } from 'net'
 import { Instance } from 'parse-torrent'
 import { basename, extname } from 'path'
-import * as JSZip from 'jszip'
+import JSZip from 'jszip'
 
 let webTorrent: WebTorrent.Instance | undefined
 let servers: { [key: string]: any } = {}
 
 export const getWebTorrent = () => {
   if (!webTorrent) {
+    console.log('WebTorrent: ', WebTorrent)
     webTorrent = new WebTorrent({ tracker: { wrtc: false } })
     addWebtorrentEvents(webTorrent)
   }
@@ -96,7 +97,7 @@ export const saveAllFiles = (infoHash: string) => {
 
   const files: WebTorrent.TorrentFile[] = torrent.files
 
-  let zip: any = new JSZip()
+  let zip: JSZip = new JSZip()
   const zipFilename = basename(torrent.name, extname(torrent.name)) + '.zip'
 
   const downloadBlob = (blob: Blob) => {
@@ -113,7 +114,10 @@ export const saveAllFiles = (infoHash: string) => {
   const downloadZip = () => {
     if (files.length > 1) {
       // generate the zip relative to the torrent folder
-      zip = zip.folder(torrent.name)
+      const folder = zip.folder(torrent.name)
+      if (folder) {
+        zip = folder
+      }
     }
 
     zip.generateAsync({ type: 'blob' }).then(
@@ -129,6 +133,8 @@ export const saveAllFiles = (infoHash: string) => {
       file.getBlob((err, blob) => {
         if (err) {
           console.error(err)
+        } else if (!blob){
+          console.error('Failed to get blob for file: ', file)
         } else {
           // add file to zip
           zip.file(file.path, blob)

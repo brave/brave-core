@@ -17,6 +17,7 @@ export const addTorrentEvents = (torrent: TorrentExtended) => {
   torrent.on('error', (e: Error) => console.log('error: ', torrent, e))
 
   torrent.on('ready', () => {
+    console.log(torrent)
     createServer(torrent, (serverURL: string) => {
       webtorrentActions.serverUpdated(torrent, serverURL)
     })
