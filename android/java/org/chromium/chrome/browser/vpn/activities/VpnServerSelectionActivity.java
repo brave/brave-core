@@ -85,7 +85,7 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(getResources().getString(R.string.change_location));
+        actionBar.setTitle(getResources().getString(R.string.server_region));
 
         mServerRegionList = (RecyclerView) findViewById(R.id.server_selection_list);
 
