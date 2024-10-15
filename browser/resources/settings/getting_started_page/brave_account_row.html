@@ -47,6 +47,7 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <template is="dom-if" if="[[isDialogType('sign-in', dialogType)]]" restamp>
   <settings-brave-account-sign-in-dialog
     on-close="onBraveAccountDialogClosed_"
+    show-back-button
     on-back-button-clicked="onBackButtonClicked_">
   </settings-brave-account-sign-in-dialog>
 </template>
