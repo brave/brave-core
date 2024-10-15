@@ -14,7 +14,7 @@
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
-#include "brave/components/json/rs/src/lib.rs.h"
+#include "brave/components/json/json_helper.h"
 
 namespace brave_wallet::fil {
 
@@ -72,15 +72,9 @@ std::string getEstimateGas(const std::string& from_address,
   dict.Set("id", 1);
   std::string json;
   base::JSONWriter::Write(dict, &json);
-  json = std::string(json::convert_string_value_to_int64("/params/0/GasLimit",
-                                                         json.c_str(), false)
-                         .c_str());
-  json = std::string(json::convert_string_value_to_uint64("/params/0/Nonce",
-                                                          json.c_str(), false)
-                         .c_str());
-  return std::string(json::convert_string_value_to_uint64("/params/0/Method",
-                                                          json.c_str(), false)
-                         .c_str());
+  json = json::convert_string_value_to_int64("/params/0/GasLimit", json, false);
+  json = json::convert_string_value_to_uint64("/params/0/Nonce", json, false);
+  return json::convert_string_value_to_uint64("/params/0/Method", json, false);
 }
 
 std::string getChainHead() {
@@ -93,9 +87,7 @@ std::string getStateSearchMsgLimited(const std::string& cid, uint64_t period) {
   auto result =
       GetJsonRpcString("Filecoin.StateSearchMsgLimited", std::move(cid_value),
                        base::Value(std::to_string(period)));
-  result = std::string(
-      json::convert_string_value_to_uint64("/params/1", result.c_str(), false)
-          .c_str());
+  result = json::convert_string_value_to_uint64("/params/1", result, false);
   return result;
 }
 

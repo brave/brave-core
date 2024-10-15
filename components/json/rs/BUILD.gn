@@ -6,6 +6,8 @@
 import("//build/rust/rust_static_library.gni")
 
 rust_static_library("rust_lib") {
+  visibility = [ "//brave/components/json" ]
+
   crate_name = "json_cxx"
   crate_root = "src/lib.rs"
   allow_unsafe = true
