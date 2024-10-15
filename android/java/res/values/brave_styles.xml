@@ -428,6 +428,7 @@
     <style name="DefaultSemibold">
         <!-- Default Brave UI size -->
         <item name="android:textSize">@dimen/default_semibold</item>
+        <item name="android:textStyle">bold</item>
         <item name="lineHeight">20sp</item>
         <item name="fontStyle">normal</item>
         <item name="fontWeight">600</item>
