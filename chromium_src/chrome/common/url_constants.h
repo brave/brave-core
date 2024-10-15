@@ -168,7 +168,8 @@ inline constexpr char kCrashReasonFeedbackDisplayedURL[] =
 
 // "Learn more" URL for the inactive tabs appearance setting.
 inline constexpr char16_t kDiscardRingTreatmentLearnMoreUrl[] =
-    u"https://support.brave.com/hc/en-us/articles/30938249371277";
+    u"https://support.brave.com/hc/en-us/articles/"
+    u"13383683902733-How-do-I-use-the-Memory-Saver-feature-in-Brave";
 
 // "Learn more" URL for the "Do not track" setting in the privacy section.
 inline constexpr char16_t kDoNotTrackLearnMoreURL[] =
