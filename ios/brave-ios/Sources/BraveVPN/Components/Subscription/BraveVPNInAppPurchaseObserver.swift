@@ -134,7 +134,7 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
       return
     }
 
-    processTransactions(transactions, on: queue)
+    processTransactions(queue.transactions, on: queue)
   }
 
   // MARK: - Handling promoted in-app purchases
