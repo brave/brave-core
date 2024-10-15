@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -1281,6 +1282,17 @@ void AdsServiceImpl::TriggerPromotedContentAdEvent(
   bat_ads_associated_remote_->TriggerPromotedContentAdEvent(
       placement_id, creative_instance_id, mojom_ad_event_type,
       std::move(callback));
+}
+
+void AdsServiceImpl::MaybeGetSearchResultAd(
+    const std::string& placement_id,
+    MaybeGetSearchResultAdCallback callback) {
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*mojom_creative_ad*/ {});
+  }
+
+  bat_ads_associated_remote_->MaybeGetSearchResultAd(placement_id,
+                                                     std::move(callback));
 }
 
 void AdsServiceImpl::TriggerSearchResultAdEvent(

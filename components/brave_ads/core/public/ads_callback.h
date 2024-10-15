@@ -38,6 +38,9 @@ using MaybeServeInlineContentAdCallback =
 using MaybeGetNotificationAdCallback =
     base::OnceCallback<void(const std::optional<NotificationAdInfo>& ad)>;
 
+using MaybeGetSearchResultAdCallback = base::OnceCallback<void(
+    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad)>;
+
 using TriggerAdEventCallback = base::OnceCallback<void(bool success)>;
 
 using PurgeOrphanedAdEventsForTypeCallback =
