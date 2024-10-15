@@ -40,9 +40,14 @@ class SettingsBraveAccountSignInDialogElement extends PolymerElement {
       isEmailAddressInvalid_: {
         type: Boolean,
         value: true,
+      },
+      showBackButton: {
+        type: Boolean
       }
     };
   }
+
+  showBackButton: boolean = false;
 
   private onBackButtonClicked_() {
     this.dispatchEvent(new CustomEvent('back-button-clicked'))

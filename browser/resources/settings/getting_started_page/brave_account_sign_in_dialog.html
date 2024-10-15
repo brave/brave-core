@@ -16,9 +16,14 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
   }
   .buttons {
     display: flex;
-    justify-content: space-between;
     min-height: 40px;
     width: 100%;
+  }
+  .buttons:has(> cr-icon-button:nth-of-type(1)) {
+    justify-content: flex-end;
+  }
+  .buttons:has(> cr-icon-button:nth-of-type(2)) {
+    justify-content: space-between;
   }
   .button {
     align-self: flex-start;
@@ -88,9 +93,11 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <cr-dialog id="dialog" show-on-attach>
   <div slot="header" class="center-center layout vertical">
     <div class="buttons">
-      <cr-icon-button class="button icon-arrow-back" aria-label$="[[closeText]]"
+      <template is="dom-if" if="[[showBackButton]]">
+        <cr-icon-button class="button icon-arrow-back" aria-label$="[[closeText]]"
           on-click="onBackButtonClicked_" on-keypress="onCloseKeypress_">
-      </cr-icon-button>
+        </cr-icon-button>
+      </template>
       <cr-icon-button class="button icon-clear" aria-label$="[[closeText]]"
           on-click="cancel" on-keypress="onCloseKeypress_">
       </cr-icon-button>
