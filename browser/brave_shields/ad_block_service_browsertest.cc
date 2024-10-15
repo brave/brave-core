@@ -3050,6 +3050,18 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
   ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
   EXPECT_EQ(web_contents()->GetLastCommittedURL(),
             "chrome://settings/shields/filters");
+
+  ShieldsDown(tab_url);
+  NavigateToURL(tab_url);
+  {
+    content::ContextMenuParams params;
+    params.page_url = tab_url;
+    TestRenderViewContextMenu menu(*web_contents()->GetPrimaryMainFrame(),
+                                   params);
+    menu.Init();
+    // No menu item if Shields are down.
+    EXPECT_FALSE(menu.IsItemEnabled(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS));
+  }
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
 

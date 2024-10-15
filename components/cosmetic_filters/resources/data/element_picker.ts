@@ -572,4 +572,7 @@ const highlightElements = (coords: TargetRect[]) => {
   }
 }
 
-launchElementPicker(attachElementPicker())
+const active = document.getElementById('brave-element-picker')
+if (!active) {
+  launchElementPicker(attachElementPicker())
+}
