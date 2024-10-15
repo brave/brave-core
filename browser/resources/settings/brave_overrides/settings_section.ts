@@ -15,6 +15,14 @@ RegisterStyleOverride(
       }
       :host(:not(.expanded)) #card {
         box-shadow: var(--leo-effect-elevation-01) !important;
+        background-color: var(--leo-color-container-background) !important;
+      }
+      .cr-row {
+        border-top: var(--leo-color-divider-subtle) !important;
+      }
+      :host(:not(.multi-card)).selected{
+        box-shadow: var(--leo-effect-elevation-01) !important;
+        background-color: var(--leo-color-container-background) !important;
       }
       </style>
   `

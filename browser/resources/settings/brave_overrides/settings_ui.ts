@@ -53,7 +53,7 @@ RegisterStyleOverride(
       #container {
         /* menu and content next to each other in the horizontal center */
         justify-content: center;
-        background: #F1F3F5; /* neutral100 */
+        background: var(--leo-color-page-background);
       }
       #left {
         /* fixed size menu */
@@ -69,7 +69,7 @@ RegisterStyleOverride(
       }
       @media (prefers-color-scheme: dark) {
         #container {
-          background: #1E2127;
+          background: var(--leo-color-page-background);
         }
       }
     </style>

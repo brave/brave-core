@@ -54,14 +54,14 @@ RegisterStyleOverride(
       :host {
         --brave-settings-menu-margin-v: 24px;
         --brave-settings-menu-padding: 24px;
-        --settings-nav-item-color: #424242 !important;
+        --settings-nav-item-color: var(--leo-color-text-primary) !important;
         position: sticky;
         top: var(--brave-settings-menu-margin-v);
         margin: 0 var(--brave-settings-menu-margin) !important;
         max-height: calc(100vh - 56px - (var(--brave-settings-menu-margin-v) * 2) - (var(--brave-settings-menu-padding) * 2));
         min-width: 172px;
         border-radius: 6px;
-        background-color: #fff;
+        background-color: var(--leo-color-container-background);
         overflow-y: auto;
         padding: 24px !important;
         box-shadow: var(--leo-effect-elevation-01);
@@ -96,9 +96,9 @@ RegisterStyleOverride(
 
       @media (prefers-color-scheme: dark) {
         :host {
-          --settings-nav-item-color: #F4F4F4 !important;
+          --settings-nav-item-color: var(--leo-color-text-primary) !important;
           border-color: transparent !important;
-          background-color: #161719;
+          background-color: var(--leo-color-container-background);
         }
       }
 
@@ -124,7 +124,7 @@ RegisterStyleOverride(
       }
 
       a:hover, cr-icon:hover {
-        color: #444DD0 !important;
+        color: var(--leo-color-icon-interactive) !important;
       }
 
       cr-icon, leo-icon {
@@ -152,7 +152,8 @@ RegisterStyleOverride(
         }
 
         a:hover, cr-icon:hover {
-          color: #A6ABE9 !important;
+          color: var(--leo-color-icon-interactive) !important;
+          --iron-icon-fill-color: var(--leo-color-icon-interactive) !important;
         }
       }
 
@@ -190,7 +191,7 @@ RegisterStyleOverride(
         flex-direction: row;
         align-items: flex-start;
         justify-content: flex-start;
-        color: #c5c5d3 !important;
+        color: var(--leo-color-text-tertiary) !important;
         margin: 16px 0 0 0 !important;
       }
       .brave-about-graphic {
