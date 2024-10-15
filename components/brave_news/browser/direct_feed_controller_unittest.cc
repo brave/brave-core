@@ -14,7 +14,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/test/wait_for_callback.h"
-#include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -79,8 +78,7 @@ constexpr char kFeedURL[] = "https://example.com/feed";
 class BraveNewsDirectFeedControllerTest : public testing::Test {
  public:
   BraveNewsDirectFeedControllerTest()
-      : pref_manager_(*profile_.GetPrefs()),
-        direct_feed_controller_(test_url_loader_factory_.GetSafeWeakWrapper()) {
+      : direct_feed_controller_(test_url_loader_factory_.GetSafeWeakWrapper()) {
   }
 
  protected:
@@ -97,12 +95,10 @@ class BraveNewsDirectFeedControllerTest : public testing::Test {
         base::Unretained(&direct_feed_controller_), possible_feed_or_site_url));
     return std::move(feeds);
   }
+
   content::BrowserTaskEnvironment task_environment_;
   data_decoder::test::InProcessDataDecoder data_decoder_;
   network::TestURLLoaderFactory test_url_loader_factory_;
-
-  TestingProfile profile_;
-  BraveNewsPrefManager pref_manager_;
   DirectFeedController direct_feed_controller_;
 };
 

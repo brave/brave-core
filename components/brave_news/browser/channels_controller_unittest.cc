@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_news/browser/channels_controller.h"
 
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -19,8 +20,8 @@
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
-#include "chrome/test/base/testing_profile.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -76,13 +77,18 @@ class BraveNewsChannelsControllerTest : public testing::Test {
  public:
   BraveNewsChannelsControllerTest()
       : api_request_helper_(TRAFFIC_ANNOTATION_FOR_TESTS,
-                            test_url_loader_factory_.GetSafeWeakWrapper()),
-        pref_manager_(*profile_.GetPrefs()),
-        publishers_controller_(&api_request_helper_),
-        channels_controller_(&publishers_controller_) {
-    profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
-    profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
-                                    true);
+                            test_url_loader_factory_.GetSafeWeakWrapper()) {
+    prefs::RegisterProfilePrefs(pref_service_.registry());
+
+    pref_manager_ = std::make_unique<BraveNewsPrefManager>(pref_service_);
+
+    // Ensure Brave News is enabled.
+    pref_manager_->SetConfig(mojom::Configuration::New(true, true, true));
+
+    publishers_controller_ =
+        std::make_unique<PublishersController>(&api_request_helper_);
+    channels_controller_ =
+        std::make_unique<ChannelsController>(publishers_controller_.get());
   }
 
   std::string GetPublishersURL() {
@@ -91,10 +97,10 @@ class BraveNewsChannelsControllerTest : public testing::Test {
   }
 
   brave_news::Channels GetAllChannels() {
-    auto [channels] =
-        WaitForCallback(base::BindOnce(&ChannelsController::GetAllChannels,
-                                       base::Unretained(&channels_controller_),
-                                       pref_manager_.GetSubscriptions()));
+    auto [channels] = WaitForCallback(
+        base::BindOnce(&ChannelsController::GetAllChannels,
+                       base::Unretained(channels_controller_.get()),
+                       pref_manager_->GetSubscriptions()));
     return std::move(channels);
   }
 
@@ -103,11 +109,11 @@ class BraveNewsChannelsControllerTest : public testing::Test {
   data_decoder::test::InProcessDataDecoder data_decoder_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   api_request_helper::APIRequestHelper api_request_helper_;
-  TestingProfile profile_;
+  sync_preferences::TestingPrefServiceSyncable pref_service_;
 
-  BraveNewsPrefManager pref_manager_;
-  PublishersController publishers_controller_;
-  ChannelsController channels_controller_;
+  std::unique_ptr<BraveNewsPrefManager> pref_manager_;
+  std::unique_ptr<PublishersController> publishers_controller_;
+  std::unique_ptr<ChannelsController> channels_controller_;
 };
 
 TEST_F(BraveNewsChannelsControllerTest, CanGetAllChannels) {
@@ -128,8 +134,8 @@ TEST_F(BraveNewsChannelsControllerTest, CanGetAllChannels) {
 }
 
 TEST_F(BraveNewsChannelsControllerTest, GetAllChannelsLoadsSubscribedState) {
-  pref_manager_.SetChannelSubscribed("en_US", "One", true);
-  pref_manager_.SetChannelSubscribed("en_US", "Five", true);
+  pref_manager_->SetChannelSubscribed("en_US", "One", true);
+  pref_manager_->SetChannelSubscribed("en_US", "Five", true);
 
   test_url_loader_factory_.AddResponse(GetPublishersURL(), kPublishersResponse,
                                        net::HTTP_OK);
@@ -156,8 +162,8 @@ TEST_F(BraveNewsChannelsControllerTest, GetAllChannelsLoadsSubscribedState) {
 
 TEST_F(BraveNewsChannelsControllerTest,
        GetAllChannelsLoadsCorrectLocaleSubscriptionStatus) {
-  pref_manager_.SetChannelSubscribed("en_US", "One", true);
-  pref_manager_.SetChannelSubscribed("ja_JA", "Five", true);
+  pref_manager_->SetChannelSubscribed("en_US", "One", true);
+  pref_manager_->SetChannelSubscribed("ja_JA", "Five", true);
 
   test_url_loader_factory_.AddResponse(GetPublishersURL(), kPublishersResponse,
                                        net::HTTP_OK);

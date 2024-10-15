@@ -22,11 +22,10 @@
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/combined_feed_parsing.h"
-#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
-#include "chrome/test/base/testing_profile.h"
-#include "content/public/test/browser_task_environment.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/mojom/url.mojom.h"
 
@@ -169,7 +168,11 @@ void PopulatePublishers(Publishers* publisher_list) {
 
 class BraveNewsFeedBuildingTest : public testing::Test {
  public:
-  BraveNewsFeedBuildingTest() : pref_manager_(*profile_.GetPrefs()) {}
+  BraveNewsFeedBuildingTest() {
+    prefs::RegisterProfilePrefs(pref_service_.registry());
+
+    pref_manager_ = std::make_unique<BraveNewsPrefManager>(pref_service_);
+  }
 
   BraveNewsFeedBuildingTest(const BraveNewsFeedBuildingTest&) = delete;
   BraveNewsFeedBuildingTest& operator=(const BraveNewsFeedBuildingTest&) =
@@ -177,13 +180,13 @@ class BraveNewsFeedBuildingTest : public testing::Test {
   ~BraveNewsFeedBuildingTest() override = default;
 
  protected:
-  content::BrowserTaskEnvironment browser_task_environment_;
-  TestingProfile profile_;
-  BraveNewsPrefManager pref_manager_;
+  sync_preferences::TestingPrefServiceSyncable pref_service_;
+
+  std::unique_ptr<BraveNewsPrefManager> pref_manager_;
 };
 
 TEST_F(BraveNewsFeedBuildingTest, BuildFeed) {
-  pref_manager_.SetChannelSubscribed("en_US", "Top Sources", true);
+  pref_manager_->SetChannelSubscribed("en_US", "Top Sources", true);
 
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
@@ -195,7 +198,7 @@ TEST_F(BraveNewsFeedBuildingTest, BuildFeed) {
   mojom::Feed feed;
 
   ASSERT_TRUE(BuildFeed(feed_items, history_hosts, &publisher_list, &feed,
-                        pref_manager_.GetSubscriptions()));
+                        pref_manager_->GetSubscriptions()));
   ASSERT_EQ(feed.pages.size(), 1u);
   // Validate featured article is top news
   ASSERT_TRUE(feed.featured_item->is_article());
@@ -365,7 +368,7 @@ TEST_F(BraveNewsFeedBuildingTest, ChannelIsUsed) {
 }
 
 TEST_F(BraveNewsFeedBuildingTest, DuplicateItemsAreNotIncluded) {
-  pref_manager_.SetChannelSubscribed("en_US", "Top Sources", true);
+  pref_manager_->SetChannelSubscribed("en_US", "Top Sources", true);
 
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
@@ -379,7 +382,7 @@ TEST_F(BraveNewsFeedBuildingTest, DuplicateItemsAreNotIncluded) {
   mojom::Feed feed;
 
   ASSERT_TRUE(BuildFeed(feed_items, history_hosts, &publisher_list, &feed,
-                        pref_manager_.GetSubscriptions()));
+                        pref_manager_->GetSubscriptions()));
   ASSERT_EQ(feed.pages.size(), 1u);
   ASSERT_EQ(feed.pages[0]->items.size(), 18u);
 }
