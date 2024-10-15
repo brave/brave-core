@@ -110,6 +110,7 @@ class ModelListSection extends ModelListSectionBase {
     }
 
     this.showModelConfig_ = false
+    this.isEditingModelIndex_ = null
   }
 
   onModelConfigClose_() {
