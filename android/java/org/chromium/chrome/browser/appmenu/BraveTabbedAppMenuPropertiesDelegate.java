@@ -24,6 +24,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -57,8 +58,6 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.modaldialog.ModalDialogManager;
-
-import java.util.Locale;
 
 /** Brave's extension for TabbedAppMenuPropertiesDelegate */
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
@@ -126,23 +125,25 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
             if (BraveVpnPrefUtils.isSubscriptionPurchase()
                     && !TextUtils.isEmpty(BraveVpnPrefUtils.getRegionIsoCode())) {
-                String serverLocation = " %s  %s";
+                String serverLocation = " %s  %s - %s";
                 SubMenu vpnLocationSubMenu =
                         menu.findItem(R.id.request_vpn_location_row_menu_id).getSubMenu();
                 MenuItem vpnLocationSubMenuItem =
                         vpnLocationSubMenu.findItem(R.id.request_vpn_location_id);
                 String isoCode = BraveVpnPrefUtils.getRegionIsoCode();
-                String country =
-                        !BraveVpnPrefUtils.getRegionCountry().equals("")
-                                ? BraveVpnPrefUtils.getRegionCountry()
-                                : new Locale("", isoCode).getDisplayCountry();
+                String regionName =
+                        BraveVpnPrefUtils.getRegionPrecision()
+                                        .equals(BraveVpnConstants.REGION_PRECISION_COUNTRY)
+                                ? mContext.getString(R.string.optimal_text)
+                                : BraveVpnPrefUtils.getRegionNamePretty();
 
                 vpnLocationSubMenuItem.setTitle(
                         String.format(
                                 serverLocation,
                                 BraveVpnUtils.countryCodeToEmoji(
                                         BraveVpnPrefUtils.getRegionIsoCode()),
-                                country));
+                                BraveVpnPrefUtils.getRegionIsoCode(),
+                                regionName));
                 MenuItem vpnLocationIconSubMenuItem =
                         vpnLocationSubMenu.findItem(R.id.request_vpn_location_icon_id);
                 Drawable drawable = vpnLocationIconSubMenuItem.getIcon();
