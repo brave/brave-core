@@ -50,10 +50,6 @@ class SettingsBraveAccountSignInDialogElement extends PolymerElement {
 
   showBackButton: boolean = false;
 
-  private onBackButtonClicked_() {
-    this.dispatchEvent(new CustomEvent('back-button-clicked'))
-  }
-
   private cancel() {
     this.$.dialog.cancel();
   }
