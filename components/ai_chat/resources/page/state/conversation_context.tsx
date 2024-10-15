@@ -6,8 +6,9 @@
 import * as React from 'react'
 import * as mojom from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
 import * as API from '../api/'
-import { isLeoModel } from '../model_utils'
 import { useAIChat } from './ai_chat_context'
+import { useSelectedConversation } from '../routes'
+import useIsConversationVisible from '../hooks/useIsConversationVisible'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -15,6 +16,7 @@ const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
 export interface ConversationContextProps {
   conversationHandler: API.ConversationHandlerRemote
   callbackRouter: API.ConversationUICallbackRouter
+  selectedConversationId: string | undefined
 }
 
 export interface CharCountContext {
@@ -85,18 +87,18 @@ const defaultContext: ConversationContext = {
   selectedActionType: undefined,
   isToolsMenuOpen: false,
   isCurrentModelLeo: true,
-  setCurrentModel: () => {},
-  switchToBasicModel: () => {},
-  generateSuggestedQuestions: () => {},
-  dismissLongConversationInfo: () => {},
-  updateShouldSendPageContents: () => {},
-  retryAPIRequest: () => {},
-  handleResetError: () => {},
-  setInputText: () => {},
-  submitInputTextToAPI: () => {},
-  resetSelectedActionType: () => {},
-  handleActionTypeClick: () => {},
-  setIsToolsMenuOpen: () => {},
+  setCurrentModel: () => { },
+  switchToBasicModel: () => { },
+  generateSuggestedQuestions: () => { },
+  dismissLongConversationInfo: () => { },
+  updateShouldSendPageContents: () => { },
+  retryAPIRequest: () => { },
+  handleResetError: () => { },
+  setInputText: () => { },
+  submitInputTextToAPI: () => { },
+  resetSelectedActionType: () => { },
+  handleActionTypeClick: () => { },
+  setIsToolsMenuOpen: () => { },
   ...defaultCharCountContext
 }
 
@@ -151,9 +153,7 @@ export function useActionMenu(
 export const ConversationReactContext =
   React.createContext<ConversationContext>(defaultContext)
 
-export function ConversationContextProvider(
-  props: React.PropsWithChildren<ConversationContextProps>
-) {
+function ConversationProviderInternal(props: React.PropsWithChildren<ConversationContextProps>) {
   const [context, setContext] =
     React.useState<ConversationContext>(defaultContext)
 
@@ -310,8 +310,16 @@ export function ConversationContextProvider(
       })
   }, [context.conversationUuid, context.faviconCacheKey])
 
-  const actionList = useActionMenu(context.inputText, aiChatContext.allActions
-  )
+  // Update the location when the visible conversation changes
+  const isVisible = useIsConversationVisible(context.conversationUuid)
+  React.useEffect(() => {
+    if (!isVisible) return
+    if (props.selectedConversationId === 'default') return
+    if (context.conversationUuid === props.selectedConversationId) return
+    window.location.href = `/${context.conversationUuid}`
+  }, [isVisible])
+
+  const actionList = useActionMenu(context.inputText, aiChatContext.allActions)
 
   const shouldShowLongConversationInfo = React.useMemo(() => {
     const chatHistoryCharTotal = context.conversationHistory.reduce(
@@ -358,7 +366,7 @@ export function ConversationContextProvider(
     context.isGenerating ||
     (!aiChatContext.isPremiumUser &&
       context.currentModel?.options.leoModelOptions?.access ===
-        mojom.ModelAccess.PREMIUM)
+      mojom.ModelAccess.PREMIUM)
   )
   const isCharLimitExceeded = context.inputText.length >= MAX_INPUT_CHAR
   const isCharLimitApproaching =
@@ -491,6 +499,57 @@ export function ConversationContextProvider(
       {props.children}
     </ConversationReactContext.Provider>
   )
+}
+
+export function ConversationContextProvider(
+  props: React.PropsWithChildren
+) {
+  const [conversationAPI, setConversationAPI] =
+    React.useState<Omit<ConversationContextProps, 'selectedConversationId'>>()
+
+  const selectedConversation = useSelectedConversation()
+  React.useEffect(() => {
+    // Handle creating a new conversation
+    if (!selectedConversation) {
+      setConversationAPI(API.newConversation())
+      return
+    }
+
+    // Select a specific conversation
+    setConversationAPI(API.bindConversation(selectedConversation === "default"
+      ? undefined
+      : selectedConversation))
+
+    // The default conversation changes as the associated tab navigates, so
+    // listen for changes.
+    if (selectedConversation === 'default') {
+      const onNewDefaultConversationListenerId =
+        getAPI().UIObserver.onNewDefaultConversation.addListener(() => {
+          setConversationAPI(API.bindConversation(undefined))
+        })
+
+      return () => {
+        getAPI().UIObserver.removeListener(onNewDefaultConversationListenerId)
+      }
+    }
+
+    // Satisfy linter
+    return undefined
+  }, [selectedConversation])
+
+  // Clean up bindings when not used anymore
+  React.useEffect(() => {
+    return () => {
+      conversationAPI?.callbackRouter.$.close()
+      conversationAPI?.conversationHandler.$.close()
+    }
+  }, [conversationAPI])
+
+  return conversationAPI
+    ? <ConversationProviderInternal selectedConversationId={selectedConversation} {...conversationAPI}>
+      {props.children}
+    </ConversationProviderInternal>
+    : null;
 }
 
 export function useConversation() {
