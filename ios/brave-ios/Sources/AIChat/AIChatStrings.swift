@@ -357,7 +357,7 @@ extension Strings {
       "aichat.paywallYearlySubscriptionDescription",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "SAVE UP TO 25%",
+      value: "BEST VALUE",
       comment:
         "The description indicating yearly subscription that show how much user is saving percentage"
     )
@@ -395,6 +395,13 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value: "Upgrade Now",
+      comment: "The title of the button for action triggering purchase"
+    )
+    public static let paywallPurchaseActionIntroOfferTitle = NSLocalizedString(
+      "aichat.paywallPurchaseActionIntroOfferTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Try 7 Days Free",
       comment: "The title of the button for action triggering purchase"
     )
     public static let paywallPremiumUpsellTitle = NSLocalizedString(

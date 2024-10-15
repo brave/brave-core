@@ -339,6 +339,22 @@ public class AppStoreSDK: ObservableObject {
     (try? await subscription(for: product)?.subscription?.status) ?? []
   }
 
+  /// Retrieves a product's renewable subscription trial status
+  /// - Parameter product: The product whose subscription trial status to retrieve
+  /// - Returns: The renewable subscription's trial status
+  @MainActor
+  public func isIntroOfferAvailable(for product: any AppStoreProduct) async -> Bool {
+    guard let subscription = await subscription(for: product)?.subscription else {
+      return false
+    }
+
+    if subscription.introductoryOffer == nil {
+      return false
+    }
+
+    return await subscription.isEligibleForIntroOffer == true
+  }
+
   /// Retrieves a product's renewable subscription renewal information
   /// - Parameter product: The product whose renewal to retrieve
   /// - Returns: The renewable subscription's renewal information
