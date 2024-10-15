@@ -95,6 +95,8 @@ class TabTrayController: AuthenticationController {
 
       privateModeButton.isSelected = privateMode
       tabTypeSelector.isHidden = privateMode
+      tabTypeSelectorContainerView.isHidden =
+        privateMode && !BraveCore.FeatureList.kBraveShredFeature.enabled
     }
   }
 
@@ -120,6 +122,7 @@ class TabTrayController: AuthenticationController {
 
   private let tabContentView = UIView()
 
+  private let tabTypeSelectorContainerView = UIView()
   private var tabTypeSelectorItems = [UIImage]()
   private lazy var tabTypeSelector: UISegmentedControl = {
     let segmentedControl = UISegmentedControl(items: tabTypeSelectorItems).then {
@@ -397,18 +400,25 @@ class TabTrayController: AuthenticationController {
       $0.isLayoutMarginsRelativeArrangement = true
     }
 
-    contentStackView.addArrangedSubview(tabTypeSelector)
-    contentStackView.setCustomSpacing(UX.segmentedControlTopInset, after: tabTypeSelector)
+    tabTypeSelectorContainerView.addSubview(tabTypeSelector)
+    contentStackView.addArrangedSubview(tabTypeSelectorContainerView)
+    contentStackView.setCustomSpacing(
+      UX.segmentedControlTopInset,
+      after: tabTypeSelectorContainerView
+    )
     contentStackView.addArrangedSubview(tabContentView)
 
     containerView.addSubview(contentStackView)
 
     if FeatureList.kBraveShredFeature.enabled {
-      containerView.addSubview(shredButton)
+      tabTypeSelectorContainerView.addSubview(shredButton)
 
-      shredButton.snp.makeConstraints { make in
-        make.trailing.equalTo(containerView.readableContentGuide)
-        make.centerY.equalTo(tabTypeSelector)
+      shredButton.snp.makeConstraints {
+        $0.leading.greaterThanOrEqualTo(tabTypeSelector.snp.trailing)
+        $0.trailing.equalTo(tabTypeSelectorContainerView.snp.trailing)
+        $0.centerY.equalTo(tabTypeSelectorContainerView)
+        $0.top.greaterThanOrEqualTo(tabTypeSelectorContainerView.snp.top)
+        $0.bottom.lessThanOrEqualTo(tabTypeSelectorContainerView.snp.bottom)
       }
     }
 
@@ -416,8 +426,13 @@ class TabTrayController: AuthenticationController {
       $0.edges.equalTo(containerView.safeAreaLayoutGuide)
     }
 
+    tabTypeSelectorContainerView.snp.makeConstraints {
+      $0.width.equalTo(containerView.layoutMarginsGuide.snp.width)
+    }
+
     tabTypeSelector.snp.makeConstraints {
       $0.width.equalTo(contentStackView.snp.width).dividedBy(2)
+      $0.center.top.bottom.equalTo(tabTypeSelectorContainerView)
     }
 
     tabContentView.addSubview(tabTrayView)
@@ -824,6 +839,8 @@ class TabTrayController: AuthenticationController {
     }
 
     tabTypeSelector.isHidden = privateMode
+    tabTypeSelectorContainerView.isHidden =
+      privateMode && !BraveCore.FeatureList.kBraveShredFeature.enabled
   }
 
   func remove(tab: Tab) {
