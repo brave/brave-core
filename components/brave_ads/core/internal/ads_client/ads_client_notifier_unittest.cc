@@ -176,8 +176,6 @@ class BraveAdsAdsClientNotifierTest : public ::testing::Test {
 };
 
 TEST_F(BraveAdsAdsClientNotifierTest, FireQueuedAdsClientNotifications) {
-  // Arrange
-
   // Act & Assert
   ExpectAdsClientNotifierCallCount(0);
   FireAdsClientNotifiers();  // Queue notifications.
@@ -196,8 +194,6 @@ TEST_F(BraveAdsAdsClientNotifierTest, FireQueuedAdsClientNotifications) {
 TEST_F(
     BraveAdsAdsClientNotifierTest,
     DoNotFireQueuedAdsClientNotificationsIfNotifyPendingObserversIsNotCalled) {
-  // Arrange
-
   // Act & Assert
   ExpectAdsClientNotifierCallCount(0);
   FireAdsClientNotifiers();

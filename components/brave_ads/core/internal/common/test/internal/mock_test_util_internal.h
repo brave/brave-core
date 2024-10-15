@@ -18,6 +18,8 @@ void MockFlags();
 
 void MockAdsClientNotifierAddObserver(AdsClientMock& ads_client_mock,
                                       TestBase& test_base);
+void MockNotifyPendingObservers(AdsClientMock& ads_client_mock,
+                                TestBase& test_base);
 
 void MockShowNotificationAd(AdsClientMock& ads_client_mock);
 void MockCloseNotificationAd(AdsClientMock& ads_client_mock);

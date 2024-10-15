@@ -37,7 +37,6 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
   void AddObserver(brave_ads::AdsClientNotifierObserver* observer);
   void RemoveObserver(brave_ads::AdsClientNotifierObserver* observer);
 
-  // Invoked to fire all pending observer events.
   void NotifyPendingObservers();
 
   // Invoked when ads did initialize.
