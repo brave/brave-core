@@ -39,7 +39,6 @@ constexpr std::string_view kBravePinsJson = R"brave_pins_json({
     // Brave
     { "name": "adblock-data.s3.brave.com", "pins": "brave"},
     { "name": "ai-chat.bsg.brave.com", "pins": "brave"},
-    { "name": "feedback.brave.com", "pins": "brave"},
     { "name": "brave-core-ext.s3.brave.com", "pins": "brave"},
     { "name": "brave-today-cdn.brave.com", "pins": "brave"},
     { "name": "clients4.brave.com", "pins": "brave"},
@@ -48,6 +47,7 @@ constexpr std::string_view kBravePinsJson = R"brave_pins_json({
     { "name": "devtools.brave.com", "pins": "brave"},
     { "name": "dict.brave.com", "pins": "brave"},
     { "name": "extensionupdater.brave.com", "pins": "brave"},
+    { "name": "feedback.brave.com", "pins": "brave"},
     { "name": "gaia.brave.com", "pins": "brave"},
     { "name": "go-updater.brave.com", "pins": "brave"},
     { "name": "mobile-data.s3.brave.com", "pins": "brave"},
@@ -136,6 +136,8 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
   "entries": [
     // Critical endpoints that should remain unpinned so that they
     // always work.
+    // TODO(djandries): remove laptop-updates once
+    // https://github.com/brave/brave-browser/issues/16374 hits release
     {
       "name": "laptop-updates.brave.com",
       "mode": "force-https",
@@ -151,6 +153,11 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
       "mode": "force-https",
       "policy": "custom"
     },
+    {
+      "name": "usage-ping.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
 
     // Brave
     {
@@ -160,11 +167,6 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
     },
     {
       "name": "ai-chat.bsg.brave.com",
-      "mode": "force-https",
-      "policy": "custom"
-    },
-    {
-      "name": "feedback.brave.com",
       "mode": "force-https",
       "policy": "custom"
     },
@@ -205,6 +207,11 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
     },
     {
       "name": "extensionupdater.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "feedback.brave.com",
       "mode": "force-https",
       "policy": "custom"
     },

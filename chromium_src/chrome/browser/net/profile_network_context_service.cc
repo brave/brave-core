@@ -4,9 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 static const char* kBraveCTExcludedHosts[] = {
     // Critical endpoints that shouldn't require SCTs so they always work
+    // TODO(djandries): remove laptop-updates once
+    // https://github.com/brave/brave-browser/issues/16374 hits release
     "laptop-updates.brave.com",
     "updates.bravesoftware.com",
     "updates-cdn.bravesoftware.com",
+    "usage-ping.brave.com",
     // Test host for manual testing
     "sct-exempted.bravesoftware.com",
 };
