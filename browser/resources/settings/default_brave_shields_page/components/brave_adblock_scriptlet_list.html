@@ -1,0 +1,51 @@
+<style include="cr-shared-style settings-shared iron-flex">
+    .list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        border: 1px solid var(--leo-color-divider-subtle);
+        border-radius: var(--leo-radius-m);
+        margin-bottom: 10px;
+    }
+
+    .scriptlet {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+        border-bottom: 1px solid var(--leo-color-divider-subtle);
+    }
+
+    .scriptlet:last-of-type {
+        border-bottom: none;
+    }
+</style>
+
+<div>
+    <div class="list">
+        <template is="dom-repeat" items="[[customScriptletsList_]]">
+            <div class="scriptlet">
+                <div>
+                    <div class="label">[[item.name]]</div>
+                </div>
+                <div>
+                    <cr-icon-button on-click="handleEdit_" class="size-20" iron-icon="edit-pencil">
+                    </cr-icon-button>
+                    <cr-icon-button on-click="handleDelete_" class="size-20" iron-icon="trash">
+                    </cr-icon-button>
+                </div>
+            </div>
+        </template>
+    </div>
+
+    <cr-button on-click="handleAdd_">
+        $i18n{adblockAddCustomScriptletButton}
+    </cr-button>
+</div>
+
+<template is="dom-if" if="[[isEditing_]]" restamp>
+    <adblock-scriptlet-editor id="adblockScriptletEditor" on-close="scriptletEditorClosed_"
+        scriptlet="{{editingScriptlet_}}">
+    </adblock-scriptlet-editor>
+</template>

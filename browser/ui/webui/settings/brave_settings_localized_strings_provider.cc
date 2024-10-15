@@ -845,6 +845,30 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"adblockSubscribeUrlUpdateFailed",
        IDS_BRAVE_ADBLOCK_SUBSCRIBE_URL_UPDATE_FAILED},
       {"adblockCustomListsLabel", IDS_BRAVE_ADBLOCK_CUSTOM_LISTS_LABEL},
+      {"adblockCustomSciptletsListLabel",
+       IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLETS_LIST_LABEL},
+      {"adblockAddCustomScriptletButton",
+       IDS_BRAVE_ADBLOCK_ADD_CUSTOM_SCRIPTLET_BUTTON},
+      {"adblockAddCustomScriptletDialogTitle",
+       IDS_BRAVE_ADBLOCK_ADD_CUSTOM_SCRIPTLET_DIALOG_TITLE},
+      {"adblockEditCustomScriptletDialogTitle",
+       IDS_BRAVE_ADBLOCK_EDIT_CUSTOM_SCRIPTLET_DIALOG_TITLE},
+      {"adblockCustomSciptletDialogNameLabel",
+       IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_DIALOG_NAME_LABEL},
+      {"adblockCustomScriptletDialogContentLabel",
+       IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_DIALOG_CONTENT_LABEL},
+      {"adblockCustomScriptletDialogCancelButton",
+       IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_DIALOG_CANCEL_BUTTON},
+      {"adblockCustomScriptletDialogSaveButton",
+       IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_DIALOG_SAVE_BUTTON},
+      {"adblockCustomScriptletDeleteConfirmation",
+       IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_DELETE_CONFIRMATION},
+      {"adblockEditCustomScriptletAlreadyExistsError",
+       IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_ALREADY_EXISTS_ERROR},
+      {"adblockEditCustomScriptletInvalidNameError",
+       IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_INVALID_NAME_ERROR},
+      {"adblockEditCustomScriptletNotFoundError",
+       IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_NOT_FOUND_ERROR},
 
       {"braveShortcutsPage", IDS_SETTINGS_BRAVE_SHORTCUTS_TITLE},
       {"shortcutsPageSearchPlaceholder", IDS_SHORTCUTS_PAGE_SEARCH_PLACEHOLDER},
@@ -1002,6 +1026,11 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
     };
     html_source->AddLocalizedStrings(kSessionOnlyToEphemeralStrings);
   }
+
+  html_source->AddBoolean(
+      "cosmeticFilteringCustomScriptletsEnabled",
+      base::FeatureList::IsEnabled(
+          brave_shields::features::kCosmeticFilteringCustomScriptlets));
 
   // Always disable upstream's side panel align option.
   // We add our customized option at preferred position.

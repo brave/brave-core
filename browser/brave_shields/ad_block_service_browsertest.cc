@@ -251,9 +251,7 @@ void AdBlockServiceTest::UpdateAdBlockResources(const std::string& resources) {
   brave_shields::AdBlockService* service =
       g_brave_browser_process->ad_block_service();
 
-  static_cast<brave_shields::AdBlockDefaultResourceProvider*>(
-      service->resource_provider())
-      ->OnComponentReady(component_path);
+  service->default_resource_provider()->OnComponentReady(component_path);
 }
 
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(

@@ -21,6 +21,8 @@ inline constexpr char kAdBlockMobileNotificationsListSettingTouched[] =
     "brave.ad_block.mobile_notifications_list_setting_touched";
 
 inline constexpr char kAdBlockCustomFilters[] = "brave.ad_block.custom_filters";
+inline constexpr char kAdBlockCustomResources[] =
+    "brave.ad_block.custom_resources";
 inline constexpr char kAdBlockRegionalFilters[] =
     "brave.ad_block.regional_filters";
 inline constexpr char kAdBlockListSubscriptions[] =

@@ -39,6 +39,7 @@ BASE_DECLARE_FEATURE(kCosmeticFilteringExtraPerfMetrics);
 BASE_DECLARE_FEATURE(kCosmeticFilteringJsPerformance);
 BASE_DECLARE_FEATURE(kCosmeticFilteringSyncLoad);
 BASE_DECLARE_FEATURE(kBlockAllCookiesToggle);
+BASE_DECLARE_FEATURE(kCosmeticFilteringCustomScriptlets);
 extern const base::FeatureParam<int> kComponentUpdateCheckIntervalMins;
 extern const base::FeatureParam<std::string>
     kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs;

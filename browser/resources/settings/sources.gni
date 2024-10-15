@@ -52,6 +52,8 @@ brave_settings_web_component_files = [
   "brave_web3_domains_page/brave_web3_domains_page.ts",
   "default_brave_shields_page/brave_adblock_subpage.ts",
   "default_brave_shields_page/components/brave_adblock_editor.ts",
+  "default_brave_shields_page/components/brave_adblock_scriptlet_editor.ts",
+  "default_brave_shields_page/components/brave_adblock_scriptlet_list.ts",
   "default_brave_shields_page/components/brave_adblock_subscribe_dropdown.ts",
   "default_brave_shields_page/default_brave_shields_page.ts",
   "getting_started_page/getting_started.ts",

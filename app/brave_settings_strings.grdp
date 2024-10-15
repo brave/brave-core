@@ -577,6 +577,42 @@
   <message name="IDS_BRAVE_ADBLOCK_FILTER_LISTS_INPUT_PLACEHOLDER" desc="A placeholder label for the input form to allow the user to filter from a list of content filters">
     Filter lists
   </message>
+  <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLETS_LIST_LABEL" desc="Label for custom scriptlets lists section">
+    Custom scriptlets
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_ADD_CUSTOM_SCRIPTLET_BUTTON" desc="A label for the add custom scriptlet button">
+    Add new scriptlet
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_ADD_CUSTOM_SCRIPTLET_DIALOG_TITLE" desc="A title for the add custom scriptlet dialog">
+    Add new scriptlet
+  </message>  
+  <message name="IDS_BRAVE_ADBLOCK_EDIT_CUSTOM_SCRIPTLET_DIALOG_TITLE" desc="A title for the edit custom scriptlet dialog">
+    Edit scriptlet
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_DIALOG_NAME_LABEL" desc="A label for the custom scriptlet name field">
+    Name
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_DIALOG_CONTENT_LABEL" desc="A label for the custom scriptlet content field">
+    Content
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_DIALOG_CANCEL_BUTTON" desc="A label for the custom scriptlet content cancel button">
+    Cancel
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_DIALOG_SAVE_BUTTON" desc="A label for the custom scriptlet content save button">
+    Save
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_DELETE_CONFIRMATION" desc="A confirmation message for the custom scriptlet deletion">
+    Are you sure you want to delete this scriptlet? If this scriptlet is used in any custom filter, it will no longer work.
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_ALREADY_EXISTS_ERROR" desc="Error message">
+    Scriptlet is already exists.
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_INVALID_NAME_ERROR" desc="Error message">
+    Invalid scriptlet name.
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_NOT_FOUND_ERROR" desc="Error message">
+    Scriptlet is not found.
+  </message>
 
   <message name="IDS_SETTINGS_BRAVE_SHORTCUTS_TITLE" desc="The text label for the shortcuts settings page">
     Shortcuts
