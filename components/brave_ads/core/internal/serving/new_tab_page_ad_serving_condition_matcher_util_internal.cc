@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/pattern.h"
 #include "base/strings/string_number_conversions.h"
@@ -132,16 +133,22 @@ std::optional<int> ParseDays(const std::string_view condition) {
   const size_t pos = condition.find(':');
   if (pos == std::string::npos || pos + 1 >= condition.size()) {
     // Malformed operator.
+    VLOG(1) << "Malformed SmartNTT days operator for " << condition
+            << " condition";
     return std::nullopt;
   }
 
   int days;
   if (!base::StringToInt(condition.substr(pos + 1), &days)) {
     // Malformed days.
+    VLOG(1) << "Malformed SmartNTT days operator for " << condition
+            << " condition";
     return std::nullopt;
   }
 
   if (days < 0) {
+    VLOG(1) << "Invalid SmartNTT " << days << " days operator for " << condition
+            << " condition";
     return std::nullopt;
   }
 
@@ -189,6 +196,8 @@ bool MatchOperator(const std::string_view value,
   int64_t timestamp;
   if (!base::StringToInt64(value, &timestamp)) {
     // Invalid timestamp.
+    VLOG(1) << "Invalid SmartNTT " << value << " timestamp operator for "
+            << condition << " condition";
     return false;
   }
   const base::TimeDelta time_delta = TimeDeltaSinceEpoch(timestamp);
@@ -206,6 +215,7 @@ bool MatchOperator(const std::string_view value,
   }
 
   // Unknown operator.
+  VLOG(1) << "Unknown SmartNTT operator for " << condition << " condition";
   return false;
 }
 
@@ -224,11 +234,16 @@ std::optional<base::Value> MaybeGetPrefValue(
     const std::string& pref_path) {
   CHECK(pref_provider);
 
-  std::optional<base::Value> pref_value;
-
   // Split the `pref_path` into individual keys using '|' as the delimiter.
   const std::vector<std::string> keys = base::SplitString(
       pref_path, "|", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+  if (keys.empty()) {
+    // Invalid pref path.
+    VLOG(1) << "Invalid SmartNTT pref path: " << pref_path;
+    return std::nullopt;
+  }
+
+  std::optional<base::Value> pref_value;
 
   for (auto iter = keys.cbegin(); iter != keys.cend(); ++iter) {
     const std::string& key = *iter;
@@ -242,6 +257,8 @@ std::optional<base::Value> MaybeGetPrefValue(
       }
 
       // Unknown pref path key.
+      VLOG(1) << "Unknown SmartNTT " << key << " key for " << pref_path
+              << " pref path";
       return std::nullopt;
     }
 
@@ -249,6 +266,8 @@ std::optional<base::Value> MaybeGetPrefValue(
     pref_value = MaybeGetNextPrefValue(*pref_value, key);
     if (!pref_value) {
       // Unknown pref path key.
+      VLOG(1) << "Unknown SmartNTT " << key << " key for " << pref_path
+              << " pref path";
       return std::nullopt;
     }
 
@@ -259,6 +278,8 @@ std::optional<base::Value> MaybeGetPrefValue(
 
     if (iter != keys.cend() - 1) {
       // Invalid pref path, because this should be the last pref path key.
+      VLOG(1) << "Invalid SmartNTT " << key << " key for " << pref_path
+              << " pref path";
       return std::nullopt;
     }
 
