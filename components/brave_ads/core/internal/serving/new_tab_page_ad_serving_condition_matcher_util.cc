@@ -25,8 +25,9 @@ bool MatchConditions(const PrefProviderInterface* pref_provider,
         const std::optional<std::string> value =
             MaybeGetPrefValueAsString(pref_provider, pref_path);
         if (!value) {
-          // Unsupported value type, so the ad should be served.
-          return true;
+          // Do not serve the ad due to an unknown preference path or
+          // unsupported value type.
+          return false;
         }
 
         return MatchOperator(*value, condition) ||
