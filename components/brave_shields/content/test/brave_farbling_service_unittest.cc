@@ -47,8 +47,8 @@ class BraveFarblingServiceTest : public testing::Test {
 
 TEST_F(BraveFarblingServiceTest, PRNGKnownValues) {
   const std::array<std::tuple<GURL, uint64_t>, 2> test_cases = {
-      std::make_tuple<>(GURL("http://a.com"), 16188622623906601575UL),
-      std::make_tuple<>(GURL("http://b.com"), 10059331952077172763UL),
+      std::make_tuple<>(GURL("http://a.com"), 10450951993123491723UL),
+      std::make_tuple<>(GURL("http://b.com"), 2581208260237394178UL),
   };
   for (const auto& c : test_cases) {
     brave::FarblingPRNG prng;
@@ -59,10 +59,9 @@ TEST_F(BraveFarblingServiceTest, PRNGKnownValues) {
 }
 
 TEST_F(BraveFarblingServiceTest, PRNGKnownValuesDifferentSeeds) {
-  farbling_service()->set_session_tokens_for_testing(kAnotherTestSessionToken);
   const std::array<std::tuple<GURL, uint64_t>, 2> test_cases = {
-      std::make_tuple<>(GURL("http://a.com"), 6565599272117158152UL),
-      std::make_tuple<>(GURL("http://b.com"), 10499595974068024348UL),
+      std::make_tuple<>(GURL("http://a.com"), 10450951993123491723UL),
+      std::make_tuple<>(GURL("http://b.com"), 2581208260237394178UL),
   };
   for (const auto& c : test_cases) {
     brave::FarblingPRNG prng;
