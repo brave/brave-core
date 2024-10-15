@@ -58,6 +58,7 @@
 
             <TextView
                 android:id="@+id/title"
+                android:textStyle="bold"
                 android:textSize="@dimen/new_tab_page_incognito_title_text_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
