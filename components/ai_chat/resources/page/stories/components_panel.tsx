@@ -419,6 +419,7 @@ const preview: Meta<CustomArgs> = {
 
       const aiChatContext: AIChatContext = {
         isDefaultConversation: true,
+        editingConversationId: null,
         visibleConversations: [],
         hasAcceptedAgreement: options.args.hasAcceptedAgreement,
         isPremiumStatusFetching: false,
@@ -434,7 +435,8 @@ const preview: Meta<CustomArgs> = {
         dismissPremiumPrompt: () => {},
         userRefreshPremiumSession: () => {},
         onNewConversation: () => {},
-        onSelectConversationUuid(id) {}
+        onSelectConversationUuid(id) {},
+        setEditingConversationId: () => {}
       }
 
       const inputText = options.args.inputText
