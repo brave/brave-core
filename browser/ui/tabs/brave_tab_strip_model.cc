@@ -10,17 +10,14 @@
 #include <iterator>
 #include <vector>
 
-#include "base/containers/adapters.h"
 #include "base/containers/span.h"
 #include "base/ranges/algorithm.h"
 #include "brave/browser/ui/brave_browser_window.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_delegate.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/prefs/pref_service.h"
@@ -46,28 +43,6 @@ void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
   } else {
     TabStripModel::SelectRelativeTab(direction, detail);
   }
-}
-
-void BraveTabStripModel::ExecuteContextMenuCommand(
-    int context_index,
-    ContextMenuCommand command_id) {
-  Browser* browser = chrome::FindBrowserWithTab(GetWebContentsAt(0));
-  if (tabs::utils::ShouldShowVerticalTabs(browser) &&
-      command_id == CommandTogglePinned && WillContextMenuPin(context_index)) {
-    // For vertical tabs, we need to ungroup the tabs before pinning tabs in
-    // order to avoid NOTREACHED.
-    // https://github.com/brave/brave-browser/issues/40201
-    auto indices = GetIndicesForCommand(context_index);
-    for (auto index : base::Reversed(indices)) {
-      if (!GetTabGroupForTab(index).has_value()) {
-        continue;
-      }
-
-      RemoveFromGroup({index});
-    }
-  }
-
-  TabStripModel::ExecuteContextMenuCommand(context_index, command_id);
 }
 
 void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
