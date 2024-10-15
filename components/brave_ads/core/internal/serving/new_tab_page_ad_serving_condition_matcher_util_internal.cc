@@ -229,6 +229,10 @@ bool MatchRegex(const std::string_view value,
   return re2::RE2::PartialMatch(value, re);
 }
 
+bool MatchPattern(std::string_view value, std::string_view condition) {
+  return base::MatchPattern(value, condition);
+}
+
 std::optional<base::Value> MaybeGetPrefValue(
     const PrefProviderInterface* const pref_provider,
     const std::string& pref_path) {

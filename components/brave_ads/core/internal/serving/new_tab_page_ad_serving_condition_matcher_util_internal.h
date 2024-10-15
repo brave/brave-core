@@ -43,6 +43,9 @@ bool MatchOperator(std::string_view value, std::string_view condition);
 // Matches a value against a regular expression condition.
 bool MatchRegex(std::string_view value, std::string_view condition);
 
+// Matches a value against a pattern condition.
+bool MatchPattern(std::string_view value, std::string_view condition);
+
 // Get the pref value from the provider for the given path. Handles nested
 // dictionaries, lists, and dot-separated keys. `base::Value::Find*ByDottedPath`
 // is not used because path keys can contain dots. Returns `std::nullopt` if the
