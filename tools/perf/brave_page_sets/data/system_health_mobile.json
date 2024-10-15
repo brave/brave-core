@@ -1,5 +1,8 @@
 {
     "archives": {
+        "UpdateProfile": {
+            "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
+        },
         "load:site:bbc:2023": {
             "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
         },
