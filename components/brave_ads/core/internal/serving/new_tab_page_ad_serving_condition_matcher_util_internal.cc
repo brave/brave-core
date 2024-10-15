@@ -47,7 +47,7 @@ std::optional<base::Value> MaybeGetRootPrefValue(
     return pref_value;
   }
 
-  // Unknown pref path key.
+  // Unknown pref path.
   return std::nullopt;
 }
 
@@ -262,10 +262,10 @@ std::optional<base::Value> MaybeGetPrefValue(
       return std::nullopt;
     }
 
-    // Return the last pref path value.
     break;
   }
 
+  // Return the last pref path value.
   return pref_value;
 }
 
