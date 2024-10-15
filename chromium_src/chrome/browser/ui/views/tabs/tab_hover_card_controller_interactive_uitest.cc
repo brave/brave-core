@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#define TabHoverCardController BraveTabHoverCardController
+#include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
+
+// Add this comment so that the pre-submit warnings are silenced
 #include "src/chrome/browser/ui/views/tabs/tab_hover_card_controller_interactive_uitest.cc"
-#undef TabHoverCardController
