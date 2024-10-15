@@ -22,6 +22,7 @@ import {
   ConversationContextProvider
 } from './state/conversation_context'
 import FullScreen from './components/full_screen'
+import useNavigations from './hooks/useNavigations'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
@@ -103,6 +104,7 @@ function App() {
 
 function Content () {
   const aiChatContext = useAIChat()
+  useNavigations()
 
   if (aiChatContext.isStandalone === undefined) {
     return <div>loading...</div>
