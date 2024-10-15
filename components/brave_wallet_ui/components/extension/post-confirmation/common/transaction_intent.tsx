@@ -119,8 +119,19 @@ export const TransactionIntent = (props: Props) => {
         .formatAsAsset(6, buyToken.symbol)
     : ''
 
+  const transactionFailed =
+    transaction.txStatus === BraveWallet.TransactionStatus.Dropped ||
+    transaction.txStatus === BraveWallet.TransactionStatus.Error
+
+  const transactionConfirmed =
+    transaction.txStatus === BraveWallet.TransactionStatus.Confirmed
+
   const recipientLabel = getAddressLabel(
-    isERC20Approval ? txApprovalTarget : txToAddress,
+    isERC20Approval
+      ? txApprovalTarget
+      : isSwapOrBridge && transactionConfirmed
+      ? transaction.swapInfo?.receiver ?? ''
+      : txToAddress,
     accountInfosRegistry
   )
 
@@ -151,13 +162,6 @@ export const TransactionIntent = (props: Props) => {
         transactionsToken?.symbol ?? ''
       }`
     : formattedSendAmount
-
-  const transactionFailed =
-    transaction.txStatus === BraveWallet.TransactionStatus.Dropped ||
-    transaction.txStatus === BraveWallet.TransactionStatus.Error
-
-  const transactionConfirmed =
-    transaction.txStatus === BraveWallet.TransactionStatus.Confirmed
 
   const firstDuringValue = React.useMemo(() => {
     if (isERC20Approval) {
