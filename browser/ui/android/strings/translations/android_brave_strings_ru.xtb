@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">Показывает рекомендации сайтов на основе ваших закладок и истории браузера.</translation>
 <translation id="924029461438529367">Показывать подсказки при поиске</translation>
 <translation id="1571106259128580884">Показывать топ сайтов в рекомендациях</translation>
+<translation id="6285118765755298263">Индексация в других поисковых системах</translation>
+<translation id="919715748352669592">Сайты, соответствующие спецификациям OpenSearch, будут автоматически индексироваться.</translation>
 <translation id="9148058034647219655">Выход</translation>
 <translation id="8047754398610073499">Блокировка уведомлений о согласии на использование файлов cookie</translation>
 <translation id="2621893359845808115">Блокирует всплывающие окна с запросом на принятие/отклонение файлов cookie на сайтах</translation>
@@ -740,7 +742,19 @@
 <translation id="755448900483975096">Оператор сотовой связи</translation>
 <translation id="1279441577056010362">Перейти в почту</translation>
 <translation id="7125582363614011660">Поддержка предоставляется в партнерстве с командой Guardian.\n\nУкажите информацию, которой хотели бы поделиться с нами.\n\nЧем больше сведений вы передадите, тем легче специалистам службы поддержки будет вам помочь.</translation>
-<translation id="7999094850625689785">На основе часового пояса системы будет автоматически выбран сервер, находящийся в ближайшем к вам регионе. Это позволит обеспечить высокую скорость интернета.</translation>
+<translation id="8813171284214934811">Автоматически выбирать VPN-сервер в ближайшей стране на основе часового пояса. Это обеспечит более высокую скорость подключения к интернету.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> город. }
+          other {Городов: <ph name="CITY_COUNT_MANY"/> . }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> сервер}
+          other {Серверов: <ph name="SERVER_COUNT_MANY"/>}
+        }</translation>
+<translation id="3199127022143353223">Серверы</translation>
+<translation id="5431902940483264007">Оптимальная</translation>
+<translation id="6527596624419285047">Использовать лучший сервер</translation>
+<translation id="6789157560111825412">Доступные серверы</translation>
 <translation id="4397083831618200686">Выберите тип проблемы</translation>
 <translation id="6687228121145903051">Ошибка подключения к VPN (другое).</translation>
 <translation id="9184988385244077767">При подключении нет интернета.</translation>
@@ -808,7 +822,6 @@
 <translation id="7358989216567322955">Максимальная плата за приоритет</translation>
 <translation id="9091334651803050473">Майнеры могут отдать приоритет вашей транзакции, если вы заплатите более высокую комиссию. Однако это не гарантировано.</translation>
 <translation id="2941112035454246133">Низкая</translation>
-<translation id="5431902940483264007">Оптимальная</translation>
 <translation id="7304030187361489308">Высокая</translation>
 <translation id="4853037749278079787">Максимальная плата: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Текущая стандартная комиссия: <ph name="ASSET_VALUE"/> Gwei</translation>

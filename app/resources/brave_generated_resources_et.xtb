@@ -51,6 +51,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="3975865347033939965">Sünkroonimisteenust ei õnnestunud käivitada, Brave'i sünkroonimine ei tööta</translation>
 <translation id="4450893287417543264">Ära enam näita</translation>
 <translation id="4595286989346610620">Kontrolli üksikasju</translation>
+<translation id="8324318899000695659">Blokeeri elemendid</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Kasuta avamiseks .onion-i aadressi: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Sundkleebi</translation>
@@ -707,7 +708,7 @@ Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="7634775528597575156">Serveri lõpp-punkt</translation>
 <translation id="6374563306438145841">API võti</translation>
 <translation id="8008271349880309090">Mudeli nimi, nagu see kuvatakse mudeli valimise menüüs.</translation>
-<translation id="7131172845656551327">Mudeli nimi sellisena, nagu see peaks ilmuma teenindavale raamistikule esitatavas taotluses, st phi-3 (pöörame tähelepanu, et kui see nimi ei vasta täpselt sellele, mida teenindav raamistik ootab, siis integratsioon ei toimi).</translation>
+<translation id="1355326130503900056">Mudeli nimi sellisena, nagu see peaks olema teenindavale raamistikule esitatavas päringus, nt phi-3 (arvestage, et kui see nimi ei ole täpselt selline, nagu teenindav raamistik ootab, siis integratsioon ei toimi).</translation>
 <translation id="3286410514484292784">URL, kus teie teenindav raamistik ootab taotluseid. Kui te ei ole kindel, vaadake teenindava raamistiku dokumentatsiooni. Näiteks Ollama puhul on see alati http://localhost:11434/v1/chat/completions.</translation>
 <translation id="1058790648388035953">Mõned teenindavad raamistikud võivad nõuda autentimisandmeid, näiteks API-võtit või juurdepääsutunnust. Need lisatakse taotluse päisesse.</translation>
 <translation id="217141195370578385">Brave ei ole nende taotluste volitatud esindaja, tutvuge valitud teenusepakkuja privaatsustingimustega.</translation>

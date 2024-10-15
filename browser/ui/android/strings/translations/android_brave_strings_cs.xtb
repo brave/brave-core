@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">Zobrazuje návrhy webových stránek na základě vašich záložek a historie procházení.</translation>
 <translation id="924029461438529367">Zobrazit návrhy vyhledávání</translation>
 <translation id="1571106259128580884">Zobrazit návrhy nejlepších webů</translation>
+<translation id="6285118765755298263">Indexovat ostatní vyhledávače</translation>
+<translation id="919715748352669592">Automaticky indexovat webové stránky, které se řídí specifikacemi OpenSearch.</translation>
 <translation id="9148058034647219655">Ukončit</translation>
 <translation id="8047754398610073499">Blokování oznámení o souhlasu se soubory cookie</translation>
 <translation id="2621893359845808115">Blokuje vyskakovací okna webových stránek, která vás žádají o přijetí / odmítnutí souborů cookie na jejich stránkách</translation>
@@ -740,7 +742,19 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="755448900483975096">Mobilní operátor</translation>
 <translation id="1279441577056010362">Pokračovat na e-mail</translation>
 <translation id="7125582363614011660">Podporu poskytujeme s pomocí týmu Guardian.\n\nVyberte informace, které nám chcete sdělit.\n\nČím více informací nám hned na začátek sdělíte, tím snadněji vám naši pracovníci podpory budou schopni vaše problémy vyřešit.</translation>
-<translation id="7999094850625689785">Na základě vašeho systémového časového pásma bude automaticky vybrána oblast serverů, která je vám nejblíže. Tento postup se doporučuje pro zajištění vysokých rychlostí internetu.</translation>
+<translation id="8813171284214934811">Automaticky vybere region serveru VPN, který je vám nejblíže na základě vašeho časového pásma. Tato možnost se doporučuje pro maximalizaci rychlostí internetu.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> město - }
+          other {<ph name="CITY_COUNT_MANY"/> města/měst - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> server}
+          other {<ph name="SERVER_COUNT_MANY"/> servery/serverů}
+        }</translation>
+<translation id="3199127022143353223">Servery/serverů</translation>
+<translation id="5431902940483264007">Optimální</translation>
+<translation id="6527596624419285047">Používejte nejlepší dostupný server</translation>
+<translation id="6789157560111825412">Dostupné servery</translation>
 <translation id="4397083831618200686">Vybrat problém</translation>
 <translation id="6687228121145903051">Nelze se připojit k síti VPN (jiná chyba)</translation>
 <translation id="9184988385244077767">Po připojení není k dispozici internet</translation>
@@ -808,7 +822,6 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="7358989216567322955">Maximální poplatek za prioritu</translation>
 <translation id="9091334651803050473">když to není zaručeno, těžaři pravděpodobně upřednostní vaši transakci, pokud zaplatíte vyšší poplatek.</translation>
 <translation id="2941112035454246133">Nízký</translation>
-<translation id="5431902940483264007">Optimální</translation>
 <translation id="7304030187361489308">Vysoký</translation>
 <translation id="4853037749278079787">Maximální poplatek: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Aktuální základní poplatek: <ph name="ASSET_VALUE"/> Gwei</translation>

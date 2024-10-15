@@ -51,6 +51,7 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3975865347033939965">Huduma ya kulandanisha haikuweza kuanzishwa, Ulandanishaji wa Brave haufanyi kazi</translation>
 <translation id="4450893287417543264">Usionyeshe tena</translation>
 <translation id="4595286989346610620">Angalia maelezo</translation>
+<translation id="8324318899000695659">Zuia vipengele</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Fungua ukitumia anwani ya .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Lazimisha Kubandika</translation>
@@ -707,7 +708,7 @@ Leo. Kitendo hiki hakiwezi kutenduliwa.</translation>
 <translation id="7634775528597575156">Kifaa cha kiunganishi cha seva</translation>
 <translation id="6374563306438145841">Ufunguo wa API</translation>
 <translation id="8008271349880309090">Jina la muundo kama litakavyoonekana kwenye menyu ya kuteua muundo</translation>
-<translation id="7131172845656551327">Jina la muundo jinsi linavyopaswa kuonekana katika ombi la mfumo unaotumika, yaani phi-3 (fahamu kwamba ikiwa jina hili halilingani kabisa na lile linalotarajiwa na mfumo unaotumika ufungamanishaji hautafanyika)</translation>
+<translation id="1355326130503900056">Jina la muundo jinsi linavyopaswa kuonekana katika ombi la mfumo unaotumika, k.m. phi-3 (kumbuka kuwa ikiwa jina hili halilingani kabisa na linalotarajiwa na mfumo unaotumika, ufungamanishaji hautafanya kazi)</translation>
 <translation id="3286410514484292784">Url ambapo mfumo wako unaotumika unasikiliza maombi. Ikiwa huna uhakika, angalia hati za mfumo unaotumika. K.m. kwa Ollama, hii daima huwa ni http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Baadhi ya mifumo inayotumika inaweza kuhitaji vitambulisho vya uthibitishaji, kama vile ufunguo wa API au tokeni ya ufikiaji. Hivi vitaongezwa kwenye kichwa cha ombi.</translation>
 <translation id="217141195370578385">Brave haitoi uwakilishi kwa maombi haya, tafadhali soma masharti ya faragha ya mtoa huduma aliyechaguliwa.</translation>

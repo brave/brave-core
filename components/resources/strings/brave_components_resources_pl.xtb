@@ -672,6 +672,29 @@
 <translation id="4284417062730522399">Reklamy <ph name="NUM"/> otrzymane w tym miesiącu</translation>
 <translation id="7697696066810593560">Do tej pory w tym miesiącu zarobiono <ph name="NUM"/></translation>
 <translation id="6733193230212030816">Szacujemy, że zarobisz w przedziale: <ph name="RANGE"/></translation>
+<translation id="7924320838799747606">Twoje saldo</translation>
+<translation id="8714473477079007268">Portfel <ph name="PROVIDER"/></translation>
+<translation id="3175337080016717494">Konto do wypłat</translation>
+<translation id="453760933181416879">Przejdź do mojego konta</translation>
+<translation id="8290994471756102241">Wylogowano</translation>
+<translation id="8414447476773253869">Zaloguj się do <ph name="PROVIDER"/>, aby wyświetlić saldo</translation>
+<translation id="615483366383024791">Konto do wypłat</translation>
+<translation id="1060062421977823695">Zarobione BAT będą przelewane na to konto do wypłat.</translation>
+<translation id="2544805415966048917">Prześlesz</translation>
+<translation id="6708522254106492579">Maksymalnie <ph name="AMOUNT"/> BAT</translation>
+<translation id="7666058404763778706">Automatyczny sposób na wspieranie stron oraz twórców treści w oparciu o ilość czasu, jaką spędzasz na przeglądaniu ich treści.</translation>
+<translation id="4319242254058427792">Automatyczna darowizna wyłączona</translation>
+<translation id="1091835891554961609">Zweryfikowani twórcy, których odwiedzasz, będą wyświetlani tutaj podczas przeglądania.</translation>
+<translation id="7714706530499503523">Automatyczna darowizna wysyłana jest co miesiąc do twórców zweryfikowanych przez Brave w oparciu o ilość czasu, jaką spędzasz na przeglądaniu ich treści.</translation>
+<translation id="2358028754328876971">Jak działa automatyczna darowizna?</translation>
+<translation id="2870560284913253234">Witryna</translation>
+<translation id="1184072843013036520">Zdobądź produkty marki Brave.</translation>
+<translation id="1170674812179664523">Sklep z produktami Brave</translation>
+<translation id="8673202990286883068">Twoje korzyści</translation>
+<translation id="3699766258844277472">Nie określono jeszcze miesięcznych darowizn.</translation>
+<translation id="957921474773060718">Następna darowizna:</translation>
+<translation id="351973834053818251">Cykliczna darowizna</translation>
+<translation id="7751260505918304024">Pokaż wszystkie</translation>
 <translation id="7090992647511817643">konto</translation>
 <translation id="4822132585477111396">Identyfikator łańcucha</translation>
 <translation id="3269475789479462358">domena</translation>
@@ -861,6 +884,8 @@
 <translation id="9111102763498581341">Odblokuj</translation>
 <translation id="5045550434625856497">Nieprawidłowe hasło</translation>
 <translation id="9195657745688986798">Odblokuj portfel</translation>
+<translation id="2274014756904854136">Dotknij dwukrotnie ekranu, aby kontynuować</translation>
+<translation id="7795718119973968770">Twój portfel został zablokowany dla Twojego bezpieczeństwa. Odblokuj portfel, aby kontynuować.</translation>
 <translation id="9175546523521600401">Zablokuj portfel</translation>
 <translation id="765834632354589737">Utwórz kopię zapasową portfela</translation>
 <translation id="1108298724135935307">Połączone strony</translation>
@@ -1758,7 +1783,6 @@
 <translation id="6709133671862442373">Wiadomości</translation>
 <translation id="3553513561058684206">Dla Ciebie</translation>
 <translation id="2217013723701900638">Wydawcy</translation>
-<translation id="7751260505918304024">Pokaż wszystkie</translation>
 <translation id="5138227688689900538">Pokaż mniej</translation>
 <translation id="1041218419402648959">Ukryj treści od <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3992393738853907417">Źródła, które mogą Ci się spodobać</translation>
@@ -2019,6 +2043,7 @@
 <translation id="7355096922131918313">Przekaż opinię tutaj</translation>
 <translation id="3027575440738035995">Leo Premium zapewnia dostęp do rozszerzonego zestawu modeli językowych zapewniających jeszcze większą szczegółowość odpowiedzi. <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="7488762544858401571">Zmodyfikowano</translation>
+<translation id="1406205536570262057">Edytuj odpowiedź</translation>
 <translation id="2399439821649319175">Nieprzydatna</translation>
 <translation id="2976167228906046828">Niepoprawna</translation>
 <translation id="1183055847065865059">Niebezpieczna/szkodliwa</translation>
@@ -2029,6 +2054,7 @@
 <translation id="7494736170250048402">Wyślij wiadomość do Leo</translation>
 <translation id="8712637175834984815">Rozumiem</translation>
 <translation id="1093419424466417703">Strona jest zbyt długa dla Leo. Może brakować części kontekstu z konwersacji. Leo był w stanie odczytać <ph name="PERCENTAGE"/> treści strony.</translation>
+<translation id="2186990448773134544">Zawartość strony została udoskonalona poprzez wyodrębnienie najistotniejszych treści, ponieważ była ona zbyt długa dla Leo.</translation>
 <translation id="4370698775470316661">Ta rozmowa jest za długa i nie może być kontynuowana. Mogą być dostępne inne modele, z którymi Leo jest w stanie zapewnić dokładność przy dłuższych rozmowach.</translation>
 <translation id="5719170755629028558">Udoskonalamy Twoją odpowiedź za pomocą Wyszukiwarki Brave…</translation>
 <translation id="5794962229997281366">Udoskonalona odpowiedź wyszukiwania dla <ph name="SEARCH_TERMS"/></translation>
@@ -2118,7 +2144,8 @@
 <ph name="NUMBER"/> Zablokowane skrypty śledzące, reklamy i inne</translation>
 <translation id="4292121526390005808">Zablokowane skrypty</translation>
 <translation id="5046271170844958713">Dozwolone skrypty</translation>
-<translation id="4575452981007854269">Zastosowano ochronę przed zbieraniem odcisków palca</translation>
+<translation id="199862531047218413">zastosowano ochronę przed zbieraniem odcisków palca</translation>
+<translation id="5032505924781383272">Zastosowane zabezpieczenia niekoniecznie wskazują, że ta strona internetowa próbuje pobrać odciski palców przeglądarki.</translation>
 <translation id="1905384713982899903">Zablokowane odciski palca</translation>
 <translation id="314364527871618241">Dozwolone odciski palca</translation>
 <translation id="264682546981571963">Masz dość powiadomień o wyrażeniu zgody na pliki cookie?</translation>
@@ -2183,6 +2210,12 @@
 <translation id="2422309687188612485">Ochrona nawet 10 urządzeń w jednym planie</translation>
 <translation id="1693568075761612600">Nie udało się utworzyć zgłoszenia do działu wsparcia. Sprawdź swoje połączenie.</translation>
 <translation id="1407707415819020643">Wybierz serwer</translation>
+<translation id="7406947191797765434"><ph name="CITY_COUNT"/> miast(-a) - <ph name="SERVER_COUNT"/> serwery(-ów)</translation>
+<translation id="7337680029337389658">1 miasto</translation>
+<translation id="1616613632573101617"><ph name="CITY_COUNT"/> miast(-a)</translation>
+<translation id="5647994901467053283">1 serwer</translation>
+<translation id="8828637853024704314"><ph name="SERVER_COUNT"/> serwery(-ów)</translation>
+<translation id="6527596624419285047">Korzystaj z najlepszego dostępnego serwera</translation>
 <translation id="8463313539532697053">Poczekaj chwilę na załadowanie.…</translation>
 <translation id="2542131205769293399">Nie można sprawdzić statusu zakupu. Jest to prawdopodobnie spowodowane problemem z siecią. Spróbuj ponownie lub skontaktuj się z pomocą techniczną.</translation>
 <translation id="4613076894734402086">Edytuj metodę płatności</translation>

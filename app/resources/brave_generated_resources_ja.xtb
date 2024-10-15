@@ -51,6 +51,7 @@
 <translation id="3975865347033939965">Syncサービスを開始できませんでした。</translation>
 <translation id="4450893287417543264">次回から表示しない</translation>
 <translation id="4595286989346610620">詳細を確認する</translation>
+<translation id="8324318899000695659">要素をブロック</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">.onionアドレスで開く: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">強制ペースト</translation>
@@ -707,7 +708,7 @@ Leoとの会話がすべて削除されます。この操作を元に戻すこ�
 <translation id="7634775528597575156">サーバーのエンドポイント</translation>
 <translation id="6374563306438145841">APIキー</translation>
 <translation id="8008271349880309090">モデル名はモデル選択メニューに表示されます。</translation>
-<translation id="7131172845656551327">サービングフレームワークへのリクエストで表示されるモデル名。例: phi-3 (この名前がサービングフレームワークでの想定値と正確に一致しない場合、統合が機能しないためご注意ください)</translation>
+<translation id="1355326130503900056">サービングフレームワークへのリクエストで表示されるモデル名。例: phi-3 (この名前がサービングフレームワークでの想定値と正確に一致しない場合、統合が機能しないためご注意ください)</translation>
 <translation id="3286410514484292784">サービングフレームワークがリクエストをリッスンする URL。不明点がある場合は、サービングフレームワークのドキュメントを確認してください。英: Ollama の場合は、常に「http://localhost:11434/v1/chat/completions」となります。</translation>
 <translation id="1058790648388035953">サービングフレームワークによっては、APIキーやアクセストークンなどの認証情報を必要とする場合があります。これらはリクエストヘッダーに追加されます。</translation>
 <translation id="217141195370578385">Braveはこれらのリクエストのプロキシを行いません。選択したプロバイダーのプライバシー規約をお読みください。</translation>

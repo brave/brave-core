@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">Yer imlerinize ve tarayıcı geçmişinize göre web sitesi önerileri gösterir.</translation>
 <translation id="924029461438529367">Arama önerilerini göster</translation>
 <translation id="1571106259128580884">Popüler site önerilerini göster</translation>
+<translation id="6285118765755298263">Diğer arama motorlarını indeksle</translation>
+<translation id="919715748352669592">OpenSearch özelliklerine uygun web siteleri otomatik olarak indeksler.</translation>
 <translation id="9148058034647219655">Çıkış</translation>
 <translation id="8047754398610073499">Çerez onay bildirimlerini engelle</translation>
 <translation id="2621893359845808115">Sitelerinde çerezleri kabul etmenizi / reddetmenizi isteyen web site açılır pencerelerini engeller</translation>
@@ -741,7 +743,19 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="755448900483975096">Hücresel Operatör</translation>
 <translation id="1279441577056010362">E-Postaya Devam Et</translation>
 <translation id="7125582363614011660">Destek, Guardian ekibi sayesinde sağlanmaktadır.\n\nLütfen bizimle paylaşmak isteyeceğiniz bilgileri seçin.\n\nBaştan bizimle ne kadar çok bilgi paylaşırsanız destek ekibimiz sorununuzu o kadar kolay şekilde çözecektir.</translation>
-<translation id="7999094850625689785">Size en yakın sunucu bölgesi, sistem saat diliminize bağlı olarak otomatik olarak seçilir. Bu, yüksek internet hızlarını garanti etmek için önerilir.</translation>
+<translation id="8813171284214934811">Saat diliminize bağlı olarak size en yakın VPN sunucu bölgesini otomatik olarak seçin. Bu seçenek, internet hızlarını maksimuma çıkarmak için önerilir.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> şehir - }
+          other {<ph name="CITY_COUNT_MANY"/> şehir - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> sunucu}
+          other {<ph name="SERVER_COUNT_MANY"/> sunucu}
+        }</translation>
+<translation id="3199127022143353223">Sunucular</translation>
+<translation id="5431902940483264007">Optimum</translation>
+<translation id="6527596624419285047">Mevcut en iyi sunucuyu kullan</translation>
+<translation id="6789157560111825412">Kullanılabilir Sunucular</translation>
 <translation id="4397083831618200686">Sorunu seçin</translation>
 <translation id="6687228121145903051">VPN'e bağlanılamıyor (Diğer hata)</translation>
 <translation id="9184988385244077767">Bağlanıldığında internet yok</translation>
@@ -809,7 +823,6 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="7358989216567322955">Azami Öncelik Ücreti</translation>
 <translation id="9091334651803050473">Bir garantisi olmasa da, daha yüksek bir ücret ödemeniz halinde madencilerin işleminize öncelik vermesi muhtemeldir.</translation>
 <translation id="2941112035454246133">Düşük</translation>
-<translation id="5431902940483264007">Optimum</translation>
 <translation id="7304030187361489308">Yüksek</translation>
 <translation id="4853037749278079787">Maksimum ücret: ~<ph name="FIAT_VALUE"/>$ (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Mevcut baz ücret: <ph name="ASSET_VALUE"/> Gwei</translation>

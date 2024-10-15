@@ -51,6 +51,7 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3975865347033939965">Không thể khởi động dịch vụ đồng bộ hóa, Brave Đồng bộ không chạy</translation>
 <translation id="4450893287417543264">Không hiển thị lại</translation>
 <translation id="4595286989346610620">Kiểm tra chi tiết</translation>
+<translation id="8324318899000695659">Chặn các thành phần</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Mở bằng địa chỉ .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Buộc dán</translation>
@@ -707,7 +708,7 @@ Leo. Hành động này không thể được hoàn tác.</translation>
 <translation id="7634775528597575156">Điểm cuối máy chủ</translation>
 <translation id="6374563306438145841">Khóa API</translation>
 <translation id="8008271349880309090">Tên của mô hình sẽ xuất hiện trong menu chọn mô hình</translation>
-<translation id="7131172845656551327">Tên của mô hình như nó sẽ xuất hiện trong yêu cầu tới khung phục vụ, tức là phi-3 (lưu ý rằng nếu tên này không khớp chính xác với những gì khung phục vụ mong đợi thì tích hợp sẽ không hoạt động)</translation>
+<translation id="1355326130503900056">Tên của mô hình khi sẽ xuất hiện trong yêu cầu tới khung phục vụ, ví dụ phi-3 (lưu ý rằng nếu tên này không khớp chính xác với những gì khung phục vụ mong đợi thì sẽ không tích hợp được)</translation>
 <translation id="3286410514484292784">URL nơi khung phục vụ của bạn đang lắng nghe các yêu cầu. Nếu bạn không chắc chắn thì hãy kiểm tra tài liệu về khung phục vụ. Ví dụ: đối với Ollama, đây luôn là http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Một số khung phục vụ có thể yêu cầu thông tin xác thực, chẳng hạn như khóa API hoặc mã thông báo truy cập. Những thông tin này sẽ được thêm vào tiêu đề yêu cầu.</translation>
 <translation id="217141195370578385">Brave không ủy quyền cho những yêu cầu này, vui lòng đọc điều khoản bảo mật của nhà cung cấp đã chọn.</translation>

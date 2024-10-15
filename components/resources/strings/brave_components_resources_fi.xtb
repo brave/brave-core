@@ -670,6 +670,29 @@
 <translation id="4284417062730522399"><ph name="NUM"/> mainosta vastaanotettu tässä kuussa</translation>
 <translation id="7697696066810593560">Olet ansainnut tähän mennessä tässä kuussa <ph name="NUM"/></translation>
 <translation id="6733193230212030816">Ansaitset arvion mukaan: <ph name="RANGE"/></translation>
+<translation id="7924320838799747606">Oma saldosi</translation>
+<translation id="8714473477079007268"><ph name="PROVIDER"/> lompakko</translation>
+<translation id="3175337080016717494">Maksutili</translation>
+<translation id="453760933181416879">Siirry tililleni</translation>
+<translation id="8290994471756102241">Kirjautunut ulos</translation>
+<translation id="8414447476773253869">Kirjaudu sisään palveluntarjoajaan <ph name="PROVIDER"/>, jotta voit nähdä saldosi</translation>
+<translation id="615483366383024791">Maksutili</translation>
+<translation id="1060062421977823695">BAT-ansiosi maksetaan tälle maksutilille.</translation>
+<translation id="2544805415966048917">Lähetät</translation>
+<translation id="6708522254106492579">Enintään <ph name="AMOUNT"/> BATia</translation>
+<translation id="7666058404763778706">Automaattinen tapa tukea verkkosivustoja ja sisällöntuottajia sen mukaan, kuinka paljon aikaa käytät niiden sisältöön.</translation>
+<translation id="4319242254058427792">Automaattinen lahjoittaminen on pois käytöstä</translation>
+<translation id="1091835891554961609">Vahvistetut sisällöntuottajat, joiden luona vierailet, näkyvät täällä selatessasi.</translation>
+<translation id="7714706530499503523">Automaattinen lahjoittaminen lähettää automaattisesti kuukausittain lahjoituksia Braven vahvistamille sisällöntuottajille sen mukaan, kuinka paljon aikaa käytät heidän sisältöönsä.</translation>
+<translation id="2358028754328876971">Miten automaattinen lahjoittaminen toimii?</translation>
+<translation id="2870560284913253234">Sivusto</translation>
+<translation id="1184072843013036520">Hanki Brave-brändättyjä tuotteita</translation>
+<translation id="1170674812179664523">Brave-kauppa</translation>
+<translation id="8673202990286883068">Etusi</translation>
+<translation id="3699766258844277472">Toistuvia lahjoituksia ei ole vielä määritetty.</translation>
+<translation id="957921474773060718">Seuraava lahjoitus:</translation>
+<translation id="351973834053818251">Toistuvat lahjoitukset</translation>
+<translation id="7751260505918304024">Näytä kaikki</translation>
 <translation id="7090992647511817643">tili</translation>
 <translation id="4822132585477111396">Ketjun tunnus</translation>
 <translation id="3269475789479462358">verkkotunnus</translation>
@@ -859,6 +882,8 @@
 <translation id="9111102763498581341">Poista lukitus</translation>
 <translation id="5045550434625856497">Väärä salasana</translation>
 <translation id="9195657745688986798">Avaa lompakko</translation>
+<translation id="2274014756904854136">Jatka kaksoisnapauttamalla näyttöä</translation>
+<translation id="7795718119973968770">Lompakkosi on lukittu turvallisuutesi vuoksi. Avaa lompakon lukitus jatkaaksesi.</translation>
 <translation id="9175546523521600401">Lukitse lompakko</translation>
 <translation id="765834632354589737">Lompakon varmuuskopio</translation>
 <translation id="1108298724135935307">Yhdistetyt sivustot</translation>
@@ -1754,7 +1779,6 @@
 <translation id="6709133671862442373">Uutiset</translation>
 <translation id="3553513561058684206">Sinulle</translation>
 <translation id="2217013723701900638">Julkaisijat</translation>
-<translation id="7751260505918304024">Näytä kaikki</translation>
 <translation id="5138227688689900538">Näytä vähemmän</translation>
 <translation id="1041218419402648959">Piilota sisältö julkaisijalta <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3992393738853907417">Saatat pitää myös seuraavista:</translation>
@@ -2015,6 +2039,7 @@
 <translation id="7355096922131918313">Anna palautetta tässä</translation>
 <translation id="3027575440738035995">Leo Premium tarjoaa pääsyn laajennettuun joukkoon kielimalleja, jotka tarjoavat entistä tarkempia vastauksia. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
 <translation id="7488762544858401571">Muokattu</translation>
+<translation id="1406205536570262057">Muokkaa vastausta</translation>
 <translation id="2399439821649319175">Ei auta</translation>
 <translation id="2976167228906046828">Virheellinen</translation>
 <translation id="1183055847065865059">Vaarallinen/haitallinen</translation>
@@ -2025,6 +2050,7 @@
 <translation id="7494736170250048402">Lähetä Leolle viesti</translation>
 <translation id="8712637175834984815">Ymmärretty</translation>
 <translation id="1093419424466417703">Sivu on liian pitkä Leolle. Keskustelusta saattaa puuttua jokin asiayhteys. Leo pystyi lukemaan <ph name="PERCENTAGE"/> sivun sisällöstä.</translation>
+<translation id="2186990448773134544">Sivun sisältöä on parannettu poimimalla sivulta tärkeimmät tiedot, koska se oli liian pitkä Leolle.</translation>
 <translation id="4370698775470316661">Tämä keskustelu on liian pitkä, eikä se voi jatkua. Saatavilla voi olla muita malleja, joiden avulla Leo pystyy säilyttämään tarkkuuden pidempiä keskusteluja varten.</translation>
 <translation id="5719170755629028558">Vastauksia parannetaan Brave-haulla…</translation>
 <translation id="5794962229997281366">Haun <ph name="SEARCH_TERMS"/> paranneltu vastaus.</translation>
@@ -2114,7 +2140,8 @@
 <ph name="NUMBER"/> seurainta, mainosta jne. estetty</translation>
 <translation id="4292121526390005808">Estetyt skriptit</translation>
 <translation id="5046271170844958713">Sallitut skriptit</translation>
-<translation id="4575452981007854269">Sormenjälkitunnistuksen suojaus otettu käyttöön</translation>
+<translation id="199862531047218413">käytössä sormenjälkiä estäviä suojauksia</translation>
+<translation id="5032505924781383272">Käytetyt suojaukset eivät välttämättä tarkoita, että tämä verkkosivu yrittää ottaa selaimesi sormenjäljen.</translation>
 <translation id="1905384713982899903">Estetyt sormenjäljet</translation>
 <translation id="314364527871618241">Sallitut sormenjäljet</translation>
 <translation id="264682546981571963">Oletko kyllästynyt evästeiden suostumusilmoituksiin?</translation>
@@ -2179,6 +2206,12 @@
 <translation id="2422309687188612485">Suojaa yhdellä tilauksella jopa 10 laitetta</translation>
 <translation id="1693568075761612600">Tukipyynnön luonti epäonnistui, tarkista yhteys.</translation>
 <translation id="1407707415819020643">Valitse palvelin</translation>
+<translation id="7406947191797765434"><ph name="CITY_COUNT"/> kaupunkia - <ph name="SERVER_COUNT"/> palvelinta</translation>
+<translation id="7337680029337389658">1 kaupunki</translation>
+<translation id="1616613632573101617"><ph name="CITY_COUNT"/> kaupunkia</translation>
+<translation id="5647994901467053283">1 palvelin</translation>
+<translation id="8828637853024704314"><ph name="SERVER_COUNT"/> palvelinta</translation>
+<translation id="6527596624419285047">Käytä parasta käytettävissä olevaa palvelinta</translation>
 <translation id="8463313539532697053">Odota hetki, lataus käynnissä…</translation>
 <translation id="2542131205769293399">Ostoksen tilaa ei voi tarkistaa. Tämä voi johtua verkko-ongelmasta. Yritä uudelleen tai ota yhteyttä tukeen.</translation>
 <translation id="4613076894734402086">Muokkaa maksutapaa</translation>

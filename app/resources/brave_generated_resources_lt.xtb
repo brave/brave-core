@@ -51,6 +51,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="3975865347033939965">Nepavyko paleisti sinchronizavimo paslaugos, „Brave“ sinchronizavimas neveikia</translation>
 <translation id="4450893287417543264">Neberodyti</translation>
 <translation id="4595286989346610620">Patikrinkite išsamią informaciją</translation>
+<translation id="8324318899000695659">Blokuoti elementus</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Atidaryti naudojant .onion adresą: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Įdėti priverstinai</translation>
@@ -707,7 +708,7 @@ Leo“. Šio veiksmo atšaukti negalima.</translation>
 <translation id="7634775528597575156">Serverio galinis taškas</translation>
 <translation id="6374563306438145841">API raktas</translation>
 <translation id="8008271349880309090">Modelio pavadinimas, kuris bus rodomas modelio pasirinkimo meniu</translation>
-<translation id="7131172845656551327">Modelio pavadinimas, kaip jis turėtų būti rodomas užklausoje aptarnaujančiai sistemai, t. y. phi-3 (atkreipkite dėmesį, kad jei šis pavadinimas nesutampa su tuo, ko tikisi aptarnaujanti sistema, integracija neveiks).</translation>
+<translation id="1355326130503900056">Modelio pavadinimas, kaip jis turėtų būti rodomas užklausoje aptarnaujančiai sistemai, t. y. phi-3 (atminkite: jei šis pavadinimas nesutampa su pavadinimu, kurio tikisi aptarnaujanti sistema, integracija neveiks)</translation>
 <translation id="3286410514484292784">URL, kuriame jūsų aptarnaujanti sistema klausosi užklausų. Jei nesate tikri, patikrinkite aptarnaujančios sistemos dokumentaciją. Pavyzdžiui, „Ollama“ atveju tai visada yra http://localhost:11434/v1/chat/completions.</translation>
 <translation id="1058790648388035953">Kai kurios aptarnaujančios sistemos gali reikalauti autentifikavimo duomenų, pavyzdžiui, API rakto arba prieigos žetono. Jie bus įtraukti į užklausos antraštę.</translation>
 <translation id="217141195370578385">„Brave“ nepatvirtina šių prašymų, perskaitykite pasirinkto paslaugų teikėjo privatumo sąlygas.</translation>

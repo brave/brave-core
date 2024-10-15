@@ -670,6 +670,29 @@
 <translation id="4284417062730522399">Šomēnes saņemtas <ph name="NUM"/> reklāmas</translation>
 <translation id="7697696066810593560">Šomēnes līdz šim jūs nopelnījāt <ph name="NUM"/></translation>
 <translation id="6733193230212030816">Plānojam, ka nopelnīsiet <ph name="RANGE"/></translation>
+<translation id="7924320838799747606">Jūsu bilance</translation>
+<translation id="8714473477079007268"><ph name="PROVIDER"/> maks</translation>
+<translation id="3175337080016717494">Izmaksas konts</translation>
+<translation id="453760933181416879">Doties uz manu kontu</translation>
+<translation id="8290994471756102241">Izrakstījies</translation>
+<translation id="8414447476773253869">Pierakstieties <ph name="PROVIDER"/>, lai redzētu savu bilanci</translation>
+<translation id="615483366383024791">Izmaksas konts</translation>
+<translation id="1060062421977823695">Jūsu BAT līdzekļi tiks ieskaitīti šajā izmaksas kontā.</translation>
+<translation id="2544805415966048917">Jūs nosūtīsiest</translation>
+<translation id="6708522254106492579">Līdz <ph name="AMOUNT"/> BAT</translation>
+<translation id="7666058404763778706">Veids, kā automātiski atbalstīt tīmekļa vietnes un satura veidotājus, pamatojoties uz to, cik ilgu laiku pavadāt, izmantojot to saturu.</translation>
+<translation id="4319242254058427792">Automātiskā ziedošana ir atspējota</translation>
+<translation id="1091835891554961609">Kad pārlūkosiet, apstiprinātie satura veidotāji, kurus apmeklējat, būs redzami šeit.</translation>
+<translation id="7714706530499503523">Automātiskā ziedošana automātiski nosūta ikmēneša ziedojumus Brave apstiprinātiem satura veidotājiem, pamatojoties uz to, cik ilgu laiku pavadāt, izmantojot to saturu.</translation>
+<translation id="2358028754328876971">Kā automātiskā ziedošana darbojas?</translation>
+<translation id="2870560284913253234">Vietne</translation>
+<translation id="1184072843013036520">Saņemiet Brave zīmola produktus.</translation>
+<translation id="1170674812179664523">Brave zīmola veikals</translation>
+<translation id="8673202990286883068">Jūsu priekšrocības</translation>
+<translation id="3699766258844277472">Jums vēl nav izveidoti periodiski ziedojumi.</translation>
+<translation id="957921474773060718">Nākamais ziedojums:</translation>
+<translation id="351973834053818251">Periodiski ziedojumi</translation>
+<translation id="7751260505918304024">Rādīt visu</translation>
 <translation id="7090992647511817643">konts</translation>
 <translation id="4822132585477111396">Ķēdes ID</translation>
 <translation id="3269475789479462358">domēns</translation>
@@ -859,6 +882,8 @@
 <translation id="9111102763498581341">Atbloķēt</translation>
 <translation id="5045550434625856497">Nepareiza parole</translation>
 <translation id="9195657745688986798">Atbloķēt maku</translation>
+<translation id="2274014756904854136">Veiciet dubultklikšķi uz ekrāna, lai turpinātu</translation>
+<translation id="7795718119973968770">Jūsu drošības nolūkos maks ir bloķēts. Atbloķējiet maku, lai turpinātu.</translation>
 <translation id="9175546523521600401">Bloķēt maku</translation>
 <translation id="765834632354589737">Maka dublēšana</translation>
 <translation id="1108298724135935307">Saistītās vietnes</translation>
@@ -1754,7 +1779,6 @@
 <translation id="6709133671862442373">Ziņas</translation>
 <translation id="3553513561058684206">Jums</translation>
 <translation id="2217013723701900638">Publicētāji</translation>
-<translation id="7751260505918304024">Rādīt visu</translation>
 <translation id="5138227688689900538">Rādīt mazāk</translation>
 <translation id="1041218419402648959">Paslēpt saturu no <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3992393738853907417">Jums varētu patikt arī</translation>
@@ -2015,6 +2039,7 @@
 <translation id="7355096922131918313">Sniegt atsauksmi šeit</translation>
 <translation id="3027575440738035995">Leo Premium sniedz piekļuvi vairāk valodu modeļiem vēl niansētākām atbildēm. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="7488762544858401571">Labots</translation>
+<translation id="1406205536570262057">Rediģēt atbildi</translation>
 <translation id="2399439821649319175">Nebija noderīgi</translation>
 <translation id="2976167228906046828">Nepareizi</translation>
 <translation id="1183055847065865059">Nedroši/kaitīgi</translation>
@@ -2025,6 +2050,7 @@
 <translation id="7494736170250048402">Nosūtīt ziņojumu Leo</translation>
 <translation id="8712637175834984815">Sapratu!</translation>
 <translation id="1093419424466417703">Lapa Leo ir pārāk gara. Sarunā var trūkt nedaudz konteksta. Leo spēja nolasīt <ph name="PERCENTAGE"/> lapas satura.</translation>
+<translation id="2186990448773134544">Lapas saturs ir saīsināts, izvelkot svarīgāko lapas informāciju, jo teksts Leo bija par garu.</translation>
 <translation id="4370698775470316661">Šī saruna ir pārāk gara, un tā nevar turpināties. Iespējams, ir citi modeļi, kuros Leo spēj nodrošināt precizitāti garākās sarunās.</translation>
 <translation id="5719170755629028558">Uzlabojam jūsu atbildi Brave meklētājā…</translation>
 <translation id="5794962229997281366">Uzlabota atbilde, meklējot <ph name="SEARCH_TERMS"/></translation>
@@ -2114,7 +2140,8 @@
 Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="4292121526390005808">Bloķētie skripti</translation>
 <translation id="5046271170844958713">Atļautie skripti</translation>
-<translation id="4575452981007854269">Piemērota aizsardzība ar pirksta nospiedumu</translation>
+<translation id="199862531047218413">identificēšanas novēršanas pasākumi ir piemēroti</translation>
+<translation id="5032505924781383272">Piemērotie aizsardzības pasākumi ne vienmēr nozīmē, ka šī tīmekļa vietne cenšas identificēt jūsu pārlūkprogrammu.</translation>
 <translation id="1905384713982899903">Bloķēti pirkstu nospiedumi</translation>
 <translation id="314364527871618241">Atļauti pirkstu nospiedumi</translation>
 <translation id="264682546981571963">Vai jums apnikuši sīkfailu piekrišanas paziņojumi?</translation>
@@ -2179,6 +2206,12 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="2422309687188612485">Aizsargājiet līdz 10 ierīcēm, izmantojot tikai vienu plānu</translation>
 <translation id="1693568075761612600">Neizdevās izveidot atbalsta ziņojumu; pārbaudiet savu savienojumu.</translation>
 <translation id="1407707415819020643">Izvēlieties savu serveri</translation>
+<translation id="7406947191797765434"><ph name="CITY_COUNT"/> pilsētas - <ph name="SERVER_COUNT"/> serveri</translation>
+<translation id="7337680029337389658">1 pilsēta</translation>
+<translation id="1616613632573101617"><ph name="CITY_COUNT"/> pilsētas</translation>
+<translation id="5647994901467053283">1 serveris</translation>
+<translation id="8828637853024704314"><ph name="SERVER_COUNT"/> serveri</translation>
+<translation id="6527596624419285047">Izmantot labāko pieejamo serveri</translation>
 <translation id="8463313539532697053">Uzgaidiet mirkli, kamēr notiek ielāde…</translation>
 <translation id="2542131205769293399">Neizdevās pārbaudīt jūsu pirkuma statusu. Visticamāk, problēma ir tīklā. Mēģiniet vēlreiz vai sazinieties ar atbalsta dienestu.</translation>
 <translation id="4613076894734402086">Labot maksāšanas metodi</translation>

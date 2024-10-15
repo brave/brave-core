@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">Attēlo tīmekļa vietnes ierosinājumus, balstoties uz jūsu grāmatzīmēm un pārlūkošanas vēsturi.</translation>
 <translation id="924029461438529367">Rādīt meklēšanas ieteikumus</translation>
 <translation id="1571106259128580884">Rādīt vadošo vietņu ieteikumus</translation>
+<translation id="6285118765755298263">Indeksēt citas meklētājprogrammas</translation>
+<translation id="919715748352669592">Automātiski indeksē tīmekļa vietnes, kas atbilst OpenSearch specifikācijām.</translation>
 <translation id="9148058034647219655">Iziet</translation>
 <translation id="8047754398610073499">Bloķēt paziņojumus par piekrišanu sīkfailiem</translation>
 <translation id="2621893359845808115">Bloķē tīmekļa vietnes iznirstošos logus, kas lūdz jums apstiprināt/noraidīt sīkfailus vietnē.</translation>
@@ -741,7 +743,19 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="755448900483975096">Mobilo sakaru operators.</translation>
 <translation id="1279441577056010362">Pāriet uz e-pastu.</translation>
 <translation id="7125582363614011660">Atbalsts sniegts ar Guardian komandas palīdzību.\n\nLūdzu, atlasiet informāciju, kuru varat kopīgot ar mums.\n\nJo vairāk informācijas sākotnēji kopīgojat ar mums, jo vieglāk mūsu atbalsta personālam būs palīdzēt atrisināt problēmu.</translation>
-<translation id="7999094850625689785">Pamatojoties uz jūsu sistēmas laika joslu, tiks automātiski izvēlēts tuvākais servera reģions. Tas ir ieteicams, lai varētu nodrošināt ātru internetu.</translation>
+<translation id="8813171284214934811">Pamatojoties uz jūsu laika joslu, tiks automātiski izvēlēts tuvākais VPN servera reģions. Tas ir ieteicams, lai nodrošinātu ātru internetu.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> pilsēta - }
+          other {<ph name="CITY_COUNT_MANY"/> pilsētas - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> serveris}
+          other {<ph name="SERVER_COUNT_MANY"/> serveri}
+        }</translation>
+<translation id="3199127022143353223">Serveri</translation>
+<translation id="5431902940483264007">Optimāls</translation>
+<translation id="6527596624419285047">Izmantot labāko pieejamo serveri</translation>
+<translation id="6789157560111825412">Pieejamie serveri</translation>
 <translation id="4397083831618200686">Atlasīt problēmu</translation>
 <translation id="6687228121145903051">Nevar izveidot savienojumu ar VPN (cita kļūda).</translation>
 <translation id="9184988385244077767">Nav interneta, kad ir izveidots savienojums.</translation>
@@ -809,7 +823,6 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="7358989216567322955">Maksimālā prioritātes maksa</translation>
 <translation id="9091334651803050473">Lai gan garantijas nav, racēji, visticamāk, prioritizēs jūsu darījumu, ja piedāvāsiet lielāku maksu.</translation>
 <translation id="2941112035454246133">Zema</translation>
-<translation id="5431902940483264007">Optimāls</translation>
 <translation id="7304030187361489308">Augsta</translation>
 <translation id="4853037749278079787">Maksimālā maksa: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Pašreizējā pamatmaksa: <ph name="ASSET_VALUE"/> Gwei</translation>

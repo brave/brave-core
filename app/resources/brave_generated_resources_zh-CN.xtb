@@ -50,6 +50,7 @@
 <translation id="3975865347033939965">同步服务无法启动，Brave Sync 未运行</translation>
 <translation id="4450893287417543264">不再显示</translation>
 <translation id="4595286989346610620">查看详情</translation>
+<translation id="8324318899000695659">拦截元素</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">使用 .onion 地址开启： <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">强制粘贴</translation>
@@ -706,7 +707,7 @@ Leo 的所有对话。此操作无法撤销。</translation>
 <translation id="7634775528597575156">服务器终端</translation>
 <translation id="6374563306438145841">API 密钥</translation>
 <translation id="8008271349880309090">型号名称将显示在模型选择菜单中</translation>
-<translation id="7131172845656551327">该型号的名称应该出现在服务框架的请求中，即 phi-3（请注意，如果该名称与服务框架期望的不完全匹配，集成将无法运行）</translation>
+<translation id="1355326130503900056">该型号的名称应该出现在服务框架的请求中，如 phi-3（请注意，如果该名称与服务框架期望的不完全匹配，集成将无法运行）</translation>
 <translation id="3286410514484292784">服务框架正在监听申请的网址。如果不确定，请查阅服务框架文档。例如，对于 Ollama 来说，这始终是 http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">某些服务框架可能需要认证凭证，如 API 密钥或访问令牌。这些凭证将添加到申请标题中。</translation>
 <translation id="217141195370578385">Brave不代理这些请求，请阅读所选供应商的隐私条款。</translation>

@@ -51,6 +51,7 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="3975865347033939965">Synkronointipalvelua ei voitu käynnistää, Brave-synkronointi ei ole käynnissä</translation>
 <translation id="4450893287417543264">Älä näytä uudelleen</translation>
 <translation id="4595286989346610620">Tarkista tiedot</translation>
+<translation id="8324318899000695659">Estä elementit</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Avaa käyttämällä .onion-osoitetta: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Pakota liittäminen</translation>
@@ -707,7 +708,7 @@ Leo-avustajan kanssa. Tätä toimintoa ei voi perua.</translation>
 <translation id="7634775528597575156">Palvelimen päätepiste</translation>
 <translation id="6374563306438145841">API-avain</translation>
 <translation id="8008271349880309090">Mallin nimi sellaisena kuin se näkyy mallin valintavalikossa.</translation>
-<translation id="7131172845656551327">Mallin nimi sellaisena kuin sen pitäisi näkyä palveluntarjoajan viitekehykselle osoitetussa pyynnössä, esim. phi-3. (Huomaa, että jos tämä nimi ei vastaa täysin palveluntarjoajan viitekehyksen odottamaa nimeä, integraatio ei toimi.)</translation>
+<translation id="1355326130503900056">Mallin nimi sellaisena kuin sen pitäisi näkyä palveluntarjoajan viitekehykselle osoitetussa pyynnössä, esim. phi-3. (Huomaa, että jos tämä nimi ei vastaa täysin palveluntarjoajan viitekehyksen odottamaa nimeä, integraatio ei toimi.)</translation>
 <translation id="3286410514484292784">URL-osoite, jossa tarjoajan viitekehys kuuntelee pyyntöjä. Jos et ole varma, tarkista palveluntarjoajan viitekehyksen asiakirjat, esim. Ollamalle tämä on aina http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Jotkin palveluntarjoajan viitekehykset voivat vaatia todennustunnukset, kuten API-avaimen tai käyttötunnuksen. Nämä lisätään pyynnön nimeen.</translation>
 <translation id="217141195370578385">Brave ei välitä näitä pyyntöjä, lue valitun palveluntarjoajan tietosuojaehdot.</translation>

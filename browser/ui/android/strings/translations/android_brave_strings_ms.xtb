@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">Memaparkan cadangan tapak web berdasarkan penanda halaman dan sejarah penyemakan imbas anda.</translation>
 <translation id="924029461438529367">Tunjukkan cadangan carian</translation>
 <translation id="1571106259128580884">Tunjukkan cadangan laman teratas</translation>
+<translation id="6285118765755298263">Indeks enjin carian lain</translation>
+<translation id="919715748352669592">Mengindeks laman web secara automatik yang mengikuti spesifikasi OpenSearch.</translation>
 <translation id="9148058034647219655">Keluar</translation>
 <translation id="8047754398610073499">Notis persetujuan kuki sekatan</translation>
 <translation id="2621893359845808115">Sekat tetingkap timbul laman web yang meminta anda menerima / menolak kuki di laman mereka</translation>
@@ -740,7 +742,19 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="755448900483975096">Pembawa Selular</translation>
 <translation id="1279441577056010362">Teruskan untuk E-mel</translation>
 <translation id="7125582363614011660">Sokongan diberikan dengan bantuan pasukan Guardian.\n\nSila pilih maklumat yang selesa anda kongsikan dengan kami.\n\nLebih banyak maklumat yang anda kongsikan dengan kami, lebih mudah bagi kakitangan sokongan kami untuk membantu menyelesaikan isu anda.</translation>
-<translation id="7999094850625689785">Rantau pelayan yang paling hampir dengan anda akan dipilih secara automatik, berdasakan zon waktu sistem anda. Ini disyorkan untuk memastikan kelajuan internet yang pantas.</translation>
+<translation id="8813171284214934811">Auto pilih kawasan pelayan VPN yang paling hampir dengan anda berdasarkan zon waktu anda. Pilihan ini disyorkan untuk memaksimumkan kelajuan Internet.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> city - }
+          other {<ph name="CITY_COUNT_MANY"/> cities - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> server}
+          other {<ph name="SERVER_COUNT_MANY"/> servers}
+        }</translation>
+<translation id="3199127022143353223">Pelayan</translation>
+<translation id="5431902940483264007">Optimum</translation>
+<translation id="6527596624419285047">Gunakan pelayan tersedia yang terbaik</translation>
+<translation id="6789157560111825412">Pelayan yang Tersedia</translation>
 <translation id="4397083831618200686">Pilih Isu</translation>
 <translation id="6687228121145903051">Tidak dapat bersambung ke VPN (Ralat lain)</translation>
 <translation id="9184988385244077767">Tiada internet apabila disambungkan</translation>
@@ -808,7 +822,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="7358989216567322955">Yuran Prioriti Maksimum</translation>
 <translation id="9091334651803050473">Walaupun bukan satu jaminan, pelombong kemungkinan akan mengutamakan transaksi anda jika anda membayar fi yang lebih tinggi.</translation>
 <translation id="2941112035454246133">Rendah</translation>
-<translation id="5431902940483264007">Optimum</translation>
 <translation id="7304030187361489308">Tinggi</translation>
 <translation id="4853037749278079787">Yuran maksimum: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Yuran asas semasa: <ph name="ASSET_VALUE"/> Gwei</translation>

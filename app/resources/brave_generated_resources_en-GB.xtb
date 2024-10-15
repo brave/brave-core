@@ -51,6 +51,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3975865347033939965">Sync service could not be started, Brave Sync is not running</translation>
 <translation id="4450893287417543264">Don't show again</translation>
 <translation id="4595286989346610620">Check details</translation>
+<translation id="8324318899000695659">Block elements</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Open using .onion address: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Force paste</translation>
@@ -707,7 +708,7 @@ Leo. This action can't be undone.</translation>
 <translation id="7634775528597575156">Server endpoint</translation>
 <translation id="6374563306438145841">API key</translation>
 <translation id="8008271349880309090">The name of the model as it will appear in the model selection menu</translation>
-<translation id="7131172845656551327">The name of the model as it should appear in the request to the serving framework, i.e. phi-3 (note that if this name doesn’t match exactly what is expected by the serving framework, the integration won't work)</translation>
+<translation id="1355326130503900056">The name of the model as it should appear in the request to the serving framework, e.g. phi-3 (note that if this name doesn’t match exactly what is expected by the serving framework, the integration won't work)</translation>
 <translation id="3286410514484292784">The URL where your serving framework is listening for requests. If you're not sure, check the serving framework documentation. E.g. for Ollama, this is always http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Some serving frameworks may require authentication credentials, such as an API key or an access token. These will be added to the request header.</translation>
 <translation id="217141195370578385">Brave doesn't proxy these requests. Please read privacy terms of the chosen provider.</translation>

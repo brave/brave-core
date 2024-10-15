@@ -51,6 +51,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3975865347033939965">Synkroniseringstjänsten kunde inte startas, Brave Sync körs inte</translation>
 <translation id="4450893287417543264">Visa inte igen.</translation>
 <translation id="4595286989346610620">Kontrollera detaljer</translation>
+<translation id="8324318899000695659">Blockera element</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Öppna med hjälp av .onion-adress: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Tvinga inklistring</translation>
@@ -707,7 +708,7 @@ Leo. Det går inte att ångra den här åtgärden.</translation>
 <translation id="7634775528597575156">Serverslutpunkt</translation>
 <translation id="6374563306438145841">API-nyckel</translation>
 <translation id="8008271349880309090">Modellens namn som det kommer att visas i menyn för val av modell</translation>
-<translation id="7131172845656551327">Namnet på modellen så som det ska visas i begäran till serverramverket, t.ex. phi-3 (observera att om detta namn inte matchar exakt vad som förväntas av serverramverket kommer integrationen inte att fungera)</translation>
+<translation id="1355326130503900056">Namnet på modellen så som det ska visas i begäran till serverramverket, t.ex. phi-3 (observera att om detta namn inte matchar exakt vad som förväntas av serverramverket kommer integrationen inte att fungera)</translation>
 <translation id="3286410514484292784">Webbadress där ditt serverramverk lyssnar efter förfrågningar. Om du är osäker kan du kontrollera dokumentationen för serverramverket. För Ollama är detta t.ex. alltid http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Vissa serverramverk kan kräva autentiseringsuppgifter, t.ex. en API-nyckel eller en åtkomsttoken. Dessa kommer att läggas till i förfrågans rubrik.</translation>
 <translation id="217141195370578385">Brave använder inte proxy för dessa förfrågningar, läs integritetsvillkoren för den valda leverantören.</translation>

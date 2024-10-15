@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="en-GB">
+<translation id="970556510921078939">Open Brave Password Manager and go to Settings. Select 'Import' and add the CSV file that contains your exported passwords.</translation>
 <translation id="1011749477052068769">Move here</translation>
 <translation id="1014147525163127655">There aren't any passkeys for <ph name="ORIGIN"/> on this device</translation>
 <translation id="1016498331642356377">Quickly search with your voice. To edit this shortcut, touch and hold.</translation>
@@ -72,6 +73,7 @@
 <translation id="1303507811548703290"><ph name="DOMAIN"/> – Sent from <ph name="DEVICE_NAME"/></translation>
 <translation id="1320912611264252795">Bookmark save flow folders opened at full height</translation>
 <translation id="1327257854815634930">Navigation history is opened</translation>
+<translation id="1328235593824723509"><ph name="TAB_TITLE"/>, new or updated tab</translation>
 <translation id="6773423637732432200">Brave can’t update. More options</translation>
 <translation id="3169981355900570544">Brave feature shortcuts</translation>
 <translation id="1333491156693005331">Checked recently</translation>
@@ -102,6 +104,7 @@ For more settings that use data to improve your Brave experience, go to <ph name
 <translation id="3219606989239049572">Save data in your Brave sync chain</translation>
 <translation id="1853026300647876496">Contacting Brave. This may take a minute…</translation>
 <translation id="1416550906796893042">Application version</translation>
+<translation id="5171187478741797469">Restart Brave?</translation>
 <translation id="1428770807407000502">Turn off sync?</translation>
 <translation id="1430915738399379752">Print</translation>
 <translation id="1435593198351412143">Automatically open PDFs</translation>
@@ -155,7 +158,6 @@ Only someone with your passphrase can read your encrypted data. The passphrase i
 <translation id="1747593111377567311">{NUM_SITES,plural, =1{1 site recently sent a lot of notifications}other{# sites recently sent a lot of notifications}}</translation>
 <translation id="1749561566933687563">Sync your bookmarks</translation>
 <translation id="12433225238423439">Keep using the passwords in your Brave sync chain</translation>
-<translation id="1750259112639922169">Tab group – <ph name="TAB_COUNT"/> tabs</translation>
 <translation id="17513872634828108">Open tabs</translation>
 <translation id="1755203724116202818">To measure the performance of an ad, limited types of data are shared between sites, such as whether you made a purchase after visiting a site.</translation>
 <translation id="9207812657123271782">Brave Password Manager update</translation>
@@ -223,6 +225,7 @@ Only someone with your passphrase can read your encrypted data. The passphrase i
 <translation id="2067805253194386918">text</translation>
 <translation id="2079545284768500474">Undo</translation>
 <translation id="2082238445998314030">Result <ph name="RESULT_NUMBER"/> of <ph name="TOTAL_RESULTS"/></translation>
+<translation id="8992364521253636633">To finish setting up autofill, restart Brave now. Your tabs will automatically reopen.</translation>
 <translation id="2091863218454846791">Showing compact view</translation>
 <translation id="2093731487903423814">last 15 minutes</translation>
 <translation id="2096012225669085171">Sync and personalise across devices</translation>
@@ -344,6 +347,7 @@ Only someone with your passphrase can read your encrypted data. The passphrase i
 <translation id="2653659639078652383">Submit</translation>
 <translation id="2656405586795711023">Web apps</translation>
 <translation id="2664252182805397291">View sites</translation>
+<translation id="2666092431469916601">Top</translation>
 <translation id="2669454659051515572">Anyone using this device can see downloaded files</translation>
 <translation id="2702516483241149200">New: Share a link that scrolls to this text</translation>
 <translation id="2705073298859543115">Create summary</translation>
@@ -441,10 +445,12 @@ Only someone with your passphrase can read your encrypted data. The passphrase i
 <translation id="1094255666887095087"><ph name="APP_NAME"/> will open in Brave. By continuing, you agree to the <ph name="BEGIN_LINK1"/>Brave Terms of Service<ph name="END_LINK1"/>, and the <ph name="BEGIN_LINK2"/>Brave and Chrome OS additional Terms of Service<ph name="END_LINK2"/>. The <ph name="BEGIN_LINK3"/>Privacy Policy<ph name="END_LINK3"/> also applies.</translation>
 <translation id="3080525922482950719">You can save pages to read later or offline</translation>
 <translation id="3354511890765693122">Some passwords saved only on this device will stop working soon. You can move these passwords to Brave Password Manager.</translation>
+<translation id="3087734570205094154">Bottom</translation>
 <translation id="3091010850649238832">Show clipboard contents</translation>
 <translation id="821565628224723530">Some images are sent to Brave to improve descriptions for you</translation>
 <translation id="3114507951000454849">Read today's news <ph name="NEWS_ICON"/></translation>
 <translation id="3123734510202723619">Announcements</translation>
+<translation id="3148237711805373460">Take me there</translation>
 <translation id="5063487983358782016">Brave’s homepage</translation>
 <translation id="3158667104057012316">Sorting by manual order</translation>
 <translation id="3166827708714933426">Tab and window shortcuts</translation>
@@ -477,6 +483,7 @@ Only someone with your passphrase can read your encrypted data. The passphrase i
 <translation id="82609232232243542">Sign in to Brave</translation>
 <translation id="3285065882678541460">{TAB_COUNT,plural, =1{<ph name="TAB_GROUPS_PART"/>, <ph name="TAB_COUNT_ONE"/> tab}other{<ph name="TAB_GROUPS_PART"/>, <ph name="TAB_COUNT_MANY"/> tabs}}</translation>
 <translation id="3293181007446299124">Your browsing history is kept private on your device and reports are sent with a delay to protect your identity</translation>
+<translation id="3302615849591357577">Restore tab group <ph name="TITLE_OF_GROUP"/>, colour <ph name="COLOR_NAME"/>, as a new background tab group.</translation>
 <translation id="3303414029551471755">Proceed to download the content?</translation>
 <translation id="3303855915957856445">No search results found</translation>
 <translation id="3305130791745726624">Send to devices</translation>
@@ -578,6 +585,7 @@ Only someone with your passphrase can read your encrypted data. The passphrase i
 <translation id="3823019343150397277">IBAN</translation>
 <translation id="38243391581572867">Lens is not available on this account.</translation>
 <translation id="3830886834687455630">Update Google Play services to check your passwords</translation>
+<translation id="3843603704176567761">Passwords may stop working soon on this device. To keep using your passwords, update Google Play services.</translation>
 <translation id="3847319713229060696">Help improve security on the web for everyone</translation>
 <translation id="3856096718352044181">Please verify that this is a valid provider or try again later</translation>
 <translation id="3858860766373142691">Name</translation>
@@ -644,11 +652,11 @@ Only someone with your passphrase can read your encrypted data. The passphrase i
 <translation id="4195643157523330669">Open in new tab</translation>
 <translation id="4197828496439691735">{NUM_TABS,plural, =1{1 tab on this device}other{# tabs on this device}}</translation>
 <translation id="4198423547019359126">No available download locations</translation>
-<translation id="4202218894997543208">Topics that you blocked</translation>
 <translation id="1675646381334855139">If you allow cookies, Brave may use them for preloading.</translation>
 <translation id="4216511743389425832">Listen to this page</translation>
 <translation id="4225725533026049334">Following</translation>
 <translation id="4225895483398857530">Toolbar shortcut</translation>
+<translation id="4232376164796433044">Passwords and autofill</translation>
 <translation id="4242533952199664413">Open settings</translation>
 <translation id="4248098802131000011">Keep your passwords safe from data breaches and other security issues</translation>
 <translation id="7445061995866044926">Sign out of Brave?</translation>
@@ -657,6 +665,7 @@ Only someone with your passphrase can read your encrypted data. The passphrase i
 <translation id="7404502124231907662">Delete passwords from Brave Password Manager?</translation>
 <translation id="426652736638196239">This IBAN will be saved to this device only</translation>
 <translation id="4269820728363426813">Copy link address</translation>
+<translation id="4270730597186910506">Track or untrack a product.</translation>
 <translation id="4277529130885813215">Use another device</translation>
 <translation id="6553929648301062677">Your organisation, <ph name="MANAGED_DOMAIN"/>, manages the account that you're signing in to and how Brave can be used. Your administrator can set up or restrict certain features.</translation>
 <translation id="4285846616383034558">Cookies, cache and other site data</translation>
@@ -673,7 +682,6 @@ Only someone with your passphrase can read your encrypted data. The passphrase i
 <translation id="4355272626458588338">You can get back to a page that's important to you by adding a bookmark</translation>
 <translation id="4357206670025518404">+<ph name="COUNT_NUMBER"/></translation>
 <translation id="4359809482106103048">Safety at a glance</translation>
-<translation id="4363222835916186793">Alerts for this product have been turned off</translation>
 <translation id="4378154925671717803">Phone</translation>
 <translation id="4380055775103003110">If this issue keeps happening, you can try other ways to continue on <ph name="SITE_ETLD_PLUS_ONE"/>.</translation>
 <translation id="4384468725000734951">Using Sogou for search</translation>
@@ -730,8 +738,10 @@ Your Brave sync chain may have other forms of browsing history such as searches 
 <translation id="2782276843156939908">Your lists of saved passwords for Brave and <ph name="CHROME_CHANNEL"/> were merged. You can still autofill all your saved passwords on both apps.</translation>
 <translation id="4616150815774728855">Open <ph name="WEBAPK_NAME"/></translation>
 <translation id="4619564267100705184">Verify that it's you</translation>
+<translation id="4620032614425803188">Autofill services</translation>
 <translation id="4634124774493850572">Use password</translation>
 <translation id="4640331037679501949">{NUM_PASSWORDS,plural, =1{1 compromised password}other{# compromised passwords}}</translation>
+<translation id="4642472735733036929">Price tracking stopped</translation>
 <translation id="4650364565596261010">System default</translation>
 <translation id="465657074423018424">Safe Browsing protects you against deceptive websites. If you turn it off, be extra careful when browsing, especially before entering passwords.</translation>
 <translation id="4662373422909645029">Nickname can’t include numbers</translation>
@@ -782,6 +792,7 @@ Your Brave sync chain may have other forms of browsing history such as searches 
 <translation id="4834007576107377210">See your search engine’s instructions for deleting your search history, if applicable</translation>
 <translation id="4834250788637067901">Payment methods, offers and addresses using Google Pay</translation>
 <translation id="2593289874938379417">Brave does not have access to the requested resource.</translation>
+<translation id="483742037940503070">{TAB_COUNT,plural, =1{Restore tab group of <ph name="TAB_COUNT_ONE"/> tab, colour <ph name="COLOR_NAME"/>, as a new background tab group.}other{Restore tab group of <ph name="TAB_COUNT_MANY"/> tabs, colour <ph name="COLOR_NAME"/>, as a new background tab group.}}</translation>
 <translation id="4837753911714442426">Open options to print page</translation>
 <translation id="4842092870884894799">Showing password generation pop-up</translation>
 <translation id="6195403640086187022">For added safety, encrypt passwords on your device before they‘re saved to Brave Password Manager</translation>
@@ -831,6 +842,7 @@ Your Brave sync chain may have other forms of browsing history such as searches 
 <translation id="5016205925109358554">Serif</translation>
 <translation id="5017529052065664584">Last 15 minutes</translation>
 <translation id="5032430150487044192">Can't create QR code</translation>
+<translation id="5039678609803776426">{TAB_COUNT,plural, =1{<ph name="TAB_COUNT_ONE"/> tab – <ph name="URL_LIST"/>}other{<ph name="TAB_COUNT_MANY"/> tabs – <ph name="URL_LIST"/>}}</translation>
 <translation id="5039804452771397117">Allow</translation>
 <translation id="5040262127954254034">Privacy</translation>
 <translation id="504456571576643789">Things to consider</translation>
@@ -874,6 +886,7 @@ Your Brave sync chain may have other forms of browsing history such as searches 
 <translation id="5264813352784073502">last 24 hours</translation>
 <translation id="5267572070504076962">Turn on Safe Browsing to get protection against dangerous sites</translation>
 <translation id="5271967389191913893">Device cannot open the content to be downloaded.</translation>
+<translation id="5273031377282080577">Your administrator manages this setting.</translation>
 <translation id="5292796745632149097">Send to</translation>
 <translation id="1078957913029848404">You are signed in as <ph name="EMAIL"/>. You can stop syncing at any time in settings. Brave may personalise Search and other services based on your history.</translation>
 <translation id="5304593522240415983">This field cannot be blank</translation>
@@ -998,6 +1011,7 @@ Your Brave sync chain may have other forms of browsing history such as searches 
 <translation id="5604589745019948682">To follow a site, go to the site, open the Brave menu and tap Follow.</translation>
 <translation id="5879072387416556377">Get better suggestions</translation>
 <translation id="2496394743292988533">Notifications <ph name="SEPARATOR"/> Brave removed these permissions because this site is dangerous</translation>
+<translation id="5895834791314695851">Passwords may stop working soon on this device. To keep using your passwords, update Google Play services. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
 <translation id="5899667542927581604">No passkeys sheet was closed</translation>
 <translation id="5916664084637901428">On</translation>
 <translation id="5919204609460789179">Update <ph name="PRODUCT_NAME"/> to start sync</translation>
@@ -1044,6 +1058,7 @@ Your Brave sync chain may have other forms of browsing history such as searches 
 <translation id="6125864963080902918"><ph name="BEGIN_LINK"/>More details<ph name="END_LINK"/></translation>
 <translation id="6127379762771434464">Item removed</translation>
 <translation id="6130303040046284160">Minimise tab</translation>
+<translation id="6135608400322377268">{TAB_COUNT,plural, =1{<ph name="TAB_COUNT_ONE"/> tab}other{<ph name="TAB_COUNT_MANY"/> tabs}}</translation>
 <translation id="6137022273846704445"><ph name="APP_NAME"/>’s language</translation>
 <translation id="6138832295072039549">Change your site settings here</translation>
 <translation id="6140912465461743537">Country/Region</translation>
@@ -1064,6 +1079,7 @@ Your Brave sync chain may have other forms of browsing history such as searches 
 <translation id="6210748933810148297">Not <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Previewing this page</translation>
 <translation id="6221633008163990886">Unlock to export your passwords</translation>
+<translation id="6225572914528673855">Address bar</translation>
 <translation id="6232535412751077445">Enabling ‘Do Not Track’ means that a request will be included with your browsing traffic. Any effect depends on whether a website responds to the request and how the request is interpreted.
 
 For example, some websites may respond to this request by showing you ads that aren’t based on other websites that you’ve visited. Many websites will still collect and use your browsing data – for example to improve security, to provide content, ads and recommendations and to generate reporting statistics.</translation>
@@ -1147,6 +1163,7 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="656065428026159829">See more</translation>
 <translation id="6565959834589222080">Wi-Fi is used when available</translation>
 <translation id="4480935821314799946">You'll now see stories from <ph name="SITE_NAME"/> when you open a new tab. The sites that you follow are saved in your Brave sync chain. You can manage them in Discover settings.</translation>
+<translation id="6570116402456758630">Page summary</translation>
 <translation id="6573096386450695060">Always allow</translation>
 <translation id="5157964048453367290">Tabs that you've opened in Brave on your other devices will appear here.</translation>
 <translation id="6583199322650523874">Bookmark the current page</translation>
@@ -1156,6 +1173,7 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="6593061639179217415">Desktop site</translation>
 <translation id="6594347733515723558">Sort and view options</translation>
 <translation id="2466982615210189224">Images are sent to Brave to improve descriptions for you.</translation>
+<translation id="6595634543029443878">{TAB_COUNT,plural, =1{Restore tab group of <ph name="TAB_COUNT_ONE"/> tab as a new background tab group.}other{Restore tab group of <ph name="TAB_COUNT_MANY"/> tabs as a new background tab group.}}</translation>
 <translation id="6904452514635238551">When you're signed in to Brave, passwords that you save will go in your Brave sync chain. To turn this off, <ph name="BEGIN_LINK"/>go to settings<ph name="END_LINK"/>.</translation>
 <translation id="661266467055912436">Improves security for you and everyone on the web.</translation>
 <translation id="8127050479140582768">To send this tab to another device, sign in to Brave on both devices</translation>
@@ -1179,6 +1197,8 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="6674571176963658787">To start sync, enter your passphrase</translation>
 <translation id="3683330416566109578">Sign in to this site and Brave</translation>
 <translation id="3385384709865894288">Make Brave better</translation>
+<translation id="6700279777779583398">Choices saved</translation>
+<translation id="6704048624334633734">Export and delete the passwords</translation>
 <translation id="670498945988402717">Checked yesterday</translation>
 <translation id="6710213216561001401">Previous</translation>
 <translation id="671481426037969117">Your <ph name="FQDN"/> timer ran out. It will start again tomorrow.</translation>
@@ -1196,6 +1216,7 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="6767294960381293877">List of devices to share a tab with, opened at half height.</translation>
 <translation id="8174975477247159780">Brave and Chrome OS additional Terms of Service</translation>
 <translation id="6795633245022906657">Quickly open a new tab. To edit this shortcut, go to Settings.</translation>
+<translation id="679956319013005046">To set your preferred service for autofill, first add the service in <ph name="BEGIN_LINK"/>Android settings<ph name="END_LINK"/> .</translation>
 <translation id="6802555630140434547">The window will be closed</translation>
 <translation id="6803791793483522764">Review notifications</translation>
 <translation id="6811034713472274749">Page is ready to view</translation>
@@ -1223,6 +1244,7 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="6869056123412990582">computer</translation>
 <translation id="6880903702195291049">Permissions look good</translation>
 <translation id="6883204995689174413">Share</translation>
+<translation id="6883606786470492001">Manage your ad topics and other settings to limit what sites can learn about you to show you personalised ads</translation>
 <translation id="6883906387682976294">Unsubscribe notifications from this site</translation>
 <translation id="688398477366397178">Let websites know the languages that you speak. They'll show content in those languages, when possible.</translation>
 <translation id="6885933993535178919">{NUM_SITES,plural, =1{Unsubscribed from 1 site}other{Unsubscribed from # sites}}</translation>
@@ -1251,7 +1273,6 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="6963766334940102469">Delete bookmarks</translation>
 <translation id="6964300328304469089"><ph name="NAME"/>, <ph name="EMAIL"/> currently selected. Choose an account.</translation>
 <translation id="6965382102122355670">OK</translation>
-<translation id="6966660124354134532">Tap to track or untrack a product.</translation>
 <translation id="6971862865055170158">Don’t approve</translation>
 <translation id="6978717888677691380">Sites that you blocked</translation>
 <translation id="6979737339423435258">All time</translation>
@@ -1282,6 +1303,7 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="144902786838571419">Brave gives you more control over the ads that you see and limits what sites can learn about you when they show you personalised ads.</translation>
 <translation id="7136902389402789299">{NUM_SITES,plural, =1{Permissions reviewed for 1 site}other{Permissions reviewed for # sites}}</translation>
 <translation id="7138678301420049075">Other</translation>
+<translation id="7139479418357139965">You can contact the sender to ask for a new link.</translation>
 <translation id="7140829094791862589">Sort by manual order</translation>
 <translation id="7146622961999026732">These sites and apps seem important to you:</translation>
 <translation id="7148400116894863598"><ph name="BEGIN_LINK"/>Get more information<ph name="END_LINK"/> from <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>.</translation>
@@ -1298,7 +1320,6 @@ To change this setting, <ph name="BEGIN_LINK"/>delete the Brave data in your acc
 <translation id="7180611975245234373">Refresh</translation>
 <translation id="7182051712900867547">Use a different account</translation>
 <translation id="7183517696921903380">App filter sheet is opened.</translation>
-<translation id="7183693674623539380">Tab group – <ph name="TITLE_OF_GROUP"/></translation>
 <translation id="6475793992224120104">Control how browsing history is used with your other data across Brave services</translation>
 <translation id="7191430249889272776">Tab opened in background.</translation>
 <translation id="7192397795254933433">{NUM_PASSWORDS,plural, =1{You should change this now}other{You should change these now}}</translation>
@@ -1370,7 +1391,6 @@ To change this setting, <ph name="BEGIN_LINK"/>delete the Brave data in your acc
 <translation id="7485033510383818941">To refresh the feed content, pull down the page</translation>
 <translation id="749294055653435199">Google Lens is not available on this device</translation>
 <translation id="7493994139787901920"><ph name="VERSION"/> (Updated <ph name="TIME_SINCE_UPDATE"/>)</translation>
-<translation id="7497755084107113646">Added topic back to potential topics</translation>
 <translation id="7498271377022651285">Please wait…</translation>
 <translation id="8156131600798538460">To sign out of your Brave sync chain on all websites, <ph name="BEGIN_LINK1"/>sign out of Brave<ph name="END_LINK1"/>.</translation>
 <translation id="750228856503700085">Updates unavailable</translation>
@@ -1384,6 +1404,7 @@ To change this setting, <ph name="BEGIN_LINK"/>delete the Brave data in your acc
 <translation id="7525248386620136756"><ph name="TAB_GROUPS_AND_TABS_PART"/> closed and saved</translation>
 <translation id="3987895309799116299">Can't check Brave version</translation>
 <translation id="7557508262441527045">Signed out</translation>
+<translation id="7573665567024262965">Choose your default apps</translation>
 <translation id="7577900504646297215">Manage interests</translation>
 <translation id="757855969265046257">{FILES,plural, =1{<ph name="FILES_DOWNLOADED_ONE"/> file downloaded}other{<ph name="FILES_DOWNLOADED_MANY"/> files downloaded}}</translation>
 <translation id="7581273696622423628">Take survey</translation>
@@ -1417,15 +1438,16 @@ To change this setting, <ph name="BEGIN_LINK"/>delete the Brave data in your acc
 <translation id="7691043218961417207">Explore content to follow</translation>
 <translation id="7697383401610880082">Drag handle</translation>
 <translation id="7698359219371678927">Create email in <ph name="APP_NAME"/></translation>
-<translation id="7702029078562412515">Query tiles</translation>
 <translation id="7707922173985738739">Use mobile data</translation>
 <translation id="7709918231054955894">Get all your tabs</translation>
 <translation id="7733878270780732638">Not enough space on device.</translation>
+<translation id="774876555279732384">Autofill services are also managed in <ph name="BEGIN_LINK"/>Android settings<ph name="END_LINK"/>.</translation>
 <translation id="7759809451544302770">Optional</translation>
 <translation id="7762668264895820836">SD Card <ph name="SD_CARD_NUMBER"/></translation>
 <translation id="7764225426217299476">Add address</translation>
 <translation id="7772032839648071052">Confirm passphrase</translation>
 <translation id="7772375229873196092">Close <ph name="APP_NAME"/></translation>
+<translation id="7774125747223422443">Based on a law in your region, you need to choose your browser and search engine</translation>
 <translation id="7774809984919390718">{PAYMENT_METHOD,plural, =1{<ph name="PAYMENT_METHOD_PREVIEW"/>\u2026 and <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> more}other{<ph name="PAYMENT_METHOD_PREVIEW"/>\u2026 and <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> more}}</translation>
 <translation id="5614774692683309331">When you're signed in, protects you across Brave services.</translation>
 <translation id="7778840695157240389">Check back later for new stories</translation>
@@ -1442,6 +1464,7 @@ To change this setting, <ph name="BEGIN_LINK"/>delete the Brave data in your acc
 <translation id="7824665136384946951">Your organisation has turned off Safe Browsing</translation>
 <translation id="78270725016672455">Your computer wants to register this device for signing in to a site</translation>
 <translation id="7844171778363018843">No data selected to sync</translation>
+<translation id="7846161022626028328">There was an error. Try again.</translation>
 <translation id="7068829570137757602">Brave services</translation>
 <translation id="784934925303690534">Time range</translation>
 <translation id="7851858861565204677">Other devices</translation>
@@ -1480,7 +1503,9 @@ To change this setting, <ph name="BEGIN_LINK"/>delete the Brave data in your acc
 <translation id="799576009106109668">You’ll browse faster because content is proactively loaded based on your current web page visit</translation>
 <translation id="8001245658307297681">You're viewing a local file</translation>
 <translation id="8004582292198964060">Browser</translation>
+<translation id="8014210850410408071">Next, import the passwords</translation>
 <translation id="8015452622527143194">Return everything on the page to default size</translation>
+<translation id="8017431260099661477">The invitation link couldn't be opened</translation>
 <translation id="8026238112629815203">We changed how passwords are saved on this device</translation>
 <translation id="8027863900915310177">Choose where to download</translation>
 <translation id="8030852056903932865">Approve</translation>
@@ -1526,6 +1551,7 @@ To change this setting, <ph name="BEGIN_LINK"/>delete the Brave data in your acc
 <translation id="820568752112382238">Most-visited sites</translation>
 <translation id="8209050860603202033">Open image</translation>
 <translation id="8210770465353466621">You'll find your tabs here</translation>
+<translation id="8211101263765532799">Some passwords will stop working soon</translation>
 <translation id="8215740705341534369">Side sheet</translation>
 <translation id="8218622182176210845">Manage your account</translation>
 <translation id="4034729701971511794">You can block sites that you don't want. Brave also auto-deletes sites that are older than 30 days from the list. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
@@ -1543,13 +1569,13 @@ To change this setting, <ph name="BEGIN_LINK"/>delete the Brave data in your acc
 <translation id="8265018477030547118">Only on this device</translation>
 <translation id="8266753737658117282">Continue with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="8266862848225348053">Download location</translation>
+<translation id="8279945625179116733">Secured by <ph name="APP_NAME"/></translation>
 <translation id="8281886186245836920">Skip</translation>
 <translation id="8282297628636750033">Apply Dark theme to sites, when possible</translation>
 <translation id="8282950411412455249">Go to security settings</translation>
 <translation id="829672787777123339">Connecting to your device…</translation>
 <translation id="8310344678080805313">Standard tabs</translation>
 <translation id="831192587911042850">Adds the current web site to the list of web sites that you are following.</translation>
-<translation id="5665071699503384089">You can block topics that you don't want to be shared with sites. Brave also auto-deletes your topics that are older than four weeks. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
 <translation id="7174809333940729365">Brave will let you know about sites that may be sending too many notifications</translation>
 <translation id="834313815369870491">Never translate sites</translation>
 <translation id="8348430946834215779">Use HTTPS whenever possible and receive a warning before loading sites that don’t support it</translation>
@@ -1625,6 +1651,8 @@ To change this setting, <ph name="BEGIN_LINK"/>delete the Brave data in your acc
 <translation id="864544049772947936">Manage windows (<ph name="INSTANCE_COUNTS"/>)</translation>
 <translation id="7436978557885042606">Use Brave your way</translation>
 <translation id="8664979001105139458">File name already exists</translation>
+<translation id="8669290537472770919">{FILE_COUNT,plural, =1{Blocked by your organisation}other{# were blocked by your organisation}}</translation>
+<translation id="3188408398745868028">Some passwords on this device will stop working soon. You can move these passwords to Brave Password Manager.</translation>
 <translation id="8676276370198826499">Sign up to <ph name="SITE_ETLD_PLUS_ONE"/> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="8676789164135894283">Sign-in verifications</translation>
 <translation id="8683039184091909753">image</translation>
@@ -1681,6 +1709,7 @@ To change this setting, <ph name="BEGIN_LINK"/>delete the Brave data in your acc
 <translation id="8972098258593396643">Download to default folder?</translation>
 <translation id="8982113230057126145">Thumbs down submits feedback that you dislike this summary</translation>
 <translation id="2481553173340651149">Your data is encrypted with your passphrase. Enter it to use and save Brave data in your Brave sync chain.</translation>
+<translation id="8995521496079646922">The apps that you chose will be used by default. If an app isn't already on this device, it'll be downloaded shortly.</translation>
 <translation id="8996847606757455498">Choose another provider</translation>
 <translation id="8998289560386111590">Not available on your device</translation>
 <translation id="8998837250940831980">Couldn’t minimise tab. Please try again later.</translation>
@@ -1714,13 +1743,13 @@ To change this setting, <ph name="BEGIN_LINK"/>delete the Brave data in your acc
 <translation id="9106148373857059373">Bookmark save flow closed</translation>
 <translation id="9108312223223904744">Phone as a security key support</translation>
 <translation id="9108808586816295166">Secure DNS may not be available all the time</translation>
+<translation id="910908805481542201">Help me fix this</translation>
 <translation id="9131209053278896908">Blocked sites appear here</translation>
 <translation id="9133397713400217035">Explore offline</translation>
 <translation id="9143389653531441385">Sign up with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="9148126808321036104">Sign in again</translation>
 <translation id="9157212632995922070">Choose an account to continue on <ph name="SITE_ETLD_PLUS_ONE"/></translation>
 <translation id="9158770349521403363">Share content only</translation>
-<translation id="9159716826369098114">Restore tab group of <ph name="TAB_COUNT"/> tabs as a new background tab group.</translation>
 <translation id="9169507124922466868">Navigation history is half-opened</translation>
 <translation id="4947625801334180582">Brave Beta</translation>
 <translation id="9190276265094487094">You’ll have your history on all your synced devices so that you can continue what you were doing</translation>
@@ -1775,7 +1804,6 @@ To change this setting, <ph name="BEGIN_LINK"/>delete the Brave data in your acc
 <translation id="3763131702135887799">Help make Brave better for profiles who use it the way you do</translation>
 <translation id="4167670741834902166">New Private tab</translation>
 <translation id="8120164982795455341">New Private tab</translation>
-<translation id="6464648082977038075">Close Private tabs</translation>
 <translation id="1988906120194081364">Switch to Private</translation>
 <translation id="4300497327999623298">Switch out of Private</translation>
 <translation id="4968908871398201967">Private mode</translation>
@@ -1796,6 +1824,10 @@ To change this setting, <ph name="BEGIN_LINK"/>delete the Brave data in your acc
 <translation id="2703361981471284696">{TAB_COUNT, plural,
           =1 {<ph name="INCOGNITO_TAB_COUNT"/> private and <ph name="TAB_COUNT_ONE"/> more tab will be closed}
           other {<ph name="INCOGNITO_TAB_COUNT"/> private and <ph name="TAB_COUNT_MANY"/> more tabs will be closed}}</translation>
+<translation id="4362959348993021460">Touch and hold to switch to Private</translation>
+<translation id="1393515642387718683">Double-tap and hold to switch to Private</translation>
+<translation id="7096147642287317420">Touch and hold to switch out of Private</translation>
+<translation id="2331163878318921124">Double-tap and hold to switch out of Private</translation>
 <translation id="3947065058794437451">Private is not available on this device</translation>
 <translation id="1998933850996224665">To share with profiles nearby, let them scan this QR Code</translation>
 <translation id="3095878721037212218">You’ll be able to easily manage media controls, private sessions, downloads and more</translation>

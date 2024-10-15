@@ -51,6 +51,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="3975865347033939965">Synchronizačnú službu nebolo možné spustiť, Brave Sync nebeží</translation>
 <translation id="4450893287417543264">Už nezobrazovať</translation>
 <translation id="4595286989346610620">Skontrolujte podrobnosti</translation>
+<translation id="8324318899000695659">Blokovať prvky</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Otvoriť pomocou adresy .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Vynútiť prilepenie</translation>
@@ -707,7 +708,7 @@ Leo. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="7634775528597575156">Koncový bod servera</translation>
 <translation id="6374563306438145841">Kľúč API</translation>
 <translation id="8008271349880309090">Názov modelu, ktorý sa zobrazí v ponuke výberu</translation>
-<translation id="7131172845656551327">Názov modelu, ktorý sa zobrazí v požiadavke na obslužný rámec, t. j. phi-3 (upozorňujeme, že ak sa tento názov presne nezhoduje s tým, čo očakáva obslužný rámec, integrácia nebude fungovať)</translation>
+<translation id="1355326130503900056">Názov modelu tak, ako by sa mal objaviť v požiadavke na obslužný rámec, napr. phi-3 (upozorňujeme, že ak sa tento názov presne nezhoduje s tým, ktorý očakáva obslužný rámec, integrácia nebude fungovať)</translation>
 <translation id="3286410514484292784">Adresa url, na ktorej váš obslužný rámec prijíma požiadavky. Ak si nie ste istí, pozrite si dokumentáciu k obslužnému rámcu. Napr. pre Ollama je to vždy http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Niektoré obslužné rámce môžu vyžadovať overovacie údaje, napríklad kľúč API alebo prístupový token. Tieto údaje sa pridajú do hlavičky požiadavky.</translation>
 <translation id="217141195370578385">Brave tieto žiadosti nesprostredkúva, prečítajte si Zásady ochrany osobných údajov vybraného poskytovateľa.</translation>

@@ -51,6 +51,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3975865347033939965">Hindi masimulan ang serbisyo ng pag-sync, hindi tumatakbo ang Brave Sync</translation>
 <translation id="4450893287417543264">Huwag ipakita ulit</translation>
 <translation id="4595286989346610620">Suriin ang mga detalye</translation>
+<translation id="8324318899000695659">I-block ang mga elemento</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Buksan gamit ang .onion na address: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">I-force Paste</translation>
@@ -707,7 +708,7 @@ ang Brave Leo. Hindi puwedeng i-undo ang pagkilos na ito.</translation>
 <translation id="7634775528597575156">Dulo ng server</translation>
 <translation id="6374563306438145841">API Key</translation>
 <translation id="8008271349880309090">Pangalan ng model tulad ng kung paano it lumilitaw sa menu ng pagpili ng model</translation>
-<translation id="7131172845656551327">Ang pangalan ng model tulad ng kung paano dapat ito lumitaw sa request sa serving framework, iyon ay, phi-3 (tandaang kung hindi tumutugma nang eksakto ang pangalang inaasahan ng serving framework, hindi gagana ang integration)</translation>
+<translation id="1355326130503900056">Ang pangalan ng model ayon sa kung paano dapat ito lumitaw sa kahilingan sa serving framework, hal. phi-3 (tandaang kung hindi tumutugma nang eksakto ang pangalang inaasahan ng serving framework, hindi gagana ang integration)</translation>
 <translation id="3286410514484292784">Ang url kung saan nakikinig ang serving framework mo sa mga request. Kung hindi ka sigurado, suriin ang dokumentasyon ng serving framework, Hal. para sa Ollama, lagi itong http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Puwedeng mangailangan ang ilang serving framework ng mga authentication credential, tulad ng API key o access token. Idadagdag ang mga ito sa header ng request.</translation>
 <translation id="217141195370578385">HIndi nagpo-proxy ang Brave ng mga request na ito ang Brave, basahin ang mga tuntunin sa privacy ng piniling provider.</translation>

@@ -51,6 +51,7 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="3975865347033939965">Non è stato possibile avviare il servizio di sincronizzazione, Sincronizzazione Brave non è in esecuzione</translation>
 <translation id="4450893287417543264">Non mostrare più</translation>
 <translation id="4595286989346610620">Controlla i dettagli</translation>
+<translation id="8324318899000695659">Blocca gli elementi</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Apri usando l’indirizzo .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Forza l’azione Incolla</translation>
@@ -707,7 +708,7 @@ Leo. Questa azione non può essere annullata.</translation>
 <translation id="7634775528597575156">Endpoint del server</translation>
 <translation id="6374563306438145841">Chiave API</translation>
 <translation id="8008271349880309090">Il nome del modello come apparirà nel menu di selezione del modello</translation>
-<translation id="7131172845656551327">Il nome del modello come dovrebbe apparire nella richiesta al framework di servizio, ad esempio phi-3 (nota: se questo nome non corrisponde esattamente a quello previsto dal framework di servizio, l’integrazione non funzionerà)</translation>
+<translation id="1355326130503900056">Il nome del modello come dovrebbe apparire nella richiesta al framework di servizio, per esempio phi-3 (attenzione: se questo nome non è identico a quello previsto dal framework di servizio, l’integrazione non funzionerà).</translation>
 <translation id="3286410514484292784">L’URL in cui il framework di servizio è in ascolto per le richieste. Se hai dubbi, controlla la documentazione del framework di servizio. Ad esempio per Ollama, questa è sempre http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Alcuni framework di servizio possono richiedere credenziali di autenticazione, come una chiave API o un token di accesso. Queste saranno aggiunte all’intestazione della richiesta.</translation>
 <translation id="217141195370578385">Brave non filtra queste richieste. Leggi le condizioni di privacy del fornitore scelto.</translation>

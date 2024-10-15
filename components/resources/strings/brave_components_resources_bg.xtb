@@ -670,6 +670,9 @@
 <translation id="4284417062730522399"><ph name="NUM"/> получени реклами този месец</translation>
 <translation id="7697696066810593560">Спечелихте <ph name="NUM"/> до момента през този месец</translation>
 <translation id="6733193230212030816">Очаква се да спечелите между: <ph name="RANGE"/></translation>
+<translation id="7924320838799747606">Вашият баланс</translation>
+<translation id="2870560284913253234">Сайт</translation>
+<translation id="7751260505918304024">Показване на всички</translation>
 <translation id="7090992647511817643">акаунт</translation>
 <translation id="4822132585477111396">Идентификатор на веригата</translation>
 <translation id="3269475789479462358">домейн</translation>
@@ -1754,7 +1757,6 @@
 <translation id="6709133671862442373">Новини</translation>
 <translation id="3553513561058684206">За вас</translation>
 <translation id="2217013723701900638">Издатели</translation>
-<translation id="7751260505918304024">Показване на всички</translation>
 <translation id="5138227688689900538">Показване на по-малко</translation>
 <translation id="1041218419402648959">Скриване на съдържанието от <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3992393738853907417">Може да ви хареса също и</translation>
@@ -2114,7 +2116,6 @@
 <ph name="NUMBER"/> тракера, реклами и други от щитовете на Brave</translation>
 <translation id="4292121526390005808">Блокирани скриптове</translation>
 <translation id="5046271170844958713">Разрешени скриптове</translation>
-<translation id="4575452981007854269">Прилагане на защити с пръстови отпечатъци</translation>
 <translation id="1905384713982899903">Блокирани пръстови отпечатъци</translation>
 <translation id="314364527871618241">Позволени пръстови отпечатъци</translation>
 <translation id="264682546981571963">Омръзнало ли ви е от известия за съгласие за бисквитки?</translation>

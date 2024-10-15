@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">Amosa suxestións de sitios web baseadas nos teus marcadores e no teu historial de navegación.</translation>
 <translation id="924029461438529367">Mostrar suxestións de busca</translation>
 <translation id="1571106259128580884">Mostrar suxestións de sitios principais</translation>
+<translation id="6285118765755298263">Indexa outros motores de busca</translation>
+<translation id="919715748352669592">Indexa automaticamente os sitios web que seguen a especificación OpenSearch.</translation>
 <translation id="9148058034647219655">Saír</translation>
 <translation id="8047754398610073499">Bloquear avisos de aceptación de cookies</translation>
 <translation id="2621893359845808115">Bloquea as ventás emerxentes dos sitios web que che solicitan aceptar/rexeitar cookies no seu sitio</translation>
@@ -740,7 +742,19 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="755448900483975096">Operador de móbil</translation>
 <translation id="1279441577056010362">Continuar ata o correo electrónico</translation>
 <translation id="7125582363614011660">A asistencia fornécese coa axuda do equipo de Guardian.\n\nSelecciona a información que queiras compartir connosco.\n\nCanta máis información compartas connosco de entrada, máis fácil será para o noso equipo de asistencia técnica axudarche a resolver o teu problema.</translation>
-<translation id="7999094850625689785">Seleccionarase automaticamente a rexión do servidor máis próxima a ti en función do fuso horario do teu sistema. Recoméndase esta opción para poder garantir maiores velocidades de Internet.</translation>
+<translation id="8813171284214934811">Selecciona automaticamente a rexión do servidor VPN máis próxima a ti en función do teu fuso horario. Recoméndase esta opción para maximizar as velocidades de Internet.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> cidade - }
+          other {<ph name="CITY_COUNT_MANY"/> cidades - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> servidor}
+          other {<ph name="SERVER_COUNT_MANY"/> servidores}
+        }</translation>
+<translation id="3199127022143353223">Servidores</translation>
+<translation id="5431902940483264007">Óptimo</translation>
+<translation id="6527596624419285047">Usar o mellor servidor dispoñible</translation>
+<translation id="6789157560111825412">Servidores dispoñibles</translation>
 <translation id="4397083831618200686">Seleccionar problema</translation>
 <translation id="6687228121145903051">Non se pode conectar coa VPN (outro erro)</translation>
 <translation id="9184988385244077767">Non hai Internet cando me conecto</translation>
@@ -808,7 +822,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="7358989216567322955">Tarifa máxima de prioridade</translation>
 <translation id="9091334651803050473">Pese a que non é unha garantía, é probable que os mineiros dean prioridade á túa transacción se pagas unha tarifa superior.</translation>
 <translation id="2941112035454246133">Baixa</translation>
-<translation id="5431902940483264007">Óptimo</translation>
 <translation id="7304030187361489308">Alta</translation>
 <translation id="4853037749278079787">Tarifa máxima: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Tarifa base actual: <ph name="ASSET_VALUE"/> Gwei</translation>

@@ -51,6 +51,7 @@
 <translation id="3975865347033939965">同步服務無法啟動，Brave 同步未執行</translation>
 <translation id="4450893287417543264">不要再顯示</translation>
 <translation id="4595286989346610620">查看詳情</translation>
+<translation id="8324318899000695659">封鎖元素</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">使用 .onion 位址開啟： <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">強制貼上</translation>
@@ -707,7 +708,7 @@
 <translation id="7634775528597575156">伺服器端點</translation>
 <translation id="6374563306438145841">API 金鑰</translation>
 <translation id="8008271349880309090">模型名稱，這會顯示於選取模型選單</translation>
-<translation id="7131172845656551327">模型名稱，這應顯示於傳給服務架構 (如 phi-3) 的要求 (請注意，如果此名稱與服務架構預期的名稱不符，就無法整合)</translation>
+<translation id="1355326130503900056">模型名稱，這應顯示於傳給服務架構 (如 phi-3) 的要求 (請注意，如果此名稱與服務架構預期的名稱不符，就無法整合)</translation>
 <translation id="3286410514484292784">您的服務架構會在這個 URL 聆聽要求。如果不確定，請查看服務架構文件，舉例而言 Ollama 的 URL 一律為 http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">部分服務架構可能須要驗證認證，例如 API 金鑰或存取權杖。這些認證會新增至要求標頭。</translation>
 <translation id="217141195370578385">Brave 不會通過 Proxy 處理這些要求，請詳閱所選提供者的隱私權條款。</translation>

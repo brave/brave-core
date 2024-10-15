@@ -51,6 +51,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3975865347033939965">Synkroniseringstjenesten kunne ikke startes. Brave-synkronisering kjører ikke</translation>
 <translation id="4450893287417543264">Ikke vis igjen</translation>
 <translation id="4595286989346610620">Sjekk detaljer</translation>
+<translation id="8324318899000695659">Blokker elementer</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Åpne ved å bruke en .onion-adresse: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Tving lim inn</translation>
@@ -707,7 +708,7 @@ Leo. Handlingen kan ikke angres.</translation>
 <translation id="7634775528597575156">Serverendepunkt</translation>
 <translation id="6374563306438145841">API-nøkkel</translation>
 <translation id="8008271349880309090">Navnet på modellen slik det vil vises i modellvalgmenyen</translation>
-<translation id="7131172845656551327">Navnet på modellen slik det skal vises i forespørselen til serveringsrammeverket, dvs. phi-3 (merk at hvis dette navnet ikke samsvarer nøyaktig med det som forventes av serveringsrammeverket, vil ikke integrasjonen fungere)</translation>
+<translation id="1355326130503900056">Navnet på modellen slik det skal vises i forespørselen til serveringsrammeverket, dvs. phi-3 (merk at hvis dette navnet ikke samsvarer nøyaktig med det som forventes av server-rammeverket, vil ikke integrasjonen fungere)</translation>
 <translation id="3286410514484292784">Nettadressen der serveringsrammeverket ditt lytter etter forespørsler. Hvis du ikke er sikker, sjekk dokumentasjonen for serveringsrammeverket. F.eks. for Ollama er dette alltid http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Noen serveringsrammeverk kan kreve autentiseringslegitimasjon, for eksempel en API-nøkkel eller et tilgangstoken. Disse vil bli lagt til forespørselsoverskriften.</translation>
 <translation id="217141195370578385">Brave fullfører ikke disse forespørslene. Les personvernvilkårene til den valgte leverandøren.</translation>

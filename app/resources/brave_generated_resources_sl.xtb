@@ -53,6 +53,7 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="3975865347033939965">Storitve sinhronizacije ni bilo mogoče zagnati, Brave Sync se ne izvaja</translation>
 <translation id="4450893287417543264">Ne prikazuj več</translation>
 <translation id="4595286989346610620">Preverite podrobnosti</translation>
+<translation id="8324318899000695659">Blokiraj elemente</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Odpiranje s pomočjo naslova .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Vseeno prilepi</translation>
@@ -710,7 +711,7 @@ Leo. Tega dejanja ni mogoče razveljaviti.</translation>
 <translation id="7634775528597575156">Končna točka strežnika</translation>
 <translation id="6374563306438145841">Ključ API</translation>
 <translation id="8008271349880309090">Ime modela, kot bo prikazano v meniju za izbiro modela</translation>
-<translation id="7131172845656551327">Ime modela, kot bi moralo biti prikazano v zahtevi za strežno ogrodje, tj. phi-3 (upoštevajte, da integracija ne bo delovala, če se to ime ne ujema natančno s pričakovanji strežnega ogrodja)</translation>
+<translation id="1355326130503900056">Ime modela, kot bi moralo biti prikazano v zahtevi za strežno ogrodje, tj. phi-3 (upoštevajte, da integracija ne bo delovala, če se to ime ne ujema natančno s pričakovanji strežnega ogrodja)</translation>
 <translation id="3286410514484292784">URL, kjer vaše strežno ogrodje posluša zahteve. Če niste prepričani, preverite dokumentacijo strežnega ogrodja. Za npr. Ollamo je to vedno http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Nekatera strežna ogrodja utegnejo zahtevati poverilnice za preverjanje pristnosti, kot je ključ API ali žeton za dostop. Dodane bodo v glavo zahteve.</translation>
 <translation id="217141195370578385">Brave teh zahtev ne posreduje, preberite pogoje zasebnosti izbranega ponudnika.</translation>

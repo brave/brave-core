@@ -670,6 +670,29 @@
 <translation id="4284417062730522399"><ph name="NUM"/> الإعلانات التي تم تلقيّها هذا الشهر</translation>
 <translation id="7697696066810593560">لقد ربحت <ph name="NUM"/> حتى الآن هذا الشهر</translation>
 <translation id="6733193230212030816">من المقدر أن تكسب ما يتراوح بين: <ph name="RANGE"/></translation>
+<translation id="7924320838799747606">رصيدك</translation>
+<translation id="8714473477079007268">محفظة <ph name="PROVIDER"/></translation>
+<translation id="3175337080016717494">حساب الدفع</translation>
+<translation id="453760933181416879">الانتقال إلى حسابي</translation>
+<translation id="8290994471756102241">تم تسجيل الخروج</translation>
+<translation id="8414447476773253869">قم بتسجيل الدخول إلى <ph name="PROVIDER"/> لمعرفة رصيدك</translation>
+<translation id="615483366383024791">حساب الدفع</translation>
+<translation id="1060062421977823695">سيتم دفع أرباح BAT الخاصة بك إلى حساب الدفع هذا.</translation>
+<translation id="2544805415966048917">سترسل</translation>
+<translation id="6708522254106492579">ما يصل إلى <ph name="AMOUNT"/> BAT</translation>
+<translation id="7666058404763778706">طريقة تلقائية لدعم المواقع الإلكترونية ومنشئي المحتوى، بناءً على مقدار الوقت الذي تقضيه في المحتوى الخاص بهم.</translation>
+<translation id="4319242254058427792">تم تعطيل المساهمة التلقائية</translation>
+<translation id="1091835891554961609">سيظهر هنا منشئو المحتوى المعتمدون الذين تزورهم أثناء التصفح.</translation>
+<translation id="7714706530499503523">ترسل ميزة المساهمة التلقائية مساهمات شهرية تلقائيًا إلى المبدعين الذين تم التحقق منهم باستخدام Brave، استنادًا إلى مقدار الوقت الذي تقضيه في المحتوى الخاص بهم.</translation>
+<translation id="2358028754328876971">كيف تعمل المساهمة التلقائية؟</translation>
+<translation id="2870560284913253234">الموقع</translation>
+<translation id="1184072843013036520">احصل على المنتجات ذات العلامة التجارية Brave.</translation>
+<translation id="1170674812179664523">متجر بضائع Brave</translation>
+<translation id="8673202990286883068">المزايا التي تتمتع بها</translation>
+<translation id="3699766258844277472">لم تجري إعداد أي مساهمات متكررة بعد.</translation>
+<translation id="957921474773060718">المساهمة التالية:</translation>
+<translation id="351973834053818251">المساهمة المتكررة</translation>
+<translation id="7751260505918304024">عرض الكل</translation>
 <translation id="7090992647511817643">الحساب</translation>
 <translation id="4822132585477111396">معرّف السلسلة</translation>
 <translation id="3269475789479462358">النطاق</translation>
@@ -859,6 +882,8 @@
 <translation id="9111102763498581341">فتح القفل</translation>
 <translation id="5045550434625856497">كلمة مرور غير صحيحة</translation>
 <translation id="9195657745688986798">فتح المحفظة</translation>
+<translation id="2274014756904854136">اضغط مرتين على الشاشة للمتابعة</translation>
+<translation id="7795718119973968770">تم قفل محفظتك لأسباب أمنية. قم بإلغاء قفل المحفظة للمتابعة.</translation>
 <translation id="9175546523521600401">قفل المحفظة</translation>
 <translation id="765834632354589737">عمل نسخة احتياطية عن المحفظة</translation>
 <translation id="1108298724135935307">المواقع المتصلة</translation>
@@ -1755,7 +1780,6 @@
 <translation id="6709133671862442373">الأخبار</translation>
 <translation id="3553513561058684206">من أجلك</translation>
 <translation id="2217013723701900638">الناشرون</translation>
-<translation id="7751260505918304024">عرض الكل</translation>
 <translation id="5138227688689900538">عرض أقل</translation>
 <translation id="1041218419402648959">إخفاء المحتوى من <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3992393738853907417">ريما يعجبك أيضًا</translation>
@@ -2016,6 +2040,7 @@
 <translation id="7355096922131918313">أضف تعليقًا هنا</translation>
 <translation id="3027575440738035995">يوفر Leo Premium إمكانية الوصول إلى مجموعات موسعة من نماذج اللغات للحصول على إجابات أكثر دقة. <ph name="LINK_BEFORE"/>لمزيد من المعلومات<ph name="LINK_AFTER"/></translation>
 <translation id="7488762544858401571">مُحرّر</translation>
+<translation id="1406205536570262057">تعديل الإجابة</translation>
 <translation id="2399439821649319175">غير مفيد</translation>
 <translation id="2976167228906046828">غير صحيح</translation>
 <translation id="1183055847065865059">غير آمن/ضار</translation>
@@ -2026,6 +2051,7 @@
 <translation id="7494736170250048402">إرسال رسالة إلى Leo</translation>
 <translation id="8712637175834984815">تم</translation>
 <translation id="1093419424466417703">تعد الصفحة طويلة للغاية بالنسبة لـ Leo، لذا فقد يفقد بعض السياق من المحادثة، إذ تمكن Leo من قراءة نسبة <ph name="PERCENTAGE"/> فقط من محتويات الصفحة.</translation>
+<translation id="2186990448773134544">لقد تم تحسين محتوى الصفحة من خلال استخراج المعلومات الأكثر صلة من الصفحة لأنها كانت طويلة للغاية بالنسبة إلى Leo.</translation>
 <translation id="4370698775470316661">هذه المحادثة طويلة جدًا ولا يمكن أن تستمر.  قد تكون هناك نماذج أخرى متوفرة يستطيع Leo من خلالها الحفاظ على الدقة المطلوبة لإجراء محادثات أطول.</translation>
 <translation id="5719170755629028558">تحسين إجابتك بواسطة بحث Brave...</translation>
 <translation id="5794962229997281366">بحث مُحسن عن الإجابات لـ <ph name="SEARCH_TERMS"/>.</translation>
@@ -2115,7 +2141,8 @@
 <ph name="NUMBER"/> وأدوات التتبع، والإعلانات’ وغيرها الكثير</translation>
 <translation id="4292121526390005808">نصوص محجوبة</translation>
 <translation id="5046271170844958713">النصوص المسموح بها</translation>
-<translation id="4575452981007854269">تم تطبيق حماية البصمات</translation>
+<translation id="199862531047218413">تم تطبيق الحماية ضد بصمات الأصابع</translation>
+<translation id="5032505924781383272">لا تشير الحماية المطبقة بالضرورة إلى أن صفحة الويب هذه تحاول الحصول على بصمة متصفحك.</translation>
 <translation id="1905384713982899903">البصمات المحظورة</translation>
 <translation id="314364527871618241">البصمات المسموح بها</translation>
 <translation id="264682546981571963">هل سئمت من إشعارات الموافقة على ملفات تعريف الارتباط؟</translation>
@@ -2180,6 +2207,12 @@
 <translation id="2422309687188612485">حماية ما يصل إلى 10 أجهزة بخطة واحدة</translation>
 <translation id="1693568075761612600">فشل إنشاء تذكرة دعم، تحقق من الاتصال.</translation>
 <translation id="1407707415819020643">حدد الخادم الخاص بك</translation>
+<translation id="7406947191797765434"><ph name="CITY_COUNT"/> مدن - <ph name="SERVER_COUNT"/> خوادم</translation>
+<translation id="7337680029337389658">1 مدينة</translation>
+<translation id="1616613632573101617"><ph name="CITY_COUNT"/> مدن</translation>
+<translation id="5647994901467053283">1 خادم</translation>
+<translation id="8828637853024704314"><ph name="SERVER_COUNT"/> خوادم</translation>
+<translation id="6527596624419285047">استخدام أفضل خادم متاح</translation>
 <translation id="8463313539532697053">انتظر لحظات بينما يتم التحميل…</translation>
 <translation id="2542131205769293399">تعذّر التحقق من حالة عملية الشراء الخاصة بك. ربما تكون هذه مشكلة في الشبكة. حاول مرة أخرى أو اتصل بالدعم.</translation>
 <translation id="4613076894734402086">تحرير طريقة الدفع</translation>

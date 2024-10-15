@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">आपके बुकमार्क और पिछली ब्राउज़िंग के आधार पर वेबसाइट के सुझाव दिखाता है.</translation>
 <translation id="924029461438529367">सर्च के सुझाव दिखाएं</translation>
 <translation id="1571106259128580884">टॉप साइट के सुझाव दिखाएं</translation>
+<translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
+<translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
 <translation id="9148058034647219655">बाहर निकलें</translation>
 <translation id="8047754398610073499">कुकी की इजाज़त के नोटिस को ब्लॉक करें</translation>
 <translation id="2621893359845808115">वेबसाइट के उन पॉप-अप को ब्लॉक करता है जो आपसे अपनी साइट पर कुकी को मंज़ूर / नामंज़ूर करने के लिए कहते हैं.</translation>
@@ -739,7 +741,19 @@
 <translation id="755448900483975096">सेल्युलर सेवा देने वाली कंपनी</translation>
 <translation id="1279441577056010362">ईमेल जारी रखें</translation>
 <translation id="7125582363614011660">सपोर्ट की सेवा गार्डियन टीम की मदद से मुहैया करवाई जाती है.\n\nकृपया वह जानकारी चुनें जिसे आपको हमारे साथ शेयर करने में असुविधा महसूस न हो.\n\nआप शुरुआत में हमारे साथ जितनी ज़्यादा जानकारी शेयर करेंगे, हमारे सपोर्ट स्टाफ़ को आपकी समस्या हल के लिए आपकी मदद करने में उतनी ज़्यादा आसानी होगी.</translation>
-<translation id="7999094850625689785">आपके सिस्टम टाइमज़ोन के आधार पर, आपके सबसे पास के सर्वर क्षेत्र को अपने आप चुना जाएगा. इंटरनेट की तेज गति सुनिश्चित करने के लिए इसका सुझाव दिया जाता है.</translation>
+<translation id="8813171284214934811">अपने टाइमज़ोन के आधार पर अपने सबसे नज़दीकी VPN सर्वर के क्षेत्र को ऑटोमैटिक तरीके से चुनें. इंटरनेट की स्पीड को अधिकतम करने के लिए यह विकल्प अपनाना चाहिए.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> शहर - }
+          other {<ph name="CITY_COUNT_MANY"/> शहर - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> सर्वर}
+          other {<ph name="SERVER_COUNT_MANY"/> सर्वर}
+        }</translation>
+<translation id="3199127022143353223">सर्वर</translation>
+<translation id="5431902940483264007">सर्वोत्तम</translation>
+<translation id="6527596624419285047">जो सबसे अच्छा सर्वर मौजूद हो, वह इस्तेमाल करें</translation>
+<translation id="6789157560111825412">उपलब्ध सर्वर</translation>
 <translation id="4397083831618200686">समस्या चुनें</translation>
 <translation id="6687228121145903051">VPN से कनेक्ट नहीं हो सका (कोई और एरर)</translation>
 <translation id="9184988385244077767">कनेक्ट होने पर कोई इंटरनेट कनेक्‍शन नहीं मिला</translation>
@@ -807,7 +821,6 @@
 <translation id="7358989216567322955">अधिकतम प्राथमिकता शुल्क</translation>
 <translation id="9091334651803050473">गारंटी नहीं होने पर, अगर आप ज़्यादा शुल्क की पेमेंट करते हैं तो माइनर आपके लेनदेन को प्राथमिकता देंगे.</translation>
 <translation id="2941112035454246133">कम</translation>
-<translation id="5431902940483264007">सर्वोत्तम</translation>
 <translation id="7304030187361489308">ज़्यादा</translation>
 <translation id="4853037749278079787">कम से कम शुल्क: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">वर्तमान बेस फ़ी: <ph name="ASSET_VALUE"/> Gwei</translation>

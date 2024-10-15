@@ -51,6 +51,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="3975865347033939965">Nelze spustit službu synchronizace, Brave Sync není spuštěna</translation>
 <translation id="4450893287417543264">Znovu neukazovat</translation>
 <translation id="4595286989346610620">Zkontrolujte podrobnosti</translation>
+<translation id="8324318899000695659">Blokovat prvky</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Otevřít pomocí adresy .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Vynucené vložení</translation>
@@ -707,7 +708,7 @@ Leo. Tuto akci nelze vrátit zpět.</translation>
 <translation id="7634775528597575156">Koncový bod serveru</translation>
 <translation id="6374563306438145841">Klíč API</translation>
 <translation id="8008271349880309090">Název modelu, který se zobrazí v nabídce pro výběr modelu</translation>
-<translation id="7131172845656551327">Název modelu, který by se měl objevit v požadavku na obslužný rámec, tj. phi-3 (upozorňujeme, že pokud se tento název přesně neshoduje s tím, co očekává obslužný rámec, integrace nebude fungovat).</translation>
+<translation id="1355326130503900056">Název modelu, jak by se měl objevit v požadavku na obslužný rámec, např. phi-3 (vezměte na vědomí, že pokud se tento název přesně neshoduje s tím, co očekává obslužný rámec, integrace nebude fungovat)</translation>
 <translation id="3286410514484292784">Adresa URL, kde váš obslužný rámec naslouchá požadavkům. Pokud si nejste jisti, podívejte se do dokumentace k obslužnému rámci. Např. pro nástroj Ollama je to vždy http://localhost:11434/v1/chat/completions.</translation>
 <translation id="1058790648388035953">Některé obslužné rámce mohou vyžadovat ověřovací údaje, například klíč API nebo přístupový token. Ty budou přidány do hlavičky požadavku.</translation>
 <translation id="217141195370578385">Brave tyto požadavky nezprostředkovává; přečtěte si prosím podmínky ochrany osobních údajů vybraného poskytovatele.</translation>

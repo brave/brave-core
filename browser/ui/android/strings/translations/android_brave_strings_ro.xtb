@@ -111,6 +111,8 @@
 <translation id="7304425663107214334">Afișați sugestiile din browser</translation>
 <translation id="8982438328166986164">Afișează sugestiile site-ului pe baza marcajelor și a istoricului de navigare.</translation>
 <translation id="1571106259128580884">Afișați sugestiile de pe site-urile principale</translation>
+<translation id="6285118765755298263">Indexare alte motoare de căutare</translation>
+<translation id="919715748352669592">Indexează automat site-urile care respectă specificațiile OpenSearch.</translation>
 <translation id="9148058034647219655">Ieși</translation>
 <translation id="8047754398610073499">Blocați avertismentele de consimțire a modulelor cookie</translation>
 <translation id="2621893359845808115">Blochează mesajele pop-up care vă solicită să acceptați/refuzați modulele cookie de pe site-uri</translation>
@@ -720,7 +722,10 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="755448900483975096">Furnizor de date mobile</translation>
 <translation id="1279441577056010362">Continuați la e-mail</translation>
 <translation id="7125582363614011660">Se oferă asistență cu ajutorul echipei Guardian.\n\nVă rugăm să selectați informațiile pe care vă simțiți confortabil să ni le furnizați.\n\nCu cât ne oferiți mai multe informații inițial, cu atât va fi mai ușor pentru echipa noastră de asistență să vă ajute cu rezolvarea problemei dvs.</translation>
-<translation id="7999094850625689785">Se va selecta automat regiunea de server cea mai apropiată de dvs., în funcție de fusul orar în care vă aflați. Această opțiune este recomandată pentru a asigura conexiunea la viteză mare.</translation>
+<translation id="8813171284214934811">Auto-selectează regiunea de server VPN cea mai apropiată de tine pe baza fusului orar. Această opțiune este recomandată pentru a maximiza viteza de internet.</translation>
+<translation id="3199127022143353223">Servere</translation>
+<translation id="5431902940483264007">Optim</translation>
+<translation id="6527596624419285047">Folosește cel mai bun server disponibil</translation>
 <translation id="4397083831618200686">Selectați problema</translation>
 <translation id="6687228121145903051">Nu este posibilă conectarea la VPN (altă eroare)</translation>
 <translation id="9184988385244077767">Fără internet în momentul conectării</translation>
@@ -788,7 +793,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="7358989216567322955">Taxa maximă pentru prioritate</translation>
 <translation id="9091334651803050473">Deși nu există garanții, probabil că minerii vor acorda prioritate tranzacției dvs. dacă plătiți o taxă mai mare.</translation>
 <translation id="2941112035454246133">Redusă</translation>
-<translation id="5431902940483264007">Optim</translation>
 <translation id="7304030187361489308">Ridicat</translation>
 <translation id="4853037749278079787">Taxa maximă: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Taxa de bază actuală: <ph name="ASSET_VALUE"/> Gwei</translation>
