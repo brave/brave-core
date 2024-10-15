@@ -764,7 +764,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, PinningGroupedTab) {
   AddTabToExistingGroup(browser(), 2, group);
   AddTabToExistingGroup(browser(), 3, group);
 
-  browser()->tab_strip_model()->SetTabPinned(0, true);
+  browser()->tab_strip_model()->SetTabPinned(1, true);
   EXPECT_EQ(GetTabStrip(browser())->tab_at(0)->group(), std::nullopt);
 
   browser()->tab_strip_model()->SetTabPinned(2, true);

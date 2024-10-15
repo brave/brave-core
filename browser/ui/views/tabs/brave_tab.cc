@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <optional>
+#include <utility>
 
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -191,5 +192,22 @@ void BraveTab::UpdateShadowForActiveTab() {
   } else if (view_shadow_) {
     view_shadow_.reset();
     DestroyLayer();
+  }
+}
+
+void BraveTab::SetData(TabRendererData data) {
+  const bool data_changed = data != data_;
+  Tab::SetData(std::move(data));
+
+  // Our vertical tab uses CompoundTabContainer.
+  // When tab is moved from the group by pinning, it's moved to
+  // pinned TabContainerImpl before its tab group id is cleared.
+  // And it causes runtime crash as using this tab from pinned TabContainerImpl
+  // has assumption that it's not included in any group.
+  // So, clear in-advance when tab enters to pinned TabContainerImpl.
+  if (data_changed &&
+      tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
+      data_.pinned) {
+    set_group(std::nullopt);
   }
 }

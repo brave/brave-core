@@ -18,6 +18,7 @@ class BraveTab;
 #define GetWidthOfLargestSelectableRegion \
   virtual GetWidthOfLargestSelectableRegion
 
+#define SetData virtual SetData
 #define ActiveStateChanged virtual ActiveStateChanged
 #define GetGroupColor virtual GetGroupColor
 #define UpdateIconVisibility virtual UpdateIconVisibility
@@ -33,5 +34,6 @@ class BraveTab;
 #undef ActiveStateChanged
 #undef GetWidthOfLargestSelectableRegion
 #undef kMinimumContentsWidthForCloseButtons
+#undef SetData
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_H_
