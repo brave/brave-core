@@ -8,9 +8,26 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
     --brave-account-dialog-logo-width: 129px;
     --brave-account-dialog-logo-height: calc(var(--brave-account-dialog-logo-width) * 40/129);
     --cr-dialog-border-radius: 16px;
+    --cr-icon-button-margin-end: 0px;
+    --cr-icon-button-margin-start: 0px;
     --cr-dialog-body-padding-horizontal: 40px;
-    --cr-dialog-top-container-min-height: 40px;
+    --cr-dialog-top-container-min-height: 0px;
     --cr-dialog-width: 500px;
+  }
+  .buttons {
+    display: flex;
+    min-height: 40px;
+    width: 100%;
+  }
+  .buttons:has(> cr-icon-button:nth-of-type(1)) {
+    justify-content: flex-end;
+  }
+  .buttons:has(> cr-icon-button:nth-of-type(2)) {
+    justify-content: space-between;
+  }
+  .button {
+    align-self: flex-start;
+    margin: 4px 4px 0px 4px;
   }
   .logo {
     background-image: url('../images/brave-logo-light.svg');
@@ -45,64 +62,48 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
     line-height: 22px;
     text-align: center;
   }
-  .buttons {
-    gap: 8px;
-    margin: 36px 0px;
+  .inputs {
+    gap: 24px;
+    margin: 24px 0px 24px;
   }
-  .footer {
-    gap: 16px;
-    padding: 24px 40px;
-  }
-  .footer-text-left {
-    color: #76767A;
+  .input-label {
+    color: #1B1B1F;
     font-family: 'Inter Variable';
     font-size: 12px;
     font-style: normal;
-    font-weight: 400;
-    line-height: 18px;
-    width: 270px;
-  }
-  .footer-text-left a {
-    color: inherit;
-  }
-  .footer-text-right {
-    font-family: 'Inter Variable';
-    font-size: 14px;
-    font-style: normal;
     font-weight: 600;
-    line-height: 20px;
-    width: 134px;
+    line-height: 18px;
+    margin: 0px 0px 4px;
+  }
+  .input {
+    --cr-input-background-color: white;
+    --cr-input-underline-display: none;
+    --cr-input-error-display: none;
+    border: 1px solid #C7C7CC;
+    border-radius: 8px;
+  }
+  #inner-input-content {
+    margin-bottom: 10px;
+  }
+  .suffix {
+    margin-bottom: 10px;
   }
 </style>
 
-<cr-dialog show-close-button show-on-attach>
-  <div slot="header" class="center-center horizontal layout">
+<cr-dialog id="dialog" show-on-attach>
+  <div slot="header" class="center-center layout vertical">
+    <div class="buttons">
+      <template is="dom-if" if="[[showBackButton]]">
+        <cr-icon-button class="button icon-arrow-back" aria-label$="[[closeText]]"
+          on-click="onBackButtonClicked_" on-keypress="onCloseKeypress_">
+        </cr-icon-button>
+      </template>
+      <cr-icon-button class="button icon-clear" aria-label$="[[closeText]]"
+          on-click="cancel" on-keypress="onCloseKeypress_">
+      </cr-icon-button>
+    </div>
     <div class="logo"></div>
   </div>
-  <div slot="body">
-    <div class="layout texts vertical">
-      <div class="body-text-top center-center horizontal layout">
-        Get started with your Brave account
-      </div>
-      <div class="body-text-bottom center-center horizontal layout">
-        $i18n{braveSyncBraveAccountDesc}
-      </div>
-    </div>
-    <div class="buttons layout vertical">
-      <cr-button class="action-button" size="medium">
-        Create a Brave account
-      </cr-button>
-      <cr-button size="medium" on-click="onSignInButtonClicked_">
-        Already have an account? Sign in
-      </cr-button>
-    </div>
-  </div>
-  <div slot="footer" class="footer horizontal layout">
-    <div class="footer-text-left">
-      For advanced users, we also support self-custody of your Brave account keys for an extra layer of privacy. <a href="#"><u>Learn more</u></a>
-    </div>
-    <div class="center-center footer-text-right horizontal layout">
-      <a href="#">Use self-custody</a>
-    </div>
-  </div>
+  <slot name="body" slot="body"></slot>
+  <slot name="footer" slot="footer"></slot>
 </cr-dialog>
