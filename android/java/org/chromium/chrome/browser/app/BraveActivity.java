@@ -157,6 +157,8 @@ import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.rewards.adaptive_captcha.AdaptiveCaptchaHelper;
+import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
+import org.chromium.chrome.browser.safe_browsing.SafeBrowsingState;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.set_default_browser.OnBraveSetDefaultBrowserListener;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
@@ -203,8 +205,7 @@ import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
-// TODO(alexeybarabash): needs to be redone for cr130
-// import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
+import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
@@ -230,8 +231,7 @@ public abstract class BraveActivity extends ChromeActivity
                 OnBraveSetDefaultBrowserListener,
                 ConnectionErrorHandler,
                 PrefObserver,
-                // TODO(alexeybarabash): needs to be redone for cr130
-                // BraveSafeBrowsingApiHandler.BraveSafeBrowsingApiHandlerDelegate,
+                BraveSafeBrowsingApiHandler.BraveSafeBrowsingApiHandlerDelegate,
                 BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate,
                 MiscAndroidMetricsConnectionErrorHandler
                         .MiscAndroidMetricsConnectionErrorHandlerDelegate {
@@ -345,17 +345,15 @@ public abstract class BraveActivity extends ChromeActivity
             }
         }
 
-        // TODO(alexeybarabash): needs to be redone for cr130
-        // BraveSafeBrowsingApiHandler.getInstance().setDelegate(
-        //         BraveActivityJni.get().getSafeBrowsingApiKey(), this);
+        BraveSafeBrowsingApiHandler.getInstance()
+                .setDelegate(BraveActivityJni.get().getSafeBrowsingApiKey(), this);
 
         // We can store a state of that flag as a browser has to be restarted
         // when the flag state is changed in any case
         mSafeBrowsingFlagEnabled =
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_SAFE_BROWSING);
 
-        // TODO(alexeybarabash): needs to be redone for cr130
-        // executeInitSafeBrowsing(0);
+        executeInitSafeBrowsing(0);
 
         if (ENABLE_IN_APP_UPDATE) {
             if (mAppUpdateManager == null) {
@@ -479,8 +477,8 @@ public abstract class BraveActivity extends ChromeActivity
             NotificationPermissionController.detach(mNotificationPermissionController);
             mNotificationPermissionController = null;
         }
-        // TODO(alexeybarabash): needs to be redone for cr130
-        // BraveSafeBrowsingApiHandler.getInstance().shutdownSafeBrowsing();
+
+        BraveSafeBrowsingApiHandler.getInstance().shutdownSafeBrowsing();
         if (ENABLE_IN_APP_UPDATE && mAppUpdateManager != null) {
             mAppUpdateManager.unregisterListener(mInstallStateUpdatedListener);
         }
@@ -973,24 +971,21 @@ public abstract class BraveActivity extends ChromeActivity
         maybeSolveAdaptiveCaptcha();
     }
 
-    // TODO(alexeybarabash): needs to be redone for cr130
-    // @Override
-    // public void turnSafeBrowsingOff() {
-    //     SafeBrowsingBridge safeBrowsingBridge = new SafeBrowsingBridge(getCurrentProfile());
-    //     safeBrowsingBridge.setSafeBrowsingState(SafeBrowsingState.NO_SAFE_BROWSING);
-    // }
+    @Override
+    public void turnSafeBrowsingOff() {
+        SafeBrowsingBridge safeBrowsingBridge = new SafeBrowsingBridge(getCurrentProfile());
+        safeBrowsingBridge.setSafeBrowsingState(SafeBrowsingState.NO_SAFE_BROWSING);
+    }
 
-    // TODO(alexeybarabash): needs to be redone for cr130
-    // @Override
-    // public boolean isSafeBrowsingEnabled() {
-    //     return mSafeBrowsingFlagEnabled;
-    // }
+    @Override
+    public boolean isSafeBrowsingEnabled() {
+        return mSafeBrowsingFlagEnabled;
+    }
 
-    // TODO(alexeybarabash): needs to be redone for cr130
-    // @Override
-    // public Activity getActivity() {
-    //     return this;
-    // }
+    @Override
+    public Activity getActivity() {
+        return this;
+    }
 
     public void maybeSolveAdaptiveCaptcha() {
         String captchaID =
@@ -2394,29 +2389,27 @@ public abstract class BraveActivity extends ChromeActivity
     // We call that method with an interval
     // BraveSafeBrowsingApiHandler.SAFE_BROWSING_INIT_INTERVAL_MS,
     // as upstream does, to keep the GmsCore process alive.
-
-    // TODO(alexeybarabash): needs to be redone for cr130
-    // private void executeInitSafeBrowsing(long delay) {
-    //     // SafeBrowsingBridge.getSafeBrowsingState() has to be executed on a main thread
-    //     PostTask.postDelayedTask(
-    //             TaskTraits.UI_DEFAULT,
-    //             () -> {
-    //                 SafeBrowsingBridge safeBrowsingBridge =
-    //                         new SafeBrowsingBridge(getCurrentProfile());
-    //                 if (safeBrowsingBridge.getSafeBrowsingState()
-    //                         != SafeBrowsingState.NO_SAFE_BROWSING) {
-    //                     // initSafeBrowsing could be executed on a background thread
-    //                     PostTask.postTask(
-    //                             TaskTraits.USER_VISIBLE_MAY_BLOCK,
-    //                             () -> {
-    //                                 BraveSafeBrowsingApiHandler.getInstance().initSafeBrowsing();
-    //                             });
-    //                 }
-    //                 executeInitSafeBrowsing(
-    //                         BraveSafeBrowsingApiHandler.SAFE_BROWSING_INIT_INTERVAL_MS);
-    //             },
-    //             delay);
-    // }
+    private void executeInitSafeBrowsing(long delay) {
+        // SafeBrowsingBridge.getSafeBrowsingState() has to be executed on a main thread
+        PostTask.postDelayedTask(
+                TaskTraits.UI_DEFAULT,
+                () -> {
+                    SafeBrowsingBridge safeBrowsingBridge =
+                            new SafeBrowsingBridge(getCurrentProfile());
+                    if (safeBrowsingBridge.getSafeBrowsingState()
+                            != SafeBrowsingState.NO_SAFE_BROWSING) {
+                        // initSafeBrowsing could be executed on a background thread
+                        PostTask.postTask(
+                                TaskTraits.USER_VISIBLE_MAY_BLOCK,
+                                () -> {
+                                    BraveSafeBrowsingApiHandler.getInstance().initSafeBrowsing();
+                                });
+                    }
+                    executeInitSafeBrowsing(
+                            BraveSafeBrowsingApiHandler.SAFE_BROWSING_INIT_INTERVAL_MS);
+                },
+                delay);
+    }
 
     public void updateBottomSheetPosition(int orientation) {
         if (BottomToolbarConfiguration.isBottomToolbarEnabled()) {
