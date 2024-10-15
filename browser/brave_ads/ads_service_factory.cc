@@ -60,11 +60,11 @@ AdsServiceFactory::AdsServiceFactory()
 AdsServiceFactory::~AdsServiceFactory() = default;
 
 std::unique_ptr<AdsTooltipsDelegateImpl>
-AdsServiceFactory::CreateAdsTooltipsDelegate(Profile* profile) const {
+AdsServiceFactory::CreateAdsTooltipsDelegate() const {
 #if BUILDFLAG(IS_ANDROID)
   return nullptr;
 #else
-  return std::make_unique<AdsTooltipsDelegateImpl>(profile);
+  return std::make_unique<AdsTooltipsDelegateImpl>();
 #endif
 }
 
@@ -91,8 +91,8 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
       delegate, profile->GetPrefs(), g_browser_process->local_state(),
       profile->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),
-      brave::GetChannelName(), profile->GetPath(),
-      CreateAdsTooltipsDelegate(profile), std::make_unique<DeviceIdImpl>(),
+      brave::GetChannelName(), profile->GetPath(), CreateAdsTooltipsDelegate(),
+      std::make_unique<DeviceIdImpl>(),
       std::make_unique<BatAdsServiceFactoryImpl>(),
       g_brave_browser_process->resource_component(), history_service,
       rewards_service);

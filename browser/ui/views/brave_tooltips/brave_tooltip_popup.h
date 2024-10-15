@@ -16,17 +16,13 @@
 #include "brave/browser/ui/views/brave_tooltips/brave_tooltip_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/display/display_observer.h"
-#include "ui/gfx/animation/animation_delegate.h"
 #include "ui/gfx/shadow_util.h"
 #include "ui/gfx/shadow_value.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/widget/widget_delegate.h"
 #include "ui/views/widget/widget_observer.h"
 
-class Profile;
-
 namespace gfx {
-class LinearAnimation;
 class Point;
 class Rect;
 class Size;
@@ -48,7 +44,7 @@ class BraveTooltipView;
 //       "id", brave_tooltips::BraveTooltipAttributes(u"Title", u"Body", u"OK"),
 //       this);
 //   auto popup = std::make_unique<brave_tooltips::BraveTooltipPopup>(
-//       profile(), std::move(tooltip));
+//       std::move(tooltip));
 //   popup->Show();
 //   ...
 //   popup->Close();
@@ -58,12 +54,10 @@ class BraveTooltipView;
 // constructor). Finally, the tooltip is closed.
 class BraveTooltipPopup : public views::WidgetDelegateView,
                           public views::WidgetObserver,
-                          public gfx::AnimationDelegate,
                           public display::DisplayObserver {
   METADATA_HEADER(BraveTooltipPopup, views::WidgetDelegateView)
  public:
-
-  BraveTooltipPopup(Profile* profile, std::unique_ptr<BraveTooltip> tooltip);
+  explicit BraveTooltipPopup(std::unique_ptr<BraveTooltip> tooltip);
   ~BraveTooltipPopup() override;
 
   BraveTooltipPopup(const BraveTooltipPopup&) = delete;
@@ -72,9 +66,8 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
   // Show the tooltip popup view
   void Show();
 
-  // Close the tooltip popup view. |by_user| is true if the tooltip popup was
-  // closed by the user, otherwise false
-  void Close(const bool by_user);
+  // Close the tooltip popup view
+  void Close();
 
   // Close the widget
   void CloseWidget();
@@ -117,11 +110,6 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
   void OnWidgetBoundsChanged(views::Widget* widget,
                              const gfx::Rect& new_bounds) override;
 
-  // AnimationDelegate:
-  void AnimationEnded(const gfx::Animation* animation) override;
-  void AnimationProgressed(const gfx::Animation* animation) override;
-  void AnimationCanceled(const gfx::Animation* animation) override;
-
  private:
   void CreatePopup();
 
@@ -137,14 +125,6 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
 
   bool IsWidgetValid() const;
 
-  void StartAnimation();
-  void UpdateAnimation();
-
-  void FadeIn();
-  void FadeOut();
-
-  raw_ptr<Profile> profile_ = nullptr;
-
   std::unique_ptr<BraveTooltip> tooltip_;
 
   raw_ptr<BraveTooltipView> tooltip_view_ = nullptr;
@@ -156,17 +136,6 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
 
   int display_work_area_inset_x_ = -13;
   int display_work_area_inset_y_ = 18;
-
-  int fade_duration_ = 200;
-
-  enum class AnimationState {
-    kIdle,
-    kFadeIn,
-    kFadeOut,
-  };
-
-  const std::unique_ptr<gfx::LinearAnimation> animation_;
-  AnimationState animation_state_ = AnimationState::kIdle;
 
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};

@@ -8,7 +8,6 @@
 #include "brave/browser/ui/brave_tooltips/brave_tooltip.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip_attributes.h"
 #include "brave/browser/ui/views/brave_tooltips/brave_tooltip_popup.h"
-#include "chrome/test/base/testing_profile.h"
 #include "chrome/test/views/chrome_views_test_base.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "ui/events/base_event_utils.h"
@@ -23,7 +22,7 @@ class MockBraveTooltipDelegate : public brave_tooltips::BraveTooltipDelegate {
   }
 
   MOCK_METHOD1(OnTooltipShow, void(const std::string&));
-  MOCK_METHOD2(OnTooltipClose, void(const std::string&, const bool));
+  MOCK_METHOD1(OnTooltipClose, void(const std::string&));
   MOCK_METHOD1(OnTooltipWidgetDestroyed, void(const std::string&));
   MOCK_METHOD1(OnTooltipOkButtonPressed, void(const std::string&));
   MOCK_METHOD1(OnTooltipCancelButtonPressed, void(const std::string&));
@@ -44,22 +43,13 @@ class BraveTooltipsTest : public ChromeViewsTestBase {
   BraveTooltipsTest() = default;
 
  protected:
-  void SetUp() override {
-    ChromeViewsTestBase::SetUp();
-    profile_ = std::make_unique<TestingProfile>();
-  }
-
-  void TearDown() override { ChromeViewsTestBase::TearDown(); }
-
-  Profile* profile() { return profile_.get(); }
-
   std::unique_ptr<brave_tooltips::BraveTooltipPopup> CreateTooltipPopup(
       const std::string& id,
       const brave_tooltips::BraveTooltipAttributes& attributes) {
     auto tooltip = std::make_unique<brave_tooltips::BraveTooltip>(
         id, attributes, mock_tooltip_delegate_.AsWeakPtr());
     return std::make_unique<brave_tooltips::BraveTooltipPopup>(
-        profile(), std::move(tooltip));
+        std::move(tooltip));
   }
 
   void ClickButton(views::Button* button) const {
@@ -74,17 +64,13 @@ class BraveTooltipsTest : public ChromeViewsTestBase {
   }
 
   testing::NiceMock<MockBraveTooltipDelegate> mock_tooltip_delegate_;
-  std::unique_ptr<TestingProfile> profile_;
 };
 
 TEST_F(BraveTooltipsTest, OkButtonPressed) {
-  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipShow(testing::_)).Times(1);
-  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipOkButtonPressed(testing::_))
-      .Times(1);
-  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipClose(testing::_, testing::_))
-      .Times(1);
-  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipWidgetDestroyed(testing::_))
-      .Times(1);
+  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipShow(testing::_));
+  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipOkButtonPressed(testing::_));
+  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipClose(testing::_));
+  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipWidgetDestroyed(testing::_));
 
   auto tooltip_popup = CreateTooltipPopup(
       "id", brave_tooltips::BraveTooltipAttributes(u"Title", u"Body", u"OK"));
@@ -94,21 +80,16 @@ TEST_F(BraveTooltipsTest, OkButtonPressed) {
 
   ClickButton(tooltip_popup->ok_button_for_testing());
 
-  tooltip_popup->Close(true);
-
   mock_tooltip_delegate_.WaitForWidgetDestroyedNotification();
 
   tooltip_popup.release();
 }
 
 TEST_F(BraveTooltipsTest, CancelButtonPressed) {
-  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipShow(testing::_)).Times(1);
-  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipCancelButtonPressed(testing::_))
-      .Times(1);
-  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipClose(testing::_, testing::_))
-      .Times(1);
-  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipWidgetDestroyed(testing::_))
-      .Times(1);
+  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipShow(testing::_));
+  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipCancelButtonPressed(testing::_));
+  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipClose(testing::_));
+  EXPECT_CALL(mock_tooltip_delegate_, OnTooltipWidgetDestroyed(testing::_));
 
   auto tooltip_popup =
       CreateTooltipPopup("id", brave_tooltips::BraveTooltipAttributes(
@@ -118,8 +99,6 @@ TEST_F(BraveTooltipsTest, CancelButtonPressed) {
   tooltip_popup->Show();
 
   ClickButton(tooltip_popup->cancel_button_for_testing());
-
-  tooltip_popup->Close(true);
 
   mock_tooltip_delegate_.WaitForWidgetDestroyedNotification();
 

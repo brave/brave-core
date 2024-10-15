@@ -206,7 +206,7 @@ void BraveTooltipView::Close() {
   is_closing_ = true;
 
   if (tooltip_popup_) {
-    tooltip_popup_->Close(/* by_user */ true);
+    tooltip_popup_->Close();
   }
 }
 
