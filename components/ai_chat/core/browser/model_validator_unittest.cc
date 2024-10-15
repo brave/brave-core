@@ -27,16 +27,18 @@ TEST_F(ModelValidatorUnitTest, IsValidContextSize) {
     bool expected_result;
   };
 
+  static constexpr auto kMaxCustomContextSize = kMaxCustomModelContextSize;
+
+  base::CheckedNumeric<int32_t> kMaxCustomContextSizePlusOne =
+      base::CheckAdd(kMaxCustomContextSize, 1);  // Check for overflow
+
   TestCase test_cases[] = {
       {1000, true},
       {1, true},              // Minimum valid size
       {std::nullopt, false},  // Nullopt should return false
       {0, false},             // Invalid size (less than MIN_CONTEXT_SIZE)
-      {static_cast<int32_t>(kMaxCustomModelContextSize),
-       true},  // Max valid size
-      {static_cast<int32_t>(kMaxCustomModelContextSize) + 1,
-       false},                                       // Beyond max size
-      {std::numeric_limits<int32_t>::max(), false},  // Beyond valid size limit
+      {kMaxCustomContextSize, true},                       // Max valid size
+      {kMaxCustomContextSizePlusOne.ValueOrDie(), false},  // Beyond max size
   };
 
   for (const auto& test_case : test_cases) {

@@ -22,7 +22,7 @@ std::vector<mojom::ActionGroupPtr> GetActionMenuList();
 extern const base::fixed_flat_set<std::string_view, 1>
     kPrintPreviewRetrievalHosts;
 
-inline constexpr uint8_t kMaxPreviewPages = 20;
+constexpr uint8_t kMaxPreviewPages = 20;
 extern const char kLeoModelSupportUrl[];
 
 // Upon registering a custom model, users have the ability to explicitly
@@ -33,6 +33,8 @@ extern const char kLeoModelSupportUrl[];
 // (both have 4k token context limits).
 constexpr size_t kDefaultCharsPerToken = 4;
 constexpr float kMaxContentLengthThreshold = 0.6f;
+constexpr size_t kReservedTokensForPrompt = 300;
+constexpr size_t kReservedTokensForMaxNewTokens = 400;
 
 inline constexpr char kBraveSearchURLPrefix[] = "search";
 

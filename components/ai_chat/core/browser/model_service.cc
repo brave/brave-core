@@ -221,38 +221,6 @@ base::Value::Dict GetModelDict(mojom::ModelPtr model) {
   return model_dict;
 }
 
-// Custom models do not have fixed properties pertaining to the number of
-// characters they can process before a potential-coherence-loss warning is
-// shown. Leo Models have hard-coded values, but custom models' properties are
-// based on their context size, which may or may not have been provided by the
-// user. For this reason, we set the long_conversation_warning_character_limit
-// and max_page_content_length after the model has been loaded and validated.
-void SetAssociatedContentLengthMetrics(mojom::Model& model) {
-  if (!model.options->is_custom_model_options()) {
-    // Only set metrics for custom models
-    return;
-  }
-
-  if (!ModelValidator::HasValidContextSize(model)) {
-    model.options->get_custom_model_options()->context_size =
-        kDefaultCustomModelContextSize;
-  }
-
-  uint32_t max_page_content_length =
-      ModelService::GetMaxAssociatedContentLengthForModel(model);
-
-  model.options->get_custom_model_options()->max_page_content_length =
-      max_page_content_length;
-
-  base::CheckedNumeric<uint32> warn_at = base::CheckMul<size_t>(
-      max_page_content_length, kMaxContentLengthThreshold);
-
-  if (warn_at.IsValid()) {
-    model.options->get_custom_model_options()
-        ->long_conversation_warning_character_limit = warn_at.ValueOrDie();
-  }
-}
-
 }  // namespace
 
 ModelService::ModelService(PrefService* prefs_service)
@@ -300,6 +268,38 @@ void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
   }
 }
 
+// Custom models do not have fixed properties pertaining to the number of
+// characters they can process before a potential-coherence-loss warning is
+// shown. Leo Models have hard-coded values, but custom models' properties are
+// based on their context size, which may or may not have been provided by the
+// user. For this reason, we set the long_conversation_warning_character_limit
+// and max_page_content_length after the model has been loaded and validated.
+void ModelService::SetAssociatedContentLengthMetrics(mojom::Model& model) {
+  if (!model.options->is_custom_model_options()) {
+    // Only set metrics for custom models
+    return;
+  }
+
+  if (!ModelValidator::HasValidContextSize(model)) {
+    model.options->get_custom_model_options()->context_size =
+        kDefaultCustomModelContextSize;
+  }
+
+  uint32_t max_page_content_length =
+      ModelService::GetMaxAssociatedContentLengthForModel(model);
+
+  model.options->get_custom_model_options()->max_page_content_length =
+      max_page_content_length;
+
+  base::CheckedNumeric<uint32> warn_at = base::CheckMul<size_t>(
+      max_page_content_length, kMaxContentLengthThreshold);
+
+  if (warn_at.IsValid()) {
+    model.options->get_custom_model_options()
+        ->long_conversation_warning_character_limit = warn_at.ValueOrDie();
+  }
+}
+
 // static
 size_t ModelService::GetMaxAssociatedContentLengthForModel(
     const mojom::Model& model) {
@@ -311,14 +311,16 @@ size_t ModelService::GetMaxAssociatedContentLengthForModel(
       model.options->get_custom_model_options()->context_size.value_or(
           kDefaultCustomModelContextSize);
 
-  base::CheckedNumeric<uint32_t> max_content_length =
-      base::CheckMul(context_size, kDefaultCharsPerToken);
+  constexpr uint32_t reserved_tokens =
+      kReservedTokensForMaxNewTokens + kReservedTokensForPrompt;
 
-  base::CheckedNumeric<uint32_t> default_content_length =
-      base::CheckMul(kDefaultCustomModelContextSize, kDefaultCharsPerToken);
+  // CheckedNumerics for safe math
+  base::CheckedNumeric<size_t> safeContextSize(context_size);
+  base::CheckedNumeric<size_t> safeReservedTokens(reserved_tokens);
+  base::CheckedNumeric<size_t> safeCharsPerToken(kDefaultCharsPerToken);
 
-  return static_cast<size_t>(
-      max_content_length.ValueOrDefault(default_content_length.ValueOrDie()));
+  return ((safeContextSize - safeReservedTokens) * safeCharsPerToken)
+      .ValueOrDie();
 }
 
 // static
