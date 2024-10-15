@@ -131,7 +131,12 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
 
     // TODO(petemill): Shouldn't the server handle the map of mojom::ActionType
     // to prompts? (e.g. SUMMARIZE_PAGE, PARAPHRASE, etc.)
-    event.type = ConversationEventType::ChatMessage;
+    if (message->action_type == mojom::ActionType::SUMMARIZE_PAGE) {
+      event.type = ConversationEventType::RequestSummary;
+      event.content = "";
+    } else {
+      event.type = ConversationEventType::ChatMessage;
+    }
     conversation.push_back(std::move(event));
   }
 
