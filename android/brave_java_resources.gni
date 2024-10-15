@@ -968,6 +968,7 @@ brave_java_resources = [
   "java/res/layout/view_holder_onboarding_header_network_selector.xml",
   "java/res/layout/view_holder_onboarding_network_selector.xml",
   "java/res/layout/vpn_location_menu_item_action_layout.xml",
+  "java/res/layout/vpn_region_preference_layout.xml",
   "java/res/layout/vpn_server_item_layout.xml",
   "java/res/layout/vpn_settings_callout_modal_layout.xml",
   "java/res/layout/wallet_balance_layout.xml",

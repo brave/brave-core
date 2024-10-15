@@ -35,14 +35,9 @@
         android:key="brave_vpn_server_section"
         android:title="@string/server">
 
-        <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="server_host"
-            android:title="@string/host"
-            android:enabled="false"/>
-
-        <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="server_change_location"
-            android:title="@string/change_location"/>
+        <org.chromium.chrome.browser.vpn.settings.VpnRegionPreference
+            android:layout="@layout/vpn_region_preference_layout"
+            android:key="server_change_location"/>
 
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
             android:key="always_on"
