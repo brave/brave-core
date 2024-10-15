@@ -22,6 +22,7 @@
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_custom_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_default_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filter_list_catalog_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
@@ -264,6 +265,11 @@ AdBlockCustomFiltersProvider* AdBlockService::custom_filters_provider() {
   return custom_filters_provider_.get();
 }
 
+AdBlockCustomResourceProvider* AdBlockService::custom_resource_provider() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return custom_resource_provider_.get();
+}
+
 AdBlockSubscriptionServiceManager*
 AdBlockService::subscription_service_manager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -306,8 +312,19 @@ AdBlockService::AdBlockService(
     SetupDiscardPolicy(policy);
   }
 
-  resource_provider_ = std::make_unique<AdBlockDefaultResourceProvider>(
-      component_update_service_);
+  auto default_resource_provider =
+      std::make_unique<AdBlockDefaultResourceProvider>(
+          component_update_service_);
+  default_resource_provider_ = default_resource_provider.get();
+
+  if (base::FeatureList::IsEnabled(
+          features::kCosmeticFilteringCustomScriptlets)) {
+    custom_resource_provider_ = new AdBlockCustomResourceProvider(
+        local_state_, std::move(default_resource_provider));
+    resource_provider_.reset(custom_resource_provider_.get());
+  } else {
+    resource_provider_ = std::move(default_resource_provider);
+  }
   filter_list_catalog_provider_ =
       std::make_unique<AdBlockFilterListCatalogProvider>(
           component_update_service_);
@@ -401,15 +418,16 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(
       prefs::kAdBlockMobileNotificationsListSettingTouched, false);
   registry->RegisterStringPref(prefs::kAdBlockCustomFilters, std::string());
+  registry->RegisterListPref(prefs::kAdBlockCustomResources);
   registry->RegisterDictionaryPref(prefs::kAdBlockRegionalFilters);
   registry->RegisterDictionaryPref(prefs::kAdBlockListSubscriptions);
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedDefaultRegion, false);
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedAllDefaultRegions, false);
 }
 
-AdBlockResourceProvider* AdBlockService::resource_provider() {
+AdBlockDefaultResourceProvider* AdBlockService::default_resource_provider() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return resource_provider_.get();
+  return default_resource_provider_.get();
 }
 
 void AdBlockService::UseSourceProviderForTest(

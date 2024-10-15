@@ -19,6 +19,8 @@ import {BaseMixin} from '../base_mixin.js';
 import {BraveAdblockBrowserProxyImpl} from './brave_adblock_browser_proxy.js'
 import {getTemplate} from './brave_adblock_subpage.html.js'
 
+import { loadTimeData } from '../i18n_setup.js'
+
 const AdBlockSubpageBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
 
 class AdBlockSubpage extends AdBlockSubpageBase {
@@ -41,6 +43,12 @@ class AdBlockSubpage extends AdBlockSubpageBase {
         type: Boolean,
         value: false
       },
+      cosmeticFilteringCustomScriptletsEnabled_: {
+        type: Boolean,
+        value: loadTimeData.getBoolean(
+          'cosmeticFilteringCustomScriptletsEnabled'
+        )
+      }
     }
   }
 
