@@ -3,21 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_queue.h"
+#include "brave/components/brave_ads/core/internal/common/functional/once_closure_queue.h"
 
 #include <utility>
 
 namespace brave_ads {
 
-AdsClientNotifierQueue::AdsClientNotifierQueue() = default;
+OnceClosureQueue::OnceClosureQueue() = default;
 
-AdsClientNotifierQueue::~AdsClientNotifierQueue() = default;
+OnceClosureQueue::~OnceClosureQueue() = default;
 
-void AdsClientNotifierQueue::Add(base::OnceClosure notifier) {
-  queue_.push(std::move(notifier));
+void OnceClosureQueue::Add(base::OnceClosure closure) {
+  queue_.push(std::move(closure));
 }
 
-void AdsClientNotifierQueue::Process() {
+void OnceClosureQueue::Process() {
   while (!queue_.empty()) {
     std::move(queue_.front()).Run();
     queue_.pop();

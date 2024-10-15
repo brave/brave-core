@@ -40,7 +40,7 @@ void BatAdsClientMojoBridge::RemoveObserver(
 }
 
 void BatAdsClientMojoBridge::NotifyPendingObservers() {
-  bat_ads_client_notifier_impl_.BindReceiver();
+  bat_ads_client_notifier_impl_.NotifyPendingObservers();
 }
 
 bool BatAdsClientMojoBridge::CanShowNotificationAdsWhileBrowserIsBackgrounded()

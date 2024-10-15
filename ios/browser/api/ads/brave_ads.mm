@@ -1587,18 +1587,25 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
       base::BindOnce(completion));
 }
 
-- (nullable NotificationAdIOS*)maybeGetNotificationAd:(NSString*)identifier {
+- (void)maybeGetNotificationAd:(NSString*)identifier
+                    completion:(void (^)(NotificationAdIOS*))completion {
   if (![self isServiceRunning]) {
-    return nil;
+    completion(nil);
+    return;
   }
 
-  const std::optional<brave_ads::NotificationAdInfo> ad =
-      ads->MaybeGetNotificationAd(identifier.UTF8String);
-  if (!ad) {
-    return nil;
-  }
+  ads->MaybeGetNotificationAd(
+      identifier.UTF8String,
+      base::BindOnce(^(const std::optional<brave_ads::NotificationAdInfo>& ad) {
+        if (!ad) {
+          completion(nil);
+          return;
+        }
 
-  return [[NotificationAdIOS alloc] initWithNotificationAdInfo:*ad];
+        const auto notification_ad =
+            [[NotificationAdIOS alloc] initWithNotificationAdInfo:*ad];
+        completion(notification_ad);
+      }));
 }
 
 - (void)triggerNotificationAdEvent:(NSString*)placementId

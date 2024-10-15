@@ -32,7 +32,7 @@ class ADS_EXPORT AdsClient {
   // Called to remove an ads client observer.
   virtual void RemoveObserver(AdsClientNotifierObserver* observer) = 0;
 
-  // Called to bind pending ads client observers.
+  // Called to fire all pending observer events.
   virtual void NotifyPendingObservers() = 0;
 
   // Returns `true` if there is an available network connection.

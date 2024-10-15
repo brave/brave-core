@@ -113,7 +113,8 @@ OBJC_EXPORT
                        eventType:(BraveAdsNewTabPageAdEventType)eventType
                       completion:(void (^)(BOOL success))completion;
 
-- (nullable NotificationAdIOS*)maybeGetNotificationAd:(NSString*)identifier;
+- (void)maybeGetNotificationAd:(NSString*)identifier
+                    completion:(void (^)(NotificationAdIOS*))completion;
 
 - (void)triggerNotificationAdEvent:(NSString*)placementId
                          eventType:(BraveAdsNotificationAdEventType)eventType

@@ -7,12 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_IMPL_H_
 
 #include <memory>
-#include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
+#include "brave/components/brave_ads/core/internal/common/functional/once_closure_queue.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads.h"
@@ -23,8 +23,6 @@ class Time;
 }  // namespace base
 
 namespace brave_ads {
-
-struct NotificationAdInfo;
 
 namespace database {
 class Maintenance;
@@ -74,8 +72,8 @@ class AdsImpl final : public Ads {
       mojom::NewTabPageAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) override;
 
-  std::optional<NotificationAdInfo> MaybeGetNotificationAd(
-      const std::string& placement_id) override;
+  void MaybeGetNotificationAd(const std::string& placement_id,
+                              MaybeGetNotificationAdCallback callback) override;
   void TriggerNotificationAdEvent(
       const std::string& placement_id,
       mojom::NotificationAdEventType mojom_ad_event_type,
@@ -142,6 +140,8 @@ class AdsImpl final : public Ads {
   // TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate global
   // state.
   GlobalState global_state_;
+
+  OnceClosureQueue pending_task_queue_;
 
   // Handles database maintenance tasks, such as purging.
   std::unique_ptr<database::Maintenance> database_maintenance_;

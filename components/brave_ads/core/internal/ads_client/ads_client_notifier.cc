@@ -9,13 +9,13 @@
 #include <memory>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_queue.h"
+#include "brave/components/brave_ads/core/internal/common/functional/once_closure_queue.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
 
 AdsClientNotifier::AdsClientNotifier()
-    : queue_(std::make_unique<AdsClientNotifierQueue>()) {}
+    : pending_task_queue_(std::make_unique<OnceClosureQueue>()) {}
 
 AdsClientNotifier::~AdsClientNotifier() = default;
 
@@ -34,12 +34,12 @@ void AdsClientNotifier::RemoveObserver(
 
 void AdsClientNotifier::NotifyPendingObservers() {
   should_queue_ = false;
-  queue_->Process();
+  pending_task_queue_->Process();
 }
 
 void AdsClientNotifier::NotifyDidInitializeAds() {
   if (should_queue_) {
-    return queue_->Add(
+    return pending_task_queue_->Add(
         base::BindOnce(&AdsClientNotifier::NotifyDidInitializeAds,
                        weak_factory_.GetWeakPtr()));
   }
@@ -53,7 +53,7 @@ void AdsClientNotifier::NotifyRewardsWalletDidUpdate(
     const std::string& payment_id,
     const std::string& recovery_seed_base64) {
   if (should_queue_) {
-    return queue_->Add(base::BindOnce(
+    return pending_task_queue_->Add(base::BindOnce(
         &AdsClientNotifier::NotifyRewardsWalletDidUpdate,
         weak_factory_.GetWeakPtr(), payment_id, recovery_seed_base64));
   }
@@ -65,8 +65,9 @@ void AdsClientNotifier::NotifyRewardsWalletDidUpdate(
 
 void AdsClientNotifier::NotifyLocaleDidChange(const std::string& locale) {
   if (should_queue_) {
-    return queue_->Add(base::BindOnce(&AdsClientNotifier::NotifyLocaleDidChange,
-                                      weak_factory_.GetWeakPtr(), locale));
+    return pending_task_queue_->Add(
+        base::BindOnce(&AdsClientNotifier::NotifyLocaleDidChange,
+                       weak_factory_.GetWeakPtr(), locale));
   }
 
   for (auto& observer : observers_) {
@@ -76,8 +77,9 @@ void AdsClientNotifier::NotifyLocaleDidChange(const std::string& locale) {
 
 void AdsClientNotifier::NotifyPrefDidChange(const std::string& path) {
   if (should_queue_) {
-    return queue_->Add(base::BindOnce(&AdsClientNotifier::NotifyPrefDidChange,
-                                      weak_factory_.GetWeakPtr(), path));
+    return pending_task_queue_->Add(
+        base::BindOnce(&AdsClientNotifier::NotifyPrefDidChange,
+                       weak_factory_.GetWeakPtr(), path));
   }
 
   for (auto& observer : observers_) {
@@ -89,7 +91,7 @@ void AdsClientNotifier::NotifyResourceComponentDidChange(
     const std::string& manifest_version,
     const std::string& id) {
   if (should_queue_) {
-    return queue_->Add(
+    return pending_task_queue_->Add(
         base::BindOnce(&AdsClientNotifier::NotifyResourceComponentDidChange,
                        weak_factory_.GetWeakPtr(), manifest_version, id));
   }
@@ -102,7 +104,7 @@ void AdsClientNotifier::NotifyResourceComponentDidChange(
 void AdsClientNotifier::NotifyDidUnregisterResourceComponent(
     const std::string& id) {
   if (should_queue_) {
-    return queue_->Add(
+    return pending_task_queue_->Add(
         base::BindOnce(&AdsClientNotifier::NotifyDidUnregisterResourceComponent,
                        weak_factory_.GetWeakPtr(), id));
   }
@@ -117,7 +119,7 @@ void AdsClientNotifier::NotifyTabTextContentDidChange(
     const std::vector<GURL>& redirect_chain,
     const std::string& text) {
   if (should_queue_) {
-    return queue_->Add(base::BindOnce(
+    return pending_task_queue_->Add(base::BindOnce(
         &AdsClientNotifier::NotifyTabTextContentDidChange,
         weak_factory_.GetWeakPtr(), tab_id, redirect_chain, text));
   }
@@ -132,7 +134,7 @@ void AdsClientNotifier::NotifyTabHtmlContentDidChange(
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
   if (should_queue_) {
-    return queue_->Add(base::BindOnce(
+    return pending_task_queue_->Add(base::BindOnce(
         &AdsClientNotifier::NotifyTabHtmlContentDidChange,
         weak_factory_.GetWeakPtr(), tab_id, redirect_chain, html));
   }
@@ -144,7 +146,7 @@ void AdsClientNotifier::NotifyTabHtmlContentDidChange(
 
 void AdsClientNotifier::NotifyTabDidStartPlayingMedia(const int32_t tab_id) {
   if (should_queue_) {
-    return queue_->Add(
+    return pending_task_queue_->Add(
         base::BindOnce(&AdsClientNotifier::NotifyTabDidStartPlayingMedia,
                        weak_factory_.GetWeakPtr(), tab_id));
   }
@@ -156,7 +158,7 @@ void AdsClientNotifier::NotifyTabDidStartPlayingMedia(const int32_t tab_id) {
 
 void AdsClientNotifier::NotifyTabDidStopPlayingMedia(const int32_t tab_id) {
   if (should_queue_) {
-    return queue_->Add(
+    return pending_task_queue_->Add(
         base::BindOnce(&AdsClientNotifier::NotifyTabDidStopPlayingMedia,
                        weak_factory_.GetWeakPtr(), tab_id));
   }
@@ -173,7 +175,7 @@ void AdsClientNotifier::NotifyTabDidChange(
     const bool is_restoring,
     const bool is_visible) {
   if (should_queue_) {
-    return queue_->Add(base::BindOnce(
+    return pending_task_queue_->Add(base::BindOnce(
         &AdsClientNotifier::NotifyTabDidChange, weak_factory_.GetWeakPtr(),
         tab_id, redirect_chain, is_new_navigation, is_restoring, is_visible));
   }
@@ -199,8 +201,9 @@ void AdsClientNotifier::NotifyTabDidLoad(const int32_t tab_id,
 
 void AdsClientNotifier::NotifyDidCloseTab(const int32_t tab_id) {
   if (should_queue_) {
-    return queue_->Add(base::BindOnce(&AdsClientNotifier::NotifyDidCloseTab,
-                                      weak_factory_.GetWeakPtr(), tab_id));
+    return pending_task_queue_->Add(
+        base::BindOnce(&AdsClientNotifier::NotifyDidCloseTab,
+                       weak_factory_.GetWeakPtr(), tab_id));
   }
 
   for (auto& observer : observers_) {
@@ -211,7 +214,7 @@ void AdsClientNotifier::NotifyDidCloseTab(const int32_t tab_id) {
 void AdsClientNotifier::NotifyUserGestureEventTriggered(
     const int32_t page_transition_type) {
   if (should_queue_) {
-    return queue_->Add(
+    return pending_task_queue_->Add(
         base::BindOnce(&AdsClientNotifier::NotifyUserGestureEventTriggered,
                        weak_factory_.GetWeakPtr(), page_transition_type));
   }
@@ -223,7 +226,7 @@ void AdsClientNotifier::NotifyUserGestureEventTriggered(
 
 void AdsClientNotifier::NotifyUserDidBecomeIdle() {
   if (should_queue_) {
-    return queue_->Add(
+    return pending_task_queue_->Add(
         base::BindOnce(&AdsClientNotifier::NotifyUserDidBecomeIdle,
                        weak_factory_.GetWeakPtr()));
   }
@@ -237,7 +240,7 @@ void AdsClientNotifier::NotifyUserDidBecomeActive(
     const base::TimeDelta idle_time,
     const bool screen_was_locked) {
   if (should_queue_) {
-    return queue_->Add(base::BindOnce(
+    return pending_task_queue_->Add(base::BindOnce(
         &AdsClientNotifier::NotifyUserDidBecomeActive,
         weak_factory_.GetWeakPtr(), idle_time, screen_was_locked));
   }
@@ -249,7 +252,7 @@ void AdsClientNotifier::NotifyUserDidBecomeActive(
 
 void AdsClientNotifier::NotifyBrowserDidEnterForeground() {
   if (should_queue_) {
-    return queue_->Add(
+    return pending_task_queue_->Add(
         base::BindOnce(&AdsClientNotifier::NotifyBrowserDidEnterForeground,
                        weak_factory_.GetWeakPtr()));
   }
@@ -261,7 +264,7 @@ void AdsClientNotifier::NotifyBrowserDidEnterForeground() {
 
 void AdsClientNotifier::NotifyBrowserDidEnterBackground() {
   if (should_queue_) {
-    return queue_->Add(
+    return pending_task_queue_->Add(
         base::BindOnce(&AdsClientNotifier::NotifyBrowserDidEnterBackground,
                        weak_factory_.GetWeakPtr()));
   }
@@ -273,7 +276,7 @@ void AdsClientNotifier::NotifyBrowserDidEnterBackground() {
 
 void AdsClientNotifier::NotifyBrowserDidBecomeActive() {
   if (should_queue_) {
-    return queue_->Add(
+    return pending_task_queue_->Add(
         base::BindOnce(&AdsClientNotifier::NotifyBrowserDidBecomeActive,
                        weak_factory_.GetWeakPtr()));
   }
@@ -285,7 +288,7 @@ void AdsClientNotifier::NotifyBrowserDidBecomeActive() {
 
 void AdsClientNotifier::NotifyBrowserDidResignActive() {
   if (should_queue_) {
-    return queue_->Add(
+    return pending_task_queue_->Add(
         base::BindOnce(&AdsClientNotifier::NotifyBrowserDidResignActive,
                        weak_factory_.GetWeakPtr()));
   }
@@ -297,7 +300,7 @@ void AdsClientNotifier::NotifyBrowserDidResignActive() {
 
 void AdsClientNotifier::NotifyDidSolveAdaptiveCaptcha() {
   if (should_queue_) {
-    return queue_->Add(
+    return pending_task_queue_->Add(
         base::BindOnce(&AdsClientNotifier::NotifyDidSolveAdaptiveCaptcha,
                        weak_factory_.GetWeakPtr()));
   }

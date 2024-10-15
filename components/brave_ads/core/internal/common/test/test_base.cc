@@ -323,6 +323,8 @@ void TestBase::SetUpIntegrationTestCallback(const bool success) {
   NotifyBrowserDidBecomeActive();
 
   NotifyDidInitializeAds();
+
+  NotifyPendingObservers();
 }
 
 void TestBase::SetUpUnitTest() {
@@ -337,6 +339,8 @@ void TestBase::SetUpUnitTest() {
   Mock();
 
   MockDefaultAdsServiceState();
+
+  NotifyPendingObservers();
 }
 
 }  // namespace brave_ads::test
