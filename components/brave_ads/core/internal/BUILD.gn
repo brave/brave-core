@@ -259,6 +259,8 @@ static_library("internal") {
     "ad_units/ad_handler.h",
     "ad_units/ad_info.cc",
     "ad_units/ad_type.cc",
+    "ad_units/creative_ad_cache.cc",
+    "ad_units/creative_ad_cache.h",
     "ad_units/inline_content_ad/inline_content_ad_feature.cc",
     "ad_units/inline_content_ad/inline_content_ad_feature.h",
     "ad_units/inline_content_ad/inline_content_ad_handler.cc",

@@ -196,6 +196,12 @@ void BatAdsImpl::TriggerInlineContentAdEvent(
                                         std::move(callback));
 }
 
+void BatAdsImpl::MaybeGetSearchResultAd(
+    const std::string& placement_id,
+    MaybeGetSearchResultAdCallback callback) {
+  GetAds()->MaybeGetSearchResultAd(placement_id, std::move(callback));
+}
+
 void BatAdsImpl::TriggerSearchResultAdEvent(
     brave_ads::mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     const brave_ads::mojom::SearchResultAdEventType mojom_ad_event_type,
