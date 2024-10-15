@@ -929,6 +929,10 @@ bool IsWebcompatEnabled(HostContentSettingsMap* map,
 
 mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
                                       const GURL& primary_url) {
+  if (!base::FeatureList::IsEnabled(features::kBraveFarbling)) {
+    return brave_shields::mojom::FarblingLevel::OFF;
+  }
+
   const bool shields_up = GetBraveShieldsEnabled(map, primary_url);
   if (!shields_up) {
     return brave_shields::mojom::FarblingLevel::OFF;
