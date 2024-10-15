@@ -52,6 +52,7 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="3975865347033939965">Senkronizasyon hizmeti başlatılamadı, Brave Senkronizasyon çalışmıyor</translation>
 <translation id="4450893287417543264">Tekrar gösterme</translation>
 <translation id="4595286989346610620">Ayrıntıları kontrol edin</translation>
+<translation id="8324318899000695659">Ögeleri engelle</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">.onion adresi kullanarak açın: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Yapıştırmayı Zorla</translation>
@@ -708,7 +709,7 @@ tümünü silecektir. Bu eylem geri alınamaz.</translation>
 <translation id="7634775528597575156">Sunucu uç noktası</translation>
 <translation id="6374563306438145841">API anahtarı</translation>
 <translation id="8008271349880309090">Model seçim menüsünde göründüğü haliyle modelin adı</translation>
-<translation id="7131172845656551327">Hizmet veren çerçeveye giden talepte yazıldığı şekliyle modelin adı, örn. phi-3 (bu ismin hizmet veren çerçevenin beklediği formatla uyuşmaması halinde entegrasyonun çalışmayacağını unutmayın)</translation>
+<translation id="1355326130503900056">Hizmet veren çerçeveye giden talepte yazıldığı şekliyle modelin adı, örn. phi-3 (bu ismin hizmet veren çerçevenin beklediği formatla uyuşmaması halinde entegrasyonun çalışmayacağını unutmayın)</translation>
 <translation id="3286410514484292784">Hizmet veren çerçevenizin talepleri dinlediği URL. Emin değilseniz, hizmet veren çerçeve dokümantasyonunu kontrol edin. Örn. Ollama için, bu her zaman http://localhost:11434/v1/chat/completions şeklindedir</translation>
 <translation id="1058790648388035953">Hizmet veren çerçevelerin bazıları, bir API anahtarı veya bir erişim belirteci gibi kimlik doğrulama bilgileri gerektirebilir. Bunlar talep başlığına eklenecektir.</translation>
 <translation id="217141195370578385">Brave, bu talepleri proxy üzerinden aktarmaz, lütfen seçtiğiniz sağlayıcının gizlilik hükümlerini okuyun.</translation>

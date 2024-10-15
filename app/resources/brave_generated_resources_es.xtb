@@ -51,6 +51,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="3975865347033939965">No se ha podido iniciar el servicio de sincronización. La sincronización de Brave no se está ejecutando.</translation>
 <translation id="4450893287417543264">No volver a mostrar</translation>
 <translation id="4595286989346610620">Ver detalles</translation>
+<translation id="8324318899000695659">Bloquear elementos</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Abrir mediante dirección .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Forzar pegado</translation>
@@ -707,7 +708,7 @@ de forma irreversible.</translation>
 <translation id="7634775528597575156">Terminal de servidor</translation>
 <translation id="6374563306438145841">Clave de API</translation>
 <translation id="8008271349880309090">El nombre del modelo tal y como aparece en el menú de selección de modelos</translation>
-<translation id="7131172845656551327">El nombre del modelo tal y como debe aparecer en la solicitud al marco de servicio, es decir, phi-3. Cabe recalcar que si este nombre no coincide exactamente con el que espera el marco servidor, la integración no se llevará a cabo.</translation>
+<translation id="1355326130503900056">El nombre del modelo tal y como debe aparecer en la solicitud al marco de servicio, es decir, phi-3. Cabe recalcar que si este nombre no coincide exactamente con el que espera el marco servidor, la integración no se llevará a cabo.</translation>
 <translation id="3286410514484292784">La url en la que su marco de servicio atiende peticiones. Si no la sabe con certeza, consulte la documentación de la plataforma. Por ejemplo, en el caso de Ollama, se trata siempre de http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Existe la posibilidad de que algunos marcos de servicio exijan credenciales de autenticación a modo de clave de API o token de acceso. En ese caso, se añadirán al encabezado de la solicitud.</translation>
 <translation id="217141195370578385">Brave no hace de proxy para estas solicitudes. Consulte los términos de privacidad del proveedor elegido.</translation>

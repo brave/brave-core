@@ -112,6 +112,8 @@
 <translation id="8982438328166986164">Mostra suggerències de llocs web basades en els teus marcadors i historial de navegació.</translation>
 <translation id="924029461438529367">Mostra suggeriments de cerca</translation>
 <translation id="1571106259128580884">Mostra els suggeriments dels llocs principals</translation>
+<translation id="6285118765755298263">Indexa altres cercadors</translation>
+<translation id="919715748352669592">Indexa automàticament els llocs web que segueixen les especificacions d'OpenSearch</translation>
 <translation id="9148058034647219655">Surt</translation>
 <translation id="8047754398610073499">Bloqueja els avisos de consentiment de les galetes</translation>
 <translation id="2621893359845808115">Bloca les finestres emergents del lloc web que et demanen que acceptis / rebutgis les galetes del seu lloc</translation>
@@ -740,7 +742,19 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="755448900483975096">Operador de telefonia mòbil</translation>
 <translation id="1279441577056010362">Continua cap al correu electrònic</translation>
 <translation id="7125582363614011660">Suport proporcionat amb l’ajuda de l’equip de Guardian.\n\nSelecciona la informació que vulguis compartir amb nosaltres.\n\nCom més informació comparteixis inicialment amb nosaltres, més fàcil serà per al teu personal de suport ajudar-te a resoldre el problema.</translation>
-<translation id="7999094850625689785">Se seleccionarà automàticament la regió del servidor que tinguis més a prop, segons la zona horària del teu sistema. Es recomana això per garantir velocitats ràpides d'Internet.</translation>
+<translation id="8813171284214934811">Selecciona automàticament la regió del servidor VPN més propera en funció de la teva zona horària. Aquesta opció es recomana per maximitzar la velocitat d'Internet.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> ciutat - }
+          other {<ph name="CITY_COUNT_MANY"/> ciutats - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> servidor}
+          other {<ph name="SERVER_COUNT_MANY"/> servidors}
+        }</translation>
+<translation id="3199127022143353223">Servidors</translation>
+<translation id="5431902940483264007">Òptim</translation>
+<translation id="6527596624419285047">Utilitza el millor servidor disponible</translation>
+<translation id="6789157560111825412">Servidors disponibles</translation>
 <translation id="4397083831618200686">Selecciona el problema</translation>
 <translation id="6687228121145903051">No s'ha pogut connectar a la VPN (Altres errors)</translation>
 <translation id="9184988385244077767">No hi havia Internet en connectar-se</translation>
@@ -808,7 +822,6 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="7358989216567322955">Tarifa màx. de prioritat</translation>
 <translation id="9091334651803050473">Tot i que no és una garantia, és probable que els miners prioritzin la teva transacció si pagues una tarifa més alta.</translation>
 <translation id="2941112035454246133">Baixa</translation>
-<translation id="5431902940483264007">Òptim</translation>
 <translation id="7304030187361489308">Alt</translation>
 <translation id="4853037749278079787">Tarifa màxima: ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
 <translation id="5939983758912255310">Tarifa base actual: <ph name="ASSET_VALUE"/> Gwei</translation>
