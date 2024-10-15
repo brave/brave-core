@@ -156,12 +156,13 @@ struct HistoryView: View {
           Alert(
             title: Text(Strings.History.historyClearAlertTitle),
             message: Text(Strings.History.historyClearAlertDescription),
-            dismissButton: .destructive(
+            primaryButton: .destructive(
               Text(Strings.History.historyClearActionTitle),
               action: {
                 model.deleteAll()
               }
-            )
+            ),
+            secondaryButton: .cancel()
           )
         }
       }
