@@ -77,9 +77,10 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
       (g_brave_browser_process->process_misc_metrics())
           ? g_brave_browser_process->process_misc_metrics()->ai_chat_metrics()
           : nullptr,
+      g_browser_process->os_crypt_async(),
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),
-      version_info::GetChannelString(chrome::GetChannel()));
+      version_info::GetChannelString(chrome::GetChannel()), context->GetPath());
 }
 
 }  // namespace ai_chat

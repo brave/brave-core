@@ -203,14 +203,16 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
   std::string assistant_input = "This is mandalorian.";
 
   history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+      std::nullopt, mojom::CharacterType::HUMAN,
+      mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
       mojom::ConversationTurnVisibility::VISIBLE, human_input, selected_text,
       std::nullopt, base::Time::Now(), std::nullopt, false));
 
   history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, assistant_input, std::nullopt,
-      std::nullopt, base::Time::Now(), std::nullopt, false));
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, mojom::ConversationTurnVisibility::VISIBLE,
+      assistant_input, std::nullopt, std::nullopt, base::Time::Now(),
+      std::nullopt, false));
 
   std::string date_and_time_string =
       base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
@@ -306,10 +308,10 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
   // Test with page content refine event.
   {
     mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
-        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-        mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
-        std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-        std::nullopt, false);
+        std::nullopt, mojom::CharacterType::ASSISTANT,
+        mojom::ActionType::RESPONSE, mojom::ConversationTurnVisibility::VISIBLE,
+        "", std::nullopt, std::vector<mojom::ConversationEntryEventPtr>{},
+        base::Time::Now(), std::nullopt, false);
     entry->events->push_back(
         mojom::ConversationEntryEvent::NewPageContentRefineEvent(
             mojom::PageContentRefineEvent::New()));
@@ -349,10 +351,10 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
   testing::Mock::VerifyAndClearExpectations(client);
 
   mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
-      std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-      std::nullopt, false);
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, mojom::ConversationTurnVisibility::VISIBLE,
+      "", std::nullopt, std::vector<mojom::ConversationEntryEventPtr>{},
+      base::Time::Now(), std::nullopt, false);
   entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("Me")));
   history.push_back(std::move(entry));
