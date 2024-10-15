@@ -6,20 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_CREATIVES_SEARCH_RESULT_AD_CREATIVE_SEARCH_RESULT_AD_MOJOM_WEB_PAGE_ENTITIES_EXTRACTOR_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_CREATIVES_SEARCH_RESULT_AD_CREATIVE_SEARCH_RESULT_AD_MOJOM_WEB_PAGE_ENTITIES_EXTRACTOR_H_
 
-#include <string>
 #include <vector>
 
-#include "base/containers/flat_map.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "components/schema_org/common/metadata.mojom-forward.h"
 
 namespace brave_ads {
 
-using CreativeSearchResultAdMap =
-    base::flat_map</*placement_id*/ std::string,
-                   mojom::CreativeSearchResultAdInfoPtr>;
-
-CreativeSearchResultAdMap
+std::vector<mojom::CreativeSearchResultAdInfoPtr>
 ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
     const std::vector<schema_org::mojom::EntityPtr>& mojom_entities);
 

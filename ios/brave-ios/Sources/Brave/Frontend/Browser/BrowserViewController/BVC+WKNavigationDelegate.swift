@@ -414,13 +414,24 @@ extension BrowserViewController: WKNavigationDelegate {
     if navigationAction.targetFrame?.isMainFrame == true,
       BraveSearchManager.isValidURL(requestURL)
     {
+      let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
+      let adsBlockingShieldUp = domain.globalBlockAdsAndTrackingLevel.isEnabled
+      let isAggressiveAdsBlocking =
+        domain.globalBlockAdsAndTrackingLevel.isAggressive
+        && adsBlockingShieldUp
 
-      if let braveSearchResultAdManager = tab?.braveSearchResultAdManager,
-        braveSearchResultAdManager.isSearchResultAdClickedURL(requestURL),
-        navigationAction.navigationType == .linkActivated
-      {
-        braveSearchResultAdManager.maybeTriggerSearchResultAdClickedEvent(requestURL)
-        tab?.braveSearchResultAdManager = nil
+      if BraveSearchResultAdManager.shouldTriggerSearchResultAdClickedEvent(
+        requestURL,
+        isPrivateBrowsing: isPrivateBrowsing,
+        isAggressiveAdsBlocking: isAggressiveAdsBlocking
+      ) {
+        // Ensure the webView is not a link preview popup.
+        if self.presentedViewController == nil {
+          BraveSearchResultAdManager.maybeTriggerSearchResultAdClickedEvent(
+            requestURL,
+            rewards: rewards
+          )
+        }
       } else {
         // The Brave-Search-Ads header should be added with a negative value when all
         // of the following conditions are met:
@@ -443,14 +454,11 @@ extension BrowserViewController: WKNavigationDelegate {
           return (.cancel, preferences)
         }
 
-        let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
-        let adsBlockingShieldUp = domain.globalBlockAdsAndTrackingLevel.isEnabled
         tab?.braveSearchResultAdManager = BraveSearchResultAdManager(
           url: requestURL,
           rewards: rewards,
           isPrivateBrowsing: isPrivateBrowsing,
-          isAggressiveAdsBlocking: domain.globalBlockAdsAndTrackingLevel.isAggressive
-            && adsBlockingShieldUp
+          isAggressiveAdsBlocking: isAggressiveAdsBlocking
         )
       }
 
