@@ -30,17 +30,15 @@ function App() {
   }, [])
 
   return (
-    <AIChatContextProvider
-      isDefaultConversation={true}
-    >
-      <NavigationContext>
+    <NavigationContext>
+      <AIChatContextProvider>
         <ConversationContextProvider>
           <BraveCoreThemeProvider>
             <Content />
           </BraveCoreThemeProvider>
         </ConversationContextProvider>
-      </NavigationContext>
-    </AIChatContextProvider>
+      </AIChatContextProvider>
+    </NavigationContext>
   )
 }
 

@@ -7,13 +7,7 @@ import * as React from 'react'
 import getAPI, * as mojom from '../api'
 import { loadTimeData } from '$web-common/loadTimeData'
 
-
-interface Props {
-  // Whether there is a specific conversation selected
-  isDefaultConversation: boolean
-}
-
-export interface AIChatContext extends Props {
+export interface AIChatContext {
   visibleConversations: mojom.Conversation[]
   hasAcceptedAgreement: boolean
   isPremiumStatusFetching: boolean
@@ -36,7 +30,6 @@ export interface AIChatContext extends Props {
 }
 
 const defaultContext: AIChatContext = {
-  isDefaultConversation: true,
   visibleConversations: [],
   hasAcceptedAgreement: Boolean(loadTimeData.getBoolean('hasAcceptedAgreement')),
   isPremiumStatusFetching: true,
@@ -59,7 +52,7 @@ const defaultContext: AIChatContext = {
 export const AIChatReactContext =
   React.createContext<AIChatContext>(defaultContext)
 
-export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
+export function AIChatContextProvider(props: React.PropsWithChildren) {
   const [context, setContext] = React.useState<AIChatContext>(defaultContext)
   const [editingConversationId, setEditingConversationId] = React.useState<string | null>(null)
 
