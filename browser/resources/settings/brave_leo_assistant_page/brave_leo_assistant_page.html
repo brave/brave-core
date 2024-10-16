@@ -52,6 +52,8 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   label="$i18n{braveLeoAssistantShowInContextMenuLabel}"
   sub-label="$i18n{braveLeoAssistantShowInContextMenuDesc}">
 </settings-toggle-button>
+<settings-dropdown-menu pref="{{prefs.brave.ai_chat.on_device_conversation_model_name}}" menu-options="[[modelOptions_]]">
+</settings-dropdown-menu>
 <div class="settings-box">
   <div class="flex cr-padded-text">
     <div>$i18n{braveLeoAssistantModelSelectionLabel}</div>

@@ -14,6 +14,7 @@
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -91,6 +92,14 @@ void OnDeviceOAIAPIClient::PerformRequest(
     base::Value::List messages,
     EngineConsumer::GenerationDataCallback data_received_callback,
     EngineConsumer::GenerationCompletedCallback completed_callback) {
+
+
+  if (!on_device_model_worker_->is_bound()) {
+    std::move(completed_callback)
+        .Run(base::unexpected(mojom::APIError::ConnectionIssue));
+    return;
+  }
+
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
   const std::string request_body =

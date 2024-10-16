@@ -46,6 +46,14 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
           type: Boolean,
           value: false,
           computed: 'computeIsPremiumUser_(premiumStatus_)'
+        },
+        modelOptions_: {
+          type: Array,
+          value: [
+            { value: 'Llama-3.1-8B-Instruct-q4f32_1-MLC', name: 'Llama 3.1 8B' },
+            { value: 'Llama-3.2-1B-Instruct-q4f32_1-MLC', name: 'Llama 3.2 1B' },
+            { value: 'TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC', name: 'TinyLlama-1.1B Chat v1.0' },
+          ]
         }
       }
     }

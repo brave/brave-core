@@ -306,6 +306,22 @@ const MODELS: mojom.Model[] = [
   },
   {
     key: '4',
+    displayName: 'Model Four (On Device)',
+    options: {
+      leoModelOptions: {
+        name: 'model-four-on-device',
+        displayMaker: 'Company',
+        engineType: mojom.ModelEngineType.ON_DEVICE,
+        category: mojom.ModelCategory.CHAT,
+        access: mojom.ModelAccess.BASIC,
+        maxPageContentLength: 10000,
+        longConversationWarningCharacterLimit: 9700
+      },
+      customModelOptions: undefined,
+    }
+  },
+  {
+    key: '5',
     displayName: 'Microsoft Phi-3',
     options: {
       leoModelOptions: undefined,
@@ -419,6 +435,7 @@ const preview: Meta<CustomArgs> = {
 
       const aiChatContext: AIChatContext = {
         isDefaultConversation: true,
+        onDeviceModelStatus: { message: 'This is the local model status [1/2424] 56Mb downloaded. This will be cached so subsequent visits won\'t have to endure this long load time and this very long message.', isComplete: false },
         editingConversationId: null,
         visibleConversations: [],
         hasAcceptedAgreement: options.args.hasAcceptedAgreement,

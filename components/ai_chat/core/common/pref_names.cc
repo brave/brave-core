@@ -17,6 +17,8 @@ namespace ai_chat::prefs {
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   if (ai_chat::features::IsAIChatEnabled()) {
     registry->RegisterTimePref(kLastAcceptedDisclaimer, {});
+    registry->RegisterStringPref(kOnDeviceConversationModelName,
+                                 "Llama-3.1-8B-Instruct-q4f32_1-MLC");
     registry->RegisterBooleanPref(kBraveChatAutocompleteProviderEnabled, true);
     registry->RegisterBooleanPref(kUserDismissedPremiumPrompt, false);
 #if BUILDFLAG(IS_ANDROID)

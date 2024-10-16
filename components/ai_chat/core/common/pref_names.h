@@ -15,6 +15,8 @@ namespace ai_chat::prefs {
 
 inline constexpr char kLastAcceptedDisclaimer[] =
     "brave.ai_chat.last_accepted_disclaimer";
+inline constexpr char kOnDeviceConversationModelName[] =
+    "brave.ai_chat.on_device_conversation_model_name";
 inline constexpr char kBraveChatAutocompleteProviderEnabled[] =
     "brave.ai_chat.autocomplete_provider_enabled";
 inline constexpr char kBraveChatP3AChatCountWeeklyStorage[] =
