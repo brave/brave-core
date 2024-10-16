@@ -167,10 +167,6 @@ BraveConfigurator::GetPatcherFactory() {
   return patch_factory_;
 }
 
-bool BraveConfigurator::EnabledDeltas() const {
-  return configurator_impl_.EnabledDeltas();
-}
-
 bool BraveConfigurator::EnabledBackgroundDownloader() const {
   return configurator_impl_.EnabledBackgroundDownloader();
 }
