@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { assert } from 'chrome://resources/js/assert.js'
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
@@ -25,12 +26,6 @@ import {
   BraveWallet,
   CreateAccountOptionsType,
   WalletRoutes,
-  FilecoinNetwork,
-  FilecoinNetworkTypes,
-  FilecoinNetworkLocaleMapping,
-  BitcoinNetworkTypes,
-  BitcoinNetwork,
-  BitcoinNetworkLocaleMapping,
   DAppSupportedCoinTypes
 } from '../../../../constants/types'
 
@@ -63,6 +58,7 @@ import {
   useSafeWalletSelector
 } from '../../../../common/hooks/use-safe-selector'
 import {
+  useGetVisibleNetworksQuery,
   useImportAccountFromJsonMutation,
   useImportAccountMutation,
   useImportBtcAccountMutation,
@@ -93,6 +89,10 @@ export const ImportAccountModal = () => {
   const isBitcoinImportEnabled = useSafeWalletSelector(
     WalletSelectors.isBitcoinImportEnabled
   )
+
+  // queries
+  const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
+
   // mutations
   const [importAccount] = useImportAccountMutation()
   const [importFilAccount] = useImportFilAccountMutation()
@@ -102,10 +102,11 @@ export const ImportAccountModal = () => {
   // memos
   const createAccountOptions = React.useMemo(() => {
     return CreateAccountOptions({
+      visibleNetworks,
       isBitcoinEnabled: isBitcoinImportEnabled,
       isZCashEnabled: false // No zcash imported accounts by now.
     })
-  }, [isBitcoinImportEnabled])
+  }, [visibleNetworks, isBitcoinImportEnabled])
 
   const selectedAccountType = React.useMemo(() => {
     return createAccountOptions.find((option) => {
@@ -120,11 +121,6 @@ export const ImportAccountModal = () => {
   const [fullLengthAccountName, setFullLengthAccountName] =
     React.useState<string>('')
   const accountName = fullLengthAccountName.substring(0, 30)
-  const [filecoinNetwork, setFilecoinNetwork] =
-    React.useState<FilecoinNetwork>('f')
-  const [bitcoinNetwork, setBitcoinNetwork] = React.useState<BitcoinNetwork>(
-    BraveWallet.BITCOIN_MAINNET
-  )
   const [importOption, setImportOption] = React.useState<string>('key')
   const [privateKey, setPrivateKey] = React.useState<string>('')
   const [file, setFile] = React.useState<HTMLInputElement['files']>()
@@ -155,20 +151,6 @@ export const ImportAccountModal = () => {
     (detail: InputEventDetail) => {
       setFullLengthAccountName(detail.value)
       setHasImportError(false)
-    },
-    []
-  )
-
-  const onChangeFilecoinNetwork = React.useCallback(
-    (detail: SelectItemEventDetail) => {
-      setFilecoinNetwork(detail.value as FilecoinNetwork)
-    },
-    []
-  )
-
-  const onChangeBitcoinNetwork = React.useCallback(
-    (detail: SelectItemEventDetail) => {
-      setBitcoinNetwork(detail.value as BitcoinNetwork)
     },
     []
   )
@@ -235,22 +217,30 @@ export const ImportAccountModal = () => {
     }
     if (importOption === 'key') {
       if (selectedAccountType.coin === BraveWallet.CoinType.FIL) {
+        assert(
+          selectedAccountType.fixedNetwork === BraveWallet.FILECOIN_MAINNET ||
+            selectedAccountType.fixedNetwork === BraveWallet.FILECOIN_TESTNET
+        )
         try {
           await importFilAccount({
             accountName,
             privateKey,
-            network: filecoinNetwork
+            network: selectedAccountType.fixedNetwork
           })
           history.push(WalletRoutes.Accounts)
         } catch (error) {
           setHasImportError(true)
         }
       } else if (selectedAccountType.coin === BraveWallet.CoinType.BTC) {
+        assert(
+          selectedAccountType.fixedNetwork === BraveWallet.BITCOIN_MAINNET ||
+            selectedAccountType.fixedNetwork === BraveWallet.BITCOIN_TESTNET
+        )
         try {
           await importBtcAccount({
             accountName,
             payload: privateKey,
-            network: bitcoinNetwork
+            network: selectedAccountType.fixedNetwork
           })
           history.push(WalletRoutes.Accounts)
         } catch (error) {
@@ -298,10 +288,8 @@ export const ImportAccountModal = () => {
     importFilAccount,
     accountName,
     privateKey,
-    filecoinNetwork,
     history,
     importBtcAccount,
-    bitcoinNetwork,
     importAccount,
     importAccountFromJson,
     password
@@ -374,63 +362,18 @@ export const ImportAccountModal = () => {
           )}
           {selectedAccountType.coin === BraveWallet.CoinType.BTC && (
             <Alert type='warning'>
-              {getLocale('braveWalletBtcImportPrivateKeyFormatDescription')}
+              {getLocale(
+                'braveWalletBtcImportPrivateKeyFormatDescription'
+              ).replace(
+                '$1',
+                selectedAccountType.fixedNetwork === BraveWallet.BITCOIN_MAINNET
+                  ? 'zprv'
+                  : 'tprv'
+              )}
             </Alert>
           )}
 
           <CreateAccountStyledWrapper>
-            {selectedAccountType?.coin === BraveWallet.CoinType.FIL && (
-              <Dropdown
-                value={filecoinNetwork}
-                onChange={onChangeFilecoinNetwork}
-              >
-                <div slot='label'>
-                  {getLocale('braveWalletAllowAddNetworkNetworkPanelTitle')}
-                </div>
-
-                <div slot='value'>
-                  {FilecoinNetworkLocaleMapping[filecoinNetwork]}
-                </div>
-
-                {FilecoinNetworkTypes.map((network, index) => {
-                  const networkLocale = FilecoinNetworkLocaleMapping[network]
-                  return (
-                    <leo-option
-                      key={index}
-                      value={network}
-                    >
-                      {networkLocale}
-                    </leo-option>
-                  )
-                })}
-              </Dropdown>
-            )}
-            {selectedAccountType.coin === BraveWallet.CoinType.BTC && (
-              <Dropdown
-                value={bitcoinNetwork}
-                onChange={onChangeBitcoinNetwork}
-              >
-                <div slot='label'>
-                  {getLocale('braveWalletAllowAddNetworkNetworkPanelTitle')}
-                </div>
-
-                <div slot='value'>
-                  {BitcoinNetworkLocaleMapping[bitcoinNetwork]}
-                </div>
-
-                {BitcoinNetworkTypes.map((network, index) => {
-                  const networkLocale = BitcoinNetworkLocaleMapping[network]
-                  return (
-                    <leo-option
-                      key={index}
-                      value={network}
-                    >
-                      {networkLocale}
-                    </leo-option>
-                  )
-                })}
-              </Dropdown>
-            )}
             {selectedAccountType.coin === BraveWallet.CoinType.ETH && (
               <Dropdown
                 value={importOption}

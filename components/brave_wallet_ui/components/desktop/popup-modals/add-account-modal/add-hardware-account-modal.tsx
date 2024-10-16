@@ -34,6 +34,7 @@ import { WalletSelectors } from '../../../../common/selectors'
 
 // hooks
 import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import { useGetVisibleNetworksQuery } from '../../../../common/slices/api.slice'
 
 interface Params {
   accountTypeName: string
@@ -52,13 +53,17 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
     WalletSelectors.isBitcoinLedgerEnabled
   )
 
+  // queries
+  const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
+
   // memos
   const createAccountOptions = React.useMemo(() => {
     return CreateAccountOptions({
+      visibleNetworks,
       isBitcoinEnabled: isBitcoinLedgerEnabled,
       isZCashEnabled: false // No zcash hardware accounts by now.
     })
-  }, [isBitcoinLedgerEnabled])
+  }, [visibleNetworks, isBitcoinLedgerEnabled])
 
   const selectedAccountType: CreateAccountOptionsType | undefined =
     React.useMemo(() => {
