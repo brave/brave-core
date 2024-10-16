@@ -95,7 +95,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
     }
 
     public static Class<OmniboxSuggestionsDropdownEmbedderImpl>
-    getOmniboxSuggestionsDropdownEmbedderImplClass() {
+            getOmniboxSuggestionsDropdownEmbedderImplClass() {
         return OmniboxSuggestionsDropdownEmbedderImpl.class;
     }
 
