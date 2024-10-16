@@ -647,15 +647,12 @@ public class CameraSource {
         return true;
     }
 
-    //==============================================================================================
+    // ==============================================================================================
     // Private
-    //==============================================================================================
+    // ==============================================================================================
 
-    /**
-     * Only allow creation via the builder class.
-     */
-    private CameraSource() {
-    }
+    /** Only allow creation via the builder class. */
+    private CameraSource() {}
 
     /** Wraps the camera1 shutter callback so that the deprecated API isn't exposed. */
     private static class PictureStartCallback implements Camera.ShutterCallback {
