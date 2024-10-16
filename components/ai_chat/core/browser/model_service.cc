@@ -167,7 +167,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
     {
       auto options = mojom::LeoModelOptions::New();
-      options->display_maker = "Meta";
+      options->display_maker = "[model name from preferences]";
       options->name = "llama-3-1b-instruct";
       options->category = mojom::ModelCategory::CHAT;
       options->access = mojom::ModelAccess::BASIC;
@@ -178,7 +178,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
       auto model = mojom::Model::New();
       model->key = "chat-basic-local";
-      model->display_name = "Llama 3.1 1B (on your device)";
+      model->display_name = "Local on-device model";
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -400,7 +400,11 @@ void ModelService::OnPremiumStatus(mojom::PremiumStatus status) {
 
 void ModelService::RegisterOnDeviceModelWorker(
     mojo::PendingRemote<mojom::OnDeviceModelWorker> on_device_model_worker) {
+  if (on_device_model_worker_.is_bound()) {
+    on_device_model_worker_.reset();
+  }
   on_device_model_worker_.Bind(std::move(on_device_model_worker));
+  on_device_model_worker_.reset_on_disconnect();
 }
 
 void ModelService::InitModels() {

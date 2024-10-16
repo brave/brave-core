@@ -305,7 +305,7 @@ interface Service {
       pending_remote<ConversationUI> conversation_ui);
 
   OnDeviceModelWorkerStatusChanged(string status, bool is_ready);
-  RegisterOnDeviceModelWorker(pending_remote<OnDeviceModelWorker> on_device_model_worker);
+  RegisterOnDeviceModelWorker(pending_remote<OnDeviceModelWorker> on_device_model_worker) => (string on_device_model_name);
 };
 
 interface ServiceObserver {

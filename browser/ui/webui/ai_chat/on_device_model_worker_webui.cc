@@ -48,7 +48,10 @@ UntrustedOnDeviceModelWorkerWebUI::UntrustedOnDeviceModelWorkerWebUI(content::We
 
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
-      "script-src 'self' 'unsafe-inline' https: chrome-untrusted://resources;");
+      "script-src 'self' 'wasm-eval' 'unsafe-inline' https: chrome-untrusted://resources;");
+  untrusted_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ConnectSrc,
+      "connect-src 'self' https: chrome-untrusted://resources;");
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;");

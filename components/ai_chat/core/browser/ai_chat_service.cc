@@ -252,8 +252,11 @@ void AIChatService::OnDeviceModelWorkerStatusChanged(const std::string& status, 
     observer->OnDeviceModelWorkerStatusChanged(status, is_ready);
   }
 }
-void AIChatService::RegisterOnDeviceModelWorker(mojo::PendingRemote<mojom::OnDeviceModelWorker> on_device_model_worker) {
+void AIChatService::RegisterOnDeviceModelWorker(
+    mojo::PendingRemote<mojom::OnDeviceModelWorker> on_device_model_worker,
+    RegisterOnDeviceModelWorkerCallback callback) {
   model_service_->RegisterOnDeviceModelWorker(std::move(on_device_model_worker));
+  std::move(callback).Run(profile_prefs_->GetString(prefs::kOnDeviceConversationModelName));
 }
 
 void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,

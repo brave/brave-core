@@ -29,6 +29,7 @@ import PrivacyMessage from '../privacy_message'
 import ToolsButtonMenu from '../tools_button_menu'
 import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
+import Alert from '@brave/leo/react/alert'
 
 const SCROLL_BOTTOM_THRESHOLD = 10.0
 
@@ -248,6 +249,14 @@ function Main() {
             <div className={styles.promptContainer}>
               <LongConversationInfo />
             </div>}
+
+          {aiChatContext.onDeviceModelStatus && !aiChatContext.onDeviceModelStatus.isComplete && (conversationContext.currentModel?.options.leoModelOptions?.engineType === mojom.ModelEngineType.ON_DEVICE) &&
+            <div className={styles.promptContainer}>
+              <Alert mode='full' type='info'>
+                {aiChatContext.onDeviceModelStatus.message}
+              </Alert>
+            </div>}
+
           {!aiChatContext.hasAcceptedAgreement && <WelcomeGuide />}
         </div>
       </div>

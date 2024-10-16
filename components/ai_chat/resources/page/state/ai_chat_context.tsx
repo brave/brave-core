@@ -26,6 +26,7 @@ export interface AIChatContext extends Props {
   canShowPremiumPrompt?: boolean
   isMobile: boolean
   isStandalone?: boolean
+  onDeviceModelStatus?: { message: string, isComplete: boolean }
   isHistoryEnabled: boolean
   allActions: mojom.ActionGroup[]
   goPremium: () => void
@@ -122,6 +123,13 @@ export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
         hasAcceptedAgreement: true
       })
     )
+
+    Observer.onDeviceModelWorkerStatusChanged.addListener((message: string, isComplete: boolean) => {
+      console.debug('onDeviceModelWorkerStatusChanged', message, isComplete)
+      setPartialContext({
+        onDeviceModelStatus: { message, isComplete }
+      })
+    })
 
     // Since there is no server-side event for premium status changing,
     // we should check often. And since purchase or login is performed in

@@ -107,8 +107,9 @@ class AIChatService : public KeyedService,
   void OnDeviceModelWorkerStatusChanged(const std::string& status,
                                         bool is_ready) override;
   void RegisterOnDeviceModelWorker(
-      mojo::PendingRemote<mojom::OnDeviceModelWorker> on_device_model_worker)
-      override;
+      mojo::PendingRemote<mojom::OnDeviceModelWorker> on_device_model_worker,
+      RegisterOnDeviceModelWorkerCallback callback)
+  override;
 
   void BindConversation(
       const std::string& uuid,
