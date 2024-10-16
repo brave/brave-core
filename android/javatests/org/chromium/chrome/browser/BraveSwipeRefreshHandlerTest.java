@@ -64,7 +64,6 @@ public class BraveSwipeRefreshHandlerTest {
                 () -> {},
                 rootUiCoordinator.getBottomSheetController(),
                 /* chromeActivityNativeDelegate= */ cta,
-                /* isCustomTab= */ true,
                 rootUiCoordinator.getBrowserControlsManager(),
                 cta.getFullscreenManager(),
                 /* tabCreatorManager= */ cta,
