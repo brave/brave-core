@@ -78,7 +78,7 @@ class EngineConsumer {
   virtual void UpdateModelOptions(const mojom::ModelOptions& options) = 0;
 
   void SetMaxAssociatedContentLengthForTesting(
-      int max_associated_content_length) {
+      uint32_t max_associated_content_length) {
     max_associated_content_length_ = max_associated_content_length;
   }
 
