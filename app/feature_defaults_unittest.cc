@@ -249,7 +249,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
       &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
       &privacy_sandbox::kPrivacySandboxFirstPartySetsUI,
-      &privacy_sandbox::kPrivacySandboxProactiveTopicsBlocking,
       &privacy_sandbox::kPrivacySandboxSettings4,
       &privacy_sandbox::kTrackingProtectionContentSettingUbControl,
       &safe_browsing::kExtensionTelemetryDisableOffstoreExtensions,
