@@ -1,8 +1,8 @@
 diff --git a/tools/web_dev_style/eslint.py b/tools/web_dev_style/eslint.py
-index 18be4f4b076888f18538323096e84d52a8659a5c..f719b65aec6b0d01cdb620be23c41ec73da8c280 100755
+index 8f122a0994ba4cc0176d40639e024ff457ddd291..75a008d12dce6e972bc53bea38cc89672d27669e 100755
 --- a/tools/web_dev_style/eslint.py
 +++ b/tools/web_dev_style/eslint.py
-@@ -26,6 +26,7 @@ def Run(os_path=None, args=None):
+@@ -32,6 +32,7 @@ def Run(os_path=None, args=None):
    ] + args)
  
  

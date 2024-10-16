@@ -1,5 +1,5 @@
 diff --git a/components/search_engines/prepopulated_engines.json b/components/search_engines/prepopulated_engines.json
-index 46ca9d2c2f4325d7b65b3c144214aee1c45b19b5..ee3109a6f2a7f3b7bb8a1dbe0f7b5b6dafe955c6 100644
+index 2036ba59e62c14e230911d344a7b4590d303beb3..d03a4d52a9ef6cba28fb119c40dcf0e5c942aef4 100644
 --- a/components/search_engines/prepopulated_engines.json
 +++ b/components/search_engines/prepopulated_engines.json
 @@ -116,23 +116,6 @@
