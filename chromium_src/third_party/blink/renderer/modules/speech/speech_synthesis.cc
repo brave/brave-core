@@ -5,6 +5,7 @@
 
 #include "third_party/blink/renderer/modules/speech/speech_synthesis.h"
 
+#include "base/compiler_specific.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
@@ -46,7 +47,8 @@ void SpeechSynthesis::OnSetVoiceList(
             "Wilson", "Alva",   "Harley",    "Beauregard", "Cleveland",
             "Cecil",  "Reuben", "Sylvester", "Jasper"};
         const int kFakeNamesCount = std::size(kFakeNames);
-        fake_voice->name = WTF::String(kFakeNames[prng() % kFakeNamesCount]);
+        fake_voice->name =
+            UNSAFE_TODO(WTF::String(kFakeNames[prng() % kFakeNamesCount]));
       }
     }
     voice_list_.push_back(

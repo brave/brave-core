@@ -40,9 +40,9 @@ std::vector<AcceleratorMapping> GetAcceleratorList() {
   std::vector<AcceleratorMapping> accelerator_list(
       GetAcceleratorList_ChromiumImpl());
 
-  accelerator_list.insert(
+  UNSAFE_TODO(accelerator_list.insert(
       accelerator_list.end(), kBraveAcceleratorMap,
-      kBraveAcceleratorMap + std::size(kBraveAcceleratorMap));
+      kBraveAcceleratorMap + std::size(kBraveAcceleratorMap)));
 
   return accelerator_list;
 }

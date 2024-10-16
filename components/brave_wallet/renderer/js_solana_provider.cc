@@ -115,7 +115,7 @@ bool JSSolanaProvider::V8ConverterStrategy::FromV8ArrayBuffer(
   if (gin::ConvertFromV8(isolate, value.As<v8::ArrayBufferView>(), &view)) {
     data = reinterpret_cast<char*>(view.bytes());
     data_length = view.num_bytes();
-    bytes.assign(data, data + data_length);
+    UNSAFE_TODO(bytes.assign(data, data + data_length));
   }
   if (!bytes.size()) {
     return false;

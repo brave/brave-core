@@ -43,7 +43,8 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
   brave_vpn::AddLocalizedStrings(source);
   webui::SetupWebUIDataSource(
       source,
-      base::make_span(kBraveVpnPanelGenerated, kBraveVpnPanelGeneratedSize),
+      UNSAFE_TODO(base::make_span(kBraveVpnPanelGenerated,
+                                  kBraveVpnPanelGeneratedSize)),
       IDR_VPN_PANEL_HTML);
 
   source->OverrideContentSecurityPolicy(

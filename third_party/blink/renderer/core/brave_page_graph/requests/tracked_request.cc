@@ -157,9 +157,7 @@ void TrackedRequest::UpdateResponseBodyHash(base::span<const char> data) {
   if (!data.data()) {
     return;
   }
-  base::span<const uint8_t> uint8_span(
-      reinterpret_cast<const uint8_t*>(data.data()), data.size());
-  CHECK(body_digestor_.Update(uint8_span));
+  CHECK(body_digestor_.Update(base::as_byte_span(data)));
 }
 
 void TrackedRequest::FinishResponseBodyHash() {

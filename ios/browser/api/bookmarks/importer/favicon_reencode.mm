@@ -4,8 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/bookmarks/importer/favicon_reencode.h"
+
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
+#import "base/compiler_specific.h"
 
 namespace gfx {
   //FROM: ui/gfx/geometry/size.h
@@ -59,7 +62,8 @@ bool ReencodeFavicon(const unsigned char* src_data,
   }
   
   const unsigned char *png_bytes = static_cast<const unsigned char*>([ios_png_data bytes]);
-  png_data->insert(png_data->begin(), png_bytes, png_bytes + [ios_png_data length]);
+  png_data->insert(png_data->begin(),
+                   UNSAFE_TODO(png_bytes, png_bytes + [ios_png_data length]));
   return true;
 }
 

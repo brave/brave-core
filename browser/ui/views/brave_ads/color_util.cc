@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/brave_ads/color_util.h"
 
+#include "base/compiler_specific.h"
 #include "base/strings/string_number_conversions.h"
 
 namespace brave_ads {
@@ -28,7 +29,7 @@ bool RgbStringToSkColor(std::string_view rgb, SkColor* color) {
                                &component)) {
       return false;
     }
-    components[i] = component;
+    UNSAFE_TODO(components[i] = component);
   }
 
   *color = SkColorSetRGB(components[0], components[1], components[2]);

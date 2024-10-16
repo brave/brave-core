@@ -210,7 +210,7 @@ std::string GetPrefPath(const std::string& name) {
 std::vector<std::string> GetISOCountries() {
   std::vector<std::string> countries;
   for (const char* const* country_pointer = icu::Locale::getISOCountries();
-       *country_pointer; ++country_pointer) {
+       *country_pointer; UNSAFE_TODO(++country_pointer)) {
     countries.emplace_back(*country_pointer);
   }
   return countries;

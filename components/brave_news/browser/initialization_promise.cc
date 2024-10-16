@@ -94,9 +94,10 @@ void InitializationPromise::OnGotLocale(const std::string& locale) {
 
   // Determine how long we should wait based on the number of times we've
   // retried.
-  int retry_delay = no_retry_delay_for_testing_
-                        ? 0
-                        : kBackoffs[std::min(attempts_, kNumBackoffs - 1)];
+  int retry_delay =
+      no_retry_delay_for_testing_
+          ? 0
+          : UNSAFE_TODO(kBackoffs[std::min(attempts_, kNumBackoffs - 1)]);
   base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&InitializationPromise::Initialize,
