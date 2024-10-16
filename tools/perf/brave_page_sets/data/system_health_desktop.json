@@ -1,5 +1,8 @@
 {
     "archives": {
+        "UpdateProfile": {
+            "DEFAULT": "system_health_desktop_8c7c864e79.wprgo"
+        },
         "browse:news:hackernews:2020": {
             "DEFAULT": "system_health_desktop_c72fda288b.wprgo"
         },
