@@ -8,13 +8,17 @@
 
 #include <optional>
 
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/net/base/url_util.h"
 #include "url/url_constants.h"
 
 namespace ai_chat {
 
-constexpr size_t kMinCustomModelContextSize = 1;
+// The declared context size needs to be large enough to accommodate expected
+// reserves (i.e., prompt tokens and max new tokens)
+constexpr size_t kMinCustomModelContextSize =
+    kReservedTokensForMaxNewTokens + kReservedTokensForPrompt;
 constexpr size_t kMaxCustomModelContextSize = 2'000'000;
 constexpr size_t kDefaultCustomModelContextSize = 4000;
 
