@@ -23,6 +23,7 @@ from telemetry.page import page as page_module
 from telemetry import story
 from telemetry.core import android_platform
 
+from components.path_util import GetPageSetsDataPath
 
 class _UpdateProfileSharedPageState(shared_page_state.SharedPageState):
   """ A special utility state to update a source profile.
@@ -121,6 +122,9 @@ class BravePerfUtilsStorySet(story.StorySet):
   See loading_desktop.py for details.
   """
 
-  def __init__(self, delay=10):
-    super().__init__(cloud_storage_bucket=story.PARTNER_BUCKET)
+  def __init__(self, delay: int, options):
+    platform = 'mobile' if options.os_name == 'android' else 'desktop'
+    archive_data_file = GetPageSetsDataPath('system_health_%s.json' % platform)
+    super().__init__(archive_data_file,
+                     cloud_storage_bucket=story.PARTNER_BUCKET)
     self.AddStory(_UpdateProfilePage(self, delay))
