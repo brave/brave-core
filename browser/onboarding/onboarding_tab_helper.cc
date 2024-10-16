@@ -6,10 +6,12 @@
 #include "brave/browser/onboarding/onboarding_tab_helper.h"
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
@@ -48,22 +50,34 @@ std::optional<base::Time> OnboardingTabHelper::s_sentinel_time_for_testing_;
 
 // static
 void OnboardingTabHelper::MaybeCreateForWebContents(
-    content::WebContents* web_contents) {
+    content::WebContents* web_contents,
+    base::OnceClosure creation_callback_for_test) {
   if (!g_browser_process->local_state()) {
     CHECK_IS_TEST();
     return;
   }
+
+  if (creation_callback_for_test) {
+    CHECK_IS_TEST();
+  }
+
   base::Time last_shields_icon_highlight_time =
       g_browser_process->local_state()->GetTime(
           onboarding::prefs::kLastShieldsIconHighlightTime);
 
   // Shields highlight is aleady shown. We use it only once.
   if (!last_shields_icon_highlight_time.is_null()) {
+    if (creation_callback_for_test) {
+      std::move(creation_callback_for_test).Run();
+    }
     return;
   }
 
   if (first_run::IsChromeFirstRun()) {
     OnboardingTabHelper::CreateForWebContents(web_contents);
+    if (creation_callback_for_test) {
+      std::move(creation_callback_for_test).Run();
+    }
     return;
   }
 
@@ -73,12 +87,17 @@ void OnboardingTabHelper::MaybeCreateForWebContents(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&OnboardingTabHelper::IsSevenDaysPassedSinceFirstRun),
       base::BindOnce(
-          [](base::WeakPtr<content::WebContents> contents, bool passed) {
+          [](base::WeakPtr<content::WebContents> contents,
+             base::OnceCallback<void()> creation_callback_for_test,
+             bool passed) {
             if (!passed && contents) {
               OnboardingTabHelper::CreateForWebContents(contents.get());
             }
+            if (creation_callback_for_test) {
+              std::move(creation_callback_for_test).Run();
+            }
           },
-          web_contents->GetWeakPtr()));
+          web_contents->GetWeakPtr(), std::move(creation_callback_for_test)));
 }
 
 OnboardingTabHelper::OnboardingTabHelper(content::WebContents* web_contents)
