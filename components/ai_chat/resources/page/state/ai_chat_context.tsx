@@ -11,10 +11,6 @@ import { loadTimeData } from '$web-common/loadTimeData'
 interface Props {
   // Whether there is a specific conversation selected
   isDefaultConversation: boolean
-  // Create a new conversation and use it
-  onNewConversation: () => unknown
-  // Select a new conversation
-  onSelectConversationUuid: (id: string | undefined) => unknown
 }
 
 export interface AIChatContext extends Props {
@@ -55,8 +51,6 @@ const defaultContext: AIChatContext = {
   handleAgreeClick: () => { },
   dismissPremiumPrompt: () => { },
   userRefreshPremiumSession: () => { },
-  onNewConversation: () => { },
-  onSelectConversationUuid: () => { },
 
   editingConversationId: null,
   setEditingConversationId: () => { }

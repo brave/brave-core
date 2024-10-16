@@ -36,10 +36,6 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
   const shouldDisplayEraseAction = !aiChatContext.isStandalone &&
     conversationContext.conversationHistory.length >= 1
 
-  const newConversation = () => {
-    aiChatContext.onNewConversation()
-  }
-
   const activeConversation = aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
   const showTitle = (!aiChatContext.isDefaultConversation || aiChatContext.isStandalone)
   const isVisible = useIsConversationVisible(conversationContext.conversationUuid)
@@ -51,7 +47,7 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
           {isVisible && <Button
             kind='plain-faint'
             fab
-            onClick={() => { aiChatContext.onSelectConversationUuid(undefined) }}
+            onClick={() => location.href = "/"}
           >
             <Icon name='arrow-left' />
           </Button>}
@@ -68,7 +64,7 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
                 kind='plain-faint'
                 aria-label={newChatButtonLabel}
                 title={newChatButtonLabel}
-                onClick={newConversation}
+                onClick={() => location.href = "/"}
               >
                 <Icon name={aiChatContext.isHistoryEnabled ? 'plus-add' : 'erase'} />
               </Button>
@@ -95,10 +91,6 @@ export function SidebarHeader() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
-  const newConversation = () => {
-    aiChatContext.onNewConversation()
-  }
-
   const canStartNewConversation = conversationContext.conversationHistory.length >= 1
     && aiChatContext.hasAcceptedAgreement
 
@@ -115,7 +107,7 @@ export function SidebarHeader() {
             kind='plain-faint'
             aria-label={newChatButtonLabel}
             title={newChatButtonLabel}
-            onClick={newConversation}
+            onClick={() => location.href = "/"}
           >
             <Icon name='plus-add' />
           </Button>

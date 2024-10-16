@@ -4,18 +4,29 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { useEffect } from "react";
-import { AIChatContext, useAIChat } from "../state/ai_chat_context";
+import { AIChatContext, useAIChat } from "../../state/ai_chat_context";
+import * as React from "react";
 
-const routes: { [key: string]: (context: AIChatContext, params: { [key: string]: string }) => Promise<void> } = {
+type Params = { [key: string]: string | undefined }
+
+export interface NavigationContext {
+    params: Params
+}
+
+const Context = React.createContext<NavigationContext>({
+    params: {}
+})
+
+const routes: { [key: string]: (context: AIChatContext, params: Params) => Promise<void> } = {
     ['/']: async (context) => {
-        context.onNewConversation()
+        // context.onNewConversation()
     },
     ['/{chatId}']: async (context, params: { chatId: string }) => {
-        if (context.visibleConversations.find(c => c.uuid === params.chatId)) {
-            context.onSelectConversationUuid(params.chatId)
-        } else {
-            location.href = "/"
-        }
+        // if (context.visibleConversations.find(c => c.uuid === params.chatId)) {
+        //     context.onSelectConversationUuid(params.chatId)
+        // } else {
+        //     location.href = "/"
+        // }
     }
 }
 
@@ -63,22 +74,40 @@ const findMatchingRoute = (url: URL) => {
 }
 
 let initialized = false
-export default function useNavigations() {
-    const aiChat = useAIChat()
+
+export function selectConversation(conversationId: string | null) {
+    window.location.href = conversationId ? `/${conversationId}` : "/"
+}
+
+export function useParams<T extends Params = Params>() {
+    return React.useContext(Context).params as T
+}
+
+export function useSelectedConversation() {
+    return useParams().chatId
+}
+
+export function NavigationContext(props: React.PropsWithChildren) {
+    const chat = useAIChat()
+    const [params, setParams] = React.useState<Params>({})
+
     useEffect(() => {
         const handler = (e?: NavigateEvent) => {
             const url = e?.destination.url ? new URL(e.destination.url) : new URL(window.location.href)
             const [handler, params] = findMatchingRoute(url)
+            console.log("Parsed params", params, handler)
             if (!handler) {
+                setParams({})
                 return
             }
 
+            setParams(params)
             if (e) {
                 e.intercept({
-                    handler: () => handler(aiChat, params)
+                    handler: () => handler(chat, params)
                 })
             } else {
-                handler(aiChat, params)
+                handler(chat, params)
             }
         }
 
@@ -90,5 +119,9 @@ export default function useNavigations() {
         return () => {
             window.navigation.removeEventListener('navigate', handler)
         }
-    }, [aiChat.visibleConversations])
+    }, [chat.visibleConversations])
+
+    return <Context.Provider value={{ params }} >
+        {props.children}
+    </Context.Provider>
 }

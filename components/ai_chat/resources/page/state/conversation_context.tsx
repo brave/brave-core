@@ -11,6 +11,8 @@ import * as API from '../api/'
 import { useAIChat } from './ai_chat_context'
 import { isLeoModel } from '../model_utils'
 import { loadTimeData } from '$web-common/loadTimeData'
+import { useSelectedConversation } from '../components/navigation_context'
+import useIsConversationVisible from '../hooks/useIsConversationVisible'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -88,18 +90,18 @@ const defaultContext: ConversationContext = {
   selectedActionType: undefined,
   isToolsMenuOpen: false,
   isCurrentModelLeo: true,
-  setCurrentModel: () => {},
-  switchToBasicModel: () => {},
-  generateSuggestedQuestions: () => {},
-  dismissLongConversationInfo: () => {},
-  updateShouldSendPageContents: () => {},
-  retryAPIRequest: () => {},
-  handleResetError: () => {},
-  setInputText: () => {},
-  submitInputTextToAPI: () => {},
-  resetSelectedActionType: () => {},
-  handleActionTypeClick: () => {},
-  setIsToolsMenuOpen: () => {},
+  setCurrentModel: () => { },
+  switchToBasicModel: () => { },
+  generateSuggestedQuestions: () => { },
+  dismissLongConversationInfo: () => { },
+  updateShouldSendPageContents: () => { },
+  retryAPIRequest: () => { },
+  handleResetError: () => { },
+  setInputText: () => { },
+  submitInputTextToAPI: () => { },
+  resetSelectedActionType: () => { },
+  handleActionTypeClick: () => { },
+  setIsToolsMenuOpen: () => { },
   ...defaultCharCountContext
 }
 
@@ -156,9 +158,7 @@ export function useActionMenu(
 export const ConversationReactContext =
   React.createContext<ConversationContext>(defaultContext)
 
-export function ConversationContextProvider(
-  props: React.PropsWithChildren<ConversationContextProps>
-) {
+function ConversationProviderInternal(props: React.PropsWithChildren<ConversationContextProps>) {
   const [context, setContext] =
     React.useState<ConversationContext>(defaultContext)
 
@@ -315,6 +315,15 @@ export function ConversationContextProvider(
       })
   }, [context.conversationUuid, context.faviconCacheKey])
 
+  // Update the location when the visible conversation changes
+  const selectedConversation = useSelectedConversation()
+  const isVisible = useIsConversationVisible(context.conversationUuid)
+  React.useEffect(() => {
+    if (!isVisible) return
+    if (context.conversationUuid === selectedConversation) return
+    window.location.href = `/${context.conversationUuid}`
+  }, [isVisible])
+
   const actionList = useActionMenu(context.inputText, () =>
     Promise.resolve(aiChatContext.allActions)
   )
@@ -329,7 +338,7 @@ export function ConversationContextProvider(
     let totalCharLimit =
       context.currentModel?.options.leoModelOptions !== undefined
         ? context.currentModel.options.leoModelOptions
-            ?.longConversationWarningCharacterLimit
+          ?.longConversationWarningCharacterLimit
         : loadTimeData.getInteger('customModelLongConversationCharLimit')
 
     if (context.shouldSendPageContents) {
@@ -371,7 +380,7 @@ export function ConversationContextProvider(
     context.isGenerating ||
     (!aiChatContext.isPremiumUser &&
       context.currentModel?.options.leoModelOptions?.access ===
-        mojom.ModelAccess.PREMIUM)
+      mojom.ModelAccess.PREMIUM)
   )
   const isCharLimitExceeded = context.inputText.length >= MAX_INPUT_CHAR
   const isCharLimitApproaching =
@@ -504,6 +513,32 @@ export function ConversationContextProvider(
       {props.children}
     </ConversationReactContext.Provider>
   )
+}
+
+export function ConversationContextProvider(
+  props: React.PropsWithChildren
+) {
+  const [conversationAPI, setConversationAPI] =
+    React.useState<ConversationContextProps>()
+
+  const selectedConversation = useSelectedConversation()
+  React.useEffect(() => {
+    setConversationAPI(API.bindConversation(selectedConversation))
+  }, [selectedConversation])
+
+  // Clean up bindings when not used anymore
+  React.useEffect(() => {
+    return () => {
+      conversationAPI?.callbackRouter.$.close()
+      conversationAPI?.conversationHandler.$.close()
+    }
+  }, [conversationAPI])
+
+  return conversationAPI
+    ? <ConversationProviderInternal {...conversationAPI}>
+      {props.children}
+    </ConversationProviderInternal>
+    : null;
 }
 
 export function useConversation() {

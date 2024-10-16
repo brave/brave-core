@@ -14,15 +14,13 @@ import '@brave/leo/tokens/css/variables.css'
 import '$web-common/defaultTrustedTypesPolicy'
 import { loadTimeData } from '$web-common/loadTimeData'
 import BraveCoreThemeProvider from '$web-common/BraveCoreThemeProvider'
-import getAPI, * as API from './api'
 import { AIChatContextProvider, useAIChat } from './state/ai_chat_context'
 import Main from './components/main'
 import {
-  ConversationContextProps,
   ConversationContextProvider
 } from './state/conversation_context'
 import FullScreen from './components/full_screen'
-import useNavigations from './hooks/useNavigations'
+import { NavigationContext } from './components/navigation_context'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
@@ -31,81 +29,25 @@ function App() {
     document.getElementById('mountPoint')?.classList.add('loaded')
   }, [])
 
-  const [selectedConversationUuid, setSelectedConversationUuid] = React.useState<
-    string | undefined
-  >()
-
-  const [conversationAPI, setConversationAPI] =
-    React.useState<ConversationContextProps>()
-
-  // A token so that we can re-bind to a new default conversation when
-  // the associated content navigates
-  const [defaultConversationToken, setDefaultConversationToken] =
-    React.useState(new Date().getTime())
-
-  const handleSelectConversationUuid = (id: string | undefined) => {
-    if (!id || id !== selectedConversationUuid) {
-      console.log('select conversation', id)
-      setConversationAPI(API.bindConversation(id))
-      setSelectedConversationUuid(id)
-    }
-  }
-
-  // Start off with default conversation and if the target content
-  // navigates then show the new conversation, only if we're still
-  // on the default conversation.
-  React.useEffect(() => {
-    if (!selectedConversationUuid) {
-      handleSelectConversationUuid(undefined)
-    }
-  }, [defaultConversationToken])
-
-  // Clean up bindings when not used anymore
-  React.useEffect(() => {
-    return () => {
-      conversationAPI?.callbackRouter.$.close()
-      conversationAPI?.conversationHandler.$.close()
-    }
-  }, [conversationAPI])
-
-  const handleNewConversation = () => {
-    setConversationAPI(API.newConversation())
-    setSelectedConversationUuid(undefined)
-  }
-
-  React.useEffect(() => {
-    // Observe when default conversation changes
-    const onNewDefaultConversationListenerId =
-      getAPI().UIObserver.onNewDefaultConversation.addListener(() => {
-        setDefaultConversationToken(new Date().getTime())
-      })
-
-    return () => {
-      getAPI().UIObserver.removeListener(onNewDefaultConversationListenerId)
-    }
-  }, [])
-
   return (
     <AIChatContextProvider
-      isDefaultConversation={!selectedConversationUuid}
-      onNewConversation={handleNewConversation}
-      onSelectConversationUuid={handleSelectConversationUuid}
+      isDefaultConversation={true}
     >
-      {conversationAPI && (
-        <ConversationContextProvider {...conversationAPI}>
+      <NavigationContext>
+        <ConversationContextProvider>
           <BraveCoreThemeProvider>
             <Content />
           </BraveCoreThemeProvider>
         </ConversationContextProvider>
-      )}
+      </NavigationContext>
     </AIChatContextProvider>
   )
 }
 
-function Content () {
+function Content() {
   const aiChatContext = useAIChat()
-  useNavigations()
 
+  console.log(aiChatContext.isStandalone)
   if (aiChatContext.isStandalone === undefined) {
     return <div>loading...</div>
   }
