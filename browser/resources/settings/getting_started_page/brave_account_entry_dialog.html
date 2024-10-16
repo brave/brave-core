@@ -4,27 +4,6 @@ License, v. 2.0. If a copy of the MPL was not distributed with this file,
 You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
 <style include="cr-shared-style iron-flex settings-shared">
-  .texts {
-    gap: 8px;
-  }
-  .body-text-top {
-    color: #46464A;
-    font-family: 'Poppins';
-    font-size: 22px;
-    font-style: normal;
-    font-weight: 600;
-    letter-spacing: -0.5px;
-    line-height: 28px;
-  }
-  .body-text-bottom {
-    color: #76767A;
-    font-family: 'Inter Variable';
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22px;
-    text-align: center;
-  }
   .buttons {
     gap: 8px;
     margin: 36px 0px;
@@ -55,16 +34,10 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
   }
 </style>
 
-<settings-brave-account-dialog>
+<settings-brave-account-dialog
+  header-text-top="Get started with your Brave account"
+  header-text-bottom="$i18n{braveSyncBraveAccountDesc}">
   <div slot="body">
-    <div class="layout texts vertical">
-      <div class="body-text-top center-center horizontal layout">
-        Get started with your Brave account
-      </div>
-      <div class="body-text-bottom center-center horizontal layout">
-        $i18n{braveSyncBraveAccountDesc}
-      </div>
-    </div>
     <div class="buttons layout vertical">
       <cr-button class="action-button" size="medium">
         Create a Brave account
