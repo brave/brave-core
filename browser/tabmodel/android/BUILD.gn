@@ -9,13 +9,12 @@ import("//build/config/android/rules.gni")
 import("//chrome/browser/buildflags.gni")
 
 android_library("java") {
-  sources = [ "java/src/org/chromium/chrome/browser/tasks/tab_groups/BraveTabGroupModelFilter.java" ]
+  sources = [ "java/src/org/chromium/chrome/browser/tabmodel/BraveTabGroupModelFilter.java" ]
 
   deps = [
     "//base:base_java",
     "//chrome/browser/preferences:java",
     "//chrome/browser/tab:java",
-    "//chrome/browser/tab_group:java",
     "//chrome/browser/tabmodel:java",
     "//third_party/androidx:androidx_annotation_annotation_java",
   ]

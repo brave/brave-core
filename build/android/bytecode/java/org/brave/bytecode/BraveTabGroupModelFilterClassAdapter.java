@@ -9,9 +9,9 @@ import org.objectweb.asm.ClassVisitor;
 
 public class BraveTabGroupModelFilterClassAdapter extends BraveClassVisitor {
     static String sTabGroupModelFilterClassName =
-            "org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter";
+            "org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl";
     static String sBraveTabGroupModelFilterClassName =
-            "org/chromium/chrome/browser/tasks/tab_groups/BraveTabGroupModelFilter";
+            "org/chromium/chrome/browser/tabmodel/BraveTabGroupModelFilter";
 
     public BraveTabGroupModelFilterClassAdapter(ClassVisitor visitor) {
         super(visitor);
