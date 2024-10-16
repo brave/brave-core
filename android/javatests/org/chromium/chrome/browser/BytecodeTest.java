@@ -35,7 +35,6 @@ import org.junit.runner.RunWith;
 
 import org.chromium.base.Callback;
 import org.chromium.base.FeatureMap;
-import org.chromium.base.Token;
 import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.shared_preferences.PreferenceKeyRegistry;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
@@ -1011,7 +1010,7 @@ public class BytecodeTest {
                         Tab.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
+                        "org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilterImpl",
                         "shouldUseParentIds",
                         MethodModifier.REGULAR,
                         true,
@@ -1019,12 +1018,11 @@ public class BytecodeTest {
                         Tab.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
-                        "getOrCreateTabGroupId",
-                        MethodModifier.STATIC,
+                        "org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilterImpl",
+                        "isTabModelRestored",
+                        MethodModifier.REGULAR,
                         true,
-                        Token.class,
-                        Tab.class));
+                        boolean.class));
 
         Assert.assertTrue(
                 methodExists(
@@ -2064,7 +2062,7 @@ public class BytecodeTest {
                 fieldExists("org/chromium/components/cached_flags/CachedFlag", "mDefaultValue"));
         Assert.assertFalse(
                 fieldExists(
-                        "org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
+                        "org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl",
                         "mIsResetting"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/SwipeRefreshHandler", "mSwipeType"));
@@ -2223,8 +2221,8 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge"));
         Assert.assertTrue(
                 checkSuperName(
-                        "org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
-                        "org/chromium/chrome/browser/tasks/tab_groups/BraveTabGroupModelFilter"));
+                        "org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl",
+                        "org/chromium/chrome/browser/tabmodel/BraveTabGroupModelFilter"));
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/media/PictureInPictureActivity",
