@@ -554,9 +554,12 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
       data->FindString(ntp_background_images::kCreativeInstanceIDKey);
   const std::string* wallpaper_id =
       data->FindString(ntp_background_images::kWallpaperIDKey);
+  const std::string* campaign_id =
+      data->FindString(ntp_background_images::kCampaignIdKey);
   service->BrandedWallpaperWillBeDisplayed(
       wallpaper_id ? *wallpaper_id : "",
-      creative_instance_id ? *creative_instance_id : "");
+      creative_instance_id ? *creative_instance_id : "",
+      campaign_id ? *campaign_id : "");
 
   constexpr char kBrandedWallpaperKey[] = "brandedWallpaper";
   wallpaper.Set(kBrandedWallpaperKey, std::move(*data));
