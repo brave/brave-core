@@ -134,6 +134,7 @@ import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarC
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateProvider;
+import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeStateProvider;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
 import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
@@ -151,7 +152,6 @@ import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDel
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.externalauth.ExternalAuthUtils;
-import org.chromium.components.favicon.LargeIconBridge;
 import org.chromium.components.feature_engagement.Tracker;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
@@ -334,7 +334,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator"));
         Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter"));
+                classExists("org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/SwipeRefreshHandler"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/identity_disc/IdentityDiscController"));
@@ -1019,7 +1019,7 @@ public class BytecodeTest {
                         Tab.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilterImpl",
+                        "org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl",
                         "shouldUseParentIds",
                         MethodModifier.REGULAR,
                         true,
@@ -1027,7 +1027,7 @@ public class BytecodeTest {
                         Tab.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilterImpl",
+                        "org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl",
                         "isTabModelRestored",
                         MethodModifier.REGULAR,
                         true,
@@ -1563,7 +1563,8 @@ public class BytecodeTest {
                         MultiInstanceManager.class,
                         ObservableSupplier.class,
                         View.class,
-                        ManualFillingComponentSupplier.class));
+                        ManualFillingComponentSupplier.class,
+                        EdgeToEdgeStateProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
@@ -1609,7 +1610,6 @@ public class BytecodeTest {
                         SelectionDelegate.class,
                         RecyclerView.class,
                         DragReorderableRecyclerViewAdapter.class,
-                        LargeIconBridge.class,
                         boolean.class,
                         ObservableSupplierImpl.class,
                         Profile.class,
@@ -1732,7 +1732,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/password_manager/settings/ExportFlow",
-                        "org/chromium/chrome/browser/password_manager/settings/BraveExportFlow"));
+                        "org/chromium/chrome/browser/password_manager/settings/BraveExportFlow",
+                        int.class));
 
         Assert.assertTrue(
                 constructorsMatch(
