@@ -22,17 +22,18 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace webcompat_reporter {
+
 class WebcompatReporterService : public KeyedService,
                                  public mojom::WebcompatReporterHandler {
  public:
-  class WebCompatServiceDelegate {
+  class Delegate {
    public:
     struct ComponentInfo {
       std::string id;
       std::string name;
       std::string version;
     };
-    virtual ~WebCompatServiceDelegate() = default;
+    virtual ~Delegate() = default;
 
     virtual std::optional<std::vector<std::string>> GetAdblockFilterListNames()
         const = 0;
@@ -41,9 +42,9 @@ class WebcompatReporterService : public KeyedService,
         const = 0;
   };
 
-  explicit WebcompatReporterService(
-      std::unique_ptr<WebCompatServiceDelegate> service_delegate,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  WebcompatReporterService(
+      std::unique_ptr<Delegate> service_delegate,
+      std::unique_ptr<WebcompatReportUploader> report_uploader);
   WebcompatReporterService(const WebcompatReporterService&) = delete;
   WebcompatReporterService& operator=(const WebcompatReporterService&) = delete;
   ~WebcompatReporterService() override;
@@ -57,14 +58,11 @@ class WebcompatReporterService : public KeyedService,
 
  private:
   friend class WebcompatReporterServiceUnitTest;
-  WebcompatReporterService();
   void SetReportUploaderForTest(
       std::unique_ptr<WebcompatReportUploader> report_uploader);
-  void SetDelegateForTest(
-      std::unique_ptr<WebCompatServiceDelegate> service_delegate);
 
   void SubmitReportInternal(const Report& report_data);
-  std::unique_ptr<WebCompatServiceDelegate> service_delegate_;
+  std::unique_ptr<Delegate> service_delegate_;
   std::unique_ptr<WebcompatReportUploader> report_uploader_;
   mojo::ReceiverSet<mojom::WebcompatReporterHandler> receivers_;
   base::WeakPtrFactory<WebcompatReporterService> weak_factory_{this};

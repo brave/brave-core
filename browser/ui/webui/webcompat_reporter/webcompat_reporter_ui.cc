@@ -52,7 +52,7 @@ namespace {
 constexpr char kUISourceHistogramName[] = "Brave.Webcompat.UISource";
 constexpr int kMaxScreenshotPixelCount = 1280 * 720;
 
-const std::string BoolToString(bool value) {
+std::string BoolToString(bool value) {
   return value ? "true" : "false";
 }
 
@@ -244,7 +244,7 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
   }
 
   auto* reporter_service =
-      WebcompatReporterServiceFactory::GetInstance()->GetServiceForContext(
+      WebcompatReporterServiceFactory::GetServiceForContext(
           Profile::FromWebUI(web_ui()));
   if (reporter_service) {
     reporter_service->SubmitWebcompatReport(pending_report_);

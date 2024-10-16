@@ -10,9 +10,9 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/ref_counted.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/sequence_checker.h"
 #include "base/values.h"
-#include "brave/components/brave_shields/core/common/brave_shields.mojom.h"
 #include "url/gurl.h"
 
 namespace network {
@@ -62,6 +62,7 @@ class WebcompatReportUploader {
                                const std::string& content_type,
                                const std::string& post_data);
   void OnSimpleURLLoaderComplete(std::unique_ptr<std::string> response_body);
+  SEQUENCE_CHECKER(sequence_checker_);
 };
 
 }  // namespace webcompat_reporter

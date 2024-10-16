@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_WEBCOMPAT_REPORTER_WEBCOMPAT_REPORTER_SERVICE_FACTORY_H_
 
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom.h"
-#include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+#include "chrome/browser/profiles/profile_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/browser_context.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -21,16 +21,15 @@ namespace webcompat_reporter {
 
 class WebcompatReporterService;
 
-class WebcompatReporterServiceFactory
-    : public BrowserContextKeyedServiceFactory {
+class WebcompatReporterServiceFactory : public ProfileKeyedServiceFactory {
  public:
   WebcompatReporterServiceFactory(const WebcompatReporterServiceFactory&) =
       delete;
   WebcompatReporterServiceFactory& operator=(
       const WebcompatReporterServiceFactory&) = delete;
 
-  static mojo::PendingRemote<mojom::WebcompatReporterHandler> GetForContext(
-      content::BrowserContext* context);
+  static mojo::PendingRemote<mojom::WebcompatReporterHandler>
+  GetMojoReportHandlerForContext(content::BrowserContext* context);
   static WebcompatReporterService* GetServiceForContext(
       content::BrowserContext* context);
   static WebcompatReporterServiceFactory* GetInstance();

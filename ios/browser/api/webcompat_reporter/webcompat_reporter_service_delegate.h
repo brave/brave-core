@@ -16,6 +16,7 @@ class ComponentUpdateService;
 }  // namespace component_updater
 
 namespace webcompat_reporter {
+
 using WebCompatServiceDelegate =
     WebcompatReporterService::WebCompatServiceDelegate;
 using ComponentInfo =

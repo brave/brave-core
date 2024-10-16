@@ -10,12 +10,11 @@
 #include <utility>
 #include <vector>
 
-#include "base/task/current_thread.h"
+#include "base/test/task_environment.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom-forward.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/googletest/src/googletest/include/gtest/gtest.h"
@@ -23,21 +22,24 @@
 using testing::_;
 
 namespace {
+
 constexpr char kChannelMockedValue[] = "MockedChannelValue";
-}  // namespace
 
-namespace webcompat_reporter {
-
-class MockWebcompatReportUploader : public WebcompatReportUploader {
+class MockWebcompatReportUploader
+    : public webcompat_reporter::WebcompatReportUploader {
  public:
   MockWebcompatReportUploader() : WebcompatReportUploader(nullptr) {}
 
-  ~MockWebcompatReportUploader() override {}
-  MOCK_METHOD(void, SubmitReport, (const Report& report), (override));
+  ~MockWebcompatReportUploader() override = default;
+  MOCK_METHOD(void,
+              SubmitReport,
+              (const webcompat_reporter::Report& report),
+              (override));
 };
 
-class MockWebCompatServiceDelegate
-    : public WebcompatReporterService::WebCompatServiceDelegate {
+using WebCompatServiceDelegate =
+    webcompat_reporter::WebcompatReporterService::Delegate;
+class MockWebCompatServiceDelegate : public WebCompatServiceDelegate {
  public:
   MockWebCompatServiceDelegate() = default;
   ~MockWebCompatServiceDelegate() override = default;
@@ -52,41 +54,37 @@ class MockWebCompatServiceDelegate
               (),
               (const));
 };
+}  // namespace
+
+namespace webcompat_reporter {
 
 class WebcompatReporterServiceUnitTest : public testing::Test {
  public:
-  using ComponentInfo =
-      WebcompatReporterService::WebCompatServiceDelegate::ComponentInfo;
-  WebcompatReporterServiceUnitTest()
-      : webcompat_reporter_service_(std::unique_ptr<WebcompatReporterService>(
-            new WebcompatReporterService())),
-        task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
+  using ComponentInfo = WebcompatReporterService::Delegate::ComponentInfo;
+  WebcompatReporterServiceUnitTest() = default;
+  ~WebcompatReporterServiceUnitTest() override = default;
+
+  void SetUp() override {
+    auto delegate = std::make_unique<MockWebCompatServiceDelegate>();
+    delegate_ = delegate.get();
+    webcompat_reporter_service_ = std::make_unique<WebcompatReporterService>(
+        std::move(delegate), nullptr);
+
     webcompat_reporter_service_->SetReportUploaderForTest(
         std::unique_ptr<WebcompatReportUploader>(
             new MockWebcompatReportUploader()));
   }
-
-  ~WebcompatReporterServiceUnitTest() override = default;
 
   MockWebcompatReportUploader* GetMockWebcompatReportUploader() {
     return static_cast<MockWebcompatReportUploader*>(
         webcompat_reporter_service_->report_uploader_.get());
   }
 
-  MockWebCompatServiceDelegate* SetUpWebCompatServiceDelegateMock() {
-    auto delegate = std::make_unique<MockWebCompatServiceDelegate>();
-    auto raw_delegate_ptr = delegate.get();
-    webcompat_reporter_service_->SetDelegateForTest(std::move(delegate));
-    return raw_delegate_ptr;
-  }
-
-  void ResetWebCompatServiceDelegateMock() {
-    webcompat_reporter_service_->SetDelegateForTest(nullptr);
-  }
-
  protected:
+  raw_ptr<MockWebCompatServiceDelegate> delegate_;
   std::unique_ptr<WebcompatReporterService> webcompat_reporter_service_;
-  content::BrowserTaskEnvironment task_environment_;
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
 };
 
 TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithReportPropsOverride) {
@@ -129,10 +127,9 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithReportPropsOverride) {
         EXPECT_EQ(report_source.contact, report.contact);
         EXPECT_EQ(report_source.report_url, report.report_url);
       });
-  auto* delegate_mock = SetUpWebCompatServiceDelegateMock();
-  EXPECT_CALL(*delegate_mock, GetComponentInfos).Times(0);
-  EXPECT_CALL(*delegate_mock, GetChannelName).Times(0);
-  EXPECT_CALL(*delegate_mock, GetAdblockFilterListNames).Times(0);
+  EXPECT_CALL(*delegate_, GetComponentInfos).Times(0);
+  EXPECT_CALL(*delegate_, GetChannelName).Times(0);
+  EXPECT_CALL(*delegate_, GetAdblockFilterListNames).Times(0);
   webcompat_reporter_service_->SubmitWebcompatReport(report_source);
 }
 
@@ -176,14 +173,13 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
                   report.ad_block_list_names.value());
         EXPECT_EQ(report_source.languages, report.languages);
       });
-  auto* delegate_mock = SetUpWebCompatServiceDelegateMock();
-  EXPECT_CALL(*delegate_mock, GetComponentInfos)
+  EXPECT_CALL(*delegate_, GetComponentInfos)
       .Times(1)
       .WillOnce(testing::Return(component_infos));
-  EXPECT_CALL(*delegate_mock, GetChannelName)
+  EXPECT_CALL(*delegate_, GetChannelName)
       .Times(1)
       .WillOnce(testing::Return(kChannelMockedValue));
-  EXPECT_CALL(*delegate_mock, GetAdblockFilterListNames)
+  EXPECT_CALL(*delegate_, GetAdblockFilterListNames)
       .Times(1)
       .WillOnce(testing::Return(get_adblock_list_names_ret_value));
 
@@ -235,10 +231,9 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojo) {
         EXPECT_TRUE(report.screenshot_png);
         EXPECT_EQ(report.screenshot_png.value(), screenshot);
       });
-  auto* delegate_mock = SetUpWebCompatServiceDelegateMock();
-  EXPECT_CALL(*delegate_mock, GetChannelName).Times(0);
-  EXPECT_CALL(*delegate_mock, GetAdblockFilterListNames).Times(0);
-  EXPECT_CALL(*delegate_mock, GetComponentInfos).Times(0);
+  EXPECT_CALL(*delegate_, GetChannelName).Times(0);
+  EXPECT_CALL(*delegate_, GetAdblockFilterListNames).Times(0);
+  EXPECT_CALL(*delegate_, GetComponentInfos).Times(0);
 
   webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info));
 }
@@ -279,14 +274,13 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportMojoWithNoPropsOverride) {
         EXPECT_FALSE(report.brave_vpn_connected);
         EXPECT_FALSE(report.languages);
       });
-  auto* delegate_mock = SetUpWebCompatServiceDelegateMock();
-  EXPECT_CALL(*delegate_mock, GetComponentInfos)
+  EXPECT_CALL(*delegate_, GetComponentInfos)
       .Times(1)
       .WillOnce(testing::Return(component_infos));
-  EXPECT_CALL(*delegate_mock, GetChannelName)
+  EXPECT_CALL(*delegate_, GetChannelName)
       .Times(1)
       .WillOnce(testing::Return(kChannelMockedValue));
-  EXPECT_CALL(*delegate_mock, GetAdblockFilterListNames)
+  EXPECT_CALL(*delegate_, GetAdblockFilterListNames)
       .Times(1)
       .WillOnce(testing::Return(get_adblock_list_names_ret_value));
 

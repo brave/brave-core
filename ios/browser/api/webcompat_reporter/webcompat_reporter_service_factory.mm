@@ -12,6 +12,7 @@
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
 namespace webcompat_reporter {
+
 // static
 mojo::PendingRemote<mojom::WebcompatReporterHandler>
 WebcompatReporterServiceFactory::GetForBrowserState(
@@ -45,11 +46,13 @@ WebcompatReporterServiceFactory::BuildServiceInstanceFor(
     return nullptr;
   }
 
+  auto report_uploader = std::make_unique<WebcompatReportUploader>(
+      context->GetSharedURLLoaderFactory());
   component_updater::ComponentUpdateService* cus =
       GetApplicationContext()->GetComponentUpdateService();
   return std::make_unique<WebcompatReporterService>(
       std::make_unique<WebcompatReporterServiceDelegateImpl>(cus),
-      context->GetSharedURLLoaderFactory());
+      std::move(report_uploader));
 }
 
 }  // namespace webcompat_reporter

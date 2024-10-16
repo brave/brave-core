@@ -16,16 +16,16 @@
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 
 namespace {
+
 constexpr char kComponentItemName[] = "name";
 constexpr char kComponentItemId[] = "id";
 constexpr char kComponentItemVersion[] = "version";
 
-void ConvertCompsToValue(
-    std::optional<base::Value>& val_to_set,
+std::optional<base::Value> ConvertCompsToValue(
     const std::vector<webcompat_reporter::mojom::ComponentInfoPtr>&
         components) {
   if (components.empty()) {
-    return;
+    return std::nullopt;
   }
   auto components_list = base::Value::List();
   for (const auto& component : components) {
@@ -35,54 +35,78 @@ void ConvertCompsToValue(
     component_dict.Set(kComponentItemVersion, component->version);
     components_list.Append(std::move(component_dict));
   }
-  val_to_set = base::Value(std::move(components_list));
+  return base::Value(std::move(components_list));
 }
 
-void FillReportWithAdblockListNames(
-    webcompat_reporter::Report& report,
-    webcompat_reporter::WebcompatReporterService::WebCompatServiceDelegate*
-        service_delegate) {
-  if (report.ad_block_list_names && !report.ad_block_list_names->empty()) {
-    return;
+struct ReportFiller {
+  ReportFiller(
+      webcompat_reporter::Report& report,
+      webcompat_reporter::WebcompatReporterService::Delegate* service_delegate)
+      : report(report), service_delegate(service_delegate) {}
+  ~ReportFiller() = default;
+
+  ReportFiller& FillReportWithAdblockListNames() {
+    if (report->ad_block_list_names && !report->ad_block_list_names->empty()) {
+      return *this;
+    }
+
+    if (!service_delegate) {
+      return *this;
+    }
+
+    auto filter_list = service_delegate->GetAdblockFilterListNames();
+    if (!filter_list) {
+      return *this;
+    }
+    report->ad_block_list_names = base::JoinString(filter_list.value(), ",");
+    return *this;
   }
 
-  if (!service_delegate) {
-    return;
+  ReportFiller& FillReportWithComponetsInfo() {
+    if (report->ad_block_components &&
+        !report->ad_block_components->is_none()) {
+      return *this;
+    }
+    if (!service_delegate) {
+      return *this;
+    }
+
+    auto component_infos = service_delegate->GetComponentInfos();
+    if (!component_infos) {
+      return *this;
+    }
+
+    auto components_list = base::Value::List();
+    for (const auto& component : component_infos.value()) {
+      base::Value::Dict component_dict;
+      component_dict.Set(kComponentItemName, component.name);
+      component_dict.Set(kComponentItemId, component.id);
+      component_dict.Set(kComponentItemVersion, component.version);
+      components_list.Append(std::move(component_dict));
+    }
+    report->ad_block_components = base::Value(std::move(components_list));
+    return *this;
   }
 
-  auto filter_list = service_delegate->GetAdblockFilterListNames();
-  if (!filter_list) {
-    return;
-  }
-  report.ad_block_list_names = base::JoinString(filter_list.value(), ",");
-}
-
-void FillReportWithComponetsInfo(
-    webcompat_reporter::Report& report,
-    webcompat_reporter::WebcompatReporterService::WebCompatServiceDelegate*
-        service_delegate) {
-  if (report.ad_block_components && !report.ad_block_components->is_none()) {
-    return;
-  }
-  if (!service_delegate) {
-    return;
+  ReportFiller& FillChannel() {
+    if (!report->channel && service_delegate) {
+      report->channel = service_delegate->GetChannelName();
+    }
+    return *this;
   }
 
-  auto component_infos = service_delegate->GetComponentInfos();
-  if (!component_infos) {
-    return;
+  ReportFiller& FillVersion() {
+    if (!report->brave_version) {
+      report->brave_version =
+          version_info::GetBraveVersionWithoutChromiumMajorVersion();
+    }
+    return *this;
   }
 
-  auto components_list = base::Value::List();
-  for (const auto& component : component_infos.value()) {
-    base::Value::Dict component_dict;
-    component_dict.Set(kComponentItemName, component.name);
-    component_dict.Set(kComponentItemId, component.id);
-    component_dict.Set(kComponentItemVersion, component.version);
-    components_list.Append(std::move(component_dict));
-  }
-  report.ad_block_components = base::Value(std::move(components_list));
-}
+  raw_ref<webcompat_reporter::Report> report;
+  const raw_ptr<webcompat_reporter::WebcompatReporterService::Delegate>
+      service_delegate;
+};
 
 void FillReportByReportInfo(
     webcompat_reporter::Report& report,
@@ -101,8 +125,8 @@ void FillReportByReportInfo(
   }
 
   if (report_info->ad_block_components_version) {
-    ConvertCompsToValue(report.ad_block_components,
-                        report_info->ad_block_components_version.value());
+    report.ad_block_components =
+        ConvertCompsToValue(report_info->ad_block_components_version.value());
   }
 
   if (report_info->ad_block_list_names &&
@@ -120,33 +144,15 @@ void FillReportByReportInfo(
   report.contact = report_info->contact;
   report.screenshot_png = report_info->screenshot_png;
 }
-
-void FillReportValues(
-    webcompat_reporter::Report& report,
-    webcompat_reporter::WebcompatReporterService::WebCompatServiceDelegate*
-        service_delegate) {
-  if (!report.channel && service_delegate) {
-    report.channel = service_delegate->GetChannelName();
-  }
-
-  if (!report.brave_version) {
-    report.brave_version =
-        version_info::GetBraveVersionWithoutChromiumMajorVersion();
-  }
-  FillReportWithComponetsInfo(report, service_delegate);
-  FillReportWithAdblockListNames(report, service_delegate);
-}
 }  // namespace
+
 namespace webcompat_reporter {
 
-WebcompatReporterService::WebcompatReporterService() = default;
-
 WebcompatReporterService::WebcompatReporterService(
-    std::unique_ptr<WebCompatServiceDelegate> service_delegate,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    std::unique_ptr<Delegate> service_delegate,
+    std::unique_ptr<WebcompatReportUploader> report_uploader)
     : service_delegate_(std::move(service_delegate)),
-      report_uploader_(
-          std::make_unique<WebcompatReportUploader>(url_loader_factory)) {}
+      report_uploader_(std::move(report_uploader)) {}
 
 WebcompatReporterService::~WebcompatReporterService() = default;
 
@@ -170,8 +176,13 @@ void WebcompatReporterService::SubmitWebcompatReport(
 }
 
 void WebcompatReporterService::SubmitWebcompatReport(Report report_data) {
-  FillReportValues(report_data,
-                   service_delegate_ ? service_delegate_.get() : nullptr);
+  ReportFiller(report_data,
+               service_delegate_ ? service_delegate_.get() : nullptr)
+      .FillChannel()
+      .FillVersion()
+      .FillReportWithComponetsInfo()
+      .FillReportWithAdblockListNames();
+
   SubmitReportInternal(report_data);
 }
 
@@ -186,8 +197,5 @@ void WebcompatReporterService::SetReportUploaderForTest(
     std::unique_ptr<WebcompatReportUploader> report_uploader) {
   report_uploader_ = std::move(report_uploader);
 }
-void WebcompatReporterService::SetDelegateForTest(
-    std::unique_ptr<WebCompatServiceDelegate> service_delegate) {
-  service_delegate_ = std::move(service_delegate);
-}
+
 }  // namespace webcompat_reporter

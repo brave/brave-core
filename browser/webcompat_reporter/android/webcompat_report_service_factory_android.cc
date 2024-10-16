@@ -10,7 +10,9 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
 namespace chrome {
+
 namespace android {
+
 static jlong
 JNI_WebcompatReporterServiceFactory_GetInterfaceToWebcompatReporterService(
     JNIEnv* env,
@@ -22,10 +24,11 @@ JNI_WebcompatReporterServiceFactory_GetInterfaceToWebcompatReporterService(
 
   auto pending =
       webcompat_reporter::WebcompatReporterServiceFactory::GetInstance()
-          ->GetForContext(profile);
+          ->GetMojoReportHandlerForContext(profile);
 
   return static_cast<jlong>(pending.PassPipe().release().value());
 }
 
 }  // namespace android
+
 }  // namespace chrome

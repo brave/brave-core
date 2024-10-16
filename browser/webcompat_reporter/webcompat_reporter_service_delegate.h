@@ -20,10 +20,9 @@ class AdBlockService;
 }  // namespace brave_shields
 
 namespace webcompat_reporter {
-using WebCompatServiceDelegate =
-    WebcompatReporterService::WebCompatServiceDelegate;
-using ComponentInfo =
-    WebcompatReporterService::WebCompatServiceDelegate::ComponentInfo;
+
+using WebCompatServiceDelegate = WebcompatReporterService::Delegate;
+using ComponentInfo = WebcompatReporterService::Delegate::ComponentInfo;
 class WebcompatReporterServiceDelegateImpl : public WebCompatServiceDelegate {
  public:
   explicit WebcompatReporterServiceDelegateImpl(
@@ -41,8 +40,9 @@ class WebcompatReporterServiceDelegateImpl : public WebCompatServiceDelegate {
   std::optional<std::vector<ComponentInfo>> GetComponentInfos() const override;
 
  private:
-  raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
-  raw_ptr<brave_shields::AdBlockService> adblock_service_;
+  const raw_ptr<component_updater::ComponentUpdateService>
+      component_update_service_;
+  const raw_ptr<brave_shields::AdBlockService> adblock_service_;
 };
 
 }  // namespace webcompat_reporter
