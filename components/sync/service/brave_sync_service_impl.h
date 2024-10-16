@@ -86,9 +86,6 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, HistoryPreconditions);
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
                            P3aForHistoryThroughDelegate);
-  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
-                           OnAccountsCookieDeletedByUserAction);
-  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, OnAccountsInCookieUpdated);
 
   BraveSyncAuthManager* GetBraveSyncAuthManager();
   SyncServiceCrypto* GetCryptoForTests();

@@ -17,6 +17,11 @@
 namespace signin {
 
 AccountsInCookieJarInfo IdentityManager::GetAccountsInCookieJar() const {
+  if (should_fake_next_get_accounts_in_cookie_jar_for_test_) {
+    return AccountsInCookieJarInfo(true, std::vector<gaia::ListedAccount>(),
+                                   std::vector<gaia::ListedAccount>());
+  }
+
   // accounts_in_cookie_jar_info.accounts_are_fresh must be false,
   // see `SyncServiceImpl::OnEngineInitialized`
   return AccountsInCookieJarInfo(false, std::vector<gaia::ListedAccount>(),
@@ -24,5 +29,11 @@ AccountsInCookieJarInfo IdentityManager::GetAccountsInCookieJar() const {
 }
 
 void IdentityManager::PrepareForAddingNewAccount() {}
+
+void IdentityManager::FakeGetAccountsInCookieJarForNextCallForTests(
+    bool should_fake_next_get_accounts_in_cookie_jar_for_test) {
+  should_fake_next_get_accounts_in_cookie_jar_for_test_ =
+      should_fake_next_get_accounts_in_cookie_jar_for_test;
+}
 
 }  // namespace signin

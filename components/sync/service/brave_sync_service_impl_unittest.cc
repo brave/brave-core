@@ -712,17 +712,11 @@ TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitializeIOS) {
   EXPECT_FALSE(brave_sync_prefs()->GetLeaveChainDetails().empty());
 }
 
-// No test for SyncServiceImplBrave::OnPrimaryAccountChanged
-// Because MaybeClearAccountKeyedPreferences at sync_service_impl.cc
-// requires accounts_in_cookie_jar_info.accounts_are_fresh to be true
-// but IdentityManager::GetAccountsInCookieJar() override at
-// chromium_src/components/signin/public/identity_manager/identity_manager.cc
-// gives false.
-
 namespace {
 enum class GACookiesMethodType {
   kOnAccountsCookieDeletedByUserAction,
-  kOnAccountsInCookieUpdated
+  kOnAccountsInCookieUpdated,
+  kOnPrimaryAccountChanged
 };
 }
 
@@ -746,7 +740,32 @@ class BraveSyncServiceImplGACookiesTest
                   signin::AccountsInCookieJarInfo(), GoogleServiceAuthError());
             },
             this);
+      case GACookiesMethodType::kOnPrimaryAccountChanged:
+        return base::BindOnce(
+            [](BraveSyncServiceImplGACookiesTest* p_this) {
+              CoreAccountInfo prev_account_info;
+              prev_account_info.email = "usertest@gmail.com";
+              prev_account_info.gaia = "gaia";
+              prev_account_info.account_id =
+                  CoreAccountId::FromGaiaId(prev_account_info.gaia);
 
+              signin::PrimaryAccountChangeEvent primary_accountchange_event(
+                  signin::PrimaryAccountChangeEvent::State(
+                      prev_account_info, signin::ConsentLevel::kSignin),
+                  signin::PrimaryAccountChangeEvent::State(),
+                  signin_metrics::ProfileSignout::kTest);
+
+              p_this->brave_sync_service_impl()
+                  ->identity_manager_
+                  ->FakeGetAccountsInCookieJarForNextCallForTests(true);
+
+              p_this->brave_sync_service_impl()->OnPrimaryAccountChanged(
+                  primary_accountchange_event);
+              p_this->brave_sync_service_impl()
+                  ->identity_manager_
+                  ->FakeGetAccountsInCookieJarForNextCallForTests(false);
+            },
+            this);
       default:
         NOTREACHED_NORETURN();
     }
@@ -773,7 +792,8 @@ INSTANTIATE_TEST_SUITE_P(
     BraveSyncServiceImplGACookiesTest,
     testing::ValuesIn(
         {GACookiesMethodType::kOnAccountsCookieDeletedByUserAction,
-         GACookiesMethodType::kOnAccountsInCookieUpdated}),
+         GACookiesMethodType::kOnAccountsInCookieUpdated,
+         GACookiesMethodType::kOnPrimaryAccountChanged}),
     [](const testing::TestParamInfo<
         BraveSyncServiceImplGACookiesTest::ParamType>& info) {
       switch (info.param) {
@@ -781,6 +801,8 @@ INSTANTIATE_TEST_SUITE_P(
           return "OnAccountsCookieDeletedByUserAction";
         case GACookiesMethodType::kOnAccountsInCookieUpdated:
           return "OnAccountsInCookieUpdated";
+        case GACookiesMethodType::kOnPrimaryAccountChanged:
+          return "OnPrimaryAccountChanged";
         default:
           NOTREACHED_NORETURN();
       }

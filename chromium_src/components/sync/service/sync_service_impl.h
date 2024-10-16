@@ -12,6 +12,7 @@
 #define BRAVE_SYNC_SERVICE_IMPL_H_                                             \
  private:                                                                      \
   friend class BraveSyncServiceImpl;                                           \
+  friend class BraveSyncServiceImplGACookiesTest;                              \
   friend class BraveSyncServiceImplTest;                                       \
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, OnSelfDeviceInfoDeleted); \
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,                           \
