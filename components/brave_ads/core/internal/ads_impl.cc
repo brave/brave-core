@@ -376,6 +376,9 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
 
   task_queue_.FlushAndStopQueueing();
 
+  LOG(ERROR) << "FOOBAR.SEARCH_ENGINE: "
+             << GetAdsClient()->GetDefaultSearchEngine().value_or("<NULL>");
+
   std::move(callback).Run(/*success=*/true);
 }
 

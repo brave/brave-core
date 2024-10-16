@@ -112,6 +112,18 @@ void BatAdsClientMojoBridge::CloseNotificationAd(
   }
 }
 
+std::optional<std::string> BatAdsClientMojoBridge::GetDefaultSearchEngine()
+    const {
+  if (!bat_ads_client_associated_remote_.is_bound()) {
+    return {};
+  }
+
+  std::optional<std::string> default_search_engine;
+  bat_ads_client_associated_remote_->GetDefaultSearchEngine(
+      &default_search_engine);
+  return default_search_engine;
+}
+
 void BatAdsClientMojoBridge::CacheAdEventForInstanceId(
     const std::string& id,
     const brave_ads::mojom::AdType mojom_ad_type,

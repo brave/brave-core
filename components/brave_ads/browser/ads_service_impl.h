@@ -324,6 +324,8 @@ class AdsServiceImpl final : public AdsService,
   void ShowNotificationAd(base::Value::Dict dict) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
+  void GetDefaultSearchEngine(GetDefaultSearchEngineCallback callback) override;
+
   void CacheAdEventForInstanceId(
       const std::string& id,
       mojom::AdType mojom_ad_type,

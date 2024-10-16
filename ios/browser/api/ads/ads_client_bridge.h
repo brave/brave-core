@@ -26,6 +26,7 @@
 - (void)notifyPendingObservers;
 - (bool)isNetworkConnectionAvailable;
 - (bool)canShowNotificationAds;
+- (std::optional<std::string>)getDefaultSearchEngine;
 - (void)loadResourceComponent:(const std::string&)id
                       version:(const int)version
                      callback:(brave_ads::LoadFileCallback)callback;

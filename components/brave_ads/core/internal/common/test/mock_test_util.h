@@ -44,6 +44,9 @@ void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
     const AdsClientMock& ads_client_mock,
     bool can_show);
 
+void MockGetDefaultSearchEngine(const AdsClientMock& ads_client_mock,
+                                const std::string& default_search_engine);
+
 void MockGetSiteHistory(const AdsClientMock& ads_client_mock,
                         const SiteHistoryList& site_history);
 

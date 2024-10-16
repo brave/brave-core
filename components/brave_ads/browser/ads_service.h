@@ -54,6 +54,9 @@ class AdsService : public KeyedService {
 #else
     virtual bool IsFullScreenMode() = 0;
 #endif
+
+    virtual std::optional<std::string> GetDefaultSearchEngine() const = 0;
+
    protected:
     virtual ~Delegate() = default;
   };

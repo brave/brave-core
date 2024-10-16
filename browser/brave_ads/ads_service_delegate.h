@@ -64,6 +64,9 @@ class AdsServiceDelegate : public AdsService::Delegate {
 #else
   bool IsFullScreenMode() override;
 #endif
+
+  std::optional<std::string> GetDefaultSearchEngine() const override;
+
  private:
   raw_ptr<Profile> profile_;
   raw_ptr<brave_adaptive_captcha::BraveAdaptiveCaptchaService>

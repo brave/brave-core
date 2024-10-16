@@ -1288,6 +1288,10 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
       closeNotificationAd:base::SysUTF8ToNSString(placement_id)];
 }
 
+- (std::optional<std::string>)getDefaultSearchEngine {
+  return std::nullopt;
+}
+
 - (void)cacheAdEventForInstanceId:(const std::string&)id
                            adType:(const brave_ads::mojom::AdType)mojom_ad_type
                  confirmationType:(const brave_ads::mojom::ConfirmationType)

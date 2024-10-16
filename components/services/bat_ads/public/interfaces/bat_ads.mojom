@@ -83,6 +83,9 @@ interface BatAdsClient {
   ShowNotificationAd(mojo_base.mojom.DictionaryValue value);
   CloseNotificationAd(string placement_id);
 
+  [Sync]
+  GetDefaultSearchEngine() => (string? default_search_engine);
+
   CacheAdEventForInstanceId(
       string id,
       brave_ads.mojom.AdType mojom_ad_type,

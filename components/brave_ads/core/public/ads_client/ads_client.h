@@ -57,6 +57,9 @@ class ADS_EXPORT AdsClient {
   // Close the notification ad for the specified `placement_id`.
   virtual void CloseNotificationAd(const std::string& placement_id) = 0;
 
+  // Returns a default search engine.
+  virtual std::optional<std::string> GetDefaultSearchEngine() const = 0;
+
   // Cache an ad event for the specified instance `id`, `mojom_ad_type`,
   // `mojom_confirmation_type` and `time`.
   virtual void CacheAdEventForInstanceId(

@@ -73,6 +73,10 @@ void AdsClientIOS::CacheAdEventForInstanceId(
                                 time:time];
 }
 
+std::optional<std::string> AdsClientIOS::GetDefaultSearchEngine() const {
+  return [bridge_ getDefaultSearchEngine];
+}
+
 std::vector<base::Time> AdsClientIOS::GetCachedAdEvents(
     const brave_ads::mojom::AdType mojom_ad_type,
     const brave_ads::mojom::ConfirmationType mojom_confirmation_type) const {

@@ -1569,6 +1569,11 @@ void AdsServiceImpl::CloseNotificationAd(const std::string& placement_id) {
   }
 }
 
+void AdsServiceImpl::GetDefaultSearchEngine(
+    GetDefaultSearchEngineCallback callback) {
+  std::move(callback).Run(delegate_->GetDefaultSearchEngine());
+}
+
 void AdsServiceImpl::CacheAdEventForInstanceId(
     const std::string& id,
     const mojom::AdType mojom_ad_type,

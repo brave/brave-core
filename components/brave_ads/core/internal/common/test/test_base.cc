@@ -225,6 +225,8 @@ void TestBase::MockAdsClient() {
   MockShowNotificationAd(ads_client_mock_);
   MockCloseNotificationAd(ads_client_mock_);
 
+  MockGetDefaultSearchEngine(ads_client_mock_, kDefaultSearchEngine);
+
   MockCacheAdEventForInstanceId(ads_client_mock_);
   MockGetCachedAdEvents(ads_client_mock_);
   MockResetAdEventCacheForInstanceId(ads_client_mock_);

@@ -45,6 +45,8 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD(void, ShowNotificationAd, (const NotificationAdInfo& ad));
   MOCK_METHOD(void, CloseNotificationAd, (const std::string& placement_id));
 
+  MOCK_METHOD(std::optional<std::string>, GetDefaultSearchEngine, (), (const));
+
   MOCK_METHOD(void,
               CacheAdEventForInstanceId,
               (const std::string& id,
