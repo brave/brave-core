@@ -143,7 +143,7 @@ struct AIChatIntroMessageView_Previews: PreviewProvider {
               engineType: .llamaRemote,
               category: .chat,
               access: .basicAndPremium,
-              maxPageContentLength: 9000,
+              maxAssociatedContentLength: 9000,
               longConversationWarningCharacterLimit: 20000
             )
           ),

@@ -253,12 +253,12 @@ TEST_F(ModelServiceTest, SetAssociatedContentLengthMetrics_CustomModel) {
   EXPECT_EQ(custom_model.options->get_custom_model_options()->context_size,
             kDefaultCustomModelContextSize);
 
-  // Validate that max_page_content_length is calculated correctly
+  // Validate that max_associated_content_length is calculated correctly
   size_t expected_content_length =
       GetService()->GetMaxAssociatedContentLengthForModel(custom_model);
-  EXPECT_EQ(
-      custom_model.options->get_custom_model_options()->max_page_content_length,
-      expected_content_length);
+  EXPECT_EQ(custom_model.options->get_custom_model_options()
+                ->max_associated_content_length,
+            expected_content_length);
 
   // Validate that long_conversation_warning_character_limit is calculated
   // correctly
@@ -287,12 +287,12 @@ TEST_F(ModelServiceTest, SetAssociatedContentLengthMetrics_ValidContextSize) {
   EXPECT_EQ(custom_model.options->get_custom_model_options()->context_size,
             kContextSize);
 
-  // Validate that max_page_content_length is calculated correctly
+  // Validate that max_associated_content_length is calculated correctly
   size_t expected_content_length =
       GetService()->GetMaxAssociatedContentLengthForModel(custom_model);
-  EXPECT_EQ(
-      custom_model.options->get_custom_model_options()->max_page_content_length,
-      expected_content_length);
+  EXPECT_EQ(custom_model.options->get_custom_model_options()
+                ->max_associated_content_length,
+            expected_content_length);
 
   // Validate long_conversation_warning_character_limit calculation
   base::CheckedNumeric<size_t> checked_warning_limit = base::CheckMul(
@@ -336,7 +336,7 @@ TEST_F(ModelServiceTest, GetMaxAssociatedContentLengthForModel_LeoModel) {
   static constexpr size_t expected_content_length = 10'000;
 
   mojom::LeoModelOptionsPtr leo_options = mojom::LeoModelOptions::New();
-  leo_options->max_page_content_length = expected_content_length;
+  leo_options->max_associated_content_length = expected_content_length;
 
   mojom::Model leo_model;
   leo_model.options =

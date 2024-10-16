@@ -106,7 +106,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
           modelRequestName: this.modelRequestName,
           contextSize: this.contextSize,
           // Determined at runtime based on contextSize
-          maxPageContentLength: -1,
+          maxAssociatedContentLength: -1,
           // Determined at runtime based on contextSize
           longConversationWarningCharacterLimit: -1,
           endpoint: mojomUrl,

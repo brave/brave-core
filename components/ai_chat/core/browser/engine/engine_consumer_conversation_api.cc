@@ -35,7 +35,7 @@ EngineConsumerConversationAPI::EngineConsumerConversationAPI(
   DCHECK(!model_options.name.empty());
   api_ = std::make_unique<ConversationAPIClient>(
       model_options.name, url_loader_factory, credential_manager);
-  max_page_content_length_ = model_options.max_page_content_length;
+  max_associated_content_length_ = model_options.max_associated_content_length;
 }
 
 EngineConsumerConversationAPI::~EngineConsumerConversationAPI() = default;
@@ -149,7 +149,7 @@ EngineConsumerConversationAPI::GetAssociatedContentConversationEvent(
     const std::string& content,
     const bool is_video) {
   const std::string& truncated_page_content =
-      content.substr(0, max_page_content_length_);
+      content.substr(0, max_associated_content_length_);
 
   ConversationEvent event;
   event.role = mojom::CharacterType::HUMAN;

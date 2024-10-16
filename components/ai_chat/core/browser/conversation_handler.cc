@@ -1237,19 +1237,19 @@ void ConversationHandler::OnHistoryUpdate() {
 int ConversationHandler::GetContentUsedPercentage() {
   CHECK(associated_content_delegate_);
   auto& model = GetCurrentModel();
-  uint32_t max_page_content_length =
+  uint32_t max_associated_content_length =
       ModelService::GetMaxAssociatedContentLengthForModel(model);
 
   auto content_length =
       associated_content_delegate_->GetCachedTextContent().length();
 
-  if (max_page_content_length > static_cast<uint32_t>(content_length)) {
+  if (max_associated_content_length > static_cast<uint32_t>(content_length)) {
     return 100;
   }
 
   // Convert to float to avoid integer division, which truncates towards zero
   // and could lead to inaccurate results before multiplication.
-  float pct = static_cast<float>(max_page_content_length) /
+  float pct = static_cast<float>(max_associated_content_length) /
               static_cast<float>(content_length) * 100;
 
   return base::ClampRound(pct);

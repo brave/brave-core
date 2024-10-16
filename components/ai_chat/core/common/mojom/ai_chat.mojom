@@ -188,7 +188,7 @@ struct LeoModelOptions {
   // Which access level grants permission to use the model
   ModelAccess access;
   // max limit to truncate page contents (measured in chars, not tokens)
-  uint32 max_page_content_length;
+  uint32 max_associated_content_length;
   // max limit for overall conversation (measured in chars, not tokens)
   uint32 long_conversation_warning_character_limit;
 };
@@ -198,7 +198,7 @@ struct CustomModelOptions {
   // number of tokens supported by the given model
   uint32 context_size;
   // max limit to truncate page contents (measured in chars, not tokens)
-  uint32 max_page_content_length;
+  uint32 max_associated_content_length;
   // max limit for overall conversation (measured in chars, not tokens)
   uint32 long_conversation_warning_character_limit;
   url.mojom.Url endpoint;

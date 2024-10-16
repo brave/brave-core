@@ -27,8 +27,8 @@ extern const char kLeoModelSupportUrl[];
 
 // Upon registering a custom model, users have the ability to explicitly
 // provide a context size (in tokens). When present, we'll use this value to
-// determine the max page content length (in chars). We will assume 4 chars per
-// token. When no context size has been provided, we will default to a
+// determine the max associated content length (in chars). We will assume 4
+// chars per token. When no context size has been provided, we will default to a
 // conservative 4k tokens based on common models like Phi 3 Mini and Llama 2
 // (both have 4k token context limits).
 constexpr size_t kDefaultCharsPerToken = 4;

@@ -114,7 +114,7 @@ EngineConsumerOAIRemote::EngineConsumerOAIRemote(
     const mojom::Model& model,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   model_options_ = *model.options->get_custom_model_options();
-  max_page_content_length_ =
+  max_associated_content_length_ =
       ModelService::GetMaxAssociatedContentLengthForModel(model);
 
   // Initialize the API client
@@ -143,7 +143,8 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
     const std::string& question,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
-  const std::string& truncated_text = text.substr(0, max_page_content_length_);
+  const std::string& truncated_text =
+      text.substr(0, max_associated_content_length_);
   std::string rewrite_prompt = base::ReplaceStringPlaceholders(
       l10n_util::GetStringUTF8(
           IDS_AI_CHAT_LLAMA2_GENERATE_REWRITE_SUGGESTION_PROMPT),
@@ -168,7 +169,7 @@ void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
     const std::string& page_content,
     SuggestedQuestionsCallback callback) {
   const std::string& truncated_page_content =
-      page_content.substr(0, max_page_content_length_);
+      page_content.substr(0, max_associated_content_length_);
   std::string content_segment = base::ReplaceStringPlaceholders(
       l10n_util::GetStringUTF8(is_video
                                    ? IDS_AI_CHAT_CLAUDE_VIDEO_PROMPT_SEGMENT
@@ -247,12 +248,12 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
   std::optional<std::string> selected_text = std::nullopt;
   if (last_turn->selected_text.has_value()) {
     selected_text =
-        last_turn->selected_text->substr(0, max_page_content_length_);
+        last_turn->selected_text->substr(0, max_associated_content_length_);
   }
 
   const std::string& truncated_page_content = page_content.substr(
-      0, selected_text ? max_page_content_length_ - selected_text->size()
-                       : max_page_content_length_);
+      0, selected_text ? max_associated_content_length_ - selected_text->size()
+                       : max_associated_content_length_);
 
   base::Value::List messages = BuildMessages(
       truncated_page_content, selected_text, is_video, conversation_history);

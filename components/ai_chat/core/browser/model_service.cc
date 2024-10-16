@@ -85,7 +85,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->engine_type =
           conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
                            : mojom::ModelEngineType::LLAMA_REMOTE;
-      options->max_page_content_length = 8000;
+      options->max_associated_content_length = 8000;
       options->long_conversation_warning_character_limit = 9700;
 
       auto model = mojom::Model::New();
@@ -106,7 +106,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->engine_type =
           conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
                            : mojom::ModelEngineType::CLAUDE_REMOTE;
-      options->max_page_content_length = 180000;
+      options->max_associated_content_length = 180000;
       options->long_conversation_warning_character_limit = 320000;
 
       auto model = mojom::Model::New();
@@ -127,7 +127,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->engine_type =
           conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
                            : mojom::ModelEngineType::CLAUDE_REMOTE;
-      options->max_page_content_length = 180000;
+      options->max_associated_content_length = 180000;
       options->long_conversation_warning_character_limit = 320000;
 
       auto model = mojom::Model::New();
@@ -150,7 +150,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->engine_type =
           conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
                            : mojom::ModelEngineType::LLAMA_REMOTE;
-      options->max_page_content_length = 8000;
+      options->max_associated_content_length = 8000;
       options->long_conversation_warning_character_limit = 9700;
 
       auto model = mojom::Model::New();
@@ -273,7 +273,8 @@ void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
 // shown. Leo Models have hard-coded values, but custom models' properties are
 // based on their context size, which may or may not have been provided by the
 // user. For this reason, we set the long_conversation_warning_character_limit
-// and max_page_content_length after the model has been loaded and validated.
+// and max_associated_content_length after the model has been loaded and
+// validated.
 void ModelService::SetAssociatedContentLengthMetrics(mojom::Model& model) {
   if (!model.options->is_custom_model_options()) {
     // Only set metrics for custom models
@@ -286,14 +287,14 @@ void ModelService::SetAssociatedContentLengthMetrics(mojom::Model& model) {
         kDefaultCustomModelContextSize;
   }
 
-  uint32_t max_page_content_length =
+  uint32_t max_associated_content_length =
       ModelService::GetMaxAssociatedContentLengthForModel(model);
 
-  model.options->get_custom_model_options()->max_page_content_length =
-      max_page_content_length;
+  model.options->get_custom_model_options()->max_associated_content_length =
+      max_associated_content_length;
 
   base::CheckedNumeric<uint32> warn_at = base::CheckMul<size_t>(
-      max_page_content_length, kMaxContentLengthThreshold);
+      max_associated_content_length, kMaxContentLengthThreshold);
 
   if (warn_at.IsValid()) {
     model.options->get_custom_model_options()
@@ -305,7 +306,8 @@ void ModelService::SetAssociatedContentLengthMetrics(mojom::Model& model) {
 size_t ModelService::GetMaxAssociatedContentLengthForModel(
     const mojom::Model& model) {
   if (model.options->is_leo_model_options()) {
-    return model.options->get_leo_model_options()->max_page_content_length;
+    return model.options->get_leo_model_options()
+        ->max_associated_content_length;
   }
 
   const auto context_size =

@@ -327,7 +327,7 @@ export function ConversationContextProvider(
     if ( options ) {
       totalCharLimit += options.longConversationWarningCharacterLimit ?? 0
       totalCharLimit += context.shouldSendPageContents
-        ? options.maxPageContentLength ?? 0
+        ? options.maxAssociatedContentLength ?? 0
         : 0
     }
 

@@ -34,9 +34,9 @@ TEST_F(ModelValidatorUnitTest, IsValidContextSize) {
 
   TestCase test_cases[] = {
       {1000, true},
-      {1, true},              // Minimum valid size
-      {std::nullopt, false},  // Nullopt should return false
-      {0, false},             // Invalid size (less than MIN_CONTEXT_SIZE)
+      {kMinCustomModelContextSize, true},  // Minimum valid size
+      {std::nullopt, false},               // Nullopt should return false
+      {0, false},  // Invalid size (less than MIN_CONTEXT_SIZE)
       {kMaxCustomContextSize, true},                       // Max valid size
       {kMaxCustomContextSizePlusOne.ValueOrDie(), false},  // Beyond max size
   };
