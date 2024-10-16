@@ -7,12 +7,12 @@
 
 #include <optional>
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_util.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
@@ -31,6 +31,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "net/http/http_status_code.h"
@@ -121,8 +122,7 @@ void RedeemRewardConfirmation::FetchPaymentTokenAfter(
     const ConfirmationInfo& confirmation) {
   BLOG(1, "Fetch payment token in " << delay);
 
-  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE,
+  GlobalState::GetInstance()->PostDelayedTask(
       base::BindOnce(&RedeemRewardConfirmation::FetchPaymentToken,
                      std::move(redeem_confirmation), confirmation),
       delay);
