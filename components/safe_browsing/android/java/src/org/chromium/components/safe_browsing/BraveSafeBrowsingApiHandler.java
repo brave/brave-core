@@ -21,6 +21,8 @@ import org.chromium.components.safe_browsing.BraveSafeBrowsingUtils.SafeBrowsing
 import org.chromium.components.safe_browsing.BraveSafeBrowsingUtils.SafeBrowsingJavaThreatType;
 import org.chromium.components.safe_browsing.SafeBrowsingApiHandler.LookupResult;
 
+import java.util.List;
+
 /**
  * Brave implementation of SafeBrowsingApiHandler for Safe Browsing Under the bonnet it still uses
  * SafetyNet.
@@ -199,6 +201,26 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                             }
                             mTriesCount = 0;
                         });
+    }
+
+    private int getMostPriorityThreat(SafeBrowsingResponse sbResponse) {
+        List<SafeBrowsingThreat> threats = sbResponse.getDetectedThreats()
+        if (threats.size() == 1) {
+            return threats.get(0).getThreatType();
+        }
+
+        // public @interface SafetyNetJavaThreatType {
+        //     int UNWANTED_SOFTWARE = 3;
+        //     int POTENTIALLY_HARMFUL_APPLICATION = 4;
+        //     int SOCIAL_ENGINEERING = 5;
+        //     int SUBRESOURCE_FILTER = 13;
+        //     int BILLING = 15;
+        //     int CSD_ALLOWLIST = 16;
+        //     int MAX_VALUE = 17;
+        // }
+    
+        
+        return threats.get(0).getThreatType();
     }
 
     private void warnWhenMoreThanOneThreat(SafeBrowsingResponse sbResponse) {
