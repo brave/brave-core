@@ -27,8 +27,9 @@ source_set("webcompat_reporter") {
     "webcompat_reporter_service_factory_wrapper.mm",
   ]
 
+  public_deps = [ ":webcompat_reporter_mojom_wrappers" ]
+
   deps = [
-    ":webcompat_reporter_mojom_wrappers",
     "//base",
     "//brave/base/mac",
     "//brave/components/webcompat_reporter/browser:browser",

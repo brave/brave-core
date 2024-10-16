@@ -13,6 +13,8 @@ static_library("browser") {
     "webcompat_report_uploader.h",
     "webcompat_reporter_service.cc",
     "webcompat_reporter_service.h",
+    "webcompat_reporter_service_delegate_base.cc",
+    "webcompat_reporter_service_delegate_base.h",
     "webcompat_reporter_utils.cc",
     "webcompat_reporter_utils.h",
   ]

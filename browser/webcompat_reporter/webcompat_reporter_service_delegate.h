@@ -9,11 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
-
-namespace component_updater {
-class ComponentUpdateService;
-}  // namespace component_updater
+#include "brave/components/webcompat_reporter/browser/webcompat_reporter_service_delegate_base.h"
 
 namespace brave_shields {
 class AdBlockService;
@@ -21,9 +17,8 @@ class AdBlockService;
 
 namespace webcompat_reporter {
 
-using WebCompatServiceDelegate = WebcompatReporterService::Delegate;
-using ComponentInfo = WebcompatReporterService::Delegate::ComponentInfo;
-class WebcompatReporterServiceDelegateImpl : public WebCompatServiceDelegate {
+class WebcompatReporterServiceDelegateImpl
+    : public WebcompatReporterServiceDelegateBase {
  public:
   explicit WebcompatReporterServiceDelegateImpl(
       component_updater::ComponentUpdateService* component_update_service,
@@ -37,11 +32,8 @@ class WebcompatReporterServiceDelegateImpl : public WebCompatServiceDelegate {
   std::optional<std::vector<std::string>> GetAdblockFilterListNames()
       const override;
   std::optional<std::string> GetChannelName() const override;
-  std::optional<std::vector<ComponentInfo>> GetComponentInfos() const override;
 
  private:
-  const raw_ptr<component_updater::ComponentUpdateService>
-      component_update_service_;
   const raw_ptr<brave_shields::AdBlockService> adblock_service_;
 };
 
