@@ -119,12 +119,12 @@ public class BraveVpnUtils {
         activity.startActivity(vpnSettingsIntent);
     }
 
-    public static void openVpnServerSelectionActivity(Activity activity) {
-        if (activity == null) {
+    public static void openVpnServerSelectionActivity(@Nullable Context context) {
+        if (context == null) {
             return;
         }
-        Intent vpnServerSelectionIntent = new Intent(activity, VpnServerSelectionActivity.class);
-        activity.startActivity(vpnServerSelectionIntent);
+        Intent vpnServerSelectionIntent = new Intent(context, VpnServerSelectionActivity.class);
+        context.startActivity(vpnServerSelectionIntent);
     }
 
     public static void openVpnServerActivity(Activity activity, Region region) {

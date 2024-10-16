@@ -2404,9 +2404,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SERVER" desc="Brave VPN settings section title">
       Server
     </message>
-    <message name="IDS_HOST" desc="Brave VPN settings section text">
-      Host
-    </message>
     <message name="IDS_CHANGE_LOCATION" desc="Brave VPN settings section text">
       Location
     </message>
