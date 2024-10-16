@@ -70,7 +70,6 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
                     OmniboxSuggestionType.URL_WHAT_YOU_TYPED,
                     suggestion.getSubtypes(),
                     suggestion.isSearchSuggestion(),
-                    suggestion.getRelevance(),
                     suggestion.getTransition(),
                     suggestion.getDisplayText(),
                     suggestion.getDisplayTextClassifications(),
