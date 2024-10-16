@@ -8,7 +8,6 @@
 #include <optional>
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_utils.h"
 #include "components/component_updater/component_updater_service.h"
 
