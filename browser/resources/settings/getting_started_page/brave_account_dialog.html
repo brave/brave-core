@@ -8,8 +8,6 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
     --brave-account-dialog-logo-width: 129px;
     --brave-account-dialog-logo-height: calc(var(--brave-account-dialog-logo-width) * 40/129);
     --cr-dialog-border-radius: 16px;
-    --cr-icon-button-margin-end: 0px;
-    --cr-icon-button-margin-start: 0px;
     --cr-dialog-body-padding-horizontal: 40px;
     --cr-dialog-top-container-min-height: 0px;
     --cr-dialog-width: 500px;
@@ -26,7 +24,6 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
     justify-content: space-between;
   }
   .button {
-    align-self: flex-start;
     margin: 4px 4px 0px 4px;
   }
   .logo {
@@ -41,65 +38,16 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
       background-image: url('../images/brave-logo-dark.svg');
     }
   }
-  .texts {
-    gap: 8px;
-  }
-  .body-text-top {
-    color: #46464A;
-    font-family: 'Poppins';
-    font-size: 22px;
-    font-style: normal;
-    font-weight: 600;
-    letter-spacing: -0.5px;
-    line-height: 28px;
-  }
-  .body-text-bottom {
-    color: #76767A;
-    font-family: 'Inter Variable';
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22px;
-    text-align: center;
-  }
-  .inputs {
-    gap: 24px;
-    margin: 24px 0px 24px;
-  }
-  .input-label {
-    color: #1B1B1F;
-    font-family: 'Inter Variable';
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 18px;
-    margin: 0px 0px 4px;
-  }
-  .input {
-    --cr-input-background-color: white;
-    --cr-input-underline-display: none;
-    --cr-input-error-display: none;
-    border: 1px solid #C7C7CC;
-    border-radius: 8px;
-  }
-  #inner-input-content {
-    margin-bottom: 10px;
-  }
-  .suffix {
-    margin-bottom: 10px;
-  }
 </style>
 
 <cr-dialog id="dialog" show-on-attach>
   <div slot="header" class="center-center layout vertical">
     <div class="buttons">
       <template is="dom-if" if="[[showBackButton]]">
-        <cr-icon-button class="button icon-arrow-back" aria-label$="[[closeText]]"
-          on-click="onBackButtonClicked_" on-keypress="onCloseKeypress_">
+        <cr-icon-button class="button icon-arrow-back" on-click="onBackButtonClicked">
         </cr-icon-button>
       </template>
-      <cr-icon-button class="button icon-clear" aria-label$="[[closeText]]"
-          on-click="cancel" on-keypress="onCloseKeypress_">
+      <cr-icon-button class="button icon-clear" on-click="onCloseButtonClicked">
       </cr-icon-button>
     </div>
     <div class="logo"></div>
