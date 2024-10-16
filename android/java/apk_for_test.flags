@@ -745,12 +745,12 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.tasks.tab_groups.TabGroupModelFilter {
+-keep class org.chromium.chrome.browser.tabmodel.TabGroupModelFilterImpl {
     *** mIsResetting;
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.tasks.tab_groups.BraveTabGroupModelFilter {
+-keep class org.chromium.chrome.browser.tabmodel.BraveTabGroupModelFilter {
     public <init>(...);
 }
 
