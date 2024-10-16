@@ -73,8 +73,6 @@ const findMatchingRoute = (url: URL) => {
     return [null, {}] as const
 }
 
-let initialized = false
-
 export function selectConversation(conversationId: string | null) {
     window.location.href = conversationId ? `/${conversationId}` : "/"
 }
@@ -89,13 +87,13 @@ export function useSelectedConversation() {
 
 export function NavigationContext(props: React.PropsWithChildren) {
     const chat = useAIChat()
-    const [params, setParams] = React.useState<Params>({})
+    const [params, setParams] = React.useState<Params>(findMatchingRoute(new URL(window.location.href))[1])
 
     useEffect(() => {
         const handler = (e?: NavigateEvent) => {
             const url = e?.destination.url ? new URL(e.destination.url) : new URL(window.location.href)
             const [handler, params] = findMatchingRoute(url)
-            console.log("Parsed params", params, handler)
+
             if (!handler) {
                 setParams({})
                 return
@@ -111,10 +109,6 @@ export function NavigationContext(props: React.PropsWithChildren) {
             }
         }
 
-        if (!initialized) {
-            handler()
-            initialized = true
-        }
         window.navigation.addEventListener('navigate', handler)
         return () => {
             window.navigation.removeEventListener('navigate', handler)
