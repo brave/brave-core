@@ -43,7 +43,7 @@ export const SelectAccountType = ({
       <DividerLine />
 
       {createAccountOptions.map((network, index) => (
-        <SelectAccountItemWrapper key={network.coin}>
+        <SelectAccountItemWrapper key={network.name}>
           <AccountTypeItem
             onClickCreate={onSelectAccountType(network)}
             icon={network.icon}

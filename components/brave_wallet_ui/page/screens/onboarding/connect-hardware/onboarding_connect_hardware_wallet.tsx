@@ -27,14 +27,30 @@ import {
 // styles
 import { Divider } from './components/account_type.style'
 
-const accountOptions = CreateAccountOptions({
-  isBitcoinEnabled: false, // No bitcoin hardware accounts by now.
-  isZCashEnabled: false // No zcash hardware accounts by now.
-})
+// queries
+import { useGetVisibleNetworksQuery } from '../../../../common/slices/api.slice'
+
+// selectors
+import { WalletSelectors } from '../../../../common/selectors'
+import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
 
 export const OnboardingConnectHardwareWallet = () => {
   // routing
   const history = useHistory()
+
+  // redux
+  const isBitcoinLedgerEnabled = useSafeWalletSelector(
+    WalletSelectors.isBitcoinLedgerEnabled
+  )
+
+  // queries
+  const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
+
+  const accountOptions = CreateAccountOptions({
+    visibleNetworks,
+    isBitcoinEnabled: isBitcoinLedgerEnabled,
+    isZCashEnabled: false // No zcash hardware accounts by now.
+  })
 
   // methods
   const onSelectAccountType = React.useCallback(

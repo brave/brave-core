@@ -421,8 +421,11 @@ provideStrings({
   braveWalletCreateAccountSolanaDescription:
     'Supports SPL compatible assets on the Solana blockchain',
   braveWalletCreateAccountBitcoinDescription: 'Store BTC assets',
+  braveWalletCreateAccountBitcoinTestnetDescription: 'Store BTC Testnet assets',
   braveWalletCreateAccountZCashDescription: 'Store ZEC assets',
+  braveWalletCreateAccountZCashTestnetDescription: 'Store ZEC Testnet assets',
   braveWalletCreateAccountFilecoinDescription: 'Store FIL asset',
+  braveWalletCreateAccountFilecoinTestnetDescription: 'Store FIL Testnet asset',
   braveWalletFilecoinPrivateKeyProtocol: 'Private key $1',
   braveWalletEnterPasswordIfApplicable: 'Enter password (if applicable)',
   braveWalletPrivateKeyImportType: 'Import type',

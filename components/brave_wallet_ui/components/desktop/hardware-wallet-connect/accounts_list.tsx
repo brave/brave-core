@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { assertNotReached } from 'chrome://resources/js/assert.js'
+import { assert, assertNotReached } from 'chrome://resources/js/assert.js'
 import * as React from 'react'
 import { EntityId } from '@reduxjs/toolkit'
 import Dropdown from '@brave/leo/react/dropdown'
@@ -13,9 +13,7 @@ import { BraveWallet } from '../../../constants/types'
 import {
   DerivationScheme,
   HardwareImportScheme,
-  AllHardwareImportSchemes,
-  AccountFromDevice,
-  DerivationSchemes
+  AccountFromDevice
 } from '../../../common/hardware/types'
 
 // Utils
@@ -26,7 +24,8 @@ import {
 } from '../../../common/slices/api.slice'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import {
-  networkEntityAdapter //
+  networkEntityAdapter, //
+  selectAllNetworksFromQueryResult
 } from '../../../common/slices/entities/network.entity'
 
 // Components
@@ -85,22 +84,13 @@ const defaultNetworkId = (
   }
 
   if (currentHardwareImportScheme.coin === BraveWallet.CoinType.FIL) {
-    return BraveWallet.FILECOIN_MAINNET
+    assert(currentHardwareImportScheme.fixedNetwork)
+    return currentHardwareImportScheme.fixedNetwork
   }
 
   if (currentHardwareImportScheme.coin === BraveWallet.CoinType.BTC) {
-    if (
-      currentHardwareImportScheme.derivationScheme ===
-      DerivationSchemes.BtcLedgerMainnet
-    ) {
-      return BraveWallet.BITCOIN_MAINNET
-    }
-    if (
-      currentHardwareImportScheme.derivationScheme ===
-      DerivationSchemes.BtcLedgerTestnet
-    ) {
-      return BraveWallet.BITCOIN_TESTNET
-    }
+    assert(currentHardwareImportScheme.fixedNetwork)
+    return currentHardwareImportScheme.fixedNetwork
   }
 
   assertNotReached(
@@ -152,10 +142,21 @@ export const HardwareWalletAccountsList = ({
     if (!networksRegistry) {
       return []
     }
-    return networksRegistry.visibleIdsByCoinType[coin].map(
-      (id) => networksRegistry.entities[id] as BraveWallet.NetworkInfo
-    )
-  }, [networksRegistry, coin])
+
+    if (currentHardwareImportScheme.fixedNetwork) {
+      return selectAllNetworksFromQueryResult({
+        data: networksRegistry
+      }).filter(
+        (n) =>
+          n.coin === currentHardwareImportScheme.coin &&
+          n.chainId === currentHardwareImportScheme.fixedNetwork
+      )
+    }
+
+    return networksRegistry.visibleIdsByCoinType[
+      currentHardwareImportScheme.coin
+    ].map((id) => networksRegistry.entities[id] as BraveWallet.NetworkInfo)
+  }, [networksRegistry, currentHardwareImportScheme])
 
   const showSchemesDropdown = coinsSupportingSchemesDropdown.includes(
     currentHardwareImportScheme.coin
@@ -213,15 +214,9 @@ export const HardwareWalletAccountsList = ({
   const onSelectNetwork = React.useCallback(
     (n: BraveWallet.NetworkInfo): void => {
       setSelectedNetworkId(networkEntityAdapter.selectId(n))
-      const schemeForNetwork = AllHardwareImportSchemes.find((scheme) => {
-        return scheme.coin === n.coin && scheme.fixedNetwork === n.chainId
-      })
-
-      if (schemeForNetwork) {
-        setHardwareImportScheme(schemeForNetwork.derivationScheme)
-      }
+      assert(!currentHardwareImportScheme.fixedNetwork)
     },
-    [setSelectedNetworkId, setHardwareImportScheme]
+    [currentHardwareImportScheme]
   )
 
   const onChangeDerivationScheme = (value?: string) => {

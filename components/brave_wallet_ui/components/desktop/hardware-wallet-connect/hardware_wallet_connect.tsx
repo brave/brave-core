@@ -119,14 +119,17 @@ const getErrorMessage = (
 }
 
 const defaultSchemeForCoinAndVendor = (
-  coin: BraveWallet.CoinType,
+  type: CreateAccountOptionsType,
   vendor: BraveWallet.HardwareVendor
 ) => {
   const result = AllHardwareImportSchemes.find(
-    (details) => details.coin === coin && details.vendor === vendor
+    (details) =>
+      details.coin === type.coin &&
+      details.fixedNetwork === type.fixedNetwork &&
+      details.vendor === vendor
   )
 
-  assert(result, `Not supported ${coin} and ${vendor}`)
+  assert(result, `Not supported ${type} and ${vendor}`)
   return result.derivationScheme
 }
 
@@ -223,10 +226,11 @@ export const HardwareWalletConnect = ({
     return AllHardwareImportSchemes.filter((scheme) => {
       return (
         scheme.coin === selectedAccountType.coin &&
+        scheme.fixedNetwork === selectedAccountType.fixedNetwork &&
         scheme.vendor === selectedHardwareVendor
       )
     })
-  }, [selectedHardwareVendor, selectedAccountType.coin])
+  }, [selectedHardwareVendor, selectedAccountType])
 
   const makeAccountListItems = React.useCallback(
     (accounts: AccountFromDevice[]): AccountFromDeviceListItem[] => {
@@ -320,12 +324,12 @@ export const HardwareWalletConnect = ({
   const selectVendor = React.useCallback(
     (vendor: BraveWallet.HardwareVendor) => {
       setCurrentDerivationScheme(
-        defaultSchemeForCoinAndVendor(selectedAccountType.coin, vendor)
+        defaultSchemeForCoinAndVendor(selectedAccountType, vendor)
       )
       setSelectedHardwareVendor(vendor)
       onSelectVendor?.(vendor)
     },
-    [onSelectVendor, selectedAccountType.coin]
+    [onSelectVendor, selectedAccountType]
   )
 
   const onSelectLedger = React.useCallback(() => {
