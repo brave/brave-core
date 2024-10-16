@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index 7b32d6792384404027c01ae14ed294548f90ac71..4c633c877438d846132111a9ff7478d17d8b2e82 100644
+index 72337e108b378d37d7c0e82a79488a29cfedadc7..6a2a3aee4cc00edcb855713ce3252ba01a1a11e0 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 @@ -91,7 +91,7 @@ export class SettingsPersonalizationOptionsElement extends
@@ -11,7 +11,7 @@ index 7b32d6792384404027c01ae14ed294548f90ac71..4c633c877438d846132111a9ff7478d1
        // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
        // (but handled differently in C++).
        metricsReportingPref_: {
-@@ -152,7 +152,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -157,7 +157,7 @@ export class SettingsPersonalizationOptionsElement extends
    focusConfig: FocusConfig;
    syncStatus: SyncStatus;
  
@@ -20,7 +20,7 @@ index 7b32d6792384404027c01ae14ed294548f90ac71..4c633c877438d846132111a9ff7478d1
    private metricsReportingPref_: chrome.settingsPrivate.PrefObject<boolean>;
    private showRestart_: boolean;
    // </if>
-@@ -209,7 +209,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -215,7 +215,7 @@ export class SettingsPersonalizationOptionsElement extends
    override ready() {
      super.ready();
  
@@ -29,7 +29,7 @@ index 7b32d6792384404027c01ae14ed294548f90ac71..4c633c877438d846132111a9ff7478d1
      const setMetricsReportingPref = (metricsReporting: MetricsReporting) =>
          this.setMetricsReportingPref_(metricsReporting);
      this.addWebUiListener('metrics-reporting-change', setMetricsReportingPref);
-@@ -224,9 +224,11 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -230,9 +230,11 @@ export class SettingsPersonalizationOptionsElement extends
          this.setChromeSigninUserChoiceInfo_.bind(this));
      // </if>
  
@@ -41,7 +41,7 @@ index 7b32d6792384404027c01ae14ed294548f90ac71..4c633c877438d846132111a9ff7478d1
    }
  
    // <if expr="chromeos_ash">
-@@ -255,7 +257,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -261,7 +263,7 @@ export class SettingsPersonalizationOptionsElement extends
    }
    // </if>
  
