@@ -26,14 +26,14 @@ class SettingsBraveAccountRow extends PolymerElement {
     return getTemplate()
   }
 
-  private dialogType: 'main' | 'sign-in' | null;
+  private dialogType: 'entry' | 'sign-in' | null;
 
   isDialogType(askingType: string) {
     return (this.dialogType === askingType)
   }
 
   private onGetStartedButtonClicked_() {
-    this.dialogType = 'main'
+    this.dialogType = 'entry'
   }
 
   private onBraveAccountDialogClosed_() {
@@ -45,7 +45,7 @@ class SettingsBraveAccountRow extends PolymerElement {
   }
 
   private onBackButtonClicked_() {
-    this.dialogType = 'main'
+    this.dialogType = 'entry'
   }
 
   private onBraveAccountSignInDialogClosed_() {

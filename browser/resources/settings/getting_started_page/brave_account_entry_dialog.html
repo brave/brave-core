@@ -4,14 +4,6 @@ License, v. 2.0. If a copy of the MPL was not distributed with this file,
 You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
 <style include="cr-shared-style iron-flex settings-shared">
-  :host {
-    --brave-account-dialog-logo-width: 129px;
-    --brave-account-dialog-logo-height: calc(var(--brave-account-dialog-logo-width) * 40/129);
-    --cr-dialog-border-radius: 16px;
-    --cr-dialog-body-padding-horizontal: 40px;
-    --cr-dialog-top-container-min-height: 40px;
-    --cr-dialog-width: 500px;
-  }
   .logo {
     background-image: url('../images/brave-logo-light.svg');
     background-size: cover;
@@ -74,12 +66,6 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
     width: 134px;
   }
 </style>
-
-<!-- <cr-dialog show-close-button show-on-attach>
-  <div slot="header" class="center-center horizontal layout">
-    <div class="logo"></div>
-  </div>
-</cr-dialog> -->
 
 <settings-brave-account-dialog>
   <div slot="body">
