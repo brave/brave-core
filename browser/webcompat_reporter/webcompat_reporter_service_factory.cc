@@ -11,7 +11,6 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_delegate.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -29,7 +28,7 @@ WebcompatReporterServiceFactory::GetInstance() {
 
 // static
 mojo::PendingRemote<mojom::WebcompatReporterHandler>
-WebcompatReporterServiceFactory::GetForContext(
+WebcompatReporterServiceFactory::GetMojoReportHandlerForContext(
     content::BrowserContext* context) {
   return static_cast<WebcompatReporterService*>(
              GetInstance()->GetServiceForBrowserContext(context, true))
@@ -44,9 +43,9 @@ WebcompatReporterService* WebcompatReporterServiceFactory::GetServiceForContext(
 }
 
 WebcompatReporterServiceFactory::WebcompatReporterServiceFactory()
-    : BrowserContextKeyedServiceFactory(
+    : ProfileKeyedServiceFactory(
           "WebcompatReporterService",
-          BrowserContextDependencyManager::GetInstance()) {}
+          ProfileSelections::BuildRedirectedInIncognito()) {}
 
 WebcompatReporterServiceFactory::~WebcompatReporterServiceFactory() = default;
 
@@ -57,13 +56,13 @@ KeyedService* WebcompatReporterServiceFactory::BuildServiceInstanceFor(
     return nullptr;
   }
 
-  auto shared_url_loader_factory =
-      default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
+  auto report_uploader = std::make_unique<WebcompatReportUploader>(
+      default_storage_partition->GetURLLoaderFactoryForBrowserProcess());
   return new WebcompatReporterService(
       std::make_unique<WebcompatReporterServiceDelegateImpl>(
           g_browser_process->component_updater(),
           g_brave_browser_process->ad_block_service()),
-      shared_url_loader_factory);
+      std::move(report_uploader));
 }
 
 content::BrowserContext*

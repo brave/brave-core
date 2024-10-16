@@ -78,4 +78,5 @@ WebcompatReporterServiceDelegateImpl::GetComponentInfos() const {
 
   return result;
 }
+
 }  // namespace webcompat_reporter

@@ -28,6 +28,7 @@
 
 namespace {
 
+constexpr char kStringTrue[] = "true";
 void SetOptValue(std::optional<base::Value>& dest,
                  const std::optional<base::Value>& source) {
   if (source) {
@@ -122,7 +123,7 @@ void WebcompatReportUploader::SubmitReport(const Report& report) {
 
   if (report.shields_enabled) {
     report_details_dict.Set(kShieldsEnabledField,
-                            report.shields_enabled.value());
+                            report.shields_enabled.value() == kStringTrue);
   }
 
   if (report.ad_block_setting) {
@@ -146,12 +147,12 @@ void WebcompatReportUploader::SubmitReport(const Report& report) {
 
   if (report.language_farbling) {
     report_details_dict.Set(kLanguageFarblingField,
-                            report.language_farbling.value());
+                            report.language_farbling.value() == kStringTrue);
   }
 
   if (report.brave_vpn_connected) {
     report_details_dict.Set(kBraveVPNEnabledField,
-                            report.brave_vpn_connected.value());
+                            report.brave_vpn_connected.value() == kStringTrue);
   }
 
   report_details_dict.Set(kApiKeyField, base::Value(api_key));
@@ -192,9 +193,7 @@ void WebcompatReportUploader::CreateAndStartURLLoader(
     const GURL& upload_url,
     const std::string& content_type,
     const std::string& post_data) {
-#if !BUILDFLAG(IS_IOS)
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-#endif  // !BUILDFLAG(IS_IOS)
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   auto resource_request = std::make_unique<network::ResourceRequest>();
   // upload_url only includes the origin and path, and not the fragment or
@@ -237,9 +236,7 @@ void WebcompatReportUploader::CreateAndStartURLLoader(
 
 void WebcompatReportUploader::OnSimpleURLLoaderComplete(
     std::unique_ptr<std::string> response_body) {
-#if !BUILDFLAG(IS_IOS)
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-#endif  // !BUILDFLAG(IS_IOS)
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool success = !!response_body;
 

@@ -63,8 +63,6 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
 
   raw_ptr<content::RenderWidgetHostView> render_widget_host_view_;
   scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
-  std::unique_ptr<webcompat_reporter::WebcompatReporterService>
-      reporter_service_;
 
   Report pending_report_;
 

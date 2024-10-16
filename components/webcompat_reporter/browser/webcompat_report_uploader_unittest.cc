@@ -7,21 +7,17 @@
 
 #include <memory>
 
-#include "base/containers/flat_map.h"
-#include "base/functional/bind.h"
-#include "base/json//json_writer.h"
+#include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
-#include "content/public/test/browser_task_environment.h"
-#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace webcompat_reporter {
 
@@ -30,8 +26,7 @@ class WebcompatReportUploaderUnitTest : public testing::Test {
   WebcompatReportUploaderUnitTest()
       : shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)),
-        task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
+                &url_loader_factory_)) {
     webcompat_report_uploader_ =
         std::make_unique<WebcompatReportUploader>(shared_url_loader_factory_);
   }
@@ -74,7 +69,12 @@ class WebcompatReportUploaderUnitTest : public testing::Test {
           for (base::Value::Dict::iterator it = content_dict_vals.begin();
                it != content_dict_vals.end(); ++it) {
             EXPECT_NE(request_dict_vals.Find(it->first), nullptr);
-            EXPECT_EQ(*(request_dict_vals.Find(it->first)), it->second);
+            auto* request_val = request_dict_vals.Find(it->first);
+            if (request_val->is_bool()) {
+              EXPECT_EQ(*request_val, it->second == "true");
+            } else {
+              EXPECT_EQ(*request_val, it->second);
+            }
           }
           run_loop.Quit();
         });
@@ -88,7 +88,8 @@ class WebcompatReportUploaderUnitTest : public testing::Test {
   std::unique_ptr<WebcompatReportUploader> webcompat_report_uploader_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  content::BrowserTaskEnvironment task_environment_;
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
 };
 
 TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
