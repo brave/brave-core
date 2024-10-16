@@ -245,7 +245,13 @@ TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
        MatchRegex) {
   // Act & Assert
-  EXPECT_TRUE(MatchRegex("foo.baz.bar", "(foo|baz|bar)"));
+  EXPECT_TRUE(MatchRegex("foo.baz.bar", "(foo|bar)"));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       MatchEmptyRegex) {
+  // Act & Assert
+  EXPECT_TRUE(MatchRegex("", ""));
 }
 
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
@@ -258,6 +264,30 @@ TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
        DoNotMatchMalformedRegex) {
   // Act & Assert
   EXPECT_FALSE(MatchRegex("foo.baz.bar", "* ?"));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       MatchPattern) {
+  // Act & Assert
+  EXPECT_TRUE(MatchPattern("foo.baz.bar", "foo?baz.*"));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       MatchEmptyPattern) {
+  // Act & Assert
+  EXPECT_TRUE(MatchPattern("", ""));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       MatchEscapedPattern) {
+  // Act & Assert
+  EXPECT_TRUE(MatchRegex(R"(*.bar.?)", R"(\*.bar.\?)"));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       DoNotMatchPattern) {
+  // Act & Assert
+  EXPECT_FALSE(MatchRegex("foo.baz.bar", "bar.*.foo"));
 }
 
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
