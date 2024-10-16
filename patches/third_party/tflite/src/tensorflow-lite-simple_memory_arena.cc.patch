@@ -1,0 +1,13 @@
+diff --git a/tensorflow/lite/simple_memory_arena.cc b/tensorflow/lite/simple_memory_arena.cc
+index f1299b56ac75027a683c421cb9d32c96d5fb1ed6..11e13e9d5a259496bb7090fcae038a217fc986b0 100644
+--- a/tensorflow/lite/simple_memory_arena.cc
++++ b/tensorflow/lite/simple_memory_arena.cc
+@@ -34,7 +34,7 @@ limitations under the License.
+ #if defined(__ANDROID__)
+ // Android has C11 aligned_alloc only with API 28 or newer, even with C++17 or
+ // C11 compilation (this is a non-standard behavior).
+-#define TF_LITE_HAS_ALIGNED_ALLOC (__ANDROID_API__ >= 28)
++#define TF_LITE_HAS_ALIGNED_ALLOC 0
+ #elif defined(__APPLE__)
+ // Apple does not provide aligned_alloc, even with C++17 or C11 compilation
+ // (this is a non-standard behavior).
