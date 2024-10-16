@@ -11,7 +11,6 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
-#include "base/notreached.h"
 #include "brave/components/brave_rewards/core/legacy/bat_util.h"
 
 namespace brave_rewards::internal {
@@ -93,7 +92,6 @@ bool ReportBalanceProperties::FromValue(const base::Value::Dict& dict) {
   bool result = GetPropertyFromDict(dict, kGrantsKey, &grants);
 
   if (!result) {
-    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
@@ -101,7 +99,6 @@ bool ReportBalanceProperties::FromValue(const base::Value::Dict& dict) {
   result = GetPropertyFromDict(dict, kAdEarningsKey, &ad_earnings);
 
   if (!result) {
-    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
@@ -110,7 +107,6 @@ bool ReportBalanceProperties::FromValue(const base::Value::Dict& dict) {
       GetPropertyFromDict(dict, kAutoContributionsKey, &auto_contributions);
 
   if (!result) {
-    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
@@ -119,7 +115,6 @@ bool ReportBalanceProperties::FromValue(const base::Value::Dict& dict) {
       GetPropertyFromDict(dict, kRecurringDonationsKey, &recurring_donations);
 
   if (!result) {
-    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
@@ -127,7 +122,6 @@ bool ReportBalanceProperties::FromValue(const base::Value::Dict& dict) {
   result = GetPropertyFromDict(dict, kOneTimeDonationsKey, &one_time_donations);
 
   if (!result) {
-    NOTREACHED_IN_MIGRATION();
     return false;
   }
 

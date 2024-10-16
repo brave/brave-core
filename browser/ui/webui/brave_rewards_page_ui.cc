@@ -13,7 +13,6 @@
 #include "base/i18n/time_formatting.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/notreached.h"
 #include "base/scoped_observation.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
@@ -1153,10 +1152,7 @@ void RewardsDOMHandler::ToggleAdThumbUp(const base::Value::List& args) {
   }
 
   const base::Value::Dict* dict = args[0].GetIfDict();
-  if (!dict) {
-    NOTREACHED_IN_MIGRATION();
-    return;
-  }
+  CHECK(dict);
 
   AllowJavascript();
 
@@ -1189,10 +1185,7 @@ void RewardsDOMHandler::ToggleAdThumbDown(const base::Value::List& args) {
   }
 
   const base::Value::Dict* dict = args[0].GetIfDict();
-  if (!dict) {
-    NOTREACHED_IN_MIGRATION();
-    return;
-  }
+  CHECK(dict);
 
   AllowJavascript();
 
@@ -1225,10 +1218,7 @@ void RewardsDOMHandler::ToggleAdOptIn(const base::Value::List& args) {
   }
 
   const base::Value::Dict* dict = args[0].GetIfDict();
-  if (!dict) {
-    NOTREACHED_IN_MIGRATION();
-    return;
-  }
+  CHECK(dict);
 
   AllowJavascript();
 
@@ -1261,10 +1251,7 @@ void RewardsDOMHandler::ToggleAdOptOut(const base::Value::List& args) {
   }
 
   const base::Value::Dict* dict = args[0].GetIfDict();
-  if (!dict) {
-    NOTREACHED_IN_MIGRATION();
-    return;
-  }
+  CHECK(dict);
 
   AllowJavascript();
 
@@ -1297,10 +1284,7 @@ void RewardsDOMHandler::ToggleSavedAd(const base::Value::List& args) {
   }
 
   const base::Value::Dict* dict = args[0].GetIfDict();
-  if (!dict) {
-    NOTREACHED_IN_MIGRATION();
-    return;
-  }
+  CHECK(dict);
 
   AllowJavascript();
 
@@ -1332,10 +1316,7 @@ void RewardsDOMHandler::ToggleFlaggedAd(const base::Value::List& args) {
   }
 
   const base::Value::Dict* dict = args[0].GetIfDict();
-  if (!dict) {
-    NOTREACHED_IN_MIGRATION();
-    return;
-  }
+  CHECK(dict);
 
   AllowJavascript();
 
@@ -1730,7 +1711,7 @@ void RewardsDOMHandler::EnableRewards(const base::Value::List& args) {
 #else
   // On Android, a native onboarding modal is displayed when the user navigates
   // to the Rewards page. This message handler should not be called.
-  NOTREACHED_IN_MIGRATION();
+  NOTREACHED();
 #endif
 }
 

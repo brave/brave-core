@@ -132,7 +132,6 @@ void StateMigration::Migrate(ResultCallback callback) {
 
   engine_->LogError(FROM_HERE)
       << "Migration version is not handled " << new_version;
-  NOTREACHED_IN_MIGRATION();
 }
 
 void StateMigration::OnMigration(ResultCallback callback,

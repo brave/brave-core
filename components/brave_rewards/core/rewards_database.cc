@@ -49,9 +49,6 @@ void HandleBinding(sql::Statement* statement,
       statement->BindNull(binding.index);
       return;
     }
-    default: {
-      NOTREACHED_IN_MIGRATION();
-    }
   }
 }
 
@@ -87,9 +84,6 @@ mojom::DBRecordPtr CreateRecord(
       case mojom::DBCommand::RecordBindingType::BOOL_TYPE: {
         value = mojom::DBValue::NewBoolValue(statement->ColumnBool(column));
         break;
-      }
-      default: {
-        NOTREACHED_IN_MIGRATION();
       }
     }
     record->fields.push_back(std::move(value));
@@ -169,7 +163,6 @@ mojom::DBCommandResponsePtr RewardsDatabase::RunTransaction(
         break;
       }
       case mojom::DBCommand::Type::CLOSE: {
-        NOTREACHED_IN_MIGRATION();
         status = mojom::DBCommandResponse::Status::COMMAND_ERROR;
         break;
       }

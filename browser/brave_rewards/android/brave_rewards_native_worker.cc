@@ -972,7 +972,6 @@ void BraveRewardsNativeWorker::RefreshPublisher(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& publisher_key) {
   if (!brave_rewards_service_) {
-    NOTREACHED_IN_MIGRATION();
     return;
   }
   brave_rewards_service_->RefreshPublisher(

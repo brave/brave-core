@@ -33,7 +33,6 @@ mojom::SKUTransactionType GetTransactionTypeFromWalletType(
     return mojom::SKUTransactionType::TOKENS;
   }
 
-  NOTREACHED_IN_MIGRATION();
   return mojom::SKUTransactionType::TOKENS;
 }
 
@@ -224,7 +223,7 @@ void SKUTransaction::SendExternalTransaction(
   switch (transaction.type) {
     case mojom::SKUTransactionType::NONE:
     case mojom::SKUTransactionType::TOKENS: {
-      NOTREACHED_IN_MIGRATION();
+      std::move(url_callback).Run(mojom::Result::FAILED);
       return;
     }
     case mojom::SKUTransactionType::UPHOLD: {

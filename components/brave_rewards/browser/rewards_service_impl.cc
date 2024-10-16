@@ -807,10 +807,8 @@ std::string RewardsServiceImpl::UrlMethodToRequestType(
       return "PATCH";
     case mojom::UrlMethod::DEL:
       return "DELETE";
-    default:
-      NOTREACHED_IN_MIGRATION();
-      return "GET";
   }
+  NOTREACHED();
 }
 
 void RewardsServiceImpl::Shutdown() {
