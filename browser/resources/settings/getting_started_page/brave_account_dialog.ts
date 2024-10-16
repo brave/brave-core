@@ -34,14 +34,6 @@ class SettingsBraveAccountDialogElement extends PolymerElement {
 
   static get properties() {
     return {
-      isTermsAccepted_: {
-        type: Boolean,
-        value: false,
-      },
-      isEmailAddressInvalid_: {
-        type: Boolean,
-        value: true,
-      },
       showBackButton: {
         type: Boolean
       }
@@ -50,21 +42,13 @@ class SettingsBraveAccountDialogElement extends PolymerElement {
 
   showBackButton: boolean = false;
 
-  private onBackButtonClicked_() {
+  private onBackButtonClicked() {
     this.dispatchEvent(new CustomEvent('back-button-clicked', { bubbles: true, composed: true }))
   }
 
-  private cancel() {
+  private onCloseButtonClicked() {
     this.$.dialog.cancel();
   }
-
-  protected onConditionsChanged_() {
-    this.canCreateAccount_ = this.isTermsAccepted_ && !this.isEmailAddressInvalid_;
-  }
-
-  private isTermsAccepted_: boolean = false;
-  private isEmailAddressInvalid_: boolean = true;
-  private canCreateAccount_: boolean = false;
 }
 
 declare global {
