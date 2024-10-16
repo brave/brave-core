@@ -1355,7 +1355,7 @@ extension BrowserViewController: WKUIDelegate {
   ) {
     let presentAlert = { [weak self] in
       guard let self = self else { return }
-      
+
       let titleFormat: String = {
         switch type {
         case .camera:
@@ -1369,7 +1369,11 @@ extension BrowserViewController: WKUIDelegate {
         }
       }()
       let title = String.localizedStringWithFormat(titleFormat, origin.host)
-      let alertController = BrowserAlertController(title: title, message: nil, preferredStyle: .alert)
+      let alertController = BrowserAlertController(
+        title: title,
+        message: nil,
+        preferredStyle: .alert
+      )
       alertController.addAction(
         .init(
           title: Strings.requestCaptureDevicePermissionAllowButtonTitle,
@@ -1391,7 +1395,8 @@ extension BrowserViewController: WKUIDelegate {
       alertController.dismissedWithoutAction = {
         decisionHandler(.prompt)
       }
-      if webView.fullscreenState == .inFullscreen || webView.fullscreenState == .enteringFullscreen {
+      if webView.fullscreenState == .inFullscreen || webView.fullscreenState == .enteringFullscreen
+      {
         webView.closeAllMediaPresentations {
           self.present(alertController, animated: true)
         }
@@ -1399,7 +1404,7 @@ extension BrowserViewController: WKUIDelegate {
       }
       self.present(alertController, animated: true)
     }
-    
+
     if let presentedViewController = presentedViewController as? BrowserAlertController {
       presentedViewController.dismiss(animated: true) {
         presentAlert()
