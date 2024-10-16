@@ -64,7 +64,6 @@ class EngineConsumerClaudeRemote : public EngineConsumer {
     api_ = std::move(api_for_testing);
   }
   RemoteCompletionClient* GetAPIForTesting() { return api_.get(); }
-  void UpdateModelOptions(const mojom::ModelOptions& options) override {}
 
  private:
   void OnGenerateQuestionSuggestionsResponse(

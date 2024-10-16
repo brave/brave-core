@@ -19,6 +19,7 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/browser/ui/webui/ai_chat/on_device_model_worker_webui.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
@@ -74,6 +75,8 @@ void RegisterChromeUntrustedWebUIConfigs() {
   if (ai_chat::features::IsAIChatEnabled()) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
         std::make_unique<UntrustedChatUIConfig>());
+    content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+        std::make_unique<UntrustedOnDeviceModelWorkerWebUIConfig>());
   }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 }

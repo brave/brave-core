@@ -157,6 +157,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/browser/ui/webui/ai_chat/on_device_model_worker_webui.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -619,6 +620,8 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   if (ai_chat::features::IsAIChatEnabled()) {
     registry.ForWebUI<AIChatUI>()
         .Add<ai_chat::mojom::AIChatUIHandler>()
+        .Add<ai_chat::mojom::Service>();
+    registry.ForWebUI<UntrustedOnDeviceModelWorkerWebUI>()
         .Add<ai_chat::mojom::Service>();
   }
 #endif

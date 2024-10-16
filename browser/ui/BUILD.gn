@@ -104,6 +104,8 @@ source_set("ui") {
     sources += [
       "webui/ai_chat/ai_chat_ui.cc",
       "webui/ai_chat/ai_chat_ui.h",
+      "webui/ai_chat/on_device_model_worker_webui.cc",
+      "webui/ai_chat/on_device_model_worker_webui.h",
       "webui/ai_chat/ai_chat_ui_page_handler.cc",
       "webui/ai_chat/ai_chat_ui_page_handler.h",
     ]
@@ -1082,6 +1084,7 @@ source_set("ui") {
       "//brave/components/ai_chat/core/common",
       "//brave/components/ai_chat/core/common/mojom",
       "//brave/components/ai_chat/resources/page:generated_resources",
+      "//brave/components/ai_chat/resources/on_device_model_worker:generated_resources",
     ]
   }
 

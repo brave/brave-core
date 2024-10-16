@@ -1,0 +1,24 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/common/typescript.gni")
+
+assert(enable_ai_chat)
+
+transpile_web_ui("on_device_model_worker") {
+  resource_name = "on_device_model_worker"
+  entry_points = [ [
+        "on_device_model_worker",
+        rebase_path("on_device_model_worker.ts"),
+      ] ]
+  deps = [ "//brave/components/ai_chat/core/common/mojom:mojom_js" ]
+}
+
+pack_web_resources("generated_resources") {
+  resource_name = "on_device_model_worker"
+  output_dir = "$root_gen_dir/brave/components/ai_chat/resources/on_device_model_worker"
+  deps = [ ":on_device_model_worker" ]
+}

@@ -75,7 +75,7 @@ class EngineConsumer {
   // from the previous run (use |true|).
   virtual bool SupportsDeltaTextResponses() const;
 
-  virtual void UpdateModelOptions(const mojom::ModelOptions& options) = 0;
+  virtual void UpdateModelOptions(const mojom::ModelOptionsPtr& options) {}
 
   void SetMaxPageContentLengthForTesting(int max_page_content_length) {
     max_page_content_length_ = max_page_content_length;

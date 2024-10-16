@@ -221,4 +221,9 @@
     "META": {"sizes": {"includes": [50]}},
     "includes": [64430],
   },
+  # This file is generated during the build.
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-on_device_model_worker/on_device_model_worker.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [64480],
+  },
 }
