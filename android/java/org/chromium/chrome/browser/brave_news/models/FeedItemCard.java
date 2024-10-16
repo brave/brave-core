@@ -44,7 +44,13 @@ public class FeedItemCard {
     @Override
     public String toString() {
         return "FeedItemCard{"
-                + "feedItem=" + feedItem + ", cardType=" + cardType + ", imageByte='"
-                + Arrays.toString(imageByte) + '\'' + '}';
+                + "feedItem="
+                + feedItem
+                + ", cardType="
+                + cardType
+                + ", imageByte='"
+                + Arrays.toString(imageByte)
+                + '\''
+                + '}';
     }
 }
