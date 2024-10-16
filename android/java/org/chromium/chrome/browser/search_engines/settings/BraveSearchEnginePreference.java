@@ -38,8 +38,7 @@ public class BraveSearchEnginePreference extends SearchEngineSettings {
         if (!isPrivate) {
             return mProfile;
         } else {
-            return mProfile.getPrimaryOTRProfile(
-                    /* createIfNeeded= */ true);
+            return mProfile.getPrimaryOtrProfile(/* createIfNeeded= */ true);
         }
     }
 }
