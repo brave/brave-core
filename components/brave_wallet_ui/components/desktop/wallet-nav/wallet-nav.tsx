@@ -32,16 +32,25 @@ import {
 } from './wallet-nav.style'
 import { Row, VerticalDivider } from '../../shared/style'
 
-export const WalletNav = () => {
+export interface Props {
+  isAndroid: boolean
+}
+
+export const WalletNav = (props: Props) => {
+  const { isAndroid } = props
+
   // routing
   const history = useHistory()
   const { pathname: walletLocation } = useLocation()
+
+  // computed
+  const panelOrAndroidNavOptions = isAndroid ? NavOptions : PanelNavOptions
 
   return (
     <Wrapper>
       <PanelOptionsWrapper>
         <Section>
-          {PanelNavOptions.map((option) => (
+          {panelOrAndroidNavOptions.map((option) => (
             <WalletNavButton
               option={option}
               key={option.id}

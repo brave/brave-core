@@ -162,7 +162,9 @@ export const WalletPageWrapper = (props: Props) => {
         {isWalletCreated && !hideHeader && !isPanel && !isAndroid && (
           <TabHeader hideHeaderMenu={hideHeaderMenu} />
         )}
-        {isWalletCreated && !isWalletLocked && !hideNav && <WalletNav />}
+        {isWalletCreated && !isWalletLocked && !hideNav && (
+          <WalletNav isAndroid={isAndroid} />
+        )}
         {!isWalletLocked && (
           <FeatureRequestButtonWrapper>
             <FeatureRequestButton />
