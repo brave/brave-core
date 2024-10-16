@@ -2,6 +2,9 @@
 "widgets.BookmarksMenuItem" = "Zakładki";
 
 /* The name of the feature */
+"widgets.braveLeo" = "Sztuczna inteligencja Leo";
+
+/* The name of the feature */
 "widgets.braveNews" = "Aktualności Brave";
 
 /* Title for downloads menu item */

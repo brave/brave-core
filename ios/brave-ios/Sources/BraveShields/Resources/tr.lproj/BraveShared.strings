@@ -157,6 +157,9 @@
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Katı";
 
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "Listeler Güncellendi";
+
 /* A button title when confirming to shred website data */
 "ShredDataButtonTitle" = "Verileri Yok Et";
 
@@ -189,6 +192,12 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "İzleyiciler ve Reklamlar için Engelleme";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "Listeleri Güncelle";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "Listeler Güncelleniyor";
 
 /* The option the user can select for the type of https upgrading */
 "UpgradeConnectionsToHTTPS" = "Bağlantıları HTTPS'ye Yükselt";

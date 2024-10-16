@@ -59,6 +59,9 @@
 "e13lS3-qKrzyX" = "您是想要‘扫描二维码’，对吗？";
 
 /* (No Comment) */
+"e13lS3-U0eRbw" = "您指的是「Leo AI」，對嗎？";
+
+/* (No Comment) */
 "e13lS3-VBH4G6" = "您要的是“历史记录”，对吗？";
 
 /* (No Comment) */
@@ -72,6 +75,39 @@
 
 /* (No Comment) */
 "EUS9FL" = "小组件快捷方式";
+
+/* (No Comment) */
+"EvESs0-0W40Cl" = "您要的是“新标签页”，对吗？";
+
+/* (No Comment) */
+"EvESs0-crhbMy" = "您要的是“书签”，对吗？";
+
+/* (No Comment) */
+"EvESs0-FGO5qW" = "您是想要‘Brave 播放列表’，对吗？";
+
+/* (No Comment) */
+"EvESs0-jXiFQY" = "您是想要‘Brave 钱包’，对吗？";
+
+/* (No Comment) */
+"EvESs0-nthxSL" = "您要的是“下载”，对吗？";
+
+/* (No Comment) */
+"EvESs0-qKrzyX" = "您是想要‘扫描二维码’，对吗？";
+
+/* (No Comment) */
+"EvESs0-U0eRbw" = "您指的是「Leo AI」，對嗎？";
+
+/* (No Comment) */
+"EvESs0-VBH4G6" = "您要的是“历史记录”，对吗？";
+
+/* (No Comment) */
+"EvESs0-vs094F" = "您要的是“新隐私标签页”，对吗？";
+
+/* (No Comment) */
+"EvESs0-XCyA8c" = "您是想要“Brave 新闻”’，对吗？";
+
+/* (No Comment) */
+"EvESs0-Y7TWy8" = "您是想要‘搜索’，对吗？";
 
 /* (No Comment) */
 "FGO5qW" = "Brave 播放列表";
@@ -110,6 +146,9 @@
 "L1fziM-qKrzyX" = "有 ${count} 个选项符合‘扫描二维码’。";
 
 /* (No Comment) */
+"L1fziM-U0eRbw" = "有 ${count} 個選項符合「Leo AI」。";
+
+/* (No Comment) */
 "L1fziM-VBH4G6" = "有 ${count} 个与“历史记录”匹配的选项。";
 
 /* (No Comment) */
@@ -120,6 +159,9 @@
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "有 ${count} 个选项符合‘搜索’。";
+
+/* (No Comment) */
+"M2Y1rg" = "#4";
 
 /* (No Comment) */
 "nthxSL" = "下载";
@@ -147,6 +189,9 @@
 
 /* (No Comment) */
 "r2EI05-qKrzyX" = "您是想要‘扫描二维码’，对吗？";
+
+/* (No Comment) */
+"r2EI05-U0eRbw" = "您指的是「Leo AI」，對嗎？";
 
 /* (No Comment) */
 "r2EI05-VBH4G6" = "您要的是“历史记录”，对吗？";
@@ -188,6 +233,9 @@
 "tNCrcE-qKrzyX" = "有 ${count} 个选项符合‘扫描二维码’。";
 
 /* (No Comment) */
+"tNCrcE-U0eRbw" = "有 ${count} 個選項符合「Leo AI」。";
+
+/* (No Comment) */
 "tNCrcE-VBH4G6" = "有 ${count} 个与“历史记录”匹配的选项。";
 
 /* (No Comment) */
@@ -221,6 +269,9 @@
 "TxuMja-qKrzyX" = "有 ${count} 个选项符合‘扫描二维码’。";
 
 /* (No Comment) */
+"TxuMja-U0eRbw" = "有 ${count} 個選項符合「Leo AI」。";
+
+/* (No Comment) */
 "TxuMja-VBH4G6" = "有 ${count} 个与“历史记录”匹配的选项。";
 
 /* (No Comment) */
@@ -234,6 +285,9 @@
 
 /* (No Comment) */
 "tYwiRd" = "预计节省时间";
+
+/* (No Comment) */
+"U0eRbw" = "Leo AI";
 
 /* (No Comment) */
 "VBH4G6" = "历史记录";
@@ -275,6 +329,9 @@
 "YQiQuz-qKrzyX" = "您是想要‘扫描二维码’，对吗？";
 
 /* (No Comment) */
+"YQiQuz-U0eRbw" = "您指的是「Leo AI」，對嗎？";
+
+/* (No Comment) */
 "YQiQuz-VBH4G6" = "您要的是“历史记录”，对吗？";
 
 /* (No Comment) */
@@ -285,6 +342,39 @@
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "您是想要‘搜索’，对吗？";
+
+/* (No Comment) */
+"z517nu-0W40Cl" = "有 ${count} 个与“新标签页”匹配的选项。";
+
+/* (No Comment) */
+"z517nu-crhbMy" = "有 ${count} 个与“书签”匹配的选项。";
+
+/* (No Comment) */
+"z517nu-FGO5qW" = "有 ${count} 个选项符合‘Brave 播放列表’。";
+
+/* (No Comment) */
+"z517nu-jXiFQY" = "有 ${count} 个选项符合‘Brave 钱包’。";
+
+/* (No Comment) */
+"z517nu-nthxSL" = "有 ${count} 个与“下载”匹配的选项。";
+
+/* (No Comment) */
+"z517nu-qKrzyX" = "有 ${count} 个选项符合‘扫描二维码’。";
+
+/* (No Comment) */
+"z517nu-U0eRbw" = "有 ${count} 個選項符合「Leo AI」。";
+
+/* (No Comment) */
+"z517nu-VBH4G6" = "有 ${count} 个与“历史记录”匹配的选项。";
+
+/* (No Comment) */
+"z517nu-vs094F" = "有 ${count} 个与“新隐私标签页”匹配的选项。";
+
+/* (No Comment) */
+"z517nu-XCyA8c" = "有 ${count} 个选项符合“Brave 新闻”。";
+
+/* (No Comment) */
+"z517nu-Y7TWy8" = "有 ${count} 个选项符合‘搜索’。";
 
 /* (No Comment) */
 "ziTvSZ" = "快捷方式小组件配置";
