@@ -13,6 +13,7 @@
 namespace p3a {
 
 inline constexpr char kCreativeMetricPrefix[] = "creativeInstanceId.";
+inline constexpr char kCampaignMetricPrefix[] = "campaignId.";
 
 enum class MetricLogType {
   // Slow metrics are currently sent once per month.

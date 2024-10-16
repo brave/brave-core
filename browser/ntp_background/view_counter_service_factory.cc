@@ -84,7 +84,9 @@ ViewCounterServiceFactory::BuildServiceInstanceForBrowserContext(
     if (g_brave_browser_process->p3a_service() != nullptr) {
       ntp_p3a_helper = std::make_unique<NTPP3AHelperImpl>(
           g_browser_process->local_state(),
-          g_brave_browser_process->p3a_service(), profile->GetPrefs());
+          g_brave_browser_process->p3a_service(),
+          g_brave_browser_process->ntp_background_images_service(),
+          profile->GetPrefs());
     }
 
     return std::make_unique<ViewCounterService>(
