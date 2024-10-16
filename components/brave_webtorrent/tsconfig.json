@@ -1,13 +1,9 @@
 {
-  "extends": "../../tsconfig",
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.d.ts",
-    "../definitions/*.d.ts"
-  ],
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
-  }
+    "extends": "../../tsconfig",
+    "include": [
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.d.ts",
+      "../definitions/*.d.ts"
+    ]
 }
