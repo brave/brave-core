@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -68,7 +69,11 @@ class GlobalState final {
   mojom::BuildChannelInfo& BuildChannel();
   mojom::Flags& Flags();
 
+  void PostDelayedTask(base::OnceClosure task, base::TimeDelta delay);
+
  private:
+  void PostDelayedTaskCallback(base::OnceClosure task);
+
   SEQUENCE_CHECKER(sequence_checker_);
 
   const raw_ptr<AdsClient> ads_client_ = nullptr;  // NOT OWNED
@@ -90,6 +95,8 @@ class GlobalState final {
   mojom::SysInfo mojom_sys_info_;
   mojom::BuildChannelInfo mojom_build_channel_;
   mojom::Flags mojom_flags_;
+
+  base::WeakPtrFactory<GlobalState> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_ads
