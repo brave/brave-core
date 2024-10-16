@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_SITE_SETTINGS_HANDLER_H_
 
 #include <string>
+#include <vector>
 
 #include "chrome/browser/ui/webui/settings/site_settings_handler.h"
 
@@ -29,6 +30,8 @@ class BraveSiteSettingsHandler : public SiteSettingsHandler {
 
   bool IsPatternValidForBraveContentType(ContentSettingsType content_type,
                                          const std::string& pattern_string);
+
+  void RemoveNonModelData(const std::vector<url::Origin>& origins) override;
 
  private:
   friend class TestBraveSiteSettingsHandlerUnittest;
