@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 
+#include "base/functional/callback_forward.h"
 #include "base/time/time.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -23,7 +24,11 @@ class OnboardingTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<OnboardingTabHelper> {
  public:
-  static void MaybeCreateForWebContents(content::WebContents* contents);
+  // |creation_callback_for_test| is called in test after this
+  // method determines whether tab helper is created or not.
+  static void MaybeCreateForWebContents(
+      content::WebContents* contents,
+      base::OnceClosure creation_callback_for_test = base::NullCallback());
   OnboardingTabHelper(const OnboardingTabHelper&) = delete;
   OnboardingTabHelper& operator=(const OnboardingTabHelper&) = delete;
   ~OnboardingTabHelper() override;

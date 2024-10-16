@@ -8,6 +8,7 @@
 
 #include "base/command_line.h"
 #include "base/files/file_util.h"
+#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "brave/browser/onboarding/onboarding_tab_helper.h"
 #include "brave/browser/onboarding/pref_names.h"
@@ -43,10 +44,20 @@ class OnboardingTest : public testing::Test {
     profile_manager_->DeleteTestingProfile(kTestProfileName);
   }
 
+  void MaybeCreateForWebContentsAndWaitTillGetResult(
+      content::WebContents* web_contents) {
+    bool created = false;
+    web_contents->SetUserData(OnboardingTabHelper::UserDataKey(), nullptr);
+    OnboardingTabHelper::MaybeCreateForWebContents(
+        web_contents,
+        base::BindLambdaForTesting([&created] { created = true; }));
+    ASSERT_TRUE(base::test::RunUntil([&created] { return created; }));
+  }
+
   Profile* profile() { return profile_; }
 
   content::BrowserTaskEnvironment task_environment_;
-  raw_ptr<Profile> profile_;
+  raw_ptr<Profile> profile_ = nullptr;
   std::unique_ptr<TestingProfileManager> profile_manager_;
 };
 
@@ -61,26 +72,24 @@ TEST_F(OnboardingTest, HelperCreationTestForFirstRun) {
   ASSERT_TRUE(web_contents);
 
   // Check helper is created for first run.
-  OnboardingTabHelper::MaybeCreateForWebContents(web_contents.get());
-  auto* helper = OnboardingTabHelper::FromWebContents(web_contents.get());
-  EXPECT_TRUE(helper);
+  MaybeCreateForWebContentsAndWaitTillGetResult(web_contents.get());
+  auto* tab_helper = OnboardingTabHelper::FromWebContents(web_contents.get());
+  EXPECT_TRUE(tab_helper);
 
   // Even seven days passed durig the first run, helper should be created.
-  web_contents->RemoveUserData(OnboardingTabHelper::UserDataKey());
   OnboardingTabHelper::s_time_now_for_testing_ =
       base::Time::Now() + base::Days(8);
-  OnboardingTabHelper::MaybeCreateForWebContents(web_contents.get());
-  helper = OnboardingTabHelper::FromWebContents(web_contents.get());
-  EXPECT_TRUE(helper);
+  MaybeCreateForWebContentsAndWaitTillGetResult(web_contents.get());
+  tab_helper = OnboardingTabHelper::FromWebContents(web_contents.get());
+  EXPECT_TRUE(tab_helper);
 
   // Check helper is not created when |kLastShieldsIconHighlightTime| is not
   // null.
-  web_contents->SetUserData(OnboardingTabHelper::UserDataKey(), nullptr);
   TestingBrowserProcess::GetGlobal()->local_state()->SetTime(
       onboarding::prefs::kLastShieldsIconHighlightTime, base::Time::Now());
-  OnboardingTabHelper::MaybeCreateForWebContents(web_contents.get());
-  helper = OnboardingTabHelper::FromWebContents(web_contents.get());
-  EXPECT_FALSE(helper);
+  MaybeCreateForWebContentsAndWaitTillGetResult(web_contents.get());
+  tab_helper = OnboardingTabHelper::FromWebContents(web_contents.get());
+  EXPECT_FALSE(tab_helper);
 }
 
 TEST_F(OnboardingTest, HelperCreationTestForNonFirstRun) {
@@ -100,18 +109,16 @@ TEST_F(OnboardingTest, HelperCreationTestForNonFirstRun) {
   // null.
   TestingBrowserProcess::GetGlobal()->local_state()->SetTime(
       onboarding::prefs::kLastShieldsIconHighlightTime, base::Time::Now());
-  OnboardingTabHelper::MaybeCreateForWebContents(web_contents.get());
+  MaybeCreateForWebContentsAndWaitTillGetResult(web_contents.get());
   auto* tab_helper = OnboardingTabHelper::FromWebContents(web_contents.get());
   EXPECT_FALSE(tab_helper);
 
   // Check helper is created when |kLastShieldsIconHighlightTime| is null.
-  TestingBrowserProcess::GetGlobal()->local_state()->SetTime(
-      onboarding::prefs::kLastShieldsIconHighlightTime, base::Time());
-  OnboardingTabHelper::MaybeCreateForWebContents(web_contents.get());
-  ASSERT_TRUE(base::test::RunUntil([&tab_helper, &web_contents] {
-    tab_helper = OnboardingTabHelper::FromWebContents(web_contents.get());
-    return tab_helper;
-  }));
+  TestingBrowserProcess::GetGlobal()->local_state()->ClearPref(
+      onboarding::prefs::kLastShieldsIconHighlightTime);
+  MaybeCreateForWebContentsAndWaitTillGetResult(web_contents.get());
+  tab_helper = OnboardingTabHelper::FromWebContents(web_contents.get());
+  ASSERT_TRUE(tab_helper);
   ASSERT_TRUE(tab_helper->CanHighlightBraveShields());
 
   // Check exiting tab doesn't give highlight when 7 days passed.
