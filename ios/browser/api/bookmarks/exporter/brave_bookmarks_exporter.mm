@@ -64,7 +64,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
     case Result::kCouldNotWriteNodes:
       return _on_export_finished(BraveBookmarksExporterStateErrorWritingNodes);
     default:
-      NOTREACHED_IN_MIGRATION();
+      CHECK(false);
   }
   delete this;
 }

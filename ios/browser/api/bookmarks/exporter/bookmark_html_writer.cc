@@ -302,7 +302,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
         break;
 
       default:
-        NOTREACHED_IN_MIGRATION();
+        CHECK(false);
     }
 
     return Write(utf8_string);
@@ -330,7 +330,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
     if (!title_ptr || !date_added_string || !type_string ||
         (*type_string != BookmarkCodec::kTypeURL &&
          *type_string != BookmarkCodec::kTypeFolder)) {
-      NOTREACHED_IN_MIGRATION();
+      DCHECK(false);
       return false;
     }
 
@@ -338,7 +338,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
     if (*type_string == BookmarkCodec::kTypeURL) {
       const std::string* url_string = value.FindString(BookmarkCodec::kURLKey);
       if (!url_string) {
-        NOTREACHED_IN_MIGRATION();
+        DCHECK(false);
         return false;
       }
 
@@ -369,7 +369,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
     const base::Value::List* child_values =
         value.FindList(BookmarkCodec::kChildrenKey);
     if (!last_modified_date || !child_values) {
-      NOTREACHED_IN_MIGRATION();
+      DCHECK(false);
       return false;
     }
     if (folder_type != BookmarkNode::OTHER_NODE &&
@@ -399,7 +399,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
     // Write the children.
     for (const base::Value& child_value : *child_values) {
       if (!child_value.is_dict()) {
-        NOTREACHED_IN_MIGRATION();
+        DCHECK(false);
         return false;
       }
       if (!WriteNode(child_value.GetDict(), BookmarkNode::FOLDER)) {
