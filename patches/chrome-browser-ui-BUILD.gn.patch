@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 4c9e41d73cedd5eafeb65832c1a8e172484a84cd..2a59f5e6a414f61dbc39a6e305109db366539352 100644
+index 43f43997a972c36b724ae9eff3ee6c88c0636f23..2f6190882a8f38cb52251a96f9758d15a0a27064 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -741,6 +741,7 @@ static_library("ui") {
-     "//chrome/browser/content_settings:impl",
+@@ -735,6 +735,7 @@ static_library("ui") {
      "//chrome/browser/content_settings:content_settings_util_impl",
+     "//chrome/browser/updates/announcement_notification:impl",
    ]
 +  import("//brave/browser/sources.gni") public_deps += [ "//brave/browser/ui" ] deps += brave_chrome_browser_ui_allow_circular_includes_from allow_circular_includes_from += brave_chrome_browser_ui_allow_circular_includes_from
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -3601,7 +3602,10 @@ static_library("ui") {
+@@ -3593,7 +3594,10 @@ static_library("ui") {
        ]
        deps += [ "//chrome/updater/app/server/win:updater_legacy_idl" ]
      } else {
