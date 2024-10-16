@@ -267,6 +267,9 @@
   <message name="IDS_CHAT_UI_CHAT_BASIC_SUBTITLE" desc="A description for default chat model">
     General purpose chat
   </message>
+  <message name="IDS_CHAT_UI_CHAT_BASIC_LOCAL_SUBTITLE" desc="A description for default chat model">
+    On-device and fully private
+  </message>
   <message name="IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE" desc="A description for the llama chat model">
     Advanced chat tasks
   </message>

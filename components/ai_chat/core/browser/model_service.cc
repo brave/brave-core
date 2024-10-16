@@ -21,6 +21,8 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_llama.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
+#include "brave/components/ai_chat/core/browser/engine/on_device_oai_api_client.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
@@ -157,6 +159,26 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       auto model = mojom::Model::New();
       model->key = "chat-basic";
       model->display_name = "Llama 3.1 8B";
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
+    {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "Meta";
+      options->name = "llama-3-1b-instruct";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = mojom::ModelAccess::BASIC;
+      options->engine_type = mojom::ModelEngineType::ON_DEVICE;
+
+      options->max_page_content_length = 8000;
+      options->long_conversation_warning_character_limit = 9700;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-basic-local";
+      model->display_name = "Llama 3.1 1B (on your device)";
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -374,6 +396,11 @@ void ModelService::OnPremiumStatus(mojom::PremiumStatus status) {
       }
     }
   }
+}
+
+void ModelService::RegisterOnDeviceModelWorker(
+    mojo::PendingRemote<mojom::OnDeviceModelWorker> on_device_model_worker) {
+  on_device_model_worker_.Bind(std::move(on_device_model_worker));
 }
 
 void ModelService::InitModels() {
@@ -635,16 +662,21 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
       DVLOG(1) << "Started AI engine: llama";
       engine = std::make_unique<EngineConsumerLlamaRemote>(
           *leo_model_opts, url_loader_factory, credential_manager);
+    }  else if (leo_model_opts->engine_type == mojom::ModelEngineType::ON_DEVICE) {
+      mojo::Remote<mojom::OnDeviceModelWorker>& local_model_worker = on_device_model_worker_;
+      engine = std::make_unique<EngineConsumerOAIRemote>(
+        model->options, std::make_unique<OnDeviceOAIAPIClient>(local_model_worker));
     } else {
       DVLOG(1) << "Started AI engine: claude";
       engine = std::make_unique<EngineConsumerClaudeRemote>(
           *leo_model_opts, url_loader_factory, credential_manager);
     }
   } else if (model->options->is_custom_model_options()) {
-    auto& custom_model_opts = model->options->get_custom_model_options();
     DVLOG(1) << "Started AI engine: custom";
-    engine = std::make_unique<EngineConsumerOAIRemote>(*custom_model_opts,
-                                                       url_loader_factory);
+    std::unique_ptr<EngineConsumerOAIRemote::APIClient> api_client =
+        std::make_unique<OAIAPIClient>(url_loader_factory);
+    engine = std::make_unique<EngineConsumerOAIRemote>(
+        model->options, std::move(api_client));
   }
 
   return engine;

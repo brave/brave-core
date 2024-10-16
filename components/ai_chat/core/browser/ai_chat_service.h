@@ -104,6 +104,11 @@ class AIChatService : public KeyedService,
   void DeleteConversation(const std::string& id) override;
   void RenameConversation(const std::string& id,
                           const std::string& new_name) override;
+  void OnDeviceModelWorkerStatusChanged(const std::string& status,
+                                        bool is_ready) override;
+  void RegisterOnDeviceModelWorker(
+      mojo::PendingRemote<mojom::OnDeviceModelWorker> on_device_model_worker)
+      override;
 
   void BindConversation(
       const std::string& uuid,

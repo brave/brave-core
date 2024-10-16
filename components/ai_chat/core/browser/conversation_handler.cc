@@ -1221,7 +1221,7 @@ void ConversationHandler::OnModelListUpdated() {
   const mojom::Model* model = model_service_->GetModel(model_key_);
 
   if (model && engine_) {
-    engine_->UpdateModelOptions(*model->options);
+    engine_->UpdateModelOptions(model->options);
   }
 }
 

@@ -29,6 +29,7 @@ enum ModelEngineType {
   LLAMA_REMOTE,
   CLAUDE_REMOTE,
   BRAVE_CONVERSATION_API,
+  ON_DEVICE,
 };
 
 // When adding or modifying category names, associated UI strings must also
@@ -263,6 +264,16 @@ struct Conversation {
   bool has_content;
 };
 
+interface OnDeviceModelResponseHandler {
+  OnPartialResponse(string delta_response);
+  OnComplete(string final_response);
+};
+
+interface OnDeviceModelWorker {
+  PerformRequest(string messagesJson, pending_remote<OnDeviceModelResponseHandler> response_handler) => (bool success);
+};
+
+
 interface Service {
   // User opts-in to the feature at a profile level
   MarkAgreementAccepted();
@@ -292,11 +303,15 @@ interface Service {
       string conversation_uuid,
       pending_receiver<ConversationHandler> conversation,
       pending_remote<ConversationUI> conversation_ui);
+
+  OnDeviceModelWorkerStatusChanged(string status, bool is_ready);
+  RegisterOnDeviceModelWorker(pending_remote<OnDeviceModelWorker> on_device_model_worker);
 };
 
 interface ServiceObserver {
-  OnConversationListChanged(array<Conversation> conversations);
   OnAgreementAccepted();
+  OnConversationListChanged(array<Conversation> conversations);
+  OnDeviceModelWorkerStatusChanged(string status, bool is_ready);
 };
 
 // Browser-side handler for general AI Chat UI functions, implemented

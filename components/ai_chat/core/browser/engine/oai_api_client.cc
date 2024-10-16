@@ -52,13 +52,15 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 std::string CreateJSONRequestBody(
     base::Value::List messages,
     const bool is_sse_enabled,
-    const mojom::CustomModelOptions& model_options) {
+    const mojom::ModelOptionsPtr& model_options) {
+  CHECK(model_options->is_custom_model_options());
   base::Value::Dict dict;
 
   dict.Set("messages", std::move(messages));
   dict.Set("stream", is_sse_enabled);
   dict.Set("temperature", 0.7);
-  dict.Set("model", model_options.model_request_name);
+  dict.Set("model",
+           model_options->get_custom_model_options()->model_request_name);
 
   std::string json;
   base::JSONWriter::Write(dict, &json);
@@ -80,11 +82,12 @@ void OAIAPIClient::ClearAllQueries() {
 }
 
 void OAIAPIClient::PerformRequest(
-    const mojom::CustomModelOptions& model_options,
+    const mojom::ModelOptionsPtr& model_options,
     base::Value::List messages,
-    GenerationDataCallback data_received_callback,
-    GenerationCompletedCallback completed_callback) {
-  if (!model_options.endpoint.is_valid()) {
+    EngineConsumer::GenerationDataCallback data_received_callback,
+    EngineConsumer::GenerationCompletedCallback completed_callback) {
+    CHECK(model_options->is_custom_model_options());
+  if (!model_options->get_custom_model_options()->endpoint.is_valid()) {
     std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
     return;
   }
@@ -94,9 +97,11 @@ void OAIAPIClient::PerformRequest(
   const std::string request_body =
       CreateJSONRequestBody(std::move(messages), is_sse_enabled, model_options);
   base::flat_map<std::string, std::string> headers;
-  if (!model_options.api_key.empty()) {
-    headers.emplace("Authorization",
-                    base::StrCat({"Bearer ", model_options.api_key}));
+  if (!model_options->get_custom_model_options()->api_key.empty()) {
+    headers.emplace(
+        "Authorization",
+        base::StrCat(
+            {"Bearer ", model_options->get_custom_model_options()->api_key}));
   }
 
   if (is_sse_enabled) {
@@ -107,21 +112,23 @@ void OAIAPIClient::PerformRequest(
                                       weak_ptr_factory_.GetWeakPtr(),
                                       std::move(completed_callback));
 
-    api_request_helper_->RequestSSE(net::HttpRequestHeaders::kPostMethod,
-                                    model_options.endpoint, request_body,
-                                    "application/json", std::move(on_received),
-                                    std::move(on_complete), headers, {});
+    api_request_helper_->RequestSSE(
+        net::HttpRequestHeaders::kPostMethod,
+        model_options->get_custom_model_options()->endpoint, request_body,
+        "application/json", std::move(on_received), std::move(on_complete),
+        headers, {});
   } else {
     auto on_complete = base::BindOnce(&OAIAPIClient::OnQueryCompleted,
                                       weak_ptr_factory_.GetWeakPtr(),
                                       std::move(completed_callback));
     api_request_helper_->Request(
-        net::HttpRequestHeaders::kPostMethod, model_options.endpoint,
-        request_body, "application/json", std::move(on_complete), headers, {});
+        net::HttpRequestHeaders::kPostMethod,
+        model_options->get_custom_model_options()->endpoint, request_body,
+        "application/json", std::move(on_complete), headers, {});
   }
 }
 
-void OAIAPIClient::OnQueryCompleted(GenerationCompletedCallback callback,
+void OAIAPIClient::OnQueryCompleted(EngineConsumer::GenerationCompletedCallback callback,
                                     APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();
   // Handle successful request
@@ -155,7 +162,7 @@ void OAIAPIClient::OnQueryCompleted(GenerationCompletedCallback callback,
 }
 
 void OAIAPIClient::OnQueryDataReceived(
-    GenerationDataCallback callback,
+    EngineConsumer::GenerationDataCallback callback,
     base::expected<base::Value, std::string> result) {
   if (!result.has_value() || !result->is_dict()) {
     return;

@@ -38,6 +38,8 @@ static_library("browser") {
     "engine/engine_consumer_oai.h",
     "engine/oai_api_client.cc",
     "engine/oai_api_client.h",
+    "engine/on_device_oai_api_client.cc",
+    "engine/on_device_oai_api_client.h",
     "engine/remote_completion_client.cc",
     "engine/remote_completion_client.h",
     "local_models_updater.cc",

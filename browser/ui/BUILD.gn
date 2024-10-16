@@ -105,6 +105,8 @@ source_set("ui") {
     deps += [ "//brave/components/webcompat_reporter/common:mojom" ]
   }
 
+      "webui/ai_chat/on_device_model_worker_webui.cc",
+      "webui/ai_chat/on_device_model_worker_webui.h",
   if (enable_print_preview) {
     sources += [
       "ai_chat/print_preview_extractor.cc",
@@ -1077,6 +1079,7 @@ source_set("ui") {
     ]
   }
 
+      "//brave/components/ai_chat/resources/on_device_model_worker:generated_resources",
   if (enable_extensions && toolkit_views) {
     sources += [
       "toolbar/brave_location_bar_model_delegate.cc",

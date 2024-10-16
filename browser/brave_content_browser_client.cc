@@ -38,6 +38,7 @@
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/browser/ui/webui/ai_chat/on_device_model_worker_webui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -619,6 +620,8 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   if (ai_chat::features::IsAIChatEnabled()) {
     registry.ForWebUI<AIChatUI>()
         .Add<ai_chat::mojom::AIChatUIHandler>()
+        .Add<ai_chat::mojom::Service>();
+    registry.ForWebUI<UntrustedOnDeviceModelWorkerWebUI>()
         .Add<ai_chat::mojom::Service>();
   }
 

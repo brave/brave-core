@@ -52,6 +52,9 @@ class ModelService : public KeyedService {
 
   void OnPremiumStatus(mojom::PremiumStatus status);
 
+  void RegisterOnDeviceModelWorker(
+      mojo::PendingRemote<mojom::OnDeviceModelWorker> on_device_model_worker);
+
   // All models that the user can choose for chat conversations, in UI display
   // order.
   const std::vector<ai_chat::mojom::ModelPtr>& GetModels();
@@ -86,6 +89,8 @@ class ModelService : public KeyedService {
   base::ObserverList<Observer> observers_;
   std::vector<ai_chat::mojom::ModelPtr> models_;
   raw_ptr<PrefService> pref_service_;
+  mojo::Remote<mojom::OnDeviceModelWorker> on_device_model_worker_;
+
   bool is_migrating_claude_instant_ = false;
 
   base::WeakPtrFactory<ModelService> weak_ptr_factory_{this};

@@ -82,6 +82,7 @@
     }
   },
   "devDependencies": {
+    "@mlc-ai/web-llm": "^0.2.73",
     "@storybook/addon-essentials": "8.3.5",
     "@storybook/addon-knobs": "8.0.1",
     "@storybook/csf-tools": "8.3.5",

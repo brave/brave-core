@@ -78,7 +78,7 @@ class EngineConsumer {
   // from the previous run (use |true|).
   virtual bool SupportsDeltaTextResponses() const;
 
-  virtual void UpdateModelOptions(const mojom::ModelOptions& options) = 0;
+  virtual void UpdateModelOptions(const mojom::ModelOptionsPtr& options) {}
 
   void SetMaxAssociatedContentLengthForTesting(
       uint32_t max_associated_content_length) {

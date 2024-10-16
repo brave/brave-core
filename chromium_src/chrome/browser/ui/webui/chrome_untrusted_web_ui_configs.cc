@@ -18,6 +18,7 @@
 #include "build/build_config.h"
 #include "content/public/browser/webui_config_map.h"
 
+#include "brave/browser/ui/webui/ai_chat/on_device_model_worker_webui.h"
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_vpn/vpn_panel_ui.h"
@@ -69,5 +70,7 @@ void RegisterChromeUntrustedWebUIConfigs() {
   if (ai_chat::features::IsAIChatEnabled()) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
         std::make_unique<UntrustedChatUIConfig>());
+    content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+        std::make_unique<UntrustedOnDeviceModelWorkerWebUIConfig>());
   }
 }

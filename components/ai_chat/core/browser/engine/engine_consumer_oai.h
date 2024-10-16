@@ -12,16 +12,11 @@
 
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 
 namespace api_request_helper {
 class APIRequestResult;
 }  // namespace api_request_helper
-
-namespace network {
-class SharedURLLoaderFactory;
-}  // namespace network
 
 namespace ai_chat {
 
@@ -29,9 +24,20 @@ using api_request_helper::APIRequestResult;
 
 class EngineConsumerOAIRemote : public EngineConsumer {
  public:
+
+  class APIClient {
+   public:
+    virtual ~APIClient() = default;
+    virtual void PerformRequest(const mojom::ModelOptionsPtr& model_options,
+                              base::Value::List messages,
+                              GenerationDataCallback data_received_callback,
+                              GenerationCompletedCallback completed_callback) = 0;
+    virtual void ClearAllQueries() = 0;
+  };
+
   explicit EngineConsumerOAIRemote(
-      const mojom::CustomModelOptions& model_options,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      const mojom::ModelOptionsPtr& model_options,
+      std::unique_ptr<APIClient> api_client);
   EngineConsumerOAIRemote(const EngineConsumerOAIRemote&) = delete;
   EngineConsumerOAIRemote& operator=(const EngineConsumerOAIRemote&) = delete;
   ~EngineConsumerOAIRemote() override;
@@ -60,19 +66,19 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   void ClearAllQueries() override;
   bool SupportsDeltaTextResponses() const override;
 
-  void SetAPIForTesting(std::unique_ptr<OAIAPIClient> api_for_testing) {
+  void SetAPIForTesting(std::unique_ptr<APIClient> api_for_testing) {
     api_ = std::move(api_for_testing);
   }
-  OAIAPIClient* GetAPIForTesting() { return api_.get(); }
-  void UpdateModelOptions(const mojom::ModelOptions& options) override;
+  APIClient* GetAPIForTesting() { return api_.get(); }
+  void UpdateModelOptions(const mojom::ModelOptionsPtr& options) override;
 
  private:
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);
 
-  std::unique_ptr<OAIAPIClient> api_ = nullptr;
-  mojom::CustomModelOptions model_options_;
+  std::unique_ptr<APIClient> api_ = nullptr;
+  raw_ref<const mojom::ModelOptionsPtr> model_options_;
 
   base::WeakPtrFactory<EngineConsumerOAIRemote> weak_ptr_factory_{this};
 };

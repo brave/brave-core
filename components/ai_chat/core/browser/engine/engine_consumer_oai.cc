@@ -118,13 +118,13 @@ base::Value::List BuildMessages(
 }  // namespace
 
 EngineConsumerOAIRemote::EngineConsumerOAIRemote(
-    const mojom::CustomModelOptions& model_options,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+    const mojom::ModelOptionsPtr& model_options,
+    std::unique_ptr<APIClient> api_client)
+    : api_(std::move(api_client)), model_options_(model_options) {
   model_options_ = model_options;
   max_associated_content_length_ = model_options.max_associated_content_length;
 
   // Initialize the API client
-  api_ = std::make_unique<OAIAPIClient>(url_loader_factory);
 }
 
 EngineConsumerOAIRemote::~EngineConsumerOAIRemote() = default;
@@ -138,12 +138,10 @@ bool EngineConsumerOAIRemote::SupportsDeltaTextResponses() const {
 }
 
 void EngineConsumerOAIRemote::UpdateModelOptions(
-    const mojom::ModelOptions& options) {
-  if (options.is_custom_model_options()) {
-    model_options_ = *options.get_custom_model_options();
+    const mojom::ModelOptionsPtr& options) {
+  model_options_ = options;
     max_associated_content_length_ =
         model_options_.max_associated_content_length;
-  }
 }
 
 void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
@@ -168,7 +166,7 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
     messages.Append(std::move(message));
   }
 
-  api_->PerformRequest(model_options_, std::move(messages),
+  api_->PerformRequest(model_options_.get(), std::move(messages),
                        std::move(received_callback),
                        std::move(completed_callback));
 }
@@ -205,7 +203,7 @@ void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
   }
 
   api_->PerformRequest(
-      model_options_, std::move(messages), base::NullCallback(),
+      model_options_.get(), std::move(messages), base::NullCallback(),
       base::BindOnce(
           &EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -269,7 +267,7 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
   base::Value::List messages =
       BuildMessages(model_options_, truncated_page_content, selected_text,
                     is_video, conversation_history);
-  api_->PerformRequest(model_options_, std::move(messages),
+  api_->PerformRequest(model_options_.get(), std::move(messages),
                        std::move(data_received_callback),
                        std::move(completed_callback));
 }

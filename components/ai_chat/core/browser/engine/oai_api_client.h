@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 
 namespace api_request_helper {
@@ -24,27 +25,21 @@ class SharedURLLoaderFactory;
 namespace ai_chat {
 
 // Performs remote request to the OAI format APIs.
-class OAIAPIClient {
+class OAIAPIClient : public EngineConsumerOAIRemote::APIClient {
  public:
-  using GenerationResult = base::expected<std::string, mojom::APIError>;
-  using GenerationDataCallback =
-      base::RepeatingCallback<void(mojom::ConversationEntryEventPtr)>;
-  using GenerationCompletedCallback =
-      base::OnceCallback<void(GenerationResult)>;
-
   explicit OAIAPIClient(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
   OAIAPIClient(const OAIAPIClient&) = delete;
   OAIAPIClient& operator=(const OAIAPIClient&) = delete;
-  virtual ~OAIAPIClient();
+  ~OAIAPIClient() override;
 
-  virtual void PerformRequest(const mojom::CustomModelOptions& model_options,
+  void PerformRequest(const mojom::ModelOptionsPtr& model_options,
                               base::Value::List messages,
-                              GenerationDataCallback data_received_callback,
-                              GenerationCompletedCallback completed_callback);
+                              EngineConsumer::GenerationDataCallback data_received_callback,
+                              EngineConsumer::GenerationCompletedCallback completed_callback) override;
 
-  void ClearAllQueries();
+  void ClearAllQueries() override;
 
  protected:
   void SetAPIRequestHelperForTesting(
@@ -56,9 +51,9 @@ class OAIAPIClient {
   }
 
  private:
-  void OnQueryCompleted(GenerationCompletedCallback callback,
+  void OnQueryCompleted(EngineConsumer::GenerationCompletedCallback callback,
                         APIRequestResult result);
-  void OnQueryDataReceived(GenerationDataCallback callback,
+  void OnQueryDataReceived(EngineConsumer::GenerationDataCallback callback,
                            base::expected<base::Value, std::string> result);
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
