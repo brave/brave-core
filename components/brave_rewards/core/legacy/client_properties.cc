@@ -73,11 +73,9 @@ bool ClientProperties::FromValue(const base::Value::Dict& dict) {
   // Wallet Info
   const auto* wallet_info_dict = dict.FindDict(kWalletInfoKey);
   if (!wallet_info_dict) {
-    NOTREACHED_IN_MIGRATION();
     return false;
   }
   if (!wallet_info.FromValue(*wallet_info_dict)) {
-    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
@@ -93,7 +91,6 @@ bool ClientProperties::FromValue(const base::Value::Dict& dict) {
                  dict.FindDouble(kBootTimestampKey)) {
     boot_timestamp = static_cast<uint64_t>(*boot_timestamp_value_double);
   } else {
-    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
@@ -110,7 +107,6 @@ bool ClientProperties::FromValue(const base::Value::Dict& dict) {
     reconcile_timestamp =
         static_cast<uint64_t>(*reconcile_timestamp_value_double);
   } else {
-    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
@@ -118,7 +114,6 @@ bool ClientProperties::FromValue(const base::Value::Dict& dict) {
   if (auto value = dict.FindDouble(kFeeAmountKey)) {
     fee_amount = *value;
   } else {
-    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
@@ -126,7 +121,6 @@ bool ClientProperties::FromValue(const base::Value::Dict& dict) {
   if (auto value = dict.FindBool(kUserChangedFeeKey)) {
     user_changed_fee = *value;
   } else {
-    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
@@ -134,7 +128,6 @@ bool ClientProperties::FromValue(const base::Value::Dict& dict) {
   if (auto value = dict.FindBool(kAutoContributeKey)) {
     auto_contribute = *value;
   } else {
-    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
@@ -142,7 +135,6 @@ bool ClientProperties::FromValue(const base::Value::Dict& dict) {
   if (auto value = dict.FindBool(kRewardsEnabledKey)) {
     rewards_enabled = *value;
   } else {
-    NOTREACHED_IN_MIGRATION();
     return false;
   }
 

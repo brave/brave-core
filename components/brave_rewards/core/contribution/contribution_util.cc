@@ -12,21 +12,13 @@
 namespace brave_rewards::internal::contribution {
 
 mojom::ReportType GetReportTypeFromRewardsType(const mojom::RewardsType type) {
-  switch (static_cast<int>(type)) {
-    case static_cast<int>(mojom::RewardsType::AUTO_CONTRIBUTE): {
+  switch (type) {
+    case mojom::RewardsType::AUTO_CONTRIBUTE:
       return mojom::ReportType::AUTO_CONTRIBUTION;
-    }
-    case static_cast<int>(mojom::RewardsType::ONE_TIME_TIP): {
-      return mojom::ReportType::TIP;
-    }
-    case static_cast<int>(mojom::RewardsType::RECURRING_TIP): {
+    case mojom::RewardsType::RECURRING_TIP:
       return mojom::ReportType::TIP_RECURRING;
-    }
-    default: {
-      // missing conversion, returning dummy value.
-      NOTREACHED_IN_MIGRATION();
+    default:
       return mojom::ReportType::TIP;
-    }
   }
 }
 

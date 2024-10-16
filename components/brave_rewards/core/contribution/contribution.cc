@@ -660,7 +660,6 @@ void Contribution::TransferFunds(const mojom::SKUTransaction& transaction,
     return;
   }
 
-  NOTREACHED_IN_MIGRATION();
   engine_->LogError(FROM_HERE) << "Wallet type not supported";
 }
 

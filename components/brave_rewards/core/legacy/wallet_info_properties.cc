@@ -10,7 +10,6 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
-#include "base/notreached.h"
 
 namespace brave_rewards::internal {
 
@@ -60,7 +59,6 @@ bool WalletInfoProperties::FromValue(const base::Value::Dict& dict) {
   if (const auto* value = dict.FindString(kPaymentIdKey)) {
     payment_id = *value;
   } else {
-    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
@@ -68,19 +66,16 @@ bool WalletInfoProperties::FromValue(const base::Value::Dict& dict) {
   if (const auto* value = dict.FindString(kAddressCardIdKey)) {
     address_card_id = *value;
   } else {
-    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
   // Key Info Seed (Base64)
   const auto* base64_key_info_seed = dict.FindString(kKeyInfoSeedKey);
   if (!base64_key_info_seed) {
-    NOTREACHED_IN_MIGRATION();
     return false;
   }
   std::string plain_key_info_seed;
   if (!base::Base64Decode(*base64_key_info_seed, &plain_key_info_seed)) {
-    NOTREACHED_IN_MIGRATION();
     return false;
   }
   key_info_seed.assign(plain_key_info_seed.begin(), plain_key_info_seed.end());
