@@ -782,8 +782,9 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
                   return;
                 }
 
-                [strongSelf.commonOps saveContents:response
-                                              name:adsResourceId.UTF8String];
+                [strongSelf.commonOps
+                    saveContents:response
+                            name:base::SysNSStringToUTF8(adsResourceId)];
                 BLOG(1, @"Cached %@ ads resource version %@", adsResourceId,
                      version);
 
@@ -1385,7 +1386,7 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
 
   BLOG(1, @"Loading %@ ads resource descriptor", nsFilePath);
 
-  base::FilePath file_path(nsFilePath.UTF8String);
+  base::FilePath file_path(base::SysNSStringToUTF8(nsFilePath));
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()}, base::BindOnce(^base::File {
         return base::File(file_path,
@@ -1408,7 +1409,7 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
   if (!contents || error) {
     return "";
   }
-  return std::string(contents.UTF8String);
+  return base::SysNSStringToUTF8(contents);
 }
 
 - (void)showScheduledCaptcha:(const std::string&)payment_id
@@ -1533,7 +1534,7 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
 
 - (void)maybeServeInlineContentAd:(NSString*)dimensionsArg
                        completion:(void (^)(NSString* dimensions,
-                                            InlineContentAdIOS* ad))completion {
+                                            InlineContentAdIOS*))completion {
   if (![self isServiceRunning]) {
     return;
   }
@@ -1587,18 +1588,25 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
       base::BindOnce(completion));
 }
 
-- (nullable NotificationAdIOS*)maybeGetNotificationAd:(NSString*)identifier {
+- (void)maybeGetNotificationAd:(NSString*)identifier
+                    completion:(void (^)(NotificationAdIOS*))completion {
   if (![self isServiceRunning]) {
-    return nil;
+    completion(nil);
+    return;
   }
 
-  const std::optional<brave_ads::NotificationAdInfo> ad =
-      ads->MaybeGetNotificationAd(identifier.UTF8String);
-  if (!ad) {
-    return nil;
-  }
+  ads->MaybeGetNotificationAd(
+      base::SysNSStringToUTF8(identifier),
+      base::BindOnce(^(const std::optional<brave_ads::NotificationAdInfo>& ad) {
+        if (!ad) {
+          completion(nil);
+          return;
+        }
 
-  return [[NotificationAdIOS alloc] initWithNotificationAdInfo:*ad];
+        const auto notification_ad =
+            [[NotificationAdIOS alloc] initWithNotificationAdInfo:*ad];
+        completion(notification_ad);
+      }));
 }
 
 - (void)triggerNotificationAdEvent:(NSString*)placementId

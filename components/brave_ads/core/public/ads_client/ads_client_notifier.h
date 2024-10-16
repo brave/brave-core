@@ -19,7 +19,7 @@ class GURL;
 
 namespace brave_ads {
 
-class AdsClientNotifierQueue;
+class OnceClosureTaskQueue;
 
 class AdsClientNotifier {
  public:
@@ -32,10 +32,6 @@ class AdsClientNotifier {
   AdsClientNotifier& operator=(AdsClientNotifier&&) noexcept = delete;
 
   virtual ~AdsClientNotifier();
-
-  void set_should_queue_for_testing(bool should_queue) {
-    should_queue_ = should_queue;
-  }
 
   void AddObserver(AdsClientNotifierObserver* observer);
   void RemoveObserver(AdsClientNotifierObserver* observer);
@@ -151,13 +147,7 @@ class AdsClientNotifier {
  private:
   base::ObserverList<AdsClientNotifierObserver> observers_;
 
-  std::unique_ptr<AdsClientNotifierQueue> queue_;
-
-#if BUILDFLAG(IS_IOS)
-  bool should_queue_ = true;
-#else
-  bool should_queue_ = false;
-#endif  // BUILDFLAG(IS_IOS)
+  std::unique_ptr<OnceClosureTaskQueue> task_queue_;
 
   base::WeakPtrFactory<AdsClientNotifier> weak_factory_{this};
 };

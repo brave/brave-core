@@ -109,10 +109,11 @@ class ADS_EXPORT Ads {
       mojom::NewTabPageAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) = 0;
 
-  // Called to get the notification ad specified by `placement_id`. Returns
-  // `NotificationAdInfo` containing the info of the ad.
-  virtual std::optional<NotificationAdInfo> MaybeGetNotificationAd(
-      const std::string& placement_id) = 0;
+  // Called to get the notification ad specified by `placement_id`. The callback
+  // takes one argument - `NotificationAdInfo` containing the info of the ad.
+  virtual void MaybeGetNotificationAd(
+      const std::string& placement_id,
+      MaybeGetNotificationAdCallback callback) = 0;
 
   // Called when a user views or interacts with a notification ad or the ad
   // notification times out to trigger a `mojom_ad_event_type` event for the

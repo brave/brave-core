@@ -76,6 +76,13 @@ void MockAdsClientNotifierAddObserver(AdsClientMock& ads_client_mock,
           }));
 }
 
+void MockNotifyPendingObservers(AdsClientMock& ads_client_mock,
+                                TestBase& test_base) {
+  ON_CALL(ads_client_mock, NotifyPendingObservers)
+      .WillByDefault(::testing::Invoke(
+          [&test_base]() { test_base.NotifyPendingObservers(); }));
+}
+
 void MockShowNotificationAd(AdsClientMock& ads_client_mock) {
   ON_CALL(ads_client_mock, ShowNotificationAd)
       .WillByDefault(::testing::Invoke([](const NotificationAdInfo& ad) {

@@ -9,6 +9,12 @@
 
 namespace brave_ads {
 
+void AdsClientNotifierForTesting::NotifyPendingObservers() {
+  AdsClientNotifier::NotifyPendingObservers();
+
+  RunTaskEnvironmentUntilIdle();
+}
+
 void AdsClientNotifierForTesting::NotifyDidInitializeAds() {
   AdsClientNotifier::NotifyDidInitializeAds();
 

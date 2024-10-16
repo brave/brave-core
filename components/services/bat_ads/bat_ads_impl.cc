@@ -96,15 +96,20 @@ void BatAdsImpl::Shutdown(ShutdownCallback callback) {
 void BatAdsImpl::MaybeGetNotificationAd(
     const std::string& placement_id,
     MaybeGetNotificationAdCallback callback) {
-  const std::optional<brave_ads::NotificationAdInfo> ad =
-      GetAds()->MaybeGetNotificationAd(placement_id);
-  if (!ad) {
-    std::move(callback).Run(/*ad*/ std::nullopt);
-    return;
-  }
+  GetAds()->MaybeGetNotificationAd(
+      placement_id,
+      base::BindOnce(
+          [](MaybeGetNotificationAdCallback callback,
+             const std::optional<brave_ads::NotificationAdInfo>& ad) {
+            if (!ad) {
+              return std::move(callback).Run(/*ad*/ std::nullopt);
+            }
 
-  std::optional<base::Value::Dict> dict = brave_ads::NotificationAdToValue(*ad);
-  std::move(callback).Run(std::move(dict));
+            std::optional<base::Value::Dict> dict =
+                brave_ads::NotificationAdToValue(*ad);
+            std::move(callback).Run(std::move(dict));
+          },
+          std::move(callback)));
 }
 
 void BatAdsImpl::TriggerNotificationAdEvent(
