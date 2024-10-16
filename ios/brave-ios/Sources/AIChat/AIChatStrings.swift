@@ -359,7 +359,7 @@ extension Strings {
       bundle: .module,
       value: "BEST VALUE",
       comment:
-        "The description indicating yearly subscription that show how much user is saving percentage"
+        "The description indicating how valuable the yearly subscription is, compared to purchasing monthly"
     )
     public static let paywallYearlyPriceDividend = NSLocalizedString(
       "aichat.paywallYearlyPriceDividend",

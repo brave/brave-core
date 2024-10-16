@@ -212,19 +212,18 @@ struct AIChatPaywallView: View {
                 .tint(Color.white)
                 .padding()
             } else {
-              if (selectedTierType == .monthly && isMonthlyIntroOfferAvailable)
+              let isIntroOfferAvailable =
+                (selectedTierType == .monthly && isMonthlyIntroOfferAvailable)
                 || (selectedTierType == .yearly && isYearlyIntroOfferAvailable)
-              {
-                Text(Strings.AIChat.paywallPurchaseActionIntroOfferTitle)
-                  .font(.body.weight(.semibold))
-                  .foregroundColor(Color(.white))
-                  .padding()
-              } else {
-                Text(Strings.AIChat.paywallPurchaseActionTitle)
-                  .font(.body.weight(.semibold))
-                  .foregroundColor(Color(.white))
-                  .padding()
-              }
+
+              Text(
+                isIntroOfferAvailable
+                  ? Strings.AIChat.paywallPurchaseActionIntroOfferTitle
+                  : Strings.AIChat.paywallPurchaseActionTitle
+              )
+              .font(.body.weight(.semibold))
+              .foregroundColor(Color(.white))
+              .padding()
             }
           }
           .frame(maxWidth: .infinity)
