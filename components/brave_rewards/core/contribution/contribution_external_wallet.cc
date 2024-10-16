@@ -155,7 +155,6 @@ void ContributionExternalWallet::OnServerPublisherInfo(
                                            amount, std::move(start_callback));
       break;
     default:
-      NOTREACHED_IN_MIGRATION();
       engine_->LogError(FROM_HERE) << "Contribution processor not supported";
       break;
   }

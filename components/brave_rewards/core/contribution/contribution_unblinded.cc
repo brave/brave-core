@@ -517,7 +517,6 @@ void Unblinded::Retry(const std::vector<mojom::CredsBatchType>& types,
     case mojom::ContributionStep::STEP_COMPLETED:
     case mojom::ContributionStep::STEP_NO: {
       engine_->LogError(FROM_HERE) << "Step not correct " << contribution->step;
-      NOTREACHED_IN_MIGRATION();
       return;
     }
   }

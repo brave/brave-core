@@ -707,9 +707,6 @@ void RewardsEngine::WhenReady(T callback) {
     case InitializationManager::State::kReady:
       callback();
       break;
-    case InitializationManager::State::kShuttingDown:
-      NOTREACHED_IN_MIGRATION();
-      break;
     default:
       ready_event_.Post(
           FROM_HERE,
