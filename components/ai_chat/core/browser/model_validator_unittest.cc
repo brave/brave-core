@@ -62,7 +62,9 @@ TEST_F(ModelValidatorUnitTest, HasValidContextSize) {
   valid_custom_model.options = mojom::ModelOptions::NewCustomModelOptions(
       std::move(valid_custom_options));
 
-  EXPECT_EQ(ModelValidator::HasValidContextSize(valid_custom_model), true);
+  EXPECT_EQ(ModelValidator::HasValidContextSize(
+                *valid_custom_model.options->get_custom_model_options()),
+            true);
 
   // Invalid context size
   mojom::CustomModelOptionsPtr invalid_context_size_options =
@@ -74,8 +76,10 @@ TEST_F(ModelValidatorUnitTest, HasValidContextSize) {
       mojom::ModelOptions::NewCustomModelOptions(
           std::move(invalid_context_size_options));
 
-  EXPECT_EQ(ModelValidator::HasValidContextSize(invalid_context_size_model),
-            false);
+  EXPECT_EQ(
+      ModelValidator::HasValidContextSize(
+          *invalid_context_size_model.options->get_custom_model_options()),
+      false);
 }
 
 // Test IsValidEndpoint with various URLs
@@ -115,7 +119,8 @@ TEST_F(ModelValidatorUnitTest, ValidateModel) {
   valid_custom_model.options = mojom::ModelOptions::NewCustomModelOptions(
       std::move(valid_custom_options));
 
-  EXPECT_EQ(ModelValidator::ValidateModel(valid_custom_model),
+  EXPECT_EQ(ModelValidator::ValidateModel(
+                *valid_custom_model.options->get_custom_model_options()),
             ModelValidationResult::kSuccess);
 
   // Invalid context size
@@ -129,8 +134,10 @@ TEST_F(ModelValidatorUnitTest, ValidateModel) {
       mojom::ModelOptions::NewCustomModelOptions(
           std::move(invalid_context_size_options));
 
-  EXPECT_EQ(ModelValidator::ValidateModel(invalid_context_size_model),
-            ModelValidationResult::kInvalidContextSize);
+  EXPECT_EQ(
+      ModelValidator::ValidateModel(
+          *invalid_context_size_model.options->get_custom_model_options()),
+      ModelValidationResult::kInvalidContextSize);
 
   // Invalid endpoint
   mojom::CustomModelOptionsPtr invalid_endpoint_options =
@@ -143,7 +150,8 @@ TEST_F(ModelValidatorUnitTest, ValidateModel) {
   invalid_endpoint_model.options = mojom::ModelOptions::NewCustomModelOptions(
       std::move(invalid_endpoint_options));
 
-  EXPECT_EQ(ModelValidator::ValidateModel(invalid_endpoint_model),
+  EXPECT_EQ(ModelValidator::ValidateModel(
+                *invalid_endpoint_model.options->get_custom_model_options()),
             ModelValidationResult::kInvalidUrl);
 }
 

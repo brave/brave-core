@@ -8,10 +8,8 @@
 
 #include <optional>
 
-#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
-#include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
+#include "brave/net/base/url_util.h"
 #include "url/url_constants.h"
 
 namespace ai_chat {
@@ -30,13 +28,14 @@ enum class ModelValidationResult {
 class ModelValidator {
  public:
   // Validates if the context size is within the valid range (1 to 50,000,000)
-  static bool IsValidContextSize(const std::optional<int32_t>& context_size);
-  static bool HasValidContextSize(const mojom::Model& model);
+  static bool IsValidContextSize(const std::optional<int32_t>& size);
+  static bool HasValidContextSize(const mojom::CustomModelOptions& options);
 
   static bool IsValidEndpoint(const GURL& endpoint);
 
   // Validates the custom model's properties, such as context size and endpoint
-  static ModelValidationResult ValidateModel(const mojom::Model& model);
+  static ModelValidationResult ValidateModel(
+      const mojom::CustomModelOptions& options);
 };
 
 }  // namespace ai_chat

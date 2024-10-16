@@ -5,15 +5,9 @@
 
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 
-#include <limits>
-#include <optional>
-
-#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
-#include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/net/base/url_util.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
 
 namespace ai_chat {
 
@@ -31,15 +25,9 @@ bool ModelValidator::IsValidContextSize(const std::optional<int32_t>& size) {
 }
 
 // Static
-bool ModelValidator::HasValidContextSize(const mojom::Model& model) {
-  if (model.options->is_custom_model_options()) {
-    return IsValidContextSize(
-        model.options->get_custom_model_options()->context_size);
-  }
-
-  // Should not be reached
-  DCHECK(false);
-  return false;
+bool ModelValidator::HasValidContextSize(
+    const mojom::CustomModelOptions& options) {
+  return IsValidContextSize(options.context_size);
 }
 
 // Static
@@ -47,13 +35,13 @@ bool ModelValidator::IsValidEndpoint(const GURL& endpoint) {
   return net::IsHTTPSOrLocalhostURL(endpoint);
 }
 
-ModelValidationResult ModelValidator::ValidateModel(const mojom::Model& model) {
-  if (!IsValidContextSize(
-          model.options->get_custom_model_options()->context_size)) {
+ModelValidationResult ModelValidator::ValidateModel(
+    const mojom::CustomModelOptions& options) {
+  if (!HasValidContextSize(options)) {
     return ModelValidationResult::kInvalidContextSize;
   }
 
-  if (!IsValidEndpoint(model.options->get_custom_model_options()->endpoint)) {
+  if (!IsValidEndpoint(options.endpoint)) {
     return ModelValidationResult::kInvalidUrl;
   }
 

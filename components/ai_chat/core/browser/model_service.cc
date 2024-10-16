@@ -280,7 +280,8 @@ void ModelService::SetAssociatedContentLengthMetrics(mojom::Model& model) {
     return;
   }
 
-  if (!ModelValidator::HasValidContextSize(model)) {
+  if (!ModelValidator::HasValidContextSize(
+          *model.options->get_custom_model_options())) {
     model.options->get_custom_model_options()->context_size =
         kDefaultCustomModelContextSize;
   }
@@ -414,7 +415,8 @@ void ModelService::AddCustomModel(mojom::ModelPtr model) {
        base::Uuid::GenerateRandomV4().AsLowercaseString().substr(0, 8)});
 
   // Validate the model
-  ModelValidationResult result = ModelValidator::ValidateModel(*model);
+  ModelValidationResult result = ModelValidator::ValidateModel(
+      *model->options->get_custom_model_options());
   if (result != ModelValidationResult::kSuccess) {
     if (result == ModelValidationResult::kInvalidContextSize) {
       VLOG(2) << "Invalid context size for model: " << model->key;
@@ -434,7 +436,8 @@ void ModelService::AddCustomModel(mojom::ModelPtr model) {
 
 void ModelService::SaveCustomModel(uint32_t index, mojom::ModelPtr model) {
   // Validate the model
-  ModelValidationResult result = ModelValidator::ValidateModel(*model);
+  ModelValidationResult result = ModelValidator::ValidateModel(
+      *model->options->get_custom_model_options());
   if (result != ModelValidationResult::kSuccess) {
     if (result == ModelValidationResult::kInvalidContextSize) {
       VLOG(2) << "Invalid context size for model: " << model->key;
@@ -569,7 +572,8 @@ std::vector<mojom::ModelPtr> ModelService::GetCustomModelsFromPrefs() {
         std::move(custom_model_opts));
 
     // Validate the model
-    ModelValidationResult result = ModelValidator::ValidateModel(*model);
+    ModelValidationResult result = ModelValidator::ValidateModel(
+        *model->options->get_custom_model_options());
     if (result != ModelValidationResult::kSuccess) {
       if (result == ModelValidationResult::kInvalidContextSize) {
         VLOG(2) << "Invalid context size for model: " << model->key;
