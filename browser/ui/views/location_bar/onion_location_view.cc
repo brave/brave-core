@@ -58,6 +58,9 @@ void OnionLocationView::UpdateImpl() {
   const bool show_icon = helper && helper->should_show_icon();
 
   if (show_icon) {
+    const auto onion_location_text =
+        base::UTF8ToUTF16(helper->onion_location().spec());
+
     if (profile_->IsTor()) {
       SetIconColor(kOnionButtonTextColor);
       SetTextColor(views::Button::STATE_DISABLED, kOnionButtonTextColor);
@@ -70,7 +73,7 @@ void OnionLocationView::UpdateImpl() {
                    IDS_LOCATION_BAR_ONION_AVAILABLE),
                l10n_util::GetStringFUTF16(
                    IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT,
-                   base::UTF8ToUTF16(helper->onion_location().spec())));
+                   onion_location_text));
     } else {
       if (const ui::ColorProvider* color_provider = GetColorProvider()) {
         const SkColor icon_color_default =
@@ -79,7 +82,7 @@ void OnionLocationView::UpdateImpl() {
       }
       SetLabel({}, l10n_util::GetStringFUTF16(
                        IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT,
-                       base::UTF8ToUTF16(helper->onion_location().spec())));
+                       onion_location_text));
     }
   }
   SetVisible(show_icon);

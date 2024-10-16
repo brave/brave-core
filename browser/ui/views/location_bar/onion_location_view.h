@@ -15,10 +15,9 @@ class Profile;
 class OnionLocationView : public PageActionIconView {
   METADATA_HEADER(OnionLocationView, PageActionIconView)
  public:
-  explicit OnionLocationView(
-      Profile* profile,
-      IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
-      PageActionIconView::Delegate* page_action_icon_delegate);
+  OnionLocationView(Profile* profile,
+                    IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
+                    PageActionIconView::Delegate* page_action_icon_delegate);
   OnionLocationView(const OnionLocationView&) = delete;
   OnionLocationView& operator=(const OnionLocationView&) = delete;
   ~OnionLocationView() override;
