@@ -10,10 +10,6 @@ export function useSelectedConversation() {
     return useParams().chatId
 }
 
-export function selectConversation(conversationId: string | null) {
-    window.location.href = conversationId ? `/${conversationId}` : "/"
-}
-
 const routes = [
     '/',
     '/{chatId}'

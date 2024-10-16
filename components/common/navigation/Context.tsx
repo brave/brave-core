@@ -33,8 +33,8 @@ const findMatchingRoute = (url: string, routes: Routes) => {
     const pathParts = path.split('/')
 
 
-    for (const [path, handler] of routes.entries()) {
-        const routeParts = path.split('/')
+    for (const [route, callbacks] of routes.entries()) {
+        const routeParts = route.split('/')
 
         if (routeParts.length !== pathParts.length) continue
 
@@ -56,12 +56,12 @@ const findMatchingRoute = (url: string, routes: Routes) => {
         }
 
         if (isMatch) {
-            return [handler, params] as const
+            return [route, callbacks, params] as const
         }
     }
 
     // Couldn't find a handler
-    return [null, {}] as const
+    return [null, [], {}] as const
 }
 
 export function useParams<T extends NavigationParams = NavigationParams>() {
@@ -79,7 +79,7 @@ export function NavigationContext(props: React.PropsWithChildren) {
 
     useEffect(() => {
         const handler = (e: NavigateEvent) => {
-            const [handler, params] = findMatchingRoute(e.destination.url, routes.current)
+            const [, callbacks, params] = findMatchingRoute(e.destination.url, routes.current)
 
             if (!handler) {
                 setParams({})
@@ -89,7 +89,7 @@ export function NavigationContext(props: React.PropsWithChildren) {
             setParams(params)
             e.intercept({
                 handler: async () => {
-                    for (const callback of handler) {
+                    for (const callback of callbacks) {
                         callback?.(params)
                     }
                 }
@@ -108,8 +108,11 @@ export function NavigationContext(props: React.PropsWithChildren) {
         }
 
         routes.current.get(route)!.push(callback)
-
-        setParams(findMatchingRoute(location.href, routes.current)[1])
+        const [matchingRoute, _, params] = findMatchingRoute(location.href, routes.current)
+        if (matchingRoute === route) {
+            setParams(params)
+            callback?.(params)
+        }
     }, [])
 
     const removeRoute = React.useCallback((route: string, callback?: (params: NavigationParams) => void) => {
@@ -123,7 +126,7 @@ export function NavigationContext(props: React.PropsWithChildren) {
             routes.current.delete(route)
         }
 
-        setParams(findMatchingRoute(location.href, routes.current)[1])
+        setParams(findMatchingRoute(location.href, routes.current)[2])
     }, [])
 
     return <Context.Provider value={{ params, addRoute, removeRoute }} >

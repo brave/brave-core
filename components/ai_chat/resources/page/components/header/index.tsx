@@ -13,7 +13,7 @@ import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
 import useIsConversationVisible from '../../hooks/useIsConversationVisible'
-import { useSelectedConversation } from '../navigation_context'
+import { useSelectedConversation } from '../../routes'
 
 const Logo = ({ isPremium }: { isPremium: boolean }) => <div className={styles.logo}>
   <Icon name='product-brave-leo' />

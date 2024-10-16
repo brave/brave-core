@@ -11,7 +11,7 @@ import * as API from '../api/'
 import { useAIChat } from './ai_chat_context'
 import { isLeoModel } from '../model_utils'
 import { loadTimeData } from '$web-common/loadTimeData'
-import { useSelectedConversation } from '../components/navigation_context'
+import { useSelectedConversation } from '../routes'
 import useIsConversationVisible from '../hooks/useIsConversationVisible'
 
 const MAX_INPUT_CHAR = 2000

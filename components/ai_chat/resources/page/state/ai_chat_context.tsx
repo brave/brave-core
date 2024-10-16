@@ -6,6 +6,7 @@
 import * as React from 'react'
 import getAPI, * as mojom from '../api'
 import { loadTimeData } from '$web-common/loadTimeData'
+import { useNavigation } from '$web-common/navigation/Context'
 
 export interface AIChatContext {
   visibleConversations: mojom.Conversation[]
@@ -123,6 +124,22 @@ export function AIChatContextProvider(props: React.PropsWithChildren) {
       }
     })
   }, [])
+
+  const { addRoute, removeRoute, params } = useNavigation()
+
+  // Handle the case where a non-existent chat has been selected by going home.
+  React.useEffect(() => {
+    const checkExistsHandler = (params: { chatId: string }) => {
+      if (params.chatId && !context.visibleConversations.find(c => c.uuid === params.chatId)) {
+        location.href = '/'
+      }
+    }
+
+    addRoute('/{chatId}', checkExistsHandler)
+    return () => {
+      removeRoute('/{chatId}', checkExistsHandler)
+    }
+  }, [context.visibleConversations, params.chatId])
 
   const { Service, UIHandler } = getAPI()
 
