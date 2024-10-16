@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.webcompat_reporter;
 
-// import org.jcp.xml.dsig.internal.dom.Utils;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
