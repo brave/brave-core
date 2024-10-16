@@ -4,64 +4,6 @@ License, v. 2.0. If a copy of the MPL was not distributed with this file,
 You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
 <style include="cr-shared-style iron-flex settings-shared">
-  :host {
-    --brave-account-dialog-logo-width: 129px;
-    --brave-account-dialog-logo-height: calc(var(--brave-account-dialog-logo-width) * 40/129);
-    --cr-dialog-border-radius: 16px;
-    --cr-icon-button-margin-end: 0px;
-    --cr-icon-button-margin-start: 0px;
-    --cr-dialog-body-padding-horizontal: 40px;
-    --cr-dialog-top-container-min-height: 0px;
-    --cr-dialog-width: 500px;
-  }
-  .buttons {
-    display: flex;
-    min-height: 40px;
-    width: 100%;
-  }
-  .buttons:has(> cr-icon-button:nth-of-type(1)) {
-    justify-content: flex-end;
-  }
-  .buttons:has(> cr-icon-button:nth-of-type(2)) {
-    justify-content: space-between;
-  }
-  .button {
-    align-self: flex-start;
-    margin: 4px 4px 0px 4px;
-  }
-  .logo {
-    background-image: url('../images/brave-logo-light.svg');
-    background-size: cover;
-    height: var(--brave-account-dialog-logo-height);
-    margin: 0px 0px var(--brave-account-dialog-logo-height);
-    width: var(--brave-account-dialog-logo-width);
-  }
-  @media (prefers-color-scheme: dark) {
-    .logo {
-      background-image: url('../images/brave-logo-dark.svg');
-    }
-  }
-  .texts {
-    gap: 8px;
-  }
-  .body-text-top {
-    color: #46464A;
-    font-family: 'Poppins';
-    font-size: 22px;
-    font-style: normal;
-    font-weight: 600;
-    letter-spacing: -0.5px;
-    line-height: 28px;
-  }
-  .body-text-bottom {
-    color: #76767A;
-    font-family: 'Inter Variable';
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22px;
-    text-align: center;
-  }
   .inputs {
     gap: 24px;
     margin: 24px 0px 24px;
@@ -90,16 +32,10 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
   }
 </style>
 
-<settings-brave-account-dialog show-back-button>
+<settings-brave-account-dialog show-back-button
+  header-text-top="Sign in to your account"
+  header-text-bottom="$i18n{braveSyncBraveAccountDesc}">
   <div slot="body">
-    <div class="layout texts vertical">
-      <div class="body-text-top center-center horizontal layout">
-        Sign in to your account
-      </div>
-      <div class="body-text-bottom center-center horizontal layout">
-        $i18n{braveSyncBraveAccountDesc}
-      </div>
-    </div>
     <div class="inputs layout vertical">
       <div>
         <div class="input-label">Email address</div>
@@ -123,6 +59,3 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
     </div>
   </div>
 </settings-brave-account-dialog>
-
-<!-- <cr-dialog id="dialog" show-on-attach>
-</cr-dialog> -->
