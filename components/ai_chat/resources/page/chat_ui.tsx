@@ -20,7 +20,8 @@ import {
   ConversationContextProvider
 } from './state/conversation_context'
 import FullScreen from './components/full_screen'
-import { NavigationContext } from './components/navigation_context'
+import { NavigationContext } from '$web-common/navigation/Context'
+import { Routes } from './components/navigation_context'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
@@ -31,6 +32,7 @@ function App() {
 
   return (
     <NavigationContext>
+      <Routes />
       <AIChatContextProvider>
         <ConversationContextProvider>
           <BraveCoreThemeProvider>
@@ -45,7 +47,6 @@ function App() {
 function Content() {
   const aiChatContext = useAIChat()
 
-  console.log(aiChatContext.isStandalone)
   if (aiChatContext.isStandalone === undefined) {
     return <div>loading...</div>
   }
