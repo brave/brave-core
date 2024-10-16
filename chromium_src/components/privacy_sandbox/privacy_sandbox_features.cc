@@ -14,7 +14,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kOverridePrivacySandboxSettingsLocalTesting,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxFirstPartySetsUI, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kPrivacySandboxProactiveTopicsBlocking, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxSettings4, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTrackingProtectionContentSettingUbControl,
      base::FEATURE_DISABLED_BY_DEFAULT},
