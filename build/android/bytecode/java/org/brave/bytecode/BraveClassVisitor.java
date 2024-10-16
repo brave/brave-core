@@ -510,7 +510,13 @@ class BraveClassVisitor extends ClassVisitor {
                 }
                 for (String annotation : annotations) {
                     method.visibleAnnotations.add(new AnnotationNode(annotation));
-                    System.out.println("add " + annotation + " annotation to " + method.name + " in " + source.name);
+                    System.out.println(
+                            "add "
+                                    + annotation
+                                    + " annotation to "
+                                    + method.name
+                                    + " in "
+                                    + source.name);
                 }
             }
         }
