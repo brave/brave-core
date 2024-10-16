@@ -7,32 +7,29 @@
 #define BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_ONION_LOCATION_VIEW_H_
 
 #include "base/memory/raw_ptr.h"
+#include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
-#include "ui/gfx/geometry/size.h"
-#include "ui/views/controls/button/label_button.h"
-#include "ui/views/controls/button/label_button_border.h"
 
 class Profile;
 
-namespace content {
-class WebContents;
-}  // namespace content
-
-class OnionLocationView : public views::View {
-  METADATA_HEADER(OnionLocationView, views::View)
+class OnionLocationView : public PageActionIconView {
+  METADATA_HEADER(OnionLocationView, PageActionIconView)
  public:
-  explicit OnionLocationView(Profile* profile);
-  ~OnionLocationView() override;
-
-  void Update(content::WebContents* web_contents, bool show_page_actions);
-
-  views::LabelButton* GetButton() { return button_; }
-
- private:
-  raw_ptr<views::LabelButton> button_ = nullptr;
-
+  OnionLocationView(Profile* profile,
+                    IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
+                    PageActionIconView::Delegate* page_action_icon_delegate);
   OnionLocationView(const OnionLocationView&) = delete;
   OnionLocationView& operator=(const OnionLocationView&) = delete;
+  ~OnionLocationView() override;
+
+ private:
+  // PageActionIconView:
+  const gfx::VectorIcon& GetVectorIcon() const override;
+  void UpdateImpl() override;
+  views::BubbleDialogDelegate* GetBubble() const override;
+  void OnExecuting(PageActionIconView::ExecuteSource execute_source) override;
+
+  raw_ptr<Profile> profile_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_ONION_LOCATION_VIEW_H_

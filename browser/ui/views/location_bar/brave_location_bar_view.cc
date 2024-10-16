@@ -123,8 +123,8 @@ void BraveLocationBarView::Init() {
         ->SetVisibleOpacity(GetPageActionInkDropVisibleOpacity());
   }
 #if BUILDFLAG(ENABLE_TOR)
-  onion_location_view_ =
-      AddChildView(std::make_unique<OnionLocationView>(browser_->profile()));
+  onion_location_view_ = AddChildView(
+      std::make_unique<OnionLocationView>(browser_->profile(), this, this));
 #endif
 
   if (PromotionButtonController::PromotionEnabled(profile()->GetPrefs())) {
@@ -170,10 +170,9 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
     brave_actions_->Update();
   }
 
-  auto show_page_actions = !ShouldHidePageActionIcons();
 #if BUILDFLAG(ENABLE_TOR)
   if (onion_location_view_) {
-    onion_location_view_->Update(contents, show_page_actions);
+    onion_location_view_->Update();
   }
 #endif
 
@@ -204,9 +203,7 @@ void BraveLocationBarView::OnChanged() {
   }
 #if BUILDFLAG(ENABLE_TOR)
   if (onion_location_view_) {
-    onion_location_view_->Update(
-        browser_->tab_strip_model()->GetActiveWebContents(),
-        !hide_page_actions);
+    onion_location_view_->Update();
   }
 #endif
 
@@ -230,7 +227,6 @@ std::vector<views::View*> BraveLocationBarView::GetRightMostTrailingViews() {
   if (brave_news_action_icon_view_) {
     views.push_back(brave_news_action_icon_view_);
   }
-
 
   if (brave_actions_) {
     views.push_back(brave_actions_);
