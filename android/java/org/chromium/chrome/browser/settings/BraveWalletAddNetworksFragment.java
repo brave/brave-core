@@ -201,6 +201,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
     private void validateInputsAddChain() {
         boolean error = false;
         mSubmitError.setVisibility(View.INVISIBLE);
+        mButtonSubmit.setEnabled(false);
 
         NetworkInfo chain = new NetworkInfo();
         String strChainId = mChainIdEditText.getText().toString().trim();
@@ -319,6 +320,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         chain.coin = CoinType.ETH;
 
         if (error) {
+            mButtonSubmit.setEnabled(true);
             return;
         }
 
@@ -330,6 +332,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
                         CoinType.ETH,
                         success -> {
                             if (!success) {
+                                mButtonSubmit.setEnabled(true);
                                 return;
                             }
                             addChain(chain, false);
@@ -354,6 +357,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
                             mSubmitError.setText(errorMessage);
                             mSubmitError.setVisibility(View.VISIBLE);
                         }
+                        mButtonSubmit.setEnabled(true);
                         return;
                     }
                     if (remove) {
