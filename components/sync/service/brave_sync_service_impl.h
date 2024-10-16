@@ -119,6 +119,8 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   // IdentityManager::Observer implementation.
   // Override with an empty implementation.
+  // We need this to avoid device cache guid regeneration once any Google
+  // Account cookie gets deleted, for example when user signs out from GMail
   void OnAccountsCookieDeletedByUserAction() override;
   void OnAccountsInCookieUpdated(
       const signin::AccountsInCookieJarInfo& accounts_in_cookie_jar_info,
