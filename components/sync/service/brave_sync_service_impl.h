@@ -74,6 +74,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void StopAndClearWithResetLocalDataReason();
 
  private:
+  friend class BraveSyncServiceImplGACookiesTest;
   friend class BraveSyncServiceImplTest;
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
                            ForcedSetDecryptionPassphrase);

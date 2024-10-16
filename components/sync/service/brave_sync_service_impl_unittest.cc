@@ -712,42 +712,78 @@ TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitializeIOS) {
   EXPECT_FALSE(brave_sync_prefs()->GetLeaveChainDetails().empty());
 }
 
-TEST_F(BraveSyncServiceImplTest, OnAccountsCookieDeletedByUserAction) {
-  SyncTransportDataPrefs::RegisterProfilePrefs(pref_service()->registry());
-
-  SyncTransportDataPrefs sync_transport_data_prefs(
-      pref_service(), signin::GaiaIdHash::FromGaiaId("user_gaia_id"));
-
-  sync_transport_data_prefs.SetCacheGuid(kCacheGuid);
-
-  CreateSyncService();
-
-  brave_sync_service_impl()->OnAccountsCookieDeletedByUserAction();
-
-  EXPECT_EQ(sync_transport_data_prefs.GetCacheGuid(), kCacheGuid);
-}
-
-TEST_F(BraveSyncServiceImplTest, OnAccountsInCookieUpdated) {
-  SyncTransportDataPrefs::RegisterProfilePrefs(pref_service()->registry());
-
-  SyncTransportDataPrefs sync_transport_data_prefs(
-      pref_service(), signin::GaiaIdHash::FromGaiaId("user_gaia_id"));
-
-  sync_transport_data_prefs.SetCacheGuid(kCacheGuid);
-
-  CreateSyncService();
-
-  brave_sync_service_impl()->OnAccountsInCookieUpdated(
-      signin::AccountsInCookieJarInfo(), GoogleServiceAuthError());
-
-  EXPECT_EQ(sync_transport_data_prefs.GetCacheGuid(), kCacheGuid);
-}
-
 // No test for SyncServiceImplBrave::OnPrimaryAccountChanged
 // Because MaybeClearAccountKeyedPreferences at sync_service_impl.cc
 // requires accounts_in_cookie_jar_info.accounts_are_fresh to be true
 // but IdentityManager::GetAccountsInCookieJar() override at
 // chromium_src/components/signin/public/identity_manager/identity_manager.cc
 // gives false.
+
+namespace {
+enum class GACookiesMethodType {
+  kOnAccountsCookieDeletedByUserAction,
+  kOnAccountsInCookieUpdated
+};
+}
+
+class BraveSyncServiceImplGACookiesTest
+    : public BraveSyncServiceImplTest,
+      public testing::WithParamInterface<GACookiesMethodType> {
+ public:
+  base::OnceCallback<void(void)> GetGACookiesMethod() {
+    switch (GetParam()) {
+      case GACookiesMethodType::kOnAccountsCookieDeletedByUserAction:
+        return base::BindOnce(
+            [](BraveSyncServiceImplGACookiesTest* p_this) {
+              p_this->brave_sync_service_impl()
+                  ->OnAccountsCookieDeletedByUserAction();
+            },
+            this);
+      case GACookiesMethodType::kOnAccountsInCookieUpdated:
+        return base::BindOnce(
+            [](BraveSyncServiceImplGACookiesTest* p_this) {
+              p_this->brave_sync_service_impl()->OnAccountsInCookieUpdated(
+                  signin::AccountsInCookieJarInfo(), GoogleServiceAuthError());
+            },
+            this);
+
+      default:
+        NOTREACHED_NORETURN();
+    }
+  }
+};
+
+TEST_P(BraveSyncServiceImplGACookiesTest, CacheGuidIsNotWiped) {
+  SyncTransportDataPrefs::RegisterProfilePrefs(pref_service()->registry());
+
+  SyncTransportDataPrefs sync_transport_data_prefs(
+      pref_service(), signin::GaiaIdHash::FromGaiaId("user_gaia_id"));
+
+  sync_transport_data_prefs.SetCacheGuid(kCacheGuid);
+
+  CreateSyncService();
+
+  std::move(GetGACookiesMethod()).Run();
+
+  EXPECT_EQ(sync_transport_data_prefs.GetCacheGuid(), kCacheGuid);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    All,
+    BraveSyncServiceImplGACookiesTest,
+    testing::ValuesIn(
+        {GACookiesMethodType::kOnAccountsCookieDeletedByUserAction,
+         GACookiesMethodType::kOnAccountsInCookieUpdated}),
+    [](const testing::TestParamInfo<
+        BraveSyncServiceImplGACookiesTest::ParamType>& info) {
+      switch (info.param) {
+        case GACookiesMethodType::kOnAccountsCookieDeletedByUserAction:
+          return "OnAccountsCookieDeletedByUserAction";
+        case GACookiesMethodType::kOnAccountsInCookieUpdated:
+          return "OnAccountsInCookieUpdated";
+        default:
+          NOTREACHED_NORETURN();
+      }
+    });
 
 }  // namespace syncer
