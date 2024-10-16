@@ -513,20 +513,21 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
      */
     public static void expandTouchArea(
             final View parentView, final View childView, final int extraPadding) {
-        parentView.post(new Runnable() {
-            @Override
-            public void run() {
-                Rect rect = new Rect();
-                childView.getHitRect(rect);
+        parentView.post(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Rect rect = new Rect();
+                        childView.getHitRect(rect);
 
-                int pxPadding = dp2px(extraPadding);
-                rect.top -= pxPadding;
-                rect.left -= pxPadding;
-                rect.right += pxPadding;
-                rect.bottom += pxPadding;
-                parentView.setTouchDelegate(new TouchDelegate(rect, childView));
-            }
-        });
+                        int pxPadding = dp2px(extraPadding);
+                        rect.top -= pxPadding;
+                        rect.left -= pxPadding;
+                        rect.right += pxPadding;
+                        rect.bottom += pxPadding;
+                        parentView.setTouchDelegate(new TouchDelegate(rect, childView));
+                    }
+                });
     }
 
     /** Converts DP into PX */
