@@ -106,7 +106,7 @@ _LoadingSkeleton.story = {
 }
 
 export const _BuySendSwapDeposit = () => {
-  return <WalletNav />
+  return <WalletNav isAndroid={false} />
 }
 
 _BuySendSwapDeposit.story = {
