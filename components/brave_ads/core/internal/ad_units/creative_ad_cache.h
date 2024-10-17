@@ -6,7 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_CREATIVE_AD_CACHE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_CREATIVE_AD_CACHE_H_
 
+#include <cstdint>
 #include <map>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -36,13 +38,17 @@ class CreativeAdCache final : public TabManagerObserver {
 
   ~CreativeAdCache() override;
 
+  // Adds a creative ad to the cache for the given `placement_id` if it is valid
+  // and there is a visible tab.
   void MaybeAdd(const std::string& placement_id,
                 CreativeAdVariant creative_ad_variant);
 
+  // Gets a creative ad from the cache if it exists for the given
+  // `placement_id`.
   template <typename T>
   std::optional<T> MaybeGet(const std::string& placement_id) {
     std::optional<CreativeAdVariant> creative_ad_variant =
-        MaybeGet(placement_id);
+        MaybeGetCreativeAdVariant(placement_id);
     if (!creative_ad_variant) {
       return std::nullopt;
     }
@@ -55,12 +61,13 @@ class CreativeAdCache final : public TabManagerObserver {
   }
 
  private:
-  // TabManagerObserver:
-  void OnDidCloseTab(int32_t tab_id) override;
-
-  std::optional<CreativeAdVariant> MaybeGet(const std::string& placement_id);
+  std::optional<CreativeAdVariant> MaybeGetCreativeAdVariant(
+      const std::string& placement_id) const;
 
   void PurgePlacements(int32_t tab_id);
+
+  // TabManagerObserver:
+  void OnDidCloseTab(int32_t tab_id) override;
 
   CreativeAdVariantMap creative_ad_variants_;
   PlacementIdMap placement_ids_;
