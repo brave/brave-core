@@ -65,10 +65,4 @@ KeyedService* WebcompatReporterServiceFactory::BuildServiceInstanceFor(
       std::move(report_uploader));
 }
 
-content::BrowserContext*
-WebcompatReporterServiceFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
-}
-
 }  // namespace webcompat_reporter

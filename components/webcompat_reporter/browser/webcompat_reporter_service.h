@@ -54,14 +54,11 @@ class WebcompatReporterService : public KeyedService,
 
   void SubmitWebcompatReport(mojom::ReportInfoPtr report_info) override;
 
-  void SubmitWebcompatReport(Report report_data);
-
  private:
   friend class WebcompatReporterServiceUnitTest;
   void SetReportUploaderForTest(
       std::unique_ptr<WebcompatReportUploader> report_uploader);
 
-  void SubmitReportInternal(const Report& report_data);
   std::unique_ptr<Delegate> service_delegate_;
   std::unique_ptr<WebcompatReportUploader> report_uploader_;
   mojo::ReceiverSet<mojom::WebcompatReporterHandler> receivers_;

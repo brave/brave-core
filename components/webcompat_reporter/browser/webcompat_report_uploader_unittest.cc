@@ -6,8 +6,9 @@
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 
 #include <memory>
+#include <optional>
+#include <utility>
 
-#include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
@@ -53,7 +54,8 @@ class WebcompatReportUploaderUnitTest : public testing::Test {
     return webcompat_report_uploader_.get();
   }
 
-  void TestReportGeneration(const Report& report, const std::string& content) {
+  void TestReportGeneration(webcompat_reporter::mojom::ReportInfoPtr report,
+                            const std::string& content) {
     auto content_vals = base::test::ParseJson(content);
     EXPECT_TRUE(content_vals.is_dict());
     auto& content_dict_vals = content_vals.GetDict();
@@ -80,7 +82,7 @@ class WebcompatReportUploaderUnitTest : public testing::Test {
         });
 
     SetInterceptor(&request_payload_check_callback);
-    GetWebcompatUploader()->SubmitReport(report);
+    GetWebcompatUploader()->SubmitReport(std::move(report));
     run_loop.Run();
   }
 
@@ -93,35 +95,24 @@ class WebcompatReportUploaderUnitTest : public testing::Test {
 };
 
 TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
-  Report report;
-  TestReportGeneration(report,
+  auto report_empty = webcompat_reporter::mojom::ReportInfo::New();
+  TestReportGeneration(std::move(report_empty),
                        base::StringPrintf(R"({"api_key":"%s"})",
                                           brave_stats::GetAPIKey().c_str()));
 
-  report.channel = "dev";
-  report.brave_version = "1.231.45";
-  report.shields_enabled = "true";
-  report.language_farbling = "true";
-  report.brave_vpn_connected = "true";
-  report.ad_block_setting = "ad_block_setting";
-  report.fp_block_setting = "fp_block_setting";
-  report.ad_block_list_names = "ad_block_list_names";
-  report.languages = "languages";
-  base::Value::Dict test_dict;
-  test_dict.Set("key1", "val1");
-  test_dict.Set("key1", "val1");
-  report.ad_block_components = base::Value(test_dict.Clone());
-  report.details = "details";
-  report.contact = "contact";
-  report.report_url = GURL("https://abc.url/p1/p2");
+  std::vector<webcompat_reporter::mojom::ComponentInfoPtr> components;
+  components.push_back(
+      webcompat_reporter::mojom::ComponentInfo::New("name", "id", "version"));
 
-  std::string test_dict_string;
-  auto serialize_success =
-      base::JSONWriter::Write(test_dict, &test_dict_string);
-  EXPECT_TRUE(serialize_success);
+  auto report = webcompat_reporter::mojom::ReportInfo::New(
+      "dev", "1.231.45", "https://abc.url/p1/p2", "true", "ad_block_setting",
+      "fp_block_setting", "ad_block_list_names", "languages", "true", "true",
+      "details", "contact", std::move(components), std::nullopt);
+
+  auto report_copy = report->Clone();
 
   TestReportGeneration(
-      report,
+      std::move(report),
       base::StringPrintf(
           R"({
   "adBlockComponentsInfo": %s,
@@ -140,17 +131,21 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
   "url": "%s",
   "version": "%s"
 })",
-          test_dict_string.c_str(), report.ad_block_list_names->c_str(),
-          report.ad_block_setting->c_str(), report.details->c_str(),
+          R"([{"id": "id", "name": "name", "version": "version"}])",
+          report_copy->ad_block_list_names->c_str(),
+          report_copy->ad_block_setting->c_str(), report_copy->details->c_str(),
           brave_stats::GetAPIKey().c_str(),
-          report.brave_vpn_connected ? "true" : "false",
-          report.channel->c_str(), report.contact->c_str(),
-          url::Origin::Create(report.report_url.value()).Serialize().c_str(),
-          report.fp_block_setting->c_str(),
-          report.language_farbling ? "true" : "false",
-          report.languages->c_str(), report.shields_enabled ? "true" : "false",
-          report.report_url.value().spec().c_str(),
-          report.brave_version->c_str()));
+          report_copy->brave_vpn_connected ? "true" : "false",
+          report_copy->channel->c_str(), report_copy->contact->c_str(),
+          url::Origin::Create(GURL(report_copy->report_url.value()))
+              .Serialize()
+              .c_str(),
+          report_copy->fp_block_setting->c_str(),
+          report_copy->language_farbling ? "true" : "false",
+          report_copy->languages->c_str(),
+          report_copy->shields_enabled ? "true" : "false",
+          GURL(report_copy->report_url.value()).spec().c_str(),
+          report_copy->brave_version->c_str()));
 }
 
 }  // namespace webcompat_reporter

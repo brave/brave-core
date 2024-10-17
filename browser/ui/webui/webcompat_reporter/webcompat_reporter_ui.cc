@@ -59,7 +59,8 @@ std::string BoolToString(bool value) {
 }  // namespace
 
 WebcompatReporterDOMHandler::WebcompatReporterDOMHandler(Profile* profile)
-    : ui_task_runner_(base::SequencedTaskRunner::GetCurrentDefault()) {
+    : ui_task_runner_(base::SequencedTaskRunner::GetCurrentDefault()),
+      pending_report_(mojom::ReportInfo::New()) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   InitAdditionalParameters(profile);
@@ -80,17 +81,17 @@ void WebcompatReporterDOMHandler::InitAdditionalParameters(Profile* profile) {
   brave_vpn::BraveVpnService* vpn_service =
       brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
   if (vpn_service != nullptr) {
-    pending_report_.brave_vpn_connected =
+    pending_report_->brave_vpn_connected =
         BoolToString(vpn_service->IsConnected());
   }
 #endif
 
   PrefService* profile_prefs = profile->GetPrefs();
-  pending_report_.languages =
+  pending_report_->languages =
       profile_prefs->GetString(language::prefs::kAcceptLanguages);
-  pending_report_.language_farbling = BoolToString(
+  pending_report_->language_farbling = BoolToString(
       profile_prefs->GetBoolean(brave_shields::prefs::kReduceLanguageEnabled));
-  pending_report_.channel = brave::GetChannelName();
+  pending_report_->channel = brave::GetChannelName();
 }
 
 WebcompatReporterDOMHandler::~WebcompatReporterDOMHandler() = default;
@@ -178,7 +179,7 @@ void WebcompatReporterDOMHandler::HandleEncodedScreenshotPNG(
     RejectJavascriptCallback(callback_id, {});
     return;
   }
-  pending_report_.screenshot_png = encoded_png;
+  pending_report_->screenshot_png = encoded_png;
   ResolveJavascriptCallback(callback_id, {});
 }
 
@@ -188,18 +189,18 @@ void WebcompatReporterDOMHandler::HandleGetCapturedScreenshot(
 
   AllowJavascript();
 
-  if (!pending_report_.screenshot_png) {
+  if (!pending_report_->screenshot_png) {
     RejectJavascriptCallback(args[0], {});
     return;
   }
 
-  auto screenshot_b64 = base::Base64Encode(*pending_report_.screenshot_png);
+  auto screenshot_b64 = base::Base64Encode(*pending_report_->screenshot_png);
   ResolveJavascriptCallback(args[0], screenshot_b64);
 }
 
 void WebcompatReporterDOMHandler::HandleClearScreenshot(
     const base::Value::List& args) {
-  pending_report_.screenshot_png = std::nullopt;
+  pending_report_->screenshot_png = std::nullopt;
 }
 
 void WebcompatReporterDOMHandler::HandleSubmitReport(
@@ -218,7 +219,7 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
       submission_args.FindString(kFPBlockSettingField);
   const base::Value* details_arg = submission_args.Find(kDetailsField);
   const base::Value* contact_arg = submission_args.Find(kContactField);
-  pending_report_.shields_enabled = BoolToString(
+  pending_report_->shields_enabled = BoolToString(
       submission_args.FindBool(kShieldsEnabledField).value_or(false));
 
   const auto ui_source_int = submission_args.FindInt(kUISourceField);
@@ -228,26 +229,26 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
   }
 
   if (url_arg != nullptr) {
-    pending_report_.report_url = GURL(*url_arg);
+    pending_report_->report_url = *url_arg;
   }
   if (ad_block_setting_arg != nullptr) {
-    pending_report_.ad_block_setting = *ad_block_setting_arg;
+    pending_report_->ad_block_setting = *ad_block_setting_arg;
   }
   if (fp_block_setting_arg != nullptr) {
-    pending_report_.fp_block_setting = *fp_block_setting_arg;
+    pending_report_->fp_block_setting = *fp_block_setting_arg;
   }
   if (details_arg != nullptr) {
-    pending_report_.details = details_arg->GetString();
+    pending_report_->details = details_arg->GetString();
   }
   if (contact_arg != nullptr) {
-    pending_report_.contact = contact_arg->GetString();
+    pending_report_->contact = contact_arg->GetString();
   }
 
   auto* reporter_service =
       WebcompatReporterServiceFactory::GetServiceForContext(
           Profile::FromWebUI(web_ui()));
   if (reporter_service) {
-    reporter_service->SubmitWebcompatReport(pending_report_);
+    reporter_service->SubmitWebcompatReport(pending_report_->Clone());
   }
 }
 

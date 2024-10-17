@@ -13,6 +13,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/sequence_checker.h"
 #include "base/values.h"
+#include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom.h"
 #include "url/gurl.h"
 
 namespace network {
@@ -22,29 +23,6 @@ class SimpleURLLoader;
 
 namespace webcompat_reporter {
 
-struct Report {
-  Report();
-  Report(const Report&);
-  Report& operator=(const Report&);
-  ~Report();
-
-  std::optional<std::string> brave_version;
-  std::optional<std::string> channel;
-  std::optional<GURL> report_url;
-  std::optional<std::string> shields_enabled;
-  std::optional<std::string> ad_block_setting;
-  std::optional<std::string> fp_block_setting;
-  std::optional<std::string> ad_block_list_names;
-  std::optional<std::string> languages;
-  std::optional<std::string> language_farbling;
-  std::optional<std::string> brave_vpn_connected;
-  std::optional<std::string> details;
-  std::optional<std::string> contact;
-  std::optional<base::Value> ad_block_components;
-
-  std::optional<std::vector<unsigned char>> screenshot_png;
-};
-
 class WebcompatReportUploader {
  public:
   explicit WebcompatReportUploader(
@@ -53,7 +31,7 @@ class WebcompatReportUploader {
   WebcompatReportUploader& operator=(const WebcompatReportUploader&) = delete;
   virtual ~WebcompatReportUploader();
 
-  virtual void SubmitReport(const Report& report);
+  virtual void SubmitReport(mojom::ReportInfoPtr report_info);
 
  private:
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;

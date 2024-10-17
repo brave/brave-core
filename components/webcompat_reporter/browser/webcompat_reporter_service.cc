@@ -17,36 +17,16 @@
 
 namespace {
 
-constexpr char kComponentItemName[] = "name";
-constexpr char kComponentItemId[] = "id";
-constexpr char kComponentItemVersion[] = "version";
-
-std::optional<base::Value> ConvertCompsToValue(
-    const std::vector<webcompat_reporter::mojom::ComponentInfoPtr>&
-        components) {
-  if (components.empty()) {
-    return std::nullopt;
-  }
-  auto components_list = base::Value::List();
-  for (const auto& component : components) {
-    base::Value::Dict component_dict;
-    component_dict.Set(kComponentItemName, component->name);
-    component_dict.Set(kComponentItemId, component->id);
-    component_dict.Set(kComponentItemVersion, component->version);
-    components_list.Append(std::move(component_dict));
-  }
-  return base::Value(std::move(components_list));
-}
-
 struct ReportFiller {
   ReportFiller(
-      webcompat_reporter::Report& report,
+      webcompat_reporter::mojom::ReportInfoPtr& report_info,
       webcompat_reporter::WebcompatReporterService::Delegate* service_delegate)
-      : report(report), service_delegate(service_delegate) {}
+      : report_info(report_info), service_delegate(service_delegate) {}
   ~ReportFiller() = default;
 
   ReportFiller& FillReportWithAdblockListNames() {
-    if (report->ad_block_list_names && !report->ad_block_list_names->empty()) {
+    if ((*report_info)->ad_block_list_names &&
+        !(*report_info)->ad_block_list_names->empty()) {
       return *this;
     }
 
@@ -58,13 +38,14 @@ struct ReportFiller {
     if (!filter_list) {
       return *this;
     }
-    report->ad_block_list_names = base::JoinString(filter_list.value(), ",");
+    (*report_info)->ad_block_list_names =
+        base::JoinString(filter_list.value(), ",");
     return *this;
   }
 
   ReportFiller& FillReportWithComponetsInfo() {
-    if (report->ad_block_components &&
-        !report->ad_block_components->is_none()) {
+    if ((*report_info)->ad_block_components_version &&
+        !(*report_info)->ad_block_components_version->empty()) {
       return *this;
     }
     if (!service_delegate) {
@@ -76,74 +57,36 @@ struct ReportFiller {
       return *this;
     }
 
-    auto components_list = base::Value::List();
+    std::vector<webcompat_reporter::mojom::ComponentInfoPtr> components_list;
     for (const auto& component : component_infos.value()) {
-      base::Value::Dict component_dict;
-      component_dict.Set(kComponentItemName, component.name);
-      component_dict.Set(kComponentItemId, component.id);
-      component_dict.Set(kComponentItemVersion, component.version);
-      components_list.Append(std::move(component_dict));
+      components_list.emplace_back(
+          webcompat_reporter::mojom::ComponentInfo::New(
+              component.name, component.id, component.version));
     }
-    report->ad_block_components = base::Value(std::move(components_list));
+    (*report_info)->ad_block_components_version = std::move(components_list);
     return *this;
   }
 
   ReportFiller& FillChannel() {
-    if (!report->channel && service_delegate) {
-      report->channel = service_delegate->GetChannelName();
+    if (!(*report_info)->channel && service_delegate) {
+      (*report_info)->channel = service_delegate->GetChannelName();
     }
     return *this;
   }
 
   ReportFiller& FillVersion() {
-    if (!report->brave_version) {
-      report->brave_version =
+    if (!(*report_info)->brave_version) {
+      (*report_info)->brave_version =
           version_info::GetBraveVersionWithoutChromiumMajorVersion();
     }
     return *this;
   }
 
-  raw_ref<webcompat_reporter::Report> report;
+  raw_ref<webcompat_reporter::mojom::ReportInfoPtr> report_info;
   const raw_ptr<webcompat_reporter::WebcompatReporterService::Delegate>
       service_delegate;
 };
 
-void FillReportByReportInfo(
-    webcompat_reporter::Report& report,
-    webcompat_reporter::mojom::ReportInfoPtr report_info) {
-  if (!report_info) {
-    return;
-  }
-  report.channel = report_info->channel;
-  report.brave_version = report_info->brave_version;
-
-  if (report_info && report_info->report_url &&
-      !report_info->report_url->empty()) {
-    report.report_url = GURL(report_info->report_url.value());
-  } else {
-    report.report_url = std::nullopt;
-  }
-
-  if (report_info->ad_block_components_version) {
-    report.ad_block_components =
-        ConvertCompsToValue(report_info->ad_block_components_version.value());
-  }
-
-  if (report_info->ad_block_list_names &&
-      !report_info->ad_block_list_names->empty()) {
-    report.ad_block_list_names = report_info->ad_block_list_names;
-  }
-
-  report.shields_enabled = report_info->shields_enabled;
-  report.ad_block_setting = report_info->ad_block_setting;
-  report.fp_block_setting = report_info->fp_block_setting;
-  report.languages = report_info->languages;
-  report.language_farbling = report_info->language_farbling;
-  report.brave_vpn_connected = report_info->brave_vpn_connected;
-  report.details = report_info->details;
-  report.contact = report_info->contact;
-  report.screenshot_png = report_info->screenshot_png;
-}
 }  // namespace
 
 namespace webcompat_reporter {
@@ -170,27 +113,14 @@ void WebcompatReporterService::Bind(
 
 void WebcompatReporterService::SubmitWebcompatReport(
     mojom::ReportInfoPtr report_info) {
-  Report pending_report;
-  FillReportByReportInfo(pending_report, std::move(report_info));
-  SubmitWebcompatReport(pending_report);
-}
-
-void WebcompatReporterService::SubmitWebcompatReport(Report report_data) {
-  ReportFiller(report_data,
+  ReportFiller(report_info,
                service_delegate_ ? service_delegate_.get() : nullptr)
       .FillChannel()
       .FillVersion()
       .FillReportWithComponetsInfo()
       .FillReportWithAdblockListNames();
 
-  SubmitReportInternal(report_data);
-}
-
-void WebcompatReporterService::SubmitReportInternal(const Report& report_data) {
-  if (!report_uploader_) {
-    return;
-  }
-  report_uploader_->SubmitReport(report_data);
+  report_uploader_->SubmitReport(std::move(report_info));
 }
 
 void WebcompatReporterService::SetReportUploaderForTest(
