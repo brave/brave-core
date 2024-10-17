@@ -68,9 +68,6 @@ source_set("unittests") {
     "//url",
   ]
   if (!is_ios) {
-    deps += [
-      "//brave/components/brave_shields/content/browser",
-      "//chrome/test:test_support",
-    ]
+    deps += [ "//brave/components/brave_shields/content/browser" ]
   }
 }

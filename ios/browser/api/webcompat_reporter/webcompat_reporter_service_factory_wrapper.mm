@@ -12,9 +12,8 @@
 
 @implementation WebcompatReporterServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto service =
-      webcompat_reporter::WebcompatReporterServiceFactory::GetForBrowserState(
-          browserState);
+  auto service = webcompat_reporter::WebcompatReporterServiceFactory::
+      GetMojoReportHandlerForContext(browserState);
   if (!service) {
     return nil;
   }
