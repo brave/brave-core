@@ -255,7 +255,7 @@ TEST_F(ModelServiceTest, SetAssociatedContentLengthMetrics_CustomModel) {
 
   // Validate that max_associated_content_length is calculated correctly
   size_t expected_content_length =
-      GetService()->GetMaxAssociatedContentLengthForModel(custom_model);
+      GetService()->CalcuateMaxAssociatedContentLengthForModel(custom_model);
   EXPECT_EQ(custom_model.options->get_custom_model_options()
                 ->max_associated_content_length,
             expected_content_length);
@@ -289,7 +289,7 @@ TEST_F(ModelServiceTest, SetAssociatedContentLengthMetrics_ValidContextSize) {
 
   // Validate that max_associated_content_length is calculated correctly
   size_t expected_content_length =
-      GetService()->GetMaxAssociatedContentLengthForModel(custom_model);
+      GetService()->CalcuateMaxAssociatedContentLengthForModel(custom_model);
   EXPECT_EQ(custom_model.options->get_custom_model_options()
                 ->max_associated_content_length,
             expected_content_length);
@@ -307,7 +307,7 @@ TEST_F(ModelServiceTest, SetAssociatedContentLengthMetrics_ValidContextSize) {
             expected_warning_limit);
 }
 
-TEST_F(ModelServiceTest, GetMaxAssociatedContentLengthForModel_CustomModel) {
+TEST_F(ModelServiceTest, CalcuateMaxAssociatedContentLengthForModel_CustomModel) {
   // Setup a custom model with a valid context size
   mojom::CustomModelOptionsPtr custom_options =
       mojom::CustomModelOptions::New();
@@ -319,7 +319,7 @@ TEST_F(ModelServiceTest, GetMaxAssociatedContentLengthForModel_CustomModel) {
 
   // Calculate max associated content length
   size_t max_content_length =
-      GetService()->GetMaxAssociatedContentLengthForModel(custom_model);
+      GetService()->CalcuateMaxAssociatedContentLengthForModel(custom_model);
 
   // Validate that max content length is correct
   static constexpr uint32_t reserved_tokens =
@@ -331,7 +331,7 @@ TEST_F(ModelServiceTest, GetMaxAssociatedContentLengthForModel_CustomModel) {
   EXPECT_EQ(max_content_length, expected_content_length);
 }
 
-TEST_F(ModelServiceTest, GetMaxAssociatedContentLengthForModel_LeoModel) {
+TEST_F(ModelServiceTest, CalcuateMaxAssociatedContentLengthForModel_LeoModel) {
   // Setup a leo model with predefined page content length
   static constexpr size_t expected_content_length = 10'000;
 
@@ -344,7 +344,7 @@ TEST_F(ModelServiceTest, GetMaxAssociatedContentLengthForModel_LeoModel) {
 
   // Calculate max associated content length
   size_t max_content_length =
-      GetService()->GetMaxAssociatedContentLengthForModel(leo_model);
+      GetService()->CalcuateMaxAssociatedContentLengthForModel(leo_model);
 
   // Validate that the predefined value is returned
   EXPECT_EQ(max_content_length, expected_content_length);

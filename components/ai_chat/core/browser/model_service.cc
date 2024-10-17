@@ -288,7 +288,7 @@ void ModelService::SetAssociatedContentLengthMetrics(mojom::Model& model) {
   }
 
   uint32_t max_associated_content_length =
-      ModelService::GetMaxAssociatedContentLengthForModel(model);
+      ModelService::CalcuateMaxAssociatedContentLengthForModel(model);
 
   model.options->get_custom_model_options()->max_associated_content_length =
       max_associated_content_length;
@@ -303,7 +303,7 @@ void ModelService::SetAssociatedContentLengthMetrics(mojom::Model& model) {
 }
 
 // static
-size_t ModelService::GetMaxAssociatedContentLengthForModel(
+size_t ModelService::CalcuateMaxAssociatedContentLengthForModel(
     const mojom::Model& model) {
   if (model.options->is_leo_model_options()) {
     return model.options->get_leo_model_options()

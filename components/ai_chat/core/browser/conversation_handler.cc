@@ -879,7 +879,7 @@ void ConversationHandler::PerformAssistantGeneration(
                      weak_ptr_factory_.GetWeakPtr());
 
   const size_t max_content_length =
-      ModelService::GetMaxAssociatedContentLengthForModel(GetCurrentModel());
+      ModelService::CalcuateMaxAssociatedContentLengthForModel(GetCurrentModel());
   const std::string summarize_page_question =
       l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
 
@@ -1238,7 +1238,7 @@ int ConversationHandler::GetContentUsedPercentage() {
   CHECK(associated_content_delegate_);
   auto& model = GetCurrentModel();
   uint32_t max_associated_content_length =
-      ModelService::GetMaxAssociatedContentLengthForModel(model);
+      ModelService::CalcuateMaxAssociatedContentLengthForModel(model);
 
   auto content_length =
       associated_content_delegate_->GetCachedTextContent().length();
