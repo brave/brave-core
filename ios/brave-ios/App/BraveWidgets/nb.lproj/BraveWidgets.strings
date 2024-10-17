@@ -59,6 +59,9 @@
 "e13lS3-qKrzyX" = "Bare for å være sikker, ser du etter «Skann QR-kode»?";
 
 /* (No Comment) */
+"e13lS3-U0eRbw" = "Bare for å være sikker, ser du etter «Leo KI»?";
+
+/* (No Comment) */
 "e13lS3-VBH4G6" = "Bare som en bekreftelse – du ville ha 'Logg'?";
 
 /* (No Comment) */
@@ -72,6 +75,39 @@
 
 /* (No Comment) */
 "EUS9FL" = "Widget-snarvei";
+
+/* (No Comment) */
+"EvESs0-0W40Cl" = "Bare som en bekreftelse – du ville ha 'Ny fane'?";
+
+/* (No Comment) */
+"EvESs0-crhbMy" = "Bare som en bekreftelse – du ville ha 'Bokmerker'?";
+
+/* (No Comment) */
+"EvESs0-FGO5qW" = "Bare for å være sikker, ser du etter «Brave-spilleliste»?";
+
+/* (No Comment) */
+"EvESs0-jXiFQY" = "Bare for å være sikker, ser du etter «Brave-lommebok»?";
+
+/* (No Comment) */
+"EvESs0-nthxSL" = "Bare som en bekreftelse – du ville ha 'Nedlastinger'?";
+
+/* (No Comment) */
+"EvESs0-qKrzyX" = "Bare for å være sikker, ser du etter «Skann QR-kode»?";
+
+/* (No Comment) */
+"EvESs0-U0eRbw" = "Bare for å være sikker, ser du etter «Leo KI»?";
+
+/* (No Comment) */
+"EvESs0-VBH4G6" = "Bare som en bekreftelse – du ville ha 'Logg'?";
+
+/* (No Comment) */
+"EvESs0-vs094F" = "Bare som en bekreftelse – du ville ha 'Ny privat fane'?";
+
+/* (No Comment) */
+"EvESs0-XCyA8c" = "Bare for å være sikker, ser du etter «Brave News»?";
+
+/* (No Comment) */
+"EvESs0-Y7TWy8" = "Bare for å være sikker, ser du etter «Søk»?";
 
 /* (No Comment) */
 "FGO5qW" = "Brave-spilleliste";
@@ -110,6 +146,9 @@
 "L1fziM-qKrzyX" = "Det er ${count} alternativer som samsvarer med «Skann QR-kode».";
 
 /* (No Comment) */
+"L1fziM-U0eRbw" = "${count} alternativer matcher med «Leo KI».";
+
+/* (No Comment) */
 "L1fziM-VBH4G6" = "${count} alternativer matcher med 'Logg'.";
 
 /* (No Comment) */
@@ -120,6 +159,9 @@
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "Det er ${count} alternativer som samsvarer med «Søk».";
+
+/* (No Comment) */
+"M2Y1rg" = "#4";
 
 /* (No Comment) */
 "nthxSL" = "Nedlastinger";
@@ -147,6 +189,9 @@
 
 /* (No Comment) */
 "r2EI05-qKrzyX" = "Bare for å være sikker, ser du etter «Skann QR-kode»?";
+
+/* (No Comment) */
+"r2EI05-U0eRbw" = "Bare for å være sikker, ser du etter «Leo KI»?";
 
 /* (No Comment) */
 "r2EI05-VBH4G6" = "Bare som en bekreftelse – du ville ha 'Logg'?";
@@ -188,6 +233,9 @@
 "tNCrcE-qKrzyX" = "Det er ${count} alternativer som samsvarer med «Skann QR-kode».";
 
 /* (No Comment) */
+"tNCrcE-U0eRbw" = "${count} alternativer matcher med «Leo KI».";
+
+/* (No Comment) */
 "tNCrcE-VBH4G6" = "${count} alternativer matcher med 'Logg'.";
 
 /* (No Comment) */
@@ -221,6 +269,9 @@
 "TxuMja-qKrzyX" = "Det er ${count} alternativer som samsvarer med «Skann QR-kode».";
 
 /* (No Comment) */
+"TxuMja-U0eRbw" = "${count} alternativer matcher med «Leo KI».";
+
+/* (No Comment) */
 "TxuMja-VBH4G6" = "${count} alternativer matcher med 'Logg'.";
 
 /* (No Comment) */
@@ -234,6 +285,9 @@
 
 /* (No Comment) */
 "tYwiRd" = "Ansl. tid spart";
+
+/* (No Comment) */
+"U0eRbw" = "Leo AI";
 
 /* (No Comment) */
 "VBH4G6" = "Logg";
@@ -275,6 +329,9 @@
 "YQiQuz-qKrzyX" = "Bare for å være sikker, ser du etter «Skann QR-kode»?";
 
 /* (No Comment) */
+"YQiQuz-U0eRbw" = "Bare for å være sikker, ser du etter «Leo KI»?";
+
+/* (No Comment) */
 "YQiQuz-VBH4G6" = "Bare som en bekreftelse – du ville ha 'Logg'?";
 
 /* (No Comment) */
@@ -285,6 +342,39 @@
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Bare for å være sikker, ser du etter «Søk»?";
+
+/* (No Comment) */
+"z517nu-0W40Cl" = "${count} alternativer matcher med 'Ny fane'.";
+
+/* (No Comment) */
+"z517nu-crhbMy" = "${count} alternativer matcher med 'Bokmerker'.";
+
+/* (No Comment) */
+"z517nu-FGO5qW" = "Det er ${count} alternativer som samsvarer med «Brave-spilleliste».";
+
+/* (No Comment) */
+"z517nu-jXiFQY" = "Det er ${count} alternativer som samsvarer med «Brave-lommebok».";
+
+/* (No Comment) */
+"z517nu-nthxSL" = "${count} alternativer matcher med 'Nedlastinger'.";
+
+/* (No Comment) */
+"z517nu-qKrzyX" = "Det er ${count} alternativer som samsvarer med «Skann QR-kode».";
+
+/* (No Comment) */
+"z517nu-U0eRbw" = "${count} alternativer matcher med «Leo KI».";
+
+/* (No Comment) */
+"z517nu-VBH4G6" = "${count} alternativer matcher med 'Logg'.";
+
+/* (No Comment) */
+"z517nu-vs094F" = "${count} alternativer matcher med 'Ny privat fane'.";
+
+/* (No Comment) */
+"z517nu-XCyA8c" = "Det er ${count} alternativer som samsvarer med «Brave News».";
+
+/* (No Comment) */
+"z517nu-Y7TWy8" = "Det er ${count} alternativer som samsvarer med «Søk».";
 
 /* (No Comment) */
 "ziTvSZ" = "Konfigurasjon av widget-snarveier";

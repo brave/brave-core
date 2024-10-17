@@ -2,6 +2,9 @@
 "widgets.BookmarksMenuItem" = "Könyvjelzők";
 
 /* The name of the feature */
+"widgets.braveLeo" = "Leo MI";
+
+/* The name of the feature */
 "widgets.braveNews" = "Brave News";
 
 /* Title for downloads menu item */
