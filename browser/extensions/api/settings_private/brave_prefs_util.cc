@@ -108,8 +108,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   // Search engine prefs
   (*s_brave_allowlist)[prefs::kAddOpenSearchEngines] =
       settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[prefs::kSyncedDefaultPrivateSearchProviderGUID] =
-      settings_api::PrefType::kNumber;
 
   // autofill prefs
   (*s_brave_allowlist)[kBraveAutofillPrivateWindows] =

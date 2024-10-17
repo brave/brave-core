@@ -946,11 +946,20 @@
   <message name="IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_DESC" desc="The description for the settings switch controlling the addition of custom search engines">
     Automatically indexes websites that follow the OpenSearch spec.
   </message>
-  <message name="IDS_SETTINGS_NORMAL_PROFILE_SEARCH_EXPLANATION" desc="Explanation for the search engine dropdown setting.">
-    Normal Window - Search engine used in the address bar.
+  <message name="IDS_SETTINGS_NORMAL_PROFILE_SEARCH_EXPLANATION" desc="Explanation for the search engine setting.">
+    Search engine used in the address bar.
   </message>
-  <message name="IDS_SETTINGS_PRIVATE_PROFILE_SEARCH_EXPLANATION" desc="Explanation for the search engine dropdown setting.">
-    Private Window - Search engine used in the address bar
+  <message name="IDS_SETTINGS_PRIVATE_PROFILE_SEARCH_EXPLANATION" desc="Explanation for the search engine setting used by private profiles.">
+    Search engine used in the address bar for private windows.
+  </message>
+  <message name="IDS_SETTINGS_NORMAL_PROFILE_SEARCH_ENGINE_HEADING" desc="Heading for the search engine setting for normal profiles.">
+    Normal Window
+  </message>
+  <message name="IDS_SETTINGS_PRIVATE_PROFILE_SEARCH_ENGINE_HEADING" desc="Heading for the search engine setting for private profiles.">
+    Private Window
+  </message>
+  <message name="IDS_SETTINGS_PRIVATE_PROFILE_SEARCH_ENGINE_CHOICE_SETTINGS_CONFIRMATION_TOAST_LABEL" desc="This confirmation message is intended to help users understand that their choice is now saved. It appears after the user changes their default private search engine in Brave settings. (A search engine provides answers to search queries; this is different from a browser, which displays web pages. A search engine powers many experiences within a browser.)">
+    <ph name="SEARCH_ENGINE_NAME">$1<ex>Brave</ex></ph> is now your default search engine for private windows
   </message>
 
   <!-- Settings / Extensions -->

@@ -16,13 +16,14 @@ import {SettingsSearchPageElement} from '../search_page/search_page.js'
 import {routes} from '../route.js'
 import {type Route, RouteObserverMixin, Router} from '../router.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
+import {loadTimeData} from '../i18n_setup.js'
 
 RegisterPolymerTemplateModifications({
   'settings-search-page': (templateContent) => {
     const enginesSubpageTrigger =
       templateContent.getElementById('enginesSubpageTrigger')
     if (!enginesSubpageTrigger) {
-      console.error(`[Brave Settings Overrides] Couldn't find enginesSubpageTrigger`)
+      console.error(`[Settings] Couldn't find enginesSubpageTrigger`)
     } else {
       enginesSubpageTrigger.insertAdjacentHTML(
         'beforebegin',
@@ -30,6 +31,14 @@ RegisterPolymerTemplateModifications({
           <settings-brave-search-page prefs="{{prefs}}">
           </settings-brave-search-page>
         `)
+    }
+    const searchEngineTitleElement =
+      templateContent.querySelector('.default-search-engine')
+    if (searchEngineTitleElement?.firstChild?.nodeType === Node.TEXT_NODE) {
+      searchEngineTitleElement.firstChild.textContent =
+        loadTimeData.getString('normalSearchEnginesSiteSearchEngineHeading')
+    } else {
+      console.error(`[Settings] Couldn't find search engine title text node`)
     }
   }
 })
