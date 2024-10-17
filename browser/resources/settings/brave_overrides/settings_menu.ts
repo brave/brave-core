@@ -57,14 +57,13 @@ RegisterStyleOverride(
         --settings-nav-item-color: var(--leo-color-text-primary) !important;
         position: sticky;
         top: var(--brave-settings-menu-margin-v);
-        margin: 0 var(--brave-settings-menu-margin) !important;
+        margin: 0 !important;
         max-height: calc(100vh - 56px - (var(--brave-settings-menu-margin-v) * 2) - (var(--brave-settings-menu-padding) * 2));
         min-width: 172px;
+        max-width:250px;
         border-radius: 6px;
-        background-color: var(--leo-color-container-background);
         overflow-y: auto;
         padding: 24px !important;
-        box-shadow: var(--leo-effect-elevation-01);
       }
 
       .cr-nav-menu-item {
@@ -98,7 +97,6 @@ RegisterStyleOverride(
         :host {
           --settings-nav-item-color: var(--leo-color-text-primary) !important;
           border-color: transparent !important;
-          background-color: var(--leo-color-container-background);
         }
       }
 
