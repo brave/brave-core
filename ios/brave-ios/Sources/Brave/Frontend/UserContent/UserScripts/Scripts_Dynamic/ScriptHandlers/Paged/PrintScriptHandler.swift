@@ -9,15 +9,13 @@ import os.log
 
 class PrintScriptHandler: TabContentScript {
   private weak var browserController: BrowserViewController?
-  private weak var tab: Tab?
   private var isPresentingController = false
   private var printCounter = 0
   private var isBlocking = false
   private var currentDomain: String?
 
-  required init(browserController: BrowserViewController, tab: Tab) {
+  required init(browserController: BrowserViewController) {
     self.browserController = browserController
-    self.tab = tab
   }
 
   static let scriptName = "PrintScript"
@@ -40,10 +38,10 @@ class PrintScriptHandler: TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
 
@@ -52,7 +50,7 @@ class PrintScriptHandler: TabContentScript {
       return
     }
 
-    if let tab = tab, let webView = tab.webView, let url = webView.url {
+    if let webView = tab.webView, let url = webView.lastCommittedURL {
       // If the main-frame's URL has changed
       if let domain = url.baseDomain, domain != currentDomain, message.frameInfo.isMainFrame {
         isBlocking = false

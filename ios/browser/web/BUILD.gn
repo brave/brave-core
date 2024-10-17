@@ -1,0 +1,41 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("web") {
+  sources = [
+    "brave_web_client.h",
+    "brave_web_client.mm",
+    "brave_web_main_parts.h",
+    "brave_web_main_parts.mm",
+    "javascript_block_util.mm",
+    "universal_link_block_util.mm",
+    "web_view_tab_helper_util.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/constants",
+    "//brave/ios/browser/application_context",
+    "//components/component_updater/installer_policies",
+    "//components/translate/ios/browser",
+    "//ios/chrome/browser/application_context/model",
+    "//ios/chrome/browser/providers/raccoon:chromium_raccoon",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/paths",
+    "//ios/chrome/browser/shared/model/url",
+    "//ios/chrome/browser/shared/model/url:constants",
+    "//ios/chrome/browser/tabs/model",
+    "//ios/chrome/browser/web/model:web_internal",
+    "//ios/components/security_interstitials",
+    "//ios/components/security_interstitials/lookalikes",
+    "//ios/components/security_interstitials/safe_browsing",
+    "//ios/components/webui:url_constants",
+    "//ios/public/provider/chrome/browser/url_rewriters:url_rewriters_api",
+    "//ios/web_view:web_view_sources",
+  ]
+  frameworks = [ "Foundation.framework" ]
+}

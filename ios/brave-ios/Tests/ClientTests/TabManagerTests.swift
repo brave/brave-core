@@ -116,7 +116,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
   let didAdd = MethodSpy(functionName: "tabManager(_:didAddTab:)")
 
   var manager: TabManager!
-  private let privateBrowsingManager = PrivateBrowsingManager()
+  private let privateBrowsingManager = PrivateBrowsingManager(braveCore: nil)
   private let testWindowId = UUID()
 
   override func setUp() {
@@ -128,8 +128,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       windowId: testWindowId,
       prefs: profile.prefs,
       rewards: nil,
-      tabGeneratorAPI: nil,
-      historyAPI: nil,
+      braveCore: nil,
       privateBrowsingManager: privateBrowsingManager
     )
     privateBrowsingManager.isPrivateBrowsing = false
@@ -157,7 +156,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     // test that non-private tabs are saved to the db
     // add some non-private tabs to the tab manager
     for _ in 0..<3 {
-      let tab = Tab(configuration: configuration, type: .private)
+      let tab = Tab(wkConfiguration: nil, configuration: nil, type: .private)
       tab.url = URL(string: "http://yahoo.com")!
       manager.configureTab(
         tab,
@@ -179,7 +178,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     manager.addDelegate(delegate)
 
     delegate.expect([willAdd, didAdd])
-    manager.addTab(isPrivate: false)
+    manager.addTab(zombie: true, isPrivate: false)
     delegate.verify("Not all delegate methods were called")
   }
 
@@ -187,7 +186,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     let delegate = MockTabManagerDelegate()
 
     //create the tab before adding the mock delegate. So we don't have to check delegate calls we dont care about
-    let tab = manager.addTab(isPrivate: false)
+    let tab = manager.addTab(zombie: true, isPrivate: false)
     manager.selectTab(tab)
     manager.addDelegate(delegate)
 
@@ -208,7 +207,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     let delegate = MockTabManagerDelegate()
 
     //create the tab before adding the mock delegate. So we don't have to check delegate calls we dont care about
-    let tab = manager.addTab(isPrivate: true)
+    let tab = manager.addTab(zombie: true, isPrivate: true)
     manager.selectTab(tab)
     manager.addDelegate(delegate)
 
@@ -229,9 +228,9 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     setPersistentPrivateMode(true)
 
     // create one private and one normal tab
-    let tab = manager.addTab(isPrivate: false)
+    let tab = manager.addTab(zombie: true, isPrivate: false)
     manager.selectTab(tab)
-    manager.selectTab(manager.addTab(isPrivate: true))
+    manager.selectTab(manager.addTab(zombie: true, isPrivate: true))
 
     XCTAssertEqual(
       TabType.of(manager.selectedTab).isPrivate,
@@ -256,7 +255,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       "The regular tab should stil be around"
     )
 
-    manager.selectTab(manager.addTab(isPrivate: true))
+    manager.selectTab(manager.addTab(zombie: true, isPrivate: true))
     XCTAssertEqual(manager.tabs(withType: .private).count, 2, "There should be two private tabs")
     manager.willSwitchTabMode(leavingPBM: true)
     XCTAssertEqual(
@@ -265,14 +264,14 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       "After willSwitchTabMode there should be 2 private tabs"
     )
 
-    manager.selectTab(manager.addTab(isPrivate: true))
-    manager.selectTab(manager.addTab(isPrivate: true))
+    manager.selectTab(manager.addTab(zombie: true, isPrivate: true))
+    manager.selectTab(manager.addTab(zombie: true, isPrivate: true))
     XCTAssertEqual(
       manager.tabs(withType: .private).count,
       4,
       "Private tabs should not be deleted when another one is added"
     )
-    manager.selectTab(manager.addTab(isPrivate: false))
+    manager.selectTab(manager.addTab(zombie: true, isPrivate: false))
     XCTAssertEqual(
       manager.tabs(withType: .private).count,
       4,
@@ -291,9 +290,9 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     setPersistentPrivateMode(false)
 
     // create one private and one normal tab
-    let tab = manager.addTab(isPrivate: false)
+    let tab = manager.addTab(zombie: true, isPrivate: false)
     manager.selectTab(tab)
-    manager.selectTab(manager.addTab(isPrivate: true))
+    manager.selectTab(manager.addTab(zombie: true, isPrivate: true))
 
     XCTAssertEqual(
       TabType.of(manager.selectedTab).isPrivate,
@@ -318,7 +317,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       "The regular tab should stil be around"
     )
 
-    manager.selectTab(manager.addTab(isPrivate: true))
+    manager.selectTab(manager.addTab(zombie: true, isPrivate: true))
     XCTAssertEqual(manager.tabs(withType: .private).count, 1, "There should be one new private tab")
     manager.willSwitchTabMode(leavingPBM: true)
     XCTAssertEqual(
@@ -327,14 +326,14 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       "After willSwitchTabMode there should be no more private tabs"
     )
 
-    manager.selectTab(manager.addTab(isPrivate: true))
-    manager.selectTab(manager.addTab(isPrivate: true))
+    manager.selectTab(manager.addTab(zombie: true, isPrivate: true))
+    manager.selectTab(manager.addTab(zombie: true, isPrivate: true))
     XCTAssertEqual(
       manager.tabs(withType: .private).count,
       2,
       "Private tabs should not be deleted when another one is added"
     )
-    manager.selectTab(manager.addTab(isPrivate: false))
+    manager.selectTab(manager.addTab(zombie: true, isPrivate: false))
     XCTAssertEqual(
       manager.tabs(withType: .private).count,
       0,
@@ -350,10 +349,10 @@ open class MockTabManagerDelegate: TabManagerDelegate {
   func testTogglePBMDeletePersistent() {
     setPersistentPrivateMode(true)
 
-    let tab = manager.addTab(isPrivate: false)
+    let tab = manager.addTab(zombie: true, isPrivate: false)
     manager.selectTab(tab)
-    manager.selectTab(manager.addTab(isPrivate: false))
-    manager.selectTab(manager.addTab(isPrivate: true))
+    manager.selectTab(manager.addTab(zombie: true, isPrivate: false))
+    manager.selectTab(manager.addTab(zombie: true, isPrivate: true))
 
     manager.willSwitchTabMode(leavingPBM: false)
     XCTAssertEqual(manager.tabs(withType: .private).count, 1, "There should be 1 private tab")
@@ -368,10 +367,10 @@ open class MockTabManagerDelegate: TabManagerDelegate {
   func testTogglePBMDeleteNonPersistent() {
     setPersistentPrivateMode(false)
 
-    let tab = manager.addTab(isPrivate: false)
+    let tab = manager.addTab(zombie: true, isPrivate: false)
     manager.selectTab(tab)
-    manager.selectTab(manager.addTab(isPrivate: false))
-    manager.selectTab(manager.addTab(isPrivate: true))
+    manager.selectTab(manager.addTab(zombie: true, isPrivate: false))
+    manager.selectTab(manager.addTab(zombie: true, isPrivate: true))
 
     manager.willSwitchTabMode(leavingPBM: false)
     XCTAssertEqual(manager.tabs(withType: .private).count, 1, "There should be 1 private tab")
@@ -385,10 +384,10 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     let delegate = MockTabManagerDelegate()
 
     //create the tab before adding the mock delegate. So we don't have to check delegate calls we dont care about
-    let tab = manager.addTab(isPrivate: false)
+    let tab = manager.addTab(zombie: true, isPrivate: false)
     manager.selectTab(tab)
-    manager.addTab(isPrivate: false)
-    let deleteTab = manager.addTab(isPrivate: false)
+    manager.addTab(zombie: true, isPrivate: false)
+    let deleteTab = manager.addTab(zombie: true, isPrivate: false)
     manager.addDelegate(delegate)
 
     delegate.expect([willRemove, didRemove])
@@ -401,7 +400,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     let delegate = MockTabManagerDelegate()
 
     func addTab(_ visit: Bool) -> Tab {
-      let tab = manager.addTab(isPrivate: false)
+      let tab = manager.addTab(zombie: true, isPrivate: false)
       if visit {
         tab.lastExecutedTime = Date.now()
       }
@@ -440,7 +439,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     let delegate = MockTabManagerDelegate()
 
     //create the tab before adding the mock delegate. So we don't have to check delegate calls we dont care about
-    (0..<10).forEach { _ in manager.addTab(isPrivate: false) }
+    (0..<10).forEach { _ in manager.addTab(zombie: true, isPrivate: false) }
     manager.selectTab(manager.allTabs.last)
     let deleteTab = manager.allTabs.last
     let newSelectedTab = manager.allTabs[8]
@@ -466,10 +465,10 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     let delegate = MockTabManagerDelegate()
 
     // create one private and one normal tab
-    let tab = manager.addTab(isPrivate: false)
-    let newTab = manager.addTab(isPrivate: false)
+    let tab = manager.addTab(zombie: true, isPrivate: false)
+    let newTab = manager.addTab(zombie: true, isPrivate: false)
     manager.selectTab(tab)
-    manager.selectTab(manager.addTab(isPrivate: true))
+    manager.selectTab(manager.addTab(zombie: true, isPrivate: true))
     manager.addDelegate(delegate)
 
     // Double check a few things
@@ -522,10 +521,10 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     let delegate = MockTabManagerDelegate()
 
     // create one private and one normal tab
-    let tab = manager.addTab(isPrivate: false)
-    let newTab = manager.addTab(isPrivate: false)
+    let tab = manager.addTab(zombie: true, isPrivate: false)
+    let newTab = manager.addTab(zombie: true, isPrivate: false)
     manager.selectTab(tab)
-    manager.selectTab(manager.addTab(isPrivate: true))
+    manager.selectTab(manager.addTab(zombie: true, isPrivate: true))
     manager.addDelegate(delegate)
 
     // Double check a few things
@@ -573,7 +572,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     let delegate = MockTabManagerDelegate()
 
     //create the tab before adding the mock delegate. So we don't have to check delegate calls we dont care about
-    (0..<10).forEach { _ in manager.addTab(isPrivate: false) }
+    (0..<10).forEach { _ in manager.addTab(zombie: true, isPrivate: false) }
     manager.selectTab(manager.allTabs.first)
     let deleteTab = manager.allTabs.first
     let newSelectedTab = manager.allTabs[1]
@@ -598,10 +597,10 @@ open class MockTabManagerDelegate: TabManagerDelegate {
 
     // We add 2 tabs. Then a private one before adding another normal tab and selecting it.
     // Make sure that when the last one is deleted we dont switch to the private tab
-    manager.addTab(isPrivate: false)
-    let newSelected = manager.addTab(isPrivate: false)
-    manager.addTab(isPrivate: true)
-    let deleted = manager.addTab(isPrivate: false)
+    manager.addTab(zombie: true, isPrivate: false)
+    let newSelected = manager.addTab(zombie: true, isPrivate: false)
+    manager.addTab(zombie: true, isPrivate: true)
+    let deleted = manager.addTab(zombie: true, isPrivate: false)
     manager.selectTab(manager.allTabs.last)
     manager.addDelegate(delegate)
 
@@ -623,10 +622,10 @@ open class MockTabManagerDelegate: TabManagerDelegate {
 
     // We add 2 tabs. Then a private one before adding another normal tab and selecting the first.
     // Make sure that when the last one is deleted we dont switch to the private tab
-    let deleted = manager.addTab(isPrivate: false)
-    let newSelected = manager.addTab(isPrivate: false)
-    manager.addTab(isPrivate: true)
-    manager.addTab(isPrivate: false)
+    let deleted = manager.addTab(zombie: true, isPrivate: false)
+    let newSelected = manager.addTab(zombie: true, isPrivate: false)
+    manager.addTab(zombie: true, isPrivate: true)
+    manager.addTab(zombie: true, isPrivate: false)
     manager.selectTab(manager.allTabs.first)
     manager.addDelegate(delegate)
 
@@ -645,7 +644,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
   func testRemoveOnlyTab() {
     let delegate = MockTabManagerDelegate()
 
-    let tab = manager.addTab(isPrivate: false)
+    let tab = manager.addTab(zombie: true, isPrivate: false)
 
     manager.addDelegate(delegate)
     delegate.expect([
@@ -661,7 +660,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
   }
 
   func testRemoveAllTabs() {
-    (0..<10).forEach { _ in manager.addTab(isPrivate: false) }
+    (0..<10).forEach { _ in manager.addTab(zombie: true, isPrivate: false) }
     manager.removeAll()
 
     XCTAssertFalse(manager.allTabs.isEmpty, "Should create a new tab when all others are removed")
@@ -669,7 +668,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
   }
 
   func testRemoveAllOtherTabs() {
-    (0..<10).forEach { index in manager.addTab(isPrivate: false) }
+    (0..<10).forEach { index in manager.addTab(zombie: true, isPrivate: false) }
     manager.removeAllForCurrentMode(isActiveTabIncluded: false)
 
     XCTAssertFalse(
@@ -684,9 +683,9 @@ open class MockTabManagerDelegate: TabManagerDelegate {
 
   func testMoveTabToEnd() {
     let firstTab = manager.addTabAndSelect(isPrivate: false)
-    let secondTab = manager.addTab(isPrivate: false)
-    manager.addTab(isPrivate: true)
-    let thirdTab = manager.addTab(isPrivate: false)
+    let secondTab = manager.addTab(zombie: true, isPrivate: false)
+    manager.addTab(zombie: true, isPrivate: true)
+    let thirdTab = manager.addTab(zombie: true, isPrivate: false)
 
     manager.moveTab(firstTab, toIndex: manager.tabs(withType: .regular).count - 1)
 
@@ -702,9 +701,9 @@ open class MockTabManagerDelegate: TabManagerDelegate {
 
   func testMoveTabToStart() {
     let firstTab = manager.addTabAndSelect(isPrivate: false)
-    let secondTab = manager.addTab(isPrivate: false)
-    manager.addTab(isPrivate: true)
-    let thirdTab = manager.addTab(isPrivate: false)
+    let secondTab = manager.addTab(zombie: true, isPrivate: false)
+    manager.addTab(zombie: true, isPrivate: true)
+    let thirdTab = manager.addTab(zombie: true, isPrivate: false)
 
     manager.moveTab(thirdTab, toIndex: 0)
 
@@ -719,11 +718,11 @@ open class MockTabManagerDelegate: TabManagerDelegate {
   }
 
   func testMoveTabToMiddle() {
-    let firstTab = manager.addTab(isPrivate: false)
-    let secondTab = manager.addTab(isPrivate: false)
-    manager.addTab(isPrivate: true)
+    let firstTab = manager.addTab(zombie: true, isPrivate: false)
+    let secondTab = manager.addTab(zombie: true, isPrivate: false)
+    manager.addTab(zombie: true, isPrivate: true)
     let thirdTab = manager.addTabAndSelect(isPrivate: false)
-    let forthTab = manager.addTab(isPrivate: false)
+    let forthTab = manager.addTab(zombie: true, isPrivate: false)
 
     manager.moveTab(forthTab, toIndex: 1)
 
@@ -756,7 +755,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       forNotification: .NSManagedObjectContextDidSave,
       object: nil
     )
-    let tab = manager.addTab(isPrivate: false)
+    let tab = manager.addTab(zombie: true, isPrivate: false)
     wait(for: [tabAddExpectation], timeout: 5)
     delegate.verify("Not all delegate methods were called")
 
@@ -772,7 +771,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     DataController.shared.initializeOnce()
 
     delegate.expect([willAdd, didAdd])
-    manager.addTab(isPrivate: true)
+    manager.addTab(zombie: true, isPrivate: true)
     delegate.verify("Not all delegate methods were called")
 
     let storedTabs = SessionTab.all()
@@ -795,12 +794,12 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     wait(for: [windowCreateExpectation], timeout: 5)
 
     delegate.expect([willAdd, didAdd, willAdd, didAdd])
-    manager.addTab(isPrivate: true)
+    manager.addTab(zombie: true, isPrivate: true)
     let tabAddExpectation = expectation(
       forNotification: .NSManagedObjectContextDidSave,
       object: nil
     )
-    let tab = manager.addTab(isPrivate: false)
+    let tab = manager.addTab(zombie: true, isPrivate: false)
     wait(for: [tabAddExpectation], timeout: 5)
     delegate.verify("Not all delegate methods were called")
 

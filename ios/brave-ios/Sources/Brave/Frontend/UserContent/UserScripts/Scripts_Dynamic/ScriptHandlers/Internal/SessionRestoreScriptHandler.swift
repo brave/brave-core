@@ -12,11 +12,6 @@ protocol SessionRestoreScriptHandlerDelegate: AnyObject {
 
 class SessionRestoreScriptHandler: TabContentScript {
   weak var delegate: SessionRestoreScriptHandlerDelegate?
-  fileprivate weak var tab: Tab?
-
-  required init(tab: Tab) {
-    self.tab = tab
-  }
 
   static let scriptName = "SessionRestoreScript"
   static let scriptId = UUID().uuidString
@@ -38,9 +33,9 @@ class SessionRestoreScriptHandler: TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
@@ -50,7 +45,7 @@ class SessionRestoreScriptHandler: TabContentScript {
       return
     }
 
-    if let tab = tab, let params = message.body as? [String: AnyObject] {
+    if let params = message.body as? [String: AnyObject] {
       if params["name"] as? String == "didRestoreSession" {
         DispatchQueue.main.async {
           self.delegate?.sessionRestore(self, didRestoreSessionForTab: tab)

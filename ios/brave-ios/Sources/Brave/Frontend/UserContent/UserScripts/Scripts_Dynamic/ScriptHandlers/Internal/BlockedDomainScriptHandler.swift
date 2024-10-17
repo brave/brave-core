@@ -8,21 +8,15 @@ import Shared
 import WebKit
 
 class BlockedDomainScriptHandler: TabContentScript {
-  private weak var tab: Tab?
-
-  required init(tab: Tab) {
-    self.tab = tab
-  }
-
   static let scriptName = "BlockedDomainScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
   static let scriptSandbox: WKContentWorld = .page
   static let userScript: WKUserScript? = nil
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
@@ -41,16 +35,16 @@ class BlockedDomainScriptHandler: TabContentScript {
 
     switch action {
     case "didProceed":
-      blockedDomainDidProceed()
+      blockedDomainDidProceed(tab: tab)
     case "didGoBack":
-      blockedDomainDidGoBack()
+      blockedDomainDidGoBack(tab: tab)
     default:
       assertionFailure("Unhandled action `\(action)`")
     }
   }
 
-  private func blockedDomainDidProceed() {
-    guard let url = tab?.url?.strippedInternalURL, let etldP1 = url.baseDomain else {
+  private func blockedDomainDidProceed(tab: Tab) {
+    guard let url = tab.url?.strippedInternalURL, let etldP1 = url.baseDomain else {
       assertionFailure(
         "There should be no way this method can be triggered if the tab is not on an internal url"
       )
@@ -58,27 +52,27 @@ class BlockedDomainScriptHandler: TabContentScript {
     }
 
     let request = URLRequest(url: url)
-    tab?.proceedAnywaysDomainList.insert(etldP1)
-    tab?.loadRequest(request)
+    tab.proceedAnywaysDomainList.insert(etldP1)
+    tab.loadRequest(request)
   }
 
-  private func blockedDomainDidGoBack() {
-    guard let url = tab?.url?.strippedInternalURL else {
+  private func blockedDomainDidGoBack(tab: Tab) {
+    guard let url = tab.url?.strippedInternalURL else {
       assertionFailure(
         "There should be no way this method can be triggered if the tab is not on an internal url"
       )
       return
     }
 
-    guard let listItem = tab?.backList?.reversed().first(where: { $0.url != url }) else {
+    guard let listItem = tab.backList?.reversed().first(where: { $0.url != url }) else {
       // How is this even possible?
       // All testing indicates no, so we will not handle.
       // If we find it is, then we need to disable or hide the "Go Back" button in these cases.
       // But this would require heavy changes or ugly mechanisms to InternalSchemeHandler.
-      tab?.goBack()
+      tab.goBack()
       return
     }
 
-    tab?.goToBackForwardListItem(listItem)
+    tab.goToBackForwardListItem(listItem)
   }
 }

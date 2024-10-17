@@ -9,7 +9,8 @@
 #define webViewNavigationProxy                                       \
   webViewNavigationProxy_ChromiumImpl;                               \
   @property(weak, nonatomic, readonly) id<CRWWebViewNavigationProxy> \
-      webViewNavigationProxy
+      webViewNavigationProxy;                                        \
+  @property(weak, nonatomic, readonly) WKWebView* webView
 
 #include "src/ios/web/web_state/ui/crw_web_controller.h"  // IWYU pragma: export
 

@@ -15,13 +15,7 @@ protocol PlaylistFolderSharingScriptHandlerDelegate: AnyObject {
 }
 
 class PlaylistFolderSharingScriptHandler: NSObject, TabContentScript {
-  fileprivate weak var tab: Tab?
   public weak var delegate: PlaylistFolderSharingScriptHandlerDelegate?
-
-  init(tab: Tab) {
-    self.tab = tab
-    super.init()
-  }
 
   static let scriptName = "PlaylistFolderSharingScript"
   static let scriptId = UUID().uuidString
@@ -43,10 +37,10 @@ class PlaylistFolderSharingScriptHandler: NSObject, TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
 

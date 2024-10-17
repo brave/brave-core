@@ -54,24 +54,6 @@ import XCTest
     XCTAssertEqual("test test".capitalizeFirstLetter, "Test test")
   }
 
-  func testRemoveUnicodeFromFilename() {
-    let files = [
-      "foo-\u{200F}cod.jpg",
-      "regedt\u{202e}gpj.apk",
-    ]
-
-    let nounicodes = [
-      "foo-cod.jpg",
-      "regedtgpj.apk",
-    ]
-
-    for (file, nounicode) in zip(files, nounicodes) {
-      XCTAssert(file != nounicode)
-      let strip = HTTPDownload.stripUnicode(fromFilename: file)
-      XCTAssert(strip == nounicode)
-    }
-  }
-
   func testWithSecureUrlScheme() {
     XCTAssertEqual("test".withSecureUrlScheme, "https://test")
     XCTAssertEqual("http://test".withSecureUrlScheme, "https://test")

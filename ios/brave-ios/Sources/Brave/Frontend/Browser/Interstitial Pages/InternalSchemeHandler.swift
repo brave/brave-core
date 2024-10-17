@@ -59,8 +59,6 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
       // interstitial
       "/interstitial-style/InterstitialStyles.css": "text/css",
       "/interstitial-style/BlockedDomain.css": "text/css",
-      "/interstitial-style/NetworkError.css": "text/css",
-      "/interstitial-style/CertificateError.css": "text/css",
       "/interstitial-style/Web3Domain.css": "text/css",
       "/interstitial-style/IPFSPreference.css": "text/css",
       "/interstitial-icon/Generic.svg": "image/svg+xml",

@@ -18,12 +18,6 @@ class SiteStateListenerScriptHandler: TabContentScript {
     let data: MessageDTOData
   }
 
-  private weak var tab: Tab?
-
-  init(tab: Tab) {
-    self.tab = tab
-  }
-
   static let scriptName = "SiteStateListenerScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
@@ -45,9 +39,9 @@ class SiteStateListenerScriptHandler: TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
@@ -57,7 +51,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
       return
     }
 
-    guard let tab = tab, let webView = tab.webView else {
+    guard let webView = tab.webView else {
       assertionFailure("Should have a tab set")
       return
     }

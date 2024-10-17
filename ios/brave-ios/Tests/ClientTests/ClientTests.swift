@@ -22,7 +22,6 @@ class ClientTests: XCTestCase {
       (AboutHomeHandler.path, AboutHomeHandler()),
       (AboutLicenseHandler.path, AboutLicenseHandler()),
       (SessionRestoreHandler.path, SessionRestoreHandler()),
-      (ErrorPageHandler.path, ErrorPageHandler()),
       (ReaderModeHandler.path, ReaderModeHandler(profile: BrowserProfile(localName: "profile"))),
     ]
 
