@@ -19,7 +19,8 @@ namespace brave_ads {
 class PrefProvider : public PrefProviderInterface {
  public:
   explicit PrefProvider(PrefService* profile_prefs,
-                        PrefService* local_state_prefs);
+                        PrefService* local_state_prefs,
+                        base::Value::Dict virtual_prefs);
 
   PrefProvider(const PrefProvider& other) = delete;
   PrefProvider& operator=(const PrefProvider& other) = delete;
@@ -37,9 +38,13 @@ class PrefProvider : public PrefProviderInterface {
       const std::string& pref_path) const override;
   bool HasLocalStatePrefPath(const std::string& pref_path) const override;
 
+  std::optional<base::Value> GetVirtualPref(
+      const std::string& pref_path) const override;
+
  private:
   const raw_ptr<PrefService> profile_prefs_ = nullptr;
   const raw_ptr<PrefService> local_state_prefs_ = nullptr;
+  const base::Value::Dict virtual_prefs_;
 };
 
 }  // namespace brave_ads

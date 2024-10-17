@@ -5,13 +5,18 @@
 
 #include "brave/components/brave_ads/core/public/prefs/pref_provider.h"
 
+#include <utility>
+
 #include "components/prefs/pref_service.h"
 
 namespace brave_ads {
 
 PrefProvider::PrefProvider(PrefService* const profile_prefs,
-                           PrefService* const local_state_prefs)
-    : profile_prefs_(profile_prefs), local_state_prefs_(local_state_prefs) {
+                           PrefService* const local_state_prefs,
+                           base::Value::Dict virtual_prefs)
+    : profile_prefs_(profile_prefs),
+      local_state_prefs_(local_state_prefs),
+      virtual_prefs_(std::move(virtual_prefs)) {
   CHECK(profile_prefs_);
   CHECK(local_state_prefs_);
 }
@@ -44,6 +49,18 @@ std::optional<base::Value> PrefProvider::GetLocalStatePref(
 
 bool PrefProvider::HasLocalStatePrefPath(const std::string& pref_path) const {
   return local_state_prefs_->HasPrefPath(pref_path);
+}
+
+std::optional<base::Value> PrefProvider::GetVirtualPref(
+    const std::string& pref_path) const {
+  if (pref_path.starts_with(kVirtualPrefPathPrefix)) {
+    if (const base::Value* const value = virtual_prefs_.Find(pref_path)) {
+      return value->Clone();
+    }
+  }
+
+  // The virtual preference does not exist.
+  return std::nullopt;
 }
 
 }  // namespace brave_ads

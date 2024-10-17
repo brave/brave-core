@@ -77,7 +77,8 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
           ->GetForProfile(profile);
   auto* display_service = NotificationDisplayService::GetForProfile(profile);
   auto* delegate = new AdsServiceDelegate(
-      profile, brave_adaptive_captcha_service, display_service,
+      profile, g_browser_process->local_state(), brave_adaptive_captcha_service,
+      display_service,
       std::make_unique<NotificationAdPlatformBridge>(*profile));
 
   auto* history_service = HistoryServiceFactory::GetInstance()->GetForProfile(

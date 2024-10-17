@@ -291,6 +291,29 @@ TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
 }
 
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       GetVirtualPrefValue) {
+  // Arrange
+  ON_CALL(ads_client_mock_, GetVirtualPrefs).WillByDefault([]() {
+    return base::Value::Dict().Set("[virtual]:matrix", /*room*/ 303);
+  });
+
+  // Act & Assert
+  EXPECT_EQ(base::Value(/*room*/ 303),
+            MaybeGetPrefValue(&pref_provider_, "[virtual]:matrix"));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       DoNotGetUnknownVirtualPrefValue) {
+  // Arrange
+  ON_CALL(ads_client_mock_, GetVirtualPrefs).WillByDefault([]() {
+    return base::Value::Dict().Set("[virtual]:inverse.matrices", /*room*/ 101);
+  });
+
+  // Act & Assert
+  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "[virtual]:matrix"));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
        GetBooleanProfilePrefValue) {
   // Arrange
   test::RegisterProfileBooleanPref("boolean", true);

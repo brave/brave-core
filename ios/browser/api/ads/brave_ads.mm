@@ -1495,6 +1495,11 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
   return self.localStatePrefService->HasPrefPath(path);
 }
 
+- (base::Value::Dict)getVirtualPrefs {
+  // Intentionally empty.
+  return {};
+}
+
 - (void)log:(const char*)file
             line:(const int)line
     verboseLevel:(const int)verbose_level

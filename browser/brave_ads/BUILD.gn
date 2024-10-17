@@ -19,6 +19,7 @@ source_set("brave_ads") {
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
     "//components/prefs",
+    "//components/search_engines",
     "//components/sessions:session_id",
     "//content/public/browser",
   ]
