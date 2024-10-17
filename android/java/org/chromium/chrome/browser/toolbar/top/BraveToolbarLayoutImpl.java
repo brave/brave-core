@@ -366,6 +366,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         updateShieldsLayoutBackground(isIncognito() || !NtpUtil.shouldShowRewardsIcon());
     }
 
+    public String getLocationBarQuery() {
+        // String query = getLocationBar().getUrlBarData().getEditingOrDisplayText().toString();
+        String query =
+                ((LocationBarCoordinator) getLocationBar()).getUrlBarTextWithoutAutocomplete();
+        Log.e("quick_search", "query : " + query);
+        return query;
+    }
+
     @Override
     public void onConnectionError(MojoException e) {
         if (isPlaylistEnabledByPrefsAndFlags()) {
