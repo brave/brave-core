@@ -139,8 +139,7 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Caducat";
 
-/* Description of vpn tunnel protocol
-   The alert title showing vpn region is changed */
+/* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Selecciona el teu protocol de transport preferit. Un cop canviïs, les teves credencials VPN existents s'esborraran i et tornaràs a connectar si s'ha establert una connexió actualitzada de VPN.";
 
 /* Message for error when we fail to switch tunnel protocol for the user */
@@ -187,6 +186,9 @@
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Restaura";
+
+/* Text for description of toggle that auto selcets the server according to time zone. */
+"vpn.serverRegionAutoSelectDescription" = "Selecciona automàticament la regió del servidor VPN més propera en funció de la teva zona horària. Aquesta opció es recomana per maximitzar la velocitat d'Internet.";
 
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Actualitza a una VPN per protegir la connexió i bloquejar arreu els rastrejadors invasius.";
@@ -244,6 +246,9 @@
 
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationTitle" = "El Tallafoc + VPN de Brave està activat";
+
+/* Text for description of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalDescription" = "Utilitza el millor servidor disponible";
 
 /* Text for title of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalTitle" = "Òptim";

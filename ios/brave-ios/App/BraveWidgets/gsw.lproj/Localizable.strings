@@ -2,6 +2,9 @@
 "widgets.BookmarksMenuItem" = "Lesezeichen";
 
 /* The name of the feature */
+"widgets.braveLeo" = "Leo-KI";
+
+/* The name of the feature */
 "widgets.braveNews" = "Brave-Nachrichten";
 
 /* Title for downloads menu item */

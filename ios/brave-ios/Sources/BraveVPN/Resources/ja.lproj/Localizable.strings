@@ -151,8 +151,7 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "期限切れ";
 
-/* Description of vpn tunnel protocol
-   The alert title showing vpn region is changed */
+/* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "ご希望の転送プロトコルを選択してください。VPN接続が確立されている場合は、一度切り替えると既存のVPN認証情報がクリアされ、再接続されます。";
 
 /* Message for error when we fail to switch tunnel protocol for the user */
@@ -298,6 +297,9 @@
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "コードを使用";
+
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "VPNのリージョンが変更されました";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "この操作を実行するとBrave Firewall + VPNの構成はリセットされ、発生しているエラーが修正されます。プロセス完了までに約1分かかる場合があります。";
