@@ -400,7 +400,6 @@ const preview: Meta<CustomArgs> = {
       }
 
       const aiChatContext: AIChatContext = {
-        isDefaultConversation: true,
         visibleConversations: [],
         hasAcceptedAgreement: options.args.hasAcceptedAgreement,
         isPremiumStatusFetching: false,
