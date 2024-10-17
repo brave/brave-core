@@ -13,10 +13,11 @@ interface TorrentExtended extends Torrent {
 }
 
 export const addTorrentEvents = (torrent: TorrentExtended) => {
-  torrent.on('warning', (e: Error) => console.log('warning: ', torrent, e))
-  torrent.on('error', (e: Error) => console.log('error: ', torrent, e))
+  torrent.on('warning', (e: Error | string) => console.log('warning: ', torrent, e))
+  torrent.on('error', (e: Error | string) => console.log('error: ', torrent, e))
 
   torrent.on('ready', () => {
+    console.error('torrent ready: ', torrent)
     createServer(torrent, (serverURL: string) => {
       webtorrentActions.serverUpdated(torrent, serverURL)
     })

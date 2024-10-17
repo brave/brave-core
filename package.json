@@ -216,7 +216,7 @@
     "redux-thunk": "^2.3.0",
     "throttleit": "^1.0.0",
     "webext-redux": "^2.1.4",
-    "webtorrent": "1.9.7"
+    "webtorrent": "^2.5.1"
   },
   "overrides": {
     "axios": "1.7.4",

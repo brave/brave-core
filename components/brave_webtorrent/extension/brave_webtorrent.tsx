@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { Store } from 'webext-redux'
 
@@ -53,14 +53,16 @@ const unsubscribe = store.subscribe(async () => {
       chrome.tabs.getCurrent(resolve)
     )
 
-    render(
+    const container = document.getElementById('root')
+    const root = createRoot(container!)
+
+    root.render(
       <Provider store={store}>
         <GlobalStyle />
         <ThemeProvider theme={Theme}>
           <App tabId={tab.id} />
         </ThemeProvider>
-      </Provider>,
-      document.getElementById('root')
+      </Provider>
     )
   } catch (err) {
     console.log('Problem mounting webtorrent', err)
