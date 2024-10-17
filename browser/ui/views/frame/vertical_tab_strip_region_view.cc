@@ -1097,8 +1097,9 @@ void VerticalTabStripRegionView::OnBoundsChanged(
   }
 
 #if DCHECK_IS_ON()
+  DCHECK(GetWidget());
   if (auto width = GetContentsBounds().width();
-      width && !IsBrowserFullscren()) {
+      width && !IsBrowserFullscren() && GetWidget()->IsVisible()) {
     CHECK_GE(
         width,
         tabs::kVerticalTabMinWidth + tabs::kMarginForVerticalTabContainers * 2 -
