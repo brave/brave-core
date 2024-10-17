@@ -1,0 +1,15 @@
+diff --git a/base/allocator/partition_allocator/partition_alloc.gni b/base/allocator/partition_allocator/partition_alloc.gni
+index 2b589ddd153214e237c1028f6be736351754a6f0..f320b815d1a500dffc299471140a21ff2e5d03c7 100644
+--- a/base/allocator/partition_allocator/partition_alloc.gni
++++ b/base/allocator/partition_allocator/partition_alloc.gni
+@@ -284,7 +284,9 @@ stack_scan_supported =
+ # - has_memory_tagging
+ if (!use_partition_alloc ||
+     (defined(toolchain_allows_use_partition_alloc_as_malloc) &&
+-     !toolchain_allows_use_partition_alloc_as_malloc)) {
++     !toolchain_allows_use_partition_alloc_as_malloc) ||
++    (defined(toolchain_for_rust_host_build_tools) &&
++     toolchain_for_rust_host_build_tools)) {
+   use_partition_alloc_as_malloc = false
+   glue_core_pools = false
+   enable_backup_ref_ptr_support = false
