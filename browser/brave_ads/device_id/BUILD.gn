@@ -37,3 +37,14 @@ source_set("device_id") {
     libs += [ "iphlpapi.lib" ]
   }
 }
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "device_id_impl_unittest.cc" ]
+
+  deps = [
+    ":device_id",
+    "//base/test:test_support",
+    "//testing/gtest",
+  ]
+}
