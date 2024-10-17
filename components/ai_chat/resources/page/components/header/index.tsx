@@ -38,18 +38,18 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
     conversationContext.conversationHistory.length >= 1
 
   const activeConversation = aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
-  const isVisible = useIsConversationVisible(conversationContext.conversationUuid)
   const conversationId = useSelectedConversation()
-  const showTitle = aiChatContext.isStandalone || conversationId
+  const isDefault = conversationId === 'default'
+  const showTitle = aiChatContext.isStandalone || !isDefault
 
   return (
     <div className={styles.header} ref={ref}>
       {showTitle ? (
         <div className={styles.pageTitle}>
-          {isVisible && <Button
+          {!isDefault && <Button
             kind='plain-faint'
             fab
-            onClick={() => location.href = "/"}
+            onClick={() => location.href = "/default"}
           >
             <Icon name='arrow-left' />
           </Button>}
