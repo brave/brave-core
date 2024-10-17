@@ -24,6 +24,7 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
@@ -113,7 +114,9 @@ EngineConsumerOAIRemote::EngineConsumerOAIRemote(
     const mojom::CustomModelOptions& model_options,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   model_options_ = model_options;
-  max_page_content_length_ = kCustomModelMaxPageContentLength;
+  max_associated_content_length_ = model_options.max_associated_content_length;
+
+  // Initialize the API client
   api_ = std::make_unique<OAIAPIClient>(url_loader_factory);
 }
 
@@ -131,6 +134,8 @@ void EngineConsumerOAIRemote::UpdateModelOptions(
     const mojom::ModelOptions& options) {
   if (options.is_custom_model_options()) {
     model_options_ = *options.get_custom_model_options();
+    max_associated_content_length_ =
+        model_options_.max_associated_content_length;
   }
 }
 
@@ -139,7 +144,8 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
     const std::string& question,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
-  const std::string& truncated_text = text.substr(0, max_page_content_length_);
+  const std::string& truncated_text =
+      text.substr(0, max_associated_content_length_);
   std::string rewrite_prompt = base::ReplaceStringPlaceholders(
       l10n_util::GetStringUTF8(
           IDS_AI_CHAT_LLAMA2_GENERATE_REWRITE_SUGGESTION_PROMPT),
@@ -164,7 +170,7 @@ void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
     const std::string& page_content,
     SuggestedQuestionsCallback callback) {
   const std::string& truncated_page_content =
-      page_content.substr(0, max_page_content_length_);
+      page_content.substr(0, max_associated_content_length_);
   std::string content_segment = base::ReplaceStringPlaceholders(
       l10n_util::GetStringUTF8(is_video
                                    ? IDS_AI_CHAT_CLAUDE_VIDEO_PROMPT_SEGMENT
@@ -243,12 +249,12 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
   std::optional<std::string> selected_text = std::nullopt;
   if (last_turn->selected_text.has_value()) {
     selected_text =
-        last_turn->selected_text->substr(0, max_page_content_length_);
+        last_turn->selected_text->substr(0, max_associated_content_length_);
   }
 
   const std::string& truncated_page_content = page_content.substr(
-      0, selected_text ? max_page_content_length_ - selected_text->size()
-                       : max_page_content_length_);
+      0, selected_text ? max_associated_content_length_ - selected_text->size()
+                       : max_associated_content_length_);
 
   base::Value::List messages = BuildMessages(
       truncated_page_content, selected_text, is_video, conversation_history);

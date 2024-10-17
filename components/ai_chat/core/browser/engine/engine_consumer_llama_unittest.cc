@@ -180,7 +180,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
   testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
 
   run_loop = std::make_unique<base::RunLoop>();
-  engine_->SetMaxPageContentLengthForTesting(7);
+  engine_->SetMaxAssociatedContentLengthForTesting(7);
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _))
       .WillOnce([](const std::string& prompt,
                    const std::vector<std::string>& history,
@@ -300,7 +300,7 @@ TEST_F(EngineConsumerLlamaUnitTest, GenerateAssistantResponseEarlyReturn) {
 TEST_F(EngineConsumerLlamaUnitTest, TestGenerateRewriteSuggestion) {
   base::RunLoop run_loop;
   testing::StrictMock<MockCallback> mock_callback;
-  engine_->SetMaxPageContentLengthForTesting(5);
+  engine_->SetMaxAssociatedContentLengthForTesting(5);
   auto* mock_client = GetMockRemoteCompletionClient();
   EXPECT_CALL(*mock_client, QueryPrompt(_, _, _, _))
       .WillOnce([&](const std::string& prompt,

@@ -10,6 +10,7 @@ import "brave/components/ai_chat/core/common/mojom/ai_chat.mojom";
 enum OperationResult {
   Success,
   InvalidUrl,
+  InvalidContextSize,
 };
 
 interface AIChatSettingsHelper {

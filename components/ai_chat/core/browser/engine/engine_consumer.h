@@ -77,8 +77,9 @@ class EngineConsumer {
 
   virtual void UpdateModelOptions(const mojom::ModelOptions& options) = 0;
 
-  void SetMaxPageContentLengthForTesting(int max_page_content_length) {
-    max_page_content_length_ = max_page_content_length;
+  void SetMaxAssociatedContentLengthForTesting(
+      uint32_t max_associated_content_length) {
+    max_associated_content_length_ = max_associated_content_length;
   }
 
  protected:
@@ -87,7 +88,7 @@ class EngineConsumer {
   // human message except page refine event.
   bool CanPerformCompletionRequest(
       const ConversationHistory& conversation_history) const;
-  int max_page_content_length_ = 0;
+  uint32_t max_associated_content_length_ = 0;
 };
 
 }  // namespace ai_chat

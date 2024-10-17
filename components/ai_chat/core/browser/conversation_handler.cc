@@ -43,12 +43,6 @@ using ai_chat::mojom::ConversationTurn;
 using AssociatedContentDelegate =
     ConversationHandler::AssociatedContentDelegate;
 
-uint32_t GetMaxContentLengthForModel(const mojom::Model& model) {
-  return model.options->is_custom_model_options()
-             ? kCustomModelMaxPageContentLength
-             : model.options->get_leo_model_options()->max_page_content_length;
-}
-
 }  // namespace
 
 AssociatedContentDelegate::AssociatedContentDelegate()
@@ -884,25 +878,32 @@ void ConversationHandler::PerformAssistantGeneration(
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
                      weak_ptr_factory_.GetWeakPtr());
 
-  bool should_refine_page_content =
-      features::IsPageContentRefineEnabled() &&
-      page_content.length() > GetMaxContentLengthForModel(GetCurrentModel()) &&
-      input != l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
-  if (should_refine_page_content && associated_content_delegate_) {
-    DVLOG(2) << "Asking to refine content, which is of length: "
-             << page_content.length();
+  const size_t max_content_length =
+      ModelService::CalcuateMaxAssociatedContentLengthForModel(
+          GetCurrentModel());
+  const std::string summarize_page_question =
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
+
+  if (features::IsPageContentRefineEnabled() &&
+      page_content.length() > max_content_length &&
+      input != summarize_page_question && associated_content_delegate_) {
+    DVLOG(2) << "Refining content of length: " << page_content.length();
+
+    auto refined_content_callback = base::BindOnce(
+        &ConversationHandler::OnGetRefinedPageContent,
+        weak_ptr_factory_.GetWeakPtr(), input,
+        std::move(data_received_callback), std::move(data_completed_callback),
+        page_content, is_video);
+
     associated_content_delegate_->GetTopSimilarityWithPromptTilContextLimit(
-        input, page_content, GetMaxContentLengthForModel(GetCurrentModel()),
-        base::BindOnce(&ConversationHandler::OnGetRefinedPageContent,
-                       weak_ptr_factory_.GetWeakPtr(), input,
-                       std::move(data_received_callback),
-                       std::move(data_completed_callback), page_content,
-                       is_video));
+        input, page_content, max_content_length,
+        std::move(refined_content_callback));
+
     UpdateOrCreateLastAssistantEntry(
         mojom::ConversationEntryEvent::NewPageContentRefineEvent(
             mojom::PageContentRefineEvent::New()));
     return;
-  } else if (!should_refine_page_content && is_content_refined_) {
+  } else if (is_content_refined_) {
     // If we previously refined content but we're not anymore (perhaps the
     // content shrunk or the model changed to one with a larger content length
     // limit), update the UI to let them know we're not refining content
@@ -1237,21 +1238,19 @@ void ConversationHandler::OnHistoryUpdate() {
 int ConversationHandler::GetContentUsedPercentage() {
   CHECK(associated_content_delegate_);
   auto& model = GetCurrentModel();
-  uint32_t max_page_content_length =
-      model.options->is_custom_model_options()
-          ? kCustomModelMaxPageContentLength
-          : model.options->get_leo_model_options()->max_page_content_length;
+  uint32_t max_associated_content_length =
+      ModelService::CalcuateMaxAssociatedContentLengthForModel(model);
 
   auto content_length =
       associated_content_delegate_->GetCachedTextContent().length();
 
-  if (max_page_content_length > static_cast<uint32_t>(content_length)) {
+  if (max_associated_content_length > static_cast<uint32_t>(content_length)) {
     return 100;
   }
 
   // Convert to float to avoid integer division, which truncates towards zero
   // and could lead to inaccurate results before multiplication.
-  float pct = static_cast<float>(max_page_content_length) /
+  float pct = static_cast<float>(max_associated_content_length) /
               static_cast<float>(content_length) * 100;
 
   return base::ClampRound(pct);

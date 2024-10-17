@@ -173,6 +173,35 @@
     <div class="input-container">
       <div class="custom-label">
         <div class="label-text">
+          <span>$i18n{braveLeoAssistantInputContextSizeLabel}</span>
+          <leo-tooltip mode="default">
+            <div
+              slot="content"
+              class="tooltip-content"
+            >
+              $i18n{braveLeoAssistantInputContextSizeTooltipInfo}
+            </div>
+            <leo-button
+              size="small"
+              kind="plain-faint"
+              fab
+            >
+              <cr-icon class="small" icon="info-outline"></cr-icon>
+            </leo-button>
+          </leo-tooltip>
+        </div>
+      </div>
+      <cr-input
+        auto-validate
+        type="number"
+        value="[[contextSize]]"
+        placeholder="$i18n{braveLeoAssistantInputDefaultContextSize}"
+        on-change="onContextSizeChange_"
+      ></cr-input>
+    </div>
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
           <span>$i18n{braveLeoAssistantInputModelApiKey}</span>
           <leo-tooltip mode="default">
             <div

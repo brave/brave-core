@@ -101,7 +101,8 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
 
   MOCK_METHOD(void,
               OnModelDataChanged,
-              (const std::string&, std::vector<mojom::ModelPtr>),
+              (const std::string& conversation_model_key,
+               std::vector<mojom::ModelPtr> all_models),
               (override));
 
   MOCK_METHOD(void,
@@ -1231,19 +1232,20 @@ TEST_P(PageContentRefineTest, TextEmbedder) {
     EXPECT_CALL(*mock_text_embedder, IsInitialized).Times(0);
   }
 
-  uint32_t max_page_content_length = conversation_handler_->GetCurrentModel()
-                                         .options->get_leo_model_options()
-                                         ->max_page_content_length;
+  uint32_t max_associated_content_length =
+      conversation_handler_->GetCurrentModel()
+          .options->get_leo_model_options()
+          ->max_associated_content_length;
   struct {
     std::string prompt;
     std::string page_content;
     bool should_refine_page_content;
   } test_cases[] = {
-      {"prompt1", std::string(max_page_content_length - 1, 'A'), false},
-      {"prompt2", std::string(max_page_content_length, 'A'), false},
-      {"prompt3", std::string(max_page_content_length + 1, 'A'), true},
+      {"prompt1", std::string(max_associated_content_length - 1, 'A'), false},
+      {"prompt2", std::string(max_associated_content_length, 'A'), false},
+      {"prompt3", std::string(max_associated_content_length + 1, 'A'), true},
       {l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE),
-       std::string(max_page_content_length + 1, 'A'), false},
+       std::string(max_associated_content_length + 1, 'A'), false},
   };
 
   for (const auto& test_case : test_cases) {
@@ -1256,7 +1258,7 @@ TEST_P(PageContentRefineTest, TextEmbedder) {
       EXPECT_CALL(*mock_text_embedder,
                   GetTopSimilarityWithPromptTilContextLimit(
                       test_case.prompt, test_case.page_content,
-                      max_page_content_length, _))
+                      max_associated_content_length, _))
           .Times(1);
       EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
           .Times(0);
@@ -1304,11 +1306,12 @@ TEST_P(PageContentRefineTest, TextEmbedderInitialized) {
       {false, true},
   };
 
-  uint32_t max_page_content_length = conversation_handler_->GetCurrentModel()
-                                         .options->get_leo_model_options()
-                                         ->max_page_content_length;
+  uint32_t max_associated_content_length =
+      conversation_handler_->GetCurrentModel()
+          .options->get_leo_model_options()
+          ->max_associated_content_length;
   constexpr char test_prompt[] = "prompt";
-  const std::string test_page_content(max_page_content_length + 1, 'A');
+  const std::string test_page_content(max_associated_content_length + 1, 'A');
   for (const auto& test_case : test_cases) {
     SCOPED_TRACE(testing::Message()
                  << "IsInitialized: " << test_case.is_initialized
@@ -1323,7 +1326,7 @@ TEST_P(PageContentRefineTest, TextEmbedderInitialized) {
       EXPECT_CALL(
           *mock_text_embedder,
           GetTopSimilarityWithPromptTilContextLimit(
-              test_prompt, test_page_content, max_page_content_length, _))
+              test_prompt, test_page_content, max_associated_content_length, _))
           .Times(1);
     } else {
       EXPECT_CALL(*mock_text_embedder, Initialize)
@@ -1338,10 +1341,10 @@ TEST_P(PageContentRefineTest, TextEmbedderInitialized) {
       } else {
         EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
             .Times(0);
-        EXPECT_CALL(
-            *mock_text_embedder,
-            GetTopSimilarityWithPromptTilContextLimit(
-                test_prompt, test_page_content, max_page_content_length, _))
+        EXPECT_CALL(*mock_text_embedder,
+                    GetTopSimilarityWithPromptTilContextLimit(
+                        test_prompt, test_page_content,
+                        max_associated_content_length, _))
             .Times(1);
       }
     }

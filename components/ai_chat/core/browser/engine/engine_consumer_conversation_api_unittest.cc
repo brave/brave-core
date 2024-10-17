@@ -34,7 +34,7 @@ using ::testing::_;
 namespace ai_chat {
 
 namespace {
-const int kTestingMaxPageContentLength = 100;
+const int kTestingMaxAssociatedContentLength = 100;
 }
 
 using ConversationEvent = ConversationAPIClient::ConversationEvent;
@@ -77,7 +77,7 @@ class EngineConsumerConversationAPIUnitTest : public testing::Test {
     options->name = "test-model-name";
     options->category = mojom::ModelCategory::CHAT;
     options->access = mojom::ModelAccess::BASIC;
-    options->max_page_content_length = kTestingMaxPageContentLength;
+    options->max_associated_content_length = kTestingMaxAssociatedContentLength;
     options->long_conversation_warning_character_limit = 1000;
 
     model_ = mojom::Model::New();
@@ -123,8 +123,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
   // ConversationEvent to JSON. It's convenient to test both here but more
   // exhaustive tests of  ConversationAPIClient are performed in its own
   // unit test suite.
-  std::string page_content(kTestingMaxPageContentLength + 1, 'a');
-  std::string expected_page_content(kTestingMaxPageContentLength, 'a');
+  std::string page_content(kTestingMaxAssociatedContentLength + 1, 'a');
+  std::string expected_page_content(kTestingMaxAssociatedContentLength, 'a');
   std::string expected_events = R"([
     {"role": "user", "type": "pageText", "content": ")" +
                                 expected_page_content + R"("},

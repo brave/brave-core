@@ -170,7 +170,7 @@ EngineConsumerClaudeRemote::EngineConsumerClaudeRemote(
       model_options.name, std::move(stop_sequences),
       std::move(url_loader_factory), credential_manager);
 
-  max_page_content_length_ = model_options.max_page_content_length;
+  max_associated_content_length_ = model_options.max_associated_content_length;
 }
 
 EngineConsumerClaudeRemote::~EngineConsumerClaudeRemote() = default;
@@ -185,7 +185,8 @@ void EngineConsumerClaudeRemote::GenerateRewriteSuggestion(
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
   SanitizeInput(text);
-  const std::string& truncated_text = text.substr(0, max_page_content_length_);
+  const std::string& truncated_text =
+      text.substr(0, max_associated_content_length_);
 
   std::string prompt = base::StrCat(
       {kHumanPromptSequence,
@@ -205,7 +206,7 @@ void EngineConsumerClaudeRemote::GenerateQuestionSuggestions(
     const std::string& page_content,
     SuggestedQuestionsCallback callback) {
   const std::string& truncated_page_content =
-      page_content.substr(0, max_page_content_length_);
+      page_content.substr(0, max_associated_content_length_);
   std::string prompt;
   std::vector<std::string> stop_sequences;
   prompt = base::StrCat(
@@ -261,11 +262,11 @@ void EngineConsumerClaudeRemote::GenerateAssistantResponse(
   std::optional<std::string> selected_text = std::nullopt;
   if (last_turn->selected_text.has_value()) {
     selected_text =
-        last_turn->selected_text->substr(0, max_page_content_length_);
+        last_turn->selected_text->substr(0, max_associated_content_length_);
   }
   const std::string& truncated_page_content = page_content.substr(
-      0, selected_text ? max_page_content_length_ - selected_text->size()
-                       : max_page_content_length_);
+      0, selected_text ? max_associated_content_length_ - selected_text->size()
+                       : max_associated_content_length_);
   std::string prompt =
       BuildClaudePrompt(human_input, truncated_page_content, selected_text,
                         is_video, conversation_history);

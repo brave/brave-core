@@ -114,7 +114,7 @@ class OAIAPIUnitTest : public testing::Test {
 
 TEST_F(OAIAPIUnitTest, PerformRequest) {
   mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
-      "test_api_key", GURL("https://test.com"), "test_model");
+      "test_api_key", 0, 0, 0, GURL("https://test.com"), "test_model");
 
   std::string server_chunk =
       R"({"id":"chatcmpl-123","object":"chat.completion.chunk","created":1694268190,"model":"gpt-3.5-turbo-0125", "system_fingerprint": "fp_44709d6fcb", "choices":[{"index":0,"delta":{"role":"assistant","content":"It was played in Arlington, Texas."},"logprobs":null,"finish_reason":null}]})";
