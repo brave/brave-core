@@ -21,13 +21,6 @@
 
 namespace brave_ads {
 
-namespace {
-
-constexpr const char* kCampaignIds[] = {"60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
-                                        "90762cee-d5bb-4a0d-baaf-61cd7f18e07e"};
-
-}  // namespace
-
 class BraveAdsPageLandExclusionRuleTest : public test::TestBase {};
 
 TEST_F(BraveAdsPageLandExclusionRuleTest, ShouldAlwaysInclude) {
@@ -39,7 +32,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest, ShouldAlwaysInclude) {
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
@@ -58,7 +51,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
 
   const PageLandExclusionRule exclusion_rule(/*ad_events=*/{});
 
@@ -76,11 +69,11 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
 
   CreativeAdInfo creative_ad_1;
   creative_ad_1.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad_1.campaign_id = kCampaignIds[0];
+  creative_ad_1.campaign_id = test::kCampaignId;
 
   CreativeAdInfo creative_ad_2;
   creative_ad_2.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad_2.campaign_id = kCampaignIds[1];
+  creative_ad_2.campaign_id = test::kAnotherCampaignId;
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
@@ -106,11 +99,11 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
 
   CreativeAdInfo creative_ad_1;
   creative_ad_1.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad_1.campaign_id = kCampaignIds[0];
+  creative_ad_1.campaign_id = test::kCampaignId;
 
   CreativeAdInfo creative_ad_2;
   creative_ad_2.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad_2.campaign_id = kCampaignIds[1];
+  creative_ad_2.campaign_id = test::kAnotherCampaignId;
 
   AdEventList ad_events;
 
@@ -163,7 +156,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
@@ -190,7 +183,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
@@ -217,7 +210,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
@@ -244,11 +237,11 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
 
   CreativeAdInfo creative_ad_1;
   creative_ad_1.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad_1.campaign_id = kCampaignIds[0];
+  creative_ad_1.campaign_id = test::kCampaignId;
 
   CreativeAdInfo creative_ad_2;
   creative_ad_2.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad_2.campaign_id = kCampaignIds[1];
+  creative_ad_2.campaign_id = test::kAnotherCampaignId;
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(

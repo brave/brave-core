@@ -7,6 +7,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -200,7 +201,7 @@ TEST_F(BraveAdsConversionsTest,
                              /*html=*/"");
 
   AdInfo ad_2 = ad_1;
-  ad_2.creative_instance_id = "1e945c25-98a2-443c-a7f5-e695110d2b84";
+  ad_2.creative_instance_id = test::kAnotherCreativeInstanceId;
   test::RecordAdEvents(ad_2, {mojom::ConfirmationType::kServedImpression,
                               mojom::ConfirmationType::kViewedImpression,
                               mojom::ConfirmationType::kClicked});

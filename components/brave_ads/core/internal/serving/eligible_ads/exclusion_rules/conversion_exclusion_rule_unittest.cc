@@ -18,14 +18,6 @@
 
 namespace brave_ads {
 
-namespace {
-
-constexpr const char* kCreativeSetIds[] = {
-    "654f10df-fbc4-4a92-8d43-2edf73734a60",
-    "465f10df-fbc4-4a92-8d43-4edf73734a60"};
-
-}  // namespace
-
 class BraveAdsConversionExclusionRuleTest : public test::TestBase {};
 
 TEST_F(BraveAdsConversionExclusionRuleTest,
@@ -44,7 +36,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
        ShouldExcludeIfSameCreativeSetHasAlreadyConverted) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIds[0];
+  creative_ad.creative_set_id = test::kCreativeSetId;
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
@@ -68,7 +60,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
       {{"should_exclude_ad_if_creative_set_exceeds_conversion_cap", "0"}});
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIds[0];
+  creative_ad.creative_set_id = test::kCreativeSetId;
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
@@ -94,7 +86,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
       {{"should_exclude_ad_if_creative_set_exceeds_conversion_cap", "7"}});
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIds[0];
+  creative_ad.creative_set_id = test::kCreativeSetId;
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
@@ -121,7 +113,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
       {{"should_exclude_ad_if_creative_set_exceeds_conversion_cap", "7"}});
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIds[0];
+  creative_ad.creative_set_id = test::kCreativeSetId;
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
@@ -143,10 +135,10 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
        ShouldIncludeIfCreativeSetHasNotAlreadyConverted) {
   // Arrange
   CreativeAdInfo creative_ad_1;
-  creative_ad_1.creative_set_id = kCreativeSetIds[0];
+  creative_ad_1.creative_set_id = test::kCreativeSetId;
 
   CreativeAdInfo creative_ad_2;
-  creative_ad_2.creative_set_id = kCreativeSetIds[1];
+  creative_ad_2.creative_set_id = test::kAnotherCreativeSetId;
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(

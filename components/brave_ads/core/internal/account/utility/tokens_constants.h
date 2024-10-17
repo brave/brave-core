@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-constexpr int kTokensServerVersion = 3;
+inline constexpr int kTokensServerVersion = 3;
 
 }  // namespace brave_ads
 

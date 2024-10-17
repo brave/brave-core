@@ -12,10 +12,10 @@
 namespace brave_ads {
 
 #if defined(OFFICIAL_BUILD)
-constexpr mojom::EnvironmentType kDefaultEnvironmentType =
+inline constexpr mojom::EnvironmentType kDefaultEnvironmentType =
     mojom::EnvironmentType::kProduction;
 #else   // OFFICIAL_BUILD
-constexpr mojom::EnvironmentType kDefaultEnvironmentType =
+inline constexpr mojom::EnvironmentType kDefaultEnvironmentType =
     mojom::EnvironmentType::kStaging;
 #endif  // !OFFICIAL_BUILD
 

@@ -65,9 +65,9 @@ TEST_F(BraveAdsPriorityTest,
   // Assert
   const PrioritizedCreativeAdBuckets<CreativeNotificationAdList>
       expected_prioritized_creative_ad_buckets = {
-          {/*priority*/ 1, {creative_ad_1, creative_ad_3}},
-          {/*priority*/ 2, {creative_ad_2}},
-          {/*priority*/ 3, {creative_ad_4}}};
+          {/*priority=*/1, {creative_ad_1, creative_ad_3}},
+          {/*priority=*/2, {creative_ad_2}},
+          {/*priority=*/3, {creative_ad_4}}};
   EXPECT_THAT(expected_prioritized_creative_ad_buckets,
               ::testing::ElementsAreArray(prioritized_creative_ad_buckets));
 }
