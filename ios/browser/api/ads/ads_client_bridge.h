@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #import "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
@@ -71,6 +72,7 @@
 - (std::optional<base::Value>)getLocalStatePref:(const std::string&)path;
 - (void)clearLocalStatePref:(const std::string&)path;
 - (bool)hasLocalStatePrefPath:(const std::string&)path;
+- (base::Value::Dict)getVirtualPrefs;
 - (void)recordP2AEvents:(const std::vector<std::string>&)events;
 
 @end
