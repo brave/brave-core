@@ -12,7 +12,6 @@ import styles from './style.module.scss'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
-import useIsConversationVisible from '../../hooks/useIsConversationVisible'
 import { useSelectedConversation } from '../../routes'
 
 const Logo = ({ isPremium }: { isPremium: boolean }) => <div className={styles.logo}>
@@ -46,7 +45,7 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
     <div className={styles.header} ref={ref}>
       {showTitle ? (
         <div className={styles.pageTitle}>
-          {!isDefault && <Button
+          {!isDefault && !aiChatContext.isStandalone && <Button
             kind='plain-faint'
             fab
             onClick={() => location.href = "/default"}

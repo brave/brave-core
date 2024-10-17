@@ -20,6 +20,7 @@ const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
 export interface ConversationContextProps {
   conversationHandler: API.ConversationHandlerRemote
   callbackRouter: API.ConversationUICallbackRouter
+  selectedConversationId: string | undefined
 }
 
 export interface CharCountContext {
@@ -316,12 +317,11 @@ function ConversationProviderInternal(props: React.PropsWithChildren<Conversatio
   }, [context.conversationUuid, context.faviconCacheKey])
 
   // Update the location when the visible conversation changes
-  const selectedConversation = useSelectedConversation()
   const isVisible = useIsConversationVisible(context.conversationUuid)
   React.useEffect(() => {
     if (!isVisible) return
-    if (selectedConversation === 'default') return
-    if (context.conversationUuid === selectedConversation) return
+    if (props.selectedConversationId === 'default') return
+    if (context.conversationUuid === props.selectedConversationId) return
     window.location.href = `/${context.conversationUuid}`
   }, [isVisible])
 
@@ -520,7 +520,7 @@ export function ConversationContextProvider(
   props: React.PropsWithChildren
 ) {
   const [conversationAPI, setConversationAPI] =
-    React.useState<ConversationContextProps>()
+    React.useState<Omit<ConversationContextProps, 'selectedConversationId'>>()
 
   const selectedConversation = useSelectedConversation()
   React.useEffect(() => {
@@ -561,7 +561,7 @@ export function ConversationContextProvider(
   }, [conversationAPI])
 
   return conversationAPI
-    ? <ConversationProviderInternal {...conversationAPI}>
+    ? <ConversationProviderInternal selectedConversationId={selectedConversation} {...conversationAPI}>
       {props.children}
     </ConversationProviderInternal>
     : null;
