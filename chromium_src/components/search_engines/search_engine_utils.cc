@@ -5,6 +5,7 @@
 
 #include "components/search_engines/search_engine_utils.h"
 
+#include "base/compiler_specific.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 
 #define GetEngineType GetEngineType_ChromiumImpl
@@ -24,7 +25,7 @@ SearchEngineType GetEngineType(const GURL& url) {
         return engine->type;
       }
       for (size_t j = 0; j < engine->alternate_urls_size; ++j) {
-        if (SameDomain(url, GURL(engine->alternate_urls[j]))) {
+        if (SameDomain(url, UNSAFE_TODO(GURL(engine->alternate_urls[j])))) {
           return engine->type;
         }
       }

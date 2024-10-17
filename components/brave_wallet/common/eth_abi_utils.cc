@@ -67,7 +67,7 @@ std::optional<Span32> ToSpan32(Span data) {
     return std::nullopt;
   }
 
-  return Span32(data.data(), kRowLength);
+  return UNSAFE_TODO(Span32(data.data(), kRowLength));
 }
 
 Span ExtractRows(Span data, size_t row, size_t row_count) {

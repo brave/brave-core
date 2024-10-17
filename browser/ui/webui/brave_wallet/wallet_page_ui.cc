@@ -65,7 +65,8 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   NavigationBarDataProvider::Initialize(source, profile);
   webui::SetupWebUIDataSource(
       source,
-      base::make_span(kBraveWalletPageGenerated, kBraveWalletPageGeneratedSize),
+      UNSAFE_TODO(base::make_span(kBraveWalletPageGenerated,
+                                  kBraveWalletPageGeneratedSize)),
       IDR_WALLET_PAGE_HTML);
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(

@@ -8,6 +8,7 @@
 #include <limits>
 #include <optional>
 
+#include "base/compiler_specific.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
@@ -156,7 +157,7 @@ std::string Uint256ValueToHex(uint256_t input) {
   static constexpr char kHexChars[] = "0123456789abcdef";
   while (input) {
     uint8_t i = static_cast<uint8_t>(input & static_cast<uint256_t>(0x0F));
-    result.insert(result.begin(), kHexChars[i]);
+    UNSAFE_TODO(result.insert(result.begin(), kHexChars[i]));
     input >>= 4;
   }
   if (result.empty()) {

@@ -9,6 +9,7 @@
 #include <array>
 
 #include "base/check.h"
+#include "base/compiler_specific.h"
 #include "base/containers/adapters.h"
 #include "base/containers/span.h"
 #include "base/ranges/algorithm.h"
@@ -39,7 +40,7 @@ std::string KeccakHash(const std::string& input, bool to_hex) {
 
 std::vector<uint8_t> KeccakHash(const std::vector<uint8_t>& input) {
   auto hash = ethash_keccak256(input.data(), input.size());
-  return std::vector<uint8_t>(hash.bytes, hash.bytes + 32);
+  return UNSAFE_TODO(std::vector<uint8_t>(hash.bytes, hash.bytes + 32));
 }
 
 eth_abi::Bytes32 KeccakHashBytes32(base::span<const uint8_t> input) {

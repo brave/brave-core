@@ -80,7 +80,8 @@ TipPanelUI::TipPanelUI(content::WebUI* web_ui)
   source->AddLocalizedStrings(kStrings);
 
   webui::SetupWebUIDataSource(
-      source, base::make_span(kTipPanelGenerated, kTipPanelGeneratedSize),
+      source,
+      UNSAFE_TODO(base::make_span(kTipPanelGenerated, kTipPanelGeneratedSize)),
       IDR_TIP_PANEL_HTML);
 
   source->OverrideContentSecurityPolicy(

@@ -165,7 +165,7 @@ std::string GetMacAddressFromGetIfTable2(
 
   MacAddressProcessor processor(std::move(is_valid_mac_address_callback));
   for (size_t i = 0; i < if_table->NumEntries; i++) {
-    processor.ProcessInterfaceRow(&(if_table->Table[i]));
+    processor.ProcessInterfaceRow(&UNSAFE_TODO((if_table->Table[i])));
   }
 
   if (if_table != NULL) {

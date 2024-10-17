@@ -51,7 +51,8 @@ web::WebUIIOSDataSource* CreateAndAddWebUIDataSource(
   source->UseStringsJs();
 
   // Add required resources.
-  source->AddResourcePaths(base::make_span(resource_map, resource_map_size));
+  source->AddResourcePaths(
+      UNSAFE_TODO(base::make_span(resource_map, resource_map_size)));
   source->SetDefaultResource(html_resource_id);
   return source;
 }

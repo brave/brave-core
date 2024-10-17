@@ -294,7 +294,9 @@ void CreateAndAddRewardsPageDataSource(content::WebUI& web_ui,
   auto* source = content::WebUIDataSource::CreateAndAdd(browser_context, host);
 
   webui::SetupWebUIDataSource(
-      source, base::make_span(kRewardsPageGenerated, kRewardsPageGeneratedSize),
+      source,
+      UNSAFE_TODO(
+          base::make_span(kRewardsPageGenerated, kRewardsPageGeneratedSize)),
       IDR_NEW_BRAVE_REWARDS_PAGE_HTML);
 
   // Adaptive captcha challenges are displayed in an iframe on the Rewards

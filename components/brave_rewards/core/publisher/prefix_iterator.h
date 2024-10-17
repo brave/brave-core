@@ -3,6 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
+// convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PREFIX_ITERATOR_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PREFIX_ITERATOR_H_
 

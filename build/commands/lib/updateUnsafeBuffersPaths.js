@@ -32,7 +32,12 @@ async function updateUnsafeBuffersPaths() {
     ...repoContent.split('\n'),
     '# Appended path correction for redirect_cc by update_patches.',
     '# File patched by brave/build/commands/lib/updateUnsafeBuffersPaths.js.',
-    '-brave/'
+    '-brave/third_party/bip39wally-core-native/',
+    '-brave/third_party/argon2/',
+    '-brave/third_party/ethash/',
+    '-brave/third_party/bitcoin-core/',
+    '-brave/third_party/rapidjson/',
+    '-brave/vendor/bat-native-tweetnacl/'
   ];
 
   updatedPathLines = bufferPathLines.filter(

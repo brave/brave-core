@@ -174,7 +174,7 @@ void DistillPageText(
         };
 
     render_frame->GetWebFrame()->RequestExecuteScript(
-        isolated_world_id, base::make_span(&source, 1u),
+        isolated_world_id, UNSAFE_TODO(base::make_span(&source, 1u)),
         blink::mojom::UserActivationOption::kDoNotActivate,
         blink::mojom::EvaluationTiming::kAsynchronous,
         blink::mojom::LoadEventBlockingOption::kDoNotBlock,

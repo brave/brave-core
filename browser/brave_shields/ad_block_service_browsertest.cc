@@ -208,7 +208,7 @@ base::FilePath AdBlockServiceTest::MakeFileInTempDir(
                                                    base::File::FLAG_WRITE |
                                                    base::File::FLAG_READ);
   EXPECT_TRUE(list_file.IsValid());
-  list_file.Write(0, contents.c_str(), contents.size());
+  UNSAFE_TODO(list_file.Write(0, contents.c_str(), contents.size()));
   list_file.Close();
 
   temp_dirs_.push_back(std::move(dir));

@@ -3,6 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/ABC): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include "brave/third_party/blink/renderer/platform/brave_audio_farbling_helper.h"
 
 #include <limits.h>

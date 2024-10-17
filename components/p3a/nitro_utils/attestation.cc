@@ -3,6 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
+// convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include "brave/components/p3a/nitro_utils/attestation.h"
 
 #include <algorithm>

@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/compiler_specific.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
@@ -45,7 +46,7 @@ double GetHashProb(const std::string& query) {
     const auto b = query[i + 1];
     const auto pos1 = GetPosForHashChars(a);
     const auto pos2 = GetPosForHashChars(b);
-    log_prob += kProbHashLogM[pos1][pos2];
+    log_prob += UNSAFE_TODO(kProbHashLogM[pos1][pos2]);
     trans_c += 1;
   }
 

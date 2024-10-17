@@ -217,7 +217,7 @@
   // Filter out the URLs with unsupported schemes.
   const char* const kInvalidSchemes[] = {"wyciwyg", "place", "about", "chrome"};
   for (size_t i = 0; i < std::size(kInvalidSchemes); ++i) {
-    if (url.SchemeIs(kInvalidSchemes[i])) {
+    if (UNSAFE_TODO(url.SchemeIs(kInvalidSchemes[i]))) {
       return false;
     }
   }

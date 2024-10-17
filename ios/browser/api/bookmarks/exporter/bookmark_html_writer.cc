@@ -274,7 +274,8 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
   bool Write(const std::string& text) {
     if (!text.length())
       return true;
-    size_t wrote = file_->WriteAtCurrentPos(text.c_str(), text.length());
+    size_t wrote =
+        UNSAFE_TODO(file_->WriteAtCurrentPos(text.c_str(), text.length()));
     bool result = (wrote == text.length());
     if (!result) {
       PLOG(ERROR) << "Could not write text to " << path_;

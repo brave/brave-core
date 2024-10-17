@@ -128,7 +128,8 @@ class OkButton : public views::LabelButton {
         ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors();
     SetBackground(CreateBackgroundFromPainter(
         views::Painter::CreateRoundRectWith1PxBorderPainter(
-            kBgColor[theme][GetVisualState()], SK_ColorTRANSPARENT, 100)));
+            UNSAFE_TODO(kBgColor[theme][GetVisualState()]), SK_ColorTRANSPARENT,
+            100)));
   }
 
   void OnThemeChanged() override {

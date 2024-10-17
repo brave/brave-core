@@ -112,7 +112,7 @@ base::FilePath LocalModelsComponentInstallerPolicy::GetRelativeInstallDir()
 void LocalModelsComponentInstallerPolicy::GetHash(
     std::vector<uint8_t>* hash) const {
   hash->assign(kPublicKeySHA256,
-               kPublicKeySHA256 + std::size(kPublicKeySHA256));
+               UNSAFE_TODO(kPublicKeySHA256 + std::size(kPublicKeySHA256)));
 }
 
 std::string LocalModelsComponentInstallerPolicy::GetName() const {

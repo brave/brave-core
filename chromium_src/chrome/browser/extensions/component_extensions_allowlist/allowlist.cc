@@ -31,8 +31,9 @@ namespace extensions {
     };
 
     for (size_t i = 0; i < std::size(kAllowed); ++i) {
-      if (extension_id == kAllowed[i])
+      if (extension_id == UNSAFE_TODO(kAllowed[i])) {
         return true;
+      }
     }
 
     return IsComponentExtensionAllowlisted_ChromiumImpl(extension_id);

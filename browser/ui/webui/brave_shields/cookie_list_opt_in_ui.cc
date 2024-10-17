@@ -49,7 +49,8 @@ CookieListOptInUI::CookieListOptInUI(content::WebUI* web_ui)
 
   webui::SetupWebUIDataSource(
       source,
-      base::make_span(kCookieListOptInGenerated, kCookieListOptInGeneratedSize),
+      UNSAFE_TODO(base::make_span(kCookieListOptInGenerated,
+                                  kCookieListOptInGeneratedSize)),
       IDR_COOKIE_LIST_OPT_IN_HTML);
 
   content::URLDataSource::Add(
