@@ -255,6 +255,23 @@ public final class Domain: NSManagedObject, CRUD {
     }).count
   }
 
+  @MainActor public class func allDomainsWithShredLevelAppExit() -> [Domain]? {
+    let appExitPredicate = NSPredicate(
+      format: "shield_shredLevel == %@",
+      SiteShredLevel.appExit.rawValue
+    )
+    let allExplicitlySet = Domain.all(
+      where: appExitPredicate
+    )
+    guard ShieldPreferences.shredLevel.shredOnAppExit else { return allExplicitlySet }
+    // Default value is SiteShredLevel.appExit, include all with default value nil
+    let nilPredicate = NSPredicate(format: "shield_shredLevel == nil")
+    return (allExplicitlySet ?? [])
+      + (Domain.all(
+        where: nilPredicate
+      ) ?? [])
+  }
+
   public class func totalDomainsWithFingerprintingProtectionLoweredFromGlobal() -> Int {
     guard Preferences.Shields.fingerprintingProtection.value,
       let domains = Domain.all(where: NSPredicate(format: "shield_fpProtection != nil"))
