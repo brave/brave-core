@@ -191,13 +191,6 @@ void SidebarContainerView::WillShowSidePanel() {
   }
 }
 
-void SidebarContainerView::WillDeregisterSidePanelEntry(SidePanelEntry* entry) {
-  // If entry's life cycle is tied with tab, we stop observing from
-  // OnTabWillBeRemoved(). However, some entry could be deregistered while tab
-  // is live. In that case, we need to stop observing here explicitely.
-  StopObservingForEntry(entry);
-}
-
 bool SidebarContainerView::IsFullscreenForCurrentEntry() const {
   // For now, we only supports fullscreen from playlist.
   if (side_panel_coordinator_->GetCurrentEntryId() !=
@@ -806,6 +799,22 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   // panel should be hidden here.
   if (!side_panel_coordinator_->GetCurrentEntryId()) {
     HideSidebarForShowOption();
+  }
+}
+
+void SidebarContainerView::OnEntryWillHide(SidePanelEntry* entry,
+                                           SidePanelEntryHideReason reason) {
+  DVLOG(1) << "Panel will hide: "
+           << SidePanelEntryIdToString(entry->key().id());
+
+  // If |reason| is panel closing, we could deregister. And it'll be
+  // re-registered when panel is shown if that entry is still live in tab's
+  // registry.
+  // We only stop observing when |entry|'s panel is hidden by closing.
+  // If it's hidden by replacing with other panel, we shoudl not stop
+  // to know the timing that it's shown again.
+  if (reason == SidePanelEntryHideReason::kSidePanelClosed) {
+    StopObservingForEntry(entry);
   }
 }
 

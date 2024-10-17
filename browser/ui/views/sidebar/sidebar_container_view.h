@@ -79,7 +79,6 @@ class SidebarContainerView
   BraveSidePanel* side_panel() { return side_panel_; }
 
   void WillShowSidePanel();
-  void WillDeregisterSidePanelEntry(SidePanelEntry* entry);
   bool IsFullscreenForCurrentEntry() const;
 
   void set_operation_from_active_tab_change(bool tab_change) {
@@ -122,6 +121,8 @@ class SidebarContainerView
   // SidePanelEntryObserver:
   void OnEntryShown(SidePanelEntry* entry) override;
   void OnEntryHidden(SidePanelEntry* entry) override;
+  void OnEntryWillHide(SidePanelEntry* entry,
+                       SidePanelEntryHideReason reason) override;
 
   // TabStripModelObserver:
   void OnTabStripModelChanged(

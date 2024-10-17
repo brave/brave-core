@@ -179,14 +179,3 @@ void BraveSidePanelCoordinator::NotifyPinnedContainerOfActiveStateChange(
   SidePanelCoordinator::NotifyPinnedContainerOfActiveStateChange(key,
                                                                  is_active);
 }
-
-void BraveSidePanelCoordinator::OnEntryWillDeregister(
-    SidePanelRegistry* registry,
-    SidePanelEntry* entry) {
-  SidePanelCoordinator::OnEntryWillDeregister(registry, entry);
-
-  // This could give the opportunity to stop observing from |entry| if
-  // this deregister happens while tab is still live.
-  auto* brave_browser_view = static_cast<BraveBrowserView*>(browser_view_);
-  brave_browser_view->WillDeregisterSidePanelEntry(entry);
-}
