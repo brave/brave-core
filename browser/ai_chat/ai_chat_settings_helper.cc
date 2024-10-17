@@ -12,6 +12,7 @@
 #include "brave/brave_domains/service_domains.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/net/base/url_util.h"
 #include "chrome/browser/browser_process.h"
@@ -152,8 +153,9 @@ void AIChatSettingsHelper::AddCustomModel(mojom::ModelPtr model,
                                           AddCustomModelCallback callback) {
   CHECK(model->options->is_custom_model_options());
 
-  if (!net::IsHTTPSOrLocalhostURL(
-          model->options->get_custom_model_options()->endpoint)) {
+  ModelValidationResult result = ModelValidator::ValidateCustomModelOptions(
+      *model->options->get_custom_model_options());
+  if (result == ModelValidationResult::kInvalidUrl) {
     std::move(callback).Run(mojom::OperationResult::InvalidUrl);
     return;
   }
@@ -167,8 +169,9 @@ void AIChatSettingsHelper::SaveCustomModel(uint32_t index,
                                            SaveCustomModelCallback callback) {
   CHECK(model->options->is_custom_model_options());
 
-  if (!net::IsHTTPSOrLocalhostURL(
-          model->options->get_custom_model_options()->endpoint)) {
+  ModelValidationResult result = ModelValidator::ValidateCustomModelOptions(
+      *model->options->get_custom_model_options());
+  if (result == ModelValidationResult::kInvalidUrl) {
     std::move(callback).Run(mojom::OperationResult::InvalidUrl);
     return;
   }

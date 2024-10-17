@@ -11,6 +11,8 @@
 
 #include "base/scoped_observation.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -195,7 +197,8 @@ TEST_F(ModelServiceTest, AddAndModifyCustomModel) {
     mojom::ModelPtr model = mojom::Model::New();
     model->display_name = kDisplayName;
     model->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New(kRequestName, kEndpoint, kAPIKey));
+        mojom::CustomModelOptions::New(kRequestName, 0, 0, 0, kEndpoint,
+                                       kAPIKey));
 
     GetService()->AddCustomModel(std::move(model));
   }
@@ -231,6 +234,121 @@ TEST_F(ModelServiceTest, ChangeDefaultModelKey_IncorrectKey) {
   // Default model key should not change if the key is invalid.
   EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
   testing::Mock::VerifyAndClearExpectations(observer_.get());
+}
+
+TEST_F(ModelServiceTest, SetAssociatedContentLengthMetrics_CustomModel) {
+  // Setup a custom model with no valid context size
+  mojom::CustomModelOptionsPtr custom_options =
+      mojom::CustomModelOptions::New();
+  custom_options->context_size = 0;  // Invalid context size
+
+  mojom::Model custom_model;
+  custom_model.options =
+      mojom::ModelOptions::NewCustomModelOptions(std::move(custom_options));
+
+  // Set associated content length metrics
+  GetService()->SetAssociatedContentLengthMetrics(custom_model);
+
+  // Validate that default context size is set
+  EXPECT_EQ(custom_model.options->get_custom_model_options()->context_size,
+            kDefaultCustomModelContextSize);
+
+  // Validate that max_associated_content_length is calculated correctly
+  size_t expected_content_length =
+      GetService()->CalcuateMaxAssociatedContentLengthForModel(custom_model);
+  EXPECT_EQ(custom_model.options->get_custom_model_options()
+                ->max_associated_content_length,
+            expected_content_length);
+
+  // Validate that long_conversation_warning_character_limit is calculated
+  // correctly
+  uint32_t expected_warning_limit = static_cast<uint32_t>(
+      expected_content_length * kMaxContentLengthThreshold);
+  EXPECT_EQ(custom_model.options->get_custom_model_options()
+                ->long_conversation_warning_character_limit,
+            expected_warning_limit);
+}
+
+TEST_F(ModelServiceTest, SetAssociatedContentLengthMetrics_ValidContextSize) {
+  // Setup a custom model with a valid context size
+  static constexpr size_t kContextSize = 5000;
+  mojom::CustomModelOptionsPtr custom_options =
+      mojom::CustomModelOptions::New();
+  custom_options->context_size = kContextSize;
+
+  mojom::Model custom_model;
+  custom_model.options =
+      mojom::ModelOptions::NewCustomModelOptions(std::move(custom_options));
+
+  // Set associated content length metrics
+  GetService()->SetAssociatedContentLengthMetrics(custom_model);
+
+  // Validate that the provided context size is retained
+  EXPECT_EQ(custom_model.options->get_custom_model_options()->context_size,
+            kContextSize);
+
+  // Validate that max_associated_content_length is calculated correctly
+  size_t expected_content_length =
+      GetService()->CalcuateMaxAssociatedContentLengthForModel(custom_model);
+  EXPECT_EQ(custom_model.options->get_custom_model_options()
+                ->max_associated_content_length,
+            expected_content_length);
+
+  // Validate long_conversation_warning_character_limit calculation
+  base::CheckedNumeric<size_t> checked_warning_limit = base::CheckMul(
+      expected_content_length, static_cast<double>(kMaxContentLengthThreshold));
+
+  ASSERT_TRUE(checked_warning_limit.IsValid());
+
+  size_t expected_warning_limit = checked_warning_limit.ValueOrDie();
+
+  EXPECT_EQ(custom_model.options->get_custom_model_options()
+                ->long_conversation_warning_character_limit,
+            expected_warning_limit);
+}
+
+TEST_F(ModelServiceTest,
+       CalcuateMaxAssociatedContentLengthForModel_CustomModel) {
+  // Setup a custom model with a valid context size
+  mojom::CustomModelOptionsPtr custom_options =
+      mojom::CustomModelOptions::New();
+  custom_options->context_size = 5000;
+
+  mojom::Model custom_model;
+  custom_model.options =
+      mojom::ModelOptions::NewCustomModelOptions(std::move(custom_options));
+
+  // Calculate max associated content length
+  size_t max_content_length =
+      GetService()->CalcuateMaxAssociatedContentLengthForModel(custom_model);
+
+  // Validate that max content length is correct
+  static constexpr uint32_t reserved_tokens =
+      kReservedTokensForMaxNewTokens + kReservedTokensForPrompt;
+
+  static constexpr size_t expected_content_length =
+      (5000 - reserved_tokens) * kDefaultCharsPerToken;
+
+  EXPECT_EQ(max_content_length, expected_content_length);
+}
+
+TEST_F(ModelServiceTest, CalcuateMaxAssociatedContentLengthForModel_LeoModel) {
+  // Setup a leo model with predefined page content length
+  static constexpr size_t expected_content_length = 10'000;
+
+  mojom::LeoModelOptionsPtr leo_options = mojom::LeoModelOptions::New();
+  leo_options->max_associated_content_length = expected_content_length;
+
+  mojom::Model leo_model;
+  leo_model.options =
+      mojom::ModelOptions::NewLeoModelOptions(std::move(leo_options));
+
+  // Calculate max associated content length
+  size_t max_content_length =
+      GetService()->CalcuateMaxAssociatedContentLengthForModel(leo_model);
+
+  // Validate that the predefined value is returned
+  EXPECT_EQ(max_content_length, expected_content_length);
 }
 
 }  // namespace ai_chat

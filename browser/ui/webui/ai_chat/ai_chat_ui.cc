@@ -85,10 +85,6 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
 
   untrusted_source->AddBoolean("hasAcceptedAgreement",
                                !last_accepted_disclaimer.is_null());
-  untrusted_source->AddInteger("customModelMaxPageContentLength",
-                               ai_chat::kCustomModelMaxPageContentLength);
-  untrusted_source->AddInteger("customModelLongConversationCharLimit",
-                               ai_chat::kCustomModelLongConversationCharLimit);
 
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
   constexpr bool kIsMobile = true;

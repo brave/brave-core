@@ -11,6 +11,7 @@
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
+#include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -456,6 +457,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_API_KEY},
       {"braveLeoAssistantInputModelLabelTooltipInfo",
        IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_LABEL_TOOLTIP_INFO},
+      {"braveLeoAssistantInputContextSizeLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_INPUT_CONTEXT_SIZE},
+      {"braveLeoAssistantInputContextSizeTooltipInfo",
+       IDS_SETTINGS_LEO_ASSISTANT_INPUT_CONTEXT_SIZE_TOOLTIP_INFO},
       {"braveLeoAssistantInputModelRequestNameTooltipInfo",
        IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_REQUEST_NAME_TOOLTIP_INFO},
       {"braveLeoAssistantInputModelServerEndpointTooltipInfo",
@@ -758,6 +763,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       confirmation_phrase);
   html_source->AddString("walletResetTransactionInfoConfirmation",
                          reset_tx_confirmation_text);
+
+  html_source->AddString(
+      "braveLeoAssistantInputDefaultContextSize",
+      base::NumberToString16(ai_chat::kDefaultCustomModelContextSize));
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   html_source->AddString("webDiscoveryLearnMoreURL", kWebDiscoveryLearnMoreUrl);
 #endif

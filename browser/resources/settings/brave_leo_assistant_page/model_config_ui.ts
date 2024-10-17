@@ -33,6 +33,9 @@ export class ModelConfigUI extends ModelConfigUIBase {
       modelRequestName: {
         type: String
       },
+      contextSize: {
+        type: Number
+      },
       endpointUrl: {
         type: String
       },
@@ -69,6 +72,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
 
   label: string
   modelRequestName: string
+  contextSize: number
   endpointUrl: string
   apiKey: string
   modelItem: mojom.Model | null
@@ -100,6 +104,11 @@ export class ModelConfigUI extends ModelConfigUIBase {
       options: {
         customModelOptions: {
           modelRequestName: this.modelRequestName,
+          contextSize: this.contextSize,
+          // Determined at runtime based on contextSize
+          maxAssociatedContentLength: -1,
+          // Determined at runtime based on contextSize
+          longConversationWarningCharacterLimit: -1,
           endpoint: mojomUrl,
           apiKey: this.apiKey
         }
@@ -121,6 +130,10 @@ export class ModelConfigUI extends ModelConfigUIBase {
 
   onModelRequestNameChange_(e: any) {
     this.modelRequestName = e.target.value
+  }
+
+  onContextSizeChange_(e: any) {
+    this.contextSize = parseInt(e.target.value, 10);
   }
 
   onModelServerEndpointChange_(e: any) {
@@ -154,6 +167,8 @@ export class ModelConfigUI extends ModelConfigUIBase {
       this.label = newValue.displayName
       this.modelRequestName =
         newValue.options.customModelOptions.modelRequestName
+      this.contextSize =
+        newValue.options.customModelOptions.contextSize
       this.endpointUrl = newValue.options.customModelOptions.endpoint.url
       this.apiKey = newValue.options.customModelOptions.apiKey
     }

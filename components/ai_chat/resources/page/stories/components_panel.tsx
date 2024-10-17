@@ -245,7 +245,7 @@ const MODELS: mojom.Model[] = [
         engineType: mojom.ModelEngineType.LLAMA_REMOTE,
         category: mojom.ModelCategory.CHAT,
         access: mojom.ModelAccess.BASIC,
-        maxPageContentLength: 10000,
+        maxAssociatedContentLength: 10000,
         longConversationWarningCharacterLimit: 9700
       },
       customModelOptions: undefined,
@@ -261,7 +261,7 @@ const MODELS: mojom.Model[] = [
         engineType: mojom.ModelEngineType.LLAMA_REMOTE,
         category: mojom.ModelCategory.CHAT,
         access: mojom.ModelAccess.PREMIUM,
-        maxPageContentLength: 10000,
+        maxAssociatedContentLength: 10000,
         longConversationWarningCharacterLimit: 9700
       },
       customModelOptions: undefined,
@@ -277,7 +277,7 @@ const MODELS: mojom.Model[] = [
         engineType: mojom.ModelEngineType.LLAMA_REMOTE,
         category: mojom.ModelCategory.CHAT,
         access: mojom.ModelAccess.BASIC_AND_PREMIUM,
-        maxPageContentLength: 10000,
+        maxAssociatedContentLength: 10000,
         longConversationWarningCharacterLimit: 9700
       },
       customModelOptions: undefined,
@@ -290,6 +290,13 @@ const MODELS: mojom.Model[] = [
       leoModelOptions: undefined,
       customModelOptions: {
         modelRequestName: 'phi3',
+        contextSize: 131072,
+        // The maxAssociatedContentLength (131072 tokens * 4 chars per token)
+        // and longConversationWarningCharacterLimit (60% of 
+        // maxAssociatedContentLength) are both here only to satisfy the
+        // type checker.
+        maxAssociatedContentLength: 131072 * 4,
+        longConversationWarningCharacterLimit: 131072 * 4 * 0.6,
         endpoint: { url: 'https://example.com' },
         apiKey: '123456',
       },

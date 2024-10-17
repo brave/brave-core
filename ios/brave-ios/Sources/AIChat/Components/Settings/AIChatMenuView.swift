@@ -308,7 +308,7 @@ struct AIChatMenuView_Preview: PreviewProvider {
               engineType: .llamaRemote,
               category: .chat,
               access: .basicAndPremium,
-              maxPageContentLength: 9000,
+              maxAssociatedContentLength: 9000,
               longConversationWarningCharacterLimit: 20000
             )
           ),
@@ -324,7 +324,7 @@ struct AIChatMenuView_Preview: PreviewProvider {
               engineType: .llamaRemote,
               category: .chat,
               access: .basicAndPremium,
-              maxPageContentLength: 9000,
+              maxAssociatedContentLength: 9000,
               longConversationWarningCharacterLimit: 20000
             )
           ),
@@ -339,7 +339,7 @@ struct AIChatMenuView_Preview: PreviewProvider {
               engineType: .claudeRemote,
               category: .chat,
               access: .basicAndPremium,
-              maxPageContentLength: 9000,
+              maxAssociatedContentLength: 9000,
               longConversationWarningCharacterLimit: 20000
             )
           ),
@@ -354,7 +354,7 @@ struct AIChatMenuView_Preview: PreviewProvider {
               engineType: .llamaRemote,
               category: .chat,
               access: .basicAndPremium,
-              maxPageContentLength: 9000,
+              maxAssociatedContentLength: 9000,
               longConversationWarningCharacterLimit: 20000
             )
           ),
@@ -369,7 +369,7 @@ struct AIChatMenuView_Preview: PreviewProvider {
               engineType: .llamaRemote,
               category: .chat,
               access: .premium,
-              maxPageContentLength: 9000,
+              maxAssociatedContentLength: 9000,
               longConversationWarningCharacterLimit: 20000
             )
           ),

@@ -10,7 +10,6 @@ import usePromise from '$web-common/usePromise'
 import * as API from '../api/'
 import { useAIChat } from './ai_chat_context'
 import { isLeoModel } from '../model_utils'
-import { loadTimeData } from '$web-common/loadTimeData'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -319,28 +318,21 @@ export function ConversationContextProvider(
       0
     )
 
-    // TODO(nullhook): make this more accurately based on the actual page content length
-    let totalCharLimit =
-      context.currentModel?.options.leoModelOptions !== undefined
-        ? context.currentModel.options.leoModelOptions
-            ?.longConversationWarningCharacterLimit
-        : loadTimeData.getInteger('customModelLongConversationCharLimit')
+    const options =
+      context.currentModel?.options.leoModelOptions ||
+      context.currentModel?.options.customModelOptions
 
-    if (context.shouldSendPageContents) {
-      totalCharLimit +=
-        context.currentModel?.options.leoModelOptions !== undefined
-          ? context.currentModel.options.leoModelOptions?.maxPageContentLength
-          : loadTimeData.getInteger('customModelMaxPageContentLength')
+    let totalCharLimit = 0
+
+    if ( options ) {
+      totalCharLimit += options.longConversationWarningCharacterLimit ?? 0
+      totalCharLimit += context.shouldSendPageContents
+        ? options.maxAssociatedContentLength ?? 0
+        : 0
     }
 
-    if (
-      !hasDismissedLongConversationInfo &&
-      chatHistoryCharTotal >= totalCharLimit
-    ) {
-      return true
-    }
-
-    return false
+    return !hasDismissedLongConversationInfo
+           && chatHistoryCharTotal >= totalCharLimit
   }, [
     context.conversationHistory,
     context.currentModel,
