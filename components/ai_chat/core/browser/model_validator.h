@@ -38,7 +38,7 @@ class ModelValidator {
   static bool IsValidEndpoint(const GURL& endpoint);
 
   // Validates the custom model's properties, such as context size and endpoint
-  static ModelValidationResult ValidateModel(
+  static ModelValidationResult ValidateCustomModelOptions(
       const mojom::CustomModelOptions& options);
 };
 

@@ -417,7 +417,7 @@ void ModelService::AddCustomModel(mojom::ModelPtr model) {
        base::Uuid::GenerateRandomV4().AsLowercaseString().substr(0, 8)});
 
   // Validate the model
-  ModelValidationResult result = ModelValidator::ValidateModel(
+  ModelValidationResult result = ModelValidator::ValidateCustomModelOptions(
       *model->options->get_custom_model_options());
   if (result != ModelValidationResult::kSuccess) {
     if (result == ModelValidationResult::kInvalidContextSize) {
@@ -438,7 +438,7 @@ void ModelService::AddCustomModel(mojom::ModelPtr model) {
 
 void ModelService::SaveCustomModel(uint32_t index, mojom::ModelPtr model) {
   // Validate the model
-  ModelValidationResult result = ModelValidator::ValidateModel(
+  ModelValidationResult result = ModelValidator::ValidateCustomModelOptions(
       *model->options->get_custom_model_options());
   if (result != ModelValidationResult::kSuccess) {
     if (result == ModelValidationResult::kInvalidContextSize) {
@@ -574,7 +574,7 @@ std::vector<mojom::ModelPtr> ModelService::GetCustomModelsFromPrefs() {
         std::move(custom_model_opts));
 
     // Validate the model
-    ModelValidationResult result = ModelValidator::ValidateModel(
+    ModelValidationResult result = ModelValidator::ValidateCustomModelOptions(
         *model->options->get_custom_model_options());
     if (result != ModelValidationResult::kSuccess) {
       if (result == ModelValidationResult::kInvalidContextSize) {

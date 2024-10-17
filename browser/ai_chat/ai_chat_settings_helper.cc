@@ -153,7 +153,7 @@ void AIChatSettingsHelper::AddCustomModel(mojom::ModelPtr model,
                                           AddCustomModelCallback callback) {
   CHECK(model->options->is_custom_model_options());
 
-  ModelValidationResult result = ModelValidator::ValidateModel(
+  ModelValidationResult result = ModelValidator::ValidateCustomModelOptions(
       *model->options->get_custom_model_options());
   if (result == ModelValidationResult::kInvalidUrl) {
     std::move(callback).Run(mojom::OperationResult::InvalidUrl);
@@ -169,7 +169,7 @@ void AIChatSettingsHelper::SaveCustomModel(uint32_t index,
                                            SaveCustomModelCallback callback) {
   CHECK(model->options->is_custom_model_options());
 
-  ModelValidationResult result = ModelValidator::ValidateModel(
+  ModelValidationResult result = ModelValidator::ValidateCustomModelOptions(
       *model->options->get_custom_model_options());
   if (result == ModelValidationResult::kInvalidUrl) {
     std::move(callback).Run(mojom::OperationResult::InvalidUrl);

@@ -35,7 +35,7 @@ bool ModelValidator::IsValidEndpoint(const GURL& endpoint) {
   return net::IsHTTPSOrLocalhostURL(endpoint);
 }
 
-ModelValidationResult ModelValidator::ValidateModel(
+ModelValidationResult ModelValidator::ValidateCustomModelOptions(
     const mojom::CustomModelOptions& options) {
   if (!HasValidContextSize(options)) {
     return ModelValidationResult::kInvalidContextSize;

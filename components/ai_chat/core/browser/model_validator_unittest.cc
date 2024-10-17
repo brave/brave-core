@@ -119,7 +119,7 @@ TEST_F(ModelValidatorUnitTest, ValidateModel) {
   valid_custom_model.options = mojom::ModelOptions::NewCustomModelOptions(
       std::move(valid_custom_options));
 
-  EXPECT_EQ(ModelValidator::ValidateModel(
+  EXPECT_EQ(ModelValidator::ValidateCustomModelOptions(
                 *valid_custom_model.options->get_custom_model_options()),
             ModelValidationResult::kSuccess);
 
@@ -135,7 +135,7 @@ TEST_F(ModelValidatorUnitTest, ValidateModel) {
           std::move(invalid_context_size_options));
 
   EXPECT_EQ(
-      ModelValidator::ValidateModel(
+      ModelValidator::ValidateCustomModelOptions(
           *invalid_context_size_model.options->get_custom_model_options()),
       ModelValidationResult::kInvalidContextSize);
 
@@ -150,7 +150,7 @@ TEST_F(ModelValidatorUnitTest, ValidateModel) {
   invalid_endpoint_model.options = mojom::ModelOptions::NewCustomModelOptions(
       std::move(invalid_endpoint_options));
 
-  EXPECT_EQ(ModelValidator::ValidateModel(
+  EXPECT_EQ(ModelValidator::ValidateCustomModelOptions(
                 *invalid_endpoint_model.options->get_custom_model_options()),
             ModelValidationResult::kInvalidUrl);
 }
