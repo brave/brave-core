@@ -32,6 +32,9 @@ const observer = {
       case PurchasedState.SESSION_EXPIRED:
         store.dispatch(Actions.purchaseExpired())
         break
+      case PurchasedState.OUT_OF_CREDENTIALS:
+        store.dispatch(Actions.outOfCredentials({description}))
+        break
       case PurchasedState.FAILED:
         store.dispatch(Actions.purchaseFailed({
           state: PurchasedState.FAILED, stateDescription: description

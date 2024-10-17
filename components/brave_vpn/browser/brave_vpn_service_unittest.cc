@@ -148,18 +148,21 @@ class TestBraveVPNServiceObserver : public mojom::ServiceObserver {
       PurchasedState state,
       const std::optional<std::string>& description) override {
     purchased_state_ = state;
-    if (purchased_callback_)
+    if (purchased_callback_) {
       std::move(purchased_callback_).Run();
+    }
   }
 #if !BUILDFLAG(IS_ANDROID)
   void OnConnectionStateChanged(ConnectionState state) override {
     connection_state_ = state;
-    if (connection_state_callback_)
+    if (connection_state_callback_) {
       std::move(connection_state_callback_).Run();
+    }
   }
   void OnSelectedRegionChanged(mojom::RegionPtr region) override {
-    if (selected_region_callback_)
+    if (selected_region_callback_) {
       std::move(selected_region_callback_).Run();
+    }
   }
 #endif
   void WaitPurchasedStateChange(base::OnceClosure callback) {
@@ -656,6 +659,22 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateSessionExpiredTest) {
   session_expired_time =
       local_pref_service_.GetTime(prefs::kBraveVPNSessionExpiredDate);
   EXPECT_TRUE(session_expired_time.is_null());
+}
+
+TEST_F(BraveVPNServiceTest, LoadPurchasedStateOutOfCredentialsTest) {
+  std::string env = skus::GetDefaultEnvironment();
+  std::string domain = skus::GetDomain("vpn", env);
+
+  // Set an expiry in the future - this would be when the last redeemed
+  // credential (whether it was successful  or not) expires.
+  local_pref_service_.SetTime(prefs::kBraveVPNLastCredentialExpiry,
+                              base::Time::Now() + base::Days(1));
+
+  SetPurchasedState(env, PurchasedState::LOADING);
+  OnFetchRegionList(GetRegionsData(), true);
+  OnCredentialSummary(
+      domain, R"({ "active": true, "remaining_credential_count": 0 } )");
+  EXPECT_EQ(PurchasedState::OUT_OF_CREDENTIALS, GetPurchasedInfoSync());
 }
 
 TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {

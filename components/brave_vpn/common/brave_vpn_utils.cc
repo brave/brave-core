@@ -43,6 +43,7 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kBraveVPNWireguardProfileCredentials, "");
   registry->RegisterDictionaryPref(prefs::kBraveVPNRootPref);
   registry->RegisterDictionaryPref(prefs::kBraveVPNSubscriberCredential);
+  registry->RegisterTimePref(prefs::kBraveVPNLastCredentialExpiry, {});
   registry->RegisterBooleanPref(prefs::kBraveVPNLocalStateMigrated, false);
   registry->RegisterTimePref(prefs::kBraveVPNSessionExpiredDate, {});
 #if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)

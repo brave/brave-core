@@ -114,6 +114,8 @@ enum PurchasedState {
   LOADING,
   SESSION_EXPIRED,
   FAILED,
+  // Desktop only - person ran out of SKU credentials.
+  OUT_OF_CREDENTIALS,
 };
 
 struct PurchasedInfo {

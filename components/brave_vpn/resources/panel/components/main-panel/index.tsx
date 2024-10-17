@@ -106,7 +106,9 @@ function MainPanel() {
   const isSelectingRegion = useSelector((state) => state.isSelectingRegion)
   const connectionStatus = useSelector((state) => state.connectionStatus)
   const expired = useSelector((state) => state.expired)
+  const outOfCredentials = useSelector((state) => state.outOfCredentials)
   const regions = useSelector((state) => state.regions)
+  const stateDescription = useSelector((state) => state.stateDescription)
 
   const onSelectRegionButtonClick = () => {
     dispatch(Actions.toggleRegionSelector(true))
@@ -184,6 +186,17 @@ function MainPanel() {
             <SessionExpiredContent />
           </S.StyledAlert>
         )}
+        {outOfCredentials && (
+          <S.StyledAlert
+            type='warning'
+            mode='full'
+            hideIcon
+          >
+            <div slot='title'>{getLocale('braveVpnOutOfCredentials')}</div>
+            <div>{stateDescription}</div>
+          </S.StyledAlert>
+        )}
+        {!outOfCredentials && (
         <S.RegionSelectorButton
           type='button'
           onClick={onSelectRegionButtonClick}
@@ -195,6 +208,7 @@ function MainPanel() {
           </RegionInfo>
           <S.StyledIcon name='carat-right' />
         </S.RegionSelectorButton>
+        )}
       </S.PanelContent>
     </PanelBox>
   )

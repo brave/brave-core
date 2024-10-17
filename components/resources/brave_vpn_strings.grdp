@@ -182,6 +182,10 @@
     Credentials expiry date elapsed.
   </message>
 
+  <message name="IDS_BRAVE_VPN_MAIN_PANEL_OUT_OF_CREDENTIALS_CONTENT" desc="Message to show when person is out of credentials and needs to wait for more">
+    Brave VPN is having trouble authenticating to the VPN server. Please contact support or try again later.
+  </message>
+
   <message name="IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_FETCH_FAILED" desc="Message to show when credentials cannot be loaded">
     Unable to load credentials.
   </message>
@@ -366,6 +370,9 @@ Let's get you connected!
   </message>
   <message name="IDS_BRAVE_VPN_MAIN_PANEL_SESSION_EXPIRED_PART_TITLE" desc="Title text for session expired panel">
     Session expired
+  </message>
+  <message name="IDS_BRAVE_VPN_MAIN_PANEL_OUT_OF_CREDENTIALS_TITLE" desc="Title text for when user is out of credentials and they can't authenticate">
+    Can't authenticate to VPN
   </message>
   <message name="IDS_BRAVE_VPN_MAIN_PANEL_VPN_SETTINGS_TITLE" desc="Settings button tooltip">
     Settings
