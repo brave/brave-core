@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_PIPELINES_NEW_TAB_PAGE_ADS_ELIGIBLE_NEW_TAB_PAGE_ADS_V2_H_
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_pref_provider.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
@@ -51,6 +52,8 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
       const SegmentList& segments,
       const CreativeNewTabPageAdList& creative_ads);
 
+  void ApplyConditionMatcher(CreativeNewTabPageAdList& creative_ads);
+
   void FilterAndMaybePredictCreativeAd(
       const UserModelInfo& user_model,
       const CreativeNewTabPageAdList& creative_ads,
@@ -64,6 +67,8 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
   const database::table::CreativeNewTabPageAds creative_ads_database_table_;
 
   const database::table::AdEvents ad_events_database_table_;
+
+  const AdsClientPrefProvider pref_provider_;
 
   base::WeakPtrFactory<EligibleNewTabPageAdsV2> weak_factory_{this};
 };

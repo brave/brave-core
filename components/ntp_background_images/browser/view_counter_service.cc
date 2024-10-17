@@ -289,7 +289,15 @@ ViewCounterService::GetNextBrandedWallpaperWhichMatchesConditions() {
       return branded_wallpaper;
     }
 
-    const brave_ads::PrefProvider pref_provider(prefs_, local_state_prefs_);
+    base::Value::Dict virtual_prefs;
+    if (ads_service_) {
+      brave_ads::AdsService::Delegate* delegate = ads_service_->GetDelegate();
+      CHECK(delegate);
+      virtual_prefs = delegate->GetVirtualPrefs();
+    }
+
+    const brave_ads::PrefProvider pref_provider(prefs_, local_state_prefs_,
+                                                std::move(virtual_prefs));
     if (brave_ads::MatchConditions(&pref_provider, *condition_matchers)) {
       // The branded wallpaper matches the conditions, so we can return it.
       return branded_wallpaper;

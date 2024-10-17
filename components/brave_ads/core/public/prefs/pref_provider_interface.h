@@ -24,6 +24,9 @@ class PrefProviderInterface {
   virtual std::optional<base::Value> GetLocalStatePref(
       const std::string& pref_path) const = 0;
   virtual bool HasLocalStatePrefPath(const std::string& pref_path) const = 0;
+
+  virtual std::optional<base::Value> GetVirtualPref(
+      const std::string& virtual_pref_path) const = 0;
 };
 
 }  // namespace brave_ads

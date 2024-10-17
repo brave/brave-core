@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #import "brave/ios/browser/api/ads/ads_client_bridge.h"
 
@@ -71,6 +72,10 @@ void AdsClientIOS::CacheAdEventForInstanceId(
                               adType:mojom_ad_type
                     confirmationType:mojom_confirmation_type
                                 time:time];
+}
+
+base::Value::Dict AdsClientIOS::GetVirtualPrefs() const {
+  return [bridge_ getVirtualPrefs];
 }
 
 std::vector<base::Time> AdsClientIOS::GetCachedAdEvents(

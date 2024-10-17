@@ -33,6 +33,8 @@ class AdsServiceMock : public AdsService {
   MOCK_METHOD(void, AddObserver, (AdsServiceObserver * observer));
   MOCK_METHOD(void, RemoveObserver, (AdsServiceObserver * observer));
 
+  MOCK_METHOD(AdsService::Delegate*, GetDelegate, ());
+
   MOCK_METHOD(void,
               AddBatAdsObserver,
               (mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>

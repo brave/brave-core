@@ -112,6 +112,16 @@ void BatAdsClientMojoBridge::CloseNotificationAd(
   }
 }
 
+base::Value::Dict BatAdsClientMojoBridge::GetVirtualPrefs() const {
+  if (!bat_ads_client_associated_remote_.is_bound()) {
+    return {};
+  }
+
+  base::Value::Dict virtual_prefs;
+  bat_ads_client_associated_remote_->GetVirtualPrefs(&virtual_prefs);
+  return virtual_prefs;
+}
+
 void BatAdsClientMojoBridge::CacheAdEventForInstanceId(
     const std::string& id,
     const brave_ads::mojom::AdType mojom_ad_type,

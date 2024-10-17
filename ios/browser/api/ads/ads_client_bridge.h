@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #import "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
@@ -26,6 +27,7 @@
 - (void)notifyPendingObservers;
 - (bool)isNetworkConnectionAvailable;
 - (bool)canShowNotificationAds;
+- (base::Value::Dict)getVirtualPrefs;
 - (void)loadResourceComponent:(const std::string&)id
                       version:(const int)version
                      callback:(brave_ads::LoadFileCallback)callback;

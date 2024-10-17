@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 
 class Profile;
@@ -64,6 +65,9 @@ class AdsServiceDelegate : public AdsService::Delegate {
 #else
   bool IsFullScreenMode() override;
 #endif
+
+  base::Value::Dict GetVirtualPrefs() const override;
+
  private:
   raw_ptr<Profile> profile_;
   raw_ptr<brave_adaptive_captcha::BraveAdaptiveCaptchaService>

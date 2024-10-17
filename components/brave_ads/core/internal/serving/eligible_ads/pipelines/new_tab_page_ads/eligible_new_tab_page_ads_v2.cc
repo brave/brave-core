@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_pref_provider.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
@@ -25,19 +24,6 @@
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
-
-namespace {
-
-void ApplyConditionMatcher(CreativeNewTabPageAdList& creative_ads) {
-  const AdsClientPrefProvider pref_provider;
-  std::erase_if(creative_ads, [&pref_provider](const auto& creative_ad) {
-    return creative_ad.wallpapers.size() != 1 ||
-           !MatchConditions(&pref_provider,
-                            creative_ad.wallpapers[0].condition_matchers);
-  });
-}
-
-}  // namespace
 
 EligibleNewTabPageAdsV2::EligibleNewTabPageAdsV2(
     const SubdivisionTargeting& subdivision_targeting,
@@ -150,6 +136,15 @@ void EligibleNewTabPageAdsV2::FilterAndMaybePredictCreativeAd(
   // Could not predict an ad for any of the buckets.
   BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
   std::move(callback).Run(/*eligible_ads=*/{});
+}
+
+void EligibleNewTabPageAdsV2::ApplyConditionMatcher(
+    CreativeNewTabPageAdList& creative_ads) {
+  std::erase_if(creative_ads, [this](const auto& creative_ad) {
+    return creative_ad.wallpapers.size() != 1 ||
+           !MatchConditions(&pref_provider_,
+                            creative_ad.wallpapers[0].condition_matchers);
+  });
 }
 
 void EligibleNewTabPageAdsV2::FilterIneligibleCreativeAds(
