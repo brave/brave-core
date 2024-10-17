@@ -107,6 +107,20 @@ class ModelServiceTestWithSamePremiumModel : public ModelServiceTest {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
+TEST_F(ModelServiceTest, MigrateFromUnknownKey) {
+  // Set default to the old key to something that "no longer" exists
+  pref_service_.SetString("brave.ai_chat.default_model_key",
+                          "an-unknown-key");
+  // Call Migrate even though it shouldn't touch this pref value, but it is
+  // called in real browser code.
+  ModelService::MigrateProfilePrefs(&pref_service_);
+  // Verify uses non-premium version
+  EXPECT_EQ(GetService()->GetDefaultModelKey(),
+            features::kAIModelsDefaultKey.Get());
+  EXPECT_EQ(pref_service_.GetString("brave.ai-chat.default_model_key"),
+            features::kAIModelsDefaultKey.Get());
+}
+
 TEST_F(ModelServiceTest, MigrateOldClaudeDefaultModelKey) {
   // Set default to the old key for claude
   pref_service_.SetString("brave.ai_chat.default_model_key",

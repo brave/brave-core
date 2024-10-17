@@ -457,6 +457,13 @@ void ModelService::SetDefaultModelKeyWithoutValidationForTesting(
 }
 
 const std::string& ModelService::GetDefaultModelKey() {
+  // Perform migration just-in-time here if needed, since we'll
+  // have an up to date custom model list, which we won't have in
+  // MigrateProfilePrefs.
+  auto* user_value = pref_service_->GetUserPrefValue(kDefaultModelKey);
+  if (user_value && !GetModel(user_value->GetString())) {
+    pref_service_->ClearPref(kDefaultModelKey);
+  }
   return pref_service_->GetString(kDefaultModelKey);
 }
 
