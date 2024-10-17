@@ -1,9 +1,9 @@
 diff --git a/chrome/android/chrome_java_sources.gni b/chrome/android/chrome_java_sources.gni
-index 8d001a2311fdcdeade45b8e57ab54acc7a5f0094..4a2a2248823a9a40a6fa6e3a3053763f868897c0 100644
+index 84825f7e47631fab8d11e5a39fc70ffe5efc10c7..c2f597987944d905f683e525467425daa33f1c2c 100644
 --- a/chrome/android/chrome_java_sources.gni
 +++ b/chrome/android/chrome_java_sources.gni
-@@ -1218,3 +1218,4 @@ chrome_java_sources = [
-   "java/src/org/chromium/chrome/browser/webauth/authenticator/CableAuthenticatorActivity.java",
+@@ -1217,3 +1217,4 @@ chrome_java_sources = [
+   "java/src/org/chromium/chrome/browser/webapps/WebappRegistry.java",
    "java/src/org/chromium/chrome/browser/webshare/ShareServiceImplementationFactory.java",
  ]
 +chrome_java_sources -= ["java/src/org/chromium/chrome/browser/ntp/IncognitoNewTabPageView.java",]
