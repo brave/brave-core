@@ -24,6 +24,7 @@ export type showMainViewPayload = {
   regions: Region[]
   connectionStatus: ConnectionState
   expired: boolean
+  outOfCredentials: boolean
 }
 
 export type initializedPayload = {
@@ -45,6 +46,7 @@ export const connectionFailed = createAction('connectionFailed')
 export const initialize = createAction('initialize')
 export const purchaseConfirmed = createAction('purchaseConfirmed')
 export const purchaseExpired = createAction('purchaseExpired')
+export const outOfCredentials = createAction('outOfCredentials')
 export const showSellView = createAction('showSellView')
 export const showLoadingView = createAction('showLoadingView')
 export const resetConnectionState = createAction('resetConnectionState')

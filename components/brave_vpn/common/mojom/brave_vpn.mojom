@@ -114,6 +114,7 @@ enum PurchasedState {
   LOADING,
   SESSION_EXPIRED,
   FAILED,
+  OUT_OF_CREDENTIALS,
 };
 
 struct PurchasedInfo {
