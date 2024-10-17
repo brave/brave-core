@@ -628,9 +628,10 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
           *leo_model_opts, url_loader_factory, credential_manager);
     }
   } else if (model->options->is_custom_model_options()) {
+    auto& custom_model_opts = model->options->get_custom_model_options();
     DVLOG(1) << "Started AI engine: custom";
-    engine =
-        std::make_unique<EngineConsumerOAIRemote>(*model, url_loader_factory);
+    engine = std::make_unique<EngineConsumerOAIRemote>(*custom_model_opts,
+                                                       url_loader_factory);
   }
 
   return engine;

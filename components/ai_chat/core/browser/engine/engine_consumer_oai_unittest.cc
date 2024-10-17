@@ -61,6 +61,7 @@ class EngineConsumerOAIUnitTest : public testing::Test {
     options->endpoint = GURL("https://test.com/");
     options->model_request_name = "request_name";
     options->context_size = 5000;
+    options->max_associated_content_length = 17200;
     options->api_key = "api_key";
 
     model_ = mojom::Model::New();
@@ -69,7 +70,8 @@ class EngineConsumerOAIUnitTest : public testing::Test {
     model_->options =
         mojom::ModelOptions::NewCustomModelOptions(std::move(options));
 
-    engine_ = std::make_unique<EngineConsumerOAIRemote>(*model_, nullptr);
+    engine_ = std::make_unique<EngineConsumerOAIRemote>(
+        *model_->options->get_custom_model_options(), nullptr);
 
     engine_->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
   }

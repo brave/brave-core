@@ -111,11 +111,10 @@ base::Value::List BuildMessages(
 }  // namespace
 
 EngineConsumerOAIRemote::EngineConsumerOAIRemote(
-    const mojom::Model& model,
+    const mojom::CustomModelOptions& model_options,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
-  model_options_ = *model.options->get_custom_model_options();
-  max_associated_content_length_ =
-      ModelService::GetMaxAssociatedContentLengthForModel(model);
+  model_options_ = model_options;
+  max_associated_content_length_ = model_options.max_associated_content_length;
 
   // Initialize the API client
   api_ = std::make_unique<OAIAPIClient>(url_loader_factory);
