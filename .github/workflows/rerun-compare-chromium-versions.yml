@@ -36,6 +36,7 @@ jobs:
 
           if [[ "${pr_ver%%.*}" != "${target_ver%%.*}" ]]; then
               while read -r pr_number head_sha; do
+                  echo "Rerunning for https://github.com/brave/brave-core/pull/${pr_number:?}"
                   run_id="$(gh api "/repos/$GITHUB_REPOSITORY/actions/workflows/compare-chromium-versions.yml/runs?head_sha=${head_sha:?}" -q '.workflow_runs[0].id')"
                   # TODO: remove echo
                   echo gh -R "$GITHUB_REPOSITORY" run rerun "${run_id:?}"
