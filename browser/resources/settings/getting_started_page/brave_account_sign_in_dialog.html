@@ -18,17 +18,18 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
     margin: 0px 0px 4px;
   }
   .input {
-    --cr-input-background-color: white;
-    --cr-input-underline-display: none;
+    --cr-hover-background-color: transparent;
+    --cr-input-background-color: transparent;
+    --cr-input-border-bottom: none;
+    --cr-input-border-radius: 8px;
     --cr-input-error-display: none;
+    --cr-input-min-height: 44px;
+    --cr-input-underline-display: none;
     border: 1px solid #C7C7CC;
     border-radius: 8px;
   }
-  #inner-input-content {
-    margin-bottom: 10px;
-  }
-  .suffix {
-    margin-bottom: 10px;
+  .input::part(row-container) {
+    height: 44px;
   }
 </style>
 
