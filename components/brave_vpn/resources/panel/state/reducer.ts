@@ -13,6 +13,7 @@ type RootState = {
   hasError: boolean
   isSelectingRegion: boolean
   expired: boolean
+  outOfCredentials: boolean
   connectionStatus: ConnectionState
   regions: Region[]
   currentRegion: Region
@@ -25,6 +26,7 @@ const defaultState: RootState = {
   hasError: false,
   isSelectingRegion: false,
   expired: false,
+  outOfCredentials: false,
   connectionStatus: ConnectionState.DISCONNECTED,
   regions: [],
   currentRegion: new Region(),
@@ -148,6 +150,7 @@ reducer.on(Actions.showMainView, (state, payload): RootState => {
   return {
     ...state,
     expired: payload.expired,
+    outOfCredentials: payload.outOfCredentials,
     currentRegion: payload.currentRegion,
     regions: payload.regions,
     connectionStatus: payload.connectionStatus,

@@ -253,6 +253,7 @@ class BraveVpnService :
   std::unique_ptr<BraveVPNServiceDelegate> delegate_;
   base::RepeatingTimer p3a_timer_;
   base::OneShotTimer subs_cred_refresh_timer_;
+  bool out_of_credentials = false;
   base::WeakPtrFactory<BraveVpnService> weak_ptr_factory_{this};
 };
 

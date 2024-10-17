@@ -383,7 +383,8 @@ void BraveVpnService::UpdatePurchasedStateForSessionExpired(
     return;
   }
 
-  SetPurchasedState(env, PurchasedState::SESSION_EXPIRED);
+  SetPurchasedState(env, out_of_credentials ? PurchasedState::OUT_OF_CREDENTIALS
+                                            : PurchasedState::SESSION_EXPIRED);
 }
 
 bool BraveVpnService::IsCurrentRegionSelectedAutomatically(
@@ -572,6 +573,8 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
   std::string summary_string_trimmed;
   base::TrimWhitespaceASCII(summary->message, base::TrimPositions::TRIM_ALL,
                             &summary_string_trimmed);
+  //SetPurchasedState(env, PurchasedState::OUT_OF_CREDENTIALS);
+  //return;
   if (summary_string_trimmed.length() == 0) {
     // no credential found; person needs to login
     VLOG(1) << __func__ << " : No credential found; user needs to login!";
@@ -678,6 +681,7 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
     return;
   }
 
+  out_of_credentials = false;
   SetSkusCredential(local_prefs_, credential, time);
 
   if (GetCurrentEnvironment() != env) {
@@ -716,28 +720,28 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
       return;
     }
 
-    // If we get here, we've already tried two credentials (the retry failed).
+    // We can set the state as FAILED and do not attempt to get another
+    // credential. The cached credential will eventually expire and user will
+    // fetch a new one.
+    //
+    // There could be two reasons for this.
+
+    // 1. We've already tried two credentials (the retry failed).
     if (token_no_longer_valid && IsRetriedSkusCredential(local_prefs_)) {
       VLOG(2) << __func__
               << " : Got TokenNoLongerValid again with retried skus credential";
+      out_of_credentials = true;
+      SetPurchasedState(
+          GetCurrentEnvironment(), PurchasedState::FAILED,
+          l10n_util::GetStringUTF8(IDS_BRAVE_VPN_PURCHASE_TOKEN_NOT_VALID));
+      return;
     }
 
-    // When this path is reached:
-    // - The cached credential is considered good but vendor side has an error.
-    //   That could be a network outage or a server side error on vendor side.
-    // OR
-    // - The cached credential is consumed and we've now tried two different
-    //   credentials.
-    //
-    // We set the state as FAILED and do not attempt to get another credential.
-    // Cached credential will eventually expire and user will fetch a new one.
-    //
-    // This logic can be updated if we issue more than two credentials per day.
-    auto message_id = token_no_longer_valid
-                          ? IDS_BRAVE_VPN_PURCHASE_TOKEN_NOT_VALID
-                          : IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_FETCH_FAILED;
+    // 2. The cached credential is considered good but vendor side has an error.
+    // That could be a network outage or a server side error on vendor side.
     SetPurchasedState(GetCurrentEnvironment(), PurchasedState::FAILED,
-                      l10n_util::GetStringUTF8(message_id));
+                      l10n_util::GetStringUTF8(
+                          IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_FETCH_FAILED));
 #endif
     return;
   }
