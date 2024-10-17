@@ -194,7 +194,7 @@ RegisterStyleOverride(
       }
       .brave-about-graphic {
         flex: 0;
-        flex-basis: 30%;
+        flex-basis: var(--leo-spacing-3xl);
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -236,7 +236,7 @@ RegisterPolymerTemplateModifications({
     const contentEl = createMenuElement(
       loadTimeData.getString('contentSettingsContentSection'),
       '/braveContent',
-      'content-big',
+      'window-content',
       'content',
     )
     appearanceBrowserEl.insertAdjacentElement('afterend', contentEl)
@@ -327,8 +327,8 @@ RegisterPolymerTemplateModifications({
     // Use per-channel logo image.
     const icon = document.createElement('img')
     icon.setAttribute('srcset', 'chrome://theme/current-channel-logo@1x, chrome://theme/current-channel-logo@2x 2x')
-    icon.setAttribute('width', '24px')
-    icon.setAttribute('height', '24px')
+    icon.setAttribute('width', '20px')
+    icon.setAttribute('height', '20px')
 
     const metaEl = document.createElement('div')
     metaEl.setAttribute('class', 'brave-about-meta')
