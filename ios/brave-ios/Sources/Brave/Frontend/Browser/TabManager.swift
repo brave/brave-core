@@ -754,22 +754,21 @@ class TabManager: NSObject {
 
   /// Forget all data for websites that have forget me enabled
   /// Will forget all data instantly with no delay
-  @MainActor func forgetDataOnAppClose() {
-    for tab in tabs(withType: .regular) {
-      guard let url = tab.url, !InternalURL.isValid(url: url) else {
-        continue
-      }
-
-      let siteDomain = Domain.getOrCreate(
-        forUrl: url,
-        persistent: !tab.isPrivate
-      )
-
-      if siteDomain.shredLevel.shredOnAppExit {
-        Task {
-          await forgetData(for: url, in: tab)
+  @MainActor func forgetDataOnAppExitDomains() {
+    guard BraveCore.FeatureList.kBraveShredFeature.enabled else { return }
+    let shredOnAppExitURLs = Domain.allDomainsWithShredLevelAppExit()?
+      .compactMap { domain -> URL? in
+        guard let urlString = domain.url,
+          let url = URL(string: urlString),
+          !InternalURL.isValid(url: url)
+        else {
+          return nil
         }
+        return url
       }
+    guard let shredOnAppExitURLs, !shredOnAppExitURLs.isEmpty else { return }
+    Task {
+      await forgetData(for: shredOnAppExitURLs)
     }
   }
 
@@ -795,7 +794,10 @@ class TabManager: NSObject {
     )
 
     switch siteDomain.shredLevel {
-    case .appExit, .never:
+    case .never:
+      return
+    case .appExit:
+      // Will be Shred on startup at next launch in `forgetDataOnAppExitDomains()`.
       return
     case .whenSiteClosed:
       let tabs = tabs(withType: tab.type).filter { existingTab in
@@ -867,15 +869,25 @@ class TabManager: NSObject {
     }
   }
 
-  @MainActor private func forgetData(for url: URL, in tab: Tab) async {
-    await FaviconFetcher.deleteCache(for: url)
-    guard let etldP1 = url.baseDomain else { return }
+  @MainActor private func forgetData(for url: URL, in tab: Tab?) async {
+    await forgetData(for: [url], dataStore: tab?.webView?.configuration.websiteDataStore)
 
-    let dataStore = tab.webView?.configuration.websiteDataStore
+    ContentBlockerManager.log.debug("Cleared website data for `\(url.baseDomain ?? "")`")
+    if let etldP1 = url.baseDomain, let tab {
+      forgetTasks[tab.type]?.removeValue(forKey: etldP1)
+    }
+  }
+
+  @MainActor private func forgetData(for urls: [URL], dataStore: WKWebsiteDataStore? = nil) async {
+    let baseDomains = Set(urls.compactMap { $0.baseDomain })
+    guard !baseDomains.isEmpty else { return }
+
+    let dataStore = dataStore ?? WKWebsiteDataStore.default()
     // Delete 1P data records
-    await dataStore?.deleteDataRecords(
-      forDomain: etldP1
+    await dataStore.deleteDataRecords(
+      forDomains: baseDomains
     )
+
     if BraveCore.FeatureList.kBraveShredCacheData.enabled {
       // Delete all cache data (otherwise 3P cache entries left behind
       // are visible in Manage Website Data view brave-browser #41095)
@@ -883,14 +895,16 @@ class TabManager: NSObject {
         WKWebsiteDataTypeMemoryCache, WKWebsiteDataTypeDiskCache,
         WKWebsiteDataTypeOfflineWebApplicationCache,
       ])
-      let cacheRecords = await dataStore?.dataRecords(ofTypes: cacheTypes) ?? []
-      await dataStore?.removeData(ofTypes: cacheTypes, for: cacheRecords)
+      let cacheRecords = await dataStore.dataRecords(ofTypes: cacheTypes)
+      await dataStore.removeData(ofTypes: cacheTypes, for: cacheRecords)
     }
 
     // Delete the history for forgotten websites
     if let historyAPI = self.historyAPI {
+      // if we're only forgetting 1 site, we can query history by it's domain
+      let query = urls.count == 1 ? urls.first?.baseDomain : nil
       let nodes = await historyAPI.search(
-        withQuery: etldP1,
+        withQuery: query,
         options: HistorySearchOptions(
           maxCount: 0,
           hostOnly: false,
@@ -899,13 +913,15 @@ class TabManager: NSObject {
           end: nil
         )
       ).filter { node in
-        node.url.baseDomain == etldP1
+        guard let baseDomain = node.url.baseDomain else { return false }
+        return baseDomains.contains(baseDomain)
       }
       historyAPI.removeHistory(for: nodes)
     }
 
-    ContentBlockerManager.log.debug("Cleared website data for `\(etldP1)`")
-    forgetTasks[tab.type]?.removeValue(forKey: etldP1)
+    for url in urls {
+      await FaviconFetcher.deleteCache(for: url)
+    }
   }
 
   /// Cancel a forget data request in case we navigate back to the tab within a certain period
@@ -1206,6 +1222,25 @@ class TabManager: NSObject {
     savedTabs = savedTabs.filter({ $0.sessionWindow?.windowId == windowId })
     if savedTabs.isEmpty { return nil }
 
+    /// Cache on if we should shred a given domain.
+    var shouldShredDomainCache: [String: Bool] = [:]
+    /// Checks if we should shred a Tab
+    let shouldShredDomain: (_ tabURL: URL, _ isPrivate: Bool) -> Bool = { url, isPrivate in
+      var shouldShredTab = false
+      let cacheKey = "\(url.domainURL.absoluteString)\(isPrivate)"
+      if let shouldShredDomain = shouldShredDomainCache[cacheKey] {
+        shouldShredTab = shouldShredDomain
+      } else {
+        let siteDomain = Domain.getOrCreate(
+          forUrl: url,
+          persistent: !isPrivate
+        )
+        shouldShredTab = siteDomain.shredLevel.shredOnAppExit
+        shouldShredDomainCache[cacheKey] = shouldShredTab
+      }
+      return shouldShredTab
+    }
+
     var tabToSelect: Tab?
     for savedTab in savedTabs {
       if let tabURL = savedTab.url {
@@ -1213,6 +1248,15 @@ class TabManager: NSObject {
         let request =
           InternalURL.isValid(url: tabURL)
           ? PrivilegedRequest(url: tabURL) as URLRequest : URLRequest(url: tabURL)
+
+        if FeatureList.kBraveShredFeature.enabled,
+          shouldShredDomain(tabURL, savedTab.isPrivate)
+        {
+          // Delete SessionTab to prevent restore next launch
+          SessionTab.delete(tabId: savedTab.tabId)
+          // Don't restore this tab, it will be Shred after setup
+          continue
+        }
 
         let tab = addTab(
           request,
@@ -1606,11 +1650,15 @@ extension TabManager: NSFetchedResultsControllerDelegate {
 
 extension WKWebsiteDataStore {
   @MainActor fileprivate func deleteDataRecords(forDomain domain: String) async {
+    await deleteDataRecords(forDomains: Set([domain]))
+  }
+
+  @MainActor fileprivate func deleteDataRecords(forDomains domains: Set<String>) async {
     let records = await dataRecords(
       ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()
     )
     let websiteRecords = records.filter { record in
-      record.displayName == domain
+      domains.contains(record.displayName)
     }
 
     await removeData(
