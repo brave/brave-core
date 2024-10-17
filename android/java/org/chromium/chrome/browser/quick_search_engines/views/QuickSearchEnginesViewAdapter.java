@@ -38,14 +38,26 @@ public class QuickSearchEnginesViewAdapter
     public void onBindViewHolder(
             @NonNull QuickSearchEnginesViewHolder quickSearchViewHolder, int position) {
         QuickSearchEngineModel quickSearchEngineModel = mSearchEngines.get(position);
-        mQuickSearchCallback.loadSearchEngineLogo(
-                quickSearchViewHolder.mSearchEngineLogo, quickSearchEngineModel);
+        if (quickSearchViewHolder.getAdapterPosition() == 0) {
+            quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_leo_icon);
+        } else if (quickSearchEngineModel.getKeyword().equals(":b")) {
+            quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_microsoft_color);
+        } else if (quickSearchEngineModel.getKeyword().equals(":sp")) {
+            quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_startpage_color);
+        } else {
+            mQuickSearchCallback.loadSearchEngineLogo(
+                    quickSearchViewHolder.mSearchEngineLogo, quickSearchEngineModel);
+        }
 
         quickSearchViewHolder.mSearchEngineLogo.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mQuickSearchCallback.onSearchEngineClick(quickSearchEngineModel);
+                        if (quickSearchViewHolder.getAdapterPosition() == 0) {
+
+                        } else {
+                            mQuickSearchCallback.onSearchEngineClick(quickSearchEngineModel);
+                        }
                     }
                 });
     }
