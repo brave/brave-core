@@ -10,7 +10,7 @@ namespace net {
 
 // HTTP status code 418 "I'm a teapot" is an April Fools' joke from the IETF's
 // RFC 2324, Hyper Text Coffee Pot Control Protocol (HTCPCP/1.0).
-constexpr int kHttpImATeapot = 418;
+inline constexpr int kHttpImATeapot = 418;
 
 }  // namespace net
 
