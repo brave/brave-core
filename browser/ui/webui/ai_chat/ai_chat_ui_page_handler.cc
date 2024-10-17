@@ -170,6 +170,7 @@ void AIChatUIPageHandler::ChatContextObserver::WebContentsDestroyed() {
 }
 
 void AIChatUIPageHandler::HandleWebContentsDestroyed() {
+  active_chat_tab_helper_ = nullptr;
   chat_tab_helper_observation_.Reset();
   chat_context_observer_.reset();
 }
