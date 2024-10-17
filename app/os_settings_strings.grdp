@@ -1332,6 +1332,9 @@
   <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_ACTIONS_ADD_ACTION" desc="Label description for button to add an action in the action settings.">
     Add action
   </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_ACTIONS_REMOVE_ACTION_LABEL" desc="Spoken description when focus is received by button to remove a specific action in the action settings." is_accessibility_with_no_ui="true">
+    Remove action <ph name="ACTION_TO_REMOVE">$1<ex>Click a mouse button</ex></ph>
+  </message>
   <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_ACTIONS_ASSIGN_GESTURE_LABEL" desc="Label description for button to assign a gesture to an action in the action settings.">
     Assign a gesture
   </message>
@@ -1415,6 +1418,9 @@
   </message>
   <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_MACRO_LABEL_CUSTOM_KEY_COMBO" desc="This text describes an action that a user can take on their computer to fire a custom key combination.">
     Create custom key combination
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_MACRO_LABEL_ASSIGNED_CUSTOM_KEY_COMBO" desc="This text describes an action that a user can take on their computer to fire the given custom key combination.">
+    Custom key combination: <ph name="KEY_COMBINATION">$1<ex>ctrl + c</ex></ph>
   </message>
   <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_MACRO_SUB_LABEL_TOGGLE_SCROLL_MODE" desc="This text describes how users can scroll on their computer using their face when in scroll mode.">
     Once you start scroll mode, move your head in the direction you'd like to scroll
@@ -1547,6 +1553,21 @@
   </message>
   <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_CURSOR_SETTINGS_RESET" desc="Label for the 'reset' button in FaceGaze cursor settings, that brings cursor settings back to default.">
     Reset
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_CURSOR_SETTINGS_RESET_NOTIFICATION" desc="Spoken feedback to notify the user when the reset button has been clicked in the FaceGaze cursor settings and the cursor settings have been set back to default." is_accessibility_with_no_ui="true">
+    Cursor settings reset
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_CURSOR_VELOCITY_THRESHOLD_SLIDER_PRIMARY_LABEL" desc="Label for the slider on the FaceGaze cursor settings page that adjusts the velocity threshold.">
+    Cursor stability
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_CURSOR_VELOCITY_THRESHOLD_SLIDER_SECONDARY_LABEL" desc="Secondary label for the slider on the FaceGaze cursor settings page that adjusts the velocity threshold.">
+    You can keep the cursor stable even if you have slight head movements. This requires more effort to move the cursor.
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_CURSOR_VELOCITY_THRESHOLD_SLIDER_MIN_LABEL" desc="Label for the 'Responsive' side of the FaceGaze velocity threshold slider.">
+    Responsive
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_CURSOR_VELOCITY_THRESHOLD_SLIDER_MAX_LABEL" desc="Label for the 'Stable' side of the FaceGaze velocity threshold slider.'">
+    Stable
   </message>
   <message name="IDS_SETTINGS_FLASH_NOTIFICATIONS_LABEL" desc="The label of a setting that flashes the screen in a color when a notification is received.">
     Flash notifications
@@ -1882,22 +1903,22 @@
   <message name="IDS_SETTINGS_CHROMEVOX_VIRTUAL_BRAILLE_DISPLAY_STYLE_SIDE_BY_SIDE" desc="A dropdown item that lets the user enable the display style of the virtual display that is side by side, where regular text is on the left and braille is on the right.">
     Side-by-side
   </message>
-  <message name="IDS_SETTINGS_DISABLE_TRACKPAD_LABEL" desc="A label for the dropdown that lets the user set the disabled state of the internal trackpad.">
+  <message name="IDS_SETTINGS_DISABLE_TOUCHPAD_LABEL" desc="A label for the dropdown that lets the user set the disabled state of the internal touchpad.">
     Disable built-in touchpad
   </message>
-  <message name="IDS_SETTINGS_DISABLE_TRACKPAD_ALWAYS" desc="A dropdown item that lets the user always disable the internal trackpad.">
+  <message name="IDS_SETTINGS_DISABLE_TOUCHPAD_ALWAYS" desc="A dropdown item that lets the user always disable the internal touchpad.">
     Always
   </message>
   <message name="IDS_SETTINGS_BUILT_IN_TOUCHPAD_DISABLED" desc="In Device Settings, link that shows up when the built-in touchpad is disabled.">
     Built-in touchpad is disabled
   </message>
-  <message name="IDS_SETTINGS_DISABLE_TRACKPAD_MOUSE_CONNECTED" desc="A dropdown item that lets the user disable the internal trackpad only when a mouse is connected.">
+  <message name="IDS_SETTINGS_DISABLE_TOUCHPAD_MOUSE_CONNECTED" desc="A dropdown item that lets the user disable the internal touchpad only when a mouse is connected.">
     When a mouse is connected
   </message>
-  <message name="IDS_SETTINGS_RE_ENABLE_TRACKPAD" desc="A label to show how to re-enable the internal trackpad.">
+  <message name="IDS_SETTINGS_RE_ENABLE_TOUCHPAD" desc="A label to show how to re-enable the internal touchpad.">
     Press esc 5 times to re-enable it
   </message>
-  <message name="IDS_SETTINGS_DISABLE_TRACKPAD_NEVER" desc="A dropdown item that lets the user never disable the internal trackpad.">
+  <message name="IDS_SETTINGS_DISABLE_TOUCHPAD_NEVER" desc="A dropdown item that lets the user never disable the internal touchpad.">
     Never
   </message>
   <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_LABEL" desc="Label for checkbox which enables the fullscreen magnifier">
