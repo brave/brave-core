@@ -35,24 +35,28 @@ async function applyPatches(printPatchFailuresInJson) {
   const catapultPatchesPath = path.join(patchesPath, 'third_party', 'catapult')
   const devtoolsFrontendPatchesPath = path.join(patchesPath, 'third_party', 'devtools-frontend', 'src')
   const ffmpegPatchesPath = path.join(patchesPath, 'third_party', 'ffmpeg')
+  const tflitePatchesPath = path.join(patchesPath, 'third_party', 'tflite', 'src')
 
   const chromiumRepoPath = config.srcDir
   const v8RepoPath = path.join(chromiumRepoPath, 'v8')
   const catapultRepoPath = path.join(chromiumRepoPath, 'third_party', 'catapult')
   const devtoolsFrontendRepoPath = path.join(chromiumRepoPath, 'third_party', 'devtools-frontend', 'src')
   const ffmpegRepoPath = path.join(chromiumRepoPath, 'third_party', 'ffmpeg')
+  const tfliteRepoPath = path.join(chromiumRepoPath, 'third_party', 'tflite', 'src')
 
   const chromiumPatcher = new GitPatcher(patchesPath, chromiumRepoPath)
   const v8Patcher = new GitPatcher(v8PatchesPath, v8RepoPath)
   const catapultPatcher = new GitPatcher(catapultPatchesPath, catapultRepoPath)
   const devtoolsFrontendPatcher = new GitPatcher(devtoolsFrontendPatchesPath, devtoolsFrontendRepoPath)
   const ffmpegPatcher = new GitPatcher(ffmpegPatchesPath, ffmpegRepoPath)
+  const tflitePatcher = new GitPatcher(tflitePatchesPath, tfliteRepoPath)
 
   const chromiumPatchStatus = await chromiumPatcher.applyPatches()
   const v8PatchStatus = await v8Patcher.applyPatches()
   const catapultPatchStatus = await catapultPatcher.applyPatches()
   const devtoolsFrontendPatchStatus = await devtoolsFrontendPatcher.applyPatches()
   const ffmpegPatchStatus = await ffmpegPatcher.applyPatches()
+  const tflitePatchStatus = await tflitePatcher.applyPatches()
 
   // Log status for all patches
   // Differentiate entries for logging
@@ -61,7 +65,7 @@ async function applyPatches(printPatchFailuresInJson) {
     s => s.path = path.join('third_party', 'catapult', s.path))
   devtoolsFrontendPatchStatus.forEach(
     s => s.path = path.join('third_party', 'devtools-frontend', 'src', s.path))
-  const allPatchStatus = [...chromiumPatchStatus, ...v8PatchStatus, ...catapultPatchStatus, ...devtoolsFrontendPatchStatus, ...ffmpegPatchStatus]
+  const allPatchStatus = [...chromiumPatchStatus, ...v8PatchStatus, ...catapultPatchStatus, ...devtoolsFrontendPatchStatus, ...ffmpegPatchStatus, ...tflitePatchStatus]
   if (printPatchFailuresInJson) {
     Log.printFailedPatchesInJsonFormat(allPatchStatus, config.braveCoreDir)
   } else {
