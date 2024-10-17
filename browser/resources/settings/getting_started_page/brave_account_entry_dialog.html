@@ -3,56 +3,53 @@ This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this file,
 You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<style include="cr-shared-style iron-flex settings-shared">
-  .buttons {
+<style include="iron-flex">
+  .body {
     gap: 8px;
     margin: 32px 0px 40px;
   }
   .footer {
-    gap: 16px;
+    display: flex;
+    justify-content: space-between;
     padding: 24px 40px;
   }
-  .footer-text-left {
+  .footer-text {
     color: #76767A;
     font-family: 'Inter Variable';
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
+    height: 54px;
     line-height: 18px;
     width: 270px;
   }
-  .footer-text-left a {
+  .footer-text a {
     color: inherit;
   }
-  .footer-text-right {
-    font-family: 'Inter Variable';
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 20px;
-    width: 134px;
+  .button { /* there must be a more elegant way to do this */
+    --leo-spacing-xl: var(--leo-spacing-s);
   }
 </style>
 
 <settings-brave-account-dialog
   header-text-top="Get started with your Brave account"
   header-text-bottom="$i18n{braveSyncBraveAccountDesc}">
-  <div slot="body">
-    <div class="buttons layout vertical">
-      <cr-button class="action-button" size="medium">
-        Create a Brave account
-      </cr-button>
-      <cr-button size="medium" on-click="onSignInButtonClicked_">
-        Already have an account? Sign in
-      </cr-button>
-    </div>
+  <div slot="body" class="body layout vertical">
+    <leo-button size="medium">
+      Create a Brave account
+    </leo-button>
+    <leo-button kind="outline" size="medium" on-click="onSignInButtonClicked_">
+      Already have an account? Sign in
+    </leo-button>
   </div>
-  <div slot="footer" class="footer horizontal layout">
-    <div class="footer-text-left">
+  <div slot="footer" class="footer">
+    <div class="footer-text">
       For advanced users, we also support self-custody of your Brave account keys for an extra layer of privacy. <a href="#"><u>Learn more</u></a>
     </div>
-    <div class="center-center footer-text-right horizontal layout">
-      <a href="#">Use self-custody</a>
+    <div class="center-center horizontal layout">
+      <leo-button class="button" kind="plain" size="medium">
+        Use self-custody
+      </leo-button>
     </div>
   </div>
 </settings-brave-account-dialog>
