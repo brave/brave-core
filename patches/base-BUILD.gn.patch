@@ -1,8 +1,8 @@
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index 4c0e4645f64e3e9f4466bd59972f8587866da8c5..dae4b156f37f51893f27c1e6ab24542f4b03edbb 100644
+index 922488fc0980d2460daf12e0011795bfa57682d1..5128b83f5ba9a5eddfafff1b46dba07019d476e2 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
-@@ -4438,6 +4438,7 @@ if (is_android) {
+@@ -4439,6 +4439,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/ValueChangedCallback.java",
        "android/java/src/org/chromium/base/WrappedClassLoader.java",
      ]
@@ -10,7 +10,7 @@ index 4c0e4645f64e3e9f4466bd59972f8587866da8c5..dae4b156f37f51893f27c1e6ab24542f
  
      if (use_clang_profiling) {
        sources += [
-@@ -4906,6 +4907,7 @@ if (is_android) {
+@@ -4907,6 +4908,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/shared_preferences/SharedPreferencesManager.java",
        "android/java/src/org/chromium/base/shared_preferences/StrictPreferenceKeyChecker.java",
      ]
