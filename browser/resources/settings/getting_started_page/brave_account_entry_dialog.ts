@@ -23,8 +23,12 @@ class SettingsBraveAccountEntryDialogElement extends PolymerElement {
     return getTemplate()
   }
 
-  private onSignInButtonClicked_() {
+  private onSignInButtonClicked() {
     this.dispatchEvent(new CustomEvent('sign-in-button-clicked'))
+  }
+
+  private onSelfCustodyButtonClicked() {
+    this.dispatchEvent(new CustomEvent('self-custody-button-clicked'))
   }
 }
 

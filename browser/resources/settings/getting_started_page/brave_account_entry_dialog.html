@@ -38,7 +38,7 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
     <leo-button size="medium">
       Create a Brave account
     </leo-button>
-    <leo-button kind="outline" size="medium" on-click="onSignInButtonClicked_">
+    <leo-button kind="outline" size="medium" on-click="onSignInButtonClicked">
       Already have an account? Sign in
     </leo-button>
   </div>
@@ -47,7 +47,7 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
       For advanced users, we also support self-custody of your Brave account keys for an extra layer of privacy. <a href="#"><u>Learn more</u></a>
     </div>
     <div class="center-center horizontal layout">
-      <leo-button class="button" kind="plain" size="medium">
+      <leo-button class="button" kind="plain" size="medium" on-click="onSelfCustodyButtonClicked">
         Use self-custody
       </leo-button>
     </div>
