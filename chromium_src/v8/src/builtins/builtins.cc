@@ -23,9 +23,9 @@ static std::string ToPageGraphArg(Isolate* isolate, Handle<Object> object) {
   if (object.is_null()) {
     return {};
   }
-  MaybeHandle<String> maybe_string =
+  MaybeDirectHandle<String> maybe_string =
       Object::NoSideEffectsToMaybeString(isolate, object);
-  Handle<String> string_handle;
+  DirectHandle<String> string_handle;
   if (!maybe_string.ToHandle(&string_handle)) {
     return {};
   }
