@@ -1,12 +1,66 @@
-<style include="settings-shared iron-flex"></style>
+<style include="cr-shared-style iron-flex settings-shared">
+  .default-search-engine .cr-row {
+    --cr-section-min-height: 55px;
+    gap: 12px;
+    padding: 0;
+  }
+
+  .default-search-engine {
+    padding-top: var(--cr-section-vertical-padding);
+  }
+
+  .search-engine-name {
+    margin-inline-end: auto;
+  }
+
+  site-favicon {
+    --site-favicon-border-radius: 4px;
+    --site-favicon-height: var(--favicon-size);
+    --site-favicon-width: var(--favicon-size);
+  }
+
+  settings-private-search-engine-list-dialog {
+    --search-engine-icon-size: var(--favicon-size);
+  }
+</style>
 <template is="dom-if" if="[[shouldShowPrivateSearchProvider_(
     prefs.default_search_provider_data.template_url_data)]]">
   <div class="settings-box">
-    <div class="label flex">$i18n{privateSearchExplanation}</div>
-    <settings-dropdown-menu
-      pref="{{prefs.brave.default_private_search_provider_guid}}"
-      menu-options="[[privateSearchEngines_]]">
-    </settings-dropdown-menu>
+    <div class="default-search-engine flex">
+      $i18n{privateSearchEnginesSiteSearchEngineHeading}
+      <div class="secondary">
+	$i18n{privateSearchEngineSearchExplanation}
+        <a href="$i18n{searchExplanationLearnMoreURL}"
+           aria-label="$i18n{searchExplanationLearnMoreA11yLabel}"
+           rel="noopener"
+           target="_blank">
+          $i18n{learnMore}
+        </a>
+      </div>
+      <div class="cr-row first">
+	<site-favicon
+	  favicon-url="[[defaultPrivateSearchEngine_.iconURL]]"
+	  url="[[defaultPrivateSearchEngine_.url]]"
+	  icon-path="[[defaultPrivateSearchEngine_.iconPath]]">
+	</site-favicon>
+	<div class="search-engine-name">[[defaultPrivateSearchEngine_.name]]</div>
+	<cr-button
+	  id="openPrivateDialogButton"
+	  on-click="onOpenPrivateDialogButtonClick_">
+	  $i18n{searchEnginesChange}
+	</cr-button>
+      </div>
+    </div>
+    <template is="dom-if" if="[[showPrivateSearchEngineListDialog_]]" restamp>
+      <settings-private-search-engine-list-dialog
+        search-engines="[[privateSearchEngines_]]"
+        on-close="onPrivateSearchEngineListDialogClose_"
+        on-private-search-engine-changed="onPrivateSearchEngineChangedInDialog_">
+      </settings-private-search-engine-list-dialog>
+    </template>
+    <cr-toast id="confirmationToast" duration="10000">
+      <div>[[confirmationToastLabel_]]</div>
+    </cr-toast>
   </div>
 </template>
 <template is="dom-if" if="[[shouldShowSearchSuggestToggle_()]]" restamp>

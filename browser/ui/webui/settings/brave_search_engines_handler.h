@@ -27,6 +27,8 @@ class BraveSearchEnginesHandler : public SearchEnginesHandler {
 
   base::Value::List GetPrivateSearchEnginesList();
   void HandleGetPrivateSearchEnginesList(const base::Value::List& args);
+
+  void HandleSetDefaultPrivateSearchEngine(const base::Value::List& args);
 };
 
 }  // namespace settings
