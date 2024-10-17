@@ -3,60 +3,57 @@ This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this file,
 You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<style include="cr-shared-style iron-flex settings-shared">
-  .inputs {
-    gap: 24px;
-    margin: 24px 0px 24px;
+<style include="iron-flex">
+  :host {
+    --brave-account-sign-in-dialog-label-margin: 4px;
   }
-  .input-label {
+  .body {
+    gap: 24px;
+    margin: 32px 0px 40px;
+  }
+  .label {
     color: #1B1B1F;
     font-family: 'Inter Variable';
     font-size: 12px;
     font-style: normal;
     font-weight: 600;
     line-height: 18px;
-    margin: 0px 0px 4px;
+    margin: 0px 0px 0px var(--brave-account-sign-in-dialog-label-margin);
   }
-  .input {
-    --cr-hover-background-color: transparent;
-    --cr-input-background-color: transparent;
-    --cr-input-border-bottom: none;
-    --cr-input-border-radius: 8px;
-    --cr-input-error-display: none;
-    --cr-input-min-height: 44px;
-    --cr-input-underline-display: none;
-    border: 1px solid #C7C7CC;
-    border-radius: 8px;
+  .password {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
   }
-  .input::part(row-container) {
-    height: 44px;
+  .password a {
+    color: #46464A;
+    font-family: 'Inter Variable';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+    margin: 0px var(--brave-account-sign-in-dialog-label-margin) 0px 0px;
+    text-decoration-line: underline !important;
   }
 </style>
 
 <settings-brave-account-dialog show-back-button
   header-text-top="Sign in to your account"
   header-text-bottom="$i18n{braveSyncBraveAccountDesc}">
-  <div slot="body">
-    <div class="inputs layout vertical">
-      <div>
-        <div class="input-label">Email address</div>
-        <cr-input class="input" autofocus required
-          pattern="^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$"
-          auto-validate
-          on-input="onConditionsChanged_"
-          invalid="{{isEmailAddressInvalid_}}">
-          <div slot="suffix" class="suffix"></div>
-        </cr-input>
+  <div slot="body" class="body layout vertical">
+    <leo-input>
+      <div class="label">Email address</div>
+    </leo-input>
+    <leo-input>
+      <div class="password">
+        <div class="label">Password</div>
+        <a href="#">Forgot your password?</a>
       </div>
-      <div>
-        <div class="input-label">Password</div>
-        <cr-input class="input" autofocus required
-          pattern="^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$"
-          auto-validate
-          on-input="onConditionsChanged_"
-          invalid="{{isEmailAddressInvalid_}}">
-        </cr-input>
-      </div>
-    </div>
+      <leo-icon slot="right-icon" name="eye-off">
+      </leo-icon>
+    </leo-input>
+    <leo-button size="medium">
+      Sign in
+    </leo-button>
   </div>
 </settings-brave-account-dialog>
