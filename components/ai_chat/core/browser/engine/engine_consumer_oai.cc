@@ -73,15 +73,10 @@ base::Value::List BuildMessages(
                      : IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT),
         {page_content}, nullptr);
 
-    auto human_turn_iter = base::ranges::find_if(
-        conversation_history, [&](const mojom::ConversationTurnPtr& turn) {
-          return turn->character_type == CharacterType::HUMAN;
-        });
-
-    if (human_turn_iter != conversation_history.end()) {
-      human_turn_iter->get()->text =
-          base::StrCat({prompt_segment_article, human_turn_iter->get()->text});
-    }
+    base::Value::Dict message;
+    message.Set("role", "user");
+    message.Set("content", prompt_segment_article);
+    messages.Append(std::move(message));
   }
 
   for (const mojom::ConversationTurnPtr& turn : conversation_history) {
