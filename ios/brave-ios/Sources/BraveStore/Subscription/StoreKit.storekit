@@ -1,4 +1,14 @@
 {
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
   "identifier" : "9019C18F",
   "nonRenewingSubscriptions" : [
 
@@ -89,7 +99,10 @@
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Brave Leo Monthly",
           "subscriptionGroupID" : "AD92D716",
-          "type" : "RecurringSubscription"
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
         },
         {
           "adHocOffers" : [
@@ -98,7 +111,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "150.00",
+          "displayPrice" : "149.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "377962C3",
@@ -110,11 +123,14 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "braveleo.yearly",
+          "productID" : "braveleo.yearly.2",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "Brave Leo Yearly",
           "subscriptionGroupID" : "AD92D716",
-          "type" : "RecurringSubscription"
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
         }
       ]
     },
@@ -132,9 +148,9 @@
           "codeOffers" : [
             {
               "eligibility" : [
-                "expired",
                 "existing",
-                "new"
+                "new",
+                "expired"
               ],
               "internalID" : "5CF353FA",
               "isStackable" : true,
@@ -146,9 +162,9 @@
             {
               "displayPrice" : "7.99",
               "eligibility" : [
+                "new",
                 "expired",
-                "existing",
-                "new"
+                "existing"
               ],
               "internalID" : "3D43C72B",
               "isStackable" : true,
@@ -183,7 +199,10 @@
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Brave VPN Monthly",
           "subscriptionGroupID" : "E6F28F94",
-          "type" : "RecurringSubscription"
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
         },
         {
           "adHocOffers" : [
@@ -217,13 +236,16 @@
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "Brave VPN Yearly",
           "subscriptionGroupID" : "E6F28F94",
-          "type" : "RecurringSubscription"
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
         }
       ]
     }
   ],
   "version" : {
-    "major" : 3,
+    "major" : 4,
     "minor" : 0
   }
 }
