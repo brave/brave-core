@@ -34,7 +34,7 @@
 namespace brave_ads {
 
 using IsValidMacAddressCallback =
-    base::RepeatingCallback<bool(const void* bytes, size_t size)>;
+    base::RepeatingCallback<bool(base::span<const uint8_t> bytes)>;
 
 using DiskMap = std::map<base::FilePath, base::FilePath>;
 
@@ -99,7 +99,6 @@ class MacAddressProcessor {
                         size_t prefixes_count) {
     bool keep_going = true;
 
-    constexpr int kMacLength = 6;
 
     struct ifreq ifinfo;
     memset(&ifinfo, 0, sizeof(ifinfo));
@@ -113,9 +112,10 @@ class MacAddressProcessor {
       return keep_going;
     }
 
-    const char* mac_address =
-        static_cast<const char*>(ifinfo.ifr_hwaddr.sa_data);
-    if (!is_valid_mac_address_callback_.Run(mac_address, kMacLength)) {
+    constexpr size_t kMacLength = 6u;
+    auto mac_address_bytes =
+        base::as_bytes(base::make_span(ifinfo.ifr_hwaddr.sa_data, kMacLength));
+    if (!is_valid_mac_address_callback_.Run(mac_address_bytes)) {
       return keep_going;
     }
 
@@ -125,7 +125,7 @@ class MacAddressProcessor {
 
     keep_going = false;
 
-    mac_address_ = base::ToLowerASCII(base::HexEncode(mac_address, kMacLength));
+    mac_address_ = base::ToLowerASCII(base::HexEncode(mac_address_bytes));
 
     return keep_going;
   }
