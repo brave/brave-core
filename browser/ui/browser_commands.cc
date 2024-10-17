@@ -61,6 +61,8 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/base/clipboard/clipboard_buffer.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "ui/shell_dialogs/select_file_policy.h"
+#include "ui/shell_dialogs/selected_file_info.h"
 #include "url/origin.h"
 
 #if defined(TOOLKIT_VIEWS)
@@ -901,13 +903,54 @@ void ScrollTabToBottom(Browser* browser) {
   contents->ScrollToBottomOfDocument();
 }
 
-void ExportAllBookmarks(Browser* browser) {
-  Profile* profile = browser->profile();
-  // @TODO: Get the path from the user, like we do when the user clicks the export bookmarks button manually.
-  base::FilePath path("/home/hamir/Downloads/Brave browser bookmarks.html");
-  BookmarksExportObserver* observer = nullptr;
+namespace {
 
-  bookmark_html_writer::WriteBookmarks(profile, path, observer);
+class BookmarksExportListener : public ui::SelectFileDialog::Listener {
+ private:
+  raw_ptr<Profile> profile_;
+
+ public:
+  scoped_refptr<ui::SelectFileDialog> fileSelector;
+
+  explicit BookmarksExportListener(Profile* profile) : profile_(profile) {}
+  void FileSelected(const ui::SelectedFileInfo& file, int index) override {
+    bookmark_html_writer::WriteBookmarks(profile_, file.file_path, nullptr);
+    std::cout << "Bookmarks exported to " << file.file_path.value()
+              << std::endl;
+
+    delete this;
+  }
+  void FileSelectionCanceled() override {
+    std::cout << "File selection for bookmarks export canceled" << std::endl;
+    delete this;
+  }
+};
+
+}  // namespace
+
+void ExportAllBookmarks(Browser* browser) {
+  const std::time_t t = std::time(0);
+  const std::tm* time = std::localtime(&t);
+  const std::string year = std::to_string(time->tm_year + 1900);
+  const std::string month = std::to_string(time->tm_mon + 1);
+  const std::string day = std::to_string(time->tm_mday);
+  const std::string formatted_time = year + "_" + month + "_" + day;
+  const std::string defaultBookmarksFilename = base::StringPrintf(
+      "%s_Brave_browser_bookmarks.html", formatted_time.c_str());
+
+  ui::SelectFileDialog::FileTypeInfo file_types;
+
+  // Only show HTML files in the file dialog.
+  file_types.extensions.push_back({"html"});
+
+  BookmarksExportListener* listener =
+      new BookmarksExportListener(browser->profile());
+
+  listener->fileSelector = ui::SelectFileDialog::Create(listener, nullptr);
+  listener->fileSelector->SelectFile(
+      ui::SelectFileDialog::SELECT_SAVEAS_FILE, u"Export Bookmarks",
+      base::FilePath::FromUTF8Unsafe(defaultBookmarksFilename), &file_types, 1,
+      FILE_PATH_LITERAL("html"), browser->window()->GetNativeWindow(), nullptr);
 }
 
 void ToggleAllBookmarksButtonVisibility(Browser* browser) {
