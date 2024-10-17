@@ -23,7 +23,7 @@ public class QuickSearchEngineModel {
     //     return mTemplateUrl;
     // }
 
-    QuickSearchEngineModel(
+    public QuickSearchEngineModel(
             String shortName, String keyword, String url, boolean isEnabled, int position) {
         this.mShortName = shortName;
         this.mKeyword = keyword;
@@ -50,5 +50,9 @@ public class QuickSearchEngineModel {
 
     public int getPosition() {
         return mPosition;
+    }
+
+    public void setEnabled(boolean isEnabled) {
+        this.mIsEnabled = isEnabled;
     }
 }

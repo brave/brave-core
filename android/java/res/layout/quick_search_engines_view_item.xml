@@ -9,6 +9,6 @@
      android:id="@+id/search_engine_logo"
      android:layout_width="24dp"
      android:layout_height="24dp"
-     android:layout_marginHorizontal="16dp"
+     android:layout_marginHorizontal="8dp"
      android:layout_gravity="center"
      android:contentDescription="@null"/>

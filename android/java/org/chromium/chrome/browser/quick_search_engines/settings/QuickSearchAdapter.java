@@ -14,7 +14,6 @@ import android.widget.CompoundButton;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
 
 import java.util.List;
@@ -43,13 +42,18 @@ public class QuickSearchAdapter extends RecyclerView.Adapter<QuickSearchViewHold
                 new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        Log.e("quick_search", "isChecked : " + isChecked);
+                        quickSearchEngineModel.setEnabled(isChecked);
                         onSearchEngineClick(quickSearchEngineModel);
                     }
                 });
-
-        mQuickSearchCallback.loadSearchEngineLogo(
-                quickSearchViewHolder.mSearchEngineLogo, quickSearchEngineModel);
+        if (quickSearchEngineModel.getKeyword().equals(":b")) {
+            quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_microsoft_color);
+        } else if (quickSearchEngineModel.getKeyword().equals(":sp")) {
+            quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_startpage_color);
+        } else {
+            mQuickSearchCallback.loadSearchEngineLogo(
+                    quickSearchViewHolder.mSearchEngineLogo, quickSearchEngineModel);
+        }
 
         quickSearchViewHolder.mView.setOnClickListener(
                 new View.OnClickListener() {

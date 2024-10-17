@@ -164,10 +164,13 @@ import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchCallback;
 import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEngineModel;
 import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesUtil;
+import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchFragment;
 import org.chromium.chrome.browser.quick_search_engines.views.QuickSearchEnginesViewAdapter;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.rewards.adaptive_captcha.AdaptiveCaptchaHelper;
+import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
+import org.chromium.chrome.browser.safe_browsing.SafeBrowsingState;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.set_default_browser.OnBraveSetDefaultBrowserListener;
@@ -220,6 +223,7 @@ import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.favicon.LargeIconBridge;
 import org.chromium.components.favicon.LargeIconBridge.GoogleFaviconServerCallback;
 import org.chromium.components.favicon.LargeIconBridge.LargeIconCallback;
+import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -293,6 +297,9 @@ public abstract class BraveActivity extends ChromeActivity
     public static final int APP_OPEN_COUNT_FOR_WIDGET_PROMO = 25;
 
     public static final String BRAVE_SEARCH_ENGINE_KEYWORD = ":br";
+
+    private int keyboardHeight;
+    private boolean isKeyboardVisible;
 
     private static final boolean ENABLE_IN_APP_UPDATE =
             Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
@@ -1561,6 +1568,11 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
+    public void openQuickSearchEnginesSettings() {
+        SettingsLauncher settingsLauncher = SettingsLauncherFactory.createSettingsLauncher();
+        settingsLauncher.launchSettingsActivity(this, QuickSearchFragment.class);
+    }
+
     public void openBravePlaylistSettings() {
         SettingsNavigation settingsLauncher = SettingsNavigationFactory.createSettingsNavigation();
         settingsLauncher.startSettings(this, BravePlaylistPreferences.class);
@@ -2568,18 +2580,54 @@ public abstract class BraveActivity extends ChromeActivity
         rootView.getViewTreeObserver()
                 .addOnGlobalLayoutListener(
                         () -> {
-                            Rect rect = new Rect();
-                            rootView.getWindowVisibleDisplayFrame(rect);
-                            int screenHeight = rootView.getHeight();
-                            int keypadHeight = screenHeight - rect.bottom;
-                            if (keypadHeight > screenHeight * 0.15) {
-                                Log.e("quick_search", "showQuickActionSearchEnginesView");
-                                showQuickActionSearchEnginesView(keypadHeight);
+                            // Rect rect = new Rect();
+                            // rootView.getWindowVisibleDisplayFrame(rect);
+                            // int screenHeight = rootView.getHeight();
+                            // int keypadHeight = screenHeight - rect.height();
+                            // if (keypadHeight > screenHeight * 0.15) {
+                            //     Log.e("quick_search", "showQuickActionSearchEnginesView");
+                            //     showQuickActionSearchEnginesView(keypadHeight);
+                            // } else {
+                            //     Log.e("quick_search", "removeQuickActionSearchEnginesView");
+                            //     removeQuickActionSearchEnginesView();
+                            // }
+                            Rect r = new Rect();
+                            rootView.getWindowVisibleDisplayFrame(r);
+
+                            int screenHeight = rootView.getRootView().getHeight();
+                            int visibleHeight = r.height();
+                            int heightDifference = screenHeight - visibleHeight;
+
+                            // If the height difference is more than a threshold, we assume the
+                            // keyboard (including top bar) is visible
+                            if (heightDifference > screenHeight * 0.15) {
+                                // Keyboard is visible
+                                if (!isKeyboardVisible) {
+                                    isKeyboardVisible = true;
+                                    keyboardHeight = heightDifference;
+                                    // Do something with the keyboard height (includes top bar)
+                                    // onKeyboardHeightChanged(keyboardHeight, true);
+                                    onKeyboardHeightChanged(keyboardHeight, true);
+                                }
                             } else {
-                                Log.e("quick_search", "removeQuickActionSearchEnginesView");
-                                removeQuickActionSearchEnginesView();
+                                // Keyboard is hidden
+                                if (isKeyboardVisible) {
+                                    isKeyboardVisible = false;
+                                    onKeyboardHeightChanged(0, false);
+                                }
                             }
                         });
+    }
+
+    private void onKeyboardHeightChanged(int height, boolean isVisible) {
+        // Implement your logic here. 'height' gives the keyboard height including the top bar
+        if (isVisible) {
+            // Keyboard is visible, and you have the total height (keyboard + top bar)
+            showQuickActionSearchEnginesView(height);
+        } else {
+            // Keyboard is hidden
+            removeQuickActionSearchEnginesView();
+        }
     }
 
     public void showQuickActionSearchEnginesView(int keypadHeight) {
@@ -2597,6 +2645,17 @@ public abstract class BraveActivity extends ChromeActivity
                 new LinearLayoutManager(BraveActivity.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        ImageView quickSearchEnginesSettings =
+                (ImageView)
+                        mQuickSearchEnginesView.findViewById(R.id.quick_search_engines_settings);
+        quickSearchEnginesSettings.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openQuickSearchEnginesSettings();
+                    }
+                });
+
         Log.e("quick_search", "showQuickActionSearchEnginesView 2");
 
         List<QuickSearchEngineModel> searchEngines = new ArrayList<>();
@@ -2604,8 +2663,14 @@ public abstract class BraveActivity extends ChromeActivity
                 QuickSearchEnginesUtil.getSearchEngines();
         for (Map.Entry<String, QuickSearchEngineModel> entry : searchEnginesMap.entrySet()) {
             QuickSearchEngineModel quickSearchEngineModel = entry.getValue();
-            searchEngines.add(quickSearchEngineModel);
+            if (quickSearchEngineModel.isEnabled()) {
+                searchEngines.add(quickSearchEngineModel);
+            }
+            Log.e("quick_search", "keyword : " + quickSearchEngineModel.getKeyword());
         }
+        QuickSearchEngineModel leoQuickSearchEngineModel =
+                new QuickSearchEngineModel("", "", "", true, 0);
+        searchEngines.add(0, leoQuickSearchEngineModel);
 
         Log.e("quick_search", "showQuickActionSearchEnginesView 3");
 
@@ -2622,6 +2687,7 @@ public abstract class BraveActivity extends ChromeActivity
                             WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             params.gravity = Gravity.BOTTOM;
             params.y = keypadHeight; // Position the view above the keyboard
+            // params.verticalMargin = 16.0f;
 
             WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
             windowManager.addView(mQuickSearchEnginesView, params);
@@ -2636,10 +2702,13 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     // QuickSearchCallback
-
     @Override
     public void onSearchEngineClick(QuickSearchEngineModel quickSearchEngineModel) {
-        Log.e("quick_search : onSearchEngineClick", quickSearchEngineModel.getShortName());
+        Log.e(
+                "quick_search : onSearchEngineClick : quickSearchEngineModel.getUrl()",
+                quickSearchEngineModel.getUrl());
+        String query = getBraveToolbarLayout().getLocationBarQuery();
+        openNewOrSelectExistingTab(quickSearchEngineModel.getUrl().replace("{searchTerms}", query));
     }
 
     @Override
@@ -2718,17 +2787,15 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void onKeyboardOpened(int keyboardHeight) {
-        Toast.makeText(
-                        BraveActivity.this,
-                        "Keyboard opened with height: " + keyboardHeight,
-                        Toast.LENGTH_LONG)
-                .show();
-        showQuickActionSearchEnginesView(keyboardHeight);
+        if (QuickSearchEnginesUtil.getQuickSearchEnginesFeature()) {
+            showQuickActionSearchEnginesView(keyboardHeight);
+        }
     }
 
     @Override
     public void onKeyboardClosed() {
-        Toast.makeText(BraveActivity.this, "Keyboard closed", Toast.LENGTH_LONG).show();
-        removeQuickActionSearchEnginesView();
+        if (QuickSearchEnginesUtil.getQuickSearchEnginesFeature()) {
+            removeQuickActionSearchEnginesView();
+        }
     }
 }

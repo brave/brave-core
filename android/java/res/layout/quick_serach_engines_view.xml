@@ -10,6 +10,7 @@
      xmlns:app="http://schemas.android.com/apk/res-auto"
      android:layout_width="match_parent"
      android:layout_height="wrap_content"
+     android:background="@color/quick_search_bg"
      android:orientation="horizontal">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -17,15 +18,23 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_margin="16dp" />
+        android:layout_marginVertical="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginVertical="16dp"
+        android:background="@color/schemes_outline_variant"/>
 
     <ImageView
         android:id="@+id/quick_search_engines_settings"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginEnd="16dp"
+        android:layout_margin="8dp"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/ic_settings2"
+        app:srcCompat="@drawable/ic_settings"
         android:contentDescription="@null"/>
 
 </LinearLayout>

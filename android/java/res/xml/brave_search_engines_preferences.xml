@@ -42,5 +42,5 @@
         android:fragment="org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchFragment"
         android:key="quick_search_engine"
         android:order="7"
-        android:title="@string/quick_search_engine"/>
+        android:title="@string/quick_search_engines_with_hyphon"/>
 </PreferenceScreen>
