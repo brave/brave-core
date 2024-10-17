@@ -134,6 +134,10 @@ class BraveRenderViewContextMenuTest : public testing::Test {
     client_.reset();
     browser_.reset();
     profile_.reset();
+
+    // We run into a DCHECK on Windows. The scenario is addressed explicitly
+    // in Chromium's source for MessageWindow::WindowClass::~WindowClass().
+    // See base/win/message_window.cc for more information.
     ui::Clipboard::DestroyClipboardForCurrentThread();
   }
 
