@@ -5,6 +5,7 @@
 
 import './brave_account_dialog.js';
 import '../settings_shared.css.js';
+import 'chrome://resources/brave/leo.bundle.js'
 import 'chrome://resources/cr_elements/cr_shared_style.css.js';
 import 'chrome://resources/polymer/v3_0/iron-flex-layout/iron-flex-layout-classes.js';
 
