@@ -113,8 +113,8 @@ class MacAddressProcessor {
     }
 
     constexpr size_t kMacLength = 6u;
-    auto mac_address_bytes =
-        base::as_bytes(base::make_span(ifinfo.ifr_hwaddr.sa_data, kMacLength));
+    auto mac_address_bytes = base::as_bytes(
+        UNSAFE_TODO(base::make_span(ifinfo.ifr_hwaddr.sa_data, kMacLength)));
     if (!is_valid_mac_address_callback_.Run(mac_address_bytes)) {
       return keep_going;
     }
@@ -137,7 +137,7 @@ class MacAddressProcessor {
                      const char* const prefixes[],
                      size_t prefixes_count) {
     for (size_t i = 0; i < prefixes_count; i++) {
-      if (strncmp(prefixes[i], name, strlen(prefixes[i])) == 0) {
+      if (UNSAFE_TODO(strncmp(prefixes[i], name, strlen(prefixes[i]))) == 0) {
         return true;
       }
     }

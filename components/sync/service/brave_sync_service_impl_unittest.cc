@@ -489,7 +489,7 @@ TEST_F(BraveSyncServiceImplTest, OnAccountDeleted_FailureAndRetry) {
             &on_account_deleted_invoked),
         sync_protocol_error);
 
-    EXPECT_EQ(on_account_deleted_invoked, was_callback_invoked[i]);
+    EXPECT_EQ(on_account_deleted_invoked, UNSAFE_TODO(was_callback_invoked[i]));
   }
 
   OSCryptMocker::TearDown();

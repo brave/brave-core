@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CALENDAR_CALENDAR_UTIL_H_
 
 #include "base/check.h"
+#include "base/compiler_specific.h"
 
 namespace base {
 class Time;
@@ -29,7 +30,7 @@ constexpr int DaysInMonth(const int year, const int month) noexcept {
       31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31  // non leap year.
   };
 
-  int days_in_month = kDaysInMonth[month - 1];
+  int days_in_month = UNSAFE_TODO(kDaysInMonth[month - 1]);
   if (month == /*february*/ 2 && IsLeapYear(year)) {
     // In a leap year, February gets an extra day, because even the shortest
     // month deserves a little extra time to shine!

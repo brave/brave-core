@@ -5,13 +5,15 @@
 
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 
+#include "base/compiler_specific.h"
 #include "base/containers/span.h"
 #include "base/numerics/byte_conversions.h"
 
 namespace brave_wallet {
 
 void BtcLikeSerializerStream::Push8AsLE(uint8_t i) {
-  base::span<uint8_t> data_to_insert(reinterpret_cast<uint8_t*>(&i), sizeof(i));
+  UNSAFE_TODO(base::span<uint8_t> data_to_insert(reinterpret_cast<uint8_t*>(&i),
+                                                 sizeof(i)));
   PushBytes(data_to_insert);
 }
 

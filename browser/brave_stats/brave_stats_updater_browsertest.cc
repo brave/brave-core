@@ -162,7 +162,8 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   WaitForStandardStatsUpdatedCallback();
 
   // We get //1/usage/brave-core here, so ignore the first slash.
-  EXPECT_STREQ(GetUpdateURL().path().c_str() + 1, "/1/usage/brave-core");
+  EXPECT_STREQ(UNSAFE_TODO(GetUpdateURL().path().c_str() + 1),
+               "/1/usage/brave-core");
 
   // First check preference should now be true
   EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(kFirstCheckMade));

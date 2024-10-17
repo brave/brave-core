@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/compiler_specific.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/renderer/modules/mediastream/media_device_info.h"
 
@@ -26,7 +27,7 @@ void FarbleMediaDevices(ExecutionContext* context,
   FarblingPRNG prng =
       BraveSessionCache::From(*context).MakePseudoRandomGenerator();
   MediaDeviceInfoVector::iterator it_begin = media_devices->begin();
-  std::shuffle(++it_begin, media_devices->end(), prng);
+  UNSAFE_TODO(std::shuffle(++it_begin, media_devices->end(), prng));
 }
 
 }  // namespace brave

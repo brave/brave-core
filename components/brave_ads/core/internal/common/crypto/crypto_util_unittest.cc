@@ -101,8 +101,8 @@ TEST(BraveAdsCryptoUtilTest, EncryptAndDecrypt) {
   const KeyPairInfo key_pair = GenerateBoxKeyPair();
   const KeyPairInfo ephemeral_key_pair = GenerateBoxKeyPair();
   const std::vector<uint8_t> nonce = GenerateRandomNonce();
-  const std::vector<uint8_t> plaintext(kMessage,
-                                       kMessage + std::size(kMessage));
+  const std::vector<uint8_t> plaintext(
+      kMessage, UNSAFE_TODO(kMessage + std::size(kMessage)));
 
   // Act
   const std::vector<uint8_t> ciphertext = Encrypt(

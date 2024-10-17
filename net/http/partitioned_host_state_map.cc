@@ -8,6 +8,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/compiler_specific.h"
 #include "base/ranges/algorithm.h"
 #include "crypto/sha2.h"
 #include "net/base/network_isolation_key.h"
@@ -61,7 +62,7 @@ PartitionedHostStateMapBase::GetKeyWithPartitionHash(
 
 base::span<const uint8_t> PartitionedHostStateMapBase::GetHalfKey(
     const HashedHost& k) {
-  return base::make_span(k.data(), std::size(k) / 2);
+  return UNSAFE_TODO(base::make_span(k.data(), std::size(k) / 2));
 }
 
 }  // namespace net

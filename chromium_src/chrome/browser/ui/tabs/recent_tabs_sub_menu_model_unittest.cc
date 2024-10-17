@@ -69,7 +69,8 @@ void RecentTabsSubMenuModelTest::VerifyModel(
     item_data.enabled = false;
   }
 
-  ::VerifyModel(model, base::make_span(v_data.begin(), v_data.size()));
+  ::VerifyModel(model,
+                UNSAFE_TODO(base::make_span(v_data.begin(), v_data.size())));
 }
 
 void RecentTabsSubMenuModelTest::VerifyModel(const ui::MenuModel* model,

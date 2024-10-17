@@ -202,8 +202,8 @@ void PlaylistThumbnailDownloader::WriteToFile(
 
   auto write_to_file = base::BindOnce(
       [](base::FilePath path, scoped_refptr<base::RefCountedBytes> image) {
-        if (!base::WriteFile(path, base::span<const uint8_t>(image->front(),
-                                                             image->size()))) {
+        if (!base::WriteFile(path, UNSAFE_TODO(base::span<const uint8_t>(
+                                       image->front(), image->size())))) {
           DVLOG(2) << "Failed to write image to file " << path;
           return base::FilePath();
         }

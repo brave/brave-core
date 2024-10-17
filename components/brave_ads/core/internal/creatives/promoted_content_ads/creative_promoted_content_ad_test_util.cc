@@ -20,7 +20,7 @@ CreativePromotedContentAdList BuildCreativePromotedContentAds(const int count) {
   for (int i = 0; i < count; ++i) {
     CreativePromotedContentAdInfo creative_ad = BuildCreativePromotedContentAd(
         /*should_generate_random_uuids=*/true);
-    creative_ad.segment = kSegments[i % std::size(kSegments)];
+    creative_ad.segment = UNSAFE_TODO(kSegments[i % std::size(kSegments)]);
 
     creative_ads.push_back(creative_ad);
   }

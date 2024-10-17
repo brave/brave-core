@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/compiler_specific.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/ranges/algorithm.h"
@@ -402,8 +403,8 @@ bool ParseEthDecryptParams(const std::string& json,
   }
 
   // IsValidHexString guarantees at least 2 bytes and starts with 0x
-  if (!base::HexStringToString(untrusted_hex_json_str->data() + 2,
-                               &untrusted_json)) {
+  if (!UNSAFE_TODO(base::HexStringToString(untrusted_hex_json_str->data() + 2,
+                                           &untrusted_json))) {
     return false;
   }
 
