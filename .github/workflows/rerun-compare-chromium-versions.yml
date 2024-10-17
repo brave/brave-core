@@ -36,9 +36,9 @@ jobs:
                   run_id="$(gh api "/repos/$GITHUB_REPOSITORY/actions/workflows/compare-chromium-versions.yml/runs?head_sha=${head_sha:?}" -q '.workflow_runs[0].id')"
                   pr_url="https://github.com/brave/brave-core/pull/${pr_number:?}"
                   if [[ "$run_id" ]]; then
-                      echo "Rerunning for $pr_url"
+                      echo "Rerunning $run_id for $pr_url"
                       # TODO: remove echo and add sleep
-                      echo gh -R "$GITHUB_REPOSITORY" run rerun "${run_id:?}"
+                      echo gh -R "$GITHUB_REPOSITORY" run rerun "$run_id"
                   else
                       echo "No run found for $pr_url"
                   fi
