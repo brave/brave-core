@@ -40,7 +40,8 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <template is="dom-if" if="[[isDialogType('entry', dialogType)]]" restamp>
   <settings-brave-account-entry-dialog
     on-close="onBraveAccountDialogClosed_"
-    on-sign-in-button-clicked="onSignInButtonClicked_">
+    on-sign-in-button-clicked="onSignInButtonClicked_"
+    on-self-custody-button-clicked="onBraveAccountDialogClosed_">
   </settings-brave-account-entry-dialog>
 </template>
 
