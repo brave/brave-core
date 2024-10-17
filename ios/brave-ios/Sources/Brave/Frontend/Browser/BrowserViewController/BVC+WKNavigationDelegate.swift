@@ -1353,48 +1353,65 @@ extension BrowserViewController: WKUIDelegate {
     type: WKMediaCaptureType,
     decisionHandler: @escaping (WKPermissionDecision) -> Void
   ) {
-    let titleFormat: String = {
-      switch type {
-      case .camera:
-        return Strings.requestCameraPermissionPrompt
-      case .microphone:
-        return Strings.requestMicrophonePermissionPrompt
-      case .cameraAndMicrophone:
-        return Strings.requestCameraAndMicrophonePermissionPrompt
-      @unknown default:
-        return Strings.requestCaptureDevicePermissionPrompt
-      }
-    }()
-    let title = String.localizedStringWithFormat(titleFormat, origin.host)
-    let alertController = BrowserAlertController(title: title, message: nil, preferredStyle: .alert)
-    alertController.addAction(
-      .init(
-        title: Strings.requestCaptureDevicePermissionAllowButtonTitle,
-        style: .default,
-        handler: { _ in
-          decisionHandler(.grant)
+    let presentAlert = { [weak self] in
+      guard let self = self else { return }
+
+      let titleFormat: String = {
+        switch type {
+        case .camera:
+          return Strings.requestCameraPermissionPrompt
+        case .microphone:
+          return Strings.requestMicrophonePermissionPrompt
+        case .cameraAndMicrophone:
+          return Strings.requestCameraAndMicrophonePermissionPrompt
+        @unknown default:
+          return Strings.requestCaptureDevicePermissionPrompt
         }
+      }()
+      let title = String.localizedStringWithFormat(titleFormat, origin.host)
+      let alertController = BrowserAlertController(
+        title: title,
+        message: nil,
+        preferredStyle: .alert
       )
-    )
-    alertController.addAction(
-      .init(
-        title: Strings.CancelString,
-        style: .cancel,
-        handler: { _ in
-          decisionHandler(.deny)
-        }
+      alertController.addAction(
+        .init(
+          title: Strings.requestCaptureDevicePermissionAllowButtonTitle,
+          style: .default,
+          handler: { _ in
+            decisionHandler(.grant)
+          }
+        )
       )
-    )
-    alertController.dismissedWithoutAction = {
-      decisionHandler(.prompt)
-    }
-    if webView.fullscreenState == .inFullscreen || webView.fullscreenState == .enteringFullscreen {
-      webView.closeAllMediaPresentations {
-        self.present(alertController, animated: true)
+      alertController.addAction(
+        .init(
+          title: Strings.CancelString,
+          style: .cancel,
+          handler: { _ in
+            decisionHandler(.deny)
+          }
+        )
+      )
+      alertController.dismissedWithoutAction = {
+        decisionHandler(.prompt)
       }
-      return
+      if webView.fullscreenState == .inFullscreen || webView.fullscreenState == .enteringFullscreen
+      {
+        webView.closeAllMediaPresentations {
+          self.present(alertController, animated: true)
+        }
+        return
+      }
+      self.present(alertController, animated: true)
     }
-    present(alertController, animated: true)
+
+    if let presentedViewController = presentedViewController as? BrowserAlertController {
+      presentedViewController.dismiss(animated: true) {
+        presentAlert()
+      }
+    } else {
+      presentAlert()
+    }
   }
 
   fileprivate func shouldDisplayJSAlertForWebView(_ webView: WKWebView) -> Bool {
