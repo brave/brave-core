@@ -6,15 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SIGNIN_PUBLIC_IDENTITY_MANAGER_IDENTITY_MANAGER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SIGNIN_PUBLIC_IDENTITY_MANAGER_IDENTITY_MANAGER_H_
 
-#define GetAccountsInCookieJar                                        \
-  GetAccountsInCookieJar_Unused() const;                              \
-  void FakeGetAccountsInCookieJarForNextCallForTests(                 \
-      bool should_fake_next_get_accounts_in_cookie_jar_for_test);     \
-                                                                      \
- private:                                                             \
-  bool should_fake_next_get_accounts_in_cookie_jar_for_test_ = false; \
-                                                                      \
- public:                                                              \
+#define GetAccountsInCookieJar           \
+  GetAccountsInCookieJar_Unused() const; \
   AccountsInCookieJarInfo GetAccountsInCookieJar
 
 #define PrepareForAddingNewAccount     \

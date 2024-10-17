@@ -755,15 +755,8 @@ class BraveSyncServiceImplGACookiesTest
                   signin::PrimaryAccountChangeEvent::State(),
                   signin_metrics::ProfileSignout::kTest);
 
-              p_this->brave_sync_service_impl()
-                  ->identity_manager_
-                  ->FakeGetAccountsInCookieJarForNextCallForTests(true);
-
               p_this->brave_sync_service_impl()->OnPrimaryAccountChanged(
                   primary_accountchange_event);
-              p_this->brave_sync_service_impl()
-                  ->identity_manager_
-                  ->FakeGetAccountsInCookieJarForNextCallForTests(false);
             },
             this);
       default:
