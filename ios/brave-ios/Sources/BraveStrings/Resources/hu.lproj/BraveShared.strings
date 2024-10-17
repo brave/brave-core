@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Könyvjelző hozzáadása";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Brave hirdetések adatai";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Hirdetések és követők";
 
@@ -513,9 +516,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Jelenleg használt keresők";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "Hozzáadás";
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Írja be a keresési URL-t, és cserélje le a lekérdezést erre: %1$s.\nPéldául: https://youtube.com/search?q=%2$s\n (Ha a webhely támogatja az OpenSearch szolgáltatást, a mező szerkesztése során lehetőség nyílik az automatikus hozzáadásra.)";
@@ -1081,17 +1081,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Billentyűzet automatikus megnyitása";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Háttérképek";
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "Háttér";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Képtípus";
+"ntp.settingsBackgroundImageSubMenu" = "Médiatípus";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Alapértelmezett képek";
 
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Szponzorált képek és videók";
+
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Szponzorált";
+"ntp.settingsSponsoredImagesSelection" = "Szponzorált képek";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Új lap";
@@ -1413,6 +1416,9 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Az adatvédelmet megőrző termékelemzés (P3A) engedélyezése";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "Az adatvédelmet megőrző termék beépülő moduljának bezárása";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Kapcsolata a webhellyel nem teljesen biztonságos.";
@@ -2258,28 +2264,28 @@
 "rewards.braveTalkRewardsOptInTitle" = "Ingyenes hívás indításához kapcsolja be a Brave Rewardsot";
 
 /* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "A bekapcsolással segíthet támogatni a tartalomkészítőket";
+"rewards.disabledBody" = "A bekapcsolással segíthet támogatni a Brave-et és a BAT közösséget.";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "A Brave-jutalmak használata segít támogatni a tartalomkészítőket böngészés közben.";
+"rewards.disabledStatusBody" = "A Brave-jutalmak használata segít támogatni a Brave-et és a BAT közösséget.";
 
 /* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "Ön segít támogatni a tartalomkészítőket";
+"rewards.enabledBody" = "Ön segít támogatni a Brave-et és a BAT-közösséget.";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "Köszönjük, hogy böngészés közben segít támogatni a tartalomkészítőket!";
+"rewards.enabledStatusBody" = "Köszönjük, hogy segít támogatni a Brave-et és a BAT közösséget!";
 
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "A kattintással elfogadja a következőket: %1$@ és %2$@. Ezt bármikor letilthatja a Beállításokban.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "A Brave privát hirdetések engedélyezésével automatikusan támogathatja a tartalomkészítőket és -szolgáltatókat. A Brave privát hirdetések az adatvédelmet tiszteletben tartó hirdetések, amelyekkel kifejezheti támogatását a tartalomkészítők számára.";
+"rewards.settingsToggleMessage" = "Segítsen támogatni a Brave-et és a BAT közösséget a Brave-jutalmak engedélyezése és a Brave hirdetések megtekintése révén.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Brave jutalmak engedélyezése";
 
 /* Displayed under verified publishers */
-"rewards.supportingPublisher" = "Ön segít támogatni ezt a tartalomkészítőt és másokat.";
+"rewards.supportingPublisher" = "Ez a Brave tartalomkészítők által ellenőrzött tartalomkészítő";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Azon tartalomkészítők száma, akiket Ön segít támogatni ebben a hónapban.";
@@ -3050,7 +3056,7 @@
 "SyncChooseDeviceHeader" = "Válaszd ki a szinkronizálni kívánt készülék típusát.";
 
 /* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "A kód lejárt. Generáljon egy újat az alábbi gombra kattintva.";
+"SyncCodeExpirationTitleLabel" = "A kód lejárt. Generáljon egy újat az alábbi gombra koppintva.";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "Ez az ideiglenes kód a következő ideig érvényes: %@ ";

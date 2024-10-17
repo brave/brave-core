@@ -2,6 +2,9 @@
 "widgets.BookmarksMenuItem" = "Adreces d'interès";
 
 /* The name of the feature */
+"widgets.braveLeo" = "IA Leo";
+
+/* The name of the feature */
 "widgets.braveNews" = "Notícies de Brave";
 
 /* Title for downloads menu item */
