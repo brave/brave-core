@@ -190,6 +190,7 @@ brave_chrome_browser_deps = [
   "//brave/components/greaselion/browser/buildflags",
   "//brave/components/https_upgrade_exceptions/browser",
   "//brave/components/ipfs",
+  "//brave/components/ipfs/buildflags",
   "//brave/components/l10n/common",
   "//brave/components/localhost_permission",
   "//brave/components/ntp_background_images/browser",

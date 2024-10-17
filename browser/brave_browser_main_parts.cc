@@ -18,6 +18,7 @@
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -56,7 +57,6 @@
 #include "brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h"
 #include "brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h"
 #include "brave/browser/infobars/sync_cannot_run_infobar_delegate.h"
-#include "brave/components/ipfs/ipfs_component_cleaner.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/infobars/content/content_infobar_manager.h"
@@ -69,6 +69,10 @@
 #include "chrome/browser/extensions/extension_service.h"
 #include "extensions/browser/extension_system.h"
 #endif
+
+#if BUILDFLAG(DEPRECATE_IPFS)
+#include "brave/components/ipfs/ipfs_component_cleaner.h"
+#endif  // BUILDFLAG(DEPRECATE_IPFS)
 
 ChromeBrowserMainParts::ChromeBrowserMainParts(bool is_integration_test,
                                                StartupData* startup_data)
@@ -163,10 +167,10 @@ void ChromeBrowserMainParts::PostBrowserStart() {
   }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-#if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(DEPRECATE_IPFS)
   ipfs::CleanupIpfsComponent(
       base::PathService::CheckedGet(chrome::DIR_USER_DATA));
-#endif  // !BUILDFLAG(IS_ANDROID)
+#endif  // BUILDFLAG(DEPRECATE_IPFS)
 }
 
 void ChromeBrowserMainParts::PreShutdown() {
