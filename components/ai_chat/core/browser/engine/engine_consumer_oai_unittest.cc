@@ -386,7 +386,10 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
             EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[1].GetDict().Find("content"),
                       "This is the text of a web page:\n<page>\nThis is a "
-                      "page.\n</page>\n\nTell me more about this page");
+                      "page.\n</page>\n\n");
+            EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+            EXPECT_EQ(*messages[2].GetDict().Find("content"),
+                      "Tell me more about this page");
             std::move(completed_callback)
                 .Run(EngineConsumer::GenerationResult(""));
           });
