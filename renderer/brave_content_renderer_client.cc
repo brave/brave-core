@@ -35,7 +35,9 @@
 #include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/render_thread.h"
 #include "third_party/blink/public/common/features.h"
+#include "third_party/blink/public/platform/web_isolated_world_info.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
+#include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/modules/service_worker/web_service_worker_context_proxy.h"
 #include "third_party/blink/public/web/web_script_controller.h"
 #include "third_party/widevine/cdm/buildflags.h"
@@ -69,6 +71,27 @@
 #endif
 
 namespace {
+
+void EnsureBraveInternalWorldInitialized() {
+  static bool initialized = false;
+  if (initialized) {
+    return;
+  }
+
+  initialized = true;
+
+  // Set an empty CSP so that the main world's CSP is not used in the isolated
+  // world.
+  constexpr char kContentSecurityPolicy[] = "";
+
+  blink::WebIsolatedWorldInfo info;
+  info.security_origin =
+      blink::WebSecurityOrigin::Create(GURL("chrome://brave_internal"));
+  info.content_security_policy =
+      blink::WebString::FromUTF8(kContentSecurityPolicy);
+  blink::SetIsolatedWorldInfo(ISOLATED_WORLD_ID_BRAVE_INTERNAL, info);
+}
+
 void MaybeRemoveWidevineSupport(media::GetSupportedKeySystemsCB cb,
                                 media::KeySystemInfos key_systems) {
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -143,6 +166,8 @@ void BraveContentRendererClient::RenderFrameCreated(
   auto* registry = rfo->registry();
 
   new feed::RssLinkReader(render_frame, registry);
+
+  EnsureBraveInternalWorldInitialized();
 
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockCosmeticFiltering)) {
