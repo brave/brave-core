@@ -29,6 +29,8 @@ class AdsServiceMock : public AdsService {
 
   ~AdsServiceMock() override;
 
+  MOCK_METHOD(AdsService::Delegate*, GetDelegate, ());
+
   MOCK_METHOD(void,
               AddBatAdsObserver,
               (mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>

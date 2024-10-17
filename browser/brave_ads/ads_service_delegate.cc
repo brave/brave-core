@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper.h"
 #include "brave/browser/ui/brave_ads/notification_ad.h"
@@ -14,6 +15,8 @@
 #include "build/build_config.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/search_engines/template_url_prepopulate_data.h"
+
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/notifications/brave_notification_platform_bridge_helper_android.h"
 #include "chrome/browser/android/service_tab_launcher.h"
@@ -29,12 +32,15 @@ namespace brave_ads {
 
 AdsServiceDelegate::AdsServiceDelegate(
     Profile* profile,
+    PrefService* local_state,
     brave_adaptive_captcha::BraveAdaptiveCaptchaService*
         adaptive_captcha_service,
     NotificationDisplayService* notification_display_service,
     std::unique_ptr<NotificationAdPlatformBridge>
         notification_ad_platform_bridge)
     : profile_(profile),
+      local_state_(local_state),
+      search_engine_choice_service_(*profile_->GetPrefs(), local_state_),
       adaptive_captcha_service_(adaptive_captcha_service),
       notification_display_service_(notification_display_service),
       notification_ad_platform_bridge_(
@@ -132,4 +138,18 @@ bool AdsServiceDelegate::IsFullScreenMode() {
   return ::IsFullScreenMode();
 }
 #endif
+
+base::Value::Dict AdsServiceDelegate::GetVirtualPrefs() {
+  const auto template_url_data =
+      TemplateURLPrepopulateData::GetPrepopulatedFallbackSearch(
+          profile_->GetPrefs(), &search_engine_choice_service_);
+  if (!template_url_data) {
+    return {};
+  }
+
+  return base::Value::Dict().Set(
+      "[virtual]:default_search_engine.name",
+      base::UTF16ToUTF8(template_url_data->short_name()));
+}
+
 }  // namespace brave_ads

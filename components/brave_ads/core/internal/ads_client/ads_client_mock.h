@@ -116,6 +116,8 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD(void, ClearLocalStatePref, (const std::string& path));
   MOCK_METHOD(bool, HasLocalStatePrefPath, (const std::string& path), (const));
 
+  MOCK_METHOD(base::Value::Dict, GetVirtualPrefs, (), (const));
+
   MOCK_METHOD(void,
               Log,
               (const char* file,
