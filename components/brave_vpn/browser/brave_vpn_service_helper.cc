@@ -86,6 +86,7 @@ void SetSkusCredential(PrefService* local_prefs,
                 base::TimeToValue(expiration_time));
   local_prefs->SetDict(prefs::kBraveVPNSubscriberCredential,
                        std::move(cred_dict));
+  local_prefs->SetTime(prefs::kBraveVPNLastCredentialExpiry, expiration_time);
 }
 
 void SetSkusCredentialFetchingRetried(PrefService* local_prefs, bool retried) {
