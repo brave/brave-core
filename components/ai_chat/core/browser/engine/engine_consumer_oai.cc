@@ -134,7 +134,8 @@ void EngineConsumerOAIRemote::UpdateModelOptions(
     const mojom::ModelOptions& options) {
   if (options.is_custom_model_options()) {
     model_options_ = *options.get_custom_model_options();
-    max_associated_content_length_ = model_options_.max_associated_content_length;
+    max_associated_content_length_ =
+        model_options_.max_associated_content_length;
   }
 }
 

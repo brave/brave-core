@@ -307,7 +307,8 @@ TEST_F(ModelServiceTest, SetAssociatedContentLengthMetrics_ValidContextSize) {
             expected_warning_limit);
 }
 
-TEST_F(ModelServiceTest, CalcuateMaxAssociatedContentLengthForModel_CustomModel) {
+TEST_F(ModelServiceTest,
+       CalcuateMaxAssociatedContentLengthForModel_CustomModel) {
   // Setup a custom model with a valid context size
   mojom::CustomModelOptionsPtr custom_options =
       mojom::CustomModelOptions::New();
