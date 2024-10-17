@@ -59,6 +59,9 @@
 "e13lS3-qKrzyX" = "'QRコードをスキャン' をお探しですか？";
 
 /* (No Comment) */
+"e13lS3-U0eRbw" = "'Leo AI' をお探しですか？";
+
+/* (No Comment) */
 "e13lS3-VBH4G6" = "確認ですが、'履歴' を探していましたか？";
 
 /* (No Comment) */
@@ -72,6 +75,39 @@
 
 /* (No Comment) */
 "EUS9FL" = "ウィジェットショートカット";
+
+/* (No Comment) */
+"EvESs0-0W40Cl" = "確認ですが、'新しいタブ' を探していましたか？";
+
+/* (No Comment) */
+"EvESs0-crhbMy" = "確認ですが、'ブックマーク' を探していましたか？";
+
+/* (No Comment) */
+"EvESs0-FGO5qW" = "'Braveプレイリスト' をお探しですか？";
+
+/* (No Comment) */
+"EvESs0-jXiFQY" = "'Braveウォレット' をお探しですか？";
+
+/* (No Comment) */
+"EvESs0-nthxSL" = "確認ですが、'ダウンロード' を探していましたか？";
+
+/* (No Comment) */
+"EvESs0-qKrzyX" = "'QRコードをスキャン' をお探しですか？";
+
+/* (No Comment) */
+"EvESs0-U0eRbw" = "'Leo AI' をお探しですか？";
+
+/* (No Comment) */
+"EvESs0-VBH4G6" = "確認ですが、'履歴' を探していましたか？";
+
+/* (No Comment) */
+"EvESs0-vs094F" = "確認ですが、'新しいプライベートタブ' を探していましたか？";
+
+/* (No Comment) */
+"EvESs0-XCyA8c" = "'Braveニュース' をお探しですか？";
+
+/* (No Comment) */
+"EvESs0-Y7TWy8" = "'検索' をお探しですか？";
 
 /* (No Comment) */
 "FGO5qW" = "Brave Playlist";
@@ -110,6 +146,9 @@
 "L1fziM-qKrzyX" = "‘QRコードをスキャン’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
+"L1fziM-U0eRbw" = "‘Leo AI’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
 "L1fziM-VBH4G6" = "‘履歴’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
@@ -120,6 +159,9 @@
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "‘検索’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"M2Y1rg" = "#4";
 
 /* (No Comment) */
 "nthxSL" = "ダウンロード";
@@ -147,6 +189,9 @@
 
 /* (No Comment) */
 "r2EI05-qKrzyX" = "'QRコードをスキャン' をお探しですか？";
+
+/* (No Comment) */
+"r2EI05-U0eRbw" = "'Leo AI' をお探しですか？";
 
 /* (No Comment) */
 "r2EI05-VBH4G6" = "確認ですが、'履歴' を探していましたか？";
@@ -188,6 +233,9 @@
 "tNCrcE-qKrzyX" = "‘QRコードをスキャン’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
+"tNCrcE-U0eRbw" = "‘Leo AI’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
 "tNCrcE-VBH4G6" = "‘履歴’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
@@ -221,6 +269,9 @@
 "TxuMja-qKrzyX" = "‘QRコードをスキャン’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
+"TxuMja-U0eRbw" = "‘Leo AI’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
 "TxuMja-VBH4G6" = "‘履歴’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
@@ -234,6 +285,9 @@
 
 /* (No Comment) */
 "tYwiRd" = "節約された時間（推定）";
+
+/* (No Comment) */
+"U0eRbw" = "Leo AI";
 
 /* (No Comment) */
 "VBH4G6" = "履歴";
@@ -275,6 +329,9 @@
 "YQiQuz-qKrzyX" = "'QRコードをスキャン' をお探しですか？";
 
 /* (No Comment) */
+"YQiQuz-U0eRbw" = "'Leo AI' をお探しですか？";
+
+/* (No Comment) */
 "YQiQuz-VBH4G6" = "確認ですが、'履歴' を探していましたか？";
 
 /* (No Comment) */
@@ -285,6 +342,39 @@
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "'検索' をお探しですか？";
+
+/* (No Comment) */
+"z517nu-0W40Cl" = "‘新しいタブ’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"z517nu-crhbMy" = "‘ブックマーク’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"z517nu-FGO5qW" = "‘Braveプレイリスト’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"z517nu-jXiFQY" = "‘Braveウォレット’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"z517nu-nthxSL" = "‘ダウンロード’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"z517nu-qKrzyX" = "‘QRコードをスキャン’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"z517nu-U0eRbw" = "‘Leo AI’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"z517nu-VBH4G6" = "‘履歴’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"z517nu-vs094F" = "‘新しいプライベートタブ’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"z517nu-XCyA8c" = "‘Braveニュース’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"z517nu-Y7TWy8" = "‘検索’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
 "ziTvSZ" = "ショートカットウィジェットの設定";

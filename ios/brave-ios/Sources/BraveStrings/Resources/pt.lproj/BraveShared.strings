@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Adicionar favorito";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Dados dos Anúncios Brave";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Anúncios e rastreadores";
 
@@ -513,9 +516,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Mecanismos de pesquisa usados no momento";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "Adicionar";
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Escreva o URL de pesquisa e substitua a consulta por %1$s.\nPor exemplo: https://youtube.com/search?q=%2$s \n(Se o site for compatível com OpenSearch, a opção de adicionar automaticamente será exibida durante a edição desse campo.)";
@@ -1081,17 +1081,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Abrir o teclado automaticamente";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Imagens de fundo";
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "Fundo";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Tipo de imagem";
+"ntp.settingsBackgroundImageSubMenu" = "Tipo de suporte multimédia";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Imagens padrão";
 
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Imagens e vídeos patrocinados";
+
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Patrocinadas";
+"ntp.settingsSponsoredImagesSelection" = "Imagens patrocinadas";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Página de nova aba";
@@ -1413,6 +1416,9 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Permitir a análise de produtos com preservação da privacidade (P3A)";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "Fechar chamada de produto com preservação de privacidade";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Sua conexão com este site não é totalmente segura.";
@@ -2258,28 +2264,28 @@
 "rewards.braveTalkRewardsOptInTitle" = "Para iniciar uma chamada gratuita, ative o Brave Rewards";
 
 /* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "Ative para apoiar criadores de conteúdo";
+"rewards.disabledBody" = "Ative para apoiar o Brave e a comunidade BAT.";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Ao usar o Brave Rewards, você apoia os criadores do conteúdo que você acessa.";
+"rewards.disabledStatusBody" = "Ao usar as Brave Rewards está a apoiar o Brave e a comunidade BAT.";
 
 /* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "Você está apoiando criadores de conteúdo";
+"rewards.enabledBody" = "Está a apoiar o Brave e a comunidade BAT.";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "Obrigado por apoiar os criadores do conteúdo que você acessa!";
+"rewards.enabledStatusBody" = "Obrigado por apoiar o Brave e a comunidade BAT.";
 
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Ao clicar, você concorda com os %1$@ e a %2$@. Desative quando quiser nas Configurações.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Ative o Brave Private Ads para apoiar criadores de conteúdo e editores com a exibição de anúncios que respeitam sua privacidade.";
+"rewards.settingsToggleMessage" = "Contribua para apoiar o Brave e a comunidade BAT ativando as Brave Rewards e vendo Anúncios Brave.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Ativar o Brave Rewards";
 
 /* Displayed under verified publishers */
-"rewards.supportingPublisher" = "Você está apoiando criadores de conteúdo como este.";
+"rewards.supportingPublisher" = "Criador de conteúdos com verificação Brave Creators";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Número de criadores de conteúdo que você está apoiando neste mês.";
@@ -3050,7 +3056,7 @@
 "SyncChooseDeviceHeader" = "Escolha o tipo de dispositivo que deseja sincronizar.";
 
 /* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "O código expirou. Gere um novo clicando no botão abaixo.";
+"SyncCodeExpirationTitleLabel" = "O código expirou. Toque no botão abaixo para gerar outro.";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "Este código temporário é válido para o próximo %@";
