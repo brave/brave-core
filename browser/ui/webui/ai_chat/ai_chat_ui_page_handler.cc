@@ -6,7 +6,9 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 
 #include <memory>
+#include <string>
 #include <utility>
+#include <vector>
 
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
@@ -170,6 +172,7 @@ void AIChatUIPageHandler::ChatContextObserver::WebContentsDestroyed() {
 }
 
 void AIChatUIPageHandler::HandleWebContentsDestroyed() {
+  active_chat_tab_helper_ = nullptr;
   chat_tab_helper_observation_.Reset();
   chat_context_observer_.reset();
 }
