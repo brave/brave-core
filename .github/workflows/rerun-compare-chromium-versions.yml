@@ -39,8 +39,9 @@ jobs:
                   run_id="$(gh api "/repos/$GITHUB_REPOSITORY/actions/workflows/compare-chromium-versions.yml/runs?head_sha=${head_sha:?}" -q '.workflow_runs[0].id')"
                   if [[ "$run_id" ]]; then
                       echo "Rerunning for https://github.com/brave/brave-core/pull/${pr_number:?}"
-                      # TODO: remove echo
+                      # TODO: remove echo and add sleep
                       echo gh -R "$GITHUB_REPOSITORY" run rerun "${run_id:?}"
                   fi
-              done < <(gh -R "$GITHUB_REPOSITORY" pr list --state open --base "$GITHUB_BASE_REF" --json number,headRefOid -q '.[]|"\(.number)\t\(.headRefOid)"')
+                  sleep 1
+              done < <(gh -R "$GITHUB_REPOSITORY" pr list --limit 1000 --state open --base "$GITHUB_BASE_REF" --json number,headRefOid -q '.[]|"\(.number)\t\(.headRefOid)"')
           fi
