@@ -10,37 +10,37 @@ on:
     types:
       - closed
 
-permissions:
-  pull-requests: write
-
 jobs:
   rerun-compare-chromium-versions:
     # TODO: uncomment
-    #if: github.event.pull_request.merged == 'true'
+    #if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PR_SHA: ${{ github.event.pull_request.head.sha }}
+      TARGET_SHA: ${{ github.event.pull_request.base.sha }}
     steps:
       - run: |
           shopt -s inherit_errexit
-          # TODO: remove -x
-          set -xeEo pipefail
+          set -eEo pipefail
 
           chromium_ver() { curl -fsS "https://raw.githubusercontent.com/${GITHUB_REPOSITORY:?}/${1:?}/package.json"|jq -r .config.projects.chrome.tag; }
 
-          # TODO: Replace PR_SHA with GITHUB_HEAD_REF here and in compare-chromium-version
           pr_ver="$(chromium_ver "${PR_SHA:?}")"
-          # TODO: this will need to be a sha
-          target_ver="$(chromium_ver "${GITHUB_BASE_REF:?}")"
+          target_ver="$(chromium_ver "${TARGET_SHA:?}")"
+
+          echo "::notice::PR branch: ${pr_ver:?}, target branch: ${target_ver:?}"
 
           if [[ "${pr_ver%%.*}" != "${target_ver%%.*}" ]]; then
               while read -r pr_number head_sha; do
                   run_id="$(gh api "/repos/$GITHUB_REPOSITORY/actions/workflows/compare-chromium-versions.yml/runs?head_sha=${head_sha:?}" -q '.workflow_runs[0].id')"
+                  pr_url="https://github.com/brave/brave-core/pull/${pr_number:?}"
                   if [[ "$run_id" ]]; then
-                      echo "Rerunning for https://github.com/brave/brave-core/pull/${pr_number:?}"
+                      echo "Rerunning for $pr_url"
                       # TODO: remove echo and add sleep
                       echo gh -R "$GITHUB_REPOSITORY" run rerun "${run_id:?}"
+                  else
+                      echo "No run found for $pr_url"
                   fi
                   sleep 1
               done < <(gh -R "$GITHUB_REPOSITORY" pr list --limit 1000 --state open --base "$GITHUB_BASE_REF" --json number,headRefOid -q '.[]|"\(.number)\t\(.headRefOid)"')
