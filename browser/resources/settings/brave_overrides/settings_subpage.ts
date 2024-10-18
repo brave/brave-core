@@ -12,8 +12,8 @@ RegisterStyleOverride(
     <style include="settings-shared">
     :host{
         min-height: auto !important;
-        display:inline;
-        position:relative;
+        display: inline;
+        position: relative;
     }
     :host(:not(.multi-card)) {
         background-color: var(--leo-color-page-background) !important;
