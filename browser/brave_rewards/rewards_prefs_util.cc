@@ -29,6 +29,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   prefs->ClearPref(prefs::kAdsEnabledTimestamp);
   prefs->ClearPref(prefs::kAdsEnabledTimeDelta);
 
+  // Added 03/2023
   prefs->ClearPref(prefs::kFetchOldBalance);
   prefs->ClearPref(prefs::kEmptyBalanceChecked);
   prefs->ClearPref(prefs::kPromotionCorruptedMigrated);

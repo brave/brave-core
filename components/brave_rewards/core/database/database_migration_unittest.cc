@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/database/database_migration.h"
+
 #include <utility>
 #include <vector>
 
@@ -13,11 +15,9 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom-test-utils.h"
-#include "brave/components/brave_rewards/core/database/database_migration.h"
+#include "brave/components/brave_rewards/core/common/prefs.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
-#include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/test/test_rewards_engine_client.h"
 #include "build/build_config.h"
@@ -736,8 +736,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_30_NonJapan) {
 TEST_F(RewardsDatabaseMigrationTest, Migration_30_Japan) {
   DatabaseMigration::SetTargetVersionForTesting(30);
   InitializeDatabaseAtVersion(29);
-  mojom::RewardsEngineClientAsyncWaiter(&client()).SetStringState(
-      state::kDeclaredGeo, "JP");
+  engine().Get<Prefs>().SetString(prefs::kDeclaredGeo, "JP");
   InitializeEngine();
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 0);
   EXPECT_EQ(CountTableRows("unblinded_tokens_bap"), 1);
@@ -760,8 +759,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_32_NonJapan) {
 TEST_F(RewardsDatabaseMigrationTest, Migration_32_Japan) {
   DatabaseMigration::SetTargetVersionForTesting(32);
   InitializeDatabaseAtVersion(30);
-  mojom::RewardsEngineClientAsyncWaiter(&client()).SetStringState(
-      state::kDeclaredGeo, "JP");
+  engine().Get<Prefs>().SetString(prefs::kDeclaredGeo, "JP");
   InitializeEngine();
   EXPECT_EQ(CountTableRows("balance_report_info"), 0);
 }

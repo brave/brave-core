@@ -4,8 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/core/common/prefs.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
@@ -59,8 +59,8 @@ class TransitionWalletCreate
 TEST_P(TransitionWalletCreate, Paths) {
   const auto& [ignore, to, wallet_already_exists, expected] = GetParam();
 
-  engine().SetState(
-      state::kWalletUphold,
+  engine().Get<Prefs>().SetString(
+      prefs::kWalletUphold,
       wallet_already_exists ? FakeEncryption::Base64EncryptString("{}") : "");
 
   const auto wallet = TransitionWallet(engine(), constant::kWalletUphold, to);
