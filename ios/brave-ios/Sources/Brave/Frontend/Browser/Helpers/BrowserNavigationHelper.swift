@@ -81,18 +81,24 @@ class BrowserNavigationHelper {
   }
 
   func openVPNBuyScreen(iapObserver: BraveVPNInAppPurchaseObserver) {
-    guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else { return }
-    vc.openAuthenticationVPNInNewTab = { [weak bvc] in
+    guard BraveVPN.vpnState.isPaywallEnabled else { return }
+
+    let vpnPaywallView = BraveVPNPaywallView(openVPNAuthenticationInNewTab: { [weak bvc] in
       guard let bvc = bvc else { return }
+
+      bvc.popToBVC()
 
       bvc.openURLInNewTab(
         .brave.braveVPNRefreshCredentials,
         isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing,
         isPrivileged: false
       )
-    }
+    })
 
-    open(vc, doneButton: DoneButton(style: .done, position: .left))
+    open(
+      UIHostingController(rootView: vpnPaywallView),
+      doneButton: DoneButton(style: .done, position: .left)
+    )
   }
 
   func openShareSheet() {
