@@ -150,6 +150,7 @@ pub(crate) enum CosmeticFilterLocationType {
     NotEntity,
     Hostname,
     NotHostname,
+    Unsupported,
 }
 
 /// Contains hashes of all of the comma separated location items that were populated before the
@@ -186,6 +187,10 @@ impl CosmeticFilter {
                 hostname.len()
             };
             let location = &hostname[start..end];
+            // AdGuard regex syntax
+            if location.starts_with('/') {
+                return Some((CosmeticFilterLocationType::Unsupported, part));
+            }
             Some(match (negation, entity) {
                 (true, true) => (CosmeticFilterLocationType::NotEntity, location),
                 (true, false) => (CosmeticFilterLocationType::NotHostname, location),
@@ -216,6 +221,7 @@ impl CosmeticFilter {
             return Err(CosmeticFilterError::LocationModifiersUnsupported);
         }
 
+        let mut any_unsupported = false;
         for (location_type, location) in Self::locations_before_sharp(line, sharp_index) {
             let mut hostname = String::new();
             if location.is_ascii() {
@@ -232,7 +238,19 @@ impl CosmeticFilter {
                 CosmeticFilterLocationType::NotHostname => not_hostnames_vec.push(hash),
                 CosmeticFilterLocationType::Entity => entities_vec.push(hash),
                 CosmeticFilterLocationType::Hostname => hostnames_vec.push(hash),
+                CosmeticFilterLocationType::Unsupported => {
+                    any_unsupported = true;
+                }
             }
+        }
+        // Discard the rule altogether if there are no supported location types
+        if any_unsupported
+            && hostnames_vec.is_empty()
+            && entities_vec.is_empty()
+            && not_hostnames_vec.is_empty()
+            && not_entities_vec.is_empty()
+        {
+            return Err(CosmeticFilterError::UnsupportedSyntax);
         }
 
         /// Sorts `vec` and wraps it in `Some` if it's not empty, or returns `None` if it is.
@@ -2165,6 +2183,13 @@ mod matching_tests {
     #[test]
     fn zero_width_space() {
         assert!(parse_cf(r#"​##a[href^="https://www.g2fame.com/"] > img"#).is_err());
+    }
+
+    #[test]
+    fn adg_regex() {
+        assert!(parse_cf(r"/^dizipal\d+\.com$/##.web").is_err());
+        // Filter is still salvageable if at least one location is supported
+        assert!(parse_cf(r"/^dizipal\d+\.com,test.net$/##.web").is_ok());
     }
 
     #[test]
