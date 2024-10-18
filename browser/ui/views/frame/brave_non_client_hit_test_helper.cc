@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "ui/base/hit_test.h"
@@ -48,6 +49,12 @@ int NonClientHitTest(BrowserView* browser_view,
     return hit_test_result;
   }
 
+  // Below checking is only for dragging with tab when vertical tab is
+  // enabled and title is hidden.
+  if (!tabs::utils::ShouldShowVerticalTabs(browser_view->browser())) {
+    return HTNOWHERE;
+  }
+
   // Now we have only resizable areas.
   if (point_in_widget.x() <= kResizableArea &&
       point_in_widget.y() <= kResizableArea) {
@@ -59,35 +66,11 @@ int NonClientHitTest(BrowserView* browser_view,
     return HTTOPRIGHT;
   }
 
-  if (point_in_widget.x() <= kResizableArea &&
-      point_in_widget.y() >= (widget_bounds.bottom() - kResizableArea)) {
-    return HTBOTTOMLEFT;
-  }
-
-  if (point_in_widget.x() >= (widget_bounds.right() - kResizableArea) &&
-      point_in_widget.y() >= (widget_bounds.bottom() - kResizableArea)) {
-    return HTBOTTOMRIGHT;
-  }
-
-  if (point_in_widget.x() <= kResizableArea) {
-    return HTLEFT;
-  }
-
-  if (point_in_widget.x() >= (widget_bounds.right() - kResizableArea)) {
-    return HTRIGHT;
-  }
-
   if (point_in_widget.y() <= kResizableArea) {
     return HTTOP;
   }
 
-  if (point_in_widget.y() <= (widget_bounds.bottom() - kResizableArea)) {
-    return HTBOTTOM;
-  }
-
-  NOTREACHED_IN_MIGRATION()
-      << "This shouldn't happen. Maybe due to inclusive/exclusive comparison?";
-  return hit_test_result;
+  return HTNOWHERE;
 }
 
 }  // namespace brave
