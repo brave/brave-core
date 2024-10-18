@@ -1,0 +1,22 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_cr_elements_replace_files = [
+  "cr_button/cr_button.html.ts",
+  "cr_button/cr_button.ts",
+  "cr_toggle/cr_toggle.html.ts",
+  "cr_toggle/cr_toggle.ts",
+  "cr_toolbar/cr_toolbar_search_field.css",
+  "cr_toolbar/cr_toolbar_search_field.html.ts",
+  "cr_toolbar/cr_toolbar_search_field.ts",
+  "cr_toolbar/cr_toolbar.css",
+  "cr_toolbar/cr_toolbar.html.ts",
+  "cr_toolbar/cr_toolbar.ts",
+]
+
+brave_cr_elements_override_files = [
+  "cr_icon/cr_icon.ts",
+  "cr_toolbar/cr_toolbar_selection_overlay.css",
+]

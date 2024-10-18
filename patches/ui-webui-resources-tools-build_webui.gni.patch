@@ -1,24 +1,32 @@
 diff --git a/ui/webui/resources/tools/build_webui.gni b/ui/webui/resources/tools/build_webui.gni
-index f64b09894c1ae..c870f62b65c3e 100644
+index f64b09894c1ae..3dee5232a902a 100644
 --- a/ui/webui/resources/tools/build_webui.gni
 +++ b/ui/webui/resources/tools/build_webui.gni
-@@ -190,6 +190,7 @@ template("build_webui") {
+@@ -111,6 +111,7 @@ template("build_webui") {
+       css_wrapper_files += [ f + ".ts" ]
+     }
+   }
++  override_output_files = [] if (defined(invoker.override_files)) { foreach(override, invoker.override_files) { override_output_files += [get_path_info(override, "dir") + "/" + get_path_info(override, "name") + "-chromium." + get_path_info(override, "extension") ] } } override_ts_files = filter_include(override_output_files, ["*.ts"]) if (defined(invoker.css_files)) { override_css_files = filter_include(override_output_files, ["*.css"]) foreach(f, override_css_files) { css_wrapper_files += [f + ".ts" ] } }
+ 
+   # Generated Mojo JS files.
+   if (defined(invoker.mojo_files)) {
+@@ -190,6 +191,7 @@ template("build_webui") {
          enable_removal_comments = enable_source_maps
        }
        in_files = ts_files
-+      if (defined(invoker.exclude_ts_preprocess_files)) { in_files -= invoker.exclude_ts_preprocess_files } if (defined(invoker.preprocess_deps)) { public_deps = invoker.preprocess_deps }
++      if (defined(invoker.override_files)) {         override_files = filter_include(invoker.override_files + invoker.replace_files, ["*.ts"]) override_file_outputs = override_ts_files } if (defined(invoker.exclude_ts_preprocess_files)) { in_files -= invoker.exclude_ts_preprocess_files } if (defined(invoker.preprocess_deps)) { public_deps = invoker.preprocess_deps } 
      }
    }
  
-@@ -240,6 +241,7 @@ template("build_webui") {
+@@ -240,6 +242,7 @@ template("build_webui") {
        if (defined(invoker.css_files)) {
          in_files += invoker.css_files
        }
-+      if (defined(invoker.exclude_html_css_preprocess_files)) { in_files -= invoker.exclude_html_css_preprocess_files } if (defined(invoker.preprocess_deps)) { public_deps = invoker.preprocess_deps }
++      if (defined(invoker.override_files)) { override_files = filter_include(invoker.override_files + invoker.replace_files, ["*.css"]) override_file_outputs = override_css_files } if (defined(invoker.exclude_html_css_preprocess_files)) { in_files -= invoker.exclude_html_css_preprocess_files } if (defined(invoker.preprocess_deps)) { public_deps = invoker.preprocess_deps }
      }
    }
  
-@@ -266,6 +268,7 @@ template("build_webui") {
+@@ -266,6 +269,7 @@ template("build_webui") {
            }
          }
        }
@@ -26,3 +34,19 @@ index f64b09894c1ae..c870f62b65c3e 100644
      }
    }
  
+@@ -276,6 +280,7 @@ template("build_webui") {
+       in_folder = preprocess_dir
+       out_folder = preprocess_dir
+       in_files = invoker.css_files
++      in_files += override_css_files
+       minify = optimize
+     }
+   }
+@@ -350,6 +355,7 @@ template("build_webui") {
+     }
+ 
+     in_files = ts_files
++    in_files += override_ts_files
+     if (defined(invoker.ts_deps)) {
+       path_mappings_file = "$target_gen_dir/path_mappings_build_path_map.json"
+       extra_deps = [ ":build_path_map" ]

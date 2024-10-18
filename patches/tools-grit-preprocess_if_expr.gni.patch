@@ -1,0 +1,12 @@
+diff --git a/tools/grit/preprocess_if_expr.gni b/tools/grit/preprocess_if_expr.gni
+index 850bff9aa94b4..7e7d901d77a2a 100644
+--- a/tools/grit/preprocess_if_expr.gni
++++ b/tools/grit/preprocess_if_expr.gni
+@@ -55,6 +55,7 @@ template("preprocess_if_expr") {
+              "--in-files",
+            ] + invoker.in_files + grit_args
+ 
++    if (defined(invoker.override_files)) { override_in_folder = string_replace(get_path_info(rebase_path(in_folder), "abspath"), "//", "//brave/") foreach(override, invoker.override_files) { inputs += [ "$override_in_folder/" + override ] } foreach(output_file, invoker.override_file_outputs) { outputs += ["$out_folder/$output_file"] } args += [ "--override-in-folder", rebase_path(override_in_folder, root_build_dir), "--overrides", ] + invoker.override_files }
+     if (defined(invoker.defines)) {
+       foreach(define, invoker.defines) {
+         args += [

@@ -42,29 +42,15 @@ if (!is_android && !is_ios) {
     # and not //ui/webui/resources which is the default for build_cr_component.
     if (!is_android && !is_ios) {
       non_web_component_files = [
-        "br_elements/br_toolbar/br_toolbar.ts",
-        "br_elements/br_toolbar/br_toolbar.html.ts",
-        "br_elements/br_toolbar/br_toolbar_search_field.ts",
-        "br_elements/br_toolbar/br_toolbar_search_field.html.ts",
         "lit_overriding.ts",
         "polymer_overriding.ts",
       ]
-
-      # All the cr_overrides we add should be included in the build.
-      foreach(cr_override, brave_override_cr_elements) {
-        non_web_component_files += [
-          "cr_elements/$cr_override/$cr_override.ts",
-          "cr_elements/$cr_override/$cr_override.html.ts",
-        ]
-      }
     }
 
     if (!is_android && !is_ios) {
       css_files = [
         "br_elements/br_shared_style.css",
         "br_elements/br_shared_vars.css",
-        "br_elements/br_toolbar/br_toolbar.css",
-        "br_elements/br_toolbar/br_toolbar_search_field.css",
         "page_specific/settings/br_settings_shared.css",
       ]
     }
@@ -100,7 +86,6 @@ if (!is_android && !is_ios) {
     "page_specific/settings/settings_loading_shim.css",
     "page_specific/bookmarks/bookmarks_loading_shim.css",
     "page_specific/extensions/extensions_loading_shim.css",
-    "br_elements/br_toolbar/br_toolbar_selection_overlay_overrides.css",
   ]
 }
 
