@@ -136,13 +136,6 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
   "entries": [
     // Critical endpoints that should remain unpinned so that they
     // always work.
-    // TODO(djandries): remove laptop-updates once
-    // https://github.com/brave/brave-browser/issues/16374 hits release
-    {
-      "name": "laptop-updates.brave.com",
-      "mode": "force-https",
-      "policy": "custom"
-    },
     {
       "name": "updates.bravesoftware.com",
       "mode": "force-https",

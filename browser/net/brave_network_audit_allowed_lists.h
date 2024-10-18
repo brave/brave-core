@@ -23,10 +23,6 @@ inline constexpr const char* kAllowedUrlPrefixes[] = {
     "https://updates.bravesoftware.com/",
 
     // stats/referrals
-    // TODO(djandries): remove laptop-updates and laptop-updates-staging once
-    // https://github.com/brave/brave-browser/issues/16374 hits release
-    "https://laptop-updates.brave.com/",
-    "https://laptop-updates-staging.brave.com/",
     "https://usage-ping.brave.com/",
 
     // needed for DoH on Mac build machines
