@@ -9,12 +9,7 @@
 #include "base/no_destructor.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
 
-class KeyedService;
 class Profile;
-
-namespace content {
-class BrowserContext;
-}
 
 namespace safe_browsing {
 
@@ -39,8 +34,6 @@ class ExtensionTelemetryServiceFactory : public ProfileKeyedServiceFactory {
   ~ExtensionTelemetryServiceFactory() override = default;
 
   // BrowserContextKeyedServiceFactory:
-  content::BrowserContext* GetBrowserContextToUse(
-      content::BrowserContext* context) const override;
   bool ServiceIsCreatedWithBrowserContext() const override;
   bool ServiceIsNULLWhileTesting() const override;
 };
