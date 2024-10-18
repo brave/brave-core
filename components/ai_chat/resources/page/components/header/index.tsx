@@ -12,7 +12,7 @@ import styles from './style.module.scss'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
-import useIsConversationVisible from '../../hooks/useIsConversationVisible'
+import { useSelectedConversation } from '../../routes'
 
 const Logo = ({ isPremium }: { isPremium: boolean }) => <div className={styles.logo}>
   <Icon name='product-brave-leo' />
@@ -36,22 +36,19 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
   const shouldDisplayEraseAction = !aiChatContext.isStandalone &&
     conversationContext.conversationHistory.length >= 1
 
-  const newConversation = () => {
-    aiChatContext.onNewConversation()
-  }
-
   const activeConversation = aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
-  const showTitle = (!aiChatContext.isDefaultConversation || aiChatContext.isStandalone)
-  const isVisible = useIsConversationVisible(conversationContext.conversationUuid)
+  const conversationId = useSelectedConversation()
+  const isDefault = conversationId === 'default'
+  const showTitle = aiChatContext.isStandalone || !isDefault
 
   return (
     <div className={styles.header} ref={ref}>
       {showTitle ? (
         <div className={styles.pageTitle}>
-          {isVisible && <Button
+          {!isDefault && !aiChatContext.isStandalone && <Button
             kind='plain-faint'
             fab
-            onClick={() => { aiChatContext.onSelectConversationUuid(undefined) }}
+            onClick={() => location.href = "/default"}
           >
             <Icon name='arrow-left' />
           </Button>}
@@ -68,7 +65,7 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
                 kind='plain-faint'
                 aria-label={newChatButtonLabel}
                 title={newChatButtonLabel}
-                onClick={newConversation}
+                onClick={() => location.href = "/"}
               >
                 <Icon name={aiChatContext.isHistoryEnabled ? 'edit-box' : 'erase'} />
               </Button>
@@ -107,10 +104,6 @@ export function SidebarHeader() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
-  const newConversation = () => {
-    aiChatContext.onNewConversation()
-  }
-
   const canStartNewConversation = conversationContext.conversationHistory.length >= 1
     && aiChatContext.hasAcceptedAgreement
 
@@ -127,7 +120,7 @@ export function SidebarHeader() {
             kind='plain-faint'
             aria-label={newChatButtonLabel}
             title={newChatButtonLabel}
-            onClick={newConversation}
+            onClick={() => location.href = "/"}
           >
             <Icon name='edit-box' />
           </Button>

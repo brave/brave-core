@@ -145,15 +145,15 @@ export default function SidebarNav(props: SidebarNavProps) {
             {aiChatContext.visibleConversations.map(item => {
               return (
                 <li key={item.uuid}>
-                  <div
+                  <a
                     className={classnames({
                       [styles.navItem]: true,
                       [styles.navItemActive]: item.uuid === conversationContext.conversationUuid
                     })}
                     onClick={() => {
-                      aiChatContext.onSelectConversationUuid(item.uuid)
                       props.setIsConversationListOpen?.(false)
                     }}
+                    href={`/${item.uuid}`}
                   >
                     {item.uuid === aiChatContext.editingConversationId ? (
                       <div className={styles.editibleTitle}>
@@ -174,7 +174,7 @@ export default function SidebarNav(props: SidebarNavProps) {
                         onDelete={() => getAPI().Service.deleteConversation(item.uuid)}
                       />
                     )}
-                  </div>
+                  </a>
                 </li>
               )
             })}

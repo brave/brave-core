@@ -102,7 +102,7 @@ export default function FullScreen() {
               <Button
                 fab
                 kind='plain-faint'
-                onClick={aiChatContext.onNewConversation}
+                onClick={() => window.location.href = "/"}
               >
                 <Icon name='edit-box' />
               </Button>

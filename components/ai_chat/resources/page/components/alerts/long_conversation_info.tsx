@@ -7,16 +7,14 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
-import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import styles from './alerts.module.scss'
 
 export default function LongConversationInfo() {
   const context = useConversation()
-  const aiChatContext = useAIChat()
 
   const handleClearChat = () => {
-    aiChatContext.onNewConversation()
+    location.href = "/"
     context.dismissLongConversationInfo()
   }
 
