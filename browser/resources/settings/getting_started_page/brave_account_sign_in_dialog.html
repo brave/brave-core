@@ -41,7 +41,7 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
   header-text-top="Sign in to your account"
   header-text-bottom="$i18n{braveSyncBraveAccountDesc}">
   <div slot="body" class="body layout vertical">
-    <leo-input>
+    <leo-input id="email" on-input="onInput">
       <div class="label">Email address</div>
     </leo-input>
     <leo-input>
@@ -52,7 +52,7 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
       <leo-icon slot="right-icon" name="eye-off">
       </leo-icon>
     </leo-input>
-    <leo-button size="medium">
+    <leo-button size="medium" isDisabled$="[[!canSignIn]]">
       Sign in
     </leo-button>
   </div>
