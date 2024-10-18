@@ -49,6 +49,9 @@
     break;                                                 \
   case RequestType::kBraveLocalhostAccessPermission:       \
     message_id = IDS_LOCALHOST_ACCESS_PERMISSION_FRAGMENT; \
+    break;                                                 \
+  case RequestType::kBraveAIChat:                          \
+    message_id = IDS_OPEN_AI_CHAT_PERMISSION_FRAGMENT;     \
     break;
 
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH_ANDROID          \
@@ -58,6 +61,9 @@
     break;                                           \
   case RequestType::kBraveLocalhostAccessPermission: \
     message_id = IDS_LOCALHOST_ACCESS_INFOBAR_TEXT;  \
+    break;                                           \
+  case RequestType::kBraveAIChat:                    \
+    message_id = IDS_AI_CHAT_INFOBAR_TEXT;           \
     break;
 
 namespace {

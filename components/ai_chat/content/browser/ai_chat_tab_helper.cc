@@ -414,6 +414,12 @@ void AIChatTabHelper::GetSearchSummarizerKey(
   page_content_fetcher_delegate_->GetSearchSummarizerKey(std::move(callback));
 }
 
+void AIChatTabHelper::ValidateOpenLeoButtonNonce(
+    mojom::PageContentExtractor::ValidateOpenLeoButtonNonceCallback callback) {
+  page_content_fetcher_delegate_->ValidateOpenLeoButtonNonce(
+      std::move(callback));
+}
+
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);
 
 }  // namespace ai_chat

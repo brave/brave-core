@@ -31,6 +31,7 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
   case RequestType::kBraveSolana:                    \
   case RequestType::kBraveGoogleSignInPermission:    \
   case RequestType::kBraveLocalhostAccessPermission: \
+  case RequestType::kBraveAIChat:                    \
     return IDR_ANDROID_INFOBAR_PERMISSION_COOKIE
 
 // Add Brave cases into GetIconIdDesktop.
@@ -41,6 +42,7 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
   case RequestType::kBraveSolana:                    \
   case RequestType::kBraveGoogleSignInPermission:    \
   case RequestType::kBraveLocalhostAccessPermission: \
+  case RequestType::kBraveAIChat:                    \
     return vector_icons::kExtensionIcon
 
 #define BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE                     \
@@ -53,7 +55,9 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
   case permissions::RequestType::kBraveGoogleSignInPermission:    \
     return "brave_google_sign_in";                                \
   case permissions::RequestType::kBraveLocalhostAccessPermission: \
-    return "brave_localhost_access";
+    return "brave_localhost_access";                              \
+  case permissions::RequestType::kBraveAIChat:                    \
+    return "brave_ai_chat";
 
 #define ContentSettingsTypeToRequestType \
   ContentSettingsTypeToRequestType_ChromiumImpl
@@ -85,6 +89,8 @@ RequestType ContentSettingsTypeToRequestType(
       return RequestType::kBraveGoogleSignInPermission;
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
       return RequestType::kBraveLocalhostAccessPermission;
+    case ContentSettingsType::BRAVE_AI_CHAT:
+      return RequestType::kBraveAIChat;
     case ContentSettingsType::DEFAULT:
       // Currently we have only one DEFAULT type that is
       // not mapped, which is Widevine, it's used for
@@ -107,6 +113,8 @@ std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
       return ContentSettingsType::BRAVE_ETHEREUM;
     case RequestType::kBraveSolana:
       return ContentSettingsType::BRAVE_SOLANA;
+    case RequestType::kBraveAIChat:
+      return ContentSettingsType::BRAVE_AI_CHAT;
     default:
       return RequestTypeToContentSettingsType_ChromiumImpl(request_type);
   }
@@ -118,6 +126,7 @@ bool IsRequestablePermissionType(ContentSettingsType content_settings_type) {
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
     case ContentSettingsType::BRAVE_ETHEREUM:
     case ContentSettingsType::BRAVE_SOLANA:
+    case ContentSettingsType::BRAVE_AI_CHAT:
       return true;
     default:
       return IsRequestablePermissionType_ChromiumImpl(content_settings_type);
