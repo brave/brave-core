@@ -80,6 +80,7 @@ class P3AServiceTest : public testing::Test {
     config_.p3a_json_upload_url = GURL(kTestP3AJsonHost);
     config_.p2a_json_upload_url = GURL(kTestP2AJsonHost);
     config_.p3a_creative_upload_url = GURL(kTestP3ACreativeHost);
+    config_.disable_star_attestation = true;
   }
 
   void TearDown() override { p3a_service_ = nullptr; }
@@ -88,7 +89,6 @@ class P3AServiceTest : public testing::Test {
     p3a_service_ = scoped_refptr(new P3AService(
         local_state_, "release", "2049-01-01", P3AConfig(config_)));
 
-    p3a_service_->DisableStarAttestationForTesting();
     p3a_service_->Init(shared_url_loader_factory_);
     task_environment_.RunUntilIdle();
   }
