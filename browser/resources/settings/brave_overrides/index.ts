@@ -9,8 +9,6 @@
 // where it is not consistant due to "network" responses) and
 // optimized (rollup controls the order in which modules are executed).
 
-import '//resources/brave/br_elements/br_toolbar/br_toolbar.js'
-
 import './config.js'
 import { ContentSettingsTypes } from '../site_settings/constants.js'
 import './all_sites.js'
@@ -19,13 +17,11 @@ import './autofill_page.js'
 import './appearance_page.js'
 import './basic_page.js'
 import './clear_browsing_data_dialog.js'
-import './cr_icon.js'
 import './add_site_dialog.js'
 import './cookies_page.js'
 import './default_browser_page.js'
 import './edit_dictionary_page.js'
 import './import_data_dialog.js'
-import './iron_icon.js'
 import './page_visibility.js'
 import './passwords_section.js'
 import './payments_section.js'

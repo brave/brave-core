@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import type { BraveToolbarSearchField } from "./br_toolbar_search_field.js";
+import type { CrToolbarSearchFieldElement } from "./cr_toolbar_search_field.js";
 import { html } from '//resources/lit/v3_0/lit.rollup.js';
 
-export function getHtml(this: BraveToolbarSearchField) {
+export function getHtml(this: CrToolbarSearchFieldElement) {
   return html`
     <input
       id="pageSearchToggle"

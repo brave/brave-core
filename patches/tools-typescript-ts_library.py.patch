@@ -1,8 +1,16 @@
 diff --git a/tools/typescript/ts_library.py b/tools/typescript/ts_library.py
-index 4dbbb4455516ac35b0df5204bc182fe798468119..d9c92ba253271ce562de70fff4a3bacabc1083ac 100644
+index 4dbbb4455516a..0ce342d4a49ac 100644
 --- a/tools/typescript/ts_library.py
 +++ b/tools/typescript/ts_library.py
-@@ -277,5 +277,6 @@ def main(argv):
+@@ -148,6 +148,7 @@ def main(argv):
+     # Source .ts files are always resolved as being relative to |root_dir|.
+     tsconfig['files'].extend([os.path.join(root_dir, f) for f in args.in_files])
+ 
++  tsconfig['include'] = ["preprocessed/**/*-chromium*.ts"]
+   if args.definitions is not None:
+     for d in args.definitions:
+       assert d.endswith(
+@@ -277,5 +278,6 @@ def main(argv):
        json.dump(manifest_data, manifest_file)
  
  
