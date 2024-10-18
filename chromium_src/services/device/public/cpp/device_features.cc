@@ -23,4 +23,8 @@ const base::FeatureParam<device::mojom::LocationProviderManagerMode>
         device::mojom::LocationProviderManagerMode::kPlatformOnly,
         &location_provider_manager_mode_options};
 
+BASE_FEATURE(kLinuxGeoClueLocationBackend,
+             "LinuxGeoClueLocationBackend",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace features
