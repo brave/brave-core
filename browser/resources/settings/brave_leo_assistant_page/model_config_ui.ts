@@ -37,7 +37,8 @@ export class ModelConfigUI extends ModelConfigUIBase {
         type: Number
       },
       modelSystemPrompt: {
-        type: String
+        type: String,
+        value: ''
       },
       endpointUrl: {
         type: String
@@ -76,7 +77,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
   label: string
   modelRequestName: string
   contextSize: number
-  modelSystemPrompt: string
+  modelSystemPrompt: string | null
   endpointUrl: string
   apiKey: string
   modelItem: mojom.Model | null
