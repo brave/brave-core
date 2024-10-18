@@ -43,17 +43,20 @@ class EngineConsumerClaudeRemote : public EngineConsumer {
   void GenerateQuestionSuggestions(
       const bool& is_video,
       const std::string& page_content,
+      const std::string& selected_language,
       SuggestedQuestionsCallback callback) override;
   void GenerateAssistantResponse(
       const bool& is_video,
       const std::string& page_content,
       const ConversationHistory& conversation_history,
       const std::string& human_input,
+      const std::string& selected_language,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) override;
   void GenerateRewriteSuggestion(
       std::string text,
       const std::string& question,
+      const std::string& selected_language,
       GenerationDataCallback received_callback,
       GenerationCompletedCallback completed_callback) override;
   void SanitizeInput(std::string& input) override;
