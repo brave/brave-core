@@ -914,15 +914,9 @@ class BookmarksExportListener : public ui::SelectFileDialog::Listener {
   explicit BookmarksExportListener(Profile* profile) : profile_(profile) {}
   void FileSelected(const ui::SelectedFileInfo& file, int index) override {
     bookmark_html_writer::WriteBookmarks(profile_, file.file_path, nullptr);
-    std::cout << "Bookmarks exported to " << file.file_path.value()
-              << std::endl;
-
     delete this;
   }
-  void FileSelectionCanceled() override {
-    std::cout << "File selection for bookmarks export canceled" << std::endl;
-    delete this;
-  }
+  void FileSelectionCanceled() override { delete this; }
 
  private:
   raw_ptr<Profile> profile_;
