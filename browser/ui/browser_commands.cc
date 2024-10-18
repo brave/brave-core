@@ -948,7 +948,7 @@ void ExportAllBookmarks(Browser* browser) {
 
   listener->fileSelector = ui::SelectFileDialog::Create(listener, nullptr);
   listener->fileSelector->SelectFile(
-      ui::SelectFileDialog::SELECT_SAVEAS_FILE, u"Export Bookmarks",
+      ui::SelectFileDialog::SELECT_SAVEAS_FILE, l10n_util::GetStringUTF16(IDS_BOOKMARK_MANAGER_MENU_EXPORT),
       base::FilePath::FromUTF8Unsafe(defaultBookmarksFilename), &file_types, 1,
       FILE_PATH_LITERAL("html"), browser->window()->GetNativeWindow(), nullptr);
 }
