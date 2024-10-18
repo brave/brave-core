@@ -789,7 +789,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletSystemProgramAssignWarningTitle",
      IDS_BRAVE_WALLET_SYSTEM_PROGRAM_ASSIGN_WARNING_TITLE},
     {"braveWalletSystemProgramAssignWarningDescription",
-    IDS_BRAVE_WALLET_SYSTEM_PROGRAM_ASSIGN_WARNING_DESCRIPTION},
+     IDS_BRAVE_WALLET_SYSTEM_PROGRAM_ASSIGN_WARNING_DESCRIPTION},
     {"braveWalletTransactionGasLimit", IDS_BRAVE_WALLET_TRANSACTION_GAS_LIMIT},
     {"braveWalletTransactionGasPremium",
      IDS_BRAVE_WALLET_TRANSACTION_GAS_PREMIUM},
