@@ -262,6 +262,7 @@ test("brave_unit_tests") {
     "//brave/components/url_sanitizer/browser:unittests",
     "//brave/components/variations:unit_tests",
     "//brave/components/version_info:unit_tests",
+    "//brave/components/webcompat_reporter/browser:unittests",
     "//brave/extensions:common",
     "//brave/mojo/brave_ast_patcher:unit_tests",
     "//brave/net:unit_tests",
