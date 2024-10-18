@@ -17,7 +17,9 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/buildflags.h"
+#include "components/browsing_data/content/browsing_data_helper.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "content/public/browser/browsing_data_remover.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -68,6 +70,17 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
     ClearAiChatHistory(delete_begin, delete_end);
   }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+  if ((remove_mask & content::BrowsingDataRemover::DATA_TYPE_COOKIES) ||
+      (remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY)) {
+    HostContentSettingsMap::PatternSourcePredicate website_settings_filter =
+        browsing_data::CreateWebsiteSettingsFilter(filter_builder);
+    HostContentSettingsMap* host_content_settings_map =
+        HostContentSettingsMapFactory::GetForProfile(profile_);
+    host_content_settings_map->ClearSettingsForOneTypeWithPredicate(
+        ContentSettingsType::BRAVE_SHIELDS_METADATA, delete_begin, delete_end,
+        website_settings_filter);
+  }
 }
 
 void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(

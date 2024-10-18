@@ -8,6 +8,7 @@
 #include "base/path_service.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -31,8 +32,12 @@ constexpr char kTitleScript[] = "document.title";
 class BraveSpeechSynthesisFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveSpeechSynthesisFarblingBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        webcompat::features::kBraveWebcompatExceptionsService);
+    scoped_feature_list_.InitWithFeatures(
+        {
+            brave_shields::features::kBraveShowStrictFingerprintingMode,
+            webcompat::features::kBraveWebcompatExceptionsService,
+        },
+        {});
   }
 
   void SetUpOnMainThread() override {
