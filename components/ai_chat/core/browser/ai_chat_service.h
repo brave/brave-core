@@ -63,6 +63,8 @@ class AIChatService : public KeyedService,
       ConversationHandler* handler,
       std::vector<mojom::ConversationTurnPtr> entries) override;
   void OnClientConnectionChanged(ConversationHandler* handler) override;
+  void OnConversationTitleChanged(ConversationHandler* handler,
+                                  std::string title) override;
 
   // Adds new conversation and returns the handler
   ConversationHandler* CreateConversation();
@@ -94,6 +96,9 @@ class AIChatService : public KeyedService,
   void GetCanShowPremiumPrompt(
       GetCanShowPremiumPromptCallback callback) override;
   void DismissPremiumPrompt() override;
+  void DeleteConversation(const std::string& id) override;
+  void RenameConversation(const std::string& id,
+                          const std::string& new_name) override;
 
   void BindConversation(
       const std::string& uuid,
