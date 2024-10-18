@@ -17,6 +17,12 @@ import {getTemplate} from './brave_account_sign_in_dialog.html.js'
  * 'settings-brave-account-sign-in-dialog'...
  */
 
+interface SettingsBraveAccountSignInDialogElement {
+  $: {
+    email: HTMLInputElement,
+  };
+}
+
 class SettingsBraveAccountSignInDialogElement extends PolymerElement {
   static get is() {
     return 'settings-brave-account-sign-in-dialog'
@@ -27,25 +33,20 @@ class SettingsBraveAccountSignInDialogElement extends PolymerElement {
   }
 
   static get properties() {
-    return {
-      isTermsAccepted_: {
-        type: Boolean,
-        value: false,
-      },
-      isEmailAddressInvalid_: {
-        type: Boolean,
-        value: true,
-      },
-    };
+    return {}
   }
 
-  protected onConditionsChanged_() {
-    this.canCreateAccount_ = this.isTermsAccepted_ && !this.isEmailAddressInvalid_;
+  private onInput() {
+    this.canSignIn = Boolean(this.$.email.value.match('^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$'))
   }
 
-  private isTermsAccepted_: boolean = false;
-  private isEmailAddressInvalid_: boolean = true;
-  private canCreateAccount_: boolean = false;
+  private canSignIn: boolean = false;
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'settings-brave-account-sign-in-dialog': SettingsBraveAccountSignInDialogElement;
+  }
 }
 
 customElements.define(
