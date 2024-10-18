@@ -930,14 +930,8 @@ class BookmarksExportListener : public ui::SelectFileDialog::Listener {
 }  // namespace
 
 void ExportAllBookmarks(Browser* browser) {
-  const std::time_t t = std::time(0);
-  const std::tm* time = std::localtime(&t);
-  const std::string year = std::to_string(time->tm_year + 1900);
-  const std::string month = std::to_string(time->tm_mon + 1);
-  const std::string day = std::to_string(time->tm_mday);
-  const std::string formatted_time = year + "_" + month + "_" + day;
-  const std::string defaultBookmarksFilename = base::StringPrintf(
-      "%s_Brave_browser_bookmarks.html", formatted_time.c_str());
+  // #include "base/i18n/time_formatting.h"
+  const std::string filename = base::UnlocalizedTimeFormatWithPattern(base::Now(), "yyyy-MM-dd", nullptr) + "_brave_browser_bookmarks.html";
 
   ui::SelectFileDialog::FileTypeInfo file_types;
 
