@@ -201,6 +201,8 @@ struct CustomModelOptions {
   uint32 max_associated_content_length;
   // max limit for overall conversation (measured in chars, not tokens)
   uint32 long_conversation_warning_character_limit;
+  // a user-specified prompt to be used with the model
+  string? model_system_prompt;
   url.mojom.Url endpoint;
   string api_key;
 };

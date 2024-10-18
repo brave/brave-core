@@ -62,6 +62,9 @@ class EngineConsumerOAIUnitTest : public testing::Test {
     options->model_request_name = "request_name";
     options->context_size = 5000;
     options->max_associated_content_length = 17200;
+    options->model_system_prompt = "This is a custom system prompt.";
+    options->context_size = 5000;
+    options->max_associated_content_length = 17200;
     options->api_key = "api_key";
 
     model_ = mojom::Model::New();
@@ -102,6 +105,7 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
         auto options = mojom::CustomModelOptions::New();
         options->endpoint = GURL("https://updated-test.com");
         options->model_request_name = "request_name";
+        options->model_system_prompt = "";
         options->api_key = "api_key";
 
         model_ = mojom::Model::New();
@@ -197,12 +201,98 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
-TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
+TEST_F(EngineConsumerOAIUnitTest,
+       GenerateAssistantResponseWithDefaultSystemPrompt) {
+  // Create a set of options WITHOUT a custom system prompt.
+  auto options = mojom::CustomModelOptions::New();
+  options->endpoint = GURL("https://test.com/");
+  options->model_request_name = "request_name";
+  options->api_key = "api_key";
+
+  // Build a new model with the prompt-less options.
+  model_ = mojom::Model::New();
+  model_->key = "test_model_key";
+  model_->display_name = "Test Model Display Name";
+  model_->options =
+      mojom::ModelOptions::NewCustomModelOptions(std::move(options));
+
+  // Create a new engine with the new model.
+  engine_ = std::make_unique<EngineConsumerOAIRemote>(
+      *model_->options->get_custom_model_options(), nullptr);
+  engine_->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
+
+  EngineConsumer::ConversationHistory history;
+
+  // Critical strings for the test.
+  std::string human_input = "Hello, how are you?";
+  std::string assistant_response = "I'm fine, thank you.";
+
+  std::string date_and_time_string =
+      base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
+
+  std::string expected_system_message = base::ReplaceStringPlaceholders(
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_DEFAULT_CUSTOM_MODEL_SYSTEM_PROMPT),
+      {date_and_time_string}, nullptr);
+
+  // Push a single user turn into the history.
+  history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN,                 // Author is the user
+      mojom::ActionType::UNSPECIFIED,              // No specific action
+      mojom::ConversationTurnVisibility::VISIBLE,  // Visible to the user
+      human_input,                                 // User message
+      std::nullopt,                                // No selected text
+      std::nullopt,                                // No events
+      base::Time::Now(),                           // Current time
+      std::nullopt,                                // No message edits
+      false                                        // Not from Brave SERP
+      ));
+
+  // Prepare to capture API client request
+  auto* client = GetClient();
+  auto run_loop = std::make_unique<base::RunLoop>();
+
+  // Expect a single call to PerformRequest
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+      .WillOnce(
+          [&](const mojom::CustomModelOptions, base::Value::List messages,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback) {
+            // system role is added by the engine
+            EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+            EXPECT_EQ(*messages[0].GetDict().Find("content"),
+                      expected_system_message);
+
+            EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+            EXPECT_EQ(*messages[1].GetDict().Find("content"), human_input);
+
+            std::move(completed_callback)
+                .Run(EngineConsumer::GenerationResult(assistant_response));
+          });
+
+  // Initiate the test
+  engine_->GenerateAssistantResponse(
+      /* is_video */ false, "", history, human_input, base::DoNothing(),
+      base::BindLambdaForTesting([&run_loop, &assistant_response](
+                                     EngineConsumer::GenerationResult result) {
+        EXPECT_STREQ(result.value().c_str(), assistant_response.c_str());
+        run_loop->Quit();
+      }));
+
+  // Run the test
+  run_loop->Run();
+
+  // Verify the expectations
+  testing::Mock::VerifyAndClearExpectations(client);
+}
+
+TEST_F(EngineConsumerOAIUnitTest,
+       TestGenerateAssistantResponseWithCustomSystemPrompt) {
   EngineConsumer::ConversationHistory history;
 
   std::string human_input = "Which show is this catchphrase from?";
   std::string selected_text = "This is the way.";
   std::string assistant_input = "This is mandalorian.";
+  std::string expected_system_message = "This is a custom system prompt.";
 
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
@@ -213,13 +303,6 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
       mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       mojom::ConversationTurnVisibility::VISIBLE, assistant_input, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, false));
-
-  std::string date_and_time_string =
-      base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
-  std::string expected_system_message =
-      base::StrCat({base::ReplaceStringPlaceholders(
-          l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC),
-          {date_and_time_string}, nullptr)});
 
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();

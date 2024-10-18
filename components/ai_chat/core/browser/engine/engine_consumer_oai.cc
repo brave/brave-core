@@ -45,6 +45,7 @@ using mojom::CharacterType;
 using mojom::ConversationTurn;
 
 base::Value::List BuildMessages(
+    const mojom::CustomModelOptions& model_options,
     const std::string& page_content,
     const std::optional<std::string>& selected_text,
     const bool& is_video,
@@ -53,11 +54,22 @@ base::Value::List BuildMessages(
 
   // Append system message
   {
+    std::string system_message;
     std::string date_and_time_string =
         base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
-    std::string system_message = base::StrCat({base::ReplaceStringPlaceholders(
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC),
-        {date_and_time_string}, nullptr)});
+
+    if (model_options.model_system_prompt &&
+        !model_options.model_system_prompt->empty()) {
+      system_message = model_options.model_system_prompt.value();
+      // Let the user optionally specify the datetime placeholder
+      base::ReplaceSubstringsAfterOffset(&system_message, 0, "%datetime%",
+                                         date_and_time_string);
+    } else {
+      system_message = base::ReplaceStringPlaceholders(
+          l10n_util::GetStringUTF8(
+              IDS_AI_CHAT_DEFAULT_CUSTOM_MODEL_SYSTEM_PROMPT),
+          {date_and_time_string}, nullptr);
+    }
 
     base::Value::Dict message;
     message.Set("role", "system");
@@ -251,8 +263,9 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
       0, selected_text ? max_associated_content_length_ - selected_text->size()
                        : max_associated_content_length_);
 
-  base::Value::List messages = BuildMessages(
-      truncated_page_content, selected_text, is_video, conversation_history);
+  base::Value::List messages =
+      BuildMessages(model_options_, truncated_page_content, selected_text,
+                    is_video, conversation_history);
   api_->PerformRequest(model_options_, std::move(messages),
                        std::move(data_received_callback),
                        std::move(completed_callback));
