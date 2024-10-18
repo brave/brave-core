@@ -131,11 +131,9 @@ if (!window.__firefox__) {
   let $Function = secureCopy(Function);
   let $Reflect = secureCopy(Reflect);
   let $Array = secureCopy(Array);
-  let $webkit = window.webkit;
-  let $MessageHandlers = $webkit.messageHandlers;
 
   secureCopy = undefined;
-  let secureObjects = [$Object, $Function, $Reflect, $Array, $MessageHandlers];
+  let secureObjects = [$Object, $Function, $Reflect, $Array];
 
   /*
    *  Prevent recursive calls if a page overrides these.
@@ -412,14 +410,27 @@ if (!window.__firefox__) {
       return Promise.reject(new TypeError("undefined is not an object (evaluating 'webkit.messageHandlers')"));
     }
 
-    let webkit = window.webkit;
-    delete window.webkit.messageHandlers[messageHandlerName].postMessage;
-    delete window.webkit.messageHandlers[messageHandlerName];
-    delete window.webkit.messageHandlers;
-    delete window.webkit;
-    let result = $MessageHandlers[messageHandlerName].postMessage(message);
-    window.webkit = webkit;
-    return result;
+    return new Promise((resolve, reject) => {
+      var oldWebkit = window.webkit;
+      delete window['webkit'];
+      
+      // WebKit no longer restores the handler immediately! So we poll for when that happens and resolve the promise accordingly.
+      const timeout = 5000;
+      let startTime = Date.now();
+      
+      // While loop blocks synchronously. SetTimeout or SetInterval can cause a race condition.
+      while(true) {
+        if (window.webkit.messageHandlers && window.webkit.messageHandlers[messageHandlerName]) {
+          let result = window.webkit.messageHandlers[messageHandlerName].postMessage(message);
+          window.webkit = oldWebkit;
+          result.then(resolve).catch(reject);
+          break;
+        } else if (Date.now() - startTime >= timeout) {
+          reject(new TypeError("undefined is not an object (evaluating 'webkit.messageHandlers')"));
+          break;
+        }
+      }
+    });
   };
 
   $.dispatchEvent = function(event) {
