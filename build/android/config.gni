@@ -43,6 +43,7 @@ brave_chrome_java_deps = [
   "//brave/components/url_sanitizer/common/mojom:mojom_java",
   "//brave/components/variations/android:java",
   "//brave/components/version_info/android:java",
+  "//brave/components/webcompat_reporter/common:mojom_java",
   "//brave/third_party/android_deps:com_airbnb_android_java",
   "//brave/third_party/android_deps:com_android_installreferrer_java",
   "//brave/third_party/android_deps:com_github_bumptech_glide_java",
@@ -130,6 +131,7 @@ brave_jni_headers_sources = [
   "//brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java",
   "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnNativeWorker.java",
   "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnServiceFactoryAndroid.java",
+  "//brave/android/java/org/chromium/chrome/browser/webcompat_reporter/WebcompatReporterServiceFactory.java",
   "//brave/browser/brave_ads/android/java/org/chromium/chrome/browser/BraveAdsNativeHelper.java",
   "//brave/components/safetynet/java/org/chromium/chrome/browser/util/SafetyNetCheck.java",
 ]

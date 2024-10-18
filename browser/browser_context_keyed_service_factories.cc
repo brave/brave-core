@@ -31,6 +31,7 @@
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
+#include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -132,6 +133,8 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_shields::FilterListServiceFactory::GetInstance();
   ntp_background_images::NTPBackgroundImagesBridgeFactory::GetInstance();
 #endif
+
+  webcompat_reporter::WebcompatReporterServiceFactory::GetInstance();
 
   brave_news::BraveNewsControllerFactory::GetInstance();
   brave_wallet::AssetRatioServiceFactory::GetInstance();

@@ -1,0 +1,54 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/ios/mojom/mojom_wrappers.gni")
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+config("mojom_header_config") {
+  visibility = [
+    ":*",
+    "//brave/ios/app",
+  ]
+  include_dirs =
+      [ "$root_gen_dir/brave/components/webcompat_reporter/common/ios" ]
+}
+
+source_set("webcompat_reporter") {
+  configs += [ ":mojom_header_config" ]
+  sources = [
+    "webcompat_reporter_service_delegate.h",
+    "webcompat_reporter_service_delegate.mm",
+    "webcompat_reporter_service_factory.h",
+    "webcompat_reporter_service_factory.mm",
+    "webcompat_reporter_service_factory_wrapper.h",
+    "webcompat_reporter_service_factory_wrapper.mm",
+  ]
+
+  public_deps = [ ":webcompat_reporter_mojom_wrappers" ]
+
+  deps = [
+    "//base",
+    "//brave/base/mac",
+    "//brave/components/webcompat_reporter/browser:browser",
+    "//brave/ios/browser/keyed_service",
+    "//components/component_updater:component_updater",
+    "//components/keyed_service/core",
+    "//components/keyed_service/ios:ios",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile:profile",
+    "//mojo/public/cpp/bindings",
+  ]
+
+  frameworks = [ "Foundation.framework" ]
+}
+
+ios_objc_mojom_wrappers("webcompat_reporter_mojom_wrappers") {
+  mojom_target = "//brave/components/webcompat_reporter/common:mojom"
+  sources = [
+    "//brave/components/webcompat_reporter/common/webcompat_reporter.mojom",
+  ]
+  output_dir = "$root_gen_dir/brave/components/webcompat_reporter/common/ios"
+}
