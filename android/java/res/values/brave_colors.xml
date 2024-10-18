@@ -388,14 +388,9 @@
     <color name="vpn_timer_icon_color">#687485</color>
 
     <!-- Brave Leo colors-->
-    <color name="leo_plan_monthly_bt_bg">#542FE5</color>
-    <color name="leo_plan_monthly_bt_bg_border">#6754F8</color>
-    <color name="leo_plan_upgrade_now_bt_bg_start">#FF006B</color>
-    <color name="leo_plan_upgrade_now_bt_bg_end">#FF5500</color>
+    <color name="leo_plan_upgrade_now_bt_bg_start">#FF1F01</color>
+    <color name="leo_plan_upgrade_now_bt_bg_end">#FF4000</color>
     <color name="leo_reset_text_color">#FF4B6A</color>
-    <color name="brave_leo_plans_bg">#1F0B63</color>
-    <color name="brave_leo_plans_tips_border">#4100C1</color>
-    <color name="brave_leo_plans_tips_desc">#BFC3FE</color>
     <!-- End Brave Leo colors-->
 
     <color name="text_primary">#0D1214</color>
@@ -406,15 +401,20 @@
     <color name="primitive_primary_20">#d5dcff</color>
     <color name="primitive_primary_30">#b7c6ff</color>
 
-    <color name="divider_interactive">#545ff8</color>
+    <color name="divider_interactive">#c1c4ff</color>
 
     <color name="location_bar_background_color_for_ntp">#f2f2f2</color>
     <color name="toolbar_background_color_for_ntp">@android:color/white</color>
 
     <color name="primitive_blurple_10">#0f0663</color>
+    <color name="primitive_blurple_15">#190b7d</color>
     <color name="primitive_blurple_20">#251491</color>
+    <color name="primitive_blurple_25">#2e19b0</color>
     <color name="primitive_blurple_35">#3e37d4</color>
+    <color name="primitive_blurple_40">#4a46e0</color>
     <color name="primitive_blurple_50">#6261ff</color>
+    <color name="primitive_blurple_80">#c1c4ff</color>
+    <color name="primitive_blurple_90">#dfe1ff</color>
     <color name="primitive_blurple_95">#efefff</color>
 
     <color name="schemes_on_surface">#1b1b1f</color>

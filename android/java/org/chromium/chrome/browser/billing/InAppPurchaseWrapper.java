@@ -52,6 +52,7 @@ public class InAppPurchaseWrapper {
             "https://play.google.com/store/account/subscriptions";
     private static final String TAG = "InAppPurchaseWrapper";
     private static final String LEO_MONTHLY_SUBSCRIPTION = "brave.leo.monthly";
+    private static final String LEO_YEARLY_SUBSCRIPTION = "brave.leo.yearly";
 
     private static final String VPN_NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
     private static final String VPN_NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
@@ -69,7 +70,7 @@ public class InAppPurchaseWrapper {
     private static volatile InAppPurchaseWrapper sInAppPurchaseWrapper;
     private static Object sMutex = new Object();
 
-    private enum SubscriptionType {
+    public enum SubscriptionType {
         MONTHLY,
         YEARLY
     }
@@ -103,13 +104,25 @@ public class InAppPurchaseWrapper {
         return mMonthlyProductDetailsVPN;
     }
 
-    private MutableLiveData<ProductDetails> mMutableYearlyProductDetails = new MutableLiveData();
-    private LiveData<ProductDetails> mYearlyProductDetails = mMutableYearlyProductDetails;
-    private void setYearlyProductDetails(ProductDetails productDetails) {
-        mMutableYearlyProductDetails.postValue(productDetails);
+    private MutableLiveData<ProductDetails> mMutableYearlyProductDetailsVPN = new MutableLiveData();
+    private LiveData<ProductDetails> mYearlyProductDetailsVPN = mMutableYearlyProductDetailsVPN;
+    private MutableLiveData<ProductDetails> mMutableYearlyProductDetailsLeo = new MutableLiveData();
+    private LiveData<ProductDetails> mYearlyProductDetailsLeo = mMutableYearlyProductDetailsLeo;
+
+    private void setYearlyProductDetails(
+            ProductDetails productDetails, SubscriptionProduct product) {
+        if (product.equals(SubscriptionProduct.LEO)) {
+            mMutableYearlyProductDetailsLeo.postValue(productDetails);
+        } else if (product.equals(SubscriptionProduct.VPN)) {
+            mMutableYearlyProductDetailsVPN.postValue(productDetails);
+        }
     }
-    public LiveData<ProductDetails> getYearlyProductDetails() {
-        return mYearlyProductDetails;
+
+    public LiveData<ProductDetails> getYearlyProductDetails(SubscriptionProduct product) {
+        if (product.equals(SubscriptionProduct.LEO)) {
+            return mYearlyProductDetailsLeo;
+        }
+        return mYearlyProductDetailsVPN;
     }
 
     private InAppPurchaseWrapper() {}
@@ -200,7 +213,9 @@ public class InAppPurchaseWrapper {
                         : VPN_NIGHTLY_YEARLY_SUBSCRIPTION;
             }
         } else if (product.equals(SubscriptionProduct.LEO)) {
-            return LEO_MONTHLY_SUBSCRIPTION;
+            return subscriptionType == SubscriptionType.MONTHLY
+                    ? LEO_MONTHLY_SUBSCRIPTION
+                    : LEO_YEARLY_SUBSCRIPTION;
         } else {
             assert false;
             return "";
@@ -210,16 +225,16 @@ public class InAppPurchaseWrapper {
     public void queryProductDetailsAsync(SubscriptionProduct product) {
         Map<String, ProductDetails> productDetails = new HashMap<>();
         List<QueryProductDetailsParams.Product> products = new ArrayList<>();
-        products.add(QueryProductDetailsParams.Product.newBuilder()
-                             .setProductId(getProductId(product, SubscriptionType.MONTHLY))
-                             .setProductType(BillingClient.ProductType.SUBS)
-                             .build());
-        if (!product.equals(SubscriptionProduct.LEO)) {
-            products.add(QueryProductDetailsParams.Product.newBuilder()
-                    .setProductId(getProductId(product, SubscriptionType.YEARLY))
-                    .setProductType(BillingClient.ProductType.SUBS)
-                    .build());
-        }
+        products.add(
+                QueryProductDetailsParams.Product.newBuilder()
+                        .setProductId(getProductId(product, SubscriptionType.MONTHLY))
+                        .setProductType(BillingClient.ProductType.SUBS)
+                        .build());
+        products.add(
+                QueryProductDetailsParams.Product.newBuilder()
+                        .setProductId(getProductId(product, SubscriptionType.YEARLY))
+                        .setProductType(BillingClient.ProductType.SUBS)
+                        .build());
         QueryProductDetailsParams queryProductDetailsParams =
                 QueryProductDetailsParams.newBuilder().setProductList(products).build();
 
@@ -247,13 +262,11 @@ public class InAppPurchaseWrapper {
                                                         getProductId(
                                                                 product, SubscriptionType.MONTHLY)),
                                                 product);
-                                        if (!product.equals(SubscriptionProduct.LEO)) {
-                                            setYearlyProductDetails(
-                                                    productDetails.get(
-                                                            getProductId(
-                                                                    product,
-                                                                    SubscriptionType.YEARLY)));
-                                        }
+                                        setYearlyProductDetails(
+                                                productDetails.get(
+                                                        getProductId(
+                                                                product, SubscriptionType.YEARLY)),
+                                                product);
                                     } else {
                                         Log.e(
                                                 TAG,
@@ -424,7 +437,8 @@ public class InAppPurchaseWrapper {
     }
 
     private boolean isLeoProduct(List<String> productIds) {
-        return productIds.contains(LEO_MONTHLY_SUBSCRIPTION);
+        return productIds.contains(LEO_MONTHLY_SUBSCRIPTION)
+                || productIds.contains(LEO_YEARLY_SUBSCRIPTION);
     }
 
     private PurchasesUpdatedListener getPurchasesUpdatedListener(Context context) {
