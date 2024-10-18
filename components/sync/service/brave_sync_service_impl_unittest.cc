@@ -22,10 +22,12 @@
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "components/signin/public/identity_manager/accounts_in_cookie_jar_info.h"
 #include "components/sync/engine/nigori/key_derivation_params.h"
 #include "components/sync/engine/nigori/nigori.h"
 #include "components/sync/model/type_entities_count.h"
 #include "components/sync/service/data_type_manager_impl.h"
+#include "components/sync/service/glue/sync_transport_data_prefs.h"
 #include "components/sync/test/data_type_manager_mock.h"
 #include "components/sync/test/fake_data_type_controller.h"
 #include "components/sync/test/fake_sync_engine.h"
@@ -45,6 +47,8 @@ using testing::Return;
 namespace syncer {
 
 namespace {
+
+constexpr char kCacheGuid[] = "cache_guid";
 
 constexpr char kValidSyncCode[] =
     "fringe digital begin feed equal output proof cheap "
@@ -707,5 +711,94 @@ TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitializeIOS) {
   EXPECT_EQ(leave_chain_pref_changed_count, 0u);
   EXPECT_FALSE(brave_sync_prefs()->GetLeaveChainDetails().empty());
 }
+
+namespace {
+enum class GACookiesMethodType {
+  kOnAccountsCookieDeletedByUserAction,
+  kOnAccountsInCookieUpdated,
+  kOnPrimaryAccountChanged
+};
+}
+
+class BraveSyncServiceImplGACookiesTest
+    : public BraveSyncServiceImplTest,
+      public testing::WithParamInterface<GACookiesMethodType> {
+ public:
+  base::OnceCallback<void(void)> GetGACookiesMethod() {
+    switch (GetParam()) {
+      case GACookiesMethodType::kOnAccountsCookieDeletedByUserAction:
+        return base::BindOnce(
+            [](BraveSyncServiceImplGACookiesTest* p_this) {
+              p_this->brave_sync_service_impl()
+                  ->OnAccountsCookieDeletedByUserAction();
+            },
+            this);
+      case GACookiesMethodType::kOnAccountsInCookieUpdated:
+        return base::BindOnce(
+            [](BraveSyncServiceImplGACookiesTest* p_this) {
+              p_this->brave_sync_service_impl()->OnAccountsInCookieUpdated(
+                  signin::AccountsInCookieJarInfo(), GoogleServiceAuthError());
+            },
+            this);
+      case GACookiesMethodType::kOnPrimaryAccountChanged:
+        return base::BindOnce(
+            [](BraveSyncServiceImplGACookiesTest* p_this) {
+              CoreAccountInfo prev_account_info;
+              prev_account_info.email = "usertest@gmail.com";
+              prev_account_info.gaia = "gaia";
+              prev_account_info.account_id =
+                  CoreAccountId::FromGaiaId(prev_account_info.gaia);
+
+              signin::PrimaryAccountChangeEvent primary_accountchange_event(
+                  signin::PrimaryAccountChangeEvent::State(
+                      prev_account_info, signin::ConsentLevel::kSignin),
+                  signin::PrimaryAccountChangeEvent::State(),
+                  signin_metrics::ProfileSignout::kTest);
+
+              p_this->brave_sync_service_impl()->OnPrimaryAccountChanged(
+                  primary_accountchange_event);
+            },
+            this);
+      default:
+        NOTREACHED_NORETURN();
+    }
+  }
+};
+
+TEST_P(BraveSyncServiceImplGACookiesTest, CacheGuidIsNotWiped) {
+  SyncTransportDataPrefs::RegisterProfilePrefs(pref_service()->registry());
+
+  SyncTransportDataPrefs sync_transport_data_prefs(
+      pref_service(), signin::GaiaIdHash::FromGaiaId("user_gaia_id"));
+
+  sync_transport_data_prefs.SetCacheGuid(kCacheGuid);
+
+  CreateSyncService();
+
+  std::move(GetGACookiesMethod()).Run();
+
+  EXPECT_EQ(sync_transport_data_prefs.GetCacheGuid(), kCacheGuid);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    All,
+    BraveSyncServiceImplGACookiesTest,
+    testing::ValuesIn(
+        {GACookiesMethodType::kOnAccountsCookieDeletedByUserAction,
+         GACookiesMethodType::kOnAccountsInCookieUpdated,
+         GACookiesMethodType::kOnPrimaryAccountChanged}),
+    [](const testing::TestParamInfo<
+        BraveSyncServiceImplGACookiesTest::ParamType>& info) {
+      switch (info.param) {
+        case GACookiesMethodType::kOnAccountsCookieDeletedByUserAction:
+          return "OnAccountsCookieDeletedByUserAction";
+        case GACookiesMethodType::kOnAccountsInCookieUpdated:
+          return "OnAccountsInCookieUpdated";
+        case GACookiesMethodType::kOnPrimaryAccountChanged:
+          return "OnPrimaryAccountChanged";
+        default:
+          NOTREACHED_NORETURN();
+      }
+    });
 
 }  // namespace syncer
