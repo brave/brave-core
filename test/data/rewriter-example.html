@@ -4,7 +4,37 @@
 </head>
 
 <body>
-    <textarea>It was a dark and stormy night...</textarea>
+    <p id="non-editable">some text to select</p>
+    <textarea id="editable">It was a dark and stormy night...</textarea>
 </body>
+
+<script type="module">
+    window.loadPromise = new Promise(r => {
+        window.addEventListener('DOMContentLoaded', r)
+    })
+
+    window.selectText = async (selector) => {
+        await window.loadPromise
+
+        // Remove focus from the activeElement, if any
+        document.activeElement?.blur()
+
+        if (!selector) {
+            document.getSelection().removeAllRanges()
+            return
+        }
+
+        const el = document.querySelector(selector)
+
+        // Create a range for this element
+        const range = document.createRange()
+        range.selectNodeContents(el)
+
+        // Clear the previous selection (if any), and set it to this element.
+        document.getSelection().removeAllRanges()
+        document.getSelection().addRange(range)
+        el.select?.()
+    }
+</script>
 
 </html>
