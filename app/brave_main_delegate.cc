@@ -54,6 +54,8 @@ constexpr char kBraveOriginTrialsPublicKey[] =
 
 constexpr char kDummyUrl[] = "https://no-thanks.invalid";
 
+constexpr char kPendingUpdatePollingIntervalSec[] = "900";
+
 std::string GetUpdateURLHost() {
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
@@ -168,6 +170,14 @@ void BraveMainDelegate::AppendCommandLineOptions() {
   if (!command_line->HasSwitch(syncer::kSyncServiceURL)) {
     command_line->AppendSwitchASCII(syncer::kSyncServiceURL,
                                     brave_sync_service_url.c_str());
+  }
+
+  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kCheckForUpdateIntervalSec)) {
+    // We want to prompt the user to restart the browser within 15, not 120,
+    // minutes when a new version is available.
+    command_line->AppendSwitchASCII(switches::kCheckForUpdateIntervalSec,
+                                    kPendingUpdatePollingIntervalSec);
   }
 
   variations::AppendBraveCommandLineOptions(*command_line);
