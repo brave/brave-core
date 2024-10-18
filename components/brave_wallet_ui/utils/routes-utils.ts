@@ -11,7 +11,8 @@ import {
   WalletOrigin,
   WalletCreationMode,
   WalletImportMode,
-  NftDropdownOptionId
+  NftDropdownOptionId,
+  MeldCryptoCurrency
 } from '../constants/types'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 import { SUPPORT_LINKS } from '../common/constants/support_links'
@@ -108,40 +109,21 @@ export const makeAccountTransactionRoute = (
 }
 
 export const makeFundWalletRoute = (
-  assetId: string,
-  options?: {
-    currencyCode?: string
-    buyAmount?: string
-    searchText?: string
-    chainId?: string
-    coinType?: string
-  }
+  asset: Pick<MeldCryptoCurrency, 'chainId' | 'currencyCode'>,
+  account?: BraveWallet.AccountInfo
 ) => {
-  if (options) {
-    const params = new URLSearchParams()
-
-    if (options.currencyCode) {
-      params.append('currencyCode', options.currencyCode)
-    }
-    if (options.buyAmount) {
-      params.append('buyAmount', options.buyAmount)
-    }
-    if (options.searchText) {
-      params.append('search', options.searchText)
-    }
-    if (options.chainId) {
-      params.append('chainId', options.chainId)
-    }
-    if (options.coinType) {
-      params.append('coinType', options.coinType)
-    }
-
-    return `${WalletRoutes.FundWalletPage.replace(
-      ':assetId?',
-      assetId
-    )}?${params.toString()}`
+  const baseQueryParams = {
+    currencyCode: asset.currencyCode ?? '',
+    chainId: asset.chainId ?? ''
   }
-  return WalletRoutes.FundWalletPage.replace(':assetId?', assetId)
+
+  const params = new URLSearchParams(
+    account
+      ? { ...baseQueryParams, accountId: account.accountId.uniqueKey }
+      : baseQueryParams
+  )
+
+  return `${WalletRoutes.FundWalletPageStart}?${params.toString()}`
 }
 
 export const makeFundWalletPurchaseOptionsRoute = (

@@ -8,24 +8,49 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 // types
 import { BraveWallet } from '../../constants/types'
 
-// hooks
-import { useGetOnRampAssetsQuery } from '../slices/api.slice'
+// utils
+import { getAssetSymbol } from '../../utils/meld_utils'
 
-export const useIsBuySupported = (
-  token?: Pick<BraveWallet.BlockchainToken, 'symbol'>
+// hooks
+import { useGetMeldCryptoCurrenciesQuery } from '../slices/api.slice'
+
+export const useFindBuySupportedToken = (
+  token?: Pick<
+    BraveWallet.BlockchainToken,
+    'symbol' | 'contractAddress' | 'chainId'
+  >
 ) => {
   // queries
-  const { data: options = undefined } = useGetOnRampAssetsQuery(
+  const { data: options } = useGetMeldCryptoCurrenciesQuery(
     token ? undefined : skipToken
   )
 
   // computed
-  const isBuySupported =
+  const foundNativeToken =
     token &&
-    options?.allAssetOptions.some(
-      (asset) => asset.symbol.toLowerCase() === token.symbol.toLowerCase()
+    token.contractAddress === '' &&
+    options?.find(
+      (asset) =>
+        asset.chainId?.toLowerCase() === token.chainId.toLowerCase() &&
+        getAssetSymbol(asset).toLowerCase() === token.symbol.toLowerCase()
+    )
+
+  const foundTokenByContractAddress =
+    token &&
+    options?.find(
+      (asset) =>
+        asset.contractAddress?.toLowerCase() ===
+          token.contractAddress.toLowerCase() &&
+        asset.chainId?.toLowerCase() === token.chainId.toLowerCase()
+    )
+
+  const foundTokenBySymbol =
+    token &&
+    options?.find(
+      (asset) =>
+        getAssetSymbol(asset).toLowerCase() === token.symbol.toLowerCase()
     )
 
   // render
-  return isBuySupported
+  return foundNativeToken || foundTokenByContractAddress || foundTokenBySymbol
 }
