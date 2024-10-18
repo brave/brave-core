@@ -53,7 +53,6 @@ RegisterStyleOverride(
       .cr-container-shadow {
         display: none !important;
      }
-
       #container {
         /* menu and content next to each other in the horizontal center */
       }
@@ -62,10 +61,11 @@ RegisterStyleOverride(
       }
       #main {
         margin: var(--leo-spacing-m) var(--leo-spacing-m) var(--leo-spacing-m) 0;
-        min-height: calc(100% - 40px);
+        height: calc(100% - 40px);
         background: var(--leo-color-page-background);
         padding-bottom: var(--leo-spacing-2xl);
         border-radius: var(--leo-radius-xl) var(--leo-radius-m) var(--leo-radius-m) var(--leo-radius-xl);  
+        overflow: scroll;
       }
       #right {
         /* this element is only a space filler in chromium */

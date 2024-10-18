@@ -11,7 +11,8 @@ RegisterStyleOverride(
   html`
     <style include="settings-shared">
       #header .title {
-        font: var(--leo-heading-h3) !important;
+        font-size: var(--leo-typography-heading-h3-font-size) !important;
+        font-weight: 500 !important;
         padding-top: var(--leo-spacing-xl) !important;
         padding-bottom: var(--leo-spacing-xl) !important;
         margin-bottom: 0 !important;
@@ -27,6 +28,9 @@ RegisterStyleOverride(
       }
       .cr-row:first-child {
         border-top: none !important;
+      }
+      .cr-centered-card-container {
+        height: auto !important;
       }
       </style>
       
