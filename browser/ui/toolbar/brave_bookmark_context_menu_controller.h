@@ -18,6 +18,10 @@ class Browser;
 class Profile;
 class PrefService;
 
+namespace bookmarks {
+class BookmarkModel;
+}
+
 class BraveBookmarkContextMenuController
     : public BookmarkContextMenuController {
  public:

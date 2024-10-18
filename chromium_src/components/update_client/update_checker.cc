@@ -89,7 +89,6 @@ void SequentialUpdateChecker::CheckNext() {
       update_context_->config, update_context_->crx_cache_,
       update_context_->is_foreground, update_context_->is_install, ids,
       update_context_->crx_state_change_callback,
-      update_context_->notify_observers_callback,
       // We don't pass a context callback here because UpdateChecker doesn't use
       // it. This is instead done by UpdateEngine, which calls us.
       base::DoNothing(), update_context_->persisted_data,
@@ -116,7 +115,7 @@ void SequentialUpdateChecker::CheckNext() {
 }
 
 void SequentialUpdateChecker::UpdateResultAvailable(
-    const std::optional<ProtocolParser::Results>& results,
+    std::optional<ProtocolParser::Results> results,
     ErrorCategory error_category,
     int error,
     int retry_after_sec) {

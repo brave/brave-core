@@ -22,6 +22,7 @@ source_set("preferences") {
     "//brave/components/constants",
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/profiles:profile",
     "//chrome/common",
     "//components/content_settings/core/browser",

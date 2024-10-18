@@ -95,11 +95,12 @@ BraveIOSAutocompleteMatchType BraveTypeFromMatchType(
 @implementation BraveIOSAutocompleteClassifier
 
 + (BraveIOSAutocompleteMatch*)classify:(NSString*)text {
+  std::vector<ProfileIOS*> profiles =
+      GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
+  ProfileIOS* last_used_profile = profiles.at(0);
+
   AutocompleteClassifier* classifier =
-      ios::AutocompleteClassifierFactory::GetForBrowserState(
-          GetApplicationContext()
-              ->GetProfileManager()
-              ->GetLastUsedProfileDeprecatedDoNotUse());
+      ios::AutocompleteClassifierFactory::GetForBrowserState(last_used_profile);
   if (classifier) {
     AutocompleteMatch match;
     classifier->Classify(base::SysNSStringToUTF16(text), false, false,

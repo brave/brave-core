@@ -352,9 +352,9 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         float r = 0;
 
         if (bitmap.getWidth() > bitmap.getHeight()) {
-            r = bitmap.getHeight() / 2;
+            r = bitmap.getHeight() / 2f;
         } else {
-            r = bitmap.getWidth() / 2;
+            r = bitmap.getWidth() / 2f;
         }
 
         paint.setAntiAlias(true);
@@ -506,32 +506,31 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
 
     /**
      * Expands touchable area of a small view
-      * @param parentView
-     * @param childView
-     * @param extraPadding: dp
+     *
+     * @param parentView Parent view.
+     * @param childView Child view.
+     * @param extraPadding Extra padding in dp.
      */
-  public static void expandTouchArea(final View parentView, final View childView, final int extraPadding) {
-        parentView.post(new Runnable() {
-            @Override
-            public void run() {
-                Rect rect = new Rect();
-                childView.getHitRect(rect);
+    public static void expandTouchArea(
+            final View parentView, final View childView, final int extraPadding) {
+        parentView.post(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Rect rect = new Rect();
+                        childView.getHitRect(rect);
 
-                int pxPadding = dp2px(extraPadding);
-                rect.top -= pxPadding;
-                rect.left -= pxPadding;
-                rect.right += pxPadding;
-                rect.bottom += pxPadding;
-                parentView.setTouchDelegate(new TouchDelegate(rect, childView));
-            }
-        });
+                        int pxPadding = dp2px(extraPadding);
+                        rect.top -= pxPadding;
+                        rect.left -= pxPadding;
+                        rect.right += pxPadding;
+                        rect.bottom += pxPadding;
+                        parentView.setTouchDelegate(new TouchDelegate(rect, childView));
+                    }
+                });
     }
 
-    /**
-     * Converts DP into PX
-     * @param dp
-     * @return
-     */
+    /** Converts DP into PX */
     public static int dp2px(int dp) {
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         float px = dp * (metrics.densityDpi / DP_PER_INCH_MDPI);

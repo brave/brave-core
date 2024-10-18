@@ -10,13 +10,29 @@
 #include <string>
 
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom-forward.h"
+#include "chrome/common/webui_url_constants.h"
 #include "content/public/browser/web_ui_controller.h"
+#include "content/public/browser/webui_config.h"
+#include "content/public/common/url_constants.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
 
+class BravePrivateNewTabUI;
+
+class BravePrivateNewTabUIConfig
+    : public content::DefaultWebUIConfig<BravePrivateNewTabUI> {
+ public:
+  BravePrivateNewTabUIConfig()
+      : DefaultWebUIConfig(content::kChromeUIScheme,
+                           chrome::kChromeUINewTabHost) {}
+
+  // content::WebUIConfig:
+  bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
+};
+
 class BravePrivateNewTabUI : public ui::MojoWebUIController {
  public:
-  BravePrivateNewTabUI(content::WebUI* web_ui, const std::string& name);
+  explicit BravePrivateNewTabUI(content::WebUI* web_ui);
   ~BravePrivateNewTabUI() override;
   BravePrivateNewTabUI(const BravePrivateNewTabUI&) = delete;
   BravePrivateNewTabUI& operator=(const BravePrivateNewTabUI&) = delete;

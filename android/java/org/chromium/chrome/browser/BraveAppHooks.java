@@ -7,7 +7,7 @@ package org.chromium.chrome.browser;
 
 import org.chromium.chrome.browser.partnerbookmarks.PartnerBookmark;
 
-public class BraveAppHooks extends AppHooksImpl {
+public class BraveAppHooks extends AppHooks {
     @Override
     public PartnerBookmark.BookmarkIterator getPartnerBookmarkIterator() {
         return null;
