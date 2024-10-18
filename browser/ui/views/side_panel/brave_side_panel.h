@@ -35,35 +35,22 @@ class BraveSidePanel : public views::View,
                        public views::ResizeAreaDelegate {
   METADATA_HEADER(BraveSidePanel, views::View)
  public:
-  // In the past we have been forced to rename these values, as this unscoped
-  // enum ends up colliding with SDK constants on MacOS builds. However as these
-  // constants are referred to in chromium code, renaming them causes a
-  // growing number of substitution overrides to be necessary across the
-  // codebase. As part of simplifying the overrides for this class, this
-  // particular shadow warning is disabled on this case alone, to permit this
-  // enum to be used here.
-#if BUILDFLAG(IS_MAC)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wshadow"
-#endif  // BUILDFLAG(IS_MAC)
   // Determines the side from which the side panel will appear.
   // LTR / RTL conversions are handled in
   // BrowserViewLayout::LayoutSidePanelView. As such, left will always be on the
   // left side of the browser regardless of LTR / RTL mode.
-  enum HorizontalAlignment { kAlignLeft = 0, kAlignRight };
-#if BUILDFLAG(IS_MAC)
-#pragma clang diagnostic pop
-#endif  // BUILDFLAG(IS_MAC)
+  enum class HorizontalAlignment { kLeft = 0, kRight };
 
   // Same signature as chromium SidePanel
-  explicit BraveSidePanel(BrowserView* browser_view,
-                          HorizontalAlignment horizontal_alignment =
-                              HorizontalAlignment::kAlignLeft);
+  explicit BraveSidePanel(
+      BrowserView* browser_view,
+      HorizontalAlignment horizontal_alignment = HorizontalAlignment::kLeft);
   BraveSidePanel(const BraveSidePanel&) = delete;
   BraveSidePanel& operator=(const BraveSidePanel&) = delete;
   ~BraveSidePanel() override;
 
   void SetPanelWidth(int width);
+  void UpdateWidthOnEntryChanged();
   double GetAnimationValue() const;
   void SetHorizontalAlignment(HorizontalAlignment alignment);
   HorizontalAlignment GetHorizontalAlignment();
@@ -86,17 +73,29 @@ class BraveSidePanel : public views::View,
   void AddedToWidget() override;
   void Layout(PassKey) override;
 
+  // Reflects the current state of the visibility of the side panel.
+  enum class State { kClosed, kOpening, kOpen, kClosing };
+  State state() { return state_; }
+
+  // These two methods are the only mechanism to change visibility of the side
+  // panel. `animated` is ignored in Brave entirely.
+  void Open(bool animated);
+  void Close(bool animated);
+
+  // This is the parent view for the contents of the side panel.
+  views::View* GetContentParentView();
+
   void SetMinimumSidePanelContentsWidthForTesting(int width) {}
 
  private:
   friend class sidebar::SidebarBrowserTest;
 
+  // This method is the shared implementation of Open/Close.
+  void UpdateVisibility(bool should_be_open);
+
   // views::ViewObserver:
   void OnChildViewAdded(View* observed_view, View* child) override;
   void OnChildViewRemoved(View* observed_view, View* child) override;
-  void OnViewPropertyChanged(View* observed_view,
-                             const void* key,
-                             int64_t old_value) override;
 
   void UpdateBorder();
   void OnSidePanelWidthChanged();
@@ -106,7 +105,7 @@ class BraveSidePanel : public views::View,
   base::ScopedMultiSourceObservation<View, ViewObserver> scoped_observation_{
       this};
 
-  HorizontalAlignment horizontal_alignment_ = kAlignLeft;
+  HorizontalAlignment horizontal_alignment_ = HorizontalAlignment::kLeft;
   std::optional<int> starting_width_on_resize_;
 
   // If this is set, use this width for panel contents during the layout
@@ -118,6 +117,9 @@ class BraveSidePanel : public views::View,
   std::unique_ptr<SidePanelResizeWidget> resize_widget_;
   std::unique_ptr<ViewShadow> shadow_;
   std::unique_ptr<views::View> header_view_;
+  // Owned by `this` indirectly through the views tree.
+  raw_ptr<views::View> content_parent_view_;
+  State state_ = State::kClosed;
 };
 
 // Alias to the original `SidePanel` to the benefit of upstream code, as

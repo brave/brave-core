@@ -401,8 +401,11 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_win or is_linux">
         </if>
 
-      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_CROWD_DENY_DESCRIPTION" desc="Description for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox, shown when a site's notifications permission request is automatically blocked by Brave, as this permission prompt is often denied by other users for this site.">
+      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_CROWD_DENY_DESCRIPTION" desc="Subtitle for the Notifications permission prompt, shown when a user clicks on a site's notifications permission request that is automatically blocked by Brave, as this permission prompt is often denied by other users for this site.">
         Most profiles block notifications from this site
+      </message>
+      <message name="IDS_GEOLOCATION_QUIET_PERMISSION_BUBBLE_CROWD_DENY_DESCRIPTION" desc="Subtitle for the Geolocation permission prompt, shown when a user clicks on a site's geolocation permission request that is automatically blocked by Brave, as this permission prompt is often denied by other users for this site.">
+        Most profiles block sharing precise location for this site
       </message>
       <if expr="toolkit_views">
         </if>
@@ -608,10 +611,6 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
 
       <message name="IDS_NTP_CUSTOMIZE_CHROME_WEBSTORE_LABEL" desc="The message that prompts user to customize Brave with Brave webstore.">
         Customize your browser even more with extensions from the <ph name="BEGIN_LINK1">&lt;a href="#" id="chromeWebstoreLink"&gt;</ph>Web Store<ph name="END_LINK1">&lt;/a&gt;</ph>
@@ -656,6 +655,12 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="is_macosx">
         </if>
+      <if expr="use_titlecase">
+        <then>
+          </then>
+        <else>
+          </else>
+      </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">

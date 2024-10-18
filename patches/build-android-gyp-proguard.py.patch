@@ -1,8 +1,8 @@
 diff --git a/build/android/gyp/proguard.py b/build/android/gyp/proguard.py
-index 5dd433ae0bd92209bd0275e19e710c310e6e8793..cdfe28a2f8facb3f5a50bf0698adbdd838adf5a6 100755
+index a42ce1c8312080ac8cfa0042827c6b6fd059ae22..fcf96a1892a3e0be9312143fd15f216e3db6448d 100755
 --- a/build/android/gyp/proguard.py
 +++ b/build/android/gyp/proguard.py
-@@ -376,6 +376,7 @@ def _OptimizeWithR8(options, config_paths, libraries, dynamic_config_data):
+@@ -378,6 +378,7 @@ def _OptimizeWithR8(options, config_paths, libraries, dynamic_config_data):
          '--pg-map-output',
          tmp_mapping_path,
      ]
