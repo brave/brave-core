@@ -6,8 +6,9 @@
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
+    <solid android:color="@color/primitive_blurple_35"/>
     <corners android:radius="12dp"/>
     <stroke
         android:width="1dp"
-        android:color="@color/primitive_blurple_25" />
+        android:color="@color/primitive_blurple_50"/>
 </shape>

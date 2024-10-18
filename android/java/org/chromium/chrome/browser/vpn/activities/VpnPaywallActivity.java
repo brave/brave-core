@@ -193,7 +193,8 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
     private void getYearlyProductDetails(ProductDetails monthlyProductDetails) {
         mYearlyPlanProgress.setVisibility(View.VISIBLE);
         LiveDataUtil.observeOnce(
-                InAppPurchaseWrapper.getInstance().getYearlyProductDetails(),
+                InAppPurchaseWrapper.getInstance()
+                        .getYearlyProductDetails(InAppPurchaseWrapper.SubscriptionProduct.VPN),
                 yearlyProductDetails -> {
                     if (yearlyProductDetails != null) {
                         runOnUiThread(
