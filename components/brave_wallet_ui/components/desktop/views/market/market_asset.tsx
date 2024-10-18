@@ -58,9 +58,7 @@ import {
 import { CoinStats } from '../portfolio/components/coin-stats/coin-stats'
 
 // Hooks
-import {
-  useIsBuySupported //
-} from '../../../../common/hooks/use-multi-chain-buy-assets'
+import { useFindBuySupportedToken } from '../../../../common/hooks/use-multi-chain-buy-assets'
 import {
   useGetNetworkQuery,
   useGetPriceHistoryQuery,
@@ -203,8 +201,9 @@ export const MarketAsset = () => {
   )
 
   // custom hooks
-  const isAssetBuySupported =
-    useIsBuySupported(selectedAssetFromParams) && !isRewardsToken
+  const foundBuySupportedToken = useFindBuySupportedToken(
+    selectedAssetFromParams
+  )
 
   // memos / computed
   const isLoadingGraphData =
@@ -303,32 +302,10 @@ export const MarketAsset = () => {
   }, [history, selectedAssetFromParams, updateUserAssetVisible])
 
   const onSelectBuy = React.useCallback(() => {
-    if (foundTokens.length === 1) {
-      history.push(
-        makeFundWalletRoute(getAssetIdKey(foundTokens[0]), {
-          searchText: foundTokens[0].symbol
-        })
-      )
-      return
+    if (foundBuySupportedToken) {
+      history.push(makeFundWalletRoute(foundBuySupportedToken))
     }
-
-    if (foundTokens.length > 1) {
-      history.push(
-        makeFundWalletRoute('', {
-          searchText: foundTokens[0].symbol
-        })
-      )
-      return
-    }
-
-    if (selectedAssetFromParams) {
-      history.push(
-        makeFundWalletRoute(getAssetIdKey(selectedAssetFromParams), {
-          searchText: selectedAssetFromParams.symbol
-        })
-      )
-    }
-  }, [foundTokens, history, selectedAssetFromParams])
+  }, [history, foundBuySupportedToken])
 
   const onSelectDeposit = React.useCallback(() => {
     if (foundTokens.length === 1) {
@@ -346,17 +323,8 @@ export const MarketAsset = () => {
           searchText: foundTokens[0].symbol
         })
       )
-      return
     }
-
-    if (selectedAssetFromParams) {
-      history.push(
-        makeFundWalletRoute('', {
-          searchText: selectedAssetFromParams.symbol
-        })
-      )
-    }
-  }, [foundTokens, history, selectedAssetFromParams])
+  }, [foundTokens, history])
 
   // token list & market data needs to load before we can find an asset to
   // select from the url params
@@ -418,7 +386,7 @@ export const MarketAsset = () => {
         />
         <Row padding='0px 20px'>
           <ButtonRow>
-            {isAssetBuySupported && (
+            {foundBuySupportedToken && (
               <div>
                 <LeoSquaredButton onClick={onSelectBuy}>
                   {getLocale('braveWalletBuy')}

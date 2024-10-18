@@ -95,10 +95,7 @@ import {
   NetworkFilterSelector //
 } from '../../../components/desktop/network-filter-selector'
 import { BuyOptions } from '../../../options/buy-with-options'
-import {
-  makeFundWalletPurchaseOptionsRoute,
-  makeFundWalletRoute
-} from '../../../utils/routes-utils'
+import { makeFundWalletPurchaseOptionsRoute } from '../../../utils/routes-utils'
 import { networkSupportsAccount } from '../../../utils/network-utils'
 
 interface Props {
@@ -207,12 +204,11 @@ function AssetSelection({ isAndroid }: Props) {
             selectedCurrency={selectedCurrency}
             key={assetId}
             token={asset}
-            onClick={() => history.push(makeFundWalletRoute(assetId))}
             ref={ref}
           />
         )
       },
-      [history, selectedCurrency]
+      [selectedCurrency]
     )
 
   // memos & computed
@@ -390,39 +386,6 @@ function AssetSelection({ isAndroid }: Props) {
               if (!selectedOnRampAssetId) {
                 return
               }
-
-              const searchValueLower = searchValue.toLowerCase()
-
-              // save latest form values in router history
-              history.replace(
-                makeFundWalletRoute(selectedOnRampAssetId, {
-                  currencyCode: selectedCurrency,
-                  buyAmount,
-                  // save latest search-box value (if it matches selection name
-                  // or symbol)
-                  searchText:
-                    searchValue &&
-                    (selectedAsset?.name
-                      .toLowerCase()
-                      .startsWith(searchValueLower) ||
-                      selectedAsset?.symbol
-                        .toLowerCase()
-                        .startsWith(searchValueLower))
-                      ? searchValue
-                      : undefined,
-                  // saving network filter (if it matches selection)
-                  chainId:
-                    selectedAsset?.chainId === selectedNetworkFilter.chainId
-                      ? selectedNetworkFilter.chainId ||
-                        AllNetworksOption.chainId
-                      : AllNetworksOption.chainId,
-                  coinType:
-                    selectedAsset?.coin === selectedNetworkFilter.coin
-                      ? selectedNetworkFilter.coin.toString() ||
-                        AllNetworksOption.coin.toString()
-                      : AllNetworksOption.coin.toString()
-                })
-              )
 
               // go to payment option selection
               history.push(
