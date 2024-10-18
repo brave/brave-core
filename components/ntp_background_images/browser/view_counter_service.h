@@ -97,7 +97,8 @@ class ViewCounterService : public KeyedService,
   std::string GetSuperReferralCode() const;
 
   void BrandedWallpaperWillBeDisplayed(const std::string& wallpaper_id,
-                                       const std::string& creative_instance_id);
+                                       const std::string& creative_instance_id,
+                                       const std::string& campaign_id);
 
   NTPBackgroundImagesData* GetCurrentWallpaperData() const;
   // Gets the current data for branded wallpaper, if there
