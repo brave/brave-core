@@ -326,7 +326,6 @@ public class AppStoreSDK: ObservableObject {
   /// Retrieves a product's renewable subscription product
   /// - Parameter product: The product whose SKU to retrieve
   /// - Returns: The AppStore renewable subscription product
-  @MainActor
   public func subscription(for product: any AppStoreProduct) async -> Product? {
     allProducts.autoRenewable.first(where: { $0.id == product.rawValue })
   }
@@ -334,15 +333,28 @@ public class AppStoreSDK: ObservableObject {
   /// Retrieves a product's renewable subscription status
   /// - Parameter product: The product whose subscription status to retrieve
   /// - Returns: The renewable subscription's status
-  @MainActor
   public func status(for product: any AppStoreProduct) async -> [Product.SubscriptionInfo.Status] {
     (try? await subscription(for: product)?.subscription?.status) ?? []
+  }
+
+  /// Retrieves a product's renewable subscription trial status
+  /// - Parameter product: The product whose subscription trial status to retrieve
+  /// - Returns: The renewable subscription's trial status
+  public func isIntroOfferAvailable(for product: any AppStoreProduct) async -> Bool {
+    guard let subscription = await subscription(for: product)?.subscription else {
+      return false
+    }
+
+    if subscription.introductoryOffer == nil {
+      return false
+    }
+
+    return await subscription.isEligibleForIntroOffer == true
   }
 
   /// Retrieves a product's renewable subscription renewal information
   /// - Parameter product: The product whose renewal to retrieve
   /// - Returns: The renewable subscription's renewal information
-  @MainActor
   public func renewalState(
     for product: any AppStoreProduct
   ) async -> Product.SubscriptionInfo.RenewalState? {
@@ -352,7 +364,6 @@ public class AppStoreSDK: ObservableObject {
   /// Retrieves a product's transaction history
   /// - Parameter product: The product whose last transaction history to retrieve
   /// - Returns: The product's latest transaction history
-  @MainActor
   public func latestTransaction(for product: any AppStoreProduct) async -> Transaction? {
     if let transaction = await Transaction.latest(for: product.rawValue) {
       do {
@@ -370,7 +381,6 @@ public class AppStoreSDK: ObservableObject {
   /// Retrieves a customer's purchase entitlement of a specified product
   /// - Parameter product: The product whose current subscription to retrieve
   /// - Returns: The current product entitlement/purchase. Null if the customer is not currently entitled to this product
-  @MainActor
   public func currentTransaction(for product: any AppStoreProduct) async -> Transaction? {
     if let transaction = await Transaction.currentEntitlement(for: product.rawValue) {
       do {
