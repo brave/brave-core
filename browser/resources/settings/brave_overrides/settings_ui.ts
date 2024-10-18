@@ -58,7 +58,7 @@ RegisterStyleOverride(
         /* menu and content next to each other in the horizontal center */
       }
       #left {
-        max-width:250px;
+        max-width: 250px;
       }
       #main {
         margin: var(--leo-spacing-m) var(--leo-spacing-m) var(--leo-spacing-m) 0;
