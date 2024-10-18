@@ -462,6 +462,8 @@ class TabTrayController: AuthenticationController {
     tabTrayView.isHidden = tabTrayMode == .sync
     tabSyncView.isHidden = tabTrayMode == .local
 
+    updateShredButtonVisibility()
+
     searchBarView?.searchBar.placeholder =
       tabTrayMode == .local
       ? Strings.tabTraySearchBarTitle : Strings.OpenTabs.tabTrayOpenTabSearchBarTitle
@@ -510,8 +512,6 @@ class TabTrayController: AuthenticationController {
     }
 
     shredButton.tintColor = browserColors.textPrimary
-    shredButton.isHidden = tabManager.selectedTab == nil && tabTrayMode == .local
-    shredButton.isEnabled = tabManager.selectedTab != nil || tabTrayMode == .local
 
     // Need to force a relayout for the nav controller for the appearance to take affect
     navigationController?.view.setNeedsLayout()
@@ -690,6 +690,11 @@ class TabTrayController: AuthenticationController {
     }
   }
 
+  private func updateShredButtonVisibility() {
+    let totalItems = dataSource.snapshot().numberOfItems
+    shredButton.isHidden = tabTrayMode == .sync || (privateMode && totalItems == 0)
+  }
+
   // MARK: - Actions
 
   @objc func doneAction() {
@@ -785,6 +790,8 @@ class TabTrayController: AuthenticationController {
     tabManager.willSwitchTabMode(leavingPBM: privateMode)
     privateMode.toggle()
 
+    updateShredButtonVisibility()
+
     // When we switch from Private => Regular make sure we reset _selectedIndex, fix for bug #888
     tabManager.resetSelectedIndex()
     if privateMode {
@@ -795,6 +802,7 @@ class TabTrayController: AuthenticationController {
         || tabManager.tabsForCurrentMode.isEmpty
       {
         tabTrayView.showPrivateModeInfo()
+        updateShredButtonVisibility()
         // New private tab is created immediately to reflect changes on NTP.
         // If user drags the modal down or dismisses it, a new private tab will be ready.
         tabManager.addTabAndSelect(isPrivate: true)
@@ -813,6 +821,7 @@ class TabTrayController: AuthenticationController {
         }
 
         tabTrayView.hidePrivateModeInfo()
+        updateShredButtonVisibility()
         tabTrayView.collectionView.reloadData()
 
         // When you go back from normal mode, current tab should be selected
@@ -950,6 +959,7 @@ extension TabTrayController: PresentingModalViewControllerDelegate {
 
 extension TabTrayController: TabManagerDelegate {
   func tabManager(_ tabManager: TabManager, didAddTab tab: Tab) {
+    updateShredButtonVisibility()
     applySnapshot()
 
     // This check is mainly for entering private mode.
