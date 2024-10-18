@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.h"
 
 #include <iterator>
+#include <string>
 #include <utility>
 
 #include "base/check.h"
@@ -236,14 +237,12 @@ bool ExtractCreativeSetConversionMojomProperty(
   return false;
 }
 
-void ExtractMojomEntity(const schema_org::mojom::EntityPtr& mojom_entity,
-                        CreativeSearchResultAdMap* creative_search_result_ads) {
-  CHECK(creative_search_result_ads);
-
+mojom::CreativeSearchResultAdInfoPtr ExtractMojomEntity(
+    const schema_org::mojom::EntityPtr& mojom_entity) {
   if (!mojom_entity ||
       mojom_entity->type != kCreativeSearchResultAdMojomEntityType) {
     // Unsupported type.
-    return;
+    return {};
   }
 
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
@@ -258,16 +257,16 @@ void ExtractMojomEntity(const schema_org::mojom::EntityPtr& mojom_entity,
 
   for (const auto& mojom_property : mojom_entity->properties) {
     if (!mojom_property) {
-      return;
+      return {};
     }
 
     const std::string_view property_name = mojom_property->name;
     if (base::Contains(kRequiredCreativeAdPropertyNames, property_name)) {
       if (!ExtractCreativeAdMojomProperty(mojom_property,
                                           mojom_creative_ad.get())) {
-        return VLOG(6)
-               << "Failed to extract creative search result ad property "
-               << property_name;
+        VLOG(6) << "Failed to extract creative search result ad property "
+                << property_name;
+        return {};
       }
 
       creative_ad_property_names.insert(property_name);
@@ -275,8 +274,9 @@ void ExtractMojomEntity(const schema_org::mojom::EntityPtr& mojom_entity,
                               property_name)) {
       if (!ExtractCreativeSetConversionMojomProperty(
               mojom_property, mojom_creative_set_conversion.get())) {
-        return VLOG(6) << "Failed to extract creative set conversion property "
-                       << property_name;
+        VLOG(6) << "Failed to extract creative set conversion property "
+                << property_name;
+        return {};
       }
 
       creative_set_conversion_property_names.insert(property_name);
@@ -291,9 +291,9 @@ void ExtractMojomEntity(const schema_org::mojom::EntityPtr& mojom_entity,
       std::back_inserter(missing_creative_ad_property_names));
 
   if (!missing_creative_ad_property_names.empty()) {
-    return VLOG(6)
-           << base::JoinString(missing_creative_ad_property_names, ", ")
-           << " creative search result ad required properties are missing";
+    VLOG(6) << base::JoinString(missing_creative_ad_property_names, ", ")
+            << " creative search result ad required properties are missing";
+    return {};
   }
 
   if (!creative_set_conversion_property_names.empty()) {
@@ -318,42 +318,46 @@ void ExtractMojomEntity(const schema_org::mojom::EntityPtr& mojom_entity,
 
   if (mojom_creative_ad->placement_id.empty()) {
     // Invalid placement id.
-    return;
+    return {};
   }
 
   mojom_creative_ad->type = mojom::AdType::kSearchResultAd;
 
-  const std::string placement_id = mojom_creative_ad->placement_id;
-  creative_search_result_ads->emplace(placement_id,
-                                      std::move(mojom_creative_ad));
+  return mojom_creative_ad;
 }
 
-void ExtractMojomProperty(
-    const schema_org::mojom::PropertyPtr& mojom_property,
-    CreativeSearchResultAdMap* creative_search_result_ads) {
+std::vector<mojom::CreativeSearchResultAdInfoPtr> ExtractMojomProperty(
+    const schema_org::mojom::PropertyPtr& mojom_property) {
+  std::vector<mojom::CreativeSearchResultAdInfoPtr> creative_search_result_ads;
+
   if (!mojom_property ||
       mojom_property->name != kCreativeSearchResultAdsMojomPropertyName) {
-    return;
+    return {};
   }
 
   const schema_org::mojom::ValuesPtr& mojom_values = mojom_property->values;
   if (!mojom_values || !mojom_values->is_entity_values()) {
-    return;
+    return {};
   }
 
   for (const auto& mojom_entity : mojom_values->get_entity_values()) {
-    ExtractMojomEntity(mojom_entity, creative_search_result_ads);
+    if (auto creative_search_result_ad = ExtractMojomEntity(mojom_entity)) {
+      creative_search_result_ads.push_back(
+          std::move(creative_search_result_ad));
+    }
   }
+
+  return creative_search_result_ads;
 }
 
-void Log(const CreativeSearchResultAdMap& creative_search_result_ads) {
+void Log(const std::vector<mojom::CreativeSearchResultAdInfoPtr>&
+             creative_search_result_ads) {
   const bool should_log = VLOG_IS_ON(6);
   if (!should_log) {
     return;
   }
 
-  for (const auto& [placement_id, mojom_creative_ad] :
-       creative_search_result_ads) {
+  for (const auto& mojom_creative_ad : creative_search_result_ads) {
     VLOG(6) << "Creative search result ad properties:\n"
             << kCreativeAdPlacementIdPropertyName << ": "
             << mojom_creative_ad->placement_id << "\n"
@@ -392,10 +396,10 @@ void Log(const CreativeSearchResultAdMap& creative_search_result_ads) {
 
 }  // namespace
 
-CreativeSearchResultAdMap
+std::vector<mojom::CreativeSearchResultAdInfoPtr>
 ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
     const std::vector<schema_org::mojom::EntityPtr>& mojom_entities) {
-  CreativeSearchResultAdMap creative_search_result_ads;
+  std::vector<mojom::CreativeSearchResultAdInfoPtr> creative_search_result_ads;
 
   for (const auto& mojom_entity : mojom_entities) {
     if (!mojom_entity ||
@@ -404,7 +408,8 @@ ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
     }
 
     for (const auto& mojom_property : mojom_entity->properties) {
-      ExtractMojomProperty(mojom_property, &creative_search_result_ads);
+      base::ranges::move(ExtractMojomProperty(mojom_property),
+                         std::back_inserter(creative_search_result_ads));
     }
   }
 
