@@ -39,6 +39,6 @@ RegisterStyleOverride(
         font-size: var(--leo-typography-heading-h3-font-size) !important;
     }
     
-      </style>
+  </style>
   `
 )
