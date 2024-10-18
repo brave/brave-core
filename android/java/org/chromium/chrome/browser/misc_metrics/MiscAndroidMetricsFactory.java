@@ -44,7 +44,7 @@ public class MiscAndroidMetricsFactory {
             ConnectionErrorHandler connectionErrorHandler) {
         final Promise<MiscAndroidMetrics> promise = new Promise<>();
 
-        mTaskRunner.postTask(
+        mTaskRunner.execute(
                 () -> {
                     Profile profile = Utils.getProfile(false); // always use regular profile
                     long nativeHandle =

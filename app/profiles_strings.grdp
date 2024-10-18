@@ -136,6 +136,9 @@
   <message name="IDS_PROFILE_MENU_SIGNIN_PROMO_DESCRIPTION" desc="Text for the sign-in promo in the profile menu when the used is signed out, describing the benefits of signing in.">
     Sign in to get your passwords and more on all your devices
   </message>
+  <message name="IDS_PROFILE_MENU_PROFILE_IDENTIFIER_WITH_SEPARATOR" desc="The user name and profile name are separated by a symbol, in this case bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
+    <ph name="USER_NAME">$1<ex>John</ex></ph> • <ph name="PROFILE_NAME">$2<ex>Work</ex></ph>
+  </message>
   <if expr="not use_titlecase">
     <message name="IDS_PROFILES_LIST_PROFILES_TITLE" desc="Title in the profile menu for the list of 'other profiles'.">
       Other profiles
@@ -166,6 +169,9 @@
     </message>
     <message name="IDS_PROFILE_MENU_OPEN_ACCOUNT_SETTINGS" desc="Button in the avatar menu bubble view for opening Brave account settings.">
       Brave services settings
+    </message>
+    <message name="IDS_PROFILE_MENU_AUTOFILL_SETTINGS_BUTTON" desc="Button in the avatar menu bubble view for opening Brave autofill settings.">
+      Passwords and autofill
     </message>
   </if>
   <if expr="use_titlecase">
@@ -199,15 +205,15 @@
     <message name="IDS_PROFILE_MENU_OPEN_ACCOUNT_SETTINGS" desc="Button in the avatar menu bubble view for opening Brave account settings.">
       Brave Services Settings
     </message>
+    <message name="IDS_PROFILE_MENU_AUTOFILL_SETTINGS_BUTTON" desc="Button in the avatar menu bubble view for opening Brave autofill settings.">
+      Passwords and Autofill
+    </message>
   </if>
   <message name="IDS_PROFILES_MANAGED_BY" desc="Label shown under the avatar in the avatar menu bubble view stating that the account is managed.">
-    managed by <ph name="VALUE">$1<ex>1</ex></ph>
+    Managed by <ph name="VALUE">$1<ex>1</ex></ph>
   </message>
   <message name="IDS_PROFILES_MANAGE_PROFILES_BUTTON_TOOLTIP" desc="Button in the avatar menu bubble view for launching the profile picker.">
     Manage profiles
-  </message>
-  <message name="IDS_PROFILES_MANAGE_PROFILES_MANAGED_TOOLTIP" desc="Icon in the avatar menu bubble view explaining why selecting other profiles is disabled.">
-    Your administrator has disabled other profiles
   </message>
   <message name="IDS_PROFILES_CUSTOMIZE_PROFILE_BUTTON_TOOLTIP" desc="Tooltip of the customize profile button in the avatar menu bubble view for editing the current profile. The button itself has no text, it is only the edit icon.">
     Customize profile
@@ -626,7 +632,10 @@
       About this profile
     </message>
     <message name="IDS_ENTERPRISE_WELCOME_PROFILE_DISCLOSURE_SUBTITLE" desc="Subtitle of the dialog disclaiming information about the profile they are about to create.">
-      This profile is managed by your organization, which can view certain kinds of information
+      This profile is managed by your organization, which can view certain kinds of information, including
+    </message>
+    <message name="IDS_ENTERPRISE_WELCOME_PROFILE_DISCLOSURE_KNOWN_DOMAIN_SUBTITLE" desc="Subtitle of the dialog disclaiming information about the profile they are about to create.">
+      This profile is managed by <ph name="PROFILE_MANAGER">$1<ex>example.com</ex></ph>, which can view certain kinds of information, including
     </message>
     <message name="IDS_ENTERPRISE_WELCOME_PROFILE_INFORMATION_TITLE" desc="Title of a section disclaiming to the user what their organization can do with their profile information.">
       Profile information
@@ -642,6 +651,9 @@
     </message>
     <message name="IDS_ENTERPRISE_OIDC_WELCOME_PROCESSING_SUBTITLE" desc="Subtitle of a section telling the user that a work profile is being created for them.">
       Setting up your work profile ...
+    </message>
+    <message name="IDS_ENTERPRISE_OIDC_WELCOME_LONG_PROCESSING_SUBTITLE" desc="Subtitle of a section telling the user that work profile creation is ongoing and taking longer than expected.">
+      Setup may take a little longer ...
     </message>
     <message name="IDS_ENTERPRISE_OIDC_WELCOME_SUCCESS_TITLE" desc="Title of a section telling the user that their work profile has been created..">
       You're all set!
@@ -659,7 +671,7 @@
       You can try again or contact your administrator for help
     </message>
     <message name="IDS_ENTERPRISE_VALUE_PROPOSITION_SUBTITLE" desc="Subtitle the value proposition dialog for creating an enterprise profile.">
-      Sign in to securely separate your work and personal browsing. Increase your productivity while protecting sensitive company data.
+      Sign in to get your bookmarks, passwords, and more on all your devices
     </message>
     <message name="IDS_ENTERPRISE_WELCOME_SEPARATE_BROWSING_TITLE" desc="Title of the dialog that asks the user to either keep their browsing data in the work profile they will create or keep it separate.">
       Keep existing browsing data separate from your work profile?
@@ -678,9 +690,12 @@
     </message>
 
     <!-- Supervised user profile signin IPH -->
-    <!-- TODO(b/351333491): Mark them translateable once the strings are approved. -->
-    <message name="IDS_SUPERVISED_USER_PROFILE_SIGNIN_IPH_TITLE" desc="Title of the IPH bubble when a supervised user signs-in in a new or existing local profile." translateable="false">
+    <message name="IDS_SUPERVISED_USER_PROFILE_SIGNIN_IPH_TITLE" desc="Title of a reminder message, which is intended to help supervised users understand that they have been signed in to Brave.">
       Welcome <ph name="CHILD_NAME">$1<ex>Charlie</ex></ph>
+    </message>
+
+    <message name="IDS_SUPERVISED_USER_PROFILE_SIGNIN_IPH_TEXT" desc="Body text of a reminder message, which is intended to help supervised users understand that they have been signed in to Brave. This body text string comes after the 'Welcome back, USER_NAME' string. It motivates kids to get their parents' help to stay safer online.">
+      Your parent's choices will now keep you safer online
     </message>
 
     <!-- Profile Picker -->
@@ -923,22 +938,44 @@
     </message>
 
     <!-- Batch Upload Desktop -->
-    <!-- TODO(b/365954368): All batch upload strings to be finalized and translated. -->
-    <message translateable="false" name="IDS_BATCH_UPLOAD_TITLE" desc="">
-      Save data to account
+    <message name="IDS_BATCH_UPLOAD_TITLE" desc="Title of the Batch Upload dialog on Desktop.">
+      Save items in account
     </message>
-    <message translateable="false" name="IDS_BATCH_UPLOAD_SUBTITLE" desc="">
-      <!-- TODO(b/365954465): Incomplete string that might get more complex. -->
-      N items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.
+    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_ITEMS" desc="Subtitle of the Batch Upload dialog if no special type exists. It only mentions the total number of items that are shown. A special type will have its type name shown first instead of 'items' and potentially show 'and other items' if multiple section exists, in different strings.">
+      {ITEM_COUNT, plural,
+      =1 {1 item is saved only to this device. To use it on your other devices, save it in your Brave sync chain}
+      other {{ITEM_COUNT} items are saved only to this device. To use them on your other devices, save them in your Brave sync chain}
+      }
     </message>
-    <message translateable="false" name="IDS_BATCH_UPLOAD_SECTION_TITLE_PASSWORDS" desc="">
-      Passwords
+    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_PASSWORDS" desc="Subtitle of the Batch Upload dialog if password type exists with no other types. It mentions the number of passwords items in the section.">
+      {PASSWORD_COUNT, plural,
+      =1 {1 password is saved only to this device. To use it on your other devices, save it in your Brave sync chain}
+      other {{PASSWORD_COUNT} passwords are saved only to this device. To use them on your other devices, save them in your Brave sync chain}
+      }
     </message>
-    <message translateable="false" name="IDS_BATCH_UPLOAD_SECTION_TITLE_ADDRESSES" desc="">
-      Addresses
+    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_PASSWORDS_COMBO" desc="Subtitle of the Batch Upload dialog if password type is the first type and it is not the only one. It mentions the number of passwords items in the section as well as 'and other items' to reference the other types.">
+      {PASSWORD_COUNT, plural,
+      =1 {1 password and other items are saved only to this device. To use it on your other devices, save it in your Brave sync chain}
+      other {{PASSWORD_COUNT} passwords and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain}
+      }
     </message>
-    <message translateable="false" name="IDS_BATCH_UPLOAD_SAVE_TO_ACCOUNT_OK_BUTTON_LABEL" desc="">
+    <message name="IDS_BATCH_UPLOAD_SECTION_TITLE_PASSWORDS" desc="Title of the Passwords section in the Batch Upload dialog. Shows the number of selected passwords in the section of the dialog if any.">
+      {SELECTED_ITEMS, plural,
+      =0 {Passwords}
+      other {Passwords ({SELECTED_ITEMS})}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SECTION_TITLE_ADDRESSES" desc="Title of the Addresses section in the Batch Upload dialog. Shows the number of selected addresses in the section of the dialog if any.">
+      {SELECTED_ITEMS, plural,
+      =0 {Addresses}
+      other {Addresses ({SELECTED_ITEMS})}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SAVE_TO_ACCOUNT_OK_BUTTON_LABEL" desc="Text of the button that triggers the saving of the selected items in the Batch Upload dialog. When pressing the button, selected items are moved to the account storage (Saved in account) and the dialog is then closed.">
       Save in account
+    </message>
+    <message name="IDS_BATCH_UPLOAD_AVATAR_BUTTON_SAVING_TO_ACCOUNT" desc="Text shown on the avatar button pill after the user has requested to save items in their account through the Batch Upload dialog. The text is shown for few seconds then disappears.">
+      Saving in your account...
     </message>
   </if>
 </grit-part>

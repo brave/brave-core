@@ -3,6 +3,70 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-group("lib") {
-  public_deps = [ "//third_party/rust/bitflags/v2:lib" ]
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "bitflags"
+  epoch = "2"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/example_generated.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/external.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/external/arbitrary.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/external/bytemuck.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/external/serde.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/internal.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/iter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/parser.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/public.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/all.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/bits.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/complement.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/contains.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/difference.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/empty.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/eq.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/extend.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/flags.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/fmt.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/from_bits.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/from_bits_retain.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/from_bits_truncate.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/from_name.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/insert.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/intersection.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/intersects.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/is_all.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/is_empty.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/iter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/parser.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/remove.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/symmetric_difference.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/tests/union.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0/src/traits.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "2.6.0"
+  cargo_pkg_authors = "The Rust Project Developers"
+  cargo_pkg_name = "bitflags"
+  cargo_pkg_description =
+      "A macro to generate structures which behave like bitflags."
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [ "//brave/third_party/rust/serde/v1:lib" ]
+  features = [ "serde" ]
 }

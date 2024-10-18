@@ -1,5 +1,5 @@
 diff --git a/components/component_updater/component_updater_service.h b/components/component_updater/component_updater_service.h
-index f71358e75f4ceec422ad67ced65dd6e982d1247b..18dba00532bec1df19ec023977d8e84cd480916f 100644
+index 75882c21b9e46ddb2fbb1814a5edcf40bfd612c6..9a58945dfafb6597f75c5816a2e8822ef676960a 100644
 --- a/components/component_updater/component_updater_service.h
 +++ b/components/component_updater/component_updater_service.h
 @@ -205,6 +205,7 @@ class ComponentUpdateService {

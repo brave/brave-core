@@ -10,11 +10,11 @@
 
 #include "net/cookies/cookie_access_delegate.h"
 
-#define ShouldTreatUrlAsTrustworthy                                       \
-  NotUsed() const override;                                               \
-  bool ShouldUseEphemeralStorage(                                         \
-      const GURL& url, const net::SiteForCookies& site_for_cookies,       \
-      const std::optional<url::Origin>& top_frame_origin) const override; \
+#define ShouldTreatUrlAsTrustworthy                                           \
+  NotUsed() const override;                                                   \
+  bool ShouldUseEphemeralStorage(                                             \
+      const GURL& url, const net::SiteForCookies& site_for_cookies,           \
+      base::optional_ref<const url::Origin> top_frame_origin) const override; \
   bool ShouldTreatUrlAsTrustworthy
 
 #include "src/services/network/cookie_access_delegate_impl.h"  // IWYU pragma: export
