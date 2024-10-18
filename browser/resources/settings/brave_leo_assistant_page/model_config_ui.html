@@ -174,37 +174,6 @@
     <div class="input-container">
       <div class="custom-label">
         <div class="label-text">
-          <span>$i18n{braveLeoAssistantModelSystemPromptTitle}</span>
-          <leo-tooltip mode="default">
-            <div
-              slot="content"
-              class="tooltip-content"
-            >
-              $i18n{braveLeoAssistantModelSystemPromptDesc}
-            </div>
-            <leo-button
-              size="small"
-              kind="plain-faint"
-              fab
-            >
-              <cr-icon class="small"  icon="info-outline"></cr-icon>
-            </leo-button>
-          </leo-tooltip>
-        </div>
-      </div>
-      <cr-textarea
-        auto-validate
-        autogrow="true"
-        value="[[modelSystemPrompt]]"
-        rows="4"
-        placeholder="$i18n{braveLeoAssistantModelSystemPromptPlaceholder}"
-        on-change="onModelSystemPromptChange_"
-      ></cr-textarea>
-    </div>
-
-    <div class="input-container">
-      <div class="custom-label">
-        <div class="label-text">
           <span>$i18n{braveLeoAssistantInputContextSizeLabel}</span>
           <leo-tooltip mode="default">
             <div
@@ -260,6 +229,36 @@
       >
       </cr-input>
     </div>
+
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span>$i18n{braveLeoAssistantModelSystemPromptTitle}</span>
+          <leo-tooltip mode="default">
+            <div
+              slot="content"
+              class="tooltip-content"
+            >
+              $i18n{braveLeoAssistantModelSystemPromptDesc}
+            </div>
+            <leo-button
+              size="small"
+              kind="plain-faint"
+              fab
+            >
+              <cr-icon class="small"  icon="info-outline"></cr-icon>
+            </leo-button>
+          </leo-tooltip>
+        </div>
+      </div>
+      <cr-textarea
+        value="[[modelSystemPrompt]]"
+        rows="4"
+        placeholder="$i18n{braveLeoAssistantModelSystemPromptPlaceholder}"
+        on-change="onModelSystemPromptChange_"
+      ></cr-textarea>
+    </div>
+
     <div class="actions-container">
       <leo-button
         disabled="[[!saveEnabled_(label,
