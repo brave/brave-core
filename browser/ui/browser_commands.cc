@@ -916,7 +916,6 @@ class BookmarksExportListener : public ui::SelectFileDialog::Listener {
     bookmark_html_writer::WriteBookmarks(profile_, file.file_path, nullptr);
     delete this;
   }
-  void FileSelectionCanceled() override { delete this; }
   void ShowFileDialog(Browser* browser) {
     const std::string exported_bookmarks_filename =
         base::UnlocalizedTimeFormatWithPattern(base::Time::Now(), "yyyy_MM_dd",
