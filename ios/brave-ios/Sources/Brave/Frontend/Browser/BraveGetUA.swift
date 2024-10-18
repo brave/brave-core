@@ -8,12 +8,6 @@ import Shared
 import WebKit
 
 class BraveGetUA: TabContentScript {
-  fileprivate weak var tab: Tab?
-
-  required init(tab: Tab) {
-    self.tab = tab
-  }
-
   static let scriptName = "BraveGetUA"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
@@ -34,9 +28,9 @@ class BraveGetUA: TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: (Any?, String?) -> Void
   ) {
     // 🙀 😭 🏃‍♀️💨

@@ -11,7 +11,22 @@ enum JavascriptError: Error {
   case invalid
 }
 
+// FIXME: Delete these JS methods once Playlist web view & error pages are ported over
 extension WKWebView {
+  // Use JS to redirect the page without adding a history entry
+  public func replaceLocation(with url: URL) {
+    let apostropheEncoded = "%27"
+    let safeUrl = url.absoluteString.replacingOccurrences(of: "'", with: apostropheEncoded)
+    evaluateSafeJavaScript(
+      functionName: "location.replace",
+      args: ["'\(safeUrl)'"],
+      contentWorld: .defaultClient,
+      escapeArgs: false,
+      asFunction: true,
+      completion: nil
+    )
+  }
+
   public func generateJSFunctionString(
     functionName: String,
     args: [Any?],

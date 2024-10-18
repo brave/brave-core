@@ -1,0 +1,17 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("prefs") {
+  sources = [
+    "browser_prefs+private.h",
+    "browser_prefs.h",
+    "browser_prefs.mm",
+  ]
+  deps = [
+    "//base",
+    "//components/prefs",
+    "//ios/chrome/browser/shared/model/prefs:pref_names",
+  ]
+}

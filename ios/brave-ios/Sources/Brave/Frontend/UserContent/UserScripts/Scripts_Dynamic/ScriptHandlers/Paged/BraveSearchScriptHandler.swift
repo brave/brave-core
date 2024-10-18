@@ -11,7 +11,6 @@ import WebKit
 import os.log
 
 class BraveSearchScriptHandler: TabContentScript {
-  private weak var tab: Tab?
   private let profile: Profile
   private weak var rewards: BraveRewards?
 
@@ -23,8 +22,7 @@ class BraveSearchScriptHandler: TabContentScript {
   /// How many times user is shown the default browser prompt in total, this does not reset between app launches.
   private let maxCountOfDefaultBrowserPromptsTotal = 10
 
-  required init(tab: Tab, profile: Profile, rewards: BraveRewards) {
-    self.tab = tab
+  required init(profile: Profile, rewards: BraveRewards) {
     self.profile = profile
     self.rewards = rewards
   }
@@ -62,9 +60,9 @@ class BraveSearchScriptHandler: TabContentScript {
     let methodId: Int
   }
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: (Any?, String?) -> Void
   ) {
     if !verifyMessage(message: message) {
@@ -93,7 +91,7 @@ class BraveSearchScriptHandler: TabContentScript {
 
     switch method {
     case Method.canSetBraveSearchAsDefault.rawValue:
-      handleCanSetBraveSearchAsDefault(replyHandler: replyHandler)
+      handleCanSetBraveSearchAsDefault(tab: tab, replyHandler: replyHandler)
     case Method.setBraveSearchDefault.rawValue:
       handleSetBraveSearchDefault(replyHandler: replyHandler)
     default:
@@ -101,8 +99,8 @@ class BraveSearchScriptHandler: TabContentScript {
     }
   }
 
-  private func handleCanSetBraveSearchAsDefault(replyHandler: (Any?, String?) -> Void) {
-    if tab?.isPrivate == true {
+  private func handleCanSetBraveSearchAsDefault(tab: Tab, replyHandler: (Any?, String?) -> Void) {
+    if tab.isPrivate == true {
       Logger.module.debug("Private mode detected, skipping setting Brave Search as a default")
       replyHandler(false, nil)
       return

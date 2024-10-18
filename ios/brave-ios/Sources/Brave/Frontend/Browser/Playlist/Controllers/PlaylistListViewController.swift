@@ -5,6 +5,7 @@
 
 import AVFoundation
 import AVKit
+import BraveCore
 import BraveShared
 import Combine
 import CoreData
@@ -47,6 +48,7 @@ class PlaylistListViewController: UIViewController {
   public var initialItemPlaybackOffset = 0.0
 
   weak var delegate: PlaylistViewControllerDelegate?
+  private let braveCore: BraveCoreMain?
   private let playerView: VideoView
   let isPrivateBrowsing: Bool
 
@@ -74,7 +76,8 @@ class PlaylistListViewController: UIViewController {
     $0.allowsSelectionDuringEditing = true
   }
 
-  init(playerView: VideoView, isPrivateBrowsing: Bool) {
+  init(braveCore: BraveCoreMain?, playerView: VideoView, isPrivateBrowsing: Bool) {
+    self.braveCore = braveCore
     self.playerView = playerView
     self.isPrivateBrowsing = isPrivateBrowsing
     super.init(nibName: nil, bundle: nil)
@@ -800,7 +803,7 @@ extension PlaylistListViewController {
           item: model,
           viewForInvisibleWebView: self.playerView.window ?? self.playerView.superview
             ?? self.playerView,
-          webLoaderFactory: LivePlaylistWebLoaderFactory()
+          webLoaderFactory: LivePlaylistWebLoaderFactory(braveCore: self.braveCore)
         )
         try Task.checkCancellation()
 

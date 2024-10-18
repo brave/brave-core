@@ -4,18 +4,12 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import AIChat
+import BraveCore
+import BraveShared
 import Foundation
-import WebKit
 import os.log
 
 class BraveLeoScriptHandler: NSObject, TabContentScript {
-  fileprivate weak var tab: Tab?
-
-  init(tab: Tab) {
-    self.tab = tab
-    super.init()
-  }
-
   static let getMainArticle = "getMainArticle\(uniqueID)"
   static let getPDFDocument = "getPDFDocument\(uniqueID)"
 
@@ -44,10 +38,10 @@ class BraveLeoScriptHandler: NSObject, TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
 
@@ -61,7 +55,7 @@ class BraveLeoScriptHandler: NSObject, TabContentScript {
 extension BraveLeoScriptHandler: AIChatJavascript {
 
   @MainActor
-  static func getPageContentType(webView: WKWebView) async -> String? {
+  static func getPageContentType(webView: CWVWebView) async -> String? {
     return try? await webView.evaluateSafeJavaScriptThrowing(
       functionName: "document.contentType",
       contentWorld: Self.scriptSandbox,
@@ -71,7 +65,7 @@ extension BraveLeoScriptHandler: AIChatJavascript {
   }
 
   @MainActor
-  static func getMainArticle(webView: WKWebView) async -> String? {
+  static func getMainArticle(webView: CWVWebView) async -> String? {
     do {
       let articleText =
         try await webView.evaluateSafeJavaScriptThrowing(
@@ -88,8 +82,8 @@ extension BraveLeoScriptHandler: AIChatJavascript {
   }
 
   @MainActor
-  static func getPDFDocument(webView: WKWebView) async -> String? {
-    // po webView.perform(Selector("_methodDescription"))
+  static func getPDFDocument(webView: CWVWebView) async -> String? {
+    guard let webView = webView.underlyingWebView else { return nil }
     if webView.responds(to: Selector(("_dataForDisplayedPDF"))),
       let pdfData = webView.perform(Selector(("_dataForDisplayedPDF"))).takeUnretainedValue()
         as? Data
@@ -131,7 +125,7 @@ extension BraveLeoScriptHandler: AIChatJavascript {
   }
 
   @MainActor
-  static func getPrintViewPDF(webView: WKWebView) async -> Data {
+  static func getPrintViewPDF(webView: CWVWebView) async -> Data {
     // No article text. Attempt to parse the page as a PDF/Image
     let render = UIPrintPageRenderer()
     render.addPrintFormatter(webView.viewPrintFormatter(), startingAtPageAt: 0)
