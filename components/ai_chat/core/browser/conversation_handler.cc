@@ -1038,11 +1038,6 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
     return;
   }
 
-  // Can only have staged entries at the start of a conversation.
-  if (!chat_history_.empty()) {
-    return;
-  }
-
   associated_content_delegate_->GetStagedEntriesFromContent(
       base::BindOnce(&ConversationHandler::OnGetStagedEntriesFromContent,
                      weak_ptr_factory_.GetWeakPtr()));
@@ -1051,10 +1046,15 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
 void ConversationHandler::OnGetStagedEntriesFromContent(
     const std::optional<std::vector<SearchQuerySummary>>& entries) {
   // Check if all requirements are still met.
-  if (!entries || !chat_history_.empty() || !IsContentAssociationPossible() ||
+  if (is_request_in_progress_ || !entries || !IsContentAssociationPossible() ||
       !should_send_page_contents_ || !ai_chat_service_->HasUserOptedIn()) {
     return;
   }
+
+  // Clear previous staged entries.
+  std::erase_if(chat_history_, [](const mojom::ConversationTurnPtr& turn) {
+    return turn->from_brave_search_SERP;
+  });
 
   // Add the query & summary pairs to the conversation history and call
   // OnHistoryUpdate to update UI.

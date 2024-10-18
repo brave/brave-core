@@ -133,6 +133,21 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
+  void ValidateOpenLeoButtonNonce(const base::Location& location,
+                                  bool expected_is_valid) {
+    SCOPED_TRACE(testing::Message() << location.ToString());
+    base::RunLoop run_loop;
+    page_content_fetcher_ =
+        std::make_unique<ai_chat::PageContentFetcher>(GetActiveWebContents());
+    page_content_fetcher_->ValidateOpenLeoButtonNonce(
+        base::BindLambdaForTesting(
+            [&run_loop, expected_is_valid](bool is_valid) {
+              EXPECT_EQ(expected_is_valid, is_valid);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
   // Handles returning a .patch file if the user is on a github.com pull request
   void SetGithubInterceptor() {
     GURL expected_patch_url =
@@ -267,5 +282,37 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, GetSearchSummarizerKey) {
                     .ExtractBool());
 
     GetSearchSummarizerKey(FROM_HERE, expected_result);
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest,
+                       ValidateOpenLeoButtonNonce) {
+  // Test no open Leo button with continue-with-leo ID present.
+  NavigateURL(https_server_.GetURL("a.com", "/open_leo_button.html"));
+  ValidateOpenLeoButtonNonce(FROM_HERE, false);
+
+  // Test valid case.
+  NavigateURL(https_server_.GetURL("a.com", "/open_leo_button.html"));
+  ASSERT_TRUE(content::ExecJs(GetActiveWebContents()->GetPrimaryMainFrame(),
+                              "document.getElementById('valid').setAttribute('"
+                              "id', 'continue-with-leo')"));
+  ValidateOpenLeoButtonNonce(FROM_HERE, true);
+
+  // Test invalid cases.
+  std::vector<std::string> invalid_cases = {
+      "invalid",         "not-a-tag",    "no-href",       "no-nonce",
+      "empty-nonce",     "empty-nonce2", "empty-nonce3",  "empty-nonce4",
+      "empty-nonce5",    "empty-nonce6", "not-https-url", "not-search-url",
+      "not-open-leo-url"};
+
+  for (const auto& invalid_case : invalid_cases) {
+    SCOPED_TRACE(testing::Message() << "Invalid case: " << invalid_case);
+    NavigateURL(https_server_.GetURL("a.com", "/open_leo_button.html"));
+    ASSERT_TRUE(content::ExecJs(GetActiveWebContents()->GetPrimaryMainFrame(),
+                                base::ReplaceStringPlaceholders(
+                                    "document.getElementById('$1')."
+                                    "setAttribute('id', 'continue-with-leo')",
+                                    {invalid_case}, nullptr)));
+    ValidateOpenLeoButtonNonce(FROM_HERE, false);
   }
 }

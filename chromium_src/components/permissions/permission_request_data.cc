@@ -21,6 +21,8 @@ std::optional<RequestType> ContentSettingsTypeToRequestTypeIfExists_BraveImpl(
       return RequestType::kBraveGoogleSignInPermission;
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
       return RequestType::kBraveLocalhostAccessPermission;
+    case ContentSettingsType::BRAVE_AI_CHAT:
+      return RequestType::kBraveAIChat;
     default:
       return ContentSettingsTypeToRequestTypeIfExists(content_settings_type);
   }

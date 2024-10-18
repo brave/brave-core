@@ -23,8 +23,11 @@
 #include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
 #include "base/values.h"
+#include "brave/brave_domains/service_domains.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
+#include "brave/components/ai_chat/core/common/utils.h"
 #include "brave/components/ai_chat/renderer/page_text_distilling.h"
 #include "brave/components/ai_chat/renderer/yt_util.h"
 #include "content/public/renderer/render_frame.h"
@@ -316,6 +319,50 @@ void PageContentExtractor::GetSearchSummarizerKey(
     return;
   }
   std::move(callback).Run(element.GetAttribute("content").Utf8());
+}
+
+void PageContentExtractor::ValidateOpenLeoButtonNonce(
+    mojom::PageContentExtractor::ValidateOpenLeoButtonNonceCallback callback) {
+  auto element = render_frame()->GetWebFrame()->GetDocument().GetElementById(
+      "continue-with-leo");
+  if (element.IsNull() || !element.HasHTMLTagName("a")) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  GURL url(element.GetAttribute("href").Utf8());
+  if (!IsOpenLeoButtonFromBraveSearchURL(url) ||
+      !element.HasAttribute("nonce") || url.ref_piece().empty()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  // Value of nonce property is not accessible via GetAttribute API, so we need
+  // to execute a script to get it.
+  blink::WebScriptSource source =
+      blink::WebScriptSource(blink::WebString::FromUTF8(
+          "document.getElementById('continue-with-leo').nonce"));
+
+  auto on_script_executed =
+      [](const std::string& ref, base::OnceCallback<void(bool)> callback,
+         std::optional<base::Value> value, base::TimeTicks start_time) {
+        if (!value.has_value() || !value->is_string()) {
+          std::move(callback).Run(false);
+          return;
+        }
+
+        std::move(callback).Run(value->GetString() == ref);
+      };
+
+  render_frame()->GetWebFrame()->RequestExecuteScript(
+      isolated_world_id_, base::span_from_ref(source),
+      blink::mojom::UserActivationOption::kDoNotActivate,
+      blink::mojom::EvaluationTiming::kAsynchronous,
+      blink::mojom::LoadEventBlockingOption::kDoNotBlock,
+      base::BindOnce(on_script_executed, url.ref(), std::move(callback)),
+      blink::BackForwardCacheAware::kAllow,
+      blink::mojom::WantResultOption::kWantResult,
+      blink::mojom::PromiseResultOption::kAwait);
 }
 
 }  // namespace ai_chat
