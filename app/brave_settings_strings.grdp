@@ -1417,6 +1417,15 @@ Leo. This action can't be undone.
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SAVE_MODEL_BUTTON_LABEL" desc="A button label for user to click when they want to save a new model">
     Save model
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_MODEL_SYSTEM_PROMPT_TITLE" desc="A header title for the model system prompt">
+    System Prompt
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_MODEL_SYSTEM_PROMPT_DESC" desc="A description message for the custom model system prompt">
+    Custom instructions and/or context given to the model to guide its responses in a specific direction or style. Use &#x25;datetime&#x25; where you would like the current date and time to be inserted.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_TOKENS_COUNT" desc="A label for the (estimated) number of tokens in the system prompt">
+    ≈<ph name="TOKENS_COUNT">$1<ex>175</ex></ph> tokens
+  </message>
 
   <!-- Settings / Playlist -->
   <message name="IDS_SETTINGS_PLAYLIST_ENABLE_PLAYLIST_LABEL" desc="The text for setting to en/disable Playlist feature">

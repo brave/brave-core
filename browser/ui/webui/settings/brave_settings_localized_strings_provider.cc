@@ -489,6 +489,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_ADD_MODEL_BUTTON_LABEL},
       {"braveLeoAssistantSaveModelButtonLabel",
        IDS_SETTINGS_LEO_ASSISTANT_SAVE_MODEL_BUTTON_LABEL},
+      {"braveLeoAssistantModelSystemPromptTitle",
+       IDS_SETTINGS_LEO_ASSISTANT_MODEL_SYSTEM_PROMPT_TITLE},
+      {"braveLeoAssistantModelSystemPromptDesc",
+       IDS_SETTINGS_LEO_ASSISTANT_MODEL_SYSTEM_PROMPT_DESC},
+      {"braveLeoAssistantTokensCount", IDS_SETTINGS_LEO_ASSISTANT_TOKENS_COUNT},
 
       // New Tab Page
       {"braveNewTab", IDS_SETTINGS_NEW_TAB},
@@ -752,6 +757,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("debounceLearnMoreURL", kDebounceLearnMoreUrl);
   html_source->AddString("enableNftDiscoveryLearnMoreURL",
                          kEnableNftDiscoveryLearnMoreUrl);
+  html_source->AddString(
+      "braveLeoAssistantModelSystemPromptPlaceholder",
+      base::ReplaceStringPlaceholders(
+          l10n_util::GetStringUTF8(
+              IDS_AI_CHAT_DEFAULT_CUSTOM_MODEL_SYSTEM_PROMPT),
+          {"%datetime%"}, nullptr));
   auto confirmation_phrase = brave_l10n::GetLocalizedResourceUTF16String(
       IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE);
   html_source->AddString("walletResetConfirmationPhrase", confirmation_phrase);
