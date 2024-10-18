@@ -44,12 +44,15 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
     <leo-input id="email" placeholder="Enter your email address" on-input="onInput">
       <div class="label">Email address</div>
     </leo-input>
-    <leo-input placeholder="Enter your password">
+    <leo-input id="password" type="password" placeholder="Enter your password">
       <div class="password">
         <div class="label">Password</div>
         <a href="#">Forgot your password?</a>
       </div>
-      <leo-icon slot="right-icon" name="eye-off">
+      <leo-icon slot="right-icon"
+                id="icon"
+                name="eye-on"
+                on-click="show">
       </leo-icon>
     </leo-input>
     <leo-button size="medium" isDisabled$="[[!canSignIn]]">
