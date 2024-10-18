@@ -23,6 +23,10 @@ void ComponentInstaller::Register(ComponentUpdateService* cus,
                                   base::OnceClosure callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(cus);
+    if (IsBraveComponent()) {
+      return; // TODO: add a feature
+    }
+
   Register(base::BindOnce(&ComponentUpdateService::RegisterComponent,
                           base::Unretained(cus)),
            std::move(callback));
