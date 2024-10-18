@@ -285,7 +285,7 @@
 
     <style name="BraveLeoToolbar" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@android:color/white</item>
-        <item name="android:background">@color/brave_leo_plans_bg</item>
+        <item name="android:background">@color/primitive_blurple_10</item>
         <item name="titleTextColor">@android:color/white</item>
         <item name="android:textColorPrimary">@android:color/white</item>
     </style>
