@@ -77,7 +77,7 @@ ConversationHandler* AIChatService::CreateConversation() {
   // Create the conversation metadata
   {
     mojom::ConversationPtr conversation =
-        mojom::Conversation::New(conversation_uuid, "", false);
+        mojom::Conversation::New(conversation_uuid, "", "", false);
     conversations_.insert_or_assign(conversation_uuid, std::move(conversation));
   }
   mojom::Conversation* conversation =
@@ -285,6 +285,16 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
   DVLOG(4) << "Client connection changed for conversation "
            << handler->get_conversation_uuid();
   MaybeEraseConversation(handler);
+}
+
+void AIChatService::OnSelectedLanguageChanged(
+    ConversationHandler* handler,
+    const std::string& selected_language) {
+  auto conversation_it = conversations_.find(handler->get_conversation_uuid());
+  CHECK(conversation_it != conversations_.end());
+  auto& conversation = conversation_it->second;
+  conversation->selected_language = selected_language;
+  OnConversationListChanged();
 }
 
 void AIChatService::GetVisibleConversations(

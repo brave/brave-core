@@ -565,7 +565,7 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
                        ->GetDefaultAIEngine();
     }
     ai_engine_->GenerateRewriteSuggestion(
-        selected_text, ai_chat::GetActionTypeQuestion(action_type),
+        selected_text, ai_chat::GetActionTypeQuestion(action_type), "",
         ai_chat::BindParseRewriteReceivedData(
             base::BindRepeating(&OnRewriteSuggestionDataReceived,
                                 source_web_contents_->GetWeakPtr())),

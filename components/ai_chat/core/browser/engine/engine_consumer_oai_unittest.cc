@@ -114,7 +114,7 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
         run_loop.Quit();
       });
 
-  engine_->GenerateQuestionSuggestions(false, "Page content",
+  engine_->GenerateQuestionSuggestions(false, "Page content", "",
                                        base::NullCallback());
   run_loop.Run();
 
@@ -127,7 +127,7 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
         run_loop2.Quit();
       });
 
-  engine_->GenerateQuestionSuggestions(false, "Page content",
+  engine_->GenerateQuestionSuggestions(false, "Page content", "",
                                        base::NullCallback());
   run_loop2.Run();
 
@@ -161,7 +161,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
           ">"));
 
   engine_->GenerateQuestionSuggestions(
-      false, page_content,
+      false, page_content, "",
       base::BindLambdaForTesting(
           [&](EngineConsumer::SuggestedQuestionResult result) {
             EXPECT_TRUE(result.has_value());
@@ -169,7 +169,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
           }));
 
   engine_->GenerateQuestionSuggestions(
-      false, page_content,
+      false, page_content, "",
       base::BindLambdaForTesting(
           [&](EngineConsumer::SuggestedQuestionResult result) {
             EXPECT_STREQ(result.value()[0].c_str(), "Question 1");
@@ -177,7 +177,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
           }));
 
   engine_->GenerateQuestionSuggestions(
-      false, page_content,
+      false, page_content, "",
       base::BindLambdaForTesting(
           [&](EngineConsumer::SuggestedQuestionResult result) {
             EXPECT_STREQ(result.value()[0].c_str(), "Question 1");
@@ -185,7 +185,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
           }));
 
   engine_->GenerateQuestionSuggestions(
-      false, page_content,
+      false, page_content, "",
       base::BindLambdaForTesting(
           [&](EngineConsumer::SuggestedQuestionResult result) {
             EXPECT_STREQ(result.value()[0].c_str(), "Question 1");
@@ -259,7 +259,8 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
   }
 
   engine_->GenerateAssistantResponse(
-      /* is_video */ false, "", history, "What's his name?", base::DoNothing(),
+      /* is_video */ false, "", history, "What's his name?", "",
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             EXPECT_STREQ(result.value().c_str(), "I dont know");
@@ -297,7 +298,7 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
       });
 
   engine_->GenerateAssistantResponse(
-      false, "", GetHistoryWithModifiedReply(), "test", base::DoNothing(),
+      false, "", GetHistoryWithModifiedReply(), "test", "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             run_loop->Quit();
@@ -328,7 +329,7 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
           });
 
   engine_->GenerateAssistantResponse(
-      false, "This is my page.", GetHistoryWithModifiedReply(), "Who?",
+      false, "This is my page.", GetHistoryWithModifiedReply(), "Who?", "",
       base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
@@ -342,7 +343,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
   auto run_loop = std::make_unique<base::RunLoop>();
   EXPECT_CALL(*client, PerformRequest(_, _, _, _)).Times(0);
   engine_->GenerateAssistantResponse(
-      false, "This is my page.", history, "Who?", base::DoNothing(),
+      false, "This is my page.", history, "Who?", "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             run_loop->Quit();
@@ -362,7 +363,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
   EXPECT_CALL(*client, PerformRequest(_, _, _, _)).Times(0);
   run_loop = std::make_unique<base::RunLoop>();
   engine_->GenerateAssistantResponse(
-      false, "This is my page.", history, "Who?", base::DoNothing(),
+      false, "This is my page.", history, "Who?", "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             run_loop->Quit();
@@ -403,7 +404,7 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
 
   engine_->GenerateAssistantResponse(
       /* is_video */ false,
-      /* page_content */ "This is a page.", history, "", base::DoNothing(),
+      /* page_content */ "This is a page.", history, "", "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 

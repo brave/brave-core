@@ -63,6 +63,8 @@ class AIChatService : public KeyedService,
       ConversationHandler* handler,
       std::vector<mojom::ConversationTurnPtr> entries) override;
   void OnClientConnectionChanged(ConversationHandler* handler) override;
+  void OnSelectedLanguageChanged(ConversationHandler* handler,
+                                 const std::string& selected_language) override;
 
   // Adds new conversation and returns the handler
   ConversationHandler* CreateConversation();
