@@ -73,6 +73,18 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
                 <Icon name={aiChatContext.isHistoryEnabled ? 'plus-add' : 'erase'} />
               </Button>
             )}
+            {!aiChatContext.isStandalone &&
+              <Button
+                fab
+                kind='plain-faint'
+                aria-label="Open full page"
+                title="Open full page"
+                onClick={() => {
+                  // TODO(fallaciousreasoning): Wire this up to a new mojom interface.
+                }}
+              >
+                <Icon name='expand' />
+              </Button>}
             <FeatureButtonMenu {...props} />
             <Button
               fab
