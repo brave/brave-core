@@ -40,6 +40,14 @@ export class ModelConfigUI extends ModelConfigUIBase {
         type: String,
         value: ''
       },
+      promptTokensEstimate: {
+        type: Number,
+        value: 0
+      },
+      promptTokensEstimateString: {
+        type: String,
+        value: ''
+      },
       endpointUrl: {
         type: String
       },
@@ -78,6 +86,8 @@ export class ModelConfigUI extends ModelConfigUIBase {
   modelRequestName: string
   contextSize: number
   modelSystemPrompt: string | null
+  promptTokensEstimate: number
+  promptTokensEstimateString: string
   endpointUrl: string
   apiKey: string
   modelItem: mojom.Model | null
@@ -167,6 +177,25 @@ export class ModelConfigUI extends ModelConfigUIBase {
     this.apiKey = e.target.value
   }
 
+  constructTokenEstimateString_( e?: any ) {
+    let charsLength = 0;
+    let tokensLength = 0;
+
+    if ( e?.target?.value ) {
+      charsLength = e.target.value.length;
+    } else if ( this.modelSystemPrompt ) {
+      charsLength = this.modelSystemPrompt.length;
+    }
+
+    tokensLength = charsLength > 0 ? Math.ceil(charsLength/4) : 0;
+
+    this.promptTokensEstimate = tokensLength
+    this.promptTokensEstimateString = this.i18n(
+      'braveLeoAssistantTokensCount',
+      this.promptTokensEstimate
+    )
+  }
+
   private saveEnabled_() {
     // Make sure all required fields are filled
     return this.label && this.modelRequestName && this.endpointUrl && !this.isUrlInvalid
@@ -184,6 +213,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
       this.modelSystemPrompt =
         newValue.options.customModelOptions.modelSystemPrompt
     }
+    this.constructTokenEstimateString_()
   }
 
   private computeIsEditing_(modelItem: mojom.Model | null) {

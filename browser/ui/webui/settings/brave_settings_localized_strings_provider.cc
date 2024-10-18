@@ -493,6 +493,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_MODEL_SYSTEM_PROMPT_TITLE},
       {"braveLeoAssistantModelSystemPromptDesc",
        IDS_SETTINGS_LEO_ASSISTANT_MODEL_SYSTEM_PROMPT_DESC},
+      {"braveLeoAssistantTokensCount", IDS_SETTINGS_LEO_ASSISTANT_TOKENS_COUNT},
 
       // New Tab Page
       {"braveNewTab", IDS_SETTINGS_NEW_TAB},

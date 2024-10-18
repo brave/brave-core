@@ -55,6 +55,11 @@
     margin-bottom: 5px;
   }
 
+  .inline-note {
+    color: var(--leo-color-text-tertiary);
+    font: var(--leo-font-small-regular);
+  }
+
   .actions-container leo-button:first-of-type {
     margin-right: 5px;
   }
@@ -249,6 +254,12 @@
               <cr-icon class="small"  icon="info-outline"></cr-icon>
             </leo-button>
           </leo-tooltip>
+          <template
+          is="dom-if"
+          if="[[promptTokensEstimate]]"
+        >
+          <span class="inline-note">[[promptTokensEstimateString]]</span>
+        </template>
         </div>
       </div>
       <cr-textarea
@@ -256,6 +267,7 @@
         rows="4"
         placeholder="$i18n{braveLeoAssistantModelSystemPromptPlaceholder}"
         on-change="onModelSystemPromptChange_"
+        on-input="constructTokenEstimateString_"
       ></cr-textarea>
     </div>
 
