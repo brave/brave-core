@@ -157,6 +157,17 @@ function Main() {
     }
   }
 
+  const maybeShowSoftKeyboard = (querySubmitted: boolean) => {
+    if (aiChatContext.isMobile && aiChatContext.hasAcceptedAgreement &&
+      !aiChatContext.hasInitialHistory && !querySubmitted &&
+      !conversationContext.isGenerating &&
+      conversationContext.conversationHistory.length === 0) {
+        aiChatContext.uiHandler?.handleShowSoftKeyboard()
+        return true
+    }
+    return false
+  }
+
   return (
     <main className={styles.main}>
       {showAgreementModal && <PrivacyMessage />}
@@ -283,6 +294,7 @@ function Main() {
           <InputBox
             context={{...conversationContext, ...aiChatContext}}
             onFocusInputMobile={handleOnFocusInputMobile}
+            maybeShowSoftKeyboard={maybeShowSoftKeyboard}
           />
         </ToolsButtonMenu>
       </div>

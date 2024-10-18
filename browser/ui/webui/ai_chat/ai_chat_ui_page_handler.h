@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UI_PAGE_HANDLER_H_
 
 #include <memory>
+#include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
@@ -52,6 +53,7 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void RefreshPremiumSession() override;
   void ManagePremium() override;
   void HandleVoiceRecognition(const std::string& conversation_uuid) override;
+  void HandleShowSoftKeyboard() override;
   void CloseUI() override;
   void SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui) override;
   void BindRelatedConversation(

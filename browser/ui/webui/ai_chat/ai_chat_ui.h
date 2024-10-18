@@ -23,6 +23,7 @@
 
 namespace content {
 class BrowserContext;
+class WebContents;
 }
 
 class Profile;
@@ -48,6 +49,7 @@ class AIChatUI : public ui::UntrustedWebUIController {
   static constexpr std::string GetWebUIName() { return "AIChatPanel"; }
 
  private:
+  content::WebContents* GetChatWebContents();
   std::unique_ptr<ai_chat::mojom::AIChatUIHandler> page_handler_;
 
   base::WeakPtr<TopChromeWebUIController::Embedder> embedder_;

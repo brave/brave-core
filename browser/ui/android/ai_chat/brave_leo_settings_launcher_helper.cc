@@ -47,4 +47,9 @@ void CloseActivity(content::WebContents* web_contents) {
       base::android::AttachCurrentThread(), web_contents->GetJavaWebContents());
 }
 
+void HandleShowSoftKeyboard(content::WebContents* web_contents) {
+  Java_BraveLeoSettingsLauncherHelper_handleShowSoftKeyboard(
+      base::android::AttachCurrentThread(), web_contents->GetJavaWebContents());
+}
+
 }  // namespace ai_chat
