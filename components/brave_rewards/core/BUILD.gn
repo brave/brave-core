@@ -3,59 +3,70 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/build/buildflag_header_with_env_config.gni")
 import("//third_party/protobuf/proto_library.gni")
-
-import("//brave/components/brave_rewards/core/config.gni")
-import("//build/buildflag_header.gni")
 
 if (is_android) {
   import("//build/config/android/rules.gni")
 }
 
-buildflag_header("buildflags") {
+buildflag_header_with_env_config("buildflags") {
   header_dir = "brave/components/brave_rewards/core"
   header = "buildflags.h"
-  flags = [
-    "BITFLYER_PRODUCTION_CLIENT_ID=\"$bitflyer_production_client_id\"",
-    "BITFLYER_PRODUCTION_CLIENT_SECRET=\"$bitflyer_production_client_secret\"",
-    "BITFLYER_PRODUCTION_FEE_ADDRESS=\"$bitflyer_production_fee_address\"",
-    "BITFLYER_PRODUCTION_URL=\"$bitflyer_production_url\"",
-    "BITFLYER_SANDBOX_CLIENT_ID=\"$bitflyer_sandbox_client_id\"",
-    "BITFLYER_SANDBOX_CLIENT_SECRET=\"$bitflyer_sandbox_client_secret\"",
-    "BITFLYER_SANDBOX_FEE_ADDRESS=\"$bitflyer_sandbox_fee_address\"",
-    "BITFLYER_SANDBOX_URL=\"$bitflyer_sandbox_url\"",
-    "GEMINI_PRODUCTION_API_URL=\"$gemini_production_api_url\"",
-    "GEMINI_PRODUCTION_CLIENT_ID=\"$gemini_production_client_id\"",
-    "GEMINI_PRODUCTION_CLIENT_SECRET=\"$gemini_production_client_secret\"",
-    "GEMINI_PRODUCTION_FEE_ADDRESS=\"$gemini_production_fee_address\"",
-    "GEMINI_PRODUCTION_OAUTH_URL=\"$gemini_production_oauth_url\"",
-    "GEMINI_SANDBOX_API_URL=\"$gemini_sandbox_api_url\"",
-    "GEMINI_SANDBOX_CLIENT_ID=\"$gemini_sandbox_client_id\"",
-    "GEMINI_SANDBOX_CLIENT_SECRET=\"$gemini_sandbox_client_secret\"",
-    "GEMINI_SANDBOX_FEE_ADDRESS=\"$gemini_sandbox_fee_address\"",
-    "GEMINI_SANDBOX_OAUTH_URL=\"$gemini_sandbox_oauth_url\"",
-    "REWARDS_GRANT_DEV_ENDPOINT=\"$rewards_grant_dev_endpoint\"",
-    "REWARDS_GRANT_STAGING_ENDPOINT=\"$rewards_grant_staging_endpoint\"",
-    "REWARDS_GRANT_PROD_ENDPOINT=\"$rewards_grant_prod_endpoint\"",
-    "UPHOLD_PRODUCTION_API_URL=\"$uphold_production_api_url\"",
-    "UPHOLD_PRODUCTION_CLIENT_ID=\"$uphold_production_client_id\"",
-    "UPHOLD_PRODUCTION_CLIENT_SECRET=\"$uphold_production_client_secret\"",
-    "UPHOLD_PRODUCTION_FEE_ADDRESS=\"$uphold_production_fee_address\"",
-    "UPHOLD_PRODUCTION_OAUTH_URL=\"$uphold_production_oauth_url\"",
-    "UPHOLD_SANDBOX_API_URL=\"$uphold_sandbox_api_url\"",
-    "UPHOLD_SANDBOX_CLIENT_ID=\"$uphold_sandbox_client_id\"",
-    "UPHOLD_SANDBOX_CLIENT_SECRET=\"$uphold_sandbox_client_secret\"",
-    "UPHOLD_SANDBOX_FEE_ADDRESS=\"$uphold_sandbox_fee_address\"",
-    "UPHOLD_SANDBOX_OAUTH_URL=\"$uphold_sandbox_oauth_url\"",
-    "ZEBPAY_PRODUCTION_API_URL=\"$zebpay_production_api_url\"",
-    "ZEBPAY_PRODUCTION_CLIENT_ID=\"$zebpay_production_client_id\"",
-    "ZEBPAY_PRODUCTION_CLIENT_SECRET=\"$zebpay_production_client_secret\"",
-    "ZEBPAY_PRODUCTION_OAUTH_URL=\"$zebpay_production_oauth_url\"",
-    "ZEBPAY_SANDBOX_API_URL=\"$zebpay_sandbox_api_url\"",
-    "ZEBPAY_SANDBOX_CLIENT_ID=\"$zebpay_sandbox_client_id\"",
-    "ZEBPAY_SANDBOX_CLIENT_SECRET=\"$zebpay_sandbox_client_secret\"",
-    "ZEBPAY_SANDBOX_OAUTH_URL=\"$zebpay_sandbox_oauth_url\"",
+  flags = []
+
+  env_config_flags = [
+    "REWARDS_GRANT_DEV_ENDPOINT",
+    "REWARDS_GRANT_STAGING_ENDPOINT",
+    "REWARDS_GRANT_PROD_ENDPOINT",
   ]
+
+  non_ios_env_config_flags = [
+    "BITFLYER_PRODUCTION_CLIENT_ID",
+    "BITFLYER_PRODUCTION_CLIENT_SECRET",
+    "BITFLYER_PRODUCTION_FEE_ADDRESS",
+    "BITFLYER_PRODUCTION_URL",
+    "BITFLYER_SANDBOX_CLIENT_ID",
+    "BITFLYER_SANDBOX_CLIENT_SECRET",
+    "BITFLYER_SANDBOX_FEE_ADDRESS",
+    "BITFLYER_SANDBOX_URL",
+    "GEMINI_PRODUCTION_API_URL",
+    "GEMINI_PRODUCTION_CLIENT_ID",
+    "GEMINI_PRODUCTION_CLIENT_SECRET",
+    "GEMINI_PRODUCTION_FEE_ADDRESS",
+    "GEMINI_PRODUCTION_OAUTH_URL",
+    "GEMINI_SANDBOX_API_URL",
+    "GEMINI_SANDBOX_CLIENT_ID",
+    "GEMINI_SANDBOX_CLIENT_SECRET",
+    "GEMINI_SANDBOX_FEE_ADDRESS",
+    "GEMINI_SANDBOX_OAUTH_URL",
+    "UPHOLD_PRODUCTION_API_URL",
+    "UPHOLD_PRODUCTION_CLIENT_ID",
+    "UPHOLD_PRODUCTION_CLIENT_SECRET",
+    "UPHOLD_PRODUCTION_FEE_ADDRESS",
+    "UPHOLD_PRODUCTION_OAUTH_URL",
+    "UPHOLD_SANDBOX_API_URL",
+    "UPHOLD_SANDBOX_CLIENT_ID",
+    "UPHOLD_SANDBOX_CLIENT_SECRET",
+    "UPHOLD_SANDBOX_FEE_ADDRESS",
+    "UPHOLD_SANDBOX_OAUTH_URL",
+    "ZEBPAY_PRODUCTION_API_URL",
+    "ZEBPAY_PRODUCTION_CLIENT_ID",
+    "ZEBPAY_PRODUCTION_CLIENT_SECRET",
+    "ZEBPAY_PRODUCTION_OAUTH_URL",
+    "ZEBPAY_SANDBOX_API_URL",
+    "ZEBPAY_SANDBOX_CLIENT_ID",
+    "ZEBPAY_SANDBOX_CLIENT_SECRET",
+    "ZEBPAY_SANDBOX_OAUTH_URL",
+  ]
+
+  if (!is_ios) {
+    env_config_flags += non_ios_env_config_flags
+  } else {
+    foreach(non_ios_flag, non_ios_env_config_flags) {
+      flags += [ "$non_ios_flag=\"\"" ]
+    }
+  }
 }
 
 group("core") {
