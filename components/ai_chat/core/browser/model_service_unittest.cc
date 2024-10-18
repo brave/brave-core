@@ -189,6 +189,7 @@ TEST_F(ModelServiceTest, ChangeOldDefaultKey) {
 
 TEST_F(ModelServiceTest, AddAndModifyCustomModel) {
   static const char kRequestName[] = "request_name";
+  static const char kModelSystemPrompt[] = "model_system_prompt";
   static const GURL kEndpoint = GURL("http://brave.com");
   static const char kAPIKey[] = "foo_api_key";
   static const char kDisplayName[] = "Custom display name";
@@ -197,8 +198,8 @@ TEST_F(ModelServiceTest, AddAndModifyCustomModel) {
     mojom::ModelPtr model = mojom::Model::New();
     model->display_name = kDisplayName;
     model->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New(kRequestName, 0, 0, 0, kEndpoint,
-                                       kAPIKey));
+        mojom::CustomModelOptions::New(kRequestName, 0, 0, 0,
+                                       kModelSystemPrompt, kEndpoint, kAPIKey));
 
     GetService()->AddCustomModel(std::move(model));
   }
@@ -209,6 +210,9 @@ TEST_F(ModelServiceTest, AddAndModifyCustomModel) {
   EXPECT_EQ(
       models.back()->options->get_custom_model_options()->model_request_name,
       kRequestName);
+  EXPECT_EQ(
+      models.back()->options->get_custom_model_options()->model_system_prompt,
+      kModelSystemPrompt);
   EXPECT_EQ(models.back()->options->get_custom_model_options()->endpoint.spec(),
             kEndpoint.spec());
   EXPECT_EQ(models.back()->options->get_custom_model_options()->api_key,

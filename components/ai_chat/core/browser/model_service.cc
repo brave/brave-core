@@ -38,6 +38,7 @@ namespace {
 inline constexpr char kCustomModelItemLabelKey[] = "label";
 inline constexpr char kCustomModelItemModelKey[] = "model_request_name";
 inline constexpr char kCustomModelContextSizeKey[] = "context_size";
+inline constexpr char kCustomModelSystemPromptKey[] = "model_system_prompt";
 inline constexpr char kCustomModelItemEndpointUrlKey[] = "endpoint_url";
 inline constexpr char kCustomModelItemApiKey[] = "api_key";
 inline constexpr char kCustomModelItemKey[] = "key";
@@ -205,19 +206,25 @@ std::string DecryptAPIKey(const std::string& encoded_api_key) {
 
 base::Value::Dict GetModelDict(mojom::ModelPtr model) {
   base::Value::Dict model_dict = base::Value::Dict();
-  model_dict.Set(kCustomModelItemLabelKey, model->display_name);
-  model_dict.Set(
-      kCustomModelItemModelKey,
-      model->options->get_custom_model_options()->model_request_name);
-  model_dict.Set(kCustomModelItemEndpointUrlKey,
-                 model->options->get_custom_model_options()->endpoint.spec());
-  model_dict.Set(
-      kCustomModelItemApiKey,
-      EncryptAPIKey(model->options->get_custom_model_options()->api_key));
-  model_dict.Set(kCustomModelContextSizeKey,
-                 static_cast<int32_t>(
-                     model->options->get_custom_model_options()->context_size));
+
+  mojom::CustomModelOptions options =
+      *model->options->get_custom_model_options();
+
   model_dict.Set(kCustomModelItemKey, model->key);
+  model_dict.Set(kCustomModelItemLabelKey, model->display_name);
+  model_dict.Set(kCustomModelItemModelKey, options.model_request_name);
+  model_dict.Set(kCustomModelItemEndpointUrlKey, options.endpoint.spec());
+  model_dict.Set(kCustomModelItemApiKey, EncryptAPIKey(options.api_key));
+  model_dict.Set(kCustomModelContextSizeKey,
+                 static_cast<int32_t>(options.context_size));
+
+  // Check if the model has a user-specified system prompt
+  if (options.model_system_prompt.has_value() &&
+      !options.model_system_prompt->empty()) {
+    model_dict.Set(kCustomModelSystemPromptKey,
+                   options.model_system_prompt.value());
+  }
+
   return model_dict;
 }
 
@@ -566,6 +573,12 @@ std::vector<mojom::ModelPtr> ModelService::GetCustomModelsFromPrefs() {
             .value_or(kDefaultCustomModelContextSize);
     custom_model_opts->api_key =
         DecryptAPIKey(*model_pref.FindString(kCustomModelItemApiKey));
+
+    // Populate system prompt (if it exists)
+    if (const std::string* model_system_prompt =
+            model_pref.FindString(kCustomModelSystemPromptKey)) {
+      custom_model_opts->model_system_prompt = *model_system_prompt;
+    }
 
     auto model = mojom::Model::New();
     model->key = *model_pref.FindString(kCustomModelItemKey);

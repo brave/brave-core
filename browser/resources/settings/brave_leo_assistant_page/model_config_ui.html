@@ -55,6 +55,11 @@
     margin-bottom: 5px;
   }
 
+  .inline-note {
+    color: var(--leo-color-text-tertiary);
+    font: var(--leo-font-small-regular);
+  }
+
   .actions-container leo-button:first-of-type {
     margin-right: 5px;
   }
@@ -170,6 +175,7 @@
         error-message="[[invalidUrlErrorMessage]]"
       ></cr-input>
     </div>
+
     <div class="input-container">
       <div class="custom-label">
         <div class="label-text">
@@ -228,6 +234,43 @@
       >
       </cr-input>
     </div>
+
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span>$i18n{braveLeoAssistantModelSystemPromptTitle}</span>
+          <leo-tooltip mode="default">
+            <div
+              slot="content"
+              class="tooltip-content"
+            >
+              $i18n{braveLeoAssistantModelSystemPromptDesc}
+            </div>
+            <leo-button
+              size="small"
+              kind="plain-faint"
+              fab
+            >
+              <cr-icon class="small"  icon="info-outline"></cr-icon>
+            </leo-button>
+          </leo-tooltip>
+          <template
+          is="dom-if"
+          if="[[promptTokensEstimate]]"
+        >
+          <span class="inline-note">[[promptTokensEstimateString]]</span>
+        </template>
+        </div>
+      </div>
+      <cr-textarea
+        value="[[modelSystemPrompt]]"
+        rows="4"
+        placeholder="$i18n{braveLeoAssistantModelSystemPromptPlaceholder}"
+        on-change="onModelSystemPromptChange_"
+        on-input="constructTokenEstimateString_"
+      ></cr-textarea>
+    </div>
+
     <div class="actions-container">
       <leo-button
         disabled="[[!saveEnabled_(label,
