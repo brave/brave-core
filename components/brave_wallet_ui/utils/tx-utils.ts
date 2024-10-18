@@ -138,6 +138,7 @@ export interface ParsedTransaction
 
   // Solana Specific
   isAssociatedTokenAccountCreation: boolean
+  hasSystemProgramAssignInstruction: boolean
 }
 
 export type ParsedTransactionWithoutFiatValues = Omit<
@@ -1278,7 +1279,7 @@ export const getTransactionIntent = ({
     return (
       toProperCase(getLocale('braveWalletApprovalTransactionIntent')) +
         ' ' +
-        token?.symbol ?? ''
+        (token?.symbol ?? '')
     )
   }
 
@@ -1741,7 +1742,8 @@ export const parseTransactionWithoutPrices = ({
     valueExact: normalizedTransferredValueExact,
     weiTransferredValue,
     formattedSendCurrencyTotal,
-    isAssociatedTokenAccountCreation: isAssociatedTokenAccountCreationTx(tx)
+    isAssociatedTokenAccountCreation: isAssociatedTokenAccountCreationTx(tx),
+    hasSystemProgramAssignInstruction: hasSystemProgramAssignInstruction(tx)
   }
 }
 
@@ -1820,6 +1822,21 @@ export const isAssociatedTokenAccountCreationTx = (
   tx?.txType ===
   BraveWallet.TransactionType
     .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+
+export function hasSystemProgramAssignInstruction(
+  tx: Pick<TransactionInfo, 'txType' | 'txDataUnion'>
+): tx is SolanaTransactionInfo {
+  if (!isSolanaTransaction(tx)) {
+    return false
+  }
+
+  const instructions = getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData)
+  return instructions.some(
+    (instruction) =>
+      instruction.type === "Assign" ||
+      instruction.type === "AssignWithSeed"
+  )
+}
 
 export function getTransactionTypeName(txType: BraveWallet.TransactionType) {
   switch (txType) {
