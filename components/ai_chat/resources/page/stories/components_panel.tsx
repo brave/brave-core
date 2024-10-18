@@ -298,8 +298,8 @@ const MODELS: mojom.Model[] = [
         maxAssociatedContentLength: 131072 * 4,
         longConversationWarningCharacterLimit: 131072 * 4 * 0.6,
         modelSystemPrompt:
-          'You are a helpful AI assistant who wishes not to be associated with ' +
-          'Clippy.',
+          'You are a helpful AI assistant who wishes not to be ' +
+          'associated with a character named Clippy.',
         endpoint: { url: 'https://example.com' },
         apiKey: '123456',
       },
