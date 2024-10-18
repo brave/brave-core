@@ -45,7 +45,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequestForStats(
     const net::test_server::HttpRequest& request) {
   std::unique_ptr<net::test_server::BasicHttpResponse> http_response(
       new net::test_server::BasicHttpResponse());
-  if (request.relative_url == "/promo/initialize/nonua") {
+  if (request.relative_url == "//promo/initialize/nonua") {
     // We need a download id to make promo initialization happy
     http_response->set_code(net::HTTP_OK);
     http_response->set_content("{\"download_id\":\"keur123\"}");
@@ -98,8 +98,7 @@ class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
   void SetBaseUpdateURLForTest() {
     std::unique_ptr<base::Environment> env(base::Environment::Create());
     env->SetVar("BRAVE_REFERRALS_SERVER",
-                embedded_test_server()->host_port_pair().ToString());
-    env->SetVar("BRAVE_REFERRALS_LOCAL", "1");  // use http for local testing
+                embedded_test_server()->base_url().spec());
   }
 
   GURL GetUpdateURL() const { return update_url_; }
