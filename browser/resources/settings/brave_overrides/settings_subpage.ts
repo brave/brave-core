@@ -10,7 +10,7 @@ RegisterStyleOverride(
   'settings-subpage',
   html`
     <style include="settings-shared">
-    :host{
+    :host {
         min-height: auto !important;
         display: inline;
         position: relative;
