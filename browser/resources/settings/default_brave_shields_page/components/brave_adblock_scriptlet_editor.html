@@ -1,0 +1,51 @@
+<style include="settings-shared md-select">
+    div[slot=body] {
+        overflow: hidden;
+    }
+
+    .flex {
+        display: grid;
+        grid-template-columns: 1fr 70%;
+        align-items: baseline;
+    }
+
+    .content {
+        margin-bottom: 5px;
+    }
+
+    textarea {
+        white-space: pre;
+        overflow-wrap: normal;
+        overflow-x: scroll;
+        width: 100%;
+        min-height: 350px;
+        max-height: 700px;
+        resize: vertical;
+        box-sizing: border-box;
+    }
+</style>
+
+<cr-dialog id="dialog" show-close-button show-on-attach>
+    <div slot="title">[[dialogTitle_]]</div>
+    <div slot="body">
+        <div class="flex">
+            <div>$i18n{adblockCustomSciptletDialogNameLabel}</div>
+            <cr-input id="scriptlet-name" value="{{scriptlet.name}}" invalid="[[!isScriptletValid_]]" autofocus required
+                spellcheck="false" on-input="validateName_" error-message="[[scriptletErrorMessage_]]">
+            </cr-input>
+        </div>
+        <div>
+            <div class="flex content">$i18n{adblockCustomScriptletDialogContentLabel}</div>
+            <textarea id="scriptlet-content" multiline="true" value="{{scriptlet.content::input}}" spellcheck="false">
+            </textarea>
+        </div>
+    </div>
+    <div slot="button-container">
+        <cr-button class="cancel-button" id="cancel"
+            on-click="cancelClicked_">$i18n{adblockCustomScriptletDialogCancelButton}
+        </cr-button>
+        <cr-button class="action-button" id="save" on-click="saveClicked_" disabled="[[!isScriptletValid_]]">
+            $i18n{adblockCustomScriptletDialogSaveButton}
+        </cr-button>
+    </div>
+</cr-dialog>
