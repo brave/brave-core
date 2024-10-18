@@ -8,6 +8,7 @@ static_library("ephemeral_storage") {
     "ephemeral_storage_pref_names.h",
     "ephemeral_storage_service.cc",
     "ephemeral_storage_service.h",
+    "ephemeral_storage_service_delegate.cc",
     "ephemeral_storage_service_delegate.h",
     "ephemeral_storage_service_observer.h",
     "ephemeral_storage_types.h",
