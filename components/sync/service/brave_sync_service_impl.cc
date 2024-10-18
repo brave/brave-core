@@ -420,4 +420,13 @@ void BraveSyncServiceImpl::StopAndClearWithResetLocalDataReason() {
   StopAndClear(ResetEngineReason::kResetLocalData);
 }
 
+void BraveSyncServiceImpl::OnAccountsCookieDeletedByUserAction() {}
+
+void BraveSyncServiceImpl::OnAccountsInCookieUpdated(
+    const signin::AccountsInCookieJarInfo& accounts_in_cookie_jar_info,
+    const GoogleServiceAuthError& error) {}
+
+void BraveSyncServiceImpl::OnPrimaryAccountChanged(
+    const signin::PrimaryAccountChangeEvent& event_details) {}
+
 }  // namespace syncer
