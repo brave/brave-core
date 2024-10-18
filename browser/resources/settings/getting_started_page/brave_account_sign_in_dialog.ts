@@ -20,6 +20,7 @@ import {getTemplate} from './brave_account_sign_in_dialog.html.js'
 interface SettingsBraveAccountSignInDialogElement {
   $: {
     email: HTMLInputElement,
+    password: HTMLInputElement,
   };
 }
 
@@ -32,12 +33,19 @@ class SettingsBraveAccountSignInDialogElement extends PolymerElement {
     return getTemplate()
   }
 
-  static get properties() {
-    return {}
-  }
-
   private onInput() {
     this.canSignIn = Boolean(this.$.email.value.match('^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$'))
+  }
+
+  private show(event: Event) {
+    event.preventDefault()
+    const icon = this.$.password.querySelector('#icon')
+    if (!icon) {
+      return
+    }
+    const isShowing = icon.getAttribute('name') === 'eye-off'
+    icon.setAttribute('name', isShowing ? 'eye-on' : 'eye-off')
+    this.$.password.setAttribute('type', isShowing ? 'password' : 'text')
   }
 
   private canSignIn: boolean = false;
