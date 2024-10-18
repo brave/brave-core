@@ -406,6 +406,8 @@
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_FIRST" desc="Confirm transaction panel first transaction button">first</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTIONS" desc="Confirm transaction panel transactions label">transactions</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_ACCOUNT_CREATION_FEE" desc="Confirm transaction panel account creation fee warning">The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it.</message>
+  <message name="IDS_BRAVE_WALLET_SYSTEM_PROGRAM_ASSIGN_WARNING_TITLE" desc="Confirm transaction panel warning title for System Program assign instruction">Account ownership change requested</message>
+  <message name="IDS_BRAVE_WALLET_SYSTEM_PROGRAM_ASSIGN_WARNING_DESCRIPTION" desc="Confirm transaction panel warning description for System Program assign instruction">This transaction will reassign ownership of the account to a new program. This action is irreversible and may result in loss of funds.</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_GAS_LIMIT" desc="Transaction gas limit">Gas Limit</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_GAS_PREMIUM" desc="Transaction gas premium">Gas Premium</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_GAS_FEE_CAP" desc="Transaction gas fee cap">Gas Fee Cap</message>

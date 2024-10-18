@@ -793,6 +793,11 @@ provideStrings({
   braveWalletNetworkFees: 'Network fees',
   braveWalletTransactionMayIncludeAccountCreationFee:
     'This transaction may include an account creation fee',
+  braveWalletSystemProgramAssignWarningTitle:
+    'Account ownership change requested',
+  braveWalletSystemProgramAssignWarningDescription:
+    'This transaction will reassign ownership of the account to a new ' +
+    'program. This action is irreversible and may result in loss of funds.',
 
   // Wallet Main Panel
   braveWalletPanelTitle: 'Brave Wallet',
