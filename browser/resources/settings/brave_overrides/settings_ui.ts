@@ -50,8 +50,8 @@ RegisterStyleOverride(
       cr-drawer settings-menu::part(header) {
         display: none;
       }
-      .cr-container-shadow{
-        display:none !important;
+      .cr-container-shadow {
+        display: none !important;
      }
 
       #container {
