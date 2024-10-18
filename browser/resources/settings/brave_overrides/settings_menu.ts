@@ -150,8 +150,8 @@ RegisterStyleOverride(
         }
 
         a:hover, cr-icon:hover {
-          color: var(--leo-color-icon-interactive) !important;
           --iron-icon-fill-color: var(--leo-color-icon-interactive) !important;
+          color: var(--leo-color-icon-interactive) !important;
         }
       }
 
