@@ -17,14 +17,16 @@ using NewTabPageAdConditionMatchers =
 class PrefProviderInterface;
 
 // Matchers are a set of conditions using AND logic that must be met for an ad
-// to be served. The conditions are in the form of `pref_path=condition`.
+// to be served.
 //
 // pref_path:
 //
-// Handles nested dictionaries, lists, and dot-separated path keys.
-// `base::Value::Find*ByDottedPath` is not used because path keys can contain
-// dots. Returns `std::nullopt` if the path is malformed or unknown. Path keys
-// should be separated by `|`.
+// Supports booleans, integers, doubles, strings, nested dictionaries, nested
+// lists, and dot-separated path keys. `base::Value::Find*ByDottedPath` is not
+// used because path keys can contain dots. Returns `std::nullopt` if the path
+// was not found in either profile or local state preferences. Path keys should
+// be separated by `|`, lists should be followed by an index, i.e., `list|1`,
+// and dictionaries should be followed by a key, i.e., `dict|key`.
 //
 // condition:
 //

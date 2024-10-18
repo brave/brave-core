@@ -344,7 +344,21 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
 
           for (const auto& wallpaper_node : payload["wallpapers"].GetArray()) {
             CatalogNewTabPageAdWallpaperInfo wallpaper;
-            wallpaper.image_url = GURL(wallpaper_node["imageUrl"].GetString());
+            std::string image_url = wallpaper_node["imageUrl"].GetString();
+            // SmartNTTs are targeted locally by the browser and only shown to
+            // users if the configured conditions match. Non-smart capable
+            // browsers that predate the introduction of this feature should
+            // never show these NTTs. To enforce this, we prepend `[SmartNTT]`
+            // to the `imageURL`, causing non-smart capable browsers to discard
+            // the wallpaper due to an invalid URL. Once we transition away from
+            // NTT in the catalog and come up with a new versionable JSON
+            // schema, we can remove this.
+            constexpr char kSmartNTTPrefix[] = "[SmartNTT]";
+            if (image_url.starts_with(kSmartNTTPrefix)) {
+              image_url =
+                  image_url.substr(/*pos=*/std::strlen(kSmartNTTPrefix));
+            }
+            wallpaper.image_url = GURL(image_url);
             if (!ShouldSupportUrl(wallpaper.image_url)) {
               BLOG(1, "Image URL for creative instance id "
                           << creative_instance_id << " is unsupported");

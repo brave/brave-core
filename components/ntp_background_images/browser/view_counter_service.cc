@@ -274,6 +274,16 @@ ViewCounterService::GetNextBrandedWallpaperWhichMatchesConditions() {
   const auto initial_branded_wallpaper_index =
       model_.GetCurrentBrandedImageIndex();
 
+  base::Value::Dict virtual_prefs;
+  if (ads_service_) {
+    if (brave_ads::AdsService::Delegate* const delegate =
+            ads_service_->GetDelegate()) {
+      virtual_prefs = delegate->GetVirtualPrefs();
+    }
+  }
+  const brave_ads::PrefProvider pref_provider(prefs_, local_state_prefs_,
+                                              std::move(virtual_prefs));
+
   do {
     std::optional<base::Value::Dict> branded_wallpaper =
         GetCurrentBrandedWallpaperFromModel();
@@ -289,7 +299,6 @@ ViewCounterService::GetNextBrandedWallpaperWhichMatchesConditions() {
       return branded_wallpaper;
     }
 
-    const brave_ads::PrefProvider pref_provider(prefs_, local_state_prefs_);
     if (brave_ads::MatchConditions(&pref_provider, *condition_matchers)) {
       // The branded wallpaper matches the conditions, so we can return it.
       return branded_wallpaper;

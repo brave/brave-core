@@ -34,6 +34,7 @@ class AdsClientIOS : public brave_ads::AdsClient {
   void ShowNotificationAd(const brave_ads::NotificationAdInfo& ad) override;
   bool CanShowNotificationAds() const override;
   void CloseNotificationAd(const std::string& placement_id) override;
+  base::Value::Dict GetVirtualPrefs() const override;
   void CacheAdEventForInstanceId(
       const std::string& id,
       const brave_ads::mojom::AdType mojom_ad_type,

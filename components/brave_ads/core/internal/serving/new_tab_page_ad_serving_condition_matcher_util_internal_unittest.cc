@@ -245,7 +245,13 @@ TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
        MatchRegex) {
   // Act & Assert
-  EXPECT_TRUE(MatchRegex("foo.baz.bar", "(foo|baz|bar)"));
+  EXPECT_TRUE(MatchRegex("foo.baz.bar", "(foo|bar)"));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       MatchEmptyRegex) {
+  // Act & Assert
+  EXPECT_TRUE(MatchRegex("", ""));
 }
 
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
@@ -258,6 +264,53 @@ TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
        DoNotMatchMalformedRegex) {
   // Act & Assert
   EXPECT_FALSE(MatchRegex("foo.baz.bar", "* ?"));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       MatchPattern) {
+  // Act & Assert
+  EXPECT_TRUE(MatchPattern("foo.baz.bar", "foo?baz.*"));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       MatchEmptyPattern) {
+  // Act & Assert
+  EXPECT_TRUE(MatchPattern("", ""));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       MatchEscapedPattern) {
+  // Act & Assert
+  EXPECT_TRUE(MatchRegex(R"(*.bar.?)", R"(\*.bar.\?)"));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       DoNotMatchPattern) {
+  // Act & Assert
+  EXPECT_FALSE(MatchRegex("foo.baz.bar", "bar.*.foo"));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       GetVirtualPrefValue) {
+  // Arrange
+  ON_CALL(ads_client_mock_, GetVirtualPrefs).WillByDefault([]() {
+    return base::Value::Dict().Set("[virtual]:matrix", /*room*/ 303);
+  });
+
+  // Act & Assert
+  EXPECT_EQ(base::Value(/*room*/ 303),
+            MaybeGetPrefValue(&pref_provider_, "[virtual]:matrix"));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       DoNotGetUnknownVirtualPrefValue) {
+  // Arrange
+  ON_CALL(ads_client_mock_, GetVirtualPrefs).WillByDefault([]() {
+    return base::Value::Dict().Set("[virtual]:inverse.matrices", /*room*/ 101);
+  });
+
+  // Act & Assert
+  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "[virtual]:matrix"));
 }
 
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,

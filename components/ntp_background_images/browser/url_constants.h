@@ -17,6 +17,7 @@ inline constexpr char kCustomWallpaperHost[] = "custom-wallpaper";
 inline constexpr char kCustomWallpaperURL[] = "chrome://custom-wallpaper/";
 
 inline constexpr char kCampaignsKey[] = "campaigns";
+inline constexpr char kCampaigns2Key[] = "campaigns2";
 
 inline constexpr char kPublicKey[] = "publicKey";
 inline constexpr char kComponentIDKey[] = "componentID";

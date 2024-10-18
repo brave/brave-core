@@ -168,8 +168,18 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
     url_prefix += kSponsoredImagesPath;
   }
 
-  auto* campaigns_value = root.FindList(kCampaignsKey);
-  if (campaigns_value) {
+  // SmartNTTs are targeted locally by the browser and are only shown to users
+  // if the configured conditions match. Non-smart capable browsers that predate
+  // the introduction of this feature should never show these NTTs. To enforce
+  // this, the existing `campaigns` array in `photo.json` never includes
+  // SmartNTTs. A new `campaigns2` array is included in `photo.json`. This
+  // includes all NTTs, including smart ones. SmartNTT capable browsers read the
+  // `campaigns2` array, fall back to `campaigns`, and then fall back to the
+  // root `campaign` for backward compatibility. Non-smart capable browsers
+  // continue to read the `campaigns` array.
+  if (auto* campaigns2_value = root.FindList(kCampaigns2Key)) {
+    ParseCampaignsList(*campaigns2_value, installed_dir);
+  } else if (auto* campaigns_value = root.FindList(kCampaignsKey)) {
     ParseCampaignsList(*campaigns_value, installed_dir);
   } else {
     // Get a global campaign directly if the campaign list doesn't exist.

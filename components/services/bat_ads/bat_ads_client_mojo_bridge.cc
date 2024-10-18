@@ -395,6 +395,18 @@ bool BatAdsClientMojoBridge::HasLocalStatePrefPath(
   return value;
 }
 
+base::Value::Dict BatAdsClientMojoBridge::GetVirtualPrefs() const {
+  if (!bat_ads_client_associated_remote_.is_bound()) {
+    return {};
+  }
+
+  base::Value::Dict virtual_prefs;
+  bat_ads_client_associated_remote_->GetVirtualPrefs(&virtual_prefs);
+  return virtual_prefs;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
 std::optional<base::Value> BatAdsClientMojoBridge::CachedProfilePrefValue(
     const std::string& path) const {
   if (!cached_profile_prefs_.contains(path)) {

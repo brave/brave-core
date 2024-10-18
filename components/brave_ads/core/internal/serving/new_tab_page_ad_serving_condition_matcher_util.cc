@@ -8,13 +8,12 @@
 #include <optional>
 
 #include "base/ranges/algorithm.h"
-#include "base/strings/pattern.h"
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_condition_matcher_util_internal.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_provider_interface.h"
 
 namespace brave_ads {
 
-bool MatchConditions(const PrefProviderInterface* pref_provider,
+bool MatchConditions(const PrefProviderInterface* const pref_provider,
                      const NewTabPageAdConditionMatchers& condition_matchers) {
   CHECK(pref_provider);
 
@@ -25,13 +24,13 @@ bool MatchConditions(const PrefProviderInterface* pref_provider,
         const std::optional<std::string> value =
             MaybeGetPrefValueAsString(pref_provider, pref_path);
         if (!value) {
-          // Unsupported value type, so the ad should be served.
-          return true;
+          // Do not serve the ad due to an unknown preference path or
+          // unsupported value type.
+          return false;
         }
 
         return MatchOperator(*value, condition) ||
-               base::MatchPattern(*value, condition) ||
-               MatchRegex(*value, condition);
+               MatchPattern(*value, condition) || MatchRegex(*value, condition);
       });
 }
 

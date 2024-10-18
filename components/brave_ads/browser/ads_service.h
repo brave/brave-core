@@ -53,6 +53,9 @@ class AdsService : public KeyedService {
 #else
     virtual bool IsFullScreenMode() = 0;
 #endif
+
+    virtual base::Value::Dict GetVirtualPrefs() = 0;
+
    protected:
     virtual ~Delegate() = default;
   };
@@ -66,6 +69,8 @@ class AdsService : public KeyedService {
   AdsService& operator=(AdsService&&) noexcept = delete;
 
   ~AdsService() override;
+
+  virtual Delegate* GetDelegate() = 0;
 
   // Returns true if a browser upgrade is required to serve ads.
   virtual bool IsBrowserUpgradeRequiredToServeAds() const = 0;
