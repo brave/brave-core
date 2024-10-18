@@ -41,11 +41,6 @@ WebcompatReporterServiceFactory::~WebcompatReporterServiceFactory() {}
 std::unique_ptr<KeyedService>
 WebcompatReporterServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
-  auto* browser_state = ChromeBrowserState::FromBrowserState(context);
-  if (browser_state->IsOffTheRecord()) {
-    return nullptr;
-  }
-
   auto report_uploader = std::make_unique<WebcompatReportUploader>(
       context->GetSharedURLLoaderFactory());
   component_updater::ComponentUpdateService* cus =

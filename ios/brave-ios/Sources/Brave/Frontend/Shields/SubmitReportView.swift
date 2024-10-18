@@ -110,34 +110,33 @@ struct SubmitReportView: View {
 
   @MainActor func createAndSubmitReport() async {
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing)
-    if let webcompatReporterAPI = WebcompatReporter.ServiceFactory.get(
-      privateMode: false
-    ) {
-        webcompatReporterAPI.submitWebcompatReport(
-            reportInfo: .init(
-                channel: AppConstants.buildChannel.webCompatReportName,
-                braveVersion: String(
-                    format: "%@ (%@)",
-                    AppInfo.appVersion,
-                    AppInfo.buildNumber
-                ),
-                reportUrl: url.absoluteString,
-                shieldsEnabled: String(!domain.areAllShieldsOff),
-                adBlockSetting: domain.globalBlockAdsAndTrackingLevel.reportLabel,
-                fpBlockSetting: domain.finterprintProtectionLevel.reportLabel,
-                adBlockListNames: FilterListStorage.shared.filterLists
-                    .compactMap({ return $0.isEnabled ? $0.entry.title : nil })
-                    .joined(separator: ","),
-                languages: Locale.current.language.languageCode?.identifier,
-                languageFarbling: String(true),
-                braveVpnConnected: String(BraveVPN.isConnected),
-                details: additionalDetails,
-                contact: contactDetails,
-                adBlockComponentsVersion: nil,
-                screenshotPng: nil
-            )
-        )
+    guard let webcompatReporterAPI = WebcompatReporter.ServiceFactory.get(privateMode: isPrivateBrowsing) else {
+        return
     }
+    webcompatReporterAPI.submitWebcompatReport(
+        reportInfo: .init(
+            channel: AppConstants.buildChannel.webCompatReportName,
+            braveVersion: String(
+                format: "%@ (%@)",
+                AppInfo.appVersion,
+                AppInfo.buildNumber
+            ),
+            reportUrl: url.absoluteString,
+            shieldsEnabled: String(!domain.areAllShieldsOff),
+            adBlockSetting: domain.globalBlockAdsAndTrackingLevel.reportLabel,
+            fpBlockSetting: domain.finterprintProtectionLevel.reportLabel,
+            adBlockListNames: FilterListStorage.shared.filterLists
+                .compactMap({ return $0.isEnabled ? $0.entry.title : nil })
+                .joined(separator: ","),
+            languages: Locale.current.language.languageCode?.identifier,
+            languageFarbling: String(true),
+            braveVpnConnected: String(BraveVPN.isConnected),
+            details: additionalDetails,
+            contact: contactDetails,
+            adBlockComponentsVersion: nil,
+            screenshotPng: nil
+        )
+    )
   }
 }
 
