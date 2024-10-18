@@ -104,7 +104,7 @@ export default function FullScreen() {
                 kind='plain-faint'
                 onClick={aiChatContext.onNewConversation}
               >
-                <Icon name='erase' />
+                <Icon name='edit-box' />
               </Button>
             </>
           )}
