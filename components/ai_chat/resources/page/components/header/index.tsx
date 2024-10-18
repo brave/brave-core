@@ -70,7 +70,7 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
                 title={newChatButtonLabel}
                 onClick={newConversation}
               >
-                <Icon name={aiChatContext.isHistoryEnabled ? 'plus-add' : 'erase'} />
+                <Icon name={aiChatContext.isHistoryEnabled ? 'edit-box' : 'erase'} />
               </Button>
             )}
             {!aiChatContext.isStandalone &&
@@ -129,7 +129,7 @@ export function SidebarHeader() {
             title={newChatButtonLabel}
             onClick={newConversation}
           >
-            <Icon name='plus-add' />
+            <Icon name='edit-box' />
           </Button>
         )}
       </div>
