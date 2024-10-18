@@ -33,8 +33,31 @@ class SettingsBraveAccountSignInDialogElement extends PolymerElement {
     return getTemplate()
   }
 
-  private onInput() {
-    this.canSignIn = Boolean(this.$.email.value.match('^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$'))
+  static get properties() {
+    return {
+      isValid: {
+        type: Object,
+        value: {
+          email: false,
+          password: false,
+        },
+      },
+    }
+  }
+
+  private isButtonDisabled_(): boolean {
+    return !this.get('isValid.email') || !this.get('isValid.password')
+  }
+
+  private onEmailInput() {
+    this.set(
+      'isValid.email',
+      Boolean(this.$.email.value.match('^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$'))
+    )
+  }
+
+  private onPasswordInput() {
+    this.set('isValid.password', this.$.password.value.length !== 0)
   }
 
   private show(event: Event) {
@@ -47,8 +70,6 @@ class SettingsBraveAccountSignInDialogElement extends PolymerElement {
     icon.setAttribute('name', isShowing ? 'eye-on' : 'eye-off')
     this.$.password.setAttribute('type', isShowing ? 'password' : 'text')
   }
-
-  private canSignIn: boolean = false;
 }
 
 declare global {
