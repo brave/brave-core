@@ -126,11 +126,19 @@ export const TransactionIntent = (props: Props) => {
   const transactionConfirmed =
     transaction.txStatus === BraveWallet.TransactionStatus.Confirmed
 
+  // Currently we only get transaction.swapInfo.receiver info
+  // for lifi swaps. Core should also return this value
+  // for all other providers.
+  const swapOrBridgeRecipient =
+    transaction.swapInfo?.provider === 'lifi'
+      ? transaction.swapInfo?.receiver ?? ''
+      : transaction.fromAddress ?? ''
+
   const recipientLabel = getAddressLabel(
     isERC20Approval
       ? txApprovalTarget
-      : isSwapOrBridge && transactionConfirmed
-      ? transaction.swapInfo?.receiver ?? ''
+      : isSwapOrBridge
+      ? swapOrBridgeRecipient
       : txToAddress,
     accountInfosRegistry
   )
