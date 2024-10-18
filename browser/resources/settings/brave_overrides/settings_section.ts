@@ -12,7 +12,7 @@ RegisterStyleOverride(
     <style include="settings-shared">
       #header .title {
         font-size: var(--leo-typography-heading-h3-font-size) !important;
-        font-weight: 500 !important;
+        font-weight: 600 !important;
         padding-top: var(--leo-spacing-xl) !important;
         padding-bottom: var(--leo-spacing-xl) !important;
         margin-bottom: 0 !important;
