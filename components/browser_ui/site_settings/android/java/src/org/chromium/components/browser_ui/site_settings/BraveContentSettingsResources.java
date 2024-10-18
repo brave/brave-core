@@ -22,7 +22,7 @@ public class BraveContentSettingsResources extends ContentSettingsResources {
                 int enabledSummary,
                 int disabledSummary,
                 int summaryOverrideForScreenReader) {
-            assert (false);
+            assert false;
         }
     }
 

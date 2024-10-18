@@ -98,8 +98,6 @@
       <part file="history_clusters_strings_override.grdp" />
       <if expr="is_android">
         </if>
-      <if expr="is_ios">
-        </if>
       <if expr="enable_vr">
         </if>
 

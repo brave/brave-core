@@ -16,23 +16,49 @@
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/tip_panel_ui.h"
+#include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+#include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_ui.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_adblock_internals_ui.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 
+namespace {
+
+#if !BUILDFLAG(IS_ANDROID)
+const GURL GetWebUIConfigURL(const char* scheme, const char* host) {
+  return GURL(base::StrCat({scheme, url::kStandardSchemeSeparator, host}));
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
+
+void RemoveOverridenWebUIs(content::WebUIConfigMap& map) {
+#if !BUILDFLAG(IS_ANDROID)
+  // NewTabUIConfig (overriden with BravePrivateNewTabUIConfig)
+  map.RemoveConfig(
+      GetWebUIConfigURL(content::kChromeUIScheme, chrome::kChromeUINewTabHost));
+  // SettingsUIConfig (overriden with BraveSettingsUIConfig)
+  map.RemoveConfig(GetWebUIConfigURL(content::kChromeUIScheme,
+                                     chrome::kChromeUISettingsHost));
+#endif  // !BUILDFLAG(IS_ANDROID)
+}
+
+}  // namespace
+
 void RegisterChromeWebUIConfigs() {
   RegisterChromeWebUIConfigs_ChromiumImpl();
 
   auto& map = content::WebUIConfigMap::GetInstance();
+  RemoveOverridenWebUIs(map);
 #if !BUILDFLAG(IS_ANDROID)
   map.AddWebUIConfig(std::make_unique<brave_rewards::RewardsPageTopUIConfig>());
   map.AddWebUIConfig(std::make_unique<brave_rewards::RewardsPanelUIConfig>());
   map.AddWebUIConfig(std::make_unique<brave_rewards::TipPanelUIConfig>());
+  map.AddWebUIConfig(std::make_unique<BravePrivateNewTabUIConfig>());
+  map.AddWebUIConfig(std::make_unique<BraveSettingsUIConfig>());
   map.AddWebUIConfig(std::make_unique<CookieListOptInUIConfig>());
   map.AddWebUIConfig(std::make_unique<ShieldsPanelUIConfig>());
   map.AddWebUIConfig(std::make_unique<SpeedreaderToolbarUIConfig>());

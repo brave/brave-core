@@ -587,7 +587,16 @@
     Password saved to this device
     </message>
     <message name="IDS_AUTOFILL_VERIFY_PROMO_SUBTITLE_PASSWORD" desc="This is the body text of a confirmation message and means that the password is in an account-pending storage. In other words, it's waiting to be uploaded to the user's Brave sync chain. It appears when the user was signed in to Brave but their sign-in credentials have expired; now, they need to sign back in to Brave. The string is after the 'Password saved' string. If the user wants to save this data to their Brave sync chain, they can click the 'Verify it's you' button at the bottom of this message. The tone should be motivating.">
-    To save and use this password on all your devices, verify it's you
+    To get this password on all your devices, verify it's you
+    </message>
+    <message name="IDS_AUTOFILL_POPUP_SEARCH_BAR_CLEAR_SEARCH_BUTTON_A11Y_NAME" desc="The a11y name for the clear button accompanying the autofill popup search bar input.">
+      Clear search
+    </message>
+    <message name="IDS_AUTOFILL_POPUP_SEARCH_BAR_PASSWORDS_INPUT_PLACEHOLDER" desc="The placeholder of the autofill popup search bar input for passwords.">
+      Search passwords
+    </message>
+    <message name="IDS_AUTOFILL_POPUP_SEARCH_BAR_PASSWORDS_NOT_FOUND" desc="On the autofill popup for paswords, the label to be used when no passwords matching user's request were found.">
+      No passwords found
     </message>
   </if>
 
@@ -595,5 +604,8 @@
   <!-- Common on all platforms -->
   <message name="IDS_AUTOFILL_ADDRESS_EDIT_DIALOG_HISPANIC_MUNICIPIO" desc="The label shown in address edit dialogs representing a municipio (Spanish) / município (Portuguese) in an address, see https://en.wikipedia.org/wiki/Municipio. This is a subdivision of a state and currently introduced for Mexico.">
     Municipality
+  </message>
+  <message name="IDS_AUTOFILL_ADDRESS_EDIT_DIALOG_FRENCH_LOCALITY_2" desc="The label for the locality-2 field in french autofill profile. In french it should be translated to 'Lieu-dit'.">
+    Named location
   </message>
 </grit-part>

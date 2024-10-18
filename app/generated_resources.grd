@@ -845,12 +845,6 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_TRANSLATEIMAGE" desc="The name of the Translate Image command in the content area context menu">
             Translate text in image with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave</ex></ph>
           </message>
-          <message name="IDS_CONTENT_CONTEXT_LENS_OVERLAY" desc="The name of the Lens overlay command in the content area context menu">
-            Search with Google Lens
-          </message>
-          <message name="IDS_CONTENT_LENS_OVERLAY_ENTRYPOINT_LABEL" desc="The label of the Lens overlay entrypoint in the omnibox">
-            Google Lens
-          </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT1" desc="The name of the Lens Region Search command in the content area context menu">
             Search page with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
           </message>
@@ -862,6 +856,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_GENERATEPASSWORD" desc="The name of the Generate Password command in the content area context menu">
             Suggest password...
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_USE_PASSKEY_FROM_ANOTHER_DEVICE" desc="The name of the Use passkey from another device command in the content area context menu">
+            Use passkey from another device
           </message>
           <message name="IDS_CONTENT_CONTEXT_MORE_APPS" desc="The label for the parent item of the submenu in the content area context menu.">
             More
@@ -884,6 +881,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PAYMENTS" desc="The name of the Autofill manual fallback for payment methods attribute command in the content area context menu.">
             Payment methods
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORD_AND_PASSKEYS" desc="This is a context menu entry. Upon clicking, it opens a submenu with more entries where the user can select a password or use a passkey from another device.">
+            Passwords and passkeys
           </message>
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_SELECT_PASSWORD" desc="This is a context menu entry in the passwords submenu. It triggers the password selection bubble.">
             Select password
@@ -1185,12 +1185,6 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_SEARCHLENSFORIMAGE" desc="In Title Case: The name of the Search Lens for Image command in the content area context menu">
             Search Image with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
           </message>
-          <message name="IDS_CONTENT_CONTEXT_LENS_OVERLAY" desc="In Title Case: The name of the Lens overlay command in the content area context menu">
-            Search with Google Lens
-          </message>
-          <message name="IDS_CONTENT_LENS_OVERLAY_ENTRYPOINT_LABEL" desc="The label of the Lens overlay entrypoint in the omnibox">
-            Google Lens
-          </message>
           <message name="IDS_CONTENT_CONTEXT_TRANSLATEIMAGE" desc="In Title Case: The name of the Translate Image command in the content area context menu">
             Translate Text in Image with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave</ex></ph>
           </message>
@@ -1205,6 +1199,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_GENERATEPASSWORD" desc="In Title Case: The name of the Generate Password command in the content area context menu">
             Suggest Password...
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_USE_PASSKEY_FROM_ANOTHER_DEVICE" desc="In Title Case: The name of the Use passkey from another device command in the content area context menu">
+            Use Passkey from Another Device
           </message>
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FEEDBACK" desc="In Title Case: The name of the Autofill Feedback command in the content area context menu">
             Help Improve Autofill
@@ -1221,6 +1218,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PAYMENTS" desc="In Title Case: The name of the Autofill manual fallback for payment methods attribute command in the content area context menu.">
             Payment Methods
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORD_AND_PASSKEYS" desc="This is a context menu entry. Upon clicking, it opens a submenu with more entries where the user can select a password or use a passkey from another device.">
+            Passwords and Passkeys
           </message>
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_SELECT_PASSWORD" desc="In Title Case: This is a context menu entry in the passwords submenu. It triggers the password selection bubble.">
             Select Password
@@ -1795,9 +1795,6 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_SHOW_PERFORMANCE" desc="The text label of the Performance menu item">
           Performance
         </message>
-        <message name="IDS_SHOW_LENS_OVERLAY" desc="The text label of the Lens overlay menu item">
-          Search with Google Lens
-        </message>
         <message name="IDS_SHOW_SEARCH_COMPANION" desc="The text label of the Brave Search Companion menu item">
           Sear&amp;ch this page with Brave...
         </message>
@@ -1853,9 +1850,6 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_SHOW_PERFORMANCE" desc="In Title Case: The text label of the Performance menu item">
           Performance
-        </message>
-        <message name="IDS_SHOW_LENS_OVERLAY" desc="In Title Case: The text label of the Lens overlay menu item">
-          Search with Google Lens
         </message>
         <message name="IDS_SHOW_SEARCH_COMPANION" desc="In Title Case: The text label of the Brave Search Companion menu item">
           Sear&amp;ch This Page with Brave...
@@ -3735,13 +3729,16 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_NEW_REQUEST_PROMO" desc="Text of the blocked notifications indicator promo, that shows under the blocked notifications indicator in the address bar, when a site requests notifications permission. The promo informs the user that as a result of them usually blocking notifications, the request from the site is automatically blocked, and the user can click on the icon to allow notifications.">
         You usually block notifications. To let this site notify you, click here.
       </message>
-      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_CROWD_DENY_DESCRIPTION" desc="Description for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox, shown when a site's notifications permission request is automatically blocked by Brave, as this permission prompt is often denied by other users for this site.">
+      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_CROWD_DENY_DESCRIPTION" desc="Subtitle for the Notifications permission prompt, shown when a user clicks on a site's notifications permission request that is automatically blocked by Brave, as this permission prompt is often denied by other users for this site.">
         Most profiles block notifications from this site
       </message>
-      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_ABUSIVE_DESCRIPTION" desc="Description for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox, shown when a site's notifications permission request is automatically blocked by Brave because the site is known to employ dark patterns to trick users into accepting the permission.">
+      <message name="IDS_GEOLOCATION_QUIET_PERMISSION_BUBBLE_CROWD_DENY_DESCRIPTION" desc="Subtitle for the Geolocation permission prompt, shown when a user clicks on a site's geolocation permission request that is automatically blocked by Brave, as this permission prompt is often denied by other users for this site.">
+        Most profiles block sharing precise location for this site
+      </message>
+      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_ABUSIVE_DESCRIPTION" desc="Subtitle for the Notifications permission prompt, shown when a user clicks on a site's notifications permission request that is automatically blocked by Brave because the site is known to employ dark patterns to trick users into accepting the permission.">
         This site may be trying to trick you into allowing intrusive notifications
       </message>
-      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_DISRUPTIVE_DESCRIPTION" desc="Description for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox, shown when a site's loud notifications permission requests was automatically blocked by Brave because the site may engage in disruptive notification permission usage practices.">
+      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_DISRUPTIVE_DESCRIPTION" desc="Subtitle for the Notifications permission prompt, shown when a user clicks on a site's notifications permission request that was automatically blocked by Brave because the site may engage in disruptive notification permission usage practices.">
         Notifications from this site may be disruptive
       </message>
       <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_PREDICTION_SERVICE_DESCRIPTION" desc="Text used as notification message when requesting permission for Web Notifications via a notification. Used when the prediction service has decided that the user will be very unlikely to grant this permission.">
@@ -3750,7 +3747,7 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_GEOLOCATION_OFF_EXPLANATORY_TEXT" desc="Explanatory animated text that appears (and then disappears) in the address bar as part of the less-prominent UX, when a website requests the geolocation permission.">
         Location blocked
       </message>
-      <message name="IDS_GEOLOCATION_QUIET_PERMISSION_BUBBLE_TITLE" desc="Title for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox.">
+      <message name="IDS_GEOLOCATION_QUIET_PERMISSION_BUBBLE_TITLE" desc="Title for the geolocatoin permission prompt, which is triggered when a user clicks on the blocked geolocation permission chip in the omnibox.">
         Location blocked
       </message>
       <message name="IDS_GEOLOCATION_QUIET_PERMISSION_BUBBLE_PREDICTION_SERVICE_DESCRIPTION" desc="Text used as notification message when requesting permission for Geolocation. Used when the prediction service has decided that the user will be very unlikely to grant this permission.">
@@ -6238,8 +6235,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSIONS_MENU_CANT_ACCESS_SITE_DATA" desc="Longer explanation for section of extensions that can't access the current site's data">
         These extensions don't need to see and change information on this site.
       </message>
-      <message name="IDS_EXTENSIONS_MENU_SITE_SETTINGS_LABEL" desc="Text of the label next to the site settings toggle button that allows extensions on site pointed by $1.">
+      <message name="IDS_EXTENSIONS_MENU_SITE_SETTINGS_LABEL" desc="Text on the menu that informs the user they can change the site settings of extensions on $1.">
         Allow extensions on <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_SETTINGS_NOT_ALLOWED_LABEL" desc="Text on the menu that informs the user they cannot change the site settings of extensions on $1.">
+        Extensions are not allowed on <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
       </message>
       <message name="IDS_EXTENSIONS_MENU_SITE_SETTINGS_TOGGLE_ON_TOOLTIP" desc="Tooltip text for the site setting toggle button when is on.">
         Extensions allowed on this site
@@ -6647,9 +6647,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_COMPONENTS_SVC_STATUS_DNL" desc="Service Status">
         Downloading
       </message>
-      <message name="IDS_COMPONENTS_SVC_STATUS_DOWNLOADED" desc="Service Status">
-        Downloaded
-      </message>
       <message name="IDS_COMPONENTS_SVC_STATUS_UPDT_DIFF" desc="Service Status">
         Updating diff
       </message>
@@ -6667,33 +6664,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_COMPONENTS_UNKNOWN" desc="Service Status">
         Unknown
-      </message>
-      <message name="IDS_COMPONENTS_EVT_STATUS_STARTED" desc="Service Status">
-        Updater started
-      </message>
-      <message name="IDS_COMPONENTS_EVT_STATUS_SLEEPING" desc="Service Status">
-        Updater sleeping
-      </message>
-      <message name="IDS_COMPONENTS_EVT_STATUS_FOUND" desc="Service Status">
-        Update found
-      </message>
-      <message name="IDS_COMPONENTS_EVT_STATUS_READY" desc="Service Status">
-        Update ready
-      </message>
-      <message name="IDS_COMPONENTS_EVT_STATUS_UPDATED" desc="Service Status">
-        Component updated
-      </message>
-      <message name="IDS_COMPONENTS_EVT_STATUS_ALREADY_UP_TO_DATE" desc="Service Status">
-        Component already up to date
-      </message>
-      <message name="IDS_COMPONENTS_EVT_STATUS_UPDATE_ERROR" desc="Service Status">
-        Update error
-      </message>
-      <message name="IDS_COMPONENTS_EVT_STATUS_DOWNLOADING" desc="Service Status">
-        Component downloading
-      </message>
-      <message name="IDS_COMPONENTS_EVT_STATUS_UPDATING" desc="Service Status">
-        Component updating
       </message>
 
       <message name="IDS_PASSWORD_MANAGER_ACCOUNT_CHOOSER_TITLE" desc="The title of the account chooser dialog.">
@@ -6807,9 +6777,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_PASSWORD_BUBBLES_FOOTER_SAVING_ON_DEVICE" desc="The footer text of the bubbles that offers users to save, update or manage stored passwords only locally in Brave.">
         Passwords are saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph> on this device.
-      </message>
-      <message name="IDS_PASSWORD_GENERATION_CONFIRMATION_GOOGLE_PASSWORD_MANAGER" desc="A message that the browser shows after saving a password it has autogenerated for the user. This message appears in a bubble and contains a link to all the user's saved passwords. The link text is a separate string in the translation console and appears here as placeholder text.">
-          You can view and manage saved passwords in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph>.
       </message>
       <message name="IDS_PASSWORD_GENERATION_PROMPT_GOOGLE_PASSWORD_MANAGER" desc="Autofill dropdown text describing password generation.">
           You won't need to remember this password. It will be saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph> for <ph name="EMAIL">$2<ex>user@gmail.com</ex></ph>.
@@ -7359,16 +7326,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Always show full URLs
         </message>
       </if>
-      <if expr="use_titlecase">
-        <message name="IDS_CONTEXT_MENU_SHOW_GOOGLE_LENS_SHORTCUT" desc="In Title Case: The text label of the omnibox context menu option to show the 'Search with Google Lens' shortcut button">
-          Always Show Google Lens Shortcut
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_CONTEXT_MENU_SHOW_GOOGLE_LENS_SHORTCUT" desc="The text label of the omnibox context menu option to show the 'Search with Google Lens' shortcut button">
-          Always show Google Lens shortcut
-        </message>
-      </if>
 
       <!-- NTP -->
       <message name="IDS_GOOGLE_SEARCH_BOX_EMPTY_HINT_MD" desc="The text displayed in the fakebox (on the New Tab page) when it is empty, Brave is the default search engine, and the Material Design UI is enabled.">
@@ -7379,6 +7336,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_GOOGLE_SEARCH_BOX_EMPTY_HINT_MULTIMODAL" desc="The text displayed in the multimodal searchbox when it is empty. It is meant to invite the user to add a text query to the existing image query in order to issue a 'multimodal' (image + text) query.">
         Add to your search
+      </message>
+      <message name="IDS_GOOGLE_SEARCH_BOX_EMPTY_HINT_CONTEXTUAL" desc="The text displayed in the overlay contextual searchbox when it is empty. It is meant to invite the user to ask a question about their current page and inform them that this is a contextual searchbox.">
+        Ask using this page
       </message>
       <message name="IDS_GOOGLE_SEARCH_BOX_MULTIMODAL_IMAGE_THUMBNAIL" desc="Aria label for the Lens image selection thumbnail in the multimodal searchbox. Spoken by screen readers when the thumbnail is highlighted, and instructs the user to press enter or backspace to delete the selection.">
         Your Google Lens selection. Press enter or backspace to delete your Google Lens selection
@@ -8199,6 +8159,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_REORDER_TIP_LABEL" desc="Label for the tip informing users of how they can reorder buttons that they have pinned to the toolbar.">
         To rearrange buttons on the toolbar, drag them
       </message>
+      <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_RESET_TO_DEFAULT_ANNOUNCEMENT" is_accessibility_with_no_ui="true" desc="Accessibility announcement communicating that the pinned toolbar buttons have been reset to their default state.">
+        Toolbar buttons were reset
+      </message>
       <if expr="use_titlecase">
         <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_NAVIGATION" desc="The label for the category of actions that involve navigation, such as the home button or opening a new private window.">
           Navigation
@@ -8304,6 +8267,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_DRIVE_SENTENCE2" desc="Variant of the name of the Drive module in sentence case shown in various UIs.">
         Drive files
       </message>
+      <!-- TODO(crbug.com/372724129): Finalize and translate IDS_NTP_MODULES_SHAREPOINT_SENTENCE. -->
+      <message name="IDS_NTP_MODULES_SHAREPOINT_SENTENCE" translateable="false" desc="Name of the SharePoint module in sentence case shown in various UIs.">
+        SharePoint files
+      </message>
       <message name="IDS_NTP_MODULES_DRIVE_FILES_SENTENCE" desc="Name of the files in the Drive module in sentence case shown in various UIs.">
         Files
       </message>
@@ -8316,11 +8283,22 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_DRIVE_TITLE" desc="Title shown in the header of the drive module and various other UIs.">
         From your Google Drive
       </message>
+      <!-- TODO(crbug.com/372724129): Finalize and translate IDS_NTP_MODULES_SHAREPOINT_TITLE. -->
+      <message name="IDS_NTP_MODULES_SHAREPOINT_TITLE" translateable="false" desc="Title shown in the header of the SharePoint module and various other UIs.">
+        From your Microsoft Sharepoint
+      </message>
       <message name="IDS_NTP_MODULES_DRIVE_TITLE_V2" desc="Title shown in the header of the drive module and various other UIs in NTP Launchpad 2.0.">
         From your Drive
       </message>
       <message name="IDS_NTP_MODULES_DRIVE_INFO" desc="Text shown in the body of the info dialog of the drive module.">
         You’re seeing suggested files to help you easily get back to your most recent activity in Google Drive.
+        <ph name="BREAK">&lt;br&gt;</ph>
+        <ph name="BREAK">&lt;br&gt;</ph>
+        You can manage settings from the card menu or see more options in Customize Brave.
+      </message>
+      <!-- TODO(crbug.com/372724129): Finalize and translate IDS_NTP_MODULES_SHAREPOINT_INFO. -->
+      <message name="IDS_NTP_MODULES_SHAREPOINT_INFO" translateable="false" desc="Text shown in the body of the info dialog of the SharePoint module.">
+        You’re seeing suggested files to help you easily get back to your most recent activity in Microsoft Sharepoint.
         <ph name="BREAK">&lt;br&gt;</ph>
         <ph name="BREAK">&lt;br&gt;</ph>
         You can manage settings from the card menu or see more options in Customize Brave.
@@ -8483,6 +8461,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_MOST_RELEVANT_TAB_RESUMPTION_SEE_MORE" desc="A label for the see more button in the most relevant tab resumption module.">
         See more
+      </message>
+
+      <!-- Mobile NTP Middle Slot Promo -->
+      <message name="IDS_NTP_MOBILE_PROMO_HEADER" desc="Header for a promo that shows on the Desktop NTP prompting user to scan a QR code with their mobile device">
+        Get Brave on your mobile device
+      </message>
+      <message name="IDS_NTP_MOBILE_PROMO_DESCRIPTION" desc="Description for a promo that shows on the Desktop NTP prompting user to scan a QR code with their mobile device">
+        Download Brave for iOS to access your tabs, bookmarks and passwords on your phone.
       </message>
 
       <!-- Extensions NTP Middle Slot Promo -->
@@ -8678,9 +8664,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SIDE_PANEL_CUSTOMIZE_CHROME_TITLE" desc="The name of the Customize Brave feature in the side panel combo box.">
         Customize Brave
       </message>
-      <message name="IDS_SIDE_PANEL_LENS_OVERLAY_TOOLBAR_TOOLTIP" desc="The tooltip for the Lens overlay toolbar button.">
-        Search with Google Lens
-      </message>
       <message name="IDS_SIDE_PANEL_TOOLBAR_BUTTON_CXMENU_UNPIN" desc="The label of the context menu item for unpinning a side panel toolbar button.">
         Unpin
       </message>
@@ -8708,34 +8691,34 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SIDE_PANEL_GENERIC_PINNABLE_IPH_SCREENREADER" desc="The screen reader text of the IPH describing a side panel is pinnable. The phrase 'top right' should read as 'top left' in rtl languages.">
         To easily get back to the side panel, click Pin at the top right
       </message>
-      <message name="IDS_SIDE_PANEL_LENS_OVERLAY_PINNABLE_IPH" desc="The body text of the IPH describing that the Lens Overlay panel is pinnable.">
-        You can pin Google Lens for easy access
-      </message>
-      <message name="IDS_SIDE_PANEL_LENS_OVERLAY_PINNABLE_IPH_SCREENREADER" desc="The screen reader text of the IPH describing that the Lens Overlay panel is pinnable." is_accessibility_with_no_ui="true">
-        You can pin Google Lens for easy access; click the Pin button at the top of the side panel
-      </message>
-      <message name="IDS_SIDE_PANEL_LENS_OVERLAY_PINNABLE_FOLLOWUP_IPH" desc="The body text of the IPH describing that the Lens Overlay panel has been pinned.">
-        Pinned! Use Google Lens again from the toolbar
-      </message>
-      <message name="IDS_SIDE_PANEL_LENS_OVERLAY_PINNABLE_FOLLOWUP_IPH_SCREENREADER" desc="The screen reader text of the IPH describing that the Lens Overlay panel has been pinned." is_accessibility_with_no_ui="true">
-        Pinned! You can access Google Lens again from the new button on the toolbar
-      </message>
       <message name="IDS_SIDE_PANEL_HEADER_MORE_INFO_BUTTON_TOOLTIP" desc="The tooltip for the side panel more info button.">
         More info
       </message>
 
       <!-- Bookmarks strings -->
-      <!-- TODO(crbug.com/363277495): Update and mark translateable. -->
-      <message name="IDS_BOOKMARKS_MOVE_TO_ACCOUNT_DIALOG_TITLE" translateable="false" desc="Title for the dialog that offers the user to move a bookmark from their device to their signed-in account.">
+      <message name="IDS_BOOKMARKS_MOVE_TO_ACCOUNT_DIALOG_TITLE" desc="Title for the dialog that offers the user to move a bookmark from their device to their signed-in account.">
         Save to a folder in your Brave sync chain?
       </message>
-      <!-- TODO(crbug.com/363277495): Update and mark translateable. -->
-      <message name="IDS_BOOKMARKS_MOVE_TO_ACCOUNT_DIALOG_SUBTITLE" translateable="false" desc="Subtitle for the dialog that offers the user to move a bookmark from their device to their signed-in account.">
-        This bookmark is saved only on this device. You can save it in your Brave sync chain.
+      <message name="IDS_BOOKMARKS_MOVE_TO_ACCOUNT_DIALOG_SUBTITLE" desc="Subtitle for the dialog that offers the user to move a bookmark from their device to their signed-in account.">
+        This bookmark is saved only to this device. If you save it to <ph name="ACCOUNT_FOLDER">$1<ex>Account Bookmarks</ex></ph>, this bookmark will also be saved in your account.
       </message>
-      <!-- TODO(crbug.com/363277495): Update and mark translateable. -->
-      <message name="IDS_BOOKMARKS_MOVE_TO_ACCOUNT_DIALOG_OK_BUTTON_LABEL" translateable="false" desc="OK button label for the dialog that offers the user to move a bookmark from their device to their signed-in account.">
+      <message name="IDS_BOOKMARKS_MOVE_TO_ACCOUNT_DIALOG_FOLDER_SUBTITLE" desc="Subtitle for the dialog that offers the user to move a bookmark folder from their device to their signed-in account.">
+        This folder is saved only to this device. If you save it to <ph name="ACCOUNT_FOLDER">$1<ex>Account Bookmarks</ex></ph>, this folder will also be saved in your account.
+      </message>
+      <message name="IDS_BOOKMARKS_MOVE_TO_ACCOUNT_DIALOG_OK_BUTTON_LABEL" desc="OK button label for the dialog that offers the user to move a bookmark from their device to their signed-in account.">
         Save in account
+      </message>
+      <message name="IDS_BOOKMARKS_MOVE_TO_DEVICE_DIALOG_TITLE" desc="Title for the dialog that offers the user to move a bookmark from their signed-in account to their device.">
+        Save to a folder only on this device?
+      </message>
+      <message name="IDS_BOOKMARKS_MOVE_TO_DEVICE_DIALOG_SUBTITLE" desc="Subtitle for the dialog that offers the user to move a bookmark from their signed-in account to their device.">
+        <ph name="LOCAL_FOLDER">$1<ex>Local Bookmarks</ex></ph> is saved only to this device. If you move this bookmark to <ph name="LOCAL_FOLDER">$1<ex>Local Bookmarks</ex></ph>, you’ll no longer get it on your other devices.
+      </message>
+      <message name="IDS_BOOKMARKS_MOVE_TO_DEVICE_DIALOG_FOLDER_SUBTITLE" desc="Subtitle for the dialog that offers the user to move a bookmark folder from their signed-in account to their device.">
+        <ph name="LOCAL_FOLDER">$1<ex>Local Bookmarks</ex></ph> is saved only to this device. If you move this folder to <ph name="LOCAL_FOLDER">$1<ex>Local Bookmarks</ex></ph>, you’ll no longer get it on your other devices.
+      </message>
+      <message name="IDS_BOOKMARKS_MOVE_TO_DEVICE_DIALOG_OK_BUTTON_LABEL" desc="OK button label for the dialog that offers the user to move a bookmark from their signed-in account to their device.">
+        Save to device
       </message>
       <message name="IDS_BOOKMARKS_SORT_BY_TYPE" desc="Menu item label for selecting the bookmarks sort type.">
         Sort by <ph name="SORT_TYPE">$1<ex>Newest</ex></ph>
@@ -9083,6 +9066,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_VOICE_SELECTION" desc="Accessibility label for button that opens a dropdown with options for changing the voice used for Read Aloud.">
         Voice selection
       </message>
+      <message name="IDS_READING_MODE_SYSTEM_VOICE" desc="Title for the dropdown menu option that selects the default system TTS voice for use with Read Aloud.">
+        System text-to-speech voice
+      </message>
       <message name="IDS_READING_MODE_ITEM_SELECTED" desc="Accessibility label for an icon that indicates a menu item in Reading mode is selected.">
         Selected.
       </message>
@@ -9122,11 +9108,23 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_LANGUAGE_MENU_NO_INTERNET" desc="Label for status text when no internet prevents a voice from downloading from the Read Aloud language menu.">
         No internet
       </message>
+      <message name="IDS_READING_MODE_CANT_USE_READ_ALOUD" desc="Label for toast message that shows when there are no voices available on the device and no internet prevents a voice from downloading.">
+        Can't use Read Aloud right now.
+      </message>
+      <message name="IDS_READING_MODE_VOICE_MENU_NO_INTERNET" desc="Label for status text when no internet prevents a voice from downloading any voices from the Read Aloud language menu.">
+        There are no <ph name="LANGUAGE">$1<ex>English</ex></ph> voices on your device. Connect to the internet, and try again.
+      </message>
       <message name="IDS_READING_MODE_LANGUAGE_MENU_DOWNLOAD_FAILED" desc="Label for generic status text when there was an error when downloading a voice from the Read Aloud language menu and there's no more details on the error.">
         Download failed
       </message>
       <message name="IDS_READING_MODE_LANGUAGE_MENU_NO_SPACE" desc="Label for status text when no space on disk prevents a voice from downloading from the Read Aloud language menu.">
         To install this language, clear space on your device
+      </message>
+      <message name="IDS_READING_MODE_TOAST_NO_SPACE" desc="Label for tost message when no space on disk prevents a voice from downloading and there are no voices available at all.">
+        To use Read Aloud, clear space on your device
+      </message>
+      <message name="IDS_READING_MODE_VOICE_MENU_NO_SPACE" desc="Label for status text when no no space on disk prevents a voice from downloading any voices from the Read Aloud language menu.">
+        There are no <ph name="LANGUAGE">$1<ex>English</ex></ph> voices on your device. Clear space on your device, and try again.
       </message>
       <message name="IDS_READING_MODE_VOICE_MENU_PREVIEW_LANGUAGE" desc="Accessibility label for a button to preview a voice in a specfic language.">
         preview voice for <ph name="LANGUAGE">$1<ex>English</ex></ph>
@@ -9343,6 +9341,27 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Strings for tab declutter -->
+      <message name="IDS_DECLUTTER_SELECTOR_HEADING" desc="Heading for the declutter button in the tab organization selector.">
+        {NUM_TABS, plural,
+          =0 {No unused tabs}
+          =1 {Close 1 unused tab}
+          other {Close # unused tabs}}
+      </message>
+      <message name="IDS_DECLUTTER_SELECTOR_SUBHEADING" desc="Subheading for the declutter button in the tab organization selector.">
+        Review and decide
+      </message>
+      <message name="IDS_DECLUTTER_TITLE" desc="The header text for the declutter UI">
+        Close unused tabs
+      </message>
+      <message name="IDS_DECLUTTER_BODY" desc="The body text for the declutter UI">
+        These tabs have been unused for <ph name="COUNT">$1<ex>7</ex></ph> or more days.
+      </message>
+      <message name="IDS_DECLUTTER_EMPTY_TITLE" desc="The header text for the declutter empty state UI">
+        Your tabs are tidy!
+      </message>
+      <message name="IDS_DECLUTTER_EMPTY_BODY" desc="The body text for the declutter empty state UI">
+        No inactive tabs right now
+      </message>
       <message name="IDS_TOOLTIP_TAB_DECLUTTER" desc="The tooltip for the Tab Declutter button.">
         Close unused tabs?
       </message>
@@ -9352,7 +9371,24 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ACCNAME_TAB_DECLUTTER" desc="The accessible name for the Tab Declutter button." is_accessibility_with_no_ui="true">
         Close unused tabs
       </message>
-
+      <message name="IDS_DECLUTTER_TIMESTAMP" desc="The description of when a tab was last accessed, for use in a declutter row.">
+        {NUM_DAYS, plural,
+          =0 {Visited 0 days ago}
+          =1 {Visited 1 day ago}
+          other {Visited # days ago}}
+      </message>
+      <if expr="use_titlecase">
+        <then>
+          <message name="IDS_DECLUTTER_MENU" desc="In Title Case: The text label for the declutter app menu item.">
+            Close Unused Tabs
+          </message>
+        </then>
+        <else>
+          <message name="IDS_DECLUTTER_MENU" desc="The text label for the declutter app menu item.">
+            Close unused tabs
+          </message>
+        </else>
+      </if>
       <!-- Strings for tab organization -->
       <message name="IDS_TOOLTIP_TAB_ORGANIZE" desc="The tooltip for the Tab Organization button.">
         Organize tabs?
@@ -9830,9 +9866,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_LIST_IN_SIDE_PANEL_PROMO_PINNING" desc="Text shown on promotional UI appearing next to the side panel button when Side Panel Pinning is enabled">
         Find your reading list and bookmarks in Bookmarks and Lists
       </message>
-      <message name="IDS_TAB_GROUPS_NEW_GROUP_PROMO" desc="Text shown on promotional UI encouraging users to create a tab group in their tab strip">
-        Organize your tabs with tab groups
-      </message>
       <message name="IDS_TAB_GROUPS_UNNAMED_GROUP_TOOLTIP" desc="Static tooltip to display on hover over unnamed tab group.">
         Unnamed group - <ph name="GROUP_CONTENT_STRING">$1<ex>"New Tab" and one other</ex></ph>
       </message>
@@ -10066,6 +10099,32 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TUTORIAL_PASSWORD_MANAGER_CLICK_INSTALL" desc="The description of the 'click install' step in password manager tutorial">
         Click “Install”
+      </message>
+
+      <!-- Lens Overlay Tutorial Strings -->
+      <message name="IDS_TUTORIAL_LENS_OVERLAY_INTRO_HEADER" desc="Header for the intro of the Lens overlay tutorial">
+        Search what’s on your screen with Google Lens
+      </message>
+      <message name="IDS_TUTORIAL_LENS_OVERLAY_INTRO_BODY" desc="Description for the intro of the Lens overlay tutorial">
+        Learn more about products, places, or text you see on your screen
+      </message>
+      <message name="IDS_TUTORIAL_LENS_OVERLAY_CLICK_ADDRESS_BAR" desc="The description of the 'click the address bar' step in Lens overlay tutorial">
+        Click the address bar
+      </message>
+      <message name="IDS_TUTORIAL_LENS_OVERLAY_CLICK_LENS" desc="The description of the 'select the Google Lens button' step in Lens overlay tutorial">
+        Select the Google Lens button
+      </message>
+      <message name="IDS_TUTORIAL_LENS_OVERLAY_SELECT" desc="The description of the 'click and drag to search' step in Lens overlay tutorial">
+        Click and drag over images or highlight text to search
+      </message>
+      <message name="IDS_TUTORIAL_LENS_OVERLAY_CLICK_SEARCH_BOX" desc="The description of the 'search box' step in Lens overlay tutorial">
+        Add more details or ask a question about your selection to refine your search
+      </message>
+      <message name="IDS_TUTORIAL_LENS_OVERLAY_CLICK_PIN_ICON" desc="The description of the 'pin to toolbar' step in Lens overlay tutorial">
+        Pin Google Lens to your toolbar for easy access next time
+      </message>
+      <message name="IDS_TUTORIAL_LENS_OVERLAY_SUCCESS_BODY" desc="Success text at the end of Lens overlay tutorial">
+        You can now use Google Lens to search anything you see on your screen
       </message>
 
       <!-- Browser Hung Plugin Detector -->
@@ -11190,21 +11249,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_AUTO_TAB_GROUPS_SELECTOR_SUBHEADING" desc="Subheading for the auto tab groups button in the tab organization selector.">
         Check for suggestions
-      </message>
-      <message name="IDS_DECLUTTER_SELECTOR_HEADING" desc="Heading for the declutter button in the tab organization selector.">
-        {NUM_TABS, plural,
-          =0 {No unused tabs}
-          =1 {Close 1 unused tab}
-          other {Close # unused tabs}}
-      </message>
-      <message name="IDS_DECLUTTER_SELECTOR_SUBHEADING" desc="Subheading for the declutter button in the tab organization selector.">
-        Review and decide
-      </message>
-      <message name="IDS_DECLUTTER_TITLE" desc="The header text for the declutter UI">
-        Close unused tabs
-      </message>
-      <message name="IDS_DECLUTTER_BODY" desc="The body text for the declutter UI">
-        These tabs have been unused for <ph name="COUNT">$1<ex>7</ex></ph> or more days.
       </message>
 
       <!-- Strings for Window Titles in Menus -->
@@ -12877,8 +12921,8 @@ This can include information about installed software, files, your browser, and 
             <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_STAY_HERE_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble">
               Stay Here
             </message>
-            <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_TITLE_SUPERVISED" desc="Title of the Signin Bubble intercept that is shown when a signed out user signs in on the web with a supervised account." translateable="false">
-              Be Safe Online
+            <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_TITLE_SUPERVISED" desc="This string is the title of a promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in: Kids of a certain age are motivated to get their parents’ help staying safer online, so the tone should be motivating. We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain.">
+              Be Safer Online
             </message>
           </then>
           <else>
@@ -12894,12 +12938,15 @@ This can include information about installed software, files, your browser, and 
             <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_STAY_HERE_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble">
               Stay here
             </message>
-            <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_TITLE_SUPERVISED" desc="Title of the Signin Bubble intercept that is shown when a signed out user signs in on the web with a supervised account." translateable="false">
-              Be safe online
+            <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_TITLE_SUPERVISED" desc="This string is the title of a promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in: Kids of a certain age are motivated to get their parents’ help staying safer online, so the tone should be motivating. We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain.">
+              Be safer online
             </message>
           </else>
         </if>
 
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_SUBTITLE_SUPERVISED" desc="This string is the body of a promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in: Kids of a certain age are motivated to get their parents’ help staying safer online, so the tone should be motivating. We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain.">
+          To stay safer online with your parent’s choices, sign in as <ph name="USER_EMAIL">$1<ex>john@google.com</ex></ph>
+        </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CANCEL_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble">
           No thanks
         </message>
@@ -12908,6 +12955,9 @@ This can include information about installed software, files, your browser, and 
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CONFIRM_SWITCH_BUTTON_LABEL" desc="Label of the profile switch button in the web signin interception bubble">
           Ok
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CREATE_BUBBLE_DESC_SUPERVISED" desc="This string is the body of a dialog about signing in to Brave with the user's Brave sync chain. It appears when a kid tries to sign in to a Brave service (like Gmail) with their account while using someone else’s Brave profile. The message explains the overarching user benefit of signing in: Kids of a certain age are motivated to get their parents’ help staying safer online, so the tone should be motivating. The body text is after the 'Sign in to Brave in a new profile?' string. We want users to understand why signing in to their own profile is beneficial, and click 'Continue as name' to sign in to their Brave sync chain.">
+          To stay safer online with your parent’s choices, sign in to your own profile as <ph name="USER_EMAIL">$1<ex>john@gmail.com</ex></ph>
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_SWITCH_BUBBLE_CONTINUE_BUTTON_LABEL" desc="This string is the button for a dialog that appears when the user is already signed in to Brave, but they just tried to sign in to a Brave service (like Gmail) with a different Brave sync chain that already has its own Brave profile on this device. The button is after the 'Switch to existing Brave profile?' string. When the user clicks this button, they will open a different existing Brave profile that is already signed in to the other Brave sync chain. The tone should be inviting and helpful.">
           Continue
@@ -12954,6 +13004,13 @@ This can include information about installed software, files, your browser, and 
 
         <message name="IDS_CLOSE_WARNING_FOR_CLEAR_COOKIES_ON_EXIT_TEXT_LINK" desc="Text of the link to open cookie settings, when closing the last browser window.">
           go to settings
+        </message>
+
+        <message name="IDS_SYNC_PASSPHRASE_DIALOG_FOOTER" desc="">
+          If you forgot your passphrase or want to change this setting, <ph name="SETTINGS_LINK">$1<ex>clear the data in your account</ex></ph>.
+        </message>
+        <message name="IDS_SYNC_PASSPHRASE_DIALOG_TITLE" desc="">
+          Enter your passphrase
         </message>
 
         <if expr="use_titlecase">
@@ -13458,13 +13515,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
             Choose another language
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_CHANGE_SOURCE_LANGUAGE" desc="Text for the menu item that lets the user open a dialog to choose another source language for translation, from a list of available languages.">
-            Page is not in <ph name="language">$1<ex>French</ex></ph>
+            Page not in <ph name="language">$1<ex>French</ex></ph>
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_OPEN_LANGUAGE_SETTINGS" desc="Text to show for the translate bubble menu item that opens language settings.">
             Open language settings
           </message>
           <message name="IDS_PARTIAL_TRANSLATE_BUBBLE_CHANGE_SOURCE_LANGUAGE" desc="Text for the partial translate bubble menu item that lets the user open a dialog to choose another source language for translation, from a list of available languages.">
-            Selection is not in <ph name="language">$1<ex>French</ex></ph>
+            Selection not in <ph name="language">$1<ex>French</ex></ph>
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_ACCEPT" desc="Text to show for the translate bubble button to accept translation.">
             Translate
@@ -13526,13 +13583,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
             Choose Another Language...
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_CHANGE_SOURCE_LANGUAGE" desc="In Title Case: Text to show for the translate bubble menu item which invokes the source language menu.">
-            Page Is Not in <ph name="language">$1<ex>French</ex></ph>
+            Page Not in <ph name="language">$1<ex>French</ex></ph>
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_OPEN_LANGUAGE_SETTINGS" desc="In Title Case: Text to show for the translate bubble menu item that opens language settings.">
             Open Language Settings
           </message>
           <message name="IDS_PARTIAL_TRANSLATE_BUBBLE_CHANGE_SOURCE_LANGUAGE" desc="In Title Case: Text to show for the partial translate bubble menu item which invokes the source language menu.">
-            Selection Is Not in <ph name="language">$1<ex>French</ex></ph>
+            Selection Not in <ph name="language">$1<ex>French</ex></ph>
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_ACCEPT" desc="In Title Case: Text to show for the translate bubble button to accept translation.">
             Translate
@@ -15790,9 +15847,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_TRANSPORT_CABLE" desc="Menu item text. The user selects this to use their phone, once connected to their computer over Bluetooth Low Energy, to sign in to web site on their computer.">
         Your phone
       </message>
-      <message name="IDS_WEBAUTHN_TRANSPORT_AOA" desc="Menu item text. The user selects this to use their phone, once physically connected with a USB cable, to sign in to a web site on their computer. This appears next to the similar string 'Your phone' with TC ID 4865460888230929643.">
-        Your phone with a USB cable
-      </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_WINDOWS_HELLO_OR_SECURITY_KEY" desc="Menu item text. The user selects this to use Windows Hello or a security key (an external physical device for user authentication). Windows Hello is a Microsoft brand and should be translated the same as it is in Windows. If you edit the language code in https://support.microsoft.com/en-us/windows/learn-about-windows-hello-and-set-it-up-dae28983-8242-bb2a-d3d1-87c9d265a5f0 you can see how Microsoft translates it in several languages. (It is often left untranslated.)">
         Windows Hello or external security key
       </message>
@@ -15884,9 +15938,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_CABLE" desc="Menu item text. The user selects this to verify their identity on a web site (i.e. sign in) using their phone. They wirelessly connect their phone to their computer over Bluetooth Low Energy, and then use the phone to sign in to web sites on their computer.">
         Verify via your phone
       </message>
-      <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_AOA" desc="Menu item text. The user selects this to verify their identity on a web site (i.e. sign in) using their phone. They physically connect the phone with a USB cable. This appears next to the similar string 'Verify via your phone' with TC ID 4577976468067558540.">
-        Verify via your phone with a USB cable
-      </message>
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_TITLE" desc="Title of the dialog shown when the user tries to sign-in using a phone as a security key.">
         Check your phone
       </message>
@@ -15912,18 +15963,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Close
       </message>
 
-      <message name="IDS_WEBAUTHN_CABLEV2_SERVERLINK_TROUBLE" desc="This message is shown as a link below IDS_WEBAUTHN_CABLEV2_SERVERLINK_DESCRIPTION. The 'it' referenced here is the notification mentioned in that message.">
-        Didn't get it?
-      </message>
-      <message name="IDS_WEBAUTHN_CABLEV2_AOA_TITLE" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key. The 'cable' is a physical USB cable.">
-        Connect your phone with a cable
-      </message>
-      <message name="IDS_WEBAUTHN_CABLEV2_AOA_DESCRIPTION" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key.">
-        Use a USB cable to connect your phone to your computer. If your phone is already connected, unplug it and plug it back in.
-      </message>
-      <message name="IDS_WEBAUTHN_CABLEV2_AOA_REQUEST_DESCRIPTION" desc="Potentially displayed in a permissions dialog on Android to describe the type of request that a computer, that is connected over USB, is making. In this context the request from the computer is to use the Android device as a security key. A 'security key' is typically a physical USB token used for authentication (e.g. a gNubby) but in this case the phone is acting as one. The translation of 'security key' should match the phrase used in TC IDs such as 1685482178220389035 and 7775033610159191691">
-        Security key request
-      </message>
       <message name="IDS_WEBAUTHN_PASSKEY_PHONE_OR_TABLET_LABEL" desc="The label on a button-like element in a list of options. Clicking this causes Brave to show a QR code that the user can scan with their phone to use that phone for signing into a website. Here 'phone' is used as a short hand for smartphone.">
         Use a phone or tablet
       </message>
@@ -15940,9 +15979,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Use a passkey from <ph name="DEVICE_NAME">$1<ex>Ted's Pixel 6 Pro</ex></ph> to sign in to <ph name="WEBSITE">$2<ex>accounts.google.com</ex></ph>
       </message>
 
-      <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_DESCRIPTION_SHORT" desc="Second line of text in an item letting the user know that they can use their phone as a security key. The user needs to check their phone and respond to a notification that will ask them to press a button on the phone's screen to confirm that they're logging in.">
-        Unlock your phone and confirm it's you
-      </message>
       <!-- WebAuthn authenticator PIN entry/setup -->
       <message name="IDS_WEBAUTHN_PIN_ENTRY_TITLE" desc="Title of the dialog shown when instructing the user to enter the PIN code to use a security key (an external physical device for user authentication) with their computer.">
         PIN required
@@ -16341,6 +16377,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_GPM_PASSKEY_DELETED_LINK" desc="Link text that directs the user to the Brave Password Manager passwords page within a bubble that is displayed as a confirmation that a passkey was deleted in Brave Password Manager. See IDS_WEBAUTHN_GPM_PASSKEY_DELETED_LABEL for more details.">
         Brave Password Manager
       </message>
+
+      <!-- WebAuthn Ambient UI -->
+      <!-- TODO(crbug.com/358119268): Remove translateable property when the strings are final. -->
+      <message name="IDS_WEBAUTHN_AMBIENT_BUBBLE_TITLE" desc="The title of a bubble that displays passkeys or passwords for signing in to a given site." translateable="false">
+        Sign in to <ph name="RP_ID">$1<ex>webauthn.io</ex></ph>
+      </message>
+
       <!-- Web-modal dialog shown during Digital Credential request -->
       <message name="IDS_WEB_DIGITAL_CREDENTIALS_BLUETOOTH_POWER_ON_MANUAL_TITLE" translateable="false">
         Bluetooth is disabled
@@ -16911,136 +16954,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <!-- Lens Region Search bubble dialog -->
     <message name="IDS_LENS_REGION_SEARCH_BUBBLE_TEXT" desc="Text that is shown in the Lens Region Search education bubble when starting the feature. Informs the user to drag over the screen to select a region to search with Google Lens.">
       Select an area to search with Lens
-    </message>
-    <message name="IDS_LENS_SEARCH_BUBBLE_DIALOG_TITLE" desc="The name of the lens search bubble dialog.">
-      Google Lens Search Bubble
-    </message>
-    <message name="IDS_LENS_OVERLAY_COPY" desc="Command in the Lens Overlay context menu to copy text.">
-      Copy
-    </message>
-    <message name="IDS_LENS_OVERLAY_COPY_TOAST_MESSAGE" desc="Notification shown in the Lens Overlay when the user has copied selected text to the clipboard.">
-      Text copied
-    </message>
-    <message name="IDS_LENS_OVERLAY_COPY_AS_IMAGE_TOAST_MESSAGE" desc="Notification shown in the Lens Overlay when the user has copied the selected image to the clipboard.">
-      Image copied
-    </message>
-    <message name="IDS_LENS_OVERLAY_MORE_OPTIONS_BUTTON_LABEL" desc="Text that is shown in the tooltip of the more options button in the Lens Overlay.">
-      More options
-    </message>
-    <message name="IDS_LENS_OVERLAY_MY_ACTIVITY" desc="Text that is shown in the more options menu to open the user's activity page.">
-      My Activity
-    </message>
-    <message name="IDS_LENS_OVERLAY_TOAST_DISMISS_MESSAGE" desc="The label for the button that dismisses the toast message">
-      Dismiss
-    </message>
-    <message name="IDS_LENS_OVERLAY_TRANSLATE" desc="Command in the Lens Overlay context menu to translate text.">
-      Translate
-    </message>
-    <message name="IDS_LENS_OVERLAY_SELECT_TEXT" desc="Command in the Lens Overlay context menu to select text.">
-      Select text
-    </message>
-    <message name="IDS_LENS_OVERLAY_COPY_AS_IMAGE" desc="Command in the Lens Overlay context menu to copy the selected screen region to the clipboard as an image.">
-      Copy as image
-    </message>
-    <message name="IDS_LENS_OVERLAY_SAVE_AS_IMAGE" desc="Command in the Lens Overlay context menu to save the selected screen region to disk as an image file.">
-      Save as image
-    </message>
-    <message name="IDS_LENS_OVERLAY_LEARN_MORE" desc="Text that is shown in the more options menu to open the help center article.">
-      Learn more
-    </message>
-    <message name="IDS_LENS_OVERLAY_INITIAL_TOAST_LABEL" desc="Accessibility label for the initial user eduction bubble that appears at the top of the screen after the user invokes the Lens Overlay feature. Informs the user to select an object to search with Google Lens, or use the escape key to exit the feature.">
-      Select anything to search with Google Lens or press escape to exit Google Lens
-    </message>
-    <message name="IDS_LENS_OVERLAY_INITIAL_TOAST_MESSAGE" desc="Text that is shown in the Lens Overlay education bubble when starting the feature. Informs the user to tap an object or drag over the screen to select a region to search with Google Lens.">
-      Select anything to search with Google Lens
-    </message>
-    <message name="IDS_LENS_OVERLAY_INITIAL_TOAST_MESSAGE_SELECT_TEXT" desc="Text that is shown in the Lens Overlay education bubble when starting the feature. Informs the user to drag over the screen to select text to search with Google Lens.">
-      Select text with Google Lens
-    </message>
-    <message name="IDS_LENS_OVERLAY_INITIAL_TOAST_ERROR_MESSAGE" desc="Text that is shown in the Lens Overlay education bubble when starting the feature in an offline state. Informs the user that Lens is not currently available.">
-      Google Lens is not available. Try again later.
-    </message>
-    <message name="IDS_LENS_OVERLAY_INITIAL_TOAST_ERROR_EXIT_BUTTON_TEXT" desc="Text that is shown in the Lens Overlay education bubble exit button when starting the feature in an offline state.">
-      Exit
-    </message>
-    <message name="IDS_LENS_OVERLAY_CURSOR_TOOLTIP_DRAG_MESSAGE" desc="Text that is shown in the Lens Overlay tooltip that appears beneath the cursor. Informs the user to drag over the screen to select a region to search it.">
-      Drag to search
-    </message>
-    <message name="IDS_LENS_OVERLAY_CURSOR_TOOLTIP_TEXT_HIGHLIGHT_MESSAGE" desc="Text that is shown in the Lens Overlay tooltip that appears beneath the cursor. Informs the user to highlight text to search it.">
-      Select text to search
-    </message>
-    <message name="IDS_LENS_OVERLAY_CURSOR_TOOLTIP_CLICK_MESSAGE" desc="Text that is shown in the Lens Overlay tooltip that appears beneath the cursor. Informs the user to click on an object to search it.">
-      Click to search
-    </message>
-    <message name="IDS_LENS_OVERLAY_CURSOR_TOOLTIP_LIVE_PAGE_MESSAGE" desc="Text that is shown in the Lens Overlay tooltip that appears beneath the cursor. Informs the user to click to exit Google Lens.">
-      Click to exit Google Lens
-    </message>
-    <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_MESSAGE" desc="Text     that is shown in the CTRL+F dialog next to the Google Lens button. Informs the user to click     to search anything on the page via Google Lens.">
-      Search anything on this page
-    </message>
-    <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_MESSAGE_1" desc="Text     that is shown in the CTRL+F dialog next to the Google Lens button. Informs the user to click     to search any image or text via Google Lens.">
-      Search any image or text with Lens
-    </message>
-    <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_MESSAGE_2" desc="Text     that is shown in the CTRL+F dialog next to the Google Lens button. Informs the user to click     to select images or text to search with Google Lens.">
-      Select images/text to search with Lens
-    </message>
-    <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_LABEL" desc="Label     for the Google Lens button in the CTRL+F dialog.">
-      Google Lens
-    </message>
-    <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_LABEL_1" desc="Label     for the button in the CTRL+F dialog to open Google Lens.">
-      Open Lens
-    </message>
-    <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_LABEL_2" desc="Label     for the button in the CTRL+F dialog inviting the user to try Google Lens.">
-      Try Lens
-    </message>
-    <message name="IDS_LENS_OVERLAY_AUTO_DETECT_LANGUAGE_LABEL" desc="Label for the language picker button denoting that source language of the page will be automatically detected.">
-      Auto-detect
-    </message>
-    <message name="IDS_LENS_OVERLAY_TRANSLATE_BUTTON_LABEL" desc="Label for the translate button. Informs the user that the entire screen will be translated when clicked.">
-      Translate screen
-    </message>
-      <message name="IDS_LENS_OVERLAY_SOURCE_LANGUAGE_PICKER_MENU_TITLE" desc="Label for the source language picker menu title denoting that the user can select a language for the screen to be translated to.">
-      Translate from
-    </message>
-    <message name="IDS_LENS_OVERLAY_TARGET_LANGUAGE_PICKER_MENU_TITLE" desc="Label for the target language picker menu title denoting that the user can select a language for the screen to be translated to.">
-      Translate to
-    </message>
-    <message name="IDS_LENS_OVERLAY_RECENT_LANGUAGES_LABEL" desc="Label in the language picker menu denoting that the following language menu items are ones that have been selected recently by the user.">
-      Recent languages
-    </message>
-    <message name="IDS_LENS_OVERLAY_ALL_LANGUAGES_LABEL" desc="Label in the language picker menu denoting that the following language menu items are all of the possible selections that can be made.">
-      All languages
-    </message>
-    <message name="IDS_LENS_OVERLAY_DETECTED_LABEL" desc="Label in the language picker menu denoting that the following language is the one that has been detected.">
-      Detected
-    </message>
-    <message name="IDS_LENS_OVERLAY_DETECT_LANGUAGE_LABEL" desc="Label in the language picker menu denoting that the following language is the one that has been detected.">
-      Detect language
-    </message>
-    <message name="IDS_LENS_SEND_FEEDBACK" desc="Text that is shown in the more options menu to open the feedback dialog.">
-      Send feedback
-    </message>
-    <message name="IDS_LENS_SEND_FEEDBACK_PLACEHOLDER" desc="Placeholder text that is shown in the feedback dialog to send feedback for the Lens Overlay.">
-      Send feedback for search with Lens
-    </message>
-    <message name="IDS_LENS_OVERLAY_RENDERER_LABEL" desc="The label for the renderer process housing the Lens overlay.">
-      Google Lens
-    </message>
-    <!-- Lens Permission bubble dialog-->
-    <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_CANCEL_BUTTON" desc="Text on the cancel button in the dialog for choosing not to allow the sending of the Lens screenshot to Brave.">
-      Cancel
-    </message>
-    <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_CONTINUE_BUTTON" desc="Text on the continue button in the dialog for choosing to allow the sending of the Lens screenshot to Brave.">
-      OK
-    </message>
-    <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_DESCRIPTION" desc="Text that is shown in the Lens permission bubble, giving examples of what Lens can do and informing users that their screenshot will be sent to Brave. Includes placeholder for learn more link.">
-      Identify things or places and copy or translate text. When you use Google Lens, a screenshot of the page is sent to Brave. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
-    </message>
-    <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_LEARN_MORE_LINK" desc="Text link that is shown to users to learn more about privacy in relation to Google Lens.">
-      Learn more
-    </message>
-    <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_TITLE" desc="The title of the lens permission search bubble dialog, introducing Lens as a way to search what's on their screen.">
-      New! An easy way to search what's on your screen
     </message>
     <!-- BraveLabs Thumbnail Tab Strip -->
     <message name="IDS_THUMBNAIL_TAB_STRIP_EXPERIMENT_NAME" desc="Name for Thumbnail Tab Strip experiment">

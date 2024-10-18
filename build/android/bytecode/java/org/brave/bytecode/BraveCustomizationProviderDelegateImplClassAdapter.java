@@ -9,7 +9,7 @@ import org.objectweb.asm.ClassVisitor;
 
 public class BraveCustomizationProviderDelegateImplClassAdapter extends BraveClassVisitor {
     static String sCustomizationProviderDelegateImplClassName =
-            "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateImpl";
+            "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateUpstreamImpl";
     static String sBraveCustomizationProviderDelegateImplClassName =
             "org/chromium/chrome/browser/partnercustomizations/BraveCustomizationProviderDelegateImpl";
 

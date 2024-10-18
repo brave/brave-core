@@ -12,10 +12,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-class ChromeBrowserState;
+class ProfileIOS;
 
 @interface BraveHistoryAPI (Private)
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState;
+- (instancetype)initWithBrowserState:(ProfileIOS*)profile;
 @end
 
 NS_ASSUME_NONNULL_END

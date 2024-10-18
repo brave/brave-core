@@ -1,8 +1,8 @@
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index 9247e9b3f4c92e6f573898049bca784cccb4b19c..e88caf45e09e864d42be27352eff26d34562d117 100644
+index 4c0e4645f64e3e9f4466bd59972f8587866da8c5..dae4b156f37f51893f27c1e6ab24542f4b03edbb 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
-@@ -4407,6 +4407,7 @@ if (is_android) {
+@@ -4438,6 +4438,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/ValueChangedCallback.java",
        "android/java/src/org/chromium/base/WrappedClassLoader.java",
      ]
@@ -10,19 +10,11 @@ index 9247e9b3f4c92e6f573898049bca784cccb4b19c..e88caf45e09e864d42be27352eff26d3
  
      if (use_clang_profiling) {
        sources += [
-@@ -4871,6 +4872,7 @@ if (is_android) {
+@@ -4906,6 +4907,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/shared_preferences/SharedPreferencesManager.java",
        "android/java/src/org/chromium/base/shared_preferences/StrictPreferenceKeyChecker.java",
      ]
 +    sources += brave_base_shared_preferences_java_sources
    }
  
-   android_library("base_cached_flags_java") {
-@@ -4896,6 +4898,7 @@ if (is_android) {
-       "android/java/src/org/chromium/base/cached_flags/ValuesOverridden.java",
-       "android/java/src/org/chromium/base/cached_flags/ValuesReturned.java",
-     ]
-+    sources += brave_base_cached_flags_java_sources
-   }
- 
-   android_aidl("process_launcher_aidl") {
+   # Most cached_flags code is in components/cached_flags. These classes are

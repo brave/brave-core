@@ -6,12 +6,11 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_
 
-#include <memory>
-#include <string>
-
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "chrome/browser/ui/webui/settings/settings_ui.h"
+
+class BraveSettingsUI;
 
 namespace content {
 class WebUIDataSource;
@@ -19,9 +18,17 @@ class WebUIDataSource;
 
 class Profile;
 
+class BraveSettingsUIConfig
+    : public content::DefaultWebUIConfig<BraveSettingsUI> {
+ public:
+  BraveSettingsUIConfig()
+      : DefaultWebUIConfig(content::kChromeUIScheme,
+                           chrome::kChromeUISettingsHost) {}
+};
+
 class BraveSettingsUI : public settings::SettingsUI {
  public:
-  BraveSettingsUI(content::WebUI* web_ui, const std::string& host);
+  explicit BraveSettingsUI(content::WebUI* web_ui);
   BraveSettingsUI(const BraveSettingsUI&) = delete;
   BraveSettingsUI& operator=(const BraveSettingsUI&) = delete;
   ~BraveSettingsUI() override;

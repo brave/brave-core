@@ -11,7 +11,7 @@
 #include "base/no_destructor.h"
 #include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
 
-class ChromeBrowserState;
+class ProfileIOS;
 
 namespace base {
 
@@ -25,9 +25,8 @@ class ModelService;
 
 class ModelServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
-  static ModelService* GetForBrowserState(ChromeBrowserState* browser_state);
-  static ModelService* GetForBrowserStateIfExists(
-      ChromeBrowserState* browser_state);
+  static ModelService* GetForBrowserState(ProfileIOS* profile);
+  static ModelService* GetForBrowserStateIfExists(ProfileIOS* profile);
   static ModelServiceFactory* GetInstance();
 
   ModelServiceFactory(const ModelServiceFactory&) = delete;
