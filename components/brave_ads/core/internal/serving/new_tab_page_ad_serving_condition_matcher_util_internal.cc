@@ -38,6 +38,10 @@ std::optional<base::Value> MaybeGetRootPrefValue(
     const std::string& pref_path) {
   CHECK(pref_provider);
 
+  if (pref_path.starts_with(kVirtualPrefPathPrefix)) {
+    return pref_provider->GetVirtualPref(pref_path);
+  }
+
   if (std::optional<base::Value> pref_value =
           pref_provider->GetProfilePref(pref_path)) {
     return pref_value;

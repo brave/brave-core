@@ -1104,6 +1104,10 @@ void AdsServiceImpl::AddBatAdsObserver(
   }
 }
 
+AdsService::Delegate* AdsServiceImpl::GetDelegate() {
+  return delegate_;
+}
+
 bool AdsServiceImpl::IsBrowserUpgradeRequiredToServeAds() const {
   return browser_upgrade_required_to_serve_ads_;
 }
@@ -1822,6 +1826,10 @@ void AdsServiceImpl::HasLocalStatePrefPath(
     const std::string& path,
     HasLocalStatePrefPathCallback callback) {
   std::move(callback).Run(local_state_->HasPrefPath(path));
+}
+
+void AdsServiceImpl::GetVirtualPrefs(GetVirtualPrefsCallback callback) {
+  std::move(callback).Run(delegate_->GetVirtualPrefs());
 }
 
 void AdsServiceImpl::Log(const std::string& file,

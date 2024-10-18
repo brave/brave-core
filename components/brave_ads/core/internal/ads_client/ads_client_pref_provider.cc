@@ -54,4 +54,17 @@ bool AdsClientPrefProvider::HasLocalStatePrefPath(
   return GetAdsClient()->HasLocalStatePrefPath(pref_path);
 }
 
+std::optional<base::Value> AdsClientPrefProvider::GetVirtualPref(
+    const std::string& pref_path) const {
+  if (pref_path.starts_with(kVirtualPrefPathPrefix)) {
+    const base::Value::Dict virtual_prefs = GetAdsClient()->GetVirtualPrefs();
+    if (const base::Value* const value = virtual_prefs.Find(pref_path)) {
+      return value->Clone();
+    }
+  }
+
+  // The virtual preference does not exist.
+  return std::nullopt;
+}
+
 }  // namespace brave_ads
