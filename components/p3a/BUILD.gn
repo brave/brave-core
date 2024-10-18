@@ -52,6 +52,8 @@ static_library("p3a") {
     "star_randomness_meta.h",
     "star_randomness_points.cc",
     "star_randomness_points.h",
+    "star_url_loader_network_service_observer.cc",
+    "star_url_loader_network_service_observer.h",
     "switches.h",
     "uploader.cc",
     "uploader.h",
