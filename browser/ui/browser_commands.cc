@@ -56,6 +56,7 @@
 #include "chrome/browser/ui/tabs/tab_utils.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/pref_names.h"
+#include "chrome/grit/generated_resources.h"
 #include "components/tab_groups/tab_group_visual_data.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
