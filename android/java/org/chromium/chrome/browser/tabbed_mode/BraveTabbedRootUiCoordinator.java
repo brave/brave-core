@@ -48,6 +48,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
+import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeStateProvider;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.ui.InsetObserver;
 import org.chromium.ui.base.ActivityWindowAndroid;
@@ -106,7 +107,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @Nullable MultiInstanceManager multiInstanceManager,
             @Nullable ObservableSupplier<Integer> overviewColorSupplier,
             @Nullable View baseChromeLayout,
-            @NonNull ManualFillingComponentSupplier manualFillingComponentSupplier) {
+            @NonNull ManualFillingComponentSupplier manualFillingComponentSupplier,
+            @NonNull EdgeToEdgeStateProvider edgeToEdgeStateProvider) {
         super(
                 activity,
                 onOmniboxFocusChangedListener,
@@ -152,7 +154,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 multiInstanceManager,
                 overviewColorSupplier,
                 baseChromeLayout,
-                manualFillingComponentSupplier);
+                manualFillingComponentSupplier,
+                edgeToEdgeStateProvider);
 
         mActivity = activity;
         mHubManagerSupplier = hubManagerSupplier;

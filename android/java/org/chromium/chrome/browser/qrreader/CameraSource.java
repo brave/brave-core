@@ -458,7 +458,7 @@ public class CameraSource {
             currentZoom = parameters.getZoom() + 1;
             float newZoom;
             if (scale > 1) {
-                newZoom = currentZoom + scale * (maxZoom / 10);
+                newZoom = currentZoom + scale * (maxZoom / 10f);
             } else {
                 newZoom = currentZoom * scale;
             }
@@ -647,20 +647,15 @@ public class CameraSource {
         return true;
     }
 
-    //==============================================================================================
+    // ==============================================================================================
     // Private
-    //==============================================================================================
+    // ==============================================================================================
 
-    /**
-     * Only allow creation via the builder class.
-     */
-    private CameraSource() {
-    }
+    /** Only allow creation via the builder class. */
+    private CameraSource() {}
 
-    /**
-     * Wraps the camera1 shutter callback so that the deprecated API isn't exposed.
-     */
-    private class PictureStartCallback implements Camera.ShutterCallback {
+    /** Wraps the camera1 shutter callback so that the deprecated API isn't exposed. */
+    private static class PictureStartCallback implements Camera.ShutterCallback {
         private ShutterCallback mDelegate;
 
         @Override
@@ -691,10 +686,8 @@ public class CameraSource {
         }
     }
 
-    /**
-     * Wraps the camera1 auto focus callback so that the deprecated API isn't exposed.
-     */
-    private class CameraAutoFocusCallback implements Camera.AutoFocusCallback {
+    /** Wraps the camera1 auto focus callback so that the deprecated API isn't exposed. */
+    private static class CameraAutoFocusCallback implements Camera.AutoFocusCallback {
         private AutoFocusCallback mDelegate;
 
         @Override
@@ -705,11 +698,9 @@ public class CameraSource {
         }
     }
 
-    /**
-     * Wraps the camera1 auto focus move callback so that the deprecated API isn't exposed.
-     */
+    /** Wraps the camera1 auto focus move callback so that the deprecated API isn't exposed. */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private class CameraAutoFocusMoveCallback implements Camera.AutoFocusMoveCallback {
+    private static class CameraAutoFocusMoveCallback implements Camera.AutoFocusMoveCallback {
         private AutoFocusMoveCallback mDelegate;
 
         @Override
@@ -764,7 +755,9 @@ public class CameraSource {
                     mFocusMode)) {
                 parameters.setFocusMode(mFocusMode);
             } else {
-                Log.i(TAG, "Camera focus mode: " + mFocusMode + " is not supported on this device.");
+                Log.i(
+                        TAG,
+                        "Camera focus mode: " + mFocusMode + " is not supported on this device.");
             }
         }
 
@@ -776,7 +769,9 @@ public class CameraSource {
                     mFlashMode)) {
                 parameters.setFlashMode(mFlashMode);
             } else {
-                Log.i(TAG, "Camera flash mode: " + mFlashMode + " is not supported on this device.");
+                Log.i(
+                        TAG,
+                        "Camera flash mode: " + mFlashMode + " is not supported on this device.");
             }
         }
 
@@ -1007,14 +1002,15 @@ public class CameraSource {
     }
 
     /**
-     * Creates one buffer for the camera preview callback.  The size of the buffer is based off of
+     * Creates one buffer for the camera preview callback. The size of the buffer is based off of
      * the camera preview size and the format of the camera image.
      *
      * @return a new preview buffer of the appropriate size for the current camera settings
      */
     private byte[] createPreviewBuffer(Size previewSize) {
         int bitsPerPixel = ImageFormat.getBitsPerPixel(ImageFormat.NV21);
-        long sizeInBits = previewSize.getHeight() * previewSize.getWidth() * bitsPerPixel;
+        long sizeInBits =
+                previewSize.getHeight() * (long) previewSize.getWidth() * (long) bitsPerPixel;
         int bufferSize = (int) Math.ceil(sizeInBits / 8.0d) + 1;
 
         //

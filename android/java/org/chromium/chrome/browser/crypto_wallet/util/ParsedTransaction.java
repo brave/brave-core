@@ -233,7 +233,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
         if (txType == TransactionType.SOLANA_DAPP_SIGN_TRANSACTION
                 || txType == TransactionType.SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION
                 || txType == TransactionType.SOLANA_SWAP
-                || txType == TransactionType.OTHER && solTxData != null) {
+                || (txType == TransactionType.OTHER && solTxData != null)) {
             if (solTxData == null) {
                 parsedTransaction.recipient = "";
                 parsedTransaction.recipientLabel = "";
@@ -243,8 +243,8 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 parsedTransaction.symbol = "";
                 return parsedTransaction;
             }
-            assert (txInfo.fromAddress != null);
-            assert (txInfo.fromAddress.equals(account.address));
+            assert txInfo.fromAddress != null;
+            assert txInfo.fromAddress.equals(account.address);
             BigDecimal lamportTransferredAmount = new BigDecimal(value);
             for (SolanaInstruction solanaInstruction : solTxData.instructions) {
                 SolanaInstructionPresenter presenter =

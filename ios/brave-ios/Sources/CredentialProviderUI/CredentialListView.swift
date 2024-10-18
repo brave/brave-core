@@ -209,6 +209,10 @@ extension CredentialListModel {
       return false
     }
 
+    func creationDate() -> Date {
+      return Date()
+    }
+
     var favicon: String!
     var recordIdentifier: String!
     var gaia: String!

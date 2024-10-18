@@ -63,25 +63,28 @@ public class DormantUsersEngagementDialogFragment extends BraveDialogFragment {
         }
 
         Button doneButton = view.findViewById(R.id.btn_done);
-        doneButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    BraveSetDefaultBrowserUtils.setDefaultBrowser(BraveActivity.getBraveActivity());
-                } catch (BraveActivity.BraveActivityNotFoundException e) {
-                    Log.e(TAG, "onViewCreated doneButton click " + e);
-                }
-                dismiss();
-            }
-        }));
+        doneButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            BraveSetDefaultBrowserUtils.setDefaultBrowser(
+                                    BraveActivity.getBraveActivity());
+                        } catch (BraveActivity.BraveActivityNotFoundException e) {
+                            Log.e(TAG, "onViewCreated doneButton click " + e);
+                        }
+                        dismiss();
+                    }
+                });
 
         Button notNowButton = view.findViewById(R.id.btn_not_now);
-        notNowButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        }));
+        notNowButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+                    }
+                });
     }
 
     public void setNotificationType(String notificationType) {

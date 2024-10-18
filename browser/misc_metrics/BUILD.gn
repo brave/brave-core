@@ -61,6 +61,7 @@ static_library("misc_metrics_impl") {
     deps += [
       "//brave/browser/themes",
       "//chrome/browser/themes",
+      "//chrome/browser/ui/tabs:tab_strip",
       "//extensions/browser",
     ]
   } else {
@@ -89,6 +90,7 @@ source_set("unit_tests") {
     "//brave/browser/misc_metrics:misc_metrics_impl",
     "//brave/components/misc_metrics",
     "//chrome/browser",
+    "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/search_engines",
     "//chrome/common",
     "//chrome/test:test_support",

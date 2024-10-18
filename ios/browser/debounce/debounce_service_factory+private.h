@@ -21,15 +21,14 @@ class BrowserState;
 }  // namespace web
 
 class KeyedService;
-class ChromeBrowserState;
+class ProfileIOS;
 
 namespace debounce {
 class DebounceService;
 
 class DebounceServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
-  static debounce::DebounceService* GetServiceForState(
-      ChromeBrowserState* browser_state);
+  static debounce::DebounceService* GetServiceForState(ProfileIOS* profile);
 
   static DebounceServiceFactory* GetInstance();
 
