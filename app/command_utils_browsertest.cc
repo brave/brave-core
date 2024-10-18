@@ -5,8 +5,11 @@
 
 #include "brave/app/command_utils.h"
 
+#include <vector>
+
 #include "base/containers/contains.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/components/commands/common/features.h"
 #include "build/buildflag.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -24,46 +27,9 @@
 #include "chrome/browser/first_run/upgrade_util.h"
 #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 
-class CommandUtilsBrowserTest : public InProcessBrowserTest {
- public:
-  CommandUtilsBrowserTest() {
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
-    // Expect a browser relaunch late in browser shutdown.
-    mock_relaunch_callback_ = std::make_unique<::testing::StrictMock<
-        base::MockCallback<upgrade_util::RelaunchChromeBrowserCallback>>>();
-    EXPECT_CALL(*mock_relaunch_callback_, Run);
-    relaunch_chrome_override_ =
-        std::make_unique<upgrade_util::ScopedRelaunchChromeBrowserOverride>(
-            mock_relaunch_callback_->Get());
-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
-  }
-  ~CommandUtilsBrowserTest() override = default;
+namespace {
 
-  void SetUp() override {
-    features_.InitAndEnableFeature(commands::features::kBraveCommands);
-    InProcessBrowserTest::SetUp();
-  }
-
- private:
-  base::test::ScopedFeatureList features_;
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
-  std::unique_ptr<
-      base::MockCallback<upgrade_util::RelaunchChromeBrowserCallback>>
-      mock_relaunch_callback_;
-  std::unique_ptr<upgrade_util::ScopedRelaunchChromeBrowserOverride>
-      relaunch_chrome_override_;
-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
-};
-
-// This test is currently flaky on all Desktop platforms. On Windows it
-// occasionally crashes, on Linux it fails an expectation in pref observer, and
-// on MacOS it times out. Disabling on all platforms until further
-// investigation can be done.
-// This test is a sanity check - if commands fail here but work when testing
-// things manually there's probably a conflict with some of the other commands,
-// in which case we can just add it to the ignored commands list.
-IN_PROC_BROWSER_TEST_F(CommandUtilsBrowserTest,
-                       DISABLED_AllCommandsShouldBeExecutableWithoutCrash) {
+std::vector<int> GetCommandIdsToTest() {
   // Some commands, particularly those that create dialogs introduce some test
   // flakes, so we disable them.
   constexpr int kKnownGoodCommandsThatSometimesBreakTest[] = {
@@ -73,6 +39,8 @@ IN_PROC_BROWSER_TEST_F(CommandUtilsBrowserTest,
       IDC_SAVE_PAGE,
       IDC_SHOW_AVATAR_MENU,
       IDC_SHOW_MANAGEMENT_PAGE,
+      IDC_SHOW_WAYBACK_MACHINE_BUBBLE,
+      IDC_ROUTE_MEDIA,
 #if BUILDFLAG(IS_MAC)
       IDC_FOCUS_THIS_TAB,
       IDC_FOCUS_TOOLBAR,
@@ -90,39 +58,55 @@ IN_PROC_BROWSER_TEST_F(CommandUtilsBrowserTest,
       IDC_TOGGLE_VERTICAL_TABS,
       IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE,
 #endif
+  };
 
-      IDC_EXIT};
+  std::vector<int> result;
 
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab")));
-  const auto& commands = commands::GetCommands();
-  for (const auto& command : commands) {
-    if (base::Contains(kKnownGoodCommandsThatSometimesBreakTest, command)) {
+  for (const auto& command_id : commands::GetCommands()) {
+    if (base::Contains(kKnownGoodCommandsThatSometimesBreakTest, command_id)) {
       continue;
     }
 
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
-    if (command == IDC_CLOSE_TAB) {
-      // If this is the only tab the browser will exit, so add a new tab
-      // before executing the command
-      SCOPED_TRACE(testing::Message() << commands::GetCommandName(command));
-      chrome::ExecuteCommand(browser(), IDC_NEW_TAB);
-      base::RunLoop().RunUntilIdle();
-    } else if (command == IDC_CLOSE_WINDOW) {
-      // If this is the only window the browser will exit, so add a new window
-      // before executing the command
-      SCOPED_TRACE(testing::Message() << commands::GetCommandName(command));
-      chrome::ExecuteCommand(browser(), IDC_NEW_WINDOW);
-      base::RunLoop().RunUntilIdle();
-    }
-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
-
-    // Use the first browser instance for each command.
-    SelectFirstBrowser();
-
-    SCOPED_TRACE(testing::Message() << commands::GetCommandName(command));
-    LOG(INFO) << command << ": " << commands::GetCommandName(command);
-    chrome::ExecuteCommand(browser(), command);
+    result.push_back(command_id);
   }
-  SCOPED_TRACE(testing::Message() << commands::GetCommandName(IDC_EXIT));
-  chrome::ExecuteCommand(browser(), IDC_EXIT);
+
+  return result;
 }
+
+}  // namespace
+
+class CommandUtilsBrowserTest : public InProcessBrowserTest,
+                                public testing::WithParamInterface<int> {
+ public:
+  CommandUtilsBrowserTest() = default;
+  ~CommandUtilsBrowserTest() override = default;
+
+  int GetCommandId() { return GetParam(); }
+
+  void SetUp() override {
+    features_.InitAndEnableFeature(commands::features::kBraveCommands);
+    InProcessBrowserTest::SetUp();
+  }
+
+ private:
+  base::test::ScopedFeatureList features_;
+};
+
+// This test is a sanity check - if commands fail here but work when testing
+// things manually there's probably a conflict with some of the other commands,
+// in which case we can just add it to the ignored commands list.
+IN_PROC_BROWSER_TEST_P(CommandUtilsBrowserTest,
+                       AllCommandsShouldBeExecutableWithoutCrash) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab")));
+  // Use the first browser instance for each command.
+  SelectFirstBrowser();
+
+  SCOPED_TRACE(testing::Message() << commands::GetCommandName(GetCommandId()));
+  LOG(INFO) << GetCommandId() << ": "
+            << commands::GetCommandName(GetCommandId());
+  chrome::ExecuteCommand(browser(), GetCommandId());
+}
+
+INSTANTIATE_TEST_SUITE_P(CommandUtilsBrowserTest,
+                         CommandUtilsBrowserTest,
+                         testing::ValuesIn(GetCommandIdsToTest()));
