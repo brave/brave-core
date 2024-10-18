@@ -23,6 +23,7 @@ class UserScriptManager {
       .faviconFetcher,
       .rewardsReporting,
       .resourceDownloader,
+      .braveTranslate,
       .nightMode,
     ]
 
@@ -133,6 +134,7 @@ class UserScriptManager {
     case searchResultAd
     case youtubeQuality
     case braveLeoAIChat
+    case braveTranslate
 
     fileprivate var script: WKUserScript? {
       switch self {
@@ -180,6 +182,7 @@ class UserScriptManager {
           ? YoutubeQualityScriptHandler.userScript : nil
       case .braveLeoAIChat:
         return Preferences.UserScript.leo.value ? BraveLeoScriptHandler.userScript : nil
+      case .braveTranslate: return BraveTranslateScriptHandler.userScript
       }
     }
 
