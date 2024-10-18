@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index 5ecfd08141976b2b4fdd3aa878d62c2973e45ba9..58cfc9ffab81ccc4ce0ba87c614daf0428d9833f 100644
+index 4d09225d35be387aff7bdfa2b7b34a531adbf0dc..608e933cadddd7e9109ed90e826aa3f7f7ed3f12 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
-@@ -451,4 +451,5 @@ build_webui("build") {
+@@ -444,4 +444,5 @@ build_webui("build") {
                "$root_gen_dir/chrome/browser/resources/settings_shared/tsc",
                root_build_dir) ]
    }

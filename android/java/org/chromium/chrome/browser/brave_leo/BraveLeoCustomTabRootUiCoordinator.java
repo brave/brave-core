@@ -42,6 +42,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
+import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeStateProvider;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.IntentRequestTracker;
@@ -88,7 +89,8 @@ public class BraveLeoCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoord
             @NonNull Supplier<CustomTabActivityTabController> tabController,
             @NonNull Supplier<CustomTabMinimizeDelegate> minimizeDelegateSupplier,
             @NonNull Supplier<CustomTabFeatureOverridesManager> featureOverridesManagerSupplier,
-            @Nullable View baseChromeLayout) {
+            @Nullable View baseChromeLayout,
+            @NonNull EdgeToEdgeStateProvider edgeToEdgeStateProvider) {
         super(
                 activity,
                 shareDelegateSupplier,
@@ -126,7 +128,8 @@ public class BraveLeoCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoord
                 tabController,
                 minimizeDelegateSupplier,
                 featureOverridesManagerSupplier,
-                baseChromeLayout);
+                baseChromeLayout,
+                edgeToEdgeStateProvider);
     }
 
     @Override

@@ -1,5 +1,5 @@
 diff --git a/third_party/libaddressinput/chromium/chrome_metadata_source.cc b/third_party/libaddressinput/chromium/chrome_metadata_source.cc
-index 2ed2488ec44b010b1e0184b4fbea35fb0fffa024..7e6eb2e332f69e9c69392e56c80a65e59959b3f0 100644
+index 5054de5bd4e403fcbaa8cdd6abae42a4f0e89692..837dbf87822842c54809589c08be3b7ef5c187c3 100644
 --- a/third_party/libaddressinput/chromium/chrome_metadata_source.cc
 +++ b/third_party/libaddressinput/chromium/chrome_metadata_source.cc
 @@ -57,7 +57,7 @@ ChromeMetadataSource::Request::Request(

@@ -193,8 +193,10 @@ public final class ShimmerDrawable extends Drawable {
             started = false;
         }
 
-        mValueAnimator = ValueAnimator.ofFloat(
-                0f, 1f + (float) (mShimmer.repeatDelay / mShimmer.animationDuration));
+        mValueAnimator =
+                ValueAnimator.ofFloat(
+                        0f,
+                        1f + (float) (mShimmer.repeatDelay / ((float) mShimmer.animationDuration)));
         mValueAnimator.setInterpolator(new LinearInterpolator());
         mValueAnimator.setRepeatMode(mShimmer.repeatMode);
         mValueAnimator.setStartDelay(mShimmer.startDelay);

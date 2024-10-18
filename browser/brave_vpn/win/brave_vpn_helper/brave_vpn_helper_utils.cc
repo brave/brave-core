@@ -94,6 +94,11 @@ std::wstring GetBraveVpnHelperServiceName() {
   return name;
 }
 
+std::wstring GetBraveVpnHelperServiceDescription() {
+  // TODO(anyone): Consider adding a description.
+  return std::wstring();
+}
+
 std::wstring GetBraveVpnHelperRegistryStoragePath() {
   switch (chrome::GetChannel()) {
     case version_info::Channel::CANARY:
