@@ -43,17 +43,21 @@ struct ReaderModeUtils {
         with: readabilityResult.credits.javaScriptEscapedString?.unquotedIfNecessary
           ?? readabilityResult.credits.htmlEntityEncodedString
       )
-      .replacingOccurrences(of: "%READER-CONTENT%", with: readabilityResult.content)
       .replacingOccurrences(
         of: "%READER-DIRECTION%",
         with: readabilityResult.direction.javaScriptEscapedString?.unquotedIfNecessary
           ?? readabilityResult.direction.htmlEntityEncodedString
       )
       .replacingOccurrences(of: "%READER-MESSAGE%", with: "")
+
+      // PAGE UNESCAPED REPLACEMENTS MUST BE DONE AFTER THIS LINE
       .replacingOccurrences(
         of: "%READER-ORIGINAL-PAGE-META-TAGS%",
         with: readabilityResult.cspMetaTags.joined(separator: "  \n")
       )
+
+      // DO NOT DO ANY REPLACEMENTS AFTER THIS LINE
+      .replacingOccurrences(of: "%READER-CONTENT%", with: readabilityResult.content)
   }
 }
 
