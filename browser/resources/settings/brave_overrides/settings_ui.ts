@@ -77,9 +77,9 @@ RegisterStyleOverride(
       }
       @media (max-width: 980px) {
         #main {
-          margin:0;
-          border-radius:0;
-          min-height:100%;
+          margin: 0;
+          border-radius: 0;
+          min-height: 100%;
         }
       }
     </style>
