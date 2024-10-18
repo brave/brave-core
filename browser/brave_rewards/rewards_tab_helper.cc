@@ -5,9 +5,11 @@
 
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 
+#include <utility>
+
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/components/brave_rewards/browser/publisher_utils.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/common/publisher_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/navigation_entry.h"
@@ -98,20 +100,31 @@ void RewardsTabHelper::DidFinishLoad(
   rewards_service_->OnLoad(tab_id_, validated_url);
 }
 
-void RewardsTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
-  if (!handle->IsInMainFrame() || !handle->HasCommitted() ||
-      handle->IsDownload()) {
+void RewardsTabHelper::DidFinishNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (!navigation_handle->HasCommitted() ||
+      !navigation_handle->IsInPrimaryMainFrame() ||
+      navigation_handle->IsDownload()) {
     return;
   }
 
-  auto id = GetPublisherIdFromURL(GetWebContents().GetLastCommittedURL());
-  SetPublisherIdForTab(id ? *id : "");
-
-  MaybeSavePublisherInfo();
-
-  if (rewards_service_) {
-    rewards_service_->OnUnload(tab_id_);
+  if (!rewards_service_) {
+    return;
   }
+
+  auto* rfh = navigation_handle->GetRenderFrameHost();
+
+  if (!navigation_handle->IsSameDocument()) {
+    auto id = GetPublisherIdFromURL(GetWebContents().GetLastCommittedURL());
+    SetPublisherIdForTab(id ? *id : "");
+    MaybeSavePublisherInfo();
+    rewards_service_->OnUnload(tab_id_);
+    creator_detection_.MaybeInjectScript(rfh);
+  }
+
+  creator_detection_.DetectCreator(
+      rfh, base::BindOnce(&RewardsTabHelper::OnCreatorDetected,
+                          base::Unretained(this)));
 }
 
 void RewardsTabHelper::ResourceLoadComplete(
@@ -192,11 +205,41 @@ void RewardsTabHelper::MaybeSavePublisherInfo() {
   }
 
   // The Rewards system currently assumes that the |publisher_info| table is
-  // populated by calling `GetPublisherActivityFromUrl` as the user nativates
+  // populated by calling `GetPublisherActivityFromUrl` as the user navigates
   // the web. Previously, this was accomplished within the background script of
   // the Rewards extension.
   rewards_service_->GetPublisherActivityFromUrl(
       tab_id_.id(), GetWebContents().GetLastCommittedURL().spec(), "", "");
+}
+
+void RewardsTabHelper::OnCreatorDetected(
+    std::optional<CreatorDetectionScriptInjector::Result> result) {
+  if (!rewards_service_ || !result) {
+    return;
+  }
+
+  SetPublisherIdForTab(result->id);
+
+  if (!result->id.empty()) {
+    // When a creator has been detected for the current tab, we must send the
+    // creator data to the utility process so that the "publisher_info" database
+    // table can be populated. We must also notify the utility process that a
+    // "page view" has started for this creator.
+    auto visit = mojom::VisitData::New();
+    visit->tab_id = static_cast<uint32_t>(tab_id_.id());
+    visit->domain = result->id;
+    visit->name = result->name;
+    visit->path = "";
+    visit->url = result->url;
+    visit->favicon_url = result->image_url;
+    if (auto platform = GetMediaPlatformFromPublisherId(result->id)) {
+      visit->provider = *platform;
+    }
+
+    rewards_service_->GetPublisherActivityFromUrl(visit->Clone());
+    rewards_service_->OnShow(tab_id_);
+    rewards_service_->OnLoad(std::move(visit));
+  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(RewardsTabHelper);
