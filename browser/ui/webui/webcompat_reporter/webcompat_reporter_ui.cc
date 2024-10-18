@@ -237,10 +237,10 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
   if (fp_block_setting_arg != nullptr) {
     pending_report_->fp_block_setting = *fp_block_setting_arg;
   }
-  if (details_arg != nullptr) {
+  if (details_arg != nullptr && details_arg->is_string()) {
     pending_report_->details = details_arg->GetString();
   }
-  if (contact_arg != nullptr) {
+  if (contact_arg != nullptr && contact_arg->is_string()) {
     pending_report_->contact = contact_arg->GetString();
   }
 

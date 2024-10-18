@@ -10,7 +10,7 @@
 
 namespace webcompat_reporter {
 
-bool NeedsToGetComponentInfo(const std::string& component_id);
+bool NeedsToGetComponentInfo(std::string_view component_id);
 
 }  // namespace webcompat_reporter
 

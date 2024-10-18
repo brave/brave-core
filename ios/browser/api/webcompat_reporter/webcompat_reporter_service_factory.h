@@ -24,7 +24,7 @@ namespace webcompat_reporter {
 class WebcompatReporterServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
   static mojo::PendingRemote<mojom::WebcompatReporterHandler>
-  GetMojoReportHandlerForContext(ChromeBrowserState* browser_state);
+  GetHandlerForContext(ChromeBrowserState* browser_state);
   static WebcompatReporterServiceFactory* GetInstance();
 
   WebcompatReporterServiceFactory(const WebcompatReporterServiceFactory&) =

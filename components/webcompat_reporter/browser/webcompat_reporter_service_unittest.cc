@@ -68,11 +68,7 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
     auto delegate = std::make_unique<MockWebCompatServiceDelegate>();
     delegate_ = delegate.get();
     webcompat_reporter_service_ = std::make_unique<WebcompatReporterService>(
-        std::move(delegate), nullptr);
-
-    webcompat_reporter_service_->SetReportUploaderForTest(
-        std::unique_ptr<WebcompatReportUploader>(
-            new MockWebcompatReportUploader()));
+        std::move(delegate), std::make_unique<MockWebcompatReportUploader>());
   }
 
   MockWebcompatReportUploader* GetMockWebcompatReportUploader() {

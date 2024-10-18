@@ -87,11 +87,11 @@ class WebcompatReportUploaderUnitTest : public testing::Test {
   }
 
  protected:
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   std::unique_ptr<WebcompatReportUploader> webcompat_report_uploader_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  base::test::TaskEnvironment task_environment_{
-      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
 };
 
 TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {

@@ -91,13 +91,12 @@ void WebcompatReportUploader::SubmitReport(mojom::ReportInfoPtr report_info) {
     report_details_dict.Set(kDetailsField, report_info->details.value());
   }
 
-  if (report_info->ad_block_components_version) {
-    auto components =
-        ConvertCompsToValue(report_info->ad_block_components_version.value());
-    if (components) {
-      report_details_dict.Set(kAdBlockComponentsVersionField,
-                              components->Clone());
-    }
+  if (report_info->ad_block_components_version &&
+      !report_info->ad_block_components_version->empty()) {
+    report_details_dict.Set(
+        kAdBlockComponentsVersionField,
+        ConvertCompsToValue(report_info->ad_block_components_version.value())
+            .value());
   }
 
   if (report_info->contact) {
