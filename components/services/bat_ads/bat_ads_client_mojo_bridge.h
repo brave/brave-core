@@ -62,8 +62,6 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
   void ShowNotificationAd(const brave_ads::NotificationAdInfo& ad) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
-  base::Value::Dict GetVirtualPrefs() const override;
-
   void CacheAdEventForInstanceId(
       const std::string& id,
       brave_ads::mojom::AdType mojom_ad_type,
@@ -114,6 +112,8 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
   void SetLocalStatePref(const std::string& path, base::Value value) override;
   void ClearLocalStatePref(const std::string& path) override;
   bool HasLocalStatePrefPath(const std::string& path) const override;
+
+  base::Value::Dict GetVirtualPrefs() const override;
 
   void Log(const char* file,
            int line,

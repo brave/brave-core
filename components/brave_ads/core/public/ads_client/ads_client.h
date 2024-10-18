@@ -57,9 +57,6 @@ class ADS_EXPORT AdsClient {
   // Close the notification ad for the specified `placement_id`.
   virtual void CloseNotificationAd(const std::string& placement_id) = 0;
 
-  // Returns a default search engine.
-  virtual base::Value::Dict GetVirtualPrefs() const = 0;
-
   // Cache an ad event for the specified instance `id`, `mojom_ad_type`,
   // `mojom_confirmation_type` and `time`.
   virtual void CacheAdEventForInstanceId(
@@ -163,6 +160,9 @@ class ADS_EXPORT AdsClient {
   // Returns `true` if a value has been set for the specified local state
   // preference `path`.
   virtual bool HasLocalStatePrefPath(const std::string& path) const = 0;
+
+  // Returns a default search engine.
+  virtual base::Value::Dict GetVirtualPrefs() const = 0;
 
   // Log a `message` to `file` and the console log with `line` and
   // `verbose_level`.

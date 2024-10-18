@@ -74,10 +74,6 @@ void AdsClientIOS::CacheAdEventForInstanceId(
                                 time:time];
 }
 
-base::Value::Dict AdsClientIOS::GetVirtualPrefs() const {
-  return [bridge_ getVirtualPrefs];
-}
-
 std::vector<base::Time> AdsClientIOS::GetCachedAdEvents(
     const brave_ads::mojom::AdType mojom_ad_type,
     const brave_ads::mojom::ConfirmationType mojom_confirmation_type) const {
@@ -187,6 +183,10 @@ void AdsClientIOS::ClearLocalStatePref(const std::string& path) {
 
 bool AdsClientIOS::HasLocalStatePrefPath(const std::string& path) const {
   return [bridge_ hasLocalStatePrefPath:path];
+}
+
+base::Value::Dict AdsClientIOS::GetVirtualPrefs() const {
+  return [bridge_ getVirtualPrefs];
 }
 
 void AdsClientIOS::RecordP2AEvents(const std::vector<std::string>& events) {

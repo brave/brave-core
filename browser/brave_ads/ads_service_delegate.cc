@@ -151,14 +151,9 @@ base::Value::Dict AdsServiceDelegate::GetVirtualPrefs() const {
     return {};
   }
 
-  // TODO(aseren): Is there a way we can return the synced GUID rather than a
-  // short name?
-  auto virtual_prefs = base::Value::Dict().Set(
+  return base::Value::Dict().Set(
       "default_search_provider.synced_guid",
       base::UTF16ToUTF8(default_search_provider->short_name()));
-  VLOG(0) << "FOOBAR.VIRTUAL_PREFS: " << virtual_prefs;
-
-  return virtual_prefs;
 }
 
 }  // namespace brave_ads

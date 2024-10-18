@@ -27,7 +27,6 @@
 - (void)notifyPendingObservers;
 - (bool)isNetworkConnectionAvailable;
 - (bool)canShowNotificationAds;
-- (base::Value::Dict)getVirtualPrefs;
 - (void)loadResourceComponent:(const std::string&)id
                       version:(const int)version
                      callback:(brave_ads::LoadFileCallback)callback;
@@ -73,6 +72,7 @@
 - (std::optional<base::Value>)getLocalStatePref:(const std::string&)path;
 - (void)clearLocalStatePref:(const std::string&)path;
 - (bool)hasLocalStatePrefPath:(const std::string&)path;
+- (base::Value::Dict)getVirtualPrefs;
 - (void)recordP2AEvents:(const std::vector<std::string>&)events;
 
 @end

@@ -1288,10 +1288,6 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
       closeNotificationAd:base::SysUTF8ToNSString(placement_id)];
 }
 
-- (base::Value::Dict)getVirtualPrefs {
-  return {};
-}
-
 - (void)cacheAdEventForInstanceId:(const std::string&)id
                            adType:(const brave_ads::mojom::AdType)mojom_ad_type
                  confirmationType:(const brave_ads::mojom::ConfirmationType)
@@ -1497,6 +1493,11 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
 
 - (bool)hasLocalStatePrefPath:(const std::string&)path {
   return self.localStatePrefService->HasPrefPath(path);
+}
+
+- (base::Value::Dict)getVirtualPrefs {
+  // Intentionally empty.
+  return {};
 }
 
 - (void)log:(const char*)file

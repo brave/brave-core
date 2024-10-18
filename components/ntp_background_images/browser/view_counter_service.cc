@@ -291,7 +291,8 @@ ViewCounterService::GetNextBrandedWallpaperWhichMatchesConditions() {
 
     base::Value::Dict virtual_prefs;
     if (ads_service_) {
-      brave_ads::AdsService::Delegate* delegate = ads_service_->GetDelegate();
+      const brave_ads::AdsService::Delegate* const delegate =
+          ads_service_->GetDelegate();
       CHECK(delegate);
       virtual_prefs = delegate->GetVirtualPrefs();
     }
