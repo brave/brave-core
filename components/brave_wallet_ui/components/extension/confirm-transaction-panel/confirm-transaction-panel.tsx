@@ -82,6 +82,7 @@ import {
   AddressText,
   WarningBox,
   WarningTitle,
+  WarningText,
   LearnMoreButton,
   WarningBoxTitleRow,
   URLText
@@ -408,6 +409,20 @@ export const ConfirmTransactionPanel = ({
                 </TransactionFiatAmountBig>
               )}
             </>
+          )}
+
+          {transactionDetails.hasSystemProgramAssignInstruction && (
+            <WarningBox warningType={'danger'}>
+              <WarningBoxTitleRow>
+                <WarningIcon />
+                <WarningTitle warningType={'danger'}>
+                  {getLocale('braveWalletSystemProgramAssignWarningTitle')}
+                </WarningTitle>
+                <WarningText>
+                  {getLocale('braveWalletSystemProgramAssignWarningDescription')}
+                </WarningText>
+              </WarningBoxTitleRow>
+            </WarningBox>
           )}
         </>
       )}
