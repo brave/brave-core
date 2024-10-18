@@ -9,6 +9,7 @@ import FeedKit
 import Growth
 import Preferences
 import Shared
+import SwiftUI
 import UIKit
 import os.log
 
@@ -95,6 +96,28 @@ extension BrowserViewController {
       }
       // Any other buttons on the leading side of the location view should be added here as well
     }
+
+    // Translate Activity
+    activities.append(
+      BasicMenuActivity(
+        activityType: .translatePage,
+        callback: { [weak self] in
+          guard let self = self, let tab = tab else { return }
+
+          if let scriptHandler = tab.getContentScript(name: BraveTranslateScriptHandler.scriptName)
+            as? BraveTranslateScriptHandler
+          {
+            scriptHandler.presentUI(on: self)
+
+            if tab.translationState == .active {
+              scriptHandler.revertTranslation()
+            } else if tab.translationState != .active {
+              scriptHandler.startTranslation(canShowToast: true)
+            }
+          }
+        }
+      )
+    )
 
     // Find In Page Activity
     activities.append(
