@@ -909,41 +909,40 @@ namespace {
 
 class BookmarksExportListener : public ui::SelectFileDialog::Listener {
  public:
-  scoped_refptr<ui::SelectFileDialog> fileSelector;
-
-  explicit BookmarksExportListener(Profile* profile) : profile_(profile) {}
+  explicit BookmarksExportListener(Profile* profile)
+      : profile_(profile),
+        file_selector_(ui::SelectFileDialog::Create(this, nullptr)) {}
   void FileSelected(const ui::SelectedFileInfo& file, int index) override {
     bookmark_html_writer::WriteBookmarks(profile_, file.file_path, nullptr);
     delete this;
   }
   void FileSelectionCanceled() override { delete this; }
+  void ShowFileDialog(Browser* browser) {
+    const std::string exported_bookmarks_filename =
+        base::UnlocalizedTimeFormatWithPattern(base::Time::Now(), "yyyy_MM_dd",
+                                               nullptr) +
+        "_brave_browser_bookmarks.html";
+    ui::SelectFileDialog::FileTypeInfo file_types;
+
+    // Only show HTML files in the file dialog.
+    file_types.extensions.push_back({"html"});
+    file_selector_->SelectFile(
+        ui::SelectFileDialog::SELECT_SAVEAS_FILE,
+        l10n_util::GetStringUTF16(IDS_BOOKMARK_MANAGER_MENU_EXPORT),
+        base::FilePath::FromUTF8Unsafe(exported_bookmarks_filename),
+        &file_types, 1, FILE_PATH_LITERAL("html"),
+        browser->window()->GetNativeWindow(), nullptr);
+  }
 
  private:
   raw_ptr<Profile> profile_;
+  scoped_refptr<ui::SelectFileDialog> file_selector_;
 };
 
 }  // namespace
 
 void ExportAllBookmarks(Browser* browser) {
-  const std::string defaultBookmarksFilename =
-      base::UnlocalizedTimeFormatWithPattern(base::Time::Now(), "yyyy_MM_dd",
-                                             nullptr) +
-      "_brave_browser_bookmarks.html";
-
-  ui::SelectFileDialog::FileTypeInfo file_types;
-
-  // Only show HTML files in the file dialog.
-  file_types.extensions.push_back({"html"});
-
-  BookmarksExportListener* listener =
-      new BookmarksExportListener(browser->profile());
-
-  listener->fileSelector = ui::SelectFileDialog::Create(listener, nullptr);
-  listener->fileSelector->SelectFile(
-      ui::SelectFileDialog::SELECT_SAVEAS_FILE,
-      l10n_util::GetStringUTF16(IDS_BOOKMARK_MANAGER_MENU_EXPORT),
-      base::FilePath::FromUTF8Unsafe(defaultBookmarksFilename), &file_types, 1,
-      FILE_PATH_LITERAL("html"), browser->window()->GetNativeWindow(), nullptr);
+  (new BookmarksExportListener(browser->profile()))->ShowFileDialog(browser);
 }
 
 void ToggleAllBookmarksButtonVisibility(Browser* browser) {
