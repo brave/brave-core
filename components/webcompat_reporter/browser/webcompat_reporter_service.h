@@ -56,8 +56,6 @@ class WebcompatReporterService : public KeyedService,
 
  private:
   friend class WebcompatReporterServiceUnitTest;
-  void SetReportUploaderForTest(
-      std::unique_ptr<WebcompatReportUploader> report_uploader);
 
   std::unique_ptr<Delegate> service_delegate_;
   std::unique_ptr<WebcompatReportUploader> report_uploader_;

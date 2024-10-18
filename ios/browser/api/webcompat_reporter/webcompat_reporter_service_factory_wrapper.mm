@@ -11,13 +11,14 @@
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
 @implementation WebcompatReporterServiceFactory
-+ (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto service = webcompat_reporter::WebcompatReporterServiceFactory::
-      GetMojoReportHandlerForContext(browserState);
-  if (!service) {
++ (nullable id)handlerForBrowserState:(ChromeBrowserState*)browserState {
+  auto handler =
+      webcompat_reporter::WebcompatReporterServiceFactory::GetHandlerForContext(
+          browserState);
+  if (!handler) {
     return nil;
   }
   return [[WebcompatReporterWebcompatReporterHandlerMojoImpl alloc]
-      initWithWebcompatReporterHandler:std::move(service)];
+      initWithWebcompatReporterHandler:std::move(handler)];
 }
 @end

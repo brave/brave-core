@@ -110,28 +110,34 @@ struct SubmitReportView: View {
 
   @MainActor func createAndSubmitReport() async {
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing)
-
-    await WebcompatReporterUploader.send(
-      braveVersion: String(
-        format: "%@ (%@)",
-        AppInfo.appVersion,
-        AppInfo.buildNumber
-      ),
-      reportUrl: url.absoluteString,
-      fpBlockSetting: domain.finterprintProtectionLevel,
-      shieldsEnabled: !domain.areAllShieldsOff,
-      adBlockSetting: domain.globalBlockAdsAndTrackingLevel,
-      adBlockListNames: FilterListStorage.shared.filterLists
-        .compactMap({ return $0.isEnabled ? $0.entry.title : nil })
-        .joined(separator: ","),
-      languages: Locale.current.language.languageCode?.identifier,
-      languageFarbling: true,
-      braveVpnConnected: BraveVPN.isConnected,
-      additionalDetails: additionalDetails,
-      contactInfo: contactDetails,
-      adBlockComponentsVersion: nil,
-      screenshotPng: nil
+    let webcompatReporterAPI = WebcompatReporter.ServiceFactory.get(
+      privateMode: false
+    )!
+    webcompatReporterAPI.submitWebcompatReport(
+      reportInfo: .init(
+        channel: AppConstants.buildChannel.webCompatReportName,
+        braveVersion: String(
+          format: "%@ (%@)",
+          AppInfo.appVersion,
+          AppInfo.buildNumber
+        ),
+        reportUrl: url.absoluteString,
+        shieldsEnabled: String(!domain.areAllShieldsOff),
+        adBlockSetting: domain.globalBlockAdsAndTrackingLevel.reportLabel,
+        fpBlockSetting: domain.finterprintProtectionLevel.reportLabel,
+        adBlockListNames: FilterListStorage.shared.filterLists
+          .compactMap({ return $0.isEnabled ? $0.entry.title : nil })
+          .joined(separator: ","),
+        languages: Locale.current.language.languageCode?.identifier,
+        languageFarbling: String(true),
+        braveVpnConnected: String(BraveVPN.isConnected),
+        details: additionalDetails,
+        contact: contactDetails,
+        adBlockComponentsVersion: nil,
+        screenshotPng: nil
+      )
     )
+
   }
 }
 

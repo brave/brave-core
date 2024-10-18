@@ -123,9 +123,4 @@ void WebcompatReporterService::SubmitWebcompatReport(
   report_uploader_->SubmitReport(std::move(report_info));
 }
 
-void WebcompatReporterService::SetReportUploaderForTest(
-    std::unique_ptr<WebcompatReportUploader> report_uploader) {
-  report_uploader_ = std::move(report_uploader);
-}
-
 }  // namespace webcompat_reporter

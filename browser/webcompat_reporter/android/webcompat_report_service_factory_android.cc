@@ -24,7 +24,7 @@ JNI_WebcompatReporterServiceFactory_GetInterfaceToWebcompatReporterService(
 
   auto pending =
       webcompat_reporter::WebcompatReporterServiceFactory::GetInstance()
-          ->GetMojoReportHandlerForContext(profile);
+          ->GetHandlerForContext(profile);
 
   return static_cast<jlong>(pending.PassPipe().release().value());
 }
