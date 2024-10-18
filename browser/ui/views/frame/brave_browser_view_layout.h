@@ -65,9 +65,9 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
   gfx::Insets AdjustInsetsConsideringFrameBorder(const gfx::Insets& insets);
 #endif
 
-  raw_ptr<views::View> vertical_tab_strip_host_ = nullptr;
-  raw_ptr<views::View> reader_mode_toolbar_ = nullptr;
-  raw_ptr<SidebarContainerView> sidebar_container_ = nullptr;
+  raw_ptr<views::View, DanglingUntriaged> vertical_tab_strip_host_ = nullptr;
+  raw_ptr<views::View, DanglingUntriaged> reader_mode_toolbar_ = nullptr;
+  raw_ptr<SidebarContainerView, DanglingUntriaged> sidebar_container_ = nullptr;
   raw_ptr<views::View> sidebar_separator_ = nullptr;
   raw_ptr<views::View> contents_background_ = nullptr;
 };
