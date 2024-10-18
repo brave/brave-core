@@ -34,6 +34,12 @@ class AdsClientPrefProvider : public PrefProviderInterface {
   std::optional<base::Value> GetLocalStatePref(
       const std::string& pref_path) const override;
   bool HasLocalStatePrefPath(const std::string& pref_path) const override;
+
+  std::optional<base::Value> GetVirtualPref(
+      const std::string& virtual_pref_path) const override;
+
+ private:
+  base::Value::Dict virtual_prefs_;
 };
 
 }  // namespace brave_ads

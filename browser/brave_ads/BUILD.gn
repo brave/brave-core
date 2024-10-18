@@ -65,6 +65,7 @@ source_set("impl") {
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser:primitives",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/search_engines",
     "//chrome/browser/ui",
     "//chrome/common:chrome_features",
     "//chrome/common:chrome_features",

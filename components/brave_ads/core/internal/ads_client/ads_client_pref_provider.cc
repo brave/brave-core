@@ -5,12 +5,16 @@
 
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_pref_provider.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
-AdsClientPrefProvider::AdsClientPrefProvider() = default;
+AdsClientPrefProvider::AdsClientPrefProvider() {
+  virtual_prefs_ = GetAdsClient()->GetVirtualPrefs();
+}
 
 AdsClientPrefProvider::~AdsClientPrefProvider() = default;
 
@@ -52,6 +56,38 @@ bool AdsClientPrefProvider::HasLocalStatePrefPath(
   }
 
   return GetAdsClient()->HasLocalStatePrefPath(pref_path);
+}
+
+std::optional<base::Value> AdsClientPrefProvider::GetVirtualPref(
+    const std::string& virtual_pref_path) const {
+  if (virtual_pref_path.starts_with("[virtual]:")) {
+    const std::string pref_path =
+        virtual_pref_path.substr(/*pos=*/std::size("[virtual]:"));
+
+    if (const base::Value* const value = virtual_prefs_.Find(pref_path)) {
+      return value->Clone();
+    }
+  }
+
+  if (virtual_pref_path.starts_with("[virtual_default]:")) {
+    const std::string pref_path =
+        virtual_pref_path.substr(/*pos=*/std::size("[virtual_default]:"));
+
+    if (HasProfilePrefPath(pref_path)) {
+      return GetProfilePref(pref_path);
+    }
+
+    if (HasLocalStatePrefPath(pref_path)) {
+      return GetLocalStatePref(pref_path);
+    }
+
+    if (const base::Value* const value = virtual_prefs_.Find(pref_path)) {
+      return value->Clone();
+    }
+  }
+
+  // Unknown virtual pref path.
+  return std::nullopt;
 }
 
 }  // namespace brave_ads

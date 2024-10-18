@@ -39,6 +39,11 @@ std::optional<base::Value> MaybeGetRootPrefValue(
   CHECK(pref_provider);
 
   if (std::optional<base::Value> pref_value =
+          pref_provider->GetVirtualPref(pref_path)) {
+    return pref_value;
+  }
+
+  if (std::optional<base::Value> pref_value =
           pref_provider->GetProfilePref(pref_path)) {
     return pref_value;
   }

@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #import "brave/ios/browser/api/ads/ads_client_bridge.h"
 
@@ -182,6 +183,10 @@ void AdsClientIOS::ClearLocalStatePref(const std::string& path) {
 
 bool AdsClientIOS::HasLocalStatePrefPath(const std::string& path) const {
   return [bridge_ hasLocalStatePrefPath:path];
+}
+
+base::Value::Dict AdsClientIOS::GetVirtualPrefs() const {
+  return [bridge_ getVirtualPrefs];
 }
 
 void AdsClientIOS::RecordP2AEvents(const std::vector<std::string>& events) {

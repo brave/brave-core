@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper.h"
 #include "brave/browser/ui/brave_ads/notification_ad.h"
@@ -14,6 +15,10 @@
 #include "build/build_config.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "components/search_engines/template_url.h"
+#include "components/search_engines/template_url_service.h"
+
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/notifications/brave_notification_platform_bridge_helper_android.h"
 #include "chrome/browser/android/service_tab_launcher.h"
@@ -132,4 +137,23 @@ bool AdsServiceDelegate::IsFullScreenMode() {
   return ::IsFullScreenMode();
 }
 #endif
+
+base::Value::Dict AdsServiceDelegate::GetVirtualPrefs() const {
+  const TemplateURLService* const template_url_service =
+      TemplateURLServiceFactory::GetForProfile(profile_);
+  if (!template_url_service) {
+    return {};
+  }
+
+  const TemplateURL* const default_search_provider =
+      template_url_service->GetDefaultSearchProvider();
+  if (!template_url_service) {
+    return {};
+  }
+
+  return base::Value::Dict().Set(
+      "default_search_provider.synced_guid",
+      base::UTF16ToUTF8(default_search_provider->short_name()));
+}
+
 }  // namespace brave_ads
