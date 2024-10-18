@@ -12,12 +12,11 @@
 [package]
 edition = "2021"
 name = "adblock"
-version = "0.9.0"
+version = "0.9.2"
 authors = [
     "Anton Lazarev <alazarev@brave.com>",
     "Andrius Aucinas",
 ]
-build = false
 exclude = [
     "*.md",
     ".github/",
@@ -30,47 +29,32 @@ exclude = [
     "package.json",
     "tests/",
 ]
-autobins = false
-autoexamples = false
-autotests = false
-autobenches = false
 description = "Native Rust module for Adblock Plus syntax (e.g. EasyList, EasyPrivacy) filter parsing and matching."
 readme = "README.md"
 license = "MPL-2.0"
 repository = "https://github.com/brave/adblock-rust/"
 
 [lib]
-name = "adblock"
-path = "src/lib.rs"
 bench = false
 
 [[bench]]
-name = "bench_cosmetic_matching"
-path = "benches/bench_cosmetic_matching.rs"
+name = "bench_regex"
+harness = false
 
 [[bench]]
 name = "bench_matching"
-path = "benches/bench_matching.rs"
-harness = false
-
-[[bench]]
-name = "bench_redirect_performance"
-path = "benches/bench_redirect_performance.rs"
-harness = false
-
-[[bench]]
-name = "bench_regex"
-path = "benches/bench_regex.rs"
-harness = false
-
-[[bench]]
-name = "bench_rules"
-path = "benches/bench_rules.rs"
 harness = false
 
 [[bench]]
 name = "bench_url"
-path = "benches/bench_url.rs"
+harness = false
+
+[[bench]]
+name = "bench_rules"
+harness = false
+
+[[bench]]
+name = "bench_redirect_performance"
 harness = false
 
 [dependencies.addr]

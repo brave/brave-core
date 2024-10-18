@@ -3,7 +3,10 @@
 
 use memchr::{memchr as find_char, memmem, memrchr as find_char_reverse};
 use once_cell::sync::Lazy;
-use regex::{Regex, RegexSet};
+use regex::{
+    bytes::Regex as BytesRegex, bytes::RegexBuilder as BytesRegexBuilder,
+    bytes::RegexSet as BytesRegexSet, bytes::RegexSetBuilder as BytesRegexSetBuilder, Regex,
+};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
@@ -180,8 +183,8 @@ impl From<&request::RequestType> for NetworkFilterMask {
 
 #[derive(Debug, Clone)]
 pub enum CompiledRegex {
-    Compiled(Regex),
-    CompiledSet(RegexSet),
+    Compiled(BytesRegex),
+    CompiledSet(BytesRegexSet),
     MatchAll,
     RegexParsingError(regex::Error),
 }
@@ -191,11 +194,11 @@ impl CompiledRegex {
         match &self {
             CompiledRegex::MatchAll => true, // simple case for matching everything, e.g. for empty filter
             CompiledRegex::RegexParsingError(_e) => false, // no match if regex didn't even compile
-            CompiledRegex::Compiled(r) => r.is_match(pattern),
+            CompiledRegex::Compiled(r) => r.is_match(pattern.as_bytes()),
             CompiledRegex::CompiledSet(r) => {
                 // let matches: Vec<_> = r.matches(pattern).into_iter().collect();
                 // println!("Matching {} against RegexSet: {:?}", pattern, matches);
-                r.is_match(pattern)
+                r.is_match(pattern.as_bytes())
             }
         }
     }
@@ -1235,7 +1238,7 @@ pub(crate) fn compile_regex(
         CompiledRegex::MatchAll
     } else if escaped_patterns.len() == 1 {
         let pattern = &escaped_patterns[0];
-        match Regex::new(pattern) {
+        match BytesRegexBuilder::new(pattern).unicode(false).build() {
             Ok(compiled) => CompiledRegex::Compiled(compiled),
             Err(e) => {
                 // println!("Regex parsing failed ({:?})", e);
@@ -1243,7 +1246,7 @@ pub(crate) fn compile_regex(
             }
         }
     } else {
-        match RegexSet::new(escaped_patterns) {
+        match BytesRegexSetBuilder::new(escaped_patterns).unicode(false).build() {
             Ok(compiled) => CompiledRegex::CompiledSet(compiled),
             Err(e) => CompiledRegex::RegexParsingError(e),
         }
