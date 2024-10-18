@@ -194,17 +194,6 @@ export default function FeatureMenu(props: Props) {
               <span className={styles.menuText}>Search and history</span>
             </div>
           </leo-menu-item>
-          <leo-menu-item onClick={() => { }}>
-            <div
-              className={classnames(
-                styles.menuItemWithIcon,
-                styles.menuItemMainItem
-              )}
-            >
-              <Icon name='launch' />
-              <span className={styles.menuText}>Open full page</span>
-            </div>
-          </leo-menu-item>
         </>
       )}
       <leo-menu-item onClick={handleSettingsClick}>
