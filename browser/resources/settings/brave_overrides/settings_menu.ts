@@ -60,7 +60,7 @@ RegisterStyleOverride(
         margin: 0 !important;
         max-height: calc(100vh - 56px - (var(--brave-settings-menu-margin-v) * 2) - (var(--brave-settings-menu-padding) * 2));
         min-width: 172px;
-        max-width:250px;
+        max-width: 250px;
         border-radius: 6px;
         overflow-y: auto;
         padding: 24px !important;
