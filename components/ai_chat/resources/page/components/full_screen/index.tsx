@@ -11,13 +11,15 @@ import Main from '../main'
 import { SidebarHeader } from '../header'
 import SidebarNav from '../sidebar_nav'
 import { useAIChat } from '../../state/ai_chat_context'
+import useMediaQuery from '$web-common/useMediaQuery'
 
 export default function FullScreen() {
   const aiChatContext = useAIChat()
   const asideAnimationRef = React.useRef<Animation | null>()
   const controllerRef = React.useRef(new AbortController())
-  const [isOpen, setIsOpen] = React.useState(false)
-  const [shouldRender, setShouldRender] = React.useState(true)
+  const isSmall = useMediaQuery('(max-width: 1024px)')
+  const [isOpen, setIsOpen] = React.useState(isSmall)
+  const [shouldRender, setShouldRender] = React.useState(!isSmall)
 
   const initAsideAnimation = React.useCallback((node: HTMLElement | null) => {
     if (!node) return
@@ -31,6 +33,10 @@ export default function FullScreen() {
     asideAnimationRef.current = new Animation(
       new KeyframeEffect(node, [open, close], animationOptions)
     )
+
+    // Make sure we're in the right state for our screen size when
+    asideAnimationRef.current.playbackRate = isSmall ? 1 : -1
+    asideAnimationRef.current.finish()
   }, [])
 
   const toggleAside = () => {
@@ -64,6 +70,21 @@ export default function FullScreen() {
       toggleAside()
     }
   }, [aiChatContext.editingConversationId, isOpen]);
+
+  React.useEffect(() => {
+    const isOpen = asideAnimationRef.current?.playbackRate === 1
+
+    // We've just changed to small and the sidebar was open, so close it
+    if (isSmall && !isOpen) {
+      toggleAside()
+    }
+
+    // We've just changed to big and the sidebar was closed, so open it
+    if (!isSmall && isOpen) {
+      toggleAside()
+    }
+
+  }, [isSmall])
 
   return (
     <div className={styles.fullscreen}>
