@@ -908,9 +908,6 @@ void ScrollTabToBottom(Browser* browser) {
 namespace {
 
 class BookmarksExportListener : public ui::SelectFileDialog::Listener {
- private:
-  raw_ptr<Profile> profile_;
-
  public:
   scoped_refptr<ui::SelectFileDialog> fileSelector;
 
@@ -926,6 +923,9 @@ class BookmarksExportListener : public ui::SelectFileDialog::Listener {
     std::cout << "File selection for bookmarks export canceled" << std::endl;
     delete this;
   }
+
+ private:
+  raw_ptr<Profile> profile_;
 };
 
 }  // namespace
