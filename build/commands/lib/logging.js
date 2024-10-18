@@ -29,6 +29,7 @@ const cmdArrowStyle = chalk.magenta
 
 // Track Teamcity progress scopes and finish them on unexpected exit.
 const progressScopes = []
+const flowId = process.env.TEAMCITY_FLOW_ID
 
 if (tsm) {
   tsm.autoFlowId = false
@@ -45,14 +46,14 @@ if (tsm) {
 
   process.on('exit', () => {
     while (progressScopes.length) {
-      tsm.blockClosed({ name: progressScopes.pop() })
+      tsm.blockClosed({ name: progressScopes.pop(), flowId })
     }
   })
 }
 
 function progressStart(message) {
   if (tsm) {
-    tsm.blockOpened({ name: message })
+    tsm.blockOpened({ name: message, flowId })
     progressScopes.push(message)
   } else {
     console.log(progressStyle(`${message}...`))
@@ -62,7 +63,7 @@ function progressStart(message) {
 function progressFinish(message) {
   if (tsm) {
     progressScopes.pop()
-    tsm.blockClosed({ name: message })
+    tsm.blockClosed({ name: message, flowId })
   } else {
     console.log(progressStyle(`...${message} done`))
   }
@@ -87,7 +88,7 @@ async function progressScopeAsync(message, callable) {
 }
 
 function status(message, alreadyStyled = false) {
-  if (tsm) {
+  if (tsm && !flowId) {
     tsm.progressMessage(message)
   } else {
     console.log(alreadyStyled ? message : statusStyle(message))
@@ -96,7 +97,7 @@ function status(message, alreadyStyled = false) {
 
 function error(message) {
   if (tsm) {
-    tsm.message({text: message, status: 'ERROR'})
+    tsm.message({text: message, status: 'ERROR', flowId})
   } else {
     console.error(errorStyle(message))
   }
@@ -104,7 +105,7 @@ function error(message) {
 
 function warn(message) {
   if (tsm) {
-    tsm.message({text: message, status: 'WARNING'})
+    tsm.message({text: message, status: 'WARNING', flowId})
   } else {
     console.error(warningStyle(message))
   }
