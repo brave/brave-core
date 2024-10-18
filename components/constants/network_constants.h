@@ -14,7 +14,6 @@ inline constexpr char kBraveSoftwareProxyPattern[] =
 
 inline constexpr char kBraveUsageStandardPath[] = "/1/usage/brave-core";
 
-inline constexpr char kBraveReferralsServer[] = "laptop-updates.brave.com";
 inline constexpr char kBraveReferralsInitPath[] = "/promo/initialize/nonua";
 inline constexpr char kBraveReferralsActivityPath[] = "/promo/activity";
 
