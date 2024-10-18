@@ -298,13 +298,6 @@ const MODELS: mojom.Model[] = [
         maxAssociatedContentLength: 131072 * 4,
         longConversationWarningCharacterLimit: 131072 * 4 * 0.6,
         modelSystemPrompt: 'You are a helpful AI assistant who wishes not to be associated with Clippy.',
-        contextSize: 131072,
-        // The maxAssociatedContentLength (131072 tokens * 4 chars per token)
-        // and longConversationWarningCharacterLimit (60% of 
-        // maxAssociatedContentLength) are both here only to satisfy the
-        // type checker.
-        maxAssociatedContentLength: 131072 * 4,
-        longConversationWarningCharacterLimit: 131072 * 4 * 0.6,
         endpoint: { url: 'https://example.com' },
         apiKey: '123456',
       },
