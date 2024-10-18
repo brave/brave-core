@@ -14,6 +14,7 @@
 
 #include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
+#include "base/i18n/time_formatting.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
@@ -930,8 +931,10 @@ class BookmarksExportListener : public ui::SelectFileDialog::Listener {
 }  // namespace
 
 void ExportAllBookmarks(Browser* browser) {
-  // #include "base/i18n/time_formatting.h"
-  const std::string filename = base::UnlocalizedTimeFormatWithPattern(base::Now(), "yyyy-MM-dd", nullptr) + "_brave_browser_bookmarks.html";
+  const std::string defaultBookmarksFilename =
+      base::UnlocalizedTimeFormatWithPattern(base::Time::Now(), "yyyy_MM_dd",
+                                             nullptr) +
+      "_brave_browser_bookmarks.html";
 
   ui::SelectFileDialog::FileTypeInfo file_types;
 
