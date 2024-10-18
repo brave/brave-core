@@ -96,7 +96,8 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
 
   base::RunLoop run_loop;
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
-      .WillOnce([&](const mojom::CustomModelOptions& model_options,
+      .WillOnce([&run_loop, this](
+                    const mojom::CustomModelOptions& model_options,
                     base::Value::List, EngineConsumer::GenerationDataCallback,
                     EngineConsumer::GenerationCompletedCallback) {
         EXPECT_EQ("https://test.com/", model_options.endpoint.spec());
@@ -124,9 +125,10 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
 
   base::RunLoop run_loop2;
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
-      .WillOnce([&](const mojom::CustomModelOptions& model_options,
-                    base::Value::List, EngineConsumer::GenerationDataCallback,
-                    EngineConsumer::GenerationCompletedCallback) {
+      .WillOnce([&run_loop2](const mojom::CustomModelOptions& model_options,
+                             base::Value::List,
+                             EngineConsumer::GenerationDataCallback,
+                             EngineConsumer::GenerationCompletedCallback) {
         EXPECT_EQ("https://updated-test.com/", model_options.endpoint.spec());
         run_loop2.Quit();
       });
@@ -167,7 +169,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
   engine_->GenerateQuestionSuggestions(
       false, page_content,
       base::BindLambdaForTesting(
-          [&](EngineConsumer::SuggestedQuestionResult result) {
+          [](EngineConsumer::SuggestedQuestionResult result) {
             EXPECT_TRUE(result.has_value());
             EXPECT_EQ(result.value().size(), 1ull);
           }));
@@ -175,7 +177,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
   engine_->GenerateQuestionSuggestions(
       false, page_content,
       base::BindLambdaForTesting(
-          [&](EngineConsumer::SuggestedQuestionResult result) {
+          [](EngineConsumer::SuggestedQuestionResult result) {
             EXPECT_STREQ(result.value()[0].c_str(), "Question 1");
             EXPECT_STREQ(result.value()[1].c_str(), "Question 2");
           }));
@@ -183,7 +185,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
   engine_->GenerateQuestionSuggestions(
       false, page_content,
       base::BindLambdaForTesting(
-          [&](EngineConsumer::SuggestedQuestionResult result) {
+          [](EngineConsumer::SuggestedQuestionResult result) {
             EXPECT_STREQ(result.value()[0].c_str(), "Question 1");
             EXPECT_STREQ(result.value()[1].c_str(), "Question 2");
           }));
@@ -191,7 +193,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
   engine_->GenerateQuestionSuggestions(
       false, page_content,
       base::BindLambdaForTesting(
-          [&](EngineConsumer::SuggestedQuestionResult result) {
+          [&run_loop](EngineConsumer::SuggestedQuestionResult result) {
             EXPECT_STREQ(result.value()[0].c_str(), "Question 1");
             EXPECT_STREQ(result.value()[1].c_str(), "Question 2");
             run_loop.Quit();
@@ -254,7 +256,8 @@ TEST_F(EngineConsumerOAIUnitTest,
   // Expect a single call to PerformRequest
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
       .WillOnce(
-          [&](const mojom::CustomModelOptions, base::Value::List messages,
+          [&expected_system_message, &human_input, &assistant_response](
+              const mojom::CustomModelOptions, base::Value::List messages,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback) {
             // system role is added by the engine
@@ -309,7 +312,8 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
       .WillOnce(
-          [&](const mojom::CustomModelOptions, base::Value::List messages,
+          [&expected_system_message, &assistant_input](
+              const mojom::CustomModelOptions, base::Value::List messages,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback) {
             // system role is added by the engine
@@ -355,7 +359,8 @@ TEST_F(EngineConsumerOAIUnitTest,
   // Test with a modified server reply.
   run_loop = std::make_unique<base::RunLoop>();
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
-      .WillOnce([&](const mojom::CustomModelOptions, base::Value::List messages,
+      .WillOnce([&expected_system_message](
+                    const mojom::CustomModelOptions, base::Value::List messages,
                     EngineConsumer::GenerationDataCallback,
                     EngineConsumer::GenerationCompletedCallback
                         completed_callback) {
@@ -403,9 +408,9 @@ TEST_F(EngineConsumerOAIUnitTest,
   run_loop = std::make_unique<base::RunLoop>();
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
       .WillOnce(
-          [&](const mojom::CustomModelOptions, base::Value::List messages,
-              EngineConsumer::GenerationDataCallback,
-              EngineConsumer::GenerationCompletedCallback completed_callback) {
+          [](const mojom::CustomModelOptions, base::Value::List messages,
+             EngineConsumer::GenerationDataCallback,
+             EngineConsumer::GenerationCompletedCallback completed_callback) {
             std::move(completed_callback)
                 .Run(EngineConsumer::GenerationResult(""));
           });
@@ -462,9 +467,9 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
       .WillOnce(
-          [&](const mojom::CustomModelOptions, base::Value::List messages,
-              EngineConsumer::GenerationDataCallback,
-              EngineConsumer::GenerationCompletedCallback completed_callback) {
+          [](const mojom::CustomModelOptions, base::Value::List messages,
+             EngineConsumer::GenerationDataCallback,
+             EngineConsumer::GenerationCompletedCallback completed_callback) {
             // Page content should always be attached to the first message
             EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[1].GetDict().Find("content"),
