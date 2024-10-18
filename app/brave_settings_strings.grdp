@@ -933,7 +933,7 @@
     Automatically indexes websites that follow the OpenSearch spec.
   </message>
   <message name="IDS_SETTINGS_NORMAL_PROFILE_SEARCH_EXPLANATION" desc="Explanation for the search engine dropdown setting.">
-    Normal Window - Search engine used in the address bar
+    Normal Window - Search engine used in the address bar.
   </message>
   <message name="IDS_SETTINGS_PRIVATE_PROFILE_SEARCH_EXPLANATION" desc="Explanation for the search engine dropdown setting.">
     Private Window - Search engine used in the address bar
