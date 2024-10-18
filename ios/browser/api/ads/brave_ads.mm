@@ -1643,11 +1643,39 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
       base::BindOnce(completion));
 }
 
+- (void)triggerSearchResultAdClickedEvent:(NSString*)placementId
+                               completion:(void (^)(BOOL success))completion {
+  if (![self isServiceRunning]) {
+    completion(/*success=*/false);
+    return;
+  }
+
+  const auto __weak weakSelf = self;
+  ads->MaybeGetSearchResultAd(
+      base::SysNSStringToUTF8(placementId),
+      base::BindOnce(^(brave_ads::mojom::CreativeSearchResultAdInfoPtr ad) {
+        if (!ad) {
+          completion(/*success=*/false);
+          return;
+        }
+
+        const auto strongSelf = weakSelf;
+        if (!strongSelf) {
+          completion(/*success=*/false);
+          return;
+        }
+        strongSelf->ads->TriggerSearchResultAdEvent(
+            std::move(ad), brave_ads::mojom::SearchResultAdEventType::kClicked,
+            base::BindOnce(completion));
+      }));
+}
+
 - (void)triggerSearchResultAdEvent:
             (BraveAdsCreativeSearchResultAdInfo*)searchResultAd
                          eventType:(BraveAdsSearchResultAdEventType)eventType
                         completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning] || !searchResultAd) {
+    completion(/*success=*/false);
     return;
   }
 
