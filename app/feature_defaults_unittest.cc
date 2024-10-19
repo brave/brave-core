@@ -47,6 +47,7 @@
 #include "components/signin/public/base/signin_switches.h"
 #include "components/subresource_filter/core/common/common_features.h"
 #include "components/sync/base/features.h"
+#include "components/user_education/common/user_education_features.h"
 #include "components/webapps/browser/features.h"
 #include "content/common/features.h"
 #include "content/public/common/content_features.h"
@@ -132,6 +133,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &companion::features::internal::kSidePanelCompanion2,
       &enterprise_signals::features::kDeviceSignalsConsentDialog,
       &extensions_features::kExtensionManifestV2DeprecationWarning,
+      &extensions_features::kExtensionManifestV2Unsupported,
       &extensions_features::kExtensionsManifestV3Only,
       &features::kToolbarPinning,
 #endif
@@ -266,6 +268,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &translate::kTFLiteLanguageDetectionEnabled,
 #endif
+      &user_education::features::kWhatsNewVersion2,
       &webapps::features::kWebAppsEnableMLModelForPromotion,
   };
 
