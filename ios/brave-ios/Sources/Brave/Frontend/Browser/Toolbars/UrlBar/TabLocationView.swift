@@ -459,17 +459,19 @@ class TabLocationView: UIView {
         // Matches LocationBarModelImpl::GetFormattedURL in Chromium (except for omitHTTP)
         // components/omnibox/browser/location_bar_model_impl.cc
         // TODO: Export omnibox related APIs and use directly
-        urlDisplayLabel.text = URLFormatter.formatURL(
-          url.scheme != "http" || url.scheme != "https"
-            ? URLOrigin(url: url).url?.absoluteString ?? "" : url.absoluteString,
-          formatTypes: [
-            .trimAfterHost, .omitHTTPS, .omitTrivialSubdomains, .omitDefaults,
-          ],
-          unescapeOptions: .normal
-        )
-        
-        if urlDisplayLabel.text?.isEmpty == true {
-          print("HERE")
+
+        // If we can't parse the origin and the URL can't be classified via AutoCompleteClassifier
+        // the URL is likely a broken deceptive URL. Example: `about:blank#https://apple.com`
+        if URLOrigin(url: url).url == nil && URIFixup.getURL(url.absoluteString) == nil {
+          urlDisplayLabel.text = ""
+        } else {
+          urlDisplayLabel.text = URLFormatter.formatURL(
+            URLOrigin(url: url).url?.absoluteString ?? url.absoluteString,
+            formatTypes: [
+              .trimAfterHost, .omitHTTPS, .omitTrivialSubdomains,
+            ],
+            unescapeOptions: .normal
+          )
         }
       }
     } else {
@@ -601,7 +603,7 @@ private class DisplayURLLabel: UILabel {
     case .arabic, .hebrew, .persian, .urdu:
       isRightToLeft = true
     default:
-      isRightToLeft = false
+      isRightToLeft = ["http", "https"].contains(URL(string: text)?.scheme ?? "")  // Only left-align if the scheme is not http/https.
     }
     // Update clipping fade direction
     clippingFade.gradientLayer.startPoint = .init(x: isRightToLeft ? 1 : 0, y: 0.5)
