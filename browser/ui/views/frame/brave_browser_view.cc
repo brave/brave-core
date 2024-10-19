@@ -394,8 +394,7 @@ tabs::TabHandle BraveBrowserView::GetActiveTabHandle() {
       model->GetIndexOfWebContents(GetActiveWebContents()));
 }
 
-bool BraveBrowserView::IsActiveWebContentsTiled(
-    const SplitViewBrowserData::Tile& tile) {
+bool BraveBrowserView::IsActiveWebContentsTiled(const TabTile& tile) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
 
   auto active_tab_handle = GetActiveTabHandle();
@@ -839,7 +838,7 @@ void BraveBrowserView::OnAcceleratorsChanged(
   }
 }
 
-void BraveBrowserView::OnTileTabs(const SplitViewBrowserData::Tile& tile) {
+void BraveBrowserView::OnTileTabs(const TabTile& tile) {
   if (!IsActiveWebContentsTiled(tile)) {
     return;
   }
@@ -847,7 +846,7 @@ void BraveBrowserView::OnTileTabs(const SplitViewBrowserData::Tile& tile) {
   UpdateContentsWebViewVisual();
 }
 
-void BraveBrowserView::OnWillBreakTile(const SplitViewBrowserData::Tile& tile) {
+void BraveBrowserView::OnWillBreakTile(const TabTile& tile) {
   if (!IsActiveWebContentsTiled(tile)) {
     return;
   }
@@ -857,8 +856,7 @@ void BraveBrowserView::OnWillBreakTile(const SplitViewBrowserData::Tile& tile) {
                                 weak_ptr_.GetWeakPtr()));
 }
 
-void BraveBrowserView::OnSwapTabsInTile(
-    const SplitViewBrowserData::Tile& tile) {
+void BraveBrowserView::OnSwapTabsInTile(const TabTile& tile) {
   if (!IsActiveWebContentsTiled(tile)) {
     return;
   }

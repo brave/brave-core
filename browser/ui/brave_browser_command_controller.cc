@@ -147,13 +147,11 @@ void BraveBrowserCommandController::OnTabGroupChanged(
   UpdateCommandsForTabs();
 }
 
-void BraveBrowserCommandController::OnTileTabs(
-    const SplitViewBrowserData::Tile& tile) {
+void BraveBrowserCommandController::OnTileTabs(const TabTile& tile) {
   UpdateCommandForSplitView();
 }
 
-void BraveBrowserCommandController::OnWillBreakTile(
-    const SplitViewBrowserData::Tile& tile) {
+void BraveBrowserCommandController::OnWillBreakTile(const TabTile& tile) {
   UpdateCommandForSplitView();
 }
 
