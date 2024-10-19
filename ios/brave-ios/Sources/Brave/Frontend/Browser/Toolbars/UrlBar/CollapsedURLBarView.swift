@@ -108,7 +108,9 @@ class CollapsedURLBarView: UIView {
           Strings.PageSecurityView.signIntoWebsiteURLBarTitle
         } else {
           URLFormatter.formatURLOrigin(
-            forDisplayOmitSchemePathAndTrivialSubdomains: $0.absoluteString
+            forDisplayOmitSchemePathAndTrivialSubdomains: $0.scheme != "http"
+              || $0.scheme != "https"
+              ? URLOrigin(url: $0).url?.absoluteString ?? $0.absoluteString : $0.absoluteString
           )
         }
       }

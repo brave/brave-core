@@ -75,6 +75,8 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
   init(privateBrowsingManager: PrivateBrowsingManager) {
     self.privateBrowsingManager = privateBrowsingManager
     super.init(frame: .zero)
+    self.semanticContentAttribute = .forceLeftToRight
+    self.textAlignment = .left
 
     super.delegate = self
     super.addTarget(
