@@ -463,10 +463,14 @@ class TabLocationView: UIView {
           url.scheme != "http" || url.scheme != "https"
             ? URLOrigin(url: url).url?.absoluteString ?? "" : url.absoluteString,
           formatTypes: [
-            .trimAfterHost, .omitHTTP, .omitHTTPS, .omitTrivialSubdomains, .omitDefaults,
+            .trimAfterHost, .omitHTTPS, .omitTrivialSubdomains, .omitDefaults,
           ],
           unescapeOptions: .normal
         )
+        
+        if urlDisplayLabel.text?.isEmpty == true {
+          print("HERE")
+        }
       }
     } else {
       urlDisplayLabel.text = ""
