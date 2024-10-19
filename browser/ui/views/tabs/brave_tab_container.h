@@ -59,8 +59,8 @@ class BraveTabContainer : public TabContainerImpl,
   void HandleDragExited() override;
 
   // SplitViewBrowserDataObserver:
-  void OnTileTabs(const SplitViewBrowserData::Tile& tile) override;
-  void OnDidBreakTile(const SplitViewBrowserData::Tile& tile) override;
+  void OnTileTabs(const StripTile& tile) override;
+  void OnDidBreakTile(const StripTile& tile) override;
 
  private:
   class DropArrow : public views::WidgetObserver {
@@ -107,8 +107,7 @@ class BraveTabContainer : public TabContainerImpl,
 
   void PaintBoundingBoxForTiles(gfx::Canvas& canvas,
                                 const SplitViewBrowserData* split_view_data);
-  void PaintBoundingBoxForTile(gfx::Canvas& canvas,
-                               const SplitViewBrowserData::Tile& tile);
+  void PaintBoundingBoxForTile(gfx::Canvas& canvas, const StripTile& tile);
 
   static gfx::ImageSkia* GetDropArrowImage(
       BraveTabContainer::DropArrow::Position pos,

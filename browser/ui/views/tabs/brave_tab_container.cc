@@ -295,9 +295,8 @@ void BraveTabContainer::PaintBoundingBoxForTiles(
   });
 }
 
-void BraveTabContainer::PaintBoundingBoxForTile(
-    gfx::Canvas& canvas,
-    const SplitViewBrowserData::Tile& tile) {
+void BraveTabContainer::PaintBoundingBoxForTile(gfx::Canvas& canvas,
+                                                const StripTile& tile) {
   if (!GetTabCount()) {
     return;
   }
@@ -573,11 +572,11 @@ void BraveTabContainer::HandleDragExited() {
   SetDropArrow({});
 }
 
-void BraveTabContainer::OnTileTabs(const SplitViewBrowserData::Tile& tile) {
+void BraveTabContainer::OnTileTabs(const StripTile& tile) {
   SchedulePaint();
 }
 
-void BraveTabContainer::OnDidBreakTile(const SplitViewBrowserData::Tile& tile) {
+void BraveTabContainer::OnDidBreakTile(const StripTile& tile) {
   SchedulePaint();
 }
 
