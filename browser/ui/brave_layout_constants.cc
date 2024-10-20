@@ -43,7 +43,8 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     }
     case TAB_STRIP_HEIGHT: {
       if (HorizontalTabsUpdateEnabled()) {
-        return brave_tabs::GetHorizontalTabStripHeight();
+        return brave_tabs::GetHorizontalTabStripHeight() +
+               GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
       }
       return std::nullopt;
     }
@@ -57,7 +58,7 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       if (!HorizontalTabsUpdateEnabled()) {
         return std::nullopt;
       }
-      return 0;
+      return 1;
     }
     case LOCATION_BAR_CHILD_CORNER_RADIUS:
       return 4;
