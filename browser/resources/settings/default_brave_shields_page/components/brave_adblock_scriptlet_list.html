@@ -25,21 +25,21 @@
 <div>
     <div class="list">
         <template is="dom-repeat" items="[[customScriptletsList_]]">
-            <div class="scriptlet">
+            <div class="scriptlet" id="[[item.name]]">
                 <div>
                     <div class="label">[[item.name]]</div>
                 </div>
                 <div>
-                    <cr-icon-button on-click="handleEdit_" class="size-20" iron-icon="edit-pencil">
+                    <cr-icon-button id="edit" on-click="handleEdit_" class="size-20" iron-icon="edit-pencil">
                     </cr-icon-button>
-                    <cr-icon-button on-click="handleDelete_" class="size-20" iron-icon="trash">
+                    <cr-icon-button id="delete" on-click="handleDelete_" class="size-20" iron-icon="trash">
                     </cr-icon-button>
                 </div>
             </div>
         </template>
     </div>
 
-    <cr-button on-click="handleAdd_">
+    <cr-button id="add-custom-scriptlet" on-click="handleAdd_">
         $i18n{adblockAddCustomScriptletButton}
     </cr-button>
 </div>

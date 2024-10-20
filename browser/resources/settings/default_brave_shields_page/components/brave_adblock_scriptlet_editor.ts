@@ -13,6 +13,8 @@ import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_
 
 import { getTemplate } from './brave_adblock_scriptlet_editor.html.js'
 
+import { loadTimeData } from '../../i18n_setup.js'
+
 import {
   Scriptlet,
   BraveAdblockBrowserProxyImpl,
@@ -50,14 +52,19 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
   isScriptletValid_: boolean
   scriptletErrorMessage_: string
 
-  scriptletName_: string
+  oldScriptletName_: string
   browserProxy_ = BraveAdblockBrowserProxyImpl.getInstance()
 
   override ready() {
     super.ready()
-    this.scriptletName_ = this.scriptlet.name
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
+      window.testing = window.testing || {}
+      window.testing[`adblockScriptletEditor`] = this.shadowRoot
+    }
 
-    if (this.scriptletName_) {
+    this.oldScriptletName_ = this.scriptlet.name
+
+    if (this.oldScriptletName_) {
       this.dialogTitle_ = this.i18n('adblockEditCustomScriptletDialogTitle')
     } else {
       this.dialogTitle_ = this.i18n('adblockAddCustomScriptletDialogTitle')
@@ -95,9 +102,14 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
   }
 
   saveClicked_() {
-    if (this.scriptletName_) {
+    this.updateScriptletBeforeSave_()
+    if (!this.isScriptletValid_) {
+      return
+    }
+
+    if (this.oldScriptletName_) {
       this.browserProxy_
-        .updateCustomScriptlet(this.scriptletName_, this.scriptlet)
+        .updateCustomScriptlet(this.oldScriptletName_, this.scriptlet)
         .then((e) => {
           this.updateError(e)
           if (this.isScriptletValid_) {
@@ -115,11 +127,23 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
   }
 
   validateName_() {
+    this.scriptlet.name = this.scriptlet.name.toLowerCase()
     if (!/^[a-z-_.]*$/.test(this.scriptlet.name)) {
       this.updateError(ErrorCode.kInvalidName)
     } else {
       this.updateError(ErrorCode.kOK)
     }
+  }
+
+  updateScriptletBeforeSave_() {
+    this.scriptlet.name = this.scriptlet.name.toLowerCase()
+    if (!this.scriptlet.name.startsWith('brave-')) {
+      this.scriptlet.name = 'brave-' + this.scriptlet.name
+    }
+    if (!this.scriptlet.name.endsWith('.js')) {
+      this.scriptlet.name = this.scriptlet.name + '.js'
+    }
+    this.validateName_()
   }
 }
 

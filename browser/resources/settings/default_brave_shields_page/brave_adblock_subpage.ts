@@ -9,6 +9,7 @@ import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import 'chrome://resources/cr_elements/icons.html.js';
 import './components/brave_adblock_subscribe_dropdown.js';
 import './components/brave_adblock_editor.js';
+import './components/brave_adblock_scriptlet_list.js';
 
 import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';

@@ -14,6 +14,8 @@ import { BaseMixin } from '../../base_mixin.js'
 
 import { getTemplate } from './brave_adblock_scriptlet_list.html.js'
 
+import { loadTimeData } from '../../i18n_setup.js'
+
 import {
   Scriptlet,
   BraveAdblockBrowserProxyImpl
@@ -52,6 +54,12 @@ class AdblockScriptletList extends AdblockScriptletListBase {
 
   override ready() {
     super.ready()
+
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
+      window.testing = window.testing || {}
+      window.testing[`adblockScriptletList`] = this.shadowRoot
+    }
+
     this.isEditing_ = false
     this.browserProxy_.getCustomScriptlets().then((scriptlets) => {
       this.customScriptletsList_ = scriptlets
@@ -69,9 +77,11 @@ class AdblockScriptletList extends AdblockScriptletListBase {
   }
 
   handleDelete_(e: any) {
-    const messageText = this.i18n('adblockCustomScriptletDeleteConfirmation')
-    if (!confirm(messageText)) {
-      return
+    if (!loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
+      const messageText = this.i18n('adblockCustomScriptletDeleteConfirmation')
+      if (!confirm(messageText)) {
+        return
+      }
     }
 
     this.browserProxy_.removeCustomScriptlet(
