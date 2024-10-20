@@ -16,6 +16,8 @@
 #include "extensions/common/constants.h"
 #include "net/http/http_content_disposition.h"
 #include "net/http/http_response_headers.h"
+#include "brave/components/webtorrent/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 
 namespace webtorrent {
 
