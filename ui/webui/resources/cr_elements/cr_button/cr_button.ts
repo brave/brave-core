@@ -24,6 +24,7 @@ export class CrButtonElement extends CrLitElement {
 :host {
   display: inline-block;
   height: min-content;
+  padding:20px;
 }
 
 :host(.cancel-button) {
