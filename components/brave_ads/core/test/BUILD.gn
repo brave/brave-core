@@ -159,6 +159,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h",
     "//brave/components/brave_ads/core/internal/ad_units/ad_test_util.cc",
     "//brave/components/brave_ads/core/internal/ad_units/ad_test_util.h",
+    "//brave/components/brave_ads/core/internal/ad_units/creative_ad_cache_unittest.cc",
     "//brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_feature_unittest.cc",
     "//brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_info_unittest.cc",
     "//brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_test.cc",
