@@ -74,6 +74,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void StopAndClearWithResetLocalDataReason();
 
  private:
+  friend class BraveSyncServiceImplGACookiesTest;
   friend class BraveSyncServiceImplTest;
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
                            ForcedSetDecryptionPassphrase);
@@ -115,6 +116,17 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   void UpdateP3AObjectsNumber();
   void OnGetTypeEntitiesCount(const TypeEntitiesCount& count);
+
+  // IdentityManager::Observer implementation.
+  // Override with an empty implementation.
+  // We need this to avoid device cache guid regeneration once any Google
+  // Account cookie gets deleted, for example when user signs out from GMail
+  void OnAccountsCookieDeletedByUserAction() override;
+  void OnAccountsInCookieUpdated(
+      const signin::AccountsInCookieJarInfo& accounts_in_cookie_jar_info,
+      const GoogleServiceAuthError& error) override;
+  void OnPrimaryAccountChanged(
+      const signin::PrimaryAccountChangeEvent& event_details) override;
 
   brave_sync::Prefs brave_sync_prefs_;
 
