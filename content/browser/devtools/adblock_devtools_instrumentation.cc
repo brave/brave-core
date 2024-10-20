@@ -62,7 +62,7 @@ void SendAdblockInfoInternal(
 
   for (auto* handler :
        content::protocol::NetworkHandler::ForAgentHost(agent_host)) {
-    handler->RequestAdblockInfoReceived(request_id, std::move(adblock_info));
+    handler->RequestAdblockInfoReceived(request_id, adblock_info->Clone());
   }
 }
 
