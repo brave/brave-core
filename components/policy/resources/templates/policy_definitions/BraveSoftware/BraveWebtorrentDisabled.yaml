@@ -1,0 +1,37 @@
+caption: Disable WebTorrent
+default: null
+desc: |-
+  Disable WebTorrent in Brave.
+
+  WebTorrent is a feature that allows users to stream and download torrents directly in Brave.
+
+            If this policy is set to true, WebTorrent will always be disabled.
+
+            If this policy is set to false, WebTorrent will always be enabled.
+
+            If you set this policy, users cannot change or override it.
+
+            If this policy is left unset, WebTorrent will be enabled by default.
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: false
+  per_profile: true
+items:
+- caption: Enable WebTorrent
+  value: false
+- caption: Disable WebTorrent
+  value: true
+- caption: Allow the user to decide
+  value: null
+owners:
+- bbondy@brave.com
+- peter@brave.com
+- clifton@brave.com
+schema:
+  type: boolean
+supported_on:
+  - chrome.*:105-
+tags: []
+type: main
