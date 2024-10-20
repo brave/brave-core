@@ -53,7 +53,7 @@ class AdBlockServiceTest : public PlatformBrowserTest {
   void AssertTagExists(const std::string& tag, bool expected_exists) const;
   void InitEmbeddedTestServer();
   base::FilePath GetTestDataDir();
-  void NavigateToURL(GURL url);
+  void NavigateToURL(const GURL& url);
   void SetDefaultComponentIdAndBase64PublicKeyForTest();
   void SetRegionalComponentIdAndBase64PublicKeyForTest();
   void InstallComponent(

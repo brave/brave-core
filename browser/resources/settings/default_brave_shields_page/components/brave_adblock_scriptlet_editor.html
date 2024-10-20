@@ -1,4 +1,4 @@
-<style include="settings-shared md-select">
+<style include="cr-shared-style settings-shared iron-flex">
     div[slot=body] {
         overflow: hidden;
     }
@@ -44,7 +44,7 @@
         <cr-button class="cancel-button" id="cancel"
             on-click="cancelClicked_">$i18n{adblockCustomScriptletDialogCancelButton}
         </cr-button>
-        <cr-button class="action-button" id="save" on-click="saveClicked_" disabled="[[!isScriptletValid_]]">
+        <cr-button class="action-button" id="save" on-click="saveClicked_">
             $i18n{adblockCustomScriptletDialogSaveButton}
         </cr-button>
     </div>

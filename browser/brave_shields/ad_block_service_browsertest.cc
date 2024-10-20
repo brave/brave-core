@@ -312,7 +312,7 @@ base::FilePath AdBlockServiceTest::GetTestDataDir() {
   return base::PathService::CheckedGet(brave::DIR_TEST_DATA);
 }
 
-void AdBlockServiceTest::NavigateToURL(GURL url) {
+void AdBlockServiceTest::NavigateToURL(const GURL& url) {
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
 }
