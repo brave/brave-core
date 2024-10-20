@@ -47,6 +47,12 @@ bool IsWebtorrentEnabled(content::BrowserContext* browser_context) {
   if (!registry) {
     return false;
   }
+
+  PrefService* prefs = Profile::FromBrowserContext(browser_context)->GetPrefs();
+  if (prefs && prefs->GetBoolean(webtorrent::prefs::kWebTorrentDisabledByPolicy)) {
+      return false;
+  }
+
   return registry->enabled_extensions().Contains(brave_webtorrent_extension_id);
 }
 
