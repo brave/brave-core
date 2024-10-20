@@ -8,12 +8,6 @@ import Foundation
 import WebKit
 
 class FingerprintingProtection: TabContentScript {
-  fileprivate weak var tab: Tab?
-
-  init(tab: Tab) {
-    self.tab = tab
-  }
-
   static let scriptName = "FingerprintingProtection"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
@@ -34,15 +28,14 @@ class FingerprintingProtection: TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
-    if let stats = self.tab?.contentBlocker.stats {
-      self.tab?.contentBlocker.stats = stats.adding(fingerprintingCount: 1)
-      BraveGlobalShieldStats.shared.fpProtection += 1
-    }
+    let stats = tab.contentBlocker.stats
+    tab.contentBlocker.stats = stats.adding(fingerprintingCount: 1)
+    BraveGlobalShieldStats.shared.fpProtection += 1
   }
 }

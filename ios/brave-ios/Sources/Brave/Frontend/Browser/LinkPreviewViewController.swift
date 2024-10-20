@@ -32,12 +32,16 @@ class LinkPreviewViewController: UIViewController {
     }
 
     currentTab = Tab(
+      wkConfiguration: .init(),
       configuration: tabWebView.configuration,
       type: parentTab.isPrivate ? .private : .regular,
-      tabGeneratorAPI: nil
+      contentScriptManager: .init(tabForWebView: { [weak self] _ in self?.currentTab }),
+      tabGeneratorAPI: nil,
+      browserPrefs: browserController?.braveCore.browserPrefs
     ).then {
       $0.tabDelegate = browserController
       $0.navigationDelegate = browserController
+      // FIXME: This should probably be treated as a pre-render or bottom-sheet web view which typically don't have all tab helpers attached
       $0.createWebview()
       $0.webView?.scrollView.layer.masksToBounds = true
     }
@@ -54,7 +58,7 @@ class LinkPreviewViewController: UIViewController {
     Task(priority: .userInitiated) {
       let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domain)
       for ruleList in ruleLists {
-        webView.configuration.userContentController.add(ruleList)
+        webView.wkConfiguration.userContentController.add(ruleList)
       }
     }
 

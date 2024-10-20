@@ -38,7 +38,7 @@ class PageZoomHandler: ObservableObject {
 
     if let webView = webView {
       // Fetch the current value for zoom
-      if let url = webView.url, let domain = Domain.getPersistedDomain(for: url) {
+      if let url = webView.lastCommittedURL, let domain = Domain.getPersistedDomain(for: url) {
         currentValue =
           domain.zoom_level?.doubleValue ?? Preferences.General.defaultPageZoomLevel.value
       } else {
@@ -75,7 +75,7 @@ class PageZoomHandler: ObservableObject {
 
   private func storeChanges() {
     guard let webView = webView,
-      let url = webView.url
+      let url = webView.lastCommittedURL
     else { return }
 
     webView.setValue(currentValue, forKey: PageZoomHandler.propertyName)

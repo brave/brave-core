@@ -103,10 +103,7 @@ extension BrowserViewController {
         callback: { [weak self] in
           guard let self = self else { return }
 
-          if let findInteraction = self.tabManager.selectedTab?.webView?.findInteraction {
-            findInteraction.searchText = ""
-            findInteraction.presentFindNavigator(showingReplace: false)
-          }
+          self.tabManager.selectedTab?.webView?.findInPageController.findString(inPage: "")
         }
       )
     )
@@ -190,13 +187,12 @@ extension BrowserViewController {
           BasicMenuActivity(
             activityType: .createPDF,
             callback: {
-              webView.createPDF { [weak self] result in
+              webView.createPDF { [weak self] data in
                 dispatchPrecondition(condition: .onQueue(.main))
                 guard let self = self else {
                   return
                 }
-                switch result {
-                case .success(let pdfData):
+                if let pdfData = data {
                   Task {
                     // Create a valid filename
                     let validFilenameSet = CharacterSet(charactersIn: ":/")
@@ -229,10 +225,9 @@ extension BrowserViewController {
                       )
                     }
                   }
-
-                case .failure(let error):
+                } else {
                   Logger.module.error(
-                    "Failed to create PDF with error: \(error.localizedDescription)"
+                    "Failed to create PDF"
                   )
                 }
               }
@@ -288,9 +283,8 @@ extension BrowserViewController {
     }
 
     // Display Certificate Activity
-    if let tabURL = tabManager.selectedTab?.webView?.url,
-      tabManager.selectedTab?.webView?.serverTrust != nil
-        || ErrorPageHelper.hasCertificates(for: tabURL)
+    if let tabURL = tabManager.selectedTab?.webView?.lastCommittedURL,
+      tabManager.selectedTab?.webView?.visibleSSLStatus?.certificate != nil
     {
       activities.append(
         BasicMenuActivity(

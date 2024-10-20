@@ -26,6 +26,7 @@
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/ios/browser/brave_stats/brave_stats_prefs.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+#include "ios/chrome/browser/shared/model/prefs/pref_names.h"
 
 void BraveRegisterBrowserStatePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
@@ -42,6 +43,8 @@ void BraveRegisterBrowserStatePrefs(
   ai_chat::ModelService::RegisterProfilePrefs(registry);
   omnibox::RegisterBraveProfilePrefs(registry);
   brave_news::prefs::RegisterProfilePrefs(registry);
+
+  registry->RegisterBooleanPref(prefs::kHttpsUpgradesEnabled, true);
 }
 
 void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {

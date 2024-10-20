@@ -19,12 +19,6 @@ class EthereumProviderScriptHandler: TabContentScript {
     "eth_newPendingTransactionFilter",
   ]
 
-  private weak var tab: Tab?
-
-  init(tab: Tab) {
-    self.tab = tab
-  }
-
   static let scriptName = "WalletEthereumProviderScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
@@ -64,9 +58,9 @@ class EthereumProviderScriptHandler: TabContentScript {
     }
   }
 
-  @MainActor func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
     if !verifyMessage(message: message) {
@@ -74,8 +68,7 @@ class EthereumProviderScriptHandler: TabContentScript {
       return
     }
 
-    guard let tab = tab,
-      !tab.isPrivate,
+    guard !tab.isPrivate,
       let provider = tab.walletEthProvider,
       // Fail if there is no last committed URL yet
       !message.frameInfo.securityOrigin.host.isEmpty,

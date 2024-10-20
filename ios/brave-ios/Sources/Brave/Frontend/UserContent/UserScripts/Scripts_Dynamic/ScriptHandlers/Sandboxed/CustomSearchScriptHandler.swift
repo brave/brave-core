@@ -6,12 +6,6 @@ import Foundation
 import WebKit
 
 class CustomSearchScriptHandler: TabContentScript {
-  fileprivate weak var tab: Tab?
-
-  required init(tab: Tab) {
-    self.tab = tab
-  }
-
   static let scriptName = "CustomSearchHelper"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
@@ -32,10 +26,10 @@ class CustomSearchScriptHandler: TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
     replyHandler(nil, nil)
     // We don't listen to messages because the BVC calls the searchHelper script by itself.
