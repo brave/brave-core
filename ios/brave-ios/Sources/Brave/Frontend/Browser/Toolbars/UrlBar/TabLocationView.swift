@@ -243,6 +243,8 @@ class TabLocationView: UIView {
 
   private let placeholderLabel = UILabel().then {
     $0.text = Strings.tabToolbarSearchAddressPlaceholderText
+    $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
     $0.isHidden = true
     $0.adjustsFontSizeToFitWidth = true
     $0.minimumScaleFactor = 0.5
@@ -450,23 +452,30 @@ class TabLocationView: UIView {
   }
 
   private func updateURLBarWithText() {
-    if let url = url, let internalURL = InternalURL(url), internalURL.isBasicAuthURL {
-      urlDisplayLabel.text = Strings.PageSecurityView.signIntoWebsiteURLBarTitle
-    } else {
-      // Matches LocationBarModelImpl::GetFormattedURL in Chromium (except for omitHTTP)
-      // components/omnibox/browser/location_bar_model_impl.cc
-      // TODO: Export omnibox related APIs and use directly
-      if let url = url {
-        urlDisplayLabel.text = URLFormatter.formatURL(
-          url.scheme == "blob" ? URLOrigin(url: url).url?.absoluteString ?? "" : url.absoluteString,
-          formatTypes: [
-            .trimAfterHost, .omitHTTP, .omitHTTPS, .omitTrivialSubdomains, .omitDefaults,
-          ],
-          unescapeOptions: .normal
-        )
+    if let url = url {
+      if let internalURL = InternalURL(url), internalURL.isBasicAuthURL {
+        urlDisplayLabel.text = Strings.PageSecurityView.signIntoWebsiteURLBarTitle
       } else {
-        urlDisplayLabel.text = ""
+        // Matches LocationBarModelImpl::GetFormattedURL in Chromium (except for omitHTTP)
+        // components/omnibox/browser/location_bar_model_impl.cc
+        // TODO: Export omnibox related APIs and use directly
+
+        // If we can't parse the origin and the URL can't be classified via AutoCompleteClassifier
+        // the URL is likely a broken deceptive URL. Example: `about:blank#https://apple.com`
+        if URLOrigin(url: url).url == nil && URIFixup.getURL(url.absoluteString) == nil {
+          urlDisplayLabel.text = ""
+        } else {
+          urlDisplayLabel.text = URLFormatter.formatURL(
+            URLOrigin(url: url).url?.absoluteString ?? url.absoluteString,
+            formatTypes: [
+              .trimAfterHost, .omitHTTPS, .omitTrivialSubdomains,
+            ],
+            unescapeOptions: .normal
+          )
+        }
       }
+    } else {
+      urlDisplayLabel.text = ""
     }
 
     reloadButton.isHidden = url == nil
@@ -529,7 +538,8 @@ private class DisplayURLLabel: UILabel {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-
+    self.semanticContentAttribute = .forceLeftToRight
+    self.textAlignment = .left
     addSubview(clippingFade)
   }
 
@@ -538,7 +548,8 @@ private class DisplayURLLabel: UILabel {
 
   override var font: UIFont! {
     didSet {
-      updateTextSize(from: text)
+      updateText()
+      updateTextSize()
     }
   }
 
@@ -546,15 +557,42 @@ private class DisplayURLLabel: UILabel {
     didSet {
       clippingFade.isHidden = true
       if oldValue != text {
-        updateTextSize(from: text)
+        updateText()
+        updateTextSize()
         detectLanguageForNaturalDirectionClipping()
       }
       setNeedsDisplay()
     }
   }
 
-  private func updateTextSize(from value: String?) {
-    textSize = (value as? NSString)?.size(withAttributes: [.font: font!]) ?? .zero
+  private func updateText() {
+    if let text = text {
+      let attributedString = NSMutableAttributedString(string: text)
+      let paragraphStyle = NSMutableParagraphStyle()
+      paragraphStyle.lineBreakMode = .byClipping
+      paragraphStyle.baseWritingDirection = .leftToRight
+
+      if let font = font {
+        attributedString.addAttribute(
+          .font,
+          value: font,
+          range: NSRange(location: 0, length: attributedString.length)
+        )
+      }
+
+      attributedString.addAttribute(
+        .paragraphStyle,
+        value: paragraphStyle,
+        range: NSRange(location: 0, length: attributedString.length)
+      )
+      self.attributedText = attributedString
+    } else {
+      self.attributedText = nil
+    }
+  }
+
+  private func updateTextSize() {
+    textSize = attributedText?.size() ?? .zero
     setNeedsLayout()
     setNeedsDisplay()
   }
@@ -565,7 +603,7 @@ private class DisplayURLLabel: UILabel {
     case .arabic, .hebrew, .persian, .urdu:
       isRightToLeft = true
     default:
-      isRightToLeft = false
+      isRightToLeft = ["http", "https"].contains(URL(string: text)?.scheme ?? "")  // Only left-align if the scheme is not http/https.
     }
     // Update clipping fade direction
     clippingFade.gradientLayer.startPoint = .init(x: isRightToLeft ? 1 : 0, y: 0.5)
