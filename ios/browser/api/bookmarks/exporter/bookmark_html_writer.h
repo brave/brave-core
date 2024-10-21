@@ -6,11 +6,9 @@
 #ifndef BRAVE_IOS_BROWSER_API_BOOKMARKS_EXPORTER_BOOKMARK_HTML_WRITER_H_
 #define BRAVE_IOS_BROWSER_API_BOOKMARKS_EXPORTER_BOOKMARK_HTML_WRITER_H_
 
-#include <memory>
-
 #include "base/values.h"
 
-class ChromeBrowserState;
+class ProfileIOS;
 
 namespace base {
 class FilePath;
@@ -38,7 +36,7 @@ namespace bookmark_html_writer {
 // Firefox and IE. The results are written asynchronously to the file at |path|.
 // Before writing to the file favicons are fetched on the main thread.
 // TODO(sky): need a callback on failure.
-void WriteBookmarks(ChromeBrowserState* browser_state,
+void WriteBookmarks(ProfileIOS* profile,
                     const base::FilePath& path,
                     BookmarksExportObserver* observer);
 

@@ -1,0 +1,12 @@
+diff --git a/components/cached_flags/BUILD.gn b/components/cached_flags/BUILD.gn
+index 651450b7028073123b94aa11cb7e05b1d37f3a4e..2e95c76d1404f81cb2a011faff23b4b193712e9c 100644
+--- a/components/cached_flags/BUILD.gn
++++ b/components/cached_flags/BUILD.gn
+@@ -24,6 +24,7 @@ android_library("java") {
+     "android/java/src/org/chromium/components/cached_flags/IntCachedFieldTrialParameter.java",
+     "android/java/src/org/chromium/components/cached_flags/StringCachedFieldTrialParameter.java",
+   ]
++  sources += brave_components_cached_flags_java_sources
+ }
+ 
+ robolectric_library("junit") {

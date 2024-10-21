@@ -21,12 +21,6 @@ AboutSigninInternalsFactory::AboutSigninInternalsFactory()
 AboutSigninInternalsFactory::~AboutSigninInternalsFactory() {}
 
 // static
-AboutSigninInternals* AboutSigninInternalsFactory::GetForBrowserState(
-    ProfileIOS* profile) {
-  return GetForProfile(profile);
-}
-
-// static
 AboutSigninInternals* AboutSigninInternalsFactory::GetForProfile(
     ProfileIOS* profile) {
   return static_cast<AboutSigninInternals*>(

@@ -17,9 +17,9 @@ namespace brave_wallet {
 
 // static
 mojo::PendingRemote<mojom::SwapService> SwapServiceFactory::GetForBrowserState(
-    ChromeBrowserState* browser_state) {
+    ProfileIOS* profile) {
   return static_cast<SwapService*>(
-             GetInstance()->GetServiceForBrowserState(browser_state, true))
+             GetInstance()->GetServiceForBrowserState(profile, true))
       ->MakeRemote();
 }
 
@@ -38,9 +38,9 @@ SwapServiceFactory::~SwapServiceFactory() = default;
 
 std::unique_ptr<KeyedService> SwapServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
-  auto* browser_state = ChromeBrowserState::FromBrowserState(context);
+  auto* profile = ProfileIOS::FromBrowserState(context);
   std::unique_ptr<SwapService> swap_service(
-      new SwapService(browser_state->GetSharedURLLoaderFactory()));
+      new SwapService(profile->GetSharedURLLoaderFactory()));
   return swap_service;
 }
 

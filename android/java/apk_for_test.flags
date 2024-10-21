@@ -300,7 +300,7 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.settings.SettingsLauncherImpl {
+-keep class org.chromium.chrome.browser.settings.SettingsNavigationImpl {
     <init>(...);
 }
 
@@ -591,7 +591,7 @@
     *** get(...);
 }
 
--keep class org.chromium.chrome.browser.partnercustomizations.CustomizationProviderDelegateImpl {
+-keep class org.chromium.chrome.browser.partnercustomizations.CustomizationProviderDelegateUpstreamImpl {
     public <init>(...);
 }
 
@@ -645,7 +645,7 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.AppHooksImpl {
+-keep class org.chromium.chrome.browser.AppHooks {
     public <init>(...);
 }
 
@@ -653,12 +653,12 @@
     public <init>(...);
 }
 
--keep class org.chromium.base.cached_flags.CachedFlag {
+-keep class org.chromium.components.cached_flags.CachedFlag {
     *** mDefaultValue;
     <init>(...);
 }
 
--keep class org.chromium.base.cached_flags.BraveCachedFlag {
+-keep class org.chromium.components.cached_flags.BraveCachedFlag {
     <init>(...);
 }
 
@@ -745,12 +745,12 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.tasks.tab_groups.TabGroupModelFilter {
+-keep class org.chromium.chrome.browser.tabmodel.TabGroupModelFilterImpl {
     *** mIsResetting;
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.tasks.tab_groups.BraveTabGroupModelFilter {
+-keep class org.chromium.chrome.browser.tabmodel.BraveTabGroupModelFilter {
     public <init>(...);
 }
 
@@ -788,16 +788,6 @@
 }
 
 -keep class org.chromium.chrome.browser.customtabs.features.partialcustomtab.BravePartialCustomTabBottomSheetStrategy {
-    public <init>(...);
-}
-
--keep class org.chromium.components.language.LocaleManagerDelegateImpl {
-    public <init>(...);
-    *** getApplicationLocale(...);
-    *** setApplicationLocale(...);
-}
-
--keep class org.chromium.components.language.BraveLocaleManagerDelegateImpl {
     public <init>(...);
 }
 

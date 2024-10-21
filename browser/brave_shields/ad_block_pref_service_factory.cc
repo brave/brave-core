@@ -61,7 +61,7 @@ AdBlockPrefServiceFactory::BuildServiceInstanceForBrowserContext(
 
 content::BrowserContext* AdBlockPrefServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
+  return GetBrowserContextRedirectedInIncognito(context);
 }
 
 bool AdBlockPrefServiceFactory::ServiceIsCreatedWithBrowserContext() const {

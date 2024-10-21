@@ -7,7 +7,7 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/node_resource.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
-#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_builder_stream.h"
 
 namespace brave_page_graph {
 
@@ -40,9 +40,9 @@ ItemName EdgeRequestStart::GetItemName() const {
 }
 
 ItemDesc EdgeRequestStart::GetItemDesc() const {
-  WTF::TextStream ts;
+  StringBuilder ts;
   ts << EdgeRequest::GetItemDesc() << " [" << resource_type_ << "]";
-  return ts.Release();
+  return ts.ReleaseString();
 }
 
 void EdgeRequestStart::AddGraphMLAttributes(xmlDocPtr doc,
