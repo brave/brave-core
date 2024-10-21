@@ -10,7 +10,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/prefs/pref_service.h"
-#include "ui/base/models/simple_menu_model.h"
+#include "ui/menus/simple_menu_model.h"
 
 BookmarkBarSubMenuModel::BookmarkBarSubMenuModel(Profile* profile)
     : SimpleMenuModel(this), profile_(profile) {
