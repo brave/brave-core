@@ -79,13 +79,9 @@ int OnHeadersReceived_AdBlockCspWork(
           new net::HttpResponseHeaders(response_headers->raw_headers());
     }
 
-    std::string original_csp_string;
-    std::optional<std::string> original_csp = std::nullopt;
-    if ((*override_response_headers)
-            ->GetNormalizedHeader("Content-Security-Policy",
-                                  &original_csp_string)) {
-      original_csp = std::optional<std::string>(original_csp_string);
-    }
+    std::optional<std::string> original_csp =
+        (*override_response_headers)
+            ->GetNormalizedHeader("Content-Security-Policy");
 
     (*override_response_headers)->RemoveHeader("Content-Security-Policy");
 
