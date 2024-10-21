@@ -121,8 +121,7 @@ std::wstring GetBraveVpnWireguardServiceDisplayName() {
 }
 
 std::wstring GetBraveVpnWireguardServiceDescription() {
-  // TODO(anyone): Consider adding a description.
-  return std::wstring();
+  return L"WireGuard client code for Brave VPN";
 }
 
 std::wstring GetBraveVpnWireguardServiceName() {
