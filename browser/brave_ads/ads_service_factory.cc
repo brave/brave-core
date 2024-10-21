@@ -6,6 +6,7 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/no_destructor.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
@@ -76,7 +77,7 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
       brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetInstance()
           ->GetForProfile(profile);
   auto* display_service = NotificationDisplayService::GetForProfile(profile);
-  auto* delegate = new AdsServiceDelegate(
+  auto delegate = std::make_unique<AdsServiceDelegate>(
       profile, g_browser_process->local_state(), brave_adaptive_captcha_service,
       display_service,
       std::make_unique<NotificationAdPlatformBridge>(*profile));
@@ -89,7 +90,8 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
           profile);
 
   return std::make_unique<AdsServiceImpl>(
-      delegate, profile->GetPrefs(), g_browser_process->local_state(),
+      std::move(delegate), profile->GetPrefs(),
+      g_browser_process->local_state(),
       profile->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),
       brave::GetChannelName(), profile->GetPath(), CreateAdsTooltipsDelegate(),
