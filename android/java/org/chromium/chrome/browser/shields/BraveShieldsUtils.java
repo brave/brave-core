@@ -38,7 +38,6 @@ public class BraveShieldsUtils {
     public static final String WEBCOMPAT_UI_SOURCE_HISTOGRAM_NAME = "Brave.Webcompat.UISource";
     public static final String WEBCOMPAT_REPORT_BRAVE_VERSION = "version";
     public static final String WEBCOMPAT_REPORT_BRAVE_CHANNEL = "channel";
-    private static final String MULTIPART_CONTENT_TYPE_PREFIX = "multipart/form-data; boundary=%s";
     private static final String MULTIPART_BOUNDARY = "MultipartBoundary";
     private static final int MULTIPART_BOUNDARY_SIZE = 69;
     private static final char[] MULTIPART_CHARS =
@@ -185,7 +184,7 @@ public class BraveShieldsUtils {
             throws UnsupportedEncodingException, IOException {
         final String mb = generateBoundary();
         urlConnection.setRequestProperty(
-                "Content-Type", String.format(MULTIPART_CONTENT_TYPE_PREFIX, mb));
+                "Content-Type", String.format("multipart/form-data; boundary=%s", mb));
         urlConnection.connect();
 
         try (OutputStream os = urlConnection.getOutputStream()) {

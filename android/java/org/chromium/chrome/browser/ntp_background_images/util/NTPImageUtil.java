@@ -153,28 +153,16 @@ public class NTPImageUtil {
     private static Bitmap getBitmapFromImagePath(String imagePath, BitmapFactory.Options options) {
         Context mContext = ContextUtils.getApplicationContext();
         Bitmap imageBitmap = null;
-        InputStream inputStream = null;
-        try {
-            Uri imageFileUri = Uri.parse("file://" + imagePath);
-            inputStream = mContext.getContentResolver().openInputStream(imageFileUri);
+        Uri imageFileUri = Uri.parse("file://" + imagePath);
+        try (InputStream inputStream =
+                mContext.getContentResolver().openInputStream(imageFileUri)) {
             imageBitmap = BitmapFactory.decodeStream(inputStream, null, options);
-            inputStream.close();
         } catch (IOException exc) {
             Log.e(TAG, "getBitmapFromImagePath: IOException: " + exc.getMessage());
         } catch (IllegalArgumentException exc) {
             Log.e(TAG, "getBitmapFromImagePath: IllegalArgumentException: " + exc.getMessage());
         } catch (OutOfMemoryError exc) {
             Log.e(TAG, "getBitmapFromImagePath: OutOfMemoryError: " + exc.getMessage());
-        } finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-            } catch (IOException exception) {
-                Log.e(TAG,
-                        "getBitmapFromImagePath IOException in finally: " + exception.getMessage());
-                return null;
-            }
         }
         return imageBitmap;
     }
