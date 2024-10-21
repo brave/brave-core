@@ -120,6 +120,10 @@ std::wstring GetBraveVpnWireguardServiceDisplayName() {
   NOTREACHED_NORETURN();
 }
 
+std::wstring GetBraveVpnWireguardServiceDescription() {
+  return L"WireGuard client code for Brave VPN";
+}
+
 std::wstring GetBraveVpnWireguardServiceName() {
   std::wstring name = GetBraveVpnWireguardServiceDisplayName();
   std::erase_if(name, isspace);

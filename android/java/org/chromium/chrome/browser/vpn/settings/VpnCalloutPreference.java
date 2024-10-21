@@ -40,7 +40,7 @@ public class VpnCalloutPreference extends Preference {
 
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getContext());
 
-        int width = (int) ((getContext().getResources().getDisplayMetrics().widthPixels) * 1.00);
+        int width = (int) (getContext().getResources().getDisplayMetrics().widthPixels * 1.00);
         if (isTablet || ConfigurationUtils.isLandscape(getContext())) {
             width = (int) dpToPx(getContext(), 390);
         }

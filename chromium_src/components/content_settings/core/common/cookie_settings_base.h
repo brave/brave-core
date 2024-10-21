@@ -13,14 +13,14 @@
 #define IsCookieSessionOnly                                                \
   ShouldUseEphemeralStorage(                                               \
       const GURL& url, const net::SiteForCookies& site_for_cookies,        \
-      const std::optional<url::Origin>& top_frame_origin) const;           \
+      base::optional_ref<const url::Origin> top_frame_origin) const;       \
   bool IsEphemeralCookieAccessAllowed(                                     \
       const GURL& url, const net::SiteForCookies& site_for_cookies,        \
-      const std::optional<url::Origin>& top_frame_origin,                  \
+      base::optional_ref<const url::Origin> top_frame_origin,              \
       net::CookieSettingOverrides overrides) const;                        \
   bool IsFullCookieAccessAllowed_ChromiumImpl(                             \
       const GURL& url, const net::SiteForCookies& site_for_cookies,        \
-      const std::optional<url::Origin>& top_frame_origin,                  \
+      base::optional_ref<const url::Origin> top_frame_origin,              \
       net::CookieSettingOverrides overrides,                               \
       CookieSettingWithMetadata* cookie_settings = nullptr) const;         \
   bool ShouldBlockThirdPartyIfSettingIsExplicit(                           \

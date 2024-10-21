@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/overlay/video_overlay_window_views.cc b/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
-index 75302c9d601d6192f9a6ea5f7cfc0d5707c7f69f..580f03a9ce94896551560a90977919d29350f8a0 100644
+index 68b5bc575c6c1458d2c3351407f73a8a26f13cb2..f78a716c674bb4dbc7d96c8ae291cd6dd3af1876 100644
 --- a/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
 +++ b/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
 @@ -289,7 +289,7 @@ std::unique_ptr<VideoOverlayWindowViews> VideoOverlayWindowViews::Create(

@@ -73,6 +73,11 @@ public class IncognitoNewTabPageView extends FrameLayout {
                 : "Something has changed in the upstream!";
 
         assert R.drawable.incognito_splash > 0 : "Something has changed in the upstream!";
+
+        // Added this check just to avoid resource is not used warning. We use own own private tab
+        // UI.
+        assert R.dimen.incognito_ntp_fading_shadow_size > 0
+                : "Something has changed in the upstream!";
     }
 
     @Override

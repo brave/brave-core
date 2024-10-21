@@ -21,7 +21,7 @@
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 
-class ChromeBrowserState;
+class ProfileIOS;
 struct SyncProtocolError;
 
 namespace syncer {
@@ -73,7 +73,7 @@ class BraveSyncServiceTracker : public syncer::SyncServiceObserver {
 
 class BraveSyncWorker : public syncer::SyncServiceObserver {
  public:
-  explicit BraveSyncWorker(ChromeBrowserState* browser_state_);
+  explicit BraveSyncWorker(ProfileIOS* profile_);
   BraveSyncWorker(const BraveSyncWorker&) = delete;
   BraveSyncWorker& operator=(const BraveSyncWorker&) = delete;
   ~BraveSyncWorker() override;
@@ -119,7 +119,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
 
   std::string passphrase_;
 
-  raw_ptr<ChromeBrowserState> browser_state_;  // NOT OWNED
+  raw_ptr<ProfileIOS> profile_;  // NOT OWNED
   base::ScopedMultiSourceObservation<syncer::SyncService,
                                      syncer::SyncServiceObserver>
       sync_service_observer_{this};
