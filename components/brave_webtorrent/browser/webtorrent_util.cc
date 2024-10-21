@@ -20,12 +20,13 @@
 namespace webtorrent {
 
 bool TorrentFileNameMatched(const net::HttpResponseHeaders* headers) {
-  std::string disposition;
-  if (!headers->GetNormalizedHeader("Content-Disposition", &disposition)) {
+  std::optional<std::string> disposition =
+      headers->GetNormalizedHeader("Content-Disposition");
+  if (!disposition) {
     return false;
   }
 
-  net::HttpContentDisposition cd_headers(disposition, std::string());
+  net::HttpContentDisposition cd_headers(*disposition, std::string());
   if (base::EndsWith(cd_headers.filename(), ".torrent",
         base::CompareCase::INSENSITIVE_ASCII) ||
       base::EndsWith(cd_headers.filename(), ".torrent\"",

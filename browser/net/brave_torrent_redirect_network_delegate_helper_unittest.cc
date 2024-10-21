@@ -133,9 +133,8 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   ASSERT_EQ(mimeType, kOctetStreamMimeType);
   orig_response_headers->AddHeader("Content-Disposition",
                                    "filename=\"sintel.torrent\"");
-  std::string disposition;
-  ASSERT_TRUE(orig_response_headers->GetNormalizedHeader("Content-Disposition",
-                                                         &disposition));
+  ASSERT_TRUE(orig_response_headers->GetNormalizedHeader("Content-Disposition")
+                  .has_value());
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
       new net::HttpResponseHeaders(std::string());
