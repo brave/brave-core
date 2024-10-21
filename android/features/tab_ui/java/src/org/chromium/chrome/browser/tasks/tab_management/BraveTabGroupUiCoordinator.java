@@ -18,6 +18,8 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider.IncognitoStateObserver;
@@ -37,6 +39,7 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
     // Own members.
     private IncognitoStateProvider mIncognitoStateProvider;
     private IncognitoStateObserver mIncognitoStateObserver;
+    private ProfileManager.Observer mProfileManagerObserver;
 
     public BraveTabGroupUiCoordinator(
             @NonNull Activity activity,
@@ -91,6 +94,41 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
 
     @Override
     public void initializeWithNative(
+            Activity activity,
+            BottomControlsCoordinator.BottomControlsVisibilityController visibilityController,
+            Callback<Object> onModelTokenChange) {
+        // Fix for the null object crash at TabGroupSyncFeatures.isTabGroupSyncEnabled
+        // Stack:
+        // at TabGroupSyncFeatures.isTabGroupSyncEnabled (TabGroupSyncFeatures.java:18)
+        // at TabGroupUiMediator.<init> (TabGroupUiMediator.java:143)
+        // at TabGroupUiCoordinator.initializeWithNative (TabGroupUiCoordinator.java:238)
+        // at BraveTabGroupUiCoordinator.initializeWithNative (BraveTabGroupUiCoordinator.java:97)
+        // at BottomControlsCoordinator.lambda$new$1 (BottomControlsCoordinator.java:148)
+        //
+        // Profile at TabGroupUiCoordinator can be null.
+        // Upstream does not have this issue because they don't use BottomControlsCoordinator
+        if (ProfileManager.isInitialized()) {
+            callSuperInitializeWithNative(activity, visibilityController, onModelTokenChange);
+        } else {
+            // Profile is not yet ready, continue initialization when it will be ready
+            mProfileManagerObserver =
+                    new ProfileManager.Observer() {
+                        @Override
+                        public void onProfileAdded(Profile profile) {
+                            ProfileManager.removeObserver(mProfileManagerObserver);
+
+                            callSuperInitializeWithNative(
+                                    activity, visibilityController, onModelTokenChange);
+                        }
+
+                        @Override
+                        public void onProfileDestroyed(Profile profile) {}
+                    };
+            ProfileManager.addObserver(mProfileManagerObserver);
+        }
+    }
+
+    private void callSuperInitializeWithNative(
             Activity activity,
             BottomControlsCoordinator.BottomControlsVisibilityController visibilityController,
             Callback<Object> onModelTokenChange) {
