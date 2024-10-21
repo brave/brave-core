@@ -501,9 +501,13 @@ void BraveShieldsTabHelper::HandleWebcompatFeatureInvoked(
 void BraveShieldsTabHelper::SetWebcompatEnabled(
     ContentSettingsType webcompat_settings_type,
     bool enabled) {
+  PrefService* profile_prefs =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+          ->GetPrefs();
   brave_shields::SetWebcompatEnabled(
       GetHostContentSettingsMap(web_contents()), webcompat_settings_type,
-      enabled, GetCurrentSiteURL(), g_browser_process->local_state());
+      enabled, GetCurrentSiteURL(), g_browser_process->local_state(),
+      profile_prefs);
   ReloadWebContents();
 }
 
