@@ -496,6 +496,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardConfigUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardServiceImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/webcompat_reporter/WebcompatReporterServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/QuickActionSearchAndBookmarkWidgetProvider.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/promo/SearchWidgetPromoPanel.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/utils/BraveSearchWidgetUtils.java",

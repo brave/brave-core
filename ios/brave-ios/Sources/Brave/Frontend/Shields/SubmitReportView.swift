@@ -3,11 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShields
 import BraveUI
 import BraveVPN
 import Data
 import DesignSystem
+import Shared
 import Strings
 import SwiftUI
 
@@ -108,21 +110,37 @@ struct SubmitReportView: View {
 
   @MainActor func createAndSubmitReport() async {
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing)
-
-    let report = WebcompatReporter.Report(
-      cleanedURL: url,
-      additionalDetails: additionalDetails,
-      contactInfo: contactDetails,
-      areShieldsEnabled: !domain.areAllShieldsOff,
-      adBlockLevel: domain.globalBlockAdsAndTrackingLevel,
-      fingerprintProtectionLevel: domain.finterprintProtectionLevel,
-      adBlockListTitles: FilterListStorage.shared.filterLists.compactMap({
-        return $0.isEnabled ? $0.entry.title : nil
-      }),
-      isVPNEnabled: BraveVPN.isConnected
+    guard
+      let webcompatReporterAPI = WebcompatReporter.ServiceFactory.get(
+        privateMode: isPrivateBrowsing
+      )
+    else {
+      return
+    }
+    webcompatReporterAPI.submitWebcompatReport(
+      reportInfo: .init(
+        channel: AppConstants.buildChannel.webCompatReportName,
+        braveVersion: String(
+          format: "%@ (%@)",
+          AppInfo.appVersion,
+          AppInfo.buildNumber
+        ),
+        reportUrl: url.absoluteString,
+        shieldsEnabled: String(!domain.areAllShieldsOff),
+        adBlockSetting: domain.globalBlockAdsAndTrackingLevel.reportLabel,
+        fpBlockSetting: domain.finterprintProtectionLevel.reportLabel,
+        adBlockListNames: FilterListStorage.shared.filterLists
+          .compactMap({ return $0.isEnabled ? $0.entry.title : nil })
+          .joined(separator: ","),
+        languages: Locale.current.language.languageCode?.identifier,
+        languageFarbling: String(true),
+        braveVpnConnected: String(BraveVPN.isConnected),
+        details: additionalDetails,
+        contact: contactDetails,
+        adBlockComponentsVersion: nil,
+        screenshotPng: nil
+      )
     )
-
-    await WebcompatReporter.send(report: report)
   }
 }
 
@@ -131,4 +149,21 @@ struct SubmitReportView: View {
     url: URL(string: "https://brave.com/privacy-features")!,
     isPrivateBrowsing: false
   )
+}
+
+extension ShieldLevel {
+  /// The value that is sent to the webcompat report server
+  fileprivate var reportLabel: String {
+    switch self {
+    case .aggressive: return "aggressive"
+    case .standard: return "standard"
+    case .disabled: return "allow"
+    }
+  }
+}
+
+extension AppBuildChannel {
+  fileprivate var webCompatReportName: String {
+    return self == .debug ? "developer" : rawValue
+  }
 }

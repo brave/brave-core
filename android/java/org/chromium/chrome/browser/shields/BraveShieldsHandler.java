@@ -43,7 +43,6 @@ import androidx.appcompat.widget.SwitchCompat;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
-import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -52,24 +51,28 @@ import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
-import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
 import org.chromium.components.browser_ui.widget.ChromeDialog;
+import org.chromium.components.version_info.BraveVersionConstants;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.ChromeImageButton;
+import org.chromium.webcompat_reporter.mojom.ReportInfo;
+import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Object responsible for handling the creation, showing, hiding of the BraveShields menu.
- */
-public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCallback {
+/** Object responsible for handling the creation, showing, hiding of the BraveShields menu. */
+public class BraveShieldsHandler
+        implements BraveRewardsHelper.LargeIconReadyCallback, ConnectionErrorHandler {
     private static final String TAG = "BraveShieldsHandler";
     private static final int URL_SPEC_MAX_LINES = 3;
     private static final String CHROME_ERROR = "chrome-error://";
@@ -135,6 +138,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private ImageView mImageView;
     private TextView mViewScreenshot;
     private byte[] mScreenshotBytes;
+
+    private WebcompatReporterHandler mWebcompatReporterHandler;
 
     private static Context scanForActivity(Context cont) {
         if (cont == null) {
@@ -315,6 +320,16 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         return popupWindow;
     }
 
+    @Override
+    public void onConnectionError(MojoException e) {
+        initWebcompatReporterService();
+    }
+
+    private void initWebcompatReporterService() {
+        mWebcompatReporterHandler =
+                WebcompatReporterServiceFactory.getInstance().getWebcompatReporterHandler(this);
+    }
+
     public void updateUrlSpec(String urlSpec) {
         mUrlSpec = urlSpec;
     }
@@ -397,6 +412,9 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     public void hideBraveShieldsMenu() {
         if (isShowing()) {
             mPopupWindow.dismiss();
+        }
+        if (null != mWebcompatReporterHandler) {
+            mWebcompatReporterHandler.close();
         }
     }
 
@@ -488,6 +506,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         setUpSecondaryLayout();
 
         setupMainSwitchClick(mShieldMainSwitch);
+
+        initWebcompatReporterService();
     }
 
     private void shareStats() {
@@ -824,18 +844,20 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     public void onClick(View view) {
                         // Profile.getLastUsedRegularProfile requires to run in UI thread,
                         // so get api key here and pass it to IO worker task
-                        String referralApiKey =
-                                NTPBackgroundImagesBridge.getInstance(mProfile).getReferralApiKey();
-                        BraveShieldsUtils.BraveShieldsWorkerTask mWorkerTask =
-                                new BraveShieldsUtils.BraveShieldsWorkerTask(
-                                        siteUrl,
-                                        referralApiKey,
-                                        isScreenshotAvailable() ? mScreenshotBytes : null);
-                        mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        mWebcompatReporterHandler.submitWebcompatReport(getReportInfo(siteUrl));
                         mReportBrokenSiteLayout.setVisibility(View.GONE);
                         mThankYouLayout.setVisibility(View.VISIBLE);
                     }
                 });
+    }
+
+    private ReportInfo getReportInfo(String siteUrl) {
+        ReportInfo reportInfo = new ReportInfo();
+        reportInfo.channel = BraveVersionConstants.CHANNEL;
+        reportInfo.braveVersion = BraveVersionConstants.VERSION;
+        reportInfo.reportUrl = siteUrl;
+        reportInfo.screenshotPng = isScreenshotAvailable() ? mScreenshotBytes : null;
+        return reportInfo;
     }
 
     private void setUpViewScreenshot(byte[] pngBytes) {
