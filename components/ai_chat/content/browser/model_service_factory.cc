@@ -42,7 +42,8 @@ ModelServiceFactory::~ModelServiceFactory() = default;
 std::unique_ptr<KeyedService>
 ModelServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return std::make_unique<ModelService>(user_prefs::UserPrefs::Get(context));
+  return std::make_unique<ModelService>(context,
+                                        user_prefs::UserPrefs::Get(context));
 }
 
 }  // namespace ai_chat

@@ -26,7 +26,7 @@ export interface AIChatContext extends Props {
   canShowPremiumPrompt?: boolean
   isMobile: boolean
   isStandalone?: boolean
-  onDeviceModelStatus?: { message: string, isComplete: boolean }
+  onDeviceModelStatus?: Map<string, { message: string, isComplete: boolean }>
   isHistoryEnabled: boolean
   allActions: mojom.ActionGroup[]
   goPremium: () => void
@@ -124,11 +124,12 @@ export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
       })
     )
 
-    Observer.onDeviceModelWorkerStatusChanged.addListener((message: string, isComplete: boolean) => {
-      console.debug('onDeviceModelWorkerStatusChanged', message, isComplete)
-      setPartialContext({
-        onDeviceModelStatus: { message, isComplete }
-      })
+    Observer.onDeviceModelWorkerStatusChanged.addListener((modelKey: string, message: string, isComplete: boolean) => {
+      console.debug('onDeviceModelWorkerStatusChanged', modelKey, message, isComplete)
+      setContext(context => ({
+        ...context,
+        onDeviceModelStatus: (context.onDeviceModelStatus ?? new Map()).set(modelKey, { message, isComplete })
+      }))
     })
 
     // Since there is no server-side event for premium status changing,
