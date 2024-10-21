@@ -1134,6 +1134,7 @@ test("brave_browser_tests") {
       "//brave/browser/sharing_hub:browser_tests",
       "//brave/browser/ui/ai_rewriter:browsertest",
       "//brave/browser/ui/geolocation:browser_tests",
+      "//brave/browser/ui/toolbar:brave_app_menu_browser_tests",
       "//brave/browser/ui/whats_new:browser_test",
       "//brave/browser/url_sanitizer:browser_tests",
       "//brave/components/brave_wallet/browser:test_support",

@@ -50,7 +50,7 @@
 // The case when number of tabs on other device is <=4 so we do not add
 // `More...` item is tested by RecentTabsSubMenuModelTest.MaxSessionsAndRecency
 
-#include "src/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_unittest.cc"
+#include "src/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc"
 
 #undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST
 

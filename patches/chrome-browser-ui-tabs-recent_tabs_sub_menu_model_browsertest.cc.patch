@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc
+index c2e5b8adbc3e6adb384e7485d72957d863091cef..063467f037528202fdabb71cdd04fdae0204363d 100644
+--- a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc
++++ b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc
+@@ -187,6 +187,7 @@ class RecentTabsSubMenuModelTest : public InProcessBrowserTest {
+     return new_browser;
+   }
+ 
++  BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST
+  private:
+   raw_ptr<sync_sessions::SessionSyncService, DanglingUntriaged>
+       session_sync_service_;

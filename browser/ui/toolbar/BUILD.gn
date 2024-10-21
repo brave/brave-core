@@ -15,10 +15,35 @@ source_set("brave_app_menu_unit_test") {
     "//testing/gtest",
   ]
 
+  deps = [
+    "//brave/app:brave_generated_resources_grit_grit",
+    "//brave/app:generate_command_metadata",
+    "//chrome/app:command_ids",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/sync",
+    "//chrome/test:test_support",
+    "//components/constrained_window:constrained_window",
+    "//components/sync_preferences:sync_preferences",
+    "//components/sync_sessions:sync_sessions",
+    "//ui/views:test_support",
+  ]
+  if (enable_brave_vpn) {
+    sources = [ "//brave/browser/ui/toolbar/brave_vpn_menu_model_unittest.cc" ]
+    deps += [
+      "//base",
+      "//brave/components/brave_vpn/common",
+    ]
+  }
+}
+
+source_set("brave_app_menu_browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
   sources = [
     "//chrome/browser/ui/tabs/recent_tabs_builder_test_helper.cc",
     "//chrome/browser/ui/tabs/recent_tabs_builder_test_helper.h",
-    "//chrome/browser/ui/tabs/recent_tabs_sub_menu_model_unittest.cc",
+    "//chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc",
     "//chrome/test/base/browser_with_test_window_test.cc",
     "//chrome/test/base/browser_with_test_window_test.h",
     "//chrome/test/base/menu_model_test.cc",
@@ -26,27 +51,21 @@ source_set("brave_app_menu_unit_test") {
   ]
 
   deps = [
-    "//brave/app:brave_generated_resources_grit_grit",
-    "//brave/app:generate_command_metadata",
-    "//build:chromeos_buildflags",
-    "//chrome/app:command_ids",
+    "//chrome/browser",
+    "//chrome/browser:browser_process",
     "//chrome/browser/sync",
     "//chrome/browser/ui:browser_navigator_params_headers",
-    "//chrome/browser/ui:ui",
+    "//chrome/browser/ui/browser_window",
     "//chrome/test:test_support",
-    "//components/constrained_window:constrained_window",
+    "//chrome/test:test_support_ui",
+    "//components/constrained_window",
     "//components/sessions:test_support",
-    "//components/sync_preferences:sync_preferences",
-    "//components/sync_sessions:sync_sessions",
-    "//components/tab_groups:tab_groups",
+    "//components/sync:test_support",
+    "//components/variations:test_support",
     "//content/test:test_support",
+    "//net:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
     "//ui/views:test_support",
   ]
-  if (enable_brave_vpn) {
-    sources += [ "//brave/browser/ui/toolbar/brave_vpn_menu_model_unittest.cc" ]
-    deps += [
-      "//base",
-      "//brave/components/brave_vpn/common",
-    ]
-  }
 }
