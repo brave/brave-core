@@ -12,11 +12,10 @@ bool DeriveKeyScryptNoCheck(const ScryptParams& params,
                             base::span<const uint8_t> salt,
                             base::span<uint8_t> result) {
   OpenSSLErrStackTracer err_tracer(FROM_HERE);
-  int rv =
-      EVP_PBE_scrypt(reinterpret_cast<const char*>(password.data()),
-                     password.size(), salt.data(), salt.size(), params.cost,
-                     params.block_size, params.parallelization,
-                     params.max_memory_bytes, result.data(), result.size());
+  int rv = EVP_PBE_scrypt(
+      base::as_chars(password).data(), password.size(), salt.data(),
+      salt.size(), params.cost, params.block_size, params.parallelization,
+      params.max_memory_bytes, result.data(), result.size());
 
   return rv == 1;
 }
