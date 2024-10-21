@@ -27,10 +27,8 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
 
   // MARK: - Handling transactions
 
-  public func paymentQueue(
-    _ queue: SKPaymentQueue,
-    updatedTransactions transactions: [SKPaymentTransaction]
-  ) {
+  private func processTransactions(_ transactions: [SKPaymentTransaction], on queue: SKPaymentQueue)
+  {
     // This helper variable helps to call the IAPObserverDelegate delegate purchased method only once.
     // Reason is when restoring or sometimes when purchasing or restoring a product there's multiple transactions
     // that are returned in `transactions` array.
@@ -38,19 +36,27 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
     // but to show the UI we only want to call the delegate method once.
     var callPurchaseDelegateOnce = true
 
-    // For safety let's start processing from the newest transaction.
-    transactions
-      .filter({
-        ($0.payment.productIdentifier == BraveVPNProductInfo.ProductIdentifiers.monthlySub)
-          || ($0.payment.productIdentifier == BraveVPNProductInfo.ProductIdentifiers.yearlySub)
-      })
+    // Filter for VPN only transactions. We do not want to call `finishTransaction` on other transactions
+    let vpnTransactions = transactions.filter({
+      ($0.payment.productIdentifier == BraveVPNProductInfo.ProductIdentifiers.monthlySub)
+        || ($0.payment.productIdentifier == BraveVPNProductInfo.ProductIdentifiers.yearlySub)
+    })
+
+    // There was no VPN purchases
+    if vpnTransactions.isEmpty {
+      let errorRestore = SKError(SKError.unknown, userInfo: ["detail": "not-purchased"])
+      self.delegate?.purchaseFailed(error: .transactionError(error: errorRestore))
+      return
+    }
+
+    vpnTransactions
       .sorted(by: { $0.transactionDate ?? Date() > $1.transactionDate ?? Date() })
       .forEach { transaction in
         switch transaction.transactionState {
         case .purchased:
           Logger.module.debug("Received transaction state: purchased")
           // This should be always called, no matter if transaction is successful or not.
-          SKPaymentQueue.default().finishTransaction(transaction)
+          queue.finishTransaction(transaction)
           if callPurchaseDelegateOnce {
             Preferences.VPN.subscriptionProductId.value = transaction.payment.productIdentifier
             self.delegate?.purchasedOrRestoredProduct(validateReceipt: true)
@@ -59,7 +65,7 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
         case .restored:
           Logger.module.debug("Received transaction state: restored")
           // This should be always called, no matter if transaction is successful or not.
-          SKPaymentQueue.default().finishTransaction(transaction)
+          queue.finishTransaction(transaction)
 
           if callPurchaseDelegateOnce {
             Preferences.VPN.subscriptionProductId.value = transaction.payment.productIdentifier
@@ -86,14 +92,24 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
           Logger.module.debug("Received transaction state: purchasing")
         case .failed:
           Logger.module.debug("Received transaction state: failed")
-          SKPaymentQueue.default().finishTransaction(transaction)
-          self.delegate?.purchaseFailed(
-            error: .transactionError(error: transaction.error as? SKError)
-          )
+          queue.finishTransaction(transaction)
+          if callPurchaseDelegateOnce {
+            self.delegate?.purchaseFailed(
+              error: .transactionError(error: transaction.error as? SKError)
+            )
+          }
+          callPurchaseDelegateOnce = false
         @unknown default:
           assertionFailure("Unknown transactionState")
         }
       }
+  }
+
+  public func paymentQueue(
+    _ queue: SKPaymentQueue,
+    updatedTransactions transactions: [SKPaymentTransaction]
+  ) {
+    processTransactions(transactions, on: queue)
   }
 
   // MARK: - Restoring Transactions
@@ -115,7 +131,10 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
 
       let errorRestore = SKError(SKError.unknown, userInfo: ["detail": "not-purchased"])
       delegate?.purchaseFailed(error: .transactionError(error: errorRestore))
+      return
     }
+
+    processTransactions(queue.transactions, on: queue)
   }
 
   // MARK: - Handling promoted in-app purchases
