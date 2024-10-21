@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h b/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
-index ead951efd696685e52a8e125357aad9aabfead0c..8dd52683fa07f44b6af853182cc040f18b92e65a 100644
+index 4954048e718931075079e74a76ec70cd78239dfd..4c731efe3c35aa57978f9d09b6d3dc65dfca4658 100644
 --- a/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
 +++ b/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
 @@ -15,10 +15,12 @@
- #include "ui/base/models/simple_menu_model.h"
+ #include "ui/menus/simple_menu_model.h"
  
  class RenderViewContextMenuProxy;
 +class BraveSpellingOptionsSubMenuObserver;
