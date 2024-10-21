@@ -361,7 +361,7 @@ void BraveSyncWorker::PermanentlyDeleteAccount(
 syncer::BraveSyncServiceImpl* BraveSyncWorker::GetSyncService() const {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   return static_cast<syncer::BraveSyncServiceImpl*>(
-      SyncServiceFactory::GetForBrowserState(profile_));
+      SyncServiceFactory::GetForProfile(profile_));
 }
 
 void BraveSyncWorker::SetEncryptionPassphrase(syncer::SyncService* service) {

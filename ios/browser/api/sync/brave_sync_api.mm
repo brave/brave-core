@@ -381,7 +381,7 @@ BraveSyncAPIWordsValidationStatus const
 - (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged
           onSyncServiceShutdown:(void (^)())onSyncServiceShutdown {
   auto* service = static_cast<syncer::SyncServiceImpl*>(
-      SyncServiceFactory::GetForBrowserState(_profile));
+      SyncServiceFactory::GetForProfile(_profile));
   return [[BraveSyncServiceObserver alloc]
       initWithSyncServiceImpl:service
          stateChangedCallback:onSyncServiceStateChanged

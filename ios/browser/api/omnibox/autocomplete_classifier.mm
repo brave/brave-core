@@ -99,7 +99,7 @@ BraveIOSAutocompleteMatchType BraveTypeFromMatchType(
   ProfileIOS* last_used_profile = profiles.at(0);
 
   AutocompleteClassifier* classifier =
-      ios::AutocompleteClassifierFactory::GetForBrowserState(last_used_profile);
+      ios::AutocompleteClassifierFactory::GetForProfile(last_used_profile);
   if (classifier) {
     AutocompleteMatch match;
     classifier->Classify(base::SysNSStringToUTF16(text), false, false,
