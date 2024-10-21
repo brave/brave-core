@@ -52,6 +52,7 @@ class SettingsBraveAccountSignInDialogElement extends PolymerElement {
   private onEmailInput() {
     this.set(
       'isValid.email',
+      // https://www.regular-expressions.info
       Boolean(this.$.email.value.match('^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$'))
     )
   }
