@@ -37,7 +37,7 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
   </cr-button>
 </div>
 
-<template is="dom-if" if="[[isDialogType('entry', dialogType)]]" restamp>
+<template is="dom-if" if="[[isDialogType(dialogTypeEnum.ENTRY, dialogType)]]" restamp>
   <settings-brave-account-entry-dialog
     on-close="onBraveAccountDialogClosed_"
     on-sign-in-button-clicked="onSignInButtonClicked_"
@@ -45,9 +45,17 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
   </settings-brave-account-entry-dialog>
 </template>
 
-<template is="dom-if" if="[[isDialogType('sign-in', dialogType)]]" restamp>
+<template is="dom-if" if="[[isDialogType(dialogTypeEnum.SIGN_IN, dialogType)]]" restamp>
   <settings-brave-account-sign-in-dialog
     on-close="onBraveAccountDialogClosed_"
-    on-back-button-clicked="onBackButtonClicked_">
+    on-back-button-clicked="onBackButtonClicked"
+    on-forgot-password-button-clicked="onForgotPassword">
   </settings-brave-account-sign-in-dialog>
+</template>
+
+<template is="dom-if" if="[[isDialogType(dialogTypeEnum.FORGOT_PASSWORD, dialogType)]]" restamp>
+  <settings-brave-account-forgot-password-dialog
+    on-close="onBraveAccountDialogClosed_"
+    on-back-button-clicked="onBackButtonClicked">
+  </settings-brave-account-forgot-password-dialog>
 </template>

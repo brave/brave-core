@@ -57,6 +57,10 @@ class SettingsBraveAccountSignInDialogElement extends PolymerElement {
     this.$.password.setAttribute('type', isShowing ? 'password' : 'text')
   }
 
+  private onForgotPasswordButtonClicked() {
+    this.dispatchEvent(new CustomEvent('forgot-password-button-clicked'))
+  }
+
   private isEmailValid: boolean = false
   private isPasswordValid: boolean = false
 }
