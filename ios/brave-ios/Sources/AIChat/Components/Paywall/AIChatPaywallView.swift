@@ -32,13 +32,19 @@ struct AIChatPaywallView: View {
   private var selectedTierType: AIChatSubscriptionTier = .monthly
 
   @State
-  private var availableTierTypes: [AIChatSubscriptionTier] = [.monthly]
+  private var availableTierTypes: [AIChatSubscriptionTier] = [.monthly, .yearly]
 
   @ObservedObject
   private(set) var storeSDK = BraveStoreSDK.shared
 
   @State
   private var paymentStatus: AIChatPaymentStatus = .success
+
+  @State
+  private var isMonthlyIntroOfferAvailable: Bool = false
+
+  @State
+  private var isYearlyIntroOfferAvailable: Bool = false
 
   @State
   private var isShowingPurchaseAlert = false
@@ -151,6 +157,9 @@ struct AIChatPaywallView: View {
     .onDisappear {
       iapRestoreTimer?.cancel()
     }
+    .task {
+      await fetchIntroOfferStatus()
+    }
   }
 
   private var tierSelection: some View {
@@ -203,10 +212,18 @@ struct AIChatPaywallView: View {
                 .tint(Color.white)
                 .padding()
             } else {
-              Text(Strings.AIChat.paywallPurchaseActionTitle)
-                .font(.body.weight(.semibold))
-                .foregroundColor(Color(.white))
-                .padding()
+              let isIntroOfferAvailable =
+                (selectedTierType == .monthly && isMonthlyIntroOfferAvailable)
+                || (selectedTierType == .yearly && isYearlyIntroOfferAvailable)
+
+              Text(
+                isIntroOfferAvailable
+                  ? Strings.AIChat.paywallPurchaseActionIntroOfferTitle
+                  : Strings.AIChat.paywallPurchaseActionTitle
+              )
+              .font(.body.weight(.semibold))
+              .foregroundColor(Color(.white))
+              .padding()
             }
           }
           .frame(maxWidth: .infinity)
@@ -281,6 +298,20 @@ struct AIChatPaywallView: View {
       // Show Alert for failure of restore
       isShowingPurchaseAlert = true
     }
+  }
+
+  private func fetchIntroOfferStatus() async {
+    paymentStatus = .ongoing
+
+    isMonthlyIntroOfferAvailable = await storeSDK.isIntroOfferAvailable(
+      for: BraveStoreProduct.leoMonthly
+    )
+
+    isYearlyIntroOfferAvailable = await storeSDK.isIntroOfferAvailable(
+      for: BraveStoreProduct.leoYearly
+    )
+
+    paymentStatus = .success
   }
 }
 
