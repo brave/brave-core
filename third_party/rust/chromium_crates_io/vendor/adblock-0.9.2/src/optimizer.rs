@@ -209,7 +209,7 @@ mod optimization_tests_pattern_group {
     use crate::lists;
     use crate::regex_manager::RegexManager;
     use crate::request::Request;
-    use regex::RegexSet;
+    use regex::bytes::RegexSetBuilder as BytesRegexSetBuilder;
 
     fn check_regex_match(regex: &CompiledRegex, pattern: &str, matches: bool) {
         let is_match = regex.is_match(pattern);
@@ -244,13 +244,15 @@ mod optimization_tests_pattern_group {
 
     #[test]
     fn regex_set_works() {
-        let regex_set = RegexSet::new(&[
+        let regex_set = BytesRegexSetBuilder::new(&[
             r"/static/ad\.",
             "/static/ad-",
             "/static/ad/.*",
             "/static/ads/.*",
             "/static/adv/.*",
-        ]);
+        ])
+        .unicode(false)
+        .build();
 
         let fused_regex = CompiledRegex::CompiledSet(regex_set.unwrap());
         assert!(matches!(fused_regex, CompiledRegex::CompiledSet(_)));
