@@ -603,6 +603,7 @@ export const transactionEndpoints = ({
           const { txService } = baseQuery(undefined).data
 
           const zecTxData: BraveWallet.ZecTxData = {
+            useShieldedPool: payload.useShieldedPool,
             to: payload.to,
             memo: undefined,
             amount: BigInt(payload.value),

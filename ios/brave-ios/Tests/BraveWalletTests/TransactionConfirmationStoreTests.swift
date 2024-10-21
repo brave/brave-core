@@ -683,7 +683,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "",
     coingeckoId: "",
     chainId: "",
-    coin: .eth
+    coin: .eth,
+    isShielded: false
   )
 }
 

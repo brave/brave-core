@@ -31,6 +31,7 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
@@ -635,6 +636,72 @@ TEST(BraveWalletUtilsUnitTest, ZcashNativeAssets) {
       )"));
 }
 
+#if BUILDFLAG(ENABLE_ORCHARD)
+TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssets_FeatureEnabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"}});
+
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+
+  auto assets = GetAllUserAssets(&prefs);
+
+  {
+    const auto count = base::ranges::count_if(
+        assets, [](const mojom::BlockchainTokenPtr& item) {
+          return item->is_shielded == true &&
+                 item->coin == mojom::CoinType::ZEC;
+        });
+
+    EXPECT_EQ(2, count);
+  }
+
+  {
+    const auto count = base::ranges::count_if(
+        assets, [](const mojom::BlockchainTokenPtr& item) {
+          return item->is_shielded == false &&
+                 item->coin == mojom::CoinType::ZEC;
+        });
+
+    EXPECT_EQ(2, count);
+  }
+}
+
+TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssets_FeatureDisabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "false"}});
+
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+
+  auto assets = GetAllUserAssets(&prefs);
+
+  {
+    const auto count = base::ranges::count_if(
+        assets, [](const mojom::BlockchainTokenPtr& item) {
+          return item->is_shielded == true &&
+                 item->coin == mojom::CoinType::ZEC;
+        });
+
+    EXPECT_EQ(0, count);
+  }
+
+  {
+    const auto count = base::ranges::count_if(
+        assets, [](const mojom::BlockchainTokenPtr& item) {
+          return item->is_shielded == false &&
+                 item->coin == mojom::CoinType::ZEC;
+        });
+
+    EXPECT_EQ(2, count);
+  }
+}
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
+
 TEST(BraveWalletUtilsUnitTest, GetAllUserAssets) {
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
@@ -672,18 +739,18 @@ TEST(BraveWalletUtilsUnitTest, GetUserAsset) {
   EXPECT_EQ(GetAllUserAssets(&prefs)[1],
             GetUserAsset(&prefs, mojom::CoinType::ETH, mojom::kMainnetChainId,
                          "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "",
-                         false, false));
+                         false, false, false));
   EXPECT_FALSE(GetUserAsset(
       &prefs, mojom::CoinType::SOL, mojom::kMainnetChainId,
-      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "", false, false))
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "", false, false, false))
       << "Coin type should match";
   EXPECT_FALSE(GetUserAsset(&prefs, mojom::CoinType::ETH, mojom::kSolanaMainnet,
                             "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "",
-                            false, false))
+                            false, false, false))
       << "Chain id should match";
   EXPECT_FALSE(GetUserAsset(
       &prefs, mojom::CoinType::ETH, mojom::kMainnetChainId,
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "", false, false))
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "", false, false, false))
       << "Address should match";
 
   // Test token ID cases.
@@ -693,15 +760,15 @@ TEST(BraveWalletUtilsUnitTest, GetUserAsset) {
       false /* is_erc1155 */, mojom::SPLTokenProgram::kUnsupported,
       true /* is_nft */, false /* is_spam */, "SYMBOL", 8 /* decimals */,
       true /* visible */, "0x11", "" /* coingecko_id */, mojom::kMainnetChainId,
-      mojom::CoinType::ETH);
+      mojom::CoinType::ETH, false);
   ASSERT_TRUE(AddUserAsset(&prefs, erc721_token.Clone()));
   EXPECT_EQ(erc721_token,
             GetUserAsset(&prefs, mojom::CoinType::ETH, mojom::kMainnetChainId,
                          "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x11",
-                         true, false));
+                         true, false, false));
   EXPECT_FALSE(GetUserAsset(
       &prefs, mojom::CoinType::ETH, mojom::kMainnetChainId,
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x22", true, false))
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x22", true, false, false))
       << "Token ID should match";
 
   auto erc1155_token = mojom::BlockchainToken::New(
@@ -710,16 +777,31 @@ TEST(BraveWalletUtilsUnitTest, GetUserAsset) {
       true /* is_erc1155 */, mojom::SPLTokenProgram::kUnsupported,
       true /* is_nft */, false /* is_spam */, "SYMBOL2", 8 /* decimals */,
       true /* visible */, "0x22", "" /* coingecko_id */, mojom::kMainnetChainId,
-      mojom::CoinType::ETH);
+      mojom::CoinType::ETH, false);
   ASSERT_TRUE(AddUserAsset(&prefs, erc1155_token.Clone()));
   EXPECT_EQ(erc1155_token,
             GetUserAsset(&prefs, mojom::CoinType::ETH, mojom::kMainnetChainId,
                          "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", "0x22",
-                         false, true));
+                         false, true, false));
   EXPECT_FALSE(GetUserAsset(
       &prefs, mojom::CoinType::ETH, mojom::kMainnetChainId,
-      "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", "0x11", false, true))
+      "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", "0x11", false, true, false))
       << "Token ID should match";
+
+  EXPECT_FALSE(GetUserAsset(&prefs, mojom::CoinType::ETH, mojom::kZCashMainnet,
+                            "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+                            "0x11", false, true, true))
+      << "Invalid ZEC token";
+
+  EXPECT_EQ(GetZcashNativeShieldedToken(mojom::kZCashMainnet),
+            GetUserAsset(&prefs, mojom::CoinType::ZEC, mojom::kZCashMainnet, "",
+                         "", false, false, true))
+      << "Invalid ZEC token";
+
+  EXPECT_EQ(GetZcashNativeShieldedToken(mojom::kZCashTestnet),
+            GetUserAsset(&prefs, mojom::CoinType::ZEC, mojom::kZCashTestnet, "",
+                         "", false, false, true))
+      << "Invalid ZEC token";
 }
 
 TEST(BraveWalletUtilsUnitTest, AddUserAsset) {
@@ -867,7 +949,8 @@ TEST(BraveWalletUtilsUnitTest, SetAssetSPLTokenProgram) {
   auto asset = mojom::BlockchainToken::New(
       "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ", "TSLA", "tsla.png", false,
       false, false, false, mojom::SPLTokenProgram::kUnknown, false, false,
-      "TSLA", 8, true, "", "", mojom::kSolanaMainnet, mojom::CoinType::SOL);
+      "TSLA", 8, true, "", "", mojom::kSolanaMainnet, mojom::CoinType::SOL,
+      false);
   ASSERT_TRUE(AddUserAsset(&prefs, asset->Clone()));
 
   ASSERT_TRUE(
@@ -876,7 +959,7 @@ TEST(BraveWalletUtilsUnitTest, SetAssetSPLTokenProgram) {
   EXPECT_EQ(asset,
             GetUserAsset(&prefs, mojom::CoinType::SOL, mojom::kSolanaMainnet,
                          "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ", "",
-                         false, false));
+                         false, false, false));
 
   EXPECT_TRUE(SetAssetSPLTokenProgram(&prefs, asset,
                                       mojom::SPLTokenProgram::kToken2022));
@@ -884,7 +967,7 @@ TEST(BraveWalletUtilsUnitTest, SetAssetSPLTokenProgram) {
   EXPECT_EQ(asset,
             GetUserAsset(&prefs, mojom::CoinType::SOL, mojom::kSolanaMainnet,
                          "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ", "",
-                         false, false));
+                         false, false, false));
 }
 
 TEST(BraveWalletUtilsUnitTest, SetAssetCompressed) {

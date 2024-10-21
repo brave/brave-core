@@ -151,7 +151,8 @@ export const AddNftForm = (props: Props) => {
         isErc721:
           !!customTokenID &&
           customAssetsNetwork.coin !== BraveWallet.CoinType.SOL,
-        isNft: true
+        isNft: true,
+        isShielded: false
       }
     }, [customAssetsNetwork, tokenContractAddress, customTokenID])
 
@@ -305,7 +306,8 @@ export const AddNftForm = (props: Props) => {
       isErc721:
         matchedTokenInfo?.isErc721 ??
         (!!customTokenID &&
-          customAssetsNetwork.coin !== BraveWallet.CoinType.SOL)
+          customAssetsNetwork.coin !== BraveWallet.CoinType.SOL),
+      isShielded: false
     }
 
     if (selectedAsset) {
