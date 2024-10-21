@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/creative_ad_cache.h"
 
-#include <optional>
-
 #include "base/containers/contains.h"
 #include "base/functional/overloaded.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
@@ -16,21 +14,21 @@ namespace brave_ads {
 
 namespace {
 
-bool IsCreativeAdVariantValid(const CreativeAdVariant& creative_ad_variant) {
+bool IsValid(const CreativeAdVariant& creative_ad_variant) {
   return absl::visit(
       base::Overloaded{
-          [](const mojom::CreativeSearchResultAdInfoPtr& search_result_ad)
-              -> bool { return !!search_result_ad; }},
+          [](const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad)
+              -> bool { return !!mojom_creative_ad; }},
       creative_ad_variant);
 }
 
-std::optional<CreativeAdVariant> CloneCreativeAdVariant(
+std::optional<CreativeAdVariant> Clone(
     const CreativeAdVariant& creative_ad_variant) {
   return absl::visit(
       base::Overloaded{
-          [](const mojom::CreativeSearchResultAdInfoPtr& search_result_ad)
+          [](const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad)
               -> std::optional<CreativeAdVariant> {
-            return search_result_ad.Clone();
+            return mojom_creative_ad.Clone();
           }},
       creative_ad_variant);
 }
@@ -47,7 +45,7 @@ CreativeAdCache::~CreativeAdCache() {
 
 void CreativeAdCache::MaybeAdd(const std::string& placement_id,
                                CreativeAdVariant creative_ad_variant) {
-  if (!IsCreativeAdVariantValid(creative_ad_variant)) {
+  if (!IsValid(creative_ad_variant)) {
     return;
   }
 
@@ -58,19 +56,17 @@ void CreativeAdCache::MaybeAdd(const std::string& placement_id,
   }
 }
 
-std::optional<CreativeAdVariant> CreativeAdCache::MaybeGet(
-    const std::string& placement_id) {
+///////////////////////////////////////////////////////////////////////////////
+
+std::optional<CreativeAdVariant> CreativeAdCache::MaybeGetCreativeAdVariant(
+    const std::string& placement_id) const {
   const auto iter = creative_ad_variants_.find(placement_id);
   if (iter == creative_ad_variants_.cend()) {
     return std::nullopt;
   }
   const auto& creative_ad_variant = iter->second;
 
-  return CloneCreativeAdVariant(creative_ad_variant);
-}
-
-void CreativeAdCache::OnDidCloseTab(const int32_t tab_id) {
-  PurgePlacements(tab_id);
+  return Clone(creative_ad_variant);
 }
 
 void CreativeAdCache::PurgePlacements(const int32_t tab_id) {
@@ -82,6 +78,10 @@ void CreativeAdCache::PurgePlacements(const int32_t tab_id) {
     creative_ad_variants_.erase(placement_id);
   }
   placement_ids_.erase(tab_id);
+}
+
+void CreativeAdCache::OnDidCloseTab(const int32_t tab_id) {
+  PurgePlacements(tab_id);
 }
 
 }  // namespace brave_ads

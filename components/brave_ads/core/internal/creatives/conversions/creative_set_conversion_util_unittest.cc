@@ -85,7 +85,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest, GetCreativeSetConversionCounts) {
   AdEventInfo ad_event_2 =
       BuildAdEvent(ad, mojom::ConfirmationType::kConversion,
                    /*created_at=*/test::Now());
-  ad_event_2.creative_set_id = "4e83a23c-1194-40f8-8fdc-2f38d7ed75c8";
+  ad_event_2.creative_set_id = test::kAnotherCreativeSetId;
   ad_events.push_back(ad_event_2);
 
   const AdEventInfo ad_event_3 =
@@ -124,8 +124,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 
   const CreativeSetConversionInfo creative_set_conversion_2 =
       test::BuildCreativeSetConversion(
-          /*creative_set_id=*/"4e83a23c-1194-40f8-8fdc-2f38d7ed75c8",
-          /*url_pattern=*/"https://www.qux.com/",
+          test::kAnotherCreativeSetId, /*url_pattern=*/"https://www.qux.com/",
           /*observation_window=*/base::Days(7));  // Bucket #2
   creative_set_conversions.push_back(creative_set_conversion_2);
 
@@ -174,8 +173,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 
   const CreativeSetConversionInfo creative_set_conversion_2 =
       test::BuildCreativeSetConversion(
-          /*creative_set_id=*/"4e83a23c-1194-40f8-8fdc-2f38d7ed75c8",
-          /*url_pattern=*/"https://baz.com/",
+          test::kAnotherCreativeSetId, /*url_pattern=*/"https://baz.com/",
           /*observation_window=*/base::Days(30));  // Bucket #1
   creative_set_conversions.push_back(creative_set_conversion_2);
   creative_set_conversions.push_back(creative_set_conversion_2);
@@ -216,8 +214,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 
   const CreativeSetConversionInfo creative_set_conversion_2 =
       test::BuildCreativeSetConversion(
-          /*creative_set_id=*/"4e83a23c-1194-40f8-8fdc-2f38d7ed75c8",
-          /*url_pattern=*/"https://baz.com/",
+          test::kAnotherCreativeSetId, /*url_pattern=*/"https://baz.com/",
           /*observation_window=*/base::Days(30));  // Bucket #2
   creative_set_conversions.push_back(creative_set_conversion_2);
   creative_set_conversions.push_back(creative_set_conversion_2);
@@ -268,10 +265,9 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   creative_set_conversions.push_back(creative_set_conversion_1);
 
   const CreativeSetConversionInfo creative_set_conversion_2 =
-      test::BuildCreativeSetConversion(
-          /*creative_set_id=*/"4e83a23c-1194-40f8-8fdc-2f38d7ed75c8",
-          /*url_pattern=*/"https://www.qux.com/",
-          /*observation_window=*/base::Days(3));
+      test::BuildCreativeSetConversion(test::kAnotherCreativeSetId,
+                                       /*url_pattern=*/"https://www.qux.com/",
+                                       /*observation_window=*/base::Days(3));
   creative_set_conversions.push_back(creative_set_conversion_2);
 
   // Act

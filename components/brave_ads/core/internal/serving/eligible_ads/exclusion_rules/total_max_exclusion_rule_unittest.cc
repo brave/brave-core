@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/total_max_exclusion_rule.h"
 
+#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -15,20 +16,12 @@
 
 namespace brave_ads {
 
-namespace {
-
-constexpr const char* kCreativeSetIds[] = {
-    "654f10df-fbc4-4a92-8d43-2edf73734a60",
-    "465f10df-fbc4-4a92-8d43-4edf73734a60"};
-
-}  // namespace
-
 class BraveAdsTotalMaxExclusionRuleTest : public test::TestBase {};
 
 TEST_F(BraveAdsTotalMaxExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIds[0];
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.total_max = 2;
 
   const TotalMaxExclusionRule exclusion_rule(/*ad_events=*/{});
@@ -40,7 +33,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
 TEST_F(BraveAdsTotalMaxExclusionRuleTest, ShouldIncludeIfZero) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIds[0];
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.total_max = 0;
 
   const TotalMaxExclusionRule exclusion_rule(/*ad_events=*/{});
@@ -52,7 +45,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest, ShouldIncludeIfZero) {
 TEST_F(BraveAdsTotalMaxExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIds[0];
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.total_max = 2;
 
   AdEventList ad_events;
@@ -72,11 +65,11 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest,
        ShouldIncludeIfDoesNotExceedCapForNoMatchingCreatives) {
   // Arrange
   CreativeAdInfo creative_ad_1;
-  creative_ad_1.creative_set_id = kCreativeSetIds[0];
+  creative_ad_1.creative_set_id = test::kCreativeSetId;
   creative_ad_1.total_max = 2;
 
   CreativeAdInfo creative_ad_2;
-  creative_ad_2.creative_set_id = kCreativeSetIds[1];
+  creative_ad_2.creative_set_id = test::kAnotherCreativeSetId;
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
@@ -95,7 +88,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest,
 TEST_F(BraveAdsTotalMaxExclusionRuleTest, ShouldExcludeIfExceedsCap) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIds[0];
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.total_max = 2;
 
   AdEventList ad_events;

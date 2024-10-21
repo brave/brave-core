@@ -23,14 +23,14 @@ constexpr char kPaymentTokensAsJson[] =
             "ad_type": "ad_notification",
             "confirmation_type": "view",
             "public_key": "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=",
-            "transaction_id": "0d9de7ce-b3f9-4158-8726-23d52b9457c6",
+            "transaction_id": "8b742869-6e4a-490c-ac31-31b49130098a",
             "unblinded_token": "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY"
           },
           {
             "ad_type": "ad_notification",
             "confirmation_type": "view",
             "public_key": "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=",
-            "transaction_id": "0d9de7ce-b3f9-4158-8726-23d52b9457c6",
+            "transaction_id": "8b742869-6e4a-490c-ac31-31b49130098a",
             "unblinded_token": "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K"
           }
         ])";

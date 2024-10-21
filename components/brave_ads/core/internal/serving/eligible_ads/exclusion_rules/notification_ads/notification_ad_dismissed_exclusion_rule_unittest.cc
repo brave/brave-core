@@ -24,13 +24,6 @@
 
 namespace brave_ads {
 
-namespace {
-
-constexpr const char* kCampaignIds[] = {"60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
-                                        "90762cee-d5bb-4a0d-baaf-61cd7f18e07e"};
-
-}  // namespace
-
 class BraveAdsDismissedExclusionRuleTest : public test::TestBase {};
 
 TEST_F(BraveAdsDismissedExclusionRuleTest, ShouldAlwaysInclude) {
@@ -42,7 +35,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest, ShouldAlwaysInclude) {
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
@@ -61,7 +54,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
 
   const NotificationAdDismissedExclusionRule exclusion_rule(/*ad_events=*/{});
 
@@ -79,7 +72,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
 
   const std::vector<mojom::ConfirmationType> mojom_confirmation_types = {
       mojom::ConfirmationType::kViewedImpression,
@@ -113,7 +106,7 @@ TEST_F(
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
 
   AdEventList ad_events;
 
@@ -157,7 +150,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
 
   const std::vector<mojom::ConfirmationType> mojom_confirmation_types = {
       mojom::ConfirmationType::kViewedImpression,
@@ -191,7 +184,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
 
   const std::vector<mojom::ConfirmationType> mojom_confirmation_types = {
       mojom::ConfirmationType::kViewedImpression,
@@ -228,7 +221,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
 
   const std::vector<mojom::ConfirmationType> mojom_confirmation_types = {
       mojom::ConfirmationType::kViewedImpression,
@@ -262,7 +255,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
 
   const std::vector<mojom::ConfirmationType> mojom_confirmation_types = {
       mojom::ConfirmationType::kViewedImpression,
@@ -299,7 +292,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
 
   const std::vector<mojom::ConfirmationType> mojom_confirmation_types = {
       mojom::ConfirmationType::kViewedImpression,
@@ -337,7 +330,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
 
   const std::vector<mojom::ConfirmationType> mojom_confirmation_types = {
       mojom::ConfirmationType::kViewedImpression,
@@ -373,7 +366,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad.campaign_id = kCampaignIds[0];
+  creative_ad.campaign_id = test::kCampaignId;
 
   const std::vector<mojom::ConfirmationType> mojom_confirmation_types = {
       mojom::ConfirmationType::kViewedImpression,
@@ -408,11 +401,11 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   CreativeAdInfo creative_ad_1;
   creative_ad_1.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad_1.campaign_id = kCampaignIds[0];
+  creative_ad_1.campaign_id = test::kCampaignId;
 
   CreativeAdInfo creative_ad_2;
   creative_ad_2.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad_2.campaign_id = kCampaignIds[1];
+  creative_ad_2.campaign_id = test::kAnotherCampaignId;
 
   const std::vector<mojom::ConfirmationType> mojom_confirmation_types = {
       mojom::ConfirmationType::kViewedImpression,
@@ -441,11 +434,11 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   // Arrange
   CreativeAdInfo creative_ad_1;
   creative_ad_1.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad_1.campaign_id = kCampaignIds[0];
+  creative_ad_1.campaign_id = test::kCampaignId;
 
   CreativeAdInfo creative_ad_2;
   creative_ad_2.creative_instance_id = test::kCreativeInstanceId;
-  creative_ad_2.campaign_id = kCampaignIds[1];
+  creative_ad_2.campaign_id = test::kAnotherCampaignId;
 
   const std::vector<mojom::ConfirmationType> mojom_confirmation_types = {
       mojom::ConfirmationType::kViewedImpression,

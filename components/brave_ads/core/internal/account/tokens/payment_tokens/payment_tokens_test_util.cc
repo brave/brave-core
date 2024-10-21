@@ -3,13 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_test_util.h"
+
 #include <cstddef>
 #include <string>
 #include <vector>
 
 #include "base/check_op.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transaction_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
@@ -21,7 +23,7 @@ namespace {
 PaymentTokenInfo BuildPaymentToken(const std::string& payment_token_base64) {
   PaymentTokenInfo payment_token;
 
-  payment_token.transaction_id = "0d9de7ce-b3f9-4158-8726-23d52b9457c6";
+  payment_token.transaction_id = test::kTransactionId;
 
   payment_token.unblinded_token = cbr::UnblindedToken(payment_token_base64);
   CHECK(payment_token.unblinded_token.has_value());
