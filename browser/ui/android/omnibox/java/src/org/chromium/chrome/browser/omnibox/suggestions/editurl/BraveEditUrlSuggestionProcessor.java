@@ -37,14 +37,14 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
     public boolean doesProcessSuggestion(@NonNull AutocompleteMatch suggestion, int position) {
         // Edit url suggestion only applicable to the first entry.
         Tab activeTab = mTabSupplier.get();
-        if (position == 0
-                && activeTab != null
-                && ((suggestion.getType() == OmniboxSuggestionType.URL_WHAT_YOU_TYPED
-                                && tabMatchesSuggestion(activeTab, suggestion))
-                        || suggestion.getUrl().equals(activeTab.getUrl()))) {
-            // Show edit url suggestion for typed URLs.
-            // If url hasn't changed we still want to show the edit url suggestion.
-            return true;
+        if (position == 0 && activeTab != null) {
+            if ((suggestion.getType() == OmniboxSuggestionType.URL_WHAT_YOU_TYPED
+                            && tabMatchesSuggestion(activeTab, suggestion))
+                    || suggestion.getUrl().equals(activeTab.getUrl())) {
+                // Show edit url suggestion for typed URLs.
+                // If url hasn't changed we still want to show the edit url suggestion.
+                return true;
+            }
         }
 
         return super.doesProcessSuggestion(suggestion, position);
