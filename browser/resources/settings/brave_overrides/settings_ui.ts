@@ -36,6 +36,7 @@ RegisterStyleOverride(
         --brave-settings-content-max-width: 708px;
         --brave-settings-menu-width: var(--settings-menu-width);
         --brave-settings-menu-margin: 12px;
+        background-color: var(--leo-color-container-background);
       }
 
       /** Styling tweaks for the settings-menu when we display it inside the
@@ -49,19 +50,22 @@ RegisterStyleOverride(
       cr-drawer settings-menu::part(header) {
         display: none;
       }
-
+      .cr-container-shadow {
+        display: none !important;
+     }
       #container {
         /* menu and content next to each other in the horizontal center */
-        justify-content: center;
-        background: #F1F3F5; /* neutral100 */
       }
       #left {
-        /* fixed size menu */
-        flex: 0 0 calc(var(--settings-menu-width) + var(--brave-settings-menu-margin) * 2)  !important;
+        max-width: 250px;
       }
       #main {
-        /* Take up rest of container up to a max */
-        flex: 0 1 var(--brave-settings-content-max-width) !important;
+        margin: var(--leo-spacing-m) var(--leo-spacing-m) var(--leo-spacing-m) 0;
+        height: calc(100% - 40px);
+        background: var(--leo-color-page-background);
+        padding-bottom: var(--leo-spacing-2xl);
+        border-radius: var(--leo-radius-xl) var(--leo-radius-m) var(--leo-radius-m) var(--leo-radius-xl);
+        overflow: scroll;
       }
       #right {
         /* this element is only a space filler in chromium */
@@ -69,7 +73,13 @@ RegisterStyleOverride(
       }
       @media (prefers-color-scheme: dark) {
         #container {
-          background: #1E2127;
+        }
+      }
+      @media (max-width: 980px) {
+        #main {
+          margin: 0;
+          border-radius: 0;
+          min-height: 100%;
         }
       }
     </style>
