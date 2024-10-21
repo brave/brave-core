@@ -799,7 +799,8 @@ export class MockedWalletApiProxy {
           contractAddress: contract,
           registry: this.tokenBalancesRegistry,
           tokenId: '',
-          coin: BraveWallet.CoinType.ETH
+          coin: BraveWallet.CoinType.ETH,
+          isShielded: false
         }),
         error: 0,
         errorMessage: ''
@@ -826,7 +827,8 @@ export class MockedWalletApiProxy {
           contractAddress,
           registry: this.tokenBalancesRegistry,
           tokenId,
-          coin: BraveWallet.CoinType.ETH
+          coin: BraveWallet.CoinType.ETH,
+          isShielded: false
         }),
         error: 0,
         errorMessage: ''
@@ -853,7 +855,8 @@ export class MockedWalletApiProxy {
           contractAddress,
           registry: this.tokenBalancesRegistry,
           tokenId,
-          coin: BraveWallet.CoinType.ETH
+          coin: BraveWallet.CoinType.ETH,
+          isShielded: false
         }),
         error: 0,
         errorMessage: ''
@@ -888,7 +891,8 @@ export class MockedWalletApiProxy {
         contractAddress: tokenMintAddress,
         registry: this.tokenBalancesRegistry,
         tokenId: '',
-        coin: BraveWallet.CoinType.SOL
+        coin: BraveWallet.CoinType.SOL,
+        isShielded: false
       })
 
       return {
@@ -932,7 +936,8 @@ export class MockedWalletApiProxy {
           coin: BraveWallet.CoinType.SOL,
           contractAddress: token.contractAddress,
           registry: this.tokenBalancesRegistry,
-          tokenId: ''
+          tokenId: '',
+          isShielded: false
         })
 
         return {
@@ -1019,7 +1024,8 @@ export class MockedWalletApiProxy {
           contractAddress: id.contractAddress,
           registry: this.tokenBalancesRegistry,
           tokenId: id.tokenId,
-          coin
+          coin,
+          isShielded: false
         })
 
         return BigInt(amount)
@@ -1248,7 +1254,8 @@ export class MockedWalletApiProxy {
           contractAddress: token.contractAddress,
           registry: this.tokenBalancesRegistry,
           tokenId: token.tokenId,
-          coin: token.coin
+          coin: token.coin,
+          isShielded: token.isShielded
         })
         const priceUsd = unbiasedRandom(0.00000001, 100_000)
         return {

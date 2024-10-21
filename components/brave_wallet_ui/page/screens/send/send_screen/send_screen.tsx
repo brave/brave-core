@@ -413,6 +413,7 @@ export const SendScreen = React.memo((props: Props) => {
 
       case BraveWallet.CoinType.ZEC: {
         await sendZecTransaction({
+          useShieldedPool: true,
           network: networkFromParams,
           fromAccount,
           to: toAddress,

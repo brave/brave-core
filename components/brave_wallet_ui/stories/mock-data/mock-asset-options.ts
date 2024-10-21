@@ -130,6 +130,7 @@ export const mockBasicAttentionToken = {
   tokenId: '',
   coingeckoId: '',
   coin: BraveWallet.CoinType.ETH,
+  isShielded: false,
   chainId: '0x1'
 }
 
@@ -150,6 +151,7 @@ export const mockBinanceCoinErc20Token = {
   tokenId: '',
   coingeckoId: '',
   coin: BraveWallet.CoinType.ETH,
+  isShielded: false,
   chainId: '0x1'
 }
 
@@ -170,6 +172,7 @@ export const mockBitcoinErc20Token = {
   tokenId: '',
   coingeckoId: '',
   coin: BraveWallet.CoinType.ETH,
+  isShielded: false,
   chainId: '0x1'
 }
 
@@ -190,6 +193,7 @@ export const mockAlgorandErc20Token = {
   tokenId: '',
   coingeckoId: '',
   coin: BraveWallet.CoinType.ETH,
+  isShielded: false,
   chainId: '0x1'
 }
 
@@ -210,6 +214,7 @@ export const mockZrxErc20Token = {
   tokenId: '',
   coingeckoId: '',
   coin: BraveWallet.CoinType.ETH,
+  isShielded: false,
   chainId: '0x1'
 }
 
@@ -230,6 +235,7 @@ export const mockDaiToken = {
   tokenId: '',
   visible: true,
   coin: BraveWallet.CoinType.ETH,
+  isShielded: false,
   chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 
@@ -250,6 +256,7 @@ export const mockUSDCoin = {
   tokenId: '',
   visible: true,
   coin: BraveWallet.CoinType.ETH,
+  isShielded: false,
   chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 
@@ -270,6 +277,7 @@ export const mockMoonCatNFT: BraveWallet.BlockchainToken = {
   tokenId: '0x42a5',
   coingeckoId: '',
   coin: BraveWallet.CoinType.ETH,
+  isShielded: false,
   chainId: '0x1'
 }
 
@@ -290,6 +298,7 @@ export const mockERC20Token: BraveWallet.BlockchainToken = {
   tokenId: '',
   coingeckoId: '',
   coin: BraveWallet.CoinType.ETH,
+  isShielded: false,
   chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 
@@ -310,6 +319,7 @@ export const mockErc721Token: BraveWallet.BlockchainToken = {
   tokenId: '0x0a19',
   coingeckoId: '',
   coin: BraveWallet.CoinType.ETH,
+  isShielded: false,
   chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 
@@ -330,6 +340,7 @@ export const mockSplNft: BraveWallet.BlockchainToken = {
   tokenId: 'wt1PhURTzRSgmWKHBEJgSX8hN9TdkdNoKhPAnwCmnZE',
   coingeckoId: '',
   coin: BraveWallet.CoinType.SOL,
+  isShielded: false,
   chainId: BraveWallet.SOLANA_MAINNET
 }
 
@@ -400,6 +411,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     tokenId: '',
     coingeckoId: '',
     coin: BraveWallet.CoinType.ETH,
+    isShielded: false,
     chainId: '0x1'
   },
   {
@@ -419,6 +431,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     tokenId: '',
     coingeckoId: '',
     coin: BraveWallet.CoinType.ETH,
+    isShielded: false,
     chainId: '0xaa36a7'
   },
   {
@@ -438,6 +451,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     tokenId: '',
     coingeckoId: '',
     coin: BraveWallet.CoinType.ETH,
+    isShielded: false,
     chainId: '0x1'
   },
   {
@@ -457,6 +471,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     tokenId: '',
     coingeckoId: '',
     coin: BraveWallet.CoinType.ETH,
+    isShielded: false,
     chainId: '0x1'
   },
   {
@@ -476,6 +491,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     tokenId: '',
     coingeckoId: '',
     coin: BraveWallet.CoinType.ETH,
+    isShielded: false,
     chainId: '0x1'
   },
   mockMoonCatNFT,

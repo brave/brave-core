@@ -178,6 +178,9 @@ export const AssetDetailsHeader = (props: Props) => {
     ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0
     : false
 
+  console.error('xxxzzz asset ' + selectedAsset?.name + ' ' + selectedAsset?.isShielded)
+  const assetName = selectedAsset?.isShielded ? selectedAsset?.name + '(shielded)' : selectedAsset?.name  
+
   return (
     <Row
       padding={isPanel ? '12px 20px' : '24px 0px'}
@@ -221,7 +224,7 @@ export const AssetDetailsHeader = (props: Props) => {
           )}
           <Column alignItems='flex-start'>
             {selectedAsset ? (
-              <AssetNameText>{selectedAsset?.name ?? ''}</AssetNameText>
+              <AssetNameText>{assetName ?? ''}</AssetNameText>
             ) : (
               <Skeleton
                 height={'18px'}
