@@ -330,8 +330,7 @@ void TestRewardsEngineClient::ReconcileStampReset() {}
 void TestRewardsEngineClient::RunDBTransaction(
     mojom::DBTransactionPtr transaction,
     RunDBTransactionCallback callback) {
-  auto response = engine_database_.RunTransaction(std::move(transaction));
-  std::move(callback).Run(std::move(response));
+  engine_database_.RunTransaction(std::move(transaction), std::move(callback));
 }
 
 void TestRewardsEngineClient::Log(const std::string& file,
