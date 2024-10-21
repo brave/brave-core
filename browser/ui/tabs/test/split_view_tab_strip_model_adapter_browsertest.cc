@@ -30,7 +30,9 @@ class SplitViewTabStripModelAdapterBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model();
   }
   SplitViewBrowserData& data() const { return *split_view_browser_data_; }
-  SplitViewTabStripModelAdapter& adapter() const { return *adapter_; }
+  SplitViewTabStripModelAdapter& adapter() const {
+    return split_view_browser_data_->tab_strip_model_adapter_;
+  }
 
   std::unique_ptr<content::WebContents> CreateWebContents() {
     content::WebContents::CreateParams params(browser()->profile());
@@ -43,21 +45,14 @@ class SplitViewTabStripModelAdapterBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    split_view_browser_data_.reset(new SplitViewBrowserData(nullptr));
-    split_view_browser_data_->is_testing_ = true;
-    split_view_browser_data_->tab_strip_model_for_testing_ = tab_strip_model();
-    split_view_browser_data_->tab_strip_model_adapter_ =
-        std::make_unique<SplitViewTabStripModelAdapter>(
-            *split_view_browser_data_, tab_strip_model());
-
-    adapter_ = split_view_browser_data_->tab_strip_model_adapter_.get();
+    CHECK(browser());
+    split_view_browser_data_.reset(new SplitViewBrowserData(browser()));
   }
 
  private:
   base::test::ScopedFeatureList feature_list_;
 
   std::unique_ptr<SplitViewBrowserData> split_view_browser_data_;
-  raw_ptr<SplitViewTabStripModelAdapter> adapter_;
 };
 
 IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
