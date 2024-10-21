@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_UI_TOOLBAR_BOOKMARK_BAR_SUB_MENU_MODEL_H_
 
 #include "base/memory/raw_ptr.h"
-#include "ui/base/models/simple_menu_model.h"
+#include "ui/menus/simple_menu_model.h"
 
 class Profile;
 

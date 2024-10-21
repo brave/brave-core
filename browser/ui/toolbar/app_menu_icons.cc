@@ -12,9 +12,9 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "ui/base/models/image_model.h"
-#include "ui/base/models/simple_menu_model.h"
 #include "ui/color/color_id.h"
 #include "ui/gfx/vector_icon_types.h"
+#include "ui/menus/simple_menu_model.h"
 
 namespace {
 

@@ -13,6 +13,7 @@ source_set("unit_tests") {
   sources = [ "brave_vpn_dns_observer_service_win_unittest.cc" ]
   deps = [
     "//brave/components/brave_vpn/common",
+    "//chrome/browser/prefs",
     "//chrome/common:constants",
     "//chrome/test:test_support",
     "//net",
