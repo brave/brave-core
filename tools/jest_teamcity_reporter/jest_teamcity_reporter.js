@@ -265,6 +265,10 @@ class TeamcityReporter {
    * @param {Record<string, any>} params
    */
   tcServiceMessage(name, params) {
+    const flowId = process.env.TEAMCITY_FLOW_ID
+    if (flowId) {
+      params.flowId = flowId
+    }
     let paramsStr = ''
     for (const [paramName, paramValue] of Object.entries(params)) {
       assert(paramValue !== undefined && paramValue !== null)

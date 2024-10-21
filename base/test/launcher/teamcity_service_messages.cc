@@ -5,6 +5,10 @@
 
 #include "brave/base/test/launcher/teamcity_service_messages.h"
 
+#include <string>
+
+#include "base/environment.h"
+#include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
 
 namespace base {
@@ -58,6 +62,17 @@ TeamcityServiceMessages::Message::Message(std::ostream& ostream,
 }
 
 TeamcityServiceMessages::Message::~Message() {
+  static const base::NoDestructor<std::string> kFlowId([] {
+    const auto environment = Environment::Create();
+    std::string result;
+    environment->GetVar("TEAMCITY_FLOW_ID", &result);
+    return result;
+  }());
+
+  if (!kFlowId->empty()) {
+    WriteProperty("flowId", *kFlowId);
+  }
+
   sstream_ << "]" << std::endl;
   // Important: output into stdout in a single call to not mix with outputs from
   // other threads.

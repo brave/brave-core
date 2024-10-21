@@ -18,7 +18,7 @@ BASE_FEATURE(kBraveCleanupSessionCookiesOnSessionRestore,
 BASE_FEATURE(kBraveCopyCleanLinkByDefault,
              "brave-copy-clean-link-by-default",
 #if BUILDFLAG(IS_MAC)
-             base::FEATURE_DISABLED_BY_DEFAULT
+             base::FEATURE_DISABLED_BY_DEFAUL
 #else
              base::FEATURE_ENABLED_BY_DEFAULT
 #endif
