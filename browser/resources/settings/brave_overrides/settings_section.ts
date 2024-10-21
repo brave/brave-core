@@ -11,10 +11,26 @@ RegisterStyleOverride(
   html`
     <style include="settings-shared">
       #header .title {
-        font-weight: 500 !important;
+        font-size: var(--leo-typography-heading-h3-font-size) !important;
+        font-weight: 600 !important;
+        padding-top: var(--leo-spacing-xl) !important;
+        padding-bottom: var(--leo-spacing-xl) !important;
+        margin-bottom: 0 !important;
+        letter-spacing: 0 !important;
       }
       :host(:not(.expanded)) #card {
         box-shadow: var(--leo-effect-elevation-01) !important;
+        background-color: var(--leo-color-container-background) !important;
+        border-radius: var(--leo-radius-m) !important;
+      }
+      .cr-row {
+        border-top: var(--leo-color-divider-subtle) !important;
+      }
+      .cr-row:first-child {
+        border-top: none !important;
+      }
+      .cr-centered-card-container {
+        height: auto !important;
       }
       </style>
   `
