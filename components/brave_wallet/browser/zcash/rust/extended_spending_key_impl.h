@@ -35,6 +35,8 @@ class ExtendedSpendingKeyImpl : ExtendedSpendingKey {
 
   OrchardFullViewKey GetFullViewKey() override;
 
+  OrchardSpendingKey GetSpendingKey() override;
+
  private:
   friend class ExtendedSpendingKey;
   explicit ExtendedSpendingKeyImpl(rust::Box<OrchardExtendedSpendingKey> esk);

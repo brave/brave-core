@@ -36,9 +36,11 @@ class TestingBuilderImpl : public OrchardDecodedBlocksBundle::TestingBuilder {
 
   std::unique_ptr<OrchardDecodedBlocksBundle> Complete() override {
     if (frontier_chain_state_) {
-      LOG(ERROR) << "XXXZZZ with frontier " << frontier_chain_state_->frontier_tree_state.size();
+      LOG(ERROR) << "XXXZZZ with frontier "
+                 << frontier_chain_state_->frontier_tree_state.size();
       ::rust::Vec<uint8_t> frontier_tree_state;
-      base::ranges::copy(frontier_chain_state_->frontier_tree_state, std::back_inserter(frontier_tree_state));
+      base::ranges::copy(frontier_chain_state_->frontier_tree_state,
+                         std::back_inserter(frontier_tree_state));
       auto orchard_chain_state = OrchardFrontierChainState{
           frontier_tree_state, frontier_chain_state_->frontier_block_height,
           frontier_chain_state_->frontier_orchard_tree_size};

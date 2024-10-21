@@ -18,7 +18,8 @@ class ZCashScanBlocksTask {
                      ZCashShieldSyncService::Error>)>;
 
   ZCashScanBlocksTask(ZCashShieldSyncService* sync_service,
-                      ZCashScanBlocksTaskObserver observer);
+                      ZCashScanBlocksTaskObserver observer,
+                      std::optional<uint32_t> to);
   ~ZCashScanBlocksTask();
 
   void Start();
@@ -31,7 +32,7 @@ class ZCashScanBlocksTask {
   void ScheduleWorkOnTask();
   void WorkOnTask();
 
-  void GetLatestScannedBlock();
+  void GetAccountMeta();
   void OnGetAccountMeta(base::expected<ZCashOrchardStorage::AccountMeta,
                                        ZCashOrchardStorage::Error> result);
 
@@ -47,9 +48,12 @@ class ZCashScanBlocksTask {
 
   raw_ptr<ZCashShieldSyncService> sync_service_;
   ZCashScanBlocksTaskObserver observer_;
+  std::optional<uint32_t> to_;
+  std::optional<uint32_t> start_block_;
+  std::optional<uint32_t> end_block_;
 
   std::optional<ZCashShieldSyncService::Error> error_;
-  std::optional<uint32_t> latest_scanned_block_;
+  std::optional<ZCashOrchardStorage::AccountMeta> account_meta_;
   std::optional<uint32_t> chain_tip_block_;
   std::optional<std::deque<ScanRange>> scan_ranges_;
   std::optional<size_t> initial_ranges_count_;

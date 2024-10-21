@@ -9,12 +9,14 @@ use std::{fmt, vec};
 use orchard::{
     builder:: {
         BuildError as OrchardBuildError, InProgress, Unauthorized, Unproven
-    }, bundle::{commitments, Bundle}, keys::{FullViewingKey as OrchardFVK, PreparedIncomingViewingKey, Scope as OrchardScope}, note:: {
+    }, bundle::{commitments, Bundle}, keys::{FullViewingKey as OrchardFVK, PreparedIncomingViewingKey, Scope as OrchardScope, SpendingKey}, note:: {
         ExtractedNoteCommitment, Nullifier, RandomSeed
     }, note_encryption:: {
         CompactAction, OrchardDomain
     }, tree::MerkleHashOrchard, zip32::{ChildIndex as OrchardChildIndex, Error as Zip32Error, ExtendedSpendingKey}
 };
+
+use orchard::keys::SpendAuthorizingKey;
 
 use zcash_note_encryption::EphemeralKeyBytes;
 use zcash_primitives::transaction::components::amount::Amount;
@@ -144,7 +146,7 @@ macro_rules! impl_result {
     };
 }
 
-pub(crate) const PRUNING_DEPTH: u8 = 10;
+pub(crate) const PRUNING_DEPTH: u8 = 100;
 pub(crate) const SHARD_HEIGHT: u8 = 16;
 pub(crate) const TREE_HEIGHT: u8 = 32;
 pub(crate) const CHUNK_SIZE: usize = 1024;
@@ -224,6 +226,7 @@ mod ffi {
 
     struct OrchardSpend {
         fvk: [u8; 96],
+        sk: [u8; 32],
         // Note value
         value: u32,
         addr: [u8; 43],
@@ -376,6 +379,10 @@ mod ffi {
             self: &OrchardExtendedSpendingKey
         ) -> [u8; 96];  // Array size sohuld match kOrchardFullViewKeySize
 
+        fn spending_key(
+            self: &OrchardExtendedSpendingKey
+        ) -> [u8; 32];  // Array size should match kSpendingKeySize
+
         fn is_ok(self: &OrchardAuthorizedBundleResult) -> bool;
         fn error_message(self: &OrchardAuthorizedBundleResult) -> String;
         fn unwrap(self: &OrchardAuthorizedBundleResult) -> Box<OrchardAuthorizedBundle>;
@@ -426,21 +433,14 @@ mod ffi {
         fn item(self: &OrchardWitnessBundle, index: usize) -> [u8; 32];
 
         fn create_shard_tree(ctx: UniquePtr<ShardStoreContext>) -> Box<OrchardShardTreeBundleResult>;
+
         fn insert_commitments(self: &mut OrchardShardTreeBundle, scan_result: &mut BatchOrchardDecodeBundle) -> bool;
         fn calculate_witness(self: &mut OrchardShardTreeBundle, commitment_tree_position: u32, checkpoint: u32) -> Box<OrchardWitnessBundleResult>;
-  
+        fn truncate(self: &mut OrchardShardTreeBundle, checkpoint_id: u32) -> bool;
 
-        fn create_mock_decode_result_with_frontier(frontier: OrchardFrontierChainState, commitments: FfiCommitments) -> Box<BatchOrchardDecodeBundleResult>;
-        fn create_mock_decode_result(commitments: FfiCommitments) -> Box<BatchOrchardDecodeBundleResult>;
-        fn create_testing_shard_tree(ctx: UniquePtr<ShardStoreContext>) -> Box<OrchardTestingShardTreeBundleResult>;
-
-        fn append(self: &mut OrchardTestingShardTreeBundle, v: [u8; 32], checkpoint: bool, marked: bool) -> bool;
         fn insert_commitments(self: &mut OrchardTestingShardTreeBundle, scan_result: &mut BatchOrchardDecodeBundle) -> bool;
         fn calculate_witness(self: &mut OrchardTestingShardTreeBundle, commitment_tree_position: u32, checkpoint: u32) -> Box<OrchardWitnessBundleResult>;
-        fn root(self: &mut OrchardTestingShardTreeBundle, level: u8, index: u32) -> Box<OrchardRootBundleResult>;
-
-        //fn insert_commitment(self: &mut OrchardTestingShardTreeBundle, h: MerkleHashOrchard, checkpoint: bool, marked: bool) -> bool;
-        fn insert_frontier(self: &mut OrchardTestingShardTreeBundle, frontier: OrchardFrontierChainState) -> bool;
+        fn truncate(self: &mut OrchardTestingShardTreeBundle, checkpoint_id: u32) -> bool;
         
         fn value(self: &OrchardRootBundle) -> [u8; 32];
         fn is_ok(self: &OrchardRootBundleResult) -> bool;
@@ -449,6 +449,9 @@ mod ffi {
 
         // Size matches kOrchardCmxSize in zcash_utils
         fn create_mock_commitment(position: u32, seed: u32) -> [u8; 32];
+        fn create_mock_decode_result_with_frontier(frontier: OrchardFrontierChainState, commitments: FfiCommitments) -> Box<BatchOrchardDecodeBundleResult>;
+        fn create_mock_decode_result(commitments: FfiCommitments) -> Box<BatchOrchardDecodeBundleResult>;
+        fn create_testing_shard_tree(ctx: UniquePtr<ShardStoreContext>) -> Box<OrchardTestingShardTreeBundleResult>;
     }
 
     unsafe extern "C++" {
@@ -577,7 +580,8 @@ enum OrchardRandomSource {
 #[derive(Clone)]
 pub struct OrchardUnauthorizedBundleValue {
     unauthorized_bundle: Bundle<InProgress<Unproven, Unauthorized>, Amount>,
-    rng: OrchardRandomSource
+    rng: OrchardRandomSource,
+    asks: Vec<SpendAuthorizingKey>
 }
 
 // Authorized bundle is a bundle where inputs are signed with signature digests
@@ -725,6 +729,12 @@ impl OrchardExtendedSpendingKey {
     ) -> [u8; 96] {
         OrchardFVK::from(&self.0).to_bytes()
     }
+
+    fn spending_key(
+        self: &OrchardExtendedSpendingKey
+    ) -> [u8; 32] {
+        *self.0.sk().to_bytes()
+    }
 }
 
 impl OrchardAuthorizedBundle {
@@ -755,11 +765,15 @@ fn create_orchard_builder_internal(
         orchard::builder::BundleType::DEFAULT,
         anchor);
 
+    let mut asks: Vec<SpendAuthorizingKey> = vec![];
+
     for spend in spends {
         let fvk = OrchardFVK::from_bytes(&spend.fvk);
         if fvk.is_none().into() {
             return Box::new(OrchardUnauthorizedBundleResult::from(Err(Error::FvkError)))
         }
+
+        println!("--- auth_path {:?}", &spend.merkle_path.auth_path.len());
         let auth_path = spend.merkle_path.auth_path.iter().map(|v| {
             let v = MerkleHashOrchard::from_bytes(&v.hash);
             if v.is_some().into() {
@@ -773,6 +787,7 @@ fn create_orchard_builder_internal(
             return Box::new(OrchardUnauthorizedBundleResult::from(Err(Error::WitnessError)))
         }
 
+        println!("---- spend position {:?}", spend.merkle_path.position);
         let merkle_path = MerklePath::from_parts(
             spend.merkle_path.position,
             auth_path.unwrap().try_into().unwrap(),
@@ -790,6 +805,13 @@ fn create_orchard_builder_internal(
         if addr.is_none().into() {
             return Box::new(OrchardUnauthorizedBundleResult::from(Err(Error::WrongInputError)))
         }
+        println!("--- addr {:?}", &addr);
+        println!("--- rho {:?}", &rho);
+        println!("--- rseed {:?}", &rseed);
+        println!("--- value {:?}", &spend.value);
+        println!("--- value {:?}", &merkle_path);
+        println!("--- fvk {:?}", &fvk);
+
         let note = orchard::Note::from_parts(
             addr.unwrap(),
             NoteValue::from_raw(u64::from(spend.value)),
@@ -801,6 +823,7 @@ fn create_orchard_builder_internal(
         }
 
         let _ = builder.add_spend(fvk.unwrap(), note.unwrap(), merkle_path);
+        asks.push(SpendAuthorizingKey::from(&SpendingKey::from_bytes(spend.sk).unwrap()));
     }
 
     for out in outputs {
@@ -820,7 +843,8 @@ fn create_orchard_builder_internal(
                 .and_then(|builder| {
                     builder.map(|bundle| OrchardUnauthorizedBundleValue {
                         unauthorized_bundle: bundle.0,
-                        rng: OrchardRandomSource::OsRng(rng) }).ok_or(Error::BuildError)
+                        rng: OrchardRandomSource::OsRng(rng),
+                        asks: asks }).ok_or(Error::BuildError)                        
                 })
         },
         OrchardRandomSource::MockRng(mut rng) => {
@@ -829,7 +853,8 @@ fn create_orchard_builder_internal(
                 .and_then(|builder| {
                     builder.map(|bundle| OrchardUnauthorizedBundleValue {
                         unauthorized_bundle: bundle.0,
-                        rng: OrchardRandomSource::MockRng(rng) }).ok_or(Error::BuildError)
+                        rng: OrchardRandomSource::MockRng(rng), asks: asks
+                    }).ok_or(Error::BuildError)                       
                 })
         }
     }))
@@ -859,6 +884,7 @@ impl OrchardUnauthorizedBundle {
 
     fn complete(self: &OrchardUnauthorizedBundle, sighash: [u8; 32]) -> Box<OrchardAuthorizedBundleResult> {
         use zcash_primitives::transaction::components::orchard::write_v5_bundle;
+        println!("----- asks {:?}", &self.0.asks);
         Box::new(OrchardAuthorizedBundleResult::from(match self.0.rng.clone() {
             OrchardRandomSource::OsRng(mut rng) => {
                 self.0.unauthorized_bundle.clone()
@@ -867,7 +893,7 @@ impl OrchardUnauthorizedBundle {
                             b.apply_signatures(
                                 &mut rng,
                                 sighash,
-                                &[],
+                                &self.0.asks,
                             )
                         })
             },
@@ -878,7 +904,7 @@ impl OrchardUnauthorizedBundle {
                             b.apply_signatures(
                                 &mut rng,
                                 sighash,
-                                &[],
+                                &self.0.asks,
                             )
                         })
             }
@@ -909,8 +935,6 @@ fn batch_decode(
     frontier_chain_state: OrchardFrontierChainState,
     actions: Vec<OrchardCompactAction>
 ) -> Box<BatchOrchardDecodeBundleResult> {
-    let block_height : u32 = 0;
-
     let fvk = match OrchardFVK::from_bytes(fvk_bytes) {
         Some(fvk) => fvk,
         None => return Box::new(BatchOrchardDecodeBundleResult::from(Err(Error::FvkError)))
@@ -920,6 +944,8 @@ fn batch_decode(
         PreparedIncomingViewingKey::new(&fvk.to_ivk(OrchardScope::External)),
         PreparedIncomingViewingKey::new(&fvk.to_ivk(OrchardScope::Internal))
     ];
+
+    println!("--- actions count {:?} ", actions.len());
 
     let input_actions: Result<Vec<(OrchardDomain, OrchardCompactAction)>, Error> = actions
         .into_iter()
@@ -953,6 +979,7 @@ fn batch_decode(
         Err(e) => return Box::new(BatchOrchardDecodeBundleResult::from(Err(e.into())))
     };
 
+    println!("--- input_actions count {:?} ", input_actions.len());
     let mut decrypted_len = 0;
     let (decrypted_opts, _decrypted_len) = (
         batch::try_compact_note_decryption(&ivks, &input_actions)
@@ -972,13 +999,15 @@ fn batch_decode(
 
     for (output_idx, ((_, output), decrypted_note)) in
          input_actions.iter().zip(decrypted_opts).enumerate() {
+        println!("---- @#$!@#$!@#");
 
         // let node = extract_note_commitment(output);
         // If the commitment is the last in the block, ensure that is is retained as a checkpoint
-        let is_checkpoint = &output.is_block_last_action/*  && last_commitments_in_block */;
+        let is_checkpoint = &output.is_block_last_action;
+        let block_id = &output.block_id;
         let retention : Retention<BlockHeight> = match (decrypted_note.is_some(), is_checkpoint) {
             (is_marked, true) => Retention::Checkpoint {
-                id: block_height.into(),
+                id: BlockHeight::from_u32(*block_id),
                 is_marked,
             },
             (true, false) => Retention::Marked,
@@ -1022,6 +1051,8 @@ fn batch_decode(
             // ));
         }        
     }
+
+    println!("----- {:?}", &note_commitments.len());
 
     Box::new(BatchOrchardDecodeBundleResult::from(Ok(BatchOrchardDecodeBundleValue {
         fvk: *fvk_bytes,
@@ -1093,12 +1124,16 @@ fn insert_frontier<const COMMITMENT_TREE_DEPTH: u8, const SHARD_HEIGHT: u8>(
 fn insert_commitments<const COMMITMENT_TREE_DEPTH: u8, const CHUNK_SIZE: usize, const SHARD_HEIGHT: u8>(
       shard_tree: &mut ShardTree<CxxShardStoreImpl<orchard::tree::MerkleHashOrchard, SHARD_HEIGHT>, COMMITMENT_TREE_DEPTH, SHARD_HEIGHT>,
       scan_result: &mut BatchOrchardDecodeBundle) -> bool {
+    println!("---- insert_commitments ");
+
     // Insert to the end of the tree by default
-    let mut start_position : u64 = match shard_tree.max_leaf_position(0) {
-        Ok(Some(pos)) => pos.into(),
-        Ok(None) => 0,
-        _ => return false
-    };
+    // let mut start_position : u64 = match shard_tree.max_leaf_position(0) {
+    //     Ok(Some(pos)) => pos.into(),
+    //     Ok(None) => 0,
+    //     _ => return false
+    // };
+    let mut start_position : u64 = 0;
+    println!("---- insert_commitments 1");
 
     match &scan_result.0.frontier_chain_state {
         // Don't insert frontier if frontier_tree_state is empty
@@ -1121,6 +1156,7 @@ fn insert_commitments<const COMMITMENT_TREE_DEPTH: u8, const CHUNK_SIZE: usize, 
     shard_tree.batch_insert(
         Position::from(start_position),
         scan_result.0.commitments.clone().into_iter().map(|c| {
+            println!("--- retention {:?}", c.unwrap().1);
             (
                 c.unwrap().0, c.unwrap().1
                 // if c.1 == 2 {
@@ -1154,7 +1190,7 @@ fn insert_commitments<const COMMITMENT_TREE_DEPTH: u8, const CHUNK_SIZE: usize, 
     //     let _ = shard_tree.insert_tree(tree, checkpoints);
     // }
     println!("-- size test");
-    println!("---shard tree size {:?}", shard_tree.max_leaf_position(0));
+    // println!("---shard tree size {:?}", shard_tree.max_leaf_position(0));
 
     true
 }
@@ -1183,73 +1219,28 @@ impl OrchardShardTreeBundle {
             }
         }
     }
+
+    fn truncate(self: &mut OrchardShardTreeBundle, checkpoint: u32) -> bool {
+        self.0.tree.truncate_removing_checkpoint(&BlockHeight::from_u32(checkpoint)).is_ok()
+    }
 }
 
-
 impl OrchardTestingShardTreeBundle {
-
-    fn root(self: &mut OrchardTestingShardTreeBundle, level: u8, index: u32) -> Box<OrchardRootBundleResult> {
-        let address = Address::from_parts(level.into(), index.into());
-        let truncate_at = self.0.tree.max_leaf_position(0).map_err(|_| Error::ShardStoreError).unwrap();
-        match truncate_at {
-            Some(truncate_at) => {
-                let root = self.0.tree.root(address, truncate_at);
-                match root {
-                    Ok(root) => Box::new(OrchardRootBundleResult::from(Ok(OrchardRootBundleValue { value: root.to_bytes() }))),
-                    Err(_) => Box::new(OrchardRootBundleResult::from(Err(Error::ShardStoreError)))
-                }
-            },
-            None => Box::new(OrchardRootBundleResult::from(Err(Error::ShardStoreError)))
-        }
-    }
-
-    fn append(self: &mut OrchardTestingShardTreeBundle, _v: [u8; 32], _checkpoint: bool, _marked: bool) -> bool {
-        true
-    }
-
-    fn insert_frontier(self: &mut OrchardTestingShardTreeBundle, frontier: OrchardFrontierChainState) -> bool {
-        let frontier_commitment_tree = read_commitment_tree::<MerkleHashOrchard, _, TESTING_TREE_HEIGHT>(
-            &frontier.frontier_tree_state[..]);
-    
-        if frontier_commitment_tree.is_err() {
-            return false;
-        }
-        
-        let frontier_result = self.0.tree.insert_frontier(
-            frontier_commitment_tree.unwrap().to_frontier(),
-            Retention::Checkpoint {
-                id: BlockHeight::from_u32(frontier.frontier_block_height),
-                // Check whether is_marked == true
-                is_marked: false,
-            },
-        );
-    
-        if frontier_result.is_err() {
-            return false;
-        }
-    
-        println!("XXXZZZ frontier inserted");
-        true
-    }
-
     fn insert_commitments(self: &mut OrchardTestingShardTreeBundle, scan_result: &mut BatchOrchardDecodeBundle) -> bool {
         insert_commitments::<TESTING_TREE_HEIGHT, TESTING_CHUNK_SIZE, TESTING_SHARD_HEIGHT>(&mut self.0.tree, scan_result)
     }
 
     fn calculate_witness(self: &mut OrchardTestingShardTreeBundle, commitment_tree_position: u32, checkpoint: u32) -> Box<OrchardWitnessBundleResult> {
-        println!("witness inputs {:?} {:?} {:?}", &commitment_tree_position, &checkpoint, self.0.tree.max_leaf_position(0));
-        //self.0.tree.max_leaf_position(checkpoint_depth)
         match self.0.tree.witness_at_checkpoint_id_caching((commitment_tree_position as u64).into(), &checkpoint.into()) {
-            Ok(witness) => {
-                println!("witness {:?}", &witness.path_elems());
-                Box::new(OrchardWitnessBundleResult::from(Ok(OrchardWitnessBundleValue { path: witness.into() })))
-            },
-            Err(e) => {
-                eprintln!("Error occurred: {}", e);
-                Box::new(OrchardWitnessBundleResult::from(Err(Error::WitnessError)))
-            }
+            Ok(witness) => Box::new(OrchardWitnessBundleResult::from(Ok(OrchardWitnessBundleValue { path: witness.into() }))),
+            Err(_e) => Box::new(OrchardWitnessBundleResult::from(Err(Error::WitnessError)))
+
         }
-    } 
+    }
+
+    fn truncate(self: &mut OrchardTestingShardTreeBundle, checkpoint: u32) -> bool {
+        self.0.tree.truncate_removing_checkpoint(&BlockHeight::from_u32(checkpoint)).is_ok()
+    }
 }
 
 impl OrchardWitnessBundle {
@@ -1422,8 +1413,10 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
             let tree = LocatedPrunableTree::<H>::try_from(&into)?;
             return Ok(Some(tree));
         } else if result == ShardStoreStatusCode::None {
+            println!("---- no last shard");
             return Ok(Option::None);
         } else {
+            println!("---- last shard error");
             return Err(Error::ShardStoreError);
         }
     }

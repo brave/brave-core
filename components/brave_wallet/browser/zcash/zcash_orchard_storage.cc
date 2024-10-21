@@ -80,6 +80,12 @@ base::expected<std::optional<OrchardShardRootHash>, std::string> ReadRootHash(
 
 }  // namespace
 
+ZCashOrchardStorage::AccountMeta::AccountMeta() = default;
+ZCashOrchardStorage::AccountMeta::~AccountMeta() = default;
+ZCashOrchardStorage::AccountMeta::AccountMeta(const AccountMeta&) = default;
+ZCashOrchardStorage::AccountMeta& ZCashOrchardStorage::AccountMeta::operator=(
+    const AccountMeta&) = default;
+
 ZCashOrchardStorage::ZCashOrchardStorage(base::FilePath path_to_database)
     : db_file_path_(std::move(path_to_database)) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -151,6 +157,7 @@ bool ZCashOrchardStorage::CreateSchema() {
                             "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                             "account_id TEXT NOT NULL,"
                             "amount INTEGER NOT NULL,"
+                            "addr BLOB NOT NULL,"
                             "block_id INTEGER NOT NULL,"
                             "commitment_tree_position INTEGER,"
                             "nullifier BLOB NOT NULL UNIQUE,"
@@ -166,8 +173,8 @@ bool ZCashOrchardStorage::CreateSchema() {
                             " ("
                             "account_id TEXT NOT NULL PRIMARY KEY,"
                             "account_birthday INTEGER NOT NULL,"
-                            "latest_scanned_block INTEGER NOT NULL,"
-                            "latest_scanned_block_hash TEXT NOT NULL);") &&
+                            "latest_scanned_block INTEGER,"
+                            "latest_scanned_block_hash TEXT);") &&
          database_->Execute(
              "CREATE TABLE " kShardTree
              " ("
@@ -207,33 +214,28 @@ bool ZCashOrchardStorage::UpdateSchema() {
 }
 
 base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::RegisterAccount(
-    mojom::AccountIdPtr account_id,
-    uint32_t account_birthday_block,
-    const std::string& account_birthday_block_hash) {
+ZCashOrchardStorage::RegisterAccount(mojom::AccountIdPtr account_id,
+                                     uint32_t account_birthday_block) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
-        Error{ErrorCode::kDbInitError, "Failed to init database "});
+        Error{ErrorCode::kDbInitError, "Failed to init database"});
   }
 
   sql::Transaction transaction(database_.get());
   if (!transaction.Begin()) {
     return base::unexpected(
-        Error{ErrorCode::kDbInitError, "Failed to init database "});
+        Error{ErrorCode::kDbInitError, "Failed to start transaction"});
   }
 
   sql::Statement register_account_statement(database_->GetCachedStatement(
       SQL_FROM_HERE, "INSERT INTO " kAccountMeta " "
-                     "(account_id, account_birthday, latest_scanned_block, "
-                     "latest_scanned_block_hash) "
-                     "VALUES (?, ?, ?, ?)"));
+                     "(account_id, account_birthday) "
+                     "VALUES (?, ?)"));
 
   register_account_statement.BindString(0, account_id->unique_key);
   register_account_statement.BindInt64(1, account_birthday_block);
-  register_account_statement.BindInt64(2, account_birthday_block);
-  register_account_statement.BindString(3, account_birthday_block_hash);
 
   if (!register_account_statement.Run()) {
     return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
@@ -241,12 +243,13 @@ ZCashOrchardStorage::RegisterAccount(
   }
 
   if (!transaction.Commit()) {
-    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+    return base::unexpected(Error{ErrorCode::kFailedToCommitTransaction,
                                   database_->GetErrorMessage()});
   }
 
-  return AccountMeta{account_birthday_block, account_birthday_block,
-                     account_birthday_block_hash};
+  AccountMeta meta;
+  meta.account_birthday = account_birthday_block;
+  return meta;
 }
 
 base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
@@ -272,16 +275,26 @@ ZCashOrchardStorage::GetAccountMeta(mojom::AccountIdPtr account_id) {
 
   AccountMeta account_meta;
   auto account_birthday = ReadUint32(resolve_account_statement, 0);
-  auto latest_scanned_block = ReadUint32(resolve_account_statement, 1);
-  if (!account_birthday || !latest_scanned_block) {
+  if (!account_birthday) {
     return base::unexpected(
         Error{ErrorCode::kInternalError, "Database format error"});
   }
+  account_meta.account_birthday = account_birthday.value();
 
-  account_meta.account_birthday = *account_birthday;
-  account_meta.latest_scanned_block_id = *latest_scanned_block;
-  account_meta.latest_scanned_block_hash =
-      resolve_account_statement.ColumnString(2);
+  if (resolve_account_statement.GetColumnType(1) != sql::ColumnType::kNull) {
+    auto latest_scanned_block = ReadUint32(resolve_account_statement, 1);
+    if (!latest_scanned_block) {
+      return base::unexpected(
+          Error{ErrorCode::kInternalError, "Database format error"});
+    }
+    account_meta.latest_scanned_block_id = latest_scanned_block.value();
+  }
+
+  if (resolve_account_statement.GetColumnType(2) != sql::ColumnType::kNull) {
+    account_meta.latest_scanned_block_hash =
+        resolve_account_statement.ColumnString(2);
+  }
+
   return account_meta;
 }
 
@@ -339,6 +352,69 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::HandleChainReorg(
   }
 
   return std::nullopt;
+}
+
+base::expected<bool, ZCashOrchardStorage::Error>
+ZCashOrchardStorage::ResetAccountSyncState(mojom::AccountIdPtr account_id) {
+  LOG(ERROR) << "XXXZZZ reset account sync state";
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!EnsureDbInit()) {
+    return base::unexpected(
+        Error{ErrorCode::kDbInitError, database_->GetErrorMessage()});
+  }
+
+  // Clear cap
+  sql::Statement clear_cap_statement(database_->GetCachedStatement(
+      SQL_FROM_HERE, "DELETE FROM " kShardTreeCap " WHERE account_id = ?;"));
+  clear_cap_statement.BindString(0, account_id->unique_key);
+
+  // Clear shards
+  sql::Statement clear_shards_statement(database_->GetCachedStatement(
+      SQL_FROM_HERE, "DELETE FROM " kShardTree " WHERE account_id = ?;"));
+  clear_shards_statement.BindString(0, account_id->unique_key);
+
+  // Clear discovered notes
+  sql::Statement clear_discovered_notes(database_->GetCachedStatement(
+      SQL_FROM_HERE, "DELETE FROM " kNotesTable " WHERE account_id = ?;"));
+  clear_discovered_notes.BindString(0, account_id->unique_key);
+
+  // Clear spent notes
+  sql::Statement clear_spent_notes(database_->GetCachedStatement(
+      SQL_FROM_HERE, "DELETE FROM " kSpentNotesTable " WHERE account_id = ?;"));
+  clear_spent_notes.BindString(0, account_id->unique_key);
+
+  // Clear checkpoints
+  sql::Statement clear_checkpoints_statement(database_->GetCachedStatement(
+      SQL_FROM_HERE,
+      "DELETE FROM " kShardTreeCheckpoints " WHERE account_id = ?;"));
+  clear_checkpoints_statement.BindString(0, account_id->unique_key);
+
+  // Update account meta
+  sql::Statement update_account_meta(database_->GetCachedStatement(
+      SQL_FROM_HERE, "UPDATE " kAccountMeta " "
+                     "SET latest_scanned_block = NULL, "
+                     "latest_scanned_block_hash = NULL WHERE account_id = ?;"));
+  update_account_meta.BindString(0, account_id->unique_key);
+
+  sql::Transaction transaction(database_.get());
+  if (!transaction.Begin()) {
+    return base::unexpected(
+        Error{ErrorCode::kDbInitError, database_->GetErrorMessage()});
+  }
+
+  if (!clear_cap_statement.Run() || !clear_shards_statement.Run() ||
+      !clear_discovered_notes.Run() || !clear_spent_notes.Run() ||
+      !clear_checkpoints_statement.Run() || !update_account_meta.Run()) {
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_->GetErrorMessage()});
+  }
+
+  if (!transaction.Commit()) {
+    return base::unexpected(Error{ErrorCode::kFailedToCommitTransaction,
+                                  database_->GetErrorMessage()});
+  }
+
+  return true;
 }
 
 base::expected<std::vector<OrchardNoteSpend>, ZCashOrchardStorage::Error>
@@ -455,15 +531,22 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::UpdateNotes(
   // Insert found notes to the notes table
   sql::Statement statement_populate_notes(database_->GetCachedStatement(
       SQL_FROM_HERE, "INSERT INTO " kNotesTable " "
-                     "(account_id, amount, block_id, nullifier) "
-                     "VALUES (?, ?, ?, ?);"));
+                     "(account_id, amount, block_id, commitment_tree_position, "
+                     "nullifier, rho, rseed, addr) "
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?);"));
 
   for (const auto& note : found_notes) {
     statement_populate_notes.Reset(true);
     statement_populate_notes.BindString(0, account_id->unique_key);
     statement_populate_notes.BindInt64(1, note.amount);
     statement_populate_notes.BindInt64(2, note.block_id);
-    statement_populate_notes.BindBlob(3, note.nullifier);
+    statement_populate_notes.BindInt64(3,
+                                       note.orchard_commitment_tree_position);
+    statement_populate_notes.BindBlob(4, note.nullifier);
+    statement_populate_notes.BindBlob(5, note.rho);
+    statement_populate_notes.BindBlob(6, note.seed);
+    statement_populate_notes.BindBlob(7, note.addr);
+
     if (!statement_populate_notes.Run()) {
       return Error{ErrorCode::kFailedToExecuteStatement,
                    database_->GetErrorMessage()};
@@ -561,8 +644,8 @@ ZCashOrchardStorage::GetCap(mojom::AccountIdPtr account_id) {
 
   if (!resolve_cap.Step()) {
     if (!resolve_cap.Succeeded()) {
-      return base::unexpected(
-          Error{ErrorCode::kFailedToExecuteStatement, database_->GetErrorMessage()});
+      return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                    database_->GetErrorMessage()});
     }
     return std::nullopt;
   }
@@ -600,27 +683,24 @@ base::expected<bool, ZCashOrchardStorage::Error> ZCashOrchardStorage::PutCap(
 
   sql::Statement stmnt;
   if (!existing_cap.value()) {
-    stmnt.Assign(database_->GetCachedStatement(
-        SQL_FROM_HERE,
-        "INSERT INTO " kShardTreeCap
-        " "
-        "(account_id, cap_data) "
-        "VALUES (?, ?);"));
+    stmnt.Assign(database_->GetCachedStatement(SQL_FROM_HERE,
+                                               "INSERT INTO " kShardTreeCap " "
+                                               "(account_id, cap_data) "
+                                               "VALUES (?, ?);"));
     stmnt.BindString(0, account_id->unique_key);
     stmnt.BindBlob(1, cap.data);
   } else {
     stmnt.Assign(database_->GetCachedStatement(
-        SQL_FROM_HERE,
-        "UPDATE " kShardTreeCap " "
-        "SET "
-        "cap_data = ? WHERE account_id = ?;"));
+        SQL_FROM_HERE, "UPDATE " kShardTreeCap " "
+                       "SET "
+                       "cap_data = ? WHERE account_id = ?;"));
     stmnt.BindBlob(0, cap.data);
     stmnt.BindString(1, account_id->unique_key);
   }
 
   if (!stmnt.Run()) {
-    return base::unexpected(
-        Error{ErrorCode::kFailedToExecuteStatement, database_->GetErrorMessage()});
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_->GetErrorMessage()});
   }
 
   if (!transaction.Commit()) {
@@ -831,15 +911,17 @@ ZCashOrchardStorage::GetShard(mojom::AccountIdPtr account_id,
   }
 
   sql::Statement resolve_shard_statement(database_->GetCachedStatement(
-      SQL_FROM_HERE,
-      "SELECT root_hash, shard_data FROM " kShardTree
-      " "
-      "WHERE account_id = ? AND shard_index = ?;"));
+      SQL_FROM_HERE, "SELECT root_hash, shard_data FROM " kShardTree " "
+                     "WHERE account_id = ? AND shard_index = ?;"));
 
   resolve_shard_statement.BindString(0, account_id->unique_key);
   resolve_shard_statement.BindInt64(1, address.index);
 
   if (!resolve_shard_statement.Step()) {
+    if (!resolve_shard_statement.Succeeded()) {
+      return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                    database_->GetErrorMessage()});
+    }
     return std::nullopt;
   }
 
@@ -851,8 +933,7 @@ ZCashOrchardStorage::GetShard(mojom::AccountIdPtr account_id,
   LOG(ERROR) << "XXXZZZ 2";
 
   auto shard_data = resolve_shard_statement.ColumnBlob(1);
-  auto shard = OrchardShard(address, hash.value(),
-                            std::vector<uint8_t>());
+  auto shard = OrchardShard(address, hash.value(), std::vector<uint8_t>());
   LOG(ERROR) << "XXXZZZ 3";
 
   base::ranges::copy(shard_data, std::back_inserter(shard.shard_data));
@@ -872,6 +953,7 @@ ZCashOrchardStorage::LastShard(mojom::AccountIdPtr account_id,
   if (!shard_index.value()) {
     return std::nullopt;
   }
+  LOG(ERROR) << "XXXZZZ last shard index " << shard_index.value().value();
 
   return GetShard(
       account_id.Clone(),
@@ -920,7 +1002,8 @@ ZCashOrchardStorage::AddCheckpoint(mojom::AccountIdPtr account_id,
                                    OrchardCheckpoint checkpoint) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  LOG(ERROR) << "XXXZZZ AddCheckpoint " << checkpoint_id << " " << checkpoint.tree_state_position.value_or(0);
+  LOG(ERROR) << "XXXZZZ AddCheckpoint " << checkpoint_id << " "
+             << checkpoint.tree_state_position.value_or(0);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -1036,8 +1119,9 @@ ZCashOrchardStorage::CheckpointCount(mojom::AccountIdPtr account_id) {
   }
 
   sql::Statement resolve_checkpoints_count(database_->GetCachedStatement(
-      SQL_FROM_HERE, "SELECT COUNT(*) FROM " kShardTreeCheckpoints));
-
+      SQL_FROM_HERE,
+      "SELECT COUNT(*) FROM " kShardTreeCheckpoints " WHERE account_id = ?;"));
+  resolve_checkpoints_count.BindString(0, account_id->unique_key);
   if (!resolve_checkpoints_count.Step()) {
     return base::unexpected(
         Error{ErrorCode::kNoCheckpoints, database_->GetErrorMessage()});
@@ -1063,11 +1147,18 @@ ZCashOrchardStorage::MinCheckpointId(mojom::AccountIdPtr account_id) {
   }
 
   sql::Statement resolve_min_checkpoint_id(database_->GetCachedStatement(
-      SQL_FROM_HERE, "SELECT MIN(checkpoint_id) FROM " kShardTreeCheckpoints));
+      SQL_FROM_HERE, "SELECT MIN(checkpoint_id) FROM " kShardTreeCheckpoints
+                     " WHERE account_id = ?;"));
+
+  resolve_min_checkpoint_id.BindString(0, account_id->unique_key);
 
   if (!resolve_min_checkpoint_id.Step()) {
-    return base::unexpected(
-        Error{ErrorCode::kNoCheckpoints, database_->GetErrorMessage()});
+    if (!resolve_min_checkpoint_id.Succeeded()) {
+      return base::unexpected(
+          Error{ErrorCode::kNoCheckpoints, database_->GetErrorMessage()});
+    } else {
+      return std::nullopt;
+    }
   }
 
   if (resolve_min_checkpoint_id.GetColumnType(0) == sql::ColumnType::kNull) {
@@ -1087,11 +1178,17 @@ ZCashOrchardStorage::MaxCheckpointId(mojom::AccountIdPtr account_id) {
   }
 
   sql::Statement resolve_max_checkpoint_id(database_->GetCachedStatement(
-      SQL_FROM_HERE, "SELECT MAX(checkpoint_id) FROM " kShardTreeCheckpoints));
+      SQL_FROM_HERE, "SELECT MAX(checkpoint_id) FROM " kShardTreeCheckpoints
+                     " WHERE account_id = ?;"));
+  resolve_max_checkpoint_id.BindString(0, account_id->unique_key);
 
   if (!resolve_max_checkpoint_id.Step()) {
-    return base::unexpected(
-        Error{ErrorCode::kNoCheckpoints, database_->GetErrorMessage()});
+    if (!resolve_max_checkpoint_id.Succeeded()) {
+      return base::unexpected(
+          Error{ErrorCode::kNoCheckpoints, database_->GetErrorMessage()});
+    } else {
+      return std::nullopt;
+    }
   }
 
   if (resolve_max_checkpoint_id.GetColumnType(0) == sql::ColumnType::kNull) {
@@ -1284,6 +1381,8 @@ base::expected<std::optional<uint32_t>, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::GetMaxCheckpointedHeight(mojom::AccountIdPtr account_id,
                                               uint32_t chain_tip_height,
                                               uint32_t min_confirmations) {
+  LOG(ERROR) << "XXXZZZ GetMaxCheckpointedHeight " << chain_tip_height << " "
+             << CheckpointCount(account_id.Clone()).value();
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -1295,15 +1394,21 @@ ZCashOrchardStorage::GetMaxCheckpointedHeight(mojom::AccountIdPtr account_id,
 
   sql::Statement get_max_checkpointed_height(database_->GetCachedStatement(
       SQL_FROM_HERE, "SELECT checkpoint_id FROM " kShardTreeCheckpoints " "
-                     "WHERE checkpoint_id <= :max_checkpoint_height "
+                     "WHERE checkpoint_id <= ? AND "
+                     "account_id = ? "
                      "ORDER BY checkpoint_id DESC "
                      "LIMIT 1"));
 
   get_max_checkpointed_height.BindInt64(0, max_checkpointed_height);
+  get_max_checkpointed_height.BindString(1, account_id->unique_key);
 
   if (!get_max_checkpointed_height.Step()) {
-    return base::unexpected(
-        Error{ErrorCode::kNoCheckpoints, database_->GetErrorMessage()});
+    if (!get_max_checkpointed_height.Succeeded()) {
+      return base::unexpected(
+          Error{ErrorCode::kNoCheckpoints, database_->GetErrorMessage()});
+    } else {
+      return std::nullopt;
+    }
   }
 
   auto value = ReadUint32(get_max_checkpointed_height, 0);

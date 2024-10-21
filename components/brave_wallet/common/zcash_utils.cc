@@ -192,10 +192,8 @@ std::optional<OrchardInput> OrchardInput::FromValue(
   return result;
 }
 
-FrontierChainState::FrontierChainState() {
-}
-FrontierChainState::~FrontierChainState() {
-}
+FrontierChainState::FrontierChainState() {}
+FrontierChainState::~FrontierChainState() {}
 FrontierChainState::FrontierChainState(const FrontierChainState&) = default;
 
 OrchardNoteWitness::OrchardNoteWitness() = default;

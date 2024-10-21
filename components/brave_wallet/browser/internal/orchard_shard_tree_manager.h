@@ -22,6 +22,8 @@ class OrchardShardTreeManager {
   base::expected<std::vector<OrchardInput>, std::string> CalculateWitness(
       std::vector<OrchardInput> notes,
       uint32_t checkpoint_position);
+  bool Truncate(uint32_t checkpoint);
+  base::expected<bool, std::string> VerifyCheckpoint();
 
   static std::unique_ptr<OrchardShardTreeManager> Create(
       std::unique_ptr<OrchardShardTreeDelegate> delegate);

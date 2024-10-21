@@ -95,6 +95,9 @@ bool ZCashTransaction::TransparentPart::operator!=(
     const TransparentPart& other) const {
   return !(*this == other);
 }
+bool ZCashTransaction::TransparentPart::IsEmpty() const {
+  return inputs.empty() && outputs.empty();
+}
 
 base::Value::Dict ZCashTransaction::Outpoint::ToValue() const {
   base::Value::Dict dict;
@@ -407,6 +410,9 @@ uint64_t ZCashTransaction::TotalInputsAmount() const {
   uint64_t result = 0;
   for (auto& input : transparent_part_.inputs) {
     result += input.utxo_value;
+  }
+  for (auto& input : orchard_part_.inputs) {
+    result += input.note.amount;
   }
   return result;
 }

@@ -130,6 +130,7 @@ std::string WalletInternalErrorMessage();
 
 mojom::BlockchainTokenPtr GetBitcoinNativeToken(const std::string& chain_id);
 mojom::BlockchainTokenPtr GetZcashNativeToken(const std::string& chain_id);
+mojom::BlockchainTokenPtr GetZcashNativeShieldedToken(const std::string& chain_id);
 
 mojom::BlowfishOptInStatus GetTransactionSimulationOptInStatus(
     PrefService* prefs);

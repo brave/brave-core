@@ -24,11 +24,15 @@ OrchardBlockDecoderImpl::~OrchardBlockDecoderImpl() = default;
 std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoderImpl::ScanBlocks(
     const FrontierChainState& frontier_chain_state,
     const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>& blocks) {
+  LOG(ERROR) << "XXXZZZ ScanBlocks";
   ::rust::Vec<orchard::OrchardCompactAction> orchard_actions;
   for (const auto& block : blocks) {
+    LOG(ERROR) << "XXXZZZ ScanBlock " << block->height;
     bool block_has_orchard_action = false;
     for (const auto& tx : block->vtx) {
       for (const auto& orchard_action : tx->orchard_actions) {
+        LOG(ERROR) << "XXXZZZ ScanBlocks action";
+
         block_has_orchard_action = true;
         orchard::OrchardCompactAction orchard_compact_action;
 
@@ -39,6 +43,8 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoderImpl::ScanBlocks(
           return nullptr;
         }
 
+        orchard_compact_action.block_id = block->height;
+        orchard_compact_action.is_block_last_action = false;
         base::ranges::copy(orchard_action->nullifier,
                            orchard_compact_action.nullifier.begin());
         base::ranges::copy(orchard_action->cmx,
@@ -47,12 +53,12 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoderImpl::ScanBlocks(
                            orchard_compact_action.ephemeral_key.begin());
         base::ranges::copy(orchard_action->ciphertext,
                            orchard_compact_action.enc_cipher_text.begin());
-        // orchard_compact_action.is_block_last_action = index == ;
 
-        orchard_actions.emplace_back(std::move(orchard_compact_action));
+        orchard_actions.push_back(std::move(orchard_compact_action));
       }
     }
     if (block_has_orchard_action) {
+      LOG(ERROR) << "XXXZZZ set block has last action";
       orchard_actions.back().is_block_last_action = true;
     }
   }
@@ -62,9 +68,15 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoderImpl::ScanBlocks(
       frontier_chain_state.frontier_block_height;
   chain_state.frontier_orchard_commitment_tree_size =
       frontier_chain_state.frontier_orchard_tree_size;
-  base::ranges::copy(frontier_chain_state.frontier_tree_state,
-                     chain_state.frontier_tree_state.begin());
 
+  base::ranges::copy(frontier_chain_state.frontier_tree_state,
+                     std::back_inserter(chain_state.frontier_tree_state));
+  LOG(ERROR) << "XXXZZZ frontier_block_height "
+             << frontier_chain_state.frontier_block_height;
+  LOG(ERROR) << "XXXZZZ frontier_orchard_tree_size "
+             << frontier_chain_state.frontier_orchard_tree_size;
+
+  LOG(ERROR) << "XXXZZZ batch_decode actions count: " << orchard_actions.size();
   ::rust::Box<::brave_wallet::orchard::BatchOrchardDecodeBundleResult>
       decode_result = ::brave_wallet::orchard::batch_decode(
           full_view_key_, std::move(chain_state), std::move(orchard_actions));

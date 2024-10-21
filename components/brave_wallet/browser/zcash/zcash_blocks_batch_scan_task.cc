@@ -27,6 +27,7 @@ ZCashBlocksBatchScanTask::ZCashBlocksBatchScanTask(
       from_(from),
       to_(to),
       callback_(std::move(callback)) {
+  LOG(ERROR) << "XXXZZZ scan range " << from << " " << to;
   frontier_block_height_ = from - 1;
 }
 
@@ -49,26 +50,32 @@ void ZCashBlocksBatchScanTask::WorkOnTask() {
   }
 
   if (!frontier_tree_state_) {
+    LOG(ERROR) << "XXXZZZ get frontier tree state";
     GetFrontierTreeState();
     return;
   }
 
   if (!frontier_block_) {
+    LOG(ERROR) << "XXXZZZ get frontier block";
     GetFrontierBlock();
     return;
   }
 
-  if (downloaded_blocks_->size() != (from_ - to_)) {
+  if (!scan_result_ && (!downloaded_blocks_ ||
+                        downloaded_blocks_->size() != (to_ - from_ + 1))) {
+    LOG(ERROR) << "XXXZZZ download blocks";
     DownloadBlocks();
     return;
   }
 
   if (!scan_result_) {
+    LOG(ERROR) << "XXXZZZ scan blocks";
     ScanBlocks();
     return;
   }
 
   if (!database_updated_) {
+    LOG(ERROR) << "XXXZZZ update database";
     UpdateDatabase();
     return;
   }
@@ -88,9 +95,10 @@ void ZCashBlocksBatchScanTask::GetFrontierTreeState() {
 void ZCashBlocksBatchScanTask::OnGetFrontierTreeState(
     base::expected<zcash::mojom::TreeStatePtr, std::string> result) {
   if (!result.has_value() || !result.value()) {
+    LOG(ERROR) << "XXXZZZ failed to obtain frontier tree state";
     error_ = ZCashShieldSyncService::Error{
         ZCashShieldSyncService::ErrorCode::kFailedToReceiveTreeState,
-        result.error()};
+        base::StrCat({"Frontier tree state failed, ", result.error()})};
     ScheduleWorkOnTask();
     return;
   }
@@ -124,8 +132,9 @@ void ZCashBlocksBatchScanTask::DownloadBlocks() {
   uint32_t start_index =
       downloaded_blocks_ ? from_ + downloaded_blocks_->size() : from_;
   uint32_t end_index = std::min(start_index + kBlockDownloadBatchSize - 1, to_);
-  auto expected_size = end_index - start_index;
+  auto expected_size = end_index - start_index + 1;
 
+  LOG(ERROR) << "XXXZZZ get compact blocks " << start_index << " " << end_index;
   sync_service_->zcash_wallet_service_->zcash_rpc_->GetCompactBlocks(
       sync_service_->chain_id_, start_index, end_index,
       base::BindOnce(&ZCashBlocksBatchScanTask::OnBlocksDownloaded,
@@ -136,7 +145,9 @@ void ZCashBlocksBatchScanTask::OnBlocksDownloaded(
     size_t expected_size,
     base::expected<std::vector<zcash::mojom::CompactBlockPtr>, std::string>
         result) {
-  if (!result.has_value() || expected_size != result.value().size()) {
+  CHECK(frontier_block_);
+  CHECK(frontier_tree_state_);
+  if (!result.has_value()) {
     error_ = ZCashShieldSyncService::Error{
         ZCashShieldSyncService::ErrorCode::kFailedToDownloadBlocks,
         result.error()};
@@ -144,14 +155,28 @@ void ZCashBlocksBatchScanTask::OnBlocksDownloaded(
     return;
   }
 
+  LOG(ERROR) << "XXXZZZ on blocks downloaded " << expected_size << " "
+             << result.value().size();
+  if (expected_size != result.value().size()) {
+    error_ = ZCashShieldSyncService::Error{
+        ZCashShieldSyncService::ErrorCode::kFailedToDownloadBlocks,
+        "Expected blocks count doesn't match actual"};
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  if (!downloaded_blocks_) {
+    downloaded_blocks_ = std::vector<zcash::mojom::CompactBlockPtr>();
+  }
   base::Extend(downloaded_blocks_.value(), std::move(result.value()));
   ScheduleWorkOnTask();
 }
 
 void ZCashBlocksBatchScanTask::ScanBlocks() {
+  LOG(ERROR) << "XXXZZZ ScanBlocks";
   if (!downloaded_blocks_ || downloaded_blocks_->empty()) {
     error_ = ZCashShieldSyncService::Error{
-        ZCashShieldSyncService::ErrorCode::kScannerError, ""};
+        ZCashShieldSyncService::ErrorCode::kScannerError, "No blocks to scan"};
     ScheduleWorkOnTask();
     return;
   }
@@ -159,7 +184,7 @@ void ZCashBlocksBatchScanTask::ScanBlocks() {
   if (!frontier_block_.value() || !frontier_tree_state_.value() ||
       !frontier_block_.value()->chain_metadata) {
     error_ = ZCashShieldSyncService::Error{
-        ZCashShieldSyncService::ErrorCode::kScannerError, ""};
+        ZCashShieldSyncService::ErrorCode::kScannerError, "Frontier error"};
     ScheduleWorkOnTask();
     return;
   }
@@ -169,18 +194,21 @@ void ZCashBlocksBatchScanTask::ScanBlocks() {
 
   if (!state_tree_bytes) {
     error_ = ZCashShieldSyncService::Error{
-        ZCashShieldSyncService::ErrorCode::kScannerError, ""};
+        ZCashShieldSyncService::ErrorCode::kScannerError,
+        "Failed to parse tree state"};
     ScheduleWorkOnTask();
     return;
   }
 
   FrontierChainState frontier_chain_state;
   frontier_chain_state.frontier_block_height = frontier_block_.value()->height;
-  frontier_chain_state.frontier_orchard_tree_size = frontier_block_.value()->chain_metadata->orchard_commitment_tree_size;
+  frontier_chain_state.frontier_orchard_tree_size =
+      frontier_block_.value()->chain_metadata->orchard_commitment_tree_size;
   frontier_chain_state.frontier_tree_state = *state_tree_bytes;
 
   latest_scanned_block_ = downloaded_blocks_->back().Clone();
 
+  LOG(ERROR) << "XXXZZZ block scanner " << sync_service_->block_scanner_;
   sync_service_->block_scanner_->ScanBlocks(
       frontier_chain_state, std::move(downloaded_blocks_.value()),
       base::BindOnce(&ZCashBlocksBatchScanTask::OnBlocksScanned,

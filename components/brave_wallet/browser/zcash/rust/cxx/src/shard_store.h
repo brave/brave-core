@@ -66,9 +66,10 @@ ShardStoreStatusCode orchard_with_checkpoints(
     rust::cxxbridge1::Fn<ShardStoreStatusCode(uint32_t checkpoint_id,
                                               const FfiCheckpoint& checkpoint)>
         fn);
-ShardStoreStatusCode orchard_get_checkpoints(const ShardStoreContext& ctx,
-                                             size_t limit,
-                                             ::rust::Vec<FfiCheckpointBundle>& into);
+ShardStoreStatusCode orchard_get_checkpoints(
+    const ShardStoreContext& ctx,
+    size_t limit,
+    ::rust::Vec<FfiCheckpointBundle>& into);
 
 }  // namespace brave_wallet::orchard
 

@@ -14,7 +14,7 @@ class OrchardShardTree {
  public:
   virtual ~OrchardShardTree() {}
 
-  virtual void TruncateToCheckpoint(uint32_t checkpoint_id) = 0;
+  virtual bool TruncateToCheckpoint(uint32_t checkpoint_id) = 0;
 
   virtual bool ApplyScanResults(
       std::unique_ptr<OrchardDecodedBlocksBundle> commitments) = 0;
@@ -23,7 +23,7 @@ class OrchardShardTree {
       uint32_t note_commitment_tree_position,
       uint32_t checkpoint) = 0;
 
-//  virtual uint8_t GetShardRootsLevel() = 0;
+  //  virtual uint8_t GetShardRootsLevel() = 0;
 
   static std::unique_ptr<OrchardShardTree> Create(
       std::unique_ptr<::brave_wallet::OrchardShardTreeDelegate> delegate);

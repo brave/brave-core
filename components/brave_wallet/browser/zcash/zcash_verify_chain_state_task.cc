@@ -60,9 +60,10 @@ void ZCashVerifyChainStateTask::GetAccountMeta() {
 void ZCashVerifyChainStateTask::OnGetAccountMeta(
     base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
         result) {
-  if (result.has_value()) {
+  if (!result.has_value()) {
     error_ = ZCashShieldSyncService::Error{
-        ZCashShieldSyncService::ErrorCode::kFailedToRetrieveAccount, ""};
+        ZCashShieldSyncService::ErrorCode::kFailedToRetrieveAccount,
+        result.error().message};
     ScheduleWorkOnTask();
     return;
   }
@@ -93,9 +94,18 @@ void ZCashVerifyChainStateTask::OnGetChainTipBlock(
 }
 
 void ZCashVerifyChainStateTask::VerifyChainState() {
+  // Skip chain state verification if no blocks were scanned yet
+  if (!account_meta_->latest_scanned_block_id) {
+    chain_state_verified_ = true;
+    ScheduleWorkOnTask();
+    return;
+  }
+  LOG(ERROR) << "XXXZZZ account_meta latest scanned block "
+             << account_meta_->latest_scanned_block_id.value();
+
   // If block chain has removed blocks we already scanned then we need to handle
   // chain reorg.
-  if (*chain_tip_block_ < account_meta_->latest_scanned_block_id) {
+  if (*chain_tip_block_ < account_meta_->latest_scanned_block_id.value()) {
     // Assume that chain reorg can't affect more than kChainReorgBlockDelta
     // blocks So we can just fallback on this number from the chain tip block.
     GetTreeStateForChainReorg(*chain_tip_block_ - kChainReorgBlockDelta);
@@ -104,7 +114,7 @@ void ZCashVerifyChainStateTask::VerifyChainState() {
   // Retrieve block info for last scanned block id to check whether block hash
   // is the same
   auto block_id = zcash::mojom::BlockID::New(
-      account_meta_->latest_scanned_block_id, std::vector<uint8_t>());
+      account_meta_->latest_scanned_block_id.value(), std::vector<uint8_t>());
   sync_service_->zcash_wallet_service_->zcash_rpc_->GetTreeState(
       sync_service_->chain_id_, std::move(block_id),
       base::BindOnce(
@@ -117,17 +127,18 @@ void ZCashVerifyChainStateTask::OnGetTreeStateForChainVerification(
   if (!tree_state.has_value() || !tree_state.value()) {
     error_ = ZCashShieldSyncService::Error{
         ZCashShieldSyncService::ErrorCode::kFailedToReceiveTreeState,
-        tree_state.error()};
+        base::StrCat({"Verification tree state failed, ", tree_state.error()})};
     ScheduleWorkOnTask();
     return;
   }
   auto backend_block_hash = RevertHex(tree_state.value()->hash);
-  if (backend_block_hash != account_meta_->latest_scanned_block_hash) {
+  if (backend_block_hash != account_meta_->latest_scanned_block_hash.value()) {
     // Assume that chain reorg can't affect more than kChainReorgBlockDelta
     // blocks So we can just fallback on this number.
     uint32_t new_block_id =
-        account_meta_->latest_scanned_block_id > kChainReorgBlockDelta
-            ? account_meta_->latest_scanned_block_id - kChainReorgBlockDelta
+        account_meta_->latest_scanned_block_id.value() > kChainReorgBlockDelta
+            ? account_meta_->latest_scanned_block_id.value() -
+                  kChainReorgBlockDelta
             : 0;
     GetTreeStateForChainReorg(new_block_id);
     return;
@@ -155,7 +166,7 @@ void ZCashVerifyChainStateTask::OnGetTreeStateForChainReorg(
       new_block_height != (*tree_state)->height) {
     error_ = ZCashShieldSyncService::Error{
         ZCashShieldSyncService::ErrorCode::kFailedToReceiveTreeState,
-        tree_state.error()};
+        base::StrCat({"Reorg tree state failed, ", tree_state.error()})};
     ScheduleWorkOnTask();
     return;
   } else {

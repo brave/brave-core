@@ -41,9 +41,9 @@ std::unique_ptr<UnauthorizedOrchardBundle> UnauthorizedOrchardBundle::Create(
     for (const auto& merkle_hash : input.witness->merkle_path) {
       merkle_path.auth_path.push_back(OrchardMerkleHash{merkle_hash});
     }
-    spends.push_back(orchard::OrchardSpend{orchard_spends.fvk, note.amount,
-                                           note.addr, note.rho, note.seed,
-                                           std::move(merkle_path)});
+    spends.push_back(orchard::OrchardSpend{
+        orchard_spends.fvk, orchard_spends.sk, note.amount, note.addr, note.rho,
+        note.seed, std::move(merkle_path)});
   }
 
   ::rust::Vec<orchard::OrchardOutput> outputs;
@@ -85,6 +85,8 @@ UnauthorizedOrchardBundleImpl::Complete(
   auto authorized_orchard_bundle_result =
       orchard_unauthorized_bundle_->complete(sighash);
   if (!authorized_orchard_bundle_result->is_ok()) {
+    LOG(ERROR) << "XXXZZZ Complete error "
+               << authorized_orchard_bundle_result->error_message();
     return nullptr;
   }
   return base::WrapUnique<AuthorizedOrchardBundle>(

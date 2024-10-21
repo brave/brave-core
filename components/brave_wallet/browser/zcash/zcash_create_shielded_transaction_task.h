@@ -37,8 +37,6 @@ class ZCashCreateShieldedTransactionTask {
  private:
   void WorkOnTask();
 
-  base::SequenceBound<ZCashOrchardSyncState>& get_sync_state();
-
   void GetSpendableNotes();
   void OnGetSpendableNotes(base::expected<std::vector<OrchardNote>,
                                           ZCashOrchardStorage::Error> result);

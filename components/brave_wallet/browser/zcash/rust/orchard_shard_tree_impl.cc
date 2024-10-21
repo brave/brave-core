@@ -54,7 +54,6 @@ FfiCap From(::brave_wallet::OrchardCap& orchard_cap) {
   // LOG(ERROR) << "XXXZZZ Put: Contains marked " << tree.contains_marked;
   LOG(ERROR) << "XXXZZZ Put: Root " << ToHex(tree.hash);
 
-
   return ::brave_wallet::OrchardShard(From(tree.address), shard_root_hash,
                                       std::move(data));
 }
@@ -78,12 +77,11 @@ FfiShardTree From(const ::brave_wallet::OrchardShard& tree) {
 
 FfiCheckpoint From(const ::brave_wallet::OrchardCheckpoint& checkpoint) {
   ::rust::Vec<uint32_t> marks_removed;
-  base::ranges::copy(checkpoint.marks_removed, std::back_inserter(marks_removed));
-  return FfiCheckpoint{
-      !checkpoint.tree_state_position.has_value(),
-      checkpoint.tree_state_position.value_or(0),
-      marks_removed
-  };
+  base::ranges::copy(checkpoint.marks_removed,
+                     std::back_inserter(marks_removed));
+  return FfiCheckpoint{!checkpoint.tree_state_position.has_value(),
+                       checkpoint.tree_state_position.value_or(0),
+                       marks_removed};
 }
 
 FfiCheckpointBundle From(
@@ -350,9 +348,10 @@ ShardStoreStatusCode orchard_with_checkpoints(
   return ShardStoreStatusCode::Ok;
 }
 
-ShardStoreStatusCode orchard_get_checkpoints(const ShardStoreContext& ctx,
-                                             size_t limit,
-                                             ::rust::Vec<FfiCheckpointBundle>& into) {
+ShardStoreStatusCode orchard_get_checkpoints(
+    const ShardStoreContext& ctx,
+    size_t limit,
+    ::rust::Vec<FfiCheckpointBundle>& into) {
   LOG(ERROR) << "XXXZZZ get checkpoints " << limit;
 
   auto checkpoints = ctx.GetCheckpoints(limit);
@@ -373,6 +372,8 @@ bool OrchardShardTreeImpl::ApplyScanResults(
     std::unique_ptr<OrchardDecodedBlocksBundle> commitments) {
   auto* bundle_impl =
       static_cast<OrchardDecodedBlocksBundleImpl*>(commitments.get());
+  LOG(ERROR) << "XXXZZZ apply scan result " << bundle_impl;
+
   return orcard_shard_tree_->insert_commitments(bundle_impl->GetDecodeBundle());
 }
 
@@ -396,7 +397,8 @@ OrchardShardTreeImpl::CalculateWitness(uint32_t note_commitment_tree_position,
   return witness;
 }
 
-void OrchardShardTreeImpl::TruncateToCheckpoint(uint32_t checkpoint_id) {
+bool OrchardShardTreeImpl::TruncateToCheckpoint(uint32_t checkpoint_id) {
+  return orcard_shard_tree_->truncate(checkpoint_id);
 }
 
 OrchardShardTreeImpl::OrchardShardTreeImpl(

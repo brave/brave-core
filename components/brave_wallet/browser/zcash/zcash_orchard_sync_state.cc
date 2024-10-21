@@ -54,13 +54,10 @@ OrchardShardTreeManager* ZCashOrchardSyncState::GetOrCreateShardTreeManager(
 }
 
 base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
-ZCashOrchardSyncState::RegisterAccount(
-    mojom::AccountIdPtr account_id,
-    uint64_t account_birthday_block,
-    const std::string& account_bithday_block_hash) {
+ZCashOrchardSyncState::RegisterAccount(mojom::AccountIdPtr account_id,
+                                       uint64_t account_birthday_block) {
   return storage_->RegisterAccount(std::move(account_id),
-                                   account_birthday_block,
-                                   account_bithday_block_hash);
+                                   account_birthday_block);
 }
 
 base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
@@ -96,8 +93,9 @@ ZCashOrchardSyncState::UpdateSubtreeRoots(
     mojom::AccountIdPtr account_id,
     uint32_t start_index,
     std::vector<zcash::mojom::SubtreeRootPtr> roots) {
-  return storage_->UpdateSubtreeRoots(std::move(account_id), start_index,
-                                      std::move(roots));
+  // return storage_->UpdateSubtreeRoots(std::move(account_id), start_index,
+  //                                     std::move(roots));
+  return true;
 }
 
 base::expected<std::optional<uint32_t>, ZCashOrchardStorage::Error>
@@ -133,12 +131,18 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardSyncState::UpdateNotes(
     }
   }
 
+  // TODO(cypt4): Add error handling
   GetOrCreateShardTreeManager(account_id.Clone())
       ->InsertCommitments(std::move(block_scanner_results));
 
   return storage_->UpdateNotes(std::move(account_id), notes_to_add,
                                std::move(nf_to_add), latest_scanned_block,
                                latest_scanned_block_hash);
+}
+
+base::expected<bool, ZCashOrchardStorage::Error>
+ZCashOrchardSyncState::ResetAccountSyncState(mojom::AccountIdPtr account_id) {
+  return storage_->ResetAccountSyncState(std::move(account_id));
 }
 
 base::expected<std::vector<OrchardInput>, ZCashOrchardStorage::Error>

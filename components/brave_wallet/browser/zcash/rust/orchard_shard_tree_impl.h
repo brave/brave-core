@@ -16,7 +16,7 @@ class OrchardShardTreeImpl : public OrchardShardTree {
   OrchardShardTreeImpl(rust::Box<OrchardShardTreeBundle> orcard_shard_tree);
   ~OrchardShardTreeImpl() override;
 
-  void TruncateToCheckpoint(uint32_t checkpoint_id) override;
+  bool TruncateToCheckpoint(uint32_t checkpoint_id) override;
 
   bool ApplyScanResults(
       std::unique_ptr<OrchardDecodedBlocksBundle> commitments) override;

@@ -150,7 +150,11 @@ void ZCashDecoder::ParseSubtreeRoots(const std::vector<std::string>& data,
       std::move(callback).Run(std::nullopt);
       return;
     }
+    roots.push_back(zcash::mojom::SubtreeRoot::New(
+        ToVector(result.roothash()), ToVector(result.completingblockhash()),
+        result.completingblockheight()));
   }
+  std::move(callback).Run(std::move(roots));
 }
 
 }  // namespace brave_wallet

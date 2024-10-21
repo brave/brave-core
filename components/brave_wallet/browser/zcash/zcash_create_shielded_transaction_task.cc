@@ -40,20 +40,24 @@ void ZCashCreateShieldedTransactionTask::WorkOnTask() {
   }
 
   if (!spendable_notes_) {
+    LOG(ERROR) << "XXXZZZ get spendble notes";
     GetSpendableNotes();
     return;
   }
 
   if (!transaction_) {
+    LOG(ERROR) << "XXXZZZ create transaction";
     CreateTransaction();
     return;
   }
+
+  LOG(ERROR) << "XXXZZZ finished";
 
   std::move(callback_).Run(base::ok(std::move(*transaction_)));
 }
 
 void ZCashCreateShieldedTransactionTask::GetSpendableNotes() {
-  get_sync_state()
+  zcash_wallet_service_->sync_state_
       .AsyncCall(&ZCashOrchardSyncState::GetSpendableNotes)
       .WithArgs(account_id_.Clone())
       .Then(base::BindOnce(
@@ -85,6 +89,7 @@ void ZCashCreateShieldedTransactionTask::CreateTransaction() {
 
   ZCashTransaction zcash_transaction;
   for (const auto& note : pick_result.value().inputs) {
+    LOG(ERROR) << "XXXZZZ inputs";
     OrchardInput orchard_input;
     orchard_input.note = note;
     zcash_transaction.orchard_part().inputs.push_back(std::move(orchard_input));
@@ -109,6 +114,11 @@ void ZCashCreateShieldedTransactionTask::CreateTransaction() {
     orchard_output.addr = *change_addr;
   }
 
+  LOG(ERROR) << "XXXZZZ total inputs amount "
+             << zcash_transaction.TotalInputsAmount();
+  LOG(ERROR) << "XXXZZZ fee " << zcash_transaction.fee();
+  LOG(ERROR) << "XXXZZZ change " << pick_result->change;
+
   // Create shielded output
   OrchardOutput& orchard_output =
       zcash_transaction.orchard_part().outputs.emplace_back();
@@ -128,6 +138,7 @@ void ZCashCreateShieldedTransactionTask::CreateTransaction() {
   zcash_transaction.set_to(*orchard_unified_addr);
 
   transaction_ = std::move(zcash_transaction);
+  ScheduleWorkOnTask();
 }
 
 }  // namespace brave_wallet

@@ -57,7 +57,6 @@ source_set("orchard_impl") {
     "orchard_test_utils_impl.h",
     "orchard_testing_shard_tree_impl.cc",
     "orchard_testing_shard_tree_impl.h",
-
     "unauthorized_orchard_bundle_impl.cc",
     "unauthorized_orchard_bundle_impl.h",
   ]

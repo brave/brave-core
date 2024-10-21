@@ -41,6 +41,7 @@ inline constexpr uint8_t kOrchardShardSubtreeHeight = 8;
 inline constexpr uint8_t kOrchardShardTreeHeight = 32;
 inline constexpr uint8_t kOrchardNoteRhoSize = 32;
 inline constexpr uint8_t kOrchardNoteRSeedSize = 32;
+inline constexpr uint8_t kOrchardSpendingKeySize = 32;
 
 using OrchardFullViewKey = std::array<uint8_t, kOrchardFullViewKeySize>;
 using OrchardMemo = std::array<uint8_t, kOrchardMemoSize>;
@@ -51,6 +52,7 @@ using OrchardMerkleHash = std::array<uint8_t, kOrchardShardTreeHashSize>;
 using OrchardNullifier = std::array<uint8_t, kOrchardNullifierSize>;
 using OrchardShardRootHash = std::array<uint8_t, kOrchardShardTreeHashSize>;
 using OrchardCommitmentValue = std::array<uint8_t, kOrchardCmxSize>;
+using OrchardSpendingKey = std::array<uint8_t, kOrchardSpendingKeySize>;
 
 // Reduce current scanning position on this value if reorg is found
 // All Zcash network participants basically assume rollbacks longer than 100
@@ -151,6 +153,7 @@ struct OrchardSpendsBundle {
   ~OrchardSpendsBundle();
   OrchardSpendsBundle(const OrchardSpendsBundle& other);
 
+  OrchardSpendingKey sk;
   OrchardFullViewKey fvk;
   std::vector<OrchardInput> inputs;
 };

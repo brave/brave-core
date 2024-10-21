@@ -35,9 +35,12 @@ mojom::ZecTxDataPtr ToZecTxData(const std::string& chain_id,
           mojom::ZecTxOutput::New(*orchard_unified_addr, output.value));
     }
   }
-  return mojom::ZecTxData::New(tx.to(), OrchardMemoToVec(tx.memo()),
-                               tx.amount(), tx.fee(), std::move(mojom_inputs),
-                               std::move(mojom_outputs));
+  return mojom::ZecTxData::New(
+      tx.to(),
+      tx.transparent_part().inputs.empty(),  // TODO(cypt4): Use explicit flag
+                                             // for useShieldedPool?
+      OrchardMemoToVec(tx.memo()), tx.amount(), tx.fee(),
+      std::move(mojom_inputs), std::move(mojom_outputs));
 }
 }  // namespace
 

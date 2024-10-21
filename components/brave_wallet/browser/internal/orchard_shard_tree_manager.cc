@@ -20,7 +20,8 @@ std::unique_ptr<OrchardShardTreeManager> OrchardShardTreeManager::Create(
 }
 
 // static
-std::unique_ptr<OrchardShardTreeManager> OrchardShardTreeManager::CreateForTesting(
+std::unique_ptr<OrchardShardTreeManager>
+OrchardShardTreeManager::CreateForTesting(
     std::unique_ptr<OrchardShardTreeDelegate> delegate) {
   auto shard_tree =
       orchard::OrchardShardTree::CreateForTesting(std::move(delegate));
@@ -55,6 +56,10 @@ OrchardShardTreeManager::CalculateWitness(std::vector<OrchardInput> notes,
     input.witness = witness.value();
   }
   return notes;
+}
+
+bool OrchardShardTreeManager::Truncate(uint32_t checkpoint) {
+  return orchard_shard_tree_->TruncateToCheckpoint(checkpoint);
 }
 
 }  // namespace brave_wallet

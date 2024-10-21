@@ -36,12 +36,12 @@ void ZCashUpdateSubtreeRootsTask::OnGetLatestShardIndex(
     return;
   }
 
-  auto latest_shard_index = result.value().value();
+  auto latest_shard_index = result.value();
+  auto start = latest_shard_index ? latest_shard_index.value() + 1 : 0;
   sync_service_->zcash_wallet_service_->zcash_rpc_->GetSubtreeRoots(
-      sync_service_->chain_id_, latest_shard_index + 1,
-      kSubTreeRootsResolveBatchSize,
+      sync_service_->chain_id_, start, kSubTreeRootsResolveBatchSize,
       base::BindOnce(&ZCashUpdateSubtreeRootsTask::OnGetSubtreeRoots,
-                     weak_ptr_factory_.GetWeakPtr(), latest_shard_index + 1));
+                     weak_ptr_factory_.GetWeakPtr(), start));
 }
 
 void ZCashUpdateSubtreeRootsTask::GetSubtreeRoots(uint32_t start_index) {

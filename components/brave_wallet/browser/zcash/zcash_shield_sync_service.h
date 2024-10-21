@@ -98,7 +98,7 @@ class ZCashShieldSyncService {
 
   bool IsStarted();
 
-  void StartSyncing();
+  void StartSyncing(std::optional<uint32_t> to);
 
   mojom::ZCashShieldSyncStatusPtr GetSyncStatus();
 
@@ -125,11 +125,6 @@ class ZCashShieldSyncService {
   void OnAccountInit(base::expected<ZCashOrchardStorage::AccountMeta,
                                     ZCashOrchardStorage::Error> error);
 
-  // Get last known block in the blockchain
-  void UpdateChainTip();
-  void OnGetLatestBlock(
-      base::expected<zcash::mojom::BlockIDPtr, std::string> result);
-
   // Chain reorg flow
   // Chain reorg happens when latest blocks are removed from the blockchain
   // We assume that there is a limit of reorg depth - kChainReorgBlockDelta
@@ -155,12 +150,12 @@ class ZCashShieldSyncService {
 
   // Params
   raw_ptr<ZCashWalletService> zcash_wallet_service_ = nullptr;
-  mojom::AccountIdPtr account_id_;
+  const mojom::AccountIdPtr account_id_;
   // Birthday of the account will be used to resolve initial scan range.
   mojom::ZCashAccountShieldBirthdayPtr account_birthday_;
-  base::FilePath db_dir_path_;
   base::WeakPtr<Observer> observer_;
   std::string chain_id_;
+  std::optional<uint32_t> to_;
 
   std::unique_ptr<OrchardBlockScannerProxy> block_scanner_;
 

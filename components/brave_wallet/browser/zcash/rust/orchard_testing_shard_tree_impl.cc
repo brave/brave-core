@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_testing_shard_tree_impl.h"
+
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bunde_impl.h"
 
 namespace brave_wallet::orchard {
@@ -16,8 +17,9 @@ bool OrchardTestingShardTreeImpl::ApplyScanResults(
 }
 
 base::expected<OrchardNoteWitness, std::string>
-OrchardTestingShardTreeImpl::CalculateWitness(uint32_t note_commitment_tree_position,
-                                              uint32_t checkpoint) {
+OrchardTestingShardTreeImpl::CalculateWitness(
+    uint32_t note_commitment_tree_position,
+    uint32_t checkpoint) {
   auto result = orcard_shard_tree_->calculate_witness(
       note_commitment_tree_position, checkpoint);
   if (!result->is_ok()) {
@@ -35,8 +37,8 @@ OrchardTestingShardTreeImpl::CalculateWitness(uint32_t note_commitment_tree_posi
   return witness;
 }
 
-void OrchardTestingShardTreeImpl::TruncateToCheckpoint(uint32_t checkpoint_id) {
-
+bool OrchardTestingShardTreeImpl::TruncateToCheckpoint(uint32_t checkpoint_id) {
+  return orcard_shard_tree_->truncate(checkpoint_id);
 }
 
 OrchardTestingShardTreeImpl::OrchardTestingShardTreeImpl(
@@ -57,4 +59,4 @@ std::unique_ptr<OrchardShardTree> OrchardShardTree::CreateForTesting(
       new OrchardTestingShardTreeImpl(shard_tree_result->unwrap()));
 }
 
-}  // namespace brave_wallet
+}  // namespace brave_wallet::orchard

@@ -18,8 +18,7 @@ class ZCashOrchardSyncState {
 
   base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
   RegisterAccount(mojom::AccountIdPtr account_id,
-                  uint64_t account_birthday_block,
-                  const std::string& account_bithday_block_hash);
+                  uint64_t account_birthday_block);
 
   base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
   GetAccountMeta(mojom::AccountIdPtr account_id);
@@ -41,6 +40,8 @@ class ZCashOrchardSyncState {
       const uint32_t latest_scanned_block,
       const std::string& latest_scanned_block_hash);
 
+  base::expected<bool, ZCashOrchardStorage::Error> ResetAccountSyncState(
+      mojom::AccountIdPtr account_id);
   void ResetDatabase();
 
   base::expected<std::optional<uint32_t>, ZCashOrchardStorage::Error>

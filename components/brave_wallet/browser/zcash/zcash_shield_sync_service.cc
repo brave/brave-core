@@ -92,7 +92,8 @@ void ZCashShieldSyncService::SetOrchardBlockScannerProxyForTesting(
   block_scanner_ = std::move(block_scanner);
 }
 
-void ZCashShieldSyncService::StartSyncing() {
+void ZCashShieldSyncService::StartSyncing(std::optional<uint32_t> to) {
+  to_ = to;
   ScheduleWorkOnTask();
   if (observer_) {
     observer_->OnSyncStart(account_id_);
@@ -143,7 +144,7 @@ void ZCashShieldSyncService::WorkOnTask() {
     return;
   }
 
-  if (!block_scanner_) {
+  if (!scan_blocks_task_) {
     StartBlockScanning();
     return;
   }
@@ -170,9 +171,11 @@ void ZCashShieldSyncService::OnGetAccountMeta(
         result) {
   if (result.has_value()) {
     account_meta_ = *result;
-    if (account_meta_->latest_scanned_block_id <
-        account_meta_->account_birthday) {
-      error_ = Error{ErrorCode::kFailedToRetrieveAccount, ""};
+    if (account_meta_->latest_scanned_block_id &&
+        (account_meta_->latest_scanned_block_id.value() <
+         account_meta_->account_birthday)) {
+      error_ =
+          Error{ErrorCode::kFailedToRetrieveAccount, "Account state conflict"};
     }
     ScheduleWorkOnTask();
     return;
@@ -191,8 +194,7 @@ void ZCashShieldSyncService::OnGetAccountMeta(
 void ZCashShieldSyncService::InitAccount() {
   zcash_wallet_service_->sync_state_
       .AsyncCall(&ZCashOrchardSyncState::RegisterAccount)
-      .WithArgs(account_id_.Clone(), account_birthday_->value,
-                account_birthday_->hash)
+      .WithArgs(account_id_.Clone(), account_birthday_->value)
       .Then(base::BindOnce(&ZCashShieldSyncService::OnAccountInit,
                            weak_ptr_factory_.GetWeakPtr()));
 }
@@ -222,14 +224,17 @@ void ZCashShieldSyncService::OnGetSpendableNotes(
         result) {
   if (!result.has_value()) {
     error_ = Error{ErrorCode::kFailedToRetrieveSpendableNotes,
-                   result.error().message};
+                   base::StrCat({"Cannot resolve spendable notes: ",
+                                 result.error().message})};
     ScheduleWorkOnTask();
     return;
   }
 
   spendable_notes_ = result.value();
+  LOG(ERROR) << "XXXZZZ spendable notes " << spendable_notes_->size();
 
   if (latest_scanned_block_result_) {
+    LOG(ERROR) << "XXXZZZ update result";
     current_sync_status_ = mojom::ZCashShieldSyncStatus::New(
         latest_scanned_block_result_->start_block,
         latest_scanned_block_result_->end_block,
@@ -238,8 +243,8 @@ void ZCashShieldSyncService::OnGetSpendableNotes(
         GetSpendableBalance());
   } else {
     current_sync_status_ = mojom::ZCashShieldSyncStatus::New(
-        latest_scanned_block_.value(), latest_scanned_block_.value(), 0, 0,
-        spendable_notes_->size(), GetSpendableBalance());
+        latest_scanned_block_.value_or(0), latest_scanned_block_.value_or(0), 0,
+        0, spendable_notes_->size(), GetSpendableBalance());
   }
 
   if (observer_) {
@@ -275,6 +280,7 @@ void ZCashShieldSyncService::OnChainStateVerified(
   ScheduleWorkOnTask();
 }
 
+// TODO(cypt4): Move to block scanning task
 void ZCashShieldSyncService::UpdateSubtreeRoots() {
   CHECK(!update_subtree_roots_task_);
   update_subtree_roots_task_ = std::make_unique<ZCashUpdateSubtreeRootsTask>(
@@ -295,15 +301,20 @@ void ZCashShieldSyncService::OnSubtreeRootsUpdated(bool result) {
 }
 
 void ZCashShieldSyncService::StartBlockScanning() {
+  LOG(ERROR) << "XXXZZZ start block scanning";
   CHECK(!scan_blocks_task_);
   scan_blocks_task_ = std::make_unique<ZCashScanBlocksTask>(
-      this, base::BindRepeating(&ZCashShieldSyncService::OnScanRangeResult,
-                                weak_ptr_factory_.GetWeakPtr()));
+      this,
+      base::BindRepeating(&ZCashShieldSyncService::OnScanRangeResult,
+                          weak_ptr_factory_.GetWeakPtr()),
+      to_);
   scan_blocks_task_->Start();
 }
 
 void ZCashShieldSyncService::OnScanRangeResult(
     base::expected<ScanRangeResult, ZCashShieldSyncService::Error> result) {
+  LOG(ERROR) << "XXXZZZ OnScanRangeResult";
+
   if (!result.has_value()) {
     scan_blocks_task_.reset();
     error_ = result.error();

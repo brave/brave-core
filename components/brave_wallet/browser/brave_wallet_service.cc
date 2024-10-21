@@ -287,6 +287,10 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
     }
   }
 
+  if (coin == mojom::CoinType::ZEC) {
+    result.push_back(GetZcashNativeShieldedToken(chain_id));
+  }
+
   std::move(callback).Run(
       EnsureNativeTokens(chain_id, coin, std::move(result)));
 }
@@ -294,6 +298,8 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
 void BraveWalletService::GetAllUserAssets(GetUserAssetsCallback callback) {
   std::vector<mojom::BlockchainTokenPtr> result =
       ::brave_wallet::GetAllUserAssets(profile_prefs_);
+  result.push_back(GetZcashNativeShieldedToken(mojom::kZCashMainnet));
+  result.push_back(GetZcashNativeShieldedToken(mojom::kZCashTestnet));
   std::move(callback).Run(std::move(result));
 }
 

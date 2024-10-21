@@ -26,8 +26,11 @@ constexpr size_t kMinConfirmations = 10;
 std::unique_ptr<OrchardBundleManager> ApplyOrchardSignatures(
     std::unique_ptr<OrchardBundleManager> orchard_bundle_manager,
     std::array<uint8_t, kZCashDigestSize> sighash) {
+  LOG(ERROR) << "XXXZZZ apply signatures " << ToHex(sighash);
   // Heavy CPU operation, should be executed on background thread
-  return orchard_bundle_manager->ApplySignature(sighash);
+  auto result = orchard_bundle_manager->ApplySignature(sighash);
+  LOG(ERROR) << "XXXZZZ apply signatures complted";
+  return result;
 }
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
@@ -59,6 +62,7 @@ void ZCashCompleteTransactionTask::WorkOnTask() {
   }
 
   if (!chain_tip_height_) {
+    LOG(ERROR) << "XXXZZZ chain_tip_height";
     GetLatestBlock();
     return;
   }
@@ -66,34 +70,41 @@ void ZCashCompleteTransactionTask::WorkOnTask() {
 #if BUILDFLAG(ENABLE_ORCHARD)
   if (!transaction_.orchard_part().outputs.empty()) {
     if (!anchor_block_height_) {
+      LOG(ERROR) << "XXXZZZ anchor_block_height";
       GetMaxCheckpointedHeight();
       return;
     }
 
     if (!witness_inputs_) {
+      LOG(ERROR) << "XXXZZZ witness_inputs";
       CalculateWitness();
       return;
     }
 
     if (!anchor_tree_state_) {
+      LOG(ERROR) << "XXXZZZ anchor_tree_state";
       GetTreeState();
       return;
     }
 
     if (!transaction_.orchard_part().raw_tx) {
+      LOG(ERROR) << "XXXZZZ raw_tx";
       SignOrchardPart();
       return;
     }
   }
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
-  if (!transaction_.IsTransparentPartSigned()) {
+  if (!transaction_.transparent_part().inputs.empty() &&
+      !transaction_.IsTransparentPartSigned()) {
+    LOG(ERROR) << "XXXZZZ SignTransparentPart";
     SignTransparentPart();
     return;
   }
 
-  zcash_wallet_service_->CompleteTransactionTaskDone(this);
+  LOG(ERROR) << "XXXZZZ completed";
   std::move(callback_).Run(std::move(transaction_));
+  zcash_wallet_service_->CompleteTransactionTaskDone(this);
 }
 
 void ZCashCompleteTransactionTask::Start() {
@@ -113,12 +124,16 @@ void ZCashCompleteTransactionTask::OnGetLatestBlockHeight(
     base::expected<zcash::mojom::BlockIDPtr, std::string> result) {
   if (!result.has_value()) {
     std::move(callback_).Run(base::unexpected("block height error"));
+    ScheduleWorkOnTask();
     return;
   }
+
+  chain_tip_height_ = result.value()->height;
 
   transaction_.set_locktime(result.value()->height);
   transaction_.set_expiry_height(result.value()->height +
                                  kDefaultZCashBlockHeightDelta);
+  ScheduleWorkOnTask();
 }
 
 #if BUILDFLAG(ENABLE_ORCHARD)
@@ -143,6 +158,7 @@ void ZCashCompleteTransactionTask::OnGetMaxCheckpointedHeight(
     base::expected<std::optional<uint32_t>, ZCashOrchardStorage::Error>
         result) {
   if (!result.has_value() || !result.value()) {
+    LOG(ERROR) << "XXXZZZ no checkpoints";
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
     return;
@@ -153,9 +169,15 @@ void ZCashCompleteTransactionTask::OnGetMaxCheckpointedHeight(
 }
 
 void ZCashCompleteTransactionTask::CalculateWitness() {
+  if (transaction_.orchard_part().inputs.empty()) {
+    witness_inputs_ = std::vector<OrchardInput>();
+    ScheduleWorkOnTask();
+    return;
+  }
+  LOG(ERROR) << "XXXZZZ CalculateWitness " << anchor_block_height_.value();
   zcash_wallet_service_->sync_state_
       .AsyncCall(&ZCashOrchardSyncState::CalculateWitnessForCheckpoint)
-      .WithArgs(account_id_.Clone(), witness_inputs_.value(),
+      .WithArgs(account_id_.Clone(), transaction_.orchard_part().inputs,
                 anchor_block_height_.value())
       .Then(base::BindOnce(
           &ZCashCompleteTransactionTask::OnWitnessCalulcateResult,
@@ -165,12 +187,15 @@ void ZCashCompleteTransactionTask::CalculateWitness() {
 void ZCashCompleteTransactionTask::OnWitnessCalulcateResult(
     base::expected<std::vector<OrchardInput>, ZCashOrchardStorage::Error>
         result) {
+  LOG(ERROR) << "XXXZZZ OnWitnessCalulcateResult";
   if (!result.has_value()) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
     return;
   }
 
+  // TODO(cypt4): rewrite
+  witness_inputs_ = result.value();
   transaction_.orchard_part().inputs = result.value();
   ScheduleWorkOnTask();
 }
@@ -206,15 +231,18 @@ void ZCashCompleteTransactionTask::SignOrchardPart() {
     return;
   }
 
-  CHECK_EQ(transaction_.orchard_part().outputs.size(), 1u);
+  // CHECK_EQ(transaction_.orchard_part().outputs.size(), 1u);
   auto fvk = zcash_wallet_service_->keyring_service_->GetOrchardFullViewKey(
       account_id_);
-  if (!fvk) {
+  auto sk = zcash_wallet_service_->keyring_service_->GetOrchardSpendingKey(
+      account_id_);
+  if (!fvk || !sk) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
     return;
   }
   OrchardSpendsBundle spends_bundle;
+  spends_bundle.sk = *sk;
   spends_bundle.fvk = *fvk;
   spends_bundle.inputs = transaction_.orchard_part().inputs;
   auto orchard_bundle_manager = OrchardBundleManager::Create(
@@ -243,11 +271,15 @@ void ZCashCompleteTransactionTask::SignOrchardPart() {
 
 void ZCashCompleteTransactionTask::OnSignOrchardPartComplete(
     std::unique_ptr<OrchardBundleManager> orchard_bundle_manager) {
+  LOG(ERROR) << "XXXZZZ OnSignOrchardPartComplete";
   if (!orchard_bundle_manager) {
+    LOG(ERROR) << "XXXZZZ orchard_bundle_manager error";
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
     return;
   }
+  LOG(ERROR) << "XXXZZZ raw tx "
+             << orchard_bundle_manager->GetRawTxBytes().has_value();
 
   transaction_.orchard_part().raw_tx = orchard_bundle_manager->GetRawTxBytes();
   ScheduleWorkOnTask();

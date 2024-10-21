@@ -93,6 +93,8 @@ class ZCashTransaction {
     bool operator==(const TransparentPart& other) const;
     bool operator!=(const TransparentPart& other) const;
 
+    bool IsEmpty() const;
+
     std::vector<TxInput> inputs;
     std::vector<TxOutput> outputs;
   };

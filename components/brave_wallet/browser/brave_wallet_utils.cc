@@ -881,6 +881,20 @@ mojom::BlockchainTokenPtr GetZcashNativeToken(const std::string& chain_id) {
   return result;
 }
 
+mojom::BlockchainTokenPtr GetZcashNativeShieldedToken(const std::string& chain_id) {
+  auto network = NetworkManager::GetKnownChain(chain_id, mojom::CoinType::ZEC);
+  CHECK(network);
+
+  auto result = NetworkToNativeToken(*network);
+  result->logo = "zec.png";
+  result->coingecko_id = "zec";
+  result->is_shielded = true;
+  result->name = "Zcash(Shielded)";
+
+  return result;
+}
+
+
 mojom::BlowfishOptInStatus GetTransactionSimulationOptInStatus(
     PrefService* prefs) {
   return static_cast<mojom::BlowfishOptInStatus>(

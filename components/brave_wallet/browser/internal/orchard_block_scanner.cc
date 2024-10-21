@@ -40,18 +40,22 @@ base::expected<OrchardBlockScanner::Result, OrchardBlockScanner::ErrorCode>
 OrchardBlockScanner::ScanBlocks(
     FrontierChainState chain_state,
     std::vector<zcash::mojom::CompactBlockPtr> blocks) {
+  LOG(ERROR) << "XXXZZZ 1";
   std::unique_ptr<orchard::OrchardDecodedBlocksBundle> result =
       decoder_->ScanBlocks(chain_state, blocks);
   if (!result) {
     return base::unexpected(ErrorCode::kInputError);
   }
+  LOG(ERROR) << "XXXZZZ 2";
 
   if (!result->GetDiscoveredNotes()) {
     return base::unexpected(ErrorCode::kInputError);
   }
+  LOG(ERROR) << "XXXZZZ 3";
 
   std::vector<OrchardNoteSpend> found_spends;
   std::vector<OrchardNote> found_notes = result->GetDiscoveredNotes().value();
+  LOG(ERROR) << "XXXZZZ 4";
 
   for (const auto& block : blocks) {
     for (const auto& tx : block->vtx) {

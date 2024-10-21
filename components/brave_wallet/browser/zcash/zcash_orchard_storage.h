@@ -61,15 +61,20 @@ class ZCashOrchardStorage : public base::RefCounted<ZCashOrchardStorage> {
       base::RepeatingCallback<void(uint32_t, OrchardCheckpoint checkpoint)>;
 
   struct AccountMeta {
+    AccountMeta();
+    ~AccountMeta();
+    AccountMeta(const AccountMeta&);
+    AccountMeta& operator=(const AccountMeta&);
     uint32_t account_birthday = 0;
-    uint32_t latest_scanned_block_id = 0;
-    std::string latest_scanned_block_hash;
+    std::optional<uint32_t> latest_scanned_block_id;
+    std::optional<std::string> latest_scanned_block_hash;
   };
 
   enum class ErrorCode {
     kDbInitError,
     kAccountNotFound,
     kFailedToExecuteStatement,
+    kFailedToCommitTransaction,
     kInternalError,
     kNoCheckpoints,
     kConsistencyError
@@ -84,9 +89,10 @@ class ZCashOrchardStorage : public base::RefCounted<ZCashOrchardStorage> {
 
   base::expected<AccountMeta, Error> RegisterAccount(
       mojom::AccountIdPtr account_id,
-      uint32_t account_birthday_block,
-      const std::string& account_bithday_block_hash);
+      uint32_t account_birthday_block);
   base::expected<AccountMeta, Error> GetAccountMeta(
+      mojom::AccountIdPtr account_id);
+  base::expected<bool, Error> ResetAccountSyncState(
       mojom::AccountIdPtr account_id);
 
   // Removes database records which are under effect of chain reorg
@@ -113,7 +119,8 @@ class ZCashOrchardStorage : public base::RefCounted<ZCashOrchardStorage> {
   void ResetDatabase();
 
   // Shard tree
-  base::expected<std::optional<OrchardCap>, Error> GetCap(mojom::AccountIdPtr account_id);
+  base::expected<std::optional<OrchardCap>, Error> GetCap(
+      mojom::AccountIdPtr account_id);
   base::expected<bool, Error> PutCap(mojom::AccountIdPtr account_id,
                                      OrchardCap cap);
 
