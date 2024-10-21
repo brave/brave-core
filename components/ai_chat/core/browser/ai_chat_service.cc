@@ -123,12 +123,16 @@ ConversationHandler* AIChatService::GetOrCreateConversationHandlerForContent(
       content_conversations_.find(associated_content_id);
   if (conversation_uuid_it != content_conversations_.end()) {
     auto conversation_uuid = conversation_uuid_it->second;
+    DVLOG(0) << __func__ << " for content ID " << associated_content_id
+             << " found conversation " << conversation_uuid;
     // Load from memory or database, but probably not database as if the
     // conversation is in the associated content map then it's probably recent
     // and still in memory.
     conversation = GetConversation(conversation_uuid);
   }
   if (!conversation) {
+    DVLOG(0) << __func__ << " for content ID " << associated_content_id
+             << " did not find conversation";
     // New conversation needed
     conversation = CreateConversation();
   }
@@ -137,6 +141,49 @@ ConversationHandler* AIChatService::GetOrCreateConversationHandlerForContent(
                                         associated_content);
 
   return conversation;
+}
+
+void AIChatService::GetOrCreateConversationHandlerForContent(
+    int associated_content_id,
+    base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
+        associated_content,
+    base::OnceCallback<void(ConversationHandler*)> callback) {
+  auto conversation_uuid_it =
+      content_conversations_.find(associated_content_id);
+  if (conversation_uuid_it != content_conversations_.end()) {
+    // A conversation already exists for this content so we need to get it
+    // (maybe retrieving from database first) and bind.
+    auto conversation_uuid = conversation_uuid_it->second;
+    DVLOG(0) << __func__ << " for content ID " << associated_content_id
+             << " found conversation " << conversation_uuid;
+    // Load from memory or database, but probably not database as if the
+    // conversation is in the associated content map then it's probably recent
+    // and still in memory.
+    GetConversation(
+        conversation_uuid,
+        base::BindOnce(
+            [](base::WeakPtr<AIChatService> instance, int associated_content_id,
+               base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
+                   associated_content,
+               base::OnceCallback<void(ConversationHandler*)> callback,
+               ConversationHandler* conversation) {
+              if (!instance) {
+                std::move(callback).Run(nullptr);
+                return;
+              }
+              if (!conversation) {
+                conversation = instance->CreateConversation();
+              }
+              instance->MaybeAssociateContentWithConversation(
+                  conversation, associated_content_id, associated_content);
+              std::move(callback).Run(conversation);
+            },
+            weak_ptr_factory_.GetWeakPtr(), std::move(associated_content_id),
+            associated_content, std::move(callback)));
+    return;
+  }
+  std::move(callback).Run(CreateConversationHandlerForContent(
+      std::move(associated_content_id), associated_content));
 }
 
 ConversationHandler* AIChatService::CreateConversationHandlerForContent(
@@ -149,6 +196,12 @@ ConversationHandler* AIChatService::CreateConversationHandlerForContent(
                                         associated_content);
 
   return conversation;
+}
+
+void AIChatService::OnAssociatedContentIdChanged(ConversationHandler* handler,
+                                                 int content_id) {
+  content_conversations_.insert_or_assign(content_id,
+                                          handler->get_conversation_uuid());
 }
 
 void AIChatService::MaybeAssociateContentWithConversation(

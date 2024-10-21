@@ -87,7 +87,21 @@ void AssociatedContentDriver::RemoveObserver(Observer* observer) {
 }
 
 int AssociatedContentDriver::GetContentId() const {
+  // TODO(petemill): Remove current_navigation_id from this class, pass through
+  // to implementer.
   return current_navigation_id_;
+}
+
+void AssociatedContentDriver::SetContentId(int content_id) {
+  current_navigation_id_ = content_id;
+  // A content ID that doesn't result in a new conversation should
+  // update any attached conversations (and the service) so that they
+  // are found via that content id.
+  for (auto& conversation : associated_conversations_) {
+    if (conversation) {
+      conversation->OnAssociatedContentIdChanged(content_id);
+    }
+  }
 }
 
 GURL AssociatedContentDriver::GetURL() const {
@@ -289,6 +303,13 @@ void AssociatedContentDriver::OnNewPage(int64_t navigation_id) {
   is_video_ = false;
   api_request_helper_.reset();
   ConversationHandler::AssociatedContentDelegate::OnNewPage(navigation_id);
+}
+
+void AssociatedContentDriver::OnAboutToBeReplaced(
+    AssociatedContentDriver* new_content) {
+  for (auto& conversation : associated_conversations_) {
+    conversation->OnAssociatedContentReplaced(new_content->GetWeakPtr());
+  }
 }
 
 }  // namespace ai_chat

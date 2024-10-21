@@ -83,6 +83,8 @@ class AssociatedContentDriver
       ConversationHandler::GetPageContentCallback callback,
       std::string_view invalidation_token) = 0;
 
+  void SetContentId(int content_id);
+
   // Implementer should call this when the favicon for the content changes
   void OnFaviconImageDataChanged();
 
@@ -98,6 +100,10 @@ class AssociatedContentDriver
   // Implementer should call this when a page navigation is detected and a new
   // conversation is expected.
   void OnNewPage(int64_t navigation_id) override;
+
+  // Implementer should call this when this instance is about to be replaced
+  // by a new instance for the same content.
+  void OnAboutToBeReplaced(AssociatedContentDriver* new_content);
 
  private:
   friend class ::AIChatUIBrowserTest;
