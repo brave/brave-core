@@ -779,6 +779,14 @@ WalletButton* BraveBrowserView::GetWalletButton() {
   return static_cast<BraveToolbarView*>(toolbar())->wallet_button();
 }
 
+void BraveBrowserView::WillShowSidePanel() {
+  sidebar_container_view_->WillShowSidePanel();
+}
+
+void BraveBrowserView::WillDeregisterSidePanelEntry(SidePanelEntry* entry) {
+  sidebar_container_view_->WillDeregisterSidePanelEntry(entry);
+}
+
 void BraveBrowserView::NotifyDialogPositionRequiresUpdate() {
   GetBrowserViewLayout()->NotifyDialogPositionRequiresUpdate();
 }
