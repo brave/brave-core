@@ -54,17 +54,16 @@ RegisterStyleOverride(
       :host {
         --brave-settings-menu-margin-v: 24px;
         --brave-settings-menu-padding: 24px;
-        --settings-nav-item-color: #424242 !important;
+        --settings-nav-item-color: var(--leo-color-text-primary) !important;
         position: sticky;
         top: var(--brave-settings-menu-margin-v);
-        margin: 0 var(--brave-settings-menu-margin) !important;
+        margin: 0 !important;
         max-height: calc(100vh - 56px - (var(--brave-settings-menu-margin-v) * 2) - (var(--brave-settings-menu-padding) * 2));
         min-width: 172px;
+        max-width: 250px;
         border-radius: 6px;
-        background-color: #fff;
         overflow-y: auto;
         padding: 24px !important;
-        box-shadow: var(--leo-effect-elevation-01);
       }
 
       .cr-nav-menu-item {
@@ -96,9 +95,8 @@ RegisterStyleOverride(
 
       @media (prefers-color-scheme: dark) {
         :host {
-          --settings-nav-item-color: #F4F4F4 !important;
+          --settings-nav-item-color: var(--leo-color-text-primary) !important;
           border-color: transparent !important;
-          background-color: #161719;
         }
       }
 
@@ -124,7 +122,7 @@ RegisterStyleOverride(
       }
 
       a:hover, cr-icon:hover {
-        color: #444DD0 !important;
+        color: var(--leo-color-icon-interactive) !important;
       }
 
       cr-icon, leo-icon {
@@ -152,7 +150,8 @@ RegisterStyleOverride(
         }
 
         a:hover, cr-icon:hover {
-          color: #A6ABE9 !important;
+          --iron-icon-fill-color: var(--leo-color-icon-interactive) !important;
+          color: var(--leo-color-icon-interactive) !important;
         }
       }
 
@@ -190,12 +189,12 @@ RegisterStyleOverride(
         flex-direction: row;
         align-items: flex-start;
         justify-content: flex-start;
-        color: #c5c5d3 !important;
+        color: var(--leo-color-text-tertiary) !important;
         margin: 16px 0 0 0 !important;
       }
       .brave-about-graphic {
         flex: 0;
-        flex-basis: 30%;
+        flex-basis: var(--leo-spacing-3xl);
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -237,7 +236,7 @@ RegisterPolymerTemplateModifications({
     const contentEl = createMenuElement(
       loadTimeData.getString('contentSettingsContentSection'),
       '/braveContent',
-      'content-big',
+      'window-content',
       'content',
     )
     appearanceBrowserEl.insertAdjacentElement('afterend', contentEl)
@@ -328,8 +327,8 @@ RegisterPolymerTemplateModifications({
     // Use per-channel logo image.
     const icon = document.createElement('img')
     icon.setAttribute('srcset', 'chrome://theme/current-channel-logo@1x, chrome://theme/current-channel-logo@2x 2x')
-    icon.setAttribute('width', '24px')
-    icon.setAttribute('height', '24px')
+    icon.setAttribute('width', '20px')
+    icon.setAttribute('height', '20px')
 
     const metaEl = document.createElement('div')
     metaEl.setAttribute('class', 'brave-about-meta')
