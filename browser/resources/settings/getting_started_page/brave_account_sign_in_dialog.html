@@ -55,7 +55,7 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
                 on-click="show">
       </leo-icon>
     </leo-input>
-    <leo-button size="medium" isDisabled$="[[isButtonDisabled_(isValid.*)]]">
+    <leo-button size="medium" isDisabled$="[[!canSignIn(isEmailValid, isPasswordValid)]]">
       Sign in
     </leo-button>
   </div>
