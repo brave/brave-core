@@ -54,6 +54,7 @@ brave_settings_web_component_files = [
   "default_brave_shields_page/default_brave_shields_page.ts",
   "getting_started_page/brave_account_dialog.ts",
   "getting_started_page/brave_account_entry_dialog.ts",
+  "getting_started_page/brave_account_forgot_password_dialog.ts",
   "getting_started_page/brave_account_sign_in_dialog.ts",
   "getting_started_page/brave_account_row.ts",
   "getting_started_page/getting_started.ts",

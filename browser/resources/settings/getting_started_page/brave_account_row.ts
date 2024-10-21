@@ -3,14 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * you can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import './brave_account_entry_dialog.js';
-import './brave_account_sign_in_dialog.js';
-import '../settings_shared.css.js';
-import 'chrome://resources/cr_elements/cr_shared_style.css.js';
-import 'chrome://resources/polymer/v3_0/iron-flex-layout/iron-flex-layout-classes.js';
+import './brave_account_entry_dialog.js'
+import './brave_account_forgot_password_dialog.js'
+import './brave_account_sign_in_dialog.js'
+import '../settings_shared.css.js'
+import 'chrome://resources/cr_elements/cr_shared_style.css.js'
+import 'chrome://resources/polymer/v3_0/iron-flex-layout/iron-flex-layout-classes.js'
 
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {getTemplate} from './brave_account_row.html.js'
+
+export enum DialogType {
+  NONE = 0,
+  ENTRY,
+  FORGOT_PASSWORD,
+  SIGN_IN
+}
 
 /**
  * @fileoverview
@@ -26,26 +34,46 @@ class SettingsBraveAccountRow extends PolymerElement {
     return getTemplate()
   }
 
-  private dialogType: 'entry' | 'sign-in' | null;
+  static get properties() {
+    return {
+      dialogTypeEnum: {
+        type: Object,
+        value: DialogType,
+      },
+    }
+  }
 
-  isDialogType(askingType: string) {
-    return (this.dialogType === askingType)
+  private dialogType: DialogType;
+
+  private isDialogType(dialogType: DialogType) {
+    return this.dialogType === dialogType
   }
 
   private onGetStartedButtonClicked_() {
-    this.dialogType = 'entry'
+    this.dialogType = DialogType.ENTRY
   }
 
   private onBraveAccountDialogClosed_() {
-    this.dialogType = null
+    this.dialogType = DialogType.NONE
   }
 
   private onSignInButtonClicked_() {
-    this.dialogType = 'sign-in'
+    this.dialogType = DialogType.SIGN_IN
   }
 
-  private onBackButtonClicked_() {
-    this.dialogType = 'entry'
+  private onBackButtonClicked() {
+    switch (this.dialogType) {
+      case DialogType.FORGOT_PASSWORD:
+        this.dialogType = DialogType.SIGN_IN
+        break
+      case DialogType.SIGN_IN:
+        this.dialogType = DialogType.ENTRY
+        break
+    }
+  }
+
+  private onForgotPassword() {
+    this.dialogType = DialogType.FORGOT_PASSWORD
   }
 
   private onBraveAccountSignInDialogClosed_() {
