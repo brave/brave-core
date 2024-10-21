@@ -477,6 +477,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/vpn/models/BraveVpnWireguardProfileCredentials.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/settings/BraveVpnPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/settings/VpnCalloutPreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/vpn/settings/VpnRegionPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/split_tunnel/ApplicationDataModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/split_tunnel/ApplicationListAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/split_tunnel/ApplicationViewModel.java",
