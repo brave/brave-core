@@ -179,7 +179,7 @@ constexpr const char TRACE_CATEGORY[] = "brave.adblock";
 // intermediaries like `about:blank`.
 blink::WebContentSettingsClient* GetWebContentSettingsClient(
     content::RenderFrame* render_frame) {
-  DCHECK(render_frame);
+  CHECK(render_frame);
 
   blink::WebLocalFrame* web_local_frame = render_frame->GetWebFrame();
   while (web_local_frame) {
@@ -589,7 +589,6 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
     base::JSONWriter::Write(*remove_attrs_dictionary, &remove_attrs_json);
     has_removals = true;
   }
-
   if (has_removals) {
     // Building a script for removals
     std::string new_selectors_script = base::StringPrintf(
@@ -612,8 +611,9 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
   const auto* cf_exceptions_list = resources_dict.FindList("exceptions");
   if (cf_exceptions_list) {
     for (const auto& item : *cf_exceptions_list) {
-      DCHECK(item.is_string());
-      exceptions_.push_back(item.GetString());
+      if (item.is_string()) {
+        exceptions_.push_back(item.GetString());
+      }
     }
   }
   // If its a vetted engine AND we're not in aggressive mode, don't apply
@@ -630,8 +630,9 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
     // mode is enabled.
     if (enabled_1st_party_cf_) {
       for (auto& selector : *hide_selectors_list) {
-        DCHECK(selector.is_string());
-        stylesheet += selector.GetString() + "{display:none !important}";
+        if (selector.is_string()) {
+          stylesheet += selector.GetString() + "{display:none !important}";
+        }
       }
     } else {
       std::string json_selectors;
@@ -654,8 +655,9 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
       resources_dict.FindList("force_hide_selectors");
   if (force_hide_selectors_list) {
     for (auto& selector : *force_hide_selectors_list) {
-      DCHECK(selector.is_string());
-      stylesheet += selector.GetString() + "{display:none !important}";
+      if (selector.is_string()) {
+        stylesheet += selector.GetString() + "{display:none !important}";
+      }
     }
   }
 
@@ -663,13 +665,16 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
       resources_dict.FindDict("style_selectors");
   if (style_selectors_dictionary) {
     for (const auto kv : *style_selectors_dictionary) {
-      DCHECK(kv.second.is_list());
+      if (!kv.second.is_list()) {
+        continue;
+      }
       std::string selector = kv.first;
       const auto& styles = kv.second.GetList();
       stylesheet += selector + '{';
       for (auto& style : styles) {
-        DCHECK(style.is_string());
-        stylesheet += style.GetString() + ';';
+        if (style.is_string()) {
+          stylesheet += style.GetString() + ';';
+        }
       }
       stylesheet += '}';
     }
@@ -694,17 +699,19 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(
   TRACE_EVENT1("brave.adblock", "OnHiddenClassIdSelectors", "url", url_.spec());
 
   base::Value::List* hide_selectors = result.FindList("hide_selectors");
-  DCHECK(hide_selectors);
+  if (!hide_selectors) {
+    return;
+  }
 
   base::Value::List* force_hide_selectors =
       result.FindList("force_hide_selectors");
-  DCHECK(force_hide_selectors);
 
-  if (force_hide_selectors->size() != 0) {
+  if (force_hide_selectors && force_hide_selectors->size() != 0) {
     std::string stylesheet = "";
     for (auto& selector : *force_hide_selectors) {
-      DCHECK(selector.is_string());
-      stylesheet += selector.GetString() + "{display:none !important}";
+      if (selector.is_string()) {
+        stylesheet += selector.GetString() + "{display:none !important}";
+      }
     }
     InjectStylesheet(stylesheet);
   }
@@ -717,8 +724,9 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(
   if (enabled_1st_party_cf_) {
     std::string stylesheet = "";
     for (auto& selector : *hide_selectors) {
-      DCHECK(selector.is_string());
-      stylesheet += selector.GetString() + "{display:none !important}";
+      if (selector.is_string()) {
+        stylesheet += selector.GetString() + "{display:none !important}";
+      }
     }
     InjectStylesheet(stylesheet);
   } else {
@@ -746,7 +754,7 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(
 
 void CosmeticFiltersJSHandler::ExecuteObservingBundleEntryPoint() {
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  DCHECK(web_frame);
+  CHECK(web_frame);
 
   if (!bundle_injected_) {
     SCOPED_UMA_HISTOGRAM_TIMER_MICROS(
