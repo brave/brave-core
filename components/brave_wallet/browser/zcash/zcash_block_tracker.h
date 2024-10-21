@@ -50,7 +50,7 @@ class ZCashBlockTracker : public BlockTracker {
   std::map<std::string, uint32_t> latest_height_map_;
   base::ObserverList<Observer> observers_;
 
-  raw_ptr<ZCashRpc> zcash_rpc_ = nullptr;
+  raw_ptr<ZCashRpc, DanglingUntriaged> zcash_rpc_ = nullptr;
 
   base::WeakPtrFactory<ZCashBlockTracker> weak_ptr_factory_{this};
 };
