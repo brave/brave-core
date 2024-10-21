@@ -108,13 +108,6 @@ source_set("ui") {
       "webui/ai_chat/ai_chat_ui_page_handler.h",
     ]
 
-    if (!is_android && !is_ios) {
-      sources += [
-        "ai_chat/ai_chat_brave_search_throttle_delegate_impl.cc",
-        "ai_chat/ai_chat_brave_search_throttle_delegate_impl.h",
-      ]
-    }
-
     deps += [ "//brave/browser/ai_chat" ]
 
     if (enable_print_preview) {

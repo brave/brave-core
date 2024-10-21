@@ -22,7 +22,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
@@ -275,26 +274,6 @@ SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
   }
 
   return ShowSidebarOption::kShowNever;
-}
-
-void ActivatePanelItem(content::WebContents* web_contents,
-                       SidebarItem::BuiltInItemType panel_item) {
-  if (!web_contents) {
-    return;
-  }
-
-  auto* browser = chrome::FindBrowserWithTab(web_contents);
-  if (!browser) {
-    return;
-  }
-
-  auto* sidebar_controller =
-      static_cast<BraveBrowser*>(browser)->sidebar_controller();
-  if (!sidebar_controller) {
-    return;
-  }
-
-  sidebar_controller->ActivatePanelItem(panel_item);
 }
 
 }  // namespace sidebar
