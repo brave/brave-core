@@ -1986,8 +1986,9 @@ public class BrowserViewController: UIViewController {
         tabsBar.updateSelectedTabTitle()
 
         if let url = webView.url,
-          webView.responds(to: Selector(("_safeBrowsingWarning")))
-            && webView.value(forKey: "_safeBrowsingWarning") != nil
+          webView.configuration.preferences.isFraudulentWebsiteWarningEnabled,
+          webView.responds(to: Selector(("_safeBrowsingWarning"))),
+          webView.value(forKey: "_safeBrowsingWarning") != nil
         {
           tab.url = url  // We can update the URL whenever showing an interstitial warning
           updateToolbarCurrentURL(url.displayURL)

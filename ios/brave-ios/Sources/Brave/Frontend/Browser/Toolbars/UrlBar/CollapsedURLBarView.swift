@@ -106,14 +106,13 @@ class CollapsedURLBarView: UIView {
       urlLabel.text = currentURL.map {
         if let internalURL = InternalURL($0), internalURL.isBasicAuthURL {
           Strings.PageSecurityView.signIntoWebsiteURLBarTitle
+        } else if URLOrigin(url: $0).url != nil || URIFixup.getURL($0.absoluteString) != nil {
+          URLFormatter.formatURLOrigin(
+            forDisplayOmitSchemePathAndTrivialSubdomains: URLOrigin(url: $0).url?.absoluteString
+              ?? $0.absoluteString
+          )
         } else {
-          if URLOrigin(url: $0).url == nil && URIFixup.getURL($0.absoluteString) == nil {
-          } else {
-            URLFormatter.formatURLOrigin(
-              forDisplayOmitSchemePathAndTrivialSubdomains: URLOrigin(url: $0).url?.absoluteString
-                ?? $0.absoluteString
-            )
-          }
+          String()
         }
       }
     }
