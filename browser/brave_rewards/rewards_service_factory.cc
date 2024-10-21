@@ -16,7 +16,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -29,10 +28,6 @@
 #include "brave/browser/brave_rewards/extension_rewards_notification_service_observer.h"
 #include "brave/browser/brave_rewards/extension_rewards_service_observer.h"
 #include "extensions/browser/event_router_factory.h"
-#endif
-
-#if BUILDFLAG(ENABLE_GREASELION)
-#include "brave/browser/greaselion/greaselion_service_factory.h"
 #endif
 
 namespace brave_rewards {
@@ -65,9 +60,6 @@ RewardsServiceFactory::RewardsServiceFactory()
           BrowserContextDependencyManager::GetInstance()) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   DependsOn(extensions::EventRouterFactory::GetInstance());
-#endif
-#if BUILDFLAG(ENABLE_GREASELION)
-  DependsOn(greaselion::GreaselionServiceFactory::GetInstance());
 #endif
   DependsOn(brave_wallet::BraveWalletServiceFactory::GetInstance());
 }
@@ -123,9 +115,6 @@ RewardsServiceFactory::BuildServiceInstanceForBrowserContext(
               profile, ServiceAccessType::EXPLICIT_ACCESS),
           request_image_callback, cancel_request_image_callback,
           profile->GetDefaultStoragePartition(),
-#if BUILDFLAG(ENABLE_GREASELION)
-          greaselion::GreaselionServiceFactory::GetForBrowserContext(context),
-#endif
           brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
               context));
   rewards_service->Init(std::move(extension_observer),

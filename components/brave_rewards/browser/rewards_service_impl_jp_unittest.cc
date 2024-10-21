@@ -10,7 +10,6 @@
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -45,9 +44,6 @@ class RewardsServiceJPTest : public testing::Test {
             const net::NetworkTrafficAnnotationTag& traffic_annotation)>(),
         base::RepeatingCallback<void(int)>(),
         profile()->GetDefaultStoragePartition(),
-#if BUILDFLAG(ENABLE_GREASELION)
-        nullptr,
-#endif
         nullptr);
     ASSERT_TRUE(rewards_service());
 
