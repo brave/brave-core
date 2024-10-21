@@ -1,8 +1,8 @@
 diff --git a/chrome/utility/BUILD.gn b/chrome/utility/BUILD.gn
-index 830288a4141e3431561f9cc5f3bd5f231c617b1b..75b9befa68414de5e88187f4de401676cc8755ef 100644
+index b45e265a7b926f2416713beeabca79f7136b6a0c..546bfef850f690597e264cd5bce18129d23e68eb 100644
 --- a/chrome/utility/BUILD.gn
 +++ b/chrome/utility/BUILD.gn
-@@ -76,6 +76,8 @@ static_library("utility") {
+@@ -77,6 +77,8 @@ static_library("utility") {
      "//ui/base:buildflags",
    ]
  

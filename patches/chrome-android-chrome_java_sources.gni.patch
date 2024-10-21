@@ -1,8 +1,8 @@
 diff --git a/chrome/android/chrome_java_sources.gni b/chrome/android/chrome_java_sources.gni
-index 84825f7e47631fab8d11e5a39fc70ffe5efc10c7..c2f597987944d905f683e525467425daa33f1c2c 100644
+index b70918f5023a972169c1b38ec71558acdf90dfd2..c440f15536006e8c5f09297f40817b530f8d7e9a 100644
 --- a/chrome/android/chrome_java_sources.gni
 +++ b/chrome/android/chrome_java_sources.gni
-@@ -1217,3 +1217,4 @@ chrome_java_sources = [
+@@ -1219,3 +1219,4 @@ chrome_java_sources = [
    "java/src/org/chromium/chrome/browser/webapps/WebappRegistry.java",
    "java/src/org/chromium/chrome/browser/webshare/ShareServiceImplementationFactory.java",
  ]
