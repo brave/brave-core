@@ -102,8 +102,14 @@ repack("resources") {
   }
 
   if (enable_ai_chat) {
-    deps += [ "//brave/components/ai_chat/resources/page:generated_resources" ]
-    sources += [ "$root_gen_dir/brave/components/ai_chat/resources/page/ai_chat_ui_generated.pak" ]
+    deps += [
+      "//brave/components/ai_chat/distiller_scripts:generated_resources",
+      "//brave/components/ai_chat/resources/page:generated_resources",
+    ]
+    sources += [
+      "$root_gen_dir/brave/components/ai_chat/distiller_scripts/ai_chat_site_distiller_generated.pak",
+      "$root_gen_dir/brave/components/ai_chat/resources/page/ai_chat_ui_generated.pak",
+    ]
   }
 
   if (enable_ai_rewriter) {
