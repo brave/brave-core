@@ -1,4 +1,5 @@
 include_rules = [
   "+brave/components/brave_sync",
   "+brave/components/sync/service",
+  "+brave/build/android/jni_headers/BraveQAPreferences_jni.h",
 ]
