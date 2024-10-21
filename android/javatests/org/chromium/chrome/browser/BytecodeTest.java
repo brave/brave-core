@@ -1133,7 +1133,6 @@ public class BytecodeTest {
                         FindToolbarManager.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        Supplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
                         boolean.class,
