@@ -152,7 +152,7 @@ public class DAppsWalletController implements ConnectionErrorHandler {
 
     private void showOnBoardingOrUnlock() {
         int dialogStyle = DAppsDialog.DAppsDialogStyle.BOTTOM;
-        if (mFullscreenManager != null && mFullscreenManager.getPersistentFullscreenMode()
+        if ((mFullscreenManager != null && mFullscreenManager.getPersistentFullscreenMode())
                 || shouldShowNotificationAtTop(mActivity)) {
             dialogStyle = DAppsDialog.DAppsDialogStyle.TOP;
         }

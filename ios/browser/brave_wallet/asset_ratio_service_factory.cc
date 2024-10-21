@@ -19,18 +19,17 @@ namespace brave_wallet {
 
 // static
 mojo::PendingRemote<mojom::AssetRatioService>
-AssetRatioServiceFactory::GetForBrowserState(
-    ChromeBrowserState* browser_state) {
+AssetRatioServiceFactory::GetForBrowserState(ProfileIOS* profile) {
   return static_cast<AssetRatioService*>(
-             GetInstance()->GetServiceForBrowserState(browser_state, true))
+             GetInstance()->GetServiceForBrowserState(profile, true))
       ->MakeRemote();
 }
 
 // static
 AssetRatioService* AssetRatioServiceFactory::GetServiceForState(
-    ChromeBrowserState* browser_state) {
+    ProfileIOS* profile) {
   return static_cast<AssetRatioService*>(
-      GetInstance()->GetServiceForBrowserState(browser_state, true));
+      GetInstance()->GetServiceForBrowserState(profile, true));
 }
 
 // static
@@ -48,9 +47,9 @@ AssetRatioServiceFactory::~AssetRatioServiceFactory() = default;
 
 std::unique_ptr<KeyedService> AssetRatioServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
-  auto* browser_state = ChromeBrowserState::FromBrowserState(context);
+  auto* profile = ProfileIOS::FromBrowserState(context);
   std::unique_ptr<AssetRatioService> asset_ratio_service(
-      new AssetRatioService(browser_state->GetSharedURLLoaderFactory()));
+      new AssetRatioService(profile->GetSharedURLLoaderFactory()));
   return asset_ratio_service;
 }
 

@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/BUILD.gn b/content/public/browser/BUILD.gn
-index ce71441bd76542ce30f4e339d5bf36a30876e398..c8f4718d34c6eca6ea65641a8080b5fc6f9813df 100644
+index 46add155cce7e131021e0a386ab0d9579e78610d..624facdda82cdbadab11a85c8a019e78e8338076 100644
 --- a/content/public/browser/BUILD.gn
 +++ b/content/public/browser/BUILD.gn
-@@ -739,6 +739,7 @@ source_set("browser_sources") {
+@@ -741,6 +741,7 @@ source_set("browser_sources") {
    if (is_chromeos_lacros) {
      deps += [ "//chromeos/startup" ]
    }

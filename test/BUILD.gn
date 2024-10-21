@@ -271,6 +271,7 @@ test("brave_unit_tests") {
     "//brave/vendor/brave_base",
     "//chrome:dependencies",
     "//chrome/app:command_ids",
+    "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/favicon",
     "//chrome/browser/permissions",
     "//chrome/browser/sync",
@@ -502,7 +503,6 @@ test("brave_unit_tests") {
       "//chrome/android:chrome_apk_paks",
       "//chrome/test/android:chrome_java_test_support_common",
       "//components/gcm_driver/instance_id/android:instance_id_driver_test_support_java",
-      "//components/search_engines/android:delegate_public_impl_java",
     ]
     if (enable_brave_vpn || enable_ai_chat) {
       deps += [ "//brave/components/brave_mobile_subscription/renderer/android:unit_tests" ]
@@ -579,7 +579,7 @@ test("brave_unit_tests") {
 source_set("crypto_unittests") {
   testonly = true
 
-  sources = [ "//crypto/symmetric_key_unittest.cc" ]
+  sources = [ "//crypto/kdf_unittest.cc" ]
 
   deps = [
     "//base",
@@ -934,6 +934,7 @@ test("brave_browser_tests") {
     "//chrome/app:command_ids",
     "//chrome/browser",
     "//chrome/browser:browser_process",
+    "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/enterprise/connectors/analysis:features",
     "//chrome/browser/media/router:media_router_feature",
     "//chrome/browser/profiles:profile",
@@ -943,6 +944,7 @@ test("brave_browser_tests") {
     "//chrome/browser/ui:browser_navigator_params_headers",
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
+    "//chrome/browser/ui/hats",
     "//chrome/browser/ui/omnibox",
     "//chrome/browser/web_applications",
     "//chrome/test:chrome_test_launcher",
@@ -1312,6 +1314,8 @@ if (is_android) {
       "//chrome/test/android:chrome_java_test_support_common",
       "//components/browser_ui/bottomsheet/android:java",
       "//components/browser_ui/bottomsheet/android:manager_java",
+      "//components/browser_ui/desktop_windowing/android:java",
+      "//components/browser_ui/edge_to_edge/android:java",
       "//components/browser_ui/settings/android:java",
       "//components/browser_ui/site_settings/android:java",
       "//components/browser_ui/util/android:java",

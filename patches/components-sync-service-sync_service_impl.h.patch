@@ -1,8 +1,8 @@
 diff --git a/components/sync/service/sync_service_impl.h b/components/sync/service/sync_service_impl.h
-index 4926ca753a0523cb463a73da4e401cb9cc5a91dc..b4d0ba261ea99051da8873c583dff8321cdf06fa 100644
+index 8f2c0d864d01d92640c0e0b596a6409b787af2d0..46ab5bcd0a530dfc4a2f832918c108fd58e7a01b 100644
 --- a/components/sync/service/sync_service_impl.h
 +++ b/components/sync/service/sync_service_impl.h
-@@ -257,6 +257,7 @@ class SyncServiceImpl : public SyncService,
+@@ -256,6 +256,7 @@ class SyncServiceImpl : public SyncService,
    void ReportDataTypeErrorForTest(DataType type);
  
   private:

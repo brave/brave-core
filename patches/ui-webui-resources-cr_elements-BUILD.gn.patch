@@ -1,12 +1,12 @@
 diff --git a/ui/webui/resources/cr_elements/BUILD.gn b/ui/webui/resources/cr_elements/BUILD.gn
-index a2480aec8aa60f1965700cc09de3278ffaab0342..fd99d6ed01d982860e1fca93a0a13fd928b2dbfc 100644
+index c7103ae0d0a71d5f8c3371cfa85f1c3774721e1e..1c65e4e61175245c9254498c90b4a787a5c3fd0d 100644
 --- a/ui/webui/resources/cr_elements/BUILD.gn
 +++ b/ui/webui/resources/cr_elements/BUILD.gn
-@@ -223,6 +223,7 @@ build_webui("build") {
-   ts_composite = true
-   ts_deps = [ "../js:build_ts" ]
-   if (include_polymer) {
+@@ -234,6 +234,7 @@ build_webui("build") {
+     "//third_party/lit/v3_0:build_ts",
+   ]
+   if (!is_android && !is_ios) {
 +    ts_deps += ["//brave/ui/webui/resources:build_ts"]
-     ts_deps += [
-       "//third_party/lit/v3_0:build_ts",
-       "//third_party/polymer/v3_0:library",
+     ts_deps += [ "//third_party/polymer/v3_0:library" ]
+   }
+   ts_definitions = [

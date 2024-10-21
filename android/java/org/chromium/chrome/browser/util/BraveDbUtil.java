@@ -108,10 +108,11 @@ public class BraveDbUtil {
         }
 
         // Update UI
-        final String msg = (!TextUtils.isEmpty(erroMsg)) ? erroMsg
-                : "Database successfully " + (isImport ? "imported" : "exported");
-        if (dlg != null)
-            dlg.dismiss();
+        final String msg =
+                !TextUtils.isEmpty(erroMsg)
+                        ? erroMsg
+                        : "Database successfully " + (isImport ? "imported" : "exported");
+        if (dlg != null) dlg.dismiss();
         Context context = ContextUtils.getApplicationContext();
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
         if (isImport) {

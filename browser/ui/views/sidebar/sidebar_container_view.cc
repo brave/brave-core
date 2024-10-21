@@ -164,9 +164,9 @@ void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
   sidebar_control_view_->SetSidebarOnLeft(sidebar_on_left_);
 
   DCHECK(side_panel_);
-  side_panel_->SetHorizontalAlignment(sidebar_on_left
-                                          ? BraveSidePanel::kAlignLeft
-                                          : BraveSidePanel::kAlignRight);
+  side_panel_->SetHorizontalAlignment(
+      sidebar_on_left ? BraveSidePanel::HorizontalAlignment::kLeft
+                      : BraveSidePanel::HorizontalAlignment::kRight);
 
   GetEventDetectWidget()->SetSidebarOnLeft(sidebar_on_left_);
 }
@@ -189,13 +189,6 @@ void SidebarContainerView::WillShowSidePanel() {
   for (const auto& entry : global_registry->entries()) {
     StartObservingForEntry(entry.get());
   }
-}
-
-void SidebarContainerView::WillDeregisterSidePanelEntry(SidePanelEntry* entry) {
-  // If entry's life cycle is tied with tab, we stop observing from
-  // OnTabWillBeRemoved(). However, some entry could be deregistered while tab
-  // is live. In that case, we need to stop observing here explicitely.
-  StopObservingForEntry(entry);
 }
 
 bool SidebarContainerView::IsFullscreenForCurrentEntry() const {
@@ -806,6 +799,19 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   // panel should be hidden here.
   if (!side_panel_coordinator_->GetCurrentEntryId()) {
     HideSidebarForShowOption();
+  }
+}
+
+void SidebarContainerView::OnEntryWillHide(SidePanelEntry* entry,
+                                           SidePanelEntryHideReason reason) {
+  // If |entry| is panel is closed, we could deregister. And it'll be
+  // re-registered when panel is shown if that entry is still live in tab's
+  // registry.
+  // We only stop observing when |entry|'s panel is hidden by closing.
+  // If it's hidden by replacing with other panel, we shoudl not stop
+  // to know the timing that it's shown again.
+  if (reason == SidePanelEntryHideReason::kSidePanelClosed) {
+    StopObservingForEntry(entry);
   }
 }
 
