@@ -87,16 +87,9 @@
   <message name="IDS_CHAT_UI_MENU_TITLE_MODELS" desc="Menu section title for language models">
     Language models
   </message>
-<if expr="is_android">
-  <message name="IDS_CHAT_UI_UPGRADE_BUTTON_LABEL" desc="A button label to upgrade to premium model">
-     Upgrade now
-  </message>
-</if>
-<if expr="not is_android">
   <message name="IDS_CHAT_UI_UPGRADE_BUTTON_LABEL" desc="A button label to upgrade to premium model">
      Try 7 days free
   </message>
-</if>
    <message name="IDS_CHAT_UI_RATE_LIMIT_REACHED_TITLE" desc="An error message when the user has reached API limit">
      Response rate limit reached
   </message>
