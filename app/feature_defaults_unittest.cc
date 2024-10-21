@@ -136,7 +136,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kToolbarPinning,
 #endif
       &features::kBookmarkTriggerForPrerender2,
-      &features::kChromeLabs,
       &features::kChromeStructuredMetrics,
       &features::kCookieDeprecationFacilitatedTesting,
 #if !BUILDFLAG(IS_ANDROID)
