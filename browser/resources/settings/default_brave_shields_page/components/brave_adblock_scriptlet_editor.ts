@@ -81,17 +81,17 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
         break
       case ErrorCode.kAlreadyExists:
         this.scriptletErrorMessage_ = this.i18n(
-          'adblockEditCustomScriptletAlreadyExistsError'
+          'adblockCustomScriptletAlreadyExistsError'
         )
         break
       case ErrorCode.kInvalidName:
         this.scriptletErrorMessage_ = this.i18n(
-          'adblockEditCustomScriptletInvalidNameError'
+          'adblockCustomScriptletInvalidNameError'
         )
         break
       case ErrorCode.kNotFound:
         this.scriptletErrorMessage_ = this.i18n(
-          'adblockEditCustomScriptletNotFoundError'
+          'adblockCustomScriptletNotFoundError'
         )
         break
     }

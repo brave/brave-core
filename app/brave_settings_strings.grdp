@@ -613,6 +613,9 @@
   <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_NOT_FOUND_ERROR" desc="Error message">
     Scriptlet is not found.
   </message>
+  <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_WARNING" desc="A warning message in Scriptlet editor.">
+    Don’t paste code here that you don’t understand or haven’t\nreviewed yourself. This could allow attackers to steal your\nidentity or take control of your computer.
+  </message>
 
   <message name="IDS_SETTINGS_BRAVE_SHORTCUTS_TITLE" desc="The text label for the shortcuts settings page">
     Shortcuts
