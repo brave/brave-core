@@ -723,7 +723,7 @@ void ConversationHandler::PerformQuestionGeneration(
     bool is_video,
     std::string invalidation_token) {
   engine_->GenerateQuestionSuggestions(
-      is_video, page_content,
+      is_video, page_content, selected_language_,
       base::BindOnce(&ConversationHandler::OnSuggestedQuestionsResponse,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -912,9 +912,9 @@ void ConversationHandler::PerformAssistantGeneration(
     OnAssociatedContentInfoChanged();
   }
 
-  engine_->GenerateAssistantResponse(is_video, page_content, chat_history_,
-                                     input, std::move(data_received_callback),
-                                     std::move(data_completed_callback));
+  engine_->GenerateAssistantResponse(
+      is_video, page_content, chat_history_, input, selected_language_,
+      std::move(data_received_callback), std::move(data_completed_callback));
 }
 
 void ConversationHandler::SetAPIError(const mojom::APIError& error) {
@@ -968,6 +968,13 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     // TODO(petemill): Remove ConversationTurn.text backwards compatibility when
     // all UI is updated to instead use ConversationEntryEvent items.
     entry->text = event->get_completion_event()->completion;
+  }
+
+  if (event->is_selected_language_event()) {
+    OnSelectedLanguageChanged(
+        event->get_selected_language_event()->selected_language);
+    // Don't add this event to history
+    return;
   }
 
   entry->events->push_back(std::move(event));
@@ -1125,7 +1132,7 @@ void ConversationHandler::OnGetRefinedPageContent(
     }
   }
   engine_->GenerateAssistantResponse(
-      is_video, page_content_to_use, chat_history_, input,
+      is_video, page_content_to_use, chat_history_, input, selected_language_,
       std::move(data_received_callback), std::move(data_completed_callback));
 }
 
@@ -1301,6 +1308,11 @@ void ConversationHandler::OnClientConnectionChanged() {
 void ConversationHandler::OnConversationUIConnectionChanged(
     mojo::RemoteSetElementId id) {
   OnClientConnectionChanged();
+}
+
+void ConversationHandler::OnSelectedLanguageChanged(
+    const std::string& selected_language) {
+  selected_language_ = selected_language;
 }
 
 void ConversationHandler::OnAssociatedContentFaviconImageDataChanged() {
