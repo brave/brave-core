@@ -13,6 +13,8 @@
 
 namespace brave_ads {
 
+inline constexpr char kVirtualPrefPathPrefix[] = "[virtual]:";
+
 class PrefProviderInterface {
  public:
   virtual ~PrefProviderInterface() = default;
@@ -24,6 +26,9 @@ class PrefProviderInterface {
   virtual std::optional<base::Value> GetLocalStatePref(
       const std::string& pref_path) const = 0;
   virtual bool HasLocalStatePrefPath(const std::string& pref_path) const = 0;
+
+  virtual std::optional<base::Value> GetVirtualPref(
+      const std::string& pref_path) const = 0;
 };
 
 }  // namespace brave_ads

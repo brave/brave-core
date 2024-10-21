@@ -161,6 +161,9 @@ class ADS_EXPORT AdsClient {
   // preference `path`.
   virtual bool HasLocalStatePrefPath(const std::string& path) const = 0;
 
+  // Get the virtual preferences.
+  virtual base::Value::Dict GetVirtualPrefs() const = 0;
+
   // Log a `message` to `file` and the console log with `line` and
   // `verbose_level`.
   virtual void Log(const char* file,
