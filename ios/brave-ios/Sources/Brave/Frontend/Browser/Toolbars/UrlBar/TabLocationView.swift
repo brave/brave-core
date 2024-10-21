@@ -450,15 +450,22 @@ class TabLocationView: UIView {
   }
 
   private func updateURLBarWithText() {
-    if let url = url, let internalURL = InternalURL(url), internalURL.isBasicAuthURL {
+    guard let url = url else {
+      urlDisplayLabel.text = ""
+      return
+    }
+
+    if let internalURL = InternalURL(url), internalURL.isBasicAuthURL {
       urlDisplayLabel.text = Strings.PageSecurityView.signIntoWebsiteURLBarTitle
     } else {
       // Matches LocationBarModelImpl::GetFormattedURL in Chromium (except for omitHTTP)
       // components/omnibox/browser/location_bar_model_impl.cc
       // TODO: Export omnibox related APIs and use directly
       urlDisplayLabel.text = URLFormatter.formatURL(
-        url?.absoluteString ?? "",
-        formatTypes: [.trimAfterHost, .omitHTTP, .omitHTTPS, .omitTrivialSubdomains],
+        url.scheme == "blob" ? URLOrigin(url: url).url?.absoluteString ?? "" : url.absoluteString,
+        formatTypes: [
+          .trimAfterHost, .omitHTTP, .omitHTTPS, .omitTrivialSubdomains, .omitDefaults,
+        ],
         unescapeOptions: .normal
       )
     }
