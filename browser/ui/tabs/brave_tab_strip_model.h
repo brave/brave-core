@@ -43,10 +43,14 @@ class BraveTabStripModel : public TabStripModel {
       uint32_t close_flags = TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
 
   // TabStripModel:
+  void CloseTabs(base::span<content::WebContents* const> items,
+                 uint32_t close_types) override;
+
   void SelectRelativeTab(TabRelativeDirection direction,
                          TabStripUserGestureDetails detail) override;
 
  private:
+  bool IsLastTab() const;
   // List of tab indexes sorted by most recently used
   std::vector<int> mru_cycle_list_;
 };

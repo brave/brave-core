@@ -30,6 +30,22 @@ BraveTabStripModel::BraveTabStripModel(
     : TabStripModel(delegate, profile, group_model_factory) {}
 BraveTabStripModel::~BraveTabStripModel() = default;
 
+void BraveTabStripModel::CloseTabs(
+    base::span<content::WebContents* const> items,
+    uint32_t close_types) {
+  if (IsLastTab() && !profile_->GetPrefs()->GetBoolean(kEnableClosingLastTab)) {
+    content::WebContents* active_web_contents = GetActiveWebContents();
+    Browser* browser = chrome::FindBrowserWithTab(active_web_contents);
+    DCHECK(browser);
+    if (!browser->IsAttemptingToCloseBrowser() &&
+        delegate()->IsNormalWindow()) {
+      GURL url(chrome::kChromeUINewTabURL);
+      delegate()->AddTabAt(url, -1, true);
+    }
+  }
+  TabStripModel::CloseTabs(items, close_types);
+}
+
 void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
                                            TabStripUserGestureDetails detail) {
   if (GetTabCount() == 0) {
@@ -97,3 +113,8 @@ void BraveTabStripModel::CloseTabs(base::span<int> indices,
   }
   TabStripModel::CloseTabs(contentses, close_types);
 }
+
+bool BraveTabStripModel::IsLastTab() const {
+  return (GetTabCount() == 1);
+}
+ 

@@ -699,8 +699,6 @@ void BringAllTabs(Browser* browser) {
   base::ranges::for_each(browsers, [&detached_pinned_tabs,
                                     &detached_unpinned_tabs, &browsers_to_close,
                                     shared_pinned_tab_enabled](auto* other) {
-    static_cast<BraveBrowser*>(other)
-        ->set_ignore_enable_closing_last_tab_pref();
 
     auto* tab_strip_model = other->tab_strip_model();
     const int pinned_tab_count = tab_strip_model->IndexOfFirstNonPinnedTab();

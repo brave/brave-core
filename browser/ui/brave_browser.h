@@ -52,7 +52,6 @@ class BraveBrowser : public Browser {
   void ResetTryToCloseWindow() override;
 
   void OnTabClosing(content::WebContents* contents) override;
-  void TabStripEmpty() override;
 
   void RunFileChooser(content::RenderFrameHost* render_frame_host,
                       scoped_refptr<content::FileSelectListener> listener,
@@ -71,10 +70,6 @@ class BraveBrowser : public Browser {
   BraveBrowserWindow* brave_window();
 
   void set_confirmed_to_close(bool close) { confirmed_to_close_ = close; }
-
-  void set_ignore_enable_closing_last_tab_pref() {
-    ignore_enable_closing_last_tab_pref_ = true;
-  }
 
  private:
   friend class BraveTestLauncherDelegate;
@@ -95,7 +90,6 @@ class BraveBrowser : public Browser {
   // When "kEnableClosingLastTab" is false, browser will try to add new tab in
   // TabStripEmpty() if there is no tab. But, in some cases, we should not add
   // new tab, like when user tries to "Bring all tabs" to other window.
-  bool ignore_enable_closing_last_tab_pref_ = false;
 
   base::WeakPtrFactory<BraveBrowser> weak_ptr_factory_{this};
 };

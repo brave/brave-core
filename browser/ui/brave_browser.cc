@@ -125,18 +125,6 @@ void BraveBrowser::OnTabClosing(content::WebContents* contents) {
   }
 }
 
-void BraveBrowser::TabStripEmpty() {
-  if (unload_controller_.is_attempting_to_close_browser() ||
-      !is_type_normal() || ignore_enable_closing_last_tab_pref_) {
-    Browser::TabStripEmpty();
-    return;
-  }
-
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&chrome::AddTabAt, this, GetNewTabURL(), -1,
-                                true, std::nullopt));
-}
-
 void BraveBrowser::RunFileChooser(
     content::RenderFrameHost* render_frame_host,
     scoped_refptr<content::FileSelectListener> listener,
