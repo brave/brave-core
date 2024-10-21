@@ -25,6 +25,7 @@ export interface AIChatContext extends Props {
   isPremiumUserDisconnected: boolean
   canShowPremiumPrompt?: boolean
   isMobile: boolean
+  hasInitialHistory: boolean
   isHistoryEnabled: boolean
   allActions: mojom.ActionGroup[]
   goPremium: () => void
@@ -43,6 +44,7 @@ const defaultContext: AIChatContext = {
   isPremiumUserDisconnected: false,
   canShowPremiumPrompt: undefined,
   isMobile: Boolean(loadTimeData.getBoolean('isMobile')),
+  hasInitialHistory: Boolean(loadTimeData.getBoolean('hasInitialHistory')),
   isHistoryEnabled: Boolean(loadTimeData.getBoolean('isHistoryEnabled')),
   allActions: [],
   goPremium: () => {},
@@ -51,7 +53,7 @@ const defaultContext: AIChatContext = {
   dismissPremiumPrompt: () => {},
   userRefreshPremiumSession: () => {},
   onNewConversation: () => {},
-  onSelectConversationUuid: () => {}
+  onSelectConversationUuid: () => {},
 }
 
 export const AIChatReactContext =
