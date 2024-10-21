@@ -557,15 +557,15 @@ private class DisplayURLLabel: UILabel {
     didSet {
       clippingFade.isHidden = true
       if oldValue != text {
-        updateText()
-        updateTextSize()
-        detectLanguageForNaturalDirectionClipping()
-
         if let text = text {
           isWebScheme = ["http", "https"].contains(URL(string: text)?.scheme ?? "")
         } else {
           isWebScheme = false
         }
+
+        updateText()
+        updateTextSize()
+        detectLanguageForNaturalDirectionClipping()
       }
       setNeedsDisplay()
     }
@@ -612,8 +612,8 @@ private class DisplayURLLabel: UILabel {
       isRightToLeft = false
     }
     // Update clipping fade direction
-    clippingFade.gradientLayer.startPoint = .init(x: isRightToLeft && isWebScheme ? 1 : 0, y: 0.5)
-    clippingFade.gradientLayer.endPoint = .init(x: isRightToLeft && isWebScheme ? 0 : 1, y: 0.5)
+    clippingFade.gradientLayer.startPoint = .init(x: isRightToLeft || !isWebScheme ? 1 : 0, y: 0.5)
+    clippingFade.gradientLayer.endPoint = .init(x: isRightToLeft || !isWebScheme ? 0 : 1, y: 0.5)
   }
 
   @available(*, unavailable)
@@ -634,7 +634,7 @@ private class DisplayURLLabel: UILabel {
     super.layoutSubviews()
 
     clippingFade.frame = .init(
-      x: isRightToLeft && isWebScheme ? bounds.width - 20 : 0,
+      x: isRightToLeft || !isWebScheme ? bounds.width - 20 : 0,
       y: 0,
       width: 20,
       height: bounds.height
@@ -648,7 +648,7 @@ private class DisplayURLLabel: UILabel {
     var rect = rect
     if textSize.width > bounds.width {
       let delta = (textSize.width - bounds.width)
-      if !isRightToLeft && isWebScheme {
+      if !isRightToLeft && !isWebScheme {
         rect.origin.x -= delta
         rect.size.width += delta
       }
