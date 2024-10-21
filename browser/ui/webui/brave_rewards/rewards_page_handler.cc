@@ -338,7 +338,8 @@ void RewardsPageHandler::GetPublisherForActiveTab(
   auto get_publisher_callback = [](decltype(callback) callback,
                                    mojom::Result result,
                                    mojom::PublisherInfoPtr publisher_info) {
-    if (publisher_info->status == mojom::PublisherStatus::NOT_VERIFIED) {
+    if (publisher_info &&
+        publisher_info->status == mojom::PublisherStatus::NOT_VERIFIED) {
       publisher_info = nullptr;
     }
     std::move(callback).Run(std::move(publisher_info));
