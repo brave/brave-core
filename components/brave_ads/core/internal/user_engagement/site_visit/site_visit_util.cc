@@ -5,11 +5,54 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_util.h"
 
+#include "base/notreached.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
+
+bool IsAllowedToLandOnPage(const mojom::AdType mojom_ad_type) {
+  switch (mojom_ad_type) {
+    case mojom::AdType::kInlineContentAd:
+    case mojom::AdType::kPromotedContentAd: {
+      // Only if:
+      // - The user has joined Brave News.
+      return UserHasOptedInToBraveNewsAds();
+    }
+
+    case mojom::AdType::kNewTabPageAd: {
+      // Only if:
+      // - The user has opted into new tab page ads and has joined Brave
+      //   Rewards.
+      return UserHasJoinedBraveRewards() && UserHasOptedInToNewTabPageAds();
+    }
+
+    case mojom::AdType::kNotificationAd: {
+      // Only if:
+      // - The user has opted into notification ads. Users cannot opt into
+      //   notification ads without joining Brave Rewards.
+      return UserHasOptedInToNotificationAds();
+    }
+
+    case mojom::AdType::kSearchResultAd: {
+      // Only if:
+      // - The user has opted into search result ads and has joined Brave
+      //   Rewards.
+      return UserHasJoinedBraveRewards() && UserHasOptedInToSearchResultAds();
+    }
+
+    case mojom::AdType::kUndefined: {
+      break;
+    }
+  }
+
+  NOTREACHED_NORETURN() << "Unexpected value for mojom::AdType: "
+                        << base::to_underlying(mojom_ad_type);
+}
 
 bool DidLandOnPage(const int32_t tab_id, const GURL& url) {
   const std::optional<TabInfo> tab =

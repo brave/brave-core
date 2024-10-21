@@ -8,9 +8,13 @@
 
 #include <cstdint>
 
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+
 class GURL;
 
 namespace brave_ads {
+
+bool IsAllowedToLandOnPage(mojom::AdType mojom_ad_type);
 
 bool DidLandOnPage(int32_t tab_id, const GURL& url);
 

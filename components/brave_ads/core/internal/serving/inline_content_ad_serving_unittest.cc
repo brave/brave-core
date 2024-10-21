@@ -29,10 +29,8 @@ class BraveAdsInlineContentAdServingTest : public test::TestBase {
  protected:
   void MaybeServeAd(const std::string& dimensions,
                     MaybeServeInlineContentAdCallback callback) {
-    NotifyTabDidChange(
-        /*tab_id=*/1, /*redirect_chain=*/{GURL("brave://newtab")},
-        /*is_new_navigation=*/true, /*is_restoring=*/false,
-        /*is_visible=*/true);
+    SimulateOpeningNewTab(/*tab_id=*/1,
+                          /*redirect_chain=*/{GURL("brave://newtab")});
 
     SubdivisionTargeting subdivision_targeting;
     AntiTargetingResource anti_targeting_resource;

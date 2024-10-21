@@ -24,6 +24,8 @@ bool IsAllowedToConvertAdEvent(const AdEventInfo& ad_event) {
   switch (ad_event.type) {
     case mojom::AdType::kInlineContentAd:
     case mojom::AdType::kPromotedContentAd: {
+      // Only if:
+      // - The user has joined Brave News.
       return UserHasOptedInToBraveNewsAds();
     }
 
@@ -37,6 +39,9 @@ bool IsAllowedToConvertAdEvent(const AdEventInfo& ad_event) {
     }
 
     case mojom::AdType::kNotificationAd: {
+      // Only if:
+      // - The user has opted into notification ads. Users cannot opt into
+      //   notification ads without joining Brave Rewards.
       return UserHasOptedInToNotificationAds();
     }
 

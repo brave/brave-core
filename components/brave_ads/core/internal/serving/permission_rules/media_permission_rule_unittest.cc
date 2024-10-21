@@ -24,9 +24,8 @@ TEST_F(BraveAdsMediaPermissionRuleTest, ShouldAllowIfMediaIsNotPlaying) {
 TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldAllowIfMediaIsStoppedForSingleTab) {
   // Arrange
-  NotifyTabDidChange(
-      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")});
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
 
@@ -39,9 +38,8 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
 TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldAllowIfMediaIsStoppedOnMultipleTabs) {
   // Arrange
-  NotifyTabDidChange(
-      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")});
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
   NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
@@ -56,9 +54,8 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
 TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldAllowIfMediaIsPlayingOnMultipleTabsButStoppedForVisibleTab) {
   // Arrange
-  NotifyTabDidChange(
-      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")});
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
   NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
@@ -72,9 +69,8 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
 TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldNotAllowIfMediaIsPlayingOnVisibleTab) {
   // Arrange
-  NotifyTabDidChange(
-      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")});
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
 
@@ -91,9 +87,8 @@ TEST_F(
       kPermissionRulesFeature,
       {{"should_only_serve_ads_if_media_is_not_playing", "false"}});
 
-  NotifyTabDidChange(
-      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")});
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
 
@@ -104,9 +99,8 @@ TEST_F(
 TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldNotAllowIfMediaIsPlayingOnMultipleTabs) {
   // Arrange
-  NotifyTabDidChange(
-      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")});
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
   NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
@@ -118,9 +112,8 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
 TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldNotAllowIfMediaIsPlayingOnMultipleTabsButStoppedForOccludedTab) {
   // Arrange
-  NotifyTabDidChange(
-      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")});
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
   NotifyTabDidStartPlayingMedia(/*tab_id=*/2);

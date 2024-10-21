@@ -7,6 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CLIENT_ADS_CLIENT_NOTIFIER_FOR_TESTING_H_
 
 #include <cstdint>
+#include <map>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -24,6 +26,18 @@ namespace brave_ads {
 
 class AdsClientNotifierForTesting : public AdsClientNotifier {
  public:
+  AdsClientNotifierForTesting();
+
+  AdsClientNotifierForTesting(const AdsClientNotifierForTesting&) = delete;
+  AdsClientNotifierForTesting& operator=(const AdsClientNotifierForTesting&) =
+      delete;
+
+  AdsClientNotifierForTesting(AdsClientNotifierForTesting&&) noexcept = delete;
+  AdsClientNotifierForTesting& operator=(
+      AdsClientNotifierForTesting&&) noexcept = delete;
+
+  ~AdsClientNotifierForTesting() override;
+
   // Must be set before calling `Notify*` functions.
   void set_ads_client_notifier_task_environment(
       base::test::TaskEnvironment* task_environment) {
@@ -78,10 +92,23 @@ class AdsClientNotifierForTesting : public AdsClientNotifier {
 
   void NotifyDidSolveAdaptiveCaptcha() override;
 
+  // Simulate helper functions.
+  void SimulateOpeningNewTab(int32_t tab_id,
+                             const std::vector<GURL>& redirect_chain);
+  void SimulateNavigateToURL(int32_t tab_id,
+                             const std::vector<GURL>& redirect_chain);
+  void SimulateSelectTab(int32_t tab_id);
+  void SimulateClosingTab(int32_t tab_id);
+
  private:
+  void SimulateSelectLastTab();
+
   void RunTaskEnvironmentUntilIdle();
 
   raw_ptr<base::test::TaskEnvironment> task_environment_ = nullptr;
+
+  std::optional<int32_t> visible_tab_id_;
+  std::map</*tab_id*/ int32_t, std::vector<GURL>> redirect_chains_;
 };
 
 }  // namespace brave_ads
