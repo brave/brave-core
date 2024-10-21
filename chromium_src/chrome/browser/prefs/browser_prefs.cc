@@ -12,6 +12,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_adaptive_captcha/prefs_util.h"
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/common/p3a_pref_names.h"
@@ -197,6 +198,9 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
 
   // Added 2024-07
   profile_prefs->ClearPref(kHangoutsEnabled);
+
+  // Added 2024-10
+  brave_adaptive_captcha::MigrateObsoleteProfilePrefs(profile_prefs);
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
