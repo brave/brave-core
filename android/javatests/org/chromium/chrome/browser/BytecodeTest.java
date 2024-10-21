@@ -1703,7 +1703,8 @@ public class BytecodeTest {
                         LayoutRenderHost.class,
                         BrowserControlsStateProvider.class,
                         LayoutManager.class,
-                        TopUiThemeColorProvider.class));
+                        TopUiThemeColorProvider.class,
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/components/embedder_support/view/ContentView",
