@@ -51,6 +51,7 @@ include_rules = [
   "+components/signin/public/base/signin_switches.h",
   "+components/subresource_filter/core/common/common_features.h",
   "+components/sync/base/features.h",
+  "+components/user_education/common/user_education_features.h",
   "+components/webapps/browser/features.h",
   "+components/password_manager/core/common/password_manager_features.h",
   "+components/device_signals/core/common/signals_features.h",
