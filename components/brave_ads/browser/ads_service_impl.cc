@@ -179,7 +179,7 @@ void OnUrlLoaderResponseStartedCallback(
 }  // namespace
 
 AdsServiceImpl::AdsServiceImpl(
-    Delegate* delegate,
+    std::unique_ptr<Delegate> delegate,
     PrefService* prefs,
     PrefService* local_state,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader,
@@ -191,7 +191,7 @@ AdsServiceImpl::AdsServiceImpl(
     brave_ads::ResourceComponent* resource_component,
     history::HistoryService* history_service,
     brave_rewards::RewardsService* rewards_service)
-    : AdsService(delegate),
+    : AdsService(std::move(delegate)),
       prefs_(prefs),
       local_state_(local_state),
       url_loader_(std::move(url_loader)),
@@ -1103,10 +1103,6 @@ void AdsServiceImpl::AddBatAdsObserver(
     bat_ads_associated_remote_->AddBatAdsObserver(
         std::move(bat_ads_observer_pending_remote));
   }
-}
-
-AdsService::Delegate* AdsServiceImpl::GetDelegate() {
-  return delegate_;
 }
 
 bool AdsServiceImpl::IsBrowserUpgradeRequiredToServeAds() const {

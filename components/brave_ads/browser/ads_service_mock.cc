@@ -5,9 +5,12 @@
 
 #include "brave/components/brave_ads/browser/ads_service_mock.h"
 
+#include <utility>
+
 namespace brave_ads {
 
-AdsServiceMock::AdsServiceMock(Delegate* delegate) : AdsService(delegate) {}
+AdsServiceMock::AdsServiceMock(std::unique_ptr<Delegate> delegate)
+    : AdsService(std::move(delegate)) {}
 
 AdsServiceMock::~AdsServiceMock() = default;
 

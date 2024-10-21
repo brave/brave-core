@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_MOCK_H_
 
 #include <cstdint>
+#include <memory>
 #include <optional>
 #include <string>
 #include <vector>
@@ -20,7 +21,7 @@ namespace brave_ads {
 
 class AdsServiceMock : public AdsService {
  public:
-  explicit AdsServiceMock(Delegate* delegate);
+  explicit AdsServiceMock(std::unique_ptr<Delegate> delegate);
 
   AdsServiceMock(const AdsServiceMock&) = delete;
   AdsServiceMock& operator=(const AdsServiceMock&) = delete;
@@ -32,8 +33,6 @@ class AdsServiceMock : public AdsService {
 
   MOCK_METHOD(void, AddObserver, (AdsServiceObserver * observer));
   MOCK_METHOD(void, RemoveObserver, (AdsServiceObserver * observer));
-
-  MOCK_METHOD(AdsService::Delegate*, GetDelegate, ());
 
   MOCK_METHOD(void,
               AddBatAdsObserver,

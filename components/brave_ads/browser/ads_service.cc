@@ -5,9 +5,12 @@
 
 #include "brave/components/brave_ads/browser/ads_service.h"
 
+#include <utility>
+
 namespace brave_ads {
 
-AdsService::AdsService(Delegate* delegate) : delegate_(delegate) {}
+AdsService::AdsService(std::unique_ptr<Delegate> delegate)
+    : delegate_(std::move(delegate)) {}
 
 AdsService::~AdsService() = default;
 
