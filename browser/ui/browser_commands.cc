@@ -907,6 +907,17 @@ void ScrollTabToBottom(Browser* browser) {
 
 namespace {
 
+/**
+ * @class BookmarksExportListener
+ * @brief A listener class for handling bookmark export file selection.
+ *
+ * This class is responsible for showing a file dialog to the user for selecting
+ * the location to save exported bookmarks.
+ *
+ * @note The lifetime of this class is tied to the FileSelected dialog. It will
+ * be automatically deleted when the dialog is closed, a file is selected, or
+ * the dialog is cancelled.
+ */
 class BookmarksExportListener : public ui::SelectFileDialog::Listener {
  public:
   explicit BookmarksExportListener(Profile* profile)
