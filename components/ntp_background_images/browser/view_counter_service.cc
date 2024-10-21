@@ -143,7 +143,8 @@ ViewCounterService::~ViewCounterService() = default;
 
 void ViewCounterService::BrandedWallpaperWillBeDisplayed(
     const std::string& wallpaper_id,
-    const std::string& creative_instance_id) {
+    const std::string& creative_instance_id,
+    const std::string& campaign_id) {
   if (ads_service_) {
     ads_service_->TriggerNewTabPageAdEvent(
         wallpaper_id, creative_instance_id,
@@ -152,7 +153,7 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
 
     if (ntp_p3a_helper_) {
       // Should only report to P3A if rewards is disabled, as required by spec.
-      ntp_p3a_helper_->RecordView(creative_instance_id);
+      ntp_p3a_helper_->RecordView(creative_instance_id, campaign_id);
     }
   }
 
