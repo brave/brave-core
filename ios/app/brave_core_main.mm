@@ -219,15 +219,14 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
                                               false);
 
     // Setup main browser
-    _browserList = BrowserListFactory::GetForBrowserState(_main_profile);
+    _browserList = BrowserListFactory::GetForProfile(_main_profile);
     _browser = Browser::Create(_main_profile, {});
     _browserList->AddBrowser(_browser.get());
 
     // Setup otr browser
     ProfileIOS* otr_last_used_profile =
         last_used_profile->GetOffTheRecordProfile();
-    _otr_browserList =
-        BrowserListFactory::GetForBrowserState(otr_last_used_profile);
+    _otr_browserList = BrowserListFactory::GetForProfile(otr_last_used_profile);
     _otr_browser = Browser::Create(otr_last_used_profile, {});
     _otr_browserList->AddBrowser(_otr_browser.get());
 
@@ -253,7 +252,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
     if (IsCredentialProviderExtensionSupported()) {
-      CredentialProviderServiceFactory::GetForBrowserState(_main_profile);
+      CredentialProviderServiceFactory::GetForProfile(_main_profile);
     }
 #endif
   }
@@ -274,14 +273,14 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   _webImageDownloader = nil;
 
   _otr_browserList =
-      BrowserListFactory::GetForBrowserState(_otr_browser->GetProfile());
+      BrowserListFactory::GetForProfile(_otr_browser->GetProfile());
   [_otr_browser->GetCommandDispatcher() prepareForShutdown];
   _otr_browserList->RemoveBrowser(_otr_browser.get());
   CloseAllWebStates(*_otr_browser->GetWebStateList(),
                     WebStateList::CLOSE_NO_FLAGS);
   _otr_browser.reset();
 
-  _browserList = BrowserListFactory::GetForBrowserState(_browser->GetProfile());
+  _browserList = BrowserListFactory::GetForProfile(_browser->GetProfile());
   [_browser->GetCommandDispatcher() prepareForShutdown];
   _browserList->RemoveBrowser(_browser.get());
   CloseAllWebStates(*_browser->GetWebStateList(), WebStateList::CLOSE_NO_FLAGS);
@@ -381,10 +380,10 @@ static bool CustomLogHandler(int severity,
 - (BraveOpenTabsAPI*)openTabsAPI {
   if (!_openTabsAPI) {
     syncer::SyncService* sync_service_ =
-        SyncServiceFactory::GetForBrowserState(_main_profile);
+        SyncServiceFactory::GetForProfile(_main_profile);
 
     sync_sessions::SessionSyncService* session_sync_service_ =
-        SessionSyncServiceFactory::GetForBrowserState(_main_profile);
+        SessionSyncServiceFactory::GetForProfile(_main_profile);
 
     _openTabsAPI =
         [[BraveOpenTabsAPI alloc] initWithSyncService:sync_service_
@@ -396,7 +395,7 @@ static bool CustomLogHandler(int severity,
 - (BravePasswordAPI*)passwordAPI {
   if (!_passwordAPI) {
     scoped_refptr<password_manager::PasswordStoreInterface> password_store_ =
-        IOSChromeProfilePasswordStoreFactory::GetForBrowserState(
+        IOSChromeProfilePasswordStoreFactory::GetForProfile(
             _main_profile, ServiceAccessType::EXPLICIT_ACCESS)
             .get();
 
@@ -426,7 +425,7 @@ static bool CustomLogHandler(int severity,
 - (BraveSyncProfileServiceIOS*)syncProfileService {
   if (!_syncProfileService) {
     syncer::SyncService* sync_service_ =
-        SyncServiceFactory::GetForBrowserState(_main_profile);
+        SyncServiceFactory::GetForProfile(_main_profile);
     _syncProfileService = [[BraveSyncProfileServiceIOS alloc]
         initWithProfileSyncService:sync_service_];
   }
@@ -524,7 +523,7 @@ static bool CustomLogHandler(int severity,
     return;
   }
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&UpdateFaviconsStorageForBrowserState,
+      FROM_HERE, base::BindOnce(&UpdateFaviconsStorageForProfile,
                                 browserState->AsWeakPtr(),
                                 /*fallback_to_google_server=*/false));
 }
