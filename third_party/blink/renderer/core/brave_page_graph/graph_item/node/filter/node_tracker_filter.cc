@@ -6,7 +6,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/filter/node_tracker_filter.h"
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
-#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_builder_stream.h"
 
 namespace brave_page_graph {
 
@@ -21,9 +21,9 @@ ItemName NodeTrackerFilter::GetItemName() const {
 }
 
 ItemDesc NodeTrackerFilter::GetItemDesc() const {
-  WTF::TextStream ts;
+  StringBuilder ts;
   ts << NodeFilter::GetItemDesc() << " [" << host_ << "]";
-  return ts.Release();
+  return ts.ReleaseString();
 }
 
 void NodeTrackerFilter::AddGraphMLAttributes(xmlDocPtr doc,
