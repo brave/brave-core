@@ -161,7 +161,7 @@ constexpr const char TRACE_CATEGORY[] = "brave.adblock";
 // intermediaries like `about:blank`.
 blink::WebContentSettingsClient* GetWebContentSettingsClient(
     content::RenderFrame* render_frame) {
-  DCHECK(render_frame);
+  CHECK(render_frame);
 
   blink::WebLocalFrame* web_local_frame = render_frame->GetWebFrame();
   while (web_local_frame) {
@@ -558,8 +558,6 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
             blink::WebScriptSource(
                 blink::WebString::FromUTF8(*procedural_actions_script)),
             blink::BackForwardCacheAware::kAllow);
-
-    DCHECK(v8_stylesheet->IsString());
     if (!v8_stylesheet.IsEmpty() && v8_stylesheet->IsString()) {
       v8::Local<v8::String> v8_str = v8_stylesheet.As<v8::String>();
       int length = v8_str->Utf8Length(isolate);
@@ -582,8 +580,9 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
   const auto* cf_exceptions_list = resources_dict.FindList("exceptions");
   if (cf_exceptions_list) {
     for (const auto& item : *cf_exceptions_list) {
-      DCHECK(item.is_string());
-      exceptions_.push_back(item.GetString());
+      if (item.is_string()) {
+        exceptions_.push_back(item.GetString());
+      }
     }
   }
   // If its a vetted engine AND we're not in aggressive mode, don't apply
@@ -600,8 +599,9 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
     // mode is enabled.
     if (enabled_1st_party_cf_) {
       for (auto& selector : *hide_selectors_list) {
-        DCHECK(selector.is_string());
-        stylesheet += selector.GetString() + "{display:none !important}";
+        if (selector.is_string()) {
+          stylesheet += selector.GetString() + "{display:none !important}";
+        }
       }
     } else {
       std::string json_selectors;
@@ -624,8 +624,9 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
       resources_dict.FindList("force_hide_selectors");
   if (force_hide_selectors_list) {
     for (auto& selector : *force_hide_selectors_list) {
-      DCHECK(selector.is_string());
-      stylesheet += selector.GetString() + "{display:none !important}";
+      if (selector.is_string()) {
+        stylesheet += selector.GetString() + "{display:none !important}";
+      }
     }
   }
 
@@ -648,17 +649,19 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(
   TRACE_EVENT1("brave.adblock", "OnHiddenClassIdSelectors", "url", url_.spec());
 
   base::Value::List* hide_selectors = result.FindList("hide_selectors");
-  DCHECK(hide_selectors);
+  if (!hide_selectors) {
+    return;
+  }
 
   base::Value::List* force_hide_selectors =
       result.FindList("force_hide_selectors");
-  DCHECK(force_hide_selectors);
 
-  if (force_hide_selectors->size() != 0) {
+  if (force_hide_selectors && force_hide_selectors->size() != 0) {
     std::string stylesheet = "";
     for (auto& selector : *force_hide_selectors) {
-      DCHECK(selector.is_string());
-      stylesheet += selector.GetString() + "{display:none !important}";
+      if (selector.is_string()) {
+        stylesheet += selector.GetString() + "{display:none !important}";
+      }
     }
     InjectStylesheet(stylesheet);
   }
@@ -671,8 +674,9 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(
   if (enabled_1st_party_cf_) {
     std::string stylesheet = "";
     for (auto& selector : *hide_selectors) {
-      DCHECK(selector.is_string());
-      stylesheet += selector.GetString() + "{display:none !important}";
+      if (selector.is_string()) {
+        stylesheet += selector.GetString() + "{display:none !important}";
+      }
     }
     InjectStylesheet(stylesheet);
   } else {
@@ -700,7 +704,7 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(
 
 void CosmeticFiltersJSHandler::ExecuteObservingBundleEntryPoint() {
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  DCHECK(web_frame);
+  CHECK(web_frame);
 
   if (!bundle_injected_) {
     SCOPED_UMA_HISTOGRAM_TIMER_MICROS(
