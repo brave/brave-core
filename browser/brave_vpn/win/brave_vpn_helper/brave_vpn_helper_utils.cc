@@ -95,8 +95,8 @@ std::wstring GetBraveVpnHelperServiceName() {
 }
 
 std::wstring GetBraveVpnHelperServiceDescription() {
-  // TODO(anyone): Consider adding a description.
-  return std::wstring();
+  return L"Protects Brave VPN against DNS leaks with Smart Multi-Homed Name "
+         L"Resolution when using IKEv2";
 }
 
 std::wstring GetBraveVpnHelperRegistryStoragePath() {
