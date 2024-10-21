@@ -281,6 +281,12 @@ export function ConversationContextProvider(
     )
     listenerIds.push(id)
 
+    id = callbackRouter.onConversationDeleted.addListener(() => {
+      // TODO(petemill): Show deleted UI
+      console.debug('DELETED')
+    })
+    listenerIds.push(id)
+
     // Remove bindings when changing conversations
     return () => {
       for (const id of listenerIds) {
