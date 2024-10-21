@@ -4,12 +4,13 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/views/download/download_shelf_context_menu_view.h"
+
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/download/bubble/download_bubble_prefs.h"
 #include "chrome/browser/download/download_ui_model.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/base/models/simple_menu_model.h"
+#include "ui/menus/simple_menu_model.h"
 
 #define DownloadShelfContextMenuView DownloadShelfContextMenuViewChromium
 

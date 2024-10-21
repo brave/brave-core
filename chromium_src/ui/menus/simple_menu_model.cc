@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/ui/base/models/simple_menu_model.cc"
+#include "src/ui/menus/simple_menu_model.cc"
 
 namespace ui {
 

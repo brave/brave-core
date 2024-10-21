@@ -12,8 +12,8 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "ui/base/models/simple_menu_model.h"
 #include "ui/base/ui_base_types.h"
+#include "ui/menus/simple_menu_model.h"
 
 class BraveBrowserTabStripController;
 class BraveTabMenuModel;
