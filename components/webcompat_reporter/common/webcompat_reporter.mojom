@@ -1,0 +1,33 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module webcompat_reporter.mojom;
+
+struct ComponentInfo {
+  string name;
+  string id;
+  string version;
+};
+
+struct ReportInfo {
+  string? channel;
+  string? brave_version;
+  string? report_url;
+  string? shields_enabled;
+  string? ad_block_setting;
+  string? fp_block_setting;
+  string? ad_block_list_names;
+  string? languages;
+  string? language_farbling;
+  string? brave_vpn_connected;
+  string? details;
+  string? contact;
+  array<ComponentInfo>? ad_block_components_version;
+  array<uint8>? screenshot_png;
+};
+
+interface WebcompatReporterHandler {
+  SubmitWebcompatReport(ReportInfo report_info);
+};

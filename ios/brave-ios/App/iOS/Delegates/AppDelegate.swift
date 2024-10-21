@@ -362,8 +362,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     SDWebImageDownloader.shared.setValue(userAgent, forHTTPHeaderField: "User-Agent")
 
-    WebcompatReporter.userAgent = userAgent
-
     // Record the user agent for use by search suggestion clients.
     SearchViewController.userAgent = userAgent
   }

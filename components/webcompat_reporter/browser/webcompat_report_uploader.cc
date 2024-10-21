@@ -6,10 +6,12 @@
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
 #include "base/json/json_writer.h"
+#include "base/values.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/fields.h"
@@ -27,6 +29,7 @@
 namespace webcompat_reporter {
 
 namespace {
+
 constexpr char kJsonContentType[] = "application/json";
 constexpr char kPngContentType[] = "image/png";
 constexpr char kMultipartContentTypePrefix[] = "multipart/form-data; boundary=";
@@ -34,10 +37,31 @@ constexpr char kMultipartContentTypePrefix[] = "multipart/form-data; boundary=";
 constexpr char kReportDetailsMultipartName[] = "report-details";
 constexpr char kScreenshotMultipartName[] = "screenshot";
 constexpr char kScreenshotMultipartFilename[] = "screenshot.png";
-}  // namespace
 
-Report::Report() = default;
-Report::~Report() = default;
+constexpr char kStringTrue[] = "true";
+
+constexpr char kComponentItemName[] = "name";
+constexpr char kComponentItemId[] = "id";
+constexpr char kComponentItemVersion[] = "version";
+
+std::optional<base::Value> ConvertCompsToValue(
+    const std::vector<webcompat_reporter::mojom::ComponentInfoPtr>&
+        components) {
+  if (components.empty()) {
+    return std::nullopt;
+  }
+  auto components_list = base::Value::List();
+  for (const auto& component : components) {
+    base::Value::Dict component_dict;
+    component_dict.Set(kComponentItemName, component->name);
+    component_dict.Set(kComponentItemId, component->id);
+    component_dict.Set(kComponentItemVersion, component->version);
+    components_list.Append(std::move(component_dict));
+  }
+  return base::Value(std::move(components_list));
+}
+
+}  // namespace
 
 WebcompatReportUploader::WebcompatReportUploader(
     scoped_refptr<network::SharedURLLoaderFactory> factory)
@@ -45,37 +69,91 @@ WebcompatReportUploader::WebcompatReportUploader(
 
 WebcompatReportUploader::~WebcompatReportUploader() = default;
 
-void WebcompatReportUploader::SubmitReport(const Report& report) {
+void WebcompatReportUploader::SubmitReport(mojom::ReportInfoPtr report_info) {
+  if (!report_info) {
+    return;
+  }
+
   std::string api_key = brave_stats::GetAPIKey();
 
   const GURL upload_url(BUILDFLAG(WEBCOMPAT_REPORT_ENDPOINT));
 
-  url::Origin report_url_origin = url::Origin::Create(report.report_url);
-
   base::Value::Dict report_details_dict;
-  report_details_dict.Set(kSiteURLField, report.report_url.spec());
-  report_details_dict.Set(kDomainField, report_url_origin.Serialize());
-  report_details_dict.Set(kDetailsField, report.details.Clone());
-  report_details_dict.Set(kContactField, report.contact.Clone());
 
-  report_details_dict.Set(kChannelField, report.channel);
-  report_details_dict.Set(
-      kVersionField,
-      version_info::GetBraveVersionWithoutChromiumMajorVersion());
-  report_details_dict.Set(kShieldsEnabledField, report.shields_enabled);
-  report_details_dict.Set(kAdBlockSettingField, report.ad_block_setting);
-  report_details_dict.Set(kFPBlockSettingField, report.fp_block_setting);
-  report_details_dict.Set(kAdBlockListsField, report.ad_block_list_names);
-  report_details_dict.Set(kLanguagesField, report.languages);
-  report_details_dict.Set(kLanguageFarblingField, report.language_farbling);
-  report_details_dict.Set(kBraveVPNEnabledField, report.brave_vpn_connected);
+  if (report_info->report_url) {
+    auto url = GURL(report_info->report_url.value());
+    report_details_dict.Set(kDomainField, url::Origin::Create(url).Serialize());
+    report_details_dict.Set(kSiteURLField,
+                            GURL(report_info->report_url.value()).spec());
+  }
+
+  if (report_info->details) {
+    report_details_dict.Set(kDetailsField, report_info->details.value());
+  }
+
+  if (report_info->ad_block_components_version &&
+      !report_info->ad_block_components_version->empty()) {
+    report_details_dict.Set(
+        kAdBlockComponentsVersionField,
+        ConvertCompsToValue(report_info->ad_block_components_version.value())
+            .value());
+  }
+
+  if (report_info->contact) {
+    report_details_dict.Set(kContactField, report_info->contact.value());
+  }
+
+  if (report_info->channel) {
+    report_details_dict.Set(kChannelField, report_info->channel.value());
+  }
+
+  if (report_info->brave_version) {
+    report_details_dict.Set(kVersionField, report_info->brave_version.value());
+  }
+
+  if (report_info->shields_enabled) {
+    report_details_dict.Set(
+        kShieldsEnabledField,
+        report_info->shields_enabled.value() == kStringTrue);
+  }
+
+  if (report_info->ad_block_setting) {
+    report_details_dict.Set(kAdBlockSettingField,
+                            report_info->ad_block_setting.value());
+  }
+
+  if (report_info->fp_block_setting) {
+    report_details_dict.Set(kFPBlockSettingField,
+                            report_info->fp_block_setting.value());
+  }
+
+  if (report_info->ad_block_list_names) {
+    report_details_dict.Set(kAdBlockListsField,
+                            report_info->ad_block_list_names.value());
+  }
+
+  if (report_info->languages) {
+    report_details_dict.Set(kLanguagesField, report_info->languages.value());
+  }
+
+  if (report_info->language_farbling) {
+    report_details_dict.Set(
+        kLanguageFarblingField,
+        report_info->language_farbling.value() == kStringTrue);
+  }
+
+  if (report_info->brave_vpn_connected) {
+    report_details_dict.Set(
+        kBraveVPNEnabledField,
+        report_info->brave_vpn_connected.value() == kStringTrue);
+  }
 
   report_details_dict.Set(kApiKeyField, base::Value(api_key));
 
   std::string report_details_json;
   base::JSONWriter::Write(report_details_dict, &report_details_json);
 
-  if (report.screenshot_png && !report.screenshot_png->empty()) {
+  if (report_info->screenshot_png && !report_info->screenshot_png->empty()) {
     std::string multipart_boundary = net::GenerateMimeMultipartBoundary();
     std::string content_type = kMultipartContentTypePrefix + multipart_boundary;
     std::string multipart_data;
@@ -85,8 +163,8 @@ void WebcompatReportUploader::SubmitReport(const Report& report) {
                                     kJsonContentType, &multipart_data);
 
     std::string screenshot_png_str;
-    screenshot_png_str = std::string(report.screenshot_png->begin(),
-                                     report.screenshot_png->end());
+    screenshot_png_str = std::string(report_info->screenshot_png->begin(),
+                                     report_info->screenshot_png->end());
     net::AddMultipartValueForUploadWithFileName(
         kScreenshotMultipartName, kScreenshotMultipartFilename,
         screenshot_png_str, multipart_boundary, kPngContentType,
@@ -108,7 +186,7 @@ void WebcompatReportUploader::CreateAndStartURLLoader(
     const GURL& upload_url,
     const std::string& content_type,
     const std::string& post_data) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   auto resource_request = std::make_unique<network::ResourceRequest>();
   // upload_url only includes the origin and path, and not the fragment or
@@ -151,7 +229,7 @@ void WebcompatReportUploader::CreateAndStartURLLoader(
 
 void WebcompatReportUploader::OnSimpleURLLoaderComplete(
     std::unique_ptr<std::string> response_body) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool success = !!response_body;
 

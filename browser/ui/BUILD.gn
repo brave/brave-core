@@ -98,6 +98,7 @@ source_set("ui") {
       "webui/webcompat_reporter/webcompat_reporter_ui.cc",
       "webui/webcompat_reporter/webcompat_reporter_ui.h",
     ]
+    deps += [ "//brave/components/webcompat_reporter/common:mojom" ]
   }
 
   if (enable_ai_chat) {

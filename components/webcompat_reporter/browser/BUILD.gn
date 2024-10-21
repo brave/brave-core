@@ -5,26 +5,69 @@
 
 import("//build/config/features.gni")
 
-assert(!is_android)
-
 static_library("browser") {
   sources = [
     "fields.cc",
     "fields.h",
     "webcompat_report_uploader.cc",
     "webcompat_report_uploader.h",
+    "webcompat_reporter_service.cc",
+    "webcompat_reporter_service.h",
+    "webcompat_reporter_service_delegate_base.cc",
+    "webcompat_reporter_service_delegate_base.h",
+    "webcompat_reporter_utils.cc",
+    "webcompat_reporter_utils.h",
   ]
 
   deps = [
     "//base",
-    "//brave/components/brave_referrals/browser",
+    "//brave/components/brave_shields/core/browser",
+    "//brave/components/brave_shields/core/common",
     "//brave/components/brave_shields/core/common:mojom",
     "//brave/components/brave_stats/browser",
     "//brave/components/constants",
     "//brave/components/version_info",
     "//brave/components/webcompat_reporter/buildflags",
-    "//content/public/browser",
+    "//brave/components/webcompat_reporter/common:mojom",
+    "//components/component_updater:component_updater",
+    "//components/keyed_service/core",
     "//net",
     "//services/network/public/cpp",
   ]
+
+  if (!is_ios) {
+    deps += [
+      "//brave/common",
+      "//brave/components/brave_referrals/browser",
+      "//brave/components/brave_shields/content/browser",
+      "//content/public/browser",
+    ]
+  }
+}
+
+source_set("unittests") {
+  testonly = true
+
+  sources = [
+    "webcompat_report_uploader_unittest.cc",
+    "webcompat_reporter_service_unittest.cc",
+  ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_stats/browser",
+    "//brave/components/version_info",
+    "//brave/components/webcompat_reporter/common:mojom",
+    "//components/component_updater:test_support",
+    "//net",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//testing/gtest",
+    "//url",
+  ]
+  if (!is_ios) {
+    deps += [ "//brave/components/brave_shields/content/browser" ]
+  }
 }

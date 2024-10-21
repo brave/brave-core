@@ -1,0 +1,29 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+brave_browser_webcompat_reporter_sources = [
+  "//brave/browser/webcompat_reporter/webcompat_reporter_service_delegate.cc",
+  "//brave/browser/webcompat_reporter/webcompat_reporter_service_delegate.h",
+  "//brave/browser/webcompat_reporter/webcompat_reporter_service_factory.cc",
+  "//brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h",
+]
+
+brave_browser_webcompat_reporter_deps = [
+  "//base",
+  "//brave/browser:browser_process",
+  "//brave/common",
+  "//brave/components/webcompat_reporter/browser",
+  "//brave/components/webcompat_reporter/common:mojom",
+  "//components/keyed_service/content",
+  "//mojo/public/cpp/bindings",
+]
+
+if (is_android) {
+  brave_browser_webcompat_reporter_sources += [ "//brave/browser/webcompat_reporter/android/webcompat_report_service_factory_android.cc" ]
+  brave_browser_webcompat_reporter_deps += [
+    "//brave/browser/android:android_browser_process",
+    "//brave/build/android:jni_headers",
+  ]
+}
