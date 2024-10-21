@@ -31,15 +31,9 @@ ExtensionTelemetryServiceFactory::ExtensionTelemetryServiceFactory()
                                  ProfileSelections::BuildNoProfilesSelected()) {
 }
 
-content::BrowserContext*
-ExtensionTelemetryServiceFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  return nullptr;
-}
-
 bool ExtensionTelemetryServiceFactory::ServiceIsCreatedWithBrowserContext()
     const {
-  return true;
+  return false;
 }
 
 bool ExtensionTelemetryServiceFactory::ServiceIsNULLWhileTesting() const {
