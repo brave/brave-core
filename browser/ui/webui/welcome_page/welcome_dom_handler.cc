@@ -61,7 +61,8 @@ bool IsChromeDev(const std::u16string& browser_name) {
 
 }  // namespace
 
-WelcomeDOMHandler::WelcomeDOMHandler(Profile* profile) : profile_(profile) {
+WelcomeDOMHandler::WelcomeDOMHandler(Profile* profile)
+    : profile_(profile), getting_started_helper_(profile) {
   base::MakeRefCounted<shell_integration::DefaultSchemeClientWorker>(
       GURL("https://brave.com"))
       ->StartCheckIsDefaultAndGetDefaultClientName(
@@ -103,6 +104,10 @@ void WelcomeDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "enableWebDiscovery",
       base::BindRepeating(&WelcomeDOMHandler::HandleEnableWebDiscovery,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getWelcomeCompleteURL",
+      base::BindRepeating(&WelcomeDOMHandler::HandleGetWelcomeCompleteURL,
                           base::Unretained(this)));
 }
 
@@ -171,6 +176,31 @@ void WelcomeDOMHandler::HandleEnableWebDiscovery(
     const base::Value::List& args) {
   DCHECK(profile_);
   profile_->GetPrefs()->SetBoolean(kWebDiscoveryEnabled, true);
+}
+
+void WelcomeDOMHandler::HandleGetWelcomeCompleteURL(
+    const base::Value::List& args) {
+  CHECK_EQ(1U, args.size());
+  const auto& callback_id = args[0].GetString();
+  getting_started_helper_.GetEducationURL(
+      base::BindOnce(&WelcomeDOMHandler::OnEducationURL,
+                     weak_ptr_factory_.GetWeakPtr(), callback_id));
+}
+
+void WelcomeDOMHandler::OnEducationURL(const std::string& callback_id,
+                                       std::optional<GURL> url) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
+  // If there is no "getting started" education URL to show the user (perhaps
+  // because they are not currently active, or because of a network issue), then
+  // send the user to the new tab page.
+  if (!url.has_value()) {
+    url = GURL(chrome::kChromeUINewTabURL);
+  }
+
+  ResolveJavascriptCallback(base::Value(callback_id), base::Value(url->spec()));
 }
 
 void WelcomeDOMHandler::SetLocalStateBooleanEnabled(
