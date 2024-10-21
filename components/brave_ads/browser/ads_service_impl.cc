@@ -1751,13 +1751,10 @@ void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
     return VLOG(1) << "Ads paused; support intervention required";
   }
 
-  const int snooze_count = prefs_->GetInteger(
-      brave_adaptive_captcha::prefs::kScheduledCaptchaSnoozeCount);
-
   CHECK(ads_tooltips_delegate_);
 
   ads_tooltips_delegate_->ShowCaptchaTooltip(
-      payment_id, captcha_id, snooze_count == 0,
+      payment_id, captcha_id, /*include_cancel_button=*/true,
       base::BindOnce(&AdsServiceImpl::ShowScheduledCaptchaCallback,
                      weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptchaCallback,

@@ -136,20 +136,12 @@ void BraveAdaptiveCaptchaService::ShowScheduledCaptcha(
 }
 
 void BraveAdaptiveCaptchaService::SnoozeScheduledCaptcha() {
-  const int snooze_count =
-      prefs_->GetInteger(prefs::kScheduledCaptchaSnoozeCount);
-  if (snooze_count >= 1) {
-    return;
-  }
-
   prefs_->SetString(prefs::kScheduledCaptchaPaymentId, "");
   prefs_->SetString(prefs::kScheduledCaptchaId, "");
-  prefs_->SetInteger(prefs::kScheduledCaptchaSnoozeCount, snooze_count + 1);
 }
 
 void BraveAdaptiveCaptchaService::ClearScheduledCaptcha() {
   prefs_->SetInteger(prefs::kScheduledCaptchaFailedAttempts, 0);
-  prefs_->SetInteger(prefs::kScheduledCaptchaSnoozeCount, 0);
   prefs_->SetString(prefs::kScheduledCaptchaPaymentId, "");
   prefs_->SetString(prefs::kScheduledCaptchaId, "");
   prefs_->SetBoolean(prefs::kScheduledCaptchaPaused, false);

@@ -5,6 +5,7 @@ include_rules = [
   "+brave/common",
   "+brave/grit",
   "+brave/components/ai_rewriter",
+  "+brave/components/brave_adaptive_captcha",
   "+brave/components/brave_ads",
   "+brave/components/brave_component_updater/browser",
   "+brave/components/brave_news",
