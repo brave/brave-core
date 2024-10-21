@@ -27,7 +27,7 @@ void AdBlockResourceProvider::RemoveObserver(
   }
 }
 
-void AdBlockResourceProvider::OnResourcesLoaded(
+void AdBlockResourceProvider::NotifyResourcesLoaded(
     const std::string& resources_json) {
   for (auto& observer : observers_) {
     observer.OnResourcesLoaded(resources_json);

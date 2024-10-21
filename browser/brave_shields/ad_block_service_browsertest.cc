@@ -243,9 +243,7 @@ void AdBlockServiceTest::UpdateAdBlockResources(const std::string& resources) {
   brave_shields::AdBlockService* service =
       g_brave_browser_process->ad_block_service();
 
-  static_cast<brave_shields::AdBlockDefaultResourceProvider*>(
-      service->resource_provider())
-      ->OnComponentReady(component_path);
+  service->default_resource_provider()->OnComponentReady(component_path);
 }
 
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
@@ -306,7 +304,7 @@ base::FilePath AdBlockServiceTest::GetTestDataDir() {
   return base::PathService::CheckedGet(brave::DIR_TEST_DATA);
 }
 
-void AdBlockServiceTest::NavigateToURL(GURL url) {
+void AdBlockServiceTest::NavigateToURL(const GURL& url) {
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
 }
