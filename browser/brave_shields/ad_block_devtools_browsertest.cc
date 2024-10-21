@@ -101,3 +101,20 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTest, Exception) {
   EXPECT_TRUE(*info->FindBool("didMatchRule"));
   EXPECT_TRUE(*info->FindBool("didMatchException"));
 }
+
+IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTest, TwoClientsNoCrash) {
+  AttachToWebContents(web_contents());
+  SendCommandSync("Network.enable");
+
+  content::TestDevToolsProtocolClient second_devtools_client_;
+  second_devtools_client_.AttachToWebContents(web_contents());
+  second_devtools_client_.SendCommandSync("Network.enable");
+
+  const GURL& url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  UpdateAdBlockInstanceWithRules("||" + url.host() + "^");
+  NavigateToURL(url);
+
+  WaitForNotification("Network.requestAdblockInfoReceived", true);
+
+  second_devtools_client_.DetachProtocolClient();
+}
