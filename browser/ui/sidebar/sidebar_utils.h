@@ -17,6 +17,10 @@ class GURL;
 class PrefService;
 enum class SidePanelEntryId;
 
+namespace content {
+class WebContents;
+}
+
 namespace sidebar {
 
 bool CanUseSidebar(Browser* browser);
@@ -44,6 +48,10 @@ bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type);
 
 SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
     version_info::Channel channel);
+
+void ActivatePanelItem(content::WebContents* web_contents,
+                       SidebarItem::BuiltInItemType panel_item);
+
 }  // namespace sidebar
 
 #endif  // BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_UTILS_H_

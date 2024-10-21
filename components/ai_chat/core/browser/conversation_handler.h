@@ -220,6 +220,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnFaviconImageDataChanged();
   void OnUserOptedIn();
 
+  // Some associated content may provide some conversation that the user wants
+  // to continue, e.g. Brave Search.
+  void MaybeFetchOrClearContentStagedConversation();
+
   base::WeakPtr<ConversationHandler> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
   }
@@ -282,9 +286,6 @@ class ConversationHandler : public mojom::ConversationHandler,
                                  bool is_video,
                                  std::string invalidation_token);
 
-  // Some associated content may provide some conversation that the user wants
-  // to continue, e.g. Brave Search.
-  void MaybeFetchOrClearContentStagedConversation();
   void OnGetStagedEntriesFromContent(
       const std::optional<std::vector<SearchQuerySummary>>& entries);
 

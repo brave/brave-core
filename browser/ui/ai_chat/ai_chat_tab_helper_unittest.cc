@@ -51,6 +51,11 @@ class MockPageContentFetcher
               GetSearchSummarizerKey,
               (mojom::PageContentExtractor::GetSearchSummarizerKeyCallback),
               (override));
+  MOCK_METHOD(void,
+              ValidateOpenLeoButtonNonce,
+              (const std::string&,
+               mojom::PageContentExtractor::ValidateOpenLeoButtonNonceCallback),
+              (override));
 };
 
 class MockAssociatedContentObserver : public AssociatedContentDriver::Observer {
