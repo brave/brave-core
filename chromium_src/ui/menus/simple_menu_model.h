@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CHROMIUM_SRC_UI_BASE_MODELS_SIMPLE_MENU_MODEL_H_
-#define BRAVE_CHROMIUM_SRC_UI_BASE_MODELS_SIMPLE_MENU_MODEL_H_
+#ifndef BRAVE_CHROMIUM_SRC_UI_MENUS_SIMPLE_MENU_MODEL_H_
+#define BRAVE_CHROMIUM_SRC_UI_MENUS_SIMPLE_MENU_MODEL_H_
 
 #define AddButtonItem                                                        \
   AddButtonItemAt(int command_id, ButtonMenuItemModel* model, size_t index); \
@@ -14,4 +14,4 @@
 
 #undef AddButtonItem
 
-#endif  // BRAVE_CHROMIUM_SRC_UI_BASE_MODELS_SIMPLE_MENU_MODEL_H_
+#endif  // BRAVE_CHROMIUM_SRC_UI_MENUS_SIMPLE_MENU_MODEL_H_
