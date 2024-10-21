@@ -250,10 +250,10 @@ function Main() {
               <LongConversationInfo />
             </div>}
 
-          {aiChatContext.onDeviceModelStatus && !aiChatContext.onDeviceModelStatus.isComplete && (conversationContext.currentModel?.options.leoModelOptions?.engineType === mojom.ModelEngineType.ON_DEVICE) &&
+          {(conversationContext.currentModel?.options.leoModelOptions?.engineType === mojom.ModelEngineType.ON_DEVICE) && aiChatContext.onDeviceModelStatus && conversationContext.currentModel && aiChatContext.onDeviceModelStatus.has(conversationContext.currentModel.options.leoModelOptions.name) && !aiChatContext.onDeviceModelStatus.get(conversationContext.currentModel.options.leoModelOptions.name)!.isComplete &&
             <div className={styles.promptContainer}>
               <Alert mode='full' type='info'>
-                {aiChatContext.onDeviceModelStatus.message}
+                {aiChatContext.onDeviceModelStatus.get(conversationContext.currentModel.options.leoModelOptions.name)!.message}
               </Alert>
             </div>}
 

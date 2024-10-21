@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
+  <message name="IDS_TASK_MANAGER_ON_DEVICE_MODEL_WORKER_NAME" desc="The name of the on-device model worker">
+    AI on-device model worker
+  </message>
   <message name="IDS_CHAT_UI_TITLE" translateable="false" desc="Title for the Brave AI product">
     Leo
   </message>
@@ -267,8 +270,14 @@
   <message name="IDS_CHAT_UI_CHAT_BASIC_SUBTITLE" desc="A description for default chat model">
     General purpose chat
   </message>
-  <message name="IDS_CHAT_UI_CHAT_BASIC_LOCAL_SUBTITLE" desc="A description for default chat model">
-    On-device and fully private
+  <message name="IDS_CHAT_UI_CHAT_BASIC_LOCAL_MEDIUM_SUBTITLE" desc="A description for default chat model">
+    On-device and fully private for high power devices
+  </message>
+  <message name="IDS_CHAT_UI_CHAT_BASIC_LOCAL_LOW_SUBTITLE" desc="A description for default chat model">
+    On-device and fully private for moderately powerful devices
+  </message>
+  <message name="IDS_CHAT_UI_CHAT_BASIC_LOCAL_TINY_SUBTITLE" desc="A description for default chat model">
+    On-device and fully private, fast and low memory usage for lower power devices
   </message>
   <message name="IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE" desc="A description for the llama chat model">
     Advanced chat tasks

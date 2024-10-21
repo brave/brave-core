@@ -270,7 +270,7 @@ interface OnDeviceModelResponseHandler {
 };
 
 interface OnDeviceModelWorker {
-  PerformRequest(string messagesJson, pending_remote<OnDeviceModelResponseHandler> response_handler) => (bool success);
+  PerformRequest(string model_key, string messagesJson, pending_remote<OnDeviceModelResponseHandler> response_handler) => (bool success);
 };
 
 
@@ -304,14 +304,14 @@ interface Service {
       pending_receiver<ConversationHandler> conversation,
       pending_remote<ConversationUI> conversation_ui);
 
-  OnDeviceModelWorkerStatusChanged(string status, bool is_ready);
-  RegisterOnDeviceModelWorker(pending_remote<OnDeviceModelWorker> on_device_model_worker) => (string on_device_model_name);
+  OnDeviceModelWorkerStatusChanged(string model_key, string status, bool is_ready);
+  RegisterOnDeviceModelWorker(pending_remote<OnDeviceModelWorker> on_device_model_worker) => (string args); // TODO(petemill): any args
 };
 
 interface ServiceObserver {
   OnAgreementAccepted();
   OnConversationListChanged(array<Conversation> conversations);
-  OnDeviceModelWorkerStatusChanged(string status, bool is_ready);
+  OnDeviceModelWorkerStatusChanged(string model_key, string status, bool is_ready);
 };
 
 // Browser-side handler for general AI Chat UI functions, implemented

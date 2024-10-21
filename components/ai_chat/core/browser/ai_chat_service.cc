@@ -247,11 +247,12 @@ void AIChatService::RenameConversation(const std::string& id,
   OnConversationTitleChanged(conversation_handler, new_name);
 }
 
-void AIChatService::OnDeviceModelWorkerStatusChanged(const std::string& status, bool is_ready) {
+void AIChatService::OnDeviceModelWorkerStatusChanged(const std::string& model_key, const std::string& status, bool is_ready) {
   for (auto& observer : observer_remotes_) {
-    observer->OnDeviceModelWorkerStatusChanged(status, is_ready);
+    observer->OnDeviceModelWorkerStatusChanged(model_key, status, is_ready);
   }
 }
+
 void AIChatService::RegisterOnDeviceModelWorker(
     mojo::PendingRemote<mojom::OnDeviceModelWorker> on_device_model_worker,
     RegisterOnDeviceModelWorkerCallback callback) {

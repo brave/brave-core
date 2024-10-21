@@ -111,7 +111,7 @@ void OnDeviceOAIAPIClient::PerformRequest(
 
   auto remote = response_handler->GetRemote();
 
-  on_device_model_worker_->get()->PerformRequest(
+  on_device_model_worker_->get()->PerformRequest(model_options->get_leo_model_options()->name,
       std::move(request_body), std::move(remote),
       base::BindOnce(
           [](std::unique_ptr<ResponseHandler> response_handler,

@@ -17,6 +17,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "content/public/browser/web_contents.h"
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -38,7 +39,7 @@ class ModelService : public KeyedService {
                                        const std::string& new_key) {}
   };
 
-  explicit ModelService(PrefService* profile_prefs);
+  ModelService(content::BrowserContext* browser_context, PrefService* profile_prefs);
   ~ModelService() override;
 
   ModelService(const ModelService&) = delete;
@@ -92,6 +93,8 @@ class ModelService : public KeyedService {
   mojo::Remote<mojom::OnDeviceModelWorker> on_device_model_worker_;
 
   bool is_migrating_claude_instant_ = false;
+
+  std::unique_ptr<content::WebContents> on_device_model_worker_web_contents_;
 
   base::WeakPtrFactory<ModelService> weak_ptr_factory_{this};
 };

@@ -17,6 +17,7 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_claude.h"
+#include "components/grit/brave_components_strings.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_llama.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
@@ -28,9 +29,14 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/task_manager/task_manager_interface.h"
+#include "chrome/browser/task_manager/web_contents_tags.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 
 namespace ai_chat {
 
@@ -167,8 +173,8 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
     {
       auto options = mojom::LeoModelOptions::New();
-      options->display_maker = "[model name from preferences]";
-      options->name = "llama-3-1b-instruct";
+      options->display_maker = "Llama";
+      options->name = "TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC";
       options->category = mojom::ModelCategory::CHAT;
       options->access = mojom::ModelAccess::BASIC;
       options->engine_type = mojom::ModelEngineType::ON_DEVICE;
@@ -177,14 +183,53 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->long_conversation_warning_character_limit = 9700;
 
       auto model = mojom::Model::New();
-      model->key = "chat-basic-local";
-      model->display_name = "Local on-device model";
+      model->key = "chat-basic-local-tiny";
+      model->display_name = "Tiny On-Device Model (TinyLlama 1B)";
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
       models.push_back(std::move(model));
     }
 
+    {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "Meta";
+      options->name = "Llama-3.2-1B-Instruct-q4f32_1-MLC";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = mojom::ModelAccess::BASIC;
+      options->engine_type = mojom::ModelEngineType::ON_DEVICE;
+
+      options->max_page_content_length = 8000;
+      options->long_conversation_warning_character_limit = 9700;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-basic-local-low";
+      model->display_name = "Low On-Device Model (Llama 1B)";
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
+    {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "Meta";
+      options->name = "Llama-3.1-8B-Instruct-q4f32_1-MLC";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = mojom::ModelAccess::BASIC;
+      options->engine_type = mojom::ModelEngineType::ON_DEVICE;
+
+      options->max_page_content_length = 8000;
+      options->long_conversation_warning_character_limit = 9700;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-basic-local-medium";
+      model->display_name = "Medium On-Device Model (Llama 8B)";
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
     return models;
   }());
 
@@ -252,7 +297,7 @@ base::Value::Dict GetModelDict(mojom::ModelPtr model) {
 
 }  // namespace
 
-ModelService::ModelService(PrefService* prefs_service)
+ModelService::ModelService(content::BrowserContext* browser_context, PrefService* prefs_service)
     : pref_service_(prefs_service) {
   InitModels();
   // Perform migrations which depend on finding out about user's premium status
@@ -268,6 +313,16 @@ ModelService::ModelService(PrefService* prefs_service)
     SetDefaultModelKey("chat-claude-haiku");
     is_migrating_claude_instant_ = true;
   }
+
+  on_device_model_worker_web_contents_ = content::WebContents::Create(
+      content::WebContents::CreateParams(browser_context));
+  auto load_url_params = content::NavigationController::LoadURLParams(
+      GURL(kOnDeviceModelWorkerURL));
+  on_device_model_worker_web_contents_->GetController().LoadURLWithParams(
+      load_url_params);
+
+  task_manager::WebContentsTags::CreateForToolContents(
+      on_device_model_worker_web_contents_.get(), IDS_TASK_MANAGER_ON_DEVICE_MODEL_WORKER_NAME);
 }
 
 ModelService::~ModelService() = default;
