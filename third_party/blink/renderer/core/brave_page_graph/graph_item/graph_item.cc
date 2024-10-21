@@ -7,7 +7,7 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/graph_item_context.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
-#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_builder_stream.h"
 
 namespace brave_page_graph {
 
@@ -19,9 +19,9 @@ GraphItem::GraphItem(GraphItemContext* context)
 GraphItem::~GraphItem() = default;
 
 ItemDesc GraphItem::GetItemDesc() const {
-  WTF::TextStream ts;
+  StringBuilder ts;
   ts << GetItemName() << " #" << id_;
-  return ts.Release();
+  return ts.ReleaseString();
 }
 
 void GraphItem::AddGraphMLAttributes(xmlDocPtr doc,
