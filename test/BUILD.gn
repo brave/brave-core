@@ -870,6 +870,7 @@ test("brave_browser_tests") {
     "//brave/browser/themes",
     "//brave/browser/ui:browser_tests",
     "//brave/browser/ui/tabs/test:browser_tests",
+    "//brave/browser/ui/toolbar:brave_app_menu_browser_tests",
     "//brave/browser/ui/views/tabs:browser_tests",
     "//brave/browser/ui/webui:browser_tests",
     "//brave/browser/web_discovery:browser_tests",
