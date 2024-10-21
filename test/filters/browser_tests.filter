@@ -1895,6 +1895,19 @@
 -LiveCaptionAutomaticLanguageDownloadTest.*
 -LiveCaptionControllerTest.*
 
+# These tests are disabled because we disable creation of UserEducationService
+# for regular and guest profiles.
+-All/MLPromotionInstallDialogBrowserTest.*
+-BatterySaverHelpPromoTest.*
+-BrowserUserEducationService*
+-FirstRunIntroPixelTest.InvokeUi_default/*
+-HelpBubbleFactoryViewsBrowsertest.*
+-LowUsageHelpControllerBrowsertest.NoPromoOnFreshProfile
+-MLPromotionBrowserTest*
+-SavedTabGroupV2Promo/SavedTabGroupV2PromoTest.*
+-ShowPromoInPageBrowserTest.*
+-StartTutorialInPageBrowserTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*

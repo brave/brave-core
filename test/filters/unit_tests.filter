@@ -666,6 +666,11 @@
 -RecentTabsSubMenuModelTest.OtherDevices
 -RecentTabsSubMenuModelTest.OtherDevicesDynamicUpdate
 
+# These tests are disabled because we disable creation of UserEducationService
+# for regular and guest profiles.
+-BrowserFeaturePromoController*
+-NewTabPageFeaturePromoHelperTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
