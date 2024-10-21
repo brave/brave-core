@@ -25,7 +25,8 @@ function getCompletionEvent(text: string): mojom.ConversationEntryEvent {
     completionEvent: { completion: text },
     pageContentRefineEvent: undefined,
     searchQueriesEvent: undefined,
-    searchStatusEvent: undefined
+    searchStatusEvent: undefined,
+    selectedLanguageEvent: { selectedLanguage: '' }
   }
 }
 
@@ -34,7 +35,8 @@ function getSearchEvent(queries: string[]): mojom.ConversationEntryEvent {
     completionEvent: undefined,
     pageContentRefineEvent: undefined,
     searchQueriesEvent: { searchQueries: queries },
-    searchStatusEvent: undefined
+    searchStatusEvent: undefined,
+    selectedLanguageEvent: { selectedLanguage: '' }
   }
 }
 
@@ -43,7 +45,8 @@ function getSearchStatusEvent(): mojom.ConversationEntryEvent {
     completionEvent: undefined,
     pageContentRefineEvent: undefined,
     searchQueriesEvent: undefined,
-    searchStatusEvent: { isSearching: true }
+    searchStatusEvent: { isSearching: true },
+    selectedLanguageEvent: { selectedLanguage: '' }
   }
 }
 
@@ -52,7 +55,8 @@ function getPageContentRefineEvent(): mojom.ConversationEntryEvent {
     completionEvent: undefined,
     pageContentRefineEvent: { isRefining: true },
     searchQueriesEvent: undefined,
-    searchStatusEvent: undefined
+    searchStatusEvent: undefined,
+    selectedLanguageEvent: { selectedLanguage: '' }
   }
 }
 

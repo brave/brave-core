@@ -47,19 +47,22 @@ void EngineConsumerConversationAPI::ClearAllQueries() {
 void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
     std::string text,
     const std::string& question,
+    const std::string& selected_language,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
   std::vector<ConversationEvent> conversation = {
       {mojom::CharacterType::HUMAN, ConversationEventType::UserText, text},
       {mojom::CharacterType::HUMAN, ConversationEventType::RequestRewrite,
        question}};
-  api_->PerformRequest(std::move(conversation), std::move(received_callback),
+  api_->PerformRequest(std::move(conversation), selected_language,
+                       std::move(received_callback),
                        std::move(completed_callback));
 }
 
 void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
     const bool& is_video,
     const std::string& page_content,
+    const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
   std::vector<ConversationEvent> conversation{
       GetAssociatedContentConversationEvent(page_content, is_video),
@@ -70,8 +73,8 @@ void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
       &EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  api_->PerformRequest(std::move(conversation), base::NullCallback(),
-                       std::move(on_response));
+  api_->PerformRequest(std::move(conversation), selected_language,
+                       base::NullCallback(), std::move(on_response));
 }
 
 void EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse(
@@ -95,6 +98,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     const std::string& page_content,
     const ConversationHistory& conversation_history,
     const std::string& human_input,
+    const std::string& selected_language,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   if (!CanPerformCompletionRequest(conversation_history)) {
@@ -131,7 +135,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     conversation.push_back(std::move(event));
   }
 
-  api_->PerformRequest(std::move(conversation),
+  api_->PerformRequest(std::move(conversation), selected_language,
                        std::move(data_received_callback),
                        std::move(completed_callback));
 }

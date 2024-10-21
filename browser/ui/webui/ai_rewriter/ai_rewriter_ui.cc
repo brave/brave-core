@@ -114,7 +114,7 @@ void AIRewriterUI::RewriteText(const std::string& text,
   // TODO(petemill): Pass |action| in addition to |instructions| when supported
   // by engine.
   ai_engine_->GenerateRewriteSuggestion(
-      text, instructions,
+      text, instructions, /*selected_language*/ "",
       ai_chat::BindParseRewriteReceivedData(
           base::BindRepeating(&AIRewriterUI::OnRewriteSuggestionGenerated,
                               weak_ptr_factory_.GetWeakPtr())),

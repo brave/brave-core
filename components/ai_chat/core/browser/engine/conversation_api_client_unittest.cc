@@ -133,19 +133,29 @@ class ConversationAPIUnitTest : public testing::Test {
     return events_json;
   }
 
-  std::optional<std::string> GetLanguage(std::string_view body_json) {
+  // Returns a pair of system_language and selected_langauge
+  // The system language is the OS locale.
+  // The selected language is the language the server side determined the
+  // conversation is in
+  std::pair<std::string, std::optional<std::string>> GetLanguage(
+      std::string_view body_json) {
     auto dict = base::JSONReader::ReadDict(body_json);
     EXPECT_TRUE(dict.has_value());
     if (!dict.has_value()) {
-      return std::nullopt;
+      return {"", std::nullopt};
     }
 
-    const std::string* language = dict->FindString("language");
-    if (!language) {
-      return std::nullopt;
-    }
+    const std::string* system_language = dict->FindString("system_language");
+    // The system language should always be present
+    EXPECT_TRUE(system_language != nullptr);
 
-    return *language;
+    const std::string* selected_language =
+        dict->FindString("selected_language");
+    if (selected_language) {
+      return {*system_language, *selected_language};
+    } else {
+      return {*system_language, std::nullopt};
+    }
   }
 
   std::string FormatComparableEventsJson(std::string_view formatted_json) {
@@ -177,16 +187,17 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
       {mojom::CharacterType::HUMAN, ConversationAPIClient::PageExcerpt,
        "The Mandalorian"},
       {mojom::CharacterType::HUMAN, ConversationAPIClient::ChatMessage,
-       "Is this related to a broader series?"}};
+       "Est-ce lié à une série plus large?"}};
   std::string expected_events_body = R"([
     {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
     {"role": "user", "type": "pageExcerpt", "content": "The Mandalorian"},
-    {"role": "user", "type": "chatMessage", "content": "Is this related to a broader series?"}
+    {"role": "user", "type": "chatMessage", "content": "Est-ce lié à une série plus large?"}
   ])";
-  std::string expected_language = "en_KY";
+  std::string expected_system_language = "en_KY";
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale(
-      expected_language);
+      expected_system_language);
   std::string expected_completion_response = "Yes, Star Wars";
+  std::string expected_selected_language = "fr";
 
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();
@@ -221,11 +232,10 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
                      FormatComparableEventsJson(expected_events_body).c_str());
 
         // Verify body contains the language
-        auto language = GetLanguage(body);
-        EXPECT_TRUE(language.has_value());
-        if (language.has_value()) {
-          EXPECT_EQ(language.value(), expected_language);
-        }
+        auto [system_language, selected_language] = GetLanguage(body);
+        EXPECT_EQ(system_language, expected_system_language);
+        EXPECT_TRUE(selected_language.has_value());
+        EXPECT_TRUE(selected_language.value().empty());
 
         // Send some event responses so that we can verify it is passed
         // through to the PerformRequest callbacks.
@@ -249,6 +259,13 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
           result.GetDict().Set("completion", expected_completion_response);
           data_received_callback.Run(base::ok(std::move(result)));
         }
+        {
+          base::Value result(base::Value::Type::DICT);
+          result.GetDict().Set("type", "selectedLanguage");
+          result.GetDict().Set("language", expected_selected_language);
+          data_received_callback.Run(base::ok(std::move(result)));
+        }
+
         std::move(result_callback)
             .Run(api_request_helper::APIRequestResult(200, {}, {}, net::OK,
                                                       GURL()));
@@ -281,12 +298,19 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
         EXPECT_EQ(event->get_completion_event()->completion,
                   expected_completion_response);
       });
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .InSequence(seq)
+      .WillOnce([&](mojom::ConversationEntryEventPtr event) {
+        EXPECT_TRUE(event->is_selected_language_event());
+        EXPECT_EQ(event->get_selected_language_event()->selected_language,
+                  expected_selected_language);
+      });
   EXPECT_CALL(mock_callbacks,
               OnCompleted(EngineConsumer::GenerationResult("")));
 
   // Begin request
   client_->PerformRequest(
-      events,
+      events, "",
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -312,16 +336,17 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
       {mojom::CharacterType::HUMAN, ConversationAPIClient::PageExcerpt,
        "The Mandalorian"},
       {mojom::CharacterType::HUMAN, ConversationAPIClient::ChatMessage,
-       "Is this related to a broader series?"}};
+       "Est-ce lié à une série plus large?"}};
   std::string expected_events_body = R"([
     {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
     {"role": "user", "type": "pageExcerpt", "content": "The Mandalorian"},
-    {"role": "user", "type": "chatMessage", "content": "Is this related to a broader series?"}
+    {"role": "user", "type": "chatMessage", "content": "Est-ce lié à une série plus large?"}
   ])";
-  std::string expected_language = "en_KY";
+  std::string expected_system_language = "en_KY";
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale(
-      expected_language);
+      expected_system_language);
   std::string expected_completion_response = "Yes, Star Wars";
+  std::string expected_selected_language = "fr";
 
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();
@@ -349,19 +374,29 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
                      FormatComparableEventsJson(expected_events_body).c_str());
 
         // Verify body contains the language
-        auto language = GetLanguage(body);
-        EXPECT_TRUE(language.has_value());
-        if (language.has_value()) {
-          EXPECT_EQ(language.value(), expected_language);
-        }
+        auto [system_language, selected_language] = GetLanguage(body);
+        EXPECT_EQ(system_language, expected_system_language);
+        EXPECT_TRUE(selected_language.has_value());
+        EXPECT_TRUE(selected_language.value().empty());
 
         // Send a simple completion response so that we can verify it is passed
         // through to the PerformRequest callbacks.
-        base::Value result(base::Value::Type::DICT);
-        base::Value::Dict& result_dict = result.GetDict();
-        result_dict.Set("type", "completion");
-        result_dict.Set("completion", expected_completion_response);
-        data_received_callback.Run(base::ok(std::move(result)));
+        {
+          base::Value result(base::Value::Type::DICT);
+          base::Value::Dict& result_dict = result.GetDict();
+          result_dict.Set("type", "completion");
+          result_dict.Set("completion", expected_completion_response);
+          data_received_callback.Run(base::ok(std::move(result)));
+        }
+
+        // Send a selected language event
+        {
+          base::Value result(base::Value::Type::DICT);
+          result.GetDict().Set("type", "selectedLanguage");
+          result.GetDict().Set("language", expected_selected_language);
+          data_received_callback.Run(base::ok(std::move(result)));
+        }
+
         std::move(result_callback)
             .Run(api_request_helper::APIRequestResult(200, {}, {}, net::OK,
                                                       GURL()));
@@ -371,18 +406,27 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
 
   // Callbacks should be passed through and translated from APIRequestHelper
   // format.
+  Sequence seq;
   EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .InSequence(seq)
       .WillOnce([&](mojom::ConversationEntryEventPtr event) {
         EXPECT_TRUE(event->is_completion_event());
         EXPECT_EQ(event->get_completion_event()->completion,
                   expected_completion_response);
+      });
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .InSequence(seq)
+      .WillOnce([&](mojom::ConversationEntryEventPtr event) {
+        EXPECT_TRUE(event->is_selected_language_event());
+        EXPECT_EQ(event->get_selected_language_event()->selected_language,
+                  expected_selected_language);
       });
   EXPECT_CALL(mock_callbacks,
               OnCompleted(EngineConsumer::GenerationResult("")));
 
   // Begin request
   client_->PerformRequest(
-      events,
+      events, "",
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -415,7 +459,7 @@ TEST_F(ConversationAPIUnitTest, FailNoConversationEvents) {
 
   // Begin request
   client_->PerformRequest(
-      events,
+      events, "",
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,

@@ -46,6 +46,7 @@ class EngineConsumer {
   virtual void GenerateQuestionSuggestions(
       const bool& is_video,
       const std::string& page_content,
+      const std::string& selected_language,
       SuggestedQuestionsCallback callback) = 0;
 
   virtual void GenerateAssistantResponse(
@@ -53,12 +54,14 @@ class EngineConsumer {
       const std::string& page_content,
       const ConversationHistory& conversation_history,
       const std::string& human_input,
+      const std::string& selected_language,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) = 0;
 
   virtual void GenerateRewriteSuggestion(
       std::string text,
       const std::string& question,
+      const std::string& selected_language,
       GenerationDataCallback received_callback,
       GenerationCompletedCallback completed_callback) {}
 
