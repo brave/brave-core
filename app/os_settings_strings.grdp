@@ -1338,6 +1338,9 @@
   <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_ACTIONS_ASSIGN_GESTURE_LABEL" desc="Label description for button to assign a gesture to an action in the action settings.">
     Assign a gesture
   </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_ACTIONS_ASSIGNED_GESTURE_ALERT" desc="Spoken feedback for when a user has assigned a gesture to an action in the action settings." is_accessibility_with_no_ui="true">
+    Assigned gesture <ph name="GESTURE">$1<ex>Blink both eyes</ex></ph> to <ph name="ACTION">$2<ex>Click a mouse button</ex></ph>
+  </message>
   <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_ACTIONS_DIALOG_TITLE" desc="Title for dialog page to add an action in the action settings.">
     Add an action
   </message>
@@ -1349,6 +1352,12 @@
   </message>
   <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_ACTIONS_DIALOG_KEY_COMBINATION_TITLE" desc="Title for dialog page to create a custom key combination in the action settings.">
     Create key combination
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_ACTIONS_DIALOG_KEY_COMBINATION_CHANGE_BUTTON_LABEL" desc="Label for button to change a custom key combination in the action settings.">
+    Change
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_ACTIONS_DIALOG_KEY_COMBINATION_CHANGE_BUTTON_DESCRIPTION" desc="Spoken feedback when focus is on button to change a custom key combination in the action settings." is_accessibility_with_no_ui="true">
+    Change key combination <ph name="KEY_COMBINATION">$1<ex>ctrl + c</ex></ph>
   </message>
   <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_ACTIONS_DIALOG_SELECT_GESTURE_TITLE" desc="Title for dialog page to select a gesture for a given action in the action settings.">
     Select a gesture for <ph name="SELECTED_ACTION">$1<ex>Click a mouse button</ex></ph>
@@ -1418,6 +1427,9 @@
   </message>
   <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_MACRO_LABEL_CUSTOM_KEY_COMBO" desc="This text describes an action that a user can take on their computer to fire a custom key combination.">
     Create custom key combination
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_MACRO_LABEL_ASSIGNED_CUSTOM_KEY_COMBO" desc="This text describes an action that a user can take on their computer to fire the given custom key combination.">
+    Custom key combination: <ph name="KEY_COMBINATION">$1<ex>ctrl + c</ex></ph>
   </message>
   <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_MACRO_SUB_LABEL_TOGGLE_SCROLL_MODE" desc="This text describes how users can scroll on their computer using their face when in scroll mode.">
     Once you start scroll mode, move your head in the direction you'd like to scroll
@@ -1900,22 +1912,22 @@
   <message name="IDS_SETTINGS_CHROMEVOX_VIRTUAL_BRAILLE_DISPLAY_STYLE_SIDE_BY_SIDE" desc="A dropdown item that lets the user enable the display style of the virtual display that is side by side, where regular text is on the left and braille is on the right.">
     Side-by-side
   </message>
-  <message name="IDS_SETTINGS_DISABLE_TRACKPAD_LABEL" desc="A label for the dropdown that lets the user set the disabled state of the internal trackpad.">
+  <message name="IDS_SETTINGS_DISABLE_TOUCHPAD_LABEL" desc="A label for the dropdown that lets the user set the disabled state of the internal touchpad.">
     Disable built-in touchpad
   </message>
-  <message name="IDS_SETTINGS_DISABLE_TRACKPAD_ALWAYS" desc="A dropdown item that lets the user always disable the internal trackpad.">
+  <message name="IDS_SETTINGS_DISABLE_TOUCHPAD_ALWAYS" desc="A dropdown item that lets the user always disable the internal touchpad.">
     Always
   </message>
   <message name="IDS_SETTINGS_BUILT_IN_TOUCHPAD_DISABLED" desc="In Device Settings, link that shows up when the built-in touchpad is disabled.">
     Built-in touchpad is disabled
   </message>
-  <message name="IDS_SETTINGS_DISABLE_TRACKPAD_MOUSE_CONNECTED" desc="A dropdown item that lets the user disable the internal trackpad only when a mouse is connected.">
+  <message name="IDS_SETTINGS_DISABLE_TOUCHPAD_MOUSE_CONNECTED" desc="A dropdown item that lets the user disable the internal touchpad only when a mouse is connected.">
     When a mouse is connected
   </message>
-  <message name="IDS_SETTINGS_RE_ENABLE_TRACKPAD" desc="A label to show how to re-enable the internal trackpad.">
+  <message name="IDS_SETTINGS_RE_ENABLE_TOUCHPAD" desc="A label to show how to re-enable the internal touchpad.">
     Press esc 5 times to re-enable it
   </message>
-  <message name="IDS_SETTINGS_DISABLE_TRACKPAD_NEVER" desc="A dropdown item that lets the user never disable the internal trackpad.">
+  <message name="IDS_SETTINGS_DISABLE_TOUCHPAD_NEVER" desc="A dropdown item that lets the user never disable the internal touchpad.">
     Never
   </message>
   <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_LABEL" desc="Label for checkbox which enables the fullscreen magnifier">

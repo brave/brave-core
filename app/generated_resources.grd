@@ -6250,20 +6250,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
        <message name="IDS_EXTENSIONS_MENU_SITE_SETTINGS_TOGGLE_ACCESSIBLE_NAME" desc="Accessibility string for the site setting toggle button.">
         Allow extensions
       </message>
-      <message name="IDS_EXTENSIONS_MENU_MESSAGE_SECTION_RESTRICTED_ACCESS_TEXT" desc="Text of the message section when this site is restricted to all extensions.">
-        No extensions need access to this site
-      </message>
-      <message name="IDS_EXTENSIONS_MENU_MESSAGE_SECTION_POLICY_BLOCKED_ACCESS_TEXT" desc="Text of the message section when the site is restricted to all non-enterprise extensions.">
-        Extensions are not allowed on this site
-      </message>
-      <message name="IDS_EXTENSIONS_MENU_MESSAGE_SECTION_USER_BLOCKED_ACCESS_TEXT" desc="Text of the message section when the user blocked access to this site to all extensions.">
-        Extensions are not allowed on this site
-      </message>
       <message name="IDS_EXTENSIONS_MENU_MESSAGE_SECTION_ENTERPRISE_TOOLTIP_ICON_TEXT" desc="Text of the info tooltip icon in the message section when the user blocked access to this site to all extensions but extensions installed by admin still have access.">
         Extensions installed by your administrator can still read and change this site
-      </message>
-      <message name="IDS_EXTENSIONS_MENU_MESSAGE_SECTION_USER_CUSTOMIZED_ACCESS_TEXT" desc="Text of the message section when the user can customize access to this site by extensions.">
-        Extensions can request access to this site
       </message>
       <message name="IDS_EXTENSIONS_MENU_MESSAGE_SECTION_RELOAD_CONTAINER_DESCRIPTION_TEXT" desc="Text of the message section when the user has to reload the page to apply the updated user site settings.">
         To apply your updated settings to this site, reload this page
@@ -12349,11 +12337,11 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
 
       <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_RELATED_APPS_TITLE" desc="This is a title of a section that displays a list of related installed web applications to the site the user is currently visiting. The label is shown in the `Cookies and site data` dialog.">
-        Related installed applications
+        Related applications
       </message>
 
       <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_RELATED_APPS_SUBTITLE" desc="This is a subtitle of a section that displays a list of related installed web applications to the site the user is currently visiting. It provides more information about what related installed web applications means. The label is shown in the `Cookies and site data` dialog.">
-        A site can find out if related web applications are installed on your machine. This info is available to the site and its subdomains.
+        A site and its subdomains can see what related web applications are installed on your device.
       </message>
 
       <message name="IDS_PAGE_SPECIFIC_SITE_DATA_DIALOG_RELATED_APPS_SETTINGS_LINK_TOOLTIP" desc="This is a tooltip for a link to an app settings page displayed on a related installed web application on the on-site data dialog. The label is shown in the `Cookies and site data` dialog.">
@@ -16471,13 +16459,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Submit Feedback
       </message>
    </if>
-
-   <message name="IDS_CABLEV2_MAKE_CREDENTIAL_NOTIFICATION_TITLE" desc="The title of a notification shown on Android that informs the user that a website wishes to register their phone for signing into that website." formatter_data="android_java">
-     Verify with this phone
-   </message>
-   <message name="IDS_CABLEV2_GET_ASSERTION_NOTIFICATION_TITLE" desc="The title of a notification shown on Android that informs the user that a website wishes to use their phone to sign them in on another computer." formatter_data="android_java">
-     Verify your identity
-   </message>
 
    <!-- Private Profile Menu bubble. -->
     <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the Private version of profile menu.">
