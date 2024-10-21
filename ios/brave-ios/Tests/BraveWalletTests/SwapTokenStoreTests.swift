@@ -59,7 +59,8 @@ class SwapStoreTests: XCTestCase {
       tokenId: "",
       coingeckoId: "",
       chainId: BraveWallet.MainnetChainId,
-      coin: .eth
+      coin: .eth,
+      isShielded: false
     )
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     let store = SwapTokenStore(
@@ -217,7 +218,8 @@ class SwapStoreTests: XCTestCase {
       tokenId: "",
       coingeckoId: "",
       chainId: BraveWallet.PolygonMainnetChainId,
-      coin: .eth
+      coin: .eth,
+      isShielded: false
     )
     let batToken: BraveWallet.BlockchainToken = .init(
       contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
@@ -236,7 +238,8 @@ class SwapStoreTests: XCTestCase {
       tokenId: "",
       coingeckoId: "",
       chainId: BraveWallet.PolygonMainnetChainId,
-      coin: .eth
+      coin: .eth,
+      isShielded: false
     )
     let rpcService = MockJsonRpcService()
     rpcService._network = { $2(.mockPolygon) }

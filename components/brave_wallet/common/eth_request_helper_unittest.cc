@@ -844,7 +844,7 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "BAT",
       "https://test.com/test.png", false, true, false, false,
       mojom::SPLTokenProgram::kUnsupported, false, false, "BAT", 18, true, "",
-      "", "0x1", mojom::CoinType::ETH);
+      "", "0x1", mojom::CoinType::ETH, false);
 
   mojom::BlockchainTokenPtr token;
   std::string error_message;

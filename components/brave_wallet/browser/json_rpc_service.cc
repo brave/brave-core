@@ -3505,7 +3505,7 @@ void JsonRpcService::GetSPLTokenProgramByMint(
 
   mojom::BlockchainTokenPtr user_asset;
   if ((user_asset = GetUserAsset(prefs_, mojom::CoinType::SOL, chain_id,
-                                 mint_address, "", false, false))) {
+                                 mint_address, "", false, false, false))) {
     if (user_asset->spl_token_program != mojom::SPLTokenProgram::kUnknown) {
       std::move(callback).Run(user_asset->spl_token_program,
                               mojom::SolanaProviderError::kSuccess, "");

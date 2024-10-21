@@ -812,7 +812,8 @@ export class MockedWalletApiProxy {
           contractAddress: contract,
           registry: this.tokenBalancesRegistry,
           tokenId: '',
-          coin: BraveWallet.CoinType.ETH
+          coin: BraveWallet.CoinType.ETH,
+          isShielded: false
         }),
         error: 0,
         errorMessage: ''
@@ -839,7 +840,8 @@ export class MockedWalletApiProxy {
           contractAddress,
           registry: this.tokenBalancesRegistry,
           tokenId,
-          coin: BraveWallet.CoinType.ETH
+          coin: BraveWallet.CoinType.ETH,
+          isShielded: false
         }),
         error: 0,
         errorMessage: ''
@@ -866,7 +868,8 @@ export class MockedWalletApiProxy {
           contractAddress,
           registry: this.tokenBalancesRegistry,
           tokenId,
-          coin: BraveWallet.CoinType.ETH
+          coin: BraveWallet.CoinType.ETH,
+          isShielded: false
         }),
         error: 0,
         errorMessage: ''
@@ -901,7 +904,8 @@ export class MockedWalletApiProxy {
         contractAddress: tokenMintAddress,
         registry: this.tokenBalancesRegistry,
         tokenId: '',
-        coin: BraveWallet.CoinType.SOL
+        coin: BraveWallet.CoinType.SOL,
+        isShielded: false
       })
 
       return {
@@ -945,7 +949,8 @@ export class MockedWalletApiProxy {
           coin: BraveWallet.CoinType.SOL,
           contractAddress: token.contractAddress,
           registry: this.tokenBalancesRegistry,
-          tokenId: ''
+          tokenId: '',
+          isShielded: false
         })
 
         return {
@@ -981,7 +986,8 @@ export class MockedWalletApiProxy {
           contractAddress: contract,
           coin: account.accountId.coin,
           chainId,
-          tokenId: '' // ERC20
+          tokenId: '', // ERC20,
+          isShielded: false
         })
 
         if (!balancesByAssetId[assetId]) {
@@ -1008,18 +1014,23 @@ export class MockedWalletApiProxy {
       }
 
       const accountUniqueId = account.accountId.uniqueKey
-
       const balances = nftIdentifiers.map((id) => {
         const token =
           this.blockchainTokens.find(
             (t) =>
               getAssetIdKey(t) ===
-              getAssetIdKey({ ...id, coin: account.accountId.coin })
+              getAssetIdKey({
+                ...id,
+                coin: account.accountId.coin,
+                isShielded: false })
           ) ||
           this.userAssets.find(
             (t) =>
               getAssetIdKey(t) ===
-              getAssetIdKey({ ...id, coin: account.accountId.coin })
+              getAssetIdKey({
+                ...id,
+                coin: account.accountId.coin,
+                isShielded: false })
           )
 
         if (!token) {
@@ -1032,7 +1043,8 @@ export class MockedWalletApiProxy {
           contractAddress: id.contractAddress,
           registry: this.tokenBalancesRegistry,
           tokenId: id.tokenId,
-          coin
+          coin,
+          isShielded: false
         })
 
         return BigInt(amount)
@@ -1222,7 +1234,8 @@ export class MockedWalletApiProxy {
           tokenId: '',
           logo: '',
           isSpam: false,
-          visible: false
+          visible: false,
+          isShielded: false
         },
         error: 0,
         errorMessage: ''
@@ -1261,7 +1274,8 @@ export class MockedWalletApiProxy {
           contractAddress: token.contractAddress,
           registry: this.tokenBalancesRegistry,
           tokenId: token.tokenId,
-          coin: token.coin
+          coin: token.coin,
+          isShielded: token.isShielded
         })
         const priceUsd = unbiasedRandom(0.00000001, 100_000)
         return {

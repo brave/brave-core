@@ -16,11 +16,12 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_orchard_storage.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace brave_wallet {
+
+class ZCashWalletService;
 
 // ZCashScanService downloads and scans blockchain blocks to find
 // spendable notes related to the account.
@@ -72,11 +73,10 @@ class ZCashShieldSyncService {
   };
 
   ZCashShieldSyncService(
-      ZCashRpc* zcash_rpc,
+      ZCashWalletService* zcash_wallet_service,
       const mojom::AccountIdPtr& account_id,
       const mojom::ZCashAccountShieldBirthdayPtr& account_birthday,
       const std::array<uint8_t, kOrchardFullViewKeySize>& fvk,
-      base::FilePath db_dir_path,
       base::WeakPtr<Observer> observer);
   virtual ~ZCashShieldSyncService();
 
@@ -85,8 +85,6 @@ class ZCashShieldSyncService {
   void StartSyncing();
 
   mojom::ZCashShieldSyncStatusPtr GetSyncStatus();
-
-  void Reset();
 
  private:
   FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest, ScanBlocks);
@@ -158,7 +156,7 @@ class ZCashShieldSyncService {
   std::optional<Error> error() { return error_; }
 
   // Params
-  raw_ptr<ZCashRpc> zcash_rpc_ = nullptr;
+  raw_ptr<ZCashWalletService> zcash_wallet_service_ = nullptr;  // Owns this
   mojom::AccountIdPtr account_id_;
   // Birthday of the account will be used to resolve initial scan range.
   mojom::ZCashAccountShieldBirthdayPtr account_birthday_;
@@ -166,7 +164,6 @@ class ZCashShieldSyncService {
   base::WeakPtr<Observer> observer_;
   std::string chain_id_;
 
-  base::SequenceBound<ZCashOrchardStorage> background_orchard_storage_;
   std::unique_ptr<OrchardBlockScannerProxy> block_scanner_;
 
   std::optional<ZCashOrchardStorage::AccountMeta> account_meta_;
