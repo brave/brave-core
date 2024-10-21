@@ -73,7 +73,7 @@ class AdsServiceImpl final : public AdsService,
                              public brave_rewards::RewardsServiceObserver {
  public:
   explicit AdsServiceImpl(
-      Delegate* delegate,
+      std::unique_ptr<Delegate> delegate,
       PrefService* prefs,
       PrefService* local_state,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader,
@@ -217,8 +217,6 @@ class AdsServiceImpl final : public AdsService,
   // AdsService:
   void AddBatAdsObserver(mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>
                              bat_ads_observer_pending_remote) override;
-
-  Delegate* GetDelegate() override;
 
   bool IsBrowserUpgradeRequiredToServeAds() const override;
 

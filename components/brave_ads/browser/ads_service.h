@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
 
 #include <cstdint>
+#include <memory>
 #include <optional>
 #include <string>
 #include <vector>
@@ -31,6 +32,8 @@ class AdsService : public KeyedService {
  public:
   class Delegate {
    public:
+    virtual ~Delegate() = default;
+
     virtual void InitNotificationHelper() = 0;
     virtual bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() = 0;
     virtual bool DoesSupportSystemNotifications() = 0;
@@ -56,12 +59,9 @@ class AdsService : public KeyedService {
 #endif
 
     virtual base::Value::Dict GetVirtualPrefs() = 0;
-
-   protected:
-    virtual ~Delegate() = default;
   };
 
-  explicit AdsService(Delegate* delegate);
+  explicit AdsService(std::unique_ptr<Delegate> delegate);
 
   AdsService(const AdsService&) = delete;
   AdsService& operator=(const AdsService&) = delete;
@@ -71,10 +71,10 @@ class AdsService : public KeyedService {
 
   ~AdsService() override;
 
+  AdsService::Delegate* delegate() { return delegate_.get(); }
+
   virtual void AddObserver(AdsServiceObserver* observer) = 0;
   virtual void RemoveObserver(AdsServiceObserver* observer) = 0;
-
-  virtual Delegate* GetDelegate() = 0;
 
   // Returns true if a browser upgrade is required to serve ads.
   virtual bool IsBrowserUpgradeRequiredToServeAds() const = 0;
@@ -305,7 +305,7 @@ class AdsService : public KeyedService {
   virtual void NotifyDidSolveAdaptiveCaptcha() = 0;
 
  protected:
-  raw_ptr<Delegate> delegate_ = nullptr;  // NOT OWNED
+  std::unique_ptr<Delegate> delegate_;
 };
 
 }  // namespace brave_ads
