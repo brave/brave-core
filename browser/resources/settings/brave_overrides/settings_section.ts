@@ -33,6 +33,5 @@ RegisterStyleOverride(
         height: auto !important;
       }
       </style>
-      
   `
 )
