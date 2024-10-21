@@ -33,32 +33,17 @@ class SettingsBraveAccountSignInDialogElement extends PolymerElement {
     return getTemplate()
   }
 
-  static get properties() {
-    return {
-      isValid: {
-        type: Object,
-        value: {
-          email: false,
-          password: false,
-        },
-      },
-    }
-  }
-
-  private isButtonDisabled_(): boolean {
-    return !this.get('isValid.email') || !this.get('isValid.password')
-  }
-
   private onEmailInput() {
-    this.set(
-      'isValid.email',
-      // https://www.regular-expressions.info
-      Boolean(this.$.email.value.match('^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$'))
-    )
+    // https://www.regular-expressions.info
+    this.isEmailValid = Boolean(this.$.email.value.match('^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$'))
   }
 
   private onPasswordInput() {
-    this.set('isValid.password', this.$.password.value.length !== 0)
+    this.isPasswordValid = this.$.password.value.length !== 0
+  }
+
+  private canSignIn() {
+    return this.isEmailValid && this.isPasswordValid
   }
 
   private show(event: Event) {
@@ -71,6 +56,9 @@ class SettingsBraveAccountSignInDialogElement extends PolymerElement {
     icon.setAttribute('name', isShowing ? 'eye-on' : 'eye-off')
     this.$.password.setAttribute('type', isShowing ? 'password' : 'text')
   }
+
+  private isEmailValid: boolean = false
+  private isPasswordValid: boolean = false
 }
 
 declare global {
