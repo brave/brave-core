@@ -1,0 +1,14 @@
+diff --git a/net/base/io_buffer.h b/net/base/io_buffer.h
+index df63f37a0eb45ac687d03de202f194e18414eabd..c7d2acbcf34aa75be51dcf5db8165c87a5a19a90 100644
+--- a/net/base/io_buffer.h
++++ b/net/base/io_buffer.h
+@@ -114,7 +114,8 @@ class NET_EXPORT IOBuffer : public base::RefCountedThreadSafe<IOBuffer> {
+ 
+   virtual ~IOBuffer();
+ 
+-  raw_ptr<char, AllowPtrArithmetic> data_ = nullptr;
++  raw_ptr<char, AcrossTasksDanglingUntriaged | AllowPtrArithmetic> data_ =
++      nullptr;
+   int size_ = 0;
+ };
+ 
