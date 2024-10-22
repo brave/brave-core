@@ -306,6 +306,13 @@ interface ServiceObserver {
 interface AIChatUIHandler {
   // Open various external links or dialogs depending on the platform
   OpenAIChatSettings();
+
+  // From a sidebar or popup conversation, open the conversation in the
+  // full-page UI.
+  // TODO(petemill): WebUI Compile-timesupport for build flags
+  // so that we can use [EnableIfNot=is_android] here.
+  OpenConversationFullPage(string conversation_uuid);
+
   OpenURL(url.mojom.Url url);
   OpenLearnMoreAboutBraveSearchWithLeo();
   OpenModelSupportUrl();

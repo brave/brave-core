@@ -43,8 +43,8 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   ~AIChatUIPageHandler() override;
 
   // mojom::AIChatUIHandler
-
   void OpenAIChatSettings() override;
+  void OpenConversationFullPage(const std::string& conversation_uuid) override;
   void OpenURL(const GURL& url) override;
   void OpenLearnMoreAboutBraveSearchWithLeo() override;
   void OpenModelSupportUrl() override;
