@@ -1498,7 +1498,6 @@ public class BytecodeTest {
                         Context.class,
                         Callback.class,
                         PropertyModel.class,
-                        boolean.class,
                         Callback.class,
                         LogoCoordinator.VisibilityObserver.class,
                         CachedTintedBitmap.class));
