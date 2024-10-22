@@ -257,9 +257,7 @@ struct Conversation {
   string uuid;
   // Set by the LLM or the user
   string title;
-  // First few characters of content, used if title isn't set
-  // or where more context is needed.
-  string summary;
+  // Time used for ordering purposes
   mojo_base.mojom.Time created_time;
   // If there are entries and the conversation should be selectable
   bool has_content;

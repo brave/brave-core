@@ -168,7 +168,7 @@ export default function SidebarNav(props: SidebarNavProps) {
                       </div>
                     ) : (
                       <DisplayTitle
-                        title={item.title ? item.title : item.summary ? item.summary : getLocale('conversationListUntitled')}
+                        title={item.title || getLocale('conversationListUntitled')}
                         description={''}
                         onEditTitle={() => aiChatContext.setEditingConversationId(item.uuid)}
                         onDelete={() => getAPI().Service.deleteConversation(item.uuid)}

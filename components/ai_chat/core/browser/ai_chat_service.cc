@@ -81,7 +81,7 @@ ConversationHandler* AIChatService::CreateConversation() {
   // Create the conversation metadata
   {
     mojom::ConversationPtr conversation = mojom::Conversation::New(
-        conversation_uuid, "", "", base::Time::Now(), false);
+        conversation_uuid, "", base::Time::Now(), false);
     conversations_.insert_or_assign(conversation_uuid, std::move(conversation));
   }
   mojom::Conversation* conversation =
@@ -299,12 +299,10 @@ void AIChatService::OnConversationEntriesChanged(
   CHECK(conversation_it != conversations_.end());
   auto& conversation = conversation_it->second;
   if (!entries.empty()) {
-    bool notify = false;
     // First time a new entry has appeared
     if (!conversation->has_content && entries.size() == 1) {
       // This conversation is visible once the first response begins
       conversation->has_content = true;
-      notify = true;
       if (ai_chat_metrics_ != nullptr) {
         if (entries.size() == 1) {
           ai_chat_metrics_->RecordNewChat();
@@ -315,22 +313,8 @@ void AIChatService::OnConversationEntriesChanged(
         if (entries.back()->character_type == mojom::CharacterType::HUMAN) {
           ai_chat_metrics_->RecordNewPrompt();
         }
-        if (entries.size() >= 2) {
-          if (conversation->summary.size() < 70) {
-            for (const auto& entry : entries) {
-              if (entry->character_type == mojom::CharacterType::ASSISTANT &&
-                  !entry->text.empty()) {
-                conversation->summary = entry->text.substr(0, 70);
-                notify = true;
-                break;
-              }
-            }
-          }
-        }
-        if (notify) {
-          OnConversationListChanged();
-        }
       }
+      OnConversationListChanged();
     }
     // TODO(petemill): Persist the entries, but consider receiving finer grained
     // entry update events.
