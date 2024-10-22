@@ -450,9 +450,13 @@ class TabLocationView: UIView {
     }
   }
 
+  // We must always set isWebScheme before setting the URLDisplayLabel text (so it will display the clipping fade correctly)
   private func updateURLBarWithText() {
+    guard let urlDisplayLabel = urlDisplayLabel as? DisplayURLLabel else { return }
+
     if let url = url {
       if let internalURL = InternalURL(url), internalURL.isBasicAuthURL {
+        urlDisplayLabel.isWebScheme = false
         urlDisplayLabel.text = Strings.PageSecurityView.signIntoWebsiteURLBarTitle
       } else {
         // Matches LocationBarModelImpl::GetFormattedURL in Chromium (except for omitHTTP)
@@ -462,8 +466,10 @@ class TabLocationView: UIView {
         // If we can't parse the origin and the URL can't be classified via AutoCompleteClassifier
         // the URL is likely a broken deceptive URL. Example: `about:blank#https://apple.com`
         if URLOrigin(url: url).url == nil && URIFixup.getURL(url.absoluteString) == nil {
+          urlDisplayLabel.isWebScheme = false
           urlDisplayLabel.text = ""
         } else {
+          urlDisplayLabel.isWebScheme = ["http", "https"].contains(url.scheme ?? "")
           urlDisplayLabel.text = URLFormatter.formatURL(
             URLOrigin(url: url).url?.absoluteString ?? url.absoluteString,
             formatTypes: [
@@ -474,6 +480,7 @@ class TabLocationView: UIView {
         }
       }
     } else {
+      urlDisplayLabel.isWebScheme = false
       urlDisplayLabel.text = ""
     }
 
@@ -544,7 +551,7 @@ private class DisplayURLLabel: UILabel {
 
   private var textSize: CGSize = .zero
   private var isRightToLeft: Bool = false
-  private var isWebScheme: Bool = false
+  fileprivate var isWebScheme: Bool = false
 
   override var font: UIFont! {
     didSet {
@@ -557,12 +564,6 @@ private class DisplayURLLabel: UILabel {
     didSet {
       clippingFade.isHidden = true
       if oldValue != text {
-        if let text = text {
-          isWebScheme = ["http", "https"].contains(URL(string: text)?.scheme ?? "")
-        } else {
-          isWebScheme = false
-        }
-
         updateText()
         updateTextSize()
         detectLanguageForNaturalDirectionClipping()
@@ -573,6 +574,8 @@ private class DisplayURLLabel: UILabel {
 
   private func updateText() {
     if let text = text {
+      // Without attributed string, the label will always render RTL characters even if you force LTR layout.
+      // This can introduce a security flaw! We must not flip the URL around based on RTL characters (Safari does not).
       let attributedString = NSMutableAttributedString(string: text)
       let paragraphStyle = NSMutableParagraphStyle()
       paragraphStyle.lineBreakMode = .byClipping
@@ -648,7 +651,7 @@ private class DisplayURLLabel: UILabel {
     var rect = rect
     if textSize.width > bounds.width {
       let delta = (textSize.width - bounds.width)
-      if !isRightToLeft && !isWebScheme {
+      if !isRightToLeft && isWebScheme {
         rect.origin.x -= delta
         rect.size.width += delta
       }
