@@ -35,9 +35,8 @@ struct ShieldsPanelView: View {
     self.url = url
     self.viewModel = ShieldsSettingsViewModel(tab: tab, domain: domain)
     self.actionCallback = callback
-    self.displayHost = URLFormatter.formatURLOrigin(
-      forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString
-    )
+    self.displayHost =
+      "\u{200E}\(URLFormatter.formatURLOrigin(forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString))"
   }
 
   private var shieldsEnabledAccessibiltyLabel: String {
@@ -82,9 +81,15 @@ struct ShieldsPanelView: View {
           url: url.absoluteString,
           isPrivateBrowsing: viewModel.isPrivateBrowsing
         )
-        Text(displayHost)
-          .font(.title2)
-          .foregroundStyle(Color(.bravePrimary))
+        Text(
+          URLFormatter.createAttributedString(
+            string: displayHost,
+            font: .title2,
+            lineBreakMode: .byWordWrapping
+          )
+        )
+        .font(.title2)
+        .foregroundStyle(Color(.bravePrimary))
       }
       .frame(minWidth: .zero, alignment: .center)
 
@@ -187,7 +192,13 @@ struct ShieldsPanelView: View {
   }
 
   @ViewBuilder private var shieldSettingsSectionView: some View {
-    ShieldSettingSectionHeader(title: displayHost)
+    ShieldSettingSectionHeader(
+      title: URLFormatter.createAttributedString(
+        string: displayHost,
+        font: .footnote,
+        lineBreakMode: .byWordWrapping
+      )
+    )
     ShieldSettingRow {
       HStack {
         Text(Strings.Shields.trackersAndAdsBlocking)
@@ -252,7 +263,7 @@ struct ShieldsPanelView: View {
   }
 
   @ViewBuilder private var globalSettingsSectionView: some View {
-    ShieldSettingSectionHeader(title: Strings.Shields.globalControls)
+    ShieldSettingSectionHeader(title: AttributedString(Strings.Shields.globalControls))
     ShieldSettingRow {
       Button {
         actionCallback(.navigate(.globalShields, dismiss: true))
@@ -305,7 +316,7 @@ private struct ShieldSettingsNavigationWrapper<Contents>: View where Contents: V
 }
 
 private struct ShieldSettingSectionHeader: View {
-  let title: String
+  let title: AttributedString
 
   var body: some View {
     VStack(alignment: .leading, spacing: 8) {
