@@ -14,8 +14,10 @@
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -26,6 +28,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/common/url_constants.h"
+#include "ui/base/page_transition_types.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/android/ai_chat/brave_leo_settings_launcher_helper.h"
@@ -105,6 +108,21 @@ void AIChatUIPageHandler::OpenAIChatSettings() {
 #else
   ai_chat::ShowBraveLeoSettings(contents_to_navigate);
 #endif
+}
+
+void AIChatUIPageHandler::OpenConversationFullPage(
+    const std::string& conversation_uuid) {
+  CHECK(ai_chat::features::IsAIChatHistoryEnabled());
+  CHECK(active_chat_tab_helper_);
+  active_chat_tab_helper_->web_contents()->OpenURL(
+      {
+          GURL(kChatUIURL).Resolve(conversation_uuid),
+          content::Referrer(),
+          WindowOpenDisposition::NEW_FOREGROUND_TAB,
+          ui::PAGE_TRANSITION_TYPED,
+          false,
+      },
+      {});
 }
 
 void AIChatUIPageHandler::OpenURL(const GURL& url) {

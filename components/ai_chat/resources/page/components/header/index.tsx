@@ -28,6 +28,7 @@ const getTitle = (activeConversation?: Conversation) => activeConversation?.titl
 
 
 const newChatButtonLabel = getLocale('newChatButtonLabel')
+const openFullPageButtonLabel = getLocale('openFullPageLabel')
 
 export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMenuProps, ref: React.Ref<HTMLDivElement>) {
   const aiChatContext = useAIChat()
@@ -43,6 +44,7 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
   const activeConversation = aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
   const showTitle = (!aiChatContext.isDefaultConversation || aiChatContext.isStandalone)
   const isVisible = useIsConversationVisible(conversationContext.conversationUuid)
+  const canShowFullScreenButton = aiChatContext.isHistoryEnabled && !aiChatContext.isMobile && !aiChatContext.isStandalone && conversationContext.conversationUuid
 
   return (
     <div className={styles.header} ref={ref}>
@@ -73,15 +75,13 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
                 <Icon name={aiChatContext.isHistoryEnabled ? 'edit-box' : 'erase'} />
               </Button>
             )}
-            {!aiChatContext.isStandalone &&
+            {canShowFullScreenButton &&
               <Button
                 fab
                 kind='plain-faint'
-                aria-label="Open full page"
-                title="Open full page"
-                onClick={() => {
-                  // TODO(fallaciousreasoning): Wire this up to a new mojom interface.
-                }}
+                aria-label={openFullPageButtonLabel}
+                title={openFullPageButtonLabel}
+                onClick={() => getAPI().UIHandler.openConversationFullPage(conversationContext.conversationUuid!)}
               >
                 <Icon name='expand' />
               </Button>}
