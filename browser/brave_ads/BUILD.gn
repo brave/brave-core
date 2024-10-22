@@ -67,7 +67,7 @@ source_set("impl") {
     "//chrome/browser:primitives",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
-    "//chrome/common:chrome_features",
+    "//chrome/common:channel_info",
     "//chrome/common:chrome_features",
     "//chrome/common:constants",
     "//components/keyed_service/content",
