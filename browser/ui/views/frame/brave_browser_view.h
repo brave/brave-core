@@ -129,9 +129,9 @@ class BraveBrowserView : public BrowserView,
   void OnAcceleratorsChanged(const commands::Accelerators& changed) override;
 
   // SplitViewBrowserDataObserver:
-  void OnTileTabs(const SplitViewBrowserData::Tile& tile) override;
-  void OnWillBreakTile(const SplitViewBrowserData::Tile& tile) override;
-  void OnSwapTabsInTile(const SplitViewBrowserData::Tile& tile) override;
+  void OnTileTabs(const TabTile& tile) override;
+  void OnWillBreakTile(const TabTile& tile) override;
+  void OnSwapTabsInTile(const TabTile& tile) override;
 
   views::WebView* secondary_contents_web_view() {
     return secondary_contents_web_view_.get();
@@ -198,7 +198,7 @@ class BraveBrowserView : public BrowserView,
   void UpdateSideBarHorizontalAlignment();
 
   tabs::TabHandle GetActiveTabHandle();
-  bool IsActiveWebContentsTiled(const SplitViewBrowserData::Tile& tile);
+  bool IsActiveWebContentsTiled(const TabTile& tile);
   void UpdateSplitViewSizeDelta(content::WebContents* old_contents,
                                 content::WebContents* new_contents);
   void UpdateContentsWebViewVisual();

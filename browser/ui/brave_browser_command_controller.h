@@ -73,8 +73,8 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController,
   friend class ::BraveBrowserCommandControllerTest;
 
   // Overriden from SplitViewBrowserDataObserver:
-  void OnTileTabs(const SplitViewBrowserData::Tile& tile) override;
-  void OnWillBreakTile(const SplitViewBrowserData::Tile& tile) override;
+  void OnTileTabs(const TabTile& tile) override;
+  void OnWillBreakTile(const TabTile& tile) override;
   void OnWillDeleteBrowserData() override;
 
   // Overriden from CommandUpdater:

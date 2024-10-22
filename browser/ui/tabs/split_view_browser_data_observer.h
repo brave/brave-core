@@ -7,14 +7,15 @@
 #define BRAVE_BROWSER_UI_TABS_SPLIT_VIEW_BROWSER_DATA_OBSERVER_H_
 
 #include "base/observer_list_types.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
+
+struct TabTile;
 
 class SplitViewBrowserDataObserver : public base::CheckedObserver {
  public:
-  virtual void OnTileTabs(const SplitViewBrowserData::Tile& tile) {}
-  virtual void OnWillBreakTile(const SplitViewBrowserData::Tile& tile) {}
-  virtual void OnDidBreakTile(const SplitViewBrowserData::Tile& tile) {}
-  virtual void OnSwapTabsInTile(const SplitViewBrowserData::Tile& tile) {}
+  virtual void OnTileTabs(const TabTile& tile) {}
+  virtual void OnWillBreakTile(const TabTile& tile) {}
+  virtual void OnDidBreakTile(const TabTile& tile) {}
+  virtual void OnSwapTabsInTile(const TabTile& tile) {}
   virtual void OnWillDeleteBrowserData() {}
 };
 

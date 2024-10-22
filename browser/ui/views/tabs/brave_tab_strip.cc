@@ -247,8 +247,7 @@ TabTiledState BraveTabStrip::GetTiledStateForTab(int index) const {
   return IsFirstTabInTile(tab) ? TabTiledState::kFirst : TabTiledState::kSecond;
 }
 
-std::optional<SplitViewBrowserData::Tile> BraveTabStrip::GetTileForTab(
-    const Tab* tab) const {
+std::optional<TabTile> BraveTabStrip::GetTileForTab(const Tab* tab) const {
   auto* browser = GetBrowser();
   auto* data = SplitViewBrowserData::FromBrowser(browser);
   if (!data) {
