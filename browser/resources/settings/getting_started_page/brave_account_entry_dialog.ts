@@ -24,6 +24,10 @@ class SettingsBraveAccountEntryDialogElement extends PolymerElement {
     return getTemplate()
   }
 
+  private onCreateButtonClicked() {
+    this.dispatchEvent(new CustomEvent('create-button-clicked'))
+  }
+
   private onSignInButtonClicked() {
     this.dispatchEvent(new CustomEvent('sign-in-button-clicked'))
   }
