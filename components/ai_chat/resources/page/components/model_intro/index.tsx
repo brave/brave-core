@@ -33,7 +33,6 @@ export default function ModelIntro() {
 
   const model = conversationContext.currentModel
   if (!model) {
-    console.error('Rendered ModelIntro when currentModel does not exist!')
     return <></>
   }
 
