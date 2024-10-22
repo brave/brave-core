@@ -69,4 +69,10 @@ void ConversationClient::OnAssociatedContentInfoChanged(
 
 void ConversationClient::OnFaviconImageDataChanged() {}
 
+void ConversationClient::OnConversationDeleted() {
+  // TODO(petemill): UI should bind to a new conversation. This only
+  // needs to be handled when the AIChatStorage feature is enabled, which
+  // allows deletion.
+}
+
 }  // namespace ai_chat
