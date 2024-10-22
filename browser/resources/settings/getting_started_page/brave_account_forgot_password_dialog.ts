@@ -34,6 +34,10 @@ class SettingsBraveAccountForgotPasswordDialogElement extends PolymerElement {
     this.isEmailValid = Boolean(this.$.email.value.match('^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$'))
   }
 
+  private onCancelButtonClicked() {
+    this.dispatchEvent(new CustomEvent('cancel-button-clicked'))
+  }
+
   private isEmailValid: boolean = false
 }
 
