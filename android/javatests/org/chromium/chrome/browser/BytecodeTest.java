@@ -900,7 +900,6 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         true,
                         ViewProvider.class,
-                        Context.class,
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
