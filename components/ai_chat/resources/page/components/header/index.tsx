@@ -28,6 +28,7 @@ const getTitle = (activeConversation?: Conversation) => activeConversation?.titl
 
 
 const newChatButtonLabel = getLocale('newChatButtonLabel')
+const closeButtonLabel = getLocale('closeLabel')
 const openFullPageButtonLabel = getLocale('openFullPageLabel')
 
 export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMenuProps, ref: React.Ref<HTMLDivElement>) {
@@ -86,16 +87,18 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
                 <Icon name='expand' />
               </Button>}
             <FeatureButtonMenu {...props} />
-            <Button
-              fab
-              kind='plain-faint'
-              aria-label='Close'
-              title='Close'
-              className={styles.closeButton}
-              onClick={() => getAPI().UIHandler.closeUI()}
-            >
-              <Icon name='close' />
-            </Button>
+            { !aiChatContext.isStandalone &&
+              <Button
+                fab
+                kind='plain-faint'
+                aria-label={closeButtonLabel}
+                title={closeButtonLabel}
+                className={styles.closeButton}
+                onClick={() => getAPI().UIHandler.closeUI()}
+              >
+                <Icon name='close' />
+              </Button>
+            }
           </>
         )}
       </div>

@@ -75,6 +75,9 @@
   <message name="IDS_CHAT_UI_LABEL_OPEN_FULL_PAGE" desc="Menu item to expand a sidebar conversation to a the full page experience">
     Open full page
   </message>
+  <message name="IDS_CHAT_UI_LABEL_CLOSE" desc="Button label to close the UI showing a chat conversation">
+    Close
+  </message>
   <message name="IDS_CHAT_UI_MENU_NEW_CHAT" desc="Menu item for new chat">
     New chat
   </message>
