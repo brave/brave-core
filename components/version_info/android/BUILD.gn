@@ -23,7 +23,17 @@ process_version("generate_brave_version_constants") {
     "BRAVE_BROWSER_VERSION=\"$brave_version\"",
     "-e",
     "BRAVE_CHROMIUM_VERSION=\"$chrome_version_string\"",
-    "-e",
-    "BRAVE_CHANNEL=str.upper('$brave_channel')",
   ]
+
+  if (is_official_build && brave_channel == "") {
+    extra_args += [
+      "-e",
+      "BRAVE_CHANNEL=RELEASE",
+    ]
+  } else {
+    extra_args += [
+      "-e",
+      "BRAVE_CHANNEL=str.upper('$brave_channel')",
+    ]
+  }
 }
