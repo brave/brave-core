@@ -169,6 +169,8 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
 
   MOCK_METHOD(void, OnFaviconImageDataChanged, (), (override));
 
+  MOCK_METHOD(void, OnConversationDeleted, (), (override));
+
  private:
   mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver_{this};
   mojo::Remote<mojom::ConversationHandler> conversation_handler_remote_;

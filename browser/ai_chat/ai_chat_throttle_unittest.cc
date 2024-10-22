@@ -71,7 +71,7 @@ INSTANTIATE_TEST_SUITE_P(
                                 info.param ? "Enabled" : "Disabled");
     });
 
-TEST_F(AiChatThrottleUnitTest, CancelNavigationFromTab) {
+TEST_P(AiChatThrottleUnitTest, CancelNavigationFromTab) {
   content::MockNavigationHandle test_handle(web_contents());
 
   test_handle.set_url(GURL("chrome-untrusted://chat"));
@@ -99,7 +99,7 @@ TEST_F(AiChatThrottleUnitTest, CancelNavigationFromTab) {
   }
 }
 
-TEST_F(AiChatThrottleUnitTest, AllowNavigationFromPanel) {
+TEST_P(AiChatThrottleUnitTest, AllowNavigationFromPanel) {
   content::MockNavigationHandle test_handle(web_contents());
 
   test_handle.set_url(GURL("chrome-untrusted://chat"));

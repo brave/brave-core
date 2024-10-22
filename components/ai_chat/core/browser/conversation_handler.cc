@@ -991,7 +991,6 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     return;
   }
 
-
   entry->events->push_back(std::move(event));
   // Update clients for partial entries but not observers, who will get notified
   // when we know this is a complete entry.
