@@ -4,6 +4,7 @@
  * you can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import './brave_account_dialog.js';
+import 'chrome://resources/brave/leo.bundle.js'
 import 'chrome://resources/polymer/v3_0/iron-flex-layout/iron-flex-layout-classes.js';
 
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';

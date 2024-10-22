@@ -3,12 +3,9 @@ This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this file,
 You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<style include="iron-flex">
+<style>
   :host {
     --brave-account-sign-in-dialog-label-margin: 4px;
-  }
-  .body {
-    gap: 24px;
   }
   .label {
     color: #1B1B1F;
@@ -40,7 +37,7 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <settings-brave-account-dialog show-back-button
   header-text-top="Sign in to your account"
   header-text-bottom="$i18n{braveSyncBraveAccountDesc}">
-  <div slot="body" class="body layout vertical">
+  <div slot="inputs">
     <leo-input id="email" placeholder="Enter your email address" on-input="onEmailInput">
       <div class="label">Email address</div>
     </leo-input>
@@ -55,6 +52,8 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
                 on-click="show">
       </leo-icon>
     </leo-input>
+  </div>
+  <div slot="buttons">
     <leo-button size="medium" isDisabled$="[[!canSignIn(isEmailValid, isPasswordValid)]]">
       Sign in
     </leo-button>
