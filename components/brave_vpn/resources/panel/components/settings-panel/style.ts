@@ -38,7 +38,7 @@ export const Setting = styled.div`
   cursor: pointer;
 
   &:focus-visible {
-    outline: 1.5px solid ${color.systemfeedback.focusDefault};
+    outline: 1.5px solid ${color.primary[40]};
     outline-offset: -6px;
   }
 `

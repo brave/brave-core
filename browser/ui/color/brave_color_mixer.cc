@@ -737,8 +737,6 @@ void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabBackgroundActiveFrameActive] = {kColorToolbar};
   mixer[kColorTabBackgroundActiveFrameInactive] = {
       kColorTabBackgroundActiveFrameActive};
-  mixer[kColorTabBackgroundInactiveHoverFrameActive] = {
-      nala::kColorDesktopbrowserTabbarHoverTabBackground};
   mixer[kColorTabDividerFrameActive] =
       ui::AlphaBlend({nala::kColorDividerStrong},
                      {kColorTabBackgroundInactiveFrameActive}, 0.75 * 0xff);

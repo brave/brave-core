@@ -85,7 +85,7 @@ export const TextareaWrapper = styled.div<{ showError: boolean }>`
     }
 
     &:focus-visible {
-      border: 1.5px solid ${color.systemfeedback.focusDefault};
+      border: 1.5px solid ${color.primary[40]};
       outline: 0;
     }
 
