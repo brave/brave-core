@@ -81,6 +81,8 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
   }
 
   fileprivate func commonInit() {
+    self.semanticContentAttribute = .forceLeftToRight
+    self.textAlignment = .left
     super.delegate = self
     super.addTarget(
       self,
