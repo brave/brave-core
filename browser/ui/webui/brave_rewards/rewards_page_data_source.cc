@@ -238,7 +238,7 @@ static constexpr webui::LocalizedString kStrings[] = {
      IDS_BRAVE_REWARDS_ONBOARDING_ERROR_HEADER_DISABLED},
     {"onboardingErrorText", IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT},
     {"onboardingErrorTitle", IDS_BRAVE_REWARDS_ONBOARDING_ERROR_HEADER},
-    {"onboardingLearnMoreLabel", IDS_REWARDS_LEARN_MORE},
+    {"onboardingLearnMoreLabel", IDS_REWARDS_WIDGET_HOW_DOES_IT_WORK},
     {"onboardingSuccessLearnMoreLabel",
      IDS_BRAVE_REWARDS_ONBOARDING_HOW_DOES_IT_WORK},
     {"onboardingSuccessText", IDS_BRAVE_REWARDS_ONBOARDING_GEO_SUCCESS_TEXT},
