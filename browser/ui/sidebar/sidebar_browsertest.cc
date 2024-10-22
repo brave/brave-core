@@ -1242,6 +1242,21 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
   EXPECT_TRUE(model()->active_index().has_value());
   EXPECT_EQ(model()->active_index(),
             model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
+
+  // Check tab specific panel item is still activated after moving to another
+  // browser.
+  tab_model()->ActivateTabAt(1);
+  EXPECT_EQ(model()->active_index(), tab_specific_item_index);
+
+  auto* browser2 = CreateBrowser(browser()->profile());
+  auto* browser2_model =
+      static_cast<BraveBrowser*>(browser2)->sidebar_controller()->model();
+  auto* browser2_tab_model = browser2->tab_strip_model();
+
+  auto detached_tab = tab_model()->DetachTabAtForInsertion(1);
+  browser2_tab_model->AppendTab(std::move(detached_tab), /* foreground */ true);
+  EXPECT_EQ(browser2_model->active_index(),
+            browser2_model->GetIndexOf(SidebarItem::BuiltInItemType::kChatUI));
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
