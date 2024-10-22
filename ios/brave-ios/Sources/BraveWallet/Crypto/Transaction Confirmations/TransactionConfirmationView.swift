@@ -16,6 +16,7 @@ struct TransactionConfirmationView: View {
   @ObservedObject var keyringStore: KeyringStore
 
   var onDismiss: () -> Void
+  var onViewInActivity: () -> Void
 
   @State private var isShowingGas: Bool = false
   @State private var isShowingAdvancedSettings: Bool = false
@@ -138,16 +139,21 @@ struct TransactionConfirmationView: View {
           if let txStatusStore = confirmationStore.activeTxStatusStore {
             TransactionStatusView(
               txStatusStore: txStatusStore,
-              networkStore: networkStore
-            ) {
-              if confirmationStore.unapprovedTxs.count == 0 {
+              networkStore: networkStore,
+              onDismiss: {
+                if confirmationStore.unapprovedTxs.count == 0 {
+                  onDismiss()
+                }
+                // update activeTransactionId
+                confirmationStore.updateActiveTxIdAfterSignedClosed()
+                // close tx status store
+                confirmationStore.closeTxStatusStore()
+              },
+              onViewInActivity: {
                 onDismiss()
+                onViewInActivity()
               }
-              // update activeTransactionId
-              confirmationStore.updateActiveTxIdAfterSignedClosed()
-              // close tx status store
-              confirmationStore.closeTxStatusStore()
-            }
+            )
           }
         }
     )
@@ -161,7 +167,8 @@ struct TransactionConfirmationView_Previews: PreviewProvider {
       confirmationStore: .previewStore,
       networkStore: .previewStore,
       keyringStore: .previewStoreWithWalletCreated,
-      onDismiss: {}
+      onDismiss: {},
+      onViewInActivity: {}
     )
     .previewLayout(.sizeThatFits)
   }

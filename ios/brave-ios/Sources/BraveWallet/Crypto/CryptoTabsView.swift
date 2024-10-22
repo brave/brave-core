@@ -9,7 +9,7 @@ import Strings
 import SwiftUI
 import UIKit
 
-enum CryptoTab: Equatable, Hashable, CaseIterable {
+public enum CryptoTab: Equatable, Hashable, CaseIterable {
   case portfolio
   case activity
   case accounts
@@ -46,6 +46,18 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
 
   @Environment(\.walletActionDestination)
   private var walletActionDestination: Binding<WalletActionDestination?>
+
+  init(
+    cryptoStore: CryptoStore,
+    keyringStore: KeyringStore,
+    toolbarDismissContent: DismissContent,
+    selectedTab: CryptoTab
+  ) {
+    self.cryptoStore = cryptoStore
+    self.keyringStore = keyringStore
+    self.toolbarDismissContent = toolbarDismissContent
+    self._selectedTab = .init(initialValue: selectedTab)
+  }
 
   private var isConfirmationButtonVisible: Bool {
     if case .transactions(let txs) = cryptoStore.pendingRequest {
@@ -135,6 +147,9 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
       tabBarController.tabBar.standardAppearance = appearance
       tabBarController.tabBar.scrollEdgeAppearance = appearance
     })
+    .onChange(of: cryptoStore.viewActivityToggle) { _ in
+      selectedTab = .activity
+    }
     .overlay(
       alignment: .bottomTrailing,
       content: {

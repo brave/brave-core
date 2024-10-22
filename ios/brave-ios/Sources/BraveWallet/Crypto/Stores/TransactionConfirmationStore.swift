@@ -75,7 +75,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       if isTxSubmitting == true, activeTxStatus != .approved {
         isTxSubmitting = false
       }
-      if activeTxStatus == .submitted || activeTxStatus == .signed {
+      if activeTxStatus == .submitted || activeTxStatus == .signed || activeTxStatus == .error {
         closeTxStatusStore()
         activeTxStatusStore = openActiveTxStatusStore()
       }
@@ -282,7 +282,6 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   @MainActor func prepare() async {
     allNetworks = await rpcService.allNetworksForSupportedCoins()
     allTxs = await fetchAllTransactions()
-    cancelTxMap = buildCancelTxMap()
     if !unapprovedTxs.contains(where: { $0.id == activeTransactionId }) {
       self.activeTransactionId = unapprovedTxs.first?.id ?? ""
     }
@@ -373,9 +372,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       txProviderError: transactionProviderErrorRegistry[activeTransactionId],
       keyringService: keyringService,
       rpcService: rpcService,
-      assetRatioService: assetRatioService,
-      txService: txService,
-      ethTxManagerProxy: ethTxManagerProxy
+      txService: txService
     )
     return txStatusStore
   }
@@ -383,22 +380,6 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   func closeTxStatusStore() {
     self.activeTxStatusStore?.tearDown()
     self.activeTxStatusStore = nil
-  }
-
-  func openTestTxStatusStore() -> TransactionStatusStore {
-    let parsedTx = activeParsedTransaction
-    parsedTx.transaction.txStatus = .submitted
-    let txStatusStore = TransactionStatusStore(
-      activeTxStatus: .submitted,
-      activeTxParsed: parsedTx,
-      txProviderError: transactionProviderErrorRegistry[activeTransactionId],
-      keyringService: keyringService,
-      rpcService: rpcService,
-      assetRatioService: assetRatioService,
-      txService: txService,
-      ethTxManagerProxy: ethTxManagerProxy
-    )
-    return txStatusStore
   }
 
   private func clearTrasactionInfoBeforeUpdate() {
@@ -553,23 +534,6 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       shouldFetchCurrentAllowance: false,
       shouldFetchGasTokenBalance: false
     )
-  }
-
-  private func buildCancelTxMap() -> [BraveWallet.TransactionInfo: [BraveWallet.TransactionInfo]] {
-    var result = [BraveWallet.TransactionInfo: [BraveWallet.TransactionInfo]]()
-    for txA in unapprovedTxs {
-      for txB in allTxs where txB.id != txA.id {
-        if isTx(txA, cancelling: txB) {
-          if var existedTx = result[txB] {
-            existedTx.append(txA)
-            result.merge(with: [txB: existedTx])
-          } else {
-            result.merge(with: [txB: [txA]])
-          }
-        }
-      }
-    }
-    return result
   }
 
   /// Updates `isContractAddress` for the `activeParsedTransaction` without blocking display updates.
@@ -916,96 +880,6 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       for: allAccounts
     )
     .sorted(by: { $0.createdTime > $1.createdTime })
-  }
-
-  private func isTx(_ txA: BraveWallet.TransactionInfo, cancelling txB: BraveWallet.TransactionInfo) -> Bool {
-    /*print("Debug - checking new unapproved tx: \(txInfo.id)")
-     if txInfo.coin == .eth, activeTransaction.coin == .eth {
-     print("DEBUG - both tx are coin type ETH")
-     } else {
-     print("coin: \(txInfo.coin)")
-     print("coin: \(activeTransaction.coin)")
-     return false
-     }
-     if txInfo.chainId == activeTransaction.chainId {
-     print("DEBUG - both tx have the same chain id")
-     } else {
-     print("chain_id: \(txInfo.chainId)")
-     print("chain_id: \(activeTransaction.chainId)")
-     return false
-     }
-     if txInfo.ethTxNonce == activeTransaction.ethTxNonce {
-     print("DEBUG - both tx have the same nonce")
-     } else {
-     print("nonce: \(txInfo.ethTxNonce)")
-     print("nonce: \(activeTransaction.ethTxNonce)")
-     return false
-     }
-     if let value = txInfo.txDataUnion.ethTxData1559?.baseData.value,
-     value == "0x0" {
-     print("DEBUG - new tx has value 0")
-     } else {
-     print("value: \(txInfo.txDataUnion.ethTxData1559?.baseData.value ?? "null")")
-     return false
-     }
-     if txInfo.ethTxData.isEmpty {
-     print("DEBUG - new tx has empty data")
-     } else {
-     print("data: \(txInfo.ethTxData)")
-     return false
-     }
-     if let newTxFrom = txInfo.fromAddress,
-     let activeTxFrom = activeTransaction.fromAddress,
-     newTxFrom.caseInsensitiveCompare(activeTxFrom) == .orderedSame {
-     print("DEBUG - both tx have the same from")
-     } else {
-     print("from of new tx: \(txInfo.fromAddress ?? "null")")
-     print("from of active tx: \(activeTransaction.fromAddress ?? "null")")
-     return false
-     }
-     if let newTxMaxFeePerGas = txInfo.txDataUnion.ethTxData1559?.maxFeePerGas,
-     let activeTxMaxFeePerGas = activeTransaction.txDataUnion.ethTxData1559?.maxFeePerGas,
-     let newTxMaxFeePerGasFormatted =  WalletAmountFormatter.weiToDecimalGwei(newTxMaxFeePerGas.removingHexPrefix, radix: .hex),
-     let activeTxMaxFeePerGasFormatted =  WalletAmountFormatter.weiToDecimalGwei(activeTxMaxFeePerGas.removingHexPrefix, radix: .hex)
-     {
-     if let newTxGasBDouble = BDouble(newTxMaxFeePerGasFormatted),
-     let activeTxGasIntBDouble = BDouble(activeTxMaxFeePerGasFormatted) {
-     if newTxGasBDouble > activeTxGasIntBDouble {
-     print("DEBUG - new tx gas price is greater")
-     } else {
-     print("gas price: \(activeTxGasIntBDouble)")
-     print("gas price: \(activeTxGasIntBDouble)")
-     return false
-     }
-     } else {
-     print("gas price: \(newTxMaxFeePerGasFormatted)")
-     print("gas price: \(activeTxMaxFeePerGasFormatted)")
-     return false
-     }
-     } else {
-     print("maxFeePerGas of new tx: \(txInfo.txDataUnion.ethTxData1559?.maxFeePerGas ?? "null")")
-     print("maxFeePerGas of active tx: \(self.activeTransaction.txDataUnion.ethTxData1559?.maxFeePerGas ?? "null")")
-     return false
-     }
-     return true*/
-    guard txA.coin == .eth,
-      txB.coin == .eth,
-      txA.chainId == txB.chainId,
-      txA.ethTxNonce == txB.ethTxNonce,
-      txA.ethTxData.isEmpty,
-      let txAValue = txA.txDataUnion.ethTxData1559?.baseData.value,
-      let txAFrom = txA.fromAddress,
-      let txBFrom = txB.fromAddress,
-      let txAMaxFeePerGas = txA.txDataUnion.ethTxData1559?.maxFeePerGas,
-      let txBMaxFeePerGas = txB.txDataUnion.ethTxData1559?.maxFeePerGas,
-      let txAMaxFeePerGasFormatted =  WalletAmountFormatter.weiToDecimalGwei(txAMaxFeePerGas.removingHexPrefix, radix: .hex),
-      let txBMaxFeePerGasFormatted =  WalletAmountFormatter.weiToDecimalGwei(txBMaxFeePerGas.removingHexPrefix, radix: .hex),
-      let txAGasBDouble = BDouble(txAMaxFeePerGasFormatted),
-      let txBGasIntBDouble = BDouble(txBMaxFeePerGasFormatted)
-    else {
-      return false
-    }
-    return txAValue == "0x0" && txAFrom.caseInsensitiveCompare(txBFrom) == .orderedSame && txAGasBDouble > txBGasIntBDouble
   }
 
   @MainActor func confirm(
