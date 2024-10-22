@@ -1554,6 +1554,7 @@ public class BytecodeTest {
                         IntentRequestTracker.class,
                         InsetObserver.class,
                         Function.class,
+                        Callback.class,
                         boolean.class,
                         BackPressManager.class,
                         Bundle.class,
