@@ -32,7 +32,7 @@ const std::optional<int> BraveBrowserTabStripController::GetModelIndexOf(
 void BraveBrowserTabStripController::ShowContextMenuForTab(
     Tab* tab,
     const gfx::Point& p,
-    ui::MenuSourceType source_type) {
+    ui::mojom::MenuSourceType source_type) {
   BrowserView* browser_view =
       BrowserView::GetBrowserViewForBrowser(browser());
   const auto tab_index = browser_view->tabstrip()->GetModelIndexOf(tab);

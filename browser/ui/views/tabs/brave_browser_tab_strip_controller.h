@@ -30,7 +30,7 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   // BrowserTabStripController overrides:
   void ShowContextMenuForTab(Tab* tab,
                              const gfx::Point& p,
-                             ui::MenuSourceType source_type) override;
+                             ui::mojom::MenuSourceType source_type) override;
 
  private:
   // If non-NULL it means we're showing a menu for the tab.

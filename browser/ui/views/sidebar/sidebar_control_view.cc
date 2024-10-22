@@ -102,7 +102,7 @@ SidebarControlView::~SidebarControlView() = default;
 void SidebarControlView::ShowContextMenuForViewImpl(
     views::View* source,
     const gfx::Point& point,
-    ui::MenuSourceType source_type) {
+    ui::mojom::MenuSourceType source_type) {
   if (context_menu_runner_ && context_menu_runner_->IsRunning()) {
     return;
   }

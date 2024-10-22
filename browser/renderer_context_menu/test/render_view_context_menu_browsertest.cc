@@ -29,7 +29,7 @@ class BraveContextMenuBrowserTest : public InProcessBrowserTest {
       const GURL& url,
       const std::u16string& link_text,
       blink::mojom::ContextMenuDataMediaType media_type,
-      ui::MenuSourceType source_type) {
+      ui::mojom::MenuSourceType source_type) {
     content::ContextMenuParams params;
     params.media_type = media_type;
     params.unfiltered_link_url = unfiltered_url;
@@ -54,7 +54,7 @@ class BraveContextMenuBrowserTest : public InProcessBrowserTest {
       const GURL& url,
       const std::u16string& link_text,
       blink::mojom::ContextMenuDataMediaType media_type,
-      ui::MenuSourceType source_type) {
+      ui::mojom::MenuSourceType source_type) {
     return CreateContextMenuInWebContents(
         browser()->tab_strip_model()->GetActiveWebContents(), unfiltered_url,
         url, link_text, media_type, source_type);
@@ -65,7 +65,7 @@ class BraveContextMenuBrowserTest : public InProcessBrowserTest {
       const GURL& url) {
     return CreateContextMenu(unfiltered_url, url, std::u16string(),
                              blink::mojom::ContextMenuDataMediaType::kNone,
-                             ui::MENU_SOURCE_NONE);
+                             ui::mojom::MenuSourceType::kNone);
   }
 
  private:
