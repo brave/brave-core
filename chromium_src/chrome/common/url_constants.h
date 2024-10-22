@@ -330,6 +330,10 @@ inline constexpr char16_t kPaymentMethodsURLForGPayWeb[] =
 inline constexpr char kAddressesAndPaymentMethodsLearnMoreURL[] =
     "https://support.brave.com";
 
+// Help URL for Autofill Prediction Improvements.
+inline constexpr char16_t kAutofillPredictionImprovementsLearnMoreURL[] =
+    u"https://support.brave.com";
+
 // "Learn more" URL for the performance intervention notification setting.
 inline constexpr char16_t kPerformanceInterventionLearnMoreUrl[] =
     u"https://support.brave.com";
