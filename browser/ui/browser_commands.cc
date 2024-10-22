@@ -933,9 +933,7 @@ class BookmarksExportListener : public ui::SelectFileDialog::Listener {
     ui::SelectFileDialog::FileTypeInfo file_types;
 
     // Only show HTML files in the file dialog.
-    file_types.extensions.emplace_back(
-        std::vector<base::FilePath::StringType>{"html"});
-
+    file_types.extensions.push_back({"html"});
     file_selector_->SelectFile(
         ui::SelectFileDialog::SELECT_SAVEAS_FILE,
         l10n_util::GetStringUTF16(IDS_BOOKMARK_MANAGER_MENU_EXPORT),
