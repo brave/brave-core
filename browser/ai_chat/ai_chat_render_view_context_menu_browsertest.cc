@@ -41,6 +41,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/mojom/menu_source_type.mojom.h"
 #include "url/gurl.h"
 
 using ::testing::_;
@@ -154,7 +155,8 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
     web_contents->GetPrimaryMainFrame()
         ->GetRenderViewHost()
         ->GetWidget()
-        ->ShowContextMenuAtPoint(gfx::Point(x, y), ui::MENU_SOURCE_MOUSE);
+        ->ShowContextMenuAtPoint(gfx::Point(x, y),
+                                 ui::mojom::MenuSourceType::kMouse);
     run_loop.Run();
     EXPECT_NE(ai_engine, nullptr);
     testing::Mock::VerifyAndClearExpectations(ai_engine);
