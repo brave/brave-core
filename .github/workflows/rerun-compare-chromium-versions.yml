@@ -12,7 +12,8 @@ on:
 
 jobs:
   rerun-compare-chromium-versions:
-    if: github.event.pull_request.merged == true
+    # TODO: uncomment
+    #if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -36,12 +37,11 @@ jobs:
                   pr_url="https://github.com/brave/brave-core/pull/${pr_number:?}"
                   if [[ "$run_id" ]]; then
                       echo "Rerunning $run_id for $pr_url"
-                      gh -R "$GITHUB_REPOSITORY" run rerun "$run_id"
+                      # TODO: remove echo and add sleep
+                      echo gh -R "$GITHUB_REPOSITORY" run rerun "$run_id"
                   else
                       echo "No run found for $pr_url"
                   fi
                   sleep 1
               done < <(gh -R "$GITHUB_REPOSITORY" pr list --limit 1000 --state open --base "$GITHUB_BASE_REF" --json number,headRefOid -q '.[]|"\(.number)\t\(.headRefOid)"')
-          else
-              echo "Chromium major versions match, nothing to do"
           fi
