@@ -62,6 +62,11 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
     line-height: 22px;
     text-align: center;
   }
+  /* In the "body" slot below, styles slotted nodes for which slot="body",
+  e.g. <div slot="body">...</div> coming from downstream dialogs. */
+  slot[name=body]::slotted([slot=body]) {
+    margin: 32px 0px 40px;
+  }
 </style>
 
 <cr-dialog id="dialog" show-on-attach>
