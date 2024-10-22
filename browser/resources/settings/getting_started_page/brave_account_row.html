@@ -56,6 +56,7 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <template is="dom-if" if="[[isDialogType(dialogTypeEnum.FORGOT_PASSWORD, dialogType)]]" restamp>
   <settings-brave-account-forgot-password-dialog
     on-close="onBraveAccountDialogClosed_"
-    on-back-button-clicked="onBackButtonClicked">
+    on-back-button-clicked="onBackButtonClicked"
+    on-cancel-button-clicked="onBackButtonClicked">
   </settings-brave-account-forgot-password-dialog>
 </template>
