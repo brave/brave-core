@@ -12,7 +12,7 @@ import UIKit
 import os.log
 
 /// A class for rendering a Bundled FavIcon onto a `UIImage`
-public class BundledFaviconRenderer {
+public actor BundledFaviconRenderer {
 
   /// Folder where custom favicons are stored.
   static let faviconOverridesDirectory = "favorite_overrides"
@@ -80,39 +80,48 @@ public class BundledFaviconRenderer {
 
   // MARK: - Bundled Icons
 
+  private static var loadBundledIconsTask: Task<Void, Never>?
   private static func loadBundledIcons() async {
-    guard let filePath = Bundle.module.path(forResource: "top_sites", ofType: "json") else {
-      Logger.module.error("Failed to get bundle path for \"top_sites.json\"")
+    if let loadBundledIconsTask {
+      await loadBundledIconsTask.value
       return
     }
-    do {
-      let file = try Data(contentsOf: URL(fileURLWithPath: filePath))
-      let json = try JSONDecoder().decode([TopSite].self, from: file)
-      var icons: [String: (color: UIColor, url: String)] = [:]
-      json.forEach({
-        guard let url = $0.domain,
-          let color = $0.backgroundColor?.lowercased(),
-          let path = $0.imageURL?.replacingOccurrences(of: ".png", with: "")
-        else {
-          return
-        }
-        let filePath = Bundle.module.path(forResource: "TopSites/" + path, ofType: "png")
-        if let filePath = filePath {
-          if color == "#fff" {
-            icons[url] = (.white, filePath)
-          } else {
-            icons[url] = (
-              UIColor(colorString: color.replacingOccurrences(of: "#", with: "")), filePath
-            )
+    let loadBundledIconsTask = Task {
+      guard let filePath = Bundle.module.path(forResource: "top_sites", ofType: "json") else {
+        Logger.module.error("Failed to get bundle path for \"top_sites.json\"")
+        return
+      }
+      do {
+        let file = try Data(contentsOf: URL(fileURLWithPath: filePath))
+        let json = try JSONDecoder().decode([TopSite].self, from: file)
+        var icons: [String: (color: UIColor, url: String)] = [:]
+        json.forEach({
+          guard let url = $0.domain,
+            let color = $0.backgroundColor?.lowercased(),
+            let path = $0.imageURL?.replacingOccurrences(of: ".png", with: "")
+          else {
+            return
           }
-        }
-      })
-      bundledIcons = icons
-    } catch {
-      Logger.module.error(
-        "Failed to get default icons at \(filePath): \(error.localizedDescription)"
-      )
+          let filePath = Bundle.module.path(forResource: "TopSites/" + path, ofType: "png")
+          if let filePath = filePath {
+            if color == "#fff" {
+              icons[url] = (.white, filePath)
+            } else {
+              icons[url] = (
+                UIColor(colorString: color.replacingOccurrences(of: "#", with: "")), filePath
+              )
+            }
+          }
+        })
+        bundledIcons = icons
+      } catch {
+        Logger.module.error(
+          "Failed to get default icons at \(filePath): \(error.localizedDescription)"
+        )
+      }
     }
+    Self.loadBundledIconsTask = loadBundledIconsTask
+    await loadBundledIconsTask.value
   }
   /// Icon attributes for icons that are bundled in the app by default.
   ///
