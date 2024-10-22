@@ -5,8 +5,6 @@
 
 #include "base/feature_override.h"
 #include "brave/browser/android/background_video/features.h"
-#include "brave/browser/android/first_run/features.h"
-#include "brave/browser/android/preferences/features.h"
 #include "brave/browser/android/safe_browsing/features.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
