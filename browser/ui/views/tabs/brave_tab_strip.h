@@ -44,7 +44,7 @@ class BraveTabStrip : public TabStrip {
   void UpdateTabContainer();
   bool ShouldShowVerticalTabs() const;
 
-  std::optional<SplitViewBrowserData::Tile> GetTileForTab(const Tab* tab) const;
+  std::optional<TabTile> GetTileForTab(const Tab* tab) const;
 
   TabContainer* GetTabContainerForTesting();
 

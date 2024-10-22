@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-constexpr int kCatalogVersion = 9;
+inline constexpr int kCatalogVersion = 9;
 
 }  // namespace brave_ads
 

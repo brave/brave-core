@@ -96,7 +96,7 @@ TEST_F(BraveAdsReactionsTest, Ads) {
   {
     mojom::ReactionInfoPtr mojom_reaction =
         test::BuildReaction(mojom::AdType::kNotificationAd);
-    mojom_reaction->advertiser_id = "57b26e2f-2e77-4b31-a3ce-d3faf82dd574";
+    mojom_reaction->advertiser_id = test::kAnotherCampaignId;
 
     base::MockCallback<ToggleReactionCallback> callback;
     EXPECT_CALL(callback, Run(/*success=*/true));
@@ -126,7 +126,7 @@ TEST_F(BraveAdsReactionsTest, Ads) {
   {
     mojom::ReactionInfoPtr mojom_reaction =
         test::BuildReaction(mojom::AdType::kNotificationAd);
-    mojom_reaction->advertiser_id = "57b26e2f-2e77-4b31-a3ce-d3faf82dd574";
+    mojom_reaction->advertiser_id = test::kAnotherCampaignId;
 
     base::MockCallback<ToggleReactionCallback> callback;
     EXPECT_CALL(callback, Run(/*success=*/true));
@@ -136,8 +136,9 @@ TEST_F(BraveAdsReactionsTest, Ads) {
   // Act & Assert
   const ReactionMap expected_ad_reactions = {
       {test::kAdvertiserId, mojom::ReactionType::kLiked},
-      {"2c0577b2-097b-41e8-81db-685de60d26e5", mojom::ReactionType::kDisliked},
-      {"57b26e2f-2e77-4b31-a3ce-d3faf82dd574", mojom::ReactionType::kDisliked}};
+      {/*advertiser_id=*/"2c0577b2-097b-41e8-81db-685de60d26e5",
+       mojom::ReactionType::kDisliked},
+      {test::kAnotherCampaignId, mojom::ReactionType::kDisliked}};
   EXPECT_EQ(expected_ad_reactions, GetReactions().Ads());
 }
 

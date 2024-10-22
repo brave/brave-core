@@ -10,9 +10,11 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+
+class SplitViewBrowserData;
+struct TabTile;
 
 // This class observes changes in tabs' index and make other tab that are paired
 // with the changed tab be synchronized.
@@ -22,17 +24,17 @@ class SplitViewTabStripModelAdapter : public TabStripModelObserver {
                                 TabStripModel* model);
   ~SplitViewTabStripModelAdapter() override;
 
-  void MakeTiledTabsAdjacent(const SplitViewBrowserData::Tile& tile,
-                             bool move_right_tab = true);
-  bool SynchronizeGroupedState(const SplitViewBrowserData::Tile& tile,
+  void MakeTiledTabsAdjacent(const TabTile& tile, bool move_right_tab = true);
+  bool SynchronizeGroupedState(const TabTile& tile,
                                const tabs::TabHandle& source,
                                std::optional<tab_groups::TabGroupId> group);
-  bool SynchronizePinnedState(const SplitViewBrowserData::Tile& tile,
+  bool SynchronizePinnedState(const TabTile& tile,
                               const tabs::TabHandle& source);
 
   void TabDragStarted();
   void TabDragEnded();
   bool is_in_tab_dragging() const { return is_in_tab_dragging_; }
+  TabStripModel& tab_strip_model() { return *model_; }
 
   // TabStripModelObserver:
   void OnTabStripModelChanged(

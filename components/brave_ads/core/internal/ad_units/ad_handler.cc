@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/ad_handler.h"
 
+#include <optional>
 #include <utility>
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data.h"
@@ -106,11 +107,23 @@ void AdHandler::TriggerInlineContentAdEvent(
                                           std::move(callback));
 }
 
+std::optional<mojom::CreativeSearchResultAdInfoPtr>
+AdHandler::MaybeGetSearchResultAd(const std::string& placement_id) {
+  return creative_ad_cache_.MaybeGet<mojom::CreativeSearchResultAdInfoPtr>(
+      placement_id);
+}
+
 void AdHandler::TriggerSearchResultAdEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     const mojom::SearchResultAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   CHECK(mojom_creative_ad);
+
+  if (mojom_ad_event_type ==
+      mojom::SearchResultAdEventType::kViewedImpression) {
+    creative_ad_cache_.MaybeAdd(mojom_creative_ad->placement_id,
+                                mojom_creative_ad->Clone());
+  }
 
   search_result_ad_handler_.TriggerEvent(
       std::move(mojom_creative_ad), mojom_ad_event_type, std::move(callback));

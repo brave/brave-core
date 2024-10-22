@@ -560,7 +560,9 @@ impl TryFrom<CosmeticFilter> for CbRule {
     type Error = CbRuleCreationFailure;
 
     fn try_from(v: CosmeticFilter) -> Result<Self, Self::Error> {
-        use crate::filters::cosmetic::{CosmeticFilterLocationType, CosmeticFilterMask};
+        use crate::filters::cosmetic::{
+            CosmeticFilterLocationType as LocationType, CosmeticFilterMask,
+        };
 
         if v.action.is_some() {
             return Err(CbRuleCreationFailure::CosmeticActionRulesNotSupported);
@@ -573,20 +575,21 @@ impl TryFrom<CosmeticFilter> for CbRule {
             let mut hostnames_vec = vec![];
             let mut not_hostnames_vec = vec![];
 
-            let mut any_entities = false;
+            let mut any_unsupported = false;
 
             // Unwrap is okay here - cosmetic rules must have a '#' character
             let sharp_index = find_char(b'#', raw_line.as_bytes()).unwrap();
             CosmeticFilter::locations_before_sharp(&raw_line, sharp_index).for_each(
                 |(location_type, location)| match location_type {
-                    CosmeticFilterLocationType::Entity => any_entities = true,
-                    CosmeticFilterLocationType::NotEntity => any_entities = true,
-                    CosmeticFilterLocationType::Hostname => {
+                    LocationType::Entity | LocationType::NotEntity | LocationType::Unsupported => {
+                        any_unsupported = true
+                    }
+                    LocationType::Hostname => {
                         if let Ok(encoded) = idna::domain_to_ascii(location) {
                             hostnames_vec.push(encoded);
                         }
                     }
-                    CosmeticFilterLocationType::NotHostname => {
+                    LocationType::NotHostname => {
                         if let Ok(encoded) = idna::domain_to_ascii(location) {
                             not_hostnames_vec.push(encoded);
                         }
@@ -594,7 +597,7 @@ impl TryFrom<CosmeticFilter> for CbRule {
                 },
             );
 
-            if any_entities {
+            if any_unsupported && hostnames_vec.is_empty() && not_hostnames_vec.is_empty() {
                 return Err(CbRuleCreationFailure::CosmeticEntitiesUnsupported);
             }
 
@@ -1400,6 +1403,27 @@ mod filterset_tests {
         assert_eq!(cb_rules.len(), 1);
         assert!(cb_rules[0].trigger.if_domain.is_some());
         assert_eq!(cb_rules[0].trigger.if_domain.as_ref().unwrap(), &["smskaraborg.se", "xn--rnskldsviksgymnasium-29be.se", "mojligheternashusab.se"]);
+
+        Ok(())
+    }
+
+    #[test]
+    fn convert_cosmetic_filter_locations() -> Result<(), ()> {
+        let list = [
+            r"/^dizipal\d+\.com$/##.web",
+            r"/^example\d+\.com$/,test.net,b.*##.ad",
+        ];
+        let mut set = FilterSet::new(true);
+        set.add_filters(&list, Default::default());
+
+        let (cb_rules, used_rules) = set.into_content_blocking()?;
+        assert_eq!(used_rules.len(), 1);
+        assert_eq!(cb_rules.len(), 1);
+        assert!(cb_rules[0].trigger.if_domain.is_some());
+        assert_eq!(
+            cb_rules[0].trigger.if_domain.as_ref().unwrap(),
+            &["test.net"]
+        );
 
         Ok(())
     }

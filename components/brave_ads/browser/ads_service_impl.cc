@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/base64.h"
@@ -178,7 +179,7 @@ void OnUrlLoaderResponseStartedCallback(
 }  // namespace
 
 AdsServiceImpl::AdsServiceImpl(
-    Delegate* delegate,
+    std::unique_ptr<Delegate> delegate,
     PrefService* prefs,
     PrefService* local_state,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader,
@@ -190,7 +191,7 @@ AdsServiceImpl::AdsServiceImpl(
     brave_ads::ResourceComponent* resource_component,
     history::HistoryService* history_service,
     brave_rewards::RewardsService* rewards_service)
-    : AdsService(delegate),
+    : AdsService(std::move(delegate)),
       prefs_(prefs),
       local_state_(local_state),
       url_loader_(std::move(url_loader)),
@@ -1104,10 +1105,6 @@ void AdsServiceImpl::AddBatAdsObserver(
   }
 }
 
-AdsService::Delegate* AdsServiceImpl::GetDelegate() {
-  return delegate_;
-}
-
 bool AdsServiceImpl::IsBrowserUpgradeRequiredToServeAds() const {
   return browser_upgrade_required_to_serve_ads_;
 }
@@ -1281,6 +1278,17 @@ void AdsServiceImpl::TriggerPromotedContentAdEvent(
   bat_ads_associated_remote_->TriggerPromotedContentAdEvent(
       placement_id, creative_instance_id, mojom_ad_event_type,
       std::move(callback));
+}
+
+void AdsServiceImpl::MaybeGetSearchResultAd(
+    const std::string& placement_id,
+    MaybeGetSearchResultAdCallback callback) {
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*mojom_creative_ad*/ {});
+  }
+
+  bat_ads_associated_remote_->MaybeGetSearchResultAd(placement_id,
+                                                     std::move(callback));
 }
 
 void AdsServiceImpl::TriggerSearchResultAdEvent(

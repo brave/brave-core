@@ -142,6 +142,13 @@ class ADS_EXPORT Ads {
       mojom::PromotedContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) = 0;
 
+  // Called to get the search result ad specified by `placement_id`. The
+  // callback takes one argument - `mojom::CreativeSearchResultAdInfoPtr`
+  // containing the info of the search result ad.
+  virtual void MaybeGetSearchResultAd(
+      const std::string& placement_id,
+      MaybeGetSearchResultAdCallback callback) = 0;
+
   // Called when a user views or interacts with a search result ad to trigger a
   // `mojom_ad_event_type` event for the ad specified in `mojom_creative_ad`.
   // The callback takes one argument - `bool` is set to `true` if successful

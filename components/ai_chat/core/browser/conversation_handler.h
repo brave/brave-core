@@ -134,6 +134,9 @@ class ConversationHandler : public mojom::ConversationHandler,
 
     // Called when a mojo client connects or disconnects
     virtual void OnClientConnectionChanged(ConversationHandler* handler) {}
+    virtual void OnSelectedLanguageChanged(
+        ConversationHandler* handler,
+        const std::string& selected_language) {}
   };
 
   ConversationHandler(
@@ -255,6 +258,7 @@ class ConversationHandler : public mojom::ConversationHandler,
                            UpdateOrCreateLastAssistantEntry_NotDelta);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            UpdateOrCreateLastAssistantEntry_NotDeltaWithSearch);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest, SelectedLanguage);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, LocalModelsUpdater);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedder);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedderInitialized);
@@ -311,6 +315,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnAssociatedContentInfoChanged();
   void OnClientConnectionChanged();
   void OnConversationUIConnectionChanged(mojo::RemoteSetElementId id);
+  void OnSelectedLanguageChanged(const std::string& selected_language);
   void OnAssociatedContentFaviconImageDataChanged();
   void OnAPIRequestInProgressChanged();
 
@@ -323,6 +328,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   mojom::ConversationTurnPtr pending_conversation_entry_;
   // Any previously-generated suggested questions
   std::vector<std::string> suggestions_;
+  std::string selected_language_;
   // Is a conversation engine request in progress (does not include
   // non-conversation engine requests.
   bool is_request_in_progress_ = false;

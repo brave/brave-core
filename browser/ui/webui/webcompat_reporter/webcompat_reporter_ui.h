@@ -13,7 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
+#include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom-forward.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "content/public/browser/web_ui_message_handler.h"
@@ -63,9 +63,8 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
 
   raw_ptr<content::RenderWidgetHostView> render_widget_host_view_;
   scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
-  std::unique_ptr<webcompat_reporter::WebcompatReportUploader> uploader_;
 
-  Report pending_report_;
+  mojom::ReportInfoPtr pending_report_;
 
   base::WeakPtrFactory<WebcompatReporterDOMHandler> weak_ptr_factory_{this};
 };

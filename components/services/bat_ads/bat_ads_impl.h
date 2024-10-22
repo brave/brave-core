@@ -84,6 +84,8 @@ class BatAdsImpl : public mojom::BatAds {
       brave_ads::mojom::PromotedContentAdEventType mojom_ad_event_type,
       TriggerPromotedContentAdEventCallback callback) override;
 
+  void MaybeGetSearchResultAd(const std::string& placement_id,
+                              MaybeGetSearchResultAdCallback callback) override;
   void TriggerSearchResultAdEvent(
       brave_ads::mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       brave_ads::mojom::SearchResultAdEventType mojom_ad_event_type,

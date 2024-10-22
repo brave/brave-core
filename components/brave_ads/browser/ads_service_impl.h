@@ -73,7 +73,7 @@ class AdsServiceImpl final : public AdsService,
                              public brave_rewards::RewardsServiceObserver {
  public:
   explicit AdsServiceImpl(
-      Delegate* delegate,
+      std::unique_ptr<Delegate> delegate,
       PrefService* prefs,
       PrefService* local_state,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader,
@@ -218,8 +218,6 @@ class AdsServiceImpl final : public AdsService,
   void AddBatAdsObserver(mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>
                              bat_ads_observer_pending_remote) override;
 
-  Delegate* GetDelegate() override;
-
   bool IsBrowserUpgradeRequiredToServeAds() const override;
 
   int64_t GetMaximumNotificationAdsPerHour() const override;
@@ -262,6 +260,8 @@ class AdsServiceImpl final : public AdsService,
       mojom::PromotedContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) override;
 
+  void MaybeGetSearchResultAd(const std::string& placement_id,
+                              MaybeGetSearchResultAdCallback callback) override;
   void TriggerSearchResultAdEvent(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,

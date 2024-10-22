@@ -7,14 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_CREATIVES_SEARCH_RESULT_AD_CREATIVE_SEARCH_RESULT_AD_HANDLER_H_
 
 #include <memory>
-#include <optional>
-#include <string>
 #include <vector>
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom-forward.h"
 
@@ -27,7 +26,8 @@ class RenderFrameHost;
 namespace brave_ads {
 
 using ExtractCreativeAdPlacementIdsFromWebPageCallback =
-    base::OnceCallback<void(std::vector<std::string> placement_ids)>;
+    base::OnceCallback<void(std::vector<mojom::CreativeSearchResultAdInfoPtr>
+                                creative_search_result_ads)>;
 
 class AdsService;
 
@@ -52,8 +52,8 @@ class CreativeSearchResultAdHandler final {
       content::RenderFrameHost* render_frame_host,
       ExtractCreativeAdPlacementIdsFromWebPageCallback callback);
 
-  void MaybeTriggerCreativeAdViewedEvent(const std::string& placement_id);
-  void MaybeTriggerCreativeAdClickedEvent(const GURL& url);
+  void MaybeTriggerCreativeAdViewedEvent(
+      mojom::CreativeSearchResultAdInfoPtr creative_search_result_ad);
 
  private:
   friend class BraveAdsCreativeSearchResultAdHandlerTest;
@@ -70,8 +70,6 @@ class CreativeSearchResultAdHandler final {
   const raw_ptr<AdsService> ads_service_;  // NOT OWNED
 
   const bool should_trigger_creative_ad_viewed_events_;
-
-  std::optional<CreativeSearchResultAdMap> creative_search_result_ads_;
 
   base::WeakPtrFactory<CreativeSearchResultAdHandler> weak_factory_{this};
 };

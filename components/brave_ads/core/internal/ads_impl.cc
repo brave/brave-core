@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads_impl.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/debug/dump_without_crashing.h"
@@ -212,6 +213,21 @@ void AdsImpl::TriggerPromotedContentAdEvent(
   GetAdHandler().TriggerPromotedContentAdEvent(
       placement_id, creative_instance_id, mojom_ad_event_type,
       std::move(callback));
+}
+
+void AdsImpl::MaybeGetSearchResultAd(const std::string& placement_id,
+                                     MaybeGetSearchResultAdCallback callback) {
+  if (task_queue_.should_queue()) {
+    task_queue_.Add(base::BindOnce(&AdsImpl::MaybeGetSearchResultAd,
+                                   weak_factory_.GetWeakPtr(), placement_id,
+                                   std::move(callback)));
+    return;
+  }
+
+  std::optional<mojom::CreativeSearchResultAdInfoPtr> ad =
+      GetAdHandler().MaybeGetSearchResultAd(placement_id);
+  std::move(callback).Run(ad ? std::move(*ad)
+                             : mojom::CreativeSearchResultAdInfoPtr());
 }
 
 void AdsImpl::TriggerSearchResultAdEvent(
