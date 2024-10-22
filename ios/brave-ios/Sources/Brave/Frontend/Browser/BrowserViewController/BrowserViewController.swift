@@ -764,7 +764,6 @@ public class BrowserViewController: UIViewController {
   @objc func appWillTerminateNotification() {
     tabManager.saveAllTabs()
     tabManager.removePrivateWindows()
-    tabManager.forgetDataOnAppClose()
   }
 
   @objc private func tappedCollapsedURLBar() {
@@ -1153,8 +1152,8 @@ public class BrowserViewController: UIViewController {
     }
     self.tabManager.selectTab(tabToSelect)
 
-    // Clear forget me data in case we are restoring from a crash
-    tabManager.forgetDataOnAppClose()
+    // Shred Domain's with SiteShieldLevel.appExit
+    self.tabManager.forgetDataOnAppExitDomains()
 
     if !setupTasksCompleted {
       for task in postSetupTasks {
