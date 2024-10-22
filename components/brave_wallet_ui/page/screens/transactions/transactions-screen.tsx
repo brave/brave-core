@@ -63,6 +63,7 @@ import {
   LoadingSkeletonStyleProps,
   Skeleton
 } from '../../../components/shared/loading-skeleton/styles'
+import { EmptyTransactionsIcon } from './transaction-screen.styles'
 
 const txListItemSkeletonProps: LoadingSkeletonStyleProps = {
   width: '100%',
@@ -249,8 +250,9 @@ export const TransactionsScreen: React.FC = () => {
               <Column
                 fullHeight
                 gap={'24px'}
+                padding={isPanel ? '0px 0px 32px 0px' : '0px'}
               >
-                <VerticalSpacer space={14} />
+                <EmptyTransactionsIcon />
                 <Text
                   textSize='18px'
                   isBold
@@ -263,24 +265,29 @@ export const TransactionsScreen: React.FC = () => {
               </Column>
             )}
 
-            <Column
-              fullWidth={true}
-              fullHeight={true}
-              justifyContent='flex-start'
-            >
-              {filteredTransactions.map((tx, i) => (
-                <PortfolioTransactionItem
-                  key={tx.id}
-                  transaction={tx}
-                  onClick={onClickTransaction}
-                />
-              ))}
-            </Column>
+            {filteredTransactions.length !== 0 && (
+              <Column
+                fullWidth={true}
+                fullHeight={true}
+                justifyContent='flex-start'
+              >
+                {filteredTransactions.map((tx) => (
+                  <PortfolioTransactionItem
+                    key={tx.id}
+                    transaction={tx}
+                    onClick={onClickTransaction}
+                  />
+                ))}
+              </Column>
+            )}
 
             {txsForSelectedChain &&
               txsForSelectedChain.length !== 0 &&
               filteredTransactions.length === 0 && (
-                <Column fullHeight>
+                <Column
+                  fullHeight
+                  padding={isPanel ? '32px 0px 64px 0px' : '0px'}
+                >
                   <Text textSize='14px'>
                     {getLocale('braveWalletConnectHardwareSearchNothingFound')}
                   </Text>
