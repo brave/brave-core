@@ -13,7 +13,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
 public class DayZeroHelper {
-    private static final String TAG = "DayZeroMojomHelper";
+    private static final String TAG = "DayZeroHelper";
 
     @CalledByNative
     private static void setDayZeroExptAndroid(boolean shouldShowFeatures) {

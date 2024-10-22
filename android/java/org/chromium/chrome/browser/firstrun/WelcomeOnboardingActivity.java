@@ -35,7 +35,6 @@ import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResp
 import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
@@ -43,7 +42,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.back_press.SecondaryActivityBackPressUma.SecondaryActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.day_zero.DayZeroHelper;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -238,12 +237,11 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private boolean shouldForceDefaultBrowserPrompt() {
-        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_DAY_ZERO_EXPERIMENT)
-                && !isDefaultBrowser();
+        return !DayZeroHelper.getDayZeroExptFlag() && !isDefaultBrowser();
     }
 
     private boolean shouldOfferSearchWidget() {
-        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_DAY_ZERO_EXPERIMENT)
+        return !DayZeroHelper.getDayZeroExptFlag()
                 && BraveSearchWidgetUtils.getShouldShowWidgetPromo(this);
     }
 
