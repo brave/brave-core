@@ -63,6 +63,17 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
     line-height: 22px;
     text-align: center;
   }
+  :host ::slotted([slot=inputs]) {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin: 0px 0px 24px;
+  }
+  :host ::slotted([slot=buttons]) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
 </style>
 
 <cr-dialog id="dialog" show-on-attach>
@@ -86,7 +97,8 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
         [[headerTextBottom]]
       </div>
     </div>
-    <slot name="body"></slot>
+    <slot name="inputs"></slot>
+    <slot name="buttons"></slot>
   </div>
   <slot name="footer" slot="footer"></slot>
 </cr-dialog>
