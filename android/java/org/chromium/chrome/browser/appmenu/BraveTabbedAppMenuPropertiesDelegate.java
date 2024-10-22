@@ -301,7 +301,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         // By this we forcibly initialize BookmarkBridge
         MenuItem bookmarkItem = menu.findItem(R.id.bookmark_this_page_id);
         if (bookmarkItem != null && currentTab != null) {
-            updateBookmarkMenuItemShortcut(bookmarkItem, currentTab, /* fromCCT= */ false);
+            updateBookmarkMenuItemShortcut(bookmarkItem, currentTab, /* fromCct= */ false);
         }
 
         // Remove unused dividers. This needs to be done after the visibility of all the items is
