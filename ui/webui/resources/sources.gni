@@ -29,16 +29,8 @@ if (!is_ios) {
     "$brave_resources_extra_grdps_path/brave_fonts_resources.grdp",
     "$brave_resources_extra_grdps_path/brave_static_resources.grdp",
     "$brave_resources_extra_grdps_path/brave_icons_resources.grdp",
+    "$brave_resources_extra_grdps_path/resources.grdp",
     "$root_gen_dir/brave/web-ui-leo/leo.grdp",
   ]
   brave_resources_extra_grdps_deps += [ "//brave/ui/webui/resources:grdp" ]
-}
-
-# At the moment, all non-static resources are only required for polymer WebUI.
-# This could change and, when it does, the `include_polymer` conditional can be removed
-# here and the one in //brave/ui/webui/resources/BUILD.gn be relied on to only add
-# polymer-related files when appropriate.
-if (!is_android && !is_ios) {
-  brave_resources_extra_grdps +=
-      [ "$brave_resources_extra_grdps_path/resources.grdp" ]
 }

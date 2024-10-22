@@ -28,60 +28,56 @@ group("grdp") {
     ":icons_grdp",
     ":leo_web_components",
     ":static_grdp",
+    ":build_grdp",
   ]
-  if (!is_android && !is_ios) {
-    public_deps += [ ":build_grdp" ]
-  }
 }
 
-if (!is_android && !is_ios) {
-  build_webui("build") {
-    grd_prefix = "brave"
+build_webui("build") {
+  grd_prefix = "brave"
 
-    # Ensure all the files are relative to this dir (with a brave/ prefix),
-    # and not //ui/webui/resources which is the default for build_cr_component.
-    if (!is_android && !is_ios) {
-      web_component_files = [
-        "br_elements/br_toolbar/br_toolbar.ts",
-        "br_elements/br_toolbar/br_toolbar_search_field.ts",
-      ]
-      non_web_component_files = [
-        "polymer_overriding.ts",
-        "lit_overriding.ts",
-      ]
+  css_files = [
+    "br_elements/br_shared_style.css",
+    "br_elements/br_shared_vars.css",
+  ]
 
-      # All the cr_overrides we add should be included in the build.
-      foreach(cr_override, brave_override_cr_elements) {
-        non_web_component_files += [
-          "cr_elements/$cr_override/$cr_override.ts",
-          "cr_elements/$cr_override/$cr_override.html.ts",
-        ]
-      }
-    }
+  # Ensure all the files are relative to this dir (with a brave/ prefix),
+  # and not //ui/webui/resources which is the default for build_cr_component.
+  if (!is_android && !is_ios) {
+    web_component_files = [
+      "br_elements/br_toolbar/br_toolbar.ts",
+      "br_elements/br_toolbar/br_toolbar_search_field.ts",
+    ]
+    non_web_component_files = [
+      "polymer_overriding.ts",
+      "lit_overriding.ts",
+    ]
 
-    if (!is_android && !is_ios) {
-      css_files = [
-        "br_elements/br_shared_style.css",
-        "br_elements/br_shared_vars.css",
-        "page_specific/settings/br_settings_shared.css",
+    # All the cr_overrides we add should be included in the build.
+    foreach(cr_override, brave_override_cr_elements) {
+      non_web_component_files += [
+        "cr_elements/$cr_override/$cr_override.ts",
+        "cr_elements/$cr_override/$cr_override.html.ts",
       ]
     }
+    css_files += [
+      "page_specific/settings/br_settings_shared.css",
+    ]
+  }
 
-    html_to_wrapper_template = "detect"
+  html_to_wrapper_template = "detect"
 
-    ts_composite = true
-    generate_grdp = true
-    grd_resource_path_prefix = "brave"
-    ts_out_dir = "$root_gen_dir/brave/ui/webui/resources/tsc"
-    ts_deps = [ "//ui/webui/resources/js:build_ts" ]
+  ts_composite = true
+  generate_grdp = true
+  grd_resource_path_prefix = "brave"
+  ts_out_dir = "$root_gen_dir/brave/ui/webui/resources/tsc"
+  ts_deps = [ "//ui/webui/resources/js:build_ts" ]
 
-    if (!is_android && !is_ios) {
-      ts_deps += [
-        "//third_party/lit/v3_0:build_ts",
-        "//third_party/polymer/v3_0:library",
-      ]
-      webui_context_type = "trusted"
-    }
+  if (!is_android && !is_ios) {
+    ts_deps += [
+      "//third_party/lit/v3_0:build_ts",
+      "//third_party/polymer/v3_0:library",
+    ]
+    webui_context_type = "trusted"
   }
 }
 
