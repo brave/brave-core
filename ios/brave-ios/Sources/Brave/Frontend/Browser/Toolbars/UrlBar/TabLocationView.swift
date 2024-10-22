@@ -544,14 +544,18 @@ private class DisplayURLLabel: UILabel {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    self.semanticContentAttribute = .forceLeftToRight
-    self.textAlignment = .left
     addSubview(clippingFade)
   }
 
   private var textSize: CGSize = .zero
   private var isRightToLeft: Bool = false
-  fileprivate var isWebScheme: Bool = false
+  fileprivate var isWebScheme: Bool = false {
+    didSet {
+      updateClippingDirection()
+      setNeedsLayout()
+      setNeedsDisplay()
+    }
+  }
 
   override var font: UIFont! {
     didSet {
@@ -567,6 +571,7 @@ private class DisplayURLLabel: UILabel {
         updateText()
         updateTextSize()
         detectLanguageForNaturalDirectionClipping()
+        updateClippingDirection()
       }
       setNeedsDisplay()
     }
@@ -576,25 +581,17 @@ private class DisplayURLLabel: UILabel {
     if let text = text {
       // Without attributed string, the label will always render RTL characters even if you force LTR layout.
       // This can introduce a security flaw! We must not flip the URL around based on RTL characters (Safari does not).
-      let attributedString = NSMutableAttributedString(string: text)
       let paragraphStyle = NSMutableParagraphStyle()
       paragraphStyle.lineBreakMode = .byClipping
       paragraphStyle.baseWritingDirection = .leftToRight
 
-      if let font = font {
-        attributedString.addAttribute(
-          .font,
-          value: font,
-          range: NSRange(location: 0, length: attributedString.length)
-        )
-      }
-
-      attributedString.addAttribute(
-        .paragraphStyle,
-        value: paragraphStyle,
-        range: NSRange(location: 0, length: attributedString.length)
+      self.attributedText = NSAttributedString(
+        string: text,
+        attributes: [
+          .font: font ?? .preferredFont(forTextStyle: .body),
+          .paragraphStyle: paragraphStyle,
+        ]
       )
-      self.attributedText = attributedString
     } else {
       self.attributedText = nil
     }
@@ -614,6 +611,9 @@ private class DisplayURLLabel: UILabel {
     default:
       isRightToLeft = false
     }
+  }
+
+  private func updateClippingDirection() {
     // Update clipping fade direction
     clippingFade.gradientLayer.startPoint = .init(x: isRightToLeft || !isWebScheme ? 1 : 0, y: 0.5)
     clippingFade.gradientLayer.endPoint = .init(x: isRightToLeft || !isWebScheme ? 0 : 1, y: 0.5)
