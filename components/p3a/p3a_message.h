@@ -59,7 +59,7 @@ class MessageMetainfo {
   // attributes.
   void MaybeStripCountry();
 
-  raw_ptr<PrefService> local_state_ = nullptr;
+  raw_ptr<PrefService, DanglingUntriaged> local_state_ = nullptr;
 };
 
 base::Value::Dict GenerateP3AMessageDict(std::string_view metric_name,

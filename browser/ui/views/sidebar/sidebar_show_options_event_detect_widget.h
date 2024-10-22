@@ -64,7 +64,7 @@ class SidebarShowOptionsEventDetectWidget : public views::ViewObserver,
 
   bool sidebar_on_left_ = true;
   raw_ref<BraveBrowserView> browser_view_;
-  raw_ptr<ContentsView> contents_view_ = nullptr;
+  raw_ptr<ContentsView, DanglingUntriaged> contents_view_ = nullptr;
   raw_ref<Delegate> delegate_;
   std::unique_ptr<views::Widget> widget_;
   base::ScopedObservation<views::View, views::ViewObserver> observation_{this};

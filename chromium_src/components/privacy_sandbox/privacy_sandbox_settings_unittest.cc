@@ -188,7 +188,7 @@ class PrivacySandboxSettingsTest : public testing::Test {
       tracking_protection_settings_;
 
   std::unique_ptr<PrivacySandboxSettings> privacy_sandbox_settings_;
-  raw_ptr<MockPrivacySandboxDelegate> mock_delegate_;
+  raw_ptr<MockPrivacySandboxDelegate, DanglingUntriaged> mock_delegate_;
 };
 
 TEST_F(PrivacySandboxSettingsTest, PreferenceOverridesDefaultContentSetting) {

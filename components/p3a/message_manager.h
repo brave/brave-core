@@ -123,7 +123,7 @@ class MessageManager : public MetricLogStore::Delegate {
   bool IsActualMetric(const std::string& histogram_name) const override;
   bool IsEphemeralMetric(const std::string& histogram_name) const override;
 
-  const raw_ref<PrefService> local_state_;
+  const raw_ref<PrefService, DanglingUntriaged> local_state_;
 
   MessageMetainfo message_meta_;
 

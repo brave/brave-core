@@ -85,7 +85,7 @@ class ZCashTxManager : public TxManager, public ZCashBlockTracker::Observer {
                               base::expected<bool, std::string> confirm_status);
 
   raw_ptr<ZCashWalletService> zcash_wallet_service_ = nullptr;
-  raw_ptr<ZCashRpc> zcash_rpc_ = nullptr;
+  raw_ptr<ZCashRpc, DanglingUntriaged> zcash_rpc_ = nullptr;
   base::ScopedObservation<ZCashBlockTracker, ZCashBlockTracker::Observer>
       block_tracker_observation_{this};
   base::WeakPtrFactory<ZCashTxManager> weak_factory_{this};
