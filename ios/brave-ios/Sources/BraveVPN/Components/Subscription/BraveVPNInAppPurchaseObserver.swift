@@ -71,18 +71,23 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
             Preferences.VPN.subscriptionProductId.value = transaction.payment.productIdentifier
 
             Task {
-              let response = await BraveVPN.validateReceiptData()
-              if response?.status == .expired {
-                // Receipt either expired or receipt validation returned some error.
-                self.delegate?.purchaseFailed(error: .receiptError)
-              } else {
-                self.delegate?.purchasedOrRestoredProduct(validateReceipt: false)
-                // If we purchased via Apple's IAP we reset the Brave SKUs credential
-                // to avoid mixing two purchase types in the app.
-                //
-                // The user will be able to retrieve the shared credential
-                // after log in to account.brave website.
-                BraveVPN.clearSkusCredentials(includeExpirationDate: false)
+              do {
+                let response = try await BraveVPN.validateReceiptData()
+                if response?.status == .expired {
+                  // Receipt either expired or receipt validation returned some error.
+                  self.delegate?.purchaseFailed(error: .receiptError)
+                } else {
+                  self.delegate?.purchasedOrRestoredProduct(validateReceipt: false)
+                  // If we purchased via Apple's IAP we reset the Brave SKUs credential
+                  // to avoid mixing two purchase types in the app.
+                  //
+                  // The user will be able to retrieve the shared credential
+                  // after log in to account.brave website.
+                  BraveVPN.clearSkusCredentials(includeExpirationDate: false)
+                }
+              } catch {
+                Logger.module.error("Error validating receipt: \(error)")
+                self.delegate?.purchaseFailed(error: .transactionError(error: SKError(.unknown)))
               }
             }
           }
