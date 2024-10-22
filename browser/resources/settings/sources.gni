@@ -52,6 +52,7 @@ brave_settings_web_component_files = [
   "default_brave_shields_page/components/brave_adblock_editor.ts",
   "default_brave_shields_page/components/brave_adblock_subscribe_dropdown.ts",
   "default_brave_shields_page/default_brave_shields_page.ts",
+  "getting_started_page/brave_account_create_dialog.ts",
   "getting_started_page/brave_account_dialog.ts",
   "getting_started_page/brave_account_entry_dialog.ts",
   "getting_started_page/brave_account_forgot_password_dialog.ts",

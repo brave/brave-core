@@ -40,9 +40,18 @@ You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <template is="dom-if" if="[[isDialogType(dialogTypeEnum.ENTRY, dialogType)]]" restamp>
   <settings-brave-account-entry-dialog
     on-close="onBraveAccountDialogClosed_"
+    on-create-button-clicked="onCreateButtonClicked_"
     on-sign-in-button-clicked="onSignInButtonClicked_"
     on-self-custody-button-clicked="onBraveAccountDialogClosed_">
   </settings-brave-account-entry-dialog>
+</template>
+
+<template is="dom-if" if="[[isDialogType(dialogTypeEnum.CREATE, dialogType)]]" restamp>
+  <settings-brave-account-create-dialog
+    on-close="onBraveAccountDialogClosed_"
+    on-back-button-clicked="onBackButtonClicked"
+    on-forgot-password-button-clicked="onForgotPassword">
+  </settings-brave-account-create-dialog>
 </template>
 
 <template is="dom-if" if="[[isDialogType(dialogTypeEnum.SIGN_IN, dialogType)]]" restamp>

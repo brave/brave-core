@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * you can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import './brave_account_create_dialog.js'
 import './brave_account_entry_dialog.js'
 import './brave_account_forgot_password_dialog.js'
 import './brave_account_sign_in_dialog.js'
@@ -15,6 +16,7 @@ import {getTemplate} from './brave_account_row.html.js'
 
 export enum DialogType {
   NONE = 0,
+  CREATE,
   ENTRY,
   FORGOT_PASSWORD,
   SIGN_IN
@@ -57,12 +59,19 @@ class SettingsBraveAccountRow extends PolymerElement {
     this.dialogType = DialogType.NONE
   }
 
+  private onCreateButtonClicked_() {
+    this.dialogType = DialogType.CREATE
+  }
+
   private onSignInButtonClicked_() {
     this.dialogType = DialogType.SIGN_IN
   }
 
   private onBackButtonClicked() {
     switch (this.dialogType) {
+      case DialogType.CREATE:
+        this.dialogType = DialogType.ENTRY
+        break
       case DialogType.FORGOT_PASSWORD:
         this.dialogType = DialogType.SIGN_IN
         break
