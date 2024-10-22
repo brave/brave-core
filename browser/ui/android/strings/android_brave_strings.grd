@@ -4066,6 +4066,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SHOW_UNDO_WHEN_TABS_CLOSED" desc="Menu item to show undo button when tabs are closed">
       Show undo button when tabs are closed
     </message>
+    <message name="IDS_BRAVE_EXIT_CONFIRMATION" desc="A confirmation shown on Exit Brave">
+      Are you sure you want to exit Brave?
+    </message>
   </messages>
   </release>
 </grit>

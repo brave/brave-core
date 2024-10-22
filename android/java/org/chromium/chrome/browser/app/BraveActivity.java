@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -22,6 +23,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -401,7 +403,7 @@ public abstract class BraveActivity extends ChromeActivity
         if (currentTab == null) {
             return false;
         } else if (id == R.id.exit_id) {
-            ApplicationLifetime.terminate(false);
+            exitBrave();
         } else if (id == R.id.set_default_browser) {
             BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(BraveActivity.this, true);
         } else if (id == R.id.brave_rewards_id) {
@@ -2468,5 +2470,30 @@ public abstract class BraveActivity extends ChromeActivity
         return (MultiInstanceManager)
                 BraveReflectionUtil.getField(
                         ChromeTabbedActivity.class, "mMultiInstanceManager", this);
+    }
+
+    private void exitBrave() {
+        LayoutInflater inflater =
+                (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.brave_exit_confirmation, null);
+        DialogInterface.OnClickListener onClickListener =
+                (dialog, button) -> {
+                    if (button == AlertDialog.BUTTON_POSITIVE) {
+                        ApplicationLifetime.terminate(false);
+                    } else {
+                        dialog.dismiss();
+                    }
+                };
+
+        AlertDialog.Builder alert =
+                new AlertDialog.Builder(this, R.style.ThemeOverlay_BrowserUI_AlertDialog);
+        AlertDialog alertDialog =
+                alert.setTitle(R.string.menu_exit)
+                        .setView(view)
+                        .setPositiveButton(R.string.brave_action_yes, onClickListener)
+                        .setNegativeButton(R.string.brave_action_no, onClickListener)
+                        .create();
+        alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
+        alertDialog.show();
     }
 }
