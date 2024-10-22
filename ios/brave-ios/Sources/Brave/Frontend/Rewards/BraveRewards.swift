@@ -220,6 +220,46 @@ public class BraveRewards: PreferencesObserver {
     }
   }
 
+  // MARK: - Brave Ads Notifications
+
+  /// Notifies Brave Ads that a tab did change
+  func maybeNotifyTabDidChange(
+    tab: Tab,
+    isSelected: Bool
+  ) {
+    guard !tab.redirectChain.isEmpty, !tab.isPrivate, ads.isServiceRunning() else {
+      // Don't notify `DidChange` for tabs that haven't finished loading, private tabs,
+      // or when the ads service is not running.
+      return
+    }
+
+    let tabId = Int(tab.rewardsId)
+
+    ads.notifyTabDidChange(
+      tabId,
+      redirectChain: tab.redirectChain,
+      isNewNavigation: tab.rewardsReportingState.isNewNavigation,
+      isRestoring: tab.rewardsReportingState.wasRestored,
+      isSelected: isSelected
+    )
+  }
+
+  /// Notifies Brave Ads that a tab did load
+  func maybeNotifyTabDidLoad(tab: Tab) {
+    guard !tab.redirectChain.isEmpty, !tab.isPrivate, ads.isServiceRunning() else {
+      // Don't notify `DidLoad` for tabs that haven't finished loading, private tabs,
+      // or when the ads service is not running.
+      return
+    }
+
+    let tabId = Int(tab.rewardsId)
+
+    ads.notifyTabDidLoad(
+      tabId,
+      httpStatusCode: tab.rewardsReportingState.httpStatusCode
+    )
+  }
+
   // MARK: - Reporting
 
   /// Report that a tab with a given id was updated
@@ -237,15 +277,6 @@ public class BraveRewards: PreferencesObserver {
     if isSelected {
       rewardsAPI?.selectedTabId = UInt32(tabId)
       tabRetrieved(tabId, url: url, html: nil)
-    }
-    if ads.isServiceRunning() && !isPrivate {
-      ads.notifyTabDidChange(
-        tabId,
-        redirectChain: tab.redirectChain,
-        isNewNavigation: tab.rewardsReportingState.isNewNavigation,
-        isRestoring: tab.rewardsReportingState.wasRestored,
-        isSelected: isSelected
-      )
     }
   }
 
@@ -265,11 +296,6 @@ public class BraveRewards: PreferencesObserver {
 
     tabRetrieved(tabId, url: url, html: htmlContent)
     if ads.isServiceRunning() {
-      ads.notifyTabDidLoad(
-        tabId,
-        httpStatusCode: tab.rewardsReportingState.httpStatusCode
-      )
-
       let kHttpClientErrorResponseStatusCodeClass = 4
       let kHttpServerErrorResponseStatusCodeClass = 5
       let responseStatusCodeClass = tab.rewardsReportingState.httpStatusCode / 100
