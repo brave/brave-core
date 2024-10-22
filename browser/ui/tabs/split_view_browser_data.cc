@@ -15,16 +15,9 @@
 #include "chrome/browser/ui/tabs/tab_model.h"
 
 SplitViewBrowserData::SplitViewBrowserData(Browser* browser)
-    : BrowserUserData(*browser) {
+    : BrowserUserData(*browser),
+      tab_strip_model_adapter_(*this, browser->tab_strip_model()) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
-
-  if (!browser) {
-    CHECK_IS_TEST();
-    return;
-  }
-
-  tab_strip_model_adapter_ = std::make_unique<SplitViewTabStripModelAdapter>(
-      *this, browser->tab_strip_model());
 }
 
 SplitViewBrowserData::~SplitViewBrowserData() {
@@ -34,35 +27,26 @@ SplitViewBrowserData::~SplitViewBrowserData() {
   }
 }
 
-void SplitViewBrowserData::TileTabs(const Tile& tile) {
+void SplitViewBrowserData::TileTabs(const TabTile& tile) {
   CHECK(!IsTabTiled(tile.first));
   CHECK(!IsTabTiled(tile.second));
 
-  TabStripModel* model = is_testing_ ? tab_strip_model_for_testing_.get()
-                                     : GetBrowser().tab_strip_model();
-  if (model) {
-    CHECK_LT(model->GetIndexOfTab(tile.first),
-             model->GetIndexOfTab(tile.second));
-  }
+  auto& model = tab_strip_model_adapter_.tab_strip_model();
+  CHECK_LT(model.GetIndexOfTab(tile.first), model.GetIndexOfTab(tile.second));
 
   tiles_.push_back(tile);
 
   tile_index_for_tab_[tile.first] = tiles_.size() - 1;
   tile_index_for_tab_[tile.second] = tiles_.size() - 1;
 
-  if (tab_strip_model_adapter_) {
-    bool tabs_are_adjacent = false;
-    if (model) {
-      tabs_are_adjacent =
-          tab_strip_model_adapter_->SynchronizePinnedState(tile, tile.first);
-      tabs_are_adjacent |= tab_strip_model_adapter_->SynchronizeGroupedState(
-          tile, /*source=*/tile.first,
-          model->GetTabGroupForTab(model->GetIndexOfTab(tile.first)));
-    }
+  bool tabs_are_adjacent =
+      tab_strip_model_adapter_.SynchronizePinnedState(tile, tile.first);
+  tabs_are_adjacent |= tab_strip_model_adapter_.SynchronizeGroupedState(
+      tile, /*source=*/tile.first,
+      model.GetTabGroupForTab(model.GetIndexOfTab(tile.first)));
 
-    if (!tabs_are_adjacent) {
-      tab_strip_model_adapter_->MakeTiledTabsAdjacent(tile);
-    }
+  if (!tabs_are_adjacent) {
+    tab_strip_model_adapter_.MakeTiledTabsAdjacent(tile);
   }
 
   for (auto& observer : observers_) {
@@ -96,8 +80,8 @@ void SplitViewBrowserData::BreakTile(const tabs::TabHandle& tab) {
   }
 }
 
-std::vector<SplitViewBrowserData::Tile>::iterator
-SplitViewBrowserData::FindTile(const tabs::TabHandle& tab) {
+std::vector<TabTile>::iterator SplitViewBrowserData::FindTile(
+    const tabs::TabHandle& tab) {
   if (IsTabTiled(tab)) {
     return tiles_.begin() + tile_index_for_tab_[tab];
   }
@@ -105,13 +89,13 @@ SplitViewBrowserData::FindTile(const tabs::TabHandle& tab) {
   return tiles_.end();
 }
 
-std::vector<SplitViewBrowserData::Tile>::const_iterator
-SplitViewBrowserData::FindTile(const tabs::TabHandle& tab) const {
+std::vector<TabTile>::const_iterator SplitViewBrowserData::FindTile(
+    const tabs::TabHandle& tab) const {
   return const_cast<SplitViewBrowserData*>(this)->FindTile(tab);
 }
 
 void SplitViewBrowserData::Transfer(SplitViewBrowserData* other,
-                                    std::vector<Tile> tiles) {
+                                    std::vector<TabTile> tiles) {
   for (const auto& tile : tiles) {
     other->TileTabs(tile);
   }
@@ -121,7 +105,7 @@ bool SplitViewBrowserData::IsTabTiled(const tabs::TabHandle& tab) const {
   return base::Contains(tile_index_for_tab_, tab);
 }
 
-void SplitViewBrowserData::SwapTabsInTile(const Tile& tile) {
+void SplitViewBrowserData::SwapTabsInTile(const TabTile& tile) {
   auto iter = FindTile(tile.first);
   std::swap(iter->first, iter->second);
 
@@ -130,7 +114,7 @@ void SplitViewBrowserData::SwapTabsInTile(const Tile& tile) {
   }
 }
 
-std::optional<SplitViewBrowserData::Tile> SplitViewBrowserData::GetTile(
+std::optional<TabTile> SplitViewBrowserData::GetTile(
     const tabs::TabHandle& tab) const {
   auto iter = FindTile(tab);
   if (iter == tiles_.end()) {
@@ -216,13 +200,13 @@ SplitViewBrowserData::OnTabDragEndedClosure::~OnTabDragEndedClosure() = default;
 
 SplitViewBrowserData::OnTabDragEndedClosure
 SplitViewBrowserData::TabDragStarted() {
-  tab_strip_model_adapter_->TabDragStarted();
+  tab_strip_model_adapter_.TabDragStarted();
 
   return OnTabDragEndedClosure(
       this, base::BindOnce(
                 [](base::WeakPtr<SplitViewBrowserData> data) {
                   if (data) {
-                    data->tab_strip_model_adapter_->TabDragEnded();
+                    data->tab_strip_model_adapter_.TabDragEnded();
                   }
                 },
                 weak_ptr_factory_.GetWeakPtr()));

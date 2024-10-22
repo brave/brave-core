@@ -15,49 +15,50 @@
 #include "base/functional/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "brave/browser/ui/tabs/split_view_tab_strip_model_adapter.h"
 #include "chrome/browser/ui/browser_user_data.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 
 class SplitViewTabStripModelAdapter;
 class SplitViewBrowserDataObserver;
 
+struct TabTile {
+  tabs::TabHandle first;
+  tabs::TabHandle second;
+
+  // A absolute value means that the split view for |first| and |second|
+  // should be resized by in pixel. When it's 0, the ratio between |first| and
+  // |second| would be 0.5.
+  int split_view_size_delta = 0;
+
+  bool operator<(const TabTile& other) const {
+    return std::tie(first, second) < std::tie(other.first, other.second);
+  }
+  bool operator==(const TabTile& other) const {
+    return std::tie(first, second) == std::tie(other.first, other.second);
+  }
+  bool operator!=(const TabTile& other) const {
+    return std::tie(first, second) != std::tie(other.first, other.second);
+  }
+};
+
 class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
  public:
-  struct Tile {
-    tabs::TabHandle first;
-    tabs::TabHandle second;
-
-    // A absolute value means that the split view for |first| and |second|
-    // should be resized by in pixel. When it's 0, the ratio between |first| and
-    // |second| would be 0.5.
-    int split_view_size_delta = 0;
-
-    bool operator<(const Tile& other) const {
-      return std::tie(first, second) < std::tie(other.first, other.second);
-    }
-    bool operator==(const Tile& other) const {
-      return std::tie(first, second) == std::tie(other.first, other.second);
-    }
-    bool operator!=(const Tile& other) const {
-      return std::tie(first, second) != std::tie(other.first, other.second);
-    }
-  };
-
   ~SplitViewBrowserData() override;
 
   // When calling this, make sure that |tile.first| has a smaller model index
   // than |tile.second| be persistent across the all tab strip model operations.
-  void TileTabs(const Tile& tile);
+  void TileTabs(const TabTile& tile);
 
   void BreakTile(const tabs::TabHandle& tab);
 
   bool IsTabTiled(const tabs::TabHandle& tab) const;
 
-  void SwapTabsInTile(const Tile& tile);
+  void SwapTabsInTile(const TabTile& tile);
 
-  std::optional<Tile> GetTile(const tabs::TabHandle& tab) const;
+  std::optional<TabTile> GetTile(const tabs::TabHandle& tab) const;
 
-  const std::vector<Tile>& tiles() const { return tiles_; }
+  const std::vector<TabTile>& tiles() const { return tiles_; }
 
   void SetSizeDelta(const tabs::TabHandle& tab, int size_delta);
   int GetSizeDelta(const tabs::TabHandle& tab);
@@ -101,15 +102,16 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
 
   explicit SplitViewBrowserData(Browser* browser);
 
-  std::vector<Tile>::iterator FindTile(const tabs::TabHandle& tab);
-  std::vector<Tile>::const_iterator FindTile(const tabs::TabHandle& tab) const;
+  std::vector<TabTile>::iterator FindTile(const tabs::TabHandle& tab);
+  std::vector<TabTile>::const_iterator FindTile(
+      const tabs::TabHandle& tab) const;
 
-  void Transfer(SplitViewBrowserData* other, std::vector<Tile> tiles);
+  void Transfer(SplitViewBrowserData* other, std::vector<TabTile> tiles);
 
-  std::unique_ptr<SplitViewTabStripModelAdapter> tab_strip_model_adapter_;
+  SplitViewTabStripModelAdapter tab_strip_model_adapter_;
 
-  std::vector<Tile> tiles_;
-  std::vector<Tile> tiles_to_be_attached_to_new_window_;
+  std::vector<TabTile> tiles_;
+  std::vector<TabTile> tiles_to_be_attached_to_new_window_;
 
   // As UI is likely to read more frequently than insert or delete, we cache
   // index for faster look up.
@@ -117,7 +119,6 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
 
   base::ObserverList<SplitViewBrowserDataObserver> observers_;
 
-  bool is_testing_ = false;
   raw_ptr<TabStripModel> tab_strip_model_for_testing_ = nullptr;
 
   base::WeakPtrFactory<SplitViewBrowserData> weak_ptr_factory_{this};

@@ -27,9 +27,8 @@ SplitViewTabStripModelAdapter::SplitViewTabStripModelAdapter(
 
 SplitViewTabStripModelAdapter::~SplitViewTabStripModelAdapter() = default;
 
-void SplitViewTabStripModelAdapter::MakeTiledTabsAdjacent(
-    const SplitViewBrowserData::Tile& tile,
-    bool move_right_tab) {
+void SplitViewTabStripModelAdapter::MakeTiledTabsAdjacent(const TabTile& tile,
+                                                          bool move_right_tab) {
   auto tab1 = tile.first;
   auto tab2 = tile.second;
   auto index1 = model_->GetIndexOfTab(tab1);
@@ -56,7 +55,7 @@ void SplitViewTabStripModelAdapter::TabDragStarted() {
 }
 
 bool SplitViewTabStripModelAdapter::SynchronizeGroupedState(
-    const SplitViewBrowserData::Tile& tile,
+    const TabTile& tile,
     const tabs::TabHandle& source,
     std::optional<tab_groups::TabGroupId> group) {
   DCHECK(!is_in_synch_grouped_state_);
@@ -80,7 +79,7 @@ bool SplitViewTabStripModelAdapter::SynchronizeGroupedState(
 }
 
 bool SplitViewTabStripModelAdapter::SynchronizePinnedState(
-    const SplitViewBrowserData::Tile& tile,
+    const TabTile& tile,
     const tabs::TabHandle& source) {
   auto tab1 = tile.first;
   auto tab2 = tile.second;
@@ -104,7 +103,7 @@ bool SplitViewTabStripModelAdapter::SynchronizePinnedState(
 void SplitViewTabStripModelAdapter::TabDragEnded() {
   // Check if any tiles are separated after drag and drop session. Then break
   // the tiles.
-  std::vector<SplitViewBrowserData::Tile> tiles_to_break;
+  std::vector<TabTile> tiles_to_break;
   for (const auto& tile : split_view_browser_data_->tiles()) {
     auto tab1 = tile.first;
     auto tab2 = tile.second;
@@ -265,17 +264,16 @@ void SplitViewTabStripModelAdapter::TabPinnedStateChanged(
   DCHECK(tile->first == source_tab || tile->second == source_tab);
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](base::WeakPtr<SplitViewTabStripModelAdapter> adapter,
-             SplitViewBrowserData::Tile tile, tabs::TabHandle source_tab) {
-            if (!adapter) {
-              return;
-            }
+      FROM_HERE, base::BindOnce(
+                     [](base::WeakPtr<SplitViewTabStripModelAdapter> adapter,
+                        TabTile tile, tabs::TabHandle source_tab) {
+                       if (!adapter) {
+                         return;
+                       }
 
-            adapter->SynchronizePinnedState(tile, source_tab);
-          },
-          weak_ptr_factory_.GetWeakPtr(), *tile, source_tab));
+                       adapter->SynchronizePinnedState(tile, source_tab);
+                     },
+                     weak_ptr_factory_.GetWeakPtr(), *tile, source_tab));
 }
 
 void SplitViewTabStripModelAdapter::TabGroupedStateChanged(
@@ -301,8 +299,8 @@ void SplitViewTabStripModelAdapter::TabGroupedStateChanged(
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(
-          [](base::WeakPtr<SplitViewTabStripModelAdapter> adapter,
-             SplitViewBrowserData::Tile tile, const tabs::TabHandle& source,
+          [](base::WeakPtr<SplitViewTabStripModelAdapter> adapter, TabTile tile,
+             const tabs::TabHandle& source,
              std::optional<tab_groups::TabGroupId> group) {
             if (!adapter) {
               return;
