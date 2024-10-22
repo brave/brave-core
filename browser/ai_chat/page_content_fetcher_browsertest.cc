@@ -133,20 +133,19 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
-  void ValidateOpenLeoButtonNonce(const base::Location& location,
-                                  const std::string& nonce,
-                                  bool expected_is_valid) {
-    SCOPED_TRACE(testing::Message() << location.ToString());
+  bool ValidateOpenLeoButtonNonce(const std::string& nonce) {
+    bool ret_is_valid = false;
     base::RunLoop run_loop;
     page_content_fetcher_ =
         std::make_unique<ai_chat::PageContentFetcher>(GetActiveWebContents());
     page_content_fetcher_->ValidateOpenLeoButtonNonce(
-        nonce, base::BindLambdaForTesting(
-                   [&run_loop, expected_is_valid](bool is_valid) {
-                     EXPECT_EQ(expected_is_valid, is_valid);
-                     run_loop.Quit();
-                   }));
+        nonce,
+        base::BindLambdaForTesting([&run_loop, &ret_is_valid](bool is_valid) {
+          ret_is_valid = is_valid;
+          run_loop.Quit();
+        }));
     run_loop.Run();
+    return ret_is_valid;
   }
 
   // Handles returning a .patch file if the user is on a github.com pull request
@@ -291,36 +290,35 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest,
   // Test no open Leo button with continue-with-leo ID present.
   GURL url = https_server_.GetURL("a.com", "/open_leo_button.html");
   NavigateURL(url);
-  ValidateOpenLeoButtonNonce(FROM_HERE, "5566", false);
+  EXPECT_FALSE(ValidateOpenLeoButtonNonce("5566"));
 
   // Test valid case.
   NavigateURL(url);
   ASSERT_TRUE(content::ExecJs(GetActiveWebContents()->GetPrimaryMainFrame(),
                               "document.getElementById('valid').setAttribute('"
                               "id', 'continue-with-leo')"));
-  ValidateOpenLeoButtonNonce(FROM_HERE, "5566", true);
+  EXPECT_TRUE(ValidateOpenLeoButtonNonce("5566"));
 
   // The pass in nonce should match with continue-with-leo URL in href.
-  ValidateOpenLeoButtonNonce(FROM_HERE, "7788", false);
+  EXPECT_FALSE(ValidateOpenLeoButtonNonce("7788"));
 
   // Empty nonce should return false.
-  ValidateOpenLeoButtonNonce(FROM_HERE, "", false);
+  EXPECT_FALSE(ValidateOpenLeoButtonNonce(""));
 
   // Test invalid cases.
-  std::vector<std::string> invalid_cases = {
-      "invalid",         "not-a-tag",    "no-href",       "no-nonce",
-      "empty-nonce",     "empty-nonce2", "empty-nonce3",  "empty-nonce4",
-      "empty-nonce5",    "empty-nonce6", "not-https-url", "not-search-url",
-      "not-open-leo-url"};
+  const auto invalid_cases = std::to_array<std::string_view>(
+      {"invalid", "not-a-tag", "no-href", "no-nonce", "empty-nonce",
+       "empty-nonce2", "empty-nonce3", "empty-nonce4", "empty-nonce5",
+       "empty-nonce6", "not-https-url", "not-search-url", "not-open-leo-url"});
 
   for (const auto& invalid_case : invalid_cases) {
     SCOPED_TRACE(testing::Message() << "Invalid case: " << invalid_case);
     NavigateURL(url);
-    ASSERT_TRUE(content::ExecJs(GetActiveWebContents()->GetPrimaryMainFrame(),
-                                base::ReplaceStringPlaceholders(
-                                    "document.getElementById('$1')."
-                                    "setAttribute('id', 'continue-with-leo')",
-                                    {invalid_case}, nullptr)));
-    ValidateOpenLeoButtonNonce(FROM_HERE, "5566", false);
+    ASSERT_TRUE(content::ExecJs(
+        GetActiveWebContents()->GetPrimaryMainFrame(),
+        content::JsReplace("document.getElementById($1)."
+                           "setAttribute('id', 'continue-with-leo')",
+                           invalid_case)));
+    EXPECT_FALSE(ValidateOpenLeoButtonNonce("5566"));
   }
 }

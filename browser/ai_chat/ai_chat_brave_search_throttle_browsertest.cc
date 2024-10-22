@@ -89,19 +89,15 @@ class AIChatBraveSearchThrottleBrowserTest : public InProcessBrowserTest {
   }
 
   void ClickOpenLeoButton() {
-    // Modify the href to have test server port.
-    std::string script = R"(
-      var link = document.getElementById('continue-with-leo')
-      var url = new URL(link.href)
-      url.port = '$1'
-      link.href = url.href
-      link.click()
-    )";
-    std::string port = base::NumberToString(https_server_.port());
-
-    ASSERT_TRUE(content::ExecJs(
-        GetActiveWebContents()->GetPrimaryMainFrame(),
-        base::ReplaceStringPlaceholders(script, {port}, nullptr)));
+    // Modify the href to have test server port and click it.
+    ASSERT_TRUE(content::ExecJs(GetActiveWebContents()->GetPrimaryMainFrame(),
+                                content::JsReplace(R"(
+            const link = document.getElementById('continue-with-leo')
+            const url = new URL(link.href)
+            url.port = $1
+            link.href = url.href
+            link.click())",
+                                                   https_server_.port())));
   }
 
   bool IsLeoOpened() {
@@ -167,12 +163,14 @@ IN_PROC_BROWSER_TEST_F(AIChatBraveSearchThrottleBrowserTest,
       permissions::PermissionRequestManager::ACCEPT_ALL);
   NavigateToTestPage(FROM_HERE, kBraveSearchHost, kOpenLeoButtonValidPath,
                      cur_prompt_count);
-  ClickOpenLeoAndCheckLeoOpenedAndNavigationCancelled(FROM_HERE,
-                                                      ++cur_prompt_count, true);
+  ClickOpenLeoAndCheckLeoOpenedAndNavigationCancelled(
+      FROM_HERE, ++cur_prompt_count,
+      /*expected_leo_opened=*/true);
 
   CloseLeoPanel(FROM_HERE);
-  ClickOpenLeoAndCheckLeoOpenedAndNavigationCancelled(FROM_HERE,
-                                                      cur_prompt_count, true);
+  ClickOpenLeoAndCheckLeoOpenedAndNavigationCancelled(
+      FROM_HERE, cur_prompt_count,
+      /*expected_leo_opened=*/true);
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatBraveSearchThrottleBrowserTest,
@@ -183,12 +181,13 @@ IN_PROC_BROWSER_TEST_F(AIChatBraveSearchThrottleBrowserTest,
   NavigateToTestPage(FROM_HERE, kBraveSearchHost, kOpenLeoButtonValidPath,
                      cur_prompt_count);
   ClickOpenLeoAndCheckLeoOpenedAndNavigationCancelled(
-      FROM_HERE, ++cur_prompt_count, false);
+      FROM_HERE, ++cur_prompt_count, /*expected_leo_opened=*/false);
 
   // Clicking a button again to test no new permission prompt should be shown
   // when the permission setting is denied.
-  ClickOpenLeoAndCheckLeoOpenedAndNavigationCancelled(FROM_HERE,
-                                                      cur_prompt_count, false);
+  ClickOpenLeoAndCheckLeoOpenedAndNavigationCancelled(
+      FROM_HERE, cur_prompt_count,
+      /*expected_leo_opened=*/false);
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatBraveSearchThrottleBrowserTest,
@@ -199,7 +198,7 @@ IN_PROC_BROWSER_TEST_F(AIChatBraveSearchThrottleBrowserTest,
   NavigateToTestPage(FROM_HERE, kBraveSearchHost, kOpenLeoButtonValidPath,
                      cur_prompt_count);
   ClickOpenLeoAndCheckLeoOpenedAndNavigationCancelled(
-      FROM_HERE, ++cur_prompt_count, false);
+      FROM_HERE, ++cur_prompt_count, /*expected_leo_opened=*/false);
 
   // Click a button again after dismissing the permission, permission prompt
   // should be shown again.
@@ -207,8 +206,9 @@ IN_PROC_BROWSER_TEST_F(AIChatBraveSearchThrottleBrowserTest,
       permissions::PermissionRequestManager::ACCEPT_ALL);
   NavigateToTestPage(FROM_HERE, kBraveSearchHost, kOpenLeoButtonValidPath,
                      cur_prompt_count);
-  ClickOpenLeoAndCheckLeoOpenedAndNavigationCancelled(FROM_HERE,
-                                                      ++cur_prompt_count, true);
+  ClickOpenLeoAndCheckLeoOpenedAndNavigationCancelled(
+      FROM_HERE, ++cur_prompt_count,
+      /*expected_leo_opened=*/true);
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatBraveSearchThrottleBrowserTest,
@@ -218,7 +218,8 @@ IN_PROC_BROWSER_TEST_F(AIChatBraveSearchThrottleBrowserTest,
                      cur_prompt_count);
   // No permission prompt should be shown.
   ClickOpenLeoAndCheckLeoOpenedAndNavigationCancelled(
-      FROM_HERE, cur_prompt_count, false, kOpenLeoButtonInvalidPath);
+      FROM_HERE, cur_prompt_count, /*expected_leo_opened=*/false,
+      kOpenLeoButtonInvalidPath);
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatBraveSearchThrottleBrowserTest,

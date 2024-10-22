@@ -22,11 +22,6 @@ class AIChatBraveSearchThrottleDelegateImpl
 
   // AIChatBraveSearchThrottle::Delegate:
   void OpenLeo(content::WebContents* web_contents) override;
-
-  AIChatBraveSearchThrottleDelegateImpl(
-      const AIChatBraveSearchThrottleDelegateImpl&) = delete;
-  AIChatBraveSearchThrottleDelegateImpl& operator=(
-      const AIChatBraveSearchThrottleDelegateImpl&) = delete;
 };
 
 }  // namespace ai_chat

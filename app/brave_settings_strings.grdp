@@ -716,10 +716,10 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_BRAVE_AI_CHAT" desc="Label for Leo AI chat site settings.">
     Leo AI chat
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_BRAVE_AI_CHAT_ASK" desc="Label for Leo AI chat site settings.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BRAVE_AI_CHAT_ASK" desc="Label for the enabled option of Leo AI chat site settings.">
     Sites can ask to open Leo AI chat
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_BRAVE_AI_CHAT_BLOCK" desc="Label for Leo AI chat site settings.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BRAVE_AI_CHAT_BLOCK" desc="Label for the disabled option of Leo AI chat site settings.">
     Don't allow site to open Leo AI chat
   </message>
 
