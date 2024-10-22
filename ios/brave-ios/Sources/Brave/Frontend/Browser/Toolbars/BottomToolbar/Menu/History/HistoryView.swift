@@ -8,6 +8,7 @@ import BraveStrings
 import DesignSystem
 import Favicon
 import Preferences
+import Shared
 import SwiftUI
 
 struct HistoryItemView: View {
@@ -38,14 +39,20 @@ struct HistoryItemView: View {
         }
 
         Text(
-          URLFormatter.formatURLOrigin(
-            forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString
+          URLFormatter.createAttributedString(
+            string: URLFormatter.formatURLOrigin(
+              forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString
+            ),
+            font: .footnote,
+            lineBreakMode: .byTruncatingTail
           )
         )
         .font(.footnote)
         .frame(maxWidth: .infinity, alignment: .leading)
         .fixedSize(horizontal: false, vertical: true)
         .foregroundStyle(Color(braveSystemName: .textSecondary))
+        .environment(\.layoutDirection, .leftToRight)
+        .flipsForRightToLeftLayoutDirection(false)
       }
     }
   }

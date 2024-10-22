@@ -411,8 +411,12 @@ extension BrowserViewController {
             .foregroundColor(Color(.braveLabel))
         }
         Text(
-          verbatim: URLFormatter.formatURLOrigin(
-            forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString
+          URLFormatter.createAttributedString(
+            string: URLFormatter.formatURLOrigin(
+              forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString
+            ),
+            font: .footnote,
+            lineBreakMode: .byTruncatingHead
           )
         )
         .font(.footnote)
