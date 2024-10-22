@@ -125,6 +125,6 @@ export const ActionLink = styled.a`
   text-decoration-line: underline;
 
   &:focus-visible {
-    outline: 1.5px solid ${color.systemfeedback.focusDefault};
+    outline: 1.5px solid ${color.primary[40]};
   }
 `

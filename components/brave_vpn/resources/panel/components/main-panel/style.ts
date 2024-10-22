@@ -67,7 +67,7 @@ export const RegionSelectorButton = styled.button`
   }
 
   &:focus-visible {
-    --border-color: ${color.systemfeedback.focusDefault};
+    --border-color: ${color.primary[40]};
     outline: 0;
   }
 `
