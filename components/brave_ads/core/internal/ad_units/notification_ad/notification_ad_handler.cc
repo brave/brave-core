@@ -209,7 +209,7 @@ void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
   NotificationAdManager::GetInstance().Remove(ad.placement_id,
                                               /*should_close=*/true);
 
-  site_visit_->SetLastClickedAd(ad);
+  site_visit_->set_last_clicked_ad(ad);
 
   AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kClicked);
 

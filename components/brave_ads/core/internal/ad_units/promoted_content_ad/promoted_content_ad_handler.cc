@@ -115,7 +115,7 @@ void PromotedContentAdHandler::OnDidFirePromotedContentAdClickedEvent(
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  site_visit_->SetLastClickedAd(ad);
+  site_visit_->set_last_clicked_ad(ad);
 
   AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kClicked);
 
