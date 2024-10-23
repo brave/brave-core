@@ -2269,12 +2269,16 @@ union EthSignTypedDataMeta {
 
 // https://eips.ethereum.org/EIPS/eip-712
 struct EthSignTypedData {
-  // message for display
-  string message;
-  string domain;
+  string message_json;  // sanitized json string
+  string domain_json;   // sanitized json string
+  string types_json;    // sanitized json string
+  string primary_type;
+
+  string? chain_id;  // chainId from domain
+
   // These fields are for hardware eip712 signing
-  string? domain_hash;
-  string? primary_hash;
+  array<uint8> domain_hash;
+  array<uint8> primary_hash;
 
   EthSignTypedDataMeta? meta;
 };
