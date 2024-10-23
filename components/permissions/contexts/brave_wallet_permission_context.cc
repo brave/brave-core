@@ -244,7 +244,7 @@ BraveWalletPermissionContext::GetAllowedAccounts(
   }
 
   const ContentSettingsType content_settings_type =
-      PermissionUtil::PermissionTypeToContentSettingTypeSafe(permission);
+      PermissionUtil::PermissionTypeToContentSettingsTypeSafe(permission);
 
   std::vector<std::string> allowed_accounts;
   url::Origin origin = url::Origin::Create(rfh->GetLastCommittedURL());
@@ -296,7 +296,7 @@ bool BraveWalletPermissionContext::AddPermission(
   }
 
   const ContentSettingsType content_settings_type =
-      PermissionUtil::PermissionTypeToContentSettingTypeSafe(permission);
+      PermissionUtil::PermissionTypeToContentSettingsTypeSafe(permission);
 
   auto origin_wallet_address = brave_wallet::GetSubRequestOrigin(
       ContentSettingsTypeToRequestType(content_settings_type), origin, account);
@@ -333,7 +333,7 @@ bool BraveWalletPermissionContext::HasPermission(
   }
 
   const ContentSettingsType content_settings_type =
-      PermissionUtil::PermissionTypeToContentSettingTypeSafe(permission);
+      PermissionUtil::PermissionTypeToContentSettingsTypeSafe(permission);
 
   auto origin_wallet_address = brave_wallet::GetSubRequestOrigin(
       ContentSettingsTypeToRequestType(content_settings_type), origin, account);
@@ -362,7 +362,7 @@ bool BraveWalletPermissionContext::ResetPermission(
   }
 
   const ContentSettingsType content_settings_type =
-      PermissionUtil::PermissionTypeToContentSettingTypeSafe(permission);
+      PermissionUtil::PermissionTypeToContentSettingsTypeSafe(permission);
 
   auto origin_wallet_address = brave_wallet::GetSubRequestOrigin(
       ContentSettingsTypeToRequestType(content_settings_type), origin, account);
@@ -381,7 +381,7 @@ BraveWalletPermissionContext::GetWebSitesWithPermission(
     blink::PermissionType permission,
     content::BrowserContext* context) {
   const ContentSettingsType content_settings_type =
-      PermissionUtil::PermissionTypeToContentSettingTypeSafe(permission);
+      PermissionUtil::PermissionTypeToContentSettingsTypeSafe(permission);
 
   HostContentSettingsMap* map =
       PermissionsClient::Get()->GetSettingsMap(context);
