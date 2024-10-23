@@ -208,7 +208,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
         solEstimatedTxFees: solEstimatedTxFeesCache
       )
 
-      let nftsWithoutMetadata = transactionSections.flatMap(\.transactions)
+      var nftsWithoutMetadata = transactionSections.flatMap(\.transactions)
         .compactMap { parsedTx in
           switch parsedTx.details {
           case .erc721Transfer(let details):
@@ -227,6 +227,8 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
             $0.caseInsensitiveCompare(token.contractAddress) == .orderedSame
           })
         }
+      // remove duplicate
+      nftsWithoutMetadata = Array(Set(nftsWithoutMetadata))
       guard !Task.isCancelled, !nftsWithoutMetadata.isEmpty else { return }
       // fetch nft metadata for all NFTs
       let allMetadata = await rpcService.fetchNFTMetadata(
