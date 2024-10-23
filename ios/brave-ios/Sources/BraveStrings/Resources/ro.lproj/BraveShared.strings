@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Adaugă marcaj";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Date Brave Ads";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Reclame și urmăritori";
 
@@ -157,6 +160,9 @@
 /* Brave Rewards title */
 "BraveRewardsTitle" = "Brave Rewards";
 
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Brave Search nu te profilează.";
+
 /* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Poate mai târziu";
 
@@ -267,6 +273,9 @@
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutTitle" = "Ajută-ne să îmbunătățim Brave.";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "Trimite informații complet confidențiale și anonime despre produs.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Beneficiază de confidențialitatea Brave pe computerul sau tableta ta și sincronizează marcajele și extensiile între dispozitive.";
@@ -507,9 +516,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Motoare de căutare folosite în prezent";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "Adaugă";
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Scrie URL-ul de căutare și înlocuiește interogarea cu %1$s.\nDe exemplu: https://youtube.com/search?q=%2$s \n(Dacă site-ul suportă OpenSearch, va fi furnizată o opțiune de adăugare automată atunci când editezi acest câmp.)";
@@ -1075,17 +1081,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Deschide automat tastatura";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Imagini de fundal";
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "Fundal";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Tipul imaginii";
+"ntp.settingsBackgroundImageSubMenu" = "Tip media";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Imagini implicite";
 
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Imagini si video-uri sponsorizate";
+
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Sponsorizat";
+"ntp.settingsSponsoredImagesSelection" = "Imagini sponsorizate";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Filă nouă";
@@ -1409,6 +1418,9 @@
 "p3a.settingTitle" = "Permite datele de produs cu protecția confidențialității (P3A)";
 
 /* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "Închide mențiunea de produs cu protecția confidențialității";
+
+/* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Conexiunea la acest site nu este complet sigură.";
 
 /* No comment provided by engineer. */
@@ -1422,6 +1434,9 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageUnknownStatusWarning" = "Conexiunea ta către acest site nu a putut fi verificată complet. Poți continua sau reîncărca pagina pentru a stabili o conexiune securizată.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "Conectează-te la website";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Afișează certificatul";
@@ -2249,28 +2264,28 @@
 "rewards.braveTalkRewardsOptInTitle" = "Pentru a iniția un apel gratuit, activează Brave Rewards";
 
 /* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "Activează pentru a susține creatorii de conținut";
+"rewards.disabledBody" = "Activează pentru a susține Brave si comunitatea BAT";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Utilizarea recompenselor Brave Rewards ajută la susținerea creatorilor de conținut în timp ce navighezi.";
+"rewards.disabledStatusBody" = "Folosind recompensele Brave Rewards ajută la susținerea Brave și a comunității BAT.";
 
 /* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "Contribuie la susținerea creatorilor de conținut";
+"rewards.enabledBody" = "Ajuți la susținerea Brave și a comunității BAT.";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "Îți mulțumim că ajuți susținerea creatorilor de conținut în timp ce navighezi!";
+"rewards.enabledStatusBody" = "Îți mulțumim pentru susținerea Brave și a comunității BAT!";
 
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Dând click, ești de acord cu %1$@ și %2$@. Dezactivează în orice moment din Setări.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Susține automat creatorii de conținut și editorii activând reclamele private Brave. Reclamele private Brave sunt reclame care respectă confidențialitatea și contribuie la susținerea creatorilor de conținut.";
+"rewards.settingsToggleMessage" = "Susține Brave și comunitatea BAT prin activarea Brave Rewards și afișarea reclamelor Brave Ads.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Activează Brave Rewards";
 
 /* Displayed under verified publishers */
-"rewards.supportingPublisher" = "Ajuți la susținerea creatorilor de conținut precum acesta.";
+"rewards.supportingPublisher" = "Acest creator de conținut este validat prin Brave Creators";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Numărul de creatori de conținut pe care îi ajuți luna aceasta.";
@@ -3041,7 +3056,7 @@
 "SyncChooseDeviceHeader" = "Alege tipul dispozitivului cu care vrei să te sincronizezi.";
 
 /* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Codul a expirat. Generează unul nou dând click pe butonul de mai jos.";
+"SyncCodeExpirationTitleLabel" = "Codul a expirat. Generează unul nou apăsând pe butonul de mai jos.";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "Acest cod temporar este valid doar pentru următoarele %@";

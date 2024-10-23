@@ -59,6 +59,9 @@
 "e13lS3-qKrzyX" = "Var det \"Skanna QR-kod\" du sökte efter?";
 
 /* (No Comment) */
+"e13lS3-U0eRbw" = "Bara för att bekräfta, du ville ha \"Leo AI\"?";
+
+/* (No Comment) */
 "e13lS3-VBH4G6" = "Var det ”Historik” du sökte efter?";
 
 /* (No Comment) */
@@ -72,6 +75,39 @@
 
 /* (No Comment) */
 "EUS9FL" = "Widgetgenväg";
+
+/* (No Comment) */
+"EvESs0-0W40Cl" = "Var det ”Ny flik” du sökte efter?";
+
+/* (No Comment) */
+"EvESs0-crhbMy" = "Var det ”Bokmärken” du sökte efter?";
+
+/* (No Comment) */
+"EvESs0-FGO5qW" = "Var det \"Brave-spellista\" du sökte efter?";
+
+/* (No Comment) */
+"EvESs0-jXiFQY" = "Var det \"Brave Wallet\" du sökte efter?";
+
+/* (No Comment) */
+"EvESs0-nthxSL" = "Var det ”Nedladdningar” du sökte efter?";
+
+/* (No Comment) */
+"EvESs0-qKrzyX" = "Var det \"Skanna QR-kod\" du sökte efter?";
+
+/* (No Comment) */
+"EvESs0-U0eRbw" = "Bara för att bekräfta, du ville ha \"Leo AI\"?";
+
+/* (No Comment) */
+"EvESs0-VBH4G6" = "Var det ”Historik” du sökte efter?";
+
+/* (No Comment) */
+"EvESs0-vs094F" = "Var det ”Ny privat flik” du sökte efter?";
+
+/* (No Comment) */
+"EvESs0-XCyA8c" = "Var det \"Brave News\" du sökte efter?";
+
+/* (No Comment) */
+"EvESs0-Y7TWy8" = "Var det ”Sök” du sökte efter?";
 
 /* (No Comment) */
 "FGO5qW" = "Brave-spellista";
@@ -110,6 +146,9 @@
 "L1fziM-qKrzyX" = "Det finns ${count} alternativ som matchar \"Skanna QR-kod\".";
 
 /* (No Comment) */
+"L1fziM-U0eRbw" = "Det finns ${count} alternativ som matchar \"Leo AI\".";
+
+/* (No Comment) */
 "L1fziM-VBH4G6" = "Det finns ${count} alternativ som matchar ”Historik”.";
 
 /* (No Comment) */
@@ -120,6 +159,9 @@
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "Det finns ${count} alternativ som matchar \"Sök\".";
+
+/* (No Comment) */
+"M2Y1rg" = "Nr. 4";
 
 /* (No Comment) */
 "nthxSL" = "Nedladdningar";
@@ -147,6 +189,9 @@
 
 /* (No Comment) */
 "r2EI05-qKrzyX" = "Var det \"Skanna QR-kod\" du sökte efter?";
+
+/* (No Comment) */
+"r2EI05-U0eRbw" = "Bara för att bekräfta, du ville ha \"Leo AI\"?";
 
 /* (No Comment) */
 "r2EI05-VBH4G6" = "Var det ”Historik” du sökte efter?";
@@ -188,6 +233,9 @@
 "tNCrcE-qKrzyX" = "Det finns ${count} alternativ som matchar \"Skanna QR-kod\".";
 
 /* (No Comment) */
+"tNCrcE-U0eRbw" = "Det finns ${count} alternativ som matchar ”Leo AI”.";
+
+/* (No Comment) */
 "tNCrcE-VBH4G6" = "Det finns ${count} alternativ som matchar ”Historik”.";
 
 /* (No Comment) */
@@ -221,6 +269,9 @@
 "TxuMja-qKrzyX" = "Det finns ${count} alternativ som matchar \"Skanna QR-kod\".";
 
 /* (No Comment) */
+"TxuMja-U0eRbw" = "Det finns ${count} alternativ som matchar \"Leo AI\".";
+
+/* (No Comment) */
 "TxuMja-VBH4G6" = "Det finns ${count} alternativ som matchar ”Historik”.";
 
 /* (No Comment) */
@@ -234,6 +285,9 @@
 
 /* (No Comment) */
 "tYwiRd" = "Uppskattad tid sparad";
+
+/* (No Comment) */
+"U0eRbw" = "Leo AI";
 
 /* (No Comment) */
 "VBH4G6" = "Historik";
@@ -275,6 +329,9 @@
 "YQiQuz-qKrzyX" = "Var det \"Skanna QR-kod\" du sökte efter?";
 
 /* (No Comment) */
+"YQiQuz-U0eRbw" = "Bara för att bekräfta, du ville ha \"Leo AI\"?";
+
+/* (No Comment) */
 "YQiQuz-VBH4G6" = "Var det ”Historik” du sökte efter?";
 
 /* (No Comment) */
@@ -285,6 +342,39 @@
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Ville du ha \"Sök\"?";
+
+/* (No Comment) */
+"z517nu-0W40Cl" = "Det finns ${count} alternativ som matchar ”Ny flik”.";
+
+/* (No Comment) */
+"z517nu-crhbMy" = "Det finns ${count} alternativ som matchar ”Bokmärken”.";
+
+/* (No Comment) */
+"z517nu-FGO5qW" = "Det finns ${count} alternativ som matchar \"Brave-spellista\".";
+
+/* (No Comment) */
+"z517nu-jXiFQY" = "Det finns ${count} alternativ som matchar \"Brave Wallet\".";
+
+/* (No Comment) */
+"z517nu-nthxSL" = "Det finns ${count} alternativ som matchar ”Nedladdningar”.";
+
+/* (No Comment) */
+"z517nu-qKrzyX" = "Det finns ${count} alternativ som matchar \"Skanna QR-kod\".";
+
+/* (No Comment) */
+"z517nu-U0eRbw" = "Det finns ${count} alternativ som matchar ”Leo AI”.";
+
+/* (No Comment) */
+"z517nu-VBH4G6" = "Det finns ${count} alternativ som matchar ”Historik”.";
+
+/* (No Comment) */
+"z517nu-vs094F" = "Det finns ${count} alternativ som matchar ”Ny privat flik”.";
+
+/* (No Comment) */
+"z517nu-XCyA8c" = "Det finns ${count} alternativ som matchar \"Brave News\".";
+
+/* (No Comment) */
+"z517nu-Y7TWy8" = "Det finns ${count} alternativ som matchar \"Sök\".";
 
 /* (No Comment) */
 "ziTvSZ" = "Genväg widgetkonfiguration";

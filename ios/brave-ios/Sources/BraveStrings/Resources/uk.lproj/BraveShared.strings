@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Додати закладку";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Дані Реклами Brave";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Реклама і трекери";
 
@@ -513,9 +516,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Нещодавно використані пошукові системи";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "Додати";
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Напишіть URL-адресу для пошуку та замініть запит таким: %1$s.\nНаприклад: https://youtube.com/search?q=%2$s\n(Якщо сайт підтримує OpenSearch, під час редагування цього поля ви зможете автоматично додати необхідне значення.)";
@@ -1081,17 +1081,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Автоматично відкривати клавіатуру";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Фонові зображення";
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "Фон";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Тип зображення";
+"ntp.settingsBackgroundImageSubMenu" = "Тип медіаданих";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Стандартні зображення";
 
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Зображення та відео від спонсорів";
+
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Спонсорські";
+"ntp.settingsSponsoredImagesSelection" = "Рекламні зображення";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Сторінка нової вкладки";
@@ -1413,6 +1416,9 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Дозволити аналітику продуктів зі збереженням конфіденційності (P3A)";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "Закрити посилання на продукт зі збереженням приватності";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Ваше підключення до сайту не є цілком захищеним.";
@@ -2258,28 +2264,28 @@
 "rewards.braveTalkRewardsOptInTitle" = "Щоб здійснити безкоштовний виклик, увімкніть Brave Rewards";
 
 /* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "Увімкніть підтримку авторів умісту";
+"rewards.disabledBody" = "Увімкнути, щоб допомогти в підтримці Brave і спільноти BAT.";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Brave Rewards дає змогу підтримувати авторів умісту, переглядаючи сторінки в Інтернеті.";
+"rewards.disabledStatusBody" = "Використання Винагород Brave допомагає в підтримці Brave і спільноти BAT.";
 
 /* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "Ви підтримуєте авторів умісту";
+"rewards.enabledBody" = "Ви допомагаєте в підтримці Brave і спільноти BAT";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "Дякуємо, що підтримуєте авторів умісту, переглядаючи сторінки в Інтернеті!";
+"rewards.enabledStatusBody" = "Дякуємо за допомогу в підтримці Brave і спільноти BAT!";
 
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Продовжуючи, ви приймаєте умови документів %1$@ і %2$@. Вимкнути опцію можна будь-коли в меню «Налаштування».";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Увімкніть Brave Private Ads, щоб автоматично підтримувати авторів умісту та видавців. Brave Private Ads — це конфіденційний засіб перегляду реклами з можливістю підтримки авторів умісту.";
+"rewards.settingsToggleMessage" = "Допоможіть у підтримці Brave і спільноти BAT, застосовуючи Винагороди Brave і переглядаючи Рекламу Brave.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Увімкнути Brave Rewards";
 
 /* Displayed under verified publishers */
-"rewards.supportingPublisher" = "Ви підтримуєте авторів умісту подібних до цього.";
+"rewards.supportingPublisher" = "Цього автора контенту перевірили Автори Brave";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Кількість авторів умісту, яких ви підтримали цього місяця.";
@@ -3050,7 +3056,7 @@
 "SyncChooseDeviceHeader" = "Виберіть тип пристрою, що ви бажаєте синхронізувати.";
 
 /* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Термін коду сплив. Згенеруйте новий, натиснувши кнопку нижче.";
+"SyncCodeExpirationTitleLabel" = "Термін коду сплив. Згенеруйте новий, торкнувшись кнопки нижче.";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "Цей тимчасовий код діє наступні %@";

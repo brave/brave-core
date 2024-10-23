@@ -1,0 +1,48 @@
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "متابعة";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "افتح كل رابط تنقر عليه باستخدام حماية الخصوصية من Brave";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "تعيين Brave كمتصفحك الافتراضي";
+
+/* The subtitle of the screen that shows ads are blocked */
+"focusOnboarding.movingAdsScreenDescription" = "تصفح بشكل أسرع واستخدم بيانات أقل.";
+
+/* The title of the screen that shows ads are blocked */
+"focusOnboarding.movingAdsScreenTitle" = "عدد أقل من الإعلانات وأدوات التتبع.";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "بجدية، تخلصنا منهم.";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "لا مزيد من إعلانات الفيديو.";
+
+/* The title of the button that opens the website abouyt privacy preserving analytics. */
+"focusOnboarding.p3aInformationButtonTitle" = "تعرف على المزيد حول تحليلات الحفاظ على الخصوصية المنتج (P3A)";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "أخبرنا بالميزات التي تستمتع بها أكثر.";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "اجعل Brave أفضل.";
+
+/* The title of the toggle for enable / disable privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "قم بتغيير هذا في أي وقت في إعدادات Brave ضمن \"Brave Shields والخصوصية\".";
+
+/* The title of the toggle for enable / disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "تمتع بمشاركة رؤى المنتج الخاصة ومجهولة المصدر.";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "ابدأ التصفح";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "انتقل إلى إعدادات النظام";
+
+/* The description of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorDescription" = "أدخل عنوان URL للاستمتاع بعدد أقل من الإعلانات وأدوات التتبع";
+
+/* The title of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorTitle" = "شاهد اختلاف Brave";
+

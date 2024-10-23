@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Pridať záložku";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Údaje Brave Ads";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Reklamy a sledovače";
 
@@ -513,9 +516,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Aktuálne používané vyhľadávače";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "Pridať";
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Napíšte vyhľadávaciu adresu URL a nahraďte dopyt s %1$s.\nNapríklad: https://youtube.com/search?q=%2$s \n(Ak stránka podporuje OpenSearch, pri úprave tohto poľa bude poskytnutá možnosť automatického pridania.)";
@@ -1081,17 +1081,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Automatické otváranie klávesnice";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Obrázky na pozadí";
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "Pozadie";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Typ obrázka";
+"ntp.settingsBackgroundImageSubMenu" = "Typ médií";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Predvolené obrázky";
 
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Sponzorované obrázky a videá";
+
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Sponzorované";
+"ntp.settingsSponsoredImagesSelection" = "Sponzorované obrázky";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Stránka novej karty";
@@ -1413,6 +1416,9 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Povoliť analýzu produktov na ochranu súkromia (P3A)";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "Zavrieť vyvolanie produktu na ochranu súkromia";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Vaše pripojenie k tejto lokalite nie je úplne zabezpečené.";
@@ -2258,28 +2264,28 @@
 "rewards.braveTalkRewardsOptInTitle" = "Ak chcete začať bezplatný hovor, zapnite Brave Rewards";
 
 /* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "Zapnite, aby ste pomohli podporiť tvorov obsahu";
+"rewards.disabledBody" = "Zapnite na podporu značky Brave a komunity BAT.";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Používanie odmien Brave pomáha podporovať tvorcov obsahu pri prehliadaní.";
+"rewards.disabledStatusBody" = "Pomocou Brave Rewards podporujete značku Brave a komunitu BAT.";
 
 /* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "Pomáhate podporovať tvorcov obsahu";
+"rewards.enabledBody" = "Podporujete značku Brave a komunitu BAT.";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "Ďakujeme, že pomáhate podporovať tvorcov obsahu pri prehliadaní!";
+"rewards.enabledStatusBody" = "Ďakujeme, že podporujete značku Brave a komunitu BAT.";
 
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Kliknutím súhlasíte s %1$ @ a %2$ @. Odvolať to môžete kedykoľvek v Nastaveniach.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Podporujte tvorcov obsahu a vydavateľov automaticky povolením súkromných reklám Brave. Súkromné ​​reklamy Brave sú reklamy rešpektujúce súkromie, ktoré poskytujú spätnú väzbu tvorcom obsahu.";
+"rewards.settingsToggleMessage" = "Podporte značku Brave a komunitu BAT povolením Brave Rewards a zobrazovaním Brave Ads.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Povoliť odmeny Brave";
 
 /* Displayed under verified publishers */
-"rewards.supportingPublisher" = "Pomáhate podporovať tvorcov obsahu, ako je tento.";
+"rewards.supportingPublisher" = "Tohto tvorcu obsahu overili tvorcovia Brave";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Počet tvorcov obsahu, ktorých tento mesiac pomáhate podporovať.";
@@ -3050,7 +3056,7 @@
 "SyncChooseDeviceHeader" = "Vyberte typ zariadenia, s ktorým chcete vykonať synchronizáciu.";
 
 /* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Kód vypršal. Vytvorte si nový kliknutím na tlačidlo nižšie.";
+"SyncCodeExpirationTitleLabel" = "Platnosť kódu vypršala. Vygenerujte si nový ťuknutím na tlačidlo nižšie.";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "Tento dočasný kód je platný na %@";

@@ -59,6 +59,9 @@
 "e13lS3-qKrzyX" = "您要的是「掃描 QR 碼」，對嗎？";
 
 /* (No Comment) */
+"e13lS3-U0eRbw" = "您要的是「Leo AI」，對嗎？";
+
+/* (No Comment) */
 "e13lS3-VBH4G6" = "您要的是「歷史記錄」，對嗎？";
 
 /* (No Comment) */
@@ -72,6 +75,39 @@
 
 /* (No Comment) */
 "EUS9FL" = "小工具捷徑";
+
+/* (No Comment) */
+"EvESs0-0W40Cl" = "您要的是「新分頁」，對嗎？";
+
+/* (No Comment) */
+"EvESs0-crhbMy" = "您要的是「書籤」，對嗎？";
+
+/* (No Comment) */
+"EvESs0-FGO5qW" = "您要的是「Brave 播放清單」，對嗎？";
+
+/* (No Comment) */
+"EvESs0-jXiFQY" = "您要的是「Brave 錢包」，對嗎？";
+
+/* (No Comment) */
+"EvESs0-nthxSL" = "您要的是「下載」，對嗎？";
+
+/* (No Comment) */
+"EvESs0-qKrzyX" = "您要的是「掃描 QR 碼」，對嗎？";
+
+/* (No Comment) */
+"EvESs0-U0eRbw" = "您要的是「Leo AI」，對嗎？";
+
+/* (No Comment) */
+"EvESs0-VBH4G6" = "您要的是「歷史記錄」，對嗎？";
+
+/* (No Comment) */
+"EvESs0-vs094F" = "您要的是「新隱私分頁」，對嗎？";
+
+/* (No Comment) */
+"EvESs0-XCyA8c" = "您要的是「Brave 新聞」，對嗎？";
+
+/* (No Comment) */
+"EvESs0-Y7TWy8" = "您要的是「搜尋」，對嗎？";
 
 /* (No Comment) */
 "FGO5qW" = "Brave 播放清單";
@@ -110,6 +146,9 @@
 "L1fziM-qKrzyX" = "有 ${count} 個選項符合「掃描 QR 碼」。";
 
 /* (No Comment) */
+"L1fziM-U0eRbw" = "有 ${count} 個選項符合「Leo AI」。";
+
+/* (No Comment) */
 "L1fziM-VBH4G6" = "有 ${count} 個選項符合「歷史記錄」。";
 
 /* (No Comment) */
@@ -120,6 +159,9 @@
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "有 ${count} 個選項符合「搜尋」。";
+
+/* (No Comment) */
+"M2Y1rg" = "#4";
 
 /* (No Comment) */
 "nthxSL" = "下載";
@@ -147,6 +189,9 @@
 
 /* (No Comment) */
 "r2EI05-qKrzyX" = "您要的是「掃描 QR 碼」，對嗎？";
+
+/* (No Comment) */
+"r2EI05-U0eRbw" = "您要的是「Leo AI」，對嗎？";
 
 /* (No Comment) */
 "r2EI05-VBH4G6" = "您要的是「歷史記錄」，對嗎？";
@@ -188,6 +233,9 @@
 "tNCrcE-qKrzyX" = "有 ${count} 個選項符合「掃描 QR 碼」。";
 
 /* (No Comment) */
+"tNCrcE-U0eRbw" = "有 ${count} 個選項符合「Leo AI」。";
+
+/* (No Comment) */
 "tNCrcE-VBH4G6" = "有 ${count} 個選項符合「歷史記錄」。";
 
 /* (No Comment) */
@@ -221,6 +269,9 @@
 "TxuMja-qKrzyX" = "有 ${count} 個選項符合「掃描 QR 碼」。";
 
 /* (No Comment) */
+"TxuMja-U0eRbw" = "有 ${count} 個選項符合「Leo AI」。";
+
+/* (No Comment) */
 "TxuMja-VBH4G6" = "有 ${count} 個選項符合「歷史記錄」。";
 
 /* (No Comment) */
@@ -234,6 +285,9 @@
 
 /* (No Comment) */
 "tYwiRd" = "預計節省時間";
+
+/* (No Comment) */
+"U0eRbw" = "Leo AI";
 
 /* (No Comment) */
 "VBH4G6" = "歷史記錄";
@@ -275,6 +329,9 @@
 "YQiQuz-qKrzyX" = "您要的是「掃描 QR 碼」，對嗎？";
 
 /* (No Comment) */
+"YQiQuz-U0eRbw" = "您要的是「Leo AI」，對嗎？";
+
+/* (No Comment) */
 "YQiQuz-VBH4G6" = "您要的是「歷史記錄」，對嗎？";
 
 /* (No Comment) */
@@ -285,6 +342,39 @@
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "您要的是「搜尋」，對嗎？";
+
+/* (No Comment) */
+"z517nu-0W40Cl" = "有 ${count} 個選項符合「新分頁」。";
+
+/* (No Comment) */
+"z517nu-crhbMy" = "有 ${count} 個選項符合「書籤」。";
+
+/* (No Comment) */
+"z517nu-FGO5qW" = "有 ${count} 個選項符合「Brave 播放清單」。";
+
+/* (No Comment) */
+"z517nu-jXiFQY" = "有 ${count} 個選項符合「Brave 錢包」。";
+
+/* (No Comment) */
+"z517nu-nthxSL" = "有 ${count} 個選項符合「下載」。";
+
+/* (No Comment) */
+"z517nu-qKrzyX" = "有 ${count} 個選項符合「掃描 QR 碼」。";
+
+/* (No Comment) */
+"z517nu-U0eRbw" = "有 ${count} 個選項符合「Leo AI」。";
+
+/* (No Comment) */
+"z517nu-VBH4G6" = "有 ${count} 個選項符合「歷史記錄」。";
+
+/* (No Comment) */
+"z517nu-vs094F" = "有 ${count} 個選項符合「新隱私分頁」。";
+
+/* (No Comment) */
+"z517nu-XCyA8c" = "有 ${count} 個符合「Brave 新聞」的選項。";
+
+/* (No Comment) */
+"z517nu-Y7TWy8" = "有 ${count} 個選項符合「搜尋」。";
 
 /* (No Comment) */
 "ziTvSZ" = "捷徑小工具組態";
