@@ -30,7 +30,7 @@ jobs:
           pr_ver="$(chromium_ver "${PR_SHA:?}")"
           target_ver="$(chromium_ver "${TARGET_SHA:?}")"
 
-          echo "::notice::PR branch: ${pr_ver:?}, target branch: ${target_ver:?}"
+          echo "::notice::PR branch: ${GITHUB_HEAD_REF:?} (${pr_ver:?}), target branch: ${GITHUB_BASE_REF:?} (${target_ver:?})"
 
           if [[ "${pr_ver%%.*}" != "${target_ver%%.*}" ]]; then
               echo "::notice::Rerunning compare-chromium-versions in PRs targeting ${GITHUB_BASE_REF:?}"
