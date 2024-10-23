@@ -1,0 +1,106 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * you can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=chrome://resources/cr_elements/cr_icons_lit.css.js
+ * #include=cr-icons-lit
+ * #css_wrapper_metadata_end */
+
+:host {
+  --cr-dialog-body-border-bottom: 0px;
+  --cr-dialog-body-border-top: 0px;
+  --cr-dialog-border-radius: 16px;
+  --cr-dialog-top-container-min-height: 0px;
+  --cr-dialog-width: 500px;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.buttons {
+  display: flex;
+  min-height: 40px;
+  width: 100%;
+}
+
+.buttons:has(> cr-icon-button:nth-of-type(1)) {
+  justify-content: flex-end;
+}
+
+.buttons:has(> cr-icon-button:nth-of-type(2)) {
+  justify-content: space-between;
+}
+
+.button {
+  margin: 4px 4px 0px 4px;
+}
+
+.logo {
+  background-image: url('../images/brave-logo-light.svg');
+  background-size: cover;
+  height: 40px;
+  width: 129px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .logo {
+    background-image: url('../images/brave-logo-dark.svg');
+  }
+}
+
+.body {
+  padding: 40px;
+}
+
+.texts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0px 0px 32px;
+}
+
+.text {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.text-top {
+  color: #46464A;
+  font-family: 'Poppins';
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  line-height: 28px;
+}
+
+.text-bottom {
+  color: #76767A;
+  font-family: 'Inter Variable';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  text-align: center;
+}
+
+:host ::slotted([slot=inputs]) {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0px 0px 24px;
+}
+
+:host ::slotted([slot=buttons]) {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
