@@ -57,8 +57,8 @@ const notYetQueriedElements: Array<(Element[] | NodeListOf<Element>)> = []
 const classIdWithoutHtmlOrBody = '[id]:not(html):not(body),[class]:not(html):not(body)'
 
 // Each of these get setup once the mutation observer starts running.
-let notYetQueriedClasses: string[] = []
-let notYetQueriedIds: string[] = []
+let notYetQueriedClassesSanitized: string[] = []
+let notYetQueriedIdsSanitized: string[] = []
 
 window.content_cosmetic = window.content_cosmetic || {}
 const CC = window.content_cosmetic
@@ -162,12 +162,14 @@ const ShouldThrottleFetchNewClassIdsRules = (): boolean => {
 const queueElementIdAndClasses = (element: Element) => {
   const id = element.id
   if (id && !queriedIds.has(id)) {
-    notYetQueriedIds.push(id)
+    // @ts-expect-error
+    notYetQueriedIdsSanitized.push(id.toWellFormed())
     queriedIds.add(id)
   }
   for (const className of element.classList.values()) {
     if (className && !queriedClasses.has(className)) {
-      notYetQueriedClasses.push(className)
+      // @ts-expect-error
+      notYetQueriedClassesSanitized.push(className.toWellFormed())
       queriedClasses.add(className)
     }
   }
@@ -180,18 +182,18 @@ const fetchNewClassIdRules = () => {
     }
   }
   notYetQueriedElements.length = 0
-  if ((!notYetQueriedClasses || notYetQueriedClasses.length === 0) &&
-    (!notYetQueriedIds || notYetQueriedIds.length === 0)) {
+  if ((!notYetQueriedClassesSanitized || notYetQueriedClassesSanitized.length === 0) &&
+    (!notYetQueriedIdsSanitized || notYetQueriedIdsSanitized.length === 0)) {
     return
   }
   // Callback to c++ renderer process
   // @ts-expect-error
   cf_worker.hiddenClassIdSelectors(
       JSON.stringify({
-        classes: notYetQueriedClasses, ids: notYetQueriedIds
+        classes: notYetQueriedClassesSanitized, ids: notYetQueriedIdsSanitized
       }))
-  notYetQueriedClasses = []
-  notYetQueriedIds = []
+  notYetQueriedClassesSanitized = []
+  notYetQueriedIdsSanitized = []
 }
 
 const useMutationObserver = () => {
@@ -235,7 +237,8 @@ const queueAttrsFromMutations = (mutations: MutationRecord[]): number => {
           mutationScore += changedElm.classList.length
           for (const aClassName of changedElm.classList.values()) {
             if (!queriedClasses.has(aClassName)) {
-              notYetQueriedClasses.push(aClassName)
+              // @ts-expect-error
+              notYetQueriedClassesSanitized.push(aClassName.toWellFormed())
               queriedClasses.add(aClassName)
             }
           }
@@ -245,7 +248,8 @@ const queueAttrsFromMutations = (mutations: MutationRecord[]): number => {
           const mutatedId = changedElm.id
           mutationScore++
           if (!queriedIds.has(mutatedId)) {
-            notYetQueriedIds.push(mutatedId)
+            // @ts-expect-error
+            notYetQueriedIdsSanitized.push(mutatedId.toWellFormed())
             queriedIds.add(mutatedId)
           }
           break
