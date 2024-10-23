@@ -243,6 +243,7 @@ class TabLocationView: UIView {
 
   private let placeholderLabel = UILabel().then {
     $0.text = Strings.tabToolbarSearchAddressPlaceholderText
+    $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     $0.isHidden = true
     $0.adjustsFontSizeToFitWidth = true
     $0.minimumScaleFactor = 0.5
@@ -449,24 +450,38 @@ class TabLocationView: UIView {
     }
   }
 
+  // We must always set isWebScheme before setting the URLDisplayLabel text (so it will display the clipping fade correctly)
   private func updateURLBarWithText() {
-    if let url = url, let internalURL = InternalURL(url), internalURL.isBasicAuthURL {
-      urlDisplayLabel.text = Strings.PageSecurityView.signIntoWebsiteURLBarTitle
-    } else {
-      // Matches LocationBarModelImpl::GetFormattedURL in Chromium (except for omitHTTP)
-      // components/omnibox/browser/location_bar_model_impl.cc
-      // TODO: Export omnibox related APIs and use directly
-      if let url = url {
-        urlDisplayLabel.text = URLFormatter.formatURL(
-          url.scheme == "blob" ? URLOrigin(url: url).url?.absoluteString ?? "" : url.absoluteString,
-          formatTypes: [
-            .trimAfterHost, .omitHTTP, .omitHTTPS, .omitTrivialSubdomains, .omitDefaults,
-          ],
-          unescapeOptions: .normal
-        )
+    guard let urlDisplayLabel = urlDisplayLabel as? DisplayURLLabel else { return }
+
+    if let url = url {
+      if let internalURL = InternalURL(url), internalURL.isBasicAuthURL {
+        urlDisplayLabel.isWebScheme = false
+        urlDisplayLabel.text = Strings.PageSecurityView.signIntoWebsiteURLBarTitle
       } else {
-        urlDisplayLabel.text = ""
+        // Matches LocationBarModelImpl::GetFormattedURL in Chromium (except for omitHTTP)
+        // components/omnibox/browser/location_bar_model_impl.cc
+        // TODO: Export omnibox related APIs and use directly
+
+        // If we can't parse the origin and the URL can't be classified via AutoCompleteClassifier
+        // the URL is likely a broken deceptive URL. Example: `about:blank#https://apple.com`
+        if URLOrigin(url: url).url == nil && URIFixup.getURL(url.absoluteString) == nil {
+          urlDisplayLabel.isWebScheme = false
+          urlDisplayLabel.text = ""
+        } else {
+          urlDisplayLabel.isWebScheme = ["http", "https"].contains(url.scheme ?? "")
+          urlDisplayLabel.text = URLFormatter.formatURL(
+            URLOrigin(url: url).url?.absoluteString ?? url.absoluteString,
+            formatTypes: [
+              .trimAfterHost, .omitHTTPS, .omitTrivialSubdomains,
+            ],
+            unescapeOptions: .normal
+          )
+        }
       }
+    } else {
+      urlDisplayLabel.isWebScheme = false
+      urlDisplayLabel.text = ""
     }
 
     reloadButton.isHidden = url == nil
@@ -529,16 +544,23 @@ private class DisplayURLLabel: UILabel {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-
     addSubview(clippingFade)
   }
 
   private var textSize: CGSize = .zero
   private var isRightToLeft: Bool = false
+  fileprivate var isWebScheme: Bool = false {
+    didSet {
+      updateClippingDirection()
+      setNeedsLayout()
+      setNeedsDisplay()
+    }
+  }
 
   override var font: UIFont! {
     didSet {
-      updateTextSize(from: text)
+      updateText()
+      updateTextSize()
     }
   }
 
@@ -546,15 +568,37 @@ private class DisplayURLLabel: UILabel {
     didSet {
       clippingFade.isHidden = true
       if oldValue != text {
-        updateTextSize(from: text)
+        updateText()
+        updateTextSize()
         detectLanguageForNaturalDirectionClipping()
+        updateClippingDirection()
       }
       setNeedsDisplay()
     }
   }
 
-  private func updateTextSize(from value: String?) {
-    textSize = (value as? NSString)?.size(withAttributes: [.font: font!]) ?? .zero
+  private func updateText() {
+    if let text = text {
+      // Without attributed string, the label will always render RTL characters even if you force LTR layout.
+      // This can introduce a security flaw! We must not flip the URL around based on RTL characters (Safari does not).
+      let paragraphStyle = NSMutableParagraphStyle()
+      paragraphStyle.lineBreakMode = .byClipping
+      paragraphStyle.baseWritingDirection = .leftToRight
+
+      self.attributedText = NSAttributedString(
+        string: text,
+        attributes: [
+          .font: font ?? .preferredFont(forTextStyle: .body),
+          .paragraphStyle: paragraphStyle,
+        ]
+      )
+    } else {
+      self.attributedText = nil
+    }
+  }
+
+  private func updateTextSize() {
+    textSize = attributedText?.size() ?? .zero
     setNeedsLayout()
     setNeedsDisplay()
   }
@@ -567,9 +611,12 @@ private class DisplayURLLabel: UILabel {
     default:
       isRightToLeft = false
     }
+  }
+
+  private func updateClippingDirection() {
     // Update clipping fade direction
-    clippingFade.gradientLayer.startPoint = .init(x: isRightToLeft ? 1 : 0, y: 0.5)
-    clippingFade.gradientLayer.endPoint = .init(x: isRightToLeft ? 0 : 1, y: 0.5)
+    clippingFade.gradientLayer.startPoint = .init(x: isRightToLeft || !isWebScheme ? 1 : 0, y: 0.5)
+    clippingFade.gradientLayer.endPoint = .init(x: isRightToLeft || !isWebScheme ? 0 : 1, y: 0.5)
   }
 
   @available(*, unavailable)
@@ -590,7 +637,7 @@ private class DisplayURLLabel: UILabel {
     super.layoutSubviews()
 
     clippingFade.frame = .init(
-      x: isRightToLeft ? bounds.width - 20 : 0,
+      x: isRightToLeft || !isWebScheme ? bounds.width - 20 : 0,
       y: 0,
       width: 20,
       height: bounds.height
@@ -604,7 +651,7 @@ private class DisplayURLLabel: UILabel {
     var rect = rect
     if textSize.width > bounds.width {
       let delta = (textSize.width - bounds.width)
-      if !isRightToLeft {
+      if !isRightToLeft && isWebScheme {
         rect.origin.x -= delta
         rect.size.width += delta
       }

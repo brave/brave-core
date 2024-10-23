@@ -1984,6 +1984,16 @@ public class BrowserViewController: UIViewController {
       if !title.isEmpty && title != tab.lastTitle {
         navigateInTab(tab: tab)
         tabsBar.updateSelectedTabTitle()
+
+        if let url = webView.url,
+          webView.configuration.preferences.isFraudulentWebsiteWarningEnabled,
+          webView.responds(to: Selector(("_safeBrowsingWarning"))),
+          webView.value(forKey: "_safeBrowsingWarning") != nil
+        {
+          tab.url = url  // We can update the URL whenever showing an interstitial warning
+          updateToolbarCurrentURL(url.displayURL)
+          updateInContentHomePanel(url)
+        }
       }
     case .canGoBack, .canGoForward:
       guard tab === tabManager.selectedTab else {
