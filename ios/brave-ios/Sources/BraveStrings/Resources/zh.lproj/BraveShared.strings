@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "添加书签";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Brave 廣告資料";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "广告和跟踪器";
 
@@ -513,9 +516,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "当前使用的搜索引擎";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "添加";
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "编写搜索 URL，并将查询替换为 %1$s。\n例如： https://youtube.com/search?q=%2$s \n（如果站点支持 OpenSearch，则系统会在编辑此字段时会提供一个自动添加的选项。）";
@@ -1081,17 +1081,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "自动开启键盘";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "背景图片";
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "背景";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "图片类型";
+"ntp.settingsBackgroundImageSubMenu" = "媒體類型";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "默认图像";
 
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "贊助圖片與影片";
+
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "赞助";
+"ntp.settingsSponsoredImagesSelection" = "赞助图片";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "新标签页";
@@ -1413,6 +1416,9 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "允许保护隐私的产品分析 (P3A)";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "關閉保護私隱的產品標註";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "您与此网站之间建立的连接并非完全安全。";
@@ -2258,28 +2264,28 @@
 "rewards.braveTalkRewardsOptInTitle" = "要开始免费通话，开启 Brave Rewards";
 
 /* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "开启以帮助支持内容创建者";
+"rewards.disabledBody" = "開啟以為 Brave 和 BAT 社群提供支援。";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "在浏览时使用 Brave Rewards 功能帮助支持内容创建者。";
+"rewards.disabledStatusBody" = "使用 Brave Rewards 協助支持 Brave 和 BAT 社群。";
 
 /* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "您即将帮助支持内容创建者";
+"rewards.enabledBody" = "您正在為支持 Brave 和 BAT 社群盡份心力。";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "感谢您在浏览过程中帮助支持内容创建者！";
+"rewards.enabledStatusBody" = "感謝您協助支持 Brave 和 BAT 社群！";
 
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "点击即表示您同意 %1$@ 和 %2$@。随时可在“设置”中禁用。";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "通过启用 Brave Private Ads 自动支持内容创建者和发布者。Brave Private Ads 是尊重隐私的、回馈内容创作者的广告。";
+"rewards.settingsToggleMessage" = "透過啟用 Brave Rewards 和查看 Brave 廣告，協助支持 Brave 和 BAT 社群。";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "开启 Brave Rewards";
 
 /* Displayed under verified publishers */
-"rewards.supportingPublisher" = "您即将帮助支持象这一位这样的内容创建者。";
+"rewards.supportingPublisher" = "此內容創作者已通過 Brave Creators 驗證";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "您本月要帮助支持的内容创建者的数量。";
@@ -3050,7 +3056,7 @@
 "SyncChooseDeviceHeader" = "选择要同步到的设备类型。";
 
 /* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "代码已过期。请点选下方按钮来生成新代码。";
+"SyncCodeExpirationTitleLabel" = "代碼已過期。請點選下方按鈕來產生新代碼。";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "这个零时代码于接下来 %@內有效。";

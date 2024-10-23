@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Προσθήκη σελιδοδείκτη";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Δεδομένα διαφημίσεων Brave";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Διαφημίσεις κι Ανιχνευτές";
 
@@ -513,9 +516,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Μηχανές αναζήτησης σε χρήση";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "Προσθήκη";
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Γράψτε τη διεύθυνση URL αναζήτησης και αντικαταστήστε το ερώτημα με το %1$s.\nΓια παράδειγμα: https://youtube.com/search?q=%2$s \n(Εάν ο ιστότοπος υποστηρίζει το OpenSearch, θα παρέχεται μια επιλογή αυτόματης προσθήκης κατά την επεξεργασία αυτού του πεδίου.)";
@@ -1081,17 +1081,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Αυτόματο άνοιγμα πληκτρολογίου";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Εικόνες φόντου";
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "Παρασκήνιο";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Τύπος εικόνας";
+"ntp.settingsBackgroundImageSubMenu" = "Τύπος μέσων";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Προεπιλεγμένες εικόνες";
 
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Χορηγούμενες εικόνες και βίντεο";
+
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Χορηγούμενες";
+"ntp.settingsSponsoredImagesSelection" = "Χορηγούμενες εικόνες";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Σελίδα Νέας καρτέλας";
@@ -1413,6 +1416,9 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Να επιτρέπονται αναλυτικά στοιχεία προϊόντων με προστασία απορρήτου (P3A)";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "Κλείσιμο επεξήγησης προϊόντος διατήρησης απορρήτου";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Η σύνδεσή σας σε αυτόν τον ιστότοπο δεν είναι εντελώς ασφαλής.";
@@ -2258,28 +2264,28 @@
 "rewards.braveTalkRewardsOptInTitle" = "Για να ξεκινήσετε μια δωρεάν κλήση, ενεργοποιήστε τις Ανταμοιβές Brave";
 
 /* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "Ενεργοποιήστε για να συμβάλετε στην υποστήριξη των δημιουργών περιεχομένου";
+"rewards.disabledBody" = "Ενεργοποιήστε για να συμβάλλετε στην υποστήριξη του Brave και της κοινότητας BAT.";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Η χρήση των Ανταμοιβών Brave συμβάλλει στην υποστήριξη των δημιουργών περιεχομένου κατά την περιήγησή σας.";
+"rewards.disabledStatusBody" = "Η χρήση των Ανταμοιβών Brave συμβάλλει στην υποστήριξη του Brave και της κοινότητας BAT.";
 
 /* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "Συμβάλλετε στην υποστήριξη των δημιουργών περιεχομένου";
+"rewards.enabledBody" = "Συμβάλλετε στην υποστήριξη του Brave και της κοινότητας BAT.";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "Σας ευχαριστούμε που συμβάλλετε στην υποστήριξη των δημιουργών περιεχομένου κατά την περιήγησή σας!";
+"rewards.enabledStatusBody" = "Ευχαριστούμε που συμβάλλετε στην υποστήριξη του Brave και της κοινότητας BAT!";
 
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Κάνοντας κλικ, συμφωνείτε με τους %1$@ και την %2$@. Απενεργοποιήστε ανά πάσα στιγμή στις Ρυθμίσεις.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Υποστηρίξτε αυτόματα δημιουργούς περιεχομένου και εκδότες, ενεργοποιώντας τις Ιδιωτικές διαφημίσεις Brave. Οι Ιδιωτικές διαφημίσεις Brave είναι διαφημίσεις που σέβονται το απόρρητο και προσφέρουν στους δημιουργούς περιεχομένου.";
+"rewards.settingsToggleMessage" = "Συμβάλλετε στην υποστήριξη του Brave και της κοινότητας BAT ενεργοποιώντας τις Ανταμοιβές Brave και παρακολουθώντας τις Διαφημίσεις Brave.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Ενεργοποίηση Ανταμοιβών Brave";
 
 /* Displayed under verified publishers */
-"rewards.supportingPublisher" = "Συμβάλλετε στην υποστήριξη δημιουργών περιεχομένου όπως αυτός.";
+"rewards.supportingPublisher" = "Αυτός ο δημιουργός περιεχομένου έχει επαληθευτεί με τους Δημιουργούς Brave";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Αριθμός δημιουργών περιεχομένου στην υποστήριξη των οποίων συμβάλλετε αυτόν τον μήνα.";
@@ -3050,7 +3056,7 @@
 "SyncChooseDeviceHeader" = "Επιλέξτε τον τύπο της συσκευής με την οποία θέλετε να συγχρονίσετε.";
 
 /* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Ο κωδικός έληξε. Δημιουργήστε νέο κωδικό, κάνοντας κλικ στο παρακάτω κουμπί.";
+"SyncCodeExpirationTitleLabel" = "Ο κωδικός έληξε. Δημιουργήστε νέο κωδικό, αγγίζοντας το παρακάτω κουμπί.";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "Αυτός ο προσωρινός κωδικός θα ισχύει για %@";

@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "ブックマークに追加";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Brave広告のデータ";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "広告とトラッカー";
 
@@ -513,9 +516,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "現在使用中の検索エンジン";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "追加する";
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "検索URLを入力しクエリを %1$s に置き換えてください。\n例: https://youtube.com/search?q=%2$s \n(サイトがOpenSearchをサポートしている場合、このフィールドを編集している際に、自動で追加する選択肢が与えられます)";
@@ -1081,17 +1081,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "自動的にキーボードを開く";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "背景画像";
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "バックグラウンド";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "画像タイプ";
+"ntp.settingsBackgroundImageSubMenu" = "メディアタイプ";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "デフォルトの画像";
 
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "スポンサー画像 & 動画";
+
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "スポンサー付き";
+"ntp.settingsSponsoredImagesSelection" = "スポンサー背景画像";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "新規タブページ";
@@ -1415,6 +1418,9 @@
 "p3a.settingTitle" = "プライバシーを保護したプロダクト分析 (P3A) を許可する";
 
 /* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "プライバシーを保護したプロダクトの設定メッセージを閉じる";
+
+/* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "このサイトへの接続は保護されていません。";
 
 /* No comment provided by engineer. */
@@ -1622,7 +1628,7 @@
 "playlist.playlistResetPlaylistOptionFooterText" = "この設定を行うとPlaylistとオフライン再生用ストレージからすべての動画を削除します。";
 
 /* Error message when saving a playlist item for offline fails */
-"playlist.playlistSaveForOfflineErrorMessage" = "すみません、このアイテムは現在オフライン再生ができません。";
+"playlist.playlistSaveForOfflineErrorMessage" = "このアイテムは現在オフライン再生ができません。";
 
 /* Title of alert when saving a playlist item for offline mode */
 "playlist.playlistSaveForOfflineErrorTitle" = "すみません。問題が発生しました";
@@ -2258,28 +2264,28 @@
 "rewards.braveTalkRewardsOptInTitle" = "無料の通話を開始するには、Brave Rewardsをオンにしてください";
 
 /* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "有効にしてコンテンツクリエイターを支援";
+"rewards.disabledBody" = "有効にしてBraveとBATコミュニティを支援しましょう。";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Brave Rewardsを使うと、ブラウジングすることででクリエイターを支援";
+"rewards.disabledStatusBody" = "Braveリワードを利用して、BraveとBATコミュニティを支援することができます。";
 
 /* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "あなたはコンテンツクリエイターを支援中です";
+"rewards.enabledBody" = "あなたはBraveとBATコミュニティを支援中です。";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "ブラウジングによるクリエイターの支援をありがとうございます！";
+"rewards.enabledStatusBody" = "BraveとBATコミュニティをご支援いただきありがとうございます！";
 
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "クリックすることで %1$@ と %2$@ に同意したことになります。設定からいつでも無効にすることができます。";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Braveのプライバシー重視型の広告を有効にすることで、コンテンツクリエイターやパブリッシャーを自動的にサポートすることができます。Brave Ads広告はプライバシーを尊重しつつコンテンツクリエイターに還元することを目指した新しい広告の仕組みです。";
+"rewards.settingsToggleMessage" = "Braveリワードを有効にし、Brave広告を見ることで、BraveとBATコミュニティのサポートにご協力ください。";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Brave Rewardsを有効にする";
 
 /* Displayed under verified publishers */
-"rewards.supportingPublisher" = "あなたはコンテンツクリエイターを支援中です";
+"rewards.supportingPublisher" = "このコンテンツクリエイターはBraveクリエイター認証済みです";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "今月支援中のコンテンツクリエイター数";
@@ -3050,7 +3056,7 @@
 "SyncChooseDeviceHeader" = "同期するデバイスの種類を選択してください。";
 
 /* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "コードの有効期限が切れています。下のボタンをクリックして新しいコードを作成してください。";
+"SyncCodeExpirationTitleLabel" = "コードの有効期限が切れています。下のボタンをタップして新しいコードを作成してください。";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "この一時コードはあと%@有効です";
@@ -3071,7 +3077,7 @@
 "syncExpiredError" = "同期コードが期限切れです。新しい同期コードを生成してもう一度お試しください。";
 
 /* Generic Sync Error Description */
-"syncGenericError" = "すみません。問題が発生しました";
+"syncGenericError" = "問題が発生しました";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "インポートされたブックマーク";
@@ -3305,13 +3311,13 @@
 "today.addSourceFailureTitle" = "ソースの追加に失敗しました";
 
 /* No comment provided by engineer. */
-"today.addSourceInvalidDataMessage" = "すみません、フィードアドレスが認識できませんでした。";
+"today.addSourceInvalidDataMessage" = "フィードアドレスが認識できませんでした。";
 
 /* No comment provided by engineer. */
-"today.addSourceNetworkFailureMessage" = "すみません、そのフィードアドレスを見つけられませんでした。";
+"today.addSourceNetworkFailureMessage" = "フィードアドレスを見つけられませんでした。";
 
 /* No comment provided by engineer. */
-"today.addSourceNoFeedsFoundMessage" = "すみません、そのフィードアドレスにはコンテンツがありません。";
+"today.addSourceNoFeedsFoundMessage" = "該当のフィードアドレスにはコンテンツが存在しないようです";
 
 /* The action title displayed in the iOS share menu */
 "today.addSourceShareTitle" = "Brave Newsにソースを追加する";
@@ -3512,7 +3518,7 @@
 "UserWalletGenericErrorMessage" = "Upholdのアカウントにログインする際に問題が発生しました。後ほど再度お試しください。";
 
 /* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "すみません。問題が発生しました";
+"UserWalletGenericErrorTitle" = "問題が発生しました";
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "バージョン %1$@ (%2$@)";

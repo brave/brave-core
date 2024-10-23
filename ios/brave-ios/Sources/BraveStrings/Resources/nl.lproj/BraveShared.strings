@@ -508,9 +508,6 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Momenteel gebruikte zoekmachines";
 
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "Voeg toe";
-
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Typ de zoek-URL en vervang de query door %1$s.\nVoorbeeld: https://youtube.com/search?q=%2$s \n(Als de site ondersteuning biedt voor OpenSearch, wordt een optie voor automatisch toevoegen gegeven wanneer dit veld wordt bewerkt.)";
 
@@ -1075,17 +1072,8 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Open toetsenbord automatisch";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Achtergrondafbeeldingen";
-
-/* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Afbeeldingstype";
-
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Standaardafbeeldingen";
-
-/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Gesponsord";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Nieuw tabblad";
@@ -2248,29 +2236,11 @@
 /* Title for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInTitle" = "Zet Brave Rewards aan om een gratis gesprek te starten";
 
-/* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "Zet aan om contentcreators te steunen";
-
-/* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Met Brave Rewards steun je contentcreators terwijl je browset.";
-
-/* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "Je steunt contentcreators";
-
-/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "Bedankt dat je contentcreators steunt tijdens het browsen!";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Als je klikt, ga je akkoord met de %1$@ en het %2$@. Je kunt dit altijd uitschakelen in Instellingen.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Steun contentcreators en uitgevers automatisch door privéadvertenties in Brave in te schakelen. Privéadvertenties in Brave zijn advertenties die je privacy respecteren en contentcreators steunen.";
-
-/* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Schakel Brave Rewards in";
-
-/* Displayed under verified publishers */
-"rewards.supportingPublisher" = "Je steunt contentcreators zoals deze.";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Aantal contentcreators die je deze maand hebt gesteund.";
@@ -3039,9 +3009,6 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Kies het type apparaat dat je wilt synchroniseren.";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Code is verlopen. Maak een nieuwe aan door op de knop hieronder te tikken.";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "Deze tijdelijke code is geldig voor de komende %@";

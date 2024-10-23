@@ -59,6 +59,9 @@
 "e13lS3-qKrzyX" = "Sadece onaylamak için soruyorum, \"QR Kodunu Tara\" bölümünü mü istediniz?";
 
 /* (No Comment) */
+"e13lS3-U0eRbw" = "Sadece onaylamak için soruyorum, \"Leo YZ\" bölümünü mü istediniz?";
+
+/* (No Comment) */
 "e13lS3-VBH4G6" = "Sadece onaylamak için soruyorum, \"Geçmiş\" bölümünü mü istediniz?";
 
 /* (No Comment) */
@@ -72,6 +75,39 @@
 
 /* (No Comment) */
 "EUS9FL" = "Pencere Öğesi Kısayolu";
+
+/* (No Comment) */
+"EvESs0-0W40Cl" = "Sadece onaylamak için soruyorum, \"Yeni Sekme\" bölümünü mü istediniz?";
+
+/* (No Comment) */
+"EvESs0-crhbMy" = "Sadece onaylamak için soruyorum, \"Yer İşaretleri\" bölümünü mü istediniz?";
+
+/* (No Comment) */
+"EvESs0-FGO5qW" = "Sadece onaylamak için soruyorum, \"Brave Oynatma Listesi\" bölümünü mü istediniz?";
+
+/* (No Comment) */
+"EvESs0-jXiFQY" = "Sadece onaylamak için soruyorum, \"Brave Cüzdanı\" bölümünü mü istediniz?";
+
+/* (No Comment) */
+"EvESs0-nthxSL" = "Sadece onaylamak için soruyorum, \"İndirilenler\" bölümünü mü istediniz?";
+
+/* (No Comment) */
+"EvESs0-qKrzyX" = "Sadece onaylamak için soruyorum, \"QR Kodunu Tara\" bölümünü mü istediniz?";
+
+/* (No Comment) */
+"EvESs0-U0eRbw" = "Sadece onaylamak için soruyorum, \"Leo YZ\" bölümünü mü istediniz?";
+
+/* (No Comment) */
+"EvESs0-VBH4G6" = "Sadece onaylamak için soruyorum, \"Geçmiş\" bölümünü mü istediniz?";
+
+/* (No Comment) */
+"EvESs0-vs094F" = "Sadece onaylamak için soruyorum, \"Yeni Gizli Sekme\" bölümünü mü istediniz?";
+
+/* (No Comment) */
+"EvESs0-XCyA8c" = "Sadece onaylamak için soruyorum, \"Brave News\" bölümünü mü istediniz?";
+
+/* (No Comment) */
+"EvESs0-Y7TWy8" = "Sadece onaylamak için soruyorum, \"Arama\" bölümünü mü istediniz?";
 
 /* (No Comment) */
 "FGO5qW" = "Brave Oynatma Listesi";
@@ -110,6 +146,9 @@
 "L1fziM-qKrzyX" = "\"QR Kodunu Tara\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
+"L1fziM-U0eRbw" = "\"Leo YZ\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
 "L1fziM-VBH4G6" = "\"Geçmiş\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
@@ -120,6 +159,9 @@
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "\"Arama\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
+"M2Y1rg" = "#4";
 
 /* (No Comment) */
 "nthxSL" = "İndirilenler";
@@ -147,6 +189,9 @@
 
 /* (No Comment) */
 "r2EI05-qKrzyX" = "Sadece onaylamak için soruyorum, \"QR Kodunu Tara\" bölümünü mü istediniz?";
+
+/* (No Comment) */
+"r2EI05-U0eRbw" = "Sadece onaylamak için soruyorum, \"Leo YZ\" bölümünü mü istediniz?";
 
 /* (No Comment) */
 "r2EI05-VBH4G6" = "Sadece onaylamak için soruyorum, \"Geçmiş\" bölümünü mü istediniz?";
@@ -188,6 +233,9 @@
 "tNCrcE-qKrzyX" = "\"QR Kodunu Tara\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
+"tNCrcE-U0eRbw" = "\"Leo YZ\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
 "tNCrcE-VBH4G6" = "\"Geçmiş\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
@@ -221,6 +269,9 @@
 "TxuMja-qKrzyX" = "\"QR Kodunu Tara\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
+"TxuMja-U0eRbw" = "\"Leo YZ\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
 "TxuMja-VBH4G6" = "\"Geçmiş\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
@@ -234,6 +285,9 @@
 
 /* (No Comment) */
 "tYwiRd" = "Tahmini Zaman Tasarrufu";
+
+/* (No Comment) */
+"U0eRbw" = "Leo YZ";
 
 /* (No Comment) */
 "VBH4G6" = "Geçmiş";
@@ -275,6 +329,9 @@
 "YQiQuz-qKrzyX" = "Sadece onaylamak için soruyorum, \"QR Kodunu Tara\" bölümünü mü istediniz?";
 
 /* (No Comment) */
+"YQiQuz-U0eRbw" = "Sadece onaylamak için soruyorum, \"Leo YZ\" bölümünü mü istediniz?";
+
+/* (No Comment) */
 "YQiQuz-VBH4G6" = "Sadece onaylamak için soruyorum, \"Geçmiş\" bölümünü mü istediniz?";
 
 /* (No Comment) */
@@ -285,6 +342,39 @@
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Sadece onaylamak için soruyorum, \"Arama\" bölümünü mü istediniz?";
+
+/* (No Comment) */
+"z517nu-0W40Cl" = "\"Yeni Sekme\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
+"z517nu-crhbMy" = "\"Yer İşaretleri\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
+"z517nu-FGO5qW" = "\"Brave Oynatma Listesi\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
+"z517nu-jXiFQY" = "\"Brave Cüzdanı\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
+"z517nu-nthxSL" = "\"İndirilenler\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
+"z517nu-qKrzyX" = "\"QR Kodunu Tara\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
+"z517nu-U0eRbw" = "\"Leo YZ\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
+"z517nu-VBH4G6" = "\"Geçmiş\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
+"z517nu-vs094F" = "\"Yeni Gizli Sekme\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
+"z517nu-XCyA8c" = "\"Brave News\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
+"z517nu-Y7TWy8" = "\"Arama\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
 "ziTvSZ" = "Kısayollar Pencere Öğesi Yapılandırması";

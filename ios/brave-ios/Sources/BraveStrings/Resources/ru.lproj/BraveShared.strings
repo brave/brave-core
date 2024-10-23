@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Добавить закладку";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Данные Brave Рекламы";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Реклама и трекеры";
 
@@ -513,9 +516,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Используемые поисковые системы";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "Добавить";
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Введите URL поисковой системы и смените запрос на %1$s.\nПример: https://youtube.com/search?q=%2$s.\nЕсли ресурс поддерживает OpenSearch, можно воспользоваться автодобавлением.";
@@ -1081,17 +1081,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Автоматически открывать клавиатуру";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Фоновые изображения";
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "Фон";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Тип изображения";
+"ntp.settingsBackgroundImageSubMenu" = "Тип медиафайла";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Изображения по умолчанию";
 
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Спонсорские изображения и видео";
+
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Спонсируемые изображения";
+"ntp.settingsSponsoredImagesSelection" = "Спонсорские изображения";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Новая вкладка";
@@ -1413,6 +1416,9 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Разрешить выполнение аналитики продукта без нарушения конфиденциальности (P3A)";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "Закрыть сообщение о продукте, не нарушающем конфиденциальность";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Подключение к сайту уязвимо.";
@@ -2258,28 +2264,28 @@
 "rewards.braveTalkRewardsOptInTitle" = "Чтобы начать бесплатный вызов, включите Brave Rewards";
 
 /* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "Включите, если хотите поддерживать создателей контента";
+"rewards.disabledBody" = "Включите, чтобы поддержать Brave и сообщество BAT";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Используя Brave Rewards, вы помогаете поддерживать создателей контента.";
+"rewards.disabledStatusBody" = "Используя Brave Награды, вы помогаете поддерживать Brave и сообщество BAT.";
 
 /* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "Вы помогаете поддерживать создателей контента";
+"rewards.enabledBody" = "Вы помогаете поддерживать Brave и сообщество BAT.";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "Просматривая сайты, вы помогаете поддерживать создателей контента. Спасибо!";
+"rewards.enabledStatusBody" = "Спасибо, что поддерживаете Brave и сообщество BAT!";
 
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Нажимая кнопку, вы принимаете следующие соглашения: %1$@ и %2$@. Вы можете в любое время изменить настройки.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Включив Brave Private Ads, вы будете автоматически поддерживать издателей и создателей контента. Brave Private Ads — это реклама, которая не нарушает конфиденциальность ваших данных.";
+"rewards.settingsToggleMessage" = "Вы можете поддержать Brave и сообщество BAT, включив Brave Награды и просматривая Brave Рекламу.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Включить Brave Rewards";
 
 /* Displayed under verified publishers */
-"rewards.supportingPublisher" = "Вы помогаете поддерживать создателей контента, таких как этот издатель.";
+"rewards.supportingPublisher" = "Этот автор контента зарегистрирован как Brave Автор.";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Количество создателей контента, которых вы поддерживаете в этом месяце.";

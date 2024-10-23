@@ -151,8 +151,7 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "만료됨";
 
-/* Description of vpn tunnel protocol
-   The alert title showing vpn region is changed */
+/* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "선호하는 전송 프로토콜을 선택하세요. 기존 VPN을 전환하면 자격증명이 지워지고 VPN 연결이 현재 수립되어 있다면 재연결됩니다.";
 
 /* Message for error when we fail to switch tunnel protocol for the user */
@@ -298,6 +297,9 @@
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "코드 사용";
+
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "VPN 리전 변경됨";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Brave Firewall + VPN 구성이 재설정되고 모든 오류가 정정됩니다. 이 프로세스는 1분 정도 소요됩니다.";

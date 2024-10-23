@@ -74,6 +74,36 @@
 "EUS9FL" = "Widget-snelkoppeling";
 
 /* (No Comment) */
+"EvESs0-0W40Cl" = "Even voor de zekerheid, je wilde 'Nieuw tabblad', toch?";
+
+/* (No Comment) */
+"EvESs0-crhbMy" = "Even voor de zekerheid, je wilde 'Bladwijzers', toch?";
+
+/* (No Comment) */
+"EvESs0-FGO5qW" = "Even voor de zekerheid, je wilde 'Brave Playlist', toch?";
+
+/* (No Comment) */
+"EvESs0-jXiFQY" = "Even voor de zekerheid, je wilde 'Brave Wallet', toch?";
+
+/* (No Comment) */
+"EvESs0-nthxSL" = "Even voor de zekerheid, je wilde 'Downloads', toch?";
+
+/* (No Comment) */
+"EvESs0-qKrzyX" = "Even voor de zekerheid, je wilde 'Scan QR-code', toch?";
+
+/* (No Comment) */
+"EvESs0-VBH4G6" = "Even voor de zekerheid, je wilde 'Geschiedenis', toch?";
+
+/* (No Comment) */
+"EvESs0-vs094F" = "Even voor de zekerheid, je wilde 'Nieuw privétabblad', toch?";
+
+/* (No Comment) */
+"EvESs0-XCyA8c" = "Even voor de zekerheid, je wilde 'Brave News', toch?";
+
+/* (No Comment) */
+"EvESs0-Y7TWy8" = "Even voor de zekerheid, je wilde 'Search', toch?";
+
+/* (No Comment) */
 "FGO5qW" = "Brave Playlist";
 
 /* (No Comment) */
@@ -285,6 +315,36 @@
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Even voor de zekerheid, je wilde 'Search', toch?";
+
+/* (No Comment) */
+"z517nu-0W40Cl" = "Er zijn ${count} opties voor ‘Nieuw tabblad’.";
+
+/* (No Comment) */
+"z517nu-crhbMy" = "Er zijn ${count} opties voor ‘Bladwijzers’.";
+
+/* (No Comment) */
+"z517nu-FGO5qW" = "Er zijn ${count} opties voor ‘Brave Playlist’.";
+
+/* (No Comment) */
+"z517nu-jXiFQY" = "Er zijn ${count} opties voor ‘Brave Wallet’.";
+
+/* (No Comment) */
+"z517nu-nthxSL" = "Er zijn ${count} opties voor ‘Downloads’.";
+
+/* (No Comment) */
+"z517nu-qKrzyX" = "Er zijn ${count} opties voor ‘Scan QR-code’.";
+
+/* (No Comment) */
+"z517nu-VBH4G6" = "Er zijn ${count} opties voor ‘Geschiedenis’.";
+
+/* (No Comment) */
+"z517nu-vs094F" = "Er zijn ${count} opties voor ‘Nieuw privétabblad’.";
+
+/* (No Comment) */
+"z517nu-XCyA8c" = "Er zijn ${count} opties voor ‘Brave News’.";
+
+/* (No Comment) */
+"z517nu-Y7TWy8" = "Er zijn ${count} opties voor ‘Search’.";
 
 /* (No Comment) */
 "ziTvSZ" = "Configuratie van Opdrachten-widget";

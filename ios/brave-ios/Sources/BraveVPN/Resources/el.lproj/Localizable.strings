@@ -151,8 +151,7 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Έχει λήξει";
 
-/* Description of vpn tunnel protocol
-   The alert title showing vpn region is changed */
+/* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Επιλέξτε το πρωτόκολλο μεταφοράς που προτιμάτε. Μετά την εναλλαγή, τα υπάρχοντα διαπιστευτήριά σας VPN θα εκκαθαριστούν και θα συνδεθείτε ξανά, εάν έχει δημιουργηθεί μια σύνδεση VPN τη δεδομένη στιγμή.";
 
 /* Message for error when we fail to switch tunnel protocol for the user */
@@ -298,6 +297,9 @@
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Εξαργύρωση κωδικού";
+
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "Η περιοχή VPN άλλαξε";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Αυτή η ενέργεια θα επαναφέρει τη διαμόρφωση Τείχους προστασίας + VPN Brave και θα διορθώσει τυχόν σφάλματα. Αυτή η διαδικασία μπορεί να χρειαστεί λίγο χρόνο.";

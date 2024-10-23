@@ -85,6 +85,9 @@
 /* The title of the menu where user can change the default model */
 "aichat.defaultModelViewTitle" = "Standardmodell";
 
+/* The text displayed under an edited user prompt/message beside a timestamp. */
+"aichat.editedMessageCaption" = "Redigert";
+
 /* The title for view which user type feedback */
 "aichat.feedbackInputViewTitle" = "Send inn en tilbakemelding her";
 
@@ -139,6 +142,9 @@
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Lynrask chat";
 
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hei! Jeg heter Leo. Jeg er tilgjengelig gjennom Brave og driftes av Claude 3 Sonnet – en modell laget av Anthropic for å kunne ha samtaler og behandle tekst.";
+
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet av Anthropic";
 
@@ -147,6 +153,12 @@
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Hei! Jeg heter Leo, og er en AI-assistent fra %@ som du kan snakke med gjennom Brave. Spør meg om hva som helst, så skal jeg svare deg så godt jeg kan!";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageLlamaMessageDescription" = "Hei! Jeg heter Leo, og er en KI-assistent som Brave er 100% vert for. Jeg kjører på Llama 3 8B – en modell fra Meta som er utviklet for å være effektiv og anvendelig for mange ulike typer bruk.";
+
+/* The model and creator for intro message - Llama 3.1 8B is the model name -- Meta is the creator */
+"aichat.introMessageLlamaModelDescription" = "Llama 3.1 8B fra Meta";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Generell chat";
@@ -301,9 +313,6 @@
 /* The title of action for quick menu which display subscription management view */
 "aichat.quickMenuManageSubscriptionActionTitle" = "Administrer abonnementer";
 
-/* The title of action for quick menu which starts a new chat */
-"aichat.quickMenuNewChatActionTitle" = "Ny chat";
-
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "Feil ved rating av svar";
 
@@ -327,6 +336,9 @@
 
 /* The title for disliking response to clipboard action */
 "aichat.responseContextMenuDislikeAnswerTitle" = "Gi svaret tommel ned";
+
+/* The title for editing user prompt action from context menu */
+"aichat.responseContextMenuEditPromptTitle" = "Rediger prompt";
 
 /* The title for liking response to clipboard action */
 "aichat.responseContextMenuLikeAnswerTitle" = "Gi svaret tommel opp";

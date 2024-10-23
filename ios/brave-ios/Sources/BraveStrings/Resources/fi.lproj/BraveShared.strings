@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Lisää kirjanmerkki";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Brave-mainosten tiedot";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Mainokset ja seurantaohjelmat";
 
@@ -513,9 +516,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Tällä hetkellä käytössä olevat hakukoneet";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "Lisää";
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Kirjoita haun URL-osoite ja korvaa kysely sanalla %1$s.\nEsimerkiksi: https://youtube.com/search?q=%2$s\n(Jos sivusto tukee OpenSearchia, vaihtoehto lisätään automaattisesti, kun muokkaat tätä kenttää.)";
@@ -1081,17 +1081,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Näppäimistön automaattinen avaaminen";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Taustakuvat";
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "Tausta";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Kuvatyyppi";
+"ntp.settingsBackgroundImageSubMenu" = "Mediatyyppi";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Oletusarvoiset kuvat";
 
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Sponsoroidut kuvat ja videot";
+
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Sponsoroitu";
+"ntp.settingsSponsoredImagesSelection" = "Sponsoroidut kuvat";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Uusi välilehtisivu";
@@ -1413,6 +1416,9 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Salli yksityisyyden säilyttävä tuoteanalytiikka (P3A)";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "Sulje yksityisyyden säilyttävä tuotehuomioteksti";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Sivustolle muodostamasi yhteys ei ole täysin turvallinen.";
@@ -2258,28 +2264,28 @@
 "rewards.braveTalkRewardsOptInTitle" = "Aloita ilmainen puhelu ottamalla Brave Rewards käyttöön";
 
 /* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "Laita päälle tukeaksesi sisällönluojia";
+"rewards.disabledBody" = "Ota käyttöön tukeaksesi Bravea ja BAT-yhteisöä.";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Brave-palkintojen käyttö auttaa sisällöntuottajia selaamisen aikana.";
+"rewards.disabledStatusBody" = "Brave-palkintojen käyttäminen tukee Bravea ja BAT-yhteisöä.";
 
 /* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "Tuet sisällönluojia";
+"rewards.enabledBody" = "Autat tukemaan Bravea ja BAT-yhteisöä.";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "Kiitos, että tuet sisällöntuottajia selaamisen aikana!";
+"rewards.enabledStatusBody" = "Kiitos, että autat tukemaan Bravea ja BAT-yhteisöä!";
 
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Klikkaamalla hyväksyt seuraavat: %1$@ ja %2$@. Poista käytöstä milloin tahansa asetuksissa.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Tue sisällöntuottajia ja julkaisijoita automaattisesti ottamalla käyttöön Braven yksityiset mainokset käyttöön. Braven yksityiset mainokset ovat yksityisyyttä kunnioittavia mainoksia, jotka antavat palautetta sisällöntuottajille.";
+"rewards.settingsToggleMessage" = "Tue Bravea ja BAT-yhteisöä ottamalla Brave-palkinnot käyttöön ja katsomalla Brave-mainoksia.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Salli Brave -palkinnot";
 
 /* Displayed under verified publishers */
-"rewards.supportingPublisher" = "Tuet tämän kaltaisia ​​sisällöntuottajia.";
+"rewards.supportingPublisher" = "Tämä sisällöntuottaja on vahvistettu Brave-sisällöntuottaja";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Niiden sisällöntuottajien määrä, joita olet tukenut tässä kuussa.";
@@ -3050,7 +3056,7 @@
 "SyncChooseDeviceHeader" = "Valitse synkronoitavan kohdelaitteen tyyppi.";
 
 /* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Koodi vanhentui. Luo uusi klikkaamalla alla olevaa painiketta.";
+"SyncCodeExpirationTitleLabel" = "Koodi vanhentui. Luo uusi napauttamalla alla olevaa painiketta.";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "Tämä väliaikainen koodi on voimassa seuraavat %@";

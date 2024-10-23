@@ -85,6 +85,9 @@
 /* The title of the menu where user can change the default model */
 "aichat.defaultModelViewTitle" = "預設模型";
 
+/* The text displayed under an edited user prompt/message beside a timestamp. */
+"aichat.editedMessageCaption" = "已編輯";
+
 /* The title for view which user type feedback */
 "aichat.feedbackInputViewTitle" = "在此處提供意見反應";
 
@@ -139,6 +142,9 @@
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "快速流暢的聊天";
 
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "您好，我是 Leo。我是 Brave 的代理機器人，由 Anthropic 建立的模型 Claude 3.5 Sonnet 提供技術支援，可勝任對話和文字處理工作。";
+
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "由 Anthropic 建置的 Claude Sonnet";
 
@@ -147,6 +153,12 @@
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "您好，我是 Leo。我是 Brave 的 AI 助理，由 %@ 提供技術支援。歡迎詢問我任何問題，我會盡力回答。";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageLlamaMessageDescription" = "您好，我是 Leo。我是 Brave 的完全託管型人工智慧助理。我由 Llama 3.1 8B 提供技術支援，Llama 3.1 8B 是由 Meta 建立的模型，效能卓越且適用於許多使用案例。";
+
+/* The model and creator for intro message - Llama 3.1 8B is the model name -- Meta is the creator */
+"aichat.introMessageLlamaModelDescription" = "由 Meta 建立的 Llama 3.1 8b";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "一般目的聊天";
@@ -301,9 +313,6 @@
 /* The title of action for quick menu which display subscription management view */
 "aichat.quickMenuManageSubscriptionActionTitle" = "管理訂閱";
 
-/* The title of action for quick menu which starts a new chat */
-"aichat.quickMenuNewChatActionTitle" = "開始新聊天";
-
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "為回答評分時發生錯誤";
 
@@ -327,6 +336,9 @@
 
 /* The title for disliking response to clipboard action */
 "aichat.responseContextMenuDislikeAnswerTitle" = "不喜歡此回答";
+
+/* The title for editing user prompt action from context menu */
+"aichat.responseContextMenuEditPromptTitle" = "編輯提示";
 
 /* The title for liking response to clipboard action */
 "aichat.responseContextMenuLikeAnswerTitle" = "喜歡此回答";

@@ -514,9 +514,6 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Utilizado actualmente en buscadores";
 
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "Añadir";
-
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Escribe la url de búsqueda y sustituye la consulta por %1$s.\nPor ejemplo: https://youtube.com/search?q=%2$s \n(Si el sitio es compatible con OpenSearch, la opción de añadir automáticamente estará disponible al editar este campo.)";
 
@@ -1081,17 +1078,11 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Abrir teclado automáticamente";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Imágenes de fondo";
-
-/* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Tipo de imagen";
-
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Imágenes predeterminadas";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Patrocinados";
+"ntp.settingsSponsoredImagesSelection" = "Imágenes de patrocinadores";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Página de pestaña nueva";
@@ -2257,29 +2248,11 @@
 /* Title for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInTitle" = "Para iniciar una llamada gratuita, activa Brave Rewards";
 
-/* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "Activar para ayudar a apoyar a los creadores de contenido";
-
-/* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Si usas Brave Rewards, ayudas a apoyar a los creadores de contenido mientras navegas.";
-
-/* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "Estás ayudando a apoyar a los creadores de contenido";
-
-/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "¡Gracias por ayudar a apoyar a los creadores de contenido mientras navegas!";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Al hacer clic, aceptas las %1$@ y la %2$@. Puedes deshabilitar esta opción en cualquier momento en Ajustes.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Apoya a los creadores y editores de contenido de forma automática al activar Brave Private Ads. Brave Private Ads son anuncios que respetan la privacidad y que retribuyen a los creadores de contenido.";
-
-/* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Habilitar Recompensas de Brave";
-
-/* Displayed under verified publishers */
-"rewards.supportingPublisher" = "Estás ayudando a apoyar a los creadores de contenido como este.";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Número de creadores de contenido a los que ayudas a apoyar este mes.";
@@ -3048,9 +3021,6 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Elige el tipo de dispositivo con el que te gustaría realizar la sincronización.";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "El código ha caducado. Haga clic en el botón de abajo para generar uno nuevo.";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "Este código temporal solo tiene validez durante las próximas %@";

@@ -289,9 +289,6 @@
 /* The title of action for quick menu which display subscription management view */
 "aichat.quickMenuManageSubscriptionActionTitle" = "Beheer abonnementen";
 
-/* The title of action for quick menu which starts a new chat */
-"aichat.quickMenuNewChatActionTitle" = "Nieuwe chat";
-
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "Fout bij beoordeling van antwoord";
 

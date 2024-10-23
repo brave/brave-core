@@ -85,6 +85,9 @@
 /* The title of the menu where user can change the default model */
 "aichat.defaultModelViewTitle" = "Standardmodell";
 
+/* The text displayed under an edited user prompt/message beside a timestamp. */
+"aichat.editedMessageCaption" = "Bearbeitet";
+
 /* The title for view which user type feedback */
 "aichat.feedbackInputViewTitle" = "Geben Sie hier Ihr Feedback";
 
@@ -139,6 +142,9 @@
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Blitzschneller Chat";
 
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hallo, ich bin Leo. Ich bin ein Proxy von Brave und werde von Claude 3.5 Sonnet angetrieben, einem von Anthropic entwickeltem Modell, um Konversations- und Textverarbeitungsaufgaben zu unterstützen.";
+
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet von Anthropic";
 
@@ -147,6 +153,12 @@
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von %@ betrieben. Fragen Sie mich irgendetwas, und ich werde mein Bestes tun, um zu antworten.";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageLlamaMessageDescription" = "Hallo, ich bin Leo. Ich bin ein vollständig gehosteter KI-Assistent von Brave. Ich werde von Llama 3.1 8B angetrieben, einem von Meta entwickelten Modell, und bin damit leistungsfähig und für viele Anwendungsfälle einsetzbar.";
+
+/* The model and creator for intro message - Llama 3.1 8B is the model name -- Meta is the creator */
+"aichat.introMessageLlamaModelDescription" = "Llama 3.1 8B von Meta";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Allgemeiner Chat";
@@ -301,9 +313,6 @@
 /* The title of action for quick menu which display subscription management view */
 "aichat.quickMenuManageSubscriptionActionTitle" = "Abonnements verwalten";
 
-/* The title of action for quick menu which starts a new chat */
-"aichat.quickMenuNewChatActionTitle" = "Neuer Chat";
-
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "Antwort zur Fehlerbewertung";
 
@@ -327,6 +336,9 @@
 
 /* The title for disliking response to clipboard action */
 "aichat.responseContextMenuDislikeAnswerTitle" = "Antwort als schlecht markieren";
+
+/* The title for editing user prompt action from context menu */
+"aichat.responseContextMenuEditPromptTitle" = "Befehl bearbeiten";
 
 /* The title for liking response to clipboard action */
 "aichat.responseContextMenuLikeAnswerTitle" = "Antwort als gut markieren";

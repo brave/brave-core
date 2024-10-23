@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Yer İşareti Ekle";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Brave Reklamları Verileri";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Reklamlar ve İzleyiciler";
 
@@ -513,9 +516,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Şu anda kullanılan arama motorları";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "Ekle";
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Arama URL'sini yazın ve sorguyu %s ile değiştirin.\\nÖrneğin: https://youtube.com/search?q= %s \\n(Site OpenSearch'i destekliyorsa, bu alan düzenlenirken otomatik olarak ekleme seçeneği sağlanır.)";
@@ -1081,17 +1081,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Klavyeyi Otomatik Aç";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Arka Plan Resimleri";
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "Arka Plan";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Resim Türü";
+"ntp.settingsBackgroundImageSubMenu" = "Medya Türü";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Varsayılan Resimler";
 
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Sponsorlu Görseller ve Videolar";
+
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Sponsorlular";
+"ntp.settingsSponsoredImagesSelection" = "Sponsorlu Görseller";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Yeni Sekme Sayfası";
@@ -1413,6 +1416,9 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Gizlilik Korumalı Ürün Analizine İzin Ver (P3A)";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "Gizlilik Korumalı Ürün Belirtecini Kapat";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Bu siteye bağlantınız tamamen güvenli değil.";
@@ -2258,28 +2264,28 @@
 "rewards.braveTalkRewardsOptInTitle" = "Ücretsiz arama başlatmak için Brave Rewards'u açın";
 
 /* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "İçerik oluşturucuları desteklemeye yardımcı olmak için açın";
+"rewards.disabledBody" = "Brave ve BAT topluluğunu desteklemeye yardım etmek için açın.";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Brave Ödülleri'ni kullanmak, gezinirken içerik oluşturucuları desteklemeye yardımcı olur.";
+"rewards.disabledStatusBody" = "Brave Ödüllerini kullanmak Brave ve BAT topluluğunu desteklemeye yardımcı olur.";
 
 /* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "İçerik oluşturucuları desteklemeye yardımcı oluyorsunuz";
+"rewards.enabledBody" = "Brave ve BAT topluluğunu desteklemeye yardımcı oluyorsunuz.";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "Gezinirken içerik oluşturucuları desteklemeye yardımcı olduğunuz için teşekkür ederiz!";
+"rewards.enabledStatusBody" = "Brave ve BAT topluluğunu desteklemeye yardımcı olduğunuz için teşekkürler!";
 
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Tıkladığınızda %1$@ ve %2$@ içeriğini kabul etmiş olursunuz. Dilediğiniz zaman Ayarlar bölümünden devre dışı bırakın.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Brave Özel Reklamları'ni etkinleştirerek içerik oluşturucuları ve yayıncıları otomatik olarak destekleyin. Brave Özel Reklamları, içerik oluşturuculara geri veren gizliliğe saygılı reklamlardır.";
+"rewards.settingsToggleMessage" = "Brave Ödüllerini etkinleştirerek ve Brave Reklamlarını görerek Brave ve BAT topluluğunu desteklemeye yardım edin.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Brave Ödülleri'ni Etkinleştir";
 
 /* Displayed under verified publishers */
-"rewards.supportingPublisher" = "Bunun gibi içerik oluşturucuları desteklemeye yardımcı oluyorsunuz.";
+"rewards.supportingPublisher" = "Bu içerik üreticisi, Brave Oluşturucuları üzerinden doğrulanmış";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Bu ay desteklemeye yardımcı olduğunuz içerik oluşturucuların sayısı.";
@@ -3050,7 +3056,7 @@
 "SyncChooseDeviceHeader" = "Eşitlemek istediğiniz aygıt türünü seçin.";
 
 /* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Kodun süresi doldu. Aşağıdaki butona tıklayarak yeni bir tane oluşturun.";
+"SyncCodeExpirationTitleLabel" = "Kodun süresi doldu. Aşağıdaki butona dokunarak yeni bir tane oluşturun.";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "Bu geçici kod, %@ boyunca geçerlidir";

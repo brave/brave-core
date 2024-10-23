@@ -2,6 +2,9 @@
 "widgets.BookmarksMenuItem" = "Záložky ";
 
 /* The name of the feature */
+"widgets.braveLeo" = "Umělá inteligence Leo";
+
+/* The name of the feature */
 "widgets.braveNews" = "Zprávy Brave";
 
 /* Title for downloads menu item */

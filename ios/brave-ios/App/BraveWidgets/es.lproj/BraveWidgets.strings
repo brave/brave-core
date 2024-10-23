@@ -74,6 +74,36 @@
 "EUS9FL" = "Accesos directos al widget";
 
 /* (No Comment) */
+"EvESs0-0W40Cl" = "Solo para confirmar: ¿querías decir \"Nueva pestaña\"?";
+
+/* (No Comment) */
+"EvESs0-crhbMy" = "Solo para confirmar: ¿querías decir \"Marcadores\"?";
+
+/* (No Comment) */
+"EvESs0-FGO5qW" = "Solo para confirmar: ¿querías decir \"Lista de reproducción de Brave\"?";
+
+/* (No Comment) */
+"EvESs0-jXiFQY" = "Solo para confirmar: ¿querías decir \"Cartera de Brave\"?";
+
+/* (No Comment) */
+"EvESs0-nthxSL" = "Solo para confirmar: ¿querías decir \"Descargas\"?";
+
+/* (No Comment) */
+"EvESs0-qKrzyX" = "Solo para confirmar: ¿querías decir \"Escanear código QR\"?";
+
+/* (No Comment) */
+"EvESs0-VBH4G6" = "Solo para confirmar: ¿querías decir \"Historial\"?";
+
+/* (No Comment) */
+"EvESs0-vs094F" = "Solo para confirmar: ¿querías decir \"Nueva pestaña privada\"?";
+
+/* (No Comment) */
+"EvESs0-XCyA8c" = "Solo para confirmar: ¿querías decir \"Noticias de Brave\"?";
+
+/* (No Comment) */
+"EvESs0-Y7TWy8" = "Solo para confirmar: ¿querías decir \"Búsqueda\"?";
+
+/* (No Comment) */
 "FGO5qW" = "Lista de reproducción de Brave";
 
 /* (No Comment) */
@@ -236,6 +266,9 @@
 "tYwiRd" = "Tiempo estimado ahorrado";
 
 /* (No Comment) */
+"U0eRbw" = "Leo IA";
+
+/* (No Comment) */
 "VBH4G6" = "Historial";
 
 /* (No Comment) */
@@ -285,6 +318,36 @@
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Solo para confirmar: ¿querías decir \"Búsqueda\"?";
+
+/* (No Comment) */
+"z517nu-0W40Cl" = "Hay ${count} opciones que coinciden con \"Nueva pestaña\".";
+
+/* (No Comment) */
+"z517nu-crhbMy" = "Hay ${count} opciones que coinciden con \"Marcadores\".";
+
+/* (No Comment) */
+"z517nu-FGO5qW" = "Hay ${count} opciones que coinciden con \"Lista de reproducción de Brave\".";
+
+/* (No Comment) */
+"z517nu-jXiFQY" = "Hay ${count} opciones que coinciden con \"Cartera de Brave\".";
+
+/* (No Comment) */
+"z517nu-nthxSL" = "Hay ${count} opciones que coinciden con \"Descargas\".";
+
+/* (No Comment) */
+"z517nu-qKrzyX" = "Hay ${count} opciones que coinciden con \"Escanear código QR\".";
+
+/* (No Comment) */
+"z517nu-VBH4G6" = "Hay ${count} opciones que coinciden con \"Historial\".";
+
+/* (No Comment) */
+"z517nu-vs094F" = "Hay ${count} opciones que coinciden con \"Nueva pestaña privada\".";
+
+/* (No Comment) */
+"z517nu-XCyA8c" = "Hay ${count} opciones que coinciden con \"Noticias de Brave\".";
+
+/* (No Comment) */
+"z517nu-Y7TWy8" = "Hay ${count} opciones que coinciden con \"Búsqueda\".";
 
 /* (No Comment) */
 "ziTvSZ" = "Configuración del widget de accesos directos";

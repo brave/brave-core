@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Tambah Penanda Halaman";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Data Brave Ads";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Iklan dan Penjejak";
 
@@ -513,9 +516,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Enjin carian yang digunakan sekarang";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "Tambah";
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Tulis url carian dan gantikan pertanyaan dengan %1$s.\nSebagai contoh: https://youtube.com/search?q=%2$s \n(Sekiranya tapak ini menyokong OpenSearch, satu pilihan untuk menambah secara automatik akan diberikan semasa mengedit bidang ini.)";
@@ -1081,17 +1081,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Papan Kekunci Buka Secara Automatik";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Imej Latar belakang";
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "Latar Belakang";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Jenis Imej";
+"ntp.settingsBackgroundImageSubMenu" = "Jenis Media";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Imej Lalai";
 
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Imej & Video Tajaan";
+
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Tajaan";
+"ntp.settingsSponsoredImagesSelection" = "Tajaan Imej";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Halaman Tab Baru";
@@ -1413,6 +1416,9 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Benarkan Analitis Produk Pengekalan Privasi (P3A)";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "Tutup Seruan Produk Pengekalan Privasi";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Sambungan anda ke laman ini tidak selamat sepenuhnya.";
@@ -2258,28 +2264,28 @@
 "rewards.braveTalkRewardsOptInTitle" = "Untuk memulakan panggilan percuma, hidupkan Brave Rewards";
 
 /* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "Hidupkan untuk membantu menyokong pencipta kandungan";
+"rewards.disabledBody" = "Hidupkan untuk membantu dalam menyokong Brave dan komuniti BAT.";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Menggunakan Brave Rewards membantu menyokong pencipta kandungan sambil anda menyemak lalu.";
+"rewards.disabledStatusBody" = "Penggunaan Ganjaran Brave membantu dalam menyokong Brave dan komuniti BAT.";
 
 /* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "Anda membantu menyokong pencipta kandungan";
+"rewards.enabledBody" = "Anda membantu dalam menyokong Brave dan komuniti BAT.";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "Terima kasih kerana membantu menyokong pencipta kandungan sambil anda menyemak lalu!";
+"rewards.enabledStatusBody" = "Terima kasih kerana membantu dalam menyokong Brave dan komuniti BAT!";
 
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Dengan mengklik, anda bersetuju dengan %1$@ dan %2$@. Nyahdayakan bila-bila masa dalam Tetapan.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Sokong pencipta dan penerbit kandungan secara automatik dengan mendayakan Brave Private Ads. Brave Private Ads adalah iklan yang menghormati privasi yang memberikan kembali kepada pencipta kandungan.";
+"rewards.settingsToggleMessage" = "Berikan sokongan kepada Brave dan komuniti BAT dengan mendayakan Ganjaran Brave dan melihat Brave Ads.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Dayakan Brave Rewards";
 
 /* Displayed under verified publishers */
-"rewards.supportingPublisher" = "Anda membantu menyokong pencipta kandungan seperti yang ini.";
+"rewards.supportingPublisher" = "Pencipta kandungan ini ditentusahkan dengan Brave Creators";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Bilangan pencipta kandungan yang anda bantu sokong bulan ini.";
@@ -3050,7 +3056,7 @@
 "SyncChooseDeviceHeader" = "Pilih jenis peranti azng anda ingin menyegerakkan.";
 
 /* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Kod telah tamat tempoh. Jana kod baharu dengan mengklik butang di bawah.";
+"SyncCodeExpirationTitleLabel" = "Kod tamat tempoh. Janakan kod baharu dengan mengetik butang di bawah.";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "Kod sementara ini sah selama %@ seterusnya";

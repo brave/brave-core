@@ -139,8 +139,7 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Verlopen";
 
-/* Description of vpn tunnel protocol
-   The alert title showing vpn region is changed */
+/* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Selecteer het gewenste transportprotocol. Na de overschakeling worden de bestaande VPN-inloggegevens gewist en word je opnieuw verbonden als je momenteel een VPN-verbinding gebruikt.";
 
 /* Message for error when we fail to switch tunnel protocol for the user */

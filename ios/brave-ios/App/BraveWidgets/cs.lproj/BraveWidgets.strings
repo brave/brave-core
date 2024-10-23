@@ -59,6 +59,9 @@
 "e13lS3-qKrzyX" = "Jen pro potvrzení, chtěli jste „Skenovat QR kód“?";
 
 /* (No Comment) */
+"e13lS3-U0eRbw" = "Jen pro potvrzení, chtěli jste „Leo AI“?";
+
+/* (No Comment) */
 "e13lS3-VBH4G6" = "Jen pro potvrzení, chtěli jste „Historie“?";
 
 /* (No Comment) */
@@ -72,6 +75,39 @@
 
 /* (No Comment) */
 "EUS9FL" = "Zkratka widgetu";
+
+/* (No Comment) */
+"EvESs0-0W40Cl" = "Jen pro potvrzení, chtěli jste „Nová karta“?";
+
+/* (No Comment) */
+"EvESs0-crhbMy" = "Jen pro potvrzení, chtěli jste „Záložky“?";
+
+/* (No Comment) */
+"EvESs0-FGO5qW" = "Jen pro potvrzení, chtěli jste „Seznam skladeb Brave“?";
+
+/* (No Comment) */
+"EvESs0-jXiFQY" = "Jen pro potvrzení, chtěli jste „Peněženka Brave“?";
+
+/* (No Comment) */
+"EvESs0-nthxSL" = "Jen pro potvrzení, chtěli jste „Stahování“?";
+
+/* (No Comment) */
+"EvESs0-qKrzyX" = "Jen pro potvrzení, chtěli jste „Skenovat QR kód“?";
+
+/* (No Comment) */
+"EvESs0-U0eRbw" = "Jen pro potvrzení, chtěli jste „Leo AI“?";
+
+/* (No Comment) */
+"EvESs0-VBH4G6" = "Jen pro potvrzení, chtěli jste „Historie“?";
+
+/* (No Comment) */
+"EvESs0-vs094F" = "Jen pro potvrzení, chtěli jste „Nová soukromá karta“?";
+
+/* (No Comment) */
+"EvESs0-XCyA8c" = "Jen pro potvrzení, chtěli jste „Novinky Brave“?";
+
+/* (No Comment) */
+"EvESs0-Y7TWy8" = "Jen pro potvrzení, chtěli jste „Vyhledat“?";
 
 /* (No Comment) */
 "FGO5qW" = "Seznam stop Brave";
@@ -110,6 +146,9 @@
 "L1fziM-qKrzyX" = "Existují/existuje ${počet} možnosti/možností odpovídající „Skenovat QR kód“.";
 
 /* (No Comment) */
+"L1fziM-U0eRbw" = "Existují/existuje ${count} možnosti/možností odpovídající „Leo AI“.";
+
+/* (No Comment) */
 "L1fziM-VBH4G6" = "Existují/existuje ${počet} možnosti/možností odpovídající „Historie“.";
 
 /* (No Comment) */
@@ -120,6 +159,9 @@
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "Existují/existuje ${počet} možnosti/možností odpovídající „Vyhledat“.";
+
+/* (No Comment) */
+"M2Y1rg" = "#4";
 
 /* (No Comment) */
 "nthxSL" = "Stažené soubory";
@@ -147,6 +189,9 @@
 
 /* (No Comment) */
 "r2EI05-qKrzyX" = "Jen pro potvrzení, chtěli jste „Skenovat QR kód“?";
+
+/* (No Comment) */
+"r2EI05-U0eRbw" = "Jen pro potvrzení, chtěli jste „Leo AI“?";
 
 /* (No Comment) */
 "r2EI05-VBH4G6" = "Jen pro potvrzení, chtěli jste „Historie“?";
@@ -188,6 +233,9 @@
 "tNCrcE-qKrzyX" = "Existují/existuje ${počet} možnosti/možností odpovídající „Skenovat QR kód“.";
 
 /* (No Comment) */
+"tNCrcE-U0eRbw" = "Existují/existuje ${count} možnosti/možností odpovídající „Leo AI“.";
+
+/* (No Comment) */
 "tNCrcE-VBH4G6" = "Existují/existuje ${počet} možnosti/možností odpovídající „Historie“.";
 
 /* (No Comment) */
@@ -221,6 +269,9 @@
 "TxuMja-qKrzyX" = "Existují/existuje ${počet} možnosti/možností odpovídající „Skenovat QR kód“.";
 
 /* (No Comment) */
+"TxuMja-U0eRbw" = "Existují/existuje ${count} možnosti/možností odpovídající „Leo AI“.";
+
+/* (No Comment) */
 "TxuMja-VBH4G6" = "Existují/existuje ${počet} možnosti/možností odpovídající „Historie“.";
 
 /* (No Comment) */
@@ -234,6 +285,9 @@
 
 /* (No Comment) */
 "tYwiRd" = "Odhadovaná úspora času";
+
+/* (No Comment) */
+"U0eRbw" = "Umělá inteligence Leo";
 
 /* (No Comment) */
 "VBH4G6" = "History";
@@ -275,6 +329,9 @@
 "YQiQuz-qKrzyX" = "Jen pro potvrzení, chtěli jste „Skenovat QR kód“?";
 
 /* (No Comment) */
+"YQiQuz-U0eRbw" = "Jen pro potvrzení, chtěli jste „Leo AI“?";
+
+/* (No Comment) */
 "YQiQuz-VBH4G6" = "Jen pro potvrzení, chtěli jste „Historie“?";
 
 /* (No Comment) */
@@ -285,6 +342,39 @@
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Jen pro potvrzení, chtěli jste „Vyhledat“?";
+
+/* (No Comment) */
+"z517nu-0W40Cl" = "Existují/existuje ${počet} možnosti/možností odpovídající „Nová karta“.";
+
+/* (No Comment) */
+"z517nu-crhbMy" = "Existují/existuje ${počet} možnosti/možností odpovídající „Záložky“.";
+
+/* (No Comment) */
+"z517nu-FGO5qW" = "Existují/existuje ${počet} možnosti/možností odpovídající „Seznam skladeb Brave“.";
+
+/* (No Comment) */
+"z517nu-jXiFQY" = "Existují/existuje ${počet} možnosti/možností odpovídající „Peněženka Brave“.";
+
+/* (No Comment) */
+"z517nu-nthxSL" = "Existují/existuje ${počet} možnosti/možností odpovídající „Stahování“.";
+
+/* (No Comment) */
+"z517nu-qKrzyX" = "Existují/existuje ${počet} možnosti/možností odpovídající „Skenovat QR kód“.";
+
+/* (No Comment) */
+"z517nu-U0eRbw" = "Existují/existuje ${count} možnosti/možností odpovídající „Leo AI“.";
+
+/* (No Comment) */
+"z517nu-VBH4G6" = "Existují/existuje ${počet} možnosti/možností odpovídající „Historie“.";
+
+/* (No Comment) */
+"z517nu-vs094F" = "Existují/existuje ${počet} možnosti/možností odpovídající „Nová soukromá karta“.";
+
+/* (No Comment) */
+"z517nu-XCyA8c" = "Existují/existuje ${počet} možnosti/možností odpovídající „Novinky Brave“.";
+
+/* (No Comment) */
+"z517nu-Y7TWy8" = "Existují/existuje ${počet} možnosti/možností odpovídající „Vyhledat“.";
 
 /* (No Comment) */
 "ziTvSZ" = "Konfigurace widgetu zkratek";

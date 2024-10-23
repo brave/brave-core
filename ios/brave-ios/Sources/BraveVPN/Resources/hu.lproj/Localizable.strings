@@ -151,8 +151,7 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Lejárt";
 
-/* Description of vpn tunnel protocol
-   The alert title showing vpn region is changed */
+/* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Válassza ki a kívánt átviteli protokollt. A váltást követően a meglévő VPN-hitelesítési adatok törlődnek, és Ön újra csatlakoztatva lesz, ha a VPN-kapcsolat jelenleg üzemel.";
 
 /* Message for error when we fail to switch tunnel protocol for the user */
@@ -298,6 +297,9 @@
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Kód beváltása";
+
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "A VPN-régió módosult";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Ezzel visszaállítja a Brave-tűzfal + VPN konfigurációját, és kijavítja az esetleges hibákat. Ez a folyamat egy percig is eltarthat.";

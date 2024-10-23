@@ -59,6 +59,9 @@
 "e13lS3-qKrzyX" = "Naozaj ste chceli „Naskenovať QR kód“?";
 
 /* (No Comment) */
+"e13lS3-U0eRbw" = "Naozaj ste chceli „Leo AI“?";
+
+/* (No Comment) */
 "e13lS3-VBH4G6" = "Naozaj ste chceli „História“?";
 
 /* (No Comment) */
@@ -72,6 +75,39 @@
 
 /* (No Comment) */
 "EUS9FL" = "Skratka miniaplikácie";
+
+/* (No Comment) */
+"EvESs0-0W40Cl" = "Naozaj ste chceli „Nová karta“?";
+
+/* (No Comment) */
+"EvESs0-crhbMy" = "Naozaj ste chceli „Záložky“?";
+
+/* (No Comment) */
+"EvESs0-FGO5qW" = "Naozaj ste chceli „Zoznam prehrávania Brave“?";
+
+/* (No Comment) */
+"EvESs0-jXiFQY" = "Naozaj ste chceli „Peňaženka Brave“?";
+
+/* (No Comment) */
+"EvESs0-nthxSL" = "Naozaj ste chceli „Stiahnuté“?";
+
+/* (No Comment) */
+"EvESs0-qKrzyX" = "Naozaj ste chceli „Naskenovať QR kód“?";
+
+/* (No Comment) */
+"EvESs0-U0eRbw" = "Naozaj ste chceli „Leo AI“?";
+
+/* (No Comment) */
+"EvESs0-VBH4G6" = "Naozaj ste chceli „História“?";
+
+/* (No Comment) */
+"EvESs0-vs094F" = "Naozaj ste chceli „Nová súkromná karta“?";
+
+/* (No Comment) */
+"EvESs0-XCyA8c" = "Naozaj ste chceli „Správy Brave“?";
+
+/* (No Comment) */
+"EvESs0-Y7TWy8" = "Naozaj ste chceli „Hľadať“?";
 
 /* (No Comment) */
 "FGO5qW" = "Zoznam skladieb Brave";
@@ -110,6 +146,9 @@
 "L1fziM-qKrzyX" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Naskenovať QR kód“.";
 
 /* (No Comment) */
+"L1fziM-U0eRbw" = "Niekoľko možností (${count}) sa zhoduje s „Leo AI“.";
+
+/* (No Comment) */
 "L1fziM-VBH4G6" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „História“.";
 
 /* (No Comment) */
@@ -120,6 +159,9 @@
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Hľadať“.";
+
+/* (No Comment) */
+"M2Y1rg" = "Č. 4";
 
 /* (No Comment) */
 "nthxSL" = "Stiahnuté";
@@ -147,6 +189,9 @@
 
 /* (No Comment) */
 "r2EI05-qKrzyX" = "Naozaj ste chceli „Naskenovať QR kód“?";
+
+/* (No Comment) */
+"r2EI05-U0eRbw" = "Naozaj ste chceli „Leo AI“?";
 
 /* (No Comment) */
 "r2EI05-VBH4G6" = "Naozaj ste chceli „História“?";
@@ -188,6 +233,9 @@
 "tNCrcE-qKrzyX" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Naskenovať QR kód“.";
 
 /* (No Comment) */
+"tNCrcE-U0eRbw" = "Niekoľko možností (${count}) sa zhoduje s „Leo AI“.";
+
+/* (No Comment) */
 "tNCrcE-VBH4G6" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „História“.";
 
 /* (No Comment) */
@@ -221,6 +269,9 @@
 "TxuMja-qKrzyX" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Naskenovať QR kód“.";
 
 /* (No Comment) */
+"TxuMja-U0eRbw" = "Niekoľko možností (${count}) sa zhoduje s „Leo AI“.";
+
+/* (No Comment) */
 "TxuMja-VBH4G6" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „História“.";
 
 /* (No Comment) */
@@ -234,6 +285,9 @@
 
 /* (No Comment) */
 "tYwiRd" = "Približný ušetrený čas";
+
+/* (No Comment) */
+"U0eRbw" = "Leo AI";
 
 /* (No Comment) */
 "VBH4G6" = "História";
@@ -275,6 +329,9 @@
 "YQiQuz-qKrzyX" = "Naozaj ste chceli „Naskenovať QR kód“?";
 
 /* (No Comment) */
+"YQiQuz-U0eRbw" = "Naozaj ste chceli „Leo AI“?";
+
+/* (No Comment) */
 "YQiQuz-VBH4G6" = "Naozaj ste chceli „História“?";
 
 /* (No Comment) */
@@ -285,6 +342,39 @@
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Naozaj ste chceli „Hľadať“?";
+
+/* (No Comment) */
+"z517nu-0W40Cl" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Nová karta“.";
+
+/* (No Comment) */
+"z517nu-crhbMy" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Záložky“.";
+
+/* (No Comment) */
+"z517nu-FGO5qW" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Zoznam prehrávania Brave“.";
+
+/* (No Comment) */
+"z517nu-jXiFQY" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Peňaženka Brave“.";
+
+/* (No Comment) */
+"z517nu-nthxSL" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Stiahnuté“.";
+
+/* (No Comment) */
+"z517nu-qKrzyX" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Naskenovať QR kód“.";
+
+/* (No Comment) */
+"z517nu-U0eRbw" = "Niekoľko možností (${count}) sa zhoduje s „Leo AI“.";
+
+/* (No Comment) */
+"z517nu-VBH4G6" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „História“.";
+
+/* (No Comment) */
+"z517nu-vs094F" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Nová súkromná karta“.";
+
+/* (No Comment) */
+"z517nu-XCyA8c" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Správy Brave“.";
+
+/* (No Comment) */
+"z517nu-Y7TWy8" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Hľadať“.";
 
 /* (No Comment) */
 "ziTvSZ" = "Skratky konfigurácie miniaplikácií";

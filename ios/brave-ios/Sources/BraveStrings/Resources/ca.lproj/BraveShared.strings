@@ -511,9 +511,6 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Motors de cerca utilitzats actualment";
 
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "Afegeix";
-
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Escriu l'URL de cerca i substitueix la consulta per %1$s.\nPer exemple: https://youtube.com/search?q=%2$s\n(Si el lloc admet OpenSearch, es proporcionarà una opció per afegir automàticament mentre edites aquest camp.)";
 
@@ -1078,17 +1075,8 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Obertura automàtica del teclat";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Imatges de fons";
-
-/* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Tipus d'imatge";
-
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Imatges predeterminades";
-
-/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Patrocinat";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Nova pàgina de pestanyes";
@@ -2251,29 +2239,11 @@
 /* Title for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInTitle" = "Per iniciar una trucada gratuïta, activa Recompenses de Brave";
 
-/* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "Activa-ho per ajudar a donar suport als creadors de contingut";
-
-/* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "L'ús de Recompenses de Brave ajuda els creadors de contingut mentre navegues.";
-
-/* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "Estàs ajudant a donar suport als creadors de contingut";
-
-/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "Gràcies per ajudar els creadors de contingut mentre navegues!";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "En clicar, acceptes les %1$@ i %2$@. Desactiva-ho en qualsevol moment a Configuració.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Dones suport automàticament als editors i creadors de contingut activant els Anuncis Privats de Brave, que són anuncis que respecten la privacitat donada pels creadors de contingut.";
-
-/* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Activa Recompenses de Brave";
-
-/* Displayed under verified publishers */
-"rewards.supportingPublisher" = "Estàs ajudant a donar suport a creadors de contingut com aquest.";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Nombre de creadors de contingut als quals ajudes a donar suport aquest mes.";
@@ -3042,9 +3012,6 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Tria el tipus de dispositiu amb què et vols sincronitzar.";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "El codi ha caducat. Genera'n un de nou clicant al botó següent.";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "Aquest codi temporal és vàlid per al proper %\nAquest codi temporal és vàlid durant les properes %@";

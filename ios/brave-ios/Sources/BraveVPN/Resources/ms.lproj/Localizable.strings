@@ -151,8 +151,7 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Tamat Tempoh";
 
-/* Description of vpn tunnel protocol
-   The alert title showing vpn region is changed */
+/* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Sila pilih protokol pemindahan pilihan anda. Sebaik sahaja ditukar, kelayakan VPN sedia ada anda akan dikosongkan dan anda akan disambungkan semula jika sambungan VPN disediakan pada masa ini. ";
 
 /* Message for error when we fail to switch tunnel protocol for the user */
@@ -298,6 +297,9 @@
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Tebus Kod";
+
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "Wilayah VPN Berubah";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Ini akan menetapkan semula konfigurasi Brave Firewall + VPN anda dan memperbaiki sebarang kesalahan. Proses ini mungkin mengambil masa sebentar.";

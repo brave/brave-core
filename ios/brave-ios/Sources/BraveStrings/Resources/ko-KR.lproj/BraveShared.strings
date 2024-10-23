@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "북마크 추가";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Brave Ads 데이터";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "광고 및 개인정보 트래커";
 
@@ -513,9 +516,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "현재 사용 중인 검색 엔진";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "추가";
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "검색 URL을 기입하고 검색어를 %1$s(으)로 대체하세요.\n예: https://youtube.com/search?q=%2$s \n(사이트에서 OpenSearch를 지원하는 경우 이 필드를 편집할 때 자동 추가 옵션이 제공됩니다.)";
@@ -1081,17 +1081,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "키보드 자동으로 열기";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "백그라운드 이미지";
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "백그라운드";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "이미지 유형";
+"ntp.settingsBackgroundImageSubMenu" = "미디어 유형";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "기본 이미지";
 
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "스폰서 이미지 및 동영상";
+
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "스폰서";
+"ntp.settingsSponsoredImagesSelection" = "스폰서 이미지";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "새 탭 페이지";
@@ -1413,6 +1416,9 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "프라이버시 보호 제품 분석(P3A) 허용";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "프라이버시 보호 제품 콜아웃 닫기";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "이 사이트로의 연결이 안전하지 않을 수 있습니다.";
@@ -2258,28 +2264,28 @@
 "rewards.braveTalkRewardsOptInTitle" = "무료 통화를 시작하려면 Brave Rewards를 켜세요.";
 
 /* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "콘텐츠 제작자를 지원하려면 켜세요.";
+"rewards.disabledBody" = "Brave 및 BAT 커뮤니티를 지원하려면 이 설정을 켜주세요.";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Brave Rewards를 사용하면 브라우징하면서 콘텐츠 제작자를 지원할 수 있습니다.";
+"rewards.disabledStatusBody" = "Brave 리워드를 사용하면 Brave와 BAT 커뮤니티를 지원하실 수 있습니다.";
 
 /* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "콘텐츠 제작자를 지원하고 계십니다.";
+"rewards.enabledBody" = "Brave와 BAT 커뮤니티를 지원하고 계십니다.";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "브라우징하면서 콘텐츠 제작자를 지원해 주셔서 감사합니다!";
+"rewards.enabledStatusBody" = "Brave 및 BAT 커뮤니티를 지원해주셔서 감사합니다!";
 
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "클릭하면 %1$@ 및 %2$@에 동의하게 됩니다. 설정에서 언제든지 비활성화할 수 있습니다.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Brave Private Ads를 활성화하면 자동으로 콘텐츠 제작자와 게시자를 지원하게 됩니다. Brave Private Ads는 개인정보를 존중하는 광고로 콘텐츠 제작자에게 보상을 줍니다.";
+"rewards.settingsToggleMessage" = "Brave 리워드를 켜고 Brave Ads를 보셔서 Brave와 BAT 커뮤니티를 지원해주세요.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Brave Rewards 활성화";
 
 /* Displayed under verified publishers */
-"rewards.supportingPublisher" = "이 제작자와 같은 콘텐츠 제작자를 지원하고 계십니다.";
+"rewards.supportingPublisher" = "이 콘텐츠 제작자는 Brave 크리에이터로 인증받았습니다.";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "이번 달 여러 콘텐츠 제작자를 지원하고 계십니다.";
@@ -3050,7 +3056,7 @@
 "SyncChooseDeviceHeader" = "동기화할 기기 유형을 선택하십시오.";
 
 /* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "코드가 만료되었습니다. 아래 버튼을 클릭하여 새로 생성하세요.";
+"SyncCodeExpirationTitleLabel" = "코드가 만료되었습니다. 아래 버튼을 탭하여 새로 생성하세요.";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "임시 코드는 다음 %@ 동안 유효함";

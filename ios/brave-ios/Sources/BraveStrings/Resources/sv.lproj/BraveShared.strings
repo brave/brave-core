@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Lägg till bokmärke";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Brave Annonser-data";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Annonser och spårare";
 
@@ -513,9 +516,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Sökmotorer som används för närvarande";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "Lägg till";
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Skriv sökadressen och ersätt frågan med %1$s.\nExempelvis: https://youtube.com/search?q=%2$s \n(Om webbplatsen stöder OpenSearch kommer ett alternativ att läggas till automatiskt när du redigerar detta fält.)";
@@ -1081,17 +1081,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Öppna tangentbord automatiskt";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Bakgrundsbilder";
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "Bakgrund";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Bildtyp";
+"ntp.settingsBackgroundImageSubMenu" = "Medietyp";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Standardbilder";
 
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Sponsrade bilder och videor";
+
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Sponsrade";
+"ntp.settingsSponsoredImagesSelection" = "Sponsrade bilder";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Ny fliksida";
@@ -1413,6 +1416,9 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Tillåt integritetsbevarande produktanalys (P3A)";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "Stäng text om integritetsbevarande produkt";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Din anslutning till denna webbplats är inte helt säker.";
@@ -2258,28 +2264,28 @@
 "rewards.braveTalkRewardsOptInTitle" = "Aktivera Brave Rewards för att starta ett gratis samtal";
 
 /* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "Aktivera för att stödja innehållsskapare";
+"rewards.disabledBody" = "Aktivera för att stödja Brave och BAT-communityn.";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Använd Brave Rewards och stöd innehållsskapare när du surfar.";
+"rewards.disabledStatusBody" = "Genom att använda Brave Belöningar hjälper du till att stödja Brave och BAT-communityn.";
 
 /* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "Du hjälper till att stödja innehållsskapare";
+"rewards.enabledBody" = "Du hjälper till att stödja Brave och BAT-communityn.";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "Tack för att du stödjer innehållsskapare när du surfar!";
+"rewards.enabledStatusBody" = "Tack för att du hjälper till att stödja Brave och BAT-communityn!";
 
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Genom att klicka godkänner du %1$@ och %2$@. Inaktivera när som helst i Inställningar.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Stöd innehållsskapare och utgivare automatiskt genom att aktivera Brave Private Ads. Brave Private Ads är annonser som respekterar din sekretess och ger tillbaka till innehållsskapare.";
+"rewards.settingsToggleMessage" = "Hjälp till att stödja Brave och BAT-communityn genom att aktivera Brave Belöningar och se Brave Annonser.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Aktivera Brave Rewards";
 
 /* Displayed under verified publishers */
-"rewards.supportingPublisher" = "Du hjälper stödja innehållsskapare som den här.";
+"rewards.supportingPublisher" = "Den här innehållsskapare är verifierad med Brave Kreatörer";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Antal innehållsskapare som du hjälper till med att stödja den här månaden.";

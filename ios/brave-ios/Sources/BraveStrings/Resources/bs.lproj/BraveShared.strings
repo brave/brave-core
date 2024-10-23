@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Dodaj oznaku";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Podatci o Brave Ads";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Oglasi i elementi za praćenje";
 
@@ -513,9 +516,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Trenutačno upotrebljavane tražilice";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "Dodaj";
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Upišite URL za pretraživanje i zamijenite upit sljedećim: %1$s.\nPrimjerice: https://youtube.com/search?q=%2$s\n(Ako se mrežnim mjestom podržava OpenSearch, tijekom uređivanja ovog polja dostupna je mogućnost za automatsko dodavanje.)";
@@ -1081,17 +1081,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Automatski otvaraj tipkovnicu";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Pozadinske slike";
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "Pozadina";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Vrsta slike";
+"ntp.settingsBackgroundImageSubMenu" = "Vrsta medija";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Zadane slike";
 
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Sponzorirane slike i videozapisi";
+
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Sponzorirana";
+"ntp.settingsSponsoredImagesSelection" = "Sponzorirane slike";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Stranica Nova kartica";
@@ -1413,6 +1416,9 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Dopusti analitiku proizvoda kojom se čuva privatnost (P3A)";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "Zatvori element proizvoda za očuvanje privatnosti";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Vaša veza s ovim mrežnim mjestom nije potpuno sigurna.";
@@ -2258,28 +2264,28 @@
 "rewards.braveTalkRewardsOptInTitle" = "Za besplatan poziv uključite uslugu Nagrade Brave";
 
 /* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "Uključite kako biste podržavali stvaratelje sadržaja";
+"rewards.disabledBody" = "Uključite kako biste podržali Brave i zajednicu BAT.";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Upotrebom značajke Nagrade Brave podržavaju se stvaratelji sadržaja tijekom pregledavanja.";
+"rewards.disabledStatusBody" = "Uporaba značajke Brave Rewards pomaže u podržavanju preglednika Brave i zajednice BAT.";
 
 /* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "Pomažete u podržavanju stvaratelja sadržaja";
+"rewards.enabledBody" = "Pomažete u podržavanje preglednika Brave i zajednice BAT.";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "Hvala vam što podržavate stvaratelje sadržaja tijekom pregledavanja!";
+"rewards.enabledStatusBody" = "Hvala Vam što pomažete u podržavanju preglednika Brave i zajednice BAT!";
 
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Klikom pristajete na dokumente %1$@ i %2$@. Onemogućite u bilo kojem trenutku u postavkama.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Automatski podržite stvaratelje sadržaja i izdavače omogućivanjem značajke Privatni oglasi Brave. Privatni oglasi Brave oglasi su kojima se čuva privatnost i daje doprinos stvarateljima sadržaja.";
+"rewards.settingsToggleMessage" = "Pomozite podržati Brave i zajednicu BAT tako što ćete omogućiti značajku Brave Rewards i vidjeti Brave Ads.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Omogući uslugu Nagrade Brave";
 
 /* Displayed under verified publishers */
-"rewards.supportingPublisher" = "Podržavate stvaratelje sadržaja kao što je ovaj.";
+"rewards.supportingPublisher" = "Brave Creators potvrdio je ovog stvaratelja sadržaja";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Broj stvaratelja sadržaja kojima pomažete ovog mjeseca.";
@@ -3050,7 +3056,7 @@
 "SyncChooseDeviceHeader" = "Odabrati tip uređaja s kojim biste se htjeli sinkronizirati.";
 
 /* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Kôd je istekao. Generirajte novi klikom na gumb u nastavku.";
+"SyncCodeExpirationTitleLabel" = "Kôd je istekao. Generirajte novi pritiskom na gumb u nastavku.";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "Ovaj privremeni kôd valjan je tijekom sljedećeg razdoblja: %@";

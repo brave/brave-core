@@ -59,6 +59,9 @@
 "e13lS3-qKrzyX" = "Haluan vahvistaa, halusit tehdä haun ”Skannaa QR-koodi”?";
 
 /* (No Comment) */
+"e13lS3-U0eRbw" = "Haluan vahvistaa, halusit tehdä haun ”Tekoälyavustaja Leo”?";
+
+/* (No Comment) */
 "e13lS3-VBH4G6" = "Haluan vahvistaa, halusit tehdä haun ”Historia”?";
 
 /* (No Comment) */
@@ -72,6 +75,39 @@
 
 /* (No Comment) */
 "EUS9FL" = "Pienoisohjelman pikavalinta";
+
+/* (No Comment) */
+"EvESs0-0W40Cl" = "Haluan vahvistaa, halusit tehdä haun ”Uusi välilehti”?";
+
+/* (No Comment) */
+"EvESs0-crhbMy" = "Haluan vahvistaa, halusit tehdä haun ”Kirjanmerkit”?";
+
+/* (No Comment) */
+"EvESs0-FGO5qW" = "Haluan vahvistaa, halusit tehdä haun ”Brave-soittolista”?";
+
+/* (No Comment) */
+"EvESs0-jXiFQY" = "Haluan vahvistaa, halusit tehdä haun ”Brave-lompakko”?";
+
+/* (No Comment) */
+"EvESs0-nthxSL" = "Haluan vahvistaa, halusit tehdä haun ”Lataukset”?";
+
+/* (No Comment) */
+"EvESs0-qKrzyX" = "Haluan vahvistaa, halusit tehdä haun ”Skannaa QR-koodi”?";
+
+/* (No Comment) */
+"EvESs0-U0eRbw" = "Haluan vahvistaa, halusit tehdä haun ”Tekoälyavustaja Leo”?";
+
+/* (No Comment) */
+"EvESs0-VBH4G6" = "Haluan vahvistaa, halusit tehdä haun ”Historia”?";
+
+/* (No Comment) */
+"EvESs0-vs094F" = "Haluan vahvistaa, halusit tehdä haun ”Uusi yksityinen välilehti”?";
+
+/* (No Comment) */
+"EvESs0-XCyA8c" = "Haluan vahvistaa, halusit tehdä haun ”Brave-uutiset”?";
+
+/* (No Comment) */
+"EvESs0-Y7TWy8" = "Haluan vahvistaa, halusit tehdä haun ”Haku”?";
 
 /* (No Comment) */
 "FGO5qW" = "Brave-soittolista";
@@ -110,6 +146,9 @@
 "L1fziM-qKrzyX" = "Hakua ”Skannaa QR-koodi” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
+"L1fziM-U0eRbw" = "Hakua ”Tekoälyavustaja Leo” vastaa ${count} vaihtoehtoa.";
+
+/* (No Comment) */
 "L1fziM-VBH4G6" = "Hakua ”Historia” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
@@ -120,6 +159,9 @@
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "Hakua ”Haku” vastaa ${count} vaihtoehtoa.";
+
+/* (No Comment) */
+"M2Y1rg" = "4";
 
 /* (No Comment) */
 "nthxSL" = "Lataukset";
@@ -147,6 +189,9 @@
 
 /* (No Comment) */
 "r2EI05-qKrzyX" = "Haluan vahvistaa, halusit tehdä haun ”Skannaa QR-koodi”?";
+
+/* (No Comment) */
+"r2EI05-U0eRbw" = "Haluan vahvistaa, halusit tehdä haun ”Tekoälyavustaja Leo”?";
 
 /* (No Comment) */
 "r2EI05-VBH4G6" = "Haluan vahvistaa, halusit tehdä haun ”Historia”?";
@@ -188,6 +233,9 @@
 "tNCrcE-qKrzyX" = "Hakua ”Skannaa QR-koodi” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
+"tNCrcE-U0eRbw" = "Hakua ”Tekoälyavustaja Leo” vastaa ${count} vaihtoehtoa.";
+
+/* (No Comment) */
 "tNCrcE-VBH4G6" = "Hakua ”Historia” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
@@ -221,6 +269,9 @@
 "TxuMja-qKrzyX" = "Hakua ”Skannaa QR-koodi” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
+"TxuMja-U0eRbw" = "Hakua ”Tekoälyavustaja Leo” vastaa ${count} vaihtoehtoa.";
+
+/* (No Comment) */
 "TxuMja-VBH4G6" = "Hakua ”Historia” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
@@ -234,6 +285,9 @@
 
 /* (No Comment) */
 "tYwiRd" = "Arvioitu ajansäästö";
+
+/* (No Comment) */
+"U0eRbw" = "Leo-tekoäly";
 
 /* (No Comment) */
 "VBH4G6" = "Historia";
@@ -275,6 +329,9 @@
 "YQiQuz-qKrzyX" = "Haluan vahvistaa, halusit tehdä haun ”Skannaa QR-koodi”?";
 
 /* (No Comment) */
+"YQiQuz-U0eRbw" = "Haluan vahvistaa, halusit tehdä haun ”Tekoälyavustaja Leo”?";
+
+/* (No Comment) */
 "YQiQuz-VBH4G6" = "Haluan vahvistaa, halusit tehdä haun ”Historia”?";
 
 /* (No Comment) */
@@ -285,6 +342,39 @@
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Haluan vahvistaa, halusit tehdä haun ”Haku”?";
+
+/* (No Comment) */
+"z517nu-0W40Cl" = "Hakua ”Uusi välilehti” vastaa ${count} vaihtoehtoa.";
+
+/* (No Comment) */
+"z517nu-crhbMy" = "Hakua ”Kirjanmerkit” vastaa ${count} vaihtoehtoa.";
+
+/* (No Comment) */
+"z517nu-FGO5qW" = "Hakua ”Brave-soittolista” vastaa ${count} vaihtoehtoa.";
+
+/* (No Comment) */
+"z517nu-jXiFQY" = "Hakua ”Brave-lompakko” vastaa ${count} vaihtoehtoa.";
+
+/* (No Comment) */
+"z517nu-nthxSL" = "Hakua ”Lataukset” vastaa ${count} vaihtoehtoa.";
+
+/* (No Comment) */
+"z517nu-qKrzyX" = "Hakua ”Skannaa QR-koodi” vastaa ${count} vaihtoehtoa.";
+
+/* (No Comment) */
+"z517nu-U0eRbw" = "Hakua ”Tekoälyavustaja Leo” vastaa ${count} vaihtoehtoa.";
+
+/* (No Comment) */
+"z517nu-VBH4G6" = "Hakua ”Historia” vastaa ${count} vaihtoehtoa.";
+
+/* (No Comment) */
+"z517nu-vs094F" = "Hakua ”Uusi yksityinen välilehti” vastaa ${count} vaihtoehtoa.";
+
+/* (No Comment) */
+"z517nu-XCyA8c" = "Hakua ”Brave-uutiset” vastaa ${count} vaihtoehtoa.";
+
+/* (No Comment) */
+"z517nu-Y7TWy8" = "Hakua ”Haku” vastaa ${count} vaihtoehtoa.";
 
 /* (No Comment) */
 "ziTvSZ" = "Pikakuvakkeiden pienoisohjelman määritys";

@@ -85,6 +85,9 @@
 /* The title of the menu where user can change the default model */
 "aichat.defaultModelViewTitle" = "النموذج الافتراضي";
 
+/* The text displayed under an edited user prompt/message beside a timestamp. */
+"aichat.editedMessageCaption" = "مُحرّر";
+
 /* The title for view which user type feedback */
 "aichat.feedbackInputViewTitle" = "أضف تعليقًا هنا";
 
@@ -139,6 +142,9 @@
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "دردشة بسرعة البرق";
 
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "مرحبًا بكم، معكم Leo، أتمتع بتوجيهي بواسطة متصفح Brave، كما أنني مدعوم بواسطة Claude 3 Sonnet، وهو نموذج أنشأته Anthropic لتشغيل المهام المتعلقة بالدردشة ومعالجة النصوص.";
+
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "كلود سونيت من Anthropic";
 
@@ -147,6 +153,12 @@
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "مرحبا ، أنا Leo. أنا مساعد الذكاء الاصطناعي من Brave. أنا مدعوم من %@. اسألني أي شيء، وسأبذل قصارى جهدي للإجابة.";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageLlamaMessageDescription" = "مرحبًا، أنا Leo، مساعد ذكاء صناعي مُستضاف بالكامل من Brave، أعمل باستخدام نموذج Llama 3.1 8B، الذي طورته Meta ليكون فعالًا وقابلًا للتطبيق في مجموعة متنوعة من حالات الاستخدام.";
+
+/* The model and creator for intro message - Llama 3.1 8B is the model name -- Meta is the creator */
+"aichat.introMessageLlamaModelDescription" = "نموذج Llama 3.1 8B من Meta";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "دردشة حول أغراض عامة";
@@ -324,6 +336,9 @@
 
 /* The title for disliking response to clipboard action */
 "aichat.responseContextMenuDislikeAnswerTitle" = "لم تعجبني الإجابة";
+
+/* The title for editing user prompt action from context menu */
+"aichat.responseContextMenuEditPromptTitle" = "تعديل الطلب";
 
 /* The title for liking response to clipboard action */
 "aichat.responseContextMenuLikeAnswerTitle" = "أعجبتني الإجابة";

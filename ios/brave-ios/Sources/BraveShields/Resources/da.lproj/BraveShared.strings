@@ -157,6 +157,9 @@
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Striks";
 
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "Listerne er opdaterede";
+
 /* A button title when confirming to shred website data */
 "ShredDataButtonTitle" = "Makulér data";
 
@@ -189,6 +192,12 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Trackere og annonceblokering";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "Opdatér lister";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "Opdaterer lister";
 
 /* The option the user can select for the type of https upgrading */
 "UpgradeConnectionsToHTTPS" = "Opgrader forbindelser til HTTPS";

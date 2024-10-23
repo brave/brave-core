@@ -151,8 +151,7 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Istekao";
 
-/* Description of vpn tunnel protocol
-   The alert title showing vpn region is changed */
+/* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Odaberite željeni transportni protokol. Nakon prebacivanja vaše postojeće vjerodajnice za mrežu VPN brišu se i ponovno se povezujete ako je veza s mrežom VPN trenutačno uspostavljena.";
 
 /* Message for error when we fail to switch tunnel protocol for the user */
@@ -298,6 +297,9 @@
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Iskoristi kôd";
+
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "Promijenjena regija za VPN";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Ovim se ponovno postavlja vaša konfiguracija vatrozida preglednika Brave Firewall + mreže VPN i ispravljaju sve pogreške. Taj postupak može trajati minutu.";

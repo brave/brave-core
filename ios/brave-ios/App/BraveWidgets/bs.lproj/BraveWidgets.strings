@@ -59,6 +59,9 @@
 "e13lS3-qKrzyX" = "Možete li potvrditi jeste li htjeli „Očitaj kôd QR”?";
 
 /* (No Comment) */
+"e13lS3-U0eRbw" = "Samo da potvrdim, htjeli ste „Leo AI”?";
+
+/* (No Comment) */
 "e13lS3-VBH4G6" = "Možete li potvrditi jeste li htjeli „Povijest”?";
 
 /* (No Comment) */
@@ -72,6 +75,39 @@
 
 /* (No Comment) */
 "EUS9FL" = "Prečac miniaplikacije";
+
+/* (No Comment) */
+"EvESs0-0W40Cl" = "Možete li potvrditi jeste li htjeli „Nova kartica”?";
+
+/* (No Comment) */
+"EvESs0-crhbMy" = "Možete li potvrditi jeste li htjeli „Knjižne oznake”?";
+
+/* (No Comment) */
+"EvESs0-FGO5qW" = "Možete li potvrditi jeste li htjeli „Popis za reprodukciju preglednika Brave”?";
+
+/* (No Comment) */
+"EvESs0-jXiFQY" = "Možete li potvrditi jeste li htjeli „Novčanik Brave”?";
+
+/* (No Comment) */
+"EvESs0-nthxSL" = "Možete li potvrditi jeste li htjeli „Preuzimanja”?";
+
+/* (No Comment) */
+"EvESs0-qKrzyX" = "Možete li potvrditi jeste li htjeli „Očitaj kôd QR”?";
+
+/* (No Comment) */
+"EvESs0-U0eRbw" = "Samo da potvrdim, htjeli ste „Leo AI”?";
+
+/* (No Comment) */
+"EvESs0-VBH4G6" = "Možete li potvrditi jeste li htjeli „Povijest”?";
+
+/* (No Comment) */
+"EvESs0-vs094F" = "Možete li potvrditi jeste li htjeli „Nova privatna kartica”?";
+
+/* (No Comment) */
+"EvESs0-XCyA8c" = "Možete li potvrditi jeste li htjeli „Novosti Brave”?";
+
+/* (No Comment) */
+"EvESs0-Y7TWy8" = "Možete li potvrditi jeste li htjeli „Pretraživanje”?";
 
 /* (No Comment) */
 "FGO5qW" = "Popis za reprodukciju Brave";
@@ -110,6 +146,9 @@
 "L1fziM-qKrzyX" = "Sljedeći broj mogućnosti: ${count} podudara se s „Očitaj kôd QR”.";
 
 /* (No Comment) */
+"L1fziM-U0eRbw" = "Postoji ${count} mogućnosti koje odgovaraju „Leo AI”.";
+
+/* (No Comment) */
 "L1fziM-VBH4G6" = "Sljedeći broj mogućnosti: ${count} podudara se s „Povijest”.";
 
 /* (No Comment) */
@@ -120,6 +159,9 @@
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "Sljedeći broj mogućnosti: ${count} podudara se s „Pretraživanje”.";
+
+/* (No Comment) */
+"M2Y1rg" = "#4";
 
 /* (No Comment) */
 "nthxSL" = "Preuzimanje";
@@ -147,6 +189,9 @@
 
 /* (No Comment) */
 "r2EI05-qKrzyX" = "Možete li potvrditi jeste li htjeli „Očitaj kôd QR”?";
+
+/* (No Comment) */
+"r2EI05-U0eRbw" = "Samo da potvrdim, htjeli ste „Leo AI”?";
 
 /* (No Comment) */
 "r2EI05-VBH4G6" = "Možete li potvrditi jeste li htjeli „Povijest”?";
@@ -188,6 +233,9 @@
 "tNCrcE-qKrzyX" = "Sljedeći broj mogućnosti: ${count} podudara se s „Očitaj kôd QR”.";
 
 /* (No Comment) */
+"tNCrcE-U0eRbw" = "Postoji ${count} mogućnosti koje odgovaraju „Leo AI”.";
+
+/* (No Comment) */
 "tNCrcE-VBH4G6" = "Sljedeći broj mogućnosti: ${count} podudara se s „Povijest”.";
 
 /* (No Comment) */
@@ -221,6 +269,9 @@
 "TxuMja-qKrzyX" = "Sljedeći broj mogućnosti: ${count} podudara se s „Očitaj kôd QR”.";
 
 /* (No Comment) */
+"TxuMja-U0eRbw" = "Postoji ${count} mogućnosti koje odgovaraju „Leo AI”.";
+
+/* (No Comment) */
 "TxuMja-VBH4G6" = "Sljedeći broj mogućnosti: ${count} podudara se s „Povijest”.";
 
 /* (No Comment) */
@@ -234,6 +285,9 @@
 
 /* (No Comment) */
 "tYwiRd" = "Procjena ušteđenog vremena";
+
+/* (No Comment) */
+"U0eRbw" = "Pomoćnik Leo potpomognut umjetnom inteligencijom (AI)";
 
 /* (No Comment) */
 "VBH4G6" = "Povijest";
@@ -275,6 +329,9 @@
 "YQiQuz-qKrzyX" = "Možete li potvrditi jeste li htjeli „Očitaj kôd QR”?";
 
 /* (No Comment) */
+"YQiQuz-U0eRbw" = "Samo da potvrdim, htjeli ste „Leo AI”?";
+
+/* (No Comment) */
 "YQiQuz-VBH4G6" = "Možete li potvrditi jeste li htjeli „Povijest”?";
 
 /* (No Comment) */
@@ -285,6 +342,39 @@
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Možete li potvrditi jeste li htjeli „Pretraživanje”?";
+
+/* (No Comment) */
+"z517nu-0W40Cl" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova kartica”.";
+
+/* (No Comment) */
+"z517nu-crhbMy" = "Sljedeći broj mogućnosti: ${count} podudara se s „Knjižne oznake”.";
+
+/* (No Comment) */
+"z517nu-FGO5qW" = "Sljedeći broj mogućnosti: ${count} podudara se s „Popis za reprodukciju preglednika Brave”.";
+
+/* (No Comment) */
+"z517nu-jXiFQY" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novčanik Brave”.";
+
+/* (No Comment) */
+"z517nu-nthxSL" = "Sljedeći broj mogućnosti: ${count} podudara se s „Preuzimanja”.";
+
+/* (No Comment) */
+"z517nu-qKrzyX" = "Sljedeći broj mogućnosti: ${count} podudara se s „Očitaj kôd QR”.";
+
+/* (No Comment) */
+"z517nu-U0eRbw" = "Postoji ${count} mogućnosti koje odgovaraju „Leo AI”.";
+
+/* (No Comment) */
+"z517nu-VBH4G6" = "Sljedeći broj mogućnosti: ${count} podudara se s „Povijest”.";
+
+/* (No Comment) */
+"z517nu-vs094F" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova privatna kartica”.";
+
+/* (No Comment) */
+"z517nu-XCyA8c" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novosti Brave”.";
+
+/* (No Comment) */
+"z517nu-Y7TWy8" = "Sljedeći broj mogućnosti: ${count} podudara se s „Pretraživanje”.";
 
 /* (No Comment) */
 "ziTvSZ" = "Konfiguracija miniaplikacije prečaca";

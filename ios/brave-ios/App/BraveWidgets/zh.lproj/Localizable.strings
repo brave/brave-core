@@ -2,6 +2,9 @@
 "widgets.BookmarksMenuItem" = "书签";
 
 /* The name of the feature */
+"widgets.braveLeo" = "Leo AI";
+
+/* The name of the feature */
 "widgets.braveNews" = "Brave 新闻";
 
 /* Title for downloads menu item */

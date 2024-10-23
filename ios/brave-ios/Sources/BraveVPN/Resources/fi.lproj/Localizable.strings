@@ -151,8 +151,7 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Vanhentunut";
 
-/* Description of vpn tunnel protocol
-   The alert title showing vpn region is changed */
+/* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Valitse haluamasi välitysprotokolla. Kun olet vaihtanut, nykyiset VPN-kirjautumistietosi poistetaan ja yhteys muodostetaan uudelleen, jos VPN-yhteys on tällä hetkellä muodostettu.";
 
 /* Message for error when we fail to switch tunnel protocol for the user */
@@ -298,6 +297,9 @@
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Lunasta koodi";
+
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "VPN-alue muuttunut";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Tämä nollaa Brave-palomuurin ja -VPN:n määritykset ja korjaa mahdolliset virheet. Tämä prosessi voi kestää minuutin.";
