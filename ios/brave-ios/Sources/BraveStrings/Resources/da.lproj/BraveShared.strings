@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Tilføj bogmærke";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Data om Brave Ads";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Annoncer og Trackere";
 
@@ -513,9 +516,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Aktuelt brugte søgemaskiner";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "Tilføj";
 
 /* Label explaining how to add search engine. */
 "customSearchEngine.addEngineDescription" = "Skriv søge-url'en og erstat forespørgslen med %1$s.\nFor eksempel: https://youtube.com/search?q=%2$s \n(Hvis webstedet understøtter OpenSearch, vil der blive givet en mulighed for at tilføje automatisk, mens du redigerer dette felt.)";
@@ -1081,17 +1081,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Åben automatisk tastatur";
 
-/* A setting to enable or disable background images on the main screen. */
-"ntp.settingsBackgroundImages" = "Baggrundsbilleder";
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "Baggrund";
 
 /* A button that leads to a 'more' menu, letting users configure additional settings. */
-"ntp.settingsBackgroundImageSubMenu" = "Billedtype";
+"ntp.settingsBackgroundImageSubMenu" = "Medietype";
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Standardbilleder";
 
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Sponsorerede billeder og videoer";
+
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesSelection" = "Sponsoreret";
+"ntp.settingsSponsoredImagesSelection" = "Sponsorerede billeder";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Side på ny fane ";
@@ -1413,6 +1416,9 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Tillad anonymitetsbeskyttede produktanalyser (P3A)";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "Luk anonymitetsbeskyttede produktopslag";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Din forbindelse til denne side er ikke helt sikker.";
@@ -2258,28 +2264,28 @@
 "rewards.braveTalkRewardsOptInTitle" = "For at starte et gratis opkald skal du aktivere Brave Rewards";
 
 /* Displayed when Brave Rewards is disabled */
-"rewards.disabledBody" = "Aktivér for at hjælpe med at støtte indholdsskabere";
+"rewards.disabledBody" = "Aktivér for at hjælpe med at støtte Brave og BAT-fællesskabet.";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Brug af Brave Rewards hjælper med at støtte indholdsskabere, mens du browser.";
+"rewards.disabledStatusBody" = "Du hjælper med at understøtte Brave og BAT-fællesskabet, når du bruger Brave Rewards.";
 
 /* Displayed when Brave Rewards is enabled */
-"rewards.enabledBody" = "Du hjælper med at understøtte indholdsskabere";
+"rewards.enabledBody" = "Du hjælper med at støtte Brave og BAT-fællesskabet";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
-"rewards.enabledStatusBody" = "Tak, fordi du hjælper med at støtte indholdsskabere, mens du browser!";
+"rewards.enabledStatusBody" = "Tak, fordi du hjælper med at støtte Brave og BAT-fællesskabet!";
 
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Hvis du klikker, accepterer du %1$@ og %2$@. Du kan når som helst deaktivere i Indstillinger.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Støt automatisk indholdsskabere og udgivere ved at aktivere Brave Private Ads. Brave Private Ads er annoncer, der respekterer privatlivets fred, og som genererer indtægt til indholdsskabere.";
+"rewards.settingsToggleMessage" = "Støt Brave og BAT-fællesskabet ved at slå Brave Rewards til, så du får vist Brave Ads.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Aktiver Brave Rewards";
 
 /* Displayed under verified publishers */
-"rewards.supportingPublisher" = "Du hjælper med at støtte indholdsskabere som denne.";
+"rewards.supportingPublisher" = "Denne indholdsskaber er verificeret hos Brave Creators";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Antal indholdsskabere, du hjælper med at støtte denne måned.";
@@ -3050,7 +3056,7 @@
 "SyncChooseDeviceHeader" = "Vælg den type enhed du ønsker at synkronisere til. ";
 
 /* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Kode udløbet. Generer en ny kode ved at klikke på knappen nedenfor.";
+"SyncCodeExpirationTitleLabel" = "Koden er udløbet. Tryk på knappen nedenfor for at få en ny.";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "Denne midlertidige kode er gyldig i de næste %@";
