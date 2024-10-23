@@ -30,6 +30,8 @@ constexpr char kOperatorMatcherPatternPrefix[] = "[?]:*";
 constexpr char kEqualOperatorMatcherPrefix[] = "[=]:";
 constexpr char kGreaterThanOperatorMatcherPrefix[] = "[>]:";
 constexpr char kGreaterThanOrEqualOperatorMatcherPrefix[] = "[≥]:";
+constexpr char kLessThanOperatorMatcherPrefix[] = "[<]:";
+constexpr char kLessThanOrEqualOperatorMatcherPrefix[] = "[≤]:";
 
 constexpr int32_t kMaxUnixEpochTimestamp = std::numeric_limits<int32_t>::max();
 
@@ -216,6 +218,14 @@ bool MatchOperator(const std::string_view value,
 
   if (condition.starts_with(kGreaterThanOrEqualOperatorMatcherPrefix)) {
     return time_delta.InDays() >= days;
+  }
+
+  if (condition.starts_with(kLessThanOperatorMatcherPrefix)) {
+    return time_delta.InDays() < days;
+  }
+
+  if (condition.starts_with(kLessThanOrEqualOperatorMatcherPrefix)) {
+    return time_delta.InDays() <= days;
   }
 
   // Unknown operator.
