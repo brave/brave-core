@@ -151,8 +151,7 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "過期";
 
-/* Description of vpn tunnel protocol
-   The alert title showing vpn region is changed */
+/* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "請選擇您喜歡的傳輸通訊協定。切換後，您現有的 VPN 憑證將被清除，如果目前已建立 VPN 連線，您將會重新連線。";
 
 /* Message for error when we fail to switch tunnel protocol for the user */
@@ -298,6 +297,9 @@
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "兌換代碼";
+
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "VPN 區域已變更";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "此程序會重設您的 Brave Firewall + VPN 組態，並修正任何錯誤。這會需要一點時間，請稍候。";

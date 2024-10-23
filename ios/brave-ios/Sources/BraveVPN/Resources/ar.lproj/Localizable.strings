@@ -298,6 +298,9 @@
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "استرداد الرمز";
 
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "تم تغيير منطقة VPN.";
+
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "سيؤدي هذا إلى إعادة تعيين تكوين Brave Firewall + VPN وإصلاح أي أخطاء. قد تستغرق هذه العملية دقيقة.";
 
