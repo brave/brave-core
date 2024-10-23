@@ -16,37 +16,116 @@ using NewTabPageAdConditionMatchers =
 
 class PrefProviderInterface;
 
-// Matchers are a set of conditions using AND logic that must be met for an ad
-// to be served.
+// Matchers are one or more preference paths and conditions, using AND logic,
+// that must all be met for a new tab takeover ad to be served. Preference path
+// keys should be separated by |, where paths may include list indices (e.g.,
+// "list|1") or dictionary keys (e.g., "dict|key"). Paths can also be nested.
+// Both Brave local state and profile preferences are supported. See
+// https://github.com/brave/brave-browser/wiki/P3A for more information on P3A
+// pref path usage.
 //
-// pref_path:
+// For non-Rewards users, condition matchers should be included in the
+// "photo.json" file under the NTP (New Tab Page) sponsored images component,
+// within "campaigns2", falling back to "campaigns", or falling back to the root
+// "campaign" for backwards compatibility.
 //
-// Supports booleans, integers, doubles, strings, nested dictionaries, nested
-// lists, and dot-separated path keys. `base::Value::Find*ByDottedPath` is not
-// used because path keys can contain dots. Returns `std::nullopt` if the path
-// was not found in either profile or local state preferences. Path keys should
-// be separated by `|`, lists should be followed by an index, i.e., `list|1`,
-// and dictionaries should be followed by a key, i.e., `dict|key`.
+// For Rewards users, these matchers should be placed in the catalog under
+// "wallpapers" with the "imageUrl" prefixed with "[SmartNTT]" for backwards
+// compatibility, where legacy browsers will discard these wallpapers due to an
+// invalid URL.
 //
-// condition:
+// If no condition matchers are present ads will always be shown, unless
+// frequency capped for Rewards users. If condition matchers are malformed or
+// have unknown pref paths, the ad will not be shown.
 //
-// [operator]:days matcher: The operator can be '=', '>', or '≥'. '=' is used
-// for exact matches, '>' for greater than, and '≥' for greater than or equal
-// to. This is used to serve an ad if an event occurred a specified number of
-// `days` ago or more from the timestamp, either a Unix epoch or a Windows epoch
-// timestamp stored at `pref_path`. For example, `pref_path=[=]:3` will serve an
-// ad if the event occurred exactly 3 days ago.
+// Supported Condition Matchers:
 //
-// regex matcher: The regex string is a regular expression that must be matched
-// by the value at `pref_path`. For example, `pref_path=(0|1|3)` will serve an
-// ad if the value at `pref_path` contains 0, 1, or 3. Uses Google's secure
-// regular expression engine, RE2.
+// 1. [operator]:days Matcher:
+//    - Support operators:
+//      - '=': Exact
+//      - '>': Greater than
+//      - '≥': Greater than or equal to
+//      - '<': Less than
+//      - '≤': Less than or equal to
+//    - This matcher triggers an ad based on when an event occurred or will
+//      occur, using a timestamp (Unix or Windows epoch) stored at "prefPath".
+//      For instance, the example below will serve an ad only if the timestamp
+//      for "foo|bar" occurred more than 3 days ago:
 //
-// pattern matcher: The pattern string can contain * and ? wildcards. The
-// backslash \ character is an escape character for * and ?. ? matches 0 or 1
-// character, while * matches 0 or more characters. For example,
-// `brave.brave_ads.enabled=0` will serve an ad if the value stored at
-// `pref_path` equals `0`, i.e., false.
+//       "conditionMatchers": [
+//         {
+//           "condition": "[>]:3",
+//           "prefPath": "foo|bar"
+//         }
+//       ]
+//
+// 2. Regex Matcher:
+//    - Uses an RE2 regular expression to partially match values at "prefPath",
+//      see https://github.com/google/re2/wiki/syntax. For example, the
+//      following will serve an ad if the value at "foo|bar" starts with "abc":
+//
+//       "conditionMatchers": [
+//         {
+//            "condition": "^abc",
+//            "prefPath": "foo|bar"
+//         }
+//       ]
+//
+// 3. Pattern Matcher:
+//    - Supports wildcards "*" and "?". "*" matches zero or more characters,
+//      while "?" matches zero or one character. To use these literally, escape
+//      them with "\". In the example below, an ad will be served only if the
+//      value at "foo|bar" matches the pattern "*baz?qux*":
+//
+//       "conditionMatchers": [
+//         {
+//           "condition": "*baz?qux*",
+//            "prefPath": "foo|bar"
+//         }
+//       ]
+//
+// For example, the following condition matchers would only serve a new tab
+// takeover ad if the default search provider is set to "Startpage", the user
+// has exactly one bookmark, and the browser was installed between three and
+// seven days ago:
+//
+//  "conditionMatchers": [
+//    {
+//      "condition": "*-538868000510",
+//      "prefPath": "default_search_provider|guid"
+//    },
+//    {
+//      "condition": "1",
+//      "prefPath": "p3a|logs_constellation_prep|Brave.Core.BookmarkCount|value"
+//    },
+//    {
+//      "condition": "[≥]:3",
+//      "prefPath": "uninstall_metrics|installation_date2"
+//    },
+//    {
+//      "condition": "[≤]:7",
+//      "prefPath": "uninstall_metrics|installation_date2"
+//    }
+//  ]
+//
+// We support virtual preferences for values that are not stored in the profile
+// or local state preferences. Virtual preference path keys should be prefixed
+// with "[virtual]:".
+//
+// "[virtual]:build_channel.name" retrieves the build channel of the browser,
+// returning one of the following values: "stable", "beta", "dev", "nightly", or
+// "unknown".
+//
+// "[virtual]:default_search_engine.name" retrieves the default search engine
+// chosen during browser installation, returning one of the following values:
+// "Brave", "Google", "Yandex", "Bing", "Daum", "네이버", "DuckDuckGo", "Qwant",
+// "Startpage", or "Ecosia".
+//
+// NOTE: To identify condition matchers, first create a copy of your preference
+// files. Next, change a brave://setting or enable a feature, quit the browser
+// and then compare the original and modified versions to determine which
+// key/value pairs are required. Invalid or malformed condition matchers will be
+// logged to the console, they are not logged to the Rewards log.
 
 bool MatchConditions(const PrefProviderInterface* pref_provider,
                      const NewTabPageAdConditionMatchers& condition_matchers);
