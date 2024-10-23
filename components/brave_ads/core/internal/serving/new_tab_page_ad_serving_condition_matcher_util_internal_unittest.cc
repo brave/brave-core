@@ -150,6 +150,44 @@ TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
 }
 
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       ParseWindowsEpochTimeDelta) {
+  // Arrange
+  AdvanceClockTo(test::TimeFromUTCString("3 October 2024"));
+
+  // Act & Assert
+  EXPECT_EQ(
+      base::Days(2),
+      ParseTimeDelta("13372214400000000" /*1st October 2024 00:00:00 UTC*/));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       ParseUnixEpochWithFractionalSecondsTimeDelta) {
+  // Arrange
+  AdvanceClockTo(test::TimeFromUTCString("3 October 2024"));
+
+  // Act & Assert
+  EXPECT_EQ(
+      base::Days(2),
+      ParseTimeDelta("1727740800.3237710" /*1st October 2024 00:00:00 UTC*/));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       ParseUnixEpochTimeDelta) {
+  // Arrange
+  AdvanceClockTo(test::TimeFromUTCString("3 October 2024"));
+
+  // Act & Assert
+  EXPECT_EQ(base::Days(2),
+            ParseTimeDelta("1727740800" /*1st October 2024 00:00:00 UTC*/));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       DoNotParseTimeDelta) {
+  // Act & Assert
+  EXPECT_FALSE(ParseTimeDelta("broken time"));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
        DoNotMatchIfNotAnOperator) {
   // Act & Assert
   EXPECT_FALSE(MatchOperator(

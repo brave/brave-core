@@ -20,7 +20,7 @@ constexpr char kTokenPreimageKey[] = "t";
 
 }  // namespace
 
-std::optional<base::Value::Dict> BuildCredential(
+std::optional<base::Value::Dict> MaybeBuildCredential(
     const UnblindedToken& unblinded_token,
     const std::string& payload) {
   CHECK(unblinded_token.has_value());

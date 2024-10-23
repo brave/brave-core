@@ -15,7 +15,7 @@ namespace brave_ads::cbr {
 
 class UnblindedToken;
 
-std::optional<base::Value::Dict> BuildCredential(
+std::optional<base::Value::Dict> MaybeBuildCredential(
     const UnblindedToken& unblinded_token,
     const std::string& payload);
 

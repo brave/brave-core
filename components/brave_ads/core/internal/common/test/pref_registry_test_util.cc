@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/internal/common/test/pref_registry_test_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/common/test/internal/local_state_pref_registry_test_util_internal.h"
-#include "brave/components/brave_ads/core/internal/common/test/internal/profile_pref_registry_test_util_internal.h"
+#include "brave/components/brave_ads/core/internal/common/test/local_state_pref_registry_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/profile_pref_registry_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"

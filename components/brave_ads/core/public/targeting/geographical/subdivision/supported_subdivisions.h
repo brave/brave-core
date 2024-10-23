@@ -16,11 +16,11 @@
 
 namespace brave_ads {
 
-using SupportedSubdivisions = base::flat_map</*subdivision*/ std::string_view,
-                                             /*name*/ std::string_view>;
+using SubdivisionMap = base::flat_map</*subdivision*/ std::string_view,
+                                      /*name*/ std::string_view>;
 
 using SupportedSubdivisionMap =
-    base::flat_map</*country_code*/ std::string_view, SupportedSubdivisions>;
+    base::flat_map</*country_code*/ std::string_view, SubdivisionMap>;
 
 ADS_EXPORT const SupportedSubdivisionMap& GetSupportedSubdivisions();
 

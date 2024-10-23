@@ -242,7 +242,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordSubmittedFormEvent) {
 TEST_F(BraveAdsUserActivityManagerTest, RecordTabUpdatedEvent) {
   // Arrange
   const UserActivityEventType user_activity_event_type =
-      UserActivityEventType::kTabUpdated;
+      UserActivityEventType::kTabDidChange;
 
   // Act
   UserActivityManager::GetInstance().RecordEvent(user_activity_event_type);
@@ -382,7 +382,7 @@ TEST_F(BraveAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
   const base::Time now = test::Now();
 
   UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kTabUpdated);
+      UserActivityEventType::kTabDidChange);
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTypedAndSelectedNonUrl);
   UserActivityManager::GetInstance().RecordEvent(
@@ -399,7 +399,7 @@ TEST_F(BraveAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
 
   UserActivityEventInfo expected_user_activity_event;
 
-  expected_user_activity_event.type = UserActivityEventType::kTabUpdated;
+  expected_user_activity_event.type = UserActivityEventType::kTabDidChange;
   expected_user_activity_event.created_at = now;
   expected_user_activity_events.push_back(expected_user_activity_event);
 

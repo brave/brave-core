@@ -41,13 +41,13 @@ constexpr char kTableName[] = "creative_new_tab_page_ads";
 
 constexpr int kDefaultBatchSize = 50;
 
-NewTabPageAdConditionMatchers StringToConditionMatchers(
+NewTabPageAdConditionMatcherMap StringToConditionMatchers(
     const std::string& value) {
   const std::vector<std::string> condition_matchers_as_string =
       base::SplitString(value, ";", base::TRIM_WHITESPACE,
                         base::SPLIT_WANT_NONEMPTY);
 
-  NewTabPageAdConditionMatchers condition_matchers;
+  NewTabPageAdConditionMatcherMap condition_matchers;
   for (const auto& condition_matcher_as_string : condition_matchers_as_string) {
     const std::vector<std::string> condition_matcher =
         base::SplitString(condition_matcher_as_string, "|",

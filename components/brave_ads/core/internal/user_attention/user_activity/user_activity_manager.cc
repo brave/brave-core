@@ -160,7 +160,7 @@ void UserActivityManager::OnTabDidChangeFocus(const int32_t /*tab_id*/) {
 }
 
 void UserActivityManager::OnTabDidChange(const TabInfo& /*tab*/) {
-  RecordEvent(UserActivityEventType::kTabUpdated);
+  RecordEvent(UserActivityEventType::kTabDidChange);
 }
 
 void UserActivityManager::OnDidOpenNewTab(const TabInfo& /*tab*/) {

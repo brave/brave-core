@@ -84,8 +84,8 @@ class ViewCounterService : public KeyedService,
   std::optional<base::Value::Dict> GetCurrentWallpaperForDisplay();
   std::optional<base::Value::Dict> GetCurrentWallpaper() const;
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaper();
-  std::optional<brave_ads::NewTabPageAdConditionMatchers> GetConditionMatchers(
-      const base::Value::Dict& dict);
+  std::optional<brave_ads::NewTabPageAdConditionMatcherMap>
+  GetConditionMatchers(const base::Value::Dict& dict);
   std::optional<base::Value::Dict>
   GetNextBrandedWallpaperWhichMatchesConditions();
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaperFromAdInfo() const;

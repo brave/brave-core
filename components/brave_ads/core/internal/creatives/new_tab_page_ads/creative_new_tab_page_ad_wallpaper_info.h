@@ -32,7 +32,7 @@ struct CreativeNewTabPageAdWallpaperInfo final {
 
   GURL image_url;
   CreativeNewTabPageAdWallpaperFocalPointInfo focal_point;
-  NewTabPageAdConditionMatchers condition_matchers;
+  NewTabPageAdConditionMatcherMap condition_matchers;
 };
 
 using CreativeNewTabPageAdWallpaperList =

@@ -26,12 +26,12 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kOperatorMatcherPatternPrefix[] = "[?]:*";
-constexpr char kEqualOperatorMatcherPrefix[] = "[=]:";
-constexpr char kGreaterThanOperatorMatcherPrefix[] = "[>]:";
-constexpr char kGreaterThanOrEqualOperatorMatcherPrefix[] = "[≥]:";
-constexpr char kLessThanOperatorMatcherPrefix[] = "[<]:";
-constexpr char kLessThanOrEqualOperatorMatcherPrefix[] = "[≤]:";
+constexpr char kOperatorConditionMatcherPrefixPattern[] = "[?]:*";
+constexpr char kEqualOperatorConditionMatcherPrefix[] = "[=]:";
+constexpr char kGreaterThanOperatorConditionMatcherPrefix[] = "[>]:";
+constexpr char kGreaterThanOrEqualOperatorConditionMatcherPrefix[] = "[≥]:";
+constexpr char kLessThanOperatorConditionMatcherPrefix[] = "[<]:";
+constexpr char kLessThanOrEqualOperatorConditionMatcherPrefix[] = "[≤]:";
 
 constexpr int32_t kMaxUnixEpochTimestamp = std::numeric_limits<int32_t>::max();
 
@@ -134,7 +134,7 @@ std::optional<std::string> ToString(const base::Value& value) {
 }
 
 std::optional<int> ParseDays(const std::string_view condition) {
-  CHECK(base::MatchPattern(condition, kOperatorMatcherPatternPrefix));
+  CHECK(base::MatchPattern(condition, kOperatorConditionMatcherPrefixPattern));
 
   const size_t pos = condition.find(':');
   if (pos == std::string::npos || pos + 1 >= condition.size()) {
@@ -186,9 +186,18 @@ base::TimeDelta TimeDeltaSinceEpoch(const int64_t timestamp) {
          base::Time::FromSecondsSinceUnixEpoch(static_cast<double>(timestamp));
 }
 
+std::optional<base::TimeDelta> ParseTimeDelta(const std::string_view value) {
+  double timestamp;
+  if (!base::StringToDouble(value, &timestamp)) {
+    return std::nullopt;
+  }
+
+  return TimeDeltaSinceEpoch(static_cast<int64_t>(timestamp));
+}
+
 bool MatchOperator(const std::string_view value,
                    const std::string_view condition) {
-  if (!base::MatchPattern(condition, kOperatorMatcherPatternPrefix)) {
+  if (!base::MatchPattern(condition, kOperatorConditionMatcherPrefixPattern)) {
     // Not an operator.
     return false;
   }
@@ -199,33 +208,33 @@ bool MatchOperator(const std::string_view value,
     return false;
   }
 
-  int64_t timestamp;
-  if (!base::StringToInt64(value, &timestamp)) {
-    // Invalid timestamp.
+  const std::optional<base::TimeDelta> time_delta = ParseTimeDelta(value);
+  if (!time_delta) {
+    // Invalid time delta.
     VLOG(1) << "Invalid SmartNTT " << value << " timestamp operator for "
             << condition << " condition";
     return false;
   }
-  const base::TimeDelta time_delta = TimeDeltaSinceEpoch(timestamp);
 
-  if (condition.starts_with(kEqualOperatorMatcherPrefix)) {
-    return time_delta.InDays() == days;
+  if (condition.starts_with(kEqualOperatorConditionMatcherPrefix)) {
+    return time_delta->InDays() == days;
   }
 
-  if (condition.starts_with(kGreaterThanOperatorMatcherPrefix)) {
-    return time_delta.InDays() > days;
+  if (condition.starts_with(kGreaterThanOperatorConditionMatcherPrefix)) {
+    return time_delta->InDays() > days;
   }
 
-  if (condition.starts_with(kGreaterThanOrEqualOperatorMatcherPrefix)) {
-    return time_delta.InDays() >= days;
+  if (condition.starts_with(
+          kGreaterThanOrEqualOperatorConditionMatcherPrefix)) {
+    return time_delta->InDays() >= days;
   }
 
-  if (condition.starts_with(kLessThanOperatorMatcherPrefix)) {
-    return time_delta.InDays() < days;
+  if (condition.starts_with(kLessThanOperatorConditionMatcherPrefix)) {
+    return time_delta->InDays() < days;
   }
 
-  if (condition.starts_with(kLessThanOrEqualOperatorMatcherPrefix)) {
-    return time_delta.InDays() <= days;
+  if (condition.starts_with(kLessThanOrEqualOperatorConditionMatcherPrefix)) {
+    return time_delta->InDays() <= days;
   }
 
   // Unknown operator.
@@ -243,7 +252,8 @@ bool MatchRegex(const std::string_view value,
   return re2::RE2::PartialMatch(value, re);
 }
 
-bool MatchPattern(std::string_view value, std::string_view condition) {
+bool MatchPattern(const std::string_view value,
+                  const std::string_view condition) {
   return base::MatchPattern(value, condition);
 }
 

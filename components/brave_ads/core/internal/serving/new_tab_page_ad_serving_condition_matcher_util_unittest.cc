@@ -38,7 +38,7 @@ TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
        MatchConditionsIfAllConditionsAreTrue) {
   // Arrange
-  const NewTabPageAdConditionMatchers condition_matchers = {
+  const NewTabPageAdConditionMatcherMap condition_matchers = {
       {prefs::kSubdivisionTargetingUserSelectedSubdivision, "AUTO"},
       {prefs::kOptedInToNotificationAds, "1"}};
 
@@ -49,7 +49,7 @@ TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
        MatchEqualOperatorCondition) {
   // Arrange
-  const NewTabPageAdConditionMatchers condition_matchers = {
+  const NewTabPageAdConditionMatcherMap condition_matchers = {
       {prefs::kServeAdAt, "[=]:7"}};
 
   AdvanceClockBy(base::Days(7));
@@ -61,7 +61,7 @@ TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
        DoNotMatchEqualOperatorCondition) {
   // Arrange
-  const NewTabPageAdConditionMatchers condition_matchers = {
+  const NewTabPageAdConditionMatcherMap condition_matchers = {
       {prefs::kServeAdAt, "[=]:7"}};
 
   AdvanceClockBy(base::Days(7) - base::Milliseconds(1));
@@ -73,7 +73,7 @@ TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
        MatchPatternCondition) {
   // Arrange
-  const NewTabPageAdConditionMatchers condition_matchers = {
+  const NewTabPageAdConditionMatcherMap condition_matchers = {
       {prefs::kSubdivisionTargetingUserSelectedSubdivision,
        "?UT*"}};  // Value is "AUTO" in the pref.
 
@@ -84,7 +84,7 @@ TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
        DoNotMatchPatternCondition) {
   // Arrange
-  const NewTabPageAdConditionMatchers condition_matchers = {
+  const NewTabPageAdConditionMatcherMap condition_matchers = {
       {prefs::kSubdivisionTargetingUserSelectedSubdivision,
        "?FOO*"}};  // Value is "AUTO" in the pref.
 
@@ -95,7 +95,7 @@ TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
        MatchRegexCondition) {
   // Arrange
-  const NewTabPageAdConditionMatchers condition_matchers = {
+  const NewTabPageAdConditionMatcherMap condition_matchers = {
       {prefs::kSubdivisionTargetingUserSelectedSubdivision,
        "^AU"}};  // Value is "AUTO" in the pref.
 
@@ -106,7 +106,7 @@ TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
        DoNotMatchRegexCondition) {
   // Arrange
-  const NewTabPageAdConditionMatchers condition_matchers = {
+  const NewTabPageAdConditionMatcherMap condition_matchers = {
       {prefs::kSubdivisionTargetingUserSelectedSubdivision,
        "^FOO"}};  // Value is "AUTO" in the pref.
 
@@ -117,7 +117,8 @@ TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
        DoNotMatchConditionsIfPrefPathWasNotFound) {
   // Arrange
-  const NewTabPageAdConditionMatchers condition_matchers = {{"foo.bar", "baz"}};
+  const NewTabPageAdConditionMatcherMap condition_matchers = {
+      {"foo.bar", "baz"}};
 
   // Act & Assert
   EXPECT_FALSE(MatchConditions(&pref_provider_, condition_matchers));
@@ -126,7 +127,7 @@ TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
        DoNotMatchConditionsIfAllConditionsAreFalse) {
   // Arrange
-  const NewTabPageAdConditionMatchers condition_matchers = {
+  const NewTabPageAdConditionMatcherMap condition_matchers = {
       {prefs::kOptedInToNotificationAds, "0"},  // Value is "1" in the pref.
       {prefs::kServeAdAt, "[>]:7"}};            // 5 days ago in the pref.
 
