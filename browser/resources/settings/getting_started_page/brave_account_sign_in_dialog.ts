@@ -6,8 +6,8 @@
 import './brave_account_dialog.js';
 import 'chrome://resources/brave/leo.bundle.js'
 
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {getTemplate} from './brave_account_sign_in_dialog.html.js'
+import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import { getTemplate } from './brave_account_sign_in_dialog.html.js'
 
 /**
  * @fileoverview
@@ -18,7 +18,7 @@ interface SettingsBraveAccountSignInDialogElement {
   $: {
     email: HTMLInputElement,
     password: HTMLInputElement,
-  };
+  }
 }
 
 class SettingsBraveAccountSignInDialogElement extends PolymerElement {
@@ -49,8 +49,8 @@ class SettingsBraveAccountSignInDialogElement extends PolymerElement {
     if (!icon) {
       return
     }
-    const isShowing = icon.getAttribute('name') === 'eye-off'
-    icon.setAttribute('name', isShowing ? 'eye-on' : 'eye-off')
+    const isShowing = icon.getAttribute('name') === 'eye-on'
+    icon.setAttribute('name', isShowing ? 'eye-off' : 'eye-on')
     this.$.password.setAttribute('type', isShowing ? 'password' : 'text')
   }
 
