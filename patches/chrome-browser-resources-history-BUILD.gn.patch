@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/history/BUILD.gn b/chrome/browser/resources/history/BUILD.gn
-index 65f4cef1706e97df2073c7cb662f345ef74db98c..14dc52b8d1fd8bc3decf1540c1dc81212c84ca7b 100644
+index 372975618eebc2d5cba0961cbca4e0113f04d60a..84234b138014b51fc288ac008ea5ba46166d054d 100644
 --- a/chrome/browser/resources/history/BUILD.gn
 +++ b/chrome/browser/resources/history/BUILD.gn
-@@ -85,4 +85,5 @@ build_webui("build") {
+@@ -86,4 +86,5 @@ build_webui("build") {
        "lazy_load.js",
      ]
    }

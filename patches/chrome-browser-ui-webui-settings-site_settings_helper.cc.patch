@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 3828b286a5d81062cfc6522704c7f600e08cf519..4f711cf4b2641a8f251801307a538d8fc846d1dd 100644
+index c13e3198bdced21e8b88307ea9d7a07fb1ea9468..b9a260dbe66145c8c440a08bcc71d634ab774068 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
 @@ -247,6 +247,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
@@ -26,7 +26,7 @@ index 3828b286a5d81062cfc6522704c7f600e08cf519..4f711cf4b2641a8f251801307a538d8f
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      if (type == entry.type) {
        // Content setting types that aren't represented in the settings UI
-@@ -696,6 +699,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+@@ -697,6 +700,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
  SiteSettingSource ProviderTypeToSiteSettingsSource(
      const ProviderType provider_type) {
    switch (provider_type) {
@@ -34,7 +34,7 @@ index 3828b286a5d81062cfc6522704c7f600e08cf519..4f711cf4b2641a8f251801307a538d8f
      case ProviderType::kWebuiAllowlistProvider:
        return SiteSettingSource::kAllowlist;
      case ProviderType::kPolicyProvider:
-@@ -722,6 +726,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
+@@ -723,6 +727,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
  
  std::string ProviderToDefaultSettingSourceString(const ProviderType provider) {
    switch (provider) {

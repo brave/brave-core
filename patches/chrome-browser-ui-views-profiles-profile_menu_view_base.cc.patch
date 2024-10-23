@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_menu_view_base.cc b/chrome/browser/ui/views/profiles/profile_menu_view_base.cc
-index 06d73cdced8d99fe3a174438de737f07a37f4b19..472f7ce393479bda1a1c6175f93c20009fc11401 100644
+index 6cc1e99acab0447e726e59b64967add58e19c964..40599e3fd14d8f86817079c6a25b427eaaef0ffd 100644
 --- a/chrome/browser/ui/views/profiles/profile_menu_view_base.cc
 +++ b/chrome/browser/ui/views/profiles/profile_menu_view_base.cc
-@@ -530,7 +530,7 @@ ProfileMenuViewBase::ProfileMenuViewBase(views::Button* anchor_button,
+@@ -543,7 +543,7 @@ ProfileMenuViewBase::ProfileMenuViewBase(views::Button* anchor_button,
      : BubbleDialogDelegateView(anchor_button, views::BubbleBorder::TOP_RIGHT),
        browser_(browser),
        anchor_button_(anchor_button),
@@ -11,7 +11,7 @@ index 06d73cdced8d99fe3a174438de737f07a37f4b19..472f7ce393479bda1a1c6175f93c2000
    SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
    // TODO(tluk): Remove when fixing https://crbug.com/822075
    // The sign in webview will be clipped on the bottom corners without these
-@@ -589,6 +589,7 @@ void ProfileMenuViewBase::BuildProfileBackgroundContainer(
+@@ -602,6 +602,7 @@ void ProfileMenuViewBase::BuildProfileBackgroundContainer(
      identity_info_color_callback_ = base::BindRepeating(
          &ProfileMenuViewBase::BuildIdentityInfoColorCallback,
          base::Unretained(this));

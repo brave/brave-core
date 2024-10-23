@@ -1,5 +1,5 @@
 diff --git a/chrome/elevation_service/BUILD.gn b/chrome/elevation_service/BUILD.gn
-index f82cf43c78367ee2bb33dbc70ca0f8d31e68fdec..f89ebc52107d6b4a1cda94dfda69e6ac2c7054fd 100644
+index 08529515b191778bfd7aefe14f6f3f1ac7d7816f..9d2158b9eda3d1455fd7149681a407ab43d071cc 100644
 --- a/chrome/elevation_service/BUILD.gn
 +++ b/chrome/elevation_service/BUILD.gn
 @@ -11,6 +11,7 @@ import("//testing/test.gni")

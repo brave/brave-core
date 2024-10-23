@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index f6ffd4c55f136aaeee1690d486b89e73a7909b43..1b6e1cbb7f3d4c94fa6bb8171161938b2e9f3295 100644
+index ab689d4788bf3be40731a8734af7eedfe360c2f4..d29dfc2e69d047d8ede3a3d43fa1d7c44cf4872d 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -20,7 +20,7 @@ index f6ffd4c55f136aaeee1690d486b89e73a7909b43..1b6e1cbb7f3d4c94fa6bb8171161938b
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
  
-@@ -75,11 +78,17 @@ by a child template that "extends" this file.
+@@ -79,11 +82,17 @@ by a child template that "extends" this file.
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" tools:ignore="SystemPermissionTypo" />
      <uses-permission android:name="android.permission.RUN_USER_INITIATED_JOBS" />
  
@@ -38,7 +38,7 @@ index f6ffd4c55f136aaeee1690d486b89e73a7909b43..1b6e1cbb7f3d4c94fa6bb8171161938b
      <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
      <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
      <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-@@ -88,7 +97,9 @@ by a child template that "extends" this file.
+@@ -92,7 +101,9 @@ by a child template that "extends" this file.
      <uses-permission-sdk-23 android:name="android.permission.READ_MEDIA_VIDEO"/>
      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
      <uses-permission android:name="android.permission.RECORD_AUDIO"/>
@@ -48,7 +48,7 @@ index f6ffd4c55f136aaeee1690d486b89e73a7909b43..1b6e1cbb7f3d4c94fa6bb8171161938b
      <uses-permission-sdk-23 android:name="android.permission.USE_BIOMETRIC"/>
      <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT"/>
      <uses-permission android:name="android.permission.VIBRATE"/>
-@@ -140,7 +151,9 @@ by a child template that "extends" this file.
+@@ -144,7 +155,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -58,7 +58,7 @@ index f6ffd4c55f136aaeee1690d486b89e73a7909b43..1b6e1cbb7f3d4c94fa6bb8171161938b
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -351,6 +364,7 @@ by a child template that "extends" this file.
+@@ -355,6 +368,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
@@ -66,7 +66,7 @@ index f6ffd4c55f136aaeee1690d486b89e73a7909b43..1b6e1cbb7f3d4c94fa6bb8171161938b
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -1206,6 +1220,7 @@ by a child template that "extends" this file.
+@@ -1194,6 +1208,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  

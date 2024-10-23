@@ -1,8 +1,8 @@
 diff --git a/components/browsing_data/core/BUILD.gn b/components/browsing_data/core/BUILD.gn
-index 3da3507c5d3ec54f1b4307b3071350423492a232..0c94d05cc13d1bc00f389a497415fe33a94e0cbd 100644
+index aed52b1002402a106b8dbc89d2247c29b6316640..b3dc395778cd07ee5994c64cec6337d746e3847b 100644
 --- a/components/browsing_data/core/BUILD.gn
 +++ b/components/browsing_data/core/BUILD.gn
-@@ -49,6 +49,7 @@ static_library("core") {
+@@ -50,6 +50,7 @@ static_library("core") {
    ]
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]
