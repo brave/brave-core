@@ -28,7 +28,7 @@ process_version("generate_brave_version_constants") {
   if (is_official_build && brave_channel == "") {
     extra_args += [
       "-e",
-      "BRAVE_CHANNEL=RELEASE",
+      "BRAVE_CHANNEL=\"RELEASE\"",
     ]
   } else {
     extra_args += [
