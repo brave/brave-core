@@ -81,5 +81,5 @@ preprocess_if_expr("preprocess") {
   out_folder =
       "$root_gen_dir/chrome/browser/resources/settings/$preprocess_folder"
 
-  in_files = brave_settings_local_ts_files + brave_settings_local_html_files
+  in_files = brave_settings_local_ts_files + brave_settings_local_html_files + brave_settings_local_css_files
 }

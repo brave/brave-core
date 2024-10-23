@@ -3,59 +3,51 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * you can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import '../settings_shared.css.js';
-import 'chrome://resources/polymer/v3_0/iron-flex-layout/iron-flex-layout-classes.js';
-
-import type {CrDialogElement} from 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {getTemplate} from './brave_account_dialog.html.js'
+import { CrDialogElement } from '//resources/cr_elements/cr_dialog/cr_dialog.js'
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
+import { getCss } from './brave_account_dialog.css.js'
+import { getHtml } from './brave_account_dialog.html.js'
 
 /**
  * @fileoverview
  * 'settings-brave-account-dialog'...
  */
 
-interface SettingsBraveAccountDialogElement {
+export interface SettingsBraveAccountDialogElement {
   $: {
     dialog: CrDialogElement,
-  };
+  }
 }
 
-class SettingsBraveAccountDialogElement extends PolymerElement {
+export class SettingsBraveAccountDialogElement extends CrLitElement {
   static get is() {
     return 'settings-brave-account-dialog'
   }
 
-  static get template() {
-    return getTemplate()
+  static override get styles() {
+    return getCss()
   }
 
-  static get properties() {
+  override render() {
+    return getHtml.bind(this)()
+  }
+
+  static override get properties() {
     return {
-      showBackButton: {
-        type: Boolean
-      },
-      headerTextTop: {
-        type: String
-      },
-      headerTextBottom: {
-        type: String
-      },
-    };
+      showBackButton: { type: Boolean },
+      headerTextTop: { type: String },
+      headerTextBottom: { type: String },
+    }
   }
 
-  private onBackButtonClicked() {
-    this.dispatchEvent(new CustomEvent('back-button-clicked', { bubbles: true, composed: true }))
-  }
-
-  private onCloseButtonClicked() {
-    this.$.dialog.cancel();
-  }
+  protected showBackButton: boolean
+  protected headerTextTop: string
+  protected headerTextBottom: string
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'settings-brave-account-dialog': SettingsBraveAccountDialogElement;
+    'settings-brave-account-dialog': SettingsBraveAccountDialogElement
   }
 }
 
