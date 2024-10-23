@@ -179,7 +179,7 @@ export default function FeatureMenu(props: Props) {
           </div>
         </leo-menu-item>
       )}
-      {!aiChatContext.isStandalone && (
+      {!aiChatContext.isStandalone && aiChatContext.isHistoryEnabled && (
         <>
           <leo-menu-item
             onClick={() => props.setIsConversationListOpen?.(true)}
@@ -191,7 +191,7 @@ export default function FeatureMenu(props: Props) {
               )}
             >
               <Icon name='history' />
-              <span className={styles.menuText}>Search and history</span>
+              <span className={styles.menuText}>{getLocale('menuConversationHistory')}</span>
             </div>
           </leo-menu-item>
         </>
