@@ -227,7 +227,6 @@ void AIChatService::DeleteConversation(const std::string& id) {
   if (!conversation_handler) {
     return;
   }
-  // conversation_handler->OnConversationDeleted();
   conversation_observations_.RemoveObservation(conversation_handler);
   conversation_handlers_.erase(id);
   conversations_.erase(id);
