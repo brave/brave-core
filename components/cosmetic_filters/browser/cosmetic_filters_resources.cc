@@ -50,9 +50,7 @@ void CosmeticFiltersResources::HiddenClassIdSelectors(
     const std::vector<std::string>& exceptions,
     HiddenClassIdSelectorsCallback callback) {
   DCHECK(ad_block_service_->GetTaskRunner()->RunsTasksInCurrentSequence());
-  std::optional<base::Value> input_value =
-      base::JSONReader::Read(input, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                        base::JSON_REPLACE_INVALID_CHARACTERS);
+  std::optional<base::Value> input_value = base::JSONReader::Read(input);
   if (!input_value) {
     // Nothing to work with
     std::move(callback).Run(base::Value::Dict());
