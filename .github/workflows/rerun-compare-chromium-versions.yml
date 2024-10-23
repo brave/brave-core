@@ -33,18 +33,20 @@ jobs:
           echo "::notice::PR branch: ${pr_ver:?}, target branch: ${target_ver:?}"
 
           if [[ "${pr_ver%%.*}" != "${target_ver%%.*}" ]]; then
+              echo "::notice::Rerunning compare-chromium-versions in PRs targeting ${GITHUB_BASE_REF:?}"
               while read -r pr_number head_sha; do
                   run_id="$(gh api "/repos/$GITHUB_REPOSITORY/actions/workflows/compare-chromium-versions.yml/runs?head_sha=${head_sha:?}" -q '.workflow_runs[0].id')"
                   pr_url="https://github.com/brave/brave-core/pull/${pr_number:?}"
                   if [[ "$run_id" ]]; then
-                      echo "::notice::Rerunning $run_id for $pr_url"
+                      echo "Rerunning $run_id for $pr_url"
                       # FIXME: remove echo
                       echo gh -R "$GITHUB_REPOSITORY" run rerun "$run_id"
                   else
                       echo "No run found for $pr_url"
                   fi
                   sleep 1
-              done < <(gh -R "$GITHUB_REPOSITORY" pr list --limit 1000 --state open --base "${GITHUB_BASE_REF:?}" --json number,headRefOid -q '.[]|"\(.number)\t\(.headRefOid)"')
+              # FIXME: done < <(gh -R "$GITHUB_REPOSITORY" pr list --limit 1000 --state open --base "$GITHUB_BASE_REF" --json number,headRefOid -q '.[]|"\(.number)\t\(.headRefOid)"')
+              done < <(gh -R "$GITHUB_REPOSITORY" pr list --limit 10 --state open --base "$GITHUB_BASE_REF" --json number,headRefOid -q '.[]|"\(.number)\t\(.headRefOid)"')
           else
               echo "::notice::Chromium major versions match, nothing to do"
           fi
