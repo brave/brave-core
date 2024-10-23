@@ -58,7 +58,7 @@ struct Logo {
 struct SponsoredBackground {
   base::FilePath image_file;
   gfx::Point focal_point;
-  brave_ads::NewTabPageAdConditionMatchers condition_matchers;
+  brave_ads::NewTabPageAdConditionMatcherMap condition_matchers;
   std::string background_color;
 
   std::string creative_instance_id;

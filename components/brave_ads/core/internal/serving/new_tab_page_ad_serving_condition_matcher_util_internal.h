@@ -36,6 +36,10 @@ int64_t WindowsToUnixEpoch(int64_t timestamp);
 // timestamp.
 base::TimeDelta TimeDeltaSinceEpoch(int64_t timestamp);
 
+// Parses a time delta from a string representation. Returns `std::nullopt` if
+// the value is invalid.
+std::optional<base::TimeDelta> ParseTimeDelta(std::string_view value);
+
 // Matches a value against a condition using operators. Supports equality,
 // greater than, and greater than or equal operators.
 bool MatchOperator(std::string_view value, std::string_view condition);

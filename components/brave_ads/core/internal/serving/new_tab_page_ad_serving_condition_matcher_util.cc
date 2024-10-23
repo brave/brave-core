@@ -13,24 +13,34 @@
 
 namespace brave_ads {
 
-bool MatchConditions(const PrefProviderInterface* const pref_provider,
-                     const NewTabPageAdConditionMatchers& condition_matchers) {
+namespace {
+
+bool MatchCondition(const std::string_view value,
+                    const std::string_view condition) {
+  return MatchOperator(value, condition) || MatchPattern(value, condition) ||
+         MatchRegex(value, condition);
+}
+
+}  // namespace
+
+bool MatchConditions(
+    const PrefProviderInterface* const pref_provider,
+    const NewTabPageAdConditionMatcherMap& condition_matchers) {
   CHECK(pref_provider);
 
   return base::ranges::all_of(
       condition_matchers, [pref_provider](const auto& condition_matcher) {
         const auto& [pref_path, condition] = condition_matcher;
 
-        const std::optional<std::string> value =
-            MaybeGetPrefValueAsString(pref_provider, pref_path);
-        if (!value) {
-          // Do not serve the ad due to an unknown preference path or
-          // unsupported value type.
-          return false;
+        const std::string normalized_pref_path = NormalizePrefPath(pref_path);
+        if (const std::optional<std::string> value = MaybeGetPrefValueAsString(
+                pref_provider, normalized_pref_path)) {
+          return MatchCondition(*value, condition);
         }
 
-        return MatchOperator(*value, condition) ||
-               MatchPattern(*value, condition) || MatchRegex(*value, condition);
+        // Do not serve the ad due to an unknown preference path or
+        // unsupported value type.
+        return false;
       });
 }
 

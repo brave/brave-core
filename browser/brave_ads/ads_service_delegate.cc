@@ -9,6 +9,7 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "base/version_info/channel.h"
+#include "base/version_info/version_info.h"
 #include "brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper.h"
 #include "brave/browser/ui/brave_ads/notification_ad.h"
@@ -153,10 +154,10 @@ base::Value::Dict AdsServiceDelegate::GetVirtualPrefs() {
   }
 
   return base::Value::Dict()
-      .Set("[virtual]:default_search_engine.name",
-           base::UTF16ToUTF8(template_url_data->short_name()))
       .Set("[virtual]:build_channel.name",
-           version_info::GetChannelString(chrome::GetChannel()));
+           version_info::GetChannelString(chrome::GetChannel()))
+      .Set("[virtual]:default_search_engine.name",
+           base::UTF16ToUTF8(template_url_data->short_name()));
 }
 
 }  // namespace brave_ads
