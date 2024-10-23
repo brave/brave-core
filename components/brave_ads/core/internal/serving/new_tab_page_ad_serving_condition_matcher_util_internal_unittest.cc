@@ -233,6 +233,53 @@ TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
 }
 
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       MatchLessThanOperator) {
+  // Arrange
+  AdvanceClockTo(test::TimeFromUTCString("3 October 2024"));
+
+  // Act & Assert
+  EXPECT_TRUE(
+      MatchOperator("13372214400000000" /*1st October 2024 00:00:00 UTC*/,
+                    "[<]:3"));  // Event occurred 2 days ago.
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       DoNotMatchLessThanOperator) {
+  // Arrange
+  AdvanceClockTo(test::TimeFromUTCString("3 October 2024"));
+
+  // Act & Assert
+  EXPECT_FALSE(
+      MatchOperator("13372214400000000" /*1st October 2024 00:00:00 UTC*/,
+                    "[<]:2"));  // Event occurred 2 days ago.
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       MatchLessThanOrEqualOperator) {
+  // Arrange
+  AdvanceClockTo(test::TimeFromUTCString("3 October 2024"));
+
+  // Act & Assert
+  EXPECT_TRUE(
+      MatchOperator("13372214400000000" /*1st October 2024 00:00:00 UTC*/,
+                    "[≤]:3"));  // Event occurred 2 days ago.
+  EXPECT_TRUE(
+      MatchOperator("13372214400000000" /*1st October 2024 00:00:00 UTC*/,
+                    "[≤]:2"));  // Event occurred 2 days ago.
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
+       DoNotMatchLessThanOrEqualOperator) {
+  // Arrange
+  AdvanceClockTo(test::TimeFromUTCString("3 October 2024"));
+
+  // Act & Assert
+  EXPECT_FALSE(
+      MatchOperator("13372214400000000" /*1st October 2024 00:00:00 UTC*/,
+                    "[≤]:1"));  // Event occurred 2 days ago.
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilInternalTest,
        DoNotMatchUnknownOperator) {
   // Arrange
   AdvanceClockTo(test::TimeFromUTCString("3 October 2024"));
