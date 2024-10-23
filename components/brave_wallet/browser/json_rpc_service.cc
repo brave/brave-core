@@ -310,6 +310,18 @@ bool ValidateNftIdentifiers(
     return false;
   }
 
+  // Check for duplicates using a set to track unique identifiers
+  base::flat_set<std::string> seen_identifiers;
+  for (const auto& nft : nft_identifiers) {
+    // Create a unique string identifier combining contract, token id, and chain
+    std::string unique_id =
+        nft->contract_address + "_" + nft->token_id + "_" + nft->chain_id;
+    if (!seen_identifiers.insert(unique_id).second) {
+      error_message = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
+      return false;
+    }
+  }
+
   if (coin == mojom::CoinType::ETH) {
     for (auto& nft_identifier : nft_identifiers) {
       auto checksum_address =
