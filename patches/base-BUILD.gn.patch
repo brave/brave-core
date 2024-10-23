@@ -1,12 +1,8 @@
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-<<<<<<< HEAD
-index aa1654d428420e99bdce3abf3140f764d73e7c48..cbe7fe8fa1f99202d4904ee3d9ccb6355312146b 100644
-=======
-index 3a08c3bde5977eeb0bfa1f14713b715394f2cd6f..1a891b80b9b1e93ce7a40e1a3bdd02d55507533a 100644
->>>>>>> a6a09ab89ec ([Android] Move base.cached_flags to components.cached_flags)
+index 4c0e4645f64e3e9f4466bd59972f8587866da8c5..dae4b156f37f51893f27c1e6ab24542f4b03edbb 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
-@@ -4417,6 +4417,7 @@ if (is_android) {
+@@ -4438,6 +4438,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/ValueChangedCallback.java",
        "android/java/src/org/chromium/base/WrappedClassLoader.java",
      ]
@@ -14,7 +10,7 @@ index 3a08c3bde5977eeb0bfa1f14713b715394f2cd6f..1a891b80b9b1e93ce7a40e1a3bdd02d5
  
      if (use_clang_profiling) {
        sources += [
-@@ -4882,6 +4883,7 @@ if (is_android) {
+@@ -4906,6 +4907,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/shared_preferences/SharedPreferencesManager.java",
        "android/java/src/org/chromium/base/shared_preferences/StrictPreferenceKeyChecker.java",
      ]

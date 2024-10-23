@@ -1,5 +1,5 @@
 diff --git a/build/rust/rust_target.gni b/build/rust/rust_target.gni
-index 10371f12c0a836d3e99f8fea4c1185198d4b7f0d..4a3021928b2703c1e297e5d5b8c1f941a2f0bf89 100644
+index b8b0e3a0ea1f02f5ebd72116e1d9d7f88a143514..b937393d6910ebd2e2fc6a663e207da32a2bfbeb 100644
 --- a/build/rust/rust_target.gni
 +++ b/build/rust/rust_target.gni
 @@ -192,7 +192,7 @@ template("rust_target") {

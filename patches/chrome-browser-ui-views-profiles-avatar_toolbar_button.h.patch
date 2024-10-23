@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-index 26c914fcaee4ad496afcdbcdd0425576660c7877..cb2d40ef517c1f2b6b62e7ff20e197f56205b0ca 100644
+index 49df54a9e05165ae32c15cde88f6a8bc988cf28d..1d3fc88dbfbcfa0e9adc903915c127489e19a5ab 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-@@ -153,6 +153,7 @@ class AvatarToolbarButton : public ToolbarButton {
+@@ -144,6 +144,7 @@ class AvatarToolbarButton : public ToolbarButton {
    CreateScopedZeroDelayOverrideSigninPendingTextForTesting();
  
   private:
