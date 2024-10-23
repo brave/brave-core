@@ -299,23 +299,19 @@ void AIChatService::OnConversationEntriesChanged(
   CHECK(conversation_it != conversations_.end());
   auto& conversation = conversation_it->second;
   if (!entries.empty()) {
-    // First time a new entry has appeared
-    if (!conversation->has_content && entries.size() == 1) {
-      // This conversation is visible once the first response begins
-      conversation->has_content = true;
-      if (ai_chat_metrics_ != nullptr) {
-        if (entries.size() == 1) {
-          ai_chat_metrics_->RecordNewChat();
-        }
-        // Each time the user submits an entry
-        // TODO(petemill): Verify this won't get called multiple times for the
-        // same entry.
-        if (entries.back()->character_type == mojom::CharacterType::HUMAN) {
-          ai_chat_metrics_->RecordNewPrompt();
-        }
+    // This conversation is visible once the first response begins
+    conversation->has_content = true;
+    if (ai_chat_metrics_ != nullptr) {
+      // Each time the user starts a conversation
+      if (entries.size() == 1) {
+        ai_chat_metrics_->RecordNewChat();
       }
-      OnConversationListChanged();
+      // Each time the user submits an entry
+      if (entries.back()->character_type == mojom::CharacterType::HUMAN) {
+        ai_chat_metrics_->RecordNewPrompt();
+      }
     }
+    OnConversationListChanged();
     // TODO(petemill): Persist the entries, but consider receiving finer grained
     // entry update events.
   }
