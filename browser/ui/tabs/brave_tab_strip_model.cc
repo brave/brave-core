@@ -23,6 +23,17 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 
+namespace {
+void GotoNewTabPage(content::WebContents* web_contents) {
+  GURL url(chrome::kChromeUINewTabURL);
+
+  content::OpenURLParams params(url, content::Referrer(),
+                                WindowOpenDisposition::CURRENT_TAB,
+                                ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
+  web_contents->OpenURL(params, /*navigation_handle_callback=*/{});
+}
+} // namespace
+
 BraveTabStripModel::BraveTabStripModel(
     TabStripModelDelegate* delegate,
     Profile* profile,
@@ -39,8 +50,8 @@ void BraveTabStripModel::CloseTabs(
     DCHECK(browser);
     if (!browser->IsAttemptingToCloseBrowser() &&
         delegate()->IsNormalWindow()) {
-      GURL url(chrome::kChromeUINewTabURL);
-      delegate()->AddTabAt(url, -1, true);
+      GotoNewTabPage(active_web_contents);
+      return;
     }
   }
   TabStripModel::CloseTabs(items, close_types);
