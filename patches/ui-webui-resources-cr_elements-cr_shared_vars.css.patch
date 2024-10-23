@@ -1,12 +1,12 @@
 diff --git a/ui/webui/resources/cr_elements/cr_shared_vars.css b/ui/webui/resources/cr_elements/cr_shared_vars.css
-index baea083e3fee5d5f8a14f7d74184cd98a38b7299..a856721cd5acd05ab80ca536620490c5dda872e4 100644
+index baea083e3fee5d5f8a14f7d74184cd98a38b7299..0f0b2e97ffcaec33a4e45cc31476b739b8289051 100644
 --- a/ui/webui/resources/cr_elements/cr_shared_vars.css
 +++ b/ui/webui/resources/cr_elements/cr_shared_vars.css
 @@ -4,6 +4,7 @@
  
  /* #css_wrapper_metadata_start
   * #type=vars-lit
-+ * #import=//resources/brave/br_elements/br_shared_vars.css.js
++<if expr="not is_android and not is_ios">* #import=//resources/brave/br_elements/br_shared_vars.css.js</if>
   * #scheme=relative
   * #css_wrapper_metadata_end */
  
