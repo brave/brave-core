@@ -41,7 +41,7 @@ function MaybeImage(props: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLI
 export function SearchEngineIcon(props: { engine?: SearchEngineInfo, className?: string }) {
   if (!props.engine) return null
 
-  const nalaIcon = icons[props.engine.host]
+  const nalaIcon = icons[props.engine.host as keyof typeof icons]
 
   return nalaIcon
     ? <Icon name={nalaIcon} className={props.className} />

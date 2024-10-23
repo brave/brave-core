@@ -11,18 +11,14 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/json/json_writer.h"
 #include "base/json/values_util.h"
 #include "base/memory/weak_ptr.h"
-#include "base/metrics/histogram_macros.h"
 #include "base/threading/thread_restrictions.h"
-#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/pref_names.h"
-#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
@@ -32,13 +28,11 @@
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/p3a/utils.h"
-#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/plural_string_handler.h"
-#include "chrome/common/chrome_features.h"
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -95,6 +89,9 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
   pref_data.Set(
       "showSearchBox",
       prefs->GetBoolean(brave_search_conversion::prefs::kShowNTPSearchBox));
+  pref_data.Set("lastUsedNtpSearchEngine",
+                prefs->GetString(
+                    brave_search_conversion::prefs::kLastUsedNTPSearchEngine));
   pref_data.Set("promptEnableSearchSuggestions",
                 prefs->GetBoolean(
                     brave_search_conversion::prefs::kPromptEnableSuggestions));
@@ -293,6 +290,10 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
+      brave_search_conversion::prefs::kLastUsedNTPSearchEngine,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
       brave_search_conversion::prefs::kPromptEnableSuggestions,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
@@ -393,73 +394,75 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   }
   PrefService* prefs = profile_->GetPrefs();
   // Collect args
-  std::string settingsKeyInput = args[0].GetString();
-  auto settingsValue = args[1].Clone();
-  std::string settingsKey;
+  std::string settings_key_input = args[0].GetString();
+  auto settings_value = args[1].Clone();
+  std::string settings_key;
 
   // Prevent News onboarding below NTP and sponsored NTP notification
   // state from triggering the "shown & changed" answer for the
   // customize dialog metric.
-  if (settingsKeyInput != "showToday" &&
-      settingsKeyInput != "isBraveNewsOptedIn" &&
-      settingsKeyInput != "isBrandedWallpaperNotificationDismissed") {
+  if (settings_key_input != "showToday" &&
+      settings_key_input != "isBraveNewsOptedIn" &&
+      settings_key_input != "isBrandedWallpaperNotificationDismissed") {
     p3a::RecordValueIfGreater<NTPCustomizeUsage>(
         NTPCustomizeUsage::kOpenedAndEdited, kCustomizeUsageHistogramName,
         kNTPCustomizeUsageStatus, g_browser_process->local_state());
   }
 
   // Handle string settings
-  if (settingsValue.is_string()) {
-    const auto settingsValueString = settingsValue.GetString();
-    if (settingsKeyInput == "clockFormat") {
-      settingsKey = kNewTabPageClockFormat;
+  if (settings_value.is_string()) {
+    const auto settings_value_string = settings_value.GetString();
+    if (settings_key_input == "clockFormat") {
+      settings_key = kNewTabPageClockFormat;
+    } else if (settings_key_input == "lastUsedNtpSearchEngine") {
+      settings_key = brave_search_conversion::prefs::kLastUsedNTPSearchEngine;
     } else {
       LOG(ERROR) << "Invalid setting key";
       return;
     }
-    prefs->SetString(settingsKey, settingsValueString);
+    prefs->SetString(settings_key, settings_value_string);
     return;
   }
 
   // Handle bool settings
-  if (!settingsValue.is_bool()) {
+  if (!settings_value.is_bool()) {
     LOG(ERROR) << "Invalid value type";
     return;
   }
-  const auto settingsValueBool = settingsValue.GetBool();
-  if (settingsKeyInput == "showBackgroundImage") {
-    settingsKey = kNewTabPageShowBackgroundImage;
-  } else if (settingsKeyInput == "brandedWallpaperOptIn") {
+  const auto settings_value_bool = settings_value.GetBool();
+  if (settings_key_input == "showBackgroundImage") {
+    settings_key = kNewTabPageShowBackgroundImage;
+  } else if (settings_key_input == "brandedWallpaperOptIn") {
     // TODO(simonhong): I think above |brandedWallpaperOptIn| should be changed
     // to |sponsoredImagesWallpaperOptIn|.
-    settingsKey = kNewTabPageShowSponsoredImagesBackgroundImage;
-  } else if (settingsKeyInput == "showClock") {
-    settingsKey = kNewTabPageShowClock;
-  } else if (settingsKeyInput == "showStats") {
-    settingsKey = kNewTabPageShowStats;
-  } else if (settingsKeyInput == "showToday") {
-    settingsKey = brave_news::prefs::kNewTabPageShowToday;
-  } else if (settingsKeyInput == "isBraveNewsOptedIn") {
-    settingsKey = brave_news::prefs::kBraveNewsOptedIn;
-  } else if (settingsKeyInput == "showRewards") {
-    settingsKey = kNewTabPageShowRewards;
-  } else if (settingsKeyInput == "isBrandedWallpaperNotificationDismissed") {
-    settingsKey = kBrandedWallpaperNotificationDismissed;
-  } else if (settingsKeyInput == "hideAllWidgets") {
-    settingsKey = kNewTabPageHideAllWidgets;
-  } else if (settingsKeyInput == "showBraveTalk") {
-    settingsKey = kNewTabPageShowBraveTalk;
-  } else if (settingsKeyInput == "showSearchBox") {
-    settingsKey = brave_search_conversion::prefs::kShowNTPSearchBox;
-  } else if (settingsKeyInput == "promptEnableSearchSuggestions") {
-    settingsKey = brave_search_conversion::prefs::kPromptEnableSuggestions;
-  } else if (settingsKeyInput == "searchSuggestionsEnabled") {
-    settingsKey = prefs::kSearchSuggestEnabled;
+    settings_key = kNewTabPageShowSponsoredImagesBackgroundImage;
+  } else if (settings_key_input == "showClock") {
+    settings_key = kNewTabPageShowClock;
+  } else if (settings_key_input == "showStats") {
+    settings_key = kNewTabPageShowStats;
+  } else if (settings_key_input == "showToday") {
+    settings_key = brave_news::prefs::kNewTabPageShowToday;
+  } else if (settings_key_input == "isBraveNewsOptedIn") {
+    settings_key = brave_news::prefs::kBraveNewsOptedIn;
+  } else if (settings_key_input == "showRewards") {
+    settings_key = kNewTabPageShowRewards;
+  } else if (settings_key_input == "isBrandedWallpaperNotificationDismissed") {
+    settings_key = kBrandedWallpaperNotificationDismissed;
+  } else if (settings_key_input == "hideAllWidgets") {
+    settings_key = kNewTabPageHideAllWidgets;
+  } else if (settings_key_input == "showBraveTalk") {
+    settings_key = kNewTabPageShowBraveTalk;
+  } else if (settings_key_input == "showSearchBox") {
+    settings_key = brave_search_conversion::prefs::kShowNTPSearchBox;
+  } else if (settings_key_input == "promptEnableSearchSuggestions") {
+    settings_key = brave_search_conversion::prefs::kPromptEnableSuggestions;
+  } else if (settings_key_input == "searchSuggestionsEnabled") {
+    settings_key = prefs::kSearchSuggestEnabled;
   } else {
     LOG(ERROR) << "Invalid setting key";
     return;
   }
-  prefs->SetBoolean(settingsKey, settingsValueBool);
+  prefs->SetBoolean(settings_key, settings_value_bool);
 }
 
 void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
@@ -541,10 +544,10 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
   // Even though we show sponsored image, we should pass "Background wallpaper"
   // data so that NTP customization menu can know which wallpaper is selected by
   // users.
-  auto backgroundWallpaper = service->GetCurrentWallpaper();
+  auto background_wallpaper = service->GetCurrentWallpaper();
   wallpaper.Set(kBackgroundWallpaperKey,
-                backgroundWallpaper
-                    ? base::Value(std::move(*backgroundWallpaper))
+                background_wallpaper
+                    ? base::Value(std::move(*background_wallpaper))
                     : base::Value());
 
   const std::string* creative_instance_id =
