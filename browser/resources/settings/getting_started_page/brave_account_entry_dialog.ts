@@ -3,37 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * you can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import './brave_account_dialog.js';
-import 'chrome://resources/brave/leo.bundle.js'
-import 'chrome://resources/polymer/v3_0/iron-flex-layout/iron-flex-layout-classes.js';
-
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {getTemplate} from './brave_account_entry_dialog.html.js'
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
+import { getCss } from './brave_account_entry_dialog.css.js'
+import { getHtml } from './brave_account_entry_dialog.html.js'
 
 /**
  * @fileoverview
- * 'settings-brave-account-dialog'...
+ * 'settings-brave-account-entry-dialog'...
  */
 
-class SettingsBraveAccountEntryDialogElement extends PolymerElement {
+export class SettingsBraveAccountEntryDialogElement extends CrLitElement {
   static get is() {
     return 'settings-brave-account-entry-dialog'
   }
 
-  static get template() {
-    return getTemplate()
+  static override get styles() {
+    return getCss()
   }
 
-  private onCreateButtonClicked() {
-    this.dispatchEvent(new CustomEvent('create-button-clicked'))
-  }
-
-  private onSignInButtonClicked() {
-    this.dispatchEvent(new CustomEvent('sign-in-button-clicked'))
-  }
-
-  private onSelfCustodyButtonClicked() {
-    this.dispatchEvent(new CustomEvent('self-custody-button-clicked'))
+  override render() {
+    return getHtml.bind(this)()
   }
 }
 

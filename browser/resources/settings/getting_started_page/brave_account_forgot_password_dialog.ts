@@ -3,47 +3,51 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * you can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import './brave_account_dialog.js';
-import 'chrome://resources/brave/leo.bundle.js'
-
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {getTemplate} from './brave_account_forgot_password_dialog.html.js'
+ import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
+ import { getCss } from './brave_account_forgot_password_dialog.css.js'
+ import { getHtml } from './brave_account_forgot_password_dialog.html.js'
 
 /**
  * @fileoverview
  * 'settings-brave-account-forgot-password-dialog'...
  */
 
-interface SettingsBraveAccountForgotPasswordDialogElement {
+export interface SettingsBraveAccountForgotPasswordDialogElement {
   $: {
     email: HTMLInputElement,
-  };
+  }
 }
 
-class SettingsBraveAccountForgotPasswordDialogElement extends PolymerElement {
+export class SettingsBraveAccountForgotPasswordDialogElement extends CrLitElement {
   static get is() {
     return 'settings-brave-account-forgot-password-dialog'
   }
 
-  static get template() {
-    return getTemplate()
+  static override get styles() {
+    return getCss()
   }
 
-  private onEmailInput() {
+  override render() {
+    return getHtml.bind(this)()
+  }
+
+  static override get properties() {
+    return {
+      isEmailValid: { type: Boolean },
+    }
+  }
+
+  protected onEmailInput() {
     // https://www.regular-expressions.info
     this.isEmailValid = Boolean(this.$.email.value.match('^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$'))
   }
 
-  private onCancelButtonClicked() {
-    this.dispatchEvent(new CustomEvent('cancel-button-clicked'))
-  }
-
-  private isEmailValid: boolean = false
+  protected isEmailValid: boolean = false
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'settings-brave-account-forgot-password-dialog': SettingsBraveAccountForgotPasswordDialogElement;
+    'settings-brave-account-forgot-password-dialog': SettingsBraveAccountForgotPasswordDialogElement
   }
 }
 
