@@ -607,10 +607,16 @@ class EthereumProviderImplUnitTest : public testing::Test {
       return;
     }
 
+    mojom::EthSignTypedDataPtr eth_sign_typed_data =
+        mojom::EthSignTypedData::New();
+    eth_sign_typed_data->message_json = message;
+    eth_sign_typed_data->meta = std::move(meta);
+    eth_sign_typed_data->domain_hash = domain_hash;
+    eth_sign_typed_data->primary_hash = primary_hash;
+
     base::RunLoop run_loop;
     provider()->SignTypedMessage(
-        address, message, domain_hash, primary_hash, std::move(meta),
-        std::move(domain),
+        address, std::move(eth_sign_typed_data),
         base::BindLambdaForTesting(
             [&](base::Value id, base::Value formed_response, const bool reject,
                 const std::string& first_allowed_account,

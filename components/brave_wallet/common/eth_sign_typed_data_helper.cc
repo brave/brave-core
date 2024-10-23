@@ -384,8 +384,8 @@ std::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
 
 std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
 EthSignTypedDataHelper::GetTypedDataDomainHash(
-    const base::Value::Dict& domain_separator) const {
-  return HashStruct("EIP712Domain", domain_separator);
+    const base::Value::Dict& domain) const {
+  return HashStruct("EIP712Domain", domain);
 }
 
 std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>

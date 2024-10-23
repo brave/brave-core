@@ -48,7 +48,7 @@ class EthSignTypedDataHelper {
   GetTypedDataPrimaryHash(const std::string& primary_type_name,
                           const base::Value::Dict& message) const;
   std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
-  GetTypedDataDomainHash(const base::Value::Dict& domain_separator) const;
+  GetTypedDataDomainHash(const base::Value::Dict& domain) const;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeTypes);

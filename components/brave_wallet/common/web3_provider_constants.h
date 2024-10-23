@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_WEB3_PROVIDER_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_WEB3_PROVIDER_CONSTANTS_H_
 
-#include <stdint.h>
-
 namespace brave_wallet {
 
 inline constexpr char kConnectEvent[] = "connect";
@@ -51,9 +49,6 @@ inline constexpr char kEthUnsubscribe[] = "eth_unsubscribe";
 inline constexpr char kEthSubscribeNewHeads[] = "newHeads";
 inline constexpr char kEthSubscribeLogs[] = "logs";
 
-// We currently don't handle it until MetaMask point it to v3 or v4 other than
-// v1 or v2
-inline constexpr char kEthSignTypedData[] = "eth_signTypedData";
 inline constexpr char kEthSignTypedDataV3[] = "eth_signTypedData_v3";
 inline constexpr char kEthSignTypedDataV4[] = "eth_signTypedData_v4";
 inline constexpr char kId[] = "id";
