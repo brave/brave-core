@@ -200,6 +200,40 @@ public class BraveRewards: PreferencesObserver {
     }
   }
 
+  /// Notifies Brave Ads that the given tab did change
+  func maybeNotifyTabDidChange(
+    tab: Tab,
+    isSelected: Bool
+  ) {
+    guard !tab.redirectChain.isEmpty, !tab.isPrivate, ads.isServiceRunning() else {
+      // Don't notify `DidChange` for tabs that haven't finished loading, private tabs,
+      // or when the ads service is not running.
+      return
+    }
+
+    ads.notifyTabDidChange(
+      Int(tab.rewardsId),
+      redirectChain: tab.redirectChain,
+      isNewNavigation: tab.rewardsReportingState.isNewNavigation,
+      isRestoring: tab.rewardsReportingState.wasRestored,
+      isSelected: isSelected
+    )
+  }
+
+  /// Notifies Brave Ads that the given tab did load
+  func maybeNotifyTabDidLoad(tab: Tab) {
+    guard !tab.redirectChain.isEmpty, !tab.isPrivate, ads.isServiceRunning() else {
+      // Don't notify `DidLoad` for tabs that haven't finished loading, private tabs,
+      // or when the ads service is not running.
+      return
+    }
+
+    ads.notifyTabDidLoad(
+      Int(tab.rewardsId),
+      httpStatusCode: tab.rewardsReportingState.httpStatusCode
+    )
+  }
+
   // MARK: - Brave Ads Data
 
   /// Clear Brave Ads Data.
@@ -218,46 +252,6 @@ public class BraveRewards: PreferencesObserver {
         }
       }
     }
-  }
-
-  // MARK: - Brave Ads Notifications
-
-  /// Notifies Brave Ads that a tab did change
-  func maybeNotifyTabDidChange(
-    tab: Tab,
-    isSelected: Bool
-  ) {
-    guard !tab.redirectChain.isEmpty, !tab.isPrivate, ads.isServiceRunning() else {
-      // Don't notify `DidChange` for tabs that haven't finished loading, private tabs,
-      // or when the ads service is not running.
-      return
-    }
-
-    let tabId = Int(tab.rewardsId)
-
-    ads.notifyTabDidChange(
-      tabId,
-      redirectChain: tab.redirectChain,
-      isNewNavigation: tab.rewardsReportingState.isNewNavigation,
-      isRestoring: tab.rewardsReportingState.wasRestored,
-      isSelected: isSelected
-    )
-  }
-
-  /// Notifies Brave Ads that a tab did load
-  func maybeNotifyTabDidLoad(tab: Tab) {
-    guard !tab.redirectChain.isEmpty, !tab.isPrivate, ads.isServiceRunning() else {
-      // Don't notify `DidLoad` for tabs that haven't finished loading, private tabs,
-      // or when the ads service is not running.
-      return
-    }
-
-    let tabId = Int(tab.rewardsId)
-
-    ads.notifyTabDidLoad(
-      tabId,
-      httpStatusCode: tab.rewardsReportingState.httpStatusCode
-    )
   }
 
   // MARK: - Reporting
@@ -295,6 +289,9 @@ public class BraveRewards: PreferencesObserver {
     let tabId = Int(tab.rewardsId)
 
     tabRetrieved(tabId, url: url, html: htmlContent)
+
+    // Don't notify about content changes if the ads service is not available, the
+    // tab was restored, was a previously committed navigation, or an error page was displayed.
     if ads.isServiceRunning() {
       let kHttpClientErrorResponseStatusCodeClass = 4
       let kHttpServerErrorResponseStatusCodeClass = 5
@@ -305,6 +302,9 @@ public class BraveRewards: PreferencesObserver {
         && responseStatusCodeClass != kHttpClientErrorResponseStatusCodeClass
         && responseStatusCodeClass != kHttpServerErrorResponseStatusCodeClass
       {
+        // HTML is not required because verifiable conversions are only supported
+        // for Brave Rewards users. However, we must notify that the tab content has
+        // changed with empty HTML to ensure that regular conversions are processed.
         ads.notifyTabHtmlContentDidChange(
           tabId,
           redirectChain: tab.redirectChain,

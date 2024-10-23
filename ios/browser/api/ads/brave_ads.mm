@@ -332,11 +332,13 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
 }
 
 - (void)applicationDidBecomeActive {
+  // Notify browser's active state changed.
   [self notifyBrowserDidEnterForeground];
   [self notifyBrowserDidBecomeActive];
 }
 
 - (void)applicationDidBackground {
+  // Notify browser's active state changed.
   [self notifyBrowserDidResignActive];
   [self notifyBrowserDidEnterBackground];
 }

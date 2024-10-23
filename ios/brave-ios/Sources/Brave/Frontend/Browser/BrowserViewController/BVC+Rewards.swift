@@ -172,6 +172,8 @@ extension Tab {
     var textContent: String?
 
     if rewards.isEnabled {
+      // Only utilized for verifiable conversions, which requires the user to have
+      // joined Brave Rewards.
       group.enter()
       webView.evaluateSafeJavaScript(
         functionName: "new XMLSerializer().serializeToString",
@@ -183,6 +185,9 @@ extension Tab {
         group.leave()
       }
 
+      // Only utilized for text classification, which requires the user to have
+      // joined Brave Rewards. Desktop requires the user to have opted into
+      // notification ads, however we do not have access to that pref at this time.
       group.enter()
       webView.evaluateSafeJavaScript(
         functionName: "document?.body?.innerText",
