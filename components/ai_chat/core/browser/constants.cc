@@ -45,6 +45,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"closeLabel", IDS_CHAT_UI_LABEL_CLOSE},
       {"menuGoPremium", IDS_CHAT_UI_MENU_GO_PREMIUM},
       {"menuManageSubscription", IDS_CHAT_UI_MENU_MANAGE_SUBSCRIPTION},
+      {"menuConversationHistory", IDS_CHAT_UI_MENU_CONVERSATION_HISTORY},
       {"menuSettings", IDS_CHAT_UI_MENU_SETTINGS},
       {"menuTitleModels", IDS_CHAT_UI_MENU_TITLE_MODELS},
       {"suggestQuestionsLabel", IDS_CHAT_UI_SUGGEST_QUESTIONS_LABEL},

@@ -87,6 +87,9 @@
   <message name="IDS_CHAT_UI_MENU_MANAGE_SUBSCRIPTION" desc="Menu item for managing premium subscription">
     Manage subscription
   </message>
+  <message name="IDS_CHAT_UI_MENU_CONVERSATION_HISTORY" desc="Menu item for opening the list of conversations">
+    Conversation history
+  </message>
   <message name="IDS_CHAT_UI_MENU_SETTINGS" desc="Menu item for Settings">
     Advanced Settings
   </message>
