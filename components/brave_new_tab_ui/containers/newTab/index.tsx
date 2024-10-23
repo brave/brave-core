@@ -44,6 +44,7 @@ import Icon from '@brave/leo/react/icon'
 
 import * as style from './style'
 import { defaultState } from '../../storage/new_tab_storage'
+import { EngineContextProvider } from '../../components/search/EngineContext'
 
 const BraveNewsPeek =  React.lazy(() => import('../../../brave_news/browser/resources/Peek'))
 const SearchPlaceholder = React.lazy(() => import('../../components/search/SearchPlaceholder'))
@@ -273,7 +274,7 @@ class NewTabPage extends React.Component<Props, State> {
       if (activeSettingsTabRaw) {
         const allSettingsTabTypes = [...Object.keys(SettingsTabType)]
         if (allSettingsTabTypes.includes(activeSettingsTabRaw)) {
-          activeSettingsTab = SettingsTabType[activeSettingsTabRaw]
+          activeSettingsTab = SettingsTabType[activeSettingsTabRaw as keyof typeof SettingsTabType]
         }
       }
       this.setState({ showSettingsMenu: true, activeSettingsTab })
@@ -403,7 +404,7 @@ class NewTabPage extends React.Component<Props, State> {
       showRewards,
       showBraveTalk
     } = this.props.newTabData
-    const lookup = {
+    const lookup: { [p: string]: { display: boolean, render: any } } = {
       'rewards': {
         display: braveRewardsSupported && showRewards,
         render: this.renderRewardsWidget.bind(this)
@@ -621,6 +622,7 @@ class NewTabPage extends React.Component<Props, State> {
         data-show-news-prompt={((this.state.backgroundHasLoaded || colorForBackground) && this.state.isPromptingBraveNews && !defaultState.featureFlagBraveNewsFeedV2Enabled) ? true : undefined}>
         <OverrideReadabilityColor override={ this.shouldOverrideReadabilityColor(this.props.newTabData) } />
         <BraveNewsContextProvider>
+        <EngineContextProvider>
         <Page.Page
             hasImage={hasImage}
             imageSrc={this.imageSource}
@@ -781,6 +783,7 @@ class NewTabPage extends React.Component<Props, State> {
             /> : null
         }
         <BraveNewsModal/>
+        </EngineContextProvider>
         </BraveNewsContextProvider>
       </Page.App>
     )

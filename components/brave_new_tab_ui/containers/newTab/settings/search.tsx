@@ -20,9 +20,10 @@ import {
 } from '../../../components/default'
 import { searchEnginesPromise } from '../../../components/search/SearchContext'
 import { MediumSearchEngineIcon } from '../../../components/search/SearchEngineIcon'
-import { hasEnabledEngine, isSearchEngineEnabled, maybeEnableDefaultEngine, setEngineEnabled } from '../../../components/search/config'
 import { useNewTabPref } from '../../../hooks/usePref'
 import { getLocale } from '../../../../common/locale'
+import { braveSearchHost } from '../../../components/search/config'
+import { useEngineContext } from '../../../components/search/EngineContext'
 
 const EnginesContainer = styled(Flex)`
   font: ${font.default.regular};
@@ -70,6 +71,14 @@ const CheckboxText = styled.span`flex: 1`;
 export default function SearchSettings() {
   const { result: engines = [] } = usePromise(() => searchEnginesPromise, [])
   const [showSearchBox, setShowSearchBox] = useNewTabPref('showSearchBox')
+  const { setEngineConfig, engineConfig } = useEngineContext()
+  const hasEnabledEngine = (config: Record<string, boolean>) => Object.keys(config).some(key => config[key])
+
+  React.useEffect(() => {
+    if (!hasEnabledEngine(engineConfig)) {
+      setShowSearchBox(false)
+    }
+  }, [engineConfig])
 
   return <Flex direction='column' gap={spacing.xl}>
     <SettingsRow>
@@ -79,8 +88,8 @@ export default function SearchSettings() {
 
         // If we've just enabled the searchbox, make sure at least one engine
         // is enabled.
-        if (e.checked) {
-          maybeEnableDefaultEngine()
+        if (e.checked && !hasEnabledEngine(engineConfig)) {
+          setEngineConfig(braveSearchHost, true)
         }
       }} />
     </SettingsRow>
@@ -90,11 +99,8 @@ export default function SearchSettings() {
         <div>{getLocale('searchEnableSearchEnginesTitle')}</div>
         <EnginesGrid>
           {engines.map(engine => <EngineCard key={engine.keyword}>
-            <EngineCheckbox checked={isSearchEngineEnabled(engine)} onChange={e => {
-              setEngineEnabled(engine, e.checked)
-              if (!hasEnabledEngine()) {
-                setShowSearchBox(false)
-              }
+            <EngineCheckbox checked={engineConfig[engine.host]} onChange={e => {
+              setEngineConfig(engine.host, e.checked)
             }}>
               <CheckboxText>{engine.name}</CheckboxText>
               <MediumSearchEngineIcon engine={engine} />

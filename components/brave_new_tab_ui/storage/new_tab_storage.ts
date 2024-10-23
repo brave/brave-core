@@ -28,6 +28,7 @@ export const defaultState: NewTab.State = {
   showRewards: false,
   showBraveTalk: false,
   showSearchBox: true,
+  lastUsedNtpSearchEngine: "search.brave.com",
   promptEnableSearchSuggestions: true,
   searchSuggestionsEnabled: false,
   showBitcoinDotCom: false,
@@ -115,7 +116,7 @@ export const replaceStackWidgets = (state: NewTab.State) => {
     braveRewardsSupported,
     braveTalkSupported
   } = state
-  const displayLookup = {
+  const displayLookup: { [p: string]: { display: boolean } } = {
     'rewards': {
       display: braveRewardsSupported && showRewards
     },

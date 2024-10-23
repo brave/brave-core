@@ -27,6 +27,9 @@ inline constexpr char kLatestDDGBannerTypeFirstShownTime[] =
 inline constexpr char kShowNTPSearchBox[] =
     "brave.brave_search.show-ntp-search";
 
+inline constexpr char kLastUsedNTPSearchEngine[] =
+    "brave.brave_search.last-used-ntp-search-engine";
+
 // Determines whether the search box on the NTP prompts the user to enable
 // search suggestions.
 inline constexpr char kPromptEnableSuggestions[] =
