@@ -5,10 +5,28 @@
 
 import styled from 'styled-components'
 
+// Icons
+import {
+  NoTransactionsIconDark,
+  NoTransactionsIconLight
+} from '../../../assets/svg-icons/empty-state-icons'
+
 export const SearchAndFiltersRow = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
   gap: 14px;
+`
+
+export const EmptyTransactionsIcon = styled.div`
+  width: 100px;
+  height: 100px;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  background-image: url(${NoTransactionsIconLight});
+  @media (prefers-color-scheme: dark) {
+    background-image: url(${NoTransactionsIconDark});
+  }
 `
