@@ -13,8 +13,9 @@
 
 namespace brave_ads {
 
-bool MatchConditions(const PrefProviderInterface* const pref_provider,
-                     const NewTabPageAdConditionMatchers& condition_matchers) {
+bool MatchConditions(
+    const PrefProviderInterface* const pref_provider,
+    const NewTabPageAdConditionMatcherMap& condition_matchers) {
   CHECK(pref_provider);
 
   return base::ranges::all_of(

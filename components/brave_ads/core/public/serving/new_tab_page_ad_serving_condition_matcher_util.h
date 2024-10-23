@@ -11,7 +11,7 @@
 
 namespace brave_ads {
 
-using NewTabPageAdConditionMatchers =
+using NewTabPageAdConditionMatcherMap =
     std::multimap</*pref_path*/ std::string, /*condition*/ std::string>;
 
 class PrefProviderInterface;
@@ -48,9 +48,9 @@ class PrefProviderInterface;
 //      - '<': Less than
 //      - '≤': Less than or equal to
 //    - This matcher triggers an ad based on when an event occurred or will
-//      occur, using a timestamp (Unix or Windows epoch) stored at "prefPath".
-//      For instance, the example below will serve an ad only if the timestamp
-//      for "foo|bar" occurred more than 3 days ago:
+//      occur, using a timestamp (Unix or Windows epoch) persisted at
+//      "prefPath". For instance, the example below will serve an ad only if the
+//      timestamp for "foo|bar" occurred more than 3 days ago:
 //
 //       "conditionMatchers": [
 //         {
@@ -108,9 +108,9 @@ class PrefProviderInterface;
 //    }
 //  ]
 //
-// We support virtual preferences for values that are not stored in the profile
-// or local state preferences. Virtual preference path keys should be prefixed
-// with "[virtual]:".
+// We support virtual preferences for values that are not persisted in the
+// profile or local state preferences. Virtual preference path keys should be
+// prefixed with "[virtual]:".
 //
 // "[virtual]:build_channel.name" retrieves the build channel of the browser,
 // returning one of the following values: "stable", "beta", "dev", "nightly", or
@@ -119,7 +119,8 @@ class PrefProviderInterface;
 // "[virtual]:default_search_engine.name" retrieves the default search engine
 // chosen during browser installation, returning one of the following values:
 // "Brave", "Google", "Yandex", "Bing", "Daum", "네이버", "DuckDuckGo", "Qwant",
-// "Startpage", or "Ecosia".
+// "Startpage", or "Ecosia". For the most up-to-date list of possible default
+// search engines, see `TemplateURLPrepopulateData::GetDefaultSearchEngine`.
 //
 // NOTE: To identify condition matchers, first create a copy of your preference
 // files. Next, change a brave://setting or enable a feature, quit the browser
@@ -128,7 +129,7 @@ class PrefProviderInterface;
 // logged to the console, they are not logged to the Rewards log.
 
 bool MatchConditions(const PrefProviderInterface* pref_provider,
-                     const NewTabPageAdConditionMatchers& condition_matchers);
+                     const NewTabPageAdConditionMatcherMap& condition_matchers);
 
 }  // namespace brave_ads
 

@@ -16,7 +16,7 @@ namespace brave_ads {
 
 TEST(BraveAdsChallengeBypassRistrettoTest, BuildCredential) {
   // Act
-  const std::optional<base::Value::Dict> credential = cbr::BuildCredential(
+  const std::optional<base::Value::Dict> credential = cbr::MaybeBuildCredential(
       cbr::UnblindedToken(cbr::test::kUnblindedTokenBase64),
       /*payload=*/"definition: the weight of a payload");
   ASSERT_TRUE(credential);

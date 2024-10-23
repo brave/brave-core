@@ -11,7 +11,7 @@ namespace brave_ads {
 
 namespace {
 
-base::Value::List ToValue(const SupportedSubdivisions& subdivisions) {
+base::Value::List ToValue(const SubdivisionMap& subdivisions) {
   base::Value::List list;
 
   for (const auto& [subdivision, name] : subdivisions) {

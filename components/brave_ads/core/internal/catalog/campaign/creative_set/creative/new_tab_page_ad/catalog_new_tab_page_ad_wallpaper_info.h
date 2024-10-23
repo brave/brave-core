@@ -31,7 +31,7 @@ struct CatalogNewTabPageAdWallpaperInfo final {
 
   GURL image_url;
   CatalogNewTabPageAdWallpaperFocalPointInfo focal_point;
-  NewTabPageAdConditionMatchers condition_matchers;
+  NewTabPageAdConditionMatcherMap condition_matchers;
 };
 
 using CatalogNewTabPageAdWallpaperList =
