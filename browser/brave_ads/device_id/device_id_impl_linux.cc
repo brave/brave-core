@@ -41,9 +41,29 @@ using DiskMap = std::map<base::FilePath, base::FilePath>;
 namespace {
 
 constexpr char kDiskByUuidDirectoryName[] = "/dev/disk/by-uuid";
-const char* const kDeviceNames[] = {"sda1", "hda1", "dm-0", "xvda1",
-                                    "sda2", "hda2", "dm-1", "xvda2"};
-const char* const kNetDeviceNamePrefixes[] = {
+constexpr const char* const kDeviceNames[] = {
+    "sda1",       // First partition of the first SATA, SCSI, or IDE drive.
+    "hda1",       // First partition of the first IDE/ATA drive.
+    "nvme0n1p1",  // First partition of the first NVMe device.
+    "md0p1",      // First partition of the first RAID array.
+    "mmcblk0p1",  // First partition of the first MMC/SD card.
+    "dm-0",       // First Device Mapper device.
+    "vda1",       // First partition of the first virtual drive in KVM or QEMU
+                  // virtualized environments.
+    "xvda1",  // First partition of the first virtual drive in Xen virtualized
+              // environments.
+    "sda2",   // Second partition of the first SATA, SCSI, or IDE drive.
+    "hda2",   // Second partition of the first IDE/ATA drive.
+    "nvme0n1p2",  // Second partition of the first NVMe device.
+    "md0p2",      // Second partition of the first RAID array.
+    "mmcblk0p2",  // Second partition of the first MMC/SD card.
+    "dm-1",       // Second Device Mapper device.
+    "vda2",       // Second partition of the first virtual drive in KVM or QEMU
+                  // virtualized environments.
+    "xvda2",  // Second partition of the first virtual drive in Xen virtualized
+              // environments.
+};
+constexpr const char* const kNetDeviceNamePrefixes[] = {
     // Fedora 15 uses biosdevname feature where Embedded ethernet uses the "em"
     // prefix and PCI cards use the p[0-9]c[0-9] format based on PCI slot and
     // card information.
