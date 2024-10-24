@@ -28,18 +28,18 @@ public class BraveSafetyNetThreatsPrioritiesTest {
     public void testPriorities() throws Exception {
         // Fail safe option for empty input, consider it is safe
         Assert.assertEquals(
-                BraveSafeBrowsingUtils.getMostPriorityThreat(new ArrayList<>()),
+                BraveSafeBrowsingUtils.getHighestPriorityThreat(new ArrayList<>()),
                 SafetyNetJavaThreatType.MAX_VALUE);
 
         // Single input must return the same value
         Assert.assertEquals(
-                BraveSafeBrowsingUtils.getMostPriorityThreat(
+                BraveSafeBrowsingUtils.getHighestPriorityThreat(
                         Arrays.asList(new Integer[] {SafetyNetJavaThreatType.SOCIAL_ENGINEERING})),
                 SafetyNetJavaThreatType.SOCIAL_ENGINEERING);
 
         // Several threats as input - return the most priority one
         Assert.assertEquals(
-                BraveSafeBrowsingUtils.getMostPriorityThreat(
+                BraveSafeBrowsingUtils.getHighestPriorityThreat(
                         Arrays.asList(
                                 new Integer[] {
                                     SafetyNetJavaThreatType.UNWANTED_SOFTWARE,
@@ -51,7 +51,7 @@ public class BraveSafetyNetThreatsPrioritiesTest {
                 SafetyNetJavaThreatType.SOCIAL_ENGINEERING);
 
         Assert.assertEquals(
-                BraveSafeBrowsingUtils.getMostPriorityThreat(
+                BraveSafeBrowsingUtils.getHighestPriorityThreat(
                         Arrays.asList(
                                 new Integer[] {
                                     SafetyNetJavaThreatType.SUBRESOURCE_FILTER,

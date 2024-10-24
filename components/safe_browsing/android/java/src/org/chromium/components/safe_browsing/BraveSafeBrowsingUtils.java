@@ -144,8 +144,8 @@ public class BraveSafeBrowsingUtils {
     // Priorities from most high to low
     private static final int SAFETY_NET_THREAT_PRIORITIES[] = {
         SafetyNetJavaThreatType.SOCIAL_ENGINEERING,
-        SafetyNetJavaThreatType.BILLING,
         SafetyNetJavaThreatType.POTENTIALLY_HARMFUL_APPLICATION,
+        SafetyNetJavaThreatType.BILLING,
         SafetyNetJavaThreatType.UNWANTED_SOFTWARE,
         SafetyNetJavaThreatType.SUBRESOURCE_FILTER,
         SafetyNetJavaThreatType.CSD_ALLOWLIST,
