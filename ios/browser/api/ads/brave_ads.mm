@@ -87,6 +87,7 @@ constexpr int kComponentUpdaterManifestSchemaVersion = 1;
 constexpr char kAdsDatabaseFilename[] = "Ads.db";
 constexpr NSString* kComponentUpdaterMetadataPrefKey =
     @"BraveAdsComponentUpdaterMetadata";
+constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
 }  // namespace
 
@@ -745,9 +746,16 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
             continue;
           }
 
-          NSDictionary* adsResourceMetadataDict =
+          NSString* adsResourceComponentMetadataKey = [adsResourceId
+              stringByAppendingString:kAdsResourceComponentMetadataVersion];
+          if (!adsResourceComponentMetadataKey) {
+            continue;
+          }
+
+          NSDictionary* componentUpdaterMetadataDict =
               [strongSelf componentUpdaterMetadata];
-          if (version <= adsResourceMetadataDict[adsResourceId]) {
+          if (version <=
+              componentUpdaterMetadataDict[adsResourceComponentMetadataKey]) {
             BLOG(1, @"%@ ads resource is up to date on version %@",
                  adsResourceId, version);
             continue;
@@ -796,7 +804,7 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
 
                 NSMutableDictionary* dictionary =
                     [[strongSelf componentUpdaterMetadata] mutableCopy];
-                dictionary[adsResourceId] = version;
+                dictionary[adsResourceComponentMetadataKey] = version;
                 [strongSelf setComponentUpdaterMetadata:dictionary];
 
                 BLOG(1, @"%@ ads resource updated to version %@", adsResourceId,
