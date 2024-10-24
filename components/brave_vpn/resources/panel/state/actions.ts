@@ -25,6 +25,7 @@ export type showMainViewPayload = {
   connectionStatus: ConnectionState
   expired: boolean
   outOfCredentials: boolean
+  stateDescription: string
 }
 
 export type initializedPayload = {

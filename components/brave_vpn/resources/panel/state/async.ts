@@ -71,7 +71,8 @@ handler.on(Actions.purchaseConfirmed.getType(), async (store) => {
           ? ConnectionState.DISCONNECTED
           : state /* Treat connection failure on startup as disconnected */,
       expired: false,
-      outOfCredentials: false
+      outOfCredentials: false,
+      stateDescription: ''
     })
   )
 })
@@ -88,13 +89,15 @@ handler.on(Actions.purchaseExpired.getType(), async (store) => {
       regions,
       connectionStatus: ConnectionState.DISCONNECTED,
       expired: true,
-      outOfCredentials: false
+      outOfCredentials: false,
+      stateDescription: ''
     })
   )
 })
 
 handler.on(Actions.outOfCredentials.getType(), async (store) => {
-  const [{ currentRegion }, { regions }] = await Promise.all([
+  const [{ state }, { currentRegion }, { regions }] = await Promise.all([
+    getPanelBrowserAPI().serviceHandler.getPurchasedState(),
     getPanelBrowserAPI().serviceHandler.getSelectedRegion(),
     getPanelBrowserAPI().serviceHandler.getAllRegions()
   ])
@@ -105,6 +108,7 @@ handler.on(Actions.outOfCredentials.getType(), async (store) => {
       regions,
       connectionStatus: ConnectionState.DISCONNECTED,
       expired: false,
+      stateDescription: state.description || '',
       outOfCredentials: true
     })
   )

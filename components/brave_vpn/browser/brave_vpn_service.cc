@@ -368,6 +368,29 @@ void BraveVpnService::UpdatePurchasedStateForSessionExpired(
     return;
   }
 
+  // Person ran out of credentials.
+  // This should only happen if communication bewteen client and VPN provider
+  // is lost after the credential is redeemed (multiple times).
+  if (out_of_credentials_) {
+    const auto last_credential_expiry =
+        local_prefs_->GetTime(prefs::kBraveVPNLastCredentialExpiry);
+    if (!last_credential_expiry.is_null()) {
+      std::stringstream ss;
+      base::TimeDelta delta = (last_credential_expiry - base::Time::Now());
+      ss << "Check again in ";
+      if (delta.InHours() == 0) {
+        ss << delta.InMinutes() << " minutes.";
+      } else {
+        int delta_hours = delta.InHours();
+        ss << delta.InHours() << " hours ";
+        base::TimeDelta delta2 = (delta - base::Hours(delta_hours));
+        ss << delta2.InMinutes() << " minutes.";
+      }
+      SetPurchasedState(env, PurchasedState::OUT_OF_CREDENTIALS, ss.str());
+      return;
+    }
+  }
+
   // Weird state. Maybe we don't see this condition.
   // Just checking for safe.
   if (session_expired_time > base::Time::Now()) {
@@ -383,8 +406,7 @@ void BraveVpnService::UpdatePurchasedStateForSessionExpired(
     return;
   }
 
-  SetPurchasedState(env, out_of_credentials ? PurchasedState::OUT_OF_CREDENTIALS
-                                            : PurchasedState::SESSION_EXPIRED);
+  SetPurchasedState(env, PurchasedState::SESSION_EXPIRED);
 }
 
 bool BraveVpnService::IsCurrentRegionSelectedAutomatically(
@@ -573,8 +595,6 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
   std::string summary_string_trimmed;
   base::TrimWhitespaceASCII(summary->message, base::TrimPositions::TRIM_ALL,
                             &summary_string_trimmed);
-  //SetPurchasedState(env, PurchasedState::OUT_OF_CREDENTIALS);
-  //return;
   if (summary_string_trimmed.length() == 0) {
     // no credential found; person needs to login
     VLOG(1) << __func__ << " : No credential found; user needs to login!";
@@ -622,6 +642,7 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
     VLOG(1) << __func__ << " : Treat it as not purchased state in android.";
     SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
 #else
+    out_of_credentials_ = true;
     VLOG(1) << __func__ << " : Treat it as session expired state in desktop.";
     UpdatePurchasedStateForSessionExpired(env);
 #endif
@@ -681,7 +702,7 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
     return;
   }
 
-  out_of_credentials = false;
+  out_of_credentials_ = false;
   SetSkusCredential(local_prefs_, credential, time);
 
   if (GetCurrentEnvironment() != env) {
@@ -730,7 +751,7 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
     if (token_no_longer_valid && IsRetriedSkusCredential(local_prefs_)) {
       VLOG(2) << __func__
               << " : Got TokenNoLongerValid again with retried skus credential";
-      out_of_credentials = true;
+      out_of_credentials_ = true;
       SetPurchasedState(
           GetCurrentEnvironment(), PurchasedState::FAILED,
           l10n_util::GetStringUTF8(IDS_BRAVE_VPN_PURCHASE_TOKEN_NOT_VALID));

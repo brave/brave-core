@@ -154,6 +154,7 @@ reducer.on(Actions.showMainView, (state, payload): RootState => {
     currentRegion: payload.currentRegion,
     regions: payload.regions,
     connectionStatus: payload.connectionStatus,
+    stateDescription: payload.stateDescription,
     currentView: ViewType.Main
   }
 })

@@ -108,6 +108,7 @@ function MainPanel() {
   const expired = useSelector((state) => state.expired)
   const outOfCredentials = useSelector((state) => state.outOfCredentials)
   const regions = useSelector((state) => state.regions)
+  const stateDescription = useSelector((state) => state.stateDescription)
 
   const onSelectRegionButtonClick = () => {
     dispatch(Actions.toggleRegionSelector(true))
@@ -192,6 +193,7 @@ function MainPanel() {
             hideIcon
           >
             <div slot='title'>OUT OF CREDENTIALS</div>
+            <div>{stateDescription}</div>
           </S.StyledAlert>
         )}
         <S.RegionSelectorButton
