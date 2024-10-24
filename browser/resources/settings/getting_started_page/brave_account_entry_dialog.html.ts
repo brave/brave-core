@@ -8,7 +8,7 @@ import { html } from '//resources/lit/v3_0/lit.rollup.js'
 import type { SettingsBraveAccountEntryDialogElement } from './brave_account_entry_dialog.js'
 
 export function getHtml(this: SettingsBraveAccountEntryDialogElement) {
-  return html`
+  return html`<!--_html_template_start_-->
     <settings-brave-account-dialog
       header-text-top="Get started with your Brave account"
       header-text-bottom="$i18n{braveSyncBraveAccountDesc}">
@@ -31,5 +31,5 @@ export function getHtml(this: SettingsBraveAccountEntryDialogElement) {
         </div>
       </div>
     </settings-brave-account-dialog>
-  `
+  <!--_html_template_end_-->`
 }
