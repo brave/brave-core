@@ -190,7 +190,6 @@ void RotationScheduler::UpdateJsonTimer(MetricLogType log_type) {
           : now + config_->json_rotation_intervals.at(log_type);
   if (now >= next_rotation) {
     // Should never happen, but let's stay on the safe side.
-    NOTREACHED_IN_MIGRATION();
     return;
   }
   json_rotation_timers_[log_type]->Start(
