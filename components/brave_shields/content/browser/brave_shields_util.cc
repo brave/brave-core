@@ -149,12 +149,10 @@ base::Value::Dict GetShieldsMetadata(HostContentSettingsMap* map,
                                      const GURL& url) {
   auto shields_metadata_value = map->GetWebsiteSetting(
       url, url, ContentSettingsType::BRAVE_SHIELDS_METADATA);
-  auto* shields_metadata_dict = shields_metadata_value.GetIfDict();
-  if (!shields_metadata_dict) {
-    shields_metadata_value = base::Value(base::Value::Type::DICT);
-    shields_metadata_dict = &shields_metadata_value.GetDict();
+  if (auto* shields_metadata_dict = shields_metadata_value.GetIfDict()) {
+    return std::move(*shields_metadata_dict);
   }
-  return std::move(*shields_metadata_dict);
+  return base::Value::Dict();
 }
 
 void SetShieldsMetadata(HostContentSettingsMap* map,
