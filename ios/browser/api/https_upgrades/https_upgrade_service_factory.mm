@@ -11,7 +11,7 @@
 #include "ios/components/security_interstitials/https_only_mode/https_upgrade_service.h"
 
 @implementation BraveHttpsUpgradeServiceFactory
-+ (nullable id)serviceForBrowserState:(ProfileIOS*)profile {
++ (nullable id)serviceForProfile:(ProfileIOS*)profile {
   auto* service = HttpsUpgradeServiceFactory::GetForProfile(profile);
   if (!service) {
     return nil;

@@ -11,7 +11,7 @@
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
 @implementation WebcompatReporterServiceFactory
-+ (nullable id)serviceForBrowserState:(ProfileIOS*)profile {
++ (nullable id)serviceForProfile:(ProfileIOS*)profile {
   auto handler =
       webcompat_reporter::WebcompatReporterServiceFactory::GetHandlerForContext(
           profile);

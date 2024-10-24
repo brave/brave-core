@@ -26,10 +26,10 @@
   if (isPrivateBrowsing) {
     last_used_profile = last_used_profile->GetOffTheRecordProfile();
   }
-  return [self serviceForBrowserState:last_used_profile];
+  return [self serviceForProfile:last_used_profile];
 }
 
-+ (nullable id)serviceForBrowserState:(ProfileIOS*)profile {
++ (nullable id)serviceForProfile:(ProfileIOS*)profile {
   NOTIMPLEMENTED();
   return nil;
 }
