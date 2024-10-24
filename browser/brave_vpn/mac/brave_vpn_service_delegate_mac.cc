@@ -28,6 +28,7 @@ void BraveVPNServiceDelegateMac::LaunchVPNPanel() {
 }
 
 void BraveVPNServiceDelegateMac::OpenVpnUI(const std::string& type) {
+  // TODO(simonhong): Get proper url based on env.
   GURL checkout_url("https://account.brave.com/?intent=checkout&product=vpn");
   GURL recover_url("https://account.brave.com/?intent=recover&product=vpn");
   auto* browser = chrome::FindBrowserWithActiveWindow();
