@@ -7,7 +7,7 @@ import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 import { SettingsBraveAccountDialogElement } from './brave_account_dialog.js'
 
 export function getHtml(this: SettingsBraveAccountDialogElement) {
-  return html`
+  return html`<!--_html_template_start_-->
     <cr-dialog id="dialog" show-on-attach>
       <div slot="header" class="header">
         <div class="buttons">${this.showBackButton ? html`
@@ -28,5 +28,5 @@ export function getHtml(this: SettingsBraveAccountDialogElement) {
       </div>
       <slot name="footer" slot="footer"></slot>
     </cr-dialog>
-  `
+  <!--_html_template_end_-->`
 }
