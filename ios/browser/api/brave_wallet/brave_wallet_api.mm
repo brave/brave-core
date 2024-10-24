@@ -66,23 +66,23 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
     ethereumProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
                isPrivateBrowsing:(bool)isPrivateBrowsing {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  auto* browserState = _profile.get();
+  auto* profile = _profile.get();
   if (isPrivateBrowsing) {
-    browserState = browserState->GetOffTheRecordProfile();
+    profile = profile->GetOffTheRecordProfile();
   }
 
   auto* brave_wallet_service =
-      brave_wallet::BraveWalletServiceFactory::GetServiceForState(browserState);
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(profile);
   if (!brave_wallet_service) {
     return nil;
   }
 
   auto provider = std::make_unique<brave_wallet::EthereumProviderImpl>(
-      ios::HostContentSettingsMapFactory::GetForBrowserState(browserState),
+      ios::HostContentSettingsMapFactory::GetForProfile(profile),
       brave_wallet_service,
       std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
           delegate),
-      browserState->GetPrefs());
+      profile->GetPrefs());
   return [[BraveWalletEthereumProviderMojoImpl alloc]
       initWithEthereumProviderImpl:std::move(provider)];
 }
@@ -91,19 +91,19 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
     solanaProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
              isPrivateBrowsing:(bool)isPrivateBrowsing {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  auto* browserState = _profile.get();
+  auto* profile = _profile.get();
   if (isPrivateBrowsing) {
-    browserState = browserState->GetOffTheRecordProfile();
+    profile = profile->GetOffTheRecordProfile();
   }
 
   auto* brave_wallet_service =
-      brave_wallet::BraveWalletServiceFactory::GetServiceForState(browserState);
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(profile);
   if (!brave_wallet_service) {
     return nil;
   }
 
   auto* host_content_settings_map =
-      ios::HostContentSettingsMapFactory::GetForBrowserState(browserState);
+      ios::HostContentSettingsMapFactory::GetForProfile(profile);
   if (!host_content_settings_map) {
     return nil;
   }

@@ -83,7 +83,7 @@ void BookmarksImporter::AddBookmarks(
   ProfileIOS* last_used_profile = profiles.at(0);
 
   bookmarks::BookmarkModel* model =
-      ios::BookmarkModelFactory::GetForBrowserState(last_used_profile);
+      ios::BookmarkModelFactory::GetForProfile(last_used_profile);
   DCHECK(model->loaded());
 
   // If the bookmark bar is currently empty, we should import directly to it.
