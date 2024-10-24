@@ -154,6 +154,7 @@ base::Value::Dict AdsServiceDelegate::GetVirtualPrefs() {
   }
 
   return base::Value::Dict()
+      .Set("[virtual]:operating_system.name", version_info::GetOSType())
       .Set("[virtual]:build_channel.name",
            version_info::GetChannelString(chrome::GetChannel()))
       .Set("[virtual]:browser_version", version_info::GetVersionNumber())

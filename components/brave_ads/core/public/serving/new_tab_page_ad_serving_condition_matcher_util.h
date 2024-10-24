@@ -111,6 +111,10 @@ class PrefProviderInterface;
 // profile or local state preferences. Virtual preference path keys should be
 // prefixed with "[virtual]:".
 //
+// "[virtual]:operating_system.name" retrieves the operating system, returning
+// one of the following values: "Windows", "Mac OS X", "Linux", "Android",
+// "iOS", or "Unknown".
+//
 // "[virtual]:build_channel.name" retrieves the build channel of the browser,
 // returning one of the following values: "stable", "beta", "dev", "nightly", or
 // "unknown".
