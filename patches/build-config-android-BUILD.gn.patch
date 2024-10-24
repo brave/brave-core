@@ -1,5 +1,5 @@
 diff --git a/build/config/android/BUILD.gn b/build/config/android/BUILD.gn
-index 2124c74e6efd65a55e11ecb7b542e915574f2539..4806c016e2af38f267289d9aa77791b50fa6ad7b 100644
+index 9162edaf82c231bfd1e2cf9741ae698ba18a6880..115f45b3f043ab00b16fe06fbd6188b35787d5e2 100644
 --- a/build/config/android/BUILD.gn
 +++ b/build/config/android/BUILD.gn
 @@ -53,6 +53,7 @@ config("compiler") {

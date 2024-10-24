@@ -29,6 +29,7 @@ include_rules = [
   "+components/signin/public/base",
   "+components/sync/base/command_line_switches.h",
   "+components/translate/core/browser/translate_prefs.h",
+  "+components/user_education/common/user_education_features.h",
   "+components/variations/variations_switches.h",
   "+google_apis/gaia",
   "+gpu/config",

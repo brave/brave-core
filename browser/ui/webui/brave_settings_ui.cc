@@ -87,9 +87,7 @@
 
 using ntp_background_images::ViewCounterServiceFactory;
 
-BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
-                                 const std::string& host)
-    : SettingsUI(web_ui) {
+BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
   web_ui->AddMessageHandler(
       std::make_unique<settings::MetricsReportingHandler>());
   web_ui->AddMessageHandler(std::make_unique<BravePrivacyHandler>());

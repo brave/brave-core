@@ -53,7 +53,7 @@ EthereumRemoteClientServiceFactory::BuildServiceInstanceForBrowserContext(
 content::BrowserContext*
 EthereumRemoteClientServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
+  return GetBrowserContextRedirectedInIncognito(context);
 }
 
 bool EthereumRemoteClientServiceFactory::ServiceIsCreatedWithBrowserContext()

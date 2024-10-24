@@ -26,9 +26,11 @@
                                  ImageDataSettings*, ExceptionState&);         \
                                                                                \
   bool isPointInPath(ScriptState*, const double x, const double y,             \
-                     const String& winding = "nonzero");                       \
+                     const V8CanvasFillRule& winding =                         \
+                         V8CanvasFillRule(V8CanvasFillRule::Enum::kNonzero));  \
   bool isPointInPath(ScriptState*, Path2D*, const double x, const double y,    \
-                     const String& winding = "nonzero");                       \
+                     const V8CanvasFillRule& winding =                         \
+                         V8CanvasFillRule(V8CanvasFillRule::Enum::kNonzero));  \
   bool isPointInStroke(ScriptState*, const double x, const double y);          \
   bool isPointInStroke(ScriptState*, Path2D*, const double x, const double y); \
                                                                                \

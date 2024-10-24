@@ -71,6 +71,11 @@ public class IncognitoNewTabPageView extends FrameLayout {
     /** Default constructor needed to inflate via XML. */
     public IncognitoNewTabPageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        // Added this check just to avoid resource is not used warning. We use own own private tab
+        // UI.
+        assert R.dimen.incognito_ntp_fading_shadow_size > 0
+                : "Something has changed in the upstream!";
     }
 
     @Override

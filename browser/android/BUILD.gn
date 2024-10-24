@@ -33,6 +33,7 @@ source_set("android_browser_process") {
     "//brave/components/brave_sync:sync_service_impl_helper",
     "//brave/components/l10n/common",
     "//chrome/android:jni_headers",
+    "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/common",
     "//components/content_settings/core/browser",
     "//components/flags_ui",

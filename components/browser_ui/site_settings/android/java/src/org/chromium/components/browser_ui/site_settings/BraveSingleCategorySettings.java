@@ -63,6 +63,6 @@ public class BraveSingleCategorySettings extends BaseSiteSettingsFragment
 
     @Override
     public void onAddSite(String primaryPattern, String secondaryPattern) {
-        assert (false);
+        assert false;
     }
 }

@@ -22,10 +22,10 @@
 #include "ios/web/public/browser_state.h"
 
 @implementation DebounceServiceFactory
-+ (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
++ (nullable id)serviceForBrowserState:(ProfileIOS*)profile {
   // Create and start the local data file service and component installer
   debounce::DebounceService* debounceService =
-      debounce::DebounceServiceFactory::GetServiceForState(browserState);
+      debounce::DebounceServiceFactory::GetServiceForState(profile);
   return [[DebounceService alloc] initWithDebounceService:debounceService];
 }
 @end
@@ -34,7 +34,7 @@ namespace debounce {
 
 // static
 debounce::DebounceService* DebounceServiceFactory::GetServiceForState(
-    ChromeBrowserState* browser_state) {
+    ProfileIOS* browser_state) {
   return static_cast<debounce::DebounceService*>(
       GetInstance()->GetServiceForBrowserState(browser_state, true));
 }

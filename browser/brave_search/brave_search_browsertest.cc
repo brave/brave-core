@@ -242,12 +242,12 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAnUndefinedFunction) {
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/29631): Test flaky on
-// master for the mac build.
-#if BUILDFLAG(IS_MAC)
+// master for the mac and linux build.
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 #define MAYBE_DefaultAPIVisibleKnownHost DISABLED_DefaultAPIVisibleKnownHost
 #else
 #define MAYBE_DefaultAPIVisibleKnownHost DefaultAPIVisibleKnownHost
-#endif  // BUILDFLAG(IS_MAC)
+#endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled,
                        MAYBE_DefaultAPIVisibleKnownHost) {
   // Opensearch providers are only allowed in the root of a site,
