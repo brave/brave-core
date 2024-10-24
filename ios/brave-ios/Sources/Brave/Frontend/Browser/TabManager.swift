@@ -1680,12 +1680,15 @@ extension WKWebsiteDataStore {
     // https://github.com/WebKit/WebKit/blob/b66e4895df40202b14bb20fb47444c3e0a3c164e/Source/WebKit/UIProcess/API/Cocoa/WKWebsiteDataRecordPrivate.h
     var types = WKWebsiteDataStore.allWebsiteDataTypes()
     types.insert("_WKWebsiteDataTypeHSTSCache")
-    types.insert("_WKWebsiteDataTypeMediaKeys")
     types.insert("_WKWebsiteDataTypeResourceLoadStatistics")
     types.insert("_WKWebsiteDataTypeCredentials")
     types.insert("_WKWebsiteDataTypeAdClickAttributions")
     types.insert("_WKWebsiteDataTypePrivateClickMeasurements")
     types.insert("_WKWebsiteDataTypeAlternativeServices")
+    if #unavailable(iOS 17) {
+      types.insert("_WKWebsiteDataTypeMediaKeys")
+      types.insert("_WKWebsiteDataTypeSearchFieldRecentSearches")
+    }
     return types
   }
 }
