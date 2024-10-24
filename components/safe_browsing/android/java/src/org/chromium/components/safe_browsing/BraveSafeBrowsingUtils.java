@@ -153,7 +153,7 @@ public class BraveSafeBrowsingUtils {
     };
 
     @VisibleForTesting
-    public static int getMostPriorityThreat(List<Integer> threats) {
+    public static int getHighestPriorityThreat(List<Integer> threats) {
         if (threats.size() == 0) {
             return SafetyNetJavaThreatType.MAX_VALUE;
         }
