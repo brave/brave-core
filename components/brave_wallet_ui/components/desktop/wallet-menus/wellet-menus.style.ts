@@ -6,6 +6,11 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
+
+// Types
+import { AccountModalTypes } from '../../../constants/types'
+
+// Shared Styles
 import { WalletButton, Row } from '../../shared/style'
 import {
   layoutPanelWidth,
@@ -64,9 +69,12 @@ export const PopupButtonText = styled.span`
   color: ${leo.color.text.primary};
 `
 
-export const ButtonIcon = styled(Icon)`
+export const ButtonIcon = styled(Icon)<{ id?: AccountModalTypes }>`
   --leo-icon-size: 18px;
-  color: ${leo.color.icon.default};
+  color: ${(p) =>
+    p.id === 'shield'
+      ? leo.color.systemfeedback.successIcon
+      : leo.color.icon.default};
   margin-right: 16px;
 `
 

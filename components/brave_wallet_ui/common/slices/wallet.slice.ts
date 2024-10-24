@@ -33,7 +33,8 @@ const defaultState: WalletState = {
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: true,
   isAnkrBalancesFeatureEnabled: false,
-  isRefreshingNetworksAndTokens: false
+  isRefreshingNetworksAndTokens: false,
+  isZCashShieldedTransactionsEnabled: false
 }
 
 // async actions
@@ -81,6 +82,8 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isWalletLocked = payload.walletInfo.isWalletLocked
         state.isAnkrBalancesFeatureEnabled =
           payload.walletInfo.isAnkrBalancesFeatureEnabled
+        state.isZCashShieldedTransactionsEnabled =
+          payload.walletInfo.isZCashShieldedTransactionsEnabled
       },
 
       setAssetAutoDiscoveryCompleted(

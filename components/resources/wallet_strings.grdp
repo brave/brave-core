@@ -1145,6 +1145,11 @@
   <message name="IDS_BRAVE_WALLET_CLEAR_FILTERS" desc="Clear filters label">Clear filters</message>
   <message name="IDS_BRAVE_WALLET_SHOW_MORE" desc="Show more label">Show more</message>
   <message name="IDS_BRAVE_WALLET_DETAILS" desc="Details label">Details</message>
+  <message name="IDS_BRAVE_WALLET_SWITCH_TO_SHIELDED_ACCOUNT" desc="Switch to a shielded account button text">Switch to a shielded account</message>
+  <message name="IDS_BRAVE_WALLET_SHIELD_ACCOUNT" desc="Shield account button text">Shield account</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNT_NOT_SHIELDED_DESCRIPTION" desc="ZCash account not shielded description.">Currently this account supports transparent transactions which means they are visible to everyone on the blockchain.</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNT_SHIELDED_DESCRIPTION" desc="ZCash account shielded description">Upgrading to a shielded account means that these transactions hide the sender, receiver and amount details.</message>
+  <message name="IDS_BRAVE_WALLET_SHIELDED" desc="Shielded label">Shielded</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_RETRY" desc="Retry an action">Retry</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_PREVIEW_FAILED" desc="Explaination that simulation of a transaction has failed">Transaction preview failed.</message>
   <message name="IDS_BRAVE_WALLET_ESTIMATED_BALANCE_CHANGE" desc="Grouping header for estimated balance changes">Estimated balance change</message>

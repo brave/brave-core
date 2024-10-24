@@ -31,14 +31,23 @@ export interface Props {
 export const AccountActionsMenu = (props: Props) => {
   const { options, onClick } = props
 
+  // Computed
+  const minButtonWidth = options.some((option) => option.id === 'shield')
+    ? 260
+    : undefined
+
   return (
     <StyledWrapper yPosition={26}>
       {options.slice(0, 2).map((option) => (
         <PopupButton
           key={option.id}
           onClick={() => onClick(option.id)}
+          minWidth={minButtonWidth}
         >
-          <ButtonIcon name={option.icon} />
+          <ButtonIcon
+            name={option.icon}
+            id={option.id}
+          />
           <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
         </PopupButton>
       ))}
@@ -48,8 +57,12 @@ export const AccountActionsMenu = (props: Props) => {
         <PopupButton
           key={option.id}
           onClick={() => onClick(option.id)}
+          minWidth={minButtonWidth}
         >
-          <ButtonIcon name={option.icon} />
+          <ButtonIcon
+            name={option.icon}
+            id={option.id}
+          />
           <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
         </PopupButton>
       ))}

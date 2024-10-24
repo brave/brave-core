@@ -24,6 +24,8 @@ export const isAnkrBalancesFeatureEnabled = ({ wallet }: State) =>
   wallet.isAnkrBalancesFeatureEnabled
 export const isRefreshingNetworksAndTokens = ({ wallet }: State) =>
   wallet.isRefreshingNetworksAndTokens
+export const isZCashShieldedTransactionsEnabled = ({ wallet }: State) =>
+  wallet.isZCashShieldedTransactionsEnabled
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects
 // and lists)
