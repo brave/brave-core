@@ -82,10 +82,11 @@ class AdBlockService {
     void OnResourcesLoaded(const std::string& resources_json) override;
 
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set_;
-    raw_ptr<AdBlockEngine> adblock_engine_;
-    raw_ptr<AdBlockFiltersProvider> filters_provider_;           // not owned
-    raw_ptr<AdBlockResourceProvider> resource_provider_;         // not owned
-    raw_ptr<AdBlockResourceProvider> custom_resource_provider_;  // not owned
+    raw_ptr<AdBlockEngine> adblock_engine_ = nullptr;               // not owned
+    raw_ptr<AdBlockFiltersProvider> filters_provider_ = nullptr;    // not owned
+    raw_ptr<AdBlockResourceProvider> resource_provider_ = nullptr;  // not owned
+    raw_ptr<AdBlockResourceProvider> custom_resource_provider_ =
+        nullptr;  // not owned
     scoped_refptr<base::SequencedTaskRunner> task_runner_;
     bool is_filter_provider_manager_;
 

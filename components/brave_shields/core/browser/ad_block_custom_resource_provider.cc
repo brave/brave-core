@@ -54,7 +54,9 @@ const std::string& GetResourceName(const base::Value& resource) {
 base::Value::List::iterator FindResource(base::Value::List& resources,
                                          const std::string& name) {
   return base::ranges::find_if(resources, [name](const base::Value& v) {
-    CHECK(IsValidResource(v));
+    if (!IsValidResource(v)) {
+      return false;
+    }
     return GetResourceName(v) == name;
   });
 }
