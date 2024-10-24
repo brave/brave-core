@@ -1217,10 +1217,7 @@ source_set("ui") {
 
   if (is_win && is_official_build) {
     sources += [ "//chrome/browser/ui/webui/help/version_updater_win.cc" ]
-    deps += [
-      "//chrome/updater/app/server/win:updater_legacy_idl",
-      "//google_update",
-    ]
+    deps += [ "//chrome/updater/app/server/win:updater_legacy_idl" ]
   }
 
   if (enable_tor) {
