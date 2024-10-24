@@ -10,6 +10,7 @@
 #include <map>
 #include <optional>
 
+#include "base/check.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager_observer.h"
@@ -47,7 +48,11 @@ class SiteVisit final : public BrowserManagerObserver,
   void AddObserver(SiteVisitObserver* observer);
   void RemoveObserver(SiteVisitObserver* observer);
 
-  void SetLastClickedAd(const AdInfo& ad) { last_clicked_ad_ = ad; }
+  void set_last_clicked_ad(const AdInfo& ad) {
+    CHECK(ad.IsValid());
+
+    last_clicked_ad_ = ad;
+  }
 
  private:
   // Returns true if the tab is currently landing on a page.

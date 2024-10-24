@@ -5,14 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
 
-#include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
-#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
@@ -52,12 +50,12 @@ bool SiteVisit::IsLandingOnPage(const int32_t tab_id) const {
 
 void SiteVisit::MaybeLandOnPage(const TabInfo& tab,
                                 const int http_status_code) {
-  if (!UserHasJoinedBraveRewards()) {
+  if (!last_clicked_ad_) {
+    // No ad interactions have occurred in the current browsing session.
     return;
   }
 
-  if (!last_clicked_ad_) {
-    // No ad interactions have occurred in the current browsing session.
+  if (!IsAllowedToLandOnPage(last_clicked_ad_->type)) {
     return;
   }
 

@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/strings/utf_string_conversions.h"
+#include "base/version_info/channel.h"
 #include "brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper.h"
 #include "brave/browser/ui/brave_ads/notification_ad.h"
@@ -15,6 +16,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/channel_info.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -147,9 +149,11 @@ base::Value::Dict AdsServiceDelegate::GetVirtualPrefs() {
     return {};
   }
 
-  return base::Value::Dict().Set(
-      "[virtual]:default_search_engine.name",
-      base::UTF16ToUTF8(template_url_data->short_name()));
+  return base::Value::Dict()
+      .Set("[virtual]:default_search_engine.name",
+           base::UTF16ToUTF8(template_url_data->short_name()))
+      .Set("[virtual]:build_channel.name",
+           version_info::GetChannelString(chrome::GetChannel()));
 }
 
 }  // namespace brave_ads

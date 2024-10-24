@@ -85,6 +85,9 @@
 /* The title of the menu where user can change the default model */
 "aichat.defaultModelViewTitle" = "Modelo predeterminado";
 
+/* The text displayed under an edited user prompt/message beside a timestamp. */
+"aichat.editedMessageCaption" = "Editado";
+
 /* The title for view which user type feedback */
 "aichat.feedbackInputViewTitle" = "Proporciona tus comentarios aquí";
 
@@ -138,6 +141,9 @@
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Conversaciones a la velocidad del rayo";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hola, me llamo Leo. Funciono mediante un proxy de Brave y con tecnología de Claude 3.5 Sonnet, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de textos.";
 
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet de Anthropic";
@@ -300,9 +306,6 @@
 
 /* The title of action for quick menu which display subscription management view */
 "aichat.quickMenuManageSubscriptionActionTitle" = "Gestionar las suscripciones";
-
-/* The title of action for quick menu which starts a new chat */
-"aichat.quickMenuNewChatActionTitle" = "Nuevo chat";
 
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "Error al valorar la respuesta";
