@@ -32,6 +32,7 @@ class AssociatedArchiveContent
  public:
   AssociatedArchiveContent(GURL url,
                            std::string text_content,
+                           std::vector<std::string> screenshots,
                            std::u16string title,
                            bool is_video);
   ~AssociatedArchiveContent() override;
@@ -57,6 +58,7 @@ class AssociatedArchiveContent
  private:
   GURL url_;
   std::string text_content_;
+  std::vector<std::string> screenshots_;
   std::u16string title_;
   bool is_video_;
 

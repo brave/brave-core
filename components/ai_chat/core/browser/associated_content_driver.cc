@@ -137,14 +137,16 @@ void AssociatedContentDriver::OnExistingGeneratePageContentComplete(
     return;
   }
   std::move(callback).Run(cached_text_content_, is_video_,
-                          content_invalidation_token_);
+                          content_invalidation_token_,
+                          std::move(cache_screenshots_));
 }
 
 void AssociatedContentDriver::OnGeneratePageContentComplete(
     int64_t navigation_id,
     std::string contents_text,
     bool is_video,
-    std::string invalidation_token) {
+    std::string invalidation_token,
+    std::vector<std::string> screenshots) {
   DVLOG(1) << "OnGeneratePageContentComplete";
   DVLOG(4) << "Contents(is_video=" << is_video
            << ", invalidation_token=" << invalidation_token
@@ -162,6 +164,7 @@ void AssociatedContentDriver::OnGeneratePageContentComplete(
     // if the content fetcher knows the content won't have changed and the fetch
     // operation is expensive (e.g. network).
     cached_text_content_ = contents_text;
+    cache_screenshots_ = std::move(screenshots);
     content_invalidation_token_ = invalidation_token;
     if (contents_text.empty()) {
       DVLOG(1) << __func__ << ": No data";
@@ -306,7 +309,7 @@ void AssociatedContentDriver::DisassociateWithConversations() {
   for (auto& conversation : conversations) {
     if (conversation) {
       conversation->OnAssociatedContentDestroyed(cached_text_content_,
-                                                 is_video_);
+                                                 is_video_, cache_screenshots_);
     }
   }
 }

@@ -58,6 +58,7 @@ class EngineConsumerLlamaRemote : public EngineConsumer {
   void GenerateAssistantResponse(
       const bool& is_video,
       const std::string& page_content,
+      const std::vector<std::string>& screenshots,
       const ConversationHistory& conversation_history,
       const std::string& human_input,
       const std::string& selected_language,

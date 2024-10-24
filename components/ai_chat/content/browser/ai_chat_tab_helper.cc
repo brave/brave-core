@@ -31,6 +31,7 @@
 #include "base/strings/utf_ostream_operators.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
+#include "brave/components/ai_chat/content/browser/full_screenshotter.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
@@ -296,6 +297,7 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
       return;
     }
   }
+
   page_content_fetcher_delegate_->FetchPageContent(
       invalidation_token,
       base::BindOnce(&AIChatTabHelper::OnFetchPageContentComplete,
@@ -324,14 +326,38 @@ void AIChatTabHelper::OnFetchPageContentComplete(
     // When print preview extraction isn't available, return empty content
     DVLOG(1) << "no fallback available";
   }
-  std::move(callback).Run(std::move(content), is_video,
-                          std::move(invalidation_token));
+
+  full_screenshotter_ = std::make_unique<FullScreenshotter>();
+  full_screenshotter_->CaptureScreenshot(
+      web_contents(),
+      base::BindOnce(&AIChatTabHelper::OnCaptureScreenshotComplete,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     content, is_video, invalidation_token));
+}
+
+void AIChatTabHelper::OnCaptureScreenshotComplete(
+    GetPageContentCallback callback,
+    std::string content,
+    bool is_video,
+    std::string invalidation_token,
+    base::expected<std::vector<std::string>, std::string> result) {
+  if (result.has_value()) {
+    LOG(ERROR) << "screenshots number: " << result->size();
+    std::move(callback).Run(std::move(content), is_video,
+                            std::move(invalidation_token),
+                            std::move(result.value()));
+  } else {
+    LOG(ERROR) << result.error();
+    VLOG(1) << result.error();
+    std::move(callback).Run(std::move(content), is_video,
+                            std::move(invalidation_token), {});
+  }
 }
 
 void AIChatTabHelper::SetPendingGetContentCallback(
     GetPageContentCallback callback) {
   if (pending_get_page_content_callback_) {
-    std::move(pending_get_page_content_callback_).Run("", false, "");
+    std::move(pending_get_page_content_callback_).Run("", false, "", {});
   }
   pending_get_page_content_callback_ = std::move(callback);
 }
@@ -360,7 +386,7 @@ void AIChatTabHelper::OnExtractPrintPreviewContentComplete(
     GetPageContentCallback callback,
     std::string content) {
   // Invalidation token not applicable for print preview OCR
-  std::move(callback).Run(std::move(content), false, "");
+  std::move(callback).Run(std::move(content), false, "", {});
 }
 
 std::u16string AIChatTabHelper::GetPageTitle() const {
@@ -371,7 +397,7 @@ void AIChatTabHelper::OnNewPage(int64_t navigation_id) {
   DVLOG(3) << __func__ << " id: " << navigation_id;
   AssociatedContentDriver::OnNewPage(navigation_id);
   if (pending_get_page_content_callback_) {
-    std::move(pending_get_page_content_callback_).Run("", false, "");
+    std::move(pending_get_page_content_callback_).Run("", false, "", {});
   }
 }
 

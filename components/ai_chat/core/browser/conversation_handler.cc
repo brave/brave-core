@@ -229,6 +229,7 @@ ConversationHandler::ConversationHandler(
       bool is_video = (metadata_->associated_content->content_type ==
                        mojom::ContentType::VideoTranscript);
       SetArchiveContent(conversation_data->associated_content[0]->content,
+                        {},  // TODO(darkdh): SQL screenshot support
                         is_video);
     }
     DVLOG(1) << "Restoring associated content for conversation "
@@ -398,7 +399,8 @@ void ConversationHandler::InitEngine() {
 
 void ConversationHandler::OnAssociatedContentDestroyed(
     std::string last_text_content,
-    bool is_video) {
+    bool is_video,
+    std::vector<std::string> last_screenshots) {
   // The associated content delegate is already or about to be destroyed.
   auto content_id = associated_content_delegate_
                         ? associated_content_delegate_->GetContentId()
@@ -411,7 +413,8 @@ void ConversationHandler::OnAssociatedContentDestroyed(
     // associated_content_info_ if this chat has history and was connected to
     // the associated conversation, then store the content so the conversation
     // can continue.
-    SetArchiveContent(std::move(last_text_content), is_video);
+    SetArchiveContent(std::move(last_text_content), std::move(last_screenshots),
+                      is_video);
   }
   OnAssociatedContentInfoChanged();
   // Notify observers
@@ -420,13 +423,15 @@ void ConversationHandler::OnAssociatedContentDestroyed(
   }
 }
 
-void ConversationHandler::SetArchiveContent(std::string text_content,
-                                            bool is_video) {
+void ConversationHandler::SetArchiveContent(
+    std::string text_content,
+    std::vector<std::string> screenshots,
+    bool is_video) {
   // Construct a "content archive" implementation of AssociatedContentDelegate
   // with a duplicate of the article text.
   auto archive_content = std::make_unique<AssociatedArchiveContent>(
       metadata_->associated_content->url.value_or(GURL()),
-      std::move(text_content),
+      std::move(text_content), std::move(screenshots),
       base::UTF8ToUTF16(metadata_->associated_content->title.value_or("")),
       is_video);
   associated_content_delegate_ = archive_content->GetWeakPtr();
@@ -936,7 +941,9 @@ void ConversationHandler::GenerateQuestions() {
 void ConversationHandler::PerformQuestionGeneration(
     std::string page_content,
     bool is_video,
-    std::string invalidation_token) {
+    std::string invalidation_token,
+    std::vector<std::string> screenshot) {
+  // TODO(darkdh): send screenshots for suggestions
   engine_->GenerateQuestionSuggestions(
       is_video, page_content, selected_language_,
       base::BindOnce(&ConversationHandler::OnSuggestedQuestionsResponse,
@@ -1099,7 +1106,8 @@ void ConversationHandler::PerformAssistantGeneration(
     const std::string& input,
     std::string page_content /* = "" */,
     bool is_video /* = false */,
-    std::string invalidation_token /* = "" */) {
+    std::string invalidation_token /* = "" */,
+    std::vector<std::string> screenshots /* = {} */) {
   auto data_received_callback =
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr());
@@ -1123,7 +1131,7 @@ void ConversationHandler::PerformAssistantGeneration(
         &ConversationHandler::OnGetRefinedPageContent,
         weak_ptr_factory_.GetWeakPtr(), input,
         std::move(data_received_callback), std::move(data_completed_callback),
-        page_content, is_video);
+        page_content, std::move(screenshots), is_video);
 
     associated_content_delegate_->GetTopSimilarityWithPromptTilContextLimit(
         input, page_content, max_content_length,
@@ -1143,8 +1151,9 @@ void ConversationHandler::PerformAssistantGeneration(
   }
 
   engine_->GenerateAssistantResponse(
-      is_video, page_content, chat_history_, input, selected_language_,
-      std::move(data_received_callback), std::move(data_completed_callback));
+      is_video, page_content, std::move(screenshots), chat_history_, input,
+      selected_language_, std::move(data_received_callback),
+      std::move(data_completed_callback));
 }
 
 void ConversationHandler::SetAPIError(const mojom::APIError& error) {
@@ -1363,6 +1372,9 @@ void ConversationHandler::GeneratePageContent(GetPageContentCallback callback) {
   // Keep hold of the current content so we can check if it changed
   std::string current_content =
       std::string(associated_content_delegate_->GetCachedTextContent());
+  // TODO(darkdh): Add previous screenshots to avoid recapturing.
+  // Capture every time for now so we can always get the latest screenshots with
+  // viewport changes.
   associated_content_delegate_->GetContent(
       base::BindOnce(&ConversationHandler::OnGeneratePageContentComplete,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
@@ -1374,7 +1386,8 @@ void ConversationHandler::OnGeneratePageContentComplete(
     std::string previous_content,
     std::string contents_text,
     bool is_video,
-    std::string invalidation_token) {
+    std::string invalidation_token,
+    std::vector<std::string> screenshots) {
   engine_->SanitizeInput(contents_text);
 
   // Keep is_content_different_ as true if it's the initial state
@@ -1385,7 +1398,8 @@ void ConversationHandler::OnGeneratePageContentComplete(
       is_video ? mojom::ContentType::VideoTranscript
                : mojom::ContentType::PageContent;
 
-  std::move(callback).Run(contents_text, is_video, invalidation_token);
+  std::move(callback).Run(contents_text, is_video, invalidation_token,
+                          std::move(screenshots));
 
   // Content-used percentage and is_video might have changed in addition to
   // content_type.
@@ -1397,6 +1411,7 @@ void ConversationHandler::OnGetRefinedPageContent(
     EngineConsumer::GenerationDataCallback data_received_callback,
     EngineConsumer::GenerationCompletedCallback data_completed_callback,
     std::string page_content,
+    std::vector<std::string> screenshots,
     bool is_video,
     base::expected<std::string, std::string> refined_page_content) {
   // Remove tenative assistant entry dedicated for page content event
@@ -1421,9 +1436,10 @@ void ConversationHandler::OnGetRefinedPageContent(
       OnAssociatedContentInfoChanged();
     }
   }
-  engine_->GenerateAssistantResponse(
-      is_video, page_content_to_use, chat_history_, input, selected_language_,
-      std::move(data_received_callback), std::move(data_completed_callback));
+  engine_->GenerateAssistantResponse(is_video, page_content_to_use, screenshots,
+                                     chat_history_, input, selected_language_,
+                                     std::move(data_received_callback),
+                                     std::move(data_completed_callback));
 }
 
 void ConversationHandler::OnEngineCompletionDataReceived(

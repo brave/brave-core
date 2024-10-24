@@ -135,7 +135,8 @@ class AssociatedContentDriver
   void OnGeneratePageContentComplete(int64_t navigation_id,
                                      std::string contents_text,
                                      bool is_video,
-                                     std::string invalidation_token);
+                                     std::string invalidation_token,
+                                     std::vector<std::string> screenshot);
   void OnExistingGeneratePageContentComplete(
       ConversationHandler::GetPageContentCallback callback,
       int64_t navigation_id);
@@ -165,6 +166,7 @@ class AssociatedContentDriver
   base::ObserverList<Observer> observers_;
   std::unique_ptr<base::OneShotEvent> on_page_text_fetch_complete_ = nullptr;
   std::string cached_text_content_;
+  std::vector<std::string> cache_screenshots_;
   std::string content_invalidation_token_;
   bool is_video_ = false;
 

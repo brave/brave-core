@@ -19,12 +19,15 @@
 
 namespace ai_chat {
 
-AssociatedArchiveContent::AssociatedArchiveContent(GURL url,
-                                                   std::string text_content,
-                                                   std::u16string title,
-                                                   bool is_video)
+AssociatedArchiveContent::AssociatedArchiveContent(
+    GURL url,
+    std::string text_content,
+    std::vector<std::string> screenshots,
+    std::u16string title,
+    bool is_video)
     : url_(url),
       text_content_(text_content),
+      screenshots_(screenshots),
       title_(title),
       is_video_(is_video) {
   DVLOG(1) << "Made archive for content at: " << url.spec() << "\n"
@@ -59,7 +62,7 @@ std::u16string AssociatedArchiveContent::GetTitle() const {
 
 void AssociatedArchiveContent::GetContent(
     ConversationHandler::GetPageContentCallback callback) {
-  std::move(callback).Run(text_content_, is_video_, "");
+  std::move(callback).Run(text_content_, is_video_, "", screenshots_);
 }
 
 std::string_view AssociatedArchiveContent::GetCachedTextContent() {
