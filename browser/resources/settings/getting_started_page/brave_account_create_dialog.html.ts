@@ -7,7 +7,7 @@ import { html } from '//resources/lit/v3_0/lit.rollup.js'
 import { SettingsBraveAccountCreateDialogElement } from './brave_account_create_dialog.js'
 
 export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
-  return html`
+  return html`<!--_html_template_start_-->
     <settings-brave-account-dialog show-back-button
       header-text-top="Create your account"
       header-text-bottom="$i18n{braveSyncBraveAccountDesc}">
@@ -46,5 +46,5 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
         </leo-button>
       </div>
     </settings-brave-account-dialog>
-  `
+  <!--_html_template_end_-->`
 }
