@@ -167,7 +167,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   void Request(base::Value input, RequestCallback callback) override;
   void Enable(EnableCallback callback) override;
   void Send(const std::string& method,
-            base::Value params,
+            base::Value::List params,
             SendCallback callback) override;
   void SendAsync(base::Value input, SendAsyncCallback callback) override;
   void GetChainId(GetChainIdCallback callback) override;

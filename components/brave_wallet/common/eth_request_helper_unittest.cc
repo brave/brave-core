@@ -695,8 +695,7 @@ TEST(EthResponseHelperUnitTest, ParseSwitchEthereumChainParams) {
 }
 
 TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
-  constexpr char kJson[] = R"({
-    "params": [
+  constexpr char kJson[] = R"([
       "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
       "{
         \"types\" :{
@@ -725,8 +724,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
         },
         \"message\": %s
       }"
-    ]
-  })";
+    ])";
 
   std::string json = base::StringPrintf(kJson, R"({
     \"from\": {
@@ -783,8 +781,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
       expected_primary_hash);
   auto message_to_sign = EthSignTypedDataHelper::GetTypedDataMessageToSign(
       eth_sign_typed_data->domain_hash, eth_sign_typed_data->primary_hash);
-  ASSERT_TRUE(message_to_sign);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*message_to_sign)),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message_to_sign)),
             expected_message_to_sign);
   EXPECT_FALSE(eth_sign_typed_data->meta);
 
@@ -822,8 +819,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
   // OK: message bytes to sign are unchanged.
   message_to_sign = EthSignTypedDataHelper::GetTypedDataMessageToSign(
       eth_sign_typed_data->domain_hash, eth_sign_typed_data->primary_hash);
-  ASSERT_TRUE(message_to_sign);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*message_to_sign)),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message_to_sign)),
             expected_message_to_sign);
   EXPECT_FALSE(eth_sign_typed_data->meta);
 }
