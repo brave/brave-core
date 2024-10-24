@@ -919,6 +919,8 @@ class TabManager: NSObject {
       historyAPI.removeHistory(for: nodes)
     }
 
+    RecentlyClosed.remove(baseDomains: baseDomains)
+
     for url in urls {
       await FaviconFetcher.deleteCache(for: url)
     }
@@ -1433,7 +1435,7 @@ class TabManager: NSObject {
     }
   }
 
-  /// Function to add all the tabs to recently closed before the list is removef entirely by Close All Tabs
+  /// Function to add all the tabs to recently closed before the list is removed entirely by Close All Tabs
   func addAllTabsToRecentlyClosed(isActiveTabIncluded: Bool) {
     var allRecentlyClosed: [SavedRecentlyClosed] = []
 

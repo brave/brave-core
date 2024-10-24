@@ -133,6 +133,63 @@ class RecentlyClosedTests: CoreDataTestCase {
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
   }
 
+  func testRemoveBaseDomains() {
+    let braveURL = URL(string: "https://brave.com")!
+    let braveURLTitle = "Brave"
+
+    let savedObject1 = SavedRecentlyClosed(
+      url: braveURL,
+      title: braveURLTitle,
+      dateAdded: Date(),
+      interactionState: Data(),
+      order: 0
+    )
+
+    let braveSearchURL = URL(string: "https://search.brave.com")!
+    let braveSearchTitle = "Brave Search"
+
+    let savedObject2 = SavedRecentlyClosed(
+      url: braveSearchURL,
+      title: braveSearchTitle,
+      dateAdded: Date(),
+      interactionState: Data(),
+      order: 0
+    )
+
+    let googleQueryURL = URL(string: "https://www.google.com/search?q=brave.com")!
+    let googleQueryTitle = "Google Search"
+
+    let savedObject3 = SavedRecentlyClosed(
+      url: googleQueryURL,
+      title: googleQueryTitle,
+      dateAdded: Date(),
+      interactionState: Data(),
+      order: 0
+    )
+
+    let savedRecentlyClosedList = [savedObject1, savedObject2, savedObject3]
+
+    backgroundSaveAndWaitForExpectation {
+      RecentlyClosed.insertAll(savedRecentlyClosedList)
+    }
+
+    XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 3)
+    XCTAssertNotNil(RecentlyClosed.get(with: braveURL.absoluteString))
+    XCTAssertNotNil(RecentlyClosed.get(with: braveSearchURL.absoluteString))
+    XCTAssertNotNil(RecentlyClosed.get(with: googleQueryURL.absoluteString))
+
+    backgroundSaveAndWaitForExpectation {
+      RecentlyClosed.remove(baseDomains: .init(["brave.com"]))
+    }
+
+    XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
+    // base domain matches get removed
+    XCTAssertNil(RecentlyClosed.get(with: braveURL.absoluteString))
+    XCTAssertNil(RecentlyClosed.get(with: braveSearchURL.absoluteString))
+    // query param does not get removed
+    XCTAssertNotNil(RecentlyClosed.get(with: googleQueryURL.absoluteString))
+  }
+
   @discardableResult
   private func createAndWait(
     url: URL,
