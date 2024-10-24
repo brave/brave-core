@@ -87,6 +87,7 @@ constexpr int kComponentUpdaterManifestSchemaVersion = 1;
 constexpr char kAdsDatabaseFilename[] = "Ads.db";
 constexpr NSString* kComponentUpdaterMetadataPrefKey =
     @"BraveAdsComponentUpdaterMetadata";
+constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
 }  // namespace
 
@@ -675,7 +676,7 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
       content_type:""
       method:"GET"
       callback:^(const std::string& errorDescriptionArg, int statusCodeArg,
-                 const std::string& responseStr,
+                 NSData* responseData,
                  const base::flat_map<std::string, std::string>& headersArg) {
         const auto strongSelf = weakSelf;
         if (!strongSelf || ![strongSelf isServiceRunning]) {
@@ -694,11 +695,15 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
           return;
         }
 
-        NSData* data = [base::SysUTF8ToNSString(responseStr)
-            dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary* dict = [NSJSONSerialization JSONObjectWithData:data
-                                                             options:0
-                                                               error:nil];
+        if (!responseData) {
+          handleRetry();
+          return;
+        }
+
+        NSDictionary* dict =
+            [NSJSONSerialization JSONObjectWithData:responseData
+                                            options:0
+                                              error:nil];
         if (!dict) {
           handleRetry();
           return;
@@ -741,9 +746,16 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
             continue;
           }
 
-          NSDictionary* adsResourceMetadataDict =
+          NSString* adsResourceComponentMetadataKey = [adsResourceId
+              stringByAppendingString:kAdsResourceComponentMetadataVersion];
+          if (!adsResourceComponentMetadataKey) {
+            continue;
+          }
+
+          NSDictionary* componentUpdaterMetadataDict =
               [strongSelf componentUpdaterMetadata];
-          if (version <= adsResourceMetadataDict[adsResourceId]) {
+          if (version <=
+              componentUpdaterMetadataDict[adsResourceComponentMetadataKey]) {
             BLOG(1, @"%@ ads resource is up to date on version %@",
                  adsResourceId, version);
             continue;
@@ -764,7 +776,7 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
               method:"GET"
               callback:^(
                   const std::string& errorDescription, int statusCode,
-                  const std::string& response,
+                  NSData* resourceData,
                   const base::flat_map<std::string, std::string>& headers) {
                 if (!strongSelf || ![strongSelf isServiceRunning]) {
                   return;
@@ -785,14 +797,14 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
                 }
 
                 [strongSelf.commonOps
-                    saveContents:response
+                    saveContents:resourceData
                             name:base::SysNSStringToUTF8(adsResourceId)];
                 BLOG(1, @"Cached %@ ads resource version %@", adsResourceId,
                      version);
 
                 NSMutableDictionary* dictionary =
                     [[strongSelf componentUpdaterMetadata] mutableCopy];
-                dictionary[adsResourceId] = version;
+                dictionary[adsResourceComponentMetadataKey] = version;
                 [strongSelf setComponentUpdaterMetadata:dictionary];
 
                 BLOG(1, @"%@ ads resource updated to version %@", adsResourceId,
@@ -1345,11 +1357,18 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
               method:methodMap[url_request->method]
             callback:^(
                 const std::string& errorDescription, int statusCode,
-                const std::string& response,
+                NSData* responseData,
                 const base::flat_map<std::string, std::string>& headers) {
               const auto strongSelf = weakSelf;
               if (!strongSelf || ![strongSelf isServiceRunning]) {
                 return;
+              }
+
+              std::string response;
+              if (responseData && responseData.length > 0) {
+                response =
+                    std::string(static_cast<const char*>(responseData.bytes),
+                                responseData.length);
               }
 
               brave_ads::mojom::UrlResponseInfo mojom_url_response;
@@ -1366,7 +1385,9 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
 - (void)save:(const std::string&)name
        value:(const std::string&)value
     callback:(brave_ads::SaveCallback)callback {
-  const bool success = [self.commonOps saveContents:value name:name];
+  NSData* valueData =
+      [base::SysUTF8ToNSString(value) dataUsingEncoding:NSUTF8StringEncoding];
+  const bool success = [self.commonOps saveContents:valueData name:name];
   std::move(callback).Run(success);
 }
 

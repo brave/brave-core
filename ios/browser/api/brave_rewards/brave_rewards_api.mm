@@ -1081,8 +1081,15 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
               method:methodMap[request->method]
             callback:^(
                 const std::string& errorDescription, int statusCode,
-                const std::string& response,
+                NSData* responseData,
                 const base::flat_map<std::string, std::string>& headers) {
+              std::string response;
+              if (responseData && responseData.length > 0) {
+                response =
+                    std::string(static_cast<const char*>(responseData.bytes),
+                                responseData.length);
+              }
+
               auto url_response = brave_rewards::mojom::UrlResponse::New();
               url_response->url = base::SysNSStringToUTF8(copiedURL);
               url_response->error = errorDescription;

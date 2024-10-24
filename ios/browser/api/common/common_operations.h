@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void (^BATNetworkCompletionBlock)(
     const std::string& errorDescription,
     int statusCode,
-    const std::string& response,
+    NSData* _Nullable responseData,
     const base::flat_map<std::string, std::string>& headers);
 
 /// A set of common operations that accept and return C++ types
@@ -55,7 +55,7 @@ OBJC_EXPORT
 - (NSString*)dataPathForFilename:(NSString*)filename;
 
 /// Save the contents to a file with the given name
-- (bool)saveContents:(const std::string&)contents name:(const std::string&)name;
+- (bool)saveContents:(NSData* _Nullable)contents name:(const std::string&)name;
 /// Load the contents of a saved file with the given name
 - (std::string)loadContentsFromFileWithName:(const std::string&)name;
 /// Remove the saved file with the given name

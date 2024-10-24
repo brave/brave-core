@@ -120,11 +120,6 @@
           strongSelf->_taskRunner->PostTask(
               FROM_HERE, base::BindOnce(^{
                 const auto response = (NSHTTPURLResponse*)urlResponse;
-                std::string body;
-                if (data && data.length > 0) {
-                  body = std::string(static_cast<const char*>(data.bytes),
-                                     data.length);
-                }
                 std::string errorDescription;
                 if (error) {
                   errorDescription = error.localizedDescription.UTF8String;
@@ -150,7 +145,7 @@
                 auto copiedHeaders =
                     base::flat_map<std::string, std::string>(*responseHeaders);
                 [strongSelf.runningTasks removeObject:task];
-                callback(errorDescription, (int)response.statusCode, body,
+                callback(errorDescription, (int)response.statusCode, data,
                          copiedHeaders);
                 delete responseHeaders;
               }));
@@ -167,16 +162,17 @@
   return [self.storagePath stringByAppendingPathComponent:filename];
 }
 
-- (bool)saveContents:(const std::string&)contents
-                name:(const std::string&)name {
+- (bool)saveContents:(NSData*)contents name:(const std::string&)name {
+  if (!contents) {
+    return false;
+  }
+
   const auto filename = [NSString stringWithUTF8String:name.c_str()];
-  const auto nscontents = [NSString stringWithUTF8String:contents.c_str()];
   NSError* error = nil;
   const auto path = [self dataPathForFilename:filename];
-  const auto result = [nscontents writeToFile:path
-                                   atomically:YES
-                                     encoding:NSUTF8StringEncoding
-                                        error:&error];
+  const auto result = [contents writeToFile:path
+                                    options:NSDataWritingAtomic
+                                      error:&error];
   if (error) {
     LOG(ERROR) << "Failed to save data for " << name << ": "
                << base::SysNSStringToUTF8(error.localizedDescription);
