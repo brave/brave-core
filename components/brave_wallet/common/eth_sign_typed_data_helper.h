@@ -41,7 +41,7 @@ class EthSignTypedDataHelper {
   std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>> EncodeData(
       const std::string& primary_type_name,
       const base::Value::Dict& data) const;
-  static std::optional<std::vector<uint8_t>> GetTypedDataMessageToSign(
+  static std::vector<uint8_t> GetTypedDataMessageToSign(
       base::span<const uint8_t> domain_hash,
       base::span<const uint8_t> primary_hash);
   std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>

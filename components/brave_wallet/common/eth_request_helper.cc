@@ -242,9 +242,14 @@ bool GetEthJsonRequestInfo(const std::string& json,
   }
 
   if (params_list) {
-    auto* found_params = response_dict->FindListByDottedPath(kParams);
-    if (found_params) {
-      *params_list = std::move(*found_params);
+    params_list->clear();
+    if (auto* found_params = response_dict->FindByDottedPath(kParams)) {
+      if (found_params->is_list()) {
+        *params_list = std::move(found_params->GetList());
+      } else if (!found_params->is_dict()) {
+        // dict is a valid type of params by we don't support it.
+        return false;
+      }
     }
   }
 
@@ -544,6 +549,13 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
 
   result->primary_type = *primary_type;
 
+  auto chain_id = domain->FindDouble("chainId");
+  if (chain_id) {
+    result->chain_id = Uint256ValueToHex(uint256_t(*chain_id));
+  }
+
+  DCHECK(!result->domain_hash.empty());
+  DCHECK(!result->primary_hash.empty());
   return result;
 }
 

@@ -44,7 +44,7 @@
 namespace {
 
 base::Value::Dict GetJsonRpcRequest(const std::string& method,
-                                    base::Value params) {
+                                    base::Value::List params) {
   base::Value::Dict dictionary;
   dictionary.Set("jsonrpc", "2.0");
   dictionary.Set("method", method);
@@ -686,15 +686,12 @@ void EthereumProviderImpl::SignTypedMessage(
 
   auto message_to_sign = EthSignTypedDataHelper::GetTypedDataMessageToSign(
       eth_sign_typed_data->domain_hash, eth_sign_typed_data->primary_hash);
-  if (!message_to_sign || message_to_sign->size() != 32) {
-    return RejectInvalidParams(std::move(id), std::move(callback));
-  }
 
   mojom::SignDataUnionPtr sign_data =
       mojom::SignDataUnion::NewEthSignTypedData(std::move(eth_sign_typed_data));
 
   SignMessageInternal(account_id, std::move(sign_data),
-                      std::move(*message_to_sign), std::move(callback),
+                      std::move(message_to_sign), std::move(callback),
                       std::move(id));
 }
 
@@ -1061,7 +1058,7 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
 }
 
 void EthereumProviderImpl::Send(const std::string& method,
-                                base::Value params,
+                                base::Value::List params,
                                 SendCallback callback) {
   CommonRequestOrSendAsync(GetJsonRpcRequest(method, std::move(params)),
                            std::move(callback), true);
