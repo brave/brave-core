@@ -9,7 +9,7 @@
 #include <memory>
 #include <optional>
 
-#include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"  // IWYU pragma: export
+#include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 
 class BraveSidePanelCoordinator : public SidePanelCoordinator {
  public:
