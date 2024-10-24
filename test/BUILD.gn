@@ -277,6 +277,7 @@ test("brave_unit_tests") {
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/favicon",
     "//chrome/browser/permissions",
+    "//chrome/browser/prefs",
     "//chrome/browser/sync",
     "//chrome/browser/ui",
     "//chrome/test:test_support",

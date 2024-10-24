@@ -1449,6 +1449,7 @@ source_set("unit_tests") {
         "//brave/components/brave_vpn/browser/connection:api",
         "//brave/components/brave_vpn/browser/connection/ikev2:sim",
         "//brave/components/skus/browser",
+        "//chrome/browser/prefs",
         "//chrome/browser/themes",
         "//chrome/test:test_support",
         "//skia",
