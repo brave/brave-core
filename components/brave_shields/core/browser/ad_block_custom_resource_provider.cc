@@ -27,9 +27,15 @@ constexpr const char kContentField[] = "content";
 constexpr const char kMimeField[] = "kind.mime";
 constexpr const char kAppJs[] = "application/javascript";
 
+bool HasName(const base::Value& resource) {
+  return resource.is_dict() && !!resource.GetDict().FindString(kNameField);
+}
+
 bool IsValidResource(const base::Value& resource) {
-  if (!resource.is_dict() || !resource.GetDict().FindString(kNameField) ||
-      !resource.GetDict().FindString(kContentField)) {
+  if (!HasName(resource)) {
+    return false;
+  }
+  if (!resource.GetDict().FindString(kContentField)) {
     // Invalid resource structure.
     return false;
   }
@@ -57,16 +63,15 @@ bool IsValidResource(const base::Value& resource) {
 }
 
 const std::string& GetResourceName(const base::Value& resource) {
-  DCHECK(IsValidResource(resource));
+  if (!HasName(resource)) {
+    return base::EmptyString();
+  }
   return *resource.GetDict().FindString(kNameField);
 }
 
 base::Value::List::iterator FindResource(base::Value::List& resources,
                                          const std::string& name) {
   return base::ranges::find_if(resources, [name](const base::Value& v) {
-    if (!IsValidResource(v)) {
-      return false;
-    }
     return GetResourceName(v) == name;
   });
 }
