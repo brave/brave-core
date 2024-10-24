@@ -75,7 +75,7 @@ struct SignMessageRequestContentView: View {
   }
 
   private var currentRequestDomain: String? {
-    request.signData.ethSignTypedData?.domain
+    request.signData.ethSignTypedData?.domainJson
   }
 
   private var requestDomain: String {
@@ -105,7 +105,7 @@ struct SignMessageRequestContentView: View {
 
   private var currentRequestMessage: String? {
     if let ethSignTypedData = request.signData.ethSignTypedData {
-      return ethSignTypedData.message
+      return ethSignTypedData.messageJson
     } else if let ethStandardSignData = request.signData.ethStandardSignData {
       return ethStandardSignData.message
     } else if let solanaSignData = request.signData.solanaSignData {
