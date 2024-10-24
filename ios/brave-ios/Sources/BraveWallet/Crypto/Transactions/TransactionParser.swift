@@ -1027,6 +1027,23 @@ struct ParsedTransaction: Equatable {
     }
   }
 
+  var hasSystemProgramAssignInstruction: Bool {
+    if case .solDappTransaction(let details) = details {
+      for parsedInstruction in details.instructions {
+        let isAssign =
+          parsedInstruction.instruction.instructionTypeName
+          == WalletConstants.solanaTxInstructionTypeNameAssign
+        let isAssignWithSeed =
+          parsedInstruction.instruction.instructionTypeName
+          == WalletConstants.solanaTxInstructionTypeNameAssignWithSeed
+        if isAssign || isAssignWithSeed {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
   init() {
     self.transaction = .init()
     self.namedFromAddress = ""
