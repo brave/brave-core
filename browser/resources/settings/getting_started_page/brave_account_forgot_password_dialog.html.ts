@@ -8,7 +8,7 @@ import { html } from '//resources/lit/v3_0/lit.rollup.js'
 import type { SettingsBraveAccountForgotPasswordDialogElement } from './brave_account_forgot_password_dialog.js'
 
 export function getHtml(this: SettingsBraveAccountForgotPasswordDialogElement) {
-  return html`
+  return html`<!--_html_template_start_-->
     <settings-brave-account-dialog show-back-button
       header-text-top="Forgot your password?"
       header-text-bottom="Confirm your Brave account email and we'll email you a link to reset your password. The link will only be valid for [X] hours.">
@@ -26,5 +26,5 @@ export function getHtml(this: SettingsBraveAccountForgotPasswordDialogElement) {
         </leo-button>
       </div>
     </settings-brave-account-dialog>
-  `
+  <!--_html_template_end_-->`
 }
