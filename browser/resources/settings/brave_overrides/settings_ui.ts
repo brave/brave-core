@@ -65,7 +65,7 @@ RegisterStyleOverride(
         background: var(--leo-color-page-background);
         padding-bottom: var(--leo-spacing-2xl);
         border-radius: var(--leo-radius-xl) var(--leo-radius-m) var(--leo-radius-m) var(--leo-radius-xl);
-        overflow: scroll;
+        overflow: auto;
       }
       #right {
         /* this element is only a space filler in chromium */
