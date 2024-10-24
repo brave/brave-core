@@ -47,6 +47,7 @@ using mojom::ConversationTurn;
 base::Value::List BuildMessages(
     const mojom::CustomModelOptions& model_options,
     const std::string& page_content,
+    const std::vector<std::string>& screenshots,
     const std::optional<std::string>& selected_text,
     const bool& is_video,
     const EngineConsumer::ConversationHistory& conversation_history) {
@@ -78,6 +79,8 @@ base::Value::List BuildMessages(
   }
 
   // Append page content, if exists
+  // Comment out for now to send image only to avoid noises interference
+#if 0
   if (!page_content.empty()) {
     const std::string prompt_segment_article = base::ReplaceStringPlaceholders(
         l10n_util::GetStringUTF8(
@@ -88,6 +91,38 @@ base::Value::List BuildMessages(
     base::Value::Dict message;
     message.Set("role", "user");
     message.Set("content", prompt_segment_article);
+    messages.Append(std::move(message));
+  }
+#endif
+  if (!screenshots.empty()) {
+    base::Value::Dict message;
+    message.Set("role", "user");
+    base::Value::List content;
+    base::Value::Dict user_message;
+    user_message.Set("type", "text");
+    user_message.Set("text",
+                     "These images are the screenshots of page content");
+    content.Append(std::move(user_message));
+
+    size_t counter = 0;
+    constexpr char kImageUrl[] = R"(data:image/png;base64,$1)";
+    // Only send the first screenshot becasue llama-vision seems to take the
+    // last one if there are multiple screenshots
+    for (const auto& screenshot : screenshots) {
+      if (counter++ > 0) {
+        break;
+      }
+      base::Value::Dict image;
+      image.Set("type", "image_url");
+      const std::string image_url =
+          base::ReplaceStringPlaceholders(kImageUrl, {screenshot}, nullptr);
+      base::Value::Dict image_url_dict;
+      image_url_dict.Set("url", image_url);
+      image.Set("image_url", std::move(image_url_dict));
+      content.Append(std::move(image));
+    }
+
+    message.Set("content", std::move(content));
     messages.Append(std::move(message));
   }
 
@@ -245,6 +280,7 @@ void EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse(
 void EngineConsumerOAIRemote::GenerateAssistantResponse(
     const bool& is_video,
     const std::string& page_content,
+    const std::vector<std::string>& screenshots,
     const ConversationHistory& conversation_history,
     const std::string& human_input,
     const std::string& selected_language,
@@ -267,8 +303,8 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
                        : max_associated_content_length_);
 
   base::Value::List messages =
-      BuildMessages(model_options_, truncated_page_content, selected_text,
-                    is_video, conversation_history);
+      BuildMessages(model_options_, truncated_page_content, screenshots,
+                    selected_text, is_video, conversation_history);
   api_->PerformRequest(model_options_, std::move(messages),
                        std::move(data_received_callback),
                        std::move(completed_callback));

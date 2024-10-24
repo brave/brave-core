@@ -11,6 +11,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
@@ -55,6 +56,7 @@ class AIChatUIBrowserTest;
 
 namespace ai_chat {
 class AIChatMetrics;
+class FullScreenshotter;
 
 // Provides context to an AI Chat conversation in the form of the Tab's content
 class AIChatTabHelper : public content::WebContentsObserver,
@@ -195,6 +197,13 @@ class AIChatTabHelper : public content::WebContentsObserver,
                                   bool is_video,
                                   std::string invalidation_token);
 
+  void OnCaptureScreenshotComplete(
+      GetPageContentCallback callback,
+      std::string content,
+      bool is_video,
+      std::string invalidation_token,
+      base::expected<std::vector<std::string>, std::string> result);
+
   void OnExtractPrintPreviewContentComplete(GetPageContentCallback callback,
                                             std::string content);
 
@@ -232,6 +241,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // A scoper only used for PDF viewing.
   std::unique_ptr<content::ScopedAccessibilityMode> scoped_accessibility_mode_;
+
+  std::unique_ptr<FullScreenshotter> full_screenshotter_;
 
   mojo::AssociatedReceiver<mojom::PageContentExtractorHost>
       page_content_extractor_receiver_{this};

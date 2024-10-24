@@ -155,7 +155,8 @@ base::Value::List ConversationEventsToList(
            {ConversationEventType::RequestSummary, "requestSummary"},
            {ConversationEventType::RequestSuggestedActions,
             "requestSuggestedActions"},
-           {ConversationEventType::SuggestedActions, "suggestedActions"}});
+           {ConversationEventType::SuggestedActions, "suggestedActions"},
+           {ConversationEventType::ImageURL, "imageUrl"}});
 
   base::Value::List events;
   for (const auto& event : conversation) {
@@ -332,6 +333,7 @@ void ConversationAPIClient::OnQueryCompleted(
     std::optional<CredentialCacheEntry> credential,
     GenerationCompletedCallback callback,
     APIRequestResult result) {
+  LOG(ERROR) << result.response_code();
   const bool success = result.Is2XXResponseCode();
   // Handle successful request
   if (success) {
@@ -375,6 +377,11 @@ void ConversationAPIClient::OnQueryDataReceived(
     GenerationDataCallback callback,
     base::expected<base::Value, std::string> result) {
   if (!result.has_value() || !result->is_dict()) {
+    if (result.has_value()) {
+      LOG(ERROR) << result.value();
+    } else {
+      LOG(ERROR) << result.error();
+    }
     return;
   }
   auto event = ParseResponseEvent(result->GetDict());

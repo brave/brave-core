@@ -120,6 +120,9 @@ void AIChatSettingsHelper::GetModelsWithSubtitles(
       } else if (model->key == "chat-claude-sonnet") {
         modelWithSubtitle.subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE);
+      } else if (model->key == "chat-vision-basic") {
+        modelWithSubtitle.subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_VISION_BASIC_SUBTITLE);
       }
     }
 

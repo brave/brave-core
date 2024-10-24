@@ -181,6 +181,29 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
+    {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "Meta";
+      options->name = "llama-3.2-11b-vision-instruct";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = features::kFreemiumAvailable.Get()
+                            ? mojom::ModelAccess::BASIC_AND_PREMIUM
+                            : mojom::ModelAccess::BASIC;
+      options->engine_type =
+          conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
+                           : mojom::ModelEngineType::LLAMA_REMOTE;
+      options->max_associated_content_length = 8000;
+      options->long_conversation_warning_character_limit = 9700;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-vision-basic";
+      model->display_name = "Llama 3.2 11B Vision";
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
     return models;
   }());
 
