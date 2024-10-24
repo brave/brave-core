@@ -23,6 +23,16 @@ extension BraveWallet.SolanaInstruction {
     programId == BraveWallet.SolanaSysvarRentProgramId
   }
 
+  var instructionTypeName: String {
+    guard let decodedData = self.decodedData else {
+      return Strings.Wallet.solanaUnknownInstructionName
+    }
+    let instructionType = BraveWallet.SolanaSystemInstruction(
+      rawValue: Int(decodedData.instructionType)
+    )
+    return instructionType?.name ?? Strings.Wallet.solanaUnknownInstructionName
+  }
+
   var instructionName: String {
     guard let decodedData = self.decodedData else {
       return Strings.Wallet.solanaUnknownInstructionName

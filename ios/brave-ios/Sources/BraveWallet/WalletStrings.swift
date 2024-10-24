@@ -1498,6 +1498,24 @@ extension Strings {
       comment:
         "The warning shown on transaction confirmation for an Solana SPL token transaction that has not yet created an associated token account."
     )
+    public static let confirmationViewSolAccountOwnershipChangeWarningTitle = NSLocalizedString(
+      "wallet.confirmationViewSolAccountOwnershipChangeWarningTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:
+        "Account ownership change requested",
+      comment:
+        "The warning title shown on transaction confirmation for an Solana Dapp request that will reassign ownership of the account to a new program."
+    )
+    public static let confirmationViewSolAccountOwnershipChangeWarning = NSLocalizedString(
+      "wallet.confirmationViewSolAccountOwnershipChangeWarning",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:
+        "This transaction will reassign ownership of the account to a new program. This action is irreversible and may result in loss of funds.",
+      comment:
+        "The warning shown on transaction confirmation for an Solana Dapp request that will reassign ownership of the account to a new program."
+    )
     public static let confirmationViewCurrentAllowance = NSLocalizedString(
       "wallet.confirmationViewCurrentAllowance",
       tableName: "BraveWallet",
