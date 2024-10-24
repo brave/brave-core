@@ -8,7 +8,7 @@ import { html } from '//resources/lit/v3_0/lit.rollup.js'
 import type { SettingsBraveAccountSignInDialogElement } from './brave_account_sign_in_dialog.js'
 
 export function getHtml(this: SettingsBraveAccountSignInDialogElement) {
-  return html`
+  return html`<!--_html_template_start_-->
     <settings-brave-account-dialog show-back-button
       header-text-top="Sign in to your account"
       header-text-bottom="$i18n{braveSyncBraveAccountDesc}">
@@ -34,5 +34,5 @@ export function getHtml(this: SettingsBraveAccountSignInDialogElement) {
         </leo-button>
       </div>
     </settings-brave-account-dialog>
-  `
+  <!--_html_template_end_-->`
 }
