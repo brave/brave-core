@@ -507,7 +507,7 @@ bool BookmarkFaviconFetcher::FetchNextFavicon() {
     URLFaviconMap::const_iterator iter = favicons_map_->find(url);
     if (favicons_map_->end() == iter) {
       favicon::FaviconService* favicon_service =
-          ios::FaviconServiceFactory::GetForBrowserState(
+          ios::FaviconServiceFactory::GetForProfile(
               profile_, ServiceAccessType::EXPLICIT_ACCESS);
       favicon_service->GetRawFaviconForPageURL(
           GURL(url), {favicon_base::IconType::kFavicon}, gfx::kFaviconSize,
