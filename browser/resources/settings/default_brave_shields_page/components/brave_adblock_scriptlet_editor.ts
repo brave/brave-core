@@ -128,7 +128,7 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
 
   validateName_() {
     this.scriptlet.name = this.scriptlet.name.toLowerCase()
-    if (!/^[a-zA-Z0-9-_.]*$/.test(this.scriptlet.name)) {
+    if (!/^[a-zA-Z0-9-_.]+$/.test(this.scriptlet.name)) {
       this.updateError(ErrorCode.kInvalidName)
     } else {
       this.updateError(ErrorCode.kOK)
