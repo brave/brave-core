@@ -228,9 +228,13 @@ Campaign NTPSponsoredImagesData::GetCampaignFromValue(
   if (auto* wallpapers = value.FindList(kWallpapersKey)) {
     for (const auto& entry : *wallpapers) {
       const auto& wallpaper = entry.GetDict();
+      const std::string* image_url = wallpaper.FindString(kImageURLKey);
+      if (!image_url) {
+        continue;
+      }
+
       SponsoredBackground background;
-      background.image_file =
-          installed_dir.AppendASCII(*wallpaper.FindString(kImageURLKey));
+      background.image_file = installed_dir.AppendASCII(*image_url);
 
       if (auto* focal_point = wallpaper.FindDict(kWallpaperFocalPointKey)) {
         background.focal_point = {focal_point->FindInt(kXKey).value_or(0),
