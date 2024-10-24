@@ -14,6 +14,7 @@ import android.util.Pair;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.PurchaseModel;
@@ -65,8 +66,8 @@ public class BraveVpnApiResponseUtils {
             BraveVpnServerRegion braveVpnServerRegion =
                     BraveVpnUtils.getServerRegionForTimeZone(
                             jsonTimezones, TimeZone.getDefault().getID());
-            String region = braveVpnServerRegion.getRegionName();
-            if (TextUtils.isEmpty(region)) {
+            String regionFromTimeZone = braveVpnServerRegion.getRegionName();
+            if (TextUtils.isEmpty(regionFromTimeZone)) {
                 BraveVpnUtils.showToast(
                         String.format(
                                 activity.getResources()
@@ -74,22 +75,28 @@ public class BraveVpnApiResponseUtils {
                                 TimeZone.getDefault().getID()));
                 return;
             }
-            if (BraveVpnUtils.selectedServerRegion != null) {
-                if (!BraveVpnUtils.selectedServerRegion
-                        .getRegionName()
-                        .equals(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC)) {
-                    region = BraveVpnUtils.selectedServerRegion.getRegionName();
-                    braveVpnServerRegion = BraveVpnUtils.selectedServerRegion;
-                }
+            String regionForHostName = regionFromTimeZone;
+            String regionPrecision = braveVpnServerRegion.getRegionPrecision();
+
+            // Determine the region for host name and precision
+            if (BraveVpnUtils.selectedServerRegion != null
+                    && !BraveVpnUtils.selectedServerRegion
+                            .getRegionName()
+                            .equals(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC)) {
+
+                regionForHostName = BraveVpnUtils.selectedServerRegion.getRegionName();
+                braveVpnServerRegion = BraveVpnUtils.selectedServerRegion;
+                regionPrecision = braveVpnServerRegion.getRegionPrecision();
             } else {
                 String serverRegion = BraveVpnPrefUtils.getRegionName();
-                region =
-                        serverRegion.equals(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC)
-                                ? region
-                                : serverRegion;
+                if (serverRegion.equals(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC)) {
+                    regionPrecision = BraveVpnConstants.REGION_PRECISION_DEFAULT;
+                } else {
+                    regionForHostName = serverRegion;
+                }
             }
             BraveVpnNativeWorker.getInstance()
-                    .getHostnamesForRegion(region, braveVpnServerRegion.getRegionPrecision());
+                    .getHostnamesForRegion(regionForHostName, regionPrecision);
             braveVpnPrefModel.setServerRegion(braveVpnServerRegion);
         } else {
             BraveVpnUtils.showToast(
