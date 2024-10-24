@@ -1288,7 +1288,8 @@ export class MockedWalletApiProxy {
           isWalletCreated: true,
           isWalletLocked: false,
           isAnkrBalancesFeatureEnabled: false,
-          isTransactionSimulationsFeatureEnabled: true
+          isTransactionSimulationsFeatureEnabled: true,
+          isZCashShieldedTransactionsEnabled: false
         }
       }
     }
