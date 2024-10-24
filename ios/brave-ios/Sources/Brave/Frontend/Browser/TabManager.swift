@@ -1665,15 +1665,32 @@ extension WKWebsiteDataStore {
 
   @MainActor fileprivate func deleteDataRecords(forDomains domains: Set<String>) async {
     let records = await dataRecords(
-      ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()
+      ofTypes: WKWebsiteDataStore.allWebsiteDataTypesIncludingPrivate()
     )
     let websiteRecords = records.filter { record in
       domains.contains(record.displayName)
     }
 
     await removeData(
-      ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
+      ofTypes: WKWebsiteDataStore.allWebsiteDataTypesIncludingPrivate(),
       for: websiteRecords
     )
+  }
+
+  /// This includes all public types from `WKWebsiteDataStore.allWebsiteDataTypes` as well as private data types.
+  public static func allWebsiteDataTypesIncludingPrivate() -> Set<String> {
+    // https://github.com/WebKit/WebKit/blob/b66e4895df40202b14bb20fb47444c3e0a3c164e/Source/WebKit/UIProcess/API/Cocoa/WKWebsiteDataRecordPrivate.h
+    var types = WKWebsiteDataStore.allWebsiteDataTypes()
+    types.insert("_WKWebsiteDataTypeHSTSCache")
+    types.insert("_WKWebsiteDataTypeResourceLoadStatistics")
+    types.insert("_WKWebsiteDataTypeCredentials")
+    types.insert("_WKWebsiteDataTypeAdClickAttributions")
+    types.insert("_WKWebsiteDataTypePrivateClickMeasurements")
+    types.insert("_WKWebsiteDataTypeAlternativeServices")
+    if #unavailable(iOS 17) {
+      types.insert("_WKWebsiteDataTypeMediaKeys")
+      types.insert("_WKWebsiteDataTypeSearchFieldRecentSearches")
+    }
+    return types
   }
 }
