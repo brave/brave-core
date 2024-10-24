@@ -777,8 +777,8 @@ void ConversationHandler::ClearErrorAndGetFailedMessage(
   DCHECK(!chat_history_.empty());
 
   SetAPIError(mojom::APIError::None);
-  mojom::ConversationTurnPtr turn = std::move(*chat_history_.end());
-  chat_history_.erase(chat_history_.end());
+  mojom::ConversationTurnPtr turn = std::move(chat_history_.back());
+  chat_history_.pop_back();
 
   OnHistoryUpdate();
 
