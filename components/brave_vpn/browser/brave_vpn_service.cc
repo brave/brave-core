@@ -594,7 +594,6 @@ void BraveVpnService::LaunchVPNPanel() {
   if (delegate_) {
     delegate_->LaunchVPNPanel();
   }
-  LOG(ERROR) << __func__ << " ######## ";
 }
 
 void BraveVpnService::OpenVpnUI(const std::string& type) {
