@@ -156,6 +156,7 @@ base::Value::Dict AdsServiceDelegate::GetVirtualPrefs() {
   return base::Value::Dict()
       .Set("[virtual]:build_channel.name",
            version_info::GetChannelString(chrome::GetChannel()))
+      .Set("[virtual]:browser_version", version_info::GetVersionNumber())
       .Set("[virtual]:default_search_engine.name",
            base::UTF16ToUTF8(template_url_data->short_name()));
 }

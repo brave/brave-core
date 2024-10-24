@@ -115,6 +115,8 @@ class PrefProviderInterface;
 // returning one of the following values: "stable", "beta", "dev", "nightly", or
 // "unknown".
 //
+// "[virtual]:browser_version" retrieves the browser version, e.g. "6.0.490.1".
+//
 // "[virtual]:default_search_engine.name" retrieves the default search engine
 // chosen during browser installation, returning one of the following values:
 // "Brave", "Google", "Yandex", "Bing", "Daum", "네이버", "DuckDuckGo", "Qwant",
