@@ -23,6 +23,11 @@
         resize: vertical;
         box-sizing: border-box;
     }
+
+    textarea::placeholder {
+        white-space: pre-line;
+    }
+    
 </style>
 
 <cr-dialog id="dialog" show-close-button show-on-attach>
@@ -36,7 +41,8 @@
         </div>
         <div>
             <div class="flex content">$i18n{adblockCustomScriptletDialogContentLabel}</div>
-            <textarea id="scriptlet-content" multiline="true" value="{{scriptlet.content::input}}" spellcheck="false"
+            <textarea class="[[getCodeClass]]" id="scriptlet-content" multiline="true"
+                value="{{scriptlet.content::input}}" spellcheck="false"
                 placeholder="$i18n{adblockCustomScriptletWarning}">
             </textarea>
         </div>
