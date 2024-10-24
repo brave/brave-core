@@ -24,8 +24,8 @@ namespace {
 
 constexpr const char kNameField[] = "name";
 constexpr const char kContentField[] = "content";
-constexpr const char kKindField[] = "kind";
-constexpr const char kMimeField[] = "mime";
+constexpr const char kMimeField[] = "kind.mime";
+constexpr const char kAppJs[] = "application/javascript";
 
 bool IsValidResource(const base::Value& resource) {
   if (!resource.is_dict() || !resource.GetDict().FindString(kNameField) ||
@@ -39,10 +39,20 @@ bool IsValidResource(const base::Value& resource) {
     return false;
   }
 
-  auto* kind = resource.GetDict().FindDict(kKindField);
-  if (!kind || !kind->FindString(kMimeField)) {
+  const auto* mime = resource.GetDict().FindStringByDottedPath(kMimeField);
+  if (!mime) {
     return false;
   }
+
+  if (*mime == kAppJs) {
+    // Resource is a scriptlet:
+    if (!base::StartsWith(*name, "brave-") || !base::EndsWith(*name, ".js")) {
+      return false;
+    }
+  } else {
+    return false;
+  }
+
   return true;
 }
 
@@ -85,18 +95,6 @@ std::string MergeResources(const std::string& default_resources,
       {"[", default_resources_str, ",", custom_resources_str, "]"});
 }
 
-base::Value FixName(const base::Value& resource) {
-  base::Value result = resource.Clone();
-
-  std::string* name = result.GetDict().FindString(kNameField);
-  *name = base::ToLowerASCII(*name);
-  if (!base::EndsWith(*name, ".js")) {
-    name->append(".js");
-  }
-
-  return result;
-}
-
 }  // namespace
 
 AdBlockCustomResourceProvider::AdBlockCustomResourceProvider(
@@ -128,7 +126,7 @@ AdBlockCustomResourceProvider::AddResource(const base::Value& resource) {
   if (FindResource(update.Get(), GetResourceName(resource)) != update->end()) {
     return ErrorCode::kAlreadyExists;
   }
-  update->Append(FixName(resource));
+  update->Append(resource.Clone());
   ReloadResourcesAndNotify();
   return ErrorCode::kOk;
 }
@@ -151,7 +149,7 @@ AdBlockCustomResourceProvider::UpdateResource(const std::string& old_name,
     }
   }
 
-  *updated_resource = FixName(resource);
+  *updated_resource = resource.Clone();
   ReloadResourcesAndNotify();
   return ErrorCode::kOk;
 }
