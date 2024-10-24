@@ -6,7 +6,6 @@
 #include "brave/components/web_discovery/browser/privacy_guard.h"
 
 #include "brave/components/web_discovery/browser/patterns.h"
-#include "brave/components/web_discovery/browser/regex_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace web_discovery {
@@ -23,67 +22,63 @@ class WebDiscoveryPrivacyGuardTest : public testing::Test {
 
  protected:
   PatternsURLDetails search_engine_pattern_;
-  RegexUtil regex_util_;
 };
 
 TEST_F(WebDiscoveryPrivacyGuardTest, IsPrivateURLLikely) {
-  EXPECT_FALSE(IsPrivateURLLikely(regex_util_,
-                                  GURL("https://www.search1.com/search?q=test"),
+  EXPECT_FALSE(IsPrivateURLLikely(GURL("https://www.search1.com/search?q=test"),
                                   &search_engine_pattern_));
   EXPECT_FALSE(IsPrivateURLLikely(
-      regex_util_,
+
       GURL("https://search2.com/search?query=testing+a+nice+query"),
       &search_engine_pattern_));
   EXPECT_FALSE(IsPrivateURLLikely(
-      regex_util_,
+
       GURL(
           "https://search2.com/search?query=quick+brown+fox+jumped&country=us"),
       &search_engine_pattern_));
-  EXPECT_FALSE(IsPrivateURLLikely(
-      regex_util_, GURL("https://www.website.com/page/test"), nullptr));
+  EXPECT_FALSE(
+      IsPrivateURLLikely(GURL("https://www.website.com/page/test"), nullptr));
+
+  EXPECT_TRUE(
+      IsPrivateURLLikely(GURL("http://www.website.com/page/test"), nullptr));
+  EXPECT_TRUE(
+      IsPrivateURLLikely(GURL("https://88.88.88.88/page/test"), nullptr));
+  EXPECT_TRUE(
+      IsPrivateURLLikely(GURL("https://website.com:8443/page/test"), nullptr));
+  EXPECT_TRUE(IsPrivateURLLikely(
+      GURL("https://user:pass@website.com/page/test"), nullptr));
+  EXPECT_TRUE(IsPrivateURLLikely(
+      GURL("https://www.search1.com/search?q=test#ABCDEFGHIJK"),
+      &search_engine_pattern_));
 
   EXPECT_TRUE(IsPrivateURLLikely(
-      regex_util_, GURL("http://www.website.com/page/test"), nullptr));
-  EXPECT_TRUE(IsPrivateURLLikely(
-      regex_util_, GURL("https://88.88.88.88/page/test"), nullptr));
-  EXPECT_TRUE(IsPrivateURLLikely(
-      regex_util_, GURL("https://website.com:8443/page/test"), nullptr));
-  EXPECT_TRUE(IsPrivateURLLikely(
-      regex_util_, GURL("https://user:pass@website.com/page/test"), nullptr));
-  EXPECT_TRUE(IsPrivateURLLikely(
-      regex_util_, GURL("https://www.search1.com/search?q=test#ABCDEFGHIJK"),
+      GURL("https://a.nested.sub.domain.website.co.uk/test/page"),
       &search_engine_pattern_));
-
+  EXPECT_TRUE(
+      IsPrivateURLLikely(GURL("https://abc192738284732929abc.com/test/page"),
+                         &search_engine_pattern_));
   EXPECT_TRUE(IsPrivateURLLikely(
-      regex_util_, GURL("https://a.nested.sub.domain.website.co.uk/test/page"),
-      &search_engine_pattern_));
-  EXPECT_TRUE(IsPrivateURLLikely(
-      regex_util_, GURL("https://abc192738284732929abc.com/test/page"),
-      &search_engine_pattern_));
-  EXPECT_TRUE(IsPrivateURLLikely(
-      regex_util_, GURL("https://a-long-hyphenated-web-site.com/test/page"),
+      GURL("https://a-long-hyphenated-web-site.com/test/page"),
       &search_engine_pattern_));
 }
 
 TEST_F(WebDiscoveryPrivacyGuardTest, IsPrivateQueryLikely) {
-  EXPECT_FALSE(IsPrivateQueryLikely(regex_util_, "test"));
-  EXPECT_FALSE(IsPrivateQueryLikely(regex_util_, "99 cake recipes"));
-  EXPECT_FALSE(IsPrivateQueryLikely(regex_util_, "grapefruit and pineapple"));
-  EXPECT_FALSE(IsPrivateQueryLikely(regex_util_, "a quick brown fox"));
+  EXPECT_FALSE(IsPrivateQueryLikely("test"));
+  EXPECT_FALSE(IsPrivateQueryLikely("99 cake recipes"));
+  EXPECT_FALSE(IsPrivateQueryLikely("grapefruit and pineapple"));
+  EXPECT_FALSE(IsPrivateQueryLikely("a quick brown fox"));
 
   EXPECT_TRUE(IsPrivateQueryLikely(
-      regex_util_,
+
       "ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123"));
   EXPECT_TRUE(IsPrivateQueryLikely(
-      regex_util_,
+
       "a long query that is potentially private and should not be considered"));
+  EXPECT_TRUE(IsPrivateQueryLikely("aliases for me@testemail.com"));
+  EXPECT_TRUE(IsPrivateQueryLikely("access site with user:pass@site.com"));
+  EXPECT_TRUE(IsPrivateQueryLikely("php $P$MArzfx58u"));
   EXPECT_TRUE(
-      IsPrivateQueryLikely(regex_util_, "aliases for me@testemail.com"));
-  EXPECT_TRUE(
-      IsPrivateQueryLikely(regex_util_, "access site with user:pass@site.com"));
-  EXPECT_TRUE(IsPrivateQueryLikely(regex_util_, "php $P$MArzfx58u"));
-  EXPECT_TRUE(IsPrivateQueryLikely(
-      regex_util_, "Hippopotomonstrosesquippedaliophobia symptoms"));
+      IsPrivateQueryLikely("Hippopotomonstrosesquippedaliophobia symptoms"));
 }
 
 TEST_F(WebDiscoveryPrivacyGuardTest, GeneratePrivateSearchURL) {
@@ -106,64 +101,60 @@ TEST_F(WebDiscoveryPrivacyGuardTest, GeneratePrivateSearchURL) {
 }
 
 TEST_F(WebDiscoveryPrivacyGuardTest, ShouldDropLongURL) {
+  EXPECT_FALSE(
+      ShouldDropLongURL(GURL("https://www.search1.com/search?q=test")));
   EXPECT_FALSE(ShouldDropLongURL(
-      regex_util_, GURL("https://www.search1.com/search?q=test")));
-  EXPECT_FALSE(ShouldDropLongURL(
-      regex_util_,
+
       GURL("https://search2.com/search?query=testing+a+nice+query")));
   EXPECT_FALSE(ShouldDropLongURL(
-      regex_util_,
+
       GURL("https://search2.com/search?query=quick+fox&country=us&d=1")));
-  EXPECT_FALSE(ShouldDropLongURL(regex_util_,
-                                 GURL("https://www.website.com/page/test")));
+  EXPECT_FALSE(ShouldDropLongURL(GURL("https://www.website.com/page/test")));
 
   EXPECT_TRUE(ShouldDropLongURL(
-      regex_util_,
+
       GURL("https://www.website.com/page/test?id=12823871923991")));
   EXPECT_TRUE(ShouldDropLongURL(
-      regex_util_, GURL("https://www.website.com/page/test1283192831292")));
+      GURL("https://www.website.com/page/test1283192831292")));
   EXPECT_TRUE(ShouldDropLongURL(
-      regex_util_, GURL("https://www.website.com/page/1283192831292?q=1")));
+      GURL("https://www.website.com/page/1283192831292?q=1")));
   EXPECT_TRUE(ShouldDropLongURL(
-      regex_util_,
+
       GURL("https://www.website.com/page/test?a=1&b=2&c=3&d=4&e=5")));
   EXPECT_TRUE(ShouldDropLongURL(
-      regex_util_,
+
       GURL("https://www.website.com/page/"
            "test?query=a+super+long+query+string+that+is+too+long")));
+  EXPECT_TRUE(
+      ShouldDropLongURL(GURL("https://www.website.com/page/ayLxezLhK1Lh1H1")));
+  EXPECT_TRUE(ShouldDropLongURL(GURL("https://www.website.com/page/WebLogic")));
+  EXPECT_TRUE(ShouldDropLongURL(GURL("https://www.website.com/page/admin")));
+  EXPECT_TRUE(ShouldDropLongURL(GURL("https://www.website.com/page/edit/")));
+  EXPECT_TRUE(
+      ShouldDropLongURL(GURL("https://www.website.com/page/doc?share=1")));
+  EXPECT_TRUE(
+      ShouldDropLongURL(GURL("https://www.website.com/page/doc?user=abc")));
+  EXPECT_TRUE(
+      ShouldDropLongURL(GURL("https://www.website.com/page/doc#logout")));
+  EXPECT_TRUE(
+      ShouldDropLongURL(GURL("https://www.website.com/page/doc?password=abc")));
+  EXPECT_TRUE(
+      ShouldDropLongURL(GURL("https://user:pass@www.website.com/page/test")));
   EXPECT_TRUE(ShouldDropLongURL(
-      regex_util_, GURL("https://www.website.com/page/ayLxezLhK1Lh1H1")));
-  EXPECT_TRUE(ShouldDropLongURL(regex_util_,
-                                GURL("https://www.website.com/page/WebLogic")));
-  EXPECT_TRUE(ShouldDropLongURL(regex_util_,
-                                GURL("https://www.website.com/page/admin")));
-  EXPECT_TRUE(ShouldDropLongURL(regex_util_,
-                                GURL("https://www.website.com/page/edit/")));
-  EXPECT_TRUE(ShouldDropLongURL(
-      regex_util_, GURL("https://www.website.com/page/doc?share=1")));
-  EXPECT_TRUE(ShouldDropLongURL(
-      regex_util_, GURL("https://www.website.com/page/doc?user=abc")));
-  EXPECT_TRUE(ShouldDropLongURL(
-      regex_util_, GURL("https://www.website.com/page/doc#logout")));
-  EXPECT_TRUE(ShouldDropLongURL(
-      regex_util_, GURL("https://www.website.com/page/doc?password=abc")));
-  EXPECT_TRUE(ShouldDropLongURL(
-      regex_util_, GURL("https://user:pass@www.website.com/page/test")));
-  EXPECT_TRUE(ShouldDropLongURL(
-      regex_util_, GURL("https://www.website.com/page/test?e=test@test.com")));
+      GURL("https://www.website.com/page/test?e=test@test.com")));
 }
 
 TEST_F(WebDiscoveryPrivacyGuardTest, MaskURL) {
   GURL url("https://www.website.com/page/test");
-  auto masked_url = MaskURL(regex_util_, url);
+  auto masked_url = MaskURL(url);
   ASSERT_TRUE(masked_url);
   EXPECT_EQ(*masked_url, url);
 
-  masked_url = MaskURL(regex_util_, GURL("https://www.website.com/page/admin"));
+  masked_url = MaskURL(GURL("https://www.website.com/page/admin"));
   ASSERT_TRUE(masked_url);
   EXPECT_EQ(*masked_url, "https://www.website.com/ (PROTECTED)");
 
-  EXPECT_FALSE(MaskURL(regex_util_, GURL("file:///etc")));
+  EXPECT_FALSE(MaskURL(GURL("file:///etc")));
 }
 
 }  // namespace web_discovery

@@ -8,16 +8,12 @@
 
 #include <string>
 
-#include "brave/components/web_discovery/browser/regex_util.h"
-
 namespace web_discovery {
 
 // Uses a pre-trained Markov chain classifier to detect the likelihood
 // of a hash in a given piece of text. Used in privacy guard functions
 // for detecting potentially private URLs/queries.
-bool IsHashLikely(RegexUtil& regex_util,
-                  std::string value,
-                  double probability_multiplier = 1.0);
+bool IsHashLikely(std::string value, double probability_multiplier = 1.0);
 
 }  // namespace web_discovery
 

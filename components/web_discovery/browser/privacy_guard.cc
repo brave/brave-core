@@ -48,31 +48,31 @@ constexpr char kGoogleHostSubstring[] = "google";
 constexpr char kGoogleURLQueryParam[] = "url";
 constexpr char kMaskedURLSuffix[] = "/ (PROTECTED)";
 
-bool ContainsForbiddenKeywords(RegexUtil& regex_util, const GURL& url) {
+bool ContainsForbiddenKeywords(const GURL& url) {
   auto path_and_query =
       base::StrCat({url.path_piece(), "?", url.query_piece()});
-  if (regex_util.CheckPathAndQueryStringKeywords(path_and_query)) {
+  if (g_regex_util.CheckPathAndQueryStringKeywords(path_and_query)) {
     return true;
   }
   if (!url.ref_piece().empty() &&
-      regex_util.CheckQueryStringOrRefKeywords("#" + url.ref())) {
+      g_regex_util.CheckQueryStringOrRefKeywords("#" + url.ref())) {
     return true;
   }
   if (!url.query_piece().empty() &&
-      regex_util.CheckQueryStringOrRefKeywords("?" + url.query())) {
+      g_regex_util.CheckQueryStringOrRefKeywords("?" + url.query())) {
     return true;
   }
   return false;
 }
 
-bool IsPrivateDomainLikely(RegexUtil& regex_util, const std::string_view host) {
+bool IsPrivateDomainLikely(const std::string_view host) {
   auto dot_split =
       base::SplitString(host, ".", base::WhitespaceHandling::KEEP_WHITESPACE,
                         base::SPLIT_WANT_ALL);
   if (dot_split.size() > kMaxDotSplitDomainSize) {
     return true;
   }
-  if (regex_util.CheckForLongNumber(host, kMaxDomainNumberLength)) {
+  if (g_regex_util.CheckForLongNumber(host, kMaxDomainNumberLength)) {
     return true;
   }
   auto hyphen_split =
@@ -86,8 +86,7 @@ bool IsPrivateDomainLikely(RegexUtil& regex_util, const std::string_view host) {
 
 }  // namespace
 
-bool IsPrivateURLLikely(RegexUtil& regex_util,
-                        const GURL& url,
+bool IsPrivateURLLikely(const GURL& url,
                         const PatternsURLDetails* matching_url_details) {
   if (!url.SchemeIs("https")) {
     VLOG(1) << "Ignoring URL due to non-HTTPS scheme";
@@ -117,14 +116,14 @@ bool IsPrivateURLLikely(RegexUtil& regex_util,
     VLOG(1) << "Ignoring URL due a local host or onion site";
     return true;
   }
-  if (IsPrivateDomainLikely(regex_util, url.host_piece())) {
+  if (IsPrivateDomainLikely(url.host_piece())) {
     VLOG(1) << "Ignoring URL due likely private domain";
     return true;
   }
   return false;
 }
 
-bool IsPrivateQueryLikely(RegexUtil& regex_util, const std::string& query) {
+bool IsPrivateQueryLikely(const std::string& query) {
   if (query.length() > kMaxQueryLength) {
     VLOG(1) << "Ignoring query due to long length";
     return true;
@@ -136,15 +135,15 @@ bool IsPrivateQueryLikely(RegexUtil& regex_util, const std::string& query) {
     VLOG(1) << "Ignoring query due to long split length";
     return true;
   }
-  if (regex_util.CheckForLongNumber(query, kMaxQueryNumberLength)) {
+  if (g_regex_util.CheckForLongNumber(query, kMaxQueryNumberLength)) {
     VLOG(1) << "Ignoring query due to long number";
     return true;
   }
-  if (regex_util.CheckForEmail(query)) {
+  if (g_regex_util.CheckForEmail(query)) {
     VLOG(1) << "Ignoring query due to inclusion of email";
     return true;
   }
-  if (regex_util.CheckQueryHTTPCredentials(query)) {
+  if (g_regex_util.CheckQueryHTTPCredentials(query)) {
     VLOG(1) << "Ignoring query due to potential inclusion of HTTP credentials";
     return true;
   }
@@ -155,7 +154,7 @@ bool IsPrivateQueryLikely(RegexUtil& regex_util, const std::string& query) {
     }
   }
   if (query.length() >= kHashCheckMinimumLength) {
-    if (IsHashLikely(regex_util, query, kHashCheckThresholdMultiplier)) {
+    if (IsHashLikely(query, kHashCheckThresholdMultiplier)) {
       VLOG(1) << "Ignoring query due to potential inclusion of hash";
       return true;
     }
@@ -179,8 +178,8 @@ GURL GeneratePrivateSearchURL(const GURL& original_url,
                     query_encoded_str}));
 }
 
-bool ShouldDropLongURL(RegexUtil& regex_util, const GURL& url) {
-  if (regex_util.CheckForEmail(url.spec())) {
+bool ShouldDropLongURL(const GURL& url) {
+  if (g_regex_util.CheckForEmail(url.spec())) {
     return true;
   }
   if (!url.query_piece().empty()) {
@@ -193,14 +192,14 @@ bool ShouldDropLongURL(RegexUtil& regex_util, const GURL& url) {
     if (query_parts.size() > kMaxQueryStringParts) {
       return true;
     }
-    if (regex_util.CheckForLongNumber(url.query_piece(),
-                                      kMaxQueryStringOrPathNumberLength)) {
+    if (g_regex_util.CheckForLongNumber(url.query_piece(),
+                                        kMaxQueryStringOrPathNumberLength)) {
       return true;
     }
   }
   if (!url.path_piece().empty()) {
-    if (regex_util.CheckForLongNumber(url.path_piece(),
-                                      kMaxQueryStringOrPathNumberLength)) {
+    if (g_regex_util.CheckForLongNumber(url.path_piece(),
+                                        kMaxQueryStringOrPathNumberLength)) {
       return true;
     }
   }
@@ -212,7 +211,7 @@ bool ShouldDropLongURL(RegexUtil& regex_util, const GURL& url) {
       return true;
     }
     if (path_part.length() >= kMinPathPartHashCheckLength &&
-        IsHashLikely(regex_util, path_part)) {
+        IsHashLikely(path_part)) {
       return true;
     }
   }
@@ -221,21 +220,21 @@ bool ShouldDropLongURL(RegexUtil& regex_util, const GURL& url) {
       base::SPLIT_WANT_ALL);
   for (const auto& path_segment : path_segments) {
     std::string alphanumeric_path_segment = path_segment;
-    regex_util.TransformToAlphanumeric(alphanumeric_path_segment);
+    TransformToAlphanumeric(alphanumeric_path_segment);
     if (alphanumeric_path_segment.length() >= kMinSegmentHashCheckLength &&
-        IsHashLikely(regex_util, alphanumeric_path_segment)) {
+        IsHashLikely(alphanumeric_path_segment)) {
       return true;
     }
   }
-  return ContainsForbiddenKeywords(regex_util, url);
+  return ContainsForbiddenKeywords(url);
 }
 
-std::optional<std::string> MaskURL(RegexUtil& regex_util, const GURL& url) {
+std::optional<std::string> MaskURL(const GURL& url) {
   if (!url.SchemeIsHTTPOrHTTPS() || !url.is_valid()) {
     return std::nullopt;
   }
 
-  if (!ShouldDropLongURL(regex_util, url)) {
+  if (!ShouldDropLongURL(url)) {
     return url.spec();
   }
 
@@ -248,7 +247,7 @@ std::optional<std::string> MaskURL(RegexUtil& regex_util, const GURL& url) {
       if (!decoded_embedded_url.is_valid()) {
         return std::nullopt;
       }
-      return MaskURL(regex_util, decoded_embedded_url);
+      return MaskURL(decoded_embedded_url);
     }
   }
 

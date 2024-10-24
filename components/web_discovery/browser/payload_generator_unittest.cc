@@ -10,7 +10,6 @@
 
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/patterns.h"
-#include "brave/components/web_discovery/browser/regex_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace web_discovery {
@@ -55,14 +54,13 @@ class WebDiscoveryPayloadGeneratorTest : public testing::Test {
  protected:
   std::vector<base::Value::Dict> GenerateQueryPayloadsHelper(
       std::unique_ptr<PageScrapeResult> scrape_result) {
-    return GenerateQueryPayloads(*server_config_.get(), regex_util_,
-                                 url_details_.get(), std::move(scrape_result));
+    return GenerateQueryPayloads(*server_config_.get(), url_details_.get(),
+                                 std::move(scrape_result));
   }
 
   std::unique_ptr<ServerConfig> server_config_;
 
  private:
-  RegexUtil regex_util_;
   std::unique_ptr<PatternsURLDetails> url_details_;
 };
 

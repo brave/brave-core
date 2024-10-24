@@ -101,8 +101,8 @@ void WebDiscoveryService::OnConfigChange() {
 
 void WebDiscoveryService::OnPatternsLoaded() {
   if (!content_scraper_) {
-    content_scraper_ = std::make_unique<ContentScraper>(
-        server_config_loader_.get(), &regex_util_);
+    content_scraper_ =
+        std::make_unique<ContentScraper>(server_config_loader_.get());
   }
 }
 
@@ -119,7 +119,7 @@ bool WebDiscoveryService::ShouldExtractFromPage(
     return false;
   }
   VLOG(1) << "URL matched pattern " << matching_url_details->id << ": " << url;
-  if (IsPrivateURLLikely(regex_util_, url, matching_url_details)) {
+  if (IsPrivateURLLikely(url, matching_url_details)) {
     return false;
   }
   return true;
@@ -130,6 +130,8 @@ void WebDiscoveryService::StartExtractingFromPage(
     mojo::Remote<mojom::DocumentExtractor> document_extractor) {
   auto remote_id =
       document_extractor_remotes_.Add(std::move(document_extractor));
+  // We use a WeakPtr within the ContentScraper for callbacks from the renderer,
+  // so using Unretained is fine here.
   content_scraper_->ScrapePage(
       url, false, document_extractor_remotes_.Get(remote_id),
       base::BindOnce(&WebDiscoveryService::OnContentScraped,
@@ -148,9 +150,9 @@ void WebDiscoveryService::OnContentScraped(
   if (!original_url_details) {
     return;
   }
-  auto payloads = GenerateQueryPayloads(
-      server_config_loader_->GetLastServerConfig(), regex_util_,
-      original_url_details, std::move(result));
+  auto payloads =
+      GenerateQueryPayloads(server_config_loader_->GetLastServerConfig(),
+                            original_url_details, std::move(result));
 }
 
 }  // namespace web_discovery

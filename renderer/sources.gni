@@ -38,6 +38,7 @@ brave_chrome_renderer_deps = [
   "//brave/components/skus/renderer",
   "//brave/components/speedreader/common/buildflags",
   "//brave/components/tor/buildflags",
+  "//brave/components/web_discovery/buildflags",
   "//brave/renderer/brave_wallet",
   "//mojo/public/cpp/bindings",
   "//third_party/blink/public:blink",

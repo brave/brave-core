@@ -18,7 +18,7 @@ namespace {
 constexpr char kTextContentAttributeName[] = "textContent";
 
 void ProcessAttributeRequests(
-    std::string root_selector,
+    std::string_view root_selector,
     const std::vector<mojom::SelectAttributeRequestPtr>& requests,
     const blink::WebVector<blink::WebElement>& elements,
     std::vector<mojom::AttributeResultPtr>& results) {

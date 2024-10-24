@@ -168,14 +168,12 @@ class WebDiscoveryContentScraperTest : public PlatformBrowserTest {
 
     server_config_loader_->SetLastPatternsForTesting(std::move(patterns_group));
 
-    scraper_ = std::make_unique<ContentScraper>(server_config_loader_.get(),
-                                                &regex_util_);
+    scraper_ = std::make_unique<ContentScraper>(server_config_loader_.get());
   }
 
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::EmbeddedTestServer test_server_{net::EmbeddedTestServer::TYPE_HTTPS};
   base::test::ScopedFeatureList scoped_features_;
-  RegexUtil regex_util_;
   std::unique_ptr<ServerConfigLoader> server_config_loader_;
 };
 

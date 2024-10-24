@@ -31,8 +31,6 @@ class RegexUtil {
   bool CheckPathAndQueryStringKeywords(const std::string_view path_and_query);
   bool CheckQueryStringOrRefKeywords(const std::string_view str);
   bool CheckQueryHTTPCredentials(const std::string_view str);
-  void RemovePunctuation(std::string& str);
-  void TransformToAlphanumeric(std::string& str);
 
  private:
   std::optional<re2::RE2> email_regex_;
@@ -41,9 +39,10 @@ class RegexUtil {
   std::deque<re2::RE2> path_and_query_string_keyword_regexes_;
   std::deque<re2::RE2> query_string_and_ref_keyword_regexes_;
   std::optional<re2::RE2> http_password_regex_;
-  std::optional<re2::RE2> punctuation_regex_;
   std::optional<re2::RE2> non_alphanumeric_regex_;
 };
+
+static RegexUtil g_regex_util;
 
 }  // namespace web_discovery
 

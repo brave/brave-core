@@ -15,8 +15,6 @@ constexpr char kLongNumberRegexSuffix[] = ",}";
 constexpr char kEmailRegex[] =
     "[a-z0-9\\-_@]+(@|%40|%(25)+40)[a-z0-9\\-_]+\\.[a-z0-9\\-_]";
 constexpr char kHttpPasswordRegex[] = "[^:]+:[^@]+@";
-constexpr char kNotAlphanumericRegex[] = "[^a-zA-Z0-9]";
-constexpr char kPunctuationRegex[] = "[!\"'()*,-./:;?[\\]^_`{|}~%$=&+#]";
 
 constexpr std::array<std::string_view, 10> kPathAndQueryStringCheckRegexes = {
     "(?i)\\/admin([\\/\\?#=]|$)",
@@ -66,20 +64,6 @@ bool RegexUtil::CheckForLongNumber(const std::string_view str,
     long_number_regexes_[max_length] = std::make_unique<re2::RE2>(regex_str);
   }
   return re2::RE2::PartialMatch(str, *long_number_regexes_[max_length]);
-}
-
-void RegexUtil::RemovePunctuation(std::string& str) {
-  if (!punctuation_regex_) {
-    punctuation_regex_.emplace(kPunctuationRegex);
-  }
-  re2::RE2::GlobalReplace(&str, *punctuation_regex_, "");
-}
-
-void RegexUtil::TransformToAlphanumeric(std::string& str) {
-  if (!non_alphanumeric_regex_) {
-    non_alphanumeric_regex_.emplace(kNotAlphanumericRegex);
-  }
-  re2::RE2::GlobalReplace(&str, *non_alphanumeric_regex_, "");
 }
 
 bool RegexUtil::CheckPathAndQueryStringKeywords(

@@ -14,7 +14,6 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/credential_manager.h"
-#include "brave/components/web_discovery/browser/regex_util.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "brave/components/web_discovery/common/web_discovery.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -78,8 +77,6 @@ class WebDiscoveryService : public KeyedService {
   PrefChangeRegistrar pref_change_registrar_;
 
   base::FilePath user_data_dir_;
-
-  RegexUtil regex_util_;
 
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 

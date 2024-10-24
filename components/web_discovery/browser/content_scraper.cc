@@ -92,11 +92,9 @@ PageScrapeResult::PageScrapeResult(GURL url, std::string id)
     : url(url), id(id) {}
 PageScrapeResult::~PageScrapeResult() = default;
 
-ContentScraper::ContentScraper(const ServerConfigLoader* server_config_loader,
-                               RegexUtil* regex_util)
+ContentScraper::ContentScraper(const ServerConfigLoader* server_config_loader)
     : sequenced_task_runner_(base::ThreadPool::CreateSequencedTaskRunner({})),
-      server_config_loader_(server_config_loader),
-      regex_util_(regex_util) {}
+      server_config_loader_(server_config_loader) {}
 
 ContentScraper::~ContentScraper() = default;
 
@@ -330,7 +328,7 @@ std::optional<std::string> ContentScraper::ExecuteRefineFunctions(
                              function_args[2].GetInt());
       }
     } else if (func_name == kRefineMaskURLFuncId) {
-      result = MaskURL(*regex_util_, GURL(value));
+      result = MaskURL(GURL(value));
     } else if (func_name == kRefineParseURLFuncId) {
       if (function_args.size() >= 3 && function_args[1].is_string() &&
           function_args[2].is_string()) {

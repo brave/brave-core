@@ -84,4 +84,8 @@ std::optional<std::string> ExtractValueFromQueryString(
   return std::nullopt;
 }
 
+void TransformToAlphanumeric(std::string& str) {
+  std::erase_if(str, [](char c) { return !std::isalnum(c); });
+}
+
 }  // namespace web_discovery

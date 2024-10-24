@@ -32,6 +32,7 @@ source_set("internal") {
     "credential_signer.h",
     "hash_detection.cc",
     "hash_detection.h",
+    "hash_detection_matrix.h",
     "patterns.cc",
     "patterns.h",
     "payload_generator.cc",
@@ -49,7 +50,10 @@ source_set("internal") {
     "util.h",
   ]
 
-  visibility = [ ":*" ]
+  visibility = [
+    ":*",
+    "//brave/browser/web_discovery:browser_tests",
+  ]
 
   deps = [
     "anonymous_credentials",
@@ -67,20 +71,6 @@ source_set("internal") {
     "//third_party/re2",
     "//third_party/zlib/google:compression_utils",
     "//url",
-  ]
-}
-
-component("tab_helper") {
-  output_name = "web_discovery_tab_helper"
-  sources = [
-    "web_discovery_tab_helper.cc",
-    "web_discovery_tab_helper.h",
-  ]
-  deps = [
-    "//base",
-    "//brave/components/web_discovery/browser",
-    "//content/public/browser",
-    "//services/service_manager/public/cpp",
   ]
 }
 
@@ -105,23 +95,4 @@ source_set("unit_tests") {
     "//services/network/public/cpp",
     "//testing/gtest",
   ]
-}
-
-source_set("browser_tests") {
-  testonly = true
-  sources = [ "content_scraper_browsertest.cc" ]
-  deps = [
-    ":browser",
-    ":internal",
-    "//base/test:test_support",
-    "//brave/components/constants",
-    "//brave/components/web_discovery/common",
-    "//brave/components/web_discovery/common:mojom",
-    "//chrome/test:test_support",
-    "//content/test:test_support",
-    "//net:test_support",
-    "//services/service_manager/public/cpp",
-    "//testing/gtest",
-  ]
-  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }
