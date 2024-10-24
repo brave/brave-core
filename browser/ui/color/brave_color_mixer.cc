@@ -706,7 +706,7 @@ void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
 
   AddOmniboxHoverSelect(mixer);
 
-  mixer[kColorPageInfoBackground] = {SK_ColorTRANSPARENT};
+  mixer[kColorOmniboxIconBackground] = {SK_ColorTRANSPARENT};
 }
 
 void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
@@ -718,11 +718,11 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsUrl] = {nala::kColorTextInteractive};
   // We use a shadow for the Omnibox hover effect, rather than a color change.
   mixer[kColorLocationBarBackgroundHovered] = {kColorLocationBarBackground};
-  mixer[kColorPageInfoIconHover] = {
+  mixer[kColorOmniboxIconHover] = {
       ui::SetAlpha(kColorOmniboxText, std::ceil(0.10f * 255.0f))};
 
   // We don't use bg color for location icon view.
-  mixer[kColorPageInfoBackground] = {SK_ColorTRANSPARENT};
+  mixer[kColorOmniboxIconBackground] = {SK_ColorTRANSPARENT};
 }
 
 void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,

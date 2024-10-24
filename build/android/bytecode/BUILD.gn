@@ -59,7 +59,6 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveIntentHandlerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveLaunchIntentDispatcherClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveLauncherActivityClassAdapter.java",
-    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveLocaleManagerDelegateImplClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveLocationBarCoordinatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveLocationBarLayoutClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveLocationBarMediatorClassAdapter.java",

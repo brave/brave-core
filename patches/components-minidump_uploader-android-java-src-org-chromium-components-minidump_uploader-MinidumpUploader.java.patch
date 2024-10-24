@@ -1,5 +1,5 @@
 diff --git a/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploader.java b/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploader.java
-index e2501f92ecf3c8414d9e77c63cce9aa2aae6274b..0030af66e0f61cdadeca06bb2044a49320c74daa 100644
+index 5f30ab591586f986da1f26359d9b5cf7bb763772..a430483effebcee3887d0957f0eb81e871855daa 100644
 --- a/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploader.java
 +++ b/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploader.java
 @@ -26,7 +26,7 @@ import java.util.zip.GZIPOutputStream;

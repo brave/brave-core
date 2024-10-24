@@ -46,8 +46,7 @@ web::WebUIIOSDataSource* CreateAndAddWebUIDataSource(
     std::size_t resource_map_size,
     int html_resource_id) {
   web::WebUIIOSDataSource* source = web::WebUIIOSDataSource::Create(name);
-  web::WebUIIOSDataSource::Add(ChromeBrowserState::FromWebUIIOS(web_ui),
-                               source);
+  web::WebUIIOSDataSource::Add(ProfileIOS::FromWebUIIOS(web_ui), source);
   source->UseStringsJs();
 
   // Add required resources.
@@ -86,12 +85,12 @@ SkusInternalsUI::SkusInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
                               kSkusInternalsGeneratedSize,
                               IDR_SKUS_INTERNALS_HTML);
 
-  ChromeBrowserState* browser_state = ChromeBrowserState::FromWebUIIOS(web_ui);
+  ProfileIOS* profile = ProfileIOS::FromWebUIIOS(web_ui);
   skus_service_getter_ = base::BindRepeating(
-      [](ChromeBrowserState* browser_state) {
-        return skus::SkusServiceFactory::GetForBrowserState(browser_state);
+      [](ProfileIOS* profile) {
+        return skus::SkusServiceFactory::GetForBrowserState(profile);
       },
-      browser_state);
+      profile);
 
   // Bind Mojom Interface
   web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(

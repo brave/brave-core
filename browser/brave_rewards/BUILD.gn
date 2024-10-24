@@ -51,6 +51,10 @@ source_set("brave_rewards_impl") {
     "//extensions/buildflags",
   ]
 
+  if (!is_android) {
+    deps += [ "//chrome/browser/ui/tabs:tab_strip" ]
+  }
+
   if (enable_extensions) {
     sources += [
       "extension_rewards_notification_service_observer.cc",

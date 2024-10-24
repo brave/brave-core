@@ -20,14 +20,16 @@ import org.chromium.chrome.browser.download.settings.DownloadSettings;
 import org.chromium.chrome.browser.safe_browsing.settings.BraveStandardProtectionSettingsFragment;
 import org.chromium.chrome.browser.safe_browsing.settings.StandardProtectionSettingsFragment;
 
-public class BraveSettingsLauncherImpl extends SettingsLauncherImpl {
+public class BraveSettingsLauncherImpl extends SettingsNavigationImpl {
     public BraveSettingsLauncherImpl() {
         super();
     }
 
     @Override
-    public void launchSettingsActivity(Context context,
-            @Nullable Class<? extends Fragment> fragment, @Nullable Bundle fragmentArgs) {
+    public void startSettings(
+            Context context,
+            @Nullable Class<? extends Fragment> fragment,
+            @Nullable Bundle fragmentArgs) {
         if (fragment != null) {
             // Substitute with our version of class
             if (fragment.equals(StandardProtectionSettingsFragment.class)) {
@@ -38,15 +40,15 @@ public class BraveSettingsLauncherImpl extends SettingsLauncherImpl {
                 fragment = BraveClearBrowsingDataFragmentAdvanced.class;
             }
         }
-        super.launchSettingsActivity(context, fragment, fragmentArgs);
+        super.startSettings(context, fragment, fragmentArgs);
     }
 
     @Override
-    public Intent createSettingsActivityIntent(
+    public Intent createSettingsIntent(
             Context context,
             @Nullable Class<? extends Fragment> fragment,
             @Nullable Bundle fragmentArgs) {
-        Intent intent = super.createSettingsActivityIntent(context, fragment, fragmentArgs);
+        Intent intent = super.createSettingsIntent(context, fragment, fragmentArgs);
         intent.setClass(context, BraveSettingsActivity.class);
         if (!(context instanceof Activity)) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

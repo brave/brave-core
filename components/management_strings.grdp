@@ -346,6 +346,9 @@
       <message name="IDS_MANAGEMENT_PROFILE_REPORTING_POLICY" desc="Item in a list of information viewable by the enterprise admin, indicating that the admin can viewuser's work profile policies" formatter_data="android_java">
         Applied browser policies in your work profile
       </message>
+      <message name="IDS_MANAGEMENT_PROFILE_REPORTING_LEARN_MORE" desc="Learn more link for profile reporting management information to provide additional informaiton">
+        <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://support.google.com/chrome/a/?p=browser_profile_details" &gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+      </message>
 
     <!-- Strings related to Brave Enterprise Connectors -->
     <message name="IDS_MANAGEMENT_THREAT_PROTECTION" desc="Title of the Brave Enterprise Connectors section of the page">
@@ -419,6 +422,21 @@
     </message>
   </if>
 
+  <if expr="is_ios">
+    <message name="IDS_IOS_MANAGEMENT_UI_DESC" desc="The descriptive text on chrome://management page when the browser is managed.">
+      Your administrator can change your browser setup remotely. Activity on this device may also be managed outside of Brave.
+    </message>
+    <message name="IDS_IOS_MANAGEMENT_UI_LEARN_MORE_LINK" desc="The clickable text on chrome://management.">
+      Learn more
+    </message>
+    <message name="IDS_IOS_MANAGEMENT_UI_MESSAGE" desc="The main message at the top of chrome://management page when the browser is managed.">
+      Your browser is managed by your administrator.
+    </message>
+    <message name="IDS_IOS_MANAGEMENT_UI_UNMANAGED_DESC" desc="The descriptive text on chrome://management page when the browser is not managed.">
+      Your browser is not managed.
+    </message>
+  </if>
+
   <!-- Strings related to Brave Enterprise Device Signals Sharing -->
   <if expr="is_win or is_linux or is_macosx">
     <message name="IDS_MANAGEMENT_DEVICE_SIGNALS_DISCLOSURE" desc="Disclosure message explaining that device signals can be shared.">
@@ -438,5 +456,22 @@
   </message>
   <message name="IDS_MANAGEMENT_DIALOG_THINGS_TO_CONSIDER_SUBTITLE" desc="Subtitle of a section of things to consider regarding that an admin can do an see while managing the browser and profile.">
     What this means
+  </message>
+
+  <!-- Managed profile required interstitial -->
+  <message name="IDS_MANAGED_PROFILE_INTERSTITIAL_TAB_TITLE" desc="The title of the tab of the interstitial that tells the user that their organization requires them to sign in to Brave with their managed account in order to access it.">
+    Profile management
+  </message>
+  <message name="IDS_MANAGED_PROFILE_INTERSTITIAL_HEADING" desc="The heading of the interstitial that tells the user that their organization requires them to sign in to Brave with their managed account in order to access it.">
+    Your organization, <ph name="MANAGER">$1<ex>manager.com</ex></ph>, requires you to sign in using a specific profile
+  </message>
+  <message name="IDS_MANAGED_PROFILE_INTERSTITIAL_UNKNOWN_MANAGER_HEADING" desc="The heading of the interstitial that tells the user that their organization requires them to sign in to Brave with their managed account in order to access it.">
+    Your organization requires you to sign in using a specific profile.
+  </message>
+  <message name="IDS_MANAGED_PROFILE_INTERSTITIAL_PRIMARY_PARAGRAPH" desc="The main text of the interstitial that tells the user that their organization requires them to sign in to Brave with their managed account in order to access it.">
+    To continue, sign in to <ph name="EMAIL">$1<ex>alice@example.com</ex></ph>, then setup a new profile
+  </message>
+  <message name="IDS_MANAGED_PROFILE_INTERSTITIAL_SIGNIN" desc="The text of primary button of the interstitial that tells the user that their organization requires them to sign in to Brave with their managed account in order to access it.">
+    Sign in
   </message>
 </grit-part>

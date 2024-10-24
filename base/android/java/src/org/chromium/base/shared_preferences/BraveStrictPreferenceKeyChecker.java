@@ -23,7 +23,7 @@ public class BraveStrictPreferenceKeyChecker extends StrictPreferenceKeyChecker 
         }
     }
 
-    /*
+    /**
      * Dummy method that will be deleted form the bytecode. {@link
      * StrictPreferenceKeyChecker#isKeyInUse} will be used instead.
      */

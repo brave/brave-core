@@ -29,6 +29,7 @@
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
 #include "crypto/encryptor.h"
+#include "crypto/kdf.h"
 #include "crypto/random.h"
 #include "crypto/symmetric_key.h"
 #include "third_party/boringssl/src/include/openssl/hmac.h"
@@ -245,8 +246,6 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
     VLOG(0) << __func__ << ": missing kdf";
     return nullptr;
   }
-
-  std::unique_ptr<SymmetricKey> derived_key = nullptr;
   const auto* kdfparams = crypto->FindDict("kdfparams");
   if (!kdfparams) {
     VLOG(0) << __func__ << ": missing kdfparams";
@@ -257,8 +256,8 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
     VLOG(0) << __func__ << ": missing dklen";
     return nullptr;
   }
-  if (*dklen < 32) {
-    VLOG(0) << __func__ << ": dklen must be >=32";
+  if (*dklen != 32) {
+    VLOG(0) << __func__ << ": dklen must be 32";
     return nullptr;
   }
   const auto* salt = kdfparams->FindString("salt");
@@ -271,6 +270,9 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
     VLOG(1) << __func__ << ": invalid salt";
     return nullptr;
   }
+
+  std::vector<uint8_t> key((size_t)*dklen);
+
   if (*kdf == "pbkdf2") {
     auto c = kdfparams->FindInt("c");
     if (!c) {
@@ -286,11 +288,13 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
       VLOG(0) << __func__ << ": prf must be hmac-sha256 when using pbkdf2";
       return nullptr;
     }
-    derived_key = SymmetricKey::DeriveKeyFromPasswordUsingPbkdf2Sha256(
-        SymmetricKey::AES, password,
-        std::string(salt_bytes.begin(), salt_bytes.end()), (size_t)*c,
-        (size_t)*dklen * 8);
-    if (!derived_key) {
+
+    crypto::kdf::Pbkdf2HmacSha256Params params = {
+        .iterations = base::checked_cast<decltype(params.iterations)>(*c),
+    };
+    if (!crypto::kdf::DeriveKeyPbkdf2HmacSha256(
+            params, base::as_byte_span(password),
+            base::as_byte_span(salt_bytes), key)) {
       VLOG(1) << __func__ << ": pbkdf2 derivation failed";
       return nullptr;
     }
@@ -310,11 +314,15 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
       VLOG(0) << __func__ << ": missing p";
       return nullptr;
     }
-    derived_key = SymmetricKey::DeriveKeyFromPasswordUsingScrypt(
-        SymmetricKey::AES, password,
-        std::string(salt_bytes.begin(), salt_bytes.end()), (size_t)*n,
-        (size_t)*r, (size_t)*p, 512 * 1024 * 1024, (size_t)*dklen * 8);
-    if (!derived_key) {
+    crypto::kdf::ScryptParams params = {
+        .cost = (size_t)*n,
+        .block_size = (size_t)*r,
+        .parallelization = (size_t)*p,
+        .max_memory_bytes = 512 * 1024 * 1024,
+    };
+    if (!crypto::kdf::DeriveKeyScryptNoCheck(
+            params, base::as_byte_span(password),
+            base::as_byte_span(salt_bytes), key)) {
       VLOG(1) << __func__ << ": scrypt derivation failed";
       return nullptr;
     }
@@ -340,6 +348,7 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
     return nullptr;
   }
 
+  auto derived_key = std::make_unique<SymmetricKey>(key);
   if (!UTCPasswordVerification(derived_key->key(), ciphertext_bytes, *mac,
                                *dklen)) {
     return nullptr;

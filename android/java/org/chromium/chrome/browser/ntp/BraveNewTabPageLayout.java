@@ -96,14 +96,14 @@ import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
-import org.chromium.chrome.browser.settings.SettingsLauncherFactory;
+import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.components.browser_ui.settings.SettingsLauncher;
+import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -351,10 +351,9 @@ public class BraveNewTabPageLayout
         ImageView ivNewsSettings = findViewById(R.id.news_settings_button);
         ivNewsSettings.setOnClickListener(
                 view -> {
-                    SettingsLauncher settingsLauncher =
-                            SettingsLauncherFactory.createSettingsLauncher();
-                    settingsLauncher.launchSettingsActivity(
-                            getContext(), BraveNewsPreferencesV2.class);
+                    SettingsNavigation settingsLauncher =
+                            SettingsNavigationFactory.createSettingsNavigation();
+                    settingsLauncher.startSettings(getContext(), BraveNewsPreferencesV2.class);
                 });
 
         mRecyclerView = findViewById(R.id.recyclerview);
@@ -1179,7 +1178,6 @@ public class BraveNewTabPageLayout
             TouchEnabledDelegate touchEnabledDelegate,
             UiConfig uiConfig,
             ActivityLifecycleDispatcher lifecycleDispatcher,
-            NewTabPageUma uma,
             Profile profile,
             WindowAndroid windowAndroid,
             boolean isTablet,
@@ -1194,7 +1192,6 @@ public class BraveNewTabPageLayout
                 touchEnabledDelegate,
                 uiConfig,
                 lifecycleDispatcher,
-                uma,
                 profile,
                 windowAndroid,
                 isTablet,
@@ -1292,7 +1289,7 @@ public class BraveNewTabPageLayout
             SponsoredTab sponsoredTab = new SponsoredTab(mNTPBackgroundImagesBridge);
             TabAttributes.from(getTab()).set(String.valueOf(getTab().getId()), sponsoredTab);
         }
-        mSponsoredTab = TabAttributes.from(getTab()).get(String.valueOf((getTab()).getId()));
+        mSponsoredTab = TabAttributes.from(getTab()).get(String.valueOf(getTab().getId()));
         if (shouldShowSuperReferral()) mNTPBackgroundImagesBridge.getTopSites();
     }
 
