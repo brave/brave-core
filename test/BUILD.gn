@@ -729,7 +729,6 @@ test("brave_browser_tests") {
     "//brave/browser/brave_prefs_browsertest.cc",
     "//brave/browser/brave_scheme_load_browsertest.cc",
     "//brave/browser/brave_search/brave_search_browsertest.cc",
-    "//brave/browser/brave_shields/ad_block_custom_resources_browsertest.cc",
     "//brave/browser/brave_shields/ad_block_devtools_browsertest.cc",
     "//brave/browser/brave_shields/ad_block_service_browsertest.cc",
     "//brave/browser/brave_shields/ad_block_service_browsertest.h",
@@ -1126,6 +1125,7 @@ test("brave_browser_tests") {
     sources += [
       "//brave/browser/brave_autofill_browsertest.cc",
       "//brave/browser/brave_resources_browsertest.cc",
+      "//brave/browser/brave_shields/ad_block_custom_resources_browsertest.cc",
       "//brave/browser/renderer_context_menu/test/render_view_context_menu_browsertest.cc",
       "//brave/browser/ssl/certificate_transparency_browsertest.cc",
       "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc",

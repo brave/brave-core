@@ -605,7 +605,7 @@
     Are you sure you want to delete this scriptlet? If this scriptlet is used in any custom filter, it will no longer work.
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_ALREADY_EXISTS_ERROR" desc="Error message">
-    Scriptlet is already exists.
+    Scriptlet already exists.
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_INVALID_NAME_ERROR" desc="Error message">
     Invalid scriptlet name.
