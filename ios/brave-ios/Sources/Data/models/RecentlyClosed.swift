@@ -56,6 +56,35 @@ public final class RecentlyClosed: NSManagedObject, CRUD {
     }
   }
 
+  /// Removes the `RecentlyClosed` objects whose url belongs to one of the `baseDomains` provided.
+  public class func remove(baseDomains: Set<String>) {
+    DataController.perform { context in
+      // Filter down CoreData db as much as we can
+      let predicates = baseDomains.map { baseDomain in
+        NSPredicate(format: "url CONTAINS[c] %@", baseDomain)
+      }
+      let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
+      guard let itemsContainingBaseDomains = self.all(where: predicate, context: context) else {
+        return
+      }
+      // Above we filter for RecentlyClosed items where the url contains the baseDomain,
+      // but this does not verify it's the actual domain (ex. could be in a query param).
+      // Verify each item's eTLD matches before we remove from RecentlyClosed.
+      for recentlyClosedTabItem in itemsContainingBaseDomains {
+        // validate baseDomain matches
+        guard let url = URL(string: recentlyClosedTabItem.url),
+          let baseDomain = url.baseDomain,
+          baseDomains.contains(where: { $0 == baseDomain })
+        else {
+          // eTLD of the url does not match
+          continue
+        }
+        // eTLD matches
+        recentlyClosedTabItem.delete(context: .existing(context))
+      }
+    }
+  }
+
   public static func removeAll() {
     RecentlyClosed.deleteAll()
   }
