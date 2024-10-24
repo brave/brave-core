@@ -380,15 +380,18 @@ void ChromeImporter::LoadFaviconData(
       if (!usage.favicon_url.is_valid())
         continue;  // Don't bother importing favicons with invalid URLs.
 
-      std::vector<unsigned char> data;
+      std::vector<uint8_t> data;
       s.ColumnBlobAsVector(1, &data);
       if (data.empty())
         continue;  // Data definitely invalid.
 
-      if (!importer::ReencodeFavicon(&data[0], data.size(), &usage.png_data))
+      auto decoded_data = importer::ReencodeFavicon(base::span(data));
+      if (!decoded_data) {
         continue;  // Unable to decode.
+      }
 
       usage.urls = entry.second;
+      usage.png_data = std::move(decoded_data).value();
       favicons->push_back(usage);
     }
     s.Reset(true);
