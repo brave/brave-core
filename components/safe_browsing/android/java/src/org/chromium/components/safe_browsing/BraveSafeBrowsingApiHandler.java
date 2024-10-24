@@ -134,7 +134,7 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                                         BraveSafeBrowsingUtils
                                                 .safetyNetToSafeBrowsingJavaThreatType(
                                                         BraveSafeBrowsingUtils
-                                                                .getMostPriorityThreat(threats)),
+                                                                .getHighestPriorityThreat(threats)),
                                         THREAT_ATTRIBUTES_STUB,
                                         SafeBrowsingJavaResponseStatus.SUCCESS_WITH_REAL_TIME,
                                         DEFAULT_CHECK_DELTA);
