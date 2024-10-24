@@ -457,8 +457,7 @@ BookmarkFaviconFetcher::BookmarkFaviconFetcher(
 
 void BookmarkFaviconFetcher::ExportBookmarks() {
   // bookmark_bar, mobile and other are children of the root node.
-  ExtractUrls(
-      ios::BookmarkModelFactory::GetForBrowserState(profile_)->root_node());
+  ExtractUrls(ios::BookmarkModelFactory::GetForProfile(profile_)->root_node());
   if (!bookmark_urls_.empty()) {
     FetchNextFavicon();
   } else {
@@ -486,7 +485,7 @@ void BookmarkFaviconFetcher::ExecuteWriter() {
   // for the duration of the write), as such we make a copy of the
   // BookmarkModel using BookmarkCodec then write from that.
   bookmarks::BookmarkModel* bookmark_model =
-      ios::BookmarkModelFactory::GetForBrowserState(profile_);
+      ios::BookmarkModelFactory::GetForProfile(profile_);
   BookmarkCodec codec;
   base::ThreadPool::PostTask(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
