@@ -78,7 +78,16 @@ class SidebarContainerView
 
   BraveSidePanel* side_panel() { return side_panel_; }
 
-  void WillShowSidePanel();
+  // Need to know this showing comes from deregistering current entry
+  // or not. We're observing contextual/global panel entries when panel is
+  // shown. And stop observing when it's hidden by closing. Unfortunately,
+  // OnEntryWillHide() is not called when current entry is closed by
+  // deregistering. Only OnEntryHidden() is called.
+  // By using OnEntryWillHide()'s arg, we can know this hidden is from
+  // closing or not. Fortunately, we can know when WillShowSidePanel()
+  // is called whether it's closing from deregistration.
+  // With |show_on_deregistered|, we can stop observing OnEntryHidden().
+  void WillShowSidePanel(bool show_on_deregistered);
   bool IsFullscreenForCurrentEntry() const;
 
   void set_operation_from_active_tab_change(bool tab_change) {
@@ -200,6 +209,7 @@ class SidebarContainerView
   bool initialized_ = false;
   bool sidebar_on_left_ = true;
   bool operation_from_active_tab_change_ = false;
+  bool deregister_when_hidden_ = false;
   base::OneShotTimer sidebar_hide_timer_;
   sidebar::SidebarService::ShowSidebarOption show_sidebar_option_ =
       sidebar::SidebarService::ShowSidebarOption::kShowAlways;
