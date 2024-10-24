@@ -18,4 +18,4 @@ Debug & channel named schemes have pre-actions to build the rest of brave-core a
 * We recommend *enabling* the "Automatically trim trailing whitespace" and keeping "Including whitespace-only lines" *deselected* in Xcode (under Text Editing).
 
 ### Attribution
-This contents of this folder was originally a fork of [Firefox iOS Browser](https://github.com/mozilla-mobile/firefox-ios)
+The content of this folder was originally a fork of [Firefox iOS Browser](https://github.com/mozilla-mobile/firefox-ios)

@@ -136,7 +136,7 @@ _needle_ "n"
 _haystack_ "winter new "
 
 and extended them both with "w". Given that, we score then match
-(including bonuses) and add that to the  score of the prefixes: the cell
+(including bonuses) and add that to the score of the prefixes: the cell
 at i - 1, j - 1. We call this `diagonal_score`.
 
 To recap: the left score means that we are extending a gap; that there's some
