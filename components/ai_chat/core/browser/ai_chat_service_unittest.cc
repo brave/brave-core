@@ -169,6 +169,8 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
 
   MOCK_METHOD(void, OnFaviconImageDataChanged, (), (override));
 
+  MOCK_METHOD(void, OnConversationDeleted, (), (override));
+
  private:
   mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver_{this};
   mojo::Remote<mojom::ConversationHandler> conversation_handler_remote_;
@@ -255,7 +257,8 @@ class AIChatServiceUnitTest : public testing::Test,
     }
   }
 
-  void ExpectVisibleConversationsSize(size_t size) {
+  void ExpectVisibleConversationsSize(base::Location location, size_t size) {
+    SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
     client_->service_remote()->GetVisibleConversations(
         base::BindLambdaForTesting(
@@ -339,7 +342,7 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_NoMessages) {
   ConversationHandler* conversation_handler2 = CreateConversation();
 
   // Shouldn't "display" any conversations without messages
-  ExpectVisibleConversationsSize(0);
+  ExpectVisibleConversationsSize(FROM_HERE, 0);
 
   // Before connecting any clients to the conversations, none should be deleted
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 2u);
@@ -374,7 +377,7 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
   ConversationHandler* conversation_handler2 = CreateConversation();
   conversation_handler2->SetChatHistoryForTesting(CreateSampleHistory());
 
-  ExpectVisibleConversationsSize(2u);
+  ExpectVisibleConversationsSize(FROM_HERE, 2u);
 
   // Before connecting any clients to the conversations, none should be deleted
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 2u);
@@ -386,7 +389,7 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(),
             IsAIChatHistoryEnabled() ? 2u : 1u);
 
-  ExpectVisibleConversationsSize(IsAIChatHistoryEnabled() ? 2u : 1u);
+  ExpectVisibleConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 2u : 1u);
 
   // Connect a client then disconnect
   auto client2 = CreateConversationClient(conversation_handler2);
@@ -394,7 +397,7 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(),
             IsAIChatHistoryEnabled() ? 2u : 0u);
 
-  ExpectVisibleConversationsSize(IsAIChatHistoryEnabled() ? 2u : 0u);
+  ExpectVisibleConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 2u : 0u);
 
   testing::Mock::VerifyAndClearExpectations(client_.get());
   task_environment_.RunUntilIdle();

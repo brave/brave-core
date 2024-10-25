@@ -26,6 +26,8 @@ void ShowBraveNewsConfigure(Browser* browser);
 void ShowShortcutsPage(Browser* browser);
 void ShowBraveTalk(Browser* browser);
 
+void ShowFullpageChat(Browser* browser);
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_PAGES_H_

@@ -13,6 +13,7 @@ import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import { InferControlsFromArgs } from '../../../../../.storybook/utils'
 import Main from '../components/main'
 import * as mojom from '../api/'
+import FullScreen from '../components/full_screen'
 import FeedbackForm from '../components/feedback_form'
 import { AIChatContext, AIChatReactContext } from '../state/ai_chat_context'
 import { ConversationContext, ConversationReactContext } from '../state/conversation_context'
@@ -26,7 +27,8 @@ function getCompletionEvent(text: string): mojom.ConversationEntryEvent {
     pageContentRefineEvent: undefined,
     searchQueriesEvent: undefined,
     searchStatusEvent: undefined,
-    selectedLanguageEvent: { selectedLanguage: '' }
+    conversationTitleEvent: undefined,
+    selectedLanguageEvent: undefined
   }
 }
 
@@ -36,7 +38,8 @@ function getSearchEvent(queries: string[]): mojom.ConversationEntryEvent {
     pageContentRefineEvent: undefined,
     searchQueriesEvent: { searchQueries: queries },
     searchStatusEvent: undefined,
-    selectedLanguageEvent: { selectedLanguage: '' }
+    conversationTitleEvent: undefined,
+    selectedLanguageEvent: undefined
   }
 }
 
@@ -46,7 +49,8 @@ function getSearchStatusEvent(): mojom.ConversationEntryEvent {
     pageContentRefineEvent: undefined,
     searchQueriesEvent: undefined,
     searchStatusEvent: { isSearching: true },
-    selectedLanguageEvent: { selectedLanguage: '' }
+    selectedLanguageEvent: undefined,
+    conversationTitleEvent: undefined
   }
 }
 
@@ -56,7 +60,8 @@ function getPageContentRefineEvent(): mojom.ConversationEntryEvent {
     pageContentRefineEvent: { isRefining: true },
     searchQueriesEvent: undefined,
     searchStatusEvent: undefined,
-    selectedLanguageEvent: { selectedLanguage: '' }
+    selectedLanguageEvent: undefined,
+    conversationTitleEvent: undefined
   }
 }
 
@@ -409,6 +414,8 @@ const preview: Meta<CustomArgs> = {
       }
 
       const aiChatContext: AIChatContext = {
+        isDefaultConversation: true,
+        editingConversationId: null,
         visibleConversations: [],
         hasAcceptedAgreement: options.args.hasAcceptedAgreement,
         isPremiumStatusFetching: false,
@@ -424,7 +431,8 @@ const preview: Meta<CustomArgs> = {
         dismissPremiumPrompt: () => {},
         userRefreshPremiumSession: () => {},
         onNewConversation: () => {},
-        onSelectConversationUuid(id) {}
+        onSelectConversationUuid(id) {},
+        setEditingConversationId: () => {}
       }
 
       const inputText = options.args.inputText
@@ -497,6 +505,16 @@ export const _FeedbackForm = {
     return (
       <div className={styles.container}>
         <FeedbackForm />
+      </div>
+    )
+  }
+}
+
+export const _Fullscreen = {
+  render: () => {
+    return (
+      <div className={styles.containerFull}>
+        <FullScreen />
       </div>
     )
   }
