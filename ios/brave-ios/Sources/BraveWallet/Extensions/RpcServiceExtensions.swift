@@ -440,7 +440,13 @@ extension BraveWalletJsonRpcService {
       guard let self = self else { return [:] }
       for (coin, tokensPerCoin) in tokenCoinMap {
         group.addTask {
-          let nftIdentifiers = tokensPerCoin.map {
+          var uniqueTokensPerCoin: [BraveWallet.BlockchainToken] = []
+          for token in tokensPerCoin {
+            if !uniqueTokensPerCoin.contains(token) {
+              uniqueTokensPerCoin.append(token)
+            }
+          }
+          let nftIdentifiers = uniqueTokensPerCoin.map {
             BraveWallet.NftIdentifier(
               chainId: $0.chainId,
               contractAddress: $0.contractAddress,
