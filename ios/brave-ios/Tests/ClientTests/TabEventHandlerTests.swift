@@ -12,7 +12,11 @@ import XCTest
 @MainActor class TabEventHandlerTests: XCTestCase {
 
   func testEventDelivery() {
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
     let handler = DummyHandler()
 
     XCTAssertNil(handler.isFocused)
@@ -25,7 +29,11 @@ import XCTest
   }
 
   func testUnregistration() {
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
     let handler = DummyHandler()
 
     XCTAssertNil(handler.isFocused)
@@ -40,7 +48,11 @@ import XCTest
   }
 
   func testOnlyRegisteredForEvents() {
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
     let handler = DummyHandler()
     handler.doUnregister()
 
@@ -58,7 +70,11 @@ import XCTest
   }
 
   func testOnlyRegisteredForEvents111() {
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
 
     let urlTest1 = URL(string: "https://www.brave.com")
     let urlTest2 = URL(string: "http://localhost:8080")

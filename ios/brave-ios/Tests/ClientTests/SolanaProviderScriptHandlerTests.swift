@@ -19,11 +19,15 @@ import XCTest
     provider._connect = { params, completion in
       completion(.internalError, Strings.Wallet.internalErrorMessage, "")
     }
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (publicKey, error) = await solProviderHelper.connect(args: nil)
+    let (publicKey, error) = await solProviderHelper.connect(tab: tab, args: nil)
     XCTAssertNil(publicKey)
     guard let error = error,  // dictionary's are unordered, need to check each value
       let errorDict = MojoBase.Value(jsonString: error)?.dictionaryValue,
@@ -43,11 +47,15 @@ import XCTest
     provider._connect = { [kTestPublicKey] params, completion in
       completion(.success, "", kTestPublicKey)
     }
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (publicKey, error) = await solProviderHelper.connect(args: nil)
+    let (publicKey, error) = await solProviderHelper.connect(tab: tab, args: nil)
     XCTAssertNil(error)
     guard let publicKey = publicKey as? String else {
       XCTFail("Unexpected result for publickey")
@@ -69,11 +77,15 @@ import XCTest
       XCTAssertNotNil(params)  // onlyIfTrusted provided as an arg, should be non-nil
       completion(.success, "", kTestPublicKey)
     }
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (publicKey, error) = await solProviderHelper.connect(args: args)
+    let (publicKey, error) = await solProviderHelper.connect(tab: tab, args: args)
     XCTAssertNil(error)
     guard let publicKey = publicKey as? String else {
       XCTFail("Unexpected result for publickey")
@@ -100,11 +112,15 @@ import XCTest
     provider._signAndSendTransaction = { signTransactionParam, sendOptions, completion in
       completion(.internalError, Strings.Wallet.internalErrorMessage, [:])
     }
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signAndSendTransaction(args: args)
+    let (result, error) = await solProviderHelper.signAndSendTransaction(tab: tab, args: args)
     XCTAssertNil(result)
     guard let error = error,  // dictionary's are unordered, need to check each value
       let errorDict = MojoBase.Value(jsonString: error)?.dictionaryValue,
@@ -143,11 +159,15 @@ import XCTest
         ]
       )
     }
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signAndSendTransaction(args: args)
+    let (result, error) = await solProviderHelper.signAndSendTransaction(tab: tab, args: args)
     XCTAssertNil(error)
     guard let result = result as? [String: String] else {
       XCTFail("Unexpected result to signAndSendTransaction request")
@@ -185,11 +205,15 @@ import XCTest
         ]
       )
     }
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signAndSendTransaction(args: args)
+    let (result, error) = await solProviderHelper.signAndSendTransaction(tab: tab, args: args)
     XCTAssertNil(error)
     guard let result = result as? [String: String] else {
       XCTFail("Unexpected result to signAndSendTransaction request")
@@ -214,11 +238,15 @@ import XCTest
     provider._signMessage = { _, _, completion in
       completion(.internalError, Strings.Wallet.internalErrorMessage, [:])
     }
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signMessage(args: args)
+    let (result, error) = await solProviderHelper.signMessage(tab: tab, args: args)
     XCTAssertNil(result)
     guard let error = error,  // dictionary's are unordered, need to check each value
       let errorDict = MojoBase.Value(jsonString: error)?.dictionaryValue,
@@ -254,11 +282,15 @@ import XCTest
         ]
       )
     }
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signMessage(args: args)
+    let (result, error) = await solProviderHelper.signMessage(tab: tab, args: args)
     XCTAssertNil(error)
     guard let result = MojoBase.Value(jsonString: (result as? String) ?? "")?.dictionaryValue else {
       XCTFail("Unexpected result to signMessage request")
@@ -299,11 +331,15 @@ import XCTest
         ]
       )
     }
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signMessage(args: args)
+    let (result, error) = await solProviderHelper.signMessage(tab: tab, args: args)
     XCTAssertNil(error)
     guard let result = MojoBase.Value(jsonString: (result as? String) ?? "")?.dictionaryValue else {
       XCTFail("Unexpected result to signMessage request")
@@ -340,11 +376,15 @@ import XCTest
     provider._signTransaction = { _, completion in
       completion(.internalError, Strings.Wallet.internalErrorMessage, [], .legacy)
     }
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signTransaction(args: args)
+    let (result, error) = await solProviderHelper.signTransaction(tab: tab, args: args)
     XCTAssertNil(result)
     guard let error = error,  // dictionary's are unordered, need to check each value
       let errorDict = MojoBase.Value(jsonString: error)?.dictionaryValue,
@@ -379,11 +419,15 @@ import XCTest
     provider._signTransaction = { [kSerializedTx] _, completion in
       completion(.success, "", kSerializedTx.map(NSNumber.init(value:)), .legacy)
     }
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signTransaction(args: args)
+    let (result, error) = await solProviderHelper.signTransaction(tab: tab, args: args)
     XCTAssertNil(error)
     guard let result = result as? [String: Any] else {
       XCTFail("Unexpected result to signTransaction request")
@@ -418,11 +462,15 @@ import XCTest
     provider._signTransaction = { [kSerializedTx] _, completion in
       completion(.success, "", kSerializedTx.map(NSNumber.init(value:)), .V0)
     }
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signTransaction(args: args)
+    let (result, error) = await solProviderHelper.signTransaction(tab: tab, args: args)
     XCTAssertNil(error)
     guard let result = result as? [String: Any] else {
       XCTFail("Unexpected result to signTransaction request")
@@ -457,11 +505,15 @@ import XCTest
     provider._signAllTransactions = { _, completion in
       completion(.internalError, Strings.Wallet.internalErrorMessage, [], [])
     }
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signAllTransactions(args: args)
+    let (result, error) = await solProviderHelper.signAllTransactions(tab: tab, args: args)
     XCTAssertNil(result)
     guard let error = error,  // dictionary's are unordered, need to check each value
       let errorDict = MojoBase.Value(jsonString: error)?.dictionaryValue,
@@ -501,11 +553,15 @@ import XCTest
         [NSNumber(value: BraveWallet.SolanaMessageVersion.legacy.rawValue)]
       )
     }
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signAllTransactions(args: args)
+    let (result, error) = await solProviderHelper.signAllTransactions(tab: tab, args: args)
     XCTAssertNil(error)
     guard let result = result as? [[String: Any]] else {
       XCTFail("Unexpected result to signAllTransactions request")
@@ -547,11 +603,15 @@ import XCTest
         [NSNumber(value: BraveWallet.SolanaMessageVersion.V0.rawValue)]
       )
     }
-    let tab = Tab(wkConfiguration: nil, configuration: nil)
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signAllTransactions(args: args)
+    let (result, error) = await solProviderHelper.signAllTransactions(tab: tab, args: args)
     XCTAssertNil(error)
     guard let result = result as? [[String: Any]] else {
       XCTFail("Unexpected result to signAllTransactions request")

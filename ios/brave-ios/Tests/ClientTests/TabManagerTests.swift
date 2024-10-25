@@ -116,7 +116,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
   let didAdd = MethodSpy(functionName: "tabManager(_:didAddTab:)")
 
   var manager: TabManager!
-  private let privateBrowsingManager = PrivateBrowsingManager(braveCore: nil)
+  private let privateBrowsingManager = PrivateBrowsingManager()
   private let testWindowId = UUID()
 
   override func setUp() {
@@ -156,7 +156,12 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     // test that non-private tabs are saved to the db
     // add some non-private tabs to the tab manager
     for _ in 0..<3 {
-      let tab = Tab(wkConfiguration: nil, configuration: nil, type: .private)
+      let tab = Tab(
+        wkConfiguration: nil,
+        configuration: nil,
+        type: .private,
+        contentScriptManager: .init(tabManager: manager)
+      )
       tab.url = URL(string: "http://yahoo.com")!
       manager.configureTab(
         tab,
