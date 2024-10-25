@@ -21,7 +21,7 @@ TEST(ChromeMetricsServicesManagerClient, MetricsReportingDisabled) {
 
   ChromeMetricsServicesManagerClient client(&local_state);
   const metrics::EnabledStateProvider& provider =
-      client.GetEnabledStateProviderForTesting();
+      client.GetEnabledStateProvider();
 
   // Reporting should never be enabled
   EXPECT_FALSE(provider.IsReportingEnabled());

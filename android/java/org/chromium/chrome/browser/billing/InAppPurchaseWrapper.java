@@ -284,46 +284,57 @@ public class InAppPurchaseWrapper {
         MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
         LiveData<Boolean> billingConnectionState = _billingConnectionState;
         startBillingServiceConnection(_billingConnectionState);
-        LiveDataUtil.observeOnce(billingConnectionState, isConnected -> {
-            if (isConnected) {
-                mBillingClient.queryPurchasesAsync(
-                        QueryPurchasesParams.newBuilder()
-                                .setProductType(BillingClient.ProductType.SUBS)
-                                .build(),
-                        (billingResult, purchases) -> {
-                            // End connection after getting purchases
-                            endConnection();
+        LiveDataUtil.observeOnce(
+                billingConnectionState,
+                isConnected -> {
+                    if (isConnected) {
+                        mBillingClient.queryPurchasesAsync(
+                                QueryPurchasesParams.newBuilder()
+                                        .setProductType(BillingClient.ProductType.SUBS)
+                                        .build(),
+                                (billingResult, purchases) -> {
+                                    // End connection after getting purchases
+                                    endConnection();
 
-                            PurchaseModel activePurchaseModel = null;
-                            if (billingResult.getResponseCode()
-                                    == BillingClient.BillingResponseCode.OK) {
-                                for (Purchase purchase : purchases) {
-                                    if (purchase.getPurchaseState()
-                                            != Purchase.PurchaseState.PURCHASED) {
-                                        continue;
+                                    PurchaseModel activePurchaseModel = null;
+                                    if (billingResult.getResponseCode()
+                                            == BillingClient.BillingResponseCode.OK) {
+                                        for (Purchase purchase : purchases) {
+                                            if (purchase.getPurchaseState()
+                                                    != Purchase.PurchaseState.PURCHASED) {
+                                                continue;
+                                            }
+                                            List<String> productIds = purchase.getProducts();
+                                            boolean isVPNProduct = isVPNProduct(productIds);
+                                            boolean isLeoProduct = isLeoProduct(productIds);
+                                            if ((isVPNProduct
+                                                            && type.equals(SubscriptionProduct.VPN))
+                                                    || (isLeoProduct
+                                                            && type.equals(
+                                                                    SubscriptionProduct.LEO))) {
+                                                activePurchaseModel =
+                                                        new PurchaseModel(
+                                                                purchase.getPurchaseToken(),
+                                                                purchase.getProducts()
+                                                                        .get(0)
+                                                                        .toString(),
+                                                                purchase);
+                                                break;
+                                            }
+                                        }
+                                    } else {
+                                        Log.e(
+                                                TAG,
+                                                "queryPurchases failed"
+                                                        + billingResult.getDebugMessage());
+                                        showToast(billingResult.getDebugMessage());
                                     }
-                                    List<String> productIds = purchase.getProducts();
-                                    boolean isVPNProduct = isVPNProduct(productIds);
-                                    boolean isLeoProduct = isLeoProduct(productIds);
-                                    if (isVPNProduct && type.equals(SubscriptionProduct.VPN) ||
-                                            isLeoProduct && type.equals(SubscriptionProduct.LEO)) {
-                                        activePurchaseModel = new PurchaseModel(
-                                                purchase.getPurchaseToken(),
-                                                purchase.getProducts().get(0).toString(), purchase);
-                                        break;
-                                    }
-                                }
-                            } else {
-                                Log.e(TAG,
-                                        "queryPurchases failed" + billingResult.getDebugMessage());
-                                showToast(billingResult.getDebugMessage());
-                            }
-                            mutableActivePurchases.postValue(activePurchaseModel);
-                        });
-            } else {
-                mutableActivePurchases.postValue(null);
-            }
-        });
+                                    mutableActivePurchases.postValue(activePurchaseModel);
+                                });
+                    } else {
+                        mutableActivePurchases.postValue(null);
+                    }
+                });
     }
 
     public void initiatePurchase(Activity activity, ProductDetails productDetails) {

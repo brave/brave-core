@@ -54,7 +54,7 @@ public class NonSwipeableViewPager extends ViewPager {
         }
     }
 
-    public class ViewPagerScroller extends Scroller {
+    public static class ViewPagerScroller extends Scroller {
         ViewPagerScroller(Context context) {
             super(context, new DecelerateInterpolator());
         }

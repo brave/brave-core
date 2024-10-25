@@ -44,7 +44,7 @@ BookmarkPrefsServiceFactory::BuildServiceInstanceForBrowserContext(
 
 content::BrowserContext* BookmarkPrefsServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
+  return GetBrowserContextRedirectedInIncognito(context);
 }
 
 bool BookmarkPrefsServiceFactory::ServiceIsCreatedWithBrowserContext() const {

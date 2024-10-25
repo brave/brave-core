@@ -122,10 +122,14 @@ END_METADATA
 class VerticalTabSearchButton : public BraveTabSearchButton {
   METADATA_HEADER(VerticalTabSearchButton, BraveTabSearchButton)
  public:
-  VerticalTabSearchButton(VerticalTabStripRegionView* region_view,
-                          TabStripController* tab_strip_controller,
-                          Edge flat_edge)
-      : BraveTabSearchButton(tab_strip_controller, flat_edge) {
+  VerticalTabSearchButton(
+      VerticalTabStripRegionView* region_view,
+      TabStripController* tab_strip_controller,
+      tabs::TabDeclutterController* tab_declutter_controller,
+      Edge flat_edge)
+      : BraveTabSearchButton(tab_strip_controller,
+                             tab_declutter_controller,
+                             flat_edge) {
     SetPreferredSize(
         gfx::Size{ToggleButton::GetIconWidth(), ToggleButton::GetIconWidth()});
     SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_TAB_SEARCH));
@@ -468,7 +472,11 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
     // We layout the search button at the end, because there's no
     // way to change its bubble arrow from TOP_RIGHT at the moment.
     tab_search_button_ = AddChildView(std::make_unique<VerticalTabSearchButton>(
-        region_view, region_view->tab_strip()->controller(), Edge::kNone));
+        region_view, region_view->tab_strip()->controller(),
+        region_view_->browser()
+            ->browser_window_features()
+            ->tab_declutter_controller(),
+        Edge::kNone));
     UpdateTabSearchButtonVisibility();
 
     vertical_tab_on_right_.Init(

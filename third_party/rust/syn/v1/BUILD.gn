@@ -3,73 +3,70 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-group("lib") {
-  public_deps = [ "//third_party/rust/syn/v1:lib" ]
-}
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
 
-# This is copied from //third_party/rust/syn/v1:lib for build dependencies
-# All deps should be changed from lib -> buildrs_support
-# TODO(bridiver) find a better way to handle this
 import("//build/rust/cargo_crate.gni")
-cargo_crate("buildrs_support") {
+
+cargo_crate("lib") {
   crate_name = "syn"
   epoch = "1"
   crate_type = "rlib"
-  crate_root =
-      "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/lib.rs"
   sources = [
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/attr.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/await.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/bigint.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/buffer.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/custom_keyword.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/custom_punctuation.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/data.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/derive.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/discouraged.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/drops.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/error.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/export.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/expr.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/ext.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/file.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/clone.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/debug.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/eq.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/fold.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/hash.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/visit.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/visit_mut.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen_helper.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/generics.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/group.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/ident.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/item.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/lib.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/lifetime.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/lit.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/lookahead.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/mac.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/macros.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/op.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/parse.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/parse_macro_input.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/parse_quote.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/pat.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/path.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/print.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/punctuated.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/reserved.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/sealed.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/span.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/spanned.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/stmt.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/thread.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/token.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/tt.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/ty.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/verbatim.rs",
-    "//third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/whitespace.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/attr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/await.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/bigint.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/buffer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/custom_keyword.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/custom_punctuation.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/data.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/derive.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/discouraged.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/drops.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/export.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/expr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/ext.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/file.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/clone.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/debug.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/eq.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/fold.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/hash.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/visit.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/visit_mut.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen_helper.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/generics.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/group.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/ident.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/item.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/lifetime.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/lit.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/lookahead.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/mac.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/op.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/parse.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/parse_macro_input.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/parse_quote.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/pat.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/path.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/print.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/punctuated.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/reserved.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/sealed.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/span.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/spanned.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/stmt.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/thread.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/token.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/tt.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/ty.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/verbatim.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/whitespace.rs",
   ]
   inputs = []
 
@@ -86,14 +83,15 @@ cargo_crate("buildrs_support") {
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
-    "//brave/third_party/rust/proc_macro2/v1:buildrs_support",
-    "//brave/third_party/rust/quote/v1:buildrs_support",
-    "//brave/third_party/rust/unicode_ident/v1:buildrs_support",
+    "//brave/third_party/rust/proc_macro2/v1:lib",
+    "//brave/third_party/rust/quote/v1:lib",
+    "//brave/third_party/rust/unicode_ident/v1:lib",
   ]
   features = [
     "clone-impls",
     "derive",
     "extra-traits",
+    "fold",
     "full",
     "parsing",
     "printing",
@@ -102,10 +100,130 @@ cargo_crate("buildrs_support") {
     "visit",
     "visit-mut",
   ]
-  features += [ "fold" ]
+  build_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/build.rs"
+  build_sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/build.rs",
+  ]
+  if (target_name == "buildrs_support" && epoch == "1") {
+    deps -= [
+      "//brave/third_party/rust/proc_macro2/v1:lib",
+      "//brave/third_party/rust/quote/v1:lib",
+      "//brave/third_party/rust/unicode_ident/v1:lib",
+    ]
+    deps += [
+      "//brave/third_party/rust/proc_macro2/v1:buildrs_support",
+      "//brave/third_party/rust/quote/v1:buildrs_support",
+      "//brave/third_party/rust/unicode_ident/v1:buildrs_support",
+    ]
+  }
+}
+cargo_crate("buildrs_support") {
+  crate_name = "syn"
+  epoch = "1"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/attr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/await.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/bigint.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/buffer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/custom_keyword.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/custom_punctuation.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/data.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/derive.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/discouraged.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/drops.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/export.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/expr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/ext.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/file.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/clone.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/debug.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/eq.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/fold.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/hash.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/visit.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen/visit_mut.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/gen_helper.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/generics.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/group.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/ident.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/item.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/lifetime.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/lit.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/lookahead.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/mac.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/op.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/parse.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/parse_macro_input.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/parse_quote.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/pat.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/path.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/print.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/punctuated.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/reserved.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/sealed.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/span.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/spanned.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/stmt.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/thread.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/token.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/tt.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/ty.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/verbatim.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/src/whitespace.rs",
+  ]
+  inputs = []
 
-  # Only for usage from third-party crates. Add the crate to
-  # //third_party/rust/chromium_crates_io/Cargo.toml to use
-  # it from first-party code.
-  visibility = [ "//third_party/rust/*" ]
+  build_native_rust_unit_tests = false
+  edition = "2018"
+  cargo_pkg_version = "1.0.109"
+  cargo_pkg_authors = "David Tolnay <dtolnay@gmail.com>"
+  cargo_pkg_name = "syn"
+  cargo_pkg_description = "Parser for Rust source code"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/proc_macro2/v1:lib",
+    "//brave/third_party/rust/quote/v1:lib",
+    "//brave/third_party/rust/unicode_ident/v1:lib",
+  ]
+  features = [
+    "clone-impls",
+    "derive",
+    "extra-traits",
+    "fold",
+    "full",
+    "parsing",
+    "printing",
+    "proc-macro",
+    "quote",
+    "visit",
+    "visit-mut",
+  ]
+  build_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/build.rs"
+  build_sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/build.rs",
+  ]
+  if (target_name == "buildrs_support" && epoch == "1") {
+    deps -= [
+      "//brave/third_party/rust/proc_macro2/v1:lib",
+      "//brave/third_party/rust/quote/v1:lib",
+      "//brave/third_party/rust/unicode_ident/v1:lib",
+    ]
+    deps += [
+      "//brave/third_party/rust/proc_macro2/v1:buildrs_support",
+      "//brave/third_party/rust/quote/v1:buildrs_support",
+      "//brave/third_party/rust/unicode_ident/v1:buildrs_support",
+    ]
+  }
 }

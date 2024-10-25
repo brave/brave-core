@@ -19,7 +19,8 @@ jobs:
       PR_SHA: ${{ github.event.pull_request.head.sha }}
       TARGET_SHA: ${{ github.event.pull_request.base.sha }}
     steps:
-      - run: |
+      - name: If a major Chromium bump was merged, rerun compare-chromium-versions in all PRs targeting the same branch
+        run: |
           shopt -s inherit_errexit
           set -eEo pipefail
 
@@ -28,9 +29,10 @@ jobs:
           pr_ver="$(chromium_ver "${PR_SHA:?}")"
           target_ver="$(chromium_ver "${TARGET_SHA:?}")"
 
-          echo "::notice::PR branch: ${pr_ver:?}, target branch: ${target_ver:?}"
+          echo "::notice::PR branch: ${GITHUB_HEAD_REF:?} (${pr_ver:?}), target branch: ${GITHUB_BASE_REF:?} (${target_ver:?})"
 
           if [[ "${pr_ver%%.*}" != "${target_ver%%.*}" ]]; then
+              echo "::notice::Rerunning compare-chromium-versions in PRs targeting ${GITHUB_BASE_REF:?}"
               while read -r pr_number head_sha; do
                   run_id="$(gh api "/repos/$GITHUB_REPOSITORY/actions/workflows/compare-chromium-versions.yml/runs?head_sha=${head_sha:?}" -q '.workflow_runs[0].id')"
                   pr_url="https://github.com/brave/brave-core/pull/${pr_number:?}"
@@ -43,5 +45,5 @@ jobs:
                   sleep 1
               done < <(gh -R "$GITHUB_REPOSITORY" pr list --limit 1000 --state open --base "$GITHUB_BASE_REF" --json number,headRefOid -q '.[]|"\(.number)\t\(.headRefOid)"')
           else
-              echo "Chromium major versions match, nothing to do"
+              echo "::notice::Chromium major versions match, nothing to do"
           fi

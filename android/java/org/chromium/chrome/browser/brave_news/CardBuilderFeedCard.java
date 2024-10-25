@@ -967,9 +967,7 @@ public class CardBuilderFeedCard {
 
                     promoted.setCompoundDrawablesWithIntrinsicBounds(
                             R.drawable.ic_promoted, 0, 0, 0);
-                    StringBuilder promotedTitle = new StringBuilder(" "
-                            + mActivity.getResources().getString(
-                                    R.string.brave_news_promoted_title));
+
                     promoted.setText(
                             mActivity.getResources().getString(R.string.brave_news_promoted_title));
 

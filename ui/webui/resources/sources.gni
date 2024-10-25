@@ -3,8 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//ui/webui/resources/include_polymer.gni")
-
 # These cr_elements will be replaced by a custom override, conforming to the
 # same interface. It's intended to allow us to provide a compatibility layer
 # for Nala components.
@@ -40,7 +38,7 @@ if (!is_ios) {
 # This could change and, when it does, the `include_polymer` conditional can be removed
 # here and the one in //brave/ui/webui/resources/BUILD.gn be relied on to only add
 # polymer-related files when appropriate.
-if (include_polymer) {
+if (!is_android && !is_ios) {
   brave_resources_extra_grdps +=
       [ "$brave_resources_extra_grdps_path/resources.grdp" ]
 }

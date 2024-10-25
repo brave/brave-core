@@ -16,6 +16,7 @@ source_set("browser_tests") {
     "//brave/browser",
     "//brave/common",
     "//brave/components/constants",
+    "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/common",
     "//chrome/test:test_support",
     "//chrome/test:test_support_ui",

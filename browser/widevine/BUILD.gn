@@ -126,6 +126,7 @@ source_set("browser_tests") {
       "//components/component_updater",
       "//components/permissions",
       "//components/prefs",
+      "//components/update_client",
       "//ui/views",
       "//url",
     ]

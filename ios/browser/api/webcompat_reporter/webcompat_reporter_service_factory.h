@@ -12,7 +12,7 @@
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom.h"
 #include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
 
-class ChromeBrowserState;
+class ProfileIOS;
 
 namespace base {
 template <typename T>
@@ -24,7 +24,7 @@ namespace webcompat_reporter {
 class WebcompatReporterServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
   static mojo::PendingRemote<mojom::WebcompatReporterHandler>
-  GetHandlerForContext(ChromeBrowserState* browser_state);
+  GetHandlerForContext(ProfileIOS* profile);
   static WebcompatReporterServiceFactory* GetInstance();
 
   WebcompatReporterServiceFactory(const WebcompatReporterServiceFactory&) =

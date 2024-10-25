@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/widevine/widevine_permission_request.h"
+
 #include <memory>
 
 #include "base/path_service.h"
 #include "brave/browser/brave_drm_tab_helper.h"
-#include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
@@ -24,6 +25,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "chrome/test/permissions/permission_request_manager_test_api.h"
 #include "components/prefs/pref_service.h"
+#include "components/update_client/crx_update_item.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -189,9 +191,10 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
   content::RunAllTasksUntilIdle();
 
   WidevinePermissionRequest::is_test_ = true;
-  GetBraveDrmTabHelper()->OnEvent(component_updater::ComponentUpdateService::
-                                      Observer ::Events::COMPONENT_UPDATED,
-                                  kWidevineComponentId);
+  update_client::CrxUpdateItem item;
+  item.id = kWidevineComponentId;
+  item.state = update_client::ComponentState::kUpdated;
+  GetBraveDrmTabHelper()->OnEvent(item);
   content::RunAllTasksUntilIdle();
 
   // Check two permission bubble are created.

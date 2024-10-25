@@ -288,6 +288,10 @@ CHAR_LIMIT guidelines:
       <message name="IDS_WEBAUTHN_INCOGNITO_CONFIRMATION_TITLE" desc="The title of a bottomsheet that appears before the user saves passkey in Private mode. (See the glossary for translations of the word 'passkey'. Do not translate as 'password'.)" formatter_data="android_java">
         Save passkey outside Private?
       </message>
+      <message name="IDS_HUB_SEARCH_EMPTY_HINT_INCOGNITO" desc="The text displayed in the private search box when it's empty.">
+        Search your Private tabs
+      </message>
+
       </messages>
   </release>
 </grit>

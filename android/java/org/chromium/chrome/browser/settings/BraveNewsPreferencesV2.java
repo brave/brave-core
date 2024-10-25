@@ -43,16 +43,17 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
-import org.chromium.components.browser_ui.settings.FragmentSettingsLauncher;
-import org.chromium.components.browser_ui.settings.SettingsLauncher;
+import org.chromium.components.browser_ui.settings.FragmentSettingsNavigation;
+import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
 import java.util.List;
 
 public class BraveNewsPreferencesV2 extends BravePreferenceFragment
-        implements BraveNewsPreferencesDataListener, ConnectionErrorHandler,
-                   FragmentSettingsLauncher {
+        implements BraveNewsPreferencesDataListener,
+                ConnectionErrorHandler,
+                FragmentSettingsNavigation {
     public static final String PREF_SHOW_OPTIN = "show_optin";
 
     private LinearLayout mParentLayout;
@@ -74,8 +75,8 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
     private boolean mIsPublisherAvailable;
     private BraveNewsController mBraveNewsController;
 
-    // SettingsLauncher injected from main Settings Activity.
-    private SettingsLauncher mSettingsLauncher;
+    // SettingsNavigation injected from main Settings Activity.
+    private SettingsNavigation mSettingsLauncher;
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
@@ -258,7 +259,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
         Bundle fragmentArgs = new Bundle();
         fragmentArgs.putString(
                 BraveConstants.BRAVE_NEWS_PREFERENCES_TYPE, braveNewsPreferencesType.toString());
-        mSettingsLauncher.launchSettingsActivity(
+        mSettingsLauncher.startSettings(
                 getActivity(), BraveNewsPreferencesDetails.class, fragmentArgs);
     }
 
@@ -328,7 +329,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
     }
 
     @Override
-    public void setSettingsLauncher(SettingsLauncher settingsLauncher) {
+    public void setSettingsNavigation(SettingsNavigation settingsLauncher) {
         mSettingsLauncher = settingsLauncher;
     }
 

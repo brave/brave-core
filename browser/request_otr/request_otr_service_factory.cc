@@ -66,7 +66,7 @@ RequestOTRServiceFactory::BuildServiceInstanceForBrowserContext(
 
 content::BrowserContext* RequestOTRServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
+  return GetBrowserContextRedirectedInIncognito(context);
 }
 
 bool RequestOTRServiceFactory::ServiceIsNULLWhileTesting() const {
