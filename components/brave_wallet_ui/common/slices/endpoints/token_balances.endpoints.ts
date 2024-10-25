@@ -243,7 +243,8 @@ export const tokenBalancesEndpoints = ({
                   coinType: balanceResult.coinType,
                   contractAddress: balanceResult.contractAddress,
                   tokenId: balanceResult.tokenId,
-                  tokenBalancesRegistry: registry
+                  tokenBalancesRegistry: registry,
+                  isShielded: balanceResult.isShielded
                 })
             })
           }
@@ -333,7 +334,8 @@ export const tokenBalancesEndpoints = ({
                     .format(),
                   tokenBalancesRegistry,
                   coinType: BraveWallet.CoinType.ETH,
-                  tokenId: ''
+                  tokenId: '',
+                  isShielded: false
                 }
               )
             }
@@ -358,7 +360,8 @@ export const tokenBalancesEndpoints = ({
                 balance,
                 tokenBalancesRegistry,
                 coinType: asset.coin,
-                tokenId: asset.tokenId
+                tokenId: asset.tokenId,
+                isShielded: asset.isShielded
               })
             }
           }
@@ -751,7 +754,9 @@ async function fetchAccountCurrentNativeBalance({
         )
       }
 
-      return Amount.normalize(balance.totalBalance.toString())
+      return token.isShielded
+        ? Amount.normalize(balance.shieldedBalance.toString())
+        : Amount.normalize(balance.transparentBalance.toString())
     }
 
     default: {
@@ -883,32 +888,36 @@ async function fetchAccountTokenBalanceRegistryForChainId({
 }): Promise<void> {
   // Construct arg to query native token for use in case the
   // optimized balance fetcher kicks in.
-  const nativeTokenArg = arg.tokens.find(isNativeAsset)
-
+  const nativeTokenArgs = arg.tokens.filter((token) => isNativeAsset(token))
   const nonNativeTokens = arg.tokens.filter((token) => !isNativeAsset(token))
 
-  if (nativeTokenArg) {
-    const balance = await fetchAccountTokenCurrentBalance({
-      arg: {
-        accountId: arg.accountId,
-        token: nativeTokenArg
-      },
-      bitcoinWalletService,
-      jsonRpcService,
-      zcashWalletService
-    })
-
-    if (balance) {
-      onBalance({
-        accountId: arg.accountId,
-        chainId: arg.chainId,
-        contractAddress: nativeTokenArg.contractAddress,
-        balance,
-        coinType: nativeTokenArg.coin,
-        tokenId: ''
+  await eachLimit(
+    nativeTokenArgs,
+    2,
+    async (token: BraveWallet.BlockchainToken) => {
+      const balance = await fetchAccountTokenCurrentBalance({
+        arg: {
+          accountId: arg.accountId,
+          token: token
+        },
+        bitcoinWalletService,
+        jsonRpcService,
+        zcashWalletService
       })
+
+      if (balance) {
+        onBalance({
+          accountId: arg.accountId,
+          chainId: arg.chainId,
+          contractAddress: token.contractAddress,
+          balance,
+          coinType: token.coin,
+          tokenId: '',
+          isShielded: token.isShielded
+        })
+      }
     }
-  }
+  )
 
   if (arg.coin === CoinTypes.ETH) {
     // jsonRpcService.getERC20TokenBalances cannot handle
@@ -961,7 +970,8 @@ async function fetchAccountTokenBalanceRegistryForChainId({
             contractAddress,
             balance: new Amount(balance).format(),
             coinType: arg.coin,
-            tokenId: '' // these are ERC20 tokens
+            tokenId: '', // these are ERC20 tokens,
+            isShielded: false
           })
         }
       }
@@ -992,7 +1002,8 @@ async function fetchAccountTokenBalanceRegistryForChainId({
           contractAddress: mint,
           balance: Amount.normalize(amount),
           coinType: arg.coin,
-          tokenId: ''
+          tokenId: '',
+          isShielded: false
         })
       }
     }
@@ -1022,7 +1033,8 @@ async function fetchAccountTokenBalanceRegistryForChainId({
           contractAddress: token.contractAddress,
           balance: result,
           coinType: token.coin,
-          tokenId: token.tokenId
+          tokenId: token.tokenId,
+          isShielded: token.isShielded
         })
       }
     }
@@ -1134,7 +1146,8 @@ async function fetchNftBalancesForAccount({
           contractAddress: token.contractAddress,
           balance: nftBalance.toString(),
           coinType: token.coin,
-          tokenId: token.tokenId
+          tokenId: token.tokenId,
+          isShielded: false
         })
       })
     }

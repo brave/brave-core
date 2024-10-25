@@ -231,7 +231,8 @@ mojom::BlockchainTokenPtr wrapped_sol = mojom::BlockchainToken::New(
     "",
     "solana",
     "0x65",
-    mojom::CoinType::SOL);
+    mojom::CoinType::SOL,
+    false);
 mojom::BlockchainTokenPtr usdc = mojom::BlockchainToken::New(
     "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
     "USD Coin",
@@ -249,7 +250,8 @@ mojom::BlockchainTokenPtr usdc = mojom::BlockchainToken::New(
     "",
     "usd-coin",
     "0x65",
-    mojom::CoinType::SOL);
+    mojom::CoinType::SOL,
+    false);
 mojom::BlockchainTokenPtr tsla = mojom::BlockchainToken::New(
     "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ",
     "Tesla Inc.",
@@ -267,7 +269,8 @@ mojom::BlockchainTokenPtr tsla = mojom::BlockchainToken::New(
     "",
     "",
     "0x65",
-    mojom::CoinType::SOL);
+    mojom::CoinType::SOL,
+    false);
 
 mojom::BlockchainTokenPtr moon = mojom::BlockchainToken::New(
     "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi",
@@ -286,7 +289,8 @@ mojom::BlockchainTokenPtr moon = mojom::BlockchainToken::New(
     "",
     "",
     "0x65",
-    mojom::CoinType::SOL);
+    mojom::CoinType::SOL,
+    false);
 
 const char chain_list_json[] = R"(
   [

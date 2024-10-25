@@ -127,7 +127,8 @@ struct AssetIconView_Previews: PreviewProvider {
         tokenId: "",
         coingeckoId: "",
         chainId: "",
-        coin: .eth
+        coin: .eth,
+        isShielded: false
       ),
       network: .mockMainnet
     )

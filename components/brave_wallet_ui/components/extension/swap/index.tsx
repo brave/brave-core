@@ -72,6 +72,7 @@ type SwapToken = Pick<
   | 'name'
   | 'coingeckoId'
   | 'decimals'
+  | 'isShielded'
 >
 
 const isNativeToken = (token: SwapToken) =>

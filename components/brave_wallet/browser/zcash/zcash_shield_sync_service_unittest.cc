@@ -10,7 +10,9 @@
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -125,26 +127,30 @@ class ZCashShieldSyncServiceTest : public testing::Test {
   void SetUp() override;
 
   void ResetSyncService() {
-    base::FilePath db_path(
-        temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
-
     auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                               mojom::KeyringId::kZCashMainnet,
                                               mojom::AccountKind::kDerived, 0);
     auto account_birthday = mojom::ZCashAccountShieldBirthday::New(100, "hash");
     OrchardFullViewKey fvk;
 
-    observer_ = std::make_unique<MockZCashShieldSyncServiceObserver>();
     sync_service_ = std::make_unique<ZCashShieldSyncService>(
-        &zcash_rpc_, account_id, account_birthday, fvk, db_path,
+        zcash_wallet_service_.get(), account_id, account_birthday, fvk,
         observer_->GetWeakPtr());
+
     // Ensure previous OrchardStorage is destroyed on background thread
     task_environment_.RunUntilIdle();
   }
 
-  ZCashRpc* zcash_rpc() { return &zcash_rpc_; }
+  ZCashWalletService* zcash_wallet_service() {
+    return zcash_wallet_service_.get();
+  }
 
   ZCashShieldSyncService* sync_service() { return sync_service_.get(); }
+
+  testing::NiceMock<MockZCashRPC>* zcash_rpc() {
+    return static_cast<testing::NiceMock<MockZCashRPC>*>(
+        zcash_wallet_service_->zcash_rpc());
+  }
 
   MockZCashShieldSyncServiceObserver* observer() { return observer_.get(); }
 
@@ -190,7 +196,7 @@ class ZCashShieldSyncServiceTest : public testing::Test {
 
   mojom::AccountIdPtr zcash_account_;
   base::ScopedTempDir temp_dir_;
-  testing::NiceMock<MockZCashRPC> zcash_rpc_;
+  std::unique_ptr<ZCashWalletService> zcash_wallet_service_;
   std::unique_ptr<MockZCashShieldSyncServiceObserver> observer_;
   std::unique_ptr<ZCashShieldSyncService> sync_service_;
   base::test::TaskEnvironment task_environment_;
@@ -198,6 +204,14 @@ class ZCashShieldSyncServiceTest : public testing::Test {
 
 void ZCashShieldSyncServiceTest::SetUp() {
   ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+  base::FilePath db_path(
+      temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
+
+  observer_ = std::make_unique<MockZCashShieldSyncServiceObserver>();
+  auto zcash_rpc = std::make_unique<testing::NiceMock<MockZCashRPC>>();
+  zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
+      db_path, nullptr, std::move(zcash_rpc));
+
   ResetSyncService();
 }
 
@@ -207,7 +221,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
   sync_service()->SetOrchardBlockScannerProxyForTesting(
       std::move(mock_block_scanner));
 
-  ON_CALL(zcash_rpc_, GetLatestBlock(_, _))
+  ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
                                ZCashRpc::GetLatestBlockCallback callback) {
@@ -215,7 +229,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
                 zcash::mojom::BlockID::New(500u, std::vector<uint8_t>({})));
           }));
 
-  ON_CALL(zcash_rpc_, GetTreeState(_, _, _))
+  ON_CALL(*zcash_rpc(), GetTreeState(_, _, _))
       .WillByDefault(::testing::Invoke(
           [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
              ZCashRpc::GetTreeStateCallback callback) {
@@ -225,7 +239,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
             std::move(callback).Run(std::move(tree_state));
           }));
 
-  ON_CALL(zcash_rpc_, GetCompactBlocks(_, _, _, _))
+  ON_CALL(*zcash_rpc(), GetCompactBlocks(_, _, _, _))
       .WillByDefault(::testing::Invoke(
           [](const std::string& chain_id, uint32_t from, uint32_t to,
              ZCashRpc::GetCompactBlocksCallback callback) {
@@ -252,7 +266,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
   ResetSyncService();
   task_environment_.RunUntilIdle();
 
-  ON_CALL(zcash_rpc_, GetLatestBlock(_, _))
+  ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
                                ZCashRpc::GetLatestBlockCallback callback) {
@@ -293,7 +307,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
             std::move(callback).Run(result);
           })));
 
-  ON_CALL(zcash_rpc_, GetTreeState(_, _, _))
+  ON_CALL(*zcash_rpc(), GetTreeState(_, _, _))
       .WillByDefault(::testing::Invoke(
           [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
              ZCashRpc::GetTreeStateCallback callback) {
@@ -314,7 +328,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
   // Chain reorg when chain tip is greater than latest scanned block
   ResetSyncService();
 
-  ON_CALL(zcash_rpc_, GetLatestBlock(_, _))
+  ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
                                ZCashRpc::GetLatestBlockCallback callback) {
@@ -322,7 +336,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
                 zcash::mojom::BlockID::New(1010u, std::vector<uint8_t>({})));
           }));
 
-  ON_CALL(zcash_rpc_, GetTreeState(_, _, _))
+  ON_CALL(*zcash_rpc(), GetTreeState(_, _, _))
       .WillByDefault(::testing::Invoke(
           [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
              ZCashRpc::GetTreeStateCallback callback) {
@@ -355,7 +369,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
   // Chain reorg when chain tip is less than latest scanned block
   ResetSyncService();
 
-  ON_CALL(zcash_rpc_, GetLatestBlock(_, _))
+  ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
                                ZCashRpc::GetLatestBlockCallback callback) {
@@ -363,7 +377,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
                 zcash::mojom::BlockID::New(950u, std::vector<uint8_t>({})));
           }));
 
-  ON_CALL(zcash_rpc_, GetTreeState(_, _, _))
+  ON_CALL(*zcash_rpc(), GetTreeState(_, _, _))
       .WillByDefault(::testing::Invoke(
           [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
              ZCashRpc::GetTreeStateCallback callback) {

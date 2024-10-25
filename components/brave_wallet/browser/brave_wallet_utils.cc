@@ -130,6 +130,11 @@ bool TokenMatchesDict(const brave_wallet::mojom::BlockchainTokenPtr& token,
     return false;
   }
 
+  // ZCash shielded tokens are hardcoded, so they don't appear in the prefs
+  if (token->is_shielded) {
+    return false;
+  }
+
   std::optional<int> coin = dict->FindInt("coin");
   if (!coin || *coin != static_cast<int>(token->coin)) {
     return false;
@@ -563,6 +568,13 @@ std::vector<mojom::BlockchainTokenPtr> GetAllUserAssets(PrefService* prefs) {
       result.push_back(std::move(token_ptr));
     }
   }
+
+#if BUILDFLAG(ENABLE_ORCHARD)
+  if (IsZCashShieldedTransactionsEnabled()) {
+    result.push_back(GetZcashNativeShieldedToken(mojom::kZCashMainnet));
+    result.push_back(GetZcashNativeShieldedToken(mojom::kZCashTestnet));
+  }
+#endif
   return result;
 }
 
@@ -572,7 +584,8 @@ mojom::BlockchainTokenPtr GetUserAsset(PrefService* prefs,
                                        const std::string& address,
                                        const std::string& token_id,
                                        bool is_erc721,
-                                       bool is_erc1155) {
+                                       bool is_erc1155,
+                                       bool is_shielded) {
   mojom::BlockchainTokenPtr token = mojom::BlockchainToken::New();
   token->chain_id = chain_id;
   token->contract_address = address;
@@ -580,6 +593,12 @@ mojom::BlockchainTokenPtr GetUserAsset(PrefService* prefs,
   token->token_id = token_id;
   token->is_erc721 = is_erc721;
   token->is_erc1155 = is_erc1155;
+  token->is_shielded = is_shielded;
+
+  // ZCash shielded tokens are hardcoded, so they don't appear in the prefs
+  if (token->is_shielded && token->coin == mojom::CoinType::ZEC) {
+    return GetZcashNativeShieldedToken(token->chain_id);
+  }
 
   const auto& user_assets_list = prefs->GetList(kBraveWalletUserAssetsList);
   for (auto& asset : user_assets_list) {
@@ -877,6 +896,20 @@ mojom::BlockchainTokenPtr GetZcashNativeToken(const std::string& chain_id) {
   auto result = NetworkToNativeToken(*network);
   result->logo = "zec.png";
   result->coingecko_id = "zec";
+
+  return result;
+}
+
+mojom::BlockchainTokenPtr GetZcashNativeShieldedToken(
+    const std::string& chain_id) {
+  auto network = NetworkManager::GetKnownChain(chain_id, mojom::CoinType::ZEC);
+  CHECK(network);
+
+  auto result = NetworkToNativeToken(*network);
+  result->logo = "zec.png";
+  result->coingecko_id = "zec";
+  result->is_shielded = true;
+  result->name += "(Shielded)";
 
   return result;
 }

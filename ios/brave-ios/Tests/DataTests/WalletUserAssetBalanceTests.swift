@@ -29,7 +29,8 @@ class WalletUserAssetBalanceTests: CoreDataTestCase {
     tokenId: "asset",
     coingeckoId: "",
     chainId: "0x1",
-    coin: .eth
+    coin: .eth,
+    isShielded: false
   )
   let asset2 = BraveWallet.BlockchainToken(
     contractAddress: "0x123",
@@ -48,7 +49,8 @@ class WalletUserAssetBalanceTests: CoreDataTestCase {
     tokenId: "asset2",
     coingeckoId: "",
     chainId: "0x67",
-    coin: .sol
+    coin: .sol,
+    isShielded: false
   )
   let account1 = "0x35DCec532e809A3dAa04ED3Fd949495f7BAc9090"
   let account2 = "0x84D4937cd23753FB71310438b7C2e4Ade45b3896"
