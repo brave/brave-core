@@ -10,7 +10,7 @@ import { useHistory } from 'react-router'
 import {
   useGetCoinMarketQuery,
   useGetDefaultFiatCurrencyQuery,
-  useGetOnRampAssetsQuery
+  useGetMeldCryptoCurrenciesQuery
 } from '../../../../common/slices/api.slice'
 import {
   useGetCombinedTokensListQuery //
@@ -42,6 +42,7 @@ import {
   makeFundWalletRoute
 } from '../../../../utils/routes-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
+import { getAssetSymbol } from '../../../../utils/meld_utils'
 
 const assetsRequestLimit = 250
 
@@ -61,12 +62,7 @@ export const MarketView = () => {
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
 
-  const { buyAssets } = useGetOnRampAssetsQuery(undefined, {
-    selectFromResult: (res) => ({
-      isLoading: res.isLoading,
-      buyAssets: res.data?.allAssetOptions || []
-    })
-  })
+  const { data: buyAssets } = useGetMeldCryptoCurrenciesQuery()
 
   const { data: allCoins = [], isLoading: isLoadingCoinMarketData } =
     useGetCoinMarketQuery({
@@ -91,25 +87,12 @@ export const MarketView = () => {
         case MarketUiCommand.SelectBuy: {
           const { payload } = message as SelectBuyMessage
           const symbolLower = payload.symbol.toLowerCase()
-          const foundTokens = buyAssets.filter(
-            (t) => t.symbol.toLowerCase() === symbolLower
+          const foundTokens = buyAssets?.filter(
+            (t) => getAssetSymbol(t) === symbolLower
           )
 
-          if (foundTokens.length === 1) {
-            history.push(
-              makeFundWalletRoute(getAssetIdKey(foundTokens[0]), {
-                searchText: symbolLower
-              })
-            )
-            return
-          }
-
-          if (foundTokens.length > 1) {
-            history.push(
-              makeFundWalletRoute('', {
-                searchText: symbolLower
-              })
-            )
+          if (foundTokens) {
+            history.push(makeFundWalletRoute(foundTokens[0]))
           }
           break
         }
