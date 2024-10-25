@@ -122,6 +122,7 @@ declare namespace NewTab {
     showRewards: boolean
     showBraveTalk: boolean
     showSearchBox: boolean
+    lastUsedNtpSearchEngine: string
     promptEnableSearchSuggestions: boolean
     searchSuggestionsEnabled: boolean
     hideAllWidgets: boolean
