@@ -81,6 +81,8 @@ class NTPBackgroundImagesService {
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            MultipleCampaignsTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
+                           SponsoredImageWithMissingImageUrlTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            WithDefaultReferralCodeTest1);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            WithDefaultReferralCodeTest2);
