@@ -331,7 +331,7 @@ class BaseListValueMojoTypemap(MojoTypemap):
     def DefaultObjCValue(self, default):
         return "@[]"
     def ObjCToCpp(self, accessor):
-        return "brave::BaseValueFromNSArray(%s)" % accessor
+        return "brave::BaseValueListFromNSArray(%s)" % accessor
     def CppToObjC(self, accessor):
         return "brave::NSArrayFromBaseValue(%s.Clone())" % accessor
 
