@@ -142,18 +142,18 @@ void NonBlockingDelay(base::TimeDelta delay) {
 
 }  // namespace
 
-class BraveTorTest : public InProcessBrowserTest {
+class BraveTorBrowserTest : public InProcessBrowserTest {
  public:
   struct TorInfo {
     raw_ptr<Profile> tor_profile = nullptr;
     int tor_pid = 0;
   };
 
-  BraveTorTest() {
+  BraveTorBrowserTest() {
     BraveSettingsUI::ShouldExposeElementsForTesting() = true;
   }
 
-  ~BraveTorTest() override {
+  ~BraveTorBrowserTest() override {
     BraveSettingsUI::ShouldExposeElementsForTesting() = false;
   }
 
@@ -222,7 +222,7 @@ class BraveTorTest : public InProcessBrowserTest {
   }
 };
 
-IN_PROC_BROWSER_TEST_F(BraveTorTest, OpenCloseDisableTorWindow) {
+IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, OpenCloseDisableTorWindow) {
   EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
   DownloadTorClient();
 
@@ -254,7 +254,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, OpenCloseDisableTorWindow) {
   }
 }
 
-class BraveTorTestWithCustomProfile : public BraveTorTest {
+class BraveTorWithCustomProfileBrowserTest : public BraveTorBrowserTest {
  private:
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
@@ -273,7 +273,7 @@ class BraveTorTestWithCustomProfile : public BraveTorTest {
   }
 };
 
-IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, PRE_SetupBridges) {
+IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, PRE_SetupBridges) {
   EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
   DownloadTorClient();
 
@@ -331,7 +331,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, PRE_SetupBridges) {
       g_brave_browser_process->tor_pluggable_transport_updater());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, SetupBridges) {
+IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, SetupBridges) {
   // Tor is disabled in PRE, check pluggable transports are removed.
   EXPECT_FALSE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
 
@@ -345,7 +345,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, SetupBridges) {
                    nullptr));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, Incognito) {
+IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, Incognito) {
   EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
   EXPECT_FALSE(TorProfileServiceFactory::IsTorManaged(browser()->profile()));
 
@@ -405,7 +405,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, Incognito) {
   EXPECT_TRUE(is_element_enabled("torSnowflake"));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, Autofill) {
+IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, Autofill) {
   GURL fake_url("http://brave.com/");
   // Disable autofill in private windows.
   browser()->profile()->GetPrefs()->SetBoolean(kBraveAutofillPrivateWindows,
@@ -426,7 +426,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, Autofill) {
   TestAutofillInWindow(web_contents, fake_url, true);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveTorTest, PRE_ResetBridges) {
+IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, PRE_ResetBridges) {
   EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
   DownloadTorClient();
   DownloadTorPluggableTransports();
@@ -451,14 +451,14 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, PRE_ResetBridges) {
   WaitProcessExit(tor::kSnowflakeExecutableName);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveTorTest, ResetBridges) {
+IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, ResetBridges) {
   // Tor is enabled and bridges are disabled check pluggable transports are
   // removed.
   EXPECT_TRUE(CheckComponentExists(tor::kTorClientComponentId));
   EXPECT_FALSE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveTorTest, HttpAllowlistIsolation) {
+IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, HttpAllowlistIsolation) {
   // Normal window
   Profile* main_profile = browser()->profile();
   auto* main_storage_partition = main_profile->GetDefaultStoragePartition();
@@ -511,11 +511,11 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, HttpAllowlistIsolation) {
   EXPECT_TRUE(tor_state->IsHttpAllowedForHost(host3, tor_storage_partition));
 }
 
-class BraveTorTest_EnableTorHttpsOnlyFlag
-    : public BraveTorTest,
+class BraveTorBrowserTest_EnableTorHttpsOnlyFlag
+    : public BraveTorBrowserTest,
       public ::testing::WithParamInterface<bool> {
  public:
-  BraveTorTest_EnableTorHttpsOnlyFlag() {
+  BraveTorBrowserTest_EnableTorHttpsOnlyFlag() {
     if (IsBraveHttpsByDefaultEnabled()) {
       std::vector<base::test::FeatureRef> enabled_features{
           net::features::kBraveTorWindowsHttpsOnly};
@@ -530,7 +530,7 @@ class BraveTorTest_EnableTorHttpsOnlyFlag
     }
   }
 
-  ~BraveTorTest_EnableTorHttpsOnlyFlag() override = default;
+  ~BraveTorBrowserTest_EnableTorHttpsOnlyFlag() override = default;
 
   bool IsBraveHttpsByDefaultEnabled() { return GetParam(); }
 
@@ -538,7 +538,7 @@ class BraveTorTest_EnableTorHttpsOnlyFlag
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_P(BraveTorTest_EnableTorHttpsOnlyFlag,
+IN_PROC_BROWSER_TEST_P(BraveTorBrowserTest_EnableTorHttpsOnlyFlag,
                        TorWindowHttpsOnly) {
   EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
   DownloadTorClient();
@@ -549,6 +549,6 @@ IN_PROC_BROWSER_TEST_P(BraveTorTest_EnableTorHttpsOnlyFlag,
   EXPECT_TRUE(prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled));
 }
 
-INSTANTIATE_TEST_SUITE_P(BraveTorTest_EnableTorHttpsOnlyFlag,
-                         BraveTorTest_EnableTorHttpsOnlyFlag,
+INSTANTIATE_TEST_SUITE_P(BraveTorBrowserTest_EnableTorHttpsOnlyFlag,
+                         BraveTorBrowserTest_EnableTorHttpsOnlyFlag,
                          ::testing::Bool());

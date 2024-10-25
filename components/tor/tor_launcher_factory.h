@@ -107,6 +107,8 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   int64_t tor_pid_;
 
   tor::mojom::TorConfig config_;
+  // The watch path from the tor client. This value is static for the user.
+  const base::FilePath tor_watch_path_;
 
   base::ObserverList<TorLauncherObserver> observers_;
 

@@ -3,14 +3,17 @@
 // You can obtain one at http://mozilla.org/MPL/2.0/.
 module tor.mojom;
 
-import "mojo/public/mojom/base/file_path.mojom";
+import "mojo/public/mojom/base/safe_base_name.mojom";
 import "sandbox/policy/mojom/sandbox.mojom";
 
 struct TorConfig {
-  mojo_base.mojom.FilePath binary_path;
-  mojo_base.mojom.FilePath torrc_path;
-  mojo_base.mojom.FilePath tor_data_path;
-  mojo_base.mojom.FilePath tor_watch_path;
+  // The install directory provided by the component updater for the Tor
+  // client.
+  mojo_base.mojom.SafeBaseName install_dir;
+
+  // The filename for the tor executable. The executable is expected to be in
+  // the install directory.
+  mojo_base.mojom.SafeBaseName executable;
 };
 
 [ServiceSandbox=sandbox.mojom.Sandbox.kNoSandbox]

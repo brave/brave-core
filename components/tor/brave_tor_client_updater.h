@@ -8,7 +8,6 @@
 
 #include <memory>
 #include <string>
-#include <utility>
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
@@ -47,13 +46,12 @@ class BraveTorClientUpdater : public BraveComponent {
   void Register();
   void Unregister();
   void Cleanup();
-  base::FilePath GetExecutablePath() const;
-  base::FilePath GetTorrcPath() const;
-  base::FilePath GetTorDataPath() const;
-  base::FilePath GetTorWatchPath() const;
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() {
     return task_runner_;
   }
+
+  const base::FilePath& install_dir() const { return install_dir_; }
+  const base::FilePath& executable() const { return executable_; }
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -67,13 +65,18 @@ class BraveTorClientUpdater : public BraveComponent {
  private:
   void RemoveObsoleteFiles();
 
-  // <tor executable, torrc>
-  void SetTorPath(const std::pair<base::FilePath, base::FilePath>&);
+  // Called with a response for the search for the executable path.
+  void OnExecutablePathFound(base::FilePath path);
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool registered_;
-  base::FilePath executable_path_;
-  base::FilePath torrc_path_;
+
+  // The path where the binary has been ultimately installed.
+  base::FilePath install_dir_;
+
+  // The path for the tor executable.
+  base::FilePath executable_;
+
   base::ObserverList<Observer> observers_;
   raw_ptr<PrefService> local_state_ = nullptr;
   base::FilePath user_data_dir_;
