@@ -3,37 +3,31 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_vpn/win/brave_vpn_service_delegate_win.h"
+#include "brave/browser/brave_vpn/mac/brave_vpn_service_delegate_mac.h"
 
-#include "brave/browser/brave_vpn/win/storage_utils.h"
-#include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 
 namespace brave_vpn {
 
-BraveVPNServiceDelegateWin::BraveVPNServiceDelegateWin() = default;
+BraveVPNServiceDelegateMac::BraveVPNServiceDelegateMac() = default;
 
-BraveVPNServiceDelegateWin::~BraveVPNServiceDelegateWin() = default;
+BraveVPNServiceDelegateMac::~BraveVPNServiceDelegateMac() = default;
 
-void BraveVPNServiceDelegateWin::WriteConnectionState(
-    mojom::ConnectionState state) {
-  ::brave_vpn::WriteConnectionState(static_cast<int>(state));
-}
+void BraveVPNServiceDelegateMac::WriteConnectionState(
+    mojom::ConnectionState state) {}
 
-void BraveVPNServiceDelegateWin::ShowBraveVpnStatusTrayIcon() {
-  wireguard::ShowBraveVpnStatusTrayIcon();
-}
+void BraveVPNServiceDelegateMac::ShowBraveVpnStatusTrayIcon() {}
 
-void BraveVPNServiceDelegateWin::LaunchVPNPanel() {
+void BraveVPNServiceDelegateMac::LaunchVPNPanel() {
   auto* browser = chrome::FindBrowserWithActiveWindow();
   if (browser) {
     brave::ShowBraveVPNBubble(browser);
   }
 }
 
-void BraveVPNServiceDelegateWin::OpenVpnUI(const std::string& type) {
+void BraveVPNServiceDelegateMac::OpenVpnUI(const std::string& type) {
   // TODO(simonhong): Get proper url based on env.
   GURL checkout_url("https://account.brave.com/?intent=checkout&product=vpn");
   GURL recover_url("https://account.brave.com/?intent=recover&product=vpn");
@@ -42,4 +36,5 @@ void BraveVPNServiceDelegateWin::OpenVpnUI(const std::string& type) {
     ShowSingletonTab(browser, type == "checkout" ? checkout_url : recover_url);
   }
 }
+
 }  // namespace brave_vpn

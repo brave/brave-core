@@ -29,6 +29,7 @@ import isReadableOnBackground from '../../helpers/colorUtil'
 // Types
 import { NewTabActions } from '../../constants/new_tab_types'
 import { BraveNewsState } from '../../reducers/today'
+import { BraveVPNState } from '../../reducers/brave_vpn'
 
 // NTP features
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
@@ -40,9 +41,6 @@ import BraveNewsHint from '../../components/default/braveNews/hint'
 import SponsoredImageClickArea from '../../components/default/sponsoredImage/sponsoredImageClickArea'
 import GridWidget from './gridWidget'
 
-import Icon from '@brave/leo/react/icon'
-
-import * as style from './style'
 import { defaultState } from '../../storage/new_tab_storage'
 
 const BraveNewsPeek =  React.lazy(() => import('../../../brave_news/browser/resources/Peek'))
@@ -52,6 +50,7 @@ interface Props {
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
   todayData: BraveNewsState
+  braveVPNData: BraveVPNState
   actions: NewTabActions
   getBraveNewsDisplayAd: GetDisplayAdContent
   saveShowBackgroundImage: (value: boolean) => void
@@ -496,31 +495,6 @@ class NewTabPage extends React.Component<Props, State> {
       return null
     }
 
-    const customMenuItems = [
-      {
-        label: 'rewardsOpenPanel',
-        renderIcon: () => {
-          return (
-            <style.rewardsMenuIcon>
-              <Icon name='product-bat-outline' />
-            </style.rewardsMenuIcon>
-          )
-        },
-        onClick: () => { chrome.braveRewards.openRewardsPanel() }
-      },
-      {
-        label: 'rewardsSettings',
-        renderIcon: () => {
-          return (
-            <style.rewardsMenuIcon>
-              <Icon name='settings' />
-            </style.rewardsMenuIcon>
-          )
-        },
-        onClick: () => { window.open('chrome://rewards', '_blank', 'noopener') }
-      }
-    ]
-
     const onSelfCustodyInviteDismissed = () => {
       chrome.braveRewards.dismissSelfCustodyInvite()
     }
@@ -532,8 +506,7 @@ class NewTabPage extends React.Component<Props, State> {
     return (
       <Rewards
         {...rewardsState}
-        widgetTitle={getLocale('rewardsWidgetBraveRewards')}
-        onLearnMore={this.learnMoreRewards}
+        widgetTitle={'Brave VPN'}
         menuPosition={'left'}
         isCardWidget
         paddingType={'none'}
@@ -545,9 +518,9 @@ class NewTabPage extends React.Component<Props, State> {
         showContent={showContent}
         onShowContent={this.setForegroundStackWidget.bind(this, 'rewards')}
         onDismissNotification={this.dismissNotification}
-        customMenuItems={customMenuItems}
         onSelfCustodyInviteDismissed={onSelfCustodyInviteDismissed}
         onTermsOfServiceUpdateAccepted={onTosUpdateAccepted}
+        braveVPNState={this.props.braveVPNData}
       />
     )
   }
