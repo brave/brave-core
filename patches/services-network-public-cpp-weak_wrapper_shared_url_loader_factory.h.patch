@@ -1,0 +1,13 @@
+diff --git a/services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h b/services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h
+index fa4528f1508945df540c1a58a58f1ae85e07da11..84c2611edad6e828d5d646c0251c9066313acd4f 100644
+--- a/services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h
++++ b/services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h
+@@ -60,7 +60,7 @@ class COMPONENT_EXPORT(NETWORK_CPP) WeakWrapperSharedURLLoaderFactory
+   base::OnceCallback<mojom::URLLoaderFactory*()> make_factory_ptr_;
+ 
+   // Not owned.
+-  raw_ptr<mojom::URLLoaderFactory> factory_ptr_ = nullptr;
++  raw_ptr<mojom::URLLoaderFactory, DanglingUntriaged> factory_ptr_ = nullptr;
+ };
+ 
+ }  // namespace network

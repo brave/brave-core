@@ -1,5 +1,5 @@
 diff --git a/net/http/http_stream_parser.cc b/net/http/http_stream_parser.cc
-index 51e0a4c6850500bc2b7dd3dcf311087e61b44ab3..73d60a2f5d1d40045c15562dfc74df67ffd7cb00 100644
+index 9ec1d666d9cc1f5dcdc9bcb326318b386bbb2970..4de4b50182cee964814c1a6dd3510b58c3851caf 100644
 --- a/net/http/http_stream_parser.cc
 +++ b/net/http/http_stream_parser.cc
 @@ -172,7 +172,8 @@ class HttpStreamParser::SeekableIOBuffer : public IOBufferWithSize {
