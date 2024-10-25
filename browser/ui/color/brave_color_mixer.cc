@@ -208,7 +208,7 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kBraveNewTabBackgroundLight};
-  mixer[kColorTabStrokeFrameActive] = {SkColorSetA(SK_ColorBLACK, 0.07 * 255)};
+  mixer[kColorTabStrokeFrameActive] = {ui::kColorRefNeutral80};
   mixer[kColorTabStrokeFrameInactive] = {kColorTabStrokeFrameActive};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
@@ -248,7 +248,7 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kBraveNewTabBackgroundDark};
-  mixer[kColorTabStrokeFrameActive] = {kColorToolbar};
+  mixer[kColorTabStrokeFrameActive] = {ui::kColorRefNeutral25};
   mixer[kColorTabStrokeFrameInactive] = {kColorToolbar};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
