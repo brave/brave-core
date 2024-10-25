@@ -415,7 +415,7 @@ extension Strings {
       "aichat.paywallRateLimitTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Response Rate Limit Reached",
+      value: "Unleash Leo's Full Powers With Premium:",
       comment: "The title for premium upseel when rate limit is shown after sending a message"
     )
     public static let paywallRateLimitSubTitle = NSLocalizedString(
