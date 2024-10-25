@@ -16,6 +16,8 @@
 #include "extensions/common/constants.h"
 #include "net/http/http_content_disposition.h"
 #include "net/http/http_response_headers.h"
+#include "brave/components/webtorrent/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 
 namespace webtorrent {
 
@@ -47,6 +49,12 @@ bool IsWebtorrentEnabled(content::BrowserContext* browser_context) {
   if (!registry) {
     return false;
   }
+
+  PrefService* prefs = Profile::FromBrowserContext(browser_context)->GetPrefs();
+  if (prefs && prefs->GetBoolean(webtorrent::prefs::kWebTorrentDisabledByPolicy)) {
+      return false;
+  }
+
   return registry->enabled_extensions().Contains(brave_webtorrent_extension_id);
 }
 
