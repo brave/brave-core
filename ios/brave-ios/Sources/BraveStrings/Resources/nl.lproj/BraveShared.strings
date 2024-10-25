@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Voeg bladwijzer toe";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Brave Ads-gegevens";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Advertenties en trackers";
 
@@ -157,6 +160,9 @@
 /* Brave Rewards title */
 "BraveRewardsTitle" = "Brave Rewards";
 
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Brave Search maakt geen profiel van jou.";
+
 /* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Misschien later";
 
@@ -267,6 +273,9 @@
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutTitle" = "Help ons Brave beter te maken.";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "Deel privé- en anonieme productinzichten.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Gebruik Brave Privacy op je computer of tablet en synchroniseer bladwijzers en extensies tussen je apparaten.";
@@ -1072,8 +1081,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Open toetsenbord automatisch";
 
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "Achtergrond";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "Mediatype";
+
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Standaardafbeeldingen";
+
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Gesponsorde afbeeldingen en video's";
+
+/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesSelection" = "Gesponsorde afbeeldingen";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Nieuw tabblad";
@@ -1397,6 +1418,9 @@
 "p3a.settingTitle" = "Sta privacybeschermende productanalyse (P3A) toe";
 
 /* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "Sluit call-out van privacybeschermend product";
+
+/* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Je verbinding met deze site is niet volledig beveiligd.";
 
 /* No comment provided by engineer. */
@@ -1410,6 +1434,9 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageUnknownStatusWarning" = "Uw verbinding met deze site kan niet volledig worden geverifieerd. U kunt doorgaan of proberen de pagina opnieuw te laden om een veilige verbinding tot stand te brengen.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "Log in bij website";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Bekijk certificaat";
@@ -2236,11 +2263,29 @@
 /* Title for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInTitle" = "Zet Brave Rewards aan om een gratis gesprek te starten";
 
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "Zet deze functie aan om Brave en de BAT Community te steunen.";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "Door Brave Rewards te gebruiken, steun je Brave en de BAT Community.";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "Je steunt Brave en de BAT Community.";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "Bedankt voor het steunen van Brave en de BAT Community!";
+
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Als je klikt, ga je akkoord met de %1$@ en het %2$@. Je kunt dit altijd uitschakelen in Instellingen.";
 
 /* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "Steun Brave en de BAT Community door Brave Rewards in te schakelen en advertenties in Brave te zien.";
+
+/* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Schakel Brave Rewards in";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "Deze contentcreator is geverifieerd met Brave Creators";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Aantal contentcreators die je deze maand hebt gesteund.";
@@ -3009,6 +3054,9 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Kies het type apparaat dat je wilt synchroniseren.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Code is verlopen. Maak een nieuwe aan door op de knop hieronder te tikken.";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "Deze tijdelijke code is geldig voor de komende %@";

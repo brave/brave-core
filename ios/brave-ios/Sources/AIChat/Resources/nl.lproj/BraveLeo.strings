@@ -13,6 +13,9 @@
 /* The title for the settings to change default model for conversations */
 "aichat.advancedSettingsDefaultModelTitle" = "Standaardmodel";
 
+/* The title for the header for adjusting leo ai settings */
+"aichat.advancedSettingsHeaderTitle" = "Leo is een slimme assistent op AI, ingebouwd in de browser.";
+
 /* The subtitle for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Koppel uw App Store-aankoop aan uw Brave-account om Leo op andere apparaten te gebruiken.";
 
@@ -67,6 +70,12 @@
 /* The title shown on limit reached error view, which is suggesting user to change default model */
 "aichat.contextLimitErrorTitle" = "Dit gesprek is te lang en kan niet worden verdergezet.\nMogelijk kan Leo met andere beschikbare modellen langere gesprekken voeren.";
 
+/* The title of the section where custom models are displayed as a list. */
+"aichat.customModelChatSectionTitle" = "Aangepaste modellen";
+
+/* The title for the custom models section in the menu */
+"aichat.customModelsMenuSectionTitle" = "Aangepaste modellen";
+
 /* The title of the section where chat models are displayed as a list. */
 "aichat.defaultModelChatSectionTitle" = "Chat";
 
@@ -75,6 +84,9 @@
 
 /* The title of the menu where user can change the default model */
 "aichat.defaultModelViewTitle" = "Standaardmodel";
+
+/* The text displayed under an edited user prompt/message beside a timestamp. */
+"aichat.editedMessageCaption" = "Bewerkt";
 
 /* The title for view which user type feedback */
 "aichat.feedbackInputViewTitle" = "Geef hier je feedback";
@@ -130,6 +142,9 @@
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Razendsnelle chat";
 
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hallo, ik ben Leo. Ik word geproxied door Brave en aangedreven door Claude 3.5 Sonnet, een model gemaakt door Anthropic om conversatie- en tekst verwerkingstaken uit te voeren.";
+
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet van Anthropic";
 
@@ -138,6 +153,12 @@
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Hallo, ik ben Leo. Ik ben de AI-assistent van Brave, mogelijk gemaakt door %@. Je kunt me alles vragen en ik doe mijn best om je een antwoord te geven.";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageLlamaMessageDescription" = "Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost en die mogelijk is gemaakt door door Llama 3.1 8B, een krachtig en veelzijdig model gemaakt door Meta.";
+
+/* The model and creator for intro message - Llama 3.1 8B is the model name -- Meta is the creator */
+"aichat.introMessageLlamaModelDescription" = "Llama 3.1 8B van Meta";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Chat voor algemene taken";
@@ -156,6 +177,9 @@
 
 /* The name of the AI-Assistant that's responsing to the user */
 "aichat.leoAssistantNameTitle" = "Leo";
+
+/* The default title displayed above a code block when the language of the code is not known. */
+"aichat.leoCodeExampleDefaultTitle" = "Voorbeeld van code";
 
 /* The text displayed on the loading screen when searching for a user query */
 "aichat.leoImprovedAnswerBraveSearch" = "Zoeken naar betere antwoorden voor";
@@ -312,6 +336,9 @@
 
 /* The title for disliking response to clipboard action */
 "aichat.responseContextMenuDislikeAnswerTitle" = "Antwoord niet leuk";
+
+/* The title for editing user prompt action from context menu */
+"aichat.responseContextMenuEditPromptTitle" = "Wijzig prompt";
 
 /* The title for liking response to clipboard action */
 "aichat.responseContextMenuLikeAnswerTitle" = "Antwoord leuk";
