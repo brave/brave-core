@@ -97,6 +97,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       }
     }
   }
+  @Published var viewActivityToggle: Bool = false
   /// The origin of the active tab (if applicable). Used for fetching/selecting network for the DApp origin.
   public var origin: URLOrigin? {
     didSet {

@@ -16,10 +16,10 @@ struct TransactionConfirmationView: View {
   @ObservedObject var keyringStore: KeyringStore
 
   var onDismiss: () -> Void
+  var onViewInActivity: () -> Void
 
   @State private var isShowingGas: Bool = false
   @State private var isShowingAdvancedSettings: Bool = false
-  @State private var transactionDetails: TransactionDetailsStore?
 
   private var transactionType: String {
     if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
@@ -59,34 +59,13 @@ struct TransactionConfirmationView: View {
       keyringStore: keyringStore,
       isShowingGas: $isShowingGas,
       isShowingAdvancedSettings: $isShowingAdvancedSettings,
+      isTxSubmitting: $confirmationStore.isTxSubmitting,
       onDismiss: {
         if confirmationStore.unapprovedTxs.count == 0 {
           onDismiss()
         }
         // update activeTransactionId
         confirmationStore.updateActiveTxIdAfterSignedClosed()
-      }
-    )
-    .overlay(
-      Group {
-        if confirmationStore.isTxSubmitting {
-          ProgressView()
-            .progressViewStyle(.braveCircular(size: .large, tint: .braveBlurpleTint))
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.braveGroupedBackground).ignoresSafeArea())
-        } else {
-          TransactionStatusView(
-            confirmationStore: confirmationStore,
-            networkStore: networkStore,
-            transactionDetails: $transactionDetails
-          ) {
-            if confirmationStore.unapprovedTxs.count == 0 {
-              onDismiss()
-            }
-            // update activeTransactionId
-            confirmationStore.updateActiveTxIdAfterSignedClosed()
-          }
-        }
       }
     )
   }
@@ -153,19 +132,27 @@ struct TransactionConfirmationView: View {
       Color.clear
         .sheet(
           isPresented: Binding(
-            get: { self.transactionDetails != nil },
-            set: {
-              if !$0 {
-                self.transactionDetails = nil
-                self.confirmationStore.closeTxDetailsStore()
-              }
-            }
+            get: { confirmationStore.activeTxStatusStore != nil },
+            set: { if !$0 { confirmationStore.closeTxStatusStore() } }
           )
         ) {
-          if let transactionDetailsStore = transactionDetails {
-            TransactionDetailsView(
-              transactionDetailsStore: transactionDetailsStore,
-              networkStore: networkStore
+          if let txStatusStore = confirmationStore.activeTxStatusStore {
+            TransactionStatusView(
+              txStatusStore: txStatusStore,
+              networkStore: networkStore,
+              onDismiss: {
+                if confirmationStore.unapprovedTxs.count == 0 {
+                  onDismiss()
+                }
+                // update activeTransactionId
+                confirmationStore.updateActiveTxIdAfterSignedClosed()
+                // close tx status store
+                confirmationStore.closeTxStatusStore()
+              },
+              onViewInActivity: {
+                onDismiss()
+                onViewInActivity()
+              }
             )
           }
         }
@@ -180,7 +167,8 @@ struct TransactionConfirmationView_Previews: PreviewProvider {
       confirmationStore: .previewStore,
       networkStore: .previewStore,
       keyringStore: .previewStoreWithWalletCreated,
-      onDismiss: {}
+      onDismiss: {},
+      onViewInActivity: {}
     )
     .previewLayout(.sizeThatFits)
   }

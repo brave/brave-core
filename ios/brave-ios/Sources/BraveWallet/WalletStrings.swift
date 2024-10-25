@@ -5582,5 +5582,149 @@ extension Strings {
       comment:
         "An error message that will get displayed when user is trying to add an existed custom token."
     )
+    public static let txStatusSending = NSLocalizedString(
+      "wallet.txStatusSending",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Sending",
+      comment:
+        "The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a send transaction waitings for getting completed."
+    )
+    public static let txStatusSwapping = NSLocalizedString(
+      "wallet.txStatusSwapping",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Swapping",
+      comment:
+        "The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a swap transaction waitings for getting completed."
+    )
+    public static let txStatusApproving = NSLocalizedString(
+      "wallet.txStatusApproving",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Approving",
+      comment:
+        "The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a ERC20 Approval transaction waitings for getting completed."
+    )
+    public static let txStatusTo = NSLocalizedString(
+      "wallet.txStatusTo",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "to",
+      comment:
+        "The word of preposition. Indicates the following account is the account receiving a certain amount of tokens. For example: Sending 0.1 ETH `to` Account 1."
+    )
+    public static let txStatusOn = NSLocalizedString(
+      "wallet.txStatusOn",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "on",
+      comment:
+        "The word of preposition. Indicates some ERC20 token is approved on the following account. For example: Approving 0.1 ETH `on` Account 1."
+    )
+    public static let txStatusCompleted = NSLocalizedString(
+      "wallet.txStatusCompleted",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Completed",
+      comment:
+        "The status inside transaction status screen, indicates this transaction is completed/confirmed on the blockchain."
+    )
+    public static let txStatusSentMsg = NSLocalizedString(
+      "wallet.txStatusSentMsg",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "has been sent to account",
+      comment:
+        "A message explains a send transaction is confirmed on the blockchain."
+    )
+    public static let txStatusERC20ApprovalMsg = NSLocalizedString(
+      "wallet.txStatusERC20ApprovalMsg",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "has been approved on your",
+      comment:
+        "A message explains an ERC20 Approval transaction is confirmed on the blockchain."
+    )
+    public static let txStatusSwappedMsg = NSLocalizedString(
+      "wallet.txStatusSwappedMsg",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "has been added to your",
+      comment:
+        "A message explains an ETH Swap transaction is confirmed on the blockchain."
+    )
+    public static let txStatusSendTxErrorTitle = NSLocalizedString(
+      "wallet.txStatusSendTxErrorTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Unable to send",
+      comment:
+        "The title of the message when a send transaction failed to be confirmed on the blockchain."
+    )
+    public static let txStatusSendTxErrorMsg = NSLocalizedString(
+      "wallet.txStatusSendTxErrorMsg",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "There was an error attempting to send",
+      comment:
+        "The message after the title when a send transaction failed to be confirmed on the blockchain."
+    )
+    public static let txStatusSwapTxErrorTitle = NSLocalizedString(
+      "wallet.txStatusSwapTxErrorTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Unable to swap",
+      comment:
+        "The title of the message when a swap transaction failed to be confirmed on the blockchain."
+    )
+    public static let txStatusSwapTxErrorMsg = NSLocalizedString(
+      "wallet.txStatusSendTxErrorMsg",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "There was an error attempting to swap",
+      comment:
+        "The message after the title when a swap transaction failed to be confirmed on the blockchain."
+    )
+    public static let txStatusERC20ApprovalTxErrorTitle = NSLocalizedString(
+      "wallet.txStatusERC20ApprovalTxErrorTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Unable to approve",
+      comment:
+        "The title of the message when a ERC20 Approval transaction failed to be confirmed on the blockchain."
+    )
+    public static let txStatusERC20ApprovalTxErrorMsg = NSLocalizedString(
+      "wallet.txStatusERC20ApprovalTxErrorMsg",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "There was an error attempting to approve",
+      comment:
+        "The message after the title when an ERC20 Approval transaction failed to be confirmed on the blockchain."
+    )
+    public static let txStatusSignedConfirmedMsg = NSLocalizedString(
+      "wallet.txStatusSignedConfirmedMsg",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "Transaction has been signed and will be sent to network by dapps and await for confirmation.",
+      comment:
+        "The message when a sign transaction is completed/confirmed on the blockchain."
+    )
+    public static let txStatusViewInActivity = NSLocalizedString(
+      "wallet.txStatusViewInActivity",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "View in Activity",
+      comment:
+        "The title for the button. User would tap on this button to view the transaction status in the `Activity` tab."
+    )
+    public static let txStatusSubmittedDisclosure = NSLocalizedString(
+      "wallet.txStatusSubmittedDisclosure",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:  "You can safely dismiss this screen.",
+      comment:
+        "The text in the disclosure view in transaction status screen."
+    )
   }
 }
