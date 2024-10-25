@@ -37,11 +37,15 @@ public class VpnRegionPreference extends Preference {
         }
 
         String serverLocationTitle = BraveVpnPrefUtils.getRegionCountry();
+        String optimalString = "%s - %s";
         String serverLocationSummary =
                 BraveVpnPrefUtils.getRegionPrecision()
                                 .equals(BraveVpnConstants.REGION_PRECISION_COUNTRY)
-                        ? mContext.getString(R.string.optimal_text)
-                        : BraveVpnPrefUtils.getRegionNamePretty();
+                        ? String.format(
+                                optimalString,
+                                mContext.getString(R.string.optimal_text),
+                                BraveVpnPrefUtils.getHostnameDisplay())
+                        : BraveVpnPrefUtils.getHostnameDisplay();
 
         TextView regionTitle = (TextView) holder.findViewById(R.id.region_title);
         regionTitle.setText(serverLocationTitle);
