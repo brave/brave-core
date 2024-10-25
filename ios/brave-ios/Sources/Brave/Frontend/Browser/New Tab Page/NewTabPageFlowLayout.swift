@@ -64,6 +64,9 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
 
       lastSizedElementMinY = nil
       lastSizedElementPreferredHeight = nil
+    } else {
+      gapLength = 0
+      extraHeight = 0
     }
   }
 

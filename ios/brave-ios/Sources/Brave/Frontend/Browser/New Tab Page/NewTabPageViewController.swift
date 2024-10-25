@@ -772,26 +772,9 @@ class NewTabPageViewController: UIViewController {
         collectionView.deleteItems(at: [IndexPath(item: 0, section: section)])
       }
 
-      // We check if first item exists before scrolling up to it.
-      // This should never happen since first item is our shields stats view.
-      // However we saw it crashing in XCode logs, see #4202.
-      let firstItemIndexPath = IndexPath(item: 0, section: 0)
-      if let itemCount = collectionView.dataSource?.collectionView(
-        collectionView,
-        numberOfItemsInSection: 0
-      ),
-        itemCount > 0,  // Only scroll if the section has items, otherwise it will crash.
-        collectionView.dataSource?
-          .collectionView(collectionView, cellForItemAt: firstItemIndexPath) != nil
-      {
-        collectionView.scrollToItem(at: firstItemIndexPath, at: .top, animated: true)
-      } else {
-        // Cannot scorll to deleted item index.
-        // Collection-View datasource never changes or updates
-        // Therefore we need to scroll to offset 0.
-        // See: #4575.
-        collectionView.setContentOffset(.zero, animated: true)
-      }
+      // scroll to offset .zero to preserve padding above section
+      collectionView.setContentOffset(.zero, animated: true)
+      backgroundButtonsView.setNeedsLayout()
       collectionView.verticalScrollIndicatorInsets = .zero
       UIView.animate(withDuration: 0.25) {
         self.feedOverlayView.headerView.alpha = 0.0
