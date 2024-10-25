@@ -283,6 +283,28 @@ struct PendingTransactionView: View {
         )
       }
 
+      if confirmationStore.activeParsedTransaction.hasSystemProgramAssignInstruction {
+        VStack(alignment: .leading, spacing: 8) {
+          Label {
+            Text(Strings.Wallet.confirmationViewSolAccountOwnershipChangeWarningTitle)
+              .foregroundColor(Color(braveSystemName: .systemfeedbackWarningText))
+          } icon: {
+            Image(braveSystemName: "leo.warning.triangle-outline")
+              .foregroundColor(Color(braveSystemName: .systemfeedbackWarningIcon))
+          }
+          .font(.subheadline.weight(.bold))
+          Text(Strings.Wallet.confirmationViewSolAccountOwnershipChangeWarning)
+            .foregroundColor(Color(braveSystemName: .systemfeedbackWarningText))
+            .font(.subheadline.weight(.medium))
+        }
+        .padding(.horizontal, 24)
+        .padding(.vertical, 20)
+        .background(
+          Color(braveSystemName: .systemfeedbackWarningBackground)
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+        )
+      }
+
       // View Mode
       VStack(spacing: 12) {
         Picker("", selection: $viewMode) {
