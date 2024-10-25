@@ -9,12 +9,16 @@
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -86,6 +90,12 @@ class HSTSPartitioningBrowserTestBase : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+
+    // Disable auto-upgrade to HTTPS for these tests.
+    auto* host_content_settings =
+        HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    host_content_settings->SetDefaultContentSetting(
+        ContentSettingsType::BRAVE_HTTPS_UPGRADE, CONTENT_SETTING_ALLOW);
   }
 
   void SetUpInProcessBrowserTestFixture() override {
