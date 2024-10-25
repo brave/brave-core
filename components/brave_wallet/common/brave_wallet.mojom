@@ -981,6 +981,7 @@ struct WalletInfo {
   bool is_z_cash_enabled;
   bool is_ankr_balances_feature_enabled;
   bool is_transaction_simulations_feature_enabled;
+  bool is_z_cash_shielded_transactions_enabled;
 };
 
 // Browser-side handler for common panel / page things

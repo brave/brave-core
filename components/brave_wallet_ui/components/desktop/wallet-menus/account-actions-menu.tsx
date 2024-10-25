@@ -37,8 +37,12 @@ export const AccountActionsMenu = (props: Props) => {
         <PopupButton
           key={option.id}
           onClick={() => onClick(option.id)}
+          minWidth={250}
         >
-          <ButtonIcon name={option.icon} />
+          <ButtonIcon
+            name={option.icon}
+            id={option.id}
+          />
           <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
         </PopupButton>
       ))}
@@ -48,8 +52,12 @@ export const AccountActionsMenu = (props: Props) => {
         <PopupButton
           key={option.id}
           onClick={() => onClick(option.id)}
+          minWidth={250}
         >
-          <ButtonIcon name={option.icon} />
+          <ButtonIcon
+            name={option.icon}
+            id={option.id}
+          />
           <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
         </PopupButton>
       ))}
