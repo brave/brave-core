@@ -14,6 +14,7 @@
 
 #include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
+#include "base/i18n/time_formatting.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
@@ -35,6 +36,7 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
+#include "chrome/browser/bookmarks/bookmark_html_writer.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -55,11 +57,14 @@
 #include "chrome/browser/ui/tabs/tab_utils.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/pref_names.h"
+#include "chrome/grit/generated_resources.h"
 #include "components/tab_groups/tab_group_visual_data.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/clipboard/clipboard_buffer.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "ui/shell_dialogs/select_file_policy.h"
+#include "ui/shell_dialogs/selected_file_info.h"
 #include "url/origin.h"
 
 #if defined(TOOLKIT_VIEWS)
@@ -896,6 +901,56 @@ void ScrollTabToTop(Browser* browser) {
 void ScrollTabToBottom(Browser* browser) {
   auto* contents = browser->tab_strip_model()->GetActiveWebContents();
   contents->ScrollToBottomOfDocument();
+}
+
+namespace {
+
+/**
+ * @class BookmarksExportListener
+ * @brief A listener class for handling bookmark export file selection.
+ *
+ * This class is responsible for showing a file dialog to the user for selecting
+ * the location to save exported bookmarks.
+ *
+ * @note The lifetime of this class is tied to the FileSelected dialog. It will
+ * be automatically deleted when the dialog is closed, a file is selected, or
+ * the dialog is cancelled.
+ */
+class BookmarksExportListener : public ui::SelectFileDialog::Listener {
+ public:
+  explicit BookmarksExportListener(Profile* profile)
+      : profile_(profile),
+        file_selector_(ui::SelectFileDialog::Create(this, nullptr)) {}
+  void FileSelected(const ui::SelectedFileInfo& file, int index) override {
+    bookmark_html_writer::WriteBookmarks(profile_, file.file_path, nullptr);
+    delete this;
+  }
+  void ShowFileDialog(Browser* browser) {
+    const std::string exported_bookmarks_filename =
+        base::UnlocalizedTimeFormatWithPattern(base::Time::Now(), "yyyy_MM_dd",
+                                               nullptr) +
+        "_brave_browser_bookmarks.html";
+    ui::SelectFileDialog::FileTypeInfo file_types;
+
+    // Only show HTML files in the file dialog.
+    file_types.extensions.push_back(std::vector<std::string>{"html"});
+    file_selector_->SelectFile(
+        ui::SelectFileDialog::SELECT_SAVEAS_FILE,
+        l10n_util::GetStringUTF16(IDS_BOOKMARK_MANAGER_MENU_EXPORT),
+        base::FilePath::FromUTF8Unsafe(exported_bookmarks_filename),
+        &file_types, 1, FILE_PATH_LITERAL("html"),
+        browser->window()->GetNativeWindow(), nullptr);
+  }
+
+ private:
+  raw_ptr<Profile> profile_;
+  scoped_refptr<ui::SelectFileDialog> file_selector_;
+};
+
+}  // namespace
+
+void ExportAllBookmarks(Browser* browser) {
+  (new BookmarksExportListener(browser->profile()))->ShowFileDialog(browser);
 }
 
 void ToggleAllBookmarksButtonVisibility(Browser* browser) {
