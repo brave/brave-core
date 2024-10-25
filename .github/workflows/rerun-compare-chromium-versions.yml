@@ -15,7 +15,7 @@ jobs:
   rerun-compare-chromium-versions:
 ## TODO: Temporary workaround for the above issue
 #    if: github.event.pull_request.merged == true
-## TODO: Just for testing before merge
+## TODO: replace before merging
     if: startsWith("cr1", github.head_ref)
 #    if: github.event.pull_request.merged == true && startsWith("cr1", github.head_ref)
     runs-on: ubuntu-latest
@@ -43,12 +43,15 @@ jobs:
                   pr_url="https://github.com/brave/brave-core/pull/${pr_number:?}"
                   if [[ "$run_id" ]]; then
                       echo "Rerunning $run_id for $pr_url"
-                      gh -R "$GITHUB_REPOSITORY" run rerun "$run_id"
+                      # TODO: remove the echo before merging
+                      echo gh -R "$GITHUB_REPOSITORY" run rerun "$run_id"
                   else
                       echo "No run found for $pr_url"
                   fi
                   sleep 1
-              done < <(gh -R "$GITHUB_REPOSITORY" pr list --limit 1000 --state open --base "$GITHUB_BASE_REF" --json number,headRefOid -q '.[]|"\(.number)\t\(.headRefOid)"')
+              ## TODO: replace before merging
+              #done < <(gh -R "$GITHUB_REPOSITORY" pr list --limit 1000 --state open --base "$GITHUB_BASE_REF" --json number,headRefOid -q '.[]|"\(.number)\t\(.headRefOid)"')
+              done < <(gh -R "$GITHUB_REPOSITORY" pr list --limit 10 --state open --base "$GITHUB_BASE_REF" --json number,headRefOid -q '.[]|"\(.number)\t\(.headRefOid)"')
           else
               echo "::notice::Chromium major versions match, nothing to do"
           fi
