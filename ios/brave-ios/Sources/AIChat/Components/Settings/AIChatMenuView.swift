@@ -123,7 +123,7 @@ struct AIChatMenuView: View {
   }
 
   var body: some View {
-    LazyVStack(spacing: 0.0) {
+    VStack(spacing: 0.0) {
       Text(Strings.AIChat.defaultModelLanguageSectionTitle)
         .font(.caption2.weight(.semibold))
         .foregroundStyle(Color(braveSystemName: .textPrimary))
