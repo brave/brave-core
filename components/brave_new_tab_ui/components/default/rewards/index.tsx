@@ -6,18 +6,27 @@
 import * as React from 'react'
 
 import createWidget from '../widget/index'
-import { StyledTitleTab } from '../widgetCard'
+import { StyledCard, StyledTitleTab } from '../widgetCard'
 
 import { LocaleContext } from '../../../../brave_rewards/resources/shared/lib/locale_context'
 import { createLocaleContextForWebUI } from '../../../../brave_rewards/resources/shared/lib/webui_locale_context'
+import { getProviderPayoutStatus } from '../../../../brave_rewards/resources/shared/lib/provider_payout_status'
+import { userTypeFromString } from '../../../../brave_rewards/resources/shared/lib/user_type'
+import {
+  optional
+} from '../../../../brave_rewards/resources/shared/lib/optional'
 
 import {
+  externalWalletFromExtensionData,
+  isExternalWalletProviderAllowed,
+  externalWalletProviderFromString,
+  isSelfCustodyProvider
+} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+
+import {
+  RewardsCard,
   RewardsCardHeaderContent
 } from '../../../../brave_rewards/resources/shared/components/newtab'
-
-import { VPNPromoWidget, VPNWidget } from '../vpn/vpn_card'
-import { BraveVPNState } from "components/brave_new_tab_ui/reducers/brave_vpn";
-import * as BraveVPN from "../../../api/braveVpn";
 
 const locale = createLocaleContextForWebUI()
 
@@ -42,7 +51,6 @@ export interface RewardsProps {
   onDismissNotification: (id: string) => void
   onSelfCustodyInviteDismissed: () => void
   onTermsOfServiceUpdateAccepted: () => void
-  braveVPNState: BraveVPNState
 }
 
 export const RewardsWidget = createWidget((props: RewardsProps) => {
@@ -56,9 +64,71 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
     )
   }
 
+  const adsInfo = props.adsAccountStatement || null
+  const externalWallet = externalWalletFromExtensionData(props.externalWallet)
+
+  const providerPayoutStatus = () => {
+    const { payoutStatus } = props.parameters
+    if (!payoutStatus) {
+      return 'off'
+    }
+    const walletProvider = externalWallet ? externalWallet.provider : null
+    return getProviderPayoutStatus(payoutStatus, walletProvider)
+  }
+
+  const showSelfCustodyInvite = () => {
+    if (props.userType !== 'unconnected') {
+      return false
+    }
+    if (props.selfCustodyInviteDismissed) {
+      return false
+    }
+    const { walletProviderRegions } = props.parameters
+    for (const name of (props.externalWalletProviders || [])) {
+      const provider = externalWalletProviderFromString(name)
+      if (provider && isSelfCustodyProvider(provider)) {
+        const regions = (walletProviderRegions || {})[provider] || null
+        if (isExternalWalletProviderAllowed(props.declaredCountry, regions)) {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
+  const openRewardsPanel = () => {
+    chrome.braveRewards.recordNTPPanelTrigger()
+    chrome.braveRewards.openRewardsPanel()
+  }
+
   return (
     <LocaleContext.Provider value={locale}>
-      {props.braveVPNState.purchasedState === BraveVPN.PurchasedState.PURCHASED ? <VPNWidget {...props.braveVPNState} /> : <VPNPromoWidget /> }
+      <StyledCard>
+        <RewardsCard
+          rewardsEnabled={props.rewardsEnabled}
+          userType={userTypeFromString(props.userType)}
+          declaredCountry={props.declaredCountry}
+          needsBrowserUpgradeToServeAds={props.needsBrowserUpgradeToServeAds}
+          rewardsBalance={optional(props.balance)}
+          exchangeCurrency='USD'
+          exchangeRate={props.parameters.rate}
+          providerPayoutStatus={providerPayoutStatus()}
+          externalWallet={externalWallet}
+          nextPaymentDate={adsInfo ? adsInfo.nextPaymentDate : 0}
+          minEarningsThisMonth={adsInfo ? adsInfo.minEarningsThisMonth : 0}
+          maxEarningsThisMonth={adsInfo ? adsInfo.maxEarningsThisMonth : 0}
+          minEarningsLastMonth={adsInfo ? adsInfo.minEarningsLastMonth : 0}
+          maxEarningsLastMonth={adsInfo ? adsInfo.maxEarningsLastMonth : 0}
+          contributionsThisMonth={props.totalContribution}
+          showSelfCustodyInvite={showSelfCustodyInvite()}
+          isTermsOfServiceUpdateRequired={props.isTermsOfServiceUpdateRequired}
+          publishersVisited={props.publishersVisitedCount || 0}
+          onEnableRewards={openRewardsPanel}
+          onSelectCountry={openRewardsPanel}
+          onSelfCustodyInviteDismissed={props.onSelfCustodyInviteDismissed}
+          onTermsOfServiceUpdateAccepted={props.onTermsOfServiceUpdateAccepted}
+        />
+      </StyledCard>
     </LocaleContext.Provider>
   )
 })
