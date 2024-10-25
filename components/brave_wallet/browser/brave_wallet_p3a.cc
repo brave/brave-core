@@ -147,7 +147,7 @@ void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
       histogram_name = kSolProviderHistogramName;
       break;
     default:
-      NOTREACHED_NORETURN();
+      return;
   }
 
   JSProviderAnswer answer = JSProviderAnswer::kNoWallet;
@@ -180,8 +180,6 @@ void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
                      : JSProviderAnswer::kNativeNotOverridden;
       }
       break;
-    default:
-      NOTREACHED_NORETURN();
   }
 
   base::UmaHistogramEnumeration(histogram_name, answer);
@@ -256,12 +254,9 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
     case mojom::CoinType::ZEC:
       histogram_name = kZecTransactionSentHistogramName;
       break;
-    default:
-      NOTREACHED_IN_MIGRATION() << coin;
-      return;
   }
 
-  DCHECK(histogram_name);
+  CHECK(histogram_name);
 
   ScopedDictPrefUpdate last_sent_time_update(
       profile_prefs_, kBraveWalletLastTransactionSentTimeDict);
@@ -309,12 +304,9 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
     case mojom::CoinType::ZEC:
       histogram_name = kZecActiveAccountHistogramName;
       break;
-    default:
-      NOTREACHED_IN_MIGRATION() << coin_type;
-      return;
   }
 
-  DCHECK(histogram_name);
+  CHECK(histogram_name);
 
   const base::Value::Dict& active_wallet_dict =
       profile_prefs_->GetDict(kBraveWalletP3AActiveWalletDict);
@@ -472,7 +464,7 @@ void BraveWalletP3A::OnTransactionStatusChanged(
       return;
     }
   } else {
-    NOTREACHED_IN_MIGRATION();
+    return;
   }
   ReportTransactionSent(tx_coin, true);
 }

@@ -130,18 +130,15 @@ const std::string& ConstellationLogStore::staged_log_histogram_name() const {
 }
 
 const std::string& ConstellationLogStore::staged_log_hash() const {
-  NOTREACHED_IN_MIGRATION();
-  return staged_log_hash_;
+  NOTREACHED();
 }
 
 const std::string& ConstellationLogStore::staged_log_signature() const {
-  NOTREACHED_IN_MIGRATION();
-  return staged_log_signature_;
+  NOTREACHED();
 }
 
 std::optional<uint64_t> ConstellationLogStore::staged_log_user_id() const {
-  NOTREACHED_IN_MIGRATION();
-  return std::nullopt;
+  NOTREACHED();
 }
 
 void ConstellationLogStore::StageNextLog() {
@@ -175,7 +172,7 @@ void ConstellationLogStore::MarkStagedLogAsSent() {
 
 void ConstellationLogStore::TrimAndPersistUnsentLogs(
     bool overwrite_in_memory_store) {
-  NOTREACHED_IN_MIGRATION();
+  NOTREACHED();
 }
 
 size_t ConstellationLogStore::GetMaxEpochsToRetain() const {

@@ -270,7 +270,6 @@ void P3AService::OnHistogramChanged(const char* histogram_name,
   const bool ok = samples->Iterator()->GetBucketIndex(&bucket);
   if (!ok) {
     LOG(ERROR) << "Only linear histograms are supported at the moment!";
-    NOTREACHED_IN_MIGRATION();
     return;
   }
 
