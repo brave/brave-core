@@ -26,7 +26,7 @@ const char* MetricLogTypeToString(MetricLogType log_type) {
     case MetricLogType::kExpress:
       return kExpressStr;
   }
-  NOTREACHED_IN_MIGRATION();
+  NOTREACHED();
 }
 
 std::optional<MetricLogType> StringToMetricLogType(
