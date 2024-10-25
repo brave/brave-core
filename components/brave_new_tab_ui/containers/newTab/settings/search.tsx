@@ -67,12 +67,12 @@ const Hr = styled.hr`
 `
 
 const CheckboxText = styled.span`flex: 1`;
+const hasEnabledEngine = (config: Record<string, boolean>) => Object.keys(config).some(key => config[key])
 
 export default function SearchSettings() {
   const { result: engines = [] } = usePromise(() => searchEnginesPromise, [])
   const [showSearchBox, setShowSearchBox] = useNewTabPref('showSearchBox')
   const { setEngineConfig, engineConfig } = useEngineContext()
-  const hasEnabledEngine = (config: Record<string, boolean>) => Object.keys(config).some(key => config[key])
 
   React.useEffect(() => {
     if (!hasEnabledEngine(engineConfig)) {

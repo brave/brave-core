@@ -6,6 +6,7 @@
 // Utils
 import { debounce } from '../../common/debounce'
 import { loadTimeData } from '../../common/loadTimeData'
+import { braveSearchHost } from '../components/search/config'
 
 export const keyName = 'new-tab-data'
 
@@ -28,7 +29,7 @@ export const defaultState: NewTab.State = {
   showRewards: false,
   showBraveTalk: false,
   showSearchBox: true,
-  lastUsedNtpSearchEngine: "search.brave.com",
+  lastUsedNtpSearchEngine: braveSearchHost,
   promptEnableSearchSuggestions: true,
   searchSuggestionsEnabled: false,
   showBitcoinDotCom: false,

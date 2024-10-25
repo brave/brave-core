@@ -21,19 +21,21 @@ const EngineContext = React.createContext<Engine>({
   setEngineConfig: () => { },
 })
 
+const searchEngineConfig = () => {
+  const localStorageValue = localStorage.getItem(ENABLED_SEARCH_ENGINES_KEY);
+  if (localStorageValue) {
+    return JSON.parse(localStorageValue);
+  }
+  return {
+    // Default to enabling Brave Search
+    [braveSearchHost]: true
+  };
+}
+
 export function EngineContextProvider(props: React.PropsWithChildren<{}>) {
   const [lastUsed, setLastUsed] = useNewTabPref('lastUsedNtpSearchEngine')
   const lastLocalStorage = localStorage.getItem(LAST_SEARCH_ENGINE_KEY)
-  const [config, setConfig] = React.useState<Record<string, boolean>>(() => {
-    const localStorageValue = localStorage.getItem(ENABLED_SEARCH_ENGINES_KEY);
-    if (localStorageValue) {
-      return JSON.parse(localStorageValue);
-    }
-    return {
-      // Default to enabling Brave Search
-      [braveSearchHost]: true
-    };
-  });
+  const [config, setConfig] = React.useState<Record<string, boolean>>(searchEngineConfig);
 
   const setLastNtpSearchEngine = React.useCallback((engine: SearchEngineInfo) => {
     setLastUsed(engine.host);
