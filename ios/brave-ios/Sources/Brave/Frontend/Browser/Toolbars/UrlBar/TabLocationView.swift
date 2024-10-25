@@ -22,6 +22,7 @@ protocol TabLocationViewDelegate {
     _ tabLocationView: TabLocationView,
     action: PlaylistURLBarButton.MenuAction
   )
+  func tabLocationViewDidTapTranslateButton(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapReload(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapStop(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapVoiceSearch(_ tabLocationView: TabLocationView)
@@ -78,7 +79,7 @@ class TabLocationView: UIView {
     configuration.buttonSize = .small
     configuration.imagePadding = 4
     // A bit extra on the leading edge for visual spacing
-    configuration.contentInsets = .init(top: 0, leading: 12, bottom: 0, trailing: 8)
+    configuration.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 8)
 
     var title = AttributedString(Strings.tabToolbarNotSecureTitle)
     title.font = .preferredFont(forTextStyle: .subheadline, compatibleWith: clampedTraitCollection)
@@ -112,27 +113,27 @@ class TabLocationView: UIView {
   }
 
   private func updateLeadingItem() {
-    var leadingView: UIView?
-    defer { leadingItemView = leadingView }
+    // Hide all items
+    leadingItemStackView.arrangedSubviews.forEach {
+      $0.isHidden = true
+    }
+
     if !secureContentState.shouldDisplayWarning {
       // Consider reader mode
-      leadingView = readerModeState != .unavailable ? readerModeButton : nil
+      secureContentStateButton.configuration = secureContentStateButtonConfiguration
+      readerModeButton.isHidden = readerModeState == .unavailable
+
+      // Consider brave translate
+      translateButton.isHidden = translationState == .unavailable
       return
     }
 
-    let button = UIButton(
-      configuration: secureContentStateButtonConfiguration,
-      primaryAction: .init(handler: { [weak self] _ in
-        guard let self = self else { return }
-        self.delegate?.tabLocationViewDidTapSecureContentState(self)
-      })
-    )
-    button.configurationUpdateHandler = { [unowned self] btn in
-      btn.configuration = secureContentStateButtonConfiguration
-    }
-    button.tintAdjustmentMode = .normal
-    secureContentStateButton = button
-    leadingView = button
+    // Display security status
+    secureContentStateButton.configuration = secureContentStateButtonConfiguration
+    secureContentStateButton.isHidden = false
+
+    // Consider brave translate
+    translateButton.isHidden = translationState == .unavailable
   }
 
   deinit {
@@ -171,6 +172,37 @@ class TabLocationView: UIView {
     }
   }
 
+  var translationState: TranslateURLBarButton.TranslateState {
+    get {
+      return translateButton.translateState
+    }
+    set(state) {
+      defer { updateLeadingItem() }
+      if state != self.translateButton.translateState {
+        let wasHidden = leadingItemView == nil
+        self.translateButton.translateState = state
+        if wasHidden != (state == TranslateURLBarButton.TranslateState.unavailable) {
+          UIAccessibility.post(notification: .layoutChanged, argument: nil)
+          if !translateButton.isHidden {
+            // Delay the Translation Button accessibility announcement briefly to prevent interruptions.
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+              UIAccessibility.post(
+                notification: .announcement,
+                argument: Strings.braveTranslateAvailableVoiceOverAnnouncement
+              )
+            }
+          }
+        }
+        UIView.animate(
+          withDuration: 0.1,
+          animations: { () -> Void in
+            self.translateButton.alpha = state == .unavailable ? 0 : 1
+          }
+        )
+      }
+    }
+  }
+
   lazy var urlDisplayLabel: UILabel = {
     let urlDisplayLabel = DisplayURLLabel()
 
@@ -189,15 +221,13 @@ class TabLocationView: UIView {
     return urlDisplayLabel
   }()
 
-  private(set) lazy var readerModeButton: ReaderModeButton = {
-    let readerModeButton = ReaderModeButton(frame: .zero)
-    readerModeButton.addTarget(self, action: #selector(didTapReaderModeButton), for: .touchUpInside)
-    readerModeButton.isAccessibilityElement = true
-    readerModeButton.imageView?.contentMode = .scaleAspectFit
-    readerModeButton.accessibilityLabel = Strings.tabToolbarReaderViewButtonAccessibilityLabel
-    readerModeButton.accessibilityIdentifier = "TabLocationView.readerModeButton"
-    return readerModeButton
-  }()
+  private(set) lazy var readerModeButton = ReaderModeButton(frame: .zero).then {
+    $0.addTarget(self, action: #selector(didTapReaderModeButton), for: .touchUpInside)
+    $0.isAccessibilityElement = true
+    $0.imageView?.contentMode = .scaleAspectFit
+    $0.accessibilityLabel = Strings.tabToolbarReaderViewButtonAccessibilityLabel
+    $0.accessibilityIdentifier = "TabLocationView.readerModeButton"
+  }
 
   private(set) lazy var playlistButton = PlaylistURLBarButton(frame: .zero).then {
     $0.accessibilityIdentifier = "TabToolbar.playlistButton"
@@ -205,6 +235,14 @@ class TabLocationView: UIView {
     $0.buttonState = .none
     $0.tintColor = .white
     $0.addTarget(self, action: #selector(didTapPlaylistButton), for: .touchUpInside)
+  }
+
+  private(set) lazy var translateButton = TranslateURLBarButton(frame: .zero).then {
+    $0.accessibilityIdentifier = "TabToolbar.translateButton"
+    $0.isAccessibilityElement = true
+    $0.translateState = .unavailable
+    $0.imageView?.contentMode = .scaleAspectFit
+    $0.addTarget(self, action: #selector(didTapTranslateButton), for: .touchUpInside)
   }
 
   private(set) lazy var walletButton = WalletURLBarButton(frame: .zero).then {
@@ -254,22 +292,35 @@ class TabLocationView: UIView {
     $0.identifier = "url-layout-guide"
   }
 
-  private let leadingItemContainerView = UIView()
+  private let leadingItemStackView = UIStackView().then {
+    $0.alignment = .center
+    $0.insetsLayoutMarginsFromSafeArea = false
+    $0.spacing = 8.0
+  }
+
   private var leadingItemView: UIView? {
     willSet {
       leadingItemView?.removeFromSuperview()
     }
     didSet {
       if let leadingItemView {
-        leadingItemContainerView.addSubview(leadingItemView)
-        leadingItemView.snp.makeConstraints {
-          $0.edges.equalToSuperview()
-        }
+        leadingItemStackView.addArrangedSubview(leadingItemView)
       }
     }
   }
 
-  private(set) var secureContentStateButton: UIButton?
+  private(set) lazy var secureContentStateButton = UIButton(
+    configuration: secureContentStateButtonConfiguration,
+    primaryAction: .init(handler: { [weak self] _ in
+      guard let self = self else { return }
+      self.delegate?.tabLocationViewDidTapSecureContentState(self)
+    })
+  ).then {
+    $0.configurationUpdateHandler = { [unowned self] in
+      $0.configuration = secureContentStateButtonConfiguration
+    }
+    $0.tintAdjustmentMode = .normal
+  }
 
   private(set) lazy var progressBar = GradientProgressBar().then {
     $0.clipsToBounds = false
@@ -286,9 +337,13 @@ class TabLocationView: UIView {
 
     addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapLocationBar)))
 
-    readerModeButton.do {
+    let leadingItemSubviews: [UIView] = [
+      readerModeButton, translateButton, secureContentStateButton,
+    ]
+    leadingItemSubviews.forEach {
       $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
       $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+      leadingItemStackView.addArrangedSubview($0)
     }
 
     var trailingOptionSubviews: [UIView] = [walletButton, playlistButton]
@@ -308,7 +363,7 @@ class TabLocationView: UIView {
     addLayoutGuide(urlLayoutGuide)
 
     addSubview(contentView)
-    contentView.addSubview(leadingItemContainerView)
+    contentView.addSubview(leadingItemStackView)
     contentView.addSubview(urlDisplayLabel)
     contentView.addSubview(trailingTabOptionsStackView)
     contentView.addSubview(placeholderLabel)
@@ -324,8 +379,8 @@ class TabLocationView: UIView {
       $0.trailing.lessThanOrEqualTo(urlLayoutGuide)
     }
 
-    leadingItemContainerView.snp.makeConstraints {
-      $0.leading.equalToSuperview()
+    leadingItemStackView.snp.makeConstraints {
+      $0.leading.equalToSuperview().offset(TabLocationViewUX.spacing * 2)
       $0.top.bottom.equalToSuperview()
     }
 
@@ -336,7 +391,7 @@ class TabLocationView: UIView {
 
     urlLayoutGuide.snp.makeConstraints {
       $0.leading.greaterThanOrEqualTo(TabLocationViewUX.spacing * 2)
-      $0.leading.equalTo(leadingItemContainerView.snp.trailing).priority(.medium)
+      $0.leading.equalTo(leadingItemStackView.snp.trailing).priority(.medium)
       $0.trailing.equalTo(trailingTabOptionsStackView.snp.leading)
       $0.top.bottom.equalTo(self)
     }
@@ -381,8 +436,11 @@ class TabLocationView: UIView {
 
   override var accessibilityElements: [Any]? {
     get {
-      return [urlDisplayLabel, placeholderLabel, readerModeButton, playlistButton, reloadButton]
-        .filter { !$0.isHidden }
+      return [
+        urlDisplayLabel, placeholderLabel, readerModeButton, playlistButton, translateButton,
+        reloadButton,
+      ]
+      .filter { !$0.isHidden }
     }
     set {
       super.accessibilityElements = newValue
@@ -392,7 +450,7 @@ class TabLocationView: UIView {
   override func layoutSubviews() {
     super.layoutSubviews()
 
-    secureContentStateButton?.setNeedsUpdateConfiguration()
+    secureContentStateButton.setNeedsUpdateConfiguration()
   }
 
   private func updateForTraitCollection() {
@@ -436,6 +494,8 @@ class TabLocationView: UIView {
     placeholderLabel.textColor = browserColors.textTertiary
     readerModeButton.unselectedTintColor = browserColors.iconDefault
     readerModeButton.selectedTintColor = browserColors.iconActive
+    translateButton.unselectedTintColor = browserColors.iconDefault
+    translateButton.selectedTintColor = browserColors.iconActive
 
     (urlDisplayLabel as! DisplayURLLabel).clippingFade.gradientLayer.colors = [
       browserColors.containerBackground,
@@ -488,7 +548,7 @@ class TabLocationView: UIView {
     voiceSearchButton.isHidden = (url != nil) || !isVoiceSearchAvailable
     placeholderLabel.isHidden = url != nil
     urlDisplayLabel.isHidden = url == nil
-    leadingItemContainerView.isHidden = url == nil
+    leadingItemStackView.isHidden = url == nil
   }
 
   // MARK: Tap Actions
@@ -499,6 +559,10 @@ class TabLocationView: UIView {
 
   @objc func didTapPlaylistButton() {
     delegate?.tabLocationViewDidTapPlaylist(self)
+  }
+
+  @objc func didTapTranslateButton() {
+    delegate?.tabLocationViewDidTapTranslateButton(self)
   }
 
   @objc func didTapStopReloadButton() {
