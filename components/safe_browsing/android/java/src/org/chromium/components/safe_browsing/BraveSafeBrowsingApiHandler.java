@@ -11,8 +11,8 @@ import android.webkit.URLUtil;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.safetynet.SafeBrowsingThreat;
 import com.google.android.gms.safetynet.SafetyNet;
-import com.google.android.gms.safetynet.SafetyNetApi.SafeBrowsingResponse;
 import com.google.android.gms.safetynet.SafetyNetStatusCodes;
 
 import org.chromium.base.ContextUtils;
@@ -20,6 +20,9 @@ import org.chromium.base.Log;
 import org.chromium.components.safe_browsing.BraveSafeBrowsingUtils.SafeBrowsingJavaResponseStatus;
 import org.chromium.components.safe_browsing.BraveSafeBrowsingUtils.SafeBrowsingJavaThreatType;
 import org.chromium.components.safe_browsing.SafeBrowsingApiHandler.LookupResult;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Brave implementation of SafeBrowsingApiHandler for Safe Browsing Under the bonnet it still uses
@@ -120,18 +123,18 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                                         DEFAULT_CHECK_DELTA);
                                 return;
                             } else {
-                                warnWhenMoreThanOneThreat(sbResponse);
+                                List<Integer> threats =
+                                        sbResponse.getDetectedThreats().stream()
+                                                .map(SafeBrowsingThreat::getThreatType)
+                                                .collect(Collectors.toList());
 
-                                // Response only with the first code
                                 mObserver.onUrlCheckDone(
                                         callbackId,
                                         LookupResult.SUCCESS,
                                         BraveSafeBrowsingUtils
                                                 .safetyNetToSafeBrowsingJavaThreatType(
-                                                        sbResponse
-                                                                .getDetectedThreats()
-                                                                .get(0)
-                                                                .getThreatType()),
+                                                        BraveSafeBrowsingUtils
+                                                                .getHighestPriorityThreat(threats)),
                                         THREAT_ATTRIBUTES_STUB,
                                         SafeBrowsingJavaResponseStatus.SUCCESS_WITH_REAL_TIME,
                                         DEFAULT_CHECK_DELTA);
@@ -199,18 +202,6 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                             }
                             mTriesCount = 0;
                         });
-    }
-
-    private void warnWhenMoreThanOneThreat(SafeBrowsingResponse sbResponse) {
-        if (sbResponse.getDetectedThreats().size() != 1) {
-            Log.d(TAG, "Unexpected threats count: " + sbResponse.getDetectedThreats().size());
-            String threats = "";
-            for (int i = 0; i < sbResponse.getDetectedThreats().size(); i++) {
-                threats += sbResponse.getDetectedThreats().get(i).getThreatType();
-                threats += " ";
-            }
-            Log.d(TAG, "Threats: [" + threats + "]");
-        }
     }
 
     public void initSafeBrowsing() {
