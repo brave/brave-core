@@ -74,8 +74,12 @@ BraveShieldsActionView::BraveShieldsActionView(Profile& profile,
       tab_strip_model_(tab_strip_model) {
   auto* web_contents = tab_strip_model_->GetActiveWebContents();
   if (web_contents) {
-    brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents)
-        ->AddObserver(this);
+    auto* tab_helper =
+        brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
+
+    if (tab_helper) {
+      tab_helper->AddObserver(this);
+    }
   }
 
   SetAccessibleName(
@@ -98,8 +102,12 @@ BraveShieldsActionView::BraveShieldsActionView(Profile& profile,
 BraveShieldsActionView::~BraveShieldsActionView() {
   auto* web_contents = tab_strip_model_->GetActiveWebContents();
   if (web_contents) {
-    brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents)
-        ->RemoveObserver(this);
+    auto* tab_helper =
+        brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
+
+    if (tab_helper) {
+      tab_helper->RemoveObserver(this);
+    }
   }
 }
 
@@ -155,13 +163,14 @@ BraveShieldsActionView::GetImageSource() {
     auto* shields_data_controller =
         brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
 
-    int count = shields_data_controller->GetTotalBlockedCount();
-    if (count > 0) {
-      badge_text = count > 99 ? "99+" : std::to_string(count);
+    if (shields_data_controller) {
+      int count = shields_data_controller->GetTotalBlockedCount();
+      if (count > 0) {
+        badge_text = count > 99 ? "99+" : std::to_string(count);
+      }
+
+      is_enabled = shields_data_controller->GetBraveShieldsEnabled();
     }
-
-    is_enabled = shields_data_controller->GetBraveShieldsEnabled();
-
     if (!badge_text.empty()) {
       badge = std::make_unique<IconWithBadgeImageSource::Badge>(
           badge_text, SK_ColorWHITE, kBadgeBg);
@@ -239,12 +248,13 @@ std::u16string BraveShieldsActionView::GetTooltipText(
   if (web_contents) {
     auto* shields_data_controller =
         brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
+    if (shields_data_controller) {
+      int count = shields_data_controller->GetTotalBlockedCount();
 
-    int count = shields_data_controller->GetTotalBlockedCount();
-
-    if (count > 0) {
-      return l10n_util::GetStringFUTF16Int(IDS_BRAVE_SHIELDS_ICON_TOOLTIP,
-                                           count);
+      if (count > 0) {
+        return l10n_util::GetStringFUTF16Int(IDS_BRAVE_SHIELDS_ICON_TOOLTIP,
+                                             count);
+      }
     }
   }
 
@@ -285,16 +295,14 @@ void BraveShieldsActionView::OnTabStripModelChanged(
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
   if (selection.active_tab_changed()) {
-    if (selection.new_contents) {
-      brave_shields::BraveShieldsTabHelper::FromWebContents(
-          selection.new_contents)
-          ->AddObserver(this);
+    auto* tab_helper = brave_shields::BraveShieldsTabHelper::FromWebContents(
+        selection.new_contents);
+    if (selection.new_contents && tab_helper) {
+      tab_helper->AddObserver(this);
     }
 
-    if (selection.old_contents) {
-      brave_shields::BraveShieldsTabHelper::FromWebContents(
-          selection.old_contents)
-          ->RemoveObserver(this);
+    if (selection.old_contents && tab_helper) {
+      tab_helper->RemoveObserver(this);
     }
     UpdateIconState();
   }
