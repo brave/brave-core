@@ -298,6 +298,9 @@
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Canjear código";
 
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "Región de VPN modificada";
+
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Se restablecerá la configuración del firewall + VPN de Brave y se corregirán todos los errores. El proceso puede tardar un minuto.";
 
