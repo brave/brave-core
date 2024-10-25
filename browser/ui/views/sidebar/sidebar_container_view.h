@@ -22,7 +22,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_observer.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_registry_observer.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_view_state_observer.h"
 #include "components/prefs/pref_member.h"
 #include "ui/events/event_observer.h"
 #include "ui/gfx/animation/slide_animation.h"
@@ -57,7 +57,7 @@ class SidebarContainerView
       public SidebarShowOptionsEventDetectWidget::Delegate,
       public sidebar::SidebarModel::Observer,
       public SidePanelEntryObserver,
-      public SidePanelRegistryObserver,
+      public SidePanelViewStateObserver,
       public TabStripModelObserver {
   METADATA_HEADER(SidebarContainerView, views::View)
  public:
@@ -78,6 +78,16 @@ class SidebarContainerView
 
   BraveSidePanel* side_panel() { return side_panel_; }
 
+  // Need to know this showing comes from deregistering current entry
+  // or not. We're observing contextual/global panel entries when panel is
+  // shown. And stop observing when it's hidden by closing. Unfortunately,
+  // OnEntryWillHide() is not called when current entry is closed by
+  // deregistering. Only OnEntryHidden() is called.
+  // By using OnEntryWillHide()'s arg, we can know this hidden is from
+  // closing or not. Fortunately, we can know when WillShowSidePanel()
+  // is called whether it's closing from deregistration.
+  // With |show_on_deregistered|, we can stop observing OnEntryHidden().
+  void WillShowSidePanel(bool show_on_deregistered);
   bool IsFullscreenForCurrentEntry() const;
 
   void set_operation_from_active_tab_change(bool tab_change) {
@@ -120,19 +130,18 @@ class SidebarContainerView
   // SidePanelEntryObserver:
   void OnEntryShown(SidePanelEntry* entry) override;
   void OnEntryHidden(SidePanelEntry* entry) override;
-
-  // SidePanelRegistryObserver:
-  void OnEntryRegistered(SidePanelRegistry* registry,
-                         SidePanelEntry* entry) override;
-  void OnEntryWillDeregister(SidePanelRegistry* registry,
-                             SidePanelEntry* entry) override;
-  void OnRegistryDestroying(SidePanelRegistry* registry) override;
+  void OnEntryWillHide(SidePanelEntry* entry,
+                       SidePanelEntryHideReason reason) override;
 
   // TabStripModelObserver:
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
+  void OnTabWillBeRemoved(content::WebContents* contents, int index) override;
+
+  // SidePanelViewStateObserver:
+  void OnSidePanelDidClose() override;
 
  private:
   friend class sidebar::SidebarBrowserTest;
@@ -182,10 +191,11 @@ class SidebarContainerView
   void StartBrowserWindowEventMonitoring();
   void StopBrowserWindowEventMonitoring();
 
-  void StartObservingContextualSidePanelRegistry(
-      content::WebContents* contents);
-  void StopObservingContextualSidePanelRegistry(content::WebContents* contents);
-  void StopObservingContextualSidePanelRegistry(SidePanelRegistry* registry);
+  void StartObservingContextualSidePanelEntry(content::WebContents* contents);
+  void StopObservingContextualSidePanelEntry(content::WebContents* contents);
+  void StartObservingForEntry(SidePanelEntry* entry);
+  void StopObservingForEntry(SidePanelEntry* entry);
+  void UpdateActiveItemState();
 
   raw_ptr<BraveBrowser> browser_ = nullptr;
   raw_ptr<SidePanelCoordinator> side_panel_coordinator_ = nullptr;
@@ -195,6 +205,7 @@ class SidebarContainerView
   bool initialized_ = false;
   bool sidebar_on_left_ = true;
   bool operation_from_active_tab_change_ = false;
+  bool deregister_when_hidden_ = false;
   base::OneShotTimer sidebar_hide_timer_;
   sidebar::SidebarService::ShowSidebarOption show_sidebar_option_ =
       sidebar::SidebarService::ShowSidebarOption::kShowAlways;
@@ -205,14 +216,13 @@ class SidebarContainerView
   std::unique_ptr<views::EventMonitor> browser_window_event_monitor_;
   std::unique_ptr<SidebarShowOptionsEventDetectWidget> show_options_widget_;
   BooleanPrefMember show_side_panel_button_;
+  base::ScopedObservation<SidePanelCoordinator, SidePanelViewStateObserver>
+      side_panel_view_state_observation_{this};
   base::ScopedObservation<sidebar::SidebarModel,
                           sidebar::SidebarModel::Observer>
       sidebar_model_observation_{this};
   base::ScopedMultiSourceObservation<SidePanelEntry, SidePanelEntryObserver>
       panel_entry_observations_{this};
-  base::ScopedMultiSourceObservation<SidePanelRegistry,
-                                     SidePanelRegistryObserver>
-      panel_registry_observations_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_CONTAINER_VIEW_H_

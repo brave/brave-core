@@ -286,6 +286,18 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return std::distance(items.cbegin(), iter);
   }
 
+  bool SidebarContainerObserving(SidePanelEntryId id) {
+    auto* sidebar_container_view =
+        static_cast<SidebarContainerView*>(controller()->sidebar());
+    for (const auto& entry :
+         sidebar_container_view->panel_entry_observations_.sources()) {
+      if (entry->key().id() == id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   raw_ptr<views::View> item_added_bubble_anchor_ = nullptr;
   std::unique_ptr<base::RunLoop> run_loop_;
   base::WeakPtrFactory<SidebarBrowserTest> weak_factory_{this};
@@ -316,13 +328,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   EXPECT_EQ(expected_count, model()->GetAllSidebarItems().size());
   // Activate item that opens in panel.
   const size_t first_panel_item_index = GetFirstPanelItemIndex();
-  controller()->ActivateItemAt(first_panel_item_index);
+  const auto& first_panel_item =
+      controller()->model()->GetAllSidebarItems()[first_panel_item_index];
+  controller()->ActivatePanelItem(first_panel_item.built_in_item_type);
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return !!model()->active_index(); }));
   EXPECT_THAT(model()->active_index(), Optional(first_panel_item_index));
   EXPECT_TRUE(controller()->IsActiveIndex(first_panel_item_index));
-
-  // Try to activate item at index 1.
-  // Default item at index 1 opens in new tab. So, sidebar active index is not
-  // changed. Still active index is 2.
 
   // Get first index of item that opens in panel.
   const size_t first_web_item_index = GetFirstWebItemIndex();
@@ -333,10 +345,15 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   EXPECT_THAT(model()->active_index(), Optional(active_item_index));
 
   // Setting std::nullopt means deactivate current active tab.
-  controller()->ActivateItemAt(std::nullopt);
+  controller()->DeactivateCurrentPanel();
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return !model()->active_index(); }));
   EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 
-  controller()->ActivateItemAt(active_item_index);
+  controller()->ActivatePanelItem(first_panel_item.built_in_item_type);
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return !!model()->active_index(); }));
+  EXPECT_THAT(model()->active_index(), Optional(active_item_index));
 
   auto* sidebar_service =
       SidebarServiceFactory::GetForProfile(browser()->profile());
@@ -902,6 +919,22 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   WaitUntil(base::BindLambdaForTesting([&]() {
     return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
   }));
+
+  // Check per-url contextual panel close.
+  // If current tab load another url, customize panel should be hidden.
+  tab_model()->ActivateTabAt(0);
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kCustomizeChrome;
+  }));
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/")));
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
+  }));
+  // As previous customize panel per-url panel, it's closed by deregistering
+  // after loading another url. Then, sidebar container should stop observing
+  // its entry.
+  EXPECT_FALSE(SidebarContainerObserving(SidePanelEntryId::kCustomizeChrome));
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
@@ -1121,7 +1154,24 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat, TabSpecificPanel) {
   ASSERT_TRUE(global_item_index.has_value());
   auto tab_specific_item_index = model()->GetIndexOf(kTabSpecificItemType);
   ASSERT_TRUE(tab_specific_item_index.has_value());
-  // Open 2 more tabs
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  ASSERT_EQ(tab_model()->GetTabCount(), 2);
+
+  // Open contextual panel from Tab 0.
+  tab_model()->ActivateTabAt(0);
+  SimulateSidebarItemClickAt(tab_specific_item_index.value());
+  EXPECT_EQ(model()->active_index(), tab_specific_item_index);
+
+  // Delete Tab 0 and check model doesn't have active index.
+  tab_model()->DetachAndDeleteWebContentsAt(0);
+  EXPECT_FALSE(!!model()->active_index());
+  ASSERT_EQ(tab_model()->GetTabCount(), 1);
+
+  // Create two more tab for test below.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("brave://newtab/"),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
@@ -1131,6 +1181,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat, TabSpecificPanel) {
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   ASSERT_EQ(tab_model()->GetTabCount(), 3);
+
   // Open a "global" panel from Tab 0
   tab_model()->ActivateTabAt(0);
   // Tab changed flag should be cleared after ActivateTabAt() executed.
@@ -1207,6 +1258,21 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
   EXPECT_TRUE(model()->active_index().has_value());
   EXPECT_EQ(model()->active_index(),
             model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
+
+  // Check tab specific panel item is still activated after moving to another
+  // browser.
+  tab_model()->ActivateTabAt(1);
+  EXPECT_EQ(model()->active_index(), tab_specific_item_index);
+
+  auto* browser2 = CreateBrowser(browser()->profile());
+  auto* browser2_model =
+      static_cast<BraveBrowser*>(browser2)->sidebar_controller()->model();
+  auto* browser2_tab_model = browser2->tab_strip_model();
+
+  auto detached_tab = tab_model()->DetachTabAtForInsertion(1);
+  browser2_tab_model->AppendTab(std::move(detached_tab), /* foreground */ true);
+  EXPECT_EQ(browser2_model->active_index(),
+            browser2_model->GetIndexOf(SidebarItem::BuiltInItemType::kChatUI));
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
