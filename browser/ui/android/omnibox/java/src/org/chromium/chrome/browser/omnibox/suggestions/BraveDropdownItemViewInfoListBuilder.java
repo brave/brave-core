@@ -134,8 +134,14 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
                 tab != null
                         ? mLeoAutocompleteDelegate.isAutoCompleteEnabled(tab.getWebContents())
                         : true;
-        if (!autocompleteEnabled) {
+        if (!autocompleteEnabled && viewInfoList.size() > 0) {
+            DropdownItemViewInfo firstObj = viewInfoList.get(0);
             viewInfoList.clear();
+            if (firstObj.processor != null
+                    && firstObj.processor.getViewTypeId()
+                            == OmniboxSuggestionUiType.EDIT_URL_SUGGESTION) {
+                viewInfoList.add(firstObj);
+            }
         }
 
         if (isBraveLeoEnabled()
