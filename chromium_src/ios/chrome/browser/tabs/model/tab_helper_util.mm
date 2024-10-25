@@ -20,8 +20,8 @@
 #import "ios/components/security_interstitials/ios_blocking_page_tab_helper.h"
 
 void AttachTabHelpers(web::WebState* web_state, TabHelperFilter filter_flags) {
-  ChromeBrowserState* const browser_state =
-      ChromeBrowserState::FromBrowserState(web_state->GetBrowserState());
+  ProfileIOS* const profile =
+      ProfileIOS::FromBrowserState(web_state->GetBrowserState());
 
   IOSChromeSessionTabHelper::CreateForWebState(web_state);
   IOSChromeSyncedTabDelegate::CreateForWebState(web_state);
@@ -36,15 +36,15 @@ void AttachTabHelpers(web::WebState* web_state, TabHelperFilter filter_flags) {
       base::FeatureList::IsEnabled(
           security_interstitials::features::kHttpsUpgrades)) {
     HttpsOnlyModeUpgradeTabHelper::CreateForWebState(
-        web_state, browser_state->GetPrefs(),
-        PrerenderServiceFactory::GetForBrowserState(browser_state),
-        HttpsUpgradeServiceFactory::GetForBrowserState(browser_state));
+        web_state, profile->GetPrefs(),
+        PrerenderServiceFactory::GetForProfile(profile),
+        HttpsUpgradeServiceFactory::GetForProfile(profile));
     HttpsOnlyModeContainer::CreateForWebState(web_state);
   }
 
   if (base::FeatureList::IsEnabled(omnibox::kDefaultTypedNavigationsToHttps)) {
     TypedNavigationUpgradeTabHelper::CreateForWebState(
-        web_state, PrerenderServiceFactory::GetForBrowserState(browser_state),
-        HttpsUpgradeServiceFactory::GetForBrowserState(browser_state));
+        web_state, PrerenderServiceFactory::GetForProfile(profile),
+        HttpsUpgradeServiceFactory::GetForProfile(profile));
   }
 }

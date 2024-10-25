@@ -1,16 +1,16 @@
 diff --git a/ios/web/navigation/crw_wk_navigation_handler.mm b/ios/web/navigation/crw_wk_navigation_handler.mm
-index 443d5684fceb98e1362b8d337b64d0a36c2186c8..569ae27d0ef10d2aef5a9c4df571570fd522c09d 100644
+index c0c115abd417ce518f7c3a8b04bfe85f58caeadc..412087a43a75891eda22535ce250074e1700866b 100644
 --- a/ios/web/navigation/crw_wk_navigation_handler.mm
 +++ b/ios/web/navigation/crw_wk_navigation_handler.mm
-@@ -256,6 +256,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
+@@ -250,6 +250,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
    BOOL isMainFrameNavigationAction = [self isMainFrameNavigationAction:action];
    auto decisionHandler = ^(WKNavigationActionPolicy policy) {
      preferences.preferredContentMode = contentMode;
 +    BRAVE_SHOULD_BLOCK_JAVASCRIPT
- #if defined(__IPHONE_16_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_16_0
      if (@available(iOS 16.0, *)) {
        if ((policy == WKNavigationActionPolicyAllow) &&
-@@ -287,6 +288,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
+           isMainFrameNavigationAction) {
+@@ -278,6 +279,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
  
    BOOL forceBlockUniversalLinks = self.blockUniversalLinksOnNextDecidePolicy;
    self.blockUniversalLinksOnNextDecidePolicy = NO;
@@ -18,7 +18,7 @@ index 443d5684fceb98e1362b8d337b64d0a36c2186c8..569ae27d0ef10d2aef5a9c4df571570f
  
    _webProcessCrashed = NO;
    if (self.beingDestroyed) {
-@@ -698,6 +700,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
+@@ -689,6 +691,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
                                  code:error.code
                              userInfo:userInfo];
    }
@@ -26,7 +26,7 @@ index 443d5684fceb98e1362b8d337b64d0a36c2186c8..569ae27d0ef10d2aef5a9c4df571570f
  
    // Handle load cancellation for directly cancelled navigations without
    // handling their potential errors. Otherwise, handle the error.
-@@ -1712,6 +1715,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
+@@ -1696,6 +1699,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
            web::CertVerificationError(is_recoverable, certStatus));
      }
    }
@@ -34,7 +34,7 @@ index 443d5684fceb98e1362b8d337b64d0a36c2186c8..569ae27d0ef10d2aef5a9c4df571570f
    completionHandler(NSURLSessionAuthChallengeRejectProtectionSpace, nil);
  }
  
-@@ -1773,6 +1777,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
+@@ -1757,6 +1761,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
      // automatically be retried by the web view, so early return in this case.
      return;
    }

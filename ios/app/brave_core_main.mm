@@ -246,11 +246,11 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     _otr_browserList->AddBrowser(_otr_browser.get());
 
     // Setup download managers for CWVWebView
-    _downloadManager = std::make_unique<ios_web_view::WebViewDownloadManager>(
-        _mainBrowserState);
+    _downloadManager =
+        std::make_unique<ios_web_view::WebViewDownloadManager>(_main_profile);
     _otrDownloadManager =
         std::make_unique<ios_web_view::WebViewDownloadManager>(
-            otrChromeBrowserState);
+            otr_last_used_profile);
 
     // Initialize the provider UI global state.
     ios::provider::InitializeUI();
@@ -529,8 +529,7 @@ static bool CustomLogHandler(int severity,
 }
 
 - (BrowserPrefs*)browserPrefs {
-  return
-      [[BrowserPrefs alloc] initWithPrefService:_mainBrowserState->GetPrefs()];
+  return [[BrowserPrefs alloc] initWithPrefService:_main_profile->GetPrefs()];
 }
 
 - (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate {
@@ -560,8 +559,7 @@ static bool CustomLogHandler(int severity,
 - (DefaultHostContentSettings*)defaultHostContentSettings {
   if (!_defaultHostContentSettings) {
     HostContentSettingsMap* map =
-        ios::HostContentSettingsMapFactory::GetForBrowserState(
-            _mainBrowserState);
+        ios::HostContentSettingsMapFactory::GetForProfile(_main_profile);
     _defaultHostContentSettings =
         [[DefaultHostContentSettings alloc] initWithSettingsMap:map];
   }
@@ -572,7 +570,7 @@ static bool CustomLogHandler(int severity,
   if (!_defaultWebViewConfiguration) {
     _defaultWebViewConfiguration = [[CWVWebViewConfiguration alloc]
         initWithBrowserState:ios_web_view::WebViewBrowserState::
-                                 FromBrowserState(_mainBrowserState)];
+                                 FromBrowserState(_main_profile)];
   }
   return _defaultWebViewConfiguration;
 }
@@ -580,9 +578,9 @@ static bool CustomLogHandler(int severity,
 - (CWVWebViewConfiguration*)nonPersistentWebViewConfiguration {
   if (!_nonPersistentWebViewConfiguration) {
     _nonPersistentWebViewConfiguration = [[CWVWebViewConfiguration alloc]
-        initWithBrowserState:
-            ios_web_view::WebViewBrowserState::FromBrowserState(
-                _mainBrowserState->GetOffTheRecordChromeBrowserState())];
+        initWithBrowserState:ios_web_view::WebViewBrowserState::
+                                 FromBrowserState(
+                                     _main_profile->GetOffTheRecordProfile())];
   }
   return _nonPersistentWebViewConfiguration;
 }
@@ -593,7 +591,7 @@ static bool CustomLogHandler(int severity,
 // closed (i.e. if there are other incognito tabs open in another Scene, the
 // BrowserState must not be destroyed).
 - (BOOL)shouldDestroyAndRebuildIncognitoBrowserState {
-  return _mainBrowserState->HasOffTheRecordChromeBrowserState();
+  return _main_profile->HasOffTheRecordChromeBrowserState();
 }
 
 // Matches lastIncognitoTabClosed from Chrome's SceneController
@@ -642,14 +640,13 @@ static bool CustomLogHandler(int severity,
 }
 
 - (void)destroyAndRebuildIncognitoBrowserState {
-  DCHECK(_mainBrowserState->HasOffTheRecordChromeBrowserState());
+  DCHECK(_main_profile->HasOffTheRecordChromeBrowserState());
   _nonPersistentWebViewConfiguration = nil;
 
-  ChromeBrowserState* otrBrowserState =
-      _mainBrowserState->GetOffTheRecordChromeBrowserState();
+  ProfileIOS* otrProfile = _main_profile->GetOffTheRecordProfile();
 
   BrowsingDataRemover* browsingDataRemover =
-      BrowsingDataRemoverFactory::GetForBrowserState(otrBrowserState);
+      BrowsingDataRemoverFactory::GetForProfile(otrProfile);
   browsingDataRemover->Remove(browsing_data::TimePeriod::ALL_TIME,
                               BrowsingDataRemoveMask::REMOVE_ALL,
                               base::DoNothing());
@@ -658,13 +655,12 @@ static bool CustomLogHandler(int severity,
   _otr_browser.reset();
 
   // Destroy and recreate the off-the-record BrowserState.
-  _mainBrowserState->DestroyOffTheRecordChromeBrowserState();
+  _main_profile->DestroyOffTheRecordProfile();
 
-  otrBrowserState = _mainBrowserState->GetOffTheRecordChromeBrowserState();
-  _otr_browser = Browser::Create(otrBrowserState, {});
+  otrProfile = _main_profile->GetOffTheRecordProfile();
+  _otr_browser = Browser::Create(otrProfile, {});
 
-  BrowserList* browserList =
-      BrowserListFactory::GetForBrowserState(otrBrowserState);
+  BrowserList* browserList = BrowserListFactory::GetForProfile(otrProfile);
   browserList->AddBrowser(_otr_browser.get());
 }
 
