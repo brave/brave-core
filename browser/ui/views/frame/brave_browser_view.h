@@ -81,7 +81,7 @@ class BraveBrowserView : public BrowserView,
   void CloseWalletBubble();
   WalletButton* GetWalletButton();
   views::View* GetWalletButtonAnchorView();
-  void WillShowSidePanel();
+  void WillShowSidePanel(bool show_on_deregistered);
 
   // Triggers layout of web modal dialogs
   void NotifyDialogPositionRequiresUpdate();
