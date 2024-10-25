@@ -4,10 +4,12 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveStrings
 import DesignSystem
 import Favicon
 import Preferences
+import Shared
 import SwiftUI
 
 struct HistoryItemView: View {
@@ -37,15 +39,18 @@ struct HistoryItemView: View {
             .foregroundStyle(Color(braveSystemName: .textPrimary))
         }
 
-        Text(
-          URLFormatter.formatURLOrigin(
+        URLElidedText(
+          text: URLFormatter.formatURLOrigin(
             forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString
           )
         )
+        .truncationMode(.tail)
         .font(.footnote)
         .frame(maxWidth: .infinity, alignment: .leading)
         .fixedSize(horizontal: false, vertical: true)
         .foregroundStyle(Color(braveSystemName: .textSecondary))
+        .environment(\.layoutDirection, .leftToRight)
+        .flipsForRightToLeftLayoutDirection(false)
       }
     }
   }
