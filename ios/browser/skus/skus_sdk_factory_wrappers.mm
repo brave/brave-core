@@ -15,7 +15,7 @@
 #endif
 
 @implementation SkusSkusServiceFactory
-+ (nullable id)serviceForBrowserState:(ProfileIOS*)profile {
++ (nullable id)serviceForProfile:(ProfileIOS*)profile {
   auto service = skus::SkusServiceFactory::GetForBrowserState(profile);
   if (!service) {
     return nil;

@@ -23,7 +23,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_actor.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
-#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_builder_stream.h"
 
 using ::blink::DOMNodeId;
 using ::blink::DynamicTo;
@@ -42,7 +42,7 @@ ItemName NodeHTMLElement::GetItemName() const {
 }
 
 ItemDesc NodeHTMLElement::GetItemDesc() const {
-  WTF::TextStream ts;
+  StringBuilder ts;
   ts << NodeHTML::GetItemDesc();
 
   ts << " [" << tag_name_;
@@ -56,7 +56,7 @@ ItemDesc NodeHTMLElement::GetItemDesc() const {
   }
   ts << "]";
 
-  return ts.Release();
+  return ts.ReleaseString();
 }
 
 void NodeHTMLElement::AddGraphMLTag(xmlDocPtr doc,

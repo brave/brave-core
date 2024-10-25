@@ -261,9 +261,7 @@ public abstract class BraveActivity extends ChromeActivity
     public static final String BRAVE_WEBCOMPAT_INFO_WIKI_URL =
             "https://github.com/brave/brave-browser/wiki/Web-compatibility-reports";
 
-    private static final int DAYS_1 = 1;
     private static final int DAYS_4 = 4;
-    private static final int DAYS_5 = 5;
     private static final int DAYS_7 = 7;
     private static final int DAYS_12 = 12;
 
@@ -1164,7 +1162,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         checkFingerPrintingOnUpgrade(isFirstInstall);
-        checkForVpnCallout(isFirstInstall);
+        checkForVpnCallout();
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
                 && BraveVpnPrefUtils.isSubscriptionPurchase()
@@ -1350,7 +1348,7 @@ public abstract class BraveActivity extends ChromeActivity
         BraveVpnUtils.openBraveVpnPlansActivity(this);
     }
 
-    private void checkForVpnCallout(boolean isFirstInstall) {
+    private void checkForVpnCallout() {
         String countryCode = Locale.getDefault().getCountry();
 
         if (!countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
@@ -1609,11 +1607,14 @@ public abstract class BraveActivity extends ChromeActivity
                 BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, lastUsedRegularProfile);
                 BraveSearchEngineUtils.setDSEPrefs(
                         yandexTemplateUrl,
-                        lastUsedRegularProfile.getPrimaryOTRProfile(/* createIfNeeded= */ true));
+                        lastUsedRegularProfile.getPrimaryOtrProfile(/* createIfNeeded= */ true));
             }
         }
     }
 
+    // TODO(alexeybarabash): find out where mCloseDialogListener is supposed to be used
+    // when the code will be compiled
+    @SuppressWarnings("UnusedVariable")
     private BraveNotificationWarningDialog.DismissListener mCloseDialogListener =
             new BraveNotificationWarningDialog.DismissListener() {
                 @Override

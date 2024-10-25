@@ -52,7 +52,12 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
     private final int mArrowDirection;
     private final boolean mDismissOnInsideTouch;
     private final boolean mDismissOnOutsideTouch;
+
+    // TODO(alexeybarabash): seems unused, removing this makes a chain of changes up to
+    // BraveActivity, ask author
+    @SuppressWarnings("UnusedVariable")
     private final boolean mModal;
+
     private final boolean mBackgroundDimDisabled;
     private final boolean mContentArrowAtStart;
     private final View mContentView;

@@ -39,13 +39,8 @@ public class CryptoModel {
     private TxService mTxService;
     private final PendingTxHelper mPendingTxHelper;
     private KeyringService mKeyringService;
-    private BlockchainRegistry mBlockchainRegistry;
     private JsonRpcService mJsonRpcService;
-    private EthTxManagerProxy mEthTxManagerProxy;
-    private SolanaTxManagerProxy mSolanaTxManagerProxy;
     private BraveWalletService mBraveWalletService;
-    private AssetRatioService mAssetRatioService;
-    private SwapService mSwapService;
     private CryptoSharedActions mCryptoSharedActions;
     private final CryptoSharedData mSharedData;
     private final MutableLiveData<Integer> _mCoinTypeMutableLiveData =
@@ -67,13 +62,8 @@ public class CryptoModel {
         mContext = context;
         mTxService = txService;
         mKeyringService = keyringService;
-        mBlockchainRegistry = blockchainRegistry;
         mJsonRpcService = jsonRpcService;
-        mEthTxManagerProxy = ethTxManagerProxy;
-        mSolanaTxManagerProxy = solanaTxManagerProxy;
         mBraveWalletService = braveWalletService;
-        mAssetRatioService = assetRatioService;
-        mSwapService = swapService;
         mCryptoSharedActions = cryptoSharedActions;
         mSharedData = new CryptoSharedDataImpl();
         mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, true);
@@ -84,24 +74,20 @@ public class CryptoModel {
 
     public void resetServices(
             Context context,
-            TxService mTxService,
-            KeyringService mKeyringService,
-            BlockchainRegistry mBlockchainRegistry,
-            JsonRpcService mJsonRpcService,
-            EthTxManagerProxy mEthTxManagerProxy,
-            SolanaTxManagerProxy mSolanaTxManagerProxy,
-            BraveWalletService mBraveWalletService,
-            AssetRatioService mAssetRatioService) {
+            TxService txService,
+            KeyringService keyringService,
+            BlockchainRegistry blockchainRegistry,
+            JsonRpcService jsonRpcService,
+            EthTxManagerProxy ethTxManagerProxy,
+            SolanaTxManagerProxy solanaTxManagerProxy,
+            BraveWalletService braveWalletService,
+            AssetRatioService assetRatioService) {
         synchronized (mLock) {
             mContext = context;
-            this.mTxService = mTxService;
-            this.mKeyringService = mKeyringService;
-            this.mBlockchainRegistry = mBlockchainRegistry;
-            this.mJsonRpcService = mJsonRpcService;
-            this.mEthTxManagerProxy = mEthTxManagerProxy;
-            this.mSolanaTxManagerProxy = mSolanaTxManagerProxy;
-            this.mBraveWalletService = mBraveWalletService;
-            this.mAssetRatioService = mAssetRatioService;
+            mTxService = txService;
+            mKeyringService = keyringService;
+            mJsonRpcService = jsonRpcService;
+            mBraveWalletService = braveWalletService;
             mPendingTxHelper.setTxService(mTxService);
             mNetworkModel.resetServices(mBraveWalletService, mJsonRpcService);
         }

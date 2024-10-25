@@ -37,7 +37,6 @@ import org.chromium.ui.text.SpanApplier.SpanInfo;
 public class VpnPaywallActivity extends BraveVpnParentActivity {
     private ProgressBar mMonthlyPlanProgress;
     private ProgressBar mYearlyPlanProgress;
-    private LinearLayout mPlanLayout;
     private boolean mShouldShowRestoreMenu;
 
     private LinearLayout mMonthlySelectorLayout;
@@ -78,7 +77,6 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
         mMonthlyPlanProgress = findViewById(R.id.monthly_plan_progress);
 
         mYearlyPlanProgress = findViewById(R.id.yearly_plan_progress);
-        mPlanLayout = findViewById(R.id.plan_layout);
 
         mRemovedValueText = findViewById(R.id.removed_value_tv);
         mRemovedValueText.setPaintFlags(

@@ -55,7 +55,6 @@ public class BraveNewsUtils {
         if (items.getFeedItems() != null) {
             for (FeedItemCard itemCard : items.getFeedItems()) {
                 FeedItem item = itemCard.getFeedItem();
-                FeedItemMetadata itemMetaData = new FeedItemMetadata();
                 if (item.which() == FeedItem.Tag.PromotedArticle) {
                     PromotedArticle promotedArticle = item.getPromotedArticle();
                     creativeInstanceId = promotedArticle.creativeInstanceId;
@@ -89,6 +88,7 @@ public class BraveNewsUtils {
 
     // method for logging news object. works by putting Log.d in the desired places of the parsing
     // of the object
+    @SuppressWarnings("UnusedVariable")
     public static void logFeedItem(FeedItemsCard items, String id) {
         if (items != null) {
             if (items.getCardType() == CardType.DISPLAY_AD) {

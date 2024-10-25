@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/frame/cached_permission_status.cc b/third_party/blink/renderer/core/frame/cached_permission_status.cc
+index e8818eb307b57edbcc4ae7959b2fb9c0c9d9ee2b..ff35eccc4157be842b8d374f4f07fb0ad2fa3991 100644
+--- a/third_party/blink/renderer/core/frame/cached_permission_status.cc
++++ b/third_party/blink/renderer/core/frame/cached_permission_status.cc
+@@ -15,7 +15,6 @@ using mojom::blink::PermissionDescriptorPtr;
+ using mojom::blink::PermissionName;
+ using mojom::blink::PermissionObserver;
+ using mojom::blink::PermissionService;
+-using mojom::blink::PermissionStatus;
+ 
+ // static
+ const char CachedPermissionStatus::kSupplementName[] = "CachedPermissionStatus";

@@ -397,15 +397,14 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
 }
 
 #if defined(PDF_OCR_INTEGRATION_TEST_ENABLED)
-// Test ai chat integration with upstream kPdfOcr
+// Test ai chat integration with upstream kPdfOcr (flag since removed)
 class UpstreamPDFIntegratoinTest : public AIChatUIBrowserTest {
  public:
   UpstreamPDFIntegratoinTest()
       : embedded_test_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitWithFeatures(
-        {::features::kPdfOcr, ::features::kScreenAITestMode,
-         ax::mojom::features::kScreenAIOCREnabled},
-        {});
+    feature_list_.InitWithFeatures({::features::kScreenAITestMode,
+                                    ax::mojom::features::kScreenAIOCREnabled},
+                                   {});
   }
 
   void SetUpOnMainThread() override {

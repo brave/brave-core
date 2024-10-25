@@ -18,6 +18,7 @@ source_set("brave_ipfs_unit_tests") {
     "//base/test:test_support",
     "//brave/components/ipfs",
     "//chrome/browser:browser",
+    "//chrome/browser/prefs",
     "//chrome/browser/sync:factories",
     "//chrome/browser/sync:sync",
     "//chrome/test:test_support",

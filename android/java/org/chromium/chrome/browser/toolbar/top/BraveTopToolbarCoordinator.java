@@ -49,6 +49,8 @@ import java.util.function.BooleanSupplier;
 public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     // To delete in bytecode. Variables from the parent class will be used instead.
     private OptionalBrowsingModeButtonController mOptionalButtonController;
+
+    @SuppressWarnings("UnusedVariable")
     private ToolbarColorObserverManager mToolbarColorObserverManager;
 
     // Own members.
@@ -199,7 +201,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             LayoutManager layoutManager,
             ObservableSupplier<Tab> tabSupplier,
             BrowserControlsVisibilityManager browserControlsVisibilityManager,
-            TopUiThemeColorProvider topUiThemeColorProvider) {
+            TopUiThemeColorProvider topUiThemeColorProvider,
+            Supplier<Integer> bottomToolbarControlsOffsetSupplier) {
         super.initializeWithNative(
                 profile,
                 layoutUpdater,
@@ -208,7 +211,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 layoutManager,
                 tabSupplier,
                 browserControlsVisibilityManager,
-                topUiThemeColorProvider);
+                topUiThemeColorProvider,
+                bottomToolbarControlsOffsetSupplier);
 
         assert mBraveToolbarLayout instanceof BraveToolbarLayoutImpl
                 : "Something has changed in the upstream!";

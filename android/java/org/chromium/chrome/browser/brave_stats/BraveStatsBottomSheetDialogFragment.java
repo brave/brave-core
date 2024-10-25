@@ -46,9 +46,7 @@ import org.chromium.ui.base.DeviceFormFactor;
 import java.util.List;
 
 public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragment {
-    final public static String TAG_FRAGMENT = "BRAVESTATS_FRAG";
-    private static final String APP_PACKAGE = "app_package";
-    private static final String APP_UID = "app_uid";
+    public static final String TAG_FRAGMENT = "BRAVESTATS_FRAG";
     private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
 
     private static final int WEBSITES = 0;

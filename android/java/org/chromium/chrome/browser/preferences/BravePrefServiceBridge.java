@@ -124,9 +124,9 @@ public class BravePrefServiceBridge {
     }
 
     public boolean getNewsOptIn() {
-        boolean getNewsOptIn = BravePrefServiceBridgeJni.get().getNewsOptIn();
         return BravePrefServiceBridgeJni.get().getNewsOptIn();
     }
+
     public void setShowNews(boolean value) {
         BravePrefServiceBridgeJni.get().setShowNews(value);
     }

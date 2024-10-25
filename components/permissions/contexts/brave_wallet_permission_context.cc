@@ -242,7 +242,7 @@ BraveWalletPermissionContext::GetAllowedAccounts(
   }
 
   const ContentSettingsType content_settings_type =
-      PermissionUtil::PermissionTypeToContentSettingTypeSafe(permission);
+      PermissionUtil::PermissionTypeToContentSettingsTypeSafe(permission);
 
   std::vector<std::string> allowed_accounts;
   url::Origin origin = url::Origin::Create(rfh->GetLastCommittedURL());
@@ -295,7 +295,7 @@ bool BraveWalletPermissionContext::AddPermission(
   }
 
   const ContentSettingsType content_settings_type =
-      PermissionUtil::PermissionTypeToContentSettingTypeSafe(permission);
+      PermissionUtil::PermissionTypeToContentSettingsTypeSafe(permission);
 
   url::Origin origin_wallet_address;
   if (!brave_wallet::GetSubRequestOrigin(
@@ -333,7 +333,7 @@ bool BraveWalletPermissionContext::HasPermission(
   }
 
   const ContentSettingsType content_settings_type =
-      PermissionUtil::PermissionTypeToContentSettingTypeSafe(permission);
+      PermissionUtil::PermissionTypeToContentSettingsTypeSafe(permission);
 
   url::Origin origin_wallet_address;
   if (!brave_wallet::GetSubRequestOrigin(
@@ -363,7 +363,7 @@ bool BraveWalletPermissionContext::ResetPermission(
   }
 
   const ContentSettingsType content_settings_type =
-      PermissionUtil::PermissionTypeToContentSettingTypeSafe(permission);
+      PermissionUtil::PermissionTypeToContentSettingsTypeSafe(permission);
 
   url::Origin origin_wallet_address;
   if (!brave_wallet::GetSubRequestOrigin(
@@ -383,7 +383,7 @@ BraveWalletPermissionContext::GetWebSitesWithPermission(
     blink::PermissionType permission,
     content::BrowserContext* context) {
   const ContentSettingsType content_settings_type =
-      PermissionUtil::PermissionTypeToContentSettingTypeSafe(permission);
+      PermissionUtil::PermissionTypeToContentSettingsTypeSafe(permission);
 
   HostContentSettingsMap* map =
       PermissionsClient::Get()->GetSettingsMap(context);

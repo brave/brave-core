@@ -93,7 +93,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             values.put(DisplayAdsTable.COLUMN_AD_IMAGE, imageUrlTemp.url);
 
             // insert row
-            long newRowId = db.insert(DisplayAdsTable.TABLE_NAME, null, values);
+            db.insert(DisplayAdsTable.TABLE_NAME, null, values);
         }
     }
 

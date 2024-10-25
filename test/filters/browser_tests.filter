@@ -63,14 +63,14 @@
 -ThreatDOMDetailsTest.CheckTagAndAttributeListIsSorted
 
 # Optimization Guide is disabled
--All/UserAnnotationsServiceBrowserTest.*/*
--All/UserAnnotationsServiceExplicitAllowlistBrowserTest.*/*
 -ChromeRenderFrameObserverTest.OptGuideGetsText
 -DependencyParserModelLoaderBrowserTest.*
 -HistoryEmbeddingsRestrictedSigninBrowserTest.SearchDoesNotReceiveAnswerForRestrictedSignin
 -OptimizationGuideInternalsPageBrowserTest.*
 -OptimizationGuideKeyedServiceBrowserTest.*
 -OptimizationGuideKeyedServiceEnterpriseBrowserTest.*
+-UserAnnotationsServiceBrowserTest.*
+-UserAnnotationsServiceExplicitAllowlistBrowserTest.*
 -VisualQueryClassifierAgentTest.StartClassification_InvalidModel
 -VisualQueryClassifierAgentTest.StartClassification_NoImages
 -VisualQueryClassifierAgentTest.StartClassification_SingleImageNonShoppy
@@ -302,6 +302,7 @@
 -All/WebAppLinkCapturingParameterizedBrowserTest.CheckLinkCaptureCombinations/*
 -Capturable/WebAppLinkCapturingParameterizedBrowserTest.*
 -Redirection_BackgroundDisposition/WebAppLinkCapturingParameterizedBrowserTest.*
+-Redirection_Capturable_Reparenting/WebAppLinkCapturingParameterizedBrowserTest.*/*
 -Redirection_NavigateCurrent/WebAppLinkCapturingParameterizedBrowserTest.CheckLinkCaptureCombinations/CaptureOn_AppWnd_ScopeA2B_ServerSideViaB_ViaLink_MiddleClick_WithOpener_TargetBlank
 -Redirection_NavigateCurrent/WebAppLinkCapturingParameterizedBrowserTest.CheckLinkCaptureCombinations/CaptureOn_AppWnd_ScopeA2B_ServerSideViaB_ViaLink_ShiftClick_WithOpener_TargetBlank
 -Redirection_OpenInApp_NewWindowDisposition/WebAppLinkCapturingParameterizedBrowserTest.*
@@ -806,6 +807,7 @@
 -All/PredictionManagerBrowserTest.*/*
 -All/PredictionManagerModelDownloadingBrowserTest.*
 -All/PredictionManagerModelDownloadingBrowserTest.*/*
+-LCPPPrefetchSubresourceTest.Base
 -LoadingPredictorBrowserTest.*
 -LoadingPredictorBrowserTestWithNoLocalPredictions.*
 -LoadingPredictorBrowserTestWithOptimizationGuide.*
@@ -1701,6 +1703,7 @@
 -ControlledFrameAvailabilityTest.Verify/*
 -ControlledFrameAvailableChannels/*
 -ControlledFrameDialogBrowserTest.*/*
+-ControlledFrameDisabledPermissionFileSystemAccessTest.*/*
 -ControlledFrameDisabledPermissionSerialTest.WebSerial/*
 -ControlledFrameDisabledPermissionUsbTest.WebUSB/*
 -ControlledFrameDisabledPermissionWebBluetoothTest.WebBluetooth/*
@@ -1846,6 +1849,7 @@
 # they try to call showOpenFilePicker
 -FileSystemObserverStorageAccessTest.StateChangeFromAllowedToBlocked
 -FileSystemObserverStorageAccessTest.StorageAccess*
+-WebViewFileSystemAccessTest.Shim_TestEnabledInTabAndWebView
 
 # This test is disabled because it fails when it encounters unrecognized (Brave)
 # WebUI URL hashes.
@@ -1886,6 +1890,11 @@
 # always return false
 -LiveCaptionAutomaticLanguageDownloadTest.*
 -LiveCaptionControllerTest.*
+
+# These tests crash because we disable
+# user_education::features::kWhatsNewVersion2
+-WhatsNewFetcherMultipleCustomizationsBrowserTest.GetV2ServerURLForRender
+-WhatsNewFetcherOneCustomizationBrowserTest.GetV2ServerURLForRender
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*

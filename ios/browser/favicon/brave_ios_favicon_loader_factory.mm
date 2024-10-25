@@ -23,7 +23,7 @@ namespace {
 std::unique_ptr<KeyedService> BuildFaviconLoader(web::BrowserState* context) {
   ProfileIOS* profile = ProfileIOS::FromBrowserState(context);
   return std::make_unique<brave_favicon::BraveFaviconLoader>(
-      ios::FaviconServiceFactory::GetForBrowserState(
+      ios::FaviconServiceFactory::GetForProfile(
           profile, ServiceAccessType::EXPLICIT_ACCESS));
 }
 

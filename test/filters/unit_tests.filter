@@ -29,7 +29,7 @@
 -MV2/ExtensionProtocolsTest.MetadataFolder/0
 -MV3/ExtensionProtocolsTest.MetadataFolder/0
 
-# These tests fail because sync_helper::IsSyncable(extension) resturns false
+# These tests fail because sync_helper::IsSyncable(extension) returns false
 # due to UPDATER_DEV_ENDPOINT being empty and not matching expected store URL.
 -ExtensionSyncServiceCustomGalleryTest.ProcessSyncDataDeferredEnable
 -ExtensionSyncServiceCustomGalleryTest.ProcessSyncDataPermissionApproval
@@ -361,6 +361,7 @@
 -ChromeAutofillPredictionImprovementsClientTest.EligibilityOfSignedInUserWithMlEnabled
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailable
 -EnclaveManagerTest.PrimaryUserChange
+-ExtensionSyncServiceTransportModeTest.OnlySyncAccountExtensions
 -ManagePasswordsUIControllerWithBrowserTestExplicitBrowserSignin.MovePasswordUponSigninWithExistingAccount
 -PeopleHandlerDiceTest.StoredAccountsList
 -PeopleHandlerDiceUnifiedConsentTest.StoredAccountsList
@@ -503,6 +504,7 @@
 # https://issues.chromium.org/issues/41484323
 -TabSearchPageHandlerDeclutterTest.TabDeclutterFindStaleTabs
 -TabSearchPageHandlerDeclutterTest.TabDeclutterObserverTest
+-TabSearchPageHandlerDeclutterTest.TabDeclutterStaleTabChanges
 
 # This test fails because we insert our own bookmarks submenu into the app menu
 # model

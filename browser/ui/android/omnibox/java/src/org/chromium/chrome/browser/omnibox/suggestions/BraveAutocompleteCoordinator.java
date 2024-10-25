@@ -1,13 +1,10 @@
 /**
- * Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
+ * Copyright (c) 2022 The Brave Authors. All rights reserved. This Source Code Form is subject to
+ * the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with
+ * this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-
 package org.chromium.chrome.browser.omnibox.suggestions;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -26,15 +23,13 @@ import java.util.List;
 
 public class BraveAutocompleteCoordinator {
     public ViewProvider<SuggestionListViewHolder> createViewProvider(
-            Context context, boolean forcePhoneStyleOmnibox) {
+            boolean forcePhoneStyleOmnibox) {
         ViewProvider<SuggestionListViewHolder> provider =
                 (ViewProvider<SuggestionListViewHolder>)
                         BraveReflectionUtil.invokeMethod(
                                 AutocompleteCoordinator.class,
                                 this,
                                 "createViewProvider",
-                                Context.class,
-                                context,
                                 boolean.class,
                                 forcePhoneStyleOmnibox);
 

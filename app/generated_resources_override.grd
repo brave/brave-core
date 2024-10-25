@@ -886,9 +886,6 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="is_win or is_macosx or is_linux">
         </if>
-      <if expr="chromeos_lacros">
-        </if>
-
       <if expr="is_macosx">
         </if>
 

@@ -915,10 +915,11 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
     return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kCustomizeChrome;
   }));
 
+  // This used to check for SidePanelEntryId::kBookmarks, but we had to change
+  // that expectation (at least temporarily) due to
+  // https://issues.chromium.org/issues/375093278
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/")));
-  WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
-  }));
+  EXPECT_FALSE(panel_ui->GetCurrentEntryId().has_value());
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {

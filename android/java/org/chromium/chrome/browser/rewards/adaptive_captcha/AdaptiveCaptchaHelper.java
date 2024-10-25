@@ -262,10 +262,10 @@ public class AdaptiveCaptchaHelper {
 
     private static String readResponse(HttpURLConnection urlConnection) throws IOException {
         String responseString = "";
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(
-                    urlConnection.getInputStream(), StandardCharsets.UTF_8.name()));
+        try (BufferedReader br =
+                new BufferedReader(
+                        new InputStreamReader(
+                                urlConnection.getInputStream(), StandardCharsets.UTF_8.name()))) {
             StringBuilder sb = new StringBuilder();
             String line = null;
             while ((line = br.readLine()) != null) {
@@ -274,12 +274,8 @@ public class AdaptiveCaptchaHelper {
             responseString = sb.toString();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
-        } finally {
-            if (br != null) {
-                br.close();
-            }
-            return responseString;
         }
+        return responseString;
     }
 
     private static String getStartAttestationBody(String paymentId) throws JSONException {

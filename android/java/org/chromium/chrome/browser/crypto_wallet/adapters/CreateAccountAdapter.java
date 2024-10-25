@@ -6,8 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.adapters;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +19,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class CreateAccountAdapter extends RecyclerView.Adapter<CreateAccountAdapter.ViewHolder> {
-    private Context mContext;
-    private final ExecutorService mExecutor;
-    private final Handler mHandler;
     private final LayoutInflater inflater;
     private OnCreateAccountClickListener mCreateAccountClickListener;
     private List<CryptoAccountTypeInfo> mCryptoAccountTypeInfos;
@@ -35,15 +28,11 @@ public class CreateAccountAdapter extends RecyclerView.Adapter<CreateAccountAdap
     public CreateAccountAdapter(
             Context context, List<CryptoAccountTypeInfo> cryptoAccountTypeInfos) {
         mCryptoAccountTypeInfos = cryptoAccountTypeInfos;
-        this.mContext = context;
         inflater = LayoutInflater.from(context);
-        mExecutor = Executors.newSingleThreadExecutor();
-        mHandler = new Handler(Looper.getMainLooper());
     }
 
     @Override
     public @NonNull ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mContext = parent.getContext();
         View view = inflater.inflate(R.layout.item_create_account, parent, false);
         return new ViewHolder(view);
     }

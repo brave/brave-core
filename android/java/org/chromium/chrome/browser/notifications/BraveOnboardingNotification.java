@@ -30,7 +30,6 @@ import java.util.Locale;
 
 public class BraveOnboardingNotification extends BroadcastReceiver {
     public Context mContext;
-    private Intent mIntent;
     private static final String TAG = "OnboardingNoti";
 
     private static final int BRAVE_ONBOARDING_NOTIFICATION_ID = -2;

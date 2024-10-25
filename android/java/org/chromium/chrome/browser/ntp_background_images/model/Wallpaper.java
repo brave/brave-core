@@ -14,9 +14,6 @@ public class Wallpaper extends NTPImage {
     private String mThemeName;
     private boolean mIsSponsored;
     private String mCreativeInstanceId;
-    private String mCreativeSetId;
-    private String mCampaignId;
-    private String mAdvertiserId;
     private String mWallpaperId;
 
     public Wallpaper(String imagePath, int focalPointX, int focalPointY, String logoPath,

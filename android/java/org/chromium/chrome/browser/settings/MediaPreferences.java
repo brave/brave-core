@@ -137,14 +137,15 @@ public class MediaPreferences extends BravePreferenceFragment
         String key = preference.getKey();
         boolean shouldRelaunch = false;
         if (PREF_WIDEVINE_ENABLED.equals(key)) {
-            ChromeSwitchPreference enableWidevinePref =
-                    (ChromeSwitchPreference) findPreference(PREF_WIDEVINE_ENABLED);
-            BraveLocalState.get().setBoolean(BravePref.WIDEVINE_ENABLED,
-                    !BraveLocalState.get().getBoolean(BravePref.WIDEVINE_ENABLED));
+            BraveLocalState.get()
+                    .setBoolean(
+                            BravePref.WIDEVINE_ENABLED,
+                            !BraveLocalState.get().getBoolean(BravePref.WIDEVINE_ENABLED));
             shouldRelaunch = true;
         } else if (PREF_BACKGROUND_VIDEO_PLAYBACK.equals(key)) {
             BraveFeatureUtil.enableFeature(
-                    BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL, (boolean) newValue,
+                    BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL,
+                    (boolean) newValue,
                     false);
             shouldRelaunch = true;
         } else if (PLAY_YT_VIDEO_IN_BROWSER_KEY.equals(key)) {

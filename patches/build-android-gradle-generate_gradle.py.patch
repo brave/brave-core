@@ -1,5 +1,5 @@
 diff --git a/build/android/gradle/generate_gradle.py b/build/android/gradle/generate_gradle.py
-index f6dce230f4609e53e55d453bed50e8d6e60d3e96..1f6b7212c5f524fbe04bc0af4a882b960a47947c 100755
+index 5a3002368867ebab7dbaa2f3597e1479901b06bb..63e1da12ecbbae046be6107663b77ba4c2f8dc6d 100755
 --- a/build/android/gradle/generate_gradle.py
 +++ b/build/android/gradle/generate_gradle.py
 @@ -938,5 +938,6 @@ def main():
