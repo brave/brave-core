@@ -86,7 +86,7 @@ class ConstellationLogStore : public metrics::LogStore {
 
   size_t GetMaxEpochsToRetain() const;
 
-  const raw_ref<PrefService> local_state_;
+  const raw_ref<PrefService, DanglingUntriaged> local_state_;
   MetricLogType log_type_;
 
   base::flat_map<LogKey, std::string, LogKeyCompare> log_;

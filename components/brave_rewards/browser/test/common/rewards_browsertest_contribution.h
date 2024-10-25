@@ -120,8 +120,9 @@ class RewardsBrowserTestContribution : public RewardsServiceObserver {
   std::unique_ptr<base::RunLoop> wait_for_ac_completed_loop_;
   mojom::Result ac_reconcile_status_ = mojom::Result::FAILED;
 
-  raw_ptr<Browser> browser_ = nullptr;  // NOT OWNED
-  raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;  // NOT OWNED
+  raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;  // NOT OWNED
+  raw_ptr<RewardsServiceImpl, DanglingUntriaged> rewards_service_ =
+      nullptr;  // NOT OWNED
   std::unique_ptr<test_util::RewardsBrowserTestContextHelper> context_helper_;
 };
 

@@ -508,7 +508,7 @@ void SharedPinnedTabService::OnTabAdded(
     pinned_tab_data_.insert(
         pinned_tab_data_.begin() + contents_with_index.index,
         {.renderer_data = tab_renderer_data,
-         .shared_contents = contents_with_index.contents,
+         .shared_contents = contents_with_index.contents.get(),
          .contents_owner_model = tab_strip_model});
 
     SynchronizeNewPinnedTab(contents_with_index.index);

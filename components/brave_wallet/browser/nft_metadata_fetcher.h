@@ -103,7 +103,7 @@ class NftMetadataFetcher {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<APIRequestHelper> api_request_helper_;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
-  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<PrefService, DanglingUntriaged> prefs_ = nullptr;
   base::WeakPtrFactory<NftMetadataFetcher> weak_ptr_factory_;
 };
 

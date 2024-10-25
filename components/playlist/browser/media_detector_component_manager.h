@@ -65,7 +65,8 @@ class MediaDetectorComponentManager {
   void OnGetScripts(const ScriptMap& script_map);
 
   bool register_requested_ = false;
-  raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
+  raw_ptr<component_updater::ComponentUpdateService, DanglingUntriaged>
+      component_update_service_;
 
   std::string media_source_api_suppressor_;
   std::string base_script_;

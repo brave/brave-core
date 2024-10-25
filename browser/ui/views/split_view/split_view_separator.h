@@ -58,9 +58,10 @@ class SplitViewSeparator : public views::ResizeArea,
 
   raw_ptr<Browser> browser_ = nullptr;
 
-  raw_ptr<SplitViewSeparatorDelegate> resize_area_delegate_ = nullptr;
+  raw_ptr<SplitViewSeparatorDelegate, DanglingUntriaged> resize_area_delegate_ =
+      nullptr;
 
-  raw_ptr<views::Widget> menu_button_widget_ = nullptr;
+  raw_ptr<views::Widget, DanglingUntriaged> menu_button_widget_ = nullptr;
 
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       parent_widget_observation_{this};
