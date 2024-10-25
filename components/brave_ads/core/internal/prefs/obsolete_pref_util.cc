@@ -29,6 +29,9 @@ constexpr char kHasMigratedNotificationState[] =
 constexpr char kHasMigratedRewardsState[] =
     "brave.brave_ads.migrated.rewards_state";
 
+constexpr char kShouldMigrateVerifiedRewardsUser[] =
+    "brave.brave_ads.rewards.verified_user.should_migrate";
+
 }  // namespace
 
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* const registry) {
@@ -46,6 +49,9 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* const registry) {
   registry->RegisterBooleanPref(kHasMigratedConversionState, false);
   registry->RegisterBooleanPref(kHasMigratedNotificationState, false);
   registry->RegisterBooleanPref(kHasMigratedRewardsState, false);
+
+  // Added 10/2024.
+  registry->RegisterBooleanPref(kShouldMigrateVerifiedRewardsUser, false);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
@@ -61,6 +67,9 @@ void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
   prefs->ClearPref(kHasMigratedConversionState);
   prefs->ClearPref(kHasMigratedNotificationState);
   prefs->ClearPref(kHasMigratedRewardsState);
+
+  // Added 10/2024.
+  prefs->ClearPref(kShouldMigrateVerifiedRewardsUser);
 }
 
 }  // namespace brave_ads

@@ -12,8 +12,6 @@ struct ConfirmationInfo;
 
 [[nodiscard]] bool IsValid(const ConfirmationInfo& confirmation);
 
-void ResetTokens();
-
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATIONS_UTIL_H_

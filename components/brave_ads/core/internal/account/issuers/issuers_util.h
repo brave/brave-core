@@ -14,7 +14,6 @@ struct IssuersInfo;
 
 void SetIssuers(const IssuersInfo& issuers);
 std::optional<IssuersInfo> GetIssuers();
-void ResetIssuers();
 
 bool IsIssuersValid(const IssuersInfo& issuers);
 

@@ -9,14 +9,10 @@
 #include <string>
 
 #include "base/base64url.h"
-#include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/confirmation_payload_json_writer.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_info.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature.h"
@@ -85,15 +81,6 @@ bool IsValid(const ConfirmationInfo& confirmation) {
   }
 
   return Verify(confirmation);
-}
-
-void ResetTokens() {
-  database::table::ConfirmationQueue database_table;
-  database_table.DeleteAll(/*intentional*/ base::DoNothing());
-
-  RemoveAllConfirmationTokens();
-
-  RemoveAllPaymentTokens();
 }
 
 }  // namespace brave_ads

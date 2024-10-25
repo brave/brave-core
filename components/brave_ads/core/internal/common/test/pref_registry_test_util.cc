@@ -59,7 +59,6 @@ void RegisterProfilePrefs() {
 
   RegisterProfileBooleanPref(prefs::kHasMigratedClientState, true);
   RegisterProfileBooleanPref(prefs::kHasMigratedConfirmationState, true);
-  RegisterProfileBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser, false);
 
   RegisterProfileStringPref(prefs::kBrowserVersionNumber, "");
 

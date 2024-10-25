@@ -106,8 +106,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/account/user_data/fixed/summary_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/fixed/summary_user_data_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/fixed/version_number_user_data_unittest.cc",
-    "//brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_delegate_mock.cc",
-    "//brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_delegate_mock.h",
     "//brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/redeem_non_reward_confirmation_test_util.cc",

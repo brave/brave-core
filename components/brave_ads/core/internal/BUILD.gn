@@ -189,7 +189,6 @@ static_library("internal") {
     "account/user_data/user_data_info.h",
     "account/user_rewards/user_rewards.cc",
     "account/user_rewards/user_rewards.h",
-    "account/user_rewards/user_rewards_delegate.h",
     "account/user_rewards/user_rewards_util.cc",
     "account/user_rewards/user_rewards_util.h",
     "account/utility/redeem_confirmation/non_reward/redeem_non_reward_confirmation.cc",

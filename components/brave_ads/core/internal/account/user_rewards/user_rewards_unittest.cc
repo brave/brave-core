@@ -15,7 +15,6 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/url_request_builders/redeem_payment_tokens_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens_test_util.h"
@@ -29,8 +28,6 @@
 #include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
-#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "net/http/http_status_code.h"
 
@@ -44,11 +41,9 @@ class BraveAdsUserRewardsTest : public AdsClientMock, public test::TestBase {
     test::TestBase::SetUp();
 
     user_rewards_ = std::make_unique<UserRewards>(test::Wallet());
-    user_rewards_->SetDelegate(&delegate_mock_);
   }
 
   std::unique_ptr<UserRewards> user_rewards_;
-  UserRewardsDelegateMock delegate_mock_;
 };
 
 TEST_F(BraveAdsUserRewardsTest, FetchIssuers) {
@@ -216,44 +211,6 @@ TEST_F(BraveAdsUserRewardsTest, RedeemPaymentTokens) {
 
   // Assert
   EXPECT_TRUE(PaymentTokensIsEmpty());
-}
-
-TEST_F(BraveAdsUserRewardsTest, MigrateVerifiedRewardsUser) {
-  // Arrange
-  test::BuildAndSetIssuers();
-
-  test::MockTokenGenerator(/*count=*/50);
-
-  const test::URLResponseMap url_responses = {
-      {BuildIssuersUrlPath(),
-       {{net::HTTP_OK, test::BuildIssuersUrlResponseBody()}}}};
-  test::MockUrlResponses(ads_client_mock_, url_responses);
-
-  test::SetPaymentTokens(/*count=*/1);
-
-  EXPECT_CALL(delegate_mock_, OnDidMigrateVerifiedRewardsUser);
-
-  // Act
-  SetProfileBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser, true);
-
-  // Assert
-  EXPECT_EQ(0U, ConfirmationTokenCount());
-  EXPECT_EQ(0U, PaymentTokenCount());
-  EXPECT_FALSE(GetProfileBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser));
-  EXPECT_TRUE(HasIssuers());
-}
-
-TEST_F(BraveAdsUserRewardsTest, DoNotMigrateVerifiedRewardsUser) {
-  // Arrange
-  test::DisableBraveRewards();
-
-  EXPECT_CALL(delegate_mock_, OnDidMigrateVerifiedRewardsUser).Times(0);
-
-  // Act
-  SetProfileBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser, false);
-
-  // Assert
-  EXPECT_FALSE(GetProfileBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser));
 }
 
 TEST_F(BraveAdsUserRewardsTest,

@@ -50,8 +50,6 @@ void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
 
   registry->RegisterBooleanPref(prefs::kHasMigratedClientState, false);
   registry->RegisterBooleanPref(prefs::kHasMigratedConfirmationState, false);
-  registry->RegisterBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser,
-                                false);
 
   registry->RegisterStringPref(prefs::kBrowserVersionNumber, "");
 

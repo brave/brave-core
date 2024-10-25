@@ -51,8 +51,6 @@ inline constexpr char kHasMigratedClientState[] =
     "brave.brave_ads.state.has_migrated.client.v7";
 inline constexpr char kHasMigratedConfirmationState[] =
     "brave.brave_ads.state.has_migrated.confirmations.v8";
-inline constexpr char kShouldMigrateVerifiedRewardsUser[] =
-    "brave.brave_ads.rewards.verified_user.should_migrate";
 
 inline constexpr char kBrowserVersionNumber[] =
     "brave.brave_ads.browser_version_number";

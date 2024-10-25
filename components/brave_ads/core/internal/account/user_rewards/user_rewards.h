@@ -8,12 +8,10 @@
 
 #include <string>
 
-#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
-#include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens.h"
@@ -40,11 +38,6 @@ class UserRewards final : public AdsClientNotifierObserver,
 
   ~UserRewards() override;
 
-  void SetDelegate(UserRewardsDelegate* delegate) {
-    CHECK_EQ(delegate_, nullptr);
-    delegate_ = delegate;
-  }
-
   void FetchIssuers();
 
   void MaybeRefillConfirmationTokens();
@@ -52,13 +45,8 @@ class UserRewards final : public AdsClientNotifierObserver,
   void MaybeRedeemPaymentTokens();
 
  private:
-  void MaybeMigrateVerifiedRewardsUser();
-
-  void NotifyDidMigrateVerifiedRewardsUser() const;
-
   // AdsClientNotifierObserver:
   void OnNotifyDidSolveAdaptiveCaptcha() override;
-  void OnNotifyPrefDidChange(const std::string& path) override;
 
   // IssuersUrlRequestDelegate:
   void OnDidFetchIssuers(const IssuersInfo& issuers) override;
@@ -75,8 +63,6 @@ class UserRewards final : public AdsClientNotifierObserver,
   void OnDidRetryRefillingConfirmationTokens() override;
   void OnCaptchaRequiredToRefillConfirmationTokens(
       const std::string& captcha_id) override;
-
-  raw_ptr<UserRewardsDelegate> delegate_ = nullptr;
 
   IssuersUrlRequest issuers_url_request_;
   RefillConfirmationTokens refill_confirmation_tokens_;
