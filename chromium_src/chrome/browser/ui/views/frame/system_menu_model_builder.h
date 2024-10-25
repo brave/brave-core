@@ -17,9 +17,7 @@
  public:                                    \
   void Init
 
-#define BuildSystemMenuForBrowserWindow \
-  NotUsed();                            \
-  virtual void BuildSystemMenuForBrowserWindow
+#define BuildSystemMenuForBrowserWindow virtual BuildSystemMenuForBrowserWindow
 
 #include "src/chrome/browser/ui/views/frame/system_menu_model_builder.h"  // IWYU pragma: export
 
