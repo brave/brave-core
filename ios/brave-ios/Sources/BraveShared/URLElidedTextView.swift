@@ -30,9 +30,10 @@ public struct URLElidedText: View {
   }
 
   public var body: some View {
+    // LRM character prevents Text elements from rendering RTL special characters
     Text(
       AttributedString(
-        "\u{200E}\(text)",  // LRM character prevents Text elements from rendering RTL special characters
+        "\u{200E}\(text)",
         attributes: .init([.font: font ?? .body, .paragraphStyle: paragraphStyle])
       )
     )
