@@ -13,6 +13,7 @@
 #undef RegisterChromeWebUIConfigs
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_education/brave_education_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/tip_panel_ui.h"
@@ -76,6 +77,8 @@ void RegisterChromeWebUIConfigs() {
   map.AddWebUIConfig(std::make_unique<WalletPanelUIConfig>());
   map.AddWebUIConfig(
       std::make_unique<webcompat_reporter::WebcompatReporterUIConfig>());
+  map.AddWebUIConfig(
+      std::make_unique<brave_education::GettingStartedUIConfig>());
 #endif  // !BUILDFLAG(IS_ANDROID)
   map.AddWebUIConfig(std::make_unique<BraveAdblockUIConfig>());
   map.AddWebUIConfig(std::make_unique<BraveAdblockInternalsUIConfig>());

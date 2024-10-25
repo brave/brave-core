@@ -1,0 +1,42 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_education.mojom;
+
+// The set of browser commands sent by brave.com content, and understood by the
+// browser.
+enum Command {
+  kOpenRewardsOnboarding = 1,
+  kOpenWalletOnboarding = 2,
+  kOpenVPNOnboarding = 3,
+  kOpenAIChat = 4
+};
+
+// Click information needed to determine user's desired window disposition using
+// ui::DispositionFromClick().
+struct ClickInfo {
+  bool middle_button;
+  bool alt_key;
+  bool ctrl_key;
+  bool meta_key;
+  bool shift_key;
+};
+
+// Initializes messaging between the browser and the page.
+interface EducationPageHandlerFactory {
+  CreatePageHandler(pending_receiver<EducationPageHandler> receiver);
+};
+
+// Browser-side handler for requests from the WebUI page.
+interface EducationPageHandler {
+
+  // Returns the education content server URL that corresponds to the current
+  // WebUI URL.
+  GetServerUrl() => (string server_url);
+
+  // Executes the command with the given ID and click information. Returns
+  // whether or not the command was executed.
+  ExecuteCommand(Command command, ClickInfo click_info) => (bool executed);
+};
