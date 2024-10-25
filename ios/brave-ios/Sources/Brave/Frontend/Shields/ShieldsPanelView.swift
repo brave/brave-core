@@ -81,13 +81,7 @@ struct ShieldsPanelView: View {
           url: url.absoluteString,
           isPrivateBrowsing: viewModel.isPrivateBrowsing
         )
-        Text(
-          URLFormatter.createAttributedString(
-            string: displayHost,
-            font: .title2,
-            lineBreakMode: .byWordWrapping
-          )
-        )
+        URLElidedText(text: displayHost)
         .font(.title2)
         .foregroundStyle(Color(.bravePrimary))
       }
@@ -193,11 +187,7 @@ struct ShieldsPanelView: View {
 
   @ViewBuilder private var shieldSettingsSectionView: some View {
     ShieldSettingSectionHeader(
-      title: URLFormatter.createAttributedString(
-        string: displayHost,
-        font: .footnote,
-        lineBreakMode: .byWordWrapping
-      )
+      title: displayHost
     )
     ShieldSettingRow {
       HStack {
@@ -263,7 +253,7 @@ struct ShieldsPanelView: View {
   }
 
   @ViewBuilder private var globalSettingsSectionView: some View {
-    ShieldSettingSectionHeader(title: AttributedString(Strings.Shields.globalControls))
+    ShieldSettingSectionHeader(title: Strings.Shields.globalControls)
     ShieldSettingRow {
       Button {
         actionCallback(.navigate(.globalShields, dismiss: true))
@@ -316,11 +306,11 @@ private struct ShieldSettingsNavigationWrapper<Contents>: View where Contents: V
 }
 
 private struct ShieldSettingSectionHeader: View {
-  let title: AttributedString
+  let title: String
 
   var body: some View {
     VStack(alignment: .leading, spacing: 8) {
-      Text(title)
+      URLElidedText(text: title)
         .font(.footnote)
         .foregroundStyle(Color(.secondaryBraveLabel))
         .textCase(.uppercase)

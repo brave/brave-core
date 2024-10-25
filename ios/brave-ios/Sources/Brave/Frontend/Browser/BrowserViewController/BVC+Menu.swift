@@ -410,13 +410,10 @@ extension BrowserViewController {
             .lineLimit(1)
             .foregroundColor(Color(.braveLabel))
         }
-        Text(
-          URLFormatter.createAttributedString(
-            string: URLFormatter.formatURLOrigin(
-              forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString
-            ),
-            font: .footnote,
-            lineBreakMode: .byTruncatingHead
+
+        URLElidedText(
+          text: URLFormatter.formatURLOrigin(
+            forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString
           )
         )
         .font(.footnote)
