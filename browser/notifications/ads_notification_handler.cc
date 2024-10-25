@@ -9,6 +9,7 @@
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "build/build_config.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -28,18 +29,29 @@ void AdsNotificationHandler::OnShow(Profile* profile, const std::string& id) {
     return;
   }
 
+  did_click_notification_ad_ = false;
+
   ads_service->OnNotificationAdShown(id);
 }
 
 void AdsNotificationHandler::OnClose(Profile* profile,
                                      const GURL& origin,
                                      const std::string& id,
-                                     bool by_user,
+                                     const bool by_user,
                                      base::OnceClosure completed_closure) {
   AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
   if (!ads_service) {
     return;
   }
+
+#if BUILDFLAG(IS_LINUX)
+  if (did_click_notification_ad_) {
+    // On Linux, clicking the notification triggers both 'clicked' and 'closed'
+    // events. To avoid redundant event handling, we suppress the 'closed' event
+    // if the notification ad was clicked.
+    return;
+  }
+#endif  // BUILDFLAG(IS_LINUX)
 
   ads_service->OnNotificationAdClosed(id, by_user);
 }
@@ -55,6 +67,8 @@ void AdsNotificationHandler::OnClick(Profile* profile,
     return;
   }
 
+  did_click_notification_ad_ = true;
+
   ads_service->OnNotificationAdClicked(id);
 }
 
@@ -64,6 +78,8 @@ void AdsNotificationHandler::OpenSettings(Profile* profile,
   if (!ads_service) {
     return;
   }
+
+  did_click_notification_ad_ = true;
 
   CHECK(origin.has_query());
   const std::string id = origin.query();
