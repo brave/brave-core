@@ -1264,6 +1264,7 @@ if (is_android) {
     }
 
     sources = [
+      "//brave/android/javatests/org/chromium/chrome/browser/BraveSafetyNetThreatsPrioritiesTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/BraveSwipeRefreshHandlerTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/brave_wallet/BraveWalletUtilsTest.java",
@@ -1279,6 +1280,7 @@ if (is_android) {
       "//base:base_java_test_support",
       "//base:base_shared_preferences_java",
       "//brave/components/brave_wallet/common:mojom_java",
+      "//brave/components/safe_browsing/android:brave_safe_browsing_java",
       "//cc:cc_java",
       "//chrome/android/features/keyboard_accessory/public:public_java",
       "//chrome/browser/android/browserservices/intents:java",
