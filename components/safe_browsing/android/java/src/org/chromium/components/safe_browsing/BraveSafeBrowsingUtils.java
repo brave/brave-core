@@ -6,6 +6,7 @@
 package org.chromium.components.safe_browsing;
 
 import androidx.annotation.IntDef;
+import androidx.annotation.VisibleForTesting;
 
 import org.chromium.base.Log;
 
@@ -138,5 +139,36 @@ public class BraveSafeBrowsingUtils {
                                 + safetyNetThreatType);
                 return SafeBrowsingJavaThreatType.NO_THREAT;
         }
+    }
+
+    // Priorities from most high to low
+    private static final int SAFETY_NET_THREAT_PRIORITIES[] = {
+        SafetyNetJavaThreatType.SOCIAL_ENGINEERING,
+        SafetyNetJavaThreatType.POTENTIALLY_HARMFUL_APPLICATION,
+        SafetyNetJavaThreatType.BILLING,
+        SafetyNetJavaThreatType.UNWANTED_SOFTWARE,
+        SafetyNetJavaThreatType.SUBRESOURCE_FILTER,
+        SafetyNetJavaThreatType.CSD_ALLOWLIST,
+        SafetyNetJavaThreatType.MAX_VALUE
+    };
+
+    @VisibleForTesting
+    public static int getHighestPriorityThreat(List<Integer> threats) {
+        if (threats.size() == 0) {
+            return SafetyNetJavaThreatType.MAX_VALUE;
+        }
+
+        if (threats.size() == 1) {
+            return threats.get(0);
+        }
+
+        for (int i = 0; i < SAFETY_NET_THREAT_PRIORITIES.length; ++i) {
+            if (threats.contains(SAFETY_NET_THREAT_PRIORITIES[i])) {
+                return SAFETY_NET_THREAT_PRIORITIES[i];
+            }
+        }
+
+        assert false : "Unexpected threat";
+        return SafetyNetJavaThreatType.MAX_VALUE;
     }
 }
