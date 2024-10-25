@@ -39,6 +39,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/ui/webui/brave_education/brave_education_ui.h"
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
@@ -141,6 +142,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     // BraveNewTabUI configs in RegisterChromeWebUIConfigs because they use the
     // same origin (content::kChromeUIScheme + chrome::kChromeUINewTabHost).
     return new BraveNewTabUI(web_ui, url.host());
+  } else if (host == kBraveGettingStartedHost) {
+    return new brave_education::BraveEducationUI(web_ui, url.host());
 #endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
   } else if (host == kTorInternalsHost) {
@@ -193,6 +196,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       ((url.host_piece() == kWelcomeHost ||
         url.host_piece() == chrome::kChromeUIWelcomeURL) &&
        !profile->IsGuestSession()) ||
+      url.host_piece() == kBraveGettingStartedHost ||
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
       url.host_piece() == kTorInternalsHost ||
