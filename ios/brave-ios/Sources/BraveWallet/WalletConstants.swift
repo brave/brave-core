@@ -205,4 +205,10 @@ public struct WalletConstants {
   static let signTransactionRiskLink: URL = URL(
     string: "https://support.brave.com/hc/en-us/articles/4409513799693"
   )!
+
+  /// Solana Transacation Instruction Type Name
+  static let solanaTxInstructionTypeNameAssign: String = "Assign"
+
+  /// Solana Transacation Instruction Type Name
+  static let solanaTxInstructionTypeNameAssignWithSeed: String = "AssignWithSeed"
 }
