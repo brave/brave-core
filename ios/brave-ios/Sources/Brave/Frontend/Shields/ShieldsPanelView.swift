@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveShields
 import BraveUI
 import Data
@@ -35,9 +36,8 @@ struct ShieldsPanelView: View {
     self.url = url
     self.viewModel = ShieldsSettingsViewModel(tab: tab, domain: domain)
     self.actionCallback = callback
-    self.displayHost = URLFormatter.formatURLOrigin(
-      forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString
-    )
+    self.displayHost =
+      "\u{200E}\(URLFormatter.formatURLOrigin(forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString))"
   }
 
   private var shieldsEnabledAccessibiltyLabel: String {
@@ -82,7 +82,7 @@ struct ShieldsPanelView: View {
           url: url.absoluteString,
           isPrivateBrowsing: viewModel.isPrivateBrowsing
         )
-        Text(displayHost)
+        URLElidedText(text: displayHost)
           .font(.title2)
           .foregroundStyle(Color(.bravePrimary))
       }
@@ -187,7 +187,9 @@ struct ShieldsPanelView: View {
   }
 
   @ViewBuilder private var shieldSettingsSectionView: some View {
-    ShieldSettingSectionHeader(title: displayHost)
+    ShieldSettingSectionHeader(
+      title: displayHost
+    )
     ShieldSettingRow {
       HStack {
         Text(Strings.Shields.trackersAndAdsBlocking)
@@ -309,7 +311,7 @@ private struct ShieldSettingSectionHeader: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: 8) {
-      Text(title)
+      URLElidedText(text: title)
         .font(.footnote)
         .foregroundStyle(Color(.secondaryBraveLabel))
         .textCase(.uppercase)

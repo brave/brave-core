@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveUI
 import BraveVPN
 import BraveWallet
@@ -410,8 +411,9 @@ extension BrowserViewController {
             .lineLimit(1)
             .foregroundColor(Color(.braveLabel))
         }
-        Text(
-          verbatim: URLFormatter.formatURLOrigin(
+
+        URLElidedText(
+          text: URLFormatter.formatURLOrigin(
             forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString
           )
         )
