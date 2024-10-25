@@ -8061,6 +8061,25 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
   nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
 
+  // If there are duplicate NFTs it returns invalid params.
+  auto duplicate_nft1 = mojom::NftIdentifier::New();
+  duplicate_nft1->chain_id = mojom::kMainnetChainId;
+  duplicate_nft1->contract_address =
+      "0xed5af388653567af2f388e6224dc7c4b3241c544";
+  duplicate_nft1->token_id = "0xacf";  // "2767"
+  nft_identifiers.push_back(std::move(duplicate_nft1));
+
+  auto duplicate_nft2 = mojom::NftIdentifier::New();
+  duplicate_nft2->chain_id = mojom::kMainnetChainId;
+  duplicate_nft2->contract_address =
+      "0xed5af388653567af2f388e6224dc7c4b3241c544";
+  duplicate_nft2->token_id = "0xacf";  // "2767"
+  nft_identifiers.push_back(std::move(duplicate_nft2));
+
+  TestGetNftMetadatas(mojom::CoinType::ETH, std::move(nft_identifiers), {},
+                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+  nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
+
   // If there are over 50 NFTs it returns invalid params.
   for (int i = 0; i < 51; i++) {
     auto nft_identifier = mojom::NftIdentifier::New();
