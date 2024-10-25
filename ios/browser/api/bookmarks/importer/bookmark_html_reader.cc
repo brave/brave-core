@@ -187,10 +187,8 @@ void ImportBookmarksFile(
     if (is_bookmark &&
         post_data.empty() &&
         (valid_url_callback.is_null() || valid_url_callback.Run(url))) {
-      if (toolbar_folder_index > path.size() && !path.empty()) {
-        NOTREACHED_IN_MIGRATION();  // error in parsing.
-        break;
-      }
+      CHECK(toolbar_folder_index <= path.size() ||
+            path.empty());  // error in parsing.
 
       ImportedBookmarkEntry entry;
       entry.creation_time = add_date;

@@ -302,7 +302,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
         break;
 
       default:
-        NOTREACHED_IN_MIGRATION();
+        NOTREACHED();
     }
 
     return Write(utf8_string);
@@ -327,20 +327,14 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
     const std::string* date_added_string =
         value.FindString(BookmarkCodec::kDateAddedKey);
     const std::string* type_string = value.FindString(BookmarkCodec::kTypeKey);
-    if (!title_ptr || !date_added_string || !type_string ||
-        (*type_string != BookmarkCodec::kTypeURL &&
-         *type_string != BookmarkCodec::kTypeFolder)) {
-      NOTREACHED_IN_MIGRATION();
-      return false;
-    }
+    CHECK(title_ptr && date_added_string && type_string &&
+          (*type_string == BookmarkCodec::kTypeURL ||
+           *type_string == BookmarkCodec::kTypeFolder));
 
     std::string title = *title_ptr;
     if (*type_string == BookmarkCodec::kTypeURL) {
       const std::string* url_string = value.FindString(BookmarkCodec::kURLKey);
-      if (!url_string) {
-        NOTREACHED_IN_MIGRATION();
-        return false;
-      }
+      CHECK(url_string);
 
       std::string favicon_string;
       auto itr = favicons_map_->find(*url_string);
@@ -368,10 +362,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
         value.FindString(BookmarkCodec::kDateModifiedKey);
     const base::Value::List* child_values =
         value.FindList(BookmarkCodec::kChildrenKey);
-    if (!last_modified_date || !child_values) {
-      NOTREACHED_IN_MIGRATION();
-      return false;
-    }
+    CHECK(last_modified_date && child_values);
     if (folder_type != BookmarkNode::OTHER_NODE &&
         folder_type != BookmarkNode::MOBILE) {
       // The other/mobile folder name are not written out. This gives the effect
@@ -398,10 +389,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
 
     // Write the children.
     for (const base::Value& child_value : *child_values) {
-      if (!child_value.is_dict()) {
-        NOTREACHED_IN_MIGRATION();
-        return false;
-      }
+      CHECK(child_value.is_dict());
       if (!WriteNode(child_value.GetDict(), BookmarkNode::FOLDER)) {
         return false;
       }
