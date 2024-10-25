@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.brave_leo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.inputmethod.InputMethodManager;
 
 import org.jni_zero.CalledByNative;
 
@@ -52,10 +53,25 @@ public class BraveLeoSettingsLauncherHelper {
     }
 
     @CalledByNative
-    private static void handleVoiceRecognition(WebContents webContents, String conversation_uuid) {
+    private static void handleVoiceRecognition(WebContents webContents, String conversationUuid) {
         new BraveLeoVoiceRecognitionHandler(
-                        webContents.getTopLevelNativeWindow(), webContents, conversation_uuid)
+                        webContents.getTopLevelNativeWindow(), webContents, conversationUuid)
                 .startVoiceRecognition();
+    }
+
+    @CalledByNative
+    private static void handleShowSoftKeyboard(WebContents webContents) {
+        WindowAndroid windowAndroid = webContents.getTopLevelNativeWindow();
+        if (windowAndroid == null) {
+            return;
+        }
+        Activity activity = windowAndroid.getActivity().get();
+        if (activity == null) {
+            return;
+        }
+        InputMethodManager imm =
+                (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(activity.getWindow().getCurrentFocus(), 0);
     }
 
     @CalledByNative
