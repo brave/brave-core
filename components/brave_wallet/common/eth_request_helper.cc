@@ -551,7 +551,7 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
 
   auto chain_id = domain->FindDouble("chainId");
   if (chain_id) {
-    result->chain_id = Uint256ValueToHex(uint256_t(*chain_id));
+    result->chain_id = Uint256ValueToHex(uint256_t(uint64_t(*chain_id)));
   }
 
   DCHECK(!result->domain_hash.empty());
