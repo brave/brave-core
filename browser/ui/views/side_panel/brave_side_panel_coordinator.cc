@@ -148,6 +148,11 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
     return;
   }
 
+  // Notify to give opportunity to observe another panel entries from
+  // global or active tab's contextual registry.
+  auto* brave_browser_view = static_cast<BraveBrowserView*>(browser_view_);
+  brave_browser_view->WillShowSidePanel();
+
   SidePanelCoordinator::PopulateSidePanel(supress_animations, unique_key, entry,
                                           std::move(content_view));
 }

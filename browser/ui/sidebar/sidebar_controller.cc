@@ -224,6 +224,18 @@ void SidebarController::AddItemWithCurrentTab() {
                           SidebarItem::BuiltInItemType::kNone, false));
 }
 
+void SidebarController::UpdateActiveItemState(
+    std::optional<SidebarItem::BuiltInItemType> active_panel_item) {
+  if (!active_panel_item) {
+    ActivateItemAt(std::nullopt);
+    return;
+  }
+
+  if (auto index = sidebar_model_->GetIndexOf(*active_panel_item)) {
+    ActivateItemAt(*index);
+  }
+}
+
 void SidebarController::SetSidebar(Sidebar* sidebar) {
   DCHECK(!sidebar_);
   // |sidebar| can be null in unit test.

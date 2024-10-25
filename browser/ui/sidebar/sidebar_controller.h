@@ -52,6 +52,8 @@ class SidebarController : public SidebarService::Observer {
       std::optional<size_t> index,
       WindowOpenDisposition disposition = WindowOpenDisposition::CURRENT_TAB);
   void AddItemWithCurrentTab();
+  void UpdateActiveItemState(std::optional<SidebarItem::BuiltInItemType>
+                                 active_panel_item = std::nullopt);
 
   // Ask panel item activation state change to SidePanelUI.
   void ActivatePanelItem(SidebarItem::BuiltInItemType panel_item);

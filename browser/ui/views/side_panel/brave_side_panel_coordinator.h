@@ -9,7 +9,7 @@
 #include <memory>
 #include <optional>
 
-#include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"  // IWYU pragma: export
+#include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 
 class BraveSidePanelCoordinator : public SidePanelCoordinator {
  public:
@@ -35,7 +35,6 @@ class BraveSidePanelCoordinator : public SidePanelCoordinator {
       const UniqueKey& unique_key,
       SidePanelEntry* entry,
       std::optional<std::unique_ptr<views::View>> content_view) override;
-
   void NotifyPinnedContainerOfActiveStateChange(SidePanelEntryKey key,
                                                 bool is_active) override;
 
