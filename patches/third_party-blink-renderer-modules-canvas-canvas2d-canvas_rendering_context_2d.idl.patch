@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
-index c8afb078b5cbecae3f287f512d39b1900932c1c9..8495b450a2f83c881ffe7c4bfc56b0c31850dc2b 100644
+index 7b2f459980b66bb2afd4205144620239629a2749..4632bbdfa49b20f404ffd25e987d34854675d5cf 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
 @@ -118,10 +118,10 @@ interface CanvasRenderingContext2D {
@@ -16,8 +16,8 @@ index c8afb078b5cbecae3f287f512d39b1900932c1c9..8495b450a2f83c881ffe7c4bfc56b0c3
 +    [CallWith=ScriptState, HighEntropy] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
  
      // text (see also the CanvasDrawingStyles interface)
-     [HighEntropy] void fillText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double maxWidth);
-@@ -150,8 +150,8 @@ interface CanvasRenderingContext2D {
+     [HighEntropy, MeasureAs="WebDXFeature::kCanvasFillText"] void fillText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double maxWidth);
+@@ -151,8 +151,8 @@ interface CanvasRenderingContext2D {
      [RaisesException] ImageData createImageData(ImageData imagedata);
      [RaisesException] ImageData createImageData([EnforceRange] long sw, [EnforceRange] long sh);
      [RaisesException] ImageData createImageData([EnforceRange] long sw, [EnforceRange] long sh, ImageDataSettings imageDataSettings);
