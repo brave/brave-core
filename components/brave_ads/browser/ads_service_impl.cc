@@ -515,7 +515,7 @@ void AdsServiceImpl::NotifyAdsServiceInitialized() const {
   }
 }
 
-void AdsServiceImpl::ShutdownAndClearData() {
+void AdsServiceImpl::ShutdownClearDataAndMaybeRestart() {
   ShutdownAdsService();
 
   VLOG(6) << "Clearing ads data";
@@ -525,11 +525,12 @@ void AdsServiceImpl::ShutdownAndClearData() {
 
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&DeletePathOnFileTaskRunner, ads_service_path_),
-      base::BindOnce(&AdsServiceImpl::ShutdownAndClearDataCallback,
+      base::BindOnce(&AdsServiceImpl::ShutdownClearDataAndMaybeRestartCallback,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void AdsServiceImpl::ShutdownAndClearDataCallback(const bool success) {
+void AdsServiceImpl::ShutdownClearDataAndMaybeRestartCallback(
+    const bool success) {
   if (!success) {
     VLOG(0) << "Failed to clear ads data";
   } else {
@@ -1157,7 +1158,7 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
 
 void AdsServiceImpl::ClearData() {
   UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
-  ShutdownAndClearData();
+  ShutdownClearDataAndMaybeRestart();
 }
 
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
@@ -1903,14 +1904,14 @@ void AdsServiceImpl::OnRewardsWalletCreated() {
 }
 
 void AdsServiceImpl::OnExternalWalletConnected() {
-  SetProfilePref(prefs::kShouldMigrateVerifiedRewardsUser, base::Value(true));
-
   ShowReminder(mojom::ReminderType::kExternalWalletConnected);
+
+  ShutdownClearDataAndMaybeRestart();
 }
 
 void AdsServiceImpl::OnCompleteReset(const bool success) {
   if (success) {
-    ShutdownAndClearData();
+    ShutdownClearDataAndMaybeRestart();
   }
 }
 

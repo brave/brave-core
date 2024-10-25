@@ -10,9 +10,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
-#include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds
@@ -36,27 +34,6 @@ class BraveAdsUserRewardsUtilTest : public AdsClientNotifierObserverMock,
 
   AdsClientNotifierObserverMock ads_client_notifier_observer_mock_;
 };
-
-TEST_F(BraveAdsUserRewardsUtilTest, ShouldMigrateVerifiedRewardsUser) {
-  // Arrange
-  test::SetProfileBooleanPrefValue(prefs::kShouldMigrateVerifiedRewardsUser,
-                                   true);
-
-  // Act & Assert
-  EXPECT_TRUE(ShouldMigrateVerifiedRewardsUser());
-}
-
-TEST_F(BraveAdsUserRewardsUtilTest,
-       ShouldNotMigrateVerifiedRewardsUserIfBraveRewardsIsDisabled) {
-  // Arrange
-  test::DisableBraveRewards();
-
-  test::SetProfileBooleanPrefValue(prefs::kShouldMigrateVerifiedRewardsUser,
-                                   false);
-
-  // Act & Assert
-  EXPECT_FALSE(ShouldMigrateVerifiedRewardsUser());
-}
 
 TEST_F(BraveAdsUserRewardsUtilTest, UpdateIssuers) {
   // Arrange

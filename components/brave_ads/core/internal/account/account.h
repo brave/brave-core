@@ -16,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards.h"
-#include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -28,8 +27,7 @@ class Confirmations;
 struct TransactionInfo;
 
 class Account final : public AdsClientNotifierObserver,
-                      public ConfirmationDelegate,
-                      public UserRewardsDelegate {
+                      public ConfirmationDelegate {
  public:
   Account();
 
@@ -117,9 +115,6 @@ class Account final : public AdsClientNotifierObserver,
   // ConfirmationDelegate:
   void OnDidConfirm(const ConfirmationInfo& confirmation) override;
   void OnFailedToConfirm(const ConfirmationInfo& confirmation) override;
-
-  // UserRewardsDelegate:
-  void OnDidMigrateVerifiedRewardsUser() override;
 
   base::ObserverList<AccountObserver> observers_;
 
