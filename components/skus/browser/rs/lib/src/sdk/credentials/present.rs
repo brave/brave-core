@@ -67,8 +67,11 @@ where
                 return Err(InternalError::OrderLocationMismatch.into());
             }
 
-            // FIXME only returns summary for first item
-            if let Some(item) = order.items.into_iter().next() {
+            for item in order.items {
+                if !item.location_matches(&self.environment, domain) {
+                    continue
+                }
+
                 let name = "sku#".to_string() + &item.sku;
 
                 let (expires_at, presentation) = match item.credential_type {
