@@ -24,10 +24,10 @@
 #endif
 
 @implementation URLSanitizerServiceFactory
-+ (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
++ (nullable id)serviceForBrowserState:(ProfileIOS*)profile {
   // Create and start the local data file service and component installer
   brave::URLSanitizerService* urlSanitizer =
-      brave::URLSanitizerServiceFactory::GetServiceForState(browserState);
+      brave::URLSanitizerServiceFactory::GetServiceForState(profile);
   return [[URLSanitizerService alloc] initWithURLSanitizerService:urlSanitizer];
 }
 @end
@@ -36,9 +36,9 @@ namespace brave {
 
 // static
 brave::URLSanitizerService* URLSanitizerServiceFactory::GetServiceForState(
-    ChromeBrowserState* browser_state) {
+    ProfileIOS* profile) {
   return static_cast<brave::URLSanitizerService*>(
-      GetInstance()->GetServiceForBrowserState(browser_state, true));
+      GetInstance()->GetServiceForBrowserState(profile, true));
 }
 
 // static

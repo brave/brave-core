@@ -12,7 +12,7 @@
 #include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
-class ChromeBrowserState;
+class ProfileIOS;
 class KeyedService;
 
 namespace base {
@@ -28,9 +28,9 @@ namespace brave_wallet {
 
 class SwapServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
-  // Creates the service if it doesn't exist already for |browser_state|.
+  // Creates the service if it doesn't exist already for |profile|.
   static mojo::PendingRemote<mojom::SwapService> GetForBrowserState(
-      ChromeBrowserState* browser_state);
+      ProfileIOS* profile);
 
   static SwapServiceFactory* GetInstance();
 

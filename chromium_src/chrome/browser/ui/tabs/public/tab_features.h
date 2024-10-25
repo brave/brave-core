@@ -6,9 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_PUBLIC_TAB_FEATURES_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_PUBLIC_TAB_FEATURES_H_
 
-// Prevent PRESUBMIT from complaining about including an std header but not
-// using std:: in the file: no-std-usage-because-pch-file
-#include <vector>  // vector->locale->ios has an Init.
+#include "base/callback_list.h"
 
 #define Init(...)                 \
   Init_ChromiumImpl(__VA_ARGS__); \

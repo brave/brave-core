@@ -81,17 +81,17 @@ public class BraveIntentHandler {
     }
 
     private static String getUrlForCustomTab(Intent intent) {
-        assert (false);
+        assert false;
         return null;
     }
 
     private static String getUrlForWebapp(Intent intent) {
-        assert (false);
+        assert false;
         return null;
     }
 
     private static boolean isJavascriptSchemeOrInvalidUrl(String url) {
-        assert (false);
+        assert false;
         return false;
     }
 }

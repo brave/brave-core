@@ -262,7 +262,7 @@ public class KeyringModel implements KeyringServiceObserver {
                 null);
     }
 
-    private <T> void generateWallet(
+    private void generateWallet(
             @NonNull final String password,
             @Nullable final String recoveryPhrase,
             final boolean legacyRestoreEnabled,

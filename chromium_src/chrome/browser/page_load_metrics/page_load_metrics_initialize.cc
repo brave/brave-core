@@ -24,8 +24,8 @@ class BravePageLoadMetricsEmbedder : public chrome::PageLoadMetricsEmbedder {
 
  protected:
   // page_load_metrics::PageLoadMetricsEmbedderBase:
-  void RegisterEmbedderObservers(
-      ::page_load_metrics::PageLoadTracker* tracker) override;
+  void RegisterObservers(page_load_metrics::PageLoadTracker* tracker,
+                         content::NavigationHandle* navigation_handle) override;
 };
 
 BravePageLoadMetricsEmbedder::BravePageLoadMetricsEmbedder(
@@ -34,9 +34,10 @@ BravePageLoadMetricsEmbedder::BravePageLoadMetricsEmbedder(
 
 BravePageLoadMetricsEmbedder::~BravePageLoadMetricsEmbedder() = default;
 
-void BravePageLoadMetricsEmbedder::RegisterEmbedderObservers(
-    page_load_metrics::PageLoadTracker* tracker) {
-  PageLoadMetricsEmbedder::RegisterEmbedderObservers(tracker);
+void BravePageLoadMetricsEmbedder::RegisterObservers(
+    page_load_metrics::PageLoadTracker* tracker,
+    content::NavigationHandle* navigation_handle) {
+  PageLoadMetricsEmbedder::RegisterObservers(tracker, navigation_handle);
 
   tracker->AddObserver(
       std::make_unique<

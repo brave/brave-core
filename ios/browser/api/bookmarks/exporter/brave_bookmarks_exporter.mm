@@ -83,7 +83,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 - (instancetype)init {
   if ((self = [super init])) {
     // This work must be done on the UI thread because it currently relies on
-    // fetching information from ChromeBrowserState which is main-thread bound
+    // fetching information from ProfileIOS which is main-thread bound
     export_thread_ = web::GetUIThreadTaskRunner({});
   }
   return self;
@@ -109,14 +109,12 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 
         listener(BraveBookmarksExporterStateStarted);
 
-        ChromeBrowserState* chromeBrowserState =
-            GetApplicationContext()
-                ->GetProfileManager()
-                ->GetLastUsedProfileDeprecatedDoNotUse();
-        DCHECK(chromeBrowserState);
+        std::vector<ProfileIOS*> profiles =
+            GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
+        ProfileIOS* last_used_profile = profiles.at(0);
 
         bookmark_html_writer::WriteBookmarks(
-            chromeBrowserState, destination_file_path,
+            last_used_profile, destination_file_path,
             new BraveBookmarksExportObserver(listener));
       };
 

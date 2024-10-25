@@ -42,6 +42,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.back_press.SecondaryActivityBackPressUma.SecondaryActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.day_zero.DayZeroHelper;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -53,6 +54,7 @@ import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUti
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.Locale;
@@ -209,28 +211,50 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
     private void onClickViews() {
         if (mBtnPositive != null) {
-            mBtnPositive.setOnClickListener(view -> {
-                if (mCurrentStep == 1
-                        && !BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this)) {
-                    BraveSetDefaultBrowserUtils.setDefaultBrowser(this);
-                    if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
-                        nextOnboardingStep();
-                    }
-                } else {
-                    nextOnboardingStep();
-                }
-            });
+            mBtnPositive.setOnClickListener(
+                    view -> {
+                        if (mCurrentStep == 1 && !isDefaultBrowser()) {
+                            setDefaultBrowserAndProceedToNextStep();
+                        } else if (shouldOfferSearchWidget() && mCurrentStep == 2) {
+                            BraveSearchWidgetUtils.requestPinAppWidget();
+                            nextOnboardingStep();
+                        } else {
+                            nextOnboardingStep();
+                        }
+                    });
         }
 
         if (mBtnNegative != null) {
-            mBtnNegative.setOnClickListener(view -> {
-                if (mCurrentStep == 2) {
-                    CustomTabActivity.showInfoPage(this, P3A_URL);
-                } else {
-                    nextOnboardingStep();
-                }
-            });
+            mBtnNegative.setOnClickListener(
+                    view -> {
+                        if (mCurrentStep == getAnalyticsConsentPageStep()) {
+                            CustomTabActivity.showInfoPage(this, P3A_URL);
+                        } else {
+                            nextOnboardingStep();
+                        }
+                    });
         }
+    }
+
+    private boolean shouldForceDefaultBrowserPrompt() {
+        return !DayZeroHelper.getDayZeroExptFlag() && !isDefaultBrowser();
+    }
+
+    private boolean shouldOfferSearchWidget() {
+        return !DayZeroHelper.getDayZeroExptFlag()
+                && BraveSearchWidgetUtils.getShouldShowWidgetPromo(this);
+    }
+
+    private void setDefaultBrowserAndProceedToNextStep() {
+        BraveSetDefaultBrowserUtils.setDefaultBrowser(this);
+        if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
+            nextOnboardingStep();
+        }
+        // onActivityResult will call nextOnboardingStep().
+    }
+
+    private boolean isDefaultBrowser() {
+        return BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this);
     }
 
     private void startTimer(int delayMillis) {
@@ -245,173 +269,17 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
         mCurrentStep++;
         if (mCurrentStep == 0) {
-            int margin = mIsTablet ? 100 : 0;
-            setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1f, margin, true);
-            setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1f, margin, false);
-            if (mTvWelcome != null) {
-                mTvWelcome.animate().alpha(1f).setDuration(200).withEndAction(
-                        () -> mTvWelcome.setVisibility(View.VISIBLE));
-            }
-            if (mIvBrave != null) {
-                mIvBrave.animate().scaleX(0.8f).scaleY(0.8f).setDuration(1000);
-            }
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (mTvWelcome != null) {
-                        mTvWelcome.animate()
-                                .translationYBy(-dpToPx(WelcomeOnboardingActivity.this, 20))
-                                .setDuration(3000)
-                                .start();
-                    }
-                }
-            }, 200);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                mRequestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
-            } else {
-                startTimer(3000);
-            }
+            showIntroPage();
         } else if (mCurrentStep == 1) {
-            int margin = mIsTablet ? 200 : 30;
-            setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.3f, margin, true);
-            setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.3f, margin, false);
-
-            if (BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this)) {
-                if (mBtnPositive != null) {
-                    mBtnPositive.setText(getResources().getString(R.string.continue_text));
-                }
-                if (mBtnNegative != null) {
-                    mBtnNegative.setVisibility(View.GONE);
-                }
-            }
-            if (mTvWelcome != null) {
-                mTvWelcome.setVisibility(View.GONE);
-            }
-            if (mLayoutCard != null) {
-                mLayoutCard.setVisibility(View.VISIBLE);
-            }
-            if (mIvArrowDown != null) {
-                mIvArrowDown.setVisibility(View.VISIBLE);
-            }
-            String countryCode = Locale.getDefault().getCountry();
-            if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)) {
-                if (mTvCard != null) {
-                    mTvCard.setText(getResources().getString(R.string.privacy_onboarding_india));
-                }
-                if (mTvDefault != null) {
-                    mTvDefault.setText(
-                            getResources().getString(R.string.onboarding_set_default_india));
-                }
-            }
-
-        } else if (mCurrentStep == 2) {
-            int margin = mIsTablet ? 250 : 60;
-            setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.5f, margin, true);
-            setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.5f, margin, false);
-
-            if (mLayoutCard != null) {
-                mLayoutCard.setVisibility(View.GONE);
-            }
-            if (mTvDefault != null) {
-                mTvDefault.setVisibility(View.GONE);
-            }
-            if (mIvArrowDown != null) {
-                mIvArrowDown.setVisibility(View.GONE);
-            }
-
-            if (mTvCard != null) {
-                mTvCard.setText(getResources().getString(R.string.p3a_title));
-            }
-            if (mBtnPositive != null) {
-                mBtnPositive.setText(getResources().getString(R.string.continue_text));
-            }
-            if (mBtnNegative != null) {
-                mBtnNegative.setText(getResources().getString(R.string.learn_more_onboarding));
-                mBtnNegative.setVisibility(View.VISIBLE);
-            }
-
-            if (PackageUtils.isFirstInstall(this)
-                    && !OnboardingPrefManager.getInstance().isP3aCrashReportingMessageShown()) {
-                if (mCheckboxCrash != null) {
-                    mCheckboxCrash.setChecked(true);
-                }
-                UmaSessionStats.changeMetricsReportingConsent(
-                        true, ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
-                OnboardingPrefManager.getInstance().setP3aCrashReportingMessageShown(true);
+            if (shouldForceDefaultBrowserPrompt()) {
+                setDefaultBrowserAndProceedToNextStep();
             } else {
-                boolean isCrashReporting = false;
-                try {
-                    isCrashReporting = PrivacyPreferencesManagerImpl.getInstance()
-                                               .isUsageAndCrashReportingPermittedByUser();
-
-                } catch (Exception e) {
-                    Log.e(TAG, "isCrashReportingOnboarding: " + e.getMessage());
-                }
-                if (mCheckboxCrash != null) {
-                    mCheckboxCrash.setChecked(isCrashReporting);
-                }
+                showBrowserSelectionPage();
             }
-
-            if (mCheckboxCrash != null) {
-                mCheckboxCrash.setOnCheckedChangeListener(
-                        new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(
-                                    CompoundButton buttonView, boolean isChecked) {
-                                try {
-                                    UmaSessionStats.changeMetricsReportingConsent(isChecked,
-                                            ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
-                                } catch (Exception e) {
-                                    Log.e(TAG, "CrashReportingOnboarding: " + e.getMessage());
-                                }
-                            }
-                        });
-            }
-
-            boolean isP3aEnabled = true;
-
-            try {
-                isP3aEnabled = BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED);
-            } catch (Exception e) {
-                Log.e(TAG, "P3aOnboarding: " + e.getMessage());
-            }
-
-            if (mCheckboxP3a != null) {
-                mCheckboxP3a.setChecked(isP3aEnabled);
-                mCheckboxP3a.setOnCheckedChangeListener(
-                        new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(
-                                    CompoundButton buttonView, boolean isChecked) {
-                                try {
-                                    BraveLocalState.get().setBoolean(
-                                            BravePref.P3A_ENABLED, isChecked);
-                                    BraveLocalState.get().setBoolean(
-                                            BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
-                                    BraveLocalState.commitPendingWrite();
-                                } catch (Exception e) {
-                                    Log.e(TAG, "P3aOnboarding: " + e.getMessage());
-                                }
-                            }
-                        });
-            }
-
-            if (mTvCard != null) {
-                mTvCard.setVisibility(View.VISIBLE);
-            }
-            if (mCheckboxCrash != null) {
-                mCheckboxCrash.setVisibility(View.VISIBLE);
-            }
-            if (mCheckboxP3a != null) {
-                mCheckboxP3a.setVisibility(View.VISIBLE);
-            }
-            if (mLayoutCard != null) {
-                mLayoutCard.setVisibility(View.VISIBLE);
-            }
-            if (mIvArrowDown != null) {
-                mIvArrowDown.setVisibility(View.VISIBLE);
-            }
+        } else if (shouldOfferSearchWidget() && mCurrentStep == 2) {
+            showSearchWidgetPage();
+        } else if (mCurrentStep == getAnalyticsConsentPageStep()) {
+            showAnalyticsConsentPage();
         } else {
             OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
             OnboardingPrefManager.getInstance().setOnboardingSearchBoxTooltip(true);
@@ -424,28 +292,250 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
     }
 
-    private void setLeafAnimation(View leafAlignView, ImageView leafView, float scale,
-            float leafMargin, boolean isTopLeaf) {
+    private int getAnalyticsConsentPageStep() {
+        return shouldOfferSearchWidget() ? 3 : 2;
+    }
+
+    private void showIntroPage() {
+        int margin = mIsTablet ? 100 : 0;
+        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1f, margin, true);
+        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1f, margin, false);
+        if (mTvWelcome != null) {
+            mTvWelcome
+                    .animate()
+                    .alpha(1f)
+                    .setDuration(200)
+                    .withEndAction(() -> mTvWelcome.setVisibility(View.VISIBLE));
+        }
+        if (mIvBrave != null) {
+            mIvBrave.animate().scaleX(0.8f).scaleY(0.8f).setDuration(1000);
+        }
+        new Handler()
+                .postDelayed(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mTvWelcome != null) {
+                                    mTvWelcome
+                                            .animate()
+                                            .translationYBy(
+                                                    -dpToPx(WelcomeOnboardingActivity.this, 20))
+                                            .setDuration(3000)
+                                            .start();
+                                }
+                            }
+                        },
+                        200);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && !shouldForceDefaultBrowserPrompt()) {
+            mRequestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+        } else {
+            startTimer(3000);
+        }
+    }
+
+    private void showBrowserSelectionPage() {
+        int margin = mIsTablet ? 200 : 30;
+        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.3f, margin, true);
+        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.3f, margin, false);
+
+        if (isDefaultBrowser()) {
+            if (mBtnPositive != null) {
+                mBtnPositive.setText(getResources().getString(R.string.continue_text));
+            }
+            if (mBtnNegative != null) {
+                mBtnNegative.setVisibility(View.GONE);
+            }
+        }
+        if (mTvWelcome != null) {
+            mTvWelcome.setVisibility(View.GONE);
+        }
+        if (mLayoutCard != null) {
+            mLayoutCard.setVisibility(View.VISIBLE);
+        }
+        if (mIvArrowDown != null) {
+            mIvArrowDown.setVisibility(View.VISIBLE);
+        }
+        String countryCode = Locale.getDefault().getCountry();
+        if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)) {
+            if (mTvCard != null) {
+                mTvCard.setText(getResources().getString(R.string.privacy_onboarding_india));
+            }
+            if (mTvDefault != null) {
+                mTvDefault.setText(getResources().getString(R.string.onboarding_set_default_india));
+            }
+        }
+    }
+
+    private void showSearchWidgetPage() {
+        int margin = mIsTablet ? 200 : 30;
+        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.3f, margin, true);
+        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.3f, margin, false);
+
+        if (mTvWelcome != null) {
+            mTvWelcome.setVisibility(View.GONE);
+        }
+        if (mTvCard != null) {
+            mTvCard.setText(getResources().getString(R.string.onboarding_search_widget_title));
+        }
+        if (mTvDefault != null) {
+            mTvDefault.setText(getResources().getString(R.string.onboarding_search_widget_text));
+        }
+        if (mBtnPositive != null) {
+            mBtnPositive.setText(
+                    getResources().getString(R.string.onboarding_search_widget_button));
+        }
+        if (mLayoutCard != null) {
+            mLayoutCard.setVisibility(View.VISIBLE);
+        }
+        if (mIvArrowDown != null) {
+            mIvArrowDown.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void showAnalyticsConsentPage() {
+        int margin = mIsTablet ? 250 : 60;
+        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.5f, margin, true);
+        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.5f, margin, false);
+
+        if (mLayoutCard != null) {
+            mLayoutCard.setVisibility(View.GONE);
+        }
+        if (mTvDefault != null) {
+            mTvDefault.setVisibility(View.GONE);
+        }
+        if (mIvArrowDown != null) {
+            mIvArrowDown.setVisibility(View.GONE);
+        }
+
+        if (mTvCard != null) {
+            mTvCard.setText(getResources().getString(R.string.p3a_title));
+        }
+        if (mBtnPositive != null) {
+            mBtnPositive.setText(getResources().getString(R.string.continue_text));
+        }
+        if (mBtnNegative != null) {
+            mBtnNegative.setText(getResources().getString(R.string.learn_more_onboarding));
+            mBtnNegative.setVisibility(View.VISIBLE);
+        }
+
+        if (PackageUtils.isFirstInstall(this)
+                && !OnboardingPrefManager.getInstance().isP3aCrashReportingMessageShown()) {
+            if (mCheckboxCrash != null) {
+                mCheckboxCrash.setChecked(true);
+            }
+            UmaSessionStats.changeMetricsReportingConsent(
+                    true, ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
+            OnboardingPrefManager.getInstance().setP3aCrashReportingMessageShown(true);
+        } else {
+            boolean isCrashReporting = false;
+            try {
+                isCrashReporting =
+                        PrivacyPreferencesManagerImpl.getInstance()
+                                .isUsageAndCrashReportingPermittedByUser();
+
+            } catch (Exception e) {
+                Log.e(TAG, "isCrashReportingOnboarding: " + e.getMessage());
+            }
+            if (mCheckboxCrash != null) {
+                mCheckboxCrash.setChecked(isCrashReporting);
+            }
+        }
+
+        if (mCheckboxCrash != null) {
+            mCheckboxCrash.setOnCheckedChangeListener(
+                    new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            try {
+                                UmaSessionStats.changeMetricsReportingConsent(
+                                        isChecked,
+                                        ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
+                            } catch (Exception e) {
+                                Log.e(TAG, "CrashReportingOnboarding: " + e.getMessage());
+                            }
+                        }
+                    });
+        }
+
+        boolean isP3aEnabled = true;
+
+        try {
+            isP3aEnabled = BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED);
+        } catch (Exception e) {
+            Log.e(TAG, "P3aOnboarding: " + e.getMessage());
+        }
+
+        if (mCheckboxP3a != null) {
+            mCheckboxP3a.setChecked(isP3aEnabled);
+            mCheckboxP3a.setOnCheckedChangeListener(
+                    new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            try {
+                                BraveLocalState.get().setBoolean(BravePref.P3A_ENABLED, isChecked);
+                                BraveLocalState.get()
+                                        .setBoolean(BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
+                                BraveLocalState.commitPendingWrite();
+                            } catch (Exception e) {
+                                Log.e(TAG, "P3aOnboarding: " + e.getMessage());
+                            }
+                        }
+                    });
+        }
+
+        if (mTvCard != null) {
+            mTvCard.setVisibility(View.VISIBLE);
+        }
+        if (mCheckboxCrash != null) {
+            mCheckboxCrash.setVisibility(View.VISIBLE);
+        }
+        if (mCheckboxP3a != null) {
+            mCheckboxP3a.setVisibility(View.VISIBLE);
+        }
+        if (mLayoutCard != null) {
+            mLayoutCard.setVisibility(View.VISIBLE);
+        }
+        if (mIvArrowDown != null) {
+            mIvArrowDown.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setLeafAnimation(
+            View leafAlignView,
+            ImageView leafView,
+            float scale,
+            float leafMargin,
+            boolean isTopLeaf) {
         if (leafMargin > 0 && leafAlignView != null) {
             int margin = (int) dpToPx(this, leafMargin);
-            Animation animation = new Animation() {
-                @Override
-                protected void applyTransformation(float interpolatedTime, Transformation t) {
-                    if (leafAlignView != null) {
-                        ViewGroup.MarginLayoutParams layoutParams =
-                                (ViewGroup.MarginLayoutParams) leafAlignView.getLayoutParams();
-                        if (isTopLeaf) {
-                            layoutParams.bottomMargin = margin
-                                    - (int) ((margin - layoutParams.bottomMargin)
-                                            * interpolatedTime);
-                        } else {
-                            layoutParams.topMargin = margin
-                                    - (int) ((margin - layoutParams.topMargin) * interpolatedTime);
+            Animation animation =
+                    new Animation() {
+                        @Override
+                        protected void applyTransformation(
+                                float interpolatedTime, Transformation t) {
+                            if (leafAlignView != null) {
+                                ViewGroup.MarginLayoutParams layoutParams =
+                                        (ViewGroup.MarginLayoutParams)
+                                                leafAlignView.getLayoutParams();
+                                if (isTopLeaf) {
+                                    layoutParams.bottomMargin =
+                                            margin
+                                                    - (int)
+                                                            ((margin - layoutParams.bottomMargin)
+                                                                    * interpolatedTime);
+                                } else {
+                                    layoutParams.topMargin =
+                                            margin
+                                                    - (int)
+                                                            ((margin - layoutParams.topMargin)
+                                                                    * interpolatedTime);
+                                }
+                                leafAlignView.setLayoutParams(layoutParams);
+                            }
                         }
-                        leafAlignView.setLayoutParams(layoutParams);
-                    }
-                }
-            };
+                    };
             animation.setDuration(800);
             leafAlignView.startAnimation(animation);
         }

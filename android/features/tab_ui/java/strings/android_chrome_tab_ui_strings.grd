@@ -503,20 +503,6 @@
         The price of this item recently dropped from <ph name="PREVIOUS_PRICE">%1$s<ex>$42</ex></ph> to <ph name="NEW_PRICE">%2$s<ex>$30</ex></ph>
       </message>
 
-      <!-- Price Alerts Card strings -->
-      <message name="IDS_PRICE_DROP_ALERTS_CARD_TITLE" desc="This text shows on the price drop alerts message card if any item in the open tabs has a price drop. It familiarizes users with the feature getting price drop alerts.">
-        Get alerts for price drops?
-      </message>
-      <message name="IDS_PRICE_DROP_ALERTS_CARD_GET_NOTIFIED_CONTENT" desc="This text shows below 'Get alerts for price drops?'. It describes what will happen when clicking 'Get notified' button.">
-        You'll get an alert when there's a lower price in an open tab
-      </message>
-      <message name="IDS_PRICE_DROP_ALERTS_CARD_GET_NOTIFIED" desc="This text button shows below 'Get alerts for price drops?'. When user clicks on the text button, the price drop notifications feature will be turned on.">
-        Get notified
-      </message>
-      <message name="IDS_PRICE_DROP_ALERTS_CARD_GO_TO_SETTINGS_CONTENT" desc="This text shows below 'Get alerts for price drops?'. It asks users to turn on notifications in Android settings to get the price drop notifications.">
-        To get an alert when there's a lower price in an open tab, turn on notifications in Settings.
-      </message>
-
       <!-- Price Tracking Settings Dialog strings -->
       <message name="IDS_TRACK_PRICES_ON_TABS" desc="This text shows in the price tracking settings dialog. It tells users the switch on the side can be used to turn on/off the 'Track prices on tabs' feature.">
         Track prices on tabs
@@ -803,6 +789,9 @@
       <message name="IDS_OPEN_NEW_TAB_IN_GROUP_CONTEXT_MENU_ITEM" desc="Menu item text which will be display for tab group context menu on strip to allow opening a new tab in the tab group.">
         New tab in group
       </message>
+      <message name="IDS_SHARE_TAB_GROUP_CONTEXT_MENU_ITEM" desc="Menu item text which will be display for tab group context menu on strip to allow sharing a tab group.">
+        Share group
+      </message>
       <message name="IDS_TAB_GROUP_RENAME_DIALOG_TITLE" desc="When users edit an existing tab group, a dialog will pop up and this text is the title of that dialog. [CHAR_LIMIT=24]">
         Rename tab group
       </message>
@@ -832,17 +821,39 @@
       <message name="IDS_CLOSE_FROM_GROUP_DIALOG_TITLE" desc="Title of a dialog asking if the user really wants to close a tab and group.">
         Close tab and delete group?
       </message>
+      <message name="IDS_KEEP_TAB_GROUP_DIALOG_TITLE" desc="Title of a dialog asking the user if they want to keep the tab group.">
+        Keep tab group?
+      </message>
+      <message name="IDS_KEEP_TAB_GROUP_DIALOG_DESCRIPTION_OWNER" desc="Main text content of a dialog asking the owner of a shared group if they want to keep it. The &#10; is a newline character to force formatting.">
+        Keep this group to add tabs later, or delete it if you no longer need it.
+
+If you delete it, everyone will immediately lose access to the "<ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph>" tab group, and it will be deleted from all devices.
+      </message>
+      <message name="IDS_KEEP_TAB_GROUP_DIALOG_DESCRIPTION_MEMBER" desc="Main text content of a dialog asking a member of a shared group if they want to keep it or leave. The &#10; is a newline character to force formatting.">
+        Keep this group to add tabs later, or leave.
+
+If you leave, you will immediately lose access to the "<ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph>" tab group.
+      </message>
+      <message name="IDS_KEEP_TAB_GROUP_DIALOG_KEEP_ACTION" desc="Action button to keep the tab group in the keep group dialog.">
+        Keep group
+      </message>
+      <message name="IDS_KEEP_TAB_GROUP_DIALOG_DELETE_ACTION" desc="Action button for the owner of a group to delete the tab group in the keep group dialog.">
+        Delete group
+      </message>
+      <message name="IDS_KEEP_TAB_GROUP_DIALOG_LEAVE_ACTION" desc="Action button for a member of a group to leave the tab group in the keep group dialog.">
+        Leave group
+      </message>
       <message name="IDS_CLOSE_TAB_GROUP_MENU_ITEM" desc="Menu item text which will prompt a confirmation dialog to close a tab group.">
         Close
       </message>
       <message name="IDS_RENAME_TAB_GROUP_MENU_ITEM" desc="Menu item text which will prompt a confirmation dialog to rename a tab group.">
         Rename
       </message>
-      <message name="IDS_ACCESSIBILITY_OPEN_TAB_GROUP_OVERFLOW_MENU_WITH_GROUP_NAME" desc="Accessibility string for opening the overflow menu on a tab group, which will allow the user to perform several actions on the tab group. TITLE_OF_GROUP is the title of the group.">
-        Open the tab group action menu for tab group <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph>
+      <message name="IDS_ACCESSIBILITY_OPEN_TAB_GROUP_OVERFLOW_MENU_WITH_GROUP_NAME_WITH_COLOR" desc="Accessibility string for opening the overflow menu on a tab group, which will allow the user to perform several actions on the tab group. TITLE_OF_GROUP is the title of the group. COLOR_NAME is the color of the group.">
+        Open the tab group action menu for tab group <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph>, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>.
       </message>
-      <message name="IDS_ACCESSIBILITY_OPEN_SHARED_TAB_GROUP_OVERFLOW_MENU_WITH_GROUP_NAME" desc="Accessibility string for opening the overflow menu on a shared tab group, which will allow the user to perform several actions on the tab group. TITLE_OF_GROUP is the title of the group.">
-        Open the tab group action menu for shared tab group <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph>
+      <message name="IDS_ACCESSIBILITY_OPEN_SHARED_TAB_GROUP_OVERFLOW_MENU_WITH_GROUP_NAME_WITH_COLOR" desc="Accessibility string for opening the overflow menu on a shared tab group, which will allow the user to perform several actions on the tab group. TITLE_OF_GROUP is the title of the group. COLOR_NAME is the color of the group.">
+        Open the tab group action menu for shared tab group <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph>, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>.
       </message>
       <message name="IDS_CLOSE_FROM_GROUP_DESCRIPTION" desc="Description of the action of deleting a tab and a group, shown in a confirmation dialog.">
         This will delete the group from all devices signed into <ph name="USER_EMAIL">%1$s<ex>test@gmail.com</ex></ph>

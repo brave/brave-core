@@ -10,16 +10,13 @@
 #include "ui/views/focus/external_focus_tracker.h"
 #include "ui/views/view.h"
 
-#define GetAccessibleNodeData       \
-  GetAccessibleNodeData_Unused() {} \
+#define CloseButtonPressed          \
+  CloseButtonPressed_Unused() {}    \
   friend class BraveConfirmInfoBar; \
-  void GetAccessibleNodeData
-
-#define CloseButtonPressed virtual CloseButtonPressed
+  virtual void CloseButtonPressed
 
 #include "src/chrome/browser/ui/views/infobars/infobar_view.h"  // IWYU pragma: export
 
 #undef CloseButtonPressed
-#undef GetAccessibleNodeData
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_INFOBARS_INFOBAR_VIEW_H_

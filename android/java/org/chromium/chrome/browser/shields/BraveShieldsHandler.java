@@ -282,12 +282,12 @@ public class BraveShieldsHandler
         mPopupView = inflater.inflate(R.layout.brave_shields_main_layout, null);
         setUpViews();
 
-        //Specify the length and width through constants
+        // Specify the length and width through constants
         int width;
         if (ConfigurationUtils.isLandscape(mContext)) {
-            width = (int) ((mContext.getResources().getDisplayMetrics().widthPixels) * 0.50);
+            width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.50);
         } else {
-            width = (int) ((mContext.getResources().getDisplayMetrics().widthPixels) * 0.75);
+            width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.75);
         }
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
@@ -443,7 +443,7 @@ public class BraveShieldsHandler
         String favIconURL = mBraveRewardsNativeWorker.getPublisherFavIconURL(mTabId);
         Tab currentActiveTab = mIconFetcher.getTab();
         String url = currentActiveTab.getUrl().getSpec();
-        final String favicon_url = (favIconURL.isEmpty()) ? url : favIconURL;
+        final String favicon_url = favIconURL.isEmpty() ? url : favIconURL;
         mIconFetcher.retrieveLargeIcon(favicon_url, this);
 
         TextView mSiteText = mMainLayout.findViewById(R.id.site_text);
@@ -545,10 +545,11 @@ public class BraveShieldsHandler
         if (ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT)) {
             detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE);
         } else {
-            mPopupView.findViewById(R.id.brave_shields_secondary_https_upgrade_layout_id)
+            mPopupView
+                    .findViewById(R.id.brave_shields_secondary_https_upgrade_layout_id)
                     .setVisibility(View.GONE);
         }
-        if (ChromeFeatureList.isEnabled((BraveFeatureList.BRAVE_SHOW_STRICT_FINGERPRINTING_MODE))) {
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHOW_STRICT_FINGERPRINTING_MODE)) {
             detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
         } else {
             mPopupView

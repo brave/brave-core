@@ -75,22 +75,22 @@ public class BraveLeoPreferences extends BravePreferenceFragment
     private void setModel() {
         BraveLeoMojomHelper.getInstance(getProfile())
                 .getModels(
-                        (models -> {
+                        models -> {
                             setDefaultModelName(models);
-                        }));
+                        });
     }
 
     private void setDefaultModelName(ModelWithSubtitle[] models) {
         BraveLeoMojomHelper.getInstance(getProfile())
                 .getDefaultModelKey(
-                        (model -> {
+                        model -> {
                             Preference pref = findPreference(PREF_DEFAULT_MODEL);
                             if (pref == null) {
                                 Log.e(TAG, "Default model pref is null");
                                 return;
                             }
                             pref.setSummary(BraveLeoUtils.getDefaultModelName(models, model));
-                        }));
+                        });
     }
 
     private void checkLinkPurchase() {

@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/cr_elements/cr_radio_button/cr_radio_button_style.css b/ui/webui/resources/cr_elements/cr_radio_button/cr_radio_button_style.css
-index 26be0eb63c6710da71edffb9f7a5c796b321d72a..113aaf9463ffe59fbace67dff252c53f6fc9c979 100644
+index 09d8d3aa5c34684370deeff9e63c20d97c56d571..29803457e85eb2d5e4566ef48da244eb2d39699f 100644
 --- a/ui/webui/resources/cr_elements/cr_radio_button/cr_radio_button_style.css
 +++ b/ui/webui/resources/cr_elements/cr_radio_button/cr_radio_button_style.css
 @@ -7,6 +7,8 @@
@@ -10,4 +10,4 @@ index 26be0eb63c6710da71edffb9f7a5c796b321d72a..113aaf9463ffe59fbace67dff252c53f
 + * #include=br-shared-style
   * #css_wrapper_metadata_end */
  
- 
+ /* Purposefully empty since this style is generated at build time from the

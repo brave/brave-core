@@ -36,7 +36,7 @@ public class CreateAccountAdapter extends RecyclerView.Adapter<CreateAccountAdap
             Context context, List<CryptoAccountTypeInfo> cryptoAccountTypeInfos) {
         mCryptoAccountTypeInfos = cryptoAccountTypeInfos;
         this.mContext = context;
-        inflater = (LayoutInflater.from(context));
+        inflater = LayoutInflater.from(context);
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
     }

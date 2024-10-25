@@ -348,6 +348,22 @@ license_files = ['LICENSE']
 [crate.star-constellation]
 license_files = ['LICENSE']
 
+[crate.syn]
+extra_kv = { raw_gn = '''
+if (target_name == "buildrs_support" && epoch == "1") {
+  deps -= [
+    "//brave/third_party/rust/proc_macro2/v1:lib",
+    "//brave/third_party/rust/quote/v1:lib",
+    "//brave/third_party/rust/unicode_ident/v1:lib",
+  ]
+  deps += [
+    "//brave/third_party/rust/proc_macro2/v1:buildrs_support",
+    "//brave/third_party/rust/quote/v1:buildrs_support",
+    "//brave/third_party/rust/unicode_ident/v1:buildrs_support",
+  ]
+}
+'''}
+
 [crate.tap]
 license_files = ['LICENSE.txt']
 
