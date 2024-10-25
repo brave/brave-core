@@ -5,6 +5,7 @@
 
 #include "brave/components/webcompat/content/browser/webcompat_exceptions_service.h"
 
+#include <algorithm>
 #include <memory>
 #include <set>
 #include <string>
@@ -66,6 +67,7 @@ constexpr auto kWebcompatNamesToType =
     });
 
 WebcompatExceptionsService* singleton = nullptr;
+std::vector<WebcompatExceptionsObserver*> observers_;
 
 bool AddRule(
   const ContentSettingsPattern& pattern,
@@ -184,8 +186,13 @@ WebcompatExceptionsService::GetPatterns(ContentSettingsType webcompat_type) {
 
 void WebcompatExceptionsService::SetRules(
   PatternsByWebcompatTypeMap patterns_by_webcompat_type) {
-  base::AutoLock lock(lock_);
-  patterns_by_webcompat_type_ = std::move(patterns_by_webcompat_type);
+  {
+    base::AutoLock lock(lock_);
+    patterns_by_webcompat_type_ = std::move(patterns_by_webcompat_type);
+  }
+  for (const auto observer : observers_) {
+    observer->OnWebcompatRulesUpdated();
+  }
 }
 
 void WebcompatExceptionsService::SetRulesForTesting(
@@ -199,6 +206,21 @@ void WebcompatExceptionsService::OnComponentReady(
     const base::FilePath& install_dir,
     const std::string& manifest) {
   LoadWebcompatExceptions(install_dir);
+}
+
+// static
+void WebcompatExceptionsService::AddObserver(
+    WebcompatExceptionsObserver* observer) {
+  observers_.push_back(observer);
+}
+
+// static
+void WebcompatExceptionsService::RemoveObserver(
+    WebcompatExceptionsObserver* observer) {
+  auto it = std::find(observers_.begin(), observers_.end(), observer);
+  if (it != observers_.end()) {
+    observers_.erase(it);
+  }
 }
 
 WebcompatExceptionsService::~WebcompatExceptionsService() {}

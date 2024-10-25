@@ -147,7 +147,8 @@ void SetWebcompatEnabled(HostContentSettingsMap* map,
                          ContentSettingsType webcompat_settings_type,
                          bool enabled,
                          const GURL& url,
-                         PrefService* local_state);
+                         PrefService* local_state,
+                         PrefService* profile_state = nullptr);
 
 bool IsWebcompatEnabled(HostContentSettingsMap* map,
                         ContentSettingsType webcompat_settings_type,
