@@ -29,6 +29,7 @@ BASE_DECLARE_FEATURE(kBraveDarkModeBlock);
 BASE_DECLARE_FEATURE(kBraveDomainBlock);
 BASE_DECLARE_FEATURE(kBraveDomainBlock1PES);
 BASE_DECLARE_FEATURE(kBraveExtensionNetworkBlocking);
+BASE_DECLARE_FEATURE(kBraveFarbling);
 BASE_DECLARE_FEATURE(kBraveLocalhostAccessPermission);
 BASE_DECLARE_FEATURE(kBraveReduceLanguage);
 BASE_DECLARE_FEATURE(kBraveShredFeature);

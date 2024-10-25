@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
 #include "base/strings/utf_string_conversions.h"
@@ -44,24 +45,18 @@ bool IsFrameWithOpaqueOrigin(blink::WebFrame* frame) {
          frame->Top()->GetSecurityOrigin().IsOpaque();
 }
 
-GURL GetOriginOrURL(const blink::WebFrame* frame) {
-  url::Origin top_origin = url::Origin(frame->Top()->GetSecurityOrigin());
-  // The |top_origin| is unique ("null") e.g., for file:// URLs. Use the
-  // document URL as the primary URL in those cases.
-  // TODO(alexmos): This is broken for --site-per-process, since top() can be a
-  // WebRemoteFrame which does not have a document(), and the WebRemoteFrame's
-  // URL is not replicated.  See https://crbug.com/628759.
-  if (top_origin.opaque() && frame->Top()->IsWebLocalFrame()) {
-    return frame->Top()->ToWebLocalFrame()->GetDocument().Url();
-  }
-  return top_origin.GetURL();
+GURL GetTopFrameOriginAsURL(const blink::WebFrame* frame) {
+  DCHECK(frame);
+  url::Origin top_origin(frame->Top()->GetSecurityOrigin());
+  return top_origin.opaque()
+             ? top_origin.GetTupleOrPrecursorTupleIfOpaque().GetURL()
+             : top_origin.GetURL();
 }
 
-bool IsBraveShieldsDown(const blink::WebFrame* frame,
+bool IsBraveShieldsDown(const GURL& primary_url,
                         const GURL& secondary_url,
                         const ContentSettingsForOneType& rules) {
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
-  const GURL& primary_url = GetOriginOrURL(frame);
 
   for (const auto& rule : rules) {
     if (rule.primary_pattern.Matches(primary_url) &&
@@ -151,9 +146,10 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
   blocked_script_url_ = GURL::EmptyGURL();
 
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+  const GURL primary_url(GetTopFrameOriginAsURL(frame));
   const GURL secondary_url(url::Origin(frame->GetSecurityOrigin()).GetURL());
   bool allow = ContentSettingsAgentImpl::AllowScript(enabled_per_settings);
-  auto is_shields_down = IsBraveShieldsDown(frame, secondary_url);
+  auto is_shields_down = IsBraveShieldsDown(primary_url, secondary_url);
   auto is_script_temporarily_allowed =
       IsScriptTemporarilyAllowed(secondary_url);
   allow = allow || is_shields_down || is_script_temporarily_allowed;
@@ -183,6 +179,7 @@ void BraveContentSettingsAgentImpl::DidNotAllowScript() {
 bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
     bool enabled_per_settings,
     const blink::WebURL& script_url) {
+  const GURL primary_url(GetTopFrameOriginAsURL(render_frame()->GetWebFrame()));
   GURL secondary_url(script_url);
   // For scripts w/o sources it should report the domain / site used for
   // executing the frame (which most, but not all, of the time will just be from
@@ -195,8 +192,7 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
   bool allow = ContentSettingsAgentImpl::AllowScriptFromSource(
       enabled_per_settings, script_url);
 
-  auto is_shields_down =
-      IsBraveShieldsDown(render_frame()->GetWebFrame(), secondary_url);
+  auto is_shields_down = IsBraveShieldsDown(primary_url, secondary_url);
   auto is_script_temporarily_allowed =
       IsScriptTemporarilyAllowed(secondary_url);
   allow = allow || is_shields_down || is_script_temporarily_allowed;
@@ -271,22 +267,22 @@ bool BraveContentSettingsAgentImpl::AllowStorageAccessSync(
 }
 
 bool BraveContentSettingsAgentImpl::IsBraveShieldsDown(
-    const blink::WebFrame* frame,
+    const GURL& primary_url,
     const GURL& secondary_url) {
   return !content_setting_rules_ ||
          ::content_settings::IsBraveShieldsDown(
-             frame, secondary_url, content_setting_rules_->brave_shields_rules);
+             primary_url, secondary_url,
+             content_setting_rules_->brave_shields_rules);
 }
 
 bool BraveContentSettingsAgentImpl::IsCosmeticFilteringEnabled(
     const GURL& url) {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+  const GURL primary_url(GetTopFrameOriginAsURL(frame));
   GURL secondary_url = GURL();
 
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
   if (content_setting_rules_) {
-    const GURL& primary_url = GetOriginOrURL(frame);
-
     for (const auto& rule : content_setting_rules_->cosmetic_filtering_rules) {
       if (rule.primary_pattern.Matches(primary_url) &&
           rule.secondary_pattern.Matches(secondary_url)) {
@@ -298,7 +294,7 @@ bool BraveContentSettingsAgentImpl::IsCosmeticFilteringEnabled(
 
   return base::FeatureList::IsEnabled(
              brave_shields::features::kBraveAdblockCosmeticFiltering) &&
-         !IsBraveShieldsDown(frame, secondary_url) &&
+         !IsBraveShieldsDown(primary_url, secondary_url) &&
          (setting != CONTENT_SETTING_ALLOW);
 }
 
@@ -309,7 +305,7 @@ bool BraveContentSettingsAgentImpl::IsFirstPartyCosmeticFilteringEnabled(
 
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
   if (content_setting_rules_) {
-    const GURL& primary_url = GetOriginOrURL(frame);
+    const GURL& primary_url = GetTopFrameOriginAsURL(frame);
 
     for (const auto& rule : content_setting_rules_->cosmetic_filtering_rules) {
       if (rule.primary_pattern.Matches(primary_url) &&
@@ -337,48 +333,36 @@ BraveContentSettingsAgentImpl::GetBraveShieldsSettings(
   GetOrCreateBraveShieldsRemote()->OnWebcompatFeatureInvoked(
       webcompat_settings_type);
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+  const GURL primary_url(GetTopFrameOriginAsURL(frame));
 
-  ContentSetting setting = CONTENT_SETTING_DEFAULT;
-  if (content_setting_rules_) {
-    if (IsBraveShieldsDown(frame,
-                           url::Origin(frame->GetSecurityOrigin()).GetURL())) {
-      setting = CONTENT_SETTING_ALLOW;
-    } else {
-      setting = brave_shields::GetBraveFPContentSettingFromRules(
-          content_setting_rules_->fingerprinting_rules, GetOriginOrURL(frame));
-    }
-    if (setting != CONTENT_SETTING_ALLOW) {
-      auto webcompat_setting =
-          brave_shields::GetBraveWebcompatContentSettingFromRules(
-              content_setting_rules_->webcompat_rules, GetOriginOrURL(frame),
-              webcompat_settings_type);
-      if (webcompat_setting == CONTENT_SETTING_ALLOW) {
-        setting = CONTENT_SETTING_ALLOW;
-      }
+  brave_shields::mojom::FarblingLevel farbling_level =
+      shields_settings_ ? shields_settings_->farbling_level
+                        : brave_shields::mojom::FarblingLevel::OFF;
+  if (content_setting_rules_ && shields_settings_ &&
+      shields_settings_->farbling_level !=
+          brave_shields::mojom::FarblingLevel::OFF &&
+      webcompat_settings_type != ContentSettingsType::BRAVE_WEBCOMPAT_NONE) {
+    auto webcompat_setting =
+        brave_shields::GetBraveWebcompatContentSettingFromRules(
+            content_setting_rules_->webcompat_rules, primary_url,
+            webcompat_settings_type);
+    if (webcompat_setting == CONTENT_SETTING_ALLOW) {
+      farbling_level = brave_shields::mojom::FarblingLevel::OFF;
     }
   }
 
-  BraveFarblingLevel farbling_level = BraveFarblingLevel::BALANCED;
-  if (setting == CONTENT_SETTING_BLOCK) {
-    DVLOG(1) << "farbling level MAXIMUM";
-    farbling_level = BraveFarblingLevel::MAXIMUM;
-  } else if (setting == CONTENT_SETTING_ALLOW) {
-    DVLOG(1) << "farbling level OFF";
-    farbling_level = BraveFarblingLevel::OFF;
-  } else {
-    DVLOG(1) << "farbling level BALANCED";
-    farbling_level = BraveFarblingLevel::BALANCED;
-  }
-
+  DVLOG(1) << "farbling_level=" << farbling_level << " @ " << primary_url;
   if (shields_settings_) {
     auto shields_settings = shields_settings_.Clone();
     shields_settings->farbling_level = farbling_level;
     return shields_settings;
   } else {
-    // TODO(goodov): Parent or Incumbent frame should be used in this case.
+    // This should not happen now, but send dumps for now if that's the case in
+    // some scenario.
     DCHECK(!HasContentSettingsRules());
+    base::debug::DumpWithoutCrashing();
     return brave_shields::mojom::ShieldsSettings::New(
-        farbling_level, std::vector<std::string>(), false);
+        farbling_level, base::Token(), std::vector<std::string>(), false);
   }
 }
 
