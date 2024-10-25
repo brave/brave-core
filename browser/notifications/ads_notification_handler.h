@@ -21,6 +21,12 @@ namespace brave_ads {
 class AdsNotificationHandler : public NotificationHandler {
  public:
   explicit AdsNotificationHandler(Profile& profile);
+
+  AdsNotificationHandler(const AdsNotificationHandler&) = delete;
+  AdsNotificationHandler& operator=(const AdsNotificationHandler&) = delete;
+  AdsNotificationHandler(AdsNotificationHandler&&) = delete;
+  AdsNotificationHandler& operator=(AdsNotificationHandler&&) = delete;
+
   ~AdsNotificationHandler() override;
 
   // NotificationHandler:
@@ -41,8 +47,7 @@ class AdsNotificationHandler : public NotificationHandler {
  private:
   raw_ref<Profile> profile_;
 
-  AdsNotificationHandler(const AdsNotificationHandler&) = delete;
-  AdsNotificationHandler& operator=(const AdsNotificationHandler&) = delete;
+  bool did_click_notification_ad_ = false;
 };
 
 }  // namespace brave_ads
