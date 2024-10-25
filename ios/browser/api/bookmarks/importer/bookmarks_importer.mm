@@ -62,8 +62,7 @@ std::u16string GenerateUniqueFolderName(BookmarkModel* model,
     }
   }
 
-  CHECK(false);
-  return folder_name;
+  NOTREACHED();
 }
 
 // Shows the bookmarks toolbar.

@@ -62,7 +62,7 @@ void BraveIOSWebFaviconDriver::DownloadManifest(
     const GURL& url,
     ManifestDownloadCallback callback) {
   // We don't support downloading manifests
-  DCHECK(false);
+  NOTREACHED();
 }
 
 bool BraveIOSWebFaviconDriver::IsOffTheRecord() {
