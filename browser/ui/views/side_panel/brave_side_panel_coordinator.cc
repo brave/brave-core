@@ -151,8 +151,23 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
   // Notify to give opportunity to observe another panel entries from
   // global or active tab's contextual registry.
   auto* brave_browser_view = static_cast<BraveBrowserView*>(browser_view_);
-  brave_browser_view->WillShowSidePanel();
-
+  CHECK(browser_view_->unified_side_panel()->children().size() == 1);
+  const auto content_wrapper =
+      browser_view_->unified_side_panel()->children()[0];
+  bool show_on_deregistered = false;
+  // If current entry is not null and its content is already removed from
+  // wrapper when new panel is about to be shown, new panel is shown by
+  // deregistering current panel. See the comment of
+  // SidebarContainerView::WillShowSidePanel() about why |show_on_deregistered|
+  // is needed.
+  // Instead, we can override base class' Show(const UniqueKey& entry, ...)
+  // method as we can know whether it's shown by deregistering with
+  // |open_trigger| arg. However, need patching to make it virtual as base class
+  // already have overridden same name methods.
+  if (current_entry_.get() && content_wrapper->children().empty()) {
+    show_on_deregistered = true;
+  }
+  brave_browser_view->WillShowSidePanel(show_on_deregistered);
   SidePanelCoordinator::PopulateSidePanel(supress_animations, unique_key, entry,
                                           std::move(content_view));
 }

@@ -175,7 +175,9 @@ bool SidebarContainerView::IsSidebarVisible() const {
   return sidebar_control_view_ && sidebar_control_view_->GetVisible();
 }
 
-void SidebarContainerView::WillShowSidePanel() {
+void SidebarContainerView::WillShowSidePanel(bool show_on_deregistered) {
+  deregister_when_hidden_ = show_on_deregistered;
+
   // It's good timing to start observing any panel entries
   // from global and contextual if not yet observed.
   auto* tab_model = browser_->tab_strip_model();
@@ -769,8 +771,13 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
 }
 
 void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
-  // Make sure item is deselected
   DVLOG(1) << "Panel hidden: " << SidePanelEntryIdToString(entry->key().id());
+
+  if (deregister_when_hidden_) {
+    StopObservingForEntry(entry);
+    deregister_when_hidden_ = false;
+  }
+
   auto* controller = GetBraveBrowser()->sidebar_controller();
 
   // Handling if |entry| is managed one.
@@ -811,10 +818,10 @@ void SidebarContainerView::OnEntryWillHide(SidePanelEntry* entry,
   // re-registered when panel is shown if that entry is still live in tab's
   // registry.
   // We only stop observing when |entry|'s panel is hidden by closing.
-  // If it's hidden by replacing with other panel, we shoudl not stop
+  // If it's hidden by replacing with other panel, we should not stop
   // to know the timing that it's shown again.
   if (reason == SidePanelEntryHideReason::kSidePanelClosed) {
-    StopObservingForEntry(entry);
+    deregister_when_hidden_ = true;
   }
 }
 
