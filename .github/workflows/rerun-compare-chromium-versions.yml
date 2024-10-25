@@ -16,8 +16,8 @@ jobs:
 ## TODO: Temporary workaround for the above issue
 #    if: github.event.pull_request.merged == true
 ## TODO: replace before merging
-    if: startsWith("cr1", github.head_ref)
-#    if: github.event.pull_request.merged == true && startsWith("cr1", github.head_ref)
+    if: startsWith('cr1', github.head_ref)
+#    if: github.event.pull_request.merged == true && startsWith('cr1', github.head_ref)
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
