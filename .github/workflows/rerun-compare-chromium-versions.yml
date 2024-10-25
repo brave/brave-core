@@ -5,14 +5,17 @@ on:
     branches:
       - master
       - '[0-9]+.[0-9]+.x'
-    paths:
-      - package.json
+## TODO: If a PR touches >300 files, this filter may prevent the workflow from being executed
+#    paths:
+#      - package.json
     types:
       - closed
 
 jobs:
   rerun-compare-chromium-versions:
-    if: github.event.pull_request.merged == true
+## TODO: Temporary workaround for the above issue
+#    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'cr1')
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
