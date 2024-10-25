@@ -3,6 +3,18 @@ import("//chrome/common/features.gni")
 
 assert(enable_tor)
 
+source_set("constants") {
+  sources = [
+    "constants.cc",
+    "constants.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/component_updater:component_updater_paths",
+  ]
+}
+
 static_library("tor") {
   public_deps = [
     ":common",
@@ -45,6 +57,7 @@ static_library("tor") {
   ]
 
   deps += [
+    ":constants",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/resources:strings",
     "//brave/components/services/tor/public/interfaces",

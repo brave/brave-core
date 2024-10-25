@@ -11,9 +11,23 @@
 #include "base/files/file_util.h"
 #include "base/process/launch.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/tor/constants.h"
 #include "build/build_config.h"
 
 namespace tor {
+
+namespace {
+
+// A utiltiy function to create the missing directories that are used by the
+// launcher.
+base::FilePath CreateIfNotExists(const base::FilePath& path) {
+  if (!base::DirectoryExists(path)) {
+    CHECK(base::CreateDirectory(path));
+  }
+  return path;
+}
+
+}  // namespace
 
 TorLauncherImpl::TorLauncherImpl(
     mojo::PendingReceiver<mojom::TorLauncher> receiver)
@@ -53,32 +67,27 @@ void TorLauncherImpl::Launch(mojom::TorConfigPtr config,
       std::move(callback).Run(false, -1);
     return;
   }
-  base::CommandLine args(config->binary_path);
+  base::CommandLine args(
+      GetClientExecutablePath(config->install_dir, config->executable));
   args.AppendArg("--ignore-missing-torrc");
+
+  auto torrc_path = GetTorRcPath(config->install_dir);
   args.AppendArg("-f");
-  args.AppendArgPath(config->torrc_path);
+  args.AppendArgPath(torrc_path);
   args.AppendArg("--defaults-torrc");
-  args.AppendArgPath(config->torrc_path);
-  base::FilePath tor_data_path = config->tor_data_path;
-  if (!tor_data_path.empty()) {
-    if (!base::DirectoryExists(tor_data_path))
-      base::CreateDirectory(tor_data_path);
-    args.AppendArg("--DataDirectory");
-    args.AppendArgPath(tor_data_path);
-  }
+  args.AppendArgPath(torrc_path);
+
+  args.AppendArg("--DataDirectory");
+  args.AppendArgPath(CreateIfNotExists(GetTorDataPath()));
   args.AppendArg("--__OwningControllerProcess");
   args.AppendArg(base::NumberToString(base::Process::Current().Pid()));
-  tor_watch_path_ = config->tor_watch_path;
-  if (!tor_watch_path_.empty()) {
-    if (!base::DirectoryExists(tor_watch_path_))
-      base::CreateDirectory(tor_watch_path_);
-    args.AppendArg("--pidfile");
-    args.AppendArgPath(tor_watch_path_.AppendASCII("tor.pid"));
-    args.AppendArg("--controlportwritetofile");
-    args.AppendArgPath(tor_watch_path_.AppendASCII("controlport"));
-    args.AppendArg("--cookieauthfile");
-    args.AppendArgPath(tor_watch_path_.AppendASCII("control_auth_cookie"));
-  }
+  tor_watch_path_ = CreateIfNotExists(GetTorWatchPath());
+  args.AppendArg("--pidfile");
+  args.AppendArgPath(tor_watch_path_.AppendASCII("tor.pid"));
+  args.AppendArg("--controlportwritetofile");
+  args.AppendArgPath(tor_watch_path_.AppendASCII("controlport"));
+  args.AppendArg("--cookieauthfile");
+  args.AppendArgPath(tor_watch_path_.AppendASCII("control_auth_cookie"));
 
   base::LaunchOptions launchopts;
 #if BUILDFLAG(IS_LINUX)
@@ -87,13 +96,14 @@ void TorLauncherImpl::Launch(mojom::TorConfigPtr config,
 #if BUILDFLAG(IS_WIN)
   launchopts.start_hidden = true;
 #endif
-  launchopts.current_directory = config->binary_path.DirName();
+  // This line is necessary as the paths for tor_snowflake and tor_obfs4 are set
+  // up relative to this binary.
+  launchopts.current_directory = args.GetProgram().DirName();
   base::Process tor_process = base::LaunchProcess(args, launchopts);
 
-  bool result = tor_process.IsValid();
-
-  if (callback)
-    std::move(callback).Run(result, tor_process.Pid());
+  if (callback) {
+    std::move(callback).Run(tor_process.IsValid(), tor_process.Pid());
+  }
 
   child_monitor_->Start(std::move(tor_process),
                         base::BindOnce(&TorLauncherImpl::OnChildCrash,

@@ -13,6 +13,7 @@ static_library("tor") {
     "public/interfaces",
     "//base",
     "//brave/components/child_process_monitor",
+    "//brave/components/tor:constants",
     "//mojo/public/cpp/bindings",
   ]
 }
