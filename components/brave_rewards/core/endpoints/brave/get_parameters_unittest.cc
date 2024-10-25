@@ -12,7 +12,6 @@
 
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
-#include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"

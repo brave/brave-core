@@ -75,7 +75,6 @@ android_test_exception_sources = [
   "//brave/components/brave_rewards/browser/test/rewards_notification_browsertest.cc",
   "//brave/components/brave_rewards/browser/test/rewards_p3a_browsertest.cc",
   "//brave/components/brave_rewards/browser/test/rewards_publisher_browsertest.cc",
-  "//brave/components/brave_rewards/browser/test/rewards_state_browsertest.cc",
   "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_browsertest.cc",
   "//brave/third_party/blink/renderer/modules/brave/navigator_browsertest.cc",
   "//chrome/browser/extensions/browsertest_util.cc",

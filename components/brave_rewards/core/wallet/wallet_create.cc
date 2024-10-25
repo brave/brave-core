@@ -8,15 +8,16 @@
 #include <optional>
 #include <utility>
 
+#include "brave/components/brave_rewards/core/common/prefs.h"
 #include "brave/components/brave_rewards/core/common/signer.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
+#include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/endpoints/brave/patch_wallets.h"
 #include "brave/components/brave_rewards/core/endpoints/brave/post_wallets.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
-#include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "brave/components/brave_rewards/core/wallet_provider/linkage_checker.h"
 
@@ -133,8 +134,9 @@ void WalletCreate::OnResult(CreateRewardsWalletCallback callback,
   }
 
   if constexpr (std::is_same_v<Result, PostWallets::Result>) {
-    engine_->state()->ResetReconcileStamp();
-    engine_->state()->SetCreationStamp(util::GetCurrentTimeStamp());
+    engine_->contribution()->ResetReconcileStamp();
+    engine_->Get<Prefs>().SetUint64(prefs::kCreationStamp,
+                                    util::GetCurrentTimeStamp());
     engine_->Get<LinkageChecker>().Start();
   }
 

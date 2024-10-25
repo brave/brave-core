@@ -145,11 +145,6 @@
       "components/cosmetic_filters/renderer/cosmetic_filters_js_handler\\.h",
       "components/speedreader/renderer/speedreader_js_handler\\.h",
     ],
-    // A temporary fix to silence a failing presubmit check on file renames.
-    "CheckStableMojomChanges": [
-      "components/brave_rewards/common/mojom/rewards_engine\\.mojom",
-      "components/services/bat_ads/public/interfaces/bat_ads\\.mojom",
-    ],
     "CheckWebDevStyle": [
       "components/speedreader/resources/speedreader-desktop.css",
       "components/speedreader/resources/third_party/",
@@ -157,6 +152,8 @@
       "test/data/speedreader/",
     ],
     "CheckStableMojomChanges": [
+      // Temporary exception to allow removal of unused interface methods.
+      "components/brave_rewards/common/mojom/rewards_engine\\.mojom",
       // Temporary fix to silence presubmit on mojom check error after zcash_decoder namespace
       // renaming
       "components/services/brave_wallet/public/mojom/brave_wallet_utils_service\\.mojom",

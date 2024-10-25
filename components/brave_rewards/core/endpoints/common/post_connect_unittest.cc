@@ -11,8 +11,8 @@
 
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/prefs.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
-#include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -48,7 +48,7 @@ class RewardsPostConnectTest : public RewardsEngineTest,
                                public WithParamInterface<PostConnectParamType> {
  protected:
   void SetUp() override {
-    engine().SetState<std::string>(state::kWalletBrave, R"(
+    engine().Get<Prefs>().SetString(prefs::kWalletBrave, R"(
         {
           "payment_id": "fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
           "recovery_seed": "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
