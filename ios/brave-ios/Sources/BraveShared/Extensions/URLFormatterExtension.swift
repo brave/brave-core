@@ -13,19 +13,17 @@ extension URLFormatter {
     font: Font,
     lineBreakMode: NSLineBreakMode
   ) -> AttributedString {
-    var attributedString = AttributedString("\u{200E}\(string)")  // LRM character prevents Text elements from rendering RTL special characters
-
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.lineBreakMode = lineBreakMode
     paragraphStyle.baseWritingDirection = .leftToRight
 
-    attributedString.setAttributes(
-      .init([
+    // LRM character prevents Text elements from rendering RTL special characters
+    return AttributedString(
+      "\u{200E}\(string)",
+      attributes: .init([
         .font: font,
         .paragraphStyle: paragraphStyle,
       ])
     )
-
-    return attributedString
   }
 }
