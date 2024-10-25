@@ -1,0 +1,34 @@
+diff --git a/third_party/blink/renderer/modules/cookie_store/cookie_store.cc b/third_party/blink/renderer/modules/cookie_store/cookie_store.cc
+index 9bc407fa19e0431afa1b18c4cdd5560c4bb38a92..baec2c886c7eca647c892c7db260891d03dc3c03 100644
+--- a/third_party/blink/renderer/modules/cookie_store/cookie_store.cc
++++ b/third_party/blink/renderer/modules/cookie_store/cookie_store.cc
+@@ -231,11 +231,7 @@ net::SiteForCookies DefaultSiteForCookies(ExecutionContext* execution_context) {
+     return window->document()->SiteForCookies();
+ 
+   auto* scope = To<ServiceWorkerGlobalScope>(execution_context);
+-  const blink::BlinkStorageKey& key = scope->storage_key();
+-  if (key.IsFirstPartyContext()) {
+-    return net::SiteForCookies::FromUrl(GURL(scope->Url()));
+-  }
+-  return net::SiteForCookies();
++  return net::SiteForCookies::FromUrl(GURL(scope->Url()));
+ }
+ 
+ const scoped_refptr<const SecurityOrigin> DefaultTopFrameOrigin(
+@@ -248,13 +244,9 @@ const scoped_refptr<const SecurityOrigin> DefaultTopFrameOrigin(
+     return window->document()->TopFrameOrigin()->IsolatedCopy();
+   }
+ 
+-  const BlinkStorageKey& key =
+-      To<ServiceWorkerGlobalScope>(execution_context)->storage_key();
+-  if (key.IsFirstPartyContext()) {
+-    return key.GetSecurityOrigin();
+-  }
+-  return SecurityOrigin::CreateFromUrlOrigin(
+-      url::Origin::Create(net::SchemefulSite(key.GetTopLevelSite()).GetURL()));
++  auto* scope = To<ServiceWorkerGlobalScope>(execution_context);
++  return SecurityOrigin::CreateFromUrlOrigin(url::Origin::Create(
++      net::SchemefulSite(scope->GetSecurityOrigin()->ToUrlOrigin()).GetURL()));
+ }
+ 
+ }  // namespace
