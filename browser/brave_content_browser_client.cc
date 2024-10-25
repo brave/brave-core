@@ -170,6 +170,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
+#include "brave/browser/ai_rewriter/ai_rewriter_tab_helper.h"
 #include "brave/browser/ui/webui/ai_rewriter/ai_rewriter_ui.h"
 #include "brave/components/ai_rewriter/common/features.h"
 #include "brave/components/ai_rewriter/common/mojom/ai_rewriter.mojom.h"
@@ -580,6 +581,19 @@ void BraveContentBrowserClient::
                 render_frame_host, std::move(receiver));
           },
           &render_frame_host));
+#endif
+
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+  associated_registry
+      .AddInterface<ai_rewriter::mojom::AIRewriterButtonController>(
+          base::BindRepeating(
+              [](content::RenderFrameHost* rfh,
+                 mojo::PendingAssociatedReceiver<
+                     ai_rewriter::mojom::AIRewriterButtonController> receiver) {
+                ai_rewriter::AIRewriterTabHelper::Bind(rfh,
+                                                       std::move(receiver));
+              },
+              &render_frame_host));
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)

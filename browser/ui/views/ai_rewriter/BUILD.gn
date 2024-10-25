@@ -3,22 +3,28 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
+assert(enable_ai_rewriter)
+
 source_set("browser_tests") {
   testonly = true
-  assert(!is_android)
 
-  sources = [ "ai_rewriter_dialog_delegate_browsertest.cc" ]
+  sources = [ "ai_rewriter_button_view_browsertest.cc" ]
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   deps = [
-    "//base/test:test_support",
+    "//base",
+    "//brave/browser",
     "//brave/components/ai_rewriter/common",
+    "//brave/components/constants",
     "//chrome/browser/ui",
     "//chrome/test:test_support_ui",
     "//content/test:test_support",
     "//net:test_support",
     "//testing/gmock",
     "//testing/gtest",
+    "//ui/base",
+    "//url",
   ]
 }
