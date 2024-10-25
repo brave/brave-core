@@ -87,7 +87,7 @@ export const localeStrings = {
   cancelButtonLabel: 'Cancel',
   captchaMaxAttemptsExceededText: 'Looks like this is not working, Brave ads will remain paused. Contact us if you need help with the captcha.',
   captchaMaxAttemptsExceededTitle: 'Max attempts exceeded',
-  captchaSolvedText: 'Ads and earnings will now resume. Thanks for helping us protect Brave Rewards and privacy-based ads.',
+  captchaSolvedText: 'Brave Ads will resume. Thanks for helping us protect Brave Rewards.',
   captchaSolvedTitle: 'Solved!',
   captchaSupportButtonLabel: 'Contact support',
   closeButtonLabel: 'Close',
