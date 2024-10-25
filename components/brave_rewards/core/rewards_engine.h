@@ -190,11 +190,6 @@ class RewardsEngine : public mojom::RewardsEngine,
 
   void StartContributionsForTesting() override;
 
-  void UpdateMediaDuration(uint64_t window_id,
-                           const std::string& publisher_key,
-                           uint64_t duration,
-                           bool first_visit) override;
-
   void IsPublisherRegistered(const std::string& publisher_id,
                              IsPublisherRegisteredCallback callback) override;
 

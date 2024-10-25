@@ -30,6 +30,8 @@ BASE_DECLARE_FEATURE(kNewRewardsUIFeature);
 
 BASE_DECLARE_FEATURE(kAnimatedBackgroundFeature);
 
+BASE_DECLARE_FEATURE(kPlatformCreatorDetectionFeature);
+
 }  // namespace brave_rewards::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_FEATURES_H_
