@@ -448,7 +448,7 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
 
   base::CallbackListSubscription callback_list_subscription_;
 
-  raw_ptr<AdsServiceMock> ads_service_mock_ = nullptr;
+  raw_ptr<AdsServiceMock, DanglingUntriaged> ads_service_mock_ = nullptr;
 
   net::EmbeddedTestServer test_server_{
       net::test_server::EmbeddedTestServer::TYPE_HTTPS};

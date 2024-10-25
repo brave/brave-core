@@ -192,7 +192,7 @@ class SelectableListView : public views::BoxLayoutView {
     on_selection_changed_.Run();
   }
 
-  raw_ptr<ThumbnailProvider> thumbnail_provider_;
+  raw_ptr<ThumbnailProvider, DanglingUntriaged> thumbnail_provider_;
 
   base::RepeatingCallback<void()> on_selection_changed_;
 

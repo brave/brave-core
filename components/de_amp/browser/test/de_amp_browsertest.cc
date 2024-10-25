@@ -222,7 +222,7 @@ class DeAmpBrowserTest : public InProcessBrowserTest {
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
-  raw_ptr<PrefService> prefs_;
+  raw_ptr<PrefService, DanglingUntriaged> prefs_;
 };
 
 IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, SimpleDeAmp) {

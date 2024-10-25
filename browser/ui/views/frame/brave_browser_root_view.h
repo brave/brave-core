@@ -32,7 +32,7 @@ class BraveBrowserRootView : public BrowserRootView,
   void OnNativeThemeUpdated(ui::NativeTheme* observed_theme) override;
 
  private:
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;
   base::ScopedObservation<ui::NativeTheme, ui::NativeThemeObserver>
       theme_observation_{this};
 };

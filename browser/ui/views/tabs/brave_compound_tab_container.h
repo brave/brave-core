@@ -73,9 +73,9 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
 
   int GetAvailableWidthConsideringScrollBar();
 
-  base::raw_ref<TabSlotController> tab_slot_controller_;
+  raw_ref<TabSlotController> tab_slot_controller_;
 
-  base::raw_ptr<views::ScrollView> scroll_view_ = nullptr;
+  raw_ptr<views::ScrollView, DanglingUntriaged> scroll_view_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_COMPOUND_TAB_CONTAINER_H_

@@ -207,10 +207,11 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
   }
 
  private:
-  raw_ptr<brave_wallet::NetworkManager> network_manager_;
-  raw_ptr<brave_wallet::KeyringService> keyring_service_;
-  raw_ptr<brave_wallet::TxService> tx_service_;
-  raw_ptr<brave_wallet::JsonRpcService> json_rpc_service_ = nullptr;
+  raw_ptr<brave_wallet::NetworkManager, DanglingUntriaged> network_manager_;
+  raw_ptr<brave_wallet::KeyringService, DanglingUntriaged> keyring_service_;
+  raw_ptr<brave_wallet::TxService, DanglingUntriaged> tx_service_;
+  raw_ptr<brave_wallet::JsonRpcService, DanglingUntriaged> json_rpc_service_ =
+      nullptr;
   net::test_server::EmbeddedTestServer https_server_for_rpc_;
 };
 

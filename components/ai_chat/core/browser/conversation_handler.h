@@ -365,10 +365,10 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   // Data store UUID for conversation
   raw_ptr<const mojom::Conversation> metadata_;
-  raw_ptr<AIChatService> ai_chat_service_;
+  raw_ptr<AIChatService, DanglingUntriaged> ai_chat_service_;
   raw_ptr<ModelService> model_service_;
-  raw_ptr<AIChatCredentialManager> credential_manager_;
-  raw_ptr<AIChatFeedbackAPI> feedback_api_;
+  raw_ptr<AIChatCredentialManager, DanglingUntriaged> credential_manager_;
+  raw_ptr<AIChatFeedbackAPI, DanglingUntriaged> feedback_api_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   base::ScopedObservation<ModelService, ModelService::Observer>
