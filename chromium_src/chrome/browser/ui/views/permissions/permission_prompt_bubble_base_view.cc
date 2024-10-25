@@ -81,7 +81,7 @@ class DontAskAgainCheckbox : public views::Checkbox {
  private:
   void ButtonPressed();
 
-  raw_ptr<WidevinePermissionRequest> request_ = nullptr;
+  raw_ptr<WidevinePermissionRequest, DanglingUntriaged> request_ = nullptr;
 };
 
 BEGIN_METADATA(DontAskAgainCheckbox)

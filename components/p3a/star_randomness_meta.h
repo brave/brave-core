@@ -109,7 +109,7 @@ class StarRandomnessMeta {
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
-  const raw_ptr<PrefService> local_state_;
+  const raw_ptr<PrefService, DanglingUntriaged> local_state_;
 
   base::flat_map<MetricLogType, std::unique_ptr<RandomnessServerUpdateState>>
       update_states_;
