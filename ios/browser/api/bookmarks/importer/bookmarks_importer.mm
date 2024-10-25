@@ -49,19 +49,20 @@ std::u16string GenerateUniqueFolderName(BookmarkModel* model,
   }
 
   // If the given name is unique, use it.
-  if (existing_folder_names.find(folder_name) == existing_folder_names.end())
+  if (existing_folder_names.find(folder_name) == existing_folder_names.end()) {
     return folder_name;
+  }
 
   // Otherwise iterate until we find a unique name.
   for (size_t i = 1; i <= existing_folder_names.size(); ++i) {
     std::u16string name =
         folder_name + u" (" + base::NumberToString16(i) + u")";
-    if (existing_folder_names.find(name) == existing_folder_names.end())
+    if (existing_folder_names.find(name) == existing_folder_names.end()) {
       return name;
+    }
   }
 
-  NOTREACHED_IN_MIGRATION();
-  return folder_name;
+  NOTREACHED();
 }
 
 // Shows the bookmarks toolbar.
