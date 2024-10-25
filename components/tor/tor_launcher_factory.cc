@@ -13,6 +13,7 @@
 #include "base/no_destructor.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/components/tor/constants.h"
 #include "brave/components/tor/tor_file_watcher.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "brave/components/tor/tor_utils.h"
@@ -66,6 +67,7 @@ TorLauncherFactory::TorLauncherFactory()
     : is_starting_(false),
       is_connected_(false),
       tor_pid_(-1),
+      tor_watch_path_(tor::GetTorWatchPath()),
       control_(nullptr,
                base::OnTaskRunnerDeleter(content::GetIOThreadTaskRunner({}))) {
   control_.reset(new tor::TorControl(this->AsWeakPtr(),
@@ -108,10 +110,8 @@ void TorLauncherFactory::LaunchTorProcess(const tor::mojom::TorConfig& config) {
     return;
   }
 
-  DCHECK(!config.binary_path.empty());
-  DCHECK(!config.torrc_path.empty());
-  DCHECK(!config.tor_data_path.empty());
-  DCHECK(!config.tor_watch_path.empty());
+  DCHECK(!config.executable.path().empty());
+  DCHECK(!config.install_dir.path().empty());
   config_ = config;
 
   // Tor launcher could be null if we created Tor process and killed it
@@ -252,7 +252,7 @@ void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
   }
 
   tor::TorFileWatcher* tor_file_watcher =
-      new tor::TorFileWatcher(config_.tor_watch_path);
+      new tor::TorFileWatcher(tor_watch_path_);
   tor_file_watcher->StartWatching(base::BindPostTask(
       base::SequencedTaskRunner::GetCurrentDefault(),
       base::BindOnce(&TorLauncherFactory::OnTorControlPrerequisitesReady,
@@ -349,7 +349,7 @@ void TorLauncherFactory::OnTorControlClosed(bool was_running) {
   // closed unexpectedly and Tor process is still running
   if (was_running && tor_launcher_.is_bound()) {
     tor::TorFileWatcher* tor_file_watcher =
-        new tor::TorFileWatcher(config_.tor_watch_path);
+        new tor::TorFileWatcher(tor_watch_path_);
     tor_file_watcher->StartWatching(base::BindPostTask(
         base::SequencedTaskRunner::GetCurrentDefault(),
         base::BindOnce(&TorLauncherFactory::OnTorControlPrerequisitesReady,
@@ -371,7 +371,7 @@ void TorLauncherFactory::OnTorControlPrerequisitesReady(
     control_->Start(std::move(cookie), port);
   } else {
     tor::TorFileWatcher* tor_file_watcher =
-        new tor::TorFileWatcher(config_.tor_watch_path);
+        new tor::TorFileWatcher(tor_watch_path_);
     tor_file_watcher->StartWatching(base::BindPostTask(
         base::SequencedTaskRunner::GetCurrentDefault(),
         base::BindOnce(&TorLauncherFactory::OnTorControlPrerequisitesReady,

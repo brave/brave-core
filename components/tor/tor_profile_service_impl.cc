@@ -285,7 +285,7 @@ void TorProfileServiceImpl::OnPluggableTransportReady(bool success) {
             DCHECK(base::PathExists(tor_path.Append(snowflake_path)));
             DCHECK(base::PathExists(tor_path.Append(obfs4_path)));
           },
-          GetTorExecutablePath(), snowflake_path, obfs4_path));
+          tor_client_updater_->executable(), snowflake_path, obfs4_path));
 #endif
 
   OnBridgesConfigChanged();
@@ -331,29 +331,16 @@ void TorProfileServiceImpl::OnBuiltinBridgesResponse(
 }
 
 void TorProfileServiceImpl::LaunchTor() {
-  tor::mojom::TorConfig config(GetTorExecutablePath(), GetTorrcPath(),
-                               GetTorDataPath(), GetTorWatchPath());
-  tor_launcher_factory_->LaunchTorProcess(config);
-}
+  auto install_dir =
+      base::SafeBaseName::Create(tor_client_updater_->install_dir());
+  CHECK(install_dir) << tor_client_updater_->install_dir();
 
-base::FilePath TorProfileServiceImpl::GetTorExecutablePath() const {
-  return tor_client_updater_ ? tor_client_updater_->GetExecutablePath()
-                             : base::FilePath();
-}
+  auto executable =
+      base::SafeBaseName::Create(tor_client_updater_->executable());
+  CHECK(executable) << tor_client_updater_->executable();
 
-base::FilePath TorProfileServiceImpl::GetTorrcPath() const {
-  return tor_client_updater_ ? tor_client_updater_->GetTorrcPath()
-                             : base::FilePath();
-}
-
-base::FilePath TorProfileServiceImpl::GetTorDataPath() const {
-  return tor_client_updater_ ? tor_client_updater_->GetTorDataPath()
-                             : base::FilePath();
-}
-
-base::FilePath TorProfileServiceImpl::GetTorWatchPath() const {
-  return tor_client_updater_ ? tor_client_updater_->GetTorWatchPath()
-                             : base::FilePath();
+  tor_launcher_factory_->LaunchTorProcess(tor::mojom::TorConfig(
+      std::move(install_dir).value(), std::move(executable).value()));
 }
 
 void TorProfileServiceImpl::RegisterTorClientUpdater() {
