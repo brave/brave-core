@@ -372,6 +372,7 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
   }
   data.Set(kWallpaperConditionMatchersKey, std::move(condition_matchers));
 
+  data.Set(kCampaignIdKey, campaign.campaign_id);
   data.Set(kCreativeInstanceIDKey,
            campaign.backgrounds[background_index].creative_instance_id);
 
