@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveShields
 import BraveUI
 import Data
@@ -82,8 +83,8 @@ struct ShieldsPanelView: View {
           isPrivateBrowsing: viewModel.isPrivateBrowsing
         )
         URLElidedText(text: displayHost)
-        .font(.title2)
-        .foregroundStyle(Color(.bravePrimary))
+          .font(.title2)
+          .foregroundStyle(Color(.bravePrimary))
       }
       .frame(minWidth: .zero, alignment: .center)
 

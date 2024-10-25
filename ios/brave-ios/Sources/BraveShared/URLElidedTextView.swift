@@ -24,7 +24,7 @@ public struct URLElidedText: View {
     paragraphStyle.baseWritingDirection = .leftToRight
     return paragraphStyle
   }
-  
+
   public init(text: String) {
     self.text = text
   }
@@ -36,7 +36,5 @@ public struct URLElidedText: View {
         attributes: .init([.font: font ?? .body, .paragraphStyle: paragraphStyle])
       )
     )
-    .font(font ?? .body)
-    .truncationMode(truncationMode)
   }
 }

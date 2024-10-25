@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
-import BraveUI
+import BraveShared
 import BraveStrings
 import DesignSystem
 import Favicon
@@ -38,10 +38,12 @@ struct HistoryItemView: View {
             .fixedSize(horizontal: false, vertical: true)
             .foregroundStyle(Color(braveSystemName: .textPrimary))
         }
-        
-        URLElidedText(text: URLFormatter.formatURLOrigin(
-          forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString
-        ))
+
+        URLElidedText(
+          text: URLFormatter.formatURLOrigin(
+            forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString
+          )
+        )
         .truncationMode(.tail)
         .font(.footnote)
         .frame(maxWidth: .infinity, alignment: .leading)
