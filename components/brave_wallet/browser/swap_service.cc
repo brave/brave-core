@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/swap_service.h"
 
+#include <limits>
 #include <optional>
 #include <utility>
 

@@ -255,8 +255,8 @@ mojom::ZeroExTransactionPtr ParseTransactionResponse(
 
 mojom::ZeroExErrorPtr ParseErrorResponse(const base::Value& json_value) {
   // {
-  // 	"code": "SWAP_VALIDATION_FAILED",
-  // 	"message": "Validation Failed"
+  //    "code": "SWAP_VALIDATION_FAILED",
+  //    "message": "Validation Failed"
   // }
   auto swap_error_response_value =
       swap_responses::ZeroExErrorResponse::FromValue(json_value);
