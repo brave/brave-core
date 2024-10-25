@@ -8,6 +8,8 @@ import("//third_party/widevine/cdm/widevine.gni")
 brave_components_permissions_sources = [
   "//brave/components/permissions/brave_permission_manager.cc",
   "//brave/components/permissions/brave_permission_manager.h",
+  "//brave/components/permissions/contexts/brave_ai_chat_permission_context.cc",
+  "//brave/components/permissions/contexts/brave_ai_chat_permission_context.h",
   "//brave/components/permissions/contexts/brave_google_sign_in_permission_context.cc",
   "//brave/components/permissions/contexts/brave_google_sign_in_permission_context.h",
   "//brave/components/permissions/contexts/brave_localhost_permission_context.cc",
@@ -39,6 +41,7 @@ if (enable_widevine) {
 
 brave_components_permissions_deps = [
   "//base",
+  "//brave/brave_domains",
   "//brave/components/brave_wallet/browser:permission_utils",
   "//brave/components/brave_wallet/common:mojom",
   "//brave/components/constants:constants",
