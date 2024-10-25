@@ -23,11 +23,12 @@ public class BravePlaylistResetPreference
     private String TAG = "BravePlaylistResetPreference";
 
     private int mPrefAccentColor;
+
+    // TODO(alexeybarabash): seems unused, but need to ask author
+    @SuppressWarnings("UnusedVariable")
     private final String mConfirmationPhrase;
 
-    /**
-     * Constructor for BravePlaylistResetPreference.
-     */
+    /** Constructor for BravePlaylistResetPreference. */
     public BravePlaylistResetPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 

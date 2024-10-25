@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KeyedServiceFactoryWrapper (Private)
 
-+ (nullable id)serviceForBrowserState:(ProfileIOS*)profile;
++ (nullable id)serviceForProfile:(ProfileIOS*)profile;
 
 @end
 

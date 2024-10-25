@@ -352,12 +352,13 @@ public class InAppPurchaseWrapper {
         MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
         LiveData<Boolean> billingConnectionState = _billingConnectionState;
         startBillingServiceConnection(_billingConnectionState);
-        LiveDataUtil.observeOnce(billingConnectionState, isConnected -> {
-            if (isConnected) {
-                BillingResult billingResult =
+        LiveDataUtil.observeOnce(
+                billingConnectionState,
+                isConnected -> {
+                    if (isConnected) {
                         mBillingClient.launchBillingFlow(activity, billingFlowParams);
-            }
-        });
+                    }
+                });
     }
 
     public void processPurchases(Context context, Purchase activePurchase) {

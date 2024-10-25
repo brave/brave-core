@@ -1,8 +1,8 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index 2d5c5f20907719f50663911e21f8eedf016f251f..5776935435d0be1070fa351ea0b11122ad6967ce 100644
+index 2745b112a023c4e45ce2aba7397c26ad84a81087..d6d100fb530a45b3e98f5577e38a907ccb48d9a1 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
-@@ -3535,6 +3535,7 @@ source_set("browser") {
+@@ -3539,6 +3539,7 @@ source_set("browser") {
        "profiling_utils.cc",
      ]
    }

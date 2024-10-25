@@ -26,9 +26,7 @@ void UpdateBraveScheme(NavigateParams* params) {
   }
 }
 
-bool IsURLAllowedInIncognitoBraveImpl(
-    const GURL& url,
-    content::BrowserContext* browser_context) {
+bool IsURLAllowedInIncognitoBraveImpl(const GURL& url) {
   std::string scheme = url.scheme();
   std::string_view host = url.host_piece();
   if (scheme != content::kChromeUIScheme) {
@@ -42,9 +40,7 @@ bool IsURLAllowedInIncognitoBraveImpl(
   }
 
   if (host == kWalletPageHost || host == kWalletPanelHost) {
-    return browser_context &&
-           user_prefs::UserPrefs::Get(browser_context)
-               ->GetBoolean(kBraveWalletPrivateWindowsEnabled);
+    return false;
   }
 
   return true;
@@ -60,8 +56,8 @@ bool IsURLAllowedInIncognitoBraveImpl(
   url_typed_with_http_scheme;      \
   force_no_https_upgrade = false
 
-#define BRAVE_IS_URL_ALLOWED_IN_INCOGNITO                      \
-  if (!IsURLAllowedInIncognitoBraveImpl(url, browser_context)) \
+#define BRAVE_IS_URL_ALLOWED_IN_INCOGNITO     \
+  if (!IsURLAllowedInIncognitoBraveImpl(url)) \
     return false;
 #define BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL UpdateBraveScheme(params);
 #include "src/chrome/browser/ui/browser_navigator.cc"

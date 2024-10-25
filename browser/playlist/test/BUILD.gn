@@ -67,6 +67,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//brave/components/playlist/browser",
+    "//chrome/browser/prefs",
     "//chrome/test:test_support",
     "//components/pref_registry",
     "//content/test:test_support",

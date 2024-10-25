@@ -151,11 +151,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     private static final List<String> BRAVE_SEARCH_ENGINE_DEFAULT_REGIONS =
             Arrays.asList("CA", "DE", "FR", "GB", "US", "AT", "ES", "MX", "BR", "AR", "IN");
-    private static final long MB_10 = 10000000;
-    private static final long MINUTES_10 = 10 * 60 * 1000;
     private static final int URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP = 10;
-
-    private static final int PLAYLIST_MEDIA_COUNT_LIMIT = 3;
 
     private static final int DAYS_7 = 7;
     public static boolean mShouldShowPlaylistMenu;
@@ -172,8 +168,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private FrameLayout mShieldsLayout;
     private FrameLayout mRewardsLayout;
     private BraveShieldsHandler mBraveShieldsHandler;
+
+    // TabModelSelectorTabObserver and TabModelSelectorTabModelObserver
+    // set the observer at own ctor, suppress [UnusedVariable] warning for both
+    @SuppressWarnings("UnusedVariable")
     private TabModelSelectorTabObserver mTabModelSelectorTabObserver;
+
+    @SuppressWarnings("UnusedVariable")
     private TabModelSelectorTabModelObserver mTabModelSelectorTabModelObserver;
+
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
     private BraveRewardsPanel mRewardsPopup;
     private DAppsWalletController mDAppsWalletController;
@@ -196,6 +199,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private ColorStateList mDarkModeTint;
     private ColorStateList mLightModeTint;
 
+    // TODO(alexeybarabash): Seems unused, needs to be rechecked when the project will be compiled
+    @SuppressWarnings("UnusedVariable")
     private SearchWidgetPromoPanel mSearchWidgetPromoPanel;
 
     private final Set<Integer> mTabsWithWalletIcon =
@@ -463,7 +468,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         if (type != TabSelectionType.FROM_USER) {
                             dismissWalletPanelOrDialog();
                         }
-                        findMediaFiles(tab);
+                        findMediaFiles();
                     }
 
                     @Override
@@ -619,7 +624,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
-    private void findMediaFiles(Tab tab) {
+    private void findMediaFiles() {
         if (mPlaylistService != null && isPlaylistEnabledByPrefsAndFlags()) {
             hidePlaylistButton();
             mPlaylistService.findMediaFilesFromActiveTab();
@@ -1030,9 +1035,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             @Override
             protected Void doInBackground() {
                 try {
-                    SavedBandwidthTable savedBandwidthTable = new SavedBandwidthTable(
-                            savings, BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
-                    long rowId = mDatabaseHelper.insertSavedBandwidth(savedBandwidthTable);
+                    SavedBandwidthTable savedBandwidthTable =
+                            new SavedBandwidthTable(
+                                    savings, BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
+                    mDatabaseHelper.insertSavedBandwidth(savedBandwidthTable);
                 } catch (Exception e) {
                     // Do nothing if url is invalid.
                     // Just return w/o showing shields popup.
@@ -1040,6 +1046,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 }
                 return null;
             }
+
             @Override
             protected void onPostExecute(Void result) {
                 assert ThreadUtils.runningOnUiThread();
@@ -1055,10 +1062,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 try {
                     URL urlObject = new URL(url);
                     URL siteObject = new URL(statSite);
-                    BraveStatsTable braveStatsTable = new BraveStatsTable(url, urlObject.getHost(),
-                            statType, statSite, siteObject.getHost(),
-                            BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
-                    long rowId = mDatabaseHelper.insertStats(braveStatsTable);
+                    BraveStatsTable braveStatsTable =
+                            new BraveStatsTable(
+                                    url,
+                                    urlObject.getHost(),
+                                    statType,
+                                    statSite,
+                                    siteObject.getHost(),
+                                    BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
+                    mDatabaseHelper.insertStats(braveStatsTable);
                 } catch (Exception e) {
                     // Do nothing if url is invalid.
                     // Just return w/o showing shields popup.
@@ -1066,6 +1078,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 }
                 return null;
             }
+
             @Override
             protected void onPostExecute(Void result) {
                 assert ThreadUtils.runningOnUiThread();
@@ -1148,11 +1161,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 Log.e(TAG, "HomeButton click " + e);
             }
         } else if (mBraveWalletButton == v && mBraveWalletButton != null) {
-            maybeShowWalletPanel(v);
+            maybeShowWalletPanel();
         }
     }
 
-    private void maybeShowWalletPanel(View v) {
+    private void maybeShowWalletPanel() {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.showWalletPanel(true);

@@ -59,7 +59,6 @@ import java.util.concurrent.Executors;
 public class SignSolTransactionsFragment extends BaseDAppsBottomSheetDialogFragment {
     private static final String TAG = "SignTransaction";
 
-    private static final String PARAM_ACITITY_TYPE = "sign_param";
     private List<NavigationItem> mTabTitles;
     private List<SignSolTransactionsRequest> mSignSolTransactionRequests;
     private ViewPager2 mViewPager;

@@ -27,6 +27,7 @@
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
+#include "chrome/browser/extensions/window_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/prefs/pref_service.h"
@@ -48,9 +49,11 @@ RewardsTabHelper* GetRewardsTabHelperForTabId(
     content::BrowserContext* browser_context) {
   DCHECK(browser_context);
   content::WebContents* web_contents = nullptr;
+  extensions::WindowController* window = nullptr;
   bool found = extensions::ExtensionTabUtil::GetTabById(
-      tab_id, browser_context, false, nullptr, nullptr, &web_contents, nullptr);
-  if (!found || !web_contents) {
+      tab_id, browser_context, /*incognito_enabled=*/false, &window,
+      &web_contents, /*tab_index=*/nullptr);
+  if (!found || !window || !web_contents) {
     return nullptr;
   }
   return RewardsTabHelper::FromWebContents(web_contents);
@@ -60,9 +63,10 @@ content::WebContents* WebContentsFromBrowserContext(
     int tab_id,
     content::BrowserContext* browser_context) {
   content::WebContents* contents = nullptr;
+  extensions::WindowController* window = nullptr;
   extensions::ExtensionTabUtil::GetTabById(
-      tab_id, Profile::FromBrowserContext(browser_context), false, nullptr,
-      nullptr, &contents, nullptr);
+      tab_id, Profile::FromBrowserContext(browser_context),
+      /*incognito_enabled=*/false, &window, &contents, /*tab_index=*/nullptr);
   return contents;
 }
 

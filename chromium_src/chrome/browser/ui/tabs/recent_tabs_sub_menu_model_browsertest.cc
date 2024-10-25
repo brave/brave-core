@@ -5,6 +5,7 @@
 
 #include <string_view>
 
+#include "base/containers/to_vector.h"
 #include "base/strings/string_util.h"
 
 // Disabling these tests because they refer to g_brave_browser_process which is
@@ -43,7 +44,7 @@
 // The case when number of tabs on other device is <=4 so we do not add
 // `More...` item is tested by RecentTabsSubMenuModelTest.MaxSessionsAndRecency
 
-#include "src/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_unittest.cc"
+#include "src/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc"
 
 #undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST
 
@@ -58,19 +59,19 @@
 // expectations
 void RecentTabsSubMenuModelTest::VerifyModel(
     const RecentTabsSubMenuModel& model,
-    base::span<const ModelData> data) {
-  std::vector<ModelData> v_data{data.begin(), data.end()};
+    base::span<const ModelData> input) {
+  // We have to copy it over as we can not modify the input.
+  auto data = base::ToVector(input);
 
   // We replace the "Sign in to see tabs from other devices" menu command with
   // the non-command string "No tabs from other devices" and need to adjust the
   // data
-  auto& item_data = v_data.back();
+  auto& item_data = data.back();
   if (item_data.type == ui::MenuModel::TYPE_COMMAND) {
     item_data.enabled = false;
   }
 
-  ::VerifyModel(model,
-                UNSAFE_TODO(base::make_span(v_data.begin(), v_data.size())));
+  ::VerifyModel(model, data);
 }
 
 void RecentTabsSubMenuModelTest::VerifyModel(const ui::MenuModel* model,

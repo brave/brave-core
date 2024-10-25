@@ -20,7 +20,6 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.ui.base.DeviceFormFactor;
 
 public class RewardsTippingSuccessContribution {
-    private static final String AMOUNT_SELECTED = "amount_selected";
     private static final String TAG = "TippingSuccess";
     private View mContentView;
     private double mAmountSelected;

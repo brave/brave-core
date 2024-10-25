@@ -900,7 +900,6 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         true,
                         ViewProvider.class,
-                        Context.class,
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
@@ -1133,7 +1132,6 @@ public class BytecodeTest {
                         FindToolbarManager.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        Supplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
                         boolean.class,
@@ -1500,7 +1498,6 @@ public class BytecodeTest {
                         Context.class,
                         Callback.class,
                         PropertyModel.class,
-                        boolean.class,
                         Callback.class,
                         LogoCoordinator.VisibilityObserver.class,
                         CachedTintedBitmap.class));
@@ -1557,6 +1554,7 @@ public class BytecodeTest {
                         IntentRequestTracker.class,
                         InsetObserver.class,
                         Function.class,
+                        Callback.class,
                         boolean.class,
                         BackPressManager.class,
                         Bundle.class,
@@ -1703,7 +1701,8 @@ public class BytecodeTest {
                         LayoutRenderHost.class,
                         BrowserControlsStateProvider.class,
                         LayoutManager.class,
-                        TopUiThemeColorProvider.class));
+                        TopUiThemeColorProvider.class,
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/components/embedder_support/view/ContentView",

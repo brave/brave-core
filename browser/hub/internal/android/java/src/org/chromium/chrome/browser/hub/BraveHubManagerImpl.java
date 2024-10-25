@@ -34,7 +34,6 @@ import org.chromium.ui.base.DeviceFormFactor;
 public class BraveHubManagerImpl extends HubManagerImpl {
     private Activity mActivity;
     private int mBottomToolbarHeight;
-    private boolean mBottomToolbarVisible;
     private boolean mIsTablet;
     private ComponentCallbacks mComponentCallbacks;
 

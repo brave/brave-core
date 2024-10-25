@@ -37,14 +37,12 @@ public class TouchDelegateComposite extends TouchDelegate {
         mDelegates.add(new Pair<>(null, new Pair<>(new Rect(), delegate)));
     }
 
-    /**
-     * Add a delegate by bounds and view.
-     */
+    /** Add a delegate by bounds and view. */
     public void addDelegate(Rect bounds, View view) {
-        boolean dup = false;
-        mDelegates = mDelegates.stream()
-                             .filter(e -> e.first == null || e.first.getId() != view.getId())
-                             .collect(Collectors.toList());
+        mDelegates =
+                mDelegates.stream()
+                        .filter(e -> e.first == null || e.first.getId() != view.getId())
+                        .collect(Collectors.toList());
 
         mDelegates.add(new Pair<>(view, new Pair<>(bounds, new TouchDelegate(bounds, view))));
     }

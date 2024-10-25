@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/cr_elements/BUILD.gn b/ui/webui/resources/cr_elements/BUILD.gn
-index c7103ae0d0a71d5f8c3371cfa85f1c3774721e1e..1c65e4e61175245c9254498c90b4a787a5c3fd0d 100644
+index 65c9dd4ae019ebb974e46f1b99b077df3e961d15..166fd2b373757e27b1cad8094e0d0f8cc59762d0 100644
 --- a/ui/webui/resources/cr_elements/BUILD.gn
 +++ b/ui/webui/resources/cr_elements/BUILD.gn
-@@ -234,6 +234,7 @@ build_webui("build") {
+@@ -230,6 +230,7 @@ build_webui("build") {
      "//third_party/lit/v3_0:build_ts",
    ]
    if (!is_android && !is_ios) {

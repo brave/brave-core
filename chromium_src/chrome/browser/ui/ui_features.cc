@@ -11,7 +11,6 @@
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kChromeLabs, base::FEATURE_DISABLED_BY_DEFAULT},
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     {kFewerUpdateConfirmations, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif

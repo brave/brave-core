@@ -33,14 +33,11 @@ import org.chromium.chrome.browser.util.BraveTouchUtils;
 public class BraveRewardsOnboardingFragment extends Fragment {
     private OnViewPagerAction onViewPagerAction;
 
-    private TextView tvTitle;
     private TextView tvText;
     private TextView tvAgree;
 
     private Button btnSkip;
     private Button btnNext;
-
-    private boolean isAdsAvailable;
 
     public BraveRewardsOnboardingFragment() {
         // Required empty public constructor
@@ -48,8 +45,7 @@ public class BraveRewardsOnboardingFragment extends Fragment {
 
     @Override
     public View onCreateView(
-        LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        isAdsAvailable = OnboardingPrefManager.getInstance().isAdsAvailable();
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_brave_rewards_onboarding, container, false);
@@ -62,7 +58,6 @@ public class BraveRewardsOnboardingFragment extends Fragment {
     }
 
     private void initializeViews(View root) {
-        tvTitle = root.findViewById(R.id.section_title);
         tvText = root.findViewById(R.id.section_text);
 
         tvAgree = root.findViewById(R.id.agree_text);

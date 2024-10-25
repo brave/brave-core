@@ -295,7 +295,6 @@ public class SolanaInstructionPresenter {
         private String mPubKey;
         private SolanaAccountMeta mSolanaAccountMeta;
         private String mLocalizeAccountHeader;
-        private String mAccountHeader;
 
         private SolanaInstructionAccountPresenter(
                 String pubKey,
@@ -305,11 +304,9 @@ public class SolanaInstructionPresenter {
             mSolanaAccountMeta = solanaAccountMeta;
             if (solInsAccountParam == null) {
                 mLocalizeAccountHeader = "";
-                mAccountHeader = "";
                 return;
             }
             mLocalizeAccountHeader = solInsAccountParam.localizedName;
-            mAccountHeader = solInsAccountParam.name;
         }
     }
 }
