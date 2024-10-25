@@ -39,7 +39,8 @@ export function EthSignTypedData(props: Props) {
 
   return (
     <>
-      {(hasUnicode(data?.message ?? '') || hasUnicode(data?.domain ?? '')) && (
+      {(hasUnicode(data?.messageJson ?? '') ||
+        hasUnicode(data?.domainJson ?? '')) && (
         <WarningBox warningType='warning'>
           <WarningTitleRow>
             <WarningIcon color={'warningIcon'} />
@@ -64,18 +65,18 @@ export function EthSignTypedData(props: Props) {
             {getLocale('braveWalletSignTransactionEIP712MessageDomain')}:
           </MessageHeader>
           <MessageText>
-            {!renderUnicode && hasUnicode(data.domain)
-              ? unicodeEscape(data.domain)
-              : data.domain}
+            {!renderUnicode && hasUnicode(data.domainJson)
+              ? unicodeEscape(data.domainJson)
+              : data.domainJson}
           </MessageText>
 
           <MessageHeader>
             {getLocale('braveWalletSignTransactionMessageTitle')}:
           </MessageHeader>
           <MessageText>
-            {!renderUnicode && hasUnicode(data.message)
-              ? unicodeEscape(data.message)
-              : data.message}
+            {!renderUnicode && hasUnicode(data.messageJson)
+              ? unicodeEscape(data.messageJson)
+              : data.messageJson}
           </MessageText>
         </MessageBox>
       )}
