@@ -6,8 +6,8 @@
 import os
 import re
 import logging
-
 import time
+
 from typing import List, Optional
 
 from components.perf_test_utils import GetProcessOutput
@@ -31,7 +31,7 @@ def SetupAndroidDevice() -> None:
   ],
                    check=True)
   if not RunFromRoot(f'sh {tmp_file}'):
-    raise RuntimeError('Failed to setup root on the device')
+    raise RuntimeError('Failed to setup the device: setup_android_device.sh')
   RunFromRoot('killall adbd')  # Restart adbd on the device to apply the changes
   time.sleep(2)
 
