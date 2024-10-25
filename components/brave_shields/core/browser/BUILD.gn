@@ -11,6 +11,8 @@ static_library("browser") {
     "ad_block_component_installer.h",
     "ad_block_component_service_manager.cc",
     "ad_block_component_service_manager.h",
+    "ad_block_custom_resource_provider.cc",
+    "ad_block_custom_resource_provider.h",
     "ad_block_default_resource_provider.cc",
     "ad_block_default_resource_provider.h",
     "ad_block_filter_list_catalog_provider.cc",
