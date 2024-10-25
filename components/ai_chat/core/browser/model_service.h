@@ -75,7 +75,7 @@ class ModelService : public KeyedService {
       AIChatCredentialManager* credential_manager);
 
   // Returns a static model
-  static const mojom::Model* GetModelForTesting(std::string_view key);
+  static const mojom::Model* GetLeoModel(std::string_view key);
   void SetDefaultModelKeyWithoutValidationForTesting(
       const std::string& model_key);
 
