@@ -431,10 +431,6 @@ Config.prototype.buildArgs = function () {
     generate_about_credits: true,
   }
 
-  if (this.getTargetOS() === 'linux') {
-    args.enable_backup_ref_ptr_instance_tracer = true
-  }
-
   if (!this.isBraveReleaseBuild()) {
     args.chrome_pgo_phase = 0
 
