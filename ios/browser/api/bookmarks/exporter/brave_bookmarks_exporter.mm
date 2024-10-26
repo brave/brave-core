@@ -56,15 +56,20 @@ BraveBookmarksExportObserver::BraveBookmarksExportObserver(
 void BraveBookmarksExportObserver::OnExportFinished(Result result) {
   switch (result) {
     case Result::kSuccess:
-      return _on_export_finished(BraveBookmarksExporterStateCompleted);
+      _on_export_finished(BraveBookmarksExporterStateCompleted);
+      break;
     case Result::kCouldNotCreateFile:
-      return _on_export_finished(BraveBookmarksExporterStateErrorCreatingFile);
+      _on_export_finished(BraveBookmarksExporterStateErrorCreatingFile);
+      break;
     case Result::kCouldNotWriteHeader:
-      return _on_export_finished(BraveBookmarksExporterStateErrorWritingHeader);
+      _on_export_finished(BraveBookmarksExporterStateErrorWritingHeader);
+      break;
     case Result::kCouldNotWriteNodes:
-      return _on_export_finished(BraveBookmarksExporterStateErrorWritingNodes);
+      _on_export_finished(BraveBookmarksExporterStateErrorWritingNodes);
+      break;
     default:
-      NOTREACHED_IN_MIGRATION();
+      delete this;
+      NOTREACHED();
   }
   delete this;
 }

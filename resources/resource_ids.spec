@@ -221,4 +221,8 @@
     "META": {"sizes": {"includes": [50]}},
     "includes": [64650],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-creator_detection/creator_detection.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [64700],
+  },
 }

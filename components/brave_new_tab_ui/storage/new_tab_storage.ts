@@ -6,6 +6,7 @@
 // Utils
 import { debounce } from '../../common/debounce'
 import { loadTimeData } from '../../common/loadTimeData'
+import { braveSearchHost } from '../components/search/config'
 
 export const keyName = 'new-tab-data'
 
@@ -28,6 +29,7 @@ export const defaultState: NewTab.State = {
   showRewards: false,
   showBraveTalk: false,
   showSearchBox: true,
+  lastUsedNtpSearchEngine: braveSearchHost,
   promptEnableSearchSuggestions: true,
   searchSuggestionsEnabled: false,
   showBitcoinDotCom: false,
@@ -115,7 +117,7 @@ export const replaceStackWidgets = (state: NewTab.State) => {
     braveRewardsSupported,
     braveTalkSupported
   } = state
-  const displayLookup = {
+  const displayLookup: { [p: string]: { display: boolean } } = {
     'rewards': {
       display: braveRewardsSupported && showRewards
     },

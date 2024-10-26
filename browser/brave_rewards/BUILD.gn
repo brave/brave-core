@@ -3,12 +3,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
 source_set("brave_rewards") {
   sources = [
+    "creator_detection_script_injector.h",
     "rewards_service_factory.h",
     "rewards_tab_helper.h",
   ]
@@ -16,6 +16,7 @@ source_set("brave_rewards") {
   deps = [
     "//base",
     "//brave/components/brave_rewards/browser",
+    "//brave/components/script_injector/common/mojom",
     "//chrome/browser/profiles",
     "//components/keyed_service/content",
     "//components/sessions",
@@ -25,6 +26,7 @@ source_set("brave_rewards") {
 
 source_set("brave_rewards_impl") {
   sources = [
+    "creator_detection_script_injector.cc",
     "rewards_prefs_util.cc",
     "rewards_prefs_util.h",
     "rewards_service_factory.cc",
@@ -40,7 +42,8 @@ source_set("brave_rewards_impl") {
     "//brave/browser/ui:brave_rewards_source",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",
-    "//brave/components/greaselion/browser/buildflags",
+    "//brave/components/brave_rewards/common:features",
+    "//brave/components/brave_rewards/resources/creator_detection:creator_detection_generated_grit",
     "//chrome/browser/bitmap_fetcher",
     "//chrome/browser/favicon",
     "//chrome/browser/profiles",
@@ -64,10 +67,6 @@ source_set("brave_rewards_impl") {
     ]
 
     deps += [ "//extensions/browser" ]
-  }
-
-  if (enable_greaselion) {
-    deps += [ "//brave/browser/greaselion" ]
   }
 }
 

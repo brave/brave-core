@@ -37,6 +37,7 @@ repack("resources") {
     ":internals_generated_resources",
     ":page_generated_resources",
     ":static_resources",
+    "creator_detection:creator_detection_generated",
     "rewards_page:rewards_page_generated",
   ]
 
@@ -44,6 +45,7 @@ repack("resources") {
     "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_internals_generated.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_page_generated.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_static.pak",
+    "$root_gen_dir/brave/components/brave_rewards/resources/creator_detection_generated.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/rewards_page_generated.pak",
   ]
 

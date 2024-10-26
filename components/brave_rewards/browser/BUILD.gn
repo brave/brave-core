@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_rewards/core/config.gni")
-import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 static_library("browser") {
@@ -14,8 +13,6 @@ static_library("browser") {
     "diagnostic_log.cc",
     "diagnostic_log.h",
     "logging.h",
-    "publisher_utils.cc",
-    "publisher_utils.h",
     "rewards_notification_service.cc",
     "rewards_notification_service.h",
     "rewards_notification_service_impl.cc",
@@ -44,7 +41,6 @@ static_library("browser") {
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
-    "//brave/components/greaselion/browser/buildflags",
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a_utils",
     "//brave/components/resources",
@@ -72,10 +68,6 @@ static_library("browser") {
 
   if (is_android) {
     deps += [ "//brave/components/safetynet:android" ]
-  }
-
-  if (enable_greaselion) {
-    deps += [ "//brave/components/greaselion/browser" ]
   }
 }
 
