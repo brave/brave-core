@@ -7,12 +7,9 @@ import './brave_account_create_dialog.js'
 import './brave_account_entry_dialog.js'
 import './brave_account_forgot_password_dialog.js'
 import './brave_account_sign_in_dialog.js'
-import '../settings_shared.css.js'
-import 'chrome://resources/cr_elements/cr_shared_style.css.js'
-import 'chrome://resources/polymer/v3_0/iron-flex-layout/iron-flex-layout-classes.js'
 
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {getTemplate} from './brave_account_row.html.js'
+import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import { getTemplate } from './brave_account_row.html.js'
 
 export enum DialogType {
   NONE = 0,
@@ -45,7 +42,7 @@ class SettingsBraveAccountRow extends PolymerElement {
     }
   }
 
-  private dialogType: DialogType;
+  private dialogType: DialogType
 
   private isDialogType(dialogType: DialogType) {
     return this.dialogType === dialogType
@@ -84,9 +81,6 @@ class SettingsBraveAccountRow extends PolymerElement {
   private onForgotPassword() {
     this.dialogType = DialogType.FORGOT_PASSWORD
   }
-
-  private onBraveAccountSignInDialogClosed_() {
-  }
 }
 
-customElements.define(SettingsBraveAccountRow.is, SettingsBraveAccountRow);
+customElements.define(SettingsBraveAccountRow.is, SettingsBraveAccountRow)
