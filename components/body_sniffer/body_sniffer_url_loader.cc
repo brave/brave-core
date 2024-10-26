@@ -113,7 +113,7 @@ void BodySnifferURLLoader::OnReceiveEarlyHints(
     network::mojom::EarlyHintsPtr early_hints) {
   // OnReceiveEarlyHints() shouldn't be called. See the comment in
   // OnReceiveResponse().
-  NOTREACHED_IN_MIGRATION();
+  NOTREACHED();
 }
 
 void BodySnifferURLLoader::OnReceiveResponse(
@@ -123,7 +123,7 @@ void BodySnifferURLLoader::OnReceiveResponse(
   // OnReceiveResponse() shouldn't be called because BodySnifferURLLoader is
   // created by WillProcessResponse(), which is equivalent
   // to OnReceiveResponse().
-  NOTREACHED_IN_MIGRATION();
+  NOTREACHED();
 }
 
 void BodySnifferURLLoader::OnReceiveRedirect(
@@ -132,7 +132,7 @@ void BodySnifferURLLoader::OnReceiveRedirect(
   // OnReceiveRedirect() shouldn't be called because BodySnifferURLLoader is
   // created by WillProcessResponse(), which is equivalent
   // to OnReceiveResponse().
-  NOTREACHED_IN_MIGRATION();
+  NOTREACHED();
 }
 
 void BodySnifferURLLoader::OnUploadProgress(
@@ -171,10 +171,8 @@ void BodySnifferURLLoader::OnComplete(
       destination_url_loader_client_->OnComplete(status);
       return;
     case State::kAborted:
-      NOTREACHED_IN_MIGRATION();
-      return;
+      NOTREACHED();
   }
-  NOTREACHED_IN_MIGRATION();
 }
 
 void BodySnifferURLLoader::FollowRedirect(
@@ -184,7 +182,7 @@ void BodySnifferURLLoader::FollowRedirect(
     const std::optional<GURL>& new_url) {
   // BodySnifferURLLoader starts handling the request after
   // OnReceivedResponse(). A redirect response is not expected.
-  NOTREACHED_IN_MIGRATION();
+  NOTREACHED();
 }
 
 void BodySnifferURLLoader::SetPriority(net::RequestPriority priority,
@@ -238,8 +236,7 @@ void BodySnifferURLLoader::OnBodyReadable(MojoResult) {
       body_consumer_watcher_.ArmOrNotify();
       return;
     default:
-      NOTREACHED_IN_MIGRATION();
-      return;
+      NOTREACHED();
   }
 
   const bool is_body_complete = result == MOJO_RESULT_FAILED_PRECONDITION;
@@ -254,8 +251,7 @@ void BodySnifferURLLoader::OnBodyReadable(MojoResult) {
         handler->OnBodyUpdated(buffered_body_, is_body_complete);
     switch (action) {
       case BodyHandler::Action::kNone:
-        NOTREACHED_IN_MIGRATION() << "Action shouldn't return kNone";
-        break;
+        NOTREACHED() << "Action shouldn't return kNone";
       case BodyHandler::Action::kContinue:
         if (is_body_complete) {
           overall_action = BodyHandler::Action::kComplete;
@@ -404,8 +400,7 @@ void BodySnifferURLLoader::SendReceivedBodyToClient() {
       body_producer_watcher_.ArmOrNotify();
       return;
     default:
-      NOTREACHED_IN_MIGRATION();
-      return;
+      NOTREACHED();
   }
   bytes_remaining_in_buffer_ -= actually_sent_bytes;
   body_producer_watcher_.ArmOrNotify();
@@ -431,8 +426,7 @@ void BodySnifferURLLoader::ForwardBodyToClient() {
       CompleteSending();
       return;
     default:
-      NOTREACHED_IN_MIGRATION();
-      return;
+      NOTREACHED();
   }
 
   size_t actually_written_bytes = 0;
@@ -451,8 +445,7 @@ void BodySnifferURLLoader::ForwardBodyToClient() {
       body_producer_watcher_.ArmOrNotify();
       return;
     default:
-      NOTREACHED_IN_MIGRATION();
-      return;
+      NOTREACHED();
   }
 
   body_consumer_handle_->EndReadData(actually_written_bytes);

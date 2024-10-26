@@ -156,7 +156,7 @@ bool DeAmpBodyHandler::IsTransformer() const {
 void DeAmpBodyHandler::DeAmpBodyHandler::Transform(
     std::string body,
     base::OnceCallback<void(std::string)> on_complete) {
-  NOTREACHED_IN_MIGRATION();
+  NOTREACHED();
 }
 
 void DeAmpBodyHandler::UpdateResponseHead(
