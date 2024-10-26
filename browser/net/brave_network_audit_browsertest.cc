@@ -125,8 +125,8 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
   Profile* profile() { return browser()->profile(); }
 
  private:
-
-  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
+  raw_ptr<brave_rewards::RewardsServiceImpl, DanglingUntriaged>
+      rewards_service_ = nullptr;
   base::FilePath net_log_path_;
   base::FilePath audit_results_path_;
 

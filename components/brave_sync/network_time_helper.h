@@ -49,7 +49,8 @@ class NetworkTimeHelper {
   SEQUENCE_CHECKER(sequence_checker_);
 
   // Not owned
-  raw_ptr<network_time::NetworkTimeTracker> network_time_tracker_ = nullptr;
+  raw_ptr<network_time::NetworkTimeTracker, DanglingUntriaged>
+      network_time_tracker_ = nullptr;
 
   base::WeakPtrFactory<NetworkTimeHelper> weak_ptr_factory_{this};
 };
