@@ -46,11 +46,6 @@ std::optional<IssuersInfo> GetIssuers() {
   return issuers;
 }
 
-void ResetIssuers() {
-  ClearProfilePref(prefs::kIssuerPing);
-  ClearProfilePref(prefs::kIssuers);
-}
-
 bool IsIssuersValid(const IssuersInfo& issuers) {
   return IsConfirmationTokenIssuerValid(issuers) &&
          IsPaymentTokenIssuerValid(issuers);

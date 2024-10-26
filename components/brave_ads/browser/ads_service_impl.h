@@ -140,8 +140,10 @@ class AdsServiceImpl final : public AdsService,
 
   void NotifyAdsServiceInitialized() const;
 
-  void ShutdownAndClearData();
-  void ShutdownAndClearDataCallback(bool success);
+  void ShutdownClearDataAndMaybeRestart();
+  void ShutdownClearDataAndMaybeRestartCallback(bool success);
+
+  void OnExternalWalletConnectedCallback(bool success);
 
   void SetSysInfo();
   void SetBuildChannel();
