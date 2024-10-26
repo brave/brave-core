@@ -15,6 +15,14 @@ namespace brave_ads {
 
 namespace {
 
+constexpr char kNotOperatorPrefix[] = "[!]:";
+
+std::string NormalizePrefPath(const std::string& pref_path) {
+  return pref_path.starts_with(kNotOperatorPrefix)
+             ? pref_path.substr(/*pos=*/std::strlen(kNotOperatorPrefix))
+             : pref_path;
+}
+
 bool MatchCondition(const std::string_view value,
                     const std::string_view condition) {
   return MatchOperator(value, condition) || MatchPattern(value, condition) ||
@@ -32,15 +40,18 @@ bool MatchConditions(
       condition_matchers, [pref_provider](const auto& condition_matcher) {
         const auto& [pref_path, condition] = condition_matcher;
 
+        // If `has_not_operator` is `true`, it means that the condition should
+        // match if the pref path does not exist.
+        const bool has_not_operator = pref_path.starts_with(kNotOperatorPrefix);
+
         const std::string normalized_pref_path = NormalizePrefPath(pref_path);
         if (const std::optional<std::string> value = MaybeGetPrefValueAsString(
                 pref_provider, normalized_pref_path)) {
-          return MatchCondition(*value, condition);
+          return !has_not_operator && MatchCondition(*value, condition);
         }
 
-        // Do not serve the ad due to an unknown preference path or
-        // unsupported value type.
-        return false;
+        // Unknown pref path.
+        return has_not_operator;
       });
 }
 
