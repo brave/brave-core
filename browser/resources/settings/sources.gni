@@ -52,7 +52,6 @@ brave_settings_web_component_files = [
   "default_brave_shields_page/components/brave_adblock_editor.ts",
   "default_brave_shields_page/components/brave_adblock_subscribe_dropdown.ts",
   "default_brave_shields_page/default_brave_shields_page.ts",
-  "getting_started_page/brave_account_row.ts",
   "getting_started_page/getting_started.ts",
   "social_blocking_page/social_blocking_page.ts",
   "ui/searchable_drop_down_cros.ts",
@@ -125,6 +124,8 @@ brave_settings_non_web_component_files = [
   "getting_started_page/brave_account_entry_dialog.ts",
   "getting_started_page/brave_account_forgot_password_dialog.html.ts",
   "getting_started_page/brave_account_forgot_password_dialog.ts",
+  "getting_started_page/brave_account_row.html.ts",
+  "getting_started_page/brave_account_row.ts",
   "getting_started_page/brave_account_sign_in_dialog.html.ts",
   "getting_started_page/brave_account_sign_in_dialog.ts",
   "shortcuts_page/shortcuts_page.ts",
@@ -135,6 +136,7 @@ brave_settings_local_css_files = [
   "getting_started_page/brave_account_dialog.css",
   "getting_started_page/brave_account_entry_dialog.css",
   "getting_started_page/brave_account_forgot_password_dialog.css",
+  "getting_started_page/brave_account_row.css",
   "getting_started_page/brave_account_sign_in_dialog.css",
 ]
 
