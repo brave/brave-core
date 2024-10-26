@@ -3,38 +3,64 @@ This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this file,
 You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<style include="cr-shared-style iron-flex settings-shared">
-  :host {
-    --brave-account-page-image-space: 10px;
+<style>
+  .row {
+    align-items: center;
+    display: flex;
+    gap: 16px;
+    min-height: 82px;
+    padding: 0 24px;
   }
-  img {
-    margin-inline-end: var(--brave-account-page-image-space);
+  .circle {
+    align-items: center;
+    border: 1px solid #E3E3E8;
+    border-radius: 50%;
+    display: flex;
+    flex-shrink: 0;
+    height: 38px;
+    justify-content: center;
+    width: 38px;
   }
-  .title-text {
-    font-weight: 600;
+  .logo {
+    background-image: url('../images/brave-favicon.svg');
+    background-size: cover;
+    height: 24px;
+    width: 24px;
   }
-  .secondary-text {
-    font-size: 85%;
-    line-height: 150%;
+  .texts {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0px;
+  }
+  .text-top {
+    font: var(--leo-font-default-semibold);
+  }
+  .text-bottom {
+    font: var(--leo-font-small-regular);
+  }
+  .button-wrapper {
+    flex-shrink: 0;
+    width: 89px;
+  }
+  .button {
+    --leo-button-padding: 0px; /* feels hackish - there must be a better way */
+    width: 100%;
   }
 </style>
 
-<div class="cr-row">
-  <img srcset="chrome://theme/current-channel-logo@1x 1x,
-               chrome://theme/current-channel-logo@2x 2x">
-  <div class="cr-padded-text flex layout vertical">
-    <div class="cr-title-text title-text">
-      Sign in or create a Brave account
-    </div>
-    <div class="cr-secondary-text secondary-text">
-      $i18n{braveSyncBraveAccountDesc}
-    </div>
+<div class="row">
+  <div class="circle">
+    <div class="logo"></div>
   </div>
-  <div class="separator"></div>
-  <cr-button class="action-button"
-             on-click="onGetStartedButtonClicked_">
-    Get started
-  </cr-button>
+  <div class="texts">
+    <div class="text-top">Sign in or create a Brave account</div>
+    <div class="text-bottom">$i18n{braveSyncBraveAccountDesc}</div>
+  </div>
+  <div class="button-wrapper">
+    <leo-button class="button" size="small" on-click="onGetStartedButtonClicked_">
+      Get started
+    </leo-button>
+  </div>
 </div>
 
 <template is="dom-if" if="[[isDialogType(dialogTypeEnum.ENTRY, dialogType)]]" restamp>
