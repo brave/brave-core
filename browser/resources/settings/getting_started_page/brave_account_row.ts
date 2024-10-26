@@ -3,13 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * you can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import './brave_account_create_dialog.js'
-import './brave_account_entry_dialog.js'
-import './brave_account_forgot_password_dialog.js'
-import './brave_account_sign_in_dialog.js'
-
-import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import { getTemplate } from './brave_account_row.html.js'
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
+import { getCss } from './brave_account_row.css.js'
+import { getHtml } from './brave_account_row.html.js'
 
 export enum DialogType {
   NONE = 0,
@@ -24,47 +20,28 @@ export enum DialogType {
  * 'settings-brave-account-row'...
  */
 
-class SettingsBraveAccountRow extends PolymerElement {
+export class SettingsBraveAccountRow extends CrLitElement {
   static get is() {
     return 'settings-brave-account-row'
   }
 
-  static get template() {
-    return getTemplate()
+  static override get styles() {
+    return getCss()
   }
 
-  static get properties() {
+  override render() {
+    return getHtml.bind(this)()
+  }
+
+  static override get properties() {
     return {
-      dialogTypeEnum: {
-        type: Object,
-        value: DialogType,
-      },
+      dialogType: { type: DialogType },
     }
   }
 
-  private dialogType: DialogType
+  protected dialogType: DialogType = DialogType.NONE
 
-  private isDialogType(dialogType: DialogType) {
-    return this.dialogType === dialogType
-  }
-
-  private onGetStartedButtonClicked_() {
-    this.dialogType = DialogType.ENTRY
-  }
-
-  private onBraveAccountDialogClosed_() {
-    this.dialogType = DialogType.NONE
-  }
-
-  private onCreateButtonClicked_() {
-    this.dialogType = DialogType.CREATE
-  }
-
-  private onSignInButtonClicked_() {
-    this.dialogType = DialogType.SIGN_IN
-  }
-
-  private onBackButtonClicked() {
+  protected onBackButtonClicked() {
     switch (this.dialogType) {
       case DialogType.CREATE:
         this.dialogType = DialogType.ENTRY
@@ -76,10 +53,6 @@ class SettingsBraveAccountRow extends PolymerElement {
         this.dialogType = DialogType.ENTRY
         break
     }
-  }
-
-  private onForgotPassword() {
-    this.dialogType = DialogType.FORGOT_PASSWORD
   }
 }
 
