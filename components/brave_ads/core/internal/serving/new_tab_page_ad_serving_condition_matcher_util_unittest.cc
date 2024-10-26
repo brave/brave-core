@@ -125,6 +125,16 @@ TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
 }
 
 TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
+       MatchConditionsWithNotOperatorWhenPrefPathNotFound) {
+  // Arrange
+  const NewTabPageAdConditionMatcherMap condition_matchers = {
+      {"[!]:foo.bar", "baz"}};
+
+  // Act & Assert
+  EXPECT_TRUE(MatchConditions(&pref_provider_, condition_matchers));
+}
+
+TEST_F(BraveAdsNewTabPageAdServingConditionMatcherUtilTest,
        DoNotMatchConditionsIfAllConditionsAreFalse) {
   // Arrange
   const NewTabPageAdConditionMatcherMap condition_matchers = {
