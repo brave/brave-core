@@ -20,8 +20,8 @@ export function getHtml(this: SettingsBraveAccountDialogElement) {
       </div>
       <div slot="body" class="body">
         <div class="texts">
-          <div class="text text-top">${this.headerTextTop}</div>
-          <div class="text text-bottom">${this.headerTextBottom}</div>
+          <div class="text-top">${this.headerTextTop}</div>
+          <div class="text-bottom">${this.headerTextBottom}</div>
         </div>
         <slot name="inputs"></slot>
         <slot name="buttons"></slot>

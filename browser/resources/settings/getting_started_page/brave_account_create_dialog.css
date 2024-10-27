@@ -8,11 +8,7 @@
  * #css_wrapper_metadata_end */
 
 .label {
-  color: #1B1B1F;
-  font-family: 'Inter Variable';
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 18px;
+  color: var(--leo-color-text-primary);
+  font: var(--leo-font-small-semibold);
   margin: 0px 0px 0px 4px;
 }

@@ -12,12 +12,8 @@
 }
 
 .label {
-  color: #1B1B1F;
-  font-family: 'Inter Variable';
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 18px;
+  color: var(--leo-color-text-primary);
+  font: var(--leo-font-small-semibold);
   margin: 0px 0px 0px var(--brave-account-sign-in-dialog-label-margin);
 }
 
@@ -28,13 +24,9 @@
 }
 
 .forgot-password {
-  color: #46464A;
+  color: var(--leo-color-text-secondary);
   cursor: pointer;
-  font-family: 'Inter Variable';
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 18px;
+  font: var(--leo-font-small-link);
   margin: 0px var(--brave-account-sign-in-dialog-label-margin) 0px 0px;
   text-decoration-line: underline;
 }
