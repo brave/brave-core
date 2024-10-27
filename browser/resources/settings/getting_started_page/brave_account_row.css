@@ -17,7 +17,8 @@
 
 .circle {
   align-items: center;
-  border: 1px solid #E3E3E8;
+  background-color: var(--leo-color-container-background);
+  border: 1px solid var(--leo-color-divider-subtle);
   border-radius: 50%;
   display: flex;
   flex-shrink: 0;
@@ -40,10 +41,12 @@
 }
 
 .text-top {
+  color: var(--leo-color-text-primary);
   font: var(--leo-font-default-semibold);
 }
 
 .text-bottom {
+  color: var(--leo-color-text-secondary);
   font: var(--leo-font-small-regular);
 }
 

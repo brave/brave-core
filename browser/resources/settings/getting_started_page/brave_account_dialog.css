@@ -60,35 +60,21 @@
 }
 
 .texts {
+  color: var(--leo-color-text-secondary);
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin: 0px 0px 32px;
 }
 
-.text {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-}
-
 .text-top {
-  color: #46464A;
-  font-family: 'Poppins';
-  font-size: 22px;
-  font-style: normal;
-  font-weight: 600;
-  letter-spacing: -0.5px;
-  line-height: 28px;
+  font: var(--leo-font-heading-h3);
+  letter-spacing: var(--leo-typography-heading-h3-letter-spacing);
+  text-align: center;
 }
 
 .text-bottom {
-  color: #76767A;
-  font-family: 'Inter Variable';
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 22px;
+  font: var(--leo-font-default-regular);
   text-align: center;
 }
 

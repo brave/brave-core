@@ -14,18 +14,15 @@
 }
 
 .footer-text {
-  color: #76767A;
-  font-family: 'Inter Variable';
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
+  color: var(--leo-color-text-tertiary);
+  font: var(--leo-font-small-regular);
   height: 54px;
-  line-height: 18px;
   width: 270px;
 }
 
 .footer-text a {
   color: inherit;
+  font: var(--leo-font-small-link);
 }
 
 .button-wrapper {
