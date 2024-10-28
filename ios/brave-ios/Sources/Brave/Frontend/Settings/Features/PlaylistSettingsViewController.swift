@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import BraveUI
 import Playlist
@@ -147,7 +148,7 @@ class PlaylistSettingsViewController: TableViewController {
       )
     )
 
-    if UIDevice.current.userInterfaceIdiom == .pad {
+    if UIDevice.current.userInterfaceIdiom == .pad, !FeatureList.kNewPlaylistUI.enabled {
       var sideSelectionSection = Section(rows: [])
       var row = Row(
         text: Strings.PlayList.playlistSidebarLocationTitle,
