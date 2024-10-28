@@ -22,6 +22,7 @@ import { setMostVisitedSettings } from '../api/topSites'
 import { handleWidgetPrefsChange } from './stack_widget_reducer'
 import { NewTabAdsData } from '../api/newTabAdsData'
 import { Background, CustomBackground } from '../api/background'
+import { loadTimeData } from '$web-common/loadTimeData'
 
 let sideEffectState: NewTab.State = storage.load()
 
@@ -45,6 +46,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ...initialDataPayload.privateTabData,
         braveRewardsSupported: initialDataPayload.braveRewardsSupported,
         braveTalkSupported: initialDataPayload.braveTalkSupported,
+        braveVPNSupported: loadTimeData.getBoolean('vpnWidgetSupported'),
         searchPromotionEnabled: initialDataPayload.searchPromotionEnabled,
         customImageBackgrounds: initialDataPayload.customImageBackgrounds
       }

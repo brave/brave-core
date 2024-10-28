@@ -97,7 +97,9 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
       "featureFlagSearchWidget",
       base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget));
 
-  source->AddBoolean("vpnWidgetEnabled",
+  source->AddBoolean("vpnWidgetSupported",
+  // Used ENABLE_BRAVE_VPN_PANEL as it's enabled on desktop platforms
+  // that supports vpn.
 #if BUILDFLAG(ENABLE_BRAVE_VPN_PANEL)
                      brave_vpn::IsBraveVPNFeatureEnabled()
 #else

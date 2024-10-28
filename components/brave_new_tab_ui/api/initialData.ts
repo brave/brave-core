@@ -19,6 +19,7 @@ export type InitialData = {
   customImageBackgrounds: NewTab.ImageBackground[]
   braveRewardsSupported: boolean
   braveTalkSupported: boolean
+  braveVPNSupported: boolean
   searchPromotionEnabled: boolean
 }
 
@@ -95,6 +96,7 @@ export async function getInitialData (): Promise<InitialData> {
       customImageBackgrounds,
       braveRewardsSupported,
       braveTalkSupported,
+      braveVPNSupported: true,
       searchPromotionEnabled
     } as InitialData
   } catch (e) {
