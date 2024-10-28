@@ -288,6 +288,7 @@ if (!is_android) {
 
   brave_chrome_browser_deps += [
     "//brave/browser/ui/ai_chat",
+    "//brave/browser/ui/webui/brave_new_tab",
     "//brave/browser/ui/webui/brave_news_internals",
     "//components/feed:feature_list",
     "//components/feed/core/v2:feed_core_v2",
@@ -612,4 +613,11 @@ if (is_android) {
     "//brave/browser/android:android_browser_process",
     "//brave/browser/android/preferences",
   ]
+}
+
+# TODO(https://github.com/brave/brave-browser/issues/43310): new_tab_page_ui.cc
+# includes some headers that are currently in the //chrome/browser target.
+if (!is_android) {
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/ui/webui/brave_new_tab" ]
 }

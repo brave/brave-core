@@ -83,6 +83,7 @@ repack("resources") {
 
   if (!is_android && !is_ios) {
     deps += [
+      "//brave/browser/resources/brave_new_tab:generated_resources",
       "//brave/components/brave_new_tab_ui:generated_resources",
       "//brave/components/brave_news/browser/resources:generated_resources",
       "//brave/components/brave_news/browser/resources:generated_resources",
@@ -95,7 +96,8 @@ repack("resources") {
     ]
 
     sources += [
-      "$root_gen_dir/brave/components/brave_new_tab/resources/brave_new_tab_generated.pak",
+      "$root_gen_dir/brave/browser/resources/brave_new_tab/brave_new_tab_generated.pak",
+      "$root_gen_dir/brave/components/brave_new_tab_ui/brave_new_tab_ui_generated.pak",
       "$root_gen_dir/brave/components/brave_news/browser/resources/brave_news_internals_generated.pak",
       "$root_gen_dir/brave/components/brave_private_new_tab/resources/page/brave_private_new_tab_generated.pak",
       "$root_gen_dir/brave/components/brave_shields/resources/cookie_list_opt_in/cookie_list_opt_in_generated.pak",

@@ -22,7 +22,11 @@ const slashStoriesIndexer: Indexer = {
 const config: StorybookConfig = {
   stories: process.env.STORYBOOK_STORYPATH
     ? [`../${process.env.STORYBOOK_STORYPATH}`]
-    : ['../components/**/stories/*.tsx', '../components/**/*.stories.tsx'],
+    : [
+      '../components/**/stories/*.tsx',
+      '../components/**/*.stories.tsx',
+      '../browser/resources/**/stories/*.tsx'
+    ],
   typescript: {
     check: false,
     reactDocgen: false,

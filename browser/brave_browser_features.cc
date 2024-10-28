@@ -9,6 +9,10 @@
 
 namespace features {
 
+BASE_FEATURE(kUseUpdatedNTP,
+             "BraveUseUpdatedNewTabPage",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 // Cleanup Session Cookies on browser restart if Session Restore is enabled.
 BASE_FEATURE(kBraveCleanupSessionCookiesOnSessionRestore,
              "BraveCleanupSessionCookiesOnSessionRestore",
