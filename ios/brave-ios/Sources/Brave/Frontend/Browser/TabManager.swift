@@ -851,6 +851,10 @@ class TabManager: NSObject {
     // Remove all unwanted tabs
     for tab in allTabs {
       guard tab.url?.baseDomain == etldP1 else { continue }
+      // The Tab's WebView is not deinitialized immediately, so it's possible the
+      // WebView still stores data after we shred but before the WebView is deinitialized.
+      // Delete the web view to prevent data being stored after data is Shred.
+      tab.deleteWebView()
       removeTab(tab)
     }
 
