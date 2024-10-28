@@ -1569,8 +1569,8 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void openQuickSearchEnginesSettings() {
-        SettingsLauncher settingsLauncher = SettingsLauncherFactory.createSettingsLauncher();
-        settingsLauncher.launchSettingsActivity(this, QuickSearchFragment.class);
+        SettingsNavigation settingsLauncher = SettingsNavigationFactory.createSettingsNavigation();
+        settingsLauncher.startSettings(this, QuickSearchFragment.class);
     }
 
     public void openBravePlaylistSettings() {

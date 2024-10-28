@@ -41,6 +41,16 @@
                app:showText="false"
                android:clickable="false"/>
 
+          <ImageView
+             android:id="@+id/drag_handle"
+             android:layout_width="24dp"
+             android:layout_height="24dp"
+             android:src="@drawable/ic_drag"
+             android:visibility="gone"
+             android:layout_gravity="center_vertical"
+             android:contentDescription="@null"
+             android:layout_marginEnd="16dp" />
+
      </LinearLayout>
 
      <View
