@@ -146,7 +146,22 @@ extension PlayerView {
     var body: some View {
       VStack {
         HStack(spacing: 16) {
-          PlaybackSpeedPicker(playbackSpeed: $model.playbackSpeed)
+          if #available(iOS 18.0, *) {
+            // iOS 18 breaks simultaneous gestures on `Menu`, so we'll swap in a the old Button
+            // instead for those users for the time being...
+            Button {
+              model.playbackSpeed.cycle()
+            } label: {
+              Label(
+                Strings.Playlist.accessibilityPlaybackSpeed,
+                braveSystemImage: model.playbackSpeed.braveSystemName
+              )
+              .transition(.opacity.animation(.linear(duration: 0.1)))
+              .contentShape(.rect)
+            }
+          } else {
+            PlaybackSpeedPicker(playbackSpeed: $model.playbackSpeed)
+          }
           Spacer()
           Toggle(isOn: $model.isShuffleEnabled) {
             if model.isShuffleEnabled {
@@ -164,8 +179,39 @@ extension PlayerView {
             }
           }
           .toggleStyle(.button)
-          RepeatModePicker(repeatMode: $model.repeatMode)
-            .disabled(model.duration.isIndefinite)
+          Group {
+            if #available(iOS 18.0, *) {
+              // iOS 18 breaks simultaneous gestures on `Menu`, so we'll swap in a the old Button
+              // instead for those users for the time being...
+              Button {
+                model.repeatMode.cycle()
+              } label: {
+                Group {
+                  switch model.repeatMode {
+                  case .none:
+                    Label(
+                      Strings.Playlist.accessibilityRepeatModeOff,
+                      braveSystemImage: "leo.loop.off"
+                    )
+                  case .one:
+                    Label(
+                      Strings.Playlist.accessibilityRepeatModeOne,
+                      braveSystemImage: "leo.loop.1"
+                    )
+                  case .all:
+                    Label(
+                      Strings.Playlist.accessibilityRepeatModeAll,
+                      braveSystemImage: "leo.loop.all"
+                    )
+                  }
+                }
+                .transition(.opacity.animation(.linear(duration: 0.1)))
+              }
+            } else {
+              RepeatModePicker(repeatMode: $model.repeatMode)
+            }
+          }
+          .disabled(model.duration.isIndefinite)
           Button {
             Task {
               await model.playNextItem()
