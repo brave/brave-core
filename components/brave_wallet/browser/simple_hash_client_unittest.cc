@@ -1880,7 +1880,7 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
   // Test case for duplicate NFT identifiers
   nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
   expected_metadatas = std::vector<mojom::NftMetadataPtr>();
-  
+
   // Add two identical NFT identifiers
   auto duplicate_nft_identifier1 = mojom::NftIdentifier::New();
   duplicate_nft_identifier1->chain_id = mojom::kSolanaMainnet;
@@ -1896,7 +1896,8 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
   duplicate_nft_identifier2->token_id = "";
   nft_identifiers.push_back(std::move(duplicate_nft_identifier2));
 
-  // Create JSON response for duplicate NFTs (response will contain only one entry)
+  // Create JSON response for duplicate NFTs (response will contain only one
+  // entry)
   std::string duplicate_json = R"({
     "nfts": [
       {
@@ -1927,7 +1928,8 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
   duplicate_metadata->animation_url = "";
   duplicate_metadata->youtube_url = "";
 
-  // Add the same metadata twice since we expect the API to return the same data for both requests
+  // Add the same metadata twice since we expect the API to return the same data
+  // for both requests
   expected_metadatas.push_back(duplicate_metadata.Clone());
   expected_metadatas.push_back(std::move(duplicate_metadata));
 
@@ -1936,7 +1938,8 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
   responses[GURL(
       "https://simplehash.wallet.brave.com/api/v0/nfts/"
       "assets?nft_ids=solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR%"
-      "2Csolana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR")] = duplicate_json;
+      "2Csolana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR")] =
+      duplicate_json;
 
   SetInterceptors(responses);
   TestGetNftMetadatas(mojom::CoinType::SOL, std::move(nft_identifiers),
