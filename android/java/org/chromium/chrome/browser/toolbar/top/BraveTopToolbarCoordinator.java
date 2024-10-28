@@ -31,6 +31,7 @@ import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
+import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
@@ -86,7 +87,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             TabObscuringHandler tabObscuringHandler,
             @Nullable DesktopWindowStateProvider desktopWindowStateProvider,
             OneshotSupplier<TabStripTransitionDelegate> tabStripTransitionDelegateSupplier,
-            @Nullable OnLongClickListener onLongClickListener) {
+            @Nullable OnLongClickListener onLongClickListener,
+            ToolbarProgressBar progressBar) {
         super(
                 controlContainer,
                 toolbarLayout,
@@ -113,7 +115,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 tabObscuringHandler,
                 desktopWindowStateProvider,
                 tabStripTransitionDelegateSupplier,
-                onLongClickListener);
+                onLongClickListener,
+                progressBar);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
