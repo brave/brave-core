@@ -21,8 +21,9 @@
 }
 
 .footer-text a {
-  color: inherit;
+  color: var(--leo-color-text-secondary);
   font: var(--leo-font-small-link);
+  text-underline-offset: 2.5px;
 }
 
 .button-wrapper {

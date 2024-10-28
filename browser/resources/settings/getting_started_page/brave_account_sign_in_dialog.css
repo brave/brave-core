@@ -29,4 +29,6 @@
   font: var(--leo-font-small-link);
   margin: 0px var(--brave-account-sign-in-dialog-label-margin) 0px 0px;
   text-decoration-line: underline;
+  text-decoration-skip-ink: none;
+  text-underline-offset: 2.4px;
 }
