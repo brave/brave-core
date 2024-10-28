@@ -6,20 +6,37 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
+import { useAppState } from './context/app_model_context'
+import { SearchBox } from './search/search_box'
 import { Background } from './background/background'
 import { BackgroundCaption } from './background/background_caption'
 import { SettingsModal, SettingsView } from './settings/settings_modal'
+import { TopSites } from './top_sites/top_sites'
+import { Clock } from './common/clock'
+import { StatsWidget } from './widgets/stats_widget'
+import { ProductWidgetStack } from './widgets/product_widget_stack'
 
 import { style } from './app.style'
 
 export function App() {
+  const widgetPosition = useAppState((s) => s.widgetPosition)
+
   const [settingsView, setSettingsView] =
     React.useState<SettingsView | null>(null)
 
   return (
-    <div data-css-scope={style.scope}>
+    <div
+      className={`widget-position-${widgetPosition}`}
+      data-css-scope={style.scope}
+    >
       <Background />
       <div className='top-controls'>
+        <button
+          className='clock'
+          onClick={() => setSettingsView('clock')}
+        >
+          <Clock />
+        </button>
         <button
           className='settings'
           onClick={() => setSettingsView('background')}
@@ -28,9 +45,21 @@ export function App() {
         </button>
       </div>
       <main className='allow-background-pointer-events'>
+        <div className='topsites-container'>
+          <TopSites />
+        </div>
+        <div className='searchbox-container'>
+          <SearchBox
+            onCustomizeSearchEngineList={() => setSettingsView('search')}
+          />
+        </div>
         <div className='spacer allow-background-pointer-events' />
         <div className='background-caption-container'>
           <BackgroundCaption />
+        </div>
+        <div className='widget-container'>
+          <StatsWidget />
+          <ProductWidgetStack />
         </div>
       </main>
       <SettingsModal

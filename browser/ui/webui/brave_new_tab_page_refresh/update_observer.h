@@ -16,13 +16,24 @@ class PrefService;
 
 namespace brave_new_tab_page_refresh {
 
+class TopSitesFacade;
+
 // Listens for changes to profile and system state that must be reflected on the
 // new tab page.
 class UpdateObserver {
  public:
-  enum class Source { kBackgrounds };
+  enum class Source {
+    kBackgrounds,
+    kClock,
+    kSearch,
+    kTopSites,
+    kShieldsStats,
+    kTalk,
+    kVPN,
+    kRewards
+  };
 
-  explicit UpdateObserver(PrefService& pref_service);
+  UpdateObserver(PrefService& pref_service, TopSitesFacade* top_sites_facade);
   ~UpdateObserver();
 
   UpdateObserver(const UpdateObserver&) = delete;

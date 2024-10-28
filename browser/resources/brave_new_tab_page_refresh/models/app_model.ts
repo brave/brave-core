@@ -4,21 +4,61 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {
+  NewTabState,
+  NewTabActions,
+  defaultNewTabState } from './new_tab'
+
+import {
   BackgroundState,
   BackgroundActions,
   defaultBackgroundState } from './backgrounds'
 
+import {
+  RewardsState,
+  RewardsActions,
+  defaultRewardsState } from './rewards'
+
+import {
+  SearchState,
+  SearchActions,
+  defaultSearchState } from './search'
+
+import {
+  TopSitesState,
+  TopSitesActions,
+  defaultTopSitesState } from './top_sites'
+
+import {
+  VPNState,
+  VPNActions,
+  defaultVPNState } from './vpn'
+
 export type AppState =
-  BackgroundState
+  NewTabState &
+  BackgroundState &
+  RewardsState &
+  SearchState &
+  TopSitesState &
+  VPNState
 
 export function defaultState(): AppState {
   return {
-    ...defaultBackgroundState()
+    ...defaultNewTabState(),
+    ...defaultBackgroundState(),
+    ...defaultRewardsState(),
+    ...defaultSearchState(),
+    ...defaultTopSitesState(),
+    ...defaultVPNState()
   }
 }
 
 export type AppActions =
-  BackgroundActions
+  NewTabActions &
+  BackgroundActions &
+  RewardsActions &
+  SearchActions &
+  TopSitesActions &
+  VPNActions
 
 export interface AppModel extends AppActions {
   getState: () => AppState

@@ -7,6 +7,10 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 import { scoped, global } from '../lib/scoped_css'
 
 export const style = scoped.css`
+  & {
+    --search-transition-duration: 120ms;
+  }
+
   .top-controls {
     position: absolute;
     inset-block-start: 4px;
@@ -29,6 +33,12 @@ export const style = scoped.css`
       opacity: 0.7;
       cursor: pointer;
     }
+  }
+
+  .clock {
+    font: ${font.large.semibold};
+    color: #fff;
+    opacity: .8;
   }
 
   .allow-background-pointer-events {
@@ -57,12 +67,73 @@ export const style = scoped.css`
     min-height: 100vh;
     gap: 16px;
     padding: 16px 24px;
+
+    > * {
+      transition:
+        opacity var(--search-transition-duration),
+        transform var(--search-transition-duration);
+
+      .search-box-expanded & {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+    }
+  }
+
+  .topsites-container {
+    padding: 16px 0;
+    align-self: stretch;
+    display: flex;
+    gap: 16px;
+  }
+
+  .searchbox-container {
+    align-self: stretch;
+
+    .search-box-expanded & {
+      opacity: 1;
+      transform: none;
+    }
   }
 
   .spacer {
     flex: 1 1 auto;
     align-self: stretch;
   }
+
+  .widget-container {
+    align-self: stretch;
+    flex: 0 0 120px;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  &.widget-position-top {
+    .widget-container {
+      order: 1;
+      margin-top: 16px;
+      margin-bottom: 18px;
+    }
+
+    .searchbox-container {
+      order: 2;
+    }
+
+    .spacer {
+      order: 3;
+    }
+
+    .background-caption-container {
+      order: 4;
+    }
+
+    .topsites-container {
+      order: 5;
+    }
+  }
+
 `
 
 global.css`
@@ -106,6 +177,49 @@ global.css`
 
     p {
       margin: 0;
+    }
+
+    dialog, [popover] {
+      border: none;
+      color: inherit;
+      margin: 0;
+      padding: 0;
+      background: none;
+
+      &::backdrop {
+        background-color: transparent;
+      }
+    }
+
+    .popover-menu {
+      padding: 4px;
+      border-radius: 8px;
+      border: solid 1px ${color.divider.subtle};
+      background: ${color.container.background};
+      box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 180px;
+
+      .divider {
+        height: 1px;
+        background: ${color.divider.subtle};
+      }
+
+      button {
+        --leo-icon-size: 20px;
+
+        padding: 8px 24px 8px 8px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        &:hover, &.highlight {
+          background: ${color.container.highlight};
+        }
+      }
     }
   }
 `

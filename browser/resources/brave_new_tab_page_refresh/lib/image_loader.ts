@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+export const placeholderImageSrc =
+  'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg"%3E%3C/svg%3E'
+
 // Loads an image in the background and resolves when the image has either
 // loaded or was unable to load.
 export function loadImage(url: string): Promise<boolean> {
