@@ -138,7 +138,12 @@ public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
 
     switch self {
     case .vpnMonthly, .leoMonthly: return "\(prefix)\(productId).monthly"
-    case .vpnYearly, .leoYearly: return "\(prefix)\(productId).yearly"
+    case .vpnYearly: return "\(prefix)\(productId).yearly"
+    case .leoYearly:
+      if BraveSkusEnvironment.current == .release {
+        return "\(prefix)\(productId).yearly.2"
+      }
+      return "\(prefix)\(productId).yearly"
     }
   }
 }
