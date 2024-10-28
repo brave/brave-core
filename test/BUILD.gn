@@ -1218,7 +1218,6 @@ if (is_android) {
     variables += [
       "manifest_package=$brave_public_test_manifest_package",
       "min_sdk_version=19",
-      "target_sdk_version=$android_sdk_version",
     ]
   }
 
