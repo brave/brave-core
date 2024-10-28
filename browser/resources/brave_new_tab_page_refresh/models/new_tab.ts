@@ -15,6 +15,7 @@ export interface NewTabState {
   clockFormat: ClockFormat
   showShieldsStats: boolean
   shieldsStats: ShieldsStats | null
+  showTalkWidget: boolean
 }
 
 export function defaultNewTabState(): NewTabState {
@@ -22,7 +23,8 @@ export function defaultNewTabState(): NewTabState {
     showClock: false,
     clockFormat: '',
     showShieldsStats: false,
-    shieldsStats: null
+    shieldsStats: null,
+    showTalkWidget: true
   }
 }
 
@@ -30,12 +32,14 @@ export interface NewTabActions {
   setShowClock: (showClock: boolean) => void
   setClockFormat: (format: ClockFormat) => void
   setShowShieldsStats: (showShieldsStats: boolean) => void
+  setShowTalkWidget: (showTalkWidget: boolean) => void
 }
 
 export function defaultNewTabActions(): NewTabActions {
   return {
     setShowClock(showClock) {},
     setClockFormat(format) {},
-    setShowShieldsStats(showShieldsStats) {}
+    setShowShieldsStats(showShieldsStats) {},
+    setShowTalkWidget(showTalkWidget) {}
   }
 }

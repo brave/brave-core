@@ -11,6 +11,7 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
@@ -47,6 +48,14 @@ UpdateObserver::UpdateObserver(PrefService& pref_service,
   AddPrefListener(kTrackersBlocked, Source::kShieldsStats);
   AddPrefListener(brave_perf_predictor::prefs::kBandwidthSavedBytes,
                   Source::kShieldsStats);
+
+  AddPrefListener(kNewTabPageShowBraveTalk, Source::kTalk);
+
+  AddPrefListener(kNewTabPageShowRewards, Source::kRewards);
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  AddPrefListener(kNewTabPageShowBraveVPN, Source::kVPN);
+#endif
 
   if (top_sites_facade) {
     top_sites_facade->SetSitesUpdatedCallback(

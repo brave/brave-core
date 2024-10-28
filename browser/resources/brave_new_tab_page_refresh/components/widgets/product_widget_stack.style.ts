@@ -8,13 +8,34 @@ import { scoped } from '../../lib/scoped_css'
 
 export const style = scoped.css`
   & {
-    flex: 0 1 var(--widget-flex-basis, auto);
-    color: ${color.text.primary};
-    border-radius: 16px;
-    background: rgba(0, 0, 0, 0.50);
-    backdrop-filter: blur(50px);
+    flex-grow: 1;
     display: flex;
     align-items: stretch;
-    overflow: clip;
+  }
+
+  .stack-tabs {
+    --leo-icon-size: 16px;
+    --leo-icon-color: ${color.icon.default};
+
+    display: flex;
+    flex-direction: column;
+
+    > * {
+      background: rgba(255, 255, 255, 0.10);
+      flex: 1 1 auto;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+    }
+
+    .active {
+      --leo-icon-color: #fff;
+      background: inherit;
+    }
+  }
+
+  .widget {
+    flex: 1 1 auto;
+    padding: 16px;
   }
 `
