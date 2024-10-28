@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <if expr="not is_android">
+    <include name="IDR_BRAVE_NEW_TAB_PAGE_HTML" file="../../browser/resources/brave_new_tab_page_refresh/brave_new_tab_page.html" type="BINDATA" />
+  </if>
+</grit-part>
