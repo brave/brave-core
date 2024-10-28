@@ -1772,7 +1772,7 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
               "value": "Red"
             },
             {
-              "trait_type": "Size",
+              "trait_type": "Size", 
               "value": "Small"
             }
           ]
@@ -1872,6 +1872,75 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
 
   expected_metadatas.push_back(std::move(metadata1));
   expected_metadatas.push_back(std::move(metadata2));
+  SetInterceptors(responses);
+  TestGetNftMetadatas(mojom::CoinType::SOL, std::move(nft_identifiers),
+                      expected_metadatas);
+
+  LOG(ERROR) << "BEFORE RELEVANT TESTS";
+  // Test case for duplicate NFT identifiers
+  nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
+  expected_metadatas = std::vector<mojom::NftMetadataPtr>();
+
+  // Add two identical NFT identifiers
+  auto duplicate_nft_identifier1 = mojom::NftIdentifier::New();
+  duplicate_nft_identifier1->chain_id = mojom::kSolanaMainnet;
+  duplicate_nft_identifier1->contract_address =
+      "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
+  duplicate_nft_identifier1->token_id = "";
+  nft_identifiers.push_back(std::move(duplicate_nft_identifier1));
+
+  auto duplicate_nft_identifier2 = mojom::NftIdentifier::New();
+  duplicate_nft_identifier2->chain_id = mojom::kSolanaMainnet;
+  duplicate_nft_identifier2->contract_address =
+      "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
+  duplicate_nft_identifier2->token_id = "";
+  nft_identifiers.push_back(std::move(duplicate_nft_identifier2));
+
+  // Create JSON response for duplicate NFTs (response will contain only one
+  // entry)
+  std::string duplicate_json = R"({
+    "nfts": [
+      {
+        "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "chain": "solana",
+        "contract_address": "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "description": "A true gladiator",
+        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
+        "extra_metadata": {
+          "metadata_original_url": "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json"
+        }
+      }
+    ]
+  })";
+
+  // Set up expected metadata for the duplicate NFT
+  auto duplicate_metadata = mojom::NftMetadata::New();
+  duplicate_metadata->name = "Common Water Warrior #19";
+  duplicate_metadata->description = "A true gladiator";
+  duplicate_metadata->image =
+      "https://simplehash.wallet-cdn.brave.com/assets/"
+      "168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png";
+  duplicate_metadata->image_data = "";
+  duplicate_metadata->external_url = "";
+  duplicate_metadata->background_color = "";
+  duplicate_metadata->animation_url = "";
+  duplicate_metadata->youtube_url = "";
+
+  // Add the same metadata twice since we expect the API to return the same data
+  // for both requests
+  expected_metadatas.push_back(duplicate_metadata.Clone());
+  expected_metadatas.push_back(std::move(duplicate_metadata));
+
+  // Set up the response interceptor for the duplicate NFT request
+  responses.clear();
+  responses[GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "assets?nft_ids=solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR%"
+      "2Csolana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR")] =
+      duplicate_json;
+
   SetInterceptors(responses);
   TestGetNftMetadatas(mojom::CoinType::SOL, std::move(nft_identifiers),
                       expected_metadatas);
