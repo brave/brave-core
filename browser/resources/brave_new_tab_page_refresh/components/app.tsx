@@ -4,9 +4,40 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
+
+import { Background } from './background/background'
+import { BackgroundCaption } from './background/background_caption'
+import { SettingsModal, SettingsView } from './settings/settings_modal'
+
+import { style } from './app.style'
 
 export function App() {
+  const [settingsView, setSettingsView] =
+    React.useState<SettingsView | null>(null)
+
   return (
-    <div></div>
+    <div data-css-scope={style.scope}>
+      <Background />
+      <div className='top-controls'>
+        <button
+          className='settings'
+          onClick={() => setSettingsView('background')}
+        >
+          <Icon name='settings' />
+        </button>
+      </div>
+      <main className='allow-background-pointer-events'>
+        <div className='spacer allow-background-pointer-events' />
+        <div className='background-caption-container'>
+          <BackgroundCaption />
+        </div>
+      </main>
+      <SettingsModal
+        isOpen={Boolean(settingsView)}
+        initialView={settingsView}
+        onClose={() => setSettingsView(null)}
+      />
+    </div>
   )
 }
