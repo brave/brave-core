@@ -28,6 +28,7 @@ export const defaultState: NewTab.State = {
   customLinksNum: 0,
   showRewards: false,
   showBraveTalk: false,
+  showBraveVPN: false,
   showSearchBox: true,
   lastUsedNtpSearchEngine: braveSearchHost,
   promptEnableSearchSuggestions: true,
@@ -40,6 +41,7 @@ export const defaultState: NewTab.State = {
   showEmptyPage: false,
   braveRewardsSupported: false,
   braveTalkSupported: false,
+  braveVPNSupported: false,
   bitcoinDotComSupported: false,
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
@@ -87,7 +89,7 @@ export const defaultState: NewTab.State = {
   currentStackWidget: '',
   removedStackWidgets: [],
   // Order is ascending, with last entry being in the foreground
-  widgetStackOrder: ['rewards'],
+  widgetStackOrder: ['rewards', 'braveVPN'],
   customImageBackgrounds: []
 }
 

@@ -84,7 +84,7 @@ declare namespace NewTab {
     url: string
   }
 
-  export type StackWidget = 'rewards' | 'braveTalk' | 'bitcoinDotCom' | ''
+  export type StackWidget = 'rewards' | 'braveTalk' | 'braveVPN' | 'bitcoinDotCom' | ''
 
   export interface GridSitesState {
     removedSites: Site[]
@@ -103,6 +103,7 @@ declare namespace NewTab {
   export interface PersistentState {
     braveRewardsSupported: boolean
     braveTalkSupported: boolean
+    braveVPNSupported: boolean
     bitcoinDotComSupported: boolean
     showEmptyPage: boolean
     rewardsState: RewardsWidgetState
@@ -121,6 +122,7 @@ declare namespace NewTab {
     showTopSites: boolean
     showRewards: boolean
     showBraveTalk: boolean
+    showBraveVPN: boolean
     showSearchBox: boolean
     lastUsedNtpSearchEngine: string
     promptEnableSearchSuggestions: boolean

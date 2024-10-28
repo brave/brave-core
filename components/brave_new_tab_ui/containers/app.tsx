@@ -54,6 +54,7 @@ function DefaultPage (props: Props) {
       saveShowBackgroundImage={PreferencesAPI.saveShowBackgroundImage}
       saveShowRewards={PreferencesAPI.saveShowRewards}
       saveShowBraveTalk={PreferencesAPI.saveShowBraveTalk}
+      saveShowBraveVPN={PreferencesAPI.saveShowBraveVPN}
       saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}
       saveSetAllStackWidgets={PreferencesAPI.saveSetAllStackWidgets}
       getBraveNewsDisplayAd={getBraveNewsDisplayAd}

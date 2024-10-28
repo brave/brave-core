@@ -10,7 +10,7 @@ import getNTPBrowserAPI from '../../api/background'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
 import { brandedWallpaperLogoClicked } from '../../api/wallpaper'
 import {
-  BraveTalkWidget as BraveTalk, Clock, EditTopSite, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion
+  BraveTalkWidget as BraveTalk, Clock, EditTopSite, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion, VPNWidget
 } from '../../components/default'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 import BraveNews, { GetDisplayAdContent } from '../../components/default/braveNews'
@@ -60,6 +60,7 @@ interface Props {
   saveShowBackgroundImage: (value: boolean) => void
   saveShowRewards: (value: boolean) => void
   saveShowBraveTalk: (value: boolean) => void
+  saveShowBraveVPN: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
   saveSetAllStackWidgets: (value: boolean) => void
   chooseNewCustomBackgroundImage: () => void
@@ -317,6 +318,10 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.saveShowBraveTalk(!this.props.newTabData.showBraveTalk)
   }
 
+  toggleShowBraveVPN = () => {
+    this.props.saveShowBraveVPN(!this.props.newTabData.showBraveVPN)
+  }
+
   disableBrandedWallpaper = () => {
     this.props.saveBrandedWallpaperOptIn(false)
   }
@@ -403,13 +408,19 @@ class NewTabPage extends React.Component<Props, State> {
       widgetStackOrder,
       braveRewardsSupported,
       braveTalkSupported,
+      braveVPNSupported,
       showRewards,
-      showBraveTalk
+      showBraveTalk,
+      showBraveVPN
     } = this.props.newTabData
     const lookup: { [p: string]: { display: boolean, render: any } } = {
       'rewards': {
         display: braveRewardsSupported && showRewards,
         render: this.renderRewardsWidget.bind(this)
+      },
+      'braveVPN': {
+        display: braveVPNSupported && showBraveVPN,
+        render: this.renderBraveVPNWidget.bind(this)
       },
       'braveTalk': {
         display: braveTalkSupported && showBraveTalk,
@@ -443,13 +454,16 @@ class NewTabPage extends React.Component<Props, State> {
     const {
       braveRewardsSupported,
       braveTalkSupported,
+      braveVPNSupported,
       showRewards,
       showBraveTalk,
+      showBraveVPN,
       hideAllWidgets
     } = this.props.newTabData
     return hideAllWidgets || [
       braveRewardsSupported && showRewards,
-      braveTalkSupported && showBraveTalk
+      braveTalkSupported && showBraveTalk,
+      braveVPNSupported && showBraveVPN,
     ].every((widget: boolean) => !widget)
   }
 
@@ -575,6 +589,29 @@ class NewTabPage extends React.Component<Props, State> {
         hideWidget={this.toggleShowBraveTalk}
         showContent={showContent}
         onShowContent={this.setForegroundStackWidget.bind(this, 'braveTalk')}
+      />
+    )
+  }
+
+  renderBraveVPNWidget (showContent: boolean, position: number) {
+    const { newTabData } = this.props
+    const { showBraveVPN, textDirection, braveVPNSupported } = newTabData
+
+    if (!showBraveVPN || !braveVPNSupported) {
+      return null
+    }
+
+    return (
+      <VPNWidget
+        paddingType={'none'}
+        menuPosition={'left'}
+        textDirection={textDirection}
+        widgetTitle={getLocale('braveVPNWidgetTitle')}
+        onShowContent={this.setForegroundStackWidget.bind(this, 'braveVPN')}
+        isForeground={showContent}
+        showContent={showContent}
+        hideWidget={this.toggleShowBraveVPN}
+        braveVPNState={this.props.braveVPNData}
       />
     )
   }
@@ -769,6 +806,9 @@ class NewTabPage extends React.Component<Props, State> {
           toggleShowRewards={this.toggleShowRewards}
           braveTalkSupported={newTabData.braveTalkSupported}
           toggleShowBraveTalk={this.toggleShowBraveTalk}
+          showBraveVPN={newTabData.showBraveVPN}
+          braveVPNSupported={newTabData.braveVPNSupported}
+          toggleShowBraveVPN={this.toggleShowBraveVPN}
           showBraveTalk={newTabData.showBraveTalk}
           cardsHidden={this.allWidgetsHidden()}
           toggleCards={this.props.saveSetAllStackWidgets}

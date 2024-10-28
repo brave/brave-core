@@ -412,6 +412,12 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
 
                {"loading", IDS_BRAVE_REWARDS_LOADING_LABEL},
 
+               // Brave VPN Widget
+               {"braveVPNWidgetTitle", IDS_BRAVE_VPN_WIDGET_TITLE},
+               {"braveVPNWidgetSettingTitle",
+                IDS_BRAVE_VPN_WIDGET_SETTING_TITLE},
+               {"braveVPNWidgetSettingDesc", IDS_BRAVE_VPN_WIDGET_SETTING_DESC},
+
                // Brave Talk  Widget
                {"braveTalkWidgetTitle", IDS_BRAVE_TALK_WIDGET_TITLE},
                {"braveTalkWidgetWelcomeTitle",

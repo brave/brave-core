@@ -20,6 +20,7 @@ import {
   ToggleCardsText
 } from '../../../components/default'
 import braveTalkBanner from './assets/brave-talk.png'
+import braveVPNBanner from './assets/brave-vpn.png'
 import rewardsBanner from './assets/braverewards.png'
 import Toggle from '@brave/leo/react/toggle'
 import Button from '@brave/leo/react/button'
@@ -45,6 +46,9 @@ interface Props {
   toggleShowRewards: () => void
   showRewards: boolean
   braveRewardsSupported: boolean
+  toggleShowBraveVPN: () => void
+  showBraveVPN: boolean
+  braveVPNSupported: boolean
   toggleCards: (show: boolean) => void
   cardsHidden: boolean
 }
@@ -58,7 +62,7 @@ const ToggleButton = ({ on, toggleFunc, float }: { on: boolean, toggleFunc: any,
   </StyledButton>
 }
 
-function CardSettings({ toggleShowBraveTalk, showBraveTalk, braveTalkSupported, toggleShowRewards, showRewards, braveRewardsSupported, toggleCards, cardsHidden }: Props) {
+function CardSettings({ toggleShowBraveTalk, showBraveTalk, braveTalkSupported, toggleShowBraveVPN, showBraveVPN, braveVPNSupported, toggleShowRewards, showRewards, braveRewardsSupported, toggleCards, cardsHidden }: Props) {
   return <StyledWidgetSettings>
     {braveTalkSupported && <FeaturedSettingsWidget>
       <StyledBannerImage src={braveTalkBanner} />
@@ -83,6 +87,18 @@ function CardSettings({ toggleShowBraveTalk, showBraveTalk, braveTalkSupported, 
         </StyledSettingsCopy>
       </StyledSettingsInfo>
       <ToggleButton on={showRewards} toggleFunc={toggleShowRewards} />
+    </SettingsWidget>}
+    {braveVPNSupported && <SettingsWidget>
+      <StyledBannerImage src={braveVPNBanner} />
+      <StyledSettingsInfo>
+        <StyledSettingsTitle>
+          {getLocale('braveVPNWidgetSettingTitle')}
+        </StyledSettingsTitle>
+        <StyledSettingsCopy>
+          {getLocale('braveVPNWidgetSettingDesc')}
+        </StyledSettingsCopy>
+      </StyledSettingsInfo>
+      <ToggleButton on={showBraveVPN} toggleFunc={toggleShowBraveVPN} />
     </SettingsWidget>}
     <FeaturedSettingsWidget>
       <ToggleCardsWrapper>

@@ -34,6 +34,10 @@ export function saveShowBraveTalk (value: boolean): void {
   sendSavePref('showBraveTalk', value)
 }
 
+export function saveShowBraveVPN (value: boolean): void {
+  sendSavePref('showBraveVPN', value)
+}
+
 export function saveBrandedWallpaperOptIn (value: boolean): void {
   sendSavePref('brandedWallpaperOptIn', value)
 }
