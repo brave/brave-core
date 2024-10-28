@@ -1,0 +1,29 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import { AppModel, defaultState } from '../models/app_model'
+import { createStore } from '../lib/store'
+import { initializeNewTab } from './webui_new_tab'
+import { initializeBackgrounds } from './webui_backgrounds'
+import { initializeRewards } from './webui_rewards'
+import { initializeSearch } from './webui_search'
+import { initializeTopSites } from './webui_top_sites'
+import { initializeVPN } from './webui_vpn'
+
+export function createAppModel(): AppModel {
+  const store = createStore(defaultState())
+
+  return {
+    getState: store.getState,
+    addListener: store.addListener,
+
+    ...initializeNewTab(store),
+    ...initializeBackgrounds(store),
+    ...initializeRewards(store),
+    ...initializeSearch(store),
+    ...initializeTopSites(store),
+    ...initializeVPN(store)
+  }
+}

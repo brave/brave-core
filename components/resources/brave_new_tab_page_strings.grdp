@@ -1,4 +1,323 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  <!-- Add strings for Brave new tab page here. -->
+  <message name="IDS_NEW_TAB_ADD_TOP_SITE_LABEL" desc="">
+    Add site
+  </message>
+
+  <message name="IDS_NEW_TAB_ADD_TOP_SITE_TITLE" desc="">
+    Add site
+  </message>
+
+  <message name="IDS_NEW_TAB_BACKGROUND_SETTINGS_TITLE" desc="Title for background image settings">
+    Background Image
+  </message>
+
+  <message name="IDS_NEW_TAB_BRAVE_BACKGROUND_LABEL" desc="Label for Brave background option">
+    Brave backgrounds
+  </message>
+
+  <message name="IDS_NEW_TAB_CANCEL_BUTTON_LABEL" desc="">
+    Cancel
+  </message>
+
+  <message name="IDS_NEW_TAB_CLOCK_FORMAT_LABEL" desc="">
+    Format
+  </message>
+
+  <message name="IDS_NEW_TAB_CLOCK_FORMAT_OPTION12HOUR_TEXT" desc="">
+    12-hour clock
+  </message>
+
+  <message name="IDS_NEW_TAB_CLOCK_FORMAT_OPTION24HOUR_TEXT" desc="">
+    24-hour clock
+  </message>
+
+  <message name="IDS_NEW_TAB_CLOCK_FORMAT_OPTION_AUTOMATIC_TEXT" desc="">
+    Automatic (<ph name="LOCALE">$1<ex>en-US</ex></ph>)
+  </message>
+
+  <message name="IDS_NEW_TAB_CLOCK_SETTINGS_TITLE" desc="">
+    Clock
+  </message>
+
+  <message name="IDS_NEW_TAB_CUSTOM_BACKGROUND_LABEL" desc="Label for custom background option">
+    Use your own
+  </message>
+
+  <message name="IDS_NEW_TAB_CUSTOMIZE_SEARCH_ENGINES_LINK">
+    Customize available engines
+  </message>
+
+  <message name="IDS_NEW_TAB_EDIT_TOP_SITE_LABEL" desc="">
+    Edit site
+  </message>
+
+  <message name="IDS_NEW_TAB_EDIT_TOP_SITE_TITLE" desc="">
+    Edit site
+  </message>
+
+  <message name="IDS_NEW_TAB_ENABLED_SEARCH_ENGINES_LABEL" desc="Label for the list of search engines">
+    Enabled search engines
+  </message>
+
+  <message name="IDS_NEW_TAB_GRADIENT_BACKGROUND_LABEL" desc="Gradient background colors title">
+    Gradients
+  </message>
+
+  <message name="IDS_NEW_TAB_HIDE_TOP_SITES_LABEL" desc="">
+    Hide top sites
+  </message>
+
+  <message name="IDS_NEW_TAB_PHOTO_CREDITS_TEXT" desc="Photographer credits for Brave background images">
+    Photo by <ph name="AUTHOR">$1</ph>
+  </message>
+
+  <message name="IDS_NEW_TAB_RANDOMIZE_BACKGROUND_LABEL" desc="Label for random toggle button">
+    Refresh on every new tab
+  </message>
+
+  <message name="IDS_NEW_TAB_REMOVE_TOP_SITE_LABEL" desc="">
+    Remove
+  </message>
+
+  <message name="IDS_NEW_TAB_REWARDS_CONNECT_BUTTON_LABEL" desc="">
+    Connect
+  </message>
+
+  <message name="IDS_NEW_TAB_REWARDS_ONBOARDING_LINK" desc="">
+    How does it work?
+  </message>
+
+  <message name="IDS_NEW_TAB_REWARDS_WIDGET_TITLE" desc="">
+    REWARDS
+  </message>
+
+  <message name="IDS_NEW_TAB_SAVE_CHANGES_BUTTON_LABEL" desc="">
+    Save changes
+  </message>
+
+  <message name="IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT" desc="Placeholder text for when Brave is not the selected search engine">
+    Search the web
+  </message>
+
+  <message name="IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT_BRAVE" desc="Placeholder text for when Brave is the selected search engine">
+    Ask Brave Search
+  </message>
+
+  <message name="IDS_NEW_TAB_SEARCH_CUSTOMIZE_ENGINE_LIST_TEXT" desc="Label for the customize list action">
+    Customize list
+  </message>
+
+  <message name="IDS_NEW_TAB_SEARCH_SETTINGS_TITLE" desc="Title for search settings">
+    Search
+  </message>
+
+  <message name="IDS_NEW_TAB_SEARCH_SUGGESTIONS_DISMISS_BUTTON_LABEL" desc="">
+    No thanks
+  </message>
+
+  <message name="IDS_NEW_TAB_SEARCH_SUGGESTIONS_ENABLE_BUTTON_LABEL" desc="">
+    Enable
+  </message>
+
+  <message name="IDS_NEW_TAB_SEARCH_SUGGESTIONS_PROMPT_TEXT" desc="">
+    When you search, what you type will be sent to your search engine for better suggestions.
+  </message>
+
+  <message name="IDS_NEW_TAB_SEARCH_SUGGESTIONS_PROMPT_TITLE" desc="">
+    Enable search suggestions?
+  </message>
+
+  <message name="IDS_NEW_TAB_SETTINGS_TITLE" desc="Title for settings dialog">
+    Customize Dashboard
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_BACKGROUNDS_LABEL" desc="Text for settings background option">
+    Show Background Images
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_CLOCK_LABEL" desc="">
+    Show clock
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_REWARDS_WIDGET_LABEL" desc="">
+    Brave Rewards
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL" desc="Label for enabling the searchbox on the NTP">
+    Show search widget in new tabs
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL" desc="Text for setting to opt-in to Branded Wallpapers on New Tab Page">
+    Show Sponsored Images
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_STATS_LABEL" desc="">
+    Brave Stats
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_TALK_WIDGET_LABEL" desc="">
+    Brave Talk
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_TOP_SITES_LABEL" desc="">
+    Show top sites
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_VPN_WIDGET_LABEL" desc="">
+    Brave VPN
+  </message>
+
+  <message name="IDS_NEW_TAB_SOLID_BACKGROUND_LABEL" desc="Solid background colors title">
+    Solid colors
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_ADS_BLOCKED_TEXT" desc="">
+    Trackers &amp; ads blocked
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_BANDWIDTH_SAVED_TEXT" desc="">
+    Bandwidth saved
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_SETTINGS_TITLE" desc="">
+    Brave Stats
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_TIME_SAVED_TEXT" desc="">
+    Time saved
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_TITLE" desc="">
+    STATS
+  </message>
+
+  <message name="IDS_NEW_TAB_TALK_DESCRIPTION_TEXT" desc="">
+    Encrypted video calls with Brave Talk.
+  </message>
+
+  <message name="IDS_NEW_TAB_TALK_DESCRIPTION_TITLE" desc="">
+    Privacy-First Calls
+  </message>
+
+  <message name="IDS_NEW_TAB_TALK_START_CALL_LABEL" desc="">
+    Start call
+  </message>
+
+  <message name="IDS_NEW_TAB_TALK_WIDGET_TITLE" desc="">
+    TALK
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITE_REMOVED_TEXT" desc="">
+    Top site removed
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITE_REMOVED_TITLE" desc="">
+    Removed
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_CUSTOM_OPTION_TEXT" desc="">
+    Top sites are curated by you
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_CUSTOM_OPTION_TITLE" desc="">
+    Favorites
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TEXT" desc="">
+    Top sites are suggested based on websites you visit often.
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TITLE" desc="">
+    Frequently Visited
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_SETTINGS_TITLE" desc="">
+    Top Sites
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_CUSTOM_LABEL" desc="">
+    Show favorites
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_MOST_VISITED_LABEL" desc="">
+    Show frequently visited
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_TITLE_LABEL" desc="">
+    Name
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_URL_LABEL" desc="">
+    URL
+  </message>
+
+  <message name="IDS_NEW_TAB_UNDO_BUTTON_LABEL" desc="">
+    Undo
+  </message>
+
+  <message name="IDS_NEW_TAB_UPLOAD_BACKGROUND_LABEL" desc="Text for custom background option upload">
+    Upload from device
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_CHANGE_REGION_LABEL" desc="">
+    Change
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_FEATURE_TEXT1" desc="">
+    Extra privacy &amp; security online
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_FEATURE_TEXT2" desc="">
+    Hide your IP &amp; change your location
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_FEATURE_TEXT3" desc="">
+    Protect every app on your device
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_RESTORE_PURCHASE_LABEL" desc="">
+    Already purchased?
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_START_TRIAL_LABEL" desc="">
+    Start free trial
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_OPTIMAL_TEXT" desc="">
+    Optimal
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_POWERED_BY_TEXT" desc="">
+    Powered by
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_STATUS_CONNECTED" desc="">
+    Connected
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_STATUS_CONNECTING" desc="">
+    Connecting
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_STATUS_DISCONNECTED" desc="">
+    Disconnected
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_STATUS_DISCONNECTING" desc="">
+    Disconnecting
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_WIDGET_TITLE" desc="">
+    BRAVE VPN
+  </message>
+
+  <message name="IDS_NEW_TAB_WIDGET_LAYOUT_LABEL" desc="">
+    Widget layout
+  </message>
+
+  <message name="IDS_NEW_TAB_WIDGET_SETTINGS_TITLE" desc="">
+    Widgets
+  </message>
+
 </grit-part>
