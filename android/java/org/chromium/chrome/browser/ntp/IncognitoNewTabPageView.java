@@ -85,6 +85,9 @@ public class IncognitoNewTabPageView extends FrameLayout {
         super.onFinishInflate();
 
         mScrollView = (NewTabPageScrollView) findViewById(R.id.ntp_scrollview);
+        mScrollView.setBackgroundColor(getContext().getColor(R.color.ntp_bg_incognito));
+        setContentDescription(
+                getResources().getText(R.string.accessibility_new_incognito_tab_page));
 
         // FOCUS_BEFORE_DESCENDANTS is needed to support keyboard shortcuts. Otherwise, pressing
         // any shortcut causes the UrlBar to be focused. See ViewRootImpl.leaveTouchMode().
