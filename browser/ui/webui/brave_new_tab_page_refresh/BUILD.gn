@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
@@ -11,7 +12,7 @@ assert(enable_custom_background)
 
 mojom("mojom") {
   sources = [ "brave_new_tab_page.mojom" ]
-  deps = []
+  deps = [ "//brave/components/brave_vpn/common/mojom" ]
 }
 
 source_set("brave_new_tab_page_refresh") {
@@ -30,17 +31,23 @@ source_set("brave_new_tab_page_refresh") {
     "top_sites_facade.h",
     "update_observer.cc",
     "update_observer.h",
+    "vpn_facade.cc",
+    "vpn_facade.h",
   ]
 
   deps = [
     ":mojom",
     "//brave/browser:browser_process",
     "//brave/browser/brave_ads",
+    "//brave/browser/brave_rewards",
+    "//brave/browser/brave_rewards:util",
     "//brave/browser/misc_metrics",
     "//brave/browser/ntp_background",
     "//brave/browser/resources/brave_new_tab_page_refresh:generated_resources",
     "//brave/components/brave_perf_predictor/common",
+    "//brave/components/brave_rewards/core/mojom:webui",
     "//brave/components/brave_search_conversion",
+    "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/l10n/common",
     "//brave/components/misc_metrics",
     "//brave/components/ntp_background_images/browser",
@@ -62,4 +69,12 @@ source_set("brave_new_tab_page_refresh") {
     "//ui/shell_dialogs",
     "//ui/webui",
   ]
+
+  if (enable_brave_vpn) {
+    deps += [
+      "//brave/browser/ui/brave_vpn",
+      "//brave/components/brave_vpn/browser",
+      "//brave/components/brave_vpn/common",
+    ]
+  }
 }
