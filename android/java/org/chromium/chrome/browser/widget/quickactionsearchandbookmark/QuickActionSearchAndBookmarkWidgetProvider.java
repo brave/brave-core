@@ -56,6 +56,7 @@ import org.chromium.chrome.browser.suggestions.tile.Tile;
 import org.chromium.chrome.browser.ui.favicon.FaviconUtils;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityClient;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityExtras;
+import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityExtras.IntentOrigin;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityPreferencesManager;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityPreferencesManager.SearchActivityPreferences;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
@@ -100,56 +101,60 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     private static final int DESIRED_ICON_SIZE = 44;
     private static final int DESIRED_ICON_RADIUS = 16;
 
-    private final static int[][][] tileViewsIdArray = new int[][][] {
-            {
+    private static final int[][][] tileViewsIdArray =
+            new int[][][] {
+                {
                     {R.id.ivRow1Bookmark1Icon, R.id.tvRow1Bookmark1Name, R.id.layoutRow1Bookmark1},
                     {R.id.ivRow1Bookmark2Icon, R.id.tvRow1Bookmark2Name, R.id.layoutRow1Bookmark2},
                     {R.id.ivRow1Bookmark3Icon, R.id.tvRow1Bookmark3Name, R.id.layoutRow1Bookmark3},
                     {R.id.ivRow1Bookmark4Icon, R.id.tvRow1Bookmark4Name, R.id.layoutRow1Bookmark4},
-            },
-            {
+                },
+                {
                     {R.id.ivRow2Bookmark1Icon, R.id.tvRow2Bookmark1Name, R.id.layoutRow2Bookmark1},
                     {R.id.ivRow2Bookmark2Icon, R.id.tvRow2Bookmark2Name, R.id.layoutRow2Bookmark2},
                     {R.id.ivRow2Bookmark3Icon, R.id.tvRow2Bookmark3Name, R.id.layoutRow2Bookmark3},
                     {R.id.ivRow2Bookmark4Icon, R.id.tvRow2Bookmark4Name, R.id.layoutRow2Bookmark4},
-            },
-            {
+                },
+                {
                     {R.id.ivRow3Bookmark1Icon, R.id.tvRow3Bookmark1Name, R.id.layoutRow3Bookmark1},
                     {R.id.ivRow3Bookmark2Icon, R.id.tvRow3Bookmark2Name, R.id.layoutRow3Bookmark2},
                     {R.id.ivRow3Bookmark3Icon, R.id.tvRow3Bookmark3Name, R.id.layoutRow3Bookmark3},
                     {R.id.ivRow3Bookmark4Icon, R.id.tvRow3Bookmark4Name, R.id.layoutRow3Bookmark4},
-            },
-            {
+                },
+                {
                     {R.id.ivRow4Bookmark1Icon, R.id.tvRow4Bookmark1Name, R.id.layoutRow4Bookmark1},
                     {R.id.ivRow4Bookmark2Icon, R.id.tvRow4Bookmark2Name, R.id.layoutRow4Bookmark2},
                     {R.id.ivRow4Bookmark3Icon, R.id.tvRow4Bookmark3Name, R.id.layoutRow4Bookmark3},
                     {R.id.ivRow4Bookmark4Icon, R.id.tvRow4Bookmark4Name, R.id.layoutRow4Bookmark4},
-            },
-    };
+                },
+            };
 
-    private static QuickActionSearchAndBookmarkWidgetProviderDelegate mDelegate;
-    private static final Object mLock = new Object();
-    private static Set<Runnable> mUpdateAppWidgetsRunnables;
+    private static QuickActionSearchAndBookmarkWidgetProviderDelegate sDelegate;
+    private static final Object LOCK = new Object();
+    private static Set<Runnable> sUpdateAppWidgetsRunnables;
 
     private boolean mNativeLoaded;
 
     public QuickActionSearchAndBookmarkWidgetProvider() {
         mNativeLoaded = false;
-        QuickActionSearchAndBookmarkWidgetProvider.mUpdateAppWidgetsRunnables =
+        QuickActionSearchAndBookmarkWidgetProvider.sUpdateAppWidgetsRunnables =
                 new HashSet<Runnable>();
-        final BrowserParts parts = new EmptyBrowserParts() {
-            @Override
-            public void finishNativeInitialization() {
-                synchronized (QuickActionSearchAndBookmarkWidgetProvider.mLock) {
-                    mNativeLoaded = true;
-                    for (Runnable runnable :
-                            QuickActionSearchAndBookmarkWidgetProvider.mUpdateAppWidgetsRunnables) {
-                        PostTask.postTask(TaskTraits.UI_DEFAULT, runnable);
+        final BrowserParts parts =
+                new EmptyBrowserParts() {
+                    @Override
+                    public void finishNativeInitialization() {
+                        synchronized (QuickActionSearchAndBookmarkWidgetProvider.LOCK) {
+                            mNativeLoaded = true;
+                            for (Runnable runnable :
+                                    QuickActionSearchAndBookmarkWidgetProvider
+                                            .sUpdateAppWidgetsRunnables) {
+                                PostTask.postTask(TaskTraits.UI_DEFAULT, runnable);
+                            }
+                            QuickActionSearchAndBookmarkWidgetProvider.sUpdateAppWidgetsRunnables
+                                    .clear();
+                        }
                     }
-                    QuickActionSearchAndBookmarkWidgetProvider.mUpdateAppWidgetsRunnables.clear();
-                }
-            }
-        };
+                };
 
         try {
             ChromeBrowserInitializer.getInstance().handlePreNativeStartupAndLoadLibraries(parts);
@@ -166,10 +171,10 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static QuickActionSearchAndBookmarkWidgetProviderDelegate getDelegate() {
-        if (mDelegate == null) {
-            mDelegate = new QuickActionSearchAndBookmarkWidgetProviderDelegate();
+        if (sDelegate == null) {
+            sDelegate = new QuickActionSearchAndBookmarkWidgetProviderDelegate();
         }
-        return mDelegate;
+        return sDelegate;
     }
 
     @Override
@@ -197,9 +202,9 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private void runUpdateAppWidgetsWithNative(int[] appWidgetIds) {
-        synchronized (QuickActionSearchAndBookmarkWidgetProvider.mLock) {
+        synchronized (QuickActionSearchAndBookmarkWidgetProvider.LOCK) {
             if (!mNativeLoaded) {
-                QuickActionSearchAndBookmarkWidgetProvider.mUpdateAppWidgetsRunnables.add(
+                QuickActionSearchAndBookmarkWidgetProvider.sUpdateAppWidgetsRunnables.add(
                         buildStartWithNativeRunnable(appWidgetIds));
 
                 return;
@@ -222,9 +227,11 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
 
     public static void updateTileIcon(Tile tile) {
         int index = indexOf(tile);
-        if (index != -1)
-            updateTileIcon(tileViewsIdArray[index / TILES_PER_ROW][index % TILES_PER_ROW][0],
+        if (index != -1) {
+            updateTileIcon(
+                    tileViewsIdArray[index / TILES_PER_ROW][index % TILES_PER_ROW][0],
                     getBitmap(tile.getIcon()));
+        }
     }
 
     public static void updateSearchEngine(String searchEngine) {
@@ -396,8 +403,9 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);
             return bitmap;
-        } else
+        } else {
             return null;
+        }
     }
 
     private static void setRowsVisibility(RemoteViews views, int tilesSize, int minHeight) {
@@ -430,11 +438,10 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static PendingIntent createIntent(@NonNull Context context, boolean startVoiceSearch) {
-        SearchActivityClient client = new SearchActivityClientImpl();
+        SearchActivityClient client = new SearchActivityClientImpl(IntentOrigin.SEARCH_WIDGET);
         Intent searchIntent =
                 client.createIntent(
                         context,
-                        SearchActivityExtras.IntentOrigin.SEARCH_WIDGET,
                         null,
                         startVoiceSearch
                                 ? SearchActivityExtras.SearchType.VOICE
@@ -516,17 +523,14 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
         }
     }
 
-    /**
-     * A short class for tile. It keeps only information needed to this widget.
-     **/
-
+    /** A short class for tile. It keeps only information needed to this widget. */
     public static class WidgetTile {
-        private String title;
-        private GURL gurl;
+        private String mTitle;
+        private GURL mGurl;
 
         public WidgetTile(String title, GURL gurl) {
-            this.title = title;
-            this.gurl = gurl;
+            mTitle = title;
+            mGurl = gurl;
         }
 
         public String getUrl() {
@@ -534,16 +538,16 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
         }
 
         public GURL getGURL() {
-            return this.gurl;
+            return mGurl;
         }
 
         public String getTitle() {
-            return this.title;
+            return mTitle;
         }
 
         public void parseTile(Tile tile) {
-            this.gurl = tile.getUrl();
-            this.title = tile.getTitle();
+            mGurl = tile.getUrl();
+            mTitle = tile.getTitle();
         }
 
         public JSONObject toJSONObject() {
