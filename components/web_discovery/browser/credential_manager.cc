@@ -19,6 +19,7 @@
 #include "brave/components/web_discovery/browser/util.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
@@ -239,7 +240,7 @@ bool CredentialManager::ProcessJoinResponse(
   auto& url_loader = join_url_loaders_[date];
   auto* response_info = url_loader->ResponseInfo();
   if (!response_body || !response_info ||
-      response_info->headers->response_code() != 200) {
+      response_info->headers->response_code() != net::HttpStatusCode::HTTP_OK) {
     VLOG(1) << "Failed to fetch credentials for " << date;
     return false;
   }

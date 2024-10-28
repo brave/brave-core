@@ -21,6 +21,7 @@
 #include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/util.h"
 #include "components/prefs/pref_service.h"
+#include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -332,8 +333,10 @@ void ServerConfigLoader::OnConfigResponsesDownloaded(
   auto* quorum_response_info = quorum_config_url_loader_->ResponseInfo();
   if (!collector_response_body || !quorum_response_body ||
       !collector_response_info || !quorum_response_info ||
-      collector_response_info->headers->response_code() != 200 ||
-      quorum_response_info->headers->response_code() != 200) {
+      collector_response_info->headers->response_code() !=
+          net::HttpStatusCode::HTTP_OK ||
+      quorum_response_info->headers->response_code() !=
+          net::HttpStatusCode::HTTP_OK) {
     VLOG(1) << "Failed to download one or more server configs";
     OnConfigResponsesProcessed(nullptr);
     return;
@@ -438,7 +441,7 @@ void ServerConfigLoader::OnPatternsResponse(
     std::optional<std::string> response_body) {
   auto* response_info = patterns_url_loader_->ResponseInfo();
   if (!response_body || !response_info ||
-      response_info->headers->response_code() != 200) {
+      response_info->headers->response_code() != net::HttpStatusCode::HTTP_OK) {
     VLOG(1) << "Failed to retrieve patterns file";
     HandlePatternsStatus(false);
     return;
