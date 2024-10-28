@@ -1017,7 +1017,7 @@ struct BlockchainToken {
   string coingecko_id = "";
   string chain_id;
   CoinType coin;
-  bool is_shielded = false; // Zcash only, markes whether asset belongs to the shielded pool.
+  bool is_shielded = false; // Zcash only, marks whether asset belongs to the shielded pool.
 };
 
 struct AllowanceInfo {
