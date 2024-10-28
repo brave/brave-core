@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
+
 namespace web_discovery {
 
 struct AESEncryptResult {
@@ -24,8 +26,8 @@ struct AESEncryptResult {
 };
 
 std::optional<AESEncryptResult> DeriveAESKeyAndEncrypt(
-    const std::vector<uint8_t>& server_pub_key,
-    const std::vector<uint8_t>& data);
+    const base::span<uint8_t> server_pub_key,
+    const base::span<uint8_t> data);
 
 }  // namespace web_discovery
 

@@ -51,7 +51,6 @@ class DoubleFetcher {
  private:
   void OnFetchTimer(const base::Value& request_data);
   void OnRequestComplete(GURL url, std::optional<std::string> response_body);
-  bool ProcessCompletedRequest(std::optional<std::string>* response_body);
 
   raw_ptr<PrefService> profile_prefs_;
   raw_ptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;

@@ -11,6 +11,8 @@
 #include "brave/components/web_discovery/browser/request_queue.h"
 #include "brave/components/web_discovery/browser/util.h"
 #include "components/prefs/pref_service.h"
+#include "net/http/http_status_code.h"
+#include "services/network/public/cpp/header_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
@@ -99,7 +101,22 @@ void DoubleFetcher::OnFetchTimer(const base::Value& request_data) {
 void DoubleFetcher::OnRequestComplete(
     GURL url,
     std::optional<std::string> response_body) {
-  auto result = ProcessCompletedRequest(&response_body);
+  bool result = false;
+  auto* response_info = url_loader_->ResponseInfo();
+  if (response_info) {
+    auto response_code = response_info->headers->response_code();
+    if (!network::IsSuccessfulStatus(response_code)) {
+      if (response_code >= net::HttpStatusCode::HTTP_BAD_REQUEST &&
+          response_code < net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR) {
+        // Only retry failures due to server error
+        // Mark as 'successful' if not a 5xx error, so we don't retry
+        result = true;
+      }
+      response_body = std::nullopt;
+    } else {
+      result = true;
+    }
+  }
 
   auto request_data = request_queue_.NotifyRequestComplete(result);
 
@@ -110,23 +127,6 @@ void DoubleFetcher::OnRequestComplete(
       callback_.Run(url, *assoc_data, response_body);
     }
   }
-}
-
-bool DoubleFetcher::ProcessCompletedRequest(
-    std::optional<std::string>* response_body) {
-  auto* response_info = url_loader_->ResponseInfo();
-  if (!response_body || !response_info) {
-    return false;
-  }
-  auto response_code = response_info->headers->response_code();
-  if (response_code < 200 || response_code >= 300) {
-    if (response_code >= 500) {
-      // Only retry failures due to server error
-      return false;
-    }
-    *response_body = std::nullopt;
-  }
-  return true;
 }
 
 }  // namespace web_discovery

@@ -3,10 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/web_discovery/browser/reporter.h"
 
 #include <utility>
@@ -21,6 +17,8 @@
 #include "brave/components/web_discovery/browser/signature_basename.h"
 #include "brave/components/web_discovery/browser/util.h"
 #include "crypto/sha2.h"
+#include "net/http/http_status_code.h"
+#include "services/network/public/cpp/header_util.h"
 #include "services/network/public/cpp/resource_request_body.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -100,7 +98,8 @@ std::optional<AESEncryptResult> CompressAndEncrypt(
   uLongf compressed_data_size = compressBound(full_signed_message.size());
   std::vector<uint8_t> compressed_data(compressed_data_size + 2);
   if (zlib_internal::CompressHelper(
-          zlib_internal::ZLIB, compressed_data.data() + 2,
+          zlib_internal::ZLIB,
+          base::span(compressed_data).last(compressed_data_size).data(),
           &compressed_data_size, full_signed_message.data(),
           full_signed_message.size(), Z_DEFAULT_COMPRESSION, nullptr,
           nullptr) != Z_OK) {
@@ -114,7 +113,7 @@ std::optional<AESEncryptResult> CompressAndEncrypt(
     return std::nullopt;
   }
   base::ranges::copy(base::U16ToBigEndian(compressed_data_size),
-                     compressed_data.begin());
+                     compressed_data.data());
   compressed_data[0] |= kCompressedMessageId;
   return DeriveAESKeyAndEncrypt(server_pub_key, compressed_data);
 }
@@ -208,9 +207,8 @@ void Reporter::OnRequestSigned(std::string final_payload_json,
                                            final_payload_json.size());
   base::SpanWriter<uint8_t> message_writer(full_signed_message);
   if (!message_writer.WriteU8BigEndian(kSignedMessageId) ||
-      !message_writer.Write(base::span<uint8_t>(
-          reinterpret_cast<uint8_t*>(final_payload_json.data()),
-          final_payload_json.size())) ||
+      !message_writer.Write(std::vector<uint8_t>(final_payload_json.begin(),
+                                                 final_payload_json.end())) ||
       !message_writer.Write(base::DoubleToBigEndian(basename_count)) ||
       !message_writer.Write(*signature)) {
     VLOG(1) << "Failed to pack signed message";
@@ -273,8 +271,8 @@ bool Reporter::ValidateResponse(
     return false;
   }
   auto response_code = headers->response_code();
-  if (response_code < 200 || response_code >= 300) {
-    if (response_code >= 500) {
+  if (!network::IsSuccessfulStatus(response_code)) {
+    if (response_code >= net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR) {
       // Only retry failures due to server error
       return false;
     }
