@@ -11,6 +11,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/pattern.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/epoch_operator_condition_matcher_util.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/numerical_operator_condition_matcher_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/pattern_condition_matcher_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/regex_condition_matcher_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/prefs/condition_matcher_pref_util.h"
@@ -40,6 +41,7 @@ bool HasNotOperator(const std::string_view pref_path) {
 bool MatchCondition(const std::string_view value,
                     const std::string_view condition) {
   return MatchEpochOperator(value, condition) ||
+         MatchNumericalOperator(value, condition) ||
          MatchPattern(value, condition) || MatchRegex(value, condition);
 }
 

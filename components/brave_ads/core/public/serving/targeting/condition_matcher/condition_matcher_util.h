@@ -38,17 +38,17 @@ class PrefProviderInterface;
 //
 // Supported Condition Matchers:
 //
-// 1. [operator]:days Matcher:
+// 1. [epoch operator]:days Matcher:
 //    - Support operators:
-//      - '=': Exact
+//      - '=': Equal
 //      - '>': Greater than
 //      - '≥': Greater than or equal to
 //      - '<': Less than
 //      - '≤': Less than or equal to
 //    - This matcher triggers an ad based on when an event occurred or will
-//      occur, using a timestamp (Unix or Windows epoch) persisted at
-//      "prefPath". For instance, the example below will serve an ad only if the
-//      timestamp for "foo.bar" occurred more than 3 days ago:
+//      occur, using a timestamp (Unix or Windows epoch) stored at "prefPath".
+//      For instance, the example below will serve an ad only if the timestamp
+//      for "foo.bar" occurred more than 3 days ago:
 //
 //       "conditionMatchers": [
 //         {
@@ -57,7 +57,26 @@ class PrefProviderInterface;
 //         }
 //       ]
 //
-// 2. Regex Matcher:
+// 2. [numerical operator]:number Matcher:
+//    - Support operators:
+//      - 'R=': Equal
+//      - 'R≠': Not equal
+//      - 'R>': Greater than
+//      - 'R≥': Greater than or equal to
+//      - 'R<': Less than
+//      - 'R≤': Less than or equal to
+//    - This matcher triggers an ad based on when a real number stored a1t
+//      "prefPath". For instance, the example below will serve an ad only if the
+//      value stored at "foo.bar" is not equal to 3:
+//
+//       "conditionMatchers": [
+//         {
+//           "condition": "[R≠]:3",
+//           "prefPath": "foo.bar"
+//         }
+//       ]
+//
+// 3. Regex Matcher:
 //    - Uses an RE2 regular expression to partially match values at "prefPath",
 //      see https://github.com/google/re2/wiki/syntax. For example, the
 //      following will serve an ad if the value at "foo.bar" starts with "abc":
@@ -69,7 +88,7 @@ class PrefProviderInterface;
 //         }
 //       ]
 //
-// 3. Pattern Matcher:
+// 4. Pattern Matcher:
 //    - Supports wildcards "*" and "?". "*" matches zero or more characters,
 //      while "?" matches zero or one character. To use these literally, escape
 //      them with "\". In the example below, an ad will be served only if the
@@ -106,7 +125,7 @@ class PrefProviderInterface;
 //    }
 //  ]
 //
-// We support virtual prefs for values that are not persisted in the profile or
+// We support virtual prefs for values that are not stored in the profile or
 // local state prefs. Virtual pref path keys should be prefixed with
 // "[virtual]:".
 //

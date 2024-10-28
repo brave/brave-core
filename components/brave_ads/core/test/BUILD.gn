@@ -527,6 +527,8 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/condition_matcher_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/epoch_operator_condition_matcher_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/internal/epoch_operator_condition_matcher_util_internal_unittest.cc",
+    "//brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/internal/numerical_operator_condition_matcher_util_internal_unittest.cc",
+    "//brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/numerical_operator_condition_matcher_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/pattern_condition_matcher_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/regex_condition_matcher_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/prefs/condition_matcher_pref_util_unittest.cc",
