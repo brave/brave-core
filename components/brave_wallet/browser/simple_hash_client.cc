@@ -426,7 +426,7 @@ void SimpleHashClient::OnGetNftsForMetadatas(
   for (const auto& nft_identifier : nft_identifiers) {
     auto it = metadatas->find(nft_identifier);
     if (it != metadatas->end()) {
-      nft_metadatas.push_back(std::move(it->second));
+      nft_metadatas.push_back(it->second.Clone());
     }
   }
 

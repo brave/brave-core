@@ -17,6 +17,7 @@
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -308,6 +309,18 @@ bool ValidateNftIdentifiers(
       nft_identifiers.size() > kSimpleHashMaxBatchSize) {
     error_message = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
     return false;
+  }
+
+  // Check for duplicates using a set to track unique identifiers
+  base::flat_set<std::string> seen_identifiers;
+  for (const auto& nft : nft_identifiers) {
+    // Create a unique string identifier combining contract, token id, and chain
+    std::string unique_id =
+        base::StrCat({nft->contract_address, nft->token_id, nft->chain_id});
+    if (!seen_identifiers.insert(unique_id).second) {
+      error_message = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
+      return false;
+    }
   }
 
   if (coin == mojom::CoinType::ETH) {
