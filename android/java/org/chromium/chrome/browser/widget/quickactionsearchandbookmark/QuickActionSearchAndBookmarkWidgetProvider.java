@@ -55,8 +55,8 @@ import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.suggestions.tile.Tile;
 import org.chromium.chrome.browser.ui.favicon.FaviconUtils;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityClient;
-import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityExtras;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityExtras.IntentOrigin;
+import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityExtras.SearchType;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityPreferencesManager;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityPreferencesManager.SearchActivityPreferences;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
@@ -438,14 +438,13 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static PendingIntent createIntent(@NonNull Context context, boolean startVoiceSearch) {
-        SearchActivityClient client = new SearchActivityClientImpl(IntentOrigin.SEARCH_WIDGET);
+        SearchActivityClient client =
+                new SearchActivityClientImpl(context, IntentOrigin.SEARCH_WIDGET);
+
         Intent searchIntent =
-                client.createIntent(
-                        context,
-                        null,
-                        startVoiceSearch
-                                ? SearchActivityExtras.SearchType.VOICE
-                                : SearchActivityExtras.SearchType.TEXT);
+                client.newIntentBuilder()
+                        .setSearchType(startVoiceSearch ? SearchType.VOICE : SearchType.TEXT)
+                        .build();
 
         searchIntent.putExtra(SearchWidgetProvider.EXTRA_FROM_SEARCH_WIDGET, true);
         searchIntent.setComponent(new ComponentName(context, SearchActivity.class));
