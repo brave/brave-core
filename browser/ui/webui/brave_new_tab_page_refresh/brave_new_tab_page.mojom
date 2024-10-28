@@ -5,6 +5,8 @@
 
 module brave_new_tab_page_refresh.mojom;
 
+import "brave/components/brave_vpn/common/mojom/brave_vpn.mojom";
+
 struct BraveBackground {
   string author;
   string image_url;
@@ -64,12 +66,21 @@ enum TopSitesListKind {
   kMostVisited
 };
 
+struct ShieldsStats {
+  double ads_blocked;
+  double bandwidth_saved_bytes;
+};
+
 // WebUI-side handler for notifications from the browser.
 interface NewTabPage {
   OnBackgroundsUpdated();
   OnSearchStateUpdated();
   OnTopSitesUpdated();
   OnClockStateUpdated();
+  OnShieldsStatsUpdated();
+  OnTalkStateUpdated();
+  OnVPNStateUpdated();
+  OnRewardsStateUpdated();
 };
 
 // Browser-side handler for requests from the WebUI page.
@@ -191,5 +202,36 @@ interface NewTabPageHandler {
   // Gets or sets the clock time format.
   GetClockFormat() => (string clock_format);
   SetClockFormat(string clock_format) => ();
+
+  // Gets or sets whether the shields stats widget is displayed.
+  GetShowShieldsStats() => (bool show_shields_stats);
+  SetShowShieldsStats(bool show_shields_stats) => ();
+
+  // Returns shields browsing stats for the current user.
+  GetShieldsStats() => (ShieldsStats shields_stats);
+
+  // Gets or sets whether the Brave Talk widget is displayed.
+  GetShowTalkWidget() => (bool show_talk_widget);
+  SetShowTalkWidget(bool show_talk_widget) => ();
+
+  // Gets or sets whether the Brave VPN widget is displayed.
+  GetShowVPNWidget() => (bool show_vpn_widget);
+  SetShowVPNWidget(bool show_vpn_widget) => ();
+
+  // Reloads the user's VPN purchase state.
+  ReloadVPNPurchasedState() => ();
+
+  // Opens the VPN panel.
+  OpenVPNPanel() => ();
+
+  // Opens the specified VPN account page.
+  OpenVPNAccountPage(brave_vpn.mojom.ManageURLType url_type) => ();
+
+  // Records VPN widget usage metrics.
+  ReportVPNWidgetUsage() => ();
+
+  // Gets or sets whether the Brave Rewards widget is displayed.
+  GetShowRewardsWidget() => (bool show_rewards_widget);
+  SetShowRewardsWidget(bool show_rewards_widget) => ();
 
 };

@@ -45,7 +45,7 @@
     Use your own
   </message>
 
-  <message name="IDS_NEW_TAB_CUSTOMIZE_SEARCH_ENGINES_LINK" desc="Link text for customizing available search engines in settings">
+  <message name="IDS_NEW_TAB_CUSTOMIZE_SEARCH_ENGINES_LINK">
     Customize available engines
   </message>
 
@@ -79,6 +79,18 @@
 
   <message name="IDS_NEW_TAB_REMOVE_TOP_SITE_LABEL" desc="Label for button that removes a top site">
     Remove
+  </message>
+
+  <message name="IDS_NEW_TAB_REWARDS_CONNECT_BUTTON_LABEL" desc="">
+    Connect
+  </message>
+
+  <message name="IDS_NEW_TAB_REWARDS_ONBOARDING_LINK" desc="">
+    How does it work?
+  </message>
+
+  <message name="IDS_NEW_TAB_REWARDS_WIDGET_TITLE" desc="">
+    REWARDS
   </message>
 
   <message name="IDS_NEW_TAB_SAVE_CHANGES_BUTTON_LABEL" desc="Label for button that saves changes">
@@ -129,6 +141,10 @@
     Show clock
   </message>
 
+  <message name="IDS_NEW_TAB_SHOW_REWARDS_WIDGET_LABEL" desc="">
+    Brave Rewards
+  </message>
+
   <message name="IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL" desc="Label for enabling the searchbox on the NTP">
     Show search widget in new tabs
   </message>
@@ -137,12 +153,60 @@
     Show Sponsored Images
   </message>
 
+  <message name="IDS_NEW_TAB_SHOW_STATS_LABEL" desc="">
+    Brave Stats
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_TALK_WIDGET_LABEL" desc="">
+    Brave Talk
+  </message>
+
   <message name="IDS_NEW_TAB_SHOW_TOP_SITES_LABEL" desc="Label for control that toggles top sites visibility">
     Show top sites
   </message>
 
+  <message name="IDS_NEW_TAB_SHOW_VPN_WIDGET_LABEL" desc="">
+    Brave VPN
+  </message>
+
   <message name="IDS_NEW_TAB_SOLID_BACKGROUND_LABEL" desc="Solid background colors title">
     Solid colors
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_ADS_BLOCKED_TEXT" desc="">
+    Trackers &amp; ads blocked
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_BANDWIDTH_SAVED_TEXT" desc="">
+    Bandwidth saved
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_SETTINGS_TITLE" desc="">
+    Brave Stats
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_TIME_SAVED_TEXT" desc="">
+    Time saved
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_TITLE" desc="">
+    STATS
+  </message>
+
+  <message name="IDS_NEW_TAB_TALK_DESCRIPTION_TEXT" desc="">
+    Encrypted video calls with Brave Talk.
+  </message>
+
+  <message name="IDS_NEW_TAB_TALK_DESCRIPTION_TITLE" desc="">
+    Privacy-First Calls
+  </message>
+
+  <message name="IDS_NEW_TAB_TALK_START_CALL_LABEL" desc="">
+    Start call
+  </message>
+
+  <message name="IDS_NEW_TAB_TALK_WIDGET_TITLE" desc="">
+    TALK
   </message>
 
   <message name="IDS_NEW_TAB_TOP_SITE_REMOVED_TEXT" desc="Text displayed when a top site is removed">
@@ -195,6 +259,66 @@
 
   <message name="IDS_NEW_TAB_UPLOAD_BACKGROUND_LABEL" desc="Text for custom background option upload">
     Upload from device
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_CHANGE_REGION_LABEL" desc="">
+    Change
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_FEATURE_TEXT1" desc="">
+    Extra privacy &amp; security online
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_FEATURE_TEXT2" desc="">
+    Hide your IP &amp; change your location
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_FEATURE_TEXT3" desc="">
+    Protect every app on your device
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_RESTORE_PURCHASE_LABEL" desc="">
+    Already purchased?
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_START_TRIAL_LABEL" desc="">
+    Start free trial
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_OPTIMAL_TEXT" desc="">
+    Optimal
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_POWERED_BY_TEXT" desc="">
+    Powered by
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_STATUS_CONNECTED" desc="">
+    Connected
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_STATUS_CONNECTING" desc="">
+    Connecting
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_STATUS_DISCONNECTED" desc="">
+    Disconnected
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_STATUS_DISCONNECTING" desc="">
+    Disconnecting
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_WIDGET_TITLE" desc="">
+    BRAVE VPN
+  </message>
+
+  <message name="IDS_NEW_TAB_WIDGET_LAYOUT_LABEL" desc="">
+    Widget layout
+  </message>
+
+  <message name="IDS_NEW_TAB_WIDGET_SETTINGS_TITLE" desc="">
+    Widgets
   </message>
 
 </grit-part>

@@ -23,11 +23,23 @@ import {
   TopSitesActions,
   defaultTopSitesState } from './top_sites'
 
+import {
+  RewardsState,
+  RewardsActions,
+  defaultRewardsState } from './rewards'
+
+import {
+  VPNState,
+  VPNActions,
+  defaultVPNState } from './vpn'
+
 export type AppState =
   NewTabState &
   BackgroundState &
   SearchState &
-  TopSitesState
+  TopSitesState &
+  RewardsState &
+  VPNState
 
 export function defaultState(): AppState {
   return {
@@ -35,6 +47,8 @@ export function defaultState(): AppState {
     ...defaultBackgroundState(),
     ...defaultSearchState(),
     ...defaultTopSitesState(),
+    ...defaultRewardsState(),
+    ...defaultVPNState()
   }
 }
 
@@ -42,7 +56,9 @@ export type AppActions =
   NewTabActions &
   BackgroundActions &
   SearchActions &
-  TopSitesActions
+  TopSitesActions &
+  RewardsActions &
+  VPNActions
 
 export interface AppModel extends AppActions {
   getState: () => AppState

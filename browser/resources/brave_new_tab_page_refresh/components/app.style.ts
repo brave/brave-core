@@ -100,6 +100,40 @@ export const style = scoped.css`
     flex: 1 1 auto;
     align-self: stretch;
   }
+
+  .widget-container {
+    align-self: stretch;
+    flex: 0 0 120px;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  &.widget-position-top {
+    .widget-container {
+      order: 1;
+      margin-top: 16px;
+      margin-bottom: 18px;
+    }
+
+    .searchbox-container {
+      order: 2;
+    }
+
+    .spacer {
+      order: 3;
+    }
+
+    .background-caption-container {
+      order: 4;
+    }
+
+    .topsites-container {
+      order: 5;
+    }
+  }
+
 `
 
 global.css`
