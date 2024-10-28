@@ -26,6 +26,7 @@
                style="@style/LargeRegular"
                android:text="@string/show_quick_search_bar"
                android:layout_marginEnd="16dp"
+               android:layout_gravity="center_vertical"
                android:textColor="@color/text_primary"/>
 
           <com.google.android.material.materialswitch.MaterialSwitch
