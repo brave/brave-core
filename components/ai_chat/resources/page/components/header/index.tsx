@@ -12,7 +12,6 @@ import styles from './style.module.scss'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
-import useIsConversationVisible from '../../hooks/useIsConversationVisible'
 
 const Logo = ({ isPremium }: { isPremium: boolean }) => <div className={styles.logo}>
   <Icon name='product-brave-leo' />
@@ -29,7 +28,7 @@ const newChatButtonLabel = getLocale('newChatButtonLabel')
 const closeButtonLabel = getLocale('closeLabel')
 const openFullPageButtonLabel = getLocale('openFullPageLabel')
 
-export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMenuProps, ref: React.Ref<HTMLDivElement>) {
+export const ConversationHeader = React.forwardRef(function (props: FeatureButtonMenuProps, ref: React.Ref<HTMLDivElement>) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
@@ -42,14 +41,13 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
 
   const activeConversation = aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
   const showTitle = (!aiChatContext.isDefaultConversation || aiChatContext.isStandalone)
-  const isVisible = useIsConversationVisible(conversationContext.conversationUuid)
   const canShowFullScreenButton = aiChatContext.isHistoryEnabled && !aiChatContext.isMobile && !aiChatContext.isStandalone && conversationContext.conversationUuid
 
   return (
     <div className={styles.header} ref={ref}>
       {showTitle ? (
         <div className={styles.pageTitle}>
-          {isVisible && <Button
+          {!aiChatContext.isStandalone && <Button
             kind='plain-faint'
             fab
             onClick={() => { aiChatContext.onSelectConversationUuid(undefined) }}
@@ -104,7 +102,7 @@ export const PageTitleHeader = React.forwardRef(function (props: FeatureButtonMe
   )
 })
 
-export function SidebarHeader() {
+export function NavigationHeader() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 

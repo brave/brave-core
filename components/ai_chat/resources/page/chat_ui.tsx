@@ -21,7 +21,7 @@ import {
   ConversationContextProps,
   ConversationContextProvider
 } from './state/conversation_context'
-import FullScreen from './components/full_screen'
+import FullScreen from './components/full_page'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 

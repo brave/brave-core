@@ -102,20 +102,6 @@
   padding: var(--leo-spacing-m) var(--leo-spacing-xl);
 }
 
-.header {
-  padding: 0 var(--leo-spacing-xl);
-  width: 100%;
-  min-height: 60px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border-bottom: 1px solid var(--leo-color-divider-subtle);
-}
-
-.noBorder {
-  border: 0;
-}
-
 .scroller {
   overflow: auto;
   width: 100%;
@@ -129,26 +115,6 @@
   &::-webkit-scrollbar-thumb {
     background: var(--leo-color-neutral-20);
     border-radius: var(--leo-spacing-m);
-  }
-}
-
-.form {
-  border-radius: var(--leo-radius-m);
-  border: 1px solid var(--leo-color-divider-strong);
-  width: 100%;
-  font: var(--leo-font-default-regular);
-  color: var(--leo-color-text-primary);
-  background: var(--leo-color-container-background);
-
-  input {
-    width: 100%;
-    background-color: transparent;
-    border: 0;
-    overflow: hidden;
-    padding: var(--leo-spacing-s) 12px;
-
-    &:focus { outline: none; }
-    &::placeholder { color: var(--leo-color-text-tertiary); }
   }
 }
 

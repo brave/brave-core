@@ -4,29 +4,30 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import { getLocale } from '$web-common/locale'
 import AlertCenter from '@brave/leo/react/alertCenter'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import * as mojom from '../../api'
 import { useConversation } from '../../state/conversation_context'
 import { useAIChat } from '../../state/ai_chat_context'
 import { isLeoModel } from '../../model_utils'
-import ConversationList from '../conversation_list'
-import PrivacyMessage from '../privacy_message'
 import ErrorConnection from '../alerts/error_connection'
+import ErrorConversationEnd from '../alerts/error_conversation_end'
 import ErrorRateLimit from '../alerts/error_rate_limit'
+import LongConversationInfo from '../alerts/long_conversation_info'
+import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
+import ConversationEntries from '../conversation_entries'
+import ConversationsList from '../conversations_list'
+import { ConversationHeader } from '../header'
 import InputBox from '../input_box'
 import ModelIntro from '../model_intro'
-import PremiumSuggestion from '../premium_suggestion'
-import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
-import LongConversationInfo from '../alerts/long_conversation_info'
-import ErrorConversationEnd from '../alerts/error_conversation_end'
-import WelcomeGuide from '../welcome_guide'
 import PageContextToggle from '../page_context_toggle'
+import PremiumSuggestion from '../premium_suggestion'
+import PrivacyMessage from '../privacy_message'
 import ToolsButtonMenu from '../tools_button_menu'
-import SidebarNav from '../sidebar_nav'
-import { PageTitleHeader } from '../header'
+import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
 
 const SCROLL_BOTTOM_THRESHOLD = 10.0
@@ -35,7 +36,7 @@ const SCROLL_BOTTOM_THRESHOLD = 10.0
 function Main() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
-  const [isConversationListOpen, setIsConversationListOpen] = React.useState(false)
+  const [isConversationListOpen, setIsConversationsListOpen] = React.useState(false)
 
   const shouldShowPremiumSuggestionForModel =
     aiChatContext.hasAcceptedAgreement &&
@@ -159,17 +160,31 @@ function Main() {
 
   return (
     <main className={styles.main}>
-      {isConversationListOpen && (
-        <div className={styles.conversationList}>
-          <SidebarNav
-            enableBackButton={true}
-            setIsConversationListOpen={setIsConversationListOpen}
+      {isConversationListOpen && !aiChatContext.isStandalone && (
+        <div className={styles.conversationsList}>
+          <div
+        className={classnames({
+          [styles.conversationsListHeader]: true,
+        })}
+      >
+        <Button
+          kind='plain-faint'
+          fab
+          onClick={() => {
+            setIsConversationsListOpen?.(false)
+          }}
+        >
+          <Icon name='arrow-left' />
+        </Button>
+      </div>
+          <ConversationsList
+            setIsConversationsListOpen={setIsConversationsListOpen}
           />
         </div>
       )}
       {showAgreementModal && <PrivacyMessage />}
-      <PageTitleHeader ref={headerElement}
-        setIsConversationListOpen={setIsConversationListOpen}
+      <ConversationHeader ref={headerElement}
+        setIsConversationsListOpen={setIsConversationsListOpen}
       />
       <div className={classnames({
         [styles.scroller]: true,
@@ -183,7 +198,7 @@ function Main() {
           ref={conversationContentElement}>
           {aiChatContext.hasAcceptedAgreement && <>
             <ModelIntro />
-            <ConversationList
+            <ConversationEntries
               onLastElementHeightChange={handleLastElementHeightChange}
             />
           </>}

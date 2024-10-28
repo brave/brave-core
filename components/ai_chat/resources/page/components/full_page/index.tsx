@@ -6,20 +6,20 @@
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import styles from './style.module.scss'
-import Main from '../main'
-import { SidebarHeader } from '../header'
-import SidebarNav from '../sidebar_nav'
-import { useAIChat } from '../../state/ai_chat_context'
 import useMediaQuery from '$web-common/useMediaQuery'
+import { useAIChat } from '../../state/ai_chat_context'
+import ConversationsList from '../conversations_list'
+import { NavigationHeader } from '../header'
+import Main from '../main'
+import styles from './style.module.scss'
 
 export default function FullScreen() {
   const aiChatContext = useAIChat()
   const asideAnimationRef = React.useRef<Animation | null>()
   const controllerRef = React.useRef(new AbortController())
   const isSmall = useMediaQuery('(max-width: 1024px)')
-  const [isOpen, setIsOpen] = React.useState(isSmall)
-  const [shouldRender, setShouldRender] = React.useState(!isSmall)
+  const [isNavigationCollapsed, setIsNavigationCollapsed] = React.useState(isSmall)
+  const [isNavigationRendered, setIsNavigationRendered] = React.useState(!isSmall)
 
   const initAsideAnimation = React.useCallback((node: HTMLElement | null) => {
     if (!node) return
@@ -43,24 +43,24 @@ export default function FullScreen() {
     const asideAnimation = asideAnimationRef.current
 
     if (asideAnimation) {
-      if (isOpen) {
+      if (isNavigationCollapsed) {
         controllerRef.current.abort()
         controllerRef.current = new AbortController()
-        asideAnimation.ready.then(() => setShouldRender(true))
+        asideAnimation.ready.then(() => setIsNavigationRendered(true))
         asideAnimation.playbackRate = -1
       } else {
         // 'finish' triggers in both directions, so we only need this once per close animation
         // user may rapidly toggle the aside, so we need to abort scheduled listener in open animation
         asideAnimation.addEventListener(
           'finish',
-          () => setShouldRender(false),
+          () => setIsNavigationRendered(false),
           { once: true, signal: controllerRef.current.signal }
         )
         asideAnimation.playbackRate = 1
       }
 
       asideAnimation.play()
-      setIsOpen(!isOpen)
+      setIsNavigationCollapsed(!isNavigationCollapsed)
     }
   }
 
@@ -69,7 +69,7 @@ export default function FullScreen() {
     if (aiChatContext.editingConversationId && isOpen) {
       toggleAside()
     }
-  }, [aiChatContext.editingConversationId, isOpen]);
+  }, [aiChatContext.editingConversationId, isNavigationCollapsed]);
 
   React.useEffect(() => {
     const isOpen = asideAnimationRef.current?.playbackRate === 1
@@ -97,7 +97,7 @@ export default function FullScreen() {
           >
             <Icon name='window-tabs-vertical-expanded' />
           </Button>
-          {!shouldRender && (
+          {!isNavigationRendered && (
             <>
               <Button
                 fab
@@ -113,10 +113,10 @@ export default function FullScreen() {
           ref={initAsideAnimation}
           className={styles.aside}
         >
-          {shouldRender && (
+          {isNavigationRendered && (
             <>
-              <SidebarHeader />
-              <SidebarNav setIsConversationListOpen={setIsOpen} />
+              <NavigationHeader />
+              <ConversationsList setIsConversationsListOpen={setIsNavigationCollapsed} />
             </>
           )}
         </aside>

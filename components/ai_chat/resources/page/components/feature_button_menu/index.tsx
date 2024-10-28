@@ -17,7 +17,7 @@ import styles from './style.module.scss'
 import useIsConversationVisible from '../../hooks/useIsConversationVisible'
 
 export interface Props {
-  setIsConversationListOpen?: (value: boolean) => unknown
+  setIsConversationsListOpen?: (value: boolean) => unknown
 }
 
 export default function FeatureMenu(props: Props) {
@@ -28,7 +28,9 @@ export default function FeatureMenu(props: Props) {
     aiChatContext.uiHandler?.openAIChatSettings()
   }
 
-  const isVisible = useIsConversationVisible(conversationContext.conversationUuid)
+  // If conversation is in the conversations list, then it has been committed
+  // as a conversation with content.
+  const isActiveConversationPermanent = useIsConversationVisible(conversationContext.conversationUuid)
 
   const customModels = conversationContext.allModels.filter(
     (model) => model.options.customModelOptions
@@ -111,18 +113,7 @@ export default function FeatureMenu(props: Props) {
       })}
       <div className={styles.menuSeparator} />
 
-      {aiChatContext.isStandalone && isVisible && <>
-        <leo-menu-item>
-          <div className={classnames(
-            styles.menuItemWithIcon,
-            styles.menuItemMainItem
-          )}>
-            <Icon name='info-outline' />
-            <div className={styles.menuText}>
-              <div>{getLocale('menuAboutConversation')}</div>
-            </div>
-          </div>
-        </leo-menu-item>
+      {aiChatContext.isStandalone && isActiveConversationPermanent && <>
         <leo-menu-item onClick={() => aiChatContext.setEditingConversationId(conversationContext.conversationUuid!)}>
           <div className={classnames(
             styles.menuItemWithIcon,
@@ -182,7 +173,7 @@ export default function FeatureMenu(props: Props) {
       {!aiChatContext.isStandalone && aiChatContext.isHistoryEnabled && (
         <>
           <leo-menu-item
-            onClick={() => props.setIsConversationListOpen?.(true)}
+            onClick={() => props.setIsConversationsListOpen?.(true)}
           >
             <div
               className={classnames(

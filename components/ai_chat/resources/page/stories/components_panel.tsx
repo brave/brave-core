@@ -11,12 +11,12 @@ import '$web-components/app.global.scss'
 import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import { InferControlsFromArgs } from '../../../../../.storybook/utils'
-import Main from '../components/main'
 import * as mojom from '../api/'
-import FullScreen from '../components/full_screen'
-import FeedbackForm from '../components/feedback_form'
 import { AIChatContext, AIChatReactContext } from '../state/ai_chat_context'
 import { ConversationContext, ConversationReactContext } from '../state/conversation_context'
+import FeedbackForm from '../components/feedback_form'
+import FullPage from '../components/full_page'
+import Main from '../components/main'
 import './locale'
 import ACTIONS_LIST from './actions'
 import styles from './style.module.scss'
@@ -64,6 +64,27 @@ function getPageContentRefineEvent(): mojom.ConversationEntryEvent {
     conversationTitleEvent: undefined
   }
 }
+
+const CONVERSATIONS: mojom.Conversation[] = [
+  {
+    title: 'Star Trek Poem',
+    uuid: '1',
+    hasContent: true,
+    createdTime: { internalValue: BigInt('13278618001000000') },
+  },
+  {
+    title: 'Sorting C++ vectors',
+    uuid: '2',
+    hasContent: true,
+    createdTime: { internalValue: BigInt('13278618001000001') },
+  },
+  {
+    title: 'Wedding speech improvements',
+    uuid: '3',
+    hasContent: true,
+    createdTime: { internalValue: BigInt('13278618001000002') },
+  }
+]
 
 const HISTORY: mojom.ConversationTurn[] = [
   {
@@ -301,7 +322,7 @@ const MODELS: mojom.Model[] = [
         modelRequestName: 'phi3',
         contextSize: 131072,
         // The maxAssociatedContentLength (131072 tokens * 4 chars per token)
-        // and longConversationWarningCharacterLimit (60% of 
+        // and longConversationWarningCharacterLimit (60% of
         // maxAssociatedContentLength) are both here only to satisfy the
         // type checker.
         maxAssociatedContentLength: 131072 * 4,
@@ -346,6 +367,9 @@ type CustomArgs = {
   isPremiumUserDisconnected: boolean
   suggestionStatus: keyof typeof mojom.SuggestionGenerationStatus
   isMobile: boolean
+  isHistoryEnabled: boolean
+  isStandalone: boolean
+  isDefaultConversation: boolean
   shouldShowLongConversationInfo: boolean
   shouldShowLongPageWarning: boolean
 }
@@ -364,6 +388,9 @@ const args: CustomArgs = {
   suggestionStatus: 'None' satisfies keyof typeof mojom.SuggestionGenerationStatus,
   model: MODELS[0].key,
   isMobile: false,
+  isHistoryEnabled: true,
+  isStandalone: false,
+  isDefaultConversation: true,
   shouldShowLongConversationInfo: false,
   shouldShowLongPageWarning: false,
 }
@@ -414,16 +441,17 @@ const preview: Meta<CustomArgs> = {
       }
 
       const aiChatContext: AIChatContext = {
-        isDefaultConversation: true,
+        isDefaultConversation: options.args.isDefaultConversation,
         editingConversationId: null,
-        visibleConversations: [],
+        visibleConversations: CONVERSATIONS,
         hasAcceptedAgreement: options.args.hasAcceptedAgreement,
         isPremiumStatusFetching: false,
         isPremiumUser: options.args.isPremiumUser,
         isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
         canShowPremiumPrompt: options.args.canShowPremiumPrompt,
         isMobile: options.args.isMobile,
-        isHistoryEnabled: false,
+        isHistoryEnabled: options.args.isHistoryEnabled,
+        isStandalone: options.args.isStandalone,
         allActions: ACTIONS_LIST,
         goPremium: () => {},
         managePremium: () => {},
@@ -438,6 +466,7 @@ const preview: Meta<CustomArgs> = {
       const inputText = options.args.inputText
 
       const conversationContext: ConversationContext = {
+        conversationUuid: CONVERSATIONS[1].uuid,
         conversationHistory: options.args.hasConversation ? HISTORY : [],
         associatedContentInfo: siteInfo,
         allModels: MODELS,
@@ -510,11 +539,14 @@ export const _FeedbackForm = {
   }
 }
 
-export const _Fullscreen = {
+export const _FullPage = {
+  args: {
+    isStandalone: true
+  },
   render: () => {
     return (
       <div className={styles.containerFull}>
-        <FullScreen />
+        <FullPage />
       </div>
     )
   }

@@ -32,10 +32,10 @@ export interface AIChatContext extends Props {
   managePremium: () => void
   handleAgreeClick: () => void
   dismissPremiumPrompt: () => void
-  userRefreshPremiumSession: () => void,
+  userRefreshPremiumSession: () => void
   uiHandler?: mojom.AIChatUIHandlerRemote
 
-  editingConversationId: string | null,
+  editingConversationId: string | null
   setEditingConversationId: (uuid: string | null) => void
 }
 

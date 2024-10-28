@@ -105,7 +105,6 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE},
       {"clearChatButtonLabel", IDS_CHAT_UI_CLEAR_CHAT_BUTTON_LABEL},
       {"newChatButtonLabel", IDS_CHAT_UI_NEW_CONVERSATION_BUTTON_LABEL},
-      {"menuAboutConversation", IDS_CHAT_UI_MENU_ABOUT_CONVERSATION},
       {"menuRenameConversation", IDS_CHAT_UI_MENU_RENAME_CONVERSATION},
       {"menuDeleteConversation", IDS_CHAT_UI_MENU_DELETE_CONVERSATION},
       {"sendChatButtonLabel", IDS_CHAT_UI_SEND_CHAT_BUTTON_LABEL},

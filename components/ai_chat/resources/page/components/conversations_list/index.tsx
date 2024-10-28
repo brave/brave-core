@@ -8,7 +8,6 @@ import styles from './style.module.scss'
 import classnames from '$web-common/classnames'
 import Icon from '@brave/leo/react/icon'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
-import Button from '@brave/leo/react/button'
 import { useAIChat } from '../../state/ai_chat_context'
 import { getLocale } from '$web-common/locale'
 import getAPI from '../../api'
@@ -104,41 +103,16 @@ function DisplayTitle(props: DisplayTitleProps) {
   )
 }
 
-interface SidebarNavProps {
-  enableBackButton?: boolean
-  setIsConversationListOpen: (value: boolean) => unknown
+interface ConversationsListProps {
+  setIsConversationsListOpen?: (value: boolean) => unknown
 }
 
-export default function SidebarNav(props: SidebarNavProps) {
+export default function ConversationsList(props: ConversationsListProps) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
   return (
     <>
-      <div
-        className={classnames({
-          [styles.header]: true,
-          [styles.noBorder]: !props.enableBackButton
-        })}
-      >
-        {!aiChatContext.isStandalone && props.enableBackButton && (
-          <Button
-            kind='plain-faint'
-            fab
-            onClick={() => {
-              props.setIsConversationListOpen?.(false)
-            }}
-          >
-            <Icon name='arrow-left' />
-          </Button>
-        )}
-        <form className={styles.form}>
-          <input
-            placeholder='Search your conversations'
-            type='text'
-          />
-        </form>
-      </div>
       <div className={styles.scroller}>
         <nav className={styles.nav}>
           <ol>
@@ -152,7 +126,7 @@ export default function SidebarNav(props: SidebarNavProps) {
                     })}
                     onClick={() => {
                       aiChatContext.onSelectConversationUuid(item.uuid)
-                      props.setIsConversationListOpen?.(false)
+                      props.setIsConversationsListOpen?.(false)
                     }}
                   >
                     {item.uuid === aiChatContext.editingConversationId ? (
@@ -169,7 +143,7 @@ export default function SidebarNav(props: SidebarNavProps) {
                     ) : (
                       <DisplayTitle
                         title={item.title || getLocale('conversationListUntitled')}
-                        description={''}
+                        description=''
                         onEditTitle={() => aiChatContext.setEditingConversationId(item.uuid)}
                         onDelete={() => getAPI().Service.deleteConversation(item.uuid)}
                       />
