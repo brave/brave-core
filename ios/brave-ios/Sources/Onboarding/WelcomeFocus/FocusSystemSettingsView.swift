@@ -123,7 +123,7 @@ public struct FocusSystemSettingsView: View {
           label: {
             Text(Strings.FocusOnboarding.systemSettingsButtonTitle)
               .font(.body.weight(.semibold))
-              .foregroundColor(Color(.white))
+              .foregroundColor(Color(braveSystemName: .schemesOnPrimary))
               .dynamicTypeSize(dynamicTypeRange)
               .padding()
               .frame(maxWidth: .infinity)

@@ -216,7 +216,7 @@ class SyncAddDeviceActionView: UIStackView {
     $0.setTitle(Strings.done, for: .normal)
     $0.titleLabel?.font = .preferredFont(for: .subheadline, weight: .semibold)
     $0.addTarget(self, action: #selector(dismiss), for: .touchUpInside)
-    $0.setTitleColor(.white, for: .normal)
+    $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
     $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
     $0.layer.cornerRadius = 12
     $0.layer.cornerCurve = .continuous

@@ -166,7 +166,7 @@ struct FocusP3AScreenView: View {
         label: {
           Text(Strings.FocusOnboarding.continueButtonTitle)
             .font(.body.weight(.semibold))
-            .foregroundColor(Color(.white))
+            .foregroundColor(Color(braveSystemName: .schemesOnPrimary))
             .dynamicTypeSize(dynamicTypeRange)
             .padding()
             .frame(maxWidth: .infinity)
