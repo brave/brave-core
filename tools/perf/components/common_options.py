@@ -41,6 +41,7 @@ class CommonOptions:
   working_directory: str = ''
   target_os: str = PerfBenchmark.FixupTargetOS(sys.platform)
   target_arch: str = ''
+  reboot_android: bool = False
 
   do_report: bool = False
   upload: bool = True
@@ -94,6 +95,10 @@ class CommonOptions:
                         type=str,
                         choices=['windows', 'mac', 'linux', 'android'])
     parser.add_argument('--target-arch', type=str, choices=['x64', 'arm64'])
+    parser.add_argument(
+        '--reboot-android',
+        action='store_true',
+        help='Reboot the Android device before running the tests')
     parser.add_argument(
         '--local-run',
         action='store_true',
@@ -175,6 +180,8 @@ class CommonOptions:
         options.target_arch = 'arm64'
       else:
         options.target_arch = 'x64'
+
+    options.reboot_android = args.reboot_android or args.ci_mode
 
     options.report_on_failure = args.report_on_failure
     if args.targets is not None:

@@ -23,6 +23,7 @@ import sys
 import os
 import tempfile
 
+import components.android_tools as android_tools
 import components.perf_config as perf_config
 import components.perf_test_runner as perf_test_runner
 import components.perf_test_utils as perf_test_utils
@@ -126,6 +127,11 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
 
   json_config = load_config(args.config, options)
   config = perf_config.PerfConfig(json_config)
+
+  if options.is_android:
+    if options.reboot_android:
+      android_tools.RebootAndroid()
+    android_tools.SetupAndroidDevice()
 
   if options.mode == PerfMode.RUN:
     if len(config.runners) != 1:
