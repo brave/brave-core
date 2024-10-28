@@ -88,6 +88,7 @@
       <part file="../skus/browser/resources/skus_internals_resources.grdp" />
       <if expr="not is_android">
         <part file="brave_blank_page_resources.grdp" />
+        <part file="brave_new_tab_resources.grdp" />
       </if>
       <part file="brave_translate_resources.grdp" />
       <part file="speedreader_resources.grdp" />

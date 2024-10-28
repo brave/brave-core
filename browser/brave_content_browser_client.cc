@@ -229,6 +229,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
+#include "brave/browser/ui/webui/brave_new_tab/new_tab_page_ui.h"
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
@@ -867,6 +868,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     content::RegisterWebUIControllerInterfaceBinder<
         commands::mojom::CommandsService, BraveSettingsUI>(map);
   }
+  content::RegisterWebUIControllerInterfaceBinder<
+      brave_new_tab::mojom::NewTabPageHandler, brave_new_tab::NewTabPageUI>(
+      map);
 #endif
 
   auto* prefs =
