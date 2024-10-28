@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 3690123883164a2745e3ea09d2dc99569399d6b0..41541bcb00cc4942aabd9840143cb7cafae3954a 100644
+index 316e8f2ba00ce2efea297249f1adb71c93092fa8..787019c2ff9495dc82dfe5a242278b94300f3978 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-@@ -1952,6 +1952,7 @@
+@@ -1948,6 +1948,7 @@
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
        status: "experimental",
@@ -10,10 +10,10 @@ index 3690123883164a2745e3ea09d2dc99569399d6b0..41541bcb00cc4942aabd9840143cb7ca
      },
      {
        // The FileSystemHandle.getCloudIdentifiers() method (see
-@@ -1967,6 +1968,7 @@
+@@ -1963,6 +1964,7 @@
        // Non-OPFS File System Access API.
        name: "FileSystemAccessLocal",
-       status: {"Android": "test", "default": "stable"},
+       status: {"default": "stable"},
 +      base_feature: "none",
      },
      {
