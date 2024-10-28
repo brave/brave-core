@@ -239,14 +239,14 @@ ViewCounterService::GetCurrentBrandedWallpaper() {
   return GetNextBrandedWallpaperWhichMatchesConditions();
 }
 
-std::optional<brave_ads::NewTabPageAdConditionMatcherMap>
+std::optional<brave_ads::ConditionMatcherMap>
 ViewCounterService::GetConditionMatchers(const base::Value::Dict& dict) {
   const auto* const list = dict.FindList(kWallpaperConditionMatchersKey);
   if (!list || list->empty()) {
     return std::nullopt;
   }
 
-  brave_ads::NewTabPageAdConditionMatcherMap condition_matchers;
+  brave_ads::ConditionMatcherMap condition_matchers;
 
   for (const auto& value : *list) {
     const auto& condition_matcher = value.GetDict();
@@ -292,8 +292,8 @@ ViewCounterService::GetNextBrandedWallpaperWhichMatchesConditions() {
       return std::nullopt;
     }
 
-    const std::optional<brave_ads::NewTabPageAdConditionMatcherMap>
-        condition_matchers = GetConditionMatchers(*branded_wallpaper);
+    const std::optional<brave_ads::ConditionMatcherMap> condition_matchers =
+        GetConditionMatchers(*branded_wallpaper);
     if (!condition_matchers) {
       // No condition matchers, so we can return the branded wallpaper.
       return branded_wallpaper;

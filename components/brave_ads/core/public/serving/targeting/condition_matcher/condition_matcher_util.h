@@ -3,25 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_SERVING_NEW_TAB_PAGE_AD_SERVING_CONDITION_MATCHER_UTIL_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_SERVING_NEW_TAB_PAGE_AD_SERVING_CONDITION_MATCHER_UTIL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_SERVING_TARGETING_CONDITION_MATCHER_CONDITION_MATCHER_UTIL_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_SERVING_TARGETING_CONDITION_MATCHER_CONDITION_MATCHER_UTIL_H_
 
 #include <map>
 #include <string>
 
 namespace brave_ads {
 
-using NewTabPageAdConditionMatcherMap =
+using ConditionMatcherMap =
     std::multimap</*pref_path*/ std::string, /*condition*/ std::string>;
 
 class PrefProviderInterface;
 
-// Matchers are one or more preference paths and conditions, using AND logic,
-// that must all be met for a new tab takeover ad to be served. Preference path
-// keys which contain dotted paths should be separated by |, where paths may
-// include list indices (e.g., "list|1") or dictionary keys (e.g., "dict|key").
-// Paths can also be nested. Both Brave local state and profile preferences are
-// supported.
+// Matchers are one or more pref paths and conditions, using AND logic, that
+// must all be met for an ad to be served. Pref path keys which contain dotted
+// paths should be separated by |, where paths may include list indices (e.g.,
+// "list|1") or dictionary keys (e.g., "dict|key"). Paths can also be nested.
+// Both Brave local state and profile prefs are supported.
 //
 // For non-Rewards users, condition matchers should be included in the
 // "photo.json" file under the NTP (New Tab Page) sponsored images component,
@@ -107,9 +106,9 @@ class PrefProviderInterface;
 //    }
 //  ]
 //
-// We support virtual preferences for values that are not persisted in the
-// profile or local state preferences. Virtual preference path keys should be
-// prefixed with "[virtual]:".
+// We support virtual prefs for values that are not persisted in the profile or
+// local state prefs. Virtual pref path keys should be prefixed with
+// "[virtual]:".
 //
 // "[virtual]:operating_system.name" retrieves the operating system, returning
 // one of the following values: "Windows", "Mac OS X", "Linux", "Android",
@@ -127,15 +126,15 @@ class PrefProviderInterface;
 // "Startpage", or "Ecosia". For the most up-to-date list of possible default
 // search engines, see `TemplateURLPrepopulateData::GetDefaultSearchEngine`.
 //
-// NOTE: To identify condition matchers, first create a copy of your preference
-// files. Next, change a brave://setting or enable a feature, quit the browser
-// and then compare the original and modified versions to determine which
-// key/value pairs are required. Invalid or malformed condition matchers will be
-// logged to the console, they are not logged to the Rewards log.
+// NOTE: To identify condition matchers, first create a copy of your pref files.
+// Next, change a brave://setting or enable a feature, quit the browser and then
+// compare the original and modified versions to determine which key/value pairs
+// are required. Invalid or malformed condition matchers will be logged to the
+// console, they are not logged to the Rewards log.
 
 bool MatchConditions(const PrefProviderInterface* pref_provider,
-                     const NewTabPageAdConditionMatcherMap& condition_matchers);
+                     const ConditionMatcherMap& condition_matchers);
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_SERVING_NEW_TAB_PAGE_AD_SERVING_CONDITION_MATCHER_UTIL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_SERVING_TARGETING_CONDITION_MATCHER_CONDITION_MATCHER_UTIL_H_

@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_focal_point_info.h"
-#include "brave/components/brave_ads/core/public/serving/new_tab_page_ad_serving_condition_matcher_util.h"
+#include "brave/components/brave_ads/core/public/serving/targeting/condition_matcher/condition_matcher_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -32,7 +32,7 @@ struct CreativeNewTabPageAdWallpaperInfo final {
 
   GURL image_url;
   CreativeNewTabPageAdWallpaperFocalPointInfo focal_point;
-  NewTabPageAdConditionMatcherMap condition_matchers;
+  ConditionMatcherMap condition_matchers;
 };
 
 using CreativeNewTabPageAdWallpaperList =
