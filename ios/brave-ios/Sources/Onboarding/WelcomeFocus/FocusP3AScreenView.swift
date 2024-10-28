@@ -16,6 +16,7 @@ struct FocusP3AScreenView: View {
 
   @State private var isP3AHelpPresented = false
   @State private var isSystemSettingsViewPresented = false
+  @State private var isP3AEnabled: Bool = false
 
   @Binding var shouldDismiss: Bool
 
@@ -105,12 +106,7 @@ struct FocusP3AScreenView: View {
         .dynamicTypeSize(dynamicTypeRange)
         .padding(.bottom, shouldUseExtendedDesign ? 46 : 16)
 
-        Toggle(
-          isOn: Binding(
-            get: { p3aUtilities?.isP3AEnabled ?? true },
-            set: { newValue in p3aUtilities?.isP3AEnabled = newValue }
-          )
-        ) {
+        Toggle(isOn: $isP3AEnabled) {
           VStack(alignment: .leading, spacing: 8) {
             Text(Strings.FocusOnboarding.p3aToggleTitle)
               .font(
@@ -128,6 +124,12 @@ struct FocusP3AScreenView: View {
           .dynamicTypeSize(dynamicTypeRange)
           .padding(.vertical, 16)
           .padding(.horizontal, 20)
+        }
+        .onAppear {
+          isP3AEnabled = p3aUtilities?.isP3AEnabled ?? true
+        }
+        .onChange(of: isP3AEnabled) { newValue in
+          p3aUtilities?.isP3AEnabled = newValue
         }
         .padding(.bottom, shouldUseExtendedDesign ? 20 : 16)
         .padding(.trailing, 36)
