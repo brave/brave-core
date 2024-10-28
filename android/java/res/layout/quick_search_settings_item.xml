@@ -30,6 +30,7 @@
                android:layout_height="wrap_content"
                android:layout_weight="1"
                style="@style/LargeRegular"
+               android:layout_gravity="center_vertical"
                android:layout_marginHorizontal="16dp"
                android:textColor="@color/text_primary"/>
 
@@ -49,6 +50,7 @@
              android:visibility="gone"
              android:layout_gravity="center_vertical"
              android:contentDescription="@null"
+             android:layout_marginVertical="12dp"
              android:layout_marginEnd="16dp" />
 
      </LinearLayout>
