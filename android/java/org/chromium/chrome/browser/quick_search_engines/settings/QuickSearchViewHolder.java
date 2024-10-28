@@ -19,6 +19,7 @@ public class QuickSearchViewHolder extends RecyclerView.ViewHolder {
     ImageView mSearchEngineLogo;
     TextView mSearchEngineText;
     MaterialSwitch mSearchEngineSwitch;
+    ImageView mDragIcon;
     View mView;
 
     QuickSearchViewHolder(View itemView) {
@@ -28,5 +29,6 @@ public class QuickSearchViewHolder extends RecyclerView.ViewHolder {
         this.mSearchEngineText = (TextView) itemView.findViewById(R.id.search_engine_text);
         this.mSearchEngineSwitch =
                 (MaterialSwitch) itemView.findViewById(R.id.search_engine_switch);
+        this.mDragIcon = (ImageView) itemView.findViewById(R.id.drag_handle);
     }
 }

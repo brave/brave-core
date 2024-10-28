@@ -2590,7 +2590,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_ADVANCED_SETTINGS_NONCE_HINT" desc="Brave crypto wallet advance setting custom nonce hint">
       Enter custom nonce value
     </message>
-    <message name="IDS_BRAVE_WALLET_ADVANCED_SETTINGS_SAVE" desc="Brave crypto wallet advance setting save/set nonce value action button">
+    <message name="IDS_ACTION_SAVE" desc="Text for save action">
       Save
     </message>
     <message name="IDS_BRAVE_WALLET_TX_PROPOGATION_WARNING" desc="Trnsaction warning regarding low gas or invalid nonce etc.">

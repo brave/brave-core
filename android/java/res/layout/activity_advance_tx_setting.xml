@@ -65,7 +65,7 @@
             android:id="@+id/activity_advance_setting_btn_save"
             style="@style/BraveWalletButton"
             android:layout_marginTop="42dp"
-            android:text="@string/brave_wallet_advanced_settings_save"
+            android:text="@string/action_save"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/activity_advance_setting_tv_tx_info" />

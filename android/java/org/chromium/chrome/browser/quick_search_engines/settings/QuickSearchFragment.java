@@ -7,6 +7,9 @@ package org.chromium.chrome.browser.quick_search_engines.settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -44,6 +47,8 @@ public class QuickSearchFragment extends BravePreferenceFragment
     private QuickSearchAdapter mAdapter;
     private boolean mHasLoadObserver;
     private LargeIconBridge mLargeIconBridge;
+
+    private MenuItem mSaveItem;
 
     private TemplateUrlService mTemplateUrlService;
 
@@ -122,8 +127,45 @@ public class QuickSearchFragment extends BravePreferenceFragment
         LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
+        setHasOptionsMenu(true);
         return view;
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.quick_search_menu, menu);
+        mSaveItem = menu.findItem(R.id.action_save);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_save) {
+            if (mAdapter != null
+                    && mAdapter.getQuickSearchEngines() != null
+                    && mAdapter.getQuickSearchEngines().size() > 0) {
+                Map<String, QuickSearchEngineModel> searchEnginesMap =
+                        new LinkedHashMap<String, QuickSearchEngineModel>();
+                for (QuickSearchEngineModel quickSearchEngineModel :
+                        mAdapter.getQuickSearchEngines()) {
+                    searchEnginesMap.put(
+                            quickSearchEngineModel.getKeyword(), quickSearchEngineModel);
+                }
+                QuickSearchEnginesUtil.saveSearchEngines(searchEnginesMap);
+                mAdapter.setEditMode(false);
+                saveMenuVisibility();
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    // @Override
+    // public void onPrepareOptionsMenu(Menu menu) {
+    //     super.onPrepareOptionsMenu(menu);
+    //     MenuItem item=menu.findItem(R.id.action_save);
+    //     if (mAdapter != null && item!=null) {
+    //         item.setVisible(mAdapter.isEditMode());
+    //     }
+    // }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -187,6 +229,31 @@ public class QuickSearchFragment extends BravePreferenceFragment
 
     private void setRecyclerViewData(List<QuickSearchEngineModel> searchEngines) {
         mAdapter = new QuickSearchAdapter(getActivity(), searchEngines, this);
+        // ItemTouchHelper.Callback callback = new ItemTouchHelper.SimpleCallback(
+        //         ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
+
+        //     @Override
+        //     public boolean onMove(@NonNull RecyclerView recyclerView,
+        //                           @NonNull RecyclerView.ViewHolder viewHolder,
+        //                           @NonNull RecyclerView.ViewHolder target) {
+        //         QuickSearchAdapter adapter = (QuickSearchAdapter) recyclerView.getAdapter();
+        //         if (adapter != null) {
+        //             int fromPosition = viewHolder.getAdapterPosition();
+        //             int toPosition = target.getAdapterPosition();
+        //             adapter.onItemMove(fromPosition, toPosition);
+        //         }
+        //         return true;
+        //     }
+
+        //     @Override
+        //     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+        //         // No action needed for swipe
+        //     }
+        // };
+
+        // // Attach the ItemTouchHelper to your RecyclerView
+        // ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        // itemTouchHelper.attachToRecyclerView(mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -219,7 +286,16 @@ public class QuickSearchFragment extends BravePreferenceFragment
     }
 
     @Override
-    public void onSearchEngineLongClick() {}
+    public void onSearchEngineLongClick() {
+        // getActivity().invalidateOptionsMenu();
+        saveMenuVisibility();
+    }
+
+    private void saveMenuVisibility() {
+        if (mSaveItem != null && mAdapter != null) {
+            mSaveItem.setVisible(mAdapter.isEditMode());
+        }
+    }
 
     @Override
     public void loadSearchEngineLogo(
