@@ -76,7 +76,7 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
   }
 
  protected:
-  raw_ptr<MockWebCompatServiceDelegate> delegate_;
+  raw_ptr<MockWebCompatServiceDelegate, DanglingUntriaged> delegate_;
   std::unique_ptr<WebcompatReporterService> webcompat_reporter_service_;
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};

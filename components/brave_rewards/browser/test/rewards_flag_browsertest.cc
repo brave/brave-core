@@ -88,7 +88,7 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
     return rewards_service_->GetDefaultServerEnvironment();
   }
 
-  raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
+  raw_ptr<RewardsServiceImpl, DanglingUntriaged> rewards_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<test_util::RewardsBrowserTestResponse> response_;
 };

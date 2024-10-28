@@ -60,7 +60,7 @@ class EthLogsTracker {
                  const std::string& error_message);
 
   base::RepeatingTimer timer_;
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
+  raw_ptr<JsonRpcService, DanglingUntriaged> json_rpc_service_ = nullptr;
 
   std::map<std::string, base::Value::Dict> eth_logs_subscription_info_;
 

@@ -142,8 +142,9 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
   }
 #endif
 
-  raw_ptr<ToolbarButtonProvider> toolbar_button_provider_ = nullptr;
-  raw_ptr<BraveToolbarView> toolbar_view_ = nullptr;
+  raw_ptr<ToolbarButtonProvider, DanglingUntriaged> toolbar_button_provider_ =
+      nullptr;
+  raw_ptr<BraveToolbarView, DanglingUntriaged> toolbar_view_ = nullptr;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_AI_CHAT)
   testing::NiceMock<policy::MockConfigurationPolicyProvider> provider_;

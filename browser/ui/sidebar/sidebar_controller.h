@@ -90,7 +90,7 @@ class SidebarController : public SidebarService::Observer {
 
   raw_ptr<BraveBrowser> browser_ = nullptr;
   // Interface to view.
-  raw_ptr<Sidebar> sidebar_ = nullptr;
+  raw_ptr<Sidebar, DanglingUntriaged> sidebar_ = nullptr;
 
   std::unique_ptr<SidebarModel> sidebar_model_;
   base::ScopedObservation<SidebarService, SidebarService::Observer>

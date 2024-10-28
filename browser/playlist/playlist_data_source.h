@@ -68,7 +68,7 @@ class PlaylistDataSource : public FaviconSource {
                     const net::HttpByteRange& range,
                     GotRangeDataCallback got_data_callback);
 
-  raw_ptr<PlaylistService> service_ = nullptr;
+  raw_ptr<PlaylistService, DanglingUntriaged> service_ = nullptr;
 };
 
 }  // namespace playlist

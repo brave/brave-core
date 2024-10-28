@@ -40,7 +40,7 @@ class RewardsBrowserTestContextHelper {
  private:
   void OpenPopup();
 
-  raw_ptr<Browser> browser_ = nullptr;  // NOT OWNED
+  raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;  // NOT OWNED
   base::WeakPtr<content::WebContents> popup_contents_;
 };
 

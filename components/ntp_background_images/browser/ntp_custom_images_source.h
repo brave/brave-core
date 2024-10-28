@@ -43,7 +43,8 @@ class NTPCustomImagesSource : public content::URLDataSource {
                     GotDataCallback callback);
   void OnGotImageFile(GotDataCallback callback, const std::string& input);
 
-  raw_ptr<BraveNTPCustomBackgroundService> service_ = nullptr;  // not owned
+  raw_ptr<BraveNTPCustomBackgroundService, DanglingUntriaged> service_ =
+      nullptr;  // not owned
   base::WeakPtrFactory<NTPCustomImagesSource> weak_factory_;
 };
 

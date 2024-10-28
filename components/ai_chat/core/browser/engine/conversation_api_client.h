@@ -110,7 +110,7 @@ class ConversationAPIClient {
 
   const std::string model_name_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
-  raw_ptr<AIChatCredentialManager> credential_manager_;
+  raw_ptr<AIChatCredentialManager, DanglingUntriaged> credential_manager_;
 
   base::WeakPtrFactory<ConversationAPIClient> weak_ptr_factory_{this};
 };

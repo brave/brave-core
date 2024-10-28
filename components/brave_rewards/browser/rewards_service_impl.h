@@ -528,7 +528,7 @@ class RewardsServiceImpl final : public RewardsService,
   safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
 #endif
   raw_ptr<PrefService> prefs_;                            // NOT OWNED
-  raw_ptr<favicon::FaviconService> favicon_service_;      // NOT OWNED
+  raw_ptr<favicon::FaviconService, DanglingUntriaged> favicon_service_;
   const RequestImageCallback request_image_callback_;
   const CancelImageRequestCallback cancel_image_request_callback_;
   raw_ptr<content::StoragePartition> storage_partition_;  // NOT OWNED

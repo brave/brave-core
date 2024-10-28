@@ -105,7 +105,7 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
   const net::EmbeddedTestServer* https_server() const { return &https_server_; }
 
  private:
-  raw_ptr<BraveWalletService> wallet_service_ = nullptr;
+  raw_ptr<BraveWalletService, DanglingUntriaged> wallet_service_ = nullptr;
   net::EmbeddedTestServer https_server_;
   base::test::ScopedFeatureList feature_list_;
 };

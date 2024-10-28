@@ -58,8 +58,8 @@ class BraveActionsContainerTest : public InProcessBrowserTest {
   }
 
  protected:
-  raw_ptr<BraveActionsContainer> brave_actions_ = nullptr;
-  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<BraveActionsContainer, DanglingUntriaged> brave_actions_ = nullptr;
+  raw_ptr<PrefService, DanglingUntriaged> prefs_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, HideBraveRewardsAction) {

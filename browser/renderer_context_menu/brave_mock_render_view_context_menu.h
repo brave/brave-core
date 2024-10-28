@@ -106,7 +106,7 @@ class BraveMockRenderViewContextMenu : public ui::SimpleMenuModel::Delegate,
   // An observer used for initializing the status of menu items added in this
   // test. This is owned by our owner and the owner is responsible for its
   // lifetime.
-  raw_ptr<RenderViewContextMenuObserver> observer_ = nullptr;
+  raw_ptr<RenderViewContextMenuObserver, DanglingUntriaged> observer_ = nullptr;
 
   // Either a regular profile or an incognito profile.
   raw_ptr<Profile> profile_ = nullptr;

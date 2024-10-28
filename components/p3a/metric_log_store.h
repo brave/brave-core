@@ -102,7 +102,7 @@ class MetricLogStore : public metrics::LogStore {
   const char* GetPrefName() const;
 
   const raw_ref<Delegate> delegate_;
-  const raw_ref<PrefService> local_state_;
+  const raw_ref<PrefService, DanglingUntriaged> local_state_;
 
   MetricLogType type_;
 

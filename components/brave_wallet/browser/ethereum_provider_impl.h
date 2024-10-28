@@ -294,10 +294,11 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   mojo::Remote<mojom::EventsListener> events_listener_;
-  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
-  raw_ptr<TxService> tx_service_ = nullptr;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
+  raw_ptr<BraveWalletService, DanglingUntriaged> brave_wallet_service_ =
+      nullptr;
+  raw_ptr<JsonRpcService, DanglingUntriaged> json_rpc_service_ = nullptr;
+  raw_ptr<TxService, DanglingUntriaged> tx_service_ = nullptr;
+  raw_ptr<KeyringService, DanglingUntriaged> keyring_service_ = nullptr;
   base::flat_map<std::string, RequestCallback> chain_callbacks_;
   base::flat_map<std::string, base::Value> chain_ids_;
   base::flat_map<std::string, RequestCallback> add_tx_callbacks_;
@@ -316,7 +317,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   EthBlockTracker eth_block_tracker_;
   EthLogsTracker eth_logs_tracker_;
   bool first_known_accounts_check_ = true;
-  const raw_ptr<PrefService> prefs_ = nullptr;
+  const raw_ptr<PrefService, DanglingUntriaged> prefs_ = nullptr;
   bool wallet_onboarding_shown_ = false;
   base::WeakPtrFactory<EthereumProviderImpl> weak_factory_{this};
 };

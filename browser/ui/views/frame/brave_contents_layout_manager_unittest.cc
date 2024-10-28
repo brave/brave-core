@@ -61,12 +61,14 @@ class BraveContentsLayoutManagerUnitTest : public testing::Test {
   base::test::ScopedFeatureList scoped_feature_;
 
   std::unique_ptr<views::View> contents_container_;
-  raw_ptr<views::WebView> contents_view_ = nullptr;
-  raw_ptr<views::WebView> devtools_view_ = nullptr;
-  raw_ptr<views::WebView> secondary_contents_view_ = nullptr;
-  raw_ptr<views::WebView> secondary_devtools_view_ = nullptr;
-  raw_ptr<SplitViewSeparator> split_view_separator_ = nullptr;
-  raw_ptr<BraveContentsLayoutManager> layout_manager_ = nullptr;
+  raw_ptr<views::WebView, DanglingUntriaged> contents_view_ = nullptr;
+  raw_ptr<views::WebView, DanglingUntriaged> devtools_view_ = nullptr;
+  raw_ptr<views::WebView, DanglingUntriaged> secondary_contents_view_ = nullptr;
+  raw_ptr<views::WebView, DanglingUntriaged> secondary_devtools_view_ = nullptr;
+  raw_ptr<SplitViewSeparator, DanglingUntriaged> split_view_separator_ =
+      nullptr;
+  raw_ptr<BraveContentsLayoutManager, DanglingUntriaged> layout_manager_ =
+      nullptr;
 };
 
 TEST_F(BraveContentsLayoutManagerUnitTest,

@@ -150,9 +150,10 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
  protected:
   NiceMock<favicon::MockFaviconService> favicon_service_;
   std::unique_ptr<NiceMock<MockAssociatedContentObserver>> observer_;
-  raw_ptr<AIChatTabHelper> helper_;
-  raw_ptr<MockPrintPreviewExtractor> print_preview_extractor_;
-  raw_ptr<MockPageContentFetcher> page_content_fetcher_;
+  raw_ptr<AIChatTabHelper, DanglingUntriaged> helper_;
+  raw_ptr<MockPrintPreviewExtractor, DanglingUntriaged>
+      print_preview_extractor_;
+  raw_ptr<MockPageContentFetcher, DanglingUntriaged> page_content_fetcher_;
   bool is_print_preview_supported_ = true;
 };
 

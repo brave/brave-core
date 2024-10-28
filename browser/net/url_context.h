@@ -91,17 +91,18 @@ struct BraveRequestInfo {
   uint64_t request_identifier = 0;
   size_t next_url_request_index = 0;
 
-  raw_ptr<content::BrowserContext> browser_context = nullptr;
+  raw_ptr<content::BrowserContext, DanglingUntriaged> browser_context = nullptr;
   raw_ptr<net::HttpRequestHeaders> headers = nullptr;
   // The following two sets are populated by |OnBeforeStartTransactionCallback|.
   // |set_headers| contains headers which values were added or modified.
   std::set<std::string> set_headers;
   std::set<std::string> removed_headers;
-  raw_ptr<const net::HttpResponseHeaders> original_response_headers = nullptr;
-  raw_ptr<scoped_refptr<net::HttpResponseHeaders>> override_response_headers =
-      nullptr;
+  raw_ptr<const net::HttpResponseHeaders, DanglingUntriaged>
+      original_response_headers = nullptr;
+  raw_ptr<scoped_refptr<net::HttpResponseHeaders>, DanglingUntriaged>
+      override_response_headers = nullptr;
 
-  raw_ptr<GURL> allowed_unsafe_redirect_url = nullptr;
+  raw_ptr<GURL, DanglingUntriaged> allowed_unsafe_redirect_url = nullptr;
   BraveNetworkDelegateEventType event_type = kUnknownEventType;
   BlockedBy blocked_by = kNotBlocked;
   std::string mock_data_url;
@@ -138,7 +139,7 @@ struct BraveRequestInfo {
   // We should also remove the one below.
   friend class ::BraveRequestHandler;
 
-  raw_ptr<GURL> new_url = nullptr;
+  raw_ptr<GURL, DanglingUntriaged> new_url = nullptr;
 };
 
 // ResponseListener

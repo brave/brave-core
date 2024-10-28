@@ -141,7 +141,8 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
-  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
+  raw_ptr<BraveWalletService, DanglingUntriaged> brave_wallet_service_ =
+      nullptr;
   std::vector<std::string> methods_{"signMessage", "signMessageViaSend",
                                     "signMessageViaSend2",
                                     "signMessageViaSendAsync"};
@@ -150,7 +151,7 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
   base::test::ScopedFeatureList scoped_feature_list_;
   net::test_server::EmbeddedTestServer https_server_;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
+  raw_ptr<KeyringService, DanglingUntriaged> keyring_service_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {

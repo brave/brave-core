@@ -68,7 +68,7 @@ class EthBlockTracker : public BlockTracker {
   std::map<std::string, uint256_t> current_block_map_;
   base::ObserverList<Observer> observers_;
 
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
+  raw_ptr<JsonRpcService, DanglingUntriaged> json_rpc_service_ = nullptr;
   base::WeakPtrFactory<EthBlockTracker> weak_factory_;
 };
 

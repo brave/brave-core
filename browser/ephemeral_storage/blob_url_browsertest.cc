@@ -73,7 +73,7 @@ constexpr char kFetchBlobViaWorkerScript[] = R"(
 class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
  public:
   struct RenderFrameHostBlobData {
-    raw_ptr<content::RenderFrameHost> rfh;
+    raw_ptr<content::RenderFrameHost, DanglingUntriaged> rfh;
     GURL blob_url;
   };
   using FramesWithRegisteredBlobs = std::vector<RenderFrameHostBlobData>;

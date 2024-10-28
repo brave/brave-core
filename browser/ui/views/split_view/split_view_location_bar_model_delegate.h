@@ -31,7 +31,7 @@ class SplitViewLocationBarModelDelegate
   bool ShouldDisplayURL() const override;
 
  private:
-  raw_ptr<content::WebContents> web_contents_;
+  raw_ptr<content::WebContents, DanglingUntriaged> web_contents_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_LOCATION_BAR_MODEL_DELEGATE_H_

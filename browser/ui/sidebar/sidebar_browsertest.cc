@@ -298,7 +298,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return false;
   }
 
-  raw_ptr<views::View> item_added_bubble_anchor_ = nullptr;
+  raw_ptr<views::View, DanglingUntriaged> item_added_bubble_anchor_ = nullptr;
   std::unique_ptr<base::RunLoop> run_loop_;
   base::WeakPtrFactory<SidebarBrowserTest> weak_factory_{this};
 };

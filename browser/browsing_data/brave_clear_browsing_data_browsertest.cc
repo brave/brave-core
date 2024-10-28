@@ -91,7 +91,7 @@ class BrowserChangeObserver : public BrowserListObserver {
   }
 
  private:
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;
   ChangeType type_;
   base::RunLoop run_loop_;
 };

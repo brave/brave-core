@@ -55,7 +55,7 @@ class BraveStatsHelper : public ProfileManagerObserver, public ProfileObserver {
       profile_manager_observer_{this};
 
   raw_ptr<PrefService> local_state_;
-  raw_ptr<ProfileManager> profile_manager_;
+  raw_ptr<ProfileManager, DanglingUntriaged> profile_manager_;
 
   base::Time testing_first_run_time_;
 };

@@ -436,8 +436,8 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
 
  private:
-  raw_ptr<content::WebContents> original_tab_ = nullptr;
-  raw_ptr<TabStripModel> tabs_ = nullptr;
+  raw_ptr<content::WebContents, DanglingUntriaged> original_tab_ = nullptr;
+  raw_ptr<TabStripModel, DanglingUntriaged> tabs_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageTest, CrossSiteCookiesBlockedInitial) {

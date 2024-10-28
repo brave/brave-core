@@ -78,7 +78,7 @@ class BraveConfigurator : public update_client::Configurator {
   friend class base::RefCountedThreadSafe<BraveConfigurator>;
 
   ConfiguratorImpl configurator_impl_;
-  const raw_ref<PrefService>
+  const raw_ref<PrefService, DanglingUntriaged>
       pref_service_;  // This member is not owned by this class.
   std::unique_ptr<update_client::PersistedData> persisted_data_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

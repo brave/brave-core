@@ -230,7 +230,7 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
-  raw_ptr<KeyringService> keyring_service_;
+  raw_ptr<KeyringService, DanglingUntriaged> keyring_service_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
   std::unique_ptr<component_updater::MockComponentUpdateService> cus_;
   base::FilePath install_dir_;

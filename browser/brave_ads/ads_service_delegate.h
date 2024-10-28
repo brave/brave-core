@@ -79,7 +79,8 @@ class AdsServiceDelegate : public AdsService::Delegate {
   search_engines::SearchEngineChoiceService search_engine_choice_service_;
   raw_ptr<brave_adaptive_captcha::BraveAdaptiveCaptchaService>
       adaptive_captcha_service_ = nullptr;
-  raw_ptr<NotificationDisplayService> notification_display_service_ = nullptr;
+  raw_ptr<NotificationDisplayService, DanglingUntriaged>
+      notification_display_service_ = nullptr;
   std::unique_ptr<NotificationAdPlatformBridge>
       notification_ad_platform_bridge_;
 };

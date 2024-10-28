@@ -224,7 +224,8 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
 
  protected:
   net::test_server::EmbeddedTestServer https_server_;
-  raw_ptr<ai_chat::AIChatTabHelper> chat_tab_helper_ = nullptr;
+  raw_ptr<ai_chat::AIChatTabHelper, DanglingUntriaged> chat_tab_helper_ =
+      nullptr;
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;

@@ -179,8 +179,8 @@ class RewardsStateBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(base::CopyFile(test_path, profile_path));
   }
 
-  raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
-  raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<RewardsServiceImpl, DanglingUntriaged> rewards_service_ = nullptr;
+  raw_ptr<Profile, DanglingUntriaged> profile_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<test_util::RewardsBrowserTestResponse> response_;
 };

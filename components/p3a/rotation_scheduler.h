@@ -65,7 +65,7 @@ class RotationScheduler {
   base::flat_map<MetricLogType, base::Time> last_json_rotation_times_;
   base::flat_map<MetricLogType, base::Time> last_constellation_rotation_times_;
 
-  const raw_ref<PrefService> local_state_;
+  const raw_ref<PrefService, DanglingUntriaged> local_state_;
   const raw_ptr<const P3AConfig> config_;
 };
 

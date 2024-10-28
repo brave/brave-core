@@ -171,7 +171,7 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
                                 const mojom::BitcoinSignature& hw_signature);
   void CreateTransactionTaskDone(CreateTransactionTask* task);
 
-  raw_ptr<KeyringService> keyring_service_;
+  raw_ptr<KeyringService, DanglingUntriaged> keyring_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::list<std::unique_ptr<CreateTransactionTask>> create_transaction_tasks_;
   std::list<std::unique_ptr<DiscoverWalletAccountTask>>

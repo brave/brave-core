@@ -55,7 +55,7 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
     const ui::NativeTheme* GetWebTheme() const override { return theme_; }
 
    private:
-    const raw_ptr<const ui::NativeTheme> theme_;
+    const raw_ptr<const ui::NativeTheme, DanglingUntriaged> theme_;
   };
 
   class MockColorProviderSource : public ui::ColorProviderSource {

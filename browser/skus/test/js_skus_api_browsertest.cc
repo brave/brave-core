@@ -161,7 +161,7 @@ class SkusAPIBrowserTest : public PlatformBrowserTest {
   content::WebContents* web_contents() {
     return chrome_test_utils::GetActiveWebContents(this);
   }
-  raw_ptr<PrefService> local_state_;
+  raw_ptr<PrefService, DanglingUntriaged> local_state_;
 
  protected:
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};

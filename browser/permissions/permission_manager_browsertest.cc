@@ -179,7 +179,8 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
 
  protected:
   net::test_server::EmbeddedTestServer https_server_;
-  raw_ptr<BravePermissionManager> permission_manager_ = nullptr;
+  raw_ptr<BravePermissionManager, DanglingUntriaged> permission_manager_ =
+      nullptr;
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;

@@ -146,8 +146,9 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   mojo::Remote<brave_wallet::mojom::JsonRpcService> json_rpc_service_;
-  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
+  raw_ptr<BraveWalletService, DanglingUntriaged> brave_wallet_service_ =
+      nullptr;
+  raw_ptr<KeyringService, DanglingUntriaged> keyring_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   base::test::ScopedFeatureList feature_list_;
 };

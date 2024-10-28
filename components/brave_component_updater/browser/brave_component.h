@@ -100,7 +100,7 @@ class BraveComponent {
   std::string component_name_;
   std::string component_id_;
   std::string component_base64_public_key_;
-  raw_ptr<Delegate> delegate_ = nullptr;  // NOT OWNED
+  raw_ptr<Delegate, DanglingUntriaged> delegate_ = nullptr;  // NOT OWNED
   base::WeakPtrFactory<BraveComponent> weak_factory_;
 };
 

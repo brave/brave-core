@@ -818,8 +818,8 @@ class JsonRpcService : public mojom::JsonRpcService {
 
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;
   raw_ptr<NetworkManager> network_manager_ = nullptr;
-  const raw_ptr<PrefService> prefs_ = nullptr;
-  const raw_ptr<PrefService> local_state_prefs_ = nullptr;
+  const raw_ptr<PrefService, DanglingUntriaged> prefs_ = nullptr;
+  const raw_ptr<PrefService, DanglingUntriaged> local_state_prefs_ = nullptr;
   std::unique_ptr<NftMetadataFetcher> nft_metadata_fetcher_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;
   base::WeakPtrFactory<JsonRpcService> weak_ptr_factory_{this};

@@ -48,7 +48,8 @@ class BraveOnDemandUpdater {
   BraveOnDemandUpdater();
   ~BraveOnDemandUpdater();
 
-  raw_ptr<component_updater::OnDemandUpdater> on_demand_updater_ = nullptr;
+  raw_ptr<component_updater::OnDemandUpdater, DanglingUntriaged>
+      on_demand_updater_ = nullptr;
 };
 
 }  // namespace brave_component_updater

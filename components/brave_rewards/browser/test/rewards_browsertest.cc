@@ -152,7 +152,7 @@ class RewardsBrowserTest : public InProcessBrowserTest {
   }
 
   base::test::ScopedFeatureList feature_list_;
-  raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
+  raw_ptr<RewardsServiceImpl, DanglingUntriaged> rewards_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<test_util::RewardsBrowserTestResponse> response_;
   std::unique_ptr<test_util::RewardsBrowserTestContribution> contribution_;

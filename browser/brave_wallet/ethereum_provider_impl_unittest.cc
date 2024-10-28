@@ -942,12 +942,12 @@ class EthereumProviderImplUnitTest : public testing::Test {
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   base::ScopedTempDir temp_dir_;
   TestingProfile profile_;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
+  raw_ptr<KeyringService, DanglingUntriaged> keyring_service_ = nullptr;
   raw_ptr<AssetRatioService> asset_ratio_service_;
-  raw_ptr<TxService> tx_service_;
+  raw_ptr<TxService, DanglingUntriaged> tx_service_;
 
  protected:
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
+  raw_ptr<JsonRpcService, DanglingUntriaged> json_rpc_service_ = nullptr;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
 };
 
