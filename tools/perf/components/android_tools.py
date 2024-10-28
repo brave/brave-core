@@ -14,7 +14,7 @@ from components.perf_test_utils import GetProcessOutput
 import components.path_util as path_util
 
 
-def RunFromRoot(cmd: str) -> bool:
+def RunAsRoot(cmd: str) -> bool:
   result, _ = GetProcessOutput(
       [path_util.GetAdbPath(), 'shell', 'su', '-c', '\'' + cmd + '\''])
   return result
@@ -30,15 +30,15 @@ def SetupAndroidDevice() -> None:
       tmp_file,
   ],
                    check=True)
-  if not RunFromRoot(f'sh {tmp_file}'):
+  if not RunAsRoot(f'sh {tmp_file}'):
     raise RuntimeError('Failed to setup the device: setup_android_device.sh')
-  RunFromRoot('killall adbd')  # Restart adbd on the device to apply the changes
+  RunAsRoot('killall adbd')  # Restart adbd on the device to apply the changes
   time.sleep(2)
 
 
 def RebootAndroid() -> None:
   logging.debug('Rebooting Android device')
-  RunFromRoot('reboot')
+  RunAsRoot('reboot')
   time.sleep(30)
 
 
