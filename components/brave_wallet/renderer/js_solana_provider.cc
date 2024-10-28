@@ -93,38 +93,11 @@ JSSolanaProvider::JSSolanaProvider(content::RenderFrame* render_frame)
     : RenderFrameObserver(render_frame),
       v8_value_converter_(content::V8ValueConverter::Create()) {
   EnsureConnected();
-  v8_value_converter_->SetStrategy(&strategy_);
 }
 
 JSSolanaProvider::~JSSolanaProvider() = default;
 
 gin::WrapperInfo JSSolanaProvider::kWrapperInfo = {gin::kEmbedderNativeGin};
-
-// Convert Uint8Array to blob base::Value
-bool JSSolanaProvider::V8ConverterStrategy::FromV8ArrayBuffer(
-    v8::Local<v8::Object> value,
-    std::unique_ptr<base::Value>* out,
-    v8::Isolate* isolate) {
-  if (!value->IsTypedArray()) {
-    return false;
-  }
-  std::vector<uint8_t> bytes;
-  char* data = nullptr;
-  size_t data_length = 0;
-  gin::ArrayBufferView view;
-  if (gin::ConvertFromV8(isolate, value.As<v8::ArrayBufferView>(), &view)) {
-    data = reinterpret_cast<char*>(view.bytes());
-    data_length = view.num_bytes();
-    UNSAFE_TODO(bytes.assign(data, data + data_length));
-  }
-  if (!bytes.size()) {
-    return false;
-  }
-  std::unique_ptr<base::Value> new_value = std::make_unique<base::Value>(bytes);
-  *out = std::move(new_value);
-
-  return true;
-}
 
 // static
 void JSSolanaProvider::Install(bool allow_overwrite_window_solana,

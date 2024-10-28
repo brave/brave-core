@@ -18,7 +18,8 @@ base::Value::BlobStorage RLPUint256ToBlob(uint256_t input);
 
 // Recursive Length Prefix (RLP) encoding of base::Values consisting of string,
 // blob, or int data
-std::string RLPEncode(base::Value val);
+std::vector<uint8_t> RLPEncode(const base::Value& val);
+std::vector<uint8_t> RLPEncode(const base::Value::List& val);
 
 }  // namespace brave_wallet
 

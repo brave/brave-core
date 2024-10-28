@@ -362,8 +362,9 @@ TEST(HDKeyUnitTest, GenerateFromPrivateKey) {
   std::unique_ptr<HDKey> key = HDKey::GenerateFromPrivateKey(private_key);
   EXPECT_NE(key, nullptr);
   EXPECT_EQ(key->GetPath(), "");
-  const std::vector<uint8_t> msg_a(32, 0x00);
-  const std::vector<uint8_t> msg_b(32, 0x08);
+  std::array<uint8_t, 32> msg_a = {};
+  std::array<uint8_t, 32> msg_b = {};
+  msg_b.fill(0x08);
   int recid_a = -1;
   int recid_b = -1;
   const std::vector<uint8_t> sig_a = key->SignCompact(msg_a, &recid_a);
@@ -389,8 +390,9 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
       "GfSh6dqA9QWTyefMLEcBYJUuekgW4BYPJcr9E7j");
   auto* key = parsed_xprv->hdkey.get();
 
-  const std::vector<uint8_t> msg_a(32, 0x00);
-  const std::vector<uint8_t> msg_b(32, 0x08);
+  std::array<uint8_t, 32> msg_a = {};
+  std::array<uint8_t, 32> msg_b = {};
+  msg_b.fill(0x08);
   int recid_a = -1;
   int recid_b = -1;
   const std::vector<uint8_t> sig_a = key->SignCompact(msg_a, &recid_a);
@@ -431,10 +433,6 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
   EXPECT_FALSE(key->VerifyForTesting(msg_a, std::vector<uint8_t>(63)));
   EXPECT_FALSE(key->VerifyForTesting(msg_a, std::vector<uint8_t>(65)));
 
-  EXPECT_TRUE(IsPublicKeyEmpty(
-      key->RecoverCompact(true, std::vector<uint8_t>(31), sig_a, recid_a)));
-  EXPECT_TRUE(IsPublicKeyEmpty(
-      key->RecoverCompact(true, std::vector<uint8_t>(33), sig_a, recid_a)));
   EXPECT_TRUE(IsPublicKeyEmpty(
       key->RecoverCompact(true, msg_a, std::vector<uint8_t>(31), recid_a)));
   EXPECT_TRUE(IsPublicKeyEmpty(

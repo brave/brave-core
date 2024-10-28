@@ -15,10 +15,10 @@
 
 namespace brave_wallet {
 
-// Equivalent to web3.utils.keccak256(string)
-std::string KeccakHash(const std::string& input, bool to_hex = true);
-std::vector<uint8_t> KeccakHash(const std::vector<uint8_t>& input);
-eth_abi::Bytes32 KeccakHashBytes32(base::span<const uint8_t> input);
+static const size_t kKeccakHashLength = 32;
+using KeccakHashArray = std::array<uint8_t, kKeccakHashLength>;
+
+KeccakHashArray KeccakHash(base::span<const uint8_t> input);
 
 // Returns the hex encoding of the first 4 bytes of the hash.
 // For example: keccak('balanceOf(address)')

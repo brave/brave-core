@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 
+#include <cstdint>
 #include <memory>
 #include <optional>
 #include <tuple>
@@ -12,6 +13,7 @@
 
 #include "base/base64.h"
 #include "base/compiler_specific.h"
+#include "base/containers/span.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/ranges/algorithm.h"
@@ -408,8 +410,9 @@ bool ParseEthDecryptParams(const std::string& json,
   }
 
   // IsValidHexString guarantees at least 2 bytes and starts with 0x
-  if (!UNSAFE_TODO(base::HexStringToString(untrusted_hex_json_str->data() + 2,
-                                           &untrusted_json))) {
+  if (!base::HexStringToString(
+          base::as_string_view(*untrusted_hex_json_str).substr(2),
+          &untrusted_json)) {
     return false;
   }
 

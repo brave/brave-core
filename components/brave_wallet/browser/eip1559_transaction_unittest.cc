@@ -49,7 +49,7 @@ TEST(Eip1559TransactionUnitTest, GetMessageToSign) {
 
   access_list->push_back(item);
 
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.GetMessageToSign())),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.GetHashedMessageToSign(0))),
             "fa81814f7dd57bad435657a05eabdba2815f41e3f15ddd6139027e7db56b0dea");
 }
 
@@ -143,7 +143,7 @@ TEST(Eip1559TransactionUnitTest, GetSignedTransactionAndHash) {
 
     int recid;
     const std::vector<uint8_t> signature =
-        key.SignCompact(tx.GetMessageToSign(), &recid);
+        key.SignCompact(tx.GetHashedMessageToSign(0), &recid);
     tx.ProcessSignature(signature, recid);
     EXPECT_EQ(tx.GetSignedTransaction(), entry.signed_tx);
     EXPECT_EQ(tx.GetTransactionHash(), entry.hash);

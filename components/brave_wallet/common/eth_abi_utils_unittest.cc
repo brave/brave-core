@@ -97,7 +97,7 @@ TEST(EthAbiUtilsTest, OffchainLookup) {
             "3b3b57de42041b0018edd29d7c17154b0c671acc0502ea0b3693cafbeadf58e6be"
             "aaa16c00000000000000000000000000000000000000000000000000000000");
 
-  EXPECT_EQ(ToHex(*ExtractFixedBytesFromTuple(args, 4, 3)), "0xf4d4d2f8");
+  EXPECT_EQ(ToHex(*ExtractFixedBytesFromTuple<4>(args, 3)), "0xf4d4d2f8");
 
   EXPECT_EQ(ToHex(*ExtractBytesFromTuple(args, 4)),
             "0x9061b92300000000000000000000000000000000000000000000000000000000"
@@ -123,7 +123,7 @@ TEST(EthAbiUtilsTest, OffchainLookupBy1Test) {
       ExtractAddressFromTuple(args, 0);
       ExtractStringArrayFromTuple(args, 1);
       ExtractBytesFromTuple(args, 2);
-      ExtractFixedBytesFromTuple(args, 4, 3);
+      ExtractFixedBytesFromTuple<4>(args, 3);
       ExtractBytesFromTuple(args, 4);
     }
   }
@@ -695,21 +695,21 @@ TEST(EthAbiUtilsTest, ExtractFixedBytesFromTuple) {
 
   auto [_, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
 
-  EXPECT_EQ(ToHex(*ExtractFixedBytesFromTuple(args, 4, 3)), "0xf4d4d2f8");
+  EXPECT_EQ(ToHex(*ExtractFixedBytesFromTuple<4>(args, 3)), "0xf4d4d2f8");
 
   // Bad tuple pos.
-  EXPECT_FALSE(ExtractFixedBytesFromTuple(args, 4, 0));
-  EXPECT_FALSE(ExtractFixedBytesFromTuple(args, 4, 1000));
+  EXPECT_FALSE(ExtractFixedBytesFromTuple<4>(args, 0));
+  EXPECT_FALSE(ExtractFixedBytesFromTuple<4>(args, 1000));
 
   // Empty data.
-  EXPECT_FALSE(ExtractFixedBytesFromTuple({}, 4, 0));
+  EXPECT_FALSE(ExtractFixedBytesFromTuple<4>({}, 0));
 
   bytes[101] = 0;
-  EXPECT_EQ(ToHex(*ExtractFixedBytesFromTuple(args, 4, 3)), "0xf400d2f8");
+  EXPECT_EQ(ToHex(*ExtractFixedBytesFromTuple<4>(args, 3)), "0xf400d2f8");
 
   // Bad padding.
   bytes[111] = 1;
-  EXPECT_FALSE(ExtractFixedBytesFromTuple(args, 4, 3));
+  EXPECT_FALSE(ExtractFixedBytesFromTuple<4>(args, 3));
 }
 
 TEST(EthAbiTupleEncoderTest, EncodeCall) {

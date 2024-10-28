@@ -67,7 +67,7 @@ std::optional<Span32> ToSpan32(Span data) {
     return std::nullopt;
   }
 
-  return UNSAFE_TODO(Span32(data.data(), kRowLength));
+  return Span32(data.first(kRowLength));
 }
 
 Span ExtractRows(Span data, size_t row, size_t row_count) {
@@ -106,6 +106,28 @@ EthAddress ExtractAddress(Span32 address_encoded) {
 }
 
 }  // namespace
+
+namespace internal {
+
+std::optional<Span32> ExtractFixedBytesRowFromTuple(Span data,
+                                                    size_t fixed_size,
+                                                    size_t tuple_pos) {
+  CHECK(fixed_size > 0 && fixed_size <= 32);
+
+  // Head contains bytes itself.
+  auto head = ExtractHeadFromTuple(data, tuple_pos);
+  if (!head) {
+    return std::nullopt;
+  }
+
+  if (!CheckPadding(head->subspan(0), fixed_size)) {
+    return std::nullopt;
+  }
+
+  return head;
+}
+
+}  // namespace internal
 
 std::pair<Span, Span> ExtractFunctionSelectorAndArgsFromCall(Span data) {
   if (data.size() < 4) {
@@ -358,33 +380,11 @@ std::optional<std::vector<uint8_t>> ExtractBytesFromTuple(Span data,
   return ExtractBytes(bytes);
 }
 
-std::optional<std::vector<uint8_t>>
-ExtractFixedBytesFromTuple(Span data, size_t fixed_size, size_t tuple_pos) {
-  if (fixed_size == 0 || fixed_size > 32) {
-    NOTREACHED_IN_MIGRATION();
-    return std::nullopt;
-  }
-
-  // Head contains bytes itself.
-  auto head = ExtractHeadFromTuple(data, tuple_pos);
-  if (!head) {
-    return std::nullopt;
-  }
-
-  if (!CheckPadding(head->subspan(0), fixed_size)) {
-    return std::nullopt;
-  }
-
-  return std::vector<uint8_t>{head->begin(), head->begin() + fixed_size};
-}
-
-// NOLINTNEXTLINE(runtime/references)
 size_t AppendEmptyRow(std::vector<uint8_t>& destination) {
   destination.resize(destination.size() + kRowLength, 0);
   return kRowLength;
 }
 
-// NOLINTNEXTLINE(runtime/references)
 size_t AppendRow(std::vector<uint8_t>& destination, uint256_t value) {
   // Append 32 bytes.
   destination.resize(destination.size() + kRowLength, 0);
@@ -393,7 +393,6 @@ size_t AppendRow(std::vector<uint8_t>& destination, uint256_t value) {
   return kRowLength;
 }
 
-// NOLINTNEXTLINE(runtime/references)
 size_t AppendRow(std::vector<uint8_t>& destination, Span32 value) {
   DCHECK_EQ(value.size(), kRowLength);
   // Append 32 bytes.
@@ -404,7 +403,6 @@ size_t AppendRow(std::vector<uint8_t>& destination, Span32 value) {
   return kRowLength;
 }
 
-// NOLINTNEXTLINE(runtime/references)
 size_t AppendBytesWithPadding(std::vector<uint8_t>& destination, Span bytes) {
   auto padded_size = PaddedSize(bytes.size());
   destination.resize(destination.size() + padded_size);
@@ -413,7 +411,6 @@ size_t AppendBytesWithPadding(std::vector<uint8_t>& destination, Span bytes) {
   return padded_size;
 }
 
-// NOLINTNEXTLINE(runtime/references)
 size_t AppendBytes(std::vector<uint8_t>& destination, Span bytes) {
   size_t total_added_bytes = 0;
   total_added_bytes += AppendRow(destination, bytes.size());
@@ -421,7 +418,6 @@ size_t AppendBytes(std::vector<uint8_t>& destination, Span bytes) {
   return total_added_bytes;
 }
 
-// NOLINTNEXTLINE(runtime/references)
 void EncodeTuple(std::vector<uint8_t>& destination,
                  Span bytes_0,
                  Span bytes_1) {

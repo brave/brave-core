@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "base/base64.h"
+#include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
@@ -19,13 +20,14 @@ namespace brave_wallet {
 namespace {
 
 // Get the 32 byte message hash
-std::vector<uint8_t> GetMessageHash(base::span<const uint8_t> message) {
-  std::string prefix("\x19");
-  prefix += std::string("Ethereum Signed Message:\n" +
-                        base::NumberToString(message.size()));
+KeccakHashArray GetMessageHash(base::span<const uint8_t> message) {
+  std::string prefix =
+      "\x19"
+      "Ethereum Signed Message:\n" +
+      base::NumberToString(message.size());
   std::vector<uint8_t> hash_input(prefix.begin(), prefix.end());
-  hash_input.insert(hash_input.end(), message.begin(), message.end());
-  return brave_wallet::KeccakHash(hash_input);
+  base::Extend(hash_input, message);
+  return KeccakHash(hash_input);
 }
 
 }  // namespace
@@ -53,7 +55,7 @@ std::optional<std::string> EthereumKeyring::RecoverAddress(
   // So recid = v - 27 when chain_id is 0
   uint8_t recid = v - 27;
   signature_only.pop_back();
-  std::vector<uint8_t> hash = GetMessageHash(message);
+  auto hash = GetMessageHash(message);
 
   // Public keys (in scripts) are given as 04 <x> <y> where x and y are 32
   // byte big-endian integers representing the coordinates of a point on the
@@ -88,20 +90,20 @@ std::vector<uint8_t> EthereumKeyring::SignMessage(
     return std::vector<uint8_t>();
   }
 
-  std::vector<uint8_t> hash;
+  std::array<uint8_t, kSecp256k1MsgSize> hashed_message;
   if (!is_eip712) {
-    hash = GetMessageHash(message);
+    hashed_message = GetMessageHash(message);
   } else {
     // eip712 hash is Keccak
     if (message.size() != 32) {
       return std::vector<uint8_t>();
     }
 
-    hash.assign(message.begin(), message.end());
+    base::span(hashed_message).copy_from(message);
   }
 
   int recid;
-  std::vector<uint8_t> signature = hd_key->SignCompact(hash, &recid);
+  std::vector<uint8_t> signature = hd_key->SignCompact(hashed_message, &recid);
   uint8_t v =
       static_cast<uint8_t>(chain_id ? recid + chain_id * 2 + 35 : recid + 27);
   signature.push_back(v);
@@ -117,9 +119,9 @@ void EthereumKeyring::SignTransaction(const std::string& address,
     return;
   }
 
-  const std::vector<uint8_t> message = tx->GetMessageToSign(chain_id);
-  int recid;
-  const std::vector<uint8_t> signature = hd_key->SignCompact(message, &recid);
+  int recid = 0;
+  const std::vector<uint8_t> signature =
+      hd_key->SignCompact(tx->GetHashedMessageToSign(chain_id), &recid);
   tx->ProcessSignature(signature, recid, chain_id);
 }
 

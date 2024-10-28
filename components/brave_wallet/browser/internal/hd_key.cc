@@ -78,8 +78,8 @@ bool UTCPasswordVerification(const std::string& derived_key,
   mac_verification_input.insert(mac_verification_input.end(),
                                 ciphertext.begin(), ciphertext.end());
   // verify password
-  std::vector<uint8_t> mac_verification(KeccakHash(mac_verification_input));
-  if (base::ToLowerASCII(base::HexEncode(mac_verification)) != mac) {
+  if (base::ToLowerASCII(
+          base::HexEncode(KeccakHash(mac_verification_input))) != mac) {
     VLOG(0) << __func__ << ": password does not match";
     return false;
   }
@@ -672,13 +672,10 @@ std::unique_ptr<HDKey> HDKey::DeriveChildFromPath(const std::string& path) {
   return hd_key;
 }
 
-std::vector<uint8_t> HDKey::SignCompact(base::span<const uint8_t> msg,
-                                        int* recid) {
+std::vector<uint8_t> HDKey::SignCompact(
+    base::span<const uint8_t, kSecp256k1MsgSize> msg,
+    int* recid) {
   std::vector<uint8_t> sig(kCompactSignatureSize);
-  if (msg.size() != 32) {
-    LOG(ERROR) << __func__ << ": message length should be 32";
-    return sig;
-  }
   if (!recid) {
     secp256k1_ecdsa_signature ecdsa_sig;
     if (!secp256k1_ecdsa_sign(GetSecp256k1Ctx(), &ecdsa_sig, msg.data(),
@@ -713,7 +710,7 @@ std::vector<uint8_t> HDKey::SignCompact(base::span<const uint8_t> msg,
 }
 
 std::optional<std::vector<uint8_t>> HDKey::SignDer(
-    base::span<const uint8_t, 32> msg) {
+    base::span<const uint8_t, kSecp256k1MsgSize> msg) {
   unsigned char extra_entropy[32] = {0};
   secp256k1_ecdsa_signature ecdsa_sig;
   if (!secp256k1_ecdsa_sign(GetSecp256k1Ctx(), &ecdsa_sig, msg.data(),
@@ -788,13 +785,14 @@ bool HDKey::VerifyForTesting(base::span<const uint8_t> msg,
   return true;
 }
 
-std::vector<uint8_t> HDKey::RecoverCompact(bool compressed,
-                                           base::span<const uint8_t> msg,
-                                           base::span<const uint8_t> sig,
-                                           int recid) {
+std::vector<uint8_t> HDKey::RecoverCompact(
+    bool compressed,
+    base::span<const uint8_t, kSecp256k1MsgSize> msg,
+    base::span<const uint8_t> sig,
+    int recid) {
   size_t public_key_len = compressed ? 33 : 65;
   std::vector<uint8_t> public_key(public_key_len);
-  if (msg.size() != 32 || sig.size() != kCompactSignatureSize) {
+  if (sig.size() != kCompactSignatureSize) {
     LOG(ERROR) << __func__ << ": message or signature length is invalid";
     return public_key;
   }

@@ -93,7 +93,7 @@ TEST(Eip2930TransactionUnitTest, GetMessageToSign) {
 
   access_list->push_back(item);
 
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.GetMessageToSign())),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.GetHashedMessageToSign(0))),
             "78528e2724aa359c58c13e43a7c467eb721ce8d410c2a12ee62943a3aaefb60b");
 }
 
@@ -126,7 +126,7 @@ TEST(Eip2930TransactionUnitTest, GetSignedTransactionAndHash) {
   key.SetPrivateKey(private_key);
   int recid;
   const std::vector<uint8_t> signature =
-      key.SignCompact(tx.GetMessageToSign(), &recid);
+      key.SignCompact(tx.GetHashedMessageToSign(0), &recid);
 
   ASSERT_FALSE(tx.IsSigned());
   tx.ProcessSignature(signature, recid);

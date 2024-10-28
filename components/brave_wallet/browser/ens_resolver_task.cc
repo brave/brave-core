@@ -167,7 +167,7 @@ std::optional<OffchainLookupData> OffchainLookupData::ExtractFromEthAbiPayload(
   auto sender = eth_abi::ExtractAddressFromTuple(args, 0);
   auto urls = eth_abi::ExtractStringArrayFromTuple(args, 1);
   auto call_data = eth_abi::ExtractBytesFromTuple(args, 2);
-  auto callback_function = eth_abi::ExtractFixedBytesFromTuple(args, 4, 3);
+  auto callback_function = eth_abi::ExtractFixedBytesFromTuple<4>(args, 3);
   auto extra_data = eth_abi::ExtractBytesFromTuple(args, 4);
 
   if (!sender.IsValid() || !urls || !call_data || !callback_function ||
@@ -543,14 +543,12 @@ void EnsResolverTask::OnFetchOffchainDone(APIRequestResult api_request_result) {
 
   offchain_lookup_attemps_left_--;
   DCHECK_GE(offchain_lookup_attemps_left_, 0);
-  DCHECK_EQ(offchain_lookup_data_->callback_function.size(), 4u);
-  UNSAFE_TODO(eth_abi::Span4 callback_selector(
-      offchain_lookup_data_->callback_function.begin(), 4u));
 
-  offchain_callback_call_ = eth_abi::TupleEncoder()
-                                .AddBytes(*bytes_result)
-                                .AddBytes(offchain_lookup_data_->extra_data)
-                                .EncodeWithSelector(callback_selector);
+  offchain_callback_call_ =
+      eth_abi::TupleEncoder()
+          .AddBytes(*bytes_result)
+          .AddBytes(offchain_lookup_data_->extra_data)
+          .EncodeWithSelector(offchain_lookup_data_->callback_function);
 
   offchain_lookup_data_.reset();
 }
