@@ -13,7 +13,7 @@
 
 #include "base/files/file_path.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/public/serving/new_tab_page_ad_serving_condition_matcher_util.h"
+#include "brave/components/brave_ads/core/public/serving/targeting/condition_matcher/condition_matcher_util.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
 
@@ -58,7 +58,7 @@ struct Logo {
 struct SponsoredBackground {
   base::FilePath image_file;
   gfx::Point focal_point;
-  brave_ads::NewTabPageAdConditionMatcherMap condition_matchers;
+  brave_ads::ConditionMatcherMap condition_matchers;
   std::string background_color;
 
   std::string creative_instance_id;

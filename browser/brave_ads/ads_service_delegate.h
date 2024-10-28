@@ -47,6 +47,8 @@ class AdsServiceDelegate : public AdsService::Delegate {
 
   ~AdsServiceDelegate() override;
 
+  std::string GetDefaultSearchEngineName();
+
   // AdsService::Delegate implementation
   void InitNotificationHelper() override;
   bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() override;

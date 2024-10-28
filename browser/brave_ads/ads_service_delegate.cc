@@ -54,6 +54,16 @@ AdsServiceDelegate::AdsServiceDelegate(
 
 AdsServiceDelegate::~AdsServiceDelegate() {}
 
+std::string AdsServiceDelegate::GetDefaultSearchEngineName() {
+  const auto template_url_data =
+      TemplateURLPrepopulateData::GetPrepopulatedFallbackSearch(
+          profile_->GetPrefs(), &search_engine_choice_service_);
+
+  const std::u16string& default_search_engine_name =
+      template_url_data ? template_url_data->short_name() : u"";
+  return base::UTF16ToUTF8(default_search_engine_name);
+}
+
 void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
 #if BUILDFLAG(IS_ANDROID)
   // ServiceTabLauncher can currently only launch new tabs
@@ -146,20 +156,13 @@ bool AdsServiceDelegate::IsFullScreenMode() {
 #endif
 
 base::Value::Dict AdsServiceDelegate::GetVirtualPrefs() {
-  const auto template_url_data =
-      TemplateURLPrepopulateData::GetPrepopulatedFallbackSearch(
-          profile_->GetPrefs(), &search_engine_choice_service_);
-  if (!template_url_data) {
-    return {};
-  }
-
   return base::Value::Dict()
       .Set("[virtual]:operating_system.name", version_info::GetOSType())
       .Set("[virtual]:build_channel.name",
            version_info::GetChannelString(chrome::GetChannel()))
       .Set("[virtual]:browser_version", version_info::GetVersionNumber())
       .Set("[virtual]:default_search_engine.name",
-           base::UTF16ToUTF8(template_url_data->short_name()));
+           GetDefaultSearchEngineName());
 }
 
 }  // namespace brave_ads

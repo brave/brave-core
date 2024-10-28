@@ -26,7 +26,7 @@ namespace {
 constexpr char kTableName[] = "creative_new_tab_page_ad_wallpapers";
 
 std::string ConditionMatchersToString(
-    const NewTabPageAdConditionMatcherMap& condition_matchers) {
+    const ConditionMatcherMap& condition_matchers) {
   std::vector<std::string> condition_matchers_as_string;
   condition_matchers_as_string.reserve(condition_matchers.size());
 
