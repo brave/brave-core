@@ -53,7 +53,7 @@ class BraveWindowTracker : public BrowserListObserver {
   void UpdateP3AValues() const;
 
   base::RepeatingTimer timer_;
-  raw_ptr<PrefService> local_state_ = nullptr;
+  raw_ptr<PrefService, DanglingUntriaged> local_state_ = nullptr;
 };
 #endif  // !BUILDFLAG(IS_ANDROID)
 

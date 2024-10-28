@@ -249,9 +249,10 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
   }
 
  private:
-  raw_ptr<content::WebContents> wallet_ = nullptr;
-  raw_ptr<content::WebContents> settings_ = nullptr;
-  raw_ptr<brave_wallet::BraveWalletService> brave_wallet_service_ = nullptr;
+  raw_ptr<content::WebContents, DanglingUntriaged> wallet_ = nullptr;
+  raw_ptr<content::WebContents, DanglingUntriaged> settings_ = nullptr;
+  raw_ptr<brave_wallet::BraveWalletService, DanglingUntriaged>
+      brave_wallet_service_ = nullptr;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 };

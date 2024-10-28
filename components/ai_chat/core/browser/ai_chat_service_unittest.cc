@@ -172,7 +172,7 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
  private:
   mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver_{this};
   mojo::Remote<mojom::ConversationHandler> conversation_handler_remote_;
-  raw_ptr<ConversationHandler> conversation_handler_;
+  raw_ptr<ConversationHandler, DanglingUntriaged> conversation_handler_;
 };
 
 class MockAssociatedContent

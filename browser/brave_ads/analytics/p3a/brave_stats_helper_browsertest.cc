@@ -48,14 +48,14 @@ class BraveStatsHelperBrowserTest : public PlatformBrowserTest {
   }
 
   base::FilePath profile_one_path_;
-  raw_ptr<Profile> profile_one_;
+  raw_ptr<Profile, DanglingUntriaged> profile_one_;
 
   base::FilePath profile_two_path_;
-  raw_ptr<Profile> profile_two_;
+  raw_ptr<Profile, DanglingUntriaged> profile_two_;
 
-  raw_ptr<ProfileManager> profile_manager_;
-  raw_ptr<PrefService> local_state_;
-  raw_ptr<BraveStatsHelper> brave_stats_helper_;
+  raw_ptr<ProfileManager, DanglingUntriaged> profile_manager_;
+  raw_ptr<PrefService, DanglingUntriaged> local_state_;
+  raw_ptr<BraveStatsHelper, DanglingUntriaged> brave_stats_helper_;
 
   base::HistogramTester histogram_tester_;
 };

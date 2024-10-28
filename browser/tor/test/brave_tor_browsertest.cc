@@ -145,7 +145,7 @@ void NonBlockingDelay(base::TimeDelta delay) {
 class BraveTorBrowserTest : public InProcessBrowserTest {
  public:
   struct TorInfo {
-    raw_ptr<Profile> tor_profile = nullptr;
+    raw_ptr<Profile, DanglingUntriaged> tor_profile = nullptr;
     int tor_pid = 0;
   };
 

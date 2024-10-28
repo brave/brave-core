@@ -35,7 +35,7 @@ class ObserverLogger : public RenderProcessHostObserver {
     observed_host_->RemoveObserver(this);
     EXPECT_EQ(info.exit_code, 0);
   }
-  raw_ptr<RenderProcessHost> observed_host_ = nullptr;
+  raw_ptr<RenderProcessHost, DanglingUntriaged> observed_host_ = nullptr;
 };
 
 }  // namespace

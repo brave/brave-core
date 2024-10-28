@@ -105,7 +105,8 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
-  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
+  raw_ptr<BraveWalletService, DanglingUntriaged> brave_wallet_service_ =
+      nullptr;
   std::vector<std::string> methods_{"request", "send1", "send2", "sendAsync"};
   std::vector<std::string> addresses_{
       "0x6B175474E89094C44Da98b954EedeAC495271d0F",
