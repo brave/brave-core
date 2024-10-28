@@ -21,6 +21,7 @@ protocol TopToolbarDelegate: AnyObject {
     _ urlBar: TopToolbarView,
     action: PlaylistURLBarButton.MenuAction
   )
+  func topToolbarDidPressTranslateButton(_ urlBar: TopToolbarView)
   func topToolbarDidEnterOverlayMode(_ topToolbar: TopToolbarView)
   func topToolbarDidLeaveOverlayMode(_ topToolbar: TopToolbarView)
   func topToolbarDidPressScrollToTop(_ topToolbar: TopToolbarView)
@@ -56,6 +57,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   enum URLBarButton {
     case wallet
     case playlist
+    case translate
   }
 
   // MARK: Internal
@@ -126,7 +128,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
     privateBrowsingManager: privateBrowsingManager
   ).then {
     $0.translatesAutoresizingMaskIntoConstraints = false
-    $0.readerModeState = ReaderModeState.unavailable
+    $0.readerModeState = .unavailable
+    $0.translationState = .unavailable
     $0.delegate = self
     $0.layer.cornerRadius = UX.textFieldCornerRadius
     $0.layer.cornerCurve = .continuous
@@ -650,6 +653,11 @@ class TopToolbarView: UIView, ToolbarProtocol {
     updateURLBarButtonsVisibility()
   }
 
+  func updateTranslateButtonState(_ state: TranslateURLBarButton.TranslateState) {
+    locationView.translationState = state
+    updateURLBarButtonsVisibility()
+  }
+
   func updateWalletButtonState(_ state: WalletURLBarButton.ButtonState) {
     locationView.walletButton.buttonState = state
     updateURLBarButtonsVisibility()
@@ -927,6 +935,10 @@ extension TopToolbarView: TabLocationViewDelegate {
     action: PlaylistURLBarButton.MenuAction
   ) {
     delegate?.topToolbarDidPressPlaylistMenuAction(self, action: action)
+  }
+
+  func tabLocationViewDidTapTranslateButton(_ tabLocationView: TabLocationView) {
+    delegate?.topToolbarDidPressTranslateButton(self)
   }
 
   func tabLocationViewDidBeginDragInteraction(_ tabLocationView: TabLocationView) {

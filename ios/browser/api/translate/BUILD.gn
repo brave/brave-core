@@ -1,0 +1,29 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("translate") {
+  sources = [
+    "translate_script.h",
+    "translate_script.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//components/language/ios/browser:browser",
+    "//components/resources:components_resources_grit",
+    "//components/translate/ios/browser",
+    "//ios/web/annotations:annotations",
+    "//ios/web/js_messaging",
+    "//ios/web/navigation:navigation_feature",
+    "//ios/web/public/js_messaging:js_messaging",
+    "//ios/web/text_fragments:text_fragments",
+    "//ui/base:base",
+  ]
+
+  frameworks = [ "Foundation.framework" ]
+}

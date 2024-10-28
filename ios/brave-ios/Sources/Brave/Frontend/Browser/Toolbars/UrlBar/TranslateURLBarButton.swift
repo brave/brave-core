@@ -1,3 +1,4 @@
+// Copyright 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -5,28 +6,38 @@
 import DesignSystem
 import UIKit
 
-class ReaderModeButton: UIButton {
+class TranslateURLBarButton: UIButton {
   var selectedTintColor: UIColor? {
     didSet {
       updateAppearance()
     }
   }
+
   var unselectedTintColor: UIColor? {
     didSet {
       updateAppearance()
     }
   }
 
+  var imageIcon: UIImage? {
+    UIImage(braveSystemNamed: "leo.product.translate")
+  }
+
   override init(frame: CGRect) {
     super.init(frame: frame)
     adjustsImageWhenHighlighted = false
-    setImage(UIImage(braveSystemNamed: "leo.product.speedreader"), for: .normal)
+    setImage(imageIcon, for: .normal)
     updateIconSize()
   }
 
   @available(*, unavailable)
   required init?(coder aDecoder: NSCoder) {
     fatalError()
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    gradientView.frame = bounds
   }
 
   override var isSelected: Bool {
@@ -51,7 +62,7 @@ class ReaderModeButton: UIButton {
     self.tintColor = (isHighlighted || isSelected) ? selectedTintColor : unselectedTintColor
   }
 
-  private var _readerModeState: ReaderModeState = .unavailable
+  private var _translateState: TranslateState = .unavailable
 
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
@@ -70,25 +81,13 @@ class ReaderModeButton: UIButton {
     )
   }
 
-  //  override var intrinsicContentSize: CGSize {
-  //    var size = super.intrinsicContentSize
-  //    let toolbarTraitCollection = UITraitCollection(
-  //      preferredContentSizeCategory: traitCollection.toolbarButtonContentSizeCategory
-  //    )
-  //    size.width = UIFontMetrics(forTextStyle: .body).scaledValue(
-  //      for: 44,
-  //      compatibleWith: toolbarTraitCollection
-  //    )
-  //    return size
-  //  }
-
-  var readerModeState: ReaderModeState {
+  var translateState: TranslateState {
     get {
-      return _readerModeState
+      return _translateState
     }
-    set(newReaderModeState) {
-      _readerModeState = newReaderModeState
-      switch _readerModeState {
+    set(state) {
+      _translateState = state
+      switch _translateState {
       case .available:
         self.isEnabled = true
         self.isSelected = false
@@ -100,5 +99,32 @@ class ReaderModeButton: UIButton {
         self.isSelected = true
       }
     }
+  }
+
+  private let gradientView = GradientView(braveSystemName: .iconsActive)
+
+  func setOnboardingState(enabled: Bool) {
+    if enabled {
+      addSubview(gradientView)
+      gradientView.frame = bounds
+      gradientView.mask = imageView
+    } else {
+      if let imageView = imageView {
+        // gradientView.mask = imageView automatically removes the imageView from the button :o!
+        // So we have to add it back lol
+        addSubview(imageView)
+      }
+
+      gradientView.mask = nil
+      gradientView.removeFromSuperview()
+      setImage(imageIcon, for: .normal)
+      updateIconSize()
+    }
+  }
+
+  enum TranslateState {
+    case available
+    case unavailable
+    case active
   }
 }

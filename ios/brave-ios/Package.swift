@@ -585,6 +585,9 @@ var braveTarget: PackageDescription.Target = .target(
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/YoutubeQualityScript.js"),
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/BraveLeoScript.js"),
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/DarkReaderScript.js"),
+    .copy(
+      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/BraveTranslateScript.js"
+    ),
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/DeAmpScript.js"),
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/FaviconScript.js"),
     .copy(

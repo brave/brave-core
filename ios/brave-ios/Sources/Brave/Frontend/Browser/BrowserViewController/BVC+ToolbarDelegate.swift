@@ -261,6 +261,21 @@ extension BrowserViewController: TopToolbarDelegate {
     }
   }
 
+  func topToolbarDidPressTranslateButton(_ urlBar: TopToolbarView) {
+    guard let tab = tabManager.selectedTab else { return }
+    if let scriptHandler = tab.getContentScript(name: BraveTranslateScriptHandler.scriptName)
+      as? BraveTranslateScriptHandler
+    {
+      scriptHandler.presentUI(on: self)
+
+      if tab.translationState == .active {
+        scriptHandler.revertTranslation()
+      } else if tab.translationState != .active {
+        scriptHandler.startTranslation(canShowToast: true)
+      }
+    }
+  }
+
   @MainActor private func submitValidURL(
     _ text: String,
     isUserDefinedURLNavigation: Bool
@@ -1025,8 +1040,7 @@ extension BrowserViewController: ToolbarDelegate {
   }
 
   func topToolbarDidTapSecureContentState(_ urlBar: TopToolbarView) {
-    guard let tab = tabManager.selectedTab, let url = tab.url,
-      let secureContentStateButton = urlBar.locationView.secureContentStateButton
+    guard let tab = tabManager.selectedTab, let url = tab.url
     else { return }
     let hasCertificate =
       (tab.webView?.serverTrust ?? (try? ErrorPageHelper.serverTrust(from: url))) != nil
@@ -1040,7 +1054,7 @@ extension BrowserViewController: ToolbarDelegate {
       }
     )
     let popoverController = PopoverController(content: pageSecurityView)
-    popoverController.present(from: secureContentStateButton, on: self)
+    popoverController.present(from: urlBar.locationView.secureContentStateButton, on: self)
   }
 
   func showBackForwardList() {

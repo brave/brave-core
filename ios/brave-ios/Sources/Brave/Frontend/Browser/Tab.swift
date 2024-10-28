@@ -320,6 +320,7 @@ class Tab: NSObject {
   var isEditing = false
   var playlistItem: PlaylistInfo?
   var playlistItemState: PlaylistItemAddedState = .none
+  var translationState: TranslateURLBarButton.TranslateState = .unavailable
 
   /// The rewards reporting state which is filled during a page navigation.
   // It is reset to initial values when the page navigation is finished.

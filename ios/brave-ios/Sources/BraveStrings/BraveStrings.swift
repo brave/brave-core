@@ -2722,6 +2722,13 @@ extension Strings {
     value: "Cookies and Site Data",
     comment: "Settings item for clearing cookies and site data"
   )
+  public static let translatePage = NSLocalizedString(
+    "TranslatePage",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Translate",
+    comment: "Share action title"
+  )
   public static let findInPage = NSLocalizedString(
     "FindInPage",
     tableName: "BraveShared",
