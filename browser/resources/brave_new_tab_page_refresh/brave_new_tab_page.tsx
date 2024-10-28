@@ -7,10 +7,23 @@ import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { setIconBasePath } from '@brave/leo/react/icon'
 
-import { App } from './components/app'
+import { LocaleContext } from './components/context/locale_context'
+import { createLocale } from './webui/webui_locale'
+import { AppModelContext } from './components/context/app_model_context'
+import { createAppModel } from './webui/webui_app_model'
 
 setIconBasePath('chrome://resources/brave-icons')
 
+const appModel = createAppModel()
+
+Object.assign(self, {
+  [Symbol.for('ntpAppModel')]: appModel
+})
+
 createRoot(document.getElementById('root')!).render(
-  <App />
+  <LocaleContext locale={createLocale()}>
+    <AppModelContext model={appModel}>
+      <main></main>
+    </AppModelContext>
+  </LocaleContext>
 )
