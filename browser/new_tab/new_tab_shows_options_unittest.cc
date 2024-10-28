@@ -4,6 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/new_tab/new_tab_shows_options.h"
+
+#include "brave/components/brave_new_tab/new_tab_prefs.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/common/pref_names.h"
@@ -14,6 +16,8 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/url_constants.h"
+
+using brave_new_tab::prefs::NewTabShowsOption;
 
 class BraveNewTabTest : public testing::Test {
  public:
@@ -42,9 +46,8 @@ TEST_F(BraveNewTabTest, BasicTest) {
   auto* prefs = profile->GetPrefs();
 
   // Check NTP url is empty for DASHBOARD.
-  prefs->SetInteger(
-      kNewTabPageShowsOptions,
-      static_cast<int>(brave::NewTabPageShowsOptions::kDashboard));
+  prefs->SetInteger(brave_new_tab::prefs::kNewTabShowsOption,
+                    static_cast<int>(NewTabShowsOption::kDashboard));
   EXPECT_EQ(GURL(), brave::GetNewTabPageURL(profile));
   EXPECT_EQ(GURL(), brave::GetNewTabPageURL(otr_profile));
   EXPECT_TRUE(brave::ShouldUseNewTabURLForNewTab(profile));
@@ -52,9 +55,8 @@ TEST_F(BraveNewTabTest, BasicTest) {
 
   // Check NTP url is empty when option is HOMEPAGE and kHomePageIsNewTabPage
   // is true.
-  prefs->SetInteger(
-      kNewTabPageShowsOptions,
-      static_cast<int>(brave::NewTabPageShowsOptions::kHomepage));
+  prefs->SetInteger(brave_new_tab::prefs::kNewTabShowsOption,
+                    static_cast<int>(NewTabShowsOption::kHomepage));
   prefs->SetString(prefs::kHomePage, "https://www.brave.com/");
   prefs->SetBoolean(prefs::kHomePageIsNewTabPage, true);
   EXPECT_EQ(GURL(), brave::GetNewTabPageURL(profile));
@@ -77,9 +79,8 @@ TEST_F(BraveNewTabTest, BasicTest) {
 
   // Check NTP url is used when option is BLANKPAGE.
   // Blank page will go NTP route and BraveNewTabUI will handle it.
-  prefs->SetInteger(
-      kNewTabPageShowsOptions,
-      static_cast<int>(brave::NewTabPageShowsOptions::kBlankpage));
+  prefs->SetInteger(brave_new_tab::prefs::kNewTabShowsOption,
+                    static_cast<int>(NewTabShowsOption::kBlankpage));
   EXPECT_EQ(GURL(), brave::GetNewTabPageURL(profile));
   EXPECT_EQ(GURL(), brave::GetNewTabPageURL(otr_profile));
   EXPECT_TRUE(brave::ShouldUseNewTabURLForNewTab(profile));

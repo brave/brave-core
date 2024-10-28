@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "brave/components/brave_new_tab/new_tab_prefs.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -29,36 +30,32 @@ GURL GetNewTabPageURL(Profile* profile) {
 
   auto* prefs = profile->GetPrefs();
 
-  NewTabPageShowsOptions option = static_cast<NewTabPageShowsOptions>(
-      prefs->GetInteger(kNewTabPageShowsOptions));
-  if (option == NewTabPageShowsOptions::kHomepage) {
-    if (prefs->GetBoolean(prefs::kHomePageIsNewTabPage)) {
+  switch (brave_new_tab::prefs::GetNewTabShowsOption(prefs)) {
+    case brave_new_tab::prefs::NewTabShowsOption::kHomepage:
+      return prefs->GetBoolean(prefs::kHomePageIsNewTabPage)
+                 ? GURL()
+                 : GURL(prefs->GetString(prefs::kHomePage));
+    case brave_new_tab::prefs::NewTabShowsOption::kBlankpage:
+    case brave_new_tab::prefs::NewTabShowsOption::kDashboard:
       return GURL();
-    }
-    return GURL(prefs->GetString(prefs::kHomePage));
-  } else if (option == NewTabPageShowsOptions::kBlankpage) {
-    // NewTab route will handle for blank page.
-    return GURL();
-  } else {
-    DCHECK_EQ(NewTabPageShowsOptions::kDashboard, option);
-    return GURL();
   }
 }
 
 base::Value::List GetNewTabShowsOptionsList(Profile* profile) {
+  using brave_new_tab::prefs::NewTabShowsOption;
+
   base::Value::List list;
 
   base::Value::Dict dashboard_option;
   dashboard_option.Set("value",
-                       static_cast<int>(NewTabPageShowsOptions::kDashboard));
+                       static_cast<int>(NewTabShowsOption::kDashboard));
   dashboard_option.Set("name",
                        l10n_util::GetStringUTF8(
                            IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_DASHBOARD));
   list.Append(std::move(dashboard_option));
 
   base::Value::Dict homepage_option;
-  homepage_option.Set("value",
-                      static_cast<int>(NewTabPageShowsOptions::kHomepage));
+  homepage_option.Set("value", static_cast<int>(NewTabShowsOption::kHomepage));
   homepage_option.Set("name",
                       l10n_util::GetStringUTF8(
                           IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_HOMEPAGE));
@@ -66,7 +63,7 @@ base::Value::List GetNewTabShowsOptionsList(Profile* profile) {
 
   base::Value::Dict blankpage_option;
   blankpage_option.Set("value",
-                       static_cast<int>(NewTabPageShowsOptions::kBlankpage));
+                       static_cast<int>(NewTabShowsOption::kBlankpage));
   blankpage_option.Set("name",
                        l10n_util::GetStringUTF8(
                            IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_BLANKPAGE));
@@ -81,9 +78,8 @@ bool ShouldUseNewTabURLForNewTab(Profile* profile) {
 }
 
 bool ShouldNewTabShowDashboard(Profile* profile) {
-  auto* prefs = profile->GetPrefs();
-  if (static_cast<NewTabPageShowsOptions>(prefs->GetInteger(
-          kNewTabPageShowsOptions)) == NewTabPageShowsOptions::kBlankpage) {
+  auto option = brave_new_tab::prefs::GetNewTabShowsOption(profile->GetPrefs());
+  if (option == brave_new_tab::prefs::NewTabShowsOption::kBlankpage) {
     return false;
   }
 
@@ -95,8 +91,8 @@ bool ShouldNewTabShowBlankpage(Profile* profile) {
     return false;
   }
 
-  return profile->GetPrefs()->GetInteger(kNewTabPageShowsOptions) ==
-         static_cast<int>(brave::NewTabPageShowsOptions::kBlankpage);
+  auto option = brave_new_tab::prefs::GetNewTabShowsOption(profile->GetPrefs());
+  return option == brave_new_tab::prefs::NewTabShowsOption::kBlankpage;
 }
 
 }  // namespace brave

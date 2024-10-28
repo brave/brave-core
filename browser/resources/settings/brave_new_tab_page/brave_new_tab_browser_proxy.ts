@@ -7,7 +7,7 @@ import {sendWithPromise} from 'chrome://resources/js/cr.js';
 
 export type NewTabOption = {
   name: string
-  value: number // corresponds to NewTabPageShowsOptions enum
+  value: number // corresponds to NewTabShowsOption enum
 }
 
 export interface BraveNewTabBrowserProxy {

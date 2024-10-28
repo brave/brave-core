@@ -30,6 +30,7 @@ source_set("unittest") {
     deps = [
       "//brave/browser",
       "//brave/common",
+      "//brave/components/brave_new_tab",
       "//brave/components/constants",
       "//chrome/common",
       "//chrome/test:test_support",

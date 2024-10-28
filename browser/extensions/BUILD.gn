@@ -140,6 +140,7 @@ source_set("extensions") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_extension:static_resources",
+    "//brave/components/brave_new_tab",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",

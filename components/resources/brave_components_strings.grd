@@ -793,6 +793,7 @@
       <part file="ai_chat_prompts.grdp" />
       <part file="ai_chat_ui_strings.grdp" />
       <if expr="not is_android">
+        <part file="../brave_new_tab/resources/brave_new_tab_strings.grdp" />
         <part file="brave_shields_strings.grdp" />
         <part file="brave_welcome_strings.grdp" />
       </if>

@@ -151,6 +151,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_ads/core",
   "//brave/components/brave_component_updater/browser",
   "//brave/components/brave_federated",
+  "//brave/components/brave_new_tab",
   "//brave/components/brave_new_tab_ui:mojom",
   "//brave/components/brave_news/common:mojom",
   "//brave/components/brave_perf_predictor/browser",
@@ -288,6 +289,7 @@ if (!is_android) {
 
   brave_chrome_browser_deps += [
     "//brave/browser/ui/ai_chat",
+    "//brave/browser/ui/webui/brave_new_tab",
     "//brave/browser/ui/webui/brave_news_internals",
     "//components/feed:feature_list",
     "//components/feed/core/v2:feed_core_v2",

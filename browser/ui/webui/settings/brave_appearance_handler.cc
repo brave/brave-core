@@ -11,6 +11,7 @@
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/components/brave_new_tab/new_tab_prefs.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -36,7 +37,7 @@ void BraveAppearanceHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
   profile_state_change_registrar_.Init(profile_->GetPrefs());
   profile_state_change_registrar_.Add(
-      kNewTabPageShowsOptions,
+      brave_new_tab::prefs::kNewTabShowsOption,
       base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
                           base::Unretained(this)));
   profile_state_change_registrar_.Add(
@@ -98,7 +99,8 @@ void BraveAppearanceHandler::OnBraveDarkModeChanged() {
 
 void BraveAppearanceHandler::OnPreferenceChanged(const std::string& pref_name) {
   if (IsJavascriptAllowed()) {
-    if (pref_name == kNewTabPageShowsOptions || pref_name == prefs::kHomePage ||
+    if (pref_name == brave_new_tab::prefs::kNewTabShowsOption ||
+        pref_name == prefs::kHomePage ||
         pref_name == prefs::kHomePageIsNewTabPage) {
       FireWebUIListener(
           "show-new-tab-dashboard-settings-changed",

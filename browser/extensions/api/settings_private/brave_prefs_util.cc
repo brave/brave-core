@@ -7,6 +7,7 @@
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_new_tab/new_tab_prefs.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -184,7 +185,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kNewTabPageShowBraveVPN] =
       settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kNewTabPageShowsOptions] =
+  (*s_brave_allowlist)[brave_new_tab::prefs::kNewTabShowsOption] =
       settings_api::PrefType::kNumber;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Web discovery prefs

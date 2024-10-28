@@ -13,12 +13,6 @@ class Profile;
 
 namespace brave {
 
-enum class NewTabPageShowsOptions {
-  kDashboard,
-  kHomepage,
-  kBlankpage
-};
-
 GURL GetNewTabPageURL(Profile* profile);
 base::Value::List GetNewTabShowsOptionsList(Profile* profile);
 bool ShouldUseNewTabURLForNewTab(Profile* profile);
