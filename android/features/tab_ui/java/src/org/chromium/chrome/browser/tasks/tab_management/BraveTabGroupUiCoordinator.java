@@ -23,6 +23,7 @@ import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider.IncognitoStateObserver;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tabmodel.TabModelSelectorObserver;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
 import org.chromium.chrome.tab_ui.R;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
@@ -37,6 +38,7 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
     // Own members.
     private IncognitoStateProvider mIncognitoStateProvider;
     private IncognitoStateObserver mIncognitoStateObserver;
+    private TabModelSelector mTabModelSelector;
 
     public BraveTabGroupUiCoordinator(
             @NonNull Activity activity,
@@ -68,6 +70,7 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
                 modalDialogManager);
 
         mIncognitoStateProvider = incognitoStateProvider;
+        mTabModelSelector = tabModelSelector;
 
         assert mToolbarView != null : "Make sure mToolbarView is properly patched in bytecode.";
         ChromeImageView fadingEdgeStart =
@@ -91,6 +94,41 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
 
     @Override
     public void initializeWithNative(
+            Activity activity,
+            BottomControlsCoordinator.BottomControlsVisibilityController visibilityController,
+            Callback<Object> onModelTokenChange) {
+        // Fix for the null object crash at TabGroupSyncFeatures.isTabGroupSyncEnabled
+        // Stack:
+        // at TabGroupSyncFeatures.isTabGroupSyncEnabled (TabGroupSyncFeatures.java:18)
+        // at TabGroupUiMediator.<init> (TabGroupUiMediator.java:143)
+        // at TabGroupUiCoordinator.initializeWithNative (TabGroupUiCoordinator.java:238)
+        // at BraveTabGroupUiCoordinator.initializeWithNative (BraveTabGroupUiCoordinator.java:97)
+        // at BottomControlsCoordinator.lambda$new$1 (BottomControlsCoordinator.java:148)
+        //
+        // TabModelSelector.getModel returns EmptyTabModel with null profile when the model is not
+        // found.
+        // Upstream does not have this issue because they don't use BottomControlsCoordinator
+        if (mTabModelSelector.getModels().size() < 2
+                || mTabModelSelector.getModel(false).getProfile() == null) {
+            mTabModelSelector.addObserver(
+                    new TabModelSelectorObserver() {
+                        @Override
+                        public void onChange() {
+                            if (mTabModelSelector.getModels().size() >= 2
+                                    && mTabModelSelector.getModel(false).getProfile() != null) {
+                                callSuperInitializeWithNative(
+                                        activity, visibilityController, onModelTokenChange);
+
+                                mTabModelSelector.removeObserver(this);
+                            }
+                        }
+                    });
+        } else {
+            callSuperInitializeWithNative(activity, visibilityController, onModelTokenChange);
+        }
+    }
+
+    private void callSuperInitializeWithNative(
             Activity activity,
             BottomControlsCoordinator.BottomControlsVisibilityController visibilityController,
             Callback<Object> onModelTokenChange) {
