@@ -247,7 +247,7 @@ bool GetEthJsonRequestInfo(const std::string& json,
       if (found_params->is_list()) {
         *params_list = std::move(found_params->GetList());
       } else if (!found_params->is_dict()) {
-        // dict is a valid type of params by we don't support it.
+        // dict is a valid type of params but we don't support it.
         return false;
       }
     }
@@ -451,23 +451,15 @@ bool ParsePersonalEcRecoverParams(const std::string& json,
   return true;
 }
 
-std::optional<std::string> ParseEthSignTypedDataAddress(
-    const base::Value::List& params_list) {
-  if (params_list.size() != 2) {
-    return std::nullopt;
-  }
-
-  const std::string* address_str = params_list[0].GetIfString();
-  if (!address_str) {
-    return std::nullopt;
-  }
-  return *address_str;
-}
-
 mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
     const base::Value::List& params_list,
     EthSignTypedDataHelper::Version version) {
   if (params_list.size() != 2) {
+    return nullptr;
+  }
+
+  const std::string* address_str = params_list[0].GetIfString();
+  if (!address_str) {
     return nullptr;
   }
 
@@ -476,6 +468,8 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
     return nullptr;
   }
 
+  // TODO(apaymyshev): support dict there per
+  // https://github.com/MetaMask/metamask-extension/issues/18462
   auto typed_data = base::JSONReader::Read(
       *typed_data_str,
       base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
@@ -525,6 +519,7 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
   }
 
   mojom::EthSignTypedDataPtr result = mojom::EthSignTypedData::New();
+  result->address_param = *address_str;
 
   auto type_hash = base::HexEncode(helper->GetTypeHash(*primary_type));
   if (type_hash == kCowSwapTypeHash) {

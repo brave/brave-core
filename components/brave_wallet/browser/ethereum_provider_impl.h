@@ -98,11 +98,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                RequestCallback callback,
                base::Value id);
   // Used for eth_signTypedData
-  // message is for displaying the sign request to users
-  // message_to_sign is the hex representation without 0x for eip712 hash
-  // domain is the domain separator defined in eip712
-  void SignTypedMessage(const std::string& address,
-                        mojom::EthSignTypedDataPtr eth_sign_typed_data,
+  void SignTypedMessage(mojom::EthSignTypedDataPtr eth_sign_typed_data,
                         RequestCallback callback,
                         base::Value id);
   void GetAllowedAccountsInternal(RequestCallback callback,

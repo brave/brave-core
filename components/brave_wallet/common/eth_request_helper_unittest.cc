@@ -764,7 +764,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
 
   ASSERT_TRUE(eth_sign_typed_data);
 
-  EXPECT_EQ(ParseEthSignTypedDataAddress(params_list),
+  EXPECT_EQ(eth_sign_typed_data->address_param,
             "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826");
   EXPECT_EQ(eth_sign_typed_data->message_json, expected_message);
 

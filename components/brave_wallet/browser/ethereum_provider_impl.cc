@@ -109,15 +109,10 @@ void RejectMismatchError(base::Value id,
 }
 
 bool IsTypedDataStructure(const base::Value::List& params_list) {
-  if (ParseEthSignTypedDataAddress(params_list)) {
-    if (ParseEthSignTypedDataParams(params_list,
-                                    EthSignTypedDataHelper::Version::kV4) ||
-        ParseEthSignTypedDataParams(params_list,
-                                    EthSignTypedDataHelper::Version::kV3)) {
-      return true;
-    }
-  }
-  return false;
+  return (ParseEthSignTypedDataParams(params_list,
+                                      EthSignTypedDataHelper::Version::kV4) ||
+          ParseEthSignTypedDataParams(params_list,
+                                      EthSignTypedDataHelper::Version::kV3));
 }
 
 }  // namespace
@@ -660,7 +655,6 @@ void EthereumProviderImpl::ContinueDecryptWithSanitizedJson(
 }
 
 void EthereumProviderImpl::SignTypedMessage(
-    const std::string& address,
     mojom::EthSignTypedDataPtr eth_sign_typed_data,
     RequestCallback callback,
     base::Value id) {
@@ -678,8 +672,8 @@ void EthereumProviderImpl::SignTypedMessage(
     }
   }
 
-  const auto account_id =
-      FindAuthenticatedAccountByAddress(address, id, callback);
+  const auto account_id = FindAuthenticatedAccountByAddress(
+      eth_sign_typed_data->address_param, id, callback);
   if (!account_id) {
     return;
   }
@@ -960,20 +954,19 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
     }
     RecoverAddress(message, signature, std::move(callback), std::move(id));
   } else if (method == kEthSignTypedDataV3 || method == kEthSignTypedDataV4) {
-    auto address = ParseEthSignTypedDataAddress(params_list);
     auto eth_sign_typed_data = ParseEthSignTypedDataParams(
         params_list, method == kEthSignTypedDataV4
                          ? EthSignTypedDataHelper::Version::kV4
                          : EthSignTypedDataHelper::Version::kV3);
 
-    if (!address || !eth_sign_typed_data) {
+    if (!eth_sign_typed_data) {
       SendErrorOnRequest(error, error_message, std::move(callback),
                          std::move(id));
       return;
     }
 
-    SignTypedMessage(std::move(*address), std::move(eth_sign_typed_data),
-                     std::move(callback), std::move(id));
+    SignTypedMessage(std::move(eth_sign_typed_data), std::move(callback),
+                     std::move(id));
   } else if (method == kEthGetEncryptionPublicKey) {
     std::string address;
     if (!ParseEthGetEncryptionPublicKeyParams(normalized_json_request,

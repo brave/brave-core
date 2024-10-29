@@ -2269,6 +2269,8 @@ union EthSignTypedDataMeta {
 
 // https://eips.ethereum.org/EIPS/eip-712
 struct EthSignTypedData {
+  string address_param;
+
   string message_json;  // sanitized json string
   string domain_json;   // sanitized json string
   string types_json;    // sanitized json string

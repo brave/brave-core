@@ -49,9 +49,6 @@ bool ParseEthDecryptData(const base::Value& obj,
                          std::vector<uint8_t>* ephemeral_public_key,
                          std::vector<uint8_t>* ciphertext);
 
-std::optional<std::string> ParseEthSignTypedDataAddress(
-    const base::Value::List& params_list);
-
 mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
     const base::Value::List& params_list,
     EthSignTypedDataHelper::Version version);
