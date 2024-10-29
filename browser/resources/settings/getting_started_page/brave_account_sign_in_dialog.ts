@@ -41,7 +41,7 @@ export class SettingsBraveAccountSignInDialogElement extends CrLitElement {
 
   protected onEmailInput() {
     // https://www.regular-expressions.info
-    this.isEmailValid = Boolean(this.$.email.value.match('^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$'))
+    this.isEmailValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.$.email.value)
   }
 
   protected onPasswordInput() {
@@ -50,10 +50,10 @@ export class SettingsBraveAccountSignInDialogElement extends CrLitElement {
 
   protected show(event: Event) {
     event.preventDefault()
-    const icon = this.$.password.querySelector('#icon')
-    const isShowing = icon!.getAttribute('name') === 'eye-on'
-    icon!.setAttribute('name', isShowing ? 'eye-off' : 'eye-on')
-    this.$.password.setAttribute('type', isShowing ? 'password' : 'text')
+    const target = event.target as Element
+    const isShowing = target.getAttribute('name') === 'eye-on'
+    target.setAttribute('name', isShowing ? 'eye-off' : 'eye-on')
+    target.parentElement!.setAttribute('type', isShowing ? 'password' : 'text')
   }
 
   protected isEmailValid: boolean = false

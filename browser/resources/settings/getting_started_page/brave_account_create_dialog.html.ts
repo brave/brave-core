@@ -15,18 +15,30 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
         <leo-input id="email_address" placeholder="Enter your email address" @input=${this.onEmailAddressInput}>
           <div class="label">Email address</div>
         </leo-input>
-        <leo-input id="account_name" placeholder="Enter the name of your account" @input=${this.onAccountNameInput}>
+        <leo-input id="account_name" placeholder="Enter a name for your account" @input=${this.onAccountNameInput}>
           <div class="label">Account name</div>
         </leo-input>
-        <leo-input id="create_password" type="password" placeholder="Enter your password" @input=${this.onCreatePasswordInput}>
-          <div class="label">Create a password</div>
-          <leo-icon slot="right-icon"
-                    id="icon"
-                    name="eye-off"
-                    @click=${this.show}>
-          </leo-icon>
-        </leo-input>
-        <leo-input id="confirm_password" type="password" placeholder="Confirm your password" @input=${this.onConfirmPasswordInput}>
+        <div>
+          <leo-input id="create_password" type="password" placeholder="Enter your password" @input=${this.onCreatePasswordInput}>
+            <div class="label">Create a password</div>
+            <leo-icon slot="right-icon"
+                      id="icon"
+                      name="eye-off"
+                      @click=${this.show}>
+            </leo-icon>
+          </leo-input>
+          <div id="password_strength_indicator">
+            <div class="password-strength-bar">
+              <div id="password_strength_value"></div>
+            </div>
+            <div id="password_strength_category"></div>
+          </div>
+        </div>
+        <leo-input id="confirm_password"
+                   ?disabled=${!this.isCreatePasswordValid}
+                   type="password"
+                   placeholder="Confirm your password"
+                   @input=${this.onConfirmPasswordInput}>
           <div class="label">Confirm password</div>
           <leo-icon slot="right-icon"
                     id="icon"

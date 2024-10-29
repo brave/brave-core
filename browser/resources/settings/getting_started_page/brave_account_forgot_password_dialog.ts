@@ -39,7 +39,7 @@ export class SettingsBraveAccountForgotPasswordDialogElement extends CrLitElemen
 
   protected onEmailInput() {
     // https://www.regular-expressions.info
-    this.isEmailValid = Boolean(this.$.email.value.match('^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$'))
+    this.isEmailValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.$.email.value)
   }
 
   protected isEmailValid: boolean = false
