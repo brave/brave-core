@@ -46,7 +46,7 @@ export class BraveToolbarSearchField extends BraveToolbarSearchFieldBase {
   static override get properties() {
     return {
       narrow: { type: Boolean, reflect: true },
-      showingSearch: { type: Boolean, reflect: true },
+      showingSearch: { type: Boolean, reflect: true, notify: true },
 
       // When true, show a loading spinner to indicate that the backend is
       // processing the search. Will only show if the search field is open.
@@ -71,7 +71,7 @@ export class BraveToolbarSearchField extends BraveToolbarSearchFieldBase {
     super.updated(changedProperties);
 
     if (changedProperties.has('showingSearch')) {
-      console.log(changedProperties)
+      console.log(this.showingSearch, changedProperties.get('showingSearch'))
       this.showingSearchChanged_(this.showingSearch, changedProperties.get('showingSearch'))
     }
   }

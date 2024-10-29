@@ -12,6 +12,7 @@ export function getHtml(this: BraveToolbarSearchField) {
       id="pageSearchToggle"
       class="page-search_toggle"
       ?checked="${this.showingSearch}"
+      @change="${() => this.showingSearch = this.$.pageSearchToggle.checked}"
       type="checkbox" />
     <div class="page-search_content" title="${this.label}">
       <label class="page-search_label" @mousedown="${this.labelMouseDown_}" for="pageSearchToggle">
@@ -31,7 +32,7 @@ export function getHtml(this: BraveToolbarSearchField) {
             class="page-search_text"
             type="search"
             @input="${this.onSearchTermInput}"
-            @search="${(this as any).onSearchTermSearch}"
+            @search="${this.onSearchTermSearch}"
             @keydown="${this.onSearchTermKeydown_}"
             @focus="${this.onInputFocus_}"
             @blur="${this.onInputBlur_}"
