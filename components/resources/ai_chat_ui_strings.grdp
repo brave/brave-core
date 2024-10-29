@@ -226,7 +226,7 @@
     This conversation is long and Leo may start forgetting things soon. You can get longer conversations by switching to a premium model, or you can clear the chat to reset it.
   </message>
   <message name="IDS_CHAT_UI_CLEAR_CHAT_BUTTON_LABEL" desc="An button label for clearing chat history">
-    Clear Chat
+    Clear conversation
   </message>
   <message name="IDS_CHAT_UI_NEW_CONVERSATION_BUTTON_LABEL" desc="A label for the button which starts a new conversation">
     Start a new conversation
@@ -400,6 +400,6 @@
     Start new conversation
   </message>
   <message name="IDS_AI_CHAT_CONVERSATION_LIST_UNTITLED" desc="Label for untitled conversations in AI Chat">
-    New chat
+    New conversation
   </message>
 </grit-part>
