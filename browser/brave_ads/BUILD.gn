@@ -61,6 +61,7 @@ source_set("impl") {
     "//brave/browser/ui/brave_ads",
     "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_ads/browser/application_state",
+    "//brave/components/l10n/common",
     "//brave/components/p3a_utils",
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",

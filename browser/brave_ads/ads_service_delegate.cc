@@ -14,6 +14,7 @@
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper.h"
 #include "brave/browser/ui/brave_ads/notification_ad.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "build/build_config.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile.h"
@@ -158,6 +159,9 @@ bool AdsServiceDelegate::IsFullScreenMode() {
 base::Value::Dict AdsServiceDelegate::GetVirtualPrefs() {
   return base::Value::Dict()
       .Set("[virtual]:operating_system.name", version_info::GetOSType())
+      .Set("[virtual]:operating_system.locale",
+           brave_l10n::GetDefaultLocaleString())
+      .Set("[virtual]:application_locale", application_locale_)
       .Set("[virtual]:build_channel.name",
            version_info::GetChannelString(chrome::GetChannel()))
       .Set("[virtual]:browser_version", version_info::GetVersionNumber())
