@@ -46,6 +46,7 @@ class DayZeroBrowserUIExptTest : public testing::Test,
     auto* prefs = profile->GetPrefs();
     EXPECT_FALSE(prefs->GetBoolean(kNewTabPageShowRewards));
     EXPECT_FALSE(prefs->GetBoolean(kNewTabPageShowBraveTalk));
+    EXPECT_FALSE(prefs->GetBoolean(kNewTabPageShowBraveVPN));
     EXPECT_FALSE(prefs->GetBoolean(kShowWalletIconOnToolbar));
     EXPECT_FALSE(
         prefs->GetBoolean(ntp_background_images::prefs::
@@ -59,6 +60,7 @@ class DayZeroBrowserUIExptTest : public testing::Test,
     auto* prefs = profile->GetPrefs();
     EXPECT_TRUE(prefs->GetBoolean(kNewTabPageShowRewards));
     EXPECT_TRUE(prefs->GetBoolean(kNewTabPageShowBraveTalk));
+    EXPECT_TRUE(prefs->GetBoolean(kNewTabPageShowBraveVPN));
     EXPECT_TRUE(prefs->GetBoolean(kShowWalletIconOnToolbar));
     EXPECT_TRUE(
         prefs->GetBoolean(ntp_background_images::prefs::

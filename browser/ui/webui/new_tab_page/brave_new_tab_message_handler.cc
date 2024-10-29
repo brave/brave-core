@@ -86,6 +86,7 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
                 prefs->GetBoolean(brave_news::prefs::kBraveNewsOptedIn));
   pref_data.Set("hideAllWidgets", prefs->GetBoolean(kNewTabPageHideAllWidgets));
   pref_data.Set("showBraveTalk", prefs->GetBoolean(kNewTabPageShowBraveTalk));
+  pref_data.Set("showBraveVPN", prefs->GetBoolean(kNewTabPageShowBraveVPN));
   pref_data.Set(
       "showSearchBox",
       prefs->GetBoolean(brave_search_conversion::prefs::kShowNTPSearchBox));
@@ -330,6 +331,11 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
+      kNewTabPageShowBraveVPN,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+
+  pref_change_registrar_.Add(
       kNewTabPageHideAllWidgets,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
@@ -452,6 +458,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settings_key = kNewTabPageHideAllWidgets;
   } else if (settings_key_input == "showBraveTalk") {
     settings_key = kNewTabPageShowBraveTalk;
+  } else if (settings_key_input == "showBraveVPN") {
+    settings_key = kNewTabPageShowBraveVPN;
   } else if (settings_key_input == "showSearchBox") {
     settings_key = brave_search_conversion::prefs::kShowNTPSearchBox;
   } else if (settings_key_input == "promptEnableSearchSuggestions") {

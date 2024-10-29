@@ -365,6 +365,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowStats, true);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
   registry->RegisterBooleanPref(kNewTabPageShowBraveTalk, true);
+  registry->RegisterBooleanPref(kNewTabPageShowBraveVPN, true);
   registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
 
 // Private New Tab Page

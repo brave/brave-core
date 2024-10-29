@@ -121,6 +121,7 @@ void DayZeroBrowserUIExptManager::SetForDayZeroBrowserUI(Profile* profile) {
   auto* prefs = profile->GetPrefs();
   prefs->SetDefaultPrefValue(kNewTabPageShowRewards, base::Value(false));
   prefs->SetDefaultPrefValue(kNewTabPageShowBraveTalk, base::Value(false));
+  prefs->SetDefaultPrefValue(kNewTabPageShowBraveVPN, base::Value(false));
   prefs->SetDefaultPrefValue(kShowWalletIconOnToolbar, base::Value(false));
   prefs->SetDefaultPrefValue(brave_rewards::prefs::kShowLocationBarButton,
                              base::Value(false));
@@ -143,6 +144,7 @@ void DayZeroBrowserUIExptManager::ResetForDayZeroBrowserUI(Profile* profile) {
   auto* prefs = profile->GetPrefs();
   prefs->SetDefaultPrefValue(kNewTabPageShowRewards, base::Value(true));
   prefs->SetDefaultPrefValue(kNewTabPageShowBraveTalk, base::Value(true));
+  prefs->SetDefaultPrefValue(kNewTabPageShowBraveVPN, base::Value(true));
   prefs->SetDefaultPrefValue(kShowWalletIconOnToolbar, base::Value(true));
   prefs->SetDefaultPrefValue(ntp_background_images::prefs::
                                  kNewTabPageShowSponsoredImagesBackgroundImage,
