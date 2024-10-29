@@ -67,7 +67,7 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
                            int task_manager_string_id,
                            bool force_load_on_create)
       : WebUIBubbleManagerImpl(anchor_view,
-                               browser->profile(),
+                               browser,
                                webui_url,
                                task_manager_string_id,
                                force_load_on_create),

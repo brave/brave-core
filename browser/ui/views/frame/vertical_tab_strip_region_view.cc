@@ -122,13 +122,12 @@ END_METADATA
 class VerticalTabSearchButton : public BraveTabSearchButton {
   METADATA_HEADER(VerticalTabSearchButton, BraveTabSearchButton)
  public:
-  VerticalTabSearchButton(
-      VerticalTabStripRegionView* region_view,
-      TabStripController* tab_strip_controller,
-      tabs::TabDeclutterController* tab_declutter_controller,
-      Edge flat_edge)
+  VerticalTabSearchButton(VerticalTabStripRegionView* region_view,
+                          TabStripController* tab_strip_controller,
+                          BrowserWindowInterface* browser_window_interface,
+                          Edge flat_edge)
       : BraveTabSearchButton(tab_strip_controller,
-                             tab_declutter_controller,
+                             browser_window_interface,
                              flat_edge) {
     SetPreferredSize(
         gfx::Size{ToggleButton::GetIconWidth(), ToggleButton::GetIconWidth()});
@@ -455,7 +454,8 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
   METADATA_HEADER(HeaderView, views::View)
  public:
   HeaderView(views::Button::PressedCallback toggle_callback,
-             VerticalTabStripRegionView* region_view)
+             VerticalTabStripRegionView* region_view,
+             BrowserWindowInterface* browser_window_interface)
       : region_view_(region_view), tab_strip_(region_view->tab_strip()) {
     SetBorder(views::CreateEmptyBorder(gfx::Insets(kHeaderInset)));
 
@@ -473,10 +473,7 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
     // way to change its bubble arrow from TOP_RIGHT at the moment.
     tab_search_button_ = AddChildView(std::make_unique<VerticalTabSearchButton>(
         region_view, region_view->tab_strip()->controller(),
-        region_view_->browser()
-            ->browser_window_features()
-            ->tab_declutter_controller(),
-        Edge::kNone));
+        browser_window_interface, Edge::kNone));
     UpdateTabSearchButtonVisibility();
 
     vertical_tab_on_right_.Init(
@@ -620,7 +617,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
             }
           },
           this),
-      this));
+      this, browser_));
   contents_view_ =
       AddChildView(std::make_unique<VerticalTabStripScrollContentsView>(
           this, original_region_view_->tab_strip_));

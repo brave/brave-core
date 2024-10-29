@@ -39,9 +39,9 @@ void BraveVPNPanelController::ShowBraveVPNPanel(bool show_select) {
     url += "select";
   }
   if (!webui_bubble_manager_) {
-    auto* profile = browser_view_->browser()->profile();
     webui_bubble_manager_ = WebUIBubbleManager::Create<VPNPanelUI>(
-        anchor_view, profile, GURL(url), IDS_BRAVE_VPN_PANEL_NAME);
+        anchor_view, browser_view_->browser(), GURL(url),
+        IDS_BRAVE_VPN_PANEL_NAME);
   }
 
   if (webui_bubble_manager_->GetBubbleWidget()) {
