@@ -27,6 +27,8 @@ source_set("unit_tests") {
 
 source_set("win") {
   sources = [
+    "brave_vpn_service_delegate_win.cc",
+    "brave_vpn_service_delegate_win.h",
     "vpn_utils_win.cc",
     "vpn_utils_win.h",
     "wireguard_connection_api_impl_win.cc",

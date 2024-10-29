@@ -8,6 +8,7 @@ import * as BraveVPN from '../api/braveVpn'
 
 export const toggleConnection = createAction('toggleConnection')
 export const launchVPNPanel = createAction('launchVPNPanel')
+export const openVPNAccountPage = createAction('openVPNAccountPage')
 export const purchasedStateChanged = createAction<BraveVPN.PurchasedState>('purchasedStateChanged')
 export const connectionStateChanged = createAction<BraveVPN.ConnectionState>('connectionStateChanged')
 export const selectedRegionChanged = createAction<BraveVPN.Region>('connectionStateChanged')

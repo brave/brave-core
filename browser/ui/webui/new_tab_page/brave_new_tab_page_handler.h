@@ -74,6 +74,8 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
                           bool ctrl_key,
                           bool meta_key,
                           bool shift_key) override;
+  void LaunchVPNPanel() override;
+  void OpenVPNAccountPage() override;
 
   // Observe BraveNTPCustomBackgroundService.
   void OnBackgroundUpdated();
