@@ -9,7 +9,9 @@
 
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/logging.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "components/prefs/pref_registry_simple.h"
 
 namespace {
 
@@ -34,6 +36,16 @@ namespace webcompat_reporter {
 
 bool NeedsToGetComponentInfo(std::string_view component_id) {
   return base::Contains(kComponentIds, component_id);
+}
+
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  //  LOG(INFO) << "[WEBCOMPAT] RegisterLocalStatePrefs";
+  //  registry->RegisterBooleanPref(kContactInfoSaveFlagPrefs, true);
+}
+
+void RegisterProfilePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(kContactInfoSaveFlagPrefs, true);
+  registry->RegisterStringPref(kContactInfoPrefs, "");
 }
 
 }  // namespace webcompat_reporter

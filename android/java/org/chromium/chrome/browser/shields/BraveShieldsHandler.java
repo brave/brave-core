@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -126,6 +127,8 @@ public class BraveShieldsHandler
     private Profile mProfile;
     public boolean isDisconnectEntityLoaded;
     private CheckBox mCheckBoxScreenshot;
+    private EditText mEditTextDetails;
+    private EditText mEditTextContact;
     private View mDialogView;
     private Dialog mDialog;
     private ImageView mImageView;
@@ -825,6 +828,8 @@ public class BraveShieldsHandler
                         mViewScreenshot.setVisibility(View.GONE);
                     }
                 });
+        mEditTextDetails = mReportBrokenSiteLayout.findViewById(R.id.details_info_text);
+        mEditTextContact = mReportBrokenSiteLayout.findViewById(R.id.contact_info_text);
 
         Button mSubmitButton = mReportBrokenSiteLayout.findViewById(R.id.btn_submit);
         mSubmitButton.setOnClickListener(
@@ -838,6 +843,12 @@ public class BraveShieldsHandler
                         mThankYouLayout.setVisibility(View.VISIBLE);
                     }
                 });
+        mWebcompatReporterHandler.getContactInfo(
+                contactInfo -> {
+                    if (contactInfo != null && !contactInfo.isEmpty()) {
+                        mEditTextContact.setText(contactInfo);
+                    }
+                });
     }
 
     private ReportInfo getReportInfo(String siteUrl) {
@@ -846,6 +857,8 @@ public class BraveShieldsHandler
         reportInfo.braveVersion = BraveVersionConstants.VERSION;
         reportInfo.reportUrl = siteUrl;
         reportInfo.screenshotPng = isScreenshotAvailable() ? mScreenshotBytes : null;
+        reportInfo.details = mEditTextDetails.getText().toString();
+        reportInfo.contact = mEditTextContact.getText().toString();
         return reportInfo;
     }
 

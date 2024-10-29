@@ -26,7 +26,7 @@ import {
 
 // Localization data
 import { getLocale } from '../../../common/locale'
-import { captureScreenshot, clearScreenshot, getCapturedScreenshot } from '../browser_proxy'
+import { captureScreenshot, clearScreenshot, getCapturedScreenshot, getSavedContactInfo } from '../browser_proxy'
 
 interface Props {
   siteUrl: string
@@ -50,6 +50,15 @@ export default class ReportView extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = { details: '', contact: '', attachScreenshot: false, screenshotObjectUrl: null }
+    getSavedContactInfo().then((ci) => {
+      console.log('getSavedContactInfo:' + ci)
+      this.setState({contact: ci})
+    })
+  }
+
+  handleContactInfoChange = async (ev: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('handleContactInfoChange - fired, contact before:' + this.state.contact + ' ev.target.value:' + ev.target.value)
+    this.setState({ contact: ev.target.value })
   }
 
   handleScreenshotChange = async (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -131,7 +140,7 @@ export default class ReportView extends React.PureComponent<Props, State> {
               </InputLabel>
               <Input
                 placeholder={getLocale('reportContactPlaceholder')}
-                onChange={(ev) => this.setState({ contact: ev.target.value })}
+                onChange={this.handleContactInfoChange}
                 type='text'
                 maxLength={2000}
                 value={contact}

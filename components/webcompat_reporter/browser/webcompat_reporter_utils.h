@@ -8,9 +8,19 @@
 
 #include <string>
 
+class PrefRegistrySimple;
+
 namespace webcompat_reporter {
 
+inline constexpr char kContactInfoSaveFlagPrefs[] =
+    "brave.webcompat.report.enable_save_contact_info";
+inline constexpr char kContactInfoPrefs[] =
+    "brave.webcompat.report.contact_info";
+
 bool NeedsToGetComponentInfo(std::string_view component_id);
+
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 }  // namespace webcompat_reporter
 

@@ -14,6 +14,7 @@
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "content/public/browser/storage_partition.h"
 
@@ -60,6 +61,8 @@ WebcompatReporterServiceFactory::BuildServiceInstanceForBrowserContext(
   auto report_uploader = std::make_unique<WebcompatReportUploader>(
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess());
   return std::make_unique<WebcompatReporterService>(
+      Profile::FromBrowserContext(context)->GetPrefs(),
+      // g_browser_process->local_state(),
       std::make_unique<WebcompatReporterServiceDelegateImpl>(
           g_browser_process->component_updater(),
           g_brave_browser_process->ad_block_service()),

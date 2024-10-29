@@ -14,6 +14,7 @@ import androidx.preference.PreferenceCategory;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.FilterListConstants;
 import org.chromium.chrome.R;
@@ -33,6 +34,7 @@ import org.chromium.chrome.browser.settings.BraveDialogPreference;
 import org.chromium.chrome.browser.settings.BravePreferenceDialogFragment;
 import org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreference;
 import org.chromium.chrome.browser.shields.FilterListServiceFactory;
+import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -40,10 +42,9 @@ import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.gms.ChromiumPlayServicesAvailability;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
-/**
- * Fragment to keep track of the all the brave privacy related preferences.
- */
+/** Fragment to keep track of the all the brave privacy related preferences. */
 public class BravePrivacySettings extends PrivacySettings implements ConnectionErrorHandler {
     // Chromium Prefs
     private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
@@ -59,6 +60,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_PHONE_AS_A_SECURITY_KEY = "phone_as_a_security_key";
     private static final String PREF_FINGERPRINT_LANGUAGE = "fingerprint_language";
+    private static final String PREF_SHIELDS_SAVE_CONTACT_INFO = "brave_shields_save_contact_info";
     private static final String PREF_PRIVACY_SECTION = "privacy_section";
     private static final String PREF_THIRD_PARTY_COOKIES = "third_party_cookies";
     private static final String PREF_SECURITY_SECTION = "security_section";
@@ -119,6 +121,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         PREF_FINGERPRINTING_PROTECTION,
         PREF_FINGERPRINTING_PROTECTION2,
         PREF_FINGERPRINT_LANGUAGE,
+        PREF_SHIELDS_SAVE_CONTACT_INFO,
         PREF_CONTENT_FILTERING,
         PREF_FORGET_FIRST_PARTY_STORAGE,
         PREF_CLEAR_DATA_SECTION, //  clear data automatically  section
@@ -186,12 +189,15 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private ChromeSwitchPreference mClearBrowsingDataOnExit;
     private Preference mUstoppableDomains;
     private ChromeSwitchPreference mFingerprntLanguagePref;
+    private ChromeSwitchPreference mBraveShieldsSaveContactInfoPref;
     private FilterListAndroidHandler mFilterListAndroidHandler;
+    private WebcompatReporterHandler mWebcompatReporterHandler;
 
     @Override
     public void onConnectionError(MojoException e) {
         mFilterListAndroidHandler = null;
         initFilterListAndroidHandler();
+        initWebcompatReporterHandler();
     }
 
     private void initFilterListAndroidHandler() {
@@ -203,10 +209,22 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 FilterListServiceFactory.getInstance().getFilterListAndroidHandler(this);
     }
 
+    private void initWebcompatReporterHandler() {
+        if (mWebcompatReporterHandler != null) {
+            return;
+        }
+        Log.i("[WEBCOMPAT]", "initWebcompatReporterHandler");
+        mWebcompatReporterHandler =
+                WebcompatReporterServiceFactory.getInstance().getWebcompatReporterHandler(this);
+    }
+
     @Override
     public void onDestroy() {
         if (mFilterListAndroidHandler != null) {
             mFilterListAndroidHandler.close();
+        }
+        if (mWebcompatReporterHandler != null) {
+            mWebcompatReporterHandler.close();
         }
         super.onDestroy();
     }
@@ -221,6 +239,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_privacy_preferences);
 
         initFilterListAndroidHandler();
+        initWebcompatReporterHandler();
 
         mDeAmpPref = (ChromeSwitchPreference) findPreference(PREF_DE_AMP);
         mDeAmpPref.setOnPreferenceChangeListener(this);
@@ -286,6 +305,10 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mFingerprntLanguagePref =
                 (ChromeSwitchPreference) findPreference(PREF_FINGERPRINT_LANGUAGE);
         mFingerprntLanguagePref.setOnPreferenceChangeListener(this);
+
+        mBraveShieldsSaveContactInfoPref =
+                (ChromeSwitchPreference) findPreference(PREF_SHIELDS_SAVE_CONTACT_INFO);
+        mBraveShieldsSaveContactInfoPref.setOnPreferenceChangeListener(this);
 
         mForgetFirstPartyStoragePref =
                 (ChromeSwitchPreference) findPreference(PREF_FORGET_FIRST_PARTY_STORAGE);
@@ -483,6 +506,14 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         } else if (PREF_FINGERPRINT_LANGUAGE.equals(key)) {
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(BravePref.REDUCE_LANGUAGE_ENABLED, (boolean) newValue);
+        } else if (PREF_SHIELDS_SAVE_CONTACT_INFO.equals(key)) {
+            Log.i(
+                    "[WEBCOMPAT]",
+                    "PREF_SHIELDS_SAVE_CONTACT_INFO mWebcompatReporterHandler!= null:"
+                            + (mWebcompatReporterHandler != null)
+                            + " newValue:"
+                            + (newValue != null ? newValue.toString() : "n/a"));
+            mWebcompatReporterHandler.setContactInfoSaveFlag((boolean) newValue);
         } else if (PREF_BLOCK_CROSS_SITE_COOKIES.equals(key)) {
             switch ((int) newValue) {
                 case STRICT:

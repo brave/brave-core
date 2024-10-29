@@ -8,6 +8,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
+#include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
@@ -58,14 +59,21 @@ class DefaultBraveShieldsHandler
   void GetNoScriptControlType(const base::Value::List& args);
   void SetForgetFirstPartyStorageEnabled(const base::Value::List& args);
   void GetForgetFirstPartyStorageEnabled(const base::Value::List& args);
+  void SetContactInfoSaveFlag(const base::Value::List& args);
+  void GetContactInfoSaveFlag(const base::Value::List& args);
+  void OnGetContactInfoSaveFlag(base::Value javascript_callback,
+                                const bool contact_info_save_flag);
 
   raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<webcompat_reporter::WebcompatReporterService>
+      webcompat_reporter_service_;
 
   base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
       content_settings_observation_{this};
   base::ScopedObservation<content_settings::CookieSettings,
                           content_settings::CookieSettings::Observer>
       cookie_settings_observation_{this};
+  base::WeakPtrFactory<DefaultBraveShieldsHandler> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_DEFAULT_BRAVE_SHIELDS_HANDLER_H_
