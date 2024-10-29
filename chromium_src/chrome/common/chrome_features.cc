@@ -13,6 +13,7 @@ namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kChromeStructuredMetrics, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kHttpsFirstBalancedMode, base::FEATURE_DISABLED_BY_DEFAULT},
     {kKAnonymityService, base::FEATURE_DISABLED_BY_DEFAULT},
     {kKAnonymityServiceOHTTPRequests, base::FEATURE_DISABLED_BY_DEFAULT},
 #if BUILDFLAG(IS_ANDROID)
@@ -24,8 +25,8 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kTrustSafetySentimentSurveyV2, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
 #if BUILDFLAG(IS_MAC)
-    {kUseChromiumUpdater, base::FEATURE_DISABLED_BY_DEFAULT},
     {kImmersiveFullscreen, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kUseChromiumUpdater, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
 #if !BUILDFLAG(IS_ANDROID)
     {kWebAppUniversalInstall, base::FEATURE_DISABLED_BY_DEFAULT},
