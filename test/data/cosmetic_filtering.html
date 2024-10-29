@@ -368,5 +368,9 @@ const classes = (expectedClasses) =>
         <p data-expect="visible">Should not be hidden</p>
       </div>
     </section>
+
+    <!-- Test that invalid UTF symbols don't break cosmetic filters -->
+    <div class="\udc75"></div>
+    <div id="\udc75"></div>
 </body>
 </html>
