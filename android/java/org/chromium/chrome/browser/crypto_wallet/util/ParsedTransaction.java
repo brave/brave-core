@@ -252,7 +252,9 @@ public class ParsedTransaction extends ParsedTransactionFees {
                         new SolanaInstructionPresenter(solanaInstruction);
                 String lamport = presenter.getLamportAmount();
                 Integer instructionType = presenter.getInstructionType();
-                if (instructionType != null && (instructionType == SolanaSystemInstruction.ASSIGN_WITH_SEED || instructionType == SolanaSystemInstruction.ASSIGN)) {
+                if (instructionType != null
+                        && (instructionType == SolanaSystemInstruction.ASSIGN_WITH_SEED
+                                || instructionType == SolanaSystemInstruction.ASSIGN)) {
                     parsedTransaction.solChangeOfOwnership = true;
                 }
                 boolean isInsExists = instructionType != null;
