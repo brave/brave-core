@@ -44,7 +44,7 @@ TEST_F(BraveAdsConditionMatcherUtilTest,
   EXPECT_TRUE(MatchConditions(&pref_provider_, condition_matchers));
 }
 
-TEST_F(BraveAdsConditionMatcherUtilTest, MatchEqualOperatorCondition) {
+TEST_F(BraveAdsConditionMatcherUtilTest, MatchEpochEqualOperatorCondition) {
   // Arrange
   const ConditionMatcherMap condition_matchers = {{prefs::kServeAdAt, "[=]:7"}};
 
@@ -54,11 +54,33 @@ TEST_F(BraveAdsConditionMatcherUtilTest, MatchEqualOperatorCondition) {
   EXPECT_TRUE(MatchConditions(&pref_provider_, condition_matchers));
 }
 
-TEST_F(BraveAdsConditionMatcherUtilTest, DoNotMatchEqualOperatorCondition) {
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       DoNotMatchEpochEqualOperatorCondition) {
   // Arrange
   const ConditionMatcherMap condition_matchers = {{prefs::kServeAdAt, "[=]:7"}};
 
   AdvanceClockBy(base::Days(7) - base::Milliseconds(1));
+
+  // Act & Assert
+  EXPECT_FALSE(MatchConditions(&pref_provider_, condition_matchers));
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest, MatchNumericalEqualOperatorCondition) {
+  // Arrange
+  const ConditionMatcherMap condition_matchers = {
+      {prefs::kMaximumNotificationAdsPerHour,
+       "[R=]:-1"}};  // Value is "-1" in the pref.
+
+  // Act & Assert
+  EXPECT_TRUE(MatchConditions(&pref_provider_, condition_matchers));
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       DoNotMatchNumericalEqualOperatorCondition) {
+  // Arrange
+  const ConditionMatcherMap condition_matchers = {
+      {prefs::kMaximumNotificationAdsPerHour,
+       "[R=]:1"}};  // Value is "-1" in the pref.
 
   // Act & Assert
   EXPECT_FALSE(MatchConditions(&pref_provider_, condition_matchers));
