@@ -160,14 +160,7 @@ void WebcompatReporterDOMHandler::HandleCapturedScreenshotBitmap(
   }
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(
-          [](SkBitmap bitmap) {
-            std::vector<unsigned char> png_output;
-            return gfx::PNGCodec::EncodeBGRASkBitmap(bitmap, true, &png_output)
-                       ? std::optional(png_output)
-                       : std::nullopt;
-          },
-          bitmap),
+      base::BindOnce(&gfx::PNGCodec::EncodeBGRASkBitmap, bitmap, false),
       base::BindOnce(&WebcompatReporterDOMHandler::HandleEncodedScreenshotPNG,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback_id)));
 }
