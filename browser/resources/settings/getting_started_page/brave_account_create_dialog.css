@@ -19,3 +19,42 @@ leo-checkbox a {
   text-decoration-skip-ink: none;
   text-underline-offset: 2.8px;
 }
+
+#password_strength_indicator {
+  --primary-color: inherit;
+  --secondary-color: inherit;
+  align-items: center;
+  display: flex;
+  height: 16px;
+  justify-content: space-between;
+  margin: 4px 0px 0px;
+  opacity: 0;
+  padding: 0px 4px;
+  transition: 750ms;
+}
+
+.password-strength-bar {
+  background-color: var(--secondary-color);
+  border-radius: var(--leo-radius-m);
+  height: 4px;
+  transition: 750ms;
+  width: 344px;
+}
+
+#password_strength_value {
+  background-color: var(--primary-color);
+  border-radius: var(--leo-radius-m);
+  height: 100%;
+  transition: 750ms;
+  width: 1%;
+}
+
+#password_strength_category {
+  color: var(--primary-color);
+  font: var(--leo-font-x-small-regular);
+  transition: 750ms;
+}
+
+#confirm_password {
+  margin: -12px 0px 0px;
+}

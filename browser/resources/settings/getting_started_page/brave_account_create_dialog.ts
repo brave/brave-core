@@ -18,6 +18,9 @@ export interface SettingsBraveAccountCreateDialogElement {
     account_name: HTMLInputElement,
     create_password: HTMLInputElement,
     confirm_password: HTMLInputElement,
+    password_strength_indicator: HTMLElement,
+    password_strength_value: HTMLElement,
+    password_strength_category: HTMLElement,
   }
 }
 
@@ -46,7 +49,7 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
 
   protected onEmailAddressInput() {
     // https://www.regular-expressions.info
-    this.isEmailAddressValid = Boolean(this.$.email_address.value.match('^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,4}$'))
+    this.isEmailAddressValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.$.email_address.value)
   }
 
   protected onAccountNameInput() {
@@ -54,7 +57,22 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   }
 
   protected onCreatePasswordInput() {
-    this.isCreatePasswordValid = this.$.create_password.value.length !== 0
+    const regexps = [ /^.{5,}$/, /[a-z]/, /[A-Z]/, /[0-9]/, /[^a-zA-Z0-9]/ ]
+    const widths = Array.from({ length: regexps.length + 1 }, (_, i) => `calc(100% * ${i}/${regexps.length})`)
+    const cagetories = [ 'error', 'error', 'error', 'warning', 'warning', 'success' ]
+    const cagetories2 = [ 'Weak', 'Weak', 'Weak', 'Medium', 'Medium', 'Strong' ]
+
+    const color = (category: string, type: string) => `var(--leo-color-systemfeedback-${category}-${type})`
+
+    const point = regexps.filter(regexp => regexp.test(this.$.create_password.value)).length
+
+    this.$.password_strength_indicator.style.setProperty("--primary-color", color(cagetories[point], 'icon'))
+    this.$.password_strength_indicator.style.setProperty("--secondary-color", color(cagetories[point], 'background'))
+    this.$.password_strength_indicator.style.setProperty("opacity", point === 0 ? '0' : '1')
+    this.$.password_strength_value.style.width = widths[point]
+    this.$.password_strength_category.textContent = cagetories2[point]
+
+    this.isCreatePasswordValid = point === regexps.length
   }
 
   protected onConfirmPasswordInput() {
