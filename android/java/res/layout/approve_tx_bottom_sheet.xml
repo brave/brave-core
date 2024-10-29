@@ -166,7 +166,7 @@
 
         <TextView
             style="@style/BraveWalletTextView"
-            android:text="@string/brave_wallet_sign_warning_title"
+            android:text="@string/wallet_change_ownership_warning"
             android:textColor="@color/brave_theme_error_txt"
             android:textStyle="bold"
             android:drawablePadding="6dp"
@@ -176,7 +176,7 @@
             android:layout_marginTop="8dp"
             style="@style/BraveWalletTextView"
             android:layout_width="match_parent"
-            android:text="@string/brave_wallet_sign_warning"
+            android:text="@string/wallet_change_ownership_description"
             android:textColor="@color/brave_theme_error_txt" />
     </LinearLayout>
 
