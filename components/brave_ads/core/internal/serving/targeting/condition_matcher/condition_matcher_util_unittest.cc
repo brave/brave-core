@@ -46,7 +46,8 @@ TEST_F(BraveAdsConditionMatcherUtilTest,
 
 TEST_F(BraveAdsConditionMatcherUtilTest, MatchEpochEqualOperatorCondition) {
   // Arrange
-  const ConditionMatcherMap condition_matchers = {{prefs::kServeAdAt, "[=]:7"}};
+  const ConditionMatcherMap condition_matchers = {
+      {prefs::kServeAdAt, "[T=]:7"}};
 
   AdvanceClockBy(base::Days(7));
 
@@ -57,7 +58,8 @@ TEST_F(BraveAdsConditionMatcherUtilTest, MatchEpochEqualOperatorCondition) {
 TEST_F(BraveAdsConditionMatcherUtilTest,
        DoNotMatchEpochEqualOperatorCondition) {
   // Arrange
-  const ConditionMatcherMap condition_matchers = {{prefs::kServeAdAt, "[=]:7"}};
+  const ConditionMatcherMap condition_matchers = {
+      {prefs::kServeAdAt, "[T=]:7"}};
 
   AdvanceClockBy(base::Days(7) - base::Milliseconds(1));
 
@@ -149,7 +151,7 @@ TEST_F(BraveAdsConditionMatcherUtilTest,
   // Arrange
   const ConditionMatcherMap condition_matchers = {
       {prefs::kOptedInToNotificationAds, "0"},  // Value is "1" in the pref.
-      {prefs::kServeAdAt, "[>]:7"}};            // 5 days ago in the pref.
+      {prefs::kServeAdAt, "[T>]:7"}};           // 5 days ago in the pref.
 
   AdvanceClockBy(base::Days(5));
 

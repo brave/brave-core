@@ -18,35 +18,35 @@ class BraveAdsOperatorConditionMatcherUtilInternalTest : public test::TestBase {
 TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
        DoNotParseNegativeDays) {
   // Act & Assert
-  EXPECT_FALSE(ParseDays("[=]:-1"));
+  EXPECT_FALSE(ParseDays("[T=]:-1"));
 }
 
 TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest, ParseDayZero) {
   // Act & Assert
-  EXPECT_EQ(0, ParseDays("[=]:0"));
+  EXPECT_EQ(0, ParseDays("[T=]:0"));
 }
 
 TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest, ParseDays) {
   // Act & Assert
-  EXPECT_EQ(7, ParseDays("[=]:7"));
+  EXPECT_EQ(7, ParseDays("[T=]:7"));
 }
 
 TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
        DoNotParseNonIntegerDays) {
   // Act & Assert
-  EXPECT_FALSE(ParseDays("[=]:1.5"));
+  EXPECT_FALSE(ParseDays("[T=]:1.5"));
 }
 
 TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
        DoNotParseMalformedDays) {
   // Act & Assert
-  EXPECT_FALSE(ParseDays("[=]: 7 "));
+  EXPECT_FALSE(ParseDays("[T=]: 7 "));
 }
 
 TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
        DoNotParseInvalidDays) {
   // Act & Assert
-  EXPECT_FALSE(ParseDays("[=]:seven"));
+  EXPECT_FALSE(ParseDays("[T=]:seven"));
 }
 
 TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest, IsUnixEpochTimestamp) {

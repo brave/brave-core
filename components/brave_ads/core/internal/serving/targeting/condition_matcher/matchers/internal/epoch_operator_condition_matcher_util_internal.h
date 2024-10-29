@@ -16,7 +16,7 @@ class TimeDelta;
 
 namespace brave_ads {
 
-inline constexpr char kEpochOperatorConditionMatcherPrefixPattern[] = "[?]:*";
+inline constexpr char kEpochOperatorConditionMatcherPrefixPattern[] = "[T?]:*";
 
 // Parses a number of days from a condition.
 std::optional<int> ParseDays(std::string_view condition);

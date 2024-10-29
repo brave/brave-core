@@ -17,11 +17,11 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kEqualOperatorConditionMatcherPrefix[] = "[=]:";
-constexpr char kGreaterThanOperatorConditionMatcherPrefix[] = "[>]:";
-constexpr char kGreaterThanOrEqualOperatorConditionMatcherPrefix[] = "[≥]:";
-constexpr char kLessThanOperatorConditionMatcherPrefix[] = "[<]:";
-constexpr char kLessThanOrEqualOperatorConditionMatcherPrefix[] = "[≤]:";
+constexpr char kEqualOperatorConditionMatcherPrefix[] = "[T=]:";
+constexpr char kGreaterThanOperatorConditionMatcherPrefix[] = "[T>]:";
+constexpr char kGreaterThanOrEqualOperatorConditionMatcherPrefix[] = "[T≥]:";
+constexpr char kLessThanOperatorConditionMatcherPrefix[] = "[T<]:";
+constexpr char kLessThanOrEqualOperatorConditionMatcherPrefix[] = "[T≤]:";
 
 }  // namespace
 
