@@ -60,7 +60,7 @@
     "url": "https://github.com/brave/brave-browser/issues"
   },
   "engines": {
-    "node": ">=20.0.0 <22.0.0",
+    "node": ">=20.0.0 <24.0.0",
     "npm": ">=10.0.0"
   },
   "homepage": "https:/github.com/brave/brave-core#readme",
