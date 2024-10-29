@@ -35,6 +35,9 @@ class BraveWebClient : public ChromeWebClient {
   void PostBrowserURLRewriterCreation(
       web::BrowserURLRewriter* rewriter) override;
 
+  void GetAdditionalWebUISchemes(
+      std::vector<std::string>* additional_schemes) override;
+
  private:
   std::string user_agent_;
 };
