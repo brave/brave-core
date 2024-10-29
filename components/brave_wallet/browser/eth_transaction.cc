@@ -188,9 +188,7 @@ std::vector<uint8_t> EthTransaction::GetMessageToSign(
     list.Append(RLPUint256ToBlob(0));
   }
 
-  std::vector<uint8_t> result;
-  base::Extend(result, RLPEncode(list));
-  return result;
+  return RLPEncode(list);
 }
 
 KeccakHashArray EthTransaction::GetHashedMessageToSign(
@@ -229,7 +227,7 @@ bool EthTransaction::ProcessVRS(const std::vector<uint8_t>& v,
 }
 
 // signature and recid will be used to produce v, r, s
-void EthTransaction::ProcessSignature(const std::vector<uint8_t> signature,
+void EthTransaction::ProcessSignature(base::span<const uint8_t> signature,
                                       int recid,
                                       uint256_t chain_id) {
   if (signature.size() != 64) {

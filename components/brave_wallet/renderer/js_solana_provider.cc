@@ -720,7 +720,7 @@ void JSSolanaProvider::OnSignMessage(
     const base::Value signature_value(signature_bytes);
     v8::Local<v8::Value> v8_signature =
         v8_value_converter_->ToV8Value(signature_value, context);
-    // From ArraryBuffer to Uint8Array
+    // From ArrayBuffer to Uint8Array
     v8_signature =
         v8::Uint8Array::New(v8::Local<v8::ArrayBuffer>::Cast(v8_signature), 0,
                             (kSolanaSignatureSize));

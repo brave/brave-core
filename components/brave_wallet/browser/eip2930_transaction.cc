@@ -196,7 +196,7 @@ std::string Eip2930Transaction::GetTransactionHash() const {
   return ToHex(KeccakHash(Serialize()));
 }
 
-void Eip2930Transaction::ProcessSignature(const std::vector<uint8_t> signature,
+void Eip2930Transaction::ProcessSignature(base::span<const uint8_t> signature,
                                           int recid,
                                           uint256_t chain_id) {
   EthTransaction::ProcessSignature(signature, recid, chain_id_);

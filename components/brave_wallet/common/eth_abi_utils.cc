@@ -120,7 +120,7 @@ std::optional<Span32> ExtractFixedBytesRowFromTuple(Span data,
     return std::nullopt;
   }
 
-  if (!CheckPadding(head->subspan(0), fixed_size)) {
+  if (!CheckPadding(*head, fixed_size)) {
     return std::nullopt;
   }
 

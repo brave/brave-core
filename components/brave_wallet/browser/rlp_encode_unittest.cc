@@ -3,12 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/brave_wallet/browser/rlp_encode.h"
 
 #include <ctype.h>
@@ -16,74 +10,16 @@
 #include <string>
 #include <utility>
 
+#include "base/strings/string_util.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
 
-base::Value RLPTestStringToValue(const std::string& s, std::string* remaining) {
-  const char* start = s.c_str();
-  const char* p = start;
-  enum State { Start, InString, InList };
-  size_t list_depth = 0;
-  State state = Start;
-  while (*p != '\0') {
-    if (isdigit(*p) && state == Start) {
-      start = p;
-      while (isdigit(*(p + 1))) {
-        ++p;
-      }
-      size_t len = p - start + 1;
-      if (start - s.c_str() + len + 1 < s.length()) {
-        *remaining = s.substr(start - s.c_str() + len + 1, std::string::npos);
-      } else {
-        *remaining = "";
-      }
-      return base::Value(std::stoi(s.substr(start - s.c_str(), len)));
-    } else if (*p == '\'' && state == Start) {
-      state = InString;
-      start = p + 1;
-    } else if (*p == '\'' && state == InString) {
-      size_t len = p - start;
-      if (start - s.c_str() + len + 1 < s.length()) {
-        *remaining = s.substr(start - s.c_str() + len + 1, std::string::npos);
-      } else {
-        *remaining = "";
-      }
-      return base::Value(s.substr(start - s.c_str(), len));
-    } else if (*p == '[' && state == Start) {
-      state = InList;
-      // + 1 to not include the [
-      start = p + 1;
-      list_depth++;
-    } else if (*p == '[' && state == InList) {
-      list_depth++;
-    } else if (*p == ']' && list_depth != 1) {
-      list_depth--;
-    } else if (*p == ']' && state == InList && list_depth == 1) {
-      base::Value::List list;
-      size_t len = p - start;
-      std::string list_contents = s.substr(start - s.c_str(), len);
-      while (list_contents.length() > 0) {
-        base::Value v = RLPTestStringToValue(list_contents, remaining);
-        list_contents = *remaining;
-        list.Append(std::move(v));
-      }
-      if (start - s.c_str() + len + 1 < s.length()) {
-        *remaining = s.substr(start - s.c_str() + len + 1, std::string::npos);
-      } else {
-        *remaining = "";
-      }
-      return base::Value(std::move(list));
-    }
-    ++p;
-  }
-  return base::Value();
-}
-
-base::Value RLPTestStringToValue(const std::string& s) {
-  std::string left_over;
-  return RLPTestStringToValue(s, &left_over);
+base::Value RLPTestStringToValue(std::string s) {
+  base::ReplaceChars(s, "'", "\"", &s);
+  return base::test::ParseJson(s);
 }
 
 }  // namespace

@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/numerics/byte_conversions.h"
 #include "base/types/expected.h"
@@ -189,8 +190,8 @@ std::string PubkeyToTransparentAddress(base::span<const uint8_t> pubkey,
                                        bool testnet) {
   std::vector<uint8_t> result = GetNetworkPrefix(testnet);
 
-  std::vector<uint8_t> data_part = Hash160(pubkey);
-  result.insert(result.end(), data_part.begin(), data_part.end());
+  base::Extend(result, Hash160(pubkey));
+
   return Base58EncodeWithCheck(result);
 }
 

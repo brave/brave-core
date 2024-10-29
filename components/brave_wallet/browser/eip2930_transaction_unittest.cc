@@ -9,6 +9,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/containers/span.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
@@ -117,19 +118,19 @@ TEST(Eip2930TransactionUnitTest, GetSignedTransactionAndHash) {
 
   access_list->push_back(item);
 
-  std::vector<uint8_t> private_key;
-  EXPECT_TRUE(base::HexStringToBytes(
+  std::array<uint8_t, 32> private_key;
+  EXPECT_TRUE(base::HexStringToSpan(
       "fad9c8855b740a0b7ed4c221dbad0f33a83a49cad6b3fe8d5817ac83d38b6a19",
-      &private_key));
+      private_key));
 
   HDKey key;
   key.SetPrivateKey(private_key);
   int recid;
-  const std::vector<uint8_t> signature =
-      key.SignCompact(tx.GetHashedMessageToSign(0), &recid);
+  auto signature = key.SignCompact(tx.GetHashedMessageToSign(0), &recid);
+  ASSERT_TRUE(signature);
 
   ASSERT_FALSE(tx.IsSigned());
-  tx.ProcessSignature(signature, recid);
+  tx.ProcessSignature(*signature, recid, 0);
   ASSERT_TRUE(tx.IsSigned());
   EXPECT_EQ(
       tx.GetSignedTransaction(),

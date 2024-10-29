@@ -8,8 +8,6 @@
 #include <algorithm>
 #include <array>
 
-#include "base/check.h"
-#include "base/compiler_specific.h"
 #include "base/containers/adapters.h"
 #include "base/containers/span.h"
 #include "base/ranges/algorithm.h"
@@ -55,8 +53,8 @@ eth_abi::Bytes4 GetFunctionHashBytes4(const std::string& input) {
 
 eth_abi::Bytes32 Namehash(const std::string& name) {
   eth_abi::Bytes32 hash = {};
-  std::vector<std::string> labels =
-      SplitString(name, ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  auto labels = SplitStringPiece(name, ".", base::KEEP_WHITESPACE,
+                                 base::SPLIT_WANT_NONEMPTY);
 
   for (const auto& label : base::Reversed(labels)) {
     auto label_hash = KeccakHash(base::as_byte_span(label));
@@ -69,15 +67,11 @@ SHA256HashArray DoubleSHA256Hash(base::span<const uint8_t> input) {
   return crypto::SHA256Hash(crypto::SHA256Hash(input));
 }
 
-std::vector<uint8_t> Hash160(base::span<const uint8_t> input) {
-  std::vector<uint8_t> result(CRIPEMD160::OUTPUT_SIZE);
-
-  std::array<uint8_t, crypto::kSHA256Length> sha256hash =
-      crypto::SHA256Hash(input);
-  DCHECK(!sha256hash.empty());
+Ripemd160HashArray Hash160(base::span<const uint8_t> input) {
+  Ripemd160HashArray result = {};
 
   CRIPEMD160()
-      .Write(sha256hash.data(), sha256hash.size())
+      .Write(crypto::SHA256Hash(input).data(), crypto::kSHA256Length)
       .Finalize(result.data());
 
   return result;

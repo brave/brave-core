@@ -69,8 +69,7 @@ class EthTransaction {
                   const std::vector<uint8_t>& s);
   bool IsToCreationAddress() const { return to_.IsEmpty(); }
 
-  // return
-  //   rlp([nonce, gasPrice, gasLimit, to, value, data, chainID, 0, 0])
+  // return rlp([nonce, gasPrice, gasLimit, to, value, data, chainID, 0, 0])
   // Support EIP-155 chain id
   virtual std::vector<uint8_t> GetMessageToSign(uint256_t chain_id) const;
 
@@ -85,7 +84,7 @@ class EthTransaction {
 
   // signature and recid will be used to produce v, r, s
   // Support EIP-155 chain id
-  virtual void ProcessSignature(const std::vector<uint8_t> signature,
+  virtual void ProcessSignature(base::span<const uint8_t> signature,
                                 int recid,
                                 uint256_t chain_id);
 

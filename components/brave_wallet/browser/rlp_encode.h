@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_RLP_ENCODE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_RLP_ENCODE_H_
 
-#include <string>
+#include <vector>
 
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"

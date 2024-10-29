@@ -114,10 +114,10 @@ TEST(EthTransactionUnitTest, GetMessageToSign) {
 }
 
 TEST(EthTransactionUnitTest, GetSignedTransactionAndHash) {
-  std::vector<uint8_t> private_key;
-  EXPECT_TRUE(base::HexStringToBytes(
+  std::array<uint8_t, 32> private_key;
+  EXPECT_TRUE(base::HexStringToSpan(
       "4646464646464646464646464646464646464646464646464646464646464646",
-      &private_key));
+      private_key));
 
   HDKey key;
   key.SetPrivateKey(private_key);
@@ -131,7 +131,7 @@ TEST(EthTransactionUnitTest, GetSignedTransactionAndHash) {
             "daf5a779ae972f972197303d7b574746c7ef83eadac0f2791ad23db92e4c8e53");
 
   int recid;
-  const std::vector<uint8_t> signature = key.SignCompact(message, &recid);
+  auto signature = *key.SignCompact(message, &recid);
 
   // invalid
   tx.ProcessSignature(std::vector<uint8_t>(63), recid, 1);
@@ -170,8 +170,7 @@ TEST(EthTransactionUnitTest, GetSignedTransactionAndHash) {
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message1337)),
             "9df81edc908cd622cbbab86525a4588fdcbaf6c88757f39b42b1f8f58fd617c2");
   recid = 0;
-  const std::vector<uint8_t> signature1337 =
-      key.SignCompact(message1337, &recid);
+  auto signature1337 = *key.SignCompact(message1337, &recid);
   tx.ProcessSignature(signature1337, recid, 1337);
   EXPECT_EQ(tx.GetSignedTransaction(),
             "0xf86e098504a817c8008252089435353535353535353535353535353535353535"

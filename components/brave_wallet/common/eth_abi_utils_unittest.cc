@@ -3,12 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 
 #include <memory>
@@ -16,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -714,8 +709,7 @@ TEST(EthAbiUtilsTest, ExtractFixedBytesFromTuple) {
 
 TEST(EthAbiTupleEncoderTest, EncodeCall) {
   std::vector<uint8_t> data(33, 0xbb);
-  auto selector_bytes = ToBytes("f400d2f8");
-  Span4 selector(selector_bytes.begin(), 4u);
+  Span4 selector({0xf4, 0x00, 0xd2, 0xf8});
   // f(bytes,bytes)
   EXPECT_EQ(
       "f400d2f8"
@@ -746,7 +740,7 @@ TEST(EthAbiTupleEncoderTest, EncodeCall) {
       "f400d2f8"
       "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
       ToHex(TupleEncoder()
-                .AddFixedBytes(Span32(data.begin(), 32u))
+                .AddFixedBytes(base::span(data).first(32u))
                 .EncodeWithSelector(selector))
           .substr(2));
 }

@@ -10,10 +10,8 @@
 
 #include "base/containers/adapters.h"
 #include "base/containers/span.h"
-#include "base/debug/crash_logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 
 namespace brave_wallet {
 

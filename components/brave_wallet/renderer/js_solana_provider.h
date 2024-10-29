@@ -73,7 +73,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   //    signature: <Uint8Array>}>
   // display encoding is optional
   v8::Local<v8::Promise> SignMessage(gin::Arguments* arguments);
-  // It takes { method: <string>, pararms: {...} and return promise accroding to
+  // It takes { method: <string>, params: {...} and return promise according to
   // the method:
   // - connect => { publicKey: solanaWeb3.PublicKey}
   // - disconnect => {}
@@ -185,7 +185,6 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   bool wallet_standard_loaded_ = false;
   v8::Global<v8::Value> solana_web3_module_;
   std::unique_ptr<content::V8ValueConverter> v8_value_converter_;
-  //   V8ConverterStrategy strategy_;
   mojo::Remote<mojom::SolanaProvider> solana_provider_;
   mojo::Receiver<mojom::SolanaEventsListener> receiver_{this};
 };
