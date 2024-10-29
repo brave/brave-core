@@ -313,6 +313,14 @@ void BraveNewTabPageHandler::SearchWhatYouTyped(const std::string& host,
   web_contents_->OpenURL(params, /*navigation_handle_callback=*/{});
 }
 
+void BraveNewTabPageHandler::LaunchVPNPanel() {
+  NOTIMPLEMENTED();
+}
+
+void BraveNewTabPageHandler::OpenVPNAccountPage() {
+  NOTIMPLEMENTED();
+}
+
 bool BraveNewTabPageHandler::IsCustomBackgroundImageEnabled() const {
   if (profile_->GetPrefs()->IsManagedPreference(GetThemePrefNameInMigration(
           ThemePrefInMigration::kNtpCustomBackgroundDict))) {

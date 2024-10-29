@@ -7,9 +7,6 @@
 
 #include "brave/browser/brave_vpn/win/storage_utils.h"
 #include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
-#include "brave/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/singleton_tabs.h"
 
 namespace brave_vpn {
 
@@ -26,20 +23,4 @@ void BraveVPNServiceDelegateWin::ShowBraveVpnStatusTrayIcon() {
   wireguard::ShowBraveVpnStatusTrayIcon();
 }
 
-void BraveVPNServiceDelegateWin::LaunchVPNPanel() {
-  auto* browser = chrome::FindBrowserWithActiveWindow();
-  if (browser) {
-    brave::ShowBraveVPNBubble(browser);
-  }
-}
-
-void BraveVPNServiceDelegateWin::OpenVpnUI(const std::string& type) {
-  // TODO(simonhong): Get proper url based on env.
-  GURL checkout_url("https://account.brave.com/?intent=checkout&product=vpn");
-  GURL recover_url("https://account.brave.com/?intent=recover&product=vpn");
-  auto* browser = chrome::FindBrowserWithActiveWindow();
-  if (browser) {
-    ShowSingletonTab(browser, type == "checkout" ? checkout_url : recover_url);
-  }
-}
 }  // namespace brave_vpn

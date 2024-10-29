@@ -8,6 +8,7 @@ import * as Actions from '../actions/brave_vpn_actions'
 import store from '../store'
 import { ApplicationState } from '../reducers'
 import AsyncActionHandler from '../../common/AsyncActionHandler'
+import getNTPBrowserAPI from '../api/background'
 
 const observer = {
   onConnectionStateChanged: (state: ConnectionState) => {
@@ -33,7 +34,13 @@ const handler = new AsyncActionHandler()
 
 handler.on(Actions.launchVPNPanel.getType(),
   async (store) => {
-    getWidgetBrowserAPI().serviceHandler.launchVPNPanel();
+    getNTPBrowserAPI().pageHandler.launchVPNPanel()
+  }
+)
+
+handler.on(Actions.openVPNAccountPage.getType(),
+  async (store) => {
+    getNTPBrowserAPI().pageHandler.openVPNAccountPage()
   }
 )
 
