@@ -880,22 +880,6 @@ source_set("ui") {
   ]
 
   if (enable_brave_vpn) {
-    if (is_mac) {
-      # TODO(simonhong): Move this to proper target.
-      sources += [
-        "//brave/browser/brave_vpn/mac/brave_vpn_service_delegate_mac.cc",
-        "//brave/browser/brave_vpn/mac/brave_vpn_service_delegate_mac.h",
-      ]
-    }
-
-    if (is_win) {
-      # TODO(simonhong): Move this to proper target.
-      sources += [
-        "//brave/browser/brave_vpn/win/brave_vpn_service_delegate_win.cc",
-        "//brave/browser/brave_vpn/win/brave_vpn_service_delegate_win.h",
-      ]
-    }
-
     deps += [
       "//brave/browser/brave_vpn",
       "//brave/components/brave_vpn/browser",
