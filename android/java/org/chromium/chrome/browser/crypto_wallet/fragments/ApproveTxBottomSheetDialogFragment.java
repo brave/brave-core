@@ -391,6 +391,9 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
     }
 
     private void refreshListContentUi() {
+        if (mTransactionInfos == null) {
+            return;
+        }
         mRejectAllTx.setText(
                 getString(
                         R.string.brave_wallet_queue_reject_all,
