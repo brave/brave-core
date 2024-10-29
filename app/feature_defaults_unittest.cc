@@ -153,6 +153,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &features::kHaTSWebUI,
 #endif
+      &features::kHttpsFirstBalancedMode,
       &features::kIdentifiabilityStudyMetaExperiment,
       &features::kIdleDetection,
       &features::kKAnonymityService,
