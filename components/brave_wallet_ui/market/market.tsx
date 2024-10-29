@@ -27,6 +27,7 @@ import {
   BraveWallet,
   MarketAssetFilterOption,
   MarketGridColumnTypes,
+  MeldCryptoCurrency,
   SortOrder
 } from '../constants/types'
 
@@ -50,6 +51,7 @@ import {
   searchCoinMarkets,
   sortCoinMarkets
 } from '../utils/coin-market-utils'
+import { getAssetSymbol } from '../utils/meld_utils'
 
 // Options
 import { AssetFilterOptions } from '../options/market-data-filter-options'
@@ -75,7 +77,7 @@ const App = () => {
     BraveWallet.CoinMarket[]
   >([])
   const [buyableAssets, setBuyableAssets] = React.useState<
-    BraveWallet.BlockchainToken[]
+    MeldCryptoCurrency[] | undefined
   >([])
   const [depositableAssets, setDepositableAssets] = React.useState<
     BraveWallet.BlockchainToken[]
@@ -112,9 +114,12 @@ const App = () => {
   // Methods
   const isBuySupported = React.useCallback(
     (coinMarket: BraveWallet.CoinMarket) => {
-      return buyableAssets.some(
-        (asset) =>
-          asset.symbol.toLowerCase() === coinMarket.symbol.toLowerCase()
+      return (
+        buyableAssets?.some(
+          (asset) =>
+            getAssetSymbol(asset).toLowerCase() ===
+            coinMarket.symbol.toLowerCase()
+        ) ?? false
       )
     },
     [buyableAssets]

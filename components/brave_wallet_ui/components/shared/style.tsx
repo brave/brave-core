@@ -143,9 +143,11 @@ export const Row = styled.div<
   FlexProps & {
     maxWidth?: CSSProperties['maxWidth']
     minWidth?: CSSProperties['minWidth']
+    minHeight?: CSSProperties['minHeight']
+    height?: '100%' | 'unset'
     margin?: number | string
     padding?: number | string
-    width?: '100%' | 'unset'
+    width?: CSSProperties['width']
     marginBottom?: number | string
     // https://styled-components.com/docs/api#transient-props
     $wrap?: boolean
@@ -165,6 +167,8 @@ export const Row = styled.div<
   width: ${(p) => p.width ?? '100%'};
   min-width: ${(p) => p.minWidth ?? 'unset'};
   max-width: ${(p) => p.maxWidth ?? 'unset'};
+  height: ${(p) => p.height ?? 'unset'};
+  min-height: ${(p) => p.minHeight ?? 'unset'};
   margin: ${(p) => p.margin ?? 'unset'};
   ${(p) =>
     p?.marginBottom || p?.marginBottom === 0
