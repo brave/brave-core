@@ -355,6 +355,12 @@
 /* One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals */
 "wallet.confirmationViewModeTransaction" = "Συναλλαγή";
 
+/* The warning shown on transaction confirmation for an Solana Dapp request that will reassign ownership of the account to a new program. */
+"wallet.confirmationViewSolAccountOwnershipChangeWarning" = "Αυτή η συναλλαγή θα εκχωρήσει εκ νέου την κυριότητα του λογαριασμού σε ένα νέο πρόγραμμα. Η ενέργεια αυτή είναι μη αναστρέψιμη και μπορεί να οδηγήσει σε απώλεια κεφαλαίων.";
+
+/* The warning title shown on transaction confirmation for an Solana Dapp request that will reassign ownership of the account to a new program. */
+"wallet.confirmationViewSolAccountOwnershipChangeWarningTitle" = "Ζητείται αλλαγή ιδιοκτησίας λογαριασμού";
+
 /* The warning shown on transaction confirmation for an Solana SPL token transaction that has not yet created an associated token account. */
 "wallet.confirmationViewSolSplTokenAccountCreationWarning" = "Ο συσχετισμένος λογαριασμός token δεν υπάρχει ακόμα. Ένα μικρό ποσό SOL θα δαπανηθεί για τη δημιουργία και τη χρηματοδότησή του.";
 

@@ -355,6 +355,12 @@
 /* One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals */
 "wallet.confirmationViewModeTransaction" = "트랜잭션";
 
+/* The warning shown on transaction confirmation for an Solana Dapp request that will reassign ownership of the account to a new program. */
+"wallet.confirmationViewSolAccountOwnershipChangeWarning" = "이 거래는 계정의 소유권을 새 프로그램으로 재할당합니다. 이 작업은 되돌릴 수 없으며 자금 손실이 발생할 수 있습니다.";
+
+/* The warning title shown on transaction confirmation for an Solana Dapp request that will reassign ownership of the account to a new program. */
+"wallet.confirmationViewSolAccountOwnershipChangeWarningTitle" = "계정 소유권 변경 요청";
+
 /* The warning shown on transaction confirmation for an Solana SPL token transaction that has not yet created an associated token account. */
 "wallet.confirmationViewSolSplTokenAccountCreationWarning" = "아직 연결된 토큰 계정이 존재하지 않습니다. 계정을 만들고 자금을 입금하는 데 소액의 SOL가 지출됩니다.";
 

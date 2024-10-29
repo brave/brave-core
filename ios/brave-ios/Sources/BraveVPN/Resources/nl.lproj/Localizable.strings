@@ -4,6 +4,9 @@
 /* Text for toggle which indicating the toggle action is for selecting region in automatic */
 "vpn.automaticServerSelectionToggleTitle" = "Automatisch";
 
+/* Title on top the list of available servers */
+"vpn.availableServerTitle" = "BESCHIKBARE SERVERS";
+
 /* Button text to buy Brave VPN */
 "vpn.buyButton" = "Koop";
 
@@ -24,6 +27,9 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Razendsnel, tot 100 Mbps";
+
+/* Text indicating how many cities is used for that country used as Ex: '1 City' */
+"vpn.cityCountTitle" = "%ld stad";
 
 /* Text showing the vpn region is connected */
 "vpn.connectedRegionDescription" = "Verbonden";
@@ -136,6 +142,12 @@
 /* No comment provided by engineer. */
 "vpn.monthlySubTitle" = "Maandabonnement";
 
+/* Text indicating how many cities is used for that region used as Ex: '2 Cities' */
+"vpn.multipleCityCountTitle" = "%ld steden";
+
+/* Text indicating how many server is used for that region used as Ex: '2 Servers' */
+"vpn.multipleServerCountTitle" = "%ld servers";
+
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Verlopen";
 
@@ -186,6 +198,15 @@
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Herstel";
+
+/* Title showing which country serves list showing. Ex: 'Brazil Server */
+"vpn.serverNameTitle" = "Server in %@";
+
+/* Text for description of toggle that auto selcets the server according to time zone. */
+"vpn.serverRegionAutoSelectDescription" = "Selecteer automatisch de dichtstbijzijnde regio voor de VPN-server op basis van je tijdzone. Deze optie wordt aanbevolen voor een maximale browsesnelheid.";
+
+/* Text indicating how many server is used for that region used as Ex: '1 Server' */
+"vpn.serverTitle" = "%ld server";
 
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Upgrade naar een VPN om je verbinding te beschermen en invasieve trackers overal te blokkeren.";
@@ -244,6 +265,9 @@
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN staat AAN";
 
+/* Text for description of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalDescription" = "Gebruik de beste beschikbare server";
+
 /* Text for title of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalTitle" = "Optimaal";
 
@@ -273,6 +297,9 @@
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Wissel code in";
+
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "VPN-regio gewijzigd";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Hiermee stel je de configuratie van Brave Firewall + VPN opnieuw in en los je eventuele fouten op. Dit proces duurt maar even.";

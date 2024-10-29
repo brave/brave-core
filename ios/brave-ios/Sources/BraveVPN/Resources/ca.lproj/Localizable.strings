@@ -4,6 +4,9 @@
 /* Text for toggle which indicating the toggle action is for selecting region in automatic */
 "vpn.automaticServerSelectionToggleTitle" = "Automàtic";
 
+/* Title on top the list of available servers */
+"vpn.availableServerTitle" = "SERVIDORS DISPONIBLES";
+
 /* Button text to buy Brave VPN */
 "vpn.buyButton" = "Compra";
 
@@ -24,6 +27,9 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Extremadament ràpid, fins a 100 Mbps";
+
+/* Text indicating how many cities is used for that country used as Ex: '1 City' */
+"vpn.cityCountTitle" = "%ld Ciutat";
 
 /* Text showing the vpn region is connected */
 "vpn.connectedRegionDescription" = "Connectat";
@@ -136,6 +142,12 @@
 /* No comment provided by engineer. */
 "vpn.monthlySubTitle" = "Subscripció mensual";
 
+/* Text indicating how many cities is used for that region used as Ex: '2 Cities' */
+"vpn.multipleCityCountTitle" = "%ld Ciutats";
+
+/* Text indicating how many server is used for that region used as Ex: '2 Servers' */
+"vpn.multipleServerCountTitle" = "%ld Servidors";
+
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Caducat";
 
@@ -187,8 +199,14 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Restaura";
 
+/* Title showing which country serves list showing. Ex: 'Brazil Server */
+"vpn.serverNameTitle" = "%@ Servidor";
+
 /* Text for description of toggle that auto selcets the server according to time zone. */
 "vpn.serverRegionAutoSelectDescription" = "Selecciona automàticament la regió del servidor VPN més propera en funció de la teva zona horària. Aquesta opció es recomana per maximitzar la velocitat d'Internet.";
+
+/* Text indicating how many server is used for that region used as Ex: '1 Server' */
+"vpn.serverTitle" = "%ld Servidor";
 
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Actualitza a una VPN per protegir la connexió i bloquejar arreu els rastrejadors invasius.";

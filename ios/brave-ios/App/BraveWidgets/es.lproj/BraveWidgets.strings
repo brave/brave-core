@@ -59,6 +59,9 @@
 "e13lS3-qKrzyX" = "Solo para confirmar: ¿querías decir \"Escanear código QR\"?";
 
 /* (No Comment) */
+"e13lS3-U0eRbw" = "Sólo para confirmar, ¿querías usar \"Leo AI\"?";
+
+/* (No Comment) */
 "e13lS3-VBH4G6" = "Solo para confirmar: ¿querías decir \"Historial\"?";
 
 /* (No Comment) */
@@ -90,6 +93,9 @@
 
 /* (No Comment) */
 "EvESs0-qKrzyX" = "Solo para confirmar: ¿querías decir \"Escanear código QR\"?";
+
+/* (No Comment) */
+"EvESs0-U0eRbw" = "Sólo para confirmar, ¿querías usar \"Leo AI\"?";
 
 /* (No Comment) */
 "EvESs0-VBH4G6" = "Solo para confirmar: ¿querías decir \"Historial\"?";
@@ -140,6 +146,9 @@
 "L1fziM-qKrzyX" = "Hay ${count} opciones que coinciden con \"Escanear código QR\".";
 
 /* (No Comment) */
+"L1fziM-U0eRbw" = "Hay ${count} opciones que coinciden con 'Leo AI'.";
+
+/* (No Comment) */
 "L1fziM-VBH4G6" = "Hay ${count} opciones que coinciden con \"Historial\".";
 
 /* (No Comment) */
@@ -150,6 +159,9 @@
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "Hay ${count} opciones que coinciden con \"Búsqueda\".";
+
+/* (No Comment) */
+"M2Y1rg" = "#4";
 
 /* (No Comment) */
 "nthxSL" = "Descargas";
@@ -177,6 +189,9 @@
 
 /* (No Comment) */
 "r2EI05-qKrzyX" = "Solo para confirmar: ¿querías decir \"Escanear código QR\"?";
+
+/* (No Comment) */
+"r2EI05-U0eRbw" = "Sólo para confirmar, ¿querías usar \"Leo AI\"?";
 
 /* (No Comment) */
 "r2EI05-VBH4G6" = "Solo para confirmar: ¿querías decir \"Historial\"?";
@@ -218,6 +233,9 @@
 "tNCrcE-qKrzyX" = "Hay ${count} opciones que coinciden con \"Escanear código QR\".";
 
 /* (No Comment) */
+"tNCrcE-U0eRbw" = "Hay ${count} opciones que coinciden con 'Leo AI'.";
+
+/* (No Comment) */
 "tNCrcE-VBH4G6" = "Hay ${count} opciones que coinciden con \"Historial\".";
 
 /* (No Comment) */
@@ -249,6 +267,9 @@
 
 /* (No Comment) */
 "TxuMja-qKrzyX" = "Hay ${count} opciones que coinciden con \"Escanear código QR\".";
+
+/* (No Comment) */
+"TxuMja-U0eRbw" = "Hay ${count} opciones que coinciden con 'Leo AI'.";
 
 /* (No Comment) */
 "TxuMja-VBH4G6" = "Hay ${count} opciones que coinciden con \"Historial\".";
@@ -308,6 +329,9 @@
 "YQiQuz-qKrzyX" = "Solo para confirmar: ¿querías decir \"Escanear código QR\"?";
 
 /* (No Comment) */
+"YQiQuz-U0eRbw" = "Sólo para confirmar, ¿querías usar \"Leo AI\"?";
+
+/* (No Comment) */
 "YQiQuz-VBH4G6" = "Solo para confirmar: ¿querías decir \"Historial\"?";
 
 /* (No Comment) */
@@ -336,6 +360,9 @@
 
 /* (No Comment) */
 "z517nu-qKrzyX" = "Hay ${count} opciones que coinciden con \"Escanear código QR\".";
+
+/* (No Comment) */
+"z517nu-U0eRbw" = "Hay ${count} opciones que coinciden con 'Leo AI'.";
 
 /* (No Comment) */
 "z517nu-VBH4G6" = "Hay ${count} opciones que coinciden con \"Historial\".";

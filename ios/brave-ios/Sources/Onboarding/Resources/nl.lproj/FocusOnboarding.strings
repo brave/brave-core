@@ -31,6 +31,9 @@
 /* The title of the toggle for enable / disable privacy preserving analytics. */
 "focusOnboarding.p3aToggleDescription" = "U kunt dit op elk gewenst moment veranderen in uw Brave-instellingen onder 'Brave Shields en Privacy'.";
 
+/* The title of the toggle for enable / disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "Deel privé- en anonieme productinzichten.";
+
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Browsen maar";
 
