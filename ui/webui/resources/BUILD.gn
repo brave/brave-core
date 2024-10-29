@@ -41,14 +41,13 @@ if (!is_android && !is_ios) {
     # Ensure all the files are relative to this dir (with a brave/ prefix),
     # and not //ui/webui/resources which is the default for build_cr_component.
     if (!is_android && !is_ios) {
-      web_component_files = [
-        "br_elements/br_toolbar/br_toolbar_search_field.ts",
-      ]
       non_web_component_files = [
         "polymer_overriding.ts",
         "lit_overriding.ts",
         "br_elements/br_toolbar/br_toolbar.ts",
         "br_elements/br_toolbar/br_toolbar.html.ts",
+        "br_elements/br_toolbar/br_toolbar_search_field.ts",
+        "br_elements/br_toolbar/br_toolbar_search_field.html.ts",
       ]
 
       # All the cr_overrides we add should be included in the build.
@@ -66,10 +65,11 @@ if (!is_android && !is_ios) {
         "br_elements/br_shared_vars.css",
         "page_specific/settings/br_settings_shared.css",
         "br_elements/br_toolbar/br_toolbar.css",
+        "br_elements/br_toolbar/br_toolbar_search_field.css",
       ]
     }
 
-    html_to_wrapper_template = "detect"
+    # html_to_wrapper_template = "detect"
 
     ts_composite = true
     generate_grdp = true

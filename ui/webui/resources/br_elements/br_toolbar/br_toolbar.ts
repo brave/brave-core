@@ -3,15 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { CrLitElement, css } from '//resources/lit/v3_0/lit.rollup.js';
-import { getHtml } from './br_toolbar.html.js';
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js';
 import { loadTimeData } from '//resources/js/load_time_data.js';
 
 import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js';
-import {getCss} from './br_toolbar.css.js';
+import { getHtml } from './br_toolbar.html.js';
+import { getCss } from './br_toolbar.css.js';
 
-// TODO: This is a hack while I haven't converted to the search field over yet
-import('//resources/brave/br_elements' + '/br_toolbar/br_toolbar_search_field.js' as any)
+import './br_toolbar_search_field.js'
 
 const customCurrentWebUINameMap: { [key: string]: string } = {
   extensions: 'settings',
@@ -63,40 +62,28 @@ export class CrToolbarElement extends CrLitElement {
       showMenu: { type: Boolean },
 
       // Whether to show menu promo tooltip.
-      showMenuPromo: {
-        type: Boolean,
-      },
+      showMenuPromo: { type: Boolean },
 
       // Controls whether the search field is shown.
       showSearch: { type: Boolean },
 
       // True when the toolbar is displaying in narrow mode.
-      narrow: {
-        type: Boolean,
-        reflectToAttribute: true,
-        readonly: true,
-        notify: true,
-      },
+      narrow: { type: Boolean, reflect: true },
 
       /**
        * The threshold at which the toolbar will change from normal to narrow
        * mode, in px.
        */
-      narrowThreshold: {
-        type: Number,
-      },
+      narrowThreshold: { type: Number },
 
       closeMenuPromo: { type: String },
 
-      noSearch: {
-        observer: 'noSearchChanged_',
-        type: Boolean,
-      },
+      noSearch: { type: Boolean },
 
       /** @private */
       showingSearch_: {
         type: Boolean,
-        reflectToAttribute: true,
+        reflect: true,
       },
 
       shouldShowRewardsButton_: {
@@ -132,7 +119,6 @@ export class CrToolbarElement extends CrLitElement {
   isBraveWalletAllowed_ = loadTimeData.getBoolean('brToolbarShowRewardsButton')
 
   // Localized strings:
-  // These will be loaded from `loadTimeData`
   historyTitle = loadTimeData.getString('brToolbarHistoryTitle')
   settingsTitle = loadTimeData.getString('brToolbarSettingsTitle')
   bookmarksTitle = loadTimeData.getString('brToolbarBookmarksTitle')
@@ -150,14 +136,18 @@ export class CrToolbarElement extends CrLitElement {
   toolbarExtraSlot: HTMLSlotElement
   toolbarExtraElement: Element
 
-  override willUpdate(changedProperties: PropertyValues<this>) {
-    super.willUpdate(changedProperties);
+  override updated(changedProperties: PropertyValues<this>) {
+    super.updated(changedProperties);
     if (changedProperties.has('narrowThreshold')) {
       this.narrowQuery_ = window.matchMedia(`(max-width: ${this.narrowThreshold}px)`);
       this.narrow = this.narrowQuery_.matches
       this.narrowQuery_.addEventListener('change', () => {
         this.narrow = this.narrowQuery_?.matches ?? false;
       });
+    }
+
+    if (changedProperties.has('noSearch')) {
+      this.noSearchChanged_()
     }
   }
 
