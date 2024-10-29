@@ -224,7 +224,7 @@
   "overrides": {
     "axios": "1.7.4",
     "cookie": "0.7.0",
-    "elliptic": "6.5.7",
+    "elliptic": "6.6.0",
     "send": "0.19.0"
   }
 }
