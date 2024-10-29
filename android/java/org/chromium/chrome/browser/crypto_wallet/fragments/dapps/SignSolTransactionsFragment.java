@@ -149,10 +149,8 @@ public class SignSolTransactionsFragment extends BaseDAppsBottomSheetDialogFragm
         mTxLearnMore.setMovementMethod(LinkMovementMethod.getInstance());
         mTxLearnMore.setText(associatedSPLTokenAccountInfo);
 
-        mBtSign.setOnClickListener(
-                v -> processRequest(true));
-        mBtCancel.setOnClickListener(
-                v -> processRequest(false));
+        mBtSign.setOnClickListener(v -> processRequest(true));
+        mBtCancel.setOnClickListener(v -> processRequest(false));
 
         mTvTxCounter.setOnClickListener(
                 v -> {
