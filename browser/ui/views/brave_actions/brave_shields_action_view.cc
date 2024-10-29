@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check_deref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
@@ -65,13 +66,15 @@ class BraveShieldsActionViewHighlightPathGenerator
 DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(BraveShieldsActionView,
                                       kShieldsActionIcon);
 
-BraveShieldsActionView::BraveShieldsActionView(Profile& profile,
-                                               TabStripModel& tab_strip_model)
+BraveShieldsActionView::BraveShieldsActionView(
+    BrowserWindowInterface* browser_window_interface)
     : LabelButton(base::BindRepeating(&BraveShieldsActionView::ButtonPressed,
-                                      base::Unretained(this)),
+                                      base::Unretained(this),
+                                      browser_window_interface),
                   std::u16string()),
-      profile_(profile),
-      tab_strip_model_(tab_strip_model) {
+      profile_(CHECK_DEREF(browser_window_interface->GetProfile())),
+      tab_strip_model_(
+          CHECK_DEREF(browser_window_interface->GetTabStripModel())) {
   auto* web_contents = tab_strip_model_->GetActiveWebContents();
   if (web_contents) {
     brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents)
@@ -89,7 +92,7 @@ BraveShieldsActionView::BraveShieldsActionView(Profile& profile,
   auto menu_button_controller = std::make_unique<views::MenuButtonController>(
       this,
       base::BindRepeating(&BraveShieldsActionView::ButtonPressed,
-                          base::Unretained(this)),
+                          base::Unretained(this), browser_window_interface),
       std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
   menu_button_controller_ = menu_button_controller.get();
   SetButtonController(std::move(menu_button_controller));
@@ -198,7 +201,8 @@ void BraveShieldsActionView::UpdateIconState() {
                 ui::ImageModel::FromImageSkia(icon));
 }
 
-void BraveShieldsActionView::ButtonPressed() {
+void BraveShieldsActionView::ButtonPressed(
+    BrowserWindowInterface* browser_window_interface) {
   auto* web_content = tab_strip_model_->GetActiveWebContents();
   if (web_content && SchemeIsLocal(web_content->GetLastCommittedURL())) {
     return;  // Do not show bubble if it's a local scheme
@@ -206,7 +210,8 @@ void BraveShieldsActionView::ButtonPressed() {
 
   if (!webui_bubble_manager_) {
     webui_bubble_manager_ = WebUIBubbleManager::Create<ShieldsPanelUI>(
-        this, &*profile_, GURL(kShieldsPanelURL), IDS_BRAVE_SHIELDS);
+        this, browser_window_interface, GURL(kShieldsPanelURL),
+        IDS_BRAVE_SHIELDS);
   }
 
   if (webui_bubble_manager_->GetBubbleWidget()) {
