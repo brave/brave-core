@@ -8775,6 +8775,14 @@ extension Strings {
     value: "Block Cookie Consent Notices",
     comment: "A title for a setting that enables cookie consent notices"
   )
+    
+  public static let braveShieldsSaveContactInfo = NSLocalizedString(
+    "BraveShieldsSaveContactInfo",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Store contact information for future webcompat reports",
+    comment: "Shields panel toggle label that would save webcompat report contact info data when enabled."
+  )
 }
 
 // MARK: - Privacy hub

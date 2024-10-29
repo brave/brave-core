@@ -40,11 +40,13 @@ WebcompatReporterServiceFactory::~WebcompatReporterServiceFactory() {}
 std::unique_ptr<KeyedService>
 WebcompatReporterServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
+  auto* browser_state = ChromeBrowserState::FromBrowserState(context);
   auto report_uploader = std::make_unique<WebcompatReportUploader>(
       context->GetSharedURLLoaderFactory());
   component_updater::ComponentUpdateService* cus =
       GetApplicationContext()->GetComponentUpdateService();
   return std::make_unique<WebcompatReporterService>(
+      browser_state->GetPrefs(),
       std::make_unique<WebcompatReporterServiceDelegateImpl>(cus),
       std::move(report_uploader));
 }
