@@ -16,6 +16,7 @@
 #include "components/grit/components_resources.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/webui/web_ui_ios_data_source.h"
+#include "ios/web/webui/web_ui_ios_data_source_impl.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/resource_path.h"
 #include "ui/base/webui/web_ui_util.h"
@@ -35,7 +36,7 @@ web::WebUIIOSDataSource* CreateWebUIDataSource(
     base::span<const webui::ResourcePath> resource_paths,
     int html_resource_id,
     bool disable_trusted_types_csp) {
-  web::WebUIIOSDataSource* source = web::WebUIIOSDataSource::Create(name);
+  web::WebUIIOSDataSource* source = BraveWebUIIOSDataSource::Create(name);
   web::WebUIIOSDataSource::Add(ProfileIOS::FromWebUIIOS(web_ui), source);
 
   source->UseStringsJs();
