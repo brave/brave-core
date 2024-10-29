@@ -127,6 +127,41 @@ TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
             ParseTimeDelta("1727740800" /*1st October 2024 00:00:00 UTC*/));
 }
 
+TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
+       ParseTimeStringTimeDelta) {
+  // Arrange
+  AdvanceClockTo(test::TimeFromUTCString("3 October 2024"));
+
+  // Act & Assert
+  EXPECT_EQ(
+      base::Days(2),
+      ParseTimeDelta("2024-10-01T00:00:00Z" /*1st October 2024 00:00:00 UTC*/));
+  EXPECT_EQ(
+      base::Days(2),
+      ParseTimeDelta(
+          "2024-10-01T00:00:00.000000Z" /*1st October 2024 00:00:00 UTC*/));
+  EXPECT_EQ(
+      base::Days(2),
+      ParseTimeDelta("2024-10-01T00:00:00" /*1st October 2024 00:00:00 UTC*/));
+  EXPECT_EQ(
+      base::Days(2),
+      ParseTimeDelta(
+          "2024-10-01T00:00:00.000000" /*1st October 2024 00:00:00 UTC*/));
+  EXPECT_EQ(base::Days(2),
+            ParseTimeDelta(
+                "2024-09-30T19:00:00-05:00" /*1st October 2024 00:00:00 UTC*/));
+  EXPECT_EQ(
+      base::Days(2),
+      ParseTimeDelta("1 Oct 2024 00:00:00" /*1st October 2024 00:00:00 UTC*/));
+  EXPECT_EQ(
+      base::Days(2),
+      ParseTimeDelta(
+          "1 Oct 2024 00:00:00.000000" /*1st October 2024 00:00:00 UTC*/));
+  EXPECT_EQ(base::Days(2),
+            ParseTimeDelta(
+                "30 Sept 2024 19:00:00 EST" /*1st October 2024 00:00:00 UTC*/));
+}
+
 TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest, DoNotParseTimeDelta) {
   // Act & Assert
   EXPECT_FALSE(ParseTimeDelta("broken time"));

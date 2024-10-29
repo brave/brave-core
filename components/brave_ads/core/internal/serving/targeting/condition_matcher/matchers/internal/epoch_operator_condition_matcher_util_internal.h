@@ -27,7 +27,8 @@ bool IsUnixEpochTimestamp(int64_t timestamp);
 // Converts a Windows timestamp to a Unix timestamp.
 int64_t WindowsToUnixEpoch(int64_t timestamp);
 
-// Returns the time delta since a Unix or Windows timestamp.
+// Returns the time delta since a Unix or Windows timestamp or an ISO 8601
+// formatted date and time.
 base::TimeDelta TimeDeltaSinceEpoch(int64_t timestamp);
 
 // Parses a time delta from a string.
