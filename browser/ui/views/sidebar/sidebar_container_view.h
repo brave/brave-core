@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 
+#include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_multi_source_observation.h"
 #include "base/scoped_observation.h"
@@ -130,8 +131,6 @@ class SidebarContainerView
   // SidePanelEntryObserver:
   void OnEntryShown(SidePanelEntry* entry) override;
   void OnEntryHidden(SidePanelEntry* entry) override;
-  void OnEntryWillHide(SidePanelEntry* entry,
-                       SidePanelEntryHideReason reason) override;
 
   // TabStripModelObserver:
   void OnTabStripModelChanged(
@@ -193,8 +192,6 @@ class SidebarContainerView
 
   void StartObservingContextualSidePanelEntry(content::WebContents* contents);
   void StopObservingContextualSidePanelEntry(content::WebContents* contents);
-  void StartObservingForEntry(SidePanelEntry* entry);
-  void StopObservingForEntry(SidePanelEntry* entry);
   void UpdateActiveItemState();
 
   // Casts |browser_| to BraveBrowser, as storing it as BraveBrowser would cause
@@ -209,7 +206,6 @@ class SidebarContainerView
   bool initialized_ = false;
   bool sidebar_on_left_ = true;
   bool operation_from_active_tab_change_ = false;
-  bool deregister_when_hidden_ = false;
   base::OneShotTimer sidebar_hide_timer_;
   sidebar::SidebarService::ShowSidebarOption show_sidebar_option_ =
       sidebar::SidebarService::ShowSidebarOption::kShowAlways;
@@ -225,8 +221,14 @@ class SidebarContainerView
   base::ScopedObservation<sidebar::SidebarModel,
                           sidebar::SidebarModel::Observer>
       sidebar_model_observation_{this};
-  base::ScopedMultiSourceObservation<SidePanelEntry, SidePanelEntryObserver>
-      panel_entry_observations_{this};
+
+  // A list of tabs we've seen already, and for which we've registered side
+  // panel entries.
+  base::flat_set<uint32_t> visited_tabs_;
+
+  // Indicates if we are observing the side panel entries for the side panel
+  // coordinator.
+  bool is_observing_side_panel_entries_for_side_panel_coordinator_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_CONTAINER_VIEW_H_

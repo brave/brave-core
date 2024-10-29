@@ -286,18 +286,6 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return std::distance(items.cbegin(), iter);
   }
 
-  bool SidebarContainerObserving(SidePanelEntryId id) {
-    auto* sidebar_container_view =
-        static_cast<SidebarContainerView*>(controller()->sidebar());
-    for (const auto& entry :
-         sidebar_container_view->panel_entry_observations_.sources()) {
-      if (entry->key().id() == id) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   raw_ptr<views::View, DanglingUntriaged> item_added_bubble_anchor_ = nullptr;
   std::unique_ptr<base::RunLoop> run_loop_;
   base::WeakPtrFactory<SidebarBrowserTest> weak_factory_{this};
@@ -931,10 +919,6 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   WaitUntil(base::BindLambdaForTesting([&]() {
     return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
   }));
-  // As previous customize panel per-url panel, it's closed by deregistering
-  // after loading another url. Then, sidebar container should stop observing
-  // its entry.
-  EXPECT_FALSE(SidebarContainerObserving(SidePanelEntryId::kCustomizeChrome));
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {

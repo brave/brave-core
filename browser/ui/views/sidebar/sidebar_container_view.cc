@@ -176,8 +176,6 @@ bool SidebarContainerView::IsSidebarVisible() const {
 }
 
 void SidebarContainerView::WillShowSidePanel(bool show_on_deregistered) {
-  deregister_when_hidden_ = show_on_deregistered;
-
   // It's good timing to start observing any panel entries
   // from global and contextual if not yet observed.
   auto* tab_model = browser_->tab_strip_model();
@@ -187,9 +185,15 @@ void SidebarContainerView::WillShowSidePanel(bool show_on_deregistered) {
   }
   StartObservingContextualSidePanelEntry(active_web_contents);
 
-  auto* global_registry = side_panel_coordinator_->GetWindowRegistry();
-  for (const auto& entry : global_registry->entries()) {
-    StartObservingForEntry(entry.get());
+  if (!is_observing_side_panel_entries_for_side_panel_coordinator_) {
+    is_observing_side_panel_entries_for_side_panel_coordinator_ = true;
+
+    // We only add the observations for the coordinator's entry once, and then
+    // we forget about it.
+    auto* global_registry = side_panel_coordinator_->GetWindowRegistry();
+    for (const auto& entry : global_registry->entries()) {
+      entry->AddObserver(this);
+    }
   }
 }
 
@@ -773,11 +777,6 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
 void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   DVLOG(1) << "Panel hidden: " << SidePanelEntryIdToString(entry->key().id());
 
-  if (deregister_when_hidden_) {
-    StopObservingForEntry(entry);
-    deregister_when_hidden_ = false;
-  }
-
   auto* controller = GetBraveBrowser()->sidebar_controller();
 
   // Handling if |entry| is managed one.
@@ -806,22 +805,6 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   // panel should be hidden here.
   if (!side_panel_coordinator_->GetCurrentEntryId()) {
     HideSidebarForShowOption();
-  }
-}
-
-void SidebarContainerView::OnEntryWillHide(SidePanelEntry* entry,
-                                           SidePanelEntryHideReason reason) {
-  DVLOG(1) << "Panel will hide: "
-           << SidePanelEntryIdToString(entry->key().id());
-
-  // If |reason| is panel closing, we could deregister. And it'll be
-  // re-registered when panel is shown if that entry is still live in tab's
-  // registry.
-  // We only stop observing when |entry|'s panel is hidden by closing.
-  // If it's hidden by replacing with other panel, we should not stop
-  // to know the timing that it's shown again.
-  if (reason == SidePanelEntryHideReason::kSidePanelClosed) {
-    deregister_when_hidden_ = true;
   }
 }
 
@@ -897,8 +880,13 @@ void SidebarContainerView::StopObservingContextualSidePanelEntry(
     return;
   }
 
-  for (const auto& entry : registry->entries()) {
-    StopObservingForEntry(entry.get());
+  // Removing observations for the side panel entries associated with this tab,
+  // if we registered them already at some point.
+  if (visited_tabs_.count(tab->GetTabHandle())) {
+    visited_tabs_.erase(tab->GetTabHandle());
+    for (const auto& entry : registry->entries()) {
+      entry->RemoveObserver(this);
+    }
   }
 }
 
@@ -914,8 +902,12 @@ void SidebarContainerView::StartObservingContextualSidePanelEntry(
     return;
   }
 
-  for (const auto& entry : registry->entries()) {
-    StartObservingForEntry(entry.get());
+  // Adding observations for the side panel entries from tab not seen before.
+  if (visited_tabs_.count(tab->GetTabHandle())) {
+    visited_tabs_.insert(tab->GetTabHandle());
+    for (const auto& entry : registry->entries()) {
+      entry->AddObserver(this);
+    }
   }
 
   SharedPinnedTabService* shared_pinned_tab_service =
@@ -934,22 +926,6 @@ void SidebarContainerView::StartObservingContextualSidePanelEntry(
     if (auto active_entry = registry->active_entry()) {
       OnEntryShown(*active_entry);
     }
-  }
-}
-
-void SidebarContainerView::StartObservingForEntry(SidePanelEntry* entry) {
-  if (!panel_entry_observations_.IsObservingSource(entry)) {
-    DVLOG(1) << "Observing panel entry: "
-             << SidePanelEntryIdToString(entry->key().id());
-    panel_entry_observations_.AddObservation(entry);
-  }
-}
-
-void SidebarContainerView::StopObservingForEntry(SidePanelEntry* entry) {
-  if (panel_entry_observations_.IsObservingSource(entry)) {
-    DVLOG(1) << "Removing panel entry observation: "
-             << SidePanelEntryIdToString(entry->key().id());
-    panel_entry_observations_.RemoveObservation(entry);
   }
 }
 
