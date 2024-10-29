@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/extensions/item_list.ts b/chrome/browser/resources/extensions/item_list.ts
-index 22b0f8711ef0388f249d2a206c658ffc7813ebd6..8749d81790c85b8a71dea14c8eed182c24a2aadc 100644
+index 7504fd84328f685eba76ba68e96ee8788aca412d..4a6326d988652f72df1a923dcec79118a731a60c 100644
 --- a/chrome/browser/resources/extensions/item_list.ts
 +++ b/chrome/browser/resources/extensions/item_list.ts
-@@ -16,6 +16,7 @@ import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bu
- import type {ExtensionsItemElement, ItemDelegate} from './item.js';
- import {getTemplate} from './item_list.html.js';
+@@ -18,6 +18,7 @@ import type {ExtensionsItemElement, ItemDelegate} from './item.js';
+ import {getCss} from './item_list.css.js';
+ import {getHtml} from './item_list.html.js';
  import {getMv2ExperimentStage, Mv2ExperimentStage} from './mv2_deprecation_util.js';
 +import './brave_item_list_more_items.js'
  

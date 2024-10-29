@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/bubble/webui_bubble_manager.h b/chrome/browser/ui/views/bubble/webui_bubble_manager.h
-index edd7d37a12e182cc663db4e565b8a9edb12e0c70..e90187359fc82f33135212fb627ac07d495076d0 100644
+index dbda307510db6bacf70a4eee109e48cdbee2ef4b..8dcd9361546bdc661eac8cf2744f3b9b750e534c 100644
 --- a/chrome/browser/ui/views/bubble/webui_bubble_manager.h
 +++ b/chrome/browser/ui/views/bubble/webui_bubble_manager.h
-@@ -165,9 +165,11 @@ class WebUIBubbleManagerImpl : public WebUIBubbleManager {
+@@ -164,12 +164,14 @@ class WebUIBubbleManagerImpl : public WebUIBubbleManager {
  
   private:
    // WebUIBubbleManager:
@@ -11,6 +11,7 @@ index edd7d37a12e182cc663db4e565b8a9edb12e0c70..e90187359fc82f33135212fb627ac07d
        const std::optional<gfx::Rect>& anchor,
        views::BubbleBorder::Arrow arrow) override;
 + private:
+   WebUIContentsWrapper* GetContentsWrapper() override;
  
    const raw_ptr<views::View> anchor_view_;
    const raw_ptr<Profile, DanglingUntriaged> profile_;
