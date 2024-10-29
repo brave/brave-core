@@ -27,7 +27,6 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
-#include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
