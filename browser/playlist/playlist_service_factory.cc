@@ -172,9 +172,11 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
     auto encode = base::BindOnce(
         [](const SkBitmap& bitmap) {
           auto encoded = base::MakeRefCounted<base::RefCountedBytes>();
-          if (!gfx::PNGCodec::EncodeBGRASkBitmap(bitmap,
-                                                 /*discard_transparency=*/false,
-                                                 &encoded->as_vector())) {
+          if (auto result = gfx::PNGCodec::EncodeBGRASkBitmap(
+                  bitmap,
+                  /*discard_transparency=*/false)) {
+            encoded->as_vector() = std::move(result).value();
+          } else {
             DVLOG(2) << "Failed to encode image as PNG";
           }
 
