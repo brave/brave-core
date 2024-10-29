@@ -71,7 +71,6 @@ export class BraveToolbarSearchField extends BraveToolbarSearchFieldBase {
     super.updated(changedProperties);
 
     if (changedProperties.has('showingSearch')) {
-      console.log(this.showingSearch, changedProperties.get('showingSearch'))
       this.showingSearchChanged_(this.showingSearch, changedProperties.get('showingSearch'))
     }
   }

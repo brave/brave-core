@@ -13,6 +13,8 @@
     --search-padding: 16px;
     --search-icon-padding: 4px;
     --search-button-width: calc(var(--search-icon-size) + 2 * var(--search-padding) + 2 * var(--search-icon-padding));
+    --leo-icon-size: var(--search-icon-size);
+
     position: absolute;
     bottom: 0;
     right: 0;
@@ -53,7 +55,7 @@
     padding: var(--search-padding);
 }
 
-.page-search_label svg {
+.page-search_label leo-icon {
     height: var(--search-icon-size);
     width: var(--search-icon-size);
     padding: var(--search-icon-padding);
@@ -127,7 +129,7 @@
     align-items: center;
 }
 
-.page-search_close-button svg {
+.page-search_close-button leo-icon {
     height: var(--search-icon-size);
     width: var(--search-icon-size);
     padding: var(--search-icon-padding);
