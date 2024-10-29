@@ -11,7 +11,7 @@ RegisterStyleOverride(
   html`
     <style include="settings-shared">
     .cr-row.manage-profile-section {
-      padding-top: var(--leo-padding-xl) !important;
+      padding-top: var(--leo-spacing-xl) !important;
     }
   </style>
   `
