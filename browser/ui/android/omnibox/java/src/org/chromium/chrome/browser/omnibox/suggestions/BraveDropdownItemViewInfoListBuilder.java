@@ -138,8 +138,10 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
             DropdownItemViewInfo firstObj = viewInfoList.get(0);
             viewInfoList.clear();
             if (firstObj.processor != null
-                    && firstObj.processor.getViewTypeId()
-                            == OmniboxSuggestionUiType.EDIT_URL_SUGGESTION) {
+                    && (firstObj.processor.getViewTypeId()
+                                    == OmniboxSuggestionUiType.EDIT_URL_SUGGESTION
+                            || firstObj.processor.getViewTypeId()
+                                    == OmniboxSuggestionUiType.CLIPBOARD_SUGGESTION)) {
                 viewInfoList.add(firstObj);
             }
         }
