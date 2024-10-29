@@ -74,12 +74,15 @@ public class BraveVPN {
     }
 
     Task {
-      let receiptResponse = await validateReceiptData()
-      // Clear configuration if only if the receipt response is expired (not retryPeriod)
-      if receiptResponse?.status == .expired {
-        clearConfiguration()
-        logAndStoreError("Receipt expired")
-        return
+      do {
+        let receiptResponse = try await validateReceiptData()
+        // Clear configuration if only if the receipt response is expired (not retryPeriod)
+        if receiptResponse?.status == .expired {
+          clearConfiguration()
+          logAndStoreError("Receipt expired")
+        }
+      } catch {
+        logAndStoreError(String(describing: error))
       }
     }
   }
