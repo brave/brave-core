@@ -108,12 +108,14 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
         // TabModelSelector.getModel returns EmptyTabModel with null profile when the model is not
         // found.
         // Upstream does not have this issue because they don't use BottomControlsCoordinator
-        if (mTabModelSelector.getModels().size() < 2) {
+        if (mTabModelSelector.getModels().size() < 2
+                || mTabModelSelector.getModel(false).getProfile() == null) {
             mTabModelSelector.addObserver(
                     new TabModelSelectorObserver() {
                         @Override
                         public void onChange() {
-                            if (mTabModelSelector.getModels().size() >= 2) {
+                            if (mTabModelSelector.getModels().size() >= 2
+                                    && mTabModelSelector.getModel(false).getProfile() != null) {
                                 callSuperInitializeWithNative(
                                         activity, visibilityController, onModelTokenChange);
 
