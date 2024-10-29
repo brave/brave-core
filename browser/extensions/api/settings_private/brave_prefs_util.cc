@@ -176,6 +176,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kNewTabPageShowBraveTalk] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kNewTabPageShowBraveVPN] =
+      settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kNewTabPageShowsOptions] =
       settings_api::PrefType::kNumber;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
