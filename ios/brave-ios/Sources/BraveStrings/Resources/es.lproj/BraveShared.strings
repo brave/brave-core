@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Añadir marcador";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Datos de Anuncios de Brave";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Anuncios y rastreadores";
 
@@ -1078,8 +1081,17 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Abrir teclado automáticamente";
 
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "Fondo";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "Tipo de medio";
+
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Imágenes predeterminadas";
+
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Imágenes y vídeos patrocinados";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Imágenes de patrocinadores";
@@ -1404,6 +1416,9 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Permitir estadísticas del producto con preservación de la privacidad (P3A)";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "Cerrar llamada de producto que preserva la privacidad";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Tu conexión a este sitio no es completamente segura.";
@@ -2248,11 +2263,29 @@
 /* Title for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInTitle" = "Para iniciar una llamada gratuita, activa Brave Rewards";
 
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "Iniciar para ayudar a Brave y a la comunidad BAT.";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "El uso de Recompensas de Brave ayuda a Brave y a la comunidad BAT.";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "Estás ayudando a Brave y a la comunidad BAT.";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "Gracias por ayudar a Brave y a la comunidad BAT.";
+
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Al hacer clic, aceptas las %1$@ y la %2$@. Puedes deshabilitar esta opción en cualquier momento en Ajustes.";
 
 /* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "Ayuda a apoyar a Brave y a la comunidad BAT activando las Recompensas de Brave y viendo los Anuncios de Brave.";
+
+/* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Habilitar Recompensas de Brave";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "Este creador de contenido está verificado con Creadores de Brave";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Número de creadores de contenido a los que ayudas a apoyar este mes.";
@@ -3021,6 +3054,9 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Elige el tipo de dispositivo con el que te gustaría realizar la sincronización.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Código caducado. Genera uno nuevo pulsando el botón de abajo.";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "SyncCodeTimeRemainingTitleLabel" = "Este código temporal solo tiene validez durante las próximas %@";
