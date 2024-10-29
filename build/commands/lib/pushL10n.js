@@ -11,14 +11,7 @@ const pushL10n = (options) => {
     options.with_translations ? '--with_translations' :
       options.with_missing_translations ? '--with_missing_translations' : ''
   if (options.extension) {
-    const extensionPath = options.extension_path
-    if (options.extension === 'greaselion') {
-      l10nUtil.getGreaselionScriptPaths(extensionPath).forEach((sourceStringPath) => {
-        util.run('python', ['script/push-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
-      })
-      return
-    }
-    console.error('Unknown extension: ', options.extension)
+    console.error('No extension is supported now')
     process.exit(1)
   } else {
     // Get rid of local copied xtb and grd changes

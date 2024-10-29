@@ -7,14 +7,7 @@ const pullL10n = (options) => {
   const cmdOptions = config.defaultOptions
   cmdOptions.cwd = config.braveCoreDir
   if (options.extension) {
-    const extensionPath = options.extension_path
-    if (options.extension === 'greaselion') {
-      l10nUtil.getGreaselionScriptPaths(extensionPath).forEach((sourceStringPath) => {
-        util.run('python', ['script/pull-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
-      })
-      return
-    }
-    console.error('Unknown extension: ', options.extension)
+    console.error('No extension is supported now')
     process.exit(1)
   }
 

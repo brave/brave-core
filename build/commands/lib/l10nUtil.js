@@ -210,43 +210,6 @@ const l10nUtil = {
     return l10nUtil.getAllBravePaths().filter((x) => ['grd', 'json'].includes(x.split('.').pop()))
   },
 
-// Helper function to retrieve Greaselion script paths relative to the
-// Brave paths.
-//
-// Greaselion.json consists of an array of Greaselion rules,
-// specifying scripts to inject into given sites based on certain
-// preconditions. If the rule contains a "messages" key, then the
-// script contains user-visible strings that require translation. This
-// helper function gathers those messages.json files for transmission
-// to Transifex.
-  getGreaselionScriptPaths: (extensionPath) => {
-    let basePath = extensionPath
-    if (!basePath) {
-      basePath = '../../../brave-site-specific-scripts'
-    }
-
-    const jsonContent = fs.readFileSync(`${basePath}/Greaselion.json`, 'utf8')
-    if (!jsonContent) {
-      console.error('Missing Greaselion.json')
-      return []
-    }
-
-    const greaselionRules = JSON.parse(jsonContent)
-    if (!greaselionRules) {
-      console.error('Malformed Greaselion.json')
-      return []
-    }
-
-    let paths = []
-    greaselionRules.forEach((rule) => {
-      if (rule.messages) {
-        paths.push(`${basePath}/${rule.messages}/en_US/messages.json`)
-      }
-    })
-
-    return paths
-  },
-
   // Helper function to pretty print removed GRDP file names.
   logRemovedGRDParts: (mapping) => {
     if (mapping.size) {

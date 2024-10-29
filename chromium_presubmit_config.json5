@@ -91,7 +91,6 @@
       "browser/browsing_data/brave_clear_browsing_data\\.cc",
       "chromium_src/chrome/browser/ui/startup/startup_browser_creator\\.cc",
       "components/brave_vpn/winvpntool\\.cc",
-      "components/greaselion/browser/greaselion_download_service\\.cc",
       "components/permissions/permission_lifetime_utils\\.cc",
       "components/tor/tor_launcher_factory\\.cc",
       "components/webcompat_reporter/browser/webcompat_report_uploader\\.cc",
