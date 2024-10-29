@@ -17,10 +17,10 @@ using ConditionMatcherMap =
 class PrefProviderInterface;
 
 // Matchers are one or more pref paths and conditions, using AND logic, that
-// must all be met for an ad to be served. Pref path keys which contain dotted
-// paths should be separated by |, where paths may include list indices (e.g.,
-// "list|1") or dictionary keys (e.g., "dict|key"). Paths can also be nested.
-// Both Brave local state and profile prefs are supported.
+// must all be met for an ad to be served. Pref path keys should be separated by
+// "|", where paths may include list indices (e.g., "list|1") or dictionary keys
+// (e.g., "dict|key"). Paths can also be nested. Both Brave local state and
+// profile prefs are supported.
 //
 // For non-Rewards users, condition matchers should be included in the
 // "photo.json" file under the NTP (New Tab Page) sponsored images component,
@@ -40,11 +40,11 @@ class PrefProviderInterface;
 //
 // 1. [epoch operator]:days Matcher:
 //    - Support operators:
-//      - '=': Equal
-//      - '>': Greater than
-//      - '≥': Greater than or equal to
-//      - '<': Less than
-//      - '≤': Less than or equal to
+//      - 'T=': Equal
+//      - 'T>': Greater than
+//      - 'T≥': Greater than or equal to
+//      - 'T<': Less than
+//      - 'T≤': Less than or equal to
 //    - This matcher triggers an ad based on when an event occurred or will
 //      occur, using a timestamp (Unix or Windows epoch) stored at "prefPath".
 //      For instance, the example below will serve an ad only if the timestamp
@@ -52,7 +52,7 @@ class PrefProviderInterface;
 //
 //       "conditionMatchers": [
 //         {
-//           "condition": "[>]:3",
+//           "condition": "[T>]:3",
 //           "prefPath": "foo.bar"
 //         }
 //       ]
@@ -65,9 +65,9 @@ class PrefProviderInterface;
 //      - 'R≥': Greater than or equal to
 //      - 'R<': Less than
 //      - 'R≤': Less than or equal to
-//    - This matcher triggers an ad based on when a real number stored a1t
-//      "prefPath". For instance, the example below will serve an ad only if the
-//      value stored at "foo.bar" is not equal to 3:
+//    - This matcher triggers an ad based on when a real number (integers or
+//      fractional) stored at "prefPath". For instance, the example below will
+//      serve an ad only if the value stored at "foo.bar" is not equal to 3:
 //
 //       "conditionMatchers": [
 //         {
@@ -103,7 +103,7 @@ class PrefProviderInterface;
 //
 // For example, the following condition matchers would only serve a new tab
 // takeover ad if the default search provider is set to "Startpage", the user
-// has exactly one bookmark, and the browser was installed between three and
+// has less than 10 bookmarks, and the browser was installed between three and
 // seven days ago:
 //
 //  "conditionMatchers": [
@@ -112,15 +112,15 @@ class PrefProviderInterface;
 //      "prefPath": "default_search_provider.guid"
 //    },
 //    {
-//      "condition": "1",
+//      "condition": "[R<]:10",
 //      "prefPath": "p3a.logs_constellation_prep|Brave.Core.BookmarkCount|value"
 //    },
 //    {
-//      "condition": "[≥]:3",
+//      "condition": "[T≥]:3",
 //      "prefPath": "uninstall_metrics.installation_date2"
 //    },
 //    {
-//      "condition": "[≤]:7",
+//      "condition": "[T≤]:7",
 //      "prefPath": "uninstall_metrics.installation_date2"
 //    }
 //  ]
@@ -129,21 +129,39 @@ class PrefProviderInterface;
 // local state prefs. Virtual pref path keys should be prefixed with
 // "[virtual]:".
 //
-// "[virtual]:operating_system.name" retrieves the operating system, returning
-// one of the following values: "Windows", "Mac OS X", "Linux", "Android",
-// "iOS", or "Unknown".
+// "[virtual]:browser|version" retrieves the browser version, e.g. "72.0.59.3".
 //
-// "[virtual]:build_channel.name" retrieves the build channel of the browser,
+// "[virtual]:browser|build_channel" retrieves the build channel of the browser,
 // returning one of the following values: "stable", "beta", "dev", "nightly", or
 // "unknown".
 //
-// "[virtual]:browser_version" retrieves the browser version, e.g. "6.0.490.1".
+// "[virtual]:operating_system|locale|language" retrieves the operating system's
+// language, e.g., "en", and "[virtual]:operating_system|locale|region"
+// retrieves the operating system's region, e.g., "US".
 //
-// "[virtual]:default_search_engine.name" retrieves the default search engine
+// "[virtual]:operating_system|name" retrieves the operating system, returning
+// one of the following values: "Windows", "Mac OS X", "Linux", "Android",
+// "iOS", or "Unknown".
+//
+// "[virtual]:search_engine|default_name" retrieves the default search engine
 // chosen during browser installation, returning one of the following values:
 // "Brave", "Google", "Yandex", "Bing", "Daum", "네이버", "DuckDuckGo", "Qwant",
 // "Startpage", or "Ecosia". For the most up-to-date list of possible default
 // search engines, see `TemplateURLPrepopulateData::GetDefaultSearchEngine`.
+//
+// "[virtual]:skus|environment|location|key" retrieves the value from either the
+// production or staging environment, the "talk.brave.com", "vpn.brave.com", or
+// "leo.brave.com" location, and the "created_at", "expires_at", "last_paid_at",
+// or "status" key. Status returns one of the following values: `trial`, `beta`,
+// `paid`, or `canceled`. For example, the following will serve an ad if the
+// user has canceled their Brave VPN subscription:
+//
+//  "conditionMatchers": [
+//    {
+//       "condition": "canceled",
+//       "prefPath": "[virtual]:skus|production|vpn.brave.com|status"
+//    }
+//  ]
 //
 // NOTE: To identify condition matchers, first create a copy of your pref files.
 // Next, change a brave://setting or enable a feature, quit the browser and then
