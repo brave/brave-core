@@ -13,7 +13,6 @@ namespace android_webview {
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kWebViewEnumerateDevicesCache, base::FEATURE_DISABLED_BY_DEFAULT},
     {kWebViewMediaIntegrityApiBlinkExtension,
      base::FEATURE_DISABLED_BY_DEFAULT},
 }});

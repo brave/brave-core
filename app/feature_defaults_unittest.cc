@@ -80,7 +80,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
       &aggregation_service::kAggregationServiceMultipleCloudProviders,
 #if BUILDFLAG(IS_ANDROID)
-      &android_webview::features::kWebViewEnumerateDevicesCache,
       &android_webview::features::kWebViewMediaIntegrityApiBlinkExtension,
 #endif
       &attribution_reporting::features::kConversionMeasurement,
