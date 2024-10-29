@@ -18,13 +18,12 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider.IncognitoStateObserver;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tabmodel.TabModelSelectorObserver;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
 import org.chromium.chrome.tab_ui.R;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
@@ -39,7 +38,7 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
     // Own members.
     private IncognitoStateProvider mIncognitoStateProvider;
     private IncognitoStateObserver mIncognitoStateObserver;
-    private ProfileManager.Observer mProfileManagerObserver;
+    private TabModelSelector mTabModelSelector;
 
     public BraveTabGroupUiCoordinator(
             @NonNull Activity activity,
@@ -71,6 +70,7 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
                 modalDialogManager);
 
         mIncognitoStateProvider = incognitoStateProvider;
+        mTabModelSelector = tabModelSelector;
 
         assert mToolbarView != null : "Make sure mToolbarView is properly patched in bytecode.";
         ChromeImageView fadingEdgeStart =
@@ -105,26 +105,26 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
         // at BraveTabGroupUiCoordinator.initializeWithNative (BraveTabGroupUiCoordinator.java:97)
         // at BottomControlsCoordinator.lambda$new$1 (BottomControlsCoordinator.java:148)
         //
-        // Profile at TabGroupUiCoordinator can be null.
+        // TabModelSelector.getModel returns EmptyTabModel with null profile when the model is not
+        // found.
         // Upstream does not have this issue because they don't use BottomControlsCoordinator
-        if (ProfileManager.isInitialized()) {
-            callSuperInitializeWithNative(activity, visibilityController, onModelTokenChange);
-        } else {
-            // Profile is not yet ready, continue initialization when it will be ready
-            mProfileManagerObserver =
-                    new ProfileManager.Observer() {
+        if (mTabModelSelector.getModels().size() < 2
+                || mTabModelSelector.getModel(false).getProfile() == null) {
+            mTabModelSelector.addObserver(
+                    new TabModelSelectorObserver() {
                         @Override
-                        public void onProfileAdded(Profile profile) {
-                            ProfileManager.removeObserver(mProfileManagerObserver);
+                        public void onChange() {
+                            if (mTabModelSelector.getModels().size() >= 2
+                                    && mTabModelSelector.getModel(false).getProfile() != null) {
+                                callSuperInitializeWithNative(
+                                        activity, visibilityController, onModelTokenChange);
 
-                            callSuperInitializeWithNative(
-                                    activity, visibilityController, onModelTokenChange);
+                                mTabModelSelector.removeObserver(this);
+                            }
                         }
-
-                        @Override
-                        public void onProfileDestroyed(Profile profile) {}
-                    };
-            ProfileManager.addObserver(mProfileManagerObserver);
+                    });
+        } else {
+            callSuperInitializeWithNative(activity, visibilityController, onModelTokenChange);
         }
     }
 
