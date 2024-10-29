@@ -11,8 +11,6 @@ export function getHtml(this: CrToolbarElement) {
 <link rel="stylesheet" href="chrome://resources/brave/fonts/poppins.css">
 <link rel="stylesheet" href="chrome://resources/brave/fonts/inter.css">
 
-/* TODO: Include shared styles, somehow */
-
 <div class="br-toolbar ${this.fontsLoadedClassName}">
   ${this.showMenu ? html`
     <div id="menuButtonContainer">

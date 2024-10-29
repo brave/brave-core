@@ -8,6 +8,7 @@ import { getHtml } from './br_toolbar.html.js';
 import { loadTimeData } from '//resources/js/load_time_data.js';
 
 import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js';
+import {getCss} from './br_toolbar.css.js';
 
 // TODO: This is a hack while I haven't converted to the search field over yet
 import('//resources/brave/br_elements' + '/br_toolbar/br_toolbar_search_field.js' as any)
@@ -29,116 +30,7 @@ export class CrToolbarElement extends CrLitElement {
   }
 
   static override get styles() {
-    return css`
-  #menuButtonContainer {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  #menuButton {
-    --cr-icon-button-fill-color: currentColor;
-  }
-
-  .br-toolbar {
-    --toolbar-background: var(--leo-gradient-toolbar-background);
-    background: var(--leo-gradient-toolbar-background);
-    color: var(--leo-color-white);
-    height: 56px;
-    position: relative;
-  }
-
-  .nav-items {
-    align-items: stretch;
-    display: flex;
-    justify-content: center;
-    margin: 0;
-    padding: 6px 0;
-    gap: 6px;
-  }
-
-  .nav-items-list-item {
-    display: flex;
-  }
-
-  .nav-item {
-    align-items: center;
-    color: var(--leo-color-white);
-    cursor: pointer;
-    display: flex;
-    /* update br_toolbar.js font-load detection
-    if font-weight or name changes */
-    font: var(--leo-font-components-navbutton) !important;
-    opacity: 0;
-    overflow: hidden;
-    padding: 0 var(--leo-spacing-xl);
-    text-decoration: none;
-    transition: background 100ms ease-out;
-    height: 44px;
-    border-radius: var(--leo-radius-l);
-  }
-
-  .fonts-loaded .nav-item {
-    opacity: 1;
-  }
-  .nav-item:hover {
-    background: rgba(0, 0, 0, 0.1);
-  }
-  .nav-item:focus {
-    background: rgba(0, 0, 0, 0.2);
-  }
-  .nav-item:active {
-    background: rgba(0, 0, 0, 0.4);
-  }
-  .nav-item.-selected {
-    background: rgba(0, 0, 0, 0.4);
-    cursor: default;
-  }
-
-  .nav-item-icon {
-    align-items: center;
-    color: inherit;
-    display: flex;
-  }
-
-  .nav-item-icon path {
-    fill: currentColor;
-  }
-
-  .nav-item-text {
-    display: block;
-    margin: 0 0 0 8px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  @media only screen and (max-width: 1200px) {
-    .nav-item-text {
-      display: none;
-    }
-  }
-
-  .toolbar-extra {
-    position: absolute;
-    right: 0;
-    top: 100%;
-    z-index: 1;
-  }
-
-  .toolbar-extra.-slot-filled {
-    color: rgb(34, 34, 34);
-    padding: 5px;
-  }
-  @media (prefers-color-scheme: dark) {
-    .toolbar-extra.-slot-filled {
-      color: rgb(221, 225, 226);
-    }
-  }
-`
+    return getCss()
   }
 
   override render() {

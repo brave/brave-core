@@ -65,6 +65,7 @@ if (!is_android && !is_ios) {
         "br_elements/br_shared_style.css",
         "br_elements/br_shared_vars.css",
         "page_specific/settings/br_settings_shared.css",
+        "br_elements/br_toolbar/br_toolbar.css",
       ]
     }
 
