@@ -1,0 +1,13 @@
+diff --git a/components/omnibox/browser/autocomplete_match.h b/components/omnibox/browser/autocomplete_match.h
+index 0fbc00afa1a8a885ba9ee26e32317c9b5cb68f91..5748bbc35569775bcc33c8b9e53cf97381fe71b1 100644
+--- a/components/omnibox/browser/autocomplete_match.h
++++ b/components/omnibox/browser/autocomplete_match.h
+@@ -717,7 +717,7 @@ struct AutocompleteMatch {
+   // The provider of this match, used to remember which provider the user had
+   // selected when the input changes. This may be NULL, in which case there is
+   // no provider (or memory of the user's selection).
+-  raw_ptr<AutocompleteProvider> provider = nullptr;
++  raw_ptr<AutocompleteProvider, DanglingUntriaged> provider = nullptr;
+ 
+   // The relevance of this match. See table in autocomplete_provider.h for
+   // scores returned by various providers. This is used to rank matches among
