@@ -74,11 +74,16 @@ base::TimeDelta TimeDeltaSinceEpoch(const int64_t timestamp) {
 
 std::optional<base::TimeDelta> ParseTimeDelta(const std::string_view value) {
   double timestamp;
-  if (!base::StringToDouble(value, &timestamp)) {
-    return std::nullopt;
+  if (base::StringToDouble(value, &timestamp)) {
+    return TimeDeltaSinceEpoch(static_cast<int64_t>(timestamp));
   }
 
-  return TimeDeltaSinceEpoch(static_cast<int64_t>(timestamp));
+  base::Time time;
+  if (base::Time::FromUTCString(value.data(), &time)) {
+    return TimeDeltaSinceEpoch(time.ToTimeT());
+  }
+
+  return std::nullopt;
 }
 
 }  // namespace brave_ads
