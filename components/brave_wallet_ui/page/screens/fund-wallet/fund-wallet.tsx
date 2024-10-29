@@ -97,7 +97,7 @@ import {
 import { BuyOptions } from '../../../options/buy-with-options'
 import {
   makeFundWalletPurchaseOptionsRoute,
-  makeFundWalletRoute
+  makeAndroidFundWalletRoute
 } from '../../../utils/routes-utils'
 import { networkSupportsAccount } from '../../../utils/network-utils'
 
@@ -207,7 +207,7 @@ function AssetSelection({ isAndroid }: Props) {
             selectedCurrency={selectedCurrency}
             key={assetId}
             token={asset}
-            onClick={() => history.push(makeFundWalletRoute(assetId))}
+            onClick={() => history.push(makeAndroidFundWalletRoute(assetId))}
             ref={ref}
           />
         )
@@ -395,7 +395,7 @@ function AssetSelection({ isAndroid }: Props) {
 
               // save latest form values in router history
               history.replace(
-                makeFundWalletRoute(selectedOnRampAssetId, {
+                makeAndroidFundWalletRoute(selectedOnRampAssetId, {
                   currencyCode: selectedCurrency,
                   buyAmount,
                   // save latest search-box value (if it matches selection name

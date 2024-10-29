@@ -5,11 +5,13 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Hooks
 import {
   useGetCoinMarketQuery,
   useGetDefaultFiatCurrencyQuery,
+  useGetMeldCryptoCurrenciesQuery,
   useGetOnRampAssetsQuery
 } from '../../../../common/slices/api.slice'
 import {
@@ -38,10 +40,13 @@ import {
   UpdateIframeHeightMessage
 } from '../../../../market/market-ui-messages'
 import {
+  makeAndroidFundWalletRoute,
   makeDepositFundsRoute,
   makeFundWalletRoute
 } from '../../../../utils/routes-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
+import { getAssetSymbol } from '../../../../utils/meld_utils'
+import { loadTimeData } from '../../../../../common/loadTimeData'
 
 const assetsRequestLimit = 250
 
@@ -57,16 +62,25 @@ export const MarketView = () => {
   // Hooks
   const history = useHistory()
 
+  // Computed
+  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
+
   // Queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
 
-  const { buyAssets } = useGetOnRampAssetsQuery(undefined, {
-    selectFromResult: (res) => ({
-      isLoading: res.isLoading,
-      buyAssets: res.data?.allAssetOptions || []
-    })
-  })
+  const { data: buyAssets } = useGetMeldCryptoCurrenciesQuery(
+    !isAndroid ? undefined : skipToken
+  )
+  const { androidBuyAssets } = useGetOnRampAssetsQuery(
+    isAndroid ? undefined : skipToken,
+    {
+      selectFromResult: (res) => ({
+        isLoading: res.isLoading,
+        androidBuyAssets: res.data?.allAssetOptions || []
+      })
+    }
+  )
 
   const { data: allCoins = [], isLoading: isLoadingCoinMarketData } =
     useGetCoinMarketQuery({
@@ -91,25 +105,33 @@ export const MarketView = () => {
         case MarketUiCommand.SelectBuy: {
           const { payload } = message as SelectBuyMessage
           const symbolLower = payload.symbol.toLowerCase()
-          const foundTokens = buyAssets.filter(
+          const foundMeldTokens = buyAssets?.filter(
+            (t) => getAssetSymbol(t) === symbolLower
+          )
+          const foundAndroidTokens = androidBuyAssets.filter(
             (t) => t.symbol.toLowerCase() === symbolLower
           )
 
-          if (foundTokens.length === 1) {
+          if (isAndroid && foundAndroidTokens.length === 1) {
             history.push(
-              makeFundWalletRoute(getAssetIdKey(foundTokens[0]), {
+              makeAndroidFundWalletRoute(getAssetIdKey(foundAndroidTokens[0]), {
                 searchText: symbolLower
               })
             )
             return
           }
 
-          if (foundTokens.length > 1) {
+          if (isAndroid && foundAndroidTokens.length > 1) {
             history.push(
-              makeFundWalletRoute('', {
+              makeAndroidFundWalletRoute('', {
                 searchText: symbolLower
               })
             )
+            return
+          }
+
+          if (foundMeldTokens) {
+            history.push(makeFundWalletRoute(foundMeldTokens[0]))
           }
           break
         }
@@ -147,7 +169,7 @@ export const MarketView = () => {
         }
       }
     },
-    [buyAssets, combinedTokensList, history]
+    [buyAssets, combinedTokensList, history, androidBuyAssets, isAndroid]
   )
 
   const onMarketDataFrameLoad = React.useCallback(() => {

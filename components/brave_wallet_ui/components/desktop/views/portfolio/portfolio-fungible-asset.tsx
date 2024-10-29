@@ -43,6 +43,7 @@ import { getLocale } from '../../../../../common/locale'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 import { isRewardsAssetId } from '../../../../utils/rewards_utils'
 import {
+  makeAndroidFundWalletRoute,
   makeDepositFundsRoute,
   makeFundWalletRoute
 } from '../../../../utils/routes-utils'
@@ -71,9 +72,7 @@ import {
 import {
   useScopedBalanceUpdater //
 } from '../../../../common/hooks/use-scoped-balance-updater'
-import {
-  useIsBuySupported //
-} from '../../../../common/hooks/use-multi-chain-buy-assets'
+import { useFindBuySupportedToken } from '../../../../common/hooks/use-multi-chain-buy-assets'
 import {
   useGetNetworkQuery,
   useGetTransactionsQuery,
@@ -224,8 +223,9 @@ export const PortfolioFungibleAsset = () => {
   )
 
   // custom hooks
-  const isAssetBuySupported =
-    useIsBuySupported(selectedAssetFromParams) && !isRewardsToken
+  const { foundAndroidBuyToken, foundMeldBuyToken } = useFindBuySupportedToken(
+    selectedAssetFromParams
+  )
 
   // memos
   /**
@@ -410,10 +410,21 @@ export const PortfolioFungibleAsset = () => {
   ])
 
   const onSelectBuy = React.useCallback(() => {
-    if (selectedAssetFromParams) {
-      history.push(makeFundWalletRoute(getAssetIdKey(selectedAssetFromParams)))
+    if (foundAndroidBuyToken && selectedAssetFromParams) {
+      history.push(
+        makeAndroidFundWalletRoute(getAssetIdKey(selectedAssetFromParams))
+      )
+      return
     }
-  }, [history, selectedAssetFromParams])
+    if (foundMeldBuyToken) {
+      history.push(makeFundWalletRoute(foundMeldBuyToken))
+    }
+  }, [
+    history,
+    foundAndroidBuyToken,
+    foundMeldBuyToken,
+    selectedAssetFromParams
+  ])
 
   const onSelectDeposit = React.useCallback(() => {
     if (selectedAssetFromParams) {
@@ -490,7 +501,7 @@ export const PortfolioFungibleAsset = () => {
         />
         <Row padding='0px 20px'>
           <ButtonRow>
-            {isAssetBuySupported && (
+            {(foundMeldBuyToken || foundAndroidBuyToken) && !isRewardsToken && (
               <div>
                 <LeoSquaredButton onClick={onSelectBuy}>
                   {getLocale('braveWalletBuy')}

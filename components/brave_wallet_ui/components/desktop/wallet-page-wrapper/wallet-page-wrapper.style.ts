@@ -17,7 +17,7 @@ import LinesDark from './assets/portfolio_lines_background_dark.svg'
 // Shared Styles
 import { Row } from '../../shared/style'
 
-const minCardHeight = 497
+const minCardHeight = 466
 export const maxCardWidth = 768
 const layoutSmallCardBottom = 67
 export const layoutSmallWidth = 1100

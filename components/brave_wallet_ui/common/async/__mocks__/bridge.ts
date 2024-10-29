@@ -10,7 +10,12 @@ import { assert } from 'chrome://resources/js/assert.js'
 import type { AnyAction } from 'redux'
 
 // types
-import { BraveWallet, CommonNftMetadata } from '../../../constants/types'
+import {
+  BraveWallet,
+  CommonNftMetadata,
+  MeldFiatCurrency,
+  MeldFilter
+} from '../../../constants/types'
 import { WalletActions } from '../../actions'
 import type WalletApiProxy from '../../wallet_api_proxy'
 
@@ -563,6 +568,26 @@ export class MockedWalletApiProxy {
         errorString: ''
       })
     }
+
+  meldIntegrationService: Partial<
+    InstanceType<typeof BraveWallet.MeldIntegrationServiceInterface>
+  > = {
+    getFiatCurrencies: async (
+      filter: MeldFilter
+    ): Promise<{
+      fiatCurrencies: MeldFiatCurrency[] | null
+      error: string[] | null
+    }> => ({
+      fiatCurrencies: [
+        {
+          currencyCode: 'usd',
+          name: 'United States Currency',
+          symbolImageUrl: ''
+        }
+      ],
+      error: null
+    })
+  }
 
   keyringService: Partial<
     InstanceType<typeof BraveWallet.KeyringServiceInterface>

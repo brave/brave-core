@@ -7,16 +7,12 @@ import * as React from 'react'
 import { useHistory } from 'react-router-dom'
 
 // Types
-import { NavOption, WalletRoutes } from '../../../../../../constants/types'
+import { NavOption } from '../../../../../../constants/types'
 
 // Hooks
 import {
   useOnClickOutside //
 } from '../../../../../../common/hooks/useOnClickOutside'
-
-// Selectors
-import { useSafeUISelector } from '../../../../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../../../../common/selectors'
 
 // Options
 import {
@@ -45,9 +41,6 @@ export const BuySendSwapDepositNav = () => {
   // Routing
   const history = useHistory()
 
-  // redux
-  const isPanel = useSafeUISelector(UISelectors.isPanel)
-
   // state
   const [showMoreMenu, setShowMoreMenu] = React.useState<boolean>(false)
 
@@ -60,17 +53,9 @@ export const BuySendSwapDepositNav = () => {
   // methods
   const onClick = React.useCallback(
     (option: NavOption) => {
-      // Redirect to full page view for buy page
-      // until we have a panel view for that page.
-      if (option.route === WalletRoutes.FundWalletPageStart && isPanel) {
-        chrome.tabs.create({
-          url: `brave://wallet${option.route}`
-        })
-      } else {
-        history.push(option.route)
-      }
+      history.push(option.route)
     },
-    [history, isPanel]
+    [history]
   )
 
   return (
