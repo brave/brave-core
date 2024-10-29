@@ -45,9 +45,9 @@ export class CrToolbarElement extends CrLitElement {
   }
 
   .br-toolbar {
-    --toolbar-background: var(--brave-toolbar-gradient);
-    background: var(--toolbar-background);
-    color: white;
+    --toolbar-background: var(--leo-gradient-toolbar-background);
+    background: var(--leo-gradient-toolbar-background);
+    color: var(--leo-color-white);
     height: 56px;
     position: relative;
   }
@@ -55,10 +55,10 @@ export class CrToolbarElement extends CrLitElement {
   .nav-items {
     align-items: stretch;
     display: flex;
-    height: 100%;
     justify-content: center;
     margin: 0;
-    padding: 0;
+    padding: 6px 0;
+    gap: 6px;
   }
 
   .nav-items-list-item {
@@ -67,21 +67,19 @@ export class CrToolbarElement extends CrLitElement {
 
   .nav-item {
     align-items: center;
-    color: #fff;
+    color: var(--leo-color-white);
     cursor: pointer;
     display: flex;
     /* update br_toolbar.js font-load detection
     if font-weight or name changes */
-    font-family: Poppins;
-    font-size: 16px;
-    font-weight: 300;
-    letter-spacing: 0.6px;
-    /* hide until fonts are loaded */
+    font: var(--leo-font-components-navbutton) !important;
     opacity: 0;
     overflow: hidden;
-    padding: 0 32px;
+    padding: 0 var(--leo-spacing-xl);
     text-decoration: none;
-    transition: opacity 100ms ease-out;
+    transition: background 100ms ease-out;
+    height: 44px;
+    border-radius: var(--leo-radius-l);
   }
 
   .fonts-loaded .nav-item {
@@ -94,10 +92,10 @@ export class CrToolbarElement extends CrLitElement {
     background: rgba(0, 0, 0, 0.2);
   }
   .nav-item:active {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.4);
   }
   .nav-item.-selected {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.4);
     cursor: default;
   }
 
@@ -132,15 +130,14 @@ export class CrToolbarElement extends CrLitElement {
   }
 
   .toolbar-extra.-slot-filled {
-    background: rgb(221, 225, 226);
     color: rgb(34, 34, 34);
     padding: 5px;
   }
   @media (prefers-color-scheme: dark) {
     .toolbar-extra.-slot-filled {
-      background: #444;
       color: rgb(221, 225, 226);
     }
+  }
 `
   }
 
