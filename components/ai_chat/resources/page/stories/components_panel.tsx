@@ -73,7 +73,7 @@ const CONVERSATIONS: mojom.Conversation[] = [
     createdTime: { internalValue: BigInt('13278618001000000') },
   },
   {
-    title: 'Sorting C++ vectors',
+    title: 'Sorting C++ vectors is hard especially when you have to have a very long title for your conversation to test text clipping or wrapping',
     uuid: '2',
     hasContent: true,
     createdTime: { internalValue: BigInt('13278618001000001') },

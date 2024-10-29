@@ -72,6 +72,7 @@ function DisplayTitle(props: DisplayTitleProps) {
         <div
           className={styles.text}
           onDoubleClick={props.onEditTitle}
+          title={props.title}
         >
           {props.title}
         </div>

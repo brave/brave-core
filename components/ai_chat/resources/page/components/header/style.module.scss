@@ -63,15 +63,17 @@
   padding-left: 36px;
 }
 
-.pageTitle {
+.conversationTitle {
   display: flex;
   align-items: center;
   gap: 10px;
+  overflow: hidden;
 }
 
-.pageText {
+.conversationTitleText {
   font: var(--leo-font-heading-h4);
   color: var(--leo-color-text-primary);
-  line-height: 1;
   white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

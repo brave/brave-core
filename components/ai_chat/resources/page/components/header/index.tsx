@@ -46,7 +46,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
   return (
     <div className={styles.header} ref={ref}>
       {showTitle ? (
-        <div className={styles.pageTitle}>
+        <div className={styles.conversationTitle}>
           {!aiChatContext.isStandalone && <Button
             kind='plain-faint'
             fab
@@ -54,7 +54,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
           >
             <Icon name='arrow-left' />
           </Button>}
-          <div className={styles.pageText}>{getTitle(activeConversation)}</div>
+          <div className={styles.conversationTitleText} title={getTitle(activeConversation)}>{getTitle(activeConversation)}</div>
         </div>
       )
         : <Logo isPremium={aiChatContext.isPremiumUser} />}
