@@ -431,6 +431,10 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
             txType.setText(getResources().getString(R.string.swap));
         } else if (parsedTx.isSolanaDappTransaction) {
             txType.setText(R.string.brave_wallet_approve_transaction);
+            if (parsedTx.isSolChangeOfOwnership()) {
+                view.findViewById(R.id.warning_container).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.tab_top_space).setVisibility(View.GONE);
+            }
         } else {
             txType.setText(getResources().getString(R.string.send));
         }
