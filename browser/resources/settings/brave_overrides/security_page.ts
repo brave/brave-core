@@ -32,11 +32,24 @@ RegisterPolymerTemplateModifications({
     } else {
       safeBrowsingEnhanced.setAttribute('hidden', 'true')
     }
-    const passwordsLeakToggle = templateContent.getElementById('passwordsLeakToggle')
-    if (!passwordsLeakToggle) {
-      console.error('[Brave Settings Overrides] Could not find passwordsLeakToggle id on security page.')
+    const passwordsLeakSettings = templateContent.
+      querySelector(
+        'template[is=dom-if][if="[[!enablePasswordLeakToggleMove_]]"]'
+    )
+    if (!passwordsLeakSettings) {
+      console.error(
+        '[Brave Settings Overrides] Could not find template with ' +
+        'if=[[!enablePasswordLeakToggleMove_]] on security page.')
     } else {
-      passwordsLeakToggle.setAttribute('hidden', 'true')
+      const passwordsLeakToggleOld = passwordsLeakSettings.content.
+        getElementById('passwordsLeakToggleOld')
+      if (!passwordsLeakToggleOld) {
+          console.error('[Brave Settings Overrides] Could not find' +
+            'passwordsLeakToggleOld on security page.')
+        } else {
+          passwordsLeakToggleOld.setAttribute('hidden', 'true')
+        }
+      passwordsLeakToggleOld.setAttribute('hidden', 'true')
     }
     if (loadTimeData.getBoolean("isHttpsByDefaultEnabled")) {
       const enableHttpsFirstModeNewSettings = templateContent.
