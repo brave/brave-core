@@ -22,7 +22,6 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
           <leo-input id="create_password" type="password" placeholder="Enter your password" @input=${this.onCreatePasswordInput}>
             <div class="label">Create a password</div>
             <leo-icon slot="right-icon"
-                      id="icon"
                       name="eye-off"
                       @click=${this.show}>
             </leo-icon>
@@ -35,16 +34,25 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
           </div>
         </div>
         <leo-input id="confirm_password"
+                   ?showErrors=${this.isCreatePasswordValid && !this.isConfirmPasswordEmpty}
                    ?disabled=${!this.isCreatePasswordValid}
                    type="password"
                    placeholder="Confirm your password"
                    @input=${this.onConfirmPasswordInput}>
           <div class="label">Confirm password</div>
           <leo-icon slot="right-icon"
-                    id="icon"
                     name="eye-off"
                     @click=${this.show}>
           </leo-icon>
+          <div slot="errors" class="errors">
+            ${this.isConfirmPasswordValid ? html`
+              <leo-icon class="extra-icon" name="check-circle-filled"></leo-icon>
+              <div class="extra-text">Passwords match</div>
+            `: html`
+              <leo-icon class="error-icon" name="warning-triangle-filled"></leo-icon>
+              <div class="error-text">Passwords don't match</div>
+            `}
+          </div>
         </leo-input>
         <leo-checkbox @change=${this.onChange}>
           <div>

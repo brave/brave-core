@@ -58,3 +58,28 @@ leo-checkbox a {
 #confirm_password {
   margin: -12px 0px 0px;
 }
+
+.errors {
+  --leo-icon-size: 14px;
+  align-items: center;
+  display: flex;
+  font: var(--leo-font-x-small-regular);
+  gap: 4px;
+  margin: 4px 0px 0px 4px;
+}
+
+.extra-icon {
+  color: var(--leo-color-text-interactive);
+}
+
+.extra-text {
+  color: var(--leo-color-text-interactive);
+}
+
+.error-icon {
+  color: var(--leo-color-systemfeedback-error-icon);
+}
+
+.error-text {
+  color: var(--leo-color-systemfeedback-error-text);
+}

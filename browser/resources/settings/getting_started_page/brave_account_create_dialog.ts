@@ -42,6 +42,7 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
       isEmailAddressValid: { type: Boolean },
       isAccountNameValid: { type: Boolean },
       isCreatePasswordValid: { type: Boolean },
+      isConfirmPasswordEmpty: { type: Boolean },
       isConfirmPasswordValid: { type: Boolean },
       isChecked: { type: Boolean },
     }
@@ -76,7 +77,8 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   }
 
   protected onConfirmPasswordInput() {
-    this.isConfirmPasswordValid = this.$.confirm_password.value.length !== 0
+    this.isConfirmPasswordEmpty = this.$.confirm_password.value.length === 0
+    this.isConfirmPasswordValid = this.$.confirm_password.value === this.$.create_password.value
   }
 
   protected onChange(e: { checked: boolean }) {
@@ -94,6 +96,7 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   protected isEmailAddressValid: boolean = false
   protected isAccountNameValid: boolean = false
   protected isCreatePasswordValid: boolean = false
+  protected isConfirmPasswordEmpty: boolean = true
   protected isConfirmPasswordValid: boolean = false
   protected isChecked: boolean = false
 }
