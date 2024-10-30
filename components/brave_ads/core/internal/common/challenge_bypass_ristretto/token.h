@@ -9,6 +9,7 @@
 #include <optional>
 #include <ostream>
 #include <string>
+#include <vector>
 
 #include "base/check.h"
 #include "brave/components/challenge_bypass_ristretto/token.h"
@@ -59,6 +60,8 @@ class Token {
 };
 
 std::ostream& operator<<(std::ostream& os, const Token& token);
+
+using TokenList = std::vector<Token>;
 
 }  // namespace brave_ads::cbr
 

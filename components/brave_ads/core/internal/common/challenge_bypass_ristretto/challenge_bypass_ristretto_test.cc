@@ -52,8 +52,8 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
   const std::optional<cbr::PublicKey> public_key = signing_key.GetPublicKey();
   EXPECT_TRUE(public_key);
 
-  const std::vector<cbr::BlindedToken> blinded_tokens = {*blinded_token};
-  const std::vector<cbr::SignedToken> signed_tokens = {*signed_token};
+  const cbr::BlindedTokenList blinded_tokens = {*blinded_token};
+  const cbr::SignedTokenList signed_tokens = {*signed_token};
   cbr::BatchDLEQProof batch_dleq_proof(blinded_tokens, signed_tokens,
                                        signing_key);
   EXPECT_TRUE(batch_dleq_proof.has_value());
@@ -61,8 +61,8 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
       batch_dleq_proof.Verify(blinded_tokens, signed_tokens, *public_key));
 
   // The client unblinds the signed tokens using the blinding scalar.
-  const std::vector<cbr::Token> tokens = {token};
-  const std::optional<std::vector<cbr::UnblindedToken>> unblinded_tokens =
+  const cbr::TokenList tokens = {token};
+  const std::optional<cbr::UnblindedTokenList> unblinded_tokens =
       batch_dleq_proof.VerifyAndUnblind(tokens, blinded_tokens, signed_tokens,
                                         *public_key);
   EXPECT_TRUE(unblinded_tokens);

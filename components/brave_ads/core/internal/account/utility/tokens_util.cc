@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_util.h"
 
+#include <string>
+
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/batch_dleq_proof.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
 namespace brave_ads {
@@ -35,14 +35,14 @@ std::optional<cbr::PublicKey> ParsePublicKey(const base::Value::Dict& dict) {
   return public_key;
 }
 
-std::optional<std::vector<cbr::SignedToken>> ParseSignedTokens(
+std::optional<cbr::SignedTokenList> ParseSignedTokens(
     const base::Value::Dict& dict) {
   const base::Value::List* const list = dict.FindList(kSignedTokensKey);
   if (!list) {
     return std::nullopt;
   }
 
-  std::vector<cbr::SignedToken> signed_tokens;
+  cbr::SignedTokenList signed_tokens;
 
   for (const auto& value : *list) {
     const std::string* const signed_token_base64 = value.GetIfString();
@@ -62,10 +62,10 @@ std::optional<std::vector<cbr::SignedToken>> ParseSignedTokens(
   return signed_tokens;
 }
 
-std::optional<std::vector<cbr::UnblindedToken>> ParseVerifyAndUnblindTokens(
+std::optional<cbr::UnblindedTokenList> ParseVerifyAndUnblindTokens(
     const base::Value::Dict& dict,
-    const std::vector<cbr::Token>& tokens,
-    const std::vector<cbr::BlindedToken>& blinded_tokens,
+    const cbr::TokenList& tokens,
+    const cbr::BlindedTokenList& blinded_tokens,
     const cbr::PublicKey& public_key) {
   if (!public_key.has_value()) {
     BLOG(1, "Invalid public key");
@@ -85,14 +85,14 @@ std::optional<std::vector<cbr::UnblindedToken>> ParseVerifyAndUnblindTokens(
     return std::nullopt;
   }
 
-  const std::optional<std::vector<cbr::SignedToken>> signed_tokens =
+  const std::optional<cbr::SignedTokenList> signed_tokens =
       ParseSignedTokens(dict);
   if (!signed_tokens) {
     BLOG(1, "Failed to parse signed tokens");
     return std::nullopt;
   }
 
-  const std::optional<std::vector<cbr::UnblindedToken>> unblinded_tokens =
+  const std::optional<cbr::UnblindedTokenList> unblinded_tokens =
       batch_dleq_proof.VerifyAndUnblind(tokens, blinded_tokens, *signed_tokens,
                                         public_key);
   if (!unblinded_tokens || unblinded_tokens->empty()) {

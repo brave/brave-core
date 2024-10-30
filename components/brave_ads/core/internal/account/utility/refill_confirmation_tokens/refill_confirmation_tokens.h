@@ -9,7 +9,6 @@
 #include <optional>
 #include <string>
 #include <tuple>
-#include <vector>
 
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
@@ -89,8 +88,8 @@ class RefillConfirmationTokens final {
 
   std::optional<std::string> nonce_;
 
-  std::optional<std::vector<cbr::Token>> tokens_;
-  std::optional<std::vector<cbr::BlindedToken>> blinded_tokens_;
+  std::optional<cbr::TokenList> tokens_;
+  std::optional<cbr::BlindedTokenList> blinded_tokens_;
 
   bool is_refilling_ = false;
 

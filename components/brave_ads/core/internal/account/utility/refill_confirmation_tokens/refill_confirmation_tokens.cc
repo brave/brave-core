@@ -251,7 +251,7 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
                         /*should_retry=*/true));
   }
 
-  const std::optional<std::vector<cbr::UnblindedToken>> unblinded_tokens =
+  const std::optional<cbr::UnblindedTokenList> unblinded_tokens =
       ParseVerifyAndUnblindTokens(*dict, *tokens_, *blinded_tokens_,
                                   *public_key);
   if (!unblinded_tokens) {

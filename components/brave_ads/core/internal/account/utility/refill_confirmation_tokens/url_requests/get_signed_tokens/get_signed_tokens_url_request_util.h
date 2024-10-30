@@ -8,15 +8,14 @@
 
 #include <optional>
 #include <string>
-#include <vector>
 
 #include "base/values.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 
 namespace brave_ads {
 
 namespace cbr {
 class PublicKey;
-class UnblindedToken;
 }  // namespace cbr
 
 struct WalletInfo;
@@ -24,7 +23,7 @@ struct WalletInfo;
 std::optional<std::string> ParseCaptchaId(const base::Value::Dict& dict);
 
 void BuildAndAddConfirmationTokens(
-    const std::vector<cbr::UnblindedToken>& unblinded_tokens,
+    const cbr::UnblindedTokenList& unblinded_tokens,
     const cbr::PublicKey& public_key,
     const WalletInfo& wallet);
 

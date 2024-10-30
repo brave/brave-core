@@ -248,7 +248,7 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
                         /*should_retry=*/true));
   }
 
-  const std::optional<std::vector<cbr::UnblindedToken>> unblinded_tokens =
+  const std::optional<cbr::UnblindedTokenList> unblinded_tokens =
       ParseVerifyAndUnblindTokens(
           *payment_token_dict, {confirmation.reward->token},
           {confirmation.reward->blinded_token}, *public_key);

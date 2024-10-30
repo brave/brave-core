@@ -6,13 +6,12 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
 
 #include <string>
+#include <vector>
 
 #include "base/check_op.h"
 #include "base/no_destructor.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads::test {
@@ -149,12 +148,12 @@ void MockTokenGenerator(const size_t count) {
       .WillByDefault(::testing::Return(BuildTokens(count)));
 }
 
-std::vector<cbr::Token> BuildTokens(const size_t count) {
+cbr::TokenList BuildTokens(const size_t count) {
   CHECK_GT(count, 0U);
 
   const size_t modulo = Tokens().size();
 
-  std::vector<cbr::Token> tokens;
+  cbr::TokenList tokens;
 
   for (size_t i = 0; i < count; ++i) {
     const std::string& token_base64 = Tokens().at(i % modulo);

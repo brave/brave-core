@@ -9,6 +9,7 @@
 #include <optional>
 #include <ostream>
 #include <string>
+#include <vector>
 
 #include "base/check.h"
 #include "brave/components/challenge_bypass_ristretto/blinded_token.h"
@@ -59,6 +60,8 @@ class BlindedToken {
 };
 
 std::ostream& operator<<(std::ostream& os, const BlindedToken& blinded_token);
+
+using BlindedTokenList = std::vector<BlindedToken>;
 
 }  // namespace brave_ads::cbr
 
