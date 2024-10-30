@@ -67,8 +67,8 @@ export class BraveToolbarSearchField extends BraveToolbarSearchFieldBase {
     return this.computeIsSpinnerShown_()
   }
 
-  override updated(changedProperties: PropertyValues<this>) {
-    super.updated(changedProperties);
+  override willUpdate(changedProperties: PropertyValues<this>) {
+    super.willUpdate(changedProperties);
 
     if (changedProperties.has('showingSearch')) {
       this.showingSearchChanged_(this.showingSearch, changedProperties.get('showingSearch'))
@@ -139,19 +139,10 @@ export class BraveToolbarSearchField extends BraveToolbarSearchFieldBase {
     this.focus_()
   }
 
-  showingSearchInputClicked_() {
-    this.showingSearch = this.$.pageSearchToggle.checked
-  }
-
   labelMouseDown_(e: MouseEvent) {
     e.preventDefault() // prevents input blur
   }
 
-  /**
-   * @param {boolean} current
-   * @param {boolean|undefined} previous
-   * @private
-   */
   showingSearchChanged_(current: boolean, previous?: boolean) {
     const wasBlurring = this.isBlurring_
     this.isBlurring_ = false
@@ -160,7 +151,7 @@ export class BraveToolbarSearchField extends BraveToolbarSearchFieldBase {
     if (previous == undefined)
       return
 
-    // Prevent unneccessary re-enable when bluring from input to toggle
+    // Prevent unneccessary re-enable when blurring from input to toggle
     if (wasBlurring && !this.hasSearchText)
       return
 
@@ -173,12 +164,6 @@ export class BraveToolbarSearchField extends BraveToolbarSearchFieldBase {
     this.getSearchInput().blur()
   }
 }
-
-// declare global {
-//   interface HTMLElementTagNameMap {
-//     'br-search-field': BraveToolbarSearchField;
-//   }
-// }
 
 customElements.define(
   BraveToolbarSearchField.is, BraveToolbarSearchField)

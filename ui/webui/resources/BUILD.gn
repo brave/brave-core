@@ -69,8 +69,6 @@ if (!is_android && !is_ios) {
       ]
     }
 
-    # html_to_wrapper_template = "detect"
-
     ts_composite = true
     generate_grdp = true
     grd_resource_path_prefix = "brave"

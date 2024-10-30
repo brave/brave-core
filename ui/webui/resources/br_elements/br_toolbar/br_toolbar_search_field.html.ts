@@ -11,7 +11,7 @@ export function getHtml(this: BraveToolbarSearchField) {
     <input
       id="pageSearchToggle"
       class="page-search_toggle"
-      ?checked="${this.showingSearch}"
+      .checked="${this.showingSearch}"
       @change="${() => this.showingSearch = this.$.pageSearchToggle.checked}"
       type="checkbox" />
     <div class="page-search_content" title="${this.label}">
