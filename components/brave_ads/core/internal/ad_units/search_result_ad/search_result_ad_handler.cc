@@ -61,7 +61,7 @@ void SearchResultAdHandler::TriggerDeferredAdViewedEventForTesting() {
 
   if (g_search_result_ad_handler_for_testing) {
     g_search_result_ad_handler_for_testing
-        ->trigger_ad_viewed_event_in_progress_ = false;
+        ->is_processing_viewed_ad_event_queue_ = false;
 
     g_search_result_ad_handler_for_testing->MaybeTriggerDeferredAdViewedEvent(
         /*intentional*/ base::DoNothing());
@@ -114,24 +114,24 @@ void SearchResultAdHandler::FireServedEventCallback(
     return std::move(callback).Run(/*success=*/false);
   }
 
-  ad_viewed_event_queue_.push_front(std::move(mojom_creative_ad));
+  viewed_ad_event_queue_.push_front(std::move(mojom_creative_ad));
 
   MaybeTriggerDeferredAdViewedEvent(std::move(callback));
 }
 
 void SearchResultAdHandler::MaybeTriggerDeferredAdViewedEvent(
     TriggerAdEventCallback callback) {
-  CHECK((!ad_viewed_event_queue_.empty() ||
-         !trigger_ad_viewed_event_in_progress_));
+  CHECK((!viewed_ad_event_queue_.empty() ||
+         !is_processing_viewed_ad_event_queue_));
 
-  if (ad_viewed_event_queue_.empty() || trigger_ad_viewed_event_in_progress_) {
+  if (viewed_ad_event_queue_.empty() || is_processing_viewed_ad_event_queue_) {
     return std::move(callback).Run(/*success=*/true);
   }
-  trigger_ad_viewed_event_in_progress_ = true;
+  is_processing_viewed_ad_event_queue_ = true;
 
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      std::move(ad_viewed_event_queue_.back());
-  ad_viewed_event_queue_.pop_back();
+      std::move(viewed_ad_event_queue_.back());
+  viewed_ad_event_queue_.pop_back();
 
   event_handler_.FireEvent(
       std::move(mojom_creative_ad),
@@ -156,7 +156,7 @@ void SearchResultAdHandler::FireAdViewedEventCallback(
     return std::move(callback).Run(success);
   }
 
-  trigger_ad_viewed_event_in_progress_ = false;
+  is_processing_viewed_ad_event_queue_ = false;
 
   MaybeTriggerDeferredAdViewedEvent(std::move(callback));
 }
