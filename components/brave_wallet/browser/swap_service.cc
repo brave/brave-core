@@ -59,7 +59,7 @@ namespace {
 
 // Ref: https://0x.org/docs/introduction/0x-cheat-sheet#-chain-support
 bool IsNetworkSupportedByZeroEx(const std::string& chain_id) {
-  return !GetZeroExAllowanceHolderAddress(chain_id).empty();
+  return GetZeroExAllowanceHolderAddress(chain_id).has_value();
 }
 
 bool IsNetworkSupportedByJupiter(const std::string& chain_id) {

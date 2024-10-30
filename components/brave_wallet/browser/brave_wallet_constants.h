@@ -1700,7 +1700,8 @@ const base::flat_map<std::string, std::string>& GetAnkrBlockchains();
 // https://docs.rs/solana-program/1.18.10/src/solana_program/clock.rs.html#129-131
 inline constexpr int kSolanaValidBlockHeightThreshold = 150;
 
-const std::string GetZeroExAllowanceHolderAddress(const std::string& chain_id);
+std::optional<std::string> GetZeroExAllowanceHolderAddress(
+    const std::string& chain_id);
 
 }  // namespace brave_wallet
 

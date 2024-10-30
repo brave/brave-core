@@ -218,7 +218,8 @@ mojom::ZeroExQuoteInfoPtr ParseQuoteResponse(const base::Value& json_value,
   }
 
   auto swap_response = mojom::ZeroExQuoteInfo::New();
-  swap_response->allowance_target = GetZeroExAllowanceHolderAddress(chain_id);
+  swap_response->allowance_target =
+      GetZeroExAllowanceHolderAddress(chain_id).value_or("");
   if (!swap_response_value->liquidity_available) {
     swap_response->liquidity_available = false;
     return swap_response;

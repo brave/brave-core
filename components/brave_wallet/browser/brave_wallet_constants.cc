@@ -101,7 +101,8 @@ const base::flat_map<std::string, std::string>& GetAnkrBlockchains() {
 }
 
 // See https://0x.org/docs/introduction/0x-cheat-sheet#allowanceholder-address
-const std::string GetZeroExAllowanceHolderAddress(const std::string& chain_id) {
+std::optional<std::string> GetZeroExAllowanceHolderAddress(
+    const std::string& chain_id) {
   // key = chain_id, value = allowance_holder_contract_address
   static std::map<std::string, std::string> allowance_holder_addresses = {
       {mojom::kMainnetChainId, kZeroExAllowanceHolderCancun},
@@ -120,9 +121,10 @@ const std::string GetZeroExAllowanceHolderAddress(const std::string& chain_id) {
 
   if (allowance_holder_address_pair == allowance_holder_addresses.end()) {
     // not found
-    return "";
-  } else {
-    return allowance_holder_address_pair->second;
+    return std::nullopt;
   }
+
+  return allowance_holder_address_pair->second;
 }
+
 }  // namespace brave_wallet
