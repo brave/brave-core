@@ -8775,7 +8775,7 @@ extension Strings {
     value: "Block Cookie Consent Notices",
     comment: "A title for a setting that enables cookie consent notices"
   )
-    
+
   public static let braveShieldsSaveContactInfo = NSLocalizedString(
     "BraveShieldsSaveContactInfo",
     tableName: "BraveShared",

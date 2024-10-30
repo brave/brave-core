@@ -49,16 +49,16 @@ struct SubmitReportView: View {
           .autocorrectionDisabled()
           .textInputAutocapitalization(.never)
           .onAppear {
-             guard
-               let webcompatReporterAPI = WebcompatReporter.ServiceFactory.get(
-                 privateMode: isPrivateBrowsing
-               )
-             else {
-               return
-             }
-             Task { @MainActor in
-                 self.contactDetails = await webcompatReporterAPI.contactInfo() ?? ""
-             }
+            guard
+              let webcompatReporterAPI = WebcompatReporter.ServiceFactory.get(
+                privateMode: isPrivateBrowsing
+              )
+            else {
+              return
+            }
+            Task { @MainActor in
+              self.contactDetails = await webcompatReporterAPI.contactInfo() ?? ""
+            }
           }
         }
       }
