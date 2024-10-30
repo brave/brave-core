@@ -168,7 +168,7 @@ class PlaylistMediaDiscoveryBrowserTest : public PlatformBrowserTest {
     std::vector<playlist::mojom::PlaylistItemPtr> expected_items;
     base::ranges::for_each(expected_data, [&](ExpectedData& item) {
       auto fix_host = [&](auto& url_str) {
-        if (!base::StartsWith(url_str, "/")) {
+        if (!url_str.starts_with("/")) {
           return;
         }
 

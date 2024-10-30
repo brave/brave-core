@@ -44,7 +44,7 @@ bool IsValidHexString(const std::string& hex_input) {
   if (hex_input.length() < 2) {
     return false;
   }
-  if (!base::StartsWith(hex_input, "0x")) {
+  if (!hex_input.starts_with("0x")) {
     return false;
   }
   for (const auto& c : hex_input.substr(2)) {

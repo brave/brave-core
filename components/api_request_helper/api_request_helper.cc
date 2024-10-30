@@ -546,7 +546,7 @@ void APIRequestHelper::URLLoaderHandler::ParseSSE(
   static constexpr char kDataPrefix[] = "data: {";
   std::erase_if(stream_data, [](std::string_view item) {
     DVLOG(3) << "Received chunk: " << item;
-    if (!base::StartsWith(item, kDataPrefix)) {
+    if (!item.starts_with(kDataPrefix)) {
       // This is useful to log in case an API starts
       // coming back with unknown data type in some
       // scenarios.

@@ -76,12 +76,12 @@ class P3AConstellationHelperTest : public testing::Test {
               ValidateURLAndGetMetricLogType(request.url, kTestHost);
 
           std::string response;
-          if (base::EndsWith(request.url.spec(), "/info")) {
+          if (request.url.spec().ends_with("/info")) {
             response =
                 HandleInfoRequest(request, log_type, GetTestEpoch(log_type),
                                   GetTestNextEpochTime(log_type));
             info_request_made_[log_type] = true;
-          } else if (base::EndsWith(request.url.spec(), "/randomness")) {
+          } else if (request.url.spec().ends_with("/randomness")) {
             response = HandleRandomnessRequest(request, GetTestEpoch(log_type));
             points_request_made_[log_type] = true;
           }
@@ -283,7 +283,7 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
       base::SplitResult::SPLIT_WANT_NONEMPTY);
 
   EXPECT_EQ(no_refcode_layers.size(), 8U);
-  EXPECT_FALSE(base::StartsWith(no_refcode_layers.at(7), "ref"));
+  EXPECT_FALSE(no_refcode_layers.at(7).starts_with("ref"));
 
   std::string message_with_refcode = GenerateP3AConstellationMessage(
       kTestHistogramName, 0, meta_info, kP3AUploadType, true, false);

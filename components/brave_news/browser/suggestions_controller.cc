@@ -84,7 +84,7 @@ double GetVisitWeighting(
     // while we wait for them to be fixed.
     // Relevant issues: https://github.com/brave/news-aggregator/issues/58 and
     // https://github.com/brave/brave-browser/issues/26092
-    if (!base::StartsWith(host_name, "www.")) {
+    if (!host_name.starts_with("www.")) {
       it = visit_weightings.find("www." + host_name);
     }
 

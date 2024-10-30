@@ -64,13 +64,11 @@ void BraveProfileImportImpl::StartImport(
     mojo::PendingRemote<brave::mojom::ProfileImportObserver> brave_observer) {
   // Signal change to OSCrypt password for importing from Chrome/Chromium
   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
-  if (base::StartsWith(base::UTF16ToUTF8(source_profile.importer_name),
-                       "Chrome", base::CompareCase::SENSITIVE)) {
+  if (source_profile.importer_name.starts_with(u"Chrome")) {
     command_line->AppendSwitch("import-chrome");
   } else if (source_profile.importer_type == importer::TYPE_EDGE_CHROMIUM) {
     command_line->AppendSwitch("import-edge");
-  } else if (base::StartsWith(base::UTF16ToUTF8(source_profile.importer_name),
-                              "Chromium", base::CompareCase::SENSITIVE)) {
+  } else if (source_profile.importer_name.starts_with(u"Chromium")) {
     command_line->AppendSwitch("import-chromium");
   } else if (source_profile.importer_type == importer::TYPE_OPERA) {
     command_line->AppendSwitch("import-opera");

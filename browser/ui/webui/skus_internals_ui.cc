@@ -125,7 +125,7 @@ base::Value::Dict SkusInternalsUI::GetOrderInfo(
   base::Value::Dict dict;
   const auto& skus_state = local_state_->GetDict(skus::prefs::kSkusState);
   for (const auto kv : skus_state) {
-    if (!base::StartsWith(kv.first, "skus:")) {
+    if (!kv.first.starts_with("skus:")) {
       continue;
     }
 
@@ -152,7 +152,7 @@ base::Value::Dict SkusInternalsUI::GetOrderInfo(
       }
 
       if (auto* order_location = order_dict->FindString("location")) {
-        if (!base::StartsWith(*order_location, location)) {
+        if (!order_location->starts_with(location)) {
           continue;
         }
         order_dict_output.Set("location", *order_location);
@@ -258,7 +258,7 @@ std::string SkusInternalsUI::GetSkusStateAsString() const {
 
   for (const auto kv : skus_state) {
     // Only shows "skus:xx" kv in webui.
-    if (!base::StartsWith(kv.first, "skus:")) {
+    if (!kv.first.starts_with("skus:")) {
       continue;
     }
 

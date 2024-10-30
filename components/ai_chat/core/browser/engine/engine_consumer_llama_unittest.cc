@@ -112,8 +112,8 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
                     const std::vector<std::string>& history,
                     EngineConsumer::GenerationCompletedCallback callback,
                     EngineConsumer::GenerationDataCallback data_callback) {
-        EXPECT_TRUE(base::StartsWith(prompt, prompt_before_time_and_date));
-        EXPECT_TRUE(base::EndsWith(prompt, prompt_after_time_and_date));
+        EXPECT_TRUE(prompt.starts_with(prompt_before_time_and_date));
+        EXPECT_TRUE(prompt.ends_with(prompt_after_time_and_date));
         std::move(callback).Run("");
       });
   {
@@ -161,8 +161,8 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
                     const std::vector<std::string>& history,
                     EngineConsumer::GenerationCompletedCallback callback,
                     EngineConsumer::GenerationDataCallback data_callback) {
-        EXPECT_TRUE(base::StartsWith(prompt, prompt_before_time_and_date));
-        EXPECT_TRUE(base::EndsWith(prompt, prompt_after_time_and_date));
+        EXPECT_TRUE(prompt.starts_with(prompt_before_time_and_date));
+        EXPECT_TRUE(prompt.ends_with(prompt_after_time_and_date));
         std::move(callback).Run("");
       });
   std::vector<mojom::ConversationTurnPtr> history2;
