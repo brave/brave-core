@@ -215,12 +215,13 @@ GURL AppendJupiterQuoteParams(const GURL& swap_url,
   return url;
 }
 
-base::flat_map<std::string, std::string> GetHeaders(bool is_zero_ex = false) {
-  base::flat_map<std::string, std::string> headers = {
-      {kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY)}};
-  if (is_zero_ex) {
-    headers[kZeroExAPIVersionHeader] = kZeroExAPIVersion;
-  }
+base::flat_map<std::string, std::string> GetHeaders() {
+  return {{kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY)}};
+}
+
+base::flat_map<std::string, std::string> GetHeadersForZeroEx() {
+  auto headers = GetHeaders();
+  headers[kZeroExAPIVersionHeader] = kZeroExAPIVersion;
   return headers;
 }
 
@@ -381,8 +382,9 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
 
     api_request_helper_.Request(net::HttpRequestHeaders::kGetMethod,
                                 GetZeroExQuoteURL(*params, fee_param), "", "",
-                                std::move(internal_callback), GetHeaders(true),
-                                {}, std::move(conversion_callback));
+                                std::move(internal_callback),
+                                GetHeadersForZeroEx(), {},
+                                std::move(conversion_callback));
 
     return;
   }
@@ -556,7 +558,7 @@ void SwapService::GetTransaction(mojom::SwapTransactionParamsUnionPtr params,
         net::HttpRequestHeaders::kGetMethod,
         GetZeroExTransactionURL(*params->get_zero_ex_transaction_params(),
                                 swap_fee->fee_param),
-        "", "", std::move(internal_callback), GetHeaders(true), {},
+        "", "", std::move(internal_callback), GetHeadersForZeroEx(), {},
         std::move(conversion_callback));
 
     return;
