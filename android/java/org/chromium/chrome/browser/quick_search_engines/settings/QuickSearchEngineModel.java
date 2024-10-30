@@ -6,30 +6,16 @@
 package org.chromium.chrome.browser.quick_search_engines.settings;
 
 public class QuickSearchEngineModel {
-    // private TemplateUrl mTemplateUrl;
     private String mShortName;
     private String mKeyword;
     private String mUrl;
     private boolean mIsEnabled;
-    private int mPosition;
 
-    // QuickSearchEngineModel(TemplateUrl templateUrl, boolean isEnabled, int position) {
-    //     this.mTemplateUrl = templateUrl;
-    //     this.mIsEnabled = isEnabled;
-    //     this.mPosition = position;
-    // }
-
-    // public TemplateUrl getTemplateUrl() {
-    //     return mTemplateUrl;
-    // }
-
-    public QuickSearchEngineModel(
-            String shortName, String keyword, String url, boolean isEnabled, int position) {
+    public QuickSearchEngineModel(String shortName, String keyword, String url, boolean isEnabled) {
         this.mShortName = shortName;
         this.mKeyword = keyword;
         this.mUrl = url;
         this.mIsEnabled = isEnabled;
-        this.mPosition = position;
     }
 
     public String getShortName() {
@@ -46,10 +32,6 @@ public class QuickSearchEngineModel {
 
     public boolean isEnabled() {
         return mIsEnabled;
-    }
-
-    public int getPosition() {
-        return mPosition;
     }
 
     public void setEnabled(boolean isEnabled) {
