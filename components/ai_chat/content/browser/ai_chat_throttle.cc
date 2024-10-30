@@ -9,6 +9,7 @@
 
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -21,8 +22,15 @@ namespace ai_chat {
 // static
 std::unique_ptr<AiChatThrottle> AiChatThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle) {
+  // The AI Chat WebUI won't be enabled if the feature is disabled
   if (!ai_chat::IsAIChatEnabled(user_prefs::UserPrefs::Get(
           navigation_handle->GetWebContents()->GetBrowserContext()))) {
+    return nullptr;
+  }
+
+  // We don't need this throttle if the full-page feature is enabled via proxy
+  // of the AIChatHistory feature flag.
+  if (features::IsAIChatHistoryEnabled()) {
     return nullptr;
   }
 

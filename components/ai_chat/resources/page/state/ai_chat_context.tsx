@@ -9,8 +9,8 @@ import { loadTimeData } from '$web-common/loadTimeData'
 
 
 interface Props {
-  // Which conversation to higlight in list
-  selectedConversationUuid?: string
+  // Whether there is a specific conversation selected
+  isDefaultConversation: boolean
   // Create a new conversation and use it
   onNewConversation: () => unknown
   // Select a new conversation
@@ -25,17 +25,22 @@ export interface AIChatContext extends Props {
   isPremiumUserDisconnected: boolean
   canShowPremiumPrompt?: boolean
   isMobile: boolean
+  isStandalone?: boolean
   isHistoryEnabled: boolean
   allActions: mojom.ActionGroup[]
   goPremium: () => void
   managePremium: () => void
   handleAgreeClick: () => void
   dismissPremiumPrompt: () => void
-  userRefreshPremiumSession: () => void,
+  userRefreshPremiumSession: () => void
   uiHandler?: mojom.AIChatUIHandlerRemote
+
+  editingConversationId: string | null
+  setEditingConversationId: (uuid: string | null) => void
 }
 
 const defaultContext: AIChatContext = {
+  isDefaultConversation: true,
   visibleConversations: [],
   hasAcceptedAgreement: Boolean(loadTimeData.getBoolean('hasAcceptedAgreement')),
   isPremiumStatusFetching: true,
@@ -45,13 +50,16 @@ const defaultContext: AIChatContext = {
   isMobile: Boolean(loadTimeData.getBoolean('isMobile')),
   isHistoryEnabled: Boolean(loadTimeData.getBoolean('isHistoryEnabled')),
   allActions: [],
-  goPremium: () => {},
-  managePremium: () => {},
-  handleAgreeClick: () => {},
-  dismissPremiumPrompt: () => {},
-  userRefreshPremiumSession: () => {},
-  onNewConversation: () => {},
-  onSelectConversationUuid: () => {}
+  goPremium: () => { },
+  managePremium: () => { },
+  handleAgreeClick: () => { },
+  dismissPremiumPrompt: () => { },
+  userRefreshPremiumSession: () => { },
+  onNewConversation: () => { },
+  onSelectConversationUuid: () => { },
+
+  editingConversationId: null,
+  setEditingConversationId: () => { }
 }
 
 export const AIChatReactContext =
@@ -59,6 +67,7 @@ export const AIChatReactContext =
 
 export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
   const [context, setContext] = React.useState<AIChatContext>(defaultContext)
+  const [editingConversationId, setEditingConversationId] = React.useState<string | null>(null)
 
   const setPartialContext = (partialContext: Partial<AIChatContext>) => {
     setContext((value) => ({
@@ -86,7 +95,7 @@ export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
       })
     }
 
-    async function updateCurrentPremiumStatus () {
+    async function updateCurrentPremiumStatus() {
       const { status } = await getAPI().Service.getPremiumStatus()
       setPartialContext({
         isPremiumStatusFetching: false,
@@ -133,12 +142,15 @@ export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
   const store: AIChatContext = {
     ...context,
     ...props,
+    isStandalone: getAPI().isStandalone,
     goPremium: () => UIHandler.goPremium(),
     managePremium: () => UIHandler.managePremium(),
     dismissPremiumPrompt: () => Service.dismissPremiumPrompt(),
     userRefreshPremiumSession: () => UIHandler.refreshPremiumSession(),
     handleAgreeClick: () => Service.markAgreementAccepted(),
-    uiHandler: UIHandler
+    uiHandler: UIHandler,
+    editingConversationId,
+    setEditingConversationId
   }
 
   return (

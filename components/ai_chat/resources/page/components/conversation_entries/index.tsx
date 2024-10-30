@@ -29,14 +29,13 @@ const SUGGESTION_STATUS_SHOW_BUTTON: mojom.SuggestionGenerationStatus[] = [
   mojom.SuggestionGenerationStatus.IsGenerating
 ]
 
-interface ConversationListProps {
+interface ConversationEntriesProps {
   onLastElementHeightChange: () => void
 }
 
-function ConversationList(props: ConversationListProps) {
+function ConversationEntries(props: ConversationEntriesProps) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
-
 
   const portalRefs = React.useRef<Map<number, Element>>(new Map())
 
@@ -285,4 +284,4 @@ function ConversationList(props: ConversationListProps) {
   )
 }
 
-export default ConversationList
+export default ConversationEntries

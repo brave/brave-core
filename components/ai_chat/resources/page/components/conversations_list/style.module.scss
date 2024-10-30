@@ -1,0 +1,127 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.nav {
+  width: 100%;
+  height: 100%;
+  padding: var(--leo-spacing-m);
+  color: var(--leo-color-text-primary);
+  max-width: 680px;
+  margin: 0 auto;
+
+  ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.navItem {
+  font: var(--leo-font-default-regular);
+  width: 100%;
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  border-radius: 8px;
+  position: relative;
+
+  &:hover {
+    background: var(--leo-color-container-background);
+  }
+}
+
+.navItemActive {
+  background: var(--leo-color-container-background);
+}
+
+.optionsMenu {
+  leo-menu-item {
+    padding: var(--leo-spacing-m);
+  }
+}
+
+.optionsButton {
+  --leo-icon-size: 20px;
+  color: var(--leo-color-icon-interactive);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  padding: 4px;
+}
+
+.displayTitle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.displayTitleContent {
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.description {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-tertiary);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.editibleTitle {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  form,
+  input {
+    width: 100%;
+  }
+}
+
+.optionsMenuItemWithIcon {
+  --leo-icon-size: 16px;
+  font: var(--leo-font-default-regular);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timeLabel {
+  font: var(--leo-font-components-label);
+  color: var(--leo-color-text-tertiary);
+  text-transform: uppercase;
+  padding: var(--leo-spacing-m) var(--leo-spacing-xl);
+}
+
+.scroller {
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 16px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--leo-color-neutral-20);
+    border-radius: var(--leo-spacing-m);
+  }
+}
+
+.simpleInput {
+  outline: 0;
+  border-radius: 4px;
+  border: 1px solid var(--leo-color-icon-interactive);
+  padding: 0 4px;
+  background: var(--leo-color-container-background);
+}
