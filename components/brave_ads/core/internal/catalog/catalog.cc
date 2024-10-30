@@ -102,15 +102,15 @@ void Catalog::MaybeFetchCatalog() const {
   }
 }
 
-void Catalog::NotifyDidUpdateCatalog(const CatalogInfo& catalog) const {
+void Catalog::NotifyDidFetchCatalog(const CatalogInfo& catalog) const {
   for (CatalogObserver& observer : observers_) {
-    observer.OnDidUpdateCatalog(catalog);
+    observer.OnDidFetchCatalog(catalog);
   }
 }
 
-void Catalog::NotifyFailedToUpdateCatalog() const {
+void Catalog::NotifyFailedToFetchCatalog() const {
   for (CatalogObserver& observer : observers_) {
-    observer.OnFailedToUpdateCatalog();
+    observer.OnFailedToFetchCatalog();
   }
 }
 
@@ -138,11 +138,11 @@ void Catalog::OnDidFetchCatalog(const CatalogInfo& catalog) {
 
   SaveCatalog(catalog);
 
-  NotifyDidUpdateCatalog(catalog);
+  NotifyDidFetchCatalog(catalog);
 }
 
 void Catalog::OnFailedToFetchCatalog() {
-  NotifyFailedToUpdateCatalog();
+  NotifyFailedToFetchCatalog();
 }
 
 void Catalog::OnDidMigrateDatabase(const int /*from_version*/,
