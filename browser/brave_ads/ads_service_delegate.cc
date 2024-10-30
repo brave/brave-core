@@ -5,14 +5,19 @@
 
 #include "brave/browser/brave_ads/ads_service_delegate.h"
 
+#include <cstddef>
 #include <utility>
 
+#include "base/json/json_reader.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/version_info/channel.h"
+#include "base/version_info/version_info.h"
 #include "brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper.h"
 #include "brave/browser/ui/brave_ads/notification_ad.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
+#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/skus/browser/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile.h"
@@ -31,6 +36,71 @@
 #endif
 
 namespace brave_ads {
+
+namespace {
+
+constexpr char kSkuEnvironmentPrefix[] = "skus:";
+constexpr char kSkuOrdersKey[] = "orders";
+constexpr char kSkuOrderLocationKey[] = "location";
+constexpr char kSkuOrderCreatedAtKey[] = "created_at";
+constexpr char kSkuOrderExpiresAtKey[] = "expires_at";
+constexpr char kSkuOrderLastPaidAtKey[] = "last_paid_at";
+constexpr char kSkuOrderStatusKey[] = "status";
+
+std::string StripSkuEnvironmentPrefix(const std::string& environment) {
+  const size_t pos = environment.find(':');
+  return environment.substr(pos + 1);
+}
+
+std::string NormalizeSkuStatus(const std::string& status) {
+  return status == "cancelled" ? "canceled" : status;
+}
+
+base::Value::Dict ParseSkuOrder(const base::Value::Dict& dict) {
+  base::Value::Dict order;
+
+  if (const auto* const created_at = dict.FindString(kSkuOrderCreatedAtKey)) {
+    order.Set(kSkuOrderCreatedAtKey, *created_at);
+  }
+
+  if (const auto* const expires_at = dict.FindString(kSkuOrderExpiresAtKey)) {
+    order.Set(kSkuOrderExpiresAtKey, *expires_at);
+  }
+
+  if (const auto* const last_paid_at =
+          dict.FindString(kSkuOrderLastPaidAtKey)) {
+    order.Set(kSkuOrderLastPaidAtKey, *last_paid_at);
+  }
+
+  if (const auto* const status = dict.FindString(kSkuOrderStatusKey)) {
+    const std::string normalized_status = NormalizeSkuStatus(*status);
+    order.Set(kSkuOrderStatusKey, normalized_status);
+  }
+
+  return order;
+}
+
+base::Value::Dict ParseSkuOrders(const base::Value::Dict& dict) {
+  base::Value::Dict orders;
+
+  for (const auto [/*id*/ _, value] : dict) {
+    const base::Value::Dict* const order = value.GetIfDict();
+    if (!order) {
+      continue;
+    }
+
+    const std::string* const location = order->FindString(kSkuOrderLocationKey);
+    if (!location) {
+      continue;
+    }
+
+    orders.Set(*location, ParseSkuOrder(*order));
+  }
+
+  return orders;
+}
+
+}  // namespace
 
 AdsServiceDelegate::AdsServiceDelegate(
     Profile* profile,
@@ -52,6 +122,49 @@ AdsServiceDelegate::AdsServiceDelegate(
           std::move(notification_ad_platform_bridge)) {}
 
 AdsServiceDelegate::~AdsServiceDelegate() {}
+
+std::string AdsServiceDelegate::GetDefaultSearchEngineName() {
+  const auto template_url_data =
+      TemplateURLPrepopulateData::GetPrepopulatedFallbackSearch(
+          profile_->GetPrefs(), &search_engine_choice_service_);
+
+  const std::u16string& default_search_engine_name =
+      template_url_data ? template_url_data->short_name() : u"";
+  return base::UTF16ToUTF8(default_search_engine_name);
+}
+
+base::Value::Dict AdsServiceDelegate::GetSkus() const {
+  base::Value::Dict skus;
+
+  if (!local_state_->FindPreference(skus::prefs::kSkusState)) {
+    // No SKUs in local state.
+    return skus;
+  }
+
+  const base::Value::Dict& skus_state =
+      local_state_->GetDict(skus::prefs::kSkusState);
+  for (const auto [environment, value] : skus_state) {
+    if (!environment.starts_with(kSkuEnvironmentPrefix)) {
+      continue;
+    }
+
+    // Parse the SKUs JSON because it is stored as a string in local state.
+    const std::optional<base::Value::Dict> sku_state =
+        base::JSONReader::ReadDict(value.GetString());
+    if (!sku_state) {
+      continue;
+    }
+
+    const base::Value::Dict* const orders = sku_state->FindDict(kSkuOrdersKey);
+    if (!orders) {
+      continue;
+    }
+
+    skus.Set(StripSkuEnvironmentPrefix(environment), ParseSkuOrders(*orders));
+  }
+
+  return skus;
+}
 
 void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
 #if BUILDFLAG(IS_ANDROID)
@@ -145,18 +258,25 @@ bool AdsServiceDelegate::IsFullScreenMode() {
 #endif
 
 base::Value::Dict AdsServiceDelegate::GetVirtualPrefs() {
-  const auto template_url_data =
-      TemplateURLPrepopulateData::GetPrepopulatedFallbackSearch(
-          profile_->GetPrefs(), &search_engine_choice_service_);
-  if (!template_url_data) {
-    return {};
-  }
-
   return base::Value::Dict()
-      .Set("[virtual]:default_search_engine.name",
-           base::UTF16ToUTF8(template_url_data->short_name()))
-      .Set("[virtual]:build_channel.name",
-           version_info::GetChannelString(chrome::GetChannel()));
+      .Set("[virtual]:browser",
+           base::Value::Dict()
+               .Set("build_channel",
+                    version_info::GetChannelString(chrome::GetChannel()))
+               .Set("version", version_info::GetVersionNumber()))
+      .Set("[virtual]:operating_system",
+           base::Value::Dict()
+               .Set("locale",
+                    base::Value::Dict()
+                        .Set("language",
+                             brave_l10n::GetDefaultISOLanguageCodeString())
+                        .Set("region",
+                             brave_l10n::GetDefaultISOCountryCodeString()))
+               .Set("name", version_info::GetOSType()))
+      .Set(
+          "[virtual]:search_engine",
+          base::Value::Dict().Set("default_name", GetDefaultSearchEngineName()))
+      .Set("[virtual]:skus", GetSkus());
 }
 
 }  // namespace brave_ads

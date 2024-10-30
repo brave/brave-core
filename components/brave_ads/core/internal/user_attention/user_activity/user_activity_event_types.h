@@ -31,7 +31,7 @@ enum class UserActivityEventType : int8_t {
   /*0E*/ kTabStartedPlayingMedia,
   /*0F*/ kTabStoppedPlayingMedia,
   /*10*/ kSubmittedForm,
-  /*11*/ kTabUpdated,
+  /*11*/ kTabDidChange,
   /*12*/ kTypedAndSelectedNonUrl,
   /*13*/ kTypedKeywordOtherThanDefaultSearchProvider,
   /*14*/ kTypedUrl,
