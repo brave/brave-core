@@ -185,6 +185,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         removePreferenceIfPresent(MainSettings.PREF_SAFETY_CHECK);
         removePreferenceIfPresent(MainSettings.PREF_ACCOUNT_AND_GOOGLE_SERVICES_SECTION);
         removePreferenceIfPresent(MainSettings.PREF_GOOGLE_SERVICES);
+        removePreferenceIfPresent(MainSettings.PREF_HOME_MODULES_CONFIG);
         removePreferenceIfPresent(PREF_LANGUAGES);
         removePreferenceIfPresent(PREF_BASICS_SECTION);
         // removePreferenceIfPresent(MainSettings.PREF_HOMEPAGE);
