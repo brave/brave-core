@@ -23,7 +23,5 @@ public class BravePasswordSettingsBaseClassAdapter extends BraveClassVisitor {
                 "createCheckPasswords",
                 sBravePasswordSettingsBaseClassName);
         deleteMethod(sPasswordSettingsClassName, "createCheckPasswords");
-
-        deleteField(sPasswordSettingsClassName, "mMenu");
     }
 }
