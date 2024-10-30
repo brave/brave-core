@@ -192,11 +192,12 @@ base::Value ToPageGraphValue(ScriptState* script_state,
   return ToPageGraphValue(script_state, opt_value.value());
 }
 
-// Convert ScriptPromise<T> types.
 template <typename T>
 base::Value ToPageGraphValue(ScriptState* script_state,
                              const ScriptPromise<T>& script_promise) {
-  return ToPageGraphValue<ScriptPromiseUntyped>(script_state, script_promise);
+  return ToPageGraphValue(
+      script_state,
+      ScriptValue(script_state->GetIsolate(), script_promise.V8Promise()));
 }
 
 // Convert v8::Value.
@@ -214,12 +215,6 @@ template <>
 CORE_EXPORT base::Value ToPageGraphValue<bindings::NativeValueTraitsAnyAdapter>(
     ScriptState* script_state,
     const bindings::NativeValueTraitsAnyAdapter& adapter);
-
-// Convert ScriptPromiseUntyped.
-template <>
-CORE_EXPORT base::Value ToPageGraphValue<ScriptPromiseUntyped>(
-    ScriptState* script_state,
-    const ScriptPromiseUntyped& script_promise);
 
 // Convert EventListener.
 template <>

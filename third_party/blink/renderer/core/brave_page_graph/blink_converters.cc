@@ -70,14 +70,6 @@ base::Value ToPageGraphValue(ScriptState* script_state,
 
 template <>
 base::Value ToPageGraphValue(ScriptState* script_state,
-                             const ScriptPromiseUntyped& script_promise) {
-  return ToPageGraphValue(
-      script_state,
-      ScriptValue(script_state->GetIsolate(), script_promise.V8Promise()));
-}
-
-template <>
-base::Value ToPageGraphValue(ScriptState* script_state,
                              blink::EventListener* const& event_listener) {
   return event_listener ? base::Value(event_listener->ScriptBody().Utf8())
                         : base::Value();
