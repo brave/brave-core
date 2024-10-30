@@ -53,7 +53,7 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
         if (!mVerboseSyncPasswordsPref) {
             return;
         }
-        Log.v(TAG, message);
+        Log.i(TAG, message);
     }
 
     @VisibleForTesting
@@ -185,9 +185,13 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
                                             }
                                         });
                             } catch (java.lang.IllegalStateException ex) {
-                                Log.e(TAG, "BraveManageSyncSettings.OnPreferenceChange ex=", ex);
+                                Log.e(
+                                        TAG,
+                                        "BraveManageSyncSettings.OnPreferenceChange"
+                                            + " IllegalStateException ex=",
+                                        ex);
                             } catch (Exception ex) {
-                                verboseIfEnabled("OnPreferenceChange: general exception=" + ex);
+                                Log.e(TAG, "BraveManageSyncSettings.OnPreferenceChange ex=", ex);
                             }
                         }
                         return false;
