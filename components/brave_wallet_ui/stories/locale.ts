@@ -1513,5 +1513,14 @@ provideStrings({
   braveWalletFilters: 'Filters',
   braveWalletClearFilters: 'Clear filters',
   braveWalletShowMore: 'Show more',
-  braveWalletDetails: 'Details'
+  braveWalletDetails: 'Details',
+
+  // ZCash
+  braveWalletSwitchToShieldedAccount: 'Switch to a shielded account',
+  braveWalletShieldAccount: 'Shield account',
+  braveWalletAccountNotShieldedDescription:
+    'Currently this account supports transparent transactions which means they are visible to everyone on the blockchain.',
+  braveWalletAccountShieldedDescription:
+    'Upgrading to a shielded account means that these transactions hide the sender, receiver and amount details.',
+  braveWalletShielded: 'Shielded'
 })

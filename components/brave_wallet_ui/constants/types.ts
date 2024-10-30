@@ -213,6 +213,7 @@ export interface WalletState {
   assetAutoDiscoveryCompleted: boolean
   isAnkrBalancesFeatureEnabled: boolean
   isRefreshingNetworksAndTokens: boolean
+  isZCashShieldedTransactionsEnabled: boolean
 }
 
 export interface PanelState {
@@ -857,6 +858,7 @@ export type AccountModalTypes =
   | 'remove'
   | 'buy'
   | 'explorer'
+  | 'shield'
 
 export interface AccountButtonOptionsObjectType {
   name: string
