@@ -9,6 +9,10 @@
  * #scheme=relative
  * #css_wrapper_metadata_end */
 
+:host {
+    --leo-icon-size: 20px;
+}
+
 #menuButtonContainer {
     position: absolute;
     left: 0;
