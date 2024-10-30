@@ -439,6 +439,18 @@ void SwapService::OnGetZeroExQuote(const std::string& chain_id,
 
   if (auto swap_response = zeroex::ParseQuoteResponse(
           api_request_result.value_body(), chain_id)) {
+    if (!swap_response->liquidity_available) {
+      std::move(callback).Run(
+          nullptr, nullptr,
+          mojom::SwapErrorUnion::NewZeroExError(mojom::ZeroExError::New(
+              "INSUFFICIENT_LIQUIDITY",
+              l10n_util::GetStringUTF8(
+                  IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_LIQUIDITY),
+              true)),
+          "");
+      return;
+    }
+
     std::move(callback).Run(
         mojom::SwapQuoteUnion::NewZeroExQuote(std::move(swap_response)),
         std::move(swap_fee), nullptr, "");

@@ -556,37 +556,36 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuote) {
     }
   )");
 
-  auto zero_ex_quote = mojom::ZeroExQuote::New();
-  zero_ex_quote->buy_amount = "100032748";
-  zero_ex_quote->buy_token = "0xdac17f958d2ee523a2206206994597c13d831ec7";
-  zero_ex_quote->sell_amount = "100000000";
-  zero_ex_quote->sell_token = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
+  auto expected_zero_ex_quote = mojom::ZeroExQuote::New();
+  expected_zero_ex_quote->buy_amount = "100032748";
+  expected_zero_ex_quote->buy_token =
+      "0xdac17f958d2ee523a2206206994597c13d831ec7";
+  expected_zero_ex_quote->sell_amount = "100000000";
+  expected_zero_ex_quote->sell_token =
+      "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
 
   auto zero_ex_fee = mojom::ZeroExFee::New();
   zero_ex_fee->type = "volume";
   zero_ex_fee->token = "0xdeadbeef";
   zero_ex_fee->amount = "0";
-  zero_ex_quote->fees = mojom::ZeroExFees::New();
-  zero_ex_quote->fees->zero_ex_fee = std::move(zero_ex_fee);
+  expected_zero_ex_quote->fees = mojom::ZeroExFees::New();
+  expected_zero_ex_quote->fees->zero_ex_fee = std::move(zero_ex_fee);
 
-  zero_ex_quote->gas = "288095";
-  zero_ex_quote->gas_price = "7062490000";
-  zero_ex_quote->liquidity_available = true;
-  zero_ex_quote->min_buy_amount = "99032421";
-  zero_ex_quote->total_network_fee = "2034668056550000";
+  expected_zero_ex_quote->gas = "288095";
+  expected_zero_ex_quote->gas_price = "7062490000";
+  expected_zero_ex_quote->liquidity_available = true;
+  expected_zero_ex_quote->min_buy_amount = "99032421";
+  expected_zero_ex_quote->total_network_fee = "2034668056550000";
 
   auto fill = mojom::ZeroExRouteFill::New();
   fill->from = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
   fill->to = "0xdac17f958d2ee523a2206206994597c13d831ec7";
   fill->source = "SolidlyV3";
   fill->proportion_bps = "10000";
-  zero_ex_quote->route = mojom::ZeroExRoute::New();
-  zero_ex_quote->route->fills.push_back(fill.Clone());
+  expected_zero_ex_quote->route = mojom::ZeroExRoute::New();
+  expected_zero_ex_quote->route->fills.push_back(fill.Clone());
 
-  auto expected_zero_ex_quote_info = mojom::ZeroExQuoteInfo::New();
-  expected_zero_ex_quote_info->quote = std::move(zero_ex_quote);
-  expected_zero_ex_quote_info->liquidity_available = true;
-  expected_zero_ex_quote_info->allowance_target =
+  expected_zero_ex_quote->allowance_target =
       "0x0000000000001fF3684f28c67538d4D072C22734";
 
   auto expected_swap_fees = mojom::SwapFees::New();
@@ -598,7 +597,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuote) {
 
   base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
   EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnion::NewZeroExQuote(
-                                expected_zero_ex_quote_info.Clone())),
+                                expected_zero_ex_quote.Clone())),
                             EqualsMojo(expected_swap_fees.Clone()),
                             EqualsMojo(mojom::SwapErrorUnionPtr()), ""));
 
@@ -676,9 +675,9 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuote) {
     }
   )");
 
-  expected_zero_ex_quote_info->quote->fees->zero_ex_fee = nullptr;
+  expected_zero_ex_quote->fees->zero_ex_fee = nullptr;
   EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnion::NewZeroExQuote(
-                                std::move(expected_zero_ex_quote_info))),
+                                std::move(expected_zero_ex_quote))),
                             EqualsMojo(expected_swap_fees.Clone()),
                             EqualsMojo(mojom::SwapErrorUnionPtr()), ""));
 
@@ -693,6 +692,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuote) {
 }
 
 TEST_F(SwapServiceUnitTest, GetZeroExQuoteError) {
+  // Case 1: validation error
   std::string error = R"(
     {
       "name": "INPUT_INVALID",
@@ -705,6 +705,34 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteError) {
                             EqualsMojo(mojom::SwapFeesPtr()),
                             EqualsMojo(mojom::SwapErrorUnion::NewZeroExError(
                                 zeroex::ParseErrorResponse(ParseJson(error)))),
+                            ""));
+
+  swap_service_->GetQuote(
+      GetCannedSwapQuoteParams(
+          mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
+          mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
+          mojom::SwapProvider::kZeroEx),
+      callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Case 2: insufficient liquidity
+  SetInterceptor(R"(
+    {
+      "liquidityAvailable": false,
+      "zid": "0x111111111111111111111111"
+    }
+  )");
+  auto error_response = mojom::ZeroExError::New();
+  error_response->name = "INSUFFICIENT_LIQUIDITY";
+  error_response->message =
+      l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_LIQUIDITY);
+  error_response->is_insufficient_liquidity = true;
+
+  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnionPtr()),
+                            EqualsMojo(mojom::SwapFeesPtr()),
+                            EqualsMojo(mojom::SwapErrorUnion::NewZeroExError(
+                                std::move(error_response))),
                             ""));
 
   swap_service_->GetQuote(

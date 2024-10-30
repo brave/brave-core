@@ -448,7 +448,7 @@ union SwapTransactionParamsUnion {
 
 union SwapQuoteUnion {
   JupiterQuote jupiter_quote;
-  ZeroExQuoteInfo zero_ex_quote;
+  ZeroExQuote zero_ex_quote;
   LiFiQuote lifi_quote;
   SquidQuote squid_quote;
 };
@@ -501,18 +501,15 @@ struct ZeroExQuote {
   string sell_amount;
   string sell_token;
   string total_network_fee;
-};
 
-struct ZeroExQuoteInfo {
-  // quote is undefined if liquidity_available is false
-  ZeroExQuote? quote;
+  // Custom field
   string allowance_target;
-  bool liquidity_available;
 };
 
 struct ZeroExError {
   string name;
   string message;
+  bool is_insufficient_liquidity;
 };
 
 union SwapErrorUnion {

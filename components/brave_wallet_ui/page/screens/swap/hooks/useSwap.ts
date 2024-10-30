@@ -308,9 +308,9 @@ export const useSwap = () => {
       })
     }
 
-    if (quoteUnion.zeroExQuote?.quote) {
+    if (quoteUnion.zeroExQuote) {
       return getZeroExQuoteOptions({
-        quote: quoteUnion.zeroExQuote.quote,
+        quote: quoteUnion.zeroExQuote,
         fromNetwork,
         fromToken,
         toToken,
@@ -565,18 +565,18 @@ export const useSwap = () => {
           }
         }
 
-        if (quoteResponse.response.zeroExQuote?.quote) {
+        if (quoteResponse.response.zeroExQuote) {
           if (params.editingFromOrToAmount === 'from') {
             setToAmount(
               getZeroExToAmount({
-                quote: quoteResponse.response.zeroExQuote.quote,
+                quote: quoteResponse.response.zeroExQuote,
                 toToken: params.toToken
               }).format(6)
             )
           } else {
             setFromAmount(
               getZeroExFromAmount({
-                quote: quoteResponse.response.zeroExQuote.quote,
+                quote: quoteResponse.response.zeroExQuote,
                 fromToken: params.fromToken
               }).format(6)
             )
@@ -1007,11 +1007,11 @@ export const useSwap = () => {
       }
 
       // 0x specific validations
-      if (quoteUnion?.zeroExQuote?.liquidityAvailable === false) {
-        return 'insufficientLiquidity'
-      }
-
       if (quoteErrorUnion?.zeroExError) {
+        if (quoteErrorUnion.zeroExError.isInsufficientLiquidity) {
+          return 'insufficientLiquidity'
+        }
+
         return 'unknownError'
       }
 

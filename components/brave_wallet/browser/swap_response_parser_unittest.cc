@@ -153,40 +153,37 @@ TEST(SwapResponseParserUnitTest, ParseZeroExQuoteResponse) {
       "zid": "0x111111111111111111111111"
     }
   )");
-  auto quote_info =
+  auto quote =
       zeroex::ParseQuoteResponse(ParseJson(json), mojom::kMainnetChainId);
-  ASSERT_TRUE(quote_info);
-  ASSERT_TRUE(quote_info->quote);
+  ASSERT_TRUE(quote);
 
-  EXPECT_EQ(quote_info->quote->buy_amount, "100032748");
-  EXPECT_EQ(quote_info->quote->buy_token,
-            "0xdac17f958d2ee523a2206206994597c13d831ec7");
+  EXPECT_EQ(quote->buy_amount, "100032748");
+  EXPECT_EQ(quote->buy_token, "0xdac17f958d2ee523a2206206994597c13d831ec7");
 
-  ASSERT_TRUE(quote_info->quote->fees->zero_ex_fee);
-  EXPECT_EQ(quote_info->quote->fees->zero_ex_fee->amount, "0");
-  EXPECT_EQ(quote_info->quote->fees->zero_ex_fee->token, "0xdeadbeef");
-  EXPECT_EQ(quote_info->quote->fees->zero_ex_fee->type, "volume");
+  ASSERT_TRUE(quote->fees->zero_ex_fee);
+  EXPECT_EQ(quote->fees->zero_ex_fee->amount, "0");
+  EXPECT_EQ(quote->fees->zero_ex_fee->token, "0xdeadbeef");
+  EXPECT_EQ(quote->fees->zero_ex_fee->type, "volume");
 
-  EXPECT_EQ(quote_info->quote->gas, "288095");
-  EXPECT_EQ(quote_info->quote->gas_price, "7062490000");
-  EXPECT_EQ(quote_info->quote->liquidity_available, true);
-  EXPECT_EQ(quote_info->quote->min_buy_amount, "99032421");
+  EXPECT_EQ(quote->gas, "288095");
+  EXPECT_EQ(quote->gas_price, "7062490000");
+  EXPECT_EQ(quote->liquidity_available, true);
+  EXPECT_EQ(quote->min_buy_amount, "99032421");
 
-  ASSERT_EQ(quote_info->quote->route->fills.size(), 1UL);
-  EXPECT_EQ(quote_info->quote->route->fills.at(0)->from,
+  ASSERT_EQ(quote->route->fills.size(), 1UL);
+  EXPECT_EQ(quote->route->fills.at(0)->from,
             "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
-  EXPECT_EQ(quote_info->quote->route->fills.at(0)->to,
+  EXPECT_EQ(quote->route->fills.at(0)->to,
             "0xdac17f958d2ee523a2206206994597c13d831ec7");
-  EXPECT_EQ(quote_info->quote->route->fills.at(0)->source, "SolidlyV3");
-  EXPECT_EQ(quote_info->quote->route->fills.at(0)->proportion_bps, "10000");
+  EXPECT_EQ(quote->route->fills.at(0)->source, "SolidlyV3");
+  EXPECT_EQ(quote->route->fills.at(0)->proportion_bps, "10000");
 
-  EXPECT_EQ(quote_info->quote->sell_amount, "100000000");
-  EXPECT_EQ(quote_info->quote->sell_token,
-            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
-  EXPECT_EQ(quote_info->quote->total_network_fee, "2034668056550000");
+  EXPECT_EQ(quote->sell_amount, "100000000");
+  EXPECT_EQ(quote->sell_token, "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
+  EXPECT_EQ(quote->total_network_fee, "2034668056550000");
 
-  EXPECT_EQ(quote_info->liquidity_available, true);
-  EXPECT_EQ(quote_info->allowance_target,
+  EXPECT_EQ(quote->liquidity_available, true);
+  EXPECT_EQ(quote->allowance_target,
             "0x0000000000001fF3684f28c67538d4D072C22734");
 
   // Case 2: null zeroExFee
@@ -253,12 +250,11 @@ TEST(SwapResponseParserUnitTest, ParseZeroExQuoteResponse) {
       "zid": "0x111111111111111111111111"
     }
   )";
-  quote_info =
-      zeroex::ParseQuoteResponse(ParseJson(json), mojom::kMainnetChainId);
-  ASSERT_TRUE(quote_info);
-  EXPECT_FALSE(quote_info->quote->fees->zero_ex_fee);
-  EXPECT_EQ(quote_info->liquidity_available, true);
-  EXPECT_EQ(quote_info->allowance_target,
+  quote = zeroex::ParseQuoteResponse(ParseJson(json), mojom::kMainnetChainId);
+  ASSERT_TRUE(quote);
+  EXPECT_FALSE(quote->fees->zero_ex_fee);
+  EXPECT_EQ(quote->liquidity_available, true);
+  EXPECT_EQ(quote->allowance_target,
             "0x0000000000001fF3684f28c67538d4D072C22734");
 
   // Case 3: malformed fees field
@@ -330,13 +326,10 @@ TEST(SwapResponseParserUnitTest, ParseZeroExQuoteResponse) {
       "liquidityAvailable": false,
     }
   )";
-  quote_info =
-      zeroex::ParseQuoteResponse(ParseJson(json), mojom::kMainnetChainId);
-  ASSERT_TRUE(quote_info);
-  EXPECT_FALSE(quote_info->liquidity_available);
-  EXPECT_EQ(quote_info->allowance_target,
-            "0x0000000000001fF3684f28c67538d4D072C22734");
-  EXPECT_FALSE(quote_info->quote);
+  quote = zeroex::ParseQuoteResponse(ParseJson(json), mojom::kMainnetChainId);
+  ASSERT_TRUE(quote);
+  EXPECT_FALSE(quote->liquidity_available);
+  EXPECT_EQ(quote->buy_token, "");
 
   // Case 5: other invalid cases
   json = R"({"totalNetworkFee": "2034668056550000"})";

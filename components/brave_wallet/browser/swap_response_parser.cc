@@ -141,8 +141,8 @@ mojom::ZeroExQuotePtr ParseQuote(
 
 }  // namespace
 
-mojom::ZeroExQuoteInfoPtr ParseQuoteResponse(const base::Value& json_value,
-                                             const std::string& chain_id) {
+mojom::ZeroExQuotePtr ParseQuoteResponse(const base::Value& json_value,
+                                         const std::string& chain_id) {
   // {
   //   "blockNumber": "20114692",
   //   "buyAmount": "100037537",
@@ -217,21 +217,20 @@ mojom::ZeroExQuoteInfoPtr ParseQuoteResponse(const base::Value& json_value,
     return nullptr;
   }
 
-  auto swap_response = mojom::ZeroExQuoteInfo::New();
-  swap_response->allowance_target =
-      GetZeroExAllowanceHolderAddress(chain_id).value_or("");
+  auto swap_response = mojom::ZeroExQuote::New();
+
   if (!swap_response_value->liquidity_available) {
     swap_response->liquidity_available = false;
     return swap_response;
   }
 
-  if (auto quote = ParseQuote(swap_response_value.value())) {
-    swap_response->quote = std::move(quote);
-  } else {
+  swap_response = ParseQuote(swap_response_value.value());
+  if (!swap_response) {
     return nullptr;
   }
 
-  swap_response->liquidity_available = swap_response_value->liquidity_available;
+  swap_response->allowance_target =
+      GetZeroExAllowanceHolderAddress(chain_id).value_or("");
 
   return swap_response;
 }
