@@ -840,8 +840,7 @@ TEST(EthSignedTypedDataHelperUnitTest, GetTypedDataMessageToSign) {
             "c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e");
   auto message_to_sign = helper->GetTypedDataMessageToSign(domain_hash->first,
                                                            primary_hash->first);
-  ASSERT_TRUE(message_to_sign);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*message_to_sign)),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message_to_sign)),
             "be609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2");
 }
 

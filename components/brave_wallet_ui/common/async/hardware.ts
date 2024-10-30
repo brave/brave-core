@@ -331,8 +331,8 @@ export async function signEthMessageWithHardwareKeyring(
       }
       return deviceKeyring.signEip712Message(
         path,
-        signTypedData.domainHash,
-        signTypedData.primaryHash
+        Buffer.from(signTypedData.domainHash).toString('hex'),
+        Buffer.from(signTypedData.primaryHash).toString('hex')
       )
     }
     if (!standardSignData) {
@@ -354,8 +354,12 @@ export async function signEthMessageWithHardwareKeyring(
       }
       return deviceKeyring.signEip712Message(
         path,
-        signTypedData.domainHash,
-        signTypedData.primaryHash
+        Buffer.from(signTypedData.domainHash).toString('hex'),
+        Buffer.from(signTypedData.primaryHash).toString('hex'),
+        signTypedData.messageJson,
+        signTypedData.domainJson,
+        signTypedData.typesJson,
+        signTypedData.primaryType
       )
     }
     if (!standardSignData) {

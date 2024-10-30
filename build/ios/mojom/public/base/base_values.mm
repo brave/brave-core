@@ -335,6 +335,14 @@ base::Value BaseValueFromNSArray(NSArray<MojoBaseValue*>* array) {
   return value;
 }
 
+base::Value::List BaseValueListFromNSArray(NSArray<MojoBaseValue*>* array) {
+  base::Value::List value;
+  for (MojoBaseValue* obj in array) {
+    value.Append(obj.cppObjPtr);
+  }
+  return value;
+}
+
 base::Value BaseValueFromNSDictionary(
     NSDictionary<NSString*, MojoBaseValue*>* dictionary) {
   base::Value result(base::Value::Type::DICT);

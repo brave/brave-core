@@ -160,7 +160,7 @@ interface EthereumProvider {
 
   // Corresponds to window.ethereum.enable and eth_requestAccounts
   Enable() => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
-  Send(string method, mojo_base.mojom.Value params) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
+  Send(string method, mojo_base.mojom.ListValue params) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
   SendAsync(mojo_base.mojom.Value input) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response, bool reject, string first_allowed_account, bool update_bind_js_properties);
 
   // Used for the connect event
@@ -2269,12 +2269,18 @@ union EthSignTypedDataMeta {
 
 // https://eips.ethereum.org/EIPS/eip-712
 struct EthSignTypedData {
-  // message for display
-  string message;
-  string domain;
+  string address_param;
+
+  string message_json;  // sanitized json string
+  string domain_json;   // sanitized json string
+  string types_json;    // sanitized json string
+  string primary_type;
+
+  string? chain_id;  // chainId from domain
+
   // These fields are for hardware eip712 signing
-  string? domain_hash;
-  string? primary_hash;
+  array<uint8> domain_hash;
+  array<uint8> primary_hash;
 
   EthSignTypedDataMeta? meta;
 };

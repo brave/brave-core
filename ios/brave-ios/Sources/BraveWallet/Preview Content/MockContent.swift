@@ -550,10 +550,14 @@ extension BraveWallet.SignMessageRequest {
       accountId: BraveWallet.AccountInfo.previewAccount.accountId,
       signData: .init(
         ethSignTypedData: .init(
-          message: "To avoid digital cat burglars, sign below to authenticate with CryptoKitties.",
-          domain: "",
-          domainHash: nil,
-          primaryHash: nil,
+          addressParam: "address",
+          messageJson: "To avoid digital cat burglars, sign below to authenticate with CryptoKitties.",
+          domainJson: "{}",
+          typesJson: "{}",
+          primaryType: "primaryType",
+          chainId: nil,
+          domainHash: [],
+          primaryHash: [],
           meta: nil
         )
       ),

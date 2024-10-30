@@ -192,7 +192,11 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
   signEip712Message = async (
     path: string,
     domainSeparatorHex: string,
-    hashStructMessageHex: string
+    hashStructMessageHex: string,
+    messageJson: string,
+    domainJson: string,
+    typesJson: string,
+    primaryType: string
   ): Promise<HardwareOperationResultEthereumSignatureBytes> => {
     if (!this.isUnlocked()) {
       const unlocked = await this.unlock()
@@ -209,10 +213,10 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
         message_hash: hashStructMessageHex,
         metamask_v4_compat: true,
         data: {
-          types: { EIP712Domain: [] },
-          primaryType: 'UnknownType',
-          domain: {},
-          message: {}
+          types: JSON.parse(typesJson),
+          primaryType: primaryType,
+          domain: JSON.parse(domainJson),
+          message: JSON.parse(messageJson)
         }
       },
       origin: window.origin

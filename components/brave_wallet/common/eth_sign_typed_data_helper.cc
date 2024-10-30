@@ -15,6 +15,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
@@ -384,8 +385,8 @@ std::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
 
 std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
 EthSignTypedDataHelper::GetTypedDataDomainHash(
-    const base::Value::Dict& domain_separator) const {
-  return HashStruct("EIP712Domain", domain_separator);
+    const base::Value::Dict& domain) const {
+  return HashStruct("EIP712Domain", domain);
 }
 
 std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
@@ -396,18 +397,16 @@ EthSignTypedDataHelper::GetTypedDataPrimaryHash(
 }
 
 // static
-std::optional<std::vector<uint8_t>>
-EthSignTypedDataHelper::GetTypedDataMessageToSign(
+std::vector<uint8_t> EthSignTypedDataHelper::GetTypedDataMessageToSign(
     base::span<const uint8_t> domain_hash,
     base::span<const uint8_t> primary_hash) {
-  if (domain_hash.empty() || primary_hash.empty()) {
-    return std::nullopt;
-  }
+  DCHECK(!domain_hash.empty());
+  DCHECK(!primary_hash.empty());
+
   std::vector<uint8_t> encoded_data({0x19, 0x01});
-  encoded_data.insert(encoded_data.end(), domain_hash.begin(),
-                      domain_hash.end());
-  encoded_data.insert(encoded_data.end(), primary_hash.begin(),
-                      primary_hash.end());
+  base::Extend(encoded_data, domain_hash);
+  base::Extend(encoded_data, primary_hash);
+
   return KeccakHash(encoded_data);
 }
 

@@ -28,6 +28,9 @@ NSDictionary<NSString*, MojoBaseValue*>* NSDictionaryFromBaseValue(
 // `base::Value::Type::LIST`
 base::Value BaseValueFromNSArray(NSArray<MojoBaseValue*>*);
 
+// Clone the contents of an NSArray into a `base::Value::List`
+base::Value::List BaseValueListFromNSArray(NSArray<MojoBaseValue*>*);
+
 // Clone the contents of an NSDictionary into a `base::Value` with the type
 // `base::Value::Type::DICT`
 base::Value BaseValueFromNSDictionary(NSDictionary<NSString*, MojoBaseValue*>*);

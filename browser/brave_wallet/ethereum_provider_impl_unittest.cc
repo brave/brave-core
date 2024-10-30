@@ -390,7 +390,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
   }
 
   std::pair<bool, base::Value> Send(const std::string& method,
-                                    base::Value params) {
+                                    base::Value::List params) {
     base::RunLoop run_loop;
     std::pair<bool, base::Value> response;
     provider()->Send(method, std::move(params),
@@ -598,7 +598,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
                         const std::string& message,
                         const std::vector<uint8_t>& domain_hash,
                         const std::vector<uint8_t>& primary_hash,
-                        base::Value::Dict domain,
+                        const std::string& chain_id,
                         mojom::EthSignTypedDataMetaPtr meta,
                         std::string* signature_out,
                         mojom::ProviderError* error_out,
@@ -607,10 +607,18 @@ class EthereumProviderImplUnitTest : public testing::Test {
       return;
     }
 
+    mojom::EthSignTypedDataPtr eth_sign_typed_data =
+        mojom::EthSignTypedData::New();
+    eth_sign_typed_data->address_param = address;
+    eth_sign_typed_data->message_json = message;
+    eth_sign_typed_data->meta = std::move(meta);
+    eth_sign_typed_data->domain_hash = domain_hash;
+    eth_sign_typed_data->primary_hash = primary_hash;
+    eth_sign_typed_data->chain_id = chain_id;
+
     base::RunLoop run_loop;
     provider()->SignTypedMessage(
-        address, message, domain_hash, primary_hash, std::move(meta),
-        std::move(domain),
+        std::move(eth_sign_typed_data),
         base::BindLambdaForTesting(
             [&](base::Value id, base::Value formed_response, const bool reject,
                 const std::string& first_allowed_account,
@@ -1898,21 +1906,19 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
   std::string signature;
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
-  base::Value::Dict domain;
   std::vector<uint8_t> domain_hash = DecodeHexHash(
       "f2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f");
   std::vector<uint8_t> primary_hash = DecodeHexHash(
       "c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e");
-  domain.Set("chainId", 1);
   SignTypedMessage(std::nullopt, "1234", "{...}", domain_hash, primary_hash,
-                   domain.Clone(), nullptr, &signature, &error, &error_message);
+                   "0x1", nullptr, &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 
   SignTypedMessage(std::nullopt, "0x12345678", "{...}", domain_hash,
-                   primary_hash, domain.Clone(), nullptr, &signature, &error,
+                   primary_hash, "0x1", nullptr, &signature, &error,
                    &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
@@ -1921,36 +1927,18 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
 
   const std::string address_0 = account_0->address;
 
-  // not valid domain hash
-  SignTypedMessage(std::nullopt, address_0, "{...}", {}, primary_hash,
-                   domain.Clone(), nullptr, &signature, &error, &error_message);
-  EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-
-  // not valid primary hash
-  SignTypedMessage(std::nullopt, address_0, "{...}", domain_hash, {},
-                   domain.Clone(), nullptr, &signature, &error, &error_message);
-  EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-
-  domain.Set("chainId", 11155111);
   std::string chain_id = "0xaa36a7";
   // not active network
   SignTypedMessage(std::nullopt, address_0, "{...}", domain_hash, primary_hash,
-                   domain.Clone(), nullptr, &signature, &error, &error_message);
+                   chain_id, nullptr, &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInternalError);
   EXPECT_EQ(error_message, l10n_util::GetStringFUTF8(
                                IDS_BRAVE_WALLET_SIGN_MESSAGE_CHAIN_ID_MISMATCH,
                                base::ASCIIToUTF16(chain_id)));
-  domain.Set("chainId", 1);
 
   SignTypedMessage(std::nullopt, address_0, "{...}", domain_hash, primary_hash,
-                   domain.Clone(), nullptr, &signature, &error, &error_message);
+                   "0x1", nullptr, &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
   EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
@@ -1958,49 +1946,33 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
   // No permission
   ASSERT_FALSE(address_0.empty());
   SignTypedMessage(std::nullopt, address_0, "{...}", domain_hash, primary_hash,
-                   domain.Clone(), nullptr, &signature, &error, &error_message);
+                   "0x1", nullptr, &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
   EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   GURL url("https://brave.com");
   Navigate(url);
   AddEthereumPermission(account_0->account_id);
-  SignTypedMessage(true, address_0, "{...}", domain_hash, primary_hash,
-                   domain.Clone(), nullptr, &signature, &error, &error_message);
+  SignTypedMessage(true, address_0, "{...}", domain_hash, primary_hash, "0x1",
+                   nullptr, &signature, &error, &error_message);
 
   EXPECT_FALSE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kSuccess);
   EXPECT_TRUE(error_message.empty());
 
   // User reject request
-  SignTypedMessage(false, address_0, "{...}", domain_hash, primary_hash,
-                   domain.Clone(), nullptr, &signature, &error, &error_message);
+  SignTypedMessage(false, address_0, "{...}", domain_hash, primary_hash, "0x1",
+                   nullptr, &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
-  // not valid eip712 domain hash
-  SignTypedMessage(std::nullopt, address_0, "{...}", DecodeHexHash("brave"),
-                   primary_hash, domain.Clone(), nullptr, &signature, &error,
-                   &error_message);
-  EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-  // not valid eip712 primary hash
-  SignTypedMessage(std::nullopt, address_0, "{...}", domain_hash,
-                   DecodeHexHash("primary"), domain.Clone(), nullptr,
-                   &signature, &error, &error_message);
-  EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
   keyring_service()->Lock();
 
   // nullopt for the first param here because we don't AddSignMessageRequest
   // when here are no accounts returned.
   SignTypedMessage(std::nullopt, address_0, "{...}", domain_hash, primary_hash,
-                   domain.Clone(), nullptr, &signature, &error, &error_message);
+                   "0x1", nullptr, &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
   EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
@@ -2991,7 +2963,7 @@ TEST_F(EthereumProviderImplUnitTest, ProviderResponseFormat) {
   expected_dict.Set("id", "1");
   base::Value expected_value = base::Value(std::move(expected_dict));
 
-  auto response = Send("eth_chainId", base::Value());
+  auto response = Send("eth_chainId", base::Value::List());
   EXPECT_FALSE(response.first);
   EXPECT_EQ(response.second, expected_value);
 
@@ -3009,7 +2981,7 @@ TEST_F(EthereumProviderImplUnitTest, ProviderResponseFormat) {
   expected_dict.Set("id", "1");
   expected_value = base::Value(std::move(expected_dict));
 
-  response = Send("eth_chainId", base::Value());
+  response = Send("eth_chainId", base::Value::List());
   EXPECT_TRUE(response.first);
   EXPECT_EQ(response.second, expected_value);
 

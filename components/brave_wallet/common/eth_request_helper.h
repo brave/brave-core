@@ -18,7 +18,7 @@ namespace brave_wallet {
 bool GetEthJsonRequestInfo(const std::string& json,
                            base::Value* id,
                            std::string* method,
-                           std::string* params);
+                           base::Value::List* params_list);
 
 mojom::TxDataPtr ParseEthTransactionParams(const std::string& json,
                                            std::string* from);
@@ -49,14 +49,9 @@ bool ParseEthDecryptData(const base::Value& obj,
                          std::vector<uint8_t>* ephemeral_public_key,
                          std::vector<uint8_t>* ciphertext);
 
-bool ParseEthSignTypedDataParams(const std::string& json,
-                                 std::string* address,
-                                 std::string* message,
-                                 base::Value::Dict* domain,
-                                 EthSignTypedDataHelper::Version version,
-                                 std::vector<uint8_t>* domain_hash_out,
-                                 std::vector<uint8_t>* primary_hash_out,
-                                 mojom::EthSignTypedDataMetaPtr* meta_out);
+mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
+    const base::Value::List& params_list,
+    EthSignTypedDataHelper::Version version);
 
 bool ParseSwitchEthereumChainParams(const std::string& json,
                                     std::string* chain_id);

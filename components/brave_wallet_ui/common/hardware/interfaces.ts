@@ -40,7 +40,11 @@ export abstract class TrezorKeyring extends HardwareKeyring {
   abstract signEip712Message(
     path: string,
     domainSeparatorHex: string,
-    hashStructMessageHex: string
+    hashStructMessageHex: string,
+    messageJson: string,
+    domainJson: string,
+    typesJson: string,
+    primaryType: string
   ): Promise<HardwareOperationResultEthereumSignatureBytes>
 }
 

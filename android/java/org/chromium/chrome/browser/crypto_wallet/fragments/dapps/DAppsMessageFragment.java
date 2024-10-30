@@ -47,7 +47,7 @@ public class DAppsMessageFragment extends BaseDAppsFragment {
             isEip712 = false;
         } else if (mCurrentSignMessageRequest.signData.which()
                 == SignDataUnion.Tag.EthSignTypedData) {
-            message = mCurrentSignMessageRequest.signData.getEthSignTypedData().message;
+            message = mCurrentSignMessageRequest.signData.getEthSignTypedData().messageJson;
             isEip712 = true;
         } else if (mCurrentSignMessageRequest.signData.which()
                 == SignDataUnion.Tag.SolanaSignData) {
@@ -83,7 +83,7 @@ public class DAppsMessageFragment extends BaseDAppsFragment {
             boolean unicodeEscape, final String message, final boolean isEip712) {
         String escapedDomain = "";
         if (isEip712) {
-            String domain = mCurrentSignMessageRequest.signData.getEthSignTypedData().domain;
+            String domain = mCurrentSignMessageRequest.signData.getEthSignTypedData().domainJson;
             escapedDomain = unicodeEscape ? Validations.unicodeEscape(domain) : domain;
         }
         String escapedMessage = unicodeEscape ? Validations.unicodeEscape(message) : message;
