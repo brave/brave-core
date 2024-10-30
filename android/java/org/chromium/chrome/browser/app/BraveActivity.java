@@ -221,20 +221,19 @@ import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -2539,10 +2538,6 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void showQuickActionSearchEnginesView(int keypadHeight) {
-        if (QuickSearchEnginesUtil.getSearchEngines() == null) {
-            return;
-        }
-        Log.e("quick_search", "showQuickActionSearchEnginesView");
         mQuickSearchEnginesView =
                 getLayoutInflater().inflate(R.layout.quick_serach_engines_view, null);
         RecyclerView recyclerView =
@@ -2564,23 +2559,11 @@ public abstract class BraveActivity extends ChromeActivity
                     }
                 });
 
-        Log.e("quick_search", "showQuickActionSearchEnginesView 2");
-
-        List<QuickSearchEngineModel> searchEngines = new ArrayList<>();
-        Map<String, QuickSearchEngineModel> searchEnginesMap =
-                QuickSearchEnginesUtil.getSearchEngines();
-        for (Map.Entry<String, QuickSearchEngineModel> entry : searchEnginesMap.entrySet()) {
-            QuickSearchEngineModel quickSearchEngineModel = entry.getValue();
-            if (quickSearchEngineModel.isEnabled()) {
-                searchEngines.add(quickSearchEngineModel);
-            }
-            Log.e("quick_search", "keyword : " + quickSearchEngineModel.getKeyword());
-        }
+        List<QuickSearchEngineModel> searchEngines =
+                QuickSearchEnginesUtil.getQuickSearchEngines(getCurrentProfile());
         QuickSearchEngineModel leoQuickSearchEngineModel =
-                new QuickSearchEngineModel("", "", "", true, 0);
+                new QuickSearchEngineModel("", "", "", true);
         searchEngines.add(0, leoQuickSearchEngineModel);
-
-        Log.e("quick_search", "showQuickActionSearchEnginesView 3");
 
         QuickSearchEnginesViewAdapter adapter =
                 new QuickSearchEnginesViewAdapter(BraveActivity.this, searchEngines, this);
@@ -2602,7 +2585,7 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void removeQuickActionSearchEnginesView() {
-        if (mQuickSearchEnginesView.getParent() != null) {
+        if (mQuickSearchEnginesView != null) {
             WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
             windowManager.removeView(mQuickSearchEnginesView);
         }
@@ -2615,7 +2598,11 @@ public abstract class BraveActivity extends ChromeActivity
                 "quick_search : onSearchEngineClick : quickSearchEngineModel.getUrl()",
                 quickSearchEngineModel.getUrl());
         String query = getBraveToolbarLayout().getLocationBarQuery();
-        openNewOrSelectExistingTab(quickSearchEngineModel.getUrl().replace("{searchTerms}", query));
+        LoadUrlParams loadUrlParams =
+                new LoadUrlParams(quickSearchEngineModel.getUrl().replace("{searchTerms}", query));
+        getActivityTab().loadUrl(loadUrlParams);
+        // KeyboardVisibilityHelper.hideKeyboard(BraveActivity.this, null);
+        getBraveToolbarLayout().clearOmniboxFocus();
     }
 
     @Override

@@ -24,27 +24,18 @@ import com.google.android.material.materialswitch.MaterialSwitch;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
-import org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.util.ImageUtils;
-import org.chromium.components.search_engines.TemplateUrl;
-import org.chromium.components.search_engines.TemplateUrlService;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class QuickSearchFragment extends BravePreferenceFragment
-        implements TemplateUrlService.LoadListener, QuickSearchCallback {
+public class QuickSearchFragment extends BravePreferenceFragment implements QuickSearchCallback {
     private RecyclerView mRecyclerView;
     private QuickSearchAdapter mAdapter;
-    private boolean mHasLoadObserver;
 
     private MenuItem mSaveItem;
-
-    private TemplateUrlService mTemplateUrlService;
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
@@ -111,7 +102,7 @@ public class QuickSearchFragment extends BravePreferenceFragment
                     searchEnginesMap.put(
                             quickSearchEngineModel.getKeyword(), quickSearchEngineModel);
                 }
-                QuickSearchEnginesUtil.saveSearchEngines(searchEnginesMap);
+                QuickSearchEnginesUtil.saveSearchEnginesIntoPref(searchEnginesMap);
                 mAdapter.setEditMode(false);
                 saveMenuVisibility();
             }
@@ -131,51 +122,9 @@ public class QuickSearchFragment extends BravePreferenceFragment
     }
 
     private void refreshData() {
-        mTemplateUrlService = TemplateUrlServiceFactory.getForProfile(getProfile());
-        if (!mTemplateUrlService.isLoaded()) {
-            mHasLoadObserver = true;
-            mTemplateUrlService.registerLoadListener(this);
-            mTemplateUrlService.load();
-            return; // Flow continues in onTemplateUrlServiceLoaded below.
-        }
-
-        List<TemplateUrl> templateUrls = mTemplateUrlService.getTemplateUrls();
-        TemplateUrl defaultSearchEngineTemplateUrl =
-                mTemplateUrlService.getDefaultSearchEngineTemplateUrl();
-        SearchEngineAdapter.sortAndFilterUnnecessaryTemplateUrl(
-                templateUrls,
-                defaultSearchEngineTemplateUrl,
-                mTemplateUrlService.isEeaChoiceCountry());
-        List<QuickSearchEngineModel> searchEngines = new ArrayList<>();
-        if (QuickSearchEnginesUtil.getSearchEngines() != null) {
-            Map<String, QuickSearchEngineModel> searchEnginesMap =
-                    QuickSearchEnginesUtil.getSearchEngines();
-            for (int i = 0; i < templateUrls.size(); i++) {
-                TemplateUrl templateUrl = templateUrls.get(i);
-                if (searchEnginesMap.containsKey(templateUrl.getKeyword())) {
-                    QuickSearchEngineModel quickSearchEngineModel =
-                            searchEnginesMap.get(templateUrl.getKeyword());
-                    searchEngines.add(quickSearchEngineModel.getPosition(), quickSearchEngineModel);
-                }
-            }
-        } else {
-            Map<String, QuickSearchEngineModel> searchEnginesMap =
-                    new LinkedHashMap<String, QuickSearchEngineModel>();
-            for (int i = 0; i < templateUrls.size(); i++) {
-                TemplateUrl templateUrl = templateUrls.get(i);
-                QuickSearchEngineModel quickSearchEngineModel =
-                        new QuickSearchEngineModel(
-                                templateUrl.getShortName(),
-                                templateUrl.getKeyword(),
-                                templateUrl.getURL(),
-                                true,
-                                i);
-                searchEngines.add(quickSearchEngineModel);
-                searchEnginesMap.put(templateUrl.getKeyword(), quickSearchEngineModel);
-            }
-            QuickSearchEnginesUtil.saveSearchEngines(searchEnginesMap);
-        }
-        setRecyclerViewData(searchEngines);
+        List<QuickSearchEngineModel> quickSearchEngines =
+                QuickSearchEnginesUtil.getQuickSearchEngines(getProfile());
+        setRecyclerViewData(quickSearchEngines);
     }
 
     private void setRecyclerViewData(List<QuickSearchEngineModel> searchEngines) {
@@ -183,30 +132,13 @@ public class QuickSearchFragment extends BravePreferenceFragment
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    @Override
-    public void onDestroy() {
-        if (mHasLoadObserver) {
-            TemplateUrlServiceFactory.getForProfile(getProfile()).unregisterLoadListener(this);
-            mHasLoadObserver = false;
-        }
-        super.onDestroy();
-    }
-
-    // TemplateUrlService.LoadListener
-    @Override
-    public void onTemplateUrlServiceLoaded() {
-        TemplateUrlServiceFactory.getForProfile(getProfile()).unregisterLoadListener(this);
-        mHasLoadObserver = false;
-        refreshData();
-    }
-
     // QuickSearchCallback
     @Override
     public void onSearchEngineClick(QuickSearchEngineModel quickSearchEngineModel) {
         Map<String, QuickSearchEngineModel> searchEnginesMap =
-                QuickSearchEnginesUtil.getSearchEngines();
+                QuickSearchEnginesUtil.getQuickSearchEnginesFromPref();
         searchEnginesMap.put(quickSearchEngineModel.getKeyword(), quickSearchEngineModel);
-        QuickSearchEnginesUtil.saveSearchEngines(searchEnginesMap);
+        QuickSearchEnginesUtil.saveSearchEnginesIntoPref(searchEnginesMap);
     }
 
     @Override

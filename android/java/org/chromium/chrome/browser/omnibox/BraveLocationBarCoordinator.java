@@ -134,6 +134,10 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
         }
     }
 
+    public void looseOmniboxFocus() {
+        mLocationBarMediator.clearOmniboxFocus();
+    }
+
     @Override
     public void destroy() {
         super.destroy();
