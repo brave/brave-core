@@ -22,7 +22,7 @@ class RequestSignedTokensUrlRequestBuilder final
     : public UrlRequestBuilderInterface {
  public:
   RequestSignedTokensUrlRequestBuilder(WalletInfo wallet,
-                                       std::vector<cbr::BlindedToken> tokens);
+                                       cbr::BlindedTokenList tokens);
 
   RequestSignedTokensUrlRequestBuilder(
       const RequestSignedTokensUrlRequestBuilder&) = delete;
@@ -47,7 +47,7 @@ class RequestSignedTokensUrlRequestBuilder final
   std::string BuildBody() const;
 
   const WalletInfo wallet_;
-  const std::vector<cbr::BlindedToken> blinded_tokens_;
+  const cbr::BlindedTokenList blinded_tokens_;
 };
 
 }  // namespace brave_ads

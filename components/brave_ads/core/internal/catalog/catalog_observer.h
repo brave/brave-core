@@ -14,11 +14,11 @@ struct CatalogInfo;
 
 class CatalogObserver : public base::CheckedObserver {
  public:
-  // Invoked when the catalog has updated.
-  virtual void OnDidUpdateCatalog(const CatalogInfo& catalog) {}
+  // Invoked when the catalog is successfully fetched.
+  virtual void OnDidFetchCatalog(const CatalogInfo& catalog) {}
 
-  // Invoked when the catalog failed to update.
-  virtual void OnFailedToUpdateCatalog() {}
+  // Invoked when the catalog fetch fails.
+  virtual void OnFailedToFetchCatalog() {}
 };
 
 }  // namespace brave_ads
