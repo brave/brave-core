@@ -7,11 +7,8 @@
 
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/inline_content_ads/inline_content_ad_event_handler_delegate_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -21,17 +18,6 @@
 
 namespace brave_ads {
 
-namespace {
-
-InlineContentAdInfo BuildAndSaveAd() {
-  const CreativeInlineContentAdInfo creative_ad =
-      test::BuildCreativeInlineContentAd(
-          /*should_generate_random_uuids=*/false);
-  database::SaveCreativeInlineContentAds({creative_ad});
-  return BuildInlineContentAd(creative_ad);
-}
-
-}  // namespace
 class BraveAdsInlineContentAdEventHandlerTest : public test::TestBase {
  protected:
   void SetUp() override {
@@ -58,7 +44,8 @@ class BraveAdsInlineContentAdEventHandlerTest : public test::TestBase {
 
 TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireServedEvent) {
   // Arrange
-  const InlineContentAdInfo ad = BuildAndSaveAd();
+  const InlineContentAdInfo ad =
+      test::BuildAndSaveInlineContentAd(/*should_generate_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireInlineContentAdServedEvent(ad));
@@ -70,7 +57,8 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireServedEvent) {
 
 TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireViewedEvent) {
   // Arrange
-  const InlineContentAdInfo ad = BuildAndSaveAd();
+  const InlineContentAdInfo ad =
+      test::BuildAndSaveInlineContentAd(/*should_generate_random_uuids=*/false);
   test::RecordAdEvent(ad, mojom::ConfirmationType::kServedImpression);
 
   // Act & Assert
@@ -84,7 +72,8 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireViewedEvent) {
 TEST_F(BraveAdsInlineContentAdEventHandlerTest,
        DoNotFireViewedEventIfAdPlacementWasAlreadyViewed) {
   // Arrange
-  const InlineContentAdInfo ad = BuildAndSaveAd();
+  const InlineContentAdInfo ad =
+      test::BuildAndSaveInlineContentAd(/*should_generate_random_uuids=*/false);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression});
 
@@ -102,7 +91,8 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
 TEST_F(BraveAdsInlineContentAdEventHandlerTest,
        DoNotFireViewedEventIfAdPlacementWasNotServed) {
   // Arrange
-  const InlineContentAdInfo ad = BuildAndSaveAd();
+  const InlineContentAdInfo ad =
+      test::BuildAndSaveInlineContentAd(/*should_generate_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_,
@@ -117,7 +107,8 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
 
 TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireClickedEvent) {
   // Arrange
-  const InlineContentAdInfo ad = BuildAndSaveAd();
+  const InlineContentAdInfo ad =
+      test::BuildAndSaveInlineContentAd(/*should_generate_random_uuids=*/false);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression});
 
@@ -131,7 +122,8 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireClickedEvent) {
 TEST_F(BraveAdsInlineContentAdEventHandlerTest,
        DoNotFireClickedEventIfAdPlacementWasAlreadyClicked) {
   // Arrange
-  const InlineContentAdInfo ad = BuildAndSaveAd();
+  const InlineContentAdInfo ad =
+      test::BuildAndSaveInlineContentAd(/*should_generate_random_uuids=*/false);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression,
                             mojom::ConfirmationType::kClicked});
@@ -148,7 +140,8 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
 TEST_F(BraveAdsInlineContentAdEventHandlerTest,
        DoNotFireClickedEventIfAdPlacementWasNotServed) {
   // Arrange
-  const InlineContentAdInfo ad = BuildAndSaveAd();
+  const InlineContentAdInfo ad =
+      test::BuildAndSaveInlineContentAd(/*should_generate_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFireInlineContentAdEvent(
@@ -188,7 +181,8 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
 TEST_F(BraveAdsInlineContentAdEventHandlerTest,
        DoNotFireEventForMissingCreativeInstanceId) {
   // Arrange
-  const InlineContentAdInfo ad = BuildAndSaveAd();
+  const InlineContentAdInfo ad =
+      test::BuildAndSaveInlineContentAd(/*should_generate_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_,

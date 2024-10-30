@@ -5,10 +5,8 @@
 
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler.h"
@@ -19,17 +17,6 @@
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
-
-namespace {
-
-NewTabPageAdInfo BuildAndSaveAd() {
-  const CreativeNewTabPageAdInfo creative_ad =
-      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/false);
-  database::SaveCreativeNewTabPageAds({creative_ad});
-  return BuildNewTabPageAd(creative_ad);
-}
-
-}  // namespace
 
 class BraveAdsNewTabPageAdEventHandlerForRewardsTest : public test::TestBase {
  protected:
@@ -57,7 +44,8 @@ class BraveAdsNewTabPageAdEventHandlerForRewardsTest : public test::TestBase {
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest, FireServedEvent) {
   // Arrange
-  const NewTabPageAdInfo ad = BuildAndSaveAd();
+  const NewTabPageAdInfo ad =
+      test::BuildAndSaveNewTabPageAd(/*should_generate_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireNewTabPageAdServedEvent(ad));
@@ -69,7 +57,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest, FireServedEvent) {
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest, FireViewedEvent) {
   // Arrange
-  const NewTabPageAdInfo ad = BuildAndSaveAd();
+  const NewTabPageAdInfo ad =
+      test::BuildAndSaveNewTabPageAd(/*should_generate_random_uuids=*/false);
   test::RecordAdEvent(ad, mojom::ConfirmationType::kServedImpression);
 
   // Act & Assert
@@ -83,7 +72,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest, FireViewedEvent) {
 TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
        DoNotFireViewedEventIfAdPlacementWasAlreadyViewed) {
   // Arrange
-  const NewTabPageAdInfo ad = BuildAndSaveAd();
+  const NewTabPageAdInfo ad =
+      test::BuildAndSaveNewTabPageAd(/*should_generate_random_uuids=*/false);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression});
 
@@ -101,7 +91,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
 TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
        DoNotFireViewedEventIfAdPlacementWasNotServed) {
   // Arrange
-  const NewTabPageAdInfo ad = BuildAndSaveAd();
+  const NewTabPageAdInfo ad =
+      test::BuildAndSaveNewTabPageAd(/*should_generate_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_,
@@ -116,7 +107,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest, FireClickedEvent) {
   // Arrange
-  const NewTabPageAdInfo ad = BuildAndSaveAd();
+  const NewTabPageAdInfo ad =
+      test::BuildAndSaveNewTabPageAd(/*should_generate_random_uuids=*/false);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression});
 
@@ -130,7 +122,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest, FireClickedEvent) {
 TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
        DoNotFireClickedEventIfAdPlacementWasAlreadyClicked) {
   // Arrange
-  const NewTabPageAdInfo ad = BuildAndSaveAd();
+  const NewTabPageAdInfo ad =
+      test::BuildAndSaveNewTabPageAd(/*should_generate_random_uuids=*/false);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression,
                             mojom::ConfirmationType::kClicked});
@@ -147,7 +140,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
 TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
        DoNotFireClickedEventIfAdPlacementWasNotServed) {
   // Arrange
-  const NewTabPageAdInfo ad = BuildAndSaveAd();
+  const NewTabPageAdInfo ad =
+      test::BuildAndSaveNewTabPageAd(/*should_generate_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFireNewTabPageAdEvent(
@@ -187,7 +181,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
 TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
        DoNotFireEventForMissingCreativeInstanceId) {
   // Arrange
-  const NewTabPageAdInfo ad = BuildAndSaveAd();
+  const NewTabPageAdInfo ad =
+      test::BuildAndSaveNewTabPageAd(/*should_generate_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_,
