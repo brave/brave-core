@@ -44,7 +44,7 @@
 namespace {
 
 base::Value::Dict GetJsonRpcRequest(const std::string& method,
-                                    base::Value params) {
+                                    base::Value::List params) {
   base::Value::Dict dictionary;
   dictionary.Set("jsonrpc", "2.0");
   dictionary.Set("method", method);
@@ -108,24 +108,11 @@ void RejectMismatchError(base::Value id,
                           false);
 }
 
-bool IsTypedDataStructure(const std::string& normalized_json_request) {
-  std::string address;
-  std::string message;
-  base::Value::Dict domain;
-  std::vector<uint8_t> domain_hash_out;
-  std::vector<uint8_t> primary_hash_out;
-
-  mojom::EthSignTypedDataMetaPtr meta;
-
-  if (ParseEthSignTypedDataParams(normalized_json_request, &address, &message,
-                                  &domain, EthSignTypedDataHelper::Version::kV4,
-                                  &domain_hash_out, &primary_hash_out, &meta) ||
-      ParseEthSignTypedDataParams(normalized_json_request, &address, &message,
-                                  &domain, EthSignTypedDataHelper::Version::kV3,
-                                  &domain_hash_out, &primary_hash_out, &meta)) {
-    return true;
-  }
-  return false;
+bool IsTypedDataStructure(const base::Value::List& params_list) {
+  return (ParseEthSignTypedDataParams(params_list,
+                                      EthSignTypedDataHelper::Version::kV4) ||
+          ParseEthSignTypedDataParams(params_list,
+                                      EthSignTypedDataHelper::Version::kV3));
 }
 
 }  // namespace
@@ -668,66 +655,44 @@ void EthereumProviderImpl::ContinueDecryptWithSanitizedJson(
 }
 
 void EthereumProviderImpl::SignTypedMessage(
-    const std::string& address,
-    const std::string& message,
-    base::span<const uint8_t> domain_hash,
-    base::span<const uint8_t> primary_hash,
-    mojom::EthSignTypedDataMetaPtr meta,
-    base::Value::Dict domain,
+    mojom::EthSignTypedDataPtr eth_sign_typed_data,
     RequestCallback callback,
     base::Value id) {
-  std::string domain_string;
-  if (!base::JSONWriter::Write(domain, &domain_string) || domain_hash.empty() ||
-      primary_hash.empty()) {
-    return RejectInvalidParams(std::move(id), std::move(callback));
-  }
-
-  auto chain_id = domain.FindDouble("chainId");
-  if (chain_id) {
-    const std::string chain_id_hex =
-        Uint256ValueToHex((uint256_t)(uint64_t)*chain_id);
-    if (base::CompareCaseInsensitiveASCII(
-            chain_id_hex, json_rpc_service_->GetChainIdSync(
-                              mojom::CoinType::ETH, delegate_->GetOrigin())) !=
-        0) {
+  if (eth_sign_typed_data->chain_id) {
+    auto active_chain_id = json_rpc_service_->GetChainIdSync(
+        mojom::CoinType::ETH, delegate_->GetOrigin());
+    if (!base::EqualsCaseInsensitiveASCII(*eth_sign_typed_data->chain_id,
+                                          active_chain_id)) {
       return RejectMismatchError(
           std::move(id),
           l10n_util::GetStringFUTF8(
               IDS_BRAVE_WALLET_SIGN_MESSAGE_CHAIN_ID_MISMATCH,
-              base::ASCIIToUTF16(chain_id_hex)),
+              base::ASCIIToUTF16(*eth_sign_typed_data->chain_id)),
           std::move(callback));
     }
   }
 
-  const auto account_id =
-      FindAuthenticatedAccountByAddress(address, id, callback);
+  const auto account_id = FindAuthenticatedAccountByAddress(
+      eth_sign_typed_data->address_param, id, callback);
   if (!account_id) {
     return;
   }
 
-  if (domain_hash.empty() || primary_hash.empty()) {
-    return RejectInvalidParams(std::move(id), std::move(callback));
-  }
   auto message_to_sign = EthSignTypedDataHelper::GetTypedDataMessageToSign(
-      domain_hash, primary_hash);
-  if (!message_to_sign || message_to_sign->size() != 32) {
-    return RejectInvalidParams(std::move(id), std::move(callback));
-  }
+      eth_sign_typed_data->domain_hash, eth_sign_typed_data->primary_hash);
 
   mojom::SignDataUnionPtr sign_data =
-      mojom::SignDataUnion::NewEthSignTypedData(mojom::EthSignTypedData::New(
-          message, domain_string, base::HexEncode(domain_hash),
-          base::HexEncode(primary_hash), std::move(meta)));
+      mojom::SignDataUnion::NewEthSignTypedData(std::move(eth_sign_typed_data));
 
   SignMessageInternal(account_id, std::move(sign_data),
-                      std::move(*message_to_sign), std::move(callback),
+                      std::move(message_to_sign), std::move(callback),
                       std::move(id));
 }
 
 void EthereumProviderImpl::SignMessageInternal(
     const mojom::AccountIdPtr& account_id,
     mojom::SignDataUnionPtr sign_data,
-    std::vector<uint8_t>&& message_to_sign,
+    std::vector<uint8_t> message_to_sign,
     RequestCallback callback,
     base::Value id) {
   CHECK(sign_data);
@@ -895,7 +860,9 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
 
   base::Value id;
   std::string method;
-  if (!GetEthJsonRequestInfo(normalized_json_request, &id, &method, nullptr)) {
+  base::Value::List params_list;
+  if (!GetEthJsonRequestInfo(normalized_json_request, &id, &method,
+                             &params_list)) {
     SendErrorOnRequest(error, error_message, std::move(callback),
                        base::Value());
     return;
@@ -972,7 +939,7 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
       return;
     }
     // Typed data should only be signed by eth_signTypedData
-    if (IsTypedDataStructure(normalized_json_request)) {
+    if (IsTypedDataStructure(params_list)) {
       return RejectInvalidParams(std::move(id), std::move(callback));
     }
     SignMessage(address, message, std::move(callback), std::move(id));
@@ -987,36 +954,18 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
     }
     RecoverAddress(message, signature, std::move(callback), std::move(id));
   } else if (method == kEthSignTypedDataV3 || method == kEthSignTypedDataV4) {
-    std::string address;
-    std::string message;
-    base::Value::Dict domain;
-    std::vector<uint8_t> domain_hash_out;
-    std::vector<uint8_t> primary_hash_out;
+    auto eth_sign_typed_data = ParseEthSignTypedDataParams(
+        params_list, method == kEthSignTypedDataV4
+                         ? EthSignTypedDataHelper::Version::kV4
+                         : EthSignTypedDataHelper::Version::kV3);
 
-    mojom::EthSignTypedDataMetaPtr meta;
-
-    if (method == kEthSignTypedDataV4) {
-      if (!ParseEthSignTypedDataParams(
-              normalized_json_request, &address, &message, &domain,
-              EthSignTypedDataHelper::Version::kV4, &domain_hash_out,
-              &primary_hash_out, &meta)) {
-        SendErrorOnRequest(error, error_message, std::move(callback),
-                           std::move(id));
-        return;
-      }
-    } else {
-      if (!ParseEthSignTypedDataParams(
-              normalized_json_request, &address, &message, &domain,
-              EthSignTypedDataHelper::Version::kV3, &domain_hash_out,
-              &primary_hash_out, &meta)) {
-        SendErrorOnRequest(error, error_message, std::move(callback),
-                           std::move(id));
-        return;
-      }
+    if (!eth_sign_typed_data) {
+      SendErrorOnRequest(error, error_message, std::move(callback),
+                         std::move(id));
+      return;
     }
 
-    SignTypedMessage(address, message, domain_hash_out, primary_hash_out,
-                     std::move(meta), std::move(domain), std::move(callback),
+    SignTypedMessage(std::move(eth_sign_typed_data), std::move(callback),
                      std::move(id));
   } else if (method == kEthGetEncryptionPublicKey) {
     std::string address;
@@ -1102,7 +1051,7 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
 }
 
 void EthereumProviderImpl::Send(const std::string& method,
-                                base::Value params,
+                                base::Value::List params,
                                 SendCallback callback) {
   CommonRequestOrSendAsync(GetJsonRpcRequest(method, std::move(params)),
                            std::move(callback), true);

@@ -680,7 +680,11 @@ test('Sign typed from unlocked device, success', () => {
     hardwareKeyring.signEip712Message(
       "m/44'/60'/0'/0",
       'domainSeparatorHex',
-      'hashStructMessageHex'
+      'hashStructMessageHex',
+      '{}', // messageJson
+      '{}', // domainJson
+      '{}', // typesJson
+      'primaryType'
     )
   ).resolves.toStrictEqual(expectedResult)
 })
@@ -703,7 +707,11 @@ test('Sign typed message api not supported', () => {
     hardwareKeyring.signEip712Message(
       "m/44'/60'/0'/0",
       'domainSeparatorHex',
-      'hashStructMessageHex'
+      'hashStructMessageHex',
+      '{}', // messageJson
+      '{}', // domainJson
+      '{}', // typesJson
+      'primaryType'
     )
   ).resolves.toStrictEqual({
     error: getLocale('braveWalletTrezorSignTypedDataError'),

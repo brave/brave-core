@@ -15,10 +15,14 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using base::test::ParseJsonDict;
+using base::test::ParseJsonList;
 
 namespace brave_wallet {
 
@@ -540,11 +544,12 @@ TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
     "params": []
   })";
   base::Value id;
-  std::string method, params;
+  std::string method;
+  base::Value::List params;
   EXPECT_TRUE(GetEthJsonRequestInfo(json, &id, &method, &params));
   EXPECT_EQ(id, base::Value("1"));
   EXPECT_EQ(method, "eth_blockNumber");
-  EXPECT_EQ(params, "[]");
+  EXPECT_EQ(params, ParseJsonList("[]"));
 
   json = R"({
     "id": null,
@@ -557,7 +562,7 @@ TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
   EXPECT_TRUE(GetEthJsonRequestInfo(json, &id, &method, &params));
   EXPECT_EQ(id, base::Value());
   EXPECT_EQ(method, "eth_getBlockByNumber");
-  EXPECT_EQ(params, "[\"0x5BaD55\",true]");
+  EXPECT_EQ(params, ParseJsonList("[\"0x5BaD55\",true]"));
 
   json = R"({
     "id": 2,
@@ -571,21 +576,21 @@ TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
   EXPECT_TRUE(GetEthJsonRequestInfo(json, &id, &method, &params));
   EXPECT_EQ(id, base::Value(2));
   EXPECT_EQ(method, "eth_getBlockByNumber");
-  EXPECT_EQ(params, "[\"0x5BaD55\",true]");
+  EXPECT_EQ(params, ParseJsonList("[\"0x5BaD55\",true]"));
 
   // Can pass nullptr for id
   method.clear();
   params.clear();
   EXPECT_TRUE(GetEthJsonRequestInfo(json, nullptr, &method, &params));
   EXPECT_EQ(method, "eth_getBlockByNumber");
-  EXPECT_EQ(params, "[\"0x5BaD55\",true]");
+  EXPECT_EQ(params, ParseJsonList("[\"0x5BaD55\",true]"));
 
   // Can pass nullptr for method
   id = base::Value();
   params.clear();
   EXPECT_TRUE(GetEthJsonRequestInfo(json, &id, nullptr, &params));
   EXPECT_EQ(id, base::Value(2));
-  EXPECT_EQ(params, "[\"0x5BaD55\",true]");
+  EXPECT_EQ(params, ParseJsonList("[\"0x5BaD55\",true]"));
 
   // Can pass nullptr for params
   id = base::Value();
@@ -608,7 +613,7 @@ TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
   EXPECT_TRUE(GetEthJsonRequestInfo(missing_id_json, &id, &method, &params));
   EXPECT_EQ(id, base::Value());
   EXPECT_EQ(method, "eth_getBlockByNumber");
-  EXPECT_EQ(params, "[\"0x5BaD55\",true]");
+  EXPECT_EQ(params, ParseJsonList("[\"0x5BaD55\",true]"));
 
   // Missing method
   std::string missing_method_json = R"({
@@ -690,8 +695,7 @@ TEST(EthResponseHelperUnitTest, ParseSwitchEthereumChainParams) {
 }
 
 TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
-  constexpr char kJson[] = R"({
-    "params": [
+  constexpr char kJson[] = R"([
       "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
       "{
         \"types\" :{
@@ -720,8 +724,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
         },
         \"message\": %s
       }"
-    ]
-  })";
+    ])";
 
   std::string json = base::StringPrintf(kJson, R"({
     \"from\": {
@@ -735,6 +738,14 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
     \"contents\":\"Hello, Bob!\"
   })");
 
+  const auto& expected_domain =
+      R"({
+        "name": "Ether Mail",
+        "version": "1",
+        "chainId": 1,
+        "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+      })";
+
   const auto& expected_message =
       "{\"contents\":\"Hello, "
       "Bob!\",\"from\":{\"name\":\"Cow\",\"wallet\":"
@@ -747,44 +758,32 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
   const auto& expected_domain_hash =
       "f2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f";
 
-  std::string address;
-  std::string message;
-  base::Value::Dict domain;
-  std::vector<uint8_t> domain_hash;
-  std::vector<uint8_t> primary_hash;
-  mojom::EthSignTypedDataMetaPtr meta;
+  auto params_list = ParseJsonList(json);
+  auto eth_sign_typed_data = ParseEthSignTypedDataParams(
+      params_list, EthSignTypedDataHelper::Version::kV4);
 
-  EXPECT_TRUE(ParseEthSignTypedDataParams(json, &address, &message, &domain,
-                                          EthSignTypedDataHelper::Version::kV4,
-                                          &domain_hash, &primary_hash, &meta));
+  ASSERT_TRUE(eth_sign_typed_data);
 
-  EXPECT_EQ(address, "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826");
-  EXPECT_EQ(message, expected_message);
+  EXPECT_EQ(eth_sign_typed_data->address_param,
+            "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826");
+  EXPECT_EQ(eth_sign_typed_data->message_json, expected_message);
 
-  std::string* ds_name = domain.FindString("name");
-  ASSERT_TRUE(ds_name);
-  EXPECT_EQ(*ds_name, "Ether Mail");
-  std::string* ds_version = domain.FindString("version");
-  ASSERT_TRUE(ds_version);
-  EXPECT_EQ(*ds_version, "1");
-  auto chain_id = domain.FindInt("chainId");
-  ASSERT_TRUE(chain_id);
-  EXPECT_EQ(*chain_id, 1);
-  std::string* ds_verifying_contract = domain.FindString("verifyingContract");
-  ASSERT_TRUE(ds_verifying_contract);
-  EXPECT_EQ(*ds_verifying_contract,
-            "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC");
+  EXPECT_EQ(ParseJsonDict(eth_sign_typed_data->domain_json),
+            ParseJsonDict(expected_domain));
 
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(domain_hash)),
-            expected_domain_hash);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(primary_hash)),
-            expected_primary_hash);
+  EXPECT_EQ(eth_sign_typed_data->chain_id, "0x1");
+
+  EXPECT_EQ(
+      base::ToLowerASCII(base::HexEncode(eth_sign_typed_data->domain_hash)),
+      expected_domain_hash);
+  EXPECT_EQ(
+      base::ToLowerASCII(base::HexEncode(eth_sign_typed_data->primary_hash)),
+      expected_primary_hash);
   auto message_to_sign = EthSignTypedDataHelper::GetTypedDataMessageToSign(
-      domain_hash, primary_hash);
-  ASSERT_TRUE(message_to_sign);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*message_to_sign)),
+      eth_sign_typed_data->domain_hash, eth_sign_typed_data->primary_hash);
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message_to_sign)),
             expected_message_to_sign);
-  EXPECT_FALSE(meta);
+  EXPECT_FALSE(eth_sign_typed_data->meta);
 
   // Test with extra fields in the message.
   json = base::StringPrintf(kJson, R"({
@@ -799,27 +798,30 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
     \"contents\":\"Hello, Bob!\",
     \"foo\":\"bar\"
   })");
-  EXPECT_TRUE(ParseEthSignTypedDataParams(json, &address, &message, &domain,
-                                          EthSignTypedDataHelper::Version::kV4,
-                                          &domain_hash, &primary_hash, &meta));
+
+  params_list = ParseJsonList(json);
+  eth_sign_typed_data = ParseEthSignTypedDataParams(
+      params_list, EthSignTypedDataHelper::Version::kV4);
+  ASSERT_TRUE(eth_sign_typed_data);
   // OK: extraneous message properties are sanitized.
-  EXPECT_EQ(message, expected_message);
+  EXPECT_EQ(eth_sign_typed_data->message_json, expected_message);
 
   // OK: primary type message hash is unchanged.
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(primary_hash)),
-            expected_primary_hash);
+  EXPECT_EQ(
+      base::ToLowerASCII(base::HexEncode(eth_sign_typed_data->primary_hash)),
+      expected_primary_hash);
 
   // OK: domain hash is unchanged.
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(domain_hash)),
-            expected_domain_hash);
+  EXPECT_EQ(
+      base::ToLowerASCII(base::HexEncode(eth_sign_typed_data->domain_hash)),
+      expected_domain_hash);
 
   // OK: message bytes to sign are unchanged.
   message_to_sign = EthSignTypedDataHelper::GetTypedDataMessageToSign(
-      domain_hash, primary_hash);
-  ASSERT_TRUE(message_to_sign);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*message_to_sign)),
+      eth_sign_typed_data->domain_hash, eth_sign_typed_data->primary_hash);
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message_to_sign)),
             expected_message_to_sign);
-  EXPECT_FALSE(meta);
+  EXPECT_FALSE(eth_sign_typed_data->meta);
 }
 
 TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
@@ -872,7 +874,7 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
   EXPECT_EQ(token, expected_token);
   EXPECT_TRUE(error_message.empty());
 
-  // Decimals as string is allowed for web compability.
+  // Decimals as string is allowed for web compatibility.
   json = R"({
     "id": "1",
     "jsonrpc": "2.0",
