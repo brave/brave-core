@@ -27,11 +27,15 @@ class TabManagerObserverMock : public TabManagerObserver {
 
   ~TabManagerObserverMock() override;
 
+  MOCK_METHOD(void, OnDidOpenNewTab, (const TabInfo& tab));
+
+  MOCK_METHOD(void,
+              OnTabDidLoad,
+              (const TabInfo& tab, const int http_status_code));
+
   MOCK_METHOD(void, OnTabDidChangeFocus, (const int32_t tab_id));
 
   MOCK_METHOD(void, OnTabDidChange, (const TabInfo& tab));
-
-  MOCK_METHOD(void, OnDidOpenNewTab, (const TabInfo& tab));
 
   MOCK_METHOD(void,
               OnTextContentDidChange,

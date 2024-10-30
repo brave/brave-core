@@ -193,14 +193,14 @@ PurchaseIntentProcessor::MaybeGetFunnelForUrl(const GURL& url) const {
   return iter->second;
 }
 
-void PurchaseIntentProcessor::OnTabDidChange(const TabInfo& tab) {
+void PurchaseIntentProcessor::OnDidOpenNewTab(const TabInfo& tab) {
   CHECK(!tab.redirect_chain.empty());
 
   const GURL& url = tab.redirect_chain.back();
   MaybeProcess(tab.id, url);
 }
 
-void PurchaseIntentProcessor::OnDidOpenNewTab(const TabInfo& tab) {
+void PurchaseIntentProcessor::OnTabDidChange(const TabInfo& tab) {
   CHECK(!tab.redirect_chain.empty());
 
   const GURL& url = tab.redirect_chain.back();

@@ -101,15 +101,9 @@ void TabManager::RemoveForId(const int32_t tab_id) {
   }
 }
 
-void TabManager::NotifyTabDidChangeFocus(const int32_t tab_id) const {
+void TabManager::NotifyDidOpenNewTab(const TabInfo& tab) const {
   for (TabManagerObserver& observer : observers_) {
-    observer.OnTabDidChangeFocus(tab_id);
-  }
-}
-
-void TabManager::NotifyTabDidChange(const TabInfo& tab) const {
-  for (TabManagerObserver& observer : observers_) {
-    observer.OnTabDidChange(tab);
+    observer.OnDidOpenNewTab(tab);
   }
 }
 
@@ -120,9 +114,15 @@ void TabManager::NotifyTabDidLoad(const TabInfo& tab,
   }
 }
 
-void TabManager::NotifyDidOpenNewTab(const TabInfo& tab) const {
+void TabManager::NotifyTabDidChangeFocus(const int32_t tab_id) const {
   for (TabManagerObserver& observer : observers_) {
-    observer.OnDidOpenNewTab(tab);
+    observer.OnTabDidChangeFocus(tab_id);
+  }
+}
+
+void TabManager::NotifyTabDidChange(const TabInfo& tab) const {
+  for (TabManagerObserver& observer : observers_) {
+    observer.OnTabDidChange(tab);
   }
 }
 

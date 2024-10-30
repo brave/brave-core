@@ -155,16 +155,16 @@ void UserActivityManager::OnBrowserDidEnterBackground() {
   RecordEvent(UserActivityEventType::kBrowserDidEnterBackground);
 }
 
+void UserActivityManager::OnDidOpenNewTab(const TabInfo& /*tab*/) {
+  RecordEvent(UserActivityEventType::kOpenedNewTab);
+}
+
 void UserActivityManager::OnTabDidChangeFocus(const int32_t /*tab_id*/) {
   RecordEvent(UserActivityEventType::kTabChangedFocus);
 }
 
 void UserActivityManager::OnTabDidChange(const TabInfo& /*tab*/) {
   RecordEvent(UserActivityEventType::kTabDidChange);
-}
-
-void UserActivityManager::OnDidOpenNewTab(const TabInfo& /*tab*/) {
-  RecordEvent(UserActivityEventType::kOpenedNewTab);
 }
 
 void UserActivityManager::OnDidCloseTab(const int32_t /*tab_id*/) {

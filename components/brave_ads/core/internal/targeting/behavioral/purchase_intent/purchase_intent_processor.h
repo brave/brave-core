@@ -58,8 +58,8 @@ class PurchaseIntentProcessor final : public TabManagerObserver {
       const GURL& url) const;
 
   // TabManagerObserver:
-  void OnTabDidChange(const TabInfo& tab) override;
   void OnDidOpenNewTab(const TabInfo& tab) override;
+  void OnTabDidChange(const TabInfo& tab) override;
   void OnDidCloseTab(int32_t tab_id) override;
 
   std::map</*tab_id*/ int32_t, GURL> tabs_;
