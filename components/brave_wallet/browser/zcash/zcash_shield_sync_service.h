@@ -21,6 +21,8 @@
 
 namespace brave_wallet {
 
+class ZCashOrchardStorage;
+class ZCashRpc;
 class ZCashWalletService;
 
 // ZCashScanService downloads and scans blockchain blocks to find
@@ -151,6 +153,9 @@ class ZCashShieldSyncService {
                    std::string latest_scanned_block_hash);
   void UpdateNotesComplete(uint32_t new_latest_scanned_block,
                            std::optional<ZCashOrchardStorage::Error> error);
+
+  ZCashRpc* zcash_rpc();
+  base::SequenceBound<ZCashOrchardStorage>& orchard_storage();
 
   uint32_t GetSpendableBalance();
   std::optional<Error> error() { return error_; }
