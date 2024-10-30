@@ -97,7 +97,6 @@ public class BraveLeoActivity extends CustomTabActivity {
                         /* statusBarColorProvider= */ this,
                         getIntentRequestTracker(),
                         () -> mToolbarCoordinator,
-                        () -> mNavigationController,
                         () -> mIntentDataProvider,
                         mBackPressManager,
                         () -> mTabController,
