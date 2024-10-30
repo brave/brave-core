@@ -69,10 +69,9 @@ class SearchResultAdHandler final : public SearchResultAdEventHandlerDelegate {
 
   SearchResultAdEventHandler event_handler_;
 
+  bool is_processing_viewed_ad_event_queue_ = false;
   base::circular_deque<mojom::CreativeSearchResultAdInfoPtr>
-      ad_viewed_event_queue_;
-
-  bool trigger_ad_viewed_event_in_progress_ = false;
+      viewed_ad_event_queue_;
 
   base::WeakPtrFactory<SearchResultAdHandler> weak_factory_{this};
 };
