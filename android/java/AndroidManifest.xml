@@ -137,7 +137,7 @@
 
 <activity android:name="org.chromium.chrome.browser.settings.BraveSettingsActivity"
     android:theme="@style/Theme.Chromium.Settings"
-    android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+    android:windowSoftInputMode="adjustResize"
     android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize"
     android:label="@string/settings"
     android:exported="false">
