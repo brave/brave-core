@@ -165,7 +165,6 @@ import org.chromium.ui.ViewProvider;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.IntentRequestTracker;
 import org.chromium.ui.base.WindowAndroid;
-import org.chromium.ui.base.WindowDelegate;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 import org.chromium.ui.modelutil.PropertyModel;
@@ -1420,7 +1419,6 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         LocationBarDataProvider.class,
                         ActionMode.Callback.class,
-                        WindowDelegate.class,
                         WindowAndroid.class,
                         Supplier.class,
                         Supplier.class,
