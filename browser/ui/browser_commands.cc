@@ -84,6 +84,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
+#include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
@@ -181,8 +182,9 @@ void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 }
 
 void ShowBraveVPNBubble(Browser* browser) {
-  // Ask to browser view.
-  static_cast<BraveBrowserWindow*>(browser->window())->ShowBraveVPNBubble();
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  browser->GetFeatures().GetBraveVPNController()->ShowBraveVPNBubble();
+#endif
 }
 
 void ToggleBraveVPNTrayIcon() {
