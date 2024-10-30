@@ -31,6 +31,7 @@ static_library("browser") {
     "//brave/components/webcompat_reporter/common:mojom",
     "//components/component_updater:component_updater",
     "//components/keyed_service/core",
+    "//components/prefs:prefs",
     "//net",
     "//services/network/public/cpp",
   ]
