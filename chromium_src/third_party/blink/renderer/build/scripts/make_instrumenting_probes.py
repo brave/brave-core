@@ -57,6 +57,25 @@ def _add_page_graph_to_config(config):
     return config
 
 
+def _add_brave_devtools_to_config(config):
+    config["observers"]["InspectorBraveAgent"] = {
+        "include_path": "brave/third_party/blink/renderer/core/inspector",
+        "probes": [
+            "SendBraveDevtoolsCommand",
+        ]
+    }
+
+    config["observers"]["WebBraveDevtoolsSink"] = {
+        "include_path": "brave/third_party/blink/renderer/core/exported",
+        "probes": [
+            "BraveDevtoolsEnabled",
+            "BraveDevtoolsMessageReceived",
+        ]
+    }
+
+    return config
+
+
 def _add_page_graph_events_to_pidl_source(source):
     insert_after = "void DidClearDocumentOfWindowObject([Keep] LocalFrame*);"
     idx = source.find(insert_after)
@@ -86,6 +105,20 @@ def _add_page_graph_events_to_pidl_source(source):
     return source[:idx] + ext + source[idx:]
 
 
+def _add_brave_devtools_to_pidl_source(source):
+    insert_after = "void DidClearDocumentOfWindowObject([Keep] LocalFrame*);"
+    idx = source.find(insert_after)
+    assert idx != -1
+    idx += len(insert_after)
+    ext = """
+        void SendBraveDevtoolsCommand(LocalFrame*, const String& command, const base::Value::Dict& params);
+        void BraveDevtoolsEnabled(CoreProbeSink*, bool enabled);
+        void BraveDevtoolsMessageReceived(CoreProbeSink*, const String& command, const base::Value::Dict& params);
+    """
+
+    return source[:idx] + ext + source[idx:]
+
+
 @override_utils.override_function(globals(), condition=_IS_PG_ENABLED)
 def load_config(original_function, file_name):
     assert file_name.endswith(("core_probes.json5", "test_probes.json5"))
@@ -94,6 +127,8 @@ def load_config(original_function, file_name):
     config = original_function(file_name)
     if should_apply_pg_changes:
         config = _add_page_graph_to_config(config)
+
+    config = _add_brave_devtools_to_config(config)
     return config
 
 
@@ -101,4 +136,6 @@ def load_config(original_function, file_name):
 def load_model_from_idl(original_function, source):
     if should_apply_pg_changes:
         source = _add_page_graph_events_to_pidl_source(source)
+
+    source = _add_brave_devtools_to_pidl_source(source)
     return original_function(source)

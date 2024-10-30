@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/exported/build.gni b/third_party/blink/renderer/core/exported/build.gni
+index 770e6b00256417ea4b42bd08ec5f6993aac800b5..e608886fc1008f0aafb3fda79fbadaef2c44f7ce 100644
+--- a/third_party/blink/renderer/core/exported/build.gni
++++ b/third_party/blink/renderer/core/exported/build.gni
+@@ -72,6 +72,7 @@ blink_core_sources_exported = [
+   "web_view_impl.h",
+   "web_view_observer.cc",
+ ]
++import("//brave/third_party/blink/renderer/core/exported/sources.gni") blink_core_sources_exported += brave_blink_core_source_exported
+ 
+ blink_core_tests_exported = [
+   "web_disallow_transition_scope_test.cc",
