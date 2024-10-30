@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 
 #include <utility>
-#include <vector>
 
 #include "base/base64url.h"
 #include "base/check.h"
@@ -39,14 +38,12 @@ std::optional<RewardInfo> BuildReward(const ConfirmationInfo& confirmation) {
   RewardInfo reward;
 
   // Token
-  const std::vector<cbr::Token> tokens =
-      GetTokenGenerator()->Generate(/*count=*/1);
+  const cbr::TokenList tokens = GetTokenGenerator()->Generate(/*count=*/1);
   CHECK(!tokens.empty());
   reward.token = tokens.front();
 
   // Blinded token
-  const std::vector<cbr::BlindedToken> blinded_tokens =
-      cbr::BlindTokens(tokens);
+  const cbr::BlindedTokenList blinded_tokens = cbr::BlindTokens(tokens);
   CHECK(!blinded_tokens.empty());
   reward.blinded_token = blinded_tokens.front();
 

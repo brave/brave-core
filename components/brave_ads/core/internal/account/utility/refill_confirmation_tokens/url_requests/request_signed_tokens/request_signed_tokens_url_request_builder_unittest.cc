@@ -21,9 +21,8 @@ class BraveAdsRequestSignedTokensUrlRequestBuilderTest : public test::TestBase {
 
 TEST_F(BraveAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange
-  const std::vector<cbr::Token> tokens = test::BuildTokens(/*count=*/3);
-  const std::vector<cbr::BlindedToken> blinded_tokens =
-      cbr::BlindTokens(tokens);
+  const cbr::TokenList tokens = test::BuildTokens(/*count=*/3);
+  const cbr::BlindedTokenList blinded_tokens = cbr::BlindTokens(tokens);
 
   RequestSignedTokensUrlRequestBuilder url_request_builder(test::Wallet(),
                                                            blinded_tokens);
