@@ -25,8 +25,6 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
-#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {

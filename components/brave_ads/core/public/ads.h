@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_H_
 
 #include <memory>
-#include <optional>
 #include <string>
 
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
