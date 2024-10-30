@@ -225,7 +225,7 @@ mojom::ZeroExQuoteInfoPtr ParseQuoteResponse(const base::Value& json_value,
     return swap_response;
   }
 
-  if (auto quote = ParseQuote(swap_response_value.value()); quote) {
+  if (auto quote = ParseQuote(swap_response_value.value())) {
     swap_response->quote = std::move(quote);
   } else {
     return nullptr;
