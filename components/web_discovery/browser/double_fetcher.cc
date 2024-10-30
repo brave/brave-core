@@ -76,7 +76,7 @@ void DoubleFetcher::ScheduleDoubleFetch(const GURL& url,
   fetch_dict.Set(kUrlKey, url.spec());
   fetch_dict.Set(kAssociatedDataKey, std::move(associated_data));
 
-  request_queue_.ScheduleRequest(base::Value(std::move(fetch_dict)));
+  request_queue_.ScheduleRequest(std::move(fetch_dict));
 }
 
 void DoubleFetcher::OnFetchTimer(const base::Value& request_data) {

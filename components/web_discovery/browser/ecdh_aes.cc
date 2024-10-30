@@ -74,7 +74,7 @@ std::optional<AESEncryptResult> DeriveAESKeyAndEncrypt(
   }
 
   std::array<uint8_t, kKeyMaterialSize> shared_key_material;
-  if (!ECDH_compute_key(shared_key_material.data(), kKeyMaterialSize,
+  if (!ECDH_compute_key(shared_key_material.data(), shared_key_material.size(),
                         server_public_point.get(), client_private_key.get(),
                         nullptr)) {
     VLOG(1) << "Failed to set derive key via ECDH";

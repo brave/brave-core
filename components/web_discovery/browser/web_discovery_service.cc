@@ -56,8 +56,8 @@ void WebDiscoveryService::RegisterLocalStatePrefs(
 void WebDiscoveryService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kAnonymousCredentialsDict);
   registry->RegisterStringPref(kCredentialRSAPrivateKey, {});
-  registry->RegisterListPref(kScheduledDoubleFetches);
-  registry->RegisterListPref(kScheduledReports);
+  registry->RegisterListPref(kScheduledDoubleFetches.value());
+  registry->RegisterListPref(kScheduledReports.value());
   registry->RegisterDictionaryPref(kUsedBasenameCounts);
   registry->RegisterDictionaryPref(kPageCounts);
 }
@@ -96,8 +96,8 @@ void WebDiscoveryService::Stop() {
 void WebDiscoveryService::ClearPrefs() {
   profile_prefs_->ClearPref(kAnonymousCredentialsDict);
   profile_prefs_->ClearPref(kCredentialRSAPrivateKey);
-  profile_prefs_->ClearPref(kScheduledDoubleFetches);
-  profile_prefs_->ClearPref(kScheduledReports);
+  profile_prefs_->ClearPref(kScheduledDoubleFetches.value());
+  profile_prefs_->ClearPref(kScheduledReports.value());
   profile_prefs_->ClearPref(kUsedBasenameCounts);
   profile_prefs_->ClearPref(kPageCounts);
 }

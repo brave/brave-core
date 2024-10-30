@@ -23,7 +23,7 @@ constexpr char kDataKey[] = "data";
 
 RequestQueue::RequestQueue(
     PrefService* profile_prefs,
-    const char* list_pref_name,
+    RequestQueuePrefName list_pref_name,
     base::TimeDelta request_max_age,
     base::TimeDelta min_request_interval,
     base::TimeDelta max_request_interval,
@@ -42,13 +42,13 @@ RequestQueue::RequestQueue(
 
 RequestQueue::~RequestQueue() = default;
 
-void RequestQueue::ScheduleRequest(base::Value request_data) {
+void RequestQueue::ScheduleRequest(base::Value::Dict request_data) {
   base::Value::Dict fetch_dict;
   fetch_dict.Set(kDataKey, std::move(request_data));
   fetch_dict.Set(kRequestTimeKey,
                  static_cast<double>(base::Time::Now().ToTimeT()));
 
-  ScopedListPrefUpdate update(profile_prefs_, list_pref_name_);
+  ScopedListPrefUpdate update(profile_prefs_, list_pref_name_.value());
   update->Append(std::move(fetch_dict));
 
   if (!fetch_timer_.IsRunning()) {
@@ -59,7 +59,7 @@ void RequestQueue::ScheduleRequest(base::Value request_data) {
 std::optional<base::Value> RequestQueue::NotifyRequestComplete(bool success) {
   backoff_entry_.InformOfRequest(success);
 
-  ScopedListPrefUpdate update(profile_prefs_, list_pref_name_);
+  ScopedListPrefUpdate update(profile_prefs_, list_pref_name_.value());
   auto& request_dict = update->front().GetDict();
 
   std::optional<base::Value> removed_value;
@@ -87,7 +87,7 @@ std::optional<base::Value> RequestQueue::NotifyRequestComplete(bool success) {
 }
 
 void RequestQueue::OnFetchTimer() {
-  ScopedListPrefUpdate update(profile_prefs_, list_pref_name_);
+  ScopedListPrefUpdate update(profile_prefs_, list_pref_name_.value());
   for (auto it = update->begin(); it != update->end();) {
     const auto* fetch_dict = it->GetIfDict();
     const auto request_time =

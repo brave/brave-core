@@ -143,7 +143,7 @@ Reporter::Reporter(PrefService* profile_prefs,
 Reporter::~Reporter() = default;
 
 void Reporter::ScheduleSend(base::Value::Dict payload) {
-  request_queue_.ScheduleRequest(base::Value(std::move(payload)));
+  request_queue_.ScheduleRequest(std::move(payload));
 }
 
 void Reporter::PrepareRequest(const base::Value& request_data) {

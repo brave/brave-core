@@ -6,10 +6,13 @@
 #ifndef BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_REQUEST_QUEUE_H_
 #define BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_REQUEST_QUEUE_H_
 
+#include <string_view>
+
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
+#include "brave/components/web_discovery/browser/pref_names.h"
 #include "net/base/backoff_entry.h"
 
 class PrefService;
@@ -24,7 +27,7 @@ class RequestQueue {
  public:
   RequestQueue(
       PrefService* profile_prefs,
-      const char* list_pref_name,
+      RequestQueuePrefName list_pref_name,
       base::TimeDelta request_max_age,
       base::TimeDelta min_request_interval,
       base::TimeDelta max_request_interval,
@@ -37,7 +40,7 @@ class RequestQueue {
 
   // Persist and schedule a request. The arbitrary data will be passed
   // to `start_request_callback` on the scheduled interval.
-  void ScheduleRequest(base::Value request_data);
+  void ScheduleRequest(base::Value::Dict request_data);
   // Returns data value if request is deleted from queue, due to the retry limit
   // or success
   std::optional<base::Value> NotifyRequestComplete(bool success);
@@ -47,7 +50,7 @@ class RequestQueue {
   void StartFetchTimer(bool use_backoff_delta);
 
   raw_ptr<PrefService> profile_prefs_;
-  const char* list_pref_name_;
+  RequestQueuePrefName list_pref_name_;
 
   net::BackoffEntry backoff_entry_;
 
