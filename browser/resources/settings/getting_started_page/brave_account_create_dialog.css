@@ -65,24 +65,14 @@ leo-checkbox a {
   display: flex;
   font: var(--leo-font-x-small-regular);
   gap: 4px;
-  height: 0px;
-  margin: 0px 0px 0px 4px;
-  opacity: 0;
+  margin: -16px 0px 0px 4px;
+  position: relative;
   transition: 750ms;
+  z-index: -1;
 }
 
 .errors.visible {
-  height: 16px;
   margin: 4px 0px 0px 4px;
-  opacity: 1;
-}
-
-.errors > * {
-  transition: 750ms;
-}
-
-.errors > .removing {
-  opacity: 0;
 }
 
 .extra-icon {
