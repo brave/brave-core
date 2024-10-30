@@ -640,6 +640,11 @@ source_set("ui") {
 
         deps += [ "//brave/browser/brave_vpn/win:wireguard_utils" ]
       }
+
+      sources += [
+        "brave_vpn/brave_vpn_controller.cc",
+        "brave_vpn/brave_vpn_controller.h",
+      ]
     }
     if (enable_ai_chat) {
       sources += [
