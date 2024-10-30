@@ -359,6 +359,15 @@ _BANNED_CPP_FUNCTIONS += (
         treat_as_error=True,
         excluded_paths=[_THIRD_PARTY_EXCEPT_BLINK],
     ),
+    BanRule(
+        'NOTREACHED_IN_MIGRATION',
+        ('Do not introduce new cases of of NOTREACHED_IN_MIGRATION. Please ',
+         'refer to the guide for how to use CHECK/DCHECK/NOTREACHED ',
+         'https://chromium.googlesource.com/chromium/src/+/main/styleguide/c++/checks.md.'
+         ),
+        treat_as_error=True,
+        excluded_paths=[],
+    ),
 )
 
 
