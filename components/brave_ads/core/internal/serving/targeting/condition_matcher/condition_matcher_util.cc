@@ -21,11 +21,11 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kOperatorPrefixPattern[] = "[?]:*";
-constexpr char kNotOperatorPrefix[] = "[!]:";
+constexpr char kPrefPathOperatorPrefixPattern[] = "[?]:*";
+constexpr char kPrefPathNotOperatorPrefix[] = "[!]:";
 
 std::string MaybeStripOperatorPrefix(const std::string& pref_path) {
-  if (!base::MatchPattern(pref_path, kOperatorPrefixPattern)) {
+  if (!base::MatchPattern(pref_path, kPrefPathOperatorPrefixPattern)) {
     // Not an operator.
     return pref_path;
   }
@@ -35,7 +35,7 @@ std::string MaybeStripOperatorPrefix(const std::string& pref_path) {
 }
 
 bool HasNotOperator(const std::string_view pref_path) {
-  return pref_path.starts_with(kNotOperatorPrefix);
+  return pref_path.starts_with(kPrefPathNotOperatorPrefix);
 }
 
 bool MatchCondition(const std::string_view value,
