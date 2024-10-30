@@ -95,6 +95,7 @@ source_set("unit_tests") {
     "payload_generator_unittest.cc",
     "privacy_guard_unittest.cc",
     "reporter_unittest.cc",
+    "request_queue_unittest.cc",
     "server_config_loader_unittest.cc",
     "signature_basename_unittest.cc",
   ]
