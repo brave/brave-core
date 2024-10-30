@@ -17,7 +17,6 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -171,7 +170,6 @@ import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.rewards.adaptive_captcha.AdaptiveCaptchaHelper;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingState;
-import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.set_default_browser.OnBraveSetDefaultBrowserListener;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
@@ -194,7 +192,6 @@ import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.ui.RootUiCoordinator;
-import org.chromium.chrome.browser.ui.favicon.FaviconUtils;
 import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.SnackbarController;
@@ -202,6 +199,7 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManagerProvider;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.chrome.browser.util.ImageUtils;
 import org.chromium.chrome.browser.util.KeyboardVisibilityHelper;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.PackageUtils;
@@ -220,20 +218,14 @@ import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
-import org.chromium.components.favicon.LargeIconBridge;
-import org.chromium.components.favicon.LargeIconBridge.GoogleFaviconServerCallback;
-import org.chromium.components.favicon.LargeIconBridge.LargeIconCallback;
 import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
 import org.chromium.components.search_engines.TemplateUrl;
-import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
-import org.chromium.net.NetworkTrafficAnnotationTag;
 import org.chromium.ui.widget.Toast;
-import org.chromium.url.GURL;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -347,7 +339,6 @@ public abstract class BraveActivity extends ChromeActivity
     private boolean mSpoofCustomTab;
 
     private View mQuickSearchEnginesView;
-    private LargeIconBridge mLargeIconBridge;
 
     /** Serves as a general exception for failed attempts to get BraveActivity. */
     public static class BraveActivityNotFoundException extends Exception {
@@ -400,7 +391,6 @@ public abstract class BraveActivity extends ChromeActivity
                                 }
                             });
         }
-        mLargeIconBridge = new LargeIconBridge(getCurrentProfile());
     }
 
     @Override
@@ -411,7 +401,6 @@ public abstract class BraveActivity extends ChromeActivity
         if (BraveVpnUtils.isVpnFeatureSupported(BraveActivity.this)) {
             BraveVpnNativeWorker.getInstance().removeObserver(this);
         }
-        mLargeIconBridge.destroy();
         super.onPauseWithNative();
     }
 
@@ -1290,8 +1279,6 @@ public abstract class BraveActivity extends ChromeActivity
                                 .readLong(BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, 0)) {
             checkAppUpdate();
         }
-
-        // setQuickActionSearchEnginesView();
         new KeyboardVisibilityHelper(BraveActivity.this, BraveActivity.this);
     }
 
@@ -2551,85 +2538,6 @@ public abstract class BraveActivity extends ChromeActivity
         return super.isCustomTab();
     }
 
-    private void setQuickActionSearchEnginesView() {
-        if (QuickSearchEnginesUtil.getSearchEngines() == null) {
-            return;
-        }
-        Log.e("quick_search", "setQuickActionSearchEnginesView");
-        // mQuickSearchEnginesView = getLayoutInflater().inflate(R.layout.quick_serach_engines_view,
-        // null); RecyclerView recyclerView = (RecyclerView)
-        // mQuickSearchEnginesView.findViewById(R.id.quick_search_engines_recyclerview);
-        // LinearLayoutManager linearLayoutManager =
-        //         new LinearLayoutManager(BraveActivity.this, LinearLayoutManager.HORIZONTAL,
-        //         false);
-        // recyclerView.setLayoutManager(linearLayoutManager);
-
-        // List<QuickSearchEngineModel> searchEngines = new ArrayList<>();
-        // Map<String, QuickSearchEngineModel> searchEnginesMap =
-        //             QuickSearchEnginesUtil.getSearchEngines();
-        // for (Map.Entry<String, QuickSearchEngineModel> entry : searchEnginesMap.entrySet()) {
-        //     QuickSearchEngineModel quickSearchEngineModel = entry.getValue();
-        //     searchEngines.add(quickSearchEngineModel.getPosition(), quickSearchEngineModel);
-        // }
-
-        // QuickSearchEnginesViewAdapter adapter = new
-        // QuickSearchEnginesViewAdapter(BraveActivity.this, searchEngines, this);
-        // recyclerView.setAdapter(adapter);
-
-        final View rootView = findViewById(android.R.id.content);
-        rootView.getViewTreeObserver()
-                .addOnGlobalLayoutListener(
-                        () -> {
-                            // Rect rect = new Rect();
-                            // rootView.getWindowVisibleDisplayFrame(rect);
-                            // int screenHeight = rootView.getHeight();
-                            // int keypadHeight = screenHeight - rect.height();
-                            // if (keypadHeight > screenHeight * 0.15) {
-                            //     Log.e("quick_search", "showQuickActionSearchEnginesView");
-                            //     showQuickActionSearchEnginesView(keypadHeight);
-                            // } else {
-                            //     Log.e("quick_search", "removeQuickActionSearchEnginesView");
-                            //     removeQuickActionSearchEnginesView();
-                            // }
-                            Rect r = new Rect();
-                            rootView.getWindowVisibleDisplayFrame(r);
-
-                            int screenHeight = rootView.getRootView().getHeight();
-                            int visibleHeight = r.height();
-                            int heightDifference = screenHeight - visibleHeight;
-
-                            // If the height difference is more than a threshold, we assume the
-                            // keyboard (including top bar) is visible
-                            if (heightDifference > screenHeight * 0.15) {
-                                // Keyboard is visible
-                                if (!isKeyboardVisible) {
-                                    isKeyboardVisible = true;
-                                    keyboardHeight = heightDifference;
-                                    // Do something with the keyboard height (includes top bar)
-                                    // onKeyboardHeightChanged(keyboardHeight, true);
-                                    onKeyboardHeightChanged(keyboardHeight, true);
-                                }
-                            } else {
-                                // Keyboard is hidden
-                                if (isKeyboardVisible) {
-                                    isKeyboardVisible = false;
-                                    onKeyboardHeightChanged(0, false);
-                                }
-                            }
-                        });
-    }
-
-    private void onKeyboardHeightChanged(int height, boolean isVisible) {
-        // Implement your logic here. 'height' gives the keyboard height including the top bar
-        if (isVisible) {
-            // Keyboard is visible, and you have the total height (keyboard + top bar)
-            showQuickActionSearchEnginesView(height);
-        } else {
-            // Keyboard is hidden
-            removeQuickActionSearchEnginesView();
-        }
-    }
-
     public void showQuickActionSearchEnginesView(int keypadHeight) {
         if (QuickSearchEnginesUtil.getSearchEngines() == null) {
             return;
@@ -2687,7 +2595,6 @@ public abstract class BraveActivity extends ChromeActivity
                             WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             params.gravity = Gravity.BOTTOM;
             params.y = keypadHeight; // Position the view above the keyboard
-            // params.verticalMargin = 16.0f;
 
             WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
             windowManager.addView(mQuickSearchEnginesView, params);
@@ -2714,75 +2621,8 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void loadSearchEngineLogo(
             ImageView logoView, QuickSearchEngineModel quickSearchEngineModel) {
-        NetworkTrafficAnnotationTag TRAFFIC_ANNOTATION =
-                NetworkTrafficAnnotationTag.createComplete(
-                        "quick_search_engines_fragment",
-                        """
-            semantics {
-                sender: 'QuickSearchEnginesFragment'
-                description: 'Sends a request to a Google server to retrieve the favicon bitmap.'
-                trigger:
-                    'A request is sent when the user opens search engine settings and Chrome does '
-                    'not have a favicon.'
-                data: 'Search engine URL and desired icon size.'
-                destination: GOOGLE_OWNED_SERVICE
-                internal {
-                    contacts {
-                        email: 'chrome-signin-team@google.com'
-                    }
-                    contacts {
-                        email: 'triploblastic@google.com'
-                    }
-                }
-                user_data {
-                    type: NONE
-                }
-                last_reviewed: '2023-12-04'
-            }
-            policy {
-        cookies_allowed:
-            NO policy_exception_justification : 'Not implemented.' setting
-                : 'This feature cannot be disabled by settings.'
-            }""");
-        TemplateUrlService mTemplateUrlService =
-                TemplateUrlServiceFactory.getForProfile(getCurrentProfile());
-        GURL faviconUrl =
-                new GURL(
-                        mTemplateUrlService.getSearchEngineUrlFromTemplateUrl(
-                                quickSearchEngineModel.getKeyword()));
-        // Use a placeholder image while trying to fetch the logo.
-        int uiElementSizeInPx =
-                getResources().getDimensionPixelSize(R.dimen.search_engine_favicon_size);
-        logoView.setImageBitmap(
-                FaviconUtils.createGenericFaviconBitmap(
-                        BraveActivity.this, uiElementSizeInPx, null));
-        LargeIconCallback onFaviconAvailable =
-                (icon, fallbackColor, isFallbackColorDefault, iconType) -> {
-                    if (icon != null) {
-                        logoView.setImageBitmap(icon);
-                    }
-                };
-        GoogleFaviconServerCallback googleServerCallback =
-                (status) -> {
-                    // Update the time the icon was last requested to avoid automatic eviction
-                    // from cache.
-                    mLargeIconBridge.touchIconFromGoogleServer(faviconUrl);
-                    // The search engine logo will be fetched from google servers, so the actual
-                    // size of the image is controlled by LargeIconService configuration.
-                    // minSizePx=1 is used to accept logo of any size.
-                    mLargeIconBridge.getLargeIconForUrl(
-                            faviconUrl,
-                            /* minSizePx= */ 1,
-                            /* desiredSizePx= */ uiElementSizeInPx,
-                            onFaviconAvailable);
-                };
-        // If the icon already exists in the cache no network request will be made, but the
-        // callback will be triggered nonetheless.
-        mLargeIconBridge.getLargeIconOrFallbackStyleFromGoogleServerSkippingLocalCache(
-                faviconUrl,
-                /* shouldTrimPageUrlPath= */ true,
-                TRAFFIC_ANNOTATION,
-                googleServerCallback);
+        ImageUtils.loadSearchEngineLogo(
+                getCurrentProfile(), logoView, quickSearchEngineModel.getKeyword());
     }
 
     @Override
