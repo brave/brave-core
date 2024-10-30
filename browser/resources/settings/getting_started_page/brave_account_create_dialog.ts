@@ -21,6 +21,7 @@ export interface SettingsBraveAccountCreateDialogElement {
     password_strength_indicator: HTMLElement,
     password_strength_value: HTMLElement,
     password_strength_category: HTMLElement,
+    errors: HTMLElement,
   }
 }
 
@@ -42,9 +43,8 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
       isEmailAddressValid: { type: Boolean },
       isAccountNameValid: { type: Boolean },
       isCreatePasswordValid: { type: Boolean },
-      isConfirmPasswordEmpty: { type: Boolean },
-      isConfirmPasswordValid: { type: Boolean },
       isChecked: { type: Boolean },
+      passwordsMatch: { type: Object }
     }
   }
 
@@ -77,8 +77,14 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   }
 
   protected onConfirmPasswordInput() {
-    this.isConfirmPasswordEmpty = this.$.confirm_password.value.length === 0
-    this.isConfirmPasswordValid = this.$.confirm_password.value === this.$.create_password.value
+    if (this.$.confirm_password.value.length === 0) {
+      this.$.errors.classList.remove('visible')
+      this.$.errors.childNodes.forEach(child => (child as HTMLElement).classList.toggle('removing'))
+    } else {
+      this.$.errors.classList.add('visible')
+    }
+
+    this.passwordsMatch = this.$.confirm_password.value.length === 0 ? undefined : this.$.confirm_password.value === this.$.create_password.value
   }
 
   protected onChange(e: { checked: boolean }) {
@@ -96,9 +102,8 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   protected isEmailAddressValid: boolean = false
   protected isAccountNameValid: boolean = false
   protected isCreatePasswordValid: boolean = false
-  protected isConfirmPasswordEmpty: boolean = true
-  protected isConfirmPasswordValid: boolean = false
   protected isChecked: boolean = false
+  protected passwordsMatch: boolean | undefined = undefined
 }
 
 declare global {

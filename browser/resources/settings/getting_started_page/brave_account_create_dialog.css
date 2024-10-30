@@ -65,7 +65,24 @@ leo-checkbox a {
   display: flex;
   font: var(--leo-font-x-small-regular);
   gap: 4px;
+  height: 0px;
+  margin: 0px 0px 0px 4px;
+  opacity: 0;
+  transition: 750ms;
+}
+
+.errors.visible {
+  height: 16px;
   margin: 4px 0px 0px 4px;
+  opacity: 1;
+}
+
+.errors > * {
+  transition: 750ms;
+}
+
+.errors > .removing {
+  opacity: 0;
 }
 
 .extra-icon {
@@ -83,3 +100,10 @@ leo-checkbox a {
 .error-text {
   color: var(--leo-color-systemfeedback-error-text);
 }
+
+/* --border-color: var(--border-color-error); */
+
+/*
+- animate:
+animation: fadeOut 750ms;
+*/

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * you can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { html } from '//resources/lit/v3_0/lit.rollup.js'
+import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 import { SettingsBraveAccountCreateDialogElement } from './brave_account_create_dialog.js'
 
 export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
@@ -34,7 +34,7 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
           </div>
         </div>
         <leo-input id="confirm_password"
-                   ?showErrors=${this.isCreatePasswordValid && !this.isConfirmPasswordEmpty}
+                   showErrors
                    ?disabled=${!this.isCreatePasswordValid}
                    type="password"
                    placeholder="Confirm your password"
@@ -44,8 +44,8 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                     name="eye-off"
                     @click=${this.show}>
           </leo-icon>
-          <div slot="errors" class="errors">
-            ${this.isConfirmPasswordValid ? html`
+          <div id="errors" slot="errors" class="errors">
+            ${this.passwordsMatch === undefined ? nothing : this.passwordsMatch ? html`
               <leo-icon class="extra-icon" name="check-circle-filled"></leo-icon>
               <div class="extra-text">Passwords match</div>
             `: html`
@@ -61,7 +61,7 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
         </leo-checkbox>
       </div>
       <div slot="buttons">
-        <leo-button size="medium" ?isDisabled=${!this.isEmailAddressValid || !this.isAccountNameValid || !this.isCreatePasswordValid || !this.isConfirmPasswordValid || !this.isChecked}>
+        <leo-button size="medium" ?isDisabled=${!this.isEmailAddressValid || !this.isAccountNameValid || !this.isCreatePasswordValid || !this.passwordsMatch || !this.isChecked}>
           Create account
         </leo-button>
       </div>
