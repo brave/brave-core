@@ -16,6 +16,18 @@ import {
 // path of generated mojom files.
 export { BraveWallet }
 export { Url } from 'gen/url/mojom/url.mojom.m.js'
+export {
+  MeldFiatCurrency,
+  MeldFilter,
+  MeldCryptoCurrency,
+  MeldCountry,
+  MeldCryptoQuote,
+  MeldServiceProvider,
+  MeldPaymentMethod,
+  MeldCryptoWidget,
+  CryptoBuySessionData,
+  CryptoWidgetCustomerData
+} from 'gen/brave/components/brave_wallet/common/meld_integration.mojom.m.js'
 export type NftDropdownOptionId = 'collected' | 'hidden'
 
 export type DAppConnectionOptionsType = 'networks' | 'accounts' | 'main'
