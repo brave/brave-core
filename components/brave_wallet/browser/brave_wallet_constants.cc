@@ -104,22 +104,23 @@ const base::flat_map<std::string, std::string>& GetAnkrBlockchains() {
 std::optional<std::string> GetZeroExAllowanceHolderAddress(
     const std::string& chain_id) {
   // key = chain_id, value = allowance_holder_contract_address
-  static std::map<std::string, std::string> allowance_holder_addresses = {
-      {mojom::kMainnetChainId, kZeroExAllowanceHolderCancun},
-      {mojom::kArbitrumMainnetChainId, kZeroExAllowanceHolderCancun},
-      {mojom::kAvalancheMainnetChainId, kZeroExAllowanceHolderShanghai},
-      {mojom::kBaseMainnetChainId, kZeroExAllowanceHolderCancun},
-      {mojom::kBlastMainnetChainId, kZeroExAllowanceHolderCancun},
-      {mojom::kBnbSmartChainMainnetChainId, kZeroExAllowanceHolderCancun},
-      {mojom::kLineaChainId, kZeroExAllowanceHolderLondon},
-      {mojom::kOptimismMainnetChainId, kZeroExAllowanceHolderCancun},
-      {mojom::kPolygonMainnetChainId, kZeroExAllowanceHolderCancun},
-      {mojom::kScrollChainId, kZeroExAllowanceHolderShanghai}};
+  static base::NoDestructor<std::map<std::string, std::string>>
+      allowance_holder_addresses(
+          {{mojom::kMainnetChainId, kZeroExAllowanceHolderCancun},
+           {mojom::kArbitrumMainnetChainId, kZeroExAllowanceHolderCancun},
+           {mojom::kAvalancheMainnetChainId, kZeroExAllowanceHolderShanghai},
+           {mojom::kBaseMainnetChainId, kZeroExAllowanceHolderCancun},
+           {mojom::kBlastMainnetChainId, kZeroExAllowanceHolderCancun},
+           {mojom::kBnbSmartChainMainnetChainId, kZeroExAllowanceHolderCancun},
+           {mojom::kLineaChainId, kZeroExAllowanceHolderLondon},
+           {mojom::kOptimismMainnetChainId, kZeroExAllowanceHolderCancun},
+           {mojom::kPolygonMainnetChainId, kZeroExAllowanceHolderCancun},
+           {mojom::kScrollChainId, kZeroExAllowanceHolderShanghai}});
 
   auto allowance_holder_address_pair =
-      allowance_holder_addresses.find(chain_id.c_str());
+      allowance_holder_addresses->find(chain_id.c_str());
 
-  if (allowance_holder_address_pair == allowance_holder_addresses.end()) {
+  if (allowance_holder_address_pair == allowance_holder_addresses->end()) {
     // not found
     return std::nullopt;
   }
