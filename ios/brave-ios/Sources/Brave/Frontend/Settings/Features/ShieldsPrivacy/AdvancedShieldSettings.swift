@@ -82,14 +82,14 @@ import os
     }
   }
 
-  @Published var isSaveContactInfoEnabled: Bool {
+  @Published var isSaveContactInfoEnabled: Bool = false {
     didSet {
-      guard webcompatReporterHandler != nil else {
-          isSaveContactInfoEnabled = false
+      guard let webcompatReporterHandler else {
+        isSaveContactInfoEnabled = false
         return
       }
 
-        webcompatReporterHandler?.setContactInfoSaveFlag(value: isSaveContactInfoEnabled)
+      webcompatReporterHandler.setContactInfoSaveFlag(value: isSaveContactInfoEnabled)
     }
   }
 
@@ -127,8 +127,7 @@ import os
     self.isDeAmpEnabled = deAmpPrefs.isDeAmpEnabled
     self.isDebounceEnabled = debounceService?.isEnabled ?? false
     self.shredLevel = ShieldPreferences.shredLevel
-    self.webcompatReporterHandler = webcompatReporterHandler          
-    self?.isSaveContactInfoEnabled = await webcompatReporterHandler?.contactInfoSaveFlag() ?? false
+    self.webcompatReporterHandler = webcompatReporterHandler
 
     cookieConsentBlocking = FilterListStorage.shared.isEnabled(
       for: AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID
@@ -196,6 +195,9 @@ import os
 
     self.clearableSettings = clearableSettings
     registerSubscriptions()
+    Task { @MainActor in
+       self.isSaveContactInfoEnabled = await webcompatReporterHandler?.contactInfoSaveFlag() ?? false
+    }
   }
 
   func clearPrivateData(_ clearables: [Clearable]) async {

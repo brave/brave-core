@@ -34,6 +34,8 @@ class WebcompatReporterServiceFactory : public BrowserStateKeyedServiceFactory {
 
  private:
   friend class base::NoDestructor<WebcompatReporterServiceFactory>;
+  void RegisterBrowserStatePrefs(
+      user_prefs::PrefRegistrySyncable* registry) override;
 
   WebcompatReporterServiceFactory();
   ~WebcompatReporterServiceFactory() override;

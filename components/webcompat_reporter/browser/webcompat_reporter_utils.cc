@@ -39,7 +39,6 @@ bool NeedsToGetComponentInfo(std::string_view component_id) {
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-  //  LOG(INFO) << "[WEBCOMPAT] RegisterLocalStatePrefs";
   //  registry->RegisterBooleanPref(kContactInfoSaveFlagPrefs, true);
 }
 

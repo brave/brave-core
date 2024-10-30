@@ -48,6 +48,18 @@ struct SubmitReportView: View {
           .textFieldStyle(BraveTextFieldStyle())
           .autocorrectionDisabled()
           .textInputAutocapitalization(.never)
+          .onAppear {
+             guard
+               let webcompatReporterAPI = WebcompatReporter.ServiceFactory.get(
+                 privateMode: isPrivateBrowsing
+               )
+             else {
+               return
+             }
+             Task { @MainActor in
+                 self.contactDetails = await webcompatReporterAPI.contactInfo() ?? ""
+             }
+          }
         }
       }
       .padding()

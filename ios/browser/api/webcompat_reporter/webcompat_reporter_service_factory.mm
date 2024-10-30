@@ -6,8 +6,10 @@
 #include "brave/ios/browser/api/webcompat_reporter/webcompat_reporter_service_factory.h"
 
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
+#include "brave/components/webcompat_reporter/browser/webcompat_reporter_utils.h"
 #include "brave/ios/browser/api/webcompat_reporter/webcompat_reporter_service_delegate.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
@@ -36,6 +38,12 @@ WebcompatReporterServiceFactory::WebcompatReporterServiceFactory()
           BrowserStateDependencyManager::GetInstance()) {}
 
 WebcompatReporterServiceFactory::~WebcompatReporterServiceFactory() {}
+
+void WebcompatReporterServiceFactory::RegisterBrowserStatePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  webcompat_reporter::RegisterProfilePrefs(
+      static_cast<PrefRegistrySimple*>(registry));
+}
 
 std::unique_ptr<KeyedService>
 WebcompatReporterServiceFactory::BuildServiceInstanceFor(

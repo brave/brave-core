@@ -165,7 +165,7 @@ struct DefaultShieldsSectionView: View {
       ToggleView(
         title: Strings.braveShieldsSaveContactInfo,
         subtitle: nil,
-        toggle: $settings.cookieConsentBlocking
+        toggle: $settings.isSaveContactInfoEnabled
       )
 
       if FeatureList.kBraveShredFeature.enabled {

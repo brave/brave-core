@@ -26,7 +26,12 @@ import {
 
 // Localization data
 import { getLocale } from '../../../common/locale'
-import { captureScreenshot, clearScreenshot, getCapturedScreenshot, getSavedContactInfo } from '../browser_proxy'
+import {
+  captureScreenshot,
+  clearScreenshot,
+  getCapturedScreenshot,
+  getSavedContactInfo
+} from '../browser_proxy'
 
 interface Props {
   siteUrl: string
@@ -57,7 +62,6 @@ export default class ReportView extends React.PureComponent<Props, State> {
   }
 
   handleContactInfoChange = async (ev: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('handleContactInfoChange - fired, contact before:' + this.state.contact + ' ev.target.value:' + ev.target.value)
     this.setState({ contact: ev.target.value })
   }
 
