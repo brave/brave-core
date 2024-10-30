@@ -188,7 +188,7 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
                                 Log.e(
                                         TAG,
                                         "BraveManageSyncSettings.OnPreferenceChange"
-                                            + " IllegalStateException ex=",
+                                                + " IllegalStateException ex=",
                                         ex);
                             } catch (Exception ex) {
                                 Log.e(TAG, "BraveManageSyncSettings.OnPreferenceChange ex=", ex);
