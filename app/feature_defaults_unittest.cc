@@ -9,7 +9,6 @@
 #include "base/features.h"
 #include "base/logging.h"
 #include "chrome/browser/browser_features.h"
-#include "chrome/browser/companion/core/features.h"
 #include "chrome/browser/devtools/features.h"
 #include "chrome/browser/preloading/preloading_features.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -126,10 +125,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &content_settings::features::kTrackingProtection3pcd,
       &content_settings::features::kUserBypassUI,
 #if !BUILDFLAG(IS_ANDROID)
-      &companion::features::internal::
-          kCompanionEnabledByObservingExpsNavigations,
-      &companion::features::internal::kSidePanelCompanion,
-      &companion::features::internal::kSidePanelCompanion2,
       &enterprise_signals::features::kDeviceSignalsConsentDialog,
       &extensions_features::kExtensionManifestV2DeprecationWarning,
       &extensions_features::kExtensionManifestV2Unsupported,
