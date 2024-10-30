@@ -100,6 +100,7 @@ export const _SignData = {
         signData: {
           ethStandardSignData: undefined,
           ethSignTypedData: {
+            addressParam: '',
             messageJson: 'Sign below to authenticate with CryptoKitties.',
             domainJson: '',
             typesJson: '',

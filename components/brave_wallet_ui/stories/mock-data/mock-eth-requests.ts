@@ -18,6 +18,7 @@ export const mockSignMessageRequest: BraveWallet.SignMessageRequest = {
       message: ''
     },
     ethSignTypedData: {
+      addressParam: '',
       domainJson: 'domain.com',
       domainHash: [1, 2, 3, 4],
       messageJson: 'message',
