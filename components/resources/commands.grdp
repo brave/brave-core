@@ -238,6 +238,10 @@
   <message name="IDS_IDC_IMPORT_SETTINGS">
     Import settings
   </message>
+
+  <message name="IDS_IDC_OPEN_FULL_PAGE_CHAT">
+    Open AI Chat
+  </message>
   <message name="IDS_IDC_EDIT_SEARCH_ENGINES">
     Edit search engines
   </message>

@@ -5,12 +5,13 @@
 
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 
+#include <functional>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "base/task/single_thread_task_runner.h"
+#include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -76,8 +77,8 @@ ConversationHandler* AIChatService::CreateConversation() {
   std::string conversation_uuid = uuid.AsLowercaseString();
   // Create the conversation metadata
   {
-    mojom::ConversationPtr conversation =
-        mojom::Conversation::New(conversation_uuid, "", false);
+    mojom::ConversationPtr conversation = mojom::Conversation::New(
+        conversation_uuid, "", base::Time::Now(), false);
     conversations_.insert_or_assign(conversation_uuid, std::move(conversation));
   }
   mojom::Conversation* conversation =
@@ -217,6 +218,35 @@ void AIChatService::DismissPremiumPrompt() {
   profile_prefs_->SetBoolean(prefs::kUserDismissedPremiumPrompt, true);
 }
 
+void AIChatService::DeleteConversation(const std::string& id) {
+  ConversationHandler* conversation_handler =
+      conversation_handlers_.at(id).get();
+  if (!conversation_handler) {
+    return;
+  }
+  conversation_observations_.RemoveObservation(conversation_handler);
+  conversation_handlers_.erase(id);
+  conversations_.erase(id);
+  DVLOG(1) << "Erased conversation due to deletion request (" << id
+           << "). Now have " << conversations_.size()
+           << " Conversation metadata items and "
+           << conversation_handlers_.size()
+           << " ConversationHandler instances.";
+  OnConversationListChanged();
+}
+
+void AIChatService::RenameConversation(const std::string& id,
+                                       const std::string& new_name) {
+  ConversationHandler* conversation_handler =
+      conversation_handlers_.at(id).get();
+  if (!conversation_handler) {
+    return;
+  }
+
+  DVLOG(1) << "Renamed conversation " << id << " to '" << new_name << "'";
+  OnConversationTitleChanged(conversation_handler, new_name);
+}
+
 void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,
                                             mojom::PremiumStatus status,
                                             mojom::PremiumInfoPtr info) {
@@ -264,27 +294,38 @@ void AIChatService::OnConversationEntriesChanged(
   auto conversation_it = conversations_.find(handler->get_conversation_uuid());
   CHECK(conversation_it != conversations_.end());
   auto& conversation = conversation_it->second;
-  if (!conversation->has_content && !entries.empty()) {
-    // This conversation is now visible
+  if (!entries.empty()) {
+    // This conversation is visible once the first response begins
     conversation->has_content = true;
-    OnConversationListChanged();
     if (ai_chat_metrics_ != nullptr) {
+      // Each time the user starts a conversation
       if (entries.size() == 1) {
         ai_chat_metrics_->RecordNewChat();
       }
+      // Each time the user submits an entry
       if (entries.back()->character_type == mojom::CharacterType::HUMAN) {
         ai_chat_metrics_->RecordNewPrompt();
       }
     }
+    OnConversationListChanged();
+    // TODO(petemill): Persist the entries, but consider receiving finer grained
+    // entry update events.
   }
-  // TODO(petemill): Persist the entries, but consider receiving finer grained
-  // entry update events.
 }
 
 void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
   DVLOG(4) << "Client connection changed for conversation "
            << handler->get_conversation_uuid();
   MaybeEraseConversation(handler);
+}
+
+void AIChatService::OnConversationTitleChanged(ConversationHandler* handler,
+                                               std::string title) {
+  auto conversation_it = conversations_.find(handler->get_conversation_uuid());
+  CHECK(conversation_it != conversations_.end());
+  auto& conversation = conversation_it->second;
+  conversation->title = title;
+  OnConversationListChanged();
 }
 
 void AIChatService::GetVisibleConversations(
@@ -301,6 +342,9 @@ void AIChatService::BindConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   ConversationHandler* conversation = GetConversation(uuid);
+  if (!conversation) {
+    return;
+  }
   CHECK(conversation) << "Asked to bind a conversation which doesn't exist";
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
 }
@@ -354,6 +398,8 @@ std::vector<mojom::Conversation*> AIChatService::FilterVisibleConversations() {
     }
     conversations.push_back(conversation.get());
   }
+  base::ranges::sort(conversations, std::greater<>(),
+                     &mojom::Conversation::created_time);
   return conversations;
 }
 

@@ -17,3 +17,8 @@
   position: relative;
   overflow: hidden;
 }
+
+.containerFull {
+  width: calc(100vw - 30px);
+  height: 95vh;
+}

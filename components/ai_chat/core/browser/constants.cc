@@ -41,8 +41,11 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        IDS_CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM},
       {"modelCategory-chat", IDS_CHAT_UI_MODEL_CATEGORY_CHAT},
       {"menuNewChat", IDS_CHAT_UI_MENU_NEW_CHAT},
+      {"openFullPageLabel", IDS_CHAT_UI_LABEL_OPEN_FULL_PAGE},
+      {"closeLabel", IDS_CHAT_UI_LABEL_CLOSE},
       {"menuGoPremium", IDS_CHAT_UI_MENU_GO_PREMIUM},
       {"menuManageSubscription", IDS_CHAT_UI_MENU_MANAGE_SUBSCRIPTION},
+      {"menuConversationHistory", IDS_CHAT_UI_MENU_CONVERSATION_HISTORY},
       {"menuSettings", IDS_CHAT_UI_MENU_SETTINGS},
       {"menuTitleModels", IDS_CHAT_UI_MENU_TITLE_MODELS},
       {"suggestQuestionsLabel", IDS_CHAT_UI_SUGGEST_QUESTIONS_LABEL},
@@ -101,6 +104,9 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"braveLeoModelSubtitle-chat-claude-sonnet",
        IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE},
       {"clearChatButtonLabel", IDS_CHAT_UI_CLEAR_CHAT_BUTTON_LABEL},
+      {"newChatButtonLabel", IDS_CHAT_UI_NEW_CONVERSATION_BUTTON_LABEL},
+      {"menuRenameConversation", IDS_CHAT_UI_MENU_RENAME_CONVERSATION},
+      {"menuDeleteConversation", IDS_CHAT_UI_MENU_DELETE_CONVERSATION},
       {"sendChatButtonLabel", IDS_CHAT_UI_SEND_CHAT_BUTTON_LABEL},
       {"errorContextLimitReaching", IDS_CHAT_UI_ERROR_CONTEXT_LIMIT_REACHING},
       {"gotItButtonLabel", IDS_CHAT_UI_GOT_IT_BUTTON_LABEL},
@@ -154,7 +160,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"toolsMenuButtonLabel", IDS_AI_CHAT_LEO_TOOLS_BUTTON_LABEL},
       {"useMicButtonLabel", IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL},
       {"menuTitleCustomModels", IDS_AI_CHAT_MENU_TITLE_CUSTOM_MODELS},
-      {"startConversationLabel", IDS_AI_CHAT_START_CONVERSATION_LABEL}};
+      {"startConversationLabel", IDS_AI_CHAT_START_CONVERSATION_LABEL},
+      {"conversationListUntitled", IDS_AI_CHAT_CONVERSATION_LIST_UNTITLED}};
 
   return kLocalizedStrings;
 }

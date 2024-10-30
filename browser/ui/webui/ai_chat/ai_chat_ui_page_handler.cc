@@ -14,8 +14,10 @@
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -26,6 +28,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/common/url_constants.h"
+#include "ui/base/page_transition_types.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/android/ai_chat/brave_leo_settings_launcher_helper.h"
@@ -67,6 +70,8 @@ AIChatUIPageHandler::AIChatUIPageHandler(
       receiver_(this, std::move(receiver)) {
   // Standalone mode means Chat is opened as its own tab in the tab strip and
   // not a side panel. chat_context_web_contents is nullptr in that case
+  favicon_service_ = FaviconServiceFactory::GetForProfile(
+      profile_, ServiceAccessType::EXPLICIT_ACCESS);
   const bool is_standalone = chat_context_web_contents == nullptr;
   if (!is_standalone) {
     active_chat_tab_helper_ =
@@ -74,14 +79,7 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
-  } else {
-    // TODO(petemill): Enable conversation without the TabHelper now that
-    // all conversation logic is extracted to ConversationHandler.
-    NOTIMPLEMENTED();
   }
-
-  favicon_service_ = FaviconServiceFactory::GetForProfile(
-      profile_, ServiceAccessType::EXPLICIT_ACCESS);
 }
 
 AIChatUIPageHandler::~AIChatUIPageHandler() = default;
@@ -110,6 +108,21 @@ void AIChatUIPageHandler::OpenAIChatSettings() {
 #else
   ai_chat::ShowBraveLeoSettings(contents_to_navigate);
 #endif
+}
+
+void AIChatUIPageHandler::OpenConversationFullPage(
+    const std::string& conversation_uuid) {
+  CHECK(ai_chat::features::IsAIChatHistoryEnabled());
+  CHECK(active_chat_tab_helper_);
+  active_chat_tab_helper_->web_contents()->OpenURL(
+      {
+          GURL(kChatUIURL).Resolve(conversation_uuid),
+          content::Referrer(),
+          WindowOpenDisposition::NEW_FOREGROUND_TAB,
+          ui::PAGE_TRANSITION_TYPED,
+          false,
+      },
+      {});
 }
 
 void AIChatUIPageHandler::OpenURL(const GURL& url) {
@@ -195,13 +208,17 @@ void AIChatUIPageHandler::CloseUI() {
 void AIChatUIPageHandler::SetChatUI(
     mojo::PendingRemote<mojom::ChatUI> chat_ui) {
   chat_ui_.Bind(std::move(chat_ui));
+  chat_ui_->SetInitialData(active_chat_tab_helper_ == nullptr);
 }
 
 void AIChatUIPageHandler::BindRelatedConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   if (!active_chat_tab_helper_) {
-    // No initial conversation for standalone page
+    ConversationHandler* conversation =
+        AIChatServiceFactory::GetForBrowserContext(profile_)
+            ->CreateConversation();
+    conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
     return;
   }
 

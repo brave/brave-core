@@ -72,6 +72,12 @@
   <message name="IDS_CHAT_UI_MODEL_CATEGORY_CHAT" desc="Category name for Chat">
     Chat
   </message>
+  <message name="IDS_CHAT_UI_LABEL_OPEN_FULL_PAGE" desc="Menu item to expand a sidebar conversation to a the full page experience">
+    Open full page
+  </message>
+  <message name="IDS_CHAT_UI_LABEL_CLOSE" desc="Button label to close the UI showing a chat conversation">
+    Close
+  </message>
   <message name="IDS_CHAT_UI_MENU_NEW_CHAT" desc="Menu item for new chat">
     New chat
   </message>
@@ -80,6 +86,9 @@
   </message>
   <message name="IDS_CHAT_UI_MENU_MANAGE_SUBSCRIPTION" desc="Menu item for managing premium subscription">
     Manage subscription
+  </message>
+  <message name="IDS_CHAT_UI_MENU_CONVERSATION_HISTORY" desc="Menu item for opening the list of conversations">
+    Conversation history
   </message>
   <message name="IDS_CHAT_UI_MENU_SETTINGS" desc="Menu item for Settings">
     Advanced Settings
@@ -217,7 +226,16 @@
     This conversation is long and Leo may start forgetting things soon. You can get longer conversations by switching to a premium model, or you can clear the chat to reset it.
   </message>
   <message name="IDS_CHAT_UI_CLEAR_CHAT_BUTTON_LABEL" desc="An button label for clearing chat history">
-    Clear Chat
+    Clear conversation
+  </message>
+  <message name="IDS_CHAT_UI_NEW_CONVERSATION_BUTTON_LABEL" desc="A label for the button which starts a new conversation">
+    Start a new conversation
+  </message>
+  <message name="IDS_CHAT_UI_MENU_RENAME_CONVERSATION" desc="Menu entry for renaming a conversation">
+    Rename conversation
+  </message>
+  <message name="IDS_CHAT_UI_MENU_DELETE_CONVERSATION" desc="Menu entry for removing a conversation">
+    Delete conversation
   </message>
   <message name="IDS_CHAT_UI_SEND_CHAT_BUTTON_LABEL" desc="An button label for sending a chat message">
     Send message to Leo
@@ -380,5 +398,8 @@
   </message>
   <message name="IDS_AI_CHAT_START_CONVERSATION_LABEL" desc="A label for when user starts a new conversation">
     Start new conversation
+  </message>
+  <message name="IDS_AI_CHAT_CONVERSATION_LIST_UNTITLED" desc="Label for untitled conversations in AI Chat">
+    New conversation
   </message>
 </grit-part>

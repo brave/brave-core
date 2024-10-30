@@ -119,6 +119,8 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
 
   MOCK_METHOD(void, OnFaviconImageDataChanged, (), (override));
 
+  MOCK_METHOD(void, OnConversationDeleted, (), (override));
+
  private:
   mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver_{this};
   mojo::Remote<mojom::ConversationHandler> conversation_handler_;
@@ -200,7 +202,8 @@ class ConversationHandlerUnitTest : public testing::Test {
         model_service_.get(), std::move(credential_manager), &prefs_, nullptr,
         shared_url_loader_factory_, "");
 
-    conversation_ = mojom::Conversation::New("uuid", "title", false);
+    conversation_ =
+        mojom::Conversation::New("uuid", "title", base::Time::Now(), false);
 
     conversation_handler_ = std::make_unique<ConversationHandler>(
         conversation_.get(), ai_chat_service_.get(), model_service_.get(),

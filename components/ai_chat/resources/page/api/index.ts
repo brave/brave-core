@@ -13,6 +13,7 @@ class API {
   public Observer: mojom.ServiceObserverCallbackRouter
   public UIHandler: mojom.AIChatUIHandlerRemote
   public UIObserver: mojom.ChatUICallbackRouter
+  public isStandalone: boolean
 
   constructor() {
     // Connect to service
@@ -22,6 +23,9 @@ class API {
     // Connect to platform UI handler
     this.UIHandler = mojom.AIChatUIHandler.getRemote()
     this.UIObserver = new mojom.ChatUICallbackRouter()
+    this.UIObserver.setInitialData.addListener((isStandalone: boolean) => {
+      this.isStandalone = isStandalone
+    })
     this.UIHandler.setChatUI(this.UIObserver.$.bindNewPipeAndPassRemote())
   }
 }

@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UI_PAGE_HANDLER_H_
 
 #include <memory>
+#include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
@@ -43,8 +44,8 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   ~AIChatUIPageHandler() override;
 
   // mojom::AIChatUIHandler
-
   void OpenAIChatSettings() override;
+  void OpenConversationFullPage(const std::string& conversation_uuid) override;
   void OpenURL(const GURL& url) override;
   void OpenLearnMoreAboutBraveSearchWithLeo() override;
   void OpenModelSupportUrl() override;

@@ -1,0 +1,61 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.fullscreen {
+  --top-padding: 6px;
+
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: var(--leo-color-page-background);
+}
+
+.content {
+  border-radius: var(--leo-radius-xl) 0 0 var(--leo-radius-xl);
+  flex: 1 1 0%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: var(--leo-color-container-background);
+  margin: 6px 6px 6px 0;
+}
+
+.aside {
+  width: 340px;
+  height: 100%;
+  overflow: hidden;
+  background: var(--leo-color-page-background);
+
+  @media (max-width: 1024px) {
+    position: fixed;
+    z-index: 2;
+    box-shadow: 0px var(--leo-elevation-xxs, 1px) 0px 0px var(--leo-color-elevation-primary, rgba(0, 0, 0, 0.05)), 0px var(--leo-elevation-xs, 4px) var(--leo-elevation-xs, 16px) -2px var(--leo-color-elevation-secondary, rgba(0, 0, 0, 0.10));
+  }
+
+  padding-top: var(--top-padding);
+}
+
+.left {
+  min-width: 52px;
+}
+
+.controls {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  padding-left: 16px;
+  padding-top: calc(20px + var(--top-padding));
+  color: var(--leo-color-icon-default);
+}

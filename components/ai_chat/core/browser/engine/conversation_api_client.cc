@@ -102,6 +102,13 @@ mojom::ConversationEntryEventPtr ParseResponseEvent(
     }
     return mojom::ConversationEntryEvent::NewSearchQueriesEvent(
         std::move(event));
+  } else if (*type == "conversationTitle") {
+    const std::string* title = response_event.FindString("title");
+    if (!title) {
+      return nullptr;
+    }
+    return mojom::ConversationEntryEvent::NewConversationTitleEvent(
+        mojom::ConversationTitleEvent::New(*title));
   } else if (*type == "selectedLanguage") {
     const std::string* selected_language =
         response_event.FindString("language");

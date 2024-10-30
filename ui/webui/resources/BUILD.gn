@@ -171,6 +171,7 @@ leo_icons = [
   "bar-chart.svg",
   "bat-color.svg",
   "bing-color.svg",
+  "social-leo-favicon-fullheight-color.svg",
   "bluetooth-off.svg",
   "bluetooth.svg",
   "brave-icon-outline.svg",
@@ -228,6 +229,7 @@ leo_icons = [
   "eye-on.svg",
   "file-corrupted.svg",
   "file-edit.svg",
+  "file-text.svg",
   "file.svg",
   "files-many.svg",
   "filter.svg",
@@ -430,6 +432,7 @@ leo_icons = [
   "xmark-color.svg",
   "yahoo-color.svg",
   "yandex-color.svg",
+  "window-tabs-vertical-expanded.svg",
 ]
 
 if (enable_brave_vpn_panel) {

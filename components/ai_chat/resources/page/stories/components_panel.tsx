@@ -11,11 +11,12 @@ import '$web-components/app.global.scss'
 import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import { InferControlsFromArgs } from '../../../../../.storybook/utils'
-import Main from '../components/main'
 import * as mojom from '../api/'
-import FeedbackForm from '../components/feedback_form'
 import { AIChatContext, AIChatReactContext } from '../state/ai_chat_context'
 import { ConversationContext, ConversationReactContext } from '../state/conversation_context'
+import FeedbackForm from '../components/feedback_form'
+import FullPage from '../components/full_page'
+import Main from '../components/main'
 import './locale'
 import ACTIONS_LIST from './actions'
 import styles from './style.module.scss'
@@ -26,7 +27,8 @@ function getCompletionEvent(text: string): mojom.ConversationEntryEvent {
     pageContentRefineEvent: undefined,
     searchQueriesEvent: undefined,
     searchStatusEvent: undefined,
-    selectedLanguageEvent: { selectedLanguage: '' }
+    conversationTitleEvent: undefined,
+    selectedLanguageEvent: undefined
   }
 }
 
@@ -36,7 +38,8 @@ function getSearchEvent(queries: string[]): mojom.ConversationEntryEvent {
     pageContentRefineEvent: undefined,
     searchQueriesEvent: { searchQueries: queries },
     searchStatusEvent: undefined,
-    selectedLanguageEvent: { selectedLanguage: '' }
+    conversationTitleEvent: undefined,
+    selectedLanguageEvent: undefined
   }
 }
 
@@ -46,7 +49,8 @@ function getSearchStatusEvent(): mojom.ConversationEntryEvent {
     pageContentRefineEvent: undefined,
     searchQueriesEvent: undefined,
     searchStatusEvent: { isSearching: true },
-    selectedLanguageEvent: { selectedLanguage: '' }
+    selectedLanguageEvent: undefined,
+    conversationTitleEvent: undefined
   }
 }
 
@@ -56,9 +60,31 @@ function getPageContentRefineEvent(): mojom.ConversationEntryEvent {
     pageContentRefineEvent: { isRefining: true },
     searchQueriesEvent: undefined,
     searchStatusEvent: undefined,
-    selectedLanguageEvent: { selectedLanguage: '' }
+    selectedLanguageEvent: undefined,
+    conversationTitleEvent: undefined
   }
 }
+
+const CONVERSATIONS: mojom.Conversation[] = [
+  {
+    title: 'Star Trek Poem',
+    uuid: '1',
+    hasContent: true,
+    createdTime: { internalValue: BigInt('13278618001000000') },
+  },
+  {
+    title: 'Sorting C++ vectors is hard especially when you have to have a very long title for your conversation to test text clipping or wrapping',
+    uuid: '2',
+    hasContent: true,
+    createdTime: { internalValue: BigInt('13278618001000001') },
+  },
+  {
+    title: 'Wedding speech improvements',
+    uuid: '3',
+    hasContent: true,
+    createdTime: { internalValue: BigInt('13278618001000002') },
+  }
+]
 
 const HISTORY: mojom.ConversationTurn[] = [
   {
@@ -296,7 +322,7 @@ const MODELS: mojom.Model[] = [
         modelRequestName: 'phi3',
         contextSize: 131072,
         // The maxAssociatedContentLength (131072 tokens * 4 chars per token)
-        // and longConversationWarningCharacterLimit (60% of 
+        // and longConversationWarningCharacterLimit (60% of
         // maxAssociatedContentLength) are both here only to satisfy the
         // type checker.
         maxAssociatedContentLength: 131072 * 4,
@@ -341,6 +367,9 @@ type CustomArgs = {
   isPremiumUserDisconnected: boolean
   suggestionStatus: keyof typeof mojom.SuggestionGenerationStatus
   isMobile: boolean
+  isHistoryEnabled: boolean
+  isStandalone: boolean
+  isDefaultConversation: boolean
   shouldShowLongConversationInfo: boolean
   shouldShowLongPageWarning: boolean
 }
@@ -359,6 +388,9 @@ const args: CustomArgs = {
   suggestionStatus: 'None' satisfies keyof typeof mojom.SuggestionGenerationStatus,
   model: MODELS[0].key,
   isMobile: false,
+  isHistoryEnabled: true,
+  isStandalone: false,
+  isDefaultConversation: true,
   shouldShowLongConversationInfo: false,
   shouldShowLongPageWarning: false,
 }
@@ -409,14 +441,17 @@ const preview: Meta<CustomArgs> = {
       }
 
       const aiChatContext: AIChatContext = {
-        visibleConversations: [],
+        isDefaultConversation: options.args.isDefaultConversation,
+        editingConversationId: null,
+        visibleConversations: CONVERSATIONS,
         hasAcceptedAgreement: options.args.hasAcceptedAgreement,
         isPremiumStatusFetching: false,
         isPremiumUser: options.args.isPremiumUser,
         isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
         canShowPremiumPrompt: options.args.canShowPremiumPrompt,
         isMobile: options.args.isMobile,
-        isHistoryEnabled: false,
+        isHistoryEnabled: options.args.isHistoryEnabled,
+        isStandalone: options.args.isStandalone,
         allActions: ACTIONS_LIST,
         goPremium: () => {},
         managePremium: () => {},
@@ -424,12 +459,14 @@ const preview: Meta<CustomArgs> = {
         dismissPremiumPrompt: () => {},
         userRefreshPremiumSession: () => {},
         onNewConversation: () => {},
-        onSelectConversationUuid(id) {}
+        onSelectConversationUuid(id) {},
+        setEditingConversationId: () => {}
       }
 
       const inputText = options.args.inputText
 
       const conversationContext: ConversationContext = {
+        conversationUuid: CONVERSATIONS[1].uuid,
         conversationHistory: options.args.hasConversation ? HISTORY : [],
         associatedContentInfo: siteInfo,
         allModels: MODELS,
@@ -497,6 +534,19 @@ export const _FeedbackForm = {
     return (
       <div className={styles.container}>
         <FeedbackForm />
+      </div>
+    )
+  }
+}
+
+export const _FullPage = {
+  args: {
+    isStandalone: true
+  },
+  render: () => {
+    return (
+      <div className={styles.containerFull}>
+        <FullPage />
       </div>
     )
   }

@@ -10,12 +10,17 @@ import Icon from '@brave/leo/react/icon'
 import Label from '@brave/leo/react/label'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
-import * as mojom from '../../api'
+import getAPI, * as mojom from '../../api'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
+import useIsConversationVisible from '../../hooks/useIsConversationVisible'
 
-export default function FeatureMenu() {
+export interface Props {
+  setIsConversationsListOpen?: (value: boolean) => unknown
+}
+
+export default function FeatureMenu(props: Props) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
@@ -23,18 +28,24 @@ export default function FeatureMenu() {
     aiChatContext.uiHandler?.openAIChatSettings()
   }
 
-  const customModels = conversationContext.allModels.filter(model => model.options.customModelOptions !== undefined)
-  const leoModels = conversationContext.allModels.filter(model => model.options.leoModelOptions !== undefined)
+  // If conversation is in the conversations list, then it has been committed
+  // as a conversation with content.
+  const isActiveConversationPermanent = useIsConversationVisible(conversationContext.conversationUuid)
+
+  const customModels = conversationContext.allModels.filter(
+    (model) => model.options.customModelOptions
+  )
+  const leoModels = conversationContext.allModels.filter(
+    (model) => model.options.leoModelOptions
+  )
 
   return (
-    <ButtonMenu
-      className={styles.buttonMenu}
-    >
+    <ButtonMenu className={styles.buttonMenu}>
       <Button
         slot='anchor-content'
         title={getLocale('leoSettingsTooltipLabel')}
         fab
-        kind="plain-faint"
+        kind='plain-faint'
       >
         <Icon name='more-vertical' />
       </Button>
@@ -45,7 +56,9 @@ export default function FeatureMenu() {
         return (
           <leo-menu-item
             key={model.key}
-            aria-selected={model.key === conversationContext.currentModel?.key || null}
+            aria-selected={
+              model.key === conversationContext.currentModel?.key || null
+            }
             onClick={() => conversationContext.setCurrentModel(model)}
           >
             <div className={styles.menuItemWithIcon}>
@@ -82,7 +95,9 @@ export default function FeatureMenu() {
         return (
           <leo-menu-item
             key={model.key}
-            aria-selected={model.key === conversationContext.currentModel?.key || null}
+            aria-selected={
+              model.key === conversationContext.currentModel?.key || null
+            }
             onClick={() => conversationContext.setCurrentModel(model)}
           >
             <div className={styles.menuItemWithIcon}>
@@ -98,26 +113,87 @@ export default function FeatureMenu() {
       })}
       <div className={styles.menuSeparator} />
 
-      {!aiChatContext.isPremiumUser &&
-      <leo-menu-item onClick={aiChatContext.goPremium}>
-        <div className={classnames(styles.menuItemWithIcon, styles.menuItemMainItem)}>
-          <Icon name='lock-open' />
-          <span className={styles.menuText}>{getLocale('menuGoPremium')}</span>
-        </div>
-      </leo-menu-item>
-      }
+      {aiChatContext.isStandalone && isActiveConversationPermanent && <>
+        <leo-menu-item onClick={() => aiChatContext.setEditingConversationId(conversationContext.conversationUuid!)}>
+          <div className={classnames(
+            styles.menuItemWithIcon,
+            styles.menuItemMainItem
+          )}>
+            <Icon name='edit-pencil' />
+            <div className={styles.menuText}>
+              <div>{getLocale('menuRenameConversation')}</div>
+            </div>
+          </div>
+        </leo-menu-item>
+        <leo-menu-item onClick={() => getAPI().Service.deleteConversation(conversationContext.conversationUuid!)}>
+          <div className={classnames(
+            styles.menuItemWithIcon,
+            styles.menuItemMainItem
+          )}>
+            <Icon name='trash' />
+            <div className={styles.menuText}>
+              <div>{getLocale('menuDeleteConversation')}</div>
+            </div>
+          </div>
+        </leo-menu-item>
+        <div className={styles.menuSeparator} />
+      </>}
 
-      {aiChatContext.isPremiumUser &&
-      <leo-menu-item onClick={aiChatContext.managePremium}>
-        <div className={classnames(styles.menuItemWithIcon, styles.menuItemMainItem)}>
-          <Icon name='lock-open' />
-          <span className={styles.menuText}>{getLocale('menuManageSubscription')}</span>
-        </div>
-      </leo-menu-item>
-      }
+      {!aiChatContext.isPremiumUser && (
+        <leo-menu-item onClick={aiChatContext.goPremium}>
+          <div
+            className={classnames(
+              styles.menuItemWithIcon,
+              styles.menuItemMainItem
+            )}
+          >
+            <Icon name='lock-open' />
+            <span className={styles.menuText}>
+              {getLocale('menuGoPremium')}
+            </span>
+          </div>
+        </leo-menu-item>
+      )}
 
+      {aiChatContext.isPremiumUser && (
+        <leo-menu-item onClick={aiChatContext.managePremium}>
+          <div
+            className={classnames(
+              styles.menuItemWithIcon,
+              styles.menuItemMainItem
+            )}
+          >
+            <Icon name='lock-open' />
+            <span className={styles.menuText}>
+              {getLocale('menuManageSubscription')}
+            </span>
+          </div>
+        </leo-menu-item>
+      )}
+      {!aiChatContext.isStandalone && aiChatContext.isHistoryEnabled && (
+        <>
+          <leo-menu-item
+            onClick={() => props.setIsConversationsListOpen?.(true)}
+          >
+            <div
+              className={classnames(
+                styles.menuItemWithIcon,
+                styles.menuItemMainItem
+              )}
+            >
+              <Icon name='history' />
+              <span className={styles.menuText}>{getLocale('menuConversationHistory')}</span>
+            </div>
+          </leo-menu-item>
+        </>
+      )}
       <leo-menu-item onClick={handleSettingsClick}>
-        <div className={classnames(styles.menuItemWithIcon, styles.menuItemMainItem)}>
+        <div
+          className={classnames(
+            styles.menuItemWithIcon,
+            styles.menuItemMainItem
+          )}
+        >
           <Icon name='settings' />
           <span className={styles.menuText}>{getLocale('menuSettings')}</span>
         </div>

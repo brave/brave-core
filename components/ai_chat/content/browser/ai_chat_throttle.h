@@ -12,6 +12,7 @@
 
 namespace ai_chat {
 
+// Prevents navigation to certain AI Chat URLs
 class AiChatThrottle : public content::NavigationThrottle {
  public:
   explicit AiChatThrottle(content::NavigationHandle* handle);

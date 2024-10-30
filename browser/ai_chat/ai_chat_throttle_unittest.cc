@@ -23,7 +23,8 @@ namespace {
 constexpr char kTestProfileName[] = "TestProfile";
 }  // namespace
 
-class AiChatThrottleUnitTest : public testing::Test {
+class AiChatThrottleUnitTest : public testing::Test,
+                               public ::testing::WithParamInterface<bool> {
  public:
   AiChatThrottleUnitTest() = default;
   AiChatThrottleUnitTest(const AiChatThrottleUnitTest&) = delete;
@@ -39,8 +40,13 @@ class AiChatThrottleUnitTest : public testing::Test {
     web_contents_ =
         content::WebContentsTester::CreateTestWebContents(profile, nullptr);
 
-    features_.InitAndEnableFeature(ai_chat::features::kAIChat);
+    features_.InitWithFeatureStates({
+        {ai_chat::features::kAIChat, true},
+        {ai_chat::features::kAIChatHistory, IsAIChatHistoryEnabled()},
+    });
   }
+
+  bool IsAIChatHistoryEnabled() { return GetParam(); }
 
   void TearDown() override {
     web_contents_.reset();
@@ -56,7 +62,16 @@ class AiChatThrottleUnitTest : public testing::Test {
   base::test::ScopedFeatureList features_;
 };
 
-TEST_F(AiChatThrottleUnitTest, CancelNavigationFromTab) {
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    AiChatThrottleUnitTest,
+    ::testing::Bool(),
+    [](const testing::TestParamInfo<AiChatThrottleUnitTest::ParamType>& info) {
+      return base::StringPrintf("History%s",
+                                info.param ? "Enabled" : "Disabled");
+    });
+
+TEST_P(AiChatThrottleUnitTest, CancelNavigationFromTab) {
   content::MockNavigationHandle test_handle(web_contents());
 
   test_handle.set_url(GURL("chrome-untrusted://chat"));
@@ -74,13 +89,17 @@ TEST_F(AiChatThrottleUnitTest, CancelNavigationFromTab) {
 
   std::unique_ptr<AiChatThrottle> throttle =
       AiChatThrottle::MaybeCreateThrottleFor(&test_handle);
-  EXPECT_NE(throttle.get(), nullptr);
 
-  EXPECT_EQ(content::NavigationThrottle::CANCEL_AND_IGNORE,
-            throttle->WillStartRequest().action());
+  if (IsAIChatHistoryEnabled()) {
+    EXPECT_EQ(throttle.get(), nullptr);
+  } else {
+    EXPECT_NE(throttle.get(), nullptr);
+    EXPECT_EQ(content::NavigationThrottle::CANCEL_AND_IGNORE,
+              throttle->WillStartRequest().action());
+  }
 }
 
-TEST_F(AiChatThrottleUnitTest, AllowNavigationFromPanel) {
+TEST_P(AiChatThrottleUnitTest, AllowNavigationFromPanel) {
   content::MockNavigationHandle test_handle(web_contents());
 
   test_handle.set_url(GURL("chrome-untrusted://chat"));

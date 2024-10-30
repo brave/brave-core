@@ -19,6 +19,7 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -355,9 +356,12 @@ void BraveBrowserCommandController::UpdateCommandForSidebar() {
 #if BUILDFLAG(ENABLE_AI_CHAT)
 void BraveBrowserCommandController::UpdateCommandForAIChat() {
   // AI Chat command implementation needs sidebar
-  bool command_enabled = (sidebar::CanUseSidebar(&*browser_) &&
-                          ai_chat::IsAllowedForContext(browser_->profile()));
-  UpdateCommandEnabled(IDC_TOGGLE_AI_CHAT, command_enabled);
+  bool allowed_for_context = ai_chat::IsAllowedForContext(browser_->profile());
+  UpdateCommandEnabled(IDC_TOGGLE_AI_CHAT, sidebar::CanUseSidebar(&*browser_) &&
+                                               allowed_for_context);
+  UpdateCommandEnabled(
+      IDC_OPEN_FULL_PAGE_CHAT,
+      ai_chat::features::IsAIChatHistoryEnabled() && allowed_for_context);
 }
 #endif
 
@@ -540,6 +544,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_TOGGLE_AI_CHAT:
 #if BUILDFLAG(ENABLE_AI_CHAT)
       brave::ToggleAIChat(&*browser_);
+#endif
+      break;
+    case IDC_OPEN_FULL_PAGE_CHAT:
+#if BUILDFLAG(ENABLE_AI_CHAT)
+      brave::ShowFullpageChat(&*browser_);
 #endif
       break;
     case IDC_SPEEDREADER_ICON_ONCLICK:

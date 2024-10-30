@@ -4,29 +4,30 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
-import Button from '@brave/leo/react/button'
-import { getLocale } from '$web-common/locale'
 import AlertCenter from '@brave/leo/react/alertCenter'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import * as mojom from '../../api'
 import { useConversation } from '../../state/conversation_context'
 import { useAIChat } from '../../state/ai_chat_context'
 import { isLeoModel } from '../../model_utils'
-import ConversationList from '../conversation_list'
-import PrivacyMessage from '../privacy_message'
 import ErrorConnection from '../alerts/error_connection'
-import ErrorRateLimit from '../alerts/error_rate_limit'
-import InputBox from '../input_box'
-import FeatureButtonMenu from '../feature_button_menu'
-import ModelIntro from '../model_intro'
-import PremiumSuggestion from '../premium_suggestion'
-import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
-import LongConversationInfo from '../alerts/long_conversation_info'
 import ErrorConversationEnd from '../alerts/error_conversation_end'
-import WelcomeGuide from '../welcome_guide'
+import ErrorRateLimit from '../alerts/error_rate_limit'
+import LongConversationInfo from '../alerts/long_conversation_info'
+import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
+import ConversationEntries from '../conversation_entries'
+import ConversationsList from '../conversations_list'
+import { ConversationHeader } from '../header'
+import InputBox from '../input_box'
+import ModelIntro from '../model_intro'
 import PageContextToggle from '../page_context_toggle'
+import PremiumSuggestion from '../premium_suggestion'
+import PrivacyMessage from '../privacy_message'
 import ToolsButtonMenu from '../tools_button_menu'
+import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
 
 const SCROLL_BOTTOM_THRESHOLD = 10.0
@@ -35,6 +36,7 @@ const SCROLL_BOTTOM_THRESHOLD = 10.0
 function Main() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
+  const [isConversationListOpen, setIsConversationsListOpen] = React.useState(false)
 
   const shouldShowPremiumSuggestionForModel =
     aiChatContext.hasAcceptedAgreement &&
@@ -51,9 +53,8 @@ function Main() {
     conversationContext.associatedContentInfo === null && // SiteInfo request has finished and this is a standalone conversation
     !aiChatContext.isPremiumUser
 
-  const shouldDisplayNewChatIcon = conversationContext.conversationHistory.length >= 1
 
-    const isLastTurnBraveSearchSERPSummary =
+  const isLastTurnBraveSearchSERPSummary =
     conversationContext.conversationHistory.at(-1)?.fromBraveSearchSERP ?? false
 
   const showContextToggle =
@@ -110,46 +111,46 @@ function Main() {
 
   // Ask for opt-in once the first message is sent
   const showAgreementModal = !aiChatContext.hasAcceptedAgreement &&
-      !!conversationContext.conversationHistory.length
+    !!conversationContext.conversationHistory.length
 
   const viewPortWithoutKeyboard = React.useRef(0)
   const keyboardSize = React.useRef(0)
 
-    React.useEffect(() => {
-      const handler = () => {
-        if (!aiChatContext.isMobile || !window.visualViewport) {
-          return
-        }
-        const viewPortWithKeyboard = window.visualViewport.height
-        if (!headerElement.current || !conversationContentElement.current ||
-          viewPortWithKeyboard === 0 || viewPortWithoutKeyboard.current === 0) {
-          return
-        }
-        if (keyboardSize.current === 0 ||
-            keyboardSize.current <
-              viewPortWithoutKeyboard.current - viewPortWithKeyboard) {
-          keyboardSize.current =
-            viewPortWithoutKeyboard.current - viewPortWithKeyboard
-        }
-        const mountPoint = document.getElementById('mountPoint')
-        if (mountPoint) {
-          if (mountPoint.clientHeight >=
-              (headerElement.current.clientHeight +
-                conversationContentElement.current.clientHeight) * 2) {
-            const percent = viewPortWithKeyboard * 100 /
-              viewPortWithoutKeyboard.current
-            mountPoint.style.height = `${percent}%`
-          } else if (keyboardSize.current >
-              viewPortWithoutKeyboard.current - viewPortWithKeyboard) {
-            mountPoint.style.height = '100%'
-          }
+  React.useEffect(() => {
+    const handler = () => {
+      if (!aiChatContext.isMobile || !window.visualViewport) {
+        return
+      }
+      const viewPortWithKeyboard = window.visualViewport.height
+      if (!headerElement.current || !conversationContentElement.current ||
+        viewPortWithKeyboard === 0 || viewPortWithoutKeyboard.current === 0) {
+        return
+      }
+      if (keyboardSize.current === 0 ||
+        keyboardSize.current <
+        viewPortWithoutKeyboard.current - viewPortWithKeyboard) {
+        keyboardSize.current =
+          viewPortWithoutKeyboard.current - viewPortWithKeyboard
+      }
+      const mountPoint = document.getElementById('mountPoint')
+      if (mountPoint) {
+        if (mountPoint.clientHeight >=
+          (headerElement.current.clientHeight +
+            conversationContentElement.current.clientHeight) * 2) {
+          const percent = viewPortWithKeyboard * 100 /
+            viewPortWithoutKeyboard.current
+          mountPoint.style.height = `${percent}%`
+        } else if (keyboardSize.current >
+          viewPortWithoutKeyboard.current - viewPortWithKeyboard) {
+          mountPoint.style.height = '100%'
         }
       }
-      window.addEventListener('resize', handler)
-      return () => {
-        window.removeEventListener('resize', handler)
-      }
-    }, [])
+    }
+    window.addEventListener('resize', handler)
+    return () => {
+      window.removeEventListener('resize', handler)
+    }
+  }, [])
 
   const handleOnFocusInputMobile = () => {
     if (window.visualViewport != null) {
@@ -159,44 +160,32 @@ function Main() {
 
   return (
     <main className={styles.main}>
-      {showAgreementModal && <PrivacyMessage />}
-      <div className={styles.header}
-        ref={headerElement}>
-        <div className={styles.logo}>
-          <Icon name='product-brave-leo' />
-          <div className={styles.logoTitle}>Leo AI</div>
-          {aiChatContext.isPremiumUser && <div className={styles.badgePremium}>PREMIUM</div>}
-        </div>
-        <div className={styles.actions}>
-          {aiChatContext.hasAcceptedAgreement && (
-            <>
-            {shouldDisplayNewChatIcon && (
-              <Button
-                fab
-                kind='plain-faint'
-                aria-label={getLocale('startConversationLabel')}
-                title={getLocale('startConversationLabel')}
-                onClick={aiChatContext.onNewConversation}
-              >
-                <Icon name='edit-box' />
-              </Button>
-            )}
-            <FeatureButtonMenu />
-            <div className={styles.divider} />
-            <Button
-              fab
-              kind='plain-faint'
-              aria-label='Close'
-              title='Close'
-              className={styles.closeButton}
-              onClick={() => aiChatContext.uiHandler?.closeUI()}
-            >
-              <Icon name='close' />
-            </Button>
-            </>
-          )}
-        </div>
+      {isConversationListOpen && !aiChatContext.isStandalone && (
+        <div className={styles.conversationsList}>
+          <div
+        className={classnames({
+          [styles.conversationsListHeader]: true,
+        })}
+      >
+        <Button
+          kind='plain-faint'
+          fab
+          onClick={() => {
+            setIsConversationsListOpen?.(false)
+          }}
+        >
+          <Icon name='arrow-left' />
+        </Button>
       </div>
+          <ConversationsList
+            setIsConversationsListOpen={setIsConversationsListOpen}
+          />
+        </div>
+      )}
+      {showAgreementModal && <PrivacyMessage />}
+      <ConversationHeader ref={headerElement}
+        setIsConversationsListOpen={setIsConversationsListOpen}
+      />
       <div className={classnames({
         [styles.scroller]: true,
         [styles.flushBottom]: !aiChatContext.hasAcceptedAgreement
@@ -207,20 +196,9 @@ function Main() {
         <AlertCenter position='top-left' className={styles.alertCenter} />
         <div className={styles.conversationContent}
           ref={conversationContentElement}>
-          {aiChatContext.isHistoryEnabled &&
-          <ul>
-            <li onClick={() => aiChatContext.onSelectConversationUuid(undefined)}>This page's conversation</li>
-          {aiChatContext.visibleConversations.map(conversation => (
-            <li key={conversation.uuid} onClick={() => aiChatContext.onSelectConversationUuid(conversation.uuid)}>
-              <div>{conversation.uuid}</div>
-              <div>{conversation.title}</div>
-            </li>
-          ))}
-          </ul>
-          }
           {aiChatContext.hasAcceptedAgreement && <>
             <ModelIntro />
-            <ConversationList
+            <ConversationEntries
               onLastElementHeightChange={handleLastElementHeightChange}
             />
           </>}
@@ -262,14 +240,14 @@ function Main() {
             )
           }
           {aiChatContext.isPremiumUserDisconnected && (!conversationContext.currentModel || isLeoModel(conversationContext.currentModel)) &&
-          <div className={styles.promptContainer}>
-            <WarningPremiumDisconnected />
-          </div>
+            <div className={styles.promptContainer}>
+              <WarningPremiumDisconnected />
+            </div>
           }
           {conversationContext.shouldShowLongConversationInfo &&
-          <div className={styles.promptContainer}>
+            <div className={styles.promptContainer}>
               <LongConversationInfo />
-          </div>}
+            </div>}
           {!aiChatContext.hasAcceptedAgreement && <WelcomeGuide />}
         </div>
       </div>
@@ -281,7 +259,7 @@ function Main() {
         )}
         <ToolsButtonMenu {...conversationContext}>
           <InputBox
-            context={{...conversationContext, ...aiChatContext}}
+            context={{ ...conversationContext, ...aiChatContext }}
             onFocusInputMobile={handleOnFocusInputMobile}
           />
         </ToolsButtonMenu>
