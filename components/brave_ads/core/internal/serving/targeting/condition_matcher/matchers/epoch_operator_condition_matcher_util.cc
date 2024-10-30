@@ -18,6 +18,7 @@ namespace brave_ads {
 namespace {
 
 constexpr char kEqualOperatorConditionMatcherPrefix[] = "[T=]:";
+constexpr char kNotEqualOperatorConditionMatcherPrefix[] = "[T≠]:";
 constexpr char kGreaterThanOperatorConditionMatcherPrefix[] = "[T>]:";
 constexpr char kGreaterThanOrEqualOperatorConditionMatcherPrefix[] = "[T≥]:";
 constexpr char kLessThanOperatorConditionMatcherPrefix[] = "[T<]:";
@@ -48,6 +49,10 @@ bool MatchEpochOperator(const std::string_view value,
 
   if (condition.starts_with(kEqualOperatorConditionMatcherPrefix)) {
     return time_delta->InDays() == days;
+  }
+
+  if (condition.starts_with(kNotEqualOperatorConditionMatcherPrefix)) {
+    return time_delta->InDays() != days;
   }
 
   if (condition.starts_with(kGreaterThanOperatorConditionMatcherPrefix)) {

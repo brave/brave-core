@@ -47,6 +47,27 @@ TEST_F(BraveAdsEpochOperatorConditionMatcherUtilTest, DoNotMatchEqualOperator) {
                          "[T=]:3"));  // Event occurred 2 days ago.
 }
 
+TEST_F(BraveAdsEpochOperatorConditionMatcherUtilTest, MatchNotEqualOperator) {
+  // Arrange
+  AdvanceClockTo(test::TimeFromUTCString("3 October 2024"));
+
+  // Act & Assert
+  EXPECT_TRUE(
+      MatchEpochOperator("13372214400000000" /*1st October 2024 00:00:00 UTC*/,
+                         "[T≠]:3"));  // Event occurred 2 days ago.
+}
+
+TEST_F(BraveAdsEpochOperatorConditionMatcherUtilTest,
+       DoNotMatchNotEqualOperator) {
+  // Arrange
+  AdvanceClockTo(test::TimeFromUTCString("3 October 2024"));
+
+  // Act & Assert
+  EXPECT_FALSE(
+      MatchEpochOperator("13372214400000000" /*1st October 2024 00:00:00 UTC*/,
+                         "[T≠]:2"));  // Event occurred 2 days ago.
+}
+
 TEST_F(BraveAdsEpochOperatorConditionMatcherUtilTest,
        MatchGreaterThanOperator) {
   // Arrange
