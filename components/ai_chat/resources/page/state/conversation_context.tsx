@@ -175,6 +175,31 @@ export function ConversationContextProvider(
     }))
   }
 
+  const setConversationState = (state: mojom.ConversationState) => {
+    console.debug('Received conversation state', state)
+    const {
+      conversationUuid,
+      isRequestInProgress: isGenerating,
+      allModels: models,
+      currentModelKey,
+      suggestedQuestions,
+      suggestionStatus,
+      associatedContentInfo,
+      shouldSendContent,
+      error
+    } = state
+    setPartialContext({
+      conversationUuid,
+      isGenerating,
+      ...getModelContext(currentModelKey, models),
+      suggestedQuestions,
+      suggestionStatus,
+      associatedContentInfo,
+      shouldSendPageContents: shouldSendContent,
+      currentError: error
+    })
+  }
+
   const getModelContext = (
     currentModelKey: string,
     allModels: mojom.Model[]
@@ -197,27 +222,8 @@ export function ConversationContextProvider(
     }
 
     async function initialize() {
-      const { conversationState: {
-        conversationUuid,
-        isRequestInProgress: isGenerating,
-        allModels: models,
-        currentModelKey,
-        suggestedQuestions,
-        suggestionStatus,
-        associatedContentInfo,
-        shouldSendContent,
-        error
-      } } = await conversationHandler.getState()
-      setPartialContext({
-        conversationUuid,
-        isGenerating,
-        ...getModelContext(currentModelKey, models),
-        suggestedQuestions,
-        suggestionStatus,
-        associatedContentInfo,
-        shouldSendPageContents: shouldSendContent,
-        currentError: error
-      })
+      const { conversationState } = await conversationHandler.getState()
+      setConversationState(conversationState)
     }
 
     // Initial data
@@ -227,6 +233,9 @@ export function ConversationContextProvider(
     // Bind the conversation handler
     let id: number
     const listenerIds: number[] = []
+
+    id = callbackRouter.onState.addListener(setConversationState)
+    listenerIds.push(id)
 
     id = callbackRouter.onConversationHistoryUpdate.addListener(updateHistory)
     listenerIds.push(id)

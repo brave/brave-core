@@ -399,6 +399,9 @@ interface ConversationHandler {
 };
 
 interface ConversationUI {
+  // This might be used more in the future for all state updates, but
+  // for now it's a signal that the remote is bound.
+  OnState(ConversationState conversation_state);
   // TODO(petemill): Provide single entry that's been updated so that we don't
   // need to fetch (and clone) all conversation entries each time text is added
   // to the most recent entry.

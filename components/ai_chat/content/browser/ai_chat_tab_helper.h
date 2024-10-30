@@ -127,6 +127,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // content::WebContentsObserver
   void WebContentsDestroyed() override;
+  void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void NavigationEntryCommitted(
       const content::LoadCommittedDetails& load_details) override;
   void TitleWasSet(content::NavigationEntry* entry) override;
@@ -135,6 +136,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
       content::RenderFrameHost* render_frame_host) override;
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override;
+  void AboutToBeDiscarded(content::WebContents* new_contents) override;
 
   // favicon::FaviconDriverObserver
   void OnFaviconUpdated(favicon::FaviconDriver* favicon_driver,
@@ -179,11 +181,12 @@ class AIChatTabHelper : public content::WebContentsObserver,
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
   bool is_same_document_navigation_ = false;
-  int pending_navigation_id_;
+  int pending_navigation_id_ = -1;
   std::u16string previous_page_title_;
   bool is_pdf_a11y_info_loaded_ = false;
   uint8_t check_pdf_a11y_tree_attempts_ = 0;
   bool is_page_loaded_ = false;
+  bool is_navigation_from_unloaded_state_ = false;
 
   raw_ptr<content::WebContents, DanglingUntriaged> inner_web_contents_ =
       nullptr;
