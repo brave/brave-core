@@ -241,6 +241,11 @@ ViewCounterService::GetCurrentBrandedWallpaper() {
 
 std::optional<brave_ads::ConditionMatcherMap>
 ViewCounterService::GetConditionMatchers(const base::Value::Dict& dict) {
+  // For non-Rewards users, condition matchers should be included in the
+  // "photo.json" file under the NTP (New Tab Page) sponsored images component,
+  // within "campaigns2", falling back to "campaigns", or the root "campaign"
+  // for backwards compatibility.
+
   const auto* const list = dict.FindList(kWallpaperConditionMatchersKey);
   if (!list || list->empty()) {
     return std::nullopt;

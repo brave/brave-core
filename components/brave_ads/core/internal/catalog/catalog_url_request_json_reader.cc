@@ -368,6 +368,10 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
                 .x = wallpaper_node["focalPoint"]["x"].GetInt(),
                 .y = wallpaper_node["focalPoint"]["y"].GetInt()};
 
+            // For Rewards users, these matchers should be placed in the catalog
+            // under "wallpapers" with the "imageUrl" prefixed with "[SmartNTT]"
+            // for backwards compatibility, where legacy browsers will discard
+            // these wallpapers due to an invalid URL.
             if (wallpaper_node.HasMember("conditionMatchers")) {
               if (wallpaper_node["conditionMatchers"].IsArray()) {
                 for (const auto& condition_matchers_node :
