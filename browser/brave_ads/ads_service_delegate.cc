@@ -223,11 +223,17 @@ void AdsServiceDelegate::SnoozeScheduledCaptcha() {
 
 void AdsServiceDelegate::Display(
     const message_center::Notification& notification) {
+  // We cannot store a raw_ptr to NotificationDisplayService due to upstream
+  // browser tests changes NotificationDisplayService instance during test run
+  // which leads to dangling pointer errors.
   GetNotificationDisplayService()->Display(NotificationHandler::Type::BRAVE_ADS,
                                            notification, nullptr);
 }
 
 void AdsServiceDelegate::Close(const std::string& notification_id) {
+  // We cannot store a raw_ptr to NotificationDisplayService due to upstream
+  // browser tests changes NotificationDisplayService instance during test run
+  // which leads to dangling pointer errors.
   GetNotificationDisplayService()->Close(NotificationHandler::Type::BRAVE_ADS,
                                          notification_id);
 }
