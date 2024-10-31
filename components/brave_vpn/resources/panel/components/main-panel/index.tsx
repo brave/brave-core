@@ -109,6 +109,14 @@ function MainPanel() {
   const outOfCredentials = useSelector((state) => state.outOfCredentials)
   const regions = useSelector((state) => state.regions)
   const stateDescription = useSelector((state) => state.stateDescription)
+  const [showSelectedRegionOnce, setShowSelectedRegionOnce] =
+    React.useState(window.location.pathname === '/select')
+
+  if (showSelectedRegionOnce) {
+    setShowSelectedRegionOnce(false)
+    dispatch(Actions.toggleRegionSelector(true))
+    return <></>
+  }
 
   const onSelectRegionButtonClick = () => {
     dispatch(Actions.toggleRegionSelector(true))
