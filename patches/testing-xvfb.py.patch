@@ -1,13 +1,15 @@
 diff --git a/testing/xvfb.py b/testing/xvfb.py
-index fb782c65db23b96c8fde3675a9fd9a0c0aaf314f..f97aac2cddbcb1eef17b04f96f5a537b5d58c46e 100755
+index fb782c65db23b96c8fde3675a9fd9a0c0aaf314f..4096557d18fb67afc94cb4f6f15f0dfc20972dbb 100755
 --- a/testing/xvfb.py
 +++ b/testing/xvfb.py
-@@ -101,7 +101,7 @@ def launch_dbus(env):  # pylint: disable=inconsistent-return-statements
+@@ -101,8 +101,8 @@ def launch_dbus(env):  # pylint: disable=inconsistent-return-statements
  def run_executable(cmd,
                     env,
                     stdoutfile=None,
 -                   use_openbox=True,
+-                   use_xcompmgr=True,
 +                   use_openbox=False,
-                    use_xcompmgr=True,
++                   use_xcompmgr=False,
                     xvfb_whd=None,
                     cwd=None):
+   """Runs an executable within Weston, Xvfb or Xorg on Linux or normally on
