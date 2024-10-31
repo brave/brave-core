@@ -85,6 +85,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
     // Solana
     public boolean isSolanaDappTransaction;
+    private boolean solChangeOfOwnership;
 
     // There are too many fields to init here
     private ParsedTransaction(ParsedTransactionFees parsedTransactionFees) {
@@ -251,6 +252,11 @@ public class ParsedTransaction extends ParsedTransactionFees {
                         new SolanaInstructionPresenter(solanaInstruction);
                 String lamport = presenter.getLamportAmount();
                 Integer instructionType = presenter.getInstructionType();
+                if (instructionType != null
+                        && (instructionType == SolanaSystemInstruction.ASSIGN_WITH_SEED
+                                || instructionType == SolanaSystemInstruction.ASSIGN)) {
+                    parsedTransaction.solChangeOfOwnership = true;
+                }
                 boolean isInsExists = instructionType != null;
                 if (isInsExists
                         && (instructionType == SolanaSystemInstruction.TRANSFER
@@ -753,5 +759,9 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
     public double getMinBuyAmount() {
         return this.minBuyAmount;
+    }
+
+    public boolean isSolChangeOfOwnership() {
+        return solChangeOfOwnership;
     }
 }
