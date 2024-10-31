@@ -216,3 +216,32 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, ExecCustomScriptlet) {
 
   EXPECT_EQ("custom-script", EvalJs(web_contents(), "window.test"));
 }
+
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameConflicts) {
+  constexpr const char kBraveFix[] = "window.test = 'default-script'";
+  constexpr const char kBraveFixResource[] = R"json(
+    [{
+      "name": "brave-fix.js",
+      "kind": { "mime": "application/javascript" },
+      "content": "$1"
+    }]
+  )json";
+
+  UpdateAdBlockResources(base::ReplaceStringPlaceholders(
+      kBraveFixResource, {base::Base64Encode(kBraveFix)}, nullptr));
+
+  NavigateToURL(GURL("brave://settings/shields/filters"));
+
+  constexpr const char kContent[] = "window.test = 'custom-script'";
+
+  ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
+  SaveCustomScriptlet("brave-fix", kContent);
+
+  UpdateAdBlockInstanceWithRules("a.com##+js(brave-fix)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  EXPECT_EQ("default-script", EvalJs(web_contents(), "window.test"));
+}

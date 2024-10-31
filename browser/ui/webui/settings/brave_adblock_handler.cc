@@ -335,7 +335,6 @@ void BraveAdBlockHandler::UpdateCustomScriptlet(const base::Value::List& args) {
 void BraveAdBlockHandler::RemoveCustomScriptlet(const base::Value::List& args) {
   CHECK(base::FeatureList::IsEnabled(
       brave_shields::features::kCosmeticFilteringCustomScriptlets));
-  AllowJavascript();
   CHECK(args.size() == 2u && args[0].is_string() && args[1].is_string());
   AllowJavascript();
   auto error_code = g_brave_browser_process->ad_block_service()
