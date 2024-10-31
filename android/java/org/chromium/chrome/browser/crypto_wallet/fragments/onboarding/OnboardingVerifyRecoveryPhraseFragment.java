@@ -195,7 +195,9 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
         super.onResume();
         if (mVerificationStep != null && mWordToMatch == null) {
             mWordToMatch = mOnboardingViewModel.getVerificationStep(mVerificationStep);
-            mCheckWord.setText(getString(R.string.enter_word, mWordToMatch.first + 1));
+            if (mWordToMatch != null) {
+                mCheckWord.setText(getString(R.string.enter_word, mWordToMatch.first + 1));
+            }
         }
     }
 
