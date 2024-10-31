@@ -36,6 +36,7 @@ public class QuickSearchFragment extends BravePreferenceFragment implements Quic
     private RecyclerView mRecyclerView;
     private QuickSearchAdapter mAdapter;
 
+    private MenuItem mCloseItem;
     private MenuItem mSaveItem;
 
     private LinearLayout mDefaultSearchEngineLayout;
@@ -128,6 +129,7 @@ public class QuickSearchFragment extends BravePreferenceFragment implements Quic
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.quick_search_menu, menu);
+        mCloseItem = menu.findItem(R.id.close_menu_id);
         mSaveItem = menu.findItem(R.id.action_save);
     }
 
@@ -180,7 +182,7 @@ public class QuickSearchFragment extends BravePreferenceFragment implements Quic
 
     // QuickSearchCallback
     @Override
-    public void onSearchEngineClick(QuickSearchEngineModel quickSearchEngineModel) {
+    public void onSearchEngineClick(int position, QuickSearchEngineModel quickSearchEngineModel) {
         updateQuickSearchEnginesInPref(quickSearchEngineModel);
     }
 
@@ -201,6 +203,9 @@ public class QuickSearchFragment extends BravePreferenceFragment implements Quic
             boolean isEditMode = mAdapter.isEditMode();
             mDefaultSearchEngineLayout.setEnabled(!isEditMode);
             mDefaultSearchEngineLayout.setAlpha(!isEditMode ? 1.0f : 0.5f);
+            if (mCloseItem != null) {
+                mCloseItem.setVisible(!isEditMode);
+            }
             if (mSaveItem != null) {
                 mSaveItem.setVisible(isEditMode);
             }
