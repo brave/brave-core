@@ -329,9 +329,10 @@ public class BraveShieldsHandler
         }
         Tab currentActiveTab = mIconFetcher.getTab();
         final boolean isPrivateWindow =
-                            currentActiveTab != null ? currentActiveTab.isIncognito() : false;
+                currentActiveTab != null ? currentActiveTab.isIncognito() : false;
         mWebcompatReporterHandler =
-                WebcompatReporterServiceFactory.getInstance().getWebcompatReporterHandler(this, isPrivateWindow);
+                WebcompatReporterServiceFactory.getInstance()
+                        .getWebcompatReporterHandler(this, isPrivateWindow);
     }
 
     public void updateUrlSpec(String urlSpec) {

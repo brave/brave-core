@@ -14,7 +14,6 @@ import androidx.preference.PreferenceCategory;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
-import org.chromium.base.Log;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.FilterListConstants;
 import org.chromium.chrome.R;
@@ -214,7 +213,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             return;
         }
         mWebcompatReporterHandler =
-                WebcompatReporterServiceFactory.getInstance().getWebcompatReporterHandler(this, false);
+                WebcompatReporterServiceFactory.getInstance()
+                        .getWebcompatReporterHandler(this, false);
     }
 
     @Override

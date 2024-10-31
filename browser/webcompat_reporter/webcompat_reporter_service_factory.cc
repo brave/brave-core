@@ -58,10 +58,12 @@ WebcompatReporterServiceFactory::BuildServiceInstanceForBrowserContext(
     return nullptr;
   }
   auto* profile = Profile::FromBrowserContext(context);
-  auto* prefs = !profile || profile->IsOffTheRecord() ? nullptr : profile->GetPrefs();
+  auto* prefs =
+      !profile || profile->IsOffTheRecord() ? nullptr : profile->GetPrefs();
   auto report_uploader = std::make_unique<WebcompatReportUploader>(
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess());
-  return std::make_unique<WebcompatReporterService>(prefs,
+  return std::make_unique<WebcompatReporterService>(
+      prefs,
       std::make_unique<WebcompatReporterServiceDelegateImpl>(
           g_browser_process->component_updater(),
           g_brave_browser_process->ad_block_service()),

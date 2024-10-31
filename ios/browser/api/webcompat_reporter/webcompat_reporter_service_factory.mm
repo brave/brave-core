@@ -11,6 +11,7 @@
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
 namespace webcompat_reporter {
@@ -54,9 +55,16 @@ WebcompatReporterServiceFactory::BuildServiceInstanceFor(
   component_updater::ComponentUpdateService* cus =
       GetApplicationContext()->GetComponentUpdateService();
   return std::make_unique<WebcompatReporterService>(
-      browser_state->GetPrefs(),
+      !browser_state || browser_state->IsOffTheRecord()
+          ? nullptr
+          : browser_state->GetPrefs(),
       std::make_unique<WebcompatReporterServiceDelegateImpl>(cus),
       std::move(report_uploader));
+}
+
+web::BrowserState* WebcompatReporterServiceFactory::GetBrowserStateToUse(
+    web::BrowserState* context) const {
+  return GetBrowserStateOwnInstanceInIncognito(context);
 }
 
 }  // namespace webcompat_reporter

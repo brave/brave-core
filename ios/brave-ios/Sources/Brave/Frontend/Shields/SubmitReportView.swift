@@ -129,28 +129,31 @@ struct SubmitReportView: View {
     else {
       return
     }
+    let version = String(
+      format: "%@ (%@)",
+      AppInfo.appVersion,
+      AppInfo.buildNumber
+    )
+    let adblkList = FilterListStorage.shared.filterLists
+      .compactMap({ return $0.isEnabled ? $0.entry.title : nil })
+      .joined(separator: ",")
     webcompatReporterAPI.submitWebcompatReport(
       reportInfo: .init(
         channel: AppConstants.buildChannel.webCompatReportName,
-        braveVersion: String(
-          format: "%@ (%@)",
-          AppInfo.appVersion,
-          AppInfo.buildNumber
-        ),
+        braveVersion: version,
         reportUrl: url.absoluteString,
         shieldsEnabled: String(!domain.areAllShieldsOff),
         adBlockSetting: domain.globalBlockAdsAndTrackingLevel.reportLabel,
         fpBlockSetting: domain.finterprintProtectionLevel.reportLabel,
-        adBlockListNames: FilterListStorage.shared.filterLists
-          .compactMap({ return $0.isEnabled ? $0.entry.title : nil })
-          .joined(separator: ","),
+        adBlockListNames: adblkList,
         languages: Locale.current.language.languageCode?.identifier,
         languageFarbling: String(true),
         braveVpnConnected: String(BraveVPN.isConnected),
         details: additionalDetails,
         contact: contactDetails,
         adBlockComponentsVersion: nil,
-        screenshotPng: nil
+        screenshotPng: nil,
+        isPrivateWindow: isPrivateBrowsing ? "true" : "false"
       )
     )
   }
