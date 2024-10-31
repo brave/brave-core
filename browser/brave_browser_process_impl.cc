@@ -181,6 +181,7 @@ void BraveBrowserProcessImpl::Init() {
 
 #if !BUILDFLAG(IS_ANDROID)
 void BraveBrowserProcessImpl::StartTearDown() {
+  brave_stats_helper_.reset();
   brave_stats_updater_.reset();
   brave_referrals_service_.reset();
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
@@ -455,7 +456,8 @@ brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
 
 brave_ads::BraveStatsHelper* BraveBrowserProcessImpl::ads_brave_stats_helper() {
   if (!brave_stats_helper_) {
-    brave_stats_helper_ = std::make_unique<brave_ads::BraveStatsHelper>();
+    brave_stats_helper_ = std::make_unique<brave_ads::BraveStatsHelper>(
+        local_state(), profile_manager());
   }
   return brave_stats_helper_.get();
 }
