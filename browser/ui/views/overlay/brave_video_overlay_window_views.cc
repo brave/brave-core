@@ -498,7 +498,8 @@ void BraveVideoOverlayWindowViews::UpdateTimestampPeriodically() {
       timestamp_->SizeToPreferredSize();
     }
 
-    if (!is_seeking_) {
+    if (!is_seeking_ && seeker_->GetWidget() &&
+        seeker_->GetWidget()->IsVisible() && seeker_->GetVisible()) {
       seeker_->SetValue(media_position_->GetPosition().InSecondsF() /
                         media_position_->duration().InSecondsF());
     }
