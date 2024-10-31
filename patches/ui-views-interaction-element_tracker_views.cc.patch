@@ -1,0 +1,13 @@
+diff --git a/ui/views/interaction/element_tracker_views.cc b/ui/views/interaction/element_tracker_views.cc
+index 46cfd6a82f6dec6c09aee8b498672972765ee8c6..e10e3174ba6f22838d474109e8d0f932164472c0 100644
+--- a/ui/views/interaction/element_tracker_views.cc
++++ b/ui/views/interaction/element_tracker_views.cc
+@@ -280,7 +280,7 @@ class ElementTrackerViews::WidgetTracker : public WidgetObserver {
+   }
+ 
+   const raw_ptr<ElementTrackerViews> tracker_;
+-  const raw_ptr<Widget> widget_;
++  const raw_ptr<Widget, DanglingUntriaged> widget_;
+   bool visible_ = false;
+   base::ScopedObservation<Widget, WidgetObserver> observation_{this};
+ };

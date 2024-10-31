@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_group_editor_bubble_view.h b/chrome/browser/ui/views/tabs/tab_group_editor_bubble_view.h
+index a3a0b5fd4dc91befcb491cf60b4d7b7cfc7ecbcf..11fd4977aca68e2b6dae027c9bfeb60e00390698 100644
+--- a/chrome/browser/ui/views/tabs/tab_group_editor_bubble_view.h
++++ b/chrome/browser/ui/views/tabs/tab_group_editor_bubble_view.h
+@@ -196,7 +196,7 @@ class TabGroupEditorBubbleView : public views::BubbleDialogDelegateView {
+   // RebuildMenuContents
+   raw_ptr<TitleField> title_field_ = nullptr;
+   raw_ptr<ColorPickerView> color_selector_ = nullptr;
+-  raw_ptr<Footer> footer_ = nullptr;
++  raw_ptr<Footer, DanglingUntriaged> footer_ = nullptr;
+   raw_ptr<views::ToggleButton> save_group_toggle_ = nullptr;
+   raw_ptr<views::ImageView> save_group_icon_ = nullptr;
+   raw_ptr<views::Label> save_group_label_ = nullptr;

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/bubble/webui_bubble_manager.h b/chrome/browser/ui/views/bubble/webui_bubble_manager.h
-index edd7d37a12e182cc663db4e565b8a9edb12e0c70..e90187359fc82f33135212fb627ac07d495076d0 100644
+index edd7d37a12e182cc663db4e565b8a9edb12e0c70..043ec6578181c02b4bad4d59769287cee6f91907 100644
 --- a/chrome/browser/ui/views/bubble/webui_bubble_manager.h
 +++ b/chrome/browser/ui/views/bubble/webui_bubble_manager.h
-@@ -165,9 +165,11 @@ class WebUIBubbleManagerImpl : public WebUIBubbleManager {
+@@ -165,11 +165,13 @@ class WebUIBubbleManagerImpl : public WebUIBubbleManager {
  
   private:
    // WebUIBubbleManager:
@@ -12,5 +12,8 @@ index edd7d37a12e182cc663db4e565b8a9edb12e0c70..e90187359fc82f33135212fb627ac07d
        views::BubbleBorder::Arrow arrow) override;
 + private:
  
-   const raw_ptr<views::View> anchor_view_;
+-  const raw_ptr<views::View> anchor_view_;
++  const raw_ptr<views::View, DanglingUntriaged> anchor_view_;
    const raw_ptr<Profile, DanglingUntriaged> profile_;
+   const GURL webui_url_;
+   const int task_manager_string_id_;
