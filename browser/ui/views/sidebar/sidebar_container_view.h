@@ -10,8 +10,6 @@
 #include <optional>
 
 #include "base/memory/raw_ptr.h"
-#include "base/scoped_multi_source_observation.h"
-#include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -86,8 +84,7 @@ class SidebarContainerView
   // By using OnEntryWillHide()'s arg, we can know this hidden is from
   // closing or not. Fortunately, we can know when WillShowSidePanel()
   // is called whether it's closing from deregistration.
-  // With |show_on_deregistered|, we can stop observing OnEntryHidden().
-  void WillShowSidePanel(bool show_on_deregistered);
+  void WillShowSidePanel();
   bool IsFullscreenForCurrentEntry() const;
 
   void set_operation_from_active_tab_change(bool tab_change) {
@@ -130,8 +127,6 @@ class SidebarContainerView
   // SidePanelEntryObserver:
   void OnEntryShown(SidePanelEntry* entry) override;
   void OnEntryHidden(SidePanelEntry* entry) override;
-  void OnEntryWillHide(SidePanelEntry* entry,
-                       SidePanelEntryHideReason reason) override;
 
   // TabStripModelObserver:
   void OnTabStripModelChanged(
@@ -192,14 +187,14 @@ class SidebarContainerView
   void StopBrowserWindowEventMonitoring();
 
   void StartObservingContextualSidePanelEntry(content::WebContents* contents);
-  void StopObservingContextualSidePanelEntry(content::WebContents* contents);
-  void StartObservingForEntry(SidePanelEntry* entry);
-  void StopObservingForEntry(SidePanelEntry* entry);
   void UpdateActiveItemState();
 
   // Casts |browser_| to BraveBrowser, as storing it as BraveBrowser would cause
   // a precocious downcast.
   BraveBrowser* GetBraveBrowser() const;
+
+  void AddSidePanelEntryObservation(SidePanelEntry* entry);
+  void RemoveSidePanelEntryObservation(SidePanelEntry* entry);
 
   raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<SidePanelCoordinator> side_panel_coordinator_ = nullptr;
@@ -209,7 +204,6 @@ class SidebarContainerView
   bool initialized_ = false;
   bool sidebar_on_left_ = true;
   bool operation_from_active_tab_change_ = false;
-  bool deregister_when_hidden_ = false;
   base::OneShotTimer sidebar_hide_timer_;
   sidebar::SidebarService::ShowSidebarOption show_sidebar_option_ =
       sidebar::SidebarService::ShowSidebarOption::kShowAlways;
@@ -225,8 +219,6 @@ class SidebarContainerView
   base::ScopedObservation<sidebar::SidebarModel,
                           sidebar::SidebarModel::Observer>
       sidebar_model_observation_{this};
-  base::ScopedMultiSourceObservation<SidePanelEntry, SidePanelEntryObserver>
-      panel_entry_observations_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_CONTAINER_VIEW_H_
