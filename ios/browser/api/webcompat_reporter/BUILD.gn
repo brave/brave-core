@@ -39,6 +39,7 @@ source_set("webcompat_reporter") {
     "//components/keyed_service/ios:ios",
     "//components/pref_registry:pref_registry",
     "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/browser_state:browser_state",
     "//ios/chrome/browser/shared/model/profile:profile",
     "//mojo/public/cpp/bindings",
   ]
