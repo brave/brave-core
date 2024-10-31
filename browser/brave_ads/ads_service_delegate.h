@@ -35,7 +35,6 @@ class AdsServiceDelegate : public AdsService::Delegate {
       PrefService* local_state,
       brave_adaptive_captcha::BraveAdaptiveCaptchaService*
           adaptive_captcha_service,
-      NotificationDisplayService* notification_display_service,
       std::unique_ptr<NotificationAdPlatformBridge>
           notification_ad_platform_bridge);
 
@@ -78,13 +77,13 @@ class AdsServiceDelegate : public AdsService::Delegate {
   base::Value::Dict GetVirtualPrefs() override;
 
  private:
+  NotificationDisplayService* GetNotificationDisplayService();
+
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<PrefService> local_state_ = nullptr;
   search_engines::SearchEngineChoiceService search_engine_choice_service_;
   raw_ptr<brave_adaptive_captcha::BraveAdaptiveCaptchaService>
       adaptive_captcha_service_ = nullptr;
-  raw_ptr<NotificationDisplayService, DanglingUntriaged>
-      notification_display_service_ = nullptr;
   std::unique_ptr<NotificationAdPlatformBridge>
       notification_ad_platform_bridge_;
 };
