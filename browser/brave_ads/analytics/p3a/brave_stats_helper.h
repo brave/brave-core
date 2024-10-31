@@ -23,7 +23,7 @@ inline constexpr char kAdsEnabledInstallationTimeHistogramName[] =
 
 class BraveStatsHelper : public ProfileManagerObserver, public ProfileObserver {
  public:
-  BraveStatsHelper();
+  BraveStatsHelper(PrefService* local_state, ProfileManager* profile_manager);
   ~BraveStatsHelper() override;
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
@@ -54,8 +54,8 @@ class BraveStatsHelper : public ProfileManagerObserver, public ProfileObserver {
   base::ScopedObservation<ProfileManager, ProfileManagerObserver>
       profile_manager_observer_{this};
 
-  raw_ptr<PrefService> local_state_;
-  raw_ptr<ProfileManager, DanglingUntriaged> profile_manager_;
+  raw_ptr<PrefService> local_state_ = nullptr;         // NOT OWNED
+  raw_ptr<ProfileManager> profile_manager_ = nullptr;  // NOT OWNED
 
   base::Time testing_first_run_time_;
 };

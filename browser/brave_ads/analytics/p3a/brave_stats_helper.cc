@@ -10,7 +10,6 @@
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/pref_names.h"
@@ -25,9 +24,9 @@ const int kAdsEnabledInstallationHourBuckets[] = {0, 11, 23, 71};
 
 }  // namespace
 
-BraveStatsHelper::BraveStatsHelper()
-    : local_state_(g_browser_process->local_state()),
-      profile_manager_(g_browser_process->profile_manager()) {
+BraveStatsHelper::BraveStatsHelper(PrefService* local_state,
+                                   ProfileManager* profile_manager)
+    : local_state_(local_state), profile_manager_(profile_manager) {
 #if !BUILDFLAG(IS_ANDROID)
   last_used_profile_pref_change_registrar_.Init(local_state_);
   last_used_profile_pref_change_registrar_.Add(
