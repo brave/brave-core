@@ -261,13 +261,16 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     }
   }
 
+  enum class TestMode { kIframe, kWindowSize, kWindowPosition };
+
   void FarbleScreenPopupPosition(int j) {
     gfx::Rect parent_bounds;
     parent_bounds = SetBounds(kTestWindowBounds[j]);
     for (bool allow_fingerprinting : {false, true}) {
       SetFingerprintingSetting(allow_fingerprinting);
       ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), parent_url()));
-      for (bool test_iframe : {false, true}) {
+      for (TestMode test_mode : {TestMode::kIframe, TestMode::kWindowSize,
+                                 TestMode::kWindowPosition}) {
         const char* script =
             "open('/simple.html', '', `"
             "left=30,"
@@ -275,7 +278,7 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
             "width=${outerWidth + 20},"
             "height=${outerHeight + 20}"
             "`);";
-        Browser* popup = OpenPopup(script, test_iframe);
+        Browser* popup = OpenPopup(script, test_mode == TestMode::kIframe);
         auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
         content::WaitForLoadStop(popup_contents);
         gfx::Rect child_bounds = popup->window()->GetBounds();
@@ -292,27 +295,27 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
           EXPECT_LE(parent_bounds.width(), child_bounds.width());
           EXPECT_LE(parent_bounds.height(), child_bounds.height());
         }
-        if (!test_iframe) {
+        if (test_mode != TestMode::kIframe) {
           auto* widget = views::Widget::GetWidgetForNativeWindow(
               popup->window()->GetNativeWindow());
-
           auto bounds_before = popup->window()->GetBounds();
-          auto waiter1 = WidgetBoundsChangeWaiter(widget, 10);
-          ASSERT_TRUE(ExecJs(popup_contents,
-                             "resizeTo(outerWidth - 13, outerHeight - 14)"));
-          waiter1.Wait();
+          auto waiter = WidgetBoundsChangeWaiter(widget, 10);
+          if (test_mode == TestMode::kWindowSize) {
+            ASSERT_TRUE(ExecJs(popup_contents,
+                               "resizeTo(outerWidth - 13, outerHeight - 14)"));
+          } else {  // test_mode == TestMode::kWindowPosition
+            ASSERT_TRUE(
+                ExecJs(popup_contents, "moveTo(screenX + 11, screenY + 12)"));
+          }
+          waiter.Wait();
           auto bounds_after = popup->window()->GetBounds();
-          EXPECT_EQ(-13, bounds_after.width() - bounds_before.width());
-          EXPECT_EQ(-14, bounds_after.height() - bounds_before.height());
-
-          bounds_before = popup->window()->GetBounds();
-          auto waiter2 = WidgetBoundsChangeWaiter(widget, 10);
-          ASSERT_TRUE(
-              ExecJs(popup_contents, "moveTo(screenX + 11, screenY + 12)"));
-          waiter2.Wait();
-          bounds_after = popup->window()->GetBounds();
-          EXPECT_EQ(11, bounds_after.x() - bounds_before.x());
-          EXPECT_EQ(12, bounds_after.y() - bounds_before.y());
+          if (test_mode == TestMode::kWindowSize) {
+            EXPECT_EQ(-13, bounds_after.width() - bounds_before.width());
+            EXPECT_EQ(-14, bounds_after.height() - bounds_before.height());
+          } else {  // test_mode == TestMode::kWindowPosition
+            EXPECT_EQ(11, bounds_after.x() - bounds_before.x());
+            EXPECT_EQ(12, bounds_after.y() - bounds_before.y());
+          }
         }
       }
     }
