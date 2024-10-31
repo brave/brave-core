@@ -62,6 +62,7 @@ source_set("unittests") {
     "//brave/components/version_info",
     "//brave/components/webcompat_reporter/common:mojom",
     "//components/component_updater:test_support",
+    "//components/prefs:test_support",
     "//net",
     "//services/network:test_support",
     "//services/network/public/cpp",

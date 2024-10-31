@@ -81,6 +81,55 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
 
   PrefService* pref_service() { return &pref_service_; }
 
+  void TestSubmitWebcompatReport(const std::string contact,
+                                 const bool is_incognito) {
+    base::flat_map<std::string, std::string> key_val_data{{"key1", "val1"},
+                                                          {"key2", "val2"}};
+    std::vector<webcompat_reporter::mojom::ComponentInfoPtr> components;
+    components.push_back(
+        webcompat_reporter::mojom::ComponentInfo::New("name", "id", "version"));
+    std::vector<uint8_t> screenshot{1, 2, 3, 4};
+    auto report_info = webcompat_reporter::mojom::ReportInfo::New(
+        "channel", "brave_version", "https://abc.url/p1/p2", "true",
+        "ad_block_setting", "fp_block_setting", "ad_block_list_names",
+        "languages", "true", "true", "details", contact, std::move(components),
+        screenshot, is_incognito ? "true" : "false");
+    EXPECT_CALL(*GetMockWebcompatReportUploader(), SubmitReport(_))
+        .Times(1)
+        .WillOnce([&](webcompat_reporter::mojom::ReportInfoPtr report) {
+          EXPECT_EQ(report->channel, "channel");
+          EXPECT_EQ(report->brave_version, "brave_version");
+          EXPECT_EQ(report->report_url, "https://abc.url/p1/p2");
+          EXPECT_EQ(report->shields_enabled, "true");
+          EXPECT_EQ(report->ad_block_setting, "ad_block_setting");
+          EXPECT_EQ(report->fp_block_setting, "fp_block_setting");
+          EXPECT_EQ(report->ad_block_list_names, "ad_block_list_names");
+          EXPECT_EQ(report->languages, "languages");
+          EXPECT_EQ(report->language_farbling, "true");
+          EXPECT_EQ(report->brave_vpn_connected, "true");
+
+          EXPECT_EQ(report->details, "details");
+          EXPECT_EQ(report->contact, contact);
+
+          EXPECT_TRUE(report->ad_block_components_version);
+          EXPECT_FALSE(report->ad_block_components_version->empty());
+
+          const auto& component = report->ad_block_components_version->front();
+          EXPECT_EQ(component->id, "id");
+          EXPECT_EQ(component->name, "name");
+          EXPECT_EQ(component->version, "version");
+
+          EXPECT_TRUE(report->screenshot_png);
+          EXPECT_EQ(report->screenshot_png.value(), screenshot);
+          EXPECT_EQ(report->is_private_window, is_incognito ? "true" : "false");
+        });
+    EXPECT_CALL(*delegate_, GetChannelName).Times(0);
+    EXPECT_CALL(*delegate_, GetAdblockFilterListNames).Times(0);
+    EXPECT_CALL(*delegate_, GetComponentInfos).Times(0);
+
+    webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info));
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
@@ -90,51 +139,27 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
 };
 
 TEST_F(WebcompatReporterServiceUnitTest, SubmitReport) {
-  base::flat_map<std::string, std::string> key_val_data{{"key1", "val1"},
-                                                        {"key2", "val2"}};
-  std::vector<webcompat_reporter::mojom::ComponentInfoPtr> components;
-  components.push_back(
-      webcompat_reporter::mojom::ComponentInfo::New("name", "id", "version"));
-  std::vector<uint8_t> screenshot{1, 2, 3, 4};
-  auto report_info = webcompat_reporter::mojom::ReportInfo::New(
-      "channel", "brave_version", "https://abc.url/p1/p2", "true",
-      "ad_block_setting", "fp_block_setting", "ad_block_list_names",
-      "languages", "true", "true", "details", "contact", std::move(components),
-      screenshot);
+  pref_service()->SetBoolean(webcompat_reporter::kContactInfoSaveFlagPrefs,
+                             true);
+  const std::string contact_value = "contact";
+  TestSubmitWebcompatReport(contact_value, false);
+  EXPECT_EQ(contact_value, pref_service()->GetString(kContactInfoPrefs));
+}
 
-  EXPECT_CALL(*GetMockWebcompatReportUploader(), SubmitReport(_))
-      .Times(1)
-      .WillOnce([&](webcompat_reporter::mojom::ReportInfoPtr report) {
-        EXPECT_EQ(report->channel, "channel");
-        EXPECT_EQ(report->brave_version, "brave_version");
-        EXPECT_EQ(report->report_url, "https://abc.url/p1/p2");
-        EXPECT_EQ(report->shields_enabled, "true");
-        EXPECT_EQ(report->ad_block_setting, "ad_block_setting");
-        EXPECT_EQ(report->fp_block_setting, "fp_block_setting");
-        EXPECT_EQ(report->ad_block_list_names, "ad_block_list_names");
-        EXPECT_EQ(report->languages, "languages");
-        EXPECT_EQ(report->language_farbling, "true");
-        EXPECT_EQ(report->brave_vpn_connected, "true");
+TEST_F(WebcompatReporterServiceUnitTest, SubmitReportDoNotSaveContactInfo) {
+  pref_service()->SetBoolean(webcompat_reporter::kContactInfoSaveFlagPrefs,
+                             false);
+  const std::string contact_value = "contact";
+  TestSubmitWebcompatReport(contact_value, false);
+  EXPECT_TRUE(pref_service()->GetString(kContactInfoPrefs).empty());
+}
 
-        EXPECT_EQ(report->details, "details");
-        EXPECT_EQ(report->contact, "contact");
-
-        EXPECT_TRUE(report->ad_block_components_version);
-        EXPECT_FALSE(report->ad_block_components_version->empty());
-
-        const auto& component = report->ad_block_components_version->front();
-        EXPECT_EQ(component->id, "id");
-        EXPECT_EQ(component->name, "name");
-        EXPECT_EQ(component->version, "version");
-
-        EXPECT_TRUE(report->screenshot_png);
-        EXPECT_EQ(report->screenshot_png.value(), screenshot);
-      });
-  EXPECT_CALL(*delegate_, GetChannelName).Times(0);
-  EXPECT_CALL(*delegate_, GetAdblockFilterListNames).Times(0);
-  EXPECT_CALL(*delegate_, GetComponentInfos).Times(0);
-
-  webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info));
+TEST_F(WebcompatReporterServiceUnitTest, SubmitReportIncognito) {
+  pref_service()->SetBoolean(webcompat_reporter::kContactInfoSaveFlagPrefs,
+                             true);
+  const std::string contact_value = "contact";
+  TestSubmitWebcompatReport(contact_value, true);
+  EXPECT_EQ("", pref_service()->GetString(kContactInfoPrefs));
 }
 
 TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
