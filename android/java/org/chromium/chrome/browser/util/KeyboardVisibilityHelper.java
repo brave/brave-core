@@ -11,9 +11,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 
 public class KeyboardVisibilityHelper {
-    private final View rootView;
-    private final KeyboardVisibilityListener listener;
-    private boolean isKeyboardVisible;
+    private boolean mIsKeyboardVisible;
 
     public interface KeyboardVisibilityListener {
         void onKeyboardOpened(int keyboardHeight);
@@ -22,8 +20,7 @@ public class KeyboardVisibilityHelper {
     }
 
     public KeyboardVisibilityHelper(Activity activity, KeyboardVisibilityListener listener) {
-        this.rootView = activity.findViewById(android.R.id.content);
-        this.listener = listener;
+        View rootView = activity.findViewById(android.R.id.content);
 
         rootView.getViewTreeObserver()
                 .addOnGlobalLayoutListener(
@@ -37,10 +34,10 @@ public class KeyboardVisibilityHelper {
                                 int heightDifference = screenHeight - visibleHeight;
 
                                 boolean keyboardVisible = heightDifference > screenHeight * 0.15;
-                                if (keyboardVisible != isKeyboardVisible) {
-                                    isKeyboardVisible = keyboardVisible;
-                                    // rootView.setPadding(0, 0, 0, keyboardVisible ?
-                                    // heightDifference : 0);
+                                if (keyboardVisible != mIsKeyboardVisible) {
+                                    mIsKeyboardVisible = keyboardVisible;
+                                    rootView.setPadding(
+                                            0, 0, 0, keyboardVisible ? heightDifference : 0);
                                     if (keyboardVisible) {
                                         listener.onKeyboardOpened(heightDifference);
                                     } else {

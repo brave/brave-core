@@ -374,7 +374,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     public String getLocationBarQuery() {
         if (getLocationBar() instanceof BraveLocationBarCoordinator) {
             String query =
-                    ((BraveLocationBarCoordinator) getLocationBar()).getUrlBarTextWithoutAutocomplete();
+                    ((BraveLocationBarCoordinator) getLocationBar())
+                            .getUrlBarTextWithoutAutocomplete();
             return query;
         }
         return "";

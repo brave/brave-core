@@ -21,6 +21,7 @@
                android:id="@+id/search_engine_logo"
                android:layout_width="24dp"
                android:layout_height="24dp"
+               android:layout_marginEnd="16dp"
                android:layout_gravity="center_vertical"
                android:contentDescription="@null"/>
 
@@ -31,7 +32,7 @@
                android:layout_weight="1"
                style="@style/LargeRegular"
                android:layout_gravity="center_vertical"
-               android:layout_marginHorizontal="16dp"
+               android:layout_marginEnd="16dp"
                android:textColor="@color/text_primary"/>
 
           <com.google.android.material.materialswitch.MaterialSwitch

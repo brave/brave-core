@@ -46,7 +46,7 @@ public class QuickSearchEnginesUtil {
                 .readBoolean(BravePreferenceKeys.BRAVE_QUICK_SEARCH_ENGINES_FEATURE, true);
     }
 
-    public static List<QuickSearchEngineModel> getQuickSearchEngines(Profile profile) {
+    private static Map<String, QuickSearchEngineModel> getQuickSearchEngines(Profile profile) {
         TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(profile);
         List<TemplateUrl> templateUrls = templateUrlService.getTemplateUrls();
         TemplateUrl defaultSearchEngineTemplateUrl =
@@ -56,7 +56,6 @@ public class QuickSearchEnginesUtil {
                 defaultSearchEngineTemplateUrl,
                 templateUrlService.isEeaChoiceCountry());
 
-        List<QuickSearchEngineModel> quickSearchEngines = new ArrayList<>();
         Map<String, QuickSearchEngineModel> searchEnginesMap =
                 getQuickSearchEnginesFromPref() != null
                         ? getQuickSearchEnginesFromPref()
@@ -73,6 +72,29 @@ public class QuickSearchEnginesUtil {
             }
         }
         saveSearchEnginesIntoPref(searchEnginesMap);
+        return searchEnginesMap;
+    }
+
+    public static List<QuickSearchEngineModel> getQuickSearchEnginesForSettings(Profile profile) {
+        Map<String, QuickSearchEngineModel> searchEnginesMap = getQuickSearchEngines(profile);
+        TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(profile);
+        TemplateUrl defaultSearchEngineTemplateUrl =
+                templateUrlService.getDefaultSearchEngineTemplateUrl();
+        List<QuickSearchEngineModel> quickSearchEngines = new ArrayList<>();
+        for (Map.Entry<String, QuickSearchEngineModel> entry : searchEnginesMap.entrySet()) {
+            QuickSearchEngineModel quickSearchEngineModel = entry.getValue();
+            if (!quickSearchEngineModel
+                    .getKeyword()
+                    .equals(defaultSearchEngineTemplateUrl.getKeyword())) {
+                quickSearchEngines.add(quickSearchEngineModel);
+            }
+        }
+        return quickSearchEngines;
+    }
+
+    public static List<QuickSearchEngineModel> getQuickSearchEnginesForView(Profile profile) {
+        Map<String, QuickSearchEngineModel> searchEnginesMap = getQuickSearchEngines(profile);
+        List<QuickSearchEngineModel> quickSearchEngines = new ArrayList<>();
         for (Map.Entry<String, QuickSearchEngineModel> entry : searchEnginesMap.entrySet()) {
             QuickSearchEngineModel quickSearchEngineModel = entry.getValue();
             if (quickSearchEngineModel.isEnabled()) {
@@ -80,5 +102,15 @@ public class QuickSearchEnginesUtil {
             }
         }
         return quickSearchEngines;
+    }
+
+    public static QuickSearchEngineModel getDefaultSearchEngine(Profile profile) {
+        Map<String, QuickSearchEngineModel> searchEnginesMap = getQuickSearchEngines(profile);
+        TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(profile);
+        TemplateUrl defaultSearchEngineTemplateUrl =
+                templateUrlService.getDefaultSearchEngineTemplateUrl();
+        QuickSearchEngineModel defaultSearchEngineModel =
+                searchEnginesMap.get(defaultSearchEngineTemplateUrl.getKeyword());
+        return defaultSearchEngineModel;
     }
 }

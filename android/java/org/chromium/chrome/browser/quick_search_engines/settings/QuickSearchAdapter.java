@@ -76,7 +76,6 @@ public class QuickSearchAdapter extends RecyclerView.Adapter<QuickSearchViewHold
                     public boolean onLongClick(View v) {
                         setEditMode(true);
                         mQuickSearchCallback.onSearchEngineLongClick();
-                        // notifyDataSetChanged();
                         return true;
                     }
                 });
