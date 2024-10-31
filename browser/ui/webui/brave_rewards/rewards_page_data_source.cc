@@ -271,6 +271,7 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"removeButtonLabel", IDS_REWARDS_REMOVE_BUTTON_LABEL},
     {"resetButtonLabel", IDS_BRAVE_UI_RESET},
     {"resetConsentText", IDS_BRAVE_UI_REWARDS_RESET_CONSENT},
+    {"resetRewardsButtonLabel", IDS_REWARDS_RESET_REWARDS_BUTTON_LABEL},
     {"resetRewardsText", IDS_BRAVE_UI_REWARDS_RESET_TEXT},
     {"resetRewardsTitle", IDS_BRAVE_UI_RESET_WALLET},
     {"rewardsPageTitle", IDS_REWARDS_PAGE_TITLE},
