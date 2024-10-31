@@ -22,6 +22,8 @@ bool NeedsToGetComponentInfo(std::string_view component_id);
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
+std::string BoolToString(bool value);
+
 }  // namespace webcompat_reporter
 
 #endif  // BRAVE_COMPONENTS_WEBCOMPAT_REPORTER_BROWSER_WEBCOMPAT_REPORTER_UTILS_H_

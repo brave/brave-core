@@ -172,8 +172,6 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   misc_metrics::GeneralBrowserUsage::RegisterPrefs(registry);
 
   playlist::PlaylistServiceFactory::RegisterLocalStatePrefs(registry);
-
-  webcompat_reporter::RegisterLocalStatePrefs(registry);
 }
 
 }  // namespace brave

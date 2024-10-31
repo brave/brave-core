@@ -149,6 +149,10 @@ public class BraveShieldsHandler
         return cont;
     }
 
+    private static String BoolToString(boolean val) {
+        return val ? "true" : "false";
+    }
+
     /**
      * Constructs a BraveShieldsHandler object.
      * @param context Context that is using the BraveShieldsMenu.
@@ -845,7 +849,9 @@ public class BraveShieldsHandler
                 });
         mWebcompatReporterHandler.getContactInfo(
                 contactInfo -> {
-                    if (contactInfo != null && !contactInfo.isEmpty()) {
+                    Tab currentActiveTab = mIconFetcher.getTab();
+                    final boolean isPrivateWindow = currentActiveTab != null ? currentActiveTab.isIncognito() : false;
+                    if (contactInfo != null && !contactInfo.isEmpty() && !isPrivateWindow) {
                         mEditTextContact.setText(contactInfo);
                     }
                 });
@@ -859,6 +865,8 @@ public class BraveShieldsHandler
         reportInfo.screenshotPng = isScreenshotAvailable() ? mScreenshotBytes : null;
         reportInfo.details = mEditTextDetails.getText().toString();
         reportInfo.contact = mEditTextContact.getText().toString();
+        Tab currentActiveTab = mIconFetcher.getTab();
+        reportInfo.isPrivateWindow = BoolToString(currentActiveTab != null ? currentActiveTab.isIncognito() : false);
         return reportInfo;
     }
 

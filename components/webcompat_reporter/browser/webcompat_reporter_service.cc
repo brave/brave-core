@@ -88,13 +88,21 @@ struct ReportFiller {
       service_delegate;
 };
 
+bool IsPrivateWindow(
+    const webcompat_reporter::mojom::ReportInfoPtr& report_info) {
+  return report_info->is_private_window.value_or(
+             webcompat_reporter::BoolToString(false)) ==
+         webcompat_reporter::BoolToString(true);
+}
+
 void ProcessContactInfo(
     PrefService* profile_prefs,
     const webcompat_reporter::mojom::ReportInfoPtr& report_info) {
   if (!profile_prefs) {
     return;
   }
-  if (!report_info->contact || report_info->contact->empty()) {
+  if (!report_info->contact || report_info->contact->empty() ||
+      IsPrivateWindow(report_info)) {
     return;
   }
   profile_prefs->SetString(

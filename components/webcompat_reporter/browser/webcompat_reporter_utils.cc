@@ -38,13 +38,13 @@ bool NeedsToGetComponentInfo(std::string_view component_id) {
   return base::Contains(kComponentIds, component_id);
 }
 
-void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-  //  registry->RegisterBooleanPref(kContactInfoSaveFlagPrefs, true);
-}
-
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kContactInfoSaveFlagPrefs, true);
   registry->RegisterStringPref(kContactInfoPrefs, "");
+}
+
+std::string BoolToString(bool value) {
+  return value ? "true" : "false";
 }
 
 }  // namespace webcompat_reporter

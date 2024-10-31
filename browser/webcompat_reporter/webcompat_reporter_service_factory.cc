@@ -62,7 +62,6 @@ WebcompatReporterServiceFactory::BuildServiceInstanceForBrowserContext(
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess());
   return std::make_unique<WebcompatReporterService>(
       Profile::FromBrowserContext(context)->GetPrefs(),
-      // g_browser_process->local_state(),
       std::make_unique<WebcompatReporterServiceDelegateImpl>(
           g_browser_process->component_updater(),
           g_brave_browser_process->ad_block_service()),

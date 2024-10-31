@@ -13,8 +13,10 @@
 #include "base/test/task_environment.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
+#include "brave/components/webcompat_reporter/browser/webcompat_reporter_utils.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom-forward.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom.h"
+#include "components/prefs/testing_pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -64,10 +66,12 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
   ~WebcompatReporterServiceUnitTest() override = default;
 
   void SetUp() override {
+    RegisterProfilePrefs(pref_service_.registry());
     auto delegate = std::make_unique<MockWebCompatServiceDelegate>();
     delegate_ = delegate.get();
     webcompat_reporter_service_ = std::make_unique<WebcompatReporterService>(
-        std::move(delegate), std::make_unique<MockWebcompatReportUploader>());
+        pref_service(), std::move(delegate),
+        std::make_unique<MockWebcompatReportUploader>());
   }
 
   MockWebcompatReportUploader* GetMockWebcompatReportUploader() {
@@ -75,11 +79,14 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
         webcompat_reporter_service_->report_uploader_.get());
   }
 
+  PrefService* pref_service() { return &pref_service_; }
+
  protected:
-  raw_ptr<MockWebCompatServiceDelegate, DanglingUntriaged> delegate_;
-  std::unique_ptr<WebcompatReporterService> webcompat_reporter_service_;
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
+  TestingPrefServiceSimple pref_service_;
+  raw_ptr<MockWebCompatServiceDelegate, DanglingUntriaged> delegate_;
+  std::unique_ptr<WebcompatReporterService> webcompat_reporter_service_;
 };
 
 TEST_F(WebcompatReporterServiceUnitTest, SubmitReport) {

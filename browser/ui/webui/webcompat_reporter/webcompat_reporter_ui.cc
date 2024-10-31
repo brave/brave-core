@@ -54,10 +54,6 @@ namespace {
 constexpr char kUISourceHistogramName[] = "Brave.Webcompat.UISource";
 constexpr int kMaxScreenshotPixelCount = 1280 * 720;
 
-std::string BoolToString(bool value) {
-  return value ? "true" : "false";
-}
-
 }  // namespace
 
 WebcompatReporterDOMHandler::WebcompatReporterDOMHandler(Profile* profile)
@@ -97,6 +93,8 @@ void WebcompatReporterDOMHandler::InitAdditionalParameters(Profile* profile) {
   pending_report_->language_farbling = BoolToString(
       profile_prefs->GetBoolean(brave_shields::prefs::kReduceLanguageEnabled));
   pending_report_->channel = brave::GetChannelName();
+  pending_report_->is_private_window =
+      BoolToString(profile->IsIncognitoProfile());
 }
 
 WebcompatReporterDOMHandler::~WebcompatReporterDOMHandler() = default;
@@ -221,7 +219,8 @@ void WebcompatReporterDOMHandler::HandleGetSavedContactInfo(
 
   AllowJavascript();
 
-  if (!reporter_service_) {
+  if (!reporter_service_ ||
+      pending_report_->is_private_window == BoolToString(true)) {
     RejectJavascriptCallback(args[0], {});
     return;
   }
