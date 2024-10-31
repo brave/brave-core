@@ -11,7 +11,7 @@ import {
   externalWalletProviderFromString
 } from '../../shared/lib/external_wallet'
 
-import { AppModel, AppState, Notification, defaultState } from './app_model'
+import { AppModel, AppState, Notification, defaultState } from '../lib/app_model'
 import { RewardsPageProxy } from './rewards_page_proxy'
 import { createStateManager } from '../../shared/lib/state_manager'
 import { createAdsHistoryAdapter } from './ads_history_adapter'
