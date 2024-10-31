@@ -324,8 +324,14 @@ public class BraveShieldsHandler
     }
 
     private void initWebcompatReporterService() {
+        if (mWebcompatReporterHandler != null) {
+            mWebcompatReporterHandler.close();
+        }
+        Tab currentActiveTab = mIconFetcher.getTab();
+        final boolean isPrivateWindow =
+                            currentActiveTab != null ? currentActiveTab.isIncognito() : false;
         mWebcompatReporterHandler =
-                WebcompatReporterServiceFactory.getInstance().getWebcompatReporterHandler(this);
+                WebcompatReporterServiceFactory.getInstance().getWebcompatReporterHandler(this, isPrivateWindow);
     }
 
     public void updateUrlSpec(String urlSpec) {
@@ -850,10 +856,7 @@ public class BraveShieldsHandler
                 });
         mWebcompatReporterHandler.getContactInfo(
                 contactInfo -> {
-                    Tab currentActiveTab = mIconFetcher.getTab();
-                    final boolean isPrivateWindow =
-                            currentActiveTab != null ? currentActiveTab.isIncognito() : false;
-                    if (contactInfo != null && !contactInfo.isEmpty() && !isPrivateWindow) {
+                    if (contactInfo != null && !contactInfo.isEmpty()) {
                         mEditTextContact.setText(contactInfo);
                     }
                 });

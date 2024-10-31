@@ -167,6 +167,7 @@ void WebcompatReporterService::SetContactInfoSaveFlag(bool value) {
 void WebcompatReporterService::GetContactInfoSaveFlag(
     GetContactInfoSaveFlagCallback callback) {
   if (!profile_prefs_) {
+    std::move(callback).Run(false);
     return;
   }
   auto save_flag_value =
@@ -176,6 +177,7 @@ void WebcompatReporterService::GetContactInfoSaveFlag(
 
 void WebcompatReporterService::GetContactInfo(GetContactInfoCallback callback) {
   if (!profile_prefs_) {
+    std::move(callback).Run(std::nullopt);
     return;
   }
   auto save_flag_value =

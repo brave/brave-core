@@ -219,8 +219,7 @@ void WebcompatReporterDOMHandler::HandleGetSavedContactInfo(
 
   AllowJavascript();
 
-  if (!reporter_service_ ||
-      pending_report_->is_private_window == BoolToString(true)) {
+  if (!reporter_service_) {
     RejectJavascriptCallback(args[0], {});
     return;
   }

@@ -213,9 +213,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         if (mWebcompatReporterHandler != null) {
             return;
         }
-        Log.i("[WEBCOMPAT]", "initWebcompatReporterHandler");
         mWebcompatReporterHandler =
-                WebcompatReporterServiceFactory.getInstance().getWebcompatReporterHandler(this);
+                WebcompatReporterServiceFactory.getInstance().getWebcompatReporterHandler(this, false);
     }
 
     @Override
@@ -507,12 +506,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(BravePref.REDUCE_LANGUAGE_ENABLED, (boolean) newValue);
         } else if (PREF_SHIELDS_SAVE_CONTACT_INFO.equals(key)) {
-            Log.i(
-                    "[WEBCOMPAT]",
-                    "PREF_SHIELDS_SAVE_CONTACT_INFO mWebcompatReporterHandler!= null:"
-                            + (mWebcompatReporterHandler != null)
-                            + " newValue:"
-                            + (newValue != null ? newValue.toString() : "n/a"));
             mWebcompatReporterHandler.setContactInfoSaveFlag((boolean) newValue);
         } else if (PREF_BLOCK_CROSS_SITE_COOKIES.equals(key)) {
             switch ((int) newValue) {
