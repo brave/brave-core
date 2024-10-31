@@ -80,6 +80,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveShieldsBlockScript", IDS_BRAVE_SHIELDS_SCRIPT_BLOCK},
     {"braveShieldsAllowScriptsAll", IDS_BRAVE_SHIELDS_ALLOW_SCRIPTS_ALL},
     {"braveShieldsBlockScriptsAll", IDS_BRAVE_SHIELDS_BLOCK_SCRIPTS_ALL}};
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELD_LOCALIZED_STRINGS_H_

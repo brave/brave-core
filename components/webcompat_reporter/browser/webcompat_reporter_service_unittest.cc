@@ -83,6 +83,9 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
 
   void TestSubmitWebcompatReport(const std::string contact,
                                  const bool is_incognito) {
+    if (is_incognito) {
+      webcompat_reporter_service_->SetPrefServiceTest(nullptr);
+    }
     base::flat_map<std::string, std::string> key_val_data{{"key1", "val1"},
                                                           {"key2", "val2"}};
     std::vector<webcompat_reporter::mojom::ComponentInfoPtr> components;

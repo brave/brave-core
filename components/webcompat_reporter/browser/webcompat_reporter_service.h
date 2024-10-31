@@ -65,6 +65,7 @@ class WebcompatReporterService : public KeyedService,
 
  private:
   friend class WebcompatReporterServiceUnitTest;
+  void SetPrefServiceTest(PrefService* pref_service);
 
   raw_ptr<PrefService> profile_prefs_;
   std::unique_ptr<Delegate> service_delegate_;

@@ -8,7 +8,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
-#include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
@@ -65,8 +64,6 @@ class DefaultBraveShieldsHandler
                                 const bool contact_info_save_flag);
 
   raw_ptr<Profile> profile_ = nullptr;
-  raw_ptr<webcompat_reporter::WebcompatReporterService>
-      webcompat_reporter_service_;
 
   base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
       content_settings_observation_{this};

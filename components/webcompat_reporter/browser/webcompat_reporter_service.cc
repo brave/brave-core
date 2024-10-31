@@ -184,4 +184,8 @@ void WebcompatReporterService::GetContactInfo(GetContactInfoCallback callback) {
   std::move(callback).Run(std::move(contact_value));
 }
 
+void WebcompatReporterService::SetPrefServiceTest(PrefService* pref_service) {
+  profile_prefs_ = pref_service;
+}
+
 }  // namespace webcompat_reporter
