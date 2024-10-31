@@ -114,7 +114,7 @@ function MoreMenu(props: { children: React.ReactNode }) {
         !isBubble &&
           <leo-menu-item class='reset' onClick={onReset}>
             <Icon name='history' />
-            <span>{getString('resetButtonLabel')}</span>
+            <span>{getString('resetRewardsButtonLabel')}</span>
           </leo-menu-item>
       }
     </ButtonMenu>

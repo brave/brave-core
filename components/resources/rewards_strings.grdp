@@ -13,6 +13,9 @@
   <message name="IDS_BRAVE_UI_REWARDS_RESET_CONSENT" desc="">
     I understand that my current Brave Rewards profile and Brave Rewards data will be deleted from my device, and I've read the <ph name="LINK_BEGIN">$1</ph>support article about resetting<ph name="LINK_END">$2</ph>.
   </message>
+  <message name="IDS_REWARDS_RESET_REWARDS_BUTTON_LABEL" desc="">
+    Disable and reset Rewards
+  </message>
 
   <!-- Payout status banner -->
   <message name="IDS_REWARDS_PAYMENT_CHECK_STATUS" desc="">

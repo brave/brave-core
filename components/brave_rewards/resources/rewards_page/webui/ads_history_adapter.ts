@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { AdsHistoryItem, AdLikeStatus } from './app_model'
+import { AdsHistoryItem, AdLikeStatus } from '../lib/app_model'
 
 // Currently, the Ads service provides Ads history data as untyped `base::Value`
 // (JSON) data. In order to interact with these history items, the caller must
