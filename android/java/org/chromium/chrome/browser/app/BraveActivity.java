@@ -668,9 +668,7 @@ public abstract class BraveActivity extends ChromeActivity
                                     // if the pending requests reach the end of the chain
                                     // without returning earlier.
                                     final Runnable openWalletPanelRunnable =
-                                            () -> {
-                                                getBraveToolbarLayout().showWalletPanel();
-                                            };
+                                            () -> getBraveToolbarLayout().showWalletPanel();
                                     maybeShowSignSolTransactionsRequestLayout(
                                             openWalletPanelRunnable);
                                 }

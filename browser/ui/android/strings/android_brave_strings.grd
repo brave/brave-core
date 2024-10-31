@@ -2207,6 +2207,12 @@ Are you sure you want to do this?
     <message name="IDS_ACCOUNT_NAME" desc="Brave wallet accounts text">
       Account Name
     </message>
+    <message name="IDS_WALLET_CHANGE_OWNERSHIP_WARNING" desc="Brave Wallet warning title displayed when requesting a change of ownership">
+      Account ownership change requested
+    </message>
+    <message name="IDS_WALLET_CHANGE_OWNERSHIP_DESCRIPTION" desc="Brave Wallet warning description displayed when requesting a change of ownership">
+      This transaction will reassign ownership of the account to a new program. This action is irreversible and may result in loss of funds.
+    </message>
     <message name="IDS_ACCOUNT_NAME_TEXT" desc="Brave wallet accounts text">
       You can create a secondary account by importing your private key.
     </message>

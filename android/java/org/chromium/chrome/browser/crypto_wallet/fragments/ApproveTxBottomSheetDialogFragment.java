@@ -208,6 +208,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         assert jsonRpcService != null && keyringService != null;
 
         TextView networkName = view.findViewById(R.id.network_name);
+        mRejectAllTx = view.findViewById(R.id.btn_reject_transactions);
         if (mTxInfo.txType
                 == TransactionType
                         .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION) {
@@ -320,7 +321,6 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                                 mTransactionConfirmationListener.onNextTransaction();
                             }
                         });
-                mRejectAllTx = view.findViewById(R.id.btn_reject_transactions);
                 mRejectAllTx.setVisibility(View.VISIBLE);
                 mRejectAllTx.setOnClickListener(
                         v -> {
@@ -391,6 +391,9 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
     }
 
     private void refreshListContentUi() {
+        if (mTransactionInfos == null) {
+            return;
+        }
         mRejectAllTx.setText(
                 getString(
                         R.string.brave_wallet_queue_reject_all,
@@ -428,6 +431,10 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
             txType.setText(getResources().getString(R.string.swap));
         } else if (parsedTx.isSolanaDappTransaction) {
             txType.setText(R.string.brave_wallet_approve_transaction);
+            if (parsedTx.isSolChangeOfOwnership()) {
+                view.findViewById(R.id.warning_container).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.tab_top_space).setVisibility(View.GONE);
+            }
         } else {
             txType.setText(getResources().getString(R.string.send));
         }
