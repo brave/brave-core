@@ -24,13 +24,16 @@ const observer = {
   }
 }
 
-const serviceObserver = new ServiceObserverReceiver(observer)
-getWidgetBrowserAPI().serviceHandler.addObserver(
-  serviceObserver.$.bindNewPipeAndPassRemote())
-
-getWidgetBrowserAPI().serviceHandler.initialize();
-
 const handler = new AsyncActionHandler()
+
+handler.on(Actions.initialize.getType(),
+  async (store) => {
+    const serviceObserver = new ServiceObserverReceiver(observer)
+    getWidgetBrowserAPI().serviceHandler.addObserver(
+    serviceObserver.$.bindNewPipeAndPassRemote())
+    getWidgetBrowserAPI().serviceHandler.initialize();
+  }
+)
 
 handler.on(Actions.launchVPNPanel.getType(),
   async (store) => {

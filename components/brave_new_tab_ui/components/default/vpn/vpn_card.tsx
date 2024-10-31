@@ -163,6 +163,11 @@ export const VPNWidget = ({
   selectedRegion
 }: BraveVPNState) => {
   const dispatch = useDispatch()
+
+  React.useEffect(() => {
+    dispatch(Actions.initialize())
+  }, [])
+
   return (
     <>
       <VPNWidgetHeader />
