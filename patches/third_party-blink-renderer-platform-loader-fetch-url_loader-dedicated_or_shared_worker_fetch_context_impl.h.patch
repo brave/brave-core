@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/platform/loader/fetch/url_loader/dedicated_or_shared_worker_fetch_context_impl.h b/third_party/blink/renderer/platform/loader/fetch/url_loader/dedicated_or_shared_worker_fetch_context_impl.h
+index b95a25fe3ba9c62bb3948dee586fdb681e35839d..7c39305115b0a46501464896e1a73156ab143154 100644
+--- a/third_party/blink/renderer/platform/loader/fetch/url_loader/dedicated_or_shared_worker_fetch_context_impl.h
++++ b/third_party/blink/renderer/platform/loader/fetch/url_loader/dedicated_or_shared_worker_fetch_context_impl.h
+@@ -301,7 +301,7 @@ class BLINK_PLATFORM_EXPORT DedicatedOrSharedWorkerFetchContextImpl final
+   std::unique_ptr<WeakWrapperResourceLoadInfoNotifier>
+       weak_wrapper_resource_load_info_notifier_;
+ 
+-  raw_ptr<AcceptLanguagesWatcher> accept_languages_watcher_ = nullptr;
++  raw_ptr<AcceptLanguagesWatcher, DanglingUntriaged> accept_languages_watcher_ = nullptr;
+ };
+ 
+ template <>

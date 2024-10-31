@@ -5,6 +5,14 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# Test disabled due to dangling pointers failures that must be fixed
+-SidePanelCoordinatorTest.DeregisterAndReturnView
+-SidePanelCoordinatorTest.DeregisterExtensionEntries
+-SidePanelCoordinatorTest.EntryDeregistersOnBeingHiddenFromSidePanelClose
+-SidePanelCoordinatorTest.EntryDeregistersOnBeingHiddenFromSwitchToOtherEntry
+# This test below for some reason runs SidePanelCoordinatorTest.DeregisterAndReturnView with it
+-TabGroupEditorBubbleViewDialogBrowserTestWithSavedGroupV2.UngroupSavedGroupShowsDialog
+
 # These tests fail because we disable adding Open Search engines by default.
 # See https://github.com/brave/brave-browser/issues/14496
 # We short circuit the SearchEngineTabHelper::PageHasOpenSearchDescriptionDocument

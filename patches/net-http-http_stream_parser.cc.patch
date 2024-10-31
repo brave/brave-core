@@ -1,0 +1,14 @@
+diff --git a/net/http/http_stream_parser.cc b/net/http/http_stream_parser.cc
+index 9ec1d666d9cc1f5dcdc9bcb326318b386bbb2970..4de4b50182cee964814c1a6dd3510b58c3851caf 100644
+--- a/net/http/http_stream_parser.cc
++++ b/net/http/http_stream_parser.cc
+@@ -172,7 +172,8 @@ class HttpStreamParser::SeekableIOBuffer : public IOBufferWithSize {
+     data_ = real_data_;
+   }
+ 
+-  raw_ptr<char, AllowPtrArithmetic> real_data_;
++  // DanglingUntriaged because it is assigned a DanglingUntriaged pointer.
++  raw_ptr<char, AcrossTasksDanglingUntriaged | AllowPtrArithmetic> real_data_;
+   const int capacity_;
+   int size_ = 0;
+   int used_ = 0;
