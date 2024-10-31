@@ -3,12 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include <algorithm>
 
 #include "base/files/file_path.h"
@@ -28,7 +22,6 @@
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
-#include "net/test/embedded_test_server/http_request.h"
 #include "third_party/blink/public/common/features.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_observer.h"
@@ -150,8 +143,8 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void FarbleScreenSize(const GURL& url, bool content_scheme) {
-    for (int j = 0; j < static_cast<int>(std::size(kTestWindowBounds)); ++j) {
-      SetBounds(kTestWindowBounds[j]);
+    for (const auto& test_bounds : kTestWindowBounds) {
+      SetBounds(test_bounds);
       for (bool allow_fingerprinting : {false, true}) {
         SetFingerprintingSetting(allow_fingerprinting);
         ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -210,8 +203,8 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
   void FarbleWindowPosition() {
     for (bool allow_fingerprinting : {false, true}) {
       SetFingerprintingSetting(allow_fingerprinting);
-      for (int i = 0; i < static_cast<int>(std::size(kTestWindowBounds)); ++i) {
-        SetBounds(kTestWindowBounds[i]);
+      for (const auto& bounds : kTestWindowBounds) {
+        SetBounds(bounds);
         ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), parent_url()));
         for (bool test_iframe : {false, true}) {
           content::RenderFrameHost* host = test_iframe ? Parent() : IFrame();
@@ -227,10 +220,10 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
                                 "testEvent.screenY - devicePixelRatio * "
                                 "testEvent.clientY"));
           } else {
-            if (kTestWindowBounds[i].x() > 8) {
+            if (bounds.x() > 8) {
               EXPECT_LT(8, EvalJs(host, "window.screenX"));
             }
-            if (kTestWindowBounds[i].y() > 8) {
+            if (bounds.y() > 8) {
               EXPECT_LT(8, EvalJs(host, "window.screenY"));
             }
           }
@@ -240,8 +233,8 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void FarbleScreenMediaQuery() {
-    for (int j = 0; j < static_cast<int>(std::size(kTestWindowBounds)); ++j) {
-      SetBounds(kTestWindowBounds[j]);
+    for (const auto& bounds : kTestWindowBounds) {
+      SetBounds(bounds);
       for (bool allow_fingerprinting : {false, true}) {
         SetFingerprintingSetting(allow_fingerprinting);
         ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), parent_url()));
@@ -266,9 +259,8 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
 
   enum class TestMode { kIframe, kWindowSize, kWindowPosition };
 
-  void FarbleScreenPopupPosition(int j) {
-    gfx::Rect parent_bounds;
-    parent_bounds = SetBounds(kTestWindowBounds[j]);
+  void FarbleScreenPopupPosition(const gfx::Rect& bounds) {
+    const gfx::Rect parent_bounds = SetBounds(bounds);
     for (bool allow_fingerprinting : {false, true}) {
       SetFingerprintingSetting(allow_fingerprinting);
       ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), parent_url()));
@@ -288,10 +280,10 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
         if (!allow_fingerprinting && !IsFlagDisabled()) {
           EXPECT_GE(child_bounds.x(), parent_bounds.x());
           EXPECT_GE(child_bounds.y(), parent_bounds.y());
-          int maxWidth = 10 + std::max(450, parent_bounds.width());
-          int maxHeight = 10 + std::max(450, parent_bounds.width());
-          EXPECT_GE(maxWidth, child_bounds.width());
-          EXPECT_GE(maxHeight, child_bounds.height());
+          int max_width = 10 + std::max(450, parent_bounds.width());
+          int max_height = 10 + std::max(450, parent_bounds.width());
+          EXPECT_GE(max_width, child_bounds.width());
+          EXPECT_GE(max_height, child_bounds.height());
         } else {
           EXPECT_LE(child_bounds.x(), std::max(80, 10 + parent_bounds.x()));
           EXPECT_LE(child_bounds.y(), std::max(80, 10 + parent_bounds.y()));
@@ -392,42 +384,42 @@ IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_DisableFlag,
 
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
                        FarbleScreenPopupPosition_EnableFlag_0) {
-  FarbleScreenPopupPosition(0);
+  FarbleScreenPopupPosition(kTestWindowBounds[0]);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_DisableFlag,
                        FarbleScreenPopupPosition_DisableFlag_0) {
-  FarbleScreenPopupPosition(0);
+  FarbleScreenPopupPosition(kTestWindowBounds[0]);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
                        FarbleScreenPopupPosition_EnableFlag_1) {
-  FarbleScreenPopupPosition(1);
+  FarbleScreenPopupPosition(kTestWindowBounds[1]);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_DisableFlag,
                        FarbleScreenPopupPosition_DisableFlag_1) {
-  FarbleScreenPopupPosition(1);
+  FarbleScreenPopupPosition(kTestWindowBounds[1]);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
                        FarbleScreenPopupPosition_EnableFlag_2) {
-  FarbleScreenPopupPosition(2);
+  FarbleScreenPopupPosition(kTestWindowBounds[2]);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_DisableFlag,
                        FarbleScreenPopupPosition_DisableFlag_2) {
-  FarbleScreenPopupPosition(2);
+  FarbleScreenPopupPosition(kTestWindowBounds[2]);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
                        FarbleScreenPopupPosition_EnableFlag_3) {
-  FarbleScreenPopupPosition(3);
+  FarbleScreenPopupPosition(kTestWindowBounds[3]);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_DisableFlag,
                        FarbleScreenPopupPosition_DisableFlag_3) {
-  FarbleScreenPopupPosition(3);
+  FarbleScreenPopupPosition(kTestWindowBounds[3]);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
