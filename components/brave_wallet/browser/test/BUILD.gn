@@ -147,6 +147,7 @@ source_set("brave_wallet_unit_tests") {
     "//components/prefs",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
+    "//components/update_client",
     "//net:test_support",
     "//services/data_decoder/public/cpp:test_support",
     "//services/network:test_support",

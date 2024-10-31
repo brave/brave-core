@@ -29,9 +29,9 @@ NSString* const kWebcompatReportEndpoint =
   raw_ptr<PrefService> _profilePrefs;
 }
 
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)browserState {
+- (instancetype)initWithBrowserState:(ProfileIOS*)profile {
   if ((self = [super init])) {
-    _profilePrefs = browserState->GetPrefs();
+    _profilePrefs = profile->GetPrefs();
     _localPrefs = GetApplicationContext()->GetLocalState();
   }
   return self;

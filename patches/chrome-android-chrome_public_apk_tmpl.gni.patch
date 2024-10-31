@@ -1,8 +1,8 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index 22701454051942b21cdcd6c171e37579dc6166a7..129b9806c595bfab460a1054f74b73f4c65b1ba8 100644
+index b1ab5a7b2a4522ece9a277673ae95430afc4f3a6..e7071b6e2fda8ea91f56b79b0d37d1768c94d5e2 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
-@@ -318,6 +318,7 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -319,6 +319,7 @@ template("chrome_common_apk_or_module_tmpl") {
        "*ic_file_download_white*",  # Bottom edge seems misaligned.
        "*ic_lock.*",  # Bottom edge seems misaligned.
      ]
@@ -10,7 +10,7 @@ index 22701454051942b21cdcd6c171e37579dc6166a7..129b9806c595bfab460a1054f74b73f4
  
      # Most of these, with the exception of resource_exclusion_exceptions,
      # are currently duplicated in system_webview_apk_tmpl.gni.
-@@ -342,6 +343,7 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -343,6 +344,7 @@ template("chrome_common_apk_or_module_tmpl") {
  
        proguard_enabled = true
        proguard_configs = [ "//chrome/android/proguard/main.flags" ]
@@ -18,7 +18,7 @@ index 22701454051942b21cdcd6c171e37579dc6166a7..129b9806c595bfab460a1054f74b73f4
        if (_is_monochrome) {
          proguard_configs +=
              [ "//android_webview/nonembedded/java/proguard.flags" ]
-@@ -762,6 +764,7 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -749,6 +751,7 @@ template("chrome_common_apk_or_module_tmpl") {
                                   "version_code",
                                   "version_name",
                                 ])

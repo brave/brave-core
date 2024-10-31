@@ -30,7 +30,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSelectorAdapter
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.settings.BraveSettingsLauncherImpl;
 import org.chromium.chrome.browser.settings.BraveWalletAddNetworksFragment;
-import org.chromium.components.browser_ui.settings.SettingsLauncher;
+import org.chromium.components.browser_ui.settings.SettingsNavigation;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -42,7 +42,7 @@ public class NetworkSelectorActivity extends BraveWalletBaseActivity
     private RecyclerView mRVNetworkSelector;
     private NetworkSelectorAdapter mNetworkSelectorAdapter;
     private MaterialToolbar mToolbar;
-    private SettingsLauncher mSettingsLauncher;
+    private SettingsNavigation mSettingsLauncher;
     private WalletModel mWalletModel;
     private NetworkModel mNetworkModel;
 
@@ -142,7 +142,7 @@ public class NetworkSelectorActivity extends BraveWalletBaseActivity
         fragmentArgs.putString(ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID, "");
         fragmentArgs.putBoolean(ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK, false);
         Intent intent =
-                mSettingsLauncher.createSettingsActivityIntent(
+                mSettingsLauncher.createSettingsIntent(
                         this, BraveWalletAddNetworksFragment.class, fragmentArgs);
         startActivity(intent);
     }

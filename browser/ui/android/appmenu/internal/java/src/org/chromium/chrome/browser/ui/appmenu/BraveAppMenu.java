@@ -17,14 +17,16 @@ import org.chromium.base.SysUtils;
 import org.chromium.chrome.browser.ui.appmenu.internal.R;
 
 class BraveAppMenu extends AppMenu {
+    private static final int BOTTOM_MENU_VERTICAL_OFFSET_DP = 44;
     private static int sMenuHeight;
     private static int sNegativeVerticalOffsetNotTopAnchored;
 
     BraveAppMenu(int itemRowHeight, AppMenuHandlerImpl handler, Resources res) {
         super(itemRowHeight, handler, res);
 
+        final float scale = res.getDisplayMetrics().density;
         sNegativeVerticalOffsetNotTopAnchored =
-                res.getDimensionPixelSize(R.dimen.menu_negative_vertical_offset_not_top_anchored);
+                (int) (BOTTOM_MENU_VERTICAL_OFFSET_DP * scale + 0.5f);
     }
 
     @SuppressLint("VisibleForTests")

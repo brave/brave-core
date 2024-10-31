@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 #include "brave/ios/browser/api/web_image/web_image.h"
 
-class ChromeBrowserState;
+class ProfileIOS;
 
 @interface WebImageDownloader (Private)
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)browserState;
+- (instancetype)initWithBrowserState:(ProfileIOS*)profile;
 @end
 
 #endif  // BRAVE_IOS_BROWSER_API_WEB_IMAGE_WEB_IMAGE_PRIVATE_H_

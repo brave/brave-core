@@ -6,8 +6,13 @@
 package org.chromium.chrome.browser.password_manager.settings;
 
 import org.chromium.base.BraveReflectionUtil;
+import org.chromium.chrome.browser.access_loss.PasswordAccessLossWarningType;
 
 public class BraveExportFlow extends ExportFlow {
+    public BraveExportFlow(@PasswordAccessLossWarningType int warningType) {
+        super(warningType);
+    }
+
     public void runSharePasswordsIntent() {
         BraveReflectionUtil.invokeMethod(ExportFlow.class, this, "runCreateFileOnDiskIntent");
     }

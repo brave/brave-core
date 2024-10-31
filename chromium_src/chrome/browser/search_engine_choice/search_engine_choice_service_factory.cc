@@ -15,7 +15,7 @@ content::BrowserContext*
 SearchEngineChoiceServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   // To make different service for normal and incognito profile.
-  return chrome::GetBrowserContextOwnInstanceInIncognito(context);
+  return GetBrowserContextOwnInstanceInIncognito(context);
 }
 
 }  // namespace search_engines

@@ -40,10 +40,17 @@ public class FeedItemCard {
         this.imageByte = imageByte;
     }
 
+    @SuppressWarnings("ObjectToString")
     @Override
     public String toString() {
         return "FeedItemCard{"
-                + "feedItem=" + feedItem + ", cardType=" + cardType + ", imageByte='"
-                + Arrays.toString(imageByte) + '\'' + '}';
+                + "feedItem="
+                + feedItem
+                + ", cardType="
+                + cardType
+                + ", imageByte='"
+                + Arrays.toString(imageByte)
+                + '\''
+                + '}';
     }
 }

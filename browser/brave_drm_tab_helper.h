@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_DRM_TAB_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_DRM_TAB_HELPER_H_
 
-#include <string>
-
 #include "base/scoped_observation.h"
 #include "brave/components/brave_drm/brave_drm.mojom.h"
 #include "components/component_updater/component_updater_service.h"
@@ -39,7 +37,7 @@ class BraveDrmTabHelper final
   void OnWidevineKeySystemAccessRequest() override;
 
   // component_updater::ComponentUpdateService::Observer
-  void OnEvent(Events event, const std::string& id) override;
+  void OnEvent(const update_client::CrxUpdateItem& item) override;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 

@@ -50,6 +50,9 @@ source_set("unit_tests") {
       "brave_shields_util_unittest.cc",
     ]
 
-    deps += [ "//chrome/browser" ]
+    deps += [
+      "//chrome/browser",
+      "//chrome/browser/content_settings:content_settings_factory",
+    ]
   }
 }
