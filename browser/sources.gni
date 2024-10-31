@@ -348,6 +348,10 @@ if (enable_ai_chat) {
     "//brave/components/ai_chat/core/common/mojom",
   ]
 
+  if (!is_android) {
+    brave_chrome_browser_deps += [ "//brave/browser/ui/ai_chat" ]
+  }
+
   if (is_android) {
     brave_chrome_browser_sources += brave_browser_ai_chat_android_sources
     brave_chrome_browser_deps += brave_browser_ai_chat_android_deps

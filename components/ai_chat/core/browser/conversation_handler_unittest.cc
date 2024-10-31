@@ -263,6 +263,32 @@ class ConversationHandlerUnitTest : public testing::Test {
             });
   }
 
+  // Pair of text and whether it's from Brave Search SERP
+  void SetupHistory(std::vector<std::pair<std::string, bool>> entries) {
+    std::vector<mojom::ConversationTurnPtr> history;
+    for (size_t i = 0; i < entries.size(); i++) {
+      bool is_human = i % 2 == 0;
+
+      std::optional<std::vector<mojom::ConversationEntryEventPtr>> events;
+      if (!is_human) {
+        events = std::vector<mojom::ConversationEntryEventPtr>();
+        events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(entries[i].first)));
+      }
+
+      auto entry = mojom::ConversationTurn::New(
+          is_human ? mojom::CharacterType::HUMAN
+                   : mojom::CharacterType::ASSISTANT,
+          is_human ? mojom::ActionType::QUERY : mojom::ActionType::RESPONSE,
+          mojom::ConversationTurnVisibility::VISIBLE,
+          entries[i].first /* text */, std::nullopt /* selected_text */,
+          std::move(events), base::Time::Now(), std::nullopt /* edits */,
+          entries[i].second /* from_brave_search_SERP */);
+      history.push_back(std::move(entry));
+    }
+    conversation_handler_->SetChatHistoryForTesting(std::move(history));
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_;
   std::unique_ptr<AIChatService> ai_chat_service_;
@@ -1007,6 +1033,108 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_TRUE(conversation_handler_->GetConversationHistory().empty());
 }
 
+TEST_F(
+    ConversationHandlerUnitTest,
+    MaybeFetchOrClearContentStagedConversation_FetchStagedEntriesWithHistory) {
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  ASSERT_TRUE(conversation_handler_->IsAnyClientConnected());
+
+  // MaybeFetchOrClearContentStagedConversation should clear old staged entries
+  // and fetch new ones.
+  EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(1);
+  // One from SetupHistory and one from removing old entries and adding
+  // new entries in OnGetStagedEntriesFromContent.
+  EXPECT_CALL(client, OnConversationHistoryUpdate()).Times(2);
+
+  // Fill history with staged and non-staged entries.
+  SetupHistory({{"old query" /* text */, true /*from_brave_search_SERP */},
+                {"old summary", "true"},
+                {"normal query", false},
+                {"normal response", false}});
+
+  // Setting mock return values for GetStagedEntriesFromContent.
+  SetAssociatedContentStagedEntries(/*empty=*/false, /*multi=*/true);
+
+  conversation_handler_->MaybeFetchOrClearContentStagedConversation();
+  task_environment_.RunUntilIdle();
+
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+  testing::Mock::VerifyAndClearExpectations(&client);
+
+  auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 6u);
+  EXPECT_FALSE(history[0]->from_brave_search_SERP);
+  EXPECT_EQ(history[0]->text, "normal query");
+  EXPECT_FALSE(history[1]->from_brave_search_SERP);
+  EXPECT_EQ(history[1]->text, "normal response");
+  EXPECT_TRUE(history[2]->from_brave_search_SERP);
+  EXPECT_EQ(history[2]->text, "query");
+  EXPECT_TRUE(history[3]->from_brave_search_SERP);
+  EXPECT_EQ(history[3]->text, "summary");
+  EXPECT_TRUE(history[4]->from_brave_search_SERP);
+  EXPECT_EQ(history[4]->text, "query2");
+  EXPECT_TRUE(history[5]->from_brave_search_SERP);
+  EXPECT_EQ(history[5]->text, "summary2");
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       OnGetStagedEntriesFromContent_FailedChecks) {
+  // No staged entries would be added if a request is in progress.
+  conversation_handler_->SetRequestInProgressForTesting(true);
+  std::vector<SearchQuerySummary> entries = {{"query", "summary"},
+                                             {"query2", "summary2"}};
+  conversation_handler_->OnGetStagedEntriesFromContent(entries);
+  task_environment_.RunUntilIdle();
+  EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 0u);
+
+  // No staged entries if should_send_page_contents_ is false.
+  conversation_handler_->SetRequestInProgressForTesting(false);
+  conversation_handler_->SetShouldSendPageContents(false);
+  conversation_handler_->OnGetStagedEntriesFromContent(entries);
+  task_environment_.RunUntilIdle();
+  EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 0u);
+
+  // No staged entries if user opt-out.
+  conversation_handler_->SetShouldSendPageContents(true);
+  EmulateUserOptedOut();
+  conversation_handler_->OnGetStagedEntriesFromContent(entries);
+  task_environment_.RunUntilIdle();
+  EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 0u);
+}
+
+TEST_F(ConversationHandlerUnitTest, OnGetStagedEntriesFromContent) {
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  ASSERT_TRUE(conversation_handler_->IsAnyClientConnected());
+
+  EXPECT_CALL(client, OnConversationHistoryUpdate()).Times(2);
+  // Fill history with staged and non-staged entries.
+  SetupHistory({{"q1" /* text */, true /*from_brave_search_SERP */},
+                {"s1", "true"},
+                {"q2", false},
+                {"r1", false}});
+
+  std::vector<SearchQuerySummary> entries = {{"query", "summary"},
+                                             {"query2", "summary2"}};
+  conversation_handler_->OnGetStagedEntriesFromContent(entries);
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&client);
+
+  auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 6u);
+  EXPECT_FALSE(history[0]->from_brave_search_SERP);
+  EXPECT_EQ(history[0]->text, "q2");
+  EXPECT_FALSE(history[1]->from_brave_search_SERP);
+  EXPECT_EQ(history[1]->text, "r1");
+  EXPECT_TRUE(history[2]->from_brave_search_SERP);
+  EXPECT_EQ(history[2]->text, "query");
+  EXPECT_TRUE(history[3]->from_brave_search_SERP);
+  EXPECT_EQ(history[3]->text, "summary");
+  EXPECT_TRUE(history[4]->from_brave_search_SERP);
+  EXPECT_EQ(history[4]->text, "query2");
+  EXPECT_TRUE(history[5]->from_brave_search_SERP);
+  EXPECT_EQ(history[5]->text, "summary2");
+}
+
 TEST_F(ConversationHandlerUnitTest_OptedOut,
        MaybeFetchOrClearSearchQuerySummary_NotOptedIn) {
   // Content will have staged entries, but we want to make sure that
@@ -1096,11 +1224,11 @@ TEST_F(ConversationHandlerUnitTest,
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
 
-  // Verify that no re-fetch happens when new client connects
+  // Verify that fetch happens when another client connects.
   client.Disconnect();
   task_environment_.RunUntilIdle();
   EXPECT_FALSE(conversation_handler_->IsAnyClientConnected());
-  EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(0);
+  EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(1);
   NiceMock<MockConversationHandlerClient> client2(conversation_handler_.get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());

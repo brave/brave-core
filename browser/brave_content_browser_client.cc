@@ -156,7 +156,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_brave_search_throttle.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -164,6 +166,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/ai_chat/utils.h"
+#endif
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/ai_chat/core/browser/android/ai_chat_iap_subscription_android.h"
 #endif
@@ -1268,6 +1273,16 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
       throttles.push_back(std::move(ai_chat_throttle));
     }
   }
+
+#if !BUILDFLAG(IS_ANDROID)
+  if (auto ai_chat_brave_search_throttle =
+          ai_chat::AIChatBraveSearchThrottle::MaybeCreateThrottleFor(
+              base::BindOnce(&ai_chat::OpenAIChatForTab), handle,
+              ai_chat::AIChatServiceFactory::GetForBrowserContext(context),
+              user_prefs::UserPrefs::Get(context))) {
+    throttles.push_back(std::move(ai_chat_brave_search_throttle));
+  }
+#endif
 #endif  // ENABLE_AI_CHAT
 
   return throttles;
