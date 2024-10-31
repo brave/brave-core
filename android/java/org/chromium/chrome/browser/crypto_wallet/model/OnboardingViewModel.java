@@ -64,10 +64,12 @@ public class OnboardingViewModel extends ViewModel {
         return mPassword;
     }
 
-    @NonNull
+    @Nullable
     public Pair<Integer, String> getVerificationStep(@NonNull final VerificationStep step) {
         assert mVerificationWords.size() != 0 : "Verification word list must not be empty.";
-
+        if (mVerificationWords.size() <= step.getValue()) {
+            return null;
+        }
         return extractPositionAndWordAtIndex(step.getValue());
     }
 
