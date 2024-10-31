@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_JAVASCRIPT_TAB_MODAL_DIALOG_VIEW_VIEWS_H_
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_JAVASCRIPT_TAB_MODAL_DIALOG_VIEW_VIEWS_H_
 
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/views/javascript_tab_modal_dialog_view_views.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -45,7 +46,7 @@ class BraveJavaScriptTabModalDialogViewViews
   // This returns point in dialog host's widget coordinate.
   gfx::Point GetDesiredPositionConsideringSplitView();
 
-  raw_ref<content::WebContents> web_contents_;
+  raw_ref<content::WebContents, DanglingUntriaged> web_contents_;
 
   base::WeakPtrFactory<BraveJavaScriptTabModalDialogViewViews>
       weak_ptr_factory_{this};
