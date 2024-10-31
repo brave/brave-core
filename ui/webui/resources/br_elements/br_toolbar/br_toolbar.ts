@@ -68,7 +68,7 @@ export class CrToolbarElement extends CrLitElement {
       showSearch: { type: Boolean },
 
       // True when the toolbar is displaying in narrow mode.
-      narrow: { type: Boolean, reflect: true },
+      narrow: { type: Boolean, reflect: true, notify: true },
 
       /**
        * The threshold at which the toolbar will change from normal to narrow
@@ -77,8 +77,6 @@ export class CrToolbarElement extends CrLitElement {
       narrowThreshold: { type: Number },
 
       closeMenuPromo: { type: String },
-
-      noSearch: { type: Boolean },
 
       /** @private */
       showingSearch_: {
@@ -113,7 +111,6 @@ export class CrToolbarElement extends CrLitElement {
   narrowThreshold = 900
   narrowQuery_: MediaQueryList | null = null
   closeMenuPromo = ''
-  noSearch = false
   showingSearch = false
   showRewardsButton = true
   isBraveWalletAllowed_ = loadTimeData.getBoolean('brToolbarShowRewardsButton')
@@ -136,18 +133,15 @@ export class CrToolbarElement extends CrLitElement {
   toolbarExtraSlot: HTMLSlotElement
   toolbarExtraElement: Element
 
-  override updated(changedProperties: PropertyValues<this>) {
+  override willUpdate(changedProperties: PropertyValues<this>) {
     super.updated(changedProperties);
+
     if (changedProperties.has('narrowThreshold')) {
       this.narrowQuery_ = window.matchMedia(`(max-width: ${this.narrowThreshold}px)`);
       this.narrow = this.narrowQuery_.matches
       this.narrowQuery_.addEventListener('change', () => {
         this.narrow = this.narrowQuery_?.matches ?? false;
       });
-    }
-
-    if (changedProperties.has('noSearch')) {
-      this.noSearchChanged_()
     }
   }
 
@@ -176,16 +170,6 @@ export class CrToolbarElement extends CrLitElement {
   isMenuFocused() {
     return !!this.shadowRoot!.activeElement &&
       this.shadowRoot!.activeElement.id === 'menuButton';
-  }
-
-  /** @private */
-  noSearchChanged_() {
-    this.updateSearchDisplayed_()
-  }
-
-  /** @private */
-  updateSearchDisplayed_() {
-    this.$.search.hidden = this.noSearch
   }
 
   /**
