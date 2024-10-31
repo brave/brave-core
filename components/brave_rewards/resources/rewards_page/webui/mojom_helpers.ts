@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as mojom from './mojom'
-import { AdType } from '../lib/app_model'
+import { AdType } from '../lib/app_state'
 
 import {
   ExternalWalletProvider,

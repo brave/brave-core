@@ -27,6 +27,8 @@ interface RewardsEngine {
 
   GetRewardsParameters() => (RewardsParameters properties);
 
+  FetchUICards() => (array<UICard>? cards);
+
   GetAutoContributeProperties() => (AutoContributeProperties props);
 
   GetPublisherMinVisitTime() => (int32 min_visit_time);
