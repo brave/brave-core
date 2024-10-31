@@ -239,14 +239,19 @@ ViewCounterService::GetCurrentBrandedWallpaper() {
   return GetNextBrandedWallpaperWhichMatchesConditions();
 }
 
-std::optional<brave_ads::NewTabPageAdConditionMatchers>
+std::optional<brave_ads::ConditionMatcherMap>
 ViewCounterService::GetConditionMatchers(const base::Value::Dict& dict) {
+  // For non-Rewards users, condition matchers should be included in the
+  // "photo.json" file under the NTP (New Tab Page) sponsored images component,
+  // within "campaigns2", falling back to "campaigns", or the root "campaign"
+  // for backwards compatibility.
+
   const auto* const list = dict.FindList(kWallpaperConditionMatchersKey);
   if (!list || list->empty()) {
     return std::nullopt;
   }
 
-  brave_ads::NewTabPageAdConditionMatchers condition_matchers;
+  brave_ads::ConditionMatcherMap condition_matchers;
 
   for (const auto& value : *list) {
     const auto& condition_matcher = value.GetDict();
@@ -292,8 +297,8 @@ ViewCounterService::GetNextBrandedWallpaperWhichMatchesConditions() {
       return std::nullopt;
     }
 
-    const std::optional<brave_ads::NewTabPageAdConditionMatchers>
-        condition_matchers = GetConditionMatchers(*branded_wallpaper);
+    const std::optional<brave_ads::ConditionMatcherMap> condition_matchers =
+        GetConditionMatchers(*branded_wallpaper);
     if (!condition_matchers) {
       // No condition matchers, so we can return the branded wallpaper.
       return branded_wallpaper;
