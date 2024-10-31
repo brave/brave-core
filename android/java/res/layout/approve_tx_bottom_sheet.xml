@@ -141,6 +141,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/amount_fiat" />
 
+    <Space
+        android:id="@+id/tab_top_space"
+        android:layout_width="0dp"
+        android:layout_height="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_approve_dialog_additional_details"
+        app:layout_constraintBottom_toTopOf="@+id/warning_container" />
+
+    <LinearLayout
+        android:id="@+id/warning_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="#32E32444"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/tabs"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_approve_dialog_additional_details"
+        app:layout_constraintVertical_bias="0"
+        android:visibility="gone">
+
+        <TextView
+            style="@style/BraveWalletTextView"
+            android:text="@string/wallet_change_ownership_warning"
+            android:textColor="@color/brave_theme_error_txt"
+            android:textStyle="bold"
+            android:drawablePadding="6dp"
+            app:drawableStartCompat="@drawable/ic_warning" />
+
+        <TextView
+            android:layout_marginTop="8dp"
+            style="@style/BraveWalletTextView"
+            android:layout_width="match_parent"
+            android:text="@string/wallet_change_ownership_description"
+            android:textColor="@color/brave_theme_error_txt" />
+    </LinearLayout>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
@@ -148,8 +187,7 @@
         android:background="@color/wallet_toolbar_bg_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_approve_dialog_additional_details"
-        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/warning_container"
         app:tabGravity="fill"
         app:tabIndicator="@drawable/tab_gradient_separator"
         app:tabIndicatorHeight="@dimen/brave_wallet_tab_indicator_height"
