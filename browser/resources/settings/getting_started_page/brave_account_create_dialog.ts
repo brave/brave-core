@@ -21,7 +21,7 @@ export interface SettingsBraveAccountCreateDialogElement {
     password_strength_indicator: HTMLElement,
     password_strength_value: HTMLElement,
     password_strength_category: HTMLElement,
-    errors: HTMLElement,
+    password_comparison_result: HTMLElement,
   }
 }
 
@@ -69,21 +69,31 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
 
     this.$.password_strength_indicator.style.setProperty("--primary-color", color(cagetories[point], 'icon'))
     this.$.password_strength_indicator.style.setProperty("--secondary-color", color(cagetories[point], 'background'))
-    this.$.password_strength_indicator.style.setProperty("opacity", point === 0 ? '0' : '1')
     this.$.password_strength_value.style.width = widths[point]
     this.$.password_strength_category.textContent = cagetories2[point]
+    if (point === 0) {
+      this.$.password_strength_indicator.classList.remove('visible')
+    } else {
+      this.$.password_strength_indicator.classList.add('visible')
+    }
 
     this.isCreatePasswordValid = point === regexps.length
   }
 
   protected onConfirmPasswordInput() {
     if (this.$.confirm_password.value.length === 0) {
-      this.$.errors.classList.remove('visible')
+      this.$.password_comparison_result.classList.remove('visible')
+      this.$.password_comparison_result.classList.add('nema')
       return
     }
 
     this.passwordsMatch = this.$.confirm_password.value === this.$.create_password.value
-    this.$.errors.classList.add('visible')
+    this.$.password_comparison_result.classList.add('visible')
+    if (this.passwordsMatch) {
+      this.$.password_comparison_result.classList.add('nema')
+    } else {
+      this.$.password_comparison_result.classList.remove('nema')
+    }
   }
 
   protected onChange(e: { checked: boolean }) {

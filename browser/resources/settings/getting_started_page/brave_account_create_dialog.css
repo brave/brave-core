@@ -20,6 +20,10 @@ leo-checkbox a {
   text-underline-offset: 2.8px;
 }
 
+leo-input:has(> .nema) {
+  --leo-control-border-color: var(--leo-color-divider-strong);
+}
+
 #password_strength_indicator {
   --primary-color: inherit;
   --secondary-color: inherit;
@@ -27,10 +31,15 @@ leo-checkbox a {
   display: flex;
   height: 16px;
   justify-content: space-between;
-  margin: 4px 0px 0px;
-  opacity: 0;
+  margin: -16px 0px 0px 0px;
   padding: 0px 4px;
+  position: relative;
   transition: 750ms;
+  z-index: -1;
+}
+
+#password_strength_indicator.visible {
+  margin: 4px 0px 0px 0px;
 }
 
 .password-strength-bar {
@@ -46,7 +55,7 @@ leo-checkbox a {
   border-radius: var(--leo-radius-m);
   height: 100%;
   transition: 750ms;
-  width: 1%;
+  width: 0%;
 }
 
 #password_strength_category {
@@ -55,11 +64,7 @@ leo-checkbox a {
   transition: 750ms;
 }
 
-#confirm_password {
-  margin: -12px 0px 0px;
-}
-
-.errors {
+.password-comparison-result {
   --leo-icon-size: 14px;
   align-items: center;
   display: flex;
@@ -71,7 +76,7 @@ leo-checkbox a {
   z-index: -1;
 }
 
-.errors.visible {
+.password-comparison-result.visible {
   margin: 4px 0px 0px 4px;
 }
 
@@ -90,10 +95,3 @@ leo-checkbox a {
 .error-text {
   color: var(--leo-color-systemfeedback-error-text);
 }
-
-/* --border-color: var(--border-color-error); */
-
-/*
-- animate:
-animation: fadeOut 750ms;
-*/

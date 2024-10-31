@@ -18,21 +18,23 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
         <leo-input id="account_name" placeholder="Enter a name for your account" @input=${this.onAccountNameInput}>
           <div class="label">Account name</div>
         </leo-input>
-        <div>
-          <leo-input id="create_password" type="password" placeholder="Enter your password" @input=${this.onCreatePasswordInput}>
-            <div class="label">Create a password</div>
-            <leo-icon slot="right-icon"
-                      name="eye-off"
-                      @click=${this.show}>
-            </leo-icon>
-          </leo-input>
-          <div id="password_strength_indicator">
+        <leo-input id="create_password"
+                   showErrors
+                   type="password"
+                   placeholder="Enter your password"
+                   @input=${this.onCreatePasswordInput}>
+          <div class="label">Create a password</div>
+          <leo-icon slot="right-icon"
+                    name="eye-off"
+                    @click=${this.show}>
+          </leo-icon>
+          <div id="password_strength_indicator" slot="errors">
             <div class="password-strength-bar">
               <div id="password_strength_value"></div>
             </div>
             <div id="password_strength_category"></div>
           </div>
-        </div>
+        </leo-input>
         <leo-input id="confirm_password"
                    showErrors
                    ?disabled=${!this.isCreatePasswordValid}
@@ -44,7 +46,7 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                     name="eye-off"
                     @click=${this.show}>
           </leo-icon>
-          <div id="errors" slot="errors" class="errors">
+          <div id="password_comparison_result" slot="errors" class="password-comparison-result">
             ${this.passwordsMatch ? html`
               <leo-icon class="extra-icon" name="check-circle-filled"></leo-icon>
               <div class="extra-text">Passwords match</div>
