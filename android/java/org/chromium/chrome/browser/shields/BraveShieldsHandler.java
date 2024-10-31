@@ -155,6 +155,7 @@ public class BraveShieldsHandler
 
     /**
      * Constructs a BraveShieldsHandler object.
+     *
      * @param context Context that is using the BraveShieldsMenu.
      */
     public BraveShieldsHandler(Context context) {
@@ -850,7 +851,8 @@ public class BraveShieldsHandler
         mWebcompatReporterHandler.getContactInfo(
                 contactInfo -> {
                     Tab currentActiveTab = mIconFetcher.getTab();
-                    final boolean isPrivateWindow = currentActiveTab != null ? currentActiveTab.isIncognito() : false;
+                    final boolean isPrivateWindow =
+                            currentActiveTab != null ? currentActiveTab.isIncognito() : false;
                     if (contactInfo != null && !contactInfo.isEmpty() && !isPrivateWindow) {
                         mEditTextContact.setText(contactInfo);
                     }
@@ -866,7 +868,8 @@ public class BraveShieldsHandler
         reportInfo.details = mEditTextDetails.getText().toString();
         reportInfo.contact = mEditTextContact.getText().toString();
         Tab currentActiveTab = mIconFetcher.getTab();
-        reportInfo.isPrivateWindow = BoolToString(currentActiveTab != null ? currentActiveTab.isIncognito() : false);
+        reportInfo.isPrivateWindow =
+                BoolToString(currentActiveTab != null ? currentActiveTab.isIncognito() : false);
         return reportInfo;
     }
 
