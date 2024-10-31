@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
@@ -37,7 +36,7 @@ source_set("renderer") {
     deps += [ "//brave/components/speedreader/renderer" ]
   }
 
-  if (is_android && (enable_brave_vpn || enable_ai_chat)) {
+  if (is_android) {
     deps += [ "//brave/components/brave_mobile_subscription/renderer/android" ]
   }
 }

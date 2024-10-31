@@ -16,6 +16,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
@@ -36,10 +37,18 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_brave_search_throttle.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "brave/components/brave_federated/features.h"
@@ -155,23 +164,11 @@ using content::WebContents;
 using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_brave_search_throttle.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/ai_chat/utils.h"
 #endif
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/ai_chat/core/browser/android/ai_chat_iap_subscription_android.h"
-#endif
 #endif
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
@@ -574,7 +571,6 @@ void BraveContentBrowserClient::
           &render_frame_host));
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   // AI Chat page content extraction renderer -> browser interface
   associated_registry.AddInterface<ai_chat::mojom::PageContentExtractorHost>(
       base::BindRepeating(
@@ -585,7 +581,6 @@ void BraveContentBrowserClient::
                 render_frame_host, std::move(receiver));
           },
           &render_frame_host));
-#endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   associated_registry.AddInterface<playlist::mojom::PlaylistMediaResponder>(
@@ -621,13 +616,11 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   }
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled()) {
     registry.ForWebUI<AIChatUI>()
         .Add<ai_chat::mojom::AIChatUIHandler>()
         .Add<ai_chat::mojom::Service>();
   }
-#endif
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
   if (ai_rewriter::features::IsAIRewriterEnabled()) {
@@ -833,7 +826,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   auto* prefs =
       user_prefs::UserPrefs::Get(render_frame_host->GetBrowserContext());
   if (ai_chat::IsAIChatEnabled(prefs) &&
@@ -852,7 +844,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     map->Add<ai_chat::mojom::IAPSubscription>(
         base::BindRepeating(&BindIAPSubscription));
   }
-#endif
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)
@@ -1266,7 +1257,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   }
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   if (Profile::FromBrowserContext(context)->IsRegularProfile()) {
     if (auto ai_chat_throttle =
             ai_chat::AiChatThrottle::MaybeCreateThrottleFor(handle)) {
@@ -1283,7 +1273,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     throttles.push_back(std::move(ai_chat_brave_search_throttle));
   }
 #endif
-#endif  // ENABLE_AI_CHAT
 
   return throttles;
 }

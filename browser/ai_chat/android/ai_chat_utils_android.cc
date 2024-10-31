@@ -6,17 +6,13 @@
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
 #include "base/time/time.h"
-#include "brave/build/android/jni_headers/BraveLeoUtils_jni.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/build/android/jni_headers/BraveLeoUtils_jni.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "content/public/browser/web_contents.h"
-#endif
 
 namespace ai_chat {
 
@@ -25,7 +21,6 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
     const base::android::JavaParamRef<jobject>& jweb_contents,
     const base::android::JavaParamRef<jstring>& conversation_uuid,
     const base::android::JavaParamRef<jstring>& query) {
-#if BUILDFLAG(ENABLE_AI_CHAT)
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
   AIChatService* ai_chat_service = AIChatServiceFactory::GetForBrowserContext(
@@ -56,6 +51,5 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
       base::android::ConvertJavaStringToUTF8(query), std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, false);
   conversation->SubmitHumanConversationEntry(std::move(turn));
-#endif
 }
 }  // namespace ai_chat

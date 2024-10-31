@@ -3,10 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
-
-assert(enable_ai_chat)
-
 component("common") {
   output_name = "ai_chat_common"
   defines = [ "IS_AI_CHAT_COMMON_IMPL" ]
@@ -24,7 +20,6 @@ component("common") {
   deps = [
     "//base",
     "//brave/brave_domains",
-    "//brave/components/ai_chat/core/common/buildflags:buildflags",
     "//components/prefs",
     "//url",
   ]

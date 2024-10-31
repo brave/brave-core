@@ -5,9 +5,13 @@
 
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 
+#include "base/check_is_test.h"
 #include "base/values.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/constants/pref_names.h"
@@ -22,13 +26,6 @@
 #include "components/omnibox/browser/omnibox_log.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "base/check_is_test.h"
-#include "brave/browser/brave_browser_process.h"
-#include "brave/browser/misc_metrics/process_misc_metrics.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
-#endif
 
 namespace {
 
@@ -72,7 +69,7 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(LocationBar* location_bar,
       search_storage_(profile_->GetPrefs(), kSearchCountPrefName) {
   // Record initial search count p3a value.
   RecordSearchEventP3A(search_storage_.GetWeeklySum());
-#if BUILDFLAG(ENABLE_AI_CHAT)
+
   if (g_brave_browser_process->process_misc_metrics()) {
     ai_chat_metrics_ =
         g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
@@ -80,7 +77,6 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(LocationBar* location_bar,
   } else {
     CHECK_IS_TEST();
   }
-#endif
 }
 
 BraveOmniboxClientImpl::~BraveOmniboxClientImpl() = default;
@@ -126,11 +122,9 @@ void BraveOmniboxClientImpl::OnAutocompleteAccept(
     if (search_engine_tracker_ != nullptr) {
       search_engine_tracker_->RecordLocationBarQuery();
     }
-#if BUILDFLAG(ENABLE_AI_CHAT)
     if (ai_chat_metrics_) {
       ai_chat_metrics_->RecordOmniboxSearchQuery();
     }
-#endif
   }
   ChromeOmniboxClient::OnAutocompleteAccept(
       destination_url, post_content, disposition, transition, match_type,

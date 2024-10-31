@@ -15,7 +15,9 @@
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
@@ -112,12 +114,6 @@
 #include "chrome/browser/ui/webui/side_panel/bookmarks/bookmarks.mojom.h"
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/browser/model_service.h"
-#include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
-#endif
-
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 #include "brave/components/request_otr/browser/request_otr_service.h"
 #endif
@@ -207,9 +203,8 @@ void RegisterProfilePrefsForMigration(
   brave_ads::RegisterProfilePrefsForMigration(registry);
 
   // Added 2024-04
-#if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::prefs::RegisterProfilePrefsForMigration(registry);
-#endif
+
   brave_shields::RegisterShieldsP3AProfilePrefsForMigration(registry);
 
   // Added 2024-05
@@ -465,10 +460,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       base::Value(static_cast<int>(side_panel::mojom::ViewType::kCompact)));
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::prefs::RegisterProfilePrefs(registry);
   ai_chat::ModelService::RegisterProfilePrefs(registry);
-#endif
 
   brave_search_conversion::RegisterPrefs(registry);
 

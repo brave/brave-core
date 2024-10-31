@@ -3,10 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
-
-assert(enable_ai_chat)
 
 static_library("browser") {
   sources = [
@@ -28,7 +25,6 @@ static_library("browser") {
     "//base",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
-    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/api_request_helper",
     "//brave/components/brave_stats/browser",
