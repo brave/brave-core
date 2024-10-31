@@ -732,8 +732,8 @@ mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
   const std::string* image = options_dict->FindString("image");
   if (image) {
     GURL url = GURL(*image);
-    if (url.is_valid() && (url.SchemeIsHTTPOrHTTPS() ||
-                           base::StartsWith(*image, "data:image/"))) {
+    if (url.is_valid() &&
+        (url.SchemeIsHTTPOrHTTPS() || image->starts_with("data:image/"))) {
       logo = url.spec();
     }
   }

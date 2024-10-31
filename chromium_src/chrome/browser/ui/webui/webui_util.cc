@@ -22,9 +22,7 @@ bool IsChromeUntrustedDataSource(content::WebUIDataSource* source) {
       base::StrCat(
           {content::kChromeUIUntrustedScheme, url::kStandardSchemeSeparator}));
 
-  return base::StartsWith(source->GetSource(),
-                          *kChromeUntrustedSourceNamePrefix,
-                          base::CompareCase::SENSITIVE);
+  return source->GetSource().starts_with(*kChromeUntrustedSourceNamePrefix);
 }
 
 constexpr char kBraveCSP[] =

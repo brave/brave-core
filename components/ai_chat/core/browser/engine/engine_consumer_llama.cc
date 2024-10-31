@@ -334,7 +334,7 @@ EngineConsumerLlamaRemote::EngineConsumerLlamaRemote(
 
   max_associated_content_length_ = model_options.max_associated_content_length;
 
-  is_mixtral_ = base::StartsWith(model_options.name, "mixtral");
+  is_mixtral_ = model_options.name.starts_with("mixtral");
 }
 
 EngineConsumerLlamaRemote::~EngineConsumerLlamaRemote() = default;

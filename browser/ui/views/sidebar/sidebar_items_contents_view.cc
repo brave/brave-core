@@ -74,7 +74,7 @@ std::string GetFirstCharFromURL(const GURL& url) {
   if (target.empty()) {
     target = url.spec();
   }
-  if (base::StartsWith(target, "www.")) {
+  if (target.starts_with("www.")) {
     target = target.substr(4, 1);
   } else {
     target = target.substr(0, 1);

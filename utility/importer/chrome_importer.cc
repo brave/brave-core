@@ -98,8 +98,7 @@ bool SetEncryptionKeyForPasswordImporting(
 
     base::Base64Decode(*base64_encrypted_key, &encrypted_key_with_header);
 
-    if (!base::StartsWith(encrypted_key_with_header, kDPAPIKeyPrefix,
-                          base::CompareCase::SENSITIVE)) {
+    if (!encrypted_key_with_header.starts_with(kDPAPIKeyPrefix)) {
       return false;
     }
     std::string encrypted_key =

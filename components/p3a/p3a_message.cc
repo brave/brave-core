@@ -248,7 +248,7 @@ void MessageMetainfo::InitRef() {
 #endif  // !BUILDFLAG(IS_IOS)
   if (referral_code.empty()) {
     ref = kRefNone;
-  } else if (base::StartsWith(referral_code, kOrganicRefPrefix)) {
+  } else if (referral_code.starts_with(kOrganicRefPrefix)) {
     ref = referral_code;
   } else {
     ref = kRefOther;

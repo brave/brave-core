@@ -188,7 +188,7 @@ void CommanderService::UpdateText(const std::u16string& text, bool force) {
     return;
   }
 
-  auto has_prefix = base::StartsWith(text, kCommandPrefix);
+  auto has_prefix = text.starts_with(kCommandPrefix);
   if (!has_prefix && !browser->profile()->GetPrefs()->GetBoolean(
                          omnibox::kCommanderSuggestionsEnabled)) {
     return;

@@ -201,7 +201,7 @@ std::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
   constexpr double kMaxSafeInteger = static_cast<double>(kMaxSafeIntegerUint64);
   std::vector<uint8_t> result;
 
-  if (base::EndsWith(type, "]")) {
+  if (type.ends_with(']')) {
     if (version_ != Version::kV4) {
       VLOG(0) << "version has to be v4 to support array";
       return std::nullopt;
@@ -271,7 +271,7 @@ std::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
       result.push_back(0);
     }
     result.insert(result.end(), address.begin(), address.end());
-  } else if (base::StartsWith(type, "bytes", base::CompareCase::SENSITIVE)) {
+  } else if (type.starts_with("bytes")) {
     unsigned num_bits;
     if (!base::StringToUint(type.data() + 5, &num_bits) || num_bits > 32) {
       return std::nullopt;
@@ -289,7 +289,7 @@ std::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
     for (size_t i = 0; i < 32u - bytes.size(); ++i) {
       result.push_back(0);
     }
-  } else if (base::StartsWith(type, "uint", base::CompareCase::SENSITIVE)) {
+  } else if (type.starts_with("uint")) {
     // uint8 to uint256 in steps of 8
     unsigned num_bits;
     if (!base::StringToUint(type.data() + 4, &num_bits) ||
@@ -328,7 +328,7 @@ std::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
     for (int i = 256 - 8; i >= 0; i -= 8) {
       result.push_back(static_cast<uint8_t>((encoded_value >> i) & 0xFF));
     }
-  } else if (base::StartsWith(type, "int", base::CompareCase::SENSITIVE)) {
+  } else if (type.starts_with("int")) {
     // int8 to int256 in steps of 8
     unsigned num_bits;
     if (!base::StringToUint(type.data() + 3, &num_bits) ||
