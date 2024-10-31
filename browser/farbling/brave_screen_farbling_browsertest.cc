@@ -247,15 +247,18 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
         ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), parent_url()));
         for (bool test_iframe : {false, true}) {
           content::RenderFrameHost* host = test_iframe ? Parent() : IFrame();
+          // Allow for a 2px variance due to non-integer devicePixelRatio.
           EXPECT_EQ(
               !allow_fingerprinting && !IsFlagDisabled(),
               EvalJs(host,
-                     "matchMedia(`(device-width: ${outerWidth}px)`).matches"));
+                     "matchMedia(`(min-device-width: ${outerWidth - 2}px) and "
+                     "(max-device-width: ${outerWidth + 2}px)`).matches"));
           EXPECT_EQ(
               !allow_fingerprinting && !IsFlagDisabled(),
               EvalJs(
                   host,
-                  "matchMedia(`(device-height: ${outerHeight}px)`).matches"));
+                  "matchMedia(`(min-device-height: ${outerHeight - 2}px) and "
+                  "(max-device-height: ${outerHeight + 2}px)`).matches"));
         }
       }
     }
@@ -309,12 +312,13 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
           }
           waiter.Wait();
           auto bounds_after = popup->window()->GetBounds();
+          // Allow for a 2px variance due to non-integer devicePixelRatio.
           if (test_mode == TestMode::kWindowSize) {
-            EXPECT_EQ(-13, bounds_after.width() - bounds_before.width());
-            EXPECT_EQ(-14, bounds_after.height() - bounds_before.height());
+            EXPECT_NEAR(bounds_after.width() - bounds_before.width(), -13, 2);
+            EXPECT_NEAR(bounds_after.height() - bounds_before.height(), -14, 2);
           } else {  // test_mode == TestMode::kWindowPosition
-            EXPECT_EQ(11, bounds_after.x() - bounds_before.x());
-            EXPECT_EQ(12, bounds_after.y() - bounds_before.y());
+            EXPECT_NEAR(bounds_after.x() - bounds_before.x(), 11, 2);
+            EXPECT_NEAR(bounds_after.y() - bounds_before.y(), 12, 2);
           }
         }
       }
