@@ -6,6 +6,7 @@
 #include "brave/browser/browser_context_keyed_service_factories.h"
 
 #include "base/feature_list.h"
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_federated/brave_federated_service_factory.h"
@@ -29,10 +30,11 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
+#include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/content/browser/model_service_factory.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -45,10 +47,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/browser/skus/skus_service_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -95,11 +93,6 @@
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 #include "brave/browser/request_otr/request_otr_service_factory.h"
-#endif
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/components/ai_chat/content/browser/model_service_factory.h"
 #endif
 
 namespace brave {
@@ -166,9 +159,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
   EphemeralStorageServiceFactory::GetInstance();
   PermissionLifetimeManagerFactory::GetInstance();
-#if BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_AI_CHAT)
   skus::SkusServiceFactory::GetInstance();
-#endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::BraveVpnServiceFactory::GetInstance();
 #endif
@@ -196,10 +187,9 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderServiceFactory::GetInstance();
 #endif
-#if BUILDFLAG(ENABLE_AI_CHAT)
+
   ai_chat::AIChatServiceFactory::GetInstance();
   ai_chat::ModelServiceFactory::GetInstance();
-#endif
 }
 
 }  // namespace brave

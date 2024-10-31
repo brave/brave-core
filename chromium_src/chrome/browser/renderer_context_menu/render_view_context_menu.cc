@@ -42,7 +42,6 @@
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
@@ -56,7 +55,6 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
-#endif
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
 #include "brave/browser/ui/ai_rewriter/ai_rewriter_dialog_delegate.h"
@@ -189,7 +187,6 @@ void OnGetImageForTextCopy(base::WeakPtr<content::WebContents> web_contents,
 }
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 constexpr char kAIChatRewriteDataKey[] = "ai_chat_rewrite_data";
 
 struct AIChatRewriteData : public base::SupportsUserData::Data {
@@ -338,7 +335,6 @@ void OnRewriteSuggestionCompleted(
 
   web_contents->RemoveUserData(kAIChatRewriteDataKey);
 }
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 bool CanOpenSplitViewForWebContents(
     base::WeakPtr<content::WebContents> web_contents) {
@@ -370,16 +366,11 @@ void OpenLinkInSplitView(base::WeakPtr<content::WebContents> web_contents,
 BraveRenderViewContextMenu::BraveRenderViewContextMenu(
     content::RenderFrameHost& render_frame_host,
     const content::ContextMenuParams& params)
-    : RenderViewContextMenu_Chromium(render_frame_host, params)
-#if BUILDFLAG(ENABLE_AI_CHAT)
-      ,
+    : RenderViewContextMenu_Chromium(render_frame_host, params),
       ai_chat_submenu_model_(this),
       ai_chat_change_tone_submenu_model_(this),
       ai_chat_change_length_submenu_model_(this),
-      ai_chat_social_media_post_submenu_model_(this)
-#endif
-{
-}
+      ai_chat_social_media_post_submenu_model_(this) {}
 
 BraveRenderViewContextMenu::~BraveRenderViewContextMenu() = default;
 
@@ -409,7 +400,6 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
 #else
       return false;
 #endif
-#if BUILDFLAG(ENABLE_AI_CHAT)
     case IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT:
     case IDC_AI_CHAT_CONTEXT_LEO_TOOLS:
     case IDC_AI_CHAT_CONTEXT_EXPLAIN:
@@ -429,7 +419,6 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
     case IDC_AI_CHAT_CONTEXT_CHANGE_LENGTH:
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST:
       return IsAIChatEnabled();
-#endif
 #if BUILDFLAG(ENABLE_AI_REWRITER)
     case IDC_AI_CHAT_CONTEXT_REWRITE:
       return ai_rewriter::features::IsAIRewriterEnabled();
@@ -481,7 +470,6 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       CopyTextFromImage();
       break;
 #endif
-#if BUILDFLAG(ENABLE_AI_CHAT)
     case IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT:
     case IDC_AI_CHAT_CONTEXT_EXPLAIN:
     case IDC_AI_CHAT_CONTEXT_PARAPHRASE:
@@ -498,7 +486,6 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     case IDC_AI_CHAT_CONTEXT_EXPAND:
       ExecuteAIChatCommand(id);
       break;
-#endif
 #if BUILDFLAG(ENABLE_AI_REWRITER)
     case IDC_AI_CHAT_CONTEXT_REWRITE:
       ai_rewriter::AIRewriterDialogDelegate::Show(
@@ -528,7 +515,6 @@ void BraveRenderViewContextMenu::CopyTextFromImage() {
 }
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 bool BraveRenderViewContextMenu::IsAIChatEnabled() const {
   return !params_.selection_text.empty() &&
          ai_chat::IsAIChatEnabled(GetProfile()->GetPrefs()) &&
@@ -687,7 +673,6 @@ void BraveRenderViewContextMenu::BuildAIChatMenu() {
       *print_index, IDC_AI_CHAT_CONTEXT_LEO_TOOLS,
       IDS_AI_CHAT_CONTEXT_LEO_TOOLS, &ai_chat_submenu_model_);
 }
-#endif
 
 void BraveRenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {
   // Call our implementation, not the one in the base class.
@@ -807,9 +792,7 @@ void BraveRenderViewContextMenu::InitMenu() {
     }
   }
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   BuildAIChatMenu();
-#endif
 
   // Add Open Link in Split View
   if (CanOpenSplitViewForWebContents(source_web_contents_->GetWeakPtr()) &&

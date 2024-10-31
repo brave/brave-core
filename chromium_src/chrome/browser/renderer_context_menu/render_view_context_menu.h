@@ -6,17 +6,14 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_RENDERER_CONTEXT_MENU_RENDER_VIEW_CONTEXT_MENU_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_RENDERER_CONTEXT_MENU_RENDER_VIEW_CONTEXT_MENU_H_
 
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
-
-#define BRAVE_RENDER_VIEW_CONTEXT_MENU_H_ \
-  private: \
-    friend class BraveRenderViewContextMenu; \
-  public:
+#define BRAVE_RENDER_VIEW_CONTEXT_MENU_H_  \
+ private:                                  \
+  friend class BraveRenderViewContextMenu; \
+                                           \
+ public:
 // define BRAVE_RENDER_VIEW_CONTEXT_MENU_H_
 
 // Get the Chromium declaration.
@@ -68,23 +65,19 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   void InitMenu() override;
   void NotifyMenuShown() override;
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   bool IsAIChatEnabled() const;
   void ExecuteAIChatCommand(int command);
   void BuildAIChatMenu();
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
   void CopyTextFromImage();
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::EngineConsumer> ai_engine_;
   ui::SimpleMenuModel ai_chat_submenu_model_;
   ui::SimpleMenuModel ai_chat_change_tone_submenu_model_;
   ui::SimpleMenuModel ai_chat_change_length_submenu_model_;
   ui::SimpleMenuModel ai_chat_social_media_post_submenu_model_;
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 };
 
 // Use our own subclass as the real RenderViewContextMenu.

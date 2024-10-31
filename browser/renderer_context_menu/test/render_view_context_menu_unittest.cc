@@ -8,7 +8,7 @@
 #include <optional>
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "chrome/browser/autocomplete/autocomplete_classifier_factory.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/custom_handlers/protocol_handler_registry_factory.h"
@@ -27,10 +27,6 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/clipboard/clipboard.h"
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/common/pref_names.h"
-#endif
 
 namespace {
 
@@ -183,7 +179,6 @@ TEST_F(BraveRenderViewContextMenuTest, MenuForLink) {
   EXPECT_TRUE(context_menu->IsCommandIdEnabled(IDC_COPY_CLEAN_LINK));
 }
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 TEST_F(BraveRenderViewContextMenuTest, MenuForAIChat) {
   content::ContextMenuParams params = CreateSelectedTextParams(u"hello");
 
@@ -200,6 +195,7 @@ TEST_F(BraveRenderViewContextMenuTest, MenuForAIChat) {
               enabled);
   }
 }
+
 TEST_F(BraveRenderViewContextMenuTest, MenuForAIChat_PWA) {
   content::ContextMenuParams params = CreateSelectedTextParams(u"hello");
 
@@ -211,4 +207,3 @@ TEST_F(BraveRenderViewContextMenuTest, MenuForAIChat_PWA) {
           IDC_AI_CHAT_CONTEXT_LEO_TOOLS);
   EXPECT_FALSE(ai_chat_index.has_value());
 }
-#endif

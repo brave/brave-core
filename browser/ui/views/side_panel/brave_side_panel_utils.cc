@@ -3,7 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
@@ -13,18 +14,12 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
-#endif
-
 using SidePanelWebUIViewT_AIChatUI = SidePanelWebUIViewT<AIChatUI>;
 BEGIN_TEMPLATE_METADATA(SidePanelWebUIViewT_AIChatUI, SidePanelWebUIViewT)
 END_METADATA
 
 namespace {
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 std::unique_ptr<views::View> CreateAIChatSidePanelWebView(
     base::WeakPtr<Profile> profile) {
   if (!profile) {
@@ -40,7 +35,6 @@ std::unique_ptr<views::View> CreateAIChatSidePanelWebView(
   web_view->ShowUI();
   return web_view;
 }
-#endif
 
 }  // namespace
 
@@ -51,7 +45,6 @@ namespace brave {
 // registering it.
 void RegisterContextualSidePanel(SidePanelRegistry* registry,
                                  content::WebContents* web_contents) {
-#if BUILDFLAG(ENABLE_AI_CHAT)
   content::BrowserContext* context = web_contents->GetBrowserContext();
   if (ai_chat::IsAIChatEnabled(user_prefs::UserPrefs::Get(context)) &&
       Profile::FromBrowserContext(context)->IsRegularProfile()) {
@@ -62,7 +55,6 @@ void RegisterContextualSidePanel(SidePanelRegistry* registry,
             &CreateAIChatSidePanelWebView,
             Profile::FromBrowserContext(context)->GetWeakPtr())));
   }
-#endif
 }
 
 }  // namespace brave

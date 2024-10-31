@@ -5,19 +5,15 @@
 
 #include "chrome/renderer/url_loader_throttle_provider_impl.h"
 
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/renderer/brave_content_renderer_client.h"
-#include "services/network/public/cpp/resource_request.h"
-#include "third_party/blink/public/common/loader/resource_type_util.h"
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/renderer/ai_chat_resource_sniffer.h"
 #include "brave/components/ai_chat/renderer/page_content_extractor.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
+#include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/renderer/brave_content_renderer_client.h"
+#include "services/network/public/cpp/resource_request.h"
+#include "third_party/blink/public/common/loader/resource_type_util.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/renderer/onion_domain_throttle.h"
@@ -39,7 +35,6 @@ std::unique_ptr<blink::URLLoaderThrottle>
 MaybeCreateAIChatResourceSnifferThrottle(
     base::optional_ref<const blink::LocalFrameToken> local_frame_token,
     const network::ResourceRequest& request) {
-#if BUILDFLAG(ENABLE_AI_CHAT)
   if (!ai_chat::features::IsAIChatEnabled() || !local_frame_token.has_value() ||
       !content::RenderThread::IsMainThread()) {
     return nullptr;
@@ -61,9 +56,6 @@ MaybeCreateAIChatResourceSnifferThrottle(
           base::SequencedTaskRunner::GetCurrentDefault());
   body_sniffer_throttle->AddHandler(std::move(ai_chat_resource_sniffer));
   return body_sniffer_throttle;
-#else
-  return nullptr;
-#endif
 }
 }  // namespace
 

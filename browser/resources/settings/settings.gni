@@ -8,6 +8,7 @@ import("//chrome/browser/resources/settings/settings.gni")
 
 settings_namespace_rewrites = [
   "settings.BraveAppearanceBrowserProxyImpl|BraveAppearanceBrowserProxyImpl",
+  "settings.BraveLeoAssistantBrowserProxyImpl|BraveLeoAssistantBrowserProxyImpl",
   "settings.BraveVPNBrowserProxyImpl|BraveVPNBrowserProxyImpl",
   "settings.BraveWalletBrowserProxyImpl|BraveWalletBrowserProxyImpl",
   "settings.BraveDefaultExtensionsBrowserProxyImpl|BraveDefaultExtensionsBrowserProxyImpl",
@@ -25,10 +26,6 @@ if (enable_pin_shortcut) {
   settings_namespace_rewrites += [
     "settings.PinShortcutPageBrowserProxyImpl|PinShortcutPageBrowserProxyImpl",
   ]
-}
-
-if (enable_ai_chat) {
-  settings_namespace_rewrites += [ "settings.BraveLeoAssistantBrowserProxyImpl|BraveLeoAssistantBrowserProxyImpl" ]
 }
 
 settings_auto_imports =

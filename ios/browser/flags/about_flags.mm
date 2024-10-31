@@ -6,7 +6,7 @@
 // This file is included into //ios/chrome/browser/flags/about_flags.mm
 
 #include "base/strings/string_util.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_rewards/common/features.h"
@@ -22,10 +22,6 @@
 #include "components/flags_ui/flags_state.h"
 #include "ios/components/security_interstitials/https_only_mode/feature.h"
 #include "net/base/features.h"
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/common/features.h"
-#endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
 
@@ -112,7 +108,6 @@
               security_interstitials::features::kHttpsOnlyMode),               \
       })
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES                                      \
   EXPAND_FEATURE_ENTRIES(                                                  \
       {                                                                    \
@@ -138,9 +133,6 @@
           flags_ui::kOsIos,                                                \
           FEATURE_VALUE_TYPE(ai_chat::features::kPageContentRefine),       \
       })
-#else
-#define BRAVE_AI_CHAT_FEATURE_ENTRIES
-#endif
 
 #define BRAVE_PLAYLIST_FEATURE_ENTRIES                        \
   EXPAND_FEATURE_ENTRIES({                                    \

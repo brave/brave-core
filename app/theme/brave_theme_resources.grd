@@ -28,9 +28,7 @@
         <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_OPEN_WIN_LIGHT" file="common/brave_bookmark_folder_open_win_light.png" />
       </if>
 
-      <if expr="enable_ai_chat">
-        <structure type="chrome_scaled_image" name="IDR_LEO_FAVICON" file="brave/product_brave_leo.png" />
-      </if>
+      <structure type="chrome_scaled_image" name="IDR_LEO_FAVICON" file="brave/product_brave_leo.png" />
 
       <if expr="enable_playlist_webui">
         <structure type="chrome_scaled_image" name="IDR_PLAYLIST_DEFAULT_THUMBNAIL" file="brave/playlist_default_thumbnail.png" />

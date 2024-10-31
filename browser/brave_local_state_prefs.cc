@@ -18,7 +18,7 @@
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
@@ -67,10 +67,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
-#endif
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -155,13 +151,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_vpn::RegisterLocalStatePrefs(registry);
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::prefs::RegisterLocalStatePrefs(registry);
-#endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_AI_CHAT)
   skus::RegisterLocalStatePrefs(registry);
-#endif
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
   DayZeroBrowserUIExptManager::RegisterLocalStatePrefs(registry);

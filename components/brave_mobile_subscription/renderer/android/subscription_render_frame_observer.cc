@@ -13,6 +13,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/skus/renderer/skus_utils.h"
 #include "build/build_config.h"
 #include "content/public/renderer/render_frame.h"
@@ -23,10 +24,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
-#endif
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/common/features.h"
 #endif
 
 namespace brave_subscription {
@@ -61,7 +58,7 @@ bool SubscriptionRenderFrameObserver::EnsureConnected() {
     bound |= vpn_service_.is_bound();
   }
 #endif
-#if BUILDFLAG(ENABLE_AI_CHAT)
+
   if (ai_chat::features::IsAIChatEnabled() && product_ == Product::kLeo) {
     if (!ai_chat_subscription_.is_bound()) {
       render_frame()->GetBrowserInterfaceBroker().GetInterface(
@@ -69,7 +66,6 @@ bool SubscriptionRenderFrameObserver::EnsureConnected() {
     }
     bound |= ai_chat_subscription_.is_bound();
   }
-#endif
   return bound;
 }
 
@@ -103,13 +99,11 @@ void SubscriptionRenderFrameObserver::DidCreateScriptContext(
     }
 #endif
   } else if (product_ == Product::kLeo) {
-#if BUILDFLAG(ENABLE_AI_CHAT)
     if (ai_chat_subscription_.is_bound()) {
       ai_chat_subscription_->GetPurchaseTokenOrderId(base::BindOnce(
           &SubscriptionRenderFrameObserver::OnGetPurchaseTokenOrderId,
           weak_factory_.GetWeakPtr()));
     }
-#endif
   }
 }
 

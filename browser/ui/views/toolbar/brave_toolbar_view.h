@@ -8,16 +8,13 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 class AIChatButton;
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 class BraveVPNButton;
@@ -37,10 +34,7 @@ class BraveToolbarView : public ToolbarView,
   BraveBookmarkButton* bookmark_button() const { return bookmark_; }
   WalletButton* wallet_button() const { return wallet_; }
   SidePanelButton* side_panel_button() const { return side_panel_; }
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
   AIChatButton* ai_chat_button() const { return ai_chat_button_; }
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   BraveVPNButton* brave_vpn_button() const { return brave_vpn_; }
@@ -77,10 +71,7 @@ class BraveToolbarView : public ToolbarView,
   void OnProfileWasRemoved(const base::FilePath& profile_path,
                            const std::u16string& profile_name) override;
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   void UpdateAIChatButtonVisibility();
-#endif
-
   void UpdateWalletButtonVisibility();
 
   views::View* toolbar_divider_for_testing() { return toolbar_divider_; }
@@ -100,11 +91,9 @@ class BraveToolbarView : public ToolbarView,
 
   BooleanPrefMember show_bookmarks_button_;
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   raw_ptr<AIChatButton> ai_chat_button_ = nullptr;
   BooleanPrefMember show_ai_chat_button_;
   BooleanPrefMember hide_ai_chat_button_by_policy_;
-#endif
 
   BooleanPrefMember show_wallet_button_;
   BooleanPrefMember wallet_private_window_enabled_;

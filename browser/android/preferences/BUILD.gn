@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//build/config/android/rules.gni")
 
 source_set("preferences") {
@@ -35,6 +34,7 @@ source_set("preferences") {
 
 java_cpp_strings("java_pref_names_srcjar") {
   sources = [
+    "//brave/components/ai_chat/core/common/pref_names.h",
     "//brave/components/brave_adaptive_captcha/pref_names.h",
     "//brave/components/brave_rewards/common/pref_names.h",
     "//brave/components/brave_shields/core/common/pref_names.h",
@@ -53,10 +53,6 @@ java_cpp_strings("java_pref_names_srcjar") {
     "//brave/components/speedreader/speedreader_pref_names.h",
     "//components/translate/core/browser/translate_pref_names.h",
   ]
-
-  if (enable_ai_chat) {
-    sources += [ "//brave/components/ai_chat/core/common/pref_names.h" ]
-  }
 
   template =
       "//brave/browser/preferences/android/java_templates/BravePref.java.tmpl"

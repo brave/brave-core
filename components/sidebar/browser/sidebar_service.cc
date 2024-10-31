@@ -20,7 +20,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -37,10 +37,6 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/browser/utils.h"
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
-
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/common/features.h"
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
@@ -54,18 +50,23 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
   // A previous version of prefs used the URL even for built-in items, and not
   // the |SidebarItem::BuiltInItemType|. Therefore, this list should not
   // need to be updated.
-  if (url == "https://together.brave.com/" || url == "https://talk.brave.com/")
+  if (url == "https://together.brave.com/" ||
+      url == "https://talk.brave.com/") {
     return SidebarItem::BuiltInItemType::kBraveTalk;
+  }
 
-  if (url == "chrome://wallet/")
+  if (url == "chrome://wallet/") {
     return SidebarItem::BuiltInItemType::kWallet;
+  }
 
   if (url == "chrome://sidebar-bookmarks.top-chrome/" ||
-      url == "chrome://bookmarks/")
+      url == "chrome://bookmarks/") {
     return SidebarItem::BuiltInItemType::kBookmarks;
+  }
 
-  if (url == "chrome://history/")
+  if (url == "chrome://history/") {
     return SidebarItem::BuiltInItemType::kHistory;
+  }
 
   NOTREACHED_IN_MIGRATION() << url;
   return SidebarItem::BuiltInItemType::kNone;
@@ -299,12 +300,14 @@ void SidebarService::AddItem(const SidebarItem& item) {
 void SidebarService::RemoveItemAt(int index) {
   const SidebarItem removed_item = items_[index];
 
-  for (Observer& obs : observers_)
+  for (Observer& obs : observers_) {
     obs.OnWillRemoveItem(removed_item, index);
+  }
 
   items_.erase(items_.begin() + index);
-  for (Observer& obs : observers_)
+  for (Observer& obs : observers_) {
     obs.OnItemRemoved(removed_item, index);
+  }
 
   UpdateSidebarItemsToPrefStore();
 }
@@ -313,15 +316,17 @@ void SidebarService::MoveItem(size_t from, size_t to) {
   DCHECK(items_.size() > static_cast<size_t>(from) &&
          items_.size() > static_cast<size_t>(to));
 
-  if (from == to)
+  if (from == to) {
     return;
+  }
 
   const SidebarItem item = items_[from];
   items_.erase(items_.begin() + from);
   items_.insert(items_.begin() + to, item);
 
-  for (Observer& obs : observers_)
+  for (Observer& obs : observers_) {
     obs.OnItemMoved(item, from, to);
+  }
 
   UpdateSidebarItemsToPrefStore();
 }
@@ -333,8 +338,9 @@ void SidebarService::UpdateItem(const GURL& old_url,
   DCHECK(old_url.is_valid() && new_url.is_valid());
   DCHECK(!old_title.empty() && !new_title.empty());
 
-  if (old_url == new_url && old_title == new_title)
+  if (old_url == new_url && old_title == new_title) {
     return;
+  }
 
   // Check any existing items doen't use |new_url| if |old_url| and |new_url|
   // is different. If both are same, only title will be updated.
@@ -426,8 +432,9 @@ std::vector<SidebarItem::BuiltInItemType>
 SidebarService::GetCurrentlyPresentBuiltInTypes() const {
   std::vector<SidebarItem::BuiltInItemType> items;
   base::ranges::for_each(items_, [&items](const auto& item) {
-    if (IsBuiltInType(item))
+    if (IsBuiltInType(item)) {
       items.push_back(item.built_in_item_type);
+    }
   });
   return items;
 }
@@ -648,7 +655,6 @@ SidebarItem SidebarService::GetBuiltInItemForType(
       return SidebarItem();
     }
     case SidebarItem::BuiltInItemType::kChatUI: {
-#if BUILDFLAG(ENABLE_AI_CHAT)
       if (ai_chat::IsAIChatEnabled(prefs_)) {
         return SidebarItem::Create(
             brave_l10n::GetLocalizedResourceUTF16String(IDS_CHAT_UI_TITLE),
@@ -658,9 +664,6 @@ SidebarItem SidebarService::GetBuiltInItemForType(
       } else {
         return SidebarItem();
       }
-#else   // BUILDFLAG(ENABLE_AI_CHAT)
-      return SidebarItem();
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
     }
     case SidebarItem::BuiltInItemType::kNone: {
       NOTREACHED_IN_MIGRATION();
@@ -672,8 +675,9 @@ SidebarItem SidebarService::GetBuiltInItemForType(
 
 void SidebarService::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == kSidebarShowOption) {
-    for (Observer& obs : observers_)
+    for (Observer& obs : observers_) {
       obs.OnShowSidebarOptionChanged(GetSidebarShowOption());
+    }
     return;
   }
 }

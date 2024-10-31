@@ -44,7 +44,6 @@ import("//brave/browser/webcompat_reporter/sources.gni")
 import("//brave/build/config.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
@@ -117,6 +116,7 @@ brave_chrome_browser_deps = [
   "//brave/app:brave_generated_resources_grit",
   "//brave/browser:browser_process",
   "//brave/browser:sparkle_buildflags",
+  "//brave/browser/ai_chat",
   "//brave/browser/brave_adaptive_captcha",
   "//brave/browser/brave_adaptive_captcha:impl",
   "//brave/browser/brave_ads",
@@ -141,7 +141,10 @@ brave_chrome_browser_deps = [
   "//brave/browser/ui",
   "//brave/common",
   "//brave/common:mojo_bindings",
-  "//brave/components/ai_chat/core/common/buildflags",
+  "//brave/components/ai_chat/content/browser",
+  "//brave/components/ai_chat/core/browser",
+  "//brave/components/ai_chat/core/common",
+  "//brave/components/ai_chat/core/common/mojom",
   "//brave/components/ai_rewriter/common/buildflags",
   "//brave/components/body_sniffer",
   "//brave/components/brave_adaptive_captcha",
@@ -284,10 +287,16 @@ if (!is_android) {
   ]
 
   brave_chrome_browser_deps += [
+    "//brave/browser/ui/ai_chat",
     "//components/feed:feature_list",
     "//components/feed/core/v2:feed_core_v2",
     "//components/feed/mojom:mojo_bindings",
   ]
+}
+
+if (is_android) {
+  brave_chrome_browser_sources += brave_browser_ai_chat_android_sources
+  brave_chrome_browser_deps += brave_browser_ai_chat_android_deps
 }
 
 if (enable_commander) {
@@ -337,25 +346,6 @@ if (enable_speedreader) {
 
 if (enable_request_otr) {
   brave_chrome_browser_deps += [ "//brave/components/request_otr/common" ]
-}
-
-if (enable_ai_chat) {
-  brave_chrome_browser_deps += [
-    "//brave/browser/ai_chat",
-    "//brave/components/ai_chat/content/browser",
-    "//brave/components/ai_chat/core/browser",
-    "//brave/components/ai_chat/core/common",
-    "//brave/components/ai_chat/core/common/mojom",
-  ]
-
-  if (!is_android) {
-    brave_chrome_browser_deps += [ "//brave/browser/ui/ai_chat" ]
-  }
-
-  if (is_android) {
-    brave_chrome_browser_sources += brave_browser_ai_chat_android_sources
-    brave_chrome_browser_deps += brave_browser_ai_chat_android_deps
-  }
 }
 
 if (enable_ai_rewriter) {

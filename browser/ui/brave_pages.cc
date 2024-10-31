@@ -7,7 +7,7 @@
 
 #include "base/strings/strcat.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/browser/constants.h"
@@ -17,10 +17,6 @@
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/common/webui_url_constants.h"
 #include "url/gurl.h"
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/common/features.h"
-#endif
 
 namespace brave {
 
@@ -50,14 +46,12 @@ void ShowBraveTalk(Browser* browser) {
   ShowSingletonTabOverwritingNTP(browser, GURL(sidebar::kBraveTalkURL));
 }
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 void ShowFullpageChat(Browser* browser) {
   if (!ai_chat::features::IsAIChatHistoryEnabled()) {
     return;
   }
   ShowSingletonTabOverwritingNTP(browser, GURL(kChatUIURL));
 }
-#endif
 
 void ShowWebcompatReporter(Browser* browser) {
   content::WebContents* web_contents =

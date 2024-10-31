@@ -5,7 +5,6 @@
 
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/common/extensions/api/api_sources.gni")
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
 import("//tools/json_schema_compiler/json_features.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")

@@ -11,7 +11,6 @@
 #include "base/run_loop.h"
 #include "base/scoped_multi_source_observation.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/lifetime/browser_shutdown.h"
@@ -71,26 +70,31 @@ bool BrowsingDataRemovalWatcher::GetClearBrowsingDataOnExitSettings(
   uint64_t site_data_mask = chrome_browsing_data_remover::DATA_TYPE_SITE_DATA;
   // Don't try to clear LSO data if it's not supported.
   if (prefs->GetBoolean(browsing_data::prefs::kDeleteBrowsingHistoryOnExit) &&
-      prefs->GetBoolean(prefs::kAllowDeletingBrowserHistory))
+      prefs->GetBoolean(prefs::kAllowDeletingBrowserHistory)) {
     *remove_mask |= chrome_browsing_data_remover::DATA_TYPE_HISTORY;
+  }
 
   if (prefs->GetBoolean(browsing_data::prefs::kDeleteDownloadHistoryOnExit) &&
-      prefs->GetBoolean(prefs::kAllowDeletingBrowserHistory))
+      prefs->GetBoolean(prefs::kAllowDeletingBrowserHistory)) {
     *remove_mask |= content::BrowsingDataRemover::DATA_TYPE_DOWNLOADS;
+  }
 
-  if (prefs->GetBoolean(browsing_data::prefs::kDeleteCacheOnExit))
+  if (prefs->GetBoolean(browsing_data::prefs::kDeleteCacheOnExit)) {
     *remove_mask |= content::BrowsingDataRemover::DATA_TYPE_CACHE;
+  }
 
   if (prefs->GetBoolean(browsing_data::prefs::kDeleteCookiesOnExit)) {
     *remove_mask |= site_data_mask;
     *origin_mask |= content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB;
   }
 
-  if (prefs->GetBoolean(browsing_data::prefs::kDeletePasswordsOnExit))
+  if (prefs->GetBoolean(browsing_data::prefs::kDeletePasswordsOnExit)) {
     *remove_mask |= chrome_browsing_data_remover::DATA_TYPE_PASSWORDS;
+  }
 
-  if (prefs->GetBoolean(browsing_data::prefs::kDeleteFormDataOnExit))
+  if (prefs->GetBoolean(browsing_data::prefs::kDeleteFormDataOnExit)) {
     *remove_mask |= chrome_browsing_data_remover::DATA_TYPE_FORM_DATA;
+  }
 
   if (prefs->GetBoolean(browsing_data::prefs::kDeleteHostedAppsDataOnExit)) {
     *remove_mask |= site_data_mask;
@@ -100,14 +104,13 @@ bool BrowsingDataRemovalWatcher::GetClearBrowsingDataOnExitSettings(
   // Note: this will also delete Brave Shields site-specific settings.
   // Corresponds to "Content settings" checkbox in the Clear Browsing Data
   // dialog.
-  if (prefs->GetBoolean(browsing_data::prefs::kDeleteSiteSettingsOnExit))
+  if (prefs->GetBoolean(browsing_data::prefs::kDeleteSiteSettingsOnExit)) {
     *remove_mask |= chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS;
+  }
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   if (prefs->GetBoolean(browsing_data::prefs::kDeleteBraveLeoHistoryOnExit)) {
     *remove_mask |= chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY;
   }
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
   return (*remove_mask != 0);
 }
@@ -132,19 +135,22 @@ void BrowsingDataRemovalWatcher::ClearBrowsingDataForLoadedProfiles(
 
   std::vector<Profile*> profiles = profile_manager->GetLoadedProfiles();
   for (Profile* profile : profiles) {
-    if (profile->IsOffTheRecord())
+    if (profile->IsOffTheRecord()) {
       continue;
+    }
     uint64_t remove_mask;
     uint64_t origin_mask;
     if (!GetClearBrowsingDataOnExitSettings(profile, &remove_mask,
-                                            &origin_mask))
+                                            &origin_mask)) {
       continue;
+    }
     ++num_profiles_to_clear_;
     content::BrowsingDataRemover* remover = profile->GetBrowsingDataRemover();
     observer_.AddObservation(remover);
-    if (testing_callback)
+    if (testing_callback) {
       testing_callback->BeforeClearOnExitRemoveData(remover, remove_mask,
                                                     origin_mask);
+    }
     remover->RemoveAndReply(base::Time(), base::Time::Max(), remove_mask,
                             origin_mask, this);
   }
@@ -153,15 +159,17 @@ void BrowsingDataRemovalWatcher::ClearBrowsingDataForLoadedProfiles(
 }
 
 void BrowsingDataRemovalWatcher::Wait() {
-  if (num_profiles_to_clear_ > 0)
+  if (num_profiles_to_clear_ > 0) {
     run_loop_.Run();
+  }
 }
 
 void BrowsingDataRemovalWatcher::OnBrowsingDataRemoverDone(
     uint64_t failed_data_types) {
   --num_profiles_to_clear_;
-  if (num_profiles_to_clear_ > 0)
+  if (num_profiles_to_clear_ > 0) {
     return;
+  }
 
   run_loop_.Quit();
 }

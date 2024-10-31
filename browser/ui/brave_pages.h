@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_PAGES_H_
 #define BRAVE_BROWSER_UI_BRAVE_PAGES_H_
 
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 
 class Browser;
@@ -26,10 +25,7 @@ void ShowSync(Browser* browser);
 void ShowBraveNewsConfigure(Browser* browser);
 void ShowShortcutsPage(Browser* browser);
 void ShowBraveTalk(Browser* browser);
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
 void ShowFullpageChat(Browser* browser);
-#endif
 
 }  // namespace brave
 

@@ -3,12 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
-
 source_set("misc_metrics") {
   sources = [ "//brave/browser/misc_metrics/process_misc_metrics.h" ]
-
-  deps = [ "//brave/components/ai_chat/core/common/buildflags" ]
 }
 
 static_library("misc_metrics_impl") {
@@ -32,7 +28,7 @@ static_library("misc_metrics_impl") {
     "//brave/browser:browser_process",
     "//brave/browser/misc_metrics",
     "//brave/browser/profiles:util",
-    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/ai_chat/core/browser",
     "//brave/components/misc_metrics",
     "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
@@ -66,10 +62,6 @@ static_library("misc_metrics_impl") {
     ]
   } else {
     sources += [ "//brave/browser/misc_metrics/misc_android_metrics.h" ]
-  }
-
-  if (enable_ai_chat) {
-    deps += [ "//brave/components/ai_chat/core/browser" ]
   }
 }
 

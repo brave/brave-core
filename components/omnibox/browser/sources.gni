@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/omnibox/buildflags/buildflags.gni")
 
@@ -24,6 +23,10 @@ brave_components_omnibox_browser_sources = [
   "//brave/components/omnibox/browser/brave_search_suggestion_parser.h",
   "//brave/components/omnibox/browser/brave_shortcuts_provider.cc",
   "//brave/components/omnibox/browser/brave_shortcuts_provider.h",
+  "//brave/components/omnibox/browser/leo_action.cc",
+  "//brave/components/omnibox/browser/leo_action.h",
+  "//brave/components/omnibox/browser/leo_provider.cc",
+  "//brave/components/omnibox/browser/leo_provider.h",
   "//brave/components/omnibox/browser/open_here_action.cc",
   "//brave/components/omnibox/browser/open_here_action.h",
   "//brave/components/omnibox/browser/promotion_provider.cc",
@@ -36,6 +39,8 @@ brave_components_omnibox_browser_sources = [
 
 brave_components_omnibox_browser_deps = [
   "//base",
+  "//brave/components/ai_chat/core/browser",
+  "//brave/components/ai_chat/core/common",
   "//brave/components/brave_search_conversion",
   "//brave/components/commander/common/buildflags",
   "//brave/components/constants",
@@ -54,21 +59,6 @@ if (is_ios) {
   brave_components_omnibox_browser_deps += [ "//brave/extensions:common" ]
 } else {
   brave_components_omnibox_browser_deps += [ "//content/public/common" ]
-}
-
-if (enable_ai_chat) {
-  brave_components_omnibox_browser_sources += [
-    "//brave/components/omnibox/browser/leo_action.cc",
-    "//brave/components/omnibox/browser/leo_action.h",
-    "//brave/components/omnibox/browser/leo_provider.cc",
-    "//brave/components/omnibox/browser/leo_provider.h",
-  ]
-
-  brave_components_omnibox_browser_deps += [
-    "//brave/components/ai_chat/core/browser",
-    "//brave/components/ai_chat/core/common",
-    "//brave/components/ai_chat/core/common/buildflags",
-  ]
 }
 
 if (enable_commander) {

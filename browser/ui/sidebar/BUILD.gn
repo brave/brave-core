@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 import("//extensions/buildflags/buildflags.gni")
 
@@ -21,7 +20,7 @@ source_set("browser_tests") {
   deps = [
     "//base",
     "//brave/app:command_ids",
-    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/ai_chat/core/common",
     "//brave/components/playlist/common",
     "//brave/components/sidebar/browser",
     "//brave/components/sidebar/common",
@@ -38,10 +37,6 @@ source_set("browser_tests") {
     "//ui/events",
     "//ui/gfx",
   ]
-
-  if (enable_ai_chat) {
-    deps += [ "//brave/components/ai_chat/core/common" ]
-  }
 }
 
 source_set("unit_tests") {
@@ -52,7 +47,6 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//brave/common",
-    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/playlist/common",
     "//brave/components/sidebar/browser",
     "//chrome/browser/ui",

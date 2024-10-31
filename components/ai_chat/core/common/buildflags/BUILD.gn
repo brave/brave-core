@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 
 declare_args() {
@@ -17,9 +16,5 @@ if (is_official_build) {
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
-  flags = [
-    "ENABLE_AI_CHAT=$enable_ai_chat",
-    "SERVICE_KEY_AICHAT=\"$service_key_aichat\"",
-    "ENABLE_AI_CHAT_FEATURE_FLAG=true",
-  ]
+  flags = [ "SERVICE_KEY_AICHAT=\"$service_key_aichat\"" ]
 }

@@ -10,7 +10,6 @@
 
 #include "base/containers/fixed_flat_map.h"
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 #define GetDeletionPreferenceFromDataType \
   GetDeletionPreferenceFromDataType_ChromiumImpl
 #define GetDataTypeFromDeletionPreference \
@@ -18,19 +17,15 @@
 #define TABS \
   TABS:      \
   case BrowsingDataType::BRAVE_AI_CHAT
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #include "src/components/browsing_data/core/browsing_data_utils.cc"
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 #undef TABS
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #undef GetDataTypeFromDeletionPreference
 #undef GetDeletionPreferenceFromDataType
 
 namespace browsing_data {
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 bool GetDeletionPreferenceFromDataType(
     BrowsingDataType data_type,
     ClearBrowsingDataTab clear_browsing_data_tab,
@@ -60,6 +55,5 @@ std::optional<BrowsingDataType> GetDataTypeFromDeletionPreference(
   }
   return GetDataTypeFromDeletionPreference_ChromiumImpl(pref_name);
 }
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 }  // namespace browsing_data

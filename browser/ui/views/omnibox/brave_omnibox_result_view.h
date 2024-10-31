@@ -7,7 +7,6 @@
 #define BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_RESULT_VIEW_H_
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_result_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
@@ -39,10 +38,7 @@ class BraveOmniboxResultView : public OmniboxResultView {
   void ResetChildren();
   void UpdateForBraveSearchConversion();
   void HandleSelectionStateChangedForPromotionView();
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
   void UpdateForLeoMatch();
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
   // Brave search conversion promotion
   raw_ptr<BraveSearchConversionPromotionView> brave_search_promotion_view_ =

@@ -5,6 +5,11 @@
 
 #include "src/chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc"
 
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -22,14 +27,6 @@
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #endif  // BUILDFLAG(ENABLE_COMMANDER)
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
-
 #if BUILDFLAG(ENABLE_COMMANDER)
 commander::CommanderFrontendDelegate*
 ChromeAutocompleteProviderClient::GetCommanderDelegate() {
@@ -37,7 +34,6 @@ ChromeAutocompleteProviderClient::GetCommanderDelegate() {
 }
 #endif  // BUILDFLAG(ENABLE_COMMANDER)
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
 #if !BUILDFLAG(IS_ANDROID)
   ai_chat::AIChatService* ai_chat_service =
@@ -109,8 +105,6 @@ bool ChromeAutocompleteProviderClient::IsLeoProviderEnabled() {
              ai_chat::prefs::kBraveChatAutocompleteProviderEnabled);
 #endif
 }
-
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 std::u16string ChromeAutocompleteProviderClient::GetClipboardText() const {
 #if !BUILDFLAG(IS_ANDROID)

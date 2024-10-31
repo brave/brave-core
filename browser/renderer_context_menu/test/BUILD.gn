@@ -3,8 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
-
 source_set("unit_tests") {
   testonly = true
   assert(is_win || is_linux || is_mac)
@@ -12,7 +10,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//brave/app:command_ids",
-    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/ai_chat/core/common",
     "//chrome/browser",
     "//chrome/browser/search_engines",
     "//chrome/test:test_support",
@@ -24,8 +22,4 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//third_party/abseil-cpp:absl",
   ]
-
-  if (enable_ai_chat) {
-    deps += [ "//brave/components/ai_chat/core/common" ]
-  }
 }

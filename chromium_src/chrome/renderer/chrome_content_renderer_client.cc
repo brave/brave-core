@@ -3,7 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/renderer/page_content_extractor.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
@@ -11,11 +12,6 @@
 #include "components/dom_distiller/content/renderer/distillability_agent.h"
 #include "components/feed/content/renderer/rss_link_reader.h"
 #include "content/public/common/isolated_world_ids.h"
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/renderer/page_content_extractor.h"
-#endif
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
 #include "brave/components/ai_rewriter/common/features.h"
@@ -28,13 +24,11 @@ void RenderFrameWithBinderRegistryCreated(
     content::RenderFrame* render_frame,
     service_manager::BinderRegistry* registry) {
   new feed::RssLinkReader(render_frame, registry);
-#if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled() && !IsIncognitoProcess()) {
     new ai_chat::PageContentExtractor(render_frame, registry,
                                       content::ISOLATED_WORLD_ID_GLOBAL,
                                       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
-#endif
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
   if (ai_rewriter::features::IsAIRewriterEnabled()) {

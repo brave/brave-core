@@ -11,13 +11,15 @@
 
 #include "base/functional/bind.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/toolbar/ai_chat_button.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -42,12 +44,6 @@
 #include "ui/events/event.h"
 #include "ui/views/window/hit_test_utils.h"
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/browser/ai_chat/ai_chat_utils.h"
-#include "brave/browser/ui/views/toolbar/ai_chat_button.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
@@ -63,12 +59,13 @@ constexpr int kLocationBarMaxWidth = 1080;
 
 double GetLocationBarMarginHPercent(int toolbar_width) {
   double location_bar_margin_h_pc = 0.07;
-  if (toolbar_width < 700)
+  if (toolbar_width < 700) {
     location_bar_margin_h_pc = 0;
-  else if (toolbar_width < 850)
+  } else if (toolbar_width < 850) {
     location_bar_margin_h_pc = 0.03;
-  else if (toolbar_width < 1000)
+  } else if (toolbar_width < 1000) {
     location_bar_margin_h_pc = 0.05;
+  }
   return location_bar_margin_h_pc;
 }
 
@@ -244,7 +241,6 @@ void BraveToolbarView::Init() {
 
   UpdateWalletButtonVisibility();
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   // Don't check policy status since we're going to
   // setup a watcher for policy pref.
   if (ai_chat::IsAllowedForContext(browser_->profile(), false)) {
@@ -262,7 +258,6 @@ void BraveToolbarView::Init() {
                             base::Unretained(this)));
     UpdateAIChatButtonVisibility();
   }
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::BraveVpnServiceFactory::GetForProfile(profile)) {
@@ -318,8 +313,9 @@ void BraveToolbarView::OnEditBookmarksEnabledChanged() {
 }
 
 void BraveToolbarView::OnShowBookmarksButtonChanged() {
-  if (!bookmark_)
+  if (!bookmark_) {
     return;
+  }
 
   UpdateBookmarkVisibility();
 }
@@ -334,13 +330,16 @@ void BraveToolbarView::OnLocationBarIsWideChanged() {
 void BraveToolbarView::OnThemeChanged() {
   ToolbarView::OnThemeChanged();
 
-  if (!brave_initialized_)
+  if (!brave_initialized_) {
     return;
+  }
 
-  if (display_mode_ == DisplayMode::NORMAL && bookmark_)
+  if (display_mode_ == DisplayMode::NORMAL && bookmark_) {
     bookmark_->UpdateImageAndText();
-  if (display_mode_ == DisplayMode::NORMAL && wallet_)
+  }
+  if (display_mode_ == DisplayMode::NORMAL && wallet_) {
     wallet_->UpdateImageAndText();
+  }
 }
 
 views::View* BraveToolbarView::GetAnchorView(
@@ -359,10 +358,12 @@ void BraveToolbarView::OnProfileWasRemoved(const base::FilePath& profile_path,
 
 void BraveToolbarView::LoadImages() {
   ToolbarView::LoadImages();
-  if (bookmark_)
+  if (bookmark_) {
     bookmark_->UpdateImageAndText();
-  if (wallet_)
+  }
+  if (wallet_) {
     wallet_->UpdateImageAndText();
+  }
 }
 
 void BraveToolbarView::Update(content::WebContents* tab) {
@@ -383,8 +384,9 @@ void BraveToolbarView::Update(content::WebContents* tab) {
 }
 
 void BraveToolbarView::UpdateBookmarkVisibility() {
-  if (!bookmark_)
+  if (!bookmark_) {
     return;
+  }
 
   DCHECK_EQ(DisplayMode::NORMAL, display_mode_);
   bookmark_->SetVisible(browser_defaults::bookmarks_enabled &&
@@ -420,8 +422,9 @@ void BraveToolbarView::ShowBookmarkBubble(const GURL& url,
   // or the location bar if there is no bookmark button
   // (i.e. in non-normal display mode).
   views::View* anchor_view = location_bar_;
-  if (bookmark_ && bookmark_->GetVisible())
+  if (bookmark_ && bookmark_->GetVisible()) {
     anchor_view = bookmark_;
+  }
 
   std::unique_ptr<BubbleSignInPromoDelegate> delegate;
   delegate =
@@ -450,8 +453,9 @@ void BraveToolbarView::ViewHierarchyChanged(
 void BraveToolbarView::Layout(PassKey) {
   LayoutSuperclass<ToolbarView>(this);
 
-  if (!brave_initialized_)
+  if (!brave_initialized_) {
     return;
+  }
 
   // ToolbarView::Layout() handles below modes. So just return.
   if (display_mode_ == DisplayMode::CUSTOM_TAB ||
@@ -491,13 +495,11 @@ void BraveToolbarView::ResetButtonBounds() {
   }
 }
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 void BraveToolbarView::UpdateAIChatButtonVisibility() {
   bool should_show = ai_chat::IsAllowedForContext(browser()->profile()) &&
                      show_ai_chat_button_.GetValue();
   ai_chat_button_->SetVisible(should_show);
 }
-#endif
 
 void BraveToolbarView::UpdateWalletButtonVisibility() {
   Profile* profile = browser()->profile();

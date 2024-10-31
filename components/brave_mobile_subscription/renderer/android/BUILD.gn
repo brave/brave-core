@@ -3,10 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 
-assert(enable_brave_vpn || enable_ai_chat)
 assert(is_android)
 
 source_set("android") {
@@ -17,7 +15,8 @@ source_set("android") {
 
   deps = [
     "//base",
-    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/skus/renderer",
     "//content/public/renderer",
@@ -29,12 +28,6 @@ source_set("android") {
     "//v8",
   ]
 
-  if (enable_ai_chat) {
-    deps += [
-      "//brave/components/ai_chat/core/common",
-      "//brave/components/ai_chat/core/common/mojom",
-    ]
-  }
   if (enable_brave_vpn) {
     deps += [
       "//brave/components/brave_vpn/common",
@@ -52,10 +45,9 @@ source_set("browser_tests") {
 
   deps = [
     "//brave/components/ai_chat/core/common",
-    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_mobile_subscription/renderer/android",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/buildflags:buildflags",
-    "//brave/components/brave_mobile_subscription/renderer/android",
     "//brave/components/skus/common",
     "//chrome/common",
     "//content/public/common",

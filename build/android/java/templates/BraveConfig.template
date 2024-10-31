@@ -11,6 +11,5 @@ package org.chromium.chrome.browser;
 public class BraveConfig {
   public static final String DEVELOPER_OPTIONS_CODE = BRAVE_ANDROID_DEVELOPER_OPTIONS_CODE;
   public static final boolean P3A_ENABLED = BRAVE_ANDROID_P3A_ENABLED;
-  public static final boolean AI_CHAT_ENABLED = BRAVE_ANDROID_AI_CHAT_ENABLED;
   public static final String WEBCOMPAT_REPORT_ENDPOINT = BRAVE_ANDROID_WEBCOMPAT_REPORT_ENDPOINT;
 }

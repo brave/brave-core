@@ -5,13 +5,10 @@
 
 #include "src/ios/chrome/browser/autocomplete/model/autocomplete_provider_client_impl.mm"
 
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 void AutocompleteProviderClientImpl::OpenLeo(const std::u16string& query) {}
 
 bool AutocompleteProviderClientImpl::IsLeoProviderEnabled() {
   return false;
 }
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)

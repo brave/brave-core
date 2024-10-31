@@ -16,12 +16,10 @@
   commander::CommanderFrontendDelegate* GetCommanderDelegate
 #endif  // BUILDFLAG(ENABLE_COMMANDER)
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 #define GetInMemoryDatabase                           \
   GetInMemoryDatabase() override;                     \
   void OpenLeo(const std::u16string& query) override; \
   bool IsLeoProviderEnabled
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #define GetAcceptLanguages             \
   GetAcceptLanguages() const override; \

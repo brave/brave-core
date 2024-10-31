@@ -3,13 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "components/omnibox/browser/autocomplete_controller.h"
+
 #include <memory>
 #include <vector>
 
 #include "base/memory/scoped_refptr.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_bookmark_provider.h"
@@ -18,10 +20,10 @@
 #include "brave/components/omnibox/browser/brave_local_history_zero_suggest_provider.h"
 #include "brave/components/omnibox/browser/brave_search_provider.h"
 #include "brave/components/omnibox/browser/brave_shortcuts_provider.h"
+#include "brave/components/omnibox/browser/leo_provider.h"
 #include "brave/components/omnibox/browser/promotion_provider.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
 #include "brave/components/omnibox/browser/topsites_provider.h"
-#include "components/omnibox/browser/autocomplete_controller.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/calculator_provider.h"
@@ -35,11 +37,6 @@
 #include "brave/components/commander/common/features.h"
 #include "brave/components/omnibox/browser/commander_provider.h"
 #endif
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/omnibox/browser/leo_provider.h"
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 using brave_search_conversion::IsBraveSearchConversionFeatureEnabled;
 
@@ -86,7 +83,6 @@ void MaybeAddCommanderProvider(AutocompleteController::Providers& providers,
 
 void MaybeAddLeoProvider(AutocompleteController::Providers& providers,
                          AutocompleteController* controller) {
-#if BUILDFLAG(ENABLE_AI_CHAT)
   auto* provider_client = controller->autocomplete_provider_client();
   // TestOmniboxClient has null prefs getter
   auto* prefs = provider_client->GetPrefs();
@@ -94,11 +90,9 @@ void MaybeAddLeoProvider(AutocompleteController::Providers& providers,
       !provider_client->IsOffTheRecord()) {
     providers.push_back(base::MakeRefCounted<LeoProvider>(provider_client));
   }
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 }
 
 void MaybeShowLeoMatch(AutocompleteResult* result) {
-#if BUILDFLAG(ENABLE_AI_CHAT)
   DCHECK(result);
 
   if (result->size() == 0) {
@@ -114,7 +108,6 @@ void MaybeShowLeoMatch(AutocompleteResult* result) {
   // Regardless of the relevance score, we want to show the Leo match at the
   // bottom. But could be followed by Brave Search promotion.
   result->ReorderMatch(leo_match, -1);
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 }
 
 }  // namespace

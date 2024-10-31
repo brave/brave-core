@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "components/user_prefs/user_prefs.h"

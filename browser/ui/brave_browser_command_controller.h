@@ -13,7 +13,6 @@
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_command_controller.h"
@@ -102,9 +101,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController,
   void UpdateCommandForBraveSync();
   void UpdateCommandForBraveWallet();
   void UpdateCommandForSidebar();
-#if BUILDFLAG(ENABLE_AI_CHAT)
   void UpdateCommandForAIChat();
-#endif
   void UpdateCommandForBraveVPN();
   void UpdateCommandForPlaylist();
   void UpdateCommandForWaybackMachine();
@@ -116,9 +113,8 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController,
   bool ExecuteBraveCommandWithDisposition(int id,
                                           WindowOpenDisposition disposition,
                                           base::TimeTicks time_stamp);
-#if BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_AI_CHAT)
+
   PrefChangeRegistrar pref_change_registrar_;
-#endif
   const raw_ref<Browser> browser_;
 
   CommandUpdaterImpl brave_command_updater_;

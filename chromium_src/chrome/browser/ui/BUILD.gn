@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
@@ -16,17 +15,11 @@ group("ui") {
 
   if (toolkit_views) {
     deps += [
-      "//brave/components/ai_chat/core/common/buildflags",
+      "//brave/components/ai_chat/content/browser",
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/common",
       "//brave/components/sidebar/browser",
     ]
-
-    if (enable_ai_chat) {
-      deps += [
-        "//brave/components/ai_chat/content/browser",
-        "//brave/components/ai_chat/core/browser",
-        "//brave/components/ai_chat/core/common",
-      ]
-    }
   }
 
   if (enable_brave_webtorrent) {
