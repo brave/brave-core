@@ -156,10 +156,8 @@ export class CrToolbarElement extends CrLitElement {
     return this.$.search;
   }
 
-  /** @private */
-  onMenuClick_() {
-    this.dispatchEvent(new CustomEvent(
-      'cr-toolbar-menu-click', { bubbles: true, composed: true }))
+  protected onMenuClick_() {
+    this.fire('cr-toolbar-menu-click')
   }
 
   focusMenuButton() {
