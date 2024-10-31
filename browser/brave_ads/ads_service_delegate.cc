@@ -20,6 +20,7 @@
 #include "brave/components/skus/browser/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/notifications/notification_display_service.h"
+#include "chrome/browser/notifications/notification_display_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/channel_info.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
@@ -107,7 +108,6 @@ AdsServiceDelegate::AdsServiceDelegate(
     PrefService* local_state,
     brave_adaptive_captcha::BraveAdaptiveCaptchaService*
         adaptive_captcha_service,
-    NotificationDisplayService* notification_display_service,
     std::unique_ptr<NotificationAdPlatformBridge>
         notification_ad_platform_bridge)
     : profile_(profile),
@@ -117,7 +117,6 @@ AdsServiceDelegate::AdsServiceDelegate(
           local_state_,
           /*is_profile_eligible_for_dse_guest_propagation=*/false),
       adaptive_captcha_service_(adaptive_captcha_service),
-      notification_display_service_(notification_display_service),
       notification_ad_platform_bridge_(
           std::move(notification_ad_platform_bridge)) {}
 
@@ -224,13 +223,13 @@ void AdsServiceDelegate::SnoozeScheduledCaptcha() {
 
 void AdsServiceDelegate::Display(
     const message_center::Notification& notification) {
-  notification_display_service_->Display(NotificationHandler::Type::BRAVE_ADS,
-                                         notification, nullptr);
+  GetNotificationDisplayService()->Display(NotificationHandler::Type::BRAVE_ADS,
+                                           notification, nullptr);
 }
 
 void AdsServiceDelegate::Close(const std::string& notification_id) {
-  notification_display_service_->Close(NotificationHandler::Type::BRAVE_ADS,
-                                       notification_id);
+  GetNotificationDisplayService()->Close(NotificationHandler::Type::BRAVE_ADS,
+                                         notification_id);
 }
 
 void AdsServiceDelegate::ShowNotificationAd(const std::string& id,
@@ -277,6 +276,11 @@ base::Value::Dict AdsServiceDelegate::GetVirtualPrefs() {
           "[virtual]:search_engine",
           base::Value::Dict().Set("default_name", GetDefaultSearchEngineName()))
       .Set("[virtual]:skus", GetSkus());
+}
+
+NotificationDisplayService*
+AdsServiceDelegate::GetNotificationDisplayService() {
+  return NotificationDisplayServiceFactory::GetForProfile(profile_);
 }
 
 }  // namespace brave_ads
