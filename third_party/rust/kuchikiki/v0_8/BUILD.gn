@@ -12,24 +12,24 @@ cargo_crate("lib") {
   crate_name = "kuchikiki"
   epoch = "0.8"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.4-speedreader/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.6-speedreader/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.4-speedreader/src/attributes.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.4-speedreader/src/cell_extras.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.4-speedreader/src/iter.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.4-speedreader/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.4-speedreader/src/node_data_ref.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.4-speedreader/src/parser.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.4-speedreader/src/select.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.4-speedreader/src/serializer.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.4-speedreader/src/tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.4-speedreader/src/tree.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.6-speedreader/src/attributes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.6-speedreader/src/cell_extras.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.6-speedreader/src/iter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.6-speedreader/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.6-speedreader/src/node_data_ref.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.6-speedreader/src/parser.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.6-speedreader/src/select.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.6-speedreader/src/serializer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.6-speedreader/src/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.6-speedreader/src/tree.rs",
   ]
   inputs = []
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.8.4-speedreader"
+  cargo_pkg_version = "0.8.6-speedreader"
   cargo_pkg_authors = "Brave Authors, Ralph Giles <rgiles@brave.com>, Simon Sapin <simon.sapin@exyr.org>"
   cargo_pkg_name = "kuchikiki"
   cargo_pkg_description = "(口利き) HTML tree manipulation library"
@@ -40,10 +40,9 @@ cargo_crate("lib") {
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
-    "//brave/third_party/rust/cssparser/v0_27:lib",
+    "//brave/third_party/rust/cssparser/v0_28:lib",
     "//brave/third_party/rust/html5ever/v0_25:lib",
-    "//brave/third_party/rust/indexmap/v1:lib",
-    "//brave/third_party/rust/matches/v0_1:lib",
-    "//brave/third_party/rust/selectors/v0_22:lib",
+    "//brave/third_party/rust/indexmap/v2:lib",
+    "//brave/third_party/rust/selectors/v0_23:lib",
   ]
 }

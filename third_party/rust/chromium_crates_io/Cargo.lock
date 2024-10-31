@@ -1238,15 +1238,6 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "1.9.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "autocfg",
- "hashbrown 0.12.3",
-]
-
-[[package]]
-name = "indexmap"
 version = "2.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
@@ -1330,14 +1321,13 @@ dependencies = [
 
 [[package]]
 name = "kuchikiki"
-version = "0.8.4-speedreader"
+version = "0.8.6-speedreader"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "cssparser 0.27.2",
+ "cssparser 0.28.1",
  "html5ever",
- "indexmap 1.9.3",
- "matches",
- "selectors 0.22.0",
+ "indexmap",
+ "selectors 0.23.0",
 ]
 
 [[package]]
