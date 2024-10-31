@@ -299,9 +299,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
  public:
   BraveWalletServiceUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+        shared_url_loader_factory_(url_loader_factory_.GetSafeWeakWrapper()) {}
 
   ~BraveWalletServiceUnitTest() override = default;
 
@@ -860,6 +858,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
   AccountUtils GetAccountUtils() { return AccountUtils(keyring_service_); }
 
   content::BrowserTaskEnvironment task_environment_;
+  network::TestURLLoaderFactory url_loader_factory_;
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<ScopedTestingLocalState> local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
@@ -883,8 +883,6 @@ class BraveWalletServiceUnitTest : public testing::Test {
   mojom::BlockchainTokenPtr sol_usdc_;
   mojom::BlockchainTokenPtr sol_tsla_;
   mojom::BlockchainTokenPtr fil_token_;
-  network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
