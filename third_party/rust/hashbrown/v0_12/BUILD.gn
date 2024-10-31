@@ -52,6 +52,5 @@ cargo_crate("lib") {
   features = [
     "ahash",
     "inline-more",
-    "raw",
   ]
 }
