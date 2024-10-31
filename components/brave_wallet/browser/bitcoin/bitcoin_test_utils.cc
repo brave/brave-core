@@ -112,11 +112,8 @@ std::optional<std::string> IsAddressUtxoRequest(
 
 }  // namespace
 
-BitcoinTestRpcServer::BitcoinTestRpcServer() {
-  shared_url_loader_factory_ =
-      base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-          &url_loader_factory_);
-
+BitcoinTestRpcServer::BitcoinTestRpcServer()
+    : shared_url_loader_factory_(url_loader_factory_.GetSafeWeakWrapper()) {
   url_loader_factory_.SetInterceptor(base::BindRepeating(
       &BitcoinTestRpcServer::RequestInterceptor, base::Unretained(this)));
 }
