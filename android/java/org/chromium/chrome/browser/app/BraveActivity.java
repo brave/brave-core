@@ -288,6 +288,8 @@ public abstract class BraveActivity extends ChromeActivity
     public static final int APP_OPEN_COUNT_FOR_WIDGET_PROMO = 25;
 
     public static final String BRAVE_SEARCH_ENGINE_KEYWORD = ":br";
+    public static final String BING_SEARCH_ENGINE_KEYWORD = ":b";
+    public static final String STARTPAGE_SEARCH_ENGINE_KEYWORD = ":sp";
 
     private static final boolean ENABLE_IN_APP_UPDATE =
             Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
@@ -2590,14 +2592,19 @@ public abstract class BraveActivity extends ChromeActivity
 
     // QuickSearchCallback
     @Override
-    public void onSearchEngineClick(QuickSearchEngineModel quickSearchEngineModel) {
-        Log.e(
-                "quick_search : onSearchEngineClick : quickSearchEngineModel.getUrl()",
-                quickSearchEngineModel.getUrl());
+    public void onSearchEngineClick(int position, QuickSearchEngineModel quickSearchEngineModel) {
+        if (getActivityTab() == null) {
+            return;
+        }
         String query = getBraveToolbarLayout().getLocationBarQuery();
-        LoadUrlParams loadUrlParams =
-                new LoadUrlParams(quickSearchEngineModel.getUrl().replace("{searchTerms}", query));
-        getActivityTab().loadUrl(loadUrlParams);
+        if (position == 0) {
+            BraveLeoUtils.openLeoQuery(getActivityTab().getWebContents(), "", query, true);
+        } else {
+            LoadUrlParams loadUrlParams =
+                    new LoadUrlParams(
+                            quickSearchEngineModel.getUrl().replace("{searchTerms}", query));
+            getActivityTab().loadUrl(loadUrlParams);
+        }
         getBraveToolbarLayout().clearOmniboxFocus();
     }
 

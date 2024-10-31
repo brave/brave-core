@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchCallback;
 import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEngineModel;
 
@@ -40,9 +41,11 @@ public class QuickSearchEnginesViewAdapter
         QuickSearchEngineModel quickSearchEngineModel = mSearchEngines.get(position);
         if (quickSearchViewHolder.getAdapterPosition() == 0) {
             quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_leo_icon);
-        } else if (quickSearchEngineModel.getKeyword().equals(":b")) {
+        } else if (BraveActivity.BING_SEARCH_ENGINE_KEYWORD.equals(
+                quickSearchEngineModel.getKeyword())) {
             quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_microsoft_color);
-        } else if (quickSearchEngineModel.getKeyword().equals(":sp")) {
+        } else if (BraveActivity.STARTPAGE_SEARCH_ENGINE_KEYWORD.equals(
+                quickSearchEngineModel.getKeyword())) {
             quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_startpage_color);
         } else {
             mQuickSearchCallback.loadSearchEngineLogo(
@@ -53,11 +56,8 @@ public class QuickSearchEnginesViewAdapter
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (quickSearchViewHolder.getAdapterPosition() == 0) {
-
-                        } else {
-                            mQuickSearchCallback.onSearchEngineClick(quickSearchEngineModel);
-                        }
+                        mQuickSearchCallback.onSearchEngineClick(
+                                quickSearchViewHolder.getAdapterPosition(), quickSearchEngineModel);
                     }
                 });
     }

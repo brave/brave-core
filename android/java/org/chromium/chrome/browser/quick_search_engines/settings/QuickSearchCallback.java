@@ -8,7 +8,8 @@ package org.chromium.chrome.browser.quick_search_engines.settings;
 import android.widget.ImageView;
 
 public interface QuickSearchCallback {
-    public default void onSearchEngineClick(QuickSearchEngineModel quickSearchEngineModel) {}
+    public default void onSearchEngineClick(
+            int position, QuickSearchEngineModel quickSearchEngineModel) {}
 
     public default void onSearchEngineLongClick() {}
 

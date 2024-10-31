@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 
 import java.util.Collections;
 import java.util.List;
@@ -49,12 +50,14 @@ public class QuickSearchAdapter extends RecyclerView.Adapter<QuickSearchViewHold
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         quickSearchEngineModel.setEnabled(isChecked);
-                        onSearchEngineClick(quickSearchEngineModel);
+                        onSearchEngineClick(
+                                quickSearchViewHolder.getAdapterPosition(), quickSearchEngineModel);
                     }
                 });
-        if (quickSearchEngineModel.getKeyword().equals(":b")) {
+        if (BraveActivity.BING_SEARCH_ENGINE_KEYWORD.equals(quickSearchEngineModel.getKeyword())) {
             quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_microsoft_color);
-        } else if (quickSearchEngineModel.getKeyword().equals(":sp")) {
+        } else if (BraveActivity.STARTPAGE_SEARCH_ENGINE_KEYWORD.equals(
+                quickSearchEngineModel.getKeyword())) {
             quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_startpage_color);
         } else {
             mQuickSearchCallback.loadSearchEngineLogo(
@@ -120,8 +123,8 @@ public class QuickSearchAdapter extends RecyclerView.Adapter<QuickSearchViewHold
                 mIsEditMode ? View.GONE : View.VISIBLE);
     }
 
-    private void onSearchEngineClick(QuickSearchEngineModel quickSearchEngineModel) {
-        mQuickSearchCallback.onSearchEngineClick(quickSearchEngineModel);
+    private void onSearchEngineClick(int position, QuickSearchEngineModel quickSearchEngineModel) {
+        mQuickSearchCallback.onSearchEngineClick(position, quickSearchEngineModel);
     }
 
     public void onItemMove(int fromPosition, int toPosition) {
