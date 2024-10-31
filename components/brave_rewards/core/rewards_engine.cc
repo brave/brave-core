@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
+#include "brave/components/brave_rewards/core/endpoints/brave/get_ui_cards.h"
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/initialization_manager.h"
@@ -80,6 +81,12 @@ void RewardsEngine::GetRewardsParameters(
     GetRewardsParametersCallback callback) {
   WhenReady([this, callback = std::move(callback)]() mutable {
     Get<RewardsParametersProvider>().GetParameters(std::move(callback));
+  });
+}
+
+void RewardsEngine::FetchUICards(FetchUICardsCallback callback) {
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    Get<endpoints::GetUICards>().Request(std::move(callback));
   });
 }
 

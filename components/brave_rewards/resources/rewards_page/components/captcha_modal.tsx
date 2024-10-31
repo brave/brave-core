@@ -9,7 +9,7 @@ import Icon from '@brave/leo/react/icon'
 
 import { TabOpenerContext } from '../../shared/components/new_tab_link'
 import { Modal } from './modal'
-import { CaptchaInfo } from '../lib/app_model'
+import { CaptchaInfo } from '../lib/app_state'
 import { useLocaleContext } from '../lib/locale_strings'
 import * as urls from '../../shared/lib/rewards_urls'
 

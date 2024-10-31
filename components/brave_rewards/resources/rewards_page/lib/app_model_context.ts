@@ -5,7 +5,8 @@
 
 import * as React from 'react'
 
-import { AppModel, AppState, defaultModel } from './app_model'
+import { AppState } from './app_state'
+import { AppModel, defaultModel } from './app_model'
 
 export const AppModelContext = React.createContext<AppModel>(defaultModel())
 

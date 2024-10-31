@@ -738,6 +738,10 @@ void RewardsPageHandler::OnCaptchaResult(bool success,
   std::move(callback).Run();
 }
 
+void RewardsPageHandler::FetchUICards(FetchUICardsCallback callback) {
+  rewards_service_->FetchUICards(std::move(callback));
+}
+
 void RewardsPageHandler::ResetRewards(ResetRewardsCallback callback) {
   rewards_service_->CompleteReset(std::move(callback));
 }

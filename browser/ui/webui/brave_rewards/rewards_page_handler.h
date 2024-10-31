@@ -137,6 +137,7 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
                         SendContributionCallback callback) override;
   void GetCaptchaInfo(GetCaptchaInfoCallback callback) override;
   void OnCaptchaResult(bool success, OnCaptchaResultCallback callback) override;
+  void FetchUICards(FetchUICardsCallback callback) override;
   void ResetRewards(ResetRewardsCallback callback) override;
 
  private:

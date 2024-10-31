@@ -91,6 +91,8 @@ class RewardsEngine : public mojom::RewardsEngine,
 
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
 
+  void FetchUICards(FetchUICardsCallback callback) override;
+
   void GetAutoContributeProperties(
       GetAutoContributePropertiesCallback callback) override;
 

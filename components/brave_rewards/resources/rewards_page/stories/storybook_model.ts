@@ -5,7 +5,8 @@
 
 import { createStateManager } from '../../shared/lib/state_manager'
 import { createLocaleContextForTesting } from '../../shared/lib/locale_context'
-import { AppModel, AppState, defaultState, defaultModel } from '../lib/app_model'
+import { AppState, defaultState } from '../lib/app_state'
+import { AppModel, defaultModel } from '../lib/app_model'
 import { localeStrings } from './storybook_strings'
 import { optional } from '../../shared/lib/optional'
 
@@ -185,7 +186,31 @@ export function createModel(): AppModel {
       supportedWalletProviders: ['uphold', 'gemini']
     },
     captchaInfo: null,
-    notifications: []
+    notifications: [],
+    cards: [
+      {
+        name: 'community-card',
+        items: [
+          {
+            title: 'Brave meetup in Toronto!',
+            description: 'December 12 in Toronto, Canada',
+            url: '{{ some link to event details }}',
+            thumbnail: ''
+          }
+        ],
+      },
+      {
+        name: 'merch-store-card',
+        items: [
+          {
+            title: 'Brave Embroidered Crop Top',
+            description: 'The beautiful embroidery, trendy raw hem, and matching drawstring are great.',
+            url: 'https://store.brave.com/p/brave-lion-embroidered-eco-hoodie/3576345201/',
+            thumbnail: 'https://cdn.store.brave.com/6944e95453a447ed8bd4ba69524eb76bb0b6b924db88ab0726b169affe0ac743.png'
+          }
+        ]
+      }
+    ]
   })
 
   return {

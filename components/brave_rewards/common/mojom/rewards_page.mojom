@@ -213,6 +213,9 @@ interface RewardsPageHandler {
   // captcha attempt.
   OnCaptchaResult(bool success) => ();
 
+  // Fetches UI card data from the Rewards API.
+  FetchUICards() => (array<UICard>? cards);
+
   // Clears all Rewards-related user state.
   ResetRewards() => (bool success);
 };

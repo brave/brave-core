@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Label from '@brave/leo/react/label'
 
-import { AdType } from '../../lib/app_model'
+import { AdType } from '../../lib/app_state'
 import { useAppState } from '../../lib/app_model_context'
 import { useLocaleContext } from '../../lib/locale_strings'
 

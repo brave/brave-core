@@ -7,7 +7,7 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 
-import { EnableRewardsResult } from '../../lib/app_model'
+import { EnableRewardsResult } from '../../lib/app_state'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { formatMessage } from '../../../shared/lib/locale_context'
 import { Modal } from '../modal'

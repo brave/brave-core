@@ -91,6 +91,7 @@ export type StringKey =
   'captchaSolvedTitle' |
   'captchaSupportButtonLabel' |
   'closeButtonLabel' |
+  'communityTitle' |
   'connectAccountSubtext' |
   'connectAccountText' |
   'connectButtonLabel' |
@@ -144,6 +145,7 @@ export type StringKey =
   'earningsRangeTooltip' |
   'helpButtonLabel' |
   'learnMoreLink' |
+  'merchStoreTitle' |
   'moreButtonLabel' |
   'navigationCreatorsLabel' |
   'navigationExploreLabel' |
@@ -206,6 +208,8 @@ export type StringKey =
   'tosUpdateRequiredText' |
   'tosUpdateRequiredTitle' |
   'unconnectedAdsViewedText' |
+  'viewAllLink' |
+  'viewStoreLink' |
   'wdpCheckboxLabel' |
   'wdpOptInText' |
   'wdpOptInTitle'

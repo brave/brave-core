@@ -128,6 +128,8 @@ class RewardsServiceImpl final : public RewardsService,
 
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
 
+  void FetchUICards(FetchUICardsCallback callback) override;
+
   void GetActivityInfoList(const uint32_t start,
                            const uint32_t limit,
                            mojom::ActivityInfoFilterPtr filter,

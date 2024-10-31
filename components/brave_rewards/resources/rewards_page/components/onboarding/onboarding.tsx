@@ -7,7 +7,7 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 
-import { EnableRewardsResult, AvailableCountryInfo } from '../../lib/app_model'
+import { EnableRewardsResult, AvailableCountryInfo } from '../../lib/app_state'
 import { AppModelContext } from '../../lib/app_model_context'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { useCallbackWrapper } from '../../lib/callback_wrapper'

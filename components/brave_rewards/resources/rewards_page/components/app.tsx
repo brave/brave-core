@@ -13,6 +13,7 @@ import { useBreakpoint } from '../lib/breakpoint'
 import { AppErrorBoundary } from './app_error_boundary'
 import { AppFrame } from './app_frame'
 import { HomeView } from './home/home_view'
+import { ExploreView } from './explore/explore_view'
 import { Onboarding } from './onboarding/onboarding'
 import { OnboardingSuccessModal } from './onboarding/onboarding_success_modal'
 import { ConnectAccount } from './connect_account'
@@ -179,7 +180,7 @@ export function App() {
       case routes.creators:
         return <></>
       case routes.explore:
-        return <></>
+        return <ExploreView />
       default:
         return <HomeView />
     }
