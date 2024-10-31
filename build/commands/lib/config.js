@@ -425,12 +425,20 @@ Config.prototype.buildArgs = function () {
     brave_services_production_domain: this.braveServicesProductionDomain,
     brave_services_staging_domain: this.braveServicesStagingDomain,
     brave_services_dev_domain: this.braveServicesDevDomain,
-    enable_dangling_raw_ptr_feature_flag: (this.getTargetOS() === 'linux'),
     brave_services_key_id: this.brave_services_key_id,
     service_key_aichat: this.service_key_aichat,
     service_key_stt: this.service_key_stt,
     generate_about_credits: true,
   }
+
+
+  if (this.getTargetOS() !== 'linux') {
+    // We explicitly disabled the check for certain other OSes, while leaving
+    // it as whatever is the default on the ones we've managed to get the
+    // detector properly running.
+    args.enable_dangling_raw_ptr_feature_flag = false
+  }
+
 
   if (!this.isBraveReleaseBuild()) {
     args.chrome_pgo_phase = 0
