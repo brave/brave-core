@@ -46,6 +46,8 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      kManagedBraveShieldsEnabledForUrls, base::Value::Type::LIST},
     {policy::key::kBraveSyncUrl, brave_sync::kCustomSyncServiceUrl,
      base::Value::Type::STRING},
+    {policy::key::kWebTorrentDisabled,
+     webtorrent::prefs::kWebTorrentDisabledByPolicy, base::Value::Type::BOOLEAN},
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
