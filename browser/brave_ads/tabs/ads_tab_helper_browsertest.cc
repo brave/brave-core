@@ -239,12 +239,14 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
     // Since we are mocking the `AdsService`, a delegate is not required. Note
     // that we are not testing the `AdsService` itself, these tests are focused
     // on the `AdsTabHelper`.
-    auto ads_service = std::make_unique<AdsServiceMock>(/*delegate*/ nullptr);
-    ads_service_mock_ = ads_service.get();
-    return ads_service;
+    return std::make_unique<AdsServiceMock>(/*delegate*/ nullptr);
   }
 
-  AdsServiceMock& ads_service_mock() { return *ads_service_mock_; }
+  AdsServiceMock& GetAdsServiceMock() {
+    AdsService* ads_service = AdsServiceFactory::GetForProfile(GetProfile());
+    CHECK(ads_service);
+    return *static_cast<AdsServiceMock*>(ads_service);
+  }
 
   Profile* GetProfile() { return chrome_test_utils::GetProfile(this); }
 
@@ -448,8 +450,6 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
 
   base::CallbackListSubscription callback_list_subscription_;
 
-  raw_ptr<AdsServiceMock, DanglingUntriaged> ads_service_mock_ = nullptr;
-
   net::EmbeddedTestServer test_server_{
       net::test_server::EmbeddedTestServer::TYPE_HTTPS};
   net::test_server::EmbeddedTestServerHandle test_server_handle_;
@@ -457,7 +457,7 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyTabDidChange) {
   EXPECT_CALL(
-      ads_service_mock(),
+      GetAdsServiceMock(),
       NotifyTabDidChange(TabId(),
                          RedirectChainExpectation(kMultiPageApplicationWebpage),
                          /*is_new_navigation=*/true, /*is_restoring=*/false,
@@ -468,11 +468,11 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyTabDidChange) {
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
                        NotifyTabDidChangeIfTabWasRestored) {
-  EXPECT_CALL(ads_service_mock(), NotifyTabDidChange)
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidChange)
       .Times(::testing::AnyNumber());
 
   EXPECT_CALL(
-      ads_service_mock(),
+      GetAdsServiceMock(),
       NotifyTabDidChange(TabId(),
                          RedirectChainExpectation(kMultiPageApplicationWebpage),
                          /*is_new_navigation=*/true, /*is_restoring=*/false,
@@ -482,6 +482,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
 
   // Must occur before the browser is closed.
   Profile* const profile = GetProfile();
+  AdsServiceMock& ads_service_mock = GetAdsServiceMock();
 
   const ScopedKeepAlive scoped_keep_alive(KeepAliveOrigin::SESSION_RESTORE,
                                           KeepAliveRestartOption::DISABLED);
@@ -491,7 +492,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
 
   // We do not know the tab id until the tab is restored, so we match on
   // `::testing::_`.
-  EXPECT_CALL(ads_service_mock(),
+  EXPECT_CALL(ads_service_mock,
               NotifyTabDidChange(
                   /*tab_id=*/::testing::_,
                   RedirectChainExpectation(kMultiPageApplicationWebpage),
@@ -503,34 +504,34 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyTabDidLoad) {
-  EXPECT_CALL(ads_service_mock(), NotifyTabDidLoad(TabId(), net::HTTP_OK));
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidLoad(TabId(), net::HTTP_OK));
   NavigateToURL(kMultiPageApplicationWebpage, /*has_user_gesture=*/true);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
                        NotifyTabDidLoadForHttpServerErrorResponsePage) {
-  EXPECT_CALL(ads_service_mock(),
+  EXPECT_CALL(GetAdsServiceMock(),
               NotifyTabDidLoad(TabId(), net::HTTP_INTERNAL_SERVER_ERROR));
   SimulateHttpStatusCodePage(net::HTTP_INTERNAL_SERVER_ERROR);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
                        NotifyTabDidLoadForHttpClientErrorResponsePage) {
-  EXPECT_CALL(ads_service_mock(),
+  EXPECT_CALL(GetAdsServiceMock(),
               NotifyTabDidLoad(TabId(), net::HTTP_NOT_FOUND));
   SimulateHttpStatusCodePage(net::HTTP_NOT_FOUND);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
                        NotifyTabDidLoadForHttpRedirectionResponsePage) {
-  EXPECT_CALL(ads_service_mock(),
+  EXPECT_CALL(GetAdsServiceMock(),
               NotifyTabDidLoad(TabId(), net::HTTP_MOVED_PERMANENTLY));
   SimulateHttpStatusCodePage(net::HTTP_MOVED_PERMANENTLY);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
                        NotifyTabDidLoadForHttpSuccessfulResponsePage) {
-  EXPECT_CALL(ads_service_mock(), NotifyTabDidLoad(TabId(), net::HTTP_OK));
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidLoad(TabId(), net::HTTP_OK));
   SimulateHttpStatusCodePage(net::HTTP_OK);
 }
 
@@ -540,7 +541,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
 
   base::RunLoop run_loop;
   EXPECT_CALL(
-      ads_service_mock(),
+      GetAdsServiceMock(),
       NotifyTabHtmlContentDidChange(
           TabId(), RedirectChainExpectation(kMultiPageApplicationWebpage),
           kMultiPageApplicationWebpageHtmlContent))
@@ -556,7 +557,7 @@ IN_PROC_BROWSER_TEST_F(
 
   base::RunLoop run_loop;
   EXPECT_CALL(
-      ads_service_mock(),
+      GetAdsServiceMock(),
       NotifyTabHtmlContentDidChange(
           TabId(), RedirectChainExpectation(kMultiPageApplicationWebpage),
           /*html=*/::testing::IsEmpty()))
@@ -570,14 +571,15 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
   base::RunLoop run_loop;
-  EXPECT_CALL(ads_service_mock(), NotifyTabHtmlContentDidChange)
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange)
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   NavigateToURL(kMultiPageApplicationWebpage, /*has_user_gesture=*/true);
   run_loop.Run();
-  ::testing::Mock::VerifyAndClearExpectations(&ads_service_mock());
+  ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
 
   // Must occur before the browser is closed.
   Profile* const profile = GetProfile();
+  AdsServiceMock& ads_service_mock = GetAdsServiceMock();
 
   const ScopedKeepAlive scoped_keep_alive(KeepAliveOrigin::SESSION_RESTORE,
                                           KeepAliveRestartOption::DISABLED);
@@ -587,7 +589,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
 
   // We should not notify about changes to the tab's HTML content, as the
   // session will be restored and the tab will reload.
-  EXPECT_CALL(ads_service_mock(), NotifyTabHtmlContentDidChange).Times(0);
+  EXPECT_CALL(ads_service_mock, NotifyTabHtmlContentDidChange).Times(0);
   RestoreBrowser(profile);
 
   EXPECT_TRUE(WaitForActiveWebContentsToLoad());
@@ -599,13 +601,13 @@ IN_PROC_BROWSER_TEST_F(
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
   base::RunLoop run_loop;
-  EXPECT_CALL(ads_service_mock(), NotifyTabHtmlContentDidChange)
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange)
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   NavigateToURL(kMultiPageApplicationWebpage, /*has_user_gesture=*/true);
   run_loop.Run();
-  ::testing::Mock::VerifyAndClearExpectations(&ads_service_mock());
+  ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
 
-  EXPECT_CALL(ads_service_mock(), NotifyTabHtmlContentDidChange).Times(0);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange).Times(0);
   GoBack();
   GoForward();
   Reload();
@@ -618,7 +620,7 @@ IN_PROC_BROWSER_TEST_F(
     DoNotNotifyTabHtmlContentDidChangeForHttpClientErrorResponsePage) {
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
-  EXPECT_CALL(ads_service_mock(), NotifyTabHtmlContentDidChange).Times(0);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange).Times(0);
   SimulateHttpStatusCodePage(net::HTTP_NOT_FOUND);
 }
 
@@ -627,7 +629,7 @@ IN_PROC_BROWSER_TEST_F(
     DoNotNotifyTabHtmlContentDidChangeForHttpServerErrorResponsePage) {
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
-  EXPECT_CALL(ads_service_mock(), NotifyTabHtmlContentDidChange).Times(0);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange).Times(0);
   SimulateHttpStatusCodePage(net::HTTP_INTERNAL_SERVER_ERROR);
 }
 
@@ -637,16 +639,16 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
 
   {
     base::RunLoop run_loop;
-    EXPECT_CALL(ads_service_mock(), NotifyTabHtmlContentDidChange)
+    EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange)
         .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
     NavigateToURL(kSinglePageApplicationWebpage, /*has_user_gesture=*/true);
     run_loop.Run();
-    ::testing::Mock::VerifyAndClearExpectations(&ads_service_mock());
+    ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
   }
 
   {
     base::RunLoop run_loop;
-    EXPECT_CALL(ads_service_mock(),
+    EXPECT_CALL(GetAdsServiceMock(),
                 NotifyTabHtmlContentDidChange(
                     TabId(), ::testing::Contains(FileName("same_document")),
                     kSinglePageApplicationWebpageHtmlContent))
@@ -665,7 +667,7 @@ IN_PROC_BROWSER_TEST_F(
 
   base::RunLoop run_loop;
   EXPECT_CALL(
-      ads_service_mock(),
+      GetAdsServiceMock(),
       NotifyTabTextContentDidChange(
           TabId(), RedirectChainExpectation(kMultiPageApplicationWebpage),
           kMultiPageApplicationWebpageTextContent))
@@ -678,7 +680,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
                        DoNotNotifyTabTextContentDidChangeForNonRewardsUser) {
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
 
-  EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange).Times(0);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange).Times(0);
   NavigateToURL(kMultiPageApplicationWebpage, /*has_user_gesture=*/true);
 }
 
@@ -688,7 +690,7 @@ IN_PROC_BROWSER_TEST_F(
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
   GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, false);
 
-  EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange).Times(0);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange).Times(0);
   NavigateToURL(kMultiPageApplicationWebpage, /*has_user_gesture=*/true);
 }
 
@@ -698,7 +700,7 @@ IN_PROC_BROWSER_TEST_F(
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
   GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, false);
 
-  EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange).Times(0);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange).Times(0);
   NavigateToURL(kMultiPageApplicationWebpage, /*has_user_gesture=*/true);
 }
 
@@ -708,14 +710,15 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
   GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, true);
 
   base::RunLoop run_loop;
-  EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange)
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange)
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   NavigateToURL(kMultiPageApplicationWebpage, /*has_user_gesture=*/true);
   run_loop.Run();
-  ::testing::Mock::VerifyAndClearExpectations(&ads_service_mock());
+  ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
 
   // Must occur before the browser is closed.
   Profile* const profile = GetProfile();
+  AdsServiceMock& ads_service_mock = GetAdsServiceMock();
 
   const ScopedKeepAlive scoped_keep_alive(KeepAliveOrigin::SESSION_RESTORE,
                                           KeepAliveRestartOption::DISABLED);
@@ -725,7 +728,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
 
   // We should not notify about changes to the tab's text content, as the
   // session will be restored and the tab will reload.
-  EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange).Times(0);
+  EXPECT_CALL(ads_service_mock, NotifyTabTextContentDidChange).Times(0);
   RestoreBrowser(profile);
 
   EXPECT_TRUE(WaitForActiveWebContentsToLoad());
@@ -738,13 +741,13 @@ IN_PROC_BROWSER_TEST_F(
   GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, true);
 
   base::RunLoop run_loop;
-  EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange)
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange)
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   NavigateToURL(kMultiPageApplicationWebpage, /*has_user_gesture=*/true);
   run_loop.Run();
-  ::testing::Mock::VerifyAndClearExpectations(&ads_service_mock());
+  ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
 
-  EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange).Times(0);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange).Times(0);
   GoBack();
   GoForward();
   Reload();
@@ -758,7 +761,7 @@ IN_PROC_BROWSER_TEST_F(
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
   GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, true);
 
-  EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange).Times(0);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange).Times(0);
   SimulateHttpStatusCodePage(net::HTTP_NOT_FOUND);
 }
 
@@ -768,7 +771,7 @@ IN_PROC_BROWSER_TEST_F(
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
   GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, true);
 
-  EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange).Times(0);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange).Times(0);
   SimulateHttpStatusCodePage(net::HTTP_INTERNAL_SERVER_ERROR);
 }
 
@@ -779,13 +782,13 @@ IN_PROC_BROWSER_TEST_F(
   GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, true);
 
   base::RunLoop run_loop;
-  EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange)
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange)
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   NavigateToURL(kSinglePageApplicationWebpage, /*has_user_gesture=*/true);
   run_loop.Run();
-  ::testing::Mock::VerifyAndClearExpectations(&ads_service_mock());
+  ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
 
-  EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange).Times(0);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange).Times(0);
   SimulateClick(kSinglePageApplicationClickSelectors,
                 /*has_user_gesture=*/true);
 
@@ -799,7 +802,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
   content::WebContents* const web_contents = GetActiveWebContents();
   MediaWaiter waiter(web_contents);
 
-  EXPECT_CALL(ads_service_mock(), NotifyTabDidStartPlayingMedia);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStartPlayingMedia);
   NavigateToURL(kAutoplayVideoWebpage, /*has_user_gesture=*/true);
 
   waiter.WaitForMediaStartedPlaying();
@@ -813,7 +816,7 @@ IN_PROC_BROWSER_TEST_F(
   content::WebContents* const web_contents = GetActiveWebContents();
   MediaWaiter waiter(web_contents);
 
-  EXPECT_CALL(ads_service_mock(), NotifyTabDidStartPlayingMedia).Times(0);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStartPlayingMedia).Times(0);
   NavigateToURL(kAutoplayVideoWebpage, /*has_user_gesture=*/true);
 
   waiter.WaitForMediaSessionCreated();
@@ -826,19 +829,19 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
   content::WebContents* const web_contents = GetActiveWebContents();
   MediaWaiter waiter(web_contents);
 
-  EXPECT_CALL(ads_service_mock(), NotifyTabDidStartPlayingMedia);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStartPlayingMedia);
   NavigateToURL(kAutoplayVideoWebpage, /*has_user_gesture=*/true);
 
   waiter.WaitForMediaStartedPlaying();
 
-  EXPECT_CALL(ads_service_mock(), NotifyTabDidStopPlayingMedia);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStopPlayingMedia);
   PauseVideoPlayback(kVideoJavascriptDocumentQuerySelectors);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyTabDidStartPlayingMedia) {
   NavigateToURL(kVideoWebpage, /*has_user_gesture=*/true);
 
-  EXPECT_CALL(ads_service_mock(), NotifyTabDidStartPlayingMedia);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStartPlayingMedia);
   StartVideoPlayback(kVideoJavascriptDocumentQuerySelectors);
 }
 
@@ -847,36 +850,37 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyTabDidStopPlayingMedia) {
 
   StartVideoPlayback(kVideoJavascriptDocumentQuerySelectors);
 
-  EXPECT_CALL(ads_service_mock(), NotifyTabDidStopPlayingMedia);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStopPlayingMedia);
   PauseVideoPlayback(kVideoJavascriptDocumentQuerySelectors);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyDidCloseTab) {
-  EXPECT_CALL(ads_service_mock(), NotifyDidCloseTab);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyDidCloseTab);
   CloseActiveWebContents();
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyUserGestureEventTriggered) {
-  EXPECT_CALL(ads_service_mock(), NotifyUserGestureEventTriggered)
+  EXPECT_CALL(GetAdsServiceMock(), NotifyUserGestureEventTriggered)
       .Times(::testing::AtLeast(1));
   NavigateToURL(kMultiPageApplicationWebpage, /*has_user_gesture=*/true);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
                        DoNotNotifyUserGestureEventTriggered) {
-  EXPECT_CALL(ads_service_mock(), NotifyUserGestureEventTriggered).Times(0);
+  EXPECT_CALL(GetAdsServiceMock(), NotifyUserGestureEventTriggered).Times(0);
   NavigateToURL(kMultiPageApplicationWebpage, /*has_user_gesture=*/false);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
                        DoNotNotifyUserGestureEventTriggeredIfTabWasRestored) {
-  EXPECT_CALL(ads_service_mock(), NotifyUserGestureEventTriggered)
+  EXPECT_CALL(GetAdsServiceMock(), NotifyUserGestureEventTriggered)
       .Times(::testing::AtLeast(1));
   NavigateToURL(kMultiPageApplicationWebpage, /*has_user_gesture=*/true);
-  ::testing::Mock::VerifyAndClearExpectations(&ads_service_mock());
+  ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
 
   // Must occur before the browser is closed.
   Profile* const profile = GetProfile();
+  AdsServiceMock& ads_service_mock = GetAdsServiceMock();
 
   const ScopedKeepAlive scoped_keep_alive(KeepAliveOrigin::SESSION_RESTORE,
                                           KeepAliveRestartOption::DISABLED);
@@ -884,7 +888,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
       profile, ProfileKeepAliveOrigin::kSessionRestore);
   CloseBrowserSynchronously(browser());
 
-  EXPECT_CALL(ads_service_mock(), NotifyUserGestureEventTriggered).Times(0);
+  EXPECT_CALL(ads_service_mock, NotifyUserGestureEventTriggered).Times(0);
   RestoreBrowser(profile);
 
   EXPECT_TRUE(WaitForActiveWebContentsToLoad());
