@@ -40,7 +40,8 @@ setBalance({
   coinType: mockEthMainnet.coin,
   contractAddress: mockMoonCatNFT.contractAddress,
   tokenId: mockMoonCatNFT.tokenId,
-  tokenBalancesRegistry: mockedTokenBalancesRegistry
+  tokenBalancesRegistry: mockedTokenBalancesRegistry,
+  isShielded: false
 })
 setBalance({
   accountId: mockSolanaAccount.accountId,
@@ -49,7 +50,8 @@ setBalance({
   coinType: mockSolanaMainnetNetwork.coin,
   contractAddress: mockSplNft.contractAddress,
   tokenId: mockSplNft.tokenId,
-  tokenBalancesRegistry: mockedTokenBalancesRegistry
+  tokenBalancesRegistry: mockedTokenBalancesRegistry,
+  isShielded: false
 })
 
 describe('token balances endpoints', () => {
@@ -100,7 +102,8 @@ describe('token balances endpoints', () => {
             coin: mockEthMainnet.coin,
             contractAddress: mockMoonCatNFT.contractAddress,
             tokenId: mockMoonCatNFT.tokenId,
-            registry: registry!
+            registry: registry!,
+            isShielded: false
           })
         ).toBe('1')
         expect(
@@ -110,7 +113,8 @@ describe('token balances endpoints', () => {
             coin: mockEthMainnet.coin,
             contractAddress: mockMoonCatNFT.contractAddress,
             tokenId: '0x1111',
-            registry: registry!
+            registry: registry!,
+            isShielded: false
           })
         ).toBe('0')
         expect(
@@ -120,7 +124,8 @@ describe('token balances endpoints', () => {
             coin: mockSolanaMainnetNetwork.coin,
             contractAddress: mockSplNft.contractAddress,
             tokenId: mockSplNft.tokenId,
-            registry: registry!
+            registry: registry!,
+            isShielded: false
           })
         ).toBe('1')
         expect(
@@ -130,7 +135,8 @@ describe('token balances endpoints', () => {
             coin: mockSolanaMainnetNetwork.coin,
             contractAddress: 'wt1t1111111111111111111',
             tokenId: '',
-            registry: registry!
+            registry: registry!,
+            isShielded: false
           })
         ).toBe('0')
       }

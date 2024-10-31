@@ -43,6 +43,7 @@ export type IconAsset = Pick<
   | 'logo'
   | 'name'
   | 'symbol'
+  | 'isShielded'
 >
 
 interface Props {

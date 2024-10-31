@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/task/thread_pool.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -62,22 +63,17 @@ void ZCashShieldSyncService::OrchardBlockScannerProxy::ScanBlocks(
 }
 
 ZCashShieldSyncService::ZCashShieldSyncService(
-    ZCashRpc* zcash_rpc,
+    ZCashWalletService* zcash_wallet_service,
     const mojom::AccountIdPtr& account_id,
     const mojom::ZCashAccountShieldBirthdayPtr& account_birthday,
     const OrchardFullViewKey& fvk,
-    base::FilePath db_dir_path,
     base::WeakPtr<Observer> observer)
-    : zcash_rpc_(zcash_rpc),
+    : zcash_wallet_service_(zcash_wallet_service),
       account_id_(account_id.Clone()),
       account_birthday_(account_birthday.Clone()),
-      db_dir_path_(db_dir_path),
       observer_(std::move(observer)) {
   chain_id_ = GetNetworkForZCashKeyring(account_id->keyring_id);
   block_scanner_ = std::make_unique<OrchardBlockScannerProxy>(fvk);
-  background_orchard_storage_.emplace(
-      base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
-      db_dir_path_);
 }
 
 ZCashShieldSyncService::~ZCashShieldSyncService() = default;
@@ -159,7 +155,8 @@ void ZCashShieldSyncService::WorkOnTask() {
 }
 
 void ZCashShieldSyncService::GetOrCreateAccount() {
-  background_orchard_storage_.AsyncCall(&ZCashOrchardStorage::GetAccountMeta)
+  orchard_storage()
+      .AsyncCall(&ZCashOrchardStorage::GetAccountMeta)
       .WithArgs(account_id_.Clone())
       .Then(base::BindOnce(&ZCashShieldSyncService::OnGetAccountMeta,
                            weak_ptr_factory_.GetWeakPtr()));
@@ -189,7 +186,8 @@ void ZCashShieldSyncService::OnGetAccountMeta(
 }
 
 void ZCashShieldSyncService::InitAccount() {
-  background_orchard_storage_.AsyncCall(&ZCashOrchardStorage::RegisterAccount)
+  orchard_storage()
+      .AsyncCall(&ZCashOrchardStorage::RegisterAccount)
       .WithArgs(account_id_.Clone(), account_birthday_->value,
                 account_birthday_->hash)
       .Then(base::BindOnce(&ZCashShieldSyncService::OnAccountInit,
@@ -221,7 +219,7 @@ void ZCashShieldSyncService::VerifyChainState(
   // is the same
   auto block_id = zcash::mojom::BlockID::New(
       account_meta.latest_scanned_block_id, std::vector<uint8_t>());
-  zcash_rpc_->GetTreeState(
+  zcash_rpc()->GetTreeState(
       chain_id_, std::move(block_id),
       base::BindOnce(
           &ZCashShieldSyncService::OnGetTreeStateForChainVerification,
@@ -259,7 +257,7 @@ void ZCashShieldSyncService::GetTreeStateForChainReorg(
   // Query block info by block height
   auto block_id =
       zcash::mojom::BlockID::New(new_block_height, std::vector<uint8_t>());
-  zcash_rpc_->GetTreeState(
+  zcash_rpc()->GetTreeState(
       chain_id_, std::move(block_id),
       base::BindOnce(&ZCashShieldSyncService::OnGetTreeStateForChainReorg,
                      weak_ptr_factory_.GetWeakPtr(), new_block_height));
@@ -275,7 +273,7 @@ void ZCashShieldSyncService::OnGetTreeStateForChainReorg(
     return;
   } else {
     // Reorg database so records related to removed blocks are wiped out
-    background_orchard_storage_
+    orchard_storage()
         .AsyncCall(&ZCashOrchardStorage::HandleChainReorg)
         .WithArgs(account_id_.Clone(), (*tree_state)->height,
                   (*tree_state)->hash)
@@ -299,7 +297,8 @@ void ZCashShieldSyncService::OnDatabaseUpdatedForChainReorg(
 }
 
 void ZCashShieldSyncService::UpdateSpendableNotes() {
-  background_orchard_storage_.AsyncCall(&ZCashOrchardStorage::GetSpendableNotes)
+  orchard_storage()
+      .AsyncCall(&ZCashOrchardStorage::GetSpendableNotes)
       .WithArgs(account_id_.Clone())
       .Then(base::BindOnce(&ZCashShieldSyncService::OnGetSpendableNotes,
                            weak_ptr_factory_.GetWeakPtr()));
@@ -321,7 +320,7 @@ void ZCashShieldSyncService::OnGetSpendableNotes(
 }
 
 void ZCashShieldSyncService::UpdateChainTip() {
-  zcash_rpc_->GetLatestBlock(
+  zcash_rpc()->GetLatestBlock(
       chain_id_, base::BindOnce(&ZCashShieldSyncService::OnGetLatestBlock,
                                 weak_ptr_factory_.GetWeakPtr()));
 }
@@ -337,7 +336,7 @@ void ZCashShieldSyncService::OnGetLatestBlock(
 }
 
 void ZCashShieldSyncService::DownloadBlocks() {
-  zcash_rpc_->GetCompactBlocks(
+  zcash_rpc()->GetCompactBlocks(
       chain_id_, *latest_scanned_block_ + 1,
       std::min(*chain_tip_block_, *latest_scanned_block_ + kScanBatchSize),
       base::BindOnce(&ZCashShieldSyncService::OnBlocksDownloaded,
@@ -392,7 +391,8 @@ void ZCashShieldSyncService::UpdateNotes(
     const std::vector<OrchardNullifier>& notes_to_delete,
     uint32_t latest_scanned_block,
     std::string latest_scanned_block_hash) {
-  background_orchard_storage_.AsyncCall(&ZCashOrchardStorage::UpdateNotes)
+  orchard_storage()
+      .AsyncCall(&ZCashOrchardStorage::UpdateNotes)
       .WithArgs(account_id_.Clone(), found_notes, notes_to_delete,
                 latest_scanned_block, latest_scanned_block_hash)
       .Then(base::BindOnce(&ZCashShieldSyncService::UpdateNotesComplete,
@@ -421,8 +421,13 @@ uint32_t ZCashShieldSyncService::GetSpendableBalance() {
   return balance;
 }
 
-void ZCashShieldSyncService::Reset() {
-  background_orchard_storage_.AsyncCall(&ZCashOrchardStorage::ResetDatabase);
+ZCashRpc* ZCashShieldSyncService::zcash_rpc() {
+  return zcash_wallet_service_->zcash_rpc();
+}
+
+base::SequenceBound<ZCashOrchardStorage>&
+ZCashShieldSyncService::orchard_storage() {
+  return zcash_wallet_service_->orchard_storage();
 }
 
 }  // namespace brave_wallet

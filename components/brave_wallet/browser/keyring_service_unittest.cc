@@ -3876,6 +3876,8 @@ TEST_F(KeyringServiceUnitTest, MigrateSelectedAccount) {
   EXPECT_EQ(all_accounts->selected_account, fil_acc);
 }
 
+#if BUILDFLAG(ENABLE_ORCHARD)
+
 // Generated using https://github.com/zcash/zcash-test-vectors
 TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes) {
   base::test::ScopedFeatureList feature_list;
@@ -3952,5 +3954,7 @@ TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes_ZCashDisabled) {
                               mojom::AccountKind::kDerived, 1),
       mojom::ZCashKeyId::New(1, 0 /* external */, 3)));
 }
+
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 }  // namespace brave_wallet

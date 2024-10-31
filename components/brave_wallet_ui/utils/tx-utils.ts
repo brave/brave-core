@@ -1449,7 +1449,8 @@ export const getTransactionFiatValues = ({
             contractAddress: '',
             chainId: txNetwork.chainId,
             coin: txNetwork.coin,
-            coingeckoId: ''
+            coingeckoId: '',
+            isShielded: false
           }
         })
       : Amount.empty()
@@ -1558,7 +1559,8 @@ export const getTransactionFiatValues = ({
           contractAddress: '',
           chainId: txNetwork.chainId,
           coin: txNetwork.coin,
-          coingeckoId: ''
+          coingeckoId: '',
+          isShielded: false
         }
       })
     : Amount.empty()
@@ -1769,7 +1771,8 @@ export const parseTransactionWithPrices = ({
         symbol: transactionNetwork.symbol,
         contractAddress: '',
         chainId: transactionNetwork.chainId,
-        coingeckoId: ''
+        coingeckoId: '',
+        isShielded: false
       }).format()
     : ''
 

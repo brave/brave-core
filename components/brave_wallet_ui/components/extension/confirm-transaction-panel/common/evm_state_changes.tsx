@@ -105,7 +105,8 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
       chainId: network.chainId,
       logo: foundTokenLogo || transfer.asset.imageUrl,
       name: transfer.asset.name,
-      symbol: transfer.asset.symbol
+      symbol: transfer.asset.symbol,
+      isShielded: false,
     }
   }, [transfer.asset, network, tokensRegistry])
 
@@ -247,9 +248,9 @@ export const NonFungibleErcTokenTransfer = ({
       logo: foundTokenLogo || transfer.metadata.rawImageUrl || '',
       name: transfer.asset.name,
       symbol: transfer.asset.symbol,
-      tokenId: transfer.asset.tokenId || ''
-    }
-  }, [transfer, network, tokensRegistry])
+      tokenId: transfer.asset.tokenId || '',
+      isShielded: false
+  }}, [transfer, network, tokensRegistry])
 
   // computed
   const isReceive = new Amount(transfer.amount.after) //

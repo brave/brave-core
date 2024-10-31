@@ -19,7 +19,7 @@ export const getTokenPriceFromRegistry = (
   spotPriceRegistry: SpotPriceRegistry,
   token: Pick<
     BraveWallet.BlockchainToken,
-    'symbol' | 'contractAddress' | 'chainId' | 'coingeckoId'
+    'symbol' | 'contractAddress' | 'chainId' | 'coingeckoId' | 'isShielded'
   >
 ): BraveWallet.AssetPrice | undefined => {
   return spotPriceRegistry[getPriceIdForToken(token)]
@@ -29,7 +29,7 @@ export const getTokenPriceAmountFromRegistry = (
   spotPriceRegistry: SpotPriceRegistry,
   token: Pick<
     BraveWallet.BlockchainToken,
-    'symbol' | 'contractAddress' | 'chainId' | 'coingeckoId'
+    'symbol' | 'contractAddress' | 'chainId' | 'coingeckoId' | 'isShielded'
   >
 ) => {
   const value = getTokenPriceFromRegistry(spotPriceRegistry, token)
@@ -51,6 +51,7 @@ export const computeFiatAmount = ({
     | 'chainId'
     | 'coin'
     | 'decimals'
+    | 'isShielded'
   >
 }): Amount => {
   if (!spotPriceRegistry && value === '0') {
@@ -86,6 +87,7 @@ export const computeFiatAmountToAssetValue = ({
     | 'chainId'
     | 'coin'
     | 'decimals'
+    | 'isShielded'
   >
 }): Amount => {
   if (!spotPriceRegistry || !value) {
@@ -103,7 +105,7 @@ export const computeFiatAmountToAssetValue = ({
 export const getPriceIdForToken = (
   token: Pick<
     BraveWallet.BlockchainToken,
-    'contractAddress' | 'symbol' | 'coingeckoId' | 'chainId'
+    'contractAddress' | 'symbol' | 'coingeckoId' | 'chainId' | 'isShielded'
   >
 ) => {
   if (token?.coingeckoId) {

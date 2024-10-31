@@ -87,7 +87,8 @@ mojom::BlockchainTokenPtr GetUserAsset(PrefService* prefs,
                                        const std::string& address,
                                        const std::string& token_id,
                                        bool is_erc721,
-                                       bool is_erc1155);
+                                       bool is_erc1155,
+                                       bool is_shielded);
 
 std::vector<mojom::BlockchainTokenPtr> GetAllUserAssets(PrefService* prefs);
 mojom::BlockchainTokenPtr AddUserAsset(PrefService* prefs,
@@ -130,6 +131,8 @@ std::string WalletInternalErrorMessage();
 
 mojom::BlockchainTokenPtr GetBitcoinNativeToken(const std::string& chain_id);
 mojom::BlockchainTokenPtr GetZcashNativeToken(const std::string& chain_id);
+mojom::BlockchainTokenPtr GetZcashNativeShieldedToken(
+    const std::string& chain_id);
 
 mojom::BlowfishOptInStatus GetTransactionSimulationOptInStatus(
     PrefService* prefs);

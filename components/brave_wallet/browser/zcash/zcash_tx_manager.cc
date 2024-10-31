@@ -61,6 +61,10 @@ void ZCashTxManager::AddUnapprovedTransaction(
     AddUnapprovedTransactionCallback callback) {
   const auto& zec_tx_data = tx_data_union->get_zec_tx_data();
 
+  if (zec_tx_data->use_shielded_pool) {
+    std::move(callback).Run(false, "", "");
+    return;
+  }
 #if BUILDFLAG(ENABLE_ORCHARD)
   if (IsZCashShieldedTransactionsEnabled()) {
     bool has_orchard_part =

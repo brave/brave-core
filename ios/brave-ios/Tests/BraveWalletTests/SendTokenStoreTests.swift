@@ -399,7 +399,8 @@ class SendTokenStoreTests: XCTestCase {
       tokenId: "",
       coingeckoId: "",
       chainId: "",
-      coin: .eth
+      coin: .eth,
+      isShielded: false
     )
     store.selectedSendToken = token
 

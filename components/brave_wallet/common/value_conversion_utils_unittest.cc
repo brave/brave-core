@@ -300,7 +300,8 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   mojom::BlockchainTokenPtr expected_token = mojom::BlockchainToken::New(
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
       "bat.png", true, true, false, false, mojom::SPLTokenProgram::kUnsupported,
-      false, false, "BAT", 18, true, "", "", "0x1", mojom::CoinType::ETH);
+      false, false, "BAT", 18, true, "", "", "0x1", mojom::CoinType::ETH,
+      false);
 
   mojom::BlockchainTokenPtr token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
@@ -339,7 +340,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "Crypto Kitties",
       "CryptoKitties-Kitty-13733.svg", false, false, true, false,
       mojom::SPLTokenProgram::kUnsupported, true, true, "CK", 0, true, "", "",
-      "0x1", mojom::CoinType::ETH);
+      "0x1", mojom::CoinType::ETH, false);
 
   token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
@@ -364,7 +365,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   expected_token = mojom::BlockchainToken::New(
       "0x28472a58A490c5e09A238847F66A68a47cC76f0f", "ADIDAS", "adidas.png",
       false, false, false, true, mojom::SPLTokenProgram::kUnsupported, true,
-      false, "ADIDAS", 0, true, "", "", "0x1", mojom::CoinType::ETH);
+      false, "ADIDAS", 0, true, "", "", "0x1", mojom::CoinType::ETH, false);
 
   token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
@@ -390,7 +391,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   expected_token = mojom::BlockchainToken::New(
       "addr", "name", "logo", false, false, false, false,
       mojom::SPLTokenProgram::kUnknown, false, false, "TEST", 8, true, "", "",
-      "0x65", mojom::CoinType::SOL);
+      "0x65", mojom::CoinType::SOL, false);
 
   token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);

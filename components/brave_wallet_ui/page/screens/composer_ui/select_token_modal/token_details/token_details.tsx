@@ -102,6 +102,8 @@ export const TokenDetails = (props: Props) => {
     ? Number(spotPrice.assetTimeframeChange) < 0
     : false
 
+  const tokenName = token.isShielded ? token.name + '(shielded)' : token.name
+
   return (
     <Column
       fullWidth={true}
@@ -122,7 +124,7 @@ export const TokenDetails = (props: Props) => {
           textColor='primary'
           isBold={true}
         >
-          {token.name}
+          {tokenName}
         </Text>
         <Text
           textSize='12px'

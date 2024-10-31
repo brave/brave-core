@@ -234,10 +234,15 @@ export const makeSendRoute = (
     token: asset.contractAddress || asset.symbol.toUpperCase(),
     account: account.accountId.uniqueKey
   }
+
+  const tokenIdQueryParams = asset.tokenId
+    ? { ...baseQueryParams, tokenId: asset.tokenId }
+    : baseQueryParams
+
   const params = new URLSearchParams(
-    asset.tokenId
-      ? { ...baseQueryParams, tokenId: asset.tokenId }
-      : baseQueryParams
+    asset.isShielded
+      ? {...tokenIdQueryParams, isShielded: 'true'}
+      : tokenIdQueryParams
   )
 
   if (isNftTab) {

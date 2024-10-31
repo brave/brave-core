@@ -258,7 +258,8 @@ export const usePendingTransactions = () => {
             contractAddress: '',
             isErc721: false,
             isNft: false,
-            tokenId: ''
+            tokenId: '',
+            isShielded: false
           }
         }
       : skipToken
@@ -274,7 +275,8 @@ export const usePendingTransactions = () => {
             contractAddress: transactionDetails.token.contractAddress,
             isErc721: transactionDetails.token.isErc721,
             isNft: transactionDetails.token.isNft,
-            tokenId: transactionDetails.token.tokenId
+            tokenId: transactionDetails.token.tokenId,
+            isShielded: transactionDetails.token.isShielded
           }
         }
       : skipToken
@@ -292,7 +294,8 @@ export const usePendingTransactions = () => {
             contractAddress: sellToken.contractAddress,
             isErc721: sellToken.isErc721,
             isNft: sellToken.isNft,
-            tokenId: sellToken.tokenId
+            tokenId: sellToken.tokenId,
+            isShielded: sellToken.isShielded
           }
         }
       : skipToken
