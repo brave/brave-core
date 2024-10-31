@@ -1018,6 +1018,7 @@ struct BlockchainToken {
   string coingecko_id = "";
   string chain_id;
   CoinType coin;
+  bool is_shielded = false; // Zcash only, marks whether asset belongs to the shielded pool.
 };
 
 struct AllowanceInfo {
@@ -1822,6 +1823,8 @@ struct ZCashKeyId {
 
 struct ZCashBalance {
   uint64 total_balance;
+  uint64 transparent_balance;
+  uint64 shielded_balance;
   map<string, uint64> balances;  // address -> balance of that address(sum of all related utxos)
 };
 
@@ -1959,6 +1962,7 @@ struct ZecTxOutput {
 };
 
 struct ZecTxData {
+  bool use_shielded_pool;
   string to;
   // Memo field should exist only for shielded output
   array<uint8>? memo;

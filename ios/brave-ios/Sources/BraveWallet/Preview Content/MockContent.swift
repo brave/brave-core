@@ -28,7 +28,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "",
     coingeckoId: "",
     chainId: BraveWallet.MainnetChainId,
-    coin: .eth
+    coin: .eth,
+    isShielded: false
   )
 
   static let previewDaiToken: BraveWallet.BlockchainToken = .init(
@@ -48,7 +49,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "",
     coingeckoId: "",
     chainId: BraveWallet.MainnetChainId,
-    coin: .eth
+    coin: .eth,
+    isShielded: false
   )
 
   static let mockUSDCToken: BraveWallet.BlockchainToken = .init(
@@ -68,7 +70,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "",
     coingeckoId: "",
     chainId: BraveWallet.MainnetChainId,
-    coin: .eth
+    coin: .eth,
+    isShielded: false
   )
 
   static let mockSolToken: BraveWallet.BlockchainToken = .init(
@@ -88,7 +91,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "",
     coingeckoId: "",
     chainId: BraveWallet.SolanaMainnet,
-    coin: .sol
+    coin: .sol,
+    isShielded: false
   )
 
   static let mockSpdToken: BraveWallet.BlockchainToken = .init(
@@ -108,7 +112,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "",
     coingeckoId: "",
     chainId: BraveWallet.SolanaMainnet,
-    coin: .sol
+    coin: .sol,
+    isShielded: false
   )
 
   static let mockERC721NFTToken: BraveWallet.BlockchainToken = .init(
@@ -128,7 +133,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "30934",
     coingeckoId: "",
     chainId: BraveWallet.MainnetChainId,
-    coin: .eth
+    coin: .eth,
+    isShielded: false
   )
 
   static let mockSolanaNFTToken: BraveWallet.BlockchainToken = .init(
@@ -148,7 +154,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "",
     coingeckoId: "",
     chainId: BraveWallet.SolanaMainnet,
-    coin: .sol
+    coin: .sol,
+    isShielded: false
   )
 
   static let mockFilToken: BraveWallet.BlockchainToken = .init(
@@ -168,7 +175,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "",
     coingeckoId: "",
     chainId: BraveWallet.FilecoinMainnet,
-    coin: .fil
+    coin: .fil,
+    isShielded: false
   )
 
   static let mockBTCToken: BraveWallet.BlockchainToken = .init(
@@ -188,7 +196,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "",
     coingeckoId: "",
     chainId: BraveWallet.BitcoinMainnet,
-    coin: .btc
+    coin: .btc,
+    isShielded: false
   )
 }
 

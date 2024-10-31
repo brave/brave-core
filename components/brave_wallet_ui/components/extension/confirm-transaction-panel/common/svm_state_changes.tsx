@@ -95,7 +95,8 @@ export const SOLTransfer = ({
       logo: network.iconUrls[0],
       name: transfer.asset.name,
       symbol: transfer.asset.symbol,
-      chainId: network.chainId
+      chainId: network.chainId,
+      isShielded: false
     }
   }, [transfer, network])
 
@@ -219,7 +220,8 @@ export const SPLTokenTransfer = ({
       name: transfer.asset.name,
       symbol: transfer.asset.symbol,
       chainId: network.chainId,
-      isNft: METAPLEX_NFT_KINDS.includes(transfer.asset.metaplexTokenStandard)
+      isNft: METAPLEX_NFT_KINDS.includes(transfer.asset.metaplexTokenStandard),
+      isShielded: false
     }
   }, [transfer, combinedTokensRegistry, network])
 

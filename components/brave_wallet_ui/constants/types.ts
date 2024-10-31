@@ -326,7 +326,9 @@ export interface SendBtcTransactionParams extends BaseTransactionParams {
   sendingMaxValue: boolean
 }
 
-export interface SendZecTransactionParams extends BaseTransactionParams {}
+export interface SendZecTransactionParams extends BaseTransactionParams {
+  useShieldedPool: boolean
+}
 
 /**
  * Used to properly store BraveWallet.TransactionInfo in redux store,

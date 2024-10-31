@@ -743,7 +743,7 @@ mojom::BlockchainTokenPtr ParseWalletWatchAssetParams(
       false /* is_compressed */, true /* is_erc20 */, false /* is_erc721 */,
       false /* is_erc1155 */, mojom::SPLTokenProgram::kUnsupported,
       false /* is_nft */, false /* is_spam */, *symbol, decimals, true, "", "",
-      base::ToLowerASCII(chain_id), mojom::CoinType::ETH);
+      base::ToLowerASCII(chain_id), mojom::CoinType::ETH, false);
 }
 
 // Parses param request objects from
