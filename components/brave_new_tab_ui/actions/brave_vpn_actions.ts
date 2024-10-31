@@ -6,6 +6,7 @@
 import { createAction } from 'redux-act'
 import * as BraveVPN from '../api/braveVpn'
 
+export const initialize = createAction('initialize')
 export const toggleConnection = createAction('toggleConnection')
 export const launchVPNPanel = createAction('launchVPNPanel')
 export const openVPNAccountPage = createAction('openVPNAccountPage')

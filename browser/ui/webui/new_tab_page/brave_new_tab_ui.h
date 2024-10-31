@@ -21,7 +21,7 @@
 #include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN_PANEL)
-#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"  // nogncheck
 #endif
 
 namespace brave_news {

@@ -9,6 +9,7 @@ import * as privateTabDataAPI from './privateTabData'
 import * as wallpaper from './wallpaper'
 import * as newTabAdsDataAPI from './newTabAdsData'
 import getNTPBrowserAPI from './background'
+import { loadTimeData } from '$web-common/loadTimeData'
 
 export type InitialData = {
   preferences: NewTab.Preferences
@@ -55,6 +56,7 @@ export async function getInitialData (): Promise<InitialData> {
       wallpaperData,
       braveRewardsSupported,
       braveTalkSupported,
+      braveVPNSupported,
       searchPromotionEnabled,
       braveBackgrounds,
       customImageBackgrounds
@@ -78,6 +80,7 @@ export async function getInitialData (): Promise<InitialData> {
           resolve(supported)
         })
       }),
+      loadTimeData.getBoolean('vpnWidgetSupported'),
       getNTPBrowserAPI().pageHandler.isSearchPromotionEnabled().then(({ enabled }) => enabled),
       getNTPBrowserAPI().pageHandler.getBraveBackgrounds().then(({ backgrounds }) => {
         return backgrounds.map(background => ({ type: 'brave', wallpaperImageUrl: background.imageUrl.url, author: background.author, link: background.link.url }))
@@ -96,7 +99,7 @@ export async function getInitialData (): Promise<InitialData> {
       customImageBackgrounds,
       braveRewardsSupported,
       braveTalkSupported,
-      braveVPNSupported: true,
+      braveVPNSupported,
       searchPromotionEnabled
     } as InitialData
   } catch (e) {
