@@ -289,9 +289,6 @@ public abstract class BraveActivity extends ChromeActivity
 
     public static final String BRAVE_SEARCH_ENGINE_KEYWORD = ":br";
 
-    private int keyboardHeight;
-    private boolean isKeyboardVisible;
-
     private static final boolean ENABLE_IN_APP_UPDATE =
             Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
 
@@ -2560,7 +2557,7 @@ public abstract class BraveActivity extends ChromeActivity
                 });
 
         List<QuickSearchEngineModel> searchEngines =
-                QuickSearchEnginesUtil.getQuickSearchEngines(getCurrentProfile());
+                QuickSearchEnginesUtil.getQuickSearchEnginesForView(getCurrentProfile());
         QuickSearchEngineModel leoQuickSearchEngineModel =
                 new QuickSearchEngineModel("", "", "", true);
         searchEngines.add(0, leoQuickSearchEngineModel);
@@ -2601,7 +2598,6 @@ public abstract class BraveActivity extends ChromeActivity
         LoadUrlParams loadUrlParams =
                 new LoadUrlParams(quickSearchEngineModel.getUrl().replace("{searchTerms}", query));
         getActivityTab().loadUrl(loadUrlParams);
-        // KeyboardVisibilityHelper.hideKeyboard(BraveActivity.this, null);
         getBraveToolbarLayout().clearOmniboxFocus();
     }
 

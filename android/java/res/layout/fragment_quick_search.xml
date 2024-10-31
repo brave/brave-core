@@ -12,38 +12,8 @@
      android:layout_height="match_parent"
      android:orientation="vertical">
 
-     <LinearLayout
-          android:id="@+id/quick_search_feature_layout"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:paddingHorizontal="16dp"
-         android:orientation="horizontal">
-
-          <TextView
-               android:layout_width="0dp"
-               android:layout_height="wrap_content"
-               android:layout_weight="1"
-               style="@style/LargeRegular"
-               android:text="@string/show_quick_search_bar"
-               android:layout_marginEnd="16dp"
-               android:layout_gravity="center_vertical"
-               android:textColor="@color/text_primary"/>
-
-          <com.google.android.material.materialswitch.MaterialSwitch
-               android:id="@+id/quick_search_feature_switch"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               app:trackTint="@color/vpn_server_selection_switch_stroke_color"
-               app:showText="false"
-               android:clickable="false"/>
-
-     </LinearLayout>
-
-     <View
-          android:id="@+id/divider"
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="@color/divider_subtle"/>
+     <include layout="@layout/quick_search_settings_item"
+          android:id="@+id/quick_search_feature_layout" />
 
      <LinearLayout
           android:id="@+id/quick_search_options_layout"
@@ -60,6 +30,9 @@
                android:layout_marginBottom="8dp"
                android:text="@string/currently_used_search_engines"
                android:textColor="@color/schemes_primary"/>
+
+          <include layout="@layout/quick_search_settings_item"
+               android:id="@+id/default_search_engine_layout" />
 
           <androidx.recyclerview.widget.RecyclerView
                android:id="@+id/quick_search_settings_recyclerview"

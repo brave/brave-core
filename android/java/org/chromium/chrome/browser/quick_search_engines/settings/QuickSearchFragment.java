@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,6 +38,8 @@ public class QuickSearchFragment extends BravePreferenceFragment implements Quic
 
     private MenuItem mSaveItem;
 
+    private LinearLayout mDefaultSearchEngineLayout;
+
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
     @Override
@@ -51,9 +54,14 @@ public class QuickSearchFragment extends BravePreferenceFragment implements Quic
         View view = inflater.inflate(R.layout.fragment_quick_search, container, false);
 
         LinearLayout quickSearchOptionsLayout = view.findViewById(R.id.quick_search_options_layout);
+
+        // Quick search feature layout
         LinearLayout quickSearchFeatureLayout = view.findViewById(R.id.quick_search_feature_layout);
+        TextView quickSearchFeatureText =
+                quickSearchFeatureLayout.findViewById(R.id.search_engine_text);
+        quickSearchFeatureText.setText(getString(R.string.show_quick_search_bar));
         MaterialSwitch quickSearchFeatureSwitch =
-                view.findViewById(R.id.quick_search_feature_switch);
+                quickSearchFeatureLayout.findViewById(R.id.search_engine_switch);
         quickSearchFeatureLayout.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -62,9 +70,8 @@ public class QuickSearchFragment extends BravePreferenceFragment implements Quic
                         quickSearchFeatureSwitch.setChecked(!isChecked);
                     }
                 });
+        quickSearchFeatureLayout.findViewById(R.id.search_engine_logo).setVisibility(View.GONE);
         quickSearchFeatureSwitch.setChecked(QuickSearchEnginesUtil.getQuickSearchEnginesFeature());
-        quickSearchOptionsLayout.setVisibility(
-                QuickSearchEnginesUtil.getQuickSearchEnginesFeature() ? View.VISIBLE : View.GONE);
         quickSearchFeatureSwitch.setOnCheckedChangeListener(
                 new CompoundButton.OnCheckedChangeListener() {
                     @Override
@@ -72,6 +79,41 @@ public class QuickSearchFragment extends BravePreferenceFragment implements Quic
                         quickSearchOptionsLayout.setVisibility(
                                 isChecked ? View.VISIBLE : View.GONE);
                         QuickSearchEnginesUtil.setQuickSearchEnginesFeature(isChecked);
+                    }
+                });
+
+        quickSearchOptionsLayout.setVisibility(
+                QuickSearchEnginesUtil.getQuickSearchEnginesFeature() ? View.VISIBLE : View.GONE);
+
+        // Default search engine layout
+        QuickSearchEngineModel defaultSearchEngineModel =
+                QuickSearchEnginesUtil.getDefaultSearchEngine(getProfile());
+        mDefaultSearchEngineLayout = view.findViewById(R.id.default_search_engine_layout);
+        ImageView defaultSearchEngineLogo =
+                mDefaultSearchEngineLayout.findViewById(R.id.search_engine_logo);
+        ImageUtils.loadSearchEngineLogo(
+                getProfile(), defaultSearchEngineLogo, defaultSearchEngineModel.getKeyword());
+        TextView defaultSearchEngineText =
+                mDefaultSearchEngineLayout.findViewById(R.id.search_engine_text);
+        defaultSearchEngineText.setText(defaultSearchEngineModel.getShortName());
+        MaterialSwitch defaultSearchEngineSwitch =
+                mDefaultSearchEngineLayout.findViewById(R.id.search_engine_switch);
+        mDefaultSearchEngineLayout.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean isChecked = defaultSearchEngineSwitch.isChecked();
+                        defaultSearchEngineSwitch.setChecked(!isChecked);
+                    }
+                });
+
+        defaultSearchEngineSwitch.setChecked(defaultSearchEngineModel.isEnabled());
+        defaultSearchEngineSwitch.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        defaultSearchEngineModel.setEnabled(isChecked);
+                        updateQuickSearchEnginesInPref(defaultSearchEngineModel);
                     }
                 });
 
@@ -97,6 +139,10 @@ public class QuickSearchFragment extends BravePreferenceFragment implements Quic
                     && mAdapter.getQuickSearchEngines().size() > 0) {
                 Map<String, QuickSearchEngineModel> searchEnginesMap =
                         new LinkedHashMap<String, QuickSearchEngineModel>();
+                QuickSearchEngineModel defaultSearchEngineModel =
+                        QuickSearchEnginesUtil.getDefaultSearchEngine(getProfile());
+                searchEnginesMap.put(
+                        defaultSearchEngineModel.getKeyword(), defaultSearchEngineModel);
                 for (QuickSearchEngineModel quickSearchEngineModel :
                         mAdapter.getQuickSearchEngines()) {
                     searchEnginesMap.put(
@@ -104,7 +150,7 @@ public class QuickSearchFragment extends BravePreferenceFragment implements Quic
                 }
                 QuickSearchEnginesUtil.saveSearchEnginesIntoPref(searchEnginesMap);
                 mAdapter.setEditMode(false);
-                saveMenuVisibility();
+                editModeUiVisibility();
             }
         }
         return super.onOptionsItemSelected(item);
@@ -123,7 +169,7 @@ public class QuickSearchFragment extends BravePreferenceFragment implements Quic
 
     private void refreshData() {
         List<QuickSearchEngineModel> quickSearchEngines =
-                QuickSearchEnginesUtil.getQuickSearchEngines(getProfile());
+                QuickSearchEnginesUtil.getQuickSearchEnginesForSettings(getProfile());
         setRecyclerViewData(quickSearchEngines);
     }
 
@@ -135,6 +181,10 @@ public class QuickSearchFragment extends BravePreferenceFragment implements Quic
     // QuickSearchCallback
     @Override
     public void onSearchEngineClick(QuickSearchEngineModel quickSearchEngineModel) {
+        updateQuickSearchEnginesInPref(quickSearchEngineModel);
+    }
+
+    private void updateQuickSearchEnginesInPref(QuickSearchEngineModel quickSearchEngineModel) {
         Map<String, QuickSearchEngineModel> searchEnginesMap =
                 QuickSearchEnginesUtil.getQuickSearchEnginesFromPref();
         searchEnginesMap.put(quickSearchEngineModel.getKeyword(), quickSearchEngineModel);
@@ -143,12 +193,17 @@ public class QuickSearchFragment extends BravePreferenceFragment implements Quic
 
     @Override
     public void onSearchEngineLongClick() {
-        saveMenuVisibility();
+        editModeUiVisibility();
     }
 
-    private void saveMenuVisibility() {
-        if (mSaveItem != null && mAdapter != null) {
-            mSaveItem.setVisible(mAdapter.isEditMode());
+    private void editModeUiVisibility() {
+        if (mAdapter != null) {
+            boolean isEditMode = mAdapter.isEditMode();
+            mDefaultSearchEngineLayout.setEnabled(!isEditMode);
+            mDefaultSearchEngineLayout.setAlpha(!isEditMode ? 1.0f : 0.5f);
+            if (mSaveItem != null) {
+                mSaveItem.setVisible(isEditMode);
+            }
         }
     }
 
