@@ -139,8 +139,7 @@ bool IsBraveSearchSERP(const GURL& url) {
   return url.SchemeIs(url::kHttpsScheme) &&
          url.host_piece() ==
              brave_domains::GetServicesDomain(kBraveSearchURLPrefix) &&
-         url.path_piece() == "/search" &&
-         base::StartsWith(url.query_piece(), "q=");
+         url.path_piece() == "/search" && url.query_piece().starts_with("q=");
 }
 
 bool IsPremiumStatus(mojom::PremiumStatus status) {

@@ -66,7 +66,8 @@ IN_PROC_BROWSER_TEST_P(ModuleFileNameBrowserTest, CheckPath) {
 
   WCHAR main_path[MAX_PATH] = {0};
   GetModuleFileNameW(nullptr, main_path, MAX_PATH);
-  EXPECT_TRUE(base::EndsWith(main_path, L"brave_browser_tests.exe"))
+  EXPECT_TRUE(
+      std::wstring_view(main_path).ends_with(L"brave_browser_tests.exe"))
       << main_path;
 
   constexpr const size_t kInterceptedFunctions = 4u;

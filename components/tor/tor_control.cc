@@ -400,9 +400,7 @@ void TorControl::GetVersionLine(std::string* version,
                                 const std::string& status,
                                 const std::string& reply) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
-  if (status != "250" ||
-      !base::StartsWith(reply, kGetVersionReply,
-                        base::CompareCase::SENSITIVE) ||
+  if (status != "250" || !reply.starts_with(kGetVersionReply) ||
       !version->empty()) {
     VLOG(0) << "tor: unexpected " << kGetVersionCmd << " reply";
     return;
@@ -447,8 +445,7 @@ void TorControl::GetSOCKSListenersLine(std::vector<std::string>* listeners,
                                        const std::string& status,
                                        const std::string& reply) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
-  if (status != "250" || !base::StartsWith(reply, kGetSOCKSListenersReply,
-                                           base::CompareCase::SENSITIVE)) {
+  if (status != "250" || !reply.starts_with(kGetSOCKSListenersReply)) {
     VLOG(0) << "tor: unexpected " << kGetSOCKSListenersCmd << " reply";
     return;
   }
@@ -491,9 +488,7 @@ void TorControl::GetCircuitEstablishedLine(std::string* established,
                                            const std::string& status,
                                            const std::string& reply) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
-  if (status != "250" ||
-      !base::StartsWith(reply, kGetCircuitEstablishedReply,
-                        base::CompareCase::SENSITIVE) ||
+  if (status != "250" || !reply.starts_with(kGetCircuitEstablishedReply) ||
       !established->empty()) {
     VLOG(0) << "tor: unexpected " << kGetCircuitEstablishedCmd << " reply";
     return;

@@ -161,7 +161,7 @@ void NTPP3AHelperImpl::OnP3ARotation(p3a::MetricLogType log_type,
 
 void NTPP3AHelperImpl::OnP3AMetricCycled(const std::string& histogram_name,
                                          bool is_constellation) {
-  if (!base::StartsWith(histogram_name, p3a::kCreativeMetricPrefix)) {
+  if (!histogram_name.starts_with(p3a::kCreativeMetricPrefix)) {
     return;
   }
 

@@ -80,8 +80,7 @@ class CustomBackgroundFileManager final {
                        CustomBackgroundFileManager* file_manager = nullptr)
         : file_manager_(file_manager) {
       if constexpr (std::is_same_v<FromT, std::string>) {
-        DCHECK(!base::StartsWith(value,
-                                 ntp_background_images::kCustomWallpaperURL))
+        DCHECK(!value.starts_with(ntp_background_images::kCustomWallpaperURL))
             << "URLs should be passed in as a GURL";
         value_ = value;
       } else if constexpr (std::is_same_v<FromT, GURL>) {

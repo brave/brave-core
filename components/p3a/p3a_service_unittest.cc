@@ -112,7 +112,7 @@ class P3AServiceTest : public testing::Test {
           p2a_i++;
         }
       } else if (p3a_i < p3a_count &&
-                 base::StartsWith(histogram_name, "Brave.Core")) {
+                 histogram_name.starts_with("Brave.Core")) {
         result.push_back(std::string(histogram_name));
         p3a_i++;
       }

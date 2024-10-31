@@ -11,7 +11,6 @@
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -122,7 +121,7 @@ class BraveAdsCreativeSearchResultAdTabHelperTest
     const GURL url = request.GetURL();
     const std::string_view path = url.path_piece();
 
-    if (!base::StartsWith(path, kClickRedirectPath)) {
+    if (!path.starts_with(kClickRedirectPath)) {
       return nullptr;
     }
 

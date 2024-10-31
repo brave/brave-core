@@ -496,7 +496,7 @@ class EphemeralStorageForgetByDefaultDisabledBrowserTest
   static bool IsPreTest() {
     const testing::TestInfo* const test_info =
         testing::UnitTest::GetInstance()->current_test_info();
-    return base::StartsWith(test_info->name(), "PRE_");
+    return std::string_view(test_info->name()).starts_with("PRE_");
   }
 
  private:

@@ -55,8 +55,7 @@ class SignedExchangeRequestBrowserTest : public InProcessBrowserTest {
 
   static std::unique_ptr<net::test_server::HttpResponse>
   RedirectResponseHandler(const net::test_server::HttpRequest& request) {
-    if (!base::StartsWith(request.relative_url, "/r?",
-                          base::CompareCase::SENSITIVE)) {
+    if (!request.relative_url.starts_with("/r?")) {
       return nullptr;
     }
     std::unique_ptr<net::test_server::BasicHttpResponse> http_response(
@@ -72,8 +71,7 @@ class SignedExchangeRequestBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<net::test_server::HttpResponse> FallbackSxgResponseHandler(
       const net::test_server::HttpRequest& request) {
     const std::string prefix = "/fallback_sxg?";
-    if (!base::StartsWith(request.relative_url, prefix,
-                          base::CompareCase::SENSITIVE)) {
+    if (!request.relative_url.starts_with(prefix)) {
       return nullptr;
     }
     std::string fallback_url(request.relative_url.substr(prefix.length()));

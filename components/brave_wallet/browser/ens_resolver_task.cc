@@ -73,7 +73,7 @@ EnsResolverTaskError MakeInvalidParamsError() {
 }
 
 std::string GetParent(const std::string& domain) {
-  DCHECK(domain == "eth" || base::EndsWith(domain, ".eth"));
+  DCHECK(domain == "eth" || domain.ends_with(".eth"));
   if (domain == "eth") {
     return "";
   }

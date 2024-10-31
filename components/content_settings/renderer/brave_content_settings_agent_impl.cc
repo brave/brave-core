@@ -78,7 +78,7 @@ bool IsBraveShieldsDown(const blink::WebFrame* frame,
 bool ShouldSkipResource(const GURL& resource_url) {
   return (resource_url.path_piece().empty() ||
           ((resource_url.path_piece().size() > 1) &&
-           !base::EndsWith(resource_url.path_piece(), kJavascriptExtension)));
+           !resource_url.path_piece().ends_with(kJavascriptExtension)));
 }
 
 }  // namespace

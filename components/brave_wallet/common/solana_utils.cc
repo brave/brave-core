@@ -78,7 +78,7 @@ bool IsBase58EncodedSolanaPubkey(const std::string& key) {
 bool Uint8ArrayDecode(const std::string& str,
                       std::vector<uint8_t>* ret,
                       size_t len) {
-  if (!base::StartsWith(str, "[") || !base::EndsWith(str, "]")) {
+  if (!str.starts_with('[') || !str.ends_with(']')) {
     return false;
   }
   DCHECK(ret);

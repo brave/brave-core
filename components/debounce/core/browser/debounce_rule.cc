@@ -48,7 +48,7 @@ const int64_t kMaxLengthRegexPattern = 200;
 // Removes trailing dot from |host_piece| if any.
 // Copied from extensions/common/url_pattern.cc
 std::string_view CanonicalizeHostForMatching(std::string_view host_piece) {
-  if (base::EndsWith(host_piece, ".")) {
+  if (host_piece.ends_with('.')) {
     host_piece.remove_suffix(1);
   }
   return host_piece;

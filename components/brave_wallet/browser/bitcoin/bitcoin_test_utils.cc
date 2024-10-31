@@ -41,10 +41,10 @@ std::string ExtractApiRequestPath(const GURL& request_url) {
                               ->rpc_endpoints[0]
                               .spec();
 
-  if (base::StartsWith(spec, mainnet_url_spec)) {
+  if (spec.starts_with(mainnet_url_spec)) {
     return spec.substr(mainnet_url_spec.size());
   }
-  if (base::StartsWith(spec, testnet_url_spec)) {
+  if (spec.starts_with(testnet_url_spec)) {
     return spec.substr(testnet_url_spec.size());
   }
 

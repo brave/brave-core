@@ -104,7 +104,7 @@ double ConsecutiveMatchWithGaps(const std::u16string& needle,
   DCHECK(haystack == base::i18n::FoldCase(haystack));
   DCHECK(matched_ranges.empty());
   // Special case for prefix.
-  if (base::StartsWith(haystack, needle)) {
+  if (haystack.starts_with(needle)) {
     matched_ranges.emplace_back(0, needle.size());
     return kPrefixScore;
   }
@@ -265,7 +265,7 @@ double FuzzyFinder::Find(const std::u16string& haystack,
     }
   }
   // Special case 2: needle is a prefix of haystack
-  if (base::StartsWith(folded, needle_)) {
+  if (folded.starts_with(needle_)) {
     matched_ranges.emplace_back(0, needle_.length());
     return kPrefixScore;
   }

@@ -29,7 +29,7 @@ MetricLogType ValidateURLAndGetMetricLogType(const GURL& url,
                                              const char* expected_host) {
   std::string url_prefix = base::StrCat({expected_host, "/instances/"});
 
-  EXPECT_TRUE(base::StartsWith(url.spec(), url_prefix));
+  EXPECT_TRUE(url.spec().starts_with(url_prefix));
 
   std::vector<std::string> path_segments = base::SplitString(
       url.path(), "/", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);

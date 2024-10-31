@@ -49,13 +49,11 @@ void RecordSentAnswersCount(uint64_t answers_count) {
 }
 
 bool IsMetricP2A(const std::string& histogram_name) {
-  return base::StartsWith(histogram_name, "Brave.P2A",
-                          base::CompareCase::SENSITIVE);
+  return histogram_name.starts_with("Brave.P2A");
 }
 
 bool IsMetricCreative(const std::string& histogram_name) {
-  return base::StartsWith(histogram_name, kCreativeMetricPrefix,
-                          base::CompareCase::SENSITIVE);
+  return histogram_name.starts_with(kCreativeMetricPrefix);
 }
 
 }  // namespace

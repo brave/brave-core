@@ -96,8 +96,8 @@ class RedirectCC {
     // Find directories to work with first.
     for (const auto* arg : args_.subspan(first_compiler_arg_idx)) {
       base::FilePath::StringPieceType arg_piece(arg);
-      if (base::StartsWith(arg_piece, kIncludeFlag) &&
-          base::EndsWith(arg_piece, kBraveChromiumSrc)) {
+      if (arg_piece.starts_with(kIncludeFlag) &&
+          arg_piece.ends_with(kBraveChromiumSrc)) {
         arg_piece.remove_prefix(kIncludeFlag.size());
         brave_chromium_src_dir = base::FilePath::StringType(arg_piece);
         arg_piece.remove_suffix(kBraveChromiumSrc.size());
@@ -141,7 +141,7 @@ class RedirectCC {
           // is used by asm compiler. We can safely ignore this, becaused we
           // don't redirect asm files.
           path_cc = base::FilePath::StringPieceType();
-        } else if (base::StartsWith(path_cc, chromium_src_dir_with_slash)) {
+        } else if (path_cc.starts_with(chromium_src_dir_with_slash)) {
           // Most common case - a file is located directly in src/...
           path_cc.remove_prefix(chromium_src_dir_with_slash.size());
         } else {

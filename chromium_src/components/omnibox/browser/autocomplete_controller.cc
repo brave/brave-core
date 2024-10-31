@@ -50,7 +50,7 @@ void MaybeShowCommands(AutocompleteResult* result,
 #if BUILDFLAG(ENABLE_COMMANDER)
   // If this input isn't a command, return and don't do any work.
   if (!base::FeatureList::IsEnabled(features::kBraveCommander) ||
-      !base::StartsWith(input.text(), commander::kCommandPrefix)) {
+      !input.text().starts_with(commander::kCommandPrefix)) {
     return;
   }
 
