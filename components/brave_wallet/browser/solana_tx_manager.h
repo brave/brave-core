@@ -19,8 +19,6 @@
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
 
-class PrefService;
-
 namespace brave_wallet {
 
 class TxService;
@@ -33,12 +31,11 @@ struct SolanaAccountInfo;
 
 class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
  public:
-  SolanaTxManager(TxService* tx_service,
+  SolanaTxManager(TxService& tx_service,
                   JsonRpcService* json_rpc_service,
-                  KeyringService* keyring_service,
-                  PrefService* prefs,
-                  TxStorageDelegate* delegate,
-                  AccountResolverDelegate* account_resolver_delegate);
+                  KeyringService& keyring_service,
+                  TxStorageDelegate& delegate,
+                  AccountResolverDelegate& account_resolver_delegate);
   ~SolanaTxManager() override;
 
   // TxManager
@@ -250,8 +247,8 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                                 const std::string& blockhash,
                                 uint64_t last_valid_block_height) override;
 
-  SolanaTxStateManager* GetSolanaTxStateManager();
-  SolanaBlockTracker* GetSolanaBlockTracker();
+  SolanaTxStateManager& GetSolanaTxStateManager();
+  SolanaBlockTracker& GetSolanaBlockTracker();
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   base::WeakPtrFactory<SolanaTxManager> weak_ptr_factory_;
 };

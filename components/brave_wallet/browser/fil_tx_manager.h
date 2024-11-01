@@ -16,8 +16,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
-class PrefService;
-
 namespace brave_wallet {
 
 class TxService;
@@ -29,12 +27,11 @@ class FilTransaction;
 
 class FilTxManager : public TxManager, public FilBlockTracker::Observer {
  public:
-  FilTxManager(TxService* tx_service,
+  FilTxManager(TxService& tx_service,
                JsonRpcService* json_rpc_service,
-               KeyringService* keyring_service,
-               PrefService* prefs,
-               TxStorageDelegate* delegate,
-               AccountResolverDelegate* account_resolver_delegate);
+               KeyringService& keyring_service,
+               TxStorageDelegate& delegate,
+               AccountResolverDelegate& account_resolver_delegate);
   ~FilTxManager() override;
   FilTxManager(const FilTxManager&) = delete;
   FilTxManager operator=(const FilTxManager&) = delete;
@@ -111,8 +108,8 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                                      int64_t exit_code,
                                      mojom::FilecoinProviderError error,
                                      const std::string& error_message);
-  FilTxStateManager* GetFilTxStateManager();
-  FilBlockTracker* GetFilBlockTracker();
+  FilTxStateManager& GetFilTxStateManager();
+  FilBlockTracker& GetFilBlockTracker();
 
   // FilBlockTracker::Observer
   void OnLatestHeightUpdated(const std::string& chain_id,
@@ -124,7 +121,6 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
 
   std::unique_ptr<FilNonceTracker> nonce_tracker_;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
-  raw_ptr<AccountResolverDelegate> account_resolver_delegate_ = nullptr;
   base::WeakPtrFactory<FilTxManager> weak_factory_{this};
 };
 

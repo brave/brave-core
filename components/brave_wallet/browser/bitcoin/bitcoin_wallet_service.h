@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -21,8 +22,6 @@
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
-
-class PrefService;
 
 namespace brave_wallet {
 class CreateTransactionTask;
@@ -35,9 +34,8 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
                              public KeyringServiceObserverBase {
  public:
   BitcoinWalletService(
-      KeyringService* keyring_service,
-      PrefService* prefs,
-      NetworkManager* network_manager,
+      KeyringService& keyring_service,
+      NetworkManager& network_manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~BitcoinWalletService() override;
 
@@ -118,8 +116,8 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
       const BitcoinTransaction& tx,
       const mojom::AccountIdPtr& account_id);
 
-  bitcoin_rpc::BitcoinRpc& bitcoin_rpc() { return *bitcoin_rpc_; }
-  KeyringService* keyring_service() { return keyring_service_; }
+  bitcoin_rpc::BitcoinRpc& bitcoin_rpc() { return bitcoin_rpc_; }
+  KeyringService& keyring_service() { return *keyring_service_; }
 
   void SetUrlLoaderFactoryForTesting(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -171,7 +169,7 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
                                 const mojom::BitcoinSignature& hw_signature);
   void CreateTransactionTaskDone(CreateTransactionTask* task);
 
-  raw_ptr<KeyringService, DanglingUntriaged> keyring_service_;
+  const raw_ref<KeyringService, DanglingUntriaged> keyring_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::list<std::unique_ptr<CreateTransactionTask>> create_transaction_tasks_;
   std::list<std::unique_ptr<DiscoverWalletAccountTask>>
@@ -182,7 +180,7 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
       fetch_raw_transactions_tasks_;
 
   mojo::ReceiverSet<mojom::BitcoinWalletService> receivers_;
-  std::unique_ptr<bitcoin_rpc::BitcoinRpc> bitcoin_rpc_;
+  bitcoin_rpc::BitcoinRpc bitcoin_rpc_;
   bool arrange_transactions_for_testing_ = false;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_service_observer_receiver_{this};

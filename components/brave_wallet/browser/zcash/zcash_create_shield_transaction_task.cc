@@ -16,7 +16,7 @@
 namespace brave_wallet {
 
 ZCashCreateShieldTransactionTask::ZCashCreateShieldTransactionTask(
-    ZCashWalletService* zcash_wallet_service,
+    ZCashWalletService& zcash_wallet_service,
     const std::string& chain_id,
     const mojom::AccountIdPtr& account_id,
     const OrchardAddrRawPart& receiver,

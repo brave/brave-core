@@ -23,7 +23,7 @@
 namespace brave_wallet {
 
 FetchRawTransactionsTask::FetchRawTransactionsTask(
-    BitcoinWalletService* bitcoin_wallet_service,
+    BitcoinWalletService& bitcoin_wallet_service,
     const std::string& network_id,
     const std::vector<SHA256HashArray>& txids)
     : bitcoin_wallet_service_(bitcoin_wallet_service),

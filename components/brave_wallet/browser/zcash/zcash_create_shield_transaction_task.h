@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -32,7 +33,7 @@ class ZCashCreateShieldTransactionTask {
   friend class ZCashWalletService;
 
   ZCashCreateShieldTransactionTask(
-      ZCashWalletService* zcash_wallet_service,
+      ZCashWalletService& zcash_wallet_service,
       const std::string& chain_id,
       const mojom::AccountIdPtr& account_id,
       const OrchardAddrRawPart& receiver,
@@ -56,7 +57,7 @@ class ZCashCreateShieldTransactionTask {
 
   bool CreateTransaction();
 
-  raw_ptr<ZCashWalletService> zcash_wallet_service_;  // Owns `this`.
+  const raw_ref<ZCashWalletService> zcash_wallet_service_;  // Owns `this`.
   std::string chain_id_;
   mojom::AccountIdPtr account_id_;
   OrchardAddrRawPart receiver_;

@@ -8,6 +8,7 @@
 
 #include <optional>
 
+#include "base/memory/raw_ref.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -20,7 +21,7 @@ class ZCashResolveBalanceTask {
  public:
   using ZCashResolveBalanceTaskCallback = base::OnceCallback<void(
       base::expected<mojom::ZCashBalancePtr, std::string>)>;
-  ZCashResolveBalanceTask(ZCashWalletService* zcash_wallet_service,
+  ZCashResolveBalanceTask(ZCashWalletService& zcash_wallet_service,
                           const std::string& chain_id,
                           mojom::AccountIdPtr account_id,
                           ZCashResolveBalanceTaskCallback callback);
@@ -45,7 +46,7 @@ class ZCashResolveBalanceTask {
 
   void CreateBalance();
 
-  raw_ptr<ZCashWalletService> zcash_wallet_service_;  // Owns this
+  const raw_ref<ZCashWalletService> zcash_wallet_service_;  // Owns this
   std::string chain_id_;
   mojom::AccountIdPtr account_id_;
   ZCashResolveBalanceTaskCallback callback_;

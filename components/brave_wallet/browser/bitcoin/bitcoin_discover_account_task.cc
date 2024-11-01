@@ -64,7 +64,7 @@ bool DiscoveredBitcoinAccount::operator==(
 }
 
 DiscoverAccountTaskBase::DiscoverAccountTaskBase(
-    BitcoinWalletService* bitcoin_wallet_service,
+    BitcoinWalletService& bitcoin_wallet_service,
     const std::string& network_id)
     : bitcoin_wallet_service_(bitcoin_wallet_service),
       network_id_(network_id),
@@ -211,7 +211,7 @@ void DiscoverAccountTaskBase::OnGetAddressStats(
 }
 
 DiscoverWalletAccountTask::DiscoverWalletAccountTask(
-    BitcoinWalletService* bitcoin_wallet_service,
+    BitcoinWalletService& bitcoin_wallet_service,
     mojom::KeyringId keyring_id,
     uint32_t account_index)
     : DiscoverAccountTaskBase(bitcoin_wallet_service,
@@ -224,12 +224,13 @@ DiscoverWalletAccountTask::~DiscoverWalletAccountTask() = default;
 
 mojom::BitcoinAddressPtr DiscoverWalletAccountTask::GetAddressById(
     const mojom::BitcoinKeyIdPtr& key_id) {
-  return bitcoin_wallet_service_->keyring_service()
-      ->GetBitcoinAccountDiscoveryAddress(keyring_id_, account_index_, key_id);
+  return bitcoin_wallet_service()
+      .keyring_service()
+      .GetBitcoinAccountDiscoveryAddress(keyring_id_, account_index_, key_id);
 }
 
 DiscoverExtendedKeyAccountTask::DiscoverExtendedKeyAccountTask(
-    BitcoinWalletService* bitcoin_wallet_service,
+    BitcoinWalletService& bitcoin_wallet_service,
     const std::string& network_id,
     const std::string& extended_key)
     : DiscoverAccountTaskBase(bitcoin_wallet_service, network_id),

@@ -39,7 +39,7 @@ class BitcoinTxStateManagerUnitTest : public testing::Test {
     account_resolver_delegate_ =
         std::make_unique<AccountResolverDelegateForTest>();
     bitcoin_tx_state_manager_ = std::make_unique<BitcoinTxStateManager>(
-        GetPrefs(), delegate_.get(), account_resolver_delegate_.get());
+        *delegate_, *account_resolver_delegate_);
   }
 
   PrefService* GetPrefs() { return &prefs_; }
