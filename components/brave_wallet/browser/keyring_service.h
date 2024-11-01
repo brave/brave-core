@@ -251,6 +251,8 @@ class KeyringService : public mojom::KeyringService {
       const mojom::ZCashKeyIdPtr& key_id);
   std::optional<OrchardFullViewKey> GetOrchardFullViewKey(
       const mojom::AccountIdPtr& account_id);
+  std::optional<OrchardSpendingKey> GetOrchardSpendingKey(
+      const mojom::AccountIdPtr& account_id);
 #endif
 
   const std::vector<mojom::AccountInfoPtr>& GetAllAccountInfos();

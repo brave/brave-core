@@ -8,5 +8,8 @@ specific_include_rules = {
   "unauthorized_orchard_bundle_impl.h": [
     "+third_party/rust/cxx/v1/cxx.h",
   ],
+  "orchard_decoded_blocks_bunde_impl.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ]
 }
 

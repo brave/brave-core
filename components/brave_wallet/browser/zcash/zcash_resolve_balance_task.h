@@ -7,6 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_RESOLVE_BALANCE_TASK_H_
 
 #include <optional>
+#include <string>
+#include <vector>
 
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"

@@ -21,7 +21,7 @@ export const zcashEndpoints = ({
           const { zcashWalletService } = baseQuery(undefined).data
 
           const { errorMessage } = await zcashWalletService.makeAccountShielded(
-            args
+            args, 0
           )
 
           if (errorMessage) {

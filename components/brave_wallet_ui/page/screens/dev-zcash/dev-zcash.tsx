@@ -7,7 +7,6 @@ import getAPIProxy from '../../../common/async/bridge'
 import * as React from 'react'
 
 import styled from 'styled-components'
-import { useState } from 'react'
 import { BraveWallet } from '../../../constants/types'
 import {
   LoadingSkeleton //
@@ -55,20 +54,22 @@ interface GetBalanceSectionProps {
 }
 
 const GetBalanceSection = (props: GetBalanceSectionProps) => {
-  const [loading, setLoading] = useState<boolean>(true)
-  const [balance, setBalance] = useState<
+  const [loading, setLoading] = React.useState<boolean>(true)
+  const [balance, setBalance] = React.useState<
     BraveWallet.ZCashBalance | undefined
   >()
-  const [shieldResult, setShieldResult] = useState<string>()
+  const [shieldResult, setShieldResult] = React.useState<string>()
   const [
     makeAccountShieldableResult,
-    setMakeAccountShieldableResult] = useState<string>()
-  const [syncStatusResult, setSyncStatusResult] = useState<string>();
-  const [shieldedBalanceValue, setShieldedBalanceValue] = useState<string>();
+    setMakeAccountShieldableResult] = React.useState<string>()
+  const [syncStatusResult, setSyncStatusResult] = React.useState<string>();
+  const [shieldedBalanceValue, setShieldedBalanceValue] = React.useState<string>();
+  const [accountBirthdayValue, setAccountBirthdayValue] = React.useState<string>();
+  const [syncBlockLimit, setSyncBlockLimit] = React.useState<string>();
 
   const makeAccountShielded = async() => {
     const result = await getAPIProxy().zcashWalletService.makeAccountShielded(
-        props.accountId);
+        props.accountId, Number(accountBirthdayValue || '0'));
     setMakeAccountShieldableResult(result.errorMessage || 'Done');
   }
 
@@ -76,7 +77,7 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
   const startOrchardSync = async() => {
     setSyncStatusResult('')
     const result =
-        await getAPIProxy().zcashWalletService.startShieldSync(props.accountId);
+        await getAPIProxy().zcashWalletService.startShieldSync(props.accountId, Number(syncBlockLimit || '0'));
 
     if (result.errorMessage) {
       setSyncStatusResult("Sync error " + result.errorMessage);
@@ -86,6 +87,14 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
   const stopOrchardSync = async() => {
     const result =
       await getAPIProxy().zcashWalletService.stopShieldSync(props.accountId);
+    if (result.errorMessage) {
+      setSyncStatusResult("Stop error " + result.errorMessage);
+    }
+  }
+
+  const resetAccountSyncState = async() => {
+    const result =
+      await getAPIProxy().zcashWalletService.resetSyncState(props.accountId);
     if (result.errorMessage) {
       setSyncStatusResult("Stop error " + result.errorMessage);
     }
@@ -128,10 +137,11 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
       },
       onSyncStatusUpdate: (accountId: BraveWallet.AccountId,
                            status: ZCashShieldSyncStatus) => {
+        console.error('xxxzzz status update');
         if (props.accountId.uniqueKey === accountId.uniqueKey) {
           setSyncStatusResult("Current block " +
-                              status.currentBlock + "/" +
-                              status.chainTip);
+                              status.endBlock + "-" +
+                              status.startBlock + " " + status.scannedRanges + "/" + status.totalRanges);
           setShieldedBalanceValue("Found balance: " + status.spendableBalance);
         }
       },
@@ -163,9 +173,26 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
         />
       ) : (
         <>
+          <input
+            type={'number'}
+            placeholder={'0'}
+            value={accountBirthdayValue}
+            name={'account birthday block'}
+            onChange={(ev) => setAccountBirthdayValue(ev.target.value)}
+            spellCheck={false}
+          />
           <button onClick={makeAccountShielded}>Upgrade to shielded</button>
+          <input
+            type={'number'}
+            placeholder={'0'}
+            value={syncBlockLimit}
+            name={'sync block limit'}
+            onChange={(ev) => setSyncBlockLimit(ev.target.value)}
+            spellCheck={false}
+          />
           <button onClick={startOrchardSync}>Start orchard sync</button>
           <button onClick={stopOrchardSync}>Stop orchard sync</button>
+          <button onClick={resetAccountSyncState}>Reset account sync state</button>
 
           <button onClick={fetchBalance}>Reload</button>
           <button onClick={shieldAllFunds}>Shield</button>
@@ -203,8 +230,8 @@ interface GetZCashAccountInfoSectionProps {
 const GetZCashAccountInfoSection: React.FC<
   GetZCashAccountInfoSectionProps
 > = ({ accountId }) => {
-  const [loading, setLoading] = useState<boolean>(true)
-  const [zcashAccountInfo, setZCashAccountInfo] = useState<
+  const [loading, setLoading] = React.useState<boolean>(true)
+  const [zcashAccountInfo, setZCashAccountInfo] = React.useState<
     BraveWallet.ZCashAccountInfo | undefined
   >()
 
@@ -249,6 +276,18 @@ const GetZCashAccountInfoSection: React.FC<
             <code>Unified address: </code>
             <code>
               {zcashAccountInfo?.unifiedAddress || '-'}
+            </code>
+          </div>
+          <div>
+            <code>Orchard address: </code>
+            <code>
+              {zcashAccountInfo?.orchardAddress || '-'}
+            </code>
+          </div>
+          <div>
+            <code>Account shielded birthday: </code>
+            <code>
+              {String(zcashAccountInfo?.accountShieldBirthday?.value) || '-'}
             </code>
           </div>
           <div>

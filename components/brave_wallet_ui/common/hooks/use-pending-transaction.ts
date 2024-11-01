@@ -259,7 +259,7 @@ export const usePendingTransactions = () => {
             isErc721: false,
             isNft: false,
             tokenId: '',
-            isShielded: false
+            isShielded: true
           }
         }
       : skipToken

@@ -6,9 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_ORCHARD_BLOCK_DECODER_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_ORCHARD_BLOCK_DECODER_IMPL_H_
 
+#include <memory>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_block_decoder.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bunde.h"
 
 namespace brave_wallet::orchard {
 
@@ -16,8 +18,10 @@ class OrchardBlockDecoderImpl : public OrchardBlockDecoder {
  public:
   ~OrchardBlockDecoderImpl() override;
 
-  std::optional<std::vector<::brave_wallet::OrchardNote>> ScanBlock(
-      const ::brave_wallet::zcash::mojom::CompactBlockPtr& block) override;
+  std::unique_ptr<OrchardDecodedBlocksBundle> ScanBlocks(
+      const ::brave_wallet::OrchardTreeState& tree_state,
+      const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>& block)
+      override;
 
  private:
   friend class OrchardBlockDecoder;

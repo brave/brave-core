@@ -8,28 +8,40 @@
 #include <algorithm>
 #include <vector>
 
+#include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
+
 namespace brave_wallet {
 
-std::array<uint8_t, kOrchardNullifierSize> GenerateMockNullifier(
-    const mojom::AccountIdPtr& account_id,
-    uint8_t seed) {
+OrchardAddrRawPart GenerateMockAddr() {
+  return {};
+}
+
+OrchardRseed GenerateMockRSeed() {
+  return {};
+}
+
+OrchardRho GenerateMockRho() {
+  return {};
+}
+
+OrchardNullifier GenerateMockNullifier(const mojom::AccountIdPtr& account_id,
+                                       uint8_t seed) {
   std::array<uint8_t, kOrchardNullifierSize> nullifier;
   nullifier.fill(seed);
   nullifier[0] = account_id->account_index;
   return nullifier;
 }
 
-OrchardNullifier GenerateMockNullifier(const mojom::AccountIdPtr& account_id,
-                                       uint32_t block_id,
-                                       uint8_t seed) {
-  return OrchardNullifier{block_id, GenerateMockNullifier(account_id, seed)};
-}
-
 OrchardNote GenerateMockOrchardNote(const mojom::AccountIdPtr& account_id,
                                     uint32_t block_id,
                                     uint8_t seed) {
-  return OrchardNote{block_id, GenerateMockNullifier(account_id, seed),
-                     static_cast<uint32_t>(seed * 10)};
+  return OrchardNote{GenerateMockAddr(),
+                     block_id,
+                     GenerateMockNullifier(account_id, seed),
+                     static_cast<uint32_t>(seed * 10),
+                     0,
+                     GenerateMockRho(),
+                     GenerateMockRSeed()};
 }
 
 void SortByBlockId(std::vector<OrchardNote>& vec) {

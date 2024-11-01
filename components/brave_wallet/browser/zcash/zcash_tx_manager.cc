@@ -61,10 +61,10 @@ void ZCashTxManager::AddUnapprovedTransaction(
     AddUnapprovedTransactionCallback callback) {
   const auto& zec_tx_data = tx_data_union->get_zec_tx_data();
 
-  if (zec_tx_data->use_shielded_pool) {
-    std::move(callback).Run(false, "", "");
-    return;
-  }
+  // if (zec_tx_data->use_shielded_pool) {
+  //   std::move(callback).Run(false, "", "");
+  //   return;
+  // }
 #if BUILDFLAG(ENABLE_ORCHARD)
   if (IsZCashShieldedTransactionsEnabled()) {
     bool has_orchard_part =
@@ -76,11 +76,20 @@ void ZCashTxManager::AddUnapprovedTransaction(
         std::move(callback).Run(false, "", "");
         return;
       }
-      zcash_wallet_service_->CreateShieldTransaction(
+      // if (true) {
+      zcash_wallet_service_->CreateShieldedTransaction(
           chain_id, from->Clone(), zec_tx_data->to, zec_tx_data->amount, memo,
           base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
                          weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
                          origin, std::move(callback)));
+      // } else {
+      //   zcash_wallet_service_->CreateShieldTransaction(
+      //       chain_id, from->Clone(), zec_tx_data->to, zec_tx_data->amount,
+      //       memo,
+      //       base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
+      //                      weak_factory_.GetWeakPtr(), chain_id,
+      //                      from.Clone(), origin, std::move(callback)));
+      // }
       return;
     }
   }
@@ -134,22 +143,22 @@ void ZCashTxManager::ApproveTransaction(const std::string& tx_meta_id,
   }
 
   // Only one transaction per account is allowed at one moment.
-  if (!GetZCashTxStateManager()
-           ->GetTransactionsByStatus(meta->chain_id(),
-                                     mojom::TransactionStatus::Submitted,
-                                     meta->from())
-           .empty()) {
-    meta->set_status(mojom::TransactionStatus::Error);
-    tx_state_manager_->AddOrUpdateTx(*meta);
+  // if (!GetZCashTxStateManager()
+  //          ->GetTransactionsByStatus(meta->chain_id(),
+  //                                    mojom::TransactionStatus::Submitted,
+  //                                    meta->from())
+  //          .empty()) {
+  //   meta->set_status(mojom::TransactionStatus::Error);
+  //   tx_state_manager_->AddOrUpdateTx(*meta);
 
-    std::move(callback).Run(
-        false,
-        mojom::ProviderErrorUnion::NewZcashProviderError(
-            mojom::ZCashProviderError::kMultipleTransactionsNotSupported),
-        l10n_util::GetStringUTF8(
-            IDS_BRAVE_WALLET_ZCASH_TRANSACTION_ALREADY_EXISTS_DESCRIPTION));
-    return;
-  }
+  //   std::move(callback).Run(
+  //       false,
+  //       mojom::ProviderErrorUnion::NewZcashProviderError(
+  //           mojom::ZCashProviderError::kMultipleTransactionsNotSupported),
+  //       l10n_util::GetStringUTF8(
+  //           IDS_BRAVE_WALLET_ZCASH_TRANSACTION_ALREADY_EXISTS_DESCRIPTION));
+  //   return;
+  // }
 
   meta->set_status(mojom::TransactionStatus::Approved);
   if (!tx_state_manager_->AddOrUpdateTx(*meta)) {

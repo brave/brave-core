@@ -259,6 +259,23 @@ const GURL MakeGetCompactBlocksURL(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
+const GURL MakeGetSubtreeRootsURL(const GURL& base_url) {
+  if (!base_url.is_valid()) {
+    return GURL();
+  }
+  if (!UrlPathEndsWithSlash(base_url)) {
+    return GURL();
+  }
+
+  GURL::Replacements replacements;
+  std::string path =
+      base::StrCat({base_url.path(),
+                    "cash.z.wallet.sdk.rpc.CompactTxStreamer/GetSubtreeRoots"});
+  replacements.SetPathStr(path);
+
+  return base_url.ReplaceComponents(replacements);
+}
+
 std::string MakeGetTreeStateURLParams(
     const zcash::mojom::BlockIDPtr& block_id) {
   ::zcash::BlockID request;
@@ -334,6 +351,16 @@ std::string MakeGetCompactBlocksParams(uint32_t block_start,
   range.mutable_end()->CopyFrom(top);
 
   return GetPrefixedProtobuf(range.SerializeAsString());
+}
+
+std::string MakeGetSubtreeRootsParams(uint32_t start, uint32_t entries) {
+  ::zcash::GetSubtreeRootsArg arg;
+
+  arg.set_startindex(start);
+  arg.set_maxentries(entries);
+  arg.set_shieldedprotocol(::zcash::ShieldedProtocol::orchard);
+
+  return GetPrefixedProtobuf(arg.SerializeAsString());
 }
 
 std::unique_ptr<network::SimpleURLLoader> MakeGRPCLoader(
@@ -517,6 +544,36 @@ void ZCashRpc::GetCompactBlocks(const std::string& chain_id,
   (*it)->DownloadAsStream(url_loader_factory_.get(), handler_it->get());
 }
 
+void ZCashRpc::GetSubtreeRoots(const std::string& chain_id,
+                               uint32_t start,
+                               uint32_t entries,
+                               GetSubtreeRootsCallback callback) {
+  GURL request_url = MakeGetSubtreeRootsURL(GetNetworkURL(chain_id));
+
+  if (!request_url.is_valid()) {
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    return;
+  }
+
+  auto url_loader =
+      MakeGRPCLoader(request_url, MakeGetSubtreeRootsParams(start, entries));
+
+  UrlLoadersList::iterator it = url_loaders_list_.insert(
+      url_loaders_list_.begin(), std::move(url_loader));
+
+  StreamHandlersList::iterator handler_it = stream_handlers_list_.insert(
+      stream_handlers_list_.begin(),
+      std::make_unique<GetCompactBlocksGrpcStreamHandler>());
+
+  static_cast<GetCompactBlocksGrpcStreamHandler*>(handler_it->get())
+      ->set_callback(base::BindOnce(&ZCashRpc::OnGetSubtreeRootsResponse,
+                                    weak_ptr_factory_.GetWeakPtr(),
+                                    std::move(callback), it, handler_it));
+
+  (*it)->DownloadAsStream(url_loader_factory_.get(), handler_it->get());
+}
+
 void ZCashRpc::OnGetCompactBlocksResponse(
     ZCashRpc::GetCompactBlocksCallback callback,
     UrlLoadersList::iterator it,
@@ -534,6 +591,26 @@ void ZCashRpc::OnGetCompactBlocksResponse(
   GetDecoder()->ParseCompactBlocks(
       *result,
       base::BindOnce(&ZCashRpc::OnParseCompactBlocks,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void ZCashRpc::OnGetSubtreeRootsResponse(
+    ZCashRpc::GetSubtreeRootsCallback callback,
+    UrlLoadersList::iterator it,
+    StreamHandlersList::iterator handler_it,
+    base::expected<std::vector<std::string>, std::string> result) {
+  url_loaders_list_.erase(it);
+  stream_handlers_list_.erase(handler_it);
+
+  if (!result.has_value()) {
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    return;
+  }
+
+  GetDecoder()->ParseSubtreeRoots(
+      *result,
+      base::BindOnce(&ZCashRpc::OnParseSubtreeRoots,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
@@ -568,6 +645,16 @@ void ZCashRpc::OnParseCompactBlocks(
     std::move(callback).Run(std::move(compact_blocks.value()));
   } else {
     std::move(callback).Run(base::unexpected("Cannot parse blocks"));
+  }
+}
+
+void ZCashRpc::OnParseSubtreeRoots(
+    GetSubtreeRootsCallback callback,
+    std::optional<std::vector<zcash::mojom::SubtreeRootPtr>> subtree_roots) {
+  if (subtree_roots) {
+    std::move(callback).Run(std::move(subtree_roots.value()));
+  } else {
+    std::move(callback).Run(base::unexpected("Cannot parse subtree roots"));
   }
 }
 

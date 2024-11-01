@@ -634,7 +634,7 @@ const util = {
         wasInterrupted
 
       if (shouldRunGnGen) {
-        util.run('gn', ['gen', outputDir, ...extraGnGenOpts, ...internalOpts], options)
+        util.run('gn', ['gen', '--ide=qtcreator', '--export-rust-project', outputDir, ...extraGnGenOpts, ...internalOpts], options)
       }
     })
   },

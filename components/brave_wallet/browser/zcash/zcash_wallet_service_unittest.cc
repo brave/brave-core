@@ -36,7 +36,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/scoped_run_loop_timeout.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_orchard_storage.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_orchard_sync_state.h"
 #endif
 
 using testing::_;
@@ -141,8 +141,8 @@ class ZCashWalletServiceUnitTest : public testing::Test {
   }
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-  base::SequenceBound<ZCashOrchardStorage>& orchard_storage() {
-    return zcash_wallet_service_->orchard_storage();
+  base::SequenceBound<ZCashOrchardSyncState>& sync_state() {
+    return zcash_wallet_service_->sync_state_;
   }
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
@@ -258,6 +258,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalance) {
         EXPECT_EQ(balance->transparent_balance, 50u);
         EXPECT_EQ(balance->shielded_balance, 0u);
       }));
+
   zcash_wallet_service_->GetBalance(mojom::kZCashMainnet, account_id.Clone(),
                                     balance_callback.Get());
   task_environment_.RunUntilIdle();
@@ -328,10 +329,14 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
   auto update_notes_callback = base::BindLambdaForTesting(
       [](std::optional<ZCashOrchardStorage::Error>) {});
 
-  orchard_storage()
-      .AsyncCall(&ZCashOrchardStorage::UpdateNotes)
-      .WithArgs(account_id.Clone(), std::vector<OrchardNote>({note}),
-                std::vector<OrchardNullifier>(), 50000, "hash50000")
+  auto result = OrchardBlockScanner::CreateResultForTesting(
+      OrchardTreeState(), std::vector<OrchardCommitment>());
+  result.discovered_notes = std::vector<OrchardNote>({note});
+  result.found_spends = std::vector<OrchardNoteSpend>();
+
+  sync_state()
+      .AsyncCall(&ZCashOrchardSyncState::UpdateNotes)
+      .WithArgs(account_id.Clone(), std::move(result), 50000, "hash50000")
       .Then(std::move(update_notes_callback));
 
   task_environment_.RunUntilIdle();
@@ -413,10 +418,14 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
   auto update_notes_callback = base::BindLambdaForTesting(
       [](std::optional<ZCashOrchardStorage::Error>) {});
 
-  orchard_storage()
-      .AsyncCall(&ZCashOrchardStorage::UpdateNotes)
-      .WithArgs(account_id.Clone(), std::vector<OrchardNote>({note}),
-                std::vector<OrchardNullifier>(), 50000, "hash50000")
+  auto result = OrchardBlockScanner::CreateResultForTesting(
+      OrchardTreeState(), std::vector<OrchardCommitment>());
+  result.discovered_notes = std::vector<OrchardNote>({note});
+  result.found_spends = std::vector<OrchardNoteSpend>();
+
+  sync_state()
+      .AsyncCall(&ZCashOrchardSyncState::UpdateNotes)
+      .WithArgs(account_id.Clone(), std::move(result), 50000, "hash50000")
       .Then(std::move(update_notes_callback));
 
   task_environment_.RunUntilIdle();
@@ -879,7 +888,7 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
     EXPECT_CALL(make_account_shielded_callback, Run(Eq(std::nullopt)));
 
     zcash_wallet_service_->MakeAccountShielded(
-        account_id_1.Clone(), make_account_shielded_callback.Get());
+        account_id_1.Clone(), 0, make_account_shielded_callback.Get());
     task_environment_.RunUntilIdle();
   }
 
@@ -960,10 +969,10 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
                 zcash::mojom::BlockID::New(100000u, std::vector<uint8_t>());
             std::move(callback).Run(std::move(response));
           }));
-  ON_CALL(*zcash_rpc(), GetLatestTreeState(_, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                ZCashRpc::GetTreeStateCallback callback) {
+  ON_CALL(*zcash_rpc(), GetTreeState(_, _, _))
+      .WillByDefault(::testing::Invoke(
+          [&](const std::string& chain_id, zcash::mojom::BlockIDPtr block_id,
+              ZCashRpc::GetTreeStateCallback callback) {
             std::move(callback).Run(base::unexpected("error"));
           }));
 
@@ -1028,8 +1037,9 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
             std::move(callback).Run(std::move(response));
           }));
 
-  ON_CALL(*zcash_rpc(), GetLatestTreeState(_, _))
+  ON_CALL(*zcash_rpc(), GetTreeState(_, _, _))
       .WillByDefault(::testing::Invoke([&](const std::string& chain_id,
+                                           zcash::mojom::BlockIDPtr block_id,
                                            ZCashRpc::GetTreeStateCallback
                                                callback) {
         auto tree_state = zcash::mojom::TreeState::New(
@@ -1421,10 +1431,10 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
             std::move(callback).Run(std::move(response));
           }));
 
-  ON_CALL(*zcash_rpc(), GetLatestTreeState(_, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                ZCashRpc::GetTreeStateCallback callback) {
+  ON_CALL(*zcash_rpc(), GetTreeState(_, _, _))
+      .WillByDefault(::testing::Invoke(
+          [&](const std::string& chain_id, zcash::mojom::BlockIDPtr block_id,
+              ZCashRpc::GetTreeStateCallback callback) {
             auto tree_state = zcash::mojom::TreeState::New(
                 "main" /* network */, 2468414 /* height */,
                 "0000000000b9f12d757cf10d5164c8eb2dceb79efbebd15939ac0c2ef69857"
