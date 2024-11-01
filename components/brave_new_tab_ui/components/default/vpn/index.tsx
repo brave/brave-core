@@ -8,9 +8,13 @@ import { useDispatch } from 'react-redux'
 
 import createWidget from '../widget/index'
 import { StyledCard, StyledTitleTab } from '../widgetCard'
-import { VPNWidget as VPNCard, VPNPromoWidget as VPNPromoCard, VPNWidgetTitle } from '../vpn/vpn_card'
-import { BraveVPNState } from "components/brave_new_tab_ui/reducers/brave_vpn";
-import * as BraveVPN from "../../../api/braveVpn"
+import {
+  VPNWidget as VPNCard,
+  VPNPromoWidget as VPNPromoCard,
+  VPNWidgetTitle
+} from '../vpn/vpn_card'
+import { BraveVPNState } from 'components/brave_new_tab_ui/reducers/brave_vpn'
+import * as BraveVPN from '../../../api/braveVpn'
 import * as Actions from '../../../actions/brave_vpn_actions'
 
 export interface VPNProps {
@@ -38,7 +42,12 @@ export const VPNWidget = createWidget((props: VPNProps) => {
 
   return (
     <StyledCard>
-      {props.braveVPNState.purchasedState === BraveVPN.PurchasedState.PURCHASED ? <VPNCard {...props.braveVPNState} /> : <VPNPromoCard />}
+      {props.braveVPNState.purchasedState ===
+      BraveVPN.PurchasedState.PURCHASED ? (
+        <VPNCard {...props.braveVPNState} />
+      ) : (
+        <VPNPromoCard />
+      )}
     </StyledCard>
   )
 })
