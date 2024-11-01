@@ -17,8 +17,8 @@ BraveVPNController::BraveVPNController(BrowserView* browser_view)
 
 BraveVPNController::~BraveVPNController() = default;
 
-void BraveVPNController::ShowBraveVPNBubble() {
-  GetBraveBrowserView()->ShowBraveVPNBubble();
+void BraveVPNController::ShowBraveVPNBubble(bool show_select) {
+  GetBraveBrowserView()->ShowBraveVPNBubble(show_select);
 }
 
 void BraveVPNController::OpenVPNAccountPage() {

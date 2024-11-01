@@ -18,7 +18,7 @@ class BraveVPNController {
   BraveVPNController(const BraveVPNController&) = delete;
   BraveVPNController& operator=(const BraveVPNController&) = delete;
 
-  void ShowBraveVPNBubble();
+  void ShowBraveVPNBubble(bool show_select = false);
   void OpenVPNAccountPage();
 
  private:

@@ -77,7 +77,7 @@ class BraveBrowserView : public BrowserView,
   void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
 
-  void ShowBraveVPNBubble();
+  void ShowBraveVPNBubble(bool show_select = false);
   void CreateWalletBubble();
   void CreateApproveWalletBubble();
   void CloseWalletBubble();
