@@ -41,7 +41,7 @@ class MappedTokensTransformation final : public Transformation {
  private:
   const raw_ptr<
       const neural_text_classification::flat::MappedTokenTransformation>
-      mapped_token_transformation_ = nullptr;  // NOT OWNED
+      mapped_token_transformation_ = nullptr;  // Not owned.
 };
 
 }  // namespace ml

@@ -29,7 +29,7 @@ class AdsServiceWaiter : public AdsServiceObserver {
   // AdsServiceObserver:
   void OnAdsServiceInitialized() override;
 
-  const raw_ptr<AdsService> ads_service_;  // not owned.
+  const raw_ptr<AdsService> ads_service_ = nullptr;  // Not owned.
 
   base::RunLoop run_loop_;
 };

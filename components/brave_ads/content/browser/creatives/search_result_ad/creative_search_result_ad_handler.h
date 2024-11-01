@@ -67,7 +67,7 @@ class CreativeSearchResultAdHandler final {
       ExtractCreativeAdPlacementIdsFromWebPageCallback callback,
       blink::mojom::WebPagePtr mojom_web_page);
 
-  const raw_ptr<AdsService> ads_service_;  // NOT OWNED
+  const raw_ptr<AdsService> ads_service_ = nullptr;  // Not owned.
 
   const bool should_trigger_creative_ad_viewed_events_;
 

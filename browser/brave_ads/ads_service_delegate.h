@@ -79,11 +79,11 @@ class AdsServiceDelegate : public AdsService::Delegate {
  private:
   NotificationDisplayService* GetNotificationDisplayService();
 
-  raw_ptr<Profile> profile_ = nullptr;          // NOT OWNED
-  raw_ptr<PrefService> local_state_ = nullptr;  // NOT OWNED
+  raw_ptr<Profile> profile_ = nullptr;          // Not owned.
+  raw_ptr<PrefService> local_state_ = nullptr;  // Not owned.
   search_engines::SearchEngineChoiceService search_engine_choice_service_;
   raw_ptr<brave_adaptive_captcha::BraveAdaptiveCaptchaService>
-      adaptive_captcha_service_ = nullptr;
+      adaptive_captcha_service_ = nullptr;  // Not owned.
   std::unique_ptr<NotificationAdPlatformBridge>
       notification_ad_platform_bridge_;
 };

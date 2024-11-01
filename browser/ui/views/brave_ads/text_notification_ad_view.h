@@ -52,7 +52,7 @@ class TextNotificationAdView : public NotificationAdView {
       const NotificationAd& notification_ad);
   void UpdateBodyLabel();
 
-  raw_ptr<views::Label> body_label_ = nullptr;  // NOT OWNED
+  raw_ptr<views::Label> body_label_ = nullptr;
 };
 
 }  // namespace brave_ads

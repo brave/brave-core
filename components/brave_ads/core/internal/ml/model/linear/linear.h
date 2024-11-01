@@ -48,7 +48,7 @@ class LinearModel final {
       std::optional<size_t> top_count) const;
 
   raw_ptr<const linear_text_classification::flat::Model> model_ =
-      nullptr;  // NOT OWNED
+      nullptr;  // Not owned.
 };
 
 }  // namespace ml
