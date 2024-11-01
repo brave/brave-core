@@ -81,7 +81,6 @@ class BraveBrowserView : public BrowserView,
   void CloseWalletBubble();
   WalletButton* GetWalletButton();
   views::View* GetWalletButtonAnchorView();
-  void WillShowSidePanel();
 
   // Triggers layout of web modal dialogs
   void NotifyDialogPositionRequiresUpdate();
@@ -135,6 +134,10 @@ class BraveBrowserView : public BrowserView,
 
   views::WebView* secondary_contents_web_view() {
     return secondary_contents_web_view_.get();
+  }
+
+  SidebarContainerView* sidebar_container_view() {
+    return sidebar_container_view_;
   }
 
  private:
