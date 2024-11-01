@@ -75,6 +75,8 @@ public class BraveSyncCodeCountdownFragment extends Fragment {
                 1000);
     }
 
+    // duration.getSeconds should be toSeconds after api 31.
+    @SuppressWarnings("JavaDurationGetSecondsToToSeconds")
     void updateText() {
         if (mDestroyed) {
             cleanupTextUpdater();
