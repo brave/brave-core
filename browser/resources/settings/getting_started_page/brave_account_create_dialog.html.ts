@@ -6,10 +6,6 @@
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 import { SettingsBraveAccountCreateDialogElement } from './brave_account_create_dialog.js'
 
-// TODO(sszaloki): discuss with UI folks if we could add noChange back to
-// https://source.chromium.org/chromium/chromium/src/+/main:third_party/lit/v3_0/lit.ts;bpv=1;bpt=0
-export const noChange = Symbol.for('lit-noChange')
-
 export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
   return html`<!--_html_template_start_-->
     <settings-brave-account-dialog show-back-button
@@ -29,7 +25,7 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
           <div class="label">Create a password</div>
           <leo-icon slot="right-icon"
                     name="eye-off"
-                    @click=${this.toggle}>
+                    @click=${this.OnEyeIconClick}>
           </leo-icon>
           <div id="password_strength_indicator" slot="errors">
             <div class="password-strength-bar">
@@ -46,21 +42,16 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
           <div class="label">Confirm password</div>
           <leo-icon slot="right-icon"
                     name="eye-off"
-                    @click=${this.toggle}>
+                    @click=${this.OnEyeIconClick}>
           </leo-icon>
           <div slot="errors" class="password-confirmation-result ${this.passwordConfirmation.length !== 0 ? 'visible' : ''}">
-            ${this.passwordConfirmation.length === 0 ? noChange : this.passwordConfirmation === this.password ? html`
-              <leo-icon class="extra-icon" name="check-circle-filled"></leo-icon>
-              <div class="extra-text">Passwords match</div>
-            `: html`
-              <leo-icon class="error-icon" name="warning-triangle-filled"></leo-icon>
-              <div class="error-text">Passwords don't match</div>
-            `}
+            <leo-icon name=${this.getIconName()}></leo-icon>
+            <div>${`Passwords ${this.icon === 'check-circle-filled' ? '' : 'don\'t'} match`}</div>
           </div>
         </leo-input>
         <leo-checkbox @change=${this.onChange}>
           <div>
-            I have read and accept the  <a href="#">Terms of service</a> and <a href="#">Privacy agreement</a>.
+            I have read and accept the <a href="#">Terms of service</a> and <a href="#">Privacy agreement</a>.
           </div>
         </leo-checkbox>
       </div>

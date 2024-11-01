@@ -77,25 +77,25 @@ leo-input:not(:focus).red-border {
   margin: 4px 0px 0px 4px;
 }
 
-.extra-icon {
-  color: var(--leo-color-text-interactive);
-}
-
-.extra-text {
-  color: var(--leo-color-text-interactive);
-}
-
-.error-icon {
-  color: var(--leo-color-systemfeedback-error-icon);
-}
-
-.error-text {
-  color: var(--leo-color-systemfeedback-error-text);
-}
-
 leo-checkbox a {
   color: var(--leo-color-text-interactive);
   font: var(--leo-font-default-link);
   text-decoration-skip-ink: none;
   text-underline-offset: 2.8px;
+}
+
+leo-icon[name="check-circle-filled"] {
+  color: var(--leo-color-text-interactive);
+}
+
+leo-icon[name="check-circle-filled"] + div {
+  color: var(--leo-color-text-interactive);
+}
+
+leo-icon[name="warning-triangle-filled"] {
+  color: var(--leo-color-systemfeedback-error-icon);
+}
+
+leo-icon[name="warning-triangle-filled"] + div {
+  color: var(--leo-color-systemfeedback-error-text);
 }

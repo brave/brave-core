@@ -60,25 +60,25 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
     this.password = detail.value
 
     const regexps = [ /^.{5,}$/, /[a-z]/, /[A-Z]/, /[0-9]/, /[^a-zA-Z0-9]/ ]
-    const widths = Array.from({ length: regexps.length + 1 }, (_, i) => `calc(100% * ${i}/${regexps.length})`)
+    const percentage = Array.from({ length: regexps.length + 1 }, (_, i) => `calc(100% * ${i}/${regexps.length})`)
     const cagetories = [ 'error', 'error', 'error', 'warning', 'warning', 'success' ]
-    const cagetories2 = [ 'Weak', 'Weak', 'Weak', 'Medium', 'Medium', 'Strong' ]
+    const strength = [ 'Weak', 'Weak', 'Weak', 'Medium', 'Medium', 'Strong' ]
 
     const color = (category: string, type: string) => `var(--leo-color-systemfeedback-${category}-${type})`
 
-    const point = regexps.filter(regexp => regexp.test(this.password)).length
+    const score = regexps.filter(regexp => regexp.test(this.password)).length
 
-    this.$.password_strength_indicator.style.setProperty("--primary-color", color(cagetories[point], 'icon'))
-    this.$.password_strength_indicator.style.setProperty("--secondary-color", color(cagetories[point], 'background'))
-    this.$.password_strength_value.style.width = widths[point]
-    this.$.password_strength_category.textContent = cagetories2[point]
-    if (point === 0) {
+    this.$.password_strength_indicator.style.setProperty("--primary-color", color(cagetories[score], 'icon'))
+    this.$.password_strength_indicator.style.setProperty("--secondary-color", color(cagetories[score], 'background'))
+    this.$.password_strength_value.style.width = percentage[score]
+    this.$.password_strength_category.textContent = strength[score]
+    if (score === 0) {
       this.$.password_strength_indicator.classList.remove('visible')
     } else {
       this.$.password_strength_indicator.classList.add('visible')
     }
 
-    this.isPasswordStrong = point === regexps.length
+    this.isPasswordStrong = score === regexps.length
   }
 
   protected onConfirmPasswordInput(detail: { value: string }) {
@@ -89,12 +89,20 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
     this.isChecked = detail.checked
   }
 
-  protected toggle(event: Event) {
+  protected OnEyeIconClick(event: Event) {
     event.preventDefault()
     const target = event.target as Element
     const isShowing = target.getAttribute('name') === 'eye-on'
     target.setAttribute('name', isShowing ? 'eye-off' : 'eye-on')
     target.parentElement!.setAttribute('type', isShowing ? 'password' : 'text')
+  }
+
+  protected getIconName() {
+    if (this.passwordConfirmation.length !== 0) {
+      this.icon = this.passwordConfirmation === this.password ? 'check-circle-filled' : 'warning-triangle-filled'
+    }
+    
+    return this.icon
   }
 
   protected isEmailAddressValid: boolean = false
@@ -103,6 +111,7 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   protected isChecked: boolean = false
   protected password: string = ''
   protected passwordConfirmation: string = ''
+  protected icon: string = 'warning-triangle-filled'
 }
 
 declare global {
