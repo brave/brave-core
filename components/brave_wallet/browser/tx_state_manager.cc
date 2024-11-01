@@ -121,15 +121,11 @@ bool TxStateManager::ValueToBaseTxMeta(const base::Value::Dict& value,
 }
 
 TxStateManager::TxStateManager(
-    PrefService* prefs,
-    TxStorageDelegate* delegate,
-    AccountResolverDelegate* account_resolver_delegate)
-    : prefs_(prefs),
-      delegate_(delegate),
+    TxStorageDelegate& delegate,
+    AccountResolverDelegate& account_resolver_delegate)
+    : delegate_(delegate),
       account_resolver_delegate_(account_resolver_delegate),
-      weak_factory_(this) {
-  DCHECK(delegate);
-}
+      weak_factory_(this) {}
 
 TxStateManager::~TxStateManager() = default;
 
@@ -142,7 +138,7 @@ bool TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
   }
   bool is_add = false;
   {
-    ScopedTxsUpdate update(delegate_);
+    ScopedTxsUpdate update(*delegate_);
     is_add = update->Find(meta.id()) == nullptr;
     update->Set(meta.id(), meta.ToValue());
   }
@@ -182,7 +178,7 @@ bool TxStateManager::DeleteTx(const std::string& meta_id) {
     return false;
   }
   {
-    ScopedTxsUpdate update(delegate_);
+    ScopedTxsUpdate update(*delegate_);
     update->Remove(meta_id);
   }
   return true;

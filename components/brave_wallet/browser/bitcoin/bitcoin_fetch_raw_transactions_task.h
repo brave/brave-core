@@ -11,7 +11,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -26,7 +26,7 @@ class FetchRawTransactionsTask {
   using FetchRawTransactionsTaskCallback = base::OnceCallback<void(
       base::expected<std::vector<std::vector<uint8_t>>, std::string>)>;
 
-  FetchRawTransactionsTask(BitcoinWalletService* bitcoin_wallet_service,
+  FetchRawTransactionsTask(BitcoinWalletService& bitcoin_wallet_service,
                            const std::string& network_id,
                            const std::vector<SHA256HashArray>& txids);
   virtual ~FetchRawTransactionsTask();
@@ -44,7 +44,7 @@ class FetchRawTransactionsTask {
       SHA256HashArray txid,
       base::expected<std::vector<uint8_t>, std::string> raw_tx);
 
-  raw_ptr<BitcoinWalletService> bitcoin_wallet_service_;
+  const raw_ref<BitcoinWalletService> bitcoin_wallet_service_;
   std::string network_id_;
   std::vector<SHA256HashArray> txids_;
   bool requests_queued_ = false;

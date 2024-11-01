@@ -60,7 +60,7 @@ inline constexpr char kBtcTestnetHardwareAccount1[] =
 class BitcoinTestRpcServer {
  public:
   BitcoinTestRpcServer();
-  explicit BitcoinTestRpcServer(BitcoinWalletService* bitcoin_wallet_service);
+  explicit BitcoinTestRpcServer(BitcoinWalletService& bitcoin_wallet_service);
   ~BitcoinTestRpcServer();
 
   static bitcoin_rpc::AddressStats EmptyAddressStats(

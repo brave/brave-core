@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
@@ -27,7 +28,7 @@ class ZCashCreateTransparentTransactionTask {
   friend class ZCashWalletService;
 
   ZCashCreateTransparentTransactionTask(
-      ZCashWalletService* zcash_wallet_service,
+      ZCashWalletService& zcash_wallet_service,
       const std::string& chain_id,
       const mojom::AccountIdPtr& account_id,
       const std::string& address_to,
@@ -49,7 +50,7 @@ class ZCashCreateTransparentTransactionTask {
   void OnGetChangeAddress(
       base::expected<mojom::ZCashAddressPtr, std::string> result);
 
-  raw_ptr<ZCashWalletService> zcash_wallet_service_;  // Owns `this`.
+  const raw_ref<ZCashWalletService> zcash_wallet_service_;  // Owns `this`.
   std::string chain_id_;
   mojom::AccountIdPtr account_id_;
   uint64_t amount_;

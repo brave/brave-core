@@ -17,7 +17,7 @@ namespace brave_wallet {
 
 // CreateTransparentTransactionTask
 ZCashCreateTransparentTransactionTask::ZCashCreateTransparentTransactionTask(
-    ZCashWalletService* zcash_wallet_service,
+    ZCashWalletService& zcash_wallet_service,
     const std::string& chain_id,
     const mojom::AccountIdPtr& account_id,
     const std::string& address_to,

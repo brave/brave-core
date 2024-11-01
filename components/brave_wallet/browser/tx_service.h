@@ -56,7 +56,7 @@ class TxService : public mojom::TxService,
   TxService(JsonRpcService* json_rpc_service,
             BitcoinWalletService* bitcoin_wallet_service,
             ZCashWalletService* zcash_wallet_service,
-            KeyringService* keyring_service,
+            KeyringService& keyring_service,
             PrefService* prefs,
             const base::FilePath& wallet_base_directory,
             scoped_refptr<base::SequencedTaskRunner> ui_task_runner);

@@ -25,37 +25,34 @@
 namespace brave_wallet {
 
 BitcoinTxManager::BitcoinTxManager(
-    TxService* tx_service,
-    BitcoinWalletService* bitcoin_wallet_service,
-    KeyringService* keyring_service,
-    PrefService* prefs,
-    TxStorageDelegate* delegate,
-    AccountResolverDelegate* account_resolver_delegate)
+    TxService& tx_service,
+    BitcoinWalletService& bitcoin_wallet_service,
+    KeyringService& keyring_service,
+    TxStorageDelegate& delegate,
+    AccountResolverDelegate& account_resolver_delegate)
     : TxManager(
-          std::make_unique<BitcoinTxStateManager>(prefs,
-                                                  delegate,
+          std::make_unique<BitcoinTxStateManager>(delegate,
                                                   account_resolver_delegate),
           std::make_unique<BitcoinBlockTracker>(
-              &bitcoin_wallet_service->bitcoin_rpc()),
+              bitcoin_wallet_service.bitcoin_rpc()),
           tx_service,
-          keyring_service,
-          prefs),
+          keyring_service),
       bitcoin_wallet_service_(bitcoin_wallet_service) {
-  block_tracker_observation_.Observe(GetBitcoinBlockTracker());
+  block_tracker_observation_.Observe(&GetBitcoinBlockTracker());
 }
 
 BitcoinTxManager::~BitcoinTxManager() = default;
 
 std::unique_ptr<BitcoinTxMeta> BitcoinTxManager::GetTxForTesting(
     const std::string& tx_meta_id) {
-  return GetBitcoinTxStateManager()->GetBitcoinTx(tx_meta_id);
+  return GetBitcoinTxStateManager().GetBitcoinTx(tx_meta_id);
 }
 
 void BitcoinTxManager::GetBtcHardwareTransactionSignData(
     const std::string& tx_meta_id,
     GetBtcHardwareTransactionSignDataCallback callback) {
   std::unique_ptr<BitcoinTxMeta> meta =
-      GetBitcoinTxStateManager()->GetBitcoinTx(tx_meta_id);
+      GetBitcoinTxStateManager().GetBitcoinTx(tx_meta_id);
   if (!meta || !meta->tx()) {
     std::move(callback).Run(nullptr);
     return;
@@ -72,14 +69,14 @@ void BitcoinTxManager::ProcessBtcHardwareSignature(
     ProcessBtcHardwareSignatureCallback callback) {
   CHECK(hw_signature);
   std::unique_ptr<BitcoinTxMeta> meta =
-      GetBitcoinTxStateManager()->GetBitcoinTx(tx_meta_id);
+      GetBitcoinTxStateManager().GetBitcoinTx(tx_meta_id);
   if (!meta) {
     std::move(callback).Run(false);
     return;
   }
 
   meta->set_status(mojom::TransactionStatus::Approved);
-  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+  if (!tx_state_manager().AddOrUpdateTx(*meta)) {
     std::move(callback).Run(false);
     return;
   }
@@ -147,7 +144,7 @@ void BitcoinTxManager::ContinueAddUnapprovedTransaction(
   meta.set_status(mojom::TransactionStatus::Unapproved);
   meta.set_chain_id(chain_id);
 
-  if (!tx_state_manager_->AddOrUpdateTx(meta)) {
+  if (!tx_state_manager().AddOrUpdateTx(meta)) {
     std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
@@ -157,7 +154,7 @@ void BitcoinTxManager::ContinueAddUnapprovedTransaction(
 void BitcoinTxManager::ApproveTransaction(const std::string& tx_meta_id,
                                           ApproveTransactionCallback callback) {
   std::unique_ptr<BitcoinTxMeta> meta =
-      GetBitcoinTxStateManager()->GetBitcoinTx(tx_meta_id);
+      GetBitcoinTxStateManager().GetBitcoinTx(tx_meta_id);
   if (!meta) {
     DCHECK(false) << "Transaction should be found";
     std::move(callback).Run(
@@ -169,7 +166,7 @@ void BitcoinTxManager::ApproveTransaction(const std::string& tx_meta_id,
   }
 
   meta->set_status(mojom::TransactionStatus::Approved);
-  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+  if (!tx_state_manager().AddOrUpdateTx(*meta)) {
     std::move(callback).Run(false,
                             mojom::ProviderErrorUnion::NewBitcoinProviderError(
                                 mojom::BitcoinProviderError::kInternalError),
@@ -191,7 +188,7 @@ void BitcoinTxManager::ContinueApproveTransaction(
     BitcoinTransaction transaction,
     std::string error) {
   std::unique_ptr<BitcoinTxMeta> meta =
-      GetBitcoinTxStateManager()->GetBitcoinTx(tx_meta_id);
+      GetBitcoinTxStateManager().GetBitcoinTx(tx_meta_id);
   if (!meta) {
     DCHECK(false) << "Transaction should be found";
     std::move(callback).Run(
@@ -212,7 +209,7 @@ void BitcoinTxManager::ContinueApproveTransaction(
     meta->set_status(mojom::TransactionStatus::Error);
   }
 
-  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+  if (!tx_state_manager().AddOrUpdateTx(*meta)) {
     std::move(callback).Run(false,
                             mojom::ProviderErrorUnion::NewBitcoinProviderError(
                                 mojom::BitcoinProviderError::kInternalError),
@@ -243,12 +240,12 @@ void BitcoinTxManager::RetryTransaction(const std::string& tx_meta_id,
   NOTIMPLEMENTED() << "Bitcoin transaction retry is not supported";
 }
 
-BitcoinTxStateManager* BitcoinTxManager::GetBitcoinTxStateManager() {
-  return static_cast<BitcoinTxStateManager*>(tx_state_manager_.get());
+BitcoinTxStateManager& BitcoinTxManager::GetBitcoinTxStateManager() {
+  return static_cast<BitcoinTxStateManager&>(tx_state_manager());
 }
 
-BitcoinBlockTracker* BitcoinTxManager::GetBitcoinBlockTracker() {
-  return static_cast<BitcoinBlockTracker*>(block_tracker_.get());
+BitcoinBlockTracker& BitcoinTxManager::GetBitcoinBlockTracker() {
+  return static_cast<BitcoinBlockTracker&>(block_tracker());
 }
 
 mojom::CoinType BitcoinTxManager::GetCoinType() const {
@@ -257,7 +254,7 @@ mojom::CoinType BitcoinTxManager::GetCoinType() const {
 
 void BitcoinTxManager::UpdatePendingTransactions(
     const std::optional<std::string>& chain_id) {
-  auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
+  auto pending_transactions = tx_state_manager().GetTransactionsByStatus(
       chain_id, mojom::TransactionStatus::Submitted, std::nullopt);
   std::set<std::string> pending_chain_ids;
   for (const auto& pending_transaction : pending_transactions) {
@@ -278,7 +275,7 @@ void BitcoinTxManager::OnGetTransactionStatus(
     return;
   }
   std::unique_ptr<BitcoinTxMeta> meta =
-      GetBitcoinTxStateManager()->GetBitcoinTx(tx_meta_id);
+      GetBitcoinTxStateManager().GetBitcoinTx(tx_meta_id);
   if (!meta) {
     return;
   }
@@ -287,7 +284,7 @@ void BitcoinTxManager::OnGetTransactionStatus(
     mojom::TransactionStatus status = mojom::TransactionStatus::Confirmed;
     meta->set_status(status);
     meta->set_confirmed_time(base::Time::Now());
-    tx_state_manager_->AddOrUpdateTx(*meta);
+    tx_state_manager().AddOrUpdateTx(*meta);
   }
 }
 

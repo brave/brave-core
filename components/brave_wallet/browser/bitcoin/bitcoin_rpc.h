@@ -8,11 +8,11 @@
 
 #include <list>
 #include <map>
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -30,7 +30,7 @@ struct EndpointQueue;
 
 class BitcoinRpc {
  public:
-  BitcoinRpc(NetworkManager* network_manager,
+  BitcoinRpc(NetworkManager& network_manager,
              scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~BitcoinRpc();
 
@@ -107,11 +107,11 @@ class BitcoinRpc {
 
   GURL GetNetworkURL(const std::string& chain_id);
 
-  const raw_ptr<NetworkManager> network_manager_;
+  const raw_ref<NetworkManager> network_manager_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   // Uses hostname as key. Tracks request throttling(if required) per host.
   std::map<std::string, EndpointQueue> endpoints_;
-  std::unique_ptr<APIRequestHelper> api_request_helper_;
+  APIRequestHelper api_request_helper_;
   base::WeakPtrFactory<BitcoinRpc> weak_ptr_factory_{this};
 };
 

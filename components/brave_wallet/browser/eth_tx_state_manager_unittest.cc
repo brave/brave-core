@@ -45,7 +45,7 @@ class EthTxStateManagerUnitTest : public testing::Test {
     account_resolver_delegate_ =
         std::make_unique<AccountResolverDelegateForTest>();
     eth_tx_state_manager_ = std::make_unique<EthTxStateManager>(
-        GetPrefs(), delegate_.get(), account_resolver_delegate_.get());
+        *delegate_, *account_resolver_delegate_);
   }
 
   PrefService* GetPrefs() { return &prefs_; }

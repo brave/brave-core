@@ -95,7 +95,7 @@ void ZCashWalletService::GetBalance(const std::string& chain_id,
                                     mojom::AccountIdPtr account_id,
                                     GetBalanceCallback callback) {
   auto balance_task = std::make_unique<ZCashResolveBalanceTask>(
-      this, chain_id, std::move(account_id),
+      *this, chain_id, std::move(account_id),
       base::BindOnce(&ZCashWalletService::OnResolveBalanceResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   balance_task->ScheduleWorkOnTask();
@@ -511,7 +511,7 @@ void ZCashWalletService::CreateFullyTransparentTransaction(
 
   auto& task = create_transaction_tasks_.emplace_back(
       base::WrapUnique<ZCashCreateTransparentTransactionTask>(
-          new ZCashCreateTransparentTransactionTask(this, chain_id, account_id,
+          new ZCashCreateTransparentTransactionTask(*this, chain_id, account_id,
                                                     final_address, amount,
                                                     std::move(callback))));
   task->ScheduleWorkOnTask();
@@ -536,7 +536,7 @@ void ZCashWalletService::CreateShieldTransaction(
   }
 
   auto shield_funds_task = base::WrapUnique<ZCashCreateShieldTransactionTask>(
-      new ZCashCreateShieldTransactionTask(this, chain_id, account_id,
+      new ZCashCreateShieldTransactionTask(*this, chain_id, account_id,
                                            *receiver_addr, std::move(memo),
                                            amount, std::move(callback)));
   shield_funds_task->ScheduleWorkOnTask();
@@ -579,7 +579,7 @@ void ZCashWalletService::CreateShieldAllTransaction(
 
   auto shield_funds_task = base::WrapUnique<ZCashCreateShieldTransactionTask>(
       new ZCashCreateShieldTransactionTask(
-          this, chain_id, account_id, *internal_addr, std::nullopt,
+          *this, chain_id, account_id, *internal_addr, std::nullopt,
           kZCashFullAmount, std::move(callback)));
   shield_funds_task->ScheduleWorkOnTask();
   create_shield_transaction_tasks_.push_back(std::move(shield_funds_task));
