@@ -225,4 +225,11 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [64700],
   },
+  "brave/ios/app/resources/brave_ios_resources.grd": {
+    "META": {"sizes": {"includes": [300]}},
+    "includes": [64630],
+  },
+  "brave/ios/app/resources/brave_ios_strings.grd": {
+    "messages": [64930],
+  },
 }
