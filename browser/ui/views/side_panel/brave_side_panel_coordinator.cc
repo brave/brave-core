@@ -94,8 +94,19 @@ void BraveSidePanelCoordinator::OnViewVisibilityChanged(
     views::View* observed_view,
     views::View* starting_from) {
   UpdateToolbarButtonHighlight(observed_view->GetVisible());
+
+  // See the comment of SidePanelCoordinator::OnViewVisibilityChanged()
+  // about this condition.
+  bool update_items_state = true;
+  if (observed_view->GetVisible() || !current_key_) {
+    update_items_state = false;
+  }
+
   SidePanelCoordinator::OnViewVisibilityChanged(observed_view, starting_from);
-  GetBraveBrowserView()->sidebar_container_view()->UpdateActiveItemState();
+
+  if (update_items_state) {
+    GetBraveBrowserView()->sidebar_container_view()->UpdateActiveItemState();
+  }
 }
 
 std::optional<SidePanelEntry::Key>
