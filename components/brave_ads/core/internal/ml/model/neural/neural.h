@@ -50,7 +50,7 @@ class NeuralModel final {
       size_t top_count) const;
 
   raw_ptr<const neural_text_classification::flat::Model> model_ =
-      nullptr;  // NOT OWNED
+      nullptr;  // Not owned.
 };
 
 }  // namespace ml

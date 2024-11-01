@@ -82,7 +82,7 @@ class NotificationAdServing final : public AdsClientNotifierObserver {
   // AdsClientNotifierObserver:
   void OnNotifyPrefDidChange(const std::string& path) override;
 
-  raw_ptr<NotificationAdServingDelegate> delegate_ = nullptr;
+  raw_ptr<NotificationAdServingDelegate> delegate_ = nullptr;  // Not owned.
 
   bool is_serving_ = false;
 

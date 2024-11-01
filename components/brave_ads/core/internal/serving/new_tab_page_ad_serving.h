@@ -68,7 +68,7 @@ class NewTabPageAdServing final {
   void NotifyDidServeNewTabPageAd(const NewTabPageAdInfo& ad) const;
   void NotifyFailedToServeNewTabPageAd() const;
 
-  raw_ptr<NewTabPageAdServingDelegate> delegate_ = nullptr;
+  raw_ptr<NewTabPageAdServingDelegate> delegate_ = nullptr;  // Not owned.
 
   std::unique_ptr<EligibleNewTabPageAdsBase> eligible_ads_;
 

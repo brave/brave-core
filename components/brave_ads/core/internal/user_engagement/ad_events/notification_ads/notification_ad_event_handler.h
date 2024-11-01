@@ -69,7 +69,8 @@ class NotificationAdEventHandler final
       const std::string& placement_id,
       mojom::NotificationAdEventType mojom_ad_event_type) const;
 
-  raw_ptr<NotificationAdEventHandlerDelegate> delegate_ = nullptr;
+  raw_ptr<NotificationAdEventHandlerDelegate> delegate_ =
+      nullptr;  // Not owned.
 
   base::WeakPtrFactory<NotificationAdEventHandler> weak_factory_{this};
 };

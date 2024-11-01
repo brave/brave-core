@@ -109,7 +109,8 @@ class SearchResultAdEventHandler final
       const SearchResultAdInfo& ad,
       mojom::SearchResultAdEventType mojom_ad_event_type) const;
 
-  raw_ptr<SearchResultAdEventHandlerDelegate> delegate_ = nullptr;
+  raw_ptr<SearchResultAdEventHandlerDelegate> delegate_ =
+      nullptr;  // Not owned.
 
   const database::table::AdEvents ad_events_database_table_;
 

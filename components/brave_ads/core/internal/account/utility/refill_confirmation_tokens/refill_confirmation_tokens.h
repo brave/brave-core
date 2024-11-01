@@ -82,7 +82,7 @@ class RefillConfirmationTokens final {
   void NotifyWillRetryRefillingConfirmationTokens(base::Time retry_at) const;
   void NotifyDidRetryRefillingConfirmationTokens() const;
 
-  raw_ptr<RefillConfirmationTokensDelegate> delegate_ = nullptr;
+  raw_ptr<RefillConfirmationTokensDelegate> delegate_ = nullptr;  // Not owned.
 
   WalletInfo wallet_;
 

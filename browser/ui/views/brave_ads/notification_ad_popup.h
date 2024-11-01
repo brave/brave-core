@@ -143,7 +143,7 @@ class NotificationAdPopup : public views::WidgetDelegateView,
 
   bool IsWidgetValid() const;
 
-  raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
+  raw_ptr<Profile> profile_ = nullptr;  // Not owned.
 
   NotificationAd notification_ad_;
 

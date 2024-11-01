@@ -54,7 +54,7 @@ class IssuersUrlRequest final {
   void NotifyWillRetryFetchingIssuers(base::Time retry_at) const;
   void NotifyDidRetryFetchingIssuers() const;
 
-  raw_ptr<IssuersUrlRequestDelegate> delegate_ = nullptr;
+  raw_ptr<IssuersUrlRequestDelegate> delegate_ = nullptr;  // Not owned.
 
   bool is_periodically_fetching_ = false;
 

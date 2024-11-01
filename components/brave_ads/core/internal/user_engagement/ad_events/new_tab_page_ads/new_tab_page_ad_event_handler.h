@@ -88,7 +88,7 @@ class NewTabPageAdEventHandler final : public NewTabPageAdEventHandlerDelegate {
       const std::string& creative_instance_id,
       mojom::NewTabPageAdEventType mojom_ad_event_type) const;
 
-  raw_ptr<NewTabPageAdEventHandlerDelegate> delegate_ = nullptr;
+  raw_ptr<NewTabPageAdEventHandlerDelegate> delegate_ = nullptr;  // Not owned.
 
   const database::table::CreativeNewTabPageAds creative_ads_database_table_;
 

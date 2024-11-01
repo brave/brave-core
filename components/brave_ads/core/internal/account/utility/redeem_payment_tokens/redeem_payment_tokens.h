@@ -66,7 +66,7 @@ class RedeemPaymentTokens final {
   void NotifyWillRetryRedeemingPaymentTokens(base::Time retry_at) const;
   void NotifyDidRetryRedeemingPaymentTokens() const;
 
-  raw_ptr<RedeemPaymentTokensDelegate> delegate_ = nullptr;
+  raw_ptr<RedeemPaymentTokensDelegate> delegate_ = nullptr;  // Not owned.
 
   WalletInfo wallet_;
 

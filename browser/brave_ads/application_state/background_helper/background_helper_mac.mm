@@ -15,7 +15,7 @@
 
 @interface BackgroundHelperDelegateMac : NSObject {
  @private
-  raw_ptr<brave_ads::BackgroundHelper> helper_;  // NOT OWNED
+  raw_ptr<brave_ads::BackgroundHelper> helper_;  // Not owned.
 }
 
 - (void)appDidBecomeActive:(NSNotification*)notification;

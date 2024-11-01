@@ -54,7 +54,7 @@ class CatalogUrlRequest final {
   void NotifyWillRetryFetchingCatalog(base::Time retry_at) const;
   void NotifyDidRetryFetchingCatalog() const;
 
-  raw_ptr<CatalogUrlRequestDelegate> delegate_ = nullptr;
+  raw_ptr<CatalogUrlRequestDelegate> delegate_ = nullptr;  // Not owned.
 
   bool is_periodically_fetching_ = false;
 

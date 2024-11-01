@@ -54,7 +54,7 @@ class BraveAdsAccountTest : public test::TestBase {
     test::TestBase::TearDown();
   }
 
-  raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;
+  raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;  // Not owned.
 
   AccountObserverMock account_observer_mock_;
 };

@@ -89,7 +89,7 @@ class ConfirmationQueue final : public AdsClientNotifierObserver,
   void OnFailedToRedeemConfirmation(const ConfirmationInfo& confirmation,
                                     bool should_retry) override;
 
-  raw_ptr<ConfirmationQueueDelegate> delegate_ = nullptr;
+  raw_ptr<ConfirmationQueueDelegate> delegate_ = nullptr;  // Not owned.
 
   database::table::ConfirmationQueue database_table_;
 

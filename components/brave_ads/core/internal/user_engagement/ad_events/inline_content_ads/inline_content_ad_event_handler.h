@@ -93,7 +93,8 @@ class InlineContentAdEventHandler final
       const std::string& creative_instance_id,
       mojom::InlineContentAdEventType mojom_ad_event_type) const;
 
-  raw_ptr<InlineContentAdEventHandlerDelegate> delegate_ = nullptr;
+  raw_ptr<InlineContentAdEventHandlerDelegate> delegate_ =
+      nullptr;  // Not owned.
 
   const database::table::CreativeInlineContentAds creative_ads_database_table_;
 

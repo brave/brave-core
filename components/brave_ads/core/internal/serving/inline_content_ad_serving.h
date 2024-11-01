@@ -80,7 +80,7 @@ class InlineContentAdServing final {
                                      const InlineContentAdInfo& ad) const;
   void NotifyFailedToServeInlineContentAd() const;
 
-  raw_ptr<InlineContentAdServingDelegate> delegate_ = nullptr;
+  raw_ptr<InlineContentAdServingDelegate> delegate_ = nullptr;  // Not owned.
 
   std::unique_ptr<EligibleInlineContentAdsBase> eligible_ads_;
 
