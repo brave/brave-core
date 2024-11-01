@@ -14,7 +14,9 @@
 
 #include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
+#include "base/i18n/file_util_icu.h"
 #include "base/i18n/time_formatting.h"
+#include "base/path_service.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
@@ -56,6 +58,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
 #include "chrome/common/channel_info.h"
+#include "chrome/common/chrome_paths.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/tab_groups/tab_group_visual_data.h"
@@ -905,6 +908,29 @@ void ScrollTabToBottom(Browser* browser) {
   contents->ScrollToBottomOfDocument();
 }
 
+/**
+ * @note This function creates a default filename like
+ * "bookmarks_10_31_24.html", for example, if the date was October 31, 2024.
+ *
+ * @note This function mimics the behavior of a function with the same name in
+ * the Chromium source code.
+ *
+ * @see
+ * https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/extensions/api/bookmark_manager_private/bookmark_manager_private_api.cc;l=205-222?q=IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME
+ */
+base::FilePath GetDefaultFilepathForBookmarkExport() {
+  std::string bookmarks_MM_DD_YY = l10n_util::GetStringFUTF8(
+      IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME,
+      base::TimeFormatShortDateNumeric(base::Time::Now()));
+
+  base::FilePath path = base::FilePath::FromUTF8Unsafe(bookmarks_MM_DD_YY);
+  base::FilePath::StringType path_str = path.value();
+  base::i18n::ReplaceIllegalCharactersInPath(&path_str, '_');
+  base::FilePath default_path;
+  base::PathService::Get(chrome::DIR_USER_DOCUMENTS, &default_path);
+  return default_path.Append(base::FilePath(path_str));
+}
+
 namespace {
 
 /**
@@ -928,10 +954,6 @@ class BookmarksExportListener : public ui::SelectFileDialog::Listener {
     delete this;
   }
   void ShowFileDialog(Browser* browser) {
-    const std::string exported_bookmarks_filename =
-        base::UnlocalizedTimeFormatWithPattern(base::Time::Now(), "yyyy_MM_dd",
-                                               nullptr) +
-        "_brave_browser_bookmarks.html";
     ui::SelectFileDialog::FileTypeInfo file_types;
 
     // Only show HTML files in the file dialog.
@@ -939,9 +961,9 @@ class BookmarksExportListener : public ui::SelectFileDialog::Listener {
     file_selector_->SelectFile(
         ui::SelectFileDialog::SELECT_SAVEAS_FILE,
         l10n_util::GetStringUTF16(IDS_BOOKMARK_MANAGER_MENU_EXPORT),
-        base::FilePath::FromUTF8Unsafe(exported_bookmarks_filename),
-        &file_types, 1, FILE_PATH_LITERAL("html"),
-        browser->window()->GetNativeWindow(), nullptr);
+        GetDefaultFilepathForBookmarkExport(), &file_types, 1,
+        FILE_PATH_LITERAL("html"), browser->window()->GetNativeWindow(),
+        nullptr);
   }
 
  private:
