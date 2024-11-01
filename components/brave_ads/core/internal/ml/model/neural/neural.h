@@ -9,7 +9,7 @@
 #include <cstddef>
 #include <optional>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 
@@ -23,7 +23,7 @@ namespace ml {
 
 class NeuralModel final {
  public:
-  explicit NeuralModel(const neural_text_classification::flat::Model* model);
+  explicit NeuralModel(const neural_text_classification::flat::Model& model);
 
   NeuralModel(const NeuralModel&) = delete;
   NeuralModel& operator=(const NeuralModel&) = delete;
@@ -33,8 +33,8 @@ class NeuralModel final {
 
   ~NeuralModel() = default;
 
-  const neural_text_classification::flat::Model* model() const {
-    return model_.get();
+  const neural_text_classification::flat::Model& model() const {
+    return *model_;
   }
 
   std::optional<PredictionMap> Predict(const VectorData& data) const;
@@ -49,8 +49,7 @@ class NeuralModel final {
       const VectorData& data,
       size_t top_count) const;
 
-  raw_ptr<const neural_text_classification::flat::Model> model_ =
-      nullptr;  // Not owned.
+  raw_ref<const neural_text_classification::flat::Model> model_;
 };
 
 }  // namespace ml

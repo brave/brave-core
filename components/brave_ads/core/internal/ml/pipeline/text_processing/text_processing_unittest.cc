@@ -97,7 +97,7 @@ TEST_F(BraveAdsTextProcessingTest, BuildSimplePipeline) {
   const auto* const raw_model =
       linear_text_classification::flat::GetModel(buffer.data());
   ASSERT_TRUE(raw_model);
-  LinearModel linear_model(raw_model);
+  LinearModel linear_model(*raw_model);
 
   const std::vector<float> data_4 = {1.0, 0.0, 0.0};
   const VectorData data_point_3(data_4);

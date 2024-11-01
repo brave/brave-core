@@ -40,7 +40,7 @@ class BraveAdsLinearTest : public test::TestBase {
       return std::nullopt;
     }
 
-    return LinearModel(raw_model);
+    return LinearModel(*raw_model);
   }
 
  private:

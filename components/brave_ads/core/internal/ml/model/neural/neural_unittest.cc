@@ -41,7 +41,7 @@ class BraveAdsNeuralTest : public test::TestBase {
       return std::nullopt;
     }
 
-    return NeuralModel(raw_model);
+    return NeuralModel(*raw_model);
   }
 
  private:

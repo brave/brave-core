@@ -27,12 +27,10 @@ std::vector<std::string> GetWordsFromText(const TextData& text_data) {
 }  // namespace
 
 MappedTokensTransformation::MappedTokensTransformation(
-    const neural_text_classification::flat::MappedTokenTransformation*
+    const neural_text_classification::flat::MappedTokenTransformation&
         mapped_token_transformation)
     : Transformation(TransformationType::kMappedTokens),
-      mapped_token_transformation_(mapped_token_transformation) {
-  CHECK(mapped_token_transformation_);
-}
+      mapped_token_transformation_(mapped_token_transformation) {}
 
 MappedTokensTransformation::~MappedTokensTransformation() = default;
 

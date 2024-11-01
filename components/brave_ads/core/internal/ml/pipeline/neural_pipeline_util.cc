@@ -33,7 +33,7 @@ std::optional<TransformationPtr> LoadMappedTokenTransformation(
   }
 
   return std::make_unique<MappedTokensTransformation>(
-      mapped_token_transformation);
+      *mapped_token_transformation);
 }
 
 std::optional<TransformationVector> LoadTransformations(
@@ -112,7 +112,7 @@ std::optional<PipelineInfo> LoadNeuralPipeline(const uint8_t* const data,
     return std::nullopt;
   }
 
-  NeuralModel neural_model(model);
+  NeuralModel neural_model(*model);
   return PipelineInfo(locale->str(), std::move(*transformations), std::nullopt,
                       std::move(neural_model));
 }
