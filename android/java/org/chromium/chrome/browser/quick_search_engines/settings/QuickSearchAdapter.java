@@ -14,11 +14,11 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.quick_search_engines.ItemTouchHelperCallback;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,15 +27,18 @@ public class QuickSearchAdapter extends RecyclerView.Adapter<QuickSearchViewHold
     private Context mContext;
     private List<QuickSearchEngineModel> mSearchEngines;
     private QuickSearchCallback mQuickSearchCallback;
+    private ItemTouchHelperCallback.OnStartDragListener mDragStartListener;
     private boolean mIsEditMode;
 
     public QuickSearchAdapter(
             Context context,
             List<QuickSearchEngineModel> searchEngines,
-            QuickSearchCallback quickSearchCallback) {
+            QuickSearchCallback quickSearchCallback,
+            ItemTouchHelperCallback.OnStartDragListener dragStartListener) {
         mContext = context;
         mSearchEngines = searchEngines;
         mQuickSearchCallback = quickSearchCallback;
+        mDragStartListener = dragStartListener;
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -77,45 +80,19 @@ public class QuickSearchAdapter extends RecyclerView.Adapter<QuickSearchViewHold
                 new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        setEditMode(true);
-                        mQuickSearchCallback.onSearchEngineLongClick();
+                        if (!mIsEditMode) {
+                            setEditMode(true);
+                            mQuickSearchCallback.onSearchEngineLongClick();
+                        }
                         return true;
                     }
                 });
         quickSearchViewHolder.mDragIcon.setOnTouchListener(
-                new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                            ItemTouchHelper itemTouchHelper =
-                                    new ItemTouchHelper(
-                                            new ItemTouchHelper.SimpleCallback(
-                                                    ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
-                                                @Override
-                                                public boolean onMove(
-                                                        @NonNull RecyclerView recyclerView,
-                                                        @NonNull RecyclerView.ViewHolder viewHolder,
-                                                        @NonNull RecyclerView.ViewHolder target) {
-                                                    int fromPosition =
-                                                            viewHolder.getAdapterPosition();
-                                                    int toPosition = target.getAdapterPosition();
-                                                    onItemMove(fromPosition, toPosition);
-                                                    return true;
-                                                }
-
-                                                @Override
-                                                public void onSwiped(
-                                                        @NonNull RecyclerView.ViewHolder viewHolder,
-                                                        int direction) {
-                                                    // No swipe action needed for reordering
-                                                }
-                                            });
-                            itemTouchHelper.attachToRecyclerView(
-                                    (RecyclerView) quickSearchViewHolder.itemView.getParent());
-                            itemTouchHelper.startDrag(quickSearchViewHolder);
-                        }
-                        return false;
+                (v, event) -> {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        mDragStartListener.onStartDrag(quickSearchViewHolder);
                     }
+                    return false;
                 });
 
         quickSearchViewHolder.mDragIcon.setVisibility(mIsEditMode ? View.VISIBLE : View.GONE);
@@ -127,16 +104,8 @@ public class QuickSearchAdapter extends RecyclerView.Adapter<QuickSearchViewHold
         mQuickSearchCallback.onSearchEngineClick(position, quickSearchEngineModel);
     }
 
-    public void onItemMove(int fromPosition, int toPosition) {
-        if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(mSearchEngines, i, i + 1);
-            }
-        } else {
-            for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(mSearchEngines, i, i - 1);
-            }
-        }
+    public void swapItems(int fromPosition, int toPosition) {
+        Collections.swap(mSearchEngines, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
     }
 
