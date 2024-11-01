@@ -15,7 +15,7 @@
 
 namespace brave_wallet {
 
-ZCashBlockTracker::ZCashBlockTracker(ZCashRpc* zcash_rpc)
+ZCashBlockTracker::ZCashBlockTracker(ZCashRpc& zcash_rpc)
     : zcash_rpc_(zcash_rpc) {}
 
 ZCashBlockTracker::~ZCashBlockTracker() = default;

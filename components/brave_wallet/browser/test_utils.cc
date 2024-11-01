@@ -427,7 +427,7 @@ void WaitForTxStorageDelegateInitialized(TxStorageDelegate* delegate) {
    private:
     base::ScopedObservation<TxStorageDelegate, TxStorageDelegate::Observer>
         observation_{this};
-    raw_ref<base::RunLoop> run_loop_;
+    const raw_ref<base::RunLoop> run_loop_;
   } observer(delegate, run_loop);
   run_loop.Run();
 }

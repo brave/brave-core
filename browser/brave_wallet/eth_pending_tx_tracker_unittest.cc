@@ -59,7 +59,7 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
     account_resolver_delegate_ =
         std::make_unique<AccountResolverDelegateForTest>();
     tx_state_manager_ = std::make_unique<EthTxStateManager>(
-        GetPrefs(), delegate_.get(), account_resolver_delegate_.get());
+        *delegate_, *account_resolver_delegate_);
 
     eth_account_id_ = account_resolver_delegate_->RegisterAccount(
         MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,

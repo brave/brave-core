@@ -122,8 +122,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
       GetTxStorageDelegateForTest(GetPrefs(), factory);
   auto account_resolver_delegate =
       std::make_unique<AccountResolverDelegateForTest>();
-  EthTxStateManager tx_state_manager(GetPrefs(), delegate.get(),
-                                     account_resolver_delegate.get());
+  EthTxStateManager tx_state_manager(*delegate, *account_resolver_delegate);
   EthNonceTracker nonce_tracker(&tx_state_manager, json_rpc_service());
 
   SetTransactionCount(2);

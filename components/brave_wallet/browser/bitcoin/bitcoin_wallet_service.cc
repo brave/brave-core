@@ -672,13 +672,11 @@ void DiscoverNextUnusedAddressTask::ScheduleWorkOnTask() {
 
 mojom::BitcoinAddressPtr DiscoverNextUnusedAddressTask::GetNextAddress(
     const mojom::BitcoinAddressPtr& address) {
-  auto* keyring_service = bitcoin_wallet_service_->keyring_service();
-  CHECK(keyring_service);
-
   auto next_key_id = current_address_->key_id.Clone();
   next_key_id->index++;
 
-  return keyring_service->GetBitcoinAddress(account_id_, next_key_id);
+  return bitcoin_wallet_service_->keyring_service().GetBitcoinAddress(
+      account_id_, next_key_id);
 }
 
 void DiscoverNextUnusedAddressTask::WorkOnTask() {
@@ -745,14 +743,11 @@ void DiscoverNextUnusedAddressTask::OnGetAddressStats(
 }
 
 BitcoinWalletService::BitcoinWalletService(
-    KeyringService* keyring_service,
-    PrefService* prefs,
-    NetworkManager* network_manager,
+    KeyringService& keyring_service,
+    NetworkManager& network_manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : keyring_service_(keyring_service),
-      bitcoin_rpc_(
-          std::make_unique<bitcoin_rpc::BitcoinRpc>(network_manager,
-                                                    url_loader_factory)) {
+      bitcoin_rpc_(network_manager, url_loader_factory) {
   keyring_service_->AddObserver(
       keyring_service_observer_receiver_.BindNewPipeAndPassRemote());
 }
@@ -772,7 +767,7 @@ void BitcoinWalletService::GetBalance(mojom::AccountIdPtr account_id,
                                       GetBalanceCallback callback) {
   CHECK(IsBitcoinAccount(*account_id));
 
-  auto addresses = keyring_service()->GetBitcoinAddresses(account_id);
+  auto addresses = keyring_service().GetBitcoinAddresses(account_id);
   if (!addresses) {
     std::move(callback).Run(nullptr, InternalErrorString());
     return;
@@ -789,7 +784,7 @@ void BitcoinWalletService::GetExtendedKeyAccountBalance(
     const std::string& extended_key,
     GetExtendedKeyAccountBalanceCallback callback) {
   CHECK(IsBitcoinNetwork(chain_id));
-  auto task = std::make_unique<DiscoverExtendedKeyAccountTask>(this, chain_id,
+  auto task = std::make_unique<DiscoverExtendedKeyAccountTask>(*this, chain_id,
                                                                extended_key);
 
   task->set_callback(base::BindOnce(
@@ -822,7 +817,7 @@ void BitcoinWalletService::GetBitcoinAccountInfo(
 
 mojom::BitcoinAccountInfoPtr BitcoinWalletService::GetBitcoinAccountInfoSync(
     const mojom::AccountIdPtr& account_id) {
-  return keyring_service()->GetBitcoinAccountInfo(account_id);
+  return keyring_service().GetBitcoinAccountInfo(account_id);
 }
 
 void BitcoinWalletService::RunDiscovery(mojom::AccountIdPtr account_id,
@@ -841,7 +836,7 @@ void BitcoinWalletService::AccountsAdded(
     // For new bitcoin account search for transacted and/or funded addresses.
     if (IsBitcoinKeyring(account->account_id->keyring_id)) {
       auto task = std::make_unique<DiscoverWalletAccountTask>(
-          this, account->account_id->keyring_id,
+          *this, account->account_id->keyring_id,
           account->account_id->account_index);
 
       task->set_callback(
@@ -892,7 +887,7 @@ void BitcoinWalletService::UpdateNextUnusedAddressForAccount(
   std::optional<uint32_t> next_change_index = !address->key_id->change
                                                   ? std::optional<uint32_t>()
                                                   : address->key_id->index;
-  keyring_service()->UpdateNextUnusedAddressForBitcoinAccount(
+  keyring_service().UpdateNextUnusedAddressForBitcoinAccount(
       account_id, next_receive_index, next_change_index);
 }
 
@@ -900,7 +895,7 @@ void BitcoinWalletService::GetUtxos(mojom::AccountIdPtr account_id,
                                     GetUtxosCallback callback) {
   CHECK(IsBitcoinAccount(*account_id));
 
-  auto addresses = keyring_service()->GetBitcoinAddresses(account_id);
+  auto addresses = keyring_service().GetBitcoinAddresses(account_id);
   if (!addresses) {
     NOTREACHED_IN_MIGRATION();
     std::move(callback).Run(base::unexpected(InternalErrorString()));
@@ -952,7 +947,7 @@ void BitcoinWalletService::SignAndPostTransaction(
   auto serialized_transaction =
       BitcoinSerializer::SerializeSignedTransaction(bitcoin_transaction);
 
-  bitcoin_rpc_->PostTransaction(
+  bitcoin_rpc_.PostTransaction(
       GetNetworkForBitcoinAccount(account_id), serialized_transaction,
       base::BindOnce(&BitcoinWalletService::OnPostTransaction,
                      weak_ptr_factory_.GetWeakPtr(),
@@ -975,7 +970,7 @@ void BitcoinWalletService::PostHwSignedTransaction(
   auto serialized_transaction =
       BitcoinSerializer::SerializeSignedTransaction(bitcoin_transaction);
 
-  bitcoin_rpc_->PostTransaction(
+  bitcoin_rpc_.PostTransaction(
       GetNetworkForBitcoinAccount(account_id), serialized_transaction,
       base::BindOnce(&BitcoinWalletService::OnPostTransaction,
                      weak_ptr_factory_.GetWeakPtr(),
@@ -998,7 +993,7 @@ void BitcoinWalletService::GetTransactionStatus(
     const std::string& chain_id,
     const std::string& txid,
     GetTransactionStatusCallback callback) {
-  bitcoin_rpc_->GetTransaction(
+  bitcoin_rpc_.GetTransaction(
       chain_id, txid,
       base::BindOnce(&BitcoinWalletService::OnGetTransaction,
                      weak_ptr_factory_.GetWeakPtr(), txid,
@@ -1027,7 +1022,7 @@ void BitcoinWalletService::FetchRawTransactions(
     const std::vector<SHA256HashArray>& txids,
     FetchRawTransactionsCallback callback) {
   auto task =
-      std::make_unique<FetchRawTransactionsTask>(this, network_id, txids);
+      std::make_unique<FetchRawTransactionsTask>(*this, network_id, txids);
 
   task->set_callback(base::BindOnce(
       &BitcoinWalletService::OnFetchRawTransactionsDone,
@@ -1053,7 +1048,7 @@ void BitcoinWalletService::DiscoverNextUnusedAddress(
     DiscoverNextUnusedAddressCallback callback) {
   CHECK(IsBitcoinAccount(*account_id));
 
-  auto account_info = keyring_service()->GetBitcoinAccountInfo(account_id);
+  auto account_info = keyring_service().GetBitcoinAccountInfo(account_id);
   if (!account_info) {
     return std::move(callback).Run(base::unexpected(InternalErrorString()));
   }
@@ -1069,7 +1064,7 @@ void BitcoinWalletService::DiscoverWalletAccount(
     mojom::KeyringId keyring_id,
     uint32_t account_index,
     DiscoverWalletAccountCallback callback) {
-  auto task = std::make_unique<DiscoverWalletAccountTask>(this, keyring_id,
+  auto task = std::make_unique<DiscoverWalletAccountTask>(*this, keyring_id,
                                                           account_index);
 
   task->set_callback(base::BindOnce(
@@ -1131,7 +1126,7 @@ BitcoinWalletService::GetBtcHardwareTransactionSignData(
 bool BitcoinWalletService::SignTransactionInternal(
     BitcoinTransaction& tx,
     const mojom::AccountIdPtr& account_id) {
-  auto addresses = keyring_service()->GetBitcoinAddresses(account_id);
+  auto addresses = keyring_service().GetBitcoinAddresses(account_id);
   if (!addresses || addresses->empty()) {
     return false;
   }
@@ -1155,14 +1150,14 @@ bool BitcoinWalletService::SignTransactionInternal(
     }
     auto& key_id = address_map.at(input.utxo_address);
 
-    auto signature = keyring_service()->SignMessageByBitcoinKeyring(
+    auto signature = keyring_service().SignMessageByBitcoinKeyring(
         account_id, key_id, *hash);
     if (!signature) {
       return false;
     }
     signature->push_back(tx.sighash_type());
 
-    auto pubkey = keyring_service()->GetBitcoinPubkey(account_id, key_id);
+    auto pubkey = keyring_service().GetBitcoinPubkey(account_id, key_id);
     if (!pubkey) {
       return false;
     }
@@ -1190,7 +1185,7 @@ bool BitcoinWalletService::ApplyHwSignatureInternal(
 
 void BitcoinWalletService::SetUrlLoaderFactoryForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
-  bitcoin_rpc_->SetUrlLoaderFactoryForTesting(  // IN-TEST
+  bitcoin_rpc_.SetUrlLoaderFactoryForTesting(  // IN-TEST
       std::move(url_loader_factory));
 }
 

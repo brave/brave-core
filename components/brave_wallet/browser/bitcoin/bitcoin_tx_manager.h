@@ -10,13 +10,12 @@
 #include <optional>
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_block_tracker.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_meta.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
-
-class PrefService;
 
 namespace brave_wallet {
 
@@ -34,12 +33,11 @@ class BitcoinTxManager : public TxManager,
   using ProcessBtcHardwareSignatureCallback =
       mojom::BtcTxManagerProxy::ProcessBtcHardwareSignatureCallback;
 
-  BitcoinTxManager(TxService* tx_service,
-                   BitcoinWalletService* bitcoin_wallet_service,
-                   KeyringService* keyring_service,
-                   PrefService* prefs,
-                   TxStorageDelegate* delegate,
-                   AccountResolverDelegate* account_resolver_delegate);
+  BitcoinTxManager(TxService& tx_service,
+                   BitcoinWalletService& bitcoin_wallet_service,
+                   KeyringService& keyring_service,
+                   TxStorageDelegate& delegate,
+                   AccountResolverDelegate& account_resolver_delegate);
   ~BitcoinTxManager() override;
   BitcoinTxManager(const BitcoinTxManager&) = delete;
   BitcoinTxManager& operator=(const BitcoinTxManager&) = delete;
@@ -60,8 +58,8 @@ class BitcoinTxManager : public TxManager,
   FRIEND_TEST_ALL_PREFIXES(BitcoinTxManagerUnitTest, SubmitTransactionError);
   FRIEND_TEST_ALL_PREFIXES(BitcoinTxManagerUnitTest, SubmitTransactionError);
 
-  BitcoinTxStateManager* GetBitcoinTxStateManager();
-  BitcoinBlockTracker* GetBitcoinBlockTracker();
+  BitcoinTxStateManager& GetBitcoinTxStateManager();
+  BitcoinBlockTracker& GetBitcoinBlockTracker();
 
   // BitcoinBlockTracker::Observer
   void OnLatestHeightUpdated(const std::string& chain_id,
@@ -106,7 +104,7 @@ class BitcoinTxManager : public TxManager,
   void OnGetTransactionStatus(const std::string& tx_meta_id,
                               base::expected<bool, std::string> confirm_status);
 
-  raw_ptr<BitcoinWalletService> bitcoin_wallet_service_ = nullptr;
+  const raw_ref<BitcoinWalletService> bitcoin_wallet_service_;
   base::ScopedObservation<BitcoinBlockTracker, BitcoinBlockTracker::Observer>
       block_tracker_observation_{this};
   base::WeakPtrFactory<BitcoinTxManager> weak_factory_{this};

@@ -12,7 +12,7 @@
 namespace brave_wallet {
 
 ZCashResolveBalanceTask::ZCashResolveBalanceTask(
-    ZCashWalletService* zcash_wallet_service,
+    ZCashWalletService& zcash_wallet_service,
     const std::string& chain_id,
     mojom::AccountIdPtr account_id,
     ZCashResolveBalanceTaskCallback callback)

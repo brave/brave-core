@@ -3105,8 +3105,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, AccountDiscovery) {
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
       GetPrefs(), GetLocalState());
+  ASSERT_TRUE(brave_wallet_service.GetBitcoinWalletService());
   BitcoinTestRpcServer bitcoin_test_rpc_server(
-      brave_wallet_service.GetBitcoinWalletService());
+      *brave_wallet_service.GetBitcoinWalletService());
 
   KeyringService& service = *brave_wallet_service.keyring_service();
 
@@ -3147,8 +3148,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, SolAccountDiscovery) {
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
+  ASSERT_TRUE(brave_wallet_service.GetBitcoinWalletService());
   BitcoinTestRpcServer bitcoin_test_rpc_server(
-      brave_wallet_service.GetBitcoinWalletService());
+      *brave_wallet_service.GetBitcoinWalletService());
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
@@ -3189,8 +3191,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, FilAccountDiscovery) {
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
+  ASSERT_TRUE(brave_wallet_service.GetBitcoinWalletService());
   BitcoinTestRpcServer bitcoin_test_rpc_server(
-      brave_wallet_service.GetBitcoinWalletService());
+      *brave_wallet_service.GetBitcoinWalletService());
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
@@ -3233,8 +3236,9 @@ TEST_F(KeyringServiceUnitTest, BitcoinDiscovery) {
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
+  ASSERT_TRUE(brave_wallet_service.GetBitcoinWalletService());
   BitcoinTestRpcServer bitcoin_test_rpc_server(
-      brave_wallet_service.GetBitcoinWalletService());
+      *brave_wallet_service.GetBitcoinWalletService());
 
   bitcoin_test_rpc_server.SetUpBitcoinRpc(std::nullopt, std::nullopt);
   BitcoinHDKeyring keyring_84(*MnemonicToSeed(kMnemonicAbandonAbandon), false);
@@ -3311,8 +3315,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, StopsOnError) {
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
+  ASSERT_TRUE(brave_wallet_service.GetBitcoinWalletService());
   BitcoinTestRpcServer bitcoin_test_rpc_server(
-      brave_wallet_service.GetBitcoinWalletService());
+      *brave_wallet_service.GetBitcoinWalletService());
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
@@ -3353,8 +3358,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, ManuallyAddAccount) {
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
+  ASSERT_TRUE(brave_wallet_service.GetBitcoinWalletService());
   BitcoinTestRpcServer bitcoin_test_rpc_server(
-      brave_wallet_service.GetBitcoinWalletService());
+      *brave_wallet_service.GetBitcoinWalletService());
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
@@ -3417,8 +3423,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
+  ASSERT_TRUE(brave_wallet_service.GetBitcoinWalletService());
   BitcoinTestRpcServer bitcoin_test_rpc_server(
-      brave_wallet_service.GetBitcoinWalletService());
+      *brave_wallet_service.GetBitcoinWalletService());
 
   std::vector<std::string> requested_addresses;
   bool first_restore = true;

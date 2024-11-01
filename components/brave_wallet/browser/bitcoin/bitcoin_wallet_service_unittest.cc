@@ -93,7 +93,7 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
-        keyring_service_.get(), &prefs_, network_manager_.get(),
+        *keyring_service_, *network_manager_,
         bitcoin_test_rpc_server_->GetURLLoaderFactory());
     bitcoin_wallet_service_->SetArrangeTransactionsForTesting(true);
 

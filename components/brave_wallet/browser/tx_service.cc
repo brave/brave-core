@@ -78,7 +78,7 @@ size_t CalculatePendingTxCount(
 TxService::TxService(JsonRpcService* json_rpc_service,
                      BitcoinWalletService* bitcoin_wallet_service,
                      ZCashWalletService* zcash_wallet_service,
-                     KeyringService* keyring_service,
+                     KeyringService& keyring_service,
                      PrefService* prefs,
                      const base::FilePath& wallet_base_directory,
                      scoped_refptr<base::SequencedTaskRunner> ui_task_runner)
@@ -88,25 +88,25 @@ TxService::TxService(JsonRpcService* json_rpc_service,
   delegate_ = std::make_unique<TxStorageDelegateImpl>(prefs, store_factory_,
                                                       ui_task_runner);
   account_resolver_delegate_ =
-      std::make_unique<AccountResolverDelegateImpl>(keyring_service);
+      std::make_unique<AccountResolverDelegateImpl>(&keyring_service);
 
   tx_manager_map_[mojom::CoinType::ETH] = std::unique_ptr<TxManager>(
-      new EthTxManager(this, json_rpc_service, keyring_service, prefs,
-                       delegate_.get(), account_resolver_delegate_.get()));
+      new EthTxManager(*this, json_rpc_service, keyring_service, *delegate_,
+                       *account_resolver_delegate_));
   tx_manager_map_[mojom::CoinType::SOL] = std::unique_ptr<TxManager>(
-      new SolanaTxManager(this, json_rpc_service, keyring_service, prefs,
-                          delegate_.get(), account_resolver_delegate_.get()));
+      new SolanaTxManager(*this, json_rpc_service, keyring_service, *delegate_,
+                          *account_resolver_delegate_));
   tx_manager_map_[mojom::CoinType::FIL] = std::unique_ptr<TxManager>(
-      new FilTxManager(this, json_rpc_service, keyring_service, prefs,
-                       delegate_.get(), account_resolver_delegate_.get()));
+      new FilTxManager(*this, json_rpc_service, keyring_service, *delegate_,
+                       *account_resolver_delegate_));
   if (IsBitcoinEnabled()) {
     if (!bitcoin_wallet_service) {
       CHECK_IS_TEST();
     } else {
       tx_manager_map_[mojom::CoinType::BTC] =
-          std::make_unique<BitcoinTxManager>(
-              this, bitcoin_wallet_service, keyring_service, prefs,
-              delegate_.get(), account_resolver_delegate_.get());
+          std::make_unique<BitcoinTxManager>(*this, *bitcoin_wallet_service,
+                                             keyring_service, *delegate_,
+                                             *account_resolver_delegate_);
     }
   }
 
@@ -115,8 +115,8 @@ TxService::TxService(JsonRpcService* json_rpc_service,
       CHECK_IS_TEST();
     } else {
       tx_manager_map_[mojom::CoinType::ZEC] = std::make_unique<ZCashTxManager>(
-          this, zcash_wallet_service, keyring_service, prefs, delegate_.get(),
-          account_resolver_delegate_.get());
+          *this, zcash_wallet_service, keyring_service, *delegate_,
+          *account_resolver_delegate_);
     }
   }
 }

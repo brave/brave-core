@@ -40,7 +40,7 @@ class FilTxStateManagerUnitTest : public testing::Test {
     account_resolver_delegate_ =
         std::make_unique<AccountResolverDelegateForTest>();
     fil_tx_state_manager_ = std::make_unique<FilTxStateManager>(
-        GetPrefs(), delegate_.get(), account_resolver_delegate_.get());
+        *delegate_, *account_resolver_delegate_);
   }
 
   PrefService* GetPrefs() { return &prefs_; }

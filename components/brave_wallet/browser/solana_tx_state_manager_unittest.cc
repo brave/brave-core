@@ -42,7 +42,7 @@ class SolanaTxStateManagerUnitTest : public testing::Test {
     account_resolver_delegate_ =
         std::make_unique<AccountResolverDelegateForTest>();
     solana_tx_state_manager_ = std::make_unique<SolanaTxStateManager>(
-        GetPrefs(), delegate_.get(), account_resolver_delegate_.get());
+        *delegate_, *account_resolver_delegate_);
   }
 
   PrefService* GetPrefs() { return &prefs_; }

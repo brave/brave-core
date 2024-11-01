@@ -11,8 +11,6 @@
 
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 
-class PrefService;
-
 namespace base {
 class Value;
 }  // namespace base
@@ -25,9 +23,8 @@ class FilTxMeta;
 
 class FilTxStateManager : public TxStateManager {
  public:
-  FilTxStateManager(PrefService* prefs,
-                    TxStorageDelegate* delegate,
-                    AccountResolverDelegate* account_resolver_delegate);
+  FilTxStateManager(TxStorageDelegate& delegate,
+                    AccountResolverDelegate& account_resolver_delegate);
   ~FilTxStateManager() override;
   FilTxStateManager(const FilTxStateManager&) = delete;
   FilTxStateManager operator=(const FilTxStateManager&) = delete;

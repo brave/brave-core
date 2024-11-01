@@ -125,9 +125,8 @@ class SolanaTxManagerUnitTest : public testing::Test {
                                                         &prefs_, &local_state_);
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
-        json_rpc_service_.get(), nullptr, nullptr, keyring_service_.get(),
-        &prefs_, temp_dir_.GetPath(),
-        base::SequencedTaskRunner::GetCurrentDefault());
+        json_rpc_service_.get(), nullptr, nullptr, *keyring_service_, &prefs_,
+        temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
     CreateWallet();
 
@@ -614,7 +613,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
                             const std::string& expected_blockhash = "") {
     SCOPED_TRACE(testing::Message() << location.ToString());
     MockTxStateManagerObserver observer(
-        solana_tx_manager()->GetSolanaTxStateManager());
+        &solana_tx_manager()->GetSolanaTxStateManager());
     if (expected_result) {
       EXPECT_CALL(observer, OnNewUnapprovedTx(testing::_)).Times(1);
     }
@@ -696,7 +695,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
 TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   // Stop the block tracker explicitly to make sure it will be started when we
   // submit our pending transactions.
-  solana_tx_manager()->GetSolanaBlockTracker()->Stop();
+  solana_tx_manager()->GetSolanaBlockTracker().Stop();
 
   const auto& from_account = sol_account();
   std::string from_account_address = from_account->address;
@@ -1411,7 +1410,7 @@ TEST_F(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash) {
 
   // Check two submitted tx.
   auto pending_transactions =
-      solana_tx_manager()->GetSolanaTxStateManager()->GetTransactionsByStatus(
+      solana_tx_manager()->GetSolanaTxStateManager().GetTransactionsByStatus(
           mojom::kSolanaMainnet, mojom::TransactionStatus::Submitted,
           std::nullopt);
   EXPECT_EQ(pending_transactions.size(), 2u);
@@ -1440,14 +1439,14 @@ TEST_F(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash) {
 
   // Check blockhash1 should be dropped, blockhash2 stay as submitted.
   auto dropped_transactions =
-      solana_tx_manager()->GetSolanaTxStateManager()->GetTransactionsByStatus(
+      solana_tx_manager()->GetSolanaTxStateManager().GetTransactionsByStatus(
           mojom::kSolanaMainnet, mojom::TransactionStatus::Dropped,
           std::nullopt);
   ASSERT_EQ(dropped_transactions.size(), 1u);
   EXPECT_EQ(dropped_transactions[0]->id(), meta_id1);
 
   pending_transactions =
-      solana_tx_manager()->GetSolanaTxStateManager()->GetTransactionsByStatus(
+      solana_tx_manager()->GetSolanaTxStateManager().GetTransactionsByStatus(
           mojom::kSolanaMainnet, mojom::TransactionStatus::Submitted,
           std::nullopt);
   ASSERT_EQ(pending_transactions.size(), 1u);
@@ -1487,7 +1486,7 @@ TEST_F(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash_DappBlockhash) {
   tx_meta2->tx()->message()->set_last_valid_block_height(
       last_valid_block_height2_ + kSolanaValidBlockHeightThreshold);
   ASSERT_TRUE(
-      solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*tx_meta2));
+      solana_tx_manager()->GetSolanaTxStateManager().AddOrUpdateTx(*tx_meta2));
 
   WaitForUpdatePendingTransactions();
 
@@ -1506,7 +1505,7 @@ TEST_F(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash_DappBlockhash) {
             last_valid_block_height2_ + 150);
   EXPECT_EQ(tx_meta2->status(), mojom::TransactionStatus::Submitted);
 
-  ASSERT_TRUE(solana_tx_manager()->GetSolanaBlockTracker()->IsRunning(
+  ASSERT_TRUE(solana_tx_manager()->GetSolanaBlockTracker().IsRunning(
       mojom::kSolanaMainnet));
 
   // Trigger block tracker to run, with block_height < last_valid_block_height.
@@ -1523,7 +1522,7 @@ TEST_F(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash_DappBlockhash) {
   ASSERT_TRUE(tx_meta2);
   EXPECT_EQ(tx_meta2->status(), mojom::TransactionStatus::Submitted);
 
-  ASSERT_TRUE(solana_tx_manager()->GetSolanaBlockTracker()->IsRunning(
+  ASSERT_TRUE(solana_tx_manager()->GetSolanaBlockTracker().IsRunning(
       mojom::kSolanaMainnet));
 
   // Fast forward to have block tracker run with the new interceptor, where
@@ -1570,7 +1569,7 @@ TEST_F(SolanaTxManagerUnitTest, DropTxAfterSafeDropThreshold) {
   ASSERT_TRUE(tx);
   tx->set_submitted_time(base::Time::Now() - base::Minutes(30));
   ASSERT_TRUE(
-      solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*tx));
+      solana_tx_manager()->GetSolanaTxStateManager().AddOrUpdateTx(*tx));
 
   send_transaction_calls_ = 0;
   SetInterceptor(latest_blockhash2_, last_valid_block_height2_, tx_hash1_, "",
@@ -1621,7 +1620,7 @@ TEST_F(SolanaTxManagerUnitTest, RetryTransaction) {
   vec.emplace_back(durable_nonce_meta->tx()->message()->instructions()[0]);
   durable_nonce_meta->tx()->message()->SetInstructionsForTesting(vec);
 
-  ASSERT_TRUE(solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(
+  ASSERT_TRUE(solana_tx_manager()->GetSolanaTxStateManager().AddOrUpdateTx(
       *durable_nonce_meta));
 
   // Test retry transaction with invalid state.
@@ -1637,9 +1636,9 @@ TEST_F(SolanaTxManagerUnitTest, RetryTransaction) {
   tx_meta1->set_status(mojom::TransactionStatus::Dropped);
   tx_meta2->set_status(mojom::TransactionStatus::Dropped);
   ASSERT_TRUE(
-      solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*tx_meta1));
+      solana_tx_manager()->GetSolanaTxStateManager().AddOrUpdateTx(*tx_meta1));
   ASSERT_TRUE(
-      solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*tx_meta2));
+      solana_tx_manager()->GetSolanaTxStateManager().AddOrUpdateTx(*tx_meta2));
 
   TestRetryTransaction(FROM_HERE, meta_id1, true, "", "");
   TestRetryTransaction(FROM_HERE, meta_id2, true, "", nonce_account->address);
@@ -1661,9 +1660,9 @@ TEST_F(SolanaTxManagerUnitTest, RetryTransaction) {
   tx_meta2->tx()->set_sign_tx_param(param.Clone());
 
   ASSERT_TRUE(
-      solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*tx_meta1));
+      solana_tx_manager()->GetSolanaTxStateManager().AddOrUpdateTx(*tx_meta1));
   ASSERT_TRUE(
-      solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*tx_meta2));
+      solana_tx_manager()->GetSolanaTxStateManager().AddOrUpdateTx(*tx_meta2));
   TestRetryTransaction(
       FROM_HERE, meta_id1, false,
       l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE));
@@ -1677,7 +1676,7 @@ TEST_F(SolanaTxManagerUnitTest, RetryTransaction) {
   // Test retry transaction with invalid tx type.
   tx_meta1->tx()->set_tx_type(mojom::TransactionType::SolanaSwap);
   ASSERT_TRUE(
-      solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*tx_meta1));
+      solana_tx_manager()->GetSolanaTxStateManager().AddOrUpdateTx(*tx_meta1));
   TestRetryTransaction(
       FROM_HERE, meta_id1, false,
       l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE));
@@ -1762,7 +1761,7 @@ TEST_F(SolanaTxManagerUnitTest, ProcessSolanaHardwareSignature) {
   meta->tx()->message()->set_recent_blockhash(latest_blockhash1_);
   meta->tx()->message()->set_last_valid_block_height(last_valid_block_height1_);
   ASSERT_TRUE(
-      solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(*meta));
+      solana_tx_manager()->GetSolanaTxStateManager().AddOrUpdateTx(*meta));
 
   // Valid blockhash and valid number of signers is valid
   TestProcessSolanaHardwareSignature(system_transfer_meta_id, signature_bytes,
@@ -1900,7 +1899,7 @@ TEST_F(SolanaTxManagerUnitTest, GetSolanaTxFeeEstimation) {
   meta.set_chain_id(mojom::kSolanaMainnet);
 
   ASSERT_TRUE(
-      solana_tx_manager()->GetSolanaTxStateManager()->AddOrUpdateTx(meta));
+      solana_tx_manager()->GetSolanaTxStateManager().AddOrUpdateTx(meta));
   task_environment_.RunUntilIdle();
 
   // Call fetch fee estimation with appropriate interceptors. Verify median and

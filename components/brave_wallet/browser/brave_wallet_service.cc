@@ -125,8 +125,7 @@ BraveWalletService::BraveWalletService(
 
   if (IsBitcoinEnabled()) {
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
-        keyring_service(), profile_prefs, network_manager(),
-        url_loader_factory);
+        *keyring_service(), *network_manager(), url_loader_factory);
   }
 
   if (IsZCashEnabled()) {
@@ -138,7 +137,7 @@ BraveWalletService::BraveWalletService(
 
   tx_service_ = std::make_unique<TxService>(
       json_rpc_service(), GetBitcoinWalletService(), GetZcashWalletService(),
-      keyring_service(), profile_prefs, delegate_->GetWalletBaseDirectory(),
+      *keyring_service(), profile_prefs, delegate_->GetWalletBaseDirectory(),
       base::SequencedTaskRunner::GetCurrentDefault());
 
   brave_wallet_p3a_ = std::make_unique<BraveWalletP3A>(

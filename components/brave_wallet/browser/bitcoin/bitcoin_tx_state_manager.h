@@ -11,8 +11,6 @@
 
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 
-class PrefService;
-
 namespace base {
 class Value;
 }  // namespace base
@@ -25,9 +23,8 @@ class TxStorageDelegate;
 
 class BitcoinTxStateManager : public TxStateManager {
  public:
-  BitcoinTxStateManager(PrefService* prefs,
-                        TxStorageDelegate* delegate,
-                        AccountResolverDelegate* account_resolver_delegate);
+  BitcoinTxStateManager(TxStorageDelegate& delegate,
+                        AccountResolverDelegate& account_resolver_delegate);
   ~BitcoinTxStateManager() override;
   BitcoinTxStateManager(const BitcoinTxStateManager&) = delete;
   BitcoinTxStateManager operator=(const BitcoinTxStateManager&) = delete;

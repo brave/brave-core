@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
@@ -17,7 +17,6 @@
 namespace brave_wallet {
 
 class BitcoinWalletService;
-class KeyringService;
 class HDKey;
 
 struct DiscoveredBitcoinAccount {
@@ -37,7 +36,7 @@ class DiscoverAccountTaskBase {
   using DiscoverAccountCallback = base::OnceCallback<void(
       base::expected<DiscoveredBitcoinAccount, std::string>)>;
 
-  DiscoverAccountTaskBase(BitcoinWalletService* bitcoin_wallet_service,
+  DiscoverAccountTaskBase(BitcoinWalletService& bitcoin_wallet_service,
                           const std::string& network_id);
   virtual ~DiscoverAccountTaskBase();
 
@@ -64,8 +63,12 @@ class DiscoverAccountTaskBase {
       mojom::BitcoinAddressPtr address,
       base::expected<bitcoin_rpc::AddressStats, std::string> stats);
 
-  raw_ptr<BitcoinWalletService> bitcoin_wallet_service_;
-  raw_ptr<KeyringService> keyring_service_;
+  BitcoinWalletService& bitcoin_wallet_service() {
+    return *bitcoin_wallet_service_;
+  }
+
+ private:
+  const raw_ref<BitcoinWalletService> bitcoin_wallet_service_;
   std::string network_id_;
 
   uint32_t active_requests_ = 0;
@@ -82,7 +85,7 @@ class DiscoverAccountTaskBase {
 
 class DiscoverWalletAccountTask : public DiscoverAccountTaskBase {
  public:
-  DiscoverWalletAccountTask(BitcoinWalletService* bitcoin_wallet_service,
+  DiscoverWalletAccountTask(BitcoinWalletService& bitcoin_wallet_service,
                             mojom::KeyringId keyring_id,
                             uint32_t account_index);
   ~DiscoverWalletAccountTask() override;
@@ -96,7 +99,7 @@ class DiscoverWalletAccountTask : public DiscoverAccountTaskBase {
 
 class DiscoverExtendedKeyAccountTask : public DiscoverAccountTaskBase {
  public:
-  DiscoverExtendedKeyAccountTask(BitcoinWalletService* bitcoin_wallet_service,
+  DiscoverExtendedKeyAccountTask(BitcoinWalletService& bitcoin_wallet_service,
                                  const std::string& network_id,
                                  const std::string& extended_key);
   ~DiscoverExtendedKeyAccountTask() override;

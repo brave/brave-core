@@ -11,8 +11,6 @@
 
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 
-class PrefService;
-
 namespace base {
 class Value;
 }  // namespace base
@@ -25,9 +23,8 @@ class TxStorageDelegate;
 
 class ZCashTxStateManager : public TxStateManager {
  public:
-  ZCashTxStateManager(PrefService* prefs,
-                      TxStorageDelegate* delegate,
-                      AccountResolverDelegate* account_resolver_delegate);
+  ZCashTxStateManager(TxStorageDelegate& delegate,
+                      AccountResolverDelegate& account_resolver_delegate);
   ~ZCashTxStateManager() override;
   ZCashTxStateManager(const ZCashTxStateManager&) = delete;
   ZCashTxStateManager operator=(const ZCashTxStateManager&) = delete;

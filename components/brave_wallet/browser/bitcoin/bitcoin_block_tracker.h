@@ -10,6 +10,7 @@
 #include <optional>
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/time/time.h"
@@ -24,7 +25,7 @@ class BitcoinRpc;
 
 class BitcoinBlockTracker : public BlockTracker {
  public:
-  explicit BitcoinBlockTracker(bitcoin_rpc::BitcoinRpc* bitcoin_rpc);
+  explicit BitcoinBlockTracker(bitcoin_rpc::BitcoinRpc& bitcoin_rpc);
   ~BitcoinBlockTracker() override;
   BitcoinBlockTracker(const BitcoinBlockTracker&) = delete;
   BitcoinBlockTracker operator=(const BitcoinBlockTracker&) = delete;
@@ -50,7 +51,7 @@ class BitcoinBlockTracker : public BlockTracker {
   std::map<std::string, uint32_t> latest_height_map_;
   base::ObserverList<Observer> observers_;
 
-  raw_ptr<bitcoin_rpc::BitcoinRpc> bitcoin_rpc_ = nullptr;
+  const raw_ref<bitcoin_rpc::BitcoinRpc> bitcoin_rpc_;
 
   base::WeakPtrFactory<BitcoinBlockTracker> weak_ptr_factory_{this};
 };

@@ -260,7 +260,7 @@ class EthTxManagerUnitTest : public testing::Test {
         json_rpc_service_.get(), &profile_prefs_, &local_state_);
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
-        json_rpc_service_.get(), nullptr, nullptr, keyring_service_.get(),
+        json_rpc_service_.get(), nullptr, nullptr, *keyring_service_,
         GetPrefs(), temp_dir_.GetPath(),
         base::SequencedTaskRunner::GetCurrentDefault());
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
@@ -331,7 +331,7 @@ class EthTxManagerUnitTest : public testing::Test {
     meta.set_id(orig_meta_id);
     meta.set_chain_id(chain_id);
     meta.set_status(status);
-    ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
+    ASSERT_TRUE(eth_tx_manager()->tx_state_manager().AddOrUpdateTx(meta));
 
     bool callback_called = false;
     eth_tx_manager()->SpeedupOrCancelTransaction(
@@ -366,7 +366,7 @@ class EthTxManagerUnitTest : public testing::Test {
     meta.set_id(orig_meta_id);
     meta.set_chain_id(chain_id);
     meta.set_status(status);
-    ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
+    ASSERT_TRUE(eth_tx_manager()->tx_state_manager().AddOrUpdateTx(meta));
 
     bool callback_called = false;
     eth_tx_manager()->SpeedupOrCancelTransaction(
@@ -1924,13 +1924,13 @@ TEST_F(EthTxManagerUnitTest, TestSubmittedToConfirmed) {
   meta.set_id("001");
   meta.set_chain_id(mojom::kLocalhostChainId);
   meta.set_status(mojom::TransactionStatus::Submitted);
-  ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
+  ASSERT_TRUE(eth_tx_manager()->tx_state_manager().AddOrUpdateTx(meta));
   meta.set_id("002");
   meta.set_chain_id(mojom::kMainnetChainId);
   meta.set_from(EthAccount(1));
   meta.tx()->set_nonce(uint256_t(4));
   meta.set_status(mojom::TransactionStatus::Submitted);
-  ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
+  ASSERT_TRUE(eth_tx_manager()->tx_state_manager().AddOrUpdateTx(meta));
 
   eth_tx_manager()->UpdatePendingTransactions(std::nullopt);
 
@@ -1987,13 +1987,13 @@ TEST_F(EthTxManagerUnitTest, TestSubmittedToConfirmed) {
   meta.set_chain_id(mojom::kLocalhostChainId);
   meta.set_from(EthAccount(0));
   meta.set_status(mojom::TransactionStatus::Submitted);
-  ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
+  ASSERT_TRUE(eth_tx_manager()->tx_state_manager().AddOrUpdateTx(meta));
   meta.set_id("002");
   meta.set_chain_id(mojom::kMainnetChainId);
   meta.set_from(EthAccount(1));
   meta.tx()->set_nonce(uint256_t(4));
   meta.set_status(mojom::TransactionStatus::Submitted);
-  ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
+  ASSERT_TRUE(eth_tx_manager()->tx_state_manager().AddOrUpdateTx(meta));
   keyring_service_->Lock();
   task_environment_.FastForwardBy(
       base::Seconds(kBlockTrackerDefaultTimeInSeconds + 1));
@@ -2221,7 +2221,7 @@ TEST_F(EthTxManagerUnitTest, RetryTransaction) {
   meta.set_id("001");
   meta.set_chain_id(mojom::kLocalhostChainId);
   meta.set_status(mojom::TransactionStatus::Error);
-  ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
+  ASSERT_TRUE(eth_tx_manager()->tx_state_manager().AddOrUpdateTx(meta));
 
   bool callback_called = false;
   std::string tx_meta_id;
@@ -2251,7 +2251,7 @@ TEST_F(EthTxManagerUnitTest, RetryTransaction) {
   meta.set_chain_id(mojom::kLocalhostChainId);
   meta.set_status(mojom::TransactionStatus::Error);
   meta.set_tx(std::make_unique<Eip1559Transaction>(*tx1559));
-  ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
+  ASSERT_TRUE(eth_tx_manager()->tx_state_manager().AddOrUpdateTx(meta));
 
   eth_tx_manager()->RetryTransaction(
       "002", base::BindOnce(&AddUnapprovedTransactionSuccessCallback,
@@ -2404,10 +2404,10 @@ TEST_F(EthTxManagerUnitTest, MakeERC1155TransferFromData) {
 
 TEST_F(EthTxManagerUnitTest, Reset) {
   eth_tx_manager()->pending_chain_ids_.emplace(mojom::kLocalhostChainId);
-  eth_tx_manager()->block_tracker_->Start(mojom::kLocalhostChainId,
+  eth_tx_manager()->block_tracker().Start(mojom::kLocalhostChainId,
                                           base::Seconds(10));
   EXPECT_TRUE(
-      eth_tx_manager()->block_tracker_->IsRunning(mojom::kLocalhostChainId));
+      eth_tx_manager()->block_tracker().IsRunning(mojom::kLocalhostChainId));
   EthTxMeta meta(from(), std::make_unique<EthTransaction>());
   meta.set_id("001");
   meta.set_chain_id(mojom::kLocalhostChainId);
@@ -2417,16 +2417,16 @@ TEST_F(EthTxManagerUnitTest, Reset) {
       "0x016345785d8a0000", std::vector<uint8_t>(), false, std::nullopt);
   auto tx = EthTransaction::FromTxData(tx_data, false);
   meta.set_tx(std::make_unique<EthTransaction>(*tx));
-  ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
+  ASSERT_TRUE(eth_tx_manager()->tx_state_manager().AddOrUpdateTx(meta));
   EXPECT_EQ(tx_service_->GetDelegateForTesting()->GetTxs().size(), 1u);
   GetPrefs()->Set(kBraveWalletTransactions, ParseJson(R"({"ethereum":{}})"));
 
   tx_service_->Reset();
 
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletTransactions));
-  EXPECT_TRUE(eth_tx_manager()->pending_chain_ids_.empty());
+  EXPECT_TRUE(eth_tx_manager()->pending_chain_ids().empty());
   EXPECT_FALSE(
-      eth_tx_manager()->block_tracker_->IsRunning(mojom::kLocalhostChainId));
+      eth_tx_manager()->block_tracker().IsRunning(mojom::kLocalhostChainId));
   // cache should be empty
   EXPECT_TRUE(tx_service_->GetDelegateForTesting()->GetTxs().empty());
   // db should be empty

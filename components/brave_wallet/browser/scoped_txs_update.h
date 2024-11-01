@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SCOPED_TXS_UPDATE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SCOPED_TXS_UPDATE_H_
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/values.h"
 
 namespace brave_wallet {
@@ -15,7 +15,7 @@ class TxStorageDelegate;
 
 class ScopedTxsUpdate {
  public:
-  explicit ScopedTxsUpdate(TxStorageDelegate* delegate);
+  explicit ScopedTxsUpdate(TxStorageDelegate& delegate);
   ScopedTxsUpdate(const ScopedTxsUpdate&) = delete;
   ScopedTxsUpdate& operator=(const ScopedTxsUpdate&) = delete;
   virtual ~ScopedTxsUpdate();
@@ -27,7 +27,7 @@ class ScopedTxsUpdate {
   base::Value::Dict* operator->() { return &Get(); }
 
  private:
-  raw_ptr<TxStorageDelegate> delegate_;
+  const raw_ref<TxStorageDelegate> delegate_;
 };
 
 }  // namespace brave_wallet

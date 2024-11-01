@@ -119,9 +119,9 @@ BitcoinTestRpcServer::BitcoinTestRpcServer()
 }
 
 BitcoinTestRpcServer::BitcoinTestRpcServer(
-    BitcoinWalletService* bitcoin_wallet_service)
+    BitcoinWalletService& bitcoin_wallet_service)
     : BitcoinTestRpcServer() {
-  bitcoin_wallet_service->SetUrlLoaderFactoryForTesting(GetURLLoaderFactory());
+  bitcoin_wallet_service.SetUrlLoaderFactoryForTesting(GetURLLoaderFactory());
 }
 
 BitcoinTestRpcServer::~BitcoinTestRpcServer() = default;

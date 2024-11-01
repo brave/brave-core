@@ -9,7 +9,7 @@
 
 namespace brave_wallet {
 
-ScopedTxsUpdate::ScopedTxsUpdate(TxStorageDelegate* delegate)
+ScopedTxsUpdate::ScopedTxsUpdate(TxStorageDelegate& delegate)
     : delegate_(delegate) {}
 
 ScopedTxsUpdate::~ScopedTxsUpdate() {
