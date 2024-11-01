@@ -9,6 +9,7 @@
 #include <optional>
 
 #include "base/functional/callback_helpers.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -56,7 +57,6 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_key.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_enums.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_test_utils.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #endif
 
@@ -174,6 +174,15 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
     EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_TOGGLE_BRAVE_VPN));
   }
 #endif
+
+#if defined(TOOLKIT_VIEWS)
+  void WaitForSidePanelClose() {
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return browser()->GetBrowserView().unified_side_panel()->state() ==
+             SidePanel::State::kClosed;
+    }));
+  }
+#endif  // #if defined(TOOLKIT_VIEWS)
 
  private:
   policy::MockConfigurationPolicyProvider provider_;
@@ -439,7 +448,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       SidePanelEntry::Key(SidePanelEntryId::kChatUI);
   auto* side_panel_coordinator =
       browser()->GetFeatures().side_panel_coordinator();
-  auto side_panel_waiter = SidePanelWaiter(side_panel_coordinator);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return browser()->GetBrowserView().unified_side_panel()->state() ==
+           SidePanel::State::kClosed;
+  }));
 
   // initially no panel is showing
   EXPECT_FALSE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
@@ -450,7 +462,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_TRUE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
   // after command again, no panel is showing
   browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_AI_CHAT);
-  side_panel_waiter.WaitForSidePanelClose();
+  WaitForSidePanelClose();
   EXPECT_FALSE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
   EXPECT_FALSE(side_panel_coordinator->IsSidePanelShowing());
 
@@ -465,7 +477,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_TRUE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
   // after command again, no panel is showing
   browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_AI_CHAT);
-  side_panel_waiter.WaitForSidePanelClose();
+  WaitForSidePanelClose();
   EXPECT_FALSE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
   EXPECT_FALSE(side_panel_coordinator->IsSidePanelShowing());
 }
