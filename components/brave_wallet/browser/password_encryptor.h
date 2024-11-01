@@ -15,6 +15,7 @@
 #include "base/functional/callback.h"
 #include "base/gtest_prod_util.h"
 #include "base/values.h"
+#include "crypto/process_bound_string.h"
 
 namespace brave_wallet {
 
@@ -67,10 +68,10 @@ class PasswordEncryptor {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(PasswordEncryptorUnitTest, DecryptForImporter);
-  explicit PasswordEncryptor(const std::vector<uint8_t> key);
+  explicit PasswordEncryptor(base::span<uint8_t> key);
 
   // symmetric key used to encrypt and decrypt
-  std::vector<uint8_t> key_;
+  std::vector<uint8_t, crypto::SecureAllocator<uint8_t>> key_;
 };
 
 }  // namespace brave_wallet

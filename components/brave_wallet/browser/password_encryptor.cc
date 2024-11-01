@@ -10,9 +10,9 @@
 
 #include "base/base64.h"
 #include "base/no_destructor.h"
-#include "brave/components/brave_wallet/common/mem_utils.h"
 #include "crypto/aead.h"
 #include "crypto/openssl_util.h"
+#include "crypto/process_bound_string.h"
 #include "crypto/random.h"
 #include "third_party/boringssl/src/include/openssl/evp.h"
 
@@ -22,12 +22,9 @@ constexpr char kCiphertextKey[] = "ciphertext";
 constexpr char kNonceKey[] = "nonce";
 }  // namespace
 
-PasswordEncryptor::PasswordEncryptor(const std::vector<uint8_t> key)
-    : key_(key) {}
-PasswordEncryptor::~PasswordEncryptor() {
-  // zero key
-  SecureZeroData(key_);
-}
+PasswordEncryptor::PasswordEncryptor(base::span<uint8_t> key)
+    : key_(key.begin(), key.end()) {}
+PasswordEncryptor::~PasswordEncryptor() = default;
 
 // TODO(apaymyshev): Need to use much lesser value for unit tests where this
 // value is irrelevant. Otherwise it takes too much time for tests to pass.

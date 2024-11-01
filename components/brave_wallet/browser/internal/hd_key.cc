@@ -30,6 +30,7 @@
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
 #include "crypto/encryptor.h"
 #include "crypto/kdf.h"
+#include "crypto/process_bound_string.h"
 #include "crypto/random.h"
 #include "crypto/symmetric_key.h"
 #include "third_party/boringssl/src/include/openssl/hmac.h"
@@ -163,7 +164,7 @@ std::unique_ptr<HDKey::ParsedExtendedKey> HDKey::GenerateFromExtendedKey(
   }
 
   SecureVector buf(decoded_key.begin(), decoded_key.end());
-  SecureZeroData(base::as_writable_byte_span(decoded_key));
+  crypto::internal::SecureZeroBuffer(base::as_writable_byte_span(decoded_key));
   // version(4) || depth(1) || parent_fingerprint(4) || index(4) || chain(32) ||
   // key(33)
   const uint8_t* ptr = buf.data();
