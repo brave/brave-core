@@ -32,7 +32,7 @@ void GotoNewTabPage(content::WebContents* web_contents) {
                                 ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
   web_contents->OpenURL(params, /*navigation_handle_callback=*/{});
 }
-} // namespace
+}  // namespace
 
 BraveTabStripModel::BraveTabStripModel(
     TabStripModelDelegate* delegate,
@@ -128,4 +128,3 @@ void BraveTabStripModel::CloseTabs(base::span<int> indices,
 bool BraveTabStripModel::IsLastTab() const {
   return (GetTabCount() == 1);
 }
- 

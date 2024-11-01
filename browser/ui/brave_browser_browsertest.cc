@@ -71,16 +71,19 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
   ASSERT_EQ(1, tab_strip->count());
   EXPECT_EQ(page_url,
             tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
+
   auto* devtools_window = DevToolsWindowTesting::OpenDevToolsWindowSync(
       tab_strip->GetActiveWebContents(), false);
   EXPECT_EQ(chrome::GetTotalBrowserCount(), 3u);
 
-  // Close the last tab.
+  // Closing the last tab strip won't close the dev tools window
+  // because we are just loading a new tab in the existing web contents
   tab_strip->GetActiveWebContents()->Close();
+  EXPECT_EQ(chrome::GetTotalBrowserCount(), 3u);
 
-  ui_test_utils::WaitForBrowserToClose(
-      DevToolsWindowTesting::Get(devtools_window)->browser());
+  DevToolsWindowTesting::CloseDevToolsWindowSync(devtools_window);
   EXPECT_EQ(chrome::GetTotalBrowserCount(), 2u);
+
   ASSERT_EQ(1, tab_strip->count());
 
   // Expecting a new tab is opened.
