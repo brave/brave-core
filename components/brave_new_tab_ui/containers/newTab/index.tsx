@@ -603,6 +603,7 @@ class NewTabPage extends React.Component<Props, State> {
 
     return (
       <VPNWidget
+        isCardWidget
         paddingType={'none'}
         menuPosition={'left'}
         textDirection={textDirection}
