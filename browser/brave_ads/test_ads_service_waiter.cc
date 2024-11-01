@@ -5,15 +5,12 @@
 
 #include "brave/browser/brave_ads/test_ads_service_waiter.h"
 
-#include "base/check.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 
 namespace brave_ads {
 
-AdsServiceWaiter::AdsServiceWaiter(AdsService* const ads_service)
+AdsServiceWaiter::AdsServiceWaiter(AdsService& ads_service)
     : ads_service_(ads_service) {
-  CHECK(ads_service_);
-
   ads_service_->AddObserver(this);
 }
 

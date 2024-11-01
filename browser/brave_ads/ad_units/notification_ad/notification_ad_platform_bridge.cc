@@ -68,7 +68,7 @@ class PassThroughDelegate : public NotificationAdDelegate {
   ~PassThroughDelegate() override = default;
 
  private:
-  raw_ref<Profile> profile_;
+  const raw_ref<Profile> profile_;
 
   NotificationAd notification_ad_;
 };
@@ -90,7 +90,7 @@ void NotificationAdPlatformBridge::ShowNotificationAd(
   const gfx::NativeWindow browser_native_window = GetBrowserNativeWindow();
   const gfx::NativeView browser_native_view =
       platform_util::GetViewForWindow(browser_native_window);
-  NotificationAdPopupHandler::Show(&*profile_, notification_ad,
+  NotificationAdPopupHandler::Show(*profile_, notification_ad,
                                    browser_native_window, browser_native_view);
 }
 

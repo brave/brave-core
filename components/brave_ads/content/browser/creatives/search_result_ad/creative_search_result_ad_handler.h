@@ -10,9 +10,8 @@
 #include <vector>
 
 #include "base/functional/callback_forward.h"
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom-forward.h"
@@ -58,7 +57,7 @@ class CreativeSearchResultAdHandler final {
  private:
   friend class BraveAdsCreativeSearchResultAdHandlerTest;
 
-  CreativeSearchResultAdHandler(AdsService* ads_service,
+  CreativeSearchResultAdHandler(AdsService& ads_service,
                                 bool should_trigger_creative_ad_viewed_events);
 
   void MaybeExtractCreativeAdPlacementIdsFromWebPageCallback(
@@ -67,7 +66,7 @@ class CreativeSearchResultAdHandler final {
       ExtractCreativeAdPlacementIdsFromWebPageCallback callback,
       blink::mojom::WebPagePtr mojom_web_page);
 
-  const raw_ptr<AdsService> ads_service_ = nullptr;  // Not owned.
+  const raw_ref<AdsService> ads_service_;
 
   const bool should_trigger_creative_ad_viewed_events_;
 

@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_TEST_ADS_SERVICE_WAITER_H_
 #define BRAVE_BROWSER_BRAVE_ADS_TEST_ADS_SERVICE_WAITER_H_
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/run_loop.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
 
@@ -17,7 +17,7 @@ class AdsService;
 // This class waits for the ads service to be initialized.
 class AdsServiceWaiter : public AdsServiceObserver {
  public:
-  explicit AdsServiceWaiter(AdsService* const ads_service);
+  explicit AdsServiceWaiter(AdsService& ads_service);
   ~AdsServiceWaiter() override;
 
   AdsServiceWaiter(const AdsServiceWaiter&) = delete;
@@ -29,7 +29,7 @@ class AdsServiceWaiter : public AdsServiceObserver {
   // AdsServiceObserver:
   void OnAdsServiceInitialized() override;
 
-  const raw_ptr<AdsService> ads_service_ = nullptr;  // Not owned.
+  const raw_ref<AdsService> ads_service_;
 
   base::RunLoop run_loop_;
 };

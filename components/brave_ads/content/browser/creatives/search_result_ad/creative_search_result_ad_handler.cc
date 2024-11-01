@@ -25,20 +25,18 @@
 namespace brave_ads {
 
 CreativeSearchResultAdHandler::CreativeSearchResultAdHandler(
-    AdsService* ads_service,
+    AdsService& ads_service,
     const bool should_trigger_creative_ad_viewed_events)
     : ads_service_(ads_service),
       should_trigger_creative_ad_viewed_events_(
-          should_trigger_creative_ad_viewed_events) {
-  CHECK(ads_service);
-}
+          should_trigger_creative_ad_viewed_events) {}
 
 CreativeSearchResultAdHandler::~CreativeSearchResultAdHandler() = default;
 
 // static
 std::unique_ptr<CreativeSearchResultAdHandler>
 CreativeSearchResultAdHandler::MaybeCreate(
-    AdsService* ads_service,
+    AdsService* const ads_service,
     const GURL& url,
     const bool should_trigger_creative_ad_viewed_events) {
   if (!ads_service) {
@@ -50,7 +48,7 @@ CreativeSearchResultAdHandler::MaybeCreate(
   }
 
   return base::WrapUnique(new CreativeSearchResultAdHandler(
-      ads_service, should_trigger_creative_ad_viewed_events));
+      *ads_service, should_trigger_creative_ad_viewed_events));
 }
 
 void CreativeSearchResultAdHandler::

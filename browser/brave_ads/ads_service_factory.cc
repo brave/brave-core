@@ -74,10 +74,12 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
   auto* brave_adaptive_captcha_service =
-      brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetInstance()
-          ->GetForProfile(profile);
+      brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetForProfile(
+          profile);
+  CHECK(brave_adaptive_captcha_service);
   auto delegate = std::make_unique<AdsServiceDelegate>(
-      profile, g_browser_process->local_state(), brave_adaptive_captcha_service,
+      *profile, g_browser_process->local_state(),
+      *brave_adaptive_captcha_service,
       std::make_unique<NotificationAdPlatformBridge>(*profile));
 
   auto* history_service = HistoryServiceFactory::GetInstance()->GetForProfile(

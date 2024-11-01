@@ -10,6 +10,7 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/brave_ads/notification_ad.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -52,8 +53,7 @@ class NotificationAdPopup : public views::WidgetDelegateView,
                             public display::DisplayObserver {
   METADATA_HEADER(NotificationAdPopup, views::WidgetDelegateView)
  public:
-
-  NotificationAdPopup(Profile* profile,
+  NotificationAdPopup(Profile& profile,
                       const NotificationAd& notification_ad,
                       gfx::NativeWindow browser_native_window,
                       gfx::NativeView browser_native_view);
@@ -143,7 +143,7 @@ class NotificationAdPopup : public views::WidgetDelegateView,
 
   bool IsWidgetValid() const;
 
-  raw_ptr<Profile> profile_ = nullptr;  // Not owned.
+  const raw_ref<Profile> profile_;
 
   NotificationAd notification_ad_;
 

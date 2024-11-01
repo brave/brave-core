@@ -104,9 +104,9 @@ base::Value::Dict ParseSkuOrders(const base::Value::Dict& dict) {
 }  // namespace
 
 AdsServiceDelegate::AdsServiceDelegate(
-    Profile* profile,
+    Profile& profile,
     PrefService* local_state,
-    brave_adaptive_captcha::BraveAdaptiveCaptchaService*
+    brave_adaptive_captcha::BraveAdaptiveCaptchaService&
         adaptive_captcha_service,
     std::unique_ptr<NotificationAdPlatformBridge>
         notification_ad_platform_bridge)
@@ -172,11 +172,11 @@ void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
                                       WindowOpenDisposition::NEW_FOREGROUND_TAB,
                                       ui::PAGE_TRANSITION_LINK, true);
   ServiceTabLauncher::GetInstance()->LaunchTab(
-      profile_, params, base::BindOnce([](content::WebContents*) {}));
+      &*profile_, params, base::BindOnce([](content::WebContents*) {}));
 #else
-  Browser* browser = chrome::FindTabbedBrowser(profile_, false);
+  Browser* browser = chrome::FindTabbedBrowser(&*profile_, false);
   if (!browser) {
-    browser = Browser::Create(Browser::CreateParams(profile_, true));
+    browser = Browser::Create(Browser::CreateParams(&*profile_, true));
   }
   NavigateParams nav_params(browser, url, ui::PAGE_TRANSITION_LINK);
   nav_params.disposition = WindowOpenDisposition::SINGLETON_TAB;
@@ -187,7 +187,7 @@ void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
 }
 
 void AdsServiceDelegate::InitNotificationHelper() {
-  NotificationHelper::GetInstance()->InitForProfile(profile_);
+  NotificationHelper::GetInstance()->InitForProfile(&*profile_);
 }
 
 bool AdsServiceDelegate::
@@ -286,7 +286,7 @@ base::Value::Dict AdsServiceDelegate::GetVirtualPrefs() {
 
 NotificationDisplayService*
 AdsServiceDelegate::GetNotificationDisplayService() {
-  return NotificationDisplayServiceFactory::GetForProfile(profile_);
+  return NotificationDisplayServiceFactory::GetForProfile(&*profile_);
 }
 
 }  // namespace brave_ads
