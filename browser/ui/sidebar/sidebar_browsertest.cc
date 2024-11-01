@@ -928,13 +928,9 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   }));
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/")));
-  WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
-  }));
-  // As previous customize panel per-url panel, it's closed by deregistering
-  // after loading another url. Then, sidebar container should stop observing
-  // its entry.
-  EXPECT_FALSE(SidebarContainerObserving(SidePanelEntryId::kCustomizeChrome));
+
+  // After loading another url, customize panel is deregistered and closed.
+  EXPECT_FALSE(panel_ui->GetCurrentEntryId());
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
