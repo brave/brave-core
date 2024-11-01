@@ -37,10 +37,10 @@ class VerticalTabStripRegionView : public views::View,
                                    public views::AnimationDelegateViews,
                                    public views::WidgetObserver,
                                    public FullscreenObserver,
-                                   public BrowserListObserver {
+                                   public BrowserListObserver,
+                                   public views::ContextMenuController {
   METADATA_HEADER(VerticalTabStripRegionView, views::View)
  public:
-
   // We have a state machine which cycles like:
   //
   //               <hovered>          <pressed button>
@@ -122,6 +122,11 @@ class VerticalTabStripRegionView : public views::View,
   // FullscreenObserver:
   void OnFullscreenStateChanged() override;
 
+  // views::ContextMenuController:
+  void ShowContextMenuForViewImpl(views::View* source,
+                                  const gfx::Point& p,
+                                  ui::MenuSourceType source_type) override;
+
   class HeaderView;
   class MouseWatcher;
 
@@ -176,8 +181,11 @@ class VerticalTabStripRegionView : public views::View,
 
   std::u16string GetShortcutTextForNewTabButton(BrowserView* browser_view);
 
+  void OnMenuClosed();
+
   views::LabelButton& GetToggleButtonForTesting();
 
+  raw_ptr<BrowserView> browser_view_ = nullptr;
   raw_ptr<Browser> browser_ = nullptr;
 
   raw_ptr<views::View> original_parent_of_region_view_ = nullptr;
@@ -229,6 +237,8 @@ class VerticalTabStripRegionView : public views::View,
       fullscreen_observation_{this};
 
   BooleanPrefMember vertical_tab_on_right_;
+
+  std::unique_ptr<views::MenuRunner> menu_runner_;
 
   base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
 };

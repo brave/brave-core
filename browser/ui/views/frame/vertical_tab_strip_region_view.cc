@@ -597,6 +597,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
     BrowserView* browser_view,
     TabStripRegionView* region_view)
     : views::AnimationDelegateViews(this),
+      browser_view_(browser_view),
       browser_(browser_view->browser()),
       original_region_view_(region_view),
       tab_style_(TabStyle::Get()) {
@@ -696,6 +697,8 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
 
   // Note: This should happen after all the PrefMembers have been initialized.
   OnFloatingModePrefChanged();
+
+  set_context_menu_controller(this);
 }
 
 VerticalTabStripRegionView::~VerticalTabStripRegionView() {
@@ -1409,6 +1412,29 @@ std::u16string VerticalTabStripRegionView::GetShortcutTextForNewTabButton(
 
 views::LabelButton& VerticalTabStripRegionView::GetToggleButtonForTesting() {
   return *header_view_->toggle_button();
+}
+
+// Show context menu in unobscured area.
+void VerticalTabStripRegionView::ShowContextMenuForViewImpl(
+    views::View* source,
+    const gfx::Point& p,
+    ui::MenuSourceType source_type) {
+  if (menu_runner_ && menu_runner_->IsRunning()) {
+    return;
+  }
+
+  menu_runner_ = std::make_unique<views::MenuRunner>(
+      browser_view_->frame()->GetSystemMenuModel(),
+      views::MenuRunner::HAS_MNEMONICS | views::MenuRunner::CONTEXT_MENU,
+      base::BindRepeating(&VerticalTabStripRegionView::OnMenuClosed,
+                          base::Unretained(this)));
+  menu_runner_->RunMenuAt(source->GetWidget(), nullptr,
+                          gfx::Rect(p, gfx::Size(0, 0)),
+                          views::MenuAnchorPosition::kTopLeft, source_type);
+}
+
+void VerticalTabStripRegionView::OnMenuClosed() {
+  menu_runner_.reset();
 }
 
 BEGIN_METADATA(VerticalTabStripRegionView)
