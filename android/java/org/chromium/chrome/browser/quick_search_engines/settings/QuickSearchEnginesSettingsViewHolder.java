@@ -15,14 +15,14 @@ import com.google.android.material.materialswitch.MaterialSwitch;
 
 import org.chromium.chrome.R;
 
-public class QuickSearchViewHolder extends RecyclerView.ViewHolder {
+public class QuickSearchEnginesSettingsViewHolder extends RecyclerView.ViewHolder {
     ImageView mSearchEngineLogo;
     TextView mSearchEngineText;
     MaterialSwitch mSearchEngineSwitch;
     ImageView mDragIcon;
     View mView;
 
-    QuickSearchViewHolder(View itemView) {
+    QuickSearchEnginesSettingsViewHolder(View itemView) {
         super(itemView);
         this.mView = itemView;
         this.mSearchEngineLogo = (ImageView) itemView.findViewById(R.id.search_engine_logo);

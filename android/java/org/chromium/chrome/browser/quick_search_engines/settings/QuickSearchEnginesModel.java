@@ -5,13 +5,14 @@
 
 package org.chromium.chrome.browser.quick_search_engines.settings;
 
-public class QuickSearchEngineModel {
+public class QuickSearchEnginesModel {
     private String mShortName;
     private String mKeyword;
     private String mUrl;
     private boolean mIsEnabled;
 
-    public QuickSearchEngineModel(String shortName, String keyword, String url, boolean isEnabled) {
+    public QuickSearchEnginesModel(
+            String shortName, String keyword, String url, boolean isEnabled) {
         this.mShortName = shortName;
         this.mKeyword = keyword;
         this.mUrl = url;

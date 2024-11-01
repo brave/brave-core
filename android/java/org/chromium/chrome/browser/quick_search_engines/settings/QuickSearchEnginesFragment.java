@@ -34,10 +34,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class QuickSearchFragment extends BravePreferenceFragment
-        implements QuickSearchCallback, ItemTouchHelperCallback.OnStartDragListener {
+public class QuickSearchEnginesFragment extends BravePreferenceFragment
+        implements QuickSearchEnginesCallback, ItemTouchHelperCallback.OnStartDragListener {
     private RecyclerView mRecyclerView;
-    private QuickSearchAdapter mQuickSearchAdapter;
+    private QuickSearchEnginesAdapter mQuickSearchEnginesAdapter;
     private ItemTouchHelper mItemTouchHelper;
 
     private MenuItem mCloseItem;
@@ -91,16 +91,16 @@ public class QuickSearchFragment extends BravePreferenceFragment
                 QuickSearchEnginesUtil.getQuickSearchEnginesFeature() ? View.VISIBLE : View.GONE);
 
         // Default search engine layout
-        QuickSearchEngineModel defaultSearchEngineModel =
+        QuickSearchEnginesModel defaultSearchEnginesModel =
                 QuickSearchEnginesUtil.getDefaultSearchEngine(getProfile());
         mDefaultSearchEngineLayout = view.findViewById(R.id.default_search_engine_layout);
         ImageView defaultSearchEngineLogo =
                 mDefaultSearchEngineLayout.findViewById(R.id.search_engine_logo);
         ImageUtils.loadSearchEngineLogo(
-                getProfile(), defaultSearchEngineLogo, defaultSearchEngineModel.getKeyword());
+                getProfile(), defaultSearchEngineLogo, defaultSearchEnginesModel.getKeyword());
         TextView defaultSearchEngineText =
                 mDefaultSearchEngineLayout.findViewById(R.id.search_engine_text);
-        defaultSearchEngineText.setText(defaultSearchEngineModel.getShortName());
+        defaultSearchEngineText.setText(defaultSearchEnginesModel.getShortName());
         MaterialSwitch defaultSearchEngineSwitch =
                 mDefaultSearchEngineLayout.findViewById(R.id.search_engine_switch);
         mDefaultSearchEngineLayout.setOnClickListener(
@@ -112,13 +112,13 @@ public class QuickSearchFragment extends BravePreferenceFragment
                     }
                 });
 
-        defaultSearchEngineSwitch.setChecked(defaultSearchEngineModel.isEnabled());
+        defaultSearchEngineSwitch.setChecked(defaultSearchEnginesModel.isEnabled());
         defaultSearchEngineSwitch.setOnCheckedChangeListener(
                 new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        defaultSearchEngineModel.setEnabled(isChecked);
-                        updateQuickSearchEnginesInPref(defaultSearchEngineModel);
+                        defaultSearchEnginesModel.setEnabled(isChecked);
+                        updateQuickSearchEnginesInPref(defaultSearchEnginesModel);
                     }
                 });
 
@@ -132,7 +132,7 @@ public class QuickSearchFragment extends BravePreferenceFragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.quick_search_menu, menu);
+        inflater.inflate(R.menu.quick_search_engines_menu, menu);
         mCloseItem = menu.findItem(R.id.close_menu_id);
         mSaveItem = menu.findItem(R.id.action_save);
     }
@@ -140,22 +140,22 @@ public class QuickSearchFragment extends BravePreferenceFragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_save) {
-            if (mQuickSearchAdapter != null
-                    && mQuickSearchAdapter.getQuickSearchEngines() != null
-                    && mQuickSearchAdapter.getQuickSearchEngines().size() > 0) {
-                Map<String, QuickSearchEngineModel> searchEnginesMap =
-                        new LinkedHashMap<String, QuickSearchEngineModel>();
-                QuickSearchEngineModel defaultSearchEngineModel =
+            if (mQuickSearchEnginesAdapter != null
+                    && mQuickSearchEnginesAdapter.getQuickSearchEngines() != null
+                    && mQuickSearchEnginesAdapter.getQuickSearchEngines().size() > 0) {
+                Map<String, QuickSearchEnginesModel> searchEnginesMap =
+                        new LinkedHashMap<String, QuickSearchEnginesModel>();
+                QuickSearchEnginesModel defaultSearchEnginesModel =
                         QuickSearchEnginesUtil.getDefaultSearchEngine(getProfile());
                 searchEnginesMap.put(
-                        defaultSearchEngineModel.getKeyword(), defaultSearchEngineModel);
-                for (QuickSearchEngineModel quickSearchEngineModel :
-                        mQuickSearchAdapter.getQuickSearchEngines()) {
+                        defaultSearchEnginesModel.getKeyword(), defaultSearchEnginesModel);
+                for (QuickSearchEnginesModel quickSearchEnginesModel :
+                        mQuickSearchEnginesAdapter.getQuickSearchEngines()) {
                     searchEnginesMap.put(
-                            quickSearchEngineModel.getKeyword(), quickSearchEngineModel);
+                            quickSearchEnginesModel.getKeyword(), quickSearchEnginesModel);
                 }
                 QuickSearchEnginesUtil.saveSearchEnginesIntoPref(searchEnginesMap);
-                mQuickSearchAdapter.setEditMode(false);
+                mQuickSearchEnginesAdapter.setEditMode(false);
                 editModeUiVisibility();
             }
         }
@@ -174,29 +174,30 @@ public class QuickSearchFragment extends BravePreferenceFragment
     }
 
     private void refreshData() {
-        List<QuickSearchEngineModel> quickSearchEngines =
+        List<QuickSearchEnginesModel> quickSearchEngines =
                 QuickSearchEnginesUtil.getQuickSearchEnginesForSettings(getProfile());
         setRecyclerViewData(quickSearchEngines);
     }
 
-    private void setRecyclerViewData(List<QuickSearchEngineModel> searchEngines) {
-        mQuickSearchAdapter = new QuickSearchAdapter(getActivity(), searchEngines, this, this);
-        mRecyclerView.setAdapter(mQuickSearchAdapter);
-        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mQuickSearchAdapter);
+    private void setRecyclerViewData(List<QuickSearchEnginesModel> searchEngines) {
+        mQuickSearchEnginesAdapter =
+                new QuickSearchEnginesAdapter(getActivity(), searchEngines, this, this);
+        mRecyclerView.setAdapter(mQuickSearchEnginesAdapter);
+        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mQuickSearchEnginesAdapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
     // QuickSearchCallback
     @Override
-    public void onSearchEngineClick(int position, QuickSearchEngineModel quickSearchEngineModel) {
-        updateQuickSearchEnginesInPref(quickSearchEngineModel);
+    public void onSearchEngineClick(int position, QuickSearchEnginesModel quickSearchEnginesModel) {
+        updateQuickSearchEnginesInPref(quickSearchEnginesModel);
     }
 
-    private void updateQuickSearchEnginesInPref(QuickSearchEngineModel quickSearchEngineModel) {
-        Map<String, QuickSearchEngineModel> searchEnginesMap =
+    private void updateQuickSearchEnginesInPref(QuickSearchEnginesModel quickSearchEnginesModel) {
+        Map<String, QuickSearchEnginesModel> searchEnginesMap =
                 QuickSearchEnginesUtil.getQuickSearchEnginesFromPref();
-        searchEnginesMap.put(quickSearchEngineModel.getKeyword(), quickSearchEngineModel);
+        searchEnginesMap.put(quickSearchEnginesModel.getKeyword(), quickSearchEnginesModel);
         QuickSearchEnginesUtil.saveSearchEnginesIntoPref(searchEnginesMap);
     }
 
@@ -211,8 +212,8 @@ public class QuickSearchFragment extends BravePreferenceFragment
     }
 
     private void editModeUiVisibility() {
-        if (mQuickSearchAdapter != null) {
-            boolean isEditMode = mQuickSearchAdapter.isEditMode();
+        if (mQuickSearchEnginesAdapter != null) {
+            boolean isEditMode = mQuickSearchEnginesAdapter.isEditMode();
             mDefaultSearchEngineLayout.setEnabled(!isEditMode);
             mDefaultSearchEngineLayout.setAlpha(!isEditMode ? 1.0f : 0.5f);
             if (mCloseItem != null) {
@@ -226,8 +227,8 @@ public class QuickSearchFragment extends BravePreferenceFragment
 
     @Override
     public void loadSearchEngineLogo(
-            ImageView logoView, QuickSearchEngineModel quickSearchEngineModel) {
+            ImageView logoView, QuickSearchEnginesModel quickSearchEnginesModel) {
         ImageUtils.loadSearchEngineLogo(
-                getProfile(), logoView, quickSearchEngineModel.getKeyword());
+                getProfile(), logoView, quickSearchEnginesModel.getKeyword());
     }
 }

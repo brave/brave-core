@@ -21,18 +21,18 @@ import java.util.Map;
 
 public class QuickSearchEnginesUtil {
     public static void saveSearchEnginesIntoPref(
-            Map<String, QuickSearchEngineModel> searchEnginesMap) {
+            Map<String, QuickSearchEnginesModel> searchEnginesMap) {
         new SharedPreferencesHelper()
                 .saveMap(BravePreferenceKeys.BRAVE_QUICK_SEARCH_ENGINES, searchEnginesMap);
     }
 
-    public static Map<String, QuickSearchEngineModel> getQuickSearchEnginesFromPref() {
+    public static Map<String, QuickSearchEnginesModel> getQuickSearchEnginesFromPref() {
         SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper();
-        Map<String, QuickSearchEngineModel> searchEnginesMap =
+        Map<String, QuickSearchEnginesModel> searchEnginesMap =
                 sharedPreferencesHelper.getMap(
                         BravePreferenceKeys.BRAVE_QUICK_SEARCH_ENGINES,
                         String.class,
-                        QuickSearchEngineModel.class);
+                        QuickSearchEnginesModel.class);
         return searchEnginesMap;
     }
 
@@ -46,7 +46,7 @@ public class QuickSearchEnginesUtil {
                 .readBoolean(BravePreferenceKeys.BRAVE_QUICK_SEARCH_ENGINES_FEATURE, true);
     }
 
-    private static Map<String, QuickSearchEngineModel> getQuickSearchEngines(Profile profile) {
+    private static Map<String, QuickSearchEnginesModel> getQuickSearchEngines(Profile profile) {
         TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(profile);
         List<TemplateUrl> templateUrls = templateUrlService.getTemplateUrls();
         TemplateUrl defaultSearchEngineTemplateUrl =
@@ -56,61 +56,61 @@ public class QuickSearchEnginesUtil {
                 defaultSearchEngineTemplateUrl,
                 templateUrlService.isEeaChoiceCountry());
 
-        Map<String, QuickSearchEngineModel> searchEnginesMap =
+        Map<String, QuickSearchEnginesModel> searchEnginesMap =
                 getQuickSearchEnginesFromPref() != null
                         ? getQuickSearchEnginesFromPref()
-                        : new LinkedHashMap<String, QuickSearchEngineModel>();
+                        : new LinkedHashMap<String, QuickSearchEnginesModel>();
         for (TemplateUrl templateUrl : templateUrls) {
             if (!searchEnginesMap.containsKey(templateUrl.getKeyword())) {
-                QuickSearchEngineModel quickSearchEngineModel =
-                        new QuickSearchEngineModel(
+                QuickSearchEnginesModel quickSearchEnginesModel =
+                        new QuickSearchEnginesModel(
                                 templateUrl.getShortName(),
                                 templateUrl.getKeyword(),
                                 templateUrl.getURL(),
                                 true);
-                searchEnginesMap.put(templateUrl.getKeyword(), quickSearchEngineModel);
+                searchEnginesMap.put(templateUrl.getKeyword(), quickSearchEnginesModel);
             }
         }
         saveSearchEnginesIntoPref(searchEnginesMap);
         return searchEnginesMap;
     }
 
-    public static List<QuickSearchEngineModel> getQuickSearchEnginesForSettings(Profile profile) {
-        Map<String, QuickSearchEngineModel> searchEnginesMap = getQuickSearchEngines(profile);
+    public static List<QuickSearchEnginesModel> getQuickSearchEnginesForSettings(Profile profile) {
+        Map<String, QuickSearchEnginesModel> searchEnginesMap = getQuickSearchEngines(profile);
         TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(profile);
         TemplateUrl defaultSearchEngineTemplateUrl =
                 templateUrlService.getDefaultSearchEngineTemplateUrl();
-        List<QuickSearchEngineModel> quickSearchEngines = new ArrayList<>();
-        for (Map.Entry<String, QuickSearchEngineModel> entry : searchEnginesMap.entrySet()) {
-            QuickSearchEngineModel quickSearchEngineModel = entry.getValue();
-            if (!quickSearchEngineModel
+        List<QuickSearchEnginesModel> quickSearchEngines = new ArrayList<>();
+        for (Map.Entry<String, QuickSearchEnginesModel> entry : searchEnginesMap.entrySet()) {
+            QuickSearchEnginesModel quickSearchEnginesModel = entry.getValue();
+            if (!quickSearchEnginesModel
                     .getKeyword()
                     .equals(defaultSearchEngineTemplateUrl.getKeyword())) {
-                quickSearchEngines.add(quickSearchEngineModel);
+                quickSearchEngines.add(quickSearchEnginesModel);
             }
         }
         return quickSearchEngines;
     }
 
-    public static List<QuickSearchEngineModel> getQuickSearchEnginesForView(Profile profile) {
-        Map<String, QuickSearchEngineModel> searchEnginesMap = getQuickSearchEngines(profile);
-        List<QuickSearchEngineModel> quickSearchEngines = new ArrayList<>();
-        for (Map.Entry<String, QuickSearchEngineModel> entry : searchEnginesMap.entrySet()) {
-            QuickSearchEngineModel quickSearchEngineModel = entry.getValue();
-            if (quickSearchEngineModel.isEnabled()) {
-                quickSearchEngines.add(quickSearchEngineModel);
+    public static List<QuickSearchEnginesModel> getQuickSearchEnginesForView(Profile profile) {
+        Map<String, QuickSearchEnginesModel> searchEnginesMap = getQuickSearchEngines(profile);
+        List<QuickSearchEnginesModel> quickSearchEngines = new ArrayList<>();
+        for (Map.Entry<String, QuickSearchEnginesModel> entry : searchEnginesMap.entrySet()) {
+            QuickSearchEnginesModel quickSearchEnginesModel = entry.getValue();
+            if (quickSearchEnginesModel.isEnabled()) {
+                quickSearchEngines.add(quickSearchEnginesModel);
             }
         }
         return quickSearchEngines;
     }
 
-    public static QuickSearchEngineModel getDefaultSearchEngine(Profile profile) {
-        Map<String, QuickSearchEngineModel> searchEnginesMap = getQuickSearchEngines(profile);
+    public static QuickSearchEnginesModel getDefaultSearchEngine(Profile profile) {
+        Map<String, QuickSearchEnginesModel> searchEnginesMap = getQuickSearchEngines(profile);
         TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(profile);
         TemplateUrl defaultSearchEngineTemplateUrl =
                 templateUrlService.getDefaultSearchEngineTemplateUrl();
-        QuickSearchEngineModel defaultSearchEngineModel =
+        QuickSearchEnginesModel defaultSearchEnginesModel =
                 searchEnginesMap.get(defaultSearchEngineTemplateUrl.getKeyword());
-        return defaultSearchEngineModel;
+        return defaultSearchEnginesModel;
     }
 }
