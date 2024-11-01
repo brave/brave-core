@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +26,7 @@ import com.google.android.material.materialswitch.MaterialSwitch;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.quick_search_engines.ItemTouchHelperCallback;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.util.ImageUtils;
 
@@ -32,9 +34,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class QuickSearchFragment extends BravePreferenceFragment implements QuickSearchCallback {
+public class QuickSearchFragment extends BravePreferenceFragment
+        implements QuickSearchCallback, ItemTouchHelperCallback.OnStartDragListener {
     private RecyclerView mRecyclerView;
-    private QuickSearchAdapter mAdapter;
+    private QuickSearchAdapter mQuickSearchAdapter;
+    private ItemTouchHelper mItemTouchHelper;
 
     private MenuItem mCloseItem;
     private MenuItem mSaveItem;
@@ -136,9 +140,9 @@ public class QuickSearchFragment extends BravePreferenceFragment implements Quic
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_save) {
-            if (mAdapter != null
-                    && mAdapter.getQuickSearchEngines() != null
-                    && mAdapter.getQuickSearchEngines().size() > 0) {
+            if (mQuickSearchAdapter != null
+                    && mQuickSearchAdapter.getQuickSearchEngines() != null
+                    && mQuickSearchAdapter.getQuickSearchEngines().size() > 0) {
                 Map<String, QuickSearchEngineModel> searchEnginesMap =
                         new LinkedHashMap<String, QuickSearchEngineModel>();
                 QuickSearchEngineModel defaultSearchEngineModel =
@@ -146,12 +150,12 @@ public class QuickSearchFragment extends BravePreferenceFragment implements Quic
                 searchEnginesMap.put(
                         defaultSearchEngineModel.getKeyword(), defaultSearchEngineModel);
                 for (QuickSearchEngineModel quickSearchEngineModel :
-                        mAdapter.getQuickSearchEngines()) {
+                        mQuickSearchAdapter.getQuickSearchEngines()) {
                     searchEnginesMap.put(
                             quickSearchEngineModel.getKeyword(), quickSearchEngineModel);
                 }
                 QuickSearchEnginesUtil.saveSearchEnginesIntoPref(searchEnginesMap);
-                mAdapter.setEditMode(false);
+                mQuickSearchAdapter.setEditMode(false);
                 editModeUiVisibility();
             }
         }
@@ -176,8 +180,11 @@ public class QuickSearchFragment extends BravePreferenceFragment implements Quic
     }
 
     private void setRecyclerViewData(List<QuickSearchEngineModel> searchEngines) {
-        mAdapter = new QuickSearchAdapter(getActivity(), searchEngines, this);
-        mRecyclerView.setAdapter(mAdapter);
+        mQuickSearchAdapter = new QuickSearchAdapter(getActivity(), searchEngines, this, this);
+        mRecyclerView.setAdapter(mQuickSearchAdapter);
+        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mQuickSearchAdapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
     // QuickSearchCallback
@@ -198,9 +205,14 @@ public class QuickSearchFragment extends BravePreferenceFragment implements Quic
         editModeUiVisibility();
     }
 
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
+    }
+
     private void editModeUiVisibility() {
-        if (mAdapter != null) {
-            boolean isEditMode = mAdapter.isEditMode();
+        if (mQuickSearchAdapter != null) {
+            boolean isEditMode = mQuickSearchAdapter.isEditMode();
             mDefaultSearchEngineLayout.setEnabled(!isEditMode);
             mDefaultSearchEngineLayout.setAlpha(!isEditMode ? 1.0f : 0.5f);
             if (mCloseItem != null) {

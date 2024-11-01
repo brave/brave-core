@@ -39,13 +39,14 @@ public class QuickSearchEnginesViewAdapter
     public void onBindViewHolder(
             @NonNull QuickSearchEnginesViewHolder quickSearchViewHolder, int position) {
         QuickSearchEngineModel quickSearchEngineModel = mSearchEngines.get(position);
-        if (quickSearchViewHolder.getAdapterPosition() == 0) {
+        int adapterPosition = quickSearchViewHolder.getAdapterPosition();
+        String keyword = quickSearchEngineModel.getKeyword();
+
+        if (adapterPosition == 0) {
             quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_leo_icon);
-        } else if (BraveActivity.BING_SEARCH_ENGINE_KEYWORD.equals(
-                quickSearchEngineModel.getKeyword())) {
+        } else if (BraveActivity.BING_SEARCH_ENGINE_KEYWORD.equals(keyword)) {
             quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_microsoft_color);
-        } else if (BraveActivity.STARTPAGE_SEARCH_ENGINE_KEYWORD.equals(
-                quickSearchEngineModel.getKeyword())) {
+        } else if (BraveActivity.STARTPAGE_SEARCH_ENGINE_KEYWORD.equals(keyword)) {
             quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_startpage_color);
         } else {
             mQuickSearchCallback.loadSearchEngineLogo(
@@ -53,13 +54,9 @@ public class QuickSearchEnginesViewAdapter
         }
 
         quickSearchViewHolder.mSearchEngineLogo.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                v ->
                         mQuickSearchCallback.onSearchEngineClick(
-                                quickSearchViewHolder.getAdapterPosition(), quickSearchEngineModel);
-                    }
-                });
+                                adapterPosition, quickSearchEngineModel));
     }
 
     @NonNull
