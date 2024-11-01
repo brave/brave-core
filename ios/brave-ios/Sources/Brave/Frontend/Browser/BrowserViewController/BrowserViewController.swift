@@ -1942,7 +1942,12 @@ public class BrowserViewController: UIViewController {
         break
       }
 
-      updateBackForwardActionStatus(for: webView)
+      // KVO executes serially and CWVWebView doesn't set the `navigationManager` on the
+      // `backForwardList` until _after_ it sets `canGoBack` and `canGoForward` so we have to ensure
+      // a thread hop before access
+      DispatchQueue.main.async {
+        self.updateBackForwardActionStatus(for: webView)
+      }
     case .visibleSSLStatus:
       Task {
         await tab.updateSecureContentState()
