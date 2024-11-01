@@ -14,6 +14,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
@@ -93,7 +94,19 @@ void BraveSidePanelCoordinator::OnViewVisibilityChanged(
     views::View* observed_view,
     views::View* starting_from) {
   UpdateToolbarButtonHighlight(observed_view->GetVisible());
+
+  // See the comment of SidePanelCoordinator::OnViewVisibilityChanged()
+  // about this condition.
+  bool update_items_state = true;
+  if (observed_view->GetVisible() || !current_key_) {
+    update_items_state = false;
+  }
+
   SidePanelCoordinator::OnViewVisibilityChanged(observed_view, starting_from);
+
+  if (update_items_state) {
+    GetBraveBrowserView()->sidebar_container_view()->UpdateActiveItemState();
+  }
 }
 
 std::optional<SidePanelEntry::Key>
@@ -150,9 +163,7 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
 
   // Notify to give opportunity to observe another panel entries from
   // global or active tab's contextual registry.
-  auto* brave_browser_view = static_cast<BraveBrowserView*>(browser_view_);
-  CHECK(browser_view_->unified_side_panel()->children().size() == 1);
-  brave_browser_view->WillShowSidePanel();
+  GetBraveBrowserView()->sidebar_container_view()->WillShowSidePanel();
   SidePanelCoordinator::PopulateSidePanel(supress_animations, unique_key, entry,
                                           std::move(content_view));
 }
@@ -166,4 +177,8 @@ void BraveSidePanelCoordinator::NotifyPinnedContainerOfActiveStateChange(
 
   SidePanelCoordinator::NotifyPinnedContainerOfActiveStateChange(key,
                                                                  is_active);
+}
+
+BraveBrowserView* BraveSidePanelCoordinator::GetBraveBrowserView() {
+  return static_cast<BraveBrowserView*>(browser_view_);
 }

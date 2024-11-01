@@ -128,7 +128,6 @@ SidebarContainerView::SidebarContainerView(
 
   SetNotifyEnterExitOnChild(true);
   side_panel_ = AddChildView(std::move(side_panel));
-  side_panel_view_state_observation_.Observe(side_panel_coordinator_);
 }
 
 SidebarContainerView::~SidebarContainerView() = default;
@@ -831,15 +830,6 @@ void SidebarContainerView::UpdateActiveItemState() {
   controller->UpdateActiveItemState(current_type);
 }
 
-void SidebarContainerView::OnSidePanelDidClose() {
-  // As contextual registry is owned by TabFeatures,
-  // that registry is destroyed before coordinator notifies OnEntryHidden() when
-  // tab is closed. In this case, we should update sidebar ui(active item state)
-  // with this notification. If not, sidebar ui's active item state is not
-  // changed.
-  UpdateActiveItemState();
-}
-
 void SidebarContainerView::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
@@ -918,6 +908,9 @@ void SidebarContainerView::AddSidePanelEntryObservation(SidePanelEntry* entry) {
   if (entry->IsBeingObservedBy(this)) {
     return;
   }
+
+  DVLOG(1) << "Start observation: "
+           << SidePanelEntryIdToString(entry->key().id());
   entry->AddObserver(this);
 }
 
@@ -926,6 +919,9 @@ void SidebarContainerView::RemoveSidePanelEntryObservation(
   if (!entry->IsBeingObservedBy(this)) {
     return;
   }
+
+  DVLOG(1) << "Stop observation: "
+           << SidePanelEntryIdToString(entry->key().id());
   entry->RemoveObserver(this);
 }
 

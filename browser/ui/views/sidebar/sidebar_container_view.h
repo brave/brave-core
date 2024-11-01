@@ -20,7 +20,6 @@
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_observer.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_view_state_observer.h"
 #include "components/prefs/pref_member.h"
 #include "ui/events/event_observer.h"
 #include "ui/gfx/animation/slide_animation.h"
@@ -55,7 +54,6 @@ class SidebarContainerView
       public SidebarShowOptionsEventDetectWidget::Delegate,
       public sidebar::SidebarModel::Observer,
       public SidePanelEntryObserver,
-      public SidePanelViewStateObserver,
       public TabStripModelObserver {
   METADATA_HEADER(SidebarContainerView, views::View)
  public:
@@ -135,8 +133,7 @@ class SidebarContainerView
       const TabStripSelectionChange& selection) override;
   void OnTabWillBeRemoved(content::WebContents* contents, int index) override;
 
-  // SidePanelViewStateObserver:
-  void OnSidePanelDidClose() override;
+  void UpdateActiveItemState();
 
  private:
   friend class sidebar::SidebarBrowserTest;
@@ -187,7 +184,6 @@ class SidebarContainerView
   void StopBrowserWindowEventMonitoring();
 
   void StartObservingContextualSidePanelEntry(content::WebContents* contents);
-  void UpdateActiveItemState();
 
   // Casts |browser_| to BraveBrowser, as storing it as BraveBrowser would cause
   // a precocious downcast.
@@ -214,8 +210,6 @@ class SidebarContainerView
   std::unique_ptr<views::EventMonitor> browser_window_event_monitor_;
   std::unique_ptr<SidebarShowOptionsEventDetectWidget> show_options_widget_;
   BooleanPrefMember show_side_panel_button_;
-  base::ScopedObservation<SidePanelCoordinator, SidePanelViewStateObserver>
-      side_panel_view_state_observation_{this};
   base::ScopedObservation<sidebar::SidebarModel,
                           sidebar::SidebarModel::Observer>
       sidebar_model_observation_{this};
