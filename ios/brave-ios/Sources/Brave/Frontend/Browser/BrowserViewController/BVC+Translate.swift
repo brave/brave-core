@@ -17,8 +17,6 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
 
     if tab === tabManager.selectedTab {
       tab.translationState = state
-
-      //      translateActivity(info: state == .existingItem ? item : nil)
       topToolbar.updateTranslateButtonState(state)
 
       showTranslateOnboarding(tab: tab) { [weak tab] translateEnabled in
@@ -99,9 +97,25 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
           }
         )
 
-        popover.popoverDidDismiss = { [weak self] _ in
-          self?.topToolbar.locationView.translateButton.setOnboardingState(enabled: false)
-          completion(Preferences.Translate.translateEnabled.value)
+        popover.popoverDidDismiss = { [weak self, weak tab] _ in
+          guard let tab = tab, let self = self else { return }
+
+          self.topToolbar.locationView.translateButton.setOnboardingState(enabled: false)
+
+          if Preferences.Translate.translateEnabled.value {
+            if let scriptHandler = tab.getContentScript(
+              name: BraveTranslateScriptHandler.scriptName
+            )
+              as? BraveTranslateScriptHandler
+            {
+              scriptHandler.presentUI(on: self)
+            }
+
+            completion(true)
+            return
+          }
+
+          completion(false)
         }
         popover.present(from: self.topToolbar.locationView.translateButton, on: self)
       }

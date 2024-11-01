@@ -9537,3 +9537,79 @@ extension Strings {
     )
   }
 }
+
+extension Strings {
+  public struct BraveTranslate {
+    public static let languageSelectionButtonTitle = NSLocalizedString(
+      "BraveTranslate.languageSelectionButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Select Language",
+      comment: "Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from."
+    )
+
+    public static let searchInputTitle = NSLocalizedString(
+      "BraveTranslate.searchInputTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Search",
+      comment: "Title for the search field in the navigation bar for the translate language selection page. The user can search for a language to translate to or from."
+    )
+
+    public static let pageTranslatedTitle = NSLocalizedString(
+      "BraveTranslate.pageTranslatedTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Page Translated",
+      comment: "Title for a text element that lets the user know the page was translated successfully."
+    )
+
+    public static let translateFromToTitle = NSLocalizedString(
+      "BraveTranslate.translateFromToTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "To",
+      comment: "The word 'to', is used in the sentenced: Translate [language-a] to [language-b]"
+    )
+
+    public static let unknownLanguageTitle = NSLocalizedString(
+      "BraveTranslate.unknownLanguageTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Unknown Language",
+      comment: "This text is used as a placeholder for languages when the language detected on the page is unsupported or unknown."
+    )
+
+    public static let settingsMenuTitle = NSLocalizedString(
+      "BraveTranslate.settingsMenuTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Brave Translate",
+      comment: "This text is for the settings menu for all Brave-Translate options."
+    )
+
+    public static let settingsScreenTitle = NSLocalizedString(
+      "BraveTranslate.settingsScreenTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Brave Translate",
+      comment: "This text is for the translate settings screen. It's the title of the settings menu."
+    )
+
+    public static let settingsTranslateEnabledOptionTitle = NSLocalizedString(
+      "BraveTranslate.settingsTranslateEnabledOptionTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Translate Enabled",
+      comment: "This text is for a Toggle that allows the user to enable or disable page translation."
+    )
+
+    public static let settingsTranslateEnabledOptionDescription = NSLocalizedString(
+      "BraveTranslate.settingsTranslateEnabledOptionDescription",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "When enabled, Brave Translate will automatically detect your page's current language, and display a translate button in the URL bar.",
+      comment: "This text is for a Toggle that allows the user to enable or disable page translation."
+    )
+  }
+}

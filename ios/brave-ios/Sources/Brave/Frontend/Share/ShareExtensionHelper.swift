@@ -82,7 +82,7 @@ extension BasicMenuActivity.ActivityType {
   static let translatePage: Self = .init(
     id: "TranslatePage",
     title: Strings.translatePage,
-    braveSystemImage: "leo.discover"
+    braveSystemImage: "leo.product.translate"
   )
   static let findInPage: Self = .init(
     id: "FindInPage",

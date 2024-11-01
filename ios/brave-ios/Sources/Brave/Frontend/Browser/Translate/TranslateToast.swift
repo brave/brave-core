@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveStrings
 import BraveUI
 import DesignSystem
 import SwiftUI
@@ -36,11 +37,11 @@ private struct TranslationOptionsView: View {
         }
       }
       .listStyle(.plain)
-      .navigationTitle("Select Language")
+      .navigationTitle(Strings.BraveTranslate.languageSelectionButtonTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .navigationBarLeading) {
-          Button("Cancel") {
+          Button(Strings.CancelString) {
             dismiss()
           }
         }
@@ -49,19 +50,8 @@ private struct TranslationOptionsView: View {
     .searchable(
       text: $searchText,
       placement: .navigationBarDrawer(displayMode: .always),
-      prompt: "Search"
+      prompt: Strings.BraveTranslate.searchInputTitle
     )
-    .onChange(of: searchText) { searchText in
-      self.timer?.invalidate()
-      self.timer = Timer.scheduledTimer(
-        withTimeInterval: 0.1,
-        repeats: false,
-        block: { timer in
-          timer.invalidate()
-          // TODO: Filter here
-        }
-      )
-    }
   }
 
   private var filteredLanguages: [Locale.Language] {
@@ -247,7 +237,7 @@ struct TranslateToast: View {
         )
         .padding(.trailing)
       VStack(alignment: .leading) {
-        Text("Page Translated")
+        Text(Strings.BraveTranslate.pageTranslatedTitle)
           .font(.callout.weight(.semibold))
           .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(.bottom, 8.0)
@@ -270,11 +260,9 @@ struct TranslateToast: View {
             .containerShape(RoundedRectangle(cornerRadius: 4.0, style: .continuous))
           }
 
-          Text(
-            "To"
-          )
-          .font(.callout)
-          .foregroundColor(Color(braveSystemName: .textSecondary))
+          Text(Strings.BraveTranslate.translateFromToTitle)
+            .font(.callout)
+            .foregroundColor(Color(braveSystemName: .textSecondary))
 
           Button {
             showTargetLanguageSelection = true
@@ -337,7 +325,7 @@ struct TranslateToast: View {
     {
       return languageName
     }
-    return "Unknown Language"
+    return Strings.BraveTranslate.unknownLanguageTitle
   }
 
   private var pageLanguageName: String {
@@ -346,7 +334,7 @@ struct TranslateToast: View {
     {
       return languageName
     }
-    return "Unknown Language"
+    return Strings.BraveTranslate.unknownLanguageTitle
   }
 }
 

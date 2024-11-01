@@ -157,3 +157,32 @@ extension Strings {
     )
   }
 }
+
+extension Strings {
+  struct BraveTranslateOnboarding {
+    public static let translateTitle = NSLocalizedString(
+      "BraveTranslateOnboarding.translateTitle",
+      bundle: .module,
+      value: "Page Translations",
+      comment:
+        "A text element that explains we're translating pages."
+    )
+
+    public static let translateDescription = NSLocalizedString(
+      "BraveTranslateOnboarding.translateDescription",
+      bundle: .module,
+      value:
+        "Pages can be translated to languages supported by your iOS device. You may be required to configure languages if this is your first time using this feature.",
+      comment:
+        "A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device."
+    )
+
+    public static let disableTranslateButtonTitle = NSLocalizedString(
+      "BraveTranslateOnboarding.disableTranslateButtonTitle",
+      bundle: .module,
+      value: "Disable This Feature",
+      comment:
+        "A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language."
+    )
+  }
+}

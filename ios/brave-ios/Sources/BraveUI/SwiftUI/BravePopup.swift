@@ -3,18 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import BraveUI
 import Foundation
 import Shared
 import SwiftUI
 import UIKit
 
-struct BravePopupViewModifier<PopupContent>: ViewModifier
+public struct BravePopupViewModifier<PopupContent>: ViewModifier
 where PopupContent: View {
   @Binding var isPresented: Bool
   let content: () -> PopupContent
 
-  func body(content: Content) -> some View {
+  public func body(content: Content) -> some View {
     content
       .background(
         BravePopupView(
@@ -26,7 +25,7 @@ where PopupContent: View {
 }
 
 extension View {
-  func bravePopup<Content>(
+  public func bravePopup<Content>(
     isPresented: Binding<Bool>,
     @ViewBuilder content: @escaping () -> Content
   ) -> some View where Content: View {
@@ -39,11 +38,11 @@ extension View {
   }
 }
 
-struct BravePopupView<Content: View>: UIViewControllerRepresentable {
+public struct BravePopupView<Content: View>: UIViewControllerRepresentable {
   @Binding var isPresented: Bool
   private var content: Content
 
-  init(
+  public init(
     isPresented: Binding<Bool>,
     @ViewBuilder content: () -> Content
   ) {
@@ -51,11 +50,11 @@ struct BravePopupView<Content: View>: UIViewControllerRepresentable {
     self.content = content()
   }
 
-  func makeUIViewController(context: Context) -> UIViewController {
+  public func makeUIViewController(context: Context) -> UIViewController {
     .init()
   }
 
-  func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+  public func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
     if isPresented {
       guard uiViewController.presentedViewController == nil
       else {
@@ -112,11 +111,11 @@ struct BravePopupView<Content: View>: UIViewControllerRepresentable {
     }
   }
 
-  class Coordinator {
+  public class Coordinator {
     var presentedViewController: WeakRef<UIViewController>?
   }
 
-  func makeCoordinator() -> Coordinator {
+  public func makeCoordinator() -> Coordinator {
     Coordinator()
   }
 }

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import BraveUI
 import DesignSystem
 import Foundation
@@ -28,17 +29,15 @@ public struct OnboardingTranslateView: View {
         )
         .padding([.top, .bottom], 24.0)
 
-        Text("Page Translations")
+        Text(Strings.BraveTranslateOnboarding.translateTitle)
           .font(.callout.weight(.semibold))
           .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(.bottom)
 
-        Text(
-          "Pages can be translated to languages supported by your iOS device. You may be required to configure languages if this is your first time using this feature."
-        )
-        .font(.callout)
-        .foregroundColor(Color(braveSystemName: .textSecondary))
-        .padding(.bottom, 24.0)
+        Text(Strings.BraveTranslateOnboarding.translateDescription)
+          .font(.callout)
+          .foregroundColor(Color(braveSystemName: .textSecondary))
+          .padding(.bottom, 24.0)
 
         Button(
           action: {
@@ -46,7 +45,7 @@ public struct OnboardingTranslateView: View {
             onContinueButtonPressed?()
           },
           label: {
-            Text("Continue")
+            Text(Strings.OBContinueButton)
               .font(.body.weight(.semibold))
               .padding()
               .frame(maxWidth: .infinity)
@@ -67,7 +66,7 @@ public struct OnboardingTranslateView: View {
             onDisableFeature?()
           },
           label: {
-            Text("Disable This Feature")
+            Text(Strings.BraveTranslateOnboarding.disableTranslateButtonTitle)
               .font(.body.weight(.semibold))
               .padding()
               .frame(maxWidth: .infinity)
