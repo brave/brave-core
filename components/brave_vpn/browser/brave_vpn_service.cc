@@ -201,6 +201,10 @@ void BraveVpnService::OnSelectedRegionChanged(const std::string& region_name) {
   }
 }
 
+void BraveVpnService::Initialize() {
+  ReloadPurchasedState();
+}
+
 mojom::ConnectionState BraveVpnService::GetConnectionState() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return connection_manager_->GetConnectionState();
@@ -584,10 +588,6 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
              "subscriber credentials";
 
   RequestCredentialSummary(domain);
-}
-
-void BraveVpnService::Initialize() {
-  ReloadPurchasedState();
 }
 
 void BraveVpnService::RequestCredentialSummary(const std::string& domain) {
