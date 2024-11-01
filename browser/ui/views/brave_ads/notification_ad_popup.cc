@@ -85,15 +85,13 @@ SkColor GetDarkModeBackgroundColor() {
 }  // namespace
 
 NotificationAdPopup::NotificationAdPopup(
-    Profile* profile,
+    Profile& profile,
     const NotificationAd& notification_ad,
     gfx::NativeWindow browser_native_window,
     gfx::NativeView browser_native_view)
     : profile_(profile),
       notification_ad_(notification_ad),
       animation_(std::make_unique<gfx::LinearAnimation>(this)) {
-  CHECK(profile_);
-
   CreatePopup(browser_native_window, browser_native_view);
 
   NotifyAccessibilityEvent(ax::mojom::Event::kAlert, true);

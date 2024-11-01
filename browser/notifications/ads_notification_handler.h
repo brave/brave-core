@@ -45,7 +45,7 @@ class AdsNotificationHandler : public NotificationHandler {
   void OpenSettings(Profile* profile, const GURL& origin) override;
 
  private:
-  raw_ref<Profile> profile_;
+  const raw_ref<Profile> profile_;
 
   bool did_click_notification_ad_ = false;
 };

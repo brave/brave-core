@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "components/prefs/pref_service.h"
@@ -31,9 +32,9 @@ class NotificationAdPlatformBridge;
 class AdsServiceDelegate : public AdsService::Delegate {
  public:
   explicit AdsServiceDelegate(
-      Profile* profile,
+      Profile& profile,
       PrefService* local_state,
-      brave_adaptive_captcha::BraveAdaptiveCaptchaService*
+      brave_adaptive_captcha::BraveAdaptiveCaptchaService&
           adaptive_captcha_service,
       std::unique_ptr<NotificationAdPlatformBridge>
           notification_ad_platform_bridge);
@@ -79,11 +80,11 @@ class AdsServiceDelegate : public AdsService::Delegate {
  private:
   NotificationDisplayService* GetNotificationDisplayService();
 
-  raw_ptr<Profile> profile_ = nullptr;          // Not owned.
-  raw_ptr<PrefService> local_state_ = nullptr;  // Not owned.
+  const raw_ref<Profile> profile_;
+  const raw_ptr<PrefService> local_state_ = nullptr;  // Not owned.
   search_engines::SearchEngineChoiceService search_engine_choice_service_;
-  raw_ptr<brave_adaptive_captcha::BraveAdaptiveCaptchaService>
-      adaptive_captcha_service_ = nullptr;  // Not owned.
+  const raw_ref<brave_adaptive_captcha::BraveAdaptiveCaptchaService>
+      adaptive_captcha_service_;
   std::unique_ptr<NotificationAdPlatformBridge>
       notification_ad_platform_bridge_;
 };
