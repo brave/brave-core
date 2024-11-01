@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
@@ -20,7 +19,8 @@ brave_chrome_renderer_sources = [
 
 brave_chrome_renderer_deps = [
   "//brave/common:mojo_bindings",
-  "//brave/components/ai_chat/core/common/buildflags",
+  "//brave/components/ai_chat/core/common",
+  "//brave/components/ai_chat/renderer",
   "//brave/components/ai_rewriter/common/buildflags",
   "//brave/components/brave_search/common",
   "//brave/components/brave_search/renderer",
@@ -53,13 +53,6 @@ if (enable_speedreader) {
   ]
 }
 
-if (enable_ai_chat) {
-  brave_chrome_renderer_deps += [
-    "//brave/components/ai_chat/core/common:common",
-    "//brave/components/ai_chat/renderer",
-  ]
-}
-
 if (enable_playlist) {
   brave_chrome_renderer_deps += [ "//brave/components/playlist/renderer" ]
 }
@@ -72,7 +65,7 @@ if (enable_brave_vpn) {
   brave_chrome_renderer_deps += [ "//brave/components/brave_vpn/common" ]
 }
 
-if (is_android && (enable_brave_vpn || enable_ai_chat)) {
+if (is_android) {
   brave_chrome_renderer_deps += [
     "//brave/components/brave_mobile_subscription/renderer/android:android",
   ]

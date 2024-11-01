@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
@@ -23,7 +22,8 @@ static_library("browser") {
 
   deps = [
     "//base",
-    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
     "//brave/components/brave_wallet/common",
     "//brave/components/constants:constants",
     "//brave/components/l10n/common",
@@ -35,13 +35,6 @@ static_library("browser") {
     "//ui/base",
     "//url",
   ]
-
-  if (enable_ai_chat) {
-    deps += [
-      "//brave/components/ai_chat/core/browser",
-      "//brave/components/ai_chat/core/common",
-    ]
-  }
 
   if (enable_playlist) {
     deps += [ "//brave/components/playlist/common" ]
@@ -55,7 +48,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/ai_chat/core/common",
     "//brave/components/sidebar/browser",
     "//components/prefs",
     "//components/prefs:test_support",
@@ -66,10 +59,6 @@ source_set("unit_tests") {
     "//testing/gmock",
     "//testing/gtest",
   ]
-
-  if (enable_ai_chat) {
-    deps += [ "//brave/components/ai_chat/core/common" ]
-  }
 
   if (enable_playlist) {
     deps += [ "//brave/components/playlist/common" ]

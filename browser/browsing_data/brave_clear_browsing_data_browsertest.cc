@@ -16,7 +16,6 @@
 #include "base/run_loop.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -81,8 +80,9 @@ class BrowserChangeObserver : public BrowserListObserver {
   }
 
   void OnBrowserRemoved(Browser* browser) override {
-    if (browser_ && browser_ != browser)
+    if (browser_ && browser_ != browser) {
       return;
+    }
 
     if (type_ == ChangeType::kRemoved) {
       browser_ = browser;
@@ -113,8 +113,9 @@ class BraveClearDataOnExitTest
   void TearDownOnMainThread() override {
     // Borrowed from browser_browsertest.cc.
     // Cycle the MessageLoop: one for each browser.
-    for (unsigned int i = 0; i < browsers_count_; ++i)
+    for (unsigned int i = 0; i < browsers_count_; ++i) {
       content::RunAllPendingInMessageLoop();
+    }
 
     // Run the application event loop to completion, which will cycle the
     // native MessagePump on all platforms.
@@ -162,10 +163,8 @@ class BraveClearDataOnExitTest
                             true);
     prefService->SetBoolean(browsing_data::prefs::kDeleteSiteSettingsOnExit,
                             true);
-#if BUILDFLAG(ENABLE_AI_CHAT)
     prefService->SetBoolean(browsing_data::prefs::kDeleteBraveLeoHistoryOnExit,
                             true);
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
   }
 
   uint64_t GetRemoveMaskAll() {
@@ -175,9 +174,7 @@ class BraveClearDataOnExitTest
            chrome_browsing_data_remover::DATA_TYPE_SITE_DATA |
            chrome_browsing_data_remover::DATA_TYPE_PASSWORDS |
            chrome_browsing_data_remover::DATA_TYPE_FORM_DATA |
-#if BUILDFLAG(ENABLE_AI_CHAT)
            chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY |
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
            chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS;
   }
 
@@ -192,10 +189,12 @@ class BraveClearDataOnExitTest
                                    uint64_t origin_mask) override {
     remove_data_call_count_++;
 
-    if (expected_remove_mask_)
+    if (expected_remove_mask_) {
       EXPECT_EQ(expected_remove_mask_, remove_mask);
-    if (expected_origin_mask_)
+    }
+    if (expected_origin_mask_) {
       EXPECT_EQ(expected_origin_mask_, origin_mask);
+    }
   }
 
  protected:
@@ -282,9 +281,10 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
     std::ignore = profile2_dir_.Set(path);
     ProfileManager* profile_manager = g_browser_process->profile_manager();
     size_t starting_number_of_profiles = profile_manager->GetNumberOfProfiles();
-    if (!base::PathExists(path) && !base::CreateDirectory(path))
+    if (!base::PathExists(path) && !base::CreateDirectory(path)) {
       NOTREACHED_IN_MIGRATION()
           << "Could not create directory at " << path.MaybeAsASCII();
+    }
     Profile* profile = profile_manager->GetProfile(path);
     DCHECK(profile);
     EXPECT_EQ(starting_number_of_profiles + 1,

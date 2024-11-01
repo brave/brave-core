@@ -1,3 +1,0 @@
-include_rules = [
-  "+brave/components/ai_chat/core/common/buildflags/buildflags.h",
-]

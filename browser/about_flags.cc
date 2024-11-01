@@ -14,7 +14,7 @@
 #include "brave/browser/ethereum_remote_client/features.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
@@ -47,10 +47,6 @@
 #include "components/translate/core/browser/translate_prefs.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/common/features.h"
-#endif
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
 #include "brave/components/ai_rewriter/common/features.h"
@@ -360,7 +356,6 @@
 #define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES                                        \
   EXPAND_FEATURE_ENTRIES(                                                    \
       {                                                                      \
@@ -400,9 +395,7 @@
           kOsDesktop | kOsAndroid,                                           \
           FEATURE_VALUE_TYPE(ai_chat::features::kOpenAIChatFromBraveSearch), \
       })
-#else
-#define BRAVE_AI_CHAT_FEATURE_ENTRIES
-#endif
+
 #if BUILDFLAG(ENABLE_AI_REWRITER)
 #define BRAVE_AI_REWRITER                                     \
   EXPAND_FEATURE_ENTRIES({                                    \

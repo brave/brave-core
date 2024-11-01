@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -131,7 +130,6 @@ source_set("extensions") {
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_ads",
     "//brave/browser/brave_rewards",
-    "//brave/browser/brave_rewards",
     "//brave/browser/brave_rewards:util",
     "//brave/browser/component_updater",
     "//brave/browser/extensions/api:generated_api_registration",
@@ -141,17 +139,13 @@ source_set("extensions") {
     "//brave/browser/ui:ui_public_dependencies",
     "//brave/common",
     "//brave/common/extensions/api",
-    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/ai_chat/core/common",
     "//brave/components/brave_adaptive_captcha",
-    "//brave/components/brave_adaptive_captcha",
-    "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_extension:static_resources",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/browser",
-    "//brave/components/brave_rewards/browser",
-    "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common/mojom",
     "//brave/components/brave_shields/core/common",
@@ -174,16 +168,13 @@ source_set("extensions") {
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/extensions",
-    "//chrome/browser/extensions",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
     "//chrome/common",
     "//components/browsing_data/core",
     "//components/gcm_driver:gcm_buildflags",
     "//components/prefs",
-    "//components/prefs",
     "//components/update_client:network_impl",
-    "//content/public/browser",
     "//content/public/browser",
   ]
 
@@ -201,10 +192,6 @@ source_set("extensions") {
 
   if (enable_brave_wayback_machine) {
     deps += [ "//brave/components/brave_wayback_machine" ]
-  }
-
-  if (enable_ai_chat) {
-    deps += [ "//brave/components/ai_chat/core/common" ]
   }
 
   if (enable_speedreader) {

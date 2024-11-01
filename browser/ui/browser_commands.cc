@@ -229,7 +229,6 @@ void OpenBraveVPNUrls(Browser* browser, int command_id) {
 #endif
 }
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 void ToggleAIChat(Browser* browser) {
 #if defined(TOOLKIT_VIEWS)
   SidePanelUI* side_panel_ui = browser->GetFeatures().side_panel_ui();
@@ -237,7 +236,6 @@ void ToggleAIChat(Browser* browser) {
                         SidePanelOpenTrigger::kToolbarButton);
 #endif
 }
-#endif
 
 void ShowWalletBubble(Browser* browser) {
 #if defined(TOOLKIT_VIEWS)

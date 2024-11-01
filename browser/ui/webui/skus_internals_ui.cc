@@ -19,7 +19,6 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/resources/grit/skus_internals_generated_map.h"
@@ -112,9 +111,7 @@ void SkusInternalsUI::GetVpnState(GetVpnStateCallback callback) {
 
 void SkusInternalsUI::GetLeoState(GetLeoStateCallback callback) {
   base::Value::Dict dict;
-#if BUILDFLAG(ENABLE_AI_CHAT)
   dict.Set("Order", GetOrderInfo("leo."));
-#endif
   std::string result;
   base::JSONWriter::Write(dict, &result);
   std::move(callback).Run(result);
