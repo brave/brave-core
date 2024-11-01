@@ -13,15 +13,12 @@
   margin: 0px 0px 0px 4px;
 }
 
-leo-checkbox a {
-  color: var(--leo-color-text-interactive);
-  font: var(--leo-font-default-link);
-  text-decoration-skip-ink: none;
-  text-underline-offset: 2.8px;
+leo-input {
+  --leo-control-border-color: var(--leo-color-divider-strong);
 }
 
-leo-input:has(> .nema) {
-  --leo-control-border-color: var(--leo-color-divider-strong);
+leo-input:not(:focus).red-border {
+  --leo-control-border-color: var(--leo-color-systemfeedback-error-icon);
 }
 
 #password_strength_indicator {
@@ -64,7 +61,7 @@ leo-input:has(> .nema) {
   transition: 750ms;
 }
 
-.password-comparison-result {
+.password-confirmation-result {
   --leo-icon-size: 14px;
   align-items: center;
   display: flex;
@@ -76,7 +73,7 @@ leo-input:has(> .nema) {
   z-index: -1;
 }
 
-.password-comparison-result.visible {
+.password-confirmation-result.visible {
   margin: 4px 0px 0px 4px;
 }
 
@@ -94,4 +91,11 @@ leo-input:has(> .nema) {
 
 .error-text {
   color: var(--leo-color-systemfeedback-error-text);
+}
+
+leo-checkbox a {
+  color: var(--leo-color-text-interactive);
+  font: var(--leo-font-default-link);
+  text-decoration-skip-ink: none;
+  text-underline-offset: 2.8px;
 }

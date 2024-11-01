@@ -12,16 +12,15 @@ import { getHtml } from './brave_account_create_dialog.html.js'
  * 'settings-brave-account-create-dialog'...
  */
 
+// https://github.com/brave/leo/blob/main/src/components/checkbox/checkbox.svelte
+// https://github.com/brave/leo/blob/main/src/components/input/input.svelte
+// https://www.regular-expressions.info
+
 export interface SettingsBraveAccountCreateDialogElement {
   $: {
-    email_address: HTMLInputElement,
-    account_name: HTMLInputElement,
-    create_password: HTMLInputElement,
-    confirm_password: HTMLInputElement,
     password_strength_indicator: HTMLElement,
     password_strength_value: HTMLElement,
     password_strength_category: HTMLElement,
-    password_comparison_result: HTMLElement,
   }
 }
 
@@ -42,22 +41,24 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
     return {
       isEmailAddressValid: { type: Boolean },
       isAccountNameValid: { type: Boolean },
-      isCreatePasswordValid: { type: Boolean },
+      isPasswordStrong: { type: Boolean },
       isChecked: { type: Boolean },
-      passwordsMatch: { type: Boolean }
+      password: { type: String },
+      passwordConfirmation: { type: String },
     }
   }
 
-  protected onEmailAddressInput() {
-    // https://www.regular-expressions.info
-    this.isEmailAddressValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.$.email_address.value)
+  protected onEmailAddressInput(detail: { value: string }) {
+    this.isEmailAddressValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(detail.value)
   }
 
-  protected onAccountNameInput() {
-    this.isAccountNameValid = this.$.account_name.value.length !== 0
+  protected onAccountNameInput(detail: { value: string }) {
+    this.isAccountNameValid = detail.value.length !== 0
   }
 
-  protected onCreatePasswordInput() {
+  protected onCreatePasswordInput(detail: { value: string }) {
+    this.password = detail.value
+
     const regexps = [ /^.{5,}$/, /[a-z]/, /[A-Z]/, /[0-9]/, /[^a-zA-Z0-9]/ ]
     const widths = Array.from({ length: regexps.length + 1 }, (_, i) => `calc(100% * ${i}/${regexps.length})`)
     const cagetories = [ 'error', 'error', 'error', 'warning', 'warning', 'success' ]
@@ -65,7 +66,7 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
 
     const color = (category: string, type: string) => `var(--leo-color-systemfeedback-${category}-${type})`
 
-    const point = regexps.filter(regexp => regexp.test(this.$.create_password.value)).length
+    const point = regexps.filter(regexp => regexp.test(this.password)).length
 
     this.$.password_strength_indicator.style.setProperty("--primary-color", color(cagetories[point], 'icon'))
     this.$.password_strength_indicator.style.setProperty("--secondary-color", color(cagetories[point], 'background'))
@@ -77,30 +78,18 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
       this.$.password_strength_indicator.classList.add('visible')
     }
 
-    this.isCreatePasswordValid = point === regexps.length
+    this.isPasswordStrong = point === regexps.length
   }
 
-  protected onConfirmPasswordInput() {
-    if (this.$.confirm_password.value.length === 0) {
-      this.$.password_comparison_result.classList.remove('visible')
-      this.$.password_comparison_result.classList.add('nema')
-      return
-    }
-
-    this.passwordsMatch = this.$.confirm_password.value === this.$.create_password.value
-    this.$.password_comparison_result.classList.add('visible')
-    if (this.passwordsMatch) {
-      this.$.password_comparison_result.classList.add('nema')
-    } else {
-      this.$.password_comparison_result.classList.remove('nema')
-    }
+  protected onConfirmPasswordInput(detail: { value: string }) {
+    this.passwordConfirmation = detail.value
   }
 
-  protected onChange(e: { checked: boolean }) {
-    this.isChecked = e.checked
+  protected onChange(detail: { checked: boolean }) {
+    this.isChecked = detail.checked
   }
 
-  protected show(event: Event) {
+  protected toggle(event: Event) {
     event.preventDefault()
     const target = event.target as Element
     const isShowing = target.getAttribute('name') === 'eye-on'
@@ -110,9 +99,10 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
 
   protected isEmailAddressValid: boolean = false
   protected isAccountNameValid: boolean = false
-  protected isCreatePasswordValid: boolean = false
+  protected isPasswordStrong: boolean = false
   protected isChecked: boolean = false
-  protected passwordsMatch: boolean = false
+  protected password: string = ''
+  protected passwordConfirmation: string = ''
 }
 
 declare global {
