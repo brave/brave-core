@@ -916,9 +916,9 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   }));
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/")));
-  WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
-  }));
+
+  // After loading another url, customize panel is deregistered and closed.
+  EXPECT_FALSE(panel_ui->GetCurrentEntryId());
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {

@@ -5,11 +5,12 @@
 
 #include "chrome/browser/ui/views/omnibox/omnibox_result_view.h"
 
+#include "chrome/browser/ui/views/omnibox/omnibox_match_cell_view.h"
 #include "ui/views/background.h"
 
-#define CreateThemedRoundedRectBackground(...) \
-  CreateThemedRoundedRectBackground(GetOmniboxBackgroundColorId(part_state), 0)
+// We want the rounded rect background to have a radius of 0
+#define kRowHeight kRowHeight * 0
 
 #include "src/chrome/browser/ui/views/omnibox/omnibox_result_view.cc"
 
-#undef CreateThemedRoundedRectBackground
+#undef kRowHeight
