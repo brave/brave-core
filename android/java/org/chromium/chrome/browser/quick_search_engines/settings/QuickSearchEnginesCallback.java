@@ -7,12 +7,12 @@ package org.chromium.chrome.browser.quick_search_engines.settings;
 
 import android.widget.ImageView;
 
-public interface QuickSearchCallback {
+public interface QuickSearchEnginesCallback {
     public default void onSearchEngineClick(
-            int position, QuickSearchEngineModel quickSearchEngineModel) {}
+            int position, QuickSearchEnginesModel quickSearchEnginesModel) {}
 
     public default void onSearchEngineLongClick() {}
 
     public default void loadSearchEngineLogo(
-            ImageView logoView, QuickSearchEngineModel quickSearchEngineModel) {}
+            ImageView logoView, QuickSearchEnginesModel quickSearchEnginesModel) {}
 }

@@ -160,10 +160,10 @@ import org.chromium.chrome.browser.prefetch.settings.PreloadPagesState;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
-import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchCallback;
-import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEngineModel;
+import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesCallback;
+import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesFragment;
+import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesModel;
 import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesUtil;
-import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchFragment;
 import org.chromium.chrome.browser.quick_search_engines.views.QuickSearchEnginesViewAdapter;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
@@ -249,7 +249,7 @@ public abstract class BraveActivity extends ChromeActivity
                 BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate,
                 MiscAndroidMetricsConnectionErrorHandler
                         .MiscAndroidMetricsConnectionErrorHandlerDelegate,
-                QuickSearchCallback,
+                QuickSearchEnginesCallback,
                 KeyboardVisibilityHelper.KeyboardVisibilityListener {
     public static final String BRAVE_WALLET_HOST = "wallet";
     public static final String BRAVE_WALLET_ORIGIN = "brave://wallet/";
@@ -1555,7 +1555,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void openQuickSearchEnginesSettings() {
         SettingsNavigation settingsLauncher = SettingsNavigationFactory.createSettingsNavigation();
-        settingsLauncher.startSettings(this, QuickSearchFragment.class);
+        settingsLauncher.startSettings(this, QuickSearchEnginesFragment.class);
     }
 
     public void openBravePlaylistSettings() {
@@ -2558,11 +2558,11 @@ public abstract class BraveActivity extends ChromeActivity
                     }
                 });
 
-        List<QuickSearchEngineModel> searchEngines =
+        List<QuickSearchEnginesModel> searchEngines =
                 QuickSearchEnginesUtil.getQuickSearchEnginesForView(getCurrentProfile());
-        QuickSearchEngineModel leoQuickSearchEngineModel =
-                new QuickSearchEngineModel("", "", "", true);
-        searchEngines.add(0, leoQuickSearchEngineModel);
+        QuickSearchEnginesModel leoQuickSearchEnginesModel =
+                new QuickSearchEnginesModel("", "", "", true);
+        searchEngines.add(0, leoQuickSearchEnginesModel);
 
         QuickSearchEnginesViewAdapter adapter =
                 new QuickSearchEnginesViewAdapter(BraveActivity.this, searchEngines, this);
@@ -2592,7 +2592,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     // QuickSearchCallback
     @Override
-    public void onSearchEngineClick(int position, QuickSearchEngineModel quickSearchEngineModel) {
+    public void onSearchEngineClick(int position, QuickSearchEnginesModel quickSearchEnginesModel) {
         if (getActivityTab() == null) {
             return;
         }
@@ -2602,7 +2602,7 @@ public abstract class BraveActivity extends ChromeActivity
         } else {
             LoadUrlParams loadUrlParams =
                     new LoadUrlParams(
-                            quickSearchEngineModel.getUrl().replace("{searchTerms}", query));
+                            quickSearchEnginesModel.getUrl().replace("{searchTerms}", query));
             getActivityTab().loadUrl(loadUrlParams);
         }
         getBraveToolbarLayout().clearOmniboxFocus();
@@ -2610,9 +2610,9 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void loadSearchEngineLogo(
-            ImageView logoView, QuickSearchEngineModel quickSearchEngineModel) {
+            ImageView logoView, QuickSearchEnginesModel quickSearchEnginesModel) {
         ImageUtils.loadSearchEngineLogo(
-                getCurrentProfile(), logoView, quickSearchEngineModel.getKeyword());
+                getCurrentProfile(), logoView, quickSearchEnginesModel.getKeyword());
     }
 
     @Override

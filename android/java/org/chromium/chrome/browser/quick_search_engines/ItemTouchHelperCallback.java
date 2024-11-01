@@ -1,15 +1,15 @@
-/**
- * Copyright (c) 2024 The Brave Authors. All rights reserved. This Source Code Form is subject to
- * the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with
- * this file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 package org.chromium.chrome.browser.quick_search_engines;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchAdapter;
+import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesAdapter;
 
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
@@ -17,9 +17,9 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
         void onStartDrag(RecyclerView.ViewHolder viewHolder);
     }
 
-    private final QuickSearchAdapter mQuickSearchAdapter;
+    private final QuickSearchEnginesAdapter mQuickSearchAdapter;
 
-    public ItemTouchHelperCallback(QuickSearchAdapter quickSearchAdapter) {
+    public ItemTouchHelperCallback(QuickSearchEnginesAdapter quickSearchAdapter) {
         this.mQuickSearchAdapter = quickSearchAdapter;
     }
 

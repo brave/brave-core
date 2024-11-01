@@ -15,32 +15,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchCallback;
-import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEngineModel;
+import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesCallback;
+import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesModel;
 
 import java.util.List;
 
 public class QuickSearchEnginesViewAdapter
         extends RecyclerView.Adapter<QuickSearchEnginesViewHolder> {
     private Context mContext;
-    private List<QuickSearchEngineModel> mSearchEngines;
-    private QuickSearchCallback mQuickSearchCallback;
+    private List<QuickSearchEnginesModel> mSearchEngines;
+    private QuickSearchEnginesCallback mQuickSearchEnginesCallback;
 
     public QuickSearchEnginesViewAdapter(
             Context context,
-            List<QuickSearchEngineModel> searchEngines,
-            QuickSearchCallback quickSearchCallback) {
+            List<QuickSearchEnginesModel> searchEngines,
+            QuickSearchEnginesCallback quickSearchEnginesCallback) {
         mContext = context;
         mSearchEngines = searchEngines;
-        mQuickSearchCallback = quickSearchCallback;
+        mQuickSearchEnginesCallback = quickSearchEnginesCallback;
     }
 
     @Override
     public void onBindViewHolder(
             @NonNull QuickSearchEnginesViewHolder quickSearchViewHolder, int position) {
-        QuickSearchEngineModel quickSearchEngineModel = mSearchEngines.get(position);
+        QuickSearchEnginesModel quickSearchEnginesModel = mSearchEngines.get(position);
         int adapterPosition = quickSearchViewHolder.getAdapterPosition();
-        String keyword = quickSearchEngineModel.getKeyword();
+        String keyword = quickSearchEnginesModel.getKeyword();
 
         if (adapterPosition == 0) {
             quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_leo_icon);
@@ -49,14 +49,14 @@ public class QuickSearchEnginesViewAdapter
         } else if (BraveActivity.STARTPAGE_SEARCH_ENGINE_KEYWORD.equals(keyword)) {
             quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_startpage_color);
         } else {
-            mQuickSearchCallback.loadSearchEngineLogo(
-                    quickSearchViewHolder.mSearchEngineLogo, quickSearchEngineModel);
+            mQuickSearchEnginesCallback.loadSearchEngineLogo(
+                    quickSearchViewHolder.mSearchEngineLogo, quickSearchEnginesModel);
         }
 
         quickSearchViewHolder.mSearchEngineLogo.setOnClickListener(
                 v ->
-                        mQuickSearchCallback.onSearchEngineClick(
-                                adapterPosition, quickSearchEngineModel));
+                        mQuickSearchEnginesCallback.onSearchEngineClick(
+                                adapterPosition, quickSearchEnginesModel));
     }
 
     @NonNull
@@ -73,7 +73,7 @@ public class QuickSearchEnginesViewAdapter
         return mSearchEngines.size();
     }
 
-    public List<QuickSearchEngineModel> getSearchEngines() {
+    public List<QuickSearchEnginesModel> getSearchEngines() {
         return mSearchEngines;
     }
 }

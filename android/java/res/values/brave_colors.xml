@@ -407,8 +407,6 @@
 
     <color name="divider_interactive">#c1c4ff</color>
 
-    <color name="primitive_primary_60">#3F39E8</color>
-
     <color name="text_interactive">#3f39e8</color>
 
     <color name="location_bar_background_color_for_ntp">#f2f2f2</color>
@@ -430,11 +428,6 @@
     <color name="schemes_outline_variant">#e3e3e8</color>
     <color name="schemes_primary">#3e37d4</color>
     <color name="schemes_surface_container_highest">#c7c7cc</color>
-
-    <color name="colorThumbOn">@color/primitive_primary_60</color> 
-    <color name="colorThumbOff">#FFFF0000</color>
-    <color name="colorTrackOn">@color/primitive_primary_60</color>
-    <color name="colorTrackOff">#FF888888</color>
 
     <color name="quick_search_bg">#FFFFFF</color>
 </resources>
