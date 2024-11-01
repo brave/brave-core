@@ -24,6 +24,7 @@
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/brave_search_conversion/types.h"
 #include "brave/components/brave_search_conversion/utils.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -34,7 +35,10 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/chrome_select_file_policy.h"
+#include "chrome/browser/ui/tabs/public/tab_interface.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/omnibox/browser/omnibox_view.h"
@@ -54,6 +58,10 @@
 #include "ui/shell_dialogs/selected_file_info.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
+#endif
 
 namespace {
 
@@ -314,11 +322,25 @@ void BraveNewTabPageHandler::SearchWhatYouTyped(const std::string& host,
 }
 
 void BraveNewTabPageHandler::LaunchVPNPanel() {
-  NOTIMPLEMENTED();
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  auto* tab = tabs::TabInterface::GetFromContents(web_contents_);
+  CHECK(tab);
+  tab->GetBrowserWindowInterface()
+      ->GetFeatures()
+      .GetBraveVPNController()
+      ->ShowBraveVPNBubble();
+#endif
 }
 
 void BraveNewTabPageHandler::OpenVPNAccountPage() {
-  NOTIMPLEMENTED();
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  auto* tab = tabs::TabInterface::GetFromContents(web_contents_);
+  CHECK(tab);
+  tab->GetBrowserWindowInterface()
+      ->GetFeatures()
+      .GetBraveVPNController()
+      ->OpenVPNAccountPage();
+#endif
 }
 
 bool BraveNewTabPageHandler::IsCustomBackgroundImageEnabled() const {
