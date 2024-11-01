@@ -177,7 +177,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kWebOTP,
       &heap_profiling::kHeapProfilerReporting,
       &history::kOrganicRepeatableQueries,
-      &history_clusters::kSidePanelJourneys,
       &history_clusters::features::kOnDeviceClustering,
       &history_clusters::features::kOnDeviceClusteringKeywordFiltering,
       &history_clusters::internal::kHistoryClustersInternalsPage,
