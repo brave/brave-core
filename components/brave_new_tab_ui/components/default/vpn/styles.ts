@@ -10,7 +10,6 @@ import { color, font, gradient, spacing } from '@brave/leo/tokens/css/variables'
 import guardianLogoUrl from '../vpn/assets/guardian-logo.svg'
 import vpnShieldsConnectedUrl from '../vpn/assets/vpn-shields-connected.svg'
 import vpnShieldsDisconnectedUrl from '../vpn/assets/vpn-shields-disconnected.svg'
-import vpnShieldsConnectingUrl from '../vpn/assets/vpn-shields-connecting.svg'
 import { ConnectionState } from '../../../api/braveVpn'
 
 export const HeaderIcon = styled(Icon)`
@@ -116,8 +115,6 @@ export const VPNShileldsIcon = styled.div<{ connectionState: ConnectionState }>`
   background-image: url(${(p) =>
     p.connectionState === ConnectionState.CONNECTED
       ? vpnShieldsConnectedUrl
-      : p.connectionState === ConnectionState.CONNECTING
-      ? vpnShieldsConnectingUrl
       : vpnShieldsDisconnectedUrl});
 `
 
