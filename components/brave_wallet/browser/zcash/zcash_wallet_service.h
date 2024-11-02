@@ -56,14 +56,13 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   ZCashWalletService(
       base::FilePath zcash_data_path,
-      KeyringService* keyring_service,
-      PrefService* prefs,
+      KeyringService& keyring_service,
       NetworkManager* network_manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
   // Constructor for tests
   ZCashWalletService(base::FilePath zcash_data_path,
-                     KeyringService* keyring_service,
+                     KeyringService& keyring_service,
                      std::unique_ptr<ZCashRpc> zcash_rpc);
 
   ~ZCashWalletService() override;
@@ -256,13 +255,13 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   void UpdateNextUnusedAddressForAccount(const mojom::AccountIdPtr& account_id,
                                          const mojom::ZCashAddressPtr& address);
 
-  ZCashRpc* zcash_rpc();
-  KeyringService* keyring_service();
+  ZCashRpc& zcash_rpc();
+  KeyringService& keyring_service();
 
   base::FilePath zcash_data_path_;
-  raw_ptr<KeyringService> keyring_service_;
+  raw_ref<KeyringService> keyring_service_;
   std::unique_ptr<ZCashRpc> zcash_rpc_;
-  std::unique_ptr<ZCashTransactionCompleteManager> complete_manager_;
+  ZCashTransactionCompleteManager complete_manager_;
 
   std::list<std::unique_ptr<ZCashCreateTransparentTransactionTask>>
       create_transaction_tasks_;

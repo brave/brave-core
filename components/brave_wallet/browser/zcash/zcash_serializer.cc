@@ -152,10 +152,10 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::HashTxIn(
 }
 
 // static
-bool ZCashSerializer::SignTransparentPart(KeyringService* keyring_service,
+bool ZCashSerializer::SignTransparentPart(KeyringService& keyring_service,
                                           const mojom::AccountIdPtr& account_id,
                                           ZCashTransaction& tx) {
-  auto addresses = keyring_service->GetZCashAddresses(account_id);
+  auto addresses = keyring_service.GetZCashAddresses(account_id);
   if (!addresses || addresses->empty()) {
     return false;
   }
@@ -176,7 +176,7 @@ bool ZCashSerializer::SignTransparentPart(KeyringService* keyring_service,
 
     auto& key_id = address_map.at(input.utxo_address);
 
-    auto pubkey = keyring_service->GetZCashPubKey(account_id, key_id);
+    auto pubkey = keyring_service.GetZCashPubKey(account_id, key_id);
     if (!pubkey) {
       return false;
     }
@@ -184,7 +184,7 @@ bool ZCashSerializer::SignTransparentPart(KeyringService* keyring_service,
     auto signature_digest =
         ZCashSerializer::CalculateSignatureDigest(tx, input);
 
-    auto signature = keyring_service->SignMessageByZCashKeyring(
+    auto signature = keyring_service.SignMessageByZCashKeyring(
         account_id, key_id, base::span(signature_digest));
 
     if (!signature) {

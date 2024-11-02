@@ -29,10 +29,10 @@
 
 namespace brave_wallet {
 
-AssetDiscoveryTask::AssetDiscoveryTask(APIRequestHelper* api_request_helper,
-                                       SimpleHashClient* simple_hash_client,
-                                       BraveWalletService* wallet_service,
-                                       JsonRpcService* json_rpc_service,
+AssetDiscoveryTask::AssetDiscoveryTask(APIRequestHelper& api_request_helper,
+                                       SimpleHashClient& simple_hash_client,
+                                       BraveWalletService& wallet_service,
+                                       JsonRpcService& json_rpc_service,
                                        PrefService* prefs)
     : api_request_helper_(api_request_helper),
       simple_hash_client_(simple_hash_client),

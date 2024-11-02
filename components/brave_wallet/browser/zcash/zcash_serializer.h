@@ -26,7 +26,7 @@ class ZCashSerializer {
       const std::optional<ZCashTransaction::TxInput>& input);
   static std::vector<uint8_t> SerializeRawTransaction(
       const ZCashTransaction& zcash_transaction);
-  static bool SignTransparentPart(KeyringService* keyring_service,
+  static bool SignTransparentPart(KeyringService& keyring_service,
                                   const mojom::AccountIdPtr& account_id,
                                   ZCashTransaction& tx);
 

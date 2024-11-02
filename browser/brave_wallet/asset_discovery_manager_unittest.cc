@@ -9,6 +9,7 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
@@ -29,6 +30,7 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
+#include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -123,11 +125,15 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
     simple_hash_client_ =
         std::make_unique<SimpleHashClient>(shared_url_loader_factory_);
     asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
-        shared_url_loader_factory_, wallet_service_.get(), json_rpc_service_,
-        keyring_service_, simple_hash_client_.get(), GetPrefs());
+        shared_url_loader_factory_, *wallet_service_, *json_rpc_service_,
+        *keyring_service_, *simple_hash_client_, GetPrefs());
     wallet_service_observer_ = std::make_unique<
         TestBraveWalletServiceObserverForAssetDiscoveryManager>();
     wallet_service_->AddObserver(wallet_service_observer_->GetReceiver());
+
+    api_request_helper_ =
+        std::make_unique<api_request_helper::APIRequestHelper>(
+            TRAFFIC_ANNOTATION_FOR_TESTS, shared_url_loader_factory_);
   }
 
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
@@ -140,6 +146,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   std::unique_ptr<TestBraveWalletServiceObserverForAssetDiscoveryManager>
       wallet_service_observer_;
   content::BrowserTaskEnvironment task_environment_;
+  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   std::unique_ptr<ScopedTestingLocalState> local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<BraveWalletService> wallet_service_;
@@ -275,8 +282,9 @@ TEST_F(AssetDiscoveryManagerUnitTest, DiscoverAssetsOnAllSupportedChains) {
   task_environment_.FastForwardBy(
       base::Minutes(kAssetDiscoveryMinutesPerRequest));
   std::queue<std::unique_ptr<AssetDiscoveryTask>> tasks;
-  tasks.push(std::make_unique<AssetDiscoveryTask>(nullptr, nullptr, nullptr,
-                                                  nullptr, nullptr));
+  tasks.push(std::make_unique<AssetDiscoveryTask>(
+      *api_request_helper_, *simple_hash_client_, *wallet_service_,
+      *json_rpc_service_, GetPrefs()));
   asset_discovery_manager_->SetQueueForTesting(std::move(tasks));
   TestDiscoverAssetsOnAllSupportedChains({}, true, true, {}, 1);
 
