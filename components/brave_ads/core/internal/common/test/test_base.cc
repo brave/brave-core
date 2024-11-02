@@ -302,7 +302,7 @@ void TestBase::SetUpIntegrationTest() {
       << "SetUpIntegrationTest should only be called if SetUp is initialized "
          "for integration testing";
 
-  ads_ = std::unique_ptr<Ads>(Ads::CreateInstance(ads_client_mock_));
+  ads_ = Ads::CreateInstance(ads_client_mock_);
   CHECK(ads_) << "Failed to create ads instance";
 
   // Must be called after `Ads` is instantiated but prior to `Initialize`.
