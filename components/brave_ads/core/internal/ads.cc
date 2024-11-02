@@ -11,8 +11,9 @@
 namespace brave_ads {
 
 // static
-Ads* Ads::CreateInstance(AdsClient& ads_client) {
-  return new AdsImpl(ads_client, std::make_unique<TokenGenerator>());
+std::unique_ptr<Ads> Ads::CreateInstance(AdsClient& ads_client) {
+  return std::make_unique<AdsImpl>(ads_client,
+                                   std::make_unique<TokenGenerator>());
 }
 
 }  // namespace brave_ads

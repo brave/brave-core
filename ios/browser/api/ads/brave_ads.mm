@@ -8,6 +8,7 @@
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
 
+#include <memory>
 #include <optional>
 
 #include "base/check.h"
@@ -104,7 +105,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 @interface BraveAds () <AdsClientBridge> {
   raw_ptr<AdsClientIOS> adsClient;
   raw_ptr<brave_ads::AdsClientNotifier> adsClientNotifier;
-  raw_ptr<brave_ads::Ads> ads;
+  std::unique_ptr<brave_ads::Ads> ads;
   raw_ptr<brave_ads::AdEventCache> adEventCache;
   scoped_refptr<base::SequencedTaskRunner> databaseQueue;
   base::SequenceBound<brave_ads::Database> adsDatabase;
@@ -176,11 +177,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (void)cleanupAds {
-  if (ads != nil) {
-    delete ads;
-    ads = nil;
-  }
-
+  ads.reset();
   adsDatabase.Reset();
 }
 

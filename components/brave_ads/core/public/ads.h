@@ -36,7 +36,7 @@ class ADS_EXPORT Ads {
 
   virtual ~Ads() = default;
 
-  static Ads* CreateInstance(AdsClient& ads_client);
+  static std::unique_ptr<Ads> CreateInstance(AdsClient& ads_client);
 
   virtual void AddObserver(
       std::unique_ptr<AdsObserverInterface> ads_observer) = 0;
