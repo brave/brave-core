@@ -6,14 +6,12 @@
 import styled from 'styled-components'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import {
-  color,
-  font,
-  gradient,
-  radius,
-  spacing
-} from '@brave/leo/tokens/css/variables'
+import { color, font, gradient, spacing } from '@brave/leo/tokens/css/variables'
 import guardianLogoUrl from '../vpn/assets/guardian-logo.svg'
+import vpnShieldsConnectedUrl from '../vpn/assets/vpn-shields-connected.svg'
+import vpnShieldsDisconnectedUrl from '../vpn/assets/vpn-shields-disconnected.svg'
+import vpnShieldsConnectingUrl from '../vpn/assets/vpn-shields-connecting.svg'
+import { ConnectionState } from '../../../api/braveVpn'
 
 export const HeaderIcon = styled(Icon)`
   --leo-icon-size: 24px;
@@ -21,7 +19,6 @@ export const HeaderIcon = styled(Icon)`
 `
 
 export const StyledTitle = styled.div`
-  margin-bottom: ${spacing['2Xl']};
   font: ${font.heading.h4};
   color: ${color.white};
   display: flex;
@@ -30,7 +27,12 @@ export const StyledTitle = styled.div`
 `
 
 export const WidgetWrapper = styled.div.attrs({ 'data-theme': 'dark' })`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
   color: ${color.white};
+  gap: ${spacing['2Xl']};
 `
 
 export const WidgetContent = styled.div`
@@ -54,9 +56,9 @@ export const PoweredBy = styled.div`
   }
 `
 
-export const GuardianLogo = styled.i`
+export const GuardianLogo = styled.span`
   width: 56px;
-  height: 13px;
+  height: 12px;
   background-image: url(${guardianLogoUrl});
 `
 
@@ -99,13 +101,66 @@ export const ActionArea = styled.div`
 `
 
 export const ActionButton = styled(Button)`
-  background: ${color.material.divider};
-  border-radius: ${radius.m};
   align-self: stretch;
 `
 
 export const ActionLabel = styled.div`
-  color: #FFF;
+  color: #fff;
   opacity: 0.5;
+  font: ${font.xSmall.regular};
+`
+
+export const VPNShileldsIcon = styled.div<{ connectionState: ConnectionState }>`
+  width: 62px;
+  height: 62px;
+  background-image: url(${(p) =>
+    p.connectionState === ConnectionState.CONNECTED
+      ? vpnShieldsConnectedUrl
+      : p.connectionState === ConnectionState.CONNECTING
+      ? vpnShieldsConnectingUrl
+      : vpnShieldsDisconnectedUrl});
+`
+
+export const ActionBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 23px;
+  align-self: stretch;
+`
+
+export const ConnectionInfoBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: ${spacing.xs};
+  flex: 1 0 0;
+`
+
+export const ConnectionStateLabel = styled.span<{ connected: boolean }>`
+  align-self: stretch;
+  color: ${(p) => (p.connected ? color.green[60] : color.text.primary)};
+  font: ${font.small.regular};
+`
+
+export const RegionAction = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${spacing.m};
+`
+
+export const RegionCountryLabel = styled.span`
+  color: ${color.text.primary};
+  font: ${font.large.semibold};
+`
+
+export const RegionChangeLink = styled.a`
+  color: ${color.text.primary};
+  font: ${font.xSmall.link};
+  text-decoration-line: underline;
+  cursor: pointer;
+`
+
+export const RegionCityLabel = styled.span`
+  color: ${color.text.tertiary};
   font: ${font.xSmall.regular};
 `

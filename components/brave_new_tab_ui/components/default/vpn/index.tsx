@@ -8,11 +8,7 @@ import { useDispatch } from 'react-redux'
 
 import createWidget from '../widget/index'
 import { StyledCard, StyledTitleTab } from '../widgetCard'
-import {
-  VPNWidget as VPNCard,
-  VPNPromoWidget as VPNPromoCard,
-  VPNWidgetTitle
-} from '../vpn/vpn_card'
+import { VPNMainWidget, VPNPromoWidget, VPNWidgetTitle } from '../vpn/vpn_card'
 import { BraveVPNState } from 'components/brave_new_tab_ui/reducers/brave_vpn'
 import * as BraveVPN from '../../../api/braveVpn'
 import * as Actions from '../../../actions/brave_vpn_actions'
@@ -44,9 +40,12 @@ export const VPNWidget = createWidget((props: VPNProps) => {
     <StyledCard>
       {props.braveVPNState.purchasedState ===
       BraveVPN.PurchasedState.PURCHASED ? (
-        <VPNCard {...props.braveVPNState} />
+        <VPNMainWidget
+          connectionState={props.braveVPNState.connectionState}
+          selectedRegion={props.braveVPNState.selectedRegion}
+        />
       ) : (
-        <VPNPromoCard />
+        <VPNPromoWidget />
       )}
     </StyledCard>
   )

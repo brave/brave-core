@@ -4,33 +4,43 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { withKnobs } from '@storybook/addon-knobs'
-import { VPNPromoWidget, VPNWidget } from '../components/default/vpn/vpn_card';
-import * as BraveVPN from '../api/braveVpn';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import { select, withKnobs } from '@storybook/addon-knobs'
+import {
+  VPNPromoWidget,
+  VPNMainWidget
+} from '../components/default/vpn/vpn_card'
+import * as BraveVPN from '../api/braveVpn'
+import '../../brave_vpn/resources/panel/stories/locale'
+import {
+  mockRegionList
+} from '../../brave_vpn/resources/panel/stories/mock-data/region-list'
 
 export default {
-  title: 'VPN/Widgets',
+  title: 'VPN/Card',
   decorators: [
     (Story: any) => {
-      const store = createStore(state => state)
-      return <Provider store={store}><Story /></Provider>
+      const store = createStore((state) => state)
+      return (
+        <Provider store={store}>
+          <Story />
+        </Provider>
+      )
     },
     withKnobs
   ]
 }
 
-const vpnWidgetProps = {
-  purchasedState: BraveVPN.PurchasedState.NOT_PURCHASED,
-  connectionState: BraveVPN.ConnectionState.DISCONNECTED,
-  selectedRegion: new BraveVPN.Region()
-}
+export const VPNPromo = () => <VPNPromoWidget />
 
-export const VPNPromo = () => (
-  <VPNPromoWidget />
-)
-
-export const VPN = () => (
-  <VPNWidget {...vpnWidgetProps} />
+export const VPNMain = () => (
+  <VPNMainWidget
+    connectionState={select(
+      'connection state',
+      BraveVPN.ConnectionState,
+      BraveVPN.ConnectionState.DISCONNECTED
+    )}
+    selectedRegion={mockRegionList[0]}
+  />
 )
