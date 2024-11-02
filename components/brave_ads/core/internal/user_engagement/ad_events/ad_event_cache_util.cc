@@ -28,7 +28,7 @@ void RebuildAdEventCache() {
 
         const std::string& id = GetInstanceId();
 
-        GetAdsClient()->ResetAdEventCacheForInstanceId(id);
+        GetAdsClient().ResetAdEventCacheForInstanceId(id);
 
         for (const auto& ad_event : ad_events) {
           if (!ad_event.IsValid()) {
@@ -45,13 +45,13 @@ void RebuildAdEventCache() {
 void CacheAdEvent(const AdEventInfo& ad_event) {
   CHECK(ad_event.IsValid());
 
-  GetAdsClient()->CacheAdEventForInstanceId(GetInstanceId(), ad_event.type,
-                                            ad_event.confirmation_type,
-                                            *ad_event.created_at);
+  GetAdsClient().CacheAdEventForInstanceId(GetInstanceId(), ad_event.type,
+                                           ad_event.confirmation_type,
+                                           *ad_event.created_at);
 }
 
 void ResetAdEventCache() {
-  GetAdsClient()->ResetAdEventCacheForInstanceId(GetInstanceId());
+  GetAdsClient().ResetAdEventCacheForInstanceId(GetInstanceId());
 }
 
 }  // namespace brave_ads

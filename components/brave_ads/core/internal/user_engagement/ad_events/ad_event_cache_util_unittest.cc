@@ -44,7 +44,7 @@ TEST_F(BraveAdsAdEventCacheUtilTest, RebuildAdEventCache) {
   // Assert
   const std::vector<base::Time> expected_cached_ad_events = {test::Now()};
   EXPECT_EQ(expected_cached_ad_events,
-            GetAdsClient()->GetCachedAdEvents(
+            GetAdsClient().GetCachedAdEvents(
                 mojom::AdType::kNotificationAd,
                 mojom::ConfirmationType::kServedImpression));
 }
@@ -63,7 +63,7 @@ TEST_F(BraveAdsAdEventCacheUtilTest, CacheAdEvent) {
   // Assert
   const std::vector<base::Time> expected_cached_ad_events = {test::Now()};
   EXPECT_EQ(expected_cached_ad_events,
-            GetAdsClient()->GetCachedAdEvents(
+            GetAdsClient().GetCachedAdEvents(
                 mojom::AdType::kNotificationAd,
                 mojom::ConfirmationType::kServedImpression));
 }
@@ -93,7 +93,7 @@ TEST_F(BraveAdsAdEventCacheUtilTest, GetCachedAdEvents) {
 
   // Act
   const std::vector<base::Time> cached_ad_events =
-      GetAdsClient()->GetCachedAdEvents(
+      GetAdsClient().GetCachedAdEvents(
           mojom::AdType::kNotificationAd,
           mojom::ConfirmationType::kServedImpression);
 

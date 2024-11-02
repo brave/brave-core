@@ -30,13 +30,13 @@
 namespace brave_ads {
 
 Account::Account() {
-  GetAdsClient()->AddObserver(this);
+  GetAdsClient().AddObserver(this);
 
   InitializeConfirmations();
 }
 
 Account::~Account() {
-  GetAdsClient()->RemoveObserver(this);
+  GetAdsClient().RemoveObserver(this);
 }
 
 void Account::AddObserver(AccountObserver* const observer) {

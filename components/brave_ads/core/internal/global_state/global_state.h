@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -36,7 +36,7 @@ class UserActivityManager;
 class GlobalState final {
  public:
   explicit GlobalState(
-      AdsClient* ads_client,
+      AdsClient& ads_client,
       std::unique_ptr<TokenGeneratorInterface> token_generator);
 
   GlobalState(const GlobalState& other) = delete;
@@ -51,7 +51,7 @@ class GlobalState final {
 
   static bool HasInstance();
 
-  AdsClient* GetAdsClient();
+  AdsClient& GetAdsClient();
 
   AdsNotifierManager& GetAdsNotifierManager();
   BrowserManager& GetBrowserManager();
@@ -76,7 +76,7 @@ class GlobalState final {
 
   SEQUENCE_CHECKER(sequence_checker_);
 
-  const raw_ptr<AdsClient> ads_client_ = nullptr;  // Not owned.
+  const raw_ref<AdsClient> ads_client_;
 
   const std::unique_ptr<GlobalStateHolder> global_state_holder_;
 

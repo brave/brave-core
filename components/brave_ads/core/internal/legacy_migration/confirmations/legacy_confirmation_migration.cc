@@ -44,7 +44,7 @@ void MigrateConfirmationState(InitializeCallback callback) {
     return std::move(callback).Run(/*success=*/true);
   }
 
-  GetAdsClient()->Load(
+  GetAdsClient().Load(
       kConfirmationsJsonFilename,
       base::BindOnce(
           [](InitializeCallback callback,
@@ -76,7 +76,7 @@ void MigrateConfirmationState(InitializeCallback callback) {
 
             BLOG(1, "Migrating confirmation state");
 
-            GetAdsClient()->Save(
+            GetAdsClient().Save(
                 kConfirmationsJsonFilename, mutable_json,
                 base::BindOnce(
                     [](const std::string& json, InitializeCallback callback,

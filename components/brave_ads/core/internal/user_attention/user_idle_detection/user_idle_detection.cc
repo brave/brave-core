@@ -15,11 +15,11 @@
 namespace brave_ads {
 
 UserIdleDetection::UserIdleDetection() {
-  GetAdsClient()->AddObserver(this);
+  GetAdsClient().AddObserver(this);
 }
 
 UserIdleDetection::~UserIdleDetection() {
-  GetAdsClient()->RemoveObserver(this);
+  GetAdsClient().RemoveObserver(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

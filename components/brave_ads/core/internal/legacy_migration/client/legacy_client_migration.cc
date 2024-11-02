@@ -67,7 +67,7 @@ void HandleAdHistoryMigration(const std::string& json,
 void HandleMalformedClientState(InitializeCallback callback) {
   BLOG(0, "Resetting malformed client state to default values");
 
-  GetAdsClient()->Save(
+  GetAdsClient().Save(
       kClientJsonFilename, /*default state=§*/ "{}",
       base::BindOnce(
           [](InitializeCallback callback, const bool success) {
@@ -97,7 +97,7 @@ void HandleClientStateMigration(InitializeCallback callback,
   }
 
   const std::string migrated_json = client.ToJson();
-  GetAdsClient()->Save(
+  GetAdsClient().Save(
       kClientJsonFilename, migrated_json,
       base::BindOnce(
           [](const std::string& json, InitializeCallback callback,
@@ -120,7 +120,7 @@ void MigrateClientState(InitializeCallback callback) {
     return std::move(callback).Run(/*success=*/true);
   }
 
-  GetAdsClient()->Load(
+  GetAdsClient().Load(
       kClientJsonFilename,
       base::BindOnce(&HandleClientStateMigration, std::move(callback)));
 }

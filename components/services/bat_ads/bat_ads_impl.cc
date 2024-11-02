@@ -33,8 +33,7 @@ class BatAdsImpl::AdsInstance final {
       : bat_ads_client_mojo_proxy_(std::make_unique<BatAdsClientMojoBridge>(
             std::move(bat_ads_client_pending_associated_remote),
             std::move(client_notifier))),
-        ads_(brave_ads::Ads::CreateInstance(bat_ads_client_mojo_proxy_.get())) {
-  }
+        ads_(brave_ads::Ads::CreateInstance(*bat_ads_client_mojo_proxy_)) {}
 
   AdsInstance(const AdsInstance&) = delete;
   AdsInstance& operator=(const AdsInstance&) = delete;

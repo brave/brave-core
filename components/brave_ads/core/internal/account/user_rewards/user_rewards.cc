@@ -25,7 +25,7 @@ namespace brave_ads {
 UserRewards::UserRewards(WalletInfo wallet) : wallet_(std::move(wallet)) {
   CHECK(wallet_.IsValid());
 
-  GetAdsClient()->AddObserver(this);
+  GetAdsClient().AddObserver(this);
 
   issuers_url_request_.SetDelegate(this);
   refill_confirmation_tokens_.SetDelegate(this);
@@ -33,7 +33,7 @@ UserRewards::UserRewards(WalletInfo wallet) : wallet_(std::move(wallet)) {
 }
 
 UserRewards::~UserRewards() {
-  GetAdsClient()->RemoveObserver(this);
+  GetAdsClient().RemoveObserver(this);
 }
 
 void UserRewards::FetchIssuers() {
@@ -106,7 +106,7 @@ void UserRewards::OnDidRetryRefillingConfirmationTokens() {
 
 void UserRewards::OnCaptchaRequiredToRefillConfirmationTokens(
     const std::string& captcha_id) {
-  GetAdsClient()->ShowScheduledCaptcha(wallet_.payment_id, captcha_id);
+  GetAdsClient().ShowScheduledCaptcha(wallet_.payment_id, captcha_id);
 }
 
 }  // namespace brave_ads

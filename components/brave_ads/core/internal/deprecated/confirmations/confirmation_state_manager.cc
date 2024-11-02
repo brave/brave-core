@@ -42,7 +42,7 @@ void ConfirmationStateManager::LoadState(
 
   wallet_ = wallet;
 
-  GetAdsClient()->Load(
+  GetAdsClient().Load(
       kConfirmationsJsonFilename,
       base::BindOnce(&ConfirmationStateManager::LoadCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
@@ -79,14 +79,14 @@ void ConfirmationStateManager::SaveState() {
 
   BLOG(9, "Saving confirmation state");
 
-  GetAdsClient()->Save(kConfirmationsJsonFilename, ToJson(),
-                       base::BindOnce([](const bool success) {
-                         if (!success) {
-                           return BLOG(0, "Failed to save confirmation state");
-                         }
+  GetAdsClient().Save(kConfirmationsJsonFilename, ToJson(),
+                      base::BindOnce([](const bool success) {
+                        if (!success) {
+                          return BLOG(0, "Failed to save confirmation state");
+                        }
 
-                         BLOG(9, "Successfully saved confirmation state");
-                       }));
+                        BLOG(9, "Successfully saved confirmation state");
+                      }));
 }
 
 std::string ConfirmationStateManager::ToJson() {

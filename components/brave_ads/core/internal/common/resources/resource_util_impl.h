@@ -69,7 +69,7 @@ void LoadAndParseResourceComponent(
     const std::string& id,
     const int version,
     LoadAndParseResourceComponentCallback<T> callback) {
-  GetAdsClient()->LoadResourceComponent(
+  GetAdsClient().LoadResourceComponent(
       id, version,
       base::BindOnce(&LoadResourceComponentCallback<T>, std::move(callback)));
 }

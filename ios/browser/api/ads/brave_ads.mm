@@ -266,7 +266,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
   [self initDatabase];
 
-  ads = brave_ads::Ads::CreateInstance(adsClient);
+  ads = brave_ads::Ads::CreateInstance(*adsClient);
 
   auto cppSysInfo =
       sysInfo ? sysInfo.cppObjPtr : brave_ads::mojom::SysInfo::New();

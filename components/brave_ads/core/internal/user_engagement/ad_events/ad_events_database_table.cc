@@ -205,7 +205,7 @@ void AdEvents::GetAll(GetAdEventsCallback callback) const {
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient()->RunDBTransaction(
+  GetAdsClient().RunDBTransaction(
       std::move(mojom_db_transaction),
       base::BindOnce(&GetCallback, std::move(callback)));
 }
@@ -245,7 +245,7 @@ void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient()->RunDBTransaction(
+  GetAdsClient().RunDBTransaction(
       std::move(mojom_db_transaction),
       base::BindOnce(&GetCallback, std::move(callback)));
 }
@@ -289,7 +289,7 @@ void AdEvents::GetUnexpired(const mojom::AdType mojom_ad_type,
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient()->RunDBTransaction(
+  GetAdsClient().RunDBTransaction(
       std::move(mojom_db_transaction),
       base::BindOnce(&GetCallback, std::move(callback)));
 }

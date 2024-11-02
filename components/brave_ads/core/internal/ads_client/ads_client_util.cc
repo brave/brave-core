@@ -11,13 +11,10 @@
 
 namespace brave_ads {
 
-AdsClient* GetAdsClient() {
+AdsClient& GetAdsClient() {
   CHECK(GlobalState::HasInstance());
 
-  AdsClient* const ads_client = GlobalState::GetInstance()->GetAdsClient();
-  CHECK(ads_client);
-
-  return ads_client;
+  return GlobalState::GetInstance()->GetAdsClient();
 }
 
 }  // namespace brave_ads

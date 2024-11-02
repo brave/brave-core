@@ -80,7 +80,7 @@ void RedeemPaymentTokens::Redeem() {
   BLOG(6, UrlRequestToString(mojom_url_request));
   BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
-  GetAdsClient()->UrlRequest(
+  GetAdsClient().UrlRequest(
       std::move(mojom_url_request),
       base::BindOnce(&RedeemPaymentTokens::RedeemCallback,
                      weak_factory_.GetWeakPtr(), payment_tokens));

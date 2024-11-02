@@ -45,7 +45,7 @@ bool IsError(
 
 void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
                       ResultCallback callback) {
-  GetAdsClient()->RunDBTransaction(
+  GetAdsClient().RunDBTransaction(
       std::move(mojom_db_transaction),
       base::BindOnce(&RunDBTransactionCallback, std::move(callback)));
 }

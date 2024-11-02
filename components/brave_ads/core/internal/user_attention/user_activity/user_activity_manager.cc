@@ -46,13 +46,13 @@ void LogEvent(const UserActivityEventType event_type) {
 }  // namespace
 
 UserActivityManager::UserActivityManager() {
-  GetAdsClient()->AddObserver(this);
+  GetAdsClient().AddObserver(this);
   BrowserManager::GetInstance().AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
 UserActivityManager::~UserActivityManager() {
-  GetAdsClient()->RemoveObserver(this);
+  GetAdsClient().RemoveObserver(this);
   BrowserManager::GetInstance().RemoveObserver(this);
   TabManager::GetInstance().RemoveObserver(this);
 }

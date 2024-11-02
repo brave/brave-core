@@ -46,11 +46,11 @@ bool DoesRequireResource() {
 }  // namespace
 
 SubdivisionTargeting::SubdivisionTargeting() {
-  GetAdsClient()->AddObserver(this);
+  GetAdsClient().AddObserver(this);
 }
 
 SubdivisionTargeting::~SubdivisionTargeting() {
-  GetAdsClient()->RemoveObserver(this);
+  GetAdsClient().RemoveObserver(this);
 }
 
 bool SubdivisionTargeting::IsDisabled() const {

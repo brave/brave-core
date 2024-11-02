@@ -68,9 +68,9 @@ void CatalogUrlRequest::Fetch() {
   BLOG(6, UrlRequestToString(mojom_url_request));
   BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
-  GetAdsClient()->UrlRequest(std::move(mojom_url_request),
-                             base::BindOnce(&CatalogUrlRequest::FetchCallback,
-                                            weak_factory_.GetWeakPtr()));
+  GetAdsClient().UrlRequest(std::move(mojom_url_request),
+                            base::BindOnce(&CatalogUrlRequest::FetchCallback,
+                                           weak_factory_.GetWeakPtr()));
 }
 
 void CatalogUrlRequest::FetchCallback(

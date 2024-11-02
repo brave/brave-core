@@ -302,7 +302,7 @@ void TestBase::SetUpIntegrationTest() {
       << "SetUpIntegrationTest should only be called if SetUp is initialized "
          "for integration testing";
 
-  ads_ = std::unique_ptr<Ads>(Ads::CreateInstance(&ads_client_mock_));
+  ads_ = std::unique_ptr<Ads>(Ads::CreateInstance(ads_client_mock_));
   CHECK(ads_) << "Failed to create ads instance";
 
   // Must be called after `Ads` is instantiated but prior to `Initialize`.
@@ -332,7 +332,7 @@ void TestBase::SetUpUnitTest() {
                                   "SetUp is initialized for unit testing";
 
   global_state_ = std::make_unique<GlobalState>(
-      &ads_client_mock_, std::make_unique<TokenGeneratorMock>());
+      ads_client_mock_, std::make_unique<TokenGeneratorMock>());
 
   // Must be called after `GlobalState` is instantiated but prior to
   // `MockDefaultAdsServiceState`.

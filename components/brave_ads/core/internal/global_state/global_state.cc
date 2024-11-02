@@ -27,12 +27,10 @@
 namespace brave_ads {
 
 GlobalState::GlobalState(
-    AdsClient* const ads_client,
+    AdsClient& ads_client,
     std::unique_ptr<TokenGeneratorInterface> token_generator)
     : ads_client_(ads_client),
       global_state_holder_(std::make_unique<GlobalStateHolder>(this)) {
-  CHECK(ads_client_);
-
   ads_notifier_manager_ = std::make_unique<AdsNotifierManager>();
   browser_manager_ = std::make_unique<BrowserManager>();
   client_state_manager_ = std::make_unique<ClientStateManager>();
@@ -62,10 +60,9 @@ bool GlobalState::HasInstance() {
   return GlobalStateHolder::GetGlobalState() != nullptr;
 }
 
-AdsClient* GlobalState::GetAdsClient() {
+AdsClient& GlobalState::GetAdsClient() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  CHECK(ads_client_);
-  return ads_client_;
+  return *ads_client_;
 }
 
 AdsNotifierManager& GlobalState::GetAdsNotifierManager() {

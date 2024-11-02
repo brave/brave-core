@@ -43,11 +43,11 @@ bool DoesRequireResource() {
 }  // namespace
 
 Subdivision::Subdivision() {
-  GetAdsClient()->AddObserver(this);
+  GetAdsClient().AddObserver(this);
 }
 
 Subdivision::~Subdivision() {
-  GetAdsClient()->RemoveObserver(this);
+  GetAdsClient().RemoveObserver(this);
 }
 
 void Subdivision::AddObserver(SubdivisionObserver* const observer) {

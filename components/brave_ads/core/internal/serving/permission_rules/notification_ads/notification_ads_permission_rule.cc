@@ -12,7 +12,7 @@
 namespace brave_ads {
 
 bool HasNotificationAdsPermission() {
-  if (GetAdsClient()->CanShowNotificationAds()) {
+  if (GetAdsClient().CanShowNotificationAds()) {
     return true;
   }
 

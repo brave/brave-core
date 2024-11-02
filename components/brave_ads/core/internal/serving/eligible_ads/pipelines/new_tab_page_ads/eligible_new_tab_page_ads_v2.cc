@@ -59,7 +59,7 @@ void EligibleNewTabPageAdsV2::GetEligibleAdsForUserModelCallback(
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
-  GetAdsClient()->GetSiteHistory(
+  GetAdsClient().GetSiteHistory(
       kSiteHistoryMaxCount.Get(), kSiteHistoryRecentDayRange.Get(),
       base::BindOnce(&EligibleNewTabPageAdsV2::GetEligibleAds,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
