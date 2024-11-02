@@ -35,11 +35,11 @@ bool DoesRequireResource() {
 }  // namespace
 
 ConversionResource::ConversionResource() {
-  GetAdsClient()->AddObserver(this);
+  GetAdsClient().AddObserver(this);
 }
 
 ConversionResource::~ConversionResource() {
-  GetAdsClient()->RemoveObserver(this);
+  GetAdsClient().RemoveObserver(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

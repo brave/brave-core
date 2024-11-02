@@ -32,11 +32,11 @@ bool DoesRequireResource() {
 }  // namespace
 
 TextClassificationResource::TextClassificationResource() {
-  GetAdsClient()->AddObserver(this);
+  GetAdsClient().AddObserver(this);
 }
 
 TextClassificationResource::~TextClassificationResource() {
-  GetAdsClient()->RemoveObserver(this);
+  GetAdsClient().RemoveObserver(this);
 }
 
 void TextClassificationResource::ClassifyPage(const std::string& text,
@@ -66,7 +66,7 @@ void TextClassificationResource::MaybeLoadOrUnload() {
 }
 
 void TextClassificationResource::Load() {
-  GetAdsClient()->LoadResourceComponent(
+  GetAdsClient().LoadResourceComponent(
       kTextClassificationResourceId, kTextClassificationResourceVersion.Get(),
       base::BindOnce(&TextClassificationResource::LoadResourceComponentCallback,
                      weak_factory_.GetWeakPtr()));

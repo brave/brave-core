@@ -45,7 +45,7 @@ bool DoesHistoryRespectRollingTimeConstraint(
     const mojom::AdType mojom_ad_type,
     const base::TimeDelta time_constraint,
     const size_t cap) {
-  const std::vector<base::Time> history = GetAdsClient()->GetCachedAdEvents(
+  const std::vector<base::Time> history = GetAdsClient().GetCachedAdEvents(
       mojom_ad_type, mojom::ConfirmationType::kServedImpression);
 
   return DoesHistoryRespectRollingTimeConstraint(history, time_constraint, cap);

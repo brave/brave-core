@@ -10,7 +10,7 @@ namespace brave_ads {
 
 class AdsClient;
 
-AdsClient* GetAdsClient();
+AdsClient& GetAdsClient();
 
 }  // namespace brave_ads
 

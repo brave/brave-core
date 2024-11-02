@@ -36,7 +36,7 @@ ClientStateManager& ClientStateManager::GetInstance() {
 void ClientStateManager::LoadState(InitializeCallback callback) {
   BLOG(3, "Loading client state");
 
-  GetAdsClient()->Load(
+  GetAdsClient().Load(
       kClientJsonFilename,
       base::BindOnce(&ClientStateManager::LoadCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
@@ -100,14 +100,14 @@ void ClientStateManager::SaveState() {
 
   BLOG(9, "Saving client state");
 
-  GetAdsClient()->Save(kClientJsonFilename, client_.ToJson(),
-                       base::BindOnce([](const bool success) {
-                         if (!success) {
-                           return BLOG(0, "Failed to save client state");
-                         }
+  GetAdsClient().Save(kClientJsonFilename, client_.ToJson(),
+                      base::BindOnce([](const bool success) {
+                        if (!success) {
+                          return BLOG(0, "Failed to save client state");
+                        }
 
-                         BLOG(9, "Successfully saved client state");
-                       }));
+                        BLOG(9, "Successfully saved client state");
+                      }));
 }
 
 void ClientStateManager::LoadCallback(InitializeCallback callback,

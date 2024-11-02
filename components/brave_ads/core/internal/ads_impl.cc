@@ -39,7 +39,7 @@ void FailedToInitialize(InitializeCallback callback) {
 
 }  // namespace
 
-AdsImpl::AdsImpl(AdsClient* const ads_client,
+AdsImpl::AdsImpl(AdsClient& ads_client,
                  std::unique_ptr<TokenGeneratorInterface> token_generator)
     : global_state_(ads_client, std::move(token_generator)),
       database_maintenance_(std::make_unique<database::Maintenance>()) {}
@@ -386,7 +386,7 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
                            mojom_wallet->recovery_seed_base64);
   }
 
-  GetAdsClient()->NotifyPendingObservers();
+  GetAdsClient().NotifyPendingObservers();
 
   task_queue_.FlushAndStopQueueing();
 

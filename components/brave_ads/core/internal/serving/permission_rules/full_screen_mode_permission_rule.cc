@@ -23,7 +23,7 @@ bool HasFullScreenModePermission() {
     return true;
   }
 
-  if (!GetAdsClient()->IsBrowserInFullScreenMode()) {
+  if (!GetAdsClient().IsBrowserInFullScreenMode()) {
     return true;
   }
 
