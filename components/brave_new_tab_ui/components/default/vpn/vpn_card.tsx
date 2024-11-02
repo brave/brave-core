@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux'
 
 import Toggle from '@brave/leo/react/toggle'
 import * as S from './styles'
+import VPNShieldsConnecting from './vpn-shields-connecting'
 import * as Actions from '../../../actions/brave_vpn_actions'
 import { ConnectionState, Region } from '../../../api/braveVpn'
 
@@ -115,7 +116,11 @@ export const VPNMainWidget = (props: MainWidgetProps) => {
     <S.WidgetWrapper>
       <VPNWidgetHeader />
       <S.WidgetContent>
-        <S.VPNShileldsIcon connectionState={props.connectionState} />
+        {props.connectionState === ConnectionState.CONNECTING ? (
+          <VPNShieldsConnecting />
+        ) : (
+          <S.VPNShileldsIcon connectionState={props.connectionState} />
+        )}
         <S.ActionBox>
           <S.ConnectionInfoBox>
             <S.ConnectionStateLabel connected={connected}>
