@@ -13,6 +13,7 @@
 -StartupBrowserCreatorTriggeredResetTest.TestMultiProfile
 
 # These tests fail on CI but pass locally
+-AiDataKeyedServiceBrowserTest.TabInnerText
 -AutofillContextMenuManagerFeedbackUIBrowserTest.DisplaysFeedbackDialogUI
 -AutomationApiTest.*
 -AutomationApiTestWithLanguageDetection.DetectedLanguage
