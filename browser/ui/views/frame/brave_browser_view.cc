@@ -602,9 +602,9 @@ void BraveBrowserView::ToggleSidebar() {
   browser_->GetFeatures().side_panel_ui()->Toggle();
 }
 
-void BraveBrowserView::ShowBraveVPNBubble() {
+void BraveBrowserView::ShowBraveVPNBubble(bool show_select) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  vpn_panel_controller_.ShowBraveVPNPanel();
+  vpn_panel_controller_.ShowBraveVPNPanel(show_select);
 #endif
 }
 

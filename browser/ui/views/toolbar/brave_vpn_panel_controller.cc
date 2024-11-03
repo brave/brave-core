@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/toolbar/brave_vpn_panel_controller.h"
 
+#include <string>
+
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -20,15 +22,26 @@ BraveVPNPanelController::BraveVPNPanelController(BraveBrowserView* browser_view)
 
 BraveVPNPanelController::~BraveVPNPanelController() = default;
 
-void BraveVPNPanelController::ShowBraveVPNPanel() {
+void BraveVPNPanelController::ShowBraveVPNPanel(bool show_select) {
   auto* anchor_view = browser_view_->GetAnchorViewForBraveVPNPanel();
   if (!anchor_view)
     return;
 
+  if (show_select) {
+    // Reset previously launched bubble to make main panel start with
+    // server selection. Otherwise, bubble shows last position if it's
+    // not destroyed yet.
+    ResetBubbleManager();
+  }
+
+  std::string url = kVPNPanelURL;
+  if (show_select) {
+    url += "select";
+  }
   if (!webui_bubble_manager_) {
     auto* profile = browser_view_->browser()->profile();
     webui_bubble_manager_ = WebUIBubbleManager::Create<VPNPanelUI>(
-        anchor_view, profile, GURL(kVPNPanelURL), IDS_BRAVE_VPN_PANEL_NAME);
+        anchor_view, profile, GURL(url), IDS_BRAVE_VPN_PANEL_NAME);
   }
 
   if (webui_bubble_manager_->GetBubbleWidget()) {
