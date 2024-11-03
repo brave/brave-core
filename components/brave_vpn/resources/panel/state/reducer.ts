@@ -24,7 +24,7 @@ type RootState = {
 
 const defaultState: RootState = {
   hasError: false,
-  isSelectingRegion: false,
+  isSelectingRegion: (window.location.pathname === '/select'),
   expired: false,
   outOfCredentials: false,
   connectionStatus: ConnectionState.DISCONNECTED,

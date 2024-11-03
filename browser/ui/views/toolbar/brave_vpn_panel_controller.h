@@ -21,7 +21,9 @@ class BraveVPNPanelController {
   BraveVPNPanelController(const BraveVPNPanelController&) = delete;
   BraveVPNPanelController& operator=(const BraveVPNPanelController&) = delete;
 
-  void ShowBraveVPNPanel();
+  // Pass true to |show_select| when we want to show server selection
+  // in the main panel at startup.
+  void ShowBraveVPNPanel(bool show_select = false);
   // Manager should be reset to use different anchor view for bubble.
   void ResetBubbleManager();
 
