@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index 89c76bad269ec7d5bb81eb92e2526060e1f02579..58ec815ba2d7b9945d8b43fe85aebe5f47ad7b95 100644
+index a0a333d95d25f05584e53305a613b8b385f79d3e..8dd92ba1c3429110e3ce19dabdd4fab1389386b2 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -38,6 +38,9 @@
@@ -12,15 +12,6 @@ index 89c76bad269ec7d5bb81eb92e2526060e1f02579..58ec815ba2d7b9945d8b43fe85aebe5f
    "chrome/app/google_chrome_strings.grd": {
      "messages": [800],
    },
-@@ -409,7 +412,7 @@
-     "includes": [4020],
-   },
-   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/history/resources.grd": {
--    "META": {"sizes": {"includes": [40]}},
-+    "META": {"sizes": {"includes": [46]}},
-     "includes": [4040],
-   },
-   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/identity_internals/resources.grd": {
 @@ -553,7 +556,7 @@
      "includes": [4720],
    },
@@ -30,7 +21,7 @@ index 89c76bad269ec7d5bb81eb92e2526060e1f02579..58ec815ba2d7b9945d8b43fe85aebe5f
      "includes": [4740],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings_shared/resources.grd": {
-@@ -923,6 +926,9 @@
+@@ -919,6 +922,9 @@
      # Big alignment at start of section.
      "messages": [7020],
    },
