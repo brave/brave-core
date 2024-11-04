@@ -607,7 +607,7 @@ class NewTabPage extends React.Component<Props, State> {
         paddingType={'none'}
         menuPosition={'left'}
         textDirection={textDirection}
-        widgetTitle={getLocale('braveVPNWidgetTitle')}
+        widgetTitle={getLocale('braveVpnWidgetTitle')}
         onShowContent={this.setForegroundStackWidget.bind(this, 'braveVPN')}
         isForeground={showContent}
         showContent={showContent}

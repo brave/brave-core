@@ -756,9 +756,6 @@
       <message name="IDS_BRAVE_TALK_WIDGET_START_BUTTON" desc="">Start call</message>
       <message name="IDS_BRAVE_TALK_WIDGET_ABOUT_DATA" desc="">About your data</message>
 
-      <message name="IDS_BRAVE_VPN_WIDGET_TITLE" desc="The text for the vpn card title">Brave VPN</message>
-      <message name="IDS_BRAVE_VPN_WIDGET_SETTING_DESC" desc="The text for vpn card description in customize menu">Extra privacy &amp; security online</message>
-
       <!-- WebUI Brave Toolbar resources -->
       <message name="IDS_WALLETS_TITLE" desc="The toolbar title for the brave://wallets page">Wallet</message>
       <!-- WebUI Crypto Wallets resources -->

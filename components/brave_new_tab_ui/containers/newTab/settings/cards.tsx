@@ -92,10 +92,10 @@ function CardSettings({ toggleShowBraveTalk, showBraveTalk, braveTalkSupported, 
       <StyledBannerImage src={braveVPNBanner} />
       <StyledSettingsInfo>
         <StyledSettingsTitle>
-          {getLocale('braveVPNWidgetSettingTitle')}
+          {getLocale('braveVpnWidgetSettingTitle')}
         </StyledSettingsTitle>
         <StyledSettingsCopy>
-          {getLocale('braveVPNWidgetSettingDesc')}
+          {getLocale('braveVpnWidgetSettingDesc')}
         </StyledSettingsCopy>
       </StyledSettingsInfo>
       <ToggleButton on={showBraveVPN} toggleFunc={toggleShowBraveVPN} />
