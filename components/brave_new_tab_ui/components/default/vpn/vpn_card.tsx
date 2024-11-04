@@ -7,34 +7,17 @@ import * as React from 'react'
 import { useDispatch } from 'react-redux'
 
 import Toggle from '@brave/leo/react/toggle'
+import { getLocale } from '$web-common/locale'
 import * as S from './styles'
 import VPNShieldsConnecting from './vpn-shields-connecting'
 import * as Actions from '../../../actions/brave_vpn_actions'
 import { ConnectionState, Region } from '../../../api/braveVpn'
 
-// Delete this.
-const locales = {
-  firewallVpn: 'Brave VPN',
-  connected: 'Connected',
-  connecting: 'Connecting',
-  disconnected: 'Disconnected',
-  disconnecting: 'Disconnecting',
-  change: 'Change',
-  optimal: 'Optimal',
-
-  promo: {
-    heading: 'Extra privacy & security online',
-    poweredBy: 'Powered by',
-    cta: 'Start free trial',
-    freeTrial: '7-day free trial'
-  }
-}
-
 export const VPNWidgetTitle = () => {
   return (
     <>
       <S.HeaderIcon name='product-vpn' />
-      {locales.firewallVpn}
+      {getLocale('braveVpnWidgetTitle')}
     </>
   )
 }
@@ -52,9 +35,9 @@ export const VPNPromoWidget = () => {
 
   const featureList = React.useMemo(
     () => [
-      'Extra privacy & security online',
-      'Hide your IP & change your location',
-      'Protect every app on your device'
+      getLocale('braveVpnFeature1'),
+      getLocale('braveVpnFeature2'),
+      getLocale('braveVpnWidgetFeature3')
     ],
     []
   )
@@ -64,7 +47,7 @@ export const VPNPromoWidget = () => {
       <VPNWidgetHeader />
       <S.WidgetContent>
         <S.PoweredBy>
-          <span>{locales.promo.poweredBy}</span>
+          <span>{getLocale('braveVpnPoweredBy')}</span>
           <S.GuardianLogo />
         </S.PoweredBy>
         <S.SellingPoints>
@@ -79,9 +62,9 @@ export const VPNPromoWidget = () => {
           <S.ActionButton
             onClick={() => dispatch(Actions.openVPNAccountPage())}
           >
-            {locales.promo.cta}
+            {getLocale('braveVpnCTA')}
           </S.ActionButton>
-          <S.ActionLabel>{locales.promo.freeTrial}</S.ActionLabel>
+          <S.ActionLabel>{getLocale('braveVpnFreeTrial')}</S.ActionLabel>
         </S.ActionArea>
       </S.WidgetContent>
     </S.WidgetWrapper>
@@ -91,16 +74,16 @@ export const VPNPromoWidget = () => {
 function GetConnectionStateLabel(connectionState: ConnectionState) {
   switch (connectionState) {
     case ConnectionState.CONNECTED:
-      return locales.connected
+      return getLocale('braveVpnConnected')
     case ConnectionState.CONNECTING:
-      return locales.connecting
+      return getLocale('braveVpnConnecting')
     case ConnectionState.DISCONNECTING:
-      return locales.disconnecting
+      return getLocale('braveVpnDisconnecting')
     default:
       break
   }
 
-  return locales.disconnected
+  return getLocale('braveVpnDisconnected')
 }
 
 interface MainWidgetProps {
@@ -133,12 +116,12 @@ export const VPNMainWidget = (props: MainWidgetProps) => {
               <S.RegionChangeLink
                 onClick={() => dispatch(Actions.launchVPNPanel())}
               >
-                {locales.change}
+                {getLocale('braveVpnChangeRegion')}
               </S.RegionChangeLink>
             </S.RegionAction>
             <S.RegionCityLabel>
               {props.selectedRegion.namePretty === props.selectedRegion.country
-                ? locales.optimal
+                ? getLocale('braveVpnOptimal')
                 : props.selectedRegion.namePretty}
             </S.RegionCityLabel>
           </S.ConnectionInfoBox>

@@ -424,4 +424,25 @@ Let's get you connected!
       Remove icon
     </message>
   </if>
+
+  <!-- Brave VPN Card widget -->
+  <message name="IDS_BRAVE_VPN_WIDGET_FEATURE_3" desc="Last feature statement for setting advertising">
+    Protect every app on your device
+  </message>
+  <message name="IDS_BRAVE_VPN_WIDGET_TITLE" desc="The text for the vpn card title">
+    Brave VPN
+  </message>
+  <message name="IDS_BRAVE_VPN_WIDGET_SETTING_DESC" desc="The text for vpn card description in customize menu">
+    Extra privacy &amp; security online.
+  </message>
+  <message name="IDS_BRAVE_VPN_WIDGET_CHANGE_LABEL" desc="The text for change link in vpn card">
+    Change
+  </message>
+  <message name="IDS_BRAVE_VPN_WIDGET_CTA" desc="The text for vpn promo card cta">
+    Start free trial
+  </message>
+  <message name="IDS_BRAVE_VPN_WIDGET_FREE_TRIAL" desc="The text for vpn promo card free trial label">
+    7-day free trial
+  </message>
+
 </grit-part>
