@@ -44,7 +44,7 @@ def should_use_transifex_for_file(source_string_path, filename):
     """ Determines if the given filename should be pulled from Transifex or
         handled locally"""
     slug = transifex_name_from_filename(source_string_path, filename)
-    return slug in transifex_handled_slugs or slug.startswith('greaselion_')
+    return slug in transifex_handled_slugs
 
 
 # pylint: disable=inconsistent-return-statements
@@ -54,8 +54,6 @@ def transifex_name_from_filename(source_file_path, filename):
         return 'brave_components_resources'
     if ext == '.grd':
         return filename
-    if 'brave-site-specific-scripts/scripts/' in source_file_path:
-        return transifex_name_from_greaselion_script_name(source_file_path)
     if 'brave_extension' in source_file_path:
         return 'brave_extension'
     if 'brave_rewards' in source_file_path:
@@ -63,14 +61,6 @@ def transifex_name_from_filename(source_file_path, filename):
     assert False, ('JSON files should be mapped explicitly, this '
                    f'one is not: {source_file_path}')
 # pylint: enable=inconsistent-return-statements
-
-def transifex_name_from_greaselion_script_name(script_name):
-    match = re.search(('brave-site-specific-scripts/scripts/(.*)/_locales/' +
-                       'en_US/messages.json$'), script_name)
-    if match:
-        return ('greaselion_' +
-            match.group(1).replace('-', '_').replace('/', '_'))
-    return ''
 
 
 def xtb_lang_to_transifex_lang(lang):

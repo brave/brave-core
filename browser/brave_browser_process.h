@@ -12,7 +12,6 @@
 #define BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -41,12 +40,6 @@ class AdBlockService;
 namespace brave_stats {
 class BraveStatsUpdater;
 }  // namespace brave_stats
-
-namespace greaselion {
-#if BUILDFLAG(ENABLE_GREASELION)
-class GreaselionDownloadService;
-#endif
-}  // namespace greaselion
 
 namespace debounce {
 class DebounceComponentInstaller;
@@ -102,10 +95,6 @@ class BraveBrowserProcess {
   https_upgrade_exceptions_service() = 0;
   virtual localhost_permission::LocalhostPermissionComponent*
   localhost_permission_component() = 0;
-#if BUILDFLAG(ENABLE_GREASELION)
-  virtual greaselion::GreaselionDownloadService*
-  greaselion_download_service() = 0;
-#endif
   virtual debounce::DebounceComponentInstaller*
   debounce_component_installer() = 0;
 #if BUILDFLAG(ENABLE_REQUEST_OTR)

@@ -29,10 +29,6 @@ namespace request_otr {
 class RequestOTRComponentInstallerPolicy;
 }
 
-namespace greaselion {
-class GreaselionDownloadService;
-}
-
 namespace webcompat {
 class WebcompatExceptionsService;
 }
@@ -68,7 +64,6 @@ class LocalDataFilesObserver {
   friend class https_upgrade_exceptions::HttpsUpgradeExceptionsService;
   friend class debounce::DebounceComponentInstaller;
   friend class request_otr::RequestOTRComponentInstallerPolicy;
-  friend class greaselion::GreaselionDownloadService;
   friend class webcompat::WebcompatExceptionsService;
 
   explicit LocalDataFilesObserver(
