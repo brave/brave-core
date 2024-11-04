@@ -18,6 +18,15 @@ index 07f855c52c5c0fd4eb63171ed861b34d6de2e387..b2da10cf5bdaa9a48afc737968248a17
      },
      {
        name: "FileSystemAccessLockingScheme",
+@@ -2502,7 +2504,7 @@
+       // enterprise policies have both expired. See the
+       // KeyboardFocusableScrollersOptOut flag.
+       name: "KeyboardFocusableScrollers",
+-      status: "stable",
++      status: "experimental",  // Revert when cr132 is merged.
+       public: true,
+     },
+     {
 @@ -2785,6 +2787,7 @@
      {
        name: "MiddleClickAutoscroll",
