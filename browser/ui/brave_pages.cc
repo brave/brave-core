@@ -92,4 +92,8 @@ void ShowWalletSettings(Browser* browser) {
   ShowSingletonTabOverwritingNTP(browser, GURL(kWalletSettingsURL));
 }
 
+void ShowAppsPage(Browser* browser) {
+  ShowSingletonTabOverwritingNTP(browser, GURL(chrome::kChromeUIAppsURL));
+}
+
 }  // namespace brave

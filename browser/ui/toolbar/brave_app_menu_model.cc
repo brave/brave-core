@@ -286,6 +286,9 @@ void BraveAppMenuModel::BuildMoreToolsSubMenu() {
                                              ui::NORMAL_SEPARATOR);
     need_separator = false;
   }
+  if (auto index = more_tools_menu_model->GetIndexOfCommandId(IDC_NAME_WINDOW)) {
+    more_tools_menu_model->InsertItemWithStringIdAt(*index + 1, IDC_SHOW_APPS_PAGE, IDS_IDC_SHOW_APPS_PAGE);
+  }
 
 #if BUILDFLAG(ENABLE_COMMANDER)
   if (auto index =
