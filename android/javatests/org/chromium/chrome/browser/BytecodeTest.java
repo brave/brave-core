@@ -1196,7 +1196,6 @@ public class BytecodeTest {
                         Activity.class,
                         ViewGroup.class,
                         BrowserControlsStateProvider.class,
-                        IncognitoStateProvider.class,
                         ScrimCoordinator.class,
                         ObservableSupplier.class,
                         BottomSheetController.class,
@@ -1205,7 +1204,8 @@ public class BytecodeTest {
                         TabContentManager.class,
                         TabCreatorManager.class,
                         OneshotSupplier.class,
-                        ModalDialogManager.class));
+                        ModalDialogManager.class,
+                        ThemeColorProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate",
@@ -1904,6 +1904,10 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
                         "mTabObscuringHandler"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mTopUiThemeColorProvider"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
