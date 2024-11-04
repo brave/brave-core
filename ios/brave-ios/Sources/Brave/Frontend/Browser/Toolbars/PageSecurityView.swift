@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveUI
 import Foundation
 import Shared
@@ -63,9 +64,12 @@ struct PageSecurityView: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 0) {
       VStack(alignment: .leading, spacing: 16) {
-        Text(displayURL)
+        URLElidedText(text: displayURL)
           .font(.headline)
           .foregroundStyle(Color(braveSystemName: .textPrimary))
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .fixedSize(horizontal: false, vertical: true)
+
         HStack(alignment: .firstTextBaseline) {
           warningIcon
           VStack(alignment: .leading, spacing: 4) {
