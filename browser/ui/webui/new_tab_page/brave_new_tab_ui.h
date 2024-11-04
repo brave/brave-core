@@ -20,7 +20,7 @@
 #include "ui/webui/mojo_web_ui_controller.h"
 #include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN_PANEL)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"  // nogncheck
 #endif
 
@@ -31,7 +31,7 @@ class BraveNewsController;
 class BraveNewTabPageHandler;
 
 class BraveNewTabUI : public ui::MojoWebUIController,
-#if BUILDFLAG(ENABLE_BRAVE_VPN_PANEL)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
                       public brave_vpn::mojom::NTPWidgetHandlerFactory,
 #endif
                       public brave_new_tab_page::mojom::PageHandlerFactory {
@@ -53,7 +53,7 @@ class BraveNewTabUI : public ui::MojoWebUIController,
   void BindInterface(mojo::PendingReceiver<searchbox::mojom::PageHandler>
                          pending_page_handler);
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN_PANEL)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   void BindInterface(
       mojo::PendingReceiver<brave_vpn::mojom::NTPWidgetHandlerFactory>
           pending_receiver);
@@ -68,7 +68,7 @@ class BraveNewTabUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<brave_new_tab_page::mojom::NewTabMetrics>
           pending_new_tab_metrics) override;
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN_PANEL)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   // brave_vpn::mojom::NTPWidgetHandlerFactory:
   void BindServiceHandler(
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler>
@@ -80,7 +80,7 @@ class BraveNewTabUI : public ui::MojoWebUIController,
   mojo::Receiver<brave_new_tab_page::mojom::PageHandlerFactory>
       page_factory_receiver_;
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN_PANEL)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   mojo::Receiver<brave_vpn::mojom::NTPWidgetHandlerFactory>
       ntp_widget_factory_receiver_{this};
 #endif

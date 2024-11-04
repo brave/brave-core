@@ -10,7 +10,6 @@ buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [
     "ENABLE_BRAVE_VPN=$enable_brave_vpn",
-    "ENABLE_BRAVE_VPN_PANEL=$enable_brave_vpn_panel",
     "ENABLE_BRAVE_VPN_WIREGUARD=$enable_brave_vpn_wireguard",
   ]
 }
