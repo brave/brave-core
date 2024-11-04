@@ -35,6 +35,21 @@ leo-input:not(:focus).red-border {
   z-index: -1;
 }
 
+#password_strength_indicator.weak {
+  --primary-color: var(--leo-color-systemfeedback-error-icon);
+  --secondary-color: var(--leo-color-systemfeedback-error-background);
+}
+
+#password_strength_indicator.medium {
+  --primary-color: var(--leo-color-systemfeedback-warning-icon);
+  --secondary-color: var(--leo-color-systemfeedback-warning-background);
+}
+
+#password_strength_indicator.strong {
+  --primary-color: var(--leo-color-systemfeedback-success-icon);
+  --secondary-color: var(--leo-color-systemfeedback-success-background);
+}
+
 #password_strength_indicator.visible {
   margin: 4px 0px 0px 0px;
 }

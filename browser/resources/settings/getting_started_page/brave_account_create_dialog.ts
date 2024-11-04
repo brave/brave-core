@@ -16,13 +16,6 @@ import { getHtml } from './brave_account_create_dialog.html.js'
 // https://github.com/brave/leo/blob/main/src/components/input/input.svelte
 // https://www.regular-expressions.info
 
-export interface SettingsBraveAccountCreateDialogElement {
-  $: {
-    password_strength_indicator: HTMLElement,
-    password_strength_category: HTMLElement,
-  }
-}
-
 export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   static get is() {
     return 'settings-brave-account-create-dialog'
@@ -58,10 +51,6 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   protected onCreatePasswordInput(detail: { value: string }) {
     this.password = detail.value
     this.score = this.regexps.filter(regexp => regexp.test(this.password)).length
-
-    this.$.password_strength_indicator.style.setProperty("--primary-color", `var(--leo-color-systemfeedback-${this.categories[this.score]}-icon)`)
-    this.$.password_strength_indicator.style.setProperty("--secondary-color", `var(--leo-color-systemfeedback-${this.categories[this.score]}-background)`)
-    this.$.password_strength_category.textContent = this.strength[this.score]
   }
 
   protected onConfirmPasswordInput(detail: { value: string }) {
@@ -95,9 +84,8 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   protected passwordConfirmation: string = ''
   protected icon: string = 'warning-triangle-filled'
 
-  protected score: number = 0
   protected regexps = [ /^.{5,}$/, /[a-z]/, /[A-Z]/, /[0-9]/, /[^a-zA-Z0-9]/ ]
-  protected categories = [ 'error', 'error', 'error', 'warning', 'warning', 'success' ]
+  protected score: number = 0
   protected strength = [ 'Weak', 'Weak', 'Weak', 'Medium', 'Medium', 'Strong' ]
 }
 

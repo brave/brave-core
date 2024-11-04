@@ -27,11 +27,13 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                     name="eye-off"
                     @click=${this.OnEyeIconClick}>
           </leo-icon>
-          <div id="password_strength_indicator" slot="errors" class=${this.score !== 0 ? 'visible' : ''}>
+          <div id="password_strength_indicator"
+               slot="errors"
+               class="${this.score !== 0 ? 'visible' : ''} ${this.strength[this.score].toLocaleLowerCase()}">
             <div class="password-strength-bar">
               <div id="password_strength_value" style="width: ${`calc(100% * ${this.score}/${this.regexps.length})`}"></div>
             </div>
-            <div id="password_strength_category"></div>
+            <div id="password_strength_category">${this.strength[this.score]}</div>
           </div>
         </leo-input>
         <leo-input class=${this.passwordConfirmation.length !== 0 && this.passwordConfirmation !== this.password ? 'red-border' : ''}
